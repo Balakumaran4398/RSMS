@@ -1,0 +1,34 @@
+<div>
+    <div class="head d-flex justify-content-between align-items-center mb-3">
+        <h6 class="span">UPDATE SMARTCARD NOT ALLOCATED DETAILS</h6>
+        <i class="fa fa-close close-icon" style="cursor: pointer;" (click)="onNoClick()"></i>
+    </div>
+    <div style="padding: 1rem;">
+        <div class="col-12 col-md-12  justify-content-center align-items-center mobile">
+            <div class="input_box display">
+                <div class="col-12 col-md-4">
+                    <label for="">Box ID</label>
+                </div>
+                <div class="col-12 col-md-8">
+                    <input type="text" class="mb-3" placeholder="Enter BoxID" [(ngModel)]="Boxid"  (keydown)="onKeydown($event)"
+                    maxlength="20" pattern="[0-9]*">
+                </div>
+            </div>
+            <div class="input_box display">
+                <div class="col-12 col-md-4">
+                    <label for="">Smartcard</label>
+                </div>
+                <div class="col-12 col-md-8">
+                    <input type="text" class="mb-3" placeholder="Enter Smartcard" [(ngModel)]="Smartcard">
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-12 col-md-12 d-flex justify-content-center align-items-center mb-3">
+        <button type="button" class="btn" (click)="submit()">
+            <i class="fa fa-upload" aria-hidden="true" style="font-size: 15px;"></i>&nbsp;
+            Update
+        </button>
+    </div>
+
+</div>

@@ -1,0 +1,12 @@
+.display {
+    display: flex;
+}
+.mobile{
+    padding: 0.5rem;
+    border:1px solid lightgray
+}
+@media screen and (max-width: 560px) {
+    .display {
+        display: block;
+    }
+}

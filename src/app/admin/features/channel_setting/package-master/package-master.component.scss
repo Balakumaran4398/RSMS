@@ -1,0 +1,104 @@
+#myGrid {
+    width: 100%;
+    height: 650px;
+    text-align: center;
+}
+
+::ng-deep .ag-header{
+    background-color: #557c9b !important;
+}
+.tab {
+    margin: 5px;
+    padding: 10px 15px;
+    border: 1px solid #ccc;
+    cursor: pointer;
+    border-radius: 5px;
+}
+
+.tab:hover {
+    background-color: #007bff;
+    color: white;
+    // font-weight: bold;   
+}
+
+
+.tab.active {
+    background-color: #007bff;
+    color: #fff;
+    border-color: #007bff;
+}
+
+.Tab h3 {
+    text-align: center;
+}
+
+.tablist {
+    flex-wrap: wrap;
+}
+
+.save {
+    height: 70px;
+}
+.display{
+    display: flex;
+}
+@media (max-width: 768px) {
+    .tablist {
+        flex-direction: column;
+        align-items: stretch;
+    }
+    .display{
+        display: block;
+    }
+    .btn_1 {
+        justify-content: center;
+        align-items: center;
+    }
+
+    .mat-form {
+        width: 100%;
+    }
+
+    .tab {
+        width: 100%;
+        text-align: center;
+    }
+
+    .tablist>div,
+    .tablist>a,
+    .tablist>select {
+        width: 100%;
+        margin: 5px 0;
+    }
+
+    .tablist>select {
+        text-align-last: center;
+        /* Center align text in select dropdown */
+    }
+
+    .button-group {
+        flex-direction: column;
+        align-items: stretch;
+        display: flex;
+    }
+
+    ::ng-deep .mat-mdc-text-field-wrapper {
+        height: 50px !important;
+    }
+
+    ::ng-deep .mat-mdc-text-field-wrapper {
+        height: auto !important;
+    }
+
+    .button-group a {
+        width: 100%;
+        // margin: 5px 0;
+    }
+}
+
+.button-group {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+}

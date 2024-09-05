@@ -1,0 +1,80 @@
+.display {
+    display: block;
+}
+
+.display_1 {
+    display: flex;
+    padding: 0.5rem;
+}
+
+.input_box span {
+    font-size: 16px;
+    color: #1e3c67;
+    font-family: sans-serif;
+    font-weight: 600;
+}
+
+.mobile {
+    max-height: 500px;
+    overflow: scroll;
+}
+
+label {
+    font-size: 15px;
+    font-weight: 600;
+}
+
+.card {
+    padding: 1rem 1rem;
+    box-shadow: 1px 2px 0 0 #989494, -2px 3px 0 0 #ae9e9e, 2px 3px 0px 0 #cbcbcb;
+    border: 1px solid lightgrey;
+
+}
+
+.view {
+    box-shadow: 1px 2px 0 0 #989494, -2px 3px 0 0 #ae9e9e, 2px 3px 0px 0 #cbcbcb;
+    border: 1px solid lightgrey;
+}
+
+
+
+.tab {
+    padding: 5px 10px;
+    cursor: pointer;
+    margin: 0 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
+}
+
+.tab:hover {
+    background-color: #2f7681;
+    color: white;
+    font-weight: bold;
+}
+
+.tab.active {
+    color: white;
+    font-size: 15spx;
+    font-weight: bold;
+    background-color: #2f7681;
+    // border-color: #007bff;
+}
+
+.tablist {
+    height: 50px;
+    // background-color: antiquewhite;
+}
+
+::ng-deep {
+    .ag-center-cols-viewport {
+        max-height: 500px;
+        overflow: scroll;
+    }
+}
+
+@media screen and (max-width:560px) {
+    // .display_1{
+    //     display: block;
+    // } 
+}

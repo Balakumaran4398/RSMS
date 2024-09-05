@@ -1,0 +1,95 @@
+<section class="Tab col-12">
+    <div>
+        <div class="d-flex tablist justify-content-center align-items-center my-3 new_d">
+            <div class="tab" [class.active]="selectedTab === 'commission'" (click)="selectTab('commission')"> LCO
+                COMMISSION
+            </div>
+            <div class="tab" [class.active]="selectedTab === 'membership'" (click)="selectTab('membership')"> LCO
+                MEMBERSHIP
+            </div>
+        </div>
+        <div *ngIf="selectedTab === 'commission'" class="commission">
+            <h6 style="text-align: center;">LCO COMMISSION DETAILS</h6>
+            <div class="row input_box">
+                <div class="col d-flex justify-content-start align-items-center mb-3">
+                    <span style="font-size:17px;color: red;">SELECT LCO MEMBERSHIP</span> &nbsp;&nbsp;
+                    <select style="width: 200px; height: 40px;" name="" id="">
+                        <option style="height: 40px;" value="">ALL</option>
+                        <option style="height: 40px;" value="">ACTIVE</option>
+                        <option style="height: 40px;" value="">DEACTIVE</option>
+                    </select>
+                </div>
+                <div class="col d-flex justify-content-end align-items-center">
+                    <a class="btn btn-outline-success mx-1" (click)="add()">
+                        <i class="fa fa-plus" aria-hidden="true"></i> <span> ADD PRODUCT / COMMISSION MEMBERSHIP</span>
+                    </a>
+                </div>
+            </div>
+            <br><br>
+            <ag-grid-angular #agGrid id="myGrid" style="text-align: center;" domLayout='autoHeight'
+                class="ag-theme-alpine table-class" rowAnimation [gridOptions]="gridOptions" [columnDefs]="columnDefs"
+                [rowData]="rowData" [enableCellTextSelection]="true">
+            </ag-grid-angular>
+        </div>
+
+
+        <div *ngIf="selectedTab === 'membership'">
+            <div class="row">
+                <div class="col-12 d-flex flex-column flex-xl-row">
+                    <div class="col-12 col-xl-6 mb-4 mx-3">
+                        <div>
+                            <h6>CREATE LCO MEMBERSHIP</h6>
+                            <ag-grid-angular #agGrid id="myGrid" style="text-align: center;" domLayout='autoHeight'
+                                rowAnimation [columnDefs]="columnDefs1" [rowData]="rowData1" class="ag-theme-alpine table-class"
+                                [enableCellTextSelection]="true">
+                            </ag-grid-angular>
+                            <div class="col d-flex justify-content-center align-items-center new_d">
+                                <a class="btn btn-success mx-1" (click)="Create_LCO()">
+                                    <span>
+                                        <i class="fa fa-plus" aria-hidden="true"></i> <span> New</span>
+                                    </span>
+                                </a>
+                            </div>
+                            <app-inventory-chart></app-inventory-chart>
+                        </div>
+                    </div>
+                    <hr class="vertical-line">
+                    <div class="col-12 col-xl-6 mx-3">
+                        <div>
+                            <h6>CHANGE LCO MEMBERSHIP</h6>
+                            <div class="row input_box">
+                                <div class="col d-flex justify-content-start align-items-center mb-3">
+                                    <span style="font-size:17px;color: red;">SELECT LCO MEMBERSHIP</span> &nbsp;&nbsp;
+                                    <select style="width: 200px; height: 40px;" name="" id="">
+                                        <option style="height: 40px;" value="">ALL</option>
+                                        <option style="height: 40px;" value="">ACTIVE</option>
+                                        <option style="height: 40px;" value="">DEACTIVE</option>
+                                    </select>
+                                </div>
+                                <ag-grid-angular #agGrid id="myGrid" style="text-align: center;" domLayout='autoHeight'
+                                class="ag-theme-alpine table-class" rowAnimation [gridOptions]="gridOptions" 
+                                    [columnDefs]="columnDefs1" [rowData]="rowData1" [enableCellTextSelection]="true">
+                                </ag-grid-angular>
+                                <div class="col d-flex justify-content-center align-items-center new_d">
+                                    <a class="btn btn-infos mx-1" (click)="change_membership()"> &nbsp;
+                                        <i class="fa fa-exchange" aria-hidden="true"></i> &nbsp;
+                                        <span>Change Membership</span>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-12 mt-4">
+                    <h6>LCO MEMBERSHIP FUP</h6>
+                    <ag-grid-angular #agGrid id="myGrid" style="text-align: center;" domLayout='autoHeight'
+                    class="ag-theme-alpine table-class" rowAnimation [gridOptions]="gridOptions" [columnDefs]="columnDefs2"
+                        [rowData]="rowData2" [enableCellTextSelection]="true">
+                    </ag-grid-angular>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+</section>

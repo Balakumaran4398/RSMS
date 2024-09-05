@@ -1,0 +1,303 @@
+<div id="Customer-page" #formContent>
+    <!-- <div>
+        <h3 style="margin: 0px;position: sticky;">
+            SUBSCRIBER CREATION
+        </h3>
+    </div> -->
+    <div class="">
+        <div class="row d-flex justify-content-center ">
+            <div class="col-12 col-md-6 p-3">
+                <form [formGroup]="form" (ngSubmit)="onSubmit(form)">
+
+                    <div class="card">
+                        <div class="title">
+                            <p>STB Bill Generate</p>
+                        </div>
+                        <div class="user_details">
+
+                            <div class="input_box">
+                                <label for="option">LCO Name</label>
+                                <select id="option" formControlName="lco"
+                                    [ngClass]="{ 'is-invalid': submitted && f['lco'].errors }" required>
+                                    <option value="" selected> Select an option</option>
+                                    <option value="ENACURITY">ENACURITY</option>
+                                    <option value="RCAS">RCAS</option>
+                                    <option value="ABVCAS">ABVCAS</option>
+                                </select>
+                                <div style="position: absolute;font-size: small;">
+                                    <div *ngIf="submitted && f['lco'].errors?.['required']" class="text-danger">
+                                        LCO Name is required</div>
+                                </div>
+                            </div>
+                            <div class="input_box">
+                                <label for="option">Area Name</label>
+                                <select id="option" formControlName="area"
+                                    [ngClass]="{ 'is-invalid': submitted && f['area'].errors }" required>
+                                    <option value="" disabled selected>Select an option</option>
+                                    <option value="ENACURITY">ENACURITY</option>
+                                    <option value="RCAS">RCAS</option>
+                                    <option value="ABVCAS">ABVCAS</option>
+                                </select>
+                                <div style="position: absolute; font-size: small;">
+                                    <div *ngIf="submitted && f['area'].errors?.['required']" class="text-danger">
+                                        Area Name is required</div>
+                                </div>
+                            </div>
+                            <div class="input_box">
+                                <label for="option">STB Model</label>
+                                <select id="option" formControlName="stb_model"
+                                    [ngClass]="{ 'is-invalid': submitted && f['stb_model'].errors }" required>
+                                    <option value="" disabled selected>Select STB Model</option>
+                                    <option value="ENACURITY">ENACURITY</option>
+                                    <option value="RCAS">RCAS</option>
+                                    <option value="ABVCAS">ABVCAS</option>
+                                </select>
+                                <div style="position: absolute;font-size: small;">
+                                    <div *ngIf="submitted && f['stb_model'].errors?.['required']" class="text-danger">
+                                        STB Model is required</div>
+                                </div>
+                            </div>
+
+
+                            <div class="input_box">
+                                <label for="username">STB Rate</label>
+                                <input type="text" formControlName="stb_rate" class=""
+                                    placeholder="Enter Stb rate" (keypress)="onKeydown($event)" required
+                                    [ngClass]="{ 'is-invalid': submitted && f['stb_rate'].errors }" />
+
+                                <div style="position: absolute; font-size: small;"
+                                    *ngIf="submitted && f['stb_rate'].errors" class="invalid-feedback">
+                                    <div *ngIf="f['stb_rate'].errors['required']">Stb rate is required</div>
+                                </div>
+                            </div>
+                            <div class="input_box">
+                                <label for="email">Total No of STB</label>
+                                <input type="text" formControlName="total_of_stb" class=""
+                                    placeholder="Enter Subscriber Name" required
+                                    [ngClass]="{ 'is-invalid': submitted && f['subscriber_name'].errors }" />
+
+                                <!-- <div style="position: absolute; font-size: small;"
+                                    *ngIf="submitted && f['subscriber_name'].errors" class="invalid-feedback">
+                                    <div *ngIf="f['subscriber_name'].errors['required']">Subscriber Name is required
+                                    </div>
+                                </div> -->
+                            </div>
+                            <div class="input_box">
+                                <label for="option">Type Of Transaction</label>
+                                <select id="option" formControlName="transaction"
+                                    [ngClass]="{ 'is-invalid': submitted && f['transaction'].errors }" required>
+                                    <option value="" disabled selected>Select Type of Transaction</option>
+                                    <option value="ENACURITY">ENACURITY</option>
+                                    <option value="RCAS">RCAS</option>
+                                    <option value="ABVCAS">ABVCAS</option>
+                                </select>
+                                <div style="position: absolute;font-size: small;">
+                                    <div *ngIf="submitted && f['transaction'].errors?.['required']" class="text-danger">
+                                        Transactionl is required</div>
+                                </div>
+                            </div>
+                            <div class="input_box">
+                                <label for="phone">Reference No</label>
+                                <input type="text" formControlName="reference_no" class=""
+                                    placeholder="EnterReference No" required
+                                    [ngClass]="{ 'is-invalid': submitted && f['reference_no'].errors }" />
+
+                                <div style="position: absolute; font-size: small;"
+                                    *ngIf="submitted && f['reference_no'].errors" class="invalid-feedback">
+                                    <div *ngIf="f['reference_no'].errors['required']">Reference No is required
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="input_box">
+                                <label for="pass">CGST</label>
+                                <input type="text" formControlName="cgst" class="" readonly
+                                    [ngClass]="{ 'is-invalid': submitted && f['cgst'].errors }" />
+
+                                <!-- <div style="position: absolute; font-size: small;"
+                                    *ngIf="submitted && f['father_name'].errors" class="invalid-feedback">
+                                    <div *ngIf="f['father_name'].errors['required']">Father Name is required
+                                    </div>
+                                </div> -->
+                            </div>
+                            <div class="input_box">
+                                <label for="pass">SGST</label>
+                                <input type="text" formControlName="select" class="" readonly
+                                    [ngClass]="{ 'is-invalid': submitted && f['sgst'].errors }" />
+
+                                <!-- <div style="position: absolute; font-size: small;"
+                                    *ngIf="submitted && f['father_name'].errors" class="invalid-feedback">
+                                    <div *ngIf="f['father_name'].errors['required']">Father Name is required
+                                    </div>
+                                </div> -->
+                            </div>
+                            <div class="input_box">
+                                <label for="phone">Previous Balance</label>
+                                <input type="text" formControlName="previous_balance" class=""
+                                    placeholder="EnterReference No" required
+                                    [ngClass]="{ 'is-invalid': submitted && f['previous_balance'].errors }" />
+
+                                <div style="position: absolute; font-size: small;"
+                                    *ngIf="submitted && f['previous_balance'].errors" class="invalid-feedback">
+                                    <div *ngIf="f['previous_balance'].errors['required']">Previous Balance is required
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="input_box">
+                                <label for="phone">Total Bill Amount</label>
+                                <input type="text" formControlName="total_bill_amount" class=""
+                                    placeholder="EnterReference No" required
+                                    [ngClass]="{ 'is-invalid': submitted && f['total_bill_amount'].errors }" />
+
+                                <!-- <div style="position: absolute; font-size: small;"
+                                    *ngIf="submitted && f['total_bill_amount'].errors" class="invalid-feedback">
+                                    <div *ngIf="f['total_bill_amount'].errors['required']">Previous Balance is required
+                                    </div>
+                                </div> -->
+                            </div>
+                            <div class="input_box">
+                                <label for="phone">Paid Amount</label>
+                                <input type="text" formControlName="paid_amount" class=""
+                                    placeholder="EnterReference No" required
+                                    [ngClass]="{ 'is-invalid': submitted && f['paid_amount'].errors }" />
+
+                                <!-- <div style="position: absolute; font-size: small;"
+                                    *ngIf="submitted && f['total_bill_amount'].errors" class="invalid-feedback">
+                                    <div *ngIf="f['total_bill_amount'].errors['required']">Previous Balance is required
+                                    </div>
+                                </div> -->
+                            </div>
+                            <div class="input_box">
+                                <label for="confirmPass">Collection Date</label>
+                                <input type="date" formControlName="collection_date" class=""
+                                    placeholder="collection date" required
+                                    [ngClass]="{ 'is-invalid': submitted && f['collection_date'].errors }" />
+
+                                <div style="position: absolute; font-size: small;"
+                                    *ngIf="submitted && f['collection_date'].errors" class="invalid-feedback">
+                                    <div *ngIf="f['collection_date'].errors['required']">Collection Date is required
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- <div class="d-flex justify-content-center align-items-center" style="padding: 10px;">
+                                <button type="button" (click)="onReset()" class="btn btn-danger">
+                                    Reset
+                                </button>
+                                &nbsp; &nbsp;
+                                <div class="">
+                                    <button type="submit" class="btn" style="background:#058372;color: white;">Bill
+                                        Generate</button>
+                                </div>
+
+                            </div> -->
+                           
+                        </div>
+                        <div class="d-flex justify-content-center align-items-center" style="padding: 10px;">
+                            <button type="button" class="btn btn-danger" (click)="onReset()">Reset</button>
+                            &nbsp;
+                            <button type="submit" class="btn btn-success">Bill Generate </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <!-- <hr> -->
+            <div class="col-12 col-md-6 p-3">
+                <div class="card">
+                    <div class="title">
+                        <p>STB Bill Details</p>
+                    </div>
+                    <div class="row d-flex align-items-center justify-content-center" style="padding: 0.5rem;">
+                        <div class="col-12 col-sm-12 col-md-12 mb-3">
+                            <div class="input_box_table">
+                                <div class="d-flex flex-wrap justify-content-start align-items-center">
+                                    <div class="col-12 col-md-6 col-lg-4 p-2">
+                                        <select id="type_of_report" class=""
+                                            (change)="onReportTypeChange($event)">
+                                            <option value="">Select type of report</option>
+                                            <option value="bill_no">Bill No</option>
+                                            <option value="operator">Operator</option>
+                                            <option value="monthly">Monthly</option>
+                                            <option value="yearly">Yearly</option>
+                                            <option value="datewise">Datewise</option>
+                                        </select>
+                                    </div>
+
+                                    <div class="col-12 col-md-6 col-lg-4 p-2">
+                                        <select id="lco_name" formControlName="lco_name" class=""
+                                            [disabled]="isLCONameDisabled">
+                                            <option value="" selected>Select LCO Name</option>
+                                            <option value="ENACURITY">ENACURITY</option>
+                                            <option value="RCAS">RCAS</option>
+                                            <option value="ABVCAS">ABVCAS</option>
+                                        </select>
+                                    </div>
+
+                                    <div class="col-12 col-md-6 col-lg-4 p-2">
+                                        <input type="date" formControlName="date" class=""
+                                            placeholder="date" required
+                                            [ngClass]="{ 'is-invalid': submitted && f['date'].errors }"
+                                            [disabled]="isDateDisabled" />
+                                    </div>
+
+                                    <div class="col-12 col-md-6 col-lg-4 p-2">
+                                        <select id="month" formControlName="month" class=""
+                                            [disabled]="isMonthDisabled">
+                                            <option value="" selected>Select Month</option>
+                                            <option value="january">January</option>
+                                            <option value="february">February</option>
+                                            <option value="march">March</option>
+                                        </select>
+                                    </div>
+
+                                    <div class="col-12 col-md-6 col-lg-4 p-2">
+                                        <select id="year" formControlName="year" class=""
+                                            [disabled]="isYearDisabled">
+                                            <option value="" selected>Select Year</option>
+                                            <option value="2024">2024</option>
+                                            <option value="2023">2023</option>
+                                            <option value="2022">2022</option>
+                                        </select>
+                                    </div>
+
+                                    <div class="col-12 col-md-6 col-lg-4 p-2">
+                                        <input type="text" placeholder="Enter Bill no" formControlName="bill_no"
+                                            class="" [disabled]="isBillNoDisabled">
+                                    </div>
+                                    <!-- <div class="d-flex justify-content-end align-item-center"> -->
+                                    <div class="col-12 col-md-6 col-lg-4 p-2">
+                                        <button type="submit" class="btn" style="background:#058372;color: white;">Get
+                                            Bill
+                                        </button>
+                                    </div>
+
+
+                                    <div class="col-12 col-md-6 col-lg-4 p-2">
+                                        <div class="icon-container ">
+                                            <img src="/assets/images/icons/Excel.png" width="40px">
+                                            <div class="tooltip">Excel</div>
+                                        </div>
+                                    </div>
+                                    <div class="col-12 col-md-6 col-lg-4 p-2">
+                                        <div class="icon-container d-flex align-items-center">
+                                            <img src="/assets/images/icons/pdf.png" width="40px">
+                                            <div class="tooltip">Pdf</div>
+                                        </div>
+                                    </div>
+                                    <!-- </div> -->
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-12 col-sm-12 col-md-12 mb-3">
+                            <ag-grid-angular #agGrid id="myGrid" domLayout='autoHeight'
+                                class="ag-theme-alpine table-class" rowAnimation [rowSelection]="rowSelection"
+                                [gridOptions]="gridOptions" [columnDefs]="columnDefs" [rowData]="rowData"
+                                (gridReady)="onGridReady($event)" [enableCellTextSelection]="true">
+                            </ag-grid-angular>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>

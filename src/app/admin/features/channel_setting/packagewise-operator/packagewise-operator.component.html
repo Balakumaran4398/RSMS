@@ -1,0 +1,70 @@
+<section>
+    <h3>PACKAGEWISE OPERATOR LIST</h3>
+    <div class="d-flex flex-column flex-lg-row justify-content-center align-items-center">
+        <div class="col-lg-5 col-12 mb-3 mb-lg-0">
+            <div class="card">
+                <div class="input_box mb-3">
+                    <select id="producttypelist" formControlName="producttypelist" (change)="onProductType($event)">
+                        <option value="0" selected>Select an Product Type</option>
+                        <option *ngFor="let item of producttypeList" [value]="item.value">{{ item.key }}</option>
+                    </select>
+                </div>
+                <div class="input_box">
+                    <input type="text" placeholder="Search">
+                </div>
+                <div class="table1 mb-3">
+                    <p>ALLOCATED</p>
+                    <div class="row inp">
+                        <div class="col-12 example-container">
+                            <div cdkDropList #todoList="cdkDropList" [cdkDropListData]="todo"
+                                [cdkDropListConnectedTo]="[doneList]" class="example-list"
+                                (cdkDropListDropped)="drop($event)">
+                                <div *ngFor="let item of todo" class="example-box" cdkDrag>{{ item.operatorname }}</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="display my-3 my-lg-0 mx-lg-3">
+            <button class="btn"><i class="bx bx-right-arrow-alt"></i></button>
+            <button class="btn"><i class="bx bx-arrow-to-right"></i></button>
+            <button class="btn"><i class="bx bx-left-arrow-alt"></i></button>
+            <button class="btn"><i class="bx bx-arrow-to-left"></i></button>
+        </div>
+        <div class="col-lg-5 col-12">
+            <div class="card">
+                <div class="input_box mb-3">
+                    <select id="productlist" formControlName="productlist" (change)="onProductlist($event)">
+                        <option value="0" selected>Select a Product Type</option>
+                        <!-- <option *ngFor="let key of producttypelistKeys" [value]="key.id">{{ key.name }}</option> -->
+                        <option *ngFor="let product of filteredProductTypes" [value]="product.id">{{ product.name }}
+                        </option>
+                    </select>
+                </div>
+                <div class="input_box">
+                    <input type="text" placeholder="Search">
+                </div>
+                <div class="table2 mb-3">
+                    <p>NOT ALLOCATED</p>
+                    <div class="row inp">
+                        <div class="col-12 example-container">
+                            <div cdkDropList #doneList="cdkDropList" [cdkDropListData]="allocated"
+                                [cdkDropListConnectedTo]="[todoList]" class="example-list"
+                                (cdkDropListDropped)="drop($event)">
+                                <div *ngFor="let item of allocated" class="example-box" cdkDrag>{{ item.operatorname }}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- <div class="col-lg-5 col-12"> -->
+            <button type="button" (click)="save($event)">Save
+
+            </button>
+        <!-- </div> -->
+    </div>
+
+</section>

@@ -1,0 +1,120 @@
+.head {
+    padding: 13px;
+    background-color: lightcyan;
+    height: 50px;
+    display: flex; /* Ensure the container is a flex container */
+    justify-content: space-between; /* Pushes children to the ends of the container */
+    align-items: center;
+}
+
+.head span {
+    color: var(--primary-color);
+    font-size: 17px;
+    text-transform: uppercase;
+    font-weight: bold;
+}
+
+.close-icon {
+    font-size: 19px;
+    cursor: pointer;
+}
+
+.close-icon:hover {
+    background-color: var(--primary-color);
+    font-size: 17px;
+    padding: 2px;
+    margin: 0;
+    color: white;
+    border-radius: 10px;
+}
+
+.lco {
+    // width: 30%;
+    // padding: 15px;
+    padding: 1rem;
+    background: rgb(181, 247, 236);
+    margin: auto;
+}
+
+.btn-infos {
+    background-color: rgb(123 158 102);
+    border: 1px solid rgb(6, 4, 136);
+    color: #ffffff;
+}
+
+.btn-infos:hover,
+.btn-success:hover {
+    color: rgb(209, 10, 43);
+}
+
+// .lco .d-flex {
+//     margin-bottom: 20px;
+//     /* Adjust the value as needed */
+// }
+.title {
+    flex: 1;
+}
+.lco label {
+    flex-grow: 1;
+    text-align: left;
+    color: #0e21f3;
+    font-size: medium;
+    font-weight: 400;
+}
+
+.lco span {
+    flex-grow: 1;
+    text-align: center;
+}
+
+.lco .value {
+    font-size: x-large;
+    font-weight: bold;
+}
+
+
+
+
+.head {
+    font-size: 1.2rem; /* Adjust font size as needed */
+}
+
+.close-icon {
+    cursor: pointer;
+}
+
+.ag-theme-quartz {
+    width: 100%; /* Make sure ag-grid takes full width */
+    max-height: 500px; /* Optionally set a max height */
+}
+
+.lco {
+    padding: 1rem; /* Add some padding */
+}
+
+.value {
+    font-weight: bold; /* Make the value stand out */
+}
+
+.btn-infos {
+    white-space: nowrap; /* Prevent button text from wrapping */
+}
+
+.form-select {
+    width: 50%; /* Make the select element responsive */
+}
+
+@media (max-width: 576px) {
+    .head {
+        font-size: 1rem; /* Adjust font size on smaller screens */
+    }
+
+    .ag-theme-quartz {
+        max-height: 300px; /* Adjust max height for smaller screens */
+    }
+
+    .lco {
+        padding: 0.5rem; /* Reduce padding on smaller screens */
+    }
+
+}

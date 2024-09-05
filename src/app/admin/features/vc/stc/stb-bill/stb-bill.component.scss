@@ -1,0 +1,205 @@
+.card {
+    max-width: 950px;
+    width: 100%;
+    background: #ffffff;
+    border-radius: 0.5rem;
+    box-shadow: 0px 0px 0px 1px rgba(0, 0, 0, 0.1),
+        0px 5px 12px -2px rgba(0, 0, 0, 0.1),
+        0px 18px 36px -6px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    margin: 0px;
+}
+.btn {
+    width: 150px;
+}
+.card .title {
+    padding: 5px;
+    background: #d4dfeb;
+}
+
+.card .title p {
+    font-size: 20px;
+    font-weight: 500;
+    position: relative;
+}
+
+.card .title p::before {
+    content: "";
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 10vw;
+    height: 3px;
+    background: linear-gradient(to right, #058372, #acf3cc);
+}
+
+.user_details {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 20px;
+    padding: 25px;
+    // height: 70vh;
+    overflow: auto;
+}
+
+.user_details .input_box {
+    width: calc(100% / 2 - 20px);
+    // margin: 0 0 12px 0;
+}
+
+.input_box label {
+    font-weight: 500;
+    margin-bottom: 5px;
+    display: block;
+    // font-size: medium;
+    color: #243359;
+}
+
+.input_box label::after {
+    content: " *";
+    color: red;
+}
+
+.input_box select option {
+    padding: 7px 0;
+}
+
+.input_box input {
+    width: 100%;
+    height: 45px;
+    border: none;
+    outline: none;
+    border-radius: 5px;
+    // font-size: 16px;
+    // padding-left: 15px;
+    padding: 0px 12px;
+    border-top: 2px solid #b0afaf;
+    border-bottom: 0.9px solid lightgray;
+    border-left: 0.9px solid lightgray;
+    border-right: 0.9px solid lightgray;
+    box-shadow: 0px 0px 0px 1px rgba(0, 0, 0, 0.1);
+    background-color: #f6f8fa;
+    font-family: 'Poppins', sans-serif;
+    transition: all 120ms ease-out 0s;
+}
+
+.input_box select {
+    width: 100%;
+    height: 45px;
+    border: none;
+    outline: none;
+    border-radius: 5px;
+    // font-size: 16px;
+    // padding-left: 15px;
+    box-shadow: 0px 0px 0px 1px rgba(0, 0, 0, 0.1);
+    background-color: #f6f8fa;
+    font-family: 'Poppins', sans-serif;
+    transition: all 120ms ease-out 0s;
+    padding: 0px 12px;
+    border-top: 2px solid #b0afaf;
+    border-bottom: 0.9px solid lightgray;
+    border-left: 0.9px solid lightgray;
+    border-right: 0.9px solid lightgray;
+}
+
+
+.input_box input:focus,
+.input_box input:valid {
+    box-shadow: 0px 0px 0px 2px #1f6764;
+}
+
+.input_box select:focus,
+.input_box select:valid {
+    box-shadow: 0px 0px 0px 2px #1f6764;
+}
+
+
+.input_box_table input {
+    width: 100%;
+    height: 35px;
+    border: none;
+    outline: none;
+    border-radius: 5px;
+    // font-size: 16px;
+    padding-left: 15px;
+    box-shadow: 0px 0px 0px 1px rgba(0, 0, 0, 0.1);
+    background-color: #f6f8fa;
+    font-family: 'Poppins', sans-serif;
+    transition: all 120ms ease-out 0s;
+}
+
+.input_box_table select {
+    width: 100%;
+    height: 35px;
+    border: none;
+    outline: none;
+    border-radius: 5px;
+    // font-size: 16px;
+    padding-left: 15px;
+    box-shadow: 0px 0px 0px 1px rgba(0, 0, 0, 0.1);
+    background-color: #f6f8fa;
+    font-family: 'Poppins', sans-serif;
+    transition: all 120ms ease-out 0s;
+}
+
+.input_box_table input:focus,
+.input_box_table input:valid {
+    box-shadow: 0px 0px 0px 2px #1f6764;
+}
+
+.input_box_table select:focus,
+.input_box_table select:valid {
+    box-shadow: 0px 0px 0px 2px #1f6764;
+}
+
+form {
+    margin-top: 0px !important;
+}
+
+
+@media screen and (max-width: 584px) {
+
+    .user_details {
+        max-height: 340px;
+        overflow-y: scroll;
+    }
+
+    .user_details::-webkit-scrollbar {
+        width: 0;
+    }
+
+    .user_details .input_box {
+        width: 100%;
+    }
+
+    .gender .category {
+        width: 100%;
+    }
+
+}
+
+
+
+@media (max-width: 576px) {
+    .title p {
+        font-size: 1rem;
+    }
+}
+
+@media (max-width: 576px) {
+
+    .input_box_table select,
+    .input_box_table input {
+        width: 100%;
+        margin-bottom: 10px;
+    }
+}
+
+@media (min-width: 768px) {
+
+    .input_box_table select,
+    .input_box_table input {
+        margin-right: 10px;
+    }
+}

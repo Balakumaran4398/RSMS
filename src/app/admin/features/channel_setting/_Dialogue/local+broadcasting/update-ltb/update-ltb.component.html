@@ -1,0 +1,120 @@
+<div>
+    <div class="head d-flex justify-content-between align-items-center mb-3">
+        <h6 class="span">UPDATE LTB</h6>
+        <i class="fa fa-close close-icon" style="cursor: pointer;" (click)="onNoClick()"></i>
+    </div>
+    <div class="container">
+        <div class="card d-block justify-content-center align-items-center"
+            style="border: 1px solid green;padding: 1rem;">
+            <div class="line">
+                <div class=" col-12 d-flex justify-content-center align-items-center">
+                    <div class="col-6 d-flex justify-content-start align-items-center">
+                        <span>Local Channel Name</span>
+                    </div>
+                    <div class="col-6">
+                        ltbname
+                    </div>
+                </div>
+            </div>
+
+            <div class="line">
+                <div class="col-12 d-flex justify-content-center align-items-center">
+                    <div class="col-6 d-flex justify-content-start align-items-center">
+                        <span>LTB name</span>
+                    </div>
+                    <div class="col-6">
+                        <div class="gender-category">
+                            <select id="option" formControlName="name_head" class="" required>
+                                <option value="Mr">Mr</option>
+                                <option value="Mrs">Mrs</option>
+                                <option value="Misss">Miss</option>
+                            </select>
+                            <!-- <div style="position: absolute;font-size: 11px;">
+                                <div *ngIf="submitted && f['name_head'].errors?.['required']" class="text-danger">
+                                    LTB Name head is required</div>
+                            </div> -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="line">
+                <div class="col-12 d-flex justify-content-center align-items-center">
+                    <div class="col-6 d-flex justify-content-start align-items-center">
+                        <span>Channel Rate</span>
+                    </div>
+                    <div class="col-6">
+                        <input type="text" class="" readonly>
+                    </div>
+                </div>
+            </div>
+            <div class="line">
+                <div class="col-12 d-flex justify-content-center align-items-center">
+                    <div class="col-6 d-flex justify-content-start align-items-center">
+                        <span>With Tax</span> &nbsp;
+                    </div>
+                    <div class="col-6">
+                        <!-- <div id="app-cover"> -->
+                            <div class="toggle-button-cover">
+                                <div class="button b2" id="button-10">
+                                    <input type="checkbox" class="checkbox" formControlName="isactive" />
+                                    <div class="knobs">
+                                        <span>YES</span>
+                                    </div>
+                                    <div class="layer"></div>
+                                </div>
+                            </div>
+                        <!-- </div> -->
+                    </div>
+                </div>
+            </div>
+            <div class="line">
+                <div class="col-12 d-flex justify-content-center align-items-center">
+                    <div class="col-6 d-flex justify-content-start align-items-center">
+                        <span>Tax</span>
+                    </div>
+                    <div class="col-6">
+                        gfdgdfgfd
+                    </div>
+                </div>
+            </div>
+            <div class="line">
+                <div class="col-12 d-flex justify-content-center align-items-center">
+                    <div class="col-6 d-flex justify-content-start align-items-center">
+                        <span>Lco price </span>
+                    </div>
+                    <div class="col-6">
+                        fdfgdfgfd
+                    </div>
+                </div>
+            </div>
+            <div class="line">
+                <div class="col-12 d-flex justify-content-center align-items-center">
+                    <div class="col-6 d-flex justify-content-start align-items-center">
+                        <span>Status</span> &nbsp;
+                    </div>
+                    <div class="col-6">
+                        <!-- <div id="app-cover"> -->
+                            <div class="toggle-button-cover">
+                                <div class="button-cover">
+                                    <div class="button b2" id="button-14">
+                                        <input type="checkbox" class="checkbox" />
+                                        <div class="knobs">
+                                            <span></span>
+                                        </div>
+                                        <div class="layer"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        <!-- </div> -->
+                    </div>
+
+                </div>
+            </div>
+        </div>
+        <div class="d-flex justify-content-center align-items-center" style="padding: 10px;">
+            <button type="button" class="btn btn-danger" (click)="onNoClick()">No</button>
+            &nbsp;
+            <button type="button" class="btn btn-success">Update </button>
+        </div>
+    </div>
+</div>

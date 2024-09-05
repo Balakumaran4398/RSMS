@@ -1,0 +1,33 @@
+
+
+.mobile {
+    padding: 1rem;
+    border: 1px solid lightgrey;
+}
+
+.display {
+    display: flex;
+}
+.input_box {
+    display: flex;
+    justify-content: center; /* Center horizontally */
+    align-items: center;     /* Center vertically */
+    height: 100%;            /* Ensure the height takes up the entire container */
+}
+ label::after {
+    content: " *";
+    color: red;
+}
+.file-upload-container {
+    display: flex;
+    justify-content: center; /* Center horizontally */
+    align-items: center;     /* Center vertically */
+    text-align: center;      /* Center text inside the container if needed */
+    height: 100%;            /* Full height of the container */
+}
+
+@media screen and (max-width: 560px) {
+   .display{
+    display: block;
+   }
+}

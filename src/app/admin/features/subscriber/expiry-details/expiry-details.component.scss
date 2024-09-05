@@ -1,0 +1,64 @@
+::ng-deep .mat-mdc-text-field-wrapper {
+    height: 50px !important;
+}
+
+::ng-deep .mat-mdc-option {
+    min-height: 30px !important;
+}
+
+::ng-deep .mat-mdc-option .mdc-list-item__primary-text {
+    font-size: small !important;
+}
+
+::ng-deep .mat-mdc-select-min-line {
+    font-size: 15px !important;
+}
+
+::ng-deep .mat-mdc-text-field-wrapper.mdc-text-field--outlined .mat-mdc-form-field-infix {
+    padding-top: 14px !important;
+    padding-bottom: 10px !important;
+}
+
+::ng-deep .mat-mdc-form-field:not(.mat-form-field-disabled) .mat-mdc-floating-label.mdc-floating-label {
+    cursor: inherit;
+    top: 23px;
+}
+
+.mat-form-field {
+    width: 100%;
+}
+
+.display_1 {
+    display: flex;
+}
+
+.btn {
+    font-size: 0.875rem;
+    background-color: rgb(70, 134, 85);
+    color: white;
+}
+
+.btn:hover {
+    background-color: rgb(36, 74, 83);
+    font-weight: bold;
+}
+
+.card {
+    padding: 2rem;
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
+}
+
+::ng-deep .mat-calendar-body-selected {
+    background-color: var(--primary-color) !important;
+    color: var(--mat-datepicker-calendar-date-selected-state-text-color);
+}
+
+/* Adjust padding for mobile view */
+@media (max-width: 767.98px) {
+    .btn {
+        padding: 0.5rem 1rem;
+    }
+    .display_1{
+        display: block;
+    }
+}

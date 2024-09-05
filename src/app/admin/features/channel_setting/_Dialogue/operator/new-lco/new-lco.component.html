@@ -1,0 +1,170 @@
+
+<div class="card">
+    <div class="Head d-flex justify-content-start align-items-center" style="padding: 0.5rem;">
+        <p class="span">ADD LCO</p>
+    </div>
+    <div class="display justify-content-center align-items-center mobile">
+        <form action="" [formGroup]="form" >
+            <div class="col-12 col-md-12 " style="padding: 1rem;max-height: 700px;overflow: scroll;">
+                <div class="input_box">
+                    <div class="mb-3 edit">
+                        <div class="col-12 col-md-4">
+                            <label class="form-label">Name Head</label>
+                        </div>
+                        <div class="col-12 col-md-8">
+                            <div class="custom-radio">
+                                <mat-radio-group aria-label="Select an option" formControlName="nameheader">
+                                    <mat-radio-button value="Mr">Mr</mat-radio-button>
+                                    <mat-radio-button value="Mrs">Mrs</mat-radio-button>
+                                    <mat-radio-button value="Miss">Miss</mat-radio-button>
+                                </mat-radio-group>
+                                <div *ngIf="form.get('nameheader')?.invalid && form.get('nameheader')?.touched">
+                                    <small class="text-danger">Name Head is required.</small>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mb-3 edit">
+                        <div class="col-12 col-md-4">
+                            <label class="form-label">LCO Name</label>
+                        </div>
+                        <div class="col-12 col-md-8">
+                            <input class="" type="text" id="" name="" value="" formControlName="operatorname">
+                            <div *ngIf="form.get('operatorname')?.invalid && form.get('operatorname')?.touched">
+                                <small class="text-danger">LCO Name is required.</small>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mb-3 edit">
+                        <div class="col-12 col-md-4">
+                            <label class="form-label">Mobile Number</label>
+                        </div>
+                        <div class="col-12 col-md-8">
+                            <input class="" type="text" pattern="0-9" maxlength="10" (keypress)="onKeydown($event)"
+                                formControlName="contactnumber1">
+                            <div *ngIf="form.get('contactnumber1')?.invalid && form.get('contactnumber1')?.touched">
+                               
+                                <small class="text-danger"
+                                    *ngIf="form.get('contactnumber1')?.errors?.['required']">Mobile Number is
+                                    required.</small>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mb-3 edit">
+                        <div class="col-12 col-md-4">
+                            <label class="form-label">Address Line</label>
+                        </div>
+                        <div class="col-12 col-md-8">
+                            <input class="" type="text" id="" name="" value="" formControlName="address">
+                            <div *ngIf="form.get('address')?.invalid && form.get('address')?.touched">
+                                <small class="text-danger">Address is required.</small>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mb-3 edit">
+                        <div class="col-12 col-md-4">
+                            <label class="form-label">State</label>
+                        </div>
+                        <div class="col-12 col-md-8">
+                            <input class="" type="text" formControlName="state">
+                            <div *ngIf="form.get('state')?.invalid && form.get('state')?.touched">
+                                <small class="text-danger">State is required.</small>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mb-3 edit">
+                        <div class="col-12 col-md-4">
+                            <label class="form-label">User ID</label>
+                        </div>
+                        <div class="col-12 col-md-8">
+                            <input class="" type="text" formControlName="userid">
+                            <div *ngIf="form.get('userid')?.invalid && form.get('userid')?.touched">
+                                <small class="text-danger">User ID is required.</small>
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <div class="mb-3 edit">
+                        <div class="col-12 col-md-4">
+                            <label class="form-label">Email</label>
+                        </div>
+                        <div class="col-12 col-md-8">
+                            <input class="" type="mail" formControlName="mail">
+                            <div *ngIf="form.get('mail')?.invalid && form.get('mail')?.touched">
+                                <small class="text-danger" *ngIf="form.get('mail')?.errors?.['email']">Invalid email
+                                    format.</small>
+                                <small class="text-danger" *ngIf="form.get('mail')?.errors?.['required']">Email is
+                                    required.</small>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mb-3 edit">
+                        <div class="col-12 col-md-4">
+
+                            <label class="form-label">Area Name</label>
+                        </div>
+                        <div class="col-12 col-md-8">
+                            <input class="" type="text" formControlName="area">
+                            <div *ngIf="form.get('area')?.invalid && form.get('area')?.touched">
+                                <small class="text-danger">Area Name is required.</small>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mb-3 edit">
+                        <div class="col-12 col-md-4">
+                            <label class="form-label">Pincode</label>
+                        </div>
+                        <div class="col-12 col-md-8">
+                            <input class="" type="text" pattern="0-9" maxlength="6" (keypress)="onKeydown($event)"
+                                formControlName="pincode">
+                            <div *ngIf="form.get('pincode')?.invalid && form.get('pincode')?.touched">
+                                
+                                <small class="text-danger" *ngIf="form.get('pincode')?.errors?.['required']">Pincode is
+                                    required.</small>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mb-3 edit">
+                        <div class="col-12 col-md-4">
+                            <label class="form-label">Password</label>
+                        </div>
+                        <div class="col-12 col-md-8">
+                            <input class="" type="password" formControlName="password">
+                            <div *ngIf="form.get('password')?.invalid && form.get('password')?.touched">
+                                <small class="text-danger" *ngIf="form.get('password')?.errors?.['pattern']">Password
+                                    must be 12
+                                    digits.</small>
+                                <small class="text-danger" *ngIf="form.get('password')?.errors?.['required']">Password
+                                    is
+                                    required.</small>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mb-3 edit">
+                        <div class="col-12 col-md-4">
+                            <label class="form-label">Business Name</label>
+                        </div>
+                        <div class="col-12 col-md-8">
+                            <select class="form-select" formControlName="lcobusinessid">
+                                <option value="0" selected>Select a Business Name</option>
+                                <option *ngFor="let business of businessList" [value]="business.value">{{ business.name}}</option>
+                            </select>
+                            <div *ngIf="form.get('lcobusinessid')?.invalid && form.get('lcobusinessid')?.touched">
+                                <small class="text-danger">Business Name is required.</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+  
+        </form>
+    </div>
+
+    <div class="d-flex justify-content-end align-item-center mx-5 mb-4">
+        <button type="button" class="btn btn-danger me-2" (click)="toggleedit()">Cancel</button>
+        <button type="submit" class="btn btn-success" (click)="onSubmit()">Update</button>
+    </div>
+
+</div>

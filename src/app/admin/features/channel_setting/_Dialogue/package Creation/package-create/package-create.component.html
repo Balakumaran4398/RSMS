@@ -1,0 +1,167 @@
+<form [formGroup]="createpackageForm" style="border-radius: 10px;">
+
+    <!-- <div class="col"> -->
+    <div class="head d-flex justify-content-between align-items-center mb-3">
+        <span class="span">CREATE BASE PACKAGE</span>
+        <i class="fa fa-close close-icon" style="cursor: pointer;" (click)="onNoClick()"></i>
+    </div>
+    <!-- Row 1 -->
+    <div class="" style="padding: 1rem;max-height: 560px; overflow: scroll;">
+        <div class="row mb-3">
+            <div class="input_box col-12 col-md-6">
+                <div class=" mb-3">
+                    <label for="package_logo" class="form-label">Package Logo</label>
+                    <input type="file" class="" id="package_logo"
+                        (change)="onFileChange($event)" placeholder="Enter package logo" accept=".png">
+                    <div *ngIf="createpackageForm.get('package_logo')?.invalid && createpackageForm.get('package_logo')?.touched"
+                        class="error-message">
+                        Package Logo is required.
+                    </div>
+                    <!-- <div class="cal-2 col-sm-6 col-md-6 col-lg-6">
+                        <div class="img-show">
+                          <img [src]="url" title="Profile Picture" width="100%" height="200px" />
+                          <input type="file" id="img" style="display:none" accept="image/*"
+                            (change)="onFileSelected($event)"  [formControl]="proofFormControl" />
+                        </div>
+                      </div> -->
+                </div>
+            </div>
+            <div class="input_box col-12 col-md-6">
+                <div class=" mb-3">
+                    <label for="package_name" class="form-label">Package Name</label>
+                    <input type="text" class="" id="package_name" formControlName="package_name"
+                        placeholder="Enter package name">
+                    <div *ngIf="createpackageForm.get('package_name')?.invalid && createpackageForm.get('package_name')?.touched"
+                        class="error-message">
+                        Package Name is required.
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Row 2 -->
+        <div class="row mb-3">
+            <div class="input_box col-12 col-md-6">
+                <div class=" mb-3">
+                    <label for="package_desc" class="form-label">Description</label>
+                    <input type="text" class="" id="package_desc" formControlName="package_desc"
+                        placeholder="Enter Description">
+                    <div *ngIf="createpackageForm.get('package_desc')?.invalid && createpackageForm.get('package_desc')?.touched"
+                        class="error-message">
+                        Description is required.
+                    </div>
+                </div>
+            </div>
+            <div class="input_box col-12 col-md-6">
+                <div class=" mb-3">
+                    <label for="order_id" class="form-label">Reference Id</label>
+                    <input type="text" class="" id="order_id" formControlName="order_id" (keydown)="onKeydown($event)"
+                        placeholder="Enter Reference Id">
+                    <div *ngIf="createpackageForm.get('order_id')?.invalid && createpackageForm.get('order_id')?.touched"
+                        class="error-message">
+                        Reference Id is required.
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row mb-3">
+            <div class="input_box col-12 col-md-6">
+                <div class=" mb-3">
+                    <label for="package_rate" class="form-label">Package Rate</label>
+                    <input type="text" class="" id="package_rate" formControlName="package_rate" (keydown)="onKeydown($event)"
+                        (keyup)="calculateAmounts()" placeholder="Enter Package Rate">
+                    <div *ngIf="createpackageForm.get('package_rate')?.invalid && createpackageForm.get('package_rate')?.touched"
+                        class="error-message">
+                        Package Rate is required.
+                    </div>
+                </div>
+            </div>
+            <!-- Tax Amount -->
+            <div class="input_box col-12 col-md-6">
+                <div class=" mb-3">
+                    <label for="tax_amount" class="me-2">Tax Amount</label>
+                    <input type="text" class="" id="tax_amount" [value]="tax_amount" readonly [disabled]="true"
+                        placeholder="Enter Tax">
+                    <!-- <div *ngIf="createpackageForm.get('tax_amount')?.invalid && createpackageForm.get('tax_amount')?.touched"
+                        class="error-message">
+                        Tax Amount is required.
+                    </div> -->
+                </div>
+            </div>
+        </div>
+        <div class="row mb-3">
+            <!-- MRP (CusAmount)l -->
+            <div class="input_box col-12 col-md-6">
+                <div class=" mb-3">
+                    <label for="customer_amount" class="me-2">MRP (CusAmount)</label>
+                    <input type="text" class="" id="customer_amount" placeholder="Customer Amount" readonly
+                        [disabled]="true" [value]="customer_amount">
+                    <!-- <div *ngIf="createpackageForm.get('customer_amount')?.invalid && createpackageForm.get('customer_amount')?.touched"
+                        class="error-message">
+                        MRP (CusAmount) is required.
+                    </div> -->
+                </div>
+            </div>
+            <!-- Commission-->
+            <div class="input_box col-12 col-md-6">
+                <div class=" mb-3">
+                    <label for="commission" class="me-2">Commission</label>
+                    <input type="email" class="" id="commission" formControlName="commission"
+                        (input)="calculateMsoCommission()" placeholder="Enter Mso Commission">
+                    <!-- <div *ngIf="createpackageForm.get('commission')?.invalid && createpackageForm.get('commission')?.touched"
+                        class="error-message">
+                        Commission is required.
+                    </div> -->
+                </div>
+            </div>
+        </div>
+        <div class="row mb-3">
+            <!-- Mso Commission -->
+            <div class="input_box col-12 col-md-6">
+                <div class=" mb-3">
+                    <label for="package_desc" class="me-2">Mso Commission</label>
+                    <input type="text" class="" [disabled]="true" [value]="mso_amount" readonly
+                        placeholder="Mso Commission">
+                    <!-- <div *ngIf="createpackageForm.get('package_desc')?.invalid && createpackageForm.get('package_desc')?.touched"
+                        class="error-message">
+                        Mso Commission is required.
+                    </div> -->
+                </div>
+            </div>
+            <div class="input_box col-12 col-md-6">
+                <div class=" mb-3">
+                    <label for="ispercentage" class="me-2">Is percentage</label>
+                    <div class="toggle-button-cover">
+                        <div class="button b2" id="button-10">
+                            <input type="checkbox" class="checkbox" checked id="ispercentage" formControlName="ispercentage" />
+                            <div class="knobs">
+                                <span>YES</span>
+                            </div>
+                            <div class="layer"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- <div class=" input_box col-12 col-md-10  display justify-content-center align-items-center ">
+                <div class="col-12 col-md-6 display justify-content-center align-items-center">
+                    <label class="me-2" style="text-align:center">Cas Type</label>
+                    <br>
+                </div>
+                <div class="col-12 col-md-6 ">
+                    <select placeholder="Select the CAS" formControlName="castype">
+                        <option value="">Select CAS</option>
+                        <option *ngFor="let casItem of cas" [value]="casItem.id">
+                            {{ casItem.casname }}
+                        </option>
+                    </select>
+                </div>
+            </div> -->
+        </div>
+    </div>
+    <div class="form-group d-flex justify-content-center align-items-center mb-3">
+        <button type="button" class="btn btn-primary me-2" (click)="Createpackage()">Save</button>
+        <button type="button" class="btn btn-secondary" (click)="onNoClick()">Cancel</button>
+    </div>
+
+    <!-- </div> -->
+</form>

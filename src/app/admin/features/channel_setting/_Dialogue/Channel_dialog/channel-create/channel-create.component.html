@@ -1,0 +1,204 @@
+<div class="mobile">
+    <form action="#" [formGroup]="form">
+        <!-- <div class="title">
+            <p>Create New Channel</p>
+        </div> -->
+        <div class="head d-flex justify-content-between align-items-center mb-3">
+            <h6 class="span">CREATE NEW CHANNEL</h6>
+            <i class="fa fa-close close-icon" style="cursor: pointer;" (click)="onNoClick()"></i>
+        </div>
+        <div class="user_details">
+            <div class="input_box"
+                [ngClass]="{'has-error': form.get('channel_name')?.invalid && form.get('channel_name')?.touched}">
+                <label for="channel_name" class="form-label">Channel Name</label>
+                <input type="text" id="channel_name" formControlName="channel_name" placeholder="Enter Channel name">
+                <div *ngIf="form.get('channel_name')?.invalid && form.get('channel_name')?.touched"
+                    class="error-message">
+                    Channel Name is required.
+                </div>
+            </div>
+            <div class=" input_box"
+                [ngClass]="{'has-error': form.get('channel_logo')?.invalid && form.get('channel_logo')?.touched}">
+                <label for="channel_logo" class="form-label">Channel Logo</label>
+                <input type="file" class="" id="channel_logo" formControlName="channel_logo"
+                    (change)="onFileChange($event)" placeholder="Enter package logo" accept=".png">
+                <div *ngIf="form.get('channel_logo')?.invalid && form.get('channel_logo')?.touched"
+                    class="error-message">
+                    Channel Logo is required.
+                </div>
+            </div>
+            <div class="input_box form-group"
+                [ngClass]="{'has-error': form.get('channel_freq')?.invalid && form.get('channel_freq')?.touched}">
+                <label for="channel_freq" class="form-label">Channel Frequency</label>
+                <input type="text" class="" id="channel_freq" formControlName="channel_freq"
+                    placeholder="Enter Channel Frequency">
+                <div *ngIf="form.get('channel_freq')?.invalid && form.get('channel_freq')?.touched"
+                    class="error-message">
+                    Channel Frequency is required.
+                </div>
+            </div>
+            <div class="input_box form-group"
+                [ngClass]="{'has-error': form.get('channel_desc')?.invalid && form.get('channel_desc')?.touched}">
+                <label for="channel_desc" class="form-label">Channel Description</label>
+                <input type="text" class="" id="channel_desc" formControlName="channel_desc"
+                    placeholder="Enter Channel Description">
+                <div *ngIf="form.get('channel_desc')?.invalid && form.get('channel_desc')?.touched"
+                    class="error-message">
+                    Channel Description is required.
+                </div>
+            </div>
+            <div class="input_box" [ngClass]="{'has-error': form.get('ts_id')?.invalid && form.get('ts_id')?.touched}">
+                <label for="ts_id" class="form-label">Transport Id</label>
+                <input type="text" class="" id="ts_id" formControlName="ts_id" (keydown)="onKeydown($event)"
+                    placeholder="Enter Transport Id">
+                <div *ngIf="form.get('ts_id')?.invalid && form.get('ts_id')?.touched" class="error-message">
+                    Transport Id is required.
+                </div>
+            </div>
+
+            <div class="input_box"
+                [ngClass]="{'has-error': form.get('service_id')?.invalid && form.get('service_id')?.touched}">
+                <label for="service_id" class="form-label">Service Id</label>
+                <input type="text" class="" id="service_id" formControlName="service_id" (keydown)="onKeydown($event)"
+                    placeholder="Enter Service Id">
+                <div *ngIf="form.get('service_id')?.invalid && form.get('service_id')?.touched" class="error-message">
+                    Service Id is required.
+                </div>
+            </div>
+            <div class="input_box"
+                [ngClass]="{'has-error': form.get('broadcaster_rate')?.invalid && form.get('broadcaster_rate')?.touched}">
+                <label for="broadcaster_rate" class="form-label">Broadcaster Rate</label>
+                <input type="text" class="" id="broadcaster_rate" formControlName="broadcaster_rate"
+                    (keydown)="onKeydown($event)" placeholder="Enter Broadcaster rate">
+                <div *ngIf="form.get('broadcaster_rate')?.invalid && form.get('broadcaster_rate')?.touched"
+                    class="error-message">
+                    Broadcaster Rate is required.
+                </div>
+            </div>
+            <div class="input_box"
+                [ngClass]="{'has-error': form.get('product_id')?.invalid && form.get('product_id')?.touched}">
+                <label for="product_id" class="form-label">Product Id</label>
+                <input type="text" class="" id="product_id" formControlName="product_id" (keydown)="onKeydown($event)"
+                    placeholder="Enter Product Id">
+                <div *ngIf="form.get('product_id')?.invalid && form.get('product_id')?.touched" class="error-message">
+                    Product Id is required.
+                </div>
+            </div>
+            <div class="input_box" style="position: relative;">
+                <label for="paid">Is Paid</label>
+                <mat-form-field appearance="outline" style="margin-top:-0px; width: 100%;">
+                    <mat-select placeholder="Choose IS Paid" formControlName="ispaid"
+                        [ngClass]="{ 'has-error': form.get('ispaid')?.errors && form.get('ispaid')?.touched }">
+                        <mat-option [value]="false">FREE CHANNEL</mat-option>
+                        <mat-option [value]="true">PAY CHANNEL</mat-option>
+                    </mat-select>
+                    <div *ngIf="form.get('ispaid')?.invalid && form.get('ispaid')?.touched" class="error-message"
+                        style="position: absolute; bottom: -20px; left: 0; font-size: small;">
+                        Is Paid is required
+                    </div>
+                </mat-form-field>
+            </div>
+            <div class="input_box"
+                [ngClass]="{'has-error': form.get('inr_amt')?.invalid && form.get('inr_amt')?.touched}">
+                <label for="inr_amt" class="form-label">INR Amount</label>
+                <input type="text" class="" id="inr_amt" (keydown)="onKeydown($event)" formControlName="inr_amt"
+                    placeholder="Enter INR Amount">
+                <div *ngIf="form.get('inr_amt')?.invalid && form.get('inr_amt')?.touched" class="error-message">
+                    INR Amount is required.
+                </div>
+            </div>
+            <div class="input_box">
+                <label for="ChannelType">Channel Type</label>
+                <mat-form-field appearance="outline" style="outline: #02422d; margin-top:-0px; width: 100%;">
+                    <mat-select placeholder="Choose Channel Type" formControlName="channel_type_id"
+                        [ngClass]="{ 'has-error': form.get('channel_type_id')?.errors && form.get('channel_type_id')?.touched }">
+                        <mat-option *ngFor="let d of channel_type_id" [value]="d.id">
+                            {{ d.channel_type }} <span style="color: red;">-({{d.id }})</span>
+                        </mat-option>
+                    </mat-select>
+                    <div *ngIf="form.get('channel_type_id')?.invalid && form.get('channel_type_id')?.touched"
+                        class="error-message" style="position: absolute; bottom: -20px; left: 0; font-size: small;">
+                        Type is required
+                    </div>
+                </mat-form-field>
+            </div>
+            <div class="input_box">
+                <label for="Category">Category</label>
+                <mat-form-field appearance="outline" style="outline: #02422d; margin-top:-0px; width: 100%;">
+                    <mat-select placeholder="Select Category" formControlName="category_id"
+                        [ngClass]="{'has-error': form.get('category_id')?.invalid && form.get('category_id')?.touched}">
+                        <mat-option *ngFor="let d of category_id" [value]="d.id">
+                            {{ d.category }} <span style="color: red;">-({{d.id }})</span>
+                        </mat-option>
+                    </mat-select>
+                    <div style="position: absolute; bottom: -20px; left: 0;font-size: small;">
+                        <div *ngIf="form.get('category_id')?.invalid && form.get('category_id')?.touched"
+                            class="text-danger">
+                            Category is required</div>
+                    </div>
+                </mat-form-field>
+            </div>
+            <div class="input_box">
+                <label for="Broadcaster">Broadcaster</label>
+                <mat-form-field appearance="outline" style="outline: #02422d; margin-top:-0px; width: 100%;">
+                    <mat-select placeholder="Select Broadcaster" formControlName="broadcaster_id"
+                        [ngClass]="{'has-error': form.get('broadcaster_id')?.invalid && form.get('broadcaster_id')?.touched}">
+                        <mat-option *ngFor="let b of broadcaster_id" [value]="b.id">
+                            {{ b.broadcastername }} <span style="color: red;">-({{b.id }})</span>
+                        </mat-option>
+                    </mat-select>
+                    <div style="position: absolute; bottom: -20px; left: 0;font-size: small;">
+                        <div *ngIf="form.get('broadcaster_id')?.invalid && form.get('broadcaster_id')?.touched"
+                            class="text-danger">
+                            Broadcaster is required</div>
+                    </div>
+                </mat-form-field>
+            </div>
+
+            <div class="input_box">
+                <label for="Distributor">Distributor</label>
+                <mat-form-field appearance="outline" style="outline: #02422d; margin-top:-0px; width: 100%;" >
+                    <mat-select placeholder="Select Distributor" formControlName="distributor_id" [(ngModel)]="remo"
+                        [ngClass]="{'has-error': form.get('distributor_id')?.invalid && form.get('distributor_id')?.touched}">
+                        <mat-option *ngFor="let d of distributor_id" [value]="d.id">
+                            {{ d.distributor }} <span style="color: red;">-({{d.id }})</span>
+                        </mat-option>
+                    </mat-select>
+                    <div style="position: absolute; bottom: -20px; left: 0;font-size: small;">
+                        <div *ngIf="form.get('distributor_id')?.invalid && form.get('distributor_id')?.touched"
+                            class="text-danger">
+                            Distributor is required</div>
+                    </div>
+                </mat-form-field>
+            </div>
+            <div class="input_box"
+                [ngClass]="{'has-error': form.get('commssion')?.invalid && form.get('commssion')?.touched}">
+                <label for="commission" class="form-label">Commission</label>
+                <input type="text" id="commission" formControlName="commssion" (keydown)="onKeydown($event)"
+                    placeholder="Enter your Commission" required>
+                <div *ngIf="form.get('commission')?.invalid && form.get('commission')?.touched" class="error-message">
+                    Commission is required.
+                </div>
+            </div>
+
+            <div class="form-group" style="margin: auto;">
+                <label for="isPercentage">Is Percentage</label>
+                <br>
+                <div class="toggle-button-cover">
+                    <div class="button b2" id="button-10">
+                        <input type="checkbox" class="checkbox" formControlName="isactive" />
+                        <div class="knobs">
+                            <span>YES</span>
+                        </div>
+                        <div class="layer"></div>
+                    </div>
+                </div>
+            </div>
+            <br>
+        </div>
+        <div class="form-group d-flex justify-content-end align-items-center mb-3 mx-2" style="gap: 1vw;">
+            <button type="button" class="btn btn-primary" (click)="onSubmit()">Save</button>
+            <button type="button" class="btn btn-secondary" (click)="onNoClick()">Cancel</button>
+        </div>
+    </form>
+</div>

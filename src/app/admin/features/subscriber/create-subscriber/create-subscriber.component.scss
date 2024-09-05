@@ -1,0 +1,232 @@
+.container {
+    max-width: 950px;
+    width: 100%;
+    background: #ffffff;
+    border-radius: 0.5rem;
+    box-shadow: 0px 0px 0px 1px rgba(0, 0, 0, 0.1),
+        0px 5px 12px -2px rgba(0, 0, 0, 0.1),
+        0px 18px 36px -6px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    margin: 10px;
+}
+
+.container .title {
+    padding: 25px;
+    background: #f6f8fa;
+}
+
+.container .title p {
+    font-size: 25px;
+    font-weight: 500;
+    position: relative;
+}
+
+.container .title p::before {
+    content: "";
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 30px;
+    height: 3px;
+    background: linear-gradient(to right, #058372, #acf3cc);
+}
+
+.user_details {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 20px;
+    padding: 25px;
+    max-height: 550px;
+    overflow: scroll;
+}
+
+.user_details .input_box {
+    width: calc(100% / 2 - 20px);
+    // margin: 0 0 12px 0;
+}
+
+.input_box label {
+    font-weight: 500;
+    margin-bottom: 5px;
+    display: block;
+    // font-size: medium;
+    color: #243359;
+}
+
+.input_box label::after {
+    content: " *";
+    color: red;
+}
+
+.input_box select option {
+    padding: 7px 0;
+}
+
+.input_box input {
+    width: 100%;
+    height: 45px;
+    border: none;
+    outline: none;
+    border-radius: 5px;
+    padding: 0px 12px;
+    border-top: 2px solid #b0afaf;
+    border-bottom: 0.9px solid lightgray;
+    border-left: 0.9px solid lightgray;
+    border-right: 0.9px solid lightgray;
+    box-shadow: 0px 0px 0px 1px rgba(0, 0, 0, 0.1);
+    background-color: #f6f8fa;
+    font-family: 'Poppins', sans-serif;
+    transition: all 120ms ease-out 0s;
+}
+
+.input_box select {
+    width: 100%;
+    height: 45px;
+    border: none;
+    outline: none;
+    border-radius: 5px;
+    box-shadow: 0px 0px 0px 1px rgba(0, 0, 0, 0.1);
+    background-color: #f6f8fa;
+    font-family: 'Poppins', sans-serif;
+    transition: all 120ms ease-out 0s;
+    padding: 0px 12px;
+    border-top: 2px solid #b0afaf;
+    border-bottom: 0.9px solid lightgray;
+    border-left: 0.9px solid lightgray;
+    border-right: 0.9px solid lightgray;
+}
+
+.checkbox-text .checkbox-content {
+    display: flex;
+    align-items: center;
+}
+
+.checkbox-text label {
+    font-weight: 500;
+    margin-bottom: 5px;
+    display: block;
+    font-size: medium;
+    color: #243359;
+}
+
+.checkbox-content input {
+    margin: 0 10px 0px 5px;
+    accent-color: white;
+}
+
+.checkbox-content {
+    .form-check-input:checked {
+        background-color: #09a223;
+        border-color: #09a223;
+    }
+}
+
+
+.checkbox-content input:checked {
+    accent-color: #09a223;
+}
+
+
+form .gender {
+    padding: 0px 25px;
+}
+
+.gender .gender_title {
+    font-size: 20px;
+    font-weight: 500;
+}
+
+.gender .category {
+    width: 80%;
+    display: flex;
+    justify-content: space-between;
+    margin: 5px 0;
+}
+
+.gender .category label {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+}
+
+.gender .category label .dot {
+    height: 18px;
+    width: 18px;
+    background: #d9d9d9;
+    border-radius: 50%;
+    margin-right: 10px;
+    border: 4px solid transparent;
+    transition: all 0.3s ease;
+}
+
+#radio_1:checked~.category label .one,
+#radio_2:checked~.category label .two,
+#radio_3:checked~.category label .three {
+    border-color: #d9d9d9;
+    background: #D64141;
+}
+
+.gender input {
+    display: none;
+}
+
+.reg_btn {
+    padding: 20px;
+    margin: 10px 0;
+}
+
+.reg_btn input {
+    height: 45px;
+    width: 100%;
+    border: none;
+    font-size: 18px;
+    font-weight: 500;
+    cursor: pointer;
+    background: linear-gradient(to right, #acf3cc, #058372);
+    border-radius: 5px;
+    color: #ffffff;
+    letter-spacing: 1px;
+    text-shadow: 0px 2px 2px rgba(0, 0, 0, 0.2);
+}
+
+.reg_btn input:hover {
+    background: linear-gradient(to right, #058372, #acf3cc);
+}
+
+
+::ng-deep .mat-mdc-text-field-wrapper {
+    height: 50px !important;
+    flex: auto;
+}
+@media screen and (max-width: 584px) {
+    .container .title {
+        padding: 13px;
+        background: #f6f8fa;
+    }
+
+    .user_details {
+        max-height: 440px;
+        overflow-y: scroll;
+    }
+
+    .user_details::-webkit-scrollbar {
+        width: 0;
+    }
+
+    .user_details .input_box {
+        width: 100%;
+    }
+
+    .gender .category {
+        width: 100%;
+    }
+
+}
+
+
+@media screen and (max-width: 419px) {
+    .gender .category {
+        flex-direction: column;
+    }
+}

@@ -1,0 +1,164 @@
+<div class="card">
+    <div class="Head d-flex justify-content-between align-items-center mb-3">
+        <p class="span">Special Permission</p>
+    </div>
+    <!-- <form action="" [formGroup]="form" (ngSubmit)="onSubmit()"> -->
+    <div class="container Permission_edit mobile">
+        <div class="row ">
+            <div class="col-12 col-md-6">
+                <div class="input_box d-flex justify-content-between align-items-center  mb-3">
+                    <label for="activeStatus">Active Status</label>
+                    <label class="switch">
+                        <input type="checkbox" id="activeStatus" name="activeStatus" [(ngModel)]="isactive">
+                        <span class="slider"></span>
+                    </label>
+                </div>
+                <div class="input_box d-flex justify-content-between align-items-center mb-3">
+                    <label for="offlinePayment" class="form-label">Offline Payment SubLCO</label>
+                    <label class="switch">
+                        <input type="checkbox" id="offlinePayment" name="offlinePayment"
+                            [(ngModel)]="offlinepaymentsublco">
+                        <span class="slider"></span>
+                    </label>
+                </div>
+                <div class="input_box d-flex justify-content-between align-items-center mb-3">
+                    <label for="walletShare" class="form-label">Wallet Share</label>
+                    <label class="switch">
+                        <input type="checkbox" id="walletShare" name="walletShare" [(ngModel)]="walletshare">
+                        <span class="slider"></span>
+                    </label>
+                </div>
+
+                <div class="input_box d-flex justify-content-between align-items-center mb-3">
+                    <label for="recurring" class="form-label">Recurring</label>
+                    <label class="switch">
+                        <input type="checkbox" id="recurring" name="recurring" [(ngModel)]="recurring">
+                        <span class="slider"></span>
+                    </label>
+                </div>
+                <div class="input_box d-flex justify-content-between align-items-center mb-3">
+                    <label for="cancelSubscription" class="form-label">Cancel Subscription</label>
+                    <label class="switch">
+                        <input type="checkbox" id="cancelSubscription" name="cancelSubscription"
+                            [(ngModel)]="iscancel">
+                        <span class="slider"></span>
+                    </label>
+                </div>
+                <div class="input_box d-flex justify-content-between align-items-center mb-3">
+                    <label for="lcoLabel" class="form-label">LCO Label</label>
+                    <label class="switch">
+                        <input type="checkbox" id="lcoLabel" name="lcoLabel" [(ngModel)]="islabel">
+                        <span class="slider"></span>
+                    </label>
+                </div>
+
+            </div>
+
+            <div class="col-12 col-md-6">
+                <div class="input_box d-flex justify-content-between align-items-center mb-3">
+                    <label for="subscriberLock" class="form-label">Subscriber Lock</label>
+                    <label class="switch">
+                        <input type="checkbox" id="subscriberLock" name="subscriberLock" [(ngModel)]="subscriberlock">
+                        <span class="slider"></span>
+                    </label>
+                </div>
+                <div class="input_box d-flex justify-content-between align-items-center mb-3">
+                    <label for="onlinePaymentStatus" class="form-label">Online Payment Status</label>
+                    <label class="switch">
+                        <input type="checkbox" id="onlinePaymentStatus" name="onlinePaymentStatus"
+                            [(ngModel)]="onlinepaymentstatus">
+                        <span class="slider"></span>
+                    </label>
+                </div>
+                <div class="input_box d-flex justify-content-between align-items-center mb-3">
+                    <label for="enableForce" class="form-label">Enable Force</label>
+                    <label class="switch">
+                        <input type="checkbox" id="enableForce" name="enableForce" [(ngModel)]="enableforce">
+                        <span class="slider"></span>
+                    </label>
+                </div>
+                <div class="input_box d-flex justify-content-between align-items-center mb-3">
+                    <label for="bulkRecharge" class="form-label">Bulk Recharge</label>
+                    <label class="switch">
+                        <input type="checkbox" id="bulkRecharge" name="bulkRecharge" [(ngModel)]="bulk">
+                        <span class="slider"></span>
+                    </label>
+                </div>
+                <!-- <div class="input_box d-flex justify-content-between align-items-center mb-3">
+                        <label for="chat" class="form-label">Chat</label>
+                        <label class="switch">
+                            <input type="checkbox" id="chat" name="chat"  formControlName="offlinepaymentsublco" [(ngModel)]="offlinepaymentsublco" >
+                            <span class="slider"></span>
+                        </label>
+                    </div>
+                    <div class="input_box d-flex justify-content-between align-items-center mb-3">
+                        <label for="dateAdjustment" class="form-label">Date Adjustment</label>
+                        <label class="switch">
+                            <input type="checkbox" id="dateAdjustment" name="dateAdjustment"  formControlName="offlinepaymentsublco" [(ngModel)]="offlinepaymentsublco" >
+                            <span class="slider"></span>
+                        </label>
+                    </div> -->
+                <div class="input_box d-flex justify-content-between align-items-center mb-3">
+                    <label for="fullRefund" class="form-label">Full Refund</label>
+                    <label class="switch">
+                        <input type="checkbox" id="fullRefund" name="fullRefund" [(ngModel)]="fullrefund">
+                        <span class="slider"></span>
+                    </label>
+                </div>
+                <div class="input_box d-flex justify-content-between align-items-center mb-3">
+                    <label for="ridpay" class="form-label">Ridpay</label>
+                    <label class="switch">
+                        <input type="checkbox" id="ridpay" name="ridpay" [(ngModel)]="isridpay">
+                        <span class="slider"></span>
+                    </label>
+                </div>
+            </div>
+        </div>
+        <div class="recharge_type ">
+            <div class="col-12 col-md-12 p-3">
+                <div class="justify-content-start align-items-center">
+                    <div class="col-12 col-md-4 col-lg-3">
+                        <span class="d-block mb-2" style="color: rgb(15, 117, 75);font-size: 17px;">Allow Recharge
+                            Type</span>
+                    </div>
+                    <!-- <div class="d-flex flex-wrap w-100"> -->
+                    <div class="border">
+                        <div class="col-12 col-md-4 col-lg-3 mb-2 mb-md-0 mx-md-2">
+                            <div class="option">
+                                <label for="planStatus" class="form-label">Plan</label>
+                                <label class="switch">
+                                    <input type="checkbox" id="planStatus" name="planStatus" [(ngModel)]="plan">
+                                    <span class="slider"></span>
+                                </label>
+                            </div>
+                        </div>
+                        <div class="col-12 col-md-4 col-lg-3 mb-2 mb-md-0 mx-md-2">
+                            <div class="option">
+                                <label for="dateStatus" class="form-label">Date</label>
+                                <label class="switch">
+                                    <input type="checkbox" id="dateStatus" name="dateStatus" [(ngModel)]="date">
+                                    <span class="slider"></span>
+                                </label>
+                            </div>
+                        </div>
+                        <div class="col-12 col-md-6 col-lg-5 mb-2 mb-md-0 mx-md-2">
+                            <div class="option">
+                                <label for="dateToDateStatus" class="form-label">Date-To-Date</label>
+                                <label class="switch">
+                                    <input type="checkbox" id="dateToDateStatus" name="dateToDateStatus"
+                                        [(ngModel)]="datetodate">
+                                    <span class="slider"></span>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="d-flex justify-content-end align-item-center mx-5 mb-4">
+            <button type="button" class="btn btn-danger me-2" (click)="togglepermission()">Cancel</button>
+            <button type="button" (click)="onSubmit()" class="btn btn-success">Update</button>
+        </div>
+    </div>
+    <!-- </form> -->
+</div>

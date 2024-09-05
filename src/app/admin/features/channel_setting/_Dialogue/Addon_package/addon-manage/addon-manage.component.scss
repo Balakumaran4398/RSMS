@@ -1,0 +1,425 @@
+// ----------------------------button-----------------------------------------------------
+.btn {
+    margin: 0 85px;
+}
+
+.button-container {
+    display: flex;
+    align-items: center;
+}
+
+.button-container .btn {
+    margin-right: 8px;
+}
+
+
+
+
+
+.button:hover {
+    background-color: #3654ff;
+    cursor: pointer;
+    color: white;
+}
+
+.text {
+    margin: auto;
+}
+
+.button1 {
+    cursor: pointer;
+    padding: 5px;
+    margin: 0 30px;
+    // font-size: 1em;
+    width: 5em;
+    aspect-ratio: 1/0.25;
+    color: white;
+    background: #212121;
+    background-size: cover;
+    background-blend-mode: overlay;
+    border-radius: 0.5em;
+    outline: 0.1em solid #353535;
+    border: 0;
+    box-shadow: 0 0 1em 1em rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease-in-out;
+    position: relative;
+}
+
+.button1:hover {
+    transform: scale(1.1);
+    box-shadow: 0 0 1em 0.45em rgba(0, 0, 0, 0.1);
+    background: linear-gradient(45deg, #212121, #252525);
+    // background: radial-gradient(circle at bottom,
+    //         rgba(16, 192, 223, 0.5) 10%,
+    //         #48075c 70%);
+    outline: 0;
+}
+
+.button2 {
+    cursor: pointer;
+    padding: 3px;
+    width: 3em;
+    color: white;
+    background: #7e7676;
+    border-radius: 0.5em;
+    outline: 0.1em solid #353535;
+    border: 0;
+    margin: auto;
+}
+
+.button3 {
+    cursor: pointer;
+    padding: 3px 12px;
+    height: 2em;
+    color: white;
+    background: #389139;
+    border-radius: 0.5em;
+    outline: 0.1em solid #353535;
+    //    border: 0; 
+}
+
+.text2 {
+    margin: auto;
+}
+
+.icon {
+    fill: white;
+    width: 1em;
+    aspect-ratio: 1;
+    top: 0;
+    left: 0;
+    margin: auto;
+    transform: translate(-35%, 10%);
+}
+
+
+
+
+// -----------------------------------------------------------------------------------------------------
+.form-container1 {
+    display: flex;
+    // margin: 0 85px;
+    margin: auto;
+    flex-direction: column;
+    /* Arrange divs in a column */
+    gap: 10px;
+}
+
+.form-container {
+    display: flex;
+    // margin: 0 85px;
+    margin: auto;
+    flex-direction: column;
+    /* Arrange divs in a column */
+    gap: 10px;
+    /* Adjust the spacing as needed */
+}
+
+.form-container .d-flex {
+    gap: 10px
+}
+
+.form-container .label {
+    // font-weight: bold;
+}
+
+.inp {
+    margin: auto;
+}
+
+.col-5 span {
+    background-color: blueviolet;
+
+}
+
+.table {
+    display: flex;
+    align-items: center;
+    text-align: center;
+    padding: 10px;
+    margin: auto;
+}
+
+.table1 {
+    padding: 8px;
+    min-height: 50vh;
+    border: 1px solid rgb(218, 218, 221);
+    margin-right: 50px;
+    box-shadow: 0px 10px 8px rgba(0, 0, 0, 0.1);
+    // margin: auto;
+    height: 100px;
+}
+
+.table1 p,
+.table2 p {
+    background-color: var(--primary-color);
+    color: white;
+    min-height: 35px;
+    align-items: center;
+    font-size: 17px;
+    margin: auto;
+}
+
+.table2 {
+    padding: 8px;
+    min-height: 50vh;
+    border: 1px solid rgb(218, 218, 221);
+    box-shadow: 0px 10px 8px rgba(0, 0, 0, 0.1);
+    height: 100px;
+}
+
+.card {
+    width: 100px;
+    height: 40px;
+    background: #000d1d;
+    position: relative;
+    display: flex;
+    place-content: center;
+    place-items: center;
+    overflow: hidden;
+    border-radius: 20px;
+}
+
+.card h2 {
+    z-index: 1;
+    color: rgb(15, 5, 156);
+    font-size: 1em;
+    margin: auto;
+}
+
+.card::before {
+    content: '';
+    position: absolute;
+    width: 100px;
+    background-image: linear-gradient(180deg, rgb(0, 183, 255), rgb(255, 48, 255));
+    height: 50%;
+    animation: rotBGimg 3s linear infinite;
+    transition: all 0.2s linear;
+}
+
+@keyframes rotBGimg {
+    from {
+        transform: rotate(0deg);
+    }
+
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+.card::after {
+    content: '';
+    position: absolute;
+    background: #07182E;
+    inset: 5px;
+    border-radius: 15px;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+}
+
+.form-group input {
+    margin-bottom: 5px;
+}
+
+.example-container {
+    display: inline-block;
+    vertical-align: top;
+}
+
+.example-container h2 {
+    background-color: rgb(89 115 120 / 77%);
+}
+
+.av {
+    color: rgb(22, 121, 22);
+}
+
+.ad {
+    color: rgb(184, 41, 41);
+}
+.example-list {
+    border: 1px solid #ccc;
+    min-height: 200px;
+    max-height: 300px;
+    // padding: 10px;
+    overflow-y: auto;
+    background-color: #f9f9f9;
+}
+
+.example-box {
+    padding: 10px;
+    border: 1px solid #ccc;
+    margin-bottom: 5px;
+    background-color: #fff;
+    cursor: move;
+    user-select: none;
+}
+
+.example-box.selected {
+    background-color: #e861ec;
+}
+.cdk-drag-preview {
+    box-sizing: border-box;
+    border-radius: 4px;
+    box-shadow: 0 5px 5px -3px rgba(0, 0, 0, 0.2),
+        0 8px 10px 1px rgba(0, 0, 0, 0.14),
+        0 3px 14px 2px rgba(0, 0, 0, 0.12);
+}
+
+.cdk-drag-placeholder {
+    opacity: 0;
+}
+
+.cdk-drag-animating {
+    transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
+}
+
+.example-box:last-child {
+    border: none;
+}
+
+.example-list.cdk-drop-list-dragging .example-box:not(.cdk-drag-placeholder) {
+    transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
+}
+
+::ng-deep .table>:not(caption)>*>* {
+    padding: 0.5rem 0.5rem;
+    background-color: var(--bs-table-bg);
+    border-bottom-width: 1px;
+    box-shadow: inset 0 0 0 9999px var(--bs-table-accent-bg);
+    margin: 1rem 7px 15rem;
+    gap: 8px;
+}
+
+
+// ===================================================================================================================================================================
+// ===============================================================================================================================================================
+
+
+.table {
+    display: flex;
+    flex-direction: column;
+}
+
+.table1,
+.table2 {
+    margin: auto;
+}
+
+.example-container {
+    margin-bottom: 20px;
+}
+
+@media (min-width: 768px) {
+    .table {
+        flex-direction: row;
+        justify-content: space-between;
+    }
+
+    .table1,
+    .table2 {
+        margin-bottom: 0;
+    }
+
+}
+
+@media screen and (max-width: 560px) {
+
+    .table1,
+    .table2 {
+        border: 1px solid grey;
+        border-radius: 10px;
+    }
+
+    .table2 {
+        margin: 42px 0px;
+    }
+
+    .cas {
+        margin: 20px 10px;
+    }
+}
+
+
+
+.form-container .row {
+    display: flex;
+    align-items: center;
+}
+
+.form-container .label,
+.form-container .value {
+    flex: 1;
+}
+
+.form-container .separator {
+    margin: 0 -10px;
+}
+
+.form-container .value {
+    margin: 0 20px;
+}
+
+.button2 {
+    background-color: #b89bfd;
+    border: none;
+    color: #000;
+
+
+    .form-container {
+        display: flex;
+        margin: auto;
+        flex-direction: column;
+        padding: 1rem;
+    }
+}
+// ================================================================Back Button=============================================================================
+body {
+    background-color: #f9f9f9;
+    font-size: 20px;
+    color: #000;
+    font-family: Arial;
+  }
+  
+  .section__tittle {
+    h1 {
+      padding: 45px 30px;
+      text-align: center;
+    }
+  }
+  
+  .section__content {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    .container {
+      width: 100%;
+    }
+    .listHoverLink {
+      display: flex;
+      flex-flow: row wrap;
+      justify-content: flex-star;
+      align-items: center;
+      .linkWrap {
+        position: relative;
+        height: 150px;
+        border-radius: 2px;
+        width: 25%;
+        flex: 0 0 auto;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        @media (max-width: 991px) {
+          width: 50%;
+          flex: 0 0 auto;
+        }
+        @media (max-width: 767px) {
+          width: 100%;
+          flex: 0 0 auto;
+        }
+      }
+    }
+  }

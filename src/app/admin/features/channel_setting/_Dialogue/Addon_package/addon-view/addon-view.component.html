@@ -1,0 +1,85 @@
+<div class="col">
+    <div class="head d-flex justify-content-between align-items-center mb-3">
+        <span class="span">ADDON PACKAGE DETAILS</span>
+        <i class="fa fa-close close-icon" (click)="onNoClick()"></i>
+    </div>
+    <!-- <section class="col-12 d-flex justify-content-center"> -->
+    <!-- <div class="">
+            <div class="form-container">
+                <div>Add-on Package </div>
+                <div>Broadcaster</div>
+                <div>Order Id</div>
+                <div>Rate</div>
+                <div>No Of Channels</div>
+            </div>
+        </div>
+        <div class="">
+            <div class="form-container1">
+                <div style="color: green;">{{Addon_Packagename}}</div>
+                <div>{{Broadcaster_Name}}</div>
+                <div>{{Order_Id}}</div>
+                <div>{{Addon_Package_Rate}}</div>
+                <div>{{Number_of_channels}}</div>
+            </div>
+        </div> -->
+    <div class="mobile">
+        <section class=" col-12 d-flex justify-content-center align-items-center">
+            <div class="card col-10 col-md-4 display justify-content-center align-items-center view">
+                <div class="col-12 col-6 display_1 justify-content-between align-items-center">
+                    <div class="col-6 col-md-6 ">
+                        <label for="">Add-on Package</label>
+                    </div>
+                    <div class="col-6 col-md-6 " style="color: green;">{{Addon_Packagename}}
+                    </div>
+                </div>
+                <div class="col-12 col-6 display_1 justify-content-between align-items-center">
+                    <div class="col-6 col-md-6 ">
+                        <label for="">Broadcaster</label>
+                    </div>
+                    <div class="col-6 col-md-6 ">
+                        {{Broadcaster_Name}}
+                    </div>
+                </div>
+                <div class="col-12 col-6 display_1 justify-content-between align-items-center">
+                    <div class="col-6 col-md-6 ">
+                        <label for="">Order Id</label>
+                    </div>
+                    <div class="col-6 col-md-6 ">
+                        {{Order_Id}}
+                    </div>
+                </div>
+                <div class="col-12 col-6 display_1 justify-content-between align-items-center">
+                    <div class="col-6 col-md-6 ">
+                        <label for="">Rate</label>
+                    </div>
+                    <div class="col-6 col-md-6 ">
+                        {{Addon_Package_Rate}}
+                    </div>
+                </div>
+                <div class="col-12 col-6 display_1 justify-content-between align-items-center">
+                    <div class="col-6 col-md-6 ">
+                        <label for="">No Of Channels</label>
+                    </div>
+                    <div class="col-6 col-md-6 ">
+                        {{Number_of_channels}}
+                    </div>
+                </div>
+
+            </div>
+        </section>
+    </div>
+    <!-- </section> -->
+
+
+    <br>
+    <section class="col-12 d-flex justify-content-center">
+        <div class="col-xl-12 col-sm-6 col-12">
+            <div selectedTab="addonview">
+                <ag-grid-angular #agGrid domLayout='autoHeight' class="ag-theme-alpine table-class"
+                    style="text-align: center;" rowAnimation [gridOptions]="gridOptions" [columnDefs]="columnDefs"
+                    [rowData]="rowData" [enableCellTextSelection]="true">
+                </ag-grid-angular>
+            </div>
+        </div>
+    </section>
+</div>

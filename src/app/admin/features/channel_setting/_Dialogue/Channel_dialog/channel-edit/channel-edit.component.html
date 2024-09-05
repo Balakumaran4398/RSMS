@@ -1,0 +1,141 @@
+<div class="head d-flex justify-content-between align-items-center mb-3">
+    <span class="span">UPDATE CHANNEL</span>
+    <i class="fa fa-close close-icon" (click)="onNoClick()"></i>
+</div>
+<div class="col d-flex justify-content-center align-items-center card transparent-background">
+    <div class="card-content">
+        <div class="card-body col-12 col-md-12 mobile">
+            <div class="input_box col-12 col-md-12 display mb-3">
+                <div class="col-12 col-md-6 ">
+                    <span for="categoryName" class="me-2">Channel Name </span>
+                </div>
+                <div class="col-12 col-md-6">
+                    <input type="text" [(ngModel)]="channel_name" class=" flex-grow-1">
+                </div>
+            </div>
+            <div class="input_box  col-12 col-md-12  display align-items-center mb-3">
+                <div class="col-12 col-md-6 ">
+                    <span for="channelLogo" class="me-2">Channel Rate </span>
+                </div>
+                <div class="col-12 col-md-6">
+                    <input type="text" [(ngModel)]="channel_rate" class=" flex-grow-1">
+                </div>
+            </div>
+
+            <div class="input_box col-12 col-md-12 display align-items-center mb-3">
+                <div class="col-12 col-md-6 ">
+                    <span for="broadcaster" class="me-2">Broadcaster </span>
+                </div>
+                <div class="col-12 col-md-6">
+                    <select [(ngModel)]="broadcastername" class=" flex-grow-1" placeholder="ALL">
+                        <option value="">Select Broadcaster</option>
+                        <option *ngFor="let broadcaster of broadcaster_id" [value]="broadcaster.id">
+                            {{ broadcaster.broadcastername }}
+                        </option>
+                    </select>
+                </div>
+            </div>
+            <div class="input_box col-12 col-md-12 display align-items-center mb-3">
+                <div class="col-12 col-md-6 ">
+                    <span for="category" class="me-2">Category</span>
+                </div>
+                <div class="col-12 col-md-6">
+                    <select id="CategoryType" [(ngModel)]="categoryname" class=" flex-grow-1" placeholder="ALL">
+                        <option value="0">Select Category</option>
+                        <option *ngFor="let chann of category_id" [value]="chann.id">
+                            {{ chann.category }}
+                        </option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="input_box col-12 col-md-12 display align-items-center mb-3">
+                <div class="col-12 col-md-6 ">
+                    <span for="distributor" class="me-2">Channel Type </span>
+                </div>
+                <div class="col-12 col-md-6">
+                    <select id="CategoryType" name="CategoryType" [(ngModel)]="channel_typename" class=" flex-grow-1"
+                        placeholder="ALL">
+                        <option value="0">Select Channel Type</option>
+                        <option *ngFor="let chann of channel_type_id" [value]="chann.id">
+                            {{ chann.channel_type }}
+                        </option>
+                    </select>
+                </div>
+            </div>
+            <div class="input_box col-12 col-md-12 display  align-items-center mb-3">
+                <div class="col-12 col-md-6 ">
+                    <span for="productId" class="me-2">Product Id </span>
+                </div>
+                <div class="col-12 col-md-6">
+                    <input type="text" [(ngModel)]="product_id" class=" flex-grow-1">
+                </div>
+            </div>
+            <div class="input_box col-12 col-md-12 display align-items-center mb-3">
+                <div class="col-12 col-md-6 ">
+                    <span for="serviceId" class="me-2">Service Id </span>
+                </div>
+                <div class="col-12 col-md-6 ">
+                    <input type="text" [(ngModel)]="service_id" class=" flex-grow-1">
+                </div>
+            </div>
+            <div class=" col-12 col-md-12 display align-items-center mb-3">
+                <div class="col-12 col-md-6 ">
+                    <span for="serviceId" class="me-2"
+                        style="font-weight: 500;margin-bottom: 5px;display: block;color: #243359;">Status </span>
+                </div>
+                <div class="col-12 col-md-6 ">
+                    <mat-radio-group class="d-flex" [(ngModel)]="status">
+                        <mat-radio-button value="active">Active</mat-radio-button>
+                        <mat-radio-button value="Deactive">Deactive</mat-radio-button>
+                    </mat-radio-group>
+                </div>
+            </div>
+
+            <div class="input_box col-12 col-md-12 display align-items-center mb-3">
+                <div class="col-12 col-md-6 ">
+                    <span for="commission" class="me-2">Commission</span>
+                </div>
+                <div class="col-12 col-md-6 ">
+                    <input type="text" [(ngModel)]="commission" (keypress)="onKeydown($event)" class=" flex-grow-1" placeholder="Commission Amount">
+                </div>
+            </div>
+            <div class="input_box col-12 col-md-12 display align-items-center mb-3">
+                <div class="col-12 col-md-6 ">
+                    <span for="isPercentage" class="me-2">Is Percentage </span>
+                </div>
+                <div class="col-12 col-md-6 d-flex ">
+                    <div class="col-6 col-md-3">
+                        <button class="btn btn-outline-primary " (click)="toggleYes()" [(ngModel)]="ispercentage"
+                            [class.active]="isYesActive === true">Yes</button>
+                    </div>
+                    <div class="col-6 col-md-3">
+                        <button class="btn btn-outline-info " (click)="toggleNo()" [(ngModel)]="ispercentage"
+                            [class.active]="isYesActive === false">No</button>
+                    </div>
+                </div>
+            </div>
+            <!-- <div class="form-group" style="margin: auto;">
+                <span for="isPercentage">Is Percentage</span>
+                <br>
+                <div class="toggle-button-cover">
+                    <div class="button b2" id="button-10">
+                        <input type="checkbox" class="checkbox" [(ngModel)]="ispercentage" />
+                        <div class="knobs">
+                            <span>YES</span>
+                        </div>
+                        <div class="layer"></div>
+                    </div>
+                </div>
+            </div> -->
+
+
+
+        </div>
+        <div class="text-center">
+            <div class="input_box d-flex  justify-content-end align-items-center">
+                <button type="button" class="btn btn-primary" (click)="onSubmit()" style="color: white;">Update</button>
+            </div>
+        </div>
+    </div>
+</div>

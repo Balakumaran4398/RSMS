@@ -1,0 +1,24 @@
+<div class="card">
+    <h5>To Set Defective Smartcard</h5>
+    <div class="row d-flex justify-content-center align-items-center  ">
+        <div class="col-12 col-sm-12 col-md-12  mb-3">
+            <ag-grid-angular #agGrid id="myGrid" domLayout='autoHeight' class="ag-theme-alpine table-class" rowAnimation
+                [rowSelection]="rowSelection" [gridOptions]="gridOptions" [columnDefs]="columnDefs" [rowData]="rowData"
+                (selectionChanged)="onSelectionChanged()" (gridReady)="onGridReady($event)"
+                [enableCellTextSelection]="true">
+            </ag-grid-angular>
+            <!-- <div class="d-flex justify-content-center align-items-center position-relative button"
+                style="padding: 10px;">
+                <button type="button" class="btn"  [disabled]="!isAnyRowSelected" (click)="submit($event)"><i class="fas fa-sync-alt"></i>
+                    Defective Smartcard
+                </button>
+                <div class="tooltip">Defective Smartcard</div>
+            </div> -->
+            <div class="d-flex justify-content-center align-items-center position-relative" style="padding: 10px;" (click)="showDisabledMessage()">
+                <button type="button" class="btn" [disabled]="!isAnyRowSelected">
+                    <i class="fas fa-sync-alt" aria-hidden="true"></i>  Defective Smartcard
+                </button>
+            </div>
+        </div>
+    </div>
+</div>

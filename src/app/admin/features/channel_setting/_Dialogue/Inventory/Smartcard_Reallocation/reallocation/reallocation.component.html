@@ -1,0 +1,33 @@
+<div>
+    <div class="head d-flex justify-content-between align-items-center mb-3">
+        <h6 class="span">RE ALLOCATE SMARTCARD TO LCO</h6>
+        <i class="fa fa-close close-icon" style="cursor: pointer;" (click)="onNoClick()"></i>
+    </div>
+
+    <div class="d-flex justify-content-center align-items-center" style="padding: 1rem;">
+        <div class=" input_box col-12 d-flex justify-content-center align-items-center">
+            <div class="col-4">
+                <label>LCO Name</label>
+            </div>
+            <div class=" col-8">
+                <div class="">
+                    <div class="">
+                        <select id="lcoName" [(ngModel)]="selectedLcoName">
+                            <option value="0"  selected>Select an LCO Name</option>
+                            <option *ngFor="let key of filteredLcoKeys()" [value]="lco_list[key]">
+                                {{ key }}
+                            </option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+    <div class="d-flex justify-content-center align-items-center" style="padding: 10px;">
+        <button type="button" class="btn" (click)="submit()">
+            Insert
+        </button>
+
+    </div>
+</div>

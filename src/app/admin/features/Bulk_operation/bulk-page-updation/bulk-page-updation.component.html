@@ -1,0 +1,129 @@
+<section class="Tab col-12">
+    <div class="" style="padding: 10px;">
+        <p>
+            BULK PACKAGE UPDATION</p>
+    </div>
+    <div class="d-flex tablist justify-content-center align-items-center my-3 new_d">
+        <div class="tab" [class.active]="selectedTab === 'bulk_package'" (click)="selectTab('bulk_package')"> BULK
+            PACKAGE </div>
+        <div class="tab" [class.active]="selectedTab === 'pending'" (click)="selectTab('pending')">PENDING </div>
+        <div class="tab" [class.active]="selectedTab === 'archive'" (click)="selectTab('archive')"> ARCHIVE </div>
+    </div>
+    <div *ngIf="selectedTab === 'bulk_package'" class="commission">
+        <div class="col-12 col-md-12  box  display justify-content-center align-items-center">
+       
+            <div class="checkbox-text mb-3">
+                <div class="checkbox-content">
+                    <mat-checkbox id="terms" formControlName="package_select">
+                    </mat-checkbox>
+                </div>
+            </div>
+
+            <mat-form-field class="me-3 " appearance="outline">
+                <mat-label>Select CAS</mat-label>
+                <mat-select placeholder="Select the CAS" [formControl]="CasFormControl">
+                    <mat-select-filter [placeholder]="'Find CAS'" [array]="cas"></mat-select-filter>
+                    <mat-option *ngFor="let casItem of cas" [value]="casItem">{{ casItem }}</mat-option>
+                </mat-select>
+            </mat-form-field>
+
+            <mat-form-field appearance="outline">
+                <mat-label>Enter a date range</mat-label>
+                <mat-date-range-input [rangePicker]="picker" [max]="maxDate">
+                    <input matStartDate matInput placeholder="Start date" (dateChange)="getFromDate($event)">
+                    <input matEndDate matInput placeholder="End date" (dateChange)="getToDate($event)">
+                </mat-date-range-input>
+                <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                <mat-date-range-picker #picker></mat-date-range-picker>
+            </mat-form-field>
+
+            <mat-form-field class="me-3 " appearance="outline">
+                <mat-label>Select LCO</mat-label>
+                <mat-select placeholder="Select the LCO" [formControl]="LcoFormControl">
+                    <mat-select-filter [placeholder]="'Find LCO'" [array]="lco"></mat-select-filter>
+                    <mat-option *ngFor="let lcoItem of lco" [value]="lcoItem">{{ lcoItem }}</mat-option>
+                </mat-select>
+            </mat-form-field>
+  
+
+            <div class="mobile mb-3">
+                <button type="submit" class="btn btn-success align-item-center">Submit</button>
+            </div>
+        </div>
+
+        <div class="row d-flex align-items-center justify-content-center" style="padding: 0.5rem;">
+            <div class="col-12 col-md-12 col-sm-12">
+                <div class="title">
+                    <h5>LCO WISE SMARTCARD DETAILS</h5>
+                </div>
+                <ag-grid-angular #agGrid id="myGrid" domLayout='autoHeight' class="ag-theme-alpine table-class"
+                    rowAnimation [rowSelection]="rowSelection" [gridOptions]="gridOptions" [columnDefs]="columnDefs"
+                    [rowData]="rowData" (gridReady)="onGridReady()" [enableCellTextSelection]="true">
+                </ag-grid-angular>
+            </div>
+        </div>
+    </div>
+    <div *ngIf="selectedTab === 'pending'" class="commission">
+        <div class="col-12 col-md-12 box d-flex justify-content-center align-item-center">
+
+
+            <mat-form-field class="me-3 " appearance="outline">
+                <mat-label>Select CAS</mat-label>
+                <mat-select placeholder="Select the CAS" [formControl]="CasFormControl">
+                    <mat-select-filter [placeholder]="'Find CAS'" [array]="cas"></mat-select-filter>
+                    <mat-option *ngFor="let casItem of cas" [value]="casItem">{{ casItem }}</mat-option>
+                </mat-select>
+            </mat-form-field>
+
+            <div class="mobile mb-3">
+                <button type="submit" class="btn btn-success align-item-center">Filter</button>
+            </div>
+
+        </div>
+        <div class="row d-flex align-items-center justify-content-center" style="padding: 0.5rem;">
+            <div class="col-12 col-md-12 col-sm-12">
+                <div class="title">
+                    <h5>PENDING SMARTCARD DETAILS - (0)</h5>
+                </div>
+                <ag-grid-angular #agGrid id="myGrid" domLayout='autoHeight' class="ag-theme-alpine table-class"
+                    rowAnimation [rowSelection]="rowSelection" [gridOptions]="gridOptions" [columnDefs]="columnDefs"
+                    [rowData]="rowData" (gridReady)="onGridReady()" [enableCellTextSelection]="true">
+                </ag-grid-angular>
+            </div>
+        </div>
+    </div>
+    <div *ngIf="selectedTab === 'archive'" class="commission">
+        <div class="col-12 col-md-12 box display justify-content-center align-item-center">
+            <mat-form-field class="me-3 " appearance="outline">
+                <mat-label>Select CAS</mat-label>
+                <mat-select placeholder="Select the CAS" [formControl]="CasFormControl">
+                    <mat-select-filter [placeholder]="'Find CAS'" [array]="cas"></mat-select-filter>
+                    <mat-option *ngFor="let casItem of cas" [value]="casItem">{{ casItem }}</mat-option>
+                </mat-select>
+            </mat-form-field>
+            <mat-form-field class="me-3 " appearance="outline">
+                <mat-label>Select Type</mat-label>
+                <mat-select placeholder="Select the CAS" [formControl]="typeFormControl">
+                    <mat-select-filter [placeholder]="'Find CAS'" [array]="alltype"></mat-select-filter>
+                    <mat-option *ngFor="let All of alltype" [value]="All">{{ All }}</mat-option>
+                </mat-select>
+            </mat-form-field>
+            <div class="mobile mb-3">
+                <button type="submit" class="btn btn-success align-item-center">Filter</button>
+            </div>
+
+        </div>
+        <div class="row d-flex align-items-center justify-content-center" style="padding: 0.5rem;">
+            <div class="col-12 col-md-12 col-sm-12">
+                <div class="title">
+                    <h5>ARCHIVED LIST STATUS (0)</h5>
+                </div>
+                <ag-grid-angular #agGrid id="myGrid" domLayout='autoHeight' class="ag-theme-alpine table-class"
+                    rowAnimation [rowSelection]="rowSelection" [gridOptions]="gridOptions" [columnDefs]="columnDefs"
+                    [rowData]="rowData" (gridReady)="onGridReady()" [enableCellTextSelection]="true">
+                </ag-grid-angular>
+            </div>
+        </div>
+    </div>
+
+</section>

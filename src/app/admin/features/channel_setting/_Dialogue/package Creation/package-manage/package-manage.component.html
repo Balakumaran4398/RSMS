@@ -1,0 +1,140 @@
+<section style="padding: 1rem;">
+    <button class="button1" (click)="back()">
+        <svg viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg" class="icon">
+            <path
+                d="M307 34.8c-11.5 5.1-19 16.6-19 29.2v64H176C78.8 128 0 206.8 0 304C0 417.3 81.5 467.9 100.2 478.1c2.5 1.4 5.3 1.9 8.1 1.9c10.9 0 19.7-8.9 19.7-19.7c0-7.5-4.3-14.4-9.8-19.5C108.8 431.9 96 414.4 96 384c0-53 43-96 96-96h96v64c0 12.6 7.4 24.1 19 29.2s25 3 34.4-5.4l160-144c6.7-6.1 10.6-14.7 10.6-23.8s-3.8-17.7-10.6-23.8l-160-144c-9.4-8.5-22.9-10.6-34.4-5.4z">
+            </path>
+        </svg>
+        Back
+    </button>
+
+    <div class="row" style="padding: 2rem;">
+        <div class="col-12 col-xl-6">
+            <div class="justify-content-center align-item-center">
+                <div class="form-container">
+                    <div class="d-flex">
+                        <div class="label">Package</div>
+                        <span class="separator">:</span>
+                        <div class="value" style="color: rgb(251 0 66); font-size: 17px;">{{package_name}}
+                        </div>
+                    </div>
+                    <div class="d-flex">
+                        <div class="label">Package Rate</div>
+                        <span class="separator">:</span>
+                        <div class="value">{{package_rate}}</div>
+                    </div>
+                    <div class="d-flex">
+                        <div class="label">Package Viewing Count</div>
+                        <span class="separator">:</span>
+                        <div class="value">{{package_viewing_count}}</div>
+                    </div>
+                    <div class="d-flex">
+                        <div class="label">Pay Channel Count</div>
+                        <span class="separator">:</span>
+                        <div class="value">
+                            <button class="button2" (click)="pay_channel('paychannel')">{{pay_chan_count}}</button>
+                        </div>
+                    </div>
+                    <div class="d-flex">
+                        <div class="label">Bouquet Count</div>
+                        <span class="separator">:</span>
+                        <div class="value">
+                            <button class="button2" (click)="pay_channel('bouquet')"> {{bouquet_cont}}</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-12 col-sm-6 cas ">
+            <button class="button3 justify-content-between align-items-center" (click)="pay_channel('pair')">
+                <p>I check RCAS product details.</p>
+            </button>
+        </div>
+    </div>
+    <div class="row table">
+        <div class="col-12 col-md-6 table1">
+            <p>ALACARTE</p>
+            <div class="row ">
+                <div class="col-12 col-md-5 example-container">
+                    <input type="text" placeholder="search" class="form-control" [(ngModel)]="searchTerm"
+                        (input)="filterAvailableList()">
+                        <!-- <button class="button" (click)="applyFilter()">Search</button> -->
+                    <h6 class="av">Available - {{filteredAvailableAlacarteList.length}} </h6>
+                    <!-- <input type="text" placeholder="search" class="form-control" >
+                    <h6 class="av">Available -{{available_alacarte_count}} </h6> -->
+                    <div cdkDropList #todoList="cdkDropList" [cdkDropListData]="available_alacarte_list"
+                        [cdkDropListConnectedTo]="[doneList]" class="example-list" (cdkDropListDropped)="drop($event)">
+                        <div *ngFor="let item of available_alacarte_list" class="example-box"
+                            (click)="toggleSelection(item)" [class.selected]="isSelected(item)" cdkDrag>{{ item }}</div>
+                    </div>
+                    
+                    <!-- <div cdkDropList #todoList="cdkDropList" [cdkDropListData]="filteredAvailableAlacarteList"
+                        [cdkDropListConnectedTo]="[doneList]" class="example-list" (cdkDropListDropped)="drop($event)">
+                        <div *ngFor="let item of filteredAvailableAlacarteList" class="example-box"
+                            (click)="toggleSelection(item)" [class.selected]="isSelected(item)" cdkDrag>{{ item }}</div>
+                    </div> -->
+                </div>      
+                <div class="d-grid col-1">
+                    <button class="button2" (click)="moveSelected_alacarte_Items('right')"><i
+                            class="bx bx-right-arrow-alt"></i></button>
+                    <button class="button2" (click)="moveAll_alacarte_Items('right')"><i
+                            class="bx bx-arrow-to-right"></i></button>
+                    <button class="button2" (click)="moveSelected_alacarte_Items('left')"><i
+                            class="bx bx-left-arrow-alt"></i></button>
+                    <button class="button2" (click)="moveAll_alacarte_Items('left')"><i
+                            class="bx bx-arrow-to-left"></i></button>
+                </div>
+                <div class="col-12 col-md-5 example-container">
+                    <input type="text" placeholder="search" class="form-control">
+                    <h6 class="ad">Added - {{added_alacrte_count}} </h6>
+                    <div cdkDropList #doneList="cdkDropList" [cdkDropListData]="added_alacarte_list"
+                        [cdkDropListConnectedTo]="[todoList]" class="example-list" (cdkDropListDropped)="drop($event)">
+                        <div *ngFor="let item of added_alacarte_list" class="example-box" ccdkDrag
+                            (click)="toggleSelection(item)" [class.selected]="isSelected(item)">{{ item }}</div>
+                    </div>
+                </div>
+            </div>
+            <!-- <button class="button"> -->
+                <!-- <div class="text" (click)="save()">Save</div> -->
+                <button type="button" class="btn" style="background:#058372;color: white;" (click)="save()">Save</button>
+            <!-- </button> -->
+        </div>
+        <div class="col-12 col-md-6 table2 ">
+            <p>ADDON</p>
+            <div class="row">
+                <div class="col-12 col-md-5 example-container">
+                    <input type="text" placeholder="search" class="form-control">
+                    <h6 class="av">Available - {{available_bouquet_count }}</h6>
+                    <div cdkDropList #todoList="cdkDropList" [cdkDropListData]="available_bouquet_list"
+                        [cdkDropListConnectedTo]="[doneList]" class="example-list" (cdkDropListDropped)="drop($event)">
+                        <div *ngFor="let item of available_bouquet_list" class="example-box" cdkDrag
+                            (click)="toggleSelection(item)" [class.selected]="isSelected(item)">{{ item }}</div>
+                    </div>
+                </div>
+                <div class="d-grid col-1">
+                    <button class="button2" (click)="moveSelected_bouquet_Items('right')"><i
+                            class="bx bx-right-arrow-alt"></i></button>
+                    <button class="button2" (click)="moveAll_bouquet_Items('right')"><i
+                            class="bx bx-arrow-to-right"></i></button>
+                    <button class="button2" (click)="moveSelected_bouquet_Items('left')"><i
+                            class="bx bx-left-arrow-alt"></i></button>
+                    <button class="button2" (click)="moveAll_bouquet_Items('left')"><i
+                            class="bx bx-arrow-to-left"></i></button>
+                </div>
+                <div class="col-12 col-md-5 example-container">
+                    <input type="text" placeholder="search" class="form-control">
+                    <h6 class="ad">Added -{{added_bouquet_count}} </h6>
+                    <div cdkDropList #doneList="cdkDropList" [cdkDropListData]="added_bouquet_list"
+                        [cdkDropListConnectedTo]="[todoList]" class="example-list" (cdkDropListDropped)="drop($event)">
+                        <div *ngFor="let item of added_bouquet_list" class="example-box" (click)="toggleSelection(item)"
+                            [class.selected]="isSelected(item)" cdkDrag>{{ item }}</div>
+                    </div>
+                </div>
+            </div>
+            <!-- <button class="button"> -->
+                <!-- <div class="text" (click)="save1()">Save</div> -->
+                <button type="button" class="btn" style="background:#058372;color: white;" (click)="save1()">Save</button>
+            <!-- </button> -->
+        </div>
+    </div>
+</section>

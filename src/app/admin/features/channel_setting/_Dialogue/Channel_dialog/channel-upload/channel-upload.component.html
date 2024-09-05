@@ -1,0 +1,39 @@
+<div class="c d-flex justify-content-between mb-3" style="padding: 10px;background-color: #8bbed6;">
+    <span class="span" style="color: #0c1e3e;">Create New Broadcaster</span>
+    <i class="fa fa-close close-icon" (click)="onNoClick()"></i>
+</div>
+<div class="col d-flex justify-content-center card transparent-background">
+    <div class="card-content mb-3">
+        <div class="card-body justify-content-between align-items-center">
+            <h3 class="me-2" style="text-align: center;font-size: 18px;color: #fc0ff5;">Channel List Upload</h3>
+            <div class="tab d-flex justify-content-center align-items-center mb-3">
+                <label class="btn btn-outline-info mx-1">
+                    <span>+</span> Choose
+                    <input type="file" style="display: none;" (change)="handleFileInput($event)">
+                </label>
+                <a class="btn btn-outline-success mx-1" [class.disabled]="!file" (click)="file ? uploadData($event) : null">
+                    <i class="fa fa-upload" aria-hidden="true"></i> UPLOAD
+                </a>
+                <a class="btn btn-outline-warning mx-1" [class.disabled]="!file"
+                    (click)="file ? clearFilePath() : null">
+                    <i class="fa fa-ban" aria-hidden="true"></i> CANCEL
+                </a>
+            </div>
+            <div class="tab card1 d-flex justify-content-between align-items-center " *ngIf="filePath">
+                <span class="mx-1">{{ filePath }}</span>
+                <i class="fa fa-close close-icon mx-1" (click)="clearFilePath()"></i>
+            </div>
+        </div>
+        <div class="row" style="max-height: 400px;overflow: scroll;">
+            <ag-grid-angular #agGrid id="myGrid" domLayout='autoHeight' class="ag-theme-alpine table-class" rowAnimation
+                [gridOptions]="gridOptions" [columnDefs]="columnDefs" [rowData]="rowData"
+                [enableCellTextSelection]="true">
+            </ag-grid-angular>
+        </div>
+    </div>
+    <div class="justify-content-center align-item-center" style="margin: auto;" *ngIf="selectedFile">
+        <a class="btn btn-outline-warning mx-1" (click)="confirm()">
+            <i class="fa fa-ban" aria-hidden="true"></i> Confirm
+        </a>
+    </div>
+</div>

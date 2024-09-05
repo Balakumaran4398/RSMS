@@ -1,0 +1,111 @@
+.head {
+    padding: 13px;
+    background-color: lightcyan;
+    height: 50px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+}
+
+.display {
+    display: flex;
+}
+
+.head span {
+    color: var(--primary-color);
+    font-size: 17px;
+    text-transform: uppercase;
+    font-weight: bold;
+}
+
+.close-icon {
+    font-size: 19px;
+    cursor: pointer;
+}
+
+.close-icon:hover {
+    background-color: var(--primary-color);
+    font-size: 17px;
+    padding: 2px;
+    margin: 0;
+    color: white;
+    border-radius: 10px;
+}
+
+.card {
+    padding: 1rem;
+    border: 1px solid lightgray;
+}
+
+.lco {
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+}
+
+.form-group {
+    display: flex;
+    align-items: center;
+    width: 100%;
+}
+
+.label-text {
+    // flex: 1;
+    text-align: left;
+}
+
+.form-control {
+    flex: 2;
+    // margin-left: 0.5rem;
+}
+
+.new_d {
+    margin-top: 1rem;
+}
+
+.btn-infos {
+    background-color: rgb(134, 238, 252);
+    border: 1px solid rgb(6, 4, 136);
+    color: rgb(10, 0, 0);
+    padding: 3px;
+    width: 5rem;
+    height: 30px;
+}
+
+.btn-infos:hover,
+.btn-success:hover {
+    color: rgb(209, 10, 43);
+}
+
+.title {
+    flex: 1;
+}
+
+/* Responsive Styles */
+@media (max-width: 767px) {
+
+    .close-icon {
+        align-self: flex-end;
+    }
+
+
+
+    .label-text {
+        text-align: left;
+        margin-bottom: 5px;
+    }
+
+
+
+    .btn-infos {
+        width: 50%;
+        text-align: center;
+    }
+
+    .display {
+        display: block;
+    }
+}

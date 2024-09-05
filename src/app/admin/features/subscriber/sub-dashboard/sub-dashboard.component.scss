@@ -1,0 +1,265 @@
+label {
+    font-weight: 500;
+}
+
+.display1 {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.display {
+    display: flex;
+
+}
+
+.icon-container {
+    gap: 20px;
+    /* Adjust the gap between icons as needed */
+}
+
+.text {
+    padding: 1rem;
+    font-size: 13px;
+    font-weight: 700;
+}
+
+.text1 {
+    padding: 1rem;
+    font-size: 12px;
+}
+
+.text2 {
+    padding: 0.5rem;
+    font-size: 15px;
+    font-weight: 700;
+}
+
+.icon-item {
+    padding: 0.5rem;
+    height: 30px;
+    border-radius: 5px;
+}
+
+.card {
+    width: 100%;
+    border: none;
+    outline: none;
+    border-radius: 5px;
+    box-shadow: 0px 0px 0px 1px rgba(0, 0, 0, 0.1);
+    background-color: #f6f8fa;
+    font-family: 'Poppins', sans-serif;
+    transition: all 120ms ease-out 0s;
+    padding: 0px 12px;
+    border-top: 2px solid #077230;
+    border-bottom: 0.9px solid lightgray;
+    border-left: 0.9px solid lightgray;
+    border-right: 0.9px solid lightgray;
+}
+
+.line {
+    border: 1px solid lightgray;
+}
+
+.button {
+    width: 10vw;
+    height: 30px;
+    background-color: aquamarine;
+    border: 1px red;
+    padding: 1rem;
+    border-radius: 10px;
+}
+
+// .button {
+//     flex-direction: row; /* Ensure icon and text are in a row */
+//     text-align: center;  /* Center the text */
+//     padding: 10px;       /* Add padding for better spacing */
+//     width: 100%;    
+//     border: 2px solid #4CAF50; 
+//     background-color: aquamarine; 
+//     border: 1px red;   /* Ensure the button takes the full width */
+// }
+
+.display_btn {
+    display: flex;
+}
+
+.mobile {
+    display: flex;
+}
+
+.mobile1 {
+    display: block;
+    padding: 0.5rem;
+}
+
+.btn_text {
+    flex-grow: 1;
+    /* Allow text to take up available space */
+    text-align: center;
+    /* Center the text within the button */
+    align-items: center;
+    /* Center vertically */
+    display: flex;
+    /* Ensure flexbox centering works */
+    justify-content: center;
+    /* Center horizontally */
+}
+
+.btn_text1 {
+    font-size: 13px;
+}
+
+.btn {
+    color: lightgray;
+    font-size: 15px;
+    background-color: rgb(217, 248, 223);
+    width: 100%;
+    border: 1px solid lightgray;
+}
+
+.btn :hover {
+    color: #2622eb;
+    font-weight: bold;
+}
+
+
+.btn i {
+    display: flex;
+    font-weight: 600;
+    justify-content: flex-start;
+    color: #4dbf8c;
+}
+
+.btn span {
+    display: flex;
+    font-weight: 600;
+    justify-content: flex-end;
+    color: #127dc4;
+}
+
+.display_btn1 {
+    display: flex;
+}
+
+.text3 {
+    padding: 0.2rem;
+}
+
+@media screen and (max-width:560px) {
+    .display {
+        display: block;
+    }
+
+    .text {
+        padding: 0.5rem;
+        font-size: 12px;
+        font-weight: 700;
+    }
+
+    .text1 {
+        font-size: 11px;
+    }
+
+    .text2 {
+        padding: 0.2rem;
+        font-size: 13px;
+        font-weight: 700;
+    }
+
+    .mobile1 {
+        display: block;
+    }
+
+    .mobile2 {
+        display: block;
+    }
+
+    .mobile {
+        display: block;
+    }
+
+    .display_btn {
+        display: flex;
+    }
+
+    .display_btn1 {
+        display: block;
+    }
+}
+
+/* Responsive styles */
+// @media (max-width: 767.98px) {
+//     .display_btn .col-6 {
+//         width: 100%;
+//         max-width: 100%;
+//     }
+// }
+
+// @media (min-width: 768px) {
+//     .display_btn .col-md-3 {
+//         max-width: 25%;
+//     }
+// }
+
+
+// =====================Tooltip====================
+.tooltip-container {
+    position: relative;
+    display: inline-block;
+}
+
+.tooltip-content {
+    visibility: hidden;
+    width: 110px;
+    background-color: rgb(35, 36, 35);
+    color: #fff;
+    text-align: center;
+    border-radius: 5px;
+    padding: 5px;
+    position: absolute;
+    font-size: 13px;
+    top: -75%;
+    left: -100%;
+    transform: translateY(-50%);
+    z-index: 1;
+    opacity: 0;
+    transition: opacity 0.3s;
+}
+
+// .tooltip-content::before {
+//     content: "";
+//       position: absolute;
+//     bottom: -46%;
+//     left: 31%;
+//     top: -5px;
+//     transform: translateX(-50%);
+//     border-width: 5px;
+//     border-style: solid;
+//     border-color: transparent rgb(7 124 7) transparent transparent;
+// }
+
+.tooltip-container:hover .tooltip-content {
+    visibility: visible;
+    opacity: 1;
+}
+
+// =============================grid-table============
+// #myGrid {
+//     width: 100%;
+//     height: 100%; /* This will ensure the grid takes full height available within the parent div */
+// }
+
+// .ag-theme-alpine {
+//     height: 100%; /* Make sure the grid theme takes full height */
+// }
+
+// .table-class {
+//     height: 100%; /* Ensures that the table class applies to full height */
+// }
+::ng-deep {
+    .ag-center-cols-viewport {
+        max-height: 200px;
+        overflow: scroll;
+    }
+}

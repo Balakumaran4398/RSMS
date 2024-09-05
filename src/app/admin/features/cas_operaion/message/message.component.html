@@ -1,0 +1,262 @@
+<div class="main justify-content-center align-item-center">
+    <div class="col-12 col-md-6 col-sm-6 p-3">
+        <div class="card">
+            <div class="title">
+                <p>Message Service</p>
+            </div>
+            <div class=" d-flex justify-content-center align-item-center">
+                <div class="">
+                    <form [formGroup]="form" (ngSubmit)="onSubmit()">
+                        <div class="col d-flex justify-content-center align-items-center">
+                            <div class="col-12 col-md-12 sol-sm-6"
+                                style="padding: 1rem;max-height: 65vh;overflow: scroll;">
+                                <div class="row">
+                                    <div class="input-box mb-3">
+                                        <div class="col-12 col-md-4">
+                                            <label for="">CAS</label>
+                                        </div>
+                                        <div class="col-12 col-md-8">
+                                            <select placeholder="Select the CAS" formControlName="castype"
+                                                (ngModelChange)="onSelectionFingerPrint($event)">
+                                                <option value="" selected>Select CAS</option>
+                                                <option *ngFor="let casItem of cas" [value]="casItem.id">
+                                                    {{ casItem.name }}
+                                                </option>
+                                            </select>
+                                            <div *ngIf="form.get('castype')?.invalid && form.get('castype')?.touched">
+                                                <small class="text-danger">CAS is required.</small>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="input-box mb-3">
+                                        <div class="col-12 col-md-4">
+                                            <label for="">Intend To</label>
+                                        </div>
+                                        <div class="col-12 col-md-8">
+                                            <select formControlName="intendto"
+                                                (ngModelChange)="onChangeIntendTo1($event)">
+                                                <option value="" selected> Select Intend</option>
+                                                <option value="" *ngFor="let in of intend" [value]="in.value">
+                                                    {{in.lable}}
+                                                </option>
+                                            </select>
+                                            <div *ngIf="form.get('intendto')?.invalid && form.get('intendto')?.touched">
+                                                <small class="text-danger">intendTo is required.</small>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="input-box mb-3">
+                                        <div class="col-12 col-md-4">
+                                            <label for="">Intend ID</label>
+                                        </div>
+                                        <div class="col-12 col-md-8" *ngIf="isSmartcardEnabled">
+                                            <input placeholder="Enter Smartcard" type="text" formControlName="intendid">
+                                            <div *ngIf="form.get('intendid')?.invalid && form.get('intendid')?.touched">
+                                                <small class="text-danger">Intend ID is required.</small>
+                                            </div>
+                                        </div>
+                                        <div class="col-12 col-md-8" *ngIf="isAreaCodeEnabled">
+                                            <select id="lcoName" formControlName="intendid">
+                                                <option value="" selected>Select a LCO Name</option>
+                                                <option *ngFor="let area of filteredIntendArea()" [value]="area.id">
+                                                    {{ area.name }}
+                                                </option>
+                                            </select>
+                                            <div *ngIf="form.get('intendid')?.invalid && form.get('intendid')?.touched">
+                                                <small class="text-danger">Intend ID is required.</small>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="input-box mb-3">
+                                        <div class="col-12 col-md-4">
+                                            <label for="">Force Message</label>
+                                        </div>
+                                        <div class="col-12 col-md-8">
+                                            <mat-radio-group class="radio-group" aria-labelledby="status"
+                                                [(ngModel)]="force" formControlName="forcemsg"
+                                                (change)="onForceChange($event)">
+                                                <mat-radio-button class="radio-button" [value]="true">Yes
+                                                </mat-radio-button>&nbsp;
+                                                <mat-radio-button class="radio-button" [value]="false">No
+                                                </mat-radio-button>
+                                            </mat-radio-group>
+                                            <div *ngIf="form.get('forcemsg')?.invalid && form.get('forcemsg')?.touched">
+                                                <small class="text-danger">Force Message is required.</small>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="input-box mb-3">
+                                        <div class="col-12 col-md-4">
+                                            <label for="">Service</label>
+                                        </div>
+                                        <div *ngIf="isservicedisabled" class="col-12 col-md-8">
+                                            <select id="lcoName" formControlName="serviceid">
+                                                <option value="" selected>Select a Service</option>
+                                                <option *ngFor="let service of filteredIntendSerivice()"
+                                                    [value]="service.id">
+                                                    {{ service.name }}
+                                                </option>
+                                            </select>
+                                            <div
+                                                *ngIf="form.get('serviceid')?.invalid && form.get('serviceid')?.touched">
+                                                <small class="text-danger">Service is required.</small>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="input-box mb-3">
+                                        <div class="col-12 col-md-4">
+                                            <label for="">Font Size</label>
+                                        </div>
+                                        <div *ngIf="isFontSizeDisabled" class="col-12 col-md-8">
+                                            <input type="text" placeholder="Enter fontsize" formControlName="fontsize">
+                                            <div *ngIf="form.get('fontsize')?.invalid && form.get('fontsize')?.touched">
+                                                <small *ngIf="form.get('fontsize')?.errors?.['required']"
+                                                    class="text-danger">Font size is required.</small>
+                                                <small *ngIf="form.get('fontsize')?.errors?.['pattern']"
+                                                    class="text-danger">Only numbers are allowed.</small>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="input-box mb-3">
+                                        <div class="col-12 col-md-4">
+                                            <label for="">Font Color</label>
+                                        </div>
+                                        <div *ngIf="isFontcolorDisabled" class="col-12 col-md-8">
+                                            <select placeholder="Select the fontcolor" formControlName="fontcolor">
+                                                <select-filter [placeholder]="'Find font color'"
+                                                    [displayMember]="'lable'" [array]="fontcolor"
+                                                    (filteredReturn)="fontcolor =$event"></select-filter>
+                                                <option value="" selected> Select a Font Color</option>
+                                                <option *ngFor="let fc of fontcolor" [value]="fc.value">{{fc.lable}}
+                                                </option>
+                                            </select>
+                                            <div
+                                                *ngIf="form.get('fontcolor')?.invalid && form.get('fontcolor')?.touched">
+                                                <small class="text-danger">Font Color is required.</small>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="input-box mb-3">
+                                        <div class="col-12 col-md-4">
+                                            <label for="">Background Color</label>
+                                        </div>
+                                        <div *ngIf="isBGcolorDisabled" class="col-12 col-md-8">
+                                            <select placeholder="Select the background color" formControlName="bgcolor">
+                                                <select-filter [placeholder]="'Find background color'"
+                                                    [displayMember]="'lable'" [array]="backcolor"
+                                                    (filteredReturn)="backcolor =$event"></select-filter>
+                                                <option value="" selected> Select a Background Color</option>
+                                                <option *ngFor="let bc of backcolor" [value]="bc.value">{{bc.lable}}
+                                                </option>
+                                            </select>
+                                            <div *ngIf="form.get('bgcolor')?.invalid && form.get('bgcolor')?.touched">
+                                                <small class="text-danger">Background Color is required.</small>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="input-box mb-3">
+                                        <div class="col-12 col-md-4">
+                                            <label for="">Repeat For</label>
+                                        </div>
+                                        <div *ngIf="isRepeatforDisabled" class="col-12 col-md-8">
+                                            <input type="text" placeholder="" formControlName="repeatfor">
+                                            <div
+                                                *ngIf="form.get('repeatfor')?.invalid && form.get('repeatfor')?.touched">
+                                                <small class="text-danger">RepeatFor is required.</small>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="input-box mb-3">
+                                        <div class="col-12 col-md-4">
+                                            <label for="">Transparancy</label>
+                                        </div>
+                                        <div *ngIf="isTransparancyDisabled" class="col-12 col-md-8">
+                                            <input type="text" placeholder="Range:20-80" formControlName="transparancy">
+                                            <div
+                                                *ngIf="form.get('transparancy')?.invalid && form.get('transparancy')?.touched">
+                                                <small *ngIf="form.get('transparancy')?.errors?.['required']"
+                                                    class="text-danger">Transparancy is required.</small>
+                                                <small
+                                                    *ngIf="form.get('transparancy')?.errors?.['min'] || form.get('transparancy')?.errors?.['max']"
+                                                    class="text-danger">
+                                                    Transparancy must be between 20 and 80.
+                                                </small>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="input-box mb-3">
+                                        <div class="col-12 col-md-4">
+                                            <label for="">Duration</label>
+                                        </div>
+                                        <div *ngIf="isDurationDisabled" class="col-12 col-md-8">
+                                            <input type="text" placeholder="Enter in Seconds"
+                                                formControlName="duration">
+                                            <div *ngIf="form.get('duration')?.invalid && form.get('duration')?.touched">
+                                                <small class="text-danger">Duration is required.</small>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="input-box mb-3">
+                                        <div class="col-12 col-md-4">
+                                            <label for="">Time Gap </label>
+                                        </div>
+                                        <div class="col-12 col-md-8">
+                                            <input type="text" placeholder="" formControlName="timegap">
+                                            <div *ngIf="form.get('timegap')?.invalid && form.get('timegap')?.touched">
+                                                <small class="text-danger">Time Gap is required.</small>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="input-box mb-3">
+                                        <div class="col-12 col-md-4">
+                                            <label for="">Message</label>
+                                        </div>
+                                        <div class="col-12 col-md-8">
+                                            <textarea type="number" placeholder="Text a Message"
+                                                formControlName="msgcontent" type="text" value="0">
+                                            </textarea>
+                                            <div
+                                                *ngIf="form.get('msgcontent')?.invalid && form.get('msgcontent')?.touched">
+                                                <small class="text-danger">Message is required.</small>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="d-flex justify-content-center align-items-center">
+                            <div class="d-flex justify-content-center align-items-center" style="padding: 10px;">
+                                <!-- <button type="submit" class="btn btn-danger">Send</button> -->
+                                &nbsp;
+                                <button type="submit" class="btn btn-success">Send </button>
+                            </div>
+
+                        </div>
+                        <div class=" d-flex justify-content-end align-items-center mb-3" style="color: red;">
+                            <!-- Service is Not Running -->
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-12 col-md-6 col-sm-6 p-3">
+        <div class="card">
+            <div class="title">
+                <p>Message History</p>
+            </div>
+            <div class="row d-flex align-items-center justify-content-center" style="padding: 0.5rem;">
+
+                <div class="col-12 col-sm-12 col-md-12 mb-3">
+                    <ag-grid-angular #agGrid id="myGrid" domLayout='autoHeight' class="ag-theme-alpine table-class"
+                        rowAnimation [rowSelection]="rowSelection" [gridOptions]="gridOptions" [columnDefs]="columnDefs"
+                        [rowData]="rowData" (gridReady)="onGridReady($event)" [enableCellTextSelection]="true">
+                    </ag-grid-angular>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+</div>

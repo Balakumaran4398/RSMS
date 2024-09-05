@@ -1,0 +1,277 @@
+<div id="Customer-page" #formContent>
+    <div>
+        <h3>
+            SUBSCRIBER CREATION
+        </h3>
+    </div>
+    <form [formGroup]="form" (ngSubmit)="onSubmit()">
+        <div style="display: flex; justify-content: center; align-items: center;  ">
+            <br>
+            <!-- <div class="container" style="margin-top: 2%;"> -->
+            <div class="container">
+                <div class="title">
+                    <p>Personal Details</p>
+                </div>
+
+                <!-- <form action="#"> -->
+                <div class="user_details">
+                    <div class="input_box">
+                        <label>LCO Name</label>
+                        <select id="lcoName" formControlName="operatorid" [(ngModel)]="operatorid"
+                            (change)="onSubscriberStatusChange()">
+                            <option value="0" selected>Select a Operator</option>
+                            <option *ngFor="let key of filteredLcoKeys()" [value]="lco_list[key]">
+                                {{ key }}
+                            </option>
+                        </select>
+                        <div style="position:relative;font-size: small;">
+                            <div *ngIf="submitted && f['operatorid'].errors?.['required']" class="text-danger">
+                                LCO Name is required</div>
+                        </div>
+                    </div>
+                    <div class="input_box">
+                        <label>Area Name</label>
+                        <select formControlName="areaid" [(ngModel)]="areaid" (change)="onAreaStatusChange()">
+                            <option value="0" selected>Select a Area</option>
+                            <option *ngFor="let key of filteredAreaKeys()" [value]="area_list[key]">
+                                {{ key }}
+                            </option>
+                        </select>
+                        <div style="position: relative; font-size: small;">
+                            <div *ngIf="submitted && f['areaid'].errors?.['required']" class="text-danger">
+                                Area Name is required</div>
+                        </div>
+                    </div>
+                    <div class="input_box">
+                        <label>Street Name</label>
+                        <select formControlName="streetid" [(ngModel)]="streetid">
+                            <option value="0" selected>Select a Street</option>
+                            <option *ngFor="let key of filteredStreetKeys()" [value]="street_list[key]">
+                                {{ key }}
+                            </option>
+                        </select>
+                        <div style="position: relative;font-size: small;">
+                            <div *ngIf="submitted && f['streetid'].errors?.['required']" class="text-danger">
+                                STREET Name is required</div>
+                        </div>
+                    </div>
+
+
+                    <div class="input_box">
+                        <label for="username">CAS Form Id</label>
+                        <input type="text" formControlName="casformid" placeholder="Enter CAS Form Id" pattern="[0-9]*"
+                            maxlength="6" (keypress)="onKeydown($event)" required
+                            [ngClass]="{ 'is-invalid': submitted && f['casformid'].errors }" />
+
+                        <div style="position: relative; font-size: small;" *ngIf="submitted && f['casformid'].errors"
+                            class="invalid-feedback">
+                            <div *ngIf="f['casformid'].errors['required']">CAS Form Id is required</div>
+                        </div>
+                    </div>
+                    <div class="input_box">
+                        <label for="email">Subscriber Name</label>
+                        <input type="text" formControlName="customername" placeholder="Enter Subscriber Name" required
+                            [ngClass]="{ 'is-invalid': submitted && f['customername'].errors }" />
+
+                        <div style="position: relative; font-size: small;" *ngIf="submitted && f['customername'].errors"
+                            class="invalid-feedback">
+                            <div *ngIf="f['customername'].errors['required']">Subscriber Name is required
+                            </div>
+                        </div>
+                    </div>
+                    <div class="input_box">
+                        <label for="phone">Subscriber Name Last</label>
+                        <input type="text" formControlName="customernamelast" placeholder="Enter Subscriber Name Last"
+                            required [ngClass]="{ 'is-invalid': submitted && f['customernamelast'].errors }" />
+
+                        <div style="position: relative; font-size: small;"
+                            *ngIf="submitted && f['customernamelast'].errors" class="invalid-feedback">
+                            <div *ngIf="f['customernamelast'].errors['required']">Subscriber Last Name
+                                is required
+                            </div>
+                        </div>
+                    </div>
+                    <div class="input_box">
+                        <label for="pass">Father Name</label>
+                        <input type="text" formControlName="fathername" placeholder="Enter Father name" required
+                            [ngClass]="{ 'is-invalid': submitted && f['fathername'].errors }" />
+
+                        <div style="position: relative; font-size: small;" *ngIf="submitted && f['fathername'].errors"
+                            class="invalid-feedback">
+                            <div *ngIf="f['fathername'].errors['required']">Father Name is required
+                            </div>
+                        </div>
+                    </div>
+                    <div class="input_box col-12 col-md-6 ">
+                        <div class="">
+                            <label>Date of Birth</label>
+                        </div>
+                        <input type="date" formControlName="dateofbirth" placeholder="Date of Birth" required
+                            [ngClass]="{ 'is-invalid': submitted && f['dateofbirth'].errors }" />
+                        <div style="position: relative; font-size: small;" *ngIf="submitted && f['dateofbirth'].errors"
+                            class="invalid-feedback">
+                            <div *ngIf="f['dateofbirth'].errors['required']">Date Of Birth is required
+                            </div>
+                        </div>
+                    </div>
+                    <div class="input_box">
+                        <label for="username">Billing Address</label>
+                        <input type="text" formControlName="address" placeholder="Enter Billing Address" required
+                            [ngClass]="{ 'is-invalid': submitted && f['address'].errors }" />
+
+                        <div style="position: relative; font-size: small;" *ngIf="submitted && f['address'].errors"
+                            class="invalid-feedback">
+                            <div *ngIf="f['address'].errors['required']">Billing Address is required
+                            </div>
+                        </div>
+                    </div>
+                    <div class="input_box">
+                        <label for="email">Install Address</label>
+                        <input type="text" formControlName="installaddress" placeholder="Enter Install Address" required
+                            [ngClass]="{ 'is-invalid': submitted && f['installaddress'].errors }" />
+
+                        <div style="position: relative;font-size: small;"
+                            *ngIf="submitted && f['installaddress'].errors" class="invalid-feedback">
+                            <div *ngIf="f['installaddress'].errors['required']">Install Address is required
+                            </div>
+                        </div>
+                    </div>
+                    <div class="input_box">
+                        <label for="phone">Mobile Number</label>
+                        <input pattern="[0-9]*" maxlength="10" required type="text" (keypress)="onKeydown($event)"
+                            formControlName="mobileno" placeholder="Phone Number" required
+                            [ngClass]="{ 'is-invalid': submitted && f['mobileno'].errors }" />
+
+                        <div style="position: relative; font-size: small;" *ngIf="submitted && f['mobileno'].errors"
+                            class="invalid-feedback">
+                            <div *ngIf="f['mobileno'].errors['required']">
+                                Mobile Number is required
+                            </div>
+                            <div *ngIf="f['mobileno'].errors['pattern']">
+                                Please enter a valid 10-digit Mobile Number
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="input_box">
+                        <label for="pass">Landline No</label>
+                        <input pattern="^0\d{2,4}\d{6,8}$" maxlength="11" type="text" formControlName="landlineno"
+                            placeholder="Enter Landline Number" 
+                            [ngClass]="{ 'is-invalid': submitted && f['landlineno'].errors }" required />
+
+                        <div style="position: relative; font-size: small;" *ngIf="submitted && f['landlineno'].errors"
+                            class="invalid-feedback">
+                            <div *ngIf="f['landlineno'].errors['required']">
+                                Landline Number is required
+                            </div>
+                            <!-- <div *ngIf="f['landlineno'].errors['pattern']">
+                                Please enter a valid Landline Number in the format 0XX-XXXXXX
+                            </div> -->
+                        </div>
+                    </div>
+                    <div class="input_box">
+                        <label for="confirmPass">Email ID</label>
+                        <input type="text" formControlName="email" placeholder="Enter Email ID"
+                            [ngClass]="{ 'is-invalid': submitted && f['email'].errors }" required />
+                        <div style="position: relative; font-size: small;" *ngIf="submitted && f['email'].errors"
+                            class="invalid-feedback">
+                            <div *ngIf="f['email'].errors['required']">Email ID is required</div>
+                            <div *ngIf="f['email'].errors['email']">Please enter a valid email 123@gmail.com</div>
+                        </div>
+                    </div>
+                    <div class="input_box">
+                        <label for="confirmPass">Form Submission Date</label>
+                        <!-- <input type="datetime-local" step='1' id="birthdaytime" name="birthdaytime"> -->
+                        <input type="datetime-local" step='1' placeholder="Form Submission Date"
+                            formControlName="formsubmissiondate"
+                            [ngClass]="{ 'is-invalid': submitted && f['formsubmissiondate'].errors }" required>
+
+                        <div style="position: relative;font-size: small; "
+                            *ngIf="submitted && f['formsubmissiondate'].errors" class="invalid-feedback">
+                            <div *ngIf="f['formsubmissiondate'].errors['required']">Form Submission Date is
+                                required
+                            </div>
+                        </div>
+                    </div>
+                    <div class="input_box">
+                        <label>ADD Proof Name</label>
+                        <select id="addressprooftypeid" formControlName="addressprooftypeid"
+                            (change)="onAddProofChange($event)">
+                            <option value="" selected>Select an ADD Proof</option>
+                            <option *ngFor="let key of filteredADDProofKeys()" [value]="key"> {{ key}} </option>
+                        </select>
+                    </div>
+
+                    <div class="input_box" *ngIf="selectedAddProofType">
+                        <label for="addressproof">{{ selectedAddProofType }} Number</label>
+                        <input type="text" formControlName="addressproof"
+                            [attr.maxlength]="getMaxLength(selectedAddProofType)"
+                            [attr.placeholder]="'Enter ' + selectedAddProofType + ' Number'"
+                            [attr.pattern]="getPattern(selectedAddProofType)" />
+
+                        <div *ngIf="f['addressproof'].invalid && (f['addressproof'].dirty || f['addressproof'].touched)"
+                            class="text-danger">
+                            <div *ngIf="f['addressproof'].errors?.['required']">
+                                {{ selectedAddProofType }} Number is required.
+                            </div>
+                            <div *ngIf="f['addressproof'].errors?.['pattern']">
+                                Invalid {{ selectedAddProofType }} Number. Expected format: {{
+                                getExampleFormat(selectedAddProofType) }}.
+                            </div>
+                            <div *ngIf="f['addressproof'].errors?.['maxlength']">
+                                Maximum length allowed is {{ getMaxLength(selectedAddProofType) }} characters.
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="input_box">
+                        <label>Id Proof Name</label>
+                        <select id="idprooftypeid" formControlName="idprooftypeid" (change)="onIDProofChange($event)">
+                            <option value="" selected>Select a ID Proof</option>
+                            <option *ngFor="let key of filteredIdProofKeys()" [value]="key"> {{ key}} </option>
+                        </select>
+                    </div>
+                    <div class="input_box" *ngIf="selectedIDProofType">
+                        <label for="idproof">{{ selectedIDProofType }} Number</label>
+                        <input type="text" formControlName="idproof"
+                            [attr.maxlength]="getMaxLength(selectedIDProofType)"
+                            [attr.placeholder]="'Enter ' + selectedIDProofType + ' idproof'"
+                            [attr.pattern]="getPattern(selectedIDProofType)" />
+
+                        <div *ngIf="f['idproof'].invalid && (f['idproof'].dirty || f['idproof'].touched)"
+                            class="text-danger">
+                            <div *ngIf="f['idproof'].errors?.['required']">
+                                {{ selectedIDProofType }} Number is required.
+                            </div>
+                            <div *ngIf="f['idproof'].errors?.['pattern']">
+                                Invalid {{ selectedIDProofType }} Number. Expected format: {{
+                                getExampleFormat(selectedIDProofType) }}.
+                            </div>
+                            <div *ngIf="f['idproof'].errors?.['maxlength']">
+                                Maximum length allowed is {{ getMaxLength(selectedIDProofType) }} characters.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="d-flex justify-content-end align-items-center" style="padding: 10px;">
+                    <button type="button" (click)="onReset()" class="btn btn-danger">
+                        Reset
+                    </button>
+                    &nbsp; &nbsp;
+                    <div>
+                        <button type="submit" class="btn"
+                            style="background:#058372;color: white;">Confirm</button>&nbsp;&nbsp;&nbsp;
+                    </div>
+                    <!-- <div class="reg_btn">
+                        <input type="submit" value="Register">
+                    </div> -->
+                </div>
+
+
+                <!-- </form> -->
+            </div>
+
+            <!-- </div> -->
+        </div>
+    </form>
+</div>

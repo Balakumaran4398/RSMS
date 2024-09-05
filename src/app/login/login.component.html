@@ -1,0 +1,50 @@
+<div class="bg">
+    <div class="d-flex justify-content-md-start">
+        <img height="38px" style="margin: 0px -6px 0px 3px;" src="/assets/images/icons/Logo1.png">
+        &nbsp; &nbsp;
+        <h1>RSMS</h1>
+    </div>
+    <div class="login-wrap">
+        <div class="login-html">
+            <div class="d-flex justify-content-center align-item-center">
+                <img class="img1" src="/assets/images/login/contact1.png" alt="">
+
+            </div>
+            <form class="login-form" [formGroup]="signInform" (ngSubmit)="submit(signInform)">
+                <div class="sign-in-htm">
+                    <div class="input-group">
+                        <label for="user" class="label">Username</label>
+                        <input id="user" formControlName="username" placeholder="Username" style="font-size: medium;"
+                            type="text" class="form-control">
+                        <span class="input-group-addon">
+                            <!-- <img src="/assets/images/icons/person.png" alt="Image" class="img-fluid"> -->
+                            <i class="fa-solid fa-user" style="color: #1f6764;"></i>
+                        </span>
+                    </div>
+                    <br><br>
+                    <!-- style="color: #1f6764;" -->
+                    <div class="input-group">
+                        <label for="pass" class="label">Password</label>
+                        <input [type]="isShow?'text':'password'" formControlName="password" class="form-control mb-4"
+                            placeholder="Password">
+                        <span class="eye" >
+                            <mat-icon (click)="isShow=!isShow" style="color: rgb(114, 111, 111);cursor: pointer">
+                                {{ isShow ? 'visibility' : 'visibility_off' }}
+                            </mat-icon>
+                        </span>
+                    </div>
+                    <div class="group">
+                        <input type="submit" class="button" value="Sign In">
+                    </div>
+                    <div class="foot-lnk">
+                        <a href="home">Forgot Password?</a>
+                    </div>
+
+                    <div class="foot-lnk">
+                        <h6>RSMS 7.0</h6>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

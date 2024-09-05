@@ -1,0 +1,91 @@
+import { Component, Inject } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
+import { BaseService } from 'src/app/_core/service/base.service';
+import { StorageService } from 'src/app/_core/service/storage.service';
+import Swal from 'sweetalert2';
+
+@Component({
+  selector: 'app-new-lco',
+  templateUrl: './new-lco.component.html',
+  styleUrls: ['./new-lco.component.scss']
+})
+export class NewLcoComponent {
+  form!: FormGroup;
+  edit_dialog: boolean = false;
+  username: any;
+  id: any;
+  role: any;
+  type: number = 0;
+  businessList: any[];
+  constructor(public dialogRef: MatDialogRef<NewLcoComponent>, @Inject(MAT_DIALOG_DATA) public data: any, private fb: FormBuilder, public dialog: MatDialog, public userService: BaseService, storageService: StorageService) {
+    this.username = storageService.getUsername();
+    this.role = storageService.getUserRole();
+    this.businessList = Object.keys(data).map(key => {
+      const value = data[key];
+      // const name = key.replace(/\(\d+\)$/, '').trim();
+      const name = key
+      return { name: name, value: value };
+    });
+  }
+  toggleedit() {
+    this.dialogRef.close();
+  }
+  ngOnInit() {
+    this.form = this.fb.group({
+      nameheader: ['', Validators.required],
+      operatorname: ['', Validators.required],
+      contactnumber1: ['', [Validators.required, Validators.pattern('^[0-9]{10}$')]],
+      contactnumber2: [0, [Validators.required, Validators.pattern('^[0-9]{10}$')]],
+      address: ['', Validators.required],
+      state: ['', Validators.required],
+      userid: ['', Validators.required],
+      mail: ['', [Validators.required, Validators.email]],
+      area: ['', Validators.required],
+      pincode: ['', [Validators.required, Validators.pattern('^[0-9]{6}$')]],
+      password: ['', [Validators.required, Validators.minLength(6)]],
+      lcobusinessid: ['', Validators.required],
+      role: this.role,
+      username: this.username
+    });
+  }
+
+
+
+  onSubmit() {
+    // if (this.form.valid) {
+      this.userService.NewOperator(this.form.value).subscribe(
+        (res: any) => {
+          Swal.fire({
+            title: 'Success!',
+            text: res.message || 'The operator has been added successfully.',
+            icon: 'success',
+            timer: 2000,
+            timerProgressBar: true,
+            willClose: () => {
+              window.location.reload();
+              // this.ngOnInit();
+            }
+          });
+        },
+        (error: any) => {
+          console.error(error);
+          Swal.fire({
+            title: 'Error!',
+            text: error?.error.message || error?.error.lcobusinessid || 'There was an issue adding the operator.',
+            icon: 'error'
+          });
+        }
+      );
+    // } else {
+    //   this.form.markAllAsTouched();
+    // }
+  }
+  onKeydown(event: KeyboardEvent) {
+    const key = event.key;
+    if (!/^\d$/.test(key) && key !== 'Backspace') {
+      event.preventDefault();
+    }
+  }
+
+}

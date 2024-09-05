@@ -1,0 +1,58 @@
+<div>
+    <p>BULK REFRESH</p>
+    <div class="box d-flex justify-content-center align-item-center">
+        <div class="col-12 col-md-6  box  display justify-content-start align-items-center">
+            <mat-form-field class="me-3 " appearance="outline">
+                <mat-label>Select CAS</mat-label>
+                <mat-select placeholder="Select the CAS" [formControl]="CasFormControl">
+                    <mat-select-filter [placeholder]="'Find CAS'" [array]="cas"></mat-select-filter>
+                    <mat-option *ngFor="let casItem of cas" [value]="casItem">{{ casItem }}</mat-option>
+                </mat-select>
+            </mat-form-field>
+            <div class="d-flex align-item-center mx-3">
+                <mat-radio-group aria-label="Select an option">
+                    <mat-radio-button value="1">Active</mat-radio-button>
+                    <mat-radio-button value="2">Deactive</mat-radio-button>
+                </mat-radio-group>
+            </div>
+            <div class="mobile mb-3">
+                <button type="submit" class="btn btn-success align-item-center">Submit</button>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="row d-flex align-items-center justify-content-center border" style="padding: 0.5rem;">
+        <div class="col-12">
+            <div class="title">
+                <h5 class="text-center">BULK REFRESH HISTORY</h5>
+                <div class="display">
+                    <div class="col-12 display justify-content-center align-items-center mb-3">
+                        <!-- <mat-form-field class="example-full-width"  appearance="outline">
+                            <mat-label>Choose a date</mat-label>
+                            <input matInput [matDatepicker]="picker">
+                            <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+                            <mat-datepicker [dateClass]="dateClass" #picker></mat-datepicker>
+                        </mat-form-field> -->
+                        <div class="mx-1 mb-3">
+                            <input type="date" class="input">
+                        </div>
+
+                        <button class="btn custom-btn mx-3 mb-3" type="button">
+                            Get Data
+                        </button>
+                        <button class="btn custom-btn mx-1 mb-3" type="button">
+                            Refresh
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <ag-grid-angular #agGrid id="myGrid" domLayout="autoHeight" class="ag-theme-alpine table-class" rowAnimation
+                [rowSelection]="rowSelection" [gridOptions]="gridOptions" [columnDefs]="columnDefs" [rowData]="rowData"
+                (gridReady)="onGridReady()" [enableCellTextSelection]="true">
+            </ag-grid-angular>
+        </div>
+    </div>
+
+</div>

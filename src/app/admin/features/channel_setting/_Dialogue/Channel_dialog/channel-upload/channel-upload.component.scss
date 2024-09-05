@@ -1,0 +1,152 @@
+.card {
+    padding: 8px;
+    margin: auto;
+    border-radius: 8px;
+}
+
+.tab.card1 {
+    padding: 10px;
+    width: 20vw;
+    background-color: #e6dddd;
+    border: 1px solid #afafaf;
+    border-radius: 5px;
+    // margin-top: 15px;
+    margin: auto;
+}
+
+.tab.card .mx-1 {
+    margin-left: 5px;
+    margin-right: 5px;
+}
+
+.tab.card .close-icon {
+    cursor: pointer;
+    color: #ff0000;
+}
+
+.span {
+    font-size: 15px;
+    text-transform: uppercase;
+    font-weight: bold;
+    // color: var(--primary-color);
+}
+
+.close-icon {
+    font-size: 19px;
+    cursor: pointer;
+}
+
+.close-icon:hover {
+    background-color: var(--primary-color);
+    font-size: 17px;
+    padding: 2px;
+    margin: 0;
+    color: white;
+    border-radius: 10px;
+}
+
+.card-body {
+    width: 100%;
+}
+
+.card-body label {
+    font-size: 17px;
+    align-items: center;
+    text-align: center;
+}
+
+.c {
+    align-items: normal !important;
+}
+
+.tab {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.tab label p {
+    font-size: 15px;
+}
+
+.tab a {
+    display: flex;
+    align-items: center;
+    padding: 8px 12px;
+    border-radius: 5px;
+    color: white;
+    text-decoration: none;
+    margin: 0 5px;
+    font-size: 12px;
+}
+
+.tab a span {
+    margin-right: 5px;
+}
+
+.tab a i {
+    margin-right: 5px;
+}
+
+.btn-outline-success {
+    color: #203064;
+    background-color: #203064;
+}
+
+.btn-outline-success:hover {
+    color: #fff;
+    background-color: #203064;
+    border-color: #203064;
+}
+
+.btn-outline-warning {
+    color: #3c973c;
+    background-color: #3c973c;
+}
+
+.btn-outline-warning:hover {
+    color: #fff;
+    background-color: #3c973c;
+    border-color: #3c973c;
+}
+
+.btn-outline-info {
+    color: #fff;
+    background-color: #354955;
+}
+
+.btn-outline-info:hover {
+    color: #fff;
+    background-color: #354955;
+    border-color: #354955;
+}
+
+.btn input[type="file"] {
+    /* Optional: Style the file input if needed */
+    display: none;
+    /* Hide the actual file input */
+}
+::ng-deep {
+    .ag-center-cols-viewport {
+        max-height: 200px;
+        overflow: scroll;
+    }
+}
+
+@media screen and (max-width:560px) {
+    .tab.card1 {
+        padding: 10px;
+        width: 55vw;
+        background-color: #e6dddd;
+        border: 1px solid #afafaf;
+        border-radius: 5px;
+        // margin-top: 15px;
+        margin: 10px 29px !important;
+    }
+}
+
+.disabled {
+    pointer-events: none;
+    opacity: 0.65;
+  }
+  

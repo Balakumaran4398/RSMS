@@ -1,0 +1,76 @@
+<section>
+    <div class="head d-flex justify-content-between align-items-center mb-3">
+        <h5 class="span">UPDATE PACKAGE</h5>
+        <i class="fa fa-close close-icon" style="cursor: pointer;" (click)="onNoClick()"></i>
+    </div>
+    <div class="card-body col-12 col-md-12 ">
+        <div class="input_box col-12 col-md-12  mb-1">
+            <div class="col-12 col-md-6">
+                <label>Package Name</label>
+            </div>
+            <div class="col-12 col-md-6">
+                <textarea matInput class="" id="package_name" style="height: 50px;"
+                    [(ngModel)]="package_name"></textarea>
+            </div>
+        </div>
+        <div class="input_box col-12 col-md-12  align-items-center mb-1">
+            <div class="col-12 col-md-6">
+                <label>Package Rate</label>
+            </div>
+            <div class="col-12 col-md-6">
+                <input type="text" id="package_rate" class="" maxlength="10" pattern="[0-9]*"
+                    (keydown)="onKeydown($event)" [(ngModel)]="package_rate">
+            </div>
+        </div>
+
+
+        <div class="input_box col-12 col-md-12   align-items-center mb-1">
+            <div class="col-12 col-md-6">
+                <label class="col-12 col-md-6 ">Description</label>
+            </div>
+            <div class="col-12 col-md-6">
+                <textarea matInput class="" id="package_desc" style="height: 50px;"
+                    [(ngModel)]="package_desc"></textarea>
+            </div>
+        </div>
+        <div class="input_box col-12 col-md-12  align-items-center mb-1">
+            <div class="col-12 col-md-6">
+                <label>Reference Id</label>
+            </div>
+            <div class="col-12 col-md-6">
+                <input type="text" id="order_id" class=""  [(ngModel)]="order_id">
+            </div>
+        </div>
+        <div class="input_box col-12 col-md-12  align-items-center mb-1">
+            <div class="col-12 col-md-6">
+                <label>Commission</label>
+            </div>
+            <div class="col-12 col-md-6">
+                <input type="text" id="commission" class="" maxlength="10" (keydown)="onKeydown1($event)"
+                    (focus)="onFocus()" (blur)="onBlur()" [value]="commission || '0'" [(ngModel)]="commission">
+            </div>
+        </div>
+
+        <div class="input_box col-12 col-md-12  align-items-center mb-1">
+            <div class="col-12 col-md-6">
+                <label>Is percentage</label>
+            </div>
+            <div class="col-12 col-md-6 d-flex justify-content-center align-items-center">
+                <div class="toggle-button-cover">
+                    <div class="button b2" id="button-10">
+                        <input type="checkbox" class="checkbox" [checked]="ispercentage" [(ngModel)]="ispercentage" />
+                        <div class="knobs">
+                            <span>YES</span>
+                        </div>
+                        <div class="layer"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="input_box  d-flex justify-content-center align-items-center mb-3">
+            <button type="button" class="btn btn-primary me-2" (click)="Update_package()">Update</button>
+            <button type="button" class="btn btn-secondary" (click)="onNoClick()">Cancel</button>
+        </div>
+
+    </div>
+</section>

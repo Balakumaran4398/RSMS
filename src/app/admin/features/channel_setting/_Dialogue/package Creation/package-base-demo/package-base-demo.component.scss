@@ -1,0 +1,28 @@
+
+
+.head span {
+    color: var(--primary-color);
+    font-size: 17px;
+    text-transform: uppercase;
+    font-weight: bold;
+}
+
+.close-icon {
+    font-size: 19px;
+    cursor: pointer;
+}
+
+.close-icon:hover {
+    background-color: var(--primary-color);
+    font-size: 17px;
+    padding: 2px;
+    margin: 0;
+    color: white;
+    border-radius: 10px;
+}
+::ng-deep {
+    .ag-center-cols-viewport {
+        max-height: 500px;
+        overflow: scroll;
+    }
+}

@@ -1,0 +1,68 @@
+<div class="chart">
+    <p>Channel Details</p>
+    <div class="row mb-3">
+        <div class=" col d-flex justify-content-start align-items-center">
+            <span style="font-size: large;align-items: center;justify-content: center;">Status:</span>
+            <!-- <mat-form-field appearance="outline">
+                <mat-select [(value)]="selectedType" (selectionChange)="onSelectionChange($event)">
+                    <mat-option *ngFor="let option of type" [value]="option">{{ option }}</mat-option>
+                </mat-select>
+            </mat-form-field> -->
+            <div class="input_box col-12 col-md-4 mx-2">
+                <select (change)="onTypeChange($event)">
+                    <option value="">Select a Type</option>
+                    <option *ngFor="let option of type" [value]="option">{{ option }}</option>
+                </select>
+            </div>
+            <div class="d-flex justify-content-end align-items-center ">
+                <div class="icon-container d-flex align-items-center">
+                    <img src="/assets/images/icons/Excel.png" width="40px">
+                    <div class="tooltip">Excel</div>
+                </div>
+                &nbsp;&nbsp;
+                <div class="icon-container d-flex align-items-center">
+                    <img src="/assets/images/icons/pdf.png" width="40px">
+                    <div class="tooltip">Pdf</div>
+                </div>
+            </div>
+
+            <!-- <div>
+                <a class="btn btn-outline-primary mx-1">
+                    <i class="fa fa-file-pdf-o" aria-hidden="true"></i> EXCEL
+                </a>
+            </div>
+            <div>
+                <a class="btn btn-outline-danger mx-1">
+                    <i class="fa fa-file-excel-o" aria-hidden="true"></i> PDF
+                </a>
+            </div> -->
+        </div>
+
+        <div class="col d-flex justify-content-end align-items-center">
+            <a class="btn btn-outline-success mx-1" (click)="upload('data')">
+                <i class="fa fa-upload" aria-hidden="true"></i> Upload
+            </a>
+            <a class="btn btn-outline-warning mx-1" (click)="openDialog()">
+                <span>+</span> New
+            </a>
+            <button class="btn btn-outline-info mx-1" mat-raised-button color="primary" type="button"
+                [disabled]="!isAnyRowSelected" (click)="Active()">
+                Active
+            </button>
+            <button class="btn btn-outline-info mx-1" mat-raised-button color="accent" type="button"
+                [disabled]="!isAnyRowSelected" (click)="Deactive()">
+                Deactive
+            </button>
+
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-12 col-sm-12  m-3">
+            <ag-grid-angular #agGrid id="myGrid" domLayout='autoHeight' class="ag-theme-alpine table-class" rowAnimation
+                [rowSelection]="rowSelection" [gridOptions]="gridOptions" [columnDefs]="columnDefs" [rowData]="rowData"
+                (selectionChanged)="onSelectionChanged()" (gridReady)="onGridReady($event)"
+                [enableCellTextSelection]="true">
+            </ag-grid-angular>
+        </div>
+    </div>
+</div>

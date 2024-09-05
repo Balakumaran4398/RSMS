@@ -1,0 +1,320 @@
+import { Component } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
+import { ColDef } from 'ag-grid-community';
+import { BaseService } from 'src/app/_core/service/base.service';
+import { StorageService } from 'src/app/_core/service/storage.service';
+import Swal from 'sweetalert2';
+import { CreateChannelTypeComponent } from '../_Dialogue/channel_Type/create-channel-type/create-channel-type.component';
+interface updateRequestbody {
+  name: any,
+  username: any,
+  role: any,
+  isactive: boolean,
+  id: any;
+}
+@Component({
+  selector: 'app-channel-type',
+  templateUrl: './channel-type.component.html',
+  styleUrls: ['./channel-type.component.scss']
+})
+export class ChannelTypeComponent {
+  rowData: any;
+  username: any;
+  role: any;
+  isnew: boolean = false;
+  isdelete: boolean = false;
+  gridOptions = {
+    defaultColDef: {
+      sortable: true,
+      resizable: true,
+      filter: true,
+      // width: 300,
+      floatingFilter: true
+    },
+    paginationPageSize: 10,
+    pagination: true,
+  }
+  gridApi: any;
+  isAnyRowSelected: any = false;
+  selectedIds: number[] = [];
+  selectedtypes: number[] = [];
+  hasSelectedRows: boolean = true;
+  type: number = 0;
+  public rowSelection: any = "multiple";
+  constructor(public dialog: MatDialog, public userService: BaseService, storageService: StorageService) {
+    this.username = storageService.getUsername();
+    this.role = storageService.getUserRole();
+  }
+  ngOnInit(): void {
+    this.userService.ChannelTypeList(this.role, this.username, this.type).subscribe((data) => {
+      this.rowData = data;
+    })
+  }
+  columnDefs: ColDef[] = [
+    {
+      headerName: "S.No", lockPosition: true, valueGetter: 'node.rowIndex+1',  headerCheckboxSelection: true,
+      checkboxSelection: true,width:140,
+    },
+    {
+      headerName: 'CHANNEL TYPE NAME',
+      field: 'name',
+      width: 300,
+      editable: true,
+      cellEditor: 'agTextCellEditor',
+      onCellValueChanged: (event) => {
+        this.updateDeviceModelname(event.data.name, event.data.isactive, event.data.id);
+      }
+    },
+
+    {
+      headerName: "ISACTIVE",
+      field: 'isactive',
+      width: 350,
+      cellRenderer: (params: any) => {
+        const isActive = params.data.isactive;
+        const toggleButton = document.createElement('button');
+        toggleButton.style.backgroundColor = 'transparent';
+        toggleButton.style.border = 'none';
+        toggleButton.style.cursor = 'pointer';
+        toggleButton.style.marginRight = '6px';
+        toggleButton.style.fontSize = '22px';
+        const icon = document.createElement('i');
+        icon.className = 'fa';
+        toggleButton.appendChild(icon);
+        const updateButtonStyle = (active: boolean) => {
+          if (active) {
+            icon.className = 'fa-solid fa-toggle-on';
+            toggleButton.style.color = '#4CAF50';
+            toggleButton.style.fontSize = '24px'; // Medium size for the button
+            icon.style.fontSize = '24px';
+            toggleButton.title = 'Deactivate the Customer';
+          } else {
+            icon.className = 'fa-solid fa-toggle-off';
+            toggleButton.style.color = 'rgb(248 92 133)';
+            toggleButton.style.fontSize = '24px'; // Medium size for the button
+            icon.style.fontSize = '24px';
+            toggleButton.title = 'Activate the Customer';
+          }
+        };
+        updateButtonStyle(isActive);
+        toggleButton.addEventListener('click', () => {
+          const newIsActive = !params.data.isactive;
+          params.data.isactive = newIsActive;
+          updateButtonStyle(newIsActive);
+          params.node.setDataValue('isactive', newIsActive);
+          this.updateDeviceModelname(params.data.name, newIsActive, params.data.id);
+        });
+
+        const div = document.createElement('div');
+        div.appendChild(toggleButton);
+        return div;
+      },
+      cellEditor: 'agTextCellEditor',
+      onCellValueChanged: (event) => {
+        this.updateDeviceModelname(event.data.name, event.data.isactive, event.data.id);
+      }
+    }
+  ]
+  onGridReady(params: { api: any; }) {
+    this.gridApi = params.api;
+  }
+  onSelectionChanged() {
+    if (this.gridApi) {
+      const selectedRows = this.gridApi.getSelectedRows();
+      this.isAnyRowSelected = selectedRows.length > 0;
+      this.selectedIds = selectedRows.map((e: any) => e.id);
+      this.selectedtypes = selectedRows.map((e: any) => e.isactive);
+    }
+  }
+  updateDeviceModelname(name: string, isactive: boolean, id: number) {
+    let requestBody: updateRequestbody = {
+      name: name,
+      username: this.username,
+      role: this.role,
+      isactive: isactive,
+      id: id
+    };
+    Swal.fire({
+      title: "Are you sure?",
+      text: "You won't be able to revert this!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, Update it!"
+    }).then((result) => {
+      if (result.isConfirmed) {
+        Swal.fire({
+          title: 'Updating...',
+          text: 'Please wait while the Channel type is being Updated',
+          allowOutsideClick: false,
+          didOpen: () => {
+            Swal.showLoading();
+          }
+        });
+        this.userService.ChannelType_update(requestBody).subscribe(
+          (res:any) => {
+            Swal.fire({
+              position: "center",
+              icon: "success",
+              title: res?.message || "Your update was successful",
+              showConfirmButton: false,
+              timer: 1000
+            }).then(() => {
+              window.location.reload();
+            });
+
+          },
+          (err) => {
+            Swal.fire({
+              position: 'center',
+              icon: 'error',
+              title: 'Error',
+              text: err?.error?.message,
+              showConfirmButton: false,
+              timer: 1500
+            });
+          }
+        );
+      }
+    });
+  }
+  adddelete1() {
+    Swal.fire({
+      title: "Are you sure?",
+      text: "You won't be able to revert this!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, delete it!"
+    }).then((result) => {
+      if (result.isConfirmed) {
+        Swal.fire({
+          title: "Deleted!",
+          text: "Your file has been deleted.",
+          icon: "success"
+        });
+      }
+    });
+    Swal.fire({
+      title: 'Are you sure?',
+      text: 'You won\'t be able to revert this!',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes, delete it!'
+    }).then((result) => {
+      Swal.fire({
+        title: 'Deleting...',
+        text: 'Please wait while the Channel Type is being deleted',
+        allowOutsideClick: false,
+        didOpen: () => {
+          Swal.showLoading();
+        }
+      });
+      if (result.isConfirmed) {
+        this.userService.deleteChannelType(this.role, this.username, this.selectedIds).subscribe((res: any) => {
+          Swal.fire({
+            title: 'Deleted!',
+            text: res.message,
+            icon: 'success'
+          })
+          this.ngOnInit();
+        }, err => {
+          Swal.fire({
+            title: 'Error!',
+            text: err?.error?.message,
+            icon: 'error'
+          })
+        });
+        // window.location.reload();
+      };
+    });
+  }
+  Active() {
+    Swal.fire({
+      title: "Are you sure?",
+      text: "You won't be able to Active this!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, Active it!"
+    }).then((result) => {
+      if (result.isConfirmed) {
+        Swal.fire({
+          title: 'Updateing...',
+          text: 'Please wait while the Channel is being updated',
+          allowOutsideClick: false,
+          didOpen: () => {
+            Swal.showLoading();
+          }
+        });
+        this.userService.ActiveChannelTpe(this.role, this.username, this.selectedIds).subscribe((res: any) => {
+          Swal.fire({
+            title: 'Activated!',
+            text: res.message,
+            icon: 'success'
+          });
+          this.ngOnInit();
+        }, (err) => {
+          Swal.fire({
+            title: 'Error!',
+            text: err?.error?.message,
+            icon: 'error'
+          });
+        });
+      }
+    });
+  }
+  Deactive() {
+    Swal.fire({
+      title: "Are you sure?",
+      text: "You won't be able to revert this!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, delete it!"
+    }).then((result) => {
+      if (result.isConfirmed) {
+        Swal.fire({
+          title: 'Deleting...',
+          text: 'Please wait while the Channel Type is being deleted',
+          allowOutsideClick: false,
+          didOpen: () => {
+            Swal.showLoading();
+          }
+        });
+        this.userService.deleteChannelType(this.role, this.username, this.selectedIds).subscribe((res: any) => {
+          Swal.fire({
+            title: 'Deleted!',
+            text: res.message,
+            icon: 'success'
+          });
+          this.ngOnInit();
+        }, (err) => {
+          Swal.fire({
+            title: 'Error!',
+            text: err?.error?.message,
+            icon: 'error'
+          });
+        });
+      }
+    });
+  }
+  addnew(): void {
+    let dialogData = {};
+    const dialogRef = this.dialog.open(CreateChannelTypeComponent, {
+      width: '400px',
+      // height: '200px',
+      panelClass: 'custom-dialog-container',
+      data: dialogData
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+    });
+  }
+}

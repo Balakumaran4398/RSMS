@@ -1,0 +1,134 @@
+.span {
+	color: var(--primary-color);
+	font-size: 19px;
+	text-transform: uppercase;
+	font-weight: bold;
+}
+
+.display {
+	display: flex;
+}
+
+.close-icon {
+	font-size: 19px;
+	cursor: pointer;
+}
+
+.close-icon:hover {
+	background-color: var(--primary-color);
+	font-size: 17px;
+	padding: 2px;
+	margin: 0;
+	color: white;
+	border-radius: 10px;
+}
+
+
+.has-error input {
+	border-color: red;
+}
+
+.error-message {
+	color: red;
+	font-size: 0.9em;
+	margin-top: 0.5em;
+}
+
+.mat-slide-toggle-green .mat-slide-toggle-thumb {
+	background-color: green;
+}
+
+.mat-slide-toggle-red .mat-slide-toggle-thumb {
+	background-color: red;
+}
+
+
+@media screen and (max-width:560px) {
+	.display {
+		display: block;
+		padding: 5px;
+	}
+	.Isactive{
+		margin: auto;
+	}
+}
+
+@media screen and (max-width:720px) {
+	.display {
+		display: block;
+		padding: 5px;
+	}
+	.Isactive{
+		margin: auto;
+	}
+}
+
+$green: var(--primary-color);
+
+*,
+*:before,
+*:after {
+	box-sizing: border-box;
+}
+
+body {
+	font-family: -apple-system, ".SFNSText-Regular", "Helvetica Neue", "Roboto", "Segoe UI", sans-serif;
+}
+
+.toggle {
+	cursor: pointer;
+	display: inline-block;
+}
+
+.toggle-switch {
+	display: inline-block;
+	background: #ccc;
+	border-radius: 16px;
+	width: 51px;
+	height: 25px;
+	position: relative;
+	vertical-align: middle;
+	transition: background 0.25s;
+
+	&:before,
+	&:after {
+		content: "";
+	}
+
+	&:before {
+		display: block;
+		background: linear-gradient(to bottom, #fff 0%, #eee 100%);
+		border-radius: 50%;
+		box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.25);
+		width: 18px;
+		height: 18px;
+		position: absolute;
+		top: 4px;
+		left: 4px;	
+		transition: left 0.25s;
+	}
+
+	.toggle:hover &:before {
+		background: linear-gradient(to bottom, #fff 0%, #fff 100%);
+		box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.5);
+	}
+
+	.toggle-checkbox:checked+& {
+		background: $green;
+
+		&:before {
+			left: 30px;
+		}
+	}
+}
+
+.toggle-checkbox {
+	position: absolute;
+	visibility: hidden;
+}
+
+.toggle-label {
+	margin-left: 5px;
+	position: relative;
+	top: 2px;
+}

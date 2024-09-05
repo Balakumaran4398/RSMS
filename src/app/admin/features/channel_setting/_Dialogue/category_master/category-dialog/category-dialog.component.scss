@@ -1,0 +1,22 @@
+
+
+.display {
+    display: flex;
+
+}
+
+@media screen and (max-width:560px) {
+    .display {
+        display: block;
+        padding: 5px;
+    }
+}
+
+@media screen and (max-width:720px) {
+    .display {
+        display: block;
+        padding: 5px;
+    }
+}
+
+

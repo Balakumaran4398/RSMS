@@ -1,0 +1,31 @@
+<div class="card">
+    <h5>Smartcard Re Allocation - {{count}}</h5>
+    <div class="row d-flex justify-content-center align-items-center  ">
+
+        <div class="col-12 col-sm-12 col-md-12  mb-3">
+
+            <div class="d-flex justify-content-end align-items-center mb-3">
+                <div class="icon-container d-flex align-items-center">
+                    <img src="/assets/images/icons/Excel.png" width="40px">
+                    <div class="tooltip">Excel</div>
+                </div>
+                &nbsp;&nbsp;
+                <div class="icon-container d-flex align-items-center">
+                    <img src="/assets/images/icons/pdf.png" width="40px">
+                    <div class="tooltip">Pdf</div>
+                </div>
+            </div>
+            <ag-grid-angular #agGrid id="myGrid" domLayout='autoHeight' class="ag-theme-alpine table-class" rowAnimation
+                [rowSelection]="rowSelection" [gridOptions]="gridOptions" [columnDefs]="columnDefs" [rowData]="rowData"
+                (selectionChanged)="onSelectionChanged()" (gridReady)="onGridReady($event)"
+                [enableCellTextSelection]="true">
+            </ag-grid-angular>
+ 
+            <div class="d-flex justify-content-center align-items-center position-relative" style="padding: 10px;" (click)="showDisabledMessage()">
+                <button type="button" class="btn" [disabled]="!isAnyRowSelected">
+                    <i class="fa fa-thumbs-down" aria-hidden="true"></i> ReAllocation
+                </button>
+            </div>
+        </div>
+    </div>
+</div>

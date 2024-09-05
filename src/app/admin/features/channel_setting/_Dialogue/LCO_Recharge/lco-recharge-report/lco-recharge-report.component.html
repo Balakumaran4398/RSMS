@@ -1,0 +1,76 @@
+<div class="chart">
+    <section class="Tab col-xl-12 col-sm-6 col-12 mb-3 " style="max-height: 73vh;overflow: scroll;">
+        <div class="display tablist justify-content-center align-items-center  mb-3">
+            <div class="tab mb-3" [class.active]="selectedTab === '1'" (click)="selectTab('1')">RECHARGE LOG
+            </div>
+            <div class="tab mb-3" [class.active]="selectedTab === '2'" (click)="selectTab('2')">LOG RECHARGE REPORT
+            </div>
+            <div class="tab mb-3" [class.active]="selectedTab === '3'" (click)="selectTab('3')">REFUND AMOUNT
+            </div>
+        </div>
+    </section>
+    <div>
+        <div *ngIf="selectedTab === '1'" class="d-flex justify-content-center align-item-center ">
+            <div class="col-12 col-md-6 d-flex justify-content-center align-items-center">
+                <span>Date:</span>
+                <mat-form-field appearance="outline" style="width: 100%;">
+                    <mat-date-range-input [rangePicker]="picker" [max]="maxDate">
+                        <input matStartDate matInput placeholder="Start date" (dateChange)="getFromDate($event)">
+                        <input matEndDate matInput placeholder="End date" (dateChange)="getToDate($event)">
+                    </mat-date-range-input>
+                    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                    <mat-date-range-picker #picker></mat-date-range-picker>
+                </mat-form-field>
+            </div>
+            <input type="checkbox">
+            <select style="color: rgb(17, 0, 0);" [(ngModel)]="operatorid" (change)="onoperatorchange($event)">
+                <option value="0" selected style="color: rgb(19, 17, 17);">ALL Operator </option>
+                <option *ngFor="let operator of operatorList" [value]="operator.value">{{ operator.name}}</option>
+            </select>
+            <div>
+                <span>
+                    LCO RECHARGE DETAILS-
+                </span>
+            </div>
+        </div>
+
+        <div *ngIf="selectedTab === '2'" class="d-flex justify-content-center align-item-center ">
+            <span>
+                LCO RECHARGE Report- ()
+            </span>
+        </div>
+        <div *ngIf="selectedTab === '3'" class="d-flex justify-content-center align-item-center ">
+            <span>
+                LCO RECHARGE DETAILS-
+            </span>
+        </div>
+    </div>
+    <div *ngIf="selectedTab">
+
+        <div class="col-12 col-md-12 align-items-center justify-content-center responsive-container mb-3"
+            style="margin: auto;">
+            <ag-grid-angular #agGrid id="myGrid" style="text-align: center;" domLayout='autoHeight'
+                class="ag-theme-alpine table-class" rowAnimation [gridOptions]="gridOptions" [columnDefs]="columnDefs"
+                [rowData]="rowData" [enableCellTextSelection]="true">
+            </ag-grid-angular>
+        </div>
+    </div>
+    <div class="">
+        <div class="row justify-content-center align-items-center">
+            <div class="col-12 col-md-6 d-flex justify-content-around">
+                <div class="col-6">
+                    <button type="button" class="btn btn-block mb-3" style="background-color: lightblue;">
+                        <i class="fa-solid fa-users-gear"></i>
+                        Bulk Recharge
+                    </button>
+                </div>
+                <div class="col-6">
+                    <button type="button" class="btn btn-block mb-3" style="background-color: lightblue;">
+                        <i class="fa fa-plus"></i> New Recharge
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>

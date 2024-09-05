@@ -1,0 +1,58 @@
+<section class="col-12">
+    <div class="head d-flex justify-content-between align-items-center mb-3">
+        <span>ADD PRODUCT / COMMISSION MEMBERSHIP</span>
+        <i class="fa fa-close close-icon" (click)="onNoClick()"></i>
+    </div>
+    <div class="add mb-3">
+        <div class="input_box col-12 col-md-6 display justify-content-center align-items-start mb-3 gap-3">
+            <div class="add col-12 col-md-3 mb-2">
+                <span class="d-block mb-2 mb-sm-0" style="color: rgb(2, 8, 102);font-size: 15px;">SELECT</span>
+            </div>
+            <div class="d-block col-12 col-md-4 mb-2">
+                <span class="d-block mb-2" style="color: rgb(2, 8, 102);font-size: 15px;">PRODUCT</span>
+                <select aria-label="Select Product Type">
+                    <option value="">Select Product Type</option>
+                    <option value="">BASE</option>
+                    <option value="">ADDON</option>
+                </select>
+            </div>
+            <div class="d-block col-12 col-md-4 mb-2">
+                <span class="d-block mb-2" style="color: rgb(2, 8, 102);font-size: 15px;">MEMBERSHIP</span>
+                <select aria-label="Select Membership">
+                    <option value="">Select Membership</option>
+                    <option value="">BASE</option>
+                    <option value="">ADDON</option>
+                    <option value="">BASE</option>
+                    <option value="">ADDON</option>
+                    <option value="">BASE</option>
+                    <option value="">ADDON</option>
+                </select>
+            </div>
+        </div>
+        <div class="card " style="border: 1px solid lightgray;">
+            <div class="head d-flex justify-content-center align-items-center mb-3">
+                <span>AVAILABLE PRODUCT FOR MEMBERSHIP</span>
+            </div>
+            <ag-grid-angular #agGrid id="myGrid" style="text-align: center;" domLayout='autoHeight' rowAnimation
+                [columnDefs]="columnDefs" [rowData]="rowData" [enableCellTextSelection]="true">
+            </ag-grid-angular>
+        </div>
+
+    </div>
+    <!-- </section>
+
+<section class="" > -->
+    <!-- <hr> -->
+    <div class="col d-flex justify-content-center align-items-center mb-3">
+        <hr>
+        <a class="btn btn-outline-danger mx-1">
+            <i class="fa fa-window-close" aria-hidden="true"></i>
+            Close
+        </a>
+
+        <a class="btn btn-outline-success mx-1">
+            <i class="fa fa-plus" aria-hidden="true"></i> Create
+        </a>
+    </div>
+
+</section>

@@ -1,0 +1,89 @@
+.add {
+    padding: 10px;
+}
+
+.add span {
+    // font-weight: bold;
+}
+
+.display {
+    display: flex;
+}
+
+.head {
+    padding: 13px;
+    background-color: lightcyan;
+    height: 50px;
+}
+
+.head span {
+    color: var(--primary-color);
+    font-size: 17px;
+    text-transform: uppercase;
+    // font-weight: bold;
+}
+
+.close-icon {
+    font-size: 19px;
+    cursor: pointer;
+}
+
+.close-icon:hover {
+    background-color: var(--primary-color);
+    font-size: 17px;
+    padding: 2px;
+    margin: 0;
+    color: white;
+    border-radius: 10px;
+}
+
+.row {
+    display: flex;
+    align-items: center;
+}
+
+.row span {
+    margin-right: 15px;
+}
+
+.product-select,
+.membership-select {
+    display: flex;
+    align-items: center;
+}
+
+.product-select select,
+.membership-select select {
+    margin-left: 10px;
+}
+
+.btn {
+    height: 30px;
+    padding: 3px;
+    width: 79px;
+}
+
+.new_d {
+    margin-top: 1rem;
+    padding: 5px;
+    background: var(--shadow-color);
+}
+
+/* Custom styles if needed */
+.add span {
+    font-size: 1rem;
+    /* Adjust font size as needed */
+}
+
+.form-select {
+    width: 100%;
+    /* Ensures select elements are responsive */
+    max-width: 200px;
+    /* Optionally, set a max-width */
+}
+
+@media screen and (max-width:560px) {
+    .display {
+        display: block;
+    }
+}

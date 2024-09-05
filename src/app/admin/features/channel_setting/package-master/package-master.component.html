@@ -1,0 +1,68 @@
+<div class="chart">
+    <h3>ALL PRODUCT DETAILS</h3>
+    <hr>
+    <section class="Tab  col-xl-12 col-sm-6 col-12">
+
+        <div class="row">
+            <!-- Flex container for tabs and select -->
+            <div class="display justify-content-between align-items-center w-100">
+                <!-- Tabs and select box -->
+                <div class="d-flex tablist align-items-center">
+                    <div class="tab" [class.active]="selectedTab === '1'" (click)="selectTab('1')">BASE PACKAGE</div>
+                    <div class="tab" [class.active]="selectedTab === '2'" (click)="selectTab('2')">ADDON PACKAGE</div>
+                    <div class="tab" [class.active]="selectedTab === '3'" (click)="selectTab('3')">ALACARTE</div>
+                    <div class="tab" [class.active]="selectedTab === '0'" (click)="selectTab('0')">ALL</div>
+                    <div class="input_box ml-3">
+                        <div class="col-12 col-md-12">
+                            <select placeholder="Select the CAS" [(ngModel)]="Castype"
+                                (change)="onSubscriberStatusChange()">
+                                <option value="0">Select CAS</option>
+                                <option *ngFor="let casItem of cas" [value]="casItem.id">
+                                    {{ casItem.casname }}
+                                </option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="col d-flex justify-content-end align-items-center mb-3">
+
+                    <button class="btn btn-outline-info mx-1" mat-raised-button color="primary" type="button"
+                        [disabled]="!isAnyRowSelected" (click)="Active()">
+                        Active
+                    </button>
+                    <button class="btn btn-outline-info mx-1" mat-raised-button color="accent" type="button"
+                        [disabled]="!isAnyRowSelected" (click)="Deactive()">
+                        Deactive
+                    </button>
+                </div>
+                <!-- <div class="btn-group">
+                    <a class="btn btn-outline-success mx-1">
+                        <i class="fa fa-file-excel-o" aria-hidden="true"></i> EXCEL
+                    </a>
+                    <a class="btn btn-outline-danger mx-1">
+                        <i class="fa fa-file-pdf-o" aria-hidden="true"></i> PDF
+                    </a>
+                </div> -->
+                <div class="d-flex justify-content-end align-items-center mb-3">
+                    <div class="icon-container d-flex align-items-center">
+                        <img src="/assets/images/icons/Excel.png" width="40px">
+                        <div class="tooltip">Excel</div>
+                    </div>
+                    &nbsp;&nbsp;
+                    <div class="icon-container d-flex align-items-center">
+                        <img src="/assets/images/icons/pdf.png" width="40px">
+                        <div class="tooltip">Pdf</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div *ngIf="selectedTab">
+            <div class="col-12 col-xl-12 col-sm-12 align-items-center justify-content-center" style="margin: auto;">
+                <ag-grid-angular #agGrid id="myGrid" domLayout='normal' class="ag-theme-alpine table-class" rowAnimation
+                    [rowSelection]="rowSelection" [gridOptions]="gridOptions" [columnDefs]="columnDefs"
+                    [rowData]="rowData" (selectionChanged)="onSelectionChanged()" (gridReady)="onGridReady($event)">
+                </ag-grid-angular>
+            </div>
+        </div>
+    </section>
+</div>

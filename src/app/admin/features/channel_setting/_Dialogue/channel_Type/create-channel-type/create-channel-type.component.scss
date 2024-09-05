@@ -1,0 +1,52 @@
+.close-icon {
+    font-size: 19px;
+    cursor: pointer;
+}
+
+.close-icon:hover {
+    background-color: var(--primary-color);
+    font-size: 17px;
+    padding: 2px;
+    margin: 0;
+    color: white;
+    border-radius: 10px;
+}
+
+
+
+.display {
+    display: flex;
+
+}
+
+@media screen and (max-width:560px) {
+    .display {
+        display: block;
+        padding: 5px;
+    }
+}
+
+@media screen and (max-width:720px) {
+    .display {
+        display: block;
+        padding: 5px;
+    }
+}
+
+
+
+//   ----------------------------------------Form validation_--------------------
+
+.has-error input {
+    border-color: red;
+}
+
+.error-message {
+    color: red;
+    font-size: 0.9em;
+    margin-top: 0.5em;
+}
+
+.small {
+    color: red;
+}

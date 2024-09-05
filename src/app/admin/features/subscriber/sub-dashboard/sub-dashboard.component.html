@@ -1,0 +1,404 @@
+<div id="Customer-page">
+    <section class="mb-3">
+        <div style="margin: 0px;position: sticky">
+            <h3 style="text-align: start;padding: 10px;">
+                Subscriber Dashboard
+            </h3>
+        </div>
+        <div class="display align-item-center">
+            <div class="col-12 col-md-4 mx-2 mb-3">
+                <div class="card ">
+                    <div class="d-flex">
+                        <div class="col-6 col-md-6 col-sm-4 " style="padding: 0.5rem;">
+                            <img src="/assets/images/icons/user_1.png" alt="" style="width: 35px;">
+                        </div>
+                        <div class="col-6 col-md-6 col-sm-4 display1" style="padding: 0.5rem;">
+                            abi
+                        </div>
+                    </div>
+                    <div class="d-flex">
+                        <div class="col-6 col-md-4" style="padding: 0.5rem;">
+                            <label for="">Area Name</label>
+                        </div>
+                        <div class="col-6 col-md-6 display1">
+                            area 1
+                        </div>
+                    </div>
+                    <div class="d-flex">
+                        <div class="col-6 col-md-4" style="padding: 0.5rem;">
+                            <label for="">Area Name</label>
+                        </div>
+                        <div class="col-6 col-md-6 display1">
+                            abi
+                        </div>
+                    </div>
+                    <div class="d-flex">
+                        <div class="col-6 col-md-4" style="padding: 0.5rem;">
+                            <label for="">LCO Name</label>
+                        </div>
+                        <div class="col-6 col-md-6 display1">
+                            abi
+                        </div>
+                    </div>
+                    <div class="d-flex">
+                        <div class="col-6 col-md-4" style="padding: 0.5rem;">
+                            <label for="">LCO Balance</label>
+                        </div>
+                        <div class="col-6 col-md-6 display1">
+                            abi
+                        </div>
+                    </div>
+                    <div class="d-flex">
+                        <div class="col-6 col-md-4" style="padding: 0.5rem;">
+                            <label for="">LCO Contact</label>
+                        </div>
+                        <div class="col-6 col-md-6 display1">
+                            abi
+                        </div>
+                    </div>
+                    <div class="d-flex">
+                        <div class="col-6 col-md-4" style="padding: 0.5rem;">
+                            <label for="">Area & Cus No</label>
+                        </div>
+                        <div class="col-6 col-md-6 display1 ">
+                            abi
+                        </div>
+                    </div>
+                    <div class="line mb-2"></div>
+                    <div class="col-12 col-md-12 mx-3 mb-3">
+                        <div class="d-flex align-items-center justify-content-center icon-container">
+                            <div class="icon-item d-flex align-item-center tooltip-container"
+                                style="background-color: rgb(94, 77, 243);" (click)="Lodin_details()">
+                                <i class="fa fa-eye" style="font-size:15px;color: white;"></i>
+                                <div class="tooltip-content">Login Details</div>
+                            </div>
+                            <div class="icon-item d-flex align-item-center tooltip-container"
+                                style="background-color: rgb(241, 50, 108);" (click)="Download()">
+                                <i class="fa fa-download" aria-hidden="true" style="font-size:15px;color: white;"></i>
+                                <div class="tooltip-content">CAS Form</div>
+                            </div>
+                            <div class="icon-item d-flex align-item-center tooltip-container"
+                                style="background-color: rgb(94, 77, 243);" (click)="Edit_subscriber_details()">
+                                <i class="fas fa-edit" style="font-size:14px;color: white;"></i>
+                                <div class="tooltip-content">Edit </div>
+                            </div>
+                            <div class="icon-item d-flex align-item-center tooltip-container"
+                                style="background-color: rgb(241, 50, 108);" (click)="Report()">
+                                <i class="fa fa-refresh" style="font-size:15px;color: white;"></i>
+                                <div class="tooltip-content">Recharge Bill</div>
+                            </div>
+                        </div>
+                    </div>
+
+
+                </div>
+
+            </div>
+            <div class="col-12 col-md-8 col-md-8 mx-2">
+                <div class="card">
+                    <div class="d-flex justify-content-between align-item-center mb-1">
+                        <div class="d-flex" style="padding: 10px;">
+                            <img src="assets/images/icons/smartcard.png" alt="" style="width: 35px;">&nbsp;&nbsp;
+                            <!-- <div class="d-flex justify-content-center align-item-center" style="margin: auto;"> -->
+                            <h6 style="margin: auto;"> SMARTCARD LIST</h6>
+                            <!-- </div> -->
+                        </div>
+                        <div class="d-flex  icon-container" style="padding: 10px;">
+                            <div class="icon-item d-flex align-item-center tooltip-container"
+                                style="background-color: rgb(241, 50, 108);" (click)="Report()">
+                                <i class="fas fa-angle-double-right	" style="font-size:15px;color: white;"></i>
+                                <div class="tooltip-content">Change LCO</div>
+                            </div>
+                            <div class="icon-item d-flex align-item-center tooltip-container"
+                                style="background-color: rgb(241, 50, 108);" (click)="Report()">
+                                <i class="fa fa-plus" style="font-size:15px;color: white;"></i>
+                                <div class="tooltip-content">Add Smartcard</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="line"></div>
+                    <div class="col-12 col-md-12 mb-3">
+                        <ag-grid-angular #agGrid id="myGrid" domLayout='autoHeight' class="ag-theme-alpine table-class"
+                            rowAnimation [gridOptions]="gridOptions" [columnDefs]="columnDefs" [rowData]="rowData"
+                            (gridReady)="onGridReady()" [enableCellTextSelection]="true">
+                        </ag-grid-angular>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section>
+        <div class="display align-item-center">
+            <div class="col-12 col-md-4 mx-2 mb-3">
+                <div class="card ">
+                    <div class="d-flex justify-content-start align-item-center">
+                        <div class="d-flex" style="padding: 10px;">
+                            <img src="assets/images/icons/smartcard.png" alt="" style="width: 35px;">&nbsp;&nbsp;
+                            <h6 style="margin: auto;"> PACKAGE STATUS</h6>
+                        </div>
+                    </div>
+                    <div class="col-12 d-flex justify-content-center align-item-center mb-1"
+                        style="background-color: rgb(223, 223, 219);padding: 5px;">
+                        1210500000000003BDF5
+                    </div>
+                    <div class="col-12 d-flex justify-content-center align-item-center mb-1"
+                        style="color: green;padding: 5px;font-size: 16px;">
+                        MV PRIME PACKE (TEST)
+                    </div>
+                    <div class="col-12 d-flex justify-content-center align-item-center mb-1"
+                        style="background-color: rgb(206, 218, 206);padding: 5px;font-size: 15px;">
+                        DAYS
+                    </div>
+                    <div class="d-flex">
+                        <div class="col-4 col-md-4 col-sm-4 " style="padding: 0.5rem;">
+                            <div class="d-block">
+                                <div style="color: red;">Aug</div>
+                                <div style="color: red;font-size: 20px;font-weight: 700;">17</div>
+                                <div style="font-size: 13px;">2024</div>
+                            </div>
+                        </div>
+                        <div class="col-4 col-md-4 col-sm-4 display1" style="padding: 0.5rem;">
+                            <div class="d-block">
+                                <div style="font-size: 12px;text-align: center;font-weight: 700;">26</div>
+                                <div style="font-size: 12px;">days remaining
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-4 col-md-4 col-sm-4 display1" style="padding: 0.5rem;">
+                            <div class="d-block">
+                                <div style="color: green;">Sep</div>
+                                <div style="color: green;font-size: 20px;;font-weight: 700;">17</div>
+                                <div style="font-size: 13px;">2024</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="d-flex">
+                        <div class="col-4 col-md-4 d-flex justify-content-start align-items-center text">
+                            Others
+                        </div>
+                        <div class="col-3 col-md-3 d-flex justify-content-center align-items-center text">
+                            Total
+                        </div>
+                        <div class="col-3 col-md-3 d-flex justify-content-center align-items-center text">
+                            Not Expiry
+                        </div>
+                        <div class="col-3 col-md-3 d-flex justify-content-center align-items-center text">
+                            Expiry
+                        </div>
+                    </div>
+                    <div class="d-flex">
+                        <div class="col-4 col-md-4 d-flex justify-content-start align-items-center text1">
+                            Addon Package
+                        </div>
+                        <div class="col-3 col-md-3 text" style="color: rgb(71, 70, 69);text-align: center;">
+                            0
+                        </div>
+                        <div class="col-3 col-md-3 text" style="color: green;text-align: center;">
+                            0 </div>
+                        <div class="col-3 col-md-3 text" style="color: red;text-align: center;">
+                            0
+                        </div>
+                    </div>
+                    <div class="d-flex">
+                        <div class="col-4 col-md-4 d-flex justify-content-start align-items-center text1">
+                            Alacarte
+                        </div>
+                        <div class="col-3 col-md-3 text" style="color: rgb(71, 70, 69);text-align: center;">
+                            0
+                        </div>
+                        <div class="col-3 col-md-3 text" style="color: green;text-align: center;">
+                            0 </div>
+                        <div class="col-3 col-md-3 text" style="color: red;text-align: center;">
+                            0
+                        </div>
+                    </div>
+                    <div class="line mb-2"></div>
+                    <div class="col-12 col-md-12 mx-3 mb-3">
+                        <div class="d-flex align-items-center justify-content-center icon-container">
+
+                        </div>
+                    </div>
+
+
+                </div>
+            </div>
+            <div class="col-12 col-md-8 col-md-8 mx-2">
+                <div class="card">
+                    <div class="d-flex justify-content-between align-item-center mb-1">
+                        <div class="d-flex" style="padding: 10px;">
+                            <img src="assets/images/icons/smartcard.png" alt="" style="width: 35px;">&nbsp;&nbsp;
+                            <!-- <div class="d-flex justify-content-center align-item-center" style="margin: auto;"> -->
+                            <h6 style="margin: auto;"> 1210500000000003BDF5</h6>
+                            <!-- </div> -->
+                        </div>
+                        <div class="d-flex  icon-container" style="padding: 10px;">
+                            <div class="icon-item d-flex align-item-center tooltip-container"
+                                style="background-color: rgb(241, 50, 108);" (click)="Report()">
+                                <i class="fas fa-angle-double-right	" style="font-size:15px;color: white;"></i>
+                                <div class="tooltip-content">Change LCO</div>
+                            </div>
+
+                        </div>
+                    </div>
+                    <div class="line"></div>
+                    <div class="mobile">
+                        <div class="col-12 col-md-5  mobile1">
+                            <div class="col-12 col-md-12 display_btn">
+                                <div class="col-6 col-md-6 d-flex justify-content-start align-items-center mb-1 text2">
+                                    Box
+                                    Number </div>
+                                <div class="col-6 col-md-6 d-flex justify-content-start align-items-center">
+                                    236688114874
+                                </div>
+
+                            </div>
+                            <div class="col-12 col-md-12 display_btn">
+                                <div class="col-6 col-md-6 d-flex justify-content-start align-items-center mb-1 text2">
+                                    Activation Date
+                                </div>
+                                <div class="col-6 col-md-6 d-flex justify-content-start align-items-center">
+                                    2023-08-08 18:39:14.0
+
+                                </div>
+
+                            </div>
+                            <div class="col-12 col-md-12 display_btn">
+                                <div class="col-6 col-md-6 d-flex justify-content-start align-items-center mb-1 text2">
+                                    Package Updated Date
+                                </div>
+                                <div class="col-6 col-md-6 d-flex justify-content-start align-items-center">
+                                    236688114874
+                                </div>
+
+                            </div>
+                            <div class="col-12 col-md-12 display_btn">
+                                <div class="col-6 col-md-6 d-flex justify-content-start align-items-center mb-1 text2">
+                                    Expiry Date</div>
+                                <div class="col-6 col-md-6 d-flex justify-content-start align-items-center">
+                                    236688114874
+                                </div>
+
+                            </div>
+                            <div class="col-12 col-md-12 display_btn">
+                                <div class="col-6 col-md-6 d-flex justify-content-start align-items-center mb-1 text2">
+                                    PIN Number</div>
+                                <div class="col-6 col-md-6 d-flex justify-content-start align-items-center">
+                                    236688114874
+                                </div>
+
+                            </div>
+                            <div class="col-12 col-md-12 display_btn">
+                                <div class="col-6 col-md-6 d-flex justify-content-start align-items-center mb-1 text2">
+                                    PVR Status
+                                </div>
+                                <div class="col-6 col-md-6 d-flex justify-content-start align-items-center">
+                                    236688114874
+                                </div>
+
+                            </div>
+                            <div class="col-12 col-md-12 display_btn">
+                                <div class="col-6 col-md-6 d-flex justify-content-start align-items-center mb-1 text2">
+                                    Box Status
+                                </div>
+                                <div class="col-6 col-md-6 d-flex justify-content-start align-items-center">
+                                    236688114874
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-12 col-md-7  mobile2">
+                            <div class="col-12 col-md-12 display_btn1">
+                                <div
+                                    class="col-12 col-md-6 display_btn1 justify-content-center align-items-center text3">
+                                    <button class="btn  d-flex justify-content-between">
+                                        <i class="fa fa-refresh"></i><span>Refresh</span></button>
+                                </div>
+                                <div
+                                    class="col-12 col-md-6 display_btn1 justify-content-center align-items-center  text3">
+                                    <button class="btn  d-flex justify-content-between">
+                                        <i class="fa-solid fa-gears"></i><span>Package
+                                            Activation</span></button>
+                                </div>
+
+                            </div>
+                            <div class="col-12 col-md-12 display_btn1">
+                                <div class="col-12 col-md-6 d-flex justify-content-center align-items-center  text3">
+                                    <button class="btn  d-flex justify-content-between">
+                                        <i class="fa-brands fa-slack"></i><span>Activation</span></button>
+                                </div>
+                                <div class="col-12 col-md-6 d-flex justify-content-center align-items-center  text3">
+                                    <button class="btn  d-flex justify-content-between">
+                                        <i class="fa fa-times"></i><span>De-Activation</span></button>
+                                </div>
+
+                            </div>
+                            <div class="col-12 col-md-12 display_btn1">
+                                <div class="col-12 col-md-6 d-flex justify-content-center align-items-center  text3">
+                                    <button class="btn  d-flex justify-content-between">
+                                        <i class="fa-solid fa-key"></i><span>PIN Change</span></button>
+                                </div>
+                                <div class="col-12 col-md-6 d-flex justify-content-center align-items-center  text3">
+                                    <button class="btn  d-flex justify-content-between"> <i
+                                            class="fa-solid fa-video"></i><span>PVR Option</span></button>
+                                </div>
+
+                            </div>
+                            <div class="col-12 col-md-12 display_btn1">
+                                <div class="col-12 col-md-6 d-flex justify-content-center align-items-center  text3">
+                                    <button class="btn  d-flex justify-content-between">
+                                        <i class="fa-solid fa-message"></i><span>Send Message</span></button>
+                                </div>
+                                <div class="col-12 col-md-6 d-flex justify-content-center align-items-center  text3">
+                                    <button class="btn  d-flex justify-content-between">
+                                        <i class="fas fa-trash"></i><span>Delete Message</span></button>
+                                </div>
+
+                            </div>
+                            <div class="col-12 col-md-12 display_btn1">
+                                <div class="col-12 col-md-6 d-flex justify-content-center align-items-center  text3">
+                                    <button class="btn  d-flex justify-content-between"> <i
+                                            class="fa-solid fa-right-left"></i><span>Force
+                                            Tuning</span></button>
+                                </div>
+                                <div class="col-12 col-md-6 d-flex justify-content-center align-items-center  text3">
+                                    <button class="btn  d-flex justify-content-between"> <i
+                                            class="fa-solid fa-share"></i><span>Smartcard Transfer</span></button>
+                                </div>
+                            </div>
+                            <div class="col-12 col-md-12 display_btn1">
+                                <div class="col-12 col-md-6 d-flex justify-content-center align-items-center  text3">
+                                    <button class="btn  d-flex justify-content-between"><i
+                                            class="fa-solid fa-share"></i><span>Box Transfer</span></button>
+                                </div>
+                                <div class="col-12 col-md-6 d-flex justify-content-center align-items-center  text3">
+                                    <button class="btn  d-flex justify-content-between"> <i
+                                            class="fa fa-file"></i><span>Suspend</span></button>
+                                </div>
+                            </div>
+                            <div class="col-12 col-md-12 display_btn1">
+                                <div class="col-12 col-md-6 d-flex justify-content-center align-items-center  text3">
+                                    <button class="btn  d-flex justify-content-between"> <i
+                                            class="fa fa-file"></i><span>Resume</span></button>
+                                </div>
+                                <div class="col-12 col-md-6 d-flex justify-content-center align-items-center  text3">
+                                    <button class="btn  d-flex justify-content-between">
+                                        <i class="fa-solid fa-repeat"></i><span>Re-Activation</span></button>
+                                </div>
+                            </div>
+                            <div class="col-12 col-md-12 display_btn1">
+                                <div class="col-12 col-md-6 d-flex justify-content-center align-items-center  text3">
+                                    <button class="btn  d-flex justify-content-between">
+                                        <i class="fa-solid fa-ban" style="font-size:15px;color: #090f13;"></i><span
+                                            style="font-size:15px;color: #090f13;">Block</span></button>
+                                </div>
+                                <div class="col-12 col-md-6 d-flex justify-content-center align-items-center  text3">
+                                    <button class="btn  d-flex justify-content-between">
+                                        <i class="fa fa-refresh"></i><span>Re-Activation</span></button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
