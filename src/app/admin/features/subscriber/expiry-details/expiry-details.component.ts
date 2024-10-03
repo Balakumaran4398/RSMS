@@ -55,12 +55,12 @@ export class ExpiryDetailsComponent {
     console.log(this.todate);
   }
   Submit() {
-    this.userservice.Expiry_subscriber(this.role, this.username, this.selectedLcoName, this.fromdate, this.todate, this.format).subscribe((data: any) => {
+    this.userservice.getExpirySubscriberByOperator(this.role, this.username, this.selectedLcoName, this.fromdate, this.todate, this.format).subscribe((data: any) => {
       console.log(data);
     })
   }
   Submit_1() {
-    this.userservice.Expiry_subscriber(this.role, this.username, this.selectedLcoName, this.fromdate, this.todate, this.format_1).subscribe((data: any) => {
+    this.userservice.getExpirySubscriberByOperator(this.role, this.username, this.selectedLcoName, this.fromdate, this.todate, this.format_1).subscribe((data: any) => {
       console.log(data);
     })
   }

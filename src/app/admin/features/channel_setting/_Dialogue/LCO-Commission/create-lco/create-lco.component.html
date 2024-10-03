@@ -4,7 +4,7 @@
         <i class="fa fa-close close-icon" (click)="onNoClick()"></i>
     </div>
     <div class="lco input_box d-flex flex-column flex-sm-row justify-content-center align-items-center">
-        <input type="text" class=" mb-2 mb-sm-0" placeholder="Enter group name">
-        <button class="btn btn-infos ms-2">Create</button>
+        <input type="text" class=" mb-2 mb-sm-0" placeholder="Enter group name" [(ngModel)]="lcogroupname" >
+        <button class="btn btn-infos ms-2" (click)="Create()" >Create</button>
     </div>
 </section>

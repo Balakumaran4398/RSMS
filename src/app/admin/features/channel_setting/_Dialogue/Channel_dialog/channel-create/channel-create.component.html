@@ -157,7 +157,7 @@
 
             <div class="input_box">
                 <label for="Distributor">Distributor</label>
-                <mat-form-field appearance="outline" style="outline: #02422d; margin-top:-0px; width: 100%;" >
+                <mat-form-field appearance="outline" style="outline: #02422d; margin-top:-0px; width: 100%;">
                     <mat-select placeholder="Select Distributor" formControlName="distributor_id" [(ngModel)]="remo"
                         [ngClass]="{'has-error': form.get('distributor_id')?.invalid && form.get('distributor_id')?.touched}">
                         <mat-option *ngFor="let d of distributor_id" [value]="d.id">
@@ -181,9 +181,8 @@
                 </div>
             </div>
 
-            <div class="form-group" style="margin: auto;">
+            <div class="input_box">
                 <label for="isPercentage">Is Percentage</label>
-                <br>
                 <div class="toggle-button-cover">
                     <div class="button b2" id="button-10">
                         <input type="checkbox" class="checkbox" formControlName="isactive" />

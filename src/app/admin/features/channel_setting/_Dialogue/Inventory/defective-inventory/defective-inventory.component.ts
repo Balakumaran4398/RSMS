@@ -31,6 +31,7 @@ export class DefectiveInventoryComponent {
     this.dialogRef.close();
   }
 
+  
   submit() {
     if (!this.remarks || this.remarks.trim() === '') {
       Swal.fire({
@@ -41,33 +42,46 @@ export class DefectiveInventoryComponent {
       });
       return;
     }
+  
+    // Show loading spinner
+    Swal.fire({
+      title: 'Loading...',
+      text: 'Please wait while we process your request.',
+      allowOutsideClick: false, // Disable closing by clicking outside
+      didOpen: () => {
+        Swal.showLoading(); // Show loading spinner
+      }
+    });
+  
+    // Make the service call
     this.userService.Defective_remark_Allocated(this.selectedIds, this.remarks, this.role, this.username)
       .subscribe(
         (data: any) => {
-
+          // Show success message
           Swal.fire({
             icon: 'success',
             title: 'Success',
             text: data?.message || 'The defective remark has been allocated successfully.',
-            timer: 3000,
+            timer: 3000, // Automatically close after 3 seconds
             timerProgressBar: true,
             showConfirmButton: false
           }).then(() => {
-            this.dialogRef.close();
+            // Reload the page after the alert is closed
+            window.location.reload();
           });
         },
         (error) => {
+          // Show error message
           Swal.fire({
             icon: 'error',
             title: 'Error',
             text: error?.error?.message || 'There was an error allocating the defective remark. Please try again.',
-            // confirmButtonText: 'OK',
-            timer: 3000,
+            timer: 3000, // Automatically close after 3 seconds
             timerProgressBar: true,
             showConfirmButton: false
           });
         }
       );
   }
-
+  
 }

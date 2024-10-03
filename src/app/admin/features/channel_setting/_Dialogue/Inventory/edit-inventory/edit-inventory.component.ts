@@ -3,6 +3,8 @@ import { FormControl } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { BaseService } from 'src/app/_core/service/base.service';
 import { StorageService } from 'src/app/_core/service/storage.service';
+import { SwalService } from 'src/app/_core/service/swal.service';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-edit-inventory',
@@ -29,11 +31,12 @@ export class EditInventoryComponent {
   isOperatorDisabled: boolean = false;
   constructor(
     public dialogRef: MatDialogRef<EditInventoryComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: any, public dialog: MatDialog, private userService: BaseService, private storageService: StorageService) {
-    console.log(data);
+    @Inject(MAT_DIALOG_DATA) public data: any, public dialog: MatDialog, private userService: BaseService, private storageService: StorageService, ) {
     this.username = storageService.getUsername();
     this.role = storageService.getUserRole();
     this.castype = data.castype;
+    console.log(this.castype);
+    
     this.lco_list = data.lco_list;
     this.smartcard = data.smartcard;
   }
@@ -41,25 +44,12 @@ export class EditInventoryComponent {
   onInventoryTypeChange(value: boolean): void {
     // If "Upload Only" is selected, disable the operator selection
     this.isOperatorDisabled = value;
-}
+  }
 
   onNoClick(): void {
     this.dialogRef.close();
   }
-  // onFileSelected(event: any): void {
-  //   const file: File = event.target.files[0];
-  //   if (file) {
-  //     console.log('Selected file:', file);
-  //   }
-  // }
-  // onFileSelected(event: any): void {
-  //   const file: File = event.target.files[0];
-  //   if (file) {
-  //     this.selectedFile = file;
-  //     console.log('Selected file:', file);
 
-  //   }
-  // }
   onFileSelected(event: any) {
     this.selectedFile = event.target.files[0];
     console.log('Selected file:', this.selectedFile);
@@ -82,27 +72,25 @@ export class EditInventoryComponent {
       key.toLowerCase().includes(this.searchTerm.toLowerCase())
     );
   }
-  // submit() {
-  //   let requestBody = {
-  //     role: this.role,
-  //     file: this.FileFormControl.value,
-  //     username: this.username,
-  //     operatorid: this.LCOFormControl.value,
-  //     castype: this.CASFormControl.value,
-  //     isupload: this.BTNFormControl.value,
-  //   }
-  //   console.log(requestBody);
 
-  //   this.userService.UploadInventory(requestBody).subscribe((data: any) => {
-  //     console.log(data);
 
-  //   })
-  // }
 
   submit() {
     console.log('111');
-
+  
     if (this.selectedFile) {
+      // Show SweetAlert loading popup
+      Swal.fire({
+        title: 'Uploading...',
+        text: 'Please wait while your file is being uploaded.',
+        icon: 'info',
+        allowOutsideClick: false,
+        showConfirmButton: false, // Hide the confirm button
+        didOpen: () => {
+          Swal.showLoading(); // Show loading animation
+        }
+      });
+  
       const formData = new FormData();
       formData.append('file', this.selectedFile);
       formData.append('role', this.role);
@@ -110,11 +98,31 @@ export class EditInventoryComponent {
       formData.append('operatorid', this.LCOFormControl.value || '0');
       formData.append('castype', this.CASFormControl.value || '');
       formData.append('isupload', this.BTNFormControl.value?.toString() || '');
-      this.userService.UploadInventory(formData).subscribe((data: any) => {
-        console.log('Upload response:', data);
-      });
-    } else {
-      console.log('No file selected!');
+  
+      this.userService.UploadInventory(formData).subscribe(
+        (res: any) => {
+          // On success, close the loading alert and show success
+          Swal.fire({
+            icon: 'success',
+            title: 'Upload Successful',
+            text: res?.message,
+            confirmButtonText: 'OK'
+          }).then(() => {
+            // Reload the window after user clicks 'OK'
+            window.location.reload();
+          });
+        },
+        (err) => {
+          // On error, close the loading alert and show an error message
+          Swal.fire({
+            icon: 'error',
+            title: 'Upload Failed',
+            text: err?.error?.message,
+            confirmButtonText: 'OK'
+          });
+        }
+      );
     }
   }
+  
 }

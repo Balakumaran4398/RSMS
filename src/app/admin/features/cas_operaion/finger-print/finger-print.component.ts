@@ -100,11 +100,7 @@ export class FingerPrintComponent {
     { lable: "SMARTCARD", value: 2 },
     { lable: "AREA CODE", value: 3 },
   ];
-  // intend_area: any = [
-  //   { lable: "delhi", value: 1 },
-  //   { lable: "tamilnadu", value: 2 },
-  //   { lable: "pondicherry", value: 3 },
-  // ];
+
   intend_area: any[] = [];
   filteredIntendArea(): any[] {
     if (!this.searchTerm) {
@@ -206,11 +202,6 @@ export class FingerPrintComponent {
       repeatfor: ['', Validators.required],
       position: ['', Validators.required],
       serviceid: ['', Validators.required],
-      // hh: ['', Validators.required] || 0,
-      // mm: ['', Validators.required] || 0,
-      // ss: ['', Validators.required] || 0,
-      // x: ['', Validators.required] || 0,
-      // y: ['', Validators.required] || 0,
       hh: [0, Validators.required],
       mm: [0, Validators.required],
       ss: [0, Validators.required],

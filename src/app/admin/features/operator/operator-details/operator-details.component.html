@@ -1,7 +1,7 @@
 <div class="opt">
     <h3>OPERATOR DETAILS</h3>
-    <div class=" col-12 col-md-12 mb-4 display justify-content-center align-items-center">
-        <div class="input_box col-12 col-md-3 mb-2 mx-2">
+    <div class=" col-12 col-md-12 mb-4 display justify-content-start align-items-center">
+        <div class="input_box col-12 col-md-4 mb-2 mx-2">
             <!-- <p>All Operator</p> -->
             <select style="color: rgb(17, 0, 0);" [(ngModel)]="operatorid" (change)="onoperatorchange($event)">
                 <option value="0" selected style="color: rgb(19, 17, 17);">ALL Operator </option>
@@ -9,18 +9,17 @@
             </select>
 
         </div>
-        <div class="col-12 col-md-3 mb-2 mx-2 card d-flex align-items-center clickable-item" (click)="New_lco()">
+        <div class="col-12 col-md-2 mb-2 mx-2 card d-flex align-items-center clickable-item" (click)="New_lco()">
             <p>
                 <i class="fa fa-plus mx-2" style="padding-right: 3px;font-size: 14px"></i>NEW LCO
             </p>
         </div>
-        <div class="col-12 col-md-3 mb-2 mx-2 card d-flex align-items-center" (click)="New_lco_business()">
+        <div class="col-12 col-md-2 mb-2 mx-2 card d-flex align-items-center" (click)="New_lco_business()">
             <p> <i class="fa fa-plus mx-2" style="padding-right: 3px;font-size: 14px"></i>New LCO Business</p>
         </div>
     </div>
-    <span class="k col-4" *ngFor="let operator of operator_details "
-        style="display: inline-table; flex-wrap: wrap;box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1), 0 6px 20px rgba(0, 0, 0, 0.1);">
-        <mat-card>
+    <span class="k col-4" *ngFor="let operator of operator_details " style="display: inline-table; ">
+        <mat-card class="mx-2">
             <mat-card-header>
                 <mat-card-title>
                     <div class="col-12 head">
@@ -60,12 +59,13 @@
                                     aria-hidden="true" (click)="toggleedit(operator.operatorid)"></i>
                             </p> -->
                             <span
-                                style="color: #0e610b; display: flex; align-items: center;justify-content: space-between ;"
-                                class="sub-tittle tittle1">
+                                style="color: #0e610b; display: flex; align-items: center;justify-content: space-between;"
+                                class="sub-tittle tittle1 tooltip-container">
                                 <p><i class="fa fa-inr" style="font-size: 14px;"></i>
                                     {{operator?.balance}}</p>
                                 <p><i class="fas fa-pen" style="color: var(--edit-button); font-size: 20px;"
                                         aria-hidden="true" (click)="toggleedit(operator.operatorid)"></i></p>
+                                <!-- <span class="tooltip">Edit</span> -->
                             </span>
 
                             <mat-card class="inventory">
@@ -88,7 +88,8 @@
                             <mat-card class="permission" (click)="togglepermission(operator.operatorid)"
                                 style="cursor: pointer;">
                                 <img src="../assets/images/icons/Accesss1.png" alt="Accesss1">
-                                <p (click)="togglepermission($event)" style="color: white;">Special Permission</p>
+                                <p (click)="togglepermission($event)" style="color: white;font-size: 14px;">Special
+                                    Permission</p>
                             </mat-card>
                         </div>
                     </div>
@@ -102,7 +103,7 @@
                             </span>
                         </div>
                         <div class="col-2 vertical">
-                            <p class="sub-text">Not Expiry</p>
+                            <p class="sub-text">NotExpiry</p>
                             <span style="color: #0e610b;">
                                 <div class="circle" style="background-color: rgb(122, 64, 129);"><span
                                         class="circle-text">{{operator?.activecount}}</span></div>
@@ -132,38 +133,52 @@
                     </div>
                     <br>
 
-                    <div class="report">
-                        <div class="file-container">
-                            <div class="files">
-                                <img src="../assets/images/icons/dashboard_icon.png" alt="Dashboard">
-                                <span class="tooltip">Dashboard</span>
-                            </div>
-                            <div class="files">
-                                <img src="../assets/images/icons/Document_icon.png" alt="Dashboard">
-                                <span class="tooltip">Recharge Report</span>
-                            </div>
-
-                            <div class="files">
-                                <img src="../assets/images/icons/Document_icon.png" alt="Report">
-                                <span class="tooltip">Retailer Report</span>
-                            </div>
-                            <div class="files">
-                                <img src="../assets/images/icons/Document_icon.png" alt="Report">
-                                <span class="tooltip">Areawise Count Report</span>
+                    <div class="report d-flex justify-content-center">
+                        <div class="file-container" >
+                            <div class="files mx-3">
+                                <a (click)="navgetToUrl(operator.operatorid)" class="tooltip-container">
+                                    <!-- <img src="../assets/images/icons/dashboard_icon.png" alt="Dashboard"> -->
+                                    <i class="fa fa-dashboard" style="font-size:25px;color:var(--primary-color)"></i>
+                                    <span class="tooltip">Dashboard</span>
+                                </a>
                             </div>
 
-                            <div class="files">
-                                <img src="../assets/images/icons/Document_icon.png" alt="Report">
-                                <span class="tooltip">Cancel_Subscription Subscription Report</span>
+
+                            <div class="files tooltip-container mx-3"  (click)="openDialog('recharge')">
+                                <!-- <img src="../assets/images/icons/Document_icon.png" alt="Dashboard"> -->
+                                <i class="fa-solid fa-book" style="font-size:25px;color:var(--primary-color)"></i>
+                                <span class="tooltip">Recharge </span>
                             </div>
-                            <div class="files">
-                                <img src="../assets/images/icons/Document_icon.png" alt="Report">
-                                <span class="tooltip">Productwise Subscriber Report</span>
+
+                            <div class="files tooltip-container mx-3" (click)="openDialog('retailer')">
+                                <!-- <img src="../assets/images/icons/Document_icon.png" alt="Report"> -->
+                                <i class="fa-solid fa-person-chalkboard"
+                                    style="font-size:25px;color:var(--primary-color)"></i>
+                                <span class="tooltip">Retailer </span>
                             </div>
-                            <div class="files">
-                                <img src="../assets/images/icons/Document_icon.png" alt="Report">
-                                <span class="tooltip">Recharge Report</span>
+                            <div class="files tooltip-container mx-3" (click)="openDialog('areawise')">
+                                <!-- <img src="../assets/images/icons/Document_icon.png" alt="Report"> -->
+
+                                <i class="fa fa-calculator" style="font-size:25px;color:var(--primary-color)"
+                                    aria-hidden="true"></i>
+                                <span class="tooltip">Areawise Count </span>
                             </div>
+
+                            <div class="files tooltip-container mx-3" (click)="openDialog('cancel_Subscription')">
+                                <!-- <img src="../assets/images/icons/Document_icon.png" alt="Report"> -->
+                                <i class="fa-solid fa-file-lines" style="font-size:25px;color:var(--primary-color)"></i>
+                                <span class="tooltip">Cancel_Subscription </span>
+                            </div>
+                            <div class="files tooltip-container mx-3" (click)="openDialog('productwise')">
+                                <!-- <img src="../assets/images/icons/Document_icon.png" alt="Report"> -->
+                                <i class="fa-solid fa-address-book"
+                                    style="font-size:25px;color:var(--primary-color)"></i>
+                                <span class="tooltip">Productwise Subscriber </span>
+                            </div>
+                            <!-- <div class="files tooltip-container">
+                                <img src="../assets/images/icons/Document_icon.png" alt="Report">
+                                <span class="tooltip">Recharge </span>
+                            </div> -->
                         </div>
                     </div>
                     <br>

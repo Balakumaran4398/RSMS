@@ -7,7 +7,7 @@ import { MatMaterialModule } from "../_core/core/mat-material/mat-material.modul
 import { AdminBaseComponent } from "./admin.base.component";
 import { NavComponent } from "./features/nav/nav.component";
 import { BarChartComponent } from "../_core/charts/bar-chart/bar-chart.component";
-import { InventoryChartComponent } from "../_core/charts/inventory-chart/inventory-chart.component";
+
 import { PackageChartComponent } from "../_core/charts/package-chart/package-chart.component";
 import { StbChartComponent } from "../_core/charts/stb-chart/stb-chart.component";
 import { AdminRoutingModule } from "./admin.routing.module";
@@ -62,7 +62,6 @@ import { UpdatePackageMasterComponent } from "./features/channel_setting/_Dialog
 import { AddLcoComponent } from "./features/channel_setting/_Dialogue/LCO-Commission/add-lco/add-lco.component";
 import { ChangeMembershipComponent } from "./features/channel_setting/_Dialogue/LCO-Commission/change-membership/change-membership.component";
 import { HomeComponent } from "./features/home/home.component";
-import { AgChartsAngularModule } from "ag-charts-angular";
 import { PaymentChannelComponent } from "./features/local_broadcasting/payment-channel/payment-channel.component";
 import { LocalPaymentComponent } from "./features/local_broadcasting/local-payment/local-payment.component";
 import { AddLtbComponent } from "./features/channel_setting/_Dialogue/local+broadcasting/add-ltb/add-ltb.component";
@@ -94,20 +93,39 @@ import { ReallocationComponent } from "./features/channel_setting/_Dialogue/Inve
 import { AgGridModule } from "ag-grid-angular";
 import { LcoRechargePageComponent } from "./features/channel_setting/_Dialogue/LCO_Recharge/lco-recharge-page/lco-recharge-page.component";
 import { LcoRechargeReportComponent } from "./features/channel_setting/_Dialogue/LCO_Recharge/lco-recharge-report/lco-recharge-report.component";
-
-
+import { NewRechargeComponent } from "./features/channel_setting/_Dialogue/LCO_Recharge/new-recharge/new-recharge.component";
+import { BulkRechargeComponent } from "./features/channel_setting/_Dialogue/LCO_Recharge/bulk-recharge/bulk-recharge.component";
+import { RefundComponent } from "./features/channel_setting/_Dialogue/LCO_Recharge/refund/refund.component";
+import { UpdateLcoCommissionComponent } from "./features/channel_setting/_Dialogue/LCO-Commission/update-lco-commission/update-lco-commission.component";
+import { CreateLcoComponent } from "./features/channel_setting/_Dialogue/LCO-Commission/create-lco/create-lco.component";
+import { UpdateLcoComponent } from "./features/channel_setting/_Dialogue/LCO-Commission/update-lco/update-lco.component";
+import { CreateLcoMembershipComponent } from "./features/channel_setting/_Dialogue/LCO-Commission/create-lco-membership/create-lco-membership.component";
+import { CanvasJSAngularChartsModule } from '@canvasjs/angular-charts';
+import { InventoryChartComponent } from "../_core/charts/inventory-chart/inventory-chart.component";
+import { LcoCommissionChartComponent } from "../_core/charts/lco-commission-chart/lco-commission-chart.component";
+import { SubscriberdialogueComponent } from "./features/subscriber/subscriberdialogue/subscriberdialogue.component";
+import { LcodashboardComponent } from "./features/channel_setting/_Dialogue/operator/lcodashboard/lcodashboard.component";
+import { SubloginComponent } from "./features/subscriber/sublogin/sublogin.component";
+import { LcochartComponent } from "../_core/charts/lcochart/lcochart.component";
+import { LcopiechartComponent } from "../_core/charts/lcopiechart/lcopiechart.component";
+import { OperatordialogueComponent } from "./features/channel_setting/_Dialogue/operator/operatordialogue/operatordialogue.component";
+import { StreetComponent } from "./features/channel_setting/_Dialogue/operator/street/street.component";
+import { NewstreetComponent } from "./features/channel_setting/_Dialogue/operator/newstreet/newstreet.component";
+import { PackagewiseOperatorComponent } from "./features/channel_setting/packagewise-operator/packagewise-operator.component";
+import { ChannellistComponent } from "./features/subscriber/channellist/channellist.component";
 @NgModule({
     declarations: [
         AdminBaseComponent, NavComponent, HomeComponent,
         // -------------------------Dashboard-----------------------------
-        BarChartComponent, InventoryChartComponent,
+        BarChartComponent,InventoryChartComponent,LcoCommissionChartComponent,
         PackageChartComponent, StbChartComponent,
         // -------------------------------------Top_subscriber_Details------------------------------------
         TopSubDetailComponent,
         // -----------------------------------------operator----------------------------------
-        OperatorDetailsComponent, LcoRechargeComponent, EditLcoComponent, SpecialPermissionComponent, NewLcoComponent, AddLcoBusinessComponent,
+        OperatorDetailsComponent, LcoRechargeComponent, EditLcoComponent, SpecialPermissionComponent, NewLcoComponent,NewstreetComponent,
+         AddLcoBusinessComponent,LcodashboardComponent,LcochartComponent,LcopiechartComponent,OperatordialogueComponent,StreetComponent,
         // --------------LCO RECHARGE-----------------
-        LcoRechargePageComponent,LcoRechargeReportComponent,
+        LcoRechargePageComponent, LcoRechargeReportComponent, NewRechargeComponent, BulkRechargeComponent, RefundComponent,
         //==========================================channel_setting==============================================
         AddonPackageComponent, BroadMasterComponent, ChannelComponent, ChannelTypeComponent, DistributorMasterComponent,
         CreateDistributorComponent, LcoCommissionComponent, PackageReferenceComponent, PackageCreationComponent, PackageMasterComponent,
@@ -126,9 +144,10 @@ import { LcoRechargeReportComponent } from "./features/channel_setting/_Dialogue
         // -------------------------packade-master-----------------------
         UpdatePackageMasterComponent,
         // ------------------------------------LCO Commission----------------------------------
-        AddLcoComponent, ChangeMembershipComponent,
+        AddLcoComponent, ChangeMembershipComponent, UpdateLcoCommissionComponent, CreateLcoComponent, UpdateLcoComponent, CreateLcoMembershipComponent,
         // -------------------------------Subscriber---------------------------------
-        CreateSubscriberComponent, SubscriberDetailsComponent, ExpiryDetailsComponent, SubDashboardComponent,
+        CreateSubscriberComponent, SubscriberDetailsComponent, ExpiryDetailsComponent, SubDashboardComponent,SubscriberdialogueComponent,
+        SubloginComponent,ChannellistComponent,
         // -----------------------------------------Cas Operation---------------------------------
         FingerPrintComponent, ScrollingComponent, MessageComponent, ForceTuningComponent, MailComponent,
         // -------------------------------Inventory---------------------------------
@@ -150,13 +169,14 @@ import { LcoRechargeReportComponent } from "./features/channel_setting/_Dialogue
         CommonModule,
         CoreModule,
         DragDropModule,
-        AgGridModule, AgChartsAngularModule,
+        AgGridModule,
         AdminRoutingModule,
         ReactiveFormsModule,
         MatMaterialModule,
         FormsModule,
         MatFormFieldModule,
-        MatInputModule
+        MatInputModule,
+        CanvasJSAngularChartsModule
     ],
     schemas: [CUSTOM_ELEMENTS_SCHEMA],
 

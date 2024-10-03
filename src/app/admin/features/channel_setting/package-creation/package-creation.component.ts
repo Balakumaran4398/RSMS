@@ -162,7 +162,6 @@ export class PackageCreationComponent {
       maxWidth: '100vw',
       data: data
     });
-
     dialogRef.afterClosed().subscribe(result => {
     });
   }

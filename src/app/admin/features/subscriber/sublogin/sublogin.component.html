@@ -1,0 +1,17 @@
+<div class="container " *ngIf="!isLoggedIn">
+    <div class="row justify-content-center align-items-center" style="height: 80vh;">
+
+
+        <form class="form" action="" [formGroup]="form">
+            <p class="title">CHECK MSO</p>
+            <input placeholder="Username" class="username input" type="text" formControlName="userid" />
+            <input placeholder="Password" class="password input" type="password" formControlName="password" />
+            <div class="col-12 col-md-6 d-flex justify-content-between align-item-center" style="gap: 20px;">
+                <button class="btn" type="button" (click)="submit()">Login</button>
+                <button class="btn" type="button" (click)="exit()">Exit</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<app-subscriberdialogue *ngIf="isLoggedIn"></app-subscriberdialogue>

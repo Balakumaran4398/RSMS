@@ -48,10 +48,23 @@
     // font-weight: bold;
 }
 
+::ng-deep .mat-mdc-form-field-has-icon-suffix .mat-mdc-text-field-wrapper {
+    padding-right: 0;
+    margin-top: 5% !important;
+}
+
 @media screen and (max-width:560px) {
     .display {
         display: block;
         margin-bottom: 10px;
         align-items: center;
     }
+}
+
+.example-month-picker .mat-calendar-period-button {
+    pointer-events: none;
+}
+
+.example-month-picker .mat-calendar-arrow {
+    display: none;
 }

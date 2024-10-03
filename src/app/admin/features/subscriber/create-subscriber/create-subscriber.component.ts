@@ -46,7 +46,7 @@ export class CreateSubscriberComponent {
   constructor(private formBuilder: FormBuilder, private userservice: BaseService, private storageservice: StorageService, private datePipe: DatePipe) {
     this.username = storageservice.getUsername();
     this.role = storageservice.getUserRole();
-    userservice.Create_subscriber_list(this.role, this.username).subscribe((data: any) => {
+    userservice.getOperatorListforSubInsert(this.role, this.username).subscribe((data: any) => {
       console.log(data);
       this.lco_list = data.operatorid;
       console.log(this.lco_list);
@@ -284,7 +284,7 @@ export class CreateSubscriberComponent {
   }
 
   loadIdProofList(): void {
-    this.userservice.Create_Idproof_list(this.role, this.username).subscribe(
+    this.userservice.getIdProofList(this.role, this.username).subscribe(
       (data: any) => {
         this.id_proof_list = data.idprooftypeid;
         console.log("ID Proof List", this.id_proof_list);
@@ -295,7 +295,7 @@ export class CreateSubscriberComponent {
     );
   }
   loadAddProofList(): void {
-    this.userservice.Create_AddressProof_list(this.role, this.username).subscribe(
+    this.userservice.getAddresProofList(this.role, this.username).subscribe(
       (data: any) => {
         this.add_proof_list = data.addressprooftypeid;
         console.log("ADD Proof List", this.add_proof_list);
@@ -325,7 +325,7 @@ export class CreateSubscriberComponent {
     let formsubmissiondateReplaced = formsubmissiondate.replace('T', ' ');
     this.form.removeControl('formsubmissiondate');
     this.form.addControl('formsubmissiondate', new FormControl(formsubmissiondateReplaced))
-    this.userservice.Create_Subscriber(this.form.value).subscribe(
+    this.userservice.createSubscriber(this.form.value).subscribe(
       (data: any) => {
         this.form.removeControl('addressprooftypeid');
         this.form.addControl('addressprooftypeid', new FormControl(addressprooftypeid));
@@ -388,7 +388,7 @@ export class CreateSubscriberComponent {
   }
   onSubscriberStatusChange() {
     console.log(this.operatorid);
-    this.userservice.Create_Area_list(this.role, this.username, this.operatorid)
+    this.userservice.getAreaListByOperatorid(this.role, this.username, this.operatorid)
       .subscribe((data: any) => {
         console.log(data);
         this.area_list = data.areaid || {};
@@ -406,7 +406,7 @@ export class CreateSubscriberComponent {
   onAreaStatusChange() {
     console.log(this.areaid);
     this.form.patchValue({ streetid: '' });
-    this.userservice.Create_Street_list(this.role, this.username, this.areaid)
+    this.userservice.getStreetListByAreaid(this.role, this.username, this.areaid)
       .subscribe((data: any) => {
         console.log(data);
         this.street_list = data.streetid || {};

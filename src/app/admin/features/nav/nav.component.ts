@@ -1,7 +1,9 @@
-import { AfterViewInit, ChangeDetectorRef, Component } from '@angular/core';
+import { AfterViewInit, ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 import { FormControl } from '@angular/forms';
+import { BaseService } from 'src/app/_core/service/base.service';
+import { StorageService } from 'src/app/_core/service/storage.service';
 
 @Component({
   selector: 'app-nav',
@@ -9,7 +11,7 @@ import { FormControl } from '@angular/forms';
   styleUrls: ['./nav.component.scss']
 })
 
-export class NavComponent implements AfterViewInit {
+export class NavComponent implements OnInit, AfterViewInit {
   activeMenu: string = '';
   activeItem: any;
   isHide: any = true;
@@ -18,15 +20,94 @@ export class NavComponent implements AfterViewInit {
   isSystem: boolean = true;
   ismobile: boolean = false;
   isSidebarOpen = false;
-  constructor(private router: Router, private breakpointObserver: BreakpointObserver, private cdr: ChangeDetectorRef) {
+  subscriberList: any[] = [];
+  showDropdown: boolean = true;
+  role: any;
+  username: any;
+  subscriber: any;
+  searchname: any;
+  lcomember: any = '';
+  constructor(private router: Router, private breakpointObserver: BreakpointObserver, private cdr: ChangeDetectorRef, private userservice: BaseService, private storageservice: StorageService) {
     this.breakpointChanged();
-    
+    this.role = storageservice.getUserRole();
+    this.username = storageservice.getUsername();
+
   }
-  ngOninit() {
+
+  ngOnInit() {
     this.checkDeviceType();
     setInterval(() => {
       this.currentTime = new Date();
     }, 1000);
+    const sidemenuLinks = document.querySelectorAll('.side-menu li a');
+    const sidedropdownmenuLinks = document.querySelectorAll('.side-menu li ul li a');
+    sidemenuLinks.forEach(link => {
+      link?.classList?.remove('active');
+      link.addEventListener("click", () => {
+        sidemenuLinks.forEach(link => link.classList.remove('active'));
+        link.classList.add('active');
+      });
+    });
+    sidedropdownmenuLinks.forEach(link => {
+      link?.classList?.remove('active');
+      link.addEventListener("click", () => {
+        sidedropdownmenuLinks.forEach(link => link.classList.remove('active'));
+        link.classList.add('active');
+      });
+    });
+
+
+  }
+  onsubscriberlist(value: any) {
+    this.showDropdown = true;
+    this.userservice.getSearchDetailsSubscriber(this.role, this.username, value).subscribe((data: any) => {
+      console.log(data);
+      this.subscriber = data;
+      this.subscriberList = Object.keys(data).map(key => {
+        const value = data[key];
+        const name = key;
+        return { name: name, value: value };
+      });
+      this.subscriberList.sort((a: any, b: any) => {
+        if (a.value > b.value) return 1;
+        if (a.value < b.value) return -1;
+        return 0;
+      });
+      console.log(this.subscriberList);
+    })
+  }
+
+  // goToSubscriberDashboard(lcomember: any) {
+  //   this.lcomember = lcomember.value;
+  //   console.log('Selected value:', this.lcomember);
+  //   if (this.router.url == `/admin/subscriber-full-info/${this.lcomember}`) {
+  //     window.location.reload();
+  //     this.router.navigateByUrl('/', { skipLocationChange: true }).then(() => {
+  //       window.location.reload();
+  //       this.router.navigate([`/admin/subscriber-full-info/${this.lcomember}`]);
+  //       console.log(this.lcomember);
+  //       window.location.reload();
+  //     });
+  //   } else {
+  //     this.router.navigateByUrl(`/admin/subscriber-full-info/${this.lcomember}`);
+  //     window.location.reload();
+  //   }
+  //   this.showDropdown = false;
+  // }
+  goToSubscriberDashboard(lcomember: any) {
+    this.lcomember = lcomember.value;
+    console.log('Selected value:', this.lcomember);
+    const targetUrl = `/admin/subscriber-full-info/${this.lcomember}//dashoard`;
+
+    if (this.router.url === targetUrl) {
+      window.location.reload();
+    } else {
+      this.router.navigateByUrl('/', { skipLocationChange: true }).then(() => {
+        this.router.navigate([targetUrl]);
+        console.log('Navigated to:', targetUrl);
+      });
+    }
+    this.showDropdown = false;
   }
 
   checkDeviceType(): void {
@@ -209,7 +290,7 @@ export class NavComponent implements AfterViewInit {
     console.log(this.isMobile);
   }
   isAdmin = false;
-  navgetToUrl(id: any) {
+  navgetToUrl(id: any,) {
     // console.log(id);
     this.activeItem = id;
     this.router.navigateByUrl("admin" + id);
@@ -217,6 +298,7 @@ export class NavComponent implements AfterViewInit {
       // this.closeSidebar();
       // this.OPENCLSO();
     }
+
   }
 
   OPENCLSO() {

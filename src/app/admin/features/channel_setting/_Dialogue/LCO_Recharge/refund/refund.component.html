@@ -1,0 +1,56 @@
+<div class="Head d-flex justify-content-start align-items-center" style="padding: 1rem;">
+    <p class="span">DO YOU WANT TO DECUCT/REFUND AMOUNT</p>
+</div>
+<div class="display justify-content-center align-items-center ">
+    <div class="col-12 col-md-12 display justify-content-center align-item-center"
+        style="padding: 1rem;max-height: 700px;overflow: scroll;">
+        <div class="input_box">
+
+            <div class="mb-3 ">
+                <div class="display justify-content-center align-item-center">
+                    <div class="col-12 col-md-6">
+                        <label class="form-label">Operator Name </label>
+                    </div>
+                    <div class="col-12 col-md-6">
+                        {{refuntlist?.operatorname}}
+                    </div>
+                </div>
+                <div class="mb-3 display justify-content-center align-item-center">
+                    <div class="col-12 col-md-6">
+                        <label class="form-label">Reference</label>
+                    </div>
+                    <div class="col-12 col-md-6">
+                        {{refuntlist?.referenceid}}
+                    </div>
+                </div>
+
+                <div class="mb-3 display justify-content-center align-item-center">
+                    <div class="col-12 col-md-6">
+                        <label class="form-label">Amount</label>
+                    </div>
+                    <div class="col-12 col-md-6">
+                        <input class="" type="text" [(ngModel)]="amount"
+                            (keypress)="onKeydown($event)">
+                    </div>
+                </div>
+                <div class="mb-3 display justify-content-center align-item-center">
+                    <div class="col-12 col-md-6">
+                        <label class="form-label">Refund remarks </label>
+                    </div>
+                    <div class="col-12 col-md-6">
+                        <textarea class="" type="text"  [(ngModel)]="remarks"
+                            placeholder="Text Message"></textarea>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+    </div>
+
+
+</div>
+<div class="d-flex justify-content-center align-item-center mx-5 mb-4">
+    <button type="button" class="btn btn-danger me-2" (click)="toggleedit()">Cancel</button>
+    <button type="submit" class="btn btn-success" (click)="onSubmit()">Refund</button>
+</div>

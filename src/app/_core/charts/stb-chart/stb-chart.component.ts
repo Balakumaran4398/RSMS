@@ -1,63 +1,43 @@
 import { Component } from '@angular/core';
+import { FONT_SIZE } from 'ag-charts-community/dist/types/src/integrated-charts-theme';
 
 @Component({
-  selector: 'app-stb-chart',
-  templateUrl: './stb-chart.component.html',
-  styleUrls: ['./stb-chart.component.scss']
+	selector: 'app-stb-chart',
+	templateUrl: './stb-chart.component.html',
+	styleUrls: ['./stb-chart.component.scss']
 })
 export class StbChartComponent {
-  public options: any = {
-    autoSize: true,
-    // width: 800,
-    height: 400,
-    title: {
-      text: 'STB Details',
-      fontSize: 18,
-      fontWeight: '500'
-    },
-    series: [{
-      type: 'bar',
-      xKey: 'label',
-      yKey: 'value',
-      label: {
-        formatter: ({ value }: any) => `${value}`,
-        fontSize: 12,
-      },
-      fills: ['#FF0000', '#00FF00', '#0000FF', '#FFFF00', '#FF00FF', '#00FFFF'], 
-      strokes: ['#FF0000', '#00FF00', '#0000FF', '#FFFF00', '#FF00FF', '#00FFFF'], 
-      highlightStyle: {
-        item: {
-          fill: '#1f6764'
-        }
-      }
-    }],
-    data: [
-      { label: 'Active', value: 20 },
-      { label: 'Deactive', value: 20 },
-      { label: 'Fresh', value: 24 },
-      { label: 'Not Expiry', value: 29 },
-      { label: 'Expiry', value: 13 },
-      { label: 'Block', value: 13 },
-    ],
-    axes: [
-      {
-        type: 'category',
-        position: 'bottom',
-        title: { text: 'Status' },
-      },
-      {
-        type: 'number',
-        position: 'left',
-        title: { text: 'Count' },
-        label: { formatter: ({ value }: any) => `${value}` }
-      }
-    ],
-    tooltip: {
-      enabled: true
-    },
-    animation: {
-      duration: 1000,
-      easing: 'easeOut'
-    }
-  };
+	chartOptions = {
+		title: {
+			text: "STB DETAILS",
+			fontSize: 20,
+			fontWeight: 600
+		},
+		animationEnabled: true,
+		axisY: {
+			title: "Count",
+			titleFontSize: 16,
+			titleFontColor: "#5A5757",
+			labelFontColor: "#5A5757",
+			gridThickness: 0,
+		},
+
+		data: [{
+			type: "column",
+
+			indexLabelFontColor: "#5A5757",
+			dataPoints: [
+				{ label: "Active", y: 50, color: "#1a8a38" },  // Green
+				{ label: "Deactive", y: 30, color: "#db635a" },  // Pink
+				{ label: "Fresh", y: 20, color: "#622a82" },  // Purple
+				{ label: "Not Expiry", y: 40, color: "#2d72ad" },  // Blue
+				{ label: "Expiry", y: 10, color: "#deac2c" },  // Yellow
+				{ label: "Block", y: 15, color: "#52504e" }  // Light Green
+			],
+
+
+		}]
+
+	}
+
 }

@@ -82,7 +82,6 @@ export class UpdateInventoryComponent {
                 text: 'There was an error updating the smartcard allocation. Please try again later.',
                 confirmButtonText: 'OK',
               }).then(() => {
-                // Reload the page after the user clicks 'OK'
                 window.location.reload();
               });
             }

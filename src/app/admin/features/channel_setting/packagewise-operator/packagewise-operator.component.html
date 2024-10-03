@@ -1,6 +1,7 @@
 <section>
     <h3>PACKAGEWISE OPERATOR LIST</h3>
     <div class="d-flex flex-column flex-lg-row justify-content-center align-items-center">
+        <!-- <div class="row"> -->
         <div class="col-lg-5 col-12 mb-3 mb-lg-0">
             <div class="card">
                 <div class="input_box mb-3">
@@ -13,13 +14,22 @@
                     <input type="text" placeholder="Search">
                 </div>
                 <div class="table1 mb-3">
-                    <p>ALLOCATED</p>
+                    <p style="color: white;">ALLOCATED</p>
                     <div class="row inp">
                         <div class="col-12 example-container">
                             <div cdkDropList #todoList="cdkDropList" [cdkDropListData]="todo"
                                 [cdkDropListConnectedTo]="[doneList]" class="example-list"
                                 (cdkDropListDropped)="drop($event)">
-                                <div *ngFor="let item of todo" class="example-box" cdkDrag>{{ item.operatorname }}</div>
+                                <div *ngFor="let item of todo" class="example-box" cdkDrag   (click)="toggleSelection(item)" [class.selected]="isSelected(item)"  >{{ item.operatorname }}
+                                </div>
+                                <!-- <mat-form-field>
+                                    <mat-select [formControl]="selectedItems" multiple>
+                                      <mat-option *ngFor="let item of todo" [value]="item.operatorid" cdkDrag>
+                                        {{ item.operatorname }}
+                                      </mat-option>
+                                    </mat-select>
+                                  </mat-form-field> -->
+
                             </div>
                         </div>
                     </div>
@@ -27,10 +37,14 @@
             </div>
         </div>
         <div class="display my-3 my-lg-0 mx-lg-3">
-            <button class="btn"><i class="bx bx-right-arrow-alt"></i></button>
-            <button class="btn"><i class="bx bx-arrow-to-right"></i></button>
-            <button class="btn"><i class="bx bx-left-arrow-alt"></i></button>
-            <button class="btn"><i class="bx bx-arrow-to-left"></i></button>
+            <button class="btn" (click)="moveSelected_bouquet_Items('right')"><i
+                    class="bx bx-right-arrow-alt"></i></button>
+            <button class="btn" (click)="moveAllSelected_bouquet_Items('right')"><i
+                    class="bx bx-arrow-to-right"></i></button>
+            <button class="btn" (click)="moveSelected_bouquet_Items('left')"><i
+                    class="bx bx-left-arrow-alt"></i></button>
+            <button class="btn" (click)="moveAllSelected_bouquet_Items('left')"><i
+                    class="bx bx-arrow-to-left"></i></button>
         </div>
         <div class="col-lg-5 col-12">
             <div class="card">
@@ -46,13 +60,14 @@
                     <input type="text" placeholder="Search">
                 </div>
                 <div class="table2 mb-3">
-                    <p>NOT ALLOCATED</p>
+                    <p style="color: white;">NOT ALLOCATED</p>
                     <div class="row inp">
                         <div class="col-12 example-container">
                             <div cdkDropList #doneList="cdkDropList" [cdkDropListData]="allocated"
                                 [cdkDropListConnectedTo]="[todoList]" class="example-list"
                                 (cdkDropListDropped)="drop($event)">
-                                <div *ngFor="let item of allocated" class="example-box" cdkDrag>{{ item.operatorname }}
+                                <div *ngFor="let item of allocated" class="example-box" cdkDrag>{{ item.operatorname
+                                    }}
                                 </div>
                             </div>
                         </div>
@@ -60,11 +75,15 @@
                 </div>
             </div>
         </div>
-        <!-- <div class="col-lg-5 col-12"> -->
-            <button type="button" (click)="save($event)">Save
-
-            </button>
         <!-- </div> -->
-    </div>
 
+    </div>
+    <div class="col-12 d-flex justify-content-center align-item-center">
+        <!-- <button type="button" (click)="save($event)">Save
+
+        </button> -->
+        <button type="button" class="btn" style="background:#058372;color: white;height: 2pc;
+    width: 5pc" (click)="save()">Save</button>
+
+    </div>
 </section>

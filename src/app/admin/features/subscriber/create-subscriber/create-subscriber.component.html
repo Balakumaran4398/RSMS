@@ -6,14 +6,10 @@
     </div>
     <form [formGroup]="form" (ngSubmit)="onSubmit()">
         <div style="display: flex; justify-content: center; align-items: center;  ">
-            <br>
-            <!-- <div class="container" style="margin-top: 2%;"> -->
             <div class="container">
                 <div class="title">
                     <p>Personal Details</p>
                 </div>
-
-                <!-- <form action="#"> -->
                 <div class="user_details">
                     <div class="input_box">
                         <label>LCO Name</label>
@@ -24,6 +20,7 @@
                                 {{ key }}
                             </option>
                         </select>
+                        <!-- <p-multiSelect formControlName="operatorid"  [(ngModel)]="operatorid" defaultLabel="Select a City" optionLabel="name"></p-multiSelect> -->
                         <div style="position:relative;font-size: small;">
                             <div *ngIf="submitted && f['operatorid'].errors?.['required']" class="text-danger">
                                 LCO Name is required</div>
@@ -156,7 +153,7 @@
                     <div class="input_box">
                         <label for="pass">Landline No</label>
                         <input pattern="^0\d{2,4}\d{6,8}$" maxlength="11" type="text" formControlName="landlineno"
-                            placeholder="Enter Landline Number" 
+                            placeholder="Enter Landline Number"
                             [ngClass]="{ 'is-invalid': submitted && f['landlineno'].errors }" required />
 
                         <div style="position: relative; font-size: small;" *ngIf="submitted && f['landlineno'].errors"
@@ -262,16 +259,8 @@
                         <button type="submit" class="btn"
                             style="background:#058372;color: white;">Confirm</button>&nbsp;&nbsp;&nbsp;
                     </div>
-                    <!-- <div class="reg_btn">
-                        <input type="submit" value="Register">
-                    </div> -->
                 </div>
-
-
-                <!-- </form> -->
             </div>
-
-            <!-- </div> -->
         </div>
     </form>
 </div>

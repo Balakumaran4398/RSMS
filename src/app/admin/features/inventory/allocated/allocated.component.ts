@@ -153,15 +153,17 @@ export class AllocatedComponent {
   //   })
   // }
   Search() {
-    if (!this.smartcard && !this.selectedLcoName) {
-      Swal.fire({
-        icon: 'warning',
-        title: 'Invalid Search',
-        text: 'Please enter a Smartcard number or select an LCO name to search.',
-        confirmButtonText: 'OK'
-      });
-      return;
-    }
+    // if (!this.smartcard && !this.selectedLcoName) {
+    //   Swal.fire({
+    //     icon: 'warning',
+    //     title: 'Invalid Search',
+    //     text: 'Please enter a Smartcard number or select an LCO name to search.',
+    //     confirmButtonText: 'OK'
+    //   });
+    //   return;
+    // }
+    console.log(this.selectedLcoName);
+    
     this.userService.getsearchforallocated_smartcard_List(this.role, this.username, this.selectedLcoName, this.smartcard).subscribe((data: any) => {
       this.rowData = data;
       Swal.fire({

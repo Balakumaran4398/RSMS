@@ -7,30 +7,35 @@
         <div class="row">
             <div class="col-12 col-md-6 mb-3 mb-md-0">
                 <ag-grid-angular #agGrid id="myGrid" style="text-align: center;" domLayout='autoHeight'
-                    class="ag-theme-alpine table-class" rowAnimation [gridOptions]="gridOptions" [columnDefs]="columnDefs"
-                    [rowData]="rowData" [enableCellTextSelection]="true">
+                    class="ag-theme-alpine table-class" rowAnimation [gridOptions]="gridOptions"
+                    [columnDefs]="columnDefs" [rowData]="rowData" [enableCellTextSelection]="true">
                 </ag-grid-angular>
             </div>
             <div class="col-12 col-md-6 mb-3 mb-md-0">
                 <div class="lco d-flex flex-column">
-                    <!-- LCO's IN NUMBERS Section -->
                     <div class="d-flex flex-column flex-md-row justify-content-between align-items-start mb-3">
                         <label class="flex-grow-1 mb-2 mb-md-0">LCO's IN NUMBERS:</label>
-                        <span class="flex-grow-1 text-center value">1</span>
+                        <span class="flex-grow-1 text-center value">{{rowData.length}}</span>
                     </div>
-                    <!-- SELECT MEMBERSHIP GROUP Section -->
                     <div class="d-flex flex-column flex-md-row justify-content-between align-items-start mb-3">
                         <label class="flex-grow-1 mb-2 mb-md-0">SELECT MEMBERSHIP GROUP:</label>
-                        <select class="form-select flex-grow-1" aria-label="Select Membership Group">
-                            <option value="">fsfdf</option>
-                            <option value="">erer</option>
-                            <option value="">ghgfh</option>
-                            <option value="">jghjug</option>
+                        <!-- <select style="color: rgb(17, 0, 0);" [(ngModel)]="lcomembershipid" >
+                            <option value="0" selected style="color: rgb(19, 17, 17);">SELECT MEMBERSHIP </option>
+                            <option *ngFor="let lcomember of lcomembershipList" [value]="lcomember.value">{{
+                                lcomember.name}}</option>
+                        </select> -->
+                        <select style="color: rgb(17, 0, 0);" [(ngModel)]="lcomembershipid">
+                            <option value="0" selected style="color: rgb(19, 17, 17);">SELECT MEMBERSHIP</option>
+                            <option *ngFor="let lcomember of lcomembershipList" [value]="lcomember.value">
+                                {{ lcomember.name }}
+                            </option>
                         </select>
                     </div>
-                    <!-- Change Button Section -->
                     <div class="d-flex justify-content-center mt-3">
-                        <a class="btn btn-infos" (click)="change()">Change</a>
+                        <!-- <a class="btn btn-infos"  (click)="change()">Change</a> -->
+                        <a class="btn btn-infos" [class.disabled]="lcomembershipid == 0" (click)="change()" [attr.disabled]="lcomembershipid == 0 ? true : null">
+                            Change
+                        </a>
                     </div>
                 </div>
             </div>

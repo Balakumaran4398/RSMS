@@ -82,9 +82,7 @@ export class ChannelComponent {
       headerName: 'Actions', minWidth: 140,
       cellRenderer: (params: any) => {
         const editButton = document.createElement('button');
-        // editButton.innerHTML = '<i class="bx bx-edit-alt"></i>';
         editButton.innerHTML = '<i class="fa fa-pencil-square" aria-hidden="true"></i>';
-
         editButton.style.backgroundColor = 'transparent';
         editButton.style.color = 'rgb(1 31 78)';
         editButton.style.border = 'none';
@@ -92,11 +90,9 @@ export class ChannelComponent {
         editButton.style.cursor = 'pointer';
         editButton.style.marginRight = '6px';
         editButton.style.fontSize = "30px";
-
         editButton.addEventListener('click', () => {
           this.openEditDialog(params.data);
         });
-
         const div = document.createElement('div');
         div.appendChild(editButton);
         return div;

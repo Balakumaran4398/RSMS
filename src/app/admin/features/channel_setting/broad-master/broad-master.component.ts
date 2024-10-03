@@ -95,13 +95,13 @@ export class BroadMasterComponent implements OnInit {
           if (active) {
             icon.className = 'fa-solid fa-toggle-on';
             toggleButton.style.color = '#4CAF50';
-            toggleButton.style.fontSize = '24px'; // Medium size for the button
+            toggleButton.style.fontSize = '24px';
             icon.style.fontSize = '24px';
             toggleButton.title = 'Deactivate the Customer';
           } else {
             icon.className = 'fa-solid fa-toggle-off';
             toggleButton.style.color = 'rgb(248 92 133)';
-            toggleButton.style.fontSize = '24px'; // Medium size for the button
+            toggleButton.style.fontSize = '24px';
             icon.style.fontSize = '24px';
             toggleButton.title = 'Activate the Customer';
           }

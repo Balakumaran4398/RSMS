@@ -1,5 +1,9 @@
+import { HttpResponse } from '@angular/common/http';
 import { Component } from '@angular/core';
 import { ColDef } from 'ag-grid-community';
+import { BaseService } from 'src/app/_core/service/base.service';
+import { StorageService } from 'src/app/_core/service/storage.service';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-deactivation',
@@ -12,16 +16,27 @@ export class DeactivationComponent {
   isCheckboxChecked: boolean = false;
   columnDefs: ColDef[] = [
     { headerName: "S.No", lockPosition: true, valueGetter: 'node.rowIndex+1', cellClass: 'locked-col', width: 80, suppressNavigable: true, sortable: false, filter: false },
-    { headerName: "SMARTCARD", field: 'intend_to' },
-    { headerName: "STATUS", field: '' },
-    { headerName: "REMARKS", field: '' },
-    { headerName: "CREATED DATE	", field: '' },
-  ];
-  rowData = [
+    { headerName: "SMARTCARD", field: 'smartcard', width: 300 },
     {
-      intend_to: 'Example Value',
+      headerName: "STATUS",
+      field: 'status',
+      width: 300,
+      cellRenderer: (params: any) => {
+        if (params.value === 'Deactivation Successfully') {
+          return `<span style="color: green;">${params.value}</span>`;
+        } else if (params.value === 'Please recharge') {
+          return `<span style="color: red;">${params.value}</span>`;
+        } else if (params.value === 'Connection Testing') {
+          return `<span style="color: orange;">${params.value}</span>`;
+        }
+        return params.value; 
+      }
     },
+
+    { headerName: "REMARKS", field: 'remarks', width: 220 },
+    { headerName: "CREATED DATE	", field: 'createddate', width: 250 },
   ];
+  rowData: any;
   public rowSelection: any = "multiple";
   gridOptions = {
     defaultColDef: {
@@ -31,8 +46,16 @@ export class DeactivationComponent {
       width: 180,
       floatingFilter: true
     },
-    // paginationPageSize: 15,
-    // pagination: true,
+    paginationPageSize: 15,
+    pagination: true,
+  }
+  date: any;
+  role: any;
+  username: any;
+  constructor(private userservice: BaseService, private storageservice: StorageService) {
+    this.role = storageservice.getUserRole();
+    this.username = storageservice.getUsername();
+
   }
   onGridReady = () => {
     // this.userservice.GetAllUser('all',this.token.getUsername(),'0000-00-00','0000-00-00').subscribe((data) => {
@@ -52,5 +75,52 @@ export class DeactivationComponent {
       this.file = false;
       this.filePath = '';
     }
+  }
+  getData() {
+    this.userservice.getDeactivationFilterlist(this.role, this.username, 'deactivation', this.date)
+      .subscribe(
+        (response: HttpResponse<any[]>) => { // Expect HttpResponse<any[]>
+          if (response.status === 200) {
+            this.rowData = response.body;
+            Swal.fire('Success', 'Data updated successfully!', 'success');
+          } else if (response.status === 204) {
+            Swal.fire('No Content', 'No data available for the given criteria.', 'info');
+          }
+        },
+        (error) => {
+          if (error.status === 400) {
+            Swal.fire('Error 400', 'Bad Request. Please check the input.', 'error');
+          } else if (error.status === 500) {
+            Swal.fire('Error 500', 'Internal Server Error. Please try again later.', 'error');
+          } else {
+            Swal.fire('Error', 'Something went wrong. Please try again.', 'error');
+          }
+        }
+      );
+
+  }
+
+
+  refresh() {
+    this.userservice.getDeactivationRefresh(this.role, this.username, 'deactivation')
+      .subscribe(
+        (response: HttpResponse<any[]>) => { // Expect HttpResponse<any[]>
+          if (response.status === 200) {
+            this.rowData = response.body;
+            Swal.fire('Success', 'Data updated successfully!', 'success');
+          } else if (response.status === 204) {
+            Swal.fire('No Content', 'No data available for the given criteria.', 'info');
+          }
+        },
+        (error) => {
+          if (error.status === 400) {
+            Swal.fire('Error 400', 'Bad Request. Please check the input.', 'error');
+          } else if (error.status === 500) {
+            Swal.fire('Error 500', 'Internal Server Error. Please try again later.', 'error');
+          } else {
+            Swal.fire('Error', 'Something went wrong. Please try again.', 'error');
+          }
+        }
+      );
   }
 }

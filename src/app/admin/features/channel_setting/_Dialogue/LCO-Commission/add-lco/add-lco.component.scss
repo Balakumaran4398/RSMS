@@ -2,9 +2,6 @@
     padding: 10px;
 }
 
-.add span {
-    // font-weight: bold;
-}
 
 .display {
     display: flex;
@@ -20,7 +17,6 @@
     color: var(--primary-color);
     font-size: 17px;
     text-transform: uppercase;
-    // font-weight: bold;
 }
 
 .close-icon {
@@ -69,17 +65,13 @@
     background: var(--shadow-color);
 }
 
-/* Custom styles if needed */
 .add span {
     font-size: 1rem;
-    /* Adjust font size as needed */
 }
 
 .form-select {
     width: 100%;
-    /* Ensures select elements are responsive */
     max-width: 200px;
-    /* Optionally, set a max-width */
 }
 
 @media screen and (max-width:560px) {

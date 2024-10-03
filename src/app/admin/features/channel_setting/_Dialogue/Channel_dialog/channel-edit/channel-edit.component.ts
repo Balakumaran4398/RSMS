@@ -34,7 +34,7 @@ export class ChannelEditComponent {
   isPercentage: boolean;
   categoryid: any;
   type: number = 0;
-  isYesActive: boolean | null = null; // Initialize as null for initial state
+  isYesActive: boolean | null = null; 
   category: any;
   channelType: any;
   nameFormControl: any; discriptionFormControl: any;

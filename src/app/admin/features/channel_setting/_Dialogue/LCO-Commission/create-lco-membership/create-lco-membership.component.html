@@ -1,0 +1,53 @@
+<section>
+    <div class="head d-flex justify-content-between align-items-center">
+        <span class="title">CREATE LCO MEMBERSHIP</span>
+        <i class="fa fa-close close-icon" (click)="onNoClick()"></i>
+    </div>
+    <div class="card">
+        <div class="lco  justify-content-center align-items-center">
+            <div class="input_box display align-items-center mb-3 w-100 ">
+                <div class="col-12 col-md-6">
+                    <label class="label-text ">Select Operator</label>
+                </div>
+                <div class="col-12 col-md-6">
+                    <select id="lcoName" [(ngModel)]="selectedLcoName">
+                        <div style="">
+                            <h1>hgfhghgfh</h1>
+                            <input type="search" placeholder="Search LCO Name" [(ngModel)]="searchTerm" />
+                        </div>
+                        <option value="0" selected>
+
+                            Select an LCO Name</option>
+                        <option *ngFor="let key of filteredLcoKeys()" [value]="lco_list[key]">
+                            {{ key }}
+                        </option>
+                    </select>
+                </div>
+
+            </div>
+            <div class="input_box display align-items-center mb-3 ">
+                <div class="col-12 col-md-6">
+                    <label class="label-text ">Used Count</label>
+                </div>
+                <div class="col-12 col-md-6">
+                    <input type="text" class="" placeholder="Enter Used Count" [(ngModel)]="usedcount">
+                </div>
+            </div>
+            <div class="input_box display align-items-center mb-3 ">
+                <div class="col-12 col-md-6">
+                    <label class="label-text ">Shared Count</label>
+                </div>
+                <div class="col-12 col-md-6">
+                    <input type="text" placeholder="Enter Shared Count" [(ngModel)]="sharedcount">
+                </div>
+            </div>
+
+        </div>
+    </div>
+    <div class="col d-flex justify-content-center align-items-center new_d mt-3 mb-2">
+        <a class="btn btn-infos mx-1" (click)="create()"> &nbsp;
+            <span>Create</span>
+        </a>
+    </div>
+
+</section>

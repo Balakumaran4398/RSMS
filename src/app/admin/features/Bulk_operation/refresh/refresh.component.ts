@@ -66,6 +66,9 @@ export class RefreshComponent {
   onGridReady() {
 
   }
+  Submit(){
+    
+  }
   dateClass: MatCalendarCellClassFunction<Date> = (cellDate, view) => {
     // Only highligh dates inside the month view.
     if (view === 'month') {

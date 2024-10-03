@@ -63,34 +63,7 @@ export class DefectiveSmartcardComponent {
     {
       headerName: "Action",
       editable: true,
-      // cellRenderer: (params: any) => {
-      //   const replaceButton = document.createElement('button');
-      //   replaceButton.innerHTML = `<i class="fas fa-sync-alt"></i> Replace`;
-      //   replaceButton.style.backgroundColor = '#767e7e';
-      //   replaceButton.style.height = '40px'; 
-      //   replaceButton.style.top = '10px'; 
-      //   replaceButton.style.color = 'white';
-      //   replaceButton.style.width = '100px';
-      //   replaceButton.style.borderRadius = '10px';
-      //   replaceButton.style.cursor = 'pointer';
-      //   replaceButton.title = 'Replace';
-      //   replaceButton.addEventListener('mouseenter', () => {
-      //     replaceButton.style.backgroundColor = '#5a6268'; 
-      //     replaceButton.style.color = 'white';
-      //     replaceButton.style.fontWeight = 'bold';
-      //   });
-
-      //   replaceButton.addEventListener('mouseleave', () => {
-      //     replaceButton.style.backgroundColor = '#767e7e'; 
-      //   });
-      //   replaceButton.addEventListener('click', () => {
-      //     this.openEditDialog(params.data);
-      //   });
-      //   const div = document.createElement('div');
-      //   div.appendChild(replaceButton);
-      //   return div;
-      // }
-      cellRenderer: (params: any) => {
+           cellRenderer: (params: any) => {
         if (params.data.isdefective) {
           const replaceButton = document.createElement('button');
           replaceButton.innerHTML = `<i class="fas fa-sync-alt"></i> Replace`;

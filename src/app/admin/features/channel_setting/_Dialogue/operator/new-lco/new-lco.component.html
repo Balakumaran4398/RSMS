@@ -1,10 +1,9 @@
-
 <div class="card">
     <div class="Head d-flex justify-content-start align-items-center" style="padding: 0.5rem;">
         <p class="span">ADD LCO</p>
     </div>
     <div class="display justify-content-center align-items-center mobile">
-        <form action="" [formGroup]="form" >
+        <form action="" [formGroup]="form">
             <div class="col-12 col-md-12 " style="padding: 1rem;max-height: 700px;overflow: scroll;">
                 <div class="input_box">
                     <div class="mb-3 edit">
@@ -21,7 +20,6 @@
                                 <div *ngIf="form.get('nameheader')?.invalid && form.get('nameheader')?.touched">
                                     <small class="text-danger">Name Head is required.</small>
                                 </div>
-
                             </div>
                         </div>
                     </div>
@@ -44,7 +42,7 @@
                             <input class="" type="text" pattern="0-9" maxlength="10" (keypress)="onKeydown($event)"
                                 formControlName="contactnumber1">
                             <div *ngIf="form.get('contactnumber1')?.invalid && form.get('contactnumber1')?.touched">
-                               
+
                                 <small class="text-danger"
                                     *ngIf="form.get('contactnumber1')?.errors?.['required']">Mobile Number is
                                     required.</small>
@@ -120,7 +118,7 @@
                             <input class="" type="text" pattern="0-9" maxlength="6" (keypress)="onKeydown($event)"
                                 formControlName="pincode">
                             <div *ngIf="form.get('pincode')?.invalid && form.get('pincode')?.touched">
-                                
+
                                 <small class="text-danger" *ngIf="form.get('pincode')?.errors?.['required']">Pincode is
                                     required.</small>
                             </div>
@@ -149,7 +147,8 @@
                         <div class="col-12 col-md-8">
                             <select class="form-select" formControlName="lcobusinessid">
                                 <option value="0" selected>Select a Business Name</option>
-                                <option *ngFor="let business of businessList" [value]="business.value">{{ business.name}}</option>
+                                <option *ngFor="let business of businessList" [value]="business.value">{{
+                                    business.name}}</option>
                             </select>
                             <div *ngIf="form.get('lcobusinessid')?.invalid && form.get('lcobusinessid')?.touched">
                                 <small class="text-danger">Business Name is required.</small>
@@ -158,7 +157,7 @@
                     </div>
                 </div>
             </div>
-  
+
         </form>
     </div>
 

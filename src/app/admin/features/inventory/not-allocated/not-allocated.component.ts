@@ -31,8 +31,8 @@ export class NotAllocatedComponent {
       sortable: true,
       resizable: true,
       filter: true,
+      floatingFilter: true,
       width: 250,
-      floatingFilter: true
     },
     paginationPageSize: 10,
     pagination: true,
@@ -116,13 +116,9 @@ export class NotAllocatedComponent {
     if (this.gridApi) {
       const selectedRows = this.gridApi.getSelectedRows();
       this.isAnyRowSelected = selectedRows.length > 0;
-      console.log("Selected Rows:", selectedRows);
       this.selectedIds = selectedRows.map((e: any) => e.id);
       this.selectsmartcard = selectedRows.map((e: any) => e.smartcard);
       this.selectedtypes = selectedRows.map((e: any) => e.isactive);
-      console.log("Selected IDs:", this.selectedIds);
-      console.log("Selected smartcards:", this.selectsmartcard);
-      console.log("Selected Types:", this.selectedtypes);
     }
   }
   onGridReady(params: { api: any; }) {

@@ -3,22 +3,23 @@
         <div class=" display justify-content-center align-items-center">
             <div class="col-12 col-md-12 mobile display justify-content-center align-items-center">
                 <div class="col-12  col-md-3  mx-2 mb-3">
-                    <select id="cas" placeholder="Select the CAS" [formControl]="CasFormControl">
+                    <select id="cas" placeholder="Select the CAS" [(ngModel)]="operatorid">
                         <option value="">Select Operator</option>
-                        <option *ngFor="let casItem of cas" [value]="casItem">{{ casItem }}</option>
+                        <option *ngFor="let operator of operatorList" [value]="operator.value">{{ operator.name }}
+                        </option>
                     </select>
                 </div>
                 <div class="col-12  col-md-3 mb-3">
-                    <input id="duration" type="number" placeholder="Enter Smartcard">
+                    <input id="duration" type="text" placeholder="Enter Smartcard" [(ngModel)]="searchname">
                 </div>
-                <button class="btn custom-btn mx-3" type="button">
+                <button class="btn custom-btn mx-3" type="button" (click)="submit(1)">
                     Total list
                 </button>
-                <button class="btn custom-btn mx-1" type="button">
+                <button class="btn custom-btn mx-1" type="button" (click)="submit(2)">
                     On list
                 </button>
 
-                <button class="btn custom-btn mx-1" type="button">
+                <button class="btn custom-btn mx-1" type="button" (click)="submit(3)">
                     Off list
                 </button>
             </div>
@@ -140,7 +141,7 @@
                                         <label for="subscriberName">Subscriber Name</label>
                                     </div>
                                     <div class="col-6">
-                                        TTTESY
+                                        {{reccuringData?.customername}}
                                     </div>
                                 </div>
                                 <div class="row mb-3">
@@ -149,7 +150,53 @@
                                     </div>
                                     <div class="col-6 d-flex justify-content-between align-items-center">
                                         <div class="col-9">
-                                            <span>1210500000000003BDF1</span>
+                                            <span> {{reccuringData?.smartcard}}</span>
+                                        </div>
+                                        <div class="col-3 text-end">
+                                            <input type="checkbox" class="form-check-input checkbox" id="recurring" [(ngModel)]="isrecurring">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row mb-3">
+                                    <div class="col-6">
+                                        <label for="boxId">Box Id</label>
+                                    </div>
+                                    <div class="col-6">
+                                        {{reccuringData?.boxid}}
+                                    </div>
+                                </div>
+                                <div class="row mb-3">
+                                    <div class="col-6">
+                                        <label for="expiryDate">Expiry Date</label>
+                                    </div>
+                                    <div class="col-6">
+                                        {{reccuringData?.expirydate}} </div>
+                                </div>
+                                <div class="row mb-3">
+                                    <div class="col-6">
+                                        <label for="address">Address</label>
+                                    </div>
+                                    <div class="col-6">
+                                        {{reccuringData?.address}} </div>
+                                </div>
+                            </div>
+
+                            <!-- <div class="card p-3 mx-2 mb-3">
+                                <div class="row mb-3">
+                                    <div class="col-6">
+                                        <label for="subscriberName">Subscriber Name</label>
+                                    </div>
+                                    <div class="col-6">
+                                        {{reccuringData?.customername}}
+                                    </div>
+                                </div>
+                                <div class="row mb-3">
+                                    <div class="col-6">
+                                        <label for="smartcard">Smartcard</label>
+                                    </div>
+                                    <div class="col-6 d-flex justify-content-between align-items-center">
+                                        <div class="col-9">
+                                            <span>     {{reccuringData?.customername}}</span>
                                         </div>
                                         <div class="col-3 text-end">
                                             <input type="checkbox" class="form-check-input checkbox" id="recurring">
@@ -161,7 +208,7 @@
                                         <label for="boxId">Box Id</label>
                                     </div>
                                     <div class="col-6">
-                                        236688114870
+                                        {{reccuringData?.customername}}
                                     </div>
                                 </div>
                                 <div class="row mb-3">
@@ -181,7 +228,7 @@
                                     </div>
                                 </div>
                             </div>
-                     
+
                             <div class="card p-3 mx-2 mb-3">
                                 <div class="row mb-3">
                                     <div class="col-6">
@@ -229,7 +276,7 @@
                                     </div>
                                 </div>
                             </div>
-                 
+
                             <div class="card p-3 mx-2 mb-3">
                                 <div class="row mb-3">
                                     <div class="col-6">
@@ -276,59 +323,11 @@
                                         Reddiyarpalayam
                                     </div>
                                 </div>
-                            </div>
-                 
-                            <div class="card p-3 mx-2 mb-3">
-                                <div class="row mb-3">
-                                    <div class="col-6">
-                                        <label for="subscriberName">Subscriber Name</label>
-                                    </div>
-                                    <div class="col-6">
-                                        TTTESY
-                                    </div>
-                                </div>
-                                <div class="row mb-3">
-                                    <div class="col-6">
-                                        <label for="smartcard">Smartcard</label>
-                                    </div>
-                                    <div class="col-6 d-flex justify-content-between align-items-center">
-                                        <div class="col-9">
-                                            <span>1210500000000003BDF1</span>
-                                        </div>
-                                        <div class="col-3 text-end">
-                                            <input type="checkbox" class="form-check-input checkbox" id="recurring">
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="row mb-3">
-                                    <div class="col-6">
-                                        <label for="boxId">Box Id</label>
-                                    </div>
-                                    <div class="col-6">
-                                        236688114870
-                                    </div>
-                                </div>
-                                <div class="row mb-3">
-                                    <div class="col-6">
-                                        <label for="expiryDate">Expiry Date</label>
-                                    </div>
-                                    <div class="col-6">
-                                        2024-09-13 23:59:59.0
-                                    </div>
-                                </div>
-                                <div class="row mb-3">
-                                    <div class="col-6">
-                                        <label for="address">Address</label>
-                                    </div>
-                                    <div class="col-6">
-                                        Reddiyarpalayam
-                                    </div>
-                                </div>
-                            </div>
+                            </div> -->
                         </div>
                     </div>
                 </div>
-                
+
             </div>
         </div>
     </div>

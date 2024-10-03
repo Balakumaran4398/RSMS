@@ -7,6 +7,10 @@ import { AddLcoBusinessComponent } from '../../channel_setting/_Dialogue/operato
 import { NewLcoComponent } from '../../channel_setting/_Dialogue/operator/new-lco/new-lco.component';
 import { BaseService } from 'src/app/_core/service/base.service';
 import { StorageService } from 'src/app/_core/service/storage.service';
+import { Router } from '@angular/router';
+import { LcodashboardComponent } from '../../channel_setting/_Dialogue/operator/lcodashboard/lcodashboard.component';
+import { DataService } from 'src/app/_core/service/Data.service';
+import { OperatordialogueComponent } from '../../channel_setting/_Dialogue/operator/operatordialogue/operatordialogue.component';
 
 interface Food {
   value: string;
@@ -43,17 +47,18 @@ export class OperatorDetailsComponent {
   blockcount: any;
   boxinhand: any;
   totalbox: any;
+  activeItem: any;
   operator_details: any = [];
   businessList: any[] = [];
   operatorList: any[] = [];
-  constructor(public responsive: BreakpointObserver, public dialog: MatDialog, private userservice: BaseService, private storageservice: StorageService) {
+  dashboardDetails: any;
+  constructor(public responsive: BreakpointObserver, private dataService: DataService, private router: Router, public dialog: MatDialog, private userservice: BaseService, private storageservice: StorageService) {
     this.role = storageservice.getUserRole();
     this.username = storageservice.getUsername();
     this.userservice.OperatorDetails(this.role, this.username, this.operatorid).subscribe(
       (data: any) => {
-        console.log(data);
         this.operator_details = data;
-        console.log(this.operator_details);
+        this.dashboardDetails = data.map((item: any) => item.list);
       });
   }
   ngOnInit(): void {
@@ -108,22 +113,7 @@ export class OperatorDetailsComponent {
     }
   }
 
-  // toggleedit(operatorid: any) {
-  //   console.log('operatorid       =' + operatorid);
-  //   const dialogRef = this.dialog.open(EditLcoComponent, {
-  //     width: '800px',
-  //     panelClass: 'custom-dialog-container',
-  //     data: {
-  //       operatorid: operatorid,
-  //       operator_details: this.operator_details,
-  //       operatorlist: this.businessList
-  //     }
-  //   });
 
-  //   dialogRef.afterClosed().subscribe(result => {
-  //     console.log('The dialog was closed');
-  //   });
-  // }
   toggleedit(operatorid: any) {
     console.log('Editing operator with ID:', operatorid);
     const selectedOperator = this.operator_details.find((operator: any) => operator.operatorid === operatorid);
@@ -164,17 +154,7 @@ export class OperatorDetailsComponent {
     }
 
   }
-  // togglepermission(data: any) {
-  //   const dialogRef = this.dialog.open(SpecialPermissionComponent, {
-  //     width: '800px',
-  //     panelClass: 'custom-dialog-container',
-  //     data: data
-  //   });
 
-  //   dialogRef.afterClosed().subscribe(result => {
-  //     console.log('The dialog was closed');
-  //   });
-  // }
   New_lco() {
     console.log(this.businessList);
     const dialogRef = this.dialog.open(NewLcoComponent, {
@@ -204,5 +184,41 @@ export class OperatorDetailsComponent {
   cancel_special_permission() {
     this.permission_dialog = !this.permission_dialog;
   }
+  navgetToUrl(operatorid: number) {
+    const detailsList = this.operator_details.find((op: any) => op.operatorid === operatorid);
+    this.dataService.setDialogData({ detailsList });
+    this.router.navigateByUrl(`/admin/lcodashboard/${operatorid}`);
+    console.log(detailsList);
+    
+  }
+  // navgetToUrl(operatorid: number) {
+  //   console.log(operatorid);
 
+  //   this.router.navigateByUrl(`/admin/lcodashboard/${operatorid}`);
+  //   let dialogData = { detailsList: this.operator_details.find((op:any) => op.operatorid === operatorid) };
+  //   console.log(dialogData);
+  // }
+  // navgetToUrl() {
+  //   this.router.navigate(['/lcodashboard'], {
+  //     queryParams: { data: JSON.stringify(this.operator_details) }
+  //   });
+  // }
+  lcodashoard(type: string): void {
+    let dialogData = { type: type, detailsList: this.operator_details, };
+
+    const dialogRef = this.dialog.open(LcodashboardComponent, {
+      width: '1000px',
+      panelClass: 'custom-dialog-container',
+      data: dialogData
+    });
+  }
+  openDialog(type: string): void {
+    let dialogData = { type: type, detailsList: this.operator_details, };
+
+    const dialogRef = this.dialog.open(OperatordialogueComponent, {
+      width: '500px',
+      panelClass: 'custom-dialog-container',
+      data: dialogData
+    });
+  }
 }

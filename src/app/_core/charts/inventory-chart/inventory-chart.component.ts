@@ -1,51 +1,31 @@
 import { Component } from '@angular/core';
 
-
 @Component({
   selector: 'app-inventory-chart',
   templateUrl: './inventory-chart.component.html',
-  styleUrls: ['./inventory-chart.component.scss']
+  styleUrls: ['./inventory-chart.component.scss'],
 })
 export class InventoryChartComponent {
-  public options: any = {
+  chartOptions = {
+
+    // exportEnabled: true,
     title: {
-      text: 'Inventory Details',
-      fontSize: 18,
-      fontWeight: '500'
+      text: "INVENTORY DETAILS",
+      fontSize: 20, 
+			fontWeight:600
     },
-    series: [
-      {
-        type: 'pie',
-        angleKey: 'value',
-        labelKey: 'category',
-        fills: ['#008FFB', '#00E396', '#FEB019', '#FF4560', '#775DD0'],
-        strokes: ['#0055FF', '#00C38A', '#FF9900', '#FF1355', '#6842F4'],
-        tooltipRenderer: (params: { datum: { category: any; value: any; }; }) => {
-          return `<div style="text-align: center; font-weight: bold;">${params.datum.category}</div>
-                  <div style="text-align: center;">Value: ${params.datum.value}</div>`;
-        },
-        label: {
-          enabled: true,
-          minRequiredAngle: 0, // Show labels for all slices
-          position: 'inside',
-          color: '#ffffff', // Label text color
-          fontSize: 14,
-          fontWeight: 'bold',
-          offset: 0 // Offset label inside the pie slice
-        },
-        callout: {
-          colors: ['#008FFB', '#00E396', '#FEB019', '#FF4560', '#775DD0'],
-          length: 10, // Length of the line from slice to callout
-          strokeWidth: 2 // Stroke width of the callout line
-        },
-        data: [
-          { category: 'Category A', value: 75 },
-          { category: 'Category B', value: 10 },
-          { category: 'Category C', value: 10 },
-          { category: 'Category D', value: 5 }
-        ]
-      }
-    ]
-  };
+
+    data: [{
+      type: "pie",
+      // indexLabel: "{name}: {y}%",
+      dataPoints: [
+        { name: "Overhead", y: 36.1, color: "#77edd0" },      
+        { name: "Problem Solving", y: 3.7, color: "#20c931" },  
+        { name: "Debugging", y: 16.4, color: "#33a5d6" },       
+        // { name: "Writing Code", y: 30.7, color: "#FFC300" },  
+        // { name: "Firefighting", y: 20.1, color: "#C70039" } 
+      ]
+    }]
+  }
   
 }

@@ -1,0 +1,24 @@
+<div 
+    class="col d-flex justify-content-center align-items-center card transparent-background dialog-content">
+    <div class="card-content " style="width: 100%;">
+        <div class="Head d-flex justify-content-between align-items-center mb-3">
+            <h5 class="span" style="color: white;"> NEW STREET</h5>
+            <i class="fa fa-close close-icon" style="cursor: pointer;" (click)="onNoClick()"></i>
+        </div>
+        <div class="card-body" style="padding: 1rem;">
+            <div class="input_box display align-items-center mb-3">
+                <div class="col-12 col-md-6">
+                    <span for="categoryName" class="me-2">STREET NAME</span>
+                </div>
+                <div class="col-12 col-md-6">
+                    <input type="text" [(ngModel)]="streetname">
+                </div>
+            </div>
+            
+            <div class="form-group d-flex justify-content-end align-items-center mb-3">
+                <button type="button" class="btn btn-success me-2" (click)="newStreet()">Save</button>
+                <button type="button" class="btn btn-danger" (click)="onNoClick()">Cancel</button>
+            </div>
+        </div>
+    </div>
+</div>

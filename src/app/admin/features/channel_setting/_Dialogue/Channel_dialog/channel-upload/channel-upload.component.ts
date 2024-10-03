@@ -185,7 +185,7 @@ export class ChannelUploadComponent {
     formData.append('username', this.username);
 
     // Upload the file first
-    this.userservice.Upload_CHANNEL(formData).subscribe(
+    this.userservice.uploadChannellist(formData).subscribe(
       (res: any) => {
         console.log('Upload successful:', res);
 

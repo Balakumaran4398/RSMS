@@ -9,108 +9,152 @@
             <div class="col-12 col-md-4 mx-2 mb-3">
                 <div class="card ">
                     <div class="d-flex">
-                        <div class="col-6 col-md-6 col-sm-4 " style="padding: 0.5rem;">
-                            <img src="/assets/images/icons/user_1.png" alt="" style="width: 35px;">
+                        <div class="col-3 col-md-2 " style="padding: 0.5rem;">
+                            <img [src]="subdetailsList?.Photo ? subdetailsList?.Photo : '/assets/images/login/contact1.png'"
+                                alt="Customer Photo" style="width: 50px;">
                         </div>
-                        <div class="col-6 col-md-6 col-sm-4 display1" style="padding: 0.5rem;">
-                            abi
-                        </div>
-                    </div>
-                    <div class="d-flex">
-                        <div class="col-6 col-md-4" style="padding: 0.5rem;">
-                            <label for="">Area Name</label>
-                        </div>
-                        <div class="col-6 col-md-6 display1">
-                            area 1
-                        </div>
-                    </div>
-                    <div class="d-flex">
-                        <div class="col-6 col-md-4" style="padding: 0.5rem;">
-                            <label for="">Area Name</label>
-                        </div>
-                        <div class="col-6 col-md-6 display1">
-                            abi
-                        </div>
-                    </div>
-                    <div class="d-flex">
-                        <div class="col-6 col-md-4" style="padding: 0.5rem;">
-                            <label for="">LCO Name</label>
-                        </div>
-                        <div class="col-6 col-md-6 display1">
-                            abi
-                        </div>
-                    </div>
-                    <div class="d-flex">
-                        <div class="col-6 col-md-4" style="padding: 0.5rem;">
-                            <label for="">LCO Balance</label>
-                        </div>
-                        <div class="col-6 col-md-6 display1">
-                            abi
-                        </div>
-                    </div>
-                    <div class="d-flex">
-                        <div class="col-6 col-md-4" style="padding: 0.5rem;">
-                            <label for="">LCO Contact</label>
-                        </div>
-                        <div class="col-6 col-md-6 display1">
-                            abi
-                        </div>
-                    </div>
-                    <div class="d-flex">
-                        <div class="col-6 col-md-4" style="padding: 0.5rem;">
-                            <label for="">Area & Cus No</label>
-                        </div>
-                        <div class="col-6 col-md-6 display1 ">
-                            abi
+                        <div class=" col-9 col-md-8  d-block justify-content-center align-items-center ">
+                            <div class="d-flex">
+                                <div class="col-5 col-md-5 d-flex justify-content-start align-items-center "
+                                    style="padding: 0.5rem;">
+                                    <h4>Name</h4>
+                                </div>
+                                <div class="col-1 col-md-1 d-flex justify-content-start align-items-center ">
+                                    <h5>:</h5>
+                                </div>
+                                <div class="col-6 col-md-8 display1 justify-content-start align-items-center ">
+                                    <h5 style="color: rgb(66, 64, 64);">{{subdetailsList?.customername}}</h5>
+                                </div>
+                            </div>
+                            <div class="d-flex">
+                                <div class="col-5 col-md-5 d-flex justify-content-start align-items-center "
+                                    style="padding: 0.5rem;">
+                                    <h5>Mobile No</h5>
+                                </div>
+                                <div class="col-1 col-md-1 d-flex justify-content-start align-items-center ">
+                                    <h5>:</h5>
+                                </div>
+                                <div class="col-6 col-md-6 display1 justify-content-start align-items-center ">
+                                    <h6 style="color: rgb(66, 64, 64);">{{subdetailsList?.mobileno}}</h6>
+                                </div>
+                            </div>
                         </div>
                     </div>
                     <div class="line mb-2"></div>
                     <div class="col-12 col-md-12 mx-3 mb-3">
                         <div class="d-flex align-items-center justify-content-center icon-container">
                             <div class="icon-item d-flex align-item-center tooltip-container"
-                                style="background-color: rgb(94, 77, 243);" (click)="Lodin_details()">
+                                style="background-color: var(--primary-color);" (click)="openDialog('logindetails')">
                                 <i class="fa fa-eye" style="font-size:15px;color: white;"></i>
                                 <div class="tooltip-content">Login Details</div>
                             </div>
                             <div class="icon-item d-flex align-item-center tooltip-container"
-                                style="background-color: rgb(241, 50, 108);" (click)="Download()">
+                                style="background-color: var(--primary-color);" (click)="Download()">
                                 <i class="fa fa-download" aria-hidden="true" style="font-size:15px;color: white;"></i>
                                 <div class="tooltip-content">CAS Form</div>
                             </div>
                             <div class="icon-item d-flex align-item-center tooltip-container"
-                                style="background-color: rgb(94, 77, 243);" (click)="Edit_subscriber_details()">
+                                style="background-color: var(--primary-color);"
+                                (click)="Edit_subscriber_details('editDetails')">
                                 <i class="fas fa-edit" style="font-size:14px;color: white;"></i>
                                 <div class="tooltip-content">Edit </div>
                             </div>
                             <div class="icon-item d-flex align-item-center tooltip-container"
-                                style="background-color: rgb(241, 50, 108);" (click)="Report()">
+                                style="background-color: var(--primary-color);"
+                                (click)="openDialog('ConfirmationReport')">
                                 <i class="fa fa-refresh" style="font-size:15px;color: white;"></i>
                                 <div class="tooltip-content">Recharge Bill</div>
                             </div>
                         </div>
                     </div>
+                    <div class="col-12 col-md-12 mobile1" style="padding: 1rem;">
 
+
+                        <div class="d-flex">
+
+                            <div class="col-6 col-md-4 d-flex justify-content-start align-items-center mb-1 text2">
+                                Area Name </div>
+                            <div class="col-1 col-md-1 d-flex justify-content-center align-items-center mb-1 text2">
+                                : </div>
+                            <div class="col-6 col-md-8 d-flex justify-content-start align-items-center">
+                                {{subdetailsList?.areaname}}
+                            </div>
+                        </div>
+                        <div class="d-flex">
+
+                            <div class="col-6 col-md-4 d-flex justify-content-start align-items-center mb-1 text2">
+                                Street Name </div>
+                            <div class="col-1 col-md-1 d-flex justify-content-center align-items-center mb-1 text2">
+                                : </div>
+                            <div class="col-6 col-md-6 d-flex justify-content-start align-items-center">
+                                {{subdetailsList?.streetname}}
+                            </div>
+                        </div>
+                        <div class="d-flex">
+
+                            <div class="col-6 col-md-4 d-flex justify-content-start align-items-center mb-1 text2">
+                                LCO Name </div>
+                            <div class="col-1 col-md-1 d-flex justify-content-center align-items-center mb-1 text2">
+                                : </div>
+                            <div class="col-6 col-md-6 d-flex justify-content-start align-items-center"
+                                style="color: rgb(66, 0, 128);">
+                                {{subdetailsList?.operatorname}}
+                            </div>
+
+                        </div>
+                        <div class="d-flex">
+
+                            <div class="col-6 col-md-4 d-flex justify-content-start align-items-center mb-1 text2">
+                                LCO Balance</div>
+                            <div class="col-1 col-md-1 d-flex justify-content-center align-items-center mb-1 text2">
+                                : </div>
+                            <div class="col-6 col-md-6 d-flex justify-content-start align-items-center"
+                                style="color: green;">
+                                <i class="fa-solid fa-indian-rupee-sign mx-2" style="color: green;"></i>
+                                {{subdetailsList?.opbalance}}
+                            </div>
+                        </div>
+                        <div class="d-flex">
+
+                            <div class="col-6 col-md-4 d-flex justify-content-start align-items-center mb-1 text2">
+                                LCO Contact </div>
+                            <div class="col-1 col-md-1 d-flex justify-content-center align-items-center mb-1 text2">
+                                : </div>
+                            <div class="col-6 col-md-6 d-flex justify-content-start align-items-center"
+                                style="color: rgb(5, 62, 167);">
+                                {{subdetailsList?.operatorcontact}}
+                            </div>
+                        </div>
+                        <!-- <div class="d-flex">
+
+                            <div class="col-6 col-md-4 d-flex justify-content-start align-items-center mb-1 text2">
+                                Area & Cus No </div>
+                            <div class="col-1 col-md-1 d-flex justify-content-center align-items-center mb-1 text2">
+                                : </div>
+                            <div class="col-6 col-md-6 d-flex justify-content-start align-items-center ">
+                                {{subdetailsList?.acount}}
+                            </div>
+                        </div> -->
+
+                    </div>
 
                 </div>
-
             </div>
             <div class="col-12 col-md-8 col-md-8 mx-2">
                 <div class="card">
                     <div class="d-flex justify-content-between align-item-center mb-1">
                         <div class="d-flex" style="padding: 10px;">
                             <img src="assets/images/icons/smartcard.png" alt="" style="width: 35px;">&nbsp;&nbsp;
-                            <!-- <div class="d-flex justify-content-center align-item-center" style="margin: auto;"> -->
                             <h6 style="margin: auto;"> SMARTCARD LIST</h6>
-                            <!-- </div> -->
                         </div>
                         <div class="d-flex  icon-container" style="padding: 10px;">
                             <div class="icon-item d-flex align-item-center tooltip-container"
-                                style="background-color: rgb(241, 50, 108);" (click)="Report()">
-                                <i class="fas fa-angle-double-right	" style="font-size:15px;color: white;"></i>
+                                style="background-color:var(--primary-color);" (click)="openDialog('change_lco')">
+                                <i class="fa fa-refresh	" style="font-size:15px;color: white;"></i>
                                 <div class="tooltip-content">Change LCO</div>
                             </div>
                             <div class="icon-item d-flex align-item-center tooltip-container"
-                                style="background-color: rgb(241, 50, 108);" (click)="Report()">
+                                style="background-color: var(--primary-color);" (click)="openDialog('addSmartcard')">
                                 <i class="fa fa-plus" style="font-size:15px;color: white;"></i>
                                 <div class="tooltip-content">Add Smartcard</div>
                             </div>
@@ -127,7 +171,7 @@
             </div>
         </div>
     </section>
-    <section>
+    <section *ngIf="subscriersmartcarddashoard">
         <div class="display align-item-center">
             <div class="col-12 col-md-4 mx-2 mb-3">
                 <div class="card ">
@@ -139,36 +183,90 @@
                     </div>
                     <div class="col-12 d-flex justify-content-center align-item-center mb-1"
                         style="background-color: rgb(223, 223, 219);padding: 5px;">
-                        1210500000000003BDF5
+                        {{subdetailsList?.smartcard}}
                     </div>
                     <div class="col-12 d-flex justify-content-center align-item-center mb-1"
                         style="color: green;padding: 5px;font-size: 16px;">
-                        MV PRIME PACKE (TEST)
+                        MV PRIME PACK (TEST)
                     </div>
-                    <div class="col-12 d-flex justify-content-center align-item-center mb-1"
+                    <!-- <div class="col-12 d-flex justify-content-center align-item-center mb-1"
                         style="background-color: rgb(206, 218, 206);padding: 5px;font-size: 15px;">
                         DAYS
-                    </div>
-                    <div class="d-flex">
-                        <div class="col-4 col-md-4 col-sm-4 " style="padding: 0.5rem;">
-                            <div class="d-block">
-                                <div style="color: red;">Aug</div>
-                                <div style="color: red;font-size: 20px;font-weight: 700;">17</div>
-                                <div style="font-size: 13px;">2024</div>
+                    </div> -->
+                    <!-- <div class="progress-container">
+                        <div class="progress" style="position: relative; height: 30px;">
+                            <div class="progress-bar progress-bar-striped bg-success" role="progressbar"
+                                style="width: 100%;" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100">
+                            </div>
+                            <div class="progress-label">
+                                DAYS
                             </div>
                         </div>
-                        <div class="col-4 col-md-4 col-sm-4 display1" style="padding: 0.5rem;">
+                    </div> -->
+
+                    <div class="progress-container">
+                        <div class="progress" style="position: relative; height: 30px;">
+
+                            <!-- Success (100% part) -->
+                            <div class="progress-bar progress-bar-striped bg-success" role="progressbar"
+                                style="width: 100%;" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100">
+                            </div>
+
+                            <!-- Info (25% part) -->
+                            <div class="progress-bar progress-bar-striped bg-info" role="progressbar"
+                                style="width: 25%; position: absolute; left: 0;" aria-valuenow="25" aria-valuemin="0"
+                                aria-valuemax="100">
+                            </div>
+
+                            <!-- Warning (20% part) -->
+                            <div class="progress-bar progress-bar-striped bg-warning" role="progressbar"
+                                style="width: 20%; position: absolute; left: 0;" aria-valuenow="20" aria-valuemin="0"
+                                aria-valuemax="100">
+                            </div>
+
+                            <!-- Danger (5% part) -->
+                            <div class="progress-bar progress-bar-striped bg-danger" role="progressbar"
+                                style="width: 5%; position: absolute; left: 0;" aria-valuenow="5" aria-valuemin="0"
+                                aria-valuemax="100">
+                            </div>
+
+                            <!-- Text overlay (DAYS) -->
+                            <div class="progress-label"
+                                style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); font-weight: bold; color: white;">
+                                DAYS
+                            </div>
+
+                        </div>
+                    </div>
+
+                    <!-- <mat-progress-bar mode="determinate" style="height: 50px;" value="40"></mat-progress-bar> -->
+                    <div class="d-flex">
+                        <div class="col-4 col-md-4 col-sm-4 display1 justify-content-start align-items-center "
+                            style="padding: 0.5rem;">
                             <div class="d-block">
-                                <div style="font-size: 12px;text-align: center;font-weight: 700;">26</div>
-                                <div style="font-size: 12px;">days remaining
+                                <div style="color: red;"> {{subdetailsList?.monthupstr}}</div>
+                                <div style="color: red;font-size: 20px;font-weight: 700;">{{subdetailsList?.dayup}}
+                                </div>
+                                <div style="color: red;font-size: 13px;"> {{subdetailsList?.yearup}}</div>
+                            </div>
+                        </div>
+                        <div class="col-4 col-md-4 col-sm-4 display1 display1 justify-content-center align-items-center "
+                            style="padding: 0.5rem;">
+                            <div class="d-block">
+                                <div
+                                    style="color: rgb(22, 79, 236);font-size: 40px;text-align: center;font-weight: 700;">
+                                    {{subdetailsList?.noofdays}}</div>
+                                <div style="font-size: 12px;">Days remaining
                                 </div>
                             </div>
                         </div>
-                        <div class="col-4 col-md-4 col-sm-4 display1" style="padding: 0.5rem;">
+                        <div class="col-4 col-md-4 col-sm-4 display1 justify-content-end align-items-center"
+                            style="padding: 0.5rem;">
                             <div class="d-block">
-                                <div style="color: green;">Sep</div>
-                                <div style="color: green;font-size: 20px;;font-weight: 700;">17</div>
-                                <div style="font-size: 13px;">2024</div>
+                                <div style="color: green;"> {{subdetailsList?.monthexpstr}}</div>
+                                <div style="color: green;font-size: 20px;;font-weight: 700;">{{subdetailsList?.dayexp}}
+                                </div>
+                                <div style="color: green;font-size: 13px;"> {{subdetailsList?.yearexp}}</div>
                             </div>
                         </div>
                     </div>
@@ -191,12 +289,12 @@
                             Addon Package
                         </div>
                         <div class="col-3 col-md-3 text" style="color: rgb(71, 70, 69);text-align: center;">
-                            0
+                            {{subdetailsList?.acount}}
                         </div>
                         <div class="col-3 col-md-3 text" style="color: green;text-align: center;">
-                            0 </div>
+                            {{subdetailsList?.bcount}} </div>
                         <div class="col-3 col-md-3 text" style="color: red;text-align: center;">
-                            0
+                            {{subdetailsList?.dcount}}
                         </div>
                     </div>
                     <div class="d-flex">
@@ -204,22 +302,20 @@
                             Alacarte
                         </div>
                         <div class="col-3 col-md-3 text" style="color: rgb(71, 70, 69);text-align: center;">
-                            0
+                            {{subdetailsList?.totalchannels}}
                         </div>
                         <div class="col-3 col-md-3 text" style="color: green;text-align: center;">
-                            0 </div>
+                            {{subdetailsList?.ftachannels}} </div>
                         <div class="col-3 col-md-3 text" style="color: red;text-align: center;">
-                            0
+                            {{subdetailsList?.paychannels}}
                         </div>
                     </div>
-                    <div class="line mb-2"></div>
+                    <!-- <div class="line mb-2"></div>
                     <div class="col-12 col-md-12 mx-3 mb-3">
                         <div class="d-flex align-items-center justify-content-center icon-container">
 
                         </div>
-                    </div>
-
-
+                    </div> -->
                 </div>
             </div>
             <div class="col-12 col-md-8 col-md-8 mx-2">
@@ -227,28 +323,25 @@
                     <div class="d-flex justify-content-between align-item-center mb-1">
                         <div class="d-flex" style="padding: 10px;">
                             <img src="assets/images/icons/smartcard.png" alt="" style="width: 35px;">&nbsp;&nbsp;
-                            <!-- <div class="d-flex justify-content-center align-item-center" style="margin: auto;"> -->
-                            <h6 style="margin: auto;"> 1210500000000003BDF5</h6>
-                            <!-- </div> -->
+                            <h6 style="margin: auto;"> {{subdetailsList?.smartcard}}</h6>
                         </div>
-                        <div class="d-flex  icon-container" style="padding: 10px;">
+                        <!-- <div class="d-flex  icon-container" style="padding: 10px;">
                             <div class="icon-item d-flex align-item-center tooltip-container"
-                                style="background-color: rgb(241, 50, 108);" (click)="Report()">
+                                style="background-color: rgb(241, 50, 108);" (click)="openDialog('')">
                                 <i class="fas fa-angle-double-right	" style="font-size:15px;color: white;"></i>
                                 <div class="tooltip-content">Change LCO</div>
                             </div>
 
-                        </div>
+                        </div> -->
                     </div>
                     <div class="line"></div>
                     <div class="mobile">
                         <div class="col-12 col-md-5  mobile1">
                             <div class="col-12 col-md-12 display_btn">
                                 <div class="col-6 col-md-6 d-flex justify-content-start align-items-center mb-1 text2">
-                                    Box
-                                    Number </div>
+                                    Box Number </div>
                                 <div class="col-6 col-md-6 d-flex justify-content-start align-items-center">
-                                    236688114874
+                                    {{subdetailsList?.boxid}}
                                 </div>
 
                             </div>
@@ -257,17 +350,15 @@
                                     Activation Date
                                 </div>
                                 <div class="col-6 col-md-6 d-flex justify-content-start align-items-center">
-                                    2023-08-08 18:39:14.0
-
+                                    {{subdetailsList?.activationdate}}
                                 </div>
-
                             </div>
                             <div class="col-12 col-md-12 display_btn">
                                 <div class="col-6 col-md-6 d-flex justify-content-start align-items-center mb-1 text2">
                                     Package Updated Date
                                 </div>
                                 <div class="col-6 col-md-6 d-flex justify-content-start align-items-center">
-                                    236688114874
+                                    {{subdetailsList?.packageupdateddate }}
                                 </div>
 
                             </div>
@@ -275,15 +366,14 @@
                                 <div class="col-6 col-md-6 d-flex justify-content-start align-items-center mb-1 text2">
                                     Expiry Date</div>
                                 <div class="col-6 col-md-6 d-flex justify-content-start align-items-center">
-                                    236688114874
-                                </div>
+                                    {{subdetailsList?.expirydate}} </div>
 
                             </div>
                             <div class="col-12 col-md-12 display_btn">
                                 <div class="col-6 col-md-6 d-flex justify-content-start align-items-center mb-1 text2">
                                     PIN Number</div>
                                 <div class="col-6 col-md-6 d-flex justify-content-start align-items-center">
-                                    236688114874
+                                    {{subdetailsList?.pinnumber}}
                                 </div>
 
                             </div>
@@ -292,7 +382,7 @@
                                     PVR Status
                                 </div>
                                 <div class="col-6 col-md-6 d-flex justify-content-start align-items-center">
-                                    236688114874
+                                    {{subdetailsList?.pvrdisplay}}
                                 </div>
 
                             </div>
@@ -301,7 +391,10 @@
                                     Box Status
                                 </div>
                                 <div class="col-6 col-md-6 d-flex justify-content-start align-items-center">
-                                    236688114874
+                                    <span [ngClass]="subdetailsList?.boxstatus ? 'new-green' : 'old-red'">
+                                        {{ subdetailsList?.boxstatus ? 'New' : 'Old' }}
+                                    </span>
+
                                 </div>
                             </div>
                         </div>
@@ -309,96 +402,334 @@
                             <div class="col-12 col-md-12 display_btn1">
                                 <div
                                     class="col-12 col-md-6 display_btn1 justify-content-center align-items-center text3">
-                                    <button class="btn  d-flex justify-content-between">
+                                    <button class="btn  d-flex justify-content-between" (click)="openDialog('refresh')"
+                                        [disabled]="!subdetailsList?.boxstatus === false">
                                         <i class="fa fa-refresh"></i><span>Refresh</span></button>
                                 </div>
                                 <div
                                     class="col-12 col-md-6 display_btn1 justify-content-center align-items-center  text3">
-                                    <button class="btn  d-flex justify-content-between">
+                                    <button class="btn  d-flex justify-content-between"
+                                        [disabled]="subdetailsList?.status=== 0"
+                                        (click)="openDialog('packagactivation')">
                                         <i class="fa-solid fa-gears"></i><span>Package
                                             Activation</span></button>
                                 </div>
 
                             </div>
                             <div class="col-12 col-md-12 display_btn1">
-                                <div class="col-12 col-md-6 d-flex justify-content-center align-items-center  text3">
-                                    <button class="btn  d-flex justify-content-between">
+                                <div class="col-12 col-md-6 d-flex justify-content-center align-items-center  text3"
+                                    *ngIf="!deactive">
+                                    <button class="btn  d-flex justify-content-between " [disabled]="!activation"
+                                        (click)="openDialog('activation')">
                                         <i class="fa-brands fa-slack"></i><span>Activation</span></button>
                                 </div>
-                                <div class="col-12 col-md-6 d-flex justify-content-center align-items-center  text3">
-                                    <button class="btn  d-flex justify-content-between">
+                                <div class="col-12 col-md-6 d-flex justify-content-center align-items-center  text3"
+                                    *ngIf="deactive">
+                                    <button class="btn  d-flex justify-content-between" [disabled]="!deactive"
+                                        (click)="openDialog('deactive')">
                                         <i class="fa fa-times"></i><span>De-Activation</span></button>
                                 </div>
-
-                            </div>
-                            <div class="col-12 col-md-12 display_btn1">
                                 <div class="col-12 col-md-6 d-flex justify-content-center align-items-center  text3">
-                                    <button class="btn  d-flex justify-content-between">
-                                        <i class="fa-solid fa-key"></i><span>PIN Change</span></button>
-                                </div>
-                                <div class="col-12 col-md-6 d-flex justify-content-center align-items-center  text3">
-                                    <button class="btn  d-flex justify-content-between"> <i
-                                            class="fa-solid fa-video"></i><span>PVR Option</span></button>
-                                </div>
-
-                            </div>
-                            <div class="col-12 col-md-12 display_btn1">
-                                <div class="col-12 col-md-6 d-flex justify-content-center align-items-center  text3">
-                                    <button class="btn  d-flex justify-content-between">
-                                        <i class="fa-solid fa-message"></i><span>Send Message</span></button>
-                                </div>
-                                <div class="col-12 col-md-6 d-flex justify-content-center align-items-center  text3">
-                                    <button class="btn  d-flex justify-content-between">
-                                        <i class="fas fa-trash"></i><span>Delete Message</span></button>
-                                </div>
-
-                            </div>
-                            <div class="col-12 col-md-12 display_btn1">
-                                <div class="col-12 col-md-6 d-flex justify-content-center align-items-center  text3">
-                                    <button class="btn  d-flex justify-content-between"> <i
-                                            class="fa-solid fa-right-left"></i><span>Force
-                                            Tuning</span></button>
-                                </div>
-                                <div class="col-12 col-md-6 d-flex justify-content-center align-items-center  text3">
-                                    <button class="btn  d-flex justify-content-between"> <i
-                                            class="fa-solid fa-share"></i><span>Smartcard Transfer</span></button>
-                                </div>
-                            </div>
-                            <div class="col-12 col-md-12 display_btn1">
-                                <div class="col-12 col-md-6 d-flex justify-content-center align-items-center  text3">
-                                    <button class="btn  d-flex justify-content-between"><i
-                                            class="fa-solid fa-share"></i><span>Box Transfer</span></button>
-                                </div>
-                                <div class="col-12 col-md-6 d-flex justify-content-center align-items-center  text3">
-                                    <button class="btn  d-flex justify-content-between"> <i
-                                            class="fa fa-file"></i><span>Suspend</span></button>
-                                </div>
-                            </div>
-                            <div class="col-12 col-md-12 display_btn1">
-                                <div class="col-12 col-md-6 d-flex justify-content-center align-items-center  text3">
-                                    <button class="btn  d-flex justify-content-between"> <i
-                                            class="fa fa-file"></i><span>Resume</span></button>
-                                </div>
-                                <div class="col-12 col-md-6 d-flex justify-content-center align-items-center  text3">
-                                    <button class="btn  d-flex justify-content-between">
+                                    <button class="btn  d-flex justify-content-between" [disabled]="!reactivation"
+                                        (click)="openDialog('reactivation')">
                                         <i class="fa-solid fa-repeat"></i><span>Re-Activation</span></button>
                                 </div>
                             </div>
                             <div class="col-12 col-md-12 display_btn1">
                                 <div class="col-12 col-md-6 d-flex justify-content-center align-items-center  text3">
-                                    <button class="btn  d-flex justify-content-between">
+                                    <button class="btn  d-flex justify-content-between" [disabled]="!pinchange"
+                                        (click)="openDialog('pinchange')">
+                                        <i class="fa-solid fa-key"></i><span>PIN Change</span></button>
+                                </div>
+                                <div class="col-12 col-md-6 d-flex justify-content-center align-items-center  text3">
+                                    <button class="btn  d-flex justify-content-between" [disabled]="!pvrchange"
+                                        (click)="openDialog('pvrchange')"> <i class="fa-solid fa-video"></i><span>PVR
+                                            Option</span></button>
+                                </div>
+
+                            </div>
+                            <div class="col-12 col-md-12 display_btn1">
+                                <div class="col-12 col-md-6 d-flex justify-content-center align-items-center  text3"
+                                    *ngIf="!sendmessage">
+                                    <button class="btn  d-flex justify-content-between" [disabled]="!sendmessage"
+                                        (click)="openDialog('sendmessage')">
+                                        <i class="fa-solid fa-message"></i><span>Send Message</span></button>
+                                </div>
+                                <div class="col-12 col-md-6 d-flex justify-content-center align-items-center  text3"
+                                    *ngIf="sendmessage">
+                                    <button class="btn  d-flex justify-content-between" [disabled]="!deletemessage"
+                                        (click)="openDialog('deletemessage')">
+                                        <i class="fas fa-trash"></i><span>Delete Message</span></button>
+                                </div>
+                                <div class="col-12 col-md-6 d-flex justify-content-center align-items-center  text3">
+                                    <button class="btn  d-flex justify-content-between" [disabled]="!forcetuning"
+                                        (click)="openDialog('forcetuning')"> <i
+                                            class="fa-solid fa-right-left"></i><span>Force
+                                            Tuning</span></button>
+                                </div>
+                            </div>
+                            <div class="col-12 col-md-12 display_btn1">
+                                <!-- <div class="col-12 col-md-6 d-flex justify-content-center align-items-center  text3">
+                                    <button class="btn  d-flex justify-content-between" [disabled]="!forcetuning"
+                                        (click)="openDialog('forcetuning')"> <i
+                                            class="fa-solid fa-right-left"></i><span>Force
+                                            Tuning</span></button>
+                                </div> -->
+                                <div class="col-12 col-md-6 d-flex justify-content-center align-items-center  text3">
+                                    <button class="btn d-flex justify-content-between" [disabled]="!smartcardchange"
+                                        (click)="openDialog('smartcardchange')">
+                                        <i class="fa-solid fa-share"></i><span>Smartcard Transfer</span>
+                                    </button>
+                                </div>
+                                <div class="col-12 col-md-6 d-flex justify-content-center align-items-center  text3">
+                                    <button class="btn  d-flex justify-content-between" [disabled]="!boxchange"
+                                        (click)="openDialog('boxchange')"><i class="fa-solid fa-share"></i><span>Box
+                                            Transfer</span></button>
+                                </div>
+                            </div>
+                            <div class="col-12 col-md-12 display_btn1">
+                                <!-- <div class="col-12 col-md-6 d-flex justify-content-center align-items-center  text3">
+                                    <button class="btn  d-flex justify-content-between" [disabled]="!boxchange"
+                                        (click)="openDialog('boxchange')"><i class="fa-solid fa-share"></i><span>Box
+                                            Transfer</span></button>
+                                </div> -->
+                                <div class="col-12 col-md-6 d-flex justify-content-center align-items-center  text3">
+                                    <button class="btn  d-flex justify-content-between" [disabled]="!suspend"
+                                        (click)="openDialog('suspend')">
+                                        <i class="fa fa-file"></i><span>Suspend</span></button>
+                                </div>
+                                <div class="col-12 col-md-6 d-flex justify-content-center align-items-center  text3">
+                                    <button class="btn  d-flex justify-content-between" [disabled]="!resumechange"
+                                        (click)="openDialog('resumechange')"> <i
+                                            class="fa fa-file"></i><span>Resume</span></button>
+                                </div>
+                            </div>
+                            <div class="col-12 col-md-12 display_btn1">
+                                <!-- <div class="col-12 col-md-6 d-flex justify-content-center align-items-center  text3">
+                                    <button class="btn  d-flex justify-content-between" [disabled]="!resumechange"
+                                        (click)="openDialog('resumechange')"> <i
+                                            class="fa fa-file"></i><span>Resume</span></button>
+                                </div> -->
+                                <!-- <div class="col-12 col-md-6 d-flex justify-content-center align-items-center  text3">
+                                    <button class="btn  d-flex justify-content-between" [disabled]="!reactivation"
+                                        (click)="openDialog('reactivation')">
+                                        <i class="fa-solid fa-repeat"></i><span>Re-Activation</span></button>
+                                </div> -->
+                            </div>
+                            <div class="col-12 col-md-12 display_btn1">
+                                <div class="col-12 col-md-6 d-flex justify-content-center align-items-center  text3">
+                                    <button class="btn  d-flex justify-content-between" [disabled]="!block"
+                                        (click)="openDialog('block')">
                                         <i class="fa-solid fa-ban" style="font-size:15px;color: #090f13;"></i><span
                                             style="font-size:15px;color: #090f13;">Block</span></button>
                                 </div>
-                                <div class="col-12 col-md-6 d-flex justify-content-center align-items-center  text3">
-                                    <button class="btn  d-flex justify-content-between">
-                                        <i class="fa fa-refresh"></i><span>Re-Activation</span></button>
+                                <!-- <div *ngIf="!cancelsubscription&&pair&&unpair"
+                                    class="col-12 col-md-6 d-flex justify-content-center align-items-center  text3">
+                                    <button class="btn  d-flex justify-content-between"
+                                        (click)="managePackage('cancelsubscription')">
+                                        <i class="fa fa-refresh"></i><span>Cancel Subscription</span></button>
+                                </div>
+                                <div *ngIf="!unpair&&cancelsubscription&&pair"
+                                    class="col-12 col-md-6 d-flex justify-content-center align-items-center  text3">
+                                    <button class="btn  d-flex justify-content-between" (click)="openDialog('unpair')">
+                                        <i class="fa-solid fa-ban" style="font-size:15px;color: #090f13;"></i><span
+                                            style="font-size:15px;color: #090f13;">Unpair</span></button>
+                                </div> -->
+                                <div
+                                class="col-12 col-md-6 d-flex justify-content-center align-items-center  text3">
+                                 <!-- *ngIf="!pair&&unpair&&cancelsubscription" -->
+                                    <button class="btn  d-flex justify-content-between" (click)="managePackage('pair')">
+                                        <i class="fa fa-refresh"></i><span>Pair</span></button>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
+        </div>
+    </section>
+    <section *ngIf="expandale" class="expandale">
+        <div class="card">
+            <mat-accordion class="example-headers-align">
+                <mat-expansion-panel [expanded]="step() === 0" (opened)="setStep(0)" hideToggle>
+                    <mat-expansion-panel-header>
+                        <mat-panel-title class="text2"> Manage Package</mat-panel-title>
+                    </mat-expansion-panel-header>
+
+                    <div class="col-12 col-md-12 col-md-8 mx-2">
+                        <div class="">
+                            <section class="Tab col-xl-12 col-sm-6 col-12  " style="max-height: 73vh;overflow: scroll;">
+                                <div class="display tablist justify-content-center align-items-center ">
+                                    <div class="tab mb-3" [class.active]="selectedTab === 'addon'"
+                                        (click)="managePackage('addon')">
+                                        ADDON ADD
+                                    </div>
+                                    <div class="tab mb-3" [class.active]="selectedTab === 'alacarte'"
+                                        (click)="managePackage('alacarte')">
+                                        ALACARTE ADD
+                                    </div>
+                                    <div class="tab mb-3" [class.active]="selectedTab === 'remove'"
+                                        (click)="managePackage('remove')">
+                                        REMOVE PRODUCT
+                                    </div>
+                                    <div class="tab mb-3" [class.active]="selectedTab === 'BASE'"
+                                        (click)="openDialog('BASE')">
+                                        BASE CHANGE
+                                    </div>
+                                </div>
+                            </section>
+
+
+
+                            <div class="d-flex justify-content-center align-item-center mb-1">
+                                <div class="d-flex  justify-content- align-item-center">
+                                    <h6 style="text-align: center;"> ACTIVE PRODUCT DETAILS</h6>
+                                </div>
+                            </div>
+
+                            <div class="col-12 col-md-12 mb-3">
+                                <ag-grid-angular #agGrid id="myGrid" domLayout='autoHeight'
+                                    class="ag-theme-alpine table-class" rowAnimation [gridOptions]="gridOptions"
+                                    [columnDefs]="columnDefs1" [rowData]="rowData1" (gridReady)="onGridReady()"
+                                    [rowSelection]="rowSelection" (selectionChanged)="onSelectionChanged()"
+                                    [enableCellTextSelection]="true">
+                                </ag-grid-angular>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="col-12 col-md-12 display justify-content-center align-items-center">
+                        <div class="input_box col-12 col-md-9">
+                            <div class=" display justify-content-start align-items-center">
+                                <div class="col-12 col-md-4 display justify-content-start align-items-center mb-3">
+                                    <div class="col-12 col-md-6">
+                                        <!-- <label for="">Recharge Type</label> -->
+                                        <label for="">Recharge TYPE
+                                            <!-- <span style="display:none;">{{rechargetype[0].name}}</span> -->
+                                        </label>
+                                    </div>
+                                    <div class="col-12 col-md-6">
+                                        <select [(ngModel)]="selectedRechargetype"
+                                            (ngModelChange)="onSelectionrechargetype($event)">
+                                            <option value="0" selected>Selected Recharge</option>
+                                            <option *ngFor="let rt of rechargetype" [value]="rt.id">
+                                                {{rt.name}}
+                                            </option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div *ngIf="isplantype"
+                                    class=" col-12 col-md-4 display justify-content-center align-items-center mb-3">
+                                    <!-- <div class="col-12 col-md-6 ">
+                                        <label for="">Plan Type</label>
+                                    </div> -->
+                                    <div class="col-12 col-md-6">
+                                        <select [(ngModel)]="plantype" (ngModelChange)="onSelectionplantype($event)">
+                                            <option value="0" selected>Selected Plan</option>
+                                            <!-- <option value="" *ngFor="let pt of plantype" [value]="pt.id">
+                                                {{pt.name}}
+                                            </option> -->
+                                            <option *ngFor="let plan of plantype$ | async | keyvalue"
+                                                [value]="plan.value">
+                                                {{ plan.key }}
+                                            </option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div *ngIf="datetype"
+                                    class="col-12 col-md-4 display justify-content-center align-items-center mb-3">
+                                    <!-- <div class="col-12 col-md-6 ">
+                                        <label for="">Date</label>
+                                    </div> -->
+                                    <div class="col-12 col-md-6">
+                                        <input type="date">
+                                    </div>
+                                </div>
+                            </div>
+                            <div *ngIf="confirmation">
+                                <div style="padding: 1rem;">
+                                    <div class="card1 mb-2" style="padding: 1rem;border-color:1px #090f13;">
+                                        <div class="input_box  mb-3">
+                                            <div class="d-flex align-items-center justify-content-center">
+                                                <div class="col-6 col-md-6">
+                                                    <span for="password" class="me-2">Old Expiry date</span>
+                                                </div>
+                                                <div class="col-6 col-md-6 value">
+                                                    <!-- {{smartcardno}} -->
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="input_box Isactive mb-3">
+                                            <div class="d-flex align-items-center justify-content-center">
+                                                <div class="col-6 col-md-6">
+                                                    <span class="me-2">New Expiry date </span>
+                                                </div>
+                                                <div class="col-6 col-md-6 value">
+                                                    <!-- {{boxno}} -->
+                                                </div>
+                                            </div>
+                                        </div>
+
+
+                                        <div class="input_box  mb-3">
+                                            <div class="d-flex align-items-center justify-content-center">
+                                                <div class="col-6 col-md-6">
+                                                    <span class="me-2">Customer Amount</span>
+                                                </div>
+                                                <div class="col-6 col-md-6 value">
+                                                    <!-- {{cardbalance}} -->
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="input_box  mb-3">
+                                            <div class="d-flex align-items-center justify-content-center">
+                                                <div class="col-6 col-md-6">
+                                                    <span class="me-2">MSO Amount</span>
+                                                </div>
+                                                <div class="col-6 col-md-6 value">
+                                                    <!-- {{cardbalance}} -->
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="  mb-3">
+                                            <div class="d-flex align-items-center justify-content-center">
+                                                <div class="input_box col-6 col-md-6">
+                                                    <span class="me-2">Customer pay </span>
+                                                </div>
+                                                <div
+                                                    class="col-6 col-md-6 display justify-content-start align-items-center">
+                                                    <div class="can-toggle">
+                                                        <input id="a" type="checkbox" [(ngModel)]="billtype"
+                                                            (change)="onBillTypeChange()">
+                                                        <label for="a">
+                                                            <div class="can-toggle__switch" data-checked="Paid"
+                                                                data-unchecked="Unpaid"></div>
+                                                        </label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class=" d-flex justify-content-start align-item-center  mb-2">
+                                <button type="button" class="btn2 confirm me-2"
+                                    (click)="toggleConfirmation()">Confirmation</button>
+                                <button type="button" class="btn2  recharge" (click)="recharge()">Recharge</button>
+                            </div>
+                        </div>
+
+                        <div class=" d-flex justify-content-end align-items-center">
+                            <a class="btn3 btn-outline-success mx-1 d-flex justify-content-end align-items-center"
+                                style="cursor: pointer;" (click)="generateBillpdf()">
+                                <span class="me-2">Generate Bill PDF</span>
+                                <i class="fa fa-download" aria-hidden="true"></i>
+                            </a>
+                        </div>
+                    </div>
+                </mat-expansion-panel>
+            </mat-accordion>
         </div>
     </section>
 </div>

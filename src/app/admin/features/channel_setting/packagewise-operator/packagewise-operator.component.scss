@@ -27,6 +27,8 @@ h1 {
 }
 
 .example-container {
+    max-height: 400px;
+    overflow: scroll;
     border: 1px solid #ccc;
     padding: 10px;
     border-radius: 5px;
@@ -61,7 +63,7 @@ h1 {
 }
 
 .card {
-    height: 80vh;
+    height: 70vh;
     padding: 1rem;
     border: 1px solid #ddd;
     border-radius: 0.25rem;

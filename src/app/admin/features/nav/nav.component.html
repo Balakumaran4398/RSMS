@@ -21,24 +21,24 @@
         <li>
             <a> <i class="bx bx-user bx-sm icon "></i> Operator <i class='bx bx-chevron-right icon-right'></i></a>
             <ul class="side-dropdown">
-                <li><a (click)="navgetToUrl('/operator_details')"> <i class='fa fa-fw fa-users  icon'></i> &nbsp;
+                <li><a (click)="navgetToUrl('/operator_details')" > <i class='fa fa-fw fa-users  icon'></i> &nbsp;
                         Operator Details</a></li>
-                <li><a (click)="navgetToUrl('/lco_recharge')"><i class='fa fa-fw fa-inr icon'></i> &nbsp;LCO
+                <li><a (click)="navgetToUrl('/lco_recharge')" ><i class='fa fa-fw fa-inr icon'></i> &nbsp;LCO
                         Recharge</a></li>
             </ul>
         </li>
 
         <li>
-            <a> <i class="bx bx-user bx-sm icon "></i> Subscriber <i class='bx bx-chevron-right icon-right'></i></a>
+            <a> <i class="bx bx-cool bx-sm icon "></i> Subscriber <i class='bx bx-chevron-right icon-right'></i></a>
             <ul class="side-dropdown">
-                <li><a (click)="navgetToUrl('/sub_dashboard')"><i class="fa fa-fw fa-plus icon">&nbsp;</i>Subscriber
+                <!-- <li><a (click)="navgetToUrl('/sub_dashboard')"><i class="fa fa-fw fa-plus icon">&nbsp;</i>Subscriber
                     </a>
-                </li>
+                </li> -->
                 <li><a (click)="navgetToUrl('/Create_sub')"><i class="fa fa-fw fa-plus icon">&nbsp;</i>Create Subscriber
                     </a> </li>
                 <li><a (click)="navgetToUrl('/subscriber')"><i class="fa fa-fw fa-user on icon">&nbsp;</i>
                         SubscriberDetails</a></li>
-                <li><a (click)="navgetToUrl('/expiry')"><i class="fa fa-fw fa-user icon">&nbsp;</i> Expiry Details </a>
+                <li><a (click)="navgetToUrl('/expiry')"><i class="fa fas fa-user-alt-slash icon">&nbsp;</i> Expiry Details </a>
                 </li>
             </ul>
         </li>
@@ -253,21 +253,31 @@
                 &nbsp;
                 &nbsp;
                 <div class="nav-content w-100 d-flex justify-content-between align-items-center">
-                    <div class="version col-4">
+                    <div class="version col-4 col-md-4">
                         <span class="ver">RSMS &nbsp;</span> <span class="ver_type">V-7.0 </span>
                     </div>
                     <div class="search-and-image col-7 col-md-7 d-flex justify-content-end align-items-center">
                         <div class="search">
                             <span class="fa fa-search"></span>
-                            <input id="searchitem" #searchitem style="font-size: 14px;"
-                                placeholder="Search by smartcard,boxid,mobilenumber or customername or CAF No">
+                            <input id="searchitem" #searchitem style="font-size: 14px;" [value]="lcomember"
+                                (keyup)="onsubscriberlist( searchitem?.value)"
+                                placeholder="Search by smartcard, boxid, mobilenumber or customername or CAF No">
+                            <div style="width: 100%;" class="dropdown-menu input"
+                                [ngClass]="(subscriberList.length != 0 && searchitem?.value?.length != 0 && showDropdown) ? 'show' : 'hide'"
+                                aria-labelledby="dropdownMenuButton">
+                                <a (click)="goToSubscriberDashboard(lcomember)" *ngFor="let lcomember of subscriberList"
+                                    class="dropdown-item"> {{ lcomember.name }}</a>
+                            </div>
                         </div>
                     </div>
 
-                    <div class="col-1 col-md-1 d-flex justify-content-end ">
-                        <a href="#" class="logout">
-                            <img style="width: 30px;" src="../assets/images/icons/logout2.png" alt="">
+                    <div class=" d-flex justify-content-between align-items-center mx-2 " >
+                        <a href="#" class="logout ">
+                            <!-- <img style="width: 30px;" src="../assets/images/icons/logout2.png" alt=""> -->
+                            <i class="fa-solid fa-power-off"></i>
+                            <!-- <span class="tooltip">Logout</span> -->
                         </a>
+                        <!-- <span class="logout1" style="font-size: medium;color: #f0f0f0;">Logout</span> -->
                     </div>
 
                 </div>

@@ -37,7 +37,7 @@ export class PackageManageComponent {
   added_alacarte_list: any = [];
   available_bouquet_list: any = [];
   added_bouquet_list: any = [];
-  selectedItems: Set<any> = new Set();
+    selectedItems: Set<any> = new Set();
 
   availableFilter: any;
   addedFilter: any;

@@ -1,0 +1,2437 @@
+<div *ngIf="sType=='logindetails'">
+    <div class="Head d-flex justify-content-between align-items-center mb-3">
+        <span class="span">Subscriber Login Details</span>
+        <i class="fa fa-close close-icon" (click)="onNoClick()"></i>
+    </div>
+    <div class="" style="padding: 1rem;">
+        <div class="input_box  mb-3">
+            <div class="display align-items-center justify-content-center">
+                <div class="col-12 col-md-6">
+                    <span for="Subscriber_name" class="me-2">Subscriber Name</span>
+                </div>
+                <div class="col-12 col-md-6" style="color: rgb(1, 90, 86);">
+                    {{subscribername}}
+                </div>
+            </div>
+        </div>
+
+        <div class="input_box  mb-3">
+            <div class="display align-items-center justify-content-center">
+                <div class="col-12 col-md-6">
+                    <span class="me-2">Username</span>
+                </div>
+                <div class="col-12 col-md-6">
+                    {{subusername}}
+                </div>
+            </div>
+        </div>
+
+        <div class="input_box  mb-3">
+            <div class="display align-items-center justify-content-center">
+                <div class="col-12 col-md-6">
+                    <span for="password" class="me-2">Password</span>
+                </div>
+                <div class="col-12 col-md-6">
+                    <input type="text" class="" id="password" data-toggle="tooltip" data-placement="bottom"
+                        [(ngModel)]="password">
+                </div>
+            </div>
+        </div>
+
+        <div class="input_box Isactive mb-3">
+            <div class="display align-items-center justify-content-center">
+
+                <div class="col-12 col-md-6">
+                    <span class="me-2">Wallet</span>
+                </div>
+                <div class="col-12 col-md-6">
+                    {{Wallet}}
+                </div>
+            </div>
+        </div>
+
+        <div class="  mb-3">
+            <div class="display align-items-center justify-content-center">
+                <div class="input_box  col-12 col-md-6">
+                    <span class="me-2">Lock Status</span>
+                </div>
+                <div class="col-12 col-md-6"
+                    [ngClass]="{'status-eable': statusSus === true, 'status-diable': statusSus === false}">
+                    <div class="toggle">
+                        {{ statusSus ? 'Enable' : 'Disable' }}
+                    </div>
+                </div>
+
+            </div>
+        </div>
+        <div class="  mb-3">
+            <div class="display align-items-center justify-content-center">
+                <div class="input_box  col-12 col-md-6">
+                    <span class="me-2">Is Lock </span>
+                </div>
+                <div class="col-12 col-md-6">
+                    <div class="checkbox-text mb-3">
+                        <div class="checkbox-content">
+                            <input class="form-check-input date" type="checkbox"
+                                style="width: 25px;height: 25px;border: 1px solid green;" [(ngModel)]="islock">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-12 col-md-12 d-flex  justify-content-center align-items-center mb-3">
+            <label for="" style="color: red;text-align: center;">Are you want to update click Yes ?</label>
+        </div>
+        <div class="d-flex justify-content-end align-item-center mx-3 mb-2">
+            <button type="button" class="btn btn-success me-2" (click)="loginDetails()">Yes</button>
+            <button type="button" class="btn btn-danger" (click)="onNoClick()">No</button>
+        </div>
+    </div>
+</div>
+<div *ngIf="isEditSubscriberDetails">
+    <div class="card">
+        <div class="Head d-flex justify-content-between align-items-center">
+            <span class="span">Edit Subscriber Details</span>
+            <i class="fa fa-close close-icon" (click)="onNoClick()"></i>
+        </div>
+        <form [formGroup]="Editform" class="mobile">
+            <div class="display justify-content-center align-items-center mobile">
+                <div class="col-12 col-md-6  edit">
+                    <div class="input_box ">
+                        <div class="mb-3">
+                            <label class="form-label">Subscriber Name
+                            </label>
+                            <input class="" type="text" [(ngModel)]="subscribername" formControlName="customername">
+                            <div *ngIf="Editform.get('customername')?.invalid && Editform.get('customername')?.touched">
+                                <small class="text-danger"
+                                    *ngIf="Editform.get('customername')?.errors?.['required']">Subscriber Namer is
+                                    required.</small>
+                            </div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label">Subscriber Last Name </label>
+                            <input class="" type="text" id="" name="" value="" formControlName="customerlastname"
+                                [(ngModel)]="subscribernameLast">
+                            <div
+                                *ngIf="Editform.get('customerlastname')?.invalid && Editform.get('customerlastname')?.touched">
+                                <small class="text-danger">Subscriber Last Name is required.</small>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Address</label>
+                            <textarea class="" type="text" style="height: 50px;" [(ngModel)]="address"
+                                formControlName="address">
+                        </textarea>
+                            <div *ngIf="Editform.get('address')?.invalid && Editform.get('address')?.touched">
+                                <small class="text-danger">Address is required.</small>
+                            </div>
+                        </div>
+
+
+
+
+                        <div class="mb-3">
+                            <label class="form-label">Address Proof
+                            </label>
+                            <input class="" type="text" [(ngModel)]="addressproof" formControlName="addressproof" />
+
+                            <div *ngIf="Editform.get('addressproof')?.invalid && Editform.get('addressproof')?.touched">
+                                <small class="text-danger">Address Proof is required.</small>
+                            </div>
+                        </div>
+                        <!-- <div class="input_box mb-3">
+                            <label>ADD Proof Name</label>
+                            <select id="addressprooftypeid" formControlName="addressprooftypeid"
+                                (change)="onAddProofChange($event)">
+                                <option value="" selected>Select an ADD Proof</option>
+                                <option *ngFor="let key of filteredADDProofKeys()" [value]="key"> {{ key}} </option>
+                            </select>
+                        </div> -->
+                        <div class="mb-3">
+                            <label class="form-label">Address Proof ID
+                            </label>
+                            <input class="" type="text" [(ngModel)]="addressprooftypeid"
+                                formControlName="addressprooftypeid">
+                            <div
+                                *ngIf="Editform.get('addressprooftypeid')?.invalid && Editform.get('addressprooftypeid')?.touched">
+                                <small class="text-danger">Address Proof ID is required.</small>
+                            </div>
+                        </div>
+                        <!-- <div class="input_box" *ngIf="selectedAddProofType">
+                            <label for="addressproof">{{ selectedAddProofType }} Number</label>
+                            <input type="text" formControlName="addressproof"
+                                [attr.maxlength]="getMaxLength(selectedAddProofType)"
+                                [attr.placeholder]="'Enter ' + selectedAddProofType + ' Number'"
+                                [attr.pattern]="getPattern(selectedAddProofType)" />
+    
+                            <div *ngIf="Editform.get('addressproof')?.invalid && (Editform.get('addressproof')?.dirty || Editform.get('addressproof')?.touched)"
+                                class="text-danger">
+                                <div *ngIf="Editform.get('addressproof')?.errors?.['required']">
+                                    {{ selectedAddProofType }} Number is required.
+                                </div>
+                                <div *ngIf="Editform.get('addressproof')?.errors?.['pattern']">
+                                    Invalid {{ selectedAddProofType }} Number. Expected format: {{
+                                    getExampleFormat(selectedAddProofType) }}.
+                                </div>
+                                <div *ngIf="Editform.get('addressproof')?.errors?.['maxlength']">
+                                    Maximum length allowed is {{ getMaxLength(selectedAddProofType) }} characters.
+                                </div>
+                            </div>
+                        </div> -->
+                        <div class="mb-3">
+                            <label class="form-label">Identity Proof
+                            </label>
+                            <input class="" type="text" [(ngModel)]="idproof" formControlName="idproof" />
+
+                            <div *ngIf="Editform.get('idproof')?.invalid && Editform.get('idproof')?.touched">
+                                <small class="text-danger">Identity Proof is required.</small>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Identity Proof ID
+                            </label>
+                            <input class="" type="text" [(ngModel)]="idprooftypeid" formControlName="idprooftypeid">
+
+                            <div
+                                *ngIf="Editform.get('idprooftypeid')?.invalid && Editform.get('idprooftypeid')?.touched">
+                                <small class="text-danger">Identity Proof ID is required.</small>
+                            </div>
+                        </div>
+                        <!-- <div class="input_box">
+                            <label>Id Proof Name</label>
+                            <select id="idprooftypeid" formControlName="idprooftypeid" (change)="onIDProofChange($event)">
+                                <option value="" selected>Select a ID Proof</option>
+                                <option *ngFor="let key of filteredIdProofKeys()" [value]="key"> {{ key}} </option>
+                            </select>
+                        </div>
+                        <div class="input_box" *ngIf="selectedIDProofType">
+                            <label for="idproof">{{ selectedIDProofType }} Number</label>
+                            <input type="text" formControlName="idproof"
+                                [attr.maxlength]="getMaxLength(selectedIDProofType)"
+                                [attr.placeholder]="'Enter ' + selectedIDProofType + ' idproof'"
+                                [attr.pattern]="getPattern(selectedIDProofType)" />
+    
+                            <div *ngIf="Editform.get('idproof')?.invalid && (Editform.get('idproof')?.dirty || Editform.get('idproof')?.touched)"
+                                class="text-danger">
+                                <div *ngIf="Editform.get('idproof')?.errors?.['required']">
+                                    {{ selectedIDProofType }} Number is required.
+                                </div>
+                                <div *ngIf="Editform.get('idproof')?.errors?.['pattern']">
+                                    Invalid {{ selectedIDProofType }} Number. Expected format: {{
+                                    getExampleFormat(selectedIDProofType) }}.
+                                </div>
+                                <div *ngIf="Editform.get('idproof')?.errors?.['maxlength']">
+                                    Maximum length allowed is {{ getMaxLength(selectedIDProofType) }} characters.
+                                </div>
+                            </div>
+                        </div> -->
+                        <div class="mb-3 display justify-content-between align-items-center livetv">
+                            <label>Premium version subscriber app (Live TV)
+                            </label>
+                            <div class="checkbox-text mb-3">
+                                <div class="checkbox-content">
+                                    <input class="form-check-input date" type="checkbox" [(ngModel)]="livetv"
+                                        formControlName="livetv">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-12 col-md-6 edit  edit1">
+                    <div class="input_box ">
+                        <div class="mb-3">
+                            <label class="form-label">Date of Birth
+                            </label>
+                            <input class="date" type="date" [(ngModel)]="dateofbirth" formControlName="dateofbirth">
+                            <div *ngIf="Editform.get('dateofbirth')?.invalid && Editform.get('dateofbirth')?.touched">
+                                <small class="text-danger">Date of birth is required.</small>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">landlineno
+                            </label>
+                            <input class="date" type="text" [(ngModel)]="landlineno" formControlName="landlineno">
+                            <div *ngIf="Editform.get('landlineno')?.invalid && Editform.get('landlineno')?.touched">
+                                <small class="text-danger">landlineno is required.</small>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">CAS Form ID</label>
+                            <input class="" type="text" id="" name="" value="" [(ngModel)]="casformid"
+                                formControlName="casformid">
+                            <div *ngIf="Editform.get('casformid')?.invalid && Editform.get('casformid')?.touched">
+                                <small class="text-danger">CAS Form ID is required.</small>
+                            </div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label">Father's Name</label>
+                            <input class="" type="text" [(ngModel)]="fathername" formControlName="fathername">
+                            <div *ngIf="Editform.get('fathername')?.invalid && Editform.get('fathername')?.touched">
+                                <small class="text-danger">Father's Name is required.</small>
+                            </div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label">Mobile Number </label>
+                            <input class="" type="text" [(ngModel)]="mobileno" formControlName="mobileno">
+                            <div *ngIf="Editform.get('mobileno')?.invalid && Editform.get('mobileno')?.touched">
+                                <small class="text-danger">Mobile Number is required.</small>
+                            </div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label">Installation Address
+                            </label>
+                            <textarea class="" type="text" style="height: 50px;" [(ngModel)]="installaddress"
+                                formControlName="installaddress">
+                            </textarea>
+                            <div
+                                *ngIf="Editform.get('installaddress')?.invalid && Editform.get('installaddress')?.touched">
+                                <small class="text-danger">Installation Address is required.</small>
+                            </div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label">Email</label>
+                            <input class="" type="email" [(ngModel)]="email" formControlName="email">
+                            <div *ngIf="Editform.get('email')?.invalid && Editform.get('email')?.touched">
+                                <small class="text-danger" *ngIf="Editform.get('email')?.errors?.['pattern']">
+                                    Email must follow the correct format.
+                                </small>
+                                <small class="text-danger" *ngIf="Editform.get('email')?.errors?.['required']">
+                                    Email is required.
+                                </small>
+                            </div>
+                        </div>
+
+
+
+                        <!-- <div class="mb-3 ">
+                            <label class="form-label">Dummy Area and Customer No
+                            </label>
+                            <div class="col-12 col-md-12 display justify-content-between align-items-center">
+                                <div class="col-12 col-md-5 mb-3 ">
+                                    <input class="" type="text" [(ngModel)]="areaid" formControlName="areaid">
+                                    <div *ngIf="Editform.get('areaid')?.invalid && Editform.get('areaid')?.touched">
+                                        <small class="text-danger">Area ID is required.</small>
+                                    </div>
+                                </div>
+                                <div class="col-12 col-md-5">
+                                    <input class="" type="text" [(ngModel)]="customerid" formControlName="customerid">
+                                    <div
+                                        *ngIf="Editform.get('customerid')?.invalid && Editform.get('customerid')?.touched">
+                                        <small class="text-danger">Customer No is required.</small>
+                                    </div>
+                                </div>
+                            </div>
+                        </div> -->
+                    </div>
+                </div>
+            </div>
+
+            <div class="d-flex justify-content-end align-item-center mx-3 mb-4">
+                <button type="button" class="btn btn-danger me-2" (click)="onNoClick()">Cancel</button>
+                <button type="button" class="btn btn-success" (click)="onSubmit()">Update</button>
+            </div>
+        </form>
+    </div>
+
+</div>
+<div *ngIf="sType=='ConfirmationReport'">
+
+    <div class="card">
+        <div class="Head d-flex justify-content-between align-items-center ">
+            <span class="span" style="font-size: 17px;font-weight: 600;">Confirmation For Report</span>
+            <i class="fa fa-close close-icon" (click)="onNoClick()"></i>
+        </div>
+        <label class="header">SUBSCRIBER RECHARGE BILL
+        </label>
+        <div class="mb-3 display justify-content-center align-items-center " style="padding: 1rem;">
+            <div class="col-12 col-md-3">
+                <label class="formlabel">Filter
+                </label>
+            </div>
+            <div class="col-12 col-md-6">
+                <mat-form-field>
+                    <input matInput [matDatepicker]="dp" [formControl]="date">
+                    <mat-datepicker-toggle matIconSuffix [for]="dp"></mat-datepicker-toggle>
+                    <mat-datepicker #dp startView="multi-year" (monthSelected)="setMonthAndYear($event, dp)"
+                        panelClass="example-month-picker">
+                    </mat-datepicker>
+                </mat-form-field>
+            </div>
+
+            <div class="col-12 col-md-3 d-flex justify-content-center align-items-center mb-3 ">
+                <div class="icon-container">
+                    <img src="/assets/images/icons/pdf.png" width="40px">
+                    <div class="tooltip">Pdf</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div *ngIf="sType=='addSmartcard'">
+    <div class="card">
+        <div class="Head d-flex justify-content-between align-items-center ">
+            <span class="span">ADD SMARTCARD</span>
+            <i class="fa fa-close close-icon" (click)="onNoClick()"></i>
+        </div>
+        <div class=" d-flex justify-content-center align-item-center">
+            <div class="">
+                <div class="col display justify-content-center align-items-center">
+                    <div class="col-12 col-sm-12 col-md-12" style="padding: 1rem;">
+                        <div class="row">
+                            <div class="input_box display mb-3 ">
+                                <div class="col-12 col-md-4">
+                                    <label for="">CAS TYPE
+                                        <!-- <span style="display:none;"> {{cas[0].id}}</span> -->
+                                    </label>
+                                </div>
+                                <div class="col-12 col-md-8">
+                                    <select placeholder="Select the CAS" [(ngModel)]="castype"
+                                        (change)="casTypelist($event)">
+                                        <option value="0" selected>Select CAS</option>
+                                        <option *ngFor="let casItem of cas" [value]="casItem.id">
+                                            {{ casItem.name }}
+                                        </option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="input_box display mb-3">
+                                <div class="col-12 col-md-4">
+                                    <label for="">Smartcard</label>
+                                </div>
+                                <div class="col-12 col-md-8">
+                                    <select id="smartcard" [(ngModel)]="smartcard" (change)="smartcardlist($event)">
+                                        <option value="0" selected>Select a Smartcard</option>
+                                        <option *ngFor="let area of filteredIntendArea()" [value]="area.name">
+                                            {{ area.name }}
+                                        </option>
+                                        <!-- <option *ngFor="let area of area" [value]="area.id">
+                                            {{ area.name }}
+                                          </option> -->
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="input_box display mb-3">
+                                <div class="col-12 col-md-4">
+                                    <label for="">Boxid</label>
+                                </div>
+                                <div class="col-12 col-md-8">
+                                    <input placeholder="Enter Smartcard" type="text" [(ngModel)]="boxid" id="boxid">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="d-flex justify-content-end align-item-center mx-3 mb-4">
+                    <button type="button" class="btn btn-danger me-2" (click)="onNoClick()">Cancel</button>
+                    <button type="button" class="btn btn-success" (click)="addSmartcard()">Submit</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div *ngIf="sType=='change_lco'">
+    <div class="card">
+        <div class="Head d-flex justify-content-between align-items-center ">
+            <span class="span">CHANGE OPERATOR</span>
+            <i class="fa fa-close close-icon" (click)="onNoClick()"></i>
+        </div>
+        <div class=" d-flex justify-content-center align-item-center">
+            <div class="">
+                <div class="col display justify-content-center align-items-center">
+                    <div class="col-12 col-sm-12 col-md-12" style="padding: 1rem;">
+                        <div class="row">
+                            <div class="input_box display mb-3 ">
+                                <div class="col-12 col-md-4">
+                                    <label for="">LCO Name <span style="display:none;">
+                                            {{lco_list[0].id}}</span></label>
+                                </div>
+                                <div class="col-12 col-md-8">
+                                    <select id="lcoName" [(ngModel)]="lcoid"
+                                        (change)="onSubscriberStatusChange($event)">
+                                        <option value="0" selected>Select a Operator</option>
+                                        <option *ngFor="let key of lco_list" [value]="key.id">
+                                            {{ key.name }}
+                                        </option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="input_box display mb-3">
+                                <div class="col-12 col-md-4">
+                                    <label for="">Area Name</label>
+                                </div>
+                                <div class="col-12 col-md-8">
+                                    <select [(ngModel)]="lcoareaid" (change)="onAreaStatusChange($event)">
+                                        <option value="0" selected>Select a Area</option>
+                                        <option *ngFor="let key of area_list" [value]="key.id">
+                                            {{ key.name }}
+                                        </option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="input_box display mb-3">
+                                <div class="col-12 col-md-4">
+                                    <label for="">Street Name</label>
+                                </div>
+                                <div class="col-12 col-md-8">
+                                    <select [(ngModel)]="lcostreetid">
+                                        <option value="0" selected>Select a Street</option>
+                                        <option *ngFor="let key of street_list" [value]="key.id">
+                                            {{ key.name }}
+                                        </option>
+                                    </select>
+                                </div>
+                            </div>
+                            <!-- <div ngIf="" class="input_box display mb-3">
+                                <div class="col-12 col-md-4">
+                                    <label for="">Subscription</label>
+                                </div>
+                                <div class="col-12 col-md-8">
+                                    <mat-radio-group class="radio-group" 
+                                        [(ngModel)]="withsubscription">
+                                        <mat-radio-button class="radio-button" [value]="true">Yes
+                                        </mat-radio-button>&nbsp;
+                                        <mat-radio-button class="radio-button" [value]="false">No
+                                        </mat-radio-button>
+                                    </mat-radio-group>
+
+                                </div>
+                            </div> -->
+                        </div>
+                    </div>
+                </div>
+                <div class="d-flex justify-content-end align-item-center mx-3 mb-4">
+                    <button type="button" class="btn btn-danger me-2" (click)="onNoClick()">Cancel</button>
+                    <button type="button" class="btn btn-success" (click)="changeOperator()">Submit</button>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+</div>
+
+
+
+
+<div *ngIf="sType=='refresh'">
+    <div class="Head d-flex justify-content-between align-items-center mb-3">
+        <span class="span">REFRESH SMARTCARD</span>
+        <i class="fa fa-close close-icon" (click)="onNoClick()"></i>
+    </div>
+    <div class="mobileview">
+        <div class="input_box  mb-3">
+            <div class="d-flex align-items-center justify-content-center">
+                <div class="col-6 col-md-6">
+                    <span for="Subscriber_name" class="me-2">Subscriber Name</span>
+                </div>
+                <div class="col-6 col-md-6 value">
+                    {{subscribername}}
+                </div>
+            </div>
+        </div>
+
+        <div class="input_box  mb-3">
+            <div class="d-flex align-items-center justify-content-center">
+                <div class="col-6 col-md-6">
+                    <span class="me-2">Mobile Number</span>
+                </div>
+                <div class="col-6 col-md-6 value">
+                    {{mobile}}
+                </div>
+            </div>
+        </div>
+
+        <div class="input_box  mb-3">
+            <div class="d-flex align-items-center justify-content-center">
+                <div class="col-6 col-md-6">
+                    <span for="password" class="me-2">Smartcard</span>
+                </div>
+                <div class="col-6 col-md-6 value">
+                    {{smartcardno}}
+                </div>
+            </div>
+        </div>
+
+        <div class="input_box Isactive mb-3">
+            <div class="d-flex align-items-center justify-content-center">
+
+                <div class="col-6 col-md-6">
+                    <span class="me-2">Boxid</span>
+                </div>
+                <div class="col-6 col-md-6 value">
+                    {{boxno}}
+                </div>
+            </div>
+        </div>
+
+        <div class="  mb-3">
+            <div class="d-flex align-items-center justify-content-center">
+                <div class="input_box  col-6 col-md-6">
+                    <span class="me-2">Status</span>
+                </div>
+                <div class="col-6 col-md-6 value"
+                    [ngClass]="{'status-enable': statusdisplay === 'Active', 'status-disable': statusdisplay === 'Deactive'}">
+                    <div class="toggle">
+                        {{statusdisplay}}
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <div class="col-12 col-md-12 d-flex  justify-content-center align-items-center mb-3">
+            <label for="" style="color: green;text-align: center;">Are you sure refresh this smartcard ?</label>
+        </div>
+    </div>
+    <div class="d-flex justify-content-end align-item-center mx-4 mb-3">
+        <button type="button" class="btn btn-success me-2" (click)="refreshSmartcard()">Yes</button>
+        <button type="button" class="btn btn-danger" (click)="onNoClick()">No</button>
+    </div>
+</div>
+<div *ngIf="sType=='deactive'">
+    <div class="Head d-flex justify-content-between align-items-center mb-3">
+        <span class="span">DE-ACTIVE SMARTCARD</span>
+        <i class="fa fa-close close-icon" (click)="onNoClick()"></i>
+    </div>
+    <div class="mobileview">
+        <div class="input_box  mb-3">
+            <div class="d-flex align-items-center justify-content-center">
+                <div class="col-6 col-md-6">
+                    <span for="Subscriber_name" class="me-2">Subscriber Name</span>
+                </div>
+                <div class="col-6 col-md-6 value">
+                    {{subscribername}}
+                </div>
+            </div>
+        </div>
+
+        <div class="input_box  mb-3">
+            <div class="d-flex align-items-center justify-content-center">
+                <div class="col-6 col-md-6">
+                    <span class="me-2">Mobile Number</span>
+                </div>
+                <div class="col-6 col-md-6 value">
+                    {{mobile}}
+                </div>
+            </div>
+        </div>
+
+        <div class="input_box  mb-3">
+            <div class="d-flex align-items-center justify-content-center">
+                <div class="col-6 col-md-6">
+                    <span for="password" class="me-2">Smartcard</span>
+                </div>
+                <div class="col-6 col-md-6 value">
+                    {{smartcardno}}
+                </div>
+            </div>
+        </div>
+
+        <div class="input_box Isactive mb-3">
+            <div class="d-flex align-items-center justify-content-center">
+
+                <div class="col-6 col-md-6">
+                    <span class="me-2">Boxid</span>
+                </div>
+                <div class="col-6 col-md-6 value">
+                    {{boxno}}
+                </div>
+            </div>
+        </div>
+
+        <div class="  mb-3">
+            <div class="d-flex align-items-center justify-content-center">
+                <div class="input_box  col-6 col-md-6">
+                    <span class="me-2">Status</span>
+                </div>
+                <div class="col-6 col-md-6 value"
+                    [ngClass]="{'status-enable': statusdisplay === 'Active', 'status-disable': statusdisplay === 'Deactive'}">
+                    <div class="toggle">
+                        {{statusdisplay}}
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <div class="col-12 col-md-12 d-flex  justify-content-center align-items-center mb-3">
+            <label for="" style="color: red;text-align: center;">Are you sure de-activate this smartcard ?</label>
+        </div>
+    </div>
+    <div class="d-flex justify-content-end align-item-center mx-4 mb-3">
+        <button type="button" class="btn btn-success me-2" (click)="deactivationofSmartcard()">Yes</button>
+        <button type="button" class="btn btn-danger" (click)="onNoClick()">No</button>
+    </div>
+</div>
+<div *ngIf="sType=='pinchange'">
+    <div class="Head d-flex justify-content-between align-items-center mb-3">
+        <span class="span">PIN CHANGE</span>
+        <i class="fa fa-close close-icon" (click)="onNoClick()"></i>
+    </div>
+    <div class="mobileview">
+        <div class="input_box  mb-3">
+            <div class="d-flex align-items-center justify-content-center">
+                <div class="col-6 col-md-6">
+                    <span for="Subscriber_name" class="me-2">Subscriber Name</span>
+                </div>
+                <div class="col-6 col-md-6 value">
+                    {{subscribername}}
+                </div>
+            </div>
+        </div>
+
+        <div class="input_box  mb-3">
+            <div class="d-flex align-items-center justify-content-center">
+                <div class="col-6 col-md-6">
+                    <span class="me-2">Mobile Number</span>
+                </div>
+                <div class="col-6 col-md-6 value">
+                    {{mobile}}
+                </div>
+            </div>
+        </div>
+
+        <div class="input_box  mb-3">
+            <div class="d-flex align-items-center justify-content-center">
+                <div class="col-6 col-md-6">
+                    <span for="password" class="me-2">Smartcard</span>
+                </div>
+                <div class="col-6 col-md-6 value">
+                    {{smartcardno}}
+                </div>
+            </div>
+        </div>
+
+        <div class="input_box Isactive mb-3">
+            <div class="d-flex align-items-center justify-content-center">
+                <div class="col-6 col-md-6">
+                    <span class="me-2">Boxid</span>
+                </div>
+                <div class="col-6 col-md-6 value">
+                    {{boxno}}
+                </div>
+            </div>
+        </div>
+
+        <div class=" input_box mb-3">
+            <div class="d-flex align-items-center justify-content-center">
+                <div class="  col-6 col-md-6">
+                    <span class="me-2">Old PIN</span>
+                </div>
+                <div class="col-6 col-md-6 value">
+                    <div class="toggle">
+                        {{oldpin}}
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <div class="  mb-3">
+            <div class="d-flex align-items-center justify-content-center">
+                <div class="input_box  col-6 col-md-6">
+                    <label class="me-2">NEW PIN</label>
+                </div>
+
+                <div class="toggle input_box">
+                    <input type="text" [(ngModel)]="newpin" (keypress)="onKeydown($event)">
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="d-flex justify-content-end align-item-center mx-4 mb-3">
+        <button type="button" class="btn btn-success me-2" (click)="pinchange()">Update</button>
+        <button type="button" class="btn btn-danger" (click)="onNoClick()">Cancel</button>
+    </div>
+</div>
+<div *ngIf="sType=='pvrchange'">
+    <div class="Head d-flex justify-content-between align-items-center mb-3">
+        <span class="span">PVR CHANGE</span>
+        <i class="fa fa-close close-icon" (click)="onNoClick()"></i>
+    </div>
+    <div class="mobileview">
+        <div class="input_box  mb-3">
+            <div class="d-flex align-items-center justify-content-center">
+                <div class="col-6 col-md-6">
+                    <span for="Subscriber_name" class="me-2">Subscriber Name</span>
+                </div>
+                <div class="col-6 col-md-6 value">
+                    {{subscribername}}
+                </div>
+            </div>
+        </div>
+
+        <div class="input_box  mb-3">
+            <div class="d-flex align-items-center justify-content-center">
+                <div class="col-6 col-md-6">
+                    <span class="me-2">Mobile Number</span>
+                </div>
+                <div class="col-6 col-md-6 value">
+                    {{mobile}}
+                </div>
+            </div>
+        </div>
+
+        <div class="input_box  mb-3">
+            <div class="d-flex align-items-center justify-content-center">
+                <div class="col-6 col-md-6">
+                    <span for="password" class="me-2">Smartcard</span>
+                </div>
+                <div class="col-6 col-md-6 value">
+                    {{smartcardno}}
+                </div>
+            </div>
+        </div>
+
+        <div class="input_box Isactive mb-3">
+            <div class="d-flex align-items-center justify-content-center">
+
+                <div class="col-6 col-md-6">
+                    <span class="me-2">Boxid</span>
+                </div>
+                <div class="col-6 col-md-6 value">
+                    {{boxno}}
+                </div>
+            </div>
+        </div>
+
+        <div class="  mb-3">
+            <div class="d-flex align-items-center justify-content-center">
+                <div class=" input_box col-6 col-md-6">
+                    <label class="me-2">PVR STATUS</label>
+                </div>
+
+                <div class="col-6 col-md-6 value">
+                    <input class="PVRstatus" type="checkbox" [(ngModel)]="PVRstatus">
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="d-flex justify-content-end align-item-center mx-4 mb-3">
+        <button type="button" class="btn btn-success me-2" (click)="pvrchange()">Update</button>
+        <button type="button" class="btn btn-danger" (click)="onNoClick()">Cancel</button>
+    </div>
+</div>
+<div *ngIf="sType=='deletemessage'">
+    <div class="Head d-flex justify-content-between align-items-center mb-3">
+        <span class="span">DELETE FORCE MESSAGE</span>
+        <i class="fa fa-close close-icon" (click)="onNoClick()"></i>
+    </div>
+    <div class="mobileview">
+        <div class="input_box  mb-3">
+            <div class="d-flex align-items-center justify-content-center">
+                <div class="col-6 col-md-6">
+                    <span for="Subscriber_name" class="me-2">Subscriber Name</span>
+                </div>
+                <div class="col-6 col-md-6 value">
+                    {{subscribername}}
+                </div>
+            </div>
+        </div>
+
+        <div class="input_box  mb-3">
+            <div class="d-flex align-items-center justify-content-center">
+                <div class="col-6 col-md-6">
+                    <span class="me-2">Mobile Number</span>
+                </div>
+                <div class="col-6 col-md-6 value">
+                    {{mobile}}
+                </div>
+            </div>
+        </div>
+
+        <div class="input_box  mb-3">
+            <div class="d-flex align-items-center justify-content-center">
+                <div class="col-12 col-md-6">
+                    <span for="password" class="me-2">Smartcard</span>
+                </div>
+                <div class="col-12 col-md-6">
+                    {{smartcardno}}
+                </div>
+            </div>
+        </div>
+
+        <div class="input_box  mb-3">
+            <div class="d-flex align-items-center justify-content-center">
+
+                <div class="col-6 col-md-6">
+                    <span class="me-2">Boxid</span>
+                </div>
+                <div class="col-6 col-md-6 value">
+                    {{boxno}}
+                </div>
+            </div>
+        </div>
+
+        <div class=" input_box mb-3">
+            <div class="d-flex align-items-center justify-content-center">
+                <div class="  col-6 col-md-6">
+                    <label class="me-2">Message</label>
+                </div>
+
+                <div class="col-6 col-md-6 value">
+                    {{message}}
+                </div>
+            </div>
+        </div>
+        <div class="col-12 col-md-12 d-flex  justify-content-center align-items-center mb-3">
+            <label for="" style="color: green;text-align: center;">Are you sure delete force message ?
+            </label>
+        </div>
+    </div>
+    <div class="d-flex justify-content-end align-item-center mx-4 mb-3">
+        <button type="button" class="btn btn-success me-2" (click)="deleteForceMessage()">Yes</button>
+        <button type="button" class="btn btn-danger" (click)="onNoClick()">No</button>
+    </div>
+</div>
+<div *ngIf="sType=='forcetuning'">
+    <div class="Head d-flex justify-content-between align-items-center mb-3">
+        <span class="span">FORCE TUNING</span>
+        <i class="fa fa-close close-icon" (click)="onNoClick()"></i>
+    </div>
+    <div class="mobileview">
+        <div class="input_box  mb-3">
+            <div class="d-flex align-items-center justify-content-center">
+                <div class="col-6 col-md-6">
+                    <span for="Subscriber_name" class="me-2">Subscriber Name</span>
+                </div>
+                <div class="col-6 col-md-6 value">
+                    {{subscribername}}
+                </div>
+            </div>
+        </div>
+
+        <div class="input_box  mb-3">
+            <div class="d-flex align-items-center justify-content-center">
+                <div class="col-6 col-md-6">
+                    <span class="me-2">Mobile Number</span>
+                </div>
+                <div class="col-6 col-md-6 value">
+                    {{mobile}}
+                </div>
+            </div>
+        </div>
+
+        <div class="input_box  mb-3">
+            <div class="d-flex align-items-center justify-content-center">
+                <div class="col-6 col-md-6">
+                    <span for="password" class="me-2">Smartcard</span>
+                </div>
+                <div class="col-6 col-md-6 value">
+                    {{smartcardno}}
+                </div>
+            </div>
+        </div>
+
+        <div class="input_box Isactive mb-3">
+            <div class="d-flex align-items-center justify-content-center">
+
+                <div class="col-6 col-md-6">
+                    <span class="me-2">Boxid</span>
+                </div>
+                <div class="col-6 col-md-6 value">
+                    {{boxno}}
+                </div>
+            </div>
+        </div>
+
+        <div class="  mb-3">
+            <div class="d-flex align-items-center justify-content-center">
+                <div class=" input_box col-6 col-md-6">
+                    <label class="me-2">Status</label>
+                </div>
+                <div class="col-6 col-md-6 value"
+                    [ngClass]="{'status-enable ': status === 2, 'status-disable': status === 1}">
+                    <div class="toggle">
+                        {{ status ? 'New' : 'Old' }}
+                    </div>
+                </div>
+
+            </div>
+        </div>
+        <div class="col-12 col-md-12 d-flex  justify-content-center align-items-center mb-3">
+            <label for="" style="color: green;text-align: center;">Are you sure force tuning this smartcard ?</label>
+        </div>
+    </div>
+    <div class="d-flex justify-content-end align-item-center mx-4 mb-3">
+        <button type="button" class="btn btn-success me-2" (click)="forcetuning()">Yes</button>
+        <button type="button" class="btn btn-danger" (click)="onNoClick()">No</button>
+    </div>
+</div>
+<div *ngIf="sType=='reactivation'">
+    <div class="Head d-flex justify-content-between align-items-center mb-3">
+        <span class="span">RE-ACTIVATE SMARTCARD</span>
+        <i class="fa fa-close close-icon" (click)="onNoClick()"></i>
+    </div>
+    <div class="mobileview">
+        <div class="input_box  mb-3">
+            <div class="d-flex align-items-center justify-content-center">
+                <div class="col-6 col-md-6">
+                    <span for="Subscriber_name" class="me-2">Subscriber Name</span>
+                </div>
+
+                <div class="col-6 col-md-6">
+                    {{subscribername}}
+                </div>
+            </div>
+        </div>
+
+        <div class="input_box  mb-3">
+            <div class="d-flex align-items-center justify-content-center">
+                <div class="col-6 col-md-6">
+                    <span class="me-2">Mobile Number</span>
+                </div>
+                <div class="col-6 col-md-6">
+                    {{mobile}}
+                </div>
+            </div>
+        </div>
+
+        <div class="input_box  mb-3">
+            <div class="d-flex align-items-center justify-content-center">
+                <div class="col-6 col-md-6">
+                    <span for="password" class="me-2">Smartcard</span>
+                </div>
+                <div class="col-6 col-md-6">
+                    {{smartcardno}}
+                </div>
+            </div>
+        </div>
+
+        <div class="input_box Isactive mb-3">
+            <div class="d-flex align-items-center justify-content-center">
+
+                <div class="col-6 col-md-6">
+                    <span class="me-2">Boxid</span>
+                </div>
+                <div class="col-6 col-md-6">
+                    {{boxno}}
+                </div>
+            </div>
+        </div>
+
+        <div class="  mb-3">
+            <div class="d-flex align-items-center justify-content-center">
+                <div class=" input_box col-6 col-md-6">
+                    <label class="me-2">Status</label>
+                </div>
+                <div class="col-12 col-md-6"
+                    [ngClass]="{'status-disable': statusdisplay === 'Deactive', 'status-enable': statusdisplay === 'Active'}">
+                    <div class="toggle">
+                        {{statusdisplay}}
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-12 col-md-12 d-flex  justify-content-center align-items-center mb-3">
+            <label for="" style="color: green;text-align: center;">Are you sure Re-Activate this smartcard ?</label>
+        </div>
+    </div>
+    <div class="d-flex justify-content-end align-item-center mx-4 mb-3">
+        <button type="button" class="btn btn-success me-2" (click)="reactivationofSmartcard()">Yes</button>
+        <button type="button" class="btn btn-danger" (click)="onNoClick()">No</button>
+    </div>
+</div>
+<div *ngIf="sType=='block'">
+    <div class="Head d-flex justify-content-between align-items-center mb-3">
+        <span class="span">BLOCK SMARTCARD</span>
+        <i class="fa fa-close close-icon" (click)="onNoClick()"></i>
+    </div>
+    <div class="mobileview">
+        <div class="input_box  mb-3">
+            <div class="d-flex align-items-center justify-content-center">
+                <div class="col-6 col-md-6">
+                    <span for="Subscriber_name" class="me-2">Subscriber Name</span>
+                </div>
+                <div class="col-6 col-md-6 value">
+                    {{subscribername}}
+                </div>
+            </div>
+        </div>
+
+        <div class="input_box  mb-3">
+            <div class="d-flex align-items-center justify-content-center">
+                <div class="col-6 col-md-6">
+                    <span class="me-2">Mobile Number</span>
+                </div>
+                <div class="col-6 col-md-6 value">
+                    {{mobile}}
+                </div>
+            </div>
+        </div>
+
+        <div class="input_box  mb-3">
+            <div class="d-flex align-items-center justify-content-center">
+                <div class="col-6 col-md-6">
+                    <span for="password" class="me-2">Smartcard</span>
+                </div>
+                <div class="col-6 col-md-6 value">
+                    {{smartcardno}}
+                </div>
+            </div>
+        </div>
+
+        <div class="input_box Isactive mb-3">
+            <div class="d-flex align-items-center justify-content-center">
+
+                <div class="col-6 col-md-6">
+                    <span class="me-2">Boxid</span>
+                </div>
+                <div class="col-6 col-md-6 value">
+                    {{boxno}}
+                </div>
+            </div>
+        </div>
+
+        <div class="input_box  mb-3">
+            <div class="d-flex align-items-center justify-content-center">
+                <div class="  col-6 col-md-6">
+                    <span class="me-2">Status</span>
+                </div>
+                <div class="col-12 col-md-6"
+                    [ngClass]="{'status-disable': statusdisplay === 'Deactive', 'status-enable': statusdisplay === 'Active'}">
+                    <div class="toggle">
+                        {{statusdisplay}}
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="input_box  mb-3">
+            <div class="d-flex align-items-center justify-content-center">
+                <div class="  col-6 col-md-6">
+                    <label class="me-2">Reason</label>
+                </div>
+                <div class="col-6 col-md-6 value">
+                    <textarea name="" id="" [(ngModel)]="block_reason"></textarea>
+                </div>
+            </div>
+        </div>
+        <div class="col-12 col-md-12 d-flex  justify-content-center align-items-center mb-3">
+            <label for="" style="color: red;text-align: center;">Are you sure block this smartcard ? </label>
+        </div>
+    </div>
+    <div class="d-flex justify-content-end align-item-center mx-4 mb-3">
+        <button type="button" class="btn btn-success me-2" (click)="block()">Yes</button>
+        <button type="button" class="btn btn-danger" (click)="onNoClick()">No</button>
+    </div>
+</div>
+<div *ngIf="sType=='boxchange'">
+    <div class="Head d-flex justify-content-between align-items-center mb-3">
+        <span class="span">BOX TRANSFER</span>
+        <i class="fa fa-close close-icon" (click)="onNoClick()"></i>
+    </div>
+    <div class="mobileview">
+        <div class="input_box  mb-3">
+            <div class="d-flex align-items-center justify-content-center">
+                <div class="col-6 col-md-6">
+                    <span for="Subscriber_name" class="me-2">Subscriber Name</span>
+                </div>
+                <div class="col-6 col-md-6 value">
+                    {{subscribername}}
+                </div>
+            </div>
+        </div>
+
+        <div class="input_box  mb-3">
+            <div class="d-flex align-items-center justify-content-center">
+                <div class="col-6 col-md-6">
+                    <span class="me-2">Mobile Number</span>
+                </div>
+                <div class="col-6 col-md-6 value">
+                    {{mobile}}
+                </div>
+            </div>
+        </div>
+
+        <div class="input_box  mb-3">
+            <div class="d-flex align-items-center justify-content-center">
+                <div class="col-6 col-md-6">
+                    <span for="password" class="me-2">Smartcard</span>
+                </div>
+                <div class="col-6 col-md-6 value">
+                    {{smartcardno}}
+                </div>
+            </div>
+        </div>
+
+        <div class="input_box Isactive mb-3">
+            <div class="d-flex align-items-center justify-content-center">
+
+                <div class="col-6 col-md-6">
+                    <span class="me-2">Old Boxid</span>
+                </div>
+                <div class="col-6 col-md-6 value">
+                    {{boxno}}
+                </div>
+            </div>
+        </div>
+
+        <div class="input_box  mb-3">
+            <div class="d-flex align-items-center justify-content-center">
+                <div class="  col-6 col-md-6">
+                    <label class="me-2">New Boxid</label>
+                </div>
+                <div class="col-6 col-md-6 value">
+                    <input type="text" [(ngModel)]="new_boxid">
+                </div>
+            </div>
+        </div>
+
+
+    </div>
+    <div class="d-flex justify-content-end align-item-center mx-4 mb-3">
+        <button type="button" class="btn btn-success me-2" (click)="boxIdChange()">Yes</button>
+        <button type="button" class="btn btn-danger" (click)="onNoClick()">No</button>
+    </div>
+</div>
+<div *ngIf="sType=='smartcardchange'">
+    <div class="Head d-flex justify-content-between align-items-center mb-3">
+        <span class="span">LCO TRANSFER</span>
+        <i class="fa fa-close close-icon" (click)="onNoClick()"></i>
+    </div>
+    <div class="mobileview">
+        <div class="input_box  mb-3">
+            <div class="d-flex align-items-center justify-content-center">
+                <div class="col-6 col-md-6">
+                    <span for="Subscriber_name" class="me-2">Subscriber Name</span>
+                </div>
+                <div class="col-6 col-md-6 value">
+                    {{subscribername}}
+                </div>
+            </div>
+        </div>
+
+        <div class="input_box  mb-3">
+            <div class="d-flex align-items-center justify-content-center">
+                <div class="col-6 col-md-6">
+                    <span class="me-2">Mobile Number</span>
+                </div>
+                <div class="col-6 col-md-6 value">
+                    {{mobile}}
+                </div>
+            </div>
+        </div>
+        <div class="input_box  mb-3">
+            <div class="d-flex align-items-center justify-content-center">
+                <div class="col-6 col-md-6">
+                    <span class="me-2">LCO Name</span>
+                </div>
+                <div class="col-6 col-md-6 value">
+                    {{lconame}}
+                </div>
+            </div>
+        </div>
+
+        <div class="input_box  mb-3">
+            <div class="d-flex align-items-center justify-content-center">
+                <div class="col-6 col-md-6">
+                    <span for="password" class="me-2">Smartcard</span>
+                </div>
+                <div class="col-6 col-md-6 value">
+                    {{smartcardno}}
+                </div>
+            </div>
+        </div>
+
+        <div class="input_box Isactive mb-3">
+            <div class="d-flex align-items-center justify-content-center">
+                <div class="col-6 col-md-6">
+                    <span class="me-2"> Boxid</span>
+                </div>
+                <div class="col-6 col-md-6 value">
+                    {{boxno}}
+                </div>
+            </div>
+        </div>
+
+        <div class="input_box  mb-3">
+            <div class="d-flex align-items-center justify-content-center">
+                <div class="  col-6 col-md-6">
+                    <label class="me-2">New LCO Name</label>
+                </div>
+                <div class="col-6 col-md-6 value">
+                    <select id="lcoName" [(ngModel)]="lcoid" (change)="onSubscriberlcoChange($event)">
+                        <option value="0" selected>Select a LCO</option>
+                        <option *ngFor="let key of lco_list" [value]="key.id">
+                            {{ key.name }}
+                        </option>
+                    </select>
+                </div>
+            </div>
+        </div>
+        <div class="input_box  mb-3">
+            <div class="d-flex align-items-center justify-content-center">
+                <div class="  col-6 col-md-6">
+                    <label class="me-2">Subscriber</label>
+                </div>
+                <div class="col-6 col-md-6 value">
+                    <select [(ngModel)]="f_subid">
+                        <option value="0" selected>Select a Subscriber</option>
+                        <option *ngFor="let key of sub_list" [value]="key.id">
+                            {{ key.name }}
+                        </option>
+                    </select>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="d-flex justify-content-end align-item-center mx-4 mb-3">
+        <button type="button" class="btn btn-success me-2" (click)="lcotransferSinglesmartcard()">Submit</button>
+        <button type="button" class="btn btn-danger" (click)="onNoClick()">Cancel</button>
+    </div>
+</div>
+<div *ngIf="sType=='resumechange'">
+    <div class="Head d-flex justify-content-between align-items-center mb-3">
+        <span class="span">RESUME SMARTCARD</span>
+        <i class="fa fa-close close-icon" (click)="onNoClick()"></i>
+    </div>
+    <div class="mobileview">
+        <div class="input_box  mb-3">
+            <div class="d-flex align-items-center justify-content-center">
+                <div class="col-6 col-md-6">
+                    <span for="Subscriber_name" class="me-2">Subscriber Name</span>
+                </div>
+                <div class="col-6 col-md-6 value">
+                    {{subscribername}}
+                </div>
+            </div>
+        </div>
+
+        <div class="input_box  mb-3">
+            <div class="d-flex align-items-center justify-content-center">
+                <div class="col-6 col-md-6">
+                    <span class="me-2">Mobile Number</span>
+                </div>
+                <div class="col-6 col-md-6 value">
+                    {{mobile}}
+                </div>
+            </div>
+        </div>
+        <div class="input_box  mb-3">
+            <div class="d-flex align-items-center justify-content-center">
+                <div class="col-6 col-md-6">
+                    <span class="me-2">LCO Name</span>
+                </div>
+                <div class="col-6 col-md-6 value">
+                    {{mobile}}
+                </div>
+            </div>
+        </div>
+
+        <div class="input_box  mb-3">
+            <div class="d-flex align-items-center justify-content-center">
+                <div class="col-6 col-md-6">
+                    <span for="password" class="me-2">Smartcard</span>
+                </div>
+                <div class="col-6 col-md-6 value">
+                    {{smartcardno}}
+                </div>
+            </div>
+        </div>
+
+        <div class="input_box Isactive mb-3">
+            <div class="d-flex align-items-center justify-content-center">
+                <div class="col-6 col-md-6">
+                    <span class="me-2"> Boxid</span>
+                </div>
+                <div class="col-6 col-md-6 value">
+                    {{boxno}}
+                </div>
+            </div>
+        </div>
+
+
+        <div class="  mb-3">
+            <div class="d-flex align-items-center justify-content-center">
+                <div class="input_box col-6 col-md-6">
+                    <span class="me-2">Status</span>
+                </div>
+                <div class="col-12 col-md-6"
+                    [ngClass]="{'status-disable': statusdisplay === 'Deactive', 'status-enable': statusdisplay === 'Active'}">
+                    <div class="toggle">
+                        {{statusdisplay}}
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-12 col-md-12 d-flex  justify-content-center align-items-center mb-3">
+            <label for="" style="color: green;text-align: center;">Are you sure resume this smartcard ?</label>
+        </div>
+    </div>
+    <div class="d-flex justify-content-end align-item-center mx-3 mb-2">
+        <button type="button" class="btn btn-success me-2" (click)="resume()">Yes</button>
+        <button type="button" class="btn btn-danger" (click)="onNoClick()">No</button>
+    </div>
+</div>
+<div *ngIf="sType=='activation'">
+    <div class="Head d-flex justify-content-between align-items-center mb-3">
+        <span class="span">ACTIVATION</span>
+        <i class="fa fa-close close-icon" (click)="onNoClick()"></i>
+    </div>
+    <div class="mobileview">
+        <div class="input_box  mb-3">
+            <div class="d-flex align-items-center justify-content-center">
+                <div class="col-6 col-md-6">
+                    <span for="Subscriber_name" class="me-2">Subscriber Name</span>
+                </div>
+                <div class="col-6 col-md-6 value">
+                    {{subscribername}}
+                </div>
+            </div>
+        </div>
+        <div class="input_box Isactive mb-3">
+            <div class="d-flex align-items-center justify-content-center">
+                <div class="col-6 col-md-6">
+                    <span class="me-2"> Boxid</span>
+                </div>
+                <div class="col-6 col-md-6 value">
+                    {{boxno}}
+                </div>
+            </div>
+        </div>
+
+        <div class="input_box  mb-3">
+            <div class="d-flex align-items-center justify-content-center">
+                <div class="col-6 col-md-6">
+                    <span class="me-2">LCO Name</span>
+                </div>
+                <div class="col-6 col-md-6 value">
+                    {{mobile}}
+                </div>
+            </div>
+        </div>
+
+        <div class="input_box  mb-3">
+            <div class="d-flex align-items-center justify-content-center">
+                <div class="col-6 col-md-6">
+                    <span for="password" class="me-2">Smartcard</span>
+                </div>
+                <div class="col-6 col-md-6 value">
+                    {{smartcardno}}
+                </div>
+            </div>
+        </div>
+
+        <div class="input_box  mb-3">
+            <div class="d-flex align-items-center justify-content-center">
+                <div class="  col-6 col-md-6">
+                    <label for="">Package Name
+
+                    </label>
+                </div>
+                <div class=" col-6 col-md-6 value">
+                    <div class="dropdown jumbotron">
+                        <select id="single" [(ngModel)]="newpackagename" class=" js-states form-control">
+                            <option value="0" selected>Selected Package Name</option>
+                            <option *ngFor="let package of packagenameList" [value]="package.packageid">
+                                {{ package.packagename }}
+                            </option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="input_box  mb-3">
+            <div class="d-flex align-items-center justify-content-center mb-3">
+                <div class="col-6 col-md-6">
+                    <label for="">Recharge Type</label>
+                </div>
+                <div class="col-6 col-md-6 ">
+                    <select [(ngModel)]="selectedRechargetype" (ngModelChange)="onSelectionrechargetype($event)">
+                        <option value="0" selected>Selected Recharge</option>
+                        <option *ngFor="let rt of rechargetype" [value]="rt.id">
+                            {{rt.name}}
+                        </option>
+                    </select>
+                </div>
+            </div>
+            <div *ngIf="isplantype" class="mb-3">
+                <div class="d-flex align-items-center justify-content-center">
+                    <div class="col-6 col-md-6 ">
+                        <label for="">Plan Type</label>
+                    </div>
+                    <div class="col-6 col-md-6">
+                        <select [(ngModel)]="plantype">
+                            <option value="0" selected>Selected Plan</option>
+                            <option *ngFor="let plan of plantype$ | async | keyvalue" [value]="plan.value">
+                                {{ plan.key }}
+                            </option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div *ngIf="datetype" class="mb-3">
+                <div class="d-flex align-items-center justify-content-center">
+                    <div class="col-6 col-md-6 ">
+                        <label for="">Date</label>
+                    </div>
+                    <div class="col-6 col-md-6">
+                        <input type="date" [(ngModel)]="f_date">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div *ngIf="confirmation">
+        <div style="padding: 1rem;">
+            <div class="card mb-2" style="padding: 1rem;">
+                <div class="input_box  mb-3">
+                    <div class="d-flex align-items-center justify-content-center">
+                        <div class="col-6 col-md-6">
+                            <span class="me-2">Old Expiry date</span>
+                        </div>
+                        <div class="col-6 col-md-6 value">
+                            {{First_list?.oldExpiryDate}}
+                        </div>
+                    </div>
+                </div>
+                <div class="input_box  mb-3">
+                    <div class="d-flex align-items-center justify-content-center">
+                        <div class="col-6 col-md-6">
+                            <span class="me-2">New Expiry date </span>
+                        </div>
+                        <div class="col-6 col-md-6 value">
+                            {{First_list?.expiryDate}}
+                        </div>
+                    </div>
+                </div>
+                <div class="input_box  mb-3">
+                    <div class="d-flex align-items-center justify-content-center">
+                        <div class="col-6 col-md-6">
+                            <span class="me-2">Customer Amount</span>
+                        </div>
+                        <div class="col-6 col-md-6 value">
+                            {{First_list?.customerPayAmount}}
+                        </div>
+                    </div>
+                </div>
+                <div class="input_box Isactive mb-3">
+                    <div class="d-flex align-items-center justify-content-center">
+                        <div class="col-6 col-md-6">
+                            <span class="me-2"> MSO Amount </span>
+                        </div>
+                        <div class="col-6 col-md-6 value">
+                            {{First_list?.msoAmount}}
+                        </div>
+                    </div>
+                </div>
+
+
+                <div class="  mb-3">
+                    <div class="d-flex align-items-center justify-content-center">
+                        <div class="input_box col-6 col-md-6">
+                            <span class="me-2">Customer pay </span>
+                        </div>
+
+                        <div class="col-6 col-md-6 display justify-content-start align-items-center">
+                            <div class="can-toggle">
+                                <input id="a" type="checkbox" [(ngModel)]="billtype" (change)="onBillTypeChange()">
+                                <label for="a">
+                                    <div class="can-toggle__switch" data-checked="Paid" data-unchecked="Unpaid"></div>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class=" d-flex justify-content-center align-item-center  mb-2">
+        <button type="button" class="btn confirm me-2" (click)="onActivationButtonClick()" [disabled]="!newpackagename || newpackagename === '0' ||  !selectedRechargetype || selectedRechargetype === '0' || !plantype   ">
+            Confirmation
+        </button>
+
+        <button type="button" class="btn  recharge me-2" (click)="ActivationOfCard()">Activate</button>
+        <button type="button" class="btn btn-danger me-2" (click)="onNoClick()">Cancel</button>
+    </div>
+</div>
+<div *ngIf="sType=='sendmessage'">
+    <div class="Head d-flex justify-content-between align-items-center mb-3">
+        <span class="span">SEND MESSAGE</span>
+        <i class="fa fa-close close-icon" (click)="onNoClick()"></i>
+    </div>
+    <form [formGroup]="Sendmseform">
+        <div class="mobileview">
+            <div class="input_box  mb-3">
+                <div class="d-flex align-items-center justify-content-center">
+                    <div class="col-6 col-md-6">
+                        <span for="Subscriber_name" class="me-2">Smartcard</span>
+                    </div>
+                    <div class="col-6 col-md-6 value">
+                        {{smartcardno}}
+                    </div>
+                </div>
+            </div>
+            <div class="input_box Isactive mb-3">
+                <div class="d-flex align-items-center justify-content-center">
+                    <div class="col-6 col-md-6">
+                        <span class="me-2"> Boxid</span>
+                    </div>
+                    <div class="col-6 col-md-6 value">
+                        {{boxno}}
+                    </div>
+                </div>
+            </div>
+            <div class="input_box  mb-3">
+                <div class="d-flex align-items-center justify-content-center">
+                    <div class="col-6 col-md-6">
+                        <span class="me-2">Force Message</span>
+                    </div>
+                    <div class="col-2 col-md-2 value">
+                        <input style="width: 20px;height: 20px;" type="checkbox" [(ngModel)]="forcemsg"
+                            formControlName="forcemessage">
+                    </div>
+                    <div class="col-4 col-md-4 value"
+                        [ngClass]="{'status-enable': forcemsg === true, 'status-disable': forcemsg === false}">
+                        <div class="toggle">
+                            {{ forcemsg ? 'Enable' : 'Disable' }}
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+            <div class="input_box  mb-3">
+                <div class="d-flex align-items-center justify-content-center">
+                    <div class="col-6 col-md-6">
+                        <label class="me-2">No.of Time </label>
+                    </div>
+                    <div class="col-6 col-md-6 value" [ngClass]="{'disabled-div': !forcemsg}">
+                        <input type="text" name="" id="" [(ngModel)]="repeatfor" formControlName="repeatfor"
+                            [disabled]="!forcemsg" (keypress)="onKeydown($event)">
+                        <div *ngIf="Sendmseform.get('repeatfor')?.invalid && Sendmseform.get('repeatfor')?.touched">
+                            <small class="text-danger">No.of Time is required.</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="input_box  mb-3">
+                <div class="d-flex align-items-center justify-content-center">
+                    <div class="col-6 col-md-6">
+                        <label for="password" class="me-2">Display Duration </label>
+                    </div>
+                    <div class="col-6 col-md-6 value" [ngClass]="{'disabled-div': !forcemsg}">
+                        <input type="text" name="" id="" [(ngModel)]="duration" formControlName="duration"
+                            [disabled]="!forcemsg" (keypress)="onKeydown($event)">
+                        <div *ngIf="Sendmseform.get('duration')?.invalid && Sendmseform.get('duration')?.touched">
+                            <small class="text-danger">Display Duration is required.</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class=" input_box mb-3">
+                <div class="d-flex align-items-center justify-content-center">
+                    <div class=" col-6 col-md-6">
+                        <label class="me-2">Time Interval </label>
+                    </div>
+                    <div class="col-6 col-md-6 value" [ngClass]="{'disabled-div': !forcemsg}">
+                        <input type="text" name="" id="" [(ngModel)]="timegap" formControlName="timegap"
+                            [disabled]="!forcemsg" (keypress)="onKeydown($event)">
+                        <div *ngIf="Sendmseform.get('timegap')?.invalid && Sendmseform.get('timegap')?.touched">
+                            <small class="text-danger">Time Interval is required.</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class=" input_box mb-3">
+                <div class="d-flex align-items-center justify-content-center">
+                    <div class=" col-6 col-md-6">
+                        <label class="me-2">Message </label>
+                    </div>
+                    <div class="col-6 col-md-6 value">
+                        <textarea name="" id="" placeholder="N/A" [(ngModel)]="message"
+                            formControlName="message"></textarea>
+                        <div *ngIf="Sendmseform.get('message')?.invalid && Sendmseform.get('message')?.touched">
+                            <small class="text-danger">Message is required.</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="d-flex justify-content-end align-item-center mx-4 mb-2">
+            <button type="button" class="btn btn-success me-2" (click)="sendMessage()">Send</button>
+            <button type="button" class="btn btn-danger" (click)="onNoClick()">Cancel</button>
+        </div>
+    </form>
+</div>
+<div *ngIf="sType=='packagactivation'">
+    <div class="Head d-flex justify-content-between align-items-center mb-3">
+        <span class="span">FIRST TIME AVTIVATION</span>
+        <i class="fa fa-close close-icon" (click)="onNoClick()"></i>
+    </div>
+    <div class="mobileview1">
+        <div class="input_box  mb-3">
+            <div class="d-flex align-items-center justify-content-center">
+                <div class="col-6 col-md-6">
+                    <span for="password" class="me-2">Smartcard</span>
+                </div>
+                <div class="col-6 col-md-6 value">
+                    {{smartcardno}}
+                </div>
+            </div>
+        </div>
+        <div class="input_box  mb-3">
+            <div class="d-flex align-items-center justify-content-center">
+                <div class="col-6 col-md-6">
+                    <span class="me-2">LCO Name</span>
+                </div>
+                <div class="col-6 col-md-6 value">
+                    {{mobile}}
+                </div>
+            </div>
+        </div>
+        <div class="input_box Isactive mb-3">
+            <div class="d-flex align-items-center justify-content-center">
+                <div class="col-6 col-md-6">
+                    <span class="me-2"> Boxid</span>
+                </div>
+                <div class="col-6 col-md-6 value">
+                    {{boxno}}
+                </div>
+            </div>
+        </div>
+        <div class="input_box  mb-3">
+            <div class="d-flex align-items-center justify-content-center">
+                <div class="  col-6 col-md-6">
+                    <label for="">Package Name
+
+                    </label>
+                </div>
+                <div class=" col-6 col-md-6 value">
+                    <div class="dropdown jumbotron">
+                        <select id="single" [(ngModel)]="newpackagename" class=" js-states form-control">
+                            <option value="0" selected>Selected Package Name</option>
+                            <option *ngFor="let package of packagenameList" [value]="package.packageid">
+                                {{ package.packagename }}
+                            </option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="input_box  mb-3">
+            <div class="d-flex align-items-center justify-content-center mb-3">
+                <div class="col-6 col-md-6">
+                    <label for="">Recharge Type</label>
+                </div>
+                <div class="col-6 col-md-6 ">
+                    <select [(ngModel)]="selectedRechargetype" (ngModelChange)="onSelectionrechargetype($event)">
+                        <option value="0" selected>Selected Recharge</option>
+                        <option *ngFor="let rt of rechargetype" [value]="rt.id">
+                            {{rt.name}}
+                        </option>
+                    </select>
+                </div>
+            </div>
+            <div *ngIf="isplantype" class="mb-3">
+                <div class="d-flex align-items-center justify-content-center">
+                    <div class="col-6 col-md-6 ">
+                        <label for="">Plan Type</label>
+                    </div>
+                    <div class="col-6 col-md-6">
+                        <select [(ngModel)]="plantype">
+                            <option value="0" selected>Selected Plan</option>
+                            <option *ngFor="let plan of plantype$ | async | keyvalue" [value]="plan.value">
+                                {{ plan.key }}
+                            </option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div *ngIf="datetype" class="mb-3">
+                <div class="d-flex align-items-center justify-content-center">
+                    <div class="col-6 col-md-6 ">
+                        <label for="">Date</label>
+                    </div>
+                    <div class="col-6 col-md-6">
+                        <input type="date" [(ngModel)]="f_date">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div *ngIf="confirmation">
+        <div style="padding: 1rem;">
+            <div class="card mb-2" style="padding: 1rem;">
+                <div class="input_box  mb-3">
+                    <div class="d-flex align-items-center justify-content-center">
+                        <div class="col-6 col-md-6">
+                            <span class="me-2">Old Expiry date</span>
+                        </div>
+                        <div class="col-6 col-md-6 value">
+                            {{First_list?.oldExpiryDate}}
+                        </div>
+                    </div>
+                </div>
+                <div class="input_box  mb-3">
+                    <div class="d-flex align-items-center justify-content-center">
+                        <div class="col-6 col-md-6">
+                            <span class="me-2">New Expiry date </span>
+                        </div>
+                        <div class="col-6 col-md-6 value">
+                            {{First_list?.expiryDate}}
+                        </div>
+                    </div>
+                </div>
+                <div class="input_box  mb-3">
+                    <div class="d-flex align-items-center justify-content-center">
+                        <div class="col-6 col-md-6">
+                            <span class="me-2">Customer Amount</span>
+                        </div>
+                        <div class="col-6 col-md-6 value">
+                            {{First_list?.customerPayAmount}}
+                        </div>
+                    </div>
+                </div>
+                <div class="input_box Isactive mb-3">
+                    <div class="d-flex align-items-center justify-content-center">
+                        <div class="col-6 col-md-6">
+                            <span class="me-2"> MSO Amount </span>
+                        </div>
+                        <div class="col-6 col-md-6 value">
+                            {{First_list?.msoAmount}}
+                        </div>
+                    </div>
+                </div>
+
+
+                <div class="  mb-3">
+                    <div class="d-flex align-items-center justify-content-center">
+                        <div class="input_box col-6 col-md-6">
+                            <span class="me-2">Customer pay </span>
+                        </div>
+
+                        <div class="col-6 col-md-6 display justify-content-start align-items-center">
+                            <div class="can-toggle">
+                                <input id="a" type="checkbox" [(ngModel)]="billtype" (change)="onBillTypeChange()">
+                                <label for="a">
+                                    <div class="can-toggle__switch" data-checked="Paid" data-unchecked="Unpaid"></div>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class=" d-flex justify-content-center align-item-center  mb-2">
+        <button type="button" class="btn confirm me-2" (click)="onFirstTimeActivationButtonClick()" [disabled]="!newpackagename || newpackagename === '0' || 
+                !selectedRechargetype || selectedRechargetype === '0' || (!plantype || !f_date)
+                 "> <!-- Updated condition for date -->
+            Confirmation
+        </button>
+
+        <!-- <button type="button" class="btn confirm me-2" >Confirmation</button> -->
+        <button type="button" class="btn  recharge me-2" (click)="firsttimeActivationOfCard()">Activate</button>
+        <!-- <button type="button" class="btn recharge me-2" [disabled]="!confirmation"
+            (click)="firsttimeActivationOfCard()">Activate</button> -->
+
+        <button type="button" class="btn btn-danger me-2" (click)="onNoClick()">Cancel</button>
+    </div>
+    <!-- <div *ngIf="(!newpackagename || newpackagename === '0') || (!selectedRechargetype || selectedRechargetype === '0')" class="text-danger">
+        <p>Please select a valid package name and recharge type.</p>
+    </div> -->
+
+</div>
+<div *ngIf="sType=='suspend'">
+    <div class="Head d-flex justify-content-between align-items-center mb-3">
+        <span class="span">SUSPEND</span>
+        <i class="fa fa-close close-icon" (click)="onNoClick()"></i>
+    </div>
+    <div class="mobileview">
+
+        <div class="input_box  mb-3">
+            <div class="display align-items-center justify-content-center">
+                <div class="col-12 col-md-6">
+                    <span for="Subscriber_name" class="me-2">Subscriber Name</span>
+                </div>
+                <div class="col-12 col-md-6" style="color: rgb(1, 90, 86);">
+                    {{subscribername}}
+                </div>
+            </div>
+        </div>
+
+
+
+        <div class="input_box  mb-3">
+            <div class="d-flex align-items-center justify-content-center">
+                <div class="col-6 col-md-6">
+                    <span class="me-2">Mobile Number</span>
+                </div>
+                <div class="col-6 col-md-6 value">
+                    {{mobile}}
+                </div>
+            </div>
+        </div>
+        <div class="input_box  mb-3">
+            <div class="d-flex align-items-center justify-content-center">
+                <div class="col-6 col-md-6">
+                    <span class="me-2"> Boxid</span>
+                </div>
+                <div class="col-6 col-md-6 value">
+                    {{boxno}}
+                </div>
+            </div>
+        </div>
+        <div class="input_box  mb-3">
+            <div class="d-flex align-items-center justify-content-center">
+                <div class="col-6 col-md-6">
+                    <span for="password" class="me-2">Smartcard</span>
+                </div>
+                <div class="col-6 col-md-6 value">
+                    {{smartcardno}}
+                </div>
+            </div>
+        </div>
+        <div class="  mb-3">
+            <div class="d-flex align-items-center justify-content-center">
+                <div class="input_box  col-6 col-md-6">
+                    <span class="me-2">Status</span>
+                </div>
+                <div class="col-6 col-md-6 value"
+                    [ngClass]="{'status-enable': statusdisplay === 'Active', 'status-disable': statusdisplay === 'Deactive'}">
+                    <div class="toggle">
+                        {{statusdisplay}}
+                    </div>
+                </div>
+
+            </div>
+        </div>
+        <div class="input_box  mb-3">
+            <div class="d-flex align-items-center justify-content-center">
+                <div class="  col-6 col-md-6">
+                    <label class="me-2">Suspend Reason</label>
+                </div>
+                <div class="col-6 col-md-6 value">
+                    <textarea type="text" [(ngModel)]="sus_reason"></textarea>
+                </div>
+            </div>
+        </div>
+        <div class="col-12 col-md-12 d-flex  justify-content-center align-items-center mb-3">
+            <label for="" style="color: red;text-align: center;">Are you sure suspend this smartcard ?
+            </label>
+        </div>
+    </div>
+    <div class=" d-flex justify-content-end align-item-center mx-4 mb-2">
+        <button type="button" class="btn btn-success me-2" (click)="smartcardSuspend()">Yes</button>
+        <button type="button" class="btn btn-danger me-2" (click)="onNoClick()">No</button>
+    </div>
+</div>
+
+<div *ngIf="sType=='BASE'">
+    <div class="Head d-flex justify-content-between align-items-center mb-3">
+        <span class="span">CHANGE BASE</span>
+        <i class="fa fa-close close-icon" (click)="onNoClick()"></i>
+    </div>
+    <div class="mobileview">
+        <div class="input_box  mb-3">
+            <div class="d-flex align-items-center justify-content-center">
+                <div class="col-6 col-md-6">
+                    <span for="password" class="me-2">Smartcard</span>
+                </div>
+                <div class="col-6 col-md-6 value">
+                    {{smartcardno}}
+                </div>
+            </div>
+        </div>
+        <div class="input_box Isactive mb-3">
+            <div class="d-flex align-items-center justify-content-center">
+                <div class="col-6 col-md-6">
+                    <span class="me-2"> Boxid</span>
+                </div>
+                <div class="col-6 col-md-6 value">
+                    {{boxno}}
+                </div>
+            </div>
+        </div>
+
+
+        <div class="input_box  mb-3">
+            <div class="d-flex align-items-center justify-content-center">
+                <div class="col-6 col-md-6">
+                    <span class="me-2">Card Balance</span>
+                </div>
+                <div class="col-6 col-md-6 value">
+                    {{cardbalance}}
+                </div>
+            </div>
+        </div>
+
+        <div class="input_box  mb-3">
+            <div class="d-flex align-items-center justify-content-center">
+                <div class="col-6 col-md-6">
+                    <span class="me-2">Package Name</span>
+                </div>
+                <div class="col-6 col-md-6 value">
+                    {{packagename}}
+                </div>
+            </div>
+        </div>
+        <div class="input_box  mb-3">
+            <div class="d-flex align-items-center justify-content-center">
+                <div class="col-6 col-md-6">
+                    <span class="me-2">Expiry Date</span>
+                </div>
+                <div class="col-6 col-md-6 value">
+                    {{expirydate}}
+                </div>
+            </div>
+        </div>
+
+        <div class="input_box mb-3">
+            <div class="d-flex align-items-center justify-content-center">
+                <div class="  col-6 col-md-6">
+                    <label for="">Package Name <span style="display:none;">
+                            {{packagenameList[0].packageid}}</span></label>
+                </div>
+                <div class="col-6 col-md-6 value">
+                    <select [(ngModel)]="newpackagename">
+                        <option value="0" selected>Selected Package Name</option>
+                        <option *ngFor="let package of packagenameList" [value]="package.packageid">
+                            {{ package.packagename }}
+                        </option>
+                    </select>
+                </div>
+            </div>
+        </div>
+        <div class="input_box  mb-3">
+            <div class="d-flex align-items-center justify-content-center mb-3">
+                <div class="col-6 col-md-6">
+                    <label for="">Recharge Type</label>
+                </div>
+                <div class="col-6 col-md-6 ">
+                    <select [(ngModel)]="selectedRechargetype" (ngModelChange)="onSelectionrechargetype($event)">
+                        <option value="0" selected>Selected Recharge</option>
+                        <option *ngFor="let rt of rechargetype" [value]="rt.id">
+                            {{rt.name}}
+                        </option>
+                    </select>
+                </div>
+
+            </div>
+            <div *ngIf="isplantype" class="mb-3">
+                <div class="d-flex align-items-center justify-content-center">
+                    <div class="col-6 col-md-6 ">
+                        <label for="">Plan Type</label>
+                    </div>
+                    <div class="col-6 col-md-6">
+                        <select [(ngModel)]="plantype">
+                            <option value="0" selected>Selected Plan</option>
+                            <!-- <option value="" *ngFor="let pt of plantype" [value]="pt.id">
+                                {{pt.name}}
+                            </option> -->
+                            <option *ngFor="let plan of plantype$ | async | keyvalue" [value]="plan.value">
+                                {{ plan.key }}
+                            </option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div *ngIf="datetype" class="mb-3">
+                <div class="d-flex align-items-center justify-content-center">
+                    <div class="col-6 col-md-6 ">
+                        <label for="">Date</label>
+                    </div>
+                    <div class="col-6 col-md-6">
+                        <input type="date" [(ngModel)]="f_date">
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+    <div *ngIf="confirmation">
+        <div style="padding: 1rem;">
+            <div class="card mb-2" style="padding: 1rem;">
+                <div class="input_box  mb-3">
+                    <div class="d-flex align-items-center justify-content-center">
+                        <div class="col-6 col-md-6">
+                            <span for="password" class="me-2">New Expiry date</span>
+                        </div>
+                        <div class="col-6 col-md-6 value">
+                            {{smartcardno}}
+                        </div>
+                    </div>
+                </div>
+                <div class="input_box Isactive mb-3">
+                    <div class="d-flex align-items-center justify-content-center">
+                        <div class="col-6 col-md-6">
+                            <span class="me-2"> Refund Amount to LCO</span>
+                        </div>
+                        <div class="col-6 col-md-6 value">
+                            {{boxno}}
+                        </div>
+                    </div>
+                </div>
+
+
+                <div class="input_box  mb-3">
+                    <div class="d-flex align-items-center justify-content-center">
+                        <div class="col-6 col-md-6">
+                            <span class="me-2">Debit from LCO</span>
+                        </div>
+                        <div class="col-6 col-md-6 value">
+                            {{cardbalance}}
+                        </div>
+                    </div>
+                </div>
+                <div class="mb-3">
+                    <div class="d-flex align-items-center justify-content-center">
+                        <div class="input_box col-6 col-md-6">
+                            <span class="me-2">Customer pay </span>
+                        </div>
+                        <div class="col-6 col-md-6 display justify-content-start align-items-center">
+                            <div class="can-toggle">
+                                <input id="a" type="checkbox" [(ngModel)]="billtype" (change)="onBillTypeChange()">
+                                <label for="a">
+                                    <div class="can-toggle__switch" data-checked="Paid" data-unchecked="Unpaid"></div>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class=" d-flex justify-content-center align-item-center  mb-2">
+        <button type="button" class="btn confirm me-2" (click)="toggleConfirmation()">Confirmation</button>
+        <button type="button" class="btn  recharge me-2"
+            (click)="getFirstTimeActivationConfirmation()">Activate</button>
+        <button type="button" class="btn btn-danger me-2" (click)="onNoClick()">Cancel</button>
+    </div>
+
+
+</div>
+
+
+
+<div *ngIf="sType=='cancelsubscription'">
+    <div class="Head d-flex justify-content-between align-items-center mb-3">
+        <span class="span">CANCEL SUBSCRIPTION</span>
+        <i class="fa fa-close close-icon" (click)="onNoClick()"></i>
+    </div>
+    <div>
+        <div style="padding: 1rem;">
+            <div class="cancel_sub display_mobile mb-2  align-items-center justify-content-center">
+                <div class="col-12 col-md-6 display_moile justify-content-start lign-items-center">
+                    <div class="input_box  mb-3">
+                        <div class="d-flex align-items-center justify-content-center">
+                            <div class="col-5 col-md-3">
+                                <span for="password" class="me-2">Smartcard</span>
+                            </div>
+                            <div class="col-7 col-md-6 value">
+                                {{smartcardno}}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="input_box Isactive mb-3">
+                        <div class="d-flex align-items-center justify-content-center">
+                            <div class="col-6 col-md-3">
+                                <span class="me-2"> Boxid</span>
+                            </div>
+                            <div class="col-6 col-md-6 value">
+                                {{boxno}}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-12 col-md-6 display_moile justify-content-end lign-items-center">
+                    <div class="input_box  mb-3">
+                        <div class="d-flex align-items-center justify-content-center">
+                            <div class="col-5 col-md-3">
+                                <span class="me-2">Expiry Date</span>
+                            </div>
+                            <div class="col-7 col-md-6 value">
+                                {{expirydate}}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="input_box  mb-3">
+                        <div class="d-flex align-items-center justify-content-center">
+                            <div class="col-5 col-md-3">
+                                <span class="me-2">Card Balance</span>
+                            </div>
+                            <div class="col-7 col-md-6 value">
+                                {{cardbalance}}
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+        <div class="col-12 col-md-12  mb-3" style="padding: 0.5rem;">
+            <ag-grid-angular #agGrid id="myGrid" domLayout='autoHeight' class="ag-theme-alpine table-class" rowAnimation
+                [columnDefs]="columnDefs" [rowData]="rowData1" [enableCellTextSelection]="true">
+            </ag-grid-angular>
+        </div>
+        <div style="padding: 1rem;">
+            <div style="background-color: aquamarine;padding: 0.5rem;">
+                <h5 style="margin-bottom: 0rem;">TOTAL: {{TotalLcoAmount}}
+                    <!-- <span style="color: red;">{{TotalLcoAmount}} </span> -->
+                </h5>
+            </div>
+        </div>
+
+    </div>
+    <div class="d-flex justify-content-center align-item-center mx-3 mb-2">
+        <button type="button" class="btn btn-success me-2" (click)="cancelSmartcard()">Submit</button>
+        <button type="button" class="btn btn-danger" (click)="onNoClick()">Cancel</button>
+    </div>
+</div>
+<div *ngIf="sType=='addon'">
+    <div class="Head d-flex justify-content-between align-items-center mb-3">
+        <span class="span">ADDON ADD</span>
+        <i class="fa fa-close close-icon" (click)="onNoClick()"></i>
+    </div>
+    <div class="mobile">
+        <div>
+            <div style="padding: 1rem;">
+                <div class="cancel_sub mb-2 display_mobile align-items-center justify-content-center">
+                    <div class="col-12 col-md-6 display_moile justify-content-start lign-items-center">
+                        <div class="input_box  mb-3">
+                            <div class="d-flex align-items-center justify-content-center">
+                                <div class="col-5 col-md-6">
+                                    <span for="password" class="me-2">Customer Name </span>
+                                </div>
+                                <div class="col-7 col-md-6 value">
+                                    {{subscribername}}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="input_box Isactive mb-3">
+                            <div class="d-flex align-items-center justify-content-center">
+                                <div class="col-5 col-md-6">
+                                    <span class="me-2"> Smartcard</span>
+                                </div>
+                                <div class="col-7 col-md-6 value">
+                                    {{smartcardno}}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-12 col-md-6 display_moile justify-content-end lign-items-center">
+                        <div class="input_box  mb-3">
+                            <div class="d-flex align-items-center justify-content-center">
+                                <div class="col-5 col-md-6">
+                                    <span class="me-2">Box Id</span>
+                                </div>
+                                <div class="col-7 col-md-6 value">
+                                    {{boxno}}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="input_box  mb-3">
+                            <div class="d-flex align-items-center justify-content-center">
+                                <div class="col-5 col-md-6">
+                                    <span class="me-2">Lco Name</span>
+                                </div>
+                                <div class="col-7 col-md-6 value">
+                                    {{lconame}}
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+            <div class="col-12 col-md-12  mb-3" style="padding: 1rem;">
+                <ag-grid-angular #agGrid id="myGrid" domLayout='autoHeight' class="ag-theme-alpine table-class"
+                    rowAnimation [gridOptions]="gridOptions" [columnDefs]="columnDefs" [rowData]="rowData"
+                    [enableCellTextSelection]="true">
+                </ag-grid-angular>
+            </div>
+        </div>
+        <div class="display_mobile ">
+            <div class="col-12 col-md-6  mb-3" style="padding: 1rem;">
+                <ag-grid-angular #agGrid id="myGrid" domLayout='autoHeight' class="ag-theme-alpine table-class"
+                    rowAnimation [columnDefs]="columnDefs1" [rowData]="rowData3" [enableCellTextSelection]="true">
+                </ag-grid-angular>
+            </div>
+            <div class="col-12 col-md-6 d-flex justify-content-center align-item-center  mb-3">
+                <div class=" d-flex  align-item-center mx-3 mb-2 " style="margin-top:15%">
+                    <button type="button" class="btn btn-success me-2" style="height: 40px;"
+                        (click)="loginDetails()">Submit</button>
+                    <button type="button" class="btn btn-danger" style="height: 40px;"
+                        (click)="onNoClick()">Cancel</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div *ngIf="sType=='alacarte'">
+    <div class="Head d-flex justify-content-between align-items-center mb-3">
+        <span class="span">ALACARTE ADD</span>
+        <i class="fa fa-close close-icon" (click)="onNoClick()"></i>
+    </div>
+    <div class="mobile">
+        <div>
+            <div style="padding: 1rem;">
+                <div class="cancel_sub mb-2 display_mobile align-items-center justify-content-center">
+                    <div class="col-12 col-md-6 display_moile justify-content-start lign-items-center">
+                        <div class="input_box  mb-3">
+                            <div class="d-flex align-items-center justify-content-center">
+                                <div class="col-5 col-md-6">
+                                    <span for="password" class="me-2">Customer Name </span>
+                                </div>
+                                <div class="col-7 col-md-6 value">
+                                    {{subscribername}}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="input_box Isactive mb-3">
+                            <div class="d-flex align-items-center justify-content-center">
+                                <div class="col-5 col-md-6">
+                                    <span class="me-2"> Smartcard</span>
+                                </div>
+                                <div class="col-7 col-md-6 value">
+                                    {{smartcardno}}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-12 col-md-6 display_moile justify-content-end lign-items-center">
+                        <div class="input_box  mb-3">
+                            <div class="d-flex align-items-center justify-content-center">
+                                <div class="col-5 col-md-6">
+                                    <span class="me-2">Box Id</span>
+                                </div>
+                                <div class="col-7 col-md-6 value">
+                                    {{boxno}}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="input_box  mb-3">
+                            <div class="d-flex align-items-center justify-content-center">
+                                <div class="col-5 col-md-6">
+                                    <span class="me-2">Lco Name</span>
+                                </div>
+                                <div class="col-7 col-md-6 value">
+                                    {{lconame}}
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+            <div class="col-12 col-md-12  mb-3" style="padding: 1rem;">
+                <ag-grid-angular #agGrid id="myGrid" domLayout='autoHeight' class="ag-theme-alpine table-class"
+                    rowAnimation [gridOptions]="gridOptions" [columnDefs]="columnDefs" [rowData]="rowData"
+                    [enableCellTextSelection]="true">
+                </ag-grid-angular>
+            </div>
+        </div>
+        <div class="display_mobile ">
+            <div class="col-12 col-md-6  mb-3" style="padding: 1rem;">
+                <ag-grid-angular #agGrid id="myGrid" domLayout='autoHeight' class="ag-theme-alpine table-class"
+                    rowAnimation [columnDefs]="columnDefs1" [rowData]="rowData3" [enableCellTextSelection]="true">
+                </ag-grid-angular>
+            </div>
+            <div class="col-12 col-md-6 d-flex justify-content-center align-item-center  mb-3">
+                <div class=" d-flex  align-item-center mx-3 mb-2 " style="margin-top:15%">
+                    <button type="button" class="btn btn-success me-2" style="height: 40px;"
+                        (click)="loginDetails()">Submit</button>
+                    <button type="button" class="btn btn-danger" style="height: 40px;"
+                        (click)="onNoClick()">Cancel</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div *ngIf="sType=='remove'">
+    <div class="Head d-flex justify-content-between align-items-center mb-3">
+        <span class="span">REMOVE PRODUCT</span>
+        <i class="fa fa-close close-icon" (click)="onNoClick()"></i>
+    </div>
+    <div class="mobile">
+
+
+        <div class="col-12 col-md-12  mb-3" style="padding: 1rem;">
+            <ag-grid-angular #agGrid id="myGrid" domLayout='autoHeight' class="ag-theme-alpine table-class" rowAnimation
+                [columnDefs]="columnDefs" [rowData]="rowData" [enableCellTextSelection]="true">
+            </ag-grid-angular>
+        </div>
+        <!-- <div class="col-12 col-md-6  mb-3"> -->
+        <div class=" d-flex justify-content-center align-item-center mx-3 mb-2">
+            <button type="button" class="btn confirm me-2" (click)="toggleConfirmation()">Confirmation</button>
+            <button type="button" class="btn  recharge me-2">Remove</button>
+            <button type="button" class="btn btn-danger me-2" (click)="onNoClick()">Cancel</button>
+        </div>
+        <!-- </div> -->
+
+    </div>
+</div>
+
+<div *ngIf="sType=='pair'">
+    <div class="Head d-flex justify-content-between align-items-center mb-3">
+        <span class="span">Unpair dialog</span>
+        <i class="fa fa-close close-icon" (click)="onNoClick()"></i>
+    </div>
+    <div class="mobileview">
+        <div class="  mb-3">
+            <div class="d-flex align-items-center justify-content-center">
+                <div class="input_box col-6 col-md-6">
+                    <label for="password" class="me-2">Do you Pair smartcard or box Id?</label>
+                </div>
+                <div class="col-6 col-md-6 value">
+                    <mat-radio-group class="radio-group d-flex justify-content-center align-items-center"
+                        [formControl]="BTNFormControl" aria-labelledby="status">
+                        <mat-radio-button class="radio-button" [value]="false"><span
+                                style="font-size: 14px;">Smartcard</span>
+                        </mat-radio-button>&nbsp;
+                        <mat-radio-button class="radio-button" [value]="true"><span style="font-size: 14px;">Box ID
+                            </span>
+                        </mat-radio-button>
+                    </mat-radio-group>
+                </div>
+            </div>
+        </div>
+        <div class="col-12 col-md-12 d-flex justify-content-center align-item-center  mb-3">
+            <div class=" d-flex  align-item-center mx-3 ">
+                <button type="button" class="btn btn-success me-2" (click)="loginDetails()">Submit</button>
+                <button type="button" class="btn btn-danger" (click)="onNoClick()">Cancel</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div *ngIf="sType=='unpair'">
+    <div class="Head d-flex justify-content-between align-items-center mb-3">
+        <span class="span">Unpair dialog</span>
+        <i class="fa fa-close close-icon" (click)="onNoClick()"></i>
+    </div>
+    <div class="mobileview">
+        <div class="  mb-3">
+            <div class="d-flex align-items-center justify-content-center">
+                <div class="input_box col-6 col-md-6">
+                    <label for="password" class="me-2">Do you Unpair smartcard or box Id?</label>
+                </div>
+                <div class="col-6 col-md-6 value">
+                    <mat-radio-group class="radio-group d-flex justify-content-center align-items-center"
+                        [formControl]="BTNFormControl" aria-labelledby="status">
+                        <mat-radio-button class="radio-button" [value]="false"><span
+                                style="font-size: 14px;">Smartcard</span>
+                        </mat-radio-button>&nbsp;
+                        <mat-radio-button class="radio-button" [value]="true"><span style="font-size: 14px;">Box ID
+                            </span>
+                        </mat-radio-button>
+                    </mat-radio-group>
+                </div>
+            </div>
+        </div>
+        <div class="col-12 col-md-12 d-flex justify-content-center align-item-center  mb-3">
+            <div class=" d-flex  align-item-center mx-3 ">
+                <button type="button" class="btn btn-success me-2" (click)="loginDetails()">Submit</button>
+                <button type="button" class="btn btn-danger" (click)="onNoClick()">Cancel</button>
+            </div>
+        </div>
+    </div>
+</div>

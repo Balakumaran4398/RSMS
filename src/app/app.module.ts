@@ -12,23 +12,22 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 
 
+
 @NgModule({
   declarations: [
     AppComponent,
-    
-    
+
+
   ],
   imports: [
-    BrowserModule,HttpClientModule,
-    AppRoutingModule,    CoreModule,
+    BrowserModule, HttpClientModule,
+    AppRoutingModule, CoreModule,
     AdminModule,
-
-
     BrowserAnimationsModule,
-  
+
   ],
   providers: [{ provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true }],
-   schemas: [CUSTOM_ELEMENTS_SCHEMA],
+  schemas: [CUSTOM_ELEMENTS_SCHEMA],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

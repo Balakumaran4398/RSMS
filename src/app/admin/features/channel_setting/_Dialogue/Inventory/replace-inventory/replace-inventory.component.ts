@@ -34,12 +34,7 @@ export class ReplaceInventoryComponent {
   onNoClick(): void {
     this.dialogRef.close();
   }
-  // Replace() {
-  //   this.userService.Defective_Replace_Allocated(this.role, this.username, this.id, this.smartcard, this.boxid).subscribe((data: any) => {
-  //     console.log(data);
 
-  //   })
-  // }
   Replace(): void {
     this.userService.Defective_Replace_Allocated(this.role, this.username, this.id, this.smartcard, this.boxid).subscribe(
       (data: any) => {

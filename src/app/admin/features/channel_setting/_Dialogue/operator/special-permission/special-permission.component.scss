@@ -11,10 +11,10 @@
 }
 
 
-.input_box label::after {
-    content: " *";
-    color: red;
-}
+// .input_box label::after {
+//     content: " *";
+//     color: red;
+// }
 
 // .input_box select option {
 //     padding: 7px 0;
@@ -23,7 +23,7 @@
     position: relative;
     display: inline-block;
     width: 55px;
-    height: 25px;
+    height: 28px;
     margin-left: 5px;
     float: inline-end;
 }
@@ -53,7 +53,8 @@
     width: 16px;
     left: 4px;
     bottom: 4px;
-    background-color: rgb(44, 116, 165);
+    // background-color: rgb(44, 116, 165);
+    background-color: rgb(185, 55, 55);
     /* Red color */
     transition: .1s;
     border-radius: 50%;
@@ -110,13 +111,20 @@ input:checked+.slider:before {
 .display {
     display: flex;
 }
-.box1{
+
+.box1 {
     display: contents;
 }
-label{
+
+label {
     color: rgb(2, 25, 51);
     // font-weight: 600;
 }
+
+.row {
+    padding: 1rem;
+}
+
 @media screen and (max-width:560px) {
     .display {
         display: block;
@@ -126,14 +134,17 @@ label{
         max-height: 500px;
         overflow: scroll;
     }
-    .box1{
+
+    .box1 {
         display: block;
     }
+
     .border {
         display: block;
         height: 17vh;
     }
-    .recharge_type{
+
+    .recharge_type {
         margin-bottom: 1rem;
     }
 }

@@ -32,44 +32,8 @@ export class SmartcardInventoryComponent {
   onNoClick(): void {
     this.dialogRef.close();
   }
- 
-  // Delete() {
-  //   Swal.fire({
-  //     title: 'Are you sure?',
-  //     text: "You won't be able to revert this!",
-  //     icon: 'warning',
-  //     showCancelButton: true,
-  //     confirmButtonColor: '#3085d6',
-  //     cancelButtonColor: '#d33',
-  //     confirmButtonText: 'Yes, delete it!'
-  //   }).then((result) => {
-  //     if (result.isConfirmed) {
-  //       this.userService.delete_Smartcard_boxid(this.role, this.username, this.id).subscribe((data: any) => {
-  //         Swal.fire({
-  //           icon: 'success',
-  //           title: 'Deleted!',
-  //           text: data?.message || 'Smartcard and Box ID have been deleted successfully.',
-  //           imageUrl: 'path/to/success-image.png', 
-  //           imageHeight: 100,
-  //           showConfirmButton: false,
-  //           timer: 1500 ,
-  //           timerProgressBar: true,
-  //         }).then(() => {
-  //              window.location.reload();
-  //         });
-  //       }, error => {
-  //         Swal.fire({
-  //           icon: 'error',
-  //           title: 'Error',
-  //           text: error?.error?.message || 'There was an error deleting the Smartcard and Box ID. Please try again.',
-  //           confirmButtonText: 'OK',
-  //           timer: 1500 ,
-  //           timerProgressBar: true,
-  //         });
-  //       });
-  //     }
-  //   });
-  // }
+
+
   Delete() {
     Swal.fire({
       title: 'Are you sure?',
@@ -113,11 +77,10 @@ export class SmartcardInventoryComponent {
           });
         });
       } else if (result.dismiss === Swal.DismissReason.timer) {
-        // If the dialog was closed by the timer
-        Swal.close(); // Ensure the dialog is closed after the timer finishes
+        Swal.close();
       }
     });
   }
-  
+
 
 }

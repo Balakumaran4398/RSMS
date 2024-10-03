@@ -1,0 +1,167 @@
+<div id="Customer-page">
+    <section class="mb-3">
+        <div style="margin: 0px;position: sticky">
+            <h3 style="text-align: center;padding: 10px;">
+                LCO Dashboard
+            </h3>
+        </div>
+        <div class="display align-item-center">
+            <div class="col-12 col-md-12 display_mobile">
+                <div class="col-12 col-md-5 mx-2 mb-3">
+                    <div class="card ">
+                        <div class="d-flex">
+                            <div class="col-2 col-md-2 " style="padding: 0.5rem;">
+                                <img [src]="'/assets/images/login/contact1.png'" alt="Customer Photo"
+                                    style="width: 50px;">
+                            </div>
+                            <div class=" col-10 col-md-10  d-block justify-content-center align-items-center ">
+                                <div class="d-flex">
+                                    <div class="col-5 col-md-5 d-flex justify-content-start align-items-center "
+                                        style="padding: 0.5rem;">
+                                        <h6>OPERATOR NAME
+                                        </h6>
+                                    </div>
+                                    <div class="col-1 col-md-1 d-flex justify-content-start align-items-center ">
+                                        <h6>:</h6>
+                                    </div>
+                                    <div class="col-6 col-md-8 display1 justify-content-start align-items-center ">
+                                        <h6>{{operatorname}}</h6>
+                                    </div>
+                                </div>
+                                <div class="d-flex">
+                                    <div class="col-5 col-md-5 d-flex justify-content-start align-items-center "
+                                        style="padding: 0.5rem;">
+                                        <h6>Mobile </h6>
+                                    </div>
+                                    <div class="col-1 col-md-1 d-flex justify-content-start align-items-center ">
+                                        <h6>:</h6>
+                                    </div>
+                                    <div class="col-6 col-md-8 display1 justify-content-start align-items-center ">
+                                        <h6>{{mobile }}</h6>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="line mb-2"></div>
+                        <div class="col-12 col-md-12 mobile1" style="padding: 1rem;">
+                            <div class="d-flex">
+                                <div class="col-4 col-md-4 d-flex justify-content-start align-items-center mb-1 text2">
+                                    MAIL ID
+                                </div>
+                                <div class="col-1 col-md-1 d-flex justify-content-center align-items-center mb-1 text2">
+                                    : </div>
+                                <div class="col-7 col-md-8 d-flex justify-content-start align-items-center">
+                                    {{mailid }}
+                                </div>
+                            </div>
+                            <div class="d-flex">
+                                <div class="col-4 col-md-4 d-flex justify-content-start align-items-center mb-1 text2">
+                                    USER ID
+                                </div>
+                                <div class="col-1 col-md-1 d-flex justify-content-center align-items-center mb-1 text2">
+                                    : </div>
+                                <div class="col-7 col-md-6 d-flex justify-content-start align-items-center">
+                                    {{userid }}
+                                </div>
+                            </div>
+                            <div class="d-flex">
+                                <div class="col-4 col-md-4 d-flex justify-content-start align-items-center mb-1 text2">
+                                    PASSWORD </div>
+                                <div class="col-1 col-md-1 d-flex justify-content-center align-items-center mb-1 text2">
+                                    : </div>
+                                <div class="col-7 col-md-6 d-flex justify-content-start align-items-center">
+                                    {{password }}
+                                </div>
+                            </div>
+                            <div class="d-flex">
+                                <div class="col-4 col-md-4 d-flex justify-content-start align-items-center mb-1 text2">
+                                    ADDRESS</div>
+                                <div class="col-1 col-md-1 d-flex justify-content-center align-items-center mb-1 text2">
+                                    : </div>
+                                <div class="col-7 col-md-6 d-flex justify-content-start align-items-center">
+                                    {{address }}
+                                </div>
+                            </div>
+                            <div class="d-flex">
+                                <div class="col-4 col-md-4 d-flex justify-content-start align-items-center mb-1 text2">
+                                    PINCODE </div>
+                                <div class="col-1 col-md-1 d-flex justify-content-center align-items-center mb-1 text2">
+                                    : </div>
+                                <div class="col-7 col-md-6 d-flex justify-content-start align-items-center">
+                                    {{pincode }}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class=" col-12 col-md-6 mx-2 mb-3">
+                    <div class="card">
+                        <h4 style="text-align: center;">Packagewise Recharge Amount</h4>
+                        <!-- <br> -->
+                        <p style="text-align: center;color: rgb(250, 81, 95);">This chart shows package-wise total
+                            recharged amount of the current year</p>
+                        <div class="line mb-2"></div>
+                        <div class=" input_box display_mobile justify-content-end align-item-center mb-2">
+                            <div class="col-12 col-md-3 ">
+                                <span for="">SELECT PACKAGE</span>
+                            </div>
+                            <div class="col-12 col-md-4">
+                                <select name="packages" id="packages" (change)="onPackageSelect($event)">
+                                    <option value="">Selected Package</option>
+                                    <option *ngFor="let package of packageid" [value]="getPackageId(package)">
+                                        {{ getPackageName(package) }}
+                                    </option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="">
+                            <!-- <app-lcopiechart></app-lcopiechart> -->
+                            <canvasjs-chart [options]="chartOptions"
+                                [styles]="{width: '100%', height:'300px'}"></canvasjs-chart>
+                        </div>
+                        <h4 style="text-align: center;color: rgb(243, 12, 12);">Total Amount: <span
+                                style="color: green;font-size: 20px;font-weight: 600;"><i class="fa fa-inr"
+                                    aria-hidden="true"></i>{{Totalamount}}</span> </h4>
+                    </div>
+                </div>
+            </div>
+            <div class="col-12 col-md-12 display_mobile">
+                <div class="col-12 col-md-6  mb-3 mx-2">
+                    <div class="card">
+                        <div class="col-12 col-md-12 display_mobile justify-content-between align-item-center mb-1"
+                            style="padding: 10px;">
+                            <h6 style="text-align: center;"> AREA DETAILS</h6>
+                            <span class="sub-tittle tittle1">
+                                <button type="button" class="btn btn-success me-2"
+                                    (click)="newArea('area')">New</button>
+                            </span>
+                        </div>
+                        <div class="col-12 col-md-12 mb-3">
+                            <ag-grid-angular #agGrid id="myGrid" style="text-align: center;" domLayout='autoHeight'
+                                class="ag-theme-alpine table-class" rowAnimation [gridOptions]="gridOptions"
+                                [columnDefs]="columnDefs" [rowSelection]="rowSelection"
+                                (selectionChanged)="onSelectionChanged()" (gridReady)="onGridReady($event)"
+                                [rowData]="rowData" [enableCellTextSelection]="true">
+                            </ag-grid-angular>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-12 col-md-5 mx-2 mb-3">
+                    <div class="card ">
+                        <h4 style="text-align: center;">Packagewise Recharge Count</h4>
+                        <br>
+                        <p style="text-align: center;color: rgb(250, 81, 95);">This chart shows package wise recharged
+                            count of current year
+                        </p>
+                        <div class="line mb-2"></div>
+                        <div>
+                            <!-- <app-lcochart></app-lcochart> -->
+                            <canvasjs-chart [options]="chartOptions1"
+                                [styles]="{width: '100%', height:'300px'}"></canvasjs-chart>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>

@@ -17,32 +17,39 @@
     font-size: 15px;
     font-weight: normal;
     font-style: normal;
-
+    // background-color: wheat;
 }
 
 h1,
 h2,
 h3,
 h4,
-h5,
-h6 {
+h5 {
     color: var(--primary-color);
     font-weight: 700;
     text-align: center;
     text-transform: uppercase;
+
+}
+
+h6 {
+    color: #fff;
+    font-size: 17px;
+    font-weight: 700;
+    margin-bottom: 0rem;
 }
 
 .head {
-    background-color: lightcyan;
+    // background-color: #6e9088;
     padding: 10px;
-    border-radius: 8px;
-    color: var(--primary-color);
+    // border-radius: 8px;
+    color:  #fff;
     font-size: large;
     font-weight: bold;
 }
 
 .container .title p::before {
-    content: "";
+    content: "";    
     position: absolute;
     bottom: 0px;
     left: 0;
@@ -56,7 +63,7 @@ h6 {
     --primary-color: #1f6764;
     --edit-button: rgb(148 19 106);
     --sidebar-color: white;
-    // --shadow-color: #dddddd url(/RSMS/faces/javax.faces.resource/images/ui-bg_highlight-soft_50_dddddd_1x100.png?ln=primefaces-flick) 50% 50% repeat-x;
+    --shadow-color: #dddddd url(/RSMS/faces/javax.faces.resource/images/ui-bg_highlight-soft_50_dddddd_1x100.png?ln=primefaces-flick) 50% 50% repeat-x;
     --secondary-color: #98d4df;
     --primary-color-light: #f6f5ff;
     --toggle-color: #ddd;
@@ -72,7 +79,7 @@ body {
     min-height: 100vh;
     background-color: white;
     transition: var(--tran-05);
-
+    // background: linear-gradient(to right, #058372, #acf3cc);
 }
 
 .ag-header-column-resize {
@@ -85,6 +92,17 @@ body {
 
 .ag-cell {
     text-align: center !important;
+}
+
+.Head {
+    background-color: var(--primary-color);
+    box-shadow: 0px 10px 8px rgba(0, 0, 0, 0.1);
+    color: white;
+    padding: 0.5rem;
+}
+
+.Head p {
+    font-size: 20px;
 }
 
 // .ag-cell-focus,
@@ -102,12 +120,12 @@ body {
 //     font-size: larger;
 // }
 
-.ag-header-viewport {
-    text-align: center !important;
-    // background: #51586e;
-    // background: #b2cfc0;
-    background: #b2cfc0;
-}
+// .ag-header-viewport {
+//     text-align: center !important;
+//     // background: #51586e;
+//     // background: #b2cfc0;
+//     background: #b2cfc0;
+// }
 
 .ag-root-wrapper {
     border-radius: 7px !important;
@@ -125,42 +143,34 @@ body {
     text-align: center;
 }
 
-.tooltip {
-    visibility: hidden;
-    background-color: black;
-    color: #fff;
-    text-align: center;
-    border-radius: 5px;
-    padding: 5px;
-    position: absolute;
-    z-index: 1;
-    bottom: 100%;
-    /* Position above the icon */
-    left: 50%;
-    transform: translateX(-50%);
-    margin-bottom: 5px;
-    white-space: nowrap;
-    font-size: 12px;
-}
 
-.tooltip {
-    visibility: hidden;
-    background-color: black;
-    color: #fff;
-    text-align: center;
-    border-radius: 5px;
-    padding: 5px;
-    position: absolute;
-    z-index: 1;
-    bottom: 100%;
-    /* Position above the icon */
-    left: 50%;
-    transform: translateX(-50%);
-    margin-bottom: 5px;
-    white-space: nowrap;
-    font-size: 12px;
-}
+// .tooltip-container {
+//     position: relative;
+//     display: inline-block;
+// }
 
+// .tooltip {
+//     visibility: hidden;
+//     background-color: black;
+//     color: #fff;
+//     text-align: center;
+//     border-radius: 5px;
+//     padding: 5px;
+//     position: absolute;
+//     z-index: 1;
+//     bottom: 125%;
+//     /* Adjust this to position the tooltip */
+//     left: 50%;
+//     margin-left: -50px;
+//     opacity: 0;
+//     transition: opacity 0.3s;
+//     width: 100px;
+// }
+
+// .tooltip-container:hover .tooltip {
+//     visibility: visible;
+//     opacity: 1;
+// }
 .form-control {
     border: 0.5px solid rgb(155, 150, 150) !important;
 }
@@ -180,6 +190,14 @@ div:where(.swal2-container) h2:where(.swal2-title) {
 
 
 .input_box label {
+    font-weight: 500;
+    margin-bottom: 5px;
+    display: block;
+    font-size: 16px;
+    color: #243359;
+}
+
+.input_box span {
     font-weight: 500;
     margin-bottom: 5px;
     display: block;
@@ -256,4 +274,31 @@ body {
 body {
     margin: 0;
     font-family: Roboto, "Helvetica Neue", sans-serif;
+}
+
+@media screen and (max-width:560px) {
+    input_box label {
+        font-weight: 500;
+        margin-bottom: 5px;
+        display: block;
+        font-size: 14px;
+        color: #243359;
+    }
+
+    .input_box span {
+        font-weight: 500;
+        margin-bottom: 5px;
+        display: block;
+        font-size: 14px;
+        color: #243359;
+    }
+}
+
+.ag-header-viewport {
+    text-align: center !important;
+    background: #3d5857 !important;
+}
+
+.ag-header-cell-text {
+    color: white;
 }

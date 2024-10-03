@@ -49,55 +49,62 @@ import { AlacarteActivationComponent } from './features/Bulk_operation/alacarte-
 import { HashLocationStrategy, LocationStrategy } from '@angular/common';
 import { RouterModule, Routes } from '@angular/router';
 import { AuthGuard } from '../_core/service/auth.guard';
+import { LcodashboardComponent } from './features/channel_setting/_Dialogue/operator/lcodashboard/lcodashboard.component';
+import { SubloginComponent } from './features/subscriber/sublogin/sublogin.component';
 
 
 const routes: Routes = [
   {
     path: "", children: [
-      { path: 'home', component: HomeComponent,canActivate: [AuthGuard] },
+      { path: 'home', component: HomeComponent, },
       // ---------------------------------------------Operator-----------------------------------
-      { path: 'operator_details', component: OperatorDetailsComponent ,canActivate: [AuthGuard] },
-      { path: 'lco_recharge', component: LcoRechargeComponent,canActivate: [AuthGuard]  },
+      { path: 'operator_details', component: OperatorDetailsComponent, },
+      { path: 'lco_recharge', component: LcoRechargeComponent, },
       // --------------------------------------------Top-Subscriber-Details---------------------------------
-      { path: 'top_sub_detail', component: TopSubDetailComponent,canActivate: [AuthGuard]  },
+      { path: 'top_sub_detail', component: TopSubDetailComponent, },
       // -------------------------Channel-Setting----------------------------
-      { path: 'Addon', component: AddonPackageComponent,canActivate: [AuthGuard] },
-      { path: 'Broadcast', component: BroadMasterComponent ,canActivate: [AuthGuard]},
-      { path: 'Channel', component: ChannelComponent ,canActivate: [AuthGuard] },
-      { path: 'Channeltype', component: ChannelTypeComponent,canActivate: [AuthGuard]  },
-      { path: 'Distributer', component: DistributorMasterComponent ,canActivate: [AuthGuard] },
-      { path: 'LcoCommission', component: LcoCommissionComponent,canActivate: [AuthGuard]  },
-      { path: 'PackageCreation', component: PackageCreationComponent,canActivate: [AuthGuard]  },
-      { path: 'PackageMaster', component: PackageMasterComponent,canActivate: [AuthGuard]  },
-      { path: 'packagemanage/:id', component: PackageManageComponent,canActivate: [AuthGuard]  },
-      { path: 'addonmanage/:id', component: AddonManageComponent,canActivate: [AuthGuard]  },
-      { path: 'PackageReference', component: PackageReferenceComponent,canActivate: [AuthGuard]  },
-      { path: 'PackagewiseOperator', component: PackagewiseOperatorComponent ,canActivate: [AuthGuard] },
-      { path: 'categery', component: CategoryComponent,canActivate: [AuthGuard]  },
+      { path: 'Addon', component: AddonPackageComponent, },
+      { path: 'Broadcast', component: BroadMasterComponent, },
+      { path: 'Channel', component: ChannelComponent, },
+      { path: 'Channeltype', component: ChannelTypeComponent, },
+      { path: 'Distributer', component: DistributorMasterComponent, },
+      { path: 'LcoCommission', component: LcoCommissionComponent, },
+      { path: 'PackageCreation', component: PackageCreationComponent, },
+      { path: 'PackageMaster', component: PackageMasterComponent, },
+      { path: 'packagemanage/:id', component: PackageManageComponent, },
+      { path: 'addonmanage/:id', component: AddonManageComponent, },
+      { path: 'PackageReference', component: PackageReferenceComponent, },
+      { path: 'PackagewiseOperator', component: PackagewiseOperatorComponent, },
+      { path: 'categery', component: CategoryComponent, },
       // -------------------------------Inventory---------------------------------
-      { path: 'allocate_smartcard', component: AllocatedComponent ,canActivate: [AuthGuard] },
-      { path: 'not_allacate_smartcard', component: NotAllocatedComponent ,canActivate: [AuthGuard] },
-      { path: 'defective_smart', component: DefectiveSmartcardComponent,canActivate: [AuthGuard]  },
-      { path: 'insert_sub', component: InsertSubComponent ,canActivate: [AuthGuard] },
-      { path: 'smartcard_declaration', component: SmartcardAllocationComponent ,canActivate: [AuthGuard] },
-      { path: 'smartcard_reallocation', component: SmartcardReallocationComponent ,canActivate: [AuthGuard] },
+      { path: 'allocate_smartcard', component: AllocatedComponent, },
+      { path: 'not_allacate_smartcard', component: NotAllocatedComponent, },
+      { path: 'defective_smart', component: DefectiveSmartcardComponent, },
+      { path: 'insert_sub', component: InsertSubComponent, },
+      { path: 'smartcard_declaration', component: SmartcardAllocationComponent, },
+      { path: 'smartcard_reallocation', component: SmartcardReallocationComponent },
       // // -------------------------------Cas Operation---------------------------------
-      { path: 'finger_print', component: FingerPrintComponent,canActivate: [AuthGuard]  },
-      { path: 'scrolling', component: ScrollingComponent ,canActivate: [AuthGuard] },
-      { path: 'message', component: MessageComponent ,canActivate: [AuthGuard] },
-      { path: 'fource_tuning', component: ForceTuningComponent,canActivate: [AuthGuard]  },
-      { path: 'mail', component: MailComponent, canActivate: [AuthGuard] },
+      { path: 'finger_print', component: FingerPrintComponent, },
+      { path: 'scrolling', component: ScrollingComponent },
+      { path: 'message', component: MessageComponent, },
+      { path: 'fource_tuning', component: ForceTuningComponent },
+      { path: 'mail', component: MailComponent, },
       // // -------------------------------Subscriber---------------------------------
       { path: 'Create_sub', component: CreateSubscriberComponent },
       { path: 'subscriber', component: SubscriberDetailsComponent },
       { path: 'expiry', component: ExpiryDetailsComponent },
-      { path: 'sub_dashboard', component: SubDashboardComponent },
-         // // -------------------------------VC/STB master---------------------------------
+      // { path: 'subscriber-full-info/:subid', component: SubDashboardComponent },
+      // { path: 'subscriber-full-info/:smartcard', component: SubDashboardComponent },
+      { path: 'subscriber-full-info/:smartcard/:status', component: SubDashboardComponent },
+
+      { path: 'sublogin', component: SubloginComponent },
+      // -------------------------------VC/STB master---------------------------------
       { path: 'chipid', component: ChipidModelComponent },
       { path: 'stb_bill', component: StbBillComponent },
       // ---------------------------------------Local-broadcasting-------------------------------
       { path: 'payment_channel', component: PaymentChannelComponent },
       { path: 'local_payment', component: LocalPaymentComponent },
+      { path: 'lcodashboard/:operatorid', component: LcodashboardComponent },
       // -----------------------------------Bulk operation----------------------------------------------
       { path: 'subscriber_import', component: SubscriberImportComponent },
       { path: 'activation', component: ActivationComponent },

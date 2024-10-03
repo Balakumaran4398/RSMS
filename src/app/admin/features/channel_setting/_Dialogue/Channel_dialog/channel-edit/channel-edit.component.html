@@ -97,7 +97,8 @@
                     <span for="commission" class="me-2">Commission</span>
                 </div>
                 <div class="col-12 col-md-6 ">
-                    <input type="text" [(ngModel)]="commission" (keypress)="onKeydown($event)" class=" flex-grow-1" placeholder="Commission Amount">
+                    <input type="text" [(ngModel)]="commission" (keypress)="onKeydown($event)" class=" flex-grow-1"
+                        placeholder="Commission Amount">
                 </div>
             </div>
             <div class="input_box col-12 col-md-12 display align-items-center mb-3">
@@ -116,7 +117,7 @@
                 </div>
             </div>
             <!-- <div class="form-group" style="margin: auto;">
-                <span for="isPercentage">Is Percentage</span>
+                <label for="isPercentage">Is Percentage</label>
                 <br>
                 <div class="toggle-button-cover">
                     <div class="button b2" id="button-10">
@@ -133,7 +134,7 @@
 
         </div>
         <div class="text-center">
-            <div class="input_box d-flex  justify-content-end align-items-center">
+            <div class="input_box d-flex justify-content-end align-items-center">
                 <button type="button" class="btn btn-primary" (click)="onSubmit()" style="color: white;">Update</button>
             </div>
         </div>

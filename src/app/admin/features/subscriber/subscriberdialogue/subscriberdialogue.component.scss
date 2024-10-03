@@ -1,0 +1,684 @@
+// -------------------------------------------------------Login Details---------------------------------------
+.span {
+    color: white;
+    font-size: 19px;
+    text-transform: uppercase;
+    font-weight: bold;
+}
+
+.display {
+    display: flex;
+}
+
+.close-icon {
+    font-size: 19px;
+    cursor: pointer;
+}
+
+.close-icon:hover {
+    background-color: var(--primary-color);
+    font-size: 17px;
+    padding: 2px;
+    margin: 0;
+    color: white;
+    border-radius: 10px;
+}
+
+
+.has-error input {
+    border-color: red;
+}
+
+.error-message {
+    color: red;
+    font-size: 0.9em;
+    margin-top: 0.5em;
+}
+
+.mat-slide-toggle-green .mat-slide-toggle-thumb {
+    background-color: green;
+}
+
+.mat-slide-toggle-red .mat-slide-toggle-thumb {
+    background-color: red;
+}
+
+.confirm {
+    background-color: rgb(243, 146, 19);
+    // background-image: linear-gradient(#134142, #60e8eb);
+    color: white;
+}
+.confirm:hover{
+    background-color: rgb(5, 119, 66);
+    color: white;
+}
+
+.recharge {
+    background-color: rgb(8, 79, 212);
+    color: white;
+}
+.recharge:hover{
+    background-color: rgb(8, 79, 212);
+    color: white;
+}
+@media screen and (max-width:560px) {
+    .display {
+        display: block;
+        padding: 5px;
+    }
+
+    .Isactive {
+        margin: auto;
+    }
+}
+
+@media screen and (max-width:720px) {
+    .display {
+        display: block;
+        padding: 5px;
+    }
+
+    .Isactive {
+        margin: auto;
+    }
+}
+
+$green: var(--primary-color);
+
+*,
+*:before,
+*:after {
+    box-sizing: border-box;
+}
+
+body {
+    font-family: -apple-system, ".SFNSText-Regular", "Helvetica Neue", "Roboto", "Segoe UI", sans-serif;
+}
+
+.toggle {
+    cursor: pointer;
+    display: inline-block;
+}
+
+.toggle-switch {
+    display: inline-block;
+    background: #ccc;
+    border-radius: 16px;
+    width: 51px;
+    height: 25px;
+    position: relative;
+    vertical-align: middle;
+    transition: background 0.25s;
+
+    &:before,
+    &:after {
+        content: "";
+    }
+
+    &:before {
+        display: block;
+        background: linear-gradient(to bottom, #fff 0%, #eee 100%);
+        border-radius: 50%;
+        box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.25);
+        width: 18px;
+        height: 18px;
+        position: absolute;
+        top: 4px;
+        left: 4px;
+        transition: left 0.25s;
+    }
+
+    .toggle:hover &:before {
+        background: linear-gradient(to bottom, #fff 0%, #fff 100%);
+        box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.5);
+    }
+
+    .toggle-checkbox:checked+& {
+        background: $green;
+
+        &:before {
+            left: 30px;
+        }
+    }
+}
+
+.toggle-checkbox {
+    position: absolute;
+    visibility: hidden;
+}
+
+.toggle-label {
+    margin-left: 5px;
+    position: relative;
+    top: 2px;
+}
+
+// -------------------------------------------------Edit ---------------
+
+.Head {
+    background-color: var(--primary-color);
+    box-shadow: 0px 10px 8px rgba(0, 0, 0, 0.1);
+    color: white;
+    padding: 1rem;
+}
+
+.Head p {
+    font-size: 20px;
+}
+
+.display {
+    display: flex;
+}
+
+.formlabel {
+    font-weight: 500;
+    margin-bottom: 5px;
+    display: block;
+    font-size: 20px;
+    color: #243359;
+}
+
+// .input_box label::after {
+//     content: " *";
+//     color: red;
+// }
+
+// .input_box select option {
+//     padding: 7px 0;
+// }
+
+// .input_box input {
+//     width: 100%;
+//     height: 45px;
+//     border: none;
+//     outline: none;
+//     border-radius: 5px;
+//     // font-size: 16px;
+//     // padding-left: 15px;
+//     padding: 0px 12px;
+//     border-top: 2px solid #b0afaf;
+//     border-bottom: 0.9px solid lightgray;
+//     border-left: 0.9px solid lightgray;
+//     border-right: 0.9px solid lightgray;
+//     box-shadow: 0px 0px 0px 1px rgba(0, 0, 0, 0.1);
+//     background-color: #f6f8fa;
+//     font-family: 'Poppins', sans-serif;
+//     transition: all 120ms ease-out 0s;
+// }
+
+// .input_box select {
+//     width: 100%;
+//     height: 45px;
+//     border: none;
+//     outline: none;
+//     border-radius: 5px;
+//     // font-size: 16px;
+//     // padding-left: 15px;
+//     box-shadow: 0px 0px 0px 1px rgba(0, 0, 0, 0.1);
+//     background-color: #f6f8fa;
+//     font-family: 'Poppins', sans-serif;
+//     transition: all 120ms ease-out 0s;
+//     padding: 0px 12px;
+//     border-top: 2px solid #b0afaf;
+//     border-bottom: 0.9px solid lightgray;
+//     border-left: 0.9px solid lightgray;
+//     border-right: 0.9px solid lightgray;
+// }
+
+@media screen and (max-width:560px) {
+    .display {
+        display: block;
+    }
+
+    .display_1 {
+        display: block;
+    }
+
+    .mobile {
+        max-height: 600px;
+        overflow: scroll;
+    }
+}
+
+.input_box .mb-3 .checkbox-text .checkbox-content input {
+    margin: 0 10px 0px 5px;
+    accent-color: white;
+    width: 25px;
+    height: 25px;
+}
+
+.input_box .mb-3 .checkbox-text .checkbox-content input:checked {
+    accent-color: #09a223;
+}
+
+.input_box .mb-3 .checkbox-text .checkbox-content input.form-check-input:checked {
+
+    background-color: #09a223;
+    border-color: #09a223;
+}
+
+::ng-deep .ag-header-viewport {
+    text-align: center !important;
+    background: #3d5857 !important;
+}
+
+// ------------------------report-----------
+.header {
+    background-color: #4f504f;
+    padding: 0.5rem;
+    text-align: center;
+    color: wheat;
+}
+
+
+// -----------------------Login Form----------------------------------
+
+
+
+
+::selection {
+    background-color: gray;
+}
+
+.container {
+    margin: auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.form {
+    width: 400px;
+    height: 300px;
+    background-image: linear-gradient(to bottom, #23503e, #172c4b);
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    border-radius: 0.5rem;
+}
+
+.title {
+    color: white;
+    margin: 1rem 0;
+    font-size: 1.5rem;
+}
+
+.input {
+    margin: 0.5rem 0;
+    padding: 1rem 0.5rem;
+    width: 20rem;
+    background-color: inherit;
+    color: white;
+    border: none;
+    outline: none;
+    border-bottom: 1px solid white;
+    transition: all 400ms;
+}
+
+.input:hover {
+    background-color: #003b34;
+    border: none;
+    border-radius: 0.5rem;
+}
+
+.btn1 {
+    height: 2rem;
+    width: 10rem;
+    margin-top: 2rem;
+    // background-color: rgb(197, 195, 192);
+    border-radius: 0.5rem;
+    border: none;
+    font-size: 1rem;
+    transition: all 400ms;
+    cursor: pointer;
+
+}
+
+.btn1:hover {
+    background-color: rgb(248, 248, 247);
+    box-shadow: none;
+}
+
+.status-disable {
+    color: red;
+    font-weight: bold;
+}
+
+.status-enable {
+    color: green;
+    font-weight: bold;
+}
+
+.PVRstatus {
+    width: 25px;
+    height: 25px;
+    border: 1px solid ridge;
+}
+
+.mobileview {
+    padding: 0rem 2rem;
+}
+
+.mobileview1 {
+    padding: 1rem;
+}
+
+.edit {
+    padding: 1rem;
+}
+
+.edit1 {
+    margin-top: -3pc
+}
+
+.livetv {
+    margin-bottom: 10px;
+}
+
+.disabled-div {
+    pointer-events: none;
+    opacity: 0.5;
+}
+
+.card {
+    box-shadow: 1px 1px 5px black;
+}
+
+.cancel_sub {
+    box-shadow: 1px 1px 5px black;
+    padding: 0.5rem;
+    align-items: center;
+}
+
+.display_moile {
+    display: block;
+}
+
+.display_mobile {
+    display: flex;
+}
+
+@media screen and (max-width:560px) {
+    .title {
+        font-size: 1rem;
+    }
+
+    .input {
+        width: 17rem;
+    }
+
+    .btn {
+        width: 7rem;
+        height: 2rem;
+    }
+
+    .form {
+        width: 280px;
+        height: 270px;
+    }
+
+    .mobileview {
+        padding: 0.2rem;
+    }
+
+    .value {
+        font-size: 14px;
+    }
+
+    .Head {
+        background-color: var(--primary-color);
+
+        box-shadow: 0px 10px 8px rgba(0, 0, 0, 0.1);
+        color: white;
+        padding: 0.5rem;
+    }
+
+    .Head p {
+        font-size: 15px;
+    }
+
+    ::ng-deep .cdk-overlay-pane {
+        display: block;
+    }
+
+    ::ng-deep .cdk-overlay-pane {
+        width: 500px;
+
+        max-width: 100vw !important;
+    }
+
+    .edit1 {
+        margin-top: -3pc
+    }
+
+    .display_moile {
+        display: block;
+    }
+
+    .display_mobile {
+        display: block;
+    }
+}
+
+// --------------------------------------------------------------------------------------can toggle------------------------------
+
+
+@mixin can-toggle-branding(
+  $can-toggle-off-color: #ea0030, 
+  $can-toggle-on-color: #5fc054,
+  $can-toggle-inactive-text: rgba(white, 0.5),
+  $can-toggle-transition: cubic-bezier(0,1,0.5,1)
+) {
+  
+  input[type="checkbox"] {
+    
+    &[disabled] ~ label {
+      color: rgba($can-toggle-off-color, 0.5);
+    }
+    
+    &:focus ~ label, &:hover ~ label {
+      .can-toggle__switch {
+        background-color: $can-toggle-off-color;
+        &:after { color: darken($can-toggle-off-color, 10%); }
+      }
+    }
+    &:hover ~label { color: darken($can-toggle-off-color, 5%); }
+    &:checked {
+      ~ label {
+        &:hover { color: darken($can-toggle-on-color, 3%); }
+        
+        .can-toggle__switch {
+          background-color: lighten($can-toggle-on-color, 5%);
+          &:after { color: darken($can-toggle-on-color, 5%); }
+        }
+      }
+      
+      &:focus, &:hover {
+        ~ label {
+          .can-toggle__switch {
+            background-color: $can-toggle-on-color;
+            &:after { color: darken($can-toggle-on-color, 10%); }
+          }
+        } 
+      }
+    }
+  }
+  
+  label {
+    
+    .can-toggle__label-text { flex: 1; }
+    
+    .can-toggle__switch {
+      transition: background-color 0.3s $can-toggle-transition;
+      background: lighten($can-toggle-off-color, 5%);
+      &:before { color: $can-toggle-inactive-text; }
+      &:after {
+        // Autoprefixer choked here, so making the prefixes explicit
+        -webkit-transition: -webkit-transform 0.3s $can-toggle-transition;
+        transition: transform 0.3s $can-toggle-transition;
+        color: $can-toggle-off-color; 
+      }
+    }
+    
+  }
+}
+
+@mixin can-toggle-appearance 
+( 
+  $can-toggle-width: 134px,
+  $can-toggle-height: 36px,
+  $can-toggle-border-radius: 4px,
+  $can-toggle-offset: 2px,
+  $can-toggle-label-font-size: 14px,
+  $can-toggle-switch-font-size: 12px,
+  $can-toggle-shadow: 0 3px 3px rgba(black, 0.4)
+){
+  $can-toggle-switch-width: $can-toggle-width/2;
+  
+  input[type="checkbox"] {
+
+    &:focus ~ label, &:hover ~ label {
+      .can-toggle__switch {
+        &:after { box-shadow: $can-toggle-shadow; } 
+      }
+    }
+    
+    &:checked {
+      ~ label {
+        .can-toggle__switch {
+          &:after { transform: translate3d($can-toggle-width - ($can-toggle-switch-width + $can-toggle-offset),0,0); }  
+        }
+      }
+      &:focus, &:hover {
+        ~ label {
+          .can-toggle__switch { &:after { box-shadow: $can-toggle-shadow; } }
+        } 
+      }
+    }
+  }
+  
+  label {
+    font-size: $can-toggle-label-font-size;
+    
+    .can-toggle__switch {
+      height: $can-toggle-height;
+      flex: 0 0 $can-toggle-width;
+      border-radius: $can-toggle-border-radius;
+      
+      &:before {
+        left: $can-toggle-width/2;
+        font-size: $can-toggle-switch-font-size; 
+        line-height: $can-toggle-height;
+        width: $can-toggle-width/2;
+        padding: 0 12px;
+      }
+      
+      &:after {
+        top: $can-toggle-offset; left: $can-toggle-offset;
+        border-radius: $can-toggle-border-radius/2;
+        width: $can-toggle-switch-width - $can-toggle-offset; 
+        line-height: $can-toggle-height - ($can-toggle-offset*2);
+        font-size: $can-toggle-switch-font-size;
+      }
+      
+      &:hover {
+        &:after { box-shadow: $can-toggle-shadow; }
+      }
+    } 
+  }
+}
+
+
+
+.can-toggle {
+  position: relative;
+  *, *:before, *:after { box-sizing: border-box; }
+  //overflow: hidden;
+  
+  input[type="checkbox"] {
+    opacity: 0;
+    position: absolute;
+    top: 0; left: 0;
+    
+    &[disabled] ~ label {
+      pointer-events: none;
+      .can-toggle__switch { opacity: 0.4; }
+    }
+    
+    &:checked {
+      ~ label {
+        
+        .can-toggle__switch {
+          
+          &:before {
+            content: attr(data-unchecked);
+            left: 0;
+          }
+        
+          &:after {
+            content: attr(data-checked);
+          }  
+        }
+      }
+      
+      &:focus, &:hover {
+        ~ label {
+        } 
+      }
+    }
+  }
+  
+  label {
+    user-select: none;
+    position: relative;
+    display: flex;
+    align-items: center;
+    
+    .can-toggle__label-text { 
+      flex: 1;
+      padding-left: 32px;
+    }
+    
+    .can-toggle__switch {
+      position: relative;
+      
+      &:before {
+        content: attr(data-checked);
+        position: absolute;
+        top: 0;
+        text-transform: uppercase;
+        text-align: center;
+      }
+      
+      &:after {
+        content: attr(data-unchecked);
+        position: absolute;
+        z-index: 5;
+        text-transform: uppercase;
+        text-align: center;
+        background: white;
+        transform: translate3d(0,0,0);
+      }
+
+    }
+    
+  }
+  
+  // Default values for .can-toggle class
+  @include can-toggle-branding; 
+  @include can-toggle-appearance; 
+  
+  // Create toggles of different sizes by overriding the can-toggle-appearance mixin defaults
+  &.can-toggle--size-small {
+    @include can-toggle-appearance
+    (
+      90px, // Toggle width
+      28px,  // Toggle height
+      2px,   // Toggle border radius
+      1px,   // Offset (distance btw switch and box)
+      13px,  // Label font size
+      10px,  // Switch font size
+      0 2px 2px rgba(black, 0.4) // Switch shadow on hover/focus
+    ); 
+  }
+}
