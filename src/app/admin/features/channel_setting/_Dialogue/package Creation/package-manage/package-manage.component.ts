@@ -316,9 +316,9 @@ export class PackageManageComponent {
           title: 'Updating...',
           text: 'Please wait for Alacarte channels to update....',
           allowOutsideClick: false,
-          didOpen: () => {
-            Swal.showLoading();
-          }
+          // didOpen: () => {
+          //   Swal.showLoading();
+          // }
         });
         this.userService.AddingdAlacarteTo_Base_Package(this.modified, this.alacarte_list_id, this.role, this.username, this.package_id).subscribe((res: any) => {
           console.log(res);
@@ -364,9 +364,9 @@ export class PackageManageComponent {
           title: 'Updating...',
           text: 'Please wait for Addon channel list to update....',
           allowOutsideClick: false,
-          didOpen: () => {
-            Swal.showLoading();
-          }
+          // didOpen: () => {
+          //   Swal.showLoading();
+          // }
         });
         this.userService.AddingdbouquetTo_Base_Package(this.modified, this.bouquet_list_id, this.role, this.username, this.package_id, this.removed_channel_list,).subscribe((res: any) => {
           console.log(res);

@@ -1,5 +1,5 @@
 <section class="col-12">
-    <div class="head d-flex justify-content-between align-items-center mb-3">
+    <div class="Head d-flex justify-content-between align-items-center mb-3">
         <span>ADD PRODUCT / COMMISSION MEMBERSHIP</span>
         <i class="fa fa-close close-icon" (click)="onNoClick()"></i>
     </div>
@@ -19,7 +19,7 @@
             </div>
             <div class="d-block col-12 col-md-4 mb-2">
                 <span class="d-block mb-2" style="color: rgb(2, 8, 102);font-size: 15px;">MEMBERSHIP</span>
-                <select style="color: rgb(17, 0, 0);" [(ngModel)]="lcogroupid" (change)="onproducttypechange($event)">
+                <select style="color: rgb(17, 0, 0);" [(ngModel)]="lcogroupid" (change)="getproductMembershipList($event)">
                     <option value="0" selected style="color: rgb(19, 17, 17);">Select Membership </option>
                     <option *ngFor="let lcomember of lcomembershipList" [value]="lcomember.value">{{
                         lcomember.name}}</option>

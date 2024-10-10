@@ -2,6 +2,7 @@ import { HttpResponse } from '@angular/common/http';
 import { Component } from '@angular/core';
 import { ColDef } from 'ag-grid-community';
 import { BaseService } from 'src/app/_core/service/base.service';
+import { ExcelService } from 'src/app/_core/service/excel.service';
 import { StorageService } from 'src/app/_core/service/storage.service';
 import Swal from 'sweetalert2';
 
@@ -11,9 +12,19 @@ import Swal from 'sweetalert2';
   styleUrls: ['./deactivation.component.scss']
 })
 export class DeactivationComponent {
-  file: boolean = false;
+
   filePath: string = '';
   isCheckboxChecked: boolean = false;
+  date: any;
+  role: any;
+  username: any;
+  remark:any;
+  file: File | null = null;
+  Dialogue: boolean = false;
+  closeDialogue: boolean = true;
+  isFileSelected: boolean = false;
+  isCheckboxChecked_operator: boolean = false;
+
   columnDefs: ColDef[] = [
     { headerName: "S.No", lockPosition: true, valueGetter: 'node.rowIndex+1', cellClass: 'locked-col', width: 80, suppressNavigable: true, sortable: false, filter: false },
     { headerName: "SMARTCARD", field: 'smartcard', width: 300 },
@@ -29,7 +40,7 @@ export class DeactivationComponent {
         } else if (params.value === 'Connection Testing') {
           return `<span style="color: orange;">${params.value}</span>`;
         }
-        return params.value; 
+        return params.value;
       }
     },
 
@@ -49,13 +60,19 @@ export class DeactivationComponent {
     paginationPageSize: 15,
     pagination: true,
   }
-  date: any;
-  role: any;
-  username: any;
-  constructor(private userservice: BaseService, private storageservice: StorageService) {
+
+  constructor(private userservice: BaseService, private storageservice: StorageService, private excelService: ExcelService) {
     this.role = storageservice.getUserRole();
     this.username = storageservice.getUsername();
 
+  }
+  opendialogue(): void {
+    this.closeDialogue = !this.closeDialogue;
+    this.Dialogue = !this.Dialogue;
+  }
+  goBack(): void {
+    this.closeDialogue = !this.closeDialogue;
+    this.Dialogue = !this.Dialogue;
   }
   onGridReady = () => {
     // this.userservice.GetAllUser('all',this.token.getUsername(),'0000-00-00','0000-00-00').subscribe((data) => {
@@ -68,11 +85,15 @@ export class DeactivationComponent {
   }
   handleFileInput(event: Event): void {
     const input = event.target as HTMLInputElement;
+
     if (input.files && input.files.length > 0) {
-      this.file = true;
+      this.isFileSelected = true;
+      this.file = input.files[0];
       this.filePath = input.files[0].name;
+      console.log(this.file);
     } else {
-      this.file = false;
+      this.isFileSelected = false;
+      this.file = null;
       this.filePath = '';
     }
   }
@@ -122,5 +143,57 @@ export class DeactivationComponent {
           }
         }
       );
+  }
+
+  bulkDeactivation() {
+    if (this.file) {
+      console.log(this.file);
+      Swal.fire({
+        title: 'Uploading...',
+        text: 'Please wait while your file is being uploaded.',
+        icon: 'info',
+        allowOutsideClick: false,
+        showConfirmButton: false,
+      });
+
+      const formData = new FormData();
+      formData.append('role', this.role);
+      formData.append('username', this.username);
+      formData.append('file', this.file);
+      formData.append('reason', this.remark);
+      formData.append('type', '2');
+
+
+      this.userservice.uploadFileforDeactivation(formData).subscribe(
+        (res: any) => {
+          console.log(res);
+          Swal.fire({
+            title: 'Success!',
+            text: res?.message || 'File uploaded successfully.',
+            icon: 'success',
+            confirmButtonText: 'OK'
+          });
+        },
+        (error) => {
+          console.error("File upload failed", error);
+          Swal.fire({
+            title: 'Error!',
+            text: error?.error?.message || 'There was a problem uploading your file. Please try again.',
+            icon: 'error',
+            confirmButtonText: 'OK'
+          });
+        }
+      );
+    } else {
+      Swal.fire({
+        title: 'Error!',
+        text: 'No file selected. Please choose a file to upload.',
+        icon: 'error',
+        confirmButtonText: 'OK'
+      });
+    }
+  }
+  generateExcel() {
+    this.excelService.generateDeactivationExcel();
   }
 }

@@ -11,6 +11,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { NewRechargeComponent } from '../new-recharge/new-recharge.component';
 import { RefundComponent } from '../refund/refund.component';
 import { MAT_MOMENT_DATE_ADAPTER_OPTIONS, MomentDateAdapter } from '@angular/material-moment-adapter';
+import { HttpResponse } from '@angular/common/http';
 
 export const MY_FORMATS: MatDateFormats = {
   parse: {
@@ -92,15 +93,15 @@ export class LcoRechargeReportComponent implements OnInit {
   }
   role: any;
   username: any;
-  rowData: any[] = [];
+  rowData: any;
   Totalamount: any;
   Date: any[] = [
     { lable: "Datewise", value: 1 },
     { lable: "Monthwise", value: 2 },
     { lable: "Yearwise", value: 3 },
   ];
-  months: { value: string, name: string }[] = [];
-  years: number[] = [];
+  months: any[] = [];
+  years: any[] = [];
   columnDefs: any[] = [
     {
       headerName: "S.No", lockPosition: true, valueGetter: 'node.rowIndex+1', width: 100, headerCheckboxSelection: true, checkboxSelection: true,
@@ -119,9 +120,9 @@ export class LcoRechargeReportComponent implements OnInit {
       title: 'Loading...',
       text: 'Fetching data, please wait...',
       allowOutsideClick: false,
-      didOpen: () => {
-        Swal.showLoading();
-      }
+      // didOpen: () => {
+      //   Swal.showLoading();
+      // }
     });
   }
 
@@ -204,23 +205,82 @@ export class LcoRechargeReportComponent implements OnInit {
 
     if (this.isDateEnabled) {
       const formattedDate = this.formatDate(this.date);
-      this.userservice.getRechargeDetailsByDate(this.role, this.username, formattedDate).subscribe((res: any) => {
-        this.rowData = res.rechargelist;
-        this.Totalamount = res.totalamount;
+      this.userservice.getRechargeDetailsByDate(this.role, this.username, formattedDate)
+      // .subscribe((res: any) => {
+      //   this.rowData = res.rechargelist;
+      //   this.Totalamount = res.totalamount;
 
-      });
+      // });
+     
+      
     } else if (this.isMonthYearEnabled) {
-      this.userservice.getRecharegDetailsByYearAndMonth(this.role, this.username, this.years, this.months).subscribe((res: any) => {
-        this.rowData = res.rechargelist;
-        this.Totalamount = res.totalamount;
+      // this.userservice.getRecharegDetailsByYearAndMonth(this.role, this.username, this.years, this.months)
+        // .subscribe((res: any) => {
+        //   this.rowData = res.rechargelist;
+        //   this.Totalamount = res.totalamount;
 
-      });
+        // });
+        this.userservice.getRecharegDetailsByYearAndMonth(this.role, this.username, this.years, this.months)
+        .subscribe(
+          (response: HttpResponse<any>) => {
+            if (response.status === 200) {
+              const responseBody = response.body;
+              if (responseBody) {
+                this.rowData = responseBody.rechargelist;
+                this.Totalamount = responseBody.totalamount;
+                console.log(this.rowData);
+                Swal.fire('Success', 'Data updated successfully!', 'success');
+              } else {
+                Swal.fire('Error', 'Response body is empty', 'error');
+              }
+            } else if (response.status === 204) {
+              Swal.fire('No Content', 'No data available for the given criteria.', 'info');
+            }
+          },
+          (error) => {
+            if (error.status === 400) {
+              Swal.fire('Error 400', 'Bad Request. Please check the input.', 'error');
+            } else if (error.status === 500) {
+              Swal.fire('Error 500', 'Internal Server Error. Please try again later.', 'error');
+            } else {
+              Swal.fire('Error', 'Something went wrong. Please try again.', 'error');
+            }
+          }
+        );
     }
     else if (this.isYearEnabled) {
-      this.userservice.getRechargeDetailsByYear(this.role, this.username, this.years).subscribe((res: any) => {
-        this.rowData = res.rechargelist;
-        this.Totalamount = res.totalamount;
-      });
+      // this.userservice.getRechargeDetailsByYear(this.role, this.username, this.years).subscribe((res: any) => {
+      //   this.rowData = res.rechargelist;
+      //   this.Totalamount = res.totalamount;
+      // });
+      this.userservice.getRechargeDetailsByYear(this.role, this.username, this.years)
+        .subscribe(
+          (response: HttpResponse<any>) => {
+            if (response.status === 200) {
+              const responseBody = response.body;
+              if (responseBody) {
+                this.rowData = responseBody.rechargelist;
+                this.Totalamount = responseBody.totalamount;
+                console.log(this.rowData);
+                Swal.fire('Success', 'Data updated successfully!', 'success');
+              } else {
+                Swal.fire('Error', 'Response body is empty', 'error');
+              }
+            } else if (response.status === 204) {
+              Swal.fire('No Content', 'No data available for the given criteria.', 'info');
+            }
+          },
+          (error) => {
+            if (error.status === 400) {
+              Swal.fire('Error 400', 'Bad Request. Please check the input.', 'error');
+            } else if (error.status === 500) {
+              Swal.fire('Error 500', 'Internal Server Error. Please try again later.', 'error');
+            } else {
+              Swal.fire('Error', 'Something went wrong. Please try again.', 'error');
+            }
+          }
+        );
+
     }
   }
 
@@ -240,34 +300,63 @@ export class LcoRechargeReportComponent implements OnInit {
   }
 
   RefundAmount() {
-    this.userservice.getRefundListByOperatorIdAndSmartcard(this.role, this.username, this.operatorid, this.smartcard).subscribe((response: any) => {
-      Swal.close();
-      console.log(response);
-      this.rowData = response
-      console.log(response);
+    this.userservice.getRefundListByOperatorIdAndSmartcard(this.role, this.username, this.operatorid, this.smartcard)
+      // .subscribe((response: any) => {
+      //   Swal.close();
+      //   console.log(response);
+      //   this.rowData = response
+      //   console.log(response);
 
-    },
-      (error) => {
-        this.handleErrorResponse(error);
-      }
-    );
+      // },
+      //   (error) => {
+      //     this.handleErrorResponse(error);
+      //   }
+      // );
+      .subscribe(
+        (response: HttpResponse<any[]>) => { // Expect HttpResponse<any[]>
+          if (response.status === 200) {
+            this.rowData = response.body;
+            Swal.fire('Success', 'Data updated successfully!', 'success');
+          } else if (response.status === 204) {
+            Swal.fire('No Content', 'No data available for the given criteria.', 'info');
+          }
+        },
+        (error) => {
+          if (error.status === 400) {
+            Swal.fire('Error 400', 'Bad Request. Please check the input.', 'error');
+          } else if (error.status === 500) {
+            Swal.fire('Error 500', 'Internal Server Error. Please try again later.', 'error');
+          } else {
+            Swal.fire('Error', 'Something went wrong. Please try again.', 'error');
+          }
+        }
+      );
+
   }
 
   RechargeLog() {
     this.showLoading();
     this.userservice.getRechargeDetailsByFdTdOpid(this.role, this.username, this.fromdate, this.todate, this.operatorid)
       .subscribe(
-        (response: any) => {
-          Swal.close();
-          console.log(response);
-          this.rowData = response
-          // this.handleSuccessResponse(response);
-          console.log(response);
+        (response: HttpResponse<any[]>) => { // Expect HttpResponse<any[]>
+          if (response.status === 200) {
+            this.rowData = response.body;
+            Swal.fire('Success', 'Data updated successfully!', 'success');
+          } else if (response.status === 204) {
+            Swal.fire('No Content', 'No data available for the given criteria.', 'info');
+          }
         },
         (error) => {
-          this.handleErrorResponse(error);
+          if (error.status === 400) {
+            Swal.fire('Error 400', 'Bad Request. Please check the input.', 'error');
+          } else if (error.status === 500) {
+            Swal.fire('Error 500', 'Internal Server Error. Please try again later.', 'error');
+          } else {
+            Swal.fire('Error', 'Something went wrong. Please try again.', 'error');
+          }
         }
       );
+
   }
 
 

@@ -7,7 +7,12 @@
                 [rowSelection]="rowSelection" [gridOptions]="gridOptions" [columnDefs]="columnDefs" [rowData]="rowData"
                 (gridReady)="onGridReady($event)" [enableCellTextSelection]="true">
             </ag-grid-angular>
-           
+            <div class="d-flex justify-content-center align-items-center position-relative button"
+            style="padding: 10px;">
+            <button type="button" class="btn" (click)="submit($event)"><i class="fas fa-plus"></i>
+                New
+            </button>
+        </div>
         </div>
     </div>
 </div>

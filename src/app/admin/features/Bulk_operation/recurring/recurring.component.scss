@@ -1,5 +1,5 @@
 .container {
-    max-width: 600px;
+    max-width: 1200px;
 }
 
 .display {
@@ -44,18 +44,32 @@ input {
     border-right: 0.9px solid lightgray;
 }
 
-.box {
-    max-width: 720px;
-    border: 1px ridge;
-}
+// .box {
+//     max-width: 720px;
+//     border: 1px ridge;
+// }
 
 .checkbox {
     width: 10px !important;
     height: 18px;
+    margin: auto;
 }
-.card{
-    border: 1px solid rgb(248, 81, 226);
+
+// .card{
+//     // border: 1px solid rgb(248, 81, 226);
+//     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+// }
+.card {
+    border: 1px solid rgb(176, 179, 176);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1), 0 6px 20px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    transition: box-shadow 0.3s ease;
 }
+
+.card:hover {
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2), 0 12px 24px rgba(0, 0, 0, 0.2);
+}
+
 @media (max-width: 576px) {
     .row.mb-3.align-items-center>div {
         margin-bottom: 0.5rem;
@@ -74,4 +88,3 @@ input {
     }
 
 }
-

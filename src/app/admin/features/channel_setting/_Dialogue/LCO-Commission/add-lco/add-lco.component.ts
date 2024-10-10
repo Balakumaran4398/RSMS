@@ -1,3 +1,4 @@
+import { HttpResponse } from '@angular/common/http';
 import { Component } from '@angular/core';
 import { MatDialogRef } from '@angular/material/dialog';
 import { ColDef } from 'ag-grid-community';
@@ -14,9 +15,9 @@ export class AddLcoComponent {
   role: any;
   username: any;
   producttype: any = 1;
-  lcogroupid: any = 1;
-  rowData: any[] = [];
   lcomembershipList: any[] = [];
+  lcogroupid: any = 1;
+  rowData: any;
 
   gridApi: any;
   isAnyRowSelected: any = false;
@@ -64,8 +65,8 @@ export class AddLcoComponent {
     { headerName: "CUSTOMER AMOUNT", field: 'customeramount', },
     {
       headerName: "MSO AMOUNT", field: 'msoamount',
-    
-     
+
+
     },
     {
       headerName: "COMMISSION",
@@ -101,20 +102,36 @@ export class AddLcoComponent {
       this.rows = selectedRows;
       this.selectedIds = selectedRows.map((row: any) => row.packageid);
       this.selectedname = selectedRows.map((row: any) => row.productname);
-      console.log("Selected Rows:", selectedRows);
-      console.log("Selected Rows:", this.rows);
-      console.log("Selected IDs:", this.selectedIds);
-      console.log("Selected Names:", this.selectedname);
     }
   }
   onproducttypechange(event: any) {
-    this.userservice.getproductMembershipList(this.role, this.username, this.producttype, this.lcogroupid).subscribe(
-      (data: any) => {
-        console.log(data);
-        this.rowData = data;
+    this.userservice.getLcoGroupMasterList(this.role, this.username).subscribe((data: any) => {
+      this.lcomembershipList = Object.keys(data).map(key => {
+        const value = data[key];
+        const name = key;
+        return { name: name, value: value };
+      });
+    })
+  }
+
+  getproductMembershipList(event:any) {
+    this.userservice.getproductMembershipList(this.role, this.username,this.producttype,this.lcogroupid)  .subscribe(
+      (response: HttpResponse<any[]>) => { 
+        if (response.status === 200) {
+          this.rowData = response.body;
+          Swal.fire('Success', 'Data updated successfully!', 'success');
+        } else if (response.status === 204) {
+          Swal.fire('No Content', 'No data available for the given criteria.', 'info');
+        }
       },
       (error) => {
-        console.error('Error fetching lcomembershipid details', error);
+        if (error.status === 400) {
+          Swal.fire('Error 400', 'Bad Request. Please check the input.', 'error');
+        } else if (error.status === 500) {
+          Swal.fire('Error 500', 'Internal Server Error. Please try again later.', 'error');
+        } else {
+          Swal.fire('Error', 'Something went wrong. Please try again.', 'error');
+        }
       }
     );
   }
@@ -127,24 +144,14 @@ export class AddLcoComponent {
       lcocommissionlist: this.rows
 
     } as any;
-    // requestBody.lcocommissionlist = this.rowData.map(item => ({
-    //   packageid: item.packageid,
-    //   productname: item.productname,
-    //   rate: item.rate,
-    //   productid: item.productid,
-    //   customeramount: item.customeramount,
-    //   msoamount: item.msoamount,
-    //   commission: item.commission,
-    //   ispercentage: item.ispercentage,
-    //   producttype: item.producttype
-    // }));
+
     Swal.fire({
       title: 'Processing...',
       text: 'Please wait while we update the product information.',
       allowOutsideClick: false,
-      didOpen: () => {
-        Swal.showLoading();
-      }
+      // didOpen: () => {
+      //   Swal.showLoading();
+      // }
     });
     this.userservice.addProductMembership(requestBody).subscribe(
       (res: any) => {

@@ -148,9 +148,9 @@ export class ChannelTypeComponent {
           title: 'Updating...',
           text: 'Please wait while the Channel type is being Updated',
           allowOutsideClick: false,
-          didOpen: () => {
-            Swal.showLoading();
-          }
+          // didOpen: () => {
+          //   Swal.showLoading();
+          // }
         });
         this.userService.ChannelType_update(requestBody).subscribe(
           (res:any) => {
@@ -210,9 +210,9 @@ export class ChannelTypeComponent {
         title: 'Deleting...',
         text: 'Please wait while the Channel Type is being deleted',
         allowOutsideClick: false,
-        didOpen: () => {
-          Swal.showLoading();
-        }
+        // didOpen: () => {
+        //   Swal.showLoading();
+        // }
       });
       if (result.isConfirmed) {
         this.userService.deleteChannelType(this.role, this.username, this.selectedIds).subscribe((res: any) => {
@@ -248,9 +248,9 @@ export class ChannelTypeComponent {
           title: 'Updateing...',
           text: 'Please wait while the Channel is being updated',
           allowOutsideClick: false,
-          didOpen: () => {
-            Swal.showLoading();
-          }
+          // didOpen: () => {
+          //   Swal.showLoading();
+          // }
         });
         this.userService.ActiveChannelTpe(this.role, this.username, this.selectedIds).subscribe((res: any) => {
           Swal.fire({
@@ -284,9 +284,9 @@ export class ChannelTypeComponent {
           title: 'Deleting...',
           text: 'Please wait while the Channel Type is being deleted',
           allowOutsideClick: false,
-          didOpen: () => {
-            Swal.showLoading();
-          }
+          // didOpen: () => {
+          //   Swal.showLoading();
+          // }
         });
         this.userService.deleteChannelType(this.role, this.username, this.selectedIds).subscribe((res: any) => {
           Swal.fire({

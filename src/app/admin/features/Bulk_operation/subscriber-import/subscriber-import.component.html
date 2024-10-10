@@ -3,7 +3,7 @@
         <p>Subscriber Import</p>
     </div>
 
-    <div class="col-12 col-lg-4 d-flex justify-content-center  mb-lg-0" style="margin: auto;">
+    <div *ngIf="closeDialogue" class="col-12 col-lg-4 d-flex justify-content-center  mb-lg-0" style="margin: auto;">
         <div class="card p-4 file ">
             <div class="d-flex justify-content-center align-items-center m-3">
                 <img src="/assets/images/icons/xlsx.png" class="img" alt="File Icon">
@@ -27,33 +27,41 @@
                     </span>
                 </div>
             </div>
-            <a class="mb-3" href="">* Download Format File</a>
+            <a class="mb-3" (click)="generateExcel()" style="cursor: pointer;">* Download Format File</a>
             <div class="checkbox-text mb-3">
                 <div class="checkbox-content">
-                    <input type="checkbox" id="terms" formControlName="billingAddressCheckbox"
-                        (change)="onCheckboxChange($event)">
+                    <input type="checkbox" id="terms" (change)="onCheckboxChange($event)">
                     <label for="confirmPass">I agree to the above statement</label>
                 </div>
             </div>
-            <div class="col-4 col-md-6 col-sm-6 mb-3">
-                <label class="btn " [style.background-color]="isCheckboxChecked ? '#3d5e80' : '#d3d3d3'"
-                    [style.color]="isCheckboxChecked ? 'white' : 'black'"
-                    [style.cursor]="isCheckboxChecked ? 'pointer' : 'not-allowed'">
-                    <i class="fa fa-plus"></i> Choose
-                    <input type="file" style="display: none;" [disabled]="!isCheckboxChecked"
-                        (change)="handleFileInput($event)">
-                </label>
+            <div class="d-flex">
+                <div class="col-4 col-md-4 col-sm-6 mb-3">
+                    <label class="btn " [style.background-color]="isCheckboxChecked ? '#3d5e80' : '#d3d3d3'"
+                        [style.color]="isCheckboxChecked ? 'white' : 'black'"
+                        [style.cursor]="isCheckboxChecked ? 'pointer' : 'not-allowed'">
+                        <i class="fa fa-plus"></i> Choose
+                        <input type="file" style="display: none;" [disabled]="!isCheckboxChecked"
+                            (change)="handleFileInput($event)">
+                    </label>
+                </div>
+                <div class="col-8 col-md-8 col-sm-6 mb-3">
+                    <span style="color:#0a21d0">{{ filePath }} </span>
+                </div>
             </div>
-            <div class=" d-flex justify-content-end align-items-center mt-3">
-                <button type="submit" class="btn btn-success ">Next &nbsp;<i class="fa fa-arrow-right"
-                        aria-hidden="true"></i></button>
+
+
+            <div class="d-flex justify-content-end align-items-center mt-3">
+                <button type="submit" class="btn btn-success" [disabled]="!isCheckboxChecked || !isFileSelected"
+                    (click)="opendialogue()">
+                    Next &nbsp;<i class="fa fa-arrow-right" aria-hidden="true"></i>
+                </button>
             </div>
         </div>
     </div>
 
-    <!-- <div>
-        <div class="col-12 col-md-12 d-flex justify-content-center  mb-lg-0" style="margin: auto;">
-            <div class="card p-4 file ">
+    <div *ngIf="Dialogue">
+        <div class="d-flex justify-content-center  " >
+            <div class="col-12 col-md-4  card p-4 file ">
                 <div class="d-flex justify-content-center align-items-center m-3">
                     <img src="/assets/images/icons/xlsx.png" class="img" alt="File Icon">
                     <span style="margin: 0 15px; display: inline-block; text-align: center;padding: 0 10px;">
@@ -62,44 +70,37 @@
                     <img src="/assets/images/icons/dashboard.png" class="img" alt="File Icon">
                 </div>
 
-                <span style="color:orangered;font-size: 16px;">Chosen File:</span>
+                <span style="color:orangered;font-size: 16px;">Chosen File: <span style="color:#0a21d0">{{ filePath }}
+                    </span>
+                </span>
 
                 <div class="input_box col-12 col-md-12 d-flex justify-content-center align-items-center ">
-                    <select formControlName="streetid" [(ngModel)]="streetid">
-                        <option value="0" selected>Select a Street</option>
-                        <option *ngFor="let key of filteredStreetKeys()" [value]="street_list[key]">
-                            {{ key }}
+                    <select style="color: rgb(17, 0, 0);" [(ngModel)]="operatorid" (change)="onOperatorChange($event)">
+                        <option value="0" selected style="color: rgb(19, 17, 17);">ALL Operator </option>
+                        <option *ngFor="let operator of operatorList" [value]="operator.value">{{ operator.name}}
                         </option>
                     </select>
-                    <select [formControl]="selectedFCFormControl">
-                        <option value="">Select a Font Color</option>
-                        <option *ngFor="let fc of fontcolor" [value]="fc.value">{{fc.lable}}</option>
-                    </select>
                 </div>
+
                 <div class="checkbox-text mb-3">
                     <div class="checkbox-content">
-                        <input type="checkbox" id="terms" formControlName="billingAddressCheckbox"
-                            (change)="onCheckboxChange($event)">
+                        <input type="checkbox" id="terms" [(ngModel)]="insert"
+                            (change)="onCheckboxChange_Operator($event)">
                         <label for="confirmPass">With smartcard allocate to subscriber</label>
                     </div>
                 </div>
-
-
-                <div class="col-4 col-md-6 col-sm-6 mb-3">
-                    <label class="btn " [style.background-color]="isCheckboxChecked_operator ? '#3d5e80' : '#d3d3d3'"
-                        [style.color]="isCheckboxChecked_operator ? 'white' : 'black'"
-                        [style.cursor]="isCheckboxChecked_operator ? 'pointer' : 'not-allowed'">
-                        <i class="fa fa-plus"></i> submit
-                        <input type="file" style="display: none;" [disabled]="!isCheckboxChecked_operator"
-                            (change)="handleFontColorSelection($event)">
-                    </label>
-                </div>
-                <div class=" d-flex justify-content-end align-items-center mt-3">
-                    <button type="submit" class="btn btn-success ">Back &nbsp;<i class="fa fa-arrow-left"
-                            aria-hidden="true"></i></button>
-                    <button type="submit" class="btn btn-success ">Submit </button>
+                <div class="d-flex justify-content-end align-items-center mt-3 ">
+                    <button type="button" class="btn btn-success mx-2" (click)="goBack()">Back &nbsp;<i
+                            class="fa fa-arrow-left" aria-hidden="true"></i></button>
+                    <button type="submit" class="btn btn-success" [disabled]="!isCheckboxChecked_operator"
+                        (click)="bulkSubscriberImport()">Submit</button>
                 </div>
             </div>
         </div>
-    </div> -->
+    </div>
+
+
+
+
+
 </section>

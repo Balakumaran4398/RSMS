@@ -58,7 +58,7 @@ li {
     max-width: 260px;
     width: 100%;
     background: var(--light);
-    /* background: var(--blue); */
+    /* background: #2d584e; */
     top: 0;
     left: 0;
     height: 100%;
@@ -92,7 +92,7 @@ li {
     align-items: center;
     height: 64px;
     font-weight: 700;
-    color: var(--blue);
+    color: #2d584e;
     position: sticky;
     text-decoration: none;
     top: 0;
@@ -171,7 +171,7 @@ li {
 
 #sidebar .side-menu>li>a.active,
 #sidebar .side-menu>li>a.active:hover {
-    background: var(--blue);
+    background: #2d584e;
     color: var(--light);
 }
 
@@ -203,7 +203,7 @@ li {
 
 #sidebar .side-dropdown.show {
     max-height: 1000px;
-    color: var(--blue)
+    color: #2d584e
 }
 
 #sidebar .side-dropdown a {
@@ -211,7 +211,7 @@ li {
 }
 
 #sidebar .side-dropdown a:hover {
-    color: var(--blue);
+    color: #2d584e;
 }
 
 #sidebar .ads {
@@ -242,7 +242,7 @@ li {
     align-items: center;
     padding: 12px 0;
     color: var(--light);
-    background: var(--blue);
+    background: #2d584e;
     transition: all .3s ease;
     border-radius: 5px;
     font-weight: 500;
@@ -336,7 +336,7 @@ nav .form-group input {
 }
 
 nav .form-group input:focus {
-    box-shadow: 0 0 0 1px var(--blue), 0 0 0 4px #0000;
+    box-shadow: 0 0 0 1px #2d584e, 0 0 0 4px #0000;
 }
 
 nav .form-group .icon {
@@ -456,7 +456,7 @@ main .breadcrumbs li a {
 }
 
 main .breadcrumbs li a {
-    color: var(--blue);
+    color: #2d584e;
 }
 
 main .breadcrumbs li a.active,
@@ -528,7 +528,7 @@ main .card .progress::before {
     top: 0;
     left: 0;
     height: 100%;
-    background: var(--blue);
+    background: #2d584e;
     width: var(--value);
 }
 
@@ -641,7 +641,7 @@ main .chat-box .day span {
     padding: 6px 12px;
     border-radius: 20px;
     background: var(--light-blue);
-    color: var(--blue);
+    color: #2d584e;
     font-size: 12px;
     font-weight: 600;
 }
@@ -681,7 +681,7 @@ main .chat-box .chat p {
 
 main .chat-box .msg:not(.me) .chat p {
     border-radius: 0 5px 5px 5px;
-    background: var(--blue);
+    background: #2d584e;
     color: var(--light);
 }
 
@@ -720,12 +720,12 @@ main .form-group input {
 }
 
 main .form-group input:focus {
-    box-shadow: 0 0 0 1px var(--blue), 0 0 0 4px var(--light-blue);
+    box-shadow: 0 0 0 1px #2d584e, 0 0 0 4px var(--light-blue);
 }
 
 main .btn-send {
     padding: 0 16px;
-    background: var(--blue);
+    background: #2d584e;
     border-radius: 5px;
     color: var(--light);
     cursor: pointer;

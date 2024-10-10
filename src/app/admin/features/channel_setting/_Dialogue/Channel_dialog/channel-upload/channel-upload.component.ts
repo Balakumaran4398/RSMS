@@ -113,7 +113,7 @@ export class ChannelUploadComponent {
       html: 'Please wait while your file is being uploaded.',
       allowOutsideClick: false,
       didOpen: () => {
-        Swal.showLoading();
+        // Swal.showLoading();
         this.userservice.Upload_channel_list(this.role, this.username, fileName).subscribe(
           (res: any) => {
             Swal.close();

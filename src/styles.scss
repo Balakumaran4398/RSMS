@@ -104,7 +104,14 @@ body {
 .Head p {
     font-size: 20px;
 }
-
+.head {
+    background-color: lightcyan;
+    padding: 10px;
+    border-radius: 8px;
+    color: var(--primary-color);
+    font-size: large;
+    font-weight: bold;
+}
 // .ag-cell-focus,
 // .ag-cell-no-focus {
 //     border: none !important;
@@ -302,3 +309,121 @@ body {
 .ag-header-cell-text {
     color: white;
 }
+// ::ng-deep {
+//     .ag-center-cols-viewport {
+//         max-height: 500px;
+//         overflow: scroll;
+//     }
+// }
+// -----------------------------------------------------------------------Yes or No button------------------------------------
+
+// #app-cover {
+//     display: table;
+//     width: 600px;
+//     margin: 80px auto;
+//     counter-reset: button-counter;
+// }
+
+// .toggle-button-cover {
+//     display: table-cell;
+//     position: relative;
+//     width: 100px;
+//     height: 40px;
+//     box-sizing: border-box;
+// }
+
+// .button {
+//     position: relative;
+//     top: 50%;
+//     width: 74px;
+//     height: 36px;
+//     margin: -20px auto 0 auto;
+//     overflow: hidden;
+// }
+
+// .button.r,
+// .button.r .layer {
+//     border-radius: 100px;
+// }
+
+// .button.b2 {
+//     border-radius: 2px;
+// }
+
+// .checkbox {
+//     position: relative;
+//     width: 100%;
+//     height: 100%;
+//     padding: 0;
+//     margin: 0;
+//     opacity: 0;
+//     cursor: pointer;
+//     z-index: 3;
+// }
+
+// .knobs {
+//     z-index: 2;
+// }
+
+// .layer {
+//     width: 100%;
+//     background-color: #ebf7fc;
+//     transition: 0.3s ease all;
+//     z-index: 1;
+// }
+
+
+// #button-10 .knobs:before,
+// #button-10 .knobs:after,
+// #button-10 .knobs span {
+//     position: absolute;
+//     top: 4px;
+//     width: 20px;
+//     height: 10px;
+//     font-size: 10px;
+//     font-weight: bold;
+//     text-align: center;
+//     line-height: 1;
+//     padding: 9px 4px;
+//     border-radius: 2px;
+//     transition: 0.3s ease all;
+// }
+
+// #button-10 .knobs:before {
+//     content: "";
+//     width: 36px;
+//     height: 31px;
+//     left: 4px;
+//     background-color: #216303;
+// }
+
+// #button-10 .knobs:after {
+//     content: "NO";
+//     right: 4px;
+//     color: #4e4e4e;
+// }
+
+// #button-10 .knobs span {
+//     display: inline-block;
+//     left: 8px;
+//     top: 6px;
+//     color: #fff;
+//     z-index: 1;
+// }
+
+// #button-10 .checkbox:checked+.knobs span {
+//     color: #4e4e4e;
+// }
+
+// #button-10 .checkbox:checked+.knobs:before {
+//     left: 42px;
+//     background-color: #f44336;
+// }
+
+// #button-10 .checkbox:checked+.knobs:after {
+//     color: #fff;
+// }
+
+// #button-10 .checkbox:checked~.layer {
+//     background-color: #fcebeb;
+// }

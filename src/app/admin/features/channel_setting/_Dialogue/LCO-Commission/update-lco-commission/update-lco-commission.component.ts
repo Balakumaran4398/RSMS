@@ -50,9 +50,9 @@ export class UpdateLcoCommissionComponent {
       html: 'Please wait while the commission is being updated.',
       timer: 3000, // Time in milliseconds (e.g., 3000ms = 3 seconds)
       timerProgressBar: true,
-      didOpen: () => {
-        Swal.showLoading();
-      }
+      // didOpen: () => {
+      //   Swal.showLoading();
+      // }
     });
 
     // Make the API call

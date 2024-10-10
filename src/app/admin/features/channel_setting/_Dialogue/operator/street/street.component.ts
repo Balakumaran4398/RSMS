@@ -58,8 +58,8 @@ export class StreetComponent implements OnInit {
         editButton.style.cursor = 'pointer';
         editButton.addEventListener('click', () => {
           // if (isEditing) {
-            this.saveRow(params.data);
-            console.log(params.data);
+          this.saveRow(params.data);
+          console.log(params.data);
           // }
           // else {
           //   this.editingRow = { ...params.data };
@@ -136,6 +136,7 @@ export class StreetComponent implements OnInit {
   }
   newStreet(): void {
     let dialogData = { areaid: this.areaid };
+    console.log('AREA ID             '+this.areaid);
 
     const dialogRef = this.dialog.open(NewstreetComponent, {
       width: '400px',

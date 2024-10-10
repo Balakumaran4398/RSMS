@@ -1,0 +1,208 @@
+
+
+.gender-category label {
+    padding: 0 20px 0 5px;
+    font-size: 14px;
+}
+
+span {
+    font-weight: 600;
+    font-size: 0.9pc;
+    color: darkslategrey;
+}
+
+
+.gender-category {
+    color: black;
+}
+
+.gender-category label,
+.gender-category input {
+    cursor: pointer;
+}
+
+.display {
+    display: flex;
+}
+
+.mobile {
+    padding: 1rem;
+    border: 1px solid rgb(177, 179, 177);
+    // box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
+}
+
+.input_box label {
+    font-weight: 500;
+    margin-bottom: 5px;
+    display: block;
+    // font-size: medium;
+    color: #243359;
+}
+
+.input_box label::after {
+    content: " *";
+    color: red;
+}
+
+.input_box select option {
+    padding: 7px 0;
+}
+
+.input_box input {
+    width: 100%;
+    height: 45px;
+    border: none;
+    outline: none;
+    border-radius: 5px;
+    padding: 0px 12px;
+    border-top: 2px solid #b0afaf;
+    border-bottom: 0.9px solid lightgray;
+    border-left: 0.9px solid lightgray;
+    border-right: 0.9px solid lightgray;
+    box-shadow: 0px 0px 0px 1px rgba(0, 0, 0, 0.1);
+    background-color: #f6f8fa;
+    font-family: 'Poppins', sans-serif;
+    transition: all 120ms ease-out 0s;
+}
+
+.input_box select {
+    width: 100%;
+    height: 45px;
+    border: none;
+    outline: none;
+    border-radius: 5px;
+    padding: 0px 10px;
+    border-top: 2px solid #b0afaf;
+    border-bottom: 0.9px solid lightgray;
+    border-left: 0.9px solid lightgray;
+    border-right: 0.9px solid lightgray;
+    box-shadow: 0px 0px 0px 1px rgba(0, 0, 0, 0.1);
+    background-color: #f6f8fa;
+    font-family: 'Poppins', sans-serif;
+    transition: all 120ms ease-out 0s;
+}
+
+
+
+
+@media screen and (max-width: 560px) {
+     .display {
+        display: block;
+    }
+   
+}
+
+
+// / ==============================================percentage button=========================================
+
+
+#app-cover {
+    display: table;
+    width: 600px;
+    margin: 80px auto;
+    counter-reset: button-counter;
+}
+
+.toggle-button-cover {
+    display: table-cell;
+    position: relative;
+    width: 100px;
+    height: 40px;
+    box-sizing: border-box;
+}
+
+.button {
+    position: relative;
+    top: 50%;
+    width: 74px;
+    height: 36px;
+    margin: -20px auto 0 auto;
+    overflow: hidden;
+}
+
+.button.r,
+.button.r .layer {
+    border-radius: 100px;
+}
+
+.button.b2 {
+    border-radius: 2px;
+}
+
+.checkbox {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    padding: 0;
+    margin: 0;
+    opacity: 0;
+    cursor: pointer;
+    z-index: 3;
+}
+
+.knobs {
+    z-index: 2;
+}
+
+.layer {
+    width: 100%;
+    background-color: #ebf7fc;
+    transition: 0.3s ease all;
+    z-index: 1;
+}
+
+
+#button-10 .knobs:before,
+#button-10 .knobs:after,
+#button-10 .knobs span {
+    position: absolute;
+    top: 4px;
+    width: 20px;
+    height: 10px;
+    font-size: 10px;
+    font-weight: bold;
+    text-align: center;
+    line-height: 1;
+    padding: 9px 4px;
+    border-radius: 2px;
+    transition: 0.3s ease all;
+}
+
+#button-10 .knobs:before {
+    content: "";
+    width: 36px;
+    height: 31px;
+    left: 4px;
+    background-color: #216303;
+}
+
+#button-10 .knobs:after {
+    content: "NO";
+    right: 4px;
+    color: #4e4e4e;
+}
+
+#button-10 .knobs span {
+    display: inline-block;
+    left: 8px;
+    top: 6px;
+    color: #fff;
+    z-index: 1;
+}
+
+#button-10 .checkbox:checked+.knobs span {
+    color: #4e4e4e;
+}
+
+#button-10 .checkbox:checked+.knobs:before {
+    left: 42px;
+    background-color: #f44336;
+}
+
+#button-10 .checkbox:checked+.knobs:after {
+    color: #fff;
+}
+
+#button-10 .checkbox:checked~.layer {
+    background-color: #fcebeb;
+}

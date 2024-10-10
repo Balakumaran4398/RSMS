@@ -14,6 +14,13 @@ const httpOptions = {
 
 
 export class BaseService {
+  someOtherApiCall(role: any, username: string): Observable<HttpResponse<any[]>> {
+    return this.http.get<any[]>(
+      BASE_URL + "/someOtherApiEndpoint?role=" + role + "&username=" + username,
+      { observe: 'response' }
+    );
+  }
+
   private defaultLogoUrl = 'https://via.placeholder.com/150';
   constructor(private http: HttpClient) {
     // this.get()
@@ -67,23 +74,23 @@ export class BaseService {
   LCOLogin(role: any, username: any, userid: any, password: any): Observable<any[]> {
     return this.http.get<any[]>(BASE_URL + "/operator/CheckRechargeCredentials?role=" + role + "&username=" + username + "&userid=" + userid + "&password=" + password)
   }
-  getRechargeDetailsByFdTdOpid(role: any, username: any, fromdate: any, todate: any, operatorid: any): Observable<any[]> {
-    return this.http.get<any[]>(BASE_URL + "/operator/GetRechargeDetailsByFdTdOpid?role=" + role + "&username=" + username + "&fromdate=" + fromdate + "&todate=" + todate + "&operatorid=" + operatorid)
+  getRechargeDetailsByFdTdOpid(role: any, username: any, fromdate: any, todate: any, operatorid: any): Observable<HttpResponse<any[]>> {
+    return this.http.get<any[]>(BASE_URL + "/operator/GetRechargeDetailsByFdTdOpid?role=" + role + "&username=" + username + "&fromdate=" + fromdate + "&todate=" + todate + "&operatorid=" + operatorid, { observe: 'response' })
   }
-  getRechargeDetailsByDate(role: any, username: any, date: any): Observable<any[]> {
-    return this.http.get<any[]>(BASE_URL + "/operator/getRechargeDetailsByDate?role=" + role + "&username=" + username + "&date=" + date)
+  getRechargeDetailsByDate(role: any, username: any, date: any): Observable<HttpResponse<any[]>> {
+    return this.http.get<any[]>(BASE_URL + "/operator/getRechargeDetailsByDate?role=" + role + "&username=" + username + "&date=" + date, { observe: 'response' })
   }
-  getRecharegDetailsByYearAndMonth(role: any, username: any, year: any, month: any): Observable<any[]> {
-    return this.http.get<any[]>(BASE_URL + "/operator/getRecharegDetailsByYearAndMonth?role=" + role + "&username=" + username + "&year=" + year + "&month=" + month)
+  getRecharegDetailsByYearAndMonth(role: any, username: any, year: any, month: any): Observable<HttpResponse<any[]>> {
+    return this.http.get<any[]>(BASE_URL + "/operator/getRecharegDetailsByYearAndMonth?role=" + role + "&username=" + username + "&year=" + year + "&month=" + month, { observe: 'response' })
   }
-  getRechargeDetailsByYear(role: any, username: any, year: any): Observable<any[]> {
-    return this.http.get<any[]>(BASE_URL + "/operator/getRechargeDetailsByYear?role=" + role + "&username=" + username + "&year=" + year)
+  getRechargeDetailsByYear(role: any, username: any, year: any): Observable<HttpResponse<any[]>> {
+    return this.http.get<any[]>(BASE_URL + "/operator/getRechargeDetailsByYear?role=" + role + "&username=" + username + "&year=" + year, { observe: 'response' })
   }
   getRechargeDetailsById(role: any, username: any, id: any): Observable<any[]> {
     return this.http.get<any[]>(BASE_URL + "/operator/getRechargeDetailsById?role=" + role + "&username=" + username + "&id=" + id)
   }
-  getRefundListByOperatorIdAndSmartcard(role: any, username: any, operatorid: any, smartcard: any): Observable<any[]> {
-    return this.http.get<any[]>(BASE_URL + "/operator/getRefundListByOperatorIdAndSmartcard?role=" + role + "&username=" + username + "&operatorid=" + operatorid + "&smartcard=" + smartcard)
+  getRefundListByOperatorIdAndSmartcard(role: any, username: any, operatorid: any, smartcard: any): Observable<HttpResponse<any[]>> {
+    return this.http.get<any[]>(BASE_URL + "/operator/getRefundListByOperatorIdAndSmartcard?role=" + role + "&username=" + username + "&operatorid=" + operatorid + "&smartcard=" + smartcard, { observe: 'response' })
   }
   getPackagewiseRechargeDetailsforBarchart(role: any, username: any, operatorid: any): Observable<any[]> {
     return this.http.get<any[]>(BASE_URL + "/operator/GetPackagewiseRechargeDetailsforBarchart?role=" + role + "&username=" + username + "&operatorid=" + operatorid)
@@ -483,6 +490,9 @@ export class BaseService {
   ManagePackageCalculation(requestBody: any): Observable<any[]> {
     return this.http.post<any[]>(BASE_URL + "/subscriber/ManagePackageCalculation", requestBody, {});
   }
+  ManagePackageRecharge(requestBody: any): Observable<any[]> {
+    return this.http.post<any[]>(BASE_URL + "/subscriber/ManagePackageRecharge", requestBody, {});
+  }
 
   getFirstTimeActivationConfirmation(role: any, username: any, packageid: any, plantype: any, plan: any, smartcard: any, type: any, retailerid: any): Observable<any[]> {
     return this.http.get<any[]>(
@@ -520,9 +530,51 @@ export class BaseService {
     return this.http.post<any[]>(
       BASE_URL + "/subscriber/PairSmartcardOrBoxid?role=" + role + "&username=" + username + "&ischeck=" + ischeck + "&smartcard=" + smartcard + "&boxid=" + boxid + "&retailerid=" + retailerid + "&type=" + type, {});
   }
+  UnpairSmartcardOrBoxId(role: any, username: any, ischeck: any, smartcard: boolean, retailerid: any, type: any): Observable<any[]> {
+    return this.http.post<any[]>(
+      BASE_URL + "/subscriber/UnpairSmartcardOrBoxId?role=" + role + "&username=" + username + "&ischeck=" + ischeck + "&smartcard=" + smartcard + "&retailerid=" + retailerid + "&type=" + type, {});
+  }
   getChannellistByPackageIdAndProductType(role: any, username: any, packageid: any, producttype: any): Observable<any[]> {
     return this.http.get<any[]>(
       BASE_URL + "/subscriber/getChannellistByPackageIdAndProductType?role=" + role + "&username=" + username + "&packageid=" + packageid + "&producttype=" + producttype);
+  }
+  getBaseChangeConfirmation(role: any, username: any, packageid: any, plantype: any, plan: any, smartcard: any, type: any, retailerid: any): Observable<any[]> {
+    return this.http.get<any[]>(
+      BASE_URL + "/subscriber/getBaseChangeConfirmation?role=" + role + "&username=" + username + "&packageid=" + packageid + "&plantype=" + plantype + "&plan=" + plan + "&smartcard=" + smartcard + "&type=" + type + "&retailerid=" + retailerid);
+  }
+  getAddonpackageDetails(role: any, username: any, smartcard: any): Observable<any[]> {
+    return this.http.get<any[]>(
+      BASE_URL + "/subscriber/getAddonpackageDetails?role=" + role + "&username=" + username + "&smartcard=" + smartcard);
+  }
+  getAlacarteDetails(role: any, username: any, smartcard: any): Observable<any[]> {
+    return this.http.get<any[]>(
+      BASE_URL + "/subscriber/getAlacarteDetails?role=" + role + "&username=" + username + "&smartcard=" + smartcard);
+  }
+  removeProductDetails(role: any, username: any, smartcard: any): Observable<any[]> {
+    return this.http.get<any[]>(
+      BASE_URL + "/subscriber/removeProductDetails?role=" + role + "&username=" + username + "&smartcard=" + smartcard);
+  }
+
+  baseChangeofSmartcardPackage(requestBody: any): Observable<any[]> {
+    return this.http.post<any[]>(BASE_URL + "/subscriber/baseChangeofSmartcardPackage", requestBody, {});
+  }
+  addAddonForSmartcard(requestBody: any): Observable<HttpResponse<any[]>> {
+    return this.http.post<any[]>(BASE_URL + "/subscriber/addAddonForSmartcard", requestBody, { observe: "response" });
+  }
+  addAddonConfirmation(requestBody: any): Observable<HttpResponse<any[]>> {
+    return this.http.post<any[]>(BASE_URL + "/subscriber/addAddonConfirmation", requestBody, { observe: "response" });
+  }
+  addAlacarteConfirmation(requestBody: any): Observable<HttpResponse<any[]>> {
+    return this.http.post<any[]>(BASE_URL + "/subscriber/addAlacarteConfirmation", requestBody, { observe: "response" });
+  }
+  addAlacarteForSmartcard(requestBody: any): Observable<HttpResponse<any[]>> {
+    return this.http.post<any[]>(BASE_URL + "/subscriber/addAlacarteForSmartcard", requestBody, { observe: "response" });
+  }
+  removeProductConfirmation(requestBody: any): Observable<HttpResponse<any[]>> {
+    return this.http.post<any[]>(BASE_URL + "/subscriber/removeProductConfirmation", requestBody, { observe: "response" });
+  }
+  removeProductForSmartcard(requestBody: any): Observable<HttpResponse<any[]>> {
+    return this.http.post<any[]>(BASE_URL + "/subscriber/removeProductForSmartcard", requestBody, { observe: "response" });
   }
   // -------------------------------------------------------------------------------------------------
 
@@ -577,8 +629,8 @@ export class BaseService {
     return this.http.post<any[]>(BASE_URL + "/lcocommission/updateLcoCommission?role=" + role + "&username=" + username + "&id=" + id + "&istax=" + istax + "&ispercentage=" + ispercentage + "&commission=" + commission, {})
   }
   // -----------------------------------------------ADD PRODUCT / COMMISSION MEMBERSHIP-----------------------------------------
-  getproductMembershipList(role: any, username: any, producttype: any, lcogroupid: any,): Observable<any> {
-    return this.http.get<any[]>(BASE_URL + "/lcocommission/getproductMembershipList?role=" + role + "&username=" + username + "&producttype=" + producttype + "&lcogroupid=" + lcogroupid,)
+  getproductMembershipList(role: any, username: any, producttype: any, lcogroupid: any,): Observable<HttpResponse<any[]>> {
+    return this.http.get<any[]>(BASE_URL + "/lcocommission/getproductMembershipList?role=" + role + "&username=" + username + "&producttype=" + producttype + "&lcogroupid=" + lcogroupid, { observe: "response" })
   }
 
   addProductMembership(requestBody: any): Observable<any[]> {
@@ -811,10 +863,14 @@ export class BaseService {
       BASE_URL + "/bulk/getDeactivationFilterlist?role=" + role + "&username=" + username + "&remarks=" + remarks + "&date=" + date, { observe: 'response' }
     );
   }
-  getRecurringListByOperatorIdSearchnameAndIsrecurring(role: any, username: any, operatorid: any, searchname: any, type: any): Observable<any[]> {
+  getRecurringListByOperatorIdSearchnameAndIsrecurring(role: any, username: any, operatorid: any, searchname: any, type: any): Observable<HttpResponse<any[]>> {
     return this.http.get<any[]>(
-      BASE_URL + "/bulk/getRecurringListByOperatorIdSearchnameAndIsrecurring?role=" + role + "&username=" + username + "&operatorid=" + operatorid + "&searchname=" + searchname + "&type=" + type, {}
+      BASE_URL + "/bulk/getRecurringListByOperatorIdSearchnameAndIsrecurring?role=" + role + "&username=" + username + "&operatorid=" + operatorid + "&searchname=" + searchname + "&type=" + type, { observe: 'response' }
     );
+  }
+  getAddonlistByCasType(role: any, username: any, castype: any): Observable<any[]> {
+    return this.http.get<any[]>(
+      BASE_URL + "/bulk/getAddonlistByCasType?role=" + role + "&username=" + username + "&castype=" + castype, {});
   }
 
   uploadFileforDeactivation(requestBody: any): Observable<any[]> {
@@ -823,6 +879,40 @@ export class BaseService {
   uploadFirsttimeActivation(requestBody: any): Observable<any[]> {
     return this.http.post<any[]>(BASE_URL + "/bulk/uploadFirsttimeActivation", requestBody, {});
   }
-
-
+  bulkSubscriberInsert(requestBody: any): Observable<any[]> {
+    return this.http.post<any[]>(BASE_URL + "/subscriber/bulkSubscriberInsert", requestBody, {});
+  }
+  // ====================================================Local Channel===============================
+  getAllLocalChannelList(role: any, username: any): Observable<any[]> {
+    return this.http.get<any[]>(
+      BASE_URL + "/localchannel/getAllLocalChannelList?role=" + role + "&username=" + username, {});
+  }
+  getLocalChannelList(role: any, username: any): Observable<any[]> {
+    return this.http.get<any[]>(
+      BASE_URL + "/localchannel/getLocalChannelList?role=" + role + "&username=" + username, {});
+  }
+  getLocalChannelOperatorList(role: any, username: any): Observable<any[]> {
+    return this.http.get<any[]>(
+      BASE_URL + "/localchannel/getLocalChannelOperatorList?role=" + role + "&username=" + username, {});
+  }
+  getLocalCreationAmountDetails(role: any, username: any, channelrate: any, istax: any): Observable<any[]> {
+    return this.http.get<any[]>(
+      BASE_URL + "/localchannel/getLocalCreationAmountDetails?role=" + role + "&username=" + username + "&channelrate=" + channelrate + "&istax=" + istax, {});
+  }
+  createLocalChannel(role: any, username: any, channelid: any, operatorid: any, tax: any, lcoprice: any, lcn: any, channelrate: any, istax: any): Observable<any[]> {
+    return this.http.post<any[]>(
+      BASE_URL + "/localchannel/createLocalChannel?role=" + role + "&username=" + username + "&channelid=" + channelid + "&operatorid=" + operatorid + "&tax=" + tax + "&lcoprice=" + lcoprice + "&lcn=" + lcn + "&channelrate=" + channelrate + "&istax=" + istax, {});
+  }
+  updateLocalChannel(role: any, username: any, channelid: any, operatorid: any, tax: any, lcoprice: any, lcn: any, channelrate: any, istax: any, id: any, isactive: any): Observable<any[]> {
+    return this.http.post<any[]>(
+      BASE_URL + "/localchannel/updateLocalChannel?role=" + role + "&username=" + username + "&channelid=" + channelid + "&operatorid=" + operatorid + "&tax=" + tax + "&lcoprice=" + lcoprice + "&lcn=" + lcn + "&channelrate=" + channelrate + "&istax=" + istax + "&id=" + id + "&isactive=" + isactive, {});
+  }
+  getLocalChannelPayConfirmation(role: any, username: any, serviceid: any, paidamount: any, iscredit: any): Observable<any[]> {
+    return this.http.get<any[]>(
+      BASE_URL + "/localchannel/getLocalChannelPayConfirmation?role=" + role + "&username=" + username + "&serviceid=" + serviceid + "&paidamount=" + paidamount + "&iscredit=" + iscredit, {});
+  }
+  payLocalChannel(role: any, username: any, serviceid: any, paidamount: any, iscredit: any, days: any, expirydate: any): Observable<any[]> {
+    return this.http.post<any[]>(
+      BASE_URL + "/localchannel/payLocalChannel?role=" + role + "&username=" + username + "&serviceid=" + serviceid + "&paidamount=" + paidamount + "&iscredit=" + iscredit + "&days=" + days + "&expirydate=" + expirydate, {});
+  }
 }

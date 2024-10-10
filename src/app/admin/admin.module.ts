@@ -113,17 +113,19 @@ import { StreetComponent } from "./features/channel_setting/_Dialogue/operator/s
 import { NewstreetComponent } from "./features/channel_setting/_Dialogue/operator/newstreet/newstreet.component";
 import { PackagewiseOperatorComponent } from "./features/channel_setting/packagewise-operator/packagewise-operator.component";
 import { ChannellistComponent } from "./features/subscriber/channellist/channellist.component";
+import { PaymentUpdateComponent } from "./features/channel_setting/_Dialogue/local+broadcasting/payment-update/payment-update.component";
+import { CreateltbComponent } from "./features/channel_setting/_Dialogue/local+broadcasting/createltb/createltb.component";
 @NgModule({
     declarations: [
         AdminBaseComponent, NavComponent, HomeComponent,
         // -------------------------Dashboard-----------------------------
-        BarChartComponent,InventoryChartComponent,LcoCommissionChartComponent,
+        BarChartComponent, InventoryChartComponent, LcoCommissionChartComponent,
         PackageChartComponent, StbChartComponent,
         // -------------------------------------Top_subscriber_Details------------------------------------
         TopSubDetailComponent,
         // -----------------------------------------operator----------------------------------
-        OperatorDetailsComponent, LcoRechargeComponent, EditLcoComponent, SpecialPermissionComponent, NewLcoComponent,NewstreetComponent,
-         AddLcoBusinessComponent,LcodashboardComponent,LcochartComponent,LcopiechartComponent,OperatordialogueComponent,StreetComponent,
+        OperatorDetailsComponent, LcoRechargeComponent, EditLcoComponent, SpecialPermissionComponent, NewLcoComponent, NewstreetComponent,
+        AddLcoBusinessComponent, LcodashboardComponent, LcochartComponent, LcopiechartComponent, OperatordialogueComponent, StreetComponent,
         // --------------LCO RECHARGE-----------------
         LcoRechargePageComponent, LcoRechargeReportComponent, NewRechargeComponent, BulkRechargeComponent, RefundComponent,
         //==========================================channel_setting==============================================
@@ -146,8 +148,8 @@ import { ChannellistComponent } from "./features/subscriber/channellist/channell
         // ------------------------------------LCO Commission----------------------------------
         AddLcoComponent, ChangeMembershipComponent, UpdateLcoCommissionComponent, CreateLcoComponent, UpdateLcoComponent, CreateLcoMembershipComponent,
         // -------------------------------Subscriber---------------------------------
-        CreateSubscriberComponent, SubscriberDetailsComponent, ExpiryDetailsComponent, SubDashboardComponent,SubscriberdialogueComponent,
-        SubloginComponent,ChannellistComponent,
+        CreateSubscriberComponent, SubscriberDetailsComponent, ExpiryDetailsComponent, SubDashboardComponent, SubscriberdialogueComponent,
+        SubloginComponent, ChannellistComponent,
         // -----------------------------------------Cas Operation---------------------------------
         FingerPrintComponent, ScrollingComponent, MessageComponent, ForceTuningComponent, MailComponent,
         // -------------------------------Inventory---------------------------------
@@ -160,7 +162,10 @@ import { ChannellistComponent } from "./features/subscriber/channellist/channell
 
         // -----------------------------------bulk operation-------------------------------
         SubscriberImportComponent, AlacarteActivationComponent, AddonActivationComponent, ActivationComponent, BulkBaseChangeComponent, BulkPageUpdationComponent,
-        DeactivationComponent, SubscriptionExdendComponent, RefreshComponent, RecurringComponent
+        DeactivationComponent, SubscriptionExdendComponent, RefreshComponent, RecurringComponent,
+
+        // --------------------------------------------Local Broadcasting-------------------------------------------------------------------------------
+        PaymentUpdateComponent,CreateltbComponent,UpdateLtbComponent
 
 
 

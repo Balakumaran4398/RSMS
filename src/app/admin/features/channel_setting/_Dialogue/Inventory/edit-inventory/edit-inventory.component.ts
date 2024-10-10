@@ -76,7 +76,6 @@ export class EditInventoryComponent {
 
 
   submit() {
-    console.log('111');
   
     if (this.selectedFile) {
       // Show SweetAlert loading popup
@@ -86,9 +85,9 @@ export class EditInventoryComponent {
         icon: 'info',
         allowOutsideClick: false,
         showConfirmButton: false, // Hide the confirm button
-        didOpen: () => {
-          Swal.showLoading(); // Show loading animation
-        }
+        // didOpen: () => {
+        //   Swal.showLoading(); // Show loading animation
+        // }
       });
   
       const formData = new FormData();
@@ -101,19 +100,16 @@ export class EditInventoryComponent {
   
       this.userService.UploadInventory(formData).subscribe(
         (res: any) => {
-          // On success, close the loading alert and show success
           Swal.fire({
             icon: 'success',
             title: 'Upload Successful',
             text: res?.message,
             confirmButtonText: 'OK'
           }).then(() => {
-            // Reload the window after user clicks 'OK'
             window.location.reload();
           });
         },
         (err) => {
-          // On error, close the loading alert and show an error message
           Swal.fire({
             icon: 'error',
             title: 'Upload Failed',

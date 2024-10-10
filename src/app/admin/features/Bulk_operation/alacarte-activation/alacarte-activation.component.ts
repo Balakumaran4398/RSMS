@@ -1,8 +1,9 @@
 import { Component } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { ColDef } from 'ag-grid-community';
 import { BaseService } from 'src/app/_core/service/base.service';
+import { ExcelService } from 'src/app/_core/service/excel.service';
 import { StorageService } from 'src/app/_core/service/storage.service';
 
 @Component({
@@ -17,11 +18,14 @@ export class AlacarteActivationComponent {
   isCheckboxChecked: boolean = false;
   username: any;
   role: any;
-
+  castype: any;
   cas: any[] = [];
   area: any;
-  CasFormControl: any;
+  casFormControl: any
   type = ["Type1", "Type2", "Type3"];
+  toppings = new FormControl([]);
+  toppingList: any[] = [];
+  casItem: any;
   // rowData: any;
   columnDefs: ColDef[] = [
     { headerName: "S.No", lockPosition: true, valueGetter: 'node.rowIndex+1', cellClass: 'locked-col', width: 80, suppressNavigable: true, sortable: false, filter: false },
@@ -65,7 +69,7 @@ export class AlacarteActivationComponent {
     //   this.listUser = data;      
     // });
   }
-  constructor(public dialog: MatDialog, private fb: FormBuilder, private userservice: BaseService, private storageService: StorageService) {
+  constructor(public dialog: MatDialog, private fb: FormBuilder, private userservice: BaseService, private storageService: StorageService, private excelService: ExcelService) {
     this.form = this.fb.group({
       billingAddressCheckbox: [false]
 
@@ -75,10 +79,17 @@ export class AlacarteActivationComponent {
   }
   selectedTab: string = 'activation';
   ngOnInit() {
-    this.userservice.Cas_type(this.role, this.username).subscribe((data) => {
-      console.log(data);
-      this.cas = data.map((item: any) => item.casname);
+    // this.userservice.Cas_type(this.role, this.username).subscribe((data) => {
+    //   console.log(data);
+    //   this.cas = data.map((item: any) => ({
+    //     casname: item.casname,
+    //     id: item.id
+    // }));
+    console.log(this.cas);
+    this.userservice.Finger_print_List(this.role, this.username).subscribe((data) => {
+      this.cas = Object.entries(data[0].caslist).map(([key, value]) => ({ name: key, id: value }));
       console.log(this.cas);
+      
     });
     this.userservice.Finger_print_List(this.role, this.username).subscribe((data) => {
       console.log(data);
@@ -105,5 +116,19 @@ export class AlacarteActivationComponent {
       this.file = false;
       this.filePath = '';
     }
+  }
+  casPackageList() {
+    console.log(this.casItem);
+    console.log(event);
+    this.userservice.getAddonlistByCasType(this.role, this.username, this.castype).subscribe((data: any) => {
+      console.log(data);
+      this.toppingList = Object.entries(data).map(([key, value]) => ({ name: key, id: value }));
+      // this.toppingList = data;
+      console.log(this.toppingList);
+      
+    })
+  }
+  generateExcel() {
+    this.excelService.generatealacarteactivationExcel();
   }
 }

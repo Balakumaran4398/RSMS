@@ -4,6 +4,10 @@ import { MatDialog } from '@angular/material/dialog';
 import { ColDef } from 'ag-grid-community';
 import { PaymentUpdateComponent } from '../../channel_setting/_Dialogue/local+broadcasting/payment-update/payment-update.component';
 import { UpdateLtbComponent } from '../../channel_setting/_Dialogue/local+broadcasting/update-ltb/update-ltb.component';
+import { BaseService } from 'src/app/_core/service/base.service';
+import { SwalService } from 'src/app/_core/service/swal.service';
+import { StorageService } from 'src/app/_core/service/storage.service';
+import { CreateltbComponent } from '../../channel_setting/_Dialogue/local+broadcasting/createltb/createltb.component';
 
 @Component({
   selector: 'app-payment-channel',
@@ -24,54 +28,57 @@ export class PaymentChannelComponent {
     paginationPageSize: 10,
     pagination: true,
   }
-  constructor(private dialog: MatDialog) {
-
+  role: any;
+  username: any;
+  constructor(private dialog: MatDialog, private userservice: BaseService, private swal: SwalService, private storageservice: StorageService,) {
+    this.role = storageservice.getUserRole();
+    this.username = storageservice.getUsername();
   }
   columnDefs: ColDef[] = [
 
     {
       headerName: 'CHANNEL NAME',
-      field: 'broadcastername',
+      field: 'channelname',
 
     },
     {
       headerName: 'SERVICE ID',
-      field: 'broadcastername',
+      field: 'serviceid',
 
     },
     {
       headerName: 'LTB',
-      field: 'broadcastername',
+      field: 'operatorname',
 
     },
     {
       headerName: 'LTB BALANCE',
-      field: 'broadcastername',
+      field: 'balance',
 
     },
     {
       headerName: 'LCN',
-      field: 'broadcastername',
+      field: 'lcn',
 
     },
     {
       headerName: 'CHANNEL RATE',
-      field: 'broadcastername',
+      field: 'channelrate',
 
     },
     {
       headerName: 'TAX',
-      field: 'broadcastername',
+      field: 'tax',
 
     },
     {
       headerName: 'SELLING PRICE',
-      field: 'broadcastername',
+      field: 'lcoprice',
 
     },
     {
       headerName: 'PAY',
-      field: 'broadcastername',
+      field: '',
       cellRenderer: (params: any) => {
         const payButton = document.createElement('button');
         payButton.innerHTML = ' <img src="/assets/images/icons/pay4.png" style="width:45px">';
@@ -91,17 +98,21 @@ export class PaymentChannelComponent {
     },
     {
       headerName: 'EXPIRY DATE',
-      field: 'broadcastername',
+      field: 'expirydate',
 
     },
     {
       headerName: 'IS ACTIVE	',
-      field: 'broadcastername',
-
+      field: 'statusdisplay',
+      cellRenderer: (params: { value: any; }) => {
+        const color = params.value ? 'red' : 'Green';
+        const text = params.value ? 'Deactive' : 'Active';
+        return `<span style="color: ${color}">${text}</span>`;
+      }
     },
     {
       headerName: '',
-      field: 'broadcastername',
+   
       cellRenderer: (params: any) => {
         const payButton = document.createElement('button');
         payButton.innerHTML = ' <img src="/assets/images/icons/edit2.png" style="width:35px">';
@@ -125,15 +136,13 @@ export class PaymentChannelComponent {
 
 
   ]
-  rowData = [
-    {
-      broadcastername: 'Example Value', // this value will be used for all columns
-      // add more rows as needed
-    },
-  ];
+  rowData: any[] = [];
   onGridReady(params: { api: any; }) {
-
     this.gridApi = params.api;
+    this.userservice.getAllLocalChannelList(this.role, this.username).subscribe((data: any) => {
+      console.log(data);
+      this.rowData = data;
+    })
   }
   openEditDialog(data: any): void {
     console.log(data);
@@ -151,7 +160,7 @@ export class PaymentChannelComponent {
   openEditDialog1(data: any): void {
     console.log(data);
     const dialogRef = this.dialog.open(UpdateLtbComponent, {
-      width: '400px',
+      width: '500px',
       // height: '500px',
       data: data
 
@@ -161,10 +170,10 @@ export class PaymentChannelComponent {
       console.log('The dialog was closed');
     });
   }
-  
+
   submit(data: any): void {
-    const dialogRef = this.dialog.open(AllocatedInventoryComponent, {
-      width: '400px',
+    const dialogRef = this.dialog.open(CreateltbComponent, {
+      width: '500px',
       // height: '500px',
       data: data
 

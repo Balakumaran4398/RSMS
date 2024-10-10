@@ -70,7 +70,10 @@
 .head {
     // width: 27vw;
     display: flex;
+
 }
+
+
 
 mat-card p {
     text-align: center;
@@ -213,8 +216,8 @@ span {
     display: flex;
     justify-content: center;
     align-items: center;
-    width: 40%;
-    height: 40%;
+    width: 60%;
+    height: 80%;
     margin: 0 18px;
     border-radius: 20px;
     // background: var(--primary-color);
@@ -269,17 +272,27 @@ span {
     position: absolute;
     z-index: 1;
     bottom: 125%;
-    /* Adjust this to position the tooltip */
     left: 50%;
     margin-left: -50px;
     opacity: 0;
     transition: opacity 0.3s;
-    width: 100px;
+    width: auto;
 }
 
 .tooltip-container:hover .tooltip {
     visibility: visible;
     opacity: 1;
+}
+
+.tooltip::after {
+    content: '';
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    margin-left: -5px;
+    border-width: 5px;
+    border-style: solid;
+    border-color: black transparent transparent transparent;
 }
 
 // @media screen and (max-width:1600px) {
@@ -485,10 +498,16 @@ span {
 //     }
 // }
 
-// @media screen and (max-width:560px) {
+@media screen and (max-width:560px) {
 
-//     .display {
-//         display: block;
-//     }
+    .head {
+        // width: 27vw;
+        display: block;
 
-// }
+    }
+
+
+    .child-card {
+        gap: 10px
+    }
+}

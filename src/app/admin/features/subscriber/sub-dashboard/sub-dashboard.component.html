@@ -523,7 +523,7 @@
                                         <i class="fa-solid fa-ban" style="font-size:15px;color: #090f13;"></i><span
                                             style="font-size:15px;color: #090f13;">Block</span></button>
                                 </div>
-                                <!-- <div *ngIf="!cancelsubscription&&pair&&unpair"
+                                <div *ngIf="!cancelsubscription&&pair&&unpair"
                                     class="col-12 col-md-6 d-flex justify-content-center align-items-center  text3">
                                     <button class="btn  d-flex justify-content-between"
                                         (click)="managePackage('cancelsubscription')">
@@ -531,14 +531,15 @@
                                 </div>
                                 <div *ngIf="!unpair&&cancelsubscription&&pair"
                                     class="col-12 col-md-6 d-flex justify-content-center align-items-center  text3">
-                                    <button class="btn  d-flex justify-content-between" (click)="openDialog('unpair')">
+                                    <button class="btn  d-flex justify-content-between"
+                                        (click)="managePackage('unpair')">
                                         <i class="fa-solid fa-ban" style="font-size:15px;color: #090f13;"></i><span
                                             style="font-size:15px;color: #090f13;">Unpair</span></button>
-                                </div> -->
-                                <div
-                                class="col-12 col-md-6 d-flex justify-content-center align-items-center  text3">
-                                 <!-- *ngIf="!pair&&unpair&&cancelsubscription" -->
-                                    <button class="btn  d-flex justify-content-between" (click)="managePackage('pair')">
+                                </div>
+                                <!-- <div *ngIf="!pair&&cancelsubscription&&unpair" -->
+                                 <div
+                                    class="col-12 col-md-6 d-flex justify-content-center align-items-center  text3">
+                                    <button class="btn  d-flex justify-content-between" (click)="openDialog('pair')">
                                         <i class="fa fa-refresh"></i><span>Pair</span></button>
                                 </div>
                             </div>
@@ -559,7 +560,7 @@
                     <div class="col-12 col-md-12 col-md-8 mx-2">
                         <div class="">
                             <section class="Tab col-xl-12 col-sm-6 col-12  " style="max-height: 73vh;overflow: scroll;">
-                                <div class="display tablist justify-content-center align-items-center ">
+                                <!-- <div class="display tablist justify-content-center align-items-center ">
                                     <div class="tab mb-3" [class.active]="selectedTab === 'addon'"
                                         (click)="managePackage('addon')">
                                         ADDON ADD
@@ -576,7 +577,37 @@
                                         (click)="openDialog('BASE')">
                                         BASE CHANGE
                                     </div>
+                                </div> -->
+
+                                <div class="display tablist justify-content-center align-items-center">
+                                    <!-- ADDON ADD -->
+                                    <div class="tab mb-3" [class.active]="selectedTab === 'addon'"
+                                        [class.disabled]="!(subdetailsList?.status > 2 && subdetailsList?.noofdays > 1)"
+                                        (click)="subdetailsList?.status > 2 && subdetailsList?.noofdays > 1 ? managePackage('addon') : null">
+                                        ADDON ADD
+                                    </div>
+
+                                    <!-- ALACARTE ADD -->
+                                    <div class="tab mb-3" [class.active]="selectedTab === 'alacarte'"
+                                        [class.disabled]="!(subdetailsList?.status > 2 && subdetailsList?.noofdays > 1)"
+                                        (click)="subdetailsList?.status > 2 && subdetailsList?.noofdays > 1 ? managePackage('alacarte') : null">
+                                        ALACARTE ADD
+                                    </div>
+
+                                    <!-- REMOVE PRODUCT -->
+                                    <div class="tab mb-3" [class.active]="selectedTab === 'remove'"
+                                        [class.disabled]="!(subdetailsList?.status > 2 && subdetailsList?.noofdays > 1)"
+                                        (click)="subdetailsList?.status > 2 && subdetailsList?.noofdays > 1 ? managePackage('remove') : null">
+                                        REMOVE PRODUCT
+                                    </div>
+
+                                    <!-- BASE CHANGE -->
+                                    <div class="tab mb-3" [class.active]="selectedTab === 'BASE'"
+                                        (click)="openDialog('BASE')">
+                                        BASE CHANGE
+                                    </div>
                                 </div>
+
                             </section>
 
 
@@ -626,9 +657,6 @@
                                     <div class="col-12 col-md-6">
                                         <select [(ngModel)]="plantype" (ngModelChange)="onSelectionplantype($event)">
                                             <option value="0" selected>Selected Plan</option>
-                                            <!-- <option value="" *ngFor="let pt of plantype" [value]="pt.id">
-                                                {{pt.name}}
-                                            </option> -->
                                             <option *ngFor="let plan of plantype$ | async | keyvalue"
                                                 [value]="plan.value">
                                                 {{ plan.key }}
@@ -649,7 +677,7 @@
                             <div *ngIf="confirmation">
                                 <div style="padding: 1rem;">
                                     <div class="card1 mb-2" style="padding: 1rem;border-color:1px #090f13;">
-                                        <div class="input_box  mb-3">
+                                        <div class="  mb-3">
                                             <div class="d-flex align-items-center justify-content-center">
                                                 <div class="col-6 col-md-6">
                                                     <span for="password" class="me-2">Old Expiry date</span>
@@ -715,7 +743,7 @@
 
                             <div class=" d-flex justify-content-start align-item-center  mb-2">
                                 <button type="button" class="btn2 confirm me-2"
-                                    (click)="toggleConfirmation()">Confirmation</button>
+                                    (click)="rechargetoggleConfirmation()">Confirmation</button>
                                 <button type="button" class="btn2  recharge" (click)="recharge()">Recharge</button>
                             </div>
                         </div>

@@ -454,9 +454,9 @@ export class PackageMasterComponent {
           title: 'Updateing...',
           text: 'Please wait while the package master is being deleted',
           allowOutsideClick: false,
-          didOpen: () => {
-            Swal.showLoading();
-          }
+          // didOpen: () => {
+          //   Swal.showLoading();
+          // }
         });
         this.userService.UpdatePackagemasterList(this.user_role, this.username, this.selectedIds).subscribe((res: any) => {
           Swal.fire({
@@ -491,9 +491,9 @@ export class PackageMasterComponent {
           title: 'Updateing...',
           text: 'Please wait while the package master is being Updated',
           allowOutsideClick: false,
-          didOpen: () => {
-            Swal.showLoading();
-          }
+          // didOpen: () => {
+          //   Swal.showLoading();
+          // }
         });
         this.userService.UpdatePackagemasterList(this.user_role, this.username, this.selectedIds).subscribe((res: any) => {
           Swal.fire({

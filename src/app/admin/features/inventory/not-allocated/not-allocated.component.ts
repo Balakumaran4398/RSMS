@@ -47,10 +47,8 @@ export class NotAllocatedComponent {
     this.userService.Not_Allocated(this.role, this.username).subscribe((data: any) => {
       this.rowData = data[0].notallocatedsmartcard;
       this.lco_list = data[0].operatorid;
-      console.log(this.lco_list);
       this.caslist = data[0].castype;
       this.isemi = data[0].isemi;
-      console.log(this.isemi);
 
     })
   }

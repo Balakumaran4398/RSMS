@@ -227,9 +227,9 @@ export class FingerPrintComponent {
             icon: 'success',
             timer: 3000,
             timerProgressBar: true,
-            didOpen: (toast) => {
-              Swal.showLoading();
-            },
+            // didOpen: (toast) => {
+            //   Swal.showLoading();
+            // },
             willClose: () => {
               // location.reload();
             }
@@ -242,9 +242,9 @@ export class FingerPrintComponent {
             icon: 'error',
             timer: 3000,
             timerProgressBar: true,
-            didOpen: (toast) => {
-              Swal.showLoading();
-            },
+            // didOpen: (toast) => {
+            //   Swal.showLoading();
+            // },
             willClose: () => {
               // location.reload();
             }
@@ -268,9 +268,9 @@ export class FingerPrintComponent {
           icon: 'success',
           timer: 3000,
           timerProgressBar: true,
-          didOpen: (toast) => {
-            Swal.showLoading();
-          },
+          // didOpen: (toast) => {
+          //   Swal.showLoading();
+          // },
           willClose: () => {
             // location.reload();
             this.ngOnInit();
@@ -284,9 +284,9 @@ export class FingerPrintComponent {
           icon: 'error',
           timer: 3000,
           timerProgressBar: true,
-          didOpen: (toast) => {
-            Swal.showLoading();
-          },
+          // didOpen: (toast) => {
+          //   Swal.showLoading();
+          // },
           willClose: () => {
             // location.reload();
             this.ngOnInit();

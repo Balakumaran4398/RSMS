@@ -34,11 +34,10 @@
                                 </p>
                             </div>
                         </div>
-                        <a class="mb-3" href="">* Download Format File</a>
+                        <a class="mb-3" (click)="generateExcel()" style="cursor: pointer;">* Download Format File</a>
                         <div class="checkbox-text mb-3">
                             <div class="checkbox-content">
-                                <input type="checkbox" id="terms" formControlName="billingAddressCheckbox"
-                                    (change)="onCheckboxChange($event)">
+                                <input type="checkbox" id="terms" (change)="onCheckboxChange($event)">
                                 <label for="confirmPass">I agree to the above statement</label>
                             </div>
                         </div>
@@ -52,20 +51,33 @@
                             </label>
                         </div>
                         <div class="col-12 mb-3">
-                            <select placeholder="Select the CAS" class="form-control" [formControl]="CasFormControl">
-                                <option value="">Select CAS</option>
-                                <option *ngFor="let casItem of cas" [value]="casItem">{{ casItem }}</option>
+                            <select placeholder="Select the CAS" class="form-control" [(ngModel)]="castype"
+                                (change)="casPackageList()">
+                                <option value="0">Select CAS</option>
+                                <option *ngFor="let casItem of cas" [value]="casItem.id">
+                                    {{ casItem.name }}
+                                </option>
                             </select>
                         </div>
 
-                        <!-- <div class="col-12 mb-3">
-                            <select class="form-control" [disabled]="!CasFormControl.value"
-                                [style.background-color]="CasFormControl.value ? '#007bff' : '#d3d3d3'"
-                                [style.cursor]="CasFormControl.value ? 'pointer' : 'not-allowed'">
-                                <option value="">Select type</option>
-                                <option *ngFor="let Type of type" [value]="Type">{{ Type }}</option>
-                            </select>
-                        </div> -->
+                        <div class="col-12 mb-3">
+                            <mat-form-field>
+                                <mat-label>Toppings</mat-label>
+                                <mat-select [formControl]="toppings" multiple>
+                                    <!-- <mat-select-trigger>
+                                  {{ toppings.value?.[0] || '' }}
+                                  <ng-container *ngIf="(toppings.value?.length || 0) > 1">
+                                    <span class="example-additional-selection">
+                                      (+{{ (toppings.value?.length || 0) - 1 }} {{ toppings.value?.length === 2 ? 'other' : 'others' }})
+                                    </span>
+                                  </ng-container>
+                                </mat-select-trigger> -->
+                                    <mat-option *ngFor="let topping of toppingList" [value]="topping.id">{{
+                                        topping.name }}</mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                        </div>
+
 
                         <div class=" d-flex justify-content-end align-items-center mt-3">
                             <button type="submit" class="btn btn-success ">Submit</button>
@@ -122,7 +134,7 @@
 
                 <!-- First Select Input -->
                 <div class="col-12 col-md-3  mt-2">
-                    <select placeholder="Select the CAS" class="form-control" [formControl]="CasFormControl">
+                    <select placeholder="Select the CAS" class="form-control" [formControl]="casFormControl">
                         <option value="">Select CAS</option>
                         <option *ngFor="let casItem of cas" [value]="casItem">{{ casItem }}</option>
                     </select>
@@ -130,7 +142,7 @@
 
                 <!-- Second Select Input -->
                 <div class="col-12 col-md-3 mt-2">
-                    <select placeholder="Select the CAS" class="form-control" [formControl]="CasFormControl">
+                    <select placeholder="Select the CAS" class="form-control" [formControl]="casFormControl">
                         <option value="">Select CAS</option>
                         <option *ngFor="let casItem of cas" [value]="casItem">{{ casItem }}</option>
                     </select>

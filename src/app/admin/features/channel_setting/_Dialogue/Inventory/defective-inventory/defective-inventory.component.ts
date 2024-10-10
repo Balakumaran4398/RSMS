@@ -48,9 +48,9 @@ export class DefectiveInventoryComponent {
       title: 'Loading...',
       text: 'Please wait while we process your request.',
       allowOutsideClick: false, // Disable closing by clicking outside
-      didOpen: () => {
-        Swal.showLoading(); // Show loading spinner
-      }
+      // didOpen: () => {
+      //   Swal.showLoading(); // Show loading spinner
+      // }
     });
   
     // Make the service call

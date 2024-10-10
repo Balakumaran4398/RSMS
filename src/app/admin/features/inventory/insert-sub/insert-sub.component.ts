@@ -101,11 +101,8 @@ export class InsertSubComponent {
     if (this.gridApi) {
       const selectedRows = this.gridApi.getSelectedRows();
       this.isAnyRowSelected = selectedRows.length > 0;
-      console.log("Selected Rows:", selectedRows);
       this.selectedIds = selectedRows.map((e: any) => e.id);
       this.selectedtypes = selectedRows.map((e: any) => e.isactive);
-      console.log("Selected IDs:", this.selectedIds);
-      console.log("Selected Types:", this.selectedtypes);
     }
   }
   updateOperatorIds() {
@@ -115,7 +112,6 @@ export class InsertSubComponent {
         this.operatorid.push(this.lco_list[key]);
       }
     });
-    console.log(this.operatorid);
   }
   filteredLcoKeys(): string[] {
     const keys = Object.keys(this.lco_list);

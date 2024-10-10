@@ -160,9 +160,9 @@ export class PackagewiseOperatorComponent {
       title: 'Saving...',
       text: 'Please wait while we allocate the operator to the product.',
       allowOutsideClick: false,
-      didOpen: () => {
-        Swal.showLoading();
-      }
+      // didOpen: () => {
+      //   Swal.showLoading();
+      // }
     });
     this.userservice.ProductListForOperator_allocate_to_notallocate(this.role, this.username, this.selectedProductTypeId, selectedProductId, this.draggedOperatorId || this.selectedItems
     ).subscribe(

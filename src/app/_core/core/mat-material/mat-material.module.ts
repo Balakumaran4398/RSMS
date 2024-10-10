@@ -43,9 +43,11 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatTreeModule } from '@angular/material/tree';
 import { OverlayModule } from '@angular/cdk/overlay';
 import { CommonModule } from '@angular/common';
-import { ReactiveFormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NgxMatDatetimePickerModule, NgxMatNativeDateModule, NgxMatTimepickerModule, } from '@angular-material-components/datetime-picker';
 import { NgxMatMomentModule } from '@angular-material-components/moment-adapter';
+import {MatFormFieldModule} from '@angular/material/form-field';
+
 @NgModule({
     declarations: [],
     imports: [
@@ -98,7 +100,9 @@ import { NgxMatMomentModule } from '@angular-material-components/moment-adapter'
         NgxMatDatetimePickerModule,
         NgxMatNativeDateModule,
         NgxMatTimepickerModule,
-        NgxMatMomentModule
+        NgxMatMomentModule,
+        MatFormFieldModule,
+        FormsModule
     ],
     exports: [
         A11yModule,
@@ -149,7 +153,8 @@ import { NgxMatMomentModule } from '@angular-material-components/moment-adapter'
         NgxMatDatetimePickerModule,
         NgxMatNativeDateModule,
         NgxMatTimepickerModule,
-        NgxMatMomentModule
+        NgxMatMomentModule,
+        MatFormFieldModule,FormsModule
     ]
 })
 export class MatMaterialModule { }

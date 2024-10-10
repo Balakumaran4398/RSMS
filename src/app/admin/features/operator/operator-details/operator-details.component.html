@@ -18,176 +18,184 @@
             <p> <i class="fa fa-plus mx-2" style="padding-right: 3px;font-size: 14px"></i>New LCO Business</p>
         </div>
     </div>
-    <span class="k col-4" *ngFor="let operator of operator_details " style="display: inline-table; ">
-        <mat-card class="mx-2">
-            <mat-card-header>
-                <mat-card-title>
-                    <div class="col-12 head">
-                        <div class="col-12 col-md-6">
-                            <p style="text-align: left;" class="sub-tittle">
-                                {{operator?.operatorname || 'empty'}}
-                            </p>
-                            <p style="text-align: left;color: rgb(90 88 88);" class="sub-tittle">Ph:
-                                {{operator?.contactnumber1 || operator?.contactnumber2}}</p>
+    <div class="row">
+        <span class="k col-12 col-sm-6 col-md-4 col-lg-4" *ngFor="let operator of operator_details">
+            <!-- <span class="col-12 col-sm-4 col-md-4 " *ngFor="let operator of operator_details"> -->
+            <mat-card class="">
+                <mat-card-header>
+                    <mat-card-title>
+                        <div class="col-12 head">   
+                            <div class="col-12 col-md-6">
+                                <p style="text-align: left;" class="sub-tittle">
+                                    {{operator?.operatorname || 'empty'}}
+                                </p>
+                                <p style="text-align: left;color: rgb(90 88 88);" class="sub-tittle">Ph:
+                                    {{operator?.contactnumber1 || operator?.contactnumber2}}</p>
 
-                            <img class="toggle1" src="/assets/images/login/contact1.png" alt="Toggle">
-                            <!-- <i class="fa fa-pencil" style="color: var(--primary-color);" aria-hidden="true"   (click)="toggleedit()"></i> -->
-                            <!-- <i class="fas fa-pen" style="color: var(--edit-button);font-size: 20px;" aria-hidden="true"
+                                <img class="toggle1" src="/assets/images/login/contact1.png" alt="Toggle">
+                                <!-- <i class="fa fa-pencil" style="color: var(--primary-color);" aria-hidden="true"   (click)="toggleedit()"></i> -->
+                                <!-- <i class="fas fa-pen" style="color: var(--edit-button);font-size: 20px;" aria-hidden="true"
                                 (click)="toggleedit(operator.operatorid)"></i> -->
 
-                            <p class="text">
-                                <span class="label label1">user id</span>
-                                <span class="separator">:</span>
-                                <span class="last">{{operator?.userid}}</span>
-                            </p>
-                            <p class="text">
-                                <span class="label label2">password</span>
-                                <span class="separator">:</span>
-                                <span class="last">{{operator?.password}}</span>
-                            </p>
-                            <p class="text">
-                                <span class="label">online payment</span>
-                                <span class="separator">:</span>
-                                <span class="last">{{operator?.isonlinepayment}}</span>
-                            </p>
-                        </div>
-                        <div class="col-12 col-md-6">
-                            <!-- <p style="color: #0e610b;text-align: between" class="sub-tittle tittle1">
+                                <p class="text">
+                                    <span class="label label1">user id</span>
+                                    <span class="separator">:</span>
+                                    <span class="last">{{operator?.userid}}</span>
+                                </p>
+                                <p class="text">
+                                    <span class="label label2">password</span>
+                                    <span class="separator">:</span>
+                                    <span class="last">{{operator?.password}}</span>
+                                </p>
+                                <p class="text">
+                                    <span class="label">online payment</span>
+                                    <span class="separator">:</span>
+                                    <span class="last">{{operator?.isonlinepayment}}</span>
+                                </p>
+                            </div>
+                            <div class="col-12 col-md-6">
+                                <!-- <p style="color: #0e610b;text-align: between" class="sub-tittle tittle1">
                                 <i class="fa fa-inr"
                                     style="padding-right: 3px;font-size: 14px"></i>{{operator?.balance}}
                                 <i class="fas fa-pen" style="color: var(--edit-button);font-size: 20px;"
                                     aria-hidden="true" (click)="toggleedit(operator.operatorid)"></i>
                             </p> -->
-                            <span
-                                style="color: #0e610b; display: flex; align-items: center;justify-content: space-between;"
-                                class="sub-tittle tittle1 tooltip-container">
-                                <p><i class="fa fa-inr" style="font-size: 14px;"></i>
-                                    {{operator?.balance}}</p>
-                                <p><i class="fas fa-pen" style="color: var(--edit-button); font-size: 20px;"
-                                        aria-hidden="true" (click)="toggleedit(operator.operatorid)"></i></p>
-                                <!-- <span class="tooltip">Edit</span> -->
-                            </span>
+                                <span
+                                    style="color: #0e610b; display: flex; align-items: center;justify-content: space-between;"
+                                    class="sub-tittle tittle1 tooltip-container">
+                                    <p><i class="fa fa-inr" style="font-size: 14px;"></i>
+                                        {{operator?.balance}}</p>
+                                    <p><i class="fas fa-pen" style="color: var(--edit-button); font-size: 20px;"
+                                            aria-hidden="true" (click)="toggleedit(operator.operatorid)"></i></p>
+                                    <!-- <span class="tooltip">Edit</span> -->
+                                </span>
 
-                            <mat-card class="inventory">
-                                <p>Inventory</p>
-                                <div class="col-12" style="display: flex;">
-                                    <div class="col-6">
-                                        <span style="font-size: 13px;">Box in hand</span>
-                                        <mat-card class="card-inside">
-                                            <span style="color: var(--primary-color)">{{operator?.boxinhand}}</span>
-                                        </mat-card>
+                                <mat-card class="inventory">
+                                    <p>Inventory</p>
+                                    <div class="row" style="display: flex;">
+                                        <div class="col-6">
+                                            <span style="font-size: 13px;">Box in hand</span>
+                                            <mat-card class="card-inside">
+                                                <span style="color: var(--primary-color)">{{operator?.boxinhand}}</span>
+                                            </mat-card>
+                                        </div>
+                                        <div class="col-6">
+                                            <span style="font-size: 13px;">Total Box</span>
+                                            <mat-card class="card-inside">
+                                                <span style="color: var(--primary-color)">{{operator?.totalbox}}</span>
+                                            </mat-card>
+                                        </div>
                                     </div>
-                                    <div class="col-6">
-                                        <span style="font-size: 13px;">Total Box</span>
-                                        <mat-card class="card-inside">
-                                            <span style="color: var(--primary-color)">{{operator?.totalbox}}</span>
-                                        </mat-card>
-                                    </div>
+                                </mat-card>
+                                <mat-card class="permission" (click)="togglepermission(operator.operatorid)"
+                                    style="cursor: pointer;">
+                                    <img src="../assets/images/icons/Accesss1.png" alt="Accesss1">
+                                    <p (click)="togglepermission($event)" style="color: white;font-size: 14px;">Special
+                                        Permission</p>
+                                </mat-card>
+                            </div>
+                        </div>
+
+                        <div class="child-card col-12">
+                            <div class="col-2 vertical tooltip-container">
+                                <!-- <p class="sub-text">Connection</p> -->
+                                <span style="color: #0e610b;">
+                                    <div class="circle" style="background-color: rgb(240, 120, 9);"><span
+                                            class="circle-text">{{operator?.connectioncount}}</span></div>
+                                </span>
+                                <span class="tooltip">Connection</span>
+                            </div>
+                            <div class="col-2 vertical tooltip-container">
+                                <!-- <p class="sub-text">NotExpiry</p> -->
+                                <span style="color: #0e610b;">
+                                    <div class="circle" style="background-color: rgb(122, 64, 129);"><span
+                                            class="circle-text">{{operator?.activecount}}</span></div>
+                                </span>
+                                <span class="tooltip">NotExpiry</span>
+                            </div>
+                            <div class="col-2 vertical tooltip-container">
+                                <!-- <p class="sub-text">Expired</p> -->
+                                <span style="color: #0e610b;">
+                                    <div class="circle" style="background-color: rgb(202, 9, 9);"><span
+                                            class="circle-text">{{operator?.connectioncount}}</span></div>
+                                </span>
+                                <span class="tooltip">Expired</span>
+                            </div>
+                            <div class="col-2 vertical tooltip-container">
+                                <!-- <p class="sub-text">New</p> -->
+                                <span style="color: #0e610b;">
+                                    <div class="circle" style="background-color: rgb(13 131 33);"><span
+                                            class="circle-text">{{operator?.newcount}}</span></div>
+                                </span> <span class="tooltip">New</span>
+                            </div>
+                            <div class="col-2 vertical tooltip-container">
+                                <!-- <p class="sub-text">Block</p> -->
+                                <span style="color: #0e610b;">
+                                    <div class="circle" style="background-color: rgb(148, 122, 8);"><span
+                                            class="circle-text">{{operator?.blockcount}}</span></div>
+                                </span>
+                             <span class="tooltip">Block</span>
+                            </div>
+                        </div>
+                        <br>
+
+                        <div class="report d-flex justify-content-center">
+                            <div class="file-container">
+                                <div class="files mx-2">
+                                    <a (click)="navgetToUrl(operator.operatorid)" class="tooltip-container">
+                                        <!-- <img src="../assets/images/icons/dashboard_icon.png" alt="Dashboard"> -->
+                                        <i class="fa fa-dashboard"
+                                            style="font-size:25px;color:var(--primary-color)"></i>
+                                        <span class="tooltip">Dashboard</span>
+                                    </a>
                                 </div>
-                            </mat-card>
-                            <mat-card class="permission" (click)="togglepermission(operator.operatorid)"
-                                style="cursor: pointer;">
-                                <img src="../assets/images/icons/Accesss1.png" alt="Accesss1">
-                                <p (click)="togglepermission($event)" style="color: white;font-size: 14px;">Special
-                                    Permission</p>
-                            </mat-card>
-                        </div>
-                    </div>
-
-                    <div class="child-card col-6">
-                        <div class="col-2 vertical">
-                            <p class="sub-text">Connection</p>
-                            <span style="color: #0e610b;">
-                                <div class="circle" style="background-color: rgb(240, 120, 9);"><span
-                                        class="circle-text">{{operator?.connectioncount}}</span></div>
-                            </span>
-                        </div>
-                        <div class="col-2 vertical">
-                            <p class="sub-text">NotExpiry</p>
-                            <span style="color: #0e610b;">
-                                <div class="circle" style="background-color: rgb(122, 64, 129);"><span
-                                        class="circle-text">{{operator?.activecount}}</span></div>
-                            </span>
-                        </div>
-                        <div class="col-2 vertical">
-                            <p class="sub-text">Expired</p>
-                            <span style="color: #0e610b;">
-                                <div class="circle" style="background-color: rgb(202, 9, 9);"><span
-                                        class="circle-text">{{operator?.connectioncount}}</span></div>
-                            </span>
-                        </div>
-                        <div class="col-2 vertical">
-                            <p class="sub-text">New</p>
-                            <span style="color: #0e610b;">
-                                <div class="circle" style="background-color: rgb(13 131 33);"><span
-                                        class="circle-text">{{operator?.newcount}}</span></div>
-                            </span>
-                        </div>
-                        <div class="col-2">
-                            <p class="sub-text">Block</p>
-                            <span style="color: #0e610b;">
-                                <div class="circle" style="background-color: rgb(148, 122, 8);"><span
-                                        class="circle-text">{{operator?.blockcount}}</span></div>
-                            </span>
-                        </div>
-                    </div>
-                    <br>
-
-                    <div class="report d-flex justify-content-center">
-                        <div class="file-container" >
-                            <div class="files mx-3">
-                                <a (click)="navgetToUrl(operator.operatorid)" class="tooltip-container">
-                                    <!-- <img src="../assets/images/icons/dashboard_icon.png" alt="Dashboard"> -->
-                                    <i class="fa fa-dashboard" style="font-size:25px;color:var(--primary-color)"></i>
-                                    <span class="tooltip">Dashboard</span>
-                                </a>
-                            </div>
 
 
-                            <div class="files tooltip-container mx-3"  (click)="openDialog('recharge')">
-                                <!-- <img src="../assets/images/icons/Document_icon.png" alt="Dashboard"> -->
-                                <i class="fa-solid fa-book" style="font-size:25px;color:var(--primary-color)"></i>
-                                <span class="tooltip">Recharge </span>
-                            </div>
+                                <div class="files tooltip-container mx-2" (click)="openDialog('recharge')">
+                                    <!-- <img src="../assets/images/icons/Document_icon.png" alt="Dashboard"> -->
+                                    <i class="fa-solid fa-book" style="font-size:25px;color:var(--primary-color)"></i>
+                                    <span class="tooltip">Recharge </span>
+                                </div>
 
-                            <div class="files tooltip-container mx-3" (click)="openDialog('retailer')">
-                                <!-- <img src="../assets/images/icons/Document_icon.png" alt="Report"> -->
-                                <i class="fa-solid fa-person-chalkboard"
-                                    style="font-size:25px;color:var(--primary-color)"></i>
-                                <span class="tooltip">Retailer </span>
-                            </div>
-                            <div class="files tooltip-container mx-3" (click)="openDialog('areawise')">
-                                <!-- <img src="../assets/images/icons/Document_icon.png" alt="Report"> -->
+                                <div class="files tooltip-container mx-2" (click)="openDialog('retailer')">
+                                    <!-- <img src="../assets/images/icons/Document_icon.png" alt="Report"> -->
+                                    <i class="fa-solid fa-person-chalkboard"
+                                        style="font-size:25px;color:var(--primary-color)"></i>
+                                    <span class="tooltip">Retailer </span>
+                                </div>
+                                <div class="files tooltip-container mx-2" (click)="openDialog('areawise')">
+                                    <!-- <img src="../assets/images/icons/Document_icon.png" alt="Report"> -->
 
-                                <i class="fa fa-calculator" style="font-size:25px;color:var(--primary-color)"
-                                    aria-hidden="true"></i>
-                                <span class="tooltip">Areawise Count </span>
-                            </div>
+                                    <i class="fa fa-calculator" style="font-size:25px;color:var(--primary-color)"
+                                        aria-hidden="true"></i>
+                                    <span class="tooltip">Areawise Count </span>
+                                </div>
 
-                            <div class="files tooltip-container mx-3" (click)="openDialog('cancel_Subscription')">
-                                <!-- <img src="../assets/images/icons/Document_icon.png" alt="Report"> -->
-                                <i class="fa-solid fa-file-lines" style="font-size:25px;color:var(--primary-color)"></i>
-                                <span class="tooltip">Cancel_Subscription </span>
-                            </div>
-                            <div class="files tooltip-container mx-3" (click)="openDialog('productwise')">
-                                <!-- <img src="../assets/images/icons/Document_icon.png" alt="Report"> -->
-                                <i class="fa-solid fa-address-book"
-                                    style="font-size:25px;color:var(--primary-color)"></i>
-                                <span class="tooltip">Productwise Subscriber </span>
-                            </div>
-                            <!-- <div class="files tooltip-container">
+                                <div class="files tooltip-container mx-2" (click)="openDialog('cancel_Subscription')">
+                                    <!-- <img src="../assets/images/icons/Document_icon.png" alt="Report"> -->
+                                    <i class="fa-solid fa-file-lines"
+                                        style="font-size:25px;color:var(--primary-color)"></i>
+                                    <span class="tooltip">Cancel_Subscription </span>
+                                </div>
+                                <div class="files tooltip-container mx-2" (click)="openDialog('productwise')">
+                                    <!-- <img src="../assets/images/icons/Document_icon.png" alt="Report"> -->
+                                    <i class="fa-solid fa-address-book"
+                                        style="font-size:25px;color:var(--primary-color)"></i>
+                                    <span class="tooltip">Productwise Subscriber </span>
+                                </div>
+                                <!-- <div class="files tooltip-container">
                                 <img src="../assets/images/icons/Document_icon.png" alt="Report">
                                 <span class="tooltip">Recharge </span>
                             </div> -->
+                            </div>
                         </div>
-                    </div>
-                    <br>
+                        <br>
 
-                </mat-card-title>
+                    </mat-card-title>
 
-            </mat-card-header>
-        </mat-card>
+                </mat-card-header>
+            </mat-card>
 
-    </span>
-
+        </span>
+    </div>
 </div>

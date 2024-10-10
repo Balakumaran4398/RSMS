@@ -12,7 +12,7 @@
                         <span>Local Channel Name</span>
                     </div>
                     <div class="col-6">
-                        ltbname
+                        {{localPaymentChannelList?.channelname}}
                     </div>
                 </div>
             </div>
@@ -24,10 +24,11 @@
                     </div>
                     <div class="col-6">
                         <div class="gender-category">
-                            <select id="option" formControlName="name_head" class="" required>
-                                <option value="Mr">Mr</option>
-                                <option value="Mrs">Mrs</option>
-                                <option value="Misss">Miss</option>
+                            <select [(ngModel)]="opName">
+                                <option value="0" selected>Selected Operator Name</option>
+                                <option *ngFor="let op of opNameList" [value]="op.packageid">
+                                    {{ op.packagename }}
+                                </option>
                             </select>
                             <!-- <div style="position: absolute;font-size: 11px;">
                                 <div *ngIf="submitted && f['name_head'].errors?.['required']" class="text-danger">
@@ -42,8 +43,8 @@
                     <div class="col-6 d-flex justify-content-start align-items-center">
                         <span>Channel Rate</span>
                     </div>
-                    <div class="col-6">
-                        <input type="text" class="" readonly>
+                    <div class="col-6 d-flex align-items-center">
+                        <input type="text" class="ms-2" value="{{localPaymentChannelList?.channelrate}}" readonly>
                     </div>
                 </div>
             </div>
@@ -54,15 +55,15 @@
                     </div>
                     <div class="col-6">
                         <!-- <div id="app-cover"> -->
-                            <div class="toggle-button-cover">
-                                <div class="button b2" id="button-10">
-                                    <input type="checkbox" class="checkbox" formControlName="isactive" />
-                                    <div class="knobs">
-                                        <span>YES</span>
-                                    </div>
-                                    <div class="layer"></div>
+                        <div class="toggle-button-cover">
+                            <div class="button b2" id="button-10">
+                                <input type="checkbox" class="checkbox" [(ngModel)]="istax" />
+                                <div class="knobs">
+                                    <span>YES</span>
                                 </div>
+                                <div class="layer"></div>
                             </div>
+                        </div>
                         <!-- </div> -->
                     </div>
                 </div>
@@ -73,7 +74,7 @@
                         <span>Tax</span>
                     </div>
                     <div class="col-6">
-                        gfdgdfgfd
+                        {{localPaymentChannelList?.tax}}
                     </div>
                 </div>
             </div>
@@ -83,7 +84,7 @@
                         <span>Lco price </span>
                     </div>
                     <div class="col-6">
-                        fdfgdfgfd
+                        {{localPaymentChannelList?.lcoprice}}
                     </div>
                 </div>
             </div>
@@ -94,17 +95,17 @@
                     </div>
                     <div class="col-6">
                         <!-- <div id="app-cover"> -->
-                            <div class="toggle-button-cover">
-                                <div class="button-cover">
-                                    <div class="button b2" id="button-14">
-                                        <input type="checkbox" class="checkbox" />
-                                        <div class="knobs">
-                                            <span></span>
-                                        </div>
-                                        <div class="layer"></div>
+                        <div class="toggle-button-cover">
+                            <div class="button-cover">
+                                <div class="button b2" id="button-14">
+                                    <input type="checkbox" class="checkbox" [(ngModel)]="isactive" />
+                                    <div class="knobs">
+                                        <span></span>
                                     </div>
+                                    <div class="layer"></div>
                                 </div>
                             </div>
+                        </div>
                         <!-- </div> -->
                     </div>
 
@@ -114,7 +115,7 @@
         <div class="d-flex justify-content-center align-items-center" style="padding: 10px;">
             <button type="button" class="btn btn-danger" (click)="onNoClick()">No</button>
             &nbsp;
-            <button type="button" class="btn btn-success">Update </button>
+            <button type="button" class="btn btn-success" (click)="submit()">Update </button>
         </div>
     </div>
 </div>

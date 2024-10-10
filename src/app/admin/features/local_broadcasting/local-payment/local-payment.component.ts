@@ -3,6 +3,9 @@ import { AllocatedInventoryComponent } from '../../channel_setting/_Dialogue/Inv
 import { MatDialog } from '@angular/material/dialog';
 import { ColDef } from 'ag-grid-community';
 import { AddLtbComponent } from '../../channel_setting/_Dialogue/local+broadcasting/add-ltb/add-ltb.component';
+import { SwalService } from 'src/app/_core/service/swal.service';
+import { StorageService } from 'src/app/_core/service/storage.service';
+import { BaseService } from 'src/app/_core/service/base.service';
 
 @Component({
   selector: 'app-local-payment',
@@ -23,8 +26,11 @@ export class LocalPaymentComponent {
     paginationPageSize: 10,
     pagination: true,
   }
-  constructor(private dialog: MatDialog) {
-
+  role: any;
+  username: any;
+  constructor(private dialog: MatDialog, private userservice: BaseService, private swal: SwalService, private storageservice: StorageService,) {
+    this.role = storageservice.getUserRole();
+    this.username = storageservice.getUsername();
   }
   columnDefs: ColDef[] = [
     {
@@ -53,15 +59,14 @@ export class LocalPaymentComponent {
     },
 
   ]
-  rowData = [
-    {
-      broadcastername: 'Example Value', // this value will be used for all columns
-      // add more rows as needed
-    },
-  ];
+  rowData: any[] = [];
   onGridReady(params: { api: any; }) {
-    this.gridApi.sizeColumnsToFit();
+    // this.gridApi.sizeColumnsToFit();
     this.gridApi = params.api;
+    this.userservice.getAllLocalChannelList(this.role, this.username).subscribe((data: any) => {
+      console.log(data);
+
+    })
   }
   submit(data: any): void {
     const dialogRef = this.dialog.open(AddLtbComponent, {

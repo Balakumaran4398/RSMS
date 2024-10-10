@@ -38,15 +38,15 @@ export class NewstreetComponent {
       username: this.username,
       streetname: this.streetname,
       areaid: this.areaid,
-
     }
+    console.log(requestBody);
 
     this.userservice.createStreet(requestBody).subscribe((res: any) => {
       this.swal.success(res?.message);
     }, (err) => {
       this.swal.Error(err?.error?.message);
 
-      
+
     });
   }
 }

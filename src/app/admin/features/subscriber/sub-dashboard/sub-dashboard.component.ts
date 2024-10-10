@@ -7,7 +7,15 @@ import { SubscriberdialogueComponent } from '../subscriberdialogue/subscriberdia
 import Swal from 'sweetalert2';
 import { BehaviorSubject } from 'rxjs';
 import { ChannellistComponent } from '../channellist/channellist.component';
+import { SwalService } from 'src/app/_core/service/swal.service';
+import jsPDF from 'jspdf';
+interface requestBodylogs {
+  access_ip: any;
+  action: any;
+  remarks: any;
+  data: any;
 
+}
 @Component({
   selector: 'app-sub-dashboard',
   templateUrl: './sub-dashboard.component.html',
@@ -25,14 +33,16 @@ export class SubDashboardComponent implements OnInit, AfterViewInit {
   subid: any;
   smartdetailList: any;
   subdetailsList: any;
-  subscriberaccounts: any;
+  subPairedboxid: any;
+  subPairedsmartcard: any[] = [];
+  subscriberaccounts: any[] = [];
   message: any;
   packageobject: any;
   packdateobj: any;
   selectedmanpacknotexp: any;
   smartcardinfo: any;
-  plantype: any[] = [];
-  rechargetype: any[] = [];
+  plantype: any;
+  rechargetype: any;
   selectedRechargetype: string = '';
   datetype = false;
   isplantype = false;
@@ -46,6 +56,8 @@ export class SubDashboardComponent implements OnInit, AfterViewInit {
       // width: 205
     },
   }
+
+  rows: any
 
   subscrierdashoard: boolean = false;
   newsubscrierdashoard: boolean = false;
@@ -97,7 +109,7 @@ export class SubDashboardComponent implements OnInit, AfterViewInit {
   prevStep() {
     this.step.update(i => i - 1);
   }
-  constructor(private route: ActivatedRoute, private userservice: BaseService, private router: Router, private storageservice: StorageService, public dialog: MatDialog, private cdr: ChangeDetectorRef) {
+  constructor(private route: ActivatedRoute, private userservice: BaseService, private swal: SwalService, private router: Router, private storageservice: StorageService, public dialog: MatDialog, private cdr: ChangeDetectorRef) {
     this.role = storageservice.getUserRole();
     this.username = storageservice.getUsername();
     this.subscriberid = this.route.snapshot.paramMap.get('smartcard');
@@ -160,6 +172,8 @@ export class SubDashboardComponent implements OnInit, AfterViewInit {
       this.rowData = data['smartcardlist'];
       this.rowData1 = data['managepacklist_notexp'];
       this.subdetailsList = data['subscriberdetails'];
+      this.subPairedboxid = data['pairedboxid'];
+      this.subPairedsmartcard = data['pairedsmartcard'];
       console.log(this.subdetailsList);
       this.subid = this.subdetailsList.subid;
       this.smartcard = this.subdetailsList.smartcard;
@@ -547,8 +561,8 @@ export class SubDashboardComponent implements OnInit, AfterViewInit {
     if (this.gridApi) {
       const selectedRows = this.gridApi.getSelectedRows();
       this.isAnyRowSelected = selectedRows.length > 0;
-      this.selectedIds = selectedRows.map((e: any) => e.id);
-      this.selectedtypes = selectedRows.map((e: any) => e.isactive);
+      this.rows = selectedRows;
+
     }
   }
   onGridReady() {
@@ -622,7 +636,7 @@ export class SubDashboardComponent implements OnInit, AfterViewInit {
   }
 
   openDialog(type: string): void {
-    let dialogData = { type: type, detailsList: this.subdetailsList, plantype: this.packagePlan };
+    let dialogData = { type: type, detailsList: this.subdetailsList, pairBoxlist: this.subPairedboxid, pairSmartcardlist: this.subPairedsmartcard, plantype: this.packagePlan };
     const dialogRef = this.dialog.open(SubscriberdialogueComponent, {
       width: '500px',
       data: dialogData
@@ -643,7 +657,6 @@ export class SubDashboardComponent implements OnInit, AfterViewInit {
   }
 
   onSelectionrechargetype(selectedValue: string) {
-    console.log(selectedValue);
     const rechargetype = Number(selectedValue);
     if (rechargetype == 1) {
       this.isplantype = true;
@@ -661,6 +674,10 @@ export class SubDashboardComponent implements OnInit, AfterViewInit {
   onSelectionplantype(selectedValue: string) {
     console.log(selectedValue);
   }
+  rechargetoggleConfirmation() {
+    this.ManagePackageCalculation();
+    this.toggleConfirmation();
+  }
   toggleConfirmation() {
     this.confirmation = !this.confirmation;
   }
@@ -668,15 +685,102 @@ export class SubDashboardComponent implements OnInit, AfterViewInit {
 
   }
   generateBillpdf() {
-    console.log('455555555');
-    console.log(this.role);
-    console.log(this.username);
-    console.log(this.subid);
-    console.log(this.smartcard);
-
-    this.userservice.getPdfBillReport(this.role, this.username, this.subdetailsList.subid, this.subdetailsList.smartcard).subscribe((data: any) => {
-      console.log(data);
+    this.userservice.getPdfBillReport(this.role, this.username, this.subdetailsList.subid, this.subdetailsList.smartcard).subscribe((x: any) => {
+      console.log(x);
+      let requestBodylogs: requestBodylogs = { access_ip: "", action: " Capture Image Download Button Clicked", data: "From Date", remarks: "Capture Image Report  ", };
+      console.log(requestBodylogs);
+      const blob = new Blob([x], { type: 'application/pdf' });
+      const data = window.URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.href = data;
+      link.download = "Home Channel Report.pdf";
+      link.dispatchEvent(new MouseEvent('click', { bubbles: true, cancelable: true, view: window }));
+      setTimeout(function () {
+        window.URL.revokeObjectURL(data);
+        link.remove();
+      }, 100);
     })
+  }
+  //   generateBillpdf() {
+  //     this.userservice.getPdfBillReport(this.role, this.username, this.subdetailsList.subid, this.subdetailsList.smartcard).subscribe(
+  //       (x: any) => {
+  //         console.log(x);
+
+  //         // Create a Blob from the PDF data
+  //         const blob = new Blob([x], { type: 'application/pdf' });
+  //         const data = window.URL.createObjectURL(blob);
+
+  //         // Create an anchor element and trigger the download
+  //         const link = document.createElement('a');
+  //         link.href = data;
+  //         link.download = "Home_Channel_Report.pdf"; // Adjust filename as needed
+  //         link.dispatchEvent(new MouseEvent('click', { bubbles: true, cancelable: true, view: window }));
+
+  //         // Clean up
+  //         setTimeout(() => {
+  //           window.URL.revokeObjectURL(data);
+  //           link.remove();
+  //         }, 100);
+  //       },
+  //       (error) => {
+  //         // Handle error response
+  //         console.error("Error downloading PDF: ", error);
+  //         Swal.fire('Error', 'Failed to generate PDF bill. Please try again.', 'error');
+  //       }
+  //     );
+  // }
+  // generateBillpdf() {
+  //   this.userservice.getPdfBillReport(this.role, this.username, this.subdetailsList.subid, this.subdetailsList.smartcard)
+  //     .subscribe((data: any) => {
+  //       // Check if data is in the expected format
+  //       if (!data) {
+  //         alert('No data received for the PDF.');
+  //         return;
+  //       }
+
+  //       const doc = new jsPDF();
+  //       doc.setFontSize(18);
+  //       doc.text('Home Channel Report', 10, 10);
+  //       doc.setFontSize(12);
+  //       let y = 20;
+
+  //       // Iterate over the keys of the data object
+  //       for (const key in data) {
+  //         if (data.hasOwnProperty(key)) {
+  //           doc.text(`${key}: ${data[key]}`, 10, y);
+  //           y += 10; // Move to the next line
+  //         }
+  //       }
+
+  //       // Add generated date
+  //       doc.text('Generated on: ' + new Date().toLocaleDateString(), 10, y + 10);
+  //       // Save the PDF with a specified filename
+  //       doc.save('Home_Channel_Report.pdf');
+  //     }, (error) => {
+  //       console.error('Error fetching data for PDF:', error);
+  //       alert('Failed to fetch data for the PDF. Please try again later.');
+  //     });
+  // }
+
+
+
+  ManagePackageCalculation() {
+    let requestBody = {
+      role: this.role,
+      username: this.username,
+      plantype: this.selectedRechargetype,
+      plan: this.plantype,
+      smartcard: this.subdetailsList.smartcard,
+      type: 10,
+      managepacklist: this.rows,
+    }
+    console.log(requestBody);
+    this.userservice.ManagePackageCalculation(requestBody).subscribe((res: any) => {
+      this.swal.success(res?.message);
+      console.log(res);
+    }, (err) => {
+      this.swal.Error(err?.error?.message);
+    });
   }
 }
 

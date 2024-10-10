@@ -112,9 +112,9 @@ export class AddonEditComponent {
       title: 'Updating...',
       text: 'Wait for the package to update...',
       allowOutsideClick: false,
-      didOpen: () => {
-        Swal.showLoading();
-      }
+      // didOpen: () => {
+      //   Swal.showLoading();
+      // }
     });
     this.userService.UPDATE_ADDON_PACKAGE(request).subscribe((res: any) => {
       console.log(res.message);

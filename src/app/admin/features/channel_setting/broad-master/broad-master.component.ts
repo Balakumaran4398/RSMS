@@ -189,9 +189,9 @@ export class BroadMasterComponent implements OnInit {
           title: 'Updating...',
           text: 'Please wait while the Broadcaster is being Updated',
           allowOutsideClick: false,
-          didOpen: () => {
-            Swal.showLoading();
-          }
+          // didOpen: () => {
+          //   Swal.showLoading();
+          // }
         });
         this.userService.Broadcaster_update(requestBody).subscribe(
           (res) => {
@@ -236,9 +236,9 @@ export class BroadMasterComponent implements OnInit {
           title: 'Deleting...',
           text: 'Please wait while the Broadcaster is being deleted',
           allowOutsideClick: false,
-          didOpen: () => {
-            Swal.showLoading();
-          }
+          // didOpen: () => {
+          //   Swal.showLoading();
+          // }
         });
 
         this.userService.deleteBroadcaster(this.role, this.username, this.selectedIds).subscribe((res: any) => {
@@ -274,9 +274,9 @@ export class BroadMasterComponent implements OnInit {
           title: 'Updateing...',
           text: 'Please wait while the Broadcaster is being updated',
           allowOutsideClick: false,
-          didOpen: () => {
-            Swal.showLoading();
-          }
+          // didOpen: () => {
+          //   Swal.showLoading();
+          // }
         });
         this.userService.ActiveBroadcaster(this.role, this.username, this.selectedIds).subscribe((res: any) => {
           Swal.fire({

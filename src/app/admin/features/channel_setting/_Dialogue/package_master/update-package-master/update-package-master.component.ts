@@ -54,9 +54,9 @@ export class UpdatePackageMasterComponent {
           title: 'Updateing...',
           text: 'Please wait while the Product ID is being updated',
           allowOutsideClick: false,
-          didOpen: () => {
-            Swal.showLoading();
-          }
+          // didOpen: () => {
+          //   Swal.showLoading();
+          // }
         });
         this.userService.UpdatePackagemasterList(this.username, this.role, this.product_id).subscribe(
           (res) => {

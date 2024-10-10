@@ -63,9 +63,9 @@ export class PackageCloneComponent {
       title: 'Loading...',
       text: 'Wait for the clone to be created.',
       allowOutsideClick: false,
-      didOpen: () => {
-        Swal.showLoading();
-      }
+      // didOpen: () => {
+      //   Swal.showLoading();
+      // }
     });
     this.userService.Clone_create(this.package_id, this.package_name, this.package_desc, this.package_rate, this.Reference_id, this.role, this.username).subscribe((res: any) => {
       console.log(res);

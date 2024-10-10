@@ -35,9 +35,9 @@ export class CreateLcoComponent {
       title: 'Processing...',
       text: 'Please wait while we create the LCO Membership.',
       allowOutsideClick: false,
-      didOpen: () => {
-        Swal.showLoading();
-      }
+      // didOpen: () => {
+      //   Swal.showLoading();
+      // }
     });
 
     this.userservice.createLcoGroup(this.role, this.username, this.lcogroupname).subscribe(

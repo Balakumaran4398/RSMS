@@ -6,7 +6,7 @@
         <span style="margin: auto;">RSMS</span></a> -->
 
 
-    <a class="brand" [ngClass]="{'sidebar-open': isSidebarOpen}">
+    <a (click)="navgetToUrl('/home')" class="brand" [ngClass]="{'sidebar-open': isSidebarOpen}">
         <img height="38px" style="margin: 0px -6px 0px 3px;" [ngStyle]="{'visibility': !isHide ? 'hidden' : 'visible'}"
             src="/assets/images/icons/Logo1.png" alt="" srcset="">
         <h2 class="brand-text" style="margin: 0px 50px;"
@@ -21,15 +21,15 @@
         <li>
             <a> <i class="bx bx-user bx-sm icon "></i> Operator <i class='bx bx-chevron-right icon-right'></i></a>
             <ul class="side-dropdown">
-                <li><a (click)="navgetToUrl('/operator_details')" > <i class='fa fa-fw fa-users  icon'></i> &nbsp;
+                <li><a (click)="navgetToUrl('/operator_details')"> <i class='fa fa-fw fa-users  icon'></i> &nbsp;
                         Operator Details</a></li>
-                <li><a (click)="navgetToUrl('/lco_recharge')" ><i class='fa fa-fw fa-inr icon'></i> &nbsp;LCO
+                <li><a (click)="navgetToUrl('/lco_recharge')"><i class='fa fa-fw fa-inr icon'></i> &nbsp;LCO
                         Recharge</a></li>
             </ul>
         </li>
 
         <li>
-            <a> <i class="bx bx-cool bx-sm icon "></i> Subscriber <i class='bx bx-chevron-right icon-right'></i></a>
+            <a> <i class="bx bx-user-circle bx-sm icon "></i> Subscriber <i class='bx bx-chevron-right icon-right'></i></a>
             <ul class="side-dropdown">
                 <!-- <li><a (click)="navgetToUrl('/sub_dashboard')"><i class="fa fa-fw fa-plus icon">&nbsp;</i>Subscriber
                     </a>
@@ -38,7 +38,8 @@
                     </a> </li>
                 <li><a (click)="navgetToUrl('/subscriber')"><i class="fa fa-fw fa-user on icon">&nbsp;</i>
                         SubscriberDetails</a></li>
-                <li><a (click)="navgetToUrl('/expiry')"><i class="fa fas fa-user-alt-slash icon">&nbsp;</i> Expiry Details </a>
+                <li><a (click)="navgetToUrl('/expiry')"><i class="fa fas fa-user-alt-slash icon">&nbsp;</i> Expiry
+                        Details </a>
                 </li>
             </ul>
         </li>
@@ -159,7 +160,7 @@
 
             </ul>
         </li>
-        <li>
+        <li class="mb-3">
             <a> <i class="fa fa-fw fa-history icon "></i> Reports <i class='bx bx-chevron-right icon-right'></i></a>
             <ul class="side-dropdown">
                 <li><a (click)="navgetToUrl('/')"><i class="fa fa-fw fa-paper-plane icon">&nbsp;</i>TRAI Reports </a>
@@ -170,6 +171,13 @@
 
             </ul>
         </li>
+        <!-- <li>
+            <a style="color: var(--primary-color);font-weight: 600;font-size: 17px;">V-7.0 </a>
+       
+        </li> -->
+        
+        <h6 style="color: var(--primary-color);font-weight: 600;font-size: 17px;text-align: center;">V-7.0</h6>
+
 
     </ul>
     <!-- <div class="ads">
@@ -197,7 +205,7 @@
         </nav> -->
         <!-- <div class="nav-sub">
         <div
-            style="z-index: 100;  font-size: large; text-transform: capitalize; color: aliceblue;width: 100vw;min-height: 50px; ;border-radius: 10px;max-height: 65px; background: var(--blue); display: flex; padding: 0 10px; align-items: center;">
+            style="z-index: 100;  font-size: large; text-transform: capitalize; color: aliceblue;width: 100vw;min-height: 50px; ;border-radius: 10px;max-height: 65px; background: #2d584e; display: flex; padding: 0 10px; align-items: center;">
             <div *ngIf="isSystem" class="row w-100 d-flex align-items-center">
 
                 <div class="col-4 justify-content-center">
@@ -241,7 +249,7 @@
     </div> -->
         <div class="nav-sub">
             <div class="nav-container"
-                style="z-index: 100; font-size: large; text-transform: capitalize; color: aliceblue; width: 100vw; min-height: 50px; max-height: 65px; background: var(--blue); display: flex; padding: 0 10px; align-items: center;">
+                style="z-index: 100; font-size: large; text-transform: capitalize; color: aliceblue; width: 100vw; min-height: 50px; max-height: 65px; background: #2d584e; display: flex; padding: 0 10px; align-items: center;">
                 <nav style="color: #f0f0f0">
                     <i class='bx bx-menu toggle-sidebar' style="font-size: 2rem;"></i>
                     <!-- <form action="#">
@@ -254,7 +262,9 @@
                 &nbsp;
                 <div class="nav-content w-100 d-flex justify-content-between align-items-center">
                     <div class="version col-4 col-md-4">
-                        <span class="ver">RSMS &nbsp;</span> <span class="ver_type">V-7.0 </span>
+                        <!-- <span class="ver">RSMS &nbsp;</span> <span class="ver_type">V-7.0 </span> -->
+                        <span class="ver" style="  font-size: 1.2em;font-weight: 600;"> {{role}} &nbsp;</span>
+
                     </div>
                     <div class="search-and-image col-7 col-md-7 d-flex justify-content-end align-items-center">
                         <div class="search">
@@ -271,7 +281,7 @@
                         </div>
                     </div>
 
-                    <div class=" d-flex justify-content-between align-items-center mx-2 " >
+                    <div class=" d-flex justify-content-between align-items-center mx-2 ">
                         <a href="#" class="logout ">
                             <!-- <img style="width: 30px;" src="../assets/images/icons/logout2.png" alt=""> -->
                             <i class="fa-solid fa-power-off"></i>
