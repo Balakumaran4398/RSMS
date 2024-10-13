@@ -21,6 +21,8 @@ export class UpdateLtbComponent implements OnInit {
   username: any;
   id: any;
   lcnno: any;
+  updateTax: any;
+  updateLcoPrice: any;
   constructor(
     public dialogRef: MatDialogRef<UpdateLtbComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any, private userService: BaseService, private storageService: StorageService, private swal: SwalService) {
@@ -28,14 +30,12 @@ export class UpdateLtbComponent implements OnInit {
     this.username = storageService.getUsername();
     this.role = storageService.getUserRole();
     this.localPaymentChannelList = data;
+    console.log(this.localPaymentChannelList);
+    
     this.id = data.id;
     this.lcnno = data.lcn;
     this.isactive = data.statusdisplay === '"Active"' ? true : false;
-    // if (data.statusdisplay === 'active') {
-    //   this.isactive = true;
-    // } else if (data.statusdisplay === 'deactive') {
-    //   this.isactive = false;
-    // }
+   
 
   }
   ngOnInit(): void {
@@ -62,10 +62,18 @@ export class UpdateLtbComponent implements OnInit {
     }
   }
 
+  onChange() {
+    this.userService.getLocalCreationAmountDetails(this.role, this.username, this.localPaymentChannelList?.channelrate, !this.istax).subscribe((data: any) => {
+      this.updateTax = data.tax;
+      this.updateLcoPrice = data.lcoprice;
+      // this.localPaymentChannelList = data;
+    })
+
+  }
   submit() {
     console.log(this.opName);
 
-    this.userService.updateLocalChannel(this.role, this.username, this.localPaymentChannelList?.channelid, this.opName, this.localPaymentChannelList?.tax, this.localPaymentChannelList?.lcoprice, this.lcnno, this.localPaymentChannelList?.channelrate, this.istax, this.id, this.isactive)
+    this.userService.updateLocalChannel(this.role, this.username, this.localPaymentChannelList?.channelid, this.opName, this.localPaymentChannelList?.tax, this.localPaymentChannelList?.lcoprice, this.lcnno, this.localPaymentChannelList?.channelrate, !this.istax, this.id, this.isactive)
       .subscribe((res: any) => {
         this.swal.success(res?.message);
       }, (err) => {

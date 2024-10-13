@@ -3,6 +3,7 @@ import { FormBuilder, FormGroup } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { ColDef } from 'ag-grid-community';
 import { BaseService } from 'src/app/_core/service/base.service';
+import { ExcelService } from 'src/app/_core/service/excel.service';
 import { StorageService } from 'src/app/_core/service/storage.service';
 
 @Component({
@@ -65,7 +66,7 @@ export class AddonActivationComponent {
     //   this.listUser = data;      
     // });
   }
-  constructor(public dialog: MatDialog, private fb: FormBuilder, private userservice: BaseService, private storageService: StorageService) {
+  constructor(public dialog: MatDialog, private fb: FormBuilder, private userservice: BaseService, private storageService: StorageService,private excelService: ExcelService) {
     this.form = this.fb.group({
       billingAddressCheckbox: [false]
 
@@ -105,5 +106,8 @@ export class AddonActivationComponent {
       this.file = false;
       this.filePath = '';
     }
+  }
+  generateExcel(type:string) {
+    this.excelService.generatealacarteactivationExcel(type);
   }
 }

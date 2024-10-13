@@ -11,7 +11,7 @@ span {
   color: darkslategrey;
 }
 
-.line {
+.line1 {
   padding: 0.4rem;
 }
 
@@ -195,15 +195,6 @@ input {
 }
 
 // ==================================================================================
-*:focus {
-  outline: none;
-}
-
-body {
-  font-family: Arial, Helvetica, sans-serif;
-  margin: 0;
-  background-color: #f1f9f9;
-}
 
 .toggle-button-cover {
   display: table-cell;

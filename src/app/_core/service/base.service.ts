@@ -2,6 +2,7 @@ import { HttpClient, HttpHeaders, HttpResponse } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import URLs from "src/app/URL";
 import { Observable, Subscriber } from 'rxjs';
+import dashboard from "node_modules1/@angular/material/schematics/ng-generate/dashboard";
 const AUTH_URL = URLs.AUTH_URL();
 const BASE_URL = URLs.BASE_URL();
 const httpOptions = {
@@ -25,6 +26,24 @@ export class BaseService {
   constructor(private http: HttpClient) {
     // this.get()
   }
+  // ========================================================Dashboard======================================================
+  //  ------------------------------STB------------------------------
+  getDashboardStbBarChart(role: any, username: string): Observable<any[]> {
+    return this.http.get<any[]>(BASE_URL + "/subscriber/getDashboardStbBarChart?role=" + role + "&username=" + username);
+  }
+  //  ------------------------------Inventory------------------------------
+  getDashboardBoxPieChart(role: any, username: string): Observable<any[]> {
+    return this.http.get<any[]>(BASE_URL + "/subscriber/getDashboardBoxPieChart?role=" + role + "&username=" + username);
+  }
+  //  ------------------------------PackageDetails------------------------------
+  getDashboardProductDetails(role: any, username: string): Observable<any[]> {
+    return this.http.get<any[]>(BASE_URL + "/subscriber/getDashboardProductDetails?role=" + role + "&username=" + username);
+  }
+  //  ------------------------------SubscribtionBarChart------------------------------
+  getDashboardSubscribtionBarChartDetails(role: any, username: string, date: any): Observable<any[]> {
+    return this.http.get<any[]>(BASE_URL + "/subscriber/getDashboardSubscribtionBarChartDetails?role=" + role + "&username=" + username + "&date=" + date);
+  }
+  // ============================================================================================================================================
   getDefaultLogoFile(): Promise<File | null> {
     return this.http.get(this.defaultLogoUrl, { responseType: 'blob' }).toPromise().then(blob => {
       if (blob) {
@@ -187,7 +206,7 @@ export class BaseService {
     return this.http.post<any[]>(BASE_URL + "/package/createChannel", requestBody, {});
   }
   UPDATE_CHANNEL(requestBody: any): Observable<any[]> {
-    return this.http.post<any[]>(BASE_URL + "/package/updateChannel", requestBody, {});
+    return this.http.put<any[]>(BASE_URL + "/package/updateChannel", requestBody, {});
   }
   ChannelList(role: any, username: string, type: string): Observable<any[]> {
     console.log(role);
@@ -911,8 +930,16 @@ export class BaseService {
     return this.http.get<any[]>(
       BASE_URL + "/localchannel/getLocalChannelPayConfirmation?role=" + role + "&username=" + username + "&serviceid=" + serviceid + "&paidamount=" + paidamount + "&iscredit=" + iscredit, {});
   }
+  getAllLocalChannelBroadcasterList(role: any, username: any): Observable<any[]> {
+    return this.http.get<any[]>(
+      BASE_URL + "/localchannel/getAllLocalChannelBroadcasterList?role=" + role + "&username=" + username, {});
+  }
   payLocalChannel(role: any, username: any, serviceid: any, paidamount: any, iscredit: any, days: any, expirydate: any): Observable<any[]> {
     return this.http.post<any[]>(
       BASE_URL + "/localchannel/payLocalChannel?role=" + role + "&username=" + username + "&serviceid=" + serviceid + "&paidamount=" + paidamount + "&iscredit=" + iscredit + "&days=" + days + "&expirydate=" + expirydate, {});
   }
+  createLocalChannelLTB(requestBody: any): Observable<any[]> {
+    return this.http.post<any[]>(BASE_URL + "/localchannel/createLocalChannelLTB", requestBody, {});
+  }
+ 
 }

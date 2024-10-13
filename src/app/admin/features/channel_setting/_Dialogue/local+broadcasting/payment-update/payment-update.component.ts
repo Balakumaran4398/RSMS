@@ -11,11 +11,12 @@ import { SwalService } from 'src/app/_core/service/swal.service';
 })
 export class PaymentUpdateComponent {
   localPaymentChannelList: any;
-  confirmationPaymentList: any;
+  confirmationPaymentList:  any = null
   role: any;
   username: any;
   pay: string = '0.0';
   iscredit: boolean = false;
+  confirmation: boolean = false;
   constructor(
     public dialogRef: MatDialogRef<PaymentUpdateComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any, private userService: BaseService, private storageService: StorageService, private swal: SwalService) {
@@ -40,20 +41,14 @@ export class PaymentUpdateComponent {
     this.userService.getLocalChannelPayConfirmation(this.role, this.username, this.localPaymentChannelList?.serviceid, this.pay, this.iscredit)
       .subscribe((res: any) => {
         this.confirmationPaymentList = res;
-        console.log(this.confirmationPaymentList);
-        console.log(this.confirmationPaymentList?.newexpiryDate);
-        console.log(res?.newexpiryDate);
-
         this.swal.success(res?.message);
       }, (err) => {
         this.swal.Error(err?.error?.message);
       });
   }
   submit() {
-
     this.userService.payLocalChannel(this.role, this.username, this.localPaymentChannelList?.serviceid, this.pay, this.iscredit, this.confirmationPaymentList?.days, this.confirmationPaymentList?.newexpirydate)
       .subscribe((res: any) => {
-
         this.swal.success(res?.message);
       }, (err) => {
         this.swal.Error(err?.error?.message);

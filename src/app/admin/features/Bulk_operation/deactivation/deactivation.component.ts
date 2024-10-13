@@ -193,7 +193,7 @@ export class DeactivationComponent {
       });
     }
   }
-  generateExcel() {
-    this.excelService.generateDeactivationExcel();
+  generateExcel(type:string) {
+    this.excelService.generatealacarteactivationExcel(type);
   }
 }

@@ -35,7 +35,9 @@ export class PaymentChannelComponent {
     this.username = storageservice.getUsername();
   }
   columnDefs: ColDef[] = [
-
+    {
+      headerName: "S.No", lockPosition: true, valueGetter: 'node.rowIndex+1', 
+    },
     {
       headerName: 'CHANNEL NAME',
       field: 'channelname',
@@ -54,7 +56,9 @@ export class PaymentChannelComponent {
     {
       headerName: 'LTB BALANCE',
       field: 'balance',
-
+      valueFormatter: (params) => {
+        return `₹ ${params.value}`;
+      }
     },
     {
       headerName: 'LCN',

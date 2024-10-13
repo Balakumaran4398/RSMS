@@ -120,7 +120,7 @@
             <div class="input_box col-12 col-md-6">
                 <div class=" mb-3">
                     <label for="package_desc" class="me-2">Mso Commission</label>
-                    <input type="text" class="" [disabled]="true" [value]="mso_amount" readonly
+                    <input type="text" class="" [disabled]="true"  [value]="mso_amount" readonly
                         placeholder="Mso Commission">
                     <!-- <div *ngIf="createpackageForm.get('package_desc')?.invalid && createpackageForm.get('package_desc')?.touched"
                         class="error-message">
@@ -133,7 +133,7 @@
                     <label for="ispercentage" class="me-2">Is percentage</label>
                     <div class="toggle-button-cover">
                         <div class="button b2" id="button-10">
-                            <input type="checkbox" class="checkbox" checked id="ispercentage" formControlName="ispercentage" />
+                            <input type="checkbox" class="checkbox" checked id="ispercentage"  (input)="calculateMsoCommission()" formControlName="ispercentage" />
                             <div class="knobs">
                                 <span>YES</span>
                             </div>

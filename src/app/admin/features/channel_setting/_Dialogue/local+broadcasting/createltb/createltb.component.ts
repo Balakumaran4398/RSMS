@@ -21,6 +21,8 @@ export class CreateltbComponent implements OnInit {
   istax: boolean = false;
   tax: any;
   lcoprice: any;
+  updateTax: string='0.0';
+  updateLcoPrice: string='0.0';
 
   constructor(
     public dialogRef: MatDialogRef<CreateltbComponent>,
@@ -56,5 +58,13 @@ export class CreateltbComponent implements OnInit {
       }, (err) => {
         this.swal.Error(err?.error?.message);
       });
+  }
+  onChange() {
+    this.userService.getLocalCreationAmountDetails(this.role, this.username, this.chRate, !this.istax).subscribe((data: any) => {
+      this.updateTax = data.tax;
+      this.updateLcoPrice = data.lcoprice;
+  
+    })
+
   }
 }

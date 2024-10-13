@@ -1,7 +1,10 @@
 <!-- <div class="package-chart">
     <ag-charts-angular [options]="options"></ag-charts-angular>
 </div> -->
-<div>
-    <canvasjs-chart [options]="chartOptions" (chartInstance)="getChartInstance($event)" [styles]="{width: '100%', height: '360px'}"></canvasjs-chart>
-    <button [ngClass]="'backButton'" *ngIf="this.isButtonVisible" (click)="handleClick($event)">Back</button>
-</div>                        
+
+
+<div id="packagechartContainer" style="height: 370px; width: 100%;"></div>
+
+
+
+  

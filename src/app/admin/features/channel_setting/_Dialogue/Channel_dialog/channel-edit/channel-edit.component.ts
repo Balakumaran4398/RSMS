@@ -18,23 +18,33 @@ export class ChannelEditComponent {
   isupload: boolean = false;
   isaddnew: boolean = false;
   broadcastername: any;
-  distributor_id: any;
-  product_id: any;
-  service_id: any;
-  status: any;
+  distributorid: any;
+  tsId: any;
+  productid: any;
+  serviceid: any;
+  customerAmount: any;
+  status: boolean;
   commission: any;
-  ispercentage: any = false;
+  ispercentage:boolean=false;
   categoryname: any;
+  inrAmt: any;
+  channelid: any
+  channellogo: any;
+  channelfreq: any;
+  channeldesc: any;
+  broadcasterRate: any;
   channel_typename: any;
-  channel_name: any;
+  channelname: any;
   channel_rate: any;
   broadcaster_id: any;
   category_id: any;
   channel_type_id: any;
   isPercentage: boolean;
+  // isactive: boolean;
+  ispaid: boolean;
   categoryid: any;
   type: number = 0;
-  isYesActive: boolean | null = null; 
+  isYesActive: boolean | null = null;
   category: any;
   channelType: any;
   nameFormControl: any; discriptionFormControl: any;
@@ -49,24 +59,31 @@ export class ChannelEditComponent {
   selectedbroadcasterFormControl: any;
   isactiveFormControl: any;
   commissionFormControl: any;
-  channel_id: any
-  channel_logo: File | null = null;
+
   constructor(public dialogRef: MatDialogRef<ChannelEditComponent>, @Inject(MAT_DIALOG_DATA) public data: any, private userservice: BaseService, private storageservice: StorageService) {
     this.role = storageservice.getUserRole();
     this.username = storageservice.getUsername();
     console.log(data);
-    this.channel_id = data.channel_id
-    console.log(this.channel_id);
-    this.channel_name = data.channel_name;
-    this.channel_rate = data.inr_amt;
-    this.broadcastername = data.broadcastername;
-    this.categoryname = data.categoryname;
-    this.channel_typename = data.channeltypename;
-    this.product_id = data.product_id;
-    this.service_id = data.service_id;
+    this.channelname = data.channel_name;
+    this.channellogo = data.channel_logo;
+    this.channelfreq = data.channel_freq;
+    this.channeldesc = data.channel_desc;
+    this.tsId = data.ts_id;
+    this.serviceid = data.service_id;
+    this.broadcasterRate = data.broadcaster_rate;
+    this.broadcastername = data.broadcaster_id;
+    this.distributorid = data.distributor_id;
+    this.categoryname = data.category_id;
+    this.inrAmt = data.inr_amt;
+    this.channel_typename = data.channel_type_id;
     this.status = data.statusdisplay;
+    this.ispaid = data.paidstatus;
+    this.productid = data.product_id;
+    this.customerAmount = data.customer_amount;
     this.isPercentage = data.isPercentage;
-    this.commission = this.commission
+    // this.channelid = data.channel_id
+    // this.channel_rate = data.inr_amt;
+    // this.status = data.statusdisplay;
   }
   onNoClick(): void {
     this.dialogRef.close();
@@ -88,21 +105,21 @@ export class ChannelEditComponent {
     this.Broadcaster_list();
     this.Category_list();
     this.Channel_type_list();
-    this.setDefaultLogo();
+    // this.setDefaultLogo();
   }
-  async setDefaultLogo() {
-    try {
-      const logoFile = await this.userservice.getDefaultLogoFile();
-      if (logoFile) {
-        this.channel_logo = logoFile;
-      } else {
-        console.warn('Using default logo failed, the file is null.');
-      }
-    } catch (error) {
-      console.error('Error setting default logo:', error);
-    }
-  }
-  
+  // async setDefaultLogo() {
+  //   try {
+  //     const logoFile = await this.userservice.getDefaultLogoFile();
+  //     if (logoFile) {
+  //       this.channellogo = logoFile;
+  //     } else {
+  //       console.warn('Using default logo failed, the file is null.');
+  //     }
+  //   } catch (error) {
+  //     console.error('Error setting default logo:', error);
+  //   }
+  // }
+
   Broadcaster_list() {
     this.userservice.BroadcasterList(this.role, this.username, this.type).subscribe((data) => {
       console.log(data);
@@ -144,23 +161,28 @@ export class ChannelEditComponent {
   }
   onSubmit() {
     const defaultFileContent = new Blob(['default content'], { type: 'image/png' });
-    const defaultFile = new File([defaultFileContent], 'default-logo.png', 
- 
+    const defaultFile = new File([defaultFileContent], 'default-logo.png',
+
     );
-    this.channel_logo = this.channel_logo || defaultFile;
+    // this.channellogo = this.channellogo || defaultFile;
     let requestbody = {
-      channel_logo: this.channel_logo,
-      channel_id: this.channel_id,
-      channel_name: this.channel_name,
-      inr_amt: this.channel_rate,
+      channel_name: this.channelname,
+      channel_logo: this.channellogo,
+      channel_freq: this.channelfreq,
+      channel_desc: this.channeldesc,
+      ts_id: this.tsId,
+      service_id: this.serviceid,
+      broadcaster_rate: this.broadcasterRate,
       broadcaster_id: this.broadcastername,
+      distributor_id: this.distributorid,
       category_id: this.categoryname,
+      inr_amt: this.inrAmt,
       channel_type_id: this.channel_typename,
-      product_id: this.product_id,
-      service_id: this.service_id,
-      statusdisplay: this.status,
-      commission: this.commission,
-      isactive: this.ispercentage,
+      isactive: this.status,
+      ispaid: this.ispaid,
+      product_id: this.productid,
+      customer_amount: this.customerAmount,
+      ispercentage:this.ispercentage,
       role: this.role,
       username: this.username
 

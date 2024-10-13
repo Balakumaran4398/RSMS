@@ -37,8 +37,8 @@ export class ChannelComponent {
   username: string;
   role: string;
   rowData: any;
-  type: string[] = ['All', 'ACTIVE', 'DEACTIVE'];
-  selectedType: string = 'ALL';
+  type: string[] = ['All', 'Active', 'Deactive'];
+  selectedType: string = 'All';
 
   constructor(public dialog: MatDialog, public userService: BaseService, storageService: StorageService) {
     this.username = storageService.getUsername();
@@ -77,6 +77,7 @@ export class ChannelComponent {
       headerName: "S.No", lockPosition: true, valueGetter: 'node.rowIndex+1', headerCheckboxSelection: true,
       checkboxSelection: true, width: 100
     },
+    { headerName: "CHANNEL NAME", field: 'channel_name', editable: true, },
     { headerName: "BROADCASTER", field: 'broadcastername', editable: true, },
     {
       headerName: 'Actions', minWidth: 140,
@@ -103,10 +104,12 @@ export class ChannelComponent {
     {
       headerName: "STATUS", field: 'statusdisplay', editable: true,
       cellRenderer: (params: { value: any; }) => {
-        const color = params.value ? 'red' : 'Green';
-        const text = params.value ? 'Deactive' : 'Active';
-        return `<span style="color: ${color}">${text}</span>`;
+        const isActive = params.value === 'Active'; // Check if the value is 'Active'
+        const color = isActive ? 'green' : 'red';  // 'Active' is green, 'Deactive' is red
+        return `<span style="color: ${color}">${params.value}</span>`;
       }
+      
+      
     },
     { headerName: "INR AMOUNT", field: 'inr_amt', editable: true },
     { headerName: "STATUS", field: 'paidstatus', editable: true },

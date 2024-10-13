@@ -57,6 +57,19 @@ li {
 	display: flex;
 }
 
+/* #sidebar ul>li>a.active,
+#sidebar ul>li>a.active:hover {
+	background-color: #6f7fa3 !important;
+	color: #1bca1b !important;
+
+}
+
+
+#sidebar .side-menu li .side-dropdown li a.active,
+#sidebar .side-menu li .side-dropdown li a:hover {
+	color: #1bca1b !important;
+} */
+
 #sidebar.hide {
 	max-width: 60px;
 }
@@ -639,6 +652,7 @@ main .chat-box .msg.me p {
 main form {
 	margin-top: 6px;
 }
+
 /* main .form-group {
 	width: 100%;
 	display: flex;
@@ -689,6 +703,7 @@ main .btn-send:hover {
 		display: none;
 	}
 }
+
 @media screen and (max-width: 560px) {
 	#content {
 		position: relative;

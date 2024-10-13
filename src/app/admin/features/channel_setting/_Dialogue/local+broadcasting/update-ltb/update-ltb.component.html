@@ -6,7 +6,7 @@
     <div class="container">
         <div class="card d-block justify-content-center align-items-center"
             style="border: 1px solid green;padding: 1rem;">
-            <div class="line">
+            <div class="line1">
                 <div class=" col-12 d-flex justify-content-center align-items-center">
                     <div class="col-6 d-flex justify-content-start align-items-center">
                         <span>Local Channel Name</span>
@@ -17,7 +17,7 @@
                 </div>
             </div>
 
-            <div class="line">
+            <div class="line1">
                 <div class="col-12 d-flex justify-content-center align-items-center">
                     <div class="col-6 d-flex justify-content-start align-items-center">
                         <span>LTB name</span>
@@ -38,17 +38,20 @@
                     </div>
                 </div>
             </div>
-            <div class="line">
+            <div class="line1">
                 <div class="col-12 d-flex justify-content-center align-items-center">
                     <div class="col-6 d-flex justify-content-start align-items-center">
                         <span>Channel Rate</span>
                     </div>
                     <div class="col-6 d-flex align-items-center">
-                        <input type="text" class="ms-2" value="{{localPaymentChannelList?.channelrate}}" readonly>
+                        <input type="text" class="ms-2" [(ngModel)]="localPaymentChannelList.channelrate" (change)="onChange()">
+<!-- 
+                        <input type="text" class="ms-2" value="{{localPaymentChannelList?.channelrate}}"
+                            (change)="onChange()"> -->
                     </div>
                 </div>
             </div>
-            <div class="line">
+            <div class="line1">
                 <div class="col-12 d-flex justify-content-center align-items-center">
                     <div class="col-6 d-flex justify-content-start align-items-center">
                         <span>With Tax</span> &nbsp;
@@ -57,7 +60,9 @@
                         <!-- <div id="app-cover"> -->
                         <div class="toggle-button-cover">
                             <div class="button b2" id="button-10">
-                                <input type="checkbox" class="checkbox" [(ngModel)]="istax" />
+                                <!-- <input type="text" class="ms-2" [(ngModel)]="istax" (change)="onChange()"> -->
+
+                                <input type="checkbox" class="checkbox" [(ngModel)]="istax" (change)="onChange()" />
                                 <div class="knobs">
                                     <span>YES</span>
                                 </div>
@@ -68,27 +73,29 @@
                     </div>
                 </div>
             </div>
-            <div class="line">
+            <div class="line1">
                 <div class="col-12 d-flex justify-content-center align-items-center">
                     <div class="col-6 d-flex justify-content-start align-items-center">
                         <span>Tax</span>
                     </div>
                     <div class="col-6">
-                        {{localPaymentChannelList?.tax}}
+                        {{ localPaymentChannelList?.tax || updateTax }}
+
                     </div>
                 </div>
             </div>
-            <div class="line">
+            <div class="line1">
                 <div class="col-12 d-flex justify-content-center align-items-center">
                     <div class="col-6 d-flex justify-content-start align-items-center">
                         <span>Lco price </span>
                     </div>
                     <div class="col-6">
-                        {{localPaymentChannelList?.lcoprice}}
+                        {{localPaymentChannelList?.lcoprice || updateLcoPrice}}
+                        <!-- {{updateLcoPrice}} -->
                     </div>
                 </div>
             </div>
-            <div class="line">
+            <div class="line1">
                 <div class="col-12 d-flex justify-content-center align-items-center">
                     <div class="col-6 d-flex justify-content-start align-items-center">
                         <span>Status</span> &nbsp;

@@ -88,7 +88,8 @@
         </div>
     </div>
 </div>
-<div *ngIf="isEditSubscriberDetails">
+<!-- <div *ngIf="isEditSubscriberDetails"> -->
+    <div *ngIf="sType=='editDetails'">
     <div class="card">
         <div class="Head d-flex justify-content-between align-items-center">
             <span class="span">Edit Subscriber Details</span>
@@ -2105,7 +2106,8 @@
     <div class=" d-flex justify-content-center align-item-center  mb-2">
         <!-- <button type="button" class="btn confirm me-2" (click)="onChangeBaseActivationButtonClick()" [disabled]="!newpackagename || newpackagename === '0' || 
                 !selectedRechargetype || selectedRechargetype === '0' || !plantype ">Confirmation</button> -->
-        <button type="button" class="btn confirm me-2" (click)="onChangeBaseActivationButtonClick()" [disabled]="!newpackagename || newpackagename === '0' ">Confirmation</button>
+        <button type="button" class="btn confirm me-2" (click)="onChangeBaseActivationButtonClick()"
+            [disabled]="!newpackagename || newpackagename === '0' ">Confirmation</button>
         <button type="button" class="btn  recharge me-2"
             (click)="baseChangeofSmartcardPackageActivate()">Activate</button>
         <button type="button" class="btn btn-danger me-2" (click)="onNoClick()">Cancel</button>
@@ -2561,29 +2563,61 @@
     </div>
     <div class="mobileview">
         <div class="  mb-3">
-            <div class="d-block align-items-center justify-content-center">
-                <div class="input_box  mb-1">
+            <!-- *ngIf="subSmartcard"  -->
+            <div *ngIf="subSmartcard" class="d-block align-items-center justify-content-center">
+                <div class="input_box  mb-2">
                     <div class="d-flex align-items-center justify-content-center">
                         <div class="col-5 col-md-6">
                             <span for="password" class="me-2">Smartcard </span>
                         </div>
                         <div class="col-7 col-md-6 value">
-                            <select [(ngModel)]="newpackagename">
-                                <option value="0" selected>Selected Package Name</option>
-                                <option *ngFor="let package of packagenameList" [value]="package.packageid">
-                                    {{ package.packagename }}
+                            <select [(ngModel)]="pairedSmartcard">
+                                <option value="0" selected>Selected Smartcard</option>
+
+                                <option *ngFor="let smartcard of pairSmartcardList" [value]="smartcard">
+                                    {{ smartcard }}
                                 </option>
                             </select>
                         </div>
                     </div>
                 </div>
-                <div class="input_box Isactive mb-1">
+                <div class="input_box Isactive mb-2">
                     <div class="d-flex align-items-center justify-content-center">
                         <div class="col-5 col-md-6">
                             <span class="me-2"> Box ID </span>
                         </div>
                         <div class="col-7 col-md-6 value">
-                            {{removeProductList_refund}}
+                            {{subBoxid}}
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div *ngIf="!ischeck" class="d-block align-items-center justify-content-center">
+                <div class="input_box  mb-2">
+                    <div class="d-flex align-items-center justify-content-center">
+                        <div class="col-5 col-md-6">
+                            <span for="password" class="me-2">Smartcard </span>
+                        </div>
+                        <div class="col-7 col-md-6 value">
+                            {{subSmartcard}}
+                        </div>
+
+                    </div>
+                </div>
+                <div class="input_box Isactive mb-2">
+                    <div class="d-flex align-items-center justify-content-center">
+                        <div class="col-5 col-md-6">
+                            <span class="me-2"> Box ID </span>
+                        </div>
+                        <div class="col-7 col-md-6 value">
+                            <select [(ngModel)]="pairedBoxid">
+                                <option value="0" selected>Selected Box ID</option>
+
+                                <option *ngFor="let boxid of pairBoxList" [value]="boxid">
+                                    {{ boxid }}
+                                </option>
+                            </select>
                         </div>
                     </div>
                 </div>
@@ -2591,7 +2625,7 @@
         </div>
         <div class="col-12 col-md-12 d-flex justify-content-center align-item-center  mb-3">
             <div class=" d-flex  align-item-center mx-3 ">
-                <button type="button" class="btn btn-success me-2" (click)="loginDetails()">Submit</button>
+                <button type="button" class="btn btn-success me-2" (click)="pairSmartcard()">Submit</button>
                 <button type="button" class="btn btn-danger" (click)="onNoClick()">Cancel</button>
             </div>
         </div>
@@ -2610,7 +2644,7 @@
                 </div>
                 <div class="col-6 col-md-6 value">
                     <mat-radio-group class="radio-group d-flex justify-content-center align-items-center"
-                        [formControl]="BTNFormControl" aria-labelledby="status">
+                        [(ngModel)]="ischeck" aria-labelledby="status">
                         <mat-radio-button class="radio-button" [value]="false"><span
                                 style="font-size: 14px;">Smartcard</span>
                         </mat-radio-button>&nbsp;
@@ -2623,8 +2657,46 @@
         </div>
         <div class="col-12 col-md-12 d-flex justify-content-center align-item-center  mb-3">
             <div class=" d-flex  align-item-center mx-3 ">
-                <button type="button" class="btn btn-success me-2" (click)="loginDetails()">Submit</button>
+                <button type="button" class="btn btn-success me-2" (click)="unPairSmartcard()">Submit</button>
                 <button type="button" class="btn btn-danger" (click)="onNoClick()">Cancel</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div *ngIf="isUnpairDialogue">
+    <div class="Head d-flex justify-content-between align-items-center mb-3">
+        <span class="span">Unpair Smartcard & Boxid</span>
+        <i class="fa fa-close close-icon" (click)="onNoClick()"></i>
+    </div>
+    <div class="mobileview">
+        <div class="  mb-3">
+            <div class="d-block align-items-center justify-content-center">
+                <div class="input_box  mb-2">
+                    <div class="d-flex align-items-center justify-content-center">
+                        <div class="col-5 col-md-6">
+                            <span for="password" class="me-2">Smartcard </span>
+                        </div>
+                        <div class="col-7 col-md-6 value">
+                            {{subSmartcard}}
+                        </div>
+                    </div>
+                </div>
+                <div class="input_box Isactive mb-2">
+                    <div class="d-flex align-items-center justify-content-center">
+                        <div class="col-5 col-md-6">
+                            <span class="me-2"> Box ID </span>
+                        </div>
+                        <div class="col-7 col-md-6 value">
+                            {{subBoxid}}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-12 col-md-12 d-flex justify-content-center align-item-center  mb-3">
+                <div class=" d-flex  align-item-center mx-3 ">
+                    <button type="button" class="btn btn-success me-2" (click)="unPairSmartcard()">Yes</button>
+                    <button type="button" class="btn btn-danger" (click)="onNoClick()">No</button>
+                </div>
             </div>
         </div>
     </div>

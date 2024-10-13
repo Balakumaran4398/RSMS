@@ -1,4 +1,17 @@
+<!-- <div>
+  <canvasjs-chart [options]="chartOptions" [styles]="{width: '100%', height:'360px',}"></canvasjs-chart>
+</div> -->
 <div>
-  <canvasjs-chart [options]="chartOptions" [styles]="{width: '100%', height:'360px',}"></canvasjs-chart>  
-    
+  <div class="input_box col-6 col-md-4 d-flex justify-content-between align-items-center mt-1 mb-2">
+    <div class="col-12 col-md-6">
+      <span>Choose Date</span>
+    </div>
+    <div class="col-12 col-md-6">
+      <input type="date" [(ngModel)]="date" (change)="onDateChange($event)" />
+    </div>
+  </div>
+  <div class="line"></div>
+  <div id="barchartContainer" style="height: 370px; width: 100%;"></div>
+
+  <!-- <canvasjs-chart [options]="chartOptions" [styles]="{width: '100%', height:'360px'}"></canvasjs-chart> -->
 </div>

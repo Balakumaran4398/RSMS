@@ -2,7 +2,9 @@ import { Component } from '@angular/core';
 import { FormBuilder } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { ColDef } from 'ag-grid-community';
+import type from 'node_modules1/ajv/dist/vocabularies/jtd/type';
 import { BaseService } from 'src/app/_core/service/base.service';
+import { ExcelService } from 'src/app/_core/service/excel.service';
 import { StorageService } from 'src/app/_core/service/storage.service';
 
 @Component({
@@ -45,7 +47,7 @@ export class BulkBaseChangeComponent {
   }
   username:any;
   role:any;
-  constructor(public dialog: MatDialog, private fb: FormBuilder, private userservice: BaseService, private storageService: StorageService) {
+  constructor(public dialog: MatDialog, private fb: FormBuilder, private userservice: BaseService, private storageService: StorageService,private excelService: ExcelService) {
 
     this.username = storageService.getUsername();
     this.role = storageService.getUserRole();
@@ -81,5 +83,9 @@ export class BulkBaseChangeComponent {
       this.file = false;
       this.filePath = '';
     }
+  }
+  generateExcel(type:string){
+    this.excelService.generateBaseChangeExcel(type);
+
   }
 }

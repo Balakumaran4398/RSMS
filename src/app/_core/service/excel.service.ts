@@ -223,7 +223,52 @@ export class ExcelService {
       fs.saveAs(blob, 'Bulk Box Deactivation.xlsx');
     });
   }
-  async generatealacarteactivationExcel() {
+  async generateBaseChangeExcel(type:any) {
+    const header = ['Smartcard (Mandatory) '];
+    const workbook = new Excel.Workbook();
+    const worksheet = workbook.addWorksheet('Sharing Data');
+    const headerRow = worksheet.addRow(header);
+    headerRow.eachCell((cell) => {
+      cell.fill = {
+        type: 'pattern',
+        pattern: 'solid',
+        fgColor: { argb: '326D41' },
+      };
+      cell.font = {
+        color: { argb: 'FFFFFF' },
+        bold: true,
+      };
+      cell.alignment = {
+        horizontal: 'center',
+        vertical: 'middle',
+      };
+      cell.border = {
+        top: { style: 'thin' },
+        left: { style: 'thin' },
+        bottom: { style: 'thin' },
+        right: { style: 'thin' },
+      };
+    });
+
+    worksheet.getColumn(1).width = 30;
+    // worksheet.getColumn(2).width = 30;
+
+    headerRow.height = 30;
+
+    worksheet.addRow([]);
+
+    workbook.xlsx.writeBuffer().then((data: any) => {
+      const blob = new Blob([data], {
+        type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+      });
+      // fs.saveAs(blob, 'Bulk Active Base Change.xlsx');
+      fs.saveAs(blob, `Bulk ${type}.xlsx`);
+
+    });
+  }
+  async generatealacarteactivationExcel(type:any) {
+    console.log(type);
+    
     const header = ['Smartcard (Mandatory)', 'Box ID (Non-Mandatory)'];
     const workbook = new Excel.Workbook();
     const worksheet = workbook.addWorksheet('Sharing Data');
@@ -261,7 +306,7 @@ export class ExcelService {
       const blob = new Blob([data], {
         type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
       });
-      fs.saveAs(blob, 'Bulk Alacarte Activation.xlsx');
+      fs.saveAs(blob, `Bulk ${type}.xlsx`);
     });
   }
 

@@ -128,7 +128,7 @@ export class AlacarteActivationComponent {
       
     })
   }
-  generateExcel() {
-    this.excelService.generatealacarteactivationExcel();
+  generateExcel(type:string) {
+    this.excelService.generatealacarteactivationExcel(type);
   }
 }

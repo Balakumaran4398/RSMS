@@ -1,43 +1,60 @@
-import { Component } from '@angular/core';
-import { FONT_SIZE } from 'ag-charts-community/dist/types/src/integrated-charts-theme';
+import { Component, OnInit } from '@angular/core';
+import { BaseService } from '../../service/base.service';
+import { StorageService } from '../../service/storage.service';
+import { CanvasJS } from '@canvasjs/angular-charts';
 
 @Component({
 	selector: 'app-stb-chart',
 	templateUrl: './stb-chart.component.html',
 	styleUrls: ['./stb-chart.component.scss']
 })
-export class StbChartComponent {
-	chartOptions = {
-		title: {
-			text: "STB DETAILS",
-			fontSize: 20,
-			fontWeight: 600
-		},
-		animationEnabled: true,
-		axisY: {
-			title: "Count",
-			titleFontSize: 16,
-			titleFontColor: "#5A5757",
-			labelFontColor: "#5A5757",
-			gridThickness: 0,
-		},
+export class StbChartComponent implements OnInit {
+	role: string;
+	username: string;
 
-		data: [{
-			type: "column",
-
-			indexLabelFontColor: "#5A5757",
-			dataPoints: [
-				{ label: "Active", y: 50, color: "#1a8a38" },  // Green
-				{ label: "Deactive", y: 30, color: "#db635a" },  // Pink
-				{ label: "Fresh", y: 20, color: "#622a82" },  // Purple
-				{ label: "Not Expiry", y: 40, color: "#2d72ad" },  // Blue
-				{ label: "Expiry", y: 10, color: "#deac2c" },  // Yellow
-				{ label: "Block", y: 15, color: "#52504e" }  // Light Green
-			],
-
-
-		}]
-
+	constructor(private userservice: BaseService, private storageservice: StorageService) {
+		this.role = storageservice.getUserRole();
+		this.username = storageservice.getUsername();
 	}
 
+	ngOnInit(): void {
+		this.userservice.getDashboardStbBarChart(this.role, this.username).subscribe((data: any) => {
+			this.renderChart(data);
+			console.log(data);
+
+		});
+	}
+
+	renderChart(data: any): void {
+		const chart = new CanvasJS.Chart("stbchartContainer", {
+			title: {
+				text: "STB DETAILS",
+				fontSize: 20,
+				fontWeight: 600
+			},
+			animationEnabled: true,
+			axisY: {
+				title: "Count",
+				titleFontSize: 16,
+				titleFontColor: "#5A5757",
+				labelFontColor: "#5A5757",
+				gridThickness: 0
+			},
+			data: [{
+				type: "column",
+				indexLabelFontColor: "#5A5757",
+				dataPoints: [
+					{ label: "Active", y: data["ACTIVE STB's"], color: "#1a8a38" },
+					{ label: "Deactive", y: data["ACTIVE SUBSCRIPTION"], color: "#db635a" },
+					{ label: "Fresh", y: data["BLOCKED STB's"], color: "#622a82" },
+					{ label: "Not Expiry", y: data["DEACTIVE STB's"], color: "#2d72ad" },
+					{ label: "Expiry", y: data["EXPIRED SUBSCRIPTION"], color: "#deac2c" },
+					{ label: "Block", y: data["NOT ACTIVE STB's"], color: "#52504e" }
+				]
+			}]
+
+		});
+
+		chart.render();  // Render the chart
+	}
 }

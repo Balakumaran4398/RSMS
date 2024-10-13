@@ -52,8 +52,6 @@ export class SubscriberDetailsComponent implements OnInit {
       checkboxSelection: true,
     },
     { headerName: 'SUBSCRIBER NAME', field: 'customername', },
-
-
     { headerName: 'LCO NAME', field: 'operatorname', },
     { headerName: 'AREA NAME', field: 'areaname', },
     { headerName: 'ADDRESS', field: 'address', },

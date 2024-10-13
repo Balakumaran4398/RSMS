@@ -15,14 +15,14 @@
                         </div>
                         <div class="col-12 col-md-6">
                             <div class="gender-category">
-                                <select id="option" formControlName="name_head" class=""
-                                    [ngClass]="{ 'is-invalid': submitted && f['name_head'].errors }" required>
-                                    <option value="Mr">Mr</option>
-                                    <option value="Mrs">Mrs</option>
-                                    <option value="Misss">Miss</option>
+                                <select id="option" formControlName="nameheader" class=""
+                                    [ngClass]="{ 'is-invalid': submitted && f['nameheader'].errors }" required>
+                                    <option value="Mr.">Mr</option>
+                                    <option value="Mrs.">Mrs</option>
+                                    <option value="Misss.">Miss</option>
                                 </select>
                                 <div style="position: absolute;font-size: 11px;">
-                                    <div *ngIf="submitted && f['name_head'].errors?.['required']" class="text-danger">
+                                    <div *ngIf="submitted && f['nameheader'].errors?.['required']" class="text-danger">
                                         Name head is required</div>
                                 </div>
                             </div>
@@ -36,10 +36,10 @@
                             <span>LTB Name</span> &nbsp; <span style="color: red;">*</span>
                         </div>
                         <div class="col-12 col-md-6">
-                            <input type="text" formcontrolname="ltb_name"
-                                [ngClass]="{ 'is-invalid': submitted && f['ltb_name'].errors }" required>
+                            <input type="text" formControlName="operatorname"
+                                [ngClass]="{ 'is-invalid': submitted && f['operatorname'].errors }" required>
                             <div style="position: absolute;font-size: 11px;">
-                                <div *ngIf="submitted && f['ltb_name'].errors?.['required']" class="text-danger">
+                                <div *ngIf="submitted && f['operatorname'].errors?.['required']" class="text-danger">
                                     LTB Name is required</div>
                             </div>
                         </div>
@@ -52,7 +52,7 @@
                         </div>
                         <div class="col-12 col-md-6">
                             <div class="gender-category">
-                                <input type="text" class="" placeholder="Enter Mobile Number" formcontrolname="mobileno"
+                                <input type="text" class="" placeholder="Enter Mobile Number" formControlName="mobileno"
                                     pattern="[0-9]" maxlength="10" (keypress)="onKeydown($event)"
                                     [ngClass]="{ 'is-invalid': submitted && f['mobileno'].errors }" required>
                                 <div style="position: absolute;font-size: 11px;">
@@ -69,14 +69,27 @@
                             <span>Email</span> &nbsp;<span style="color: red;">*</span>
                         </div>
                         <div class="col-12 col-md-6">
-                            <div class="gender-category">
-                                <input type="text" class="" formcontrolname="email" placeholder="Ex:- 123@gmail.com"
+                            <!-- <div class="gender-category">
+                                <input type="text" class="" formControlName="email" placeholder="Ex:- 123@gmail.com"
                                     [ngClass]="{ 'is-invalid': submitted && f['email'].errors }" required>
                                 <div style="position: absolute;font-size: 11px;">
                                     <div *ngIf="submitted && f['email'].errors?.['required']" class="text-danger">
                                         Email is required</div>
                                 </div>
+                            </div> -->
+                            <div class="gender-category">
+                                <input type="email" class="" formControlName="email" placeholder="Ex: 123@gmail.com"
+                                    [ngClass]="{ 'is-invalid': submitted && f['email'].errors }" required />
+                                <div style="position: absolute; font-size: 11px;">
+                                    <div *ngIf="submitted && f['email'].errors?.['required']" class="text-danger">
+                                        Email is required
+                                    </div>
+                                    <div *ngIf="submitted && f['email'].errors?.['email']" class="text-danger">
+                                        Mail Format:- 123@gmail.com
+                                    </div>
+                                </div>
                             </div>
+
                         </div>
                     </div>
                 </div>
@@ -87,7 +100,7 @@
                         </div>
                         <div class="col-12 col-md-6">
                             <div class="gender-category">
-                                <input type="text" class="" formcontrolname="address" placeholder="Enter Address"
+                                <input type="text" class="" formControlName="address" placeholder="Enter Address"
                                     [ngClass]="{ 'is-invalid': submitted && f['address'].errors }" required>
                                 <div style="position: absolute;font-size: 11px;">
                                     <div *ngIf="submitted && f['address'].errors?.['required']" class="text-danger">
@@ -104,7 +117,7 @@
                         </div>
                         <div class="col-12 col-md-6">
                             <div class="gender-category">
-                                <input type="text" class="" formcontrolname="area" placeholder="Enter Area"
+                                <input type="text" class="" formControlName="area" placeholder="Enter Area"
                                     [ngClass]="{ 'is-invalid': submitted && f['area'].errors }" required>
                                 <div style="position: absolute;font-size: 11px;">
                                     <div *ngIf="submitted && f['area'].errors?.['required']" class="text-danger">
@@ -121,7 +134,7 @@
                         </div>
                         <div class="col-12 col-md-6">
                             <div class="gender-category">
-                                <input type="text" class="" formcontrolname="state" placeholder="Enter state"
+                                <input type="text" class="" formControlName="state" placeholder="Enter state"
                                     [ngClass]="{ 'is-invalid': submitted && f['state'].errors }" required>
                                 <div style="position: absolute;font-size: 11px;">
                                     <div *ngIf="submitted && f['state'].errors?.['required']" class="text-danger">
@@ -138,7 +151,8 @@
                         </div>
                         <div class="col-6">
                             <div class="gender-category">
-                                <input type="text" class="" formcontrolname="pincode" placeholder="Enter pincode"
+                                <input type="text" class="" formControlName="pincode" placeholder="Enter pincode"
+                                    pattern="[0-9]" maxlength="6" (keypress)="onKeydown($event)"
                                     [ngClass]="{ 'is-invalid': submitted && f['pincode'].errors }" required>
                                 <div style="position: absolute;font-size: 11px;">
                                     <div *ngIf="submitted && f['pincode'].errors?.['required']" class="text-danger">
@@ -155,7 +169,7 @@
                         </div>
                         <div class="col-12 col-md-6">
                             <div class="gender-category">
-                                <input type="text" class="" formcontrolname="userid"
+                                <input type="text" class="" formControlName="userid"
                                     [ngClass]="{ 'is-invalid': submitted && f['userid'].errors }" required>
                                 <div style="position: absolute;font-size: 11px;">
                                     <div *ngIf="submitted && f['userid'].errors?.['required']" class="text-danger">
@@ -172,11 +186,19 @@
                         </div>
                         <div class="col-6">
                             <div class="gender-category">
-                                <input type="password" class="" formcontrolname="password"
+                                <input type="password" class="" formControlName="password"
                                     [ngClass]="{ 'is-invalid': submitted && f['password'].errors }" required>
                                 <div style="position: absolute;font-size: 11px;">
                                     <div *ngIf="submitted && f['password'].errors?.['required']" class="text-danger">
                                         Password is required</div>
+
+                                    <!-- <div *ngIf="form.get('password')?.invalid && (form.get('password')?.touched || submitted)">
+                                        <div *ngIf="submitted && f['password'].errors?.['required']">Password is
+                                            required.
+                                        </div>
+                                        <div *ngIf="submitted && f['password'].errors?.['minlength']">Password must be
+                                            at least 6 characters long.</div>
+                                    </div> -->
                                 </div>
                             </div>
                         </div>

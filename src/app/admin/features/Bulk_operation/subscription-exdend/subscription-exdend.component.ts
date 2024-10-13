@@ -1,5 +1,8 @@
 import { Component } from '@angular/core';
 import { ColDef } from 'ag-grid-community';
+import { BaseService } from 'src/app/_core/service/base.service';
+import { ExcelService } from 'src/app/_core/service/excel.service';
+import { StorageService } from 'src/app/_core/service/storage.service';
 
 @Component({
   selector: 'app-subscription-exdend',
@@ -35,6 +38,13 @@ export class SubscriptionExdendComponent {
     paginationPageSize: 15,
     pagination: true,
   }
+  role: any;
+  username: any;
+  constructor(private storageservice: StorageService, private excelService: ExcelService, ) {
+    this.role = storageservice.getUserRole();
+    this.username = storageservice.getUsername();
+
+  }
   onGridReady = () => {
     // this.userservice.GetAllUser('all',this.token.getUsername(),'0000-00-00','0000-00-00').subscribe((data) => {
     //   this.gridApi.setRowData(data);
@@ -53,5 +63,8 @@ export class SubscriptionExdendComponent {
       this.file = false;
       this.filePath = '';
     }
+  }
+  generateExcel(type:string) {
+    this.excelService.generateBaseChangeExcel(type);
   }
 }

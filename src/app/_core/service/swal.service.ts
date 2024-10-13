@@ -18,6 +18,7 @@ export class SwalService {
       // location.reload();
     });
   }
+
   warning(message: any) {
     Swal.fire({
       title: 'Warning!',
@@ -51,4 +52,23 @@ export class SwalService {
       // location.reload();
     });
   }
+  warning_1() {
+    Swal.fire({
+      title: 'Warning!',
+      icon: 'warning',
+      timer: 1000,
+      showConfirmButton: false
+    })
+  }
+  Loading() {
+    Swal.fire({
+     title: 'Processing...',
+     text: 'Please wait while we cancel your smartcard.',
+     showConfirmButton: false,
+     allowOutsideClick: false,
+    //  onBeforeOpen: () => {
+    //    Swal.showLoading(); // Show loading animation
+    //  }
+   });
+ }
 }

@@ -129,4 +129,7 @@ export class EditLcoComponent {
       event.preventDefault();
     }
   }
+  onNoClick(): void {
+    this.dialogRef.close();
+  }
 }

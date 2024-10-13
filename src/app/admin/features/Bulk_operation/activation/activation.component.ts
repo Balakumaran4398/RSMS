@@ -225,7 +225,7 @@ export class ActivationComponent implements OnInit {
         }
       );
   }
-  generateExcel() {
-    this.excelService.generateActivationExcel();
+  generateExcel(type:string) {
+    this.excelService.generatealacarteactivationExcel(type);
   }
 }

@@ -33,7 +33,7 @@ export class SubDashboardComponent implements OnInit, AfterViewInit {
   subid: any;
   smartdetailList: any;
   subdetailsList: any;
-  subPairedboxid: any;
+  subPairedboxid: any[] = [];
   subPairedsmartcard: any[] = [];
   subscriberaccounts: any[] = [];
   message: any;
@@ -166,23 +166,24 @@ export class SubDashboardComponent implements OnInit, AfterViewInit {
 
   }
   loadNewDashboard() {
-    this.userservice.getNewsubscriberDetails(this.role, this.username, (this.smartcard || this.subscriberid || this.boxid)).subscribe((data: any) => {
-      console.log(data);
-      this.newsubscrierdashoard = !this.newsubscrierdashoard;
-      this.rowData = data['smartcardlist'];
-      this.rowData1 = data['managepacklist_notexp'];
-      this.subdetailsList = data['subscriberdetails'];
-      this.subPairedboxid = data['pairedboxid'];
-      this.subPairedsmartcard = data['pairedsmartcard'];
-      console.log(this.subdetailsList);
-      this.subid = this.subdetailsList.subid;
-      this.smartcard = this.subdetailsList.smartcard;
-      console.log(this.subid);
-      console.log(this.smartcard);
+    this.userservice.getNewsubscriberDetails(this.role, this.username, this.subscriberid || this.smartcard || this.boxid)
+      .subscribe((data: any) => {
+        console.log(data);
+        this.newsubscrierdashoard = !this.newsubscrierdashoard;
+        this.rowData = data['smartcardlist'];
+        this.rowData1 = data['managepacklist_notexp'];
+        this.subdetailsList = data['subscriberdetails'];
 
-    }, (error) => {
-      console.error('Error fetching new dashboard data:', error);
-    });
+
+        console.log(this.subdetailsList);
+        this.subid = this.subdetailsList.subid;
+        this.smartcard = this.subdetailsList.smartcard;
+        console.log(this.subid);
+        console.log(this.smartcard);
+
+      }, (error) => {
+        console.error('Error fetching new dashboard data:', error);
+      });
   }
 
   loadSubscriberDashboard() {
@@ -200,6 +201,11 @@ export class SubDashboardComponent implements OnInit, AfterViewInit {
         this.smartdetailList = data['smartcardlist']
         this.subscriberaccounts = data['subscriberaccounts'];
         this.smartcardinfo = data['smartcardinfo'];
+        this.subPairedboxid = data['pairedboxid'];
+        console.log(this.subPairedboxid);
+
+        this.subPairedsmartcard = data['pairedsmartcard'];
+        console.log(this.subPairedsmartcard);
         this.message = data['message'];
         if (this.rowData && Array.isArray(this.rowData)) {
           this.rowData.forEach(item => {
@@ -299,6 +305,11 @@ export class SubDashboardComponent implements OnInit, AfterViewInit {
         this.smartdetailList = data['smartcardlist']
         this.subscriberaccounts = data['subscriberaccounts'];
         this.smartcardinfo = data['smartcardinfo'];
+        this.subPairedboxid = data['pairedboxid'];
+        console.log(this.subPairedboxid);
+
+        this.subPairedsmartcard = data['pairedsmartcard'];
+        console.log(this.subPairedsmartcard);
         this.message = data['message'];
         if (this.rowData && Array.isArray(this.rowData)) {
           this.rowData.forEach(item => {
@@ -587,12 +598,14 @@ export class SubDashboardComponent implements OnInit, AfterViewInit {
   }
 
   Edit_subscriber_details(type: string): void {
-    let dialogData = {};
-    switch (type) {
-      case 'editDetails':
-        dialogData = { isEditSubscriberDetails: true, detailsList: this.subdetailsList };
-        break;
-    }
+    // let dialogData = {};
+    // switch (type) {
+    //   case 'editDetails':
+    //     dialogData = { isEditSubscriberDetails: true, detailsList: this.subdetailsList };
+    //     break;
+    // }
+    let dialogData = { type: type, detailsList: this.subdetailsList, };
+
     const dialogRef = this.dialog.open(SubscriberdialogueComponent, {
       width: '1000px',
       panelClass: 'custom-dialog-container',
@@ -602,7 +615,7 @@ export class SubDashboardComponent implements OnInit, AfterViewInit {
 
   }
   managePackage(type: string): void {
-    let dialogData = { type: type, detailsList: this.subdetailsList, };
+    let dialogData = { type: type, detailsList: this.subdetailsList, pairBoxlist: this.subPairedboxid, pairSmartcardlist: this.subPairedsmartcard, subSmartcarList: this.subdetailsList?.smartcard, subBoxList: this.subdetailsList?.boxid };
     // switch (type) {
     //   case 'addon':
     //     dialogData = { type:type, detailsList: this.subdetailsList, };
@@ -635,12 +648,33 @@ export class SubDashboardComponent implements OnInit, AfterViewInit {
 
   }
 
-  openDialog(type: string): void {
-    let dialogData = { type: type, detailsList: this.subdetailsList, pairBoxlist: this.subPairedboxid, pairSmartcardlist: this.subPairedsmartcard, plantype: this.packagePlan };
+  pairDialogue(type: string): void {
+    let dialogData = { type: type, detailsList: this.subdetailsList, pairBoxlist: this.subPairedboxid, pairSmartcardlist: this.subPairedsmartcard, plantype: this.packagePlan, subSmartcarList: this.subdetailsList?.smartcard, subBoxList: this.subdetailsList?.boxid };
     const dialogRef = this.dialog.open(SubscriberdialogueComponent, {
       width: '500px',
       data: dialogData
     });
+    dialogRef.afterClosed().subscribe(result => {
+      console.log('The dialog was closed', result);
+    });
+  }
+  openDialog(type: string): void {
+    let dialogData = { type: type, detailsList: this.subdetailsList, subId: this.subscriberid, pairBoxlist: this.subPairedboxid, pairSmartcardlist: this.subPairedsmartcard, plantype: this.packagePlan };
+    const dialogRef = this.dialog.open(SubscriberdialogueComponent, {
+      data: dialogData
+    });
+    let dialogConfig = {
+      width: '500px',
+      // height: '350px', 
+      data: { dialogType: type }
+    };
+    if (type === 'addSmartcard') {
+      // dialogConfig.height = '1000px'; 
+      dialogConfig.width = '350px';
+    } else if (type === 'editDetails') {
+      dialogConfig.width = '1000px';
+    }
+
     dialogRef.afterClosed().subscribe(result => {
       console.log('The dialog was closed', result);
     });

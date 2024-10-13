@@ -1,8 +1,10 @@
 import { Component, Inject } from '@angular/core';
 import { AbstractControl, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { Role } from 'node_modules1/@tufjs/models/dist/role';
 import { BaseService } from 'src/app/_core/service/base.service';
 import { StorageService } from 'src/app/_core/service/storage.service';
+import { SwalService } from 'src/app/_core/service/swal.service';
 
 @Component({
   selector: 'app-add-ltb',
@@ -12,10 +14,15 @@ import { StorageService } from 'src/app/_core/service/storage.service';
 export class AddLtbComponent {
   form!: FormGroup;
   submitted = false;
+  role: any;
+  username: any;
   constructor(
     public dialogRef: MatDialogRef<AddLtbComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: any, private formBuilder: FormBuilder, private userService: BaseService, private storageService: StorageService) {
+    @Inject(MAT_DIALOG_DATA) public data: any, private formBuilder: FormBuilder, private userService: BaseService, private storageService: StorageService,
+    private swal: SwalService) {
     console.log(data);
+    this.username = storageService.getUsername();
+    this.role = storageService.getUserRole();
   }
   onNoClick(): void {
     this.dialogRef.close();
@@ -26,10 +33,10 @@ export class AddLtbComponent {
   ngOnInit(): void {
     this.form = this.formBuilder.group(
       {
-        name_head: ['', Validators.required],
-        ltb_name: ['', Validators.required],
+        nameheader: ['', Validators.required],
+        operatorname: ['', Validators.required],
         mobileno: ['', Validators.required],
-        email: ['', [Validators.required,Validators.email]],
+        email: ['', [Validators.required, Validators.email]],
         address: ['', [Validators.required,]],
         area: ['', [Validators.required]],
         state: ['', [Validators.required]],
@@ -38,30 +45,34 @@ export class AddLtbComponent {
         password: ['', [Validators.required]],
       });
   }
+
   onSubmit(form: any): void {
     this.submitted = true;
-    console.log('sdsdfs');
-
-    if (form.invalid) {
-      console.log('Form is invalid. API call not made.');
-      return;
+    let requestBody = {
+      role: this.role,
+      username: this.username,
+      nameheader: form.value.nameheader,
+      operatorname: form.value.operatorname,
+      mobileno: form.value.mobileno,
+      mail: form.value.email,
+      address: form.value.address,
+      state: form.value.state,
+      area: form.value.area,
+      pincode: form.value.pincode,
+      userid: form.value.userid,
+      password: form.value.password,
     }
-    const fd = new FormData();
-    fd.append('name_head', this.form?.value?.name_head);
-    fd.append('ltb_name', this.form?.value?.ltb_name);
-    fd.append('mobileno', this.form?.value?.mobileno);
-    fd.append('email', this.form?.value?.email);
-    fd.append('address', this.form?.value?.address);
-    fd.append('area', this.form?.value?.area);
-    fd.append('state', this.form?.value?.state);
-    fd.append('pincode', this.form?.value?.pincode);
-    fd.append('userid', this.form?.value?.userid);
-    fd.append('password', this.form?.value?.password);
+
+    this.userService.createLocalChannelLTB(requestBody)
+      .subscribe((res: any) => {
+        this.swal.success(res?.message);
+      }, (err) => {
+        this.swal.Error(err?.error?.message);
+      });
   }
+
   onKeydown(e: any) {
-    // console.log(e.keyCode);
     var key = e.keyCode;
-    // Only allow numbers to be entered
     if (key < 48 || key > 57) {
       e.preventDefault();
     }
@@ -70,4 +81,5 @@ export class AddLtbComponent {
     this.submitted = false;
     this.form.reset();
   }
+
 }

@@ -20,7 +20,7 @@ export class LocalPaymentComponent {
       sortable: true,
       resizable: true,
       filter: true,
-      width: 360,
+      // width: 360,  
       floatingFilter: true
     },
     paginationPageSize: 10,
@@ -34,28 +34,30 @@ export class LocalPaymentComponent {
   }
   columnDefs: ColDef[] = [
     {
-      headerName: 'S.NO', width: 100,
-      lockPosition: true,
+      headerName: "S.No", lockPosition: true, valueGetter: 'node.rowIndex+1', width: 100,
+     
     },
     {
-      headerName: 'LTB NAME',
-      field: 'broadcastername',
+      headerName: 'LTB NAME', width: 360,
+      field: 'operatorname',
 
     },
     {
-      headerName: 'BALANCE',
-      field: 'broadcastername',
+      headerName: 'BALANCE', width: 300,
+      field: 'balance',
+      valueFormatter: (params) => {
+        return ` ${params.value}`;
+      },
 
     },
     {
-      headerName: 'MOBILE NO',
-      field: 'broadcastername',
+      headerName: 'MOBILE NO', width: 250,
+      field: 'contactnumber1',
 
     },
     {
-      headerName: 'ADDRESS',
-      field: 'broadcastername',
-
+      headerName: 'ADDRESS', width: 400,
+      field: 'address',
     },
 
   ]
@@ -63,9 +65,9 @@ export class LocalPaymentComponent {
   onGridReady(params: { api: any; }) {
     // this.gridApi.sizeColumnsToFit();
     this.gridApi = params.api;
-    this.userservice.getAllLocalChannelList(this.role, this.username).subscribe((data: any) => {
+    this.userservice.getAllLocalChannelBroadcasterList(this.role, this.username).subscribe((data: any) => {
       console.log(data);
-
+      this.rowData = data;
     })
   }
   submit(data: any): void {

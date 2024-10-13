@@ -47,7 +47,8 @@
                     <span for="">Channel Rate </span>
                 </div>
                 <div class="col-12 col-md-6 ">
-                    <input type="text" placeholder="Enter Channel Rate" [(ngModel)]="chRate">
+                    <input type="text" placeholder="Enter Channel Rate" [(ngModel)]="chRate" (change)="onChange()" />
+                    <!-- <input type="text" placeholder="Enter Channel Rate" [(ngModel)]="chRate"> -->
                 </div>
             </div>
             <div class="input_box display mb-1">
@@ -58,7 +59,8 @@
 
                     <div class="toggle-button-cover">
                         <div class="button b2" id="button-10">
-                            <input type="checkbox" class="checkbox" [(ngModel)]="istax" />
+                            <input type="checkbox" class="checkbox" [(ngModel)]="istax" (change)="onChange()" />
+                            <!-- <input type="checkbox" class="checkbox" [(ngModel)]="istax" /> -->
                             <div class="knobs">
                                 <span>YES</span>
                             </div>
@@ -73,7 +75,8 @@
                     <span for="">Tax</span>
                 </div>
                 <div class="col-12 col-md-6 ">
-                    <input type="text" placeholder="Enter Tax" [(ngModel)]="tax">
+                    {{updateTax}}
+                    <!-- <input type="text" placeholder="Enter Tax" [(ngModel)]="tax"> -->
                 </div>
             </div>
             <div class="input_box display mb-1">
@@ -81,7 +84,8 @@
                     <span for="">Lco price </span>
                 </div>
                 <div class="col-12 col-md-6 ">
-                    <input type="text" placeholder="Enter BoxID" [(ngModel)]="lcoprice">
+                    {{updateLcoPrice}}
+                    <!-- <input type="text" placeholder="Enter BoxID" [(ngModel)]="lcoprice"> -->
                 </div>
             </div>
         </div>

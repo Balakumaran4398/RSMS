@@ -14,6 +14,7 @@ import { BehaviorSubject, filter, map, Observable, startWith } from 'rxjs';
 import { SwalService } from 'src/app/_core/service/swal.service';
 import { dateToNumber } from 'ag-charts-community/dist/types/src/module-support';
 import { HttpResponse } from '@angular/common/http';
+import { ChangeDetectorRef } from 'node_modules1/@angular/core';
 declare var $: any;
 const moment = _rollupMoment || _moment;
 
@@ -70,6 +71,9 @@ export class SubscriberdialogueComponent implements OnInit {
 
   pair: boolean = false;
   unpair: boolean = false;
+  ischeck: boolean = false;
+  pairedSmartcard: any = 0;
+  pairedBoxid: any = 0;
 
   cardOldBalance: any;
   newexpiryDate: any;
@@ -105,12 +109,18 @@ export class SubscriberdialogueComponent implements OnInit {
   sub_list: any[] = [];
   area_list: any[] = [];
   street_list: any[] = [];
+
+  pairBoxList: any[] = [];
+  pairSmartcardList: any[] = [];
+  subSmartcard: any;
+  subBoxid: any;
+  isUnpairDialogue: any;
   operatorid: any;
   subid: any;
   islock = false;
   password: any;
   subscribername: any;
-  baseplan:any;
+  baseplan: any;
   subusername: any;
   Wallet: any;
 
@@ -158,8 +168,8 @@ export class SubscriberdialogueComponent implements OnInit {
   plantype: any = " ";
   rechargetype: any[] = [];
   packagenameList: any = [];
-  pairedSmartcard:any[]=[];
-  pairedBoxid:any[]=[];
+  subid_1: any;
+
   p_name: any;
   selectedRechargetype: string = '0';
   selectedpackagetype: string = '0';
@@ -221,7 +231,19 @@ export class SubscriberdialogueComponent implements OnInit {
     this.role = storageService.getUserRole();
     this.username = storageService.getUsername();
     console.log(data);
+    this.subid_1 = data.subId;
     this.sType = data?.type;
+    this.pairBoxList = data['pairBoxlist'].map((item: any) => item);
+    // this.pairSmartcardList = data['pairSmartcardlist'].map((item: any) => item);
+    this.subSmartcard = data.subSmartcarList;
+    this.subBoxid = data.subBoxList;
+
+    // this.ischeck = data.subBoxList || data.subSmartcarList
+    console.log(this.subSmartcard);
+    console.log(this.subBoxid);
+    this.pairSmartcardList = data['detailsList'].smartcardlist;
+    console.log(this.pairSmartcardList);
+
     this.subscribername = data['detailsList'].customername;
     this.operatorid = data['detailsList'].operatorid;
     this.subid = data['detailsList'].subid;
@@ -338,8 +360,7 @@ export class SubscriberdialogueComponent implements OnInit {
 
     this.userService.PackageList(this.role, this.username, this.type).subscribe((data) => {
       console.log(data);
-      // this.p_name=data;
-      console.log(data);
+
       this.packagenameList = data
       // this.packagenameList = data.map((item: any) => ({
       //   packagename: item.packagename,
@@ -377,6 +398,8 @@ export class SubscriberdialogueComponent implements OnInit {
     this.userService.cancelSubscriptionOfSmartcardDetails(this.role, this.username, this.smartcardno).subscribe((data: any) => {
       this.TotalLcoAmount = data.totallcoamount;
       this.rowData1 = data.cancelproduct;
+      console.log(this.rowData1);
+      // this.cdr.detectChanges();
     })
     this.loadIdProofList();
     this.loadAddProofList();
@@ -625,6 +648,8 @@ export class SubscriberdialogueComponent implements OnInit {
   ]
 
   private updateColumnDefs(type: string): void {
+    console.log(type);
+
     if (type === 'remove') {
       this.columnDefs = [
         {
@@ -660,15 +685,15 @@ export class SubscriberdialogueComponent implements OnInit {
         },
         {
           headerName: 'PACKAGE TYPE		 ', width: 250,
-          field: 'ptype',
+          field: 'producttype',
         },
         {
           headerName: 'REFUND AMOUNT		', width: 250,
-          field: 'casproductid',
+          field: 'refundproductrate',
         },
         {
           headerName: 'DAYS', width: 250,
-          field: 'noofdays',
+          field: 'days',
         },
       ]
     }
@@ -798,7 +823,7 @@ export class SubscriberdialogueComponent implements OnInit {
       // }
     });
 
-    this.userService.addSmartcardToSubscriber(this.role, this.username, this.operatorid, this.castype, this.smartcard, this.boxid, this.subid).subscribe(
+    this.userService.addSmartcardToSubscriber(this.role, this.username, this.operatorid, this.castype, this.smartcard, this.boxid, this.subid_1).subscribe(
       (res: any) => {
         this.returndata = res;
         Swal.fire({
@@ -1278,6 +1303,7 @@ export class SubscriberdialogueComponent implements OnInit {
       });
   }
   cancelSmartcard() {
+    this.swal.Loading();
     this.userService.cancelSmartcard(this.role, this.username, this.smartcardno, 2, 0,)
       .subscribe((res: any) => {
         this.swal.success(res?.message);
@@ -1510,6 +1536,22 @@ export class SubscriberdialogueComponent implements OnInit {
         }
       }
     );
+  }
+  pairSmartcard() {
+    this.userService.PairSmartcardOrBoxid(this.role, this.username, !this.ischeck, this.pairedSmartcard, this.subBoxid, 0, 2).subscribe((res: any) => {
+      this.swal.success(res?.message);
+    }, (err) => {
+      this.swal.Error(err?.error?.message);
+    });
+  }
+  unPairSmartcard() {
+    this.userService.UnpairSmartcardOrBoxId(this.role, this.username, !this.ischeck, this.subSmartcard, 0, 2).subscribe((res: any) => {
+      // this.swal.success(res?.message);
+      this.isUnpairDialogue = res?.message;
+    }, (err) => {
+      this.swal.Error(err?.error?.message);
+    });
+
   }
 }
 
