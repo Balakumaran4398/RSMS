@@ -51,23 +51,32 @@
                             </label>
                         </div>
                         <div class="col-12 mb-3">
-                            <select placeholder="Select the CAS" class="form-control" [formControl]="CasFormControl">
-                                <option value="">Select CAS</option>
-                                <option *ngFor="let casItem of cas" [value]="casItem">{{ casItem }}</option>
+                            <select placeholder="Select the CAS" class="form-control" [(ngModel)]="castype"
+                                (change)="casPackageList()">
+                                <option value="0" selected>Select CAS</option>
+                                <option *ngFor="let casItem of cas" [value]="casItem.id">
+                                    {{ casItem.name }}
+                                </option>
                             </select>
                         </div>
 
-                        <!-- <div class="col-12 mb-3">
-                            <select class="form-control" [disabled]="!CasFormControl.value"
-                                [style.background-color]="CasFormControl.value ? '#007bff' : '#d3d3d3'"
-                                [style.cursor]="CasFormControl.value ? 'pointer' : 'not-allowed'">
-                                <option value="">Select type</option>
-                                <option *ngFor="let Type of type" [value]="Type">{{ Type }}</option>
-                            </select>
-                        </div> -->
+                        <div class="col-12 mb-3">
+                            <div class="col-12 mb-3">
+                                <mat-form-field class="w-100" appearance="outline">
+                                    <mat-select [formControl]="toppings" multiple [(ngModel)]="alacarteList">
+                                        <div class="input_box " style="padding: 1rem;">
+                                            <input placeholder="Search..." [(ngModel)]="searchText"
+                                                (ngModelChange)="filterToppings()" />
+                                        </div>
+                                        <mat-option *ngFor="let topping of toppingList" [value]="topping.id">{{
+                                            topping.name }}</mat-option>
+                                    </mat-select>
+                                </mat-form-field>
+                            </div>
+                        </div>
 
                         <div class=" d-flex justify-content-end align-items-center mt-3">
-                            <button type="submit" class="btn btn-success ">Submit</button>
+                            <button type="submit" class="btn btn-success" (click)="submit()">Submit</button>
                         </div>
                     </div>
                 </div>
@@ -82,13 +91,13 @@
                             <div class="col-12 mb-3">
                                 <div class="row align-items-center justify-content-center mb-3" style="gap:10px;">
                                     <div class="col-12 col-md-3 mb-2 mb-md-0">
-                                        <input class="date form-control" type="date" name="" id="">
+                                        <input class="date form-control" type="date" name="" id="" [(ngModel)]="date">
                                     </div>
                                     <div class="col-12 col-md-3 mb-2 mb-md-0">
-                                        <button class="btn btn-primary w-100">Get Data</button>
+                                        <button class="btn btn-primary w-100" (click)="getData()">Get Data</button>
                                     </div>
                                     <div class="col-12 col-md-3 mb-2 mb-md-0">
-                                        <button class="btn btn-secondary w-100">Refresh</button>
+                                        <button class="btn btn-secondary w-100" (click)="refresh()">Refresh</button>
                                     </div>
                                 </div>
 
@@ -112,7 +121,7 @@
         <div class="container ">
             <div class="row justify-content-center align-items-center mb-2">
                 <!-- File Input -->
-                <div class="col-12 col-md-3 mb-3 d-flex justify-content-center align-items-center mt-3">
+                <div class="col-12 col-md-2 mb-3 d-flex justify-content-center align-items-center mt-3">
                     <label class="btn btn-outline-primary">
                         <i class="fa fa-plus"></i> Choose
                         <input type="file" style="display: none;" (change)="handleFileInput($event)">
@@ -121,24 +130,33 @@
 
                 <!-- First Select Input -->
                 <div class="col-12 col-md-3  mt-2">
-                    <select placeholder="Select the CAS" class="form-control" [formControl]="CasFormControl">
-                        <option value="">Select CAS</option>
-                        <option *ngFor="let casItem of cas" [value]="casItem">{{ casItem }}</option>
+                    <select placeholder="Select the CAS" class="form-control" [(ngModel)]="castype"
+                        (change)="casPackageList()">
+                        <option value="0" selected>Select CAS</option>
+                        <option *ngFor="let casItem of cas" [value]="casItem.id">
+                            {{ casItem.name }}
+                        </option>
                     </select>
                 </div>
 
                 <!-- Second Select Input -->
-                <div class="col-12 col-md-3 mt-2">
-                    <select placeholder="Select the CAS" class="form-control" [formControl]="CasFormControl">
-                        <option value="">Select CAS</option>
-                        <option *ngFor="let casItem of cas" [value]="casItem">{{ casItem }}</option>
-                    </select>
+                <div class="col-12 col-md-5 mt-2">
+                    <mat-form-field class="w-100" appearance="outline">
+                        <mat-select [formControl]="toppings" multiple [(ngModel)]="alacarteList">
+                            <div class="input_box " style="padding: 1rem;">
+                                <input placeholder="Search..." [(ngModel)]="searchText"
+                                    (ngModelChange)="filterToppings()" />
+                            </div>
+                            <mat-option *ngFor="let topping of toppingList" [value]="topping.id">{{
+                                topping.name }}</mat-option>
+                        </mat-select>
+                    </mat-form-field>
                 </div>
 
                 <!-- Submit Button -->
                 <div
-                    class="col-12 col-md-3 mt-2 d-flex justify-content-center justify-content-md-end align-items-center">
-                    <button type="submit" class="btn btn-success w-100 w-md-auto">Remove</button>
+                    class="col-12 col-md-2 mt-2 d-flex justify-content-center justify-content-md-end align-items-center">
+                    <button type="submit" class="btn btn-success w-100 w-md-auto" (click)="remove()">Remove</button>
                 </div>
             </div>
         </div>
@@ -153,13 +171,13 @@
                     <div class="col-12 mb-3">
                         <div class="row align-items-center justify-content-center mb-3" style="gap:10px;">
                             <div class="col-12 col-md-3 mb-2 mb-md-0">
-                                <input class="date form-control" type="date" name="" id="">
+                                <input class="date form-control" type="date" [(ngModel)]="date">
                             </div>
                             <div class="col-12 col-md-3 mb-2 mb-md-0">
-                                <button class="btn btn-primary w-100">Get Data</button>
+                                <button class="btn btn-primary w-100" (click)="getData()">Get Data</button>
                             </div>
                             <div class="col-12 col-md-3 mb-2 mb-md-0">
-                                <button class="btn btn-secondary w-100">Refresh</button>
+                                <button class="btn btn-secondary w-100" (click)="refresh()">Refresh</button>
                             </div>
                         </div>
 

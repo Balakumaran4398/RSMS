@@ -16,7 +16,7 @@ export class UpdateLcoComponent {
   sharedcount: any;
   lcogroupid: any;
   lcogroupname: any;
-  lcomembershipList: any=[];
+  lcomembershipList: any = [];
   id: any;
   constructor(
     public dialogRef: MatDialogRef<UpdateLcoComponent>, @Inject(MAT_DIALOG_DATA) public data: any, private userservice: BaseService, private storageservice: StorageService) {
@@ -26,14 +26,14 @@ export class UpdateLcoComponent {
     this.id = data.id;
     this.usedcount = data.usedcount;
     this.sharedcount = data.sharecount;
-   
+
     userservice.getLcoGroupMasterList(this.role, this.username).subscribe((data: any) => {
       this.lcomembershipList = Object.keys(data).map(key => {
         return { name: key, value: data[key] }; // Mapping data to name and value
       });
 
       // Set lcogroupid based on the selected lcogroupname
-      const selectedGroup = this.lcomembershipList.find((group:any) => group.name === this.lcogroupname);
+      const selectedGroup = this.lcomembershipList.find((group: any) => group.name === this.lcogroupname);
       this.lcogroupid = selectedGroup ? selectedGroup.value : ''; // Set lcogroupid
     });
   }
@@ -53,20 +53,27 @@ export class UpdateLcoComponent {
     }).then((result) => {
       if (result.isConfirmed) {
         this.userservice.UpdatecomembershipFUP(this.role, this.username, this.id, this.sharedcount, this.lcogroupid)
-          .subscribe((res: any) => {
-            Swal.fire({
-              title: 'Updated!',
-              text: res?.message,
-              icon: 'success'
-            });
-            window.location.reload();
-          }, (err) => {
-            Swal.fire({
-              title: 'Error!',
-              text: err?.error?.message,
-              icon: 'error'
-            });
-          });
+          .subscribe(
+            (res: any) => {
+              Swal.fire({
+                title: 'Success!',
+                text: res?.message,
+                icon: 'success',
+                timer: 2000,
+                showConfirmButton: false
+              }).then(() => {
+                this.dialogRef.close();
+              });
+            },
+            (err: any) => {
+              Swal.fire({
+                title: 'Error!',
+                text: err?.error?.message,
+                icon: 'error',
+                confirmButtonText: 'OK'
+              });
+            }
+          );
       }
     });
   }

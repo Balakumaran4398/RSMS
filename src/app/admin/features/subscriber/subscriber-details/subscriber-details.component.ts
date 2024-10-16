@@ -12,7 +12,7 @@ import Swal from 'sweetalert2';
   styleUrls: ['./subscriber-details.component.scss']
 })
 export class SubscriberDetailsComponent implements OnInit {
-  selectedStatusId: any = -1;
+  selectedStatusId: any = '0';
   rowData: any[] = [];
   username: any;
   role: any;
@@ -45,12 +45,10 @@ export class SubscriberDetailsComponent implements OnInit {
   }
   ngOnInit(): void {
     // this.updateColumnDefs(this.selectedStatusId);
+    this.onSubscriberStatusChange();
   }
   columnDefs: ColDef[] = [
-    {
-      headerName: "S.No", lockPosition: true, valueGetter: 'node.rowIndex+1', width: 100, headerCheckboxSelection: true,
-      checkboxSelection: true,
-    },
+    { headerName: "S.No", lockPosition: true, valueGetter: 'node.rowIndex+1', width: 100 },
     { headerName: 'SUBSCRIBER NAME', field: 'customername', },
     { headerName: 'LCO NAME', field: 'operatorname', },
     { headerName: 'AREA NAME', field: 'areaname', },
@@ -66,8 +64,7 @@ export class SubscriberDetailsComponent implements OnInit {
     if (selectedStatusId === '0') {
       this.columnDefs = [
         {
-          headerName: "S.No", lockPosition: true, valueGetter: 'node.rowIndex+1', width: 100, headerCheckboxSelection: true,
-          checkboxSelection: true,
+          headerName: "S.No", lockPosition: true, valueGetter: 'node.rowIndex+1', width: 100,
         },
         {
           headerName: 'SUBSCRIBER NAME',
@@ -92,7 +89,7 @@ export class SubscriberDetailsComponent implements OnInit {
             console.log('Smartcard:', smartcard);
             if (subid) {
               this.router.navigate([`/admin/subscriber-full-info/${subid}/new`]);
-            } 
+            }
           }
         },
         { headerName: 'LCO NAME', field: 'operatorname', },
@@ -108,31 +105,10 @@ export class SubscriberDetailsComponent implements OnInit {
     } else if (selectedStatusId === '1') {
       this.columnDefs = [
         {
-          headerName: "S.No", lockPosition: true, valueGetter: 'node.rowIndex+1', width: 100, headerCheckboxSelection: true,
-          checkboxSelection: true,
+          headerName: "S.No", lockPosition: true, valueGetter: 'node.rowIndex+1', width: 100,
         },
         {
           headerName: 'SMARTCARD', field: 'smartcard',
-          // cellStyle: params => {
-          //   // Conditionally change cell background color
-          //   if (params.data.someCondition) {
-          //     return { backgroundColor: '#f4cccc' };
-          //   } else {
-          //     return null;
-          //   }
-          // },
-          // cellRenderer: (params: any) => {
-          //   return `<a href="javascript:void(0)" style="color: blue; text-decoration: underline;">
-          //             ${params.value}
-          //           </a>`;
-          // },
-          // onCellClicked: (params) => {
-          //   const subid = params.data.id;
-          //   const smartcard = params.data.smartcard;
-          //   console.log('Sub ID:', subid);
-          //   console.log('Smartcard:', smartcard);
-          //   this.router.navigate([`/admin/subscriber-full-info`, smartcard]);
-          // }
           cellStyle: params => {
             if (params.data.someCondition) {
               return { backgroundColor: '#f4cccc' };
@@ -172,8 +148,7 @@ export class SubscriberDetailsComponent implements OnInit {
     } else if (selectedStatusId === '2') {
       this.columnDefs = [
         {
-          headerName: "S.No", lockPosition: true, valueGetter: 'node.rowIndex+1', width: 100, headerCheckboxSelection: true,
-          checkboxSelection: true,
+          headerName: "S.No", lockPosition: true, valueGetter: 'node.rowIndex+1', width: 100,
         },
         {
           headerName: 'SMARTCARD', field: 'smartcard',
@@ -215,8 +190,7 @@ export class SubscriberDetailsComponent implements OnInit {
     } else if (selectedStatusId === '3') {
       this.columnDefs = [
         {
-          headerName: "S.No", lockPosition: true, valueGetter: 'node.rowIndex+1', width: 100, headerCheckboxSelection: true,
-          checkboxSelection: true,
+          headerName: "S.No", lockPosition: true, valueGetter: 'node.rowIndex+1', width: 100,
         },
         {
           headerName: 'SMARTCARD', field: 'smartcard',
@@ -258,8 +232,7 @@ export class SubscriberDetailsComponent implements OnInit {
     } else if (selectedStatusId === '4') {
       this.columnDefs = [
         {
-          headerName: "S.No", lockPosition: true, valueGetter: 'node.rowIndex+1', width: 100, headerCheckboxSelection: true,
-          checkboxSelection: true,
+          headerName: "S.No", lockPosition: true, valueGetter: 'node.rowIndex+1', width: 100,
         },
         {
           headerName: 'SMARTCARD', field: 'smartcard',
@@ -278,10 +251,10 @@ export class SubscriberDetailsComponent implements OnInit {
           onCellClicked: (params) => {
             const subid = params.data.id;
             const smartcard = params.data.smartcard;
-            const status = params.data.status; 
+            const status = params.data.status;
             console.log('Sub ID:', subid);
             console.log('Smartcard:', smartcard);
-         
+
             if (smartcard) {
               this.router.navigate([`/admin/subscriber-full-info/${smartcard}/subsmartcard`]);
             } else if (subid) {
@@ -302,8 +275,7 @@ export class SubscriberDetailsComponent implements OnInit {
     } else if (selectedStatusId === '5') {
       this.columnDefs = [
         {
-          headerName: "S.No", lockPosition: true, valueGetter: 'node.rowIndex+1', width: 100, headerCheckboxSelection: true,
-          checkboxSelection: true,
+          headerName: "S.No", lockPosition: true, valueGetter: 'node.rowIndex+1', width: 100,
         },
         {
           headerName: 'SMARTCARD', field: 'smartcard',
@@ -355,8 +327,8 @@ export class SubscriberDetailsComponent implements OnInit {
   //   })
   // }
   onSubscriberStatusChange() {
-    if (this.selectedStatusId === -1) {
-      return; // No status selected, do nothing
+    if (this.selectedStatusId === 0) {
+      return;
     }
 
     this.userservice.getsubscriberlist_subscriber(this.role, this.username, this.selectedStatusId)
@@ -374,7 +346,5 @@ export class SubscriberDetailsComponent implements OnInit {
       });
     this.updateColumnDefs(this.selectedStatusId);
   }
-  // statusKeys(): number[] {
-  //   return Object.keys(this.status).map(key => parseInt(key, 10));
-  // }
+
 }

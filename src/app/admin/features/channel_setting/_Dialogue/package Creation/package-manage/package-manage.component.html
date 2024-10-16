@@ -59,21 +59,16 @@
                     <input type="text" placeholder="search" class="form-control" [(ngModel)]="searchTerm"
                         (input)="filterAvailableList()">
                         <!-- <button class="button" (click)="applyFilter()">Search</button> -->
-                    <h6 class="av">Available - {{filteredAvailableAlacarteList.length}} </h6>
-                    <!-- <input type="text" placeholder="search" class="form-control" >
-                    <h6 class="av">Available -{{available_alacarte_count}} </h6> -->
+                    <!-- <h6 class="av">Available - {{filteredAvailableAlacarteList.length}} </h6> -->
+                    <h6 class="av">Available - {{available_alacarte_count}} </h6>
+
                     <div cdkDropList #todoList="cdkDropList" [cdkDropListData]="available_alacarte_list"
                         [cdkDropListConnectedTo]="[doneList]" class="example-list" (cdkDropListDropped)="drop($event)">
                         <div *ngFor="let item of available_alacarte_list" class="example-box"
                             (click)="toggleSelection(item)" [class.selected]="isSelected(item)" cdkDrag>{{ item }}</div>
                     </div>
                     
-                    <!-- <div cdkDropList #todoList="cdkDropList" [cdkDropListData]="filteredAvailableAlacarteList"
-                        [cdkDropListConnectedTo]="[doneList]" class="example-list" (cdkDropListDropped)="drop($event)">
-                        <div *ngFor="let item of filteredAvailableAlacarteList" class="example-box"
-                            (click)="toggleSelection(item)" [class.selected]="isSelected(item)" cdkDrag>{{ item }}</div>
-                    </div> -->
-                </div>      
+                                  </div>      
                 <div class="d-grid col-1">
                     <button class="button2" (click)="moveSelected_alacarte_Items('right')"><i
                             class="bx bx-right-arrow-alt"></i></button>
@@ -85,12 +80,12 @@
                             class="bx bx-arrow-to-left"></i></button>
                 </div>
                 <div class="col-12 col-md-5 example-container">
-                    <input type="text" placeholder="search" class="form-control">
+                    <input type="text" placeholder="search" class="form-control"> 
                     <h6 class="ad">Added - {{added_alacrte_count}} </h6>
                     <div cdkDropList #doneList="cdkDropList" [cdkDropListData]="added_alacarte_list"
                         [cdkDropListConnectedTo]="[todoList]" class="example-list" (cdkDropListDropped)="drop($event)">
-                        <div *ngFor="let item of added_alacarte_list" class="example-box" ccdkDrag
-                            (click)="toggleSelection(item)" [class.selected]="isSelected(item)">{{ item }}</div>
+                        <div *ngFor="let item of added_alacarte_list" class="example-box" 
+                            (click)="toggleSelection(item)" [class.selected]="isSelected(item)" cdkDrag>{{ item }}</div>
                     </div>
                 </div>
             </div>
@@ -107,8 +102,8 @@
                     <h6 class="av">Available - {{available_bouquet_count }}</h6>
                     <div cdkDropList #todoList="cdkDropList" [cdkDropListData]="available_bouquet_list"
                         [cdkDropListConnectedTo]="[doneList]" class="example-list" (cdkDropListDropped)="drop($event)">
-                        <div *ngFor="let item of available_bouquet_list" class="example-box" cdkDrag
-                            (click)="toggleSelection(item)" [class.selected]="isSelected(item)">{{ item }}</div>
+                        <div *ngFor="let item of available_bouquet_list" class="example-box" 
+                            (click)="toggleSelection(item)" [class.selected]="isSelected(item)" cdkDrag>{{ item }}</div>
                     </div>
                 </div>
                 <div class="d-grid col-1">

@@ -162,9 +162,9 @@ export class CategoryComponent {
           title: 'Updating...',
           text: 'Please wait while the Category is being Updated',
           allowOutsideClick: false,
-          // didOpen: () => {
-          //   Swal.showLoading();
-          // }
+          didOpen: () => {
+            Swal.showLoading(null);
+          }
         });
         this.userService.Category_update(requestBody).subscribe(
           (res) => {
@@ -210,9 +210,9 @@ export class CategoryComponent {
           title: 'Updateing...',
           text: 'Please wait while the Category is being updated',
           allowOutsideClick: false,
-          // didOpen: () => {
-          //   Swal.showLoading();
-          // }
+          didOpen: () => {
+            Swal.showLoading(null);
+          }
         });
         this.userService.ActiveCategory(this.role, this.username, this.selectedIds).subscribe((res: any) => {
           Swal.fire({
@@ -246,9 +246,9 @@ export class CategoryComponent {
           title: 'Deleting...',
           text: 'Please wait while the Category is being deleted',
           allowOutsideClick: false,
-          // didOpen: () => {
-          //   Swal.showLoading();
-          // }
+          didOpen: () => {
+            Swal.showLoading(null);
+          }
         });
 
         this.userService.deleteCategory(this.role, this.username, this.selectedIds).subscribe((res: any) => {

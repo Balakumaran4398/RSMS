@@ -37,6 +37,8 @@ export class ChannellistComponent implements OnInit {
       this.productType = 1;
     } else if (data.ptype === 'ADDON') {
       this.productType = 2;
+    } else if (data.ptype === 'ALACARTE') {
+      this.productType = 3;
     }
     console.log(this.productType);
   }
@@ -54,9 +56,7 @@ export class ChannellistComponent implements OnInit {
   }
   columnDefs: any[] = [
     {
-      headerName: "S.No", valueGetter: 'node.rowIndex+1', width: 100,headerCheckboxSelection: true,
-      checkboxSelection: true,
-
+      headerName: "S.No", valueGetter: 'node.rowIndex+1', width: 100,
     },
     {
       headerName: 'CHANNEL NAME',

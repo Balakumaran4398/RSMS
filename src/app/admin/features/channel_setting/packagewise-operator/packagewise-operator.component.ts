@@ -17,7 +17,7 @@ import Swal from 'sweetalert2';
 })
 export class PackagewiseOperatorComponent {
   selectedItems: Set<any> = new Set();
-
+  product: any = '0';
   role: any;
   username: any;
   selectedProductTypeId: any;
@@ -160,9 +160,9 @@ export class PackagewiseOperatorComponent {
       title: 'Saving...',
       text: 'Please wait while we allocate the operator to the product.',
       allowOutsideClick: false,
-      // didOpen: () => {
-      //   Swal.showLoading();
-      // }
+      didOpen: () => {
+        Swal.showLoading(null);
+      }
     });
     this.userservice.ProductListForOperator_allocate_to_notallocate(this.role, this.username, this.selectedProductTypeId, selectedProductId, this.draggedOperatorId || this.selectedItems
     ).subscribe(

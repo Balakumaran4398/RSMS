@@ -89,7 +89,7 @@
     </div>
 </div>
 <!-- <div *ngIf="isEditSubscriberDetails"> -->
-    <div *ngIf="sType=='editDetails'">
+<div *ngIf="sType=='editDetails'">
     <div class="card">
         <div class="Head d-flex justify-content-between align-items-center">
             <span class="span">Edit Subscriber Details</span>
@@ -1545,11 +1545,15 @@
         </div>
     </div>
     <div class=" d-flex justify-content-center align-item-center  mb-2">
-        <button type="button" class="btn confirm me-2" (click)="onActivationButtonClick()"
+        <button *ngIf="!confirmation" type="button" class="btn confirm me-2" (click)="onActivationButtonClick()"
             [disabled]="!newpackagename || newpackagename === '0' ||  !selectedRechargetype || selectedRechargetype === '0' || !plantype   ">
             Confirmation
         </button>
 
+        <button *ngIf="confirmation" type="button" class="btn confirm me-2" (click)="onActivationClick()"
+            [disabled]="!newpackagename || newpackagename === '0' ||  !selectedRechargetype || selectedRechargetype === '0' || !plantype   ">
+            Confirmation
+        </button>
         <button type="button" class="btn  recharge me-2" (click)="ActivationOfCard()">Activate</button>
         <button type="button" class="btn btn-danger me-2" (click)="onNoClick()">Cancel</button>
     </div>
@@ -1708,7 +1712,7 @@
                 </div>
                 <div class=" col-6 col-md-6 value">
                     <div class="dropdown jumbotron">
-                        <select id="single" [(ngModel)]="newpackagename" class=" js-states form-control">
+                        <select id="single" [(ngModel)]="newpackagename" class=" js-states ">
                             <option value="0" selected>Selected Package Name</option>
                             <option *ngFor="let package of packagenameList" [value]="package.packageid">
                                 {{ package.packagename }}
@@ -1824,22 +1828,21 @@
         </div>
     </div>
     <div class=" d-flex justify-content-center align-item-center  mb-2">
-        <button type="button" class="btn confirm me-2" (click)="onFirstTimeActivationButtonClick()" [disabled]="!newpackagename || newpackagename === '0' || 
+
+        <button *ngIf="!confirmation" type="button" class="btn confirm me-2"
+            (click)="onFirstTimeActivationButtonClick()" [disabled]="!newpackagename || newpackagename === '0' || 
                 !selectedRechargetype || selectedRechargetype === '0' || !plantype ">
-            <!-- Updated condition for date -->
             Confirmation
         </button>
-
-        <!-- <button type="button" class="btn confirm me-2" >Confirmation</button> -->
+        <button *ngIf="confirmation" type="button" class="btn confirm me-2" (click)="onFirstTimeActivationClick()"
+            [disabled]="!newpackagename || newpackagename === '0' || 
+                !selectedRechargetype || selectedRechargetype === '0' || !plantype ">
+            Confirmation
+        </button>
         <button type="button" class="btn  recharge me-2" (click)="firsttimeActivationOfCard()">Activate</button>
-        <!-- <button type="button" class="btn recharge me-2" [disabled]="!confirmation"
-            (click)="firsttimeActivationOfCard()">Activate</button> -->
-
         <button type="button" class="btn btn-danger me-2" (click)="onNoClick()">Cancel</button>
     </div>
-    <!-- <div *ngIf="(!newpackagename || newpackagename === '0') || (!selectedRechargetype || selectedRechargetype === '0')" class="text-danger">
-        <p>Please select a valid package name and recharge type.</p>
-    </div> -->
+
 
 </div>
 <div *ngIf="sType=='suspend'">
@@ -2106,8 +2109,17 @@
     <div class=" d-flex justify-content-center align-item-center  mb-2">
         <!-- <button type="button" class="btn confirm me-2" (click)="onChangeBaseActivationButtonClick()" [disabled]="!newpackagename || newpackagename === '0' || 
                 !selectedRechargetype || selectedRechargetype === '0' || !plantype ">Confirmation</button> -->
-        <button type="button" class="btn confirm me-2" (click)="onChangeBaseActivationButtonClick()"
+        <button *ngIf="!confirmation" type="button" class="btn confirm me-2"
+            (click)="onChangeBaseActivationButtonClick()"
             [disabled]="!newpackagename || newpackagename === '0' ">Confirmation</button>
+
+        <button *ngIf="confirmation" type="button" class="btn confirm me-2" (click)="onChangeBaseActivationClick()"
+            [disabled]="!newpackagename || newpackagename === '0' ">Confirmation</button>
+
+
+
+
+
         <button type="button" class="btn  recharge me-2"
             (click)="baseChangeofSmartcardPackageActivate()">Activate</button>
         <button type="button" class="btn btn-danger me-2" (click)="onNoClick()">Cancel</button>
@@ -2266,7 +2278,7 @@
                                 <span for="password" class="me-2">Expiry date </span>
                             </div>
                             <div class="col-7 col-md-6 value">
-                                {{subscribername}}
+                                {{typeData?.expirydate}}
                             </div>
                         </div>
                     </div>
@@ -2276,7 +2288,7 @@
                                 <span class="me-2"> Customer Pay Amount </span>
                             </div>
                             <div class="col-7 col-md-6 value">
-                                {{smartcardno}}
+                                {{typeData?.pay}}
                             </div>
                         </div>
                     </div>
@@ -2286,7 +2298,7 @@
                                 <span for="password" class="me-2">Mso Amount for LCO </span>
                             </div>
                             <div class="col-7 col-md-6 value">
-                                {{subscribername}}
+                                {{typeData?.msoamount}}
                             </div>
                         </div>
                     </div>
@@ -2296,7 +2308,7 @@
                                 <span class="me-2"> Day</span>
                             </div>
                             <div class="col-7 col-md-6 value">
-                                {{smartcardno}}
+                                {{typeData?.days}}
                             </div>
                         </div>
                     </div>
@@ -2306,7 +2318,7 @@
                                 <span for="password" class="me-2">Selected Addon count</span>
                             </div>
                             <div class="col-7 col-md-6 value">
-                                {{subscribername}}
+                                {{typeData?.addoncount}}
                             </div>
                         </div>
                     </div>
@@ -2328,8 +2340,10 @@
                     </div>
                 </div>
                 <div class=" d-flex  align-item-center mx-3 mb-2 " style="margin-block: auto;">
-                    <button type="button" class="btn btn-success me-2" style="height: 40px;"
+                    <button *ngIf="!confirmation" type="button" class="btn btn-success me-2" style="height: 40px;"
                         [disabled]="!isAnyRowSelected" (click)="onAddonConfirmation()">Confirmation</button>
+                    <button *ngIf="confirmation" type="button" class="btn btn-success me-2" style="height: 40px;"
+                        [disabled]="!isAnyRowSelected" (click)="onAddon()">Confirmation</button>
                     <button type="button" class="btn btn-success me-2" style="height: 40px;"
                         (click)="addAddonForSmartcard()">ADD</button>
                     <button type="button" class="btn btn-danger" style="height: 40px;"
@@ -2338,7 +2352,7 @@
             </div>
             <div class="col-12 col-md-6  mb-3" style="padding: 1rem;">
                 <ag-grid-angular #agGrid id="myGrid" domLayout='autoHeight' class="ag-theme-alpine table-class"
-                    rowAnimation [columnDefs]="columnDefs1" [rowData]="rowData3" [enableCellTextSelection]="true">
+                    rowAnimation [columnDefs]="columnDefs1" [rowData]="typeData" [enableCellTextSelection]="true">
                 </ag-grid-angular>
             </div>
         </div>
@@ -2403,7 +2417,7 @@
             <div class="col-12 col-md-12  mb-3" style="padding: 1rem;">
 
                 <ag-grid-angular #agGrid id="myGrid" domLayout='autoHeight' class="ag-theme-alpine table-class"
-                    rowAnimation [gridOptions]="gridOptions" [columnDefs]="columnDefs2" [rowData]="rowData"
+                    rowAnimation [gridOptions]="gridOptions" [columnDefs]="columnDefs" [rowData]="rowData"
                     (gridReady)="onGridReady($event)" [enableCellTextSelection]="true"
                     (selectionChanged)="onSelectionChanged()" [rowSelection]="rowSelection">
                 </ag-grid-angular>
@@ -2418,7 +2432,7 @@
                                 <span for="password" class="me-2">Expiry date </span>
                             </div>
                             <div class="col-7 col-md-6 value">
-                                {{subscribername}}
+                                {{typeData?.expirydate}}
                             </div>
                         </div>
                     </div>
@@ -2428,7 +2442,7 @@
                                 <span class="me-2"> Customer Pay Amount </span>
                             </div>
                             <div class="col-7 col-md-6 value">
-                                {{smartcardno}}
+                                {{typeData?.amount}}
                             </div>
                         </div>
                     </div>
@@ -2438,7 +2452,7 @@
                                 <span for="password" class="me-2">Mso Amount for LCO </span>
                             </div>
                             <div class="col-7 col-md-6 value">
-                                {{subscribername}}
+                                {{typeData?.msoamount}}
                             </div>
                         </div>
                     </div>
@@ -2448,7 +2462,7 @@
                                 <span class="me-2"> Day</span>
                             </div>
                             <div class="col-7 col-md-6 value">
-                                {{smartcardno}}
+                                {{typeData?.days}}
                             </div>
                         </div>
                     </div>
@@ -2458,7 +2472,7 @@
                                 <span for="password" class="me-2">Selected Addon count</span>
                             </div>
                             <div class="col-7 col-md-6 value">
-                                {{subscribername}}
+                                {{typeData?.addoncount}}
                             </div>
                         </div>
                     </div>
@@ -2480,8 +2494,12 @@
                     </div>
                 </div>
                 <div class=" d-flex  align-item-center mx-3 mb-2 " style="margin-block: auto;">
-                    <button type="button" class="btn btn-success me-2" style="height: 40px;"
+                    <button *ngIf="!confirmation" type="button" class="btn btn-warning me-2" style="height: 40px;"
                         [disabled]="!isAnyRowSelected" (click)="onAlacarteConfirmation()">Confirmation</button>
+                    <button *ngIf="confirmation" type="button" class="btn btn-warning me-2" style="height: 40px;"
+                        [disabled]="!isAnyRowSelected" (click)="onAlacarte()">Confirmation</button>
+
+
                     <button type="button" class="btn btn-success me-2" style="height: 40px;"
                         (click)="addAlacarteSmartcard()">ADD</button>
                     <button type="button" class="btn btn-danger" style="height: 40px;"
@@ -2490,7 +2508,7 @@
             </div>
             <div class="col-12 col-md-6  mb-3" style="padding: 1rem;">
                 <ag-grid-angular #agGrid id="myGrid" domLayout='autoHeight' class="ag-theme-alpine table-class"
-                    rowAnimation [columnDefs]="columnDefs1" [rowData]="rowData3" [enableCellTextSelection]="true">
+                    rowAnimation [columnDefs]="columnDefs1" [rowData]="typeData" [enableCellTextSelection]="true">
                 </ag-grid-angular>
             </div>
         </div>
@@ -2545,9 +2563,13 @@
                 </div>
 
             </div>
-            <div class=" d-flex  align-item-center mx-3 mb-2 " style="margin-block: auto;">
-                <button type="button" class="btn btn-success me-2" style="height: 40px;" [disabled]="!isAnyRowSelected"
+            <div class=" d-flex justify-content-centerlign-item-center mx-3 mb-2 " style="margin-block: auto;">
+                <button *ngIf="!confirmation" type="button" class="btn btn-warning me-2" style="height: 40px;" [disabled]="!isAnyRowSelected"
                     (click)="onRemoveConfirmation()">Confirmation</button>
+                <button *ngIf="confirmation" type="button" class="btn btn-warning me-2" style="height: 40px;" [disabled]="!isAnyRowSelected"
+                    (click)="onRemove()">Confirmation</button>
+
+
                 <button type="button" class="btn btn-success me-2" style="height: 40px;"
                     (click)="removeProductForSmartcard()">Remove</button>
                 <button type="button" class="btn btn-danger" style="height: 40px;" (click)="onNoClick()">Cancel</button>

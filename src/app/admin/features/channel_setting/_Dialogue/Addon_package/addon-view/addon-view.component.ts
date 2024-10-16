@@ -59,6 +59,16 @@ export class AddonViewComponent {
     { headerName: 'BROADCASTER NAME	', field: 'broadcastername', editable: true, width: 180 },
     { headerName: 'SERIVICE ID	', field: 'service_id', editable: true, width: 160 },
     { headerName: 'RATE	', field: 'broadcaster_rate', editable: true, width: 180 },
-    { headerName: 'STATUS', field: 'statusdisplay', editable: true, width: 150 }
+    {
+      headerName: 'STATUS', field: 'isactive', editable: true, width: 150,
+      cellRenderer: (params: any) => {
+        if (params.value === true) {
+          return `<span style="color: green; font-weight: bold;">Active</span>`;
+        } else if (params.value === false) {
+          return `<span style="color: red; font-weight: bold;">Deactive</span>`;
+        }
+        return params.value; // handle other values if needed
+      }
+    }
   ];
 }

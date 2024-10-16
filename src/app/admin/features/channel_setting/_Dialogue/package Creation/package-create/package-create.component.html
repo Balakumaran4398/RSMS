@@ -1,11 +1,9 @@
-<form [formGroup]="createpackageForm" style="border-radius: 10px;">
+<div class="Head d-flex justify-content-between align-items-center mb-3" style="padding: 1rem;">
+    <h6>CREATE BASE PACKAGE</h6>
+    <i class="fa fa-close close-icon" style="cursor: pointer;" (click)="onNoClick()"></i>
+</div>
 
-    <!-- <div class="col"> -->
-    <div class="head d-flex justify-content-between align-items-center mb-3">
-        <span class="span">CREATE BASE PACKAGE</span>
-        <i class="fa fa-close close-icon" style="cursor: pointer;" (click)="onNoClick()"></i>
-    </div>
-    <!-- Row 1 -->
+<form [formGroup]="createpackageForm" style="border-radius: 10px;">
     <div class="" style="padding: 1rem;max-height: 560px; overflow: scroll;">
         <div class="row mb-3">
             <div class="input_box col-12 col-md-6">
@@ -17,13 +15,7 @@
                         class="error-message">
                         Package Logo is required.
                     </div>
-                    <!-- <div class="cal-2 col-sm-6 col-md-6 col-lg-6">
-                        <div class="img-show">
-                          <img [src]="url" title="Profile Picture" width="100%" height="200px" />
-                          <input type="file" id="img" style="display:none" accept="image/*"
-                            (change)="onFileSelected($event)"  [formControl]="proofFormControl" />
-                        </div>
-                      </div> -->
+                 
                 </div>
             </div>
             <div class="input_box col-12 col-md-6">

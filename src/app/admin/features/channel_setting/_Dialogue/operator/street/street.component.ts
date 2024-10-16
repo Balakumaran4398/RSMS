@@ -35,8 +35,7 @@ export class StreetComponent implements OnInit {
   }
   columnDefs: any[] = [
     {
-      headerName: "S.No", valueGetter: 'node.rowIndex+1', width: 80, headerCheckboxSelection: true,
-      checkboxSelection: true
+      headerName: "S.No", valueGetter: 'node.rowIndex+1', width: 80, 
     },
     {
       headerName: 'STREET NAME', width: 160, editable: true,
@@ -56,17 +55,19 @@ export class StreetComponent implements OnInit {
         editButton.style.backgroundColor = 'transparent';
         editButton.style.border = 'none';
         editButton.style.cursor = 'pointer';
+        // editButton.addEventListener('click', () => {
+        //   // if (isEditing) {
+        //   this.saveRow(params.data);
+        //   console.log(params.data);
+        //   // }
+        //   // else {
+        //   //   this.editingRow = { ...params.data };
+        //   //   this.gridApi.refreshCells();
+        //   // }
+        // });
         editButton.addEventListener('click', () => {
-          // if (isEditing) {
-          this.saveRow(params.data);
-          console.log(params.data);
-          // }
-          // else {
-          //   this.editingRow = { ...params.data };
-          //   this.gridApi.refreshCells();
-          // }
+          this.editarea('editstreet', params.data);
         });
-
         const closeButton = document.createElement('button');
         if (isEditing) {
           closeButton.innerHTML = '<i class="fa-solid fa-xmark"></i>';
@@ -134,9 +135,20 @@ export class StreetComponent implements OnInit {
         this.swal.Error(err?.error?.message);
       });
   }
-  newStreet(): void {
-    let dialogData = { areaid: this.areaid };
-    console.log('AREA ID             '+this.areaid);
+  newStreet(type: any): void {
+    let dialogData = { areaid: this.areaid || this.id, type: type };
+    console.log('AREA ID             ' + this.areaid);
+
+    const dialogRef = this.dialog.open(NewstreetComponent, {
+      width: '400px',
+      data: dialogData
+    });
+    dialogRef.afterClosed().subscribe(result => {
+      console.log('The dialog was closed');
+    });
+  }
+  editarea(type:any,data: any): void {
+    let dialogData = { data: data, type: type };
 
     const dialogRef = this.dialog.open(NewstreetComponent, {
       width: '400px',

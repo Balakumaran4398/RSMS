@@ -51,14 +51,6 @@ export class CreateltbComponent implements OnInit {
   onNoClick(): void {
     this.dialogRef.close();
   }
-  submit() {
-    this.userService.createLocalChannel(this.role, this.username, this.channel, this.opName, this.tax, this.lcoprice, this.lcnNo, this.chRate, this.istax)
-      .subscribe((res: any) => {
-        this.swal.success(res?.message);
-      }, (err) => {
-        this.swal.Error(err?.error?.message);
-      });
-  }
   onChange() {
     this.userService.getLocalCreationAmountDetails(this.role, this.username, this.chRate, !this.istax).subscribe((data: any) => {
       this.updateTax = data.tax;
@@ -67,4 +59,13 @@ export class CreateltbComponent implements OnInit {
     })
 
   }
+  submit() {
+    this.userService.createLocalChannel(this.role, this.username, this.channel, this.opName, this.updateTax, this.updateLcoPrice, this.lcnNo, this.chRate, this.istax)
+      .subscribe((res: any) => {
+        this.swal.success(res?.message);
+      }, (err) => {
+        this.swal.Error(err?.error?.message);
+      });
+  }
+
 }

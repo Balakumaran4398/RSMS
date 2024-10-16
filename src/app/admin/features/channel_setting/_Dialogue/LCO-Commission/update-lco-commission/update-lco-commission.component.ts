@@ -24,6 +24,8 @@ export class UpdateLcoCommissionComponent {
     public dialogRef: MatDialogRef<UpdateLcoCommissionComponent>, @Inject(MAT_DIALOG_DATA) public data: any, private userservice: BaseService, private storageservice: StorageService) {
     this.role = storageservice.getUserRole();
     this.username = storageservice.getUsername();
+    console.log(data);
+
     this.productname = data.productname;
     this.producttype = data.productTypeDisplay;
     this.id = data.id;
@@ -31,7 +33,7 @@ export class UpdateLcoCommissionComponent {
     this.commissionvalue = data.commissionvalue;
     this.isPercentage = data.ispercentage;
     console.log(this.id);
-    
+
   }
   onNoClick(): void {
     this.dialogRef.close();
@@ -78,16 +80,16 @@ export class UpdateLcoCommissionComponent {
       });
   }
 
-  toggleYes() {
-    this.isYesActive = true; // Set Yes active
-    this.isPercentage = this.isYesActive
-    console.log("Ispercentage" + this.isPercentage);
-  }
+  // toggleYes() {
+  //   this.isYesActive = true; // Set Yes active
+  //   this.isPercentage = this.isYesActive
+  //   console.log("Ispercentage" + this.isPercentage);
+  // }
 
-  toggleNo() {
-    this.isYesActive = false; // Set No active
-    this.isPercentage = this.isYesActive
-    console.log("Ispercentage" + this.isPercentage);
-  }
+  // toggleNo() {
+  //   this.isYesActive = false; // Set No active
+  //   this.isPercentage = this.isYesActive
+  //   console.log("Ispercentage" + this.isPercentage);
+  // }
 }
 

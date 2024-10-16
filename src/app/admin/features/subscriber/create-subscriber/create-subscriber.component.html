@@ -152,18 +152,18 @@
 
                     <div class="input_box">
                         <label for="pass">Landline No</label>
-                        <input pattern="^0\d{2,4}\d{6,8}$" maxlength="11" type="text" formControlName="landlineno"
+                        <input pattern="^0\d{2,4}\d{6,8}$" maxlength="11" type="text" formControlName="landlineno" (keypress)="onKeydown_landline($event)"
                             placeholder="Enter Landline Number"
-                            [ngClass]="{ 'is-invalid': submitted && f['landlineno'].errors }" required />
+                            [ngClass]="{'is-invalid': submitted && f['landlineno'].errors }" required />
 
                         <div style="position: relative; font-size: small;" *ngIf="submitted && f['landlineno'].errors"
                             class="invalid-feedback">
                             <div *ngIf="f['landlineno'].errors['required']">
                                 Landline Number is required
                             </div>
-                            <!-- <div *ngIf="f['landlineno'].errors['pattern']">
+                            <div *ngIf="f['landlineno'].errors['pattern']">
                                 Please enter a valid Landline Number in the format 0XX-XXXXXX
-                            </div> -->
+                            </div>
                         </div>
                     </div>
                     <div class="input_box">
@@ -179,7 +179,10 @@
                     <div class="input_box">
                         <label for="confirmPass">Form Submission Date</label>
                         <!-- <input type="datetime-local" step='1' id="birthdaytime" name="birthdaytime"> -->
-                        <input type="datetime-local" step='1' placeholder="Form Submission Date"
+                        <!-- <input type="datetime-local" step='1' placeholder="Form Submission Date"
+                            formControlName="formsubmissiondate"
+                            [ngClass]="{ 'is-invalid': submitted && f['formsubmissiondate'].errors }" required> -->
+                        <input type="date" step='1' placeholder="Form Submission Date"
                             formControlName="formsubmissiondate"
                             [ngClass]="{ 'is-invalid': submitted && f['formsubmissiondate'].errors }" required>
 

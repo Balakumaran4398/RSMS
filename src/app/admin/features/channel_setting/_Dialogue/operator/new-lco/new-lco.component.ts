@@ -87,5 +87,8 @@ export class NewLcoComponent {
       event.preventDefault();
     }
   }
+  onNoClick(): void {
+    this.dialogRef.close();
+  }
 
 }

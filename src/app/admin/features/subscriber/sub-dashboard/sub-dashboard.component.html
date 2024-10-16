@@ -54,8 +54,7 @@
                                 <div class="tooltip-content">CAS Form</div>
                             </div>
                             <div class="icon-item d-flex align-item-center tooltip-container"
-                                style="background-color: var(--primary-color);"
-                                (click)="openDialog('editDetails')">
+                                style="background-color: var(--primary-color);" (click)="openDialog('editDetails')">
                                 <i class="fas fa-edit" style="font-size:14px;color: white;"></i>
                                 <div class="tooltip-content">Edit </div>
                             </div>
@@ -68,8 +67,6 @@
                         </div>
                     </div>
                     <div class="col-12 col-md-12 mobile1" style="padding: 1rem;">
-
-
                         <div class="d-flex">
 
                             <div class="col-6 col-md-4 d-flex justify-content-start align-items-center mb-1 text2">
@@ -145,7 +142,7 @@
                     <div class="d-flex justify-content-between align-item-center mb-1">
                         <div class="d-flex" style="padding: 10px;">
                             <img src="assets/images/icons/smartcard.png" alt="" style="width: 35px;">&nbsp;&nbsp;
-                            <h6 style="margin: auto;"> SMARTCARD LIST</h6>
+                            <h6 style="margin: auto;color: black;font-weight: 600;"> SMARTCARD LIST</h6>
                         </div>
                         <div class="d-flex  icon-container" style="padding: 10px;">
                             <div class="icon-item d-flex align-item-center tooltip-container"
@@ -164,7 +161,7 @@
                     <div class="col-12 col-md-12 mb-3">
                         <ag-grid-angular #agGrid id="myGrid" domLayout='autoHeight' class="ag-theme-alpine table-class"
                             rowAnimation [gridOptions]="gridOptions" [columnDefs]="columnDefs" [rowData]="rowData"
-                            (gridReady)="onGridReady()" [enableCellTextSelection]="true">
+                            [enableCellTextSelection]="true">
                         </ag-grid-angular>
                     </div>
                 </div>
@@ -178,11 +175,11 @@
                     <div class="d-flex justify-content-start align-item-center">
                         <div class="d-flex" style="padding: 10px;">
                             <img src="assets/images/icons/smartcard.png" alt="" style="width: 35px;">&nbsp;&nbsp;
-                            <h6 style="margin: auto;"> PACKAGE STATUS</h6>
+                            <h6 style="margin: auto;color: rgb(51, 106, 128);font-weight: 600;"> PACKAGE STATUS</h6>
                         </div>
                     </div>
                     <div class="col-12 d-flex justify-content-center align-item-center mb-1"
-                        style="background-color: rgb(223, 223, 219);padding: 5px;">
+                        style="background-color: rgb(213, 224, 233);padding: 5px;">
                         {{subdetailsList?.smartcard}}
                     </div>
                     <div class="col-12 d-flex justify-content-center align-item-center mb-1"
@@ -323,7 +320,8 @@
                     <div class="d-flex justify-content-between align-item-center mb-1">
                         <div class="d-flex" style="padding: 10px;">
                             <img src="assets/images/icons/smartcard.png" alt="" style="width: 35px;">&nbsp;&nbsp;
-                            <h6 style="margin: auto;"> {{subdetailsList?.smartcard}}</h6>
+                            <h6 style="margin: auto;color: #b14662;font-weight: 600;"> {{subdetailsList?.smartcard}}
+                            </h6>
                         </div>
                         <!-- <div class="d-flex  icon-container" style="padding: 10px;">
                             <div class="icon-item d-flex align-item-center tooltip-container"
@@ -391,8 +389,8 @@
                                     Box Status
                                 </div>
                                 <div class="col-6 col-md-6 d-flex justify-content-start align-items-center">
-                                    <span [ngClass]="subdetailsList?.boxstatus ? 'new-green' : 'old-red'">
-                                        {{ subdetailsList?.boxstatus ? 'New' : 'Old' }}
+                                    <span [ngClass]="subdetailsList?.statusdisplay ? 'new-green' : 'old-red'">
+                                        {{ subdetailsList?.statusdisplay ? 'Active' : 'Deactive' }}
                                     </span>
 
                                 </div>
@@ -409,7 +407,7 @@
                                 <div
                                     class="col-12 col-md-6 display_btn1 justify-content-center align-items-center  text3">
                                     <button class="btn  d-flex justify-content-between"
-                                        [disabled]="subdetailsList?.status=== 0"
+                                        [disabled]="subdetailsList?.status === 1"
                                         (click)="openDialog('packagactivation')">
                                         <i class="fa-solid fa-gears"></i><span>Package
                                             Activation</span></button>
@@ -523,44 +521,46 @@
                                         <i class="fa-solid fa-ban" style="font-size:15px;color: #090f13;"></i><span
                                             style="font-size:15px;color: #090f13;">Block</span></button>
                                 </div>
-                                <!-- <div *ngIf="!cancelsubscription&&pair&&unpair" -->
-                                <div
-                                class="col-12 col-md-6 d-flex justify-content-center align-items-center text3">
-                                <button class="btn  d-flex justify-content-between"
-                                    (click)="managePackage('cancelsubscription')">
-                                    <i class="fa fa-refresh"></i><span>Cancel Subscription</span></button>
-                            </div>
-                            <!-- <div -->
-                            <div *ngIf="!unpair&&cancelsubscription&&pair"
-                                class="col-12 col-md-6 d-flex justify-content-center align-items-center  text3">
-                                <button class="btn  d-flex justify-content-between" (click)="managePackage('unpair')">
-                                    <i class="fa-solid fa-ban" style="font-size:15px;color: #090f13;"></i><span
-                                        style="font-size:15px;color: #090f13;">Unpair</span></button>
-                            </div>
-                            <!-- <div *ngIf="!pair&&cancelsubscription&&unpair" -->
-                            <div class="col-12 col-md-6 d-flex justify-content-center align-items-center  text3">
-                                <button class="btn  d-flex justify-content-between" (click)="pairDialogue('pair')">
-                                    <i class="fa fa-refresh"></i><span>Pair</span></button>
+                                <!-- <div -->
+                                <div *ngIf="!cancelsubscription&&pair&&unpair"
+                                    class="col-12 col-md-6 d-flex justify-content-center align-items-center text3">
+                                    <button class="btn  d-flex justify-content-between"
+                                        (click)="managePackage('cancelsubscription')">
+                                        <i class="fa fa-refresh"></i><span>Cancel Subscription</span></button>
+                                </div>
+                                <!-- <div -->
+                                <div *ngIf="!unpair&&cancelsubscription&&pair"
+                                    class="col-12 col-md-6 d-flex justify-content-center align-items-center  text3">
+                                    <button class="btn  d-flex justify-content-between"
+                                        (click)="managePackage('unpair')">
+                                        <i class="fa-solid fa-ban" style="font-size:15px;color: #090f13;"></i><span
+                                            style="font-size:15px;color: #090f13;">Unpair</span></button>
+                                </div>
+                                <!-- <div  -->
+                                <div *ngIf="!pair&&cancelsubscription&&unpair"
+                                    class="col-12 col-md-6 d-flex justify-content-center align-items-center  text3">
+                                    <button class="btn  d-flex justify-content-between" (click)="pairDialogue('pair')">
+                                        <i class="fa fa-refresh"></i><span>Pair</span></button>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-</div>
-</section>
-<section *ngIf="expandale" class="expandale">
-    <div class="card">
-        <mat-accordion class="example-headers-align">
-            <mat-expansion-panel [expanded]="step() === 0" (opened)="setStep(0)" hideToggle>
-                <mat-expansion-panel-header>
-                    <mat-panel-title class="text2"> Manage Package</mat-panel-title>
-                </mat-expansion-panel-header>
+    </section>
+    <section *ngIf="expandale" class="expandale">
+        <div class="card">
+            <mat-accordion class="example-headers-align">
+                <mat-expansion-panel [expanded]="step() === 0" (opened)="setStep(0)" hideToggle>
+                    <mat-expansion-panel-header>
+                        <mat-panel-title class="text2"> Manage Package</mat-panel-title>
+                    </mat-expansion-panel-header>
 
-                <div class="col-12 col-md-12 col-md-8 mx-2">
-                    <div class="">
-                        <section class="Tab col-xl-12 col-sm-6 col-12  " style="max-height: 73vh;overflow: scroll;">
-                            <!-- <div class="display tablist justify-content-center align-items-center ">
+                    <div class="col-12 col-md-12 col-md-8 mx-2">
+                        <div class="">
+                            <section class="Tab col-xl-12 col-sm-6 col-12  " style="max-height: 73vh;overflow: scroll;">
+                                <!-- <div class="display tablist justify-content-center align-items-center ">
                                     <div class="tab mb-3" [class.active]="selectedTab === 'addon'"
                                         (click)="managePackage('addon')">
                                         ADDON ADD
@@ -579,184 +579,197 @@
                                     </div>
                                 </div> -->
 
-                            <div class="display tablist justify-content-center align-items-center">
-                                <!-- ADDON ADD -->
-                                <div class="tab mb-3" [class.active]="selectedTab === 'addon'"
-                                    [class.disabled]="!(subdetailsList?.status > 2 && subdetailsList?.noofdays > 1)"
-                                    (click)="subdetailsList?.status > 2 && subdetailsList?.noofdays > 1 ? managePackage('addon') : null">
-                                    ADDON ADD
+                                <div class="display tablist justify-content-center align-items-center">
+                                    <!-- ADDON ADD -->
+                                    <!-- <div class="tab mb-3" [class.active]="selectedTab === 'addon'"
+                                        [class.disabled]="!(subdetailsList?.status > 2 && subdetailsList?.noofdays > 1)"
+                                        (click)="subdetailsList?.status > 2 && subdetailsList?.noofdays > 1 ? managePackage('addon') : null">
+                                        ADDON ADD
+                                    </div> -->
+
+                                    <!-- ALACARTE ADD -->
+                                    <!-- <div class="tab mb-3" [class.active]="selectedTab === 'alacarte'"
+                                        [class.disabled]="!(subdetailsList?.status > 2 && subdetailsList?.noofdays > 1)"
+                                        (click)="subdetailsList?.status > 2 && subdetailsList?.noofdays > 1 ? managePackage('alacarte') : null">
+                                        ALACARTE ADD
+                                    </div> -->
+
+                                    <!-- REMOVE PRODUCT -->
+                                    <!-- <div class="tab mb-3" [class.active]="selectedTab === 'remove'"
+                                        [class.disabled]="!(subdetailsList?.status > 2 && subdetailsList?.noofdays > 1)"
+                                        (click)="subdetailsList?.status > 2 && subdetailsList?.noofdays > 1 ? managePackage('remove') : null">
+                                        REMOVE PRODUCT
+                                    </div> -->
+
+                                    <div class="tab mb-3" (click)="managePackage('addon')">ADDON ADD </div>
+                                    <div class="tab mb-3" (click)="managePackage('alacarte')"> ALACARTE ADD </div>
+                                    <div class="tab mb-3" (click)="managePackage('remove')"> REMOVE PRODUCT </div>
+                                    <!-- BASE CHANGE -->
+                                    <div class="tab mb-3" [class.active]="selectedTab === 'BASE'"
+                                        (click)="openDialog('BASE')">
+                                        BASE CHANGE
+                                    </div>
                                 </div>
 
-                                <!-- ALACARTE ADD -->
-                                <div class="tab mb-3" [class.active]="selectedTab === 'alacarte'"
-                                    [class.disabled]="!(subdetailsList?.status > 2 && subdetailsList?.noofdays > 1)"
-                                    (click)="subdetailsList?.status > 2 && subdetailsList?.noofdays > 1 ? managePackage('alacarte') : null">
-                                    ALACARTE ADD
-                                </div>
+                            </section>
 
-                                <!-- REMOVE PRODUCT -->
-                                <div class="tab mb-3" [class.active]="selectedTab === 'remove'"
-                                    [class.disabled]="!(subdetailsList?.status > 2 && subdetailsList?.noofdays > 1)"
-                                    (click)="subdetailsList?.status > 2 && subdetailsList?.noofdays > 1 ? managePackage('remove') : null">
-                                    REMOVE PRODUCT
-                                </div>
 
-                                <!-- BASE CHANGE -->
-                                <div class="tab mb-3" [class.active]="selectedTab === 'BASE'"
-                                    (click)="openDialog('BASE')">
-                                    BASE CHANGE
+
+                            <div class="d-flex justify-content-center align-item-center mb-1">
+                                <div class="d-flex  justify-content- align-item-center">
+                                    <h6 style="text-align: center;color:#1c3f57"> ACTIVE PRODUCT DETAILS</h6>
                                 </div>
                             </div>
 
-                        </section>
+                            <div class="col-12 col-md-12 mb-3">
+                                <ag-grid-angular #agGrid id="myGrid" domLayout='autoHeight'
+                                    class="ag-theme-alpine table-class" rowAnimation [gridOptions]="gridOptions"
+                                    [columnDefs]="columnDefs1" [rowData]="rowData1" (gridReady)="onGridReady($event)"
+                                    [rowSelection]="rowSelection" (selectionChanged)="onSelectionChanged()"
+                                    [enableCellTextSelection]="true">
+                                </ag-grid-angular>
 
 
-
-                        <div class="d-flex justify-content-center align-item-center mb-1">
-                            <div class="d-flex  justify-content- align-item-center">
-                                <h6 style="text-align: center;"> ACTIVE PRODUCT DETAILS</h6>
                             </div>
                         </div>
 
-                        <div class="col-12 col-md-12 mb-3">
-                            <ag-grid-angular #agGrid id="myGrid" domLayout='autoHeight'
-                                class="ag-theme-alpine table-class" rowAnimation [gridOptions]="gridOptions"
-                                [columnDefs]="columnDefs1" [rowData]="rowData1" (gridReady)="onGridReady()"
-                                [rowSelection]="rowSelection" (selectionChanged)="onSelectionChanged()"
-                                [enableCellTextSelection]="true">
-                            </ag-grid-angular>
-                        </div>
                     </div>
-
-                </div>
-                <div class="col-12 col-md-12 display justify-content-center align-items-center">
-                    <div class="input_box col-12 col-md-9">
-                        <div class=" display justify-content-start align-items-center">
-                            <div class="col-12 col-md-4 display justify-content-start align-items-center mb-3">
-                                <div class="col-12 col-md-6">
-                                    <!-- <label for="">Recharge Type</label> -->
-                                    <label for="">Recharge TYPE
-                                        <!-- <span style="display:none;">{{rechargetype[0].name}}</span> -->
-                                    </label>
+                    <div class="col-12 col-md-12 display justify-content-center align-items-center">
+                        <div class="input_box col-12 col-md-9">
+                            <div class=" display justify-content-start align-items-center">
+                                <div class="col-12 col-md-4 display justify-content-start align-items-center mb-3">
+                                    <div class="col-12 col-md-6">
+                                        <!-- <label for="">Recharge Type</label> -->
+                                        <label for="">Recharge TYPE
+                                            <!-- <span style="display:none;">{{rechargetype[0].name}}</span> -->
+                                        </label>
+                                    </div>
+                                    <div class="col-12 col-md-6">
+                                        <select [(ngModel)]="selectedRechargetype"
+                                            (ngModelChange)="onSelectionrechargetype($event)">
+                                            <option value="0" selected>Selected Recharge</option>
+                                            <option *ngFor="let rt of rechargetype" [value]="rt.id">
+                                                {{rt.name}}
+                                            </option>
+                                        </select>
+                                    </div>
                                 </div>
-                                <div class="col-12 col-md-6">
-                                    <select [(ngModel)]="selectedRechargetype"
-                                        (ngModelChange)="onSelectionrechargetype($event)">
-                                        <option value="0" selected>Selected Recharge</option>
-                                        <option *ngFor="let rt of rechargetype" [value]="rt.id">
-                                            {{rt.name}}
-                                        </option>
-                                    </select>
-                                </div>
-                            </div>
-                            <div *ngIf="isplantype"
-                                class=" col-12 col-md-4 display justify-content-center align-items-center mb-3">
-                                <!-- <div class="col-12 col-md-6 ">
+                                <div *ngIf="isplantype"
+                                    class=" col-12 col-md-4 display justify-content-center align-items-center mb-3">
+                                    <!-- <div class="col-12 col-md-6 ">
                                         <label for="">Plan Type</label>
                                     </div> -->
-                                <div class="col-12 col-md-6">
-                                    <select [(ngModel)]="plantype" (ngModelChange)="onSelectionplantype($event)">
-                                        <option value="0" selected>Selected Plan</option>
-                                        <option *ngFor="let plan of plantype$ | async | keyvalue" [value]="plan.value">
-                                            {{ plan.key }}
-                                        </option>
-                                    </select>
+                                    <div class="col-12 col-md-6">
+                                        <select [(ngModel)]="plantype" (ngModelChange)="onSelectionplantype($event)">
+                                            <option value="0" selected>Selected Plan</option>
+                                            <option *ngFor="let plan of plantype$ | async | keyvalue"
+                                                [value]="plan.value">
+                                                {{ plan.key }}
+                                            </option>
+                                        </select>
+                                    </div>
                                 </div>
-                            </div>
-                            <div *ngIf="datetype"
-                                class="col-12 col-md-4 display justify-content-center align-items-center mb-3">
-                                <!-- <div class="col-12 col-md-6 ">
-                                        <label for="">Date</label>
-                                    </div> -->
-                                <div class="col-12 col-md-6">
-                                    <input type="date">
+                                <div *ngIf="datetype"
+                                    class="col-12 col-md-4 display justify-content-center align-items-center mb-3">
+
+                                    <div class="col-12 col-md-6">
+                                        <input type="date" [(ngModel)]="plantype">
+                                    </div>
                                 </div>
+                               
                             </div>
-                        </div>
-                        <div *ngIf="confirmation">
-                            <div style="padding: 1rem;">
-                                <div class="card1 mb-2" style="padding: 1rem;border-color:1px #090f13;">
-                                    <div class="  mb-3">
-                                        <div class="d-flex align-items-center justify-content-center">
-                                            <div class="col-6 col-md-6">
-                                                <span for="password" class="me-2">Old Expiry date</span>
-                                            </div>
-                                            <div class="col-6 col-md-6 value">
-                                                <!-- {{smartcardno}} -->
+                            <div *ngIf="confirmation">
+                                <div style="padding: 1rem;">
+                                    <div class="card1 mb-2" style="padding: 1rem;border-color:1px #090f13;">
+                                        <div class="  mb-3">
+                                            <div class="d-flex align-items-center justify-content-center">
+                                                <div class="col-6 col-md-6">
+                                                    <span for="password" class="me-2">Old Expiry date</span>
+                                                </div>
+                                                <div class="col-6 col-md-6 value">
+                                                    <!-- {{smartcardno}} -->
+                                                </div>
                                             </div>
                                         </div>
-                                    </div>
-                                    <div class="input_box Isactive mb-3">
-                                        <div class="d-flex align-items-center justify-content-center">
-                                            <div class="col-6 col-md-6">
-                                                <span class="me-2">New Expiry date </span>
-                                            </div>
-                                            <div class="col-6 col-md-6 value">
-                                                <!-- {{boxno}} -->
+                                        <div class="input_box Isactive mb-3">
+                                            <div class="d-flex align-items-center justify-content-center">
+                                                <div class="col-6 col-md-6">
+                                                    <span class="me-2">New Expiry date </span>
+                                                </div>
+                                                <div class="col-6 col-md-6 value">
+                                                    <!-- {{boxno}} -->
+                                                </div>
                                             </div>
                                         </div>
-                                    </div>
 
 
-                                    <div class="input_box  mb-3">
-                                        <div class="d-flex align-items-center justify-content-center">
-                                            <div class="col-6 col-md-6">
-                                                <span class="me-2">Customer Amount</span>
-                                            </div>
-                                            <div class="col-6 col-md-6 value">
-                                                <!-- {{cardbalance}} -->
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="input_box  mb-3">
-                                        <div class="d-flex align-items-center justify-content-center">
-                                            <div class="col-6 col-md-6">
-                                                <span class="me-2">MSO Amount</span>
-                                            </div>
-                                            <div class="col-6 col-md-6 value">
-                                                <!-- {{cardbalance}} -->
+                                        <div class="input_box  mb-3">
+                                            <div class="d-flex align-items-center justify-content-center">
+                                                <div class="col-6 col-md-6">
+                                                    <span class="me-2">Customer Amount</span>
+                                                </div>
+                                                <div class="col-6 col-md-6 value">
+                                                    <!-- {{cardbalance}} -->
+                                                </div>
                                             </div>
                                         </div>
-                                    </div>
-                                    <div class="  mb-3">
-                                        <div class="d-flex align-items-center justify-content-center">
-                                            <div class="input_box col-6 col-md-6">
-                                                <span class="me-2">Customer pay </span>
+                                        <div class="input_box  mb-3">
+                                            <div class="d-flex align-items-center justify-content-center">
+                                                <div class="col-6 col-md-6">
+                                                    <span class="me-2">MSO Amount</span>
+                                                </div>
+                                                <div class="col-6 col-md-6 value">
+                                                    <!-- {{cardbalance}} -->
+                                                </div>
                                             </div>
-                                            <div
-                                                class="col-6 col-md-6 display justify-content-start align-items-center">
-                                                <div class="can-toggle">
-                                                    <input id="a" type="checkbox" [(ngModel)]="billtype"
-                                                        (change)="onBillTypeChange()">
-                                                    <label for="a">
-                                                        <div class="can-toggle__switch" data-checked="Paid"
-                                                            data-unchecked="Unpaid"></div>
-                                                    </label>
+                                        </div>
+                                        <div class="  mb-3">
+                                            <div class="d-flex align-items-center justify-content-center">
+                                                <div class="input_box col-6 col-md-6">
+                                                    <span class="me-2">Customer pay </span>
+                                                </div>
+                                                <div
+                                                    class="col-6 col-md-6 display justify-content-start align-items-center">
+                                                    <div class="can-toggle">
+                                                        <input id="a" type="checkbox" [(ngModel)]="billtype"
+                                                            (change)="onBillTypeChange()">
+                                                        <label for="a">
+                                                            <div class="can-toggle__switch" data-checked="Paid"
+                                                                data-unchecked="Unpaid"></div>
+                                                        </label>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
 
-                        <div class=" d-flex justify-content-start align-item-center  mb-2">
+                            <!-- <div class=" d-flex justify-content-start align-item-center  mb-2">
                             <button type="button" class="btn2 confirm me-2"
                                 (click)="rechargetoggleConfirmation()">Confirmation</button>
                             <button type="button" class="btn2  recharge" (click)="recharge()">Recharge</button>
+                        </div> -->
+
+                            <div class=" d-flex justify-content-start align-item-center  mb-2">
+                                <button *ngIf="!confirmation" type="button" class="btn2 confirm me-2"
+                                    (click)="rechargetoggle()">Confirmation</button>
+                                <button *ngIf="confirmation" type="button" class="btn2 confirm me-2"
+                                    (click)="rechargetoggleConfirmation()">Confirmation</button>
+                                <button type="button" class="btn2  recharge" (click)="recharge()">Recharge</button>
+                            </div>
+                        </div>
+
+                        <div class=" d-flex justify-content-end align-items-center">
+                            <a class="btn3 btn-outline-success mx-1 d-flex justify-content-end align-items-center"
+                                style="cursor: pointer;" (click)="generateBillpdf()">
+                                <span class="me-2">Generate Bill PDF</span>
+                                <i class="fa fa-download" aria-hidden="true"></i>
+                            </a>
                         </div>
                     </div>
-
-                    <div class=" d-flex justify-content-end align-items-center">
-                        <a class="btn3 btn-outline-success mx-1 d-flex justify-content-end align-items-center"
-                            style="cursor: pointer;" (click)="generateBillpdf()">
-                            <span class="me-2">Generate Bill PDF</span>
-                            <i class="fa fa-download" aria-hidden="true"></i>
-                        </a>
-                    </div>
-                </div>
-            </mat-expansion-panel>
-        </mat-accordion>
-    </div>
-</section>
+                </mat-expansion-panel>
+            </mat-accordion>
+        </div>
+    </section>
 </div>

@@ -16,6 +16,11 @@ export class PackageReferenceComponent {
   selectedTab: any = '1';
   rowData: any[] = [];
   cas: any[] = [];
+  gridApi: any;
+  isAnyRowSelected: any = false;
+  selectedIds: number[] = [];
+  selectedtypes: number[] = [];
+  hasSelectedRows: boolean = true;
   gridOptions = {
     defaultColDef: {
       sortable: true,
@@ -27,17 +32,45 @@ export class PackageReferenceComponent {
     paginationPageSize: 10,
     pagination: true,
   }
+  rows: any[] = [];
+
+  public rowSelection: any = "multiple";
+  agGrid: any;
+
   constructor(public dialog: MatDialog, public userservice: BaseService, storageService: StorageService) {
     this.username = storageService.getUsername();
     this.role = storageService.getUserRole();
   }
   selectTab(tab: string) {
     this.selectedTab = tab;
+    if (this.gridOptions) {
+      let newRowData;
+      if (this.selectedTab === '1') {
+        newRowData = this.getBasePackageData('1');
+      } else if (this.selectedTab === '2') {
+        newRowData = this.getAddonPackageData('2');
+      } else if (this.selectedTab === '3') {
+        newRowData = this.getAlacarteData('3');
+      }
+    }
   }
+  getBasePackageData(event: any) {
+    this.onSubscriberStatusChange(event)
+    return [this.rowData];
+  }
+  getAddonPackageData(event: any) {
+    this.onSubscriberStatusChange(event)
+    return [this.rowData];
+  }
+  getAlacarteData(event: any) {
+    this.onSubscriberStatusChange(event)
+    return [this.rowData];
+  }
+
   ngAfterViewInit(): void {
     this.loadData(this.selectedTab);
   }
-  onSubscriberStatusChange() {
+  onSubscriberStatusChange(event: any) {
     this.userservice.ProductTeference(this.role, this.username, this.Castype, this.selectedTab).subscribe((data: any) => {
       if (this.selectedTab === '1') {
         this.rowData = data.baselist;
@@ -46,7 +79,7 @@ export class PackageReferenceComponent {
       } else if (this.selectedTab === '3') {
         this.rowData = data.alacartelist;
       } else {
-        this.rowData = []; 
+        this.rowData = [];
       }
 
       this.updateColumnDefs(this.selectedTab);
@@ -74,7 +107,20 @@ export class PackageReferenceComponent {
     )
 
   }
-
+  onGridReady(params: { api: any; }) {
+    // this.gridApi.sizeColumnsToFit();
+    this.gridApi = params.api;
+  }
+  onSelectionChanged() {
+    if (this.gridApi) {
+      const selectedRows = this.gridApi.getSelectedRows();
+      this.isAnyRowSelected = selectedRows.length > 0;
+      console.log("Selected Rows:", selectedRows);
+      this.rows = selectedRows;
+      this.selectedIds = selectedRows.map((e: any) => e.id);
+      this.selectedtypes = selectedRows.map((e: any) => e.isactive);
+    }
+  }
   private loadData(tab: any): void {
     this.userservice.Cas_type(this.role, this.username).subscribe((data) => {
       this.cas = data;
@@ -251,21 +297,21 @@ export class PackageReferenceComponent {
     } as any;
 
     if (this.selectedTab == 1) {
-      requestBody['baselist'] = this.rowData.map(item => ({
+      requestBody['baselist'] = this.rows.map(item => ({
         productname: item.productname,
         casproductid: item.casproductid,
         packagerate: item.packagerate,
         orderid: item.orderid
       }));
     } else if (this.selectedTab == 2) {
-      requestBody['addonlist'] = this.rowData.map(item => ({
+      requestBody['addonlist'] = this.rows.map(item => ({
         productname: item.productname,
         casproductid: item.casproductid,
         packagerate: item.packagerate,
         orderid: item.orderid
       }));
     } else if (this.selectedTab == 3) {
-      requestBody['alacartelist'] = this.rowData.map(item => ({
+      requestBody['alacartelist'] = this.rows.map(item => ({
         productname: item.productname,
         casproductid: item.casproductid,
         packagerate: item.packagerate,

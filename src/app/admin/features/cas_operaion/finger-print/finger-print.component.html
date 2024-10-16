@@ -83,7 +83,7 @@
                             <div class="col-12 col-md-3 mb-8">
                                 <select formControlName="intendto" [(ngModel)]="intend_1"
                                     (ngModelChange)="onChangeIntendTo1($event)">
-                                    <option value="" selected>Select Intend</option>
+                                    <option value="0" selected>Select Intend</option>
                                     <option *ngFor="let Intend of intend" [value]="Intend.value">{{Intend.lable}}
                                     </option>
                                 </select>

@@ -24,7 +24,7 @@ export class SubscriberImportComponent implements OnInit {
   closeDialogue: boolean = true;
   selectedFCFormControl = new FormControl('');
   insert: any;
-  operatorid: any=0;
+  operatorid: any = 0;
   operator_details: any = [];
   operatorList: any[] = [];
 
@@ -127,9 +127,8 @@ export class SubscriberImportComponent implements OnInit {
   }
   bulkSubscriberImport() {
     if (this.file) {
-      console.log(this.file); // File is correctly loaded
+      console.log(this.file);
 
-      // Show Swal alert for upload process
       Swal.fire({
         title: 'Uploading...',
         text: 'Please wait while your file is being uploaded.',
@@ -137,21 +136,12 @@ export class SubscriberImportComponent implements OnInit {
         allowOutsideClick: false,
         showConfirmButton: false,
       });
-
-      // Create FormData to send the file and other data
       const formData = new FormData();
-      formData.append('role', this.role);  // Append additional form data
+      formData.append('role', this.role);
       formData.append('username', this.username);
-      formData.append('file', this.file);  // Append the selected file
+      formData.append('file', this.file);
       formData.append('operatorid', this.operatorid);
       formData.append('isinsert', this.insert.toString());
-      console.log(this.role);
-      console.log(this.username);
-      console.log(this.file);
-      console.log(this.operatorid);
-      console.log(this.insert.toString());
-
-
       this.userservice.bulkSubscriberInsert(formData).subscribe(
         (res: any) => {
           console.log(res);

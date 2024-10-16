@@ -4,6 +4,7 @@ import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 import { FormControl } from '@angular/forms';
 import { BaseService } from 'src/app/_core/service/base.service';
 import { StorageService } from 'src/app/_core/service/storage.service';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-nav',
@@ -60,21 +61,121 @@ export class NavComponent implements OnInit, AfterViewInit {
   }
   onsubscriberlist(value: any) {
     this.showDropdown = true;
-    this.userservice.getSearchDetailsSubscriber(this.role, this.username, value).subscribe((data: any) => {
-      console.log(data);
-      this.subscriber = data;
-      this.subscriberList = Object.keys(data).map(key => {
-        const value = data[key];
-        const name = key;
-        return { name: name, value: value };
-      });
-      this.subscriberList.sort((a: any, b: any) => {
-        if (a.value > b.value) return 1;
-        if (a.value < b.value) return -1;
-        return 0;
-      });
-      console.log(this.subscriberList);
-    })
+    // this.userservice.getSearchDetailsSubscriber(this.role, this.username, value).subscribe((data: any) => {
+    //   console.log(data);
+    //   this.subscriber = data;
+    //   this.subscriberList = Object.keys(data).map(key => {
+    //     const value = data[key];
+    //     const name = key;
+    //     return { name: name, value: value };
+    //   });
+    //   this.subscriberList.sort((a: any, b: any) => {
+    //     if (a.value > b.value) return 1;
+    //     if (a.value < b.value) return -1;
+    //     return 0;
+    //   });
+    //   console.log(this.subscriberList);
+    // })
+
+    // this.userservice.getSearchDetailsSubscriber(this.role, this.username, value).subscribe(
+    //   (data: any) => {
+    //     console.log(data);
+    
+    //     // Check if data is empty or null
+    //     if (!data || Object.keys(data).length === 0) {
+    //       console.log('No data found');
+    //       Swal.fire({
+    //         title: 'No Data',
+    //         text: 'No subscriber details found for this search.',
+    //         icon: 'warning',
+    //         confirmButtonText: 'OK'
+    //       });
+    //       return;
+    //     }
+    
+    //     // If data is not empty, process it
+    //     this.subscriber = data;
+    //     this.subscriberList = Object.keys(data).map(key => {
+    //       const value = data[key];
+    //       const name = key;
+    //       return { name: name, value: value };
+    //     });
+    
+    //     // Sort the subscriberList by value
+    //     this.subscriberList.sort((a: any, b: any) => {
+    //       if (a.value > b.value) return 1;
+    //       if (a.value < b.value) return -1;
+    //       return 0;
+    //     });
+    
+    //     console.log(this.subscriberList);
+    //   },
+    //   (error) => {
+    //     // Handle error from the API call
+    //     Swal.fire({
+    //       title: 'Error!',
+    //       text: 'An error occurred while fetching subscriber details.',
+    //       icon: 'error',
+    //       confirmButtonText: 'OK'
+    //     });
+    //   }
+    // );
+
+    this.userservice.getSearchDetailsSubscriber(this.role, this.username, value).subscribe(
+      (data: any) => {
+        console.log(data);
+    
+        // Check if data is empty or null
+        if (!data || Object.keys(data).length === 0) {
+          console.log('No data found');
+          Swal.fire({
+            title: 'No Data',
+            text: 'No subscriber details found for this search.',
+            icon: 'warning',
+            confirmButtonText: 'OK'
+          });
+          return;
+        }
+    
+        // Process the subscriber data if it's not empty
+        this.subscriber = data;
+        this.subscriberList = Object.keys(data).map(key => {
+          const value = data[key];
+          const name = key;
+          return { name: name, value: value };
+        });
+    
+        // Sort the subscriberList by value
+        this.subscriberList.sort((a: any, b: any) => {
+          if (a.value > b.value) return 1;
+          if (a.value < b.value) return -1;
+          return 0;
+        });
+    
+        // Check if the sorted list is empty
+        if (this.subscriberList.length === 0) {
+          console.log('No matching data after sorting');
+          Swal.fire({
+            title: 'No Matching Results',
+            text: 'No subscribers match your search criteria.',
+            icon: 'info',
+            confirmButtonText: 'OK'
+          });
+        }
+    
+        console.log(this.subscriberList);
+      },
+      (error) => {
+        // Handle error from the API call
+        Swal.fire({
+          title: 'Error!',
+          text: 'An error occurred while fetching subscriber details.',
+          icon: 'error',
+          confirmButtonText: 'OK'
+        });
+      }
+    );
+0    
   }
 
   // goToSubscriberDashboard(lcomember: any) {
@@ -102,9 +203,9 @@ export class NavComponent implements OnInit, AfterViewInit {
     if (this.router.url === targetUrl) {
       window.location.reload();
     } else {
-      this.router.navigateByUrl('/', { skipLocationChange: true }).then(() => {
-        this.router.navigate([targetUrl]);
+      this.router.navigate([targetUrl]).then(() => {
         console.log('Navigated to:', targetUrl);
+        window.location.reload();
       });
     }
     this.showDropdown = false;

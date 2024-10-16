@@ -8,6 +8,9 @@
         <div class="display align-item-center">
             <div class="col-12 col-md-12 display_mobile">
                 <div class="col-12 col-md-5 mx-2 mb-3">
+                    <div class="mb-2" style="padding: 2rem;background-color: #405a51;">
+                        <h5 style="color: white;font-weight: 600;">LCO DETAILS </h5>
+                    </div>
                     <div class="card ">
                         <div class="d-flex">
                             <div class="col-2 col-md-2 " style="padding: 0.5rem;">
@@ -18,26 +21,26 @@
                                 <div class="d-flex">
                                     <div class="col-5 col-md-5 d-flex justify-content-start align-items-center "
                                         style="padding: 0.5rem;">
-                                        <h6>OPERATOR NAME
-                                        </h6>
+                                        <h5 style="color: rgb(29, 58, 42);">OPERATOR NAME
+                                        </h5>
                                     </div>
                                     <div class="col-1 col-md-1 d-flex justify-content-start align-items-center ">
                                         <h6>:</h6>
                                     </div>
                                     <div class="col-6 col-md-8 display1 justify-content-start align-items-center ">
-                                        <h6>{{operatorname}}</h6>
+                                        <h5 style="color: rgb(41, 43, 42);">{{operatorname}}</h5>
                                     </div>
                                 </div>
                                 <div class="d-flex">
                                     <div class="col-5 col-md-5 d-flex justify-content-start align-items-center "
                                         style="padding: 0.5rem;">
-                                        <h6>Mobile </h6>
+                                        <h5 style="color: rgb(29, 58, 42);">Mobile </h5>
                                     </div>
                                     <div class="col-1 col-md-1 d-flex justify-content-start align-items-center ">
                                         <h6>:</h6>
                                     </div>
                                     <div class="col-6 col-md-8 display1 justify-content-start align-items-center ">
-                                        <h6>{{mobile }}</h6>
+                                        <h5 style="color: rgb(41, 43, 42);">{{mobile }}</h5>
                                     </div>
                                 </div>
                             </div>
@@ -106,12 +109,22 @@
                                 <span for="">SELECT PACKAGE</span>
                             </div>
                             <div class="col-12 col-md-4">
-                                <select name="packages" id="packages" (change)="onPackageSelect($event)">
+                                <!-- <select name="packages" id="packages" (change)="onPackageSelect()">
                                     <option value="">Selected Package</option>
                                     <option *ngFor="let package of packageid" [value]="getPackageId(package)">
                                         {{ getPackageName(package) }}
                                     </option>
+                                </select> -->
+
+                                <select name="packages" id="packages" (change)="onPackageSelect($event)"
+                                    [(ngModel)]="package">
+                                    <option value="">Selected Package</option>
+                                    <option *ngFor="let pack of packageid"
+                                        [value]="pack.basePackage || pack.addonPackage || pack.alacartePackage">
+                                        {{ getPackageName(pack) }}
+                                    </option>
                                 </select>
+
                             </div>
                         </div>
                         <div class="">

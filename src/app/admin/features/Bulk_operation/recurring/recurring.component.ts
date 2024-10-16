@@ -17,7 +17,7 @@ export class RecurringComponent implements OnInit {
   cas: any;
   smartcard: any;
   CasFormControl: any;
-  operatorid: any;
+  operatorid: any=0;
   searchname: any = 0;
   operatorList: any[] = [];
   reccuringData: any;
@@ -27,14 +27,14 @@ export class RecurringComponent implements OnInit {
     this.role = storageService.getUserRole();
   }
   ngOnInit(): void {
-    this.userservice.getOeratorList(this.role, this.username).subscribe((data: any) => {
-      console.log(data);
-      this.operatorList = Object.keys(data).map(key => {
-        const value = data[key];
-        const name = key;
-        return { name: name, value: value };
-      });
-    })
+      this.userservice.getOeratorList(this.role, this.username).subscribe((data: any) => {
+        console.log(data);
+        this.operatorList = Object.keys(data).map(key => {
+          const value = data[key];
+          const name = key;
+          return { name: name, value: value };
+        });
+      })
   }
   // submit(type: any) {
 

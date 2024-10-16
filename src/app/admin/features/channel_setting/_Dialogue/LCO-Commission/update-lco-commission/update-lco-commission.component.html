@@ -1,9 +1,13 @@
 <section>
-    <div class="head d-flex justify-content-between align-items-center">
+    <!-- <div class="head d-flex justify-content-between align-items-center">
         <span class="title">UPDATE LCO COMMISSION</span>
         <i class="fa fa-close close-icon" (click)="onNoClick()"></i>
+    </div> -->
+    <div class="Head d-flex justify-content-between align-items-center mb-3" style="padding: 1rem;">
+        <h6>UPDATE LCO COMMISSION</h6>
+        <i class="fa fa-close close-icon" style="cursor: pointer;" (click)="onNoClick()"></i>
     </div>
-    <div class="card">
+    <div class="card mb-3">
         <div class="lco  justify-content-center align-items-center">
             <div class=" display align-items-center mb-3 w-100 ">
                 <div class="col-12 col-md-6">
@@ -48,11 +52,11 @@
                 </div> -->
                 <div class="col-12 col-md-6  " style="display: flex;gap: 20px;">
                     <div class="col-6 col-md-3">
-                        <button class="btn btn-outline-primary " (click)="toggleYes()" [(ngModel)]="isYesActive"
+                        <button class="btn btn-outline-primary "  [(ngModel)]="isYesActive"
                             [class.active]="isYesActive === true">Yes</button>
                     </div>
                     <div class="col-6 col-md-3">
-                        <button class="btn btn-outline-info " (click)="toggleNo()" [(ngModel)]="isYesActive"
+                        <button class="btn btn-outline-info "  [(ngModel)]="isYesActive"
                             [class.active]="isYesActive === false">No</button>
                     </div>
                 </div>
@@ -87,10 +91,13 @@
 
     </div>
 
-    <div class="col d-flex justify-content-center align-items-center new_d mt-3 mb-2">
+    <!-- <div class="col d-flex justify-content-center align-items-center new_d mt-3 mb-2">
         <a class="btn btn-infos mx-1" (click)="change()"> &nbsp;
             <span>Update</span>
         </a>
+    </div> -->
+    <div class="form-group d-flex justify-content-center align-items-center mb-3 ">
+        <button type="button" class="btn btn-success me-2" (click)="change()">Update</button>
+        <button type="button" class="btn btn-danger" (click)="onNoClick()">Cancel</button>
     </div>
-
 </section>

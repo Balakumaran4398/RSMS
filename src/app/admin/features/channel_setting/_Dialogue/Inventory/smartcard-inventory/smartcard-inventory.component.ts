@@ -47,9 +47,9 @@ export class SmartcardInventoryComponent {
       timer: 3000,
       timerProgressBar: true,
       allowOutsideClick: false, // Prevent the user from closing the dialog by clicking outside of it
-      // didOpen: () => {
-      //   Swal.showLoading(); // Show the loading animation during the countdown
-      // }
+      didOpen: () => {
+        Swal.showLoading(null); 
+      }
     }).then((result) => {
       if (result.isConfirmed) {
         // If the user confirmed the deletion

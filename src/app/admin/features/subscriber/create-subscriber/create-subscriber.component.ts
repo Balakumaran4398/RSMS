@@ -1,4 +1,4 @@
-import { Component, ViewChild } from '@angular/core';
+import { ChangeDetectorRef, Component, ViewChild } from '@angular/core';
 import { AbstractControl, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { BaseService } from 'src/app/_core/service/base.service';
 import { StorageService } from 'src/app/_core/service/storage.service';
@@ -43,7 +43,7 @@ export class CreateSubscriberComponent {
   selectedIDProofType: string = '';
   // proofType:any;
 
-  constructor(private formBuilder: FormBuilder, private userservice: BaseService, private storageservice: StorageService, private datePipe: DatePipe) {
+  constructor(private formBuilder: FormBuilder, private userservice: BaseService, private cdr: ChangeDetectorRef,private storageservice: StorageService, private datePipe: DatePipe) {
     this.username = storageservice.getUsername();
     this.role = storageservice.getUserRole();
     userservice.getOperatorListforSubInsert(this.role, this.username).subscribe((data: any) => {
@@ -287,6 +287,7 @@ export class CreateSubscriberComponent {
     this.userservice.getIdProofList(this.role, this.username).subscribe(
       (data: any) => {
         this.id_proof_list = data.idprooftypeid;
+        this.cdr.detectChanges();
         console.log("ID Proof List", this.id_proof_list);
       },
       error => {
@@ -298,6 +299,7 @@ export class CreateSubscriberComponent {
     this.userservice.getAddresProofList(this.role, this.username).subscribe(
       (data: any) => {
         this.add_proof_list = data.addressprooftypeid;
+        this.cdr.detectChanges();
         console.log("ADD Proof List", this.add_proof_list);
       },
       error => {
@@ -393,14 +395,7 @@ export class CreateSubscriberComponent {
         console.log(data);
         this.area_list = data.areaid || {};
         console.log(this.area_list);
-        // Handle the response (e.g., display the report data)
-        // }, (error) => {
-        //   Swal.fire({
-        //     icon: 'error',
-        //     title: 'Error',
-        //     text: 'Failed to retrieve subscriber list.',
-        //   });
-        //   console.error(error);
+        this.cdr.detectChanges();
       });
   }
   onAreaStatusChange() {
@@ -411,6 +406,7 @@ export class CreateSubscriberComponent {
         console.log(data);
         this.street_list = data.streetid || {};
         console.log(this.street_list);
+        this.cdr.detectChanges();
       });
   }
   onStreetStatusChange() {

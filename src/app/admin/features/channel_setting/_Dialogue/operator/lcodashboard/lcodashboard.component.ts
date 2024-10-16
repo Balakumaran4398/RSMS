@@ -9,6 +9,7 @@ import { StreetComponent } from '../street/street.component';
 import Swal from 'sweetalert2';
 import { tuesday } from 'ag-charts-community/dist/types/src/sparklines-util';
 import { SwalService } from 'src/app/_core/service/swal.service';
+import { EditareaComponent } from '../editarea/editarea.component';
 
 @Component({
   selector: 'app-lcodashboard',
@@ -37,6 +38,7 @@ export class LcodashboardComponent implements OnInit {
 
   role: any;
   username: any;
+  package: any = 2;
   packageid: any[] = [
     { basePackage: 2 },
     { addonPackage: 3 },
@@ -59,8 +61,6 @@ export class LcodashboardComponent implements OnInit {
   Areapincode: any;
   Areaid: any;
   public rowSelection: any = "multiple";
-
-
   constructor(private route: ActivatedRoute, private swal: SwalService, private dataService: DataService, public dialog: MatDialog, private userservice: BaseService, private storageservice: StorageService) {
     this.role = storageservice.getUserRole();
     this.username = storageservice.getUsername();
@@ -83,6 +83,7 @@ export class LcodashboardComponent implements OnInit {
     });
     this.barChart();
     this.tableData();
+    this.onPackageSelect("");
   }
   tableData() {
     this.userservice.getAreaListByOperatorId(this.role, this.username, this.operatorid).subscribe((data: any) => {
@@ -105,6 +106,7 @@ export class LcodashboardComponent implements OnInit {
         }
         this.chartOptions1 = {
           animationEnabled: true,
+          showInLegend: true,
           axisX: {
             labelAngle: 0,
             title: "Month",
@@ -135,21 +137,21 @@ export class LcodashboardComponent implements OnInit {
               type: "column",
               name: "Base Package",
               legendText: "Base Package",
-              showInLegend: true,
+              // showInLegend: true,
               dataPoints: this.transformDataToDataPoints(Data?.baselist, "#2fd6c8")
             },
             {
               type: "column",
               name: "Addon Package",
               legendText: "Addon Package",
-              showInLegend: true,
+              // showInLegend: true,
               dataPoints: this.transformDataToDataPoints(Data?.addonlist, "#3c8680")
             },
             {
               type: "column",
               name: "Alacarte Package",
               legendText: "Alacarte Package",
-              showInLegend: true,
+              // showInLegend: true,
               dataPoints: this.transformDataToDataPoints(Data?.alacartelist, "#1b5849")
             }
           ]
@@ -158,14 +160,25 @@ export class LcodashboardComponent implements OnInit {
   }
 
   transformDataToDataPoints(data: any, color: string): any[] {
+    // if (!data || typeof data !== 'object' || Object.keys(data).length === 0) {
+    //   console.warn('Data is not valid for transformation:', data);
+    //   return [];
+    // }
+    const monthOrder = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+
     if (!data || typeof data !== 'object' || Object.keys(data).length === 0) {
       console.warn('Data is not valid for transformation:', data);
       return [];
     }
 
-    return Object.keys(data).map(month => ({
+    // return Object.keys(data).map(month => ({
+    //   label: month,
+    //   y: data[month] || 0,
+    //   color: color
+    // }));
+    return monthOrder.map(month => ({
       label: month,
-      y: data[month],
+      y: data[month],  // Ensure missing months have a value of 0
       color: color
     }));
   }
@@ -173,16 +186,27 @@ export class LcodashboardComponent implements OnInit {
   ngOnDestroy() {
     this.dataService.clearDialogData();
   }
-  getPackageName(packageObj: any): string {
-    return Object.keys(packageObj)[0];
+
+  getPackageName(pack: any): string {
+    if (pack.basePackage) {
+      return 'Base Package';
+    } else if (pack.addonPackage) {
+      return 'Addon Package';
+    } else if (pack.alacartePackage) {
+      return 'Alacarte Package';
+    }
+    return '';
   }
-  getPackageId(packageObj: any): number {
-    return packageObj[Object.keys(packageObj)[0]];  // Returns the package ID (e.g., '2', '3', '4')
-  }
+  // getPackageName(packageObj: any): string {
+  //   return Object.keys(packageObj)[0];
+  // }
+  // getPackageId(packageObj: any): number {
+  //   return packageObj[Object.keys(packageObj)[0]];
+  // }
 
   onPackageSelect(event: any): void {
-    const selectedPackageId = event?.target?.value;  // Get the selected package ID
-    this.userservice.getPackagewiseRechargeDetailsforPiechart(this.role, this.username, selectedPackageId, this.operatorid)
+    const selectedPackageId = event?.target?.value ?? this.package;
+    console.log('Selected Package ID:', selectedPackageId); this.userservice.getPackagewiseRechargeDetailsforPiechart(this.role, this.username, this.package, this.operatorid)
       .subscribe((data: any) => {
         if (!data || !data['rechargelist'] || data['rechargelist'].length === 0) {
           Swal.fire({
@@ -192,12 +216,12 @@ export class LcodashboardComponent implements OnInit {
             confirmButtonText: 'Reload',
             allowOutsideClick: true
           })
-            // .then((result) => {
-            //   if (result.isConfirmed) {
-            //     window.location.reload();
-            //   }
-            // });
-          
+          // .then((result) => {
+          //   if (result.isConfirmed) {
+          //     window.location.reload();
+          //   }
+          // });
+
         } else {
           this.Totalamount = data.totalamount;
           const monthColors: { [key: string]: string } = {
@@ -221,53 +245,52 @@ export class LcodashboardComponent implements OnInit {
           }));
 
           this.chartOptions = {
-            
+
             data: [{
               type: "pie",
               dataPoints: dataPoints
             }]
           };
-               
+
         }
-       
+
       });
   }
 
 
   columnDefs: any[] = [
     {
-      headerName: "S.No", valueGetter: 'node.rowIndex+1', width: 80, headerCheckboxSelection: true,
-      checkboxSelection: true
+      headerName: "S.No", valueGetter: 'node.rowIndex+1', width: 80, 
     },
     {
       headerName: 'AREA NAME', width: 170,
       field: 'name',
-      editable: true,
-      cellRenderer: (params: any) => {
+      // editable: true,
+      // cellRenderer: (params: any) => {
 
-        const isEditing = this.editingRow && this.editingRow.id === params.data.id;
+      //   const isEditing = this.editingRow && this.editingRow.id === params.data.id;
 
-        if (isEditing) {
-          return `<input type="text" maxLength="6" value="${params.data.name}" style="width:100%;height:50px"/>`;
-        }
-        return params.value;
-      }
+      //   if (isEditing) {
+      //     return `<input type="text" maxLength="6" value="${params.data.name}" style="width:100%;height:50px"/>`;
+      //   }
+      //   return params.value;
+      // }
     },
     {
       headerName: 'PINCODE ', field: 'pincode', width: 150,
-      editable: true,
-      cellRenderer: (params: any) => {
-        const isEditing = this.editingRow && this.editingRow.id === params.data.id;
+      // editable: true,
+      // cellRenderer: (params: any) => {
+      //   const isEditing = this.editingRow && this.editingRow.id === params.data.id;
 
-        if (isEditing) {
-          return `<input type="text" maxLength="6" value="${params.data.pincode}" style="width:100%;height:50px"/>`;
-        }
-        return params.value;
-      }
+      //   if (isEditing) {
+      //     return `<input type="text" maxLength="6" value="${params.data.pincode}" style="width:100%;height:50px"/>`;
+      //   }
+      //   return params.value;
+      // }
     },
     {
       headerName: 'ACTIVE STATUS', field: 'statusdisplay', width: 170,
-      editable: true,
+      // editable: true,
       cellRenderer: (params: { value: any; data: any }) => {
         const isEditing = this.editingRow && this.editingRow.id === params.data.id;
         const color = params.value ? 'red' : 'Green';
@@ -301,46 +324,66 @@ export class LcodashboardComponent implements OnInit {
     },
     {
       headerName: 'EDIT', width: 80,
-      cellRenderer: (params: any) => {
-        const editButton = document.createElement('button');
-        const isEditing = this.editingRow && this.editingRow.id === params.data.id;
-        console.log(isEditing);
+      // cellRenderer: (params: any) => {
+      //   const editButton = document.createElement('button');
+      //   const isEditing = this.editingRow && this.editingRow.id === params.data.id;
+      //   console.log(isEditing);
 
-        editButton.innerHTML = isEditing ? '<i class="fa-solid fa-check"></i>' : '<img src="/assets/images/icons/editstreet2.png" style="width:30px">';
+      //   editButton.innerHTML = isEditing ? '<i class="fa-solid fa-check"></i>' : '<img src="/assets/images/icons/editstreet2.png" style="width:30px">';
+      //   editButton.style.backgroundColor = 'transparent';
+      //   editButton.style.border = 'none';
+      //   editButton.style.cursor = 'pointer';
+      //   editButton.addEventListener('click', () => {
+      //     // if (isEditing) {
+      //     //   this.saveRow(params.data);
+      //     //   console.log(params.data);
+      //     // } else {
+      //     //   this.editingRow = { ...params.data };
+      //     //   this.gridApi.refreshCells();
+      //     // }
+      //     editButton.addEventListener('click', () => {
+      //       this.editarea(params.data);
+      //     });
+      //   });
+      //   // editButton.addEventListener('click', () => {
+      //   //   this.newArea(params.data);
+      //   // });
+
+      //   const closeButton = document.createElement('button');
+      //   if (isEditing) {
+      //     closeButton.innerHTML = '<i class="fa-solid fa-xmark"></i>';
+      //     closeButton.style.marginLeft = '10px';
+      //     closeButton.style.cursor = 'pointer';
+      //     closeButton.style.backgroundColor = 'transparent';
+      //     closeButton.style.border = 'none';
+      //     // closeButton.addEventListener('click', () => {
+      //     //   this.saveRow(params.data);
+      //     // });
+      //     closeButton.addEventListener('click', () => {
+      //       this.editingRow = null;
+      //       this.gridApi.refreshCells();
+      //     });
+      //   }
+
+      //   const div = document.createElement('div');
+      //   div.appendChild(editButton);
+      //   if (isEditing) {
+      //     div.appendChild(closeButton);
+      //   }
+      //   return div;
+      // }
+       cellRenderer: (params: any) => {
+        const editButton = document.createElement('button');
+        editButton.innerHTML = '<img src="/assets/images/icons/editstreet2.png" style="width:30px;background-color:none">';
         editButton.style.backgroundColor = 'transparent';
         editButton.style.border = 'none';
+        editButton.title = 'Street List';
         editButton.style.cursor = 'pointer';
         editButton.addEventListener('click', () => {
-          if (isEditing) {
-            this.saveRow(params.data);
-            console.log(params.data);
-          } else {
-            this.editingRow = { ...params.data };
-            this.gridApi.refreshCells();
-          }
+          this.editarea(params.data);
         });
-
-        const closeButton = document.createElement('button');
-        if (isEditing) {
-          closeButton.innerHTML = '<i class="fa-solid fa-xmark"></i>';
-          closeButton.style.marginLeft = '10px';
-          closeButton.style.cursor = 'pointer';
-          closeButton.style.backgroundColor = 'transparent';
-          closeButton.style.border = 'none';
-          // closeButton.addEventListener('click', () => {
-          //   this.saveRow(params.data);
-          // });
-          closeButton.addEventListener('click', () => {
-            this.editingRow = null;
-            this.gridApi.refreshCells();
-          });
-        }
-
         const div = document.createElement('div');
         div.appendChild(editButton);
-        if (isEditing) {
-          div.appendChild(closeButton);
-        }
         return div;
       }
     }
@@ -394,6 +437,15 @@ export class LcodashboardComponent implements OnInit {
 
   street(data: any): void {
     const dialogRef = this.dialog.open(StreetComponent, {
+      width: '500px',
+      data: data
+    });
+    dialogRef.afterClosed().subscribe(result => {
+      console.log('The dialog was closed');
+    });
+  }
+  editarea(data: any): void {
+    const dialogRef = this.dialog.open(EditareaComponent, {
       width: '500px',
       data: data
     });

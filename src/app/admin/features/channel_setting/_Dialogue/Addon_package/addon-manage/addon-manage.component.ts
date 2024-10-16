@@ -72,10 +72,10 @@ export class AddonManageComponent {
       this.added_alacarte_list = data[0].Added_Alacarte.map((addede_alacarte: any) => {
         return `${addede_alacarte.channel_name} (${addede_alacarte.channel_id}) - Rs.${addede_alacarte.inr_amt}.0`;
       });
-      this.available_bouquet_list = data[0].Available_addon.map((available_bouquet: any) => {
+      this.available_bouquet_list = data[0].Available_Addon.map((available_bouquet: any) => {
         return `${available_bouquet.addon_package_name} (${available_bouquet.id}) - Rs.${available_bouquet.addon_package_rate}.0`;
       });
-      this.added_bouquet_list = data[0].Added_addon.map((added_bouque: any) => {
+      this.added_bouquet_list = data[0].Added_Addon.map((added_bouque: any) => {
         return `${added_bouque.addon_package_name} (${added_bouque.id}) - Rs.${added_bouque.addon_package_rate}.0`;
       });
       console.log(this.alacarte_available_list);
@@ -264,9 +264,9 @@ export class AddonManageComponent {
           title: 'Updating...',
           text: 'Please wait for Alacarte channels to update....',
           allowOutsideClick: false,
-          // didOpen: () => {
-          //   Swal.showLoading();
-          // }
+          didOpen: () => {
+            Swal.showLoading(null);
+          }
         });
         this.userService.AddingdAlacarteTo_Addon_Package(this.modified, this.alacarte_list_id, this.role, this.username, this.id).subscribe((res: any) => {
           console.log(res)
@@ -312,9 +312,9 @@ export class AddonManageComponent {
           title: 'Updating...',
           text: 'Please wait for Addon channel list to update....',
           allowOutsideClick: false,
-          // didOpen: () => {
-          //   Swal.showLoading();
-          // }
+          didOpen: () => {
+            Swal.showLoading(null);
+          }
         });
         this.userService.AddingdbouquetTo_Addon_Package(this.modified, this.bouquet_list_id, this.role, this.username, this.id, this.removed_channel_list,).subscribe((res: any) => {
           console.log(res);

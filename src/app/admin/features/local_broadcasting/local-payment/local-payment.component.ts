@@ -51,7 +51,7 @@ export class LocalPaymentComponent {
 
     },
     {
-      headerName: 'MOBILE NO', width: 250,
+      headerName: 'MOBILE NO', width: 400,
       field: 'contactnumber1',
 
     },

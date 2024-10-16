@@ -1,12 +1,10 @@
+<div class="Head d-flex justify-content-between align-items-center mb-3" style="padding: 1rem;">
+    <h6>CREATE NEW CHANNEL</h6>
+    <i class="fa fa-close close-icon" style="cursor: pointer;" (click)="onNoClick()"></i>
+</div>
+
 <div class="mobile">
     <form action="#" [formGroup]="form">
-        <!-- <div class="title">
-            <p>Create New Channel</p>
-        </div> -->
-        <div class="head d-flex justify-content-between align-items-center mb-3">
-            <h6 class="span">CREATE NEW CHANNEL</h6>
-            <i class="fa fa-close close-icon" style="cursor: pointer;" (click)="onNoClick()"></i>
-        </div>
         <div class="user_details">
             <div class="input_box"
                 [ngClass]="{'has-error': form.get('channel_name')?.invalid && form.get('channel_name')?.touched}">
@@ -195,7 +193,7 @@
             </div>
             <br>
         </div>
-        <div class="form-group d-flex justify-content-end align-items-center mb-3 mx-2" style="gap: 1vw;">
+        <div class="form-group d-flex justify-content-center align-items-center mb-3 mx-2" style="gap: 1vw;">
             <button type="button" class="btn btn-primary" (click)="onSubmit()">Save</button>
             <button type="button" class="btn btn-secondary" (click)="onNoClick()">Cancel</button>
         </div>

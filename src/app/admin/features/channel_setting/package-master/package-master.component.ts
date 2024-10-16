@@ -4,6 +4,7 @@ import { BaseService } from 'src/app/_core/service/base.service';
 import { StorageService } from 'src/app/_core/service/storage.service';
 import Swal from 'sweetalert2';
 import { UpdatePackageMasterComponent } from '../_Dialogue/package_master/update-package-master/update-package-master.component';
+import { filter } from 'node_modules1/jszip';
 
 @Component({
   selector: 'app-package-master',
@@ -63,7 +64,7 @@ export class PackageMasterComponent {
       this.selectedtypes = selectedRows.map((e: any) => e.isactive);
     }
   }
-  onSubscriberStatusChange() {
+  onSubscriberStatusChange(event:any) {
     this.userService.PackagemasterList(this.user_role, this.username, this.selectedTab,this.Castype).subscribe((data) => {
       this.updateColumnDefs(this.selectedTab);
     });
@@ -72,8 +73,8 @@ export class PackageMasterComponent {
 
   columnDefs: any[] = [
     {
-      headerName: "S.No", lockPosition: true, valueGetter: 'node.rowIndex+1', headerCheckboxSelection: true,
-      checkboxSelection: true,
+      headerName: "S.No", lockPosition: true, valueGetter: 'node.rowIndex+1', headerCheckboxSelection: true,filter:false,
+            checkboxSelection: true,
     },
     { headerName: "PRODUCT NAME", field: 'productname', width: 150, },
     { headerName: "CAS TYPE", field: 'castype', },
@@ -98,50 +99,62 @@ export class PackageMasterComponent {
 
     {
       headerName: 'ISACTIVE',
-      field: '_delete',
+      field: 'isactive',
       cellRenderer: (params: { value: any; }) => {
         const color = params.value ? 'green' : 'red';
         const text = params.value ? 'Active' : 'Deactive';
         return `<span style="color: ${color}">${text}</span>`;
       }
     },
-    //  {
-    //   headerName: 'Actions', minWidth: 140,
-    //   cellRenderer: (params: any) => {
-    //     const editButton = document.createElement('button');
-    //     editButton.innerHTML = '<i class="fas fa-pen-square" style="font-size:30px"></i>';
-    //     // editButton.innerHTML = '<i class="bx bx-edit-alt"></i>';
-    //     editButton.style.backgroundColor = 'transparent';
-    //     editButton.style.color = 'rgb(2 85 13)';
-    //     editButton.style.border = 'none';
-    //     editButton.title = 'Edit the Customer';
-    //     editButton.style.cursor = 'pointer';
-    //     editButton.style.marginRight = '6px';
-    //     editButton.addEventListener('click', () => {
-    //       this.openUpdatepackage(params.data);
-    //     });
-
-    //     const div = document.createElement('div');
-    //     div.appendChild(editButton);
-    //     return div;
-    //   }
-    // },
+  
 
   ]
-  selectTab(tab: string): void {
+  // selectTab(tab: string): void {
+  //   this.selectedTab = tab;
+  //   this.loadData(tab);
+  // }
+
+  selectTab(tab: string) {
     this.selectedTab = tab;
-    this.loadData(tab);
+    if (this.gridOptions) {
+      let newRowData;
+      if (this.selectedTab === '1') {
+        newRowData = this.getBasePackageData('1');
+      } else if (this.selectedTab === '2') {
+        newRowData = this.getAddonPackageData('2');
+      } else if (this.selectedTab === '3') {
+        newRowData = this.getAlacarteData('3');
+      }else if (this.selectedTab === '0') {
+        newRowData = this.getAllData('0');
+      }
+    }
+  }
+  getBasePackageData(event: any) {
+    this.onSubscriberStatusChange(event)
+    return [this.rowData];
+  }
+  getAddonPackageData(event: any) {
+    this.onSubscriberStatusChange(event)
+    return [this.rowData];
+  }
+  getAlacarteData(event: any) {
+    this.onSubscriberStatusChange(event)
+    return [this.rowData];
+  }
+  getAllData(event: any) {
+    this.onSubscriberStatusChange(event)
+    return [this.rowData];
   }
   private updateColumnDefs(tab: string): void {
     if (tab === '0') {
       this.columnDefs = [
         {
-          headerName: "S.No", lockPosition: true, valueGetter: 'node.rowIndex+1', headerCheckboxSelection: true,
+          headerName: "S.No", lockPosition: true, valueGetter: 'node.rowIndex+1', headerCheckboxSelection: true,filter:false,
           checkboxSelection: true,
         },
-        { headerName: "PRODUCT NAME", field: 'productname', width: 150,pinned: 'left' },
+        { headerName: "PRODUCT NAME", field: 'productname', width: 150, },
         {
-          headerName: 'ACTION', width: 80,
+          headerName: 'ACTION', width: 150,
           cellRenderer: (params: any) => {
             const editButton = document.createElement('button');
             // editButton.innerHTML = '<i class="bx bx-edit-alt"></i>';
@@ -184,7 +197,7 @@ export class PackageMasterComponent {
         },
         {
           headerName: 'ISACTIVE',
-          field: '_delete', width: 150,
+          field: 'isactive', width: 150,
           cellRenderer: (params: { value: any; }) => {
             const color = params.value ? 'green' : 'red';
             const text = params.value ? 'Active' : 'Deactive';
@@ -195,33 +208,33 @@ export class PackageMasterComponent {
     } else if (tab === '1') {
       this.columnDefs = [
         {
-          headerName: "S.No", lockPosition: true, valueGetter: 'node.rowIndex+1', headerCheckboxSelection: true,
+          headerName: "S.No", lockPosition: true, valueGetter: 'node.rowIndex+1', headerCheckboxSelection: true,filter:false,
           checkboxSelection: true,
         },
-        { headerName: "PRODUCT NAME", field: 'productname', width: 150,pinned: 'left' },
-        // {
-        //   headerName: 'ACTION', width: 80,
-        //   cellRenderer: (params: any) => {
-        //     const editButton = document.createElement('button');
-        //     // editButton.innerHTML = '<i class="bx bx-edit-alt"></i>';
-        //     editButton.innerHTML = '<i class="fa fa-pen-square" aria-hidden="true"></i>';
-        //     editButton.style.backgroundColor = 'transparent';
-        //     editButton.style.color = 'rgb(2 85 13)';
-        //     editButton.style.border = 'none';
-        //     editButton.title = 'Edit the Customer';
-        //     editButton.style.cursor = 'pointer';
-        //     editButton.style.marginRight = '6px';
-        //     editButton.style.fontSize = "30px";
+        { headerName: "PRODUCT NAME", field: 'productname', width: 150, },
+        {
+          headerName: 'ACTION', width: 150,
+          cellRenderer: (params: any) => {
+            const editButton = document.createElement('button');
+            // editButton.innerHTML = '<i class="bx bx-edit-alt"></i>';
+            editButton.innerHTML = '<i class="fa fa-pen-square" aria-hidden="true"></i>';
+            editButton.style.backgroundColor = 'transparent';
+            editButton.style.color = 'rgb(2 85 13)';
+            editButton.style.border = 'none';
+            editButton.title = 'Edit the Customer';
+            editButton.style.cursor = 'pointer';
+            editButton.style.marginRight = '6px';
+            editButton.style.fontSize = "30px";
 
-        //     editButton.addEventListener('click', () => {
-        //       this.openUpdatepackage(params.data);
-        //     });
+            editButton.addEventListener('click', () => {
+              this.openUpdatepackage(params.data);
+            });
 
-        //     const div = document.createElement('div');
-        //     div.appendChild(editButton);
-        //     return div;
-        //   }
-        // },
+            const div = document.createElement('div');
+            div.appendChild(editButton);
+            return div;
+          }
+        },
 
         { headerName: "CAS TYPE", field: 'castype', },
         { headerName: "REFERENCE ID", field: 'referenceid', },
@@ -244,7 +257,7 @@ export class PackageMasterComponent {
         },
         {
           headerName: 'ISACTIVE',
-          field: '_delete', width: 150,
+          field: 'isactive', width: 150,
           cellRenderer: (params: { value: any; }) => {
             const color = params.value ? 'green' : 'red';
             const text = params.value ? 'Active' : 'Deactive';
@@ -255,33 +268,33 @@ export class PackageMasterComponent {
     } else if (tab === '2') {
       this.columnDefs = [
         {
-          headerName: "S.No", lockPosition: true, valueGetter: 'node.rowIndex+1', headerCheckboxSelection: true,
+          headerName: "S.No", lockPosition: true, valueGetter: 'node.rowIndex+1', headerCheckboxSelection: true,filter:false,
           checkboxSelection: true,
         },
-        { headerName: "PRODUCT NAME", field: 'productname', width: 150, pinned: 'left'},
-        // {
-        //   headerName: 'ACTION', width: 80,
-        //   cellRenderer: (params: any) => {
-        //     const editButton = document.createElement('button');
-        //     // editButton.innerHTML = '<i class="bx bx-edit-alt"></i>';
-        //     editButton.innerHTML = '<i class="fa fa-pen-square" aria-hidden="true"></i>';
-        //     editButton.style.backgroundColor = 'transparent';
-        //     editButton.style.color = 'rgb(2 85 13)';
-        //     editButton.style.border = 'none';
-        //     editButton.title = 'Edit the Customer';
-        //     editButton.style.cursor = 'pointer';
-        //     editButton.style.marginRight = '6px';
-        //     editButton.style.fontSize = "30px";
+        { headerName: "PRODUCT NAME", field: 'productname', width: 150, },
+        {
+          headerName: 'ACTION', width: 150,
+          cellRenderer: (params: any) => {
+            const editButton = document.createElement('button');
+            // editButton.innerHTML = '<i class="bx bx-edit-alt"></i>';
+            editButton.innerHTML = '<i class="fa fa-pen-square" aria-hidden="true"></i>';
+            editButton.style.backgroundColor = 'transparent';
+            editButton.style.color = 'rgb(2 85 13)';
+            editButton.style.border = 'none';
+            editButton.title = 'Edit the Customer';
+            editButton.style.cursor = 'pointer';
+            editButton.style.marginRight = '6px';
+            editButton.style.fontSize = "30px";
 
-        //     editButton.addEventListener('click', () => {
-        //       this.openUpdatepackage(params.data);
-        //     });
+            editButton.addEventListener('click', () => {
+              this.openUpdatepackage(params.data);
+            });
 
-        //     const div = document.createElement('div');
-        //     div.appendChild(editButton);
-        //     return div;
-        //   }
-        // },
+            const div = document.createElement('div');
+            div.appendChild(editButton);
+            return div;
+          }
+        },
         { headerName: "CAS TYPE", field: 'castype', },
         { headerName: "REFERENCE ID", field: 'referenceid', },
         { headerName: "CAS PRODUCT_ID", field: 'casproductid', },
@@ -303,7 +316,7 @@ export class PackageMasterComponent {
         },
         {
           headerName: 'ISACTIVE',
-          field: '_delete', width: 150,
+          field: 'isactive', width: 150,
           cellRenderer: (params: { value: any; }) => {
             const color = params.value ? 'green' : 'red';
             const text = params.value ? 'Active' : 'Deactive';
@@ -314,33 +327,33 @@ export class PackageMasterComponent {
     } else if (tab === '3') {
       this.columnDefs = [
         {
-          headerName: "S.No", lockPosition: true, valueGetter: 'node.rowIndex+1', headerCheckboxSelection: true,
+          headerName: "S.No", lockPosition: true, valueGetter: 'node.rowIndex+1', headerCheckboxSelection: true,filter:false,
           checkboxSelection: true,
         },
-        { headerName: "PRODUCT NAME", field: 'productname', width: 150, pinned: 'left'},
-        // {
-        //   headerName: 'ACTION', width: 80,
-        //   cellRenderer: (params: any) => {
-        //     const editButton = document.createElement('button');
-        //     // editButton.innerHTML = '<i class="bx bx-edit-alt"></i>';
-        //     editButton.innerHTML = '<i class="fa fa-pen-square" aria-hidden="true"></i>';
-        //     editButton.style.backgroundColor = 'transparent';
-        //     editButton.style.color = 'rgb(2 85 13)';
-        //     editButton.style.border = 'none';
-        //     editButton.title = 'Edit the Customer';
-        //     editButton.style.cursor = 'pointer';
-        //     editButton.style.marginRight = '6px';
-        //     editButton.style.fontSize = "30px";
+        { headerName: "PRODUCT NAME", field: 'productname', width: 150, },
+        {
+          headerName: 'ACTION', width: 150,
+          cellRenderer: (params: any) => {
+            const editButton = document.createElement('button');
+            // editButton.innerHTML = '<i class="bx bx-edit-alt"></i>';
+            editButton.innerHTML = '<i class="fa fa-pen-square" aria-hidden="true"></i>';
+            editButton.style.backgroundColor = 'transparent';
+            editButton.style.color = 'rgb(2 85 13)';
+            editButton.style.border = 'none';
+            editButton.title = 'Edit the Customer';
+            editButton.style.cursor = 'pointer';
+            editButton.style.marginRight = '6px';
+            editButton.style.fontSize = "30px";
 
-        //     editButton.addEventListener('click', () => {
-        //       this.openUpdatepackage(params.data);
-        //     });
+            editButton.addEventListener('click', () => {
+              this.openUpdatepackage(params.data);
+            });
 
-        //     const div = document.createElement('div');
-        //     div.appendChild(editButton);
-        //     return div;
-        //   }
-        // },
+            const div = document.createElement('div');
+            div.appendChild(editButton);
+            return div;
+          }
+        },
         { headerName: "CAS TYPE", field: 'castype', },
         { headerName: "REFERENCE ID", field: 'referenceid', },
         { headerName: "CAS PRODUCT_ID", field: 'casproductid', },
@@ -361,7 +374,7 @@ export class PackageMasterComponent {
         },
         {
           headerName: 'ISACTIVE',
-          field: '_delete', width: 150,
+          field: 'isactive', width: 150,
           cellRenderer: (params: { value: any; }) => {
             const color = params.value ? 'green' : 'red';
             const text = params.value ? 'Active' : 'Deactive';
@@ -454,9 +467,9 @@ export class PackageMasterComponent {
           title: 'Updateing...',
           text: 'Please wait while the package master is being deleted',
           allowOutsideClick: false,
-          // didOpen: () => {
-          //   Swal.showLoading();
-          // }
+          didOpen: () => {
+            Swal.showLoading(null);
+          }
         });
         this.userService.UpdatePackagemasterList(this.user_role, this.username, this.selectedIds).subscribe((res: any) => {
           Swal.fire({
@@ -491,9 +504,9 @@ export class PackageMasterComponent {
           title: 'Updateing...',
           text: 'Please wait while the package master is being Updated',
           allowOutsideClick: false,
-          // didOpen: () => {
-          //   Swal.showLoading();
-          // }
+          didOpen: () => {
+            Swal.showLoading(null);
+          }
         });
         this.userService.UpdatePackagemasterList(this.user_role, this.username, this.selectedIds).subscribe((res: any) => {
           Swal.fire({

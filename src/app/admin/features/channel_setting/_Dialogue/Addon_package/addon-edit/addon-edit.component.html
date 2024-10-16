@@ -1,7 +1,8 @@
-<div>
-    <div class="head d-flex justify-content-between align-items-center mb-3">
-        <h5 class="span">UPDATE ADDON PACKAGE</h5>
-        <i class="fa fa-close close-icon" (click)="onNoClick()"></i>
+
+
+    <div class="Head d-flex justify-content-between align-items-center mb-3" style="padding: 1rem;">
+        <h6>UPDATE ADDON PACKAGE</h6>
+        <i class="fa fa-close close-icon" style="cursor: pointer;" (click)="onNoClick()"></i>
     </div>
     <div class="col-12 col-md-12" style="padding: 1rem;">
         <div class="mobile">
@@ -64,7 +65,7 @@
             <div class="input_box col-12 col-md-12 display mb-1">
                 <!-- <label class="col-12 col-md-6 ">MRP (Customer Amounr)</label> -->
                 <div class="col-12 col-md-6 ">
-                    <label>MRP (Customer Amounr)</label>
+                    <label>MRP (Customer Amount)</label>
                 </div>
                 <div class="col-12 col-md-6">
                     <input type="text" id="customer_amount" class="" [(ngModel)]="customer_amount">
@@ -108,8 +109,7 @@
             </div>
         </div>
     </div>
-    <div class="input_box d-flex justify-content-end align-items-center mb-3" style="padding: 1rem;">
+    <div class="input_box d-flex justify-content-center align-items-center mb-3" style="padding: 1rem;">
         <button type="button" class="btn btn-primary me-2" (click)="Update_Addon_package()">Update</button>
         <button type="button" class="btn btn-secondary" (click)="onNoClick()">Cancel</button>
     </div>
-</div>

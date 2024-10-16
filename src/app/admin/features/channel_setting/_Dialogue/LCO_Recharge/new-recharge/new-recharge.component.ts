@@ -88,5 +88,7 @@ export class NewRechargeComponent {
       event.preventDefault();
     }
   }
-
+  onNoClick(): void {
+    this.dialogRef.close();
+  }
 }

@@ -4,6 +4,7 @@ import { ColDef } from 'ag-grid-community';
 import { BaseService } from 'src/app/_core/service/base.service';
 import { ExcelService } from 'src/app/_core/service/excel.service';
 import { StorageService } from 'src/app/_core/service/storage.service';
+import { SwalService } from 'src/app/_core/service/swal.service';
 import Swal from 'sweetalert2';
 
 @Component({
@@ -61,7 +62,7 @@ export class DeactivationComponent {
     pagination: true,
   }
 
-  constructor(private userservice: BaseService, private storageservice: StorageService, private excelService: ExcelService) {
+  constructor(private userservice: BaseService, private storageservice: StorageService, private excelService: ExcelService,private swal: SwalService) {
     this.role = storageservice.getUserRole();
     this.username = storageservice.getUsername();
 
@@ -98,7 +99,7 @@ export class DeactivationComponent {
     }
   }
   getData() {
-    this.userservice.getDeactivationFilterlist(this.role, this.username, 'deactivation', this.date)
+    this.userservice.getDeactivationFilterlist(this.role, this.username, 'deactivation', this.date,2)
       .subscribe(
         (response: HttpResponse<any[]>) => { // Expect HttpResponse<any[]>
           if (response.status === 200) {
@@ -123,26 +124,31 @@ export class DeactivationComponent {
 
 
   refresh() {
-    this.userservice.getDeactivationRefresh(this.role, this.username, 'deactivation')
-      .subscribe(
-        (response: HttpResponse<any[]>) => { // Expect HttpResponse<any[]>
-          if (response.status === 200) {
-            this.rowData = response.body;
-            Swal.fire('Success', 'Data updated successfully!', 'success');
-          } else if (response.status === 204) {
-            Swal.fire('No Content', 'No data available for the given criteria.', 'info');
-          }
-        },
-        (error) => {
-          if (error.status === 400) {
-            Swal.fire('Error 400', 'Bad Request. Please check the input.', 'error');
-          } else if (error.status === 500) {
-            Swal.fire('Error 500', 'Internal Server Error. Please try again later.', 'error');
-          } else {
-            Swal.fire('Error', 'Something went wrong. Please try again.', 'error');
-          }
-        }
-      );
+    this.userservice.getDeactivationRefresh(this.role, this.username, 'deactivation',2)
+      // .subscribe(
+      //   (response: HttpResponse<any[]>) => { // Expect HttpResponse<any[]>
+      //     if (response.status === 200) {
+      //       this.rowData = response.body;
+      //       Swal.fire('Success', 'Data updated successfully!', 'success');
+      //     } else if (response.status === 204) {
+      //       Swal.fire('No Content', 'No data available for the given criteria.', 'info');
+      //     }
+      //   },
+      //   (error) => {
+      //     if (error.status === 400) {
+      //       Swal.fire('Error 400', 'Bad Request. Please check the input.', 'error');
+      //     } else if (error.status === 500) {
+      //       Swal.fire('Error 500', 'Internal Server Error. Please try again later.', 'error');
+      //     } else {
+      //       Swal.fire('Error', 'Something went wrong. Please try again.', 'error');
+      //     }
+      //   }
+      // );
+      .subscribe((res: any) => {
+        this.swal.success(res?.message);
+      }, (err) => {
+        this.swal.Error(err?.error?.message);
+      });
   }
 
   bulkDeactivation() {

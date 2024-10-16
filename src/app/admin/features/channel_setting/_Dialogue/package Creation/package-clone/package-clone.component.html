@@ -1,7 +1,7 @@
-<div class="">
-    <div class="head d-flex justify-content-between align-items-center mb-3">
-        <span class="span">NEW PACKAGE CREATION</span>
-        <i class="fa fa-close close-icon" (click)="onNoClick()"></i>
+
+    <div class="Head d-flex justify-content-between align-items-center mb-3" style="padding: 1rem;">
+        <h6>NEW PACKAGE CREATION</h6>
+        <i class="fa fa-close close-icon" style="cursor: pointer;" (click)="onNoClick()"></i>
     </div>
     <div class="col" style="padding: 1rem;">
         <div class="card mb-3">
@@ -29,15 +29,21 @@
         <div class="card-body col-12 col-md-12 mb-3">
             <div class="input_box display align-items-center mb-1">
                 <div class="col-12 col-md-6">
-                    <label>Package Name</label>
+                    <span>Package Name</span>
                 </div>
                 <div class="col-12 col-md-6 ">
-                    <input type="text" id="package_name" class="" [(ngModel)]="package_name">
+                    <!-- <input type="text" id="package_name" class="" [(ngModel)]="package_name"> -->
+                    <select id="single" [(ngModel)]="newpackagename" class=" js-states ">
+                        <option value="0" selected>Selected Package Name</option>
+                        <option *ngFor="let package of packagenameList" [value]="package.packageid">
+                            {{ package.packagename }}
+                        </option>
+                    </select>
                 </div>
             </div>
             <div class="input_box display align-items-center mb-1">
                 <div class="col-12 col-md-6">
-                    <label>Package Rate</label>
+                    <span>Package Rate</span>
                 </div>
                 <div class="col-12 col-md-6">
                     <input type="text" id="package_rate" class="" maxlength="10" pattern="[0-9]*"
@@ -46,7 +52,7 @@
             </div>
             <div class="input_box display align-items-center mb-1">
                 <div class="col-12 col-md-6">
-                    <label>Description</label>
+                    <span>Description</span>
                 </div>
                 <div class="col-12 col-md-6">
                     <input type="text" id="package_desc" class="" [(ngModel)]="package_desc">
@@ -54,7 +60,7 @@
             </div>
             <div class="input_box display align-items-center mb-3">
                 <div class="col-12 col-md-6">
-                    <label>Reference Id</label>
+                    <span>Reference Id</span>
                 </div>
                 <div class="col-12 col-md-6">
                     <input type="text" id="Reference_id" class="" maxlength="10" pattern="[0-9]*"
@@ -67,4 +73,3 @@
             </div>
         </div>
     </div>
-</div>

@@ -179,9 +179,9 @@ export class DistributorMasterComponent {
           title: 'Updateing...',
           text: 'Please wait while the Distributor is being updated',
           allowOutsideClick: false,
-          // didOpen: () => {
-          //   Swal.showLoading();
-          // }
+          didOpen: () => {
+            Swal.showLoading(null);
+          }
         });
         this.userService.ActivateDistributor(this.role, this.username, this.selectedIds).subscribe((res: any) => {
           Swal.fire({
@@ -215,9 +215,9 @@ export class DistributorMasterComponent {
           title: 'Deleting...',
           text: 'Please wait while the Distributor is being deleted',
           allowOutsideClick: false,
-          // didOpen: () => {
-          //   Swal.showLoading();
-          // }
+          didOpen: () => {
+            Swal.showLoading(null);
+          }
         });
 
         this.userService.deleteDistributor(this.role, this.username, this.selectedIds).subscribe((res: any) => {

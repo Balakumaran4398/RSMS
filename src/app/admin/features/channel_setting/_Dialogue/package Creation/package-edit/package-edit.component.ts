@@ -72,14 +72,14 @@ export class PackageEditComponent {
     //   ispercentage: this.ispercentage
     // };
   
-    // Swal.fire({
-    //   title: 'Updating...',
-    //   text: 'Wait for the package to update...',
-    //   allowOutsideClick: false,
-    //   didOpen: () => {
-    //     Swal.showLoading();
-    //   }
-    // });
+    Swal.fire({
+      title: 'Updating...',
+      text: 'Wait for the package to update...',
+      allowOutsideClick: false,
+      didOpen: () => {
+        Swal.showLoading(null); 
+      }
+    });
     this.userService.Package_Update(this.package_name, this.package_desc, this.package_rate, this.order_id, this.role, this.username, this.commission, this.ispercentage, this.package_id,).subscribe((res: any) => {
       console.log(res);
       Swal.fire({

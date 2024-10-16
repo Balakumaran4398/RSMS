@@ -1,25 +1,28 @@
+
+
+<div class="Head d-flex justify-content-between align-items-center mb-3" style="padding: 1rem;">
+    <h6> Street list</h6>
+    <i class="fa fa-close close-icon" style="cursor: pointer;" (click)="onNoClick()"></i>
+</div>
 <div class=" d-flex justify-content-center align-items-center ">
     <div class="card-content" style="width: 100%;">
-        <div class="Head d-flex justify-content-between align-items-center mb-3">
-            <h5 class="span" style="color: white;"> Street list</h5>
-            <i class="fa fa-close close-icon" style="cursor: pointer;" (click)="onNoClick()"></i>
-        </div>
+
         <div class="col-12 col-md-12 display justify-content-center align-item-center mb-1">
             <div class="col-12 col-md-6 display justify-content-between align-item-center">
                 <h6 style="text-align: center;"> AREA : {{area}} </h6>
             </div>
             <div class="col-12 col-md-6 display justify-content-end align-item-center">
                 <span class="sub-tittle tittle1">
-                    <button type="button" class="btn btn-success me-2" (click)="newStreet()">New</button>
+                    <button type="button" class="btn btn-success me-2" (click)="newStreet('newstreet')">New</button>
                 </span>
             </div>
         </div>
         <div class="mb-3" style="padding: 0.2rem;">
             <ag-grid-angular #agGrid id="myGrid" domLayout='autoHeight' class="ag-theme-alpine table-class" rowAnimation
-            [rowSelection]="rowSelection" (selectionChanged)="onSelectionChanged()"
-                [columnDefs]="columnDefs" [rowData]="rowData" [enableCellTextSelection]="true">
+                [rowSelection]="rowSelection" (selectionChanged)="onSelectionChanged()" [columnDefs]="columnDefs"
+                [rowData]="rowData" [enableCellTextSelection]="true">
             </ag-grid-angular>
         </div>
-
     </div>
 </div>
+

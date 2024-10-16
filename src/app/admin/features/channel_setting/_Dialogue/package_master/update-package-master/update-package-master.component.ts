@@ -1,4 +1,5 @@
-import { Component, Inject } from '@angular/core';
+import { Component, Inject, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { BaseService } from 'src/app/_core/service/base.service';
 import { StorageService } from 'src/app/_core/service/storage.service';
@@ -13,13 +14,15 @@ interface updateRequestbody {
   templateUrl: './update-package-master.component.html',
   styleUrls: ['./update-package-master.component.scss']
 })
-export class UpdatePackageMasterComponent {
+export class UpdatePackageMasterComponent implements OnInit {
   product_id: any;
   isactive: boolean = false;
   username: any;
   role: any;
+  packageMasterForm!: FormGroup;
+
   constructor(public dialogRef: MatDialogRef<UpdatePackageMasterComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: any, private userService: BaseService, private storageService: StorageService) {
+    @Inject(MAT_DIALOG_DATA) public data: any, private userService: BaseService, private storageService: StorageService,private fb: FormBuilder) {
     console.log(data);
     this.product_id = data.cas_product_id;
     this.isactive = data._active;
@@ -27,6 +30,8 @@ export class UpdatePackageMasterComponent {
     this.role = storageService.getUserRole();
 
 
+  }
+  ngOnInit(): void {
   }
   onNoClick(): void {
     this.dialogRef.close();
@@ -54,11 +59,11 @@ export class UpdatePackageMasterComponent {
           title: 'Updateing...',
           text: 'Please wait while the Product ID is being updated',
           allowOutsideClick: false,
-          // didOpen: () => {
-          //   Swal.showLoading();
-          // }
+          didOpen: () => {
+            Swal.showLoading(null); 
+          }
         });
-        this.userService.UpdatePackagemasterList(this.username, this.role, this.product_id).subscribe(
+        this.userService.UpdatePackagemasterList(this.role,this.username, this.product_id).subscribe(
           (res) => {
             console.log(res);
             Swal.fire({

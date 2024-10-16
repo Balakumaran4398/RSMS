@@ -87,18 +87,39 @@ export class ChangeMembershipComponent {
       cancelButtonText: 'No, cancel'
     }).then((result) => {
       if (result.isConfirmed) {
-        this.userservice.updateLcoMembership(requestBody).subscribe((data: any) => {
-          console.log(data);
-          Swal.fire({
-            title: 'Success!',
-            text: 'Changes have been applied successfully.',
-            icon: 'success',
-            timer: 2000,
-            timerProgressBar: true,
-            willClose: () => {
+        this.userservice.updateLcoMembership(requestBody)
+          // .subscribe((data: any) => {
+          //   console.log(data);
+          //   Swal.fire({
+          //     title: 'Success!',
+          //     text: 'Changes have been applied successfully.',
+          //     icon: 'success',
+          //     timer: 2000,
+          //     timerProgressBar: true,
+          //     willClose: () => {
+          //     }
+          //   });
+          .subscribe(
+            (res: any) => {
+              Swal.fire({
+                title: 'Success!',
+                text: res?.message,
+                icon: 'success',
+                timer: 2000,
+                showConfirmButton: false
+              }).then(() => {
+                this.dialogRef.close();
+              });
+            },
+            (err: any) => {
+              Swal.fire({
+                title: 'Error!',
+                text: err?.error?.message,
+                icon: 'error',
+                confirmButtonText: 'OK'
+              });
             }
-          });
-        });
+          );
       }
     });
   }

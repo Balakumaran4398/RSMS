@@ -16,7 +16,7 @@
                 <label for="cas" class="me-2 cas align-items-center ">CAS TYPE</label>
             </div>
             <div class="col-6 col-md-3">
-                <select placeholder="Select the CAS" [(ngModel)]="Castype" (change)="onSubscriberStatusChange()">
+                <select placeholder="Select the CAS" [(ngModel)]="Castype" (change)="onSubscriberStatusChange($event)">
                     <option value="0">Select CAS</option>
                     <option *ngFor="let casItem of cas" [value]="casItem.id">
                         {{ casItem.casname }}
@@ -31,11 +31,13 @@
                 style="margin: auto;">
                 <ag-grid-angular #agGrid id="myGrid" style="text-align: center;" domLayout='autoHeight'
                     class="ag-theme-alpine table-class" rowAnimation [gridOptions]="gridOptions"
-                    [columnDefs]="columnDefs" [rowData]="rowData" [enableCellTextSelection]="true">
+                    [rowSelection]="rowSelection" [columnDefs]="columnDefs" [rowData]="rowData"
+                    [enableCellTextSelection]="true" (selectionChanged)="onSelectionChanged()"
+                    (gridReady)="onGridReady($event)">
                 </ag-grid-angular>
             </div>
         </div>
-      
+
     </section>
     <div class="col-12 col-md-12 d-flex justify-content-center align-items-center">
         <button (click)="save()" class="btn btn-success">Save</button>

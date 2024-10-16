@@ -85,9 +85,9 @@ export class EditInventoryComponent {
         icon: 'info',
         allowOutsideClick: false,
         showConfirmButton: false, // Hide the confirm button
-        // didOpen: () => {
-        //   Swal.showLoading(); // Show loading animation
-        // }
+        didOpen: () => {
+          Swal.showLoading(null);
+        }
       });
   
       const formData = new FormData();

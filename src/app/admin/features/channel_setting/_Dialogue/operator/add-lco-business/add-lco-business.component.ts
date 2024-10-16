@@ -49,4 +49,7 @@ export class AddLcoBusinessComponent {
     );
     
   }
+  onNoClick(): void {
+    this.dialogRef.close();
+  }
 }

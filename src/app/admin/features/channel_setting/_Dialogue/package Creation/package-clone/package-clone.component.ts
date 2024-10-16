@@ -1,4 +1,4 @@
-import { Component, Inject } from '@angular/core';
+import { ChangeDetectorRef, Component, Inject } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { BaseService } from 'src/app/_core/service/base.service';
 import { StorageService } from 'src/app/_core/service/storage.service';
@@ -18,9 +18,12 @@ export class PackageCloneComponent {
   username: any;
   role: any;
   package_id: any;
+  newpackagename:any=0;
+  packagenameList: any = [];
+  type: number = 1;
   constructor(
     public dialogRef: MatDialogRef<PackageCloneComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: any, private userService: BaseService, private storageService: StorageService) {
+    @Inject(MAT_DIALOG_DATA) public data: any, private userService: BaseService, private storageService: StorageService,private cdr: ChangeDetectorRef,) {
     this.username = storageService.getUsername();
     this.role = storageService.getUserRole();
     this.package_name = data.packagename;
@@ -34,7 +37,10 @@ export class PackageCloneComponent {
     })
   }
   ngOnInit(): void {
-
+    this.userService.PackageList(this.role, this.username, this.type).subscribe((data) => {
+      this.packagenameList = data;
+      this.cdr.detectChanges();
+    })
   }
   onNoClick(): void {
     this.dialogRef.close();
@@ -63,11 +69,11 @@ export class PackageCloneComponent {
       title: 'Loading...',
       text: 'Wait for the clone to be created.',
       allowOutsideClick: false,
-      // didOpen: () => {
-      //   Swal.showLoading();
-      // }
+      didOpen: () => {
+        Swal.showLoading(null); 
+      }
     });
-    this.userService.Clone_create(this.package_id, this.package_name, this.package_desc, this.package_rate, this.Reference_id, this.role, this.username).subscribe((res: any) => {
+    this.userService.Clone_create(this.package_id, this.newpackagename, this.package_desc, this.package_rate, this.Reference_id, this.role, this.username).subscribe((res: any) => {
       console.log(res);
       Swal.fire({
         position: "center",

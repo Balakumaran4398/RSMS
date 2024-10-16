@@ -23,9 +23,9 @@ export class ChannelEditComponent {
   productid: any;
   serviceid: any;
   customerAmount: any;
-  status: boolean;
+  status: string = 'Active';
   commission: any;
-  ispercentage:boolean=false;
+  ispercentage: boolean = false;
   categoryname: any;
   inrAmt: any;
   channelid: any
@@ -40,7 +40,7 @@ export class ChannelEditComponent {
   category_id: any;
   channel_type_id: any;
   isPercentage: boolean;
-  // isactive: boolean;
+  isactive = '1';
   ispaid: boolean;
   categoryid: any;
   type: number = 0;
@@ -50,21 +50,17 @@ export class ChannelEditComponent {
   nameFormControl: any; discriptionFormControl: any;
   streamidFormControl: any;
   addchannelGroup: any;
-  channelidFormControl: any;
-  // productidFormControl: any;
   selectbroadcaster: any;
-  amountFormControl: any;
-  selectedlanguageFormControl: any;
-  selectedcategoryFormControl: any;
-  selectedbroadcasterFormControl: any;
-  isactiveFormControl: any;
-  commissionFormControl: any;
 
   constructor(public dialogRef: MatDialogRef<ChannelEditComponent>, @Inject(MAT_DIALOG_DATA) public data: any, private userservice: BaseService, private storageservice: StorageService) {
+
+
     this.role = storageservice.getUserRole();
     this.username = storageservice.getUsername();
     console.log(data);
     this.channelname = data.channel_name;
+    console.log(this.channelname);
+
     this.channellogo = data.channel_logo;
     this.channelfreq = data.channel_freq;
     this.channeldesc = data.channel_desc;
@@ -77,9 +73,13 @@ export class ChannelEditComponent {
     this.inrAmt = data.inr_amt;
     this.channel_typename = data.channel_type_id;
     this.status = data.statusdisplay;
+    // this.isactive = data.statusdisplay;;
+
+    console.log(this.isactive);
+
     this.ispaid = data.paidstatus;
     this.productid = data.product_id;
-    this.customerAmount = data.customer_amount;
+    this.commission = data.lcocommission;
     this.isPercentage = data.isPercentage;
     // this.channelid = data.channel_id
     // this.channel_rate = data.inr_amt;
@@ -161,16 +161,14 @@ export class ChannelEditComponent {
   }
   onSubmit() {
     const defaultFileContent = new Blob(['default content'], { type: 'image/png' });
-    const defaultFile = new File([defaultFileContent], 'default-logo.png',
+    const defaultFile = new File([defaultFileContent], 'default-logo.png',);
+    console.log(this.status);
+    console.log(this.isactive);
 
-    );
-    // this.channellogo = this.channellogo || defaultFile;
+
+    const isActive = this.isactive === "Active";
     let requestbody = {
       channel_name: this.channelname,
-      channel_logo: this.channellogo,
-      channel_freq: this.channelfreq,
-      channel_desc: this.channeldesc,
-      ts_id: this.tsId,
       service_id: this.serviceid,
       broadcaster_rate: this.broadcasterRate,
       broadcaster_id: this.broadcastername,
@@ -178,11 +176,10 @@ export class ChannelEditComponent {
       category_id: this.categoryname,
       inr_amt: this.inrAmt,
       channel_type_id: this.channel_typename,
-      isactive: this.status,
-      ispaid: this.ispaid,
+      isactive: isActive,
       product_id: this.productid,
-      customer_amount: this.customerAmount,
-      ispercentage:this.ispercentage,
+      customer_amount: this.commission,
+      ispercentage: this.ispercentage,
       role: this.role,
       username: this.username
 

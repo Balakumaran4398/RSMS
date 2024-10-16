@@ -9,8 +9,8 @@
     <a (click)="navgetToUrl('/home')" class="brand" [ngClass]="{'sidebar-open': isSidebarOpen}">
         <img height="38px" style="margin: 0px -6px 0px 3px;" [ngStyle]="{'visibility': !isHide ? 'hidden' : 'visible'}"
             src="/assets/images/icons/Logo1.png" alt="" srcset="">
-        <h2 class="brand-text" style="margin: 0px 50px;"
-            [ngStyle]="{'visibility': !isSidebarOpen ? 'visible' : 'hidden'}">RSMS</h2>
+        <h3 class="brand-text" style="margin: 0px 30px;"
+            [ngStyle]="{'visibility': !isSidebarOpen ? 'visible' : 'hidden'}">RSMS V-7.1 </h3>
     </a>
 
     <ul class="side-menu">
@@ -18,6 +18,8 @@
                 Dashboard</a></li>
         <li><a (click)="navgetToUrl('/top_sub_detail')" class=""><i class='bx bx-table bx-sm icon'></i>
                 Top Subscription Details</a></li>
+        <!-- <li><a (click)="navgetToUrl('/operatorlist')" class=""><i class='bx bx-table bx-sm icon'></i>
+                Operator</a></li> -->
         <li>
             <a> <i class="bx bx-user bx-sm icon "></i> Operator <i class='bx bx-chevron-right icon-right'></i></a>
             <ul class="side-dropdown">
@@ -29,7 +31,8 @@
         </li>
 
         <li>
-            <a> <i class="bx bx-user-circle bx-sm icon "></i> Subscriber <i class='bx bx-chevron-right icon-right'></i></a>
+            <a> <i class="bx bx-user-circle bx-sm icon "></i> Subscriber <i
+                    class='bx bx-chevron-right icon-right'></i></a>
             <ul class="side-dropdown">
                 <!-- <li><a (click)="navgetToUrl('/sub_dashboard')"><i class="fa fa-fw fa-plus icon">&nbsp;</i>Subscriber
                     </a>
@@ -107,7 +110,7 @@
                 </li>
             </ul>
         </li>
-        <li>
+        <!-- <li>
             <a> <i class="fa fa-fw fa-wrench icon "></i> VC/STB master <i
                     class='bx bx-chevron-right icon-right'></i></a>
             <ul class="side-dropdown">
@@ -117,7 +120,7 @@
                 <li><a (click)="navgetToUrl('/stb_bill')"><i class="fa fa-fw fa-dollar icon ">&nbsp;</i>STB Bill
                     </a> </li>
             </ul>
-        </li>
+        </li> -->
         <li>
             <a> <i class="fa fa-fw fa-tasks icon "></i> Bulk operation <i
                     class='bx bx-chevron-right icon-right'></i></a>
@@ -175,8 +178,8 @@
             <a style="color: var(--primary-color);font-weight: 600;font-size: 17px;">V-7.0 </a>
        
         </li> -->
-        
-        <h6 style="color: var(--primary-color);font-weight: 600;font-size: 17px;text-align: center;">V-7.0</h6>
+
+        <!-- <h6 style="color: var(--primary-color);font-weight: 600;font-size: 17px;text-align: center;">V-7.1</h6> -->
 
 
     </ul>

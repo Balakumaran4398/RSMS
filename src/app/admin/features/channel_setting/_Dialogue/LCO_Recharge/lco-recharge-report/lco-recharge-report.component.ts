@@ -120,9 +120,9 @@ export class LcoRechargeReportComponent implements OnInit {
       title: 'Loading...',
       text: 'Fetching data, please wait...',
       allowOutsideClick: false,
-      // didOpen: () => {
-      //   Swal.showLoading();
-      // }
+      didOpen: () => {
+        Swal.showLoading(null); 
+      }
     });
   }
 

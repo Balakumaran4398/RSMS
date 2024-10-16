@@ -4,13 +4,13 @@
             <div class="col-12 col-md-12 mobile display justify-content-center align-items-center">
                 <div class="col-12  col-md-3  mx-2 mb-3">
                     <select id="cas" placeholder="Select the CAS" [(ngModel)]="operatorid">
-                        <option value="">Select Operator</option>
+                        <option value="0" selected>Select Operator</option>
                         <option *ngFor="let operator of operatorList" [value]="operator.value">{{ operator.name }}
                         </option>
                     </select>
                 </div>
                 <div class="col-12  col-md-3 mb-3">
-                    <input id="duration" type="text" placeholder="Enter Smartcard" [(ngModel)]="searchname">
+                    <input  type="text" placeholder="Enter Smartcard" [(ngModel)]="searchname">
                 </div>
                 <button class="btn custom-btn mx-3" type="button" (click)="submit(1)">
                     Total list

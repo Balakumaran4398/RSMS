@@ -1,12 +1,13 @@
 <section>
-    <div class="head d-flex justify-content-between align-items-center mb-3">
-        <h5 class="span">UPDATE PACKAGE</h5>
+    <div class="Head d-flex justify-content-between align-items-center mb-3" style="padding: 1rem;">
+        <h6>UPDATE PACKAGE</h6>
         <i class="fa fa-close close-icon" style="cursor: pointer;" (click)="onNoClick()"></i>
     </div>
+
     <div class="card-body col-12 col-md-12 ">
         <div class="input_box col-12 col-md-12  mb-1">
             <div class="col-12 col-md-6">
-                <label>Package Name</label>
+                <span>Package Name</span>
             </div>
             <div class="col-12 col-md-6">
                 <textarea matInput class="" id="package_name" style="height: 50px;"
@@ -15,7 +16,7 @@
         </div>
         <div class="input_box col-12 col-md-12  align-items-center mb-1">
             <div class="col-12 col-md-6">
-                <label>Package Rate</label>
+                <span>Package Rate</span>
             </div>
             <div class="col-12 col-md-6">
                 <input type="text" id="package_rate" class="" maxlength="10" pattern="[0-9]*"
@@ -26,7 +27,7 @@
 
         <div class="input_box col-12 col-md-12   align-items-center mb-1">
             <div class="col-12 col-md-6">
-                <label class="col-12 col-md-6 ">Description</label>
+                <span class="col-12 col-md-6 ">Description</span>
             </div>
             <div class="col-12 col-md-6">
                 <textarea matInput class="" id="package_desc" style="height: 50px;"
@@ -35,7 +36,7 @@
         </div>
         <div class="input_box col-12 col-md-12  align-items-center mb-1">
             <div class="col-12 col-md-6">
-                <label>Reference Id</label>
+                <span>Reference Id</span>
             </div>
             <div class="col-12 col-md-6">
                 <input type="text" id="order_id" class=""  [(ngModel)]="order_id">
@@ -43,7 +44,7 @@
         </div>
         <div class="input_box col-12 col-md-12  align-items-center mb-1">
             <div class="col-12 col-md-6">
-                <label>Commission</label>
+                <span>Commission</span>
             </div>
             <div class="col-12 col-md-6">
                 <input type="text" id="commission" class="" maxlength="10" (keydown)="onKeydown1($event)"
@@ -53,7 +54,7 @@
 
         <div class="input_box col-12 col-md-12  align-items-center mb-1">
             <div class="col-12 col-md-6">
-                <label>Is percentage</label>
+                <span>Is percentage</span>
             </div>
             <div class="col-12 col-md-6 d-flex justify-content-center align-items-center">
                 <div class="toggle-button-cover">

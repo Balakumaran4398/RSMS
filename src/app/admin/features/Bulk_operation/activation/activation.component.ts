@@ -131,7 +131,7 @@ export class ActivationComponent implements OnInit {
     })
   }
   getData() {
-    this.userservice.getBulkOperationListByDate(this.role, this.username, 'first_time_activation', this.date)
+    this.userservice.getBulkOperationListByDate(this.role, this.username, 'first_time_activation', this.date,4)
       .subscribe(
         (response: HttpResponse<any[]>) => { 
           if (response.status === 200) {
@@ -204,7 +204,7 @@ export class ActivationComponent implements OnInit {
   }
 
   refresh() {
-    this.userservice.getBulkOperationRefreshList(this.role, this.username, 'first_time_activation')
+    this.userservice.getBulkOperationRefreshList(this.role, this.username, 'first_time_activation',4)
       .subscribe(
         (response: HttpResponse<any[]>) => { // Expect HttpResponse<any[]>
           if (response.status === 200) {

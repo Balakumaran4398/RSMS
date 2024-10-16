@@ -188,9 +188,9 @@ export class ChannelComponent {
           title: 'Updateing...',
           text: 'Please wait while the Channel is being updated',
           allowOutsideClick: false,
-          // didOpen: () => {
-          //   Swal.showLoading();
-          // }
+          didOpen: () => {
+            Swal.showLoading(null);
+          }
         });
         this.userService.ActiveChannel(this.role, this.username, this.selectedIds).subscribe((res: any) => {
           Swal.fire({
@@ -224,9 +224,9 @@ export class ChannelComponent {
           title: 'Deleting...',
           text: 'Please wait while the Channel is being deleted',
           allowOutsideClick: false,
-          // didOpen: () => {
-          //   Swal.showLoading();
-          // }
+          didOpen: () => {
+            Swal.showLoading(null);
+          }
         });
         this.userService.deleteChannel(this.role, this.username, this.selectedIds).subscribe((res: any) => {
           Swal.fire({

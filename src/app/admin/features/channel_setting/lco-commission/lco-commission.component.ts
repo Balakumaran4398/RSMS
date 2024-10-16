@@ -94,8 +94,7 @@ export class LcoCommissionComponent {
   domLayout: 'normal' | 'autoHeight' | 'print' = 'autoHeight';
   columnDefs: any[] = [
     {
-      headerName: "S.No", lockPosition: true, valueGetter: 'node.rowIndex+1', width: 100, headerCheckboxSelection: true,
-      checkboxSelection: true,
+      headerName: "S.No", lockPosition: true, valueGetter: 'node.rowIndex+1', width: 100,
     },
     { headerName: "PRODUCT NAME", field: 'productname', width: 200 },
     { headerName: "PRODUCT ID", field: 'productid', width: 150 },
@@ -183,8 +182,7 @@ export class LcoCommissionComponent {
   ];
   columnDefs3: any[] = [
     {
-      headerName: "S.No", lockPosition: true, valueGetter: 'node.rowIndex+1', width: 100, headerCheckboxSelection: true,
-      checkboxSelection: true,
+      headerName: "S.No", lockPosition: true, valueGetter: 'node.rowIndex+1', width: 100, 
     },
     { headerName: "OPERATOR NAME", field: 'operatorname', width: 200 },
     {

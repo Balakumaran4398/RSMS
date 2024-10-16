@@ -11,11 +11,6 @@ import { Router } from '@angular/router';
 import { LcodashboardComponent } from '../../channel_setting/_Dialogue/operator/lcodashboard/lcodashboard.component';
 import { DataService } from 'src/app/_core/service/Data.service';
 import { OperatordialogueComponent } from '../../channel_setting/_Dialogue/operator/operatordialogue/operatordialogue.component';
-
-interface Food {
-  value: string;
-  viewValue: string;
-}
 @Component({
   selector: 'app-operator-details',
   templateUrl: './operator-details.component.html',
@@ -82,7 +77,8 @@ export class OperatorDetailsComponent {
       console.log(data);
       this.operatorList = Object.keys(data).map(key => {
         const value = data[key];
-        const name = key.replace(/\(\d+\)$/, '').trim();
+        // const name = key.replace(/\(\d+\)$/, '').trim();
+        const name = key;
         return { name: name, value: value };
       });
     })
@@ -189,7 +185,7 @@ export class OperatorDetailsComponent {
     this.dataService.setDialogData({ detailsList });
     this.router.navigateByUrl(`/admin/lcodashboard/${operatorid}`);
     console.log(detailsList);
-    
+
   }
   // navgetToUrl(operatorid: number) {
   //   console.log(operatorid);

@@ -115,6 +115,8 @@ import { PackagewiseOperatorComponent } from "./features/channel_setting/package
 import { ChannellistComponent } from "./features/subscriber/channellist/channellist.component";
 import { PaymentUpdateComponent } from "./features/channel_setting/_Dialogue/local+broadcasting/payment-update/payment-update.component";
 import { CreateltbComponent } from "./features/channel_setting/_Dialogue/local+broadcasting/createltb/createltb.component";
+import { EditareaComponent } from "./features/channel_setting/_Dialogue/operator/editarea/editarea.component";
+import { OperatorlistComponent } from "./features/operator/operatorlist/operatorlist.component";
 @NgModule({
     declarations: [
         AdminBaseComponent, NavComponent, HomeComponent,
@@ -124,8 +126,8 @@ import { CreateltbComponent } from "./features/channel_setting/_Dialogue/local+b
         // -------------------------------------Top_subscriber_Details------------------------------------
         TopSubDetailComponent,
         // -----------------------------------------operator----------------------------------
-        OperatorDetailsComponent, LcoRechargeComponent, EditLcoComponent, SpecialPermissionComponent, NewLcoComponent, NewstreetComponent,
-        AddLcoBusinessComponent, LcodashboardComponent, LcochartComponent, LcopiechartComponent, OperatordialogueComponent, StreetComponent,
+        OperatorlistComponent, OperatorDetailsComponent, LcoRechargeComponent, EditLcoComponent, SpecialPermissionComponent, NewLcoComponent, NewstreetComponent,
+        AddLcoBusinessComponent, LcodashboardComponent, LcochartComponent, LcopiechartComponent, OperatordialogueComponent, StreetComponent,EditareaComponent,
         // --------------LCO RECHARGE-----------------
         LcoRechargePageComponent, LcoRechargeReportComponent, NewRechargeComponent, BulkRechargeComponent, RefundComponent,
         //==========================================channel_setting==============================================

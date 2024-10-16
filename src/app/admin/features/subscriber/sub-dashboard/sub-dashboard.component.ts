@@ -27,6 +27,7 @@ export class SubDashboardComponent implements OnInit, AfterViewInit {
   checkingObj: any = {};
   username: any;
   subscriberid: any;
+  subscribersubid: any;
   status: any;
   smartcardsubid: any;
   smartcard: any;
@@ -43,9 +44,10 @@ export class SubDashboardComponent implements OnInit, AfterViewInit {
   smartcardinfo: any;
   plantype: any;
   rechargetype: any;
-  selectedRechargetype: string = '';
+  selectedRechargetype: any = 0;
   datetype = false;
   isplantype = false;
+  dateTodate = 3;
   public rowSelection: any = "multiple";
   gridApi: any;
   selectedIds: number[] = [];
@@ -86,7 +88,7 @@ export class SubDashboardComponent implements OnInit, AfterViewInit {
   pinchange: boolean = false;
   deactive: boolean = false;
   activation: boolean = false;
-  packagactivation: boolean = false;
+  packagactivation: boolean = true;
   refresh: boolean = false;
   reactivation: boolean = false;
   resumechange: boolean = false;
@@ -113,6 +115,7 @@ export class SubDashboardComponent implements OnInit, AfterViewInit {
     this.role = storageservice.getUserRole();
     this.username = storageservice.getUsername();
     this.subscriberid = this.route.snapshot.paramMap.get('smartcard');
+    this.subscribersubid = this.route.snapshot.paramMap.get('subid');
     this.status = this.route.snapshot.paramMap.get('status');
     this.loaddata()
     console.log(this.subscriberid);
@@ -140,6 +143,8 @@ export class SubDashboardComponent implements OnInit, AfterViewInit {
     });
     this.userservice.getPlanTypeList(this.role, this.username).subscribe((data: any) => {
       this.rechargetype = Object.entries(data).map(([key, value]) => ({ name: key, id: value }));
+      console.log(this.rechargetype);
+
     })
 
   }
@@ -166,6 +171,8 @@ export class SubDashboardComponent implements OnInit, AfterViewInit {
 
   }
   loadNewDashboard() {
+    // for (let index = 0; index < 2; index++) {
+
     this.userservice.getNewsubscriberDetails(this.role, this.username, this.subscriberid || this.smartcard || this.boxid)
       .subscribe((data: any) => {
         console.log(data);
@@ -173,25 +180,23 @@ export class SubDashboardComponent implements OnInit, AfterViewInit {
         this.rowData = data['smartcardlist'];
         this.rowData1 = data['managepacklist_notexp'];
         this.subdetailsList = data['subscriberdetails'];
-
-
         console.log(this.subdetailsList);
         this.subid = this.subdetailsList.subid;
         this.smartcard = this.subdetailsList.smartcard;
         console.log(this.subid);
         console.log(this.smartcard);
-
+        this.cdr.detectChanges();
       }, (error) => {
         console.error('Error fetching new dashboard data:', error);
       });
+    // }
   }
 
   loadSubscriberDashboard() {
-
+    // for (let index = 0; index < 2; index++) {
     this.userservice.getQuickOperationDetailsBySearchname(this.role, this.username, (this.subscriberid || this.smartcardValue || this.boxid)).subscribe(
       (data: any) => {
         console.log(data);
-
         this.packageobject = data['packageobject'];
         this.packdateobj = data['packdateobj'];
         this.rowData1 = data['managepacklist_notexp'];
@@ -279,6 +284,7 @@ export class SubDashboardComponent implements OnInit, AfterViewInit {
             this.deactive = true;
           }
         }
+        this.cdr.detectChanges();
       },
       (error: any) => {
         console.error('Error fetching data:', error);
@@ -290,116 +296,120 @@ export class SubDashboardComponent implements OnInit, AfterViewInit {
         // });
       }
     );
+    // }
   }
 
   loadSmartcardDashboard() {
-    this.userservice.getQuickOperationDetailsBySmartcard(this.role, this.username, (this.smartcard || this.subscriberid || this.boxid)).subscribe(
-      (data: any) => {
-        console.log(data);
-        this.packageobject = data['packageobject'];
-        this.packdateobj = data['packdateobj'];
-        // this.rowData1 = data['selectedmanpacknotexp'];
-        this.rowData1 = data['managepacklist_notexp'];
-        this.rowData = data['smartcardlist'];
-        this.subdetailsList = data['subscriberdetails']
-        this.smartdetailList = data['smartcardlist']
-        this.subscriberaccounts = data['subscriberaccounts'];
-        this.smartcardinfo = data['smartcardinfo'];
-        this.subPairedboxid = data['pairedboxid'];
-        console.log(this.subPairedboxid);
+    for (let index = 0; index < 2; index++) {
+      this.userservice.getQuickOperationDetailsBySmartcard(this.role, this.username, (this.smartcard || this.subscriberid || this.boxid)).subscribe(
+        (data: any) => {
+          this.cdr.detectChanges();
+          console.log(data);
+          this.packageobject = data['packageobject'];
+          this.packdateobj = data['packdateobj'];
+          // this.rowData1 = data['selectedmanpacknotexp'];
+          this.rowData1 = data['managepacklist_notexp'];
+          this.rowData = data['smartcardlist'];
+          this.subdetailsList = data['subscriberdetails']
+          this.smartdetailList = data['smartcardlist']
+          this.subscriberaccounts = data['subscriberaccounts'];
+          this.smartcardinfo = data['smartcardinfo'];
+          this.subPairedboxid = data['pairedboxid'];
+          console.log(this.subPairedboxid);
 
-        this.subPairedsmartcard = data['pairedsmartcard'];
-        console.log(this.subPairedsmartcard);
-        this.message = data['message'];
-        if (this.rowData && Array.isArray(this.rowData)) {
-          this.rowData.forEach(item => {
-            if (item.casname !== "RCAS") {
-              this.boxchange = true;
-              this.smartcardchange = true;
-              this.unpair = true;
+          this.subPairedsmartcard = data['pairedsmartcard'];
+          console.log(this.subPairedsmartcard);
+          this.message = data['message'];
+          if (this.rowData && Array.isArray(this.rowData)) {
+            this.rowData.forEach(item => {
+              if (item.casname !== "RCAS") {
+                this.boxchange = true;
+                this.smartcardchange = true;
+                this.unpair = true;
+              } else {
+                this.boxchange = false;
+                this.smartcardchange = false;
+                this.unpair = false;
+              }
+            });
+          }
+
+          // if (this.subdetailsList && Array.isArray(this.subdetailsList)) {
+          if (this.subdetailsList) {
+            let item = this.subdetailsList
+            if (item.status === 0) {
+              this.packagactivation = true;
             } else {
-              this.boxchange = false;
-              this.smartcardchange = false;
-              this.unpair = false;
+              this.packagactivation = false;
             }
-          });
+            if (item.status === 2) {
+              this.activation = true;
+            } else {
+              this.activation = false;
+            }
+            if (item.boxstatus === false) {
+              this.refresh = true;
+            } else {
+              this.refresh = false;
+            }
+            if (item.status !== 1 && item.suspendstatus === 1) {
+              this.pinchange = true;
+              this.pvrchange = true;
+              this.sendmessage = true;
+              // this.deletemessage = true;
+              this.forcetuning = true;
+              this.reactivation = true;
+              this.block = true;
+            }
+            else {
+              this.pinchange = false;
+              this.pvrchange = false;
+              this.sendmessage = false;
+              // this.deletemessage = false;
+              this.forcetuning = false;
+              this.reactivation = false;
+              this.block = false;
+            }
+            // if (item.package_status === "Not Expired" && item.boxstatus === false) {
+            //   this.cancelsubscription = true;
+            // } else {
+            //   this.cancelsubscription = false;
+            // }
+            if (item.showPairUnpair === false) {
+              this.unpair = true;
+              this.pair = false;
+            } else {
+              this.unpair = false;
+              this.pair = true;
+            }
+            if (item.suspendstatus !== 1 && item.statusSus === true) {
+              this.resumechange = false;
+            } else {
+              this.resumechange = true;
+            }
+            if (item.statussuspend == false && item.noofdays > 1) {
+              this.suspend = false;
+            } else {
+              this.suspend = true;
+            }
+            if (item.status == 0 || item.status == 2 && item.suspendstatus == 1) {
+              this.deactive = false;
+            } else {
+              this.deactive = true;
+            }
+          }
+        },
+        (error: any) => {
+          console.error('Error fetching data:', error);
+          // Swal.fire({
+          //   title: 'Error!',
+          //   text: error?.error?.message || 'Failed to fetch operation details. Please try again later.',
+          //   icon: 'error',
+          //   showConfirmButton: true
+          // });
         }
-
-        // if (this.subdetailsList && Array.isArray(this.subdetailsList)) {
-        if (this.subdetailsList) {
-          let item = this.subdetailsList
-          if (item.status === 0) {
-            this.packagactivation = true;
-          } else {
-            this.packagactivation = false;
-          }
-          if (item.status === 2) {
-            this.activation = true;
-          } else {
-            this.activation = false;
-          }
-          if (item.boxstatus === false) {
-            this.refresh = true;
-          } else {
-            this.refresh = false;
-          }
-          if (item.status !== 1 && item.suspendstatus === 1) {
-            this.pinchange = true;
-            this.pvrchange = true;
-            this.sendmessage = true;
-            // this.deletemessage = true;
-            this.forcetuning = true;
-            this.reactivation = true;
-            this.block = true;
-          }
-          else {
-            this.pinchange = false;
-            this.pvrchange = false;
-            this.sendmessage = false;
-            // this.deletemessage = false;
-            this.forcetuning = false;
-            this.reactivation = false;
-            this.block = false;
-          }
-          // if (item.package_status === "Not Expired" && item.boxstatus === false) {
-          //   this.cancelsubscription = true;
-          // } else {
-          //   this.cancelsubscription = false;
-          // }
-          if (item.showPairUnpair === false) {
-            this.unpair = true;
-            this.pair = false;
-          } else {
-            this.unpair = false;
-            this.pair = true;
-          }
-          if (item.suspendstatus !== 1 && item.statusSus === true) {
-            this.resumechange = false;
-          } else {
-            this.resumechange = true;
-          }
-          if (item.statussuspend == false && item.noofdays > 1) {
-            this.suspend = false;
-          } else {
-            this.suspend = true;
-          }
-          if (item.status == 0 || item.status == 2 && item.suspendstatus == 1) {
-            this.deactive = false;
-          } else {
-            this.deactive = true;
-          }
-        }
-      },
-      (error: any) => {
-        console.error('Error fetching data:', error);
-        // Swal.fire({
-        //   title: 'Error!',
-        //   text: error?.error?.message || 'Failed to fetch operation details. Please try again later.',
-        //   icon: 'error',
-        //   showConfirmButton: true
-        // });
-      }
-    );
+      );
+    }
   }
 
   columnDefs: any[] = [
@@ -407,7 +417,7 @@ export class SubDashboardComponent implements OnInit, AfterViewInit {
       headerName: "S.No", valueGetter: 'node.rowIndex+1', width: 80,
     },
     {
-      headerName: 'SMARTCARD', width: 200,
+      headerName: 'SMARTCARD', width: 250,
       field: 'smartcard',
     },
     {
@@ -445,7 +455,8 @@ export class SubDashboardComponent implements OnInit, AfterViewInit {
         infoButton.appendChild(infoIcon);
         infoButton.title = 'Info';
         infoButton.addEventListener('click', () => {
-          this.openDialog('refresh');
+          // this.openDialog('refresh');
+          this.refreshpage(params.data);
         });
         // Refresh Button
         const refreshButton = document.createElement('button');
@@ -573,12 +584,191 @@ export class SubDashboardComponent implements OnInit, AfterViewInit {
       const selectedRows = this.gridApi.getSelectedRows();
       this.isAnyRowSelected = selectedRows.length > 0;
       this.rows = selectedRows;
+      console.log(this.rows);
 
     }
   }
-  onGridReady() {
-
+  onGridReady(params: { api: any; }) {
+    this.gridApi = params.api;
   }
+
+
+  refreshpage(event: any) {
+    // console.log(event.smartcard);
+    // let timerInterval: any;
+    // Swal.fire({
+    //   title: "Loading!!!",
+    //   timer: 2000,
+    //   timerProgressBar: true,
+    //   didOpen: () => {
+    //     Swal.showLoading(null);
+    //   },
+    //   willClose: () => {
+    //     clearInterval(timerInterval);
+    //   }
+    // }).then((result) => {
+    //   if (result.dismiss === Swal.DismissReason.timer) {
+    //     console.log("I was closed by the timer");
+    //   }
+    // });
+
+    for (let index = 0; index < 3; index++) {
+      this.userservice.getQuickOperationDetailsBySmartcard(this.role, this.username, event.smartcard).subscribe(
+        (data: any) => {
+          this.cdr.detectChanges();
+          console.log(data);
+          this.packageobject = data['packageobject'];
+          this.packdateobj = data['packdateobj'];
+          // this.rowData1 = data['selectedmanpacknotexp'];
+          this.rowData1 = data['managepacklist_notexp'];
+          this.rowData = data['smartcardlist'];
+          this.subdetailsList = data['subscriberdetails']
+          this.smartdetailList = data['smartcardlist']
+          this.subscriberaccounts = data['subscriberaccounts'];
+          this.smartcardinfo = data['smartcardinfo'];
+          this.subPairedboxid = data['pairedboxid'];
+          console.log(this.subPairedboxid);
+
+          this.subPairedsmartcard = data['pairedsmartcard'];
+          console.log(this.subPairedsmartcard);
+          this.message = data['message'];
+          if (this.rowData && Array.isArray(this.rowData)) {
+            this.rowData.forEach(item => {
+              if (item.casname !== "RCAS") {
+                this.boxchange = true;
+                this.smartcardchange = true;
+                this.unpair = true;
+              } else {
+                this.boxchange = false;
+                this.smartcardchange = false;
+                this.unpair = false;
+              }
+            });
+          }
+
+          // if (this.subdetailsList && Array.isArray(this.subdetailsList)) {
+          if (this.subdetailsList) {
+            let item = this.subdetailsList
+            if (item.status === 0) {
+              this.packagactivation = true;
+            } else {
+              this.packagactivation = false;
+            }
+            if (item.status === 2) {
+              this.activation = true;
+            } else {
+              this.activation = false;
+            }
+            if (item.boxstatus === false) {
+              this.refresh = true;
+            } else {
+              this.refresh = false;
+            }
+            if (item.status !== 1 && item.suspendstatus === 1) {
+              this.pinchange = true;
+              this.pvrchange = true;
+              this.sendmessage = true;
+              // this.deletemessage = true;
+              this.forcetuning = true;
+              this.reactivation = true;
+              this.block = true;
+            }
+            else {
+              this.pinchange = false;
+              this.pvrchange = false;
+              this.sendmessage = false;
+              // this.deletemessage = false;
+              this.forcetuning = false;
+              this.reactivation = false;
+              this.block = false;
+            }
+            // if (item.package_status === "Not Expired" && item.boxstatus === false) {
+            //   this.cancelsubscription = true;
+            // } else {
+            //   this.cancelsubscription = false;
+            // }
+            if (item.showPairUnpair === false) {
+              this.unpair = true;
+              this.pair = false;
+            } else {
+              this.unpair = false;
+              this.pair = true;
+            }
+            if (item.suspendstatus !== 1 && item.statusSus === true) {
+              this.resumechange = false;
+            } else {
+              this.resumechange = true;
+            }
+            if (item.statussuspend == false && item.noofdays > 1) {
+              this.suspend = false;
+            } else {
+              this.suspend = true;
+            }
+            if (item.status == 0 || item.status == 2 && item.suspendstatus == 1) {
+              this.deactive = false;
+            } else {
+              this.deactive = true;
+            }
+          }
+        },
+        (error: any) => {
+          console.error('Error fetching data:', error);
+          // Swal.fire({
+          //   title: 'Error!',
+          //   text: error?.error?.message || 'Failed to fetch operation details. Please try again later.',
+          //   icon: 'error',
+          //   showConfirmButton: true
+          // });
+        }
+      );
+    }
+  }
+
+  processData() {
+    if (this.rowData && Array.isArray(this.rowData)) {
+      this.rowData.forEach(item => {
+        if (item.casname !== "RCAS") {
+          this.boxchange = true;
+          this.smartcardchange = true;
+          this.unpair = true;
+        } else {
+          this.boxchange = false;
+          this.smartcardchange = false;
+          this.unpair = false;
+        }
+      });
+    }
+
+    if (this.subdetailsList) {
+      let item = this.subdetailsList;
+      this.packagactivation = item.status === 0;
+      this.activation = item.status === 2;
+      this.refresh = item.boxstatus === false;
+
+      if (item.status !== 1 && item.suspendstatus === 1) {
+        this.pinchange = true;
+        this.pvrchange = true;
+        this.sendmessage = true;
+        this.forcetuning = true;
+        this.reactivation = true;
+        this.block = true;
+      } else {
+        this.pinchange = false;
+        this.pvrchange = false;
+        this.sendmessage = false;
+        this.forcetuning = false;
+        this.reactivation = false;
+        this.block = false;
+      }
+
+      this.unpair = item.showPairUnpair === false;
+      this.pair = !this.unpair;
+      this.resumechange = !(item.suspendstatus !== 1 && item.statusSus === true);
+      this.suspend = !(item.statussuspend === false && item.noofdays > 1);
+      this.deactive = !(item.status === 0 || (item.status === 2 && item.suspendstatus === 1));
+    }
+  }
+
   onNoClick() {
     this.selectedTab = !this.selectedTab
   }
@@ -659,21 +849,22 @@ export class SubDashboardComponent implements OnInit, AfterViewInit {
     });
   }
   openDialog(type: string): void {
-    let dialogData = { type: type, detailsList: this.subdetailsList, subId: this.subscriberid, pairBoxlist: this.subPairedboxid, pairSmartcardlist: this.subPairedsmartcard, plantype: this.packagePlan };
-    const dialogRef = this.dialog.open(SubscriberdialogueComponent, {
-      data: dialogData
-    });
-    let dialogConfig = {
-      width: '500px',
-      // height: '350px', 
-      data: { dialogType: type }
-    };
+
+    let width = '500px';
     if (type === 'addSmartcard') {
       // dialogConfig.height = '1000px'; 
-      dialogConfig.width = '350px';
+      width = '350px';
     } else if (type === 'editDetails') {
-      dialogConfig.width = '1000px';
+      width = '1000px';
+    } else if (type === 'refresh') {
+      width = '500px';
     }
+
+    let dialogData = { type: type, detailsList: this.subdetailsList, subId: this.subdetailsList.subid, pairBoxlist: this.subPairedboxid, pairSmartcardlist: this.subPairedsmartcard, plantype: this.packagePlan };
+    const dialogRef = this.dialog.open(SubscriberdialogueComponent, {
+      data: dialogData,
+      width: width
+    });
 
     dialogRef.afterClosed().subscribe(result => {
       console.log('The dialog was closed', result);
@@ -701,14 +892,18 @@ export class SubDashboardComponent implements OnInit, AfterViewInit {
       this.datetype = true;
     }
     if (rechargetype == 3) {
-      this.datetype = false;
+      this.dateTodate;
       this.isplantype = false;
+      this.datetype = false;
     }
   }
   onSelectionplantype(selectedValue: string) {
     console.log(selectedValue);
   }
   rechargetoggleConfirmation() {
+    this.ManagePackageCalculation();
+  }
+  rechargetoggle() {
     this.ManagePackageCalculation();
     this.toggleConfirmation();
   }
@@ -735,66 +930,6 @@ export class SubDashboardComponent implements OnInit, AfterViewInit {
       }, 100);
     })
   }
-  //   generateBillpdf() {
-  //     this.userservice.getPdfBillReport(this.role, this.username, this.subdetailsList.subid, this.subdetailsList.smartcard).subscribe(
-  //       (x: any) => {
-  //         console.log(x);
-
-  //         // Create a Blob from the PDF data
-  //         const blob = new Blob([x], { type: 'application/pdf' });
-  //         const data = window.URL.createObjectURL(blob);
-
-  //         // Create an anchor element and trigger the download
-  //         const link = document.createElement('a');
-  //         link.href = data;
-  //         link.download = "Home_Channel_Report.pdf"; // Adjust filename as needed
-  //         link.dispatchEvent(new MouseEvent('click', { bubbles: true, cancelable: true, view: window }));
-
-  //         // Clean up
-  //         setTimeout(() => {
-  //           window.URL.revokeObjectURL(data);
-  //           link.remove();
-  //         }, 100);
-  //       },
-  //       (error) => {
-  //         // Handle error response
-  //         console.error("Error downloading PDF: ", error);
-  //         Swal.fire('Error', 'Failed to generate PDF bill. Please try again.', 'error');
-  //       }
-  //     );
-  // }
-  // generateBillpdf() {
-  //   this.userservice.getPdfBillReport(this.role, this.username, this.subdetailsList.subid, this.subdetailsList.smartcard)
-  //     .subscribe((data: any) => {
-  //       // Check if data is in the expected format
-  //       if (!data) {
-  //         alert('No data received for the PDF.');
-  //         return;
-  //       }
-
-  //       const doc = new jsPDF();
-  //       doc.setFontSize(18);
-  //       doc.text('Home Channel Report', 10, 10);
-  //       doc.setFontSize(12);
-  //       let y = 20;
-
-  //       // Iterate over the keys of the data object
-  //       for (const key in data) {
-  //         if (data.hasOwnProperty(key)) {
-  //           doc.text(`${key}: ${data[key]}`, 10, y);
-  //           y += 10; // Move to the next line
-  //         }
-  //       }
-
-  //       // Add generated date
-  //       doc.text('Generated on: ' + new Date().toLocaleDateString(), 10, y + 10);
-  //       // Save the PDF with a specified filename
-  //       doc.save('Home_Channel_Report.pdf');
-  //     }, (error) => {
-  //       console.error('Error fetching data for PDF:', error);
-  //       alert('Failed to fetch data for the PDF. Please try again later.');
-  //     });
-  // }
 
 
 
@@ -806,7 +941,9 @@ export class SubDashboardComponent implements OnInit, AfterViewInit {
       plan: this.plantype,
       smartcard: this.subdetailsList.smartcard,
       type: 10,
-      managepacklist: this.rows,
+      managepacklist: this.rowData1,
+      selectedpacklist:this.rows,
+      retailerid: 0
     }
     console.log(requestBody);
     this.userservice.ManagePackageCalculation(requestBody).subscribe((res: any) => {

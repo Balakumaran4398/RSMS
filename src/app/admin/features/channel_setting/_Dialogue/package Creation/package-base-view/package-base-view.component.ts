@@ -14,6 +14,7 @@ import { StorageService } from 'src/app/_core/service/storage.service';
 export class PackageBaseViewComponent {
   selectedTab: string = '1';
   rowData: any[] = [];
+  count:any;
   username: string;
   role: string;
   package_id: number;
@@ -94,6 +95,7 @@ export class PackageBaseViewComponent {
       this.packagerate = data.packagerate;
       this.subcount = data.subcount;
       this.rowData = data;
+      this.count=data.length;
       this.updateColumnDefs(tab);
     });
   }

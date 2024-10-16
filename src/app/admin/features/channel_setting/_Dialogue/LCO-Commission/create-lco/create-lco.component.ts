@@ -35,31 +35,32 @@ export class CreateLcoComponent {
       title: 'Processing...',
       text: 'Please wait while we create the LCO Membership.',
       allowOutsideClick: false,
-      // didOpen: () => {
-      //   Swal.showLoading();
-      // }
+      didOpen: () => {
+        Swal.showLoading(null);
+      }
     });
 
-    this.userservice.createLcoGroup(this.role, this.username, this.lcogroupname).subscribe(
-      (res: any) => {
-        Swal.fire({
-          icon: 'success',
-          title: 'Success!',
-          text: res?.message || 'LCO Membership has been successfully created.'
-        }).then(() => {
-          // this.refreshTable.emit();
-          window.location.reload();
-          this.dialogRef.close();
-        });
-        console.log(res);
-      },
-      (error: any) => {
-        Swal.fire({
-          icon: 'error',
-          title: 'Oops!',
-          text: error?.error.message || 'Something went wrong while creating the LCO Membership.'
-        });
-      }
-    );
+    this.userservice.createLcoGroup(this.role, this.username, this.lcogroupname)
+      .subscribe(
+        (res: any) => {
+          Swal.fire({
+            title: 'Success!',
+            text: res?.message,
+            icon: 'success',
+            timer: 2000,
+            showConfirmButton: false
+          }).then(() => {
+            this.dialogRef.close();
+          });
+        },
+        (err: any) => {
+          Swal.fire({
+            title: 'Error!',
+            text: err?.error?.message,
+            icon: 'error',
+            confirmButtonText: 'OK'
+          });
+        }
+      );
   }
 }

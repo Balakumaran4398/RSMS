@@ -1,26 +1,37 @@
-import { Component } from '@angular/core';
+import { HttpResponse } from '@angular/common/http';
+import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { MatCalendarCellClassFunction } from '@angular/material/datepicker';
 import { MatDialog } from '@angular/material/dialog';
 import { ColDef } from 'ag-grid-community';
 import { BaseService } from 'src/app/_core/service/base.service';
 import { StorageService } from 'src/app/_core/service/storage.service';
+import { SwalService } from 'src/app/_core/service/swal.service';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-bulk-page-updation',
   templateUrl: './bulk-page-updation.component.html',
   styleUrls: ['./bulk-page-updation.component.scss']
 })
-export class BulkPageUpdationComponent {
-  selectedTab: string = 'all_operator';
+export class BulkPageUpdationComponent implements OnInit {
+  selectedTab: string = 'bulk_package';
+  package: any;
+  operatorid: any;
   package_select: boolean = false;
+  isCheckboxChecked: boolean = false; 
+  packageList: any[] = [];
+  operatorList: any[] = [];
   cas: any[] = [];
+  typelist: any;
+  alltypelist: any;
   type: any = [
     { label: "Select filter Type", value: 0 },
-    { lable: "LCO", value: 1 },
-    { lable: "SMARTCARD/BoxID", value: 2 },
-    { lable: "Datewise", value: 3 },
+    { label: "LCO", value: 1 },
+    { label: "SMARTCARD/BoxID", value: 2 },
+    { label: "Datewise", value: 3 },
   ];
+
   lco: any = [
     { label: "Select filter Lco", value: 0 },
     { lable: "fdsfdsfdsf", value: 1 },
@@ -28,7 +39,8 @@ export class BulkPageUpdationComponent {
     { lable: "jhdjhsdsad", value: 3 },
   ];
   alltype: any = [
-    { label: "ALL", value: 1 },
+    { label: "ALL", value: 0 },
+    { label: "Success", value: 1 },
     { label: "Failure", value: 2 }
   ]
   smartcard: any;
@@ -36,8 +48,8 @@ export class BulkPageUpdationComponent {
   username: any;
   role: any;
   CasFormControl: any;
-  typeFormControl:any;
-  LcoFormControl:any;
+  typeFormControl: any;
+  LcoFormControl: any;
   columnDefs1: ColDef[] = [
     { headerName: "S.No", lockPosition: true, valueGetter: 'node.rowIndex+1', cellClass: 'locked-col', width: 80, suppressNavigable: true, sortable: false, filter: false },
     { headerName: "CUSTOMER NAME", field: 'intend_to' },
@@ -46,11 +58,7 @@ export class BulkPageUpdationComponent {
     { headerName: "PACKAGE NAME", field: '' },
     { headerName: "EXPIRY DATE", field: '' },
   ];
-  rowData = [
-    {
-      intend_to: 'Example Value',
-    },
-  ];
+  rowData: any;
   public rowSelection: any = "multiple";
   gridOptions = {
     defaultColDef: {
@@ -60,11 +68,11 @@ export class BulkPageUpdationComponent {
       width: 250,
       floatingFilter: true
     },
-    // paginationPageSize: 15,
-    // pagination: true,
+    paginationPageSize: 10,
+    pagination: true,
   }
   columnDefs: any;
-  constructor(public dialog: MatDialog, private fb: FormBuilder, private userservice: BaseService, private storageService: StorageService) {
+  constructor(public dialog: MatDialog, private fb: FormBuilder, private userservice: BaseService, private storageService: StorageService, private swal: SwalService) {
 
     this.username = storageService.getUsername();
     this.role = storageService.getUserRole();
@@ -82,35 +90,65 @@ export class BulkPageUpdationComponent {
     if (tab === 'bulk_package') {
       this.columnDefs = [
         { headerName: "S.No", lockPosition: true, valueGetter: 'node.rowIndex+1', cellClass: 'locked-col', width: 80, suppressNavigable: true, sortable: false, filter: false },
-        { headerName: "CUSTOMER NAME", field: 'intend_to' },
-        { headerName: "SMARTCARD", field: '' },
-        { headerName: "BOX ID", field: '' },
-        { headerName: "PACKAGE NAME", field: '' },
-        { headerName: "EXPIRY DATE", field: '' },
+        { headerName: "CUSTOMER NAME", field: 'customername' },
+        { headerName: "SMARTCARD", field: 'smartcard' },
+        { headerName: "BOX ID", field: 'boxid' },
+        { headerName: "PACKAGE NAME", field: 'productname' },
+        { headerName: "EXPIRY DATE", field: 'expirydate' },
       ];
     } else if (tab === 'pending') {
       this.columnDefs = [
         { headerName: "S.No", lockPosition: true, valueGetter: 'node.rowIndex+1', cellClass: 'locked-col', width: 80, suppressNavigable: true, sortable: false, filter: false },
-        { headerName: "OPERATOR NAME	", field: 'intend_to' },
-        { headerName: "CUSTOMER NAME	", field: '' },
-        { headerName: "SMARTCARD", field: '' },
-        { headerName: "BOX ID", field: '' },
-        { headerName: "CREATED DATE", field: '' },
-        { headerName: "PACKAGE NAME", field: '' },
-        { headerName: "EXPIRY DATE", field: '' },
-        { headerName: "STATUS", field: '' },
+        { headerName: "OPERATOR NAME	", field: 'operatorname' },
+        { headerName: "CUSTOMER NAME	", field: 'customername' },
+        { headerName: "SMARTCARD", field: 'smartcard' },
+        { headerName: "BOX ID", field: 'boxid' },
+        { headerName: "CREATED DATE", field: 'createddate' },
+        { headerName: "PACKAGE NAME", field: 'expirydate' },
+        { headerName: "EXPIRY DATE", field: 'packagename' },
+        {
+          headerName: "STATUS",
+          field: 'status',
+          cellRenderer: (params: any) => {
+            return params.value === 1 ? 'Active' : 'Deactive';
+          },
+          cellStyle: (params: any) => {
+            if (params.value === 1) {
+              return { color: 'green', fontWeight: 'bold' };
+            } else if (params.value === 0) {
+              return { color: 'red', fontWeight: 'bold' };
+            }
+            return null;
+          }
+        }
+        
       ];
     } else if (tab === 'archive') {
       this.columnDefs = [
         { headerName: "S.No", lockPosition: true, valueGetter: 'node.rowIndex+1', cellClass: 'locked-col', width: 80, suppressNavigable: true, sortable: false, filter: false },
-        { headerName: "OPERATOR NAME	", field: 'intend_to' },
-        { headerName: "CUSTOMER NAME	", field: '' },
-        { headerName: "SMARTCARD", field: '' },
-        { headerName: "BOX ID", field: '' },
-        { headerName: "ECREATED DATE", field: '' },
-        { headerName: "PACKAGE NAME	", field: '' },
-        { headerName: "EXPIRY DATE	", field: '' },
-        { headerName: "STATUS", field: '' },
+        { headerName: "OPERATOR NAME	", field: 'operatorname' },
+        { headerName: "CUSTOMER NAME	", field: 'customername' },
+        { headerName: "SMARTCARD", field: 'smartcard' },
+        { headerName: "BOX ID", field: 'boxid' },
+        { headerName: "CREATED DATE", field: 'createddate' },
+        { headerName: "PACKAGE NAME", field: 'expirydate' },
+        { headerName: "EXPIRY DATE", field: 'packagename' },
+        {
+          headerName: "STATUS",
+          field: 'status',
+          cellRenderer: (params: any) => {
+            return params.value === 1 ? 'Active' : 'Deactive';
+          },
+          cellStyle: (params: any) => {
+            if (params.value === 1) {
+              return { color: 'green', fontWeight: 'bold' };
+            } else if (params.value === 0) {
+              return { color: 'red', fontWeight: 'bold' };
+            }
+            return null;
+          }
+        }
+        
       ];
     }
   }
@@ -128,74 +166,281 @@ export class BulkPageUpdationComponent {
       }
     });
 
-    this.userservice.Cas_type(this.role, this.username).subscribe((data) => {
+
+    this.fetchPackageList();
+    this.fetchOperatorList();
+
+  }
+  fetchPackageList() {
+    this.userservice.getPackageList(this.role, this.username, 1).subscribe((data: any) => {
       console.log(data);
-      this.cas = data.map((item: any) => item.casname);
-      console.log(this.cas);
+      // this.packageList = Object.keys(data.packageid); // Assuming packageid contains the necessary values
+      this.packageList = Object.keys(data.packageid).map(key => {
+        const value = data.packageid[key]; // Access the value for the corresponding key
+        // const name = key.split('(')[0].trim(); // Extract the name from the key, trimming any whitespace
+        const name = key
+        return { name: name, value: value }; // Return an object with separated name and value
+      });
+      console.log(this.packageList);
     });
+  }
 
+  fetchOperatorList() {
+    this.userservice.getOeratorList(this.role, this.username).subscribe((data: any) => {
+      console.log(data);
+      this.operatorList = Object.keys(data).map(key => {
+        const value = data[key];
+        const name = key;
+        return { name: name, value: value };
+      });
+      console.log(this.operatorList);
+    });
   }
-  ngAfterViewInit(): void {
-    this.loadData(this.selectedTab);
-  }
-  selectTab(tab: string) {
-    this.selectedTab = tab;
-    this.loadData(tab);  
-
-  }
-  private loadData(tab: any): void {
-    // this.userService.PackagemasterList(this.user_role, this.username, tab).subscribe((data) => {
-    // console.log(data);
-    this.updateColumnDefs(tab);
-    // });
-  }
-  // onCheckboxChange(event: Event): void {
-  //   this.package_select = (event.target as HTMLInputElement).checked;
+  // ngAfterViewInit(): void {
+  //   this.loadData(this.selectedTab);
   // }
-  handleFileInput(event: Event): void {
-
+  selectbulk(tab: string) {
+    this.selectedTab = tab;
+    this.updateColumnDefs(tab);
   }
+  selectPending(tab: string) {
+    this.selectedTab = tab;
+    this.updateColumnDefs(tab);
+  }
+  selectArchive(tab: string) {
+    this.selectedTab = tab;
+    this.updateColumnDefs(tab);
+  }
+
+  // selectTab(tab: string) {
+  //   this.selectedTab = tab;
+  //   if (this.gridOptions) {
+  //     let newRowData;
+  //     if (this.selectedTab === 'bulk_package') {
+  //       newRowData = this.getBulkpackage('bulk_package');
+  //     } else if (this.selectedTab === 'pending') {
+  //       newRowData = this.getPendingData('pending');
+  //     } else if (this.selectedTab === 'archive') {
+  //       newRowData = this.getArchiveData('archive');
+  //     }
+  //   }
+  // }
+  // getBulkpackage(event: any) {
+  //   this.onSubscriberStatusChange(event)
+  //   return [this.rowData];
+  // }
+  // getPendingData(event: any) {
+  //   this.onSubscriberStatusChange(event)
+  //   return [this.rowData];
+  // }
+  // getArchiveData(event: any) {
+  //   this.onSubscriberStatusChange(event)
+  //   return [this.rowData];
+  // }
+  // getAllData(event: any) {
+  //   this.onSubscriberStatusChange(event)
+  //   return [this.rowData];
+  // }
+  // onSubscriberStatusChange(event: any) {
+  //   this.userservice.getExpirySubscriberDetailsByDatePackAndOperatorId(this.role, this.username, this.fromdate, this.todate, this.package, this.operatorid).subscribe((data) => {
+  //     this.updateColumnDefs(this.selectedTab);
+  //   });
+  // }
+
+  // private loadData(tab: any): void {
+  //   this.updateColumnDefs(tab);
+  // }
+
+
+
+
   onGridReady = () => {
-    // this.userservice.GetAllUser('all',this.token.getUsername(),'0000-00-00','0000-00-00').subscribe((data) => {
-    //   this.gridApi.setRowData(data);
-    //   this.listUser = data;      
-    // });
+
+
   }
   maxDate = new Date();
-  fromdate: any = "null";
-  todate: any = 'null';
+  fromdate: any;
+  todate: any;
 
   getFromDate(event: any) {
-    // console.log(event.value);
-    const date = new Date(event.value).getDate();
-    const month = new Date(event.value).getMonth() + 1;
-    const year = new Date(event.value).getFullYear();
-    this.fromdate = year + "-" + month + "-" + date
+    this.fromdate = this.formatDate(event.value);
+  }
 
-  }
   getToDate(event: any) {
-    const date = new Date(event.value).getDate();
-    const month = new Date(event.value).getMonth() + 1;
-    const year = new Date(event.value).getFullYear();
-    this.todate = year + "-" + month + "-" + date
-    // console.log(this.fromdate + "---" + this.todate);
-    // this.filterDistributorList()
-    this.filterDistributorListByMultiple()
+    this.todate = this.formatDate(event.value);
   }
-  filterDistributorListByMultiple() {
-    let payload = {
-      // "statelist": this.allSelectedStateList,
-      // "districtlist": this.allSelectedDistrictList,
-      // "citylist": this.allSelectedCityList,
-      // "locationlist": this.allSelectedLocationList,
-      "fromdate": this.fromdate,
-      "todate": this.todate
+
+  formatDate(date: Date): string {
+    const d = new Date(date);
+    const year = d.getFullYear();
+    const month = (d.getMonth() + 1).toString().padStart(2, '0'); // Ensure month is 2 digits
+    const day = d.getDate().toString().padStart(2, '0'); // Ensure day is 2 digits
+    return `${year}-${month}-${day}`; // Return date in "YYYY-MM-DD" format
+  }
+
+  submit() {
+    console.log("Submitting with values: ", {
+      fromdate: this.fromdate,
+      todate: this.todate,
+      package: this.package,
+      operatorid: this.operatorid
+    });
+    this.userservice.getExpirySubscriberDetailsByDatePackAndOperatorId(
+      this.role, this.username, this.fromdate, this.todate, this.package, this.operatorid
+    ).subscribe((res: any) => {
+      this.updateColumnDefs(this.selectedTab);
+      this.swal.success(res?.message);
+    }, (err) => {
+      this.swal.Error(err?.error?.message);
+    });
+  }
+  pendingFilter() {
+
+    console.log(this.typelist);
+    if (this.typelist === 1) {
+      this.userservice.getAllBulkPackageListByOperatoridAndStatus(this.role, this.username, this.operatorid, 0).subscribe(
+        (response: HttpResponse<any[]>) => { // Expect HttpResponse<any[]>
+          if (response.status === 200) {
+            this.updateColumnDefs(this.selectedTab);
+            this.rowData = response.body;
+            Swal.fire('Success', 'Data updated successfully!', 'success');
+          } else if (response.status === 204) {
+            Swal.fire('No Content', 'No data available for the given criteria.', 'info');
+          }
+        },
+        (error) => {
+          if (error.status === 400) {
+            Swal.fire('Error 400', 'Bad Request. Please check the input.', 'error');
+          } else if (error.status === 500) {
+            Swal.fire('Error 500', 'Internal Server Error. Please try again later.', 'error');
+          } else {
+            Swal.fire('Error', 'Something went wrong. Please try again.', 'error');
+          }
+        }
+      );
+    } else if (this.typelist === 2) {
+      this.userservice.getAllBulkPackageListBySearchnameAndStatus(this.role, this.username, this.smartcard, 0).subscribe(
+        (response: HttpResponse<any[]>) => {
+          if (response.status === 200) {
+            this.updateColumnDefs(this.selectedTab);
+            this.rowData = response.body;
+            Swal.fire('Success', 'Data updated successfully!', 'success');
+          } else if (response.status === 204) {
+            Swal.fire('No Content', 'No data available for the given criteria.', 'info');
+          }
+        },
+        (error) => {
+          if (error.status === 400) {
+            Swal.fire('Error 400', 'Bad Request. Please check the input.', 'error');
+          } else if (error.status === 500) {
+            Swal.fire('Error 500', 'Internal Server Error. Please try again later.', 'error');
+          } else {
+            Swal.fire('Error', 'Something went wrong. Please try again.', 'error');
+          }
+        }
+      );
+    } else if (this.typelist === 3) {
+      this.userservice.getAllBulkPackageListByFromdateTodateAndStatus(this.role, this.username, this.fromdate, this.todate, 0).subscribe(
+        (response: HttpResponse<any[]>) => {
+          if (response.status === 200) {
+            this.updateColumnDefs(this.selectedTab);
+            this.rowData = response.body;
+            Swal.fire('Success', 'Data updated successfully!', 'success');
+          } else if (response.status === 204) {
+            Swal.fire('No Content', 'No data available for the given criteria.', 'info');
+          }
+        },
+        (error) => {
+          if (error.status === 400) {
+            Swal.fire('Error 400', 'Bad Request. Please check the input.', 'error');
+          } else if (error.status === 500) {
+            Swal.fire('Error 500', 'Internal Server Error. Please try again later.', 'error');
+          } else {
+            Swal.fire('Error', 'Something went wrong. Please try again.', 'error');
+          }
+        }
+      );
     }
-    // this.clientService.getAllDistributorListByList(payload).subscribe(res => {
-      // console.log(res);
-      // this.rowData = res;
-      // this.rowDatafilter = res;
-    // })
   }
- 
+  archiveFilter() {
+    console.log(this.typelist);
+    if (this.typelist === 1) {
+      this.userservice.getAllBulkPackageListBySearchnameAndStatus(this.role, this.username, this.operatorid, this.alltypelist).subscribe(
+        (response: HttpResponse<any[]>) => {
+          if (response.status === 200) {
+            this.updateColumnDefs(this.selectedTab);
+            this.rowData = response.body;
+            Swal.fire('Success', 'Data updated successfully!', 'success');
+          } else if (response.status === 204) {
+            Swal.fire('No Content', 'No data available for the given criteria.', 'info');
+          }
+        },
+        (error) => {
+          if (error.status === 400) {
+            Swal.fire('Error 400', 'Bad Request. Please check the input.', 'error');
+          } else if (error.status === 500) {
+            Swal.fire('Error 500', 'Internal Server Error. Please try again later.', 'error');
+          } else {
+            Swal.fire('Error', 'Something went wrong. Please try again.', 'error');
+          }
+        }
+      );
+    } else if (this.typelist === 2) {
+      this.userservice.getAllBulkPackageListByOperatoridAndStatus(this.role, this.username, this.smartcard, this.alltypelist).subscribe(
+        //   (res: any) => {
+        //   this.updateColumnDefs(this.selectedTab);
+        //   this.rowData = res;
+        //   this.swal.success(res?.message);
+        // }, (err) => {
+        //   this.swal.Error(err?.error?.message);
+        // });
+        (response: HttpResponse<any[]>) => {
+          if (response.status === 200) {
+            this.updateColumnDefs(this.selectedTab);
+            this.rowData = response.body;
+            Swal.fire('Success', 'Data updated successfully!', 'success');
+          } else if (response.status === 204) {
+            Swal.fire('No Content', 'No data available for the given criteria.', 'info');
+          }
+        },
+        (error) => {
+          if (error.status === 400) {
+            Swal.fire('Error 400', 'Bad Request. Please check the input.', 'error');
+          } else if (error.status === 500) {
+            Swal.fire('Error 500', 'Internal Server Error. Please try again later.', 'error');
+          } else {
+            Swal.fire('Error', 'Something went wrong. Please try again.', 'error');
+          }
+        }
+      );
+    } else if (this.typelist === 3) {
+      this.userservice.getAllBulkPackageListByFromdateTodateAndStatus(this.role, this.username, this.fromdate, this.todate, this.alltypelist).subscribe(
+        //   (res: any) => {
+        //   this.updateColumnDefs(this.selectedTab);
+        //   this.rowData = res;
+        //   this.swal.success(res?.message);
+        // }, (err) => {
+        //   this.swal.Error(err?.error?.message);
+        // });
+        (response: HttpResponse<any[]>) => {
+          if (response.status === 200) {
+            this.updateColumnDefs(this.selectedTab);
+            this.rowData = response.body;
+            Swal.fire('Success', 'Data updated successfully!', 'success');
+          } else if (response.status === 204) {
+            Swal.fire('No Content', 'No data available for the given criteria.', 'info');
+          }
+        },
+        (error) => {
+          if (error.status === 400) {
+            Swal.fire('Error 400', 'Bad Request. Please check the input.', 'error');
+          } else if (error.status === 500) {
+            Swal.fire('Error 500', 'Internal Server Error. Please try again later.', 'error');
+          } else {
+            Swal.fire('Error', 'Something went wrong. Please try again.', 'error');
+          }
+        }
+      );
+    }
+  }
 }

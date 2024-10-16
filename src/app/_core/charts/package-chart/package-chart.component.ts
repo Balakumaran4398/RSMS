@@ -155,21 +155,21 @@ export class PackageChartComponent implements OnInit {
   updateChartData(apiData: any): void {
     // Ensure that the API data contains the keys you expect
     const dataPoints = [
-      { name: "Addon Package", y: apiData["Addon Package"] || 0, color: "#3bada6" },
-      { name: "Base Package", y: apiData["Base Package"] || 0, color: "#61a0ed" },
-      { name: "FTA Channels", y: apiData["FTA Channels"] || 0, color: "#28b847" },
-      { name: "Pay Channels", y: apiData["Pay Channels"] || 0, color: "#d1ae2e" }
+      { name: "Addon Package", y: apiData["Addon Package"] || 0, color: "#bfa628" },
+      { name: "Base Package", y: apiData["Base Package"] || 0, color: "#396ba8" },
+      { name: "FTA Channels", y: apiData["FTA Channels"] || 0, color: "#147a2a" },
+      { name: "Pay Channels", y: apiData["Pay Channels"] || 0, color: "#3bada6" }
     ];
 
     // Set up the chart options with dataPoints
     this.chartOptions = {
       animationEnabled: true,
       theme: 'light2',
-      title: {
-        text: 'PACKAGE DETAILS',
-        fontSize: 20,
-        fontWeight: 600
-      },
+      // title: {
+      //   text: 'PACKAGE DETAILS',
+      //   fontSize: 20,
+      //   fontWeight: 600
+      // },
       data: [{
         type: 'pie',
         // startAngle: 90,

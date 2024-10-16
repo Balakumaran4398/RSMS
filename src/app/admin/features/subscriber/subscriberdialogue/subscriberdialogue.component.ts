@@ -14,7 +14,7 @@ import { BehaviorSubject, filter, map, Observable, startWith } from 'rxjs';
 import { SwalService } from 'src/app/_core/service/swal.service';
 import { dateToNumber } from 'ag-charts-community/dist/types/src/module-support';
 import { HttpResponse } from '@angular/common/http';
-import { ChangeDetectorRef } from 'node_modules1/@angular/core';
+import { ChangeDetectorRef } from '@angular/core';
 declare var $: any;
 const moment = _rollupMoment || _moment;
 
@@ -44,6 +44,7 @@ export class SubscriberdialogueComponent implements OnInit {
   myControl = new FormControl('');
   options: string[] = ['One', 'Two', 'Three'];
   readonly date = new FormControl(moment());
+  columnDefs: any;
   setMonthAndYear(normalizedMonthAndYear: Moment, datepicker: MatDatepicker<Moment>) {
     const ctrlValue = this.date.value ?? moment();
     ctrlValue.month(normalizedMonthAndYear.month());
@@ -94,14 +95,14 @@ export class SubscriberdialogueComponent implements OnInit {
   addsmartcardform!: FormGroup;
   role: any;
   username: any;
-  castype: any;
+  castype: any = 0;
   lconame: any;
   smartcard: any = 0;
   boxid: any = "";
   cas: any[] = [];
-  lcoid: any;
-  lcoareaid: any;
-  lcostreetid: any;
+  lcoid: any = 0;
+  lcoareaid: any = 0;
+  lcostreetid: any = 0;
   withsubscription = false;
   area: any[] = [];
   searchTerm: any;
@@ -157,7 +158,7 @@ export class SubscriberdialogueComponent implements OnInit {
   cardbalance: any;
   expirydate: any;
   packagename: any;
-  newpackagename: any;
+  newpackagename: any = 0;
   statusdisplay: any
   newpin: any;
   statusValue: any;
@@ -205,6 +206,7 @@ export class SubscriberdialogueComponent implements OnInit {
     },
   }
   sType: any
+  typeData: any;
   TotalLcoAmount: any;
   BTNFormControl = new FormControl('');
 
@@ -227,11 +229,13 @@ export class SubscriberdialogueComponent implements OnInit {
   id_proof_list: { [key: string]: number } = {};
   add_proof_list: { [key: string]: number } = {};
   constructor(public dialogRef: MatDialogRef<SubscriberdialogueComponent>, private swal: SwalService,
-    @Inject(MAT_DIALOG_DATA) public data: any, public userService: BaseService, public storageService: StorageService, private fb: FormBuilder, private zone: NgZone) {
+    @Inject(MAT_DIALOG_DATA) public data: any, public userService: BaseService, private cdr: ChangeDetectorRef, public storageService: StorageService, private fb: FormBuilder, private zone: NgZone) {
     this.role = storageService.getUserRole();
     this.username = storageService.getUsername();
     console.log(data);
     this.subid_1 = data.subId;
+    console.log(this.subid_1);
+
     this.sType = data?.type;
     this.pairBoxList = data['pairBoxlist'].map((item: any) => item);
     // this.pairSmartcardList = data['pairSmartcardlist'].map((item: any) => item);
@@ -353,32 +357,23 @@ export class SubscriberdialogueComponent implements OnInit {
     );
     console.log(this.filteredPackageList);
     const params = {
-      api: this.gridApi // this will be set when the grid is initialized
+      api: this.gridApi
     };
     this.onGridReady(params);
-
-
     this.userService.PackageList(this.role, this.username, this.type).subscribe((data) => {
-      console.log(data);
-
-      this.packagenameList = data
-      // this.packagenameList = data.map((item: any) => ({
-      //   packagename: item.packagename,
-      //   packageid: item.packageid
-      // }));
-      // this.p_name = this.packagenameList;
+      this.packagenameList = data;
+      this.cdr.detectChanges();
     })
     this.userService.getActiveCasList(this.role, this.username).subscribe((data: any) => {
       let v = Object.entries(data).map(([key, value]) => ({ name: key, id: value }));
-      // this.cas = data;
       this.cas = v
-      console.log(this.cas);
-
+      this.cdr.detectChanges();
     });
 
 
     this.userService.getNotinOperatorList(this.role, this.username, this.operatorid).subscribe((data: any) => {
       this.lco_list = Object.entries(data).map(([key, value]) => ({ name: key, id: value }));
+      this.cdr.detectChanges();
     })
     // this.userService.getActivePackagePlanList(this.role, this.username).subscribe((data: any) => {
     //   this.plantype = Object.entries(data).map(([key, value]) => ({ name: key, id: value }));
@@ -394,12 +389,13 @@ export class SubscriberdialogueComponent implements OnInit {
     });
     this.userService.getPlanTypeList(this.role, this.username).subscribe((data: any) => {
       this.rechargetype = Object.entries(data).map(([key, value]) => ({ name: key, id: value }));
+      this.cdr.detectChanges();
     })
     this.userService.cancelSubscriptionOfSmartcardDetails(this.role, this.username, this.smartcardno).subscribe((data: any) => {
       this.TotalLcoAmount = data.totallcoamount;
       this.rowData1 = data.cancelproduct;
       console.log(this.rowData1);
-      // this.cdr.detectChanges();
+      this.cdr.detectChanges();
     })
     this.loadIdProofList();
     this.loadAddProofList();
@@ -408,7 +404,7 @@ export class SubscriberdialogueComponent implements OnInit {
     this.userService.getIdProofList(this.role, this.username).subscribe(
       (data: any) => {
         this.id_proof_list = data.idprooftypeid;
-        // console.log("ID Proof List", this.id_proof_list);
+        this.cdr.detectChanges();
       },
       error => {
         console.error('Error fetching ID Proof List', error);
@@ -420,6 +416,7 @@ export class SubscriberdialogueComponent implements OnInit {
       (data: any) => {
         this.add_proof_list = data.addressprooftypeid;
         console.log("ADD Proof List", this.add_proof_list);
+        this.cdr.detectChanges();
       },
       error => {
         console.error('Error fetching ID Proof List', error);
@@ -595,109 +592,173 @@ export class SubscriberdialogueComponent implements OnInit {
       control.updateValueAndValidity();
     }
   }
-  columnDefs: any[] = [
-    {
-      headerName: "S.No", valueGetter: 'node.rowIndex+1', width: 80, filter: false, headerCheckboxSelection: true,
-      checkboxSelection: true,
-    },
+  // columnDefs: any[] = [
+  //   {
+  //     headerName: "S.No", valueGetter: 'node.rowIndex+1', width: 80, filter: false, headerCheckboxSelection: true,
+  //     checkboxSelection: true,
+  //   },
 
-    {
-      headerName: 'PACKAGE NAME	',
-      field: 'productname', width: 200,
-    },
-    {
-      headerName: 'CAS PRODUCT ID	 ', width: 200,
-      field: 'casproductid',
-    },
-    {
-      headerName: 'BROADCASTER NAME	', width: 200,
-      field: 'broadcastername',
-    },
-    {
-      headerName: 'CUSTOMER AMOUNT', width: 150, filter: false,
-      field: 'customeramount',
-    },
-    {
-      headerName: 'PROGRAMS', width: 100, filter: false,
-      field: '',
-    },
+  //   {
+  //     headerName: 'PACKAGE NAME	',
+  //     field: 'packagename', width: 200,
+  //   },
+  //   {
+  //     headerName: 'CAS PRODUCT ID	 ', width: 200,
+  //     field: 'casproductid',
+  //   },
+  //   {
+  //     headerName: 'BROADCASTER NAME	', width: 200,
+  //     field: 'broadcastername',
+  //   },
+  //   {
+  //     headerName: 'CUSTOMER AMOUNT', width: 150, filter: false,
+  //     field: 'customeramount',
+  //   },
+  //   {
+  //     headerName: 'PROGRAMS', width: 100, filter: false,
+  //     field: '',
+  //   },
 
-  ]
-  columnDefs2: any[] = [
-    {
-      headerName: "S.No", valueGetter: 'node.rowIndex+1', width: 100, filter: false, headerCheckboxSelection: true, checkboxSelection: true,
-    },
-    {
-      headerName: 'PACKAGE NAME	',
-      field: 'packagename', width: 150,
-    },
-    {
-      headerName: 'BROADCASTER NAME	 ', width: 250,
-      field: 'broadcastername',
-    },
-    {
-      headerName: 'CAS PRODUCT ID		', width: 250,
-      field: 'casproductid',
-    },
-    {
-      headerName: ' CUSTOMER AMOUNT ', width: 250, filter: false,
-      field: 'customeramount',
-    },
+  // ]
+  // columnDefs2: any[] = [
+  //   {
+  //     headerName: "S.No", valueGetter: 'node.rowIndex+1', width: 100, filter: false, headerCheckboxSelection: true, checkboxSelection: true,
+  //   },
+  //   {
+  //     headerName: 'PACKAGE NAME	',
+  //     field: 'packagename', width: 150,
+  //   },
+  //   {
+  //     headerName: 'BROADCASTER NAME	 ', width: 250,
+  //     field: 'broadcastername',
+  //   },
+  //   {
+  //     headerName: 'CAS PRODUCT ID		', width: 250,
+  //     field: 'casproductid',
+  //   },
+  //   {
+  //     headerName: ' CUSTOMER AMOUNT ', width: 250, filter: false,
+  //     field: 'customeramount',
+  //   },
 
 
-  ]
+  // ]
 
-  private updateColumnDefs(type: string): void {
-    console.log(type);
+  // private updateColumnDefs(stype: string): void {
+  //   console.log(stype);
 
-    if (type === 'remove') {
+  //   if (stype === 'remove') {
+  //     this.columnDefs = [
+  //       {
+  //         headerName: "S.No", valueGetter: 'node.rowIndex+1', width: 100, filter: false, headerCheckboxSelection: true, checkboxSelection: true,
+
+  //       },
+  //       {
+  //         headerName: 'PACKAGE NAME	',
+  //         field: 'productname', width: 150,
+  //       },
+  //       {
+  //         headerName: 'PACKAGE TYPE		 ', width: 250,
+  //         field: 'producttypename',
+  //       },
+  //       {
+  //         headerName: 'REFUND AMOUNT		', width: 250,
+  //         field: 'refundproductrate',
+  //       },
+  //       {
+  //         headerName: 'DAYS', width: 250,
+  //         field: 'days',
+  //       },
+  //     ]
+  //   } else if (stype === 'cancelsubscription') {
+  //     this.columnDefs = [
+  //       {
+  //         headerName: "S.No", valueGetter: 'node.rowIndex+1', width: 100, filter: false
+
+  //       },
+  //       {
+  //         headerName: 'PACKAGE NAME	', field: 'productname', width: 150,        },
+  //       {
+  //         headerName: 'PACKAGE TYPE		 ', width: 250,
+  //         field: 'producttype',
+  //       },
+  //       {
+  //         headerName: 'REFUND AMOUNT		', width: 250,
+  //         field: 'refundproductrate',
+  //       },
+  //       {
+  //         headerName: 'DAYS', width: 250,
+  //         field: 'days',
+  //       },
+  //     ]
+  //   } else if (this.sType === 'addon') {
+  //     this.columnDefs = [
+  //       { headerName: "S.No", valueGetter: 'node.rowIndex+1', width: 100, filter: false, headerCheckboxSelection: true, checkboxSelection: true },
+  //       { headerName: 'PACKAGE NAME', field: 'channel_name', width: 150 },
+  //       { headerName: 'BROADCASTER NAME', field: 'broadcastername', width: 250 },
+  //       { headerName: 'CAS PRODUCT ID', field: 'casproductid', width: 250 },
+  //       { headerName: 'CUSTOMER AMOUNT', field: 'customeramount', width: 250, filter: false }
+  //     ];
+  //   } else if (this.sType === 'alacarte') {
+  //     this.columnDefs = [
+  //       { headerName: "S.No", valueGetter: 'node.rowIndex+1', width: 80, filter: false, headerCheckboxSelection: true, checkboxSelection: true },
+  //       { headerName: 'PACKAGE NAME', field: 'channel_name', width: 200 },
+  //       { headerName: 'CAS PRODUCT ID', field: 'casproductid', width: 200 },
+  //       { headerName: 'BROADCASTER NAME', field: 'broadcastername', width: 200 },
+  //       { headerName: 'CUSTOMER AMOUNT', field: 'customeramount', width: 200, filter: false },
+  //       { headerName: 'PROGRAMS', field: '', width: 100, filter: false }
+  //     ];
+  //   } else if (this.sType === 'remove') {
+  //     this.columnDefs = [
+  //       // Define the column definitions for the 'remove' case here
+  //       { headerName: "S.No", valueGetter: 'node.rowIndex+1', width: 80, filter: false, headerCheckboxSelection: true, checkboxSelection: true },
+  //       { headerName: 'PACKAGE NAME', field: 'channel_name', width: 200 },
+  //       { headerName: 'CAS PRODUCT ID', field: 'casproductid', width: 200 },
+  //       { headerName: 'BROADCASTER NAME', field: 'broadcastername', width: 200 },
+  //       { headerName: 'CUSTOMER AMOUNT', field: 'customeramount', width: 200, filter: false },
+  //       { headerName: 'PROGRAMS', field: '', width: 100, filter: false }
+  //     ];
+  //   }
+  // }
+  private updateColumnDefs(stype: string): void {
+    console.log(stype);
+
+    if (stype === 'remove') {
       this.columnDefs = [
-        {
-          headerName: "S.No", valueGetter: 'node.rowIndex+1', width: 100, filter: false, headerCheckboxSelection: true, checkboxSelection: true,
-
-        },
-        {
-          headerName: 'PACKAGE NAME	',
-          field: 'productname', width: 150,
-        },
-        {
-          headerName: 'PACKAGE TYPE		 ', width: 250,
-          field: 'producttypename',
-        },
-        {
-          headerName: 'REFUND AMOUNT		', width: 250,
-          field: 'refundproductrate',
-        },
-        {
-          headerName: 'DAYS', width: 250,
-          field: 'days',
-        },
-      ]
-    } else if (type === 'cancelsubscription') {
+        { headerName: "S.No", valueGetter: 'node.rowIndex+1', width: 100, filter: false, headerCheckboxSelection: true, checkboxSelection: true },
+        { headerName: 'PACKAGE NAME', field: 'productname', width: 150 },
+        { headerName: 'PACKAGE TYPE', field: 'producttypename', width: 250 },
+        { headerName: 'REFUND AMOUNT', field: 'refundproductrate', width: 250 },
+        { headerName: 'DAYS', field: 'days', width: 250 },
+      ];
+    } else if (stype === 'cancelsubscription') {
       this.columnDefs = [
-        {
-          headerName: "S.No", valueGetter: 'node.rowIndex+1', width: 100, filter: false
-
-        },
-        {
-          headerName: 'PACKAGE NAME	',
-          field: 'productname', width: 150,
-        },
-        {
-          headerName: 'PACKAGE TYPE		 ', width: 250,
-          field: 'producttype',
-        },
-        {
-          headerName: 'REFUND AMOUNT		', width: 250,
-          field: 'refundproductrate',
-        },
-        {
-          headerName: 'DAYS', width: 250,
-          field: 'days',
-        },
-      ]
+        { headerName: "S.No", valueGetter: 'node.rowIndex+1', width: 100, filter: false },
+        { headerName: 'PACKAGE NAME', field: 'productname', width: 150 },
+        { headerName: 'PACKAGE TYPE', field: 'producttype', width: 250 },
+        { headerName: 'REFUND AMOUNT', field: 'refundproductrate', width: 250 },
+        { headerName: 'DAYS', field: 'days', width: 250 },
+      ];
+    } else if (stype === 'addon') {
+      this.columnDefs = [
+        { headerName: "S.No", valueGetter: 'node.rowIndex+1', width: 100, filter: false, headerCheckboxSelection: true, checkboxSelection: true },
+        { headerName: 'PACKAGE NAME', field: 'productname', width: 150 },
+        { headerName: 'BROADCASTER NAME', field: 'broadcastername', width: 250 },
+        { headerName: 'CAS PRODUCT ID', field: 'casproductid', width: 250 },
+        { headerName: 'CUSTOMER AMOUNT', field: 'customeramount', width: 250, filter: false }
+      ];
+    } else if (stype === 'alacarte') {
+      this.columnDefs = [
+        { headerName: "S.No", valueGetter: 'node.rowIndex+1', width: 80, filter: false, headerCheckboxSelection: true, checkboxSelection: true },
+        { headerName: 'PACKAGE NAME', field: 'channel_name', width: 200 },
+        { headerName: 'CAS PRODUCT ID', field: 'casproductid', width: 200 },
+        { headerName: 'BROADCASTER NAME', field: 'broadcastername', width: 200 },
+        { headerName: 'CUSTOMER AMOUNT', field: 'customeramount', width: 200, filter: false },
+        { headerName: 'PROGRAMS', field: '', width: 100, filter: false }
+      ];
     }
   }
+
   columnDefs1: any[] = [
     {
       headerName: "S.No", valueGetter: 'node.rowIndex+1', width: 100,
@@ -713,29 +774,97 @@ export class SubscriberdialogueComponent implements OnInit {
 
   onGridReady(params: { api: any; }) {
     this.gridApi = params.api;
+    console.log(this.sType);
 
     if (this.sType === 'addon') {
-      this.userService.getAddonpackageDetails(this.role, this.username, this.smartcardno).subscribe((res: any) => {
-        this.swal.success(res?.message);
-        this.rowData = res;
-      }, (err) => {
-        this.swal.Error(err?.error?.message);
-      });
+      this.userService.getAddonpackageDetails(this.role, this.username, this.smartcardno).subscribe(
+        //   (res: any) => {
+        //   this.swal.success(res?.message);
+        //   this.rowData = res;
+        //   this.cdr.detectChanges();
+        // }, (err) => {
+        //   this.swal.Error(err?.error?.message);
+        // }
+        (response: HttpResponse<any[]>) => {
+          if (response.status === 200) {
+            this.rowData = response.body;
+            this.cdr.detectChanges();
+            Swal.fire('Success', 'Data updated successfully!', 'success');
+          } else if (response.status === 204) {
+            Swal.fire('No Content', 'No data available for the given criteria.', 'info');
+          }
+        },
+        (error) => {
+          if (error.status === 400) {
+            Swal.fire(error?.error?.message || error?.error?.addonlist || 'Error 400', 'Bad Request. Please check the input.', 'error');
+          } else if (error.status === 500) {
+            Swal.fire('Error 500', 'Internal Server Error. Please try again later.', 'error');
+          } else {
+            Swal.fire('Error', 'Something went wrong. Please try again.', 'error');
+          }
+        }
+
+      );
     } else if (this.sType === 'alacarte') {
-      this.userService.getAlacarteDetails(this.role, this.username, this.smartcardno).subscribe((res: any) => {
-        this.swal.success(res?.message);
-        this.rowData = res;
-      }, (err) => {
-        this.swal.Error(err?.error?.message);
-      });
+      this.userService.getAlacarteDetails(this.role, this.username, this.smartcardno).subscribe(
+        //   (res: any) => {
+        //   this.swal.success(res?.message);
+        //   this.rowData = res;
+        //   this.cdr.detectChanges();
+        // }, (err) => {
+        //   this.swal.Error(err?.error?.message);
+        // }
+        (response: HttpResponse<any[]>) => {
+          if (response.status === 200) {
+            this.rowData = response.body;
+            this.cdr.detectChanges();
+            Swal.fire('Success', 'Data updated successfully!', 'success');
+          } else if (response.status === 204) {
+            Swal.fire('No Content', 'No data available for the given criteria.', 'info');
+          }
+        },
+        (error) => {
+          if (error.status === 400) {
+            Swal.fire(error?.error?.message || error?.error?.addonlist || 'Error 400', 'Bad Request. Please check the input.', 'error');
+          } else if (error.status === 500) {
+            Swal.fire('Error 500', 'Internal Server Error. Please try again later.', 'error');
+          } else {
+            Swal.fire('Error', 'Something went wrong. Please try again.', 'error');
+          }
+        }
+      );
+
     } else if (this.sType === 'remove') {
-      this.userService.removeProductDetails(this.role, this.username, this.smartcardno).subscribe((res: any) => {
-        this.swal.success(res?.message);
-        this.rowData = res;
-      }, (err) => {
-        this.swal.Error(err?.error?.message);
-      });
+      this.userService.removeProductDetails(this.role, this.username, this.smartcardno).subscribe(
+        //   (res: any) => {
+        //   this.swal.success(res?.message);
+        //   this.rowData = res;
+        //   this.cdr.detectChanges();
+        // }, (err) => {
+        //   this.swal.Error(err?.error?.message);
+        // }
+        (response: HttpResponse<any[]>) => {
+          if (response.status === 200) {
+            this.rowData = response.body;
+            this.cdr.detectChanges();
+            Swal.fire('Success', 'Data updated successfully!', 'success');
+          } else if (response.status === 204) {
+            Swal.fire('No Content', 'No data available for the given criteria.', 'info');
+          }
+        },
+        (error) => {
+          if (error.status === 400) {
+            Swal.fire(error?.error?.message || error?.error?.addonlist || 'Error 400', 'Bad Request. Please check the input.', 'error');
+          } else if (error.status === 500) {
+            Swal.fire('Error 500', 'Internal Server Error. Please try again later.', 'error');
+          } else {
+            Swal.fire('Error', 'Something went wrong. Please try again.', 'error');
+          }
+        }
+      );
+
     }
+
   }
 
   onSelectionChanged() {
@@ -813,14 +942,14 @@ export class SubscriberdialogueComponent implements OnInit {
   // }
   addSmartcard() {
     Swal.fire({
-      title: 'Uploading...',
-      text: 'Please wait while your file is being uploaded.',
+      title: 'Adding...',
+      text: 'Please wait Smartcard Added.',
       icon: 'info',
       allowOutsideClick: false,
       showConfirmButton: false, // Hide the confirm button
-      // didOpen: () => {
-      //   Swal.showLoading(); // Show loading animation
-      // }
+      didOpen: () => {
+        Swal.showLoading(null);
+      }
     });
 
     this.userService.addSmartcardToSubscriber(this.role, this.username, this.operatorid, this.castype, this.smartcard, this.boxid, this.subid_1).subscribe(
@@ -832,13 +961,12 @@ export class SubscriberdialogueComponent implements OnInit {
           text: res?.message,
           confirmButtonText: 'OK'
         }).then(() => {
-          window.location.reload(); // Reload the page
+          window.location.reload();
         });
       },
       (err) => {
         this.returndata = err?.error;
-
-        // On error, show error message
+        console.log(this.returndata);
         Swal.fire({
           icon: 'error',
           title: 'Failed to Add Smartcard',
@@ -983,7 +1111,7 @@ export class SubscriberdialogueComponent implements OnInit {
 
   }
   changeOperator() {
-    this.userService.transferLcoToSmartcard(this.role, this.username, this.operatorid, this.lcoid, this.lcoareaid, this.lcostreetid, this.withsubscription, 0, 2)
+    this.userService.transferLcoToSmartcard(this.role, this.username, this.lcoid, this.lcoareaid, this.lcostreetid, this.subid_1, this.withsubscription, 0, 2)
       .subscribe((res: any) => {
         this.swal.success(res?.message);
       }, (err) => {
@@ -1096,10 +1224,42 @@ export class SubscriberdialogueComponent implements OnInit {
     this.baseChangeofSmartcardPackage();
     this.toggleConfirmation();
   }
+  onChangeBaseActivationClick(): void {
+    this.baseChangeofSmartcardPackage();
+  }
+  onFirstTimeActivationClick(): void {
+    this.baseChangeofSmartcardPackage();
+  }
 
   onActivationButtonClick(): void {
     this.getFirstTimeActivationConfirmation();
     this.toggleConfirmation();
+  }
+
+  onActivationClick(): void {
+    this.getFirstTimeActivationConfirmation();
+  }
+
+  onAddonConfirmation(): void {
+    this.addAddonConfirmation();
+    this.toggleAddonConfirmation();
+  }
+  onAddon(): void {
+    this.addAddonConfirmation();
+  }
+  onAlacarteConfirmation(): void {
+    this.addAlacarteConfirmation();
+    this.toggleAlacarteConfirmation();
+  }
+  onAlacarte(): void {
+    this.addAlacarteConfirmation();
+  }
+  onRemoveConfirmation(): void {
+    this.removeProductConfirmation();
+    this.toggleRemoveConfirmation();
+  }
+  onRemove(): void {
+    this.removeProductConfirmation();
   }
   firsttimeActivationOfCard() {
     let requestBody = {
@@ -1120,9 +1280,9 @@ export class SubscriberdialogueComponent implements OnInit {
       icon: 'info',
       allowOutsideClick: false,
       showConfirmButton: false,
-      // didOpen: () => {
-      //   Swal.showLoading();
-      // }
+      didOpen: () => {
+        Swal.showLoading(null);
+      }
     });
     this.userService.firsttimeActivationOfCard(requestBody).subscribe(
       (res: any) => {
@@ -1164,9 +1324,9 @@ export class SubscriberdialogueComponent implements OnInit {
       icon: 'info',
       allowOutsideClick: false,
       showConfirmButton: false,
-      // didOpen: () => {
-      //   Swal.showLoading();
-      // }
+      didOpen: () => {
+        Swal.showLoading(null);
+      }
     });
     this.userService.ActivationOfCard(requestBody).subscribe(
       (res: any) => {
@@ -1194,9 +1354,9 @@ export class SubscriberdialogueComponent implements OnInit {
       title: 'Loading...',
       text: 'Please wait while we process your request.',
       allowOutsideClick: false, // Disable clicking outside the popup to close it
-      // didOpen: () => {
-      //   Swal.showLoading(); // Display the loading spinner
-      // }
+      didOpen: () => {
+        Swal.showLoading(null);
+      }
     });
 
     this.userService.getBaseChangeConfirmation(this.role, this.username, this.newpackagename, this.selectedRechargetype, this.plantype || this.f_date, this.smartcardno, 8, 0)
@@ -1207,6 +1367,7 @@ export class SubscriberdialogueComponent implements OnInit {
         this.changebase_totalRefundToLco = data.totalRefundToLco;
         this.changebase_expiryDate = data.expiryDate;
         this.swal.success(data?.message);
+        this.cdr.detectChanges();
       }, (err) => {
         this.swal.Error(err?.error?.message);
       });
@@ -1224,19 +1385,17 @@ export class SubscriberdialogueComponent implements OnInit {
       smartcard: this.smartcardno,
       type: 8,
       retailerid: 0,
-      iscollected: this.iscollected
+      iscollected: this.iscollected,
     }
     Swal.fire({
       title: 'Loading...',
       text: 'Please wait while we process your request.',
       allowOutsideClick: false, // Disable clicking outside the popup to close it
-      // didOpen: () => {
-      //   Swal.showLoading(); // Display the loading spinner
-      // }
+      didOpen: () => {
+        Swal.showLoading(null);
+      }
     });
     this.userService.baseChangeofSmartcardPackage(requestBody).subscribe((res: any) => {
-      console.log(res);
-
       this.swal.success(res?.message);
     }, (err) => {
       this.swal.Error(err?.error?.message);
@@ -1247,9 +1406,9 @@ export class SubscriberdialogueComponent implements OnInit {
       title: 'Loading...',
       text: 'Please wait while we process your request.',
       allowOutsideClick: false, // Disable clicking outside the popup to close it
-      // didOpen: () => {
-      //   Swal.showLoading(); // Display the loading spinner
-      // }
+      didOpen: () => {
+        Swal.showLoading(null);
+      }
     });
     this.userService.getFirstTimeActivationConfirmation(this.role, this.username, this.newpackagename, this.selectedRechargetype, this.plantype || this.f_date, this.smartcardno, 1, 0)
       .subscribe((data: any) => {
@@ -1261,7 +1420,6 @@ export class SubscriberdialogueComponent implements OnInit {
   }
   lcotransferSinglesmartcard() {
     this.userService.lcotransferSinglesmartcard(this.role, this.username, this.operatorid, this.subid, this.f_subid, this.withsubscription, this.smartcardno, 0, 2)
-
       .subscribe((res: any) => {
         this.swal.success(res?.message);
       }, (err) => {
@@ -1270,7 +1428,6 @@ export class SubscriberdialogueComponent implements OnInit {
   }
   smartcardSuspend() {
     this.userService.smartcardSuspend(this.role, this.username, this.smartcardno, 0, 4, this.sus_reason)
-
       .subscribe((res: any) => {
         this.swal.success(res?.message);
       }, (err) => {
@@ -1279,7 +1436,6 @@ export class SubscriberdialogueComponent implements OnInit {
   }
   reactivationofSmartcard() {
     this.userService.reactivationofSmartcard(this.role, this.username, this.smartcardno, 0, 3)
-
       .subscribe((res: any) => {
         this.swal.success(res?.message);
       }, (err) => {
@@ -1311,18 +1467,7 @@ export class SubscriberdialogueComponent implements OnInit {
         this.swal.Error(err?.error?.message);
       });
   }
-  onAddonConfirmation(): void {
-    this.addAddonConfirmation();
-    this.toggleAddonConfirmation();
-  }
-  onAlacarteConfirmation(): void {
-    this.addAlacarteConfirmation();
-    this.toggleAlacarteConfirmation();
-  }
-  onRemoveConfirmation(): void {
-    this.removeProductConfirmation();
-    this.toggleRemoveConfirmation();
-  }
+
   toggleAddonConfirmation() {
     this.addonconfirmation = !this.addonconfirmation;
   }
@@ -1378,7 +1523,8 @@ export class SubscriberdialogueComponent implements OnInit {
     this.userService.addAddonForSmartcard(requestBody).subscribe(
       (response: HttpResponse<any[]>) => {
         if (response.status === 200) {
-          this.rowData = response.body;
+          this.typeData = response.body;
+
           Swal.fire('Success', 'Data updated successfully!', 'success');
         } else if (response.status === 204) {
           Swal.fire('No Content', 'No data available for the given criteria.', 'info');
@@ -1410,7 +1556,7 @@ export class SubscriberdialogueComponent implements OnInit {
     this.userService.addAlacarteConfirmation(requestBody).subscribe(
       (response: HttpResponse<any[]>) => {
         if (response.status === 200) {
-          this.rowData = response.body;
+          this.typeData = response.body;
           const selectedRows = this.gridApi.getSelectedRows();
           this.rowData3 = selectedRows.filter((row: any) => row.packagename);
           console.log(this.rowData3);
@@ -1421,7 +1567,6 @@ export class SubscriberdialogueComponent implements OnInit {
       },
       (error) => {
         if (error.status === 400) {
-
           Swal.fire(error?.error?.message || error?.error?.addonlist || 'Error 400', 'Bad Request. Please check the input.', 'error');
         } else if (error.status === 500) {
           Swal.fire('Error 500', 'Internal Server Error. Please try again later.', 'error');

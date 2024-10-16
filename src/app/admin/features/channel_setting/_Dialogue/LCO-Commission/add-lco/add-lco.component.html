@@ -1,7 +1,7 @@
 <section class="col-12">
-    <div class="Head d-flex justify-content-between align-items-center mb-3">
-        <span>ADD PRODUCT / COMMISSION MEMBERSHIP</span>
-        <i class="fa fa-close close-icon" (click)="onNoClick()"></i>
+    <div class="Head d-flex justify-content-between align-items-center mb-3" style="padding: 1rem;">
+        <h6>ADD PRODUCT / COMMISSION MEMBERSHIP</h6>
+        <i class="fa fa-close close-icon" style="cursor: pointer;" (click)="onNoClick()"></i>
     </div>
     <div class="add mb-3">
         <div class="input_box col-12 col-md-6 display justify-content-center align-items-start mb-3 gap-3">
@@ -19,7 +19,8 @@
             </div>
             <div class="d-block col-12 col-md-4 mb-2">
                 <span class="d-block mb-2" style="color: rgb(2, 8, 102);font-size: 15px;">MEMBERSHIP</span>
-                <select style="color: rgb(17, 0, 0);" [(ngModel)]="lcogroupid" (change)="getproductMembershipList($event)">
+                <select style="color: rgb(17, 0, 0);" [(ngModel)]="lcogroupid"
+                    (change)="getproductMembershipList($event)">
                     <option value="0" selected style="color: rgb(19, 17, 17);">Select Membership </option>
                     <option *ngFor="let lcomember of lcomembershipList" [value]="lcomember.value">{{
                         lcomember.name}}</option>
@@ -39,19 +40,23 @@
     </div>
     <div class="col d-flex justify-content-center align-items-center mb-3">
         <hr>
-        <a class="btn btn-danger mx-1" (click)="onNoClick()">
+        <!-- <a class="btn btn-danger mx-1" (click)="onNoClick()">
             <i class="fa fa-window-close" aria-hidden="true"></i>
             Close
-        </a>
+        </a> -->
 
         <!-- <a class="btn btn-outline-success mx-1" [disabled]="!isAnyRowSelected" (click)="Create()">
             <i class="fa fa-plus" aria-hidden="true"></i> Create
         </a> -->
 
 
-        <button class="btn btn-success mx-1" color="primary" type="button" [disabled]="!isAnyRowSelected"
+        <!-- <button class="btn btn-success mx-1" color="primary" type="button" [disabled]="!isAnyRowSelected"
             (click)="Create()">
             <i class="fa fa-plus" aria-hidden="true"></i> Create
-        </button>
+        </button> -->
+        <div class="form-group d-flex justify-content-center align-items-center mb-3 ">
+            <button type="button" class="btn btn-success me-2" (click)="Create()">Create</button>
+            <button type="button" class="btn btn-danger" (click)="onNoClick()">Cancel</button>
+        </div>
     </div>
 </section>

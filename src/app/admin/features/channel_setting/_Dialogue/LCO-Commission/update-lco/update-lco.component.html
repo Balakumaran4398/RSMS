@@ -1,9 +1,13 @@
 <section>
-    <div class="head d-flex justify-content-between align-items-center">
+    <!-- <div class="head d-flex justify-content-between align-items-center">
         <span class="title">UPDATE LCO MEMBERSHIP</span>
         <i class="fa fa-close close-icon" (click)="onNoClick()"></i>
+    </div> -->
+    <div class="Head d-flex justify-content-between align-items-center mb-3" style="padding: 1rem;">
+        <h6>UPDATE LCO GROUP</h6>
+        <i class="fa fa-close close-icon" style="cursor: pointer;" (click)="onNoClick()"></i>
     </div>
-    <div class="card">
+    <div class="card mb-2">
         <div class="lco  justify-content-center align-items-center">
             <div class="input_box display align-items-center mb-3 ">
                 <div class="col-12 col-md-6">
@@ -35,10 +39,13 @@
             </div>
         </div>
     </div>
-    <div class="col d-flex justify-content-center align-items-center new_d mt-3 mb-2">
+    <!-- <div class="col d-flex justify-content-center align-items-center new_d mt-3 mb-2">
         <a class="btn btn-infos mx-1" (click)="change()"> &nbsp;
             <span>Update</span>
         </a>
+    </div> -->
+    <div class="form-group d-flex justify-content-center align-items-center mb-3 ">
+        <button type="button" class="btn btn-success me-2" (click)="change()">Update</button>
+        <button type="button" class="btn btn-danger" (click)="onNoClick()">Cancel</button>
     </div>
-
 </section>

@@ -6,7 +6,7 @@
     <div class="d-flex justify-content-center align-items-center">
         <h5>{{data?.ptype}} PACKAGE FTA (TEST)- <span style="color: rgb(6, 17, 168);font-size: 17px;font-weight: 600;">{{count}}</span> </h5>
     </div>
-    <div class="sol-12 col-md-12" style="padding: 1rem;">
+    <div class="sol-12 col-md-12" style="padding: 1rem;max-height: 600px;overflow: scroll;" >
         <ag-grid-angular #agGrid id="myGrid" domLayout='autoHeight' class="ag-theme-alpine table-class" rowAnimation
             [gridOptions]="gridOptions" [columnDefs]="columnDefs" [rowData]="rowData"  [enableCellTextSelection]="true">
         </ag-grid-angular>

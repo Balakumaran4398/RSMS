@@ -35,7 +35,7 @@ export class LcoRechargeComponent {
     if (this.form.valid) {
       const { userid, password } = this.form.value;
 
-      this.userservice.LCOLogin(this.role, this.username, userid, password).subscribe(
+      this.userservice.LCOLogin(this.role, this.username, userid, password,2).subscribe(
         (res: any) => {
           Swal.fire({
             title: 'Login Successful',

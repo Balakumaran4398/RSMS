@@ -65,7 +65,7 @@ export class BroadMasterComponent implements OnInit {
     {
       headerName: 'BroadCaster Name',
       field: 'broadcastername',
-      width:250,
+      width: 250,
       editable: true,
       cellEditor: 'agTextCellEditor',
       onCellValueChanged: (event: { data: { broadcastername: string; isactive: boolean; id: number; }; }) => {
@@ -77,7 +77,7 @@ export class BroadMasterComponent implements OnInit {
     {
       headerName: "ISACTIVE",
       field: 'isactive',
-      width:300,
+      width: 300,
       cellRenderer: (params: any) => {
         const isActive = params.data.isactive;
         const toggleButton = document.createElement('button');
@@ -130,12 +130,12 @@ export class BroadMasterComponent implements OnInit {
         this.updateDeviceModelname(event.data.broadcastername, event.data.isactive, event.data.id);
       }
     },
-   
+
   ]
 
   onGridReady(params: { api: any; }) {
     // this.gridApi.sizeColumnsToFit();
-    this.gridApi = params.api;  
+    this.gridApi = params.api;
   }
 
   onSelectionChanged() {
@@ -189,9 +189,9 @@ export class BroadMasterComponent implements OnInit {
           title: 'Updating...',
           text: 'Please wait while the Broadcaster is being Updated',
           allowOutsideClick: false,
-          // didOpen: () => {
-          //   Swal.showLoading();
-          // }
+          didOpen: () => {
+            Swal.showLoading(null);
+          }
         });
         this.userService.Broadcaster_update(requestBody).subscribe(
           (res) => {
@@ -236,9 +236,9 @@ export class BroadMasterComponent implements OnInit {
           title: 'Deleting...',
           text: 'Please wait while the Broadcaster is being deleted',
           allowOutsideClick: false,
-          // didOpen: () => {
-          //   Swal.showLoading();
-          // }
+          didOpen: () => {
+            Swal.showLoading(null);
+          }
         });
 
         this.userService.deleteBroadcaster(this.role, this.username, this.selectedIds).subscribe((res: any) => {
@@ -274,9 +274,9 @@ export class BroadMasterComponent implements OnInit {
           title: 'Updateing...',
           text: 'Please wait while the Broadcaster is being updated',
           allowOutsideClick: false,
-          // didOpen: () => {
-          //   Swal.showLoading();
-          // }
+          didOpen: () => {
+            Swal.showLoading(null);
+          }
         });
         this.userService.ActiveBroadcaster(this.role, this.username, this.selectedIds).subscribe((res: any) => {
           Swal.fire({

@@ -51,6 +51,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { AuthGuard } from '../_core/service/auth.guard';
 import { LcodashboardComponent } from './features/channel_setting/_Dialogue/operator/lcodashboard/lcodashboard.component';
 import { SubloginComponent } from './features/subscriber/sublogin/sublogin.component';
+import { OperatorlistComponent } from './features/operator/operatorlist/operatorlist.component';
 
 
 const routes: Routes = [
@@ -60,6 +61,7 @@ const routes: Routes = [
       // ---------------------------------------------Operator-----------------------------------
       { path: 'operator_details', component: OperatorDetailsComponent, },
       { path: 'lco_recharge', component: LcoRechargeComponent, },
+      { path: 'operatorlist', component: OperatorlistComponent, },
       // --------------------------------------------Top-Subscriber-Details---------------------------------
       { path: 'top_sub_detail', component: TopSubDetailComponent, },
       // -------------------------Channel-Setting----------------------------

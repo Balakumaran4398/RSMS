@@ -17,6 +17,7 @@ export class CreateLcoMembershipComponent {
   selectedLcoName: any = 0;
   lco_list: { [key: string]: number } = {};
   searchTerm: string = '';
+  
   constructor(
     public dialogRef: MatDialogRef<CreateLcoMembershipComponent>, @Inject(MAT_DIALOG_DATA) public data: any, private userservice: BaseService, private storageservice: StorageService) {
     this.role = storageservice.getUserRole();
@@ -72,4 +73,38 @@ export class CreateLcoMembershipComponent {
       );
   }
   
+
+  // create() {
+  //   let isValid = true;
+  //   this.errors = {
+  //     selectedLcoName: '',
+  //     usedcount: '',
+  //     sharedcount: ''
+  //   };
+
+  //   // Validation rules
+  //   if (!this.selectedLcoName || this.selectedLcoName === '0') {
+  //     this.errors.selectedLcoName = 'Please select an LCO Name';
+  //     isValid = false;
+  //   }
+
+  //   if (!this.usedcount || isNaN(+this.usedcount) || +this.usedcount <= 0) {
+  //     this.errors.usedcount = 'Please enter a valid Used Count (numeric and greater than 0)';
+  //     isValid = false;
+  //   }
+
+  //   if (!this.sharedcount || isNaN(+this.sharedcount) || +this.sharedcount <= 0) {
+  //     this.errors.sharedcount = 'Please enter a valid Shared Count (numeric and greater than 0)';
+  //     isValid = false;
+  //   }
+
+  //   if (isValid) {
+  //     // Proceed with creation if all fields are valid
+  //     console.log('LCO Membership Created:', {
+  //       selectedLcoName: this.selectedLcoName,
+  //       usedcount: this.usedcount,
+  //       sharedcount: this.sharedcount
+  //     });
+  //   }
+  // }
 }

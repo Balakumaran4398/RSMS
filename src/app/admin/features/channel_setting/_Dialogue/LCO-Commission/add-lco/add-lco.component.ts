@@ -4,6 +4,7 @@ import { MatDialogRef } from '@angular/material/dialog';
 import { ColDef } from 'ag-grid-community';
 import { BaseService } from 'src/app/_core/service/base.service';
 import { StorageService } from 'src/app/_core/service/storage.service';
+import { SwalService } from 'src/app/_core/service/swal.service';
 import Swal from 'sweetalert2';
 
 @Component({
@@ -27,7 +28,7 @@ export class AddLcoComponent {
 
 
   constructor(
-    public dialogRef: MatDialogRef<AddLcoComponent>, private userservice: BaseService, private storageservice: StorageService) {
+    public dialogRef: MatDialogRef<AddLcoComponent>, private userservice: BaseService, private storageservice: StorageService, private swal: SwalService) {
     this.role = storageservice.getUserRole();
     this.username = storageservice.getUsername();
     userservice.getLcoGroupMasterList(this.role, this.username).subscribe((data: any) => {
@@ -114,9 +115,9 @@ export class AddLcoComponent {
     })
   }
 
-  getproductMembershipList(event:any) {
-    this.userservice.getproductMembershipList(this.role, this.username,this.producttype,this.lcogroupid)  .subscribe(
-      (response: HttpResponse<any[]>) => { 
+  getproductMembershipList(event: any) {
+    this.userservice.getproductMembershipList(this.role, this.username, this.producttype, this.lcogroupid).subscribe(
+      (response: HttpResponse<any[]>) => {
         if (response.status === 200) {
           this.rowData = response.body;
           Swal.fire('Success', 'Data updated successfully!', 'success');
@@ -149,29 +150,14 @@ export class AddLcoComponent {
       title: 'Processing...',
       text: 'Please wait while we update the product information.',
       allowOutsideClick: false,
-      // didOpen: () => {
-      //   Swal.showLoading();
-      // }
-    });
-    this.userservice.addProductMembership(requestBody).subscribe(
-      (res: any) => {
-        Swal.fire({
-          icon: 'success',
-          title: 'Success!',
-          text: res?.message || 'Product information has been successfully updated.',
-          timer: 2000,
-          timerProgressBar: true,
-        });
-        console.log(res);
-      },
-      (error: any) => {
-        Swal.fire({
-          icon: 'error',
-          title: 'Oops!',
-          text: error?.error.message || 'Something went wrong while updating the product information.'
-        });
-        console.error(error);
+      didOpen: () => {
+        Swal.showLoading(null);
       }
-    );
+    });
+    this.userservice.addProductMembership(requestBody).subscribe((res: any) => {
+      this.swal.success(res?.message);
+    }, (err) => {
+      this.swal.Error(err?.error?.message);
+    });
   }
 }

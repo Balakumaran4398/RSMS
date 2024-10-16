@@ -21,7 +21,7 @@ export class FingerPrintComponent {
   service: any;
   service_1: any;
   isforce: boolean = false;
-  intend_1: any;
+  intend_1: any = 0;
   intendid_1: any;
   covertype_1: any;
   bgcolor_1: any;
@@ -202,9 +202,9 @@ export class FingerPrintComponent {
       repeatfor: ['', Validators.required],
       position: ['', Validators.required],
       serviceid: ['', Validators.required],
-      hh: [0, Validators.required],
-      mm: [0, Validators.required],
-      ss: [0, Validators.required],
+      hh: ['0', Validators.required],
+      mm: ['0', Validators.required],
+      ss: ['0', Validators.required],
       x: [0, Validators.required],
       y: [0, Validators.required],
       username: [storageService.getUsername(), Validators.required],
@@ -216,49 +216,109 @@ export class FingerPrintComponent {
 
   }
 
+  // submit() {
+  //   if (this.form.valid) {
+  //     this.userservice.SendFingerPrint(this.form.value).subscribe(
+  //       (res: any) => {
+  //         console.log(res.message);
+  //         Swal.fire({
+  //           title: 'Success',
+  //           text: res.message || 'Fingerprint data has been sent successfully!',
+  //           icon: 'success',
+  //           timer: 3000,
+  //           timerProgressBar: true,
+  //           // didOpen: (toast) => {
+  //           //   Swal.showLoading();
+  //           // },
+  //           willClose: () => {
+  //             // location.reload();
+  //           }
+  //         });
+  //       },
+  //       (error) => {
+  //         Swal.fire({
+  //           title: 'Error',
+  //           text: error.error?.message || 'Failed to Send fingerprint data. Please try again later.',
+  //           icon: 'error',
+  //           timer: 3000,
+  //           timerProgressBar: true,
+  //           // didOpen: (toast) => {
+  //           //   Swal.showLoading();
+  //           // },
+  //           willClose: () => {
+  //             // location.reload();
+  //           }
+  //         });
+  //       }
+  //     );
+  //   } else {
+  //     this.form.markAllAsTouched();
+  //   }
+  // }
   submit() {
-    if (this.form.valid) {
-      this.userservice.SendFingerPrint(this.form.value).subscribe(
-        (res: any) => {
-          console.log(res.message);
-          Swal.fire({
-            title: 'Success',
-            text: res.message || 'Fingerprint data has been sent successfully!',
-            icon: 'success',
-            timer: 3000,
-            timerProgressBar: true,
-            // didOpen: (toast) => {
-            //   Swal.showLoading();
-            // },
-            willClose: () => {
-              // location.reload();
-            }
-          });
-        },
-        (error) => {
-          Swal.fire({
-            title: 'Error',
-            text: error.error?.message || 'Failed to Send fingerprint data. Please try again later.',
-            icon: 'error',
-            timer: 3000,
-            timerProgressBar: true,
-            // didOpen: (toast) => {
-            //   Swal.showLoading();
-            // },
-            willClose: () => {
-              // location.reload();
-            }
-          });
-        }
-      );
-    } else {
-      this.form.markAllAsTouched();
-    }
+    // if (this.form.valid) {
+    // Show loading indicator before making the API call
+    Swal.fire({
+      title: "Loading!!!",
+      text: "Please wait while we send the fingerprint data.",
+      didOpen: () => {
+        Swal.showLoading(null);
+      }
+    });
+
+    // Make the API call
+    this.userservice.SendFingerPrint(this.form.value).subscribe(
+      (res: any) => {
+        console.log(res.message);
+
+        // Close the loading indicator
+        Swal.close(); // Close the loading alert
+
+        // Show success message
+        Swal.fire({
+          title: 'Success',
+          text: res.message || 'Fingerprint data has been sent successfully!',
+          icon: 'success',
+          timer: 3000,
+          timerProgressBar: true,
+        });
+
+        // Optionally, you can refresh the page or do something else
+        // location.reload();
+      },
+      (error) => {
+        // Close the loading indicator
+        Swal.close(); // Close the loading alert
+
+        // Show error message
+        Swal.fire({
+          title: 'Error',
+          text: error.error?.message || 'Failed to send fingerprint data. Please try again later.',
+          icon: 'error',
+          timer: 3000,
+          timerProgressBar: true,
+        });
+
+        // Optionally, you can refresh the page or do something else
+        // location.reload();
+      }
+    );
+    // } else {
+    //   // If the form is invalid, mark all controls as touched to show validation errors
+    //   this.form.markAllAsTouched();
   }
+
+
+
   stop() {
-
-    console.log('stop');
-
+    Swal.fire({
+      title: "Loading!!!",
+      text: "Please wait while we process your request.",
+      timerProgressBar: true,
+      didOpen: () => {
+        Swal.showLoading(null); // Show loading spinner
+      }
+    });
     this.userservice.StopFingerPrint(this.form.value).subscribe(
       (res: any) => {
         console.log(res.message);
@@ -268,35 +328,21 @@ export class FingerPrintComponent {
           icon: 'success',
           timer: 3000,
           timerProgressBar: true,
-          // didOpen: (toast) => {
-          //   Swal.showLoading();
-          // },
-          willClose: () => {
-            // location.reload();
-            this.ngOnInit();
-          }
+
         });
       },
       (error) => {
+        Swal.close();
         Swal.fire({
           title: 'Error',
           text: error.error?.message || 'Failed to stop fingerprint data. Please try again later.',
           icon: 'error',
           timer: 3000,
-          timerProgressBar: true,
-          // didOpen: (toast) => {
-          //   Swal.showLoading();
-          // },
-          willClose: () => {
-            // location.reload();
-            this.ngOnInit();
-          }
+          timerProgressBar: true
         });
       }
     );
-
   }
-
 
   get f(): { [key: string]: AbstractControl } {
     return this.form.controls;
@@ -318,28 +364,36 @@ export class FingerPrintComponent {
       this.area = Object.entries(data[0].arealist).map(([key, value]) => ({ name: key, id: value }));
       this.cas = Object.entries(data[0].caslist).map(([key, value]) => ({ name: key, id: value }));
       this.service = Object.entries(data[0].servicelist).map(([key, value]) => ({ name: key, id: value }));
-      this.castype_1 = data[0].fplist[0].castype;
-      this.finger = data[0].fplist[0].fptype;
-      this.service_1 = data[0].fplist[0].serviceid;
-      this.isforce = data[0].fplist[0].isforce;
-      this.intend_1 = data[0].fplist[0].intendto;
-      this.type_1 = data[0].fplist[0].type;
-      this.intendid_1 = data[0].fplist[0].intendid;
-      this.covertype_1 = data[0].fplist[0].covertype;
-      this.bgcolor_1 = data[0].fplist[0].bgcolor;
-      this.duration_1 = data[0].fplist[0].duration;
-      this.fontcolor_1 = data[0].fplist[0].fontcolor;
-      this.fontsize_1 = data[0].fplist[0].fontsize;
-      this.positiontype_1 = data[0].fplist[0].positiontype;
-      this.position_1 = data[0].fplist[0].position;
-      this.repeatfor_1 = data[0].fplist[0].repeatfor;
-      this.timegap_1 = data[0].fplist[0].timegap;
-      this.transparancy_1 = data[0].fplist[0].transparancy;
-      this.hh = data[0].fplist[0].hh;
-      this.mm = data[0].fplist[0].mm;
-      this.ss = data[0].fplist[0].ss;
-      this.x = data[0].fplist[0].x;
-      this.y = data[0].fplist[0].y;
+      console.log(this.service);
+
+      // let fplistLastObj = data[0].fplist[data[0].fplist.length - 1]
+      let fplistLastObj = data[0].fp
+      console.log(fplistLastObj);
+
+      this.castype_1 = fplistLastObj.castype;
+      this.finger = fplistLastObj.fptype;
+      this.service_1 = fplistLastObj.serviceid;
+      this.isforce = fplistLastObj.isforce;
+      // this.intend_1 = fplistLastObj.intendto;
+      console.log('                  ' + this.intend_1);
+
+      this.type_1 = fplistLastObj.type;
+      this.intendid_1 = fplistLastObj.intendid;
+      this.covertype_1 = fplistLastObj.covertype;
+      this.bgcolor_1 = fplistLastObj.bgcolor;
+      this.duration_1 = fplistLastObj.duration;
+      this.fontcolor_1 = fplistLastObj.fontcolor;
+      this.fontsize_1 = fplistLastObj.fontsize;
+      this.positiontype_1 = fplistLastObj.positiontype;
+      this.position_1 = fplistLastObj.position;
+      this.repeatfor_1 = fplistLastObj.repeatfor;
+      this.timegap_1 = fplistLastObj.timegap;
+      this.transparancy_1 = fplistLastObj.transparancy;
+      this.hh = fplistLastObj.hh;
+      this.mm = fplistLastObj.mm;
+      this.ss = fplistLastObj.ss;
+      this.x = fplistLastObj.x;
+      this.y = fplistLastObj.y;
     })
     this.checkScreenSize();
 

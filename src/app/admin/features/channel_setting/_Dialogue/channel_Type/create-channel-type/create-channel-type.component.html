@@ -1,20 +1,22 @@
+<div class="Head d-flex justify-content-between align-items-center mb-3" style="padding: 1rem;">
+    <h6>CREATE NEW CHANNEL TYPE</h6>
+    <i class="fa fa-close close-icon" style="cursor: pointer;" (click)="onNoClick()"></i>
+</div>
 <div class="col d-flex justify-content-center align-items-center">
-    <div class="card-content" >
-        <div class="head d-flex justify-content-between align-items-center mb-3">
-            <h6 class="span">CREATE NEW CHANNEL TYPE</h6>
-            <i class="fa fa-close close-icon" style="cursor: pointer;" (click)="onNoClick()"></i>
-        </div>
+    <div class="card-content">
         <div class="input_box mb-3" style="padding: 10px;">
             <div class="display align-items-center mb-3">
                 <div class="col-12 col-md-6">
                     <label for="distributor_name" class="me-2">Channel Type Name </label>
                 </div>
                 <div class="col-12 col-md-6">
-                    <input type="text" id="ChannelType_name" 
-                        [(ngModel)]="ChannelType_name">
-                    <div *ngIf="errorMessage" class=" alert alert-danger d-flex justify-content-between align-items-center mt-3"  style="position: relative;font-size: 11px;">
+                    <input type="text" id="ChannelType_name" [(ngModel)]="ChannelType_name">
+                    <div *ngIf="errorMessage"
+                        class=" alert alert-danger d-flex justify-content-between align-items-center mt-3"
+                        style="position: relative;font-size: 11px;">
                         {{ errorMessage }}
-                        <i class="fa fa-close close-icon" style="cursor: pointer;font-size: 11px" (click)="onNoClick()"></i>
+                        <i class="fa fa-close close-icon" style="cursor: pointer;font-size: 11px"
+                            (click)="onNoClick()"></i>
                     </div>
                 </div>
             </div>

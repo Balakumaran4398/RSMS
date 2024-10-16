@@ -82,4 +82,7 @@ export class RefundComponent {
     //   this.form.markAllAsTouched();
     // }
   }
+  onNoClick(): void {
+    this.dialogRef.close();
+  }
 }

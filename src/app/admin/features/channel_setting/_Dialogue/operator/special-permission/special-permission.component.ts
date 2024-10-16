@@ -112,4 +112,7 @@ export class SpecialPermissionComponent {
       }
     );
   }
+  onNoClick(): void {
+    this.dialogRef.close();
+  }
 }

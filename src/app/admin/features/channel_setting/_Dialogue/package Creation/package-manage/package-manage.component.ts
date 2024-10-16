@@ -93,6 +93,9 @@ export class PackageManageComponent {
       this.added_alacarte_list = data[0].Added_Alacarte.map((addede_alacarte: any) => {
         return `${addede_alacarte.channel_name} (${addede_alacarte.channel_id}) - Rs.${addede_alacarte.inr_amt}.0`;
       });
+
+
+      
       this.available_bouquet_list = data[0].Available_addon.map((available_bouquet: any) => {
         return `${available_bouquet.addon_package_name} (${available_bouquet.id}) - Rs.${available_bouquet.addon_package_rate}.0`;
       });
@@ -106,18 +109,27 @@ export class PackageManageComponent {
       });
 
       // console.log('AVAILABE ALACARTE_ID    1   ' + this.alacarte_list_id);
-      console.log('AVAILABE ALACARTE       ' + this.available_bouquet_list);
+      // console.log('AVAILABE ALACARTE       ' + this.available_bouquet_list);
+      console.log('Added bouquet list         '+this.added_bouquet_list );
+      console.log('Available bouquet list    '+this.available_bouquet_list);
       // console.log('ADDED ALACARTE    2  ' + this.added_alacarte_list_id);
-      console.log('AVAILABE BOUQUET      ' + this.bouquet_list_id);
+      // console.log('AVAILABE BOUQUET      ' + this.bouquet_list_id);
       // console.log('ADDED BOUQUET   4   ' + this.added_bouquet_list_id);     
     })
-    this.filteredAvailableAlacarteList = this.available_alacarte_list;
+    // this.filteredAvailableAlacarteList = this.available_alacarte_list;
   }
 
   drop(event: CdkDragDrop<string[]>) {
+    console.log('drop event');
+    console.log(event);
+    
     if (event.previousContainer === event.container) {
+      console.log('sss');
+      
       moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
     } else {
+      console.log('dfdlfjd');
+      
       transferArrayItem(
         event.previousContainer.data,
         event.container.data,
@@ -146,6 +158,29 @@ export class PackageManageComponent {
       console.log('The dialog was closed');
     });
   }
+
+  // pay_channel(type: any) {
+  //   let dialogData = { type: type, package_id: this.package_id };
+  
+  //   let dialogHeight = '700px'; // Default height
+  //   if (type === 'paychannel') {
+  //     dialogHeight = '600px';
+  //   } else if (type === 'bouquet') {
+  //     dialogHeight = '300px';
+  //   }
+  
+  //   const dialogRef = this.dialog.open(PackageBASEDEMOComponent, {
+  //     width: '800px',
+  //     height: dialogHeight,  // Set height dynamically
+  //     panelClass: 'custom-dialog-container',
+  //     data: dialogData
+  //   });
+  
+  //   dialogRef.afterClosed().subscribe(result => {
+  //     console.log('The dialog was closed');
+  //   });
+  // }
+  
   // applyFilter(): void {
   //   if (!this.searchTerm) {
   //     this.filteredAvailableAlacarteList = this.available_alacarte_list;
@@ -316,9 +351,9 @@ export class PackageManageComponent {
           title: 'Updating...',
           text: 'Please wait for Alacarte channels to update....',
           allowOutsideClick: false,
-          // didOpen: () => {
-          //   Swal.showLoading();
-          // }
+          didOpen: () => {
+            Swal.showLoading(null); 
+          }
         });
         this.userService.AddingdAlacarteTo_Base_Package(this.modified, this.alacarte_list_id, this.role, this.username, this.package_id).subscribe((res: any) => {
           console.log(res);
@@ -364,9 +399,9 @@ export class PackageManageComponent {
           title: 'Updating...',
           text: 'Please wait for Addon channel list to update....',
           allowOutsideClick: false,
-          // didOpen: () => {
-          //   Swal.showLoading();
-          // }
+          didOpen: () => {
+            Swal.showLoading(null); 
+          }
         });
         this.userService.AddingdbouquetTo_Base_Package(this.modified, this.bouquet_list_id, this.role, this.username, this.package_id, this.removed_channel_list,).subscribe((res: any) => {
           console.log(res);

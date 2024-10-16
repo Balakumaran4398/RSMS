@@ -1,7 +1,12 @@
+
+<div class="Head d-flex justify-content-between align-items-center mb-3" style="padding: 1rem;">
+    <h6>Special Permission</h6>
+    <i class="fa fa-close close-icon" style="cursor: pointer;" (click)="onNoClick()"></i>
+</div>
 <div class="card">
-    <div class="Head d-flex justify-content-between align-items-center mb-3">
+    <!-- <div class="Head d-flex justify-content-between align-items-center mb-3">
         <p class="span">Special Permission</p>
-    </div>
+    </div> -->
     <!-- <form action="" [formGroup]="form" (ngSubmit)="onSubmit()"> -->
     <div class="container Permission_edit mobile">
         <div class="row">
@@ -155,7 +160,7 @@
                 </div>
             </div>
         </div>
-        <div class="d-flex justify-content-end align-item-center mx-3 mb-4">
+        <div class="d-flex justify-content-center align-item-center mx-3 mb-4">
             <button type="button" class="btn btn-danger me-2" (click)="togglepermission()">Cancel</button>
             <button type="button" (click)="onSubmit()" class="btn btn-success">Update</button>
         </div>

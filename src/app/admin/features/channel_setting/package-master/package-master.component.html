@@ -15,7 +15,7 @@
                     <div class="input_box ml-3">
                         <div class="col-12 col-md-12">
                             <select placeholder="Select the CAS" [(ngModel)]="Castype"
-                                (change)="onSubscriberStatusChange()">
+                                (change)="onSubscriberStatusChange($event)">
                                 <option value="0">Select CAS</option>
                                 <option *ngFor="let casItem of cas" [value]="casItem.id">
                                     {{ casItem.casname }}
