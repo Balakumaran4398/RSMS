@@ -45,11 +45,11 @@ export class StbChartComponent implements OnInit {
 				indexLabelFontColor: "#5A5757",
 				dataPoints: [
 					{ label: "Active", y: data["ACTIVE STB's"], color: "#1a8a38" },
-					{ label: "Deactive", y: data["ACTIVE SUBSCRIPTION"], color: "#db635a" },
-					{ label: "Fresh", y: data["BLOCKED STB's"], color: "#622a82" },
-					{ label: "Not Expiry", y: data["DEACTIVE STB's"], color: "#2d72ad" },
+					{ label: "Deactive", y: data["DEACTIVE STB's"], color: "#db635a" },
+					{ label: "Fresh", y: data["NOT ACTIVE STB's"], color: "#622a82" },
+					{ label: "Not Expiry", y: data["ACTIVE SUBSCRIPTION"], color: "#2d72ad" },
 					{ label: "Expiry", y: data["EXPIRED SUBSCRIPTION"], color: "#deac2c" },
-					{ label: "Block", y: data["NOT ACTIVE STB's"], color: "#52504e" }
+					{ label: "Block", y: data["BLOCKED STB's"], color: "#52504e" }
 				]
 			}]
 

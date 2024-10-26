@@ -90,8 +90,8 @@
 }
 ::ng-deep {
     .ag-center-cols-viewport {
-        max-height: 200px;
-        overflow: scroll;
+        max-height: 1500px;
+        overflow: auto;
     }
 }
 @media screen and (max-width:560px) {

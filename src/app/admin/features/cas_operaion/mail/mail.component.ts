@@ -4,6 +4,8 @@ import { ColDef } from 'ag-grid-community';
 import { BaseService } from 'src/app/_core/service/base.service';
 import { StorageService } from 'src/app/_core/service/storage.service';
 import Swal from 'sweetalert2';
+import { CasDialogueComponent } from '../../channel_setting/_Dialogue/cas-dialogue/cas-dialogue.component';
+import { MatDialog } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-mail',
@@ -18,6 +20,7 @@ export class MailComponent {
   isIntendto: boolean = true;
   isSmartcardEnabled: boolean = false;
   isAreaCodeEnabled: boolean = false;
+  isMSOCodeEnabled: boolean = false;
   isButtonEnable: boolean = false;
   isDateDisabled: boolean = true;
   CasFormControl: any;
@@ -52,7 +55,7 @@ export class MailComponent {
   onGridReady = () => {
 
   }
-  constructor(private userservice: BaseService, private storageService: StorageService, private fb: FormBuilder) {
+  constructor(private userservice: BaseService, private storageService: StorageService, private fb: FormBuilder, public dialog: MatDialog) {
     this.username = storageService.getUsername();
     this.role = storageService.getUserRole();
     userservice.GetMail_List(this.role, this.username).subscribe((data: any) => {
@@ -76,8 +79,36 @@ export class MailComponent {
     { headerName: "SENDER	", field: 'sender' },
     { headerName: "MESSAGE", field: 'message' },
     { headerName: "EXPIRY DATE	", field: 'expirydate' },
-    { headerName: "ACTION	", field: '' },
+    {
+      headerName: "ACTION",
+      cellRenderer: (params: any) => {
+        const div = document.createElement('div');
+
+        const MailButton = document.createElement('button');
+        MailButton.innerHTML = '<button style="width: 5em;background-color: #6f8fde;color:white;border-radius: 5px;height: 2em;color:white"><p style="margin-top:-6px">RS</p></button>';
+        MailButton.style.backgroundColor = 'transparent';
+        MailButton.style.border = 'none';
+        MailButton.title = 'Mail';
+        MailButton.style.cursor = 'pointer';
+        MailButton.style.marginLeft = '20px';
+
+        // Add click event listener to Stop Button
+        MailButton.addEventListener('click', () => {
+          // Assuming 'this' refers to the component instance
+          this.openDialog(params.data, 'mail');
+        });
+
+        // Append Stop Button to div
+        div.appendChild(MailButton);
+
+        // Return the div containing the Stop Button
+        return div;
+      }
+    }
+
+
   ];
+
   ngOnInit() {
     this.userservice.Finger_print_List(this.role, this.username).subscribe((data) => {
       console.log(data);
@@ -89,21 +120,28 @@ export class MailComponent {
     this.form = this.fb.group({
       castype: ['', Validators.required],
       intendto: ['', Validators.required],
-      intendid: [0, Validators.required],
+      intendid: ['', Validators.required],
       sender: ['', Validators.required],
       mailtitle: ['', Validators.required],
-      expirydate: ['', Validators.required],
+      expirydate: [0, Validators.required],
       isresend: [false, Validators.required],
       message: ['', Validators.required],
       d_type: 0,
       role: this.role,
       username: this.username,
     })
+    
   }
   onChangeIntendTo1(selectedValue: any) {
     this.isSmartcardEnabled = false;
     this.isAreaCodeEnabled = false;
     console.log('enabled             =' + selectedValue);
+    if (selectedValue == 0) {
+      this.isSmartcardEnabled = false;
+      this.isAreaCodeEnabled = false
+      this.isMSOCodeEnabled = false
+      console.log('Smartcard enabled');
+    }
     if (selectedValue == 1) {
       this.isSmartcardEnabled = true;
       this.isAreaCodeEnabled = false
@@ -136,35 +174,102 @@ export class MailComponent {
       area.lable.toLowerCase().includes(this.searchTerm.toLowerCase())
     );
   }
-  onSubmit() {
-    // if (this.form.valid) {
-
-    this.userservice.CreateMail(this.form.value).subscribe(
-      (res: any) => {
-        console.log(res);
-        Swal.fire({
-          title: 'Success!',
-          text: res.message || 'Your mail has been created successfully.',
-          icon: 'success',
-          timer: 3000, // 3 seconds
-          showConfirmButton: false
-        }).then(() => {
-          // window.location.reload();
-          this.ngOnInit();
-        });
-      },
-      (error) => {
-        console.error(error);
-        Swal.fire({
-          title: 'Error!',
-          text: error?.error.message || 'There was an issue creating your mail. Please try again later.',
-          icon: 'error',
-          confirmButtonText: 'OK'
-        });
-      }
-    );
-  // } else {
-  //   this.form.markAllAsTouched();
+  // onSubmit() {
+  //   // if (this.form.valid) {
+  //     Swal.fire({
+  //       title: 'Updateing...',
+  //       text: 'Please wait while the Mail is being updated',
+  //       allowOutsideClick: false,
+  //       didOpen: () => {
+  //         Swal.showLoading(null);
+  //       }
+  //     });
+  //   this.userservice.CreateMail(this.form.value).subscribe(
+  //     (res: any) => {
+  //       console.log(res);
+  //       Swal.fire({
+  //         title: 'Success!',
+  //         text: res.message || 'Your mail has been created successfully.',
+  //         icon: 'success',
+  //         timer: 3000, // 3 seconds
+  //         showConfirmButton: false
+  //       }).then(() => {
+  //         // window.location.reload();
+  //         this.ngOnInit();
+  //       });
+  //     },
+  //     (error) => {
+  //       console.error(error);
+  //       Swal.fire({
+  //         title: 'Error!',
+  //         text: error?.error.message || 'There was an issue creating your mail. Please try again later.',
+  //         icon: 'error',
+  //         confirmButtonText: 'OK'
+  //       });
+  //     }
+  //   );
+  // // } else {
+  // //   this.form.markAllAsTouched();
+  // // }
   // }
+
+  onSubmit() {
+    // Check if the form is valid
+    if (this.form.valid) {
+      Swal.fire({
+        title: 'Updating...',
+        text: 'Please wait while the Mail is being updated',
+        allowOutsideClick: false,
+        didOpen: () => {
+          Swal.showLoading(null);
+        }
+      });
+
+      // Call the API to create the mail
+      this.userservice.CreateMail(this.form.value).subscribe(
+        (res: any) => {
+          console.log(res);
+          Swal.fire({
+            title: 'Success!',
+            text: res.message || 'Your mail has been created successfully.',
+            icon: 'success',
+            timer: 2000,
+            timerProgressBar: true,
+          }).then(() => {
+            // Optionally reload the page or refresh data
+            this.ngOnInit();
+          });
+        },
+        (error) => {
+          console.error(error);
+          Swal.fire({
+            title: 'Error!',
+            text: error?.error.message || 'There was an issue creating your mail. Please try again later.',
+            icon: 'error',
+            confirmButtonText: 'OK',
+            timer: 2000,
+            timerProgressBar: true,
+          });
+        }
+      );
+    } else {
+      // If the form is invalid, mark all controls as touched to trigger validation messages
+      this.form.markAllAsTouched();
+    }
+  }
+
+
+  openDialog(event: any, type: any): void {
+    let dialogData = { data: event, type: type };
+    const dialogRef = this.dialog.open(CasDialogueComponent, {
+      width: '400px',
+      panelClass: 'custom-dialog-container',
+      data: dialogData
+    });
+    console.log(dialogData);
+
+    dialogRef.afterClosed().subscribe(result => {
+      console.log('The dialog was closed');
+    });
   }
 }

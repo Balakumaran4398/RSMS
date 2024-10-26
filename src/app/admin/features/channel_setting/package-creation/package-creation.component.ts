@@ -15,8 +15,12 @@ import { Router } from '@angular/router';
 })
 export class PackageCreationComponent {
   gridOptions = {
-    defaultany: {
-      // width: 180,
+    defaultColDef: {
+      sortable: true,
+      resizable: true,
+      filter: true,
+      width: 180,
+      floatingFilter: true
     },
     paginationPageSize: 10,
     pagination: true,
@@ -43,7 +47,7 @@ export class PackageCreationComponent {
     },
     { headerName: "PACKAGE NAME", field: 'packagename', width: 180 },
     {
-      headerName: 'Actions', width: 350,
+      headerName: 'Actions', width: 350, filter: false,
       cellRenderer: (params: any) => {
         const editButton = document.createElement('button');
         const manageButton = document.createElement('button');

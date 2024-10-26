@@ -1,0 +1,143 @@
+// ------------------------------------------AREA UPDATION-------------------------------------------
+
+h1 {
+    text-align: center;
+}
+
+/* Ensure all form controls have the same width */
+// .form-group select,
+// .form-group input {
+//     width: 80%;
+// }
+
+.table1 p,
+.table2 p {
+    justify-content: center;
+    align-items: center;
+    // width: 80%;
+}
+
+.table1 p,
+.table2 p {
+    padding: 5px;
+    text-align: center;
+    background-color: var(--primary-color);
+}
+
+// .display {
+//     display: block;
+// }
+
+.example-container {
+    max-height: 400px;
+    overflow: scroll;
+    border: 1px solid #ccc;
+    padding: 10px;
+    border-radius: 5px;
+}
+
+.example-box {
+    margin-bottom: 5px;
+    padding: 5px;
+    background-color: #f1f1f1;
+    border: 1px solid #ddd;
+    border-radius: 3px;
+}
+
+
+.btn {
+    width: 50px;
+    padding: 1px;
+    background-color: #ccc;
+    color: #f1f1f1;
+    margin: 5px;
+    /* Add margin to create space between buttons */
+}
+
+.btn:hover {
+    color: black;
+}
+
+
+h1 {
+    text-align: center;
+    margin-bottom: 1rem;
+}
+
+.card {
+    height: 30vh;
+    padding: 1rem;
+    border: 1px solid #ddd;
+    border-radius: 0.25rem;
+}
+
+.form-group {
+    margin-bottom: 1rem;
+}
+
+.form-control {
+    width: 100%;
+}
+
+.table1,
+.table2 {
+    border: 1px solid #ddd;
+    padding: 1rem;
+    border-radius: 0.25rem;
+}
+
+
+
+
+.example-list {
+    width: 100%;
+    min-height: 100px;
+    border: 1px solid #ccc;
+    background: #f9f9f9;
+    display: flex;
+    flex-direction: column;
+    padding: 10px;
+}
+
+.example-box {
+    padding: 10px;
+    margin: 5px;
+    border: 1px solid #ccc;
+    background: #fff;
+    cursor: move;
+}
+
+@media (max-width: 767.98px) {
+    .d-flex {
+        // flex-direction: column;
+    }
+
+    .mobile {
+        max-height: 600px;
+        overflow: auto;
+    }
+
+    // .d-grid {
+    //     margin: 1rem 0;
+    // }
+}
+
+/* Tablet and Desktop View */
+@media (min-width: 560px) {
+    .d-flex {
+        flex-direction: row;
+    }
+
+    // .d-grid {
+    //     margin: 0;
+    // }
+    .display {
+        display: grid;
+    }
+}
+
+.profile {
+    height: 1pc;
+    width: 1pc;
+    background-color: rgb(222, 241, 241);
+}

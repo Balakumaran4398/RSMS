@@ -14,14 +14,14 @@
 
             <div class="checkbox-text mb-3 mx-2">
                 <div class="checkbox-content">
-                    <mat-checkbox [(ngModel)]="isCheckboxChecked" id="terms">   </mat-checkbox>
+                    <mat-checkbox [(ngModel)]="isCheckboxChecked" id="terms"> </mat-checkbox>
                 </div>
             </div>
 
 
             <mat-form-field appearance="fill" appearance="outline" class="w-25 mx-2">
                 <mat-label>Select Package</mat-label>
-                <mat-select [(ngModel)]="package"  [disabled]="!isCheckboxChecked">
+                <mat-select [(ngModel)]="package" [disabled]="!isCheckboxChecked">
                     <mat-option value="">Select Package</mat-option>
                     <mat-option *ngFor="let pkg of packageList" [value]="pkg.value">{{ pkg.name }}</mat-option>
                 </mat-select>
@@ -58,7 +58,9 @@
         <div class="row d-flex align-items-center justify-content-center" style="padding: 0.5rem;">
             <div class="col-12 col-md-12 col-sm-12">
                 <div class="title">
-                    <h5>LCO WISE SMARTCARD DETAILS <span style="color: rgb(11, 67, 170);font-size: 20px;font-weight: 600;">- {{rowData?.length}}</span></h5>
+                    <h5>LCO WISE SMARTCARD DETAILS <span
+                            style="color: rgb(11, 67, 170);font-size: 20px;font-weight: 600;">-
+                            {{rowData?.length}}</span></h5>
                 </div>
                 <ag-grid-angular #agGrid id="myGrid" domLayout='autoHeight' class="ag-theme-alpine table-class"
                     rowAnimation [rowSelection]="rowSelection" [gridOptions]="gridOptions" [columnDefs]="columnDefs"
@@ -119,13 +121,25 @@
         <div class="row d-flex align-items-center justify-content-center" style="padding: 0.5rem;">
             <div class="col-12 col-md-12 col-sm-12">
                 <div class="title">
-                    <h5>PENDING SMARTCARD DETAILS <span style="color: rgb(11, 67, 170);font-size: 20px;font-weight: 600;">- {{rowData?.length}}</span></h5>
+                    <h5>PENDING SMARTCARD DETAILS <span
+                            style="color: rgb(11, 67, 170);font-size: 20px;font-weight: 600;">-
+                            {{rowData?.length}}</span></h5>
                 </div>
                 <ag-grid-angular #agGrid id="myGrid" domLayout='autoHeight' class="ag-theme-alpine table-class"
                     rowAnimation [rowSelection]="rowSelection" [gridOptions]="gridOptions" [columnDefs]="columnDefs"
                     [rowData]="rowData" (gridReady)="onGridReady()" [enableCellTextSelection]="true">
                 </ag-grid-angular>
             </div>
+        </div>
+
+        <div class="col-12 col-md-6 display justify-content-center align-items-center" style="margin: 10px auto;">
+            <div> <button [disabled]="status==false" class="btn btn-secondary me-2" (click)="start()">Start Service</button></div>
+            <div> <button [disabled]="status==true" class="btn btn-secondary me-2" (click)="stop()">Stop Service</button></div>
+            <div>
+                <h6 style="color: green;font-size: 18px;">SERVICE RUNNING</h6>
+            </div>
+
+
         </div>
     </div>
     <div *ngIf="selectedTab === 'archive'" class="commission">
@@ -179,14 +193,16 @@
                 </mat-form-field>
             </div>
             <div class="mobile d-flex justify-content-center align-items-center mb-3">
-                <button type="submit" class="btn btn-success align-item-center" (click)="archiveFilter()">Filter</button>
+                <button type="submit" class="btn btn-success align-item-center"
+                    (click)="archiveFilter()">Filter</button>
             </div>
 
         </div>
         <div class="row d-flex align-items-center justify-content-center" style="padding: 0.5rem;">
             <div class="col-12 col-md-12 col-sm-12">
                 <div class="title">
-                    <h5>ARCHIVED LIST STATUS <span style="color: rgb(11, 67, 170);font-size: 20px;font-weight: 600;">- {{rowData?.length}}</span> </h5>
+                    <h5>ARCHIVED LIST STATUS <span style="color: rgb(11, 67, 170);font-size: 20px;font-weight: 600;">-
+                            {{rowData?.length}}</span> </h5>
                 </div>
                 <ag-grid-angular #agGrid id="myGrid" domLayout='autoHeight' class="ag-theme-alpine table-class"
                     rowAnimation [rowSelection]="rowSelection" [gridOptions]="gridOptions" [columnDefs]="columnDefs"

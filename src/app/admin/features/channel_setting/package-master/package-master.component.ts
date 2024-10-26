@@ -5,6 +5,7 @@ import { StorageService } from 'src/app/_core/service/storage.service';
 import Swal from 'sweetalert2';
 import { UpdatePackageMasterComponent } from '../_Dialogue/package_master/update-package-master/update-package-master.component';
 import { filter } from 'node_modules1/jszip';
+import { isTemplateMiddle } from 'typescript';
 
 @Component({
   selector: 'app-package-master',
@@ -16,6 +17,7 @@ export class PackageMasterComponent {
   gridApi: any;
   selectedIds: number[] = [];
   selectedtypes: number[] = [];
+  act_deact_type: any;
   isAnyRowSelected: boolean = false;
   gridOptions = {
     defaultColDef: {
@@ -38,8 +40,10 @@ export class PackageMasterComponent {
   }
   ngOnInit(): void {
 
-  this.userService.PackagemasterList(this.user_role, this.username, this.type,this.Castype).subscribe((data) => {
+    this.userService.PackagemasterList(this.user_role, this.username, this.type, this.Castype).subscribe((data) => {
       this.rowData = data;
+   
+      
     })
     this.userService.Cas_type(this.user_role, this.username).subscribe((data) => {
       this.cas = data;
@@ -54,18 +58,19 @@ export class PackageMasterComponent {
   }
   onGridReady(params: { api: any; }) {
     // this.gridApi.sizeColumnsToFit();
-    this.gridApi = params.api;  
+    this.gridApi = params.api;
   }
   onSelectionChanged() {
     if (this.gridApi) {
       const selectedRows = this.gridApi.getSelectedRows();
       this.isAnyRowSelected = selectedRows.length > 0;
       this.selectedIds = selectedRows.map((e: any) => e.id);
-      this.selectedtypes = selectedRows.map((e: any) => e.isactive);
+      this.selectedtypes = selectedRows.map((e: any) => e.type);
+
     }
   }
-  onSubscriberStatusChange(event:any) {
-    this.userService.PackagemasterList(this.user_role, this.username, this.selectedTab,this.Castype).subscribe((data) => {
+  onSubscriberStatusChange(event: any) {
+    this.userService.PackagemasterList(this.user_role, this.username, this.selectedTab, this.Castype).subscribe((data) => {
       this.updateColumnDefs(this.selectedTab);
     });
 
@@ -73,8 +78,8 @@ export class PackageMasterComponent {
 
   columnDefs: any[] = [
     {
-      headerName: "S.No", lockPosition: true, valueGetter: 'node.rowIndex+1', headerCheckboxSelection: true,filter:false,
-            checkboxSelection: true,
+      headerName: "S.No", lockPosition: true, valueGetter: 'node.rowIndex+1', headerCheckboxSelection: true, filter: false,
+      checkboxSelection: true,
     },
     { headerName: "PRODUCT NAME", field: 'productname', width: 150, },
     { headerName: "CAS TYPE", field: 'castype', },
@@ -89,9 +94,9 @@ export class PackageMasterComponent {
 
     {
       headerName: 'IS DELETE',
-      field: 'active',
+      field: 'isdelete',
       cellRenderer: (params: { value: any }) => {
-        const color = params.value ? 'pink' : 'blue';
+     const color = params.value ? 'blue' : 'red';
         const text = params.value ? 'YES' : 'NO';
         return `<span style="color: ${color}">${text}</span>`;
       }
@@ -106,7 +111,7 @@ export class PackageMasterComponent {
         return `<span style="color: ${color}">${text}</span>`;
       }
     },
-  
+
 
   ]
   // selectTab(tab: string): void {
@@ -124,7 +129,7 @@ export class PackageMasterComponent {
         newRowData = this.getAddonPackageData('2');
       } else if (this.selectedTab === '3') {
         newRowData = this.getAlacarteData('3');
-      }else if (this.selectedTab === '0') {
+      } else if (this.selectedTab === '0') {
         newRowData = this.getAllData('0');
       }
     }
@@ -149,7 +154,7 @@ export class PackageMasterComponent {
     if (tab === '0') {
       this.columnDefs = [
         {
-          headerName: "S.No", lockPosition: true, valueGetter: 'node.rowIndex+1', headerCheckboxSelection: true,filter:false,
+          headerName: "S.No", lockPosition: true, valueGetter: 'node.rowIndex+1', headerCheckboxSelection: true, filter: false,
           checkboxSelection: true,
         },
         { headerName: "PRODUCT NAME", field: 'productname', width: 150, },
@@ -188,9 +193,9 @@ export class PackageMasterComponent {
 
         {
           headerName: 'IS DELETE',
-          field: 'active', width: 120,
+          field: 'isdelete', width: 120,
           cellRenderer: (params: { value: any }) => {
-            const color = params.value ? 'pink' : 'blue';
+         const color = params.value ? 'blue' : 'red';
             const text = params.value ? 'YES' : 'NO';
             return `<span style="color: ${color}">${text}</span>`;
           }
@@ -208,7 +213,7 @@ export class PackageMasterComponent {
     } else if (tab === '1') {
       this.columnDefs = [
         {
-          headerName: "S.No", lockPosition: true, valueGetter: 'node.rowIndex+1', headerCheckboxSelection: true,filter:false,
+          headerName: "S.No", lockPosition: true, valueGetter: 'node.rowIndex+1', headerCheckboxSelection: true, filter: false,
           checkboxSelection: true,
         },
         { headerName: "PRODUCT NAME", field: 'productname', width: 150, },
@@ -248,9 +253,9 @@ export class PackageMasterComponent {
 
         {
           headerName: 'IS DELETE',
-          field: 'active', width: 120,
+          field: 'isdelete', width: 120,
           cellRenderer: (params: { value: any }) => {
-            const color = params.value ? 'pink' : 'blue';
+         const color = params.value ? 'blue' : 'red';
             const text = params.value ? 'YES' : 'NO';
             return `<span style="color: ${color}">${text}</span>`;
           }
@@ -268,7 +273,7 @@ export class PackageMasterComponent {
     } else if (tab === '2') {
       this.columnDefs = [
         {
-          headerName: "S.No", lockPosition: true, valueGetter: 'node.rowIndex+1', headerCheckboxSelection: true,filter:false,
+          headerName: "S.No", lockPosition: true, valueGetter: 'node.rowIndex+1', headerCheckboxSelection: true, filter: false,
           checkboxSelection: true,
         },
         { headerName: "PRODUCT NAME", field: 'productname', width: 150, },
@@ -307,9 +312,9 @@ export class PackageMasterComponent {
 
         {
           headerName: 'IS DELETE',
-          field: 'active', width: 120,
+          field: 'isdelete', width: 120,
           cellRenderer: (params: { value: any }) => {
-            const color = params.value ? 'pink' : 'blue';
+         const color = params.value ? 'blue' : 'red';
             const text = params.value ? 'YES' : 'NO';
             return `<span style="color: ${color}">${text}</span>`;
           }
@@ -327,7 +332,7 @@ export class PackageMasterComponent {
     } else if (tab === '3') {
       this.columnDefs = [
         {
-          headerName: "S.No", lockPosition: true, valueGetter: 'node.rowIndex+1', headerCheckboxSelection: true,filter:false,
+          headerName: "S.No", lockPosition: true, valueGetter: 'node.rowIndex+1', headerCheckboxSelection: true, filter: false,
           checkboxSelection: true,
         },
         { headerName: "PRODUCT NAME", field: 'productname', width: 150, },
@@ -365,9 +370,9 @@ export class PackageMasterComponent {
         { headerName: "CREATED DATE", field: 'createddate', },
         {
           headerName: 'IS DELETE',
-          field: 'active', width: 120,
+          field: 'isdelete', width: 120,
           cellRenderer: (params: { value: any }) => {
-            const color = params.value ? 'pink' : 'blue';
+         const color = params.value ? 'blue' : 'red';
             const text = params.value ? 'YES' : 'NO';
             return `<span style="color: ${color}">${text}</span>`;
           }
@@ -471,18 +476,22 @@ export class PackageMasterComponent {
             Swal.showLoading(null);
           }
         });
-        this.userService.UpdatePackagemasterList(this.user_role, this.username, this.selectedIds).subscribe((res: any) => {
+        this.userService.UpdatePackagemasterList(this.user_role, this.username, this.selectedIds, 'false').subscribe((res: any) => {
           Swal.fire({
             title: 'Deleted!',
             text: res.message,
-            icon: 'success'
+            icon: 'success',
+            timer: 2000,
+            timerProgressBar: true,
           });
           this.ngOnInit();
         }, (err) => {
           Swal.fire({
             title: 'Error!',
             text: err?.error?.message,
-            icon: 'error'
+            icon: 'error',
+            timer: 2000,
+            timerProgressBar: true,
           });
         });
       }
@@ -508,18 +517,22 @@ export class PackageMasterComponent {
             Swal.showLoading(null);
           }
         });
-        this.userService.UpdatePackagemasterList(this.user_role, this.username, this.selectedIds).subscribe((res: any) => {
+        this.userService.UpdatePackagemasterList(this.user_role, this.username, this.selectedIds, 'true').subscribe((res: any) => {
           Swal.fire({
             title: 'Deleted!',
             text: res.message,
-            icon: 'success'
+            icon: 'success',
+            timer: 2000,
+            timerProgressBar: true,
           });
           this.ngOnInit();
         }, (err) => {
           Swal.fire({
             title: 'Error!',
             text: err?.error?.message,
-            icon: 'error'
+            icon: 'error',
+            timer: 2000,
+            timerProgressBar: true,
           });
         });
       }

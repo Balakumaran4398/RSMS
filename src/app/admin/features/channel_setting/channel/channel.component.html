@@ -9,7 +9,7 @@
                 </mat-select>
             </mat-form-field> -->
             <div class="input_box col-12 col-md-4 mx-2">
-                <select (change)="onTypeChange($event)">
+                <select (change)="onTypeChange($event)" [(ngModel)]="selectType" > 
                     <option value="">Select a Type</option>
                     <option *ngFor="let option of type" [value]="option">{{ option }}</option>
                 </select>

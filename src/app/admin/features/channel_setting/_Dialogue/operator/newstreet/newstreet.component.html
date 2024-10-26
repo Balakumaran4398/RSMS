@@ -23,7 +23,8 @@
     </div>
 </div> -->
 
-<div *ngIf="type=='newstreet'" class="col d-flex justify-content-center align-items-center card transparent-background dialog-content">
+<div *ngIf="type=='newstreet'"
+    class="col d-flex justify-content-center align-items-center card transparent-background dialog-content">
     <div class="card-content " style="width: 100%;">
         <div class="Head d-flex justify-content-between align-items-center mb-3" style="padding: 1rem;">
             <h6>NEW STREET</h6>
@@ -53,7 +54,8 @@
         </div>
     </div>
 </div>
-<div *ngIf="type=='editstreet'" class="col d-flex justify-content-center align-items-center card transparent-background dialog-content">
+<div *ngIf="type=='editstreet'"
+    class="col d-flex justify-content-center align-items-center card transparent-background dialog-content">
     <div class="card-content " style="width: 100%;">
         <div class="Head d-flex justify-content-between align-items-center mb-3" style="padding: 1rem;">
             <h6>Edit STREET</h6>
@@ -67,13 +69,25 @@
                     </div>
                     <div class="col-12 col-md-6">
                         <input type="text" [(ngModel)]="editstreetname" name="streetname" required
-                            #streetnameInput="ngModel" >
+                            #streetnameInput="ngModel">
                         <div *ngIf="streetnameInput.invalid && streetnameInput.touched" class="text-danger">
                             Street Name is required.
                         </div>
                     </div>
                 </div>
-
+                <div class="input_box display align-items-center mb-3">
+                    <div class="col-12 col-md-6">
+                        <span class="me-2">ISDELETE</span>
+                    </div>
+                    <div class="col-12 col-md-6 d-flex  justify-content-start align-item-center  ">
+                        <div class="toggle">
+                            <label class="switch">
+                                <input type="checkbox" id="lcoLabel" name="lcoLabel" [(ngModel)]="isdelete">
+                                <span class="slider"></span>
+                            </label>
+                        </div>
+                    </div>
+                </div>
                 <!-- Action Buttons -->
                 <div class="form-group d-flex justify-content-center align-items-center mb-3">
                     <button type="submit" class="btn btn-success me-2" [disabled]="streetForm.invalid">Save</button>

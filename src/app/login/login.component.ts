@@ -68,9 +68,12 @@ export class LoginComponent implements OnInit {
     } else if (form.valid) {
       this.authService.login(this.signInform.value).subscribe(
         res => {
+          console.log(res);
+          console.log(res.roles);
+          
           // Success handler
           // if (res.roles.includes('ROLE_RECEPTION')) {
-          if (res.roles.includes('ROLE_USER')) {
+          if (res.roles.includes('ROLE_USER') || res.roles.includes('ROLE_RECEPTION') || res.roles.includes('ROLE_SPECIAL') ) {
             this.storageService.saveToken(res.accessToken);
             this.storageService.saveUser(res);
             this.idstorage = res.id;
@@ -80,7 +83,11 @@ export class LoginComponent implements OnInit {
 
             this.roles = user.roles;
             this.post();
-            const role = this.storageService.getUserRole();
+            // const role = this.storageService.getUserRole();
+            let isUser = this.roles.includes('ROLE_USER');
+            let isReception = this.roles.includes('ROLE_RECEPTION');
+            let isSpecial = this.roles.includes('ROLE_SPECIAL');
+            
             Swal.fire({
               position: "center",
               icon: "success",
@@ -89,11 +96,17 @@ export class LoginComponent implements OnInit {
               timer: 1000
             });
             // if (role === 'ROLE_RECEPTION') {
-            if (role === 'ROLE_USER') {
+            if (isUser) {
               this.router.navigate(['admin/home']).then(() => {
                 console.log('Navigated to home page');
               });
-            }
+            }else if (isReception) {
+              this.router.navigate(['admin/home']).then(() => {
+              });
+            } else if (isSpecial) {
+              this.router.navigate(['admin/msodetails']).then(() => {
+              });
+            } 
           } else {
             Swal.fire({
               position: 'center',

@@ -1,4 +1,4 @@
-import { Component, Inject } from '@angular/core';
+import { Component, Inject, OnInit } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { BaseService } from 'src/app/_core/service/base.service';
 import { StorageService } from 'src/app/_core/service/storage.service';
@@ -9,16 +9,17 @@ import Swal from 'sweetalert2';
   templateUrl: './package-edit.component.html',
   styleUrls: ['./package-edit.component.scss']
 })
-export class PackageEditComponent {
+export class PackageEditComponent implements OnInit {
   package_name: any;
   package_rate: any;
-  package_desc:any;
-  package_id:any;
-  username:any;
-  order_id:any;
-  ispercentage:boolean=false;
-  commission: string = '0.0';
-  role:any;
+  package_desc: any;
+  package_id: any;
+  username: any;
+  order_id: any;
+  ispercentage: boolean = false;
+  commission: any= '0.0';
+  role: any;
+  value: any;
   constructor(
     public dialogRef: MatDialogRef<PackageEditComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any, private userService: BaseService, private storageService: StorageService) {
@@ -32,11 +33,19 @@ export class PackageEditComponent {
     this.package_rate = data.packagerate;
     this.order_id = data.orderid;
     // this.broadcaster_id=data.broadcaster_id;
-    this.commission = data.commission;
+    // this.commission = data.commission;
     this.ispercentage = data.isactive;
     this.package_id = data.packageid;
 
 
+  }
+  ngOnInit(): void {
+    this.userService.Package_CloneList(this.role, this.username, this.package_id).subscribe((data: any) => {
+      console.log(data);
+      this.commission = data.customeramount;
+      console.log(this.value);
+
+    })
   }
 
   onKeydown1(event: KeyboardEvent) {
@@ -71,13 +80,13 @@ export class PackageEditComponent {
     //   commission: this.commission,
     //   ispercentage: this.ispercentage
     // };
-  
+
     Swal.fire({
       title: 'Updating...',
       text: 'Wait for the package to update...',
       allowOutsideClick: false,
       didOpen: () => {
-        Swal.showLoading(null); 
+        Swal.showLoading(null);
       }
     });
     this.userService.Package_Update(this.package_name, this.package_desc, this.package_rate, this.order_id, this.role, this.username, this.commission, this.ispercentage, this.package_id,).subscribe((res: any) => {
@@ -87,7 +96,8 @@ export class PackageEditComponent {
         icon: "success",
         title: res?.message,
         showConfirmButton: false,
-        timer: 1000
+        timer: 2000,
+        timerProgressBar: true
       }).then(() => {
         window.location.reload();
       });
@@ -102,7 +112,8 @@ export class PackageEditComponent {
           title: 'Error',
           text: errorMessage,
           showConfirmButton: false,
-          timer: 1500
+          timer: 2000,
+          timerProgressBar: true
         });
       }
     );

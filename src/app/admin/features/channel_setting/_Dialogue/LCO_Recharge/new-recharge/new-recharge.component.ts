@@ -3,6 +3,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { BaseService } from 'src/app/_core/service/base.service';
 import { StorageService } from 'src/app/_core/service/storage.service';
+import { SwalService } from 'src/app/_core/service/swal.service';
 import Swal from 'sweetalert2';
 
 @Component({
@@ -23,7 +24,7 @@ export class NewRechargeComponent {
     { lable: "Cash", value: 2 },
     { lable: "Account Transfer", value: 3 },
   ];
-  constructor(public dialogRef: MatDialogRef<NewRechargeComponent>, @Inject(MAT_DIALOG_DATA) public data: any, private fb: FormBuilder, public dialog: MatDialog, public userService: BaseService, storageService: StorageService) {
+  constructor(public dialogRef: MatDialogRef<NewRechargeComponent>, @Inject(MAT_DIALOG_DATA) public data: any, private fb: FormBuilder, private swal: SwalService, public dialog: MatDialog, public userService: BaseService, storageService: StorageService) {
     this.username = storageService.getUsername();
     this.role = storageService.getUserRole();
     this.userService.getOeratorList(this.role, this.username).subscribe((data: any) => {
@@ -52,9 +53,12 @@ export class NewRechargeComponent {
 
 
   onSubmit() {
-    // if (this.form.valid) {
-    console.log(this.form.value);
-
+    if (this.form.valid) {
+      console.log(this.form.value);
+    } else {
+      this.form.markAllAsTouched();
+    }
+    this.swal.Loading();
     this.userService.Newrecharge(this.form.value).subscribe(
       (res: any) => {
         Swal.fire({

@@ -160,10 +160,7 @@ export class LcodashboardComponent implements OnInit {
   }
 
   transformDataToDataPoints(data: any, color: string): any[] {
-    // if (!data || typeof data !== 'object' || Object.keys(data).length === 0) {
-    //   console.warn('Data is not valid for transformation:', data);
-    //   return [];
-    // }
+
     const monthOrder = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
 
     if (!data || typeof data !== 'object' || Object.keys(data).length === 0) {
@@ -171,14 +168,10 @@ export class LcodashboardComponent implements OnInit {
       return [];
     }
 
-    // return Object.keys(data).map(month => ({
-    //   label: month,
-    //   y: data[month] || 0,
-    //   color: color
-    // }));
+
     return monthOrder.map(month => ({
       label: month,
-      y: data[month],  // Ensure missing months have a value of 0
+      y: data[month],
       color: color
     }));
   }
@@ -216,25 +209,19 @@ export class LcodashboardComponent implements OnInit {
             confirmButtonText: 'Reload',
             allowOutsideClick: true
           })
-          // .then((result) => {
-          //   if (result.isConfirmed) {
-          //     window.location.reload();
-          //   }
-          // });
-
         } else {
           this.Totalamount = data.totalamount;
           const monthColors: { [key: string]: string } = {
             "January": "#103f2f",
-            "February": "#1b5849",
-            "March": "#4aa199",
-            "April": "#58bfb6",
-            "May": "#48d9cc",
-            "June": "#1d6e59",
-            "July": "#297f99",
-            "August": "#185c70",
-            "September": "#2384a1",
-            "October": "#3fafd1",
+            "February": "#464878",
+            "March": "#9e5972",
+            "April": "#0f94a3",
+            "May": "#402033",
+            "June": "#377a58",
+            "July": "#415e27",
+            "August": "#007787",
+            "September": "#3c445e",
+            "October": "#8c8b8b",
             "November": "#012d3b",
             "December": "#8ba7b0"
           };
@@ -245,9 +232,25 @@ export class LcodashboardComponent implements OnInit {
           }));
 
           this.chartOptions = {
-
+            animationEnabled: true,
+            theme: 'light2',
+            legend: {
+              verticalAlign: 'center',
+              horizontalAlign: 'right',
+              fontSize: 14,
+              fontFamily: 'Arial',
+              markerType: 'square',
+              right: '10px'
+            },
             data: [{
-              type: "pie",
+              type: 'pie',
+              startAngle: 90,
+              cursor: 'pointer',
+              explodeOnClick: false,
+              showInLegend: true,
+              legendMarkerType: 'square',
+              indexLabelPlacement: 'inside',
+              indexLabelFontColor: 'white',
               dataPoints: dataPoints
             }]
           };
@@ -260,34 +263,10 @@ export class LcodashboardComponent implements OnInit {
 
   columnDefs: any[] = [
     {
-      headerName: "S.No", valueGetter: 'node.rowIndex+1', width: 80, 
+      headerName: "S.No", valueGetter: 'node.rowIndex+1', width: 80,
     },
-    {
-      headerName: 'AREA NAME', width: 170,
-      field: 'name',
-      // editable: true,
-      // cellRenderer: (params: any) => {
-
-      //   const isEditing = this.editingRow && this.editingRow.id === params.data.id;
-
-      //   if (isEditing) {
-      //     return `<input type="text" maxLength="6" value="${params.data.name}" style="width:100%;height:50px"/>`;
-      //   }
-      //   return params.value;
-      // }
-    },
-    {
-      headerName: 'PINCODE ', field: 'pincode', width: 150,
-      // editable: true,
-      // cellRenderer: (params: any) => {
-      //   const isEditing = this.editingRow && this.editingRow.id === params.data.id;
-
-      //   if (isEditing) {
-      //     return `<input type="text" maxLength="6" value="${params.data.pincode}" style="width:100%;height:50px"/>`;
-      //   }
-      //   return params.value;
-      // }
-    },
+    { headerName: 'AREA NAME', width: 170, field: 'name', },
+    { headerName: 'PINCODE ', field: 'pincode', width: 150, },
     {
       headerName: 'ACTIVE STATUS', field: 'statusdisplay', width: 170,
       // editable: true,
@@ -324,55 +303,8 @@ export class LcodashboardComponent implements OnInit {
     },
     {
       headerName: 'EDIT', width: 80,
-      // cellRenderer: (params: any) => {
-      //   const editButton = document.createElement('button');
-      //   const isEditing = this.editingRow && this.editingRow.id === params.data.id;
-      //   console.log(isEditing);
 
-      //   editButton.innerHTML = isEditing ? '<i class="fa-solid fa-check"></i>' : '<img src="/assets/images/icons/editstreet2.png" style="width:30px">';
-      //   editButton.style.backgroundColor = 'transparent';
-      //   editButton.style.border = 'none';
-      //   editButton.style.cursor = 'pointer';
-      //   editButton.addEventListener('click', () => {
-      //     // if (isEditing) {
-      //     //   this.saveRow(params.data);
-      //     //   console.log(params.data);
-      //     // } else {
-      //     //   this.editingRow = { ...params.data };
-      //     //   this.gridApi.refreshCells();
-      //     // }
-      //     editButton.addEventListener('click', () => {
-      //       this.editarea(params.data);
-      //     });
-      //   });
-      //   // editButton.addEventListener('click', () => {
-      //   //   this.newArea(params.data);
-      //   // });
-
-      //   const closeButton = document.createElement('button');
-      //   if (isEditing) {
-      //     closeButton.innerHTML = '<i class="fa-solid fa-xmark"></i>';
-      //     closeButton.style.marginLeft = '10px';
-      //     closeButton.style.cursor = 'pointer';
-      //     closeButton.style.backgroundColor = 'transparent';
-      //     closeButton.style.border = 'none';
-      //     // closeButton.addEventListener('click', () => {
-      //     //   this.saveRow(params.data);
-      //     // });
-      //     closeButton.addEventListener('click', () => {
-      //       this.editingRow = null;
-      //       this.gridApi.refreshCells();
-      //     });
-      //   }
-
-      //   const div = document.createElement('div');
-      //   div.appendChild(editButton);
-      //   if (isEditing) {
-      //     div.appendChild(closeButton);
-      //   }
-      //   return div;
-      // }
-       cellRenderer: (params: any) => {
+      cellRenderer: (params: any) => {
         const editButton = document.createElement('button');
         editButton.innerHTML = '<img src="/assets/images/icons/editstreet2.png" style="width:30px;background-color:none">';
         editButton.style.backgroundColor = 'transparent';
@@ -393,19 +325,6 @@ export class LcodashboardComponent implements OnInit {
     return pincodePattern.test(pincode);
   }
   saveRow(rowData: any) {
-    // Correct selection of inputs using rowData.id for unique identification
-    // const updatedAreaName = (document.querySelector(`input[name="name-${rowData.id}"]`) as HTMLInputElement)?.value;
-    // const updatedPincode = (document.querySelector(`input[name="pincode-${rowData.id}"]`) as HTMLInputElement)?.value;
-    // const updatedStatus = (document.querySelector(`select[name="statusdisplay-${rowData.id}"]`) as HTMLSelectElement)?.value;
-
-    // rowData.name = updatedAreaName || rowData.name;
-    // rowData.pincode = updatedPincode || rowData.pincode;
-    // rowData.statusdisplay = updatedStatus === 'Active' ? true : false;
-
-    // this.gridApi.applyTransaction({ update: [rowData] });
-    // this.editingRow = null;
-    // this.gridApi.refreshCells();
-
     const requestBody = {
       role: this.role,
       username: this.username,
@@ -437,7 +356,7 @@ export class LcodashboardComponent implements OnInit {
 
   street(data: any): void {
     const dialogRef = this.dialog.open(StreetComponent, {
-      width: '500px',
+      width: '600px',
       data: data
     });
     dialogRef.afterClosed().subscribe(result => {

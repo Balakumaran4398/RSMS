@@ -1,0 +1,482 @@
+<div *ngIf="type==='newcasmaster'">
+    <div class="Head d-flex justify-content-between align-items-center mb-3" style="padding: 1rem;">
+        <h6>CREATE NEW CAS MASTER</h6>
+        <i class="fa fa-close close-icon" style="cursor: pointer;" (click)="onNoClick()"></i>
+    </div>
+    <div class="d-flex justify-content-center align-item-center mobile">
+        <form [formGroup]="form" (ngSubmit)="onSubmit()">
+            <div class="col justify-content-center align-items-center mb-3 mobile1">
+                <div class="col-md-12 col-sm-12 col-sm-6 ">
+                    <div class="row ">
+                        <div class="col-12 col-md-6">
+                            <div class="input_box col-12 col-md-12 ">
+                                <label for="">CAS ID </label>
+                            </div>
+                            <div class=" input_box col-12 col-md-12">
+                                <input type="text" formControlName="casname" placeholder="Enter Cas id"
+                                    (keypress)="onKeydown($event)">
+                                <div *ngIf="form.get('casname')?.invalid && form.get('casname')?.touched">
+                                    <small class="text-danger">CAS ID is required.</small>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-12 col-md-6 ">
+                            <div class="input_box col-12 col-md-12 ">
+                                <label for="">CAS Name </label>
+                            </div>
+                            <div class="input_box col-12 col-md-12">
+                                <input type="text" formControlName="casname" placeholder="Enter Cas Name">
+                                <div *ngIf="form.get('casname')?.invalid && form.get('casname')?.touched">
+                                    <small class="text-danger">CAS Name is required.</small>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-12 col-md-6">
+                            <div class="input_box col-12 col-md-12">
+                                <label for="">Username</label>
+                            </div>
+                            <div class="input_box col-12 col-md-12">
+                                <input type="text" formControlName="uname" placeholder="Enter Username">
+                                <div *ngIf="form.get('uname')?.invalid && form.get('uname')?.touched">
+                                    <small class="text-danger">Username is required.</small>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-12 col-md-6">
+                            <div class="input_box col-12 col-md-12">
+                                <label for="">Password</label>
+                            </div>
+                            <div class="input_box col-12 col-md-12">
+                                <input type="password" formControlName="password" placeholder="Enter Password">
+                                <!-- <div *ngIf="form.get('password')?.invalid && form.get('password')?.touched">
+                                <small class="text-danger">Password is required.</small>
+                            </div> -->
+                                <div *ngIf="form.get('password')?.invalid && form.get('password')?.touched">
+                                    <small class="text-danger"
+                                        *ngIf="form.get('password')?.errors?.['required']">Password
+                                        is required.</small>
+                                    <small class="text-danger"
+                                        *ngIf="form.get('password')?.errors?.['pattern']">Password
+                                        must be at least 8 characters, including one letter and one number.</small>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="row">
+                        <div class="col-12 col-md-6">
+                            <div class="input_box col-12 col-md-12">
+                                <label for="">Address</label>
+                            </div>
+                            <div class="input_box col-12 col-md-12">
+                                <input type="text" formControlName="address" placeholder="Enter Address">
+                                <div *ngIf="form.get('address')?.invalid && form.get('address')?.touched">
+                                    <small class="text-danger">Address is required.</small>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-12 col-md-6">
+                            <div class="input_box col-12 col-md-12">
+                                <label for="">Vendor</label>
+                            </div>
+                            <div class="input_box col-12 col-md-12">
+                                <input type="text" formControlName="vendor" placeholder="Enter Vendor">
+                                <div *ngIf="form.get('vendor')?.invalid && form.get('vendor')?.touched">
+                                    <small class="text-danger">Vendor is required.</small>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-12 col-md-6">
+                            <div class="input_box col-12 col-md-12">
+                                <label for="">Reference Url</label>
+                            </div>
+                            <div class="input_box col-12 col-md-12">
+                                <input type="text" formControlName="referenceurl" placeholder="http://example.com">
+                                <div *ngIf="form.get('referenceurl')?.invalid && form.get('referenceurl')?.touched">
+                                    <small class="text-danger"
+                                        *ngIf="form.get('referenceurl')?.errors?.['required']">Reference URL is
+                                        required.</small>
+                                    <small class="text-danger"
+                                        *ngIf="form.get('referenceurl')?.errors?.['pattern']">Invalid
+                                        URL format.</small>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-12 col-md-6">
+                            <div class="input_box col-12 col-md-12">
+                                <label for="">Website</label>
+                            </div>
+                            <div class="input_box col-12 col-md-12">
+                                <input type="text" formControlName="website" placeholder="www.example.com">
+                                <div *ngIf="form.get('website')?.invalid && form.get('website')?.touched">
+                                    <small class="text-danger">Website is required.</small>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-12 col-md-6">
+                            <div class="input_box col-12 col-md-12">
+                                <label for="">Email</label>
+                            </div>
+                            <div class="input_box col-12 col-md-12">
+                                <input type="text" formControlName="email" placeholder="example@gmail.com">
+                                <!-- <div *ngIf="form.get('email')?.invalid && form.get('email')?.touched">
+                                <small class="text-danger">Email is required.</small>
+                            </div> -->
+                                <div *ngIf="form.get('email')?.invalid && form.get('email')?.touched">
+                                    <small class="text-danger" *ngIf="form.get('email')?.errors?.['required']">Email is
+                                        required.</small>
+                                    <small class="text-danger" *ngIf="form.get('email')?.errors?.['email']">Invalid
+                                        email
+                                        format.</small>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-12 col-md-6">
+                            <div class="input_box col-12 col-md-12">
+                                <label for="">Contact Number</label>
+                            </div>
+                            <div class="input_box col-12 col-md-12">
+                                <!-- <input type="text" formControlName="contactno" placeholder="Enter Contact No" maxlength="10" (keypress)="onKeydown($event)">
+                            <div *ngIf="form.get('contactno')?.invalid && form.get('contactno')?.touched">
+                                <small class="text-danger">Contactno is required.</small>
+                            </div> -->
+                                <input type="text" formControlName="contactno" maxlength="10"
+                                    placeholder="Enter Contact No">
+                                <div *ngIf="form.get('contactno')?.invalid && form.get('contactno')?.touched">
+                                    <small class="text-danger"
+                                        *ngIf="form.get('contactno')?.errors?.['required']">Contact
+                                        number is required.</small>
+                                    <small class="text-danger"
+                                        *ngIf="form.get('contactno')?.errors?.['pattern']">Invalid
+                                        mobile
+                                        number (must be 10 digits).</small>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-12 col-md-6">
+                            <div class="input_box col-12 col-md-12">
+                                <label for="">Server IP</label>
+                            </div>
+                            <div class="input_box col-12 col-md-12">
+                                <input type="text" formControlName="serverip" placeholder="0.0.0.0" maxlength="8">
+                                <div *ngIf="form.get('serverip')?.invalid && form.get('serverip')?.touched">
+                                    <small class="text-danger">Server IP is required.</small>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-12 col-md-6">
+                            <div class="input_box col-12 col-md-12">
+                                <label for="">Server Port</label>
+                            </div>
+                            <div class="input_box col-12 col-md-12">
+                                <input type="text" formControlName="serverport" placeholder="9000" maxlength="4"
+                                    (keypress)="onKeydown($event)">
+                                <div *ngIf="form.get('serverport')?.invalid && form.get('serverport')?.touched">
+                                    <small class="text-danger">Server Port is required.</small>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-12 col-md-6">
+                            <div class="input_box col-12 col-md-12">
+                                <label for="">Smartcard Length</label>
+                            </div>
+                            <div class="input_box col-12 col-md-12">
+                                <input type="text" formControlName="smartcardlength" [(ngModel)]="smartcart_length"
+                                    (keypress)="onKeydown($event)">
+                                <div
+                                    *ngIf="form.get('smartcardlength')?.invalid && form.get('smartcardlength')?.touched">
+                                    <small class="text-danger">Smartcard length is required.</small>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-12 col-md-6">
+                            <div class="input_box col-12 col-md-12">
+                                <label for="">Box ID Length</label>
+                            </div>
+                            <div class="input_box col-12 col-md-12">
+                                <input type="text" formControlName="boxidlength" [(ngModel)]="boxid_length"
+                                    (keypress)="onKeydown($event)">
+                                <div *ngIf="form.get('boxidlength')?.invalid && form.get('boxidlength')?.touched">
+                                    <small class="text-danger">Boxidlength is required.</small>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+
+            <div class="d-flex justify-content-center align-items-center mb-3">
+                <div class="d-flex justify-content-center align-items-center" style="padding: 10px;">
+                    <button type="submit" class="btn btn-success">Create</button> &nbsp;
+                    <button (click)="onNoClick()" class="btn btn-danger">Cancel </button>
+                </div>
+            </div>
+
+        </form>
+    </div>
+</div>
+
+<div *ngIf="type==='deletecasmaster'">
+    <div class="Head d-flex justify-content-between align-items-center mb-3" style="padding: 1rem;">
+        <h6>Do You Want to Delete following ?</h6>
+        <i class="fa fa-close close-icon" style="cursor: pointer;" (click)="onNoClick()"></i>
+    </div>
+    <div class="col justify-content-center align-items-center mb-3 mobile1">
+        <div class="col-md-12 col-sm-12 col-sm-6">
+            <div *ngFor="let cas of casList"
+                class="input_box col-12 col-md-12 d-flex justify-content-center align-items-center">
+                {{ cas.id }} - {{ cas.name }}
+            </div>
+        </div>
+    </div>
+
+    <div class="d-flex justify-content-center align-items-center mb-3">
+        <div class="d-flex justify-content-center align-items-center" style="padding: 10px;">
+            <button (click)="onDelete()" class="btn btn-success">Delete</button> &nbsp;
+            <button (click)="onNoClick()" class="btn btn-danger">Cancel </button>
+        </div>
+    </div>
+</div>
+
+<div *ngIf="type==='editcasmaster'">
+    <div class="Head d-flex justify-content-between align-items-center mb-3" style="padding: 1rem;">
+        <h6>Update MSO Detaild</h6>
+        <i class="fa fa-close close-icon" style="cursor: pointer;" (click)="onNoClick()"></i>
+    </div>
+    <div class="" style="padding: 1rem;">
+        <form #casForm="ngForm" (ngSubmit)="editcas()">
+            <div class="d-flex justify-content-center align-item-center mobile">
+                <div class=" justify-content-center align-items-center mb-3 mobile1">
+                    <div class="col-md-12 mb-3 mobilerow">
+                        <div class="row ">
+                            <div class="input_box col-12 col-md-6">
+                                <div class="col-12 col-md-12 ">
+                                    <span>CAS ID </span>
+                                </div>
+                                <div class="col-12 col-md-12">
+                                    <input type="text" [value]="cas_id" [(ngModel)]="cas_id" placeholder="Enter CAS ID" required
+                                        #casmastedidRef="ngModel">
+                                    <div *ngIf="casmastedidRef.invalid && casmastedidRef.touched" class="text-danger">
+                                        CAS ID is required.
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="input_box col-12 col-md-6">
+                                <div class="col-12 col-md-12 ">
+                                    <span>CAS NAME</span>
+                                </div>
+                                <div class="col-12 col-md-12">
+                                    <input type="text" [value]="cas_name" [(ngModel)]="cas_name" placeholder="Enter CAS Name" required
+                                        #casmasternameRef="ngModel">
+                                    <div *ngIf="casmasternameRef.invalid && casmasternameRef.touched"
+                                        class="text-danger">
+                                        CAS NAME is required.
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="input_box col-12 col-md-6">
+                                <div class="col-12 col-md-12">
+                                    <span>VENDOR</span>
+                                </div>
+                                <div class="col-12 col-md-12">
+                                    <input type="text" [value]="msovendor" [(ngModel)]="msovendor" placeholder="Enter a Vendor name"
+                                        required #casmastervendorRef="ngModel">
+                                    <div *ngIf="casmastervendorRef.invalid && casmastervendorRef.touched"
+                                        class="text-danger">
+                                        VENDOR is required.
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="input_box col-12 col-md-6">
+                                <div class="col-12 col-md-12">
+                                    <span>ADDRESS</span>
+                                </div>
+
+                                <div class="col-12 col-md-12">
+                                    <input type="text" [value]="address" [(ngModel)]="address" placeholder="Enter a Address" required
+                                        #casmasteraddressRef="ngModel">
+                                    <div *ngIf="casmasteraddressRef.invalid && casmasteraddressRef.touched"
+                                        class="text-danger">
+                                        <div *ngIf="casmasteraddressRef.errors?.['required']">ADDRESS is required.</div>
+                                        <div *ngIf="casmasteraddressRef.invalid && casmasteraddressRef.touched"
+                                            class="text-danger">
+                                            ADDRESS is required.
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="input_box col-12 col-md-6">
+                                <div class="col-12 col-md-12">
+                                    <span>SERVER IP </span>
+                                </div>
+                                <div class="col-12 col-md-12">
+                                    <input type="text" [value]="serviceip" [(ngModel)]="serviceip" placeholder="Enter Server IP" required
+                                        #casmastersipRef="ngModel">
+                                    <div *ngIf="casmastersipRef.invalid && casmastersipRef.touched" class="text-danger">
+                                        <div *ngIf="casmastersipRef.errors?.['required']">SERVER IP is required.</div>
+
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="input_box col-12 col-md-6">
+                                <div class="col-12 col-md-12">
+                                    <span>SERVER PORT </span>
+                                </div>
+                                <div class="col-12 col-md-12">
+                                    <input type="text" name="msocontact" [value]="serverport" [(ngModel)]="serverport" maxlength="10"
+                                        placeholder="Enter Server Port" required pattern="^\d{10}$"
+                                        #casmasterserverportRef="ngModel">
+                                    <div *ngIf="casmasterserverportRef.invalid && casmasterserverportRef.touched"
+                                        class="text-danger">
+                                        <div *ngIf="casmasterserverportRef.errors?.['required']">SERVER PORT is
+                                            required.
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="row ">
+                            <div class="input_box col-12 col-md-6">
+                                <div class="col-12 col-md-12">
+                                    <span>SMARTCARD LENGTH</span>
+                                </div>
+                                <div class="col-12 col-md-12">
+                                    <input type="email" name="msoemail" [value]="smartcardlength" [(ngModel)]="smartcardlength"
+                                        placeholder="Enter Smartcard length" required #cmsmartcardlengthRef="ngModel">
+                                    <div *ngIf="cmsmartcardlengthRef.invalid && cmsmartcardlengthRef.touched"
+                                        class="text-danger">
+                                        <div *ngIf="cmsmartcardlengthRef.errors?.['required']">SMARTCARD LENGTH is
+                                            required.
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="input_box col-12 col-md-6">
+                                <div class="col-12 col-md-12">
+                                    <span>BOX ID LENGTH</span>
+                                </div>
+                                <div class="col-12 col-md-12">
+                                    <input type="text" [value]="boxidlength" [(ngModel)]="boxidlength" placeholder="Enter Box id Length"
+                                        maxlength="10" pattern="[A-Z]{5}[0-9]{4}[A-Z]{1}" required
+                                        #cmboxidRef="ngModel">
+                                    <div *ngIf="cmboxidRef.invalid && cmboxidRef.touched" class="text-danger">
+                                        <div *ngIf="cmboxidRef.errors?.['required']">BOX ID LENGTH is required.</div>
+
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="row ">
+                            <div class="input_box col-12 col-md-6">
+                                <div class="col-12 col-md-12">
+                                    <span>REFERENCE URL</span>
+                                </div>
+                                <div class="col-12 col-md-12">
+                                    <input type="text" [value]="referenceurl" [(ngModel)]="referenceurl" required
+                                        placeholder="http://example.com" #refurlRef="ngModel">
+                                    <!-- <div *ngIf="refurlRef.invalid && refurlRef.touched" class="text-danger">
+                                        <div *ngIf="refurlRef.errors?.['required']">REFERENCE URL is required.</div>
+                                    </div> -->
+                                    <div *ngIf="refurlRef.invalid && refurlRef.touched" class="text-danger">
+                                        <div *ngIf="refurlRef.errors?.['required']">REFERENCE URL is required.</div>
+                                        <div *ngIf="refurlRef.errors?.['pattern']">Invalid URL format. Please start with
+                                            http:// or https://.</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="input_box col-12 col-md-6">
+                                <div class="col-12 col-md-12">
+                                    <span>WEBSITE</span>
+                                </div>
+                                <div class="col-12 col-md-12">
+                                    <input type="text" [value]="website" [(ngModel)]="website" required #websiteRef="ngModel"
+                                        placeholder="www.example.com">
+                                    <!-- <div *ngIf="websiteRef.invalid && websiteRef.touched" class="text-danger">
+                                        <div *ngIf="websiteRef.errors?.['required']">WEBSITE is required.</div>
+                                    </div> -->
+                                    <div *ngIf="websiteRef.invalid && websiteRef.touched" class="text-danger">
+                                        <div *ngIf="websiteRef.errors?.['required']">WEBSITE is required.</div>
+                                        <div *ngIf="websiteRef.errors?.['pattern']">Invalid website format. Use
+                                            www.example.com.</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row mb-3">
+                            <div class="input_box col-12 col-md-6">
+                                <div class="col-12 col-md-12">
+                                    <span>EMAIL</span>
+                                </div>
+                                <div class="col-12 col-md-12">
+                                    <input type="email" [value]="referenceurl" [(ngModel)]="referenceurl" required #emailRef="ngModel"
+                                        placeholder="123@gmail.com">
+                                    <!-- <div *ngIf="emailRef.invalid && emailRef.touched" class="text-danger">
+                                        <div *ngIf="emailRef.errors?.['required']">EMAIL is required.</div>
+                                    </div> -->
+                                    <div *ngIf="emailRef.invalid && emailRef.touched" class="text-danger">
+                                        <div *ngIf="emailRef.errors?.['required']">EMAIL is required.</div>
+                                        <div *ngIf="emailRef.errors?.['email']">Invalid email format.</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="input_box col-12 col-md-6">
+                                <div class="col-12 col-md-12">
+                                    <span>CONTACT NO</span>
+                                </div>
+                                <div class="col-12 col-md-12">
+                                    <input type="text" name="gstno" [value]="mobileno" [(ngModel)]="mobileno" required
+                                        #mobilenoRef="ngModel" maxlength="10" placeholder="Enter a Contactno">
+                                    <!-- <div *ngIf="mobilenoRef.invalid && mobilenoRef.touched" class="text-danger">
+                                        <div *ngIf="mobilenoRef.errors?.['required']">CONTACT NO is required.</div>
+                                    </div> -->
+                                    <div *ngIf="mobilenoRef.invalid && mobilenoRef.touched" class="text-danger">
+                                        <div *ngIf="mobilenoRef.errors?.['required']">CONTACT NO is required.</div>
+                                        <div *ngIf="mobilenoRef.errors?.['pattern']">Invalid contact number. Must be 10
+                                            digits.</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row ">
+                            <div class="input_box col-12 col-md-6">
+                                <div class="input_box d-flex justify-content-between align-items-center  mb-3">
+                                    <span>IsEMI</span>
+                                    <label class="switch">
+                                        <input type="checkbox" [value]="isactive" [(ngModel)]="isactive">
+                                        <span class="slider"></span>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="d-flex justify-content-center align-item-center mx-3 mb-2">
+                        <button type="button" class="btn btn-danger me-2" (click)="onNoClick()">Cancel</button>
+                        <button type="submit" class="btn btn-success" [disabled]="casForm.invalid">Update</button>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+
+</div>

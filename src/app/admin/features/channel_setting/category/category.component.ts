@@ -218,14 +218,18 @@ export class CategoryComponent {
           Swal.fire({
             title: 'Activated!',
             text: res.message,
-            icon: 'success'
+            icon: 'success',
+            timer: 2000,
+            timerProgressBar: true,
           });
           this.ngOnInit();
         }, (err) => {
           Swal.fire({
             title: 'Error!',
             text: err?.error?.message,
-            icon: 'error'
+            icon: 'error',
+            timer: 2000,
+            timerProgressBar: true,
           });
         });
       }
@@ -255,14 +259,18 @@ export class CategoryComponent {
           Swal.fire({
             title: 'Deleted!',
             text: res.message,
-            icon: 'success'
+            icon: 'success',
+            timer: 2000,
+            timerProgressBar: true,
           });
           this.ngOnInit();
         }, (err: { error: { message: any; }; }) => {
           Swal.fire({
             title: 'Error!',
             text: err?.error?.message,
-            icon: 'error'
+            icon: 'error',
+            timer: 2000,
+            timerProgressBar: true,
           });
         });
       }

@@ -10,13 +10,13 @@
                     <label for="distributor_name" class="me-2">Channel Type Name </label>
                 </div>
                 <div class="col-12 col-md-6">
-                    <input type="text" id="ChannelType_name" [(ngModel)]="ChannelType_name">
+                    <input type="text" id="ChannelType_name" [(ngModel)]="ChannelType_name" (input)="clearError()">
                     <div *ngIf="errorMessage"
                         class=" alert alert-danger d-flex justify-content-between align-items-center mt-3"
                         style="position: relative;font-size: 11px;">
                         {{ errorMessage }}
                         <i class="fa fa-close close-icon" style="cursor: pointer;font-size: 11px"
-                            (click)="onNoClick()"></i>
+                            (click)="errorToggle()"></i>
                     </div>
                 </div>
             </div>

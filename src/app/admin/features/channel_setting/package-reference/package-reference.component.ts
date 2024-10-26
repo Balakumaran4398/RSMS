@@ -304,21 +304,28 @@ export class PackageReferenceComponent {
         orderid: item.orderid
       }));
     } else if (this.selectedTab == 2) {
-      requestBody['addonlist'] = this.rows.map(item => ({
+      requestBody['baselist'] = this.rows.map(item => ({
         productname: item.productname,
         casproductid: item.casproductid,
         packagerate: item.packagerate,
         orderid: item.orderid
       }));
     } else if (this.selectedTab == 3) {
-      requestBody['alacartelist'] = this.rows.map(item => ({
+      requestBody['baselist'] = this.rows.map(item => ({
         productname: item.productname,
         casproductid: item.casproductid,
         packagerate: item.packagerate,
         orderid: item.orderid
       }));
     }
-
+    Swal.fire({
+      title: 'Updating...',
+      // text: 'Please wait while the  is being updated',
+      // allowOutsideClick: false,
+      didOpen: () => {
+        Swal.showLoading(null);
+      }
+    });
     this.userservice.ProductTeference_SaveAll(requestBody).subscribe(
       (response: any) => {
         console.log('Product ID updated successfully', response);
@@ -336,7 +343,9 @@ export class PackageReferenceComponent {
           title: 'Error!',
           text: error.error.message || 'Failed to update Product ID.',
           icon: 'error',
-          confirmButtonText: 'OK'
+          confirmButtonText: 'OK',
+          timer: 2000,
+          timerProgressBar: true,
         });
       }
     );

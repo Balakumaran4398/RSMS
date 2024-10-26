@@ -8,7 +8,7 @@
         <div class="input_box  mb-3">
             <div class="display align-items-center justify-content-center">
                 <div class="col-12 col-md-6">
-                    <label for="distributor_name" class="me-2">Distributor Name</label>
+                    <span for="distributor_name" class="me-2">Distributor Name</span>
                 </div>
                 <div class="col-12 col-md-6">
                     <input type="text" class="" id="distributor_name" formControlName="distributor_name"
@@ -25,7 +25,7 @@
         <div class="input_box  mb-3">
             <div class="display align-items-center justify-content-center">
                 <div class="col-12 col-md-6">
-                    <label for="distributor_contact" class="me-2">Distributor Contact</label>
+                    <span for="distributor_contact" class="me-2">Distributor Contact</span>
                 </div>
                 <div class="col-12 col-md-6">
                     <input type="text" class="" id="distributor_contact" (keydown)="onKeydown($event)" maxlength="10"
@@ -43,7 +43,7 @@
         <div class="input_box  mb-3">
             <div class="display align-items-center justify-content-center">
                 <div class="col-12 col-md-6">
-                    <label for="distributor_address" class="me-2">Distributor Address</label>
+                    <span for="distributor_address" class="me-2">Distributor Address</span>
                 </div>
                 <div class="col-12 col-md-6">
                     <input type="text" class="" id="distributor_address" formControlName="distributor_address"
@@ -61,7 +61,7 @@
             <div class="display align-items-center justify-content-center">
 
                 <div class="col-12 col-md-6">
-                    <label for="distributor_email" class="me-2">Distributor Email</label>
+                    <span for="distributor_email" class="me-2">Distributor Email</span>
                 </div>
                 <div class="col-12 col-md-6">
                     <input type="email" class="" id="distributor_email" formControlName="distributor_email"
@@ -78,13 +78,19 @@
         <div class="  mb-3">
             <div class="display align-items-center justify-content-center">
                 <div class="input_box  col-12 col-md-6">
-                    <label for="distributor_isactive" class="me-2">Isactive</label>
+                    <span for="distributor_isactive" class="me-2">Isactive</span>
                 </div>
-                <div class="col-12 col-md-6">
+                <div class="col-12 col-md-6 ">
                     <div class="toggle">
-                        <input class="toggle-checkbox" type="checkbox" id="distributor_isactive"
+                        <!-- <input class="toggle-checkbox" type="checkbox" id="distributor_isactive"
                             formControlName="distributor_isactive">
-                        <div class="toggle-switch"></div>
+                        <div class="toggle-switch"></div> -->
+
+
+                        <label class="switch">
+                            <input type="checkbox" id="lcoLabel" name="lcoLabel" formControlName="distributor_isactive">
+                            <span class="slider"></span>
+                        </label>
                     </div>
                 </div>
             </div>

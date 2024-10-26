@@ -38,12 +38,18 @@ export class StreetComponent implements OnInit {
       headerName: "S.No", valueGetter: 'node.rowIndex+1', width: 80, 
     },
     {
-      headerName: 'STREET NAME', width: 160, editable: true,
+      headerName: 'STREET NAME', width: 200, editable: true,
       field: 'name',
     },
     {
       headerName: 'STATUS ', editable: true,
-      field: 'statusdisplay', width: 150
+      field: 'isdelete', width: 200,
+      cellRenderer: (params: { value: any; data: any }) => {
+        const isEditing = this.editingRow && this.editingRow.id === params.data.id;
+        const color = params.value ? 'red' : 'Green';
+        const text = params.value ? 'false' : 'true';
+        
+      }
     },
     {
       headerName: 'EDIT', width: 80,

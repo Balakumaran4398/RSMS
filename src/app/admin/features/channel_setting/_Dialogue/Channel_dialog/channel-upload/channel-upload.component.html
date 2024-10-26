@@ -16,7 +16,8 @@
                     <span>+</span> Choose
                     <input type="file" style="display: none;" (change)="handleFileInput($event)">
                 </label>
-                <a class="btn btn-outline-success mx-1" [class.disabled]="!file" (click)="file ? uploadData($event) : null">
+                <a class="btn btn-outline-success mx-1" [class.disabled]="!file"
+                    (click)="file ? uploadData($event) : null">
                     <i class="fa fa-upload" aria-hidden="true"></i> UPLOAD
                 </a>
                 <a class="btn btn-outline-warning mx-1" [class.disabled]="!file"
@@ -29,7 +30,7 @@
                 <i class="fa fa-close close-icon mx-1" (click)="clearFilePath()"></i>
             </div>
         </div>
-        <div class="row" style="max-height: 400px;overflow: scroll;">
+        <div class="row" style="max-height: 400px;overflow: auto;">
             <ag-grid-angular #agGrid id="myGrid" domLayout='autoHeight' class="ag-theme-alpine table-class" rowAnimation
                 [gridOptions]="gridOptions" [columnDefs]="columnDefs" [rowData]="rowData"
                 [enableCellTextSelection]="true">

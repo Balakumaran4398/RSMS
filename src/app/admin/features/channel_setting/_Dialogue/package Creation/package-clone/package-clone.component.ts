@@ -81,7 +81,8 @@ export class PackageCloneComponent {
         text: res.message,
         // title: "Clone created successfully !!",
         showConfirmButton: false,
-        timer: 1000
+        timer: 2000,
+        timerProgressBar: true
       }).then(() => {
         window.location.reload();
       });
@@ -94,7 +95,8 @@ export class PackageCloneComponent {
           title: 'Error',
           text: err?.error?.message || 'Failed to create Clone. Please try again.',
           showConfirmButton: false,
-          timer: 1500
+          timer: 2000,
+          timerProgressBar: true
         });
       }
     );

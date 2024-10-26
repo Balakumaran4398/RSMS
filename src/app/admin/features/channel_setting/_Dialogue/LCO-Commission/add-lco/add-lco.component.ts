@@ -120,16 +120,16 @@ export class AddLcoComponent {
       (response: HttpResponse<any[]>) => {
         if (response.status === 200) {
           this.rowData = response.body;
-          Swal.fire('Success', 'Data updated successfully!', 'success');
+          this.swal.Success_200();
         } else if (response.status === 204) {
-          Swal.fire('No Content', 'No data available for the given criteria.', 'info');
+          this.swal.Success_204();
         }
       },
       (error) => {
         if (error.status === 400) {
-          Swal.fire('Error 400', 'Bad Request. Please check the input.', 'error');
+          this.swal.Error_400();
         } else if (error.status === 500) {
-          Swal.fire('Error 500', 'Internal Server Error. Please try again later.', 'error');
+          this.swal.Error_500();
         } else {
           Swal.fire('Error', 'Something went wrong. Please try again.', 'error');
         }

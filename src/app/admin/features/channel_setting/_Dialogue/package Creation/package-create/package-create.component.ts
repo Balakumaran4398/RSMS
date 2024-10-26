@@ -116,6 +116,7 @@ export class PackageCreateComponent {
 
 
   calculateMsoCommission() {
+
     const commission = parseFloat(this.createpackageForm.get('commission')?.value || '0');
     if (this.isPercentage) {
       if (commission > 100) {
@@ -144,9 +145,9 @@ export class PackageCreateComponent {
     this.createpackageForm.get('mso_amount')?.setValue(this.mso_amount, { emitEvent: false });
   }
   Createpackage() {
-    // if (this.createpackageForm.invalid) {
-    //   return;
-    // }
+    if (this.createpackageForm.invalid) {
+
+
     console.log(File);
 
     const formData = new FormData();
@@ -165,6 +166,14 @@ export class PackageCreateComponent {
     formData.append('username', this.username);
 
     console.log(formData);
+    Swal.fire({
+      title: 'Updating...',
+      text: 'Please wait while the Package Creation is being updated',
+      allowOutsideClick: false,
+      didOpen: () => {
+        Swal.showLoading(null);
+      }
+    });
     this.userservice.CREATE_BASE_PACKAGE(formData).subscribe(
       (res) => {
         console.log(res);
@@ -173,7 +182,8 @@ export class PackageCreateComponent {
           icon: "success",
           title: "Package Created Successfully!!",
           showConfirmButton: false,
-          timer: 1000
+          timer: 2000,
+          timerProgressBar: true
         }).then(() => {
           window.location.reload();
           this.closeDialog();
@@ -186,10 +196,15 @@ export class PackageCreateComponent {
           title: 'Error',
           text: err?.error?.message || 'An error occurred',
           showConfirmButton: false,
-          timer: 1500
+          timer: 2000,
+          timerProgressBar: true
         });
       }
     );
+    this.createpackageForm.markAllAsTouched();
+    return;
+  }
+
   }
 
   closeDialog() {

@@ -23,7 +23,8 @@
                                     <h5>:</h5>
                                 </div>
                                 <div class="col-6 col-md-8 display1 justify-content-start align-items-center ">
-                                    <h5 style="color: rgb(66, 64, 64);">{{subdetailsList?.customername}}</h5>
+                                    <h5 style="color: rgb(66, 64, 64);">{{subdetailsList?.customername}}
+                                        {{subdetails?.customername}}</h5>
                                 </div>
                             </div>
                             <div class="d-flex">
@@ -35,7 +36,8 @@
                                     <h5>:</h5>
                                 </div>
                                 <div class="col-6 col-md-6 display1 justify-content-start align-items-center ">
-                                    <h6 style="color: rgb(66, 64, 64);">{{subdetailsList?.mobileno}}</h6>
+                                    <h6 style="color: rgb(66, 64, 64);">{{subdetailsList?.mobileno}}
+                                        {{subdetails?.mobileno}}</h6>
                                 </div>
                             </div>
                         </div>
@@ -43,22 +45,22 @@
                     <div class="line mb-2"></div>
                     <div class="col-12 col-md-12 mx-3 mb-3">
                         <div class="d-flex align-items-center justify-content-center icon-container">
-                            <div class="icon-item d-flex align-item-center tooltip-container"
+                            <div *ngIf="logindetails" class="icon-item d-flex align-item-center tooltip-container"
                                 style="background-color: var(--primary-color);" (click)="openDialog('logindetails')">
                                 <i class="fa fa-eye" style="font-size:15px;color: white;"></i>
                                 <div class="tooltip-content">Login Details</div>
                             </div>
-                            <div class="icon-item d-flex align-item-center tooltip-container"
-                                style="background-color: var(--primary-color);" (click)="Download()">
+                            <div *ngIf="casform" class="icon-item d-flex align-item-center tooltip-container"
+                                style="background-color: var(--primary-color);" (click)="getPdfCasformReport()">
                                 <i class="fa fa-download" aria-hidden="true" style="font-size:15px;color: white;"></i>
                                 <div class="tooltip-content">CAS Form</div>
                             </div>
-                            <div class="icon-item d-flex align-item-center tooltip-container"
+                            <div *ngIf="editDetails" class="icon-item d-flex align-item-center tooltip-container"
                                 style="background-color: var(--primary-color);" (click)="openDialog('editDetails')">
                                 <i class="fas fa-edit" style="font-size:14px;color: white;"></i>
                                 <div class="tooltip-content">Edit </div>
                             </div>
-                            <div class="icon-item d-flex align-item-center tooltip-container"
+                            <div *ngIf="ConfirmationReport" class="icon-item d-flex align-item-center tooltip-container"
                                 style="background-color: var(--primary-color);"
                                 (click)="openDialog('ConfirmationReport')">
                                 <i class="fa fa-refresh" style="font-size:15px;color: white;"></i>
@@ -74,7 +76,7 @@
                             <div class="col-1 col-md-1 d-flex justify-content-center align-items-center mb-1 text2">
                                 : </div>
                             <div class="col-6 col-md-8 d-flex justify-content-start align-items-center">
-                                {{subdetailsList?.areaname}}
+                                {{subdetailsList?.areaname}} {{subdetails?.areaname}}
                             </div>
                         </div>
                         <div class="d-flex">
@@ -84,7 +86,7 @@
                             <div class="col-1 col-md-1 d-flex justify-content-center align-items-center mb-1 text2">
                                 : </div>
                             <div class="col-6 col-md-6 d-flex justify-content-start align-items-center">
-                                {{subdetailsList?.streetname}}
+                                {{subdetailsList?.streetname}} {{subdetails?.streetname}}
                             </div>
                         </div>
                         <div class="d-flex">
@@ -95,7 +97,7 @@
                                 : </div>
                             <div class="col-6 col-md-6 d-flex justify-content-start align-items-center"
                                 style="color: rgb(66, 0, 128);">
-                                {{subdetailsList?.operatorname}}
+                                {{subdetailsList?.operatorname}} {{subdetails?.operatorname}}
                             </div>
 
                         </div>
@@ -108,7 +110,7 @@
                             <div class="col-6 col-md-6 d-flex justify-content-start align-items-center"
                                 style="color: green;">
                                 <i class="fa-solid fa-indian-rupee-sign mx-2" style="color: green;"></i>
-                                {{subdetailsList?.opbalance}}
+                                {{subdetailsList?.opbalance}} {{subdetails?.opbalance}}
                             </div>
                         </div>
                         <div class="d-flex">
@@ -119,7 +121,7 @@
                                 : </div>
                             <div class="col-6 col-md-6 d-flex justify-content-start align-items-center"
                                 style="color: rgb(5, 62, 167);">
-                                {{subdetailsList?.operatorcontact}}
+                                {{subdetailsList?.operatorcontact}} {{subdetails?.operatorcontact}}
                             </div>
                         </div>
                         <!-- <div class="d-flex">
@@ -180,7 +182,7 @@
                     </div>
                     <div class="col-12 d-flex justify-content-center align-item-center mb-1"
                         style="background-color: rgb(213, 224, 233);padding: 5px;">
-                        {{subdetailsList?.smartcard}}
+                        {{subdetailsList?.smartcard}} {{subdetails?.smartcard}}
                     </div>
                     <div class="col-12 d-flex justify-content-center align-item-center mb-1"
                         style="color: green;padding: 5px;font-size: 16px;">
@@ -241,10 +243,10 @@
                         <div class="col-4 col-md-4 col-sm-4 display1 justify-content-start align-items-center "
                             style="padding: 0.5rem;">
                             <div class="d-block">
-                                <div style="color: red;"> {{subdetailsList?.monthupstr}}</div>
-                                <div style="color: red;font-size: 20px;font-weight: 700;">{{subdetailsList?.dayup}}
+                                <div style="color: red;"> {{subdetailsList?.monthupstr}} {{subdetails?.monthupstr}} </div>
+                                <div style="color: red;font-size: 20px;font-weight: 700;">{{subdetailsList?.dayup}} {{subdetails?.dayup}}
                                 </div>
-                                <div style="color: red;font-size: 13px;"> {{subdetailsList?.yearup}}</div>
+                                <div style="color: red;font-size: 13px;"> {{subdetailsList?.yearup}} {{subdetails?.yearup}}</div>
                             </div>
                         </div>
                         <div class="col-4 col-md-4 col-sm-4 display1 display1 justify-content-center align-items-center "
@@ -252,7 +254,7 @@
                             <div class="d-block">
                                 <div
                                     style="color: rgb(22, 79, 236);font-size: 40px;text-align: center;font-weight: 700;">
-                                    {{subdetailsList?.noofdays}}</div>
+                                    {{subdetailsList?.noofdays}}  {{subdetails?.noofdays}}</div>
                                 <div style="font-size: 12px;">Days remaining
                                 </div>
                             </div>
@@ -260,10 +262,10 @@
                         <div class="col-4 col-md-4 col-sm-4 display1 justify-content-end align-items-center"
                             style="padding: 0.5rem;">
                             <div class="d-block">
-                                <div style="color: green;"> {{subdetailsList?.monthexpstr}}</div>
-                                <div style="color: green;font-size: 20px;;font-weight: 700;">{{subdetailsList?.dayexp}}
+                                <div style="color: green;"> {{subdetailsList?.monthexpstr}}  {{subdetails?.monthexpstr}}</div>
+                                <div style="color: green;font-size: 20px;;font-weight: 700;">{{subdetailsList?.dayexp}} {{subdetails?.dayexp}}
                                 </div>
-                                <div style="color: green;font-size: 13px;"> {{subdetailsList?.yearexp}}</div>
+                                <div style="color: green;font-size: 13px;"> {{subdetailsList?.yearexp}}  {{subdetails?.yearexp}}</div>
                             </div>
                         </div>
                     </div>
@@ -286,12 +288,12 @@
                             Addon Package
                         </div>
                         <div class="col-3 col-md-3 text" style="color: rgb(71, 70, 69);text-align: center;">
-                            {{subdetailsList?.acount}}
+                            {{subdetailsList?.acount}} {{subdetails?.acount}}
                         </div>
                         <div class="col-3 col-md-3 text" style="color: green;text-align: center;">
-                            {{subdetailsList?.bcount}} </div>
+                            {{subdetailsList?.bcount}} {{subdetails?.bcount}} </div>
                         <div class="col-3 col-md-3 text" style="color: red;text-align: center;">
-                            {{subdetailsList?.dcount}}
+                            {{subdetailsList?.dcount}} {{subdetails?.dcount}} 
                         </div>
                     </div>
                     <div class="d-flex">
@@ -299,12 +301,12 @@
                             Alacarte
                         </div>
                         <div class="col-3 col-md-3 text" style="color: rgb(71, 70, 69);text-align: center;">
-                            {{subdetailsList?.totalchannels}}
+                            {{subdetailsList?.totalchannels}} {{subdetails?.totalchannels}} 
                         </div>
                         <div class="col-3 col-md-3 text" style="color: green;text-align: center;">
-                            {{subdetailsList?.ftachannels}} </div>
+                            {{subdetailsList?.ftachannels}}  {{subdetails?.ftachannels}} </div>
                         <div class="col-3 col-md-3 text" style="color: red;text-align: center;">
-                            {{subdetailsList?.paychannels}}
+                            {{subdetailsList?.paychannels}}  {{subdetails?.paychannels}}
                         </div>
                     </div>
                     <!-- <div class="line mb-2"></div>
@@ -320,7 +322,7 @@
                     <div class="d-flex justify-content-between align-item-center mb-1">
                         <div class="d-flex" style="padding: 10px;">
                             <img src="assets/images/icons/smartcard.png" alt="" style="width: 35px;">&nbsp;&nbsp;
-                            <h6 style="margin: auto;color: #b14662;font-weight: 600;"> {{subdetailsList?.smartcard}}
+                            <h6 style="margin: auto;color: #b14662;font-weight: 600;"> {{subdetailsList?.smartcard}} {{subdetails?.smartcard}}
                             </h6>
                         </div>
                         <!-- <div class="d-flex  icon-container" style="padding: 10px;">
@@ -339,7 +341,7 @@
                                 <div class="col-6 col-md-6 d-flex justify-content-start align-items-center mb-1 text2">
                                     Box Number </div>
                                 <div class="col-6 col-md-6 d-flex justify-content-start align-items-center">
-                                    {{subdetailsList?.boxid}}
+                                    {{subdetailsList?.boxid}} {{subdetails?.boxid}}
                                 </div>
 
                             </div>
@@ -348,7 +350,7 @@
                                     Activation Date
                                 </div>
                                 <div class="col-6 col-md-6 d-flex justify-content-start align-items-center">
-                                    {{subdetailsList?.activationdate}}
+                                    {{subdetailsList?.activationdate}} {{subdetails?.activationdate}}
                                 </div>
                             </div>
                             <div class="col-12 col-md-12 display_btn">
@@ -356,7 +358,7 @@
                                     Package Updated Date
                                 </div>
                                 <div class="col-6 col-md-6 d-flex justify-content-start align-items-center">
-                                    {{subdetailsList?.packageupdateddate }}
+                                    {{subdetailsList?.packageupdateddate }} {{subdetails?.packageupdateddate}}
                                 </div>
 
                             </div>
@@ -364,14 +366,14 @@
                                 <div class="col-6 col-md-6 d-flex justify-content-start align-items-center mb-1 text2">
                                     Expiry Date</div>
                                 <div class="col-6 col-md-6 d-flex justify-content-start align-items-center">
-                                    {{subdetailsList?.expirydate}} </div>
+                                    {{subdetailsList?.expirydate}} {{subdetails?.expirydate}} </div>
 
                             </div>
                             <div class="col-12 col-md-12 display_btn">
                                 <div class="col-6 col-md-6 d-flex justify-content-start align-items-center mb-1 text2">
                                     PIN Number</div>
                                 <div class="col-6 col-md-6 d-flex justify-content-start align-items-center">
-                                    {{subdetailsList?.pinnumber}}
+                                    {{subdetailsList?.pinnumber}} {{subdetails?.pinnumber}}
                                 </div>
 
                             </div>
@@ -380,7 +382,7 @@
                                     PVR Status
                                 </div>
                                 <div class="col-6 col-md-6 d-flex justify-content-start align-items-center">
-                                    {{subdetailsList?.pvrdisplay}}
+                                    {{subdetailsList?.pvrdisplay}} {{subdetails?.pvrdisplay}}
                                 </div>
 
                             </div>
@@ -389,8 +391,19 @@
                                     Box Status
                                 </div>
                                 <div class="col-6 col-md-6 d-flex justify-content-start align-items-center">
-                                    <span [ngClass]="subdetailsList?.statusdisplay ? 'new-green' : 'old-red'">
-                                        {{ subdetailsList?.statusdisplay ? 'Active' : 'Deactive' }}
+                                    <!-- <span [ngClass]="subdetailsList?.statusdisplay ? 'new-green' : 'old-red'">
+                                        {{ subdetailsList?.statusdisplay ? 'Active' : 'Blocked' }}
+                                        {{subdetails?.statusdisplay ? 'Active' : 'Blocked'}}
+                                    </span> -->
+                                    <span *ngIf="subdetailsList?.statusdisplay"
+                                        [ngClass]="subdetailsList?.statusdisplay  === 'Active' ? 'new-green' : 'old-red'">
+                                        {{
+                                        subdetailsList?.statusdisplay || 'Active' }} </span>
+
+
+                                    <span *ngIf="subdetails?.statusdisplay"
+                                        [ngClass]="subdetails?.statusdisplay === 'Blocked' ? 'old-red' : 'new-green'">
+                                        {{ subdetails?.statusdisplay || 'Blocked' }}
                                     </span>
 
                                 </div>
@@ -401,13 +414,12 @@
                                 <div
                                     class="col-12 col-md-6 display_btn1 justify-content-center align-items-center text3">
                                     <button class="btn  d-flex justify-content-between" (click)="openDialog('refresh')"
-                                        [disabled]="!subdetailsList?.boxstatus === false">
+                                        [disabled]="!refresh">
                                         <i class="fa fa-refresh"></i><span>Refresh</span></button>
                                 </div>
                                 <div
                                     class="col-12 col-md-6 display_btn1 justify-content-center align-items-center  text3">
-                                    <button class="btn  d-flex justify-content-between"
-                                        [disabled]="subdetailsList?.status === 1"
+                                    <button class="btn  d-flex justify-content-between" [disabled]="!packagactivation"
                                         (click)="openDialog('packagactivation')">
                                         <i class="fa-solid fa-gears"></i><span>Package
                                             Activation</span></button>
@@ -474,13 +486,13 @@
                                             Tuning</span></button>
                                 </div> -->
                                 <div class="col-12 col-md-6 d-flex justify-content-center align-items-center  text3">
-                                    <button class="btn d-flex justify-content-between" [disabled]="!smartcardchange"
+                                    <button class="btn d-flex justify-content-between" [disabled]="smartcardchange"
                                         (click)="openDialog('smartcardchange')">
                                         <i class="fa-solid fa-share"></i><span>Smartcard Transfer</span>
                                     </button>
                                 </div>
                                 <div class="col-12 col-md-6 d-flex justify-content-center align-items-center  text3">
-                                    <button class="btn  d-flex justify-content-between" [disabled]="!boxchange"
+                                    <button class="btn  d-flex justify-content-between" [disabled]="boxchange"
                                         (click)="openDialog('boxchange')"><i class="fa-solid fa-share"></i><span>Box
                                             Transfer</span></button>
                                 </div>
@@ -491,15 +503,22 @@
                                         (click)="openDialog('boxchange')"><i class="fa-solid fa-share"></i><span>Box
                                             Transfer</span></button>
                                 </div> -->
-                                <div class="col-12 col-md-6 d-flex justify-content-center align-items-center  text3">
+                                <div *ngIf="!suspend"
+                                    class="col-12 col-md-6 d-flex justify-content-center align-items-center  text3">
                                     <button class="btn  d-flex justify-content-between" [disabled]="!suspend"
                                         (click)="openDialog('suspend')">
                                         <i class="fa fa-file"></i><span>Suspend</span></button>
                                 </div>
-                                <div class="col-12 col-md-6 d-flex justify-content-center align-items-center  text3">
+                                <div *ngIf="suspend"
+                                    class="col-12 col-md-6 d-flex justify-content-center align-items-center  text3">
                                     <button class="btn  d-flex justify-content-between" [disabled]="!resumechange"
                                         (click)="openDialog('resumechange')"> <i
                                             class="fa fa-file"></i><span>Resume</span></button>
+                                </div>
+                                <div class="col-12 col-md-6 d-flex justify-content-center align-items-center text3">
+                                    <button class="btn  d-flex justify-content-between" [disabled]="!cancelsubscription"
+                                        (click)="managePackage('cancelsubscription')">
+                                        <i class="fa fa-refresh"></i><span>Cancel Subscription</span></button>
                                 </div>
                             </div>
                             <div class="col-12 col-md-12 display_btn1">
@@ -514,6 +533,7 @@
                                         <i class="fa-solid fa-repeat"></i><span>Re-Activation</span></button>
                                 </div> -->
                             </div>
+
                             <div class="col-12 col-md-12 display_btn1">
                                 <div class="col-12 col-md-6 d-flex justify-content-center align-items-center  text3">
                                     <button class="btn  d-flex justify-content-between" [disabled]="!block"
@@ -522,27 +542,34 @@
                                             style="font-size:15px;color: #090f13;">Block</span></button>
                                 </div>
                                 <!-- <div -->
-                                <div *ngIf="!cancelsubscription&&pair&&unpair"
-                                    class="col-12 col-md-6 d-flex justify-content-center align-items-center text3">
-                                    <button class="btn  d-flex justify-content-between"
-                                        (click)="managePackage('cancelsubscription')">
-                                        <i class="fa fa-refresh"></i><span>Cancel Subscription</span></button>
-                                </div>
-                                <!-- <div -->
-                                <div *ngIf="!unpair&&cancelsubscription&&pair"
+                                <div *ngIf="!unpair"
                                     class="col-12 col-md-6 d-flex justify-content-center align-items-center  text3">
-                                    <button class="btn  d-flex justify-content-between"
+                                    <button class="btn  d-flex justify-content-between" [disabled]="!unpair"
                                         (click)="managePackage('unpair')">
                                         <i class="fa-solid fa-ban" style="font-size:15px;color: #090f13;"></i><span
                                             style="font-size:15px;color: #090f13;">Unpair</span></button>
                                 </div>
-                                <!-- <div  -->
-                                <div *ngIf="!pair&&cancelsubscription&&unpair"
+                                <div *ngIf="unpair"
                                     class="col-12 col-md-6 d-flex justify-content-center align-items-center  text3">
-                                    <button class="btn  d-flex justify-content-between" (click)="pairDialogue('pair')">
+                                    <button class="btn  d-flex justify-content-between" [disabled]="!pair"
+                                        (click)="pairDialogue('pair')">
                                         <i class="fa fa-refresh"></i><span>Pair</span></button>
                                 </div>
+
                             </div>
+                            <!-- <div class="col-12 col-md-12 display_btn1">
+                                <div *ngIf="!unpair" class="col-12 col-md-6 d-flex justify-content-center align-items-center  text3">
+                                    <button class="btn  d-flex justify-content-between" [disabled]="!unpair"
+                                        (click)="managePackage('unpair')">
+                                        <i class="fa-solid fa-ban" style="font-size:15px;color: #090f13;"></i><span
+                                            style="font-size:15px;color: #090f13;">Unpair</span></button>
+                                </div>
+                                <div *ngIf="unpair" class="col-12 col-md-6 d-flex justify-content-center align-items-center  text3">
+                                    <button class="btn  d-flex justify-content-between" [disabled]="!pair"
+                                        (click)="pairDialogue('pair')">
+                                        <i class="fa fa-refresh"></i><span>Pair</span></button>
+                                </div>
+                            </div> -->
                         </div>
                     </div>
                 </div>
@@ -580,22 +607,19 @@
                                 </div> -->
 
                                 <div class="display tablist justify-content-center align-items-center">
-                                    <!-- ADDON ADD -->
                                     <!-- <div class="tab mb-3" [class.active]="selectedTab === 'addon'"
                                         [class.disabled]="!(subdetailsList?.status > 2 && subdetailsList?.noofdays > 1)"
                                         (click)="subdetailsList?.status > 2 && subdetailsList?.noofdays > 1 ? managePackage('addon') : null">
                                         ADDON ADD
-                                    </div> -->
+                                    </div>
 
-                                    <!-- ALACARTE ADD -->
-                                    <!-- <div class="tab mb-3" [class.active]="selectedTab === 'alacarte'"
+                                    <div class="tab mb-3" [class.active]="selectedTab === 'alacarte'"
                                         [class.disabled]="!(subdetailsList?.status > 2 && subdetailsList?.noofdays > 1)"
                                         (click)="subdetailsList?.status > 2 && subdetailsList?.noofdays > 1 ? managePackage('alacarte') : null">
                                         ALACARTE ADD
-                                    </div> -->
+                                    </div>
 
-                                    <!-- REMOVE PRODUCT -->
-                                    <!-- <div class="tab mb-3" [class.active]="selectedTab === 'remove'"
+                                    <div class="tab mb-3" [class.active]="selectedTab === 'remove'"
                                         [class.disabled]="!(subdetailsList?.status > 2 && subdetailsList?.noofdays > 1)"
                                         (click)="subdetailsList?.status > 2 && subdetailsList?.noofdays > 1 ? managePackage('remove') : null">
                                         REMOVE PRODUCT
@@ -676,7 +700,7 @@
                                         <input type="date" [(ngModel)]="plantype">
                                     </div>
                                 </div>
-                               
+
                             </div>
                             <div *ngIf="confirmation">
                                 <div style="padding: 1rem;">

@@ -111,28 +111,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="input_box">
-                        <label for="username">Billing Address</label>
-                        <input type="text" formControlName="address" placeholder="Enter Billing Address" required
-                            [ngClass]="{ 'is-invalid': submitted && f['address'].errors }" />
 
-                        <div style="position: relative; font-size: small;" *ngIf="submitted && f['address'].errors"
-                            class="invalid-feedback">
-                            <div *ngIf="f['address'].errors['required']">Billing Address is required
-                            </div>
-                        </div>
-                    </div>
-                    <div class="input_box">
-                        <label for="email">Install Address</label>
-                        <input type="text" formControlName="installaddress" placeholder="Enter Install Address" required
-                            [ngClass]="{ 'is-invalid': submitted && f['installaddress'].errors }" />
-
-                        <div style="position: relative;font-size: small;"
-                            *ngIf="submitted && f['installaddress'].errors" class="invalid-feedback">
-                            <div *ngIf="f['installaddress'].errors['required']">Install Address is required
-                            </div>
-                        </div>
-                    </div>
                     <div class="input_box">
                         <label for="phone">Mobile Number</label>
                         <input pattern="[0-9]*" maxlength="10" required type="text" (keypress)="onKeydown($event)"
@@ -152,8 +131,8 @@
 
                     <div class="input_box">
                         <label for="pass">Landline No</label>
-                        <input pattern="^0\d{2,4}\d{6,8}$" maxlength="11" type="text" formControlName="landlineno" (keypress)="onKeydown_landline($event)"
-                            placeholder="Enter Landline Number"
+                        <input pattern="^0\d{2,4}\d{6,8}$" maxlength="11" type="text" formControlName="landlineno"
+                            (keypress)="onKeydown_landline($event)" placeholder="Enter Landline Number"
                             [ngClass]="{'is-invalid': submitted && f['landlineno'].errors }" required />
 
                         <div style="position: relative; font-size: small;" *ngIf="submitted && f['landlineno'].errors"
@@ -178,10 +157,6 @@
                     </div>
                     <div class="input_box">
                         <label for="confirmPass">Form Submission Date</label>
-                        <!-- <input type="datetime-local" step='1' id="birthdaytime" name="birthdaytime"> -->
-                        <!-- <input type="datetime-local" step='1' placeholder="Form Submission Date"
-                            formControlName="formsubmissiondate"
-                            [ngClass]="{ 'is-invalid': submitted && f['formsubmissiondate'].errors }" required> -->
                         <input type="date" step='1' placeholder="Form Submission Date"
                             formControlName="formsubmissiondate"
                             [ngClass]="{ 'is-invalid': submitted && f['formsubmissiondate'].errors }" required>
@@ -198,6 +173,7 @@
                         <select id="addressprooftypeid" formControlName="addressprooftypeid"
                             (change)="onAddProofChange($event)">
                             <option value="" selected>Select an ADD Proof</option>
+                            <!-- <option *ngFor="let key of filterd_proof_list" [value]="key"> {{ key}} </option> -->
                             <option *ngFor="let key of filteredADDProofKeys()" [value]="key"> {{ key}} </option>
                         </select>
                     </div>
@@ -252,8 +228,36 @@
                             </div>
                         </div>
                     </div>
+                    <div class="input_box">
+                        <label for="username">Billing Address</label>
+                        <input type="text" formControlName="address" placeholder="Enter Billing Address" required
+                            [(ngModel)]="billingaddress"
+                            [ngClass]="{ 'is-invalid': submitted && f['address'].errors }" />
+
+                        <div style="position: relative; font-size: small;" *ngIf="submitted && f['address'].errors"
+                            class="invalid-feedback">
+                            <div *ngIf="f['address'].errors['required']">Billing Address is required</div>
+                        </div>
+
+                    </div>
+                    <div class="input_box">
+                        <label for="username">Same as Billing Address</label>
+                        <input type="checkbox" style="width: 30px;height: 25px;" (change)="onChange($event)" />
+                    </div>
+                    <div class="input_box">
+                        <label for="email">Install Address</label>
+                        <input type="text" formControlName="installaddress" placeholder="Enter Install Address" required
+                            [(ngModel)]="installaddress"
+                            [ngClass]="{ 'is-invalid': submitted && f['installaddress'].errors }" />
+
+                        <div style="position: relative;font-size: small;"
+                            *ngIf="submitted && f['installaddress'].errors" class="invalid-feedback">
+                            <div *ngIf="f['installaddress'].errors['required']">Install Address is required
+                            </div>
+                        </div>
+                    </div>
                 </div>
-                <div class="d-flex justify-content-end align-items-center" style="padding: 10px;">
+                <div class="d-flex justify-content-center align-items-center" style="padding: 10px;">
                     <button type="button" (click)="onReset()" class="btn btn-danger">
                         Reset
                     </button>

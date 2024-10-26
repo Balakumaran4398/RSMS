@@ -8,13 +8,14 @@ import { PackageBASEDEMOComponent } from '../package-base-demo/package-base-demo
 import Swal from 'sweetalert2';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { SwalService } from 'src/app/_core/service/swal.service';
 
 @Component({
   selector: 'app-package-manage',
   templateUrl: './package-manage.component.html',
   styleUrls: ['./package-manage.component.scss'],
   standalone: true,
-  imports: [CdkDropList, CdkDrag, CommonModule,FormsModule]
+  imports: [CdkDropList, CdkDrag, CommonModule, FormsModule]
 })
 export class PackageManageComponent {
   package_id: any;
@@ -37,7 +38,7 @@ export class PackageManageComponent {
   added_alacarte_list: any = [];
   available_bouquet_list: any = [];
   added_bouquet_list: any = [];
-    selectedItems: Set<any> = new Set();
+  selectedItems: Set<any> = new Set();
 
   availableFilter: any;
   addedFilter: any;
@@ -58,7 +59,7 @@ export class PackageManageComponent {
   added_bouquet_count: any;
   // filteredAvailableList: string[] = [...this.available_alacarte_list];
   // filteredAddedList: string[] = [...this.added_alacarte_list];
-  constructor(public dialog: MatDialog, public router: Router, private route: ActivatedRoute, private userService: BaseService, private storageservice: StorageService) {
+  constructor(public dialog: MatDialog, public router: Router, private route: ActivatedRoute, private swal:SwalService,private userService: BaseService, private storageservice: StorageService) {
     this.username = storageservice.getUsername();
     this.role = storageservice.getUserRole();
   }
@@ -75,7 +76,7 @@ export class PackageManageComponent {
 
     //   console.log(data);
     // });
-    this.userService.MANAGE_PACKAGE(this.package_id, this.role, this.username).subscribe((data: any) => {
+    this.userService.managePackage(this.package_id, this.role, this.username).subscribe((data: any) => {
       console.log(data);
       this.package_name = data[0].Package_Name
       this.package_rate = data[0].Package_Rate
@@ -95,7 +96,7 @@ export class PackageManageComponent {
       });
 
 
-      
+
       this.available_bouquet_list = data[0].Available_addon.map((available_bouquet: any) => {
         return `${available_bouquet.addon_package_name} (${available_bouquet.id}) - Rs.${available_bouquet.addon_package_rate}.0`;
       });
@@ -110,8 +111,8 @@ export class PackageManageComponent {
 
       // console.log('AVAILABE ALACARTE_ID    1   ' + this.alacarte_list_id);
       // console.log('AVAILABE ALACARTE       ' + this.available_bouquet_list);
-      console.log('Added bouquet list         '+this.added_bouquet_list );
-      console.log('Available bouquet list    '+this.available_bouquet_list);
+      console.log('Added bouquet list         ' + this.added_bouquet_list);
+      console.log('Available bouquet list    ' + this.available_bouquet_list);
       // console.log('ADDED ALACARTE    2  ' + this.added_alacarte_list_id);
       // console.log('AVAILABE BOUQUET      ' + this.bouquet_list_id);
       // console.log('ADDED BOUQUET   4   ' + this.added_bouquet_list_id);     
@@ -122,14 +123,14 @@ export class PackageManageComponent {
   drop(event: CdkDragDrop<string[]>) {
     console.log('drop event');
     console.log(event);
-    
+
     if (event.previousContainer === event.container) {
       console.log('sss');
-      
+
       moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
     } else {
       console.log('dfdlfjd');
-      
+
       transferArrayItem(
         event.previousContainer.data,
         event.container.data,
@@ -161,26 +162,26 @@ export class PackageManageComponent {
 
   // pay_channel(type: any) {
   //   let dialogData = { type: type, package_id: this.package_id };
-  
+
   //   let dialogHeight = '700px'; // Default height
   //   if (type === 'paychannel') {
   //     dialogHeight = '600px';
   //   } else if (type === 'bouquet') {
   //     dialogHeight = '300px';
   //   }
-  
+
   //   const dialogRef = this.dialog.open(PackageBASEDEMOComponent, {
   //     width: '800px',
   //     height: dialogHeight,  // Set height dynamically
   //     panelClass: 'custom-dialog-container',
   //     data: dialogData
   //   });
-  
+
   //   dialogRef.afterClosed().subscribe(result => {
   //     console.log('The dialog was closed');
   //   });
   // }
-  
+
   // applyFilter(): void {
   //   if (!this.searchTerm) {
   //     this.filteredAvailableAlacarteList = this.available_alacarte_list;
@@ -194,7 +195,7 @@ export class PackageManageComponent {
     if (!this.searchTerm) {
       this.filteredAvailableAlacarteList = this.available_alacarte_list;
     } else {
-      this.filteredAvailableAlacarteList = this.available_alacarte_list.filter((item:any) =>
+      this.filteredAvailableAlacarteList = this.available_alacarte_list.filter((item: any) =>
         item.toLowerCase().includes(this.searchTerm.toLowerCase())
       );
     }
@@ -336,6 +337,7 @@ export class PackageManageComponent {
       });
       return;
     }
+    if(this.alacarte_list_id){
     console.log('save');
     Swal.fire({
       title: "Are you sure?",
@@ -352,7 +354,7 @@ export class PackageManageComponent {
           text: 'Please wait for Alacarte channels to update....',
           allowOutsideClick: false,
           didOpen: () => {
-            Swal.showLoading(null); 
+            Swal.showLoading(null);
           }
         });
         this.userService.AddingdAlacarteTo_Base_Package(this.modified, this.alacarte_list_id, this.role, this.username, this.package_id).subscribe((res: any) => {
@@ -380,53 +382,72 @@ export class PackageManageComponent {
         );
       }
     });
+  } else {
+    // this.swal.Invalid();
+    Swal.fire({
+      title: 'Warning!',
+      icon: 'warning',
+      text:'Invalid Input',
+      timer: 1000,
+      showConfirmButton: false
+    })
+  }
     this.selectedItems.clear();
   }
   save1() {
-    console.log('save1');
-    console.log('save');
-    Swal.fire({
-      title: "Are you sure?",
-      text: "You won't be able to revert this!",
-      icon: "warning",
-      showCancelButton: true,
-      confirmButtonColor: "#3085d6",
-      cancelButtonColor: "#d33",
-      confirmButtonText: "Yes, Change it!"
-    }).then((result) => {
-      if (result.isConfirmed) {
-        Swal.fire({
-          title: 'Updating...',
-          text: 'Please wait for Addon channel list to update....',
-          allowOutsideClick: false,
-          didOpen: () => {
-            Swal.showLoading(null); 
-          }
-        });
-        this.userService.AddingdbouquetTo_Base_Package(this.modified, this.bouquet_list_id, this.role, this.username, this.package_id, this.removed_channel_list,).subscribe((res: any) => {
-          console.log(res);
+    if (this.bouquet_list_id) {
+      Swal.fire({
+        title: "Are you sure?",
+        text: "You won't be able to revert this!",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Yes, Change it!"
+      }).then((result) => {
+        if (result.isConfirmed) {
           Swal.fire({
-            position: "center",
-            icon: "success",
-            title: "Your update was successful",
-            showConfirmButton: false,
-            timer: 1000
-          }).then(() => {
-            // window.location.reload();
+            title: 'Updating...',
+            text: 'Please wait for Addon channel list to update....',
+            allowOutsideClick: false,
+            didOpen: () => {
+              Swal.showLoading(null);
+            }
           });
-        },
-          (err) => {
+          this.userService.AddingdbouquetTo_Base_Package(this.modified, this.bouquet_list_id, this.role, this.username, this.package_id, 0,).subscribe((res: any) => {
+            console.log(res);
             Swal.fire({
-              position: 'center',
-              icon: 'error',
-              title: 'Error',
-              text: err?.error?.message,
+              position: "center",
+              icon: "success",
+              title: "Your update was successful",
               showConfirmButton: false,
-              timer: 1500
+              timer: 1000
+            }).then(() => {
+              // window.location.reload();
             });
-          }
-        );
-      }
-    });
+          },
+            (err) => {
+              Swal.fire({
+                position: 'center',
+                icon: 'error',
+                title: 'Error',
+                text: err?.error?.message,
+                showConfirmButton: false,
+                timer: 1500
+              });
+            }
+          );
+        }
+      });
+    }else{
+      // this.swal.Invalid();
+      Swal.fire({
+        title: 'Warning!',
+        icon: 'warning',
+        text:'Invalid Input',
+        timer: 1000,
+        showConfirmButton: false
+      })
+    }
   }
 }

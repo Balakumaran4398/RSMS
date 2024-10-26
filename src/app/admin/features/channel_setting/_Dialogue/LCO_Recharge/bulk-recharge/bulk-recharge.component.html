@@ -5,7 +5,7 @@
     <i class="fa fa-close close-icon" style="cursor: pointer;" (click)="onNoClick()"></i>
 </div>
 <div class=" display_1 justify-content-center align-items-center mobile">
-    <div class="align-items-center justify-content-center  mb-3" style="margin: auto;">
+    <div class="align-items-center justify-content-center  mb-3" style="margin: auto;max-height: 300px;overflow: auto;">
 
         <ag-grid-angular #agGrid id="myGrid" domLayout='autoHeight' class="ag-theme-alpine table-class" rowAnimation
             [rowSelection]="rowSelection" [gridOptions]="gridOptions" [columnDefs]="columnDefs" [rowData]="rowData"

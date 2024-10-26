@@ -53,12 +53,19 @@
     color: var(--mat-datepicker-calendar-date-selected-state-text-color);
 }
 
+.operator_width {
+    width: 130%;
+}
+
 /* Adjust padding for mobile view */
 @media (max-width: 767.98px) {
     .btn {
         padding: 0.5rem 1rem;
     }
-    .display_1{
+    .operator_width {
+        width: 100%;
+    }
+    .display_1 {
         display: block;
     }
 }

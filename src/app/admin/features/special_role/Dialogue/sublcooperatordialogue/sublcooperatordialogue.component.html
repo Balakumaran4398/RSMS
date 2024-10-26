@@ -1,0 +1,519 @@
+<div *ngIf="type=='createsublco'">
+    <div class="Head d-flex justify-content-between align-items-center mb-3" style="padding: 1rem;">
+        <h6>CREATE NEW RETAILER</h6>
+        <i class="fa fa-close close-icon" style="cursor: pointer;" (click)="onNoClick()"></i>
+    </div>
+    <div style="padding: 1rem;">
+        <form [formGroup]="form" (ngSubmit)="onSubmit()">
+            <div class="col justify-content-center align-items-center mb-3 mobile1">
+                <div class="col-md-12 col-sm-12 col-sm-6 ">
+                    <div class="row ">
+                        <div class="col-12 col-md-6">
+                            <div class="input_box col-12 col-md-12 ">
+                                <label for="">Retailer Name </label>
+                            </div>
+                            <div class=" input_box col-12 col-md-12">
+                                <input type="text" formControlName="retailername" placeholder="Enter Cas id">
+                                <div *ngIf="form.get('retailername')?.invalid && form.get('retailername')?.touched">
+                                    <small class="text-danger">Retailer Name is required.</small>
+                                </div>
+                            </div>
+                        </div>
+
+
+                        <div class="col-12 col-md-6">
+                            <div class="input_box col-12 col-md-12">
+                                <label for="">Mobile Number</label>
+                            </div>
+                            <div class="input_box col-12 col-md-12">
+                                <input type="text" formControlName="contactno" maxlength="10"
+                                    (keypress)="onKeydown($event)" placeholder="Enter Contact No">
+                                <div *ngIf="form.get('contactno')?.invalid && form.get('contactno')?.touched">
+                                    <small class="text-danger"
+                                        *ngIf="form.get('contactno')?.errors?.['required']">Contact
+                                        number is required.</small>
+                                    <small class="text-danger"
+                                        *ngIf="form.get('contactno')?.errors?.['pattern']">Invalid
+                                        mobile
+                                        number (must be 10 digits).</small>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-12 col-md-6">
+                            <div class="input_box col-12 col-md-12">
+                                <label for="">Alternate Number</label>
+                            </div>
+                            <div class="input_box col-12 col-md-12">
+                                <input type="text" formControlName="contactno2" maxlength="10"
+                                    (keypress)="onKeydown($event)" placeholder="Enter Contact No">
+                                <div *ngIf="form.get('contactno2')?.invalid && form.get('contactno2')?.touched">
+                                    <small class="text-danger"
+                                        *ngIf="form.get('contactno2')?.errors?.['required']">Contact
+                                        number is required.</small>
+                                    <small class="text-danger"
+                                        *ngIf="form.get('contactno2')?.errors?.['pattern']">Invalid
+                                        mobile
+                                        number (must be 10 digits).</small>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-12 col-md-6">
+                            <div class="input_box col-12 col-md-12">
+                                <label for="">Address</label>
+                            </div>
+                            <div class="input_box col-12 col-md-12">
+                                <input type="text" formControlName="address" placeholder="Enter Address">
+                                <div *ngIf="form.get('address')?.invalid && form.get('address')?.touched">
+                                    <small class="text-danger">Address is required.</small>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-12 col-md-6">
+                            <div class="input_box col-12 col-md-12">
+                                <label for="">Password</label>
+                            </div>
+                            <div class="input_box col-12 col-md-12">
+                                <input type="password" formControlName="password" placeholder="Enter Password">
+                                <div *ngIf="form.get('password')?.invalid && form.get('password')?.touched">
+                                    <small class="text-danger"
+                                        *ngIf="form.get('password')?.errors?.['required']">Password
+                                        is required.</small>
+                                    <small class="text-danger"
+                                        *ngIf="form.get('password')?.errors?.['pattern']">Password
+                                        must be at least 8 characters, including one letter and one number.</small>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="d-flex justify-content-center align-items-center mb-3">
+                <div class="d-flex justify-content-center align-items-center" style="padding: 10px;">
+                    <button (click)="onNoClick()" class="btn btn-danger">Cancel </button>
+                    <button type="submit" class="btn btn-success">Create</button> &nbsp;
+                </div>
+            </div>
+        </form>
+    </div>
+
+</div>
+
+<div *ngIf="type=='updatesublco'">
+    <div class="Head d-flex justify-content-between align-items-center mb-3" style="padding: 1rem;">
+        <h6>UPDATE SUBLCO DETAILS</h6>
+        <i class="fa fa-close close-icon" style="cursor: pointer;" (click)="onNoClick()"></i>
+    </div>
+    <div style="padding: 1rem;">
+        <form [formGroup]="editform" (ngSubmit)="oneditSubmit()">
+            <div class="col justify-content-center align-items-center mb-3 mobile1">
+                <div class="col-md-12 col-sm-12 col-sm-6 ">
+                    <div class="row ">
+                        <div class="col-12 col-md-6">
+                            <div class="input_box col-12 col-md-12 ">
+                                <label for="">Retailer Name </label>
+                            </div>
+
+                            <div class=" input_box col-12 col-md-12">
+                                <input type="text" formControlName="retailername" [(ngModel)]="retailername"
+                                    placeholder="Enter Cas id">
+                                <div *ngIf="form.get('retailername')?.invalid && form.get('retailername')?.touched">
+                                    <small class="text-danger">Retailer Name is required.</small>
+                                </div>
+                            </div>
+                        </div>
+
+
+                        <div class="col-12 col-md-6">
+                            <div class="input_box col-12 col-md-12">
+                                <label for="">Mobile Number</label>
+                            </div>
+                            <div class="input_box col-12 col-md-12">
+                                <input type="text" formControlName="contactno" maxlength="10" [(ngModel)]="contactno"
+                                    (keypress)="onKeydown($event)" placeholder="Enter Contact No">
+                                <div *ngIf="form.get('contactno')?.invalid && form.get('contactno')?.touched">
+                                    <small class="text-danger"
+                                        *ngIf="form.get('contactno')?.errors?.['required']">Contact
+                                        number is required.</small>
+                                    <small class="text-danger"
+                                        *ngIf="form.get('contactno')?.errors?.['pattern']">Invalid
+                                        mobile
+                                        number (must be 10 digits).</small>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-12 col-md-6">
+                            <div class="input_box col-12 col-md-12">
+                                <label for="">Alternate Number</label>
+                            </div>
+                            <div class="input_box col-12 col-md-12">
+                                <input type="text" formControlName="contactno2" maxlength="10" [(ngModel)]="contactno2"
+                                    (keypress)="onKeydown($event)" placeholder="Enter Contact No">
+                                <div *ngIf="form.get('contactno2')?.invalid && form.get('contactno2')?.touched">
+                                    <small class="text-danger"
+                                        *ngIf="form.get('contactno2')?.errors?.['required']">Contact
+                                        number is required.</small>
+                                    <small class="text-danger"
+                                        *ngIf="form.get('contactno2')?.errors?.['pattern']">Invalid
+                                        mobile
+                                        number (must be 10 digits).</small>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-12 col-md-6">
+                            <div class="input_box col-12 col-md-12">
+                                <label for="">Address</label>
+                            </div>
+                            <div class="input_box col-12 col-md-12">
+                                <input type="text" formControlName="address" placeholder="Enter Address"
+                                    [(ngModel)]="address">
+                                <div *ngIf="form.get('address')?.invalid && form.get('address')?.touched">
+                                    <small class="text-danger">Address is required.</small>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-12 col-md-6">
+                            <div class="input_box col-12 col-md-12">
+                                <label for="">Password</label>
+                            </div>
+                            <div class="input_box col-12 col-md-12">
+                                <input type="password" formControlName="password" placeholder="Enter Password"
+                                    [(ngModel)]="password">
+                                <div *ngIf="form.get('password')?.invalid && form.get('password')?.touched">
+                                    <small class="text-danger"
+                                        *ngIf="form.get('password')?.errors?.['required']">Password
+                                        is required.</small>
+                                    <small class="text-danger"
+                                        *ngIf="form.get('password')?.errors?.['pattern']">Password
+                                        must be at least 8 characters, including one letter and one number.</small>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="d-flex justify-content-center align-items-center mb-3">
+                <div class="d-flex justify-content-center align-items-center" style="padding: 10px;">
+                    <button (click)="onNoClick()" class="btn btn-danger">Cancel </button>
+                    <button type="submit" class="btn btn-success">Create</button> &nbsp;
+                </div>
+            </div>
+        </form>
+    </div>
+
+</div>
+
+<div *ngIf="type=='deletesublco'">
+    <div class="Head d-flex justify-content-between align-items-center mb-3" style="padding: 1rem;">
+        <h6>DELETE</h6>
+        <i class="fa fa-close close-icon" style="cursor: pointer;" (click)="onNoClick()"></i>
+    </div>
+    <div style="padding: 1rem;">
+        <span>Delete this Retailer ? </span>
+    </div>
+    <div class="d-flex justify-content-center align-items-center mb-3">
+        <div class="d-flex justify-content-center align-items-center" style="padding: 10px;">
+            <button (click)="onActive()" class="btn btn-success">Active</button> &nbsp;
+            <button (click)="onDeactive()" class="btn btn-danger">Deactive </button>
+        </div>
+    </div>
+</div>
+<div *ngIf="type=='paymentgateway'">
+    <div class="Head d-flex justify-content-between align-items-center mb-3" style="padding: 1rem;">
+        <h6>UPDATE PAYMENT GATEWAY</h6>
+        <i class="fa fa-close close-icon" style="cursor: pointer;" (click)="onNoClick()"></i>
+    </div>
+    <div class="col-12 col-md-12 display justify-content-center align-items-center" style="padding: 0.5rem;">
+        <div class="input_box col-12 col-md-6">
+            <label for="">Payment Gateway Name </label>
+        </div>
+        <div class="input_box col-12 col-md-6 ">
+            <select [(ngModel)]="paymentid">
+                <option value="0" selected>select payment gateway</option>
+                <option *ngFor="let pt of paygatelist" [value]="pt.id">{{ pt.name }}</option>
+            </select>
+
+        </div>
+    </div>
+    <div class="d-flex justify-content-center align-items-center mb-3">
+        <div class="d-flex justify-content-center align-items-center" style="padding: 10px;">
+            <button (click)="onNoClick()" class="btn btn-danger">No </button>
+            <button type="button" class="btn btn-success" (click)="paymentgateway()">Yes</button> &nbsp;
+        </div>
+    </div>
+</div>
+
+<div *ngIf="type=='permission'">
+    <div class="Head d-flex justify-content-between align-items-center mb-3" style="padding: 1rem;">
+        <h6>PERMISSION</h6>
+        <i class="fa fa-close close-icon" style="cursor: pointer;" (click)="onNoClick()"></i>
+    </div>
+
+    <div class="display justify-content-center align-items-center">
+        <div class="row">
+            <div class="col-12 col-md-12 d-flex  justify-content-center align-items-center">
+                <div class="col-5 col-md-5" style="font-size: 15px;color: black;">
+                    <label for="">NAME </label>
+                </div>
+                <div class="col-1 col-md-1">
+                    <span for="">:</span>
+                </div>
+                <div class="col-6 col-md-6" style="font-size: 15px;color: rgb(33, 88, 11);">
+                    {{data?.data.retailerName}}
+                </div>
+            </div>
+            <div class="col-12 col-md-12 d-flex  justify-content-center align-items-center">
+                <div class="col-5 col-md-5" style="font-size: 15px;color: black;">
+                    <label for="">SubLcoId </label>
+                </div>
+                <div class="col-1 col-md-1">
+                    <span for="">:</span>
+                </div>
+                <div class="col-6 col-md-6" style="font-size: 13px;color: rgb(6, 4, 109);">
+                    {{data?.data.retailerId}}
+                </div>
+            </div>
+        </div>
+    </div>
+    <section>
+        <div class="d-flex flex-column flex-lg-row justify-content-center align-items-center">
+            <div class="col-lg-5 col-12 mb-3 mb-lg-0">
+                <div class="card">
+                    <div class="input_box">
+                        <input type="text" placeholder="Search">
+                    </div>
+                    <div class="table1 mb-3">
+                        <p style="color: white;">NOT ADDED</p>
+                        <div class="row inp">
+                            <div class="col-12 example-container">
+                                <!-- <div cdkDropList #todoList="cdkDropList" [cdkDropListData]="todo"
+                                    [cdkDropListConnectedTo]="[doneList]" class="example-list"
+                                    (cdkDropListDropped)="drop($event)">
+                                    <div *ngFor="let item of todo" class="example-box" cdkDrag
+                                        (click)="toggleSelection(item)" [class.selected]="isSelected(item)">{{
+                                        item.operatorname }}
+                                    </div>
+                                </div> -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="display my-3 my-lg-0 mx-lg-3">
+                <button class="btn" (click)="moveSelected_added_Items('right')"><i
+                        class="bx bx-right-arrow-alt"></i></button>
+                <button class="btn" (click)="moveAllSelected_added_Items('right')"><i
+                        class="bx bx-arrow-to-right"></i></button>
+                <button class="btn" (click)="moveSelected_added_Items('left')"><i
+                        class="bx bx-left-arrow-alt"></i></button>
+                <button class="btn" (click)="moveAllSelected_added_Items('left')"><i
+                        class="bx bx-arrow-to-left"></i></button>
+            </div>
+            <div class="col-lg-5 col-12">
+                <div class="card">
+
+                    <div class="input_box">
+                        <input type="text" placeholder="Search">
+                    </div>
+                    <div class="table2 mb-3">
+                        <p style="color: white;">ADDED</p>
+                        <div class="row inp">
+                            <!-- <div class="col-12 example-container">
+                                <div cdkDropList #doneList="cdkDropList" [cdkDropListData]="allocated"
+                                    [cdkDropListConnectedTo]="[todoList]" class="example-list"
+                                    (cdkDropListDropped)="drop($event)">
+                                    <div *ngFor="let item of allocated" class="example-box" cdkDrag>{{ item.operatorname
+                                        }}
+                                    </div>
+                                </div>
+                            </div> -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        <div class="col-12 d-flex justify-content-center align-item-center">
+            <button type="button" class="btn" style="background:#058372;color: white;height: 2pc; width: 5pc"
+                (click)="save()">Save</button>
+        </div>
+    </section>
+</div>
+<div *ngIf="type=='reportdation'">
+    <div class="Head d-flex justify-content-between align-items-center mb-3" style="padding: 1rem;">
+        <h6>REPORT</h6>
+        <i class="fa fa-close close-icon" style="cursor: pointer;" (click)="onNoClick()"></i>
+    </div>
+    <div style="padding: 1rem;">
+        <div class="d-flex tablist justify-content-center align-items-center my-3 new_d">
+            <div class="tab" [class.active]="selectedTab === 'datewise'" (click)="selectTab('datewise')"> DATE WISE
+            </div>
+            <div class="tab" [class.active]="selectedTab === 'monthwise'" (click)="selectTab('monthwise')">MONTH
+                WISE
+            </div>
+        </div>
+
+        <div *ngIf="selectedTab === 'datewise'" class="row display justify-content-center align-items-center">
+            <div class=" display col-12 col-md-10 justify-content-start align-items-center">
+                <p class="mx-2"
+                    style="text-align: center;align-items: center;color: rgb(0, 12, 22); font-size: 16px;font-weight: 600;">
+                    Date:</p>
+                <mat-form-field appearance="outline" class="mx-2">
+                    <mat-date-range-input [rangePicker]="picker" [max]="maxDate">
+                        <input matStartDate matInput placeholder="Start date" (dateChange)="getFromDate($event)">
+                        <input matEndDate matInput placeholder="End date" (dateChange)="getToDate($event)">
+                    </mat-date-range-input>
+                    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                    <mat-date-range-picker #picker></mat-date-range-picker>
+                </mat-form-field>
+                <button class="btn mx-2" style="background-color: rgb(37 49 49);;border-radius: 5px;margin-bottom: 2%;"
+                    (click)="getDatewiseReport()"><span style="color: white;">Report</span></button>
+            </div>
+
+            <div class="col-12 col-md-12 align-items-center justify-content-center responsive-container mb-3"
+                style="margin: auto;">
+                <ag-grid-angular #agGrid id="myGrid" style="text-align: center;" domLayout='autoHeight'
+                    class="ag-theme-alpine table-class" rowAnimation [gridOptions]="gridOptions"
+                    (gridReady)="onGridReady($event)" [columnDefs]="columnDefs" [rowData]="rowData"
+                    [enableCellTextSelection]="true">
+                </ag-grid-angular>
+            </div>
+        </div>
+
+        <div *ngIf="selectedTab === 'monthwise'" class="row display justify-content-center align-items-center">
+            <div class=" display col-12 col-md-10 justify-content-start align-items-center mb-3">
+                <p class="mx-2"
+                    style="text-align: center;align-items: center;color: rgb(0, 12, 22); font-size: 16px;font-weight: 600;">
+                    Filter:</p>
+                <div class="input_box display justify-content-center align-item-center">
+                    <div class="mx-2 mb-3">
+                        <select name="month" id="month" [(ngModel)]="selectedMonth">
+                            <option value="0" selected>Select Month</option>
+                            <option *ngFor="let month of months" [value]="month.value">{{ month.name }}</option>
+                        </select>
+                    </div>
+                    <div class="mx-2 mb-2">
+                        <select name="year" id="year" [(ngModel)]="selectedYear">
+                            <option value="0" selected>Select Year</option>
+                            <option *ngFor="let year of years" [value]="year">{{ year }}</option>
+                        </select>
+                    </div>
+                </div>
+                <button class="btn mx-2 " style="background-color: rgb(37 49 49);;border-radius: 5px;"
+                    (click)="getmonthwisereport()"><span style="color: white;">Report</span></button>
+                <button class="btn mx-2 " style="background-color: rgb(128 50 90);border-radius: 5px;"
+                    (click)="getmonthwisepdfreport()" [disabled]="!isReportReady">
+                    <span style="color: white;">Get PDF Report</span>
+                </button>
+
+            </div>
+
+            <div class="col-12 col-md-12 align-items-center justify-content-center responsive-container mb-3"
+                style="margin: auto;">
+                <ag-grid-angular #agGrid id="myGrid" style="text-align: center;" domLayout='autoHeight'
+                    class="ag-theme-alpine table-class" rowAnimation [gridOptions]="gridOptions"
+                    (gridReady)="onGridReady($event)" [columnDefs]="columnDefs" [rowData]="rowData"
+                    [enableCellTextSelection]="true">
+                </ag-grid-angular>
+            </div>
+        </div>
+
+
+    </div>
+
+</div>
+<div *ngIf="type=='areaupdation'">
+    <div class="Head d-flex justify-content-between align-items-center mb-3" style="padding: 1rem;">
+        <h6>AREA UPDATION</h6>
+        <i class="fa fa-close close-icon" style="cursor: pointer;" (click)="onNoClick()"></i>
+    </div>
+
+    <div class="display justify-content-center align-items-center">
+        <div class="row">
+            <div class="col-12 col-md-12 d-flex  justify-content-center align-items-center">
+                <div class="col-5 col-md-5" style="font-size: 15px;color: black;">
+                    <label for="">NAME </label>
+                </div>
+                <div class="col-1 col-md-1">
+                    <span for="">:</span>
+                </div>
+                <div class="col-6 col-md-6" style="font-size: 15px;color: rgb(33, 88, 11);">
+                    {{data?.data.retailerName}}
+                </div>
+            </div>
+            <div class="col-12 col-md-12 d-flex  justify-content-center align-items-center">
+                <div class="col-5 col-md-5" style="font-size: 15px;color: black;">
+                    <label for="">SubLcoId </label>
+                </div>
+                <div class="col-1 col-md-1">
+                    <span for="">:</span>
+                </div>
+                <div class="col-6 col-md-6" style="font-size: 13px;color: rgb(6, 4, 109);">
+                    {{data?.data.retailerId}}
+                </div>
+            </div>
+        </div>
+    </div>
+    <section>
+        <div class="d-flex flex-column flex-lg-row justify-content-center align-items-center">
+            <div class="col-lg-5 col-12 mb-3 mb-lg-0">
+                <div class="card">
+                    <div class="input_box">
+                        <input type="text" placeholder="Search">
+                    </div>
+                    <div class="table1 mb-3">
+                        <p style="color: white;">NOT ADDED</p>
+                        <div class="row inp">
+                            <div class="col-12 example-container">
+                                <!-- <div cdkDropList #todoList="cdkDropList" [cdkDropListData]="todo"
+                                    [cdkDropListConnectedTo]="[doneList]" class="example-list"
+                                    (cdkDropListDropped)="drop($event)">
+                                    <div *ngFor="let item of todo" class="example-box" cdkDrag
+                                        (click)="toggleSelection(item)" [class.selected]="isSelected(item)">{{
+                                        item.operatorname }}
+                                    </div>
+                                </div> -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="display my-3 my-lg-0 mx-lg-3">
+                <button class="btn" (click)="moveSelected_added_Items('right')"><i
+                        class="bx bx-right-arrow-alt"></i></button>
+                <button class="btn" (click)="moveAllSelected_added_Items('right')"><i
+                        class="bx bx-arrow-to-right"></i></button>
+                <button class="btn" (click)="moveSelected_added_Items('left')"><i
+                        class="bx bx-left-arrow-alt"></i></button>
+                <button class="btn" (click)="moveAllSelected_added_Items('left')"><i
+                        class="bx bx-arrow-to-left"></i></button>
+            </div>
+            <div class="col-lg-5 col-12">
+                <div class="card">
+
+                    <div class="input_box">
+                        <input type="text" placeholder="Search">
+                    </div>
+                    <div class="table2 mb-3">
+                        <p style="color: white;">ADDED</p>
+                        <div class="row inp">
+                            <!-- <div class="col-12 example-container">
+                                <div cdkDropList #doneList="cdkDropList" [cdkDropListData]="allocated"
+                                    [cdkDropListConnectedTo]="[todoList]" class="example-list"
+                                    (cdkDropListDropped)="drop($event)">
+                                    <div *ngFor="let item of allocated" class="example-box" cdkDrag>{{ item.operatorname
+                                        }}
+                                    </div>
+                                </div>
+                            </div> -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        <div class="col-12 d-flex justify-content-center align-item-center">
+            <button type="button" class="btn" style="background:#058372;color: white;height: 2pc; width: 5pc"
+                (click)="save()">Save</button>
+        </div>
+    </section>
+</div>

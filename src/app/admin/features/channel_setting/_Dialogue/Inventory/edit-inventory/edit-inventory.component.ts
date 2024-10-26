@@ -31,7 +31,7 @@ export class EditInventoryComponent {
   isOperatorDisabled: boolean = false;
   constructor(
     public dialogRef: MatDialogRef<EditInventoryComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: any, public dialog: MatDialog, private userService: BaseService, private storageService: StorageService, ) {
+    @Inject(MAT_DIALOG_DATA) public data: any, public dialog: MatDialog, private userService: BaseService, private storageService: StorageService,  private swal: SwalService) {
     this.username = storageService.getUsername();
     this.role = storageService.getUserRole();
     this.castype = data.castype;
@@ -98,26 +98,33 @@ export class EditInventoryComponent {
       formData.append('castype', this.CASFormControl.value || '');
       formData.append('isupload', this.BTNFormControl.value?.toString() || '');
   
-      this.userService.UploadInventory(formData).subscribe(
-        (res: any) => {
-          Swal.fire({
-            icon: 'success',
-            title: 'Upload Successful',
-            text: res?.message,
-            confirmButtonText: 'OK'
-          }).then(() => {
-            window.location.reload();
-          });
-        },
-        (err) => {
-          Swal.fire({
-            icon: 'error',
-            title: 'Upload Failed',
-            text: err?.error?.message,
-            confirmButtonText: 'OK'
-          });
-        }
-      );
+      this.userService.UploadInventory(formData)
+      // .subscribe(
+      //   (res: any) => {
+      //     Swal.fire({
+      //       icon: 'success',
+      //       title: 'Upload Successful',
+      //       text: res?.message,
+      //       confirmButtonText: 'OK'
+      //     }).then(() => {
+      //       window.location.reload();
+      //     });
+      //   },
+      //   (err) => {
+      //     Swal.fire({
+      //       icon: 'error',
+      //       title: 'Upload Failed',
+      //       text: err?.error?.message,
+      //       confirmButtonText: 'OK'
+      //     });
+      //   }
+      // );
+
+      .subscribe((res: any) => {
+        this.swal.success(res?.message);
+      }, (err) => {
+        this.swal.Error(err?.error?.message);
+      });
     }
   }
   

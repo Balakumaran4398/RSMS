@@ -170,7 +170,7 @@ export class ActivationComponent implements OnInit {
       formData.append('file', this.file);
       formData.append('packageid', this.lcogroupid);
       formData.append('type', '1');
-      formData.append('plantype', '1');
+      formData.append('plantype', '5');
       formData.append('plan', this.plan);
 
       this.userservice.uploadFirsttimeActivation(formData).subscribe(

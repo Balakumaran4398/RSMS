@@ -55,8 +55,8 @@
         <div class="col-12 col-md-6 table1">
             <p>ALACARTE</p>
             <div class="row ">
-                <div class="col-12 col-md-5 example-container">
-                    <input type="text" placeholder="search" class="form-control" [(ngModel)]="searchTerm"
+                <div class="col-12 col-md-5 example-container input_box">
+                    <input type="text" placeholder="search"  [(ngModel)]="searchTerm"
                         (input)="filterAvailableList()">
                         <!-- <button class="button" (click)="applyFilter()">Search</button> -->
                     <!-- <h6 class="av">Available - {{filteredAvailableAlacarteList.length}} </h6> -->
@@ -79,8 +79,8 @@
                     <button class="button2" (click)="moveAll_alacarte_Items('left')"><i
                             class="bx bx-arrow-to-left"></i></button>
                 </div>
-                <div class="col-12 col-md-5 example-container">
-                    <input type="text" placeholder="search" class="form-control"> 
+                <div class="col-12 col-md-5 example-container  input_box ">
+                    <input type="text" placeholder="search" > 
                     <h6 class="ad">Added - {{added_alacrte_count}} </h6>
                     <div cdkDropList #doneList="cdkDropList" [cdkDropListData]="added_alacarte_list"
                         [cdkDropListConnectedTo]="[todoList]" class="example-list" (cdkDropListDropped)="drop($event)">
@@ -97,8 +97,8 @@
         <div class="col-12 col-md-6 table2 ">
             <p>ADDON</p>
             <div class="row">
-                <div class="col-12 col-md-5 example-container">
-                    <input type="text" placeholder="search" class="form-control">
+                <div class="col-12 col-md-5 example-container input_box ">
+                    <input type="text" placeholder="search" >
                     <h6 class="av">Available - {{available_bouquet_count }}</h6>
                     <div cdkDropList #todoList="cdkDropList" [cdkDropListData]="available_bouquet_list"
                         [cdkDropListConnectedTo]="[doneList]" class="example-list" (cdkDropListDropped)="drop($event)">
@@ -116,8 +116,8 @@
                     <button class="button2" (click)="moveAll_bouquet_Items('left')"><i
                             class="bx bx-arrow-to-left"></i></button>
                 </div>
-                <div class="col-12 col-md-5 example-container">
-                    <input type="text" placeholder="search" class="form-control">
+                <div class="col-12 col-md-5 example-container input_box ">
+                    <input type="text" placeholder="search" >
                     <h6 class="ad">Added -{{added_bouquet_count}} </h6>
                     <div cdkDropList #doneList="cdkDropList" [cdkDropListData]="added_bouquet_list"
                         [cdkDropListConnectedTo]="[todoList]" class="example-list" (cdkDropListDropped)="drop($event)">

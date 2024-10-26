@@ -1,0 +1,42 @@
+.profile {
+    padding: 1rem;
+    background-color: rgb(222 241 241);
+    border-radius: 1px solid rgb(77, 75, 75);
+    height: 28pc;
+    width: 25pc;
+}
+
+.profile1 {
+    padding: 1rem;
+    background-color: rgb(222 241 241);
+    border-radius: 1px solid rgb(77, 75, 75);
+    height: 28pc;
+    width: 25pc;
+}
+
+.display {
+    display: flex;
+}
+
+// .label{
+//     color: ;
+// }
+.image {
+    width: 250px;
+    height: 250px;
+}
+
+@media screen and (max-width:560px) {
+    // .display {
+    //     display: block;
+    // }
+
+  
+
+    // span {
+    //     display: none;
+    // }
+}
+@media screen and (max-width:770px) {
+
+}

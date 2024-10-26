@@ -40,7 +40,7 @@ export class CreateLcoComponent {
       }
     });
 
-    this.userservice.createLcoGroup(this.role, this.username, this.lcogroupname)
+    this.userservice.createLcoGroup(this.role, this.username, this.lcogroupname || null)
       .subscribe(
         (res: any) => {
           Swal.fire({
@@ -48,6 +48,7 @@ export class CreateLcoComponent {
             text: res?.message,
             icon: 'success',
             timer: 2000,
+            timerProgressBar:true,
             showConfirmButton: false
           }).then(() => {
             this.dialogRef.close();
@@ -58,7 +59,9 @@ export class CreateLcoComponent {
             title: 'Error!',
             text: err?.error?.message,
             icon: 'error',
-            confirmButtonText: 'OK'
+            confirmButtonText: 'OK',
+            timer: 3000,
+            timerProgressBar:true,
           });
         }
       );

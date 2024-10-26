@@ -17,7 +17,13 @@ import { HttpResponse } from '@angular/common/http';
 import { ChangeDetectorRef } from '@angular/core';
 declare var $: any;
 const moment = _rollupMoment || _moment;
+interface requestBodylogs {
+  access_ip: any;
+  action: any;
+  remarks: any;
+  data: any;
 
+}
 export const MY_FORMATS = {
   parse: {
     dateInput: 'MM/YYYY',
@@ -45,6 +51,7 @@ export class SubscriberdialogueComponent implements OnInit {
   options: string[] = ['One', 'Two', 'Three'];
   readonly date = new FormControl(moment());
   columnDefs: any;
+  finalrow: any = [];
   setMonthAndYear(normalizedMonthAndYear: Moment, datepicker: MatDatepicker<Moment>) {
     const ctrlValue = this.date.value ?? moment();
     ctrlValue.month(normalizedMonthAndYear.month());
@@ -152,6 +159,8 @@ export class SubscriberdialogueComponent implements OnInit {
   f_subid: any;
   boxno: any;
   message: any;
+  smart: boolean = false;
+  box: boolean = false;
   status: any;
   smartcardno: any;
   mobile: any;
@@ -170,7 +179,7 @@ export class SubscriberdialogueComponent implements OnInit {
   rechargetype: any[] = [];
   packagenameList: any = [];
   subid_1: any;
-
+  newSubid: any;
   p_name: any;
   selectedRechargetype: string = '0';
   selectedpackagetype: string = '0';
@@ -229,13 +238,13 @@ export class SubscriberdialogueComponent implements OnInit {
   id_proof_list: { [key: string]: number } = {};
   add_proof_list: { [key: string]: number } = {};
   constructor(public dialogRef: MatDialogRef<SubscriberdialogueComponent>, private swal: SwalService,
-    @Inject(MAT_DIALOG_DATA) public data: any, public userService: BaseService, private cdr: ChangeDetectorRef, public storageService: StorageService, private fb: FormBuilder, private zone: NgZone) {
+    @Inject(MAT_DIALOG_DATA) public data: any, public userservice: BaseService, private cdr: ChangeDetectorRef, public storageService: StorageService, private fb: FormBuilder, private zone: NgZone) {
     this.role = storageService.getUserRole();
     this.username = storageService.getUsername();
     console.log(data);
     this.subid_1 = data.subId;
     console.log(this.subid_1);
-
+    this.newSubid = data.newsubid;
     this.sType = data?.type;
     this.pairBoxList = data['pairBoxlist'].map((item: any) => item);
     // this.pairSmartcardList = data['pairSmartcardlist'].map((item: any) => item);
@@ -279,6 +288,14 @@ export class SubscriberdialogueComponent implements OnInit {
     this.smartcardno = data['detailsList'].smartcard;
     this.statusdisplay = data['detailsList'].statusdisplay;
     this.boxno = data['detailsList'].boxid;
+    if (this.boxno) {
+      this.box = true
+      this.smart = false
+    } else if (this.smartcardno) {
+      this.smart = true;
+      this.box = false
+    }
+
     this.expirydate = data['detailsList'].expirydate;
     this.packagename = data['subdetaillist']?.[0]?.packagename;
     console.log(this.packagename);
@@ -301,7 +318,7 @@ export class SubscriberdialogueComponent implements OnInit {
 
     this.Editform = this.fb.group(
       {
-        id: this.subid,
+        id: this.newSubid,
         customername: ['', Validators.required],
         customerlastname: ['', Validators.required],
         dateofbirth: ['', [Validators.required]],
@@ -360,38 +377,38 @@ export class SubscriberdialogueComponent implements OnInit {
       api: this.gridApi
     };
     this.onGridReady(params);
-    this.userService.PackageList(this.role, this.username, this.type).subscribe((data) => {
+    this.userservice.PackageList(this.role, this.username, this.type).subscribe((data) => {
       this.packagenameList = data;
       this.cdr.detectChanges();
     })
-    this.userService.getActiveCasList(this.role, this.username).subscribe((data: any) => {
+    this.userservice.getActiveCasList(this.role, this.username).subscribe((data: any) => {
       let v = Object.entries(data).map(([key, value]) => ({ name: key, id: value }));
       this.cas = v
       this.cdr.detectChanges();
     });
 
 
-    this.userService.getNotinOperatorList(this.role, this.username, this.operatorid).subscribe((data: any) => {
+    this.userservice.getNotinOperatorList(this.role, this.username, this.operatorid).subscribe((data: any) => {
       this.lco_list = Object.entries(data).map(([key, value]) => ({ name: key, id: value }));
       this.cdr.detectChanges();
     })
-    // this.userService.getActivePackagePlanList(this.role, this.username).subscribe((data: any) => {
+    // this.userservice.getActivePackagePlanList(this.role, this.username).subscribe((data: any) => {
     //   this.plantype = Object.entries(data).map(([key, value]) => ({ name: key, id: value }));
     //   this.selectedRechargetype = data;
     // })
-    // this.userService.getActivePackagePlanList(this.role, this.username).subscribe((data: any) => {
+    // this.userservice.getActivePackagePlanList(this.role, this.username).subscribe((data: any) => {
     //   this.plantype = data;
 
     //   console.log(this.plantype);
     // });
-    this.userService.getActivePackagePlanList(this.role, this.username).subscribe((data: any) => {
+    this.userservice.getActivePackagePlanList(this.role, this.username).subscribe((data: any) => {
       this.plantypeSubject.next(data);
     });
-    this.userService.getPlanTypeList(this.role, this.username).subscribe((data: any) => {
+    this.userservice.getPlanTypeList(this.role, this.username).subscribe((data: any) => {
       this.rechargetype = Object.entries(data).map(([key, value]) => ({ name: key, id: value }));
       this.cdr.detectChanges();
     })
-    this.userService.cancelSubscriptionOfSmartcardDetails(this.role, this.username, this.smartcardno).subscribe((data: any) => {
+    this.userservice.cancelSubscriptionOfSmartcardDetails(this.role, this.username, this.smartcardno).subscribe((data: any) => {
       this.TotalLcoAmount = data.totallcoamount;
       this.rowData1 = data.cancelproduct;
       console.log(this.rowData1);
@@ -401,7 +418,7 @@ export class SubscriberdialogueComponent implements OnInit {
     this.loadAddProofList();
   }
   loadIdProofList(): void {
-    this.userService.getIdProofList(this.role, this.username).subscribe(
+    this.userservice.getIdProofList(this.role, this.username).subscribe(
       (data: any) => {
         this.id_proof_list = data.idprooftypeid;
         this.cdr.detectChanges();
@@ -412,7 +429,7 @@ export class SubscriberdialogueComponent implements OnInit {
     );
   }
   loadAddProofList(): void {
-    this.userService.getAddresProofList(this.role, this.username).subscribe(
+    this.userservice.getAddresProofList(this.role, this.username).subscribe(
       (data: any) => {
         this.add_proof_list = data.addressprooftypeid;
         console.log("ADD Proof List", this.add_proof_list);
@@ -765,10 +782,18 @@ export class SubscriberdialogueComponent implements OnInit {
     },
     {
       headerName: 'SELECTED PACKAGES',
+      field: 'channel_name', width: 200,
+    },
+  ]
+  columnDefs2: any[] = [
+    {
+      headerName: "S.No", valueGetter: 'node.rowIndex+1', width: 100,
+    },
+    {
+      headerName: 'SELECTED PACKAGES',
       field: 'productname', width: 200,
     },
   ]
-
 
 
 
@@ -777,7 +802,7 @@ export class SubscriberdialogueComponent implements OnInit {
     console.log(this.sType);
 
     if (this.sType === 'addon') {
-      this.userService.getAddonpackageDetails(this.role, this.username, this.smartcardno).subscribe(
+      this.userservice.getAddonpackageDetails(this.role, this.username, this.smartcardno).subscribe(
         //   (res: any) => {
         //   this.swal.success(res?.message);
         //   this.rowData = res;
@@ -806,7 +831,7 @@ export class SubscriberdialogueComponent implements OnInit {
 
       );
     } else if (this.sType === 'alacarte') {
-      this.userService.getAlacarteDetails(this.role, this.username, this.smartcardno).subscribe(
+      this.userservice.getAlacarteDetails(this.role, this.username, this.smartcardno).subscribe(
         //   (res: any) => {
         //   this.swal.success(res?.message);
         //   this.rowData = res;
@@ -835,7 +860,7 @@ export class SubscriberdialogueComponent implements OnInit {
       );
 
     } else if (this.sType === 'remove') {
-      this.userService.removeProductDetails(this.role, this.username, this.smartcardno).subscribe(
+      this.userservice.removeProductDetails(this.role, this.username, this.smartcardno).subscribe(
         //   (res: any) => {
         //   this.swal.success(res?.message);
         //   this.rowData = res;
@@ -870,8 +895,20 @@ export class SubscriberdialogueComponent implements OnInit {
   onSelectionChanged() {
     if (this.gridApi) {
       const selectedRows = this.gridApi.getSelectedRows();
-      this.isAnyRowSelected = selectedRows.length > 0;
-      this.rows = selectedRows;
+      this.isAnyRowSelected = selectedRows;
+      if (this.finalrow.length > 0) {
+        console.log('if');
+        this.rows = this.finalrow;
+      } else {
+        console.log('else');
+
+        this.rows = selectedRows;
+      }
+      console.log(this.rows);
+      console.log(this.isAnyRowSelected);
+      console.log(this.finalrow);
+
+
     }
   }
   filteredIntendArea(): any[] {
@@ -902,35 +939,19 @@ export class SubscriberdialogueComponent implements OnInit {
     }
   }
   loginDetails() {
-    this.userService.updatelogindetails(this.role, this.username, this.subid, this.islock, this.password).subscribe(
+    this.swal.Loading();
+    this.userservice.updatelogindetails(this.role, this.username, this.subid, this.islock, this.password).subscribe(
       (res: any) => {
-        Swal.fire({
-          title: 'Login details updated!',
-          text: res?.message || 'The login details have been successfully updated.',
-          icon: 'success',
-          timer: 3000,
-          showConfirmButton: false,
-          willClose: () => {
-            window.location.reload();
-          }
-        });
+        this.swal.success(res?.message);
+      }, (err) => {
+        this.swal.Error(err?.error?.message);
+      });
 
-      },
-      (error) => {
-        console.error(error);
-        Swal.fire({
-          title: 'Error!',
-          text: error?.error?.message || 'Failed to update login details. Please try again.',
-          icon: 'error',
-          confirmButtonText: 'Okay'
-        });
-      }
-    );
   }
 
 
   // addSmartcard() {
-  //   this.userService.addSmartcardToSubscriber(this.role, this.username, this.operatorid, this.castype, this.smartcard, this.boxid, this.subid)
+  //   this.userservice.addSmartcardToSubscriber(this.role, this.username, this.operatorid, this.castype, this.smartcard, this.boxid, this.subid)
   //     .subscribe((res: any) => {
   //       this.returndata = res;
 
@@ -951,30 +972,14 @@ export class SubscriberdialogueComponent implements OnInit {
         Swal.showLoading(null);
       }
     });
-
-    this.userService.addSmartcardToSubscriber(this.role, this.username, this.operatorid, this.castype, this.smartcard, this.boxid, this.subid_1).subscribe(
+    this.userservice.addSmartcardToSubscriber(this.role, this.username, this.operatorid, this.castype, this.smartcard, this.boxid, this.subid_1 || this.newSubid).subscribe(
       (res: any) => {
         this.returndata = res;
-        Swal.fire({
-          icon: 'success',
-          title: 'Smartcard Added Successfully',
-          text: res?.message,
-          confirmButtonText: 'OK'
-        }).then(() => {
-          window.location.reload();
-        });
-      },
-      (err) => {
-        this.returndata = err?.error;
-        console.log(this.returndata);
-        Swal.fire({
-          icon: 'error',
-          title: 'Failed to Add Smartcard',
-          text: err?.error?.message,
-          confirmButtonText: 'OK'
-        });
-      }
-    );
+        this.swal.success(res?.message);
+      }, (err) => {
+        this.swal.Error(err?.error?.message);
+      });
+
   }
 
 
@@ -988,7 +993,8 @@ export class SubscriberdialogueComponent implements OnInit {
     //   });
     //   return; 
     // }
-    this.userService.UpdateSubscriberDetails(this.Editform.value)
+    this.swal.Loading();
+    this.userservice.UpdateSubscriberDetails(this.Editform.value)
       .subscribe((res: any) => {
         this.swal.success(res?.message);
       }, (err) => {
@@ -1005,11 +1011,19 @@ export class SubscriberdialogueComponent implements OnInit {
       event.preventDefault();
     }
   }
+  onKeydown_landline(event: KeyboardEvent) {
+    const allowedKeys = ['Backspace', 'Tab', 'ArrowLeft', 'ArrowRight', '-', 'Delete'];
+    const key = event.key;
 
+    // Allow digits (0-9), hyphen, and control keys
+    if (!/^\d$/.test(key) && !allowedKeys.includes(key)) {
+      event.preventDefault();
+    }
+  }
   // smartcardlist(event: Event) {
   //   const target = event.target as HTMLSelectElement;
   //   const smartcard = target.value;
-  //   this.userService.getBoxidBySmartcard(this.role, this.username, this.smartcard).subscribe((data: any) => {
+  //   this.userservice.getBoxidBySmartcard(this.role, this.username, this.smartcard).subscribe((data: any) => {
   //     this.boxid = data;
   //     let boxid: any = document.getElementById("boxid");
   //     boxid!.value = data;
@@ -1019,7 +1033,7 @@ export class SubscriberdialogueComponent implements OnInit {
   // casTypelist(event: Event) {
   //   const target = event.target as HTMLSelectElement;
   //   const castype = target.value;
-  //   this.userService.getNotallocatedSmartcardListByCastypeAndOperatorid(this.role, this.username, this.operatorid, castype).subscribe((data: any) => {
+  //   this.userservice.getNotallocatedSmartcardListByCastypeAndOperatorid(this.role, this.username, this.operatorid, castype).subscribe((data: any) => {
   //     this.area = Object.entries(data).map(([key, value]) => ({ name: key, id: value }));
   //     console.log(this.area);
 
@@ -1030,7 +1044,7 @@ export class SubscriberdialogueComponent implements OnInit {
     const castype = target.value;
 
     // Call API to fetch smartcard list based on selected CAS type
-    this.userService.getNotallocatedSmartcardListByCastypeAndOperatorid(this.role, this.username, this.operatorid, castype)
+    this.userservice.getNotallocatedSmartcardListByCastypeAndOperatorid(this.role, this.username, this.operatorid, castype)
       .subscribe((data: any) => {
         // Check if any data is returned
         if (data && Object.keys(data).length > 0) {
@@ -1063,7 +1077,7 @@ export class SubscriberdialogueComponent implements OnInit {
     const smartcard = target.value;
 
     // Call API to fetch box ID based on the selected smartcard
-    this.userService.getBoxidBySmartcard(this.role, this.username, smartcard).subscribe((data: any) => {
+    this.userservice.getBoxidBySmartcard(this.role, this.username, smartcard).subscribe((data: any) => {
       // Set the box ID in the input field
       this.boxid = data;
 
@@ -1084,7 +1098,7 @@ export class SubscriberdialogueComponent implements OnInit {
   onSubscriberStatusChange(event: Event) {
     const target = event.target as HTMLSelectElement;
     const lco = target.value;
-    this.userService.getAreaListByOperatorid(this.role, this.username, lco)
+    this.userservice.getAreaListByOperatorid(this.role, this.username, lco)
       .subscribe((data: any) => {
         this.area_list = Object.entries(data.areaid).map(([key, value]) => ({ name: key, id: value }));
 
@@ -1093,7 +1107,7 @@ export class SubscriberdialogueComponent implements OnInit {
   onAreaStatusChange(event: Event) {
     const target = event.target as HTMLSelectElement;
     const area = target.value;
-    this.userService.getStreetListByAreaid(this.role, this.username, area)
+    this.userservice.getStreetListByAreaid(this.role, this.username, area)
       .subscribe((data: any) => {
         this.street_list = Object.entries(data.streetid).map(([key, value]) => ({ name: key, id: value }));
       });
@@ -1105,13 +1119,14 @@ export class SubscriberdialogueComponent implements OnInit {
   onSubscriberlcoChange(event: Event) {
     const target = event.target as HTMLSelectElement;
     const lco = target.value;
-    this.userService.getSubscriberIdListByOperatorid(this.role, this.username, lco).subscribe((data: any) => {
+    this.userservice.getSubscriberIdListByOperatorid(this.role, this.username, lco).subscribe((data: any) => {
       this.sub_list = Object.entries(data).map(([key, value]) => ({ name: key, id: value }));
     })
 
   }
   changeOperator() {
-    this.userService.transferLcoToSmartcard(this.role, this.username, this.lcoid, this.lcoareaid, this.lcostreetid, this.subid_1, this.withsubscription, 0, 2)
+    this.swal.Loading();
+    this.userservice.transferLcoToSmartcard(this.role, this.username, this.lcoid, this.lcoareaid, this.lcostreetid, this.subid_1, this.withsubscription, 0, 2)
       .subscribe((res: any) => {
         this.swal.success(res?.message);
       }, (err) => {
@@ -1120,7 +1135,8 @@ export class SubscriberdialogueComponent implements OnInit {
   }
 
   refreshSmartcard() {
-    this.userService.refreshSmartcard(this.role, this.username, this.smartcardno, 0, 3)
+    this.swal.Loading();
+    this.userservice.refreshSmartcard(this.role, this.username, this.smartcardno, 0, 3)
       .subscribe((res: any) => {
         this.swal.success(res?.message);
       }, (err) => {
@@ -1128,8 +1144,8 @@ export class SubscriberdialogueComponent implements OnInit {
       });
   }
   deactivationofSmartcard() {
-    this.userService.deactivationofSmartcard(this.role, this.username, this.smartcardno, 2)
-
+    this.swal.Loading();
+    this.userservice.deactivationofSmartcard(this.role, this.username, this.smartcardno, 2)
       .subscribe((res: any) => {
         this.swal.success(res?.message);
       }, (err) => {
@@ -1137,8 +1153,8 @@ export class SubscriberdialogueComponent implements OnInit {
       });
   }
   pinchange() {
-    this.userService.pinchange(this.role, this.username, this.smartcardno, this.newpin, 3, 0)
-
+    this.swal.Loading();
+    this.userservice.pinchange(this.role, this.username, this.smartcardno, this.newpin, 3, 0)
       .subscribe((res: any) => {
         this.swal.success(res?.message);
       }, (err) => {
@@ -1146,8 +1162,8 @@ export class SubscriberdialogueComponent implements OnInit {
       });
   }
   pvrchange() {
-    this.userService.pvrChange(this.role, this.username, this.smartcardno, this.PVRstatus, 3, 0)
-
+    this.swal.Loading();
+    this.userservice.pvrChange(this.role, this.username, this.smartcardno, this.PVRstatus, 3, 0)
       .subscribe((res: any) => {
         this.swal.success(res?.message);
       }, (err) => {
@@ -1156,8 +1172,8 @@ export class SubscriberdialogueComponent implements OnInit {
   }
 
   deleteForceMessage() {
-    this.userService.deleteForceMessage(this.role, this.username, this.smartcardno)
-
+    this.swal.Loading();
+    this.userservice.deleteForceMessage(this.role, this.username, this.smartcardno)
       .subscribe((res: any) => {
         this.swal.success(res?.message);
       }, (err) => {
@@ -1165,8 +1181,8 @@ export class SubscriberdialogueComponent implements OnInit {
       });
   }
   forcetuning() {
-    this.userService.forceTuning(this.role, this.username, this.smartcardno)
-
+    this.swal.Loading();
+    this.userservice.forceTuning(this.role, this.username, this.smartcardno)
       .subscribe((res: any) => {
         this.swal.success(res?.message);
       }, (err) => {
@@ -1174,8 +1190,8 @@ export class SubscriberdialogueComponent implements OnInit {
       });
   }
   boxIdChange() {
-    this.userService.boxIdChange(this.role, this.username, this.smartcardno, this.new_boxid, 0, 2)
-
+    this.swal.Loading();
+    this.userservice.boxIdChange(this.role, this.username, this.smartcardno, this.new_boxid, 0, 2)
       .subscribe((res: any) => {
         this.swal.success(res?.message);
       }, (err) => {
@@ -1202,7 +1218,7 @@ export class SubscriberdialogueComponent implements OnInit {
       role: formValues.role,
       username: formValues.username
     };
-    this.userService.sendMessage(payload)
+    this.userservice.sendMessage(payload)
 
       .subscribe((res: any) => {
         this.swal.success(res?.message);
@@ -1284,7 +1300,7 @@ export class SubscriberdialogueComponent implements OnInit {
         Swal.showLoading(null);
       }
     });
-    this.userService.firsttimeActivationOfCard(requestBody).subscribe(
+    this.userservice.firsttimeActivationOfCard(requestBody).subscribe(
       (res: any) => {
         Swal.fire({
           title: 'Success',
@@ -1328,7 +1344,7 @@ export class SubscriberdialogueComponent implements OnInit {
         Swal.showLoading(null);
       }
     });
-    this.userService.ActivationOfCard(requestBody).subscribe(
+    this.userservice.ActivationOfCard(requestBody).subscribe(
       (res: any) => {
         Swal.fire({
           title: 'Success',
@@ -1350,23 +1366,22 @@ export class SubscriberdialogueComponent implements OnInit {
     );
   }
   baseChangeofSmartcardPackage() {
-    Swal.fire({
-      title: 'Loading...',
-      text: 'Please wait while we process your request.',
-      allowOutsideClick: false, // Disable clicking outside the popup to close it
-      didOpen: () => {
-        Swal.showLoading(null);
-      }
-    });
+    // Swal.fire({
+    //   title: 'Loading...',
+    //   text: 'Please wait while we process your request.',
+    //   allowOutsideClick: false, // Disable clicking outside the popup to close it
+    //   didOpen: () => {
+    //     Swal.showLoading(null);
+    //   }
+    // });
 
-    this.userService.getBaseChangeConfirmation(this.role, this.username, this.newpackagename, this.selectedRechargetype, this.plantype || this.f_date, this.smartcardno, 8, 0)
+    this.userservice.getBaseChangeConfirmation(this.role, this.username, this.newpackagename, this.selectedRechargetype, this.plantype || this.f_date, this.smartcardno, 8, 0)
       .subscribe((data: any) => {
         this.changebase = data;
         console.log(this.changebase);
         this.changebase_msoAmount = data.msoAmount;
         this.changebase_totalRefundToLco = data.totalRefundToLco;
         this.changebase_expiryDate = data.expiryDate;
-        this.swal.success(data?.message);
         this.cdr.detectChanges();
       }, (err) => {
         this.swal.Error(err?.error?.message);
@@ -1395,31 +1410,35 @@ export class SubscriberdialogueComponent implements OnInit {
         Swal.showLoading(null);
       }
     });
-    this.userService.baseChangeofSmartcardPackage(requestBody).subscribe((res: any) => {
+    this.userservice.baseChangeofSmartcardPackage(requestBody).subscribe((res: any) => {
       this.swal.success(res?.message);
     }, (err) => {
       this.swal.Error(err?.error?.message);
     });
   }
   getFirstTimeActivationConfirmation() {
-    Swal.fire({
-      title: 'Loading...',
-      text: 'Please wait while we process your request.',
-      allowOutsideClick: false, // Disable clicking outside the popup to close it
-      didOpen: () => {
-        Swal.showLoading(null);
-      }
-    });
-    this.userService.getFirstTimeActivationConfirmation(this.role, this.username, this.newpackagename, this.selectedRechargetype, this.plantype || this.f_date, this.smartcardno, 1, 0)
+    // Swal.fire({
+    //   title: 'Loading...',
+    //   text: 'Please wait while we process your request.',
+    //   allowOutsideClick: false, // Disable clicking outside the popup to close it
+    //   didOpen: () => {
+    //     Swal.showLoading(null);
+    //   }
+    // });
+    this.swal.Loading();
+    this.userservice.getFirstTimeActivationConfirmation(this.role, this.username, this.newpackagename, this.selectedRechargetype, this.plantype || this.f_date, this.smartcardno, 1, 0)
       .subscribe((data: any) => {
         this.First_list = data;
-        this.swal.success(data?.message);
+        this.swal.success_1(data?.message);
+        this.cdr.detectChanges();
       }, (err) => {
         this.swal.Error(err?.error?.message);
       });
+    // this.cdr.detectChanges();
   }
   lcotransferSinglesmartcard() {
-    this.userService.lcotransferSinglesmartcard(this.role, this.username, this.operatorid, this.subid, this.f_subid, this.withsubscription, this.smartcardno, 0, 2)
+    this.swal.Loading();
+    this.userservice.lcotransferSinglesmartcard(this.role, this.username, this.operatorid, this.subid, this.f_subid, this.withsubscription, this.smartcardno, 0, 2)
       .subscribe((res: any) => {
         this.swal.success(res?.message);
       }, (err) => {
@@ -1427,7 +1446,8 @@ export class SubscriberdialogueComponent implements OnInit {
       });
   }
   smartcardSuspend() {
-    this.userService.smartcardSuspend(this.role, this.username, this.smartcardno, 0, 4, this.sus_reason)
+    this.swal.Loading();
+    this.userservice.smartcardSuspend(this.role, this.username, this.smartcardno, 0, 4, this.sus_reason)
       .subscribe((res: any) => {
         this.swal.success(res?.message);
       }, (err) => {
@@ -1435,7 +1455,8 @@ export class SubscriberdialogueComponent implements OnInit {
       });
   }
   reactivationofSmartcard() {
-    this.userService.reactivationofSmartcard(this.role, this.username, this.smartcardno, 0, 3)
+    this.swal.Loading();
+    this.userservice.reactivationofSmartcard(this.role, this.username, this.smartcardno, 0, 3)
       .subscribe((res: any) => {
         this.swal.success(res?.message);
       }, (err) => {
@@ -1443,7 +1464,8 @@ export class SubscriberdialogueComponent implements OnInit {
       });
   }
   resume() {
-    this.userService.smartcardResume(this.role, this.username, this.smartcardno, 0, 5,)
+    this.swal.Loading();
+    this.userservice.smartcardResume(this.role, this.username, this.smartcardno, 0, 5,)
       .subscribe((res: any) => {
         this.swal.success(res?.message);
       }, (err) => {
@@ -1451,16 +1473,62 @@ export class SubscriberdialogueComponent implements OnInit {
       });
   }
   block() {
-    this.userService.blockSmartcard(this.role, this.username, this.smartcardno, 2, this.block_reason,)
-      .subscribe((res: any) => {
-        this.swal.success(res?.message);
-      }, (err) => {
-        this.swal.Error(err?.error?.message);
-      });
+
+    Swal.fire({
+      title: "Are you sure?",
+      text: "You won't be able to Block  this!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, Update it!"
+    }).then((result) => {
+      if (result.isConfirmed) {
+        Swal.fire({
+          title: 'Updating...',
+          text: 'Please wait ',
+          allowOutsideClick: false,
+          didOpen: () => {
+            Swal.showLoading(null);
+          }
+        });
+        this.userservice.blockSmartcard(this.role, this.username, this.smartcardno, 2, this.block_reason,).subscribe(
+          (res) => {
+            console.log(res);
+            Swal.fire({
+              position: "center",
+              icon: "success",
+              title: "Your update was successful",
+              showConfirmButton: false,
+              timer: 1000
+            }).then(() => {
+              window.location.reload();
+            });
+          },
+          (err) => {
+            Swal.fire({
+              position: 'center',
+              icon: 'error',
+              title: 'Error',
+              text: err?.error?.message,
+              showConfirmButton: false,
+              timer: 1500
+            });
+          }
+        );
+      }
+    });
+
+    // this.userservice.blockSmartcard(this.role, this.username, this.smartcardno, 2, this.block_reason,)
+    //   .subscribe((res: any) => {
+    //     this.swal.success(res?.message);
+    //   }, (err) => {
+    //     this.swal.Error(err?.error?.message);
+    //   });
   }
   cancelSmartcard() {
     this.swal.Loading();
-    this.userService.cancelSmartcard(this.role, this.username, this.smartcardno, 2, 0,)
+    this.userservice.cancelSmartcard(this.role, this.username, this.smartcardno, 2, 0,)
       .subscribe((res: any) => {
         this.swal.success(res?.message);
       }, (err) => {
@@ -1479,6 +1547,7 @@ export class SubscriberdialogueComponent implements OnInit {
   }
   // --------------------------------------------------addon--------------------------------------
   addAddonConfirmation() {
+    this.finalrow = this.rows
     let requestBody = {
       role: this.role,
       username: this.username,
@@ -1486,64 +1555,70 @@ export class SubscriberdialogueComponent implements OnInit {
       type: 6,
       retailerid: 0,
       addonlist: this.rows,
+      managepackagelist: this.rowData,
     }
-    this.userService.addAddonConfirmation(requestBody).subscribe(
+    this.userservice.addAddonConfirmation(requestBody).subscribe(
       (response: HttpResponse<any[]>) => {
         if (response.status === 200) {
           this.rowData = response.body;
-          const selectedRows = this.gridApi.getSelectedRows();
-          this.rowData3 = selectedRows.filter((row: any) => row.packagename);
+          console.log(this.rowData);
+          // const selectedRows = this.gridApi.getSelectedRows();
+          // this.rowData3 = selectedRows.filter((row: any) => row.packagename);
+          console.log(this.rows?.length);
+          this.cdr.detectChanges();
           console.log(this.rowData3);
-          Swal.fire('Success', 'Data updated successfully!', 'success');
+          this.swal.Success_200();
         } else if (response.status === 204) {
-          Swal.fire('No Content', 'No data available for the given criteria.', 'info');
+          this.swal.Success_204();
+          this.rowData = [];
         }
       },
       (error) => {
-        if (error.status === 400) {
-
-          Swal.fire(error?.error?.message || error?.error?.addonlist || 'Error 400', 'Bad Request. Please check the input.', 'error');
-        } else if (error.status === 500) {
-          Swal.fire('Error 500', 'Internal Server Error. Please try again later.', 'error');
-        } else {
-          Swal.fire('Error', 'Something went wrong. Please try again.', 'error');
-        }
+        this.handleApiError(error);
       }
     );
   }
   addAddonForSmartcard() {
+    this.finalrow = this.rows
     let requestBody = {
       role: this.role,
       username: this.username,
       smartcard: this.smartcardno,
       type: 6,
       retailerid: 0,
-      addonlist: this.rows
+      iscollected: this.iscollected,
+      addonlist: this.rows,
+      managepackagelist: this.rowData
     }
-    this.userService.addAddonForSmartcard(requestBody).subscribe(
+    Swal.fire({
+      title: 'Adding...',
+      text: 'Please wait Smartcard Added.',
+      icon: 'info',
+      allowOutsideClick: false,
+      showConfirmButton: false, // Hide the confirm button
+      didOpen: () => {
+        Swal.showLoading(null);
+      }
+    });
+    this.userservice.addAddonForSmartcard(requestBody).subscribe(
       (response: HttpResponse<any[]>) => {
         if (response.status === 200) {
           this.typeData = response.body;
 
-          Swal.fire('Success', 'Data updated successfully!', 'success');
+          this.swal.Success_200();
         } else if (response.status === 204) {
-          Swal.fire('No Content', 'No data available for the given criteria.', 'info');
+          this.swal.Success_204();
+          this.rowData = [];
         }
       },
       (error) => {
-        if (error.status === 400) {
-
-          Swal.fire(error?.error?.message || error?.error?.addonlist || 'Error 400', 'Bad Request. Please check the input.', 'error');
-        } else if (error.status === 500) {
-          Swal.fire('Error 500', 'Internal Server Error. Please try again later.', 'error');
-        } else {
-          Swal.fire('Error', 'Something went wrong. Please try again.', 'error');
-        }
+        this.handleApiError(error);
       }
     );
   }
   // ----------------------------------alacarte-----------------------------------------
   addAlacarteConfirmation() {
+    this.finalrow = this.rows
     let requestBody = {
       role: this.role,
       username: this.username,
@@ -1553,28 +1628,24 @@ export class SubscriberdialogueComponent implements OnInit {
       iscollected: this.iscollected,
       alacartelist: this.rows,
     }
-    this.userService.addAlacarteConfirmation(requestBody).subscribe(
+    console.log(requestBody);
+    this.swal.Loading();
+    this.userservice.addAlacarteConfirmation(requestBody).subscribe(
       (response: HttpResponse<any[]>) => {
         if (response.status === 200) {
-          this.typeData = response.body;
-          const selectedRows = this.gridApi.getSelectedRows();
-          this.rowData3 = selectedRows.filter((row: any) => row.packagename);
-          console.log(this.rowData3);
-          Swal.fire('Success', 'Data updated successfully!', 'success');
+          this.rowData = response.body;
+          console.log(this.rowData);
+          this.swal.Success_200();
         } else if (response.status === 204) {
-          Swal.fire('No Content', 'No data available for the given criteria.', 'info');
+          this.swal.Success_204();
+          this.rowData = [];
         }
       },
       (error) => {
-        if (error.status === 400) {
-          Swal.fire(error?.error?.message || error?.error?.addonlist || 'Error 400', 'Bad Request. Please check the input.', 'error');
-        } else if (error.status === 500) {
-          Swal.fire('Error 500', 'Internal Server Error. Please try again later.', 'error');
-        } else {
-          Swal.fire('Error', 'Something went wrong. Please try again.', 'error');
-        }
+        this.handleApiError(error);
       }
     );
+    // this.cdr.detectChanges();
   }
   addAlacarteSmartcard() {
     let requestBody = {
@@ -1586,24 +1657,26 @@ export class SubscriberdialogueComponent implements OnInit {
       iscollected: this.iscollected,
       alacartelist: this.rows,
     }
-    this.userService.addAlacarteForSmartcard(requestBody).subscribe(
+    Swal.fire({
+      title: 'Updateing...',
+      text: 'Please wait while the Recurring is being updated',
+      allowOutsideClick: false,
+      didOpen: () => {
+        Swal.showLoading(null);
+      }
+    });
+    this.userservice.addAlacarteForSmartcard(requestBody).subscribe(
       (response: HttpResponse<any[]>) => {
         if (response.status === 200) {
           this.rowData = response.body;
-          Swal.fire('Success', 'Data updated successfully!', 'success');
+          this.swal.Success_200();
         } else if (response.status === 204) {
-          Swal.fire('No Content', 'No data available for the given criteria.', 'info');
+          this.swal.Success_204();
+          this.rowData = [];
         }
       },
       (error) => {
-        if (error.status === 400) {
-
-          Swal.fire(error?.error?.message || error?.error?.addonlist || 'Error 400', 'Bad Request. Please check the input.', 'error');
-        } else if (error.status === 500) {
-          Swal.fire('Error 500', 'Internal Server Error. Please try again later.', 'error');
-        } else {
-          Swal.fire('Error', 'Something went wrong. Please try again.', 'error');
-        }
+        this.handleApiError(error);
       }
     );
   }
@@ -1619,15 +1692,20 @@ export class SubscriberdialogueComponent implements OnInit {
       iscollected: this.iscollected,
       removeproductlist: this.rows,
     }
-    this.userService.removeProductConfirmation(requestBody).subscribe((data: any) => {
-      console.log(data);
-      this.removeProductList = data?.body;
-      this.removeProductList_expiryDate = data?.body?.expiryDate;
-      this.removeProductList_refund = data?.body?.lcoRefund;
-      console.log(this.removeProductList_expiryDate);
-      console.log(this.removeProductList_refund);
-
-    })
+    this.userservice.removeProductConfirmation(requestBody).subscribe(
+      (response: HttpResponse<any[]>) => {
+        if (response.status === 200) {
+          this.rowData = response.body;
+          this.swal.Success_200();
+        } else if (response.status === 204) {
+          this.swal.Success_204();
+          this.rowData = [];
+        }
+      },
+      (error) => {
+        this.handleApiError(error);
+      }
+    );
     //   (response: HttpResponse<any[]>) => {
     //     if (response.status === 200) {
     //       this.rowData = response.body;
@@ -1661,42 +1739,70 @@ export class SubscriberdialogueComponent implements OnInit {
       iscollected: this.iscollected,
       removeproductlist: this.rows,
     }
-    this.userService.removeProductForSmartcard(requestBody).subscribe(
+    this.userservice.removeProductForSmartcard(requestBody).subscribe(
       (response: HttpResponse<any[]>) => {
         if (response.status === 200) {
           this.rowData = response.body;
-          Swal.fire('Success', 'Data updated successfully!', 'success');
+          this.swal.Success_200();
         } else if (response.status === 204) {
-          Swal.fire('No Content', 'No data available for the given criteria.', 'info');
+          this.swal.Success_204();
+          this.rowData = [];
         }
       },
       (error) => {
-        if (error.status === 400) {
-
-          Swal.fire(error?.error?.message || error?.error?.addonlist || 'Error 400', 'Bad Request. Please check the input.', 'error');
-        } else if (error.status === 500) {
-          Swal.fire('Error 500', 'Internal Server Error. Please try again later.', 'error');
-        } else {
-          Swal.fire('Error', 'Something went wrong. Please try again.', 'error');
-        }
+        this.handleApiError(error);
       }
     );
   }
   pairSmartcard() {
-    this.userService.PairSmartcardOrBoxid(this.role, this.username, !this.ischeck, this.pairedSmartcard, this.subBoxid, 0, 2).subscribe((res: any) => {
+    this.userservice.PairSmartcardOrBoxid(this.role, this.username, !this.ischeck, this.pairedSmartcard, this.subBoxid, 0, 2).subscribe((res: any) => {
       this.swal.success(res?.message);
     }, (err) => {
       this.swal.Error(err?.error?.message);
     });
   }
   unPairSmartcard() {
-    this.userService.UnpairSmartcardOrBoxId(this.role, this.username, !this.ischeck, this.subSmartcard, 0, 2).subscribe((res: any) => {
+    this.userservice.UnpairSmartcardOrBoxId(this.role, this.username, !this.ischeck, this.subSmartcard, 0, 2).subscribe((res: any) => {
       // this.swal.success(res?.message);
       this.isUnpairDialogue = res?.message;
+      this.unpairtoggle();
     }, (err) => {
       this.swal.Error(err?.error?.message);
     });
 
   }
+  unpairtoggle() {
+    this.isUnpairDialogue = !this.isUnpairDialogue;
+  }
+
+  getPdfSubscriberRechargeDetails() {
+    this.userservice.getPdfSubscriberRechargeDetails(this.role, this.username, this.subid_1, this.date).subscribe((x: any) => {
+      console.log(x);
+      let requestBodylogs: requestBodylogs = { access_ip: "", action: " PDF Bill Report", data: "From Date", remarks: "PDF Bill Report  ", };
+      console.log(requestBodylogs);
+      const blob = new Blob([x], { type: 'application/pdf' });
+      const data = window.URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.href = data;
+      link.download = "PDF Bill Report.pdf";
+      link.dispatchEvent(new MouseEvent('click', { bubbles: true, cancelable: true, view: window }));
+      setTimeout(function () {
+        window.URL.revokeObjectURL(data);
+        link.remove();
+      }, 100);
+    })
+  }
+
+
+  handleApiError(error: any) {
+    if (error.status === 400) {
+      this.swal.Error_400();
+    } else if (error.status === 500) {
+      this.swal.Error_500();
+    } else {
+      Swal.fire('Error', 'Something went wrong. Please try again.', 'error');
+    }
+  }
+
 }
 

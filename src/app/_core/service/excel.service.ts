@@ -11,7 +11,7 @@ export class ExcelService {
 
   async generateExcel() {
     const ws1Header = [
-      'Cus Name First', 'Cus Name Last', 'Father Name', 'Date of Birth',
+      'Cas Form Id','Cus Name First', 'Cus Name Last', 'Father Name', 'Date of Birth',
       'Area Name', 'Street Name', 'Address', 'Address Proof No',
       'Mobile No', 'Landline No', 'Email', 'Smartcard No', 'Box Id'
     ];
@@ -313,6 +313,7 @@ export class ExcelService {
 
 
   async generateIMAGEExcel(areatitle: string, headers: any, dataRow: any[], titles: any, cellSize: any, areasub: any, sub: any) {
+
     const subtitle = sub;
     const title = titles;
     const header = headers;

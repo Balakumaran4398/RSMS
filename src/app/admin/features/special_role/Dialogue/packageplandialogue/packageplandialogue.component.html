@@ -1,0 +1,63 @@
+<div *ngIf="type =='new'">
+    <div class="Head d-flex justify-content-between align-items-center mb-3" style="padding: 1rem;">
+        <h6>CREATE NEW PLAN</h6>
+        <i class="fa fa-close close-icon" style="cursor: pointer;" (click)="onNoClick()"></i>
+    </div>
+    <div class="input_box display align-items-center mb-3" style="padding: 1rem;">
+        <div class="col-12 col-md-6">
+            <span for="categoryName" class="me-2">No Of Month</span>
+        </div>
+        <div class="col-12 col-md-6">
+            <input type="number" [(ngModel)]="planpackage" [min]="1" [max]="12" ariaValueMin="1" ariaValueMax="12">
+            <div *ngIf="errorMessage" class=" alert alert-danger d-flex justify-content-between align-items-center mt-3"
+                style="position: relative;font-size: 11px;">
+                {{ errorMessage }}
+                <i class="fa fa-close close-icon" style="cursor: pointer;font-size: 11px" (click)="errorToggle()"></i>
+            </div>
+        </div>
+    </div>
+
+    <div class="form-group d-flex justify-content-center align-items-center mb-3">
+        <button class="btn btn-success me-2" (click)="create()">Create</button>
+        <button type="button" class="btn btn-danger" (click)="onNoClick()">Cancel</button>
+    </div>
+</div>
+
+<div *ngIf="type =='editpackageplan'">
+    <div class="Head d-flex justify-content-between align-items-center mb-3" style="padding: 1rem;">
+        <h6>EDIT PLAN PACKAGE</h6>
+        <i class="fa fa-close close-icon" style="cursor: pointer;" (click)="onNoClick()"></i>
+    </div>
+    <div class="card-body" style="padding: 1rem;">
+        <form #editForm="ngForm" (ngSubmit)="update()" novalidate>
+            <div class="input_box display align-items-center mb-3">
+                <div class="col-12 col-md-6">
+                    <span for="categoryName" class="me-2">Days</span>
+                </div>
+                <div class="col-12 col-md-6">
+                    <input type="text" [(ngModel)]="days" name="streetname" required #streetnameInput="ngModel">
+                    <div *ngIf="streetnameInput.invalid && streetnameInput.touched" class="text-danger">
+                        Days is required.
+                    </div>
+                </div>
+            </div>
+            <div class="input_box display align-items-center mb-3">
+                <div class="col-12 col-md-6">
+                    <span class="me-2">ISACTIVE</span>
+                </div>
+                <div class="col-12 col-md-6 d-flex  justify-content-start align-item-center  ">
+                    <div class="toggle">
+                        <label class="switch">
+                            <input type="checkbox" id="lcoLabel" name="lcoLabel" [(ngModel)]="isactive">
+                            <span class="slider"></span>
+                        </label>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group d-flex justify-content-center align-items-center mb-3">
+                <button type="submit" class="btn btn-success me-2" [disabled]="editForm.invalid">Save</button>
+                <button type="button" class="btn btn-danger" (click)="onNoClick()">Cancel</button>
+            </div>
+        </form>
+    </div>
+</div>

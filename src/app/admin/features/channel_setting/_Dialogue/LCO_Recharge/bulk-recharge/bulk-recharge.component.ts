@@ -3,6 +3,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { BaseService } from 'src/app/_core/service/base.service';
 import { StorageService } from 'src/app/_core/service/storage.service';
+import { SwalService } from 'src/app/_core/service/swal.service';
 import Swal from 'sweetalert2';
 
 @Component({
@@ -36,15 +37,18 @@ export class BulkRechargeComponent {
   }
   columnDefs: any[] = [
     {
-      headerName: "OPERATOR ID", field: 'operatorid', headerCheckboxSelection: true,
+      headerName: "S.No", lockPosition: true, valueGetter: 'node.rowIndex+1', width: 100,headerCheckboxSelection: true,
       checkboxSelection: true,
     },
-    { headerName: "OPERATOR NAME", field: 'operatorname', },
-    { headerName: "CONTACT NUMBER", field: 'contactnumber1', },
+    {
+      headerName: "OPERATOR ID", field: 'operatorid',width: 250, 
+    },
+    { headerName: "OPERATOR NAME", field: 'operatorname', width: 300,},
+    { headerName: "CONTACT NUMBER", field: 'contactnumber1', width: 300,},
   ]
 
   constructor(public dialogRef: MatDialogRef<BulkRechargeComponent>, @Inject(MAT_DIALOG_DATA) public data: any, private fb: FormBuilder, public dialog: MatDialog,
-    public userService: BaseService, storageService: StorageService) {
+    public userService: BaseService, storageService: StorageService, private swal:SwalService) {
     this.username = storageService.getUsername();
     this.role = storageService.getUserRole();
     this.userService.OperatorDetails(this.role, this.username, 0).subscribe(
@@ -72,6 +76,7 @@ export class BulkRechargeComponent {
     this.gridApi = params.api;
   }
   onSubmit() {
+    this.swal.Loading();
     this.userService.bulkOperatorRecharge(this.role, this.username, this.selectedIds, this.amount, this.remarks).subscribe(
       (res: any) => {
         Swal.fire({

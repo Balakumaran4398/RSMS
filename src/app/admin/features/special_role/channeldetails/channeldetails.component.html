@@ -1,0 +1,31 @@
+<div class="chart">
+    <h3>Local Channel Details
+    </h3>
+    <div class="row " style="padding: 1rem;">
+        <div class="">
+            <div class="col d-flex justify-content-center align-items-center mb-3">
+                <a class="btn btn-outline-success mx-1" (click)="openaddedlogue('new','')">
+                    <i class="fa fa-plus"></i> New
+                </a>
+                <button class="btn btn-outline-info mx-1" mat-raised-button color="primary" type="button"
+                    [disabled]="!isAnyRowSelected" (click)="Active()">
+                    Active
+                </button>
+                <button class="btn btn-outline-info mx-1" mat-raised-button color="accent" type="button"
+                    [disabled]="!isAnyRowSelected" (click)="Deactive()">
+                    Deactive
+                </button>
+            </div>
+            <div class="row d-flex align-items-center justify-content-center">
+                <div class="col-12  col-md-12 m-3">
+                    <ag-grid-angular #agGrid id="myGrid" domLayout='autoHeight' class="ag-theme-alpine table-class"
+                        rowAnimation [rowSelection]="rowSelection" [gridOptions]="gridOptions" [columnDefs]="columnDefs"
+                        [rowData]="rowData" (selectionChanged)="onSelectionChanged()" (gridReady)="onGridReady($event)"
+                        [enableCellTextSelection]="true">
+                    </ag-grid-angular>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>

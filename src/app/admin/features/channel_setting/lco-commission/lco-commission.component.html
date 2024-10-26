@@ -43,8 +43,8 @@
                     <div class="col-12 col-xl-6 mb-4 mx-3">
                         <div>
                             <h6>CREATE LCO MEMBERSHIP</h6>
-                            <ag-grid-angular #agGrid id="myGrid"
-                                style="text-align: center; max-height: 250px;overflow: scroll;" domLayout='autoHeight'
+                            <ag-grid-angular #agGrid id="myGrid" class="gridtable"
+                                style="text-align: center; max-height: 200px;overflow: auto;" domLayout='autoHeight'
                                 rowAnimation [columnDefs]="columnDefs1" [rowData]="rowData1"
                                 [rowSelection]="rowSelection" class="ag-theme-alpine table-class"
                                 [enableCellTextSelection]="true">

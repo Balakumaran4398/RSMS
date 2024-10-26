@@ -16,16 +16,17 @@ export class NewstreetComponent {
   streetname: any;
   areaid: any;
   type: any;
+  isdelete = false;
   editstreetname: any;
+  Areaname: any;
   constructor(public dialogRef: MatDialogRef<NewstreetComponent>, private swal: SwalService, private userservice: BaseService, private storageservice: StorageService,
     @Inject(MAT_DIALOG_DATA) public data: any,) {
     console.log(data);
     this.editstreetname = data?.data?.name;
-    console.log(this.editstreetname);
-
     this.type = data.type;
     this.areaid = data?.areaid;
-    console.log(this.areaid);
+    this.isdelete = data?.isdelete;
+   
     this.username = storageservice.getUsername();
     this.role = storageservice.getUserRole();
   }
@@ -43,7 +44,7 @@ export class NewstreetComponent {
       streetname: this.streetname,
       areaid: this.areaid,
     }
-  
+
     console.log(requestBody);
 
     this.userservice.createStreet(requestBody).subscribe((res: any) => {
@@ -59,7 +60,7 @@ export class NewstreetComponent {
       streetname: this.editstreetname,
       areaid: this.data?.data?.areaid,
       id: this.data?.data?.id,
-      isactive: this.data?.data?.isactive,
+      isdelete: this.isdelete,
     }
     console.log(requestBody);
 

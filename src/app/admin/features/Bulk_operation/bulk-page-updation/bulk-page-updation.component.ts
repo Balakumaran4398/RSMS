@@ -1,6 +1,6 @@
 import { HttpResponse } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { MatCalendarCellClassFunction } from '@angular/material/datepicker';
 import { MatDialog } from '@angular/material/dialog';
 import { ColDef } from 'ag-grid-community';
@@ -19,12 +19,17 @@ export class BulkPageUpdationComponent implements OnInit {
   package: any;
   operatorid: any;
   package_select: boolean = false;
-  isCheckboxChecked: boolean = false; 
+  isCheckboxChecked: boolean = false;
   packageList: any[] = [];
   operatorList: any[] = [];
   cas: any[] = [];
   typelist: any;
   alltypelist: any;
+
+  maxDate = new Date(2400, 11, 31);
+  fromdate: any;
+  todate: any;
+
   type: any = [
     { label: "Select filter Type", value: 0 },
     { label: "LCO", value: 1 },
@@ -47,6 +52,7 @@ export class BulkPageUpdationComponent implements OnInit {
   form!: FormGroup;
   username: any;
   role: any;
+  status: any;
   CasFormControl: any;
   typeFormControl: any;
   LcoFormControl: any;
@@ -72,7 +78,7 @@ export class BulkPageUpdationComponent implements OnInit {
     pagination: true,
   }
   columnDefs: any;
-  constructor(public dialog: MatDialog, private fb: FormBuilder, private userservice: BaseService, private storageService: StorageService, private swal: SwalService) {
+  constructor(public dialog: MatDialog, private fb: FormBuilder, private userservice: BaseService,  private storageService: StorageService, private swal: SwalService) {
 
     this.username = storageService.getUsername();
     this.role = storageService.getUserRole();
@@ -87,6 +93,8 @@ export class BulkPageUpdationComponent implements OnInit {
   }
 
   private updateColumnDefs(tab: string): void {
+    console.log(tab);
+
     if (tab === 'bulk_package') {
       this.columnDefs = [
         { headerName: "S.No", lockPosition: true, valueGetter: 'node.rowIndex+1', cellClass: 'locked-col', width: 80, suppressNavigable: true, sortable: false, filter: false },
@@ -121,7 +129,7 @@ export class BulkPageUpdationComponent implements OnInit {
             return null;
           }
         }
-        
+
       ];
     } else if (tab === 'archive') {
       this.columnDefs = [
@@ -148,7 +156,7 @@ export class BulkPageUpdationComponent implements OnInit {
             return null;
           }
         }
-        
+
       ];
     }
   }
@@ -206,50 +214,13 @@ export class BulkPageUpdationComponent implements OnInit {
   selectPending(tab: string) {
     this.selectedTab = tab;
     this.updateColumnDefs(tab);
+    this.service();
   }
   selectArchive(tab: string) {
     this.selectedTab = tab;
     this.updateColumnDefs(tab);
   }
 
-  // selectTab(tab: string) {
-  //   this.selectedTab = tab;
-  //   if (this.gridOptions) {
-  //     let newRowData;
-  //     if (this.selectedTab === 'bulk_package') {
-  //       newRowData = this.getBulkpackage('bulk_package');
-  //     } else if (this.selectedTab === 'pending') {
-  //       newRowData = this.getPendingData('pending');
-  //     } else if (this.selectedTab === 'archive') {
-  //       newRowData = this.getArchiveData('archive');
-  //     }
-  //   }
-  // }
-  // getBulkpackage(event: any) {
-  //   this.onSubscriberStatusChange(event)
-  //   return [this.rowData];
-  // }
-  // getPendingData(event: any) {
-  //   this.onSubscriberStatusChange(event)
-  //   return [this.rowData];
-  // }
-  // getArchiveData(event: any) {
-  //   this.onSubscriberStatusChange(event)
-  //   return [this.rowData];
-  // }
-  // getAllData(event: any) {
-  //   this.onSubscriberStatusChange(event)
-  //   return [this.rowData];
-  // }
-  // onSubscriberStatusChange(event: any) {
-  //   this.userservice.getExpirySubscriberDetailsByDatePackAndOperatorId(this.role, this.username, this.fromdate, this.todate, this.package, this.operatorid).subscribe((data) => {
-  //     this.updateColumnDefs(this.selectedTab);
-  //   });
-  // }
-
-  // private loadData(tab: any): void {
-  //   this.updateColumnDefs(tab);
-  // }
 
 
 
@@ -258,9 +229,6 @@ export class BulkPageUpdationComponent implements OnInit {
 
 
   }
-  maxDate = new Date();
-  fromdate: any;
-  todate: any;
 
   getFromDate(event: any) {
     this.fromdate = this.formatDate(event.value);
@@ -285,34 +253,50 @@ export class BulkPageUpdationComponent implements OnInit {
       package: this.package,
       operatorid: this.operatorid
     });
+
+
     this.userservice.getExpirySubscriberDetailsByDatePackAndOperatorId(
-      this.role, this.username, this.fromdate, this.todate, this.package, this.operatorid
-    ).subscribe((res: any) => {
-      this.updateColumnDefs(this.selectedTab);
-      this.swal.success(res?.message);
-    }, (err) => {
-      this.swal.Error(err?.error?.message);
-    });
+      this.role, this.username, this.fromdate || null, this.todate || null, this.package || 0, this.operatorid || null
+    ).subscribe(
+      (response: HttpResponse<any[]>) => { // Expect HttpResponse<any[]>
+        if (response.status === 200) {
+          this.updateColumnDefs(this.selectedTab);
+          this.rowData = response.body;
+          this.swal.Success_200();
+        } else if (response.status === 204) {
+          this.swal.Success_204();
+        }
+      },
+      (error) => {
+        if (error.status === 400) {
+          this.swal.Error_400();
+        } else if (error.status === 500) {
+           this.swal.Error_500();
+        } else {
+          Swal.fire('Error', 'Something went wrong. Please try again.', 'error');
+        }
+      }
+    );
   }
   pendingFilter() {
 
     console.log(this.typelist);
     if (this.typelist === 1) {
-      this.userservice.getAllBulkPackageListByOperatoridAndStatus(this.role, this.username, this.operatorid, 0).subscribe(
+      this.userservice.getAllBulkPackageListByOperatoridAndStatus(this.role, this.username, this.operatorid || null, 0).subscribe(
         (response: HttpResponse<any[]>) => { // Expect HttpResponse<any[]>
           if (response.status === 200) {
             this.updateColumnDefs(this.selectedTab);
             this.rowData = response.body;
-            Swal.fire('Success', 'Data updated successfully!', 'success');
+            this.swal.Success_200();
           } else if (response.status === 204) {
-            Swal.fire('No Content', 'No data available for the given criteria.', 'info');
+             this.swal.Success_204();
           }
         },
         (error) => {
           if (error.status === 400) {
-            Swal.fire('Error 400', 'Bad Request. Please check the input.', 'error');
+             this.swal.Error_400();
           } else if (error.status === 500) {
-            Swal.fire('Error 500', 'Internal Server Error. Please try again later.', 'error');
+             this.swal.Error_500();
           } else {
             Swal.fire('Error', 'Something went wrong. Please try again.', 'error');
           }
@@ -324,37 +308,37 @@ export class BulkPageUpdationComponent implements OnInit {
           if (response.status === 200) {
             this.updateColumnDefs(this.selectedTab);
             this.rowData = response.body;
-            Swal.fire('Success', 'Data updated successfully!', 'success');
+            this.swal.Success_200();
           } else if (response.status === 204) {
-            Swal.fire('No Content', 'No data available for the given criteria.', 'info');
+             this.swal.Success_204();
           }
         },
         (error) => {
           if (error.status === 400) {
-            Swal.fire('Error 400', 'Bad Request. Please check the input.', 'error');
+             this.swal.Error_400();
           } else if (error.status === 500) {
-            Swal.fire('Error 500', 'Internal Server Error. Please try again later.', 'error');
+             this.swal.Error_500();
           } else {
             Swal.fire('Error', 'Something went wrong. Please try again.', 'error');
           }
         }
       );
     } else if (this.typelist === 3) {
-      this.userservice.getAllBulkPackageListByFromdateTodateAndStatus(this.role, this.username, this.fromdate, this.todate, 0).subscribe(
+      this.userservice.getAllBulkPackageListByFromdateTodateAndStatus(this.role, this.username, this.fromdate || null, this.todate, 0).subscribe(
         (response: HttpResponse<any[]>) => {
           if (response.status === 200) {
             this.updateColumnDefs(this.selectedTab);
             this.rowData = response.body;
-            Swal.fire('Success', 'Data updated successfully!', 'success');
+            this.swal.Success_200();
           } else if (response.status === 204) {
-            Swal.fire('No Content', 'No data available for the given criteria.', 'info');
+             this.swal.Success_204();
           }
         },
         (error) => {
           if (error.status === 400) {
-            Swal.fire('Error 400', 'Bad Request. Please check the input.', 'error');
+             this.swal.Error_400();
           } else if (error.status === 500) {
-            Swal.fire('Error 500', 'Internal Server Error. Please try again later.', 'error');
+             this.swal.Error_500();
           } else {
             Swal.fire('Error', 'Something went wrong. Please try again.', 'error');
           }
@@ -365,82 +349,89 @@ export class BulkPageUpdationComponent implements OnInit {
   archiveFilter() {
     console.log(this.typelist);
     if (this.typelist === 1) {
-      this.userservice.getAllBulkPackageListBySearchnameAndStatus(this.role, this.username, this.operatorid, this.alltypelist).subscribe(
+      this.userservice.getAllBulkPackageListByOperatoridAndStatus(this.role, this.username, this.operatorid, this.alltypelist).subscribe(
         (response: HttpResponse<any[]>) => {
           if (response.status === 200) {
             this.updateColumnDefs(this.selectedTab);
             this.rowData = response.body;
-            Swal.fire('Success', 'Data updated successfully!', 'success');
+            this.swal.Success_200();
           } else if (response.status === 204) {
-            Swal.fire('No Content', 'No data available for the given criteria.', 'info');
+             this.swal.Success_204();
           }
         },
         (error) => {
           if (error.status === 400) {
-            Swal.fire('Error 400', 'Bad Request. Please check the input.', 'error');
+             this.swal.Error_400();
           } else if (error.status === 500) {
-            Swal.fire('Error 500', 'Internal Server Error. Please try again later.', 'error');
+             this.swal.Error_500();
           } else {
             Swal.fire('Error', 'Something went wrong. Please try again.', 'error');
           }
         }
       );
     } else if (this.typelist === 2) {
-      this.userservice.getAllBulkPackageListByOperatoridAndStatus(this.role, this.username, this.smartcard, this.alltypelist).subscribe(
-        //   (res: any) => {
-        //   this.updateColumnDefs(this.selectedTab);
-        //   this.rowData = res;
-        //   this.swal.success(res?.message);
-        // }, (err) => {
-        //   this.swal.Error(err?.error?.message);
-        // });
+      this.userservice.getAllBulkPackageListBySearchnameAndStatus(this.role, this.username, this.smartcard, this.alltypelist).subscribe(
+
         (response: HttpResponse<any[]>) => {
           if (response.status === 200) {
             this.updateColumnDefs(this.selectedTab);
             this.rowData = response.body;
-            Swal.fire('Success', 'Data updated successfully!', 'success');
+            this.swal.Success_200();
           } else if (response.status === 204) {
-            Swal.fire('No Content', 'No data available for the given criteria.', 'info');
+             this.swal.Success_204();
           }
         },
         (error) => {
           if (error.status === 400) {
-            Swal.fire('Error 400', 'Bad Request. Please check the input.', 'error');
+             this.swal.Error_400();
           } else if (error.status === 500) {
-            Swal.fire('Error 500', 'Internal Server Error. Please try again later.', 'error');
+             this.swal.Error_500();
           } else {
             Swal.fire('Error', 'Something went wrong. Please try again.', 'error');
           }
         }
       );
     } else if (this.typelist === 3) {
-      this.userservice.getAllBulkPackageListByFromdateTodateAndStatus(this.role, this.username, this.fromdate, this.todate, this.alltypelist).subscribe(
-        //   (res: any) => {
-        //   this.updateColumnDefs(this.selectedTab);
-        //   this.rowData = res;
-        //   this.swal.success(res?.message);
-        // }, (err) => {
-        //   this.swal.Error(err?.error?.message);
-        // });
+      this.userservice.getAllBulkPackageListByFromdateTodateAndStatus(this.role, this.username, this.fromdate || null, this.todate || null, this.alltypelist).subscribe(
+
         (response: HttpResponse<any[]>) => {
           if (response.status === 200) {
             this.updateColumnDefs(this.selectedTab);
             this.rowData = response.body;
-            Swal.fire('Success', 'Data updated successfully!', 'success');
+            this.swal.Success_200();
           } else if (response.status === 204) {
-            Swal.fire('No Content', 'No data available for the given criteria.', 'info');
+             this.swal.Success_204();
           }
         },
         (error) => {
           if (error.status === 400) {
-            Swal.fire('Error 400', 'Bad Request. Please check the input.', 'error');
+             this.swal.Error_400();
           } else if (error.status === 500) {
-            Swal.fire('Error 500', 'Internal Server Error. Please try again later.', 'error');
+             this.swal.Error_500();
           } else {
             Swal.fire('Error', 'Something went wrong. Please try again.', 'error');
           }
         }
       );
     }
+  }
+
+  service() {
+    this.userservice.getBulkPackageServiceStatus(this.role, this.username).subscribe((data: any) => {
+      console.log(data);
+      this.status = data.serviceState;
+      console.log(this.status);
+
+    })
+  }
+  start() {
+    this.userservice.StartOrStopBulkPackageService(this.role, this.username, this.status).subscribe((data: any) => {
+      console.log(data);
+    })
+  }
+  stop() {
+    this.userservice.StartOrStopBulkPackageService(this.role, this.username, this.status).subscribe((data: any) => {
+      console.log(data);
+    })
   }
 }

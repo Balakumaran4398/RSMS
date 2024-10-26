@@ -87,6 +87,14 @@ export class ChangeMembershipComponent {
       cancelButtonText: 'No, cancel'
     }).then((result) => {
       if (result.isConfirmed) {
+        Swal.fire({
+          title: 'Processing...',
+          text: 'Please wait while we Change the LCO Membership.',
+          allowOutsideClick: false,
+          didOpen: () => {
+            Swal.showLoading(null);
+          }
+        });
         this.userservice.updateLcoMembership(requestBody)
           // .subscribe((data: any) => {
           //   console.log(data);
@@ -116,7 +124,9 @@ export class ChangeMembershipComponent {
                 title: 'Error!',
                 text: err?.error?.message,
                 icon: 'error',
-                confirmButtonText: 'OK'
+                confirmButtonText: 'OK',
+                timer: 3000,
+                showConfirmButton: false
               });
             }
           );

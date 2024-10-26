@@ -5,6 +5,9 @@ import { BaseService } from 'src/app/_core/service/base.service';
 import { StorageService } from 'src/app/_core/service/storage.service';
 import { MyErrorStateMatcher } from '../message/message.component';
 import Swal from 'sweetalert2';
+import { SwalService } from 'src/app/_core/service/swal.service';
+import { CasDialogueComponent } from '../../channel_setting/_Dialogue/cas-dialogue/cas-dialogue.component';
+import { MatDialog } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-scrolling',
@@ -52,9 +55,9 @@ export class ScrollingComponent {
     { lable: "fdgdfg", value: 2 },
   ]
   intend: any = [
-    { lable: "MSO", value: 1 },
-    { lable: "SMARTCARD", value: 2 },
-    { lable: "AREA CODE", value: 3 },
+    { lable: "MSO", value: 0 },
+    { lable: "Smartcard", value: 1 },
+    { lable: "LCO", value: 2 },
   ];
   filteredIntendArea(): any[] {
     if (!this.searchTerm) {
@@ -114,10 +117,11 @@ export class ScrollingComponent {
   //   { label: "Black", value: "rgb(0, 0, 0)" },
   //   { label: "White", value: "rgb(255, 255, 255)" },
   // ];
-  transparancy: any = [
-    { lable: "Enable", value: "true" },
-    { lable: "Disable", value: "false" }
-  ];
+  // transparancy: any = [
+  //   { lable: "Enable", value: "true" },
+  //   { lable: "Disable", value: "false" }
+  // ];
+  transparency: any;
   force: boolean = true;
   intendto: any = [];
   isVisible!: boolean;
@@ -129,8 +133,8 @@ export class ScrollingComponent {
   isForce: boolean = true;
   isIntendto: boolean = true;
   isIntendForLco: boolean = false;
-  isSmartcardEnabled: boolean = true;
-  isAreaCodeEnabled: boolean = true;
+  isSmartcardEnabled: boolean = false;
+  isAreaCodeEnabled: boolean = false;
   username: any;
   role: any;
   public rowSelection: any = "multiple";
@@ -145,13 +149,14 @@ export class ScrollingComponent {
     paginationPageSize: 10,
     pagination: true,
   }
-  constructor(private userservice: BaseService, private storageService: StorageService, private fb: FormBuilder) {
+  constructor(private userservice: BaseService, private storageService: StorageService, private fb: FormBuilder, private swal: SwalService, public dialog: MatDialog) {
     this.username = storageService.getUsername();
     this.role = storageService.getUserRole();
     this.userservice.Get_Scroll_version_List(this.role, this.username).subscribe((data: any) => {
       this.rowData = data;
       console.log(this.rowData);
     })
+
     this.form = this.fb.group({
       castype: ['', Validators.required],
       isforce: ['', Validators.required],
@@ -163,7 +168,7 @@ export class ScrollingComponent {
       scrollcolor: ['', Validators.required],
       scrollbgcolor: ['', Validators.required],
       repeatfor: ['', Validators.required],
-      transparancy: ['', Validators.required],
+      transparency: ['', Validators.required],
       duration: ['', Validators.required],
       timegap: ['', Validators.required],
       message: ['', Validators.required],
@@ -173,9 +178,11 @@ export class ScrollingComponent {
       role: this.role,
       username: this.username,
     })
+    // if (this.form.get('intendid').value === '') {
+    //   this.form.get('intendid').setValue('1');
+    // }
   }
   ngOnInit() {
-
     this.userservice.Finger_print_List(this.role, this.username).subscribe((data) => {
       this.area = Object.entries(data[0].arealist).map(([key, value]) => ({ name: key, id: value }));
       this.cas = Object.entries(data[0].caslist).map(([key, value]) => ({ name: key, id: value }));
@@ -200,8 +207,8 @@ export class ScrollingComponent {
 
   columnDefs: ColDef[] = [
     { headerName: "S.No", lockPosition: true, valueGetter: 'node.rowIndex+1', cellClass: 'locked-col', width: 80, suppressNavigable: true, sortable: false, filter: false },
-    { headerName: "INTEND ID", field: 'intendto' },
-    { headerName: "INTEND TO", field: 'intendid' },
+    { headerName: "INTEND ID", field: 'intendid' },
+    { headerName: "INTEND TO", field: 'intendto' },
     { headerName: "MESSAGE", field: 'scrollmsg' },
     { headerName: "FONT COLOR	", field: 'scrollcolor' },
     { headerName: "BACKGROUND COLOR	", field: 'scrollbgcolor' },
@@ -210,7 +217,39 @@ export class ScrollingComponent {
     { headerName: "DURATION", field: 'duration' },
     { headerName: "TIME GAP	", field: 'timegap' },
     { headerName: "CAS", field: 'casname' },
-    { headerName: "ACTION", field: '' },
+    {
+      headerName: 'ACTIONS',
+      width: 320,
+      cellRenderer: (params: any) => {
+        const div = document.createElement('div');
+
+        if ((params.data.isforce === true && params.data.isdelete === false) || (params.data.isdelete === 2) || (params.data.isdelete === 5 && params.data.isdelete === false)) {
+          const StopButton = document.createElement('button');
+          StopButton.innerHTML = '<button style="width: 5em;background-color: #998f68;border-radius: 5px;height: 2em;"><p style="margin-top:-6px">STOP</p></button>';
+          StopButton.style.backgroundColor = 'transparent';
+          StopButton.style.border = 'none';
+          StopButton.title = 'Stop';
+          StopButton.style.cursor = 'pointer';
+          StopButton.style.marginLeft = '20px';
+          StopButton.addEventListener('click', () => {
+            this.openDialog(params.data, 'scroll_stop');
+          });
+
+          div.appendChild(StopButton);
+        } else {
+          const DisabledStopButton = document.createElement('button');
+          DisabledStopButton.innerHTML = '<button style="width: 5em;background-color: grey;border-radius: 5px;height: 2em;" disabled><p style="margin-top:-6px">STOP</p></button>';
+          DisabledStopButton.style.backgroundColor = 'transparent';
+          DisabledStopButton.style.border = 'none';
+          DisabledStopButton.title = 'Stop (Disabled)';
+          DisabledStopButton.style.cursor = 'not-allowed';
+          DisabledStopButton.style.marginLeft = '20px';
+          div.appendChild(DisabledStopButton);
+        }
+        return div;
+      }
+    }
+
   ];
 
 
@@ -224,7 +263,22 @@ export class ScrollingComponent {
 
 
   }
+  openStoDialog(event: any) {
+    Swal.fire({
+      title: 'Updateing...',
+      text: 'Please wait while the Recurring is being updated',
+      allowOutsideClick: false,
+      didOpen: () => {
+        Swal.showLoading(null);
+      }
+    });
 
+    this.userservice.stopScroll(event.id, this.role, this.username).subscribe((res: any) => {
+      this.swal.success(res?.message);
+    }, (err) => {
+      this.swal.Error(err?.error?.message);
+    });
+  }
 
   get f(): { [key: string]: AbstractControl } {
     return this.form.controls;
@@ -244,38 +298,117 @@ export class ScrollingComponent {
     );
   }
 
+  openDialog(event: any, type: any): void {
+    let dialogData = { data: event, type: type };
+    const dialogRef = this.dialog.open(CasDialogueComponent, {
+      width: '400px',
+      panelClass: 'custom-dialog-container',
+      data: dialogData
+    });
+    console.log(dialogData);
 
+    dialogRef.afterClosed().subscribe(result => {
+      console.log('The dialog was closed');
+    });
+  }
 
   submit() {
-    console.log('11111111111111');
+    // if (this.form.valid) {
+    Swal.fire({
+      title: 'Updateing...',
+      text: 'Please wait while the Scrolling is being updated',
+      allowOutsideClick: false,
+      didOpen: () => {
+        Swal.showLoading(null);
+      }
+    });
+    this.userservice.CreateScroll(this.form.value).subscribe(
+      (res: any) => {
+        console.log(res);
+        Swal.fire({
+          icon: 'success',
+          title: 'Submission Successful!',
+          text: res.message || 'Your data has been successfully submitted.',
+          timer: 2000,
+          timerProgressBar: true,
+        }).then(() => {
+          location.reload();
+        });
+      },
+      (error) => {
+        console.error(error);
+        Swal.fire({
+          title: 'Error!',
+          text: error?.error.castype ||
+            error?.error.duration ||
+            error?.error.intendid ||
+            error?.error.intendto ||
+            error?.error.message ||
+            error?.error.repeatfor ||
+            error?.error.scrollbgcolor ||
+            error?.error.scrollcolor ||
+            error?.error.scrollfontsize || error?.error.scrollposition || error?.error.timegap || error?.error.transparency || 'There was a problem creating the message.',
+          icon: 'error',
+          confirmButtonText: 'OK',
+          timer: 2000,
+          timerProgressBar: true,
+        }).then(() => {
+          // Revalidate the form fields after API error, marking controls as touched
+          this.form.markAllAsTouched();
+        });
+      }
+    );
+    // }
+    // else {
+    // }
 
 
     // if (this.form.valid) {
-      this.userservice.CreateScroll(this.form.value).subscribe(
-        (res: any) => {
-          console.log(res);
-          Swal.fire({
-            icon: 'success',
-            title: 'Submission Successful!',
-            text: res.message || 'Your data has been successfully submitted.',
-            timer: 2000,
-            timerProgressBar: true,
-          }).then(() => {
-            location.reload();
-          });
-        },
-        (error) => {
-          console.error('Error:', error);
-          Swal.fire({
-            icon: 'error',
-            title: 'Submission Failed',
-            text: error?.error.message || 'There was an error submitting your data.',
-          });
-        }
-      );
+    //   // Show loading message
+    //   Swal.fire({
+    //     title: 'Updating...',
+    //     text: 'Please wait while the Recurring is being updated.',
+    //     allowOutsideClick: false,
+    //     didOpen: () => {
+    //       Swal.showLoading(null);
+    //     }
+    //   });
+
+    //   // Submit form data
+    //   this.userservice.CreateScroll(this.form.value).subscribe(
+    //     (res: any) => {
+    //       console.log(res);
+    //       // Success message after submission
+    //       Swal.fire({
+    //         icon: 'success',
+    //         title: 'Submission Successful!',
+    //         text: res.message || 'Your data has been successfully submitted.',
+    //         timer: 2000,
+    //         timerProgressBar: true,
+    //       }).then(() => {
+    //         location.reload();
+    //       });
+    //     },
+    //     (error) => {
+    //       console.error('Error:', error);
+    //       // Error message if submission fails
+    //       Swal.fire({
+    //         icon: 'error',
+    //         title: 'Submission Failed',
+    //         text: error?.error.message || 'There was an error submitting your data.',
+    //       });
+    //     }
+    //   );
     // } else {
-    //   this.form.markAllAsTouched();
+    //   // Show validation error message
+    //   Swal.fire({
+    //     icon: 'error',
+    //     title: 'Form Validation Error',
+    //     text: 'Please check the form and fill out all required fields correctly.',
+    //     confirmButtonText: 'OK'
+    //   });
     // }
+
   }
 
   onSelectionFingerPrint(selectedValue: string) {
@@ -302,17 +435,44 @@ export class ScrollingComponent {
     }
   }
 
+  // onChangeIntendTo1(selectedValue: any) {
+  //   // this.isSmartcardEnabled = false;
+  //   // this.isAreaCodeEnabled = false;
+  //   console.log('enabled' + selectedValue);
+  //   if (selectedValue === 2) {
+  //     this.isSmartcardEnabled = false;
+  //     console.log('Smartcard enabled');
+  //   }
+
+  //   if (selectedValue === 3) {
+  //     this.isAreaCodeEnabled = false;
+  //     console.log('Area code enabled');
+  //   }
+  //   if (selectedValue !== 2 && selectedValue !== 3) {
+  //     console.log('Both disabled');
+  //     this.isSmartcardEnabled = false;
+  //     this.isAreaCodeEnabled = false;
+  //   }
+  // }
+
   onChangeIntendTo1(selectedValue: any) {
     this.isSmartcardEnabled = false;
     this.isAreaCodeEnabled = false;
-    console.log('enabled' + selectedValue);
-    if (selectedValue == 2) {
+    console.log('enabled             =' + selectedValue);
+    if (selectedValue == 0) {
+      this.isSmartcardEnabled = false;
+      this.isAreaCodeEnabled = false
+      console.log('Smartcard enabled');
+    }
+    if (selectedValue == 1) {
       this.isSmartcardEnabled = true;
+      this.isAreaCodeEnabled = false
       console.log('Smartcard enabled');
     }
 
-    if (selectedValue == 3) {
+    if (selectedValue == 2) {
       this.isAreaCodeEnabled = true;
+      this.isSmartcardEnabled = false
       console.log('Area code enabled');
     }
     if (selectedValue !== 2 && selectedValue !== 3) {
@@ -320,4 +480,7 @@ export class ScrollingComponent {
     }
   }
 
+
 }
+
+

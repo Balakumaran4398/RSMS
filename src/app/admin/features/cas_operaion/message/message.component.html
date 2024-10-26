@@ -50,9 +50,20 @@
                                             <label for="">Intend ID</label>
                                         </div>
                                         <div class="col-12 col-md-8" *ngIf="isSmartcardEnabled">
-                                            <input placeholder="Enter Smartcard" type="text" formControlName="intendid">
-                                            <div *ngIf="form.get('intendid')?.invalid && form.get('intendid')?.touched">
+                                            <input placeholder="Enter Smartcard" type="text" formControlName="intendid"
+                                                maxlength="20">
+                                            <!-- <div *ngIf="form.get('intendid')?.invalid && form.get('intendid')?.touched">
                                                 <small class="text-danger">Intend ID is required.</small>
+                                            </div> -->
+                                            <div *ngIf="form.get('intendid')?.invalid && form.get('intendid')?.touched">
+                                                <small *ngIf="form.get('intendid')?.errors?.['required']"
+                                                    class="text-danger">Intend ID is required.</small>
+                                                <small
+                                                    *ngIf="form.get('intendid')?.errors?.['minlength'] || form.get('intendid')?.errors?.['maxlength']"
+                                                    class="text-danger">
+                                                    Intend ID must be exactly 20 digits long.
+                                                </small>
+                                             
                                             </div>
                                         </div>
                                         <div class="col-12 col-md-8" *ngIf="isAreaCodeEnabled">
@@ -237,6 +248,122 @@
                             <!-- Service is Not Running -->
                         </div>
                     </form>
+
+                    <!-- <form [formGroup]="form" (ngSubmit)="onSubmit()">
+                        <div class="col d-flex justify-content-center align-items-center">
+                            <div class="col-12 col-md-12 sol-sm-6" style="padding: 1rem;max-height: 65vh;overflow: scroll;">
+                                <div class="row">
+                                    <div class="input-box mb-3">
+                                        <div class="col-12 col-md-4">
+                                            <label for="">CAS</label>
+                                        </div>
+                                        <div class="col-12 col-md-8">
+                                            <select placeholder="Select the CAS" formControlName="castype" (ngModelChange)="onSelectionFingerPrint($event)">
+                                                <option value="" selected>Select CAS</option>
+                                                <option *ngFor="let casItem of cas" [value]="casItem.id">{{ casItem.name }}</option>
+                                            </select>
+                                            <div *ngIf="form.get('castype')?.invalid && form.get('castype')?.touched">
+                                                <small class="text-danger">CAS is required.</small>
+                                            </div>
+                                        </div>
+                                    </div>
+                    
+                                    <div class="input-box mb-3">
+                                        <div class="col-12 col-md-4">
+                                            <label for="">Intend To</label>
+                                        </div>
+                                        <div class="col-12 col-md-8">
+                                            <select formControlName="intendto" (ngModelChange)="onChangeIntendTo1($event)">
+                                                <option value="" selected> Select Intend</option>
+                                                <option value="" *ngFor="let in of intend" [value]="in.value">{{in.lable}}</option>
+                                            </select>
+                                            <div *ngIf="form.get('intendto')?.invalid && form.get('intendto')?.touched">
+                                                <small class="text-danger">IntendTo is required.</small>
+                                            </div>
+                                        </div>
+                                    </div>
+                    
+                                    <div class="input-box mb-3">
+                                        <div class="col-12 col-md-4">
+                                            <label for="">Intend ID</label>
+                                        </div>
+                                        <div class="col-12 col-md-8" *ngIf="isSmartcardEnabled">
+                                            <input placeholder="Enter Smartcard" type="text" formControlName="intendid">
+                                            <div *ngIf="form.get('intendid')?.invalid && form.get('intendid')?.touched">
+                                                <small class="text-danger">Intend ID is required.</small>
+                                            </div>
+                                        </div>
+                                        <div class="col-12 col-md-8" *ngIf="isAreaCodeEnabled">
+                                            <select id="lcoName" formControlName="intendid">
+                                                <option value="" selected>Select a LCO Name</option>
+                                                <option *ngFor="let area of filteredIntendArea()" [value]="area.id">{{ area.name }}</option>
+                                            </select>
+                                            <div *ngIf="form.get('intendid')?.invalid && form.get('intendid')?.touched">
+                                                <small class="text-danger">Intend ID is required.</small>
+                                            </div>
+                                        </div>
+                                    </div>
+                    
+                                    <div class="input-box mb-3">
+                                        <div class="col-12 col-md-4">
+                                            <label for="">Force Message</label>
+                                        </div>
+                                        <div class="col-12 col-md-8">
+                                            <mat-radio-group class="radio-group" aria-labelledby="status" [(ngModel)]="force" formControlName="forcemsg" (change)="onForceChange($event)">
+                                                <mat-radio-button class="radio-button" [value]="true">Yes</mat-radio-button>&nbsp;
+                                                <mat-radio-button class="radio-button" [value]="false">No</mat-radio-button>
+                                            </mat-radio-group>
+                                            <div *ngIf="form.get('forcemsg')?.invalid && form.get('forcemsg')?.touched">
+                                                <small class="text-danger">Force Message is required.</small>
+                                            </div>
+                                        </div>
+                                    </div>
+                    
+                                    <div class="input-box mb-3">
+                                        <div class="col-12 col-md-4">
+                                            <label for="">Font Size</label>
+                                        </div>
+                                        <div class="col-12 col-md-8">
+                                            <input type="text" placeholder="Enter fontsize" formControlName="fontsize">
+                                            <div *ngIf="form.get('fontsize')?.invalid && form.get('fontsize')?.touched">
+                                                <small *ngIf="form.get('fontsize')?.errors?.['required']" class="text-danger">Font size is required.</small>
+                                                <small *ngIf="form.get('fontsize')?.errors?.['pattern']" class="text-danger">Only numbers are allowed.</small>
+                                            </div>
+                                        </div>
+                                    </div>
+                    
+                                    <div class="input-box mb-3">
+                                        <div class="col-12 col-md-4">
+                                            <label for="">Repeat For</label>
+                                        </div>
+                                        <div class="col-12 col-md-8">
+                                            <input type="text" placeholder="" formControlName="repeatfor">
+                                            <div *ngIf="form.get('repeatfor')?.invalid && form.get('repeatfor')?.touched">
+                                                <small class="text-danger">Repeat For is required.</small>
+                                            </div>
+                                        </div>
+                                    </div>
+                    
+                                    <div class="input-box mb-3">
+                                        <div class="col-12 col-md-4">
+                                            <label for="">Message</label>
+                                        </div>
+                                        <div class="col-12 col-md-8">
+                                            <textarea placeholder="Text a Message" formControlName="msgcontent"></textarea>
+                                            <div *ngIf="form.get('msgcontent')?.invalid && form.get('msgcontent')?.touched">
+                                                <small class="text-danger">Message is required.</small>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    
+                        <div class="d-flex justify-content-center align-items-center">
+                            <button type="submit" class="btn btn-success">Send</button>
+                        </div>
+                    </form> -->
+
                 </div>
             </div>
         </div>

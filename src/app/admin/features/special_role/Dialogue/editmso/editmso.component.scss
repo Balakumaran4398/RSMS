@@ -1,0 +1,15 @@
+.mobile {
+    max-height: 900px;
+    overflow: auto;
+}
+
+@media screen and (max-width:560px) {
+    .mobile {
+        max-height: 500px;
+        overflow: auto;
+    }
+
+    .mobile1 {
+        padding: 1rem;
+    }
+}

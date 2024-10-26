@@ -31,14 +31,15 @@
                                         <label for="">Intend To</label>
                                     </div>
                                     <div class="col-12 col-md-8">
-                                        <select formControlName="intendto" (ngModelChange)="onChangeIntendTo1($event)">
-                                            <option value="0" selected> Select Intend</option>
+                                        <select formControlName="intendto"
+                                            (ngModelChange)="onChangeIntendTo1($event)">
+                                            <option value="" selected> Select Intend</option>
                                             <option value="" *ngFor="let in of intend" [value]="in.value">
                                                 {{in.lable}}
                                             </option>
                                         </select>
                                         <div *ngIf="form.get('intendto')?.invalid && form.get('intendto')?.touched">
-                                            <small class="text-danger">Intend To is required.</small>
+                                            <small class="text-danger">intendTo is required.</small>
                                         </div>
                                     </div>
                                 </div>
@@ -47,14 +48,25 @@
                                         <label for="">Intend ID</label>
                                     </div>
                                     <div class="col-12 col-md-8" *ngIf="isSmartcardEnabled">
-                                        <input placeholder="Enter Smartcard" type="text" formControlName="intendid">
+                                        <input placeholder="Enter Smartcard" type="text" formControlName="intendid" 
+                                            maxlength="20">
                                         <div *ngIf="form.get('intendid')?.invalid && form.get('intendid')?.touched">
                                             <small class="text-danger">Intend ID is required.</small>
+                                        </div>
+                                        <div *ngIf="form.get('intendid')?.invalid && form.get('intendid')?.touched">
+                                            <small *ngIf="form.get('intendid')?.errors?.['required']"
+                                                class="text-danger">Intend ID is required.</small>
+                                            <small
+                                                *ngIf="form.get('intendid')?.errors?.['minlength'] || form.get('intendid')?.errors?.['maxlength']"
+                                                class="text-danger">
+                                                Intend ID must be exactly 20 digits long.
+                                            </small>
+                                         
                                         </div>
                                     </div>
                                     <div class="col-12 col-md-8" *ngIf="isAreaCodeEnabled">
                                         <select id="lcoName" formControlName="intendid">
-                                            <option value="" selected>Select a Area</option>
+                                            <option value="" selected>Select a LCO Name</option>
                                             <option *ngFor="let area of filteredIntendArea()" [value]="area.id">
                                                 {{ area.name }}
                                             </option>
@@ -171,7 +183,7 @@
                                         <label for="">Repeat For</label>
                                     </div>
                                     <div class="col-12 col-md-8">
-                                        <input type="text" placeholder="" formControlName="repeatfor">
+                                        <input type="text" placeholder="" formControlName="repeatfor"  (keypress)="onKeydown($event)">
                                         <div *ngIf="form.get('repeatfor')?.invalid && form.get('repeatfor')?.touched">
                                             <small class="text-danger">RepeatFor is required.</small>
                                         </div>
@@ -182,8 +194,8 @@
                                         <label for="">Transparancy</label>
                                     </div>
                                     <div class="col-12 col-md-8">
-                                        <input type="text" placeholder="Range : 20-80" formControlName="transparancy">
-                                        <div *ngIf="form.get('transparancy')?.invalid && form.get('transparancy')?.touched">
+                                        <input type="text" placeholder="Range : 20-80" formControlName="transparency"  (keypress)="onKeydown($event)">
+                                        <div *ngIf="form.get('transparency')?.invalid && form.get('transparency')?.touched">
                                             <small class="text-danger">Transparancy is required.</small>
                                         </div>
                                     </div>
@@ -193,7 +205,7 @@
                                         <label for="">Duration</label>
                                     </div>
                                     <div class="col-12 col-md-8">
-                                        <input type="text" placeholder="Enter in Seconds" formControlName="duration">
+                                        <input type="text" placeholder="Enter in Seconds" formControlName="duration"  (keypress)="onKeydown($event)">
                                         <div *ngIf="form.get('duration')?.invalid && form.get('duration')?.touched">
                                             <small class="text-danger">Duration is required.</small>
                                         </div>
@@ -205,7 +217,7 @@
                                     </div>
                                     <div class="col-12 col-md-8">
                                         <input type="text" placeholder="" formControlName="timegap">
-                                        <div *ngIf="form.get('timegap')?.invalid && form.get('timegap')?.touched">
+                                        <div *ngIf="form.get('timegap')?.invalid && form.get('timegap')?.touched"  (keypress)="onKeydown($event)">
                                             <small class="text-danger">TimeGap is required.</small>
                                         </div>
                                     </div>

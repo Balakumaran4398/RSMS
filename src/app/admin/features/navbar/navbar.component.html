@@ -1,0 +1,117 @@
+<!-- SIDEBAR -->
+<section id="sidebar-cms">
+    <a class="brand" [ngClass]="{'sidebar-open': isSidebarOpen}">
+     
+        <h1 class="brand-text" style="margin:auto; color: var(--primary);font-family: Poppins;"
+            [ngStyle]="{'visibility': !isSidebarOpen ? 'visible' : 'hidden'}">
+            <img src="./assets/images/AAR FFcopy3.png" alt="AAR Logo" style="height: 90px;">
+
+        </h1>
+    </a>
+
+    <ul class="side-menu">
+        <li><a (click)="routerByUrl('dashboard')" (click)="setActiveTab($event)" class="active"><i
+                    class='fi fi-rr-apps bx-sm  icon' style="font-size: 18px !important;"></i>
+                Dashboard</a></li>
+        <li *ngIf="hasAdminRole()">
+            <a (click)="routerByUrl('employees')" (click)="setActiveTab($event)"> <i class="bx bx-user bx-sm icon"
+                    style="font-size: 18px !important;"></i> Employees </a>
+        </li>
+
+       
+        <li>
+            <a (click)="setActiveTab($event)"> <i class="fi fi-rr-mode-portrait bx-sm icon "
+                    style="font-size: 18px !important;"></i> CRM <i class='bx bx-chevron-right icon-right'></i></a>
+            <ul class="side-dropdown">
+                <li><a (click)="routerByUrl('crmenquirycustomer')" (click)="setActiveTab($event)"><i
+                            class='fi fi-rr-shield-check bx-sm ' style="font-size: 18px !important;"></i> &nbsp; Enquiry
+                    </a></li>
+                <li><a (click)="routerByUrl('contacts')" (click)="setActiveTab($event)"><i
+                            class='fi fi-rr-address-book bx-sm ' style="font-size: 18px !important;"></i> &nbsp;
+                        Contacts
+                    </a></li>
+                <li><a (click)="routerByUrl('companies')" (click)="setActiveTab($event)"><i
+                            class='fi fi-rr-building bx-sm ' style="font-size: 18px !important;"></i> &nbsp; Companies
+                    </a></li>
+            </ul>
+        </li>
+    </ul>
+
+</section>
+<!-- SIDEBAR -->
+
+<!-- NAVBAR -->
+<section id="content">
+    <!-- NAVBAR -->
+    <div class="" style="position: sticky; top: 0;z-index: 10;">
+      
+        <div class="nav-sub">
+            <div class="nav-container"
+                style="z-index: 100; font-size: large; text-transform: capitalize; color: aliceblue; width: 100vw; min-height: 50px; max-height: 65px; background: var(--blue); display: flex; padding: 0 10px; align-items: center;">
+
+                <nav style="color: white;background-color: #475172; display: flex; align-items: center;">
+                    <i class='bx bx-menu toggle-sidebar' style="font-size: 2rem;margin-top: 12px;"></i>
+                </nav>
+                &nbsp;
+                <div class="nav-content w-100 d-flex justify-content-between align-items-center"
+                    style="margin-top: 12px;">
+
+                    <div class="search col-6 d-flex justify-content-between">
+                        <input type="text" placeholder="Search..." class="search-input"
+                            style="width: 100%; padding: 5px 10px; border-radius: 5px; border: none;background: #475172;">
+                        <i class="fa fa-search" style="margin-left: -30px; color: #ccc;"></i>
+                    </div>
+
+                    <div class="right-icons col-4 d-flex justify-content-end align-items-center" style="gap: 25px;">
+
+                        <i class='bx bx-cog' style="font-size: 1.5rem; color: rgb(212, 210, 210);"></i>
+
+                        <i class='bx bx-bell' style="font-size: 1.5rem; color: rgb(212, 210, 210);"></i>
+
+                        <div class="user-profile d-flex align-items-center" style="color: rgb(212, 210, 210);">
+
+                            <img src="assets/images/user.png" alt="User"
+                                style="width: 28px; height: 28px; border-radius: 50%; margin-right: 8px;">
+                            <span class="user-name" (click)="toggleDrop()"
+                                style="cursor: pointer;">{{user?.username}}</span>
+                            <i class='bx bx-chevron-down' style="font-size: 1.5rem;" (click)="toggleDrop()"></i>
+
+                            <div *ngIf="isDropdownOpen" class="dropdown-menu1">
+                                <div class="dropdown-header d-flex align-items-center">
+                                    <div>
+                                        <img src="assets/images/user.png" alt="User" class="dropdown-avatar"
+                                            style="margin-left: 130%;">
+                                    </div>
+                                    <div class="user-details ml-2" style="color: black;position: relative;top: 11vh;">
+                                        <p style="color: #28a745;display: flex;justify-content: center;">
+                                            {{user?.username}}</p>
+                                        <p style="display: flex;justify-content: center;">Admin ID</p>
+                                        <p style="display: flex;justify-content: center;">Finance Branch</p>
+                                    </div>
+                                </div>
+                                <div class="dropdown-footer mt-2">
+                                    <button class="logout-btn" (click)="logout()">Logout</button>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+
+    </div>
+    <!-- NAVBAR -->
+   
+
+    <!-- </div> -->
+    <!-- MAIN -->
+    <main>
+        <!-- <router-outlet></router-outlet> -->
+    </main>
+    <!-- MAIN -->
+
+</section>
+<!-- NAVBAR -->

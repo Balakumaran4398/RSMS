@@ -52,6 +52,14 @@ export class UpdateLcoComponent {
       cancelButtonText: 'Cancel'
     }).then((result) => {
       if (result.isConfirmed) {
+        Swal.fire({
+          title: 'Processing...',
+          text: 'Please wait while we Update the LCO Membership.',
+          allowOutsideClick: false,
+          didOpen: () => {
+            Swal.showLoading(null);
+          }
+        });
         this.userservice.UpdatecomembershipFUP(this.role, this.username, this.id, this.sharedcount, this.lcogroupid)
           .subscribe(
             (res: any) => {
@@ -60,6 +68,7 @@ export class UpdateLcoComponent {
                 text: res?.message,
                 icon: 'success',
                 timer: 2000,
+                timerProgressBar:true,
                 showConfirmButton: false
               }).then(() => {
                 this.dialogRef.close();
@@ -70,7 +79,9 @@ export class UpdateLcoComponent {
                 title: 'Error!',
                 text: err?.error?.message,
                 icon: 'error',
-                confirmButtonText: 'OK'
+                confirmButtonText: 'OK',
+                timer: 2000,
+                timerProgressBar:true,
               });
             }
           );

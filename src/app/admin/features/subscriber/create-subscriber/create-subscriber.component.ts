@@ -4,6 +4,7 @@ import { BaseService } from 'src/app/_core/service/base.service';
 import { StorageService } from 'src/app/_core/service/storage.service';
 import Swal from 'sweetalert2';
 import { DatePipe } from '@angular/common';
+import { SwalService } from 'src/app/_core/service/swal.service';
 
 
 @Component({
@@ -18,11 +19,11 @@ export class CreateSubscriberComponent {
   maxLength: number | undefined;
   exampleFormat: string | undefined;
   form!: FormGroup;
-  operatorid: any = 0;
-  areaid: any = 0;
-  streetid: any = 0;
-  idproof: any = 0;
-  addressproof: any = 0;
+  operatorid: any;
+  areaid: any;
+  streetid: any;
+  idproof: any;
+  addressproof: any;
   casformid: any;
   customername: any;
   isLinear = false;
@@ -35,6 +36,8 @@ export class CreateSubscriberComponent {
   street_list: { [key: string]: number } = {};
   id_proof_list: { [key: string]: number } = {};
   add_proof_list: { [key: string]: number } = {};
+  filterd_proof_list: any[] = [];
+
   searchTerm: string = '';
   username: any;
   role: any;
@@ -43,7 +46,7 @@ export class CreateSubscriberComponent {
   selectedIDProofType: string = '';
   // proofType:any;
 
-  constructor(private formBuilder: FormBuilder, private userservice: BaseService, private cdr: ChangeDetectorRef,private storageservice: StorageService, private datePipe: DatePipe) {
+  constructor(private formBuilder: FormBuilder, private userservice: BaseService, private swal: SwalService, private cdr: ChangeDetectorRef, private storageservice: StorageService, private datePipe: DatePipe) {
     this.username = storageservice.getUsername();
     this.role = storageservice.getUserRole();
     userservice.getOperatorListforSubInsert(this.role, this.username).subscribe((data: any) => {
@@ -112,10 +115,34 @@ export class CreateSubscriberComponent {
   }
   filteredIdProofKeys(): string[] {
     return Object.keys(this.id_proof_list);
+    // return Object.keys(this.id_proof_list)
+    //   .map(key => key.split('(')[0].trim())
+    //   .sort();
   }
-  filteredADDProofKeys(): string[] {
+  filteredADDProofKeys(): any[] {
+    console.log(this.add_proof_list);
     return Object.keys(this.add_proof_list);
+    // const resultArray = Object.keys(this.add_proof_list).map(key => {
+    //   return {
+    //     name: key.split('(')[0].trim(), // Extract name before '('
+    //     id: this.add_proof_list[key]
+    //   };
+    // });
+
+    // return resultArray;
+    // return Object.keys(this.add_proof_list)
+    //   .map(key => key.split('(')[0].trim())
+    //   .sort();
   }
+  // filteredADDProofKeys(): { name: string, id: number }[] {
+  //   return Object.keys(this.add_proof_list)
+  //     .map(key => {
+  //       const name = key.split('(')[0].trim(); 
+  //       const id = this.add_proof_list[key];  
+  //       return { name, id };
+  //     })
+  //     .sort((a, b) => a.name.localeCompare(b.name)); // Sort alphabetically by name
+  // }
 
   onIDProofChange(event: any): void {
     const selectedValue = event.target.value;
@@ -126,14 +153,32 @@ export class CreateSubscriberComponent {
     this.applyValidators(this.selectedIDProofType, 'idproof');
   }
   onAddProofChange(event: any): void {
+    console.log(event.target.value);
+    console.log(this.form.value);
+
     const selectedValue = event.target.value;
     const match = selectedValue.match(/\((\d+)\)/);
     const value = match ? match[1] : null;
     this.selectedAddProofType = selectedValue.replace(/\(\d+\)/, '').trim();
+    console.log(this.selectedAddProofType);
     this.form.get('addressproof')?.reset();
     this.applyValidators(this.selectedAddProofType, 'addressproof');
-  }
 
+
+  }
+  validateAddressProof(control: AbstractControl): { [key: string]: boolean } | null {
+    console.log('address proof');
+
+    const ebBillPattern = /^EB\d{9}$/;
+    const gasBillPattern = /^GAS\d{8}$/;
+    const value = control.value;
+
+    if (ebBillPattern.test(value) || gasBillPattern.test(value)) {
+      return { invalidAddressProof: true };  // Return error if it matches EB or Gas Bill
+    }
+
+    return null;  // Return null if no error
+  }
 
   getMaxLength(proofType: string): number {
     // console.log(" getMaxLength          " + proofType);
@@ -148,6 +193,8 @@ export class CreateSubscriberComponent {
         return 13;
       case 'Passport':
         return 8;
+      case 'Address proof':
+        return 11;
       case 'No Proof':
         return 1;
       default:
@@ -169,16 +216,16 @@ export class CreateSubscriberComponent {
         return '[A-Z]{2}\\d{11}';
       case 'Passport':
         return '[A-PR-WYa-pr-wy][1-9]\\d{4}[1-9]';
+      case 'Address proof':
+        return '\\d{2}[A-Z]{2}\\d{6}';
       case 'No Proof':
         return '0';
       default:
-        return '.*'; // Accept anything by default
+        return '.*';
     }
   }
 
   getExampleFormat(proofType: string): string {
-    // console.log("getExampleFormat        " + proofType);
-
     switch (proofType) {
       case 'Aadhaar Card':
         return '123456789123';
@@ -190,6 +237,8 @@ export class CreateSubscriberComponent {
         return 'DL123456789012';
       case 'Passport':
         return 'A1234567';
+      case 'Address proof':
+        return 'EB123456789';
       case 'No Proof':
         return '0';
       default:
@@ -237,6 +286,40 @@ export class CreateSubscriberComponent {
             Validators.maxLength(this.maxLength)
           ]);
           break;
+
+        case 'Address proof':
+          this.maskPattern = '00A00000000';
+          this.maxLength = 11;
+          this.exampleFormat = '12A3456789';
+          control.setValidators([
+            Validators.required,
+            Validators.pattern(/^\d{2}[A-Z]\d{7}$/),
+            Validators.maxLength(this.maxLength),
+            // this.validateAddressProof
+          ]);
+          break;
+
+        // case 'EB Bill':
+        //   this.maskPattern = 'EB000000000';
+        //   this.maxLength = 11;
+        //   this.exampleFormat = 'EB123456789';
+        //   control.setValidators([
+        //     Validators.required,
+        //     Validators.pattern(/^EB\d{9}$/),
+        //     Validators.maxLength(this.maxLength)
+        //   ]);
+        //   break;
+
+        // // case 'Gas Bill':
+        //   this.maskPattern = 'GAS00000000';
+        //   this.maxLength = 11;
+        //   this.exampleFormat = 'GAS12345678';
+        //   control.setValidators([
+        //     Validators.required,
+        //     Validators.pattern(/^GAS\d{8}$/),
+        //     Validators.maxLength(this.maxLength)
+        //   ]);
+        //   break;
 
         case 'Driving Licence':
           this.maskPattern = 'AA00000000000';
@@ -299,8 +382,15 @@ export class CreateSubscriberComponent {
     this.userservice.getAddresProofList(this.role, this.username).subscribe(
       (data: any) => {
         this.add_proof_list = data.addressprooftypeid;
+        console.log(this.add_proof_list);
         this.cdr.detectChanges();
         console.log("ADD Proof List", this.add_proof_list);
+        this.filterd_proof_list = Object.keys(this.add_proof_list).map(key => {
+          return {
+            name: key.split('(')[0].trim(), // Extract name before '('
+            id: this.add_proof_list[key]
+          };
+        });
       },
       error => {
         console.error('Error fetching ID Proof List', error);
@@ -313,20 +403,23 @@ export class CreateSubscriberComponent {
     let addressprooftypeid = this.form.get('addressprooftypeid')?.value
     const match = this.form.get('addressprooftypeid')?.value.match(/\((\d+)\)/);
     const value = match ? match[1] : null;
-    console.log(value);
     this.form.removeControl('addressprooftypeid');
     this.form.addControl('addressprooftypeid', new FormControl(value))
     let idprooftypeid = this.form.get('idprooftypeid')?.value
     const match1 = this.form.get('idprooftypeid')?.value.match(/\((\d+)\)/);
     const value1 = match1 ? match[1] : null;
-    console.log(value1);
     this.form.removeControl('idprooftypeid');
     this.form.addControl('idprooftypeid', new FormControl(value1))
     let formsubmissiondate = this.form.get('formsubmissiondate')?.value
-    console.log(formsubmissiondate);
     let formsubmissiondateReplaced = formsubmissiondate.replace('T', ' ');
     this.form.removeControl('formsubmissiondate');
     this.form.addControl('formsubmissiondate', new FormControl(formsubmissiondateReplaced))
+    const errorFields = [
+      'address', 'customername', 'casformid', 'customernamelast', 'fathername',
+      'dateofbirth', 'installaddress', 'mobileno', 'landlineno', 'email',
+      'formsubmissiondate', 'addressproof', 'addressprooftypeid', 'idproof', 'idprooftypeid'
+    ];
+    this.swal.Loading();
     this.userservice.createSubscriber(this.form.value).subscribe(
       (data: any) => {
         this.form.removeControl('addressprooftypeid');
@@ -347,6 +440,9 @@ export class CreateSubscriberComponent {
 
       },
       (error) => {
+        const errorMessage = errorFields
+          .map(field => error?.error?.[field])
+          .find(message => message) || 'An error occurred while creating the subscriber.'
         this.form.removeControl('addressprooftypeid');
         this.form.addControl('addressprooftypeid', new FormControl(addressprooftypeid))
         this.form.removeControl('idprooftypeid');
@@ -354,13 +450,16 @@ export class CreateSubscriberComponent {
         Swal.fire({
           icon: 'error',
           title: 'Error',
-          text:  'An error occurred while creating the subscriber.',
+          text: errorMessage,
+
+          // text: error?.error?.address || error?.error?.customername || error?.error?.casformid || error?.error?.customernamelast || error?.error?.fathername ||
+          //   error?.error?.dateofbirth || error?.error?.installaddress || error?.error?.mobileno || error?.error?.landlineno || error?.error?.email || error?.error?.formsubmissiondate || error?.error?.addressproof ||
+          //   error?.error?.addressprooftypeid || error?.error?.idproof || error?.error?.idprooftypeid || 'An error occurred while creating the subscriber.',
           timer: 3000,
           timerProgressBar: true,
           showConfirmButton: false
-
         }).then(() => {
-          // window.location.reload()
+          this.form.markAllAsTouched();
         });
 
 
@@ -420,5 +519,17 @@ export class CreateSubscriberComponent {
   onReset(): void {
     this.submitted = false;
     this.form.reset();
+  }
+  installaddress: string = '';
+  billingaddress: string = '';
+
+  onChange(event: Event) {
+    const isChecked = (event.target as HTMLInputElement).checked;
+    if (isChecked) {
+      this.installaddress = this.billingaddress;
+    } else {
+      this.billingaddress = this.billingaddress
+      this.installaddress = '';
+    }
   }
 }

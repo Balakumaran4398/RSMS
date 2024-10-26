@@ -11,7 +11,7 @@ import { SwalService } from 'src/app/_core/service/swal.service';
 })
 export class PaymentUpdateComponent {
   localPaymentChannelList: any;
-  confirmationPaymentList:  any = null
+  confirmationPaymentList: any = null
   role: any;
   username: any;
   pay: string = '0.0';
@@ -41,12 +41,13 @@ export class PaymentUpdateComponent {
     this.userService.getLocalChannelPayConfirmation(this.role, this.username, this.localPaymentChannelList?.serviceid, this.pay, this.iscredit)
       .subscribe((res: any) => {
         this.confirmationPaymentList = res;
-        this.swal.success(res?.message);
+        this.swal.success_1(res?.message);
       }, (err) => {
         this.swal.Error(err?.error?.message);
       });
   }
   submit() {
+    this.swal.Loading();
     this.userService.payLocalChannel(this.role, this.username, this.localPaymentChannelList?.serviceid, this.pay, this.iscredit, this.confirmationPaymentList?.days, this.confirmationPaymentList?.newexpirydate)
       .subscribe((res: any) => {
         this.swal.success(res?.message);

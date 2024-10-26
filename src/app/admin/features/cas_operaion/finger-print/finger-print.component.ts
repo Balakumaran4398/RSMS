@@ -39,7 +39,7 @@ export class FingerPrintComponent {
   ss: any = 0;
   x: any;
   y: any;
-
+  casId: any;
   // CasFormControl = new FormControl('');
   // selectedFPFormControl = new FormControl();
   // selectedServiveFormControl = new FormControl();
@@ -85,7 +85,7 @@ export class FingerPrintComponent {
   isSmartcardEnabled: boolean = true;
   isAreaCodeEnabled: boolean = false;
   isPositionXYVisible: boolean = true;
-  isPositionXYVisible_mobile: boolean = true;
+  isPositionXYVisible_mobile: boolean = false;
   area: any[] = [];
   smartcardFormControl = new FormControl();
 
@@ -257,7 +257,6 @@ export class FingerPrintComponent {
   // }
   submit() {
     // if (this.form.valid) {
-    // Show loading indicator before making the API call
     Swal.fire({
       title: "Loading!!!",
       text: "Please wait while we send the fingerprint data.",
@@ -266,51 +265,40 @@ export class FingerPrintComponent {
       }
     });
 
-    // Make the API call
     this.userservice.SendFingerPrint(this.form.value).subscribe(
       (res: any) => {
-        console.log(res.message);
-
-        // Close the loading indicator
-        Swal.close(); // Close the loading alert
-
-        // Show success message
+        Swal.close();
         Swal.fire({
           title: 'Success',
           text: res.message || 'Fingerprint data has been sent successfully!',
           icon: 'success',
-          timer: 3000,
+          timer: 2000,
           timerProgressBar: true,
         });
-
-        // Optionally, you can refresh the page or do something else
-        // location.reload();
       },
       (error) => {
-        // Close the loading indicator
-        Swal.close(); // Close the loading alert
-
-        // Show error message
+        console.error(error);
         Swal.fire({
-          title: 'Error',
-          text: error.error?.message || 'Failed to send fingerprint data. Please try again later.',
+          title: 'Error!',
+          text: error?.error.message || 'There was a problem creating the message.',
           icon: 'error',
-          timer: 3000,
-          timerProgressBar: true,
+          confirmButtonText: 'OK',
+          timer: 2000,
+          timerProgressBar: true
+        }).then(() => {
+          this.form.markAllAsTouched();
         });
-
-        // Optionally, you can refresh the page or do something else
-        // location.reload();
       }
     );
     // } else {
-    //   // If the form is invalid, mark all controls as touched to show validation errors
     //   this.form.markAllAsTouched();
+    // }
   }
 
 
 
   stop() {
+    // if (this.form.valid) {
     Swal.fire({
       title: "Loading!!!",
       text: "Please wait while we process your request.",
@@ -328,7 +316,6 @@ export class FingerPrintComponent {
           icon: 'success',
           timer: 3000,
           timerProgressBar: true,
-
         });
       },
       (error) => {
@@ -430,10 +417,10 @@ export class FingerPrintComponent {
     console.log(selectedValue);
     this.isButtonEnable = false;
     this.showServiceNameField = selectedValue === 'ecm';
-    const casId = Number(selectedValue);
+    this.casId = Number(selectedValue);
 
-    console.log(casId);
-    if (casId == 3) {
+    console.log(this.casId);
+    if (this.casId == 3) {
       this.ispositiondisabled = true;
       console.log(this.ispositiondisabled);
 
@@ -441,23 +428,31 @@ export class FingerPrintComponent {
       this.ispositiondisabled = false;
       console.log(this.ispositiondisabled);
     }
-    if (casId == 1) {
+    if (this.casId == 1) {
       this.isFontSizeDisabled = true;
       this.isFontSizeSelectDisabled = false;
+
     } else {
       this.isFontSizeDisabled = false;
       this.isFontSizeSelectDisabled = true;
     }
 
-    if (casId == 1) {
+    if (this.casId == 1) {
       this.isTransparencyDisabled = true;
       this.isTransparency_select_Disabled = false;
     } else {
       this.isTransparencyDisabled = false;
       this.isTransparency_select_Disabled = true;
     }
+    if (this.casId == 1) {
+      this.isPositionXYVisible = false;
 
-    if (casId == 1) {
+    } else {
+      this.isPositionXYVisible = false;
+
+    }
+
+    if (this.casId == 1) {
       this.isrepeatfordisabled = true;
       console.log(this.isrepeatfordisabled);
 
@@ -488,13 +483,30 @@ export class FingerPrintComponent {
     }
   }
   onChangePositionType(selectedValue: any) {
-    console.log('enabled' + selectedValue);
-    if (selectedValue == 3) {
+    console.log('sdghfgjjjjjjjjjjjjjjjj=========-----------dddddd', this.casId);
+
+
+    if (this.casId == 1 && selectedValue == 3) {
+      this.isPositionXYVisible = false;
+      console.log('isPositionXYVisible enabled');
+    } else {
+      this.isPositionXYVisible = false;
+    }
+
+    if ((this.casId == 3 || this.casId == 7) && selectedValue == 3) {
       this.isPositionXYVisible = true;
       console.log('isPositionXYVisible enabled');
     } else {
       this.isPositionXYVisible = false;
     }
+
+    // console.log('enabled' + selectedValue);
+    // if (selectedValue == 3) {
+    //   this.isPositionXYVisible = true;
+    //   console.log('isPositionXYVisible enabled');
+    // } else {
+    //   this.isPositionXYVisible = false;
+    // }
   }
 
 }

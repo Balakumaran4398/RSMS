@@ -50,6 +50,14 @@ export class CreateChannelTypeComponent {
       confirmButtonText: 'Yes, create it!'
     }).then((result) => {
       if (result.isConfirmed) {
+        Swal.fire({
+          title: 'Updateing...',
+          text: 'Please wait while the Channel is being updated',
+          allowOutsideClick: false,
+          didOpen: () => {
+            Swal.showLoading(null);
+          }
+        });
         this.userService.Channel_Type(requestBody).subscribe(
           (res) => {
             console.log(res);
@@ -58,7 +66,8 @@ export class CreateChannelTypeComponent {
               icon: "success",
               title: "ChannelType created successfully !!",
               showConfirmButton: false,
-              timer: 1000
+              timer: 2000,
+              timerProgressBar:true,
             }).then(() => {
               window.location.reload();
               this.closeDialog();
@@ -73,7 +82,9 @@ export class CreateChannelTypeComponent {
               title: 'Error',
               text: errorMessage,
               showConfirmButton: false,
-              timer: 1500
+              timer: 2000,
+              timerProgressBar:true,
+
             });
           }
         );
@@ -85,5 +96,13 @@ export class CreateChannelTypeComponent {
   }
   closeDialog() {
     this.dialogRef.close();
+  }
+  errorToggle(){
+    this.errorMessage=!this.errorMessage;
+  }
+  clearError() {
+    if (this.ChannelType_name.trim()) {
+      this.errorMessage = null; 
+    }
   }
 }

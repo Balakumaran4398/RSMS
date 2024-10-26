@@ -91,7 +91,6 @@ import { ReplaceInventoryComponent } from "./features/channel_setting/_Dialogue/
 import { InsertSubDialogComponent } from "./features/channel_setting/_Dialogue/Inventory/insert_sub/insert-sub-dialog/insert-sub-dialog.component";
 import { ReallocationComponent } from "./features/channel_setting/_Dialogue/Inventory/Smartcard_Reallocation/reallocation/reallocation.component";
 import { AgGridModule } from "ag-grid-angular";
-import { LcoRechargePageComponent } from "./features/channel_setting/_Dialogue/LCO_Recharge/lco-recharge-page/lco-recharge-page.component";
 import { LcoRechargeReportComponent } from "./features/channel_setting/_Dialogue/LCO_Recharge/lco-recharge-report/lco-recharge-report.component";
 import { NewRechargeComponent } from "./features/channel_setting/_Dialogue/LCO_Recharge/new-recharge/new-recharge.component";
 import { BulkRechargeComponent } from "./features/channel_setting/_Dialogue/LCO_Recharge/bulk-recharge/bulk-recharge.component";
@@ -117,9 +116,24 @@ import { PaymentUpdateComponent } from "./features/channel_setting/_Dialogue/loc
 import { CreateltbComponent } from "./features/channel_setting/_Dialogue/local+broadcasting/createltb/createltb.component";
 import { EditareaComponent } from "./features/channel_setting/_Dialogue/operator/editarea/editarea.component";
 import { OperatorlistComponent } from "./features/operator/operatorlist/operatorlist.component";
+import { NavbarComponent } from "./features/navbar/navbar.component";
+import { CasDialogueComponent } from "./features/channel_setting/_Dialogue/cas-dialogue/cas-dialogue.component";
+import { MsodetailsComponent } from "./features/special_role/msodetails/msodetails.component";
+import { CasmasterComponent } from "./features/special_role/casmaster/casmaster.component";
+import { LcoinvoiceComponent } from "./features/special_role/lcoinvoice/lcoinvoice.component";
+import { CasdialogueComponent } from "./features/special_role/Dialogue/casdialogue/casdialogue.component";
+import { EditmsoComponent } from "./features/special_role/Dialogue/editmso/editmso.component";
+import { SpecialoperatorComponent } from "./features/special_role/specialoperator/specialoperator.component";
+import { SpecialoperatordialogueComponent } from "./features/special_role/Dialogue/specialoperatordialogue/specialoperatordialogue.component";
+import { SublcooperatorComponent } from "./features/special_role/Dialogue/sublcooperator/sublcooperator.component";
+import { SublcooperatordialogueComponent } from "./features/special_role/Dialogue/sublcooperatordialogue/sublcooperatordialogue.component";
+import { AddednotaddedComponent } from "./features/special_role/Dialogue/addednotadded/addednotadded.component";
+import { PackageplanComponent } from "./features/special_role/packageplan/packageplan.component";
+import { PackageplandialogueComponent } from "./features/special_role/Dialogue/packageplandialogue/packageplandialogue.component";
+import { ChanneldetailsComponent } from "./features/special_role/channeldetails/channeldetails.component";
 @NgModule({
     declarations: [
-        AdminBaseComponent, NavComponent, HomeComponent,
+        AdminBaseComponent, NavComponent, HomeComponent, NavbarComponent, MsodetailsComponent, CasmasterComponent,
         // -------------------------Dashboard-----------------------------
         BarChartComponent, InventoryChartComponent, LcoCommissionChartComponent,
         PackageChartComponent, StbChartComponent,
@@ -127,9 +141,9 @@ import { OperatorlistComponent } from "./features/operator/operatorlist/operator
         TopSubDetailComponent,
         // -----------------------------------------operator----------------------------------
         OperatorlistComponent, OperatorDetailsComponent, LcoRechargeComponent, EditLcoComponent, SpecialPermissionComponent, NewLcoComponent, NewstreetComponent,
-        AddLcoBusinessComponent, LcodashboardComponent, LcochartComponent, LcopiechartComponent, OperatordialogueComponent, StreetComponent,EditareaComponent,
+        AddLcoBusinessComponent, LcodashboardComponent, LcochartComponent, LcopiechartComponent, OperatordialogueComponent, StreetComponent, EditareaComponent,
         // --------------LCO RECHARGE-----------------
-        LcoRechargePageComponent, LcoRechargeReportComponent, NewRechargeComponent, BulkRechargeComponent, RefundComponent,
+        LcoRechargeReportComponent, NewRechargeComponent, BulkRechargeComponent, RefundComponent,
         //==========================================channel_setting==============================================
         AddonPackageComponent, BroadMasterComponent, ChannelComponent, ChannelTypeComponent, DistributorMasterComponent,
         CreateDistributorComponent, LcoCommissionComponent, PackageReferenceComponent, PackageCreationComponent, PackageMasterComponent,
@@ -153,7 +167,7 @@ import { OperatorlistComponent } from "./features/operator/operatorlist/operator
         CreateSubscriberComponent, SubscriberDetailsComponent, ExpiryDetailsComponent, SubDashboardComponent, SubscriberdialogueComponent,
         SubloginComponent, ChannellistComponent,
         // -----------------------------------------Cas Operation---------------------------------
-        FingerPrintComponent, ScrollingComponent, MessageComponent, ForceTuningComponent, MailComponent,
+        FingerPrintComponent, ScrollingComponent, MessageComponent, ForceTuningComponent, MailComponent, CasDialogueComponent,
         // -------------------------------Inventory---------------------------------
         AllocatedComponent, NotAllocatedComponent, DefectiveSmartcardComponent, InsertSubComponent, SmartcardAllocationComponent, ReplaceInventoryComponent, InsertSubDialogComponent,
         SmartcardReallocationComponent, UpdateInventoryComponent, AllocatedInventoryComponent, EditInventoryComponent, SubInventoryComponent, DefectiveInventoryComponent, ReallocationComponent,
@@ -167,9 +181,11 @@ import { OperatorlistComponent } from "./features/operator/operatorlist/operator
         DeactivationComponent, SubscriptionExdendComponent, RefreshComponent, RecurringComponent,
 
         // --------------------------------------------Local Broadcasting-------------------------------------------------------------------------------
-        PaymentUpdateComponent,CreateltbComponent,UpdateLtbComponent
-
-
+        PaymentUpdateComponent, CreateltbComponent, UpdateLtbComponent,
+        // ----------------------------------------------Special role-----------------------------------------
+        LcoinvoiceComponent, CasdialogueComponent, EditmsoComponent, SpecialoperatorComponent, SpecialoperatordialogueComponent, SublcooperatorComponent, SublcooperatordialogueComponent,
+        
+        AddednotaddedComponent,PackageplanComponent,PackageplandialogueComponent,ChanneldetailsComponent
 
     ],
     imports: [

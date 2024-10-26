@@ -303,7 +303,7 @@ export class BaseService {
     console.log(role);
     return this.http.get<any[]>(BASE_URL + "/package/getaddonlistpackage?role=" + role + "&username=" + username + "&packageid=" + package_id + "&type=" + type);
   }
-  MANAGE_PACKAGE(package_id: any, role: any, username: any): Observable<any[]> {
+  managePackage(package_id: any, role: any, username: any): Observable<any[]> {
     return this.http.get<any[]>(BASE_URL + "/package/managePackages?packageid=" + package_id + "&role=" + role + "&username=" + username, {});
   }
   AddingdAlacarteTo_Base_Package(modified: any, selectedchannellist: any, role: any, u_name: any, package_id: any): Observable<any[]> {
@@ -359,10 +359,14 @@ export class BaseService {
     return this.http.get<any[]>(BASE_URL + "/package/getpackagemasterList?role=" + role + "&username=" + username + "&type=" + type + "&castype=" + castype);
   }
   // ============================================================Package Master=========================================
-  UpdatePackagemasterList(role: any, username: string, id: any): Observable<any[]> {
+  UpdatePackagemasterList(role: any, username: string, id: any, type: any): Observable<any[]> {
     console.log(role);
-    return this.http.get<any[]>(BASE_URL + "/package/updatepackagemaster?role=" + role + "&username=" + username + "&id=" + id);
+    return this.http.post<any[]>(BASE_URL + "/package/updatepackagemaster?role=" + role + "&username=" + username + "&id=" + id + "&type=" + type, {});
   }
+  // poductActiveDeactive(role: any, username: string, id: any,type:any): Observable<any[]> {
+  //   console.log(role);
+  //   return this.http.post<any[]>(BASE_URL + "/package/updatepackagemaster?role=" + role + "&username=" + username + "&id=" + id+"&type="+type,{});
+  // }
 
   // ==============================Fingerprint=======================================
   Cas_type(role: any, username: any): Observable<any[]> {
@@ -539,10 +543,25 @@ export class BaseService {
     return this.http.get<any[]>(
       BASE_URL + "/subscriber/getSubscriberIdListByOperatorid?role=" + role + "&username=" + username + "&operatorid=" + operatorid);
   }
-  getPdfBillReport(role: any, username: any, subid: any, smartcard: any): Observable<any[]> {
-    return this.http.get<any[]>(
-      BASE_URL + "/subscriber/getPdfBillReport?role=" + role + "&username=" + username + "&subid=" + subid + "&smartcard=" + smartcard);
+  // getPdfBillReport(role: any, username: any, subid: any, smartcard: any): Observable<Blob> {
+  //   return this.http.get(BASE_URL + "/subscriber/getPdfBillReport?role=" + role + "&username=" + username + "&subid=" + subid + "&smartcard=" + smartcard,{responseType: 'blob'});
+  // }
+  getPdfBillReport(role: any, username: any, subid: any, smartcard: any): Observable<Blob> {
+    return this.http.get(BASE_URL + "/subscriber/getPdfBillReport?role=" + role + "&username=" + username + "&subid=" + subid + "&smartcard=" + smartcard, { responseType: 'blob' });
   }
+  getPdfCasformReport(role: any, username: any, subid: any): Observable<Blob> {
+    return this.http.get(BASE_URL + "/subscriber/getPdfCasformReport?role=" + role + "&username=" + username + "&subid=" + subid, { responseType: 'blob' });
+  }
+
+  getPdfSmartcardRechargeReport(role: any, username: any, smartcard: any): Observable<any[]> {
+    return this.http.get<any[]>(
+      BASE_URL + "/subscriber/getPdfSmartcardRechargeReport?role=" + role + "&username=" + username + "&smartcard=" + smartcard);
+  }
+  getPdfSubscriberRechargeDetails(role: any, username: any, subid: any, input: any): Observable<any[]> {
+    return this.http.get<any[]>(
+      BASE_URL + "/subscriber/getPdfSubscriberRechargeDetails?role=" + role + "&username=" + username + "&subid=" + subid + "&input=" + input);
+  }
+
   lcotransferSinglesmartcard(role: any, username: any, operatorid: any, oldsubid: boolean, newsubid: any, withsubscription: any, smartcard: any, retailerid: any, type: any): Observable<any[]> {
     return this.http.post<any[]>(
       BASE_URL + "/subscriber/lcotransferSinglesmartcard?role=" + role + "&username=" + username + "&operatorid=" + operatorid + "&oldsubid=" + oldsubid + "&newsubid=" + newsubid + "&withsubscription=" + withsubscription + "&smartcard=" + smartcard + "&retailerid=" + retailerid + "&type=" + type, {});
@@ -567,17 +586,17 @@ export class BaseService {
     return this.http.get<any[]>(
       BASE_URL + "/subscriber/getBaseChangeConfirmation?role=" + role + "&username=" + username + "&packageid=" + packageid + "&plantype=" + plantype + "&plan=" + plan + "&smartcard=" + smartcard + "&type=" + type + "&retailerid=" + retailerid);
   }
-  getAddonpackageDetails(role: any, username: any, smartcard: any):  Observable<HttpResponse<any[]>> {
+  getAddonpackageDetails(role: any, username: any, smartcard: any): Observable<HttpResponse<any[]>> {
     return this.http.get<any[]>(
-      BASE_URL + "/subscriber/getAddonpackageDetails?role=" + role + "&username=" + username + "&smartcard=" + smartcard,{ observe: "response" });
+      BASE_URL + "/subscriber/getAddonpackageDetails?role=" + role + "&username=" + username + "&smartcard=" + smartcard, { observe: "response" });
   }
   getAlacarteDetails(role: any, username: any, smartcard: any): Observable<HttpResponse<any[]>> {
     return this.http.get<any[]>(
-      BASE_URL + "/subscriber/getAlacarteDetails?role=" + role + "&username=" + username + "&smartcard=" + smartcard,{ observe: "response" });
+      BASE_URL + "/subscriber/getAlacarteDetails?role=" + role + "&username=" + username + "&smartcard=" + smartcard, { observe: "response" });
   }
-  removeProductDetails(role: any, username: any, smartcard: any): Observable<HttpResponse<any[]>>{
+  removeProductDetails(role: any, username: any, smartcard: any): Observable<HttpResponse<any[]>> {
     return this.http.get<any[]>(
-      BASE_URL + "/subscriber/removeProductDetails?role=" + role + "&username=" + username + "&smartcard=" + smartcard,{ observe: "response" });
+      BASE_URL + "/subscriber/removeProductDetails?role=" + role + "&username=" + username + "&smartcard=" + smartcard, { observe: "response" });
   }
 
   baseChangeofSmartcardPackage(requestBody: any): Observable<any[]> {
@@ -635,8 +654,8 @@ export class BaseService {
     );
   }
 
-  getExpirySubscriberByOperator(role: any, username: any, operatorid: any, fromdate: any, todate: any, format: any): Observable<any> {
-    return this.http.get<any[]>(BASE_URL + "/subscriber/getExpirySubscriberByOperator?role=" + role + "&username=" + username + "&operatorid=" + operatorid + "&fromdate=" + fromdate + "&todate=" + todate + "&format=" + format, {}
+  getExpirySubscriberByOperator(role: any, username: any, operatorid: any, fromdate: any, todate: any, format: any): Observable<HttpResponse<any[]>> {
+    return this.http.get<any[]>(BASE_URL + "/subscriber/getExpirySubscriberByOperator?role=" + role + "&username=" + username + "&operatorid=" + operatorid + "&fromdate=" + fromdate + "&todate=" + todate + "&format=" + format, { observe: 'response' }
     )
   }
 
@@ -650,8 +669,8 @@ export class BaseService {
   }
 
   // -------------------------------Update lco commission---------------------------
-  updateLcoCommission(role: any, username: any, id: any, istax: boolean, ispercentage: boolean, commission: any): Observable<any> {
-    return this.http.post<any[]>(BASE_URL + "/lcocommission/updateLcoCommission?role=" + role + "&username=" + username + "&id=" + id + "&istax=" + istax + "&ispercentage=" + ispercentage + "&commission=" + commission, {})
+  updateLcoCommission(role: any, username: any, id: any, istax: boolean, ispercentage: boolean, commission: any, rate: any): Observable<any> {
+    return this.http.post<any[]>(BASE_URL + "/lcocommission/updateLcoCommission?role=" + role + "&username=" + username + "&id=" + id + "&istax=" + istax + "&ispercentage=" + ispercentage + "&commission=" + commission + "&rate=" + rate, {})
   }
   // -----------------------------------------------ADD PRODUCT / COMMISSION MEMBERSHIP-----------------------------------------
   getproductMembershipList(role: any, username: any, producttype: any, lcogroupid: any,): Observable<HttpResponse<any[]>> {
@@ -822,9 +841,17 @@ export class BaseService {
   CreateMail(requestBody: any): Observable<any[]> {
     return this.http.post<any[]>(BASE_URL + "/mail/sendMail", requestBody, {});
   }
+  resendMail(role: any, username: any, id: any): Observable<any[]> {
+    return this.http.post<any[]>(
+      BASE_URL + "/mail/resendMail?role=" + role + "&username=" + username + "&id=" + id, {}
+    );
+  }
   // ----------------------------------------------_SCROLL----------------------------------
   CreateScroll(requestBody: any): Observable<any[]> {
     return this.http.post<any[]>(BASE_URL + "/scroll/sendscroll", requestBody, {});
+  }
+  stopScroll(id: any, role: any, username: any): Observable<any[]> {
+    return this.http.post<any[]>(BASE_URL + "/scroll/stopscrollmsg?id=" + id + "&role=" + role + "&username=" + username, {});
   }
   Get_Scroll_version(id: any, role: any, username: any): Observable<any[]> {
     return this.http.get<any[]>(
@@ -840,6 +867,16 @@ export class BaseService {
   GetMessage(role: any, username: any, id: any): Observable<any[]> {
     return this.http.get<any[]>(
       BASE_URL + "/message/getMessage?role=" + role + "&username=" + username + "&id=" + id, {}
+    );
+  }
+  resendMessage(role: any, username: any, id: any): Observable<any[]> {
+    return this.http.post<any[]>(
+      BASE_URL + "/message/resendMessage?role=" + role + "&username=" + username + "&id=" + id, {}
+    );
+  }
+  stopMessage(role: any, username: any, id: any): Observable<any[]> {
+    return this.http.post<any[]>(
+      BASE_URL + "/message/stopMessage?role=" + role + "&username=" + username + "&id=" + id, {}
     );
   }
   GetMessageList(role: any, username: any): Observable<any[]> {
@@ -870,6 +907,22 @@ export class BaseService {
       BASE_URL + "/bulk/getPackageListForFirstTimeActivation?role=" + role + "&username=" + username + "&type=" + type, {}
     );
   }
+  getBulkPackageServiceStatus(role: any, username: any): Observable<any[]> {
+    return this.http.get<any[]>(
+      BASE_URL + "/bulk/getBulkPackageServiceStatus?role=" + role + "&username=" + username, {}
+    );
+  }
+  StartOrStopBulkPackageService(role: any, username: any, type: any): Observable<any[]> {
+    return this.http.get<any[]>(
+      BASE_URL + "/bulk/getBulkPackageServiceStatus?role=" + role + "&username=" + username + "&type=" + type, {}
+    );
+  }
+
+  BulkReactivationByOperatorId(role: any, username: any, operatorid: any, retailerid: any, type: any, status: any): Observable<any[]> {
+    return this.http.post<any[]>(
+      BASE_URL + "/bulk/BulkReactivationByOperatorId?role=" + role + "&username=" + username + "&operatorid=" + operatorid + "&retailerid=" + retailerid + "&type=" + type + "&status=" + status, {}
+    );
+  }
   getBulkOperationRefreshList(role: any, username: any, remarks: any, optype: any): Observable<HttpResponse<any[]>> {
     return this.http.get<any[]>(
       BASE_URL + "/bulk/getBulkOperationRefreshList?role=" + role + "&username=" + username + "&remarks=" + remarks + "&optype=" + optype, { observe: 'response' }
@@ -889,25 +942,24 @@ export class BaseService {
       { observe: 'response' }
     );
   }
-  getDeactivationRefresh(role: any, username: any, remarks: any, optype: any): Observable<any[]> {
-    return this.http.get<any[]>(
-      BASE_URL + "/bulk/getDeactivationRefresh?role=" + role + "&username=" + username + "&remarks=" + remarks + "&optype=" + optype,
-      {}
-    );
-  }
-  getDeactivationFilterlist(role: any, username: any, remarks: any, date: any, optype: any): Observable<HttpResponse<any[]>> {
-    return this.http.get<any[]>(
-      BASE_URL + "/bulk/getDeactivationFilterlist?role=" + role + "&username=" + username + "&remarks=" + remarks + "&date=" + date + "&optype=" + optype, { observe: 'response' }
-    );
-  }
+  // getDeactivationRefresh(role: any, username: any, remarks: any, optype: any): Observable<HttpResponse<any[]>> {
+  //   return this.http.get<any[]>(
+  //     BASE_URL + "/bulk/getDeactivationRefresh?role=" + role + "&username=" + username + "&remarks=" + remarks + "&optype=" + optype, { observe: 'response' }
+  //   );
+  // }
+  // getDeactivationFilterlist(role: any, username: any, remarks: any, date: any, optype: any): Observable<HttpResponse<any[]>> {
+  //   return this.http.get<any[]>(
+  //     BASE_URL + "/bulk/getDeactivationRefresh?role=" + role + "&username=" + username + "&remarks=" + remarks + "&date=" + date + "&optype=" + optype, { observe: 'response' }
+  //   );
+  // }
   getRecurringListByOperatorIdSearchnameAndIsrecurring(role: any, username: any, operatorid: any, searchname: any, type: any): Observable<HttpResponse<any[]>> {
     return this.http.get<any[]>(
       BASE_URL + "/bulk/getRecurringListByOperatorIdSearchnameAndIsrecurring?role=" + role + "&username=" + username + "&operatorid=" + operatorid + "&searchname=" + searchname + "&type=" + type, { observe: 'response' }
     );
   }
-  getExpirySubscriberDetailsByDatePackAndOperatorId(role: any, username: any, fromdate: any, todate: any, packageid: any, operatorid: any): Observable<any[]> {
+  getExpirySubscriberDetailsByDatePackAndOperatorId(role: any, username: any, fromdate: any, todate: any, packageid: any, operatorid: any): Observable<HttpResponse<any[]>> {
     return this.http.get<any[]>(
-      BASE_URL + "/bulk/getExpirySubscriberDetailsByDatePackAndOperatorId?role=" + role + "&username=" + username + "&fromdate=" + fromdate + "&todate=" + todate + "&packageid=" + packageid + "&operatorid=" + operatorid, {}
+      BASE_URL + "/bulk/getExpirySubscriberDetailsByDatePackAndOperatorId?role=" + role + "&username=" + username + "&fromdate=" + fromdate + "&todate=" + todate + "&packageid=" + packageid + "&operatorid=" + operatorid, { observe: 'response' }
     );
   }
   getAddonlistByCasType(role: any, username: any, castype: any): Observable<any[]> {
@@ -918,13 +970,13 @@ export class BaseService {
     return this.http.get<any[]>(
       BASE_URL + "/bulk/getAlacartelistByCasType?role=" + role + "&username=" + username + "&castype=" + castype, {});
   }
-  getAllBulkPackageListByOperatoridAndStatus(role: any, username: any,operatorid:any, status: any): Observable<HttpResponse<any[]>>  {
+  getAllBulkPackageListByOperatoridAndStatus(role: any, username: any, operatorid: any, status: any): Observable<HttpResponse<any[]>> {
     return this.http.get<any[]>(
-      BASE_URL + "/bulk/getAllBulkPackageListByOperatoridAndStatus?role=" + role + "&username=" + username +"&operatorid="+operatorid+ "&status=" + status, { observe: 'response' });
+      BASE_URL + "/bulk/getAllBulkPackageListByOperatoridAndStatus?role=" + role + "&username=" + username + "&operatorid=" + operatorid + "&status=" + status, { observe: 'response' });
   }
-  getAllBulkPackageListBySearchnameAndStatus(role: any, username: any,searchname:any, status: any):Observable<HttpResponse<any[]>> {
+  getAllBulkPackageListBySearchnameAndStatus(role: any, username: any, searchname: any, status: any): Observable<HttpResponse<any[]>> {
     return this.http.get<any[]>(
-      BASE_URL + "/bulk/getAllBulkPackageListBySearchnameAndStatus?role=" + role + "&username=" + username +"&searchname="+searchname+ "&status=" + status, { observe: 'response' });
+      BASE_URL + "/bulk/getAllBulkPackageListBySearchnameAndStatus?role=" + role + "&username=" + username + "&searchname=" + searchname + "&status=" + status, { observe: 'response' });
   }
   getAllBulkPackageListByFromdateTodateAndStatus(role: any, username: any, fromdate: any, todate: any, status: any): Observable<HttpResponse<any[]>> {
     return this.http.get<any[]>(
@@ -933,6 +985,9 @@ export class BaseService {
 
   uploadFileForSubscriptionExtend(requestBody: any): Observable<any[]> {
     return this.http.post<any[]>(BASE_URL + "/bulk/uploadFileForSubscriptionExtend", requestBody, {});
+  }
+  bulkIsRecurring(requestBody: any): Observable<any[]> {
+    return this.http.post<any[]>(BASE_URL + "/bulk/BulkIsRecurring", requestBody, {});
   }
   uploadFileForBaseChange(requestBody: any): Observable<any[]> {
     return this.http.post<any[]>(BASE_URL + "/bulk/uploadFileForBaseChange", requestBody, {});
@@ -992,5 +1047,95 @@ export class BaseService {
   createLocalChannelLTB(requestBody: any): Observable<any[]> {
     return this.http.post<any[]>(BASE_URL + "/localchannel/createLocalChannelLTB", requestBody, {});
   }
+  // ===============================================================Special Role==========================================================
+  // ------------------------------------------------------------mso details-----------------------------------------
+  getMsoDetails(role: any, username: any): Observable<any[]> {
+    return this.http.get<any[]>(
+      BASE_URL + "/mso/getMsoDetails?role=" + role + "&username=" + username, {});
+  }
+  updateMso(requestBody: any): Observable<any[]> {
+    return this.http.post<any[]>(BASE_URL + "/mso/updateMso", requestBody, {});
+  }
+  uploadLogo(requestBody: any): Observable<any[]> {
+    return this.http.post<any[]>(BASE_URL + "/mso/uploadMsoLogo", requestBody, {});
+  }
+  // ------------------------------------------------------------CAS details-----------------------------------------
+  casmaster(role: any, username: any): Observable<HttpResponse<any[]>> {
+    return this.http.get<any[]>(
+      BASE_URL + "/cas/getcaslist?role=" + role + "&username=" + username, { observe: 'response' });
+  }
 
-}
+  // ------------------------------------------------------------operator invoice-----------------------------------------
+  getAllOperatorInvoiceBillByMonthYear(role: any, username: any, month: any, Year: any): Observable<HttpResponse<any[]>> {
+    return this.http.get<any[]>(
+      BASE_URL + "/operator/getAllOperatorInvoiceBillByMonthYear?role=" + role + "&username=" + username + "&month=" + month + "&year=" + Year, { observe: 'response' });
+  }
+  // ------------------------------------------------------------bill generation-----------------------------------------
+  generateOperatorInvoiceBill(role: any, username: any, month: any, Year: any): Observable<any[]> {
+    return this.http.post<any[]>(
+      BASE_URL + "/operator/generateOperatorInvoiceBill?role=" + role + "&username=" + username + "&month=" + month + "&year=" + Year, {});
+  }
+
+  createCas(requestBody: any): Observable<any[]> {
+    return this.http.post<any[]>(BASE_URL + "/cas/createCas", requestBody, {});
+  }
+  // --------------------------------------------SUBLCO OPERATOR-------------------------------------------------
+  getAllSublcoListByOperatorId(role: any, username: any, operatorid: any): Observable<any[]> {
+    return this.http.get<any[]>(
+      BASE_URL + "/sublco/getAllSublcoListByOperatorId?role=" + role + "&username=" + username + "&operatorid=" + operatorid, {});
+  }
+  sublcoCreate(requestBody: any): Observable<any[]> {
+    return this.http.post<any[]>(BASE_URL + "/sublco/sublcoCreate", requestBody, {});
+  }
+  sublcoUpdate(requestBody: any): Observable<any[]> {
+    return this.http.post<any[]>(BASE_URL + "/sublco/sublcoUpdate", requestBody, {});
+  }
+
+  // --------------------------------------------------paymentgatewaylist--------------------------------------
+
+  getPaymentGateWayList(role: any, username: any): Observable<any[]> {
+    return this.http.get<any[]>(
+      BASE_URL + "/sublco/getPaymentGateWayList?role=" + role + "&username=" + username, {});
+  }
+  sublcoUpdatePaymentGateway(role: any, username: any, retailerid: any, paymentid: any): Observable<any[]> {
+    return this.http.post<any[]>(BASE_URL + "/sublco/sublcoUpdatePaymentGateway?role=" + role + "&username=" + username + "&retailerid=" + retailerid + "&paymentid=" + paymentid, {});
+  }
+  sublcoDelete(role: any, username: any, id: any, type: any): Observable<any[]> {
+    return this.http.post<any[]>(BASE_URL + "/sublco/sublcoDelete?role=" + role + "&username=" + username + "&id=" + id + "&type=" + type, {});
+  }
+
+  getsublcoDatewiseReport(role: any, username: any, retailerid: any, operatorid: any, fromdate: any, todate: any): Observable<HttpResponse<any[]>> {
+    return this.http.get<any[]>(BASE_URL + "/sublco/getsublcoDatewiseReport?role=" + role + "&username=" + username + "&retailerid=" + retailerid + '&operatorid=' + operatorid + "&fromdate=" + fromdate + "&todate=" + todate, { observe: 'response' })
+  }
+  getsublcoMonthwiseReport(role: any, username: any, retailerid: any, operatorid: any, month: any, year: any): Observable<HttpResponse<any[]>> {
+    return this.http.get<any[]>(BASE_URL + "/sublco/getsublcoMonthwiseReport?role=" + role + "&username=" + username + "&retailerid=" + retailerid + '&operatorid=' + operatorid + "&month=" + month + "&year=" + year, { observe: 'response' })
+  }
+  // getsublcoMonthwisePdfReport(role: any, username: any, retailerid: any, operatorid: any, month: any, year: any, p0: { responseType: string; }): Observable<any[]> {
+  //   return this.http.get<any[]>(BASE_URL + "/sublco/getsublcoMonthwisePdfReport?role=" + role + "&username=" + username + "&retailerid=" + retailerid + '&operatorid=' + operatorid + "&month=" + month + "&year=" + year, { })
+  // }
+
+  getsublcoMonthwisePdfReport(role: any, username: any, retailerid: any, operatorid: any, month: any, year: any): Observable<Blob> {
+    return this.http.get(BASE_URL + "/sublco/getsublcoMonthwisePdfReport?role=" + role + "&username=" + username + "&retailerid=" + retailerid + '&operatorid=' + operatorid + "&month=" + month + "&year=" + year, { responseType: 'blob' });
+  }
+  // ---------------------------------------------packaheplan---------------------------------------------------
+  getAllPackagePlanList(role: any, username: any): Observable<any[]> {
+    return this.http.get<any[]>(
+      BASE_URL + "/master/getAllPackagePlanList?role=" + role + "&username=" + username, {});
+  }
+  createPackagePlan(role: any, username: any, months: any): Observable<any[]> {
+    return this.http.post<any[]>(
+      BASE_URL + "/master/createPackagePlan?role=" + role + "&username=" + username + "&months=" + months, {});
+  }
+  updatePackagePlan(role: any, username: any, days: any, isactive: any, id: any): Observable<any[]> {
+    return this.http.post<any[]>(
+      BASE_URL + "/master/updatePackagePlan?role=" + role + "&username=" + username + "&days=" + days + "&isactive=" + isactive + "&id=" + id, {});
+  }
+  activeORDeactivePackagePlan(role: any, username: any, id: any, type: any): Observable<any[]> {
+    return this.http.post<any[]>(
+      BASE_URL + "/master/activeORDeactivePackagePlan?role=" + role + "&username=" + username + "&id=" + id + "&type=" + type, {});
+  }
+  getspecialLocalChannelList(role: any, username: any): Observable<any[]> {
+    return this.http.get<any[]>(
+      BASE_URL + "/master/getLocalChannelList?role=" + role + "&username=" + username, {});
+  }
+} 

@@ -1,0 +1,21 @@
+<div style="padding: 1rem;">
+    <h4 style="text-align: center;color: rgb(68, 64, 64);text-transform: uppercase;">Cas Master Details </h4>
+    <div class="col d-flex justify-content-start align-items-center mb-1">
+        <a class="btn btn-outline-success mx-1" (click)="opendialogue('newcasmaster','')">
+            <i class="fa fa-plus"></i> New
+        </a>
+        <button class="btn btn-outline-info mx-1" mat-raised-button color="primary" type="button"
+            [disabled]="!isAnyRowSelected" (click)="opendialogue('deletecasmaster','')">
+            Delete
+        </button>
+
+    </div>
+    <div class="row d-flex align-items-center justify-content-center">
+        <div class="col-12  col-md-12 col-sm-12 m-3">
+            <ag-grid-angular #agGrid id="myGrid" domLayout='autoHeight' class="ag-theme-alpine table-class" rowAnimation
+                [rowSelection]="rowSelection" [gridOptions]="gridOptions" [columnDefs]="columnDefs" [rowData]="rowData"
+                (gridReady)="onGridReady($event)" (selectionChanged)="onSelectionChanged()" [enableCellTextSelection]="true">
+            </ag-grid-angular>
+        </div>
+    </div>
+</div>

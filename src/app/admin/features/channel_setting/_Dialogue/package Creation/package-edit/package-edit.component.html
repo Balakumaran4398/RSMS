@@ -48,7 +48,7 @@
             </div>
             <div class="col-12 col-md-6">
                 <input type="text" id="commission" class="" maxlength="10" (keydown)="onKeydown1($event)"
-                    (focus)="onFocus()" (blur)="onBlur()" [value]="commission || '0'" [(ngModel)]="commission">
+                    [value]="commission" [(ngModel)]="commission">
             </div>
         </div>
 
@@ -56,7 +56,7 @@
             <div class="col-12 col-md-6">
                 <span>Is percentage</span>
             </div>
-            <div class="col-12 col-md-6 d-flex justify-content-center align-items-center">
+            <div class="col-12 col-md-6 d-flex justify-content-center align-items-center toggle_body">
                 <div class="toggle-button-cover">
                     <div class="button b2" id="button-10">
                         <input type="checkbox" class="checkbox" [checked]="ispercentage" [(ngModel)]="ispercentage" />

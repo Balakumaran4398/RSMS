@@ -7,17 +7,17 @@
 <div class=" d-flex justify-content-center align-items-center ">
     <div class="card-content" style="width: 100%;">
 
-        <div class="col-12 col-md-12 display justify-content-center align-item-center mb-1">
-            <div class="col-12 col-md-6 display justify-content-between align-item-center">
-                <h6 style="text-align: center;"> AREA : {{area}} </h6>
+        <div class="col-12 col-md-12 d-flex justify-content-center align-item-center mb-1">
+            <div class="col-6 col-md-4 display justify-content-start align-item-center">
+                <h6 style="text-align: center;color:rgb(66, 64, 64)"> AREA : <span style="color: blue;">{{area}}</span>  </h6>
             </div>
-            <div class="col-12 col-md-6 display justify-content-end align-item-center">
+            <div class="col-6 col-md-4 display justify-content-end align-item-center">
                 <span class="sub-tittle tittle1">
                     <button type="button" class="btn btn-success me-2" (click)="newStreet('newstreet')">New</button>
                 </span>
             </div>
         </div>
-        <div class="mb-3" style="padding: 0.2rem;">
+        <div class="mb-3" style="padding: 1rem;">
             <ag-grid-angular #agGrid id="myGrid" domLayout='autoHeight' class="ag-theme-alpine table-class" rowAnimation
                 [rowSelection]="rowSelection" (selectionChanged)="onSelectionChanged()" [columnDefs]="columnDefs"
                 [rowData]="rowData" [enableCellTextSelection]="true">

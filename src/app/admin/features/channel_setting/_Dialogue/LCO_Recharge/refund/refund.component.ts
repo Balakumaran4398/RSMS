@@ -3,6 +3,7 @@ import { FormGroup } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { BaseService } from 'src/app/_core/service/base.service';
 import { StorageService } from 'src/app/_core/service/storage.service';
+import { SwalService } from 'src/app/_core/service/swal.service';
 import Swal from 'sweetalert2';
 
 @Component({
@@ -22,7 +23,7 @@ export class RefundComponent {
   Referenceid: any;
   refuntlist: any;
   operatorid: any = 0;
-  constructor(public dialogRef: MatDialogRef<RefundComponent>, @Inject(MAT_DIALOG_DATA) public data: any, private userservice: BaseService, private storageservice: StorageService) {
+  constructor(public dialogRef: MatDialogRef<RefundComponent>, @Inject(MAT_DIALOG_DATA) public data: any, private swal: SwalService, private userservice: BaseService, private storageservice: StorageService) {
     console.log(this.data);
     this.amount = data.amount;
     this.remarks = data.transactionremarks1;
@@ -54,8 +55,8 @@ export class RefundComponent {
   onSubmit() {
     // if (this.form.valid) {
 
-
-    this.userservice.getRefund(this.role, this.username, this.id,this.amount, this.remarks, this.operatorid, this.isenablesmartcard).subscribe(
+    this.swal.Loading();
+    this.userservice.getRefund(this.role, this.username, this.id, this.amount, this.remarks, this.operatorid, this.isenablesmartcard).subscribe(
       (res: any) => {
         Swal.fire({
           title: 'Success!',

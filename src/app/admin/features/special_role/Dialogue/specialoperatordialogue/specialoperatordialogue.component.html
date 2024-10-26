@@ -1,0 +1,443 @@
+<!-- <div *ngIf="OType=='area'"
+    class="col d-flex justify-content-center align-items-center card transparent-background dialog-content">
+    <div class="card-content ">
+        <div class="Head d-flex justify-content-between align-items-center mb-3">
+            <h5 class="span" style="color: white;"> NEW AREA DETAILS</h5>
+            <i class="fa fa-close close-icon" style="cursor: pointer;" (click)="onNoClick()"></i>
+        </div>
+        <div class="card-body" style="padding: 1rem;">
+            <div class="input_box display align-items-center mb-3">
+                <div class="col-12 col-md-6">
+                    <span for="categoryName" class="me-2">AREA NAME</span>
+                </div>
+                <div class="col-12 col-md-6">
+                    <input type="text" [(ngModel)]="areaname">
+                </div>
+            </div>
+            <div class="input_box display align-items-center mb-3">
+                <div class="col-12 col-md-6">
+                    <span for="categoryName" class="me-2">PINCODE</span>
+                </div>
+                <div class="col-12 col-md-6">
+                    <input type="text" [(ngModel)]="pincode" maxlength="6" (keypress)="onKeydown($event)">
+                </div>
+            </div>
+            <div class="form-group d-flex justify-content-end align-items-center mb-3">
+                <button type="button" class="btn btn-success me-2" (click)="newArea()">Save</button>
+                <button type="button" class="btn btn-danger" (click)="onNoClick()">Cancel</button>
+            </div>
+        </div>
+    </div>
+</div> -->
+
+
+<div *ngIf="OType=='area'"
+  class="col d-flex justify-content-center align-items-center card transparent-background dialog-content">
+  <div class="card-content">
+    <!-- <div class="Head d-flex justify-content-between align-items-center mb-3">
+      <h5 class="span" style="color: white;"> NEW AREA DETAILS</h5>
+      <i class="fa fa-close close-icon" style="cursor: pointer;" (click)="onNoClick()"></i>
+    </div> -->
+    <div class="Head d-flex justify-content-between align-items-center mb-3" style="padding: 1rem;">
+        <h6>NEW AREA DETAILS</h6>
+        <i class="fa fa-close close-icon" style="cursor: pointer;" (click)="onNoClick()"></i>
+    </div>
+    <div class="card-body" style="padding: 1rem;">
+      <div class="input_box display align-items-center mb-3">
+        <div class="col-12 col-md-6">
+          <span for="areaname" class="me-2">AREA NAME</span>
+        </div>
+        <div class="col-12 col-md-6">
+          <input type="text" [(ngModel)]="areaname" #areaName="ngModel" required minlength="3" maxlength="50">
+          <div *ngIf="areaName.invalid && areaName.touched" class="text-danger">
+            <small *ngIf="areaName.errors?.['required']">Area Name is required.</small>
+            <small *ngIf="areaName.errors?.['minlength']">Area Name should be at least 3 characters long.</small>
+          </div>
+        </div>
+      </div>
+      <div class="input_box display align-items-center mb-3">
+        <div class="col-12 col-md-6">
+          <span for="pincode" class="me-2">PINCODE</span>
+        </div>
+        <div class="col-12 col-md-6">
+          <input type="text" [(ngModel)]="pincode" #pinCode="ngModel" required pattern="^[0-9]{6}$" maxlength="6" (keypress)="onKeydown($event)">
+          <div *ngIf="pinCode.invalid && pinCode.touched" class="text-danger">
+            <small *ngIf="pinCode.errors?.['required']">Pincode is required.</small>
+            <small *ngIf="pinCode.errors?.['pattern']">Pincode should be 6 digits long.</small>
+          </div>
+        </div>
+      </div>
+      <div class="form-group d-flex justify-content-end align-items-center mb-3">
+        <button type="button" class="btn btn-success me-2" [disabled]="areaName.invalid || pinCode.invalid" (click)="newArea()">Save</button>
+        <button type="button" class="btn btn-danger" (click)="onNoClick()">Cancel</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- <div *ngIf="OType=='edit'"
+    class="col d-flex justify-content-center align-items-center card transparent-background dialog-content">
+    <div class="card-content ">
+        <div class="Head d-flex justify-content-between align-items-center mb-3">
+            <h5 class="span" style="color: white;"> NEW AREA DETAILS</h5>
+            <i class="fa fa-close close-icon" style="cursor: pointer;" (click)="onNoClick()"></i>
+        </div>
+        <div class="card-body" style="padding: 1rem;">
+            <div class="input_box display align-items-center mb-3">
+                <div class="col-12 col-md-6">
+                    <span for="categoryName" class="me-2">AREA NAME</span>
+                </div>
+                <div class="col-12 col-md-6">
+                    <input type="text" [(ngModel)]="areaname">
+                </div>
+            </div>
+            <div class="input_box display align-items-center mb-3">
+                <div class="col-12 col-md-6">
+                    <span for="categoryName" class="me-2">PINCODE</span>
+                </div>
+                <div class="col-12 col-md-6">
+                    <input type="text" [(ngModel)]="pincode" maxlength="6" (keypress)="onKeydown($event)">
+                </div>
+            </div>
+            <div class="form-group d-flex justify-content-center align-items-center mb-3">
+                <button type="button" class="btn btn-primary me-2" (click)="newArea()">Save</button>
+                <button type="button" class="btn btn-secondary" (click)="onNoClick()">Cancel</button>
+            </div>
+        </div>
+    </div>
+</div> -->
+
+
+
+<div *ngIf="OType=='edit'"
+  class="col d-flex justify-content-center align-items-center card transparent-background dialog-content">
+  <div class="card-content">
+    <!-- <div class="Head d-flex justify-content-between align-items-center mb-3">
+      <h5 class="span" style="color: white;"> EDIT AREA DETAILS</h5>
+      <i class="fa fa-close close-icon" style="cursor: pointer;" (click)="onNoClick()"></i>
+    </div> -->
+    <div class="Head d-flex justify-content-between align-items-center mb-3" style="padding: 1rem;">
+        <h6>EDIT AREA DETAILS</h6>
+        <i class="fa fa-close close-icon" style="cursor: pointer;" (click)="onNoClick()"></i>
+    </div>
+    <div class="card-body" style="padding: 1rem;">
+      <div class="input_box display align-items-center mb-3">
+        <div class="col-12 col-md-6">
+          <span for="areaname" class="me-2">AREA NAME</span>
+        </div>
+        <div class="col-12 col-md-6">
+          <input type="text" [(ngModel)]="areaname" #areaName="ngModel" required minlength="3" maxlength="50">
+          <div *ngIf="areaName.invalid && areaName.touched" class="text-danger">
+            <small *ngIf="areaName.errors?.['required']">Area Name is required.</small>
+            <small *ngIf="areaName.errors?.['minlength']">Area Name should be at least 3 characters long.</small>
+            <small *ngIf="areaName.errors?.['maxlength']">Area Name cannot exceed 50 characters.</small>
+          </div>
+        </div>
+      </div>
+      <div class="input_box display align-items-center mb-3">
+        <div class="col-12 col-md-6">
+          <span for="pincode" class="me-2">PINCODE</span>
+        </div>
+        <div class="col-12 col-md-6">
+          <input type="text" [(ngModel)]="pincode" #pinCode="ngModel" required pattern="^[0-9]{6}$" maxlength="6" (keypress)="onKeydown($event)">
+          <div *ngIf="pinCode.invalid && pinCode.touched" class="text-danger">
+            <small *ngIf="pinCode.errors?.['required']">Pincode is required.</small>
+            <small *ngIf="pinCode.errors?.['pattern']">Pincode should be 6 digits long.</small>
+          </div>
+        </div>
+      </div>
+      <div class="form-group d-flex justify-content-center align-items-center mb-3">
+        <button type="button" class="btn btn-primary me-2" [disabled]="areaName.invalid || pinCode.invalid" (click)="newArea()">Save</button>
+        <button type="button" class="btn btn-secondary" (click)="onNoClick()">Cancel</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<div *ngIf="OType=='recharge'">
+    <div class="card">
+        <!-- <div class="Head d-flex justify-content-between align-items-center ">
+            <span class="span">CONFIRMATION FOR REPORT</span>
+            <i class="fa fa-close close-icon" (click)="onNoClick()"></i>
+        </div> -->
+        <div class="Head d-flex justify-content-between align-items-center mb-3" style="padding: 1rem;">
+            <h6>CONFIRMATION FOR REPORT</h6>
+            <i class="fa fa-close close-icon" style="cursor: pointer;" (click)="onNoClick()"></i>
+        </div>
+        <label class="header">LCO RECHARGE REPORT</label>
+        <div class="mb-3 display justify-content-center align-items-center " style="padding: 1rem;">
+            <div class="input_box col-12 col-md-3">
+                <span class="formlabel">Filter
+                </span>
+            </div>
+            <div class="col-12 col-md-6">
+                <mat-form-field>
+                    <input matInput [matDatepicker]="dp" [formControl]="date">
+                    <mat-datepicker-toggle matIconSuffix [for]="dp"></mat-datepicker-toggle>
+                    <mat-datepicker #dp startView="multi-year" (monthSelected)="setMonthAndYear($event, dp)"
+                        panelClass="example-month-picker">
+                    </mat-datepicker>
+                </mat-form-field>
+            </div>
+            <div class="col-12 col-md-3 d-flex justify-content-center align-items-center mb-3 tooltip-container">
+                <div class="icon-container">
+                    <img src="/assets/images/icons/pdf.png" width="40px">
+                    <div class="tooltip">Pdf</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div *ngIf="OType=='retailer'">
+    <div class="card">
+         <div class="Head d-flex justify-content-between align-items-center mb-3" style="padding: 1rem;">
+            <h6>CONFIRMATION FOR REPORT</h6>
+            <i class="fa fa-close close-icon" style="cursor: pointer;" (click)="onNoClick()"></i>
+        </div>
+        <label class="header">LCO WISE RETAILER REPORT</label>
+        <div class="mb-3 display justify-content-center align-items-center " style="padding: 1rem;">
+            <div class="input_box col-12 col-md-8">
+                <span class="formlabel">Click You Need Report Format 
+                </span>
+            </div>
+            <div class="col-12 col-md-2 d-flex justify-content-center align-items-center tooltip-container">
+                <div class="icon-container " >
+                    <img src="/assets/images/icons/Excel.png" width="40px">
+                    <div class="tooltip">Excel</div>
+                </div>
+            </div>
+            <div class="col-12 col-md-2 d-flex justify-content-center align-items-center tooltip-container ">
+                <div class="icon-container">
+                    <img src="/assets/images/icons/pdf.png" width="40px">
+                    <div class="tooltip">Pdf</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div *ngIf="OType=='areawise'">
+    <div class="card">
+        <div class="Head d-flex justify-content-between align-items-center mb-3" style="padding: 1rem;">
+            <h6>CONFIRMATION FOR REPORT</h6>
+            <i class="fa fa-close close-icon" style="cursor: pointer;" (click)="onNoClick()"></i>
+        </div>
+        <label class="header">AREAWISE CONECTION COUNT REPORT
+        </label>
+        <div class="mb-3 display justify-content-center align-items-center " style="padding: 1rem;">
+            <div class="input_box col-12 col-md-8">
+                <span class="formlabel">Click You Need Report Format 
+                </span>
+            </div>
+            <div class="col-12 col-md-2 d-flex justify-content-center align-items-center tooltip-container">
+                <div class="icon-container " >
+                    <img src="/assets/images/icons/Excel.png" width="40px">
+                    <div class="tooltip">Excel</div>
+                </div>
+            </div>
+            <div class="col-12 col-md-2 d-flex justify-content-center align-items-center tooltip-container ">
+                <div class="icon-container">
+                    <img src="/assets/images/icons/pdf.png" width="40px">
+                    <div class="tooltip">Pdf</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div *ngIf="OType=='cancel_Subscription'">
+    <div class="card">
+        <div class="Head d-flex justify-content-between align-items-center mb-3" style="padding: 1rem;">
+            <h6>CONFIRMATION FOR REPORT</h6>
+            <i class="fa fa-close close-icon" style="cursor: pointer;" (click)="onNoClick()"></i>
+        </div>
+        <label class="header">CANCEL SUBSCRIPTION REPORT</label>
+        <div class="mb-3 display justify-content-center align-items-center " style="padding: 1rem;">
+            <div class="input_box col-12 col-md-3">
+                <span class="formlabel">Filter
+                </span>
+            </div>
+            <div class="col-12 col-md-6">
+                <mat-form-field appearance="outline" style="width: 100%;">
+                    <mat-date-range-input [rangePicker]="picker" [max]="maxDate">
+                        <input matStartDate matInput placeholder="Start date" (dateChange)="getFromDate($event)">
+                        <input matEndDate matInput placeholder="End date" (dateChange)="getToDate($event)">
+                    </mat-date-range-input>
+                    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                    <mat-date-range-picker #picker></mat-date-range-picker>
+                </mat-form-field>
+            </div>
+            <div class="col-12 col-md-3 d-flex justify-content-center align-items-center mb-3 ">
+                <div class="icon-container">
+                    <img src="/assets/images/icons/pdf.png" width="40px">
+                    <div class="tooltip">Pdf</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div *ngIf="OType=='productwise'">
+    <div class="card">
+        <div class="Head d-flex justify-content-between align-items-center mb-3" style="padding: 1rem;">
+            <h6>CONFIRMATION FOR REPORT</h6>
+            <i class="fa fa-close close-icon" style="cursor: pointer;" (click)="onNoClick()"></i>
+        </div>
+        <label class="header">PRODUCTWISE CURRENT COUNT</label>
+        <div class="mb-3 display justify-content-center align-items-center " style="padding: 1rem;">
+            <div class="input_box col-12 col-md-8">
+                <span class="formlabel">Click You Need Report Format 
+                </span>
+            </div>
+            <div class="col-12 col-md-2 d-flex justify-content-center align-items-center tooltip-container">
+                <div class="icon-container " >
+                    <img src="/assets/images/icons/Excel.png" width="40px">
+                    <div class="tooltip">Excel</div>
+                </div>
+            </div>
+            <div class="col-12 col-md-2 d-flex justify-content-center align-items-center tooltip-container ">
+                <div class="icon-container">
+                    <img src="/assets/images/icons/pdf.png" width="40px">
+                    <div class="tooltip">Pdf</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- ------------------------------------------------------------------------------------------ -->
+<div *ngIf="OType=='connection'">
+    <div class="card">
+        <div class="Head d-flex justify-content-between align-items-center mb-3" style="padding: 1rem;">
+            <h6>CONFIRMATION FOR REPORT</h6>
+            <i class="fa fa-close close-icon" style="cursor: pointer;" (click)="onNoClick()"></i>
+        </div>
+        <label class="header">TOTAL SMARTCARD CONNECTION REPORT</label>
+        <div class="mb-3 display justify-content-center align-items-center " style="padding: 1rem;">
+            <div class="input_box col-12 col-md-8">
+                <span class="formlabel">Click You Need Report Format - >
+                </span>
+            </div>
+            <div class="col-12 col-md-2 d-flex justify-content-center align-items-center tooltip-container">
+                <div class="icon-container ">
+                    <img src="/assets/images/icons/Excel.png" width="40px">
+                    <div class="tooltip">Excel</div>
+                </div>
+            </div>
+            <div class="col-12 col-md-2 d-flex justify-content-center align-items-center tooltip-container ">
+                <div class="icon-container">
+                    <img src="/assets/images/icons/pdf.png" width="40px">
+                    <div class="tooltip">Pdf</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div *ngIf="OType=='notexpiry'">
+    <div class="card">
+        <div class="Head d-flex justify-content-between align-items-center mb-3" style="padding: 1rem;">
+            <h6>CONFIRMATION FOR REPORT</h6>
+            <i class="fa fa-close close-icon" style="cursor: pointer;" (click)="onNoClick()"></i>
+        </div>
+        <label class="header">ACTIVE SMARTCARD CONNECTION REPORT </label>
+        <div class="mb-3 display justify-content-center align-items-center " style="padding: 1rem;">
+            <div class="input_box col-12 col-md-8">
+                <span class="formlabel">Click You Need Report Format
+                </span>
+            </div>
+            <div class="col-12 col-md-2 d-flex justify-content-center align-items-center tooltip-container">
+                <div class="icon-container ">
+                    <img src="/assets/images/icons/Excel.png" width="40px">
+                    <div class="tooltip">Excel</div>
+                </div>
+            </div>
+            <div class="col-12 col-md-2 d-flex justify-content-center align-items-center tooltip-container ">
+                <div class="icon-container">
+                    <img src="/assets/images/icons/pdf.png" width="40px">
+                    <div class="tooltip">Pdf</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div *ngIf="OType=='expired'">
+    <div class="card">
+        <div class="Head d-flex justify-content-between align-items-center mb-3" style="padding: 1rem;">
+            <h6>CONFIRMATION FOR REPORT</h6>
+            <i class="fa fa-close close-icon" style="cursor: pointer;" (click)="onNoClick()"></i>
+        </div>
+        <label class="header">EXPIRED SMARTCARD CONNECTION REPORT </label>
+        <div class="mb-3 display justify-content-center align-items-center " style="padding: 1rem;">
+            <div class="input_box col-12 col-md-8">
+                <span class="formlabel">Click You Need Report Format
+                </span>
+            </div>
+            <div class="col-12 col-md-2 d-flex justify-content-center align-items-center tooltip-container">
+                <div class="icon-container ">
+                    <img src="/assets/images/icons/Excel.png" width="40px">
+                    <div class="tooltip">Excel</div>
+                </div>
+            </div>
+            <div class="col-12 col-md-2 d-flex justify-content-center align-items-center tooltip-container ">
+                <div class="icon-container">
+                    <img src="/assets/images/icons/pdf.png" width="40px">
+                    <div class="tooltip">Pdf</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div *ngIf="OType=='new'">
+    <div class="card">
+        <div class="Head d-flex justify-content-between align-items-center mb-3" style="padding: 1rem;">
+            <h6>CONFIRMATION FOR REPORT</h6>
+            <i class="fa fa-close close-icon" style="cursor: pointer;" (click)="onNoClick()"></i>
+        </div>
+        <label class="header">NEW SMARTCARD REPORT </label>
+        <div class="mb-3 display justify-content-center align-items-center " style="padding: 1rem;">
+            <div class="input_box col-12 col-md-8">
+                <span class="formlabel">Click You Need Report Format
+                </span>
+            </div>
+            <div class="col-12 col-md-2 d-flex justify-content-center align-items-center tooltip-container">
+                <div class="icon-container ">
+                    <img src="/assets/images/icons/Excel.png" width="40px">
+                    <div class="tooltip">Excel</div>
+                </div>
+            </div>
+            <div class="col-12 col-md-2 d-flex justify-content-center align-items-center tooltip-container ">
+                <div class="icon-container">
+                    <img src="/assets/images/icons/pdf.png" width="40px">
+                    <div class="tooltip">Pdf</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div *ngIf="OType=='block'">
+    <div class="card">
+        <div class="Head d-flex justify-content-between align-items-center mb-3" style="padding: 1rem;">
+            <h6>CONFIRMATION FOR REPORT</h6>
+            <i class="fa fa-close close-icon" style="cursor: pointer;" (click)="onNoClick()"></i>
+        </div>
+        <label class="header">BLOCK SMARTCARD REPORT
+        </label>
+        <div class="mb-3 display justify-content-center align-items-center " style="padding: 1rem;">
+            <div class="input_box col-12 col-md-8">
+                <span class="formlabel">Click You Need Report Format
+                </span>
+            </div>
+            <div class="col-12 col-md-2 d-flex justify-content-center align-items-center tooltip-container">
+                <div class="icon-container ">
+                    <img src="/assets/images/icons/Excel.png" width="40px">
+                    <div class="tooltip">Excel</div>
+                </div>
+            </div>
+            <div class="col-12 col-md-2 d-flex justify-content-center align-items-center tooltip-container ">
+                <div class="icon-container">
+                    <img src="/assets/images/icons/pdf.png" width="40px">
+                    <div class="tooltip">Pdf</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

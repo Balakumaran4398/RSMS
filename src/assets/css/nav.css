@@ -119,7 +119,22 @@ li {
     margin-left: auto;
     transition: all .3s ease;
 }
-
+#sidebar .side-menu>li>a.active,
+#sidebar .side-menu>li>a.active:hover {
+    background-color: var(--blue);
+    color: white !important;
+   
+}
+#sidebar .side-dropdown li a.active ,#sidebar .side-dropdown li a:hover{
+    /* color: rgb(33, 34, 36) !important; */
+    color: #06213b !important;
+    font-size: 13px;
+    font-weight: bold;
+}
+#sidebar .side-dropdown li a.active {
+    color: #06213b !important;
+    font-size: 13px;
+}
 #sidebar .side-menu {
     margin: 36px 0;
     padding: 0 20px;

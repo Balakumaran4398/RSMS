@@ -49,6 +49,14 @@ export class CreateLcoMembershipComponent {
   // }
 
   create() {
+    Swal.fire({
+      title: 'Processing...',
+      text: 'Please wait while we Create the LCO Membership.',
+      allowOutsideClick: false,
+      didOpen: () => {
+        Swal.showLoading(null);
+      }
+    });
     this.userservice.createlcomembershipFUP(this.role, this.username, this.selectedLcoName, this.usedcount, this.sharedcount)
       .subscribe(
         (res: any) => {
@@ -57,6 +65,7 @@ export class CreateLcoMembershipComponent {
             text: 'LCO membership has been created successfully.',
             icon: 'success',
             timer: 2000,  
+            timerProgressBar:true,
             showConfirmButton: false  
           }).then(() => {
             this.dialogRef.close(); 

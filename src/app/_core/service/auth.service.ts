@@ -14,14 +14,9 @@ const httpOptions = {
 export class AuthService {
   constructor(private http: HttpClient, private router: Router, private storageService: StorageService) { }
   login(credentials: { username: any; password: any; }): Observable<any> {
-    console.log('11111' + credentials.username);
-    console.log('2222' + credentials.password);
-    return this.http.post(
-      AUTH_API + '/signin', {
-      username: credentials.username,
-      password: credentials.password
-    }, httpOptions
-    );
+    console.log('Username' + credentials.username);
+    console.log('Password' + credentials.password);
+    return this.http.post(AUTH_API + '/signin', { username: credentials.username, password: credentials.password }, httpOptions);
   }
   signOut(): void {
     // window.location.reload();
@@ -32,9 +27,10 @@ export class AuthService {
       "role": user?.roles[0],
       "id": sessionId
     }
+    console.log(c);
+
     window.sessionStorage.clear();
     this.router.navigate(['/signin']).then(() => {
     });
-
   }
 }

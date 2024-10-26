@@ -227,6 +227,7 @@ body {
     position: relative;
     width: 100px;
     height: 72px;
+    left: -63px;
     box-sizing: border-box;
 }
 
@@ -270,6 +271,22 @@ body {
     z-index: 1;
 }
 
+
+@media screen and (max-width:560px) {
+    .toggle_body {
+        height: 30px;
+    }
+
+    .toggle-button-cover {
+        display: table-cell;
+        position: relative;
+        width: 100px;
+        height: 72px;
+        left: 40px;
+        bottom: 15px;
+        box-sizing: border-box;
+    }
+}
 
 #button-10 .knobs:before,
 #button-10 .knobs:after,

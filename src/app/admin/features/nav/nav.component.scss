@@ -343,34 +343,7 @@ body {
     }
 }
 
-.tooltip-container {
-    position: relative;
-    display: inline-block;
-}
 
-.tooltip {
-    visibility: hidden;
-    background-color: black;
-    color: #fff;
-    text-align: center;
-    border-radius: 5px;
-    padding: 5px;
-    position: absolute;
-    z-index: 1;
-    bottom: 125%;
-    left: 50%;
-    top: 50%;
-    margin-left: -50px;
-    opacity: 0;
-    transition: opacity 0.3s;
-    width: 100px;
-    height: 30%;
-}
-
-.tooltip-container:hover .tooltip {
-    visibility: visible;
-    opacity: 1;
-}
 
 // ==============================================================================================================================
 
@@ -474,4 +447,24 @@ input[type="text"] {
         overflow: scroll;
         width: 22pc;
     }
+}
+
+// ==========================================================================================================
+
+.tooltip {
+    visibility: hidden;
+    background-color: black;
+    color: #fff;
+    text-align: center;
+    border-radius: 5px;
+    padding: 5px;
+    position: absolute;
+    z-index: 1;
+    bottom: -0%;
+    left: -50%;
+    // top: 100%;
+    margin-left: -50px;
+    opacity: 0;
+    transition: opacity 0.3s;
+    width: max-content;
 }

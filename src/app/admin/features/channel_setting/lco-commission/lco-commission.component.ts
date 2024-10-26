@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { ChangeDetectorRef, Component } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { AddLcoComponent } from '../_Dialogue/LCO-Commission/add-lco/add-lco.component';
 import { CreateLcoComponent } from '../_Dialogue/LCO-Commission/create-lco/create-lco.component';
@@ -33,7 +33,7 @@ export class LcoCommissionComponent {
   selectedIds: number[] = [];
   selectedname: any[] = [];
   rows: any[] = [];
-  constructor(public dialog: MatDialog, private userservice: BaseService, private storageservice: StorageService) {
+  constructor(public dialog: MatDialog, private userservice: BaseService, private storageservice: StorageService,private cdr: ChangeDetectorRef) {
     this.role = storageservice.getUserRole();
     this.username = storageservice.getUsername();
     userservice.getLcoGroupMasterList(this.role, this.username).subscribe((data: any) => {
@@ -138,9 +138,7 @@ export class LcoCommissionComponent {
 
   columnDefs1: any[] = [
     {
-      headerName: "S.No", lockPosition: true, valueGetter: 'node.rowIndex+1', width: 100, headerCheckboxSelection: true,
-      checkboxSelection: true,
-    },
+      headerName: "S.No", lockPosition: true, valueGetter: 'node.rowIndex+1', width: 100,    },
     {
       headerName: "GROUP NAME",
       field: 'groupName',
@@ -282,7 +280,10 @@ export class LcoCommissionComponent {
       (error) => {
         console.error('Error fetching lcomembershipid details', error);
       }
+      
     );
+ 
+
   }
   onmembershipchange(event: any) {
     this.userservice.getOperatorlistByGroupId(this.role, this.username, this.lcomembershipid).subscribe(

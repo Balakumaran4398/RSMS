@@ -1,4 +1,4 @@
-import { Component, Inject } from '@angular/core';
+import { ChangeDetectorRef, Component, Inject } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { BaseService } from 'src/app/_core/service/base.service';
 import { StorageService } from 'src/app/_core/service/storage.service';
@@ -21,7 +21,7 @@ export class UpdateLcoCommissionComponent {
   isYesActive: boolean = false;
   isPercentage: boolean = false;
   constructor(
-    public dialogRef: MatDialogRef<UpdateLcoCommissionComponent>, @Inject(MAT_DIALOG_DATA) public data: any, private userservice: BaseService, private storageservice: StorageService) {
+    public dialogRef: MatDialogRef<UpdateLcoCommissionComponent>, @Inject(MAT_DIALOG_DATA) public data: any,private cdr: ChangeDetectorRef, private userservice: BaseService, private storageservice: StorageService) {
     this.role = storageservice.getUserRole();
     this.username = storageservice.getUsername();
     console.log(data);
@@ -33,7 +33,7 @@ export class UpdateLcoCommissionComponent {
     this.commissionvalue = data.commissionvalue;
     this.isPercentage = data.ispercentage;
     console.log(this.id);
-
+ 
   }
   onNoClick(): void {
     this.dialogRef.close();
@@ -58,7 +58,7 @@ export class UpdateLcoCommissionComponent {
     });
 
     // Make the API call
-    this.userservice.updateLcoCommission(this.role, this.username, this.id, this.isYesActive, this.isPercentage, this.commissionvalue)
+    this.userservice.updateLcoCommission(this.role, this.username, this.id, this.isYesActive, this.isPercentage, this.commissionvalue,this.productrate)
       .subscribe((response: any) => {
         console.log(response);
         Swal.close();
@@ -69,6 +69,8 @@ export class UpdateLcoCommissionComponent {
           text: response?.message || 'Commission updated successfully!',
           timer: 2000,
           timerProgressBar: true
+        }).then(() => {
+          this.dialogRef.close();
         });
       }, (error) => {
         Swal.close();

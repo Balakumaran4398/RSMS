@@ -23,7 +23,7 @@ export class AddonEditComponent {
   tax_amount: any = '0.0';
   customer_amount: any = '0.0';
   mso_amount: any = '0.0';
-  ispercentage: any;
+  ispercentage: true;
   role: any;
   constructor(
     public dialogRef: MatDialogRef<AddonEditComponent>,

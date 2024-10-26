@@ -2,6 +2,7 @@ import { Component, Inject } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { BaseService } from 'src/app/_core/service/base.service';
 import { StorageService } from 'src/app/_core/service/storage.service';
+import { SwalService } from 'src/app/_core/service/swal.service';
 import Swal from 'sweetalert2';
 
 @Component({
@@ -22,7 +23,7 @@ export class SubInventoryComponent {
   operatorid: any;
   constructor(
     public dialogRef: MatDialogRef<SubInventoryComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: any, private userService: BaseService, private storageService: StorageService) {
+    @Inject(MAT_DIALOG_DATA) public data: any, private userService: BaseService, private storageService: StorageService,private swal:SwalService) {
     console.log(data);
     this.username = storageService.getUsername();
     this.role = storageService.getUserRole();
@@ -75,26 +76,32 @@ export class SubInventoryComponent {
     }).then((result) => {
       if (result.isConfirmed) {
         // Proceed with API call if confirmed
-        this.userService.ALLOCATED_SMARTCARD_TO_LCO(this.smartcard, this.role, this.username, this.ismei, '0.0', this.selectedLcoName).subscribe(
-          (res: any) => {
-            // Success message
-            Swal.fire({
-              icon: 'success',
-              title: 'Success!',
-              text:res.message|| 'Smartcard has been successfully allocated.',
-            });
-            console.log(res);
-          },
-          (error) => {
-            // Error handling
-            Swal.fire({
-              icon: 'error',
-              title: 'Error!',
-              text: error.error?.message || 'Something went wrong. Please try again later.',
-            });
-            console.error(error);
-          }
-        );
+        this.userService.ALLOCATED_SMARTCARD_TO_LCO(this.smartcard, this.role, this.username, this.ismei, '0.0', this.selectedLcoName)
+        // .subscribe(
+        //   (res: any) => {
+        //     // Success message
+        //     Swal.fire({
+        //       icon: 'success',
+        //       title: 'Success!',
+        //       text:res.message|| 'Smartcard has been successfully allocated.',
+        //     });
+        //     console.log(res);
+        //   },
+        //   (error) => {
+        //     // Error handling
+        //     Swal.fire({
+        //       icon: 'error',
+        //       title: 'Error!',
+        //       text: error.error?.message || 'Something went wrong. Please try again later.',
+        //     });
+        //     console.error(error);
+        //   }
+        // );
+        .subscribe((res: any) => {
+          this.swal.success(res?.message);
+        }, (err) => {
+          this.swal.Error(err?.error?.message);
+        });
       }
     });
   }

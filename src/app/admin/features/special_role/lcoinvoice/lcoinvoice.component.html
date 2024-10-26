@@ -1,0 +1,26 @@
+<h4 style="text-align: center;color: black;text-transform: uppercase;">Invoice Generation</h4>
+<div class="input_box display justify-content-center align-item-center">
+    <div class="mx-3">
+        <select name="month" id="month" [(ngModel)]="selectedMonth">
+            <option value="0" selected>Select Month</option>
+            <option *ngFor="let month of months" [value]="month.value">{{ month.name }}</option>
+        </select>
+    </div>
+    <div>
+        <select name="year" id="year" [(ngModel)]="selectedYear">
+            <option value="0" selected>Select Year</option>
+            <option *ngFor="let year of years" [value]="year">{{ year }}</option>
+        </select>
+    </div>
+    <button class="btn mx-2" style="background-color: rgb(26, 129, 133); border-radius: 5px;" (click)="submit()">
+        <span style="color: white;">Generate Invoice</span>
+    </button>
+</div>
+<div class="row d-flex align-items-center justify-content-center">
+    <div class="col-12  col-md-12 col-sm-12 m-3">
+        <ag-grid-angular #agGrid id="myGrid" domLayout='autoHeight' class="ag-theme-alpine table-class" rowAnimation
+            [rowSelection]="rowSelection" [gridOptions]="gridOptions" [columnDefs]="columnDefs" [rowData]="rowData"
+            (gridReady)="onGridReady($event)" [enableCellTextSelection]="true">
+        </ag-grid-angular>
+    </div>
+</div>

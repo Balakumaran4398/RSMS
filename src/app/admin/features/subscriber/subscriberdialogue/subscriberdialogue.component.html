@@ -82,7 +82,7 @@
         <div class="col-12 col-md-12 d-flex  justify-content-center align-items-center mb-3">
             <label for="" style="color: red;text-align: center;">Are you want to update click Yes ?</label>
         </div>
-        <div class="d-flex justify-content-end align-item-center mx-3 mb-2">
+        <div class="d-flex justify-content-center align-item-center mx-3 mb-2">
             <button type="button" class="btn btn-success me-2" (click)="loginDetails()">Yes</button>
             <button type="button" class="btn btn-danger" (click)="onNoClick()">No</button>
         </div>
@@ -253,7 +253,8 @@
                         <div class="mb-3">
                             <label class="form-label">landlineno
                             </label>
-                            <input class="date" type="text" [(ngModel)]="landlineno" formControlName="landlineno">
+                            <input class="date" type="text" pattern="^0\d{2,4}\d{6,8}$" [(ngModel)]="landlineno"
+                                formControlName="landlineno" (keypress)="onKeydown_landline($event)" maxlength="11">
                             <div *ngIf="Editform.get('landlineno')?.invalid && Editform.get('landlineno')?.touched">
                                 <small class="text-danger">landlineno is required.</small>
                             </div>
@@ -277,7 +278,8 @@
 
                         <div class="mb-3">
                             <label class="form-label">Mobile Number </label>
-                            <input class="" type="text" [(ngModel)]="mobileno" formControlName="mobileno">
+                            <input class="" type="text" [(ngModel)]="mobileno" formControlName="mobileno" maxlength="10"
+                                required type="text" (keypress)="onKeydown($event)">
                             <div *ngIf="Editform.get('mobileno')?.invalid && Editform.get('mobileno')?.touched">
                                 <small class="text-danger">Mobile Number is required.</small>
                             </div>
@@ -333,9 +335,9 @@
                 </div>
             </div>
 
-            <div class="d-flex justify-content-end align-item-center mx-3 mb-4">
+            <div class="d-flex justify-content-center align-item-center  mb-4">
+                <button type="button" class="btn btn-success mx-3" (click)="onSubmit()">Update</button>
                 <button type="button" class="btn btn-danger me-2" (click)="onNoClick()">Cancel</button>
-                <button type="button" class="btn btn-success" (click)="onSubmit()">Update</button>
             </div>
         </form>
     </div>
@@ -368,7 +370,7 @@
             <div class="col-12 col-md-3 d-flex justify-content-center align-items-center mb-3 ">
                 <div class="icon-container">
                     <img src="/assets/images/icons/pdf.png" width="40px">
-                    <div class="tooltip">Pdf</div>
+                    <div class="tooltip" (click)="getPdfSubscriberRechargeDetails()">Pdf</div>
                 </div>
             </div>
         </div>
@@ -422,15 +424,16 @@
                                     <label for="">Boxid</label>
                                 </div>
                                 <div class="col-12 col-md-8">
-                                    <input placeholder="Enter Smartcard" type="text" [(ngModel)]="boxid" id="boxid">
+                                    <input placeholder="Enter Smartcard" type="text" [(ngModel)]="boxid" readonly
+                                        id="boxid">
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
-                <div class="d-flex justify-content-end align-item-center mx-3 mb-4">
+                <div class="d-flex justify-content-center align-item-center mb-4">
+                    <button type="button" class="btn btn-success mx-3" (click)="addSmartcard()">Submit</button>
                     <button type="button" class="btn btn-danger me-2" (click)="onNoClick()">Cancel</button>
-                    <button type="button" class="btn btn-success" (click)="addSmartcard()">Submit</button>
                 </div>
             </div>
         </div>
@@ -506,9 +509,9 @@
                         </div>
                     </div>
                 </div>
-                <div class="d-flex justify-content-end align-item-center mx-3 mb-4">
+                <div class="d-flex justify-content-center align-item-center mx-3 mb-4">
+                    <button type="button" class="btn btn-success mx-3" (click)="changeOperator()">Submit</button>
                     <button type="button" class="btn btn-danger me-2" (click)="onNoClick()">Cancel</button>
-                    <button type="button" class="btn btn-success" (click)="changeOperator()">Submit</button>
                 </div>
 
             </div>
@@ -590,7 +593,7 @@
             <label for="" style="color: green;text-align: center;">Are you sure refresh this smartcard ?</label>
         </div>
     </div>
-    <div class="d-flex justify-content-end align-item-center mx-4 mb-3">
+    <div class="d-flex justify-content-center align-item-center mx-4 mb-3">
         <button type="button" class="btn btn-success me-2" (click)="refreshSmartcard()">Yes</button>
         <button type="button" class="btn btn-danger" (click)="onNoClick()">No</button>
     </div>
@@ -665,7 +668,7 @@
             <label for="" style="color: red;text-align: center;">Are you sure de-activate this smartcard ?</label>
         </div>
     </div>
-    <div class="d-flex justify-content-end align-item-center mx-4 mb-3">
+    <div class="d-flex justify-content-center align-item-center mx-4 mb-3">
         <button type="button" class="btn btn-success me-2" (click)="deactivationofSmartcard()">Yes</button>
         <button type="button" class="btn btn-danger" (click)="onNoClick()">No</button>
     </div>
@@ -741,12 +744,12 @@
                 </div>
 
                 <div class="toggle input_box">
-                    <input type="text" [(ngModel)]="newpin" (keypress)="onKeydown($event)">
+                    <input type="text" [(ngModel)]="newpin" maxlength="4" (keypress)="onKeydown($event)">
                 </div>
             </div>
         </div>
     </div>
-    <div class="d-flex justify-content-end align-item-center mx-4 mb-3">
+    <div class="d-flex justify-content-center align-item-center mx-4 mb-3">
         <button type="button" class="btn btn-success me-2" (click)="pinchange()">Update</button>
         <button type="button" class="btn btn-danger" (click)="onNoClick()">Cancel</button>
     </div>
@@ -814,7 +817,7 @@
             </div>
         </div>
     </div>
-    <div class="d-flex justify-content-end align-item-center mx-4 mb-3">
+    <div class="d-flex justify-content-center align-item-center mx-4 mb-3">
         <button type="button" class="btn btn-success me-2" (click)="pvrchange()">Update</button>
         <button type="button" class="btn btn-danger" (click)="onNoClick()">Cancel</button>
     </div>
@@ -886,7 +889,7 @@
             </label>
         </div>
     </div>
-    <div class="d-flex justify-content-end align-item-center mx-4 mb-3">
+    <div class="d-flex justify-content-center align-item-center mx-4 mb-3">
         <button type="button" class="btn btn-success me-2" (click)="deleteForceMessage()">Yes</button>
         <button type="button" class="btn btn-danger" (click)="onNoClick()">No</button>
     </div>
@@ -960,7 +963,7 @@
             <label for="" style="color: green;text-align: center;">Are you sure force tuning this smartcard ?</label>
         </div>
     </div>
-    <div class="d-flex justify-content-end align-item-center mx-4 mb-3">
+    <div class="d-flex justify-content-center align-item-center mx-4 mb-3">
         <button type="button" class="btn btn-success me-2" (click)="forcetuning()">Yes</button>
         <button type="button" class="btn btn-danger" (click)="onNoClick()">No</button>
     </div>
@@ -1034,7 +1037,7 @@
             <label for="" style="color: green;text-align: center;">Are you sure Re-Activate this smartcard ?</label>
         </div>
     </div>
-    <div class="d-flex justify-content-end align-item-center mx-4 mb-3">
+    <div class="d-flex justify-content-center align-item-center mx-4 mb-3">
         <button type="button" class="btn btn-success me-2" (click)="reactivationofSmartcard()">Yes</button>
         <button type="button" class="btn btn-danger" (click)="onNoClick()">No</button>
     </div>
@@ -1117,7 +1120,7 @@
             <label for="" style="color: red;text-align: center;">Are you sure block this smartcard ? </label>
         </div>
     </div>
-    <div class="d-flex justify-content-end align-item-center mx-4 mb-3">
+    <div class="d-flex justify-content-center align-item-center mx-4 mb-3">
         <button type="button" class="btn btn-success me-2" (click)="block()">Yes</button>
         <button type="button" class="btn btn-danger" (click)="onNoClick()">No</button>
     </div>
@@ -1186,7 +1189,7 @@
 
 
     </div>
-    <div class="d-flex justify-content-end align-item-center mx-4 mb-3">
+    <div class="d-flex justify-content-center align-item-center mx-4 mb-3">
         <button type="button" class="btn btn-success me-2" (click)="boxIdChange()">Yes</button>
         <button type="button" class="btn btn-danger" (click)="onNoClick()">No</button>
     </div>
@@ -1282,7 +1285,7 @@
             </div>
         </div>
     </div>
-    <div class="d-flex justify-content-end align-item-center mx-4 mb-3">
+    <div class="d-flex justify-content-center align-item-center mx-4 mb-3">
         <button type="button" class="btn btn-success me-2" (click)="lcotransferSinglesmartcard()">Submit</button>
         <button type="button" class="btn btn-danger" (click)="onNoClick()">Cancel</button>
     </div>
@@ -1366,7 +1369,7 @@
             <label for="" style="color: green;text-align: center;">Are you sure resume this smartcard ?</label>
         </div>
     </div>
-    <div class="d-flex justify-content-end align-item-center mx-3 mb-2">
+    <div class="d-flex justify-content-center align-item-center mx-3 mb-2">
         <button type="button" class="btn btn-success me-2" (click)="resume()">Yes</button>
         <button type="button" class="btn btn-danger" (click)="onNoClick()">No</button>
     </div>
@@ -1427,15 +1430,15 @@
 
                     </label>
                 </div>
-                <div class=" col-6 col-md-6 value">
-                    <div class="dropdown jumbotron">
-                        <select id="single" [(ngModel)]="newpackagename" class=" js-states form-control">
-                            <option value="0" selected>Selected Package Name</option>
-                            <option *ngFor="let package of packagenameList" [value]="package.packageid">
-                                {{ package.packagename }}
-                            </option>
-                        </select>
-                    </div>
+                <div class="input_box col-6 col-md-6 value">
+                    <!-- <div class="dropdown jumbotron"> -->
+                    <select id="single" [(ngModel)]="newpackagename">
+                        <option value="0" selected>Selected Package Name</option>
+                        <option *ngFor="let package of packagenameList" [value]="package.packageid">
+                            {{ package.packagename }}
+                        </option>
+                    </select>
+                    <!-- </div> -->
                 </div>
             </div>
         </div>
@@ -1661,7 +1664,7 @@
                 </div>
             </div>
         </div>
-        <div class="d-flex justify-content-end align-item-center mx-4 mb-2">
+        <div class="d-flex justify-content-center align-item-center mx-4 mb-2">
             <button type="button" class="btn btn-success me-2" (click)="sendMessage()">Send</button>
             <button type="button" class="btn btn-danger" (click)="onNoClick()">Cancel</button>
         </div>
@@ -1924,7 +1927,7 @@
             </label>
         </div>
     </div>
-    <div class=" d-flex justify-content-end align-item-center mx-4 mb-2">
+    <div class=" d-flex justify-content-center align-item-center mx-4 mb-2">
         <button type="button" class="btn btn-success me-2" (click)="smartcardSuspend()">Yes</button>
         <button type="button" class="btn btn-danger me-2" (click)="onNoClick()">No</button>
     </div>
@@ -2116,16 +2119,10 @@
         <button *ngIf="confirmation" type="button" class="btn confirm me-2" (click)="onChangeBaseActivationClick()"
             [disabled]="!newpackagename || newpackagename === '0' ">Confirmation</button>
 
-
-
-
-
         <button type="button" class="btn  recharge me-2"
             (click)="baseChangeofSmartcardPackageActivate()">Activate</button>
         <button type="button" class="btn btn-danger me-2" (click)="onNoClick()">Cancel</button>
     </div>
-
-
 </div>
 
 
@@ -2188,7 +2185,7 @@
 
         <div class="col-12 col-md-12  mb-3" style="padding: 0.5rem;">
             <ag-grid-angular #agGrid id="myGrid" domLayout='autoHeight' class="ag-theme-alpine table-class" rowAnimation
-                [columnDefs]="columnDefs" [rowData]="rowData1" [enableCellTextSelection]="true">
+                [columnDefs]="columnDefs" [enableCellTextSelection]="true">
             </ag-grid-angular>
         </div>
         <div style="padding: 1rem;">
@@ -2278,7 +2275,7 @@
                                 <span for="password" class="me-2">Expiry date </span>
                             </div>
                             <div class="col-7 col-md-6 value">
-                                {{typeData?.expirydate}}
+                                {{rowData?.expiryDate}}
                             </div>
                         </div>
                     </div>
@@ -2288,7 +2285,7 @@
                                 <span class="me-2"> Customer Pay Amount </span>
                             </div>
                             <div class="col-7 col-md-6 value">
-                                {{typeData?.pay}}
+                                {{rowData?.customerPayAmount}}
                             </div>
                         </div>
                     </div>
@@ -2298,7 +2295,7 @@
                                 <span for="password" class="me-2">Mso Amount for LCO </span>
                             </div>
                             <div class="col-7 col-md-6 value">
-                                {{typeData?.msoamount}}
+                                {{rowData?.msoAmount}}
                             </div>
                         </div>
                     </div>
@@ -2308,7 +2305,7 @@
                                 <span class="me-2"> Day</span>
                             </div>
                             <div class="col-7 col-md-6 value">
-                                {{typeData?.days}}
+                                {{rowData?.days}}
                             </div>
                         </div>
                     </div>
@@ -2318,7 +2315,7 @@
                                 <span for="password" class="me-2">Selected Addon count</span>
                             </div>
                             <div class="col-7 col-md-6 value">
-                                {{typeData?.addoncount}}
+                                {{rows?.length}}
                             </div>
                         </div>
                     </div>
@@ -2341,9 +2338,9 @@
                 </div>
                 <div class=" d-flex  align-item-center mx-3 mb-2 " style="margin-block: auto;">
                     <button *ngIf="!confirmation" type="button" class="btn btn-success me-2" style="height: 40px;"
-                        [disabled]="!isAnyRowSelected" (click)="onAddonConfirmation()">Confirmation</button>
+                        [disabled]="!isAnyRowSelected " (click)="onAddonConfirmation()">Confirmation</button>
                     <button *ngIf="confirmation" type="button" class="btn btn-success me-2" style="height: 40px;"
-                        [disabled]="!isAnyRowSelected" (click)="onAddon()">Confirmation</button>
+                        [disabled]="!isAnyRowSelected || (rows?.length > 1)" (click)="onAddon()">Confirmation</button>
                     <button type="button" class="btn btn-success me-2" style="height: 40px;"
                         (click)="addAddonForSmartcard()">ADD</button>
                     <button type="button" class="btn btn-danger" style="height: 40px;"
@@ -2352,7 +2349,7 @@
             </div>
             <div class="col-12 col-md-6  mb-3" style="padding: 1rem;">
                 <ag-grid-angular #agGrid id="myGrid" domLayout='autoHeight' class="ag-theme-alpine table-class"
-                    rowAnimation [columnDefs]="columnDefs1" [rowData]="typeData" [enableCellTextSelection]="true">
+                    rowAnimation [columnDefs]="columnDefs2" [rowData]="rows" [enableCellTextSelection]="true">
                 </ag-grid-angular>
             </div>
         </div>
@@ -2429,10 +2426,10 @@
                     <div class="input_box  mb-1">
                         <div class="d-flex align-items-center justify-content-center">
                             <div class="col-5 col-md-6">
-                                <span for="password" class="me-2">Expiry date </span>
+                                <span class="me-2">Expiry date </span>
                             </div>
                             <div class="col-7 col-md-6 value">
-                                {{typeData?.expirydate}}
+                                {{rowData?.expiryDate}}
                             </div>
                         </div>
                     </div>
@@ -2442,7 +2439,7 @@
                                 <span class="me-2"> Customer Pay Amount </span>
                             </div>
                             <div class="col-7 col-md-6 value">
-                                {{typeData?.amount}}
+                                {{rowData?.customerPayAmount}}
                             </div>
                         </div>
                     </div>
@@ -2452,7 +2449,7 @@
                                 <span for="password" class="me-2">Mso Amount for LCO </span>
                             </div>
                             <div class="col-7 col-md-6 value">
-                                {{typeData?.msoamount}}
+                                {{rowData?.msoAmount}}
                             </div>
                         </div>
                     </div>
@@ -2462,7 +2459,7 @@
                                 <span class="me-2"> Day</span>
                             </div>
                             <div class="col-7 col-md-6 value">
-                                {{typeData?.days}}
+                                {{rowData?.days}}
                             </div>
                         </div>
                     </div>
@@ -2472,7 +2469,7 @@
                                 <span for="password" class="me-2">Selected Addon count</span>
                             </div>
                             <div class="col-7 col-md-6 value">
-                                {{typeData?.addoncount}}
+                                {{rows?.length}}
                             </div>
                         </div>
                     </div>
@@ -2508,7 +2505,7 @@
             </div>
             <div class="col-12 col-md-6  mb-3" style="padding: 1rem;">
                 <ag-grid-angular #agGrid id="myGrid" domLayout='autoHeight' class="ag-theme-alpine table-class"
-                    rowAnimation [columnDefs]="columnDefs1" [rowData]="typeData" [enableCellTextSelection]="true">
+                    rowAnimation [columnDefs]="columnDefs1" [rowData]="finalrow" [enableCellTextSelection]="true">
                 </ag-grid-angular>
             </div>
         </div>
@@ -2523,9 +2520,6 @@
 
 
         <div class="col-12 col-md-12  mb-3" style="padding: 1rem;">
-            <!-- <ag-grid-angular #agGrid id="myGrid" domLayout='autoHeight' class="ag-theme-alpine table-class" rowAnimation
-                [columnDefs]="columnDefs" [rowData]="rowData" [enableCellTextSelection]="true">
-            </ag-grid-angular> -->
             <ag-grid-angular #agGrid id="myGrid" domLayout='autoHeight' class="ag-theme-alpine table-class" rowAnimation
                 [gridOptions]="gridOptions" [columnDefs]="columnDefs" [rowData]="rowData"
                 (gridReady)="onGridReady($event)" [enableCellTextSelection]="true"
@@ -2547,7 +2541,7 @@
                             <span for="password" class="me-2">Expiry date </span>
                         </div>
                         <div class="col-7 col-md-6 value">
-                            {{removeProductList_expiryDate}}
+                            {{rowData?.days}}
                         </div>
                     </div>
                 </div>
@@ -2557,17 +2551,17 @@
                             <span class="me-2"> Refund Amount for LCO </span>
                         </div>
                         <div class="col-7 col-md-6 value">
-                            {{removeProductList_refund}}
+                            {{rowData?.lcoRefund}}
                         </div>
                     </div>
                 </div>
 
             </div>
             <div class=" d-flex justify-content-centerlign-item-center mx-3 mb-2 " style="margin-block: auto;">
-                <button *ngIf="!confirmation" type="button" class="btn btn-warning me-2" style="height: 40px;" [disabled]="!isAnyRowSelected"
-                    (click)="onRemoveConfirmation()">Confirmation</button>
-                <button *ngIf="confirmation" type="button" class="btn btn-warning me-2" style="height: 40px;" [disabled]="!isAnyRowSelected"
-                    (click)="onRemove()">Confirmation</button>
+                <button *ngIf="!confirmation" type="button" class="btn btn-warning me-2" style="height: 40px;"
+                    [disabled]="!isAnyRowSelected" (click)="onRemoveConfirmation()">Confirmation</button>
+                <button *ngIf="confirmation" type="button" class="btn btn-warning me-2" style="height: 40px;"
+                    [disabled]="!isAnyRowSelected" (click)="onRemove()">Confirmation</button>
 
 
                 <button type="button" class="btn btn-success me-2" style="height: 40px;"
@@ -2586,7 +2580,7 @@
     <div class="mobileview">
         <div class="  mb-3">
             <!-- *ngIf="subSmartcard"  -->
-            <div *ngIf="subSmartcard" class="d-block align-items-center justify-content-center">
+            <div *ngIf="!smart" class="d-block align-items-center justify-content-center">
                 <div class="input_box  mb-2">
                     <div class="d-flex align-items-center justify-content-center">
                         <div class="col-5 col-md-6">
@@ -2615,7 +2609,7 @@
                 </div>
             </div>
 
-            <div *ngIf="!ischeck" class="d-block align-items-center justify-content-center">
+            <div *ngIf="!box" class="d-block align-items-center justify-content-center">
                 <div class="input_box  mb-2">
                     <div class="d-flex align-items-center justify-content-center">
                         <div class="col-5 col-md-6">

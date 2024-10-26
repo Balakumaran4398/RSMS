@@ -28,10 +28,34 @@ export class NavComponent implements OnInit, AfterViewInit {
   subscriber: any;
   searchname: any;
   lcomember: any = '';
+  userRole: any;
+
+  isUser: boolean = false;
+  isReception: boolean = false;
+  isSpecial: boolean = false;
+  isDropdownOpen: boolean = false;
   constructor(private router: Router, private breakpointObserver: BreakpointObserver, private cdr: ChangeDetectorRef, private userservice: BaseService, private storageservice: StorageService) {
     this.breakpointChanged();
     this.role = storageservice.getUserRole();
+    console.log(this.role);
+
     this.username = storageservice.getUsername();
+    if (this.role.includes('ROLE_USER')) {
+      this.isUser = true;
+      this.isReception = false;
+      this.isSpecial = false;
+      this.role = 'ADMIN';
+    } else if (this.role.includes('ROLE_RECEPTION')) {
+      this.isReception = true;
+      this.isUser = false;
+      this.isSpecial = false;
+      this.role = 'RECEPTION';
+    } else if (this.role.includes('ROLE_SPECIAL')) {
+      this.isReception = false;
+      this.isUser = false;
+      this.isSpecial = true;
+      this.role = 'SPECIAL';
+    }
 
   }
 
@@ -40,8 +64,9 @@ export class NavComponent implements OnInit, AfterViewInit {
     setInterval(() => {
       this.currentTime = new Date();
     }, 1000);
+    this.setActive("");
     const sidemenuLinks = document.querySelectorAll('.side-menu li a');
-    const sidedropdownmenuLinks = document.querySelectorAll('.side-menu li ul li a');
+    // const sidedropdownmenuLinks = document.querySelectorAll('.side-menu li ul li a');
     sidemenuLinks.forEach(link => {
       link?.classList?.remove('active');
       link.addEventListener("click", () => {
@@ -49,16 +74,33 @@ export class NavComponent implements OnInit, AfterViewInit {
         link.classList.add('active');
       });
     });
-    sidedropdownmenuLinks.forEach(link => {
-      link?.classList?.remove('active');
-      link.addEventListener("click", () => {
-        sidedropdownmenuLinks.forEach(link => link.classList.remove('active'));
-        link.classList.add('active');
-      });
-    });
+    // sidedropdownmenuLinks.forEach(link => {
+    //   link?.classList?.remove('active');
+    //   link.addEventListener("click", () => {
+    //     sidedropdownmenuLinks.forEach(link => link.classList.remove('active'));
+    //     link.classList.add('active');
+    //   });
+    // });
 
 
   }
+  setActive(event: any): void {
+    const dropdownLinks = document.querySelectorAll('.side-dropdown li a');
+    dropdownLinks.forEach(link => link.classList.remove('active'));
+
+    event.target.classList.add('active');
+  }
+  setActiveTab(event: Event) {
+    const activeTabs = document.querySelectorAll('.side-menu a.active');
+    activeTabs.forEach((tab) => {
+      tab.classList.remove('active');
+    });
+
+    // Add 'active' class to the clicked element
+    const clickedElement = event.currentTarget as HTMLElement;
+    clickedElement.classList.add('active');
+  }
+
   onsubscriberlist(value: any) {
     this.showDropdown = true;
     // this.userservice.getSearchDetailsSubscriber(this.role, this.username, value).subscribe((data: any) => {
@@ -80,7 +122,7 @@ export class NavComponent implements OnInit, AfterViewInit {
     // this.userservice.getSearchDetailsSubscriber(this.role, this.username, value).subscribe(
     //   (data: any) => {
     //     console.log(data);
-    
+
     //     // Check if data is empty or null
     //     if (!data || Object.keys(data).length === 0) {
     //       console.log('No data found');
@@ -92,7 +134,7 @@ export class NavComponent implements OnInit, AfterViewInit {
     //       });
     //       return;
     //     }
-    
+
     //     // If data is not empty, process it
     //     this.subscriber = data;
     //     this.subscriberList = Object.keys(data).map(key => {
@@ -100,14 +142,14 @@ export class NavComponent implements OnInit, AfterViewInit {
     //       const name = key;
     //       return { name: name, value: value };
     //     });
-    
+
     //     // Sort the subscriberList by value
     //     this.subscriberList.sort((a: any, b: any) => {
     //       if (a.value > b.value) return 1;
     //       if (a.value < b.value) return -1;
     //       return 0;
     //     });
-    
+
     //     console.log(this.subscriberList);
     //   },
     //   (error) => {
@@ -124,7 +166,7 @@ export class NavComponent implements OnInit, AfterViewInit {
     this.userservice.getSearchDetailsSubscriber(this.role, this.username, value).subscribe(
       (data: any) => {
         console.log(data);
-    
+
         // Check if data is empty or null
         if (!data || Object.keys(data).length === 0) {
           console.log('No data found');
@@ -136,7 +178,7 @@ export class NavComponent implements OnInit, AfterViewInit {
           });
           return;
         }
-    
+
         // Process the subscriber data if it's not empty
         this.subscriber = data;
         this.subscriberList = Object.keys(data).map(key => {
@@ -144,14 +186,14 @@ export class NavComponent implements OnInit, AfterViewInit {
           const name = key;
           return { name: name, value: value };
         });
-    
+
         // Sort the subscriberList by value
         this.subscriberList.sort((a: any, b: any) => {
           if (a.value > b.value) return 1;
           if (a.value < b.value) return -1;
           return 0;
         });
-    
+
         // Check if the sorted list is empty
         if (this.subscriberList.length === 0) {
           console.log('No matching data after sorting');
@@ -162,7 +204,7 @@ export class NavComponent implements OnInit, AfterViewInit {
             confirmButtonText: 'OK'
           });
         }
-    
+
         console.log(this.subscriberList);
       },
       (error) => {
@@ -175,7 +217,22 @@ export class NavComponent implements OnInit, AfterViewInit {
         });
       }
     );
-0    
+    0
+  }
+  signOut() {
+    this.toggleButton();
+
+  }
+  logout() {
+    sessionStorage.clear();
+    this.router.navigate([`/`]);
+  }
+  toggleButton() {
+
+  }
+  toggleDrop() {
+    console.log('toggle droped');
+    this.isDropdownOpen = !this.isDropdownOpen;
   }
 
   // goToSubscriberDashboard(lcomember: any) {

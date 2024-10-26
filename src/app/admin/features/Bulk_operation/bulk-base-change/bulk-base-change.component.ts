@@ -41,7 +41,7 @@ export class BulkBaseChangeComponent implements OnInit {
   }
   username: any;
   role: any;
-  packageid: any;
+  packageid: any=0;
   file: File | null = null;
   date: any;
   isFileSelected: boolean = false;
@@ -171,7 +171,7 @@ export class BulkBaseChangeComponent implements OnInit {
       );
   }
   getData() {
-    this.userservice.getBulkOperationListByDate(this.role, this.username, 'Bulk Base Change', this.date, 9)
+    this.userservice.getBulkOperationListByDate(this.role, this.username, 'Bulk Base Change', this.date || null, 9)
       .subscribe(
         (response: HttpResponse<any[]>) => { // Expect HttpResponse<any[]>
           if (response.status === 200) {

@@ -83,6 +83,14 @@ export class CreateDistributorComponent {
       confirmButtonText: 'Yes, create it!'
     }).then((result) => {
       if (result.isConfirmed) {
+        Swal.fire({
+          title: 'Creating...',
+          text: 'Wait for the Distributor to be created....',
+          allowOutsideClick: false,
+          didOpen: () => {
+            Swal.showLoading(null);
+          }
+        });
         this.userService.Distributor(requestBody).subscribe(
           (res) => {
             console.log(res);
@@ -91,7 +99,8 @@ export class CreateDistributorComponent {
               icon: "success",
               title: "Distributor created successfully !!",
               showConfirmButton: false,
-              timer: 1000
+              timer: 2000,
+              timerProgressBar: true,
             }).then(() => {
               window.location.reload();
               this.closeDialog();
@@ -112,7 +121,8 @@ export class CreateDistributorComponent {
               title: 'Error',
               text: errorMessage,
               showConfirmButton: false,
-              timer: 1500
+              timer: 2000,
+              timerProgressBar: true,
             });
           }
         );

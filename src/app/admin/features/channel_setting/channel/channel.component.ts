@@ -38,6 +38,7 @@ export class ChannelComponent {
   role: string;
   rowData: any;
   type: string[] = ['All', 'Active', 'Deactive'];
+  selectType:any='All';
   selectedType: string = 'All';
 
   constructor(public dialog: MatDialog, public userService: BaseService, storageService: StorageService) {

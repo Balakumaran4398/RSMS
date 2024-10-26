@@ -45,15 +45,24 @@ export class BroadCreateDialogComponent {
       confirmButtonText: 'Yes, create it!'
     }).then((result) => {
       if (result.isConfirmed) {
+        Swal.fire({
+          title: 'Creating...',
+          text: 'Wait for the Broadcaster to be created....',
+          allowOutsideClick: false,
+          didOpen: () => {
+            Swal.showLoading(null);
+          }
+        });
         this.userService.Broadcaster(requestBody).subscribe(
-          (res:any) => {
+          (res: any) => {
             console.log(res);
             Swal.fire({
               position: "center",
               icon: "success",
-              title:res?.message || "Broadcaster created successfully !!",
+              title: res?.message || "Broadcaster created successfully !!",
               showConfirmButton: false,
-              timer: 1000
+              timer: 2000,
+              timerProgressBar: true,
             }).then(() => {
               window.location.reload();
               this.closeDialog();
@@ -65,8 +74,9 @@ export class BroadCreateDialogComponent {
               icon: 'error',
               title: 'Error',
               text: err?.errorMessage || 'Failed to create broadcaster. Please try again.',
+              timer: 2000,
+              timerProgressBar: true,
               showConfirmButton: false,
-              timer: 1500
             });
           }
         );
@@ -78,5 +88,13 @@ export class BroadCreateDialogComponent {
   }
   closeDialog() {
     this.dialogRef.close();
+  }
+  errorToggle(){
+    this.errorMessage=!this.errorMessage;
+  }
+  clearError() {
+    if (this.broadcastername.trim()) {
+      this.errorMessage = null; 
+    }
   }
 }

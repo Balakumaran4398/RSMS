@@ -93,7 +93,9 @@ export class ForceTuningComponent {
           title: 'Error!',
           text: error?.error.message || 'There was an issue submitting the form.',
           icon: 'error',
-          confirmButtonText: 'OK'
+          confirmButtonText: 'OK',
+          timer: 2000,
+          timerProgressBar: true,
         });
       }
     );

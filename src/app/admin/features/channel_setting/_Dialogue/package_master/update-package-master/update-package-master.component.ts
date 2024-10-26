@@ -63,30 +63,30 @@ export class UpdatePackageMasterComponent implements OnInit {
             Swal.showLoading(null); 
           }
         });
-        this.userService.UpdatePackagemasterList(this.role,this.username, this.product_id).subscribe(
-          (res) => {
-            console.log(res);
-            Swal.fire({
-              position: "center",
-              icon: "success",
-              title: "Your update was successful",
-              showConfirmButton: false,
-              timer: 1000
-            }).then(() => {
-              window.location.reload();
-            });
-          },
-          (err) => {
-            Swal.fire({
-              position: 'center',
-              icon: 'error',
-              title: 'Error',
-              text: err?.error?.message,
-              showConfirmButton: false,
-              timer: 1500
-            });
-          }
-        );
+        // this.userService.UpdatePackagemasterList(this.role,this.username, this.product_id,).subscribe(
+        //   (res) => {
+        //     console.log(res);
+        //     Swal.fire({
+        //       position: "center",
+        //       icon: "success",
+        //       title: "Your update was successful",
+        //       showConfirmButton: false,
+        //       timer: 1000
+        //     }).then(() => {
+        //       window.location.reload();
+        //     });
+        //   },
+        //   (err) => {
+        //     Swal.fire({
+        //       position: 'center',
+        //       icon: 'error',
+        //       title: 'Error',
+        //       text: err?.error?.message,
+        //       showConfirmButton: false,
+        //       timer: 1500
+        //     });
+        //   }
+        // );
       }
     });
   }

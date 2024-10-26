@@ -6,6 +6,7 @@ import { AllocatedInventoryComponent } from '../../channel_setting/_Dialogue/Inv
 import { BaseService } from 'src/app/_core/service/base.service';
 import { StorageService } from 'src/app/_core/service/storage.service';
 import Swal from 'sweetalert2';
+import { SwalService } from 'src/app/_core/service/swal.service';
 
 @Component({
   selector: 'app-allocated',
@@ -21,7 +22,7 @@ export class AllocatedComponent {
   rowData: any;
   smartcard: any;
   caslist: any;
-  selectedLcoName:any  = 0;
+  selectedLcoName: any = 0;
   lco_list: { [key: string]: number } = {};
   searchTerm: string = '';
   isAnyRowSelected: any = false;
@@ -40,7 +41,7 @@ export class AllocatedComponent {
     pagination: true,
   }
 
-  constructor(public dialog: MatDialog, public userService: BaseService, storageService: StorageService) {
+  constructor(public dialog: MatDialog, public userService: BaseService, private storageService: StorageService, private swal: SwalService) {
     this.username = storageService.getUsername();
     this.role = storageService.getUserRole();
     this.userService.Allocated_smartcard_List(this.role, this.username).subscribe((data: any) => {
@@ -147,11 +148,6 @@ export class AllocatedComponent {
   onGridReady(params: { api: any; }) {
     this.gridApi = params.api;
   }
-  // Search() {
-  //   this.userService.getsearchforallocated_smartcard_List(this.role, this.username, this.smartcard, this.lco_list).subscribe((data: any) => {
-  //     console.log(data);
-  //   })
-  // }
   Search() {
     // if (!this.smartcard && !this.selectedLcoName) {
     //   Swal.fire({
@@ -163,8 +159,8 @@ export class AllocatedComponent {
     //   return;
     // }
     console.log(this.selectedLcoName);
-    
-    this.userService.getsearchforallocated_smartcard_List(this.role, this.username, this.selectedLcoName, this.smartcard).subscribe((data: any) => {
+    this.swal.Loading();
+    this.userService.getsearchforallocated_smartcard_List(this.role, this.username, this.selectedLcoName, this.smartcard || null).subscribe((data: any) => {
       this.rowData = data;
       Swal.fire({
         icon: 'success',

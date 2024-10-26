@@ -10,7 +10,7 @@
                     </select>
                 </div>
                 <div class="col-12  col-md-3 mb-3">
-                    <input  type="text" placeholder="Enter Smartcard" [(ngModel)]="searchname">
+                    <input type="text" placeholder="Enter Smartcard" [(ngModel)]="searchname">
                 </div>
                 <button class="btn custom-btn mx-3" type="button" (click)="submit(1)">
                     Total list
@@ -32,11 +32,7 @@
                 <div class="title text-center mb-4">
                     <h5>TOTAL SUBSCRIBER RECURRING</h5>
                 </div>
-                <div class="row">
-                    <!-- <div *ngIf="reccuringData.length === 0" class="text-center col-12">
-                        <p style="color:red">No Records Found, Please Select an Input and Get the Data</p>
-                    </div> -->
-
+                <!-- <div class="row">
                     <span class="col-12 col-sm-4 col-md-4 mb-3" *ngFor="let cus of reccuringData">
                         <div class="card p-3 mb-1">
                             <div class="row mb-2">
@@ -90,7 +86,20 @@
                             </div>
                         </div>
                     </span>
+                </div> -->
+
+                <div class="col d-flex justify-content-center align-items-center mb-3">
+               
+                    <button class="btn btn-outline-info mx-1" mat-raised-button color="primary" type="button"
+                        [disabled]="!isAnyRowSelected" (click)="Active()">
+                        Active
+                    </button>
+                  
                 </div>
+                <ag-grid-angular #agGrid id="myGrid" domLayout='autoHeight' class="ag-theme-alpine table-class"
+                    rowAnimation [rowSelection]="rowSelection" [gridOptions]="gridOptions" [columnDefs]="columnDefs"
+                    [rowData]="reccuringData" (gridReady)="onGridReady($event)" [enableCellTextSelection]="true" (selectionChanged)="onSelectionChanged()">
+                </ag-grid-angular>
             </div>
         </div>
     </div>

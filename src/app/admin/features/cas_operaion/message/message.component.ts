@@ -1,10 +1,13 @@
 import { Component } from '@angular/core';
 import { AbstractControl, FormBuilder, FormControl, FormGroup, FormGroupDirective, NgForm, Validators } from '@angular/forms';
 import { ErrorStateMatcher } from '@angular/material/core';
+import { MatDialog } from '@angular/material/dialog';
 import { ColDef } from 'ag-grid-community';
 import { BaseService } from 'src/app/_core/service/base.service';
 import { StorageService } from 'src/app/_core/service/storage.service';
+import { SwalService } from 'src/app/_core/service/swal.service';
 import Swal from 'sweetalert2';
+import { CasDialogueComponent } from '../../channel_setting/_Dialogue/cas-dialogue/cas-dialogue.component';
 export class MyErrorStateMatcher implements ErrorStateMatcher {
   isErrorState(control: FormControl | null, form: FormGroupDirective | NgForm | null): boolean {
     const isSubmitted = form && form.submitted;
@@ -114,7 +117,7 @@ export class MessageComponent {
   lco_list: any[] = [];
   username: any;
   role: any;
-  constructor(private userservice: BaseService, private storageService: StorageService, private fb: FormBuilder) {
+  constructor(private userservice: BaseService, private storageService: StorageService, private fb: FormBuilder, private swal: SwalService, public dialog: MatDialog) {
     this.username = storageService.getUsername();
     this.role = storageService.getUserRole();
     userservice.GetMessageList(this.role, this.username).subscribe((data: any) => {
@@ -127,9 +130,15 @@ export class MessageComponent {
       forcemsg: [false, Validators.required],
       deletemsg: [false, Validators.required],
       intendto: ['', Validators.required],
-      intendid: [0, Validators.required],
+      // intendid: ['', Validators.required],
+      intendid: ['', [
+        Validators.required,
+        Validators.minLength(20),
+        Validators.maxLength(20),
+        Validators.pattern('^[0-9]{20}$') // Allows exactly 20 digits
+      ]],
       serviceid: ['', Validators.required],
-      fontsize: ['', Validators.required],
+      fontsize: ['', [Validators.required, Validators.pattern(/^\d+$/)]],
       position: ['', Validators.required],
       fontcolor: ['', Validators.required],
       bgcolor: ['', Validators.required],
@@ -164,7 +173,61 @@ export class MessageComponent {
     { headerName: "DURATION", field: 'duration' },
     { headerName: "TIME GAP	", field: 'timegap' },
     { headerName: "CAS", field: 'casname' },
-    { headerName: "ACTION", field: '' },
+    {
+      headerName: 'ACTIONS',
+      width: 320,
+
+      cellRenderer: (params: any) => {
+        const div = document.createElement('div');
+
+        // Always show the Resend button
+        const ResendButton = document.createElement('button');
+        ResendButton.innerHTML = '<button style="width: 5em;background-color: #48804f;color:white;border-radius: 5px;height: 2em;"><p style="margin-top:-6px">RESEND</p></button>';
+        ResendButton.style.backgroundColor = 'transparent';
+        ResendButton.style.border = 'none';
+        ResendButton.title = 'Resend';
+        ResendButton.style.cursor = 'pointer';
+        ResendButton.style.marginLeft = '20px';
+        ResendButton.addEventListener('click', () => {
+          this.openDialog(params.data, 'resend');
+        });
+
+        // Append the Resend button
+        div.appendChild(ResendButton);
+
+        // Check the condition to enable or disable the Stop button
+        if ((params.data.forcemsg === true && params.data.deletemsg === false) || (params.data.isdelete === 5 && params.data.deletemsg === false)) {
+          // Create and append the Stop button if the condition is true
+          const StopButton = document.createElement('button');
+          StopButton.innerHTML = '<button style="width: 5em;background-color: #c35f5f;border-radius: 5px;height: 2em;"><p style="margin-top:-6px">STOP</p></button>';
+          StopButton.style.backgroundColor = 'transparent';
+          StopButton.style.border = 'none';
+          StopButton.title = 'Stop';
+          StopButton.style.cursor = 'pointer';
+          StopButton.style.marginLeft = '20px';
+          StopButton.addEventListener('click', () => {
+            this.openDialog(params.data, 'message_stop');
+          });
+
+          div.appendChild(StopButton);
+
+        } else {
+          // Create and append the disabled Stop button if the condition is false
+          const DisabledStopButton = document.createElement('button');
+          DisabledStopButton.innerHTML = '<button style="width: 5em;background-color: grey;border-radius: 5px;height: 2em;" disabled><p style="margin-top:-6px">STOP</p></button>';
+          DisabledStopButton.style.backgroundColor = 'transparent';
+          DisabledStopButton.style.border = 'none';
+          DisabledStopButton.title = 'Stop (Disabled)';
+          DisabledStopButton.style.cursor = 'not-allowed';
+          DisabledStopButton.style.marginLeft = '20px';
+
+          div.appendChild(DisabledStopButton);
+        }
+
+        // Return the div with both buttons
+        return div;
+      }
+    }
   ];
 
   public rowSelection: any = "multiple";
@@ -209,7 +272,27 @@ export class MessageComponent {
 
 
   onSubmit() {
+    if (this.isSmartcardEnabled) {
+      this.form.patchValue({
+        intendid: this.form.get('intendid')?.value
+      });
+    } else if (this.isAreaCodeEnabled) {
+      this.form.patchValue({
+        intendid: this.form.get('intendid')?.value
+      });
+    }
     // if (this.form.valid) {
+
+      Swal.fire({
+        title: 'Updating...',
+        text: 'Please wait while the Message is being updated',
+        allowOutsideClick: false,
+        didOpen: () => {
+          Swal.showLoading(null);
+        }
+      });
+
+      // Call the API
       this.userservice.CreateMessage(this.form.value).subscribe(
         (res: any) => {
           console.log(res);
@@ -217,8 +300,8 @@ export class MessageComponent {
             title: 'Success!',
             text: res?.message || 'Message created successfully.',
             icon: 'success',
-            timer: 2000,
-            showConfirmButton: false,
+            timer: 3000,
+            timerProgressBar: true,
           }).then(() => {
             window.location.reload();
           });
@@ -230,23 +313,29 @@ export class MessageComponent {
             text: error?.error.message || 'There was a problem creating the message.',
             icon: 'error',
             confirmButtonText: 'OK',
+            timer: 3000,
+            timerProgressBar: true,
+          }).then(() => {
+            // Revalidate the form fields after API error, marking controls as touched
+            this.form.markAllAsTouched();
           });
         }
       );
-    // } else {
-    //   this.form.markAllAsTouched();
+      // } else {
+      //   // If form is invalid, mark all fields as touched to show validation errors
+      //   this.form.markAllAsTouched();
+      // }
+    //   this.form.markAllAsTouched(); // This will trigger the validation messages if there are errors
+    //   return;
     // }
   }
 
 
   onSelectionFingerPrint(selectedValue: string) {
-    console.log(selectedValue);
     this.isButtonEnable = false;
-
     const casId = Number(selectedValue);
     if (casId == 3) {
       this.isservicedisabled = false;
-
     } else {
       this.isservicedisabled = true;
     }
@@ -261,25 +350,6 @@ export class MessageComponent {
       this.isBGcolorDisabled = true;
       this.isTransparancyDisabled = true;
     }
-
-    // if (casId == 1) {
-    //   this.isTransparencyDisabled = true;
-    //   this.isTransparency_select_Disabled = false;
-    // } else {
-    //   this.isTransparencyDisabled = false;
-    //   this.isTransparency_select_Disabled = true;
-    // }
-
-    // if (casId == 1) {
-    //   this.isrepeatfordisabled = true;
-    //   console.log(this.isrepeatfordisabled);
-
-    // } else {
-    //   this.isrepeatfordisabled = false;
-    //   console.log(this.isrepeatfordisabled);
-    // }
-
-
   }
 
 
@@ -309,5 +379,17 @@ export class MessageComponent {
     this.isDurationDisabled = !this.force;
     this.isTransparancyDisabled = !this.force;
   }
+  openDialog(event: any, type: any): void {
+    let dialogData = { data: event, type: type };
+    const dialogRef = this.dialog.open(CasDialogueComponent, {
+      width: '400px',
+      panelClass: 'custom-dialog-container',
+      data: dialogData
+    });
+    console.log(dialogData);
 
+    dialogRef.afterClosed().subscribe(result => {
+      console.log('The dialog was closed');
+    });
+  }
 }

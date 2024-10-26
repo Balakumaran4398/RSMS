@@ -48,6 +48,14 @@ export class CategoryDialogComponent {
       confirmButtonText: 'Yes, create it!'
     }).then((result) => {
       if (result.isConfirmed) {
+        Swal.fire({
+          title: 'Creating...',
+          text: 'Wait for the Category to be created....',
+          allowOutsideClick: false,
+          didOpen: () => {
+            Swal.showLoading(null);
+          }
+        });
         this.userService.Category(requestBody).subscribe(
           (res) => {
             console.log(res);
@@ -56,7 +64,8 @@ export class CategoryDialogComponent {
               icon: "success",
               title: "Category created successfully !!",
               showConfirmButton: false,
-              timer: 1000
+              timer: 2000,
+              timerProgressBar: true,
             }).then(() => {
               window.location.reload();
               this.closeDialog();
@@ -71,7 +80,8 @@ export class CategoryDialogComponent {
               title: 'Error',
               text: errorMessage,
               showConfirmButton: false,
-              timer: 1500
+              timer: 2000,
+              timerProgressBar: true,
             });
           }
         );
@@ -83,5 +93,14 @@ export class CategoryDialogComponent {
   }
   closeDialog() {
     this.dialogRef.close();
+  }
+  errorToggle(){
+    this.errorMessage=!this.errorMessage;
+  }
+
+  clearError() {
+    if (this.Category_name.trim()) {
+      this.errorMessage = null; 
+    }
   }
 }

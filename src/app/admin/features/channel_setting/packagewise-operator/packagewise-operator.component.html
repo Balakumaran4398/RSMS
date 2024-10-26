@@ -1,11 +1,10 @@
 <section>
     <h3>PACKAGEWISE OPERATOR LIST</h3>
     <div class="d-flex flex-column flex-lg-row justify-content-center align-items-center">
-        <!-- <div class="row"> -->
         <div class="col-lg-5 col-12 mb-3 mb-lg-0">
             <div class="card">
                 <div class="input_box mb-3">
-                    <select id="producttypelist" formControlName="producttypelist"  (change)="onProductType($event)">
+                    <select id="producttypelist" formControlName="producttypelist" (change)="onProductType($event)">
                         <option value="0" selected>Select an Product Type</option>
                         <option *ngFor="let item of producttypeList" [value]="item.value">{{ item.key }}</option>
                     </select>
@@ -20,16 +19,10 @@
                             <div cdkDropList #todoList="cdkDropList" [cdkDropListData]="todo"
                                 [cdkDropListConnectedTo]="[doneList]" class="example-list"
                                 (cdkDropListDropped)="drop($event)">
-                                <div *ngFor="let item of todo" class="example-box" cdkDrag   (click)="toggleSelection(item)" [class.selected]="isSelected(item)"  >{{ item.operatorname }}
+                                <div *ngFor="let item of todo" class="example-box" cdkDrag
+                                    (click)="toggleSelection(item)" [class.selected]="isSelected(item)">{{
+                                    item.operatorname }}
                                 </div>
-                                <!-- <mat-form-field>
-                                    <mat-select [formControl]="selectedItems" multiple>
-                                      <mat-option *ngFor="let item of todo" [value]="item.operatorid" cdkDrag>
-                                        {{ item.operatorname }}
-                                      </mat-option>
-                                    </mat-select>
-                                  </mat-form-field> -->
-
                             </div>
                         </div>
                     </div>
@@ -51,7 +44,6 @@
                 <div class="input_box mb-3">
                     <select id="productlist" formControlName="productlist" (change)="onProductlist($event)">
                         <option value="0" selected>Select a Product Type</option>
-                        <!-- <option *ngFor="let key of producttypelistKeys" [value]="key.id">{{ key.name }}</option> -->
                         <option *ngFor="let product of filteredProductTypes" [value]="product.id">{{ product.name }}
                         </option>
                     </select>
@@ -75,15 +67,10 @@
                 </div>
             </div>
         </div>
-        <!-- </div> -->
 
     </div>
     <div class="col-12 d-flex justify-content-center align-item-center">
-        <!-- <button type="button" (click)="save($event)">Save
-
-        </button> -->
-        <button type="button" class="btn" style="background:#058372;color: white;height: 2pc;
-    width: 5pc" (click)="save()">Save</button>
-
+        <button type="button" class="btn" style="background:#058372;color: white;height: 2pc; width: 5pc"
+            (click)="save()">Save</button>
     </div>
 </section>

@@ -1,0 +1,124 @@
+<div class="row display justify-content-center align-items-center " >
+    <div class="card col-12 col-md-4 display justify-content-center align-items-center profile1 mx-3 mb-3">
+        <div class="d-block justify-content-center align-items-center">
+            <div class="col-6 col-md-6">
+                <!-- <img [src]=" msodetails?.msoLogo || '/assets/images/login/contact1.png'" style="width: 250px;"> -->
+                <img [src]="'/assets/images/login/contact1.png'" style="width: 250px;">
+            </div>
+            <div class="col-6 col-md-6 w-100 d-flex justify-content-center align-items-center">
+                <label class="btn btn-success mx-1" style="width: 100px;">
+                    <i class="fa fa-plus"></i> Choose
+                    <input type="file" style="display: none;" (change)="handleFileInput($event)">
+                </label>
+            </div>
+        </div>
+
+    </div>
+    <div class="card col-12 col-md-6 d-flex justify-content-center align-items-center profile ">
+        <!-- <div class="col d-flex justify-content-center align-items-center"> -->
+        <div class="row">
+            <div class="row input-box  mb-3">
+                <div class="col-5 col-md-5">
+                    <label for="">MSO NAME </label>
+                </div>
+                <div class="col-1 col-md-1">
+                    <span for="">:</span>
+                </div>
+                <div class="col-6 col-md-6">
+                    {{msodetails?.msoName}}
+                </div>
+            </div>
+
+            <div class="row input-box mb-3">
+                <div class="col-5 col-md-5">
+                    <label for="">MSO AREA </label>
+                </div>
+                <div class="col-1 col-md-1">
+                    <span for="">:</span>
+                </div>
+                <div class="col-6 col-md-6">
+                    {{msodetails?.msoArea}}
+                </div>
+            </div>
+            <div class="row input-box mb-3">
+                <div class="col-5 col-md-5">
+                    <label for="">MSO STREET </label>
+                </div>
+                <div class="col-1 col-md-1">
+                    <span for="">:</span>
+                </div>
+                <div class="col-6 col-md-6">
+                    {{msodetails?.msoStreet}}
+                </div>
+            </div>
+            <div class="row input-box mb-3">
+                <div class="col-5 col-md-5">
+                    <label for="">MSO PINCODE </label>
+                </div>
+                <div class="col-1 col-md-1">
+                    <span for="">:</span>
+                </div>
+                <div class="col-6 col-md-6">
+                    {{msodetails?.msoPincode}}
+                </div>
+            </div>
+            <div class="row input-box mb-3">
+                <div class="col-5 col-md-5">
+                    <label for="">MSO E-MAIL</label>
+                </div>
+                <div class="col-1 col-md-1">
+                    <span for="">:</span>
+                </div>
+                <div class="col-6 col-md-6">
+                    {{msodetails?.msoEmail}}
+                </div>
+            </div>
+            <div class="row input-box mb-3">
+                <div class="col-5 col-md-5">
+                    <label for="">MSO CONTACT</label>
+                </div>
+                <div class="col-1 col-md-1">
+                    <span for="">:</span>
+                </div>
+                <div class="col-6 col-md-6">
+                    {{msodetails?.msoContact}}
+                </div>
+            </div>
+            <div class="row input-box mb-3">
+                <div class="col-5 col-md-5">
+                    <label for="">PAN NO</label>
+                </div>
+                <div class="col-1 col-md-1">
+                    <span for="">:</span>
+                </div>
+                <div class="col-6 col-md-6">
+                    {{msodetails?.panNo}}
+                </div>
+            </div>
+            <div class="row input-box mb-3">
+                <div class="col-5 col-md-5">
+                    <label for="">GST NO</label>
+                </div>
+                <div class="col-1 col-md-1">
+                    <span for="">:</span>
+                </div>
+                <div class="col-6 col-md-6">
+                    {{msodetails?.gstNo}}
+                </div>
+            </div>
+            <div class="row input-box mb-3" style="cursor: pointer;">
+                <div class="col-5 col-md-5" >
+                    <label for="">EDIT</label>
+                </div>
+                <div class="col-1 col-md-1">
+                    <span for="">:</span>
+                </div>
+                <div class="col-6 col-md-6" (click)="openDialogue($event)">
+                    <i class="fa fa-pencil-square" style="font-size: 20px;" aria-hidden="true"></i>
+                </div>
+            </div>
+
+        </div>
+        <!-- </div> -->
+
+    </div>

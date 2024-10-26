@@ -1,16 +1,16 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { EditareaComponent } from './editarea.component';
+import { NavbarComponent } from './navbar.component';
 
-describe('EditareaComponent', () => {
-  let component: EditareaComponent;
-  let fixture: ComponentFixture<EditareaComponent>;
+describe('NavbarComponent', () => {
+  let component: NavbarComponent;
+  let fixture: ComponentFixture<NavbarComponent>;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      declarations: [EditareaComponent]
+      declarations: [NavbarComponent]
     });
-    fixture = TestBed.createComponent(EditareaComponent);
+    fixture = TestBed.createComponent(NavbarComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

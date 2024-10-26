@@ -16,6 +16,7 @@ export class AddLcoBusinessComponent {
   role: any;
   type: number = 0;
   businessname: string = '';
+  errorMessage: any;
   constructor(public dialogRef: MatDialogRef<AddLcoBusinessComponent>, public dialog: MatDialog, public userService: BaseService, storageService: StorageService) {
     this.username = storageService.getUsername();
     this.role = storageService.getUserRole();
@@ -25,6 +26,18 @@ export class AddLcoBusinessComponent {
     this.dialogRef.close();
   }
   submit() {
+    if (!this.businessname) {
+      this.errorMessage = 'Businessname Name is required.';
+      return;
+    }
+    Swal.fire({
+      title: 'Updateing...',
+      text: 'Please wait while the LCO Business is being Created',
+      allowOutsideClick: false,
+      didOpen: () => {
+        Swal.showLoading(null);
+      }
+    });
     this.userService.NewLCObusiness(this.businessname, this.role, this.username).subscribe((res: any) => {
         console.log(res);
         Swal.fire({
@@ -52,4 +65,14 @@ export class AddLcoBusinessComponent {
   onNoClick(): void {
     this.dialogRef.close();
   }
+  errorToggle(){
+    this.errorMessage=!this.errorMessage;
+  }
+  clearError() {
+    if (this.businessname.trim()) {
+      this.errorMessage = null; 
+    }
+  }
+
+  
 }

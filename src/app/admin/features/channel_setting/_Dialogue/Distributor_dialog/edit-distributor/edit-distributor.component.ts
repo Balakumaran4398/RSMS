@@ -77,6 +77,14 @@ export class EditDistributorComponent {
       id: this.distributor_id,
     };
     console.log(requestBody);
+    Swal.fire({
+      title: 'Updating...',
+      text: 'Wait for the Distributor to be Updated....',
+      allowOutsideClick: false,
+      didOpen: () => {
+        Swal.showLoading(null);
+      }
+    });
     this.userService.Distributor_update(requestBody).subscribe(
       (res) => {
         console.log(res); 
@@ -85,7 +93,8 @@ export class EditDistributorComponent {
           icon: "success",
           title: "Your update was successful!!",
           showConfirmButton: false,
-          timer: 1000
+          timer: 2000,
+          timerProgressBar: true,
         }).then(() => {
           window.location.reload();
           this.closeDialog();
@@ -98,7 +107,8 @@ export class EditDistributorComponent {
           title: 'Error',
           text: err?.error?.message,
           showConfirmButton: false,
-          timer: 1500
+          timer: 2000,
+          timerProgressBar: true,
         });
       }
     );

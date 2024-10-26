@@ -133,8 +133,8 @@ export class AddonManageComponent {
   }
 
   isSelected(item: string): boolean {
-    // return this.selectedItems.has(item);
-    return false;
+    return this.selectedItems.has(item);
+    // return false;
   }
   moveSelected_alacarte_Items(direction: 'left' | 'right') {
     const itemsToMove: any[] = [];

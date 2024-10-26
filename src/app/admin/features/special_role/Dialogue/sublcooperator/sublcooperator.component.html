@@ -1,0 +1,19 @@
+<div style="padding: 1rem;">
+    <h4 style="text-align: center;color: rgb(68, 64, 64);text-transform: uppercase;">Retailer(SUB LCO) Creation </h4>
+    <div class="col d-flex justify-content-start align-items-center mb-3">
+        <a class="btn btn-outline-success mx-1" (click)="opendialogue('createsublco','')">
+            <i class="fa fa-plus"></i> New
+        </a>
+        
+        <button class="btn btn-outline-info mx-1" mat-raised-button color="primary" type="button"
+            [disabled]="!isAnyRowSelected" (click)="opendialogue('deletesublco','')">
+            Delete
+        </button>
+    </div>
+    <div>
+        <ag-grid-angular domLayout="autoHeight" [enableCellTextSelection]="true" style="width:100%;"
+            [rowSelection]="rowSelection" [columnDefs]="columnDefs" [gridOptions]="gridOptions" [rowData]="rowData"
+            (selectionChanged)="onSelectionChanged()" class="ag-theme-alpine table-class"
+            (gridReady)="onGridReady($event)"></ag-grid-angular>
+    </div>
+</div>

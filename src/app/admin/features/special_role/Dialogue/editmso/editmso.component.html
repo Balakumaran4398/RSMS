@@ -1,0 +1,203 @@
+<div class="Head d-flex justify-content-between align-items-center mb-3" style="padding: 1rem;">
+    <h6>Update MSO Details</h6>
+    <i class="fa fa-close close-icon" style="cursor: pointer;" (click)="onNoClick()"></i>
+</div>
+<form #msoForm="ngForm">
+    <div class="d-flex justify-content-center align-item-center mobile">
+        <div class=" justify-content-center align-items-center mb-3 mobile1">
+            <div class="col-md-12 mb-3">
+                <div class="row ">
+                    <div class="input_box col-12 col-md-6">
+                        <div class="col-12 col-md-12 ">
+                            <span>MSO NAME </span>
+                        </div>
+                        <div class="col-12 col-md-12">
+                            <input type="text" name="msoname" [(ngModel)]="msoname" placeholder="Enter Name" required
+                                #msonameRef="ngModel">
+                            <div *ngIf="msonameRef.invalid && msonameRef.touched" class="text-danger">
+                                MSO Name is required.
+                            </div>
+                        </div>
+                    </div>
+                    <div class="input_box col-12 col-md-6">
+                        <div class="col-12 col-md-12 ">
+                            <span>MSO AREA </span>
+                        </div>
+                        <div class="col-12 col-md-12">
+                            <input type="text" name="msoarea" [(ngModel)]="msoarea" placeholder="Enter Area" required
+                                #msoareaRef="ngModel">
+                            <div *ngIf="msoareaRef.invalid && msoareaRef.touched" class="text-danger">
+                                MSO Area is required.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Add similar validation for other fields -->
+                <div class="row">
+                    <div class="input_box col-12 col-md-6">
+                        <div class="col-12 col-md-12">
+                            <span>MSO STREET </span>
+                        </div>
+                        <div class="col-12 col-md-12">
+                            <input type="text" name="msostreet" [(ngModel)]="msostreet" placeholder="Enter Street"
+                                required #msostreetRef="ngModel">
+                            <div *ngIf="msostreetRef.invalid && msostreetRef.touched" class="text-danger">
+                                <div *ngIf="msostreetRef.invalid && msostreetRef.touched" class="text-danger">
+                                    MSO Area is required.
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="input_box col-12 col-md-6">
+                        <div class="col-12 col-md-12">
+                            <span>MSO STATE</span>
+                        </div>
+                        <div class="col-12 col-md-12">
+                            <input type="text" name="msostate" [(ngModel)]="msostate" placeholder="Enter State" required
+                                #msostateRef="ngModel">
+                            <div *ngIf="msostateRef.invalid && msostateRef.touched" class="text-danger">
+                                <div *ngIf="msostateRef.errors?.['required']">State is required.</div>
+                                <div *ngIf="msostateRef.invalid && msostateRef.touched" class="text-danger">
+                                    MSO State is required.
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="input_box col-12 col-md-6">
+                        <div class="col-12 col-md-12">
+                            <span>MSO PINCODE </span>
+                        </div>
+                        <div class="col-12 col-md-12">
+                            <input type="text" name="msopincode" [(ngModel)]="msopincode" maxlength="6"
+                                placeholder="Enter Pincode" required pattern="^\d{6}$" #msopincodeRef="ngModel">
+                            <div *ngIf="msopincodeRef.invalid && msocontactRef.touched" class="text-danger">
+                                <div *ngIf="msopincodeRef.errors?.['required']">Pincode is required.</div>
+                                <div *ngIf="msopincodeRef.errors?.['pattern']">Invalid contact. It should be a
+                                    6-digit number.</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="input_box col-12 col-md-6">
+                        <div class="col-12 col-md-12">
+                            <span>MSO CONTACT </span>
+                        </div>
+                        <div class="col-12 col-md-12">
+                            <input type="text" name="msocontact" [(ngModel)]="msocontact" maxlength="10"
+                                placeholder="Enter Contact" required pattern="^\d{10}$" #msocontactRef="ngModel">
+                            <div *ngIf="msocontactRef.invalid && msocontactRef.touched" class="text-danger">
+                                <div *ngIf="msocontactRef.errors?.['required']">Contact is required.</div>
+                                <div *ngIf="msocontactRef.errors?.['pattern']">Invalid contact. It should be a
+                                    10-digit number.</div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="row ">
+                    <div class="input_box col-12 col-md-6">
+                        <div class="col-12 col-md-12">
+                            <span>MSO E-MAIL</span>
+                        </div>
+                        <div class="col-12 col-md-12">
+                            <input type="email" name="msoemail" [(ngModel)]="msoemail" placeholder="Enter Email"
+                                required #msoemailRef="ngModel">
+                            <div *ngIf="msoemailRef.invalid && msoemailRef.touched" class="text-danger">
+                                <div *ngIf="msoemailRef.errors?.['required']">Email is required.</div>
+                                <div *ngIf="msoemailRef.errors?.['email']">Invalid email format.</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="input_box col-12 col-md-6">
+                        <div class="col-12 col-md-12">
+                            <span>MSO PAN NO</span>
+                        </div>
+                        <div class="col-12 col-md-12">
+                            <input type="text" name="panno" [(ngModel)]="panno" placeholder="Enter PAN" maxlength="10"
+                                pattern="[A-Z]{5}[0-9]{4}[A-Z]{1}" required #pannoRef="ngModel">
+                            <div *ngIf="pannoRef.invalid && pannoRef.touched" class="text-danger">
+                                <div *ngIf="pannoRef.errors?.['required']">PAN Number is required.</div>
+                                <div *ngIf="pannoRef.errors?.['pattern']">Invalid PAN format. Ex:- ABCDE1234F
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="row ">
+                    <div class="input_box col-12 col-md-6">
+                        <div class="col-12 col-md-12">
+                            <span>MSO GST NO</span>
+                        </div>
+                        <div class="col-12 col-md-12">
+                            <input type="text" name="gstno" [(ngModel)]="gstno" placeholder="Enter GST Number"
+                                maxlength="15" required #gstnoRef="ngModel"
+                                pattern="\d{2}[A-Z]{5}\d{4}[A-Z]{1}[A-Z\d]{1}[Zz]{1}[A-Z\d]{1}">
+                            <div *ngIf="gstnoRef.invalid && gstnoRef.touched" class="text-danger">
+                                <div *ngIf="gstnoRef.errors?.['required']">GST Number is required.</div>
+                                <div *ngIf="gstnoRef.errors?.['pattern']">Invalid GST format. Example: 07ABCDE1234F1Z5
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+            <div class="card mb-3" style="padding: 1rem;">
+                <div class="container Permission_edit mobile">
+                    <div class="row">
+                        <div class="col-12 col-md-6">
+                            <div class="input_box d-flex justify-content-between align-items-center  mb-3">
+                                <span>IsEMI</span>
+                                <label class="switch">
+                                    <input type="checkbox" [(ngModel)]="isemi">
+                                    <span class="slider"></span>
+                                </label>
+                            </div>
+                            <div class="input_box d-flex justify-content-between align-items-center mb-3">
+                                <span class="form-label">Report Status </span>
+                                <label class="switch">
+                                    <input type="checkbox" [(ngModel)]="reportstatus">
+                                    <span class="slider"></span>
+                                </label>
+                            </div>
+                        </div>
+                        <div class="col-12 col-md-6">
+                            <div class="input_box d-flex justify-content-between align-items-center  mb-3">
+                                <span>ChipId Force</span>
+                                <label class="switch">
+                                    <input type="checkbox" [(ngModel)]="chipidforce">
+                                    <span class="slider"></span>
+                                </label>
+                            </div>
+                            <div class="input_box d-flex justify-content-between align-items-center mb-3">
+                                <span class="form-label">Manage Pack</span>
+                                <label class="switch">
+                                    <input type="checkbox" [(ngModel)]="managepack">
+                                    <span class="slider"></span>
+                                </label>
+                            </div>
+                        </div>
+                        <div class="col-12 col-md-6">
+                            <div class="input_box d-flex justify-content-between align-items-center  mb-3">
+                                <span>Calendar Recharge</span>
+                                <label class="switch">
+                                    <input type="checkbox" [(ngModel)]="calendarrecharge">
+                                    <span class="slider"></span>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Add other fields with validation here -->
+            <div class="d-flex justify-content-center align-item-center mx-3 mb-2">
+                <button type="button" class="btn btn-danger me-2" (click)="onNoClick()">Cancel</button>
+                <!-- <button type="submit" class="btn btn-success" [disabled]="msoForm.invalid">Update</button> -->
+                <button type="button" class="btn btn-success" (click)="onSubmit()">Update</button>
+            </div>
+        </div>
+    </div>
+
+</form>

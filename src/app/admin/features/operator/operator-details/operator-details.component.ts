@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { BreakpointObserver, Breakpoints, BreakpointState } from '@angular/cdk/layout';
 import { MatDialog } from '@angular/material/dialog';
 import { EditLcoComponent } from '../../channel_setting/_Dialogue/operator/edit-lco/edit-lco.component';
@@ -16,7 +16,7 @@ import { OperatordialogueComponent } from '../../channel_setting/_Dialogue/opera
   templateUrl: './operator-details.component.html',
   styleUrls: ['./operator-details.component.scss']
 })
-export class OperatorDetailsComponent {
+export class OperatorDetailsComponent implements OnInit {
   isSystem: boolean = false;
   ismobile: boolean = true;
   edit_dialog: boolean = false;
@@ -24,6 +24,7 @@ export class OperatorDetailsComponent {
   role: any;
   username: any;
   operatorid: any = 0;
+  operatorname: any = 'ALL Operator';
   operator_name: any;
   area: any;
   mobilenumber: any;
@@ -43,9 +44,12 @@ export class OperatorDetailsComponent {
   boxinhand: any;
   totalbox: any;
   activeItem: any;
+  searchText: any = '';
+  filteredOperators: any[] = [];
+  showDropdown: boolean = false;
+  operatorList: any[] = [];
   operator_details: any = [];
   businessList: any[] = [];
-  operatorList: any[] = [];
   dashboardDetails: any;
   constructor(public responsive: BreakpointObserver, private dataService: DataService, private router: Router, public dialog: MatDialog, private userservice: BaseService, private storageservice: StorageService) {
     this.role = storageservice.getUserRole();
@@ -71,6 +75,28 @@ export class OperatorDetailsComponent {
       this.businessList = data;
     })
     this.operatorlist();
+    // this.filteredOperators = this.operatorList;
+  }
+
+  // filterOperators() {
+  //   if (this.operatorid) {
+  //     this.filteredOperators = this.operatorList.filter(operator =>
+  //       operator.name.toLowerCase().includes(this.searchText.toLowerCase())
+  //     );
+  //     console.log(this.filteredOperators);
+  //   }
+  // }
+  filterOperators() {
+    console.log(this.operatorname);
+
+    if (this.operatorname) {
+      console.log(this.filteredOperators);
+      this.filteredOperators = this.operatorList.filter(operator =>
+        operator.name.toLowerCase().includes(this.operatorname.toLowerCase())
+      );
+      console.log(this.filteredOperators);
+    }
+
   }
   operatorlist() {
     this.userservice.getOeratorList(this.role, this.username).subscribe((data: any) => {
@@ -81,10 +107,20 @@ export class OperatorDetailsComponent {
         const name = key;
         return { name: name, value: value };
       });
+      this.filteredOperators = this.operatorList
     })
   }
+  selectOperator(value: string, name: any) {
+
+    console.log(this.filteredOperators);
+    this.showDropdown = false;
+    this.operatorid = value;
+    this.operatorname=name;
+    this.onoperatorchange({ value });
+  }
   onoperatorchange(event: any) {
-    if (this.operatorid === '0') {
+
+    if (this.operatorid === 'ALL Operator') {
       this.operatorid = 0;
     }
     this.userservice.OperatorDetails(this.role, this.username, this.operatorid).subscribe(

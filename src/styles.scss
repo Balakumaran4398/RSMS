@@ -91,7 +91,8 @@ body {
 }
 
 .ag-cell {
-    text-align: center !important;
+    // text-align: center !important;
+    text-align: left !important;
 }
 
 .Head {
@@ -155,34 +156,45 @@ body {
     text-align: center;
 }
 
+.tooltip-container {
+    position: relative;
+    display: inline-block;
+}
 
-// .tooltip-container {
-//     position: relative;
-//     display: inline-block;
-// }
+.tooltip {
+    visibility: hidden;
+    background-color: black;
+    color: #fff;
+    text-align: center;
+    border-radius: 5px;
+    padding: 5px;
+    position: absolute;
+    z-index: 1;
+    bottom: 125%;
+    left: 50%;
+    margin-left: -50px;
+    opacity: 0;
+    transition: opacity 0.3s;
+    // width: auto;
+    width: max-content;
+}
 
-// .tooltip {
-//     visibility: hidden;
-//     background-color: black;
-//     color: #fff;
-//     text-align: center;
-//     border-radius: 5px;
-//     padding: 5px;
+.tooltip-container:hover .tooltip {
+    visibility: visible;
+    opacity: 1;
+}
+
+// .tooltip::after {
+//     content: '';
 //     position: absolute;
-//     z-index: 1;
-//     bottom: 125%;
-//     /* Adjust this to position the tooltip */
+//     top: 100%;
 //     left: 50%;
-//     margin-left: -50px;
-//     opacity: 0;
-//     transition: opacity 0.3s;
-//     width: 100px;
+//     margin-left: -5px;
+//     border-width: 5px;
+//     border-style: solid;
+//     border-color: black transparent transparent transparent;
 // }
 
-// .tooltip-container:hover .tooltip {
-//     visibility: visible;
-//     opacity: 1;
-// }
 .form-control {
     border: 0.5px solid rgb(155, 150, 150) !important;
 }
@@ -334,4 +346,117 @@ body {
     color: rgb(56, 61, 58);
     font-weight: 600;
     text-transform: uppercase
+}
+
+.switch {
+    position: relative;
+    display: inline-block;
+    width: 55px;
+    height: 28px;
+    margin-left: 5px;
+    float: inline-end;
+}
+
+.switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #ccc;
+    transition: .4s;
+    border-radius: 34px;
+}
+
+.slider:before {
+    position: absolute;
+    content: "";
+    height: 16px;
+    width: 16px;
+    left: 4px;
+    bottom: 4px;
+    // background-color: rgb(44, 116, 165);
+    background-color: rgb(185, 55, 55);
+    /* Red color */
+    transition: .1s;
+    border-radius: 50%;
+}
+
+.slider:after {
+    background-color: green;
+    position: absolute;
+    content: "";
+    height: 16px;
+    width: 16px;
+    left: 15px;
+    bottom: 4px;
+    transition: .1s;
+    border-radius: 50%;
+    opacity: 0;
+    /* Initially hidden */
+}
+
+input:checked+.slider:before {
+    transform: translateX(20px);
+    background-color: green;
+    /* Change to green when checked */
+}
+
+input:checked+.slider:after {
+    transform: translateX(16px);
+    opacity: 1;
+    /* Show the green slider */
+    background-color: green;
+}
+
+input:checked+.slider:before {
+    opacity: 0;
+    /* Hide the red slider */
+}
+
+.custom-select {
+    position: relative;
+    display: inline-block;
+    width: 400px;
+}
+
+.custom-select input {
+    width: 100%;
+    padding: 8px;
+    box-sizing: border-box;
+}
+
+.dropdown {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    border: 1px solid #ccc;
+    max-height: 250px;
+    overflow-y: auto;
+    position: absolute;
+    background-color: white;
+    width: 100%;
+
+    z-index: 1;
+}
+
+.dropdown li {
+    padding: 10px;
+    cursor: pointer;
+}
+
+.dropdown li:hover {
+    background-color: #eee;
+}
+@media screen and (max-width:775px) {
+    .ag-paging-panel{
+        display: grid !important;
+    }
 }

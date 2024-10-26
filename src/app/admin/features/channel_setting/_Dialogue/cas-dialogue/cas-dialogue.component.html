@@ -1,0 +1,111 @@
+<!-- Conditional rendering for Resend Dialog -->
+<div *ngIf="data.type === 'resend'">
+    <div class="Head d-flex justify-content-between align-items-center mb-3" style="padding: 1rem;">
+        <h6>DO YOU WANT TO RESEND AGAIN?</h6>
+        <i class="fa fa-close close-icon" style="cursor: pointer;" (click)="onNoClick()"></i>
+    </div>
+    <div class="card-body" style="padding: 1rem;">
+        <div class="input_box display  justify-content-center align-items-center mb-3">
+            <div class="col-12 col-md-6 ">
+                <span for="categoryName" class="me-2">Intend ID</span>
+            </div>
+            <div class="col-12 col-md-6 ">
+                <span style="color:blue"> {{data?.data.intendid}}</span>
+            </div>
+        </div>
+        <div class="input_box  display justify-content-center  align-items-center mb-3">
+            <div class="col-12 col-md-6 ">
+                <span for="categoryName" class="me-2">Message</span>
+            </div>
+            <div class="col-12 col-md-6 ">
+                <span style="color:blue"> {{data?.data.msgcontent}}</span>
+            </div>
+        </div>
+        <div class="form-group d-flex justify-content-center align-items-center mb-3">
+            <button type="button" class="btn btn-primary me-2" (click)="onResendDialog()">YES</button>
+            <button type="button" class="btn btn-secondary" (click)="onNoClick()">NO</button>
+        </div>
+    </div>
+
+</div>
+
+<!-- Conditional rendering for Stop Dialog -->
+<div *ngIf="data.type === 'message_stop'">
+
+    <div class="Head d-flex justify-content-between align-items-center mb-3" style="padding: 1rem;">
+        <h6>DO YOU WANT TO STOP FORCE MESSAGE ?</h6>
+        <i class="fa fa-close close-icon" style="cursor: pointer;" (click)="onNoClick()"></i>
+    </div>
+    <div class="card-body" style="padding: 1rem;">
+        <div class="input_box display  justify-content-center align-items-center mb-3">
+            <div class="col-12 col-md-6 ">
+                <span for="categoryName" class="me-2">Intend ID</span>
+            </div>
+            <div class="col-12 col-md-6 ">
+                <span style="color:blue"> {{data?.data.intendid}}</span>
+            </div>
+        </div>
+        <div class="input_box  display justify-content-center  align-items-center mb-3">
+            <div class="col-12 col-md-6 ">
+                <span for="categoryName" class="me-2">Message</span>
+            </div>
+            <div class="col-12 col-md-6 ">
+                <span style="color:blue"> {{data?.data.msgcontent}}</span>
+            </div>
+        </div>
+        <div class="form-group d-flex justify-content-center align-items-center mb-3">
+            <button type="button" class="btn btn-primary me-2" (click)="onStopDialog()">YES</button>
+            <button type="button" class="btn btn-secondary" (click)="onNoClick()">NO</button>
+        </div>
+    </div>
+
+</div>
+<div *ngIf="data.type === 'scroll_stop'">
+    <div class="Head d-flex justify-content-between align-items-center mb-3" style="padding: 1rem;">
+        <h6>DO YOU WANT TO STOP SCROLLING ?</h6>
+        <i class="fa fa-close close-icon" style="cursor: pointer;" (click)="onNoClick()"></i>
+    </div>
+    <div class="card-body" style="padding: 1rem;">
+        <div class="input_box display  justify-content-center align-items-center mb-3">
+            <div class="col-12 col-md-6 ">
+                <span for="categoryName" class="me-2">Intend ID</span>
+            </div>
+            <div class="col-12 col-md-6 ">
+                <span style="color:blue"> {{data?.data.intendid}}</span>
+            </div>
+        </div>
+        <div class="input_box  display justify-content-center  align-items-center mb-3">
+            <div class="col-12 col-md-6 ">
+                <span for="categoryName" class="me-2">Message</span>
+            </div>
+            <div class="col-12 col-md-6 ">
+                <span style="color:blue"> {{data?.data.msgcontent}}</span>
+            </div>
+        </div>
+        <div class="form-group d-flex justify-content-center align-items-center mb-3">
+            <button type="button" class="btn btn-primary me-2" (click)="openScrollingDialog()">YES</button>
+            <button type="button" class="btn btn-secondary" (click)="onNoClick()">NO</button>
+        </div>
+    </div>
+</div>
+
+<div *ngIf="data.type === 'mail'">
+    <div class="Head d-flex justify-content-between align-items-center mb-3" style="padding: 1rem;">
+        <h6>CONFIRM</h6>
+        <i class="fa fa-close close-icon" style="cursor: pointer;" (click)="onNoClick()"></i>
+    </div>
+    <div class="card-body" style="padding: 1rem;">
+        <div class="input_box display  justify-content-center align-items-center mb-3">
+            <div class="col-12 col-md-12 justify-content-center align-items-center ">
+                <span for="categoryName" class="me-2">Are You Confirm To Resend mail?
+                </span>
+            </div>
+
+        </div>
+
+        <div class="form-group d-flex justify-content-center align-items-center mb-3">
+            <button type="button" class="btn btn-primary me-2" (click)="openScrollingDialog()">YES</button>
+            <button type="button" class="btn btn-secondary" (click)="onNoClick()">NO</button>
+        </div>
+    </div>
+</div>

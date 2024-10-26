@@ -8,19 +8,18 @@
         <div class="row mb-3">
             <div class="input_box col-12 col-md-6">
                 <div class=" mb-3">
-                    <label for="package_logo" class="form-label">Package Logo</label>
+                    <span for="package_logo" class="form-label">Package Logo</span>
                     <input type="file" class="" id="package_logo"
                         (change)="onFileChange($event)" placeholder="Enter package logo" accept=".png">
-                    <div *ngIf="createpackageForm.get('package_logo')?.invalid && createpackageForm.get('package_logo')?.touched"
-                        class="error-message">
-                        Package Logo is required.
-                    </div>
+                        <div *ngIf="createpackageForm.get('package_logo')?.invalid && createpackageForm.get('package_logo')?.touched" class="error-message">
+                            Package Logo is required.
+                          </div>
                  
                 </div>
             </div>
             <div class="input_box col-12 col-md-6">
                 <div class=" mb-3">
-                    <label for="package_name" class="form-label">Package Name</label>
+                    <span for="package_name" class="form-label">Package Name</span>
                     <input type="text" class="" id="package_name" formControlName="package_name"
                         placeholder="Enter package name">
                     <div *ngIf="createpackageForm.get('package_name')?.invalid && createpackageForm.get('package_name')?.touched"
@@ -34,7 +33,7 @@
         <div class="row mb-3">
             <div class="input_box col-12 col-md-6">
                 <div class=" mb-3">
-                    <label for="package_desc" class="form-label">Description</label>
+                    <span for="package_desc" class="form-label">Description</span>
                     <input type="text" class="" id="package_desc" formControlName="package_desc"
                         placeholder="Enter Description">
                     <div *ngIf="createpackageForm.get('package_desc')?.invalid && createpackageForm.get('package_desc')?.touched"
@@ -45,7 +44,7 @@
             </div>
             <div class="input_box col-12 col-md-6">
                 <div class=" mb-3">
-                    <label for="order_id" class="form-label">Reference Id</label>
+                    <span for="order_id" class="form-label">Reference Id</span>
                     <input type="text" class="" id="order_id" formControlName="order_id" (keydown)="onKeydown($event)"
                         placeholder="Enter Reference Id">
                     <div *ngIf="createpackageForm.get('order_id')?.invalid && createpackageForm.get('order_id')?.touched"
@@ -59,7 +58,7 @@
         <div class="row mb-3">
             <div class="input_box col-12 col-md-6">
                 <div class=" mb-3">
-                    <label for="package_rate" class="form-label">Package Rate</label>
+                    <span for="package_rate" class="form-label">Package Rate</span>
                     <input type="text" class="" id="package_rate" formControlName="package_rate" (keydown)="onKeydown($event)"
                         (keyup)="calculateAmounts()" placeholder="Enter Package Rate">
                     <div *ngIf="createpackageForm.get('package_rate')?.invalid && createpackageForm.get('package_rate')?.touched"
@@ -71,13 +70,13 @@
             <!-- Tax Amount -->
             <div class="input_box col-12 col-md-6">
                 <div class=" mb-3">
-                    <label for="tax_amount" class="me-2">Tax Amount</label>
+                    <span for="tax_amount" class="me-2">Tax Amount</span>
                     <input type="text" class="" id="tax_amount" [value]="tax_amount" readonly [disabled]="true"
                         placeholder="Enter Tax">
-                    <!-- <div *ngIf="createpackageForm.get('tax_amount')?.invalid && createpackageForm.get('tax_amount')?.touched"
+                    <div *ngIf="createpackageForm.get('tax_amount')?.invalid && createpackageForm.get('tax_amount')?.touched"
                         class="error-message">
                         Tax Amount is required.
-                    </div> -->
+                    </div>
                 </div>
             </div>
         </div>
@@ -85,25 +84,25 @@
             <!-- MRP (CusAmount)l -->
             <div class="input_box col-12 col-md-6">
                 <div class=" mb-3">
-                    <label for="customer_amount" class="me-2">MRP (CusAmount)</label>
+                    <span for="customer_amount" class="me-2">MRP (CusAmount)</span>
                     <input type="text" class="" id="customer_amount" placeholder="Customer Amount" readonly
                         [disabled]="true" [value]="customer_amount">
-                    <!-- <div *ngIf="createpackageForm.get('customer_amount')?.invalid && createpackageForm.get('customer_amount')?.touched"
+                    <div *ngIf="createpackageForm.get('customer_amount')?.invalid && createpackageForm.get('customer_amount')?.touched"
                         class="error-message">
                         MRP (CusAmount) is required.
-                    </div> -->
+                    </div>
                 </div>
             </div>
             <!-- Commission-->
             <div class="input_box col-12 col-md-6">
                 <div class=" mb-3">
-                    <label for="commission" class="me-2">Commission</label>
+                    <span for="commission" class="me-2">Commission</span>
                     <input type="email" class="" id="commission" formControlName="commission"
                         (input)="calculateMsoCommission()" placeholder="Enter Mso Commission">
-                    <!-- <div *ngIf="createpackageForm.get('commission')?.invalid && createpackageForm.get('commission')?.touched"
+                    <div *ngIf="createpackageForm.get('commission')?.invalid && createpackageForm.get('commission')?.touched"
                         class="error-message">
                         Commission is required.
-                    </div> -->
+                    </div>
                 </div>
             </div>
         </div>
@@ -111,18 +110,18 @@
             <!-- Mso Commission -->
             <div class="input_box col-12 col-md-6">
                 <div class=" mb-3">
-                    <label for="package_desc" class="me-2">Mso Commission</label>
+                    <span for="package_desc" class="me-2">Mso Commission</span>
                     <input type="text" class="" [disabled]="true"  [value]="mso_amount" readonly
                         placeholder="Mso Commission">
-                    <!-- <div *ngIf="createpackageForm.get('package_desc')?.invalid && createpackageForm.get('package_desc')?.touched"
+                    <div *ngIf="createpackageForm.get('package_desc')?.invalid && createpackageForm.get('package_desc')?.touched"
                         class="error-message">
                         Mso Commission is required.
-                    </div> -->
+                    </div>
                 </div>
             </div>
             <div class="input_box col-12 col-md-6">
                 <div class=" mb-3">
-                    <label for="ispercentage" class="me-2">Is percentage</label>
+                    <span for="ispercentage" class="me-2">Is percentage</span>
                     <div class="toggle-button-cover">
                         <div class="button b2" id="button-10">
                             <input type="checkbox" class="checkbox" checked id="ispercentage"  (input)="calculateMsoCommission()" formControlName="ispercentage" />

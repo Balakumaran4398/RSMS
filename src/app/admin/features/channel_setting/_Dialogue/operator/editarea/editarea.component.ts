@@ -13,6 +13,7 @@ export class EditareaComponent implements OnInit {
 
   pincode: any;
   areaname: any;
+  isdelete = false;
   username: any;
   operatorid: any;
   role: any;
@@ -28,6 +29,8 @@ export class EditareaComponent implements OnInit {
     this.id = data.id;
     this.areaname = data.name;
     this.pincode = data.pincode;
+    console.log(data);
+
   }
   ngOnInit(): void {
   }
@@ -47,10 +50,10 @@ export class EditareaComponent implements OnInit {
       name: this.areaname,
       operatorid: this.editarea.operatorid,
       pincode: this.pincode,
-      isactive: this.editarea.isactive,
+      isdelete: this.editarea.isdelete,
       id: this.id
     };
-
+    this.swal.Loading();
     this.userservice.updateArea(requestBody)
       .subscribe((res: any) => {
         this.swal.success(res?.message);

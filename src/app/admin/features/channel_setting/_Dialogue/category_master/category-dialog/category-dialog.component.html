@@ -12,13 +12,13 @@
                     <label for="categoryName" class="me-2">Category Name</label>
                 </div>
                 <div class="col-12 col-md-6">
-                    <input type="text" id="categoryName" [(ngModel)]="Category_name">
+                    <input type="text" id="categoryName" [(ngModel)]="Category_name" (input)="clearError()">
                     <div *ngIf="errorMessage"
                         class=" alert alert-danger d-flex justify-content-between align-items-center mt-3"
                         style="position: relative;font-size: 11px;">
                         {{ errorMessage }}
                         <i class="fa fa-close close-icon" style="cursor: pointer;font-size: 11px"
-                            (click)="onNoClick()"></i>
+                        (click)="errorToggle()"></i>
                     </div>
                 </div>
             </div>

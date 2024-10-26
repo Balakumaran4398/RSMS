@@ -52,6 +52,15 @@ import { AuthGuard } from '../_core/service/auth.guard';
 import { LcodashboardComponent } from './features/channel_setting/_Dialogue/operator/lcodashboard/lcodashboard.component';
 import { SubloginComponent } from './features/subscriber/sublogin/sublogin.component';
 import { OperatorlistComponent } from './features/operator/operatorlist/operatorlist.component';
+import { NavbarComponent } from './features/navbar/navbar.component';
+import { LcoRechargeReportComponent } from './features/channel_setting/_Dialogue/LCO_Recharge/lco-recharge-report/lco-recharge-report.component';
+import { MsodetailsComponent } from './features/special_role/msodetails/msodetails.component';
+import { CasmasterComponent } from './features/special_role/casmaster/casmaster.component';
+import { LcoinvoiceComponent } from './features/special_role/lcoinvoice/lcoinvoice.component';
+import { SpecialoperatorComponent } from './features/special_role/specialoperator/specialoperator.component';
+import { SublcooperatorComponent } from './features/special_role/Dialogue/sublcooperator/sublcooperator.component';
+import { PackageplanComponent } from './features/special_role/packageplan/packageplan.component';
+import { ChanneldetailsComponent } from './features/special_role/channeldetails/channeldetails.component';
 
 
 const routes: Routes = [
@@ -62,6 +71,8 @@ const routes: Routes = [
       { path: 'operator_details', component: OperatorDetailsComponent, },
       { path: 'lco_recharge', component: LcoRechargeComponent, },
       { path: 'operatorlist', component: OperatorlistComponent, },
+      { path: 'nav', component: NavbarComponent, },
+      { path: 'lcorecharge', component: LcoRechargeReportComponent, },
       // --------------------------------------------Top-Subscriber-Details---------------------------------
       { path: 'top_sub_detail', component: TopSubDetailComponent, },
       // -------------------------Channel-Setting----------------------------
@@ -118,6 +129,15 @@ const routes: Routes = [
       { path: 'Bulk_Refresh', component: RefreshComponent },
       { path: 'Recurring', component: RecurringComponent },
       { path: 'Alacarte_Activation', component: AlacarteActivationComponent },
+
+      // ------------------------------------Special role-------------------------------------------
+      { path: 'msodetails', component: MsodetailsComponent },
+      { path: 'casmaster', component: CasmasterComponent },
+      { path: 'invoice', component: LcoinvoiceComponent },
+      { path: 'special_operator', component: SpecialoperatorComponent },
+      { path: 'sublcodashboard/:operatorid', component: SublcooperatorComponent },
+      { path: 'Packageplan', component: PackageplanComponent },
+      { path: 'channeldetails', component: ChanneldetailsComponent },
     ]
   }
 ];

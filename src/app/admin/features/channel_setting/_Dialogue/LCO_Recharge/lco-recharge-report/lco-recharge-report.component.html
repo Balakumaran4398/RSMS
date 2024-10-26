@@ -24,12 +24,25 @@
                 <mat-date-range-picker #picker></mat-date-range-picker>
             </mat-form-field>
             <input class="mx-2" type="checkbox" [(ngModel)]="isCheckboxChecked" style="width: 30px;height: 25px;">
-            <div class="input_box mb-2">
+            <!-- <div class="input_box mb-2">
                 <select [(ngModel)]="operatorid" [disabled]="!isCheckboxChecked">
-                    <option value="0" selected>ALL Operator</option>
                     <option *ngFor="let operator of operatorList" [value]="operator.value">{{ operator.name }}
                     </option>
                 </select>
+            </div> -->
+
+            <div class="custom-select input_box col-10 col-md-3 mb-2 mx-2">
+                <input type="text" placeholder="Search Operator" [disabled]="!isCheckboxChecked"
+                    [(ngModel)]="operatorname" (input)="filterOperators()" (focus)="showDropdown = false"
+                    (click)="showDropdown = true">
+
+                <ul class="dropdown" *ngIf="showDropdown">
+                    <!-- <li (click)="selectOperator('0','ALL Operator')">ALL Operator</li> -->
+                    <li *ngFor="let operator of filteredOperators"
+                        (click)="selectOperator(operator.value,operator.name  )">
+                        {{ operator.name }}
+                    </li>
+                </ul>
             </div>
             <button class="btn mx-2" style="background-color: rgb(26, 129, 133);border-radius: 5px;"
                 (click)="RechargeLog()"><span style="color: white;">Report</span></button>
@@ -51,8 +64,9 @@
         <div class="col-12 col-md-12 align-items-center justify-content-center responsive-container mb-3"
             style="margin: auto;">
             <ag-grid-angular #agGrid id="myGrid" style="text-align: center;" domLayout='autoHeight'
-                class="ag-theme-alpine table-class" rowAnimation [gridOptions]="gridOptions" [columnDefs]="columnDefs"
-                [rowData]="rowData" [enableCellTextSelection]="true">
+                class="ag-theme-alpine table-class" rowAnimation [gridOptions]="gridOptions"
+                (gridReady)="onGridReady($event)" [columnDefs]="columnDefs" [rowData]="rowData"
+                [enableCellTextSelection]="true">
             </ag-grid-angular>
         </div>
 
@@ -83,7 +97,7 @@
             <p class="mx-2 mb-0" style="text-align: center;color: rgb(0, 12, 22); font-size: 16px;font-weight: 600;">
                 Request types:</p>
             <div class="input_box mx-2">
-                <select [(ngModel)]="type" (ngModelChange)="onChangeDateType($event)">
+                <select (ngModelChange)="onChangeDateType($event)" [(ngModel)]="selectedDateType">
                     <option *ngFor="let Type of Date" [value]="Type.value">{{ Type.lable }}</option>
                 </select>
             </div>
@@ -97,13 +111,13 @@
             <div *ngIf="isMonthYearEnabled" class="mx-2">
                 <div class="input_box d-flex justify-content-center align-item-center">
                     <div class="mx-3">
-                        <select name="month" id="month" [(ngModel)]="months">
+                        <select name="month" id="month" [(ngModel)]="selectedMonth">
                             <option value="0" selected>Select Month</option>
                             <option *ngFor="let month of months" [value]="month.value">{{ month.name }}</option>
                         </select>
                     </div>
                     <div>
-                        <select name="year" id="year" [(ngModel)]="years">
+                        <select name="year" id="year" [(ngModel)]="selectedYear">
                             <option value="0" selected>Select Year</option>
                             <option *ngFor="let year of years" [value]="year">{{ year }}</option>
                         </select>
@@ -113,7 +127,7 @@
 
             <div *ngIf="isYearEnabled" class="mx-2">
                 <div class="input_box d-flex justify-content-center align-item-center">
-                    <select name="year" id="year" [(ngModel)]="years">
+                    <select name="year" id="year" [(ngModel)]="selectedYear">
                         <option value="0" selected>Select Year</option>
                         <option *ngFor="let year of years" [value]="year">{{ year }}</option>
                     </select>
@@ -147,19 +161,31 @@
             </ag-grid-angular>
         </div>
         <div class="col-12 col-md-12 d-flex align-items-center justify-content-center" style="background-color: #c0d3d3;height: 31px;
-    font-size: 16px;font-weight: 600;">TOTAL AMOUNT: <span style="color:rgb(236, 5, 148);font-size: 18px;">{{Totalamount}}</span>
+      font-size: 16px;font-weight: 600;color: red;">TOTAL AMOUNT : <span
+                style="color:rgb(17, 22, 54);font-size: 18px;margin-left: 10px;">{{Totalamount}}</span>
         </div>
     </div>
-
     <div *ngIf="selectedTab === '3'" class="display justify-content-center align-item-center  flex-wrap">
         <div class=" d-flex col-12 col-md-12 justify-content-start align-items-center mb-4">
             <p class="mx-2" style="text-align: center;align-items: center;">Filter:</p>
-            <div class="input_box ">
+            <!-- <div class="input_box ">
                 <select [(ngModel)]="operatorid">
                     <option value="0" selected>ALL Operator</option>
                     <option *ngFor="let operator of operatorList" [value]="operator.value">{{ operator.name }}
                     </option>
                 </select>
+            </div> -->
+
+            <div class=" custom-select input_box  col-10 col-md-4 mb-2 mx-2">
+                <input type="text" placeholder="Search Operator" [(ngModel)]="operatorname" (input)="filterOperators()"
+                    (focus)="showDropdown = false" (click)="showDropdown = true">
+
+                <ul class="dropdown" *ngIf="showDropdown">
+                    <li *ngFor="let operator of filteredOperators"
+                        (click)="selectOperator(operator.value,operator.name  )">
+                        {{ operator.name }}
+                    </li>
+                </ul>
             </div>
             <input class="mx-2" type="checkbox" [(ngModel)]="isCheckboxChecked" style="width: 30px;height: 25px;">
             <div class="input_box ">
