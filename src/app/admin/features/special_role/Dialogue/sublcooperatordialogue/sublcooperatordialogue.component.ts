@@ -194,7 +194,8 @@ export class SublcooperatordialogueComponent implements OnInit {
   generateYears() {
     const startYear = 2012;
     const currentYear = new Date().getFullYear();
-    for (let year = startYear; year <= currentYear; year++) {
+    this.years = []; 
+    for (let year = currentYear; year >= startYear; year--) {
       this.years.push(year);
     }
   }

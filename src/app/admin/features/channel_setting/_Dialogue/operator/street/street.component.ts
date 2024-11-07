@@ -35,7 +35,7 @@ export class StreetComponent implements OnInit {
   }
   columnDefs: any[] = [
     {
-      headerName: "S.No", valueGetter: 'node.rowIndex+1', width: 80, 
+      headerName: "S.No", valueGetter: 'node.rowIndex+1', width: 80,
     },
     {
       headerName: 'STREET NAME', width: 200, editable: true,
@@ -43,12 +43,18 @@ export class StreetComponent implements OnInit {
     },
     {
       headerName: 'STATUS ', editable: true,
-      field: 'isdelete', width: 200,
+      field: 'statusdisplay', width: 200,
+      // cellRenderer: (params: { value: any; data: any }) => {
+      //   const isEditing = this.editingRow && this.editingRow.id === params.data.id;
+      //   const color = params.value ? 'red' : 'Green';
+      //   const text = params.value ? 'false' : 'true';
+
+      // }
       cellRenderer: (params: { value: any; data: any }) => {
-        const isEditing = this.editingRow && this.editingRow.id === params.data.id;
-        const color = params.value ? 'red' : 'Green';
-        const text = params.value ? 'false' : 'true';
-        
+        const status = params.data?.statusdisplay; // Fetch status from params.data
+        const color = status === 'Active' ? 'green' : 'red'; // Determine color based on status
+        const text = status === 'Active' ? 'Active' : 'Deactive'; // Set text accordingly
+        return `<span style="color: ${color}; ">${text}</span>`; // Return formatted span
       }
     },
     {
@@ -131,8 +137,9 @@ export class StreetComponent implements OnInit {
       streetname: rowData.name,
       areaid: rowData.areaid,
       id: rowData.id,
-      isactive: rowData.isactive,
+      isdelete: rowData.isactive,
     };
+    console.log(requestBody);
 
     this.userservice.updateStreet(requestBody)
       .subscribe((res: any) => {
@@ -153,7 +160,7 @@ export class StreetComponent implements OnInit {
       console.log('The dialog was closed');
     });
   }
-  editarea(type:any,data: any): void {
+  editarea(type: any, data: any): void {
     let dialogData = { data: data, type: type };
 
     const dialogRef = this.dialog.open(NewstreetComponent, {

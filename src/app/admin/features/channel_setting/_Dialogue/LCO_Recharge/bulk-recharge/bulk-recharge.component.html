@@ -38,5 +38,5 @@
 
 <div class="d-flex justify-content-center align-item-center mx-5 mb-4">
     <button type="button" class="btn btn-danger me-2" (click)="toggleedit()">Cancel</button>
-    <button type="button" class="btn btn-success" (click)="onSubmit()">Recharge</button>
+    <button type="button" class="btn btn-success" (click)="onSubmit()" [disabled]="!remarks || !amount ">Recharge</button>
 </div>

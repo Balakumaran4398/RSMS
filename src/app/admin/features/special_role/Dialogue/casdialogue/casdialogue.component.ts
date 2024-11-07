@@ -1,6 +1,7 @@
 import { Component, Inject, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, NgForm, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { id } from 'node_modules1/postcss-selector-parser/postcss-selector-parser';
 import { BaseService } from 'src/app/_core/service/base.service';
 import { StorageService } from 'src/app/_core/service/storage.service';
 import { SwalService } from 'src/app/_core/service/swal.service';
@@ -14,6 +15,7 @@ export class CasdialogueComponent implements OnInit {
   username: any;
   role: any;
   form!: FormGroup;
+  // casForm!: FormGroup;
   submitted = false;
   smartcart_length = '0.00'
   boxid_length = '0.00'
@@ -28,6 +30,8 @@ export class CasdialogueComponent implements OnInit {
   cas_id: any;
   cas_name: any;
   msovendor: any;
+  uname: any;
+  password: any;
   address: any;
   serviceip: any;
   serverport: any;
@@ -39,7 +43,9 @@ export class CasdialogueComponent implements OnInit {
   mobileno: any;
   isactive: boolean = true;
 
-  constructor(public dialogRef: MatDialogRef<CasdialogueComponent>, @Inject(MAT_DIALOG_DATA) public data: any, private swal: SwalService, private userService: BaseService, private storageservice: StorageService, private fb: FormBuilder) {
+
+  errorMessage: string | null = null;
+  constructor(public dialogRef: MatDialogRef<CasdialogueComponent>, @Inject(MAT_DIALOG_DATA) public data: any, private swal: SwalService, private userservice: BaseService, private storageservice: StorageService, private fb: FormBuilder) {
     this.username = storageservice.getUsername();
     this.role = storageservice.getUserRole();
     console.log(data);
@@ -48,6 +54,7 @@ export class CasdialogueComponent implements OnInit {
 
     this.casname = data?.casname;
     this.form = this.fb.group({
+      id: ['', Validators.required],
       casname: ['', Validators.required],
       uname: ['', Validators.required],
       password: ['', [
@@ -79,26 +86,30 @@ export class CasdialogueComponent implements OnInit {
       ]],
       smartcardlength: ['', Validators.required],
       boxidlength: ['', Validators.required],
-      username: [this.storageservice.getUsername(), Validators.required],
       role: [this.storageservice.getUserRole(), Validators.required],
+      username: [this.storageservice.getUsername(), Validators.required],
     });
 
 
     // -------------------------editcasmaster-------------------
     this.editcasmaster = data?.data;
-    this.cas_id = this.editcasmaster.id;
-    this.cas_name = this.editcasmaster.casname;
-    this.msovendor = this.editcasmaster.vendor;
-    this.address = this.editcasmaster.address;
-    this.serviceip = this.editcasmaster.serverip;
-    this.serverport = this.editcasmaster.serverport;
-    this.smartcardlength = this.editcasmaster.smartcardlength;
-    this.boxidlength = this.editcasmaster.boxlength;
-    this.referenceurl = this.editcasmaster.referenceurl;
-    this.email = this.editcasmaster.email;
-    this.website = this.editcasmaster.website;
-    this.mobileno = this.editcasmaster.contactno;
-    this.isactive = this.editcasmaster.isactive;
+    this.cas_id = data?.data?.id;
+    this.cas_name = data?.data?.casname;
+    this.uname = data?.data?.username;
+    this.password = data?.data?.password;
+    this.msovendor = data?.data?.vendor;
+    this.address = data?.data?.address;
+    this.serviceip = data?.data?.serverip;
+    console.log('serviceip', this.serviceip);
+
+    this.serverport = data?.data?.serverport;
+    this.smartcardlength = data?.data?.smartcardlength;
+    this.boxidlength = data?.data?.boxlength;
+    this.referenceurl = data?.data?.referenceurl;
+    this.email = data?.data?.email;
+    this.website = data?.data?.website;
+    this.mobileno = data?.data?.contactno;
+    this.isactive = data?.data?.isactive;
 
     // ------------------------------------
   }
@@ -123,23 +134,117 @@ export class CasdialogueComponent implements OnInit {
       return;
     }
     const errorFields = [
-      'casname', 'uname', 'password', 'address', 'vendor',
+      'id', 'casname', 'uname', 'password', 'address', 'vendor',
       'referenceurl', 'website', 'contactno', 'email', 'serverip',
       'serverport', 'smartcardlength', 'boxidlength', 'username', 'role'
     ];
     this.swal.Loading()
-    this.userService.createCas(this.form.value)
+    this.userservice.createCas(this.form.value)
       // .subscribe(  (res: any) => {  })
       .subscribe((res: any) => {
         this.swal.success(res?.message);
       }, (err) => {
-        // this.swal.Error(err?.error?.message);
+        this.swal.Error(err?.error?.message);
         const errorMessage = errorFields
           .map(field => err?.error?.[field])
           .find(message => message) || 'An error occurred while creating the subscriber.'
       });
   }
-  editcas() { }
+  // editcas() {
+  //   // if (form.invalid) {
+
+  //     let requestBody = {
+  //       casname: this.cas_name,
+  //       uname: this.uname,
+  //       password: this.password,
+  //       address: this.address,
+  //       vendor: this.msovendor,
+  //       referenceurl: this.referenceurl,
+  //       website: this.website,
+  //       contactno: this.mobileno,
+  //       email: this.email,
+  //       serverip: this.serviceip,
+  //       serverport: this.serverport, smartcardlength: this.smartcardlength,
+  //       boxidlength: this.boxidlength, role: this.role, username: this.username, isactive: this.isactive, id: this.cas_id
+  //     }
+  //     console.log('requestBody', requestBody);
+
+  //     const errorFields = [
+  //       'id', 'casname', 'uname', 'password', 'address', 'vendor',
+  //       'referenceurl', 'website', 'contactno', 'email', 'serverip',
+  //       'serverport', 'smartcardlength', 'boxidlength', 'username', 'role'
+  //     ];
+  //     // this.swal.Loading();
+  //     this.userservice.updateCas(requestBody).subscribe((res: any) => {
+  //       this.swal.success(res?.message);
+  //     }, (err) => {
+  //       // this.swal.Error(err?.error?.message);
+  //       const errorMessage = errorFields
+  //         .map(field => err?.error?.[field])
+  //         .find(message => message) || 'An error occurred while creating the subscriber.';
+  //       console.error(errorMessage); // Log the error message for debugging
+  //     });
+  //     // form.control.markAllAsTouched();
+  //     return;
+  //   // }
+  // }
+  editcas() {
+    // if (casForm.invalid) { // Validate before submission
+    //   this.markAllFieldsAsTouched(casForm);
+    //   return;
+    // }
+
+    const requestBody = {
+      casname: this.cas_name,
+      uname: this.uname,
+      password: this.password,
+      address: this.address,
+      vendor: this.msovendor,
+      referenceurl: this.referenceurl,
+      website: this.website,
+      contactno: this.mobileno,
+      email: this.email,
+      serverip: this.serviceip,
+      serverport: this.serverport,
+      smartcardlength: this.smartcardlength,
+      boxidlength: this.boxidlength,
+      role: this.role,
+      username: this.username,
+      isactive: this.isactive,
+      id: this.cas_id
+    };
+
+    console.log('Request Body:', requestBody);
+
+    this.userservice.updateCas(requestBody).subscribe(
+      (res: any) => {
+        this.swal.success(res?.message);
+      },
+      (err) => {
+        this.swal.Error(err?.error?.message || err?.error?.id || err?.error?.casname || err?.error?.uname || err?.error?.password || err?.error?.address || err?.error?.vendor ||
+          err?.error?.referenceurl || err?.error?.website || err?.error?.contactno || err?.error?.email || err?.error?.serverip || err?.error?.serverport ||
+          err?.error?.serverport || err?.error?.smartcardlength || err?.error?.boxidlength
+        );
+        // this.errorMessage = this.getErrorMessage(err?.error); // Set the error message
+        console.error(this.errorMessage); // Centralized error logging
+      }
+    );
+  }
+  markAllFieldsAsTouched(form: NgForm) {
+    Object.keys(form.controls).forEach(control => {
+      form.controls[control].markAsTouched();
+    });
+  }
+
+  getErrorMessage(errors: any): string {
+    const errorFields = [
+      'id', 'casname', 'uname', 'password', 'address', 'vendor',
+      'referenceurl', 'website', 'contactno', 'email', 'serverip',
+      'serverport', 'smartcardlength', 'boxidlength', 'username', 'role'
+    ];
+    return errorFields.map(field => errors?.[field]).find(msg => msg) ||
+      'An error occurred while updating CAS details.';
+  }
   onDelete() { }
   refresh() {
     this.submitted = false;

@@ -98,6 +98,7 @@
                 Request types:</p>
             <div class="input_box mx-2">
                 <select (ngModelChange)="onChangeDateType($event)" [(ngModel)]="selectedDateType">
+                    <option value="0">select the Types</option>
                     <option *ngFor="let Type of Date" [value]="Type.value">{{ Type.lable }}</option>
                 </select>
             </div>
@@ -206,13 +207,3 @@
     </div>
 </div>
 
-<!-- <div *ngIf="selectedTab">
-
-    <div class="col-12 col-md-12 align-items-center justify-content-center responsive-container mb-3"
-        style="margin: auto;">
-        <ag-grid-angular #agGrid id="myGrid" style="text-align: center;" domLayout='autoHeight'
-            class="ag-theme-alpine table-class" rowAnimation [gridOptions]="gridOptions" [columnDefs]="columnDefs"
-            [rowData]="rowData" [enableCellTextSelection]="true">
-        </ag-grid-angular>
-    </div>
-</div> -->

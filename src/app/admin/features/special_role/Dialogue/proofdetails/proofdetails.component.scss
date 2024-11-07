@@ -1,0 +1,10 @@
+
+.display {
+    display: flex;
+}
+
+@media screen and (max-width:560px) {
+    .display {
+        display: block;
+    }
+}

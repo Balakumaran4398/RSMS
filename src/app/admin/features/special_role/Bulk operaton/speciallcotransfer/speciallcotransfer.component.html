@@ -1,0 +1,115 @@
+<section class="Tab col-12">
+    <div class="title">
+        <p>LCO TRANSFER</p>
+    </div>
+    <div class="" style="margin:30px auto;max-width: 500px;">
+        <!-- Left Column (File Upload and Instructions) -->
+        <!-- <div class="col-12 col-lg-4 d-flex justify-content-center align-items-center mb-4 mb-lg-0"> -->
+        <div class="card p-4 file ">
+            <div class="d-flex justify-content-center align-items-center mb-3">
+                <img src="/assets/images/icons/dashboard.png" class="img" alt="File Icon">
+            </div>
+            <div class="mb-1">
+                <div class="">
+                    <span class="p">* Must have kept the data according to the format file (Please check the format
+                        file by below download option)and fill the Smartcard number without incorrect and Select LCO
+                        , Street and Area.
+                        <span style="color: red;"> Otherwise LCO Doesn't Change .</span>
+                    </span>
+                </div>
+            </div>
+            <a class="mb-3" (click)="generateExcel('LCO Transfer')" style="cursor: pointer;">* Download Format
+                File</a>
+            <div class="checkbox-text mb-3">
+                <div class="checkbox-content">
+                    <input type="checkbox" id="terms" (change)="onCheckboxChange($event)">
+                    <label for="confirmPass">I agree to the above statement</label>
+                </div>
+            </div>
+            <div class="d-flex">
+                <div class="col-4 col-md-4 col-sm-6 mb-3">
+                    <label class="btn " [style.background-color]="isCheckboxChecked ? '#3d5e80' : '#d3d3d3'"
+                        [style.color]="isCheckboxChecked ? 'white' : 'black'"
+                        [style.cursor]="isCheckboxChecked ? 'pointer' : 'not-allowed'">
+                        <i class="fa fa-plus"></i> Choose
+                        <input type="file" style="display: none;" [disabled]="!isCheckboxChecked"
+                            (change)="handleFileInput($event)">
+                    </label>
+                </div>
+                <div class="col-8 col-md-8 col-sm-6 mb-3">
+                    <span style="color:#0a21d0">{{ filePath }} </span>
+                </div>
+            </div>
+
+            <!-- Row for LCO -->
+            <div class="">
+                <!-- Row for LCO -->
+                <div class="row - display align-items-center">
+                    <div class="col-6 col-md-4 ">
+                        <label for="lco" style="color: #261b72;font-size: 15px;">Choose LCO :</label>
+                    </div>
+                    <div class="col-12  col-md-6">
+                        <mat-form-field appearance="outline" class="w-100">
+                            <mat-label>Select LCO</mat-label>
+                            <mat-select [(ngModel)]="lco" (ngModelChange)="onSubscriberStatusChange()" name="lco"
+                                required>
+                                <mat-option value="">Select LCO</mat-option>
+                                <mat-option *ngFor="let lco of lcoList" [value]="lco.value">{{ lco.name
+                                    }}</mat-option>
+                            </mat-select>
+                            <mat-error *ngIf="!lco">LCO is required</mat-error>
+                        </mat-form-field>
+                    </div>
+                </div>
+
+                <!-- Row for Area -->
+                <div class="row  display align-items-center">
+                    <div class="col-6  col-md-4 ">
+                        <label for="area" style="color: #261b72;font-size: 15px;">Choose Area :</label>
+                    </div>
+                    <div class="col-12  col-md-6">
+                        <mat-form-field appearance="outline" class="w-100">
+                            <mat-label>Select Area</mat-label>
+                            <mat-select [(ngModel)]="area" (ngModelChange)="onAreaStatusChange()" name="area" required>
+                                <mat-option value="">Select Area</mat-option>
+                                <mat-option value="0">All Area</mat-option>
+                                <mat-option *ngFor="let area of areaList" [value]="area.value">{{ area.name
+                                    }}</mat-option>
+                            </mat-select>
+                            <mat-error *ngIf="!area">Area is required</mat-error>
+                        </mat-form-field>
+                    </div>
+                </div>
+
+                <!-- Row for Street -->
+                <div class="row  display align-items-center">
+                    <div class="col-6   col-md-4">
+                        <label for="street" style="color: #261b72;font-size: 15px;">Choose Street :</label>
+                    </div>
+                    <div class="col-12  col-md-6">
+                        <mat-form-field appearance="outline" class="w-100">
+                            <mat-label>Select Street</mat-label>
+                            <mat-select [(ngModel)]="street" name="street" required>
+                                <mat-option value="">Select Street</mat-option>
+                                <mat-option value="0">All Street</mat-option>
+                                <mat-option *ngFor="let street of streetList" [value]="street.value">{{ street.name
+                                    }}</mat-option>
+                            </mat-select>
+                            <mat-error *ngIf="!street">Street is required</mat-error>
+                        </mat-form-field>
+                    </div>
+                </div>
+            </div>
+
+
+
+            <div class="d-flex justify-content-end align-items-center mt-3">
+                <button type="submit" class="btn btn-success" [disabled]="!isCheckboxChecked || !isFileSelected"
+                    (click)="opendialogue()">
+                    Submit
+                </button>
+            </div>
+        </div>
+        <!-- </div> -->
+    </div>
+</section>

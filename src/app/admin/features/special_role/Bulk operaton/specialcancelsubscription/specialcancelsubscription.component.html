@@ -1,0 +1,86 @@
+<section class="Tab col-12">
+    <div class="title">
+        <p>CANCEL SUBSCRIPTION</p>
+    </div>
+    <div class="row">
+        <!-- Left Column (File Upload and Instructions) -->
+        <div class="col-12 col-lg-4 d-flex justify-content-center align-items-center mb-4 mb-lg-0">
+            <div class="card p-4 file ">
+                <div class="d-flex justify-content-center align-items-center mb-3">
+                    <img src="/assets/images/icons/dashboard.png" class="img" alt="File Icon">
+                </div>
+                <div class="mb-3">
+                    <div class="mb-3">
+                        <span class="p">1) Must have kept the data according to the format file (Please check the format
+                            file by below download option)and fill the Smartcard number without incorrect otherwise
+                            <span style="color: red;">Subscription Cancel Doesn't.</span>.
+                        </span>
+                    </div>
+
+                </div>
+                <a class="mb-3" (click)="generateExcel('Cancel Subscription')" style="cursor: pointer;">* Download
+                    Format
+                    File</a>
+                <div class="checkbox-text mb-3">
+                    <div class="checkbox-content">
+                        <input type="checkbox" id="terms" (change)="onCheckboxChange($event)">
+                        <label for="confirmPass">I agree to the above statement</label>
+                    </div>
+                </div>
+                <div class="d-flex">
+                    <div class="col-4 col-md-4 col-sm-6 mb-3">
+                        <label class="btn " [style.background-color]="isCheckboxChecked ? '#3d5e80' : '#d3d3d3'"
+                            [style.color]="isCheckboxChecked ? 'white' : 'black'"
+                            [style.cursor]="isCheckboxChecked ? 'pointer' : 'not-allowed'">
+                            <i class="fa fa-plus"></i> Choose
+                            <input type="file" style="display: none;" [disabled]="!isCheckboxChecked"
+                                (change)="handleFileInput($event)">
+                        </label>
+                    </div>
+                    <div class="col-8 col-md-8 col-sm-6 mb-3">
+                        <span style="color:#0a21d0">{{ filePath }} </span>
+                    </div>
+                </div>
+                <!-- <div class=" d-flex justify-content-end align-items-center mt-3">
+                    <button type="submit" class="btn btn-success ">Next &nbsp;<i class="fa fa-arrow-right"
+                            aria-hidden="true"></i></button>
+                </div> -->
+                <div class="d-flex justify-content-end align-items-center mt-3">
+                    <button type="submit" class="btn btn-success" [disabled]="!isCheckboxChecked || !isFileSelected"
+                        (click)="Submit()">
+                        Submit
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-12 col-lg-8 d-flex justify-content-center">
+            <div class="card col-12">
+                <div class="title">
+                    <h5>BULK CANCEL SUBSCRIPTION HISTORY</h5>
+                </div>
+                <div class="row d-flex align-items-center justify-content-center" style="padding: 0.5rem;">
+                    <div class="col-12 mb-3">
+                        <div class="row align-items-center justify-content-center mb-3" style="gap:10px;">
+                            <div class="col-12 col-md-3 mb-2 mb-md-0">
+                                <input class="date form-control" type="date" name="" id="" [(ngModel)]="date">
+                            </div>
+                            <div class="col-12 col-md-2 mb-2 mb-md-0">
+                                <button class="btn btn-primary w-100" (click)="getData()">Get Data</button>
+                            </div>
+                            <div class="col-12 col-md-2 mb-2 mb-md-0">
+                                <button class="btn btn-secondary w-100" (click)="refresh()">Refresh</button>
+                            </div>
+                        </div>
+
+                        <ag-grid-angular #agGrid id="myGrid" domLayout='autoHeight' class="ag-theme-alpine table-class"
+                            rowAnimation [rowSelection]="rowSelection" [gridOptions]="gridOptions"
+                            [columnDefs]="columnDefs" [rowData]="rowData" (gridReady)="onGridReady()"
+                            [enableCellTextSelection]="true">
+                        </ag-grid-angular>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

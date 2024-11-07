@@ -1,0 +1,120 @@
+<section class="Tab col-12">
+    <!-- <div class="" style="padding: 10px;">
+        <p>AREA CHANGE</p>
+    </div> -->
+    <div class="d-flex tablist justify-content-center align-items-center my-3 new_d">
+        <div class="tab" [class.active]="selectedTab === 'lcochange'" (click)="selectTab('lcochange')">LCO CHANGE </div>
+        <div class="tab" [class.active]="selectedTab === 'areachange'" (click)="selectTab('areachange')">AREA CHANGE</div>
+    </div>
+    <div *ngIf="selectedTab === 'areachange'" class="commission">
+        <div class="col-12 col-md-12 box display justify-content-center align-items-center">
+            <!-- Select LCO -->
+            <mat-form-field appearance="outline" class="w-25 mx-2">
+                <mat-label>Select LCO</mat-label>
+                <mat-select [(ngModel)]="lco" (selectionChange)="onTableData()" (ngModelChange)="onSubscriberStatusChange()"  name="lco" required>
+                    <mat-option value="">Select LCO</mat-option>
+                    <mat-option *ngFor="let lco of lcoList" [value]="lco.value">{{ lco.name }}</mat-option>
+                </mat-select>
+                <mat-error *ngIf="!lco">LCO is required</mat-error>
+            </mat-form-field>
+
+            <!-- Select Area -->
+            <mat-form-field appearance="outline" class="mx-2" [disabled]="!isAnyRowSelected">
+                <mat-label>Select Area</mat-label>
+                <mat-select [(ngModel)]="area" (ngModelChange)="onAreaStatusChange()" name="area" required>
+                    <mat-option value="">Select Area</mat-option>
+                    <mat-option value="0">ALL Area</mat-option>
+                    <mat-option *ngFor="let area of areaList" [value]="area.value">{{ area.name }}</mat-option>
+                </mat-select>
+                <mat-error *ngIf="!area">Area is required</mat-error>
+            </mat-form-field>
+
+            <!-- Select Street -->
+            <mat-form-field appearance="outline" class="mx-2" [disabled]="!isAnyRowSelected">
+                <mat-label>Select Street</mat-label>
+                <mat-select [(ngModel)]="street"  name="street" required>
+                    <mat-option value="">Select Street</mat-option>
+                    <mat-option value="0">ALL Street</mat-option>
+                    <mat-option *ngFor="let street of streetList" [value]="street.value">{{ street.name }}</mat-option>
+                </mat-select>
+                <mat-error *ngIf="!street">Street is required</mat-error>
+            </mat-form-field>
+            <div class="mobile mb-3 d-flex justify-content-center align-items-center ">
+                <button class="btn btn-outline-info mx-1" mat-raised-button color="primary" type="button"
+                    [disabled]="!isAnyRowSelected" (click)="updateArea()">
+                    Change AREA
+                </button>
+            </div>
+        </div>
+
+        <div class="row d-flex align-items-center justify-content-center" style="padding: 0.5rem;">
+            <div class="col-12 col-md-12 col-sm-12 mb-3">
+                <div class="title">
+                    <h5>SUBSCRIBER <span style="color: rgb(11, 67, 170);font-size: 20px;font-weight: 600;">-
+                            {{rowData?.length}}</span></h5>
+                </div>
+                <ag-grid-angular #agGrid id="myGrid" domLayout='autoHeight' class="ag-theme-alpine table-class"
+                    rowAnimation [rowSelection]="rowSelection" [gridOptions]="gridOptions" [columnDefs]="columnDefs"
+                    [rowData]="rowData" [rowSelection]="rowSelection" (selectionChanged)="onSelectionChanged()"
+                    (gridReady)="onGridReady($event)" [enableCellTextSelection]="true">
+                </ag-grid-angular>
+            </div>
+           
+        </div>
+    </div>
+
+
+    <div *ngIf="selectedTab === 'lcochange'" class="commission">
+        <div class="col-12 col-md-12 box display justify-content-center align-items-center">
+            <!-- Select LCO -->
+            <mat-form-field appearance="outline" class="w-25 mx-2">
+                <mat-label>Select LCO</mat-label>
+                <mat-select [(ngModel)]="lco" (ngModelChange)="onSubscriberStatusLCOChange()" name="lco" required>
+                    <mat-option value="">Select LCO</mat-option>
+                    <mat-option *ngFor="let lco of lcoList" [value]="lco.value">{{ lco.name }}</mat-option>
+                </mat-select>
+                <mat-error *ngIf="!lco">LCO is required</mat-error>
+            </mat-form-field>
+
+            <!-- Select Area -->
+            <mat-form-field appearance="outline" class="mx-2">
+                <mat-label>Select Area</mat-label>
+                <mat-select [(ngModel)]="area" (ngModelChange)="onAreaStatusLCOChange()" name="area" required>
+                    <mat-option value="">Select Area</mat-option>
+                    <mat-option *ngFor="let area of areaList" [value]="area.value">{{ area.name }}</mat-option>
+                </mat-select>
+                <mat-error *ngIf="!area">Area is required</mat-error>
+            </mat-form-field>
+
+            <!-- Select Street -->
+            <mat-form-field appearance="outline" class="mx-2">
+                <mat-label>Select Street</mat-label>
+                <mat-select [(ngModel)]="street" (ngModelChange)="onSubscriberStreetLCOChange()" name="street" required>
+                    <mat-option value="">Select Street</mat-option>
+                    <mat-option *ngFor="let street of streetList" [value]="street.value">{{ street.name }}</mat-option>
+                </mat-select>
+                <mat-error *ngIf="!street">Street is required</mat-error>
+            </mat-form-field>
+        </div>
+
+        <div class="row d-flex align-items-center justify-content-center" style="padding: 0.5rem;">
+            <div class="col-12 col-md-12 col-sm-12 mb-3">
+                <div class="title">
+                    <h5>SUBSCRIBER <span style="color: rgb(11, 67, 170);font-size: 20px;font-weight: 600;">-
+                            {{rowData?.length}}</span></h5>
+                </div>
+                <ag-grid-angular #agGrid id="myGrid" domLayout='autoHeight' class="ag-theme-alpine table-class"
+                    rowAnimation [rowSelection]="rowSelection" [gridOptions]="gridOptions" [columnDefs]="columnDefs"
+                    [rowData]="rowData" [rowSelection]="rowSelection" (selectionChanged)="onSelectionChanged()"
+                    (gridReady)="onGridReady($event)" [enableCellTextSelection]="true">
+                </ag-grid-angular>
+            </div>
+            <div class="mobile mb-3 d-flex justify-content-center align-items-center ">
+                <button class="btn btn-outline-info mx-1" mat-raised-button color="primary" type="button"
+                    [disabled]="!isAnyRowSelected" (click)="change('lcochange')">
+                    Change LCO
+                </button>
+            </div>
+        </div>
+    </div>
+</section>

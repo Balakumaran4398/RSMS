@@ -428,13 +428,13 @@
                             </div>
                             <div class="col-12 col-md-12 display_btn1">
                                 <div class="col-12 col-md-6 d-flex justify-content-center align-items-center  text3"
-                                    *ngIf="!deactive">
+                                    *ngIf="deactive">
                                     <button class="btn  d-flex justify-content-between " [disabled]="!activation"
                                         (click)="openDialog('activation')">
                                         <i class="fa-brands fa-slack"></i><span>Activation</span></button>
                                 </div>
                                 <div class="col-12 col-md-6 d-flex justify-content-center align-items-center  text3"
-                                    *ngIf="deactive">
+                                    *ngIf="!deactive">
                                     <button class="btn  d-flex justify-content-between" [disabled]="!deactive"
                                         (click)="openDialog('deactive')">
                                         <i class="fa fa-times"></i><span>De-Activation</span></button>

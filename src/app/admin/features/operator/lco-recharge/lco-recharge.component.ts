@@ -31,6 +31,12 @@ export class LcoRechargeComponent {
     })
   }
 
+  ngOnInit() {
+    this.form = this.fb.group({
+      userid: ['', Validators.required],  // username is required
+      password: ['', Validators.required], // password is required
+    });
+  }
   submit() {
     if (this.form.valid) {
       const { userid, password } = this.form.value;
@@ -46,29 +52,25 @@ export class LcoRechargeComponent {
             timer: 1000,
             showConfirmButton: false
           }).then(() => {
-            // this.isLoggedIn = true;
-            if (role === 'ROLE_USER' || role === 'ROLE_RECEPTION' ) {
+            if (role === 'ROLE_USER' || role === 'ROLE_RECEPTION') {
               this.router.navigate(['admin/lcorecharge']).then(() => {
                 console.log('Navigated to lcorecharge page');
               });
             }
-            // if (role === 'ROLE_USER') {
-            //   this.router.navigate(['admin/lcorecharge']).then(() => {
-            //     console.log('Navigated to lcorecharge page');
-            //   });
-            // }
           });
         },
         (error: any) => {
           Swal.fire({
             title: 'Login Failed',
-            text: error?.error.message || 'Please check your credentials and try again.',
+            text: error?.error?.message || 'Username or password is incorrect. Please try again.',
             icon: 'error',
             confirmButtonText: 'Retry'
           });
+          console.log('Error:', error?.error?.message);
         }
       );
-    } else {
+    }
+    else {
       Swal.fire({
         title: 'Invalid Form',
         text: 'Please fill in all required fields.',
@@ -92,17 +94,11 @@ export class LcoRechargeComponent {
       cancelButtonText: 'Cancel'
     }).then((result) => {
       if (result.isConfirmed) {
-        // If OK is clicked
         if (role === 'ROLE_USER' || role === 'ROLE_RECEPTION') {
           this.router.navigate(['admin/home']).then(() => {
           });
         }
-        // if (role === 'ROLE_RECEPTION') {
-        //   this.router.navigate(['admin/home']).then(() => {
-        //   });
-        // }
       } else if (result.dismiss === Swal.DismissReason.cancel) {
-        // If Cancel is clicked
         this.router.navigate(['admin/lco_recharge']).then(() => {
         });
       }

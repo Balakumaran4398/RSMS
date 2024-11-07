@@ -118,3 +118,11 @@
     }
 
 }
+
+.gridtable {
+    ::ng-deep .ag-header {}
+
+    ::ng-deep .ag-header {
+        max-height: 200px;
+    }
+}

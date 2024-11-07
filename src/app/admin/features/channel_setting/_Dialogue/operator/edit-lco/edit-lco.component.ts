@@ -50,9 +50,11 @@ export class EditLcoComponent {
       this.mail = data.mail,
       this.nameheader = data.nameheader,
       this.paymentid = data.paymentid,
-      this.lcobusinessid = data.lcobusinessid,
-      this.password = data.password,
+      // this.lcobusinessid = data.lcobusinessid,
+      this.lcobusinessid = data.lcobusinessid || 0;
+     this.password = data.password,
       this.userid = data.userid
+
 
   }
   toggleedit() {
@@ -150,15 +152,15 @@ export class EditLcoComponent {
     const missingFields = Object.keys(requestbody);
 
     // If there are missing fields, show validation error and stop
-    if (missingFields.length > 0) {
-      Swal.fire({
-        title: 'Error!',
-        text: `The following fields are required: ${missingFields.join(', ')}`,
-        icon: 'error',
-        confirmButtonText: 'OK',
-      });
-      return;
-    }
+    // if (missingFields.length > 0) {
+    //   Swal.fire({
+    //     title: 'Error!',
+    //     text: `The following fields are required: ${missingFields.join(', ')}`,
+    //     icon: 'error',
+    //     confirmButtonText: 'OK',
+    //   });
+    //   return;
+    // }
 
     // If all fields are present, proceed with the API call
     this.userService.EditOperator(requestbody).subscribe(

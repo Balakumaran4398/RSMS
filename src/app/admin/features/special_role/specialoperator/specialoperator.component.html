@@ -30,7 +30,7 @@
     <div class="" style="grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); display: grid; gap: 10px; ">
         <!-- <span class="k col-12 col-md-4" *ngFor="let operator of operator_details"> -->
         <div *ngFor="let operator of operator_details">
-            <mat-card class=" " style="height: 100%;">
+            <mat-card class=" " style="height: 100%;width: min-content;">
                 <mat-card-header>
                     <mat-card-subtitle class="sub-tittle mb-3">
                         {{operator?.operatorname || 'empty'}} [ {{operator?.balance}}]
@@ -124,7 +124,7 @@
                             <!-- <p class="sub-text">Expired</p> -->
                             <span style="color: #0e610b;">
                                 <div class="circle" style="background-color: rgb(202, 9, 9);"><span
-                                        class="circle-text">{{operator?.connectioncount}}</span></div>
+                                        class="circle-text">{{operator?.expiredcount}}</span></div>
                             </span>
                             <span class="tooltip">Expired</span>
                         </div>
@@ -199,7 +199,7 @@
                             <div class="files mx-2">
                                 <a (click)="navgetTosublcoUrl(operator.operatorid)" class="tooltip-container">
                                     <!-- <img src="../assets/images/icons/dashboard_icon.png" alt="Dashboard"> -->
-                                    <i class='bx bx-sm bxs-user-pin'
+                                    <i class='fa-solid fa-people-group'
                                         style="font-size:25px;color:var(--primary-color)"></i>
                                     <span class="tooltip">TO CLICK SUBLCO DETAILS</span>
                                 </a>

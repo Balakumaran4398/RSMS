@@ -1,96 +1,107 @@
-.head {
-    padding: 13px;
-    background-color: lightcyan;
-    height: 50px;
+// .head {
+//     padding: 13px;
+//     background-color: lightcyan;
+//     height: 50px;
+// }
+
+// .head span {
+//     color: var(--primary-color);
+//     font-size: 17px;
+//     text-transform: uppercase;
+//     font-weight: bold;
+// }
+
+// .close-icon {
+//     font-size: 19px;
+//     cursor: pointer;
+// }
+
+// .close-icon:hover {
+//     background-color: var(--primary-color);
+//     font-size: 17px;
+//     padding: 2px;
+//     margin: 0;
+//     color: white;
+//     border-radius: 10px;
+// }
+
+// .lco {
+//     padding: 20px;
+// }
+
+// .btn-infos {
+//     background-color: rgb(134, 238, 252);
+//     border: 1px solid rgb(6, 4, 136);
+//     color: rgb(10, 0, 0);
+//     padding: 3px;
+//     width: 5rem;
+//     height: 30px;
+// }
+
+// .btn-infos:hover,
+// .btn-success:hover {
+//     color: rgb(209, 10, 43);
+// }
+
+// /* Custom styles if needed */
+// .head {
+//     font-size: 1.2rem;
+//     /* Adjust font size as needed */
+// }
+
+// .close-icon {
+//     cursor: pointer;
+// }
+
+// .lco {
+//     max-width: 500px;
+//     /* Optionally set a max width */
+//     margin: 0 auto;
+//     /* Center align the section */
+// }
+
+// .form-control {
+//     flex: 1;
+//     /* Allows the input to grow and fill available space */
+//     max-width: 300px;
+//     /* Optionally set a max width */
+// }
+
+// .btn-infos {
+//     white-space: nowrap;
+//     /* Prevent button text from wrapping */
+// }
+
+// @media (max-width: 576px) {
+//     .head {
+//         font-size: 1rem;
+//     }
+
+//     .lco {
+//         flex-direction: column;
+//         align-items: stretch;
+//     }
+
+//     .form-control {
+//         width: 100%;
+//     }
+
+//     .btn-infos {
+//         width: 50%;
+//     }
+
+//     .btn-infos {
+//         margin-top: 1rem;
+//     }
+// }
+
+
+.display {
+    display: flex;
 }
 
-.head span {
-    color: var(--primary-color);
-    font-size: 17px;
-    text-transform: uppercase;
-    font-weight: bold;
-}
-
-.close-icon {
-    font-size: 19px;
-    cursor: pointer;
-}
-
-.close-icon:hover {
-    background-color: var(--primary-color);
-    font-size: 17px;
-    padding: 2px;
-    margin: 0;
-    color: white;
-    border-radius: 10px;
-}
-
-.lco {
-    padding: 20px;
-}
-
-.btn-infos {
-    background-color: rgb(134, 238, 252);
-    border: 1px solid rgb(6, 4, 136);
-    color: rgb(10, 0, 0);
-    padding: 3px;
-    width: 5rem;
-    height: 30px;
-}
-
-.btn-infos:hover,
-.btn-success:hover {
-    color: rgb(209, 10, 43);
-}
-
-/* Custom styles if needed */
-.head {
-    font-size: 1.2rem;
-    /* Adjust font size as needed */
-}
-
-.close-icon {
-    cursor: pointer;
-}
-
-.lco {
-    max-width: 500px;
-    /* Optionally set a max width */
-    margin: 0 auto;
-    /* Center align the section */
-}
-
-.form-control {
-    flex: 1;
-    /* Allows the input to grow and fill available space */
-    max-width: 300px;
-    /* Optionally set a max width */
-}
-
-.btn-infos {
-    white-space: nowrap;
-    /* Prevent button text from wrapping */
-}
-
-@media (max-width: 576px) {
-    .head {
-        font-size: 1rem;
-    }
-
-    .lco {
-        flex-direction: column;
-        align-items: stretch;
-    }
-
-    .form-control {
-        width: 100%;
-    }
-
-    .btn-infos {
-        width: 50%;
-    }
-
-    .btn-infos {
-        margin-top: 1rem;
+@media screen and (max-width:560px) {
+    .display {
+        display: block;
     }
 }

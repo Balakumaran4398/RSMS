@@ -7,8 +7,8 @@
         </div>
         <div class="display align-item-center">
             <div class="col-12 col-md-12 display_mobile">
-                <div class="col-12 col-md-5 mx-2 mb-3">
-                    <div class="mb-2" style="padding: 2rem;background-color: #405a51;">
+                <div class="col-12 col-sm-12 col-md-3 mx-2 mb-3">
+                    <div class="mb-2" style="padding: 0.5rem;background-color: #213d4d;">
                         <h5 style="color: white;font-weight: 600;">LCO DETAILS </h5>
                     </div>
                     <div class="card ">
@@ -21,26 +21,26 @@
                                 <div class="d-flex">
                                     <div class="col-5 col-md-5 d-flex justify-content-start align-items-center "
                                         style="padding: 0.5rem;">
-                                        <h5 style="color: rgb(29, 58, 42);">OPERATOR NAME
-                                        </h5>
+                                        <p style="color: rgb(29, 58, 42);">OPERATOR NAME
+                                        </p>
                                     </div>
                                     <div class="col-1 col-md-1 d-flex justify-content-start align-items-center ">
-                                        <h6>:</h6>
+                                        <p>:</p>
                                     </div>
                                     <div class="col-6 col-md-8 display1 justify-content-start align-items-center ">
-                                        <h5 style="color: rgb(41, 43, 42);">{{operatorname}}</h5>
+                                        <p style="color: rgb(41, 43, 42);">{{operatorname}}</p>
                                     </div>
                                 </div>
                                 <div class="d-flex">
                                     <div class="col-5 col-md-5 d-flex justify-content-start align-items-center "
                                         style="padding: 0.5rem;">
-                                        <h5 style="color: rgb(29, 58, 42);">Mobile </h5>
+                                        <p style="color: rgb(29, 58, 42);">Mobile </p>
                                     </div>
                                     <div class="col-1 col-md-1 d-flex justify-content-start align-items-center ">
-                                        <h6>:</h6>
+                                        <p>:</p>
                                     </div>
                                     <div class="col-6 col-md-8 display1 justify-content-start align-items-center ">
-                                        <h5 style="color: rgb(41, 43, 42);">{{mobile }}</h5>
+                                        <p style="color: rgb(41, 43, 42);">{{mobile }}</p>
                                     </div>
                                 </div>
                             </div>
@@ -82,7 +82,7 @@
                                 <div class="col-1 col-md-1 d-flex justify-content-center align-items-center mb-1 text2">
                                     : </div>
                                 <div class="col-7 col-md-6 d-flex justify-content-start align-items-center">
-                                    {{address }}
+                                    {{address }},{{area}},{{state}}
                                 </div>
                             </div>
                             <div class="d-flex">
@@ -97,16 +97,19 @@
                         </div>
                     </div>
                 </div>
-                <div class=" col-12 col-md-6 mx-2 mb-3">
+                <div class=" col-12  col-sm-12 col-md-4 mx-2 mb-3">
+                    <div class="mb-2" style="padding: 0.5rem;background-color: #213d4d;">
+                        <h5 style="color: white;font-weight: 600;">Packagewise Recharge Amount </h5>
+                    </div>
                     <div class="card">
-                        <h4 style="text-align: center;">Packagewise Recharge Amount</h4>
+                        <!-- <h4 style="text-align: center;">Packagewise Recharge Amount</h4> -->
                         <!-- <br> -->
                         <p style="text-align: center;color: rgb(250, 81, 95);">This chart shows package-wise total
                             recharged amount of the current year</p>
                         <div class="line mb-2"></div>
-                        <div class=" input_box display_mobile justify-content-end align-item-center mb-2">
-                            <div class="col-12 col-md-3 ">
-                                <span for="">SELECT PACKAGE</span>
+                        <div class=" input_box justify-content-end align-item-center mb-2">
+                            <div class="col-12 col-md-4 d-flex  justify-content-center align-items-center">
+                                <span for="">SELECT PACKAGE </span>
                             </div>
                             <div class="col-12 col-md-4">
                                 <!-- <select name="packages" id="packages" (change)="onPackageSelect()">
@@ -137,13 +140,14 @@
                                     aria-hidden="true"></i>{{Totalamount}}</span> </h4>
                     </div>
                 </div>
-            </div>
-            <div class="col-12 col-md-12 display_mobile">
-                <div class="col-12 col-md-6  mb-3 mx-2">
+                <div class="col-12  col-sm-12 col-md-5  mb-3 mx-2">
+                    <div class="mb-2" style="padding: 0.5rem;background-color: #213d4d;">
+                        <h5 style="color: white;font-weight: 600;">AREA DETAILS </h5>
+                    </div>
                     <div class="card">
-                        <div class="col-12 col-md-12 display_mobile justify-content-between align-item-center mb-1"
+                        <div class="col-12 col-md-12  justify-content-between align-item-center mb-1"
                             style="padding: 10px;">
-                            <h6 style="text-align: center;"> AREA DETAILS</h6>
+                            <!-- <h6 style="text-align: center;color:#405a51"> AREA DETAILS</h6> -->
                             <span class="sub-tittle tittle1">
                                 <button type="button" class="btn btn-success me-2"
                                     (click)="newArea('area')">New</button>
@@ -159,10 +163,35 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-12 col-md-5 mx-2 mb-3">
-                    <div class="card ">
-                        <h4 style="text-align: center;">Packagewise Recharge Count</h4>
-                        <br>
+            </div>
+            <div class="col-12   col-md-12 display_mobile">
+                <!-- <div class="col-12 col-md-6  mb-3 mx-2">
+                    <div class="card">
+                        <div class="col-12 col-md-12 display_mobile justify-content-between align-item-center mb-1"
+                            style="padding: 10px;">
+                            <h6 style="text-align: center;color:#405a51"> AREA DETAILS</h6>
+                            <span class="sub-tittle tittle1">
+                                <button type="button" class="btn btn-success me-2"
+                                    (click)="newArea('area')">New</button>
+                            </span>
+                        </div>
+                        <div class="col-12 col-md-12 mb-3">
+                            <ag-grid-angular #agGrid id="myGrid" style="text-align: center;" domLayout='autoHeight'
+                                class="ag-theme-alpine table-class" rowAnimation [gridOptions]="gridOptions"
+                                [columnDefs]="columnDefs" [rowSelection]="rowSelection"
+                                (selectionChanged)="onSelectionChanged()" (gridReady)="onGridReady($event)"
+                                [rowData]="rowData" [enableCellTextSelection]="true">
+                            </ag-grid-angular>
+                        </div>
+                    </div>
+                </div> -->
+                <div class="col-12 col-md-12 mx-2 mb-3">
+                    <div class="mb-2" style="padding: 0.5rem;background-color: #213d4d;">
+                        <h5 style="color: white;font-weight: 600;">Packagewise Recharge Count </h5>
+                    </div>
+                    <div class="card1 ">
+                        <!-- <h4 style="text-align: center;">Packagewise Recharge Count</h4>
+                        <br> -->
                         <p style="text-align: center;color: rgb(250, 81, 95);">This chart shows package wise recharged
                             count of current year
                         </p>

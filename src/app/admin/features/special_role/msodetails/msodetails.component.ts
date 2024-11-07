@@ -60,16 +60,14 @@ export class MsodetailsComponent implements OnInit {
 
 
 
-  openDialogue(data: any) {
+  openDialogue(event: any) {
     let dialogData = { data: this.msodetails };
+    console.log(dialogData);
     const dialogRef = this.dialog.open(EditmsoComponent, {
       width: '800px',
       panelClass: 'custom-dialog-container',
       data: dialogData
     });
-    console.log(dialogData);
-
-
     dialogRef.afterClosed().subscribe(result => {
       console.log('The dialog was closed');
     });

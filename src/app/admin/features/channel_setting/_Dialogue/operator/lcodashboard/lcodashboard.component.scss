@@ -41,6 +41,24 @@ label {
 
 .card {
     width: 100%;
+    height: 90%;
+    border: none;
+    outline: none;
+    border-radius: 5px;
+    box-shadow: 0px 0px 0px 3px rgba(0, 0, 0, 0.1);
+    background-color: #f6f8fa;
+    font-family: 'Poppins', sans-serif;
+    transition: all 120ms ease-out 0s;
+    padding: 0px 12px;
+    // border-top: 1px solid #6b6d6c;
+    border-bottom: 0.9px solid lightgray;
+    border-left: 0.9px solid lightgray;
+    border-right: 0.9px solid lightgray;
+}
+
+.card1 {
+
+    width: 100%;
     height: 100%;
     border: none;
     outline: none;
@@ -50,7 +68,7 @@ label {
     font-family: 'Poppins', sans-serif;
     transition: all 120ms ease-out 0s;
     padding: 0px 12px;
-    border-top: 1px solid #6b6d6c;
+    // border-top: 1px solid #6b6d6c;
     border-bottom: 0.9px solid lightgray;
     border-left: 0.9px solid lightgray;
     border-right: 0.9px solid lightgray;
@@ -73,44 +91,63 @@ label {
 .display_mobile {
     display: flex;
 }
+
 .display {
     display: block;
 
 }
+
 ::ng-deep .ag-header-viewport {
     text-align: center !important;
     // background: #51586e;
     // background: #b2cfc0;
-    background: var(--primary-color) ;
+    background: var(--primary-color);
 }
 
 ::ng-deep .ag-header-cell-text {
     color: white;
 }
-::ng-deep {
-    .ag-center-cols-viewport {
-        max-height: 220px !important;
-        overflow: scroll;
-    }
-}
+
+// ::ng-deep {
+//     .ag-center-cols-viewport {
+//         max-height: 220px !important;
+//         overflow: scroll;
+//     }
+// }
 @media screen and (max-width:560px) {
     .display_mobile {
         display: block;
     }
+
     .display {
         display: block;
-    
+
     }
 }
+
 @media screen and (max-width:720px) {
     .display_mobile {
         display: block;
     }
+
     .display {
         display: block;
-    
+
     }
 }
+
+@media screen and (max-width:900px) {
+    .display_mobile {
+        display: inline-block;
+        width: 100%;
+    }
+
+    .display {
+        display: block;
+
+    }
+}
+
 ::ng-deep .canvasjs-chart-credit {
     display: none !important;
-  }
+}

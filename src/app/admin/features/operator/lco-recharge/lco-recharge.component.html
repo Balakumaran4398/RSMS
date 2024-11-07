@@ -1,17 +1,25 @@
 <div class="container " *ngIf="!isLoggedIn">
-    <div class="row justify-content-center align-items-center" style="height: 80vh;">
+  <div class="row justify-content-center align-items-center" style="height: 80vh;">
+ 
+    <form class="form" [formGroup]="form">
+      <p class="title">CHECK MSO</p>
+      <input placeholder="Username" class="username input" type="text" formControlName="userid" />
+      <div *ngIf="form.get('userid')?.invalid && form.get('userid')?.touched" class="text-danger">
+        <small>Username is required.</small>
+      </div>
+      <input placeholder="Password" class="password input" type="password" formControlName="password" />
+      <div *ngIf="form.get('password')?.invalid && form.get('password')?.touched" class="text-danger">
+        <small>Password is required.</small>
+      </div>
+      <div class="col-12 col-md-6 d-flex justify-content-between align-items-center" style="gap: 20px;">
+        <button class="btn" type="button" (click)="submit()" [disabled]="form.invalid">
+          Login
+        </button>
+        <button class="btn" type="button" (click)="exit()">Exit</button>
+      </div>
+    </form>
 
-
-        <form class="form" action="" [formGroup]="form">
-            <p class="title">CHECK MSO</p>
-            <input placeholder="Username" class="username input" type="text" formControlName="userid" />
-            <input placeholder="Password" class="password input" type="password" formControlName="password" />
-            <div class="col-12 col-md-6 d-flex justify-content-between align-item-center" style="gap: 20px;">
-                <button class="btn" type="button" (click)="submit()">Login</button>
-                <button class="btn" type="button" (click)="exit()">Exit</button>
-            </div>
-        </form>
-    </div>
+  </div>
 </div>
 
 <!-- <app-lco-recharge-report *ngIf="isLoggedIn"></app-lco-recharge-report> -->

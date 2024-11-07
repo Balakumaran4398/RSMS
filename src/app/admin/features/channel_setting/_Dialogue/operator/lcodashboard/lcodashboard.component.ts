@@ -27,11 +27,15 @@ export class LcodashboardComponent implements OnInit {
   address: any;
   pincode: any;
   password: any;
+  area: any;
+  state: any;
   Totalamount: any;
   gridOptions = {
     defaultColDef: {
 
     },
+    paginationPageSize: 5,
+    pagination: true,
   }
 
   editingRow: any;
@@ -75,6 +79,8 @@ export class LcodashboardComponent implements OnInit {
         this.mailid = this.dialogData.detailsList.mail;
         this.userid = this.dialogData.detailsList.userid;
         this.address = this.dialogData.detailsList.address;
+        this.area = this.dialogData.detailsList.area;
+        this.state = this.dialogData.detailsList.state;
         this.pincode = this.dialogData.detailsList.pincode;
         this.password = this.dialogData.detailsList.password;
       } else {
@@ -95,6 +101,169 @@ export class LcodashboardComponent implements OnInit {
       this.Areaid = data.find((item: any) => item)?.id;
     })
   }
+
+  // barChart() {
+  //   this.userservice.getPackagewiseRechargeDetailsforBarchart(this.role, this.username, this.operatorid)
+  //     .subscribe((Data: any) => {
+  //       console.log(Data);
+  //       if (!Data || Data.length === 0) {
+  //         console.error('No data returned from API');
+  //         return;
+  //       }
+  //       this.chartOptions1 = {
+  //         animationEnabled: true,
+  //         showInLegend: true,
+  //         axisX: {
+  //           labelAngle: 0,
+  //           title: "Month",
+  //           grid: {
+  //             display: false
+  //           }
+  //         },
+  //         axisY: {
+  //           title: "Recharge Count",
+  //           gridThickness: 0,
+  //         },
+  //         toolTip: {
+  //           shared: true
+  //         },
+  //         legend: {
+  //           cursor: "pointer",
+  //           itemclick: function (e: any) {
+  //             if (typeof (e.dataSeries.visible) === "undefined" || e.dataSeries.visible) {
+  //               e.dataSeries.visible = false;
+  //             } else {
+  //               e.dataSeries.visible = true;
+  //             }
+  //             e.chart.render();
+  //           }
+  //         },
+  //         data: [
+  //           {
+  //             type: "column",
+  //             name: "Base Package",
+  //             legendText: "Base Package",
+  //             // showInLegend: true,
+  //             dataPoints: this.transformDataToDataPoints(Data?.baselist, "#2fd6c8")
+  //           },
+  //           {
+  //             type: "column",
+  //             name: "Addon Package",
+  //             legendText: "Addon Package",
+  //             // showInLegend: true,
+  //             dataPoints: this.transformDataToDataPoints(Data?.addonlist, "#3c8680")
+  //           },
+  //           {
+  //             type: "column",
+  //             name: "Alacarte Package",
+  //             legendText: "Alacarte Package",
+  //             // showInLegend: true,
+  //             dataPoints: this.transformDataToDataPoints(Data?.alacartelist, "#1b5849")
+  //           }
+  //         ]
+  //       };
+  //     });
+  // }
+
+  // transformDataToDataPoints(data: any, color: string): any[] {
+
+  //   const monthOrder = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+
+  //   if (!data || typeof data !== 'object' || Object.keys(data).length === 0) {
+  //     console.warn('Data is not valid for transformation:', data);
+  //     return [];
+  //   }
+
+
+  //   return monthOrder.map(month => ({
+  //     label: month,
+  //     y: data[month],
+  //     color: color
+  //   }));
+  // }
+
+
+  // barChart() {
+  //   this.userservice.getPackagewiseRechargeDetailsforBarchart(this.role, this.username, this.operatorid)
+  //     .subscribe((Data: any) => {
+  //       console.log(Data);
+  //       if (!Data || Data.length === 0) {
+  //         console.error('No data returned from API');
+  //         return;
+  //       }
+  //       this.chartOptions1 = {
+  //         animationEnabled: true,
+  //         showInLegend: true,
+  //         axisX: {
+  //           labelAngle: 0,
+  //           title: "Month",
+  //           grid: {
+  //             display: false
+  //           }
+  //         },
+  //         axisY: {
+  //           title: "Recharge Count",
+  //           gridThickness: 0,
+  //         },
+  //         toolTip: {
+  //           shared: true
+  //         },
+  //         legend: {
+  //           cursor: "pointer",
+  //           itemclick: function (e: any) {
+  //             if (typeof (e.dataSeries.visible) === "undefined" || e.dataSeries.visible) {
+  //               e.dataSeries.visible = false;
+  //             } else {
+  //               e.dataSeries.visible = true;
+  //             }
+  //             e.chart.render();
+  //           },
+  //           verticalAlign: "top", // Vertically aligns the legend at the top of the chart
+  //           horizontalAlign: "left", // Horizontally aligns the legend to the left
+  //           itemMaxWidth: 150, // Ensures that the legend items do not overflow
+  //         },
+  //         data: [
+  //           {
+  //             type: "column",
+  //             name: "Base Package",
+  //             legendText: "Base Package",
+  //             dataPoints: this.transformDataToDataPoints(Data?.baselist, "#2fd6c8")
+  //           },
+  //           {
+  //             type: "column",
+  //             name: "Addon Package",
+  //             legendText: "Addon Package",
+  //             dataPoints: this.transformDataToDataPoints(Data?.addonlist, "#3c8680")
+  //           },
+  //           {
+  //             type: "column",
+  //             name: "Alacarte Package",
+  //             legendText: "Alacarte Package",
+  //             dataPoints: this.transformDataToDataPoints(Data?.alacartelist, "#1b5849")
+  //           }
+  //         ]
+  //       };
+  //     });
+  // }
+
+  // transformDataToDataPoints(data: any, color: string): any[] {
+  //   const monthOrder = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+
+  //   if (!data || typeof data !== 'object' || Object.keys(data).length === 0) {
+  //     console.warn('Data is not valid for transformation:', data);
+  //     return [];
+  //   }
+
+  //   return monthOrder.map(month => ({
+  //     label: month,
+  //     y: data[month] || 0, // Ensure 0 if data is undefined for that month
+  //     color: color,
+  //     indexLabel: data[month] !== undefined ? data[month].toString() : "0", // Show "0" if no data for that month
+  //     indexLabelPlacement: 'outside', 
+  //     indexLabelFontSize: 16, 
+  //     indexLabelFontColor: '#000000' 
+  //   }));
+  // }
 
   barChart() {
     this.userservice.getPackagewiseRechargeDetailsforBarchart(this.role, this.username, this.operatorid)
@@ -121,38 +290,39 @@ export class LcodashboardComponent implements OnInit {
           toolTip: {
             shared: true
           },
-          legend: {
-            cursor: "pointer",
-            itemclick: function (e: any) {
-              if (typeof (e.dataSeries.visible) === "undefined" || e.dataSeries.visible) {
-                e.dataSeries.visible = false;
-              } else {
-                e.dataSeries.visible = true;
-              }
-              e.chart.render();
-            }
-          },
+          // legend: {
+          //   cursor: "pointer",
+          //   verticalAlign: "top", 
+          //   horizontalAlign: "left",
+          //   itemMaxWidth: 150, 
+          //   fontSize: 14, 
+          //   borderColor: "gray", 
+          //   borderThickness: 1, 
+          //   itemTextFormatter: function (e: any) {
+          //     return e.dataSeries.name; 
+          //   }
+          // },
           data: [
             {
               type: "column",
               name: "Base Package",
               legendText: "Base Package",
-              // showInLegend: true,
-              dataPoints: this.transformDataToDataPoints(Data?.baselist, "#2fd6c8")
+              color: "#014a01",
+              dataPoints: this.transformDataToDataPoints(Data?.baselist, "#014a01")
             },
             {
               type: "column",
               name: "Addon Package",
               legendText: "Addon Package",
-              // showInLegend: true,
-              dataPoints: this.transformDataToDataPoints(Data?.addonlist, "#3c8680")
+              color: "#388a75",
+              dataPoints: this.transformDataToDataPoints(Data?.addonlist, "#388a75")
             },
             {
               type: "column",
               name: "Alacarte Package",
               legendText: "Alacarte Package",
-              // showInLegend: true,
-              dataPoints: this.transformDataToDataPoints(Data?.alacartelist, "#1b5849")
+              color: "#359c9c",
+              dataPoints: this.transformDataToDataPoints(Data?.alacartelist, "#359c9c")
             }
           ]
         };
@@ -160,7 +330,6 @@ export class LcodashboardComponent implements OnInit {
   }
 
   transformDataToDataPoints(data: any, color: string): any[] {
-
     const monthOrder = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
 
     if (!data || typeof data !== 'object' || Object.keys(data).length === 0) {
@@ -168,11 +337,14 @@ export class LcodashboardComponent implements OnInit {
       return [];
     }
 
-
     return monthOrder.map(month => ({
       label: month,
-      y: data[month],
-      color: color
+      y: data[month] || 0,
+      color: color,
+      indexLabel: data[month] !== undefined ? data[month].toString() : "0",
+      indexLabelPlacement: 'outside',
+      indexLabelFontSize: 12,
+      indexLabelFontColor: '#000000'
     }));
   }
 
@@ -271,18 +443,12 @@ export class LcodashboardComponent implements OnInit {
       headerName: 'ACTIVE STATUS', field: 'statusdisplay', width: 170,
       // editable: true,
       cellRenderer: (params: { value: any; data: any }) => {
-        const isEditing = this.editingRow && this.editingRow.id === params.data.id;
-        const color = params.value ? 'red' : 'Green';
-        const text = params.value ? 'Deactive' : 'Active';
-        if (isEditing) {
-          return `
-            <select>
-              <option value="Active" ${!params.value ? 'selected' : ''}>Active</option>
-              <option value="Deactive" ${params.value ? 'selected' : ''}>Deactive</option>
-            </select>`;
-        }
-        return `<span style="color: ${color}">${text}</span>`;
+        const status = params.data?.statusdisplay;
+        const color = status === 'Active' ? 'green' : 'red';
+        const text = status === 'Active' ? 'Active' : 'Deactive';
+        return `<span style="color: ${color}; ">${text}</span>`;
       }
+
     },
     {
       headerName: 'STREET DETAILS', width: 100,

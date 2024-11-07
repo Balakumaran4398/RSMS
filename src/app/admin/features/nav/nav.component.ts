@@ -61,9 +61,9 @@ export class NavComponent implements OnInit, AfterViewInit {
 
   ngOnInit() {
     this.checkDeviceType();
-    setInterval(() => {
-      this.currentTime = new Date();
-    }, 1000);
+    // setInterval(() => {
+    //   this.currentTime = new Date();
+    // }, 1000);
     this.setActive("");
     const sidemenuLinks = document.querySelectorAll('.side-menu li a');
     // const sidedropdownmenuLinks = document.querySelectorAll('.side-menu li ul li a');

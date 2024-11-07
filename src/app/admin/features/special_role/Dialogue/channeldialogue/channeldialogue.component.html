@@ -1,1 +1,196 @@
-<p>channeldialogue works!</p>
+
+<div *ngIf="type =='createlocalchannel'">
+    <div class="Head d-flex justify-content-between align-items-center mb-3" style="padding: 1rem;">
+        <h6>CREATE NEW LOCAL CHANNEL</h6>
+        <i class="fa fa-close close-icon" style="cursor: pointer;" (click)="onClick()"></i>
+    </div>
+
+    <div style="padding: 1rem;">
+        <form [formGroup]="createForm" (ngSubmit)="onSubmit()" novalidate>
+            <!-- Channel Name -->
+            <div class="input_box display align-items-center mb-3">
+                <div class="col-12 col-md-4">
+                    <label for="categoryName" class="me-2">Channel Name</label>
+                </div>
+                <div class="col-12 col-md-1 mobile" >
+                    <span for="categoryName" class="me-2">:</span>
+                </div>
+                <div class="col-12 col-md-7">
+                    <input type="text" formControlName="channelname" placeholder="Enter Channel Name">
+                    <div *ngIf="createForm.get('channelname')?.invalid && createForm.get('channelname')?.touched"
+                        class="text-danger">
+                        Channel Name is required.
+                    </div>
+                </div>
+            </div>
+            <!-- URL -->
+            <div class="input_box display align-items-center mb-3">
+                <div class="col-12 col-md-4">
+                    <label class="me-2">URL</label>
+                </div>
+                <div class="col-12 col-md-1 mobile" >
+                    <span for="categoryName" class="me-2">:</span>
+                </div>
+                <div class="col-12 col-md-7">
+                    <input type="url" formControlName="url" placeholder="Enter URL">
+                    <div *ngIf="createForm.get('url')?.invalid && createForm.get('url')?.touched" class="text-danger">
+                        <div *ngIf="createForm.get('url')?.errors?.['required']">URL is required.</div>
+                        <div *ngIf="createForm.get('url')?.errors?.['pattern']">
+                            Please enter a valid URL (e.g., https://www.example.com).
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Channel Logo -->
+            <div class="input_box display align-items-center mb-3">
+                <div class="col-12 col-md-4">
+                    <label class="me-2">Channel Logo</label>
+                </div>
+                <div class="col-12 col-md-1 mobile" >
+                    <span for="categoryName" class="me-2">:</span>
+                </div>
+                <div class="col-12 col-md-7">
+                    <input type="file" (change)="onFileSelected($event)">
+                    <div *ngIf="fileError" class="text-danger">
+                        Channel Logo is required.
+                    </div>
+                </div>
+            </div>
+            <div class="input_box display align-items-center mb-3">
+                <div class="col-12 col-md-4">
+                    <label class="me-2">CATEGORY</label>
+                </div>
+                <div class="col-12 col-md-1 mobile" >
+                    <span for="categoryName" class="me-2">:</span>
+                </div>
+                <div class="col-12 col-md-7">
+                    <mat-form-field appearance="outline" style="outline: #02422d; margin-top:-0px; width: 100%;">
+                        <mat-select placeholder="Select Category" formControlName="categoryid" [(ngModel)]="categoryid"
+                            [ngClass]="{'has-error': createForm.get('categoryid')?.invalid && createForm.get('categoryid')?.touched}">
+                            <mat-option value="0">Selected category</mat-option>
+                            <mat-option *ngFor="let d of categorylist" [value]="d.id">
+                                {{ d.category }}
+                            </mat-option>
+                        </mat-select>
+                        <div *ngIf="createForm.get('categoryid')?.invalid && createForm.get('required')?.touched"
+                            class="text-danger">
+                            Category is required.
+                        </div>
+                    </mat-form-field>
+                </div>
+            </div>
+            <!-- Submit and Cancel Buttons -->
+            <div class="form-group d-flex justify-content-center align-items-center mb-3">
+                <button type="submit" class="btn btn-success me-2">Create</button>
+                <button type="button" class="btn btn-danger" (click)="onClick()">Cancel</button>
+            </div>
+        </form>
+    </div>
+
+</div>
+<div *ngIf="type =='editlocalchannel'">
+    <div class="Head d-flex justify-content-between align-items-center mb-3" style="padding: 1rem;">
+        <h6>EDIT CAS MASTER DETAILS</h6>
+        <i class="fa fa-close close-icon" style="cursor: pointer;" (click)="onClick()"></i>
+    </div>
+
+    <div style="padding: 1rem;">
+        <form [formGroup]="editform" (ngSubmit)="onEditsubmit()" novalidate>
+            <!-- Channel Name -->
+            <div class="input_box display align-items-center mb-3">
+                <div class="col-12 col-md-4">
+                    <span for="categoryName" class="me-2">Channel Name</span>
+                </div>
+                <div class="col-12 col-md-1 mobile" >
+                    <span for="categoryName" class="me-2">:</span>
+                </div>
+                <div class="col-12 col-md-7">
+                    <input type="text" formControlName="channelname" placeholder="Enter Channel Name"
+                        [(ngModel)]="channelname">
+                    <div *ngIf="editform.get('channelname')?.invalid && editform.get('channelname')?.touched"
+                        class="text-danger">
+                        Channel Name is required.
+                    </div>
+                </div>
+            </div>
+            <!-- URL -->
+            <div class="input_box display align-items-center mb-3">
+                <div class="col-12 col-md-4">
+                    <span class="me-2">URL</span>
+                </div>
+                <div class="col-12 col-md-1 mobile" >
+                    <span for="categoryName" class="me-2">:</span>
+                </div>
+                <div class="col-12 col-md-7">
+                    <input type="url" formControlName="url" placeholder="Enter URL" [(ngModel)]="url">
+                    <div *ngIf="editform.get('url')?.invalid && editform.get('url')?.touched" class="text-danger">
+                        <div *ngIf="editform.get('url')?.errors?.['required']">URL is required.</div>
+                        <div *ngIf="editform.get('url')?.errors?.['pattern']">
+                            Please enter a valid URL (e.g., https://www.example.com).
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Channel Logo -->
+            <div class="input_box display align-items-center mb-3">
+                <div class="col-12 col-md-4">
+                    <span class="me-2">Channel Logo</span>
+                </div>
+                <div class="col-12 col-md-1 mobile" >
+                    <span for="categoryName" class="me-2">:</span>
+                </div>
+                <div class="col-12 col-md-7">
+                    <input type="file" (change)="onFileSelected($event)" [(ngModel)]="channellogo">
+                    <div *ngIf="fileError" class="text-danger">
+                        Channel Logo is required.
+                    </div>
+                </div>
+            </div>
+            <div class="input_box display align-items-center mb-3">
+                <div class="col-12 col-md-4">
+                    <span class="me-2">CATEGORY</span>
+                </div>
+                <div class="col-12 col-md-1 mobile" >
+                    <span for="categoryName" class="me-2">:</span>
+                </div>
+                <div class="col-12 col-md-7">
+                    <mat-form-field appearance="outline" style="outline: #02422d; margin-top:-0px; width: 100%;">
+                        <mat-select placeholder="Select Category" formControlName="categoryid"  [(ngModel)]="categoryid"
+                            [ngClass]="{'has-error': editform.get('categoryid')?.invalid && editform.get('categoryid')?.touched}">
+                            <mat-option *ngFor="let d of categorylist" [value]="d.id">
+                                {{ d.category }}
+                            </mat-option>
+                        </mat-select>
+                        <div *ngIf="editform.get('categoryid')?.invalid && editform.get('required')?.touched"
+                            class="text-danger">
+                            Category is required.
+                        </div>
+                    </mat-form-field>
+                </div>
+
+            </div>
+
+            <div class="input_box display align-items-center mb-3">
+                <div class="col-12 col-md-4">
+                    <span>STATUS</span>
+                </div>
+                <div class="col-12 col-md-7 display justify-content-start align-items-center">
+                    <label class="switch">
+                        <input type="checkbox" [(ngModel)]="isactive" formControlName="isactive">
+                        <span class="slider"></span>
+                    </label>
+                </div>
+            </div>
+
+            <!-- Submit and Cancel Buttons -->
+            <div class="form-group d-flex justify-content-center align-items-center mb-3">
+                <button type="submit" class="btn btn-success me-2">Update</button>
+                <button type="button" class="btn btn-danger" (click)="onClick()">Cancel</button>
+            </div>
+        </form>
+    </div>
+
+</div>
+

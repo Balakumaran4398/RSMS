@@ -12,10 +12,7 @@ import { filter } from 'node_modules1/jszip';
   styleUrls: ['./channeldetails.component.scss']
 })
 export class ChanneldetailsComponent implements OnInit {
-  modellist: any;
   rowData: any;
-  isnew: boolean = false;
-  isdelete: boolean = false;
   public rowSelection: any = "multiple";
 
   gridOptions = {
@@ -44,23 +41,29 @@ export class ChanneldetailsComponent implements OnInit {
   }
   columnDefs: any[] = [
     {
-      headerName: "S.NO", lockPosition: true, valueGetter: 'node.rowIndex+1', headerCheckboxSelection: true,
-      checkboxSelection: true,
+      headerName: "S.NO", lockPosition: true, valueGetter: 'node.rowIndex+1', 
     },
     { headerName: 'CHANNEL NAME', field: 'channelName', width: 250, },
     { headerName: 'URL', field: 'url', width: 350, },
-    { headerName: 'CHANNEL LOGO	', field: 'logo', width: 150, filter: false },
+    { headerName: 'CHANNEL LOGO	', field: 'logo', width: 150, filter: false,
+      cellRenderer: (params: any) => {
+        if (params.value) {
+          return `<img src="${params.value}"  style="width: 100%; height: auto;" />`;
+        }
+        return ''; 
+      }
+     },
     { headerName: 'CATEGORY	', field: 'categoryname', width: 150, },
     {
       headerName: 'IS ACTIVE', field: 'statusdisplay', width: 250,
       cellRenderer: (params: { value: any; data: any }) => {
-        const color = params.value ? 'red' : 'green';
-        const text = params.value ? 'Deactive' : 'Active';
-        return `<span style="color: ${color}; font-weight: bold;">${text}</span>`;
+        const color = params.value ? 'green':'red'  ;
+        const text = params.value ?  'Active': 'Deactive' ;
+        return `<span style="color: ${color};">${text}</span>`;
       }
     },
     {
-      headerName: 'ACTION', minWidth: 140,
+      headerName: 'ACTION', minWidth: 140,filter: false,
       cellRenderer: (params: any) => {
         const editButton = document.createElement('button');
         editButton.innerHTML = '<i class="fa fa-pencil-square" aria-hidden="true"></i>';
@@ -72,7 +75,7 @@ export class ChanneldetailsComponent implements OnInit {
         editButton.style.marginRight = '6px';
         editButton.style.fontSize = "30px";
         editButton.addEventListener('click', () => {
-          this.openaddedlogue('editchanneldetails', params.data);
+          this.openaddedlogue('editlocalchannel', params.data);
         });
         const div = document.createElement('div');
         div.appendChild(editButton);
@@ -104,9 +107,9 @@ export class ChanneldetailsComponent implements OnInit {
   Deactive() { }
   openaddedlogue(type: any, data: any) {
     let width = '500px';
-    if (type === 'new') {
+    if (type === 'createlocalchannel') {
       width = '500px';
-    } else if (type === 'editchanneldetails') {
+    } else if (type === 'editlocalchannel') {
       width = '500px';
     }
     let dialogData = { type: type, data: data, selectedid: this.selectedIds };

@@ -61,6 +61,15 @@ import { SpecialoperatorComponent } from './features/special_role/specialoperato
 import { SublcooperatorComponent } from './features/special_role/Dialogue/sublcooperator/sublcooperator.component';
 import { PackageplanComponent } from './features/special_role/packageplan/packageplan.component';
 import { ChanneldetailsComponent } from './features/special_role/channeldetails/channeldetails.component';
+import { AdsdetailsComponent } from './features/special_role/adsdetails/adsdetails.component';
+import { LoginsettingsComponent } from './features/special_role/loginsettings/loginsettings.component';
+import { TaxComponent } from './features/special_role/tax/tax.component';
+import { ProofComponent } from './features/special_role/proof/proof.component';
+import { SpecialBulkpackageComponent } from './features/special_role/Bulk operaton/special-bulkpackage/special-bulkpackage.component';
+import { SpecialareachangeComponent } from './features/special_role/Bulk operaton/specialareachange/specialareachange.component';
+import { SpecialcancelsubscriptionComponent } from './features/special_role/Bulk operaton/specialcancelsubscription/specialcancelsubscription.component';
+import { SpeciallcochangeComponent } from './features/special_role/Bulk operaton/speciallcochange/speciallcochange.component';
+import { SpeciallcotransferComponent } from './features/special_role/Bulk operaton/speciallcotransfer/speciallcotransfer.component';
 
 
 const routes: Routes = [
@@ -138,6 +147,15 @@ const routes: Routes = [
       { path: 'sublcodashboard/:operatorid', component: SublcooperatorComponent },
       { path: 'Packageplan', component: PackageplanComponent },
       { path: 'channeldetails', component: ChanneldetailsComponent },
+      { path: 'adsdetails', component: AdsdetailsComponent },
+      { path: 'tax', component: TaxComponent },
+      { path: 'proof', component: ProofComponent },
+      { path: 'loginsettings', component: LoginsettingsComponent },
+      { path: 'special_bulk_package', component: SpecialBulkpackageComponent },
+      { path: 'special_area_package', component: SpecialareachangeComponent },
+      { path: 'special_lco_package', component: SpeciallcochangeComponent },
+      { path: 'special_cancel_subscription', component: SpecialcancelsubscriptionComponent },
+      { path: 'special_lcotransfer', component: SpeciallcotransferComponent },
     ]
   }
 ];

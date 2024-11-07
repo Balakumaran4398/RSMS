@@ -6,6 +6,7 @@ import { ColDef } from 'ag-grid-community';
 import { BaseService } from 'src/app/_core/service/base.service';
 import { ExcelService } from 'src/app/_core/service/excel.service';
 import { StorageService } from 'src/app/_core/service/storage.service';
+import { SwalService } from 'src/app/_core/service/swal.service';
 import Swal from 'sweetalert2';
 
 @Component({
@@ -41,7 +42,8 @@ export class AddonActivationComponent {
     { headerName: "PACKAGE NAME", field: 'packagename' },
     { headerName: "ADDING PACKAGE", field: 'packageid' },
     { headerName: "ADDED PACKAGE ID	", field: 'addingpackageid' },
-    { headerName: "STATUS	", field: 'status',
+    {
+      headerName: "STATUS	", field: 'status',
       cellRenderer: (params: any) => {
         const status = params.value;
         if (status === 'Success') {
@@ -52,7 +54,7 @@ export class AddonActivationComponent {
           return `<span style="color: #3235c9; ">${status}</span>`;
         }
       }
-     },
+    },
     { headerName: "REMARKS", field: 'remarks' },
     { headerName: "CREATED DATE	", field: 'createddate' },
     { headerName: "UPDATE DATE", field: 'updateddate' },
@@ -96,7 +98,7 @@ export class AddonActivationComponent {
     //   this.listUser = data;      
     // });
   }
-  constructor(public dialog: MatDialog, private fb: FormBuilder, private userservice: BaseService, private storageService: StorageService, private excelService: ExcelService) {
+  constructor(public dialog: MatDialog, private fb: FormBuilder, private userservice: BaseService,private swal:SwalService, private storageService: StorageService, private excelService: ExcelService) {
     this.form = this.fb.group({
       billingAddressCheckbox: [false]
 
@@ -122,21 +124,20 @@ export class AddonActivationComponent {
   getData() {
     this.userservice.getBulkOperationListByDate(this.role, this.username, 'addon_add', this.date, 4)
       .subscribe(
-        (response: HttpResponse<any[]>) => {
+        (response: HttpResponse<any[]>) => { // Expect HttpResponse<any[]>
           if (response.status === 200) {
+
             this.rowData = response.body;
-            Swal.fire('Success', 'Data updated successfully!', 'success');
+            this.swal.Success_200();
           } else if (response.status === 204) {
-            this.rowData = [];
-            Swal.fire('No Content', 'No data available for the given criteria.', 'info');
-            
+            this.swal.Success_204();
           }
         },
         (error) => {
           if (error.status === 400) {
-            Swal.fire('Error 400', 'Bad Request. Please check the input.', 'error');
+            this.swal.Error_400();
           } else if (error.status === 500) {
-            Swal.fire('Error 500', 'Internal Server Error. Please try again later.', 'error');
+            this.swal.Error_500();
           } else {
             Swal.fire('Error', 'Something went wrong. Please try again.', 'error');
           }
@@ -145,20 +146,21 @@ export class AddonActivationComponent {
   }
   refresh() {
     this.userservice.getBulkOperationRefreshList(this.role, this.username, 'addon_add', 4)
-      .subscribe(
+     .subscribe(
         (response: HttpResponse<any[]>) => { // Expect HttpResponse<any[]>
           if (response.status === 200) {
+
             this.rowData = response.body;
-            Swal.fire('Success', 'Data updated successfully!', 'success');
+            this.swal.Success_200();
           } else if (response.status === 204) {
-            Swal.fire('No Content', 'No data available for the given criteria.', 'info');
+            this.swal.Success_204();
           }
         },
         (error) => {
           if (error.status === 400) {
-            Swal.fire('Error 400', 'Bad Request. Please check the input.', 'error');
+            this.swal.Error_400();
           } else if (error.status === 500) {
-            Swal.fire('Error 500', 'Internal Server Error. Please try again later.', 'error');
+            this.swal.Error_500();
           } else {
             Swal.fire('Error', 'Something went wrong. Please try again.', 'error');
           }

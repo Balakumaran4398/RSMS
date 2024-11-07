@@ -25,8 +25,9 @@ export class NewstreetComponent {
     this.editstreetname = data?.data?.name;
     this.type = data.type;
     this.areaid = data?.areaid;
-    this.isdelete = data?.isdelete;
-   
+    this.isdelete =data?.data?.isdelete;
+    console.log(this.isdelete);
+
     this.username = storageservice.getUsername();
     this.role = storageservice.getUserRole();
   }
@@ -67,7 +68,7 @@ export class NewstreetComponent {
     this.userservice.updateStreet(requestBody).subscribe((res: any) => {
       this.swal.success(res?.message);
     }, (err) => {
-      this.swal.Error(err?.error?.message);
+      this.swal.Error(err?.error?.message || err?.error?.isdelete);
     });
   }
 }

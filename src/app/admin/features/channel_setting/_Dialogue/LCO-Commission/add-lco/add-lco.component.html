@@ -1,62 +1,100 @@
-<section class="col-12">
-    <div class="Head d-flex justify-content-between align-items-center mb-3" style="padding: 1rem;">
-        <h6>ADD PRODUCT / COMMISSION MEMBERSHIP</h6>
-        <i class="fa fa-close close-icon" style="cursor: pointer;" (click)="onNoClick()"></i>
-    </div>
-    <div class="add mb-3">
-        <div class="input_box col-12 col-md-6 display justify-content-center align-items-start mb-3 gap-3">
-            <div class="add col-12 col-md-3 mb-2">
-                <span class="d-block mb-2 mb-sm-0" style="color: rgb(2, 8, 102);font-size: 15px;">SELECT</span>
+
+<div *ngIf="type==='commission'">
+    <section class="col-12">
+        <div class="Head d-flex justify-content-between align-items-center mb-3" style="padding: 1rem;">
+            <h6>ADD PRODUCT /LCO COMMISSION MEMBERSHIP</h6>
+            <i class="fa fa-close close-icon" style="cursor: pointer;" (click)="onNoClick()"></i>
+        </div>
+        <div class="add mb-3">
+            <div class="input_box col-12 col-md-6 display justify-content-center align-items-start mb-3 gap-3">
+                <div class="add col-12 col-md-3 mb-2">
+                    <span class="d-block mb-2 mb-sm-0" style="color: rgb(2, 8, 102);font-size: 15px;">SELECT</span>
+                </div>
+                <div class="d-block col-12 col-md-4 mb-2">
+                    <span class="d-block mb-2" style="color: rgb(2, 8, 102);font-size: 15px;">PRODUCT</span>
+                    <select aria-label="Select Product Type" [(ngModel)]="producttype"
+                        (change)="onproducttypechange($event)">
+                        <option value="1">BASE</option>
+                        <option value="2">ADDON</option>
+                    </select>
+                </div>
+                <div class="d-block col-12 col-md-4 mb-2">
+                    <span class="d-block mb-2" style="color: rgb(2, 8, 102);font-size: 15px;">MEMBERSHIP</span>
+                    <select style="color: rgb(17, 0, 0);" [(ngModel)]="lcogroupid"
+                        (change)="getproductMembershipList($event)">
+                        <option value="0" selected style="color: rgb(19, 17, 17);">Select Membership </option>
+                        <option *ngFor="let lcomember of lcomembershipList" [value]="lcomember.value">{{
+                            lcomember.name}}</option>
+                    </select>
+                </div>
             </div>
-            <div class="d-block col-12 col-md-4 mb-2">
-                <span class="d-block mb-2" style="color: rgb(2, 8, 102);font-size: 15px;">PRODUCT</span>
-                <select aria-label="Select Product Type" [(ngModel)]="producttype"
-                    (change)="onproducttypechange($event)">
-                    <!-- <option value="0" selected>Select Product Type</option> -->
-                    <option value="1">BASE</option>
-                    <option value="2">ADDON</option>
-                </select>
-            </div>
-            <div class="d-block col-12 col-md-4 mb-2">
-                <span class="d-block mb-2" style="color: rgb(2, 8, 102);font-size: 15px;">MEMBERSHIP</span>
-                <select style="color: rgb(17, 0, 0);" [(ngModel)]="lcogroupid"
-                    (change)="getproductMembershipList($event)">
-                    <option value="0" selected style="color: rgb(19, 17, 17);">Select Membership </option>
-                    <option *ngFor="let lcomember of lcomembershipList" [value]="lcomember.value">{{
-                        lcomember.name}}</option>
-                </select>
+            <div class="card " style="border: 1px solid lightgray;" style="height: 600px;">
+                <div class="head d-flex justify-content-center align-items-center mb-3">
+                    <span>AVAILABLE PRODUCT FOR MEMBERSHIP</span>
+                </div>
+                <ag-grid-angular #agGrid id="myGrid" style="text-align: center;" domLayout='autoHeight'
+                    [rowSelection]="rowSelection" class="ag-theme-alpine table-class" rowAnimation
+                    [gridOptions]="gridOptions" [columnDefs]="columnDefs" (selectionChanged)="onSelectionChanged()"
+                    (gridReady)="onGridReady($event)" [rowData]="rowData" [enableCellTextSelection]="true">
+                </ag-grid-angular>
             </div>
         </div>
-        <div class="card " style="border: 1px solid lightgray;" style="height: 600px;">
-            <div class="head d-flex justify-content-center align-items-center mb-3">
-                <span>AVAILABLE PRODUCT FOR MEMBERSHIP</span>
+        <div class="col d-flex justify-content-center align-items-center mb-3">
+            <hr>
+            <div class="form-group d-flex justify-content-center align-items-center mb-3 ">
+                <button type="button" class="btn btn-success me-2" (click)="createCommission()">Create</button>
+                <button type="button" class="btn btn-danger" (click)="onNoClick()">Cancel</button>
             </div>
-            <ag-grid-angular #agGrid id="myGrid" style="text-align: center;" domLayout='autoHeight'
-                [rowSelection]="rowSelection" class="ag-theme-alpine table-class" rowAnimation
-                [gridOptions]="gridOptions" [columnDefs]="columnDefs" (selectionChanged)="onSelectionChanged()"
-                (gridReady)="onGridReady($event)" [rowData]="rowData" [enableCellTextSelection]="true">
-            </ag-grid-angular>
         </div>
-    </div>
-    <div class="col d-flex justify-content-center align-items-center mb-3">
-        <hr>
-        <!-- <a class="btn btn-danger mx-1" (click)="onNoClick()">
-            <i class="fa fa-window-close" aria-hidden="true"></i>
-            Close
-        </a> -->
+    </section>
+</div>
 
-        <!-- <a class="btn btn-outline-success mx-1" [disabled]="!isAnyRowSelected" (click)="Create()">
-            <i class="fa fa-plus" aria-hidden="true"></i> Create
-        </a> -->
-
-
-        <!-- <button class="btn btn-success mx-1" color="primary" type="button" [disabled]="!isAnyRowSelected"
-            (click)="Create()">
-            <i class="fa fa-plus" aria-hidden="true"></i> Create
-        </button> -->
-        <div class="form-group d-flex justify-content-center align-items-center mb-3 ">
-            <button type="button" class="btn btn-success me-2" (click)="Create()">Create</button>
-            <button type="button" class="btn btn-danger" (click)="onNoClick()">Cancel</button>
+<div *ngIf="type==='dis_commission'">
+    <section class="col-12">
+        <div class="Head d-flex justify-content-between align-items-center mb-3" style="padding: 1rem;">
+            <h6>ADD PRODUCT /DISTRIBUTOR COMMISSION MEMBERSHIP</h6>
+            <i class="fa fa-close close-icon" style="cursor: pointer;" (click)="onNoClick()"></i>
         </div>
-    </div>
-</section>
+        <div class="add mb-3">
+            <div class="input_box col-12 col-md-6 display justify-content-center align-items-start mb-3 gap-3">
+                <div class="add col-12 col-md-3 mb-2">
+                    <span class="d-block mb-2 mb-sm-0" style="color: rgb(2, 8, 102);font-size: 15px;">SELECT</span>
+                </div>
+                <div class="d-block col-12 col-md-4 mb-2">
+                    <span class="d-block mb-2" style="color: rgb(2, 8, 102);font-size: 15px;">PRODUCT</span>
+                    <select aria-label="Select Product Type" [(ngModel)]="producttype"
+                        (change)="onproducttypechange($event)">
+                        <option value="1">BASE</option>
+                        <option value="2">ADDON</option>
+                    </select>
+                </div>
+                <div class="d-block col-12 col-md-4 mb-2">
+                    <span class="d-block mb-2" style="color: rgb(2, 8, 102);font-size: 15px;">MEMBERSHIP</span>
+                    <select style="color: rgb(17, 0, 0);" [(ngModel)]="lcogroupid"
+                        (change)="getproductMembershipList($event)">
+                        <option value="0" selected style="color: rgb(19, 17, 17);">Select Membership </option>
+                        <option *ngFor="let lcomember of lcomembershipList" [value]="lcomember.value">{{
+                            lcomember.name}}</option>
+                    </select>
+                </div>
+            </div>
+            <div class="card " style="border: 1px solid lightgray;" style="height: 600px;">
+                <div class="head d-flex justify-content-center align-items-center mb-3">
+                    <h6>AVAILABLE PRODUCT FOR MEMBERSHIP</h6>
+                </div>
+                <ag-grid-angular #agGrid id="myGrid" style="text-align: center;" domLayout='autoHeight'
+                    [rowSelection]="rowSelection" class="ag-theme-alpine table-class" rowAnimation
+                    [gridOptions]="gridOptions" [columnDefs]="columnDefs" (selectionChanged)="onSelectionChanged()"
+                    (gridReady)="onGridReady($event)" [rowData]="rowData" [enableCellTextSelection]="true">
+                </ag-grid-angular>
+            </div>
+        </div>
+        <div class="col d-flex justify-content-center align-items-center mb-3">
+            <hr>
+            <div class="form-group d-flex justify-content-center align-items-center mb-3 ">
+                <button type="button" class="btn btn-success me-2" (click)="createDisCommission()">Create</button>
+                <button type="button" class="btn btn-danger" (click)="onNoClick()">Cancel</button>
+            </div>
+        </div>
+    </section>
+</div>

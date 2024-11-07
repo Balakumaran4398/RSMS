@@ -1,103 +1,147 @@
-<section>
-    <!-- <div class="head d-flex justify-content-between align-items-center">
-        <span class="title">UPDATE LCO COMMISSION</span>
-        <i class="fa fa-close close-icon" (click)="onNoClick()"></i>
-    </div> -->
-    <div class="Head d-flex justify-content-between align-items-center mb-3" style="padding: 1rem;">
-        <h6>UPDATE LCO COMMISSION</h6>
-        <i class="fa fa-close close-icon" style="cursor: pointer;" (click)="onNoClick()"></i>
-    </div>
-    <div class="card mb-3">
-        <div class="lco  justify-content-center align-items-center">
-            <div class=" display align-items-center mb-3 w-100 ">
-                <div class="col-12 col-md-6">
-                    <label class="label-text "
-                        style="font-weight: 500;margin-bottom: 5px;display: block; font-size: 16px;color: #243359;">
-                        Product Name</label>
-                </div>
-                <div class="col-12 col-md-6">
-                    {{productname}}
-                </div>
-            </div>
-            <div class=" display align-items-center mb-3 w-100 ">
-                <div class="col-12 col-md-6">
-                    <label class="label-text "
-                        style="font-weight: 500;margin-bottom: 5px;display: block; font-size: 16px;color: #243359;">Product
-                        Type </label>
-                </div>
-                <div class="col-12 col-md-6  ">
-                    {{producttype}}
-                    <!-- <input type="text" placeholder="Enter Shared Count" [(ngModel)]="producttype"> -->
-                </div>
-            </div>
-            <div class=" display align-items-center mb-3 w-100">
-                <div class="col-12 col-md-6">
-                    <label class="label-text "
-                        style="font-weight: 500;margin-bottom: 5px;display: block; font-size: 16px;color: #243359;">Product
-                        Rate </label>
-                </div>
-                <div class="col-12 col-md-6">
-                    {{productrate}}
-                    <!-- <input type="text" placeholder="Enter Shared Count" [(ngModel)]="productrate"> -->
-                </div>
-            </div>
-            <div class=" display align-items-center mb-3 w-100">
-                <div class="col-12 col-md-6">
-                    <label class="label-text "
-                        style="font-weight: 500;margin-bottom: 5px;display: block; font-size: 16px;color: #243359;">With
-                        Tax</label>
-                </div>
-                <!-- <div class="col-12 col-md-6">
-                    <input type="text" placeholder="Enter Shared Count" [(ngModel)]="istax">
-                </div> -->
-                <div class="col-12 col-md-6  " style="display: flex;gap: 20px;">
-                    <div class="col-6 col-md-3">
-                        <button class="btn btn-outline-primary "  [(ngModel)]="isYesActive"
-                            [class.active]="isYesActive === true">Yes</button>
+<div *ngIf="type==='commission'">
+    <section>
+        <div class="Head d-flex justify-content-between align-items-center mb-3" style="padding: 1rem;">
+            <h6>UPDATE LCO COMMISSION</h6>
+            <i class="fa fa-close close-icon" style="cursor: pointer;" (click)="onNoClick()"></i>
+        </div>
+        <div class="card mb-3">
+            <div class="lco  justify-content-center align-items-center">
+                <div class=" display align-items-center mb-3 w-100 ">
+                    <div class="col-12 col-md-6">
+                        <label class="label-text "
+                            style="font-weight: 500;margin-bottom: 5px;display: block; font-size: 16px;color: #243359;">
+                            Product Name</label>
                     </div>
-                    <div class="col-6 col-md-3">
-                        <button class="btn btn-outline-info "  [(ngModel)]="isYesActive"
-                            [class.active]="isYesActive === false">No</button>
+                    <div class="col-12 col-md-6">
+                        {{productname}}
+                    </div>
+                </div>
+                <div class=" display align-items-center mb-3 w-100 ">
+                    <div class="col-12 col-md-6">
+                        <label class="label-text "
+                            style="font-weight: 500;margin-bottom: 5px;display: block; font-size: 16px;color: #243359;">Product
+                            Type </label>
+                    </div>
+                    <div class="col-12 col-md-6  ">
+                        {{producttype}}
+                    </div>
+                </div>
+                <div class=" display align-items-center mb-3 w-100">
+                    <div class="col-12 col-md-6">
+                        <label class="label-text "
+                            style="font-weight: 500;margin-bottom: 5px;display: block; font-size: 16px;color: #243359;">Product
+                            Rate </label>
+                    </div>
+                    <div class="col-12 col-md-6">
+                        {{productrate}}
+                    </div>
+                </div>
+                <div class=" display align-items-center mb-3 w-100">
+                    <div class="col-12 col-md-6">
+                        <label class="label-text "
+                            style="font-weight: 500;margin-bottom: 5px;display: block; font-size: 16px;color: #243359;">With
+                            Tax</label>
+                    </div>
+
+                    <div class="col-12 col-md-6  " style="display: flex;gap: 20px;">
+                        <div class="col-6 col-md-3">
+                            <button class="btn btn-outline-primary " [(ngModel)]="isYesActive"
+                                [class.active]="isYesActive === true">Yes</button>
+                        </div>
+                        <div class="col-6 col-md-3">
+                            <button class="btn btn-outline-info " [(ngModel)]="isYesActive"
+                                [class.active]="isYesActive === false">No</button>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
-        <div class="input_box display align-items-center mb-3 ">
-            <div class="col-12 col-md-6">
-                <span class="label-text"
-                    style="font-weight: 500;margin-bottom: 5px;display: block; font-size: 16px;color: #243359;">Commission
-                    value </span>
+            <div class="input_box display align-items-center mb-3 ">
+                <div class="col-12 col-md-6">
+                    <span class="label-text"
+                        style="font-weight: 500;margin-bottom: 5px;display: block; font-size: 16px;color: #243359;">Commission
+                        value </span>
+                </div>
+                <div class="col-12 col-md-6">
+                    <input type="text" placeholder="Enter Commission value" [(ngModel)]="commissionvalue">
+                </div>
             </div>
-            <div class="col-12 col-md-6">
-                <input type="text" placeholder="Enter Commission value"  [(ngModel)]="commissionvalue">
-            </div>
-        </div>
-        <div class="Percentage display align-items-center mb-3 w-100">
-            <div class="col-12 col-md-6 display justify-content-start align-items-center">
-                <label class="label-text"
-                    style="font-weight: 500;margin-bottom: 5px;display: block; font-size: 16px;color: #243359;">isPercentage</label>
-            </div>
-            <div class="col-12 col-md-6 display justify-content-start align-items-center">
+            <div class="Percentage display align-items-center mb-3 w-100">
+                <div class="col-12 col-md-6 display justify-content-start align-items-center">
+                    <label class="label-text"
+                        style="font-weight: 500;margin-bottom: 5px;display: block; font-size: 16px;color: #243359;">isPercentage</label>
+                </div>
+                <div class="col-12 col-md-6 display justify-content-start align-items-center">
 
-                <div class="can-toggle">
-                    <input id="a" type="checkbox" [(ngModel)]="isPercentage">
-                    <label for="a">
-                        <div class="can-toggle__switch" data-checked="Yes" data-unchecked="No"></div>
-                    </label>
+                    <div class="can-toggle">
+                        <input id="a" type="checkbox" [(ngModel)]="isPercentage">
+                        <label for="a">
+                            <div class="can-toggle__switch" data-checked="Yes" data-unchecked="No"></div>
+                        </label>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="form-group d-flex justify-content-center align-items-center mb-3 ">
+            <button type="button" class="btn btn-success me-2" (click)="updateCommission()">Update</button>
+            <button type="button" class="btn btn-danger" (click)="onNoClick()">Cancel</button>
+        </div>
+    </section>
+</div>
+<div *ngIf="type==='dis_commission'">
+    <section>
+        <div class="Head d-flex justify-content-between align-items-center mb-3" style="padding: 1rem;">
+            <h6>UPDATE DISTRIBUTOR COMMISSION</h6>
+            <i class="fa fa-close close-icon" style="cursor: pointer;" (click)="onNoClick()"></i>
+        </div>
+        <div class="card mb-3">
+            <div class="lco  justify-content-center align-items-center">
+                <div class=" display align-items-center mb-3 w-100 ">
+                    <div class="col-12 col-md-6">
+                        <label class="label-text "
+                            style="font-weight: 500;margin-bottom: 5px;display: block; font-size: 16px;color: #243359;">
+                            Product Name</label>
+                    </div>
+                    <div class="col-12 col-md-6">
+                        {{disProductname}}
+                    </div>
+                </div>
+                <div class=" display align-items-center mb-3 w-100 ">
+                    <div class="col-12 col-md-6">
+                        <label class="label-text "
+                            style="font-weight: 500;margin-bottom: 5px;display: block; font-size: 16px;color: #243359;">Product
+                            Type </label>
+                    </div>
+                    <div class="col-12 col-md-6  ">
+                        {{disProducttype}}
+                    </div>
+                </div>
+                <div class=" display align-items-center mb-3 w-100">
+                    <div class="col-12 col-md-6">
+                        <label class="label-text "
+                            style="font-weight: 500;margin-bottom: 5px;display: block; font-size: 16px;color: #243359;">Product
+                            Rate </label>
+                    </div>
+                    <div class="col-12 col-md-6">
+                        {{disProductrate}}
+                    </div>
+                </div>
+
+            </div>
+            <div class="input_box display align-items-center mb-3 ">
+                <div class="col-12 col-md-6">
+                    <span class="label-text"
+                        style="font-weight: 500;margin-bottom: 5px;display: block; font-size: 16px;color: #243359;">MSO
+                        Amount </span>
+                </div>
+                <div class="col-12 col-md-6">
+                    <input type="text" placeholder="Enter MSO Amount" [(ngModel)]="msoamount">
                 </div>
             </div>
 
         </div>
-
-    </div>
-
-    <!-- <div class="col d-flex justify-content-center align-items-center new_d mt-3 mb-2">
-        <a class="btn btn-infos mx-1" (click)="change()"> &nbsp;
-            <span>Update</span>
-        </a>
-    </div> -->
-    <div class="form-group d-flex justify-content-center align-items-center mb-3 ">
-        <button type="button" class="btn btn-success me-2" (click)="change()">Update</button>
-        <button type="button" class="btn btn-danger" (click)="onNoClick()">Cancel</button>
-    </div>
-</section>
+        <div class="form-group d-flex justify-content-center align-items-center mb-3 ">
+            <button type="button" class="btn btn-success me-2" (click)="updateDisCommission()">Update</button>
+            <button type="button" class="btn btn-danger" (click)="onNoClick()">Cancel</button>
+        </div>
+    </section>
+</div>

@@ -39,19 +39,7 @@ export class LcoinvoiceComponent implements OnInit {
     this.selectedMonth = (currentDate.getMonth() + 1).toString().padStart(2, '0');
     this.selectedYear = currentDate.getFullYear();
     // this.swal.Loading();
-    this.userservice.getAllOperatorInvoiceBillByMonthYear(this.role, this.username, this.selectedMonth || null, this.selectedYear || null).subscribe(
-      (response: HttpResponse<any[]>) => { // Expect HttpResponse<any[]>
-        if (response.status === 200) {
-          this.rowData = response.body;
-          this.swal.Success_200();
-        } else if (response.status === 204) {
-          this.swal.Success_204();
-        }
-      },
-      (error) => {
-        this.handleApiError(error);
-      }
-    );
+
     this.generateMonths();
     this.generateYears();
 
@@ -92,14 +80,34 @@ export class LcoinvoiceComponent implements OnInit {
     { headerName: "ALACARTE", field: 'alacarteBase', width: 260 },
   ]
   onGridReady(event: any) {
+    this.userservice.getAllOperatorInvoiceBillByMonthYear(this.role, this.username, this.selectedMonth || null, this.selectedYear || null).subscribe(
+      (response: HttpResponse<any[]>) => { // Expect HttpResponse<any[]>
+        if (response.status === 200) {
+          this.rowData = response.body;
+          // this.swal.Success_200();
+        } else if (response.status === 204) {
+          this.swal.Success_204();
+        }
+      },
+      (error) => {
+        this.handleApiError(error);
+      }
+    );
   }
   submit() {
     // this.swal.Loading();
-    this.userservice.generateOperatorInvoiceBill(this.role, this.username, this.selectedMonth || null, this.selectedYear || null).subscribe(
-      (data: any) => {
-        this.rowData = data;
-      }
-    );
+    this.rowData = [];
+    this.userservice.generateOperatorInvoiceBill(this.role, this.username, this.selectedMonth || null, this.selectedYear || null)
+      // .subscribe(
+      //   (data: any) => {
+      //     this.rowData = data;
+      //   });
+      .subscribe((res: any) => {
+        this.swal.success(res?.message);
+        this.rowData = res;
+      }, (err) => {
+        this.swal.Error(err?.error?.message);
+      });
   }
   handleApiError(error: any) {
     if (error.status === 400) {

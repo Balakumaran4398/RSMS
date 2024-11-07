@@ -1,6 +1,6 @@
 import { HttpResponse } from '@angular/common/http';
-import { Component } from '@angular/core';
-import { MatDialogRef } from '@angular/material/dialog';
+import { Component, Inject, Injectable } from '@angular/core';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { ColDef } from 'ag-grid-community';
 import { BaseService } from 'src/app/_core/service/base.service';
 import { StorageService } from 'src/app/_core/service/storage.service';
@@ -26,18 +26,21 @@ export class AddLcoComponent {
   selectedname: any[] = [];
   rows: any[] = [];
 
-
+  type: any;
   constructor(
-    public dialogRef: MatDialogRef<AddLcoComponent>, private userservice: BaseService, private storageservice: StorageService, private swal: SwalService) {
+    public dialogRef: MatDialogRef<AddLcoComponent>, @Inject(MAT_DIALOG_DATA) public data: any, private userservice: BaseService, private storageservice: StorageService, private swal: SwalService) {
     this.role = storageservice.getUserRole();
     this.username = storageservice.getUsername();
-    userservice.getLcoGroupMasterList(this.role, this.username).subscribe((data: any) => {
-      this.lcomembershipList = Object.keys(data).map(key => {
-        const value = data[key];
-        const name = key;
-        return { name: name, value: value };
-      });
-    })
+    // userservice.getLcoGroupMasterList(this.role, this.username).subscribe((data: any) => {
+    //   this.lcomembershipList = Object.keys(data).map(key => {
+    //     const value = data[key];
+    //     const name = key;
+    //     return { name: name, value: value };
+    //   });
+    // })
+
+    console.log(data);
+    this.type = data.type;
     this.onproducttypechange("");
   }
   onNoClick(): void {
@@ -60,9 +63,13 @@ export class AddLcoComponent {
     {
       headerName: "S.No", lockPosition: true, valueGetter: 'node.rowIndex+1', width: 100, headerCheckboxSelection: true,
       checkboxSelection: true,
-    }, { headerName: "PRODUCT NAME", field: 'productname', },
+    },
+    { headerName: "PRODUCT NAME", field: 'productname', },
     { headerName: "PRODUCT ID", field: 'productid', },
-    { headerName: "PRODUCT TYPE", field: 'producttype', },
+    {
+      headerName: "PRODUCT RATE", field: 'rate', cellRenderer: (params: any) => `<span style="color: #035203;
+      font-weight: bold;;">₹</span> ${params.value}`
+    },
     { headerName: "CUSTOMER AMOUNT", field: 'customeramount', },
     {
       headerName: "MSO AMOUNT", field: 'msoamount',
@@ -109,34 +116,91 @@ export class AddLcoComponent {
     this.userservice.getLcoGroupMasterList(this.role, this.username).subscribe((data: any) => {
       this.lcomembershipList = Object.keys(data).map(key => {
         const value = data[key];
-        const name = key;
+        // const name = key;
+        const name = key.replace(/\s*\(.*?\)\s*/g, '').trim();
         return { name: name, value: value };
+      });
+      this.lcomembershipList.sort((a: any, b: any) => {
+        if (a.value > b.value) return 1;
+        if (a.value < b.value) return -1;
+        return 0;
       });
     })
   }
 
+  // getproductMembershipList(event: any) {
+  //   if (this.type === 'commission') {
+  //     this.userservice.getproductMembershipList(this.role, this.username, this.producttype, this.lcogroupid).subscribe(
+  //       (response: HttpResponse<any[]>) => {
+  //         if (response.status === 200) {
+  //           this.rowData = response.body;
+  //           this.swal.Success_200();
+  //         } else if (response.status === 204) {
+  //           this.swal.Success_204();
+  //         }
+  //       },
+  //       (error) => {
+  //         if (error.status === 400) {
+  //           this.swal.Error_400();
+  //         } else if (error.status === 500) {
+  //           this.swal.Error_500();
+  //         } else {
+  //           Swal.fire('Error', 'Something went wrong. Please try again.', 'error');
+  //         }
+  //       }
+  //     );
+  //   } else if (this.type === 'dis_commission') {
+  //     this.userservice.getDistributroProductMembershipList(this.role, this.username, this.producttype, this.lcogroupid).subscribe(
+  //       (response: HttpResponse<any[]>) => {
+  //         if (response.status === 200) {
+  //           this.rowData = response.body;
+  //           this.swal.Success_200();
+  //         } else if (response.status === 204) {
+  //           this.swal.Success_204();
+  //         }
+  //       },
+  //       (error) => {
+  //         if (error.status === 400) {
+  //           this.swal.Error_400();
+  //         } else if (error.status === 500) {
+  //           this.swal.Error_500();
+  //         } else {
+  //           Swal.fire('Error', 'Something went wrong. Please try again.', 'error');
+  //         }
+  //       }
+  //     );
+  //   }
+
+  // }
   getproductMembershipList(event: any) {
-    this.userservice.getproductMembershipList(this.role, this.username, this.producttype, this.lcogroupid).subscribe(
-      (response: HttpResponse<any[]>) => {
-        if (response.status === 200) {
-          this.rowData = response.body;
-          this.swal.Success_200();
-        } else if (response.status === 204) {
-          this.swal.Success_204();
-        }
-      },
-      (error) => {
-        if (error.status === 400) {
-          this.swal.Error_400();
-        } else if (error.status === 500) {
-          this.swal.Error_500();
-        } else {
-          Swal.fire('Error', 'Something went wrong. Please try again.', 'error');
-        }
+    console.log(this.type);
+    
+    const successHandler = (response: HttpResponse<any[]>) => {
+      if (response.status === 200) {
+        this.rowData = response.body;
+        console.log(this.rowData);
+        this.swal.Success_200();
+      } else if (response.status === 204) {
+        this.swal.Success_204();
       }
-    );
+    };
+    const errorHandler = (error: any) => {
+      const errorStatusHandlers: { [key: number]: () => void } = {
+        400: () => this.swal.Error_400(),
+        500: () => this.swal.Error_500(),
+      };
+      (errorStatusHandlers[error.status] || (() => Swal.fire('Error', 'Something went wrong. Please try again.', 'error')))();
+    };
+
+    if (this.type === 'commission') {
+      this.userservice.getproductMembershipList(this.role, this.username, this.producttype, this.lcogroupid).subscribe(successHandler, errorHandler);
+
+    } else if (this.type === 'dis_commission') {
+      this.userservice.getDistributroProductMembershipList(this.role, this.username, this.producttype, this.lcogroupid).subscribe(successHandler, errorHandler);
+    }
   }
-  Create() {
+
+  createCommission() {
     let requestBody = {
       role: this.role,
       username: this.username,
@@ -155,6 +219,32 @@ export class AddLcoComponent {
       }
     });
     this.userservice.addProductMembership(requestBody).subscribe((res: any) => {
+      this.swal.success(res?.message);
+    }, (err) => {
+      this.swal.Error(err?.error?.message);
+    });
+  }
+
+
+  createDisCommission() {
+    let requestBody = {
+      role: this.role,
+      username: this.username,
+      producttype: this.producttype,
+      lcogroupid: this.lcogroupid,
+      lcocommissionlist: this.rows
+
+    } as any;
+
+    Swal.fire({
+      title: 'Processing...',
+      text: 'Please wait while we update the product information.',
+      allowOutsideClick: false,
+      didOpen: () => {
+        Swal.showLoading(null);
+      }
+    });
+    this.userservice.addDistributorProductMembership(requestBody).subscribe((res: any) => {
       this.swal.success(res?.message);
     }, (err) => {
       this.swal.Error(err?.error?.message);

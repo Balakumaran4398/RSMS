@@ -16,6 +16,4 @@ export default class URLs {
         // return "http://192.168.70.201:8585/rsms/api";    //QC
     }
 
-
-    
 }

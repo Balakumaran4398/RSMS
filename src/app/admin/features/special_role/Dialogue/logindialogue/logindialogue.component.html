@@ -1,0 +1,228 @@
+<div *ngIf="type =='newlogin'">
+    <div class="Head d-flex justify-content-between align-items-center mb-3" style="padding: 1rem;">
+        <h6>CREATE NEW LOGIN</h6>
+        <i class="fa fa-close close-icon" style="cursor: pointer;" (click)="onClick()"></i>
+    </div>
+    <div style="padding: 1rem;">
+        <form #editForm="ngForm" (ngSubmit)="onCreate(editForm)" novalidate>
+            <!-- User ID -->
+            <div class="input_box display align-items-center mb-3">
+                <div class="col-12 col-md-4">
+                    <label for="userId" class="me-2">User ID</label>
+                </div>
+                <div class="col-12 col-md-1 mobile">
+                    <span for="userId" class="me-2">:</span>
+                </div>
+                <div class="col-12 col-md-7">
+                    <input type="text" [(ngModel)]="userid" name="userid" placeholder="Enter User ID" #idInput="ngModel"
+                        required>
+                    <div *ngIf="idInput.invalid && idInput.touched" class="text-danger">
+                        User ID is required.
+                    </div>
+                </div>
+            </div>
+
+            <!-- Password -->
+            <div class="input_box display align-items-center mb-3">
+                <div class="col-12 col-md-4">
+                    <label class="me-2">Password</label>
+                </div>
+                <div class="col-12 col-md-1 mobile">
+                    <span class="me-2">:</span>
+                </div>
+                <div class="col-12 col-md-7">
+                    <input type="password" [(ngModel)]="password" name="password" placeholder="Enter Password"
+                        #passwordInput="ngModel" required minlength="8" pattern="^(?=.*[A-Za-z])(?=.*\d).+$">
+                    <div *ngIf="passwordInput.invalid && passwordInput.touched" class="text-danger">
+                        <div *ngIf="passwordInput.errors?.['required']">Password is required.</div>
+                        <div *ngIf="passwordInput.errors?.['minlength']">Password must be at least 8 characters long.
+                        </div>
+                        <div *ngIf="passwordInput.errors?.['pattern']">Password must include at least one letter and one
+                            number.</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Role -->
+            <div class="input_box display align-items-center mb-3">
+                <div class="col-12 col-md-4">
+                    <label class="me-2">Select Role</label>
+                </div>
+                <div class="col-12 col-md-1 mobile">
+                    <span class="me-2">:</span>
+                </div>
+                <div class="col-12 col-md-7">
+                    <mat-form-field appearance="outline" style="width: 100%;">
+                        <mat-select placeholder="Select Role" [(ngModel)]="roleid" name="roleid" required
+                            #roleInput="ngModel">
+                            <mat-option value="">Select a Role</mat-option>
+                            <mat-option *ngFor="let d of roleList" [value]="d.id">{{ d.role }}</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                    <div *ngIf="roleInput.invalid && roleInput.touched" class="text-danger">
+                        Role is required.
+                    </div>
+                </div>
+            </div>
+
+            <!-- Email -->
+            <div class="input_box display align-items-center mb-3">
+                <div class="col-12 col-md-4">
+                    <label for="mail" class="me-2">Email</label>
+                </div>
+                <div class="col-12 col-md-1 mobile">
+                    <span for="mail" class="me-2">:</span>
+                </div>
+                <div class="col-12 col-md-7">
+                    <input type="email" id="mail" [(ngModel)]="mail" name="mail" placeholder="Enter Email"
+                        #emailInput="ngModel" required email>
+                    <div *ngIf="emailInput.invalid && emailInput.touched" class="text-danger">
+                        <div *ngIf="emailInput.errors?.['required']">Email is required.</div>
+                        <div *ngIf="emailInput.errors?.['email']">Please enter a valid email address.</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group d-flex justify-content-center align-items-center mb-3">
+                <button type="submit" class="btn btn-success me-2" [disabled]="editForm.invalid">Create</button>
+                <button type="button" class="btn btn-danger" (click)="onClick()">Cancel</button>
+            </div>
+        </form>
+    </div>
+
+
+</div>
+
+
+<div *ngIf="type =='editlogin'">
+    <div class="Head d-flex justify-content-between align-items-center mb-3" style="padding: 1rem;">
+        <h6>UPDATE LOGIN</h6>
+        <i class="fa fa-close close-icon" style="cursor: pointer;" (click)="onClick()"></i>
+    </div>
+    <div style="padding: 1rem;">
+        <form #editForm="ngForm" (ngSubmit)="onupdate(editForm)" novalidate>
+            <!-- User ID -->
+
+            <div class="input_box display align-items-center mb-3">
+                <div class="col-12 col-md-4">
+                    <label for="categoryName" class="me-2">User ID</label>
+                </div>
+                <div class="col-12 col-md-1 mobile">
+                    <span for="categoryName" class="me-2">:</span>
+                </div>
+                <div class="col-12 col-md-7">
+                    <input type="text" [(ngModel)]="edituserid" [value]="data?.data?.username"
+                        placeholder="Enter User Name" #idInput="ngModel">
+                    <div *ngIf="idInput.invalid && idInput.touched" class="text-danger">
+                        User ID is required.
+                    </div>
+                </div>
+            </div>
+            <!-- PASSWORD -->
+            <!-- <div class="input_box display align-items-center mb-3">
+                <div class="col-12 col-md-4">
+                    <label class="me-2">Password</label>
+                </div>
+                <div class="col-12 col-md-1 mobile">
+                    <span class="me-2">:</span>
+                </div>
+                <div class="col-12 col-md-7">
+                    <textarea type="password" [(ngModel)]="editPassword" name="password" placeholder="Enter Password"
+                        #passwordInput="ngModel" required minlength="8" pattern="^(?=.*[A-Za-z])(?=.*\d).+$"></textarea>
+                    <div *ngIf="passwordInput.invalid && passwordInput.touched" class="text-danger">
+                        <div *ngIf="passwordInput.errors?.['required']">Password is required.</div>
+                        <div *ngIf="passwordInput.errors?.['minlength']">Password must be at least 8 characters long.
+                        </div>
+                        <div *ngIf="passwordInput.errors?.['pattern']">Password must include at least one letter and one
+                            number.</div>
+                    </div>
+                </div>
+            </div> -->
+
+            <!-- ROLE -->
+            <div class="input_box display align-items-center mb-3">
+                <div class="col-12 col-md-4">
+                    <label class="me-2">Select Role</label>
+                </div>
+                <div class="col-12 col-md-1 mobile">
+                    <span class="me-2">:</span>
+                </div>
+
+                <div class="col-12 col-md-7">
+                    {{editRole}}
+                    <mat-form-field appearance="outline" style="width: 100%;">
+                        <mat-select [(ngModel)]="editRole" name="roleid" #roleInput="ngModel" required>
+                            <mat-option value="">Select a Role</mat-option>
+                            <mat-option *ngFor="let d of roleList" [value]="d.id">{{ d.role }}</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                    <div *ngIf="roleInput.invalid && roleInput.touched" class="text-danger">
+                        Role is required.
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- ------Expity date------------- -->
+            <!-- <div class="input_box display align-items-center mb-3">
+                <div class="col-12 col-md-4">
+                    <label class="me-2">Expiry Date</label>
+                </div>
+                <div class="col-12 col-md-1 mobile">
+                    <span class="me-2">:</span>
+                </div>
+                <div class="col-12 col-md-7">
+                    <mat-form-field appearance="outline" class="mx-2">
+                        <mat-date-range-input [rangePicker]="picker" [max]="maxDate" required [(ngModel)]="editDate"
+                            #dateInput="ngModel">
+                            <input matStartDate matInput placeholder="Start date" (dateChange)="getFromDate($event)">
+                            <input matEndDate matInput placeholder="End date" (dateChange)="getToDate($event)">
+                        </mat-date-range-input>
+                        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                        <mat-date-range-picker #picker></mat-date-range-picker>
+                    </mat-form-field>
+                    <div *ngIf="dateInput.invalid && dateInput.touched" class="text-danger">
+                        Date is required.
+                    </div>
+                </div>
+            </div> -->
+
+            <!-- Email -->
+            <!-- <div class="input_box display align-items-center mb-3">
+                <div class="col-12 col-md-4">
+                    <label for="mail" class="me-2">Email</label>
+                </div>
+                <div class="col-12 col-md-1 mobile">
+                    <span for="mail" class="me-2">:</span>
+                </div>
+                <div class="col-12 col-md-7">
+                    <input type="email" id="mail" [(ngModel)]="editmail" name="mail" placeholder="Enter Email"
+                        #emailInput="ngModel" required email>
+                    <div *ngIf="emailInput.invalid && emailInput.touched" class="text-danger">
+                        <div *ngIf="emailInput.errors?.['required']">Email is required.</div>
+                        <div *ngIf="emailInput.errors?.['email']">Please enter a valid email address.</div>
+                    </div>
+                </div>
+            </div> -->
+            <!-- ISdelete -->
+
+            <div class="input_box display align-items-center mb-3">
+                <div class="col-12 col-md-6">
+                    <span>Status</span>
+                </div>
+                <div class="col-12 col-md-6 d-flex justify-content-start align-items-center">
+                    <label class="switch">
+                        <input type="checkbox" [(ngModel)]="isactive">
+                        <span class="slider"></span>
+                    </label>
+                </div>
+            </div>
+            <!-- Submit and Cancel Buttons -->
+            <div class="form-group d-flex justify-content-center align-items-center mb-3">
+                <button type="submit" class="btn btn-success me-2" [disabled]="editForm.invalid">Save</button>
+                <button type="button" class="btn btn-danger" (click)="onClick()">Cancel</button>
+            </div>
+        </form>
+    </div>
+
+</div>

@@ -108,6 +108,9 @@ export class BaseService {
   getRechargeDetailsById(role: any, username: any, id: any): Observable<any[]> {
     return this.http.get<any[]>(BASE_URL + "/operator/getRechargeDetailsById?role=" + role + "&username=" + username + "&id=" + id)
   }
+  getRefundListByOperatorId(role: any, username: any, operatorid: any, isenablesmartcard: any): Observable<HttpResponse<any[]>> {
+    return this.http.get<any[]>(BASE_URL + "/operator/getRefundListByOperatorId?role=" + role + "&username=" + username + "&operatorid=" + operatorid + "&isenablesmartcard=" + isenablesmartcard, { observe: 'response' })
+  }
   getRefundListByOperatorIdAndSmartcard(role: any, username: any, operatorid: any, smartcard: any): Observable<HttpResponse<any[]>> {
     return this.http.get<any[]>(BASE_URL + "/operator/getRefundListByOperatorIdAndSmartcard?role=" + role + "&username=" + username + "&operatorid=" + operatorid + "&smartcard=" + smartcard, { observe: 'response' })
   }
@@ -664,8 +667,20 @@ export class BaseService {
   getLcoGroupMasterList(role: any, username: any): Observable<any> {
     return this.http.get<any[]>(BASE_URL + "/lcocommission/GetLcoGroupMasterList?role=" + role + "&username=" + username)
   }
-  getLcoCommissionListByLcoGroupId(role: any, username: any, lcogroupid: any,): Observable<any> {
-    return this.http.get<any[]>(BASE_URL + "/lcocommission/getLcoCommissionListByLcoGroupId?role=" + role + "&username=" + username + "&lcogroupid=" + lcogroupid,)
+  GetDistributorGroupDetails(role: any, username: any): Observable<any> {
+    return this.http.get<any[]>(BASE_URL + "/lcocommission/GetDistributorGroupDetails?role=" + role + "&username=" + username)
+  }
+  getLcoCommissionListByLcoGroupId(role: any, username: any, lcogroupid: any,): Observable<HttpResponse<any[]>> {
+    return this.http.get<any[]>(BASE_URL + "/lcocommission/getLcoCommissionListByLcoGroupId?role=" + role + "&username=" + username + "&lcogroupid=" + lcogroupid, { observe: "response" })
+  }
+  getDistributorCommissionListByLcoGroupId(role: any, username: any, lcogroupid: any): Observable<HttpResponse<any[]>> {
+    return this.http.get<any[]>(BASE_URL + "/lcocommission/getDistributorCommissionListByLcoGroupId?role=" + role + "&username=" + username + "&lcogroupid=" + lcogroupid, { observe: "response" })
+  }
+  getDistributroProductMembershipList(role: any, username: any, producttype: any, lcogroupid: any): Observable<HttpResponse<any[]>> {
+    return this.http.get<any[]>(BASE_URL + "/lcocommission/getDistributroProductMembershipList?role=" + role + "&username=" + username + "&producttype=" + producttype + "&lcogroupid=" + lcogroupid, { observe: "response" })
+  }
+  updateDistributorCommission(role: any, username: any, id: any, msoamount: any): Observable<any> {
+    return this.http.post<any[]>(BASE_URL + "/lcocommission/updateDistributorCommission?role=" + role + "&username=" + username + "&id=" + id + "&msoamount=" + msoamount, {})
   }
 
   // -------------------------------Update lco commission---------------------------
@@ -690,14 +705,32 @@ export class BaseService {
   getLcoGroupDetails(role: any, username: any): Observable<any> {
     return this.http.get<any[]>(BASE_URL + "/lcocommission/GetLcoGroupDetails?role=" + role + "&username=" + username)
   }
+  getDistributorListNotInDistributor(role: any, username: any): Observable<any> {
+    return this.http.get<any[]>(BASE_URL + "/lcocommission/GetDistributorListNotInDistributor?role=" + role + "&username=" + username)
+  }
   createLcoGroup(role: any, username: any, groupname: any): Observable<any> {
     return this.http.post<any[]>(BASE_URL + "/lcocommission/createLcoGroup?role=" + role + "&username=" + username + "&groupname=" + groupname, {})
+  }
+  createDistributorGroup(role: any, username: any, distributorgroupid: any): Observable<any> {
+    return this.http.post<any[]>(BASE_URL + "/lcocommission/createDistributorGroup?role=" + role + "&username=" + username + "&distributorgroupid=" + distributorgroupid, {})
+  }
+  updateDistributor(role: any, username: any, distributorid: any, distributorlist: any): Observable<any> {
+    return this.http.post<any[]>(BASE_URL + "/lcocommission/updateDistributor?role=" + role + "&username=" + username + "&distributorid=" + distributorid + "&distributorlist=" + distributorlist, {})
   }
   getLcoGroupMasterListNotInLcogroupId(role: any, username: any, lcogroupid: any): Observable<any> {
     return this.http.get<any[]>(BASE_URL + "/lcocommission/GetLcoGroupMasterListNotInLcogroupId?role=" + role + "&username=" + username + "&lcogroupid=" + lcogroupid)
   }
-  getOperatorlistByGroupId(role: any, username: any, lcogroupid: any): Observable<any> {
-    return this.http.get<any[]>(BASE_URL + "/lcocommission/getOperatorlistByGroupId?role=" + role + "&username=" + username + "&lcogroupid=" + lcogroupid)
+  getOperatorlistByGroupId(role: any, username: any, lcogroupid: any): Observable<HttpResponse<any[]>> {
+    return this.http.get<any[]>(BASE_URL + "/lcocommission/getOperatorlistByGroupId?role=" + role + "&username=" + username + "&lcogroupid=" + lcogroupid, { observe: 'response' })
+  }
+  getAvailableAndNotAvailableDistributorList(role: any, username: any, distributorid: any): Observable<any> {
+    return this.http.get<any[]>(BASE_URL + "/lcocommission/getAvailableAndNotAvailableDistributorList?role=" + role + "&username=" + username + "&distributorid=" + distributorid)
+  }
+  addDistributorProductMembership(requestBody: any): Observable<any[]> {
+    return this.http.post<any[]>(BASE_URL + "/lcocommission/addDistributorProductMembership", requestBody, {});
+  }
+  getDistributorMembershipDetailsByLcogroupid(role: any, username: any, lcogroupid: any): Observable<any> {
+    return this.http.post<any[]>(BASE_URL + "/lcocommission/createDistributorGroup?role=" + role + "&username=" + username + "&lcogroupid=" + lcogroupid, {})
   }
   // -------------------------------------------LCO MEMBERSHIP FUP----------------------------------
   getOperatorMembershipFUP(role: any, username: any): Observable<any> {
@@ -711,6 +744,9 @@ export class BaseService {
   }
   updateLcoMembership(requestBody: any): Observable<any[]> {
     return this.http.post<any[]>(BASE_URL + "/lcocommission/updateLcoMembership", requestBody, {});
+  }
+  updateDistributorMembership(requestBody: any): Observable<any[]> {
+    return this.http.post<any[]>(BASE_URL + "/lcocommission/updateDistributorMembership", requestBody, {});
   }
   // ==============================================Inventory=======================================================
 
@@ -823,8 +859,6 @@ export class BaseService {
   }
 
   StopFingerPrint(requestBody: any): Observable<any[]> {
-    console.log('stop API');
-
     return this.http.post<any[]>(BASE_URL + "/fingerprint/stopFingerPrint", requestBody, {});
   }
   // -------------------------------------------MAIL---------------------------------
@@ -1007,6 +1041,26 @@ export class BaseService {
   bulkSubscriberInsert(requestBody: any): Observable<any[]> {
     return this.http.post<any[]>(BASE_URL + "/subscriber/bulkSubscriberInsert", requestBody, {});
   }
+
+  // ------------------------------------------------SPECIAL ROLE BULK OPERATION------------------------
+  getAreaChangeSubscriberList(role: any, username: any, operatorid: any,): Observable<HttpResponse<any[]>> {
+    return this.http.get<any[]>(
+      BASE_URL + "/bulk/getAreaChangeSubscriberList?role=" + role + "&username=" + username + "&operatorid=" + operatorid, { observe: 'response' });
+  }
+  getLcochangeSubscriberList(role: any, username: any, operatorid: any, areaid: any, streetid: any): Observable<HttpResponse<any[]>> {
+    return this.http.get<any[]>(
+      BASE_URL + "/bulk/getLcochangeSubscriberList?role=" + role + "&username=" + username + "&operatorid=" + operatorid + "&areaid=" + areaid + "&streetid=" + streetid, { observe: 'response' });
+  }
+
+  updateLcoChangeSubscriber(requestBody: any): Observable<any[]> {
+    return this.http.post<any[]>(BASE_URL + "/bulk/updateLcoChangeSubscriber", requestBody, {});
+  }
+  uploadFileForBulkLcoTransfer(requestBody: any): Observable<any[]> {
+    return this.http.post<any[]>(BASE_URL + "/bulk/uploadFileForBulkLcoTransfer", requestBody, {});
+  }
+  uploadFileForSubscriptionCancel(requestBody: any): Observable<any[]> {
+    return this.http.post<any[]>(BASE_URL + "/bulk/uploadFileForSubscriptionCancel", requestBody, {});
+  }
   // ====================================================Local Channel===============================
   getAllLocalChannelList(role: any, username: any): Observable<any[]> {
     return this.http.get<any[]>(
@@ -1060,9 +1114,13 @@ export class BaseService {
     return this.http.post<any[]>(BASE_URL + "/mso/uploadMsoLogo", requestBody, {});
   }
   // ------------------------------------------------------------CAS details-----------------------------------------
+  // casmaster(role: any, username: any): Observable<HttpResponse<any[]>> {
+  //   return this.http.get<any[]>(
+  //     BASE_URL + "/cas/getcaslist?role=" + role + "&username=" + username, { observe: 'response' });
+  // }
   casmaster(role: any, username: any): Observable<HttpResponse<any[]>> {
     return this.http.get<any[]>(
-      BASE_URL + "/cas/getcaslist?role=" + role + "&username=" + username, { observe: 'response' });
+      BASE_URL + "/cas/getAllCasList?role=" + role + "&username=" + username, { observe: 'response' });
   }
 
   // ------------------------------------------------------------operator invoice-----------------------------------------
@@ -1075,9 +1133,17 @@ export class BaseService {
     return this.http.post<any[]>(
       BASE_URL + "/operator/generateOperatorInvoiceBill?role=" + role + "&username=" + username + "&month=" + month + "&year=" + Year, {});
   }
+  activeORDeactiveCas(role: any, username: any, id: any, type: any): Observable<any[]> {
+    return this.http.post<any[]>(
+      BASE_URL + "/cas/activeORDeactiveCas?role=" + role + "&username=" + username + "&id=" + id + "&type=" + type, {});
+  }
 
   createCas(requestBody: any): Observable<any[]> {
     return this.http.post<any[]>(BASE_URL + "/cas/createCas", requestBody, {});
+  }
+
+  updateCas(requestBody: any): Observable<any[]> {
+    return this.http.post<any[]>(BASE_URL + "/cas/updateCas", requestBody, {});
   }
   // --------------------------------------------SUBLCO OPERATOR-------------------------------------------------
   getAllSublcoListByOperatorId(role: any, username: any, operatorid: any): Observable<any[]> {
@@ -1090,7 +1156,23 @@ export class BaseService {
   sublcoUpdate(requestBody: any): Observable<any[]> {
     return this.http.post<any[]>(BASE_URL + "/sublco/sublcoUpdate", requestBody, {});
   }
+  getAllAreaList(role: any, username: any, retailerid: any, operatorid: any): Observable<any[]> {
+    return this.http.get<any[]>(
+      BASE_URL + "/sublco/getallAreaList?role=" + role + "&username=" + username + "&retailerid=" + retailerid + "&operatorid=" + operatorid, {});
+  }
+  sublcoUpdateArea(role: any, username: any, retailerid: any, arealist: any): Observable<any[]> {
+    return this.http.post<any[]>(
+      BASE_URL + "/sublco/sublcoUpdateArea?role=" + role + "&username=" + username + "&retailerid=" + retailerid + "&arealist=" + arealist, {});
+  }
+  getallPermissionList(role: any, username: any, retailerid: any): Observable<any[]> {
+    return this.http.get<any[]>(
+      BASE_URL + "/sublco/getallPermissionList?role=" + role + "&username=" + username + "&retailerid=" + retailerid , {});
+  }
 
+  sublcoUpdatePermission(role: any, username: any, retailerid: any, permissionlist: any): Observable<any[]> {
+    return this.http.post<any[]>(
+      BASE_URL + "/sublco/sublcoUpdatePermission?role=" + role + "&username=" + username + "&retailerid=" + retailerid + "&permissionlist=" + permissionlist, {});
+  }
   // --------------------------------------------------paymentgatewaylist--------------------------------------
 
   getPaymentGateWayList(role: any, username: any): Observable<any[]> {
@@ -1134,8 +1216,92 @@ export class BaseService {
     return this.http.post<any[]>(
       BASE_URL + "/master/activeORDeactivePackagePlan?role=" + role + "&username=" + username + "&id=" + id + "&type=" + type, {});
   }
+  // ---------------------------------------------Local Channel----------------------------------------------------------
   getspecialLocalChannelList(role: any, username: any): Observable<any[]> {
     return this.http.get<any[]>(
       BASE_URL + "/master/getLocalChannelList?role=" + role + "&username=" + username, {});
+  }
+  specialCreateLocalChannel(requestBody: any): Observable<any[]> {
+    return this.http.post<any[]>(BASE_URL + "/master/createLocalChannel", requestBody, {});
+  }
+  specialeditLocalChannel(requestBody: any): Observable<any[]> {
+    return this.http.post<any[]>(BASE_URL + "/master/updateLocalChannel", requestBody, {});
+  }
+  // ---------------------------------------ADS Channel ------------------------------
+  getAllAdMasterList(role: any, username: any): Observable<any[]> {
+    return this.http.get<any[]>(
+      BASE_URL + "/master/getAllAdMasterList?role=" + role + "&username=" + username, {});
+  }
+  createAdMaster(role: any, username: any, adname: any, adurl: any, siteurl: any): Observable<any[]> {
+    return this.http.post<any[]>(
+      BASE_URL + "/master/createAdMaster?role=" + role + "&username=" + username + "&adname=" + adname + "&adurl=" + adurl + "&siteurl=" + siteurl, {});
+  }
+  updateAdmaster(role: any, username: any, adname: any, adurl: any, siteurl: any, isactive: any, id: any): Observable<any[]> {
+    return this.http.post<any[]>(
+      BASE_URL + "/master/updateAdmaster?role=" + role + "&username=" + username + "&adname=" + adname + "&adurl=" + adurl + "&siteurl=" + siteurl + "&isactive=" + isactive + "&id=" + id, {});
+  }
+  // -------------------------------------------Login settings-----------------------------------------
+  getAllLoginList(role: any, username: any): Observable<any[]> {
+    return this.http.get<any[]>(
+      BASE_URL + "/master/getAllLoginList?role=" + role + "&username=" + username, {});
+  }
+  getAllRoles(role: any, username: any): Observable<any[]> {
+    return this.http.get<any[]>(
+      BASE_URL + "/master/getAllRoles?role=" + role + "&username=" + username, {});
+  }
+  addNewUser(requestBody: any): Observable<any[]> {
+    return this.http.post<any[]>(BASE_URL + "/master/addNewUser", requestBody, {});
+  }
+  updateUser(requestBody: any): Observable<any[]> {
+    return this.http.post<any[]>(BASE_URL + "/master/updateUser", requestBody, {});
+  }
+  // ------------------------------------------proofdetails----------------------------------
+  getAllIdProofList(role: any, username: any): Observable<any[]> {
+    return this.http.get<any[]>(
+      BASE_URL + "/master/getAllIdProofList?role=" + role + "&username=" + username, {});
+  }
+  getAllAddressProofList(role: any, username: any): Observable<any[]> {
+    return this.http.get<any[]>(
+      BASE_URL + "/master/getAllAddressProofList?role=" + role + "&username=" + username, {});
+  }
+  createIdProof(role: any, username: any, idproofname: any): Observable<any[]> {
+    return this.http.post<any[]>(
+      BASE_URL + "/master/createIdProof?role=" + role + "&username=" + username + "&idproofname=" + idproofname, {});
+  }
+  createAddressProof(role: any, username: any, addressproofname: any): Observable<any[]> {
+    return this.http.post<any[]>(
+      BASE_URL + "/master/createAddressProof?role=" + role + "&username=" + username + "&addressproofname=" + addressproofname, {});
+  }
+  updateIdProof(role: any, username: any, idproofname: any, isdelete: any, id: any): Observable<any[]> {
+    return this.http.post<any[]>(
+      BASE_URL + "/master/updateIdProof?role=" + role + "&username=" + username + "&idproofname=" + idproofname + "&isdelete=" + isdelete + "&id=" + id, {});
+  }
+  updateAddressProof(role: any, username: any, addressproofname: any, isdelete: any, id: any): Observable<any[]> {
+    return this.http.post<any[]>(
+      BASE_URL + "/master/updateAddressProof?role=" + role + "&username=" + username + "&addressproofname=" + addressproofname + "&isdelete=" + isdelete + "&id=" + id, {});
+  }
+  activeORDeactiveIdProof(role: any, username: any, id: any, type: any): Observable<any[]> {
+    return this.http.post<any[]>(
+      BASE_URL + "/master/activeORDeactiveIdProof?role=" + role + "&username=" + username + "&id=" + id + "&type=" + type, {});
+  }
+  activeORDeactiveAddressProof(role: any, username: any, id: any, type: any): Observable<any[]> {
+    return this.http.post<any[]>(
+      BASE_URL + "/master/activeORDeactiveAddressProof?role=" + role + "&username=" + username + "&id=" + id + "&type=" + type, {});
+  }
+
+  // ---------------------------------------------------TAX--------------------------------------
+  getAllTaxList(role: any, username: any): Observable<any[]> {
+    return this.http.get<any[]>(
+      BASE_URL + "/master/getAllTaxList?role=" + role + "&username=" + username, {});
+  }
+  createTax(requestBody: any): Observable<any[]> {
+    return this.http.post<any[]>(BASE_URL + "/master/createTax", requestBody, {});
+  }
+  updateTax(requestBody: any): Observable<any[]> {
+    return this.http.post<any[]>(BASE_URL + "/master/updateTax", requestBody, {});
+  }
+  activeORDeactiveTax(role: any, username: any, id: any, type: any): Observable<any[]> {
+    return this.http.post<any[]>(
+      BASE_URL + "/master/activeORDeactiveTax?role=" + role + "&username=" + username + "&id=" + id + "&type=" + type, {});
   }
 } 

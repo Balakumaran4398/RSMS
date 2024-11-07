@@ -4,6 +4,7 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { ColDef } from 'ag-grid-community';
 import { BaseService } from 'src/app/_core/service/base.service';
 import { StorageService } from 'src/app/_core/service/storage.service';
+import { SwalService } from 'src/app/_core/service/swal.service';
 import Swal from 'sweetalert2';
 
 @Component({
@@ -27,15 +28,18 @@ export class ChangeMembershipComponent {
   selectedtypes: number[] = [];
   count: any;
   rowData: any[] = [];
+  type: any;
   constructor(private fb: FormBuilder,
-    public dialogRef: MatDialogRef<ChangeMembershipComponent>, @Inject(MAT_DIALOG_DATA) public data: any, private userservice: BaseService,
+    public dialogRef: MatDialogRef<ChangeMembershipComponent>, @Inject(MAT_DIALOG_DATA) public data: any, private userservice: BaseService, private swal: SwalService,
     private storageservice: StorageService) {
     this.role = storageservice.getUserRole();
     this.username = storageservice.getUsername();
     console.log(data);
-    this.rowData = data;
-    this.operatorid = data.map((item: any) => item.operatorid);
-    this.lcogroupid = data[0].lcogroupid;
+    this.rowData =  data?.row;
+    this.type = data.type;
+    this.operatorid = data?.row.map((item: any) => item.operatorid);
+    this.lcogroupid = data?.row[0].lcogroupid;
+    console.log(this.operatorid);
     this.membershiplist();
   }
   onNoClick(): void {
@@ -46,7 +50,6 @@ export class ChangeMembershipComponent {
       sortable: true,
       resizable: true,
       filter: true,
-
       floatingFilter: true
     },
   }
@@ -78,6 +81,7 @@ export class ChangeMembershipComponent {
       lcogroupupdateddate: item.lcogroupupdateddate,
       lcogroupid: item.lcogroupid,
     }));
+    console.log(requestBody);
     Swal.fire({
       title: 'Are you sure?',
       text: 'Do you want to apply these changes?',
@@ -96,44 +100,14 @@ export class ChangeMembershipComponent {
           }
         });
         this.userservice.updateLcoMembership(requestBody)
-          // .subscribe((data: any) => {
-          //   console.log(data);
-          //   Swal.fire({
-          //     title: 'Success!',
-          //     text: 'Changes have been applied successfully.',
-          //     icon: 'success',
-          //     timer: 2000,
-          //     timerProgressBar: true,
-          //     willClose: () => {
-          //     }
-          //   });
-          .subscribe(
-            (res: any) => {
-              Swal.fire({
-                title: 'Success!',
-                text: res?.message,
-                icon: 'success',
-                timer: 2000,
-                showConfirmButton: false
-              }).then(() => {
-                this.dialogRef.close();
-              });
-            },
-            (err: any) => {
-              Swal.fire({
-                title: 'Error!',
-                text: err?.error?.message,
-                icon: 'error',
-                confirmButtonText: 'OK',
-                timer: 3000,
-                showConfirmButton: false
-              });
-            }
-          );
+          .subscribe((res: any) => {
+            this.swal.success(res?.message);
+          }, (err) => {
+            this.swal.Error(err?.error?.message);
+          });
       }
     });
   }
-
 
 
 }

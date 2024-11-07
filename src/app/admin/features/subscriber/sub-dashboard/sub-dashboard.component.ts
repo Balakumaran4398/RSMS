@@ -216,6 +216,7 @@ export class SubDashboardComponent implements OnInit, AfterViewInit {
         console.log(this.rowData1);
         this.rowData = data['smartcardlist'];
         this.subdetailsList = data['subscriberdetails']
+        this.statusdisplay = this.subdetailsList.statusdisplay
         this.smartdetailList = data['smartcardlist']
         this.subscriberaccounts = data['subscriberaccounts'];
         this.smartcardinfo = data['smartcardinfo'];

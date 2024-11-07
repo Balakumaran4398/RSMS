@@ -1,0 +1,76 @@
+<div class="Head d-flex justify-content-between align-items-center mb-3" style="padding: 1rem;">
+    <h6>OPERATOR LIST</h6>
+    <i class="fa fa-close close-icon" style="cursor: pointer;" (click)="onNoClick()"></i>
+</div>
+
+<section>
+    <div class="col-12 col-12 mb-3 d-flex justify-content-center align-items-center ">
+        <div style="padding: 1rem;background-color: #058372;">
+            <h6 style="text-align: center;font-weight: bold;"> <span style="color: #220566;font-size: 17px;
+    font-weight: bold;">SUBMSO :</span>
+                {{distributor}}-{{distributorid}}</h6>
+        </div>
+    </div>
+    <div class="d-flex flex-column flex-lg-row justify-content-center align-items-center mobile">
+
+        <div class="col-lg-5 col-12 mb-3 mb-lg-0">
+            <div class="card">
+                <div class="input_box">
+                    <input type="text" placeholder="Search" [(ngModel)]="searchTermAvailable"
+                        (input)="filterAvailableList()">
+                </div>
+                <div class="table1 mb-3">
+                    <p style="color: white;">AVAILABLE - LCO</p>
+                    <div class="row inp">
+                        <div class="col-12 example-container">
+                            <div cdkDropList #todoList="cdkDropList" [cdkDropListData]="filteredAvailableList"
+                                [cdkDropListConnectedTo]="[doneList]" class="example-list"
+                                (cdkDropListDropped)="drop($event)">
+                                <div *ngFor="let item of filteredAvailableList" class="example-box"
+                                    (click)="toggleSelection(item.id)" [class.selected]="isSelected(item.id)" cdkDrag
+                                    [cdkDragData]="item">
+                                    {{ item.name }}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="display my-3 my-lg-0 mx-lg-3">
+            <button class="btn" (click)="moveSelectedItems('right')"><i class="bx bx-right-arrow-alt"></i></button>
+            <button class="btn" (click)="moveAllItems('right')"><i class="bx bx-arrow-to-right"></i></button>
+            <button class="btn" (click)="moveSelectedItems('left')"><i class="bx bx-left-arrow-alt"></i></button>
+            <button class="btn" (click)="moveAllItems('left')"><i class="bx bx-arrow-to-left"></i></button>
+        </div>
+        <div class="col-lg-5 col-12">
+            <div class="card">
+
+                <div class="input_box">
+                    <input type="text" placeholder="Search" [(ngModel)]="searchTermAdded" (input)="filterAddedList()">
+                </div>
+                <div class="table2 mb-3">
+                    <p style="color: white;">ADDED-LCO</p>
+                    <div class="row inp">
+                        <div class="col-12 example-container">
+                            <div cdkDropList #doneList="cdkDropList" [cdkDropListData]="filteredAddedList"
+                                [cdkDropListConnectedTo]="[todoList]" class="example-list"
+                                (cdkDropListDropped)="drop($event)">
+                                <div *ngFor="let item of filteredAddedList" class="example-box"
+                                    (click)="toggleSelection(item.id)" [class.selected]="isSelected(item.id)" cdkDrag
+                                    [cdkDragData]="item">
+                                    {{ item.name }}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+    <div class="col-12 d-flex justify-content-center align-item-center">
+        <button type="button" class="btn" style="background:#058372;color: white;height: 2pc; width: 5pc"
+            (click)="save()">Save</button>
+    </div>
+</section>

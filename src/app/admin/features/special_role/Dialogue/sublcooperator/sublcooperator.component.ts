@@ -57,7 +57,7 @@ export class SublcooperatorComponent {
     { headerName: 'PASSWORD', field: 'password', filter: true },
     { headerName: 'ACIVE SUBSCRIPTION', field: 'activecount', filter: true },
     {
-      headerName: 'ACTIONS', field: '', filter: true, width: 300,
+      headerName: 'ACTIONS', field: '', filter: true,  width: 500,
       cellRenderer: (params: any) => {
         // const deleteButton = document.createElement('button');
         const updateButton = document.createElement('button');
@@ -82,7 +82,8 @@ export class SublcooperatorComponent {
         // });
 
         // updateButton
-        updateButton.innerHTML = '<i class="fa-solid fa-edit" style="font-size: x-large;color: #0f8d18;">‌</i>';
+        // updateButton.innerHTML = '<i class="fa-solid fa-edit" style="font-size: x-large;color: #0f8d18;">‌</i>';
+        updateButton.innerHTML = '<button style="width: 7em;background-color: #4c6b79;border-radius: 5px;height: 2em;color: white;"><p style="margin-top:-6px">Edit Sub LCO</p></button>';
         updateButton.style.backgroundColor = 'transparent';
         updateButton.style.border = 'none';
         updateButton.title = 'Edit Sub LCO';
@@ -93,7 +94,8 @@ export class SublcooperatorComponent {
         });
 
         // areaupdationButton
-        areaupdationButton.innerHTML = '<i class="fa-solid fa-undo" style="font-size: x-large;color: #363626;">‌</i>';
+        // areaupdationButton.innerHTML = '<i class="fa-solid fa-undo" style="font-size: x-large;color: #363626;">‌</i>';
+        areaupdationButton.innerHTML = '<button style="width: 8em;background-color: #774957;border-radius: 5px;height: 2em;color: white;"><p style="margin-top:-6px">Area Updation</p></button>';
         areaupdationButton.style.backgroundColor = 'transparent';
         areaupdationButton.style.border = 'none';
         areaupdationButton.title = 'Area Updation';
@@ -104,7 +106,8 @@ export class SublcooperatorComponent {
         });
 
         // View button
-        reportButton.innerHTML = '<i class="fa-solid fa-file-invoice-dollar" style="font-size: x-large;color: #c50534;">‌</i>';
+        // reportButton.innerHTML = '<i class="fa-solid fa-file-invoice-dollar" style="font-size: x-large;color: #c50534;">‌</i>';
+        reportButton.innerHTML = '<button style="width: 5em;background-color: #956196;border-radius: 5px;height: 2em;color: white;"><p style="margin-top:-6px">Report</p></button>';
         reportButton.style.backgroundColor = 'transparent';
         reportButton.style.border = 'none';
         reportButton.title = 'Datewise Monthwise Report';
@@ -115,7 +118,8 @@ export class SublcooperatorComponent {
         });
 
         // permmissionButton
-        permmissionButton.innerHTML = '<i class="fa-solid fa-lock" style="font-size: x-large;color: #06561f;">‌</i>';
+        // permmissionButton.innerHTML = '<i class="fa-solid fa-lock" style="font-size: x-large;color: #06561f;">‌</i>';
+        permmissionButton.innerHTML =  '<button style="width: 6em;background-color: #63846f;border-radius: 5px;height: 2em;color: white;"><p style="margin-top:-6px">Permission</p></button>';
         permmissionButton.style.backgroundColor = 'transparent';
         permmissionButton.style.border = 'none';
         permmissionButton.title = 'Permission';
@@ -181,13 +185,9 @@ export class SublcooperatorComponent {
       width = '350px';
     } else if (type === 'updatesublco') {
       width = '800px';
-    } else if (type === 'areaupdation') {
+    }  else if (type === 'reportdation') {
       width = '1000px';
-    } else if (type === 'reportdation') {
-      width = '1000px';
-    } else if (type === 'permission') {
-      width = '1000px';
-    } else if (type === 'paymentgateway') {
+    }  else if (type === 'paymentgateway') {
       width = '500px';
     } else if (type === 'deletesublco') {
       width = '500px';
@@ -210,10 +210,13 @@ export class SublcooperatorComponent {
 
   openaddedlogue(type: any, data: any) {
     let width = '800px';
+    let height = '1000px';
     if (type === 'areaupdation') {
-      width = '1000px';
+      width = '1000px',
+      height="1000px"
     } else if (type === 'permission') {
       width = '1000px';
+      height="1000px"
     }
     let dialogData = { type: type, data: data, id: this.operatorid, selectedid: this.selectedIds };
     const dialogRef = this.dialog.open(AddednotaddedComponent, {

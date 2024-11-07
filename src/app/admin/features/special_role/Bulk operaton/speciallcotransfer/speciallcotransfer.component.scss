@@ -1,0 +1,82 @@
+.title p {
+    color: var(--primary-color);
+    font-size: 20px;
+    font-weight: 600;
+    text-align: center;
+    padding: 20px;
+    background-color: antiquewhite;
+}
+
+.p {
+    font-size: 15px;
+}
+
+.file {
+    outline: 2px ridge;
+    background-color: rgb(233, 206, 248);
+}
+
+.img {
+    width: 70px;
+}
+
+.checkbox-content input {
+    margin: 0 10px 0px 5px;
+    accent-color: white;
+}
+
+.checkbox-content {
+    .form-check-input:checked {
+        background-color: #09a223;
+        border-color: #09a223;
+    }
+}
+
+
+.checkbox-content input:checked {
+    accent-color: #09a223;
+}
+
+
+select,
+.date {
+    width: 100%;
+    height: 40px;
+    border-radius: 4px;
+    padding: 0px 12px;
+    border-top: 2px solid #b0afaf;
+    border-bottom: 0.9px solid lightgray;
+    border-left: 0.9px solid lightgray;
+    border-right: 0.9px solid lightgray;
+}
+
+.date {
+    width: 100%;
+    height: 40px;
+    border-radius: 4px;
+    padding: 0px 12px;
+    border-top: 2px solid #b0afaf;
+    border-bottom: 0.9px solid lightgray;
+    border-left: 0.9px solid lightgray;
+    border-right: 0.9px solid lightgray;
+}
+
+// .btn {
+//     color: var(--primary-color);
+//     background-color: lightgray;
+// }
+
+.btn:hover {
+    color: white;
+    background-color: var(--primary-color);
+}
+
+.display {
+    display: flex;
+}
+
+@media screen and (max-width:560px) {
+    .display {
+        display: block;
+    }
+}

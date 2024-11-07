@@ -131,6 +131,23 @@ import { AddednotaddedComponent } from "./features/special_role/Dialogue/addedno
 import { PackageplanComponent } from "./features/special_role/packageplan/packageplan.component";
 import { PackageplandialogueComponent } from "./features/special_role/Dialogue/packageplandialogue/packageplandialogue.component";
 import { ChanneldetailsComponent } from "./features/special_role/channeldetails/channeldetails.component";
+import { ChanneldialogueComponent } from "./features/special_role/Dialogue/channeldialogue/channeldialogue.component";
+import { AdsdetailsComponent } from "./features/special_role/adsdetails/adsdetails.component";
+import { AdsdialogueComponent } from "./features/special_role/Dialogue/adsdialogue/adsdialogue.component";
+import { LoginsettingsComponent } from "./features/special_role/loginsettings/loginsettings.component";
+import { TaxComponent } from "./features/special_role/tax/tax.component";
+import { ProofComponent } from "./features/special_role/proof/proof.component";
+import { ProofdetailsComponent } from "./features/special_role/Dialogue/proofdetails/proofdetails.component";
+import { TaxdetailsComponent } from "./features/special_role/Dialogue/taxdetails/taxdetails.component";
+import { LogindialogueComponent } from "./features/special_role/Dialogue/logindialogue/logindialogue.component";
+import { EditDismembershipComponent } from "./features/channel_setting/_Dialogue/LCO-Commission/edit-dismembership/edit-dismembership.component";
+import { SpecialBulkpackageComponent } from "./features/special_role/Bulk operaton/special-bulkpackage/special-bulkpackage.component";
+import { SpecialcancelsubscriptionComponent } from "./features/special_role/Bulk operaton/specialcancelsubscription/specialcancelsubscription.component";
+import { SpecialareachangeComponent } from "./features/special_role/Bulk operaton/specialareachange/specialareachange.component";
+import { SpeciallcochangeComponent } from "./features/special_role/Bulk operaton/speciallcochange/speciallcochange.component";
+import { SpecialeditbulkpackageComponent } from "./features/special_role/Dialogue/Bulk operation/specialeditbulkpackage/specialeditbulkpackage.component";
+import { SpeciallcotransferComponent } from "./features/special_role/Bulk operaton/speciallcotransfer/speciallcotransfer.component";
+import { AddonManageComponent } from "./features/channel_setting/_Dialogue/Addon_package/addon-manage/addon-manage.component";
 @NgModule({
     declarations: [
         AdminBaseComponent, NavComponent, HomeComponent, NavbarComponent, MsodetailsComponent, CasmasterComponent,
@@ -184,9 +201,10 @@ import { ChanneldetailsComponent } from "./features/special_role/channeldetails/
         PaymentUpdateComponent, CreateltbComponent, UpdateLtbComponent,
         // ----------------------------------------------Special role-----------------------------------------
         LcoinvoiceComponent, CasdialogueComponent, EditmsoComponent, SpecialoperatorComponent, SpecialoperatordialogueComponent, SublcooperatorComponent, SublcooperatordialogueComponent,
-        
-        AddednotaddedComponent,PackageplanComponent,PackageplandialogueComponent,ChanneldetailsComponent
 
+        AddednotaddedComponent, PackageplanComponent, PackageplandialogueComponent, ChanneldetailsComponent, ChanneldialogueComponent, AdsdetailsComponent, AdsdialogueComponent, LoginsettingsComponent,
+        TaxComponent, ProofComponent,ProofdetailsComponent,TaxdetailsComponent,LogindialogueComponent,EditDismembershipComponent,SpecialBulkpackageComponent,
+        SpecialcancelsubscriptionComponent,SpecialareachangeComponent,SpeciallcochangeComponent,SpecialeditbulkpackageComponent,SpeciallcotransferComponent,
     ],
     imports: [
         CommonModule,

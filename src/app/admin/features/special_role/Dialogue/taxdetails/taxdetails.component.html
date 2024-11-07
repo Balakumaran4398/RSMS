@@ -1,0 +1,168 @@
+<div *ngIf="type == 'createtax'">
+    <div class="Head d-flex justify-content-between align-items-center mb-3" style="padding: 1rem;">
+        <h6>CREATE TAX</h6>
+        <i class="fa fa-close close-icon" style="cursor: pointer;" (click)="onNoClick()"></i>
+    </div>
+    <div class="card-body" style="padding: 1rem;">
+        <form #editForm="ngForm" (ngSubmit)="createtax()" novalidate>
+
+            <!-- TAX Name Field -->
+            <div class="input_box display align-items-center mb-3">
+                <div class="col-12 col-md-6">
+                    <label for="taxname" class="me-2">TAX Name</label>
+                </div>
+                <div class="col-12 col-md-6">
+                    <input type="text" [(ngModel)]="taxname" name="taxname" required #taxnameInput="ngModel">
+                    <div *ngIf="taxnameInput.invalid && taxnameInput.touched" class="text-danger">
+                        TAX Name is required.
+                    </div>
+                </div>
+            </div>
+            <div class="input_box col-12 col-md-12 display mb-1">
+                <div class="col-12 col-md-6 ">
+                    <label>TAX Applicable</label>
+                </div>
+                <div class="col-12 col-md-6">
+                    <div class="toggle-button-cover">
+                        <div class="button b2" id="button-10">
+                            <input type="checkbox" class="checkbox" checked [(ngModel)]="taxapplicable"
+                                (change)="edit($event)" />
+                            <!-- <mat-slide-toggle (change)="edit($event)"></mat-slide-toggle> -->
+
+                            <div class="knobs">
+                                <span>YES</span>
+                                <!-- <span>{{ taxapplicable ? 'YES' :'NO' }}</span> -->
+                            </div>
+                            <div class="layer"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Percentage Field -->
+            <div class="input_box display align-items-center mb-3">
+                <div class="col-12 col-md-6">
+                    <label for="percentage" class="me-2">Percentage</label>
+                </div>
+                <div class="col-12 col-md-6 position-relative">
+                    <input type="number" [(ngModel)]="percentage" name="percentage" placeholder="0" required min="0"
+                        max="100" #percentageInput="ngModel" class="percentage-input">
+                    <!-- <span class="percentage-symbol">%</span> -->
+                    <div *ngIf="percentageInput.invalid && percentageInput.touched" class="text-danger mt-2">
+                        <div *ngIf="percentageInput.errors?.['required']">Percentage is required.</div>
+                        <div *ngIf="percentageInput.errors?.['min'] || percentageInput.errors?.['max']">
+                            Percentage must be between 0 and 100.
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            <!-- Tax Type Field -->
+            <div class="input_box display align-items-center mb-3">
+                <div class="col-12 col-md-6">
+                    <label for="taxtype" class="me-2">Tax Type</label>
+                </div>
+                <div class="col-12 col-md-6">
+                    <input type="text" [(ngModel)]="taxtype" name="taxtype" required #taxtypeInput="ngModel">
+                    <div *ngIf="taxtypeInput.invalid && taxtypeInput.touched" class="text-danger">
+                        TAX Type is required.
+                    </div>
+                </div>
+            </div>
+
+            <!-- Submit and Cancel Buttons -->
+            <div class="form-group d-flex justify-content-center align-items-center mb-3">
+                <button type="submit" class="btn btn-success me-2" [disabled]="editForm.invalid">Create</button>
+                <button type="button" class="btn btn-danger" (click)="onNoClick()">Cancel</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<div *ngIf="type == 'editTax'">
+    <div class="Head d-flex justify-content-between align-items-center mb-3" style="padding: 1rem;">
+        <h6>EDIT TAX</h6>
+        <i class="fa fa-close close-icon" style="cursor: pointer;" (click)="onNoClick()"></i>
+    </div>
+    <div class="card-body" style="padding: 1rem;">
+        <form #editForm="ngForm" (ngSubmit)="updateTax()" novalidate>
+            <!-- TAX Name Field -->
+            <div class="input_box display align-items-center mb-3">
+                <div class="col-12 col-md-6">
+                    <span for="taxname" class="me-2">TAX Name</span>
+                </div>
+                <div class="col-12 col-md-6">
+                    <input type="text" [(ngModel)]="editTaxname" name="taxname" required #taxnameInput="ngModel">
+                    <div *ngIf="taxnameInput.invalid && taxnameInput.touched" class="text-danger">
+                        TAX Name is required.
+                    </div>
+                </div>
+            </div>
+            <div class="input_box col-12 col-md-12 display mb-1">
+                <div class="col-12 col-md-6 ">
+                    <span>TAX Applicable</span>
+                </div>
+                <div class="col-12 col-md-6">
+                    <div class="toggle-button-cover">
+                        <div class="button b2" id="button-10">
+                            <input type="checkbox" class="checkbox" checked id="isactive"
+                                [(ngModel)]="editTaxapplicable" />
+                            <div class="knobs">
+                                <span>YES</span>
+                                <!-- <span>{{ taxapplicable ? 'YES'  }}</span> -->
+                            </div>
+                            <div class="layer"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Percentage Field -->
+            <div class="input_box display align-items-center mb-3">
+                <div class="col-12 col-md-6">
+                    <span for="percentage" class="me-2">Percentage</span>
+                </div>
+                <div class="col-12 col-md-6 position-relative">
+                    <input type="number" [(ngModel)]="editPercentage" name="percentage" placeholder="0" required min="0"
+                        max="100" #percentageInput="ngModel" class="percentage-input">
+                    <!-- <span class="percentage-symbol">%</span> -->
+                    <div *ngIf="percentageInput.invalid && percentageInput.touched" class="text-danger mt-2">
+                        <div *ngIf="percentageInput.errors?.['required']">Percentage is required.</div>
+                        <div *ngIf="percentageInput.errors?.['min'] || percentageInput.errors?.['max']">
+                            Percentage must be between 0 and 100.
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            <!-- Tax Type Field -->
+            <div class="input_box display align-items-center mb-3">
+                <div class="col-12 col-md-6">
+                    <span for="taxtype" class="me-2">Tax Type</span>
+                </div>
+                <div class="col-12 col-md-6">
+                    <input type="text" [(ngModel)]="editTaxtype" name="taxtype" required #taxtypeInput="ngModel">
+                    <div *ngIf="taxtypeInput.invalid && taxtypeInput.touched" class="text-danger">
+                        TAX Type is required.
+                    </div>
+                </div>
+            </div>
+            <!-- ISdelete -->
+            <div class="input_box display align-items-center mb-3">
+                <div class="col-12 col-md-6">
+                    <span>IsDelete</span>
+                </div>
+                <div class="col-12 col-md-6 d-flex justify-content-start align-items-center">
+                    <label class="switch">
+                        <input type="checkbox" [(ngModel)]="isdelete" [ngModelOptions]="{standalone: true}">
+                        <span class="slider"></span>
+                    </label>
+                </div>
+            </div>
+
+            <!-- Submit and Cancel Buttons -->
+            <div class="form-group d-flex justify-content-center align-items-center mb-3">
+                <button type="submit" class="btn btn-success me-2" [disabled]="editForm.invalid">Save</button>
+                <button type="button" class="btn btn-danger" (click)="onNoClick()">Cancel</button>
+            </div>
+        </form>
+    </div>
+</div>

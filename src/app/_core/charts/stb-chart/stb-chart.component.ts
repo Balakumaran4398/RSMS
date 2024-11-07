@@ -25,36 +25,72 @@ export class StbChartComponent implements OnInit {
 		});
 	}
 
+	// renderChart(data: any): void {
+	// 	const chart = new CanvasJS.Chart("stbchartContainer", {
+	// 		title: {
+	// 			text: "STB DETAILS",
+	// 			fontSize: 20,
+	// 			fontWeight: 600
+	// 		},
+	// 		animationEnabled: true,
+	// 		axisY: {
+	// 			title: "Count",
+	// 			titleFontSize: 16,
+	// 			titleFontColor: "#5A5757",
+	// 			labelFontColor: "#5A5757",
+	// 			gridThickness: 0
+	// 		},
+	// 		data: [{
+	// 			type: "column",
+	// 			indexLabelFontColor: "#5A5757",
+				
+	// 			dataPoints: [
+	// 				{ label: "Active", y: data["ACTIVE STB's"], color: "#1a8a38" },
+	// 				{ label: "Deactive", y: data["DEACTIVE STB's"], color: "#db635a" },
+	// 				{ label: "Fresh", y: data["NOT ACTIVE STB's"], color: "#622a82" },
+	// 				{ label: "Not Expiry", y: data["ACTIVE SUBSCRIPTION"], color: "#2d72ad" },
+	// 				{ label: "Expiry", y: data["EXPIRED SUBSCRIPTION"], color: "#deac2c" },
+	// 				{ label: "Block", y: data["BLOCKED STB's"], color: "#52504e" }
+	// 			]
+	// 		}]
+
+	// 	});
+
+	// 	chart.render();  // Render the chart
+	// }
 	renderChart(data: any): void {
 		const chart = new CanvasJS.Chart("stbchartContainer", {
-			title: {
-				text: "STB DETAILS",
-				fontSize: 20,
-				fontWeight: 600
-			},
-			animationEnabled: true,
-			axisY: {
-				title: "Count",
-				titleFontSize: 16,
-				titleFontColor: "#5A5757",
-				labelFontColor: "#5A5757",
-				gridThickness: 0
-			},
-			data: [{
-				type: "column",
-				indexLabelFontColor: "#5A5757",
-				dataPoints: [
-					{ label: "Active", y: data["ACTIVE STB's"], color: "#1a8a38" },
-					{ label: "Deactive", y: data["DEACTIVE STB's"], color: "#db635a" },
-					{ label: "Fresh", y: data["NOT ACTIVE STB's"], color: "#622a82" },
-					{ label: "Not Expiry", y: data["ACTIVE SUBSCRIPTION"], color: "#2d72ad" },
-					{ label: "Expiry", y: data["EXPIRED SUBSCRIPTION"], color: "#deac2c" },
-					{ label: "Block", y: data["BLOCKED STB's"], color: "#52504e" }
-				]
-			}]
-
+		  title: {
+			text: "STB DETAILS",
+			fontSize: 20,
+			fontWeight: 600
+		  },
+		  animationEnabled: true,
+		  axisY: {
+			title: "Count",
+			titleFontSize: 16,
+			titleFontColor: "#5A5757",
+			labelFontColor: "#5A5757",
+			gridThickness: 0
+		  },
+		  data: [{
+			type: "column",
+			indexLabelFontColor: "#5A5757",  // Color of the count label
+			indexLabelFontSize: 14,  // Size of the count label
+			indexLabelPlacement: "outside",  // Position of the label (outside the bar)
+			indexLabelAlign: "center",  // Align the label in the center of the bar
+			dataPoints: [
+			  { label: "Active", y: data["ACTIVE STB's"], color: "#1a8a38", indexLabel: data["ACTIVE STB's"].toString() },
+			  { label: "Deactive", y: data["DEACTIVE STB's"], color: "#db635a", indexLabel: data["DEACTIVE STB's"].toString() },
+			  { label: "Fresh", y: data["NOT ACTIVE STB's"], color: "#622a82", indexLabel: data["NOT ACTIVE STB's"].toString() },
+			  { label: "Not Expiry", y: data["ACTIVE SUBSCRIPTION"], color: "#2d72ad", indexLabel: data["ACTIVE SUBSCRIPTION"].toString() },
+			  { label: "Expiry", y: data["EXPIRED SUBSCRIPTION"], color: "#deac2c", indexLabel: data["EXPIRED SUBSCRIPTION"].toString() },
+			  { label: "Block", y: data["BLOCKED STB's"], color: "#52504e", indexLabel: data["BLOCKED STB's"].toString() }
+			]
+		  }]
 		});
-
+	  
 		chart.render();  // Render the chart
-	}
+	  }
+	  
 }

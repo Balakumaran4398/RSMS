@@ -208,12 +208,11 @@
     <div class="" style="grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); display: grid; gap: 10px; ">
         <!-- <span class="k col-12 col-md-4" *ngFor="let operator of operator_details"> -->
         <div *ngFor="let operator of operator_details">
-            <mat-card class=" " style="height: 100%;">
+            <mat-card class=" " style="height: 100%;width: min-content;">
                 <mat-card-header>
                     <mat-card-subtitle class="sub-tittle mb-3">
                         {{operator?.operatorname || 'empty'}} [ {{operator?.balance}}]
                     </mat-card-subtitle>
-
                 </mat-card-header>
                 <mat-card-content>
                     <div class="col-12 head " style="text-align: left;">
@@ -302,7 +301,7 @@
                             <!-- <p class="sub-text">Expired</p> -->
                             <span style="color: #0e610b;">
                                 <div class="circle" style="background-color: rgb(202, 9, 9);"><span
-                                        class="circle-text">{{operator?.connectioncount}}</span></div>
+                                        class="circle-text">{{operator?.expiredcount}}</span></div>
                             </span>
                             <span class="tooltip">Expired</span>
                         </div>
@@ -374,7 +373,7 @@
                                 </span>
                             </div>
 
-                         
+
 
                             <!-- <div class="files tooltip-container mx-2">
                                 <a (click)="navgetToUrl(operator.operatorid)" class="tooltip-container">

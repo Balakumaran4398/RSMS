@@ -1,5 +1,3 @@
-
-
 .title {
     padding: 0px;
     background: #f6f8fa;
@@ -96,6 +94,11 @@ form .gender {
     width: 7vw;
 }
 
+::ng-deep .mdc-text-field--outlined .mdc-notched-outline {
+    z-index: 1;
+    height: 51px !important;
+}
+
 .reg_btn input {
     height: 45px;
     width: 100%;
@@ -113,13 +116,15 @@ form .gender {
 .reg_btn input:hover {
     background: linear-gradient(to right, #385cfc, #ceaef8);
 }
+
 @media screen and (max-width:560px) {
 
-    .mobile{
+    .mobile {
         max-height: 500px;
         overflow: scroll;
     }
 }
+
 @media screen and (max-width: 584px) {
 
     .user_details {

@@ -1,0 +1,162 @@
+<div *ngIf="type =='createadd'">
+    <div class="Head d-flex justify-content-between align-items-center mb-3" style="padding: 1rem;">
+        <h6>CREATE NEW ADD DETAILS</h6>
+        <i class="fa fa-close close-icon" style="cursor: pointer;" (click)="onClick()"></i>
+    </div>
+    <div style="padding: 1rem;">
+        <form #casForm="ngForm" (ngSubmit)="onSubmit()" novalidate>
+            <!-- Channel Name -->
+            <div class="input_box display align-items-center mb-3">
+                <div class="col-12 col-md-3">
+                    <label for="addName" class="me-2">ADD Name</label>
+                </div>
+                <div class="col-12 col-md-1 mobile">
+                    <span class="me-2">:</span>
+                </div>
+                <div class="col-12 col-md-8">
+                    <input type="text" [(ngModel)]="addname" name="addname" placeholder="Enter ADD Name" required
+                        #addNameRef="ngModel">
+                    <div *ngIf="addNameRef.invalid && addNameRef.touched" class="text-danger">
+                        ADD Name is required.
+                    </div>
+                </div>
+            </div>
+
+            <!-- URL -->
+            <div class="input_box display align-items-center mb-3">
+                <div class="col-12 col-md-3">
+                    <label class="me-2">ADD URL</label>
+                </div>
+                <div class="col-12 col-md-1 mobile">
+                    <span class="me-2">:</span>
+                </div>
+                <div class="col-12 col-md-8">
+                    <textarea [(ngModel)]="addurl" name="addurl" placeholder="Enter ADD URL" required #urlRef="ngModel"
+                        pattern="http:\/\/\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}:\d+\/udp\/\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}:\d+"></textarea>
+                    <div *ngIf="urlRef.invalid && urlRef.touched" class="text-danger">
+                        <div *ngIf="urlRef.errors?.['required']">ADD URL is required.</div>
+                        <div *ngIf="urlRef.errors?.['pattern']">
+                            Please enter a valid URL <br> (e.g., http://192.168.50.36:1012 <br>
+                            /udp/239.239.239.118:1235).
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Site URL -->
+            <div class="input_box display align-items-center mb-3">
+                <div class="col-12 col-md-3">
+                    <label class="me-2">SITE URL</label>
+                </div>
+                <div class="col-12 col-md-1 mobile">
+                    <span class="me-2">:</span>
+                </div>
+                <div class="col-12 col-md-8">
+                    <textarea type="url" [(ngModel)]="siteurl" name="siteurl" placeholder="Enter URL" required
+                        #siteUrlRef="ngModel" pattern="https?://.+"></textarea>
+                    <div *ngIf="siteUrlRef.invalid && siteUrlRef.touched" class="text-danger">
+                        <div *ngIf="siteUrlRef.errors?.['required']">SITE URL is required.</div>
+                        <div *ngIf="siteUrlRef.errors?.['pattern']">Please enter a valid URL <br> (e.g.,
+                            https://www.example.com).</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- CAS ID -->
+
+
+            <!-- Submit and Cancel Buttons -->
+            <div class="form-group d-flex justify-content-center align-items-center mb-3">
+                <button type="submit" class="btn btn-success me-2" [disabled]="casForm.invalid">Create</button>
+                <button type="button" class="btn btn-danger" (click)="onClick()">Cancel</button>
+            </div>
+        </form>
+    </div>
+
+</div>
+
+<div *ngIf="type =='editAdd'">
+    <div class="Head d-flex justify-content-between align-items-center mb-3" style="padding: 1rem;">
+        <h6>EDIT ADD DETAIL</h6>
+        <i class="fa fa-close close-icon" style="cursor: pointer;" (click)="onClick()"></i>
+    </div>
+    <div style="padding: 1rem;">
+        <form #editForm="ngForm" (ngSubmit)="onEditsubmit()" novalidate>
+            <!-- Channel Name -->
+            <div class="input_box display align-items-center mb-3">
+                <div class="col-12 col-md-3">
+                    <label for="addName" class="me-2">ADD Name</label>
+                </div>
+                <div class="col-12 col-md-1 mobile">
+                    <span class="me-2">:</span>
+                </div>
+                <div class="col-12 col-md-8">
+                    <input type="text" [(ngModel)]="addname" name="addname" placeholder="Enter ADD Name" required
+                        #addNameRef="ngModel">
+                    <div *ngIf="addNameRef.invalid && addNameRef.touched" class="text-danger">
+                        ADD Name is required.
+                    </div>
+                </div>
+            </div>
+
+            <!-- URL -->
+            <div class="input_box display align-items-center mb-3">
+                <div class="col-12 col-md-3">
+                    <label class="me-2">ADD URL</label>
+                </div>
+                <div class="col-12 col-md-1 mobile">
+                    <span class="me-2">:</span>
+                </div>
+                <div class="col-12 col-md-8">
+                    <textarea [(ngModel)]="addurl" name="addurl" placeholder="Enter ADD URL" required #urlRef="ngModel"
+                        pattern="http:\/\/\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}:\d+\/udp\/\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}:\d+"></textarea>
+                    <div *ngIf="urlRef.invalid && urlRef.touched" class="text-danger">
+                        <div *ngIf="urlRef.errors?.['required']">ADD URL is required.</div>
+                        <div *ngIf="urlRef.errors?.['pattern']">
+                            Please enter a valid URL <br> (e.g., http://192.168.50.36:1012 <br>
+                            /udp/239.239.239.118:1235).
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Site URL -->
+            <div class="input_box display align-items-center mb-3">
+                <div class="col-12 col-md-3">
+                    <label class="me-2">SITE URL</label>
+                </div>
+                <div class="col-12 col-md-1 mobile">
+                    <span class="me-2">:</span>
+                </div>
+                <div class="col-12 col-md-8">
+                    <textarea type="url" [(ngModel)]="siteurl" name="siteurl" placeholder="Enter SITE URL" required
+                        #siteUrlRef="ngModel" pattern="https?://.+"></textarea>
+                    <div *ngIf="siteUrlRef.invalid && siteUrlRef.touched" class="text-danger">
+                        <div *ngIf="siteUrlRef.errors?.['required']">SITE URL is required.</div>
+                        <div *ngIf="siteUrlRef.errors?.['pattern']">Please enter a valid URL <br> (e.g.,
+                            https://www.example.com).</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- status -->
+            <div class="input_box display align-items-center mb-3">
+                <div class="col-12 col-md-4">
+                    <span>STATUS</span>
+                </div>
+                <div class="col-12 col-md-7 display justify-content-start align-items-center">
+                    <label class="switch">
+                        <!-- {{ isactive ? 'Active' : 'Deactive' }} -->
+                        <input type="checkbox" [(ngModel)]="isactive">
+                        <span class="slider"></span>
+                    </label>
+                </div>
+            </div>
+
+            <!-- Submit and Cancel Buttons -->
+            <div class="form-group d-flex justify-content-center align-items-center mb-3">
+                <button type="submit" class="btn btn-success me-2" [disabled]="editForm.invalid">Update</button>
+                <button type="button" class="btn btn-danger" (click)="onClick()">Cancel</button>
+            </div>
+        </form>
+    </div>
+
+</div>

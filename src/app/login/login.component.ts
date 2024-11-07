@@ -67,13 +67,10 @@ export class LoginComponent implements OnInit {
       return;
     } else if (form.valid) {
       this.authService.login(this.signInform.value).subscribe(
-        res => {
+        (res: any) => {
           console.log(res);
           console.log(res.roles);
-          
-          // Success handler
-          // if (res.roles.includes('ROLE_RECEPTION')) {
-          if (res.roles.includes('ROLE_USER') || res.roles.includes('ROLE_RECEPTION') || res.roles.includes('ROLE_SPECIAL') ) {
+          if (res.roles.includes('ROLE_USER') || res.roles.includes('ROLE_RECEPTION') || res.roles.includes('ROLE_SPECIAL')) {
             this.storageService.saveToken(res.accessToken);
             this.storageService.saveUser(res);
             this.idstorage = res.id;
@@ -87,26 +84,25 @@ export class LoginComponent implements OnInit {
             let isUser = this.roles.includes('ROLE_USER');
             let isReception = this.roles.includes('ROLE_RECEPTION');
             let isSpecial = this.roles.includes('ROLE_SPECIAL');
-            
+
             Swal.fire({
               position: "center",
               icon: "success",
-              title: "Your Login is Successful",
+              title: res.message || "Your Login is Successful",
               showConfirmButton: false,
               timer: 1000
             });
-            // if (role === 'ROLE_RECEPTION') {
             if (isUser) {
               this.router.navigate(['admin/home']).then(() => {
                 console.log('Navigated to home page');
               });
-            }else if (isReception) {
+            } else if (isReception) {
               this.router.navigate(['admin/home']).then(() => {
               });
             } else if (isSpecial) {
               this.router.navigate(['admin/msodetails']).then(() => {
               });
-            } 
+            }
           } else {
             Swal.fire({
               position: 'center',
@@ -120,11 +116,11 @@ export class LoginComponent implements OnInit {
         },
         err => {
           console.error('Login error', err);
-          let errorMessage = 'An error occurred during login.';
+          let errorMessage = err?.error?.message || 'An error occurred during login.';
           if (err.status === 0) {
-            errorMessage = 'Unable to reach the server. Please try again later.';
+            errorMessage = err?.error?.message || 'Unable to reach the server. Please try again later.';
           } else if (err.status === 401) {
-            errorMessage = 'Invalid username or password.';
+            errorMessage = err?.error?.message || 'Invalid username or password.';
           }
           Swal.fire({
             position: 'center',

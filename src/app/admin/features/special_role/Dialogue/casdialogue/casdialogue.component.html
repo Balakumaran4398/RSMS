@@ -13,9 +13,9 @@
                                 <label for="">CAS ID </label>
                             </div>
                             <div class=" input_box col-12 col-md-12">
-                                <input type="text" formControlName="casname" placeholder="Enter Cas id"
+                                <input type="text" formControlName="id" placeholder="Enter Cas id"
                                     (keypress)="onKeydown($event)">
-                                <div *ngIf="form.get('casname')?.invalid && form.get('casname')?.touched">
+                                <div *ngIf="form.get('id')?.invalid && form.get('id')?.touched">
                                     <small class="text-danger">CAS ID is required.</small>
                                 </div>
                             </div>
@@ -58,8 +58,8 @@
                                         *ngIf="form.get('password')?.errors?.['required']">Password
                                         is required.</small>
                                     <small class="text-danger"
-                                        *ngIf="form.get('password')?.errors?.['pattern']">Password
-                                        must be at least 8 characters, including one letter and one number.</small>
+                                        *ngIf="form.get('password')?.errors?.['pattern']">Password must be at least 8
+                                        characters,<br> including one letter and one number.</small>
                                 </div>
                             </div>
                         </div>
@@ -266,10 +266,13 @@
                                     <span>CAS ID </span>
                                 </div>
                                 <div class="col-12 col-md-12">
-                                    <input type="text" [value]="cas_id" [(ngModel)]="cas_id" placeholder="Enter CAS ID" required
-                                        #casmastedidRef="ngModel">
-                                    <div *ngIf="casmastedidRef.invalid && casmastedidRef.touched" class="text-danger">
+                                    <input type="text" [(ngModel)]="cas_id" [ngModelOptions]="{standalone: true}"
+                                        placeholder="Enter CAS ID" required #casidRef="ngModel">
+                                    <div *ngIf="casidRef.invalid && casidRef.touched" class="text-danger">
                                         CAS ID is required.
+                                    </div>
+                                    <div *ngIf="cas_id === null" class="text-muted">
+                                        <span style="color: rgb(233, 97, 97);">Null value</span>
                                     </div>
                                 </div>
                             </div>
@@ -278,11 +281,14 @@
                                     <span>CAS NAME</span>
                                 </div>
                                 <div class="col-12 col-md-12">
-                                    <input type="text" [value]="cas_name" [(ngModel)]="cas_name" placeholder="Enter CAS Name" required
-                                        #casmasternameRef="ngModel">
+                                    <input type="text" [(ngModel)]="cas_name" [ngModelOptions]="{standalone: true}"
+                                        placeholder="Enter CAS Name" required #casmasternameRef="ngModel">
                                     <div *ngIf="casmasternameRef.invalid && casmasternameRef.touched"
                                         class="text-danger">
                                         CAS NAME is required.
+                                    </div>
+                                    <div *ngIf="cas_name === null" class="text-muted">
+                                        <span style="color: rgb(233, 97, 97);">Null value</span>
                                     </div>
                                 </div>
                             </div>
@@ -290,14 +296,53 @@
                         <div class="row">
                             <div class="input_box col-12 col-md-6">
                                 <div class="col-12 col-md-12">
+                                    <span>USER NAME</span>
+                                </div>
+                                <div class="col-12 col-md-12">
+                                    <input type="text" [(ngModel)]="uname" [ngModelOptions]="{standalone: true}"
+                                        placeholder="Enter a Vendor name" required #casmasterunameRef="ngModel">
+                                    <div *ngIf="casmasterunameRef.invalid && casmasterunameRef.touched"
+                                        class="text-danger">
+                                        USER NAME is required.
+                                    </div>
+                                    <div *ngIf="uname === null" class="text-muted">
+                                        <span style="color: rgb(233, 97, 97);">Null value</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="input_box col-12 col-md-6">
+                                <div class="col-12 col-md-12">
+                                    <span>PASSWORD</span>
+                                </div>
+                                <div class="col-12 col-md-12">
+                                    <input type="text" [(ngModel)]="password" [ngModelOptions]="{standalone: true}"
+                                        placeholder="Enter a Address" required #casmasterpasswordRef="ngModel">
+                                    <div *ngIf="casmasterpasswordRef.invalid && casmasterpasswordRef.touched"
+                                        class="text-danger">
+                                        <div *ngIf="casmasterpasswordRef.errors?.['required']">PASSWORD is required.
+                                        </div>
+                                    </div>
+                                    <div *ngIf="password === null" class="text-muted">
+                                        <span style="color: rgb(233, 97, 97);">Null value</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="input_box col-12 col-md-6">
+                                <div class="col-12 col-md-12">
                                     <span>VENDOR</span>
                                 </div>
                                 <div class="col-12 col-md-12">
-                                    <input type="text" [value]="msovendor" [(ngModel)]="msovendor" placeholder="Enter a Vendor name"
-                                        required #casmastervendorRef="ngModel">
+                                    <input type="text" [(ngModel)]="msovendor" [ngModelOptions]="{standalone: true}"
+                                        placeholder="Enter a Vendor name" required #casmastervendorRef="ngModel">
                                     <div *ngIf="casmastervendorRef.invalid && casmastervendorRef.touched"
                                         class="text-danger">
                                         VENDOR is required.
+                                    </div>
+                                    <div *ngIf="msovendor === null" class="text-muted">
+                                        <span style="color: rgb(233, 97, 97);">Null value</span>
                                     </div>
                                 </div>
                             </div>
@@ -305,10 +350,9 @@
                                 <div class="col-12 col-md-12">
                                     <span>ADDRESS</span>
                                 </div>
-
                                 <div class="col-12 col-md-12">
-                                    <input type="text" [value]="address" [(ngModel)]="address" placeholder="Enter a Address" required
-                                        #casmasteraddressRef="ngModel">
+                                    <input type="text" [(ngModel)]="address" [ngModelOptions]="{standalone: true}"
+                                        placeholder="Enter a Address" required #casmasteraddressRef="ngModel">
                                     <div *ngIf="casmasteraddressRef.invalid && casmasteraddressRef.touched"
                                         class="text-danger">
                                         <div *ngIf="casmasteraddressRef.errors?.['required']">ADDRESS is required.</div>
@@ -316,6 +360,9 @@
                                             class="text-danger">
                                             ADDRESS is required.
                                         </div>
+                                    </div>
+                                    <div *ngIf="address === null" class="text-muted">
+                                        <span style="color: rgb(233, 97, 97);">Null value</span>
                                     </div>
                                 </div>
                             </div>
@@ -326,20 +373,25 @@
                                     <span>SERVER IP </span>
                                 </div>
                                 <div class="col-12 col-md-12">
-                                    <input type="text" [value]="serviceip" [(ngModel)]="serviceip" placeholder="Enter Server IP" required
-                                        #casmastersipRef="ngModel">
+                                    <input type="text" [(ngModel)]="serviceip" [ngModelOptions]="{standalone: true}"
+                                        placeholder="Enter Server IP" required #casmastersipRef="ngModel">
                                     <div *ngIf="casmastersipRef.invalid && casmastersipRef.touched" class="text-danger">
                                         <div *ngIf="casmastersipRef.errors?.['required']">SERVER IP is required.</div>
 
                                     </div>
                                 </div>
+                                <div *ngIf="serviceip === null" class="text-muted">
+                                    <span style="color: rgb(233, 97, 97);">Null value</span>
+                                </div>
                             </div>
+
                             <div class="input_box col-12 col-md-6">
                                 <div class="col-12 col-md-12">
                                     <span>SERVER PORT </span>
                                 </div>
                                 <div class="col-12 col-md-12">
-                                    <input type="text" name="msocontact" [value]="serverport" [(ngModel)]="serverport" maxlength="10"
+                                    <input type="text" name="msocontact" [(ngModel)]="serverport"
+                                        [ngModelOptions]="{standalone: true}" maxlength="10"
                                         placeholder="Enter Server Port" required pattern="^\d{10}$"
                                         #casmasterserverportRef="ngModel">
                                     <div *ngIf="casmasterserverportRef.invalid && casmasterserverportRef.touched"
@@ -348,6 +400,9 @@
                                             required.
                                         </div>
 
+                                    </div>
+                                    <div *ngIf="serverport === null" class="text-muted">
+                                        <span style="color: rgb(233, 97, 97);">Null value</span>
                                     </div>
                                 </div>
                             </div>
@@ -359,14 +414,18 @@
                                     <span>SMARTCARD LENGTH</span>
                                 </div>
                                 <div class="col-12 col-md-12">
-                                    <input type="email" name="msoemail" [value]="smartcardlength" [(ngModel)]="smartcardlength"
-                                        placeholder="Enter Smartcard length" required #cmsmartcardlengthRef="ngModel">
+                                    <input type="email" name="msoemail" [(ngModel)]="smartcardlength"
+                                        [ngModelOptions]="{standalone: true}" placeholder="Enter Smartcard length"
+                                        required #cmsmartcardlengthRef="ngModel">
                                     <div *ngIf="cmsmartcardlengthRef.invalid && cmsmartcardlengthRef.touched"
                                         class="text-danger">
                                         <div *ngIf="cmsmartcardlengthRef.errors?.['required']">SMARTCARD LENGTH is
                                             required.
                                         </div>
 
+                                    </div>
+                                    <div *ngIf="smartcardlength === null" class="text-muted">
+                                        <span style="color: rgb(233, 97, 97);">Null value</span>
                                     </div>
                                 </div>
                             </div>
@@ -375,12 +434,14 @@
                                     <span>BOX ID LENGTH</span>
                                 </div>
                                 <div class="col-12 col-md-12">
-                                    <input type="text" [value]="boxidlength" [(ngModel)]="boxidlength" placeholder="Enter Box id Length"
-                                        maxlength="10" pattern="[A-Z]{5}[0-9]{4}[A-Z]{1}" required
-                                        #cmboxidRef="ngModel">
+                                    <input type="text" [(ngModel)]="boxidlength" [ngModelOptions]="{standalone: true}"
+                                        placeholder="Enter Box id Length" required #cmboxidRef="ngModel">
                                     <div *ngIf="cmboxidRef.invalid && cmboxidRef.touched" class="text-danger">
                                         <div *ngIf="cmboxidRef.errors?.['required']">BOX ID LENGTH is required.</div>
 
+                                    </div>
+                                    <div *ngIf="boxidlength === null" class="text-muted">
+                                        <span style="color: rgb(233, 97, 97);">Null value</span>
                                     </div>
                                 </div>
                             </div>
@@ -392,8 +453,8 @@
                                     <span>REFERENCE URL</span>
                                 </div>
                                 <div class="col-12 col-md-12">
-                                    <input type="text" [value]="referenceurl" [(ngModel)]="referenceurl" required
-                                        placeholder="http://example.com" #refurlRef="ngModel">
+                                    <input type="text" [(ngModel)]="referenceurl" [ngModelOptions]="{standalone: true}"
+                                        required placeholder="http://example.com" #refurlRef="ngModel">
                                     <!-- <div *ngIf="refurlRef.invalid && refurlRef.touched" class="text-danger">
                                         <div *ngIf="refurlRef.errors?.['required']">REFERENCE URL is required.</div>
                                     </div> -->
@@ -402,6 +463,9 @@
                                         <div *ngIf="refurlRef.errors?.['pattern']">Invalid URL format. Please start with
                                             http:// or https://.</div>
                                     </div>
+                                    <div *ngIf="referenceurl === null" class="text-muted">
+                                        <span style="color: rgb(233, 97, 97);">Null value</span>
+                                    </div>
                                 </div>
                             </div>
                             <div class="input_box col-12 col-md-6">
@@ -409,8 +473,8 @@
                                     <span>WEBSITE</span>
                                 </div>
                                 <div class="col-12 col-md-12">
-                                    <input type="text" [value]="website" [(ngModel)]="website" required #websiteRef="ngModel"
-                                        placeholder="www.example.com">
+                                    <input type="text" [(ngModel)]="website" [ngModelOptions]="{standalone: true}"
+                                        required #websiteRef="ngModel" placeholder="www.example.com">
                                     <!-- <div *ngIf="websiteRef.invalid && websiteRef.touched" class="text-danger">
                                         <div *ngIf="websiteRef.errors?.['required']">WEBSITE is required.</div>
                                     </div> -->
@@ -418,6 +482,9 @@
                                         <div *ngIf="websiteRef.errors?.['required']">WEBSITE is required.</div>
                                         <div *ngIf="websiteRef.errors?.['pattern']">Invalid website format. Use
                                             www.example.com.</div>
+                                    </div>
+                                    <div *ngIf="website === null" class="text-muted">
+                                        <span style="color: rgb(233, 97, 97);">Null value</span>
                                     </div>
                                 </div>
                             </div>
@@ -428,14 +495,17 @@
                                     <span>EMAIL</span>
                                 </div>
                                 <div class="col-12 col-md-12">
-                                    <input type="email" [value]="referenceurl" [(ngModel)]="referenceurl" required #emailRef="ngModel"
-                                        placeholder="123@gmail.com">
+                                    <input type="email" [(ngModel)]="email" [ngModelOptions]="{standalone: true}"
+                                        required #emailRef="ngModel" placeholder="123@gmail.com">
                                     <!-- <div *ngIf="emailRef.invalid && emailRef.touched" class="text-danger">
                                         <div *ngIf="emailRef.errors?.['required']">EMAIL is required.</div>
                                     </div> -->
                                     <div *ngIf="emailRef.invalid && emailRef.touched" class="text-danger">
                                         <div *ngIf="emailRef.errors?.['required']">EMAIL is required.</div>
                                         <div *ngIf="emailRef.errors?.['email']">Invalid email format.</div>
+                                    </div>
+                                    <div *ngIf="email === null" class="text-muted">
+                                        <span style="color: rgb(233, 97, 97);">Null value</span>
                                     </div>
                                 </div>
                             </div>
@@ -444,8 +514,9 @@
                                     <span>CONTACT NO</span>
                                 </div>
                                 <div class="col-12 col-md-12">
-                                    <input type="text" name="gstno" [value]="mobileno" [(ngModel)]="mobileno" required
-                                        #mobilenoRef="ngModel" maxlength="10" placeholder="Enter a Contactno">
+                                    <input type="text" name="gstno" [(ngModel)]="mobileno"
+                                        [ngModelOptions]="{standalone: true}" required #mobilenoRef="ngModel"
+                                        maxlength="10" placeholder="Enter a Contactno">
                                     <!-- <div *ngIf="mobilenoRef.invalid && mobilenoRef.touched" class="text-danger">
                                         <div *ngIf="mobilenoRef.errors?.['required']">CONTACT NO is required.</div>
                                     </div> -->
@@ -453,6 +524,9 @@
                                         <div *ngIf="mobilenoRef.errors?.['required']">CONTACT NO is required.</div>
                                         <div *ngIf="mobilenoRef.errors?.['pattern']">Invalid contact number. Must be 10
                                             digits.</div>
+                                    </div>
+                                    <div *ngIf="mobileno === null" class="text-muted">
+                                        <span style="color: rgb(233, 97, 97);">Null value</span>
                                     </div>
                                 </div>
                             </div>
@@ -462,7 +536,8 @@
                                 <div class="input_box d-flex justify-content-between align-items-center  mb-3">
                                     <span>IsEMI</span>
                                     <label class="switch">
-                                        <input type="checkbox" [value]="isactive" [(ngModel)]="isactive">
+                                        <input type="checkbox" [(ngModel)]="isactive"
+                                            [ngModelOptions]="{standalone: true}">
                                         <span class="slider"></span>
                                     </label>
                                 </div>
@@ -470,10 +545,14 @@
                         </div>
                     </div>
 
-                    <div class="d-flex justify-content-center align-item-center mx-3 mb-2">
+                    <div class="d-flex justify-content-center align-item-center mb-2">
+                        <!-- <button type="submit" class="btn btn-success mx-3"  [disabled]="casmasterserverportRef.invalid || cmsmartcardlengthRef.invalid ||cmboxidRef.invalid ||  mobilenoRef.invalid || emailRef.invalid || websiteRef.invalid">Update</button> -->
+                        <button type="submit" class="btn btn-success mx-3">
+                            Update
+                        </button>
                         <button type="button" class="btn btn-danger me-2" (click)="onNoClick()">Cancel</button>
-                        <button type="submit" class="btn btn-success" [disabled]="casForm.invalid">Update</button>
                     </div>
+
                 </div>
             </div>
         </form>

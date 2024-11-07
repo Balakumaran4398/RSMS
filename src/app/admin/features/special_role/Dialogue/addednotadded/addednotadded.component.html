@@ -1,100 +1,3 @@
-<div *ngIf="type=='permission'">
-    <div class="Head d-flex justify-content-between align-items-center mb-3" style="padding: 1rem;">
-        <h6>PERMISSION</h6>
-        <i class="fa fa-close close-icon" style="cursor: pointer;" (click)="onNoClick()"></i>
-    </div>
-
-    <div class="display justify-content-center align-items-center">
-        <div class="row" style="padding: 1rem;">
-            <div class="col-12 col-md-12 d-flex  justify-content-center align-items-center">
-                <div class="col-5 col-md-5" style="font-size: 17px;color: black;">
-                    <label for="">NAME </label>
-                </div>
-                <div class="col-1 col-md-1">
-                    <span for="">:</span>
-                </div>
-                <div class="col-6 col-md-6" style="font-size: 17px;color: rgb(33, 88, 11);">
-                    {{data?.data.retailerName}}
-                </div>
-            </div>
-            <div class="col-12 col-md-12 d-flex  justify-content-center align-items-center">
-                <div class="col-5 col-md-5" style="font-size: 17px;color: black;">
-                    <label for="">SubLcoId </label>
-                </div>
-                <div class="col-1 col-md-1">
-                    <span for="">:</span>
-                </div>
-                <div class="col-6 col-md-6" style="font-size: 17px;color: rgb(6, 4, 109);">
-                    {{data?.data.retailerId}}
-                </div>
-            </div>
-        </div>
-    </div>
-    <section>
-        <div class="d-flex flex-column flex-lg-row justify-content-center align-items-center mobile" >
-            <div class="col-lg-5 col-12 mb-3 mb-lg-0">
-                <div class="card">
-                    <div class="input_box">
-                        <input type="text" placeholder="Search">
-                    </div>
-                    <div class="table1 mb-3">
-                        <p style="color: white;">NOT ADDED</p>
-                        <div class="row inp">
-                            <div class="col-12 example-container">
-                                <!-- <div cdkDropList #todoList="cdkDropList" [cdkDropListData]="todo"
-                                    [cdkDropListConnectedTo]="[doneList]" class="example-list"
-                                    (cdkDropListDropped)="drop($event)">
-                                    <div *ngFor="let item of todo" class="example-box" cdkDrag
-                                        (click)="toggleSelection(item)" [class.selected]="isSelected(item)">{{
-                                        item.operatorname }}
-                                    </div>
-                                </div> -->
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="display my-3 my-lg-0 mx-lg-3">
-                <button class="btn" (click)="moveSelected_added_Items('right')"><i
-                        class="bx bx-right-arrow-alt"></i></button>
-                <button class="btn" (click)="moveAllSelected_added_Items('right')"><i
-                        class="bx bx-arrow-to-right"></i></button>
-                <button class="btn" (click)="moveSelected_added_Items('left')"><i
-                        class="bx bx-left-arrow-alt"></i></button>
-                <button class="btn" (click)="moveAllSelected_added_Items('left')"><i
-                        class="bx bx-arrow-to-left"></i></button>
-            </div>
-            <div class="col-lg-5 col-12">
-                <div class="card">
-
-                    <div class="input_box">
-                        <input type="text" placeholder="Search">
-                    </div>
-                    <div class="table2 mb-3">
-                        <p style="color: white;">ADDED</p>
-                        <div class="row inp">
-                            <!-- <div class="col-12 example-container">
-                                <div cdkDropList #doneList="cdkDropList" [cdkDropListData]="allocated"
-                                    [cdkDropListConnectedTo]="[todoList]" class="example-list"
-                                    (cdkDropListDropped)="drop($event)">
-                                    <div *ngFor="let item of allocated" class="example-box" cdkDrag>{{ item.operatorname
-                                        }}
-                                    </div>
-                                </div>
-                            </div> -->
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-        </div>
-        <div class="col-12 d-flex justify-content-center align-item-center">
-            <button type="button" class="btn" style="background:#058372;color: white;height: 2pc; width: 5pc"
-                (click)="save()">Save</button>
-        </div>
-    </section>
-</div>
-
 <div *ngIf="type=='areaupdation'">
     <div class="Head d-flex justify-content-between align-items-center mb-3" style="padding: 1rem;">
         <h6>AREA UPDATION</h6>
@@ -128,57 +31,59 @@
         </div>
     </div>
     <section>
-        <div class="d-flex flex-column flex-lg-row justify-content-center align-items-center mobile" >
+        <div class="d-flex flex-column flex-lg-row justify-content-center align-items-center mobile">
             <div class="col-lg-5 col-12 mb-3 mb-lg-0">
                 <div class="card">
                     <div class="input_box">
-                        <input type="text" placeholder="Search">
+                        <input type="text" placeholder="Search Not Added" [(ngModel)]="searchTermNotAdded"
+                            (input)="filterNotAddedList()">
                     </div>
+
                     <div class="table1 mb-3">
                         <p style="color: white;">NOT ADDED</p>
                         <div class="row inp">
                             <div class="col-12 example-container">
-                                <!-- <div cdkDropList #todoList="cdkDropList" [cdkDropListData]="todo"
+                                <div cdkDropList #todoList="cdkDropList" [cdkDropListData]="filteredNotaddedList"
                                     [cdkDropListConnectedTo]="[doneList]" class="example-list"
                                     (cdkDropListDropped)="drop($event)">
-                                    <div *ngFor="let item of todo" class="example-box" cdkDrag
-                                        (click)="toggleSelection(item)" [class.selected]="isSelected(item)">{{
-                                        item.operatorname }}
+                                    <div *ngFor="let item of filteredNotaddedList" class="example-box"
+                                        (click)="toggleSelection(item.id)" [class.selected]="isSelected(item.id)"
+                                        cdkDrag [cdkDragData]="item">
+                                        {{ item.name }}
                                     </div>
-                                </div> -->
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-            <div class="display my-3 my-lg-0 mx-lg-3">
-                <button class="btn" (click)="moveSelected_added_Items('right')"><i
-                        class="bx bx-right-arrow-alt"></i></button>
-                <button class="btn" (click)="moveAllSelected_added_Items('right')"><i
-                        class="bx bx-arrow-to-right"></i></button>
-                <button class="btn" (click)="moveSelected_added_Items('left')"><i
-                        class="bx bx-left-arrow-alt"></i></button>
-                <button class="btn" (click)="moveAllSelected_added_Items('left')"><i
-                        class="bx bx-arrow-to-left"></i></button>
+            <div class="displaybtn my-3 my-lg-0 mx-lg-3">
+                <button class="btn" (click)="moveSelectedItems('right')"><i class="bx bx-right-arrow-alt"></i></button>
+                <button class="btn" (click)="moveAllItems('right')"><i class="bx bx-arrow-to-right"></i></button>
+                <button class="btn" (click)="moveSelectedItems('left')"><i class="bx bx-left-arrow-alt"></i></button>
+                <button class="btn" (click)="moveAllItems('left')"><i class="bx bx-arrow-to-left"></i></button>
             </div>
             <div class="col-lg-5 col-12">
                 <div class="card">
 
                     <div class="input_box">
-                        <input type="text" placeholder="Search">
+                        <input type="text" placeholder="Search Added" [(ngModel)]="searchTermAdded"
+                            (input)="filterAddedList()">
                     </div>
                     <div class="table2 mb-3">
                         <p style="color: white;">ADDED</p>
                         <div class="row inp">
-                            <!-- <div class="col-12 example-container">
-                                <div cdkDropList #doneList="cdkDropList" [cdkDropListData]="allocated"
+                            <div class="col-12 example-container">
+                                <div cdkDropList #doneList="cdkDropList" [cdkDropListData]="filteredAddedList"
                                     [cdkDropListConnectedTo]="[todoList]" class="example-list"
                                     (cdkDropListDropped)="drop($event)">
-                                    <div *ngFor="let item of allocated" class="example-box" cdkDrag>{{ item.operatorname
-                                        }}
+                                    <div *ngFor="let item of filteredAddedList" class="example-box"
+                                        (click)="toggleSelection(item.id)" [class.selected]="isSelected(item.id)"
+                                        cdkDrag [cdkDragData]="item">
+                                        {{ item.name }}
                                     </div>
                                 </div>
-                            </div> -->
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -188,6 +93,105 @@
         <div class="col-12 d-flex justify-content-center align-item-center">
             <button type="button" class="btn" style="background:#058372;color: white;height: 2pc; width: 5pc"
                 (click)="save()">Save</button>
+        </div>
+    </section>
+</div>
+
+<div *ngIf="type=='permission'">
+    <div class="Head d-flex justify-content-between align-items-center mb-3" style="padding: 1rem;">
+        <h6>PERMISSION</h6>
+        <i class="fa fa-close close-icon" style="cursor: pointer;" (click)="onNoClick()"></i>
+    </div>
+
+    <div class="display justify-content-center align-items-center">
+        <div class="row" style="padding: 1rem;">
+            <div class="col-12 col-md-12 d-flex  justify-content-center align-items-center">
+                <div class="col-5 col-md-5" style="font-size: 17px;color: black;">
+                    <label for="">NAME </label>
+                </div>
+                <div class="col-1 col-md-1">
+                    <span for="">:</span>
+                </div>
+                <div class="col-6 col-md-6" style="font-size: 17px;color: rgb(33, 88, 11);">
+                    {{data?.data.retailerName}}
+                </div>
+            </div>
+            <div class="col-12 col-md-12 d-flex  justify-content-center align-items-center">
+                <div class="col-5 col-md-5" style="font-size: 17px;color: black;">
+                    <label for="">SubLcoId </label>
+                </div>
+                <div class="col-1 col-md-1">
+                    <span for="">:</span>
+                </div>
+                <div class="col-6 col-md-6" style="font-size: 17px;color: rgb(6, 4, 109);">
+                    {{data?.data.retailerId}}
+                </div>
+            </div>
+        </div>
+    </div>
+    <section>
+        <div class="d-flex flex-column flex-lg-row justify-content-center align-items-center mobile">
+            <div class="col-lg-5 col-12 mb-3 mb-lg-0">
+                <div class="card">
+                    <div class="input_box">
+                        <input type="text" placeholder="Search Not Added" [(ngModel)]="searchTermPermission"
+                            (input)="filterNotPermissionList()">
+                    </div>
+                    <div class="table1 mb-3">
+                        <p style="color: white;">NOT ADDED</p>
+                        <div class="row inp">
+                            <div class="col-12 example-container">
+                                <div cdkDropList #todoList="cdkDropList" [cdkDropListData]="filteredNotPermissionList"
+                                    [cdkDropListConnectedTo]="[doneList]" class="example-list"
+                                    (cdkDropListDropped)="drop($event)">
+                                    <div *ngFor="let item of filteredNotPermissionList" class="example-box"
+                                        (click)="toggleSelection(item.id)" [class.selected]="isSelected(item.id)"
+                                        cdkDrag [cdkDragData]="item">
+                                        {{ item.name }}
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="displaybtn my-3 my-lg-0 mx-lg-3">
+                <button class="btn" (click)="moveSelectedItems1('right')"><i class="bx bx-right-arrow-alt"></i></button>
+                <button class="btn" (click)="moveAllItems1('right')"><i class="bx bx-arrow-to-right"></i></button>
+                <button class="btn" (click)="moveSelectedItems1('left')"><i class="bx bx-left-arrow-alt"></i></button>
+                <button class="btn" (click)="moveAllItems1('left')"><i class="bx bx-arrow-to-left"></i></button>
+            </div>
+            <div class="col-lg-5 col-12">
+                <div class="card">
+
+                    <div class="input_box">
+                        <input type="text" placeholder="Search Added" [(ngModel)]="searchTermAdded"
+                            (input)="filterPermissionList()">
+                    </div>
+                    <div class="table2 mb-3">
+                        <p style="color: white;">ADDED</p>
+                        <div class="row inp">
+                            <div class="col-12 example-container">
+                                <div cdkDropList #doneList="cdkDropList" [cdkDropListData]="filteredPermissionList"
+                                    [cdkDropListConnectedTo]="[todoList]" class="example-list"
+                                    (cdkDropListDropped)="drop($event)">
+                                    <div *ngFor="let item of filteredPermissionList" class="example-box"
+                                        (click)="toggleSelection(item.id)" [class.selected]="isSelected(item.id)"
+                                        cdkDrag [cdkDragData]="item">
+                                        {{ item.name }}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        <div class="col-12 d-flex justify-content-center align-item-center">
+            <button type="button" class="btn" style="background:#058372;color: white;height: 2pc; width: 5pc"
+                (click)="save1()">Save</button>
         </div>
     </section>
 </div>

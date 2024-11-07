@@ -34,6 +34,7 @@ export class CasmasterComponent {
   isAnyRowSelected: any = false;
   selectedIds: number[] = [];
   selectednames: any[] = [];
+  selectedisactive: any[] = [];
   hasSelectedRows: boolean = true;
   constructor(private userservice: BaseService, private storageservice: StorageService, private swal: SwalService, public dialog: MatDialog,) {
     this.role = storageservice.getUserRole();
@@ -61,8 +62,8 @@ export class CasmasterComponent {
       cellRenderer: (params: any) => {
         const isActive = params.value;
         const color = isActive ? 'green' : 'red';
-        return `<span style="color: ${color}; font-weight: bold;">
-                  ${isActive ? 'Active' : 'Inactive'}
+        return `<span style="color: ${color}; ">
+                  ${isActive ? 'Active' : 'Deactive'}
                 </span>`;
       }
     },
@@ -96,6 +97,7 @@ export class CasmasterComponent {
       this.isAnyRowSelected = selectedRows.length > 0;
       this.selectedIds = selectedRows.map((e: any) => e.id);
       this.selectednames = selectedRows.map((e: any) => e.casname);
+      this.selectednames = selectedRows.map((e: any) => e.casname);
       console.log(this.selectedIds);
       console.log(this.selectednames);
 
@@ -125,6 +127,20 @@ export class CasmasterComponent {
     } else {
       Swal.fire('Error', 'Something went wrong. Please try again.', 'error');
     }
+  }
+  Active() {
+    this.userservice.activeORDeactiveCas(this.role, this.username, this.selectedIds, 'true').subscribe((res: any) => {
+      this.swal.success(res?.message);
+    }, (err) => {
+      this.swal.Error(err?.error?.message);
+    });
+  }
+  Deactive() {
+    this.userservice.activeORDeactiveCas(this.role, this.username, this.selectedIds, 'false').subscribe((res: any) => {
+      this.swal.success(res?.message);
+    }, (err) => {
+      this.swal.Error(err?.error?.message);
+    });
   }
   opendialogue(type: any, data: any) {
     let width = '800px';

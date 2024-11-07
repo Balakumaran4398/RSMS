@@ -1,120 +1,232 @@
 <section class="Tab col-12">
-    <div>
-        <div class="d-flex tablist justify-content-center align-items-center my-3 new_d">
-            <div class="tab" [class.active]="selectedTab === 'commission'" (click)="selectTab('commission')"> LCO
-                COMMISSION
+
+    <div class="display tablist justify-content-center align-items-center mb-3 ">
+        <div class="tab mb-2" [class.active]="selectedTab === 'dis_commission'" style="text-align: center;"
+            (click)="selectTab('dis_commission')">
+            DISTRUBUTOR COMMISSION
+        </div>
+        <div class="tab mb-2" [class.active]="selectedTab === 'dis_membership'" style="text-align: center;"
+            (click)="selectTab('dis_membership')">
+            DITRIBUTOR MEMBERSHIP
+        </div>
+        <div class="tab mb-2" [class.active]="selectedTab === 'commission'" style="text-align: center;"
+            (click)="selectTab('commission')"> LCO
+            COMMISSION
+        </div>
+        <div class="tab mb-2" [class.active]="selectedTab === 'membership'" style="text-align: center;"
+            (click)="selectTab('membership')"> LCO
+            MEMBERSHIP
+        </div>
+    </div>
+    <!-- ---------------------------------------------DISTRIBUTOR COMMISSION--------------------------- -->
+    <div *ngIf="selectedTab === 'dis_commission'" class="dis_commission">
+        <div style="padding: 1rem;text-align: center;">
+            <h6 style="text-align: center;color:var(--primary-color)">DISTRIBUTOR COMMISSION DETAILS</h6>
+        </div>
+        <div class="display input_box com_select">
+            <div class="col display justify-content-start align-items-center mb-3">
+                <span style="font-size:17px;color: red;">SELECT DISTRIBUTOR MEMBERSHIP</span> &nbsp;&nbsp;
+                <select style="color: rgb(17, 0, 0);" [(ngModel)]="lcomembershipid" (change)="onOperatorChange($event)">
+                    <option value="0" selected style="color: rgb(19, 17, 17);">SELECT DISTRIBUTOR MEMBERSHIP
+                    </option>
+                    <option *ngFor="let lcomember of lcomembershipList" [value]="lcomember.value">{{
+                        lcomember.name}}</option>
+                </select>
+
             </div>
-            <div class="tab" [class.active]="selectedTab === 'membership'" (click)="selectTab('membership')"> LCO
-                MEMBERSHIP
+            <div class="col display justify-content-end align-items-center">
+                <a class="btn btn-outline-success mx-1" (click)="add('dis_commission')">
+                    <!-- <i class="fa fa-plus" aria-hidden="true"></i>  -->
+                    <span> ADD PRODUCT / COMMISSION AT MEMBERSHIP</span>
+                </a>
             </div>
         </div>
-        <div *ngIf="selectedTab === 'commission'" class="commission">
-            <h6 style="text-align: center;">LCO COMMISSION DETAILS</h6>
-            <div class="row input_box">
-                <div class="col d-flex justify-content-start align-items-center mb-3">
-                    <span style="font-size:17px;color: red;">SELECT LCO MEMBERSHIP</span> &nbsp;&nbsp;
-                    <select style="color: rgb(17, 0, 0);width: 50%;" [(ngModel)]="lcomembershipid"
-                        (change)="onoperatorchange($event)">
-                        <option value="" selected style="color: rgb(19, 17, 17);">SELECT LCO MEMBERSHIP </option>
-                        <option *ngFor="let lcomember of lcomembershipList" [value]="lcomember.value">{{
-                            lcomember.name}}</option>
-                    </select>
-
+        <br><br>
+        <ag-grid-angular #agGrid id="myGrid" style="text-align: center;" domLayout='autoHeight'
+            [rowSelection]="rowSelection" class="ag-theme-alpine table-class" rowAnimation [gridOptions]="gridOptions"
+            [columnDefs]="discolumnnDefs" [rowData]="rowData" (gridReady)="onGridReady($event)"
+            [enableCellTextSelection]="true">
+        </ag-grid-angular>
+    </div>
+    <!-- ---------------------------------------------DISTRIBUTOR MEBERSHIP--------------------------- -->
+    <div *ngIf="selectedTab === 'dis_membership'">
+        <div class="row">
+            <div class="col-12 d-flex flex-column flex-xl-row">
+                <div class="col-12 col-xl-6 mb-4 mx-3">
+                    <div>
+                        <div style="padding: 1rem;text-align: center;">
+                            <h6 style="color:var(--primary-color);">CREATE LCO MEMBERSHIP</h6>
+                        </div>
+                        <ag-grid-angular #agGrid id="myGrid" class="gridtable" domLayout='autoHeight'
+                            [gridOptions]="gridOptions" rowAnimation [columnDefs]="discolumnnDefs" [rowData]="rowData1"
+                            [rowSelection]="rowSelection" class="ag-theme-alpine table-class"
+                            (gridReady)="onGridReady($event)" [enableCellTextSelection]="true">
+                        </ag-grid-angular>
+                        <div class="col d-flex justify-content-center align-items-center new_d">
+                            <a class="btn btn-success mx-1" (click)="Create_LCO('dis_membership')">
+                                <span>
+                                    <i class="fa fa-plus" aria-hidden="true"></i> <span> New</span>
+                                </span>
+                            </a>
+                        </div>
+                    </div>
                 </div>
-                <div class="col d-flex justify-content-end align-items-center">
-                    <a class="btn btn-outline-success mx-1" (click)="add()">
-                        <!-- <i class="fa fa-plus" aria-hidden="true"></i>  -->
-                        <span> ADD PRODUCT / COMMISSION MEMBERSHIP</span>
-                    </a>
-                </div>
-            </div>
-            <br><br>
-            <ag-grid-angular #agGrid id="myGrid" style="text-align: center;" domLayout='autoHeight'
-                [rowSelection]="rowSelection" class="ag-theme-alpine table-class" rowAnimation
-                [gridOptions]="gridOptions" [columnDefs]="columnDefs" [rowData]="rowData"
-                [enableCellTextSelection]="true">
-            </ag-grid-angular>
-        </div>
+                <hr class="vertical-line">
+                <div class="col-12 col-xl-6 mx-3">
+                    <div>
+                        <div style="padding: 1rem;text-align: center;">
+                            <h6 style="color:var(--primary-color)">CHANGE LCO MEMBERSHIP</h6>
+                        </div>
+                        <div class="row input_box">
+                            <div class="col d-flex justify-content-start align-items-center mb-3">
+                                <span style="font-size:17px;color: red;">SELECT LCO MEMBERSHIP</span> &nbsp;&nbsp;
+                                <select style="color: rgb(17, 0, 0);width: 50%;" [(ngModel)]="lcomembershipid"
+                                    (change)="onmembershipchange($event)">
+                                    <option value="" selected style="color: rgb(19, 17, 17);">SELECT LCO MEMBERSHIP
+                                    </option>
 
-
-        <div *ngIf="selectedTab === 'membership'">
-            <div class="row">
-                <div class="col-12 d-flex flex-column flex-xl-row">
-                    <div class="col-12 col-xl-6 mb-4 mx-3">
-                        <div>
-                            <h6>CREATE LCO MEMBERSHIP</h6>
-                            <ag-grid-angular #agGrid id="myGrid" class="gridtable"
-                                style="text-align: center; max-height: 200px;overflow: auto;" domLayout='autoHeight'
-                                rowAnimation [columnDefs]="columnDefs1" [rowData]="rowData1"
-                                [rowSelection]="rowSelection" class="ag-theme-alpine table-class"
+                                    <option *ngFor="let lcomember of lcomembershipList" [value]="lcomember.value">{{
+                                        lcomember.name}}</option>
+                                </select>
+                            </div>
+                            <ag-grid-angular #agGrid id="myGrid" style="text-align: center;"
+                                style="text-align: center; max-height: 500px;overflow: auto;" domLayout='autoHeight'
+                                class="ag-theme-alpine table-class" rowAnimation [rowSelection]="rowSelection"
+                                [columnDefs]="columnDefs2" [rowData]="rowData2"
+                                (selectionChanged)="onSelectionChanged()" (gridReady)="onGridReady($event)"
                                 [enableCellTextSelection]="true">
                             </ag-grid-angular>
                             <div class="col d-flex justify-content-center align-items-center new_d">
-                                <a class="btn btn-success mx-1" (click)="Create_LCO($event)">
-                                    <span>
-                                        <i class="fa fa-plus" aria-hidden="true"></i> <span> New</span>
-                                    </span>
-                                </a>
+                                <button class="btn btn-outline-info mx-1    " type="button"
+                                    [disabled]="!isAnyRowSelected" (click)="change_membership('dis_membership')">
+                                    <!-- <i class="fa fa-exchange" aria-hidden="true"></i> &nbsp; -->
+                                    <span>Change Membership</span>
+                                </button>
                             </div>
-                            <div class="col-12 col-md-12">
-                                <div class="card">
-                                    <div class="card-body">
-                                        <div class="row">
-                                            <div class="col">
-                                                <app-lco-commission-chart></app-lco-commission-chart>
-                                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+          
+        </div>
+    </div>
+    <!-- --------------------------------------------- COMMISSION--------------------------- -->
+
+    <div *ngIf="selectedTab === 'commission'" class="commission">
+        <div style="padding: 1rem;text-align: center;">
+            <h6 style="text-align: center;color:var(--primary-color)">LCO COMMISSION DETAILS</h6>
+        </div>
+        <div class="display input_box com_select">
+            <div class="col display justify-content-start align-items-center mb-3">
+                <span style="font-size:17px;color: red;">SELECT LCO MEMBERSHIP</span> &nbsp;&nbsp;
+                <select style="color: rgb(17, 0, 0);" [(ngModel)]="lcomembershipid" (change)="onOperatorChange($event)">
+                    <option value="0" selected style="color: rgb(19, 17, 17);">SELECT LCO MEMBERSHIP
+                    </option>
+                    <option *ngFor="let lcomember of lcomembershipList" [value]="lcomember.value">{{
+                        lcomember.name}}</option>
+                </select>
+
+            </div>
+            <div class="col display justify-content-end align-items-center">
+                <a class="btn btn-outline-success mx-1" (click)="add('commission')">
+                    <!-- <i class="fa fa-plus" aria-hidden="true"></i>  -->
+                    <span> ADD PRODUCT / COMMISSION AT MEMBERSHIP</span>
+                </a>
+            </div>
+        </div>
+        <br><br>
+        <ag-grid-angular #agGrid id="myGrid" style="text-align: center;" domLayout='autoHeight'
+            [rowSelection]="rowSelection" class="ag-theme-alpine table-class" rowAnimation [gridOptions]="gridOptions"
+            [columnDefs]="discolumnnDefs" [rowData]="rowData" [enableCellTextSelection]="true">
+        </ag-grid-angular>
+    </div>
+    <!-- --------------------------------------------- MEBERSHIP--------------------------- -->
+
+    <div *ngIf="selectedTab === 'membership'">
+        <div class="row">
+            <div class="col-12 d-flex flex-column flex-xl-row">
+                <div class="col-12 col-xl-6 mb-4 mx-3">
+                    <div>
+                        <div style="padding: 1rem;text-align: center;">
+                            <h6 style="color:var(--primary-color);">CREATE LCO MEMBERSHIP</h6>
+                        </div>
+                        <ag-grid-angular #agGrid id="myGrid" class="gridtable"
+                            style="text-align: center; max-height: 200px;overflow: auto;" domLayout='autoHeight'
+                            rowAnimation [columnDefs]="columnDefs1" [rowData]="rowData1" [rowSelection]="rowSelection"
+                            (gridReady)="onGridReady($event)" class="ag-theme-alpine table-class"
+                            [enableCellTextSelection]="true">
+                        </ag-grid-angular>
+                        <div class="col d-flex justify-content-center align-items-center new_d">
+                            <a class="btn btn-success mx-1" (click)="Create_LCO('membership')">
+                                <span>
+                                    <i class="fa fa-plus" aria-hidden="true"></i> <span> New</span>
+                                </span>
+                            </a>
+                        </div>
+                        <div class="col-12 col-md-12">
+                            <div class="card">
+                                <div class="card-body">
+                                    <div class="row">
+                                        <div class="col">
+                                            <app-lco-commission-chart></app-lco-commission-chart>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <hr class="vertical-line">
-                    <div class="col-12 col-xl-6 mx-3">
-                        <div>
-                            <h6>CHANGE LCO MEMBERSHIP</h6>
-                            <div class="row input_box">
-                                <div class="col d-flex justify-content-start align-items-center mb-3">
-                                    <span style="font-size:17px;color: red;">SELECT LCO MEMBERSHIP</span> &nbsp;&nbsp;
-                                    <select style="color: rgb(17, 0, 0);width: 50%;" [(ngModel)]="lcomembershipid"
-                                        (change)="onmembershipchange($event)">
-                                        <option value="" selected style="color: rgb(19, 17, 17);">SELECT LCO MEMBERSHIP
-                                        </option>
-                                        <option *ngFor="let lcomember of lcomembershipList" [value]="lcomember.value">{{
-                                            lcomember.name}}</option>
-                                    </select>
-                                </div>
-                                <ag-grid-angular #agGrid id="myGrid" style="text-align: center;" domLayout='autoHeight'
-                                    class="ag-theme-alpine table-class" rowAnimation [gridOptions]="gridOptions"
-                                    [rowSelection]="rowSelection" [columnDefs]="columnDefs2" [rowData]="rowData2"
-                                    (selectionChanged)="onSelectionChanged()" (gridReady)="onGridReady($event)"
-                                    [enableCellTextSelection]="true">
-                                </ag-grid-angular>
-                                <div class="col d-flex justify-content-center align-items-center new_d">
-                                    <button class="btn btn-outline-info mx-1    " type="button"
-                                        [disabled]="!isAnyRowSelected" (click)="change_membership()">
-                                        <!-- <i class="fa fa-exchange" aria-hidden="true"></i> &nbsp; -->
-                                        <span>Change Membership</span>
-                                    </button>
-                                </div>
+                </div>
+                <hr class="vertical-line">
+                <div class="col-12 col-xl-6 mx-3">
+                    <div>
+                        <div style="padding: 1rem;text-align: center;">
+                            <h6 style="color:var(--primary-color)">CHANGE LCO MEMBERSHIP</h6>
+                        </div>
+                        <div class="row input_box com_select">
+                            <div class="col d-flex justify-content-start align-items-center mb-3">
+                                <span style="font-size:17px;color: red;">SELECT LCO MEMBERSHIP</span> &nbsp;&nbsp;
+                                <select style="color: rgb(17, 0, 0);" [(ngModel)]="lcomembershipid"
+                                    (change)="onmembershipchange($event)">
+                                    <option value="" selected style="color: rgb(19, 17, 17);">SELECT LCO MEMBERSHIP
+                                    </option>
+                                    <option *ngFor="let lcomember of lcomembershipList" [value]="lcomember.value">{{
+                                        lcomember.name}}</option>
+                                </select>
+                            </div>
+                            <ag-grid-angular #agGrid id="myGrid" style="text-align: center;"
+                                style="text-align: center; max-height: 500px;overflow: auto;" domLayout='autoHeight'
+                                class="ag-theme-alpine table-class" rowAnimation [rowSelection]="rowSelection"
+                                [columnDefs]="columnDefs2" [rowData]="rowData2"
+                                (selectionChanged)="onSelectionChanged()" (gridReady)="onGridReady($event)"
+                                [enableCellTextSelection]="true">
+                            </ag-grid-angular>
+                            <div class="col d-flex justify-content-center align-items-center new_d">
+                                <button class="btn btn-outline-info mx-1    " type="button"
+                                    [disabled]="!isAnyRowSelected" (click)="change_membership('membership')">
+                                    <!-- <i class="fa fa-exchange" aria-hidden="true"></i> &nbsp; -->
+                                    <span>Change Membership</span>
+                                </button>
                             </div>
                         </div>
                     </div>
                 </div>
-                <div class="col-12 mt-4 mb-3">
-                    <h6>LCO MEMBERSHIP FUP</h6>
-                    <ag-grid-angular #agGrid id="myGrid" style="text-align: center;" domLayout='autoHeight'
-                        class="ag-theme-alpine table-class" rowAnimation [gridOptions]="gridOptions"
-                        [columnDefs]="columnDefs3" [rowData]="rowData3" [enableCellTextSelection]="true">
-                    </ag-grid-angular>
+            </div>
+            <div class="col-12 mt-4 mb-3">
+                <div style="padding: 1rem;text-align: center;">
+                    <h6 style="color:var(--primary-color)"> LCO MEMBERSHIP FUP</h6>
                 </div>
-                <div class="col d-flex justify-content-center align-items-center">
-                    <a class="btn btn-outline-success mx-1" (click)="create()">
-                        <i class="fa fa-plus" aria-hidden="true"></i> <span> NEW</span>
-                    </a>
-                </div>
+                <ag-grid-angular #agGrid id="myGrid" style="text-align: center;" domLayout='autoHeight'
+                    class="ag-theme-alpine table-class" rowAnimation [gridOptions]="gridOptions"
+                    [columnDefs]="columnDefs3" [rowData]="rowData3" [enableCellTextSelection]="true">
+                </ag-grid-angular>
+            </div>
+            <div class="col d-flex justify-content-center align-items-center">
+                <a class="btn btn-outline-success mx-1" (click)="create()">
+                    <i class="fa fa-plus" aria-hidden="true"></i> <span> NEW</span>
+                </a>
             </div>
         </div>
-
     </div>
+
+
 </section>

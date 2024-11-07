@@ -61,7 +61,7 @@ export class LcoRechargeReportComponent implements OnInit {
   maxDate = new Date();
   fromdate: any;
   todate: any;
-  
+
   selectedDate: any;
   isDateEnabled: boolean = false;
   isMonthYearEnabled: boolean = false;
@@ -75,7 +75,7 @@ export class LcoRechargeReportComponent implements OnInit {
 
 
   isCheckboxChecked: boolean = false;
-  smartcard: any = 0;
+  smartcard: any;
   date: any;
   operatorid: any = 0;
   operatorList: any[] = [];
@@ -96,7 +96,7 @@ export class LcoRechargeReportComponent implements OnInit {
   Totalamount: any;
   selectedDateType: number = 0;
   Date: any[] = [
-    { lable: "", value: 0 },
+    // { lable: "", value: 0 },
     { lable: "Datewise", value: 1 },
     { lable: "Monthwise", value: 2 },
     { lable: "Yearwise", value: 3 },
@@ -113,18 +113,7 @@ export class LcoRechargeReportComponent implements OnInit {
   filteredOperators: any[] = [];
   operator_details: any = [];
 
-  columnDefs: any[] = [
-    {
-      headerName: "S.No", lockPosition: true, valueGetter: 'node.rowIndex+1', width: 100, headerCheckboxSelection: true, checkboxSelection: true,
-    },
-    { headerName: "OPERATOR NAME", field: 'operatorname', },
-    { headerName: "TRANSACTION GROUP TYPE", field: 'transactiongroupname', },
-    { headerName: "AMOUNT", field: 'lcoamount', },
-    { headerName: "REMARKS1", field: 'transactionremarks' },
-    { headerName: "TRANSACTION DATE", field: 'transactiondate' },
-    { headerName: "BILL", field: '', filter: false },
-
-  ]
+  columnDefs: any;
 
   constructor(private userservice: BaseService, private storageservice: StorageService, private swal: SwalService, public dialog: MatDialog, private dateAdapter: DateAdapter<Moment>, private cdr: ChangeDetectorRef) {
     this.role = storageservice.getUserRole();
@@ -142,6 +131,7 @@ export class LcoRechargeReportComponent implements OnInit {
   ngOnInit(): void {
     this.generateMonths();
     this.generateYears();
+    this.getrefundData('');
   }
 
   generateMonths() {
@@ -162,9 +152,17 @@ export class LcoRechargeReportComponent implements OnInit {
   }
 
   generateYears() {
+    // const startYear = 2012;
+    // const currentYear = new Date().getFullYear();
+    // for (let year = startYear; year <= currentYear; year++) {
+    //   this.years.push(year);
+    // }
     const startYear = 2012;
     const currentYear = new Date().getFullYear();
-    for (let year = startYear; year <= currentYear; year++) {
+    this.years = []; // Initialize the array
+
+    // Push years in descending order from currentYear to startYear
+    for (let year = currentYear; year >= startYear; year--) {
       this.years.push(year);
     }
   }
@@ -216,6 +214,10 @@ export class LcoRechargeReportComponent implements OnInit {
   //   })
   // }
   selectTab(tab: string) {
+    console.log('dsfsdfdsf', tab);
+    this.operatorid = '';
+    this.operatorname = '';
+
     this.selectedTab = tab;
     this.rowData = [];
     if (this.agGrid) {
@@ -250,6 +252,7 @@ export class LcoRechargeReportComponent implements OnInit {
     this.operatorid = value;
     this.operatorname = name;
     this.onoperatorchange({ value });
+    this.selectoperatorList();
   }
 
   onoperatorchange(event: any) {
@@ -273,12 +276,31 @@ export class LcoRechargeReportComponent implements OnInit {
     this.gridColumnApi = params.columnApi;
   }
   getrefundData(event: any) {
+    this.userservice.getRechargeDetailsByFdTdOpid(this.role, this.username, this.fromdate, this.todate, 0)
+      .subscribe(
+        (response: HttpResponse<any[]>) => {
+          if (response.status === 200) {
+            this.rowData = response.body;
+            this.updateColumnDefs(this.selectedTab);
+            // this.swal.Success_200();
+          } else if (response.status === 204) {
+            // this.swal.Success_204();
+            this.rowData = [];
+          }
+        },
+        (error) => {
+          this.handleApiError(error);
+        }
+      );
     return [this.rowData];
+
   }
   getLogrechargeReport(event: any) {
+    this.updateColumnDefs(this.selectedTab);
     return [this.rowData];
   }
   getRechargeLog(event: any) {
+    this.updateColumnDefs(this.selectedTab);
     return [this.rowData];
   }
 
@@ -294,6 +316,32 @@ export class LcoRechargeReportComponent implements OnInit {
     this.rowData = [];
     this.swal.Loading();
     this.userservice.getRefundListByOperatorIdAndSmartcard(this.role, this.username, this.operatorid, this.smartcard)
+      .subscribe(
+        (response: HttpResponse<any[]>) => { // Expect HttpResponse<any[]>
+          if (response.status === 200) {
+            this.updateColumnDefs(this.selectedTab);
+            this.rowData = response.body;
+            this.swal.Success_200();
+          } else if (response.status === 204) {
+            this.swal.Success_204();
+          }
+        },
+        (error) => {
+          if (error.status === 400) {
+            this.swal.Error_400();
+          } else if (error.status === 500) {
+            this.swal.Error_500();
+          } else {
+            Swal.fire('Error', 'Something went wrong. Please try again.', 'error');
+          }
+        }
+      );
+
+  }
+  selectoperatorList() {
+    this.rowData = [];
+    this.swal.Loading();
+    this.userservice.getRefundListByOperatorId(this.role, this.username, this.operatorid, 'false')
       .subscribe(
         (response: HttpResponse<any[]>) => { // Expect HttpResponse<any[]>
           if (response.status === 200) {
@@ -396,9 +444,9 @@ export class LcoRechargeReportComponent implements OnInit {
     this.rowData = [];
     this.swal.Loading();
 
-    this.userservice.getRechargeDetailsByFdTdOpid(this.role, this.username, this.fromdate, this.todate, this.operatorid)
+    this.userservice.getRechargeDetailsByFdTdOpid(this.role, this.username, this.fromdate || null, this.todate || null, this.operatorid)
       .subscribe(
-        (response: HttpResponse<any[]>) => { // Expect HttpResponse<any[]>
+        (response: HttpResponse<any[]>) => {
           if (response.status === 200) {
             this.rowData = response.body;
             this.updateColumnDefs(this.selectedTab);
@@ -437,11 +485,12 @@ export class LcoRechargeReportComponent implements OnInit {
         { headerName: "OPERATOR NAME", field: 'operatorname', },
         { headerName: "TRANSACTION GROUP TYPE", field: 'transactiongroupname', },
         { headerName: "AMOUNT", field: 'lcoamount', },
-        { headerName: "REMARKS1", field: 'transactionremarks' },
+        { headerName: "REMARKS", field: 'transactionremarks' },
         { headerName: "TRANSACTION DATE", field: 'transactiondate' },
         { headerName: "BILL", field: '', filter: false },
       ]
     } else if (tab === '2') {
+
       this.columnDefs = [
         {
           headerName: "S.No", lockPosition: true, valueGetter: 'node.rowIndex+1', width: 100, headerCheckboxSelection: true, checkboxSelection: true,
@@ -449,7 +498,7 @@ export class LcoRechargeReportComponent implements OnInit {
         { headerName: "OPERATOR NAME", field: 'operatorname', },
         { headerName: "OPERATOR ID", field: 'operatorid', },
         { headerName: "AMOUNT", field: 'lcoamount', },
-        { headerName: "REMARKS1", field: 'transactionremarks' },
+        { headerName: "REMARKS", field: 'transactionremarks' },
         { headerName: "TRANSACTION DATE", field: 'transactiondate' },
         { headerName: "OPERATOR ADDRESS	", field: 'address', },
         { headerName: " CONTACT NUMBER", field: 'contactnumber', },

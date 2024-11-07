@@ -55,15 +55,15 @@
 
 
                     <div class="input_box">
-                        <label for="username">CAS Form Id</label>
+                        <span for="username">CAS Form Id</span>
                         <input type="text" formControlName="casformid" placeholder="Enter CAS Form Id" pattern="[0-9]*"
                             maxlength="6" (keypress)="onKeydown($event)" required
                             [ngClass]="{ 'is-invalid': submitted && f['casformid'].errors }" />
 
-                        <div style="position: relative; font-size: small;" *ngIf="submitted && f['casformid'].errors"
+                        <!-- <div style="position: relative; font-size: small;" *ngIf="submitted && f['casformid'].errors"
                             class="invalid-feedback">
                             <div *ngIf="f['casformid'].errors['required']">CAS Form Id is required</div>
-                        </div>
+                        </div> -->
                     </div>
                     <div class="input_box">
                         <label for="email">Subscriber Name</label>
@@ -131,8 +131,11 @@
 
                     <div class="input_box">
                         <label for="pass">Landline No</label>
-                        <input pattern="^0\d{2,4}\d{6,8}$" maxlength="11" type="text" formControlName="landlineno"
+                        <!-- <input pattern="^0\d{2,4}\d{6,8}$" maxlength="11" type="text" formControlName="landlineno"
                             (keypress)="onKeydown_landline($event)" placeholder="Enter Landline Number"
+                            [ngClass]="{'is-invalid': submitted && f['landlineno'].errors }" required /> -->
+                        <input pattern="^0\d{2,4}\d{6,8}$" maxlength="10" type="text" formControlName="landlineno"
+                            (keypress)="onKeydown($event)" placeholder="Enter Landline Number"
                             [ngClass]="{'is-invalid': submitted && f['landlineno'].errors }" required />
 
                         <div style="position: relative; font-size: small;" *ngIf="submitted && f['landlineno'].errors"
@@ -140,9 +143,9 @@
                             <div *ngIf="f['landlineno'].errors['required']">
                                 Landline Number is required
                             </div>
-                            <div *ngIf="f['landlineno'].errors['pattern']">
+                            <!-- <div *ngIf="f['landlineno'].errors['pattern']">
                                 Please enter a valid Landline Number in the format 0XX-XXXXXX
-                            </div>
+                            </div> -->
                         </div>
                     </div>
                     <div class="input_box">

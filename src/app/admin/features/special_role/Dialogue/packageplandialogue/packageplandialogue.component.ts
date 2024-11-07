@@ -41,9 +41,6 @@ export class PackageplandialogueComponent implements OnInit {
   }
   create() {
     this.userservice.createPackagePlan(this.role, this.username, this.planpackage)
-      // .subscribe((res: any) => {
-
-      // })
       .subscribe((res: any) => {
         this.swal.success(res?.message);
       }, (err) => {

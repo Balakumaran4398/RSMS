@@ -24,15 +24,15 @@ export class EditmsoComponent implements OnInit {
   panno: any;
   gstno: any;
 
-  isemi: boolean = true;
-  chipidforce: boolean = true;
-  managepack: boolean = true;
-  reportstatus: boolean = true;
-  calendarrecharge: boolean = true;
+  isemi = true;
+  chipidforce = true;
+  managepack = true;
+  reportstatus = true;
+  calendarrecharge = true;
   constructor(public dialogRef: MatDialogRef<EditmsoComponent>, @Inject(MAT_DIALOG_DATA) public data: any, private swal: SwalService, private userService: BaseService, private storageservice: StorageService, private fb: FormBuilder) {
     this.username = storageservice.getUsername();
     this.role = storageservice.getUserRole();
-    console.log(data.data);
+    console.log(data);
     this.msoname = data?.data.msoName;
     this.msoarea = data?.data.msoArea;
     this.msostreet = data?.data.msoStreet;
@@ -48,6 +48,7 @@ export class EditmsoComponent implements OnInit {
     this.managepack = data?.data.managepack;
     this.reportstatus = data?.data.reportStatus;
     this.calendarrecharge = data?.data.calendarrecharge;
+    
     console.log('isemi', this.isemi);
     console.log('chipidforce', this.chipidforce);
     console.log('managepack', this.managepack);
@@ -55,8 +56,10 @@ export class EditmsoComponent implements OnInit {
     console.log('calendarrecharge', this.calendarrecharge);
 
   }
-  ngOnInit(): void {
-  }
+  ngOnInit() {
+
+}
+
 
 
   onSubmit() {
@@ -91,8 +94,10 @@ export class EditmsoComponent implements OnInit {
         text: res?.message || 'MSO details updated successfully!',
         icon: 'success',
         confirmButtonText: 'OK',
-        timer:2000,
+        timer: 2000,
         timerProgressBar: true,
+      }).then(() => {
+        location.reload();
       });
 
     }, (err) => {
