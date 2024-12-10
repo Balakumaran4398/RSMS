@@ -1,10 +1,11 @@
 import { Component, Inject } from '@angular/core';
 import { FormGroup } from '@angular/forms';
-import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { BaseService } from 'src/app/_core/service/base.service';
 import { StorageService } from 'src/app/_core/service/storage.service';
 import { SwalService } from 'src/app/_core/service/swal.service';
 import Swal from 'sweetalert2';
+import { LoginrefundComponent } from '../loginrefund/loginrefund.component';
 
 @Component({
   selector: 'app-refund',
@@ -15,28 +16,23 @@ export class RefundComponent {
 
   role: any;
   username: any;
-  isenablesmartcard = false;
+  isenablesmartcard = true;
   remarks: any;
   amount: any;
   id: any;
   Operatorname: any;
   Referenceid: any;
   refuntlist: any;
-  operatorid: any = 0;
-  constructor(public dialogRef: MatDialogRef<RefundComponent>, @Inject(MAT_DIALOG_DATA) public data: any, private swal: SwalService, private userservice: BaseService, private storageservice: StorageService) {
+  operatorid: any;
+  constructor(public dialogRef: MatDialogRef<RefundComponent>, @Inject(MAT_DIALOG_DATA) public data: any, public dialog: MatDialog, private swal: SwalService, private userservice: BaseService, private storageservice: StorageService) {
     console.log(this.data);
     this.amount = data.amount;
-    this.remarks = data.transactionremarks1;
+    // this.remarks = data.transactionremarks1;
     this.id = data.id;
-    console.log(this.amount);
-    console.log(this.remarks);
     this.role = storageservice.getUserRole();
     this.username = storageservice.getUsername();
     this.refuntlist = data;
-    console.log(this.refuntlist);
-    console.log(this.data);
-
-
+    this.operatorid = data.operatorid
 
   }
 
@@ -52,37 +48,96 @@ export class RefundComponent {
     }
   }
 
-  onSubmit() {
-    // if (this.form.valid) {
+  // onSubmit() {
+  //   if (!this.remarks) {
+  //     Swal.fire({
+  //       title: 'Error!',
+  //       text: 'Refund remarks cannot be empty.',
+  //       icon: 'error'
+  //     });
+  //     return;
+  //   }
+  //   this.swal.Loading();
+  //   this.userservice.getRefund(this.role, this.username, this.id, this.amount, this.remarks, this.operatorid, this.isenablesmartcard).subscribe(
+  //     (res: any) => {
 
+  //       Swal.fire({
+  //         title: 'Success!',
+  //         text: res.message || 'Recharge has been added successfully.',
+  //         icon: 'success',
+  //         timer: 2000,
+  //         timerProgressBar: true,
+  //         willClose: () => {
+  //           window.location.reload();
+  //         }
+  //       });
+  //     },
+  //     (error: any) => {
+  //       console.error(error);
+  //       Swal.fire({
+  //         title: 'Error!',
+  //         text: error?.error.message || error?.error.refundamount.remarks || 'There was an issue adding the Recharge.',
+  //         icon: 'error'
+  //       });
+  //     }
+  //   );
+
+
+  // }
+
+  onSubmit() {
+    if (!this.remarks) {
+      Swal.fire({
+        title: 'Error!',
+        text: 'Refund remarks cannot be empty.',
+        icon: 'error'
+      });
+      return;
+    }
+
+    // Open the dialog first
+    const dialogRef = this.dialog.open(LoginrefundComponent, {
+      width: '500px',
+      panelClass: 'custom-dialog-container',
+    });
+
+    dialogRef.afterClosed().subscribe((dialogResult) => {
+    console.log('dfdsfdsfsd',dialogResult );
+
+    if (this.data) {
     this.swal.Loading();
-    this.userservice.getRefund(this.role, this.username, this.id, this.amount, this.remarks, this.operatorid, this.isenablesmartcard).subscribe(
-      (res: any) => {
-        Swal.fire({
-          title: 'Success!',
-          text: res.message || 'Recharge has been added successfully.',
-          icon: 'success',
-          timer: 2000,
-          timerProgressBar: true,
-          willClose: () => {
-            window.location.reload();
-            // this.ngOnInit();
-          }
-        });
-      },
-      (error: any) => {
-        console.error(error);
-        Swal.fire({
-          title: 'Error!',
-          text: error?.error.message || error?.error.lcobusinessid || 'There was an issue adding the Recharge.',
-          icon: 'error'
-        });
-      }
-    );
-    // } else {
-    //   this.form.markAllAsTouched();
-    // }
+    this.userservice
+      .getRefund(this.role, this.username, this.id, this.amount, this.remarks, this.operatorid, this.isenablesmartcard)
+      .subscribe(
+        (res: any) => {
+          Swal.fire({
+            title: 'Success!',
+            text: res.message || 'Recharge has been added successfully.',
+            icon: 'success',
+            timer: 2000,
+            timerProgressBar: true,
+            willClose: () => {
+              window.location.reload();
+            }
+          });
+        },
+        (error: any) => {
+          console.error(error);
+          Swal.fire({
+            title: 'Error!',
+            text: error?.error.message || error?.error.refundamount.remarks || 'There was an issue adding the Recharge.',
+            icon: 'error'
+          });
+        }
+      );
+    } else {
+      console.log('Dialog closed without success');
+    }
+    });
   }
+
+
+
   onNoClick(): void {
     this.dialogRef.close();
   }

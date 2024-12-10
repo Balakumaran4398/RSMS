@@ -1,5 +1,5 @@
 import { CdkDragDrop, moveItemInArray, transferArrayItem } from '@angular/cdk/drag-drop';
-import { Component, Inject, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, Inject, OnInit } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { BaseService } from 'src/app/_core/service/base.service';
 import { StorageService } from 'src/app/_core/service/storage.service';
@@ -25,17 +25,18 @@ export class EditDismembershipComponent implements OnInit {
   selectedItems: Set<any> = new Set();
   availableid: any;
   addedid: any;
-
+  containerData: any;
+  containerID: any[] = [];
   selectedIds: string[] = [];
   todoList: any;
   doneList: any;
-
-  filteredAvailableList: any[] = []; 
-  filteredAddedList: any[] = []; 
-  searchTermAvailable: string = ''; 
+  droppedItemId: any;
+  filteredAvailableList: any[] = [];
+  filteredAddedList: any[] = [];
+  searchTermAvailable: string = '';
   searchTermAdded: string = '';
   constructor(
-    public dialogRef: MatDialogRef<EditDismembershipComponent>, @Inject(MAT_DIALOG_DATA) public data: any, private swal: SwalService, private userservice: BaseService, private storageservice: StorageService
+    public dialogRef: MatDialogRef<EditDismembershipComponent>, @Inject(MAT_DIALOG_DATA) public data: any, private cdr: ChangeDetectorRef, private swal: SwalService, private userservice: BaseService, private storageservice: StorageService
   ) {
     this.role = storageservice.getUserRole();
     this.username = storageservice.getUsername();
@@ -49,21 +50,15 @@ export class EditDismembershipComponent implements OnInit {
       this.userservice.getAvailableAndNotAvailableDistributorList(this.role, this.username, this.distributorid).subscribe((data: any) => {
         this.availableList = data?.available?.map((operator: any) => ({ name: operator.operatorname, id: operator.operatorid })) || [];
         this.addedList = data?.added?.map((operator: any) => ({ name: operator.operatorname, id: operator.operatorid })) || [];
-        this.filteredAvailableList = [...this.availableList]; 
-        this.filteredAddedList = [...this.addedList]; 
+        this.filteredAvailableList = [...this.availableList];
+        this.filteredAddedList = [...this.addedList];
       });
     });
   }
   isSelected(item: string): boolean {
     return this.selectedItems.has(item);
   }
-  // toggleSelection(item: string) {
-  //   if (this.selectedItems.has(item)) {
-  //     this.selectedItems.delete(item);
-  //   } else {
-  //     this.selectedItems.add(item);
-  //   }
-  // }
+
   toggleSelection(id: string) {
     const index = this.selectedIds.indexOf(id);
     if (index > -1) {
@@ -77,6 +72,7 @@ export class EditDismembershipComponent implements OnInit {
   }
 
   filterAvailableList() {
+    this.cdr.detectChanges();
     this.filteredAvailableList = this.availableList.filter(item =>
       item.name.toLowerCase().includes(this.searchTermAvailable.toLowerCase())
     );
@@ -84,6 +80,7 @@ export class EditDismembershipComponent implements OnInit {
 
   // Filter function for added list
   filterAddedList() {
+    this.cdr.detectChanges();
     this.filteredAddedList = this.addedList.filter(item =>
       item.name.toLowerCase().includes(this.searchTermAdded.toLowerCase())
     );
@@ -97,35 +94,68 @@ export class EditDismembershipComponent implements OnInit {
         if (index > -1) {
           this.availableList.splice(index, 1);
           this.addedList.push(this.availableList[index]);
-          console.log(this.addedList.push(this.availableList[index]));
+          // console.log(this.addedList.push(this.availableList[index]));
           console.log('    console.log(this.selectedIds);', this.selectedIds);
         }
       });
+      this.containerData = this.addedList.map((item: { name: string, id: number }) => ({
+        name: item.name,
+        id: item.id
+      }));
+      this.containerID = this.containerData.map((item: any) => item.id);
+      console.log(this.containerID);
+
     } else if (direction === 'left') {
       this.selectedIds.forEach(id => {
         const index = this.addedList.findIndex(item => item.id === id);
         if (index > -1) {
           this.addedList.splice(index, 1);
           this.availableList.push(this.addedList[index]);
-          console.log(this.availableList.push(this.addedList[index]));
+          // console.log(this.availableList.push(this.addedList[index]));
           console.log('    console.log(this.selectedIds);', this.selectedIds);
-
         }
       });
+      console.log(this.addedList);
+      this.containerData = this.addedList.map((item: { name: string, id: number }) => ({
+        name: item.name,
+        id: item.id
+      }));
+      this.containerID = this.containerData.map((item: any) => item.id);
+      console.log(this.containerID);
     }
 
-    this.selectedIds = [];
+
+    this.filteredAvailableList = [...this.availableList];
+    this.filteredAddedList = [...this.addedList];
+    this.selectedItems.clear();
   }
 
   moveAllItems(direction: 'right' | 'left') {
-    console.log(this.selectedIds);
     if (direction === 'right') {
       this.addedList.push(...this.availableList);
       this.availableList = [];
+      console.log(this.addedList);
+      this.containerData = this.addedList.map((item: { name: string, id: number }) => ({
+        name: item.name,
+        id: item.id
+      }));
+      this.containerID = this.containerData.map((item: any) => item.id);
+      console.log(this.containerID);
     } else if (direction === 'left') {
       this.availableList.push(...this.addedList);
       this.addedList = [];
+      console.log(this.addedList);
+      this.containerData = this.addedList.map((item: { name: string, id: number }) => ({
+        name: item.name,
+        id: item.id
+      }));
+      this.containerID = this.containerData.map((item: any) => item.id);
+      console.log(this.containerID);
     }
+
+    this.filteredAvailableList = [...this.availableList];
+    this.filteredAddedList = [...this.addedList];
+    this.selectedItems.clear();
   }
 
 
@@ -134,7 +164,8 @@ export class EditDismembershipComponent implements OnInit {
     if (droppedItemId) {
       this.selectedIds.push(droppedItemId);
     }
-    console.log("Selected IDs:", this.selectedIds);
+    console.log(this.selectedIds);
+    
     if (event.previousContainer === event.container) {
       moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
     } else {
@@ -145,45 +176,25 @@ export class EditDismembershipComponent implements OnInit {
         event.currentIndex,
       );
     }
+    this.containerData = event.container.data.map((item: { name: string, id: number }) => ({
+      name: item.name,
+      id: item.id
+    }));
+    this.containerID = this.containerData.map((item: any) => item.id);
+    console.log('Container Data:', this.containerData);
+    console.log('Container IDs:', this.containerID);      
   }
-  // drop(event: CdkDragDrop<any[]>) {
-  //   const droppedItemId = event.item.data?.id;
-  //   console.log('log',droppedItemId);
 
-  //   if (event.previousContainer !== event.container) {
-  //     // Add item ID to selectedIds if not already present
-  //     if (!this.selectedIds.includes(droppedItemId)) {
-  //       this.selectedIds.push(droppedItemId);
-  //     }
-
-  //     // Transfer item between lists based on direction
-  //     if (event.previousContainer === this.todoList) {  // Moving from availableList to addedList
-  //       transferArrayItem(
-  //         event.previousContainer.data,
-  //         event.container.data,
-  //         event.previousIndex,
-  //         event.currentIndex
-  //       );
-  //     } else if (event.previousContainer === this.doneList) {  // Moving from addedList to availableList
-  //       transferArrayItem(
-  //         event.previousContainer.data,
-  //         event.container.data,
-  //         event.previousIndex,
-  //         event.currentIndex
-  //       );
-  //     }
-  //   } else {
-  //     // Handle reordering within the same list
-  //     moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
-  //   }
-
-  //   console.log("Selected IDs after drop:", this.selectedIds);
-  // }
 
   save() {
-    this.swal.Loading();
-    this.userservice.updateDistributor(this.role, this.username, this.distributorid, this.selectedIds).subscribe((res: any) => {
-      this.swal.success(res?.message);
+    const idsToPass = this.containerID?.length > 0 ? this.containerID : this.selectedIds;
+
+    console.log('containerID:', this.containerID);
+    console.log('selectedIds:', this.selectedIds);
+    console.log('IDs to pass:', idsToPass);
+    // this.swal.Loading();
+    this.userservice.updateDistributor(this.role, this.username, this.distributorid,idsToPass).subscribe((res: any) => {
+      // this.swal.success(res?.message);
     }, (err) => {
       this.swal.Error(err?.error?.message);
     });

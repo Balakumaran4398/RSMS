@@ -131,7 +131,6 @@ export class SmartcardReallocationComponent {
 
   showDisabledMessage(): void {
     if (!this.isAnyRowSelected) {
-      // Display an information message if no row is selected
       Swal.fire({
         icon: 'info',
         title: 'Action Disabled',
@@ -145,17 +144,13 @@ export class SmartcardReallocationComponent {
         lco_list: this.lco_list,
         id: this.selectedIds,
         smartcard: this.selectedsmartcard,
-        // castype: this.caslist,
       };
-      console.log(dataToSend);
-
       const dialogRef = this.dialog.open(ReallocationComponent, {
         width: '450px',
         data: dataToSend
       });
 
       dialogRef.afterClosed().subscribe(result => {
-        console.log('The dialog was closed');
       });
     }
   }

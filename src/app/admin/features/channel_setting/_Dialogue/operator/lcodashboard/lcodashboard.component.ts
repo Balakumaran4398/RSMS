@@ -10,6 +10,7 @@ import Swal from 'sweetalert2';
 import { tuesday } from 'ag-charts-community/dist/types/src/sparklines-util';
 import { SwalService } from 'src/app/_core/service/swal.service';
 import { EditareaComponent } from '../editarea/editarea.component';
+import { filter } from 'node_modules1/jszip';
 
 @Component({
   selector: 'app-lcodashboard',
@@ -30,12 +31,16 @@ export class LcodashboardComponent implements OnInit {
   area: any;
   state: any;
   Totalamount: any;
-  gridOptions = {
-    defaultColDef: {
-
-    },
-    paginationPageSize: 5,
+    gridOptions = {
+      defaultColDef: {
+        sortable: true,
+        resizable: true,
+        filter: true,
+        floatingFilter: true
+      },
+    paginationPageSize: 10,
     pagination: true,
+    paginationPageSizeOptions: [5, 10, 15, 20, 25],
   }
 
   editingRow: any;
@@ -412,7 +417,9 @@ export class LcodashboardComponent implements OnInit {
               fontSize: 14,
               fontFamily: 'Arial',
               markerType: 'square',
-              right: '10px'
+              right: '10px',
+              itemWrap: true,
+              itemTextFormatter: (e: any) => `${e.dataPoint.name}   : ₹${e.dataPoint.y}`, 
             },
             data: [{
               type: 'pie',
@@ -435,12 +442,13 @@ export class LcodashboardComponent implements OnInit {
 
   columnDefs: any[] = [
     {
-      headerName: "S.No", valueGetter: 'node.rowIndex+1', width: 80,
+      headerName: "S.No", valueGetter: 'node.rowIndex+1', width: 80,   filter: false,
     },
-    { headerName: 'AREA NAME', width: 170, field: 'name', },
-    { headerName: 'PINCODE ', field: 'pincode', width: 150, },
+    { headerName: 'AREA NAME', width: 170, field: 'name',filter:true },
+    { headerName: 'SUBSCRIBER COUNT	', width: 170, field: 'subscribercount',    filter: false,},
+    { headerName: 'PINCODE ', field: 'pincode', width: 150,   filter: false, },
     {
-      headerName: 'ACTIVE STATUS', field: 'statusdisplay', width: 170,
+      headerName: 'STATUS', field: 'statusdisplay', width: 170,   filter: false,
       // editable: true,
       cellRenderer: (params: { value: any; data: any }) => {
         const status = params.data?.statusdisplay;
@@ -451,7 +459,7 @@ export class LcodashboardComponent implements OnInit {
 
     },
     {
-      headerName: 'STREET DETAILS', width: 100,
+      headerName: 'STREET DETAILS', width: 100,   filter: false,
       cellRenderer: (params: any) => {
         const editButton = document.createElement('button');
         editButton.innerHTML = '<img src="/assets/images/icons/streetlist2.webp" style="width:30px;background-color:none">';
@@ -468,7 +476,7 @@ export class LcodashboardComponent implements OnInit {
       }
     },
     {
-      headerName: 'EDIT', width: 80,
+      headerName: 'EDIT', width: 80,   filter: false,
 
       cellRenderer: (params: any) => {
         const editButton = document.createElement('button');

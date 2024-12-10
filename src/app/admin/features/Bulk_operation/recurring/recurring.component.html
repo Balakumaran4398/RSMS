@@ -3,11 +3,24 @@
         <div class=" display justify-content-center align-items-center">
             <div class="col-12 col-md-12 mobile display justify-content-center align-items-center">
                 <div class="col-12  col-md-3  mx-2 mb-3">
-                    <select id="cas" placeholder="Select the CAS" [(ngModel)]="operatorid">
+                    <!-- <select id="cas" placeholder="Select the CAS" [(ngModel)]="operatorid">
                         <option value="0" selected>Select Operator</option>
                         <option *ngFor="let operator of operatorList" [value]="operator.value">{{ operator.name }}
                         </option>
-                    </select>
+                    </select> -->
+                    <input type="text" matInput [matAutocomplete]="auto" [(ngModel)]="operatorid" maxlength="20"
+                    (input)="filterOperators($event)" placeholder="Select a Operator" [matAutocompleteDisabled]="false"
+                    [value]="selectedOperator?.name">
+    
+                <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayOperator">
+                    <mat-option *ngFor="let operator of filteredOperators" [value]="operator.value"
+                        (click)="onSubscriberStatusChange(operator)">
+                        {{ operator.name }}
+                    </mat-option>
+                </mat-autocomplete>
+                <div *ngIf="submitted && !operatorid" class="text-danger" style="font-size: small;">
+                    Operator Name is required
+                </div>
                 </div>
                 <div class="col-12  col-md-3 mb-3">
                     <input type="text" placeholder="Enter Smartcard" [(ngModel)]="searchname">

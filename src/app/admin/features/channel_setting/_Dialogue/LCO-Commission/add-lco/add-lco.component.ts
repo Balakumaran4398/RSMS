@@ -20,6 +20,10 @@ export class AddLcoComponent {
   lcogroupid: any = 1;
   rowData: any;
 
+  filteredOperators:any=[];
+  selectedOperator:any;
+  selectedLcoName:any;
+
   gridApi: any;
   isAnyRowSelected: any = false;
   selectedIds: number[] = [];
@@ -64,18 +68,15 @@ export class AddLcoComponent {
       headerName: "S.No", lockPosition: true, valueGetter: 'node.rowIndex+1', width: 100, headerCheckboxSelection: true,
       checkboxSelection: true,
     },
-    { headerName: "PRODUCT NAME", field: 'productname', },
-    { headerName: "PRODUCT ID", field: 'productid', },
+    { headerName: "PRODUCT NAME", field: 'productname',  width: 300,},
+    { headerName: "PRODUCT ID", field: 'productid',  width: 250,},
     {
-      headerName: "PRODUCT RATE", field: 'rate', cellRenderer: (params: any) => `<span style="color: #035203;
+      headerName: "PRODUCT RATE", field: 'rate', width: 220, cellRenderer: (params: any) => `<span style="color: #035203;
       font-weight: bold;;">₹</span> ${params.value}`
     },
-    { headerName: "CUSTOMER AMOUNT", field: 'customeramount', },
+    { headerName: "CUSTOMER AMOUNT", field: 'customeramount', width: 200, },
     {
-      headerName: "MSO AMOUNT", field: 'msoamount',
-
-
-    },
+      headerName: "MSO AMOUNT", field: 'msoamount', width: 200,   },
     {
       headerName: "COMMISSION",
       field: 'commission',
@@ -90,7 +91,7 @@ export class AddLcoComponent {
     },
 
     {
-      headerName: "	IS PERCENTAGE", field: 'ispercentage',
+      headerName: "	IS PERCENTAGE", field: 'ispercentage', width: 200,
       cellRenderer: (params: any) => {
         if (params.value === true) {
           return `<span style="color: green;">YES</span>`;
@@ -103,6 +104,25 @@ export class AddLcoComponent {
   onGridReady(params: { api: any; }) {
     this.gridApi = params.api;
   }
+  filterOperators(event: any): void {
+    const filterValue = event.target.value.toLowerCase();
+    this.filteredOperators = this.lcomembershipList.filter((operator:any) =>
+      operator.name.toLowerCase().includes(filterValue)
+    );
+    console.log(this.filteredOperators);
+    
+  }
+  displayOperator(operator: any): string {
+    return operator ? operator.name : '';
+  }
+  onSubscriberStatusChange(selectedOperator: any) { 
+    console.log(selectedOperator);
+    this.selectedOperator = selectedOperator;
+    this.selectedLcoName = selectedOperator.value;
+    console.log(this.selectedLcoName);
+  }
+
+
   onSelectionChanged() {
     if (this.gridApi) {
       const selectedRows = this.gridApi.getSelectedRows();
@@ -120,6 +140,7 @@ export class AddLcoComponent {
         const name = key.replace(/\s*\(.*?\)\s*/g, '').trim();
         return { name: name, value: value };
       });
+      this.filteredOperators = this.lcomembershipList
       this.lcomembershipList.sort((a: any, b: any) => {
         if (a.value > b.value) return 1;
         if (a.value < b.value) return -1;
@@ -172,14 +193,16 @@ export class AddLcoComponent {
   //   }
 
   // }
-  getproductMembershipList(event: any) {
+  getproductMembershipList(selectedOperator: any) {
     console.log(this.type);
-    
+    console.log(selectedOperator);
+    this.selectedOperator = selectedOperator;
+    this.selectedLcoName = selectedOperator.value;
     const successHandler = (response: HttpResponse<any[]>) => {
       if (response.status === 200) {
         this.rowData = response.body;
         console.log(this.rowData);
-        this.swal.Success_200();
+        // this.swal.Success_200();
       } else if (response.status === 204) {
         this.swal.Success_204();
       }

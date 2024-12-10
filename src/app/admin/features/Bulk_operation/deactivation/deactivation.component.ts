@@ -1,5 +1,5 @@
 import { HttpResponse } from '@angular/common/http';
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { ColDef } from 'ag-grid-community';
 import { BaseService } from 'src/app/_core/service/base.service';
 import { ExcelService } from 'src/app/_core/service/excel.service';
@@ -12,11 +12,12 @@ import Swal from 'sweetalert2';
   templateUrl: './deactivation.component.html',
   styleUrls: ['./deactivation.component.scss']
 })
-export class DeactivationComponent {
+export class DeactivationComponent implements OnInit{
 
   filePath: string = '';
   isCheckboxChecked: boolean = false;
   date: any;
+  selectedDate: any;
   role: any;
   username: any;
   remark:any;
@@ -67,6 +68,11 @@ export class DeactivationComponent {
     this.username = storageservice.getUsername();
 
   }
+  ngOnInit(): void {
+    this.date = new Date().toISOString().split('T')[0];
+    this.selectedDate = this.date; 
+    this.refresh();
+  }
   opendialogue(): void {
     this.closeDialogue = !this.closeDialogue;
     this.Dialogue = !this.Dialogue;
@@ -99,51 +105,55 @@ export class DeactivationComponent {
     }
   }
   getData() {
-    this.userservice.getBulkOperationListByDate(this.role, this.username, 'deactivation', this.date,2)
-      .subscribe(
-        (response: HttpResponse<any[]>) => { // Expect HttpResponse<any[]>
-          if (response.status === 200) {
-            this.rowData = response.body;
-            Swal.fire('Success', 'Data updated successfully!', 'success');
-          } else if (response.status === 204) {
-            Swal.fire('No Content', 'No data available for the given criteria.', 'info');
-          }
-        },
-        (error) => {
-          if (error.status === 400) {
-            Swal.fire('Error 400', 'Bad Request. Please check the input.', 'error');
-          } else if (error.status === 500) {
-            Swal.fire('Error 500', 'Internal Server Error. Please try again later.', 'error');
-          } else {
-            Swal.fire('Error', 'Something went wrong. Please try again.', 'error');
-          }
+    this.rowData=[];
+    const dateToPass = this.selectedDate || this.date;
+    this.userservice.getBulkOperationListByDate(this.role, this.username, 'deactivation', dateToPass,2)
+    .subscribe(
+      (response: HttpResponse<any[]>) => { // Expect HttpResponse<any[]>
+        if (response.status === 200) {
+          this.rowData = response.body;
+          // this.swal.Success_200();
+        } else if (response.status === 204) {
+          this.rowData = '';
+          this.swal.Success_204();
         }
-      );
+      },
+      (error) => {
+        if (error.status === 400) {
+          this.swal.Error_400();
+        } else if (error.status === 500) {
+          this.swal.Error_500();
+        } else {
+          Swal.fire('Error', 'Something went wrong. Please try again.', 'error');
+        }
+      }
+    );
 
   }
 
 
   refresh() {
     this.userservice.getBulkOperationRefreshList(this.role, this.username, 'deactivation',2)
-      .subscribe(
-        (response: HttpResponse<any[]>) => { // Expect HttpResponse<any[]>
-          if (response.status === 200) {
-            this.rowData = response.body;
-            Swal.fire('Success', 'Data updated successfully!', 'success');
-          } else if (response.status === 204) {
-            Swal.fire('No Content', 'No data available for the given criteria.', 'info');
-          }
-        },
-        (error) => {
-          if (error.status === 400) {
-            Swal.fire('Error 400', 'Bad Request. Please check the input.', 'error');
-          } else if (error.status === 500) {
-            Swal.fire('Error 500', 'Internal Server Error. Please try again later.', 'error');
-          } else {
-            Swal.fire('Error', 'Something went wrong. Please try again.', 'error');
-          }
+    .subscribe(
+      (response: HttpResponse<any[]>) => { // Expect HttpResponse<any[]>
+        if (response.status === 200) {
+          this.rowData = response.body;
+          // this.swal.Success_200();
+        } else if (response.status === 204) {
+          this.rowData = '';
+          this.swal.Success_204();
         }
-      );
+      },
+      (error) => {
+        if (error.status === 400) {
+          this.swal.Error_400();
+        } else if (error.status === 500) {
+          this.swal.Error_500();
+        } else {
+          Swal.fire('Error', 'Something went wrong. Please try again.', 'error');
+        }
+      }
+    );
       // .subscribe((res: any) => {
       //   this.swal.success(res?.message);
       // }, (err) => {

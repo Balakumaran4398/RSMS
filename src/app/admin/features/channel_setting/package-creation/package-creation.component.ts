@@ -43,11 +43,11 @@ export class PackageCreationComponent {
   domLayout: 'normal' | 'autoHeight' | 'print' = 'autoHeight';
   columnDefs: any[] = [
     {
-      headerName: "S.No", lockPosition: true, valueGetter: 'node.rowIndex+1', width: 100,
+      headerName: "S.No", lockPosition: true, valueGetter: 'node.rowIndex+1', width: 120,
     },
-    { headerName: "PACKAGE NAME", field: 'packagename', width: 180 },
+    { headerName: "PACKAGE NAME", field: 'packagename', width: 300 },
     {
-      headerName: 'Actions', width: 350, filter: false,
+      headerName: 'Actions', width: 380, filter: false,
       cellRenderer: (params: any) => {
         const editButton = document.createElement('button');
         const manageButton = document.createElement('button');
@@ -112,12 +112,10 @@ export class PackageCreationComponent {
       },
 
     },
-    { headerName: "ORDER ID", field: 'orderid', width: 150 },
-    { headerName: "PACKAGE RATE", field: 'packagerate', width: 150 },
-
-
+    { headerName: "ORDER ID", field: 'orderid', width: 280 },
+    { headerName: "PACKAGE RATE", field: 'packagerate', width: 260 },
     {
-      headerName: "REPORT", field: 'report', width: 130,
+      headerName: "REPORT", field: 'report', width: 170,
       cellRenderer: (params: any) => {
         const editButton = document.createElement('button');
         editButton.innerHTML = '<i class="far fa-file-pdf" style="font-size:20px;color:red"></i>';
@@ -158,8 +156,6 @@ export class PackageCreationComponent {
     dialogRef.afterClosed().subscribe(result => {
     });
   }
-
-
   openCloneDialog(data: any): void {
     const dialogRef = this.dialog.open(PackageCloneComponent, {
       width: '600px',
@@ -183,4 +179,6 @@ export class PackageCreationComponent {
     dialogRef.afterClosed().subscribe(result => {
     });
   }
+
+  
 }

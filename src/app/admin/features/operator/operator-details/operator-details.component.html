@@ -1,228 +1,59 @@
-<!-- <div class="opt">
-    <div class=" col-12 col-md-12 mb-4 display justify-content-start align-items-center    ">
-        <div class="custom-select input_box  col-12 col-md-4 mb-2 mx-2">
-            <input type="text" placeholder="Search Operator" [(ngModel)]="operatorname" (input)="filterOperators()"
-                (focus)="showDropdown = false" (click)="showDropdown = true">
-            <ul class="dropdown" *ngIf="showDropdown">
-                <li (click)="selectOperator('0','ALL Operator')">ALL Operator</li>
-                <li *ngFor="let operator of filteredOperators" (click)="selectOperator(operator.value,operator.name  )">
-                    {{ operator.name }}
-                </li>
-            </ul>
-        </div>
-        <div class="col-12 col-md-2 mb-2 mx-2 card  d-flex align-items-center " (click)="New_lco()">
-            <p>
-                <i class="fa fa-plus mx-2" style="padding-right: 3px;font-size: 14px"></i>NEW LCO
-            </p>
-        </div>
-        <div class="col-12 col-md-2 mb-2 mx-2 card d-flex align-items-center" (click)="New_lco_business()">
-            <p> <i class="fa fa-plus mx-2" style="padding-right: 3px;font-size: 14px"></i>New LCO Business</p>
-
-        </div>
-    </div>
-    <div class="row">
-        <span class="col-12 col-md-4 " *ngFor="let operator of operator_details">
-            <mat-card class="">
-                <mat-card-header>
-                    <mat-card-title>
-                        <div class="col-12 head">
-                            <div class="col-12 col-md-6">
-                                <p style="text-align: left;" class="sub-tittle">
-                                    {{operator?.operatorname || 'empty'}}
-                                </p>
-                                <p style="text-align: left;color: rgb(90 88 88);" class="sub-tittle">Ph:
-                                    {{operator?.contactnumber1 || operator?.contactnumber2}}</p>
-
-                                <img class="toggle1" src="/assets/images/login/contact1.png" alt="Toggle">
-                                <p class="text">
-                                    <span class="label label1">user id</span>
-                                    <span class="separator">:</span>
-                                    <span class="last">{{operator?.userid}}</span>
-                                </p>
-                                <p class="text">
-                                    <span class="label label2">password</span>
-                                    <span class="separator">:</span>
-                                    <span class="last">{{operator?.password}}</span>
-                                </p>
-                                <p class="text">
-                                    <span class="label">online payment</span>
-                                    <span class="separator">:</span>
-                                    <span class="last">{{operator?.isonlinepayment}}</span>
-                                </p>
-                            </div>
-                            <div class="col-12 col-md-6">
-                                <span
-                                    style="color: #0e610b; display: flex; align-items: center;justify-content: space-between;"
-                                    class="sub-tittle tittle1 tooltip-container">
-                                    <p><i class="fa fa-inr" style="font-size: 14px;"></i>
-                                        {{operator?.balance}}</p>
-                                    <p><i class="fas fa-pen"
-                                            style="color: var(--edit-button); font-size: 20px;cursor: pointer;"
-                                            aria-hidden="true" (click)="toggleedit(operator.operatorid)"></i></p>
-                                </span>
-
-                                <mat-card class="inventory">
-                                    <p>Inventory</p>
-                                    <div class="row" style="display: flex;">
-                                        <div class="col-6">
-                                            <span style="font-size: 13px;">Box in hand</span>
-                                            <mat-card class="card-inside">
-                                                <span style="color: var(--primary-color)">{{operator?.boxinhand}}</span>
-                                            </mat-card>
-                                        </div>
-                                        <div class="col-6">
-                                            <span style="font-size: 13px;">Total Box</span>
-                                            <mat-card class="card-inside">
-                                                <span style="color: var(--primary-color)">{{operator?.totalbox}}</span>
-                                            </mat-card>
-                                        </div>
-                                    </div>
-                                </mat-card>
-                                <mat-card class="permission" (click)="togglepermission(operator.operatorid)"
-                                    style="cursor: pointer;">
-                                    <img src="../assets/images/icons/Accesss1.png" alt="Accesss1">
-                                    <p (click)="togglepermission($event)" style="color: white;font-size: 14px;">Special
-                                        Permission</p>
-                                </mat-card>
-                            </div>
-                        </div>
-
-                        <div class="child-card col-12">
-                            <div class="col-2 vertical tooltip-container" (click)="openDialog('connection')">
-                                <span style="color: #0e610b;">
-                                    <div class="circle" style="background-color: rgb(240, 120, 9);"><span
-                                            class="circle-text">{{operator?.connectioncount}}</span></div>
-                                </span>
-                                <span class="tooltip">Connection</span>
-                            </div>
-                            <div class="col-2 vertical tooltip-container" (click)="openDialog('notexpiry')">
-                                <span style="color: #0e610b;">
-                                    <div class="circle" style="background-color: rgb(122, 64, 129);"><span
-                                            class="circle-text">{{operator?.activecount}}</span></div>
-                                </span>
-                                <span class="tooltip">NotExpiry</span>
-                            </div>
-                            <div class="col-2 vertical tooltip-container" (click)="openDialog('expired')">
-                                <span style="color: #0e610b;">
-                                    <div class="circle" style="background-color: rgb(202, 9, 9);"><span
-                                            class="circle-text">{{operator?.connectioncount}}</span></div>
-                                </span>
-                                <span class="tooltip">Expired</span>
-                            </div>
-                            <div class="col-2 vertical tooltip-container" (click)="openDialog('new')">
-                                <span style="color: #0e610b;">
-                                    <div class="circle" style="background-color: rgb(13 131 33);"><span
-                                            class="circle-text">{{operator?.newcount}}</span></div>
-                                </span> <span class="tooltip">New</span>
-                            </div>
-                            <div class="col-2 vertical tooltip-container" (click)="openDialog('block')">
-                                <span style="color: #0e610b;">
-                                    <div class="circle" style="background-color: rgb(148, 122, 8);"><span
-                                            class="circle-text">{{operator?.blockcount}}</span></div>
-                                </span>
-                                <span class="tooltip">Block</span>
-                            </div>
-                        </div>
-                        <br>
-
-                        <div class="report d-flex justify-content-center">
-                            <div class="file-container">
-                                <div class="files mx-2">
-                                    <a (click)="navgetToUrl(operator.operatorid)" class="tooltip-container">
-                                        <i class="fa fa-dashboard"
-                                            style="font-size:25px;color:var(--primary-color)"></i>
-                                        <span class="tooltip">Dashboard</span>
-                                    </a>
-                                </div>
-
-
-                                <div class="files tooltip-container mx-2" (click)="openDialog('recharge')">
-                                    <i class="fa-solid fa-book" style="font-size:25px;color:var(--primary-color)"></i>
-                                    <span class="tooltip">LCO RECHARGE REPORT
-                                    </span>
-                                </div>
-
-                                <div class="files tooltip-container mx-2" (click)="openDialog('retailer')">
-                                    <i class="fa-solid fa-person-chalkboard"
-                                        style="font-size:25px;color:var(--primary-color)"></i>
-                                    <span class="tooltip">LCO WISE RETAILER REPORT </span>
-                                </div>
-                                <div class="files tooltip-container mx-2" (click)="openDialog('areawise')">
-                                    <i class="fa fa-calculator" style="font-size:25px;color:var(--primary-color)"
-                                        aria-hidden="true"></i>
-                                    <span class="tooltip">AREAWISE CONECTION COUNT REPORT
-                                    </span>
-                                </div>
-
-                                <div class="files tooltip-container mx-2" (click)="openDialog('cancel_Subscription')">
-                                    <i class="fa-solid fa-file-lines"
-                                        style="font-size:25px;color:var(--primary-color)"></i>
-                                    <span class="tooltip">CANCEL SUBSCRIPTION REPORT
-                                    </span>
-                                </div>
-                                <div class="files tooltip-container mx-2" (click)="openDialog('productwise')">
-                                    <i class="fa-solid fa-address-book"
-                                        style="font-size:25px;color:var(--primary-color)"></i>
-                                    <span class="tooltip">PRODUCTWISE CURRENT COUNT
-                                    </span>
-                                </div>
-                            </div>
-                        </div>
-                        <br>
-                    </mat-card-title>
-                </mat-card-header>
-            </mat-card>
-        </span>
-    </div>
-</div> -->
-
 <div class="opt">
-    <div class=" col-12 col-md-12 mb-4 display justify-content-start align-items-center    ">
-        <div class="custom-select input_box  col-12 col-md-4 mb-2 mx-2">
-            <input type="text" placeholder="Search Operator" [(ngModel)]="operatorname" (input)="filterOperators()"
-                (focus)="showDropdown = false" (click)="showDropdown = true">
+    <div class=" col-12 col-md-12 mb-4 display justify-content-start align-items-baseline   ">
+        <div class="col-12 col-md-3">
+            <mat-form-field class="example-full-width" style="min-width: 100%;" appearance="outline">
+                <mat-label>Select Operator</mat-label>
+                <input type="text" matInput [matAutocomplete]="auto" (input)="filterOperators($event)"
+                    [matAutocompleteDisabled]="false" [value]="selectedOperator?.name">
 
-            <ul class="dropdown" *ngIf="showDropdown">
-                <li (click)="selectOperator('0','ALL Operator')">ALL Operator</li>
-                <li *ngFor="let operator of filteredOperators" (click)="selectOperator(operator.value,operator.name  )">
-                    {{ operator.name }}
-                </li>
-            </ul>
+                <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayOperator">
+                    <mat-option (click)="onoperatorchange({ name: 'ALL Operator', value: 0 })">ALL Operator</mat-option>
+                    <mat-option *ngFor="let operator of filteredOperators" [value]="operator.name"
+                        (click)="onoperatorchange(operator)">
+                        {{ operator.name }}
+                    </mat-option>
+                </mat-autocomplete>
+            </mat-form-field>
+        </div>
+        <div class="d-flex justify-content-center mb-2" style="align-items: baseline;">
+            <button class="btn btn-outline-info mx-1" mat-raised-button color="custom-select"
+                style="background-color: #0c5e85;color: white;" type="button" (click)="New_lco()"> <i
+                    class="fa fa-plus mx-2" style="padding-right: 1px;font-size: 14px"></i>
+                NEW LCO
+            </button>
+        </div>
+        <div class="d-flex justify-content-center mb-2" style="align-items: baseline;">
+            <button class="btn btn-outline-info mx-1" mat-raised-button color="custom-select"
+                style="background-color: #0c5e85;color: white;" type="button" (click)="New_lco_business()"> <i
+                    class="fa fa-plus mx-2" style="padding-right: 1px;font-size: 14px"></i>
+                New LCO Business
+            </button>
         </div>
 
-
-        <div class="col-12 col-md-2 mb-2 mx-2 card  d-flex align-items-center " (click)="New_lco()">
-            <p>
-                <i class="fa fa-plus mx-2" style="padding-right: 3px;font-size: 14px"></i>NEW LCO
-
-            </p>
-            <!-- <button class="btn btn-success"><i class="fa fa-plus mx-2"
-                    style="padding-right: 3px;font-size: 14px"></i>NEW LCO </button> -->
-        </div>
-        <div class="col-12 col-md-2 mb-2 mx-2 card d-flex align-items-center" (click)="New_lco_business()">
-            <p> <i class="fa fa-plus mx-2" style="padding-right: 3px;font-size: 14px"></i>New LCO Business</p>
-            <!-- <button class="btn btn-success"><i class="fa fa-plus mx-2"
-                style="padding-right: 3px;font-size: 14px"></i>NEW LCO  Business</button> -->
-        </div>
     </div>
-    <div class="" style="grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); display: grid; gap: 10px; ">
-        <!-- <span class="k col-12 col-md-4" *ngFor="let operator of operator_details"> -->
-        <div *ngFor="let operator of operator_details">
-            <mat-card class=" " style="height: 100%;width: min-content;">
+    <div class="grid-container">
+        <div *ngFor="let operator of pagedOperators">
+            <mat-card class="card">
                 <mat-card-header>
-                    <mat-card-subtitle class="sub-tittle mb-3">
-                        {{operator?.operatorname || 'empty'}} [ {{operator?.balance}}]
-                    </mat-card-subtitle>
+                    <div class="d-block justify-content-start align-item-center">
+                        <div class="sub-tittle mb-3 col-md-10" style="text-align: left;">
+                            {{operator?.operatorname || 'empty'}} <span
+                                style="color: rgb(1, 1, 14);font-weight: 600;">[{{operator?.operatorid}}]</span> - [
+                            {{operator?.balance}}]
+                        </div>
+                        <div style="text-align: left;font-size: 15px; color: rgb(26, 23, 23); margin-top: 8px; text-transform: capitalize;"
+                            class=""> &nbsp; Phone:
+                            {{operator?.contactnumber1 || operator?.contactnumber2}}</div>
+                    </div>
                 </mat-card-header>
+
                 <mat-card-content>
                     <div class="col-12 head " style="text-align: left;">
-                        <div class="col-12 col-md-6">
+                        <div class="col-6 col-md-6">
                             <!-- <p style="text-align: left;" class="sub-tittle">
                                 {{operator?.operatorname || 'empty'}}
                             </p> -->
-
                             <div style="display: flex; justify-content: center;">
-
                                 <img class="toggle1" src="/assets/images/login/contact1.png" alt="Toggle">
                             </div>
                             <p class="text">
@@ -235,14 +66,20 @@
                                 <span class="separator">:</span>
                                 <span class="last">{{operator?.password}}</span>
                             </p>
-                            <p class="text">
+                            <!-- <p class="text">
                                 <span class="label">online payment</span>
                                 <span class="separator">:</span>
                                 <span class="last">{{operator?.isonlinepayment}}</span>
+                            </p> -->
+                            <p class="text" [ngClass]="operator?.isonlinepayment ? 'active-text' : 'deactive-text'">
+                                <span class="label">online payment</span>
+                                <span class="separator1">:</span>
+                                <span class="last1">{{ operator?.isonlinepayment ? 'Active' : 'Deactive' }}</span>
                             </p>
 
+
                         </div>
-                        <div class="col-12 col-md-6">
+                        <div class="col-6 col-md-6">
                             <span
                                 style="color: #0e610b; display: flex; align-items: center;justify-content: space-between; position: absolute; top: 5px; right: 10px;"
                                 class="sub-tittle tittle1 ">
@@ -279,48 +116,8 @@
                             </mat-card>
                         </div>
                     </div>
-                    <br>
-                    <div class="child-card col-12">
-                        <div class="col-2 vertical tooltip-container" (click)="openDialog('connection')">
-                            <!-- <p class="sub-text">Connection</p> -->
-                            <span style="color: #0e610b;">
-                                <div class="circle" style="background-color: rgb(240, 120, 9);"><span
-                                        class="circle-text">{{operator?.connectioncount}}</span></div>
-                            </span>
-                            <span class="tooltip">Connection</span>
-                        </div>
-                        <div class="col-2 vertical tooltip-container" (click)="openDialog('notexpiry')">
-                            <!-- <p class="sub-text">NotExpiry</p> -->
-                            <span style="color: #0e610b;">
-                                <div class="circle" style="background-color: rgb(122, 64, 129);"><span
-                                        class="circle-text">{{operator?.activecount}}</span></div>
-                            </span>
-                            <span class="tooltip">NotExpiry</span>
-                        </div>
-                        <div class="col-2 vertical tooltip-container" (click)="openDialog('expired')">
-                            <!-- <p class="sub-text">Expired</p> -->
-                            <span style="color: #0e610b;">
-                                <div class="circle" style="background-color: rgb(202, 9, 9);"><span
-                                        class="circle-text">{{operator?.expiredcount}}</span></div>
-                            </span>
-                            <span class="tooltip">Expired</span>
-                        </div>
-                        <div class="col-2 vertical tooltip-container" (click)="openDialog('new')">
-                            <!-- <p class="sub-text">New</p> -->
-                            <span style="color: #0e610b;">
-                                <div class="circle" style="background-color: rgb(13 131 33);"><span
-                                        class="circle-text">{{operator?.newcount}}</span></div>
-                            </span> <span class="tooltip">New</span>
-                        </div>
-                        <div class="col-2 vertical tooltip-container" (click)="openDialog('block')">
-                            <!-- <p class="sub-text">Block</p> -->
-                            <span style="color: #0e610b;">
-                                <div class="circle" style="background-color: rgb(148, 122, 8);"><span
-                                        class="circle-text">{{operator?.blockcount}}</span></div>
-                            </span>
-                            <span class="tooltip">Block</span>
-                        </div>
-                    </div>
+
+
                     <br>
 
                     <div class="report d-flex justify-content-center">
@@ -337,62 +134,105 @@
                             </div>
 
 
-                            <div class="files tooltip-container mx-2" (click)="openDialog('recharge')">
-                                <!-- <img src="../assets/images/icons/Document_icon.png" alt="Dashboard"> -->
+                            <!-- <div class="files tooltip-container mx-2" (click)="openDialog('recharge')"> -->
+                            <!-- <div class="files tooltip-container mx-2">
                                 <i class="fa-solid fa-book" style="font-size:20px;color:var(--primary-color)"></i>
                                 <span class="tooltip">LCO RECHARGE REPORT
                                 </span>
-                            </div>
+                            </div> -->
 
-                            <div class="files tooltip-container mx-2" (click)="openDialog('retailer')">
-                                <!-- <img src="../assets/images/icons/Document_icon.png" alt="Report"> -->
+                            <!-- <div class="files tooltip-container mx-2" (click)="openDialog('retailer')"> -->
+                            <!-- <div class="files tooltip-container mx-2">
                                 <i class="fa-solid fa-person-chalkboard"
                                     style="font-size:20px;color:var(--primary-color)"></i>
                                 <span class="tooltip">LCO WISE RETAILER REPORT </span>
-                            </div>
-                            <div class="files tooltip-container mx-2" (click)="openDialog('areawise')">
-                                <!-- <img src="../assets/images/icons/Document_icon.png" alt="Report"> -->
-
+                            </div> -->
+                            <!-- <div class="files tooltip-container mx-2" (click)="openDialog('areawise')"> -->
+                            <!-- <div class="files tooltip-container mx-2">
                                 <i class="fa fa-calculator" style="font-size:20px;color:var(--primary-color)"
                                     aria-hidden="true"></i>
                                 <span class="tooltip">AREAWISE CONECTION COUNT REPORT
                                 </span>
-                            </div>
+                            </div> -->
 
-                            <div class="files tooltip-container mx-2" (click)="openDialog('cancel_Subscription')">
-                                <!-- <img src="../assets/images/icons/Document_icon.png" alt="Report"> -->
+                            <!-- <div class="files tooltip-container mx-2" (click)="opencancelsubDialog('cancel_Subscription')"> -->
+                            <!-- <div class="files tooltip-container mx-2">
                                 <i class="fa-solid fa-file-lines" style="font-size:20px;color:var(--primary-color)"></i>
                                 <span class="tooltip">CANCEL SUBSCRIPTION REPORT
                                 </span>
-                            </div>
-                            <div class="files tooltip-container mx-2" (click)="openDialog('productwise')">
-                                <!-- <img src="../assets/images/icons/Document_icon.png" alt="Report"> -->
+                            </div> -->
+                            <!-- <div class="files tooltip-container mx-2" (click)="openDialog('productwise')"> -->
+                            <!-- <div class="files tooltip-container mx-2">
                                 <i class="fa-solid fa-address-book"
                                     style="font-size:20px;color:var(--primary-color)"></i>
                                 <span class="tooltip">PRODUCTWISE CURRENT COUNT
                                 </span>
-                            </div>
-
-
-
-                            <!-- <div class="files tooltip-container mx-2">
-                                <a (click)="navgetToUrl(operator.operatorid)" class="tooltip-container">
-                                    <i class='bx bx-sm bxs-user-pin'
-                                        style="font-size:25px;color:var(--primary-color)"></i>
-                                    <span class="tooltip">TO CLICK SUBLCO DETAILS
-                                    </span>
-                                </a>
                             </div> -->
+
+
+
+
 
                         </div>
                     </div>
+                    <div class="child-card col-12">
+                        <!-- <div class="col-2 vertical tooltip-container" (click)="openDialog('connection')"> -->
+                        <div class="col-2 vertical tooltip-container">
+                            <!-- <p class="sub-text">Connection</p> -->
+                            <span style="color: #0e610b;">
+                                <div class="circle" style="background-color: rgb(240, 120, 9);"><span
+                                        class="circle-text">{{operator?.connectioncount}}</span></div>
+                            </span>
+                            <span class="tooltip">Connection</span>
+                        </div>
+                        <!-- <div class="col-2 vertical tooltip-container" (click)="openDialog('notexpiry')"> -->
+                        <div class="col-2 vertical tooltip-container">
+                            <!-- <p class="sub-text">NotExpiry</p> -->
+                            <span style="color: #0e610b;">
+                                <div class="circle" style="background-color: rgb(122, 64, 129);"><span
+                                        class="circle-text">{{operator?.activecount}}</span></div>
+                            </span>
+                            <span class="tooltip">NotExpiry</span>
+                        </div>
+                        <!-- <div class="col-2 vertical tooltip-container" (click)="openDialog('expired')"> -->
+                        <div class="col-2 vertical tooltip-container">
+                            <!-- <p class="sub-text">Expired</p> -->
+                            <span style="color: #0e610b;">
+                                <div class="circle" style="background-color: rgb(202, 9, 9);"><span
+                                        class="circle-text">{{operator?.expiredcount}}</span></div>
+                            </span>
+                            <span class="tooltip">Expired</span>
+                        </div>
+                        <!-- <div class="col-2 vertical tooltip-container" (click)="openDialog('new')"> -->
+                        <div class="col-2 vertical tooltip-container">
+                            <!-- <p class="sub-text">New</p> -->
+                            <span style="color: #0e610b;">
+                                <div class="circle" style="background-color: rgb(13 131 33);"><span
+                                        class="circle-text">{{operator?.newcount}}</span></div>
+                            </span> <span class="tooltip">New</span>
+                        </div>
+                        <!-- <div class="col-2 vertical tooltip-container" (click)="openDialog('block')"> -->
+                        <div class="col-2 vertical tooltip-container">
+                            <!-- <p class="sub-text">Block</p> -->
+                            <span style="color: #0e610b;">
+                                <div class="circle" style="background-color: rgb(148, 122, 8);"><span
+                                        class="circle-text">{{operator?.blockcount}}</span></div>
+                            </span>
+                            <span class="tooltip">Block</span>
+                        </div>
+                    </div>
                 </mat-card-content>
-                <span
-                    style="text-align: left;font-size: small; color: rgb(90 88 88); margin-top: 8px; text-transform: capitalize;"
-                    class="sub-tittle"> &nbsp; Phone:
-                    {{operator?.contactnumber1 || operator?.contactnumber2}}</span>
-            </mat-card>
 
+            </mat-card>
         </div>
+
+        <!-- </div> -->
+        <!-- </div> -->
+        <!-- </div> -->
+    </div>
+    <div class="d-flex justify-content-center align-items-center" style="padding: 0.5rem;">
+        <mat-paginator [length]="totalLength" [pageSize]="pageSize" [pageSizeOptions]="[5, 10, 25, 50]"
+            (page)="onPageChange($event)">
+        </mat-paginator>
     </div>
 </div>

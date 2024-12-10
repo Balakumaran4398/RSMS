@@ -3,12 +3,13 @@
     <div class="row">
         <div class="">
             <div class="col d-flex justify-content-center align-items-center mb-3">
-                <a class="btn btn-outline-success mx-1" (click)="addnew()">
+                <a class="btn btn-success mx-1" (click)="addnew()">
                     <span>+</span> New
                 </a>
             </div>
 
-            <div class="col-12 col-sm-8 col-md-8 align-items-center justify-content-center responsive-container" style="margin: auto;">
+            <div class="col-12 col-sm-10  align-items-center justify-content-center responsive-container" style="margin: auto;">
+           
                 <ag-grid-angular #agGrid id="myGrid" domLayout='autoHeight' class="ag-theme-alpine table-class"
                 rowAnimation [gridOptions]="gridOptions" [columnDefs]="columnDefs" [rowData]="rowData"
                 [enableCellTextSelection]="true">

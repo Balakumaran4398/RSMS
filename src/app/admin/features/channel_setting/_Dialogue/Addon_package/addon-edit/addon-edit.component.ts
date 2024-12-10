@@ -1,7 +1,8 @@
-import { Component, Inject } from '@angular/core';
+import { ChangeDetectorRef, Component, Inject, OnInit } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { BaseService } from 'src/app/_core/service/base.service';
 import { StorageService } from 'src/app/_core/service/storage.service';
+import { SwalService } from 'src/app/_core/service/swal.service';
 import Swal from 'sweetalert2';
 
 @Component({
@@ -9,7 +10,7 @@ import Swal from 'sweetalert2';
   templateUrl: './addon-edit.component.html',
   styleUrls: ['./addon-edit.component.scss']
 })
-export class AddonEditComponent {
+export class AddonEditComponent implements OnInit {
   addon_package_name: any;
   addon_package_rate: any;
   addon_package_description: any;
@@ -19,39 +20,54 @@ export class AddonEditComponent {
   username: any;
   order_id: any;
   broadcaster_id: any;
-  commission: string = '0.0';
+  commission: any;
   tax_amount: any = '0.0';
   customer_amount: any = '0.0';
   mso_amount: any = '0.0';
-  ispercentage: true;
+  ispercentage: boolean = true;
   role: any;
+
+  broadcaster_list: any[] = [];
   constructor(
     public dialogRef: MatDialogRef<AddonEditComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: any, private userService: BaseService, private storageService: StorageService) {
+    @Inject(MAT_DIALOG_DATA) public data: any, private userService: BaseService, private swal: SwalService, private storageService: StorageService, private cdr: ChangeDetectorRef) {
     console.log(data);
-    // if (data.addon) {
-    //   this.addon = true;
-    // }
-    // if (data.package_cr) {
-    //   this.package_cr = true;
-    // }
-
     this.username = storageService.getUsername();
     this.role = storageService.getUserRole();
-    console.log(this.username + "-------------------------" + this.role);
-
+    this.id=data.id;
     this.order_id = data.order_id;
     this.broadcaster_id = data.broadcaster_id;
-    this.commission = data.commission;
-    this.ispercentage = data.isactive;
-
+    this.commission = data.customeramount;
+    this.ispercentage = data.ispercentage;
     this.addon_package_name = data.addon_package_name;
     this.addon_package_rate = data.addon_package_rate;
     this.addon_package_description = data.addon_package_description
-    this.tax_amount = data.tax_amount
-    this.customer_amount = data.customer_amount
-    this.mso_amount = data.mso_amount
+    this.tax_amount = 0;
+    this.customer_amount = data.customeramount
+    this.mso_amount = 0;
     this.taxRate = data.taxRate
+  }
+
+  ngOnInit(): void {
+    this.loadBroadcasterList();
+  }
+  loadBroadcasterList(): void {
+    this.userService.BroadcasterList(this.role, this.username, 1).subscribe(
+      (data: any) => {
+        this.broadcaster_list = Object.keys(data).map((key) => ({
+          name: key,
+          value: data[key],
+        }));
+        this.cdr.detectChanges();
+      },
+      (error) => {
+        console.error('Error fetching Broadcaster List', error);
+      }
+    );
+  }
+  onBroadcasterChange(event: Event): void {
+    const selectedValue = (event.target as HTMLSelectElement).value;
+    this.broadcaster_id = selectedValue; 
   }
   onNoClick(): void {
     this.dialogRef.close();
@@ -86,17 +102,17 @@ export class AddonEditComponent {
       id: this.id,
       addon_package_name: this.addon_package_name,
       addon_package_rate: this.addon_package_rate,
+      broadcaster_id: this.broadcaster_id,
       addon_package_description: this.addon_package_description,
       order_id: this.order_id,
-      broadcaster_id: this.broadcaster_id,
+      commission: this.commission,
+      ispercentage: this.ispercentage,
       username: this.username,
       role: this.role,
       mso_amount: this.mso_amount,
       package_id: this.package_id,
       tax_amount: this.tax_amount,
       customer_amount: this.customer_amount,
-      commission: this.commission,
-      ispercentage: this.ispercentage
     };
     // if (!request.package_name || !request.package_rate || !request.package_desc || !request.order_id || !request.username || !request.role || !request.package_id || !request.commission || !request.ispercentage) {
     //   Swal.fire({
@@ -106,7 +122,7 @@ export class AddonEditComponent {
     //     showConfirmButton: false,
     //     timer: 1500
     //   });
-    //   return; // Stop further execution if validation fails
+    //   return; 
     // }
     Swal.fire({
       title: 'Updating...',
@@ -116,30 +132,11 @@ export class AddonEditComponent {
         Swal.showLoading(null);
       }
     });
-    this.userService.UPDATE_ADDON_PACKAGE(request).subscribe((res: any) => {
-      console.log(res.message);
-      Swal.fire({
-        position: "center",
-        icon: "success",
-        title: "Package Updated successfully !!",
-        showConfirmButton: false,
-        timer: 1000
-      }).then(() => {
+    this.userService.UPDATE_ADDON_PACKAGE(request)
+      .subscribe((res: any) => {
+        this.swal.success(res?.message);
+      }, (err) => {
+        this.swal.Error(err?.error?.message);
       });
-    },
-      (error) => {
-        // console.error(error.message);
-        const errorMessage = error?.error?.message || 'An error occurred while updating the package.';
-        // Error message
-        Swal.fire({
-          position: 'center',
-          icon: 'error',
-          title: 'Error',
-          text: errorMessage,
-          showConfirmButton: false,
-          timer: 1500
-        });
-      }
-    );
   }
 }

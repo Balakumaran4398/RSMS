@@ -30,13 +30,7 @@ h1 {
     border-radius: 5px;
 }
 
-// .example-box {
-//     margin-bottom: 5px;
-//     padding: 5px;
-//     background-color: #f1f1f1;
-//     border: 1px solid #ddd;
-//     border-radius: 3px;
-// }
+
 
 
 .btn {
@@ -81,7 +75,7 @@ h1 {
 }
 
 .example-box.selected {
-    background-color: lightblue;
+    background-color: #e861ec;
 }
 
 
@@ -103,8 +97,9 @@ h1 {
     background: #fff;
     cursor: move;
 }
+
 .displaybtn {
-    display: grid !important;
+    display: grid ;
 }
 
 .profile {
@@ -112,6 +107,12 @@ h1 {
     width: 1pc;
     background-color: rgb(222, 241, 241);
 }
+
+.mobile {
+    max-height: 500px;
+    overflow: auto;
+}
+
 // @media (max-width: 767.98px) {
 //     .d-flex {
 //         // flex-direction: column;
@@ -124,7 +125,7 @@ h1 {
 //     .displaybtn {
 //         display: flex !important;
 //     }
- 
+
 //     .card {
 //         height: 50vh;
 //         padding: 1rem;
@@ -134,7 +135,7 @@ h1 {
 // }
 
 
-@media (min-width: 560px) {
+@media (max-width: 560px) {
     .d-flex {
         flex-direction: row;
     }
@@ -142,13 +143,15 @@ h1 {
     // .display {
     //     display: grid;
     // }
-    .displaybtn {
-        display: flex ;
-    }
+    // .displaybtn {
+    //     display: flex !important;
+    // }
+
     .example-container {
         max-height: 310px !important;
         overflow: auto;
     }
+
     .card {
         height: 50vh;
         padding: 1rem;
@@ -159,7 +162,6 @@ h1 {
 
 @media screen and (max-width:770px) {
     .displaybtn {
-        display: flex ;
+        display: flex !important;
     }
 }
-

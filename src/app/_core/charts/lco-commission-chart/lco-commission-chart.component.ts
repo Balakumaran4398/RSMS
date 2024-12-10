@@ -18,10 +18,8 @@ export class LcoCommissionChartComponent {
     this.role = storageservice.getUserRole();
     this.username = storageservice.getUsername();
 
-    // Fetching data from API and updating chart data
     this.userservice.getMembershipcountForPiechart(this.role, this.username).subscribe((data: any) => {
       console.log(data);
-      // Convert the API data to the format needed for the chart
       const dataPoints = Object.keys(data).map(key => ({
         y: data[key],
         name: key
@@ -29,11 +27,18 @@ export class LcoCommissionChartComponent {
       this.updateChartData(dataPoints);
     });
   }
-
-
   chartOptions = {
     animationEnabled: true,
     theme: 'light2',
+    legend: {
+      verticalAlign: 'center',
+      horizontalAlign: 'right',
+      fontFamily: 'Arial',
+      markerType: 'square',
+      fontSize: 14,
+      itemWrap: true,
+      itemTextFormatter: (e: any) => `${e.dataPoint.name}: ${e.dataPoint.y}`,
+    },
     data: [{
       type: 'pie',
       startAngle: 90,

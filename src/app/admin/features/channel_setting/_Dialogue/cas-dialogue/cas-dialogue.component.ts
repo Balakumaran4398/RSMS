@@ -15,12 +15,22 @@ export class CasDialogueComponent {
   username: any;
   id: any;
   type: any;
+  intend:any;
+  message:any;
+  resendMessage:any;
   constructor(private userservice: BaseService, private storageservice: StorageService, public dialogRef: MatDialogRef<CasDialogueComponent>, @Inject(MAT_DIALOG_DATA) public data: any, private swal: SwalService) {
     console.log(data);
     this.type = data.type;
     this.id = data?.data.id;
     console.log(this.type );
     console.log(this.id );
+    this.intend= data?.data?.intendid;
+    this.message= data?.data?.scrollmsg;
+    this.resendMessage= data?.data?.msgcontent;
+    console.log(this.intend);
+    console.log(this.message);
+    this.username = storageservice.getUsername();
+    this.role = storageservice.getUserRole();
     
   }
   onNoClick(): void {

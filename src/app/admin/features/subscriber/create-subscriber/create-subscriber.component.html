@@ -13,14 +13,17 @@
                 <div class="user_details">
                     <div class="input_box">
                         <label>LCO Name</label>
-                        <select id="lcoName" formControlName="operatorid" [(ngModel)]="operatorid"
-                            (change)="onSubscriberStatusChange()">
-                            <option value="0" selected>Select a Operator</option>
-                            <option *ngFor="let key of filteredLcoKeys()" [value]="lco_list[key]">
-                                {{ key }}
-                            </option>
-                        </select>
-                        <!-- <p-multiSelect formControlName="operatorid"  [(ngModel)]="operatorid" defaultLabel="Select a City" optionLabel="name"></p-multiSelect> -->
+                        <input type="text" matInput [matAutocomplete]="auto" formControlName="operatorid"
+                            (input)="filterOperators($event)" placeholder="Select a Operator"
+                            [matAutocompleteDisabled]="false" [value]="selectedOperator?.name">
+
+                        <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayOperator">
+                            <mat-option *ngFor="let operator of filteredOperators" [value]="operator.name"
+                                (click)="onoperatorchange(operator)">
+                                {{ operator.name }}
+                            </mat-option>
+                        </mat-autocomplete>
+
                         <div style="position:relative;font-size: small;">
                             <div *ngIf="submitted && f['operatorid'].errors?.['required']" class="text-danger">
                                 LCO Name is required</div>
@@ -28,12 +31,16 @@
                     </div>
                     <div class="input_box">
                         <label>Area Name</label>
-                        <select formControlName="areaid" [(ngModel)]="areaid" (change)="onAreaStatusChange()">
-                            <option value="0" selected>Select a Area</option>
-                            <option *ngFor="let key of filteredAreaKeys()" [value]="area_list[key]">
-                                {{ key }}
-                            </option>
-                        </select>
+                        <input type="text" matInput [matAutocomplete]="autoArea" formControlName="areaid"
+                            (input)="filterAreas($event)" placeholder="Select a areaid"
+                            [matAutocompleteDisabled]="false" [value]="selectedArea?.name">
+
+                        <mat-autocomplete #autoArea="matAutocomplete" [displayWith]="displayArea">
+                            <mat-option *ngFor="let area of filteredAreas" [value]="area.name"
+                                (click)="onAreaStatusChange(area)">
+                                {{ area.name }}
+                            </mat-option>
+                        </mat-autocomplete>
                         <div style="position: relative; font-size: small;">
                             <div *ngIf="submitted && f['areaid'].errors?.['required']" class="text-danger">
                                 Area Name is required</div>
@@ -41,12 +48,15 @@
                     </div>
                     <div class="input_box">
                         <label>Street Name</label>
-                        <select formControlName="streetid" [(ngModel)]="streetid">
-                            <option value="0" selected>Select a Street</option>
-                            <option *ngFor="let key of filteredStreetKeys()" [value]="street_list[key]">
-                                {{ key }}
-                            </option>
-                        </select>
+                        <input type="text" placeholder="Search a Street" formControlName="streetid"
+                            [(ngModel)]="streetid" [matAutocomplete]="autoStreet" class="example-input"
+                            [value]="selectedStreet?.name" (input)="filterStreet($event)">
+                        <mat-autocomplete #autoStreet="matAutocomplete" [displayWith]="displayStreet">
+                            <mat-option *ngFor="let key of filteredStreet" [value]="key.value"
+                                (click)="onStreetStatusChange(key)">
+                                {{ key.name }}
+                            </mat-option>
+                        </mat-autocomplete>
                         <div style="position: relative;font-size: small;">
                             <div *ngIf="submitted && f['streetid'].errors?.['required']" class="text-danger">
                                 STREET Name is required</div>
@@ -59,11 +69,6 @@
                         <input type="text" formControlName="casformid" placeholder="Enter CAS Form Id" pattern="[0-9]*"
                             maxlength="6" (keypress)="onKeydown($event)" required
                             [ngClass]="{ 'is-invalid': submitted && f['casformid'].errors }" />
-
-                        <!-- <div style="position: relative; font-size: small;" *ngIf="submitted && f['casformid'].errors"
-                            class="invalid-feedback">
-                            <div *ngIf="f['casformid'].errors['required']">CAS Form Id is required</div>
-                        </div> -->
                     </div>
                     <div class="input_box">
                         <label for="email">Subscriber Name</label>
@@ -131,9 +136,6 @@
 
                     <div class="input_box">
                         <label for="pass">Landline No</label>
-                        <!-- <input pattern="^0\d{2,4}\d{6,8}$" maxlength="11" type="text" formControlName="landlineno"
-                            (keypress)="onKeydown_landline($event)" placeholder="Enter Landline Number"
-                            [ngClass]="{'is-invalid': submitted && f['landlineno'].errors }" required /> -->
                         <input pattern="^0\d{2,4}\d{6,8}$" maxlength="10" type="text" formControlName="landlineno"
                             (keypress)="onKeydown($event)" placeholder="Enter Landline Number"
                             [ngClass]="{'is-invalid': submitted && f['landlineno'].errors }" required />
@@ -143,9 +145,6 @@
                             <div *ngIf="f['landlineno'].errors['required']">
                                 Landline Number is required
                             </div>
-                            <!-- <div *ngIf="f['landlineno'].errors['pattern']">
-                                Please enter a valid Landline Number in the format 0XX-XXXXXX
-                            </div> -->
                         </div>
                     </div>
                     <div class="input_box">
@@ -172,13 +171,13 @@
                         </div>
                     </div>
                     <div class="input_box">
-                        <label>ADD Proof Name</label>
+                        <label>Address Proof Name</label>
                         <select id="addressprooftypeid" formControlName="addressprooftypeid"
                             (change)="onAddProofChange($event)">
-                            <option value="" selected>Select an ADD Proof</option>
-                            <!-- <option *ngFor="let key of filterd_proof_list" [value]="key"> {{ key}} </option> -->
+                            <option value="0" disabled>Select an Address Proof</option>
                             <option *ngFor="let key of filteredADDProofKeys()" [value]="key"> {{ key}} </option>
                         </select>
+
                     </div>
 
                     <div class="input_box" *ngIf="selectedAddProofType">
@@ -206,7 +205,7 @@
                     <div class="input_box">
                         <label>Id Proof Name</label>
                         <select id="idprooftypeid" formControlName="idprooftypeid" (change)="onIDProofChange($event)">
-                            <option value="" selected>Select a ID Proof</option>
+                            <option value="0" disabled>Select a ID Proof</option>
                             <option *ngFor="let key of filteredIdProofKeys()" [value]="key"> {{ key}} </option>
                         </select>
                     </div>

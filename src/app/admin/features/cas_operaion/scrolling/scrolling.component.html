@@ -1,5 +1,5 @@
 <div class="justify-content-center align-item-center main">
-    <div class="col-12 col-md-6 col-sm-6 p-3 mobile">
+    <div class="col-12 col-md-6 col-sm-6 p-3 ">
         <div class="card">
             <div class="title">
                 <p>Scrolling Message</p>
@@ -14,13 +14,24 @@
                                         <label for="">CAS</label>
                                     </div>
                                     <div class="col-12 col-md-8">
-                                        <select placeholder="Select the CAS" formControlName="castype"
+                                        <!-- <select placeholder="Select the CAS" formControlName="castype"
                                             (ngModelChange)="onSelectionFingerPrint($event)">
                                             <option value="">Select CAS</option>
                                             <option *ngFor="let casItem of cas" [value]="casItem.id">
                                                 {{ casItem.name }}
                                             </option>
-                                        </select>
+                                        </select> -->
+
+                                        <input type="text" placeholder="Search an CAS" formControlName="castype"
+                                            [value]="casname" (input)="onSearchChange($event)" [matAutocomplete]="auto"
+                                            class="example-input">
+
+                                        <mat-autocomplete #auto="matAutocomplete">
+                                            <mat-option *ngFor="let casItem of filteredcas()" [value]="casItem.name"
+                                                (click)="onSelectionFingerPrint(casItem)">
+                                                {{ casItem.name }}
+                                            </mat-option>
+                                        </mat-autocomplete>
                                         <div *ngIf="form.get('castype')?.invalid && form.get('castype')?.touched">
                                             <small class="text-danger">CAS is required.</small>
                                         </div>
@@ -31,9 +42,9 @@
                                         <label for="">Intend To</label>
                                     </div>
                                     <div class="col-12 col-md-8">
-                                        <select formControlName="intendto"
+                                        <select formControlName="intendto" [(ngModel)]="intendTo_1"
                                             (ngModelChange)="onChangeIntendTo1($event)">
-                                            <option value="" selected> Select Intend</option>
+                                            <option value="" disabled> Select Intend</option>
                                             <option value="" *ngFor="let in of intend" [value]="in.value">
                                                 {{in.lable}}
                                             </option>
@@ -43,34 +54,36 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="input-box mb-3">
+                                <div *ngIf="isSmartcardEnabled || isAreaCodeEnabled" class="input-box mb-3">
                                     <div class="col-12 col-md-4">
                                         <label for="">Intend ID</label>
                                     </div>
                                     <div class="col-12 col-md-8" *ngIf="isSmartcardEnabled">
-                                        <input placeholder="Enter Smartcard" type="text" formControlName="intendid" 
-                                            maxlength="20">
+                                        <input placeholder="Enter Smartcard" type="text" formControlName="intendid"
+                                            [(ngModel)]="intendid_1" (keypress)="onKeydown($event)"
+                                            [maxlength]="castype != 6 ? 20 : 14" (input)="validateExactLength()">
+                                        <div *ngIf="isInvalidLength">
+                                            <small class="text-danger">
+                                                Please enter exactly {{ castype != 6 ? 20 : 14 }} digits.
+                                            </small>
+                                        </div>
                                         <div *ngIf="form.get('intendid')?.invalid && form.get('intendid')?.touched">
                                             <small class="text-danger">Intend ID is required.</small>
                                         </div>
-                                        <div *ngIf="form.get('intendid')?.invalid && form.get('intendid')?.touched">
-                                            <small *ngIf="form.get('intendid')?.errors?.['required']"
-                                                class="text-danger">Intend ID is required.</small>
-                                            <small
-                                                *ngIf="form.get('intendid')?.errors?.['minlength'] || form.get('intendid')?.errors?.['maxlength']"
-                                                class="text-danger">
-                                                Intend ID must be exactly 20 digits long.
-                                            </small>
-                                         
-                                        </div>
+
                                     </div>
                                     <div class="col-12 col-md-8" *ngIf="isAreaCodeEnabled">
-                                        <select id="lcoName" formControlName="intendid">
-                                            <option value="" selected>Select a LCO Name</option>
-                                            <option *ngFor="let area of filteredIntendArea()" [value]="area.id">
+                                        <input type="text" placeholder="Search an LCO" [value]="LCO_name"
+                                            [ngModel]="intendid_1" formControlName="intendid"
+                                            (input)="onSearchLCOChange($event)" [matAutocomplete]="auto"
+                                            class="example-input">
+
+                                        <mat-autocomplete #auto="matAutocomplete">
+                                            <mat-option *ngFor="let area of filteredIntendArea()" [value]="area.name"
+                                                (click)="onLCOSelect(area)">
                                                 {{ area.name }}
-                                            </option>
-                                        </select>
+                                            </mat-option>
+                                        </mat-autocomplete>
                                         <div *ngIf="form.get('intendid')?.invalid && form.get('intendid')?.touched">
                                             <small class="text-danger">Intend ID is required.</small>
                                         </div>
@@ -89,44 +102,50 @@
                                             <mat-radio-button class="radio-button" [value]="false">No
                                             </mat-radio-button>
                                         </mat-radio-group>
-                                        
+
                                     </div>
                                 </div>
-                                <div class="input-box mb-3">
+                                <div *ngIf="isServiceDisabled" class="input-box mb-3">
                                     <div class="col-12 col-md-4">
                                         <label for="">Service</label>
                                     </div>
-                                    <div class="col-12 col-md-8" *ngIf="isService">
-                                        <select id="lcoName" formControlName="serviceid">
-                                            <option value="" selected>Select a Service</option>
-                                            <option *ngFor="let service of filteredIntendSerivice()"
-                                                [value]="service.id">
+                                    <div class="col-12 col-md-8">
+                                        <input type="text" placeholder="Search an Service" [value]="service_name"
+                                            formControlName="serviceid" (input)="onSearchServiceChange($event)"
+                                            [matAutocomplete]="auto" class="example-input">
+
+                                        <mat-autocomplete #auto="matAutocomplete">
+                                            <mat-option *ngFor="let service of filteredService()" [value]="service.id"
+                                                (click)="onServiceSelect(service)">
                                                 {{ service.name }}
-                                            </option>
-                                        </select>
+                                            </mat-option>
+                                        </mat-autocomplete>
                                         <div *ngIf="form.get('serviceid')?.invalid && form.get('serviceid')?.touched">
                                             <small class="text-danger">Service is required.</small>
                                         </div>
                                     </div>
                                 </div>
-                                <div class="input-box mb-3">
+                                <div *ngIf="isFontSize" class="input-box mb-3">
                                     <div class="col-12 col-md-4">
                                         <label for="">Font Size</label>
                                     </div>
-                                    <div class="col-12 col-md-8" *ngIf="!isFontSizeSelectDisabled">
-                                        <select placeholder="Select the fontsize" formControlName="scrollfontsize">
-                                            <option value="">Select a Font Size</option>
+                                    <div *ngIf="isFontSizeSelectDisabled" class="col-12 col-md-8">
+                                        <select placeholder="Select the fontsize" formControlName="scrollfontsize"
+                                            [(ngModel)]="scrollfontsize">
+                                            <option value="" disabled>Select a Font Size</option>
                                             <option *ngFor="let fs of fontsize" [value]="fs.value">{{fs.lable}}
                                             </option>
                                         </select>
-                                        <div *ngIf="form.get('scrollfontsize')?.invalid && form.get('scrollfontsize')?.touched">
+                                        <div
+                                            *ngIf="form.get('scrollfontsize')?.invalid && form.get('scrollfontsize')?.touched">
                                             <small class="text-danger">Font Size is required.</small>
                                         </div>
                                     </div>
-                                    <div class="col-12 col-md-8" *ngIf="!isFontSizeDisabled">
+                                    <div *ngIf="isFontSizeDisabled" class="col-12 col-md-8">
                                         <input type="text" placeholder="Enter Font size" pattern="[0-9]*" maxlength="2"
                                             (keypress)="onKeydown($event)" step="1" formControlName="scrollfontsize">
-                                        <div *ngIf="form.get('scrollfontsize')?.invalid && form.get('scrollfontsize')?.touched">
+                                        <div
+                                            *ngIf="form.get('scrollfontsize')?.invalid && form.get('scrollfontsize')?.touched">
                                             <small class="text-danger">Font Size is required.</small>
                                         </div>
                                     </div>
@@ -136,89 +155,166 @@
                                         <label for="">Position</label>
                                     </div>
                                     <div class="col-12 col-md-8">
-                                        <select placeholder="Select the position" formControlName="scrollposition">
-                                            <option value="">Select a Position</option>
-                                            <option *ngFor="let po of position" [value]="po.value">{{po.lable}}
+                                        <select placeholder="Select the position" formControlName="scrollposition"
+                                            [(ngModel)]="position_1">
+                                            <option value="" disabled>Select a Position</option>
+                                            <option *ngFor="let po of position" [value]="po.value"
+                                                [disabled]="castype == 1 && po.value == 1">{{po.lable}}
                                             </option>
                                         </select>
-                                        <div *ngIf="form.get('scrollposition')?.invalid && form.get('scrollposition')?.touched">
+                                        <div
+                                            *ngIf="form.get('scrollposition')?.invalid && form.get('scrollposition')?.touched">
                                             <small class="text-danger">Position is required.</small>
                                         </div>
                                     </div>
                                 </div>
-                                <div class="input-box mb-3">
+                                <div *ngIf="isMarque" class="input-box mb-3">
+                                    <div class="col-12 col-md-4">
+                                        <label for="">Marque</label>
+                                    </div>
+                                    <div class="col-12 col-md-8">
+                                        <select placeholder="Select the Marque" formControlName="marque"
+                                            [(ngModel)]="marque1">
+                                            <option value="" disabled>Select a Marque</option>
+                                            <option *ngFor="let po of marque" [value]="po.value">{{po.lable}}
+                                            </option>
+                                        </select>
+                                        <div *ngIf="form.get('marque')?.invalid && form.get('marque')?.touched">
+                                            <small class="text-danger">Marque is required.</small>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div *ngIf="isFontColor" class="input-box mb-3">
                                     <div class="col-12 col-md-4">
                                         <label for="">Font Color</label>
                                     </div>
                                     <div class="col-12 col-md-8">
-                                        <select placeholder="Select the fontcolor" formControlName="scrollcolor">
-                                            <option value="">Select a Scrool Color</option>
+                                        <select placeholder="Select the fontcolor" formControlName="scrollcolor"
+                                            [(ngModel)]="Scroll_color_1">
+                                            <option value="" disabled>Select a Scrool Color</option>
+                                            <option *ngFor="let fc of fontcolor1" [value]="fc.value">{{fc.lable}}
+                                            </option>
+                                        </select>
+                                        <div
+                                            *ngIf="form.get('scrollcolor')?.invalid && form.get('scrollcolor')?.touched">
+                                            <small class="text-danger">Font Color is required.</small>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div *ngIf="isScrollColor" class="input-box mb-3">
+                                    <div class="col-12 col-md-4">
+                                        <label for="">Scroll Color</label>
+                                    </div>
+                                    <div class="col-12 col-md-8">
+                                        <select placeholder="Select the fontcolor" formControlName="scrollcolor"
+                                            [(ngModel)]="Scroll_color_1">
+                                            <option value="" disabled>Select a Scrool Color</option>
                                             <option *ngFor="let fc of fontcolor" [value]="fc.value">{{fc.lable}}
                                             </option>
                                         </select>
-                                        <div *ngIf="form.get('scrollcolor')?.invalid && form.get('scrollcolor')?.touched">
+                                        <div
+                                            *ngIf="form.get('scrollcolor')?.invalid && form.get('scrollcolor')?.touched">
                                             <small class="text-danger">Font Color is required.</small>
                                         </div>
                                     </div>
                                 </div>
 
-                                <div class="input-box mb-3">
+                                <div *ngIf="isBackgroundColor" class="input-box mb-3">
                                     <div class="col-12 col-md-4">
                                         <label for="">Background Color</label>
                                     </div>
                                     <div class="col-12 col-md-8">
                                         <select placeholder="Select the background color"
-                                            formControlName="scrollbgcolor">
-                                            <option value="">Select a Background Color</option>
-                                            <option *ngFor="let bc of backcolor" [value]="bc.value">{{bc.lable}}
+                                            formControlName="scrollbgcolor" [(ngModel)]="Scroll_bgColor_1">
+                                            <option value="" disabled>Select a Background Color</option>
+                                            <option *ngFor="let bc of bgcolor" [value]="bc.value">{{bc.lable}}
                                             </option>
                                         </select>
-                                        <div *ngIf="form.get('scrollbgcolor')?.invalid && form.get('scrollbgcolor')?.touched">
+                                        <div
+                                            *ngIf="form.get('scrollbgcolor')?.invalid && form.get('scrollbgcolor')?.touched">
                                             <small class="text-danger">Background Color is required.</small>
                                         </div>
                                     </div>
                                 </div>
-                                <div class="input-box mb-3">
+                                <div *ngIf="isBackgroundColor1" class="input-box mb-3">
+                                    <div class="col-12 col-md-4">
+                                        <label for="">Background Color</label>
+                                    </div>
+                                    <div class="col-12 col-md-8">
+                                        <select placeholder="Select the background color" [(ngModel)]="Scroll_bgColor_1"
+                                            formControlName="scrollbgcolor">
+                                            <option value="" disabled>Select a Background Color</option>
+                                            <option *ngFor="let bc of bgcolor1" [value]="bc.value">{{bc.lable}}
+                                            </option>
+                                        </select>
+                                        <div
+                                            *ngIf="form.get('scrollbgcolor')?.invalid && form.get('scrollbgcolor')?.touched">
+                                            <small class="text-danger">Background Color is required.</small>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div *ngIf="isRepeatDisabled" class="input-box mb-3">
                                     <div class="col-12 col-md-4">
                                         <label for="">Repeat For</label>
                                     </div>
                                     <div class="col-12 col-md-8">
-                                        <input type="text" placeholder="" formControlName="repeatfor"  (keypress)="onKeydown($event)">
+                                        <input type="text" placeholder="" formControlName="repeatfor"
+                                            (keypress)="onKeydown($event)">
                                         <div *ngIf="form.get('repeatfor')?.invalid && form.get('repeatfor')?.touched">
                                             <small class="text-danger">RepeatFor is required.</small>
                                         </div>
                                     </div>
                                 </div>
-                                <div class="input-box mb-3">
+                                <div *ngIf="isTransparancyDisabled" class="input-box mb-3">
                                     <div class="col-12 col-md-4">
                                         <label for="">Transparancy</label>
                                     </div>
                                     <div class="col-12 col-md-8">
-                                        <input type="text" placeholder="Range : 20-80" formControlName="transparency"  (keypress)="onKeydown($event)">
-                                        <div *ngIf="form.get('transparency')?.invalid && form.get('transparency')?.touched">
+                                        <input type="text" placeholder="Range : 20-80" formControlName="transparency"
+                                            (keypress)="onKeydown($event)">
+                                        <div
+                                            *ngIf="form.get('transparency')?.invalid && form.get('transparency')?.touched">
                                             <small class="text-danger">Transparancy is required.</small>
                                         </div>
                                     </div>
                                 </div>
-                                <div class="input-box mb-3">
+                                <div *ngIf="isDurationDisabled" class="input-box mb-3">
                                     <div class="col-12 col-md-4">
                                         <label for="">Duration</label>
                                     </div>
                                     <div class="col-12 col-md-8">
-                                        <input type="text" placeholder="Enter in Seconds" formControlName="duration"  (keypress)="onKeydown($event)">
+                                        <input type="text" placeholder="Enter in Seconds" formControlName="duration"
+                                            (keypress)="onKeydown($event)">
                                         <div *ngIf="form.get('duration')?.invalid && form.get('duration')?.touched">
                                             <small class="text-danger">Duration is required.</small>
                                         </div>
                                     </div>
                                 </div>
-                                <div class="input-box mb-3">
+                                <div *ngIf="isTimeGapDisabled" class="input-box mb-3">
                                     <div class="col-12 col-md-4">
                                         <label for="">Time Gap </label>
                                     </div>
                                     <div class="col-12 col-md-8">
                                         <input type="text" placeholder="" formControlName="timegap">
-                                        <div *ngIf="form.get('timegap')?.invalid && form.get('timegap')?.touched"  (keypress)="onKeydown($event)">
+                                        <div *ngIf="form.get('timegap')?.invalid && form.get('timegap')?.touched"
+                                            (keypress)="onKeydown($event)">
                                             <small class="text-danger">TimeGap is required.</small>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div *ngIf="isScrollingTypeDisabled" class="input-box mb-3">
+                                    <div class="col-12 col-md-4">
+                                        <label for="">Scrolling Type</label>
+                                    </div>
+                                    <div class="col-12 col-md-8">
+                                        <select placeholder="Select the Scroll type" formControlName="scrolltype"
+                                            [(ngModel)]="scrollType1">
+                                            <option value="" disabled>Select a Scroll type</option>
+                                            <option *ngFor="let st of scrollType" [value]="st.value">{{st.lable}}
+                                            </option>
+                                        </select>
+                                        <div *ngIf="form.get('scrolltype')?.invalid && form.get('scrolltype')?.touched">
+                                            <small class="text-danger">Scroll Type is required.</small>
                                         </div>
                                     </div>
                                 </div>

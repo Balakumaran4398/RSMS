@@ -38,9 +38,9 @@ export class LcoRechargeComponent {
     });
   }
   submit() {
+    console.log('submit ');
     if (this.form.valid) {
       const { userid, password } = this.form.value;
-
       this.userservice.LCOLogin(this.role, this.username, userid, password, 2).subscribe(
         (res: any) => {
           const role = this.storageservice.getUserRole();
@@ -50,14 +50,15 @@ export class LcoRechargeComponent {
             text: res?.message || 'You will be redirected shortly.',
             icon: 'success',
             timer: 1000,
-            showConfirmButton: false
+            showConfirmButton: false,
           }).then(() => {
-            if (role === 'ROLE_USER' || role === 'ROLE_RECEPTION') {
+            if (role === 'ROLE_ADMIN' || role === 'ROLE_RECEPTION') {
               this.router.navigate(['admin/lcorecharge']).then(() => {
                 console.log('Navigated to lcorecharge page');
               });
             }
           });
+
         },
         (error: any) => {
           Swal.fire({
@@ -94,7 +95,7 @@ export class LcoRechargeComponent {
       cancelButtonText: 'Cancel'
     }).then((result) => {
       if (result.isConfirmed) {
-        if (role === 'ROLE_USER' || role === 'ROLE_RECEPTION') {
+        if (role === 'ROLE_ADMIN' || role === 'ROLE_RECEPTION') {
           this.router.navigate(['admin/home']).then(() => {
           });
         }

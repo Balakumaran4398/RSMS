@@ -6,7 +6,7 @@
 <section>
     <div class="col-12 col-12 mb-3 d-flex justify-content-center align-items-center ">
         <div style="padding: 1rem;background-color: #058372;">
-            <h6 style="text-align: center;font-weight: bold;"> <span style="color: #220566;font-size: 17px;
+            <h6 style="text-align: center;font-weight: bold;"> <span style="color: #09080a;font-size: 17px;
     font-weight: bold;">SUBMSO :</span>
                 {{distributor}}-{{distributorid}}</h6>
         </div>
@@ -20,15 +20,15 @@
                         (input)="filterAvailableList()">
                 </div>
                 <div class="table1 mb-3">
-                    <p style="color: white;">AVAILABLE - LCO</p>
+                    <p style="color: white;">AVAILABLE LCO  - {{availableList.length}}</p>
                     <div class="row inp">
                         <div class="col-12 example-container">
                             <div cdkDropList #todoList="cdkDropList" [cdkDropListData]="filteredAvailableList"
                                 [cdkDropListConnectedTo]="[doneList]" class="example-list"
                                 (cdkDropListDropped)="drop($event)">
                                 <div *ngFor="let item of filteredAvailableList" class="example-box"
-                                    (click)="toggleSelection(item.id)" [class.selected]="isSelected(item.id)" cdkDrag
-                                    [cdkDragData]="item">
+                                    (click)="toggleSelection(item.id)"  cdkDrag
+                                    [cdkDragData]="item" [class.selected]="isSelected(item)">
                                     {{ item.name }}
                                 </div>
                             </div>
@@ -50,15 +50,15 @@
                     <input type="text" placeholder="Search" [(ngModel)]="searchTermAdded" (input)="filterAddedList()">
                 </div>
                 <div class="table2 mb-3">
-                    <p style="color: white;">ADDED-LCO</p>
+                    <p style="color: white;">ADDED LCO - {{addedList.length}}</p>
                     <div class="row inp">
                         <div class="col-12 example-container">
                             <div cdkDropList #doneList="cdkDropList" [cdkDropListData]="filteredAddedList"
                                 [cdkDropListConnectedTo]="[todoList]" class="example-list"
                                 (cdkDropListDropped)="drop($event)">
                                 <div *ngFor="let item of filteredAddedList" class="example-box"
-                                    (click)="toggleSelection(item.id)" [class.selected]="isSelected(item.id)" cdkDrag
-                                    [cdkDragData]="item">
+                                    (click)="toggleSelection(item.id)"  cdkDrag
+                                    [cdkDragData]="item" [class.selected]="isSelected(item)">
                                     {{ item.name }}
                                 </div>
                             </div>

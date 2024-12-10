@@ -46,10 +46,10 @@ export class AddonPackageComponent {
     this.gridApi = params.api;
   }
   columnDefs: ColDef[] = [
-    { headerName: "S.No", lockPosition: true, valueGetter: 'node.rowIndex+1', cellClass: 'locked-col', width: 100 },
+    { headerName: "S.No", lockPosition: true, valueGetter: 'node.rowIndex+1', cellClass: 'locked-col', width: 120 },
     { headerName: "PACKAGE NAME", field: 'addon_package_name', },
     {
-      headerName: 'Actions', width: 320,
+      headerName: 'Actions', width: 400,
       cellRenderer: (params: any) => {
         const editButton = document.createElement('button');
         const manageButton = document.createElement('button');
@@ -100,12 +100,12 @@ export class AddonPackageComponent {
 
     },
     // { headerName: "BROADCASTER NAME", field: 'city', },
-    { headerName: "ORDER ID", field: 'order_id',width:150 },
-    { headerName: "RATE", field: 'addon_package_rate',width:150 },
+    { headerName: "ORDER ID", field: 'order_id',width:300 },
+    { headerName: "RATE", field: 'addon_package_rate',width:200 },
 
 
     {
-      headerName: "EXPORT", field: 'report',width:130,
+      headerName: "EXPORT", field: 'report',width:150,
       cellRenderer: (params: any) => {
         const editButton = document.createElement('button');
         editButton.innerHTML = '<i class="far fa-file-pdf" style="font-size:20px;color:red"></i>';

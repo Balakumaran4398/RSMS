@@ -16,6 +16,8 @@ export class InventoryChartComponent implements OnInit {
   username: string;
   chart: any; 
   chartOptions: any;
+  dataPoints: { name: string; y: number; color: string }[] = [];
+
   constructor(private userservice: BaseService, private storageservice: StorageService) {
     this.role = this.storageservice.getUserRole();
     this.username = this.storageservice.getUsername();
@@ -28,9 +30,38 @@ export class InventoryChartComponent implements OnInit {
     });
   }
 
+  // updateChartData(apiData: any): void {
+  //   const dataPoints = [
+  //     { name: "New box in LCO End", y: apiData["New box in LCO End"], color: " #33a5d6" },
+  //     { name: "New box in MSO Hand", y: apiData["New box in MSO Hand"], color: "#77edd0" },
+  //     { name: "New in Customer End", y: apiData["New in Customer End"], color: "#20c931" }
+  //   ];
+
+  //   this.chartOptions = {
+  //     animationEnabled: true,
+  //     theme: 'light2',
+  //     title: {
+  //       text: "INVENTORY DETAILS",
+  //       fontSize: 20,
+  //       fontWeight: 600
+  //     },
+  //     data: [{
+  //       type: "pie",
+  //       dataPoints: dataPoints,
+  //       showInLegend: true,
+  //     }]
+  //   };
+  //   this.renderChart();  
+  // }
+
+  // renderChart(): void {
+  //   this.chart = new CanvasJS.Chart("inventarychartContainer", this.chartOptions);
+  //   this.chart.render();
+  // }
+
   updateChartData(apiData: any): void {
-    const dataPoints = [
-      { name: "New box in LCO End", y: apiData["New box in LCO End"], color: " #33a5d6" },
+    this.dataPoints = [
+      { name: "New box in LCO End", y: apiData["New box in LCO End"], color: "#33a5d6" },
       { name: "New box in MSO Hand", y: apiData["New box in MSO Hand"], color: "#77edd0" },
       { name: "New in Customer End", y: apiData["New in Customer End"], color: "#20c931" }
     ];
@@ -38,6 +69,15 @@ export class InventoryChartComponent implements OnInit {
     this.chartOptions = {
       animationEnabled: true,
       theme: 'light2',
+      legend: {
+        verticalAlign: 'center',
+        horizontalAlign: 'right',
+        fontFamily: 'Arial',
+        markerType: 'square',
+        fontSize: 14,
+        itemWrap: true,
+        itemTextFormatter: (e: any) => `${e.dataPoint.name}: ${e.dataPoint.y}`,
+      },
       title: {
         text: "INVENTORY DETAILS",
         fontSize: 20,
@@ -45,11 +85,11 @@ export class InventoryChartComponent implements OnInit {
       },
       data: [{
         type: "pie",
-        dataPoints: dataPoints,
+        dataPoints: this.dataPoints,
         showInLegend: true,
       }]
     };
-    this.renderChart();  
+    this.renderChart();
   }
 
   renderChart(): void {

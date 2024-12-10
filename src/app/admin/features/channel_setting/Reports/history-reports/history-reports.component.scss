@@ -1,0 +1,71 @@
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@200;300&family=Source+Code+Pro:wght@200;300;400&display=swap");
+
+* {
+  margin: 0px;
+  padding: 0px;
+  box-sizing: border-box;
+}
+
+body {
+  width: 100%;
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: linear-gradient(319deg, #00a1ab, #020112);
+  font-family: "Source Code Pro", monospace;
+}
+
+.card {
+  width: 400px;
+  height: 250px;
+  border-radius: 20px;
+  background: linear-gradient(120deg, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)),
+    url("https://raw.githubusercontent.com/muhammederdem/credit-card-form/master/src/assets/images/12.jpeg");
+  background-size: cover;
+  padding: 30px;
+  overflow: hidden;
+}
+
+.card .card-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.card-head h3 {
+  color: #fff;
+  font-size: 26px;
+}
+
+.card .card-head img {
+  width: 60px;
+}
+.card-no {
+  text-align: center;
+  margin: 30px auto;
+  color: #fff;
+  letter-spacing: 2px;
+  font-size: 26px;
+  font-weight: bold;
+  text-shadow: 2px -1px 0px #000;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-family: "Inter", sans-serif;
+}
+
+.card-dtl {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  color: #fff;
+}
+
+.card-dtl span {
+  font-size: 14px;
+}
+
+.card-dtl p {
+  font-size: 18px;
+}

@@ -1,6 +1,6 @@
 import { CdkDrag, CdkDragDrop, CdkDropList, moveItemInArray, transferArrayItem } from '@angular/cdk/drag-drop';
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+import { ChangeDetectorRef, Component } from '@angular/core';
 import { FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectModule } from '@angular/material/select';
@@ -31,13 +31,22 @@ export class PackagewiseOperatorComponent {
   allocated: any[] = [];
   todo: any[] = []; // This will contain items to be dragged
   done: any[] = [];
+  containerData: any;
   productId: string = '';
   referenceId: string = '';
   operatorid: any;
-  draggedOperatorId: any
-  constructor(private userservice: BaseService, private storageservice: StorageService) {
+  draggedOperatorId: any;
+  containeroperatorid: any;
+  searchTermAdded: any;
+  searchTermAvailable: any;
+
+  filteredAvailableList: any = [];
+  filteredAddedList: any = [];
+  constructor(private userservice: BaseService, private storageservice: StorageService, private cdr: ChangeDetectorRef,) {
     this.role = storageservice.getUserRole();
     this.username = storageservice.getUsername();
+
+
   }
   onProductType(event: Event): void {
     const selectElement = event.target as HTMLSelectElement;
@@ -56,7 +65,6 @@ export class PackagewiseOperatorComponent {
           id: data.referenceid[key]
         }));
         this.filteredProductTypes = this.producttypelistKeys;
-        console.log(this.producttypelistKeys);
       }
     });
   }
@@ -66,31 +74,60 @@ export class PackagewiseOperatorComponent {
       product.name.toLowerCase().includes(term)
     );
   }
+
+
+  filterAvailableList(): void {
+    this.cdr.detectChanges();
+    const searchTerm = this.searchTermAvailable.toLowerCase();
+    this.filteredAvailableList = this.todo.filter((item: any) =>
+      item.operatorname.toLowerCase().includes(searchTerm)
+    );
+    console.log(this.filteredAvailableList);
+
+  }
+  filterAddedList(): void {
+    const searchTerm = this.searchTermAdded.toLowerCase();
+    this.filteredAddedList = this.allocated.filter((item: any) =>
+      item.operatorname.toLowerCase().includes(searchTerm)
+    );
+    this.cdr.detectChanges();
+    console.log(this.filteredAddedList);
+
+  }
+
+
   onProductlist(event: Event): void {
+    this.fetchProductList(this.selectedProductTypeId);
     const selectedProductId = (event.target as HTMLSelectElement).value;
     this.productId = selectedProductId;
-    console.log('Selected Product ID:', selectedProductId);
-    console.log(this.productId);
-    this.userservice.ProductListForOperator(this.role, this.username, '1', selectedProductId).subscribe((data: any) => {
+    this.userservice.ProductListForOperator(this.role, this.username, this.selectedProductTypeId, selectedProductId).subscribe((data: any) => {
       console.log(data);
       this.todo = data.operatorlist.notallocated || [];
       this.allocated = data.operatorlist.allocated || [];
-      console.log('Not Allocated:', this.todo);
-      console.log('Allocated:', this.allocated);
+      this.filteredAvailableList = [...this.todo];
+      this.filteredAddedList = [...this.allocated];
+      console.log(this.todo);
+      console.log(this.allocated);
+      console.log(this.filteredAvailableList);
+      console.log(this.filteredAddedList);
     })
+
   }
 
 
   drop(event: CdkDragDrop<string[]>) {
-    console.log(event);
-    console.log(event.container.data);
-    console.log(event.container.data.map((item: any) => item.operatorid));
     this.draggedOperatorId = event.container.data.map((item: any) => item.operatorid);
     const draggedItem = event.item;
+    console.log(this.draggedOperatorId);
+
+    console.log(draggedItem);
     if (event.previousContainer === event.container) {
       moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
     } else {
       console.log('Item moved to a different container:', draggedItem);
+      console.log(draggedItem.dropContainer.data);
+      this.containeroperatorid = draggedItem.dropContainer.data.map((item: any) => item.operatorid);
+      console.log(this.containeroperatorid);
       transferArrayItem(
         event.previousContainer.data,
         event.container.data,
@@ -98,10 +135,7 @@ export class PackagewiseOperatorComponent {
         event.currentIndex,
       );
     }
-
   }
-
-
 
 
   toggleSelection(item: string) {
@@ -115,11 +149,53 @@ export class PackagewiseOperatorComponent {
   isSelected(item: string): boolean {
     return this.selectedItems.has(item);
   }
-  moveSelected_bouquet_Items(direction: 'left' | 'right') {
-    const itemsToMove: any[] = [];
 
+  moveSelectedRight_BouquetItems(direction: 'left' | 'right') {
+    const itemsToMove: any[] = [];
     if (direction === 'right') {
-      // Move selected items from 'todo' (available) to 'allocated' (added)
+      this.selectedItems.forEach(item => {
+        const index = this.todo.indexOf(item);
+        if (index > -1) {
+          this.todo.splice(index, 1);
+          this.allocated.push(item);
+          itemsToMove.push(item);
+        }
+      });
+      this.containerData = this.allocated.map((item: any) => ({
+        operatorname: item.operatorname,
+        operatorid: item.operatorid
+      }));
+      console.log(this.containerData);
+
+      this.containeroperatorid = this.containerData.map((item: any) => item.operatorid);
+      console.log(this.containeroperatorid);
+
+    } else if (direction === 'left') {
+      this.selectedItems.forEach(item => {
+        const index = this.allocated.indexOf(item);
+        if (index > -1) {
+          this.allocated.splice(index, 1);
+          this.todo.push(item);
+          itemsToMove.push(item);
+        }
+        this.containerData = this.todo.map((item: any) => ({
+          operatorname: item.operatorname,
+          operatorid: item.operatorid
+        }));
+        console.log(this.containerData);
+
+        this.containeroperatorid = this.containerData.map((item: any) => item.operatorid);
+        console.log(this.containeroperatorid);
+
+      });
+    }
+    this.filteredAvailableList = [...this.todo];
+    this.filteredAddedList = [...this.allocated];
+    this.selectedItems.clear();
+  }
+  moveSelectedLeft_BouquetItems(direction: 'left' | 'right') {
+    const itemsToMove: any[] = [];
+    if (direction === 'right') {
       this.selectedItems.forEach(item => {
         const index = this.todo.indexOf(item);
         if (index > -1) {
@@ -135,27 +211,76 @@ export class PackagewiseOperatorComponent {
           this.allocated.splice(index, 1);
           this.todo.push(item);
           itemsToMove.push(item);
+          console.log(this.allocated);
+          console.log(this.todo);
+          console.log(itemsToMove);
+
         }
+        this.containerData = this.allocated.map((item: any) => ({
+          operatorname: item.operatorname,
+          operatorid: item.operatorid
+        }));
+        console.log(this.containerData);
+
+        this.containeroperatorid = this.containerData.map((item: any) => item.operatorid);
+        console.log(this.containeroperatorid);
       });
     }
-    this.todo = Array.from(this.selectedItems).map(item => {
-      const match = item.match(/\((\d+)\)/);
-      return match ? match[1] : null;
-    });
-
-    console.log(this.allocated);
-    // Clear selected items after movement
+    this.containerData = this.todo.map((item: any) => ({
+      operatorname: item.operatorname,
+      operatorid: item.operatorid
+    }));
+    // this.containeroperatorid = this.containerData.map((item: any) => item.operatorid);
+    console.log(this.containeroperatorid);
+    this.filteredAvailableList = [...this.todo];
+    this.filteredAddedList = [...this.allocated];
     this.selectedItems.clear();
   }
 
-  moveAllSelected_bouquet_Items(direction: 'left' | 'right') {
-    throw new Error('Method not implemented.');
+  moveAllSelected(direction: 'left' | 'right') {
+    if (direction === 'right') {
+      this.allocated.push(...this.todo);
+      this.todo = [];
+      this.containerData = this.allocated.map((item: any) => ({
+        operatorname: item.operatorname,
+        operatorid: item.operatorid
+      }));
+      this.containeroperatorid = this.containerData.map((item: any) => item.operatorid);
+    } else if (direction === 'left') {
+      this.todo.push(...this.allocated);
+      this.allocated = [];
+      this.containerData = this.allocated.map((item: any) => ({
+        operatorname: item.operatorname,
+        operatorid: item.operatorid
+      }));
+      this.containeroperatorid = this.containerData.map((item: any) => item.operatorid);
+      console.log(this.containeroperatorid);
+
+    }
+
+    this.filteredAvailableList = [...this.todo];
+    this.filteredAddedList = [...this.allocated];
+    console.log('Todo List:', this.todo);
+    console.log('Allocated List:', this.allocated);
   }
   save() {
+
     const selectedProductId = this.productId;
     const referenceId = this.referenceId;
     console.log('Selected Product ID:', selectedProductId);
     console.log('Reference ID:', referenceId);
+    console.log('containeroperatorid:', this.containeroperatorid);
+    console.log('draggedOperatorId:', this.draggedOperatorId);
+    console.log('selectedProductTypeId:', this.selectedProductTypeId);
+  
+    // Determine the value to pass based on the priority
+    const operatorIdToPass = 
+      this.draggedOperatorId || 
+      this.containeroperatorid 
+    
+    console.log('Operator ID to Pass:', operatorIdToPass);
+    console.log('Operator ID to Pass:',  operatorIdToPass?.length);
+
     Swal.fire({
       title: 'Saving...',
       text: 'Please wait while we allocate the operator to the product.',
@@ -164,8 +289,7 @@ export class PackagewiseOperatorComponent {
         Swal.showLoading(null);
       }
     });
-    this.userservice.ProductListForOperator_allocate_to_notallocate(this.role, this.username, this.selectedProductTypeId, selectedProductId, this.draggedOperatorId || this.selectedItems
-    ).subscribe(
+    this.userservice.ProductListForOperator_allocate_to_notallocate(this.role, this.username, this.selectedProductTypeId, selectedProductId,  operatorIdToPass || operatorIdToPass?.length    ).subscribe(
       (res: any) => {
         Swal.fire({
           icon: 'success',
@@ -174,7 +298,7 @@ export class PackagewiseOperatorComponent {
           confirmButtonText: 'OK',
           timer: 3000
         }).then(() => {
-          window.location.reload();
+          // window.location.reload();
         });
       },
       (error: any) => {

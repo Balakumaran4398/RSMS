@@ -1,6 +1,6 @@
 <section>
     <h3>PACKAGEWISE OPERATOR LIST</h3>
-    <div class="d-flex flex-column flex-lg-row justify-content-center align-items-center">
+    <div class="d-flex flex-column flex-lg-row justify-content-center align-items-center mb-3">
         <div class="col-lg-5 col-12 mb-3 mb-lg-0">
             <div class="card">
                 <div class="input_box mb-3">
@@ -8,18 +8,30 @@
                         <option value="0" selected>Select an Product Type</option>
                         <option *ngFor="let item of producttypeList" [value]="item.value">{{ item.key }}</option>
                     </select>
+
+                    <!-- <input type="text" placeholder="Search an Operator" formControlName="producttypelist"
+                        [(ngModel)]="operatorid" [matAutocomplete]="auto" class="example-input"
+                        (input)="onSearchChange($event)">
+
+                    <mat-autocomplete #auto="matAutocomplete">
+                        <mat-option *ngFor="let key of filteredLcoKeys()" [value]="key"
+                            (click)="onProductType(key)">
+                            {{ key }}
+                        </mat-option>
+                    </mat-autocomplete> -->
                 </div>
                 <div class="input_box">
-                    <input type="text" placeholder="Search">
+                    <input type="text" placeholder="Search Available" [(ngModel)]="searchTermAvailable"
+                        (input)="filterAvailableList()">
                 </div>
                 <div class="table1 mb-3">
-                    <p style="color: white;">ALLOCATED</p>
+                    <p style="color: white;">ALLOCATED - {{todo.length}}</p>
                     <div class="row inp">
                         <div class="col-12 example-container">
-                            <div cdkDropList #todoList="cdkDropList" [cdkDropListData]="todo"
+                            <div cdkDropList #todoList="cdkDropList" [cdkDropListData]="filteredAvailableList"
                                 [cdkDropListConnectedTo]="[doneList]" class="example-list"
                                 (cdkDropListDropped)="drop($event)">
-                                <div *ngFor="let item of todo" class="example-box" cdkDrag
+                                <div *ngFor="let item of filteredAvailableList" class="example-box" cdkDrag
                                     (click)="toggleSelection(item)" [class.selected]="isSelected(item)">{{
                                     item.operatorname }}
                                 </div>
@@ -30,14 +42,12 @@
             </div>
         </div>
         <div class="display my-3 my-lg-0 mx-lg-3">
-            <button class="btn" (click)="moveSelected_bouquet_Items('right')"><i
+            <button class="btn" (click)="moveSelectedRight_BouquetItems('right')"><i
                     class="bx bx-right-arrow-alt"></i></button>
-            <button class="btn" (click)="moveAllSelected_bouquet_Items('right')"><i
-                    class="bx bx-arrow-to-right"></i></button>
-            <button class="btn" (click)="moveSelected_bouquet_Items('left')"><i
+            <button class="btn" (click)="moveAllSelected('right')"><i class="bx bx-arrow-to-right"></i></button>
+            <button class="btn" (click)="moveSelectedLeft_BouquetItems('left')"><i
                     class="bx bx-left-arrow-alt"></i></button>
-            <button class="btn" (click)="moveAllSelected_bouquet_Items('left')"><i
-                    class="bx bx-arrow-to-left"></i></button>
+            <button class="btn" (click)="moveAllSelected('left')"><i class="bx bx-arrow-to-left"></i></button>
         </div>
         <div class="col-lg-5 col-12">
             <div class="card">
@@ -49,17 +59,19 @@
                     </select>
                 </div>
                 <div class="input_box">
-                    <input type="text" placeholder="Search">
+                    <input type="text" placeholder="Search Added" [(ngModel)]="searchTermAdded"
+                        (input)="filterAddedList()">
                 </div>
                 <div class="table2 mb-3">
-                    <p style="color: white;">NOT ALLOCATED</p>
+                    <p style="color: white;">NOT ALLOCATED - {{allocated.length}}</p>
                     <div class="row inp">
                         <div class="col-12 example-container">
-                            <div cdkDropList #doneList="cdkDropList" [cdkDropListData]="allocated"
+                            <div cdkDropList #doneList="cdkDropList" [cdkDropListData]="filteredAddedList"
                                 [cdkDropListConnectedTo]="[todoList]" class="example-list"
                                 (cdkDropListDropped)="drop($event)">
-                                <div *ngFor="let item of allocated" class="example-box" cdkDrag>{{ item.operatorname
-                                    }}
+                                <div *ngFor="let item of filteredAddedList" class="example-box" cdkDrag
+                                    (click)="toggleSelection(item)" [class.selected]="isSelected(item)">{{
+                                    item.operatorname }}
                                 </div>
                             </div>
                         </div>
@@ -67,9 +79,8 @@
                 </div>
             </div>
         </div>
-
     </div>
-    <div class="col-12 d-flex justify-content-center align-item-center">
+    <div class="col-12 d-flex justify-content-center align-items-center">
         <button type="button" class="btn" style="background:#058372;color: white;height: 2pc; width: 5pc"
             (click)="save()">Save</button>
     </div>

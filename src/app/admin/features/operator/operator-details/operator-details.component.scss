@@ -7,6 +7,13 @@
 
 }
 
+.grid-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(360px, 1fr));
+    /* Adjust column size */
+    gap: 10px;
+}
+
 .display {
     display: flex;
 }
@@ -15,56 +22,19 @@
 //     max-width: 530px;
 //     overflow: auto;
 // }
+.mobile {
+    display: grid;
+}
 
 .card {
-    border-radius: 10px;
-    // background-color: var(--sidebar-color);
-    border-radius: 10px;
-    color: var(--primary-color);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    height: 45px;
+    height: 100%;
+    width: 100%;
+    max-width: 400px;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
 }
 
-.card .clickable-item {
-    display: flex;
-    align-items: center;
-    color: var(--primary-color);
-    cursor: pointer;
-}
 
-.card .clickable-item:hover {
-    color: white;
-}
-
-.card .clickable-item i,
-.card .clickable-item p {
-    margin: 0;
-}
-
-.card .clickable-item i {
-    margin-right: 8px;
-}
-
-.card span {
-    color: var(--primary-color);
-}
-
-.card span:hover,
-.card i:hover,
-.card p:hover {
-    color: white;
-}
-
-.card:hover {
-    background-color: var(--primary-color);
-    color: white
-}
-
-.card p {
-    margin: 0;
-}
 
 .head {
     display: flex;
@@ -97,6 +67,8 @@ mat-card-header {
     letter-spacing: 1px;
     text-transform: uppercase;
     color: var(--primary-color);
+    position: relative;
+    height: 15%;
 }
 
 p .text {
@@ -117,16 +89,21 @@ p {
 
 .text {
     display: flex;
-    justify-content: center;
+    // justify-content: center;
+    justify-content: flex-start;
     align-items: center;
     margin: 5px 0;
+}
+
+.text .last {
+    text-transform: lowercase;
 }
 
 .label {
     margin-right: 0px;
     text-align: center;
     text-transform: uppercase;
-    font-size: 14px;
+    font-size: 13px;
     color: rgb(90 88 88);
 }
 
@@ -136,8 +113,21 @@ p {
     color: rgb(90 88 88);
 }
 
+.separator1 {
+    margin: 0 1px;
+    text-align: center;
+    color: rgb(90 88 88);
+}
+
 .last {
     margin-left: 5px;
+    text-align: center;
+    font-size: 14px;
+    color: rgb(90 88 88);
+}
+
+.last1 {
+    margin-left: 1px;
     text-align: center;
     font-size: 14px;
     color: rgb(90 88 88);
@@ -156,7 +146,8 @@ span {
 
 .permission {
     width: auto;
-    background-color: #0e840a;
+    // background-color: #0e840a;
+    background-color: #4a4a60;
     display: -webkit-inline-box;
 }
 
@@ -179,6 +170,7 @@ span {
     background-color: white;
     margin: auto;
 }
+
 // .child-card {
 //     display: flex;
 //     gap: 20px;
@@ -189,7 +181,8 @@ span {
 //     width: 100%;
 // }
 .child-card {
-    gap: 8px;
+    // gap: 8px;
+    gap: 25px;
     background: #8f9b8f;
     border-radius: 10px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1), 0 6px 20px rgba(0, 0, 0, 0.1);
@@ -241,6 +234,7 @@ span {
     padding: 10px;
     border-radius: 50%;
 }
+
 .circle-text {
     font-size: 12px;
 }
@@ -257,6 +251,7 @@ span {
 
 .file-container {
     display: flex;
+    gap: 25px
 }
 
 .files img {
@@ -273,6 +268,7 @@ span {
     font-size: 13px;
     color: white;
 }
+
 .sub-text {
     color: var(--primary-color);
 }
@@ -296,6 +292,7 @@ span {
     .head {
         display: block;
     }
+
     .k {
         max-width: 400px;
         overflow: auto;
@@ -308,4 +305,23 @@ span {
     .child-card {
         gap: 10px
     }
+
+}
+
+.active-text .last1 {
+    color: #015013;
+    /* Active text color */
+    font-weight: 600;
+}
+
+.deactive-text .last1 {
+    color: red;
+    /* Deactive text color */
+    font-weight: 600;
+}
+
+
+// =========================================mat select=================================
+::ng-deep .mat-mdc-text-field-wrapper {
+    height: 50px;
 }

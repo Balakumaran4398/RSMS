@@ -15,8 +15,8 @@
 }
 
 .mobile {
-    max-height: 500px;
-    overflow: scroll;
+    max-height: 700px;
+    overflow: auto;
 }
 
 label {
@@ -66,12 +66,12 @@ label {
     // background-color: antiquewhite;
 }
 
-::ng-deep {
-    .ag-center-cols-viewport {
-        max-height: 500px;
-        overflow: scroll;
-    }
-}
+// ::ng-deep {
+//     .ag-center-cols-viewport {
+//         max-height: 500px;
+//         overflow: scroll;
+//     }
+// }
 
 @media screen and (max-width:560px) {
     // .display_1{

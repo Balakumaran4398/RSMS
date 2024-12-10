@@ -39,12 +39,12 @@ export class PackageMasterComponent {
     this.user_role = storageService.getUserRole();
   }
   ngOnInit(): void {
+    // this.userService.getpackagemasterBaseList(this.user_role, this.username, this.type, this.Castype).subscribe((data) => {
+    //   this.rowData = data;
 
-    this.userService.PackagemasterList(this.user_role, this.username, this.type, this.Castype).subscribe((data) => {
-      this.rowData = data;
-   
-      
-    })
+
+    // })
+    this.onSubscriberStatusChange("");
     this.userService.Cas_type(this.user_role, this.username).subscribe((data) => {
       this.cas = data;
     });
@@ -70,8 +70,9 @@ export class PackageMasterComponent {
     }
   }
   onSubscriberStatusChange(event: any) {
-    this.userService.PackagemasterList(this.user_role, this.username, this.selectedTab, this.Castype).subscribe((data) => {
+    this.userService.getpackagemasterBaseList(this.user_role, this.username, this.selectedTab, this.Castype).subscribe((data) => {
       this.updateColumnDefs(this.selectedTab);
+      this.rowData = data;
     });
 
   }
@@ -96,7 +97,7 @@ export class PackageMasterComponent {
       headerName: 'IS DELETE',
       field: 'isdelete',
       cellRenderer: (params: { value: any }) => {
-     const color = params.value ? 'blue' : 'red';
+        const color = params.value ? 'blue' : 'red';
         const text = params.value ? 'YES' : 'NO';
         return `<span style="color: ${color}">${text}</span>`;
       }
@@ -195,7 +196,7 @@ export class PackageMasterComponent {
           headerName: 'IS DELETE',
           field: 'isdelete', width: 120,
           cellRenderer: (params: { value: any }) => {
-         const color = params.value ? 'blue' : 'red';
+            const color = params.value ? 'blue' : 'red';
             const text = params.value ? 'YES' : 'NO';
             return `<span style="color: ${color}">${text}</span>`;
           }
@@ -255,7 +256,7 @@ export class PackageMasterComponent {
           headerName: 'IS DELETE',
           field: 'isdelete', width: 120,
           cellRenderer: (params: { value: any }) => {
-         const color = params.value ? 'blue' : 'red';
+            const color = params.value ? 'blue' : 'red';
             const text = params.value ? 'YES' : 'NO';
             return `<span style="color: ${color}">${text}</span>`;
           }
@@ -314,7 +315,7 @@ export class PackageMasterComponent {
           headerName: 'IS DELETE',
           field: 'isdelete', width: 120,
           cellRenderer: (params: { value: any }) => {
-         const color = params.value ? 'blue' : 'red';
+            const color = params.value ? 'blue' : 'red';
             const text = params.value ? 'YES' : 'NO';
             return `<span style="color: ${color}">${text}</span>`;
           }
@@ -372,7 +373,7 @@ export class PackageMasterComponent {
           headerName: 'IS DELETE',
           field: 'isdelete', width: 120,
           cellRenderer: (params: { value: any }) => {
-         const color = params.value ? 'blue' : 'red';
+            const color = params.value ? 'blue' : 'red';
             const text = params.value ? 'YES' : 'NO';
             return `<span style="color: ${color}">${text}</span>`;
           }
@@ -392,7 +393,7 @@ export class PackageMasterComponent {
   openUpdatepackage(data: any) {
     const dialogRef = this.dialog.open(UpdatePackageMasterComponent, {
       width: '400px',
-      height: '220px',
+      height: '280px',
       maxWidth: '100vw',
       data: data
     });

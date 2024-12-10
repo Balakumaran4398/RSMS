@@ -20,7 +20,8 @@ export class AddednotaddedComponent implements OnInit {
   selectedIds: string[] = [];
   todoList: any;
   doneList: any;
-
+  containerData: any;
+  containerID: any;
   NotaddedList: any[] = [];
   addedList: any[] = [];
 
@@ -31,11 +32,14 @@ export class AddednotaddedComponent implements OnInit {
   retailerid: any;
 
   searchTerm: string = '';  // Search input binding
-  filteredNotaddedList = [...this.NotaddedList];
-  filteredAddedList = [...this.addedList];
-  filteredNotPermissionList = [...this.NotpermissionList];
-  filteredPermissionList = [...this.permissionList];
-
+  // filteredNotaddedList = [...this.NotaddedList];
+  // filteredAddedList = [...this.addedList];
+  // filteredNotPermissionList = [...this.NotpermissionList];
+  // filteredPermissionList = [...this.permissionList];
+  filteredNotaddedList: any[] = [];
+  filteredAddedList: any[] = [];
+  filteredNotPermissionList: any[] = [];
+  filteredPermissionList: any[] = [];
 
   searchTermNotAdded: string = '';
   searchTermAdded: string = '';
@@ -59,8 +63,6 @@ export class AddednotaddedComponent implements OnInit {
       this.cdr.detectChanges();
       this.NotaddedList = data?.notadded.map((area: any) => ({ name: area.name, id: area.id }));
       this.addedList = data?.added?.map((operator: any) => ({ name: operator.name, id: operator.id }));
-      console.log('NotaddedList', this.NotaddedList);
-      console.log('addedList', this.addedList);
       this.filteredNotaddedList = [...this.NotaddedList];
       this.filteredAddedList = [...this.addedList];
     })
@@ -122,43 +124,68 @@ export class AddednotaddedComponent implements OnInit {
         if (index > -1) {
           this.NotaddedList.splice(index, 1);
           this.addedList.push(this.NotaddedList[index]);
-          console.log(this.addedList.push(this.NotaddedList[index]));
           console.log('    console.log(this.selectedIds);', this.selectedIds);
         }
       });
+      console.log(this.addedList);
+      this.containerData = this.addedList.map((item: { name: string, id: number }) => ({
+        name: item.name,
+        id: item.id
+      }));
+      this.containerID = this.containerData.map((item: any) => item.id);
+      console.log(this.containerID);
     } else if (direction === 'left') {
       this.selectedIds.forEach(id => {
         const index = this.addedList.findIndex(item => item.id === id);
         if (index > -1) {
           this.addedList.splice(index, 1);
           this.NotaddedList.push(this.addedList[index]);
-          console.log(this.NotaddedList.push(this.addedList[index]));
           console.log('    console.log(this.selectedIds);', this.selectedIds);
-
         }
       });
+      console.log(this.NotaddedList);
+      this.containerData = this.NotaddedList.map((item: { name: string, id: number }) => ({
+        name: item.name,
+        id: item.id
+      }));
+      this.containerID = this.containerData.map((item: any) => item.id);
+      console.log(this.containerID);
     }
-
-    this.selectedIds = [];
+    this.filteredNotaddedList = [...this.NotaddedList];
+    this.filteredAddedList = [...this.addedList];
+    this.selectedItems.clear();
   }
 
+
   moveAllItems(direction: 'right' | 'left') {
-    console.log(this.selectedIds);
     if (direction === 'right') {
       this.addedList.push(...this.NotaddedList);
       this.NotaddedList = [];
+      this.containerData = this.addedList.map((item: { name: string, id: number }) => ({
+        name: item.name,
+        id: item.id
+      }));
+      this.containerID = this.containerData.map((item: any) => item.id);
     } else if (direction === 'left') {
       this.NotaddedList.push(...this.addedList);
       this.addedList = [];
+      this.containerData = this.NotaddedList.map((item: { name: string, id: number }) => ({
+        name: item.name,
+        id: item.id
+      }));
+      this.containerID = this.containerData.map((item: any) => item.id);
     }
+    this.filteredNotaddedList = [...this.NotaddedList];
+    this.filteredAddedList = [...this.addedList];
+    this.selectedItems.clear();
   }
 
   drop(event: CdkDragDrop<any[]>) {
-    const droppedItemId = event.item.data?.id;
-    if (droppedItemId) {
-      this.selectedIds.push(droppedItemId);
-    }
-    console.log("Selected IDs:", this.selectedIds);
+    // const droppedItemId = event.item.data?.id;
+    // if (droppedItemId) {
+    //   this.selectedIds.push(droppedItemId);
+    // }
+    // console.log("Selected IDs:", this.selectedIds);
     if (event.previousContainer === event.container) {
       moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
     } else {
@@ -169,6 +196,13 @@ export class AddednotaddedComponent implements OnInit {
         event.currentIndex,
       );
     }
+    this.containerData = event.container.data.map((item: { name: string, id: number }) => ({
+      name: item.name,
+      id: item.id
+    }));
+    this.containerID = this.containerData.map((item: any) => item.id);
+    console.log(this.containerID);
+
   }
 
   moveSelectedItems1(direction: 'right' | 'left') {
@@ -179,23 +213,33 @@ export class AddednotaddedComponent implements OnInit {
         if (index > -1) {
           this.NotpermissionList.splice(index, 1);
           this.permissionList.push(this.NotpermissionList[index]);
-          console.log(this.permissionList.push(this.NotpermissionList[index]));
-          console.log('    console.log(this.selectedIds);', this.selectedIds);
         }
       });
+      this.containerData = this.permissionList.map((item: { name: string, id: number }) => ({
+        name: item.name,
+        id: item.id
+      }));
+      this.containerID = this.containerData.map((item: any) => item.id);
+      console.log(this.containerID);
+
     } else if (direction === 'left') {
       this.selectedIds.forEach(id => {
         const index = this.permissionList.findIndex(item => item.id === id);
         if (index > -1) {
           this.permissionList.splice(index, 1);
           this.NotpermissionList.push(this.permissionList[index]);
-          console.log(this.NotpermissionList.push(this.permissionList[index]));
-          console.log('    console.log(this.selectedIds);', this.selectedIds);
         }
       });
+      this.containerData = this.NotpermissionList.map((item: { name: string, id: number }) => ({
+        name: item.name,
+        id: item.id
+      }));
+      this.containerID = this.containerData.map((item: any) => item.id);
+      console.log(this.containerID);
     }
-
-    this.selectedIds = [];
+    this.filteredNotPermissionList = [...this.NotpermissionList];
+    this.filteredPermissionList = [...this.permissionList];
+    this.selectedItems.clear();
   }
 
   moveAllItems1(direction: 'right' | 'left') {
@@ -203,15 +247,30 @@ export class AddednotaddedComponent implements OnInit {
     if (direction === 'right') {
       this.permissionList.push(...this.NotpermissionList);
       this.NotpermissionList = [];
+      this.containerData = this.permissionList.map((item: { name: string, id: number }) => ({
+        name: item.name,
+        id: item.id
+      }));
+      this.containerID = this.containerData.map((item: any) => item.id);
+      console.log(this.containerID);
     } else if (direction === 'left') {
       this.NotpermissionList.push(...this.permissionList);
       this.permissionList = [];
+      this.containerData = this.NotpermissionList.map((item: { name: string, id: number }) => ({
+        name: item.name,
+        id: item.id
+      }));
+      this.containerID = this.containerData.map((item: any) => item.id);
+      console.log(this.containerID);
     }
+    this.filteredNotPermissionList = [...this.NotpermissionList];
+    this.filteredPermissionList = [...this.permissionList];
+    this.selectedItems.clear();
   }
 
   save() {
     this.swal.Loading();
-    this.userservice.sublcoUpdateArea(this.role, this.username, this.retailerid, this.selectedIds).subscribe((res: any) => {
+    this.userservice.sublcoUpdateArea(this.role, this.username, this.retailerid, this.containerID).subscribe((res: any) => {
       this.swal.success(res?.message);
     }, (err) => {
       this.swal.Error(err?.error?.message);
@@ -220,7 +279,7 @@ export class AddednotaddedComponent implements OnInit {
   }
   save1() {
     this.swal.Loading();
-    this.userservice.sublcoUpdatePermission(this.role, this.username, this.retailerid, this.selectedIds).subscribe((res: any) => {
+    this.userservice.sublcoUpdatePermission(this.role, this.username, this.retailerid, this.containerID).subscribe((res: any) => {
       this.swal.success(res?.message);
     }, (err) => {
       this.swal.Error(err?.error?.message);

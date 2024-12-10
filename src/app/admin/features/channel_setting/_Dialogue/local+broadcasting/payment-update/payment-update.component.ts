@@ -1,4 +1,4 @@
-import { Component, Inject } from '@angular/core';
+import { ChangeDetectorRef, Component, Inject } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { BaseService } from 'src/app/_core/service/base.service';
 import { StorageService } from 'src/app/_core/service/storage.service';
@@ -11,15 +11,17 @@ import { SwalService } from 'src/app/_core/service/swal.service';
 })
 export class PaymentUpdateComponent {
   localPaymentChannelList: any;
-  confirmationPaymentList: any = null
+  confirmationPaymentList: any = null;
+  disPaymentList: boolean = false;
   role: any;
   username: any;
   pay: string = '0.0';
-  iscredit: boolean = false;
+  iscredit: boolean = true;
   confirmation: boolean = false;
   constructor(
     public dialogRef: MatDialogRef<PaymentUpdateComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: any, private userService: BaseService, private storageService: StorageService, private swal: SwalService) {
+    @Inject(MAT_DIALOG_DATA) public data: any, private userService: BaseService, private storageService: StorageService, private swal: SwalService,
+    private cdr: ChangeDetectorRef) {
     console.log(data);
     this.localPaymentChannelList = data;
     this.username = storageService.getUsername();
@@ -38,21 +40,24 @@ export class PaymentUpdateComponent {
     }
   }
   confirm() {
-    this.userService.getLocalChannelPayConfirmation(this.role, this.username, this.localPaymentChannelList?.serviceid, this.pay, this.iscredit)
-      .subscribe((res: any) => {
-        this.confirmationPaymentList = res;
-        this.swal.success_1(res?.message);
+
+    this.disPaymentList = true;
+    // this.cdr.detectChanges();
+    this.userService.getLocalChannelPayConfirmation(this.role, this.username, this.localPaymentChannelList?.serviceid, this.pay, !this.iscredit)
+    .subscribe((res: any) => {
+      this.confirmationPaymentList = res;
+      this.swal.success_1(res?.message);
       }, (err) => {
         this.swal.Error(err?.error?.message);
       });
   }
   submit() {
     this.swal.Loading();
-    this.userService.payLocalChannel(this.role, this.username, this.localPaymentChannelList?.serviceid, this.pay, this.iscredit, this.confirmationPaymentList?.days, this.confirmationPaymentList?.newexpirydate)
+    this.userService.payLocalChannel(this.role, this.username, this.localPaymentChannelList?.serviceid, this.pay, !this.iscredit, this.confirmationPaymentList?.days, this.confirmationPaymentList?.newexpirydate)
       .subscribe((res: any) => {
         this.swal.success(res?.message);
       }, (err) => {
-        this.swal.Error(err?.error?.message);
+        this.swal.Error(err?.error?.message || err?.error?.payLocalChannel.expirydate);
       });
   }
 

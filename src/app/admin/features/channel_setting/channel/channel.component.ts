@@ -75,8 +75,8 @@ export class ChannelComponent {
   }
   columnDefs: any[] = [
     {
-      headerName: "S.No", lockPosition: true, valueGetter: 'node.rowIndex+1', headerCheckboxSelection: true,
-      checkboxSelection: true, width: 100
+      headerName: "S.No", lockPosition: true, valueGetter: 'node.rowIndex+1', width: 100,headerCheckboxSelection: true,
+      checkboxSelection: true,
     },
     { headerName: "CHANNEL NAME", field: 'channel_name', editable: true, },
     { headerName: "BROADCASTER", field: 'broadcastername', editable: true, },

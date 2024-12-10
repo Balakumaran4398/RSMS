@@ -1,4 +1,4 @@
-import { Component, Inject, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Inject, OnInit } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { BaseService } from 'src/app/_core/service/base.service';
 import { StorageService } from 'src/app/_core/service/storage.service';
@@ -7,6 +7,8 @@ import { default as _rollupMoment, Moment } from 'moment';
 import * as _moment from 'moment';
 import { FormControl } from '@angular/forms';
 import { MatDatepicker } from '@angular/material/datepicker';
+import { MomentDateAdapter, MAT_MOMENT_DATE_ADAPTER_OPTIONS } from '@angular/material-moment-adapter';
+import { DateAdapter, MAT_DATE_LOCALE, MAT_DATE_FORMATS } from '@angular/material/core';
 
 const moment = _rollupMoment || _moment;
 
@@ -21,39 +23,53 @@ export const MY_FORMATS = {
     monthYearA11yLabel: 'MMMM YYYY',
   },
 };
+
 @Component({
   selector: 'app-operatordialogue',
   templateUrl: './operatordialogue.component.html',
-  styleUrls: ['./operatordialogue.component.scss']
+  styleUrls: ['./operatordialogue.component.scss'], 
+  providers: [
+    // `MomentDateAdapter` can be automatically provided by importing `MomentDateModule` in your
+    // application's root module. We provide it at the component level here, due to limitations of
+    // our example generation script.
+    {
+      provide: DateAdapter,
+      useClass: MomentDateAdapter,
+      deps: [MAT_DATE_LOCALE, MAT_MOMENT_DATE_ADAPTER_OPTIONS]
+    },
+
+    {provide: MAT_DATE_FORMATS, useValue: MY_FORMATS},
+  ],
+   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class OperatordialogueComponent implements OnInit {
-  readonly date = new FormControl(moment());
 
-  maxDate = new Date();
-  fromdate: any;
-  todate: any;
-  getFromDate(event: any) {
-    console.log(event.value);
-    const date = new Date(event.value).getDate();
-    const month = new Date(event.value).getMonth() + 1;
-    const year = new Date(event.value).getFullYear();
-    this.fromdate = year + "-" + month + "-" + date
-    console.log(this.fromdate);
-  }
-  getToDate(event: any) {
-    const date = new Date(event.value).getDate();
-    const month = new Date(event.value).getMonth() + 1;
-    const year = new Date(event.value).getFullYear();
-    this.todate = year + "-" + month + "-" + date
-    console.log(this.todate);
-  }
-  setMonthAndYear(normalizedMonthAndYear: Moment, datepicker: MatDatepicker<Moment>) {
+
+  
+  readonly date = new FormControl(moment());
+  // setMonthAndYear(normalizedMonthAndYear: Moment, datepicker: MatDatepicker<Moment>) {
+  //   const ctrlValue = this.date.value ?? moment();
+  //   ctrlValue.month(normalizedMonthAndYear.month());
+  //   ctrlValue.year(normalizedMonthAndYear.year());
+  //   this.date.setValue(ctrlValue);
+  //   datepicker.close();
+  // }
+  chosenYearHandler(normalizedYear: Moment) {
+    // const ctrlValue = this.date.value;
     const ctrlValue = this.date.value ?? moment();
-    ctrlValue.month(normalizedMonthAndYear.month());
-    ctrlValue.year(normalizedMonthAndYear.year());
+    ctrlValue.year(normalizedYear.year());
+    this.date.setValue(ctrlValue);
+  }
+
+  chosenMonthHandler(normalizedMonth: Moment, datepicker: MatDatepicker<Moment>) {
+    // const ctrlValue = this.date.value;
+    const ctrlValue = this.date.value ?? moment();
+    ctrlValue.month(normalizedMonth.month());
     this.date.setValue(ctrlValue);
     datepicker.close();
   }
+
+
   pincode: any;
   areaname: any;
   username: any;
@@ -63,6 +79,10 @@ export class OperatordialogueComponent implements OnInit {
   area: any;
   id: any
   rowData: any[] = [];
+
+
+
+  
   constructor(public dialogRef: MatDialogRef<OperatordialogueComponent>, private swal: SwalService, private userService: BaseService, private storageservice: StorageService, @Inject(MAT_DIALOG_DATA) public data: any,) {
     this.username = storageservice.getUsername();
     this.role = storageservice.getUserRole();

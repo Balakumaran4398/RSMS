@@ -1,5 +1,5 @@
 
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { BreakpointObserver, Breakpoints, BreakpointState } from '@angular/cdk/layout';
 import { MatDialog } from '@angular/material/dialog';
 import { EditLcoComponent } from '../../channel_setting/_Dialogue/operator/edit-lco/edit-lco.component';
@@ -13,6 +13,7 @@ import { LcodashboardComponent } from '../../channel_setting/_Dialogue/operator/
 import { DataService } from 'src/app/_core/service/Data.service';
 import { OperatordialogueComponent } from '../../channel_setting/_Dialogue/operator/operatordialogue/operatordialogue.component';
 import { SpecialoperatordialogueComponent } from '../Dialogue/specialoperatordialogue/specialoperatordialogue.component';
+import { PageEvent } from '@angular/material/paginator';
 @Component({
   selector: 'app-specialoperator',
   templateUrl: './specialoperator.component.html',
@@ -54,41 +55,28 @@ export class SpecialoperatorComponent {
   businessList: any[] = [];
   dashboardDetails: any;
 
-
+  selectedOperator: any;
   // --------------------------role based----------------------
   isUser: boolean = false;
   isReception: boolean = false;
   isSpecial: boolean = false;
   // ---------------------------------
+  pagedOperators: any = [];
+  pageSize = 10; 
+  pageIndex = 0;
+  totalLength = 0;
+  paginatedData: any;
 
-
-  constructor(public responsive: BreakpointObserver, private dataService: DataService, private router: Router, public dialog: MatDialog, private userservice: BaseService, private storageservice: StorageService) {
+  constructor(public responsive: BreakpointObserver, private dataService: DataService,private cdr: ChangeDetectorRef, private router: Router, public dialog: MatDialog, private userservice: BaseService, private storageservice: StorageService) {
     this.role = storageservice.getUserRole();
     this.username = storageservice.getUsername();
     this.userservice.OperatorDetails(this.role, this.username, this.operatorid).subscribe(
       (data: any) => {
         this.operator_details = data;
         this.dashboardDetails = data.map((item: any) => item.list);
+        this.totalLength = data.length;
+        this.updatePageData();
       });
-    // this.role = storageservice.getUserRole();
-    // console.log(this.role);
-    // if (this.role.includes('ROLE_USER')) {
-    //   this.isUser = true;
-    //   this.isReception = false;
-    //   this.isSpecial = false;
-    //   this.role = 'ADMIN';
-    // } else if (this.role.includes('ROLE_RECEPTION')) {
-    //   this.isReception = true;
-    //   this.isUser = false;
-    //   this.isSpecial = false;
-    //   this.role = 'RECEPTION';
-    // } else if (this.role.includes('ROLE_SPECIAL')) {
-    //   this.isReception = false;
-    //   this.isUser = false;
-    //   this.isSpecial = true;
-    //   this.role = 'SPECIAL';
-    // }
-
   }
   ngOnInit(): void {
     this.responsive
@@ -107,7 +95,24 @@ export class SpecialoperatorComponent {
     this.operatorlist();
     // this.filteredOperators = this.operatorList;
   }
+  onPageChange(event: PageEvent): void {
+    this.pageSize = event.pageSize;
+    this.pageIndex = event.pageIndex;
+    // this.updatePage();
+    this.updatePageData();
 
+  }
+  updatePageData() {
+    const startIndex = this.pageIndex * this.pageSize;
+    this.pagedOperators = this.operator_details.slice(
+      startIndex,
+      startIndex + this.pageSize
+    );
+  }
+ 
+  displayOperator(operator: any): string {
+    return operator ? operator.name : '';
+  }
   // filterOperators() {
   //   if (this.operatorid) {
   //     this.filteredOperators = this.operatorList.filter(operator =>
@@ -116,17 +121,23 @@ export class SpecialoperatorComponent {
   //     console.log(this.filteredOperators);
   //   }
   // }
-  filterOperators() {
-    console.log(this.operatorname);
+  // filterOperators() {
+  //   console.log(this.operatorname);
 
-    if (this.operatorname) {
-      console.log(this.filteredOperators);
-      this.filteredOperators = this.operatorList.filter(operator =>
-        operator.name.toLowerCase().includes(this.operatorname.toLowerCase())
-      );
-      console.log(this.filteredOperators);
-    }
+  //   if (this.operatorname) {
+  //     console.log(this.filteredOperators);
+  //     this.filteredOperators = this.operatorList.filter(operator =>
+  //       operator.name.toLowerCase().includes(this.operatorname.toLowerCase())
+  //     );
+  //     console.log(this.filteredOperators);
+  //   }
 
+  // }
+  filterOperators(event: any): void {
+    const filterValue = event.target.value.toLowerCase();
+    this.filteredOperators = this.operatorList.filter(operator =>
+      operator.name.toLowerCase().includes(filterValue)
+    );
   }
   operatorlist() {
     this.userservice.getOeratorList(this.role, this.username).subscribe((data: any) => {
@@ -148,16 +159,38 @@ export class SpecialoperatorComponent {
     this.operatorname = name;
     this.onoperatorchange({ value });
   }
-  onoperatorchange(event: any) {
+  // onoperatorchange(event: any) {
 
-    if (this.operatorid === 'ALL Operator') {
+  //   if (this.operatorid === 'ALL Operator') {
+  //     this.operatorid = 0;
+  //   }
+  //   this.userservice.OperatorDetails(this.role, this.username, this.operatorid).subscribe(
+  //     (data: any) => {
+  //       console.log(data);
+  //       this.operator_details = data;
+  //       console.log(this.operator_details);
+  //     },
+  //     (error) => {
+  //       console.error('Error fetching operator details', error);
+  //     }
+  //   );
+  // }
+
+  onoperatorchange(operator: any): void {
+    console.log(operator);
+    this.selectedOperator = operator;
+    this.operatorid = operator.value;
+    if (operator.value === 0) {
       this.operatorid = 0;
+      this.selectedOperator = { name: 'ALL Operator', value: 0 }; 
+    } else {
+      this.operatorid = operator.value; 
     }
     this.userservice.OperatorDetails(this.role, this.username, this.operatorid).subscribe(
       (data: any) => {
         console.log(data);
-        this.operator_details = data;
-        console.log(this.operator_details);
+        // this.operator_details = data;
+        this.pagedOperators = data;
       },
       (error) => {
         console.error('Error fetching operator details', error);

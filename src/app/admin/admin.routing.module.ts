@@ -70,6 +70,11 @@ import { SpecialareachangeComponent } from './features/special_role/Bulk operato
 import { SpecialcancelsubscriptionComponent } from './features/special_role/Bulk operaton/specialcancelsubscription/specialcancelsubscription.component';
 import { SpeciallcochangeComponent } from './features/special_role/Bulk operaton/speciallcochange/speciallcochange.component';
 import { SpeciallcotransferComponent } from './features/special_role/Bulk operaton/speciallcotransfer/speciallcotransfer.component';
+import { TraiComponent } from './features/channel_setting/Reports/trai/trai.component';
+import { HistoryReportsComponent } from './features/channel_setting/Reports/history-reports/history-reports.component';
+import { MsoreportsComponent } from './features/channel_setting/Reports/msoreports/msoreports.component';
+import { TraiReportComponent } from './features/channel_setting/Reports/trai-report/trai-report.component';
+import { HistoryComponent } from './features/channel_setting/Reports/history/history.component';
 
 
 const routes: Routes = [
@@ -138,7 +143,11 @@ const routes: Routes = [
       { path: 'Bulk_Refresh', component: RefreshComponent },
       { path: 'Recurring', component: RecurringComponent },
       { path: 'Alacarte_Activation', component: AlacarteActivationComponent },
-
+      // --------------------------------------Reports-----------------------------------
+      { path: 'traiReports', component: TraiReportComponent },
+      { path: 'msoReports', component: MsoreportsComponent },
+      { path: 'historyReports', component: HistoryComponent },
+      
       // ------------------------------------Special role-------------------------------------------
       { path: 'msodetails', component: MsodetailsComponent },
       { path: 'casmaster', component: CasmasterComponent },

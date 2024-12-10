@@ -55,7 +55,7 @@ export class StorageService {
     const user = this.getUser();
     // console.log(user);
     // return user.roles.includes('ROLE_RECEPTION') ? 'ROLE_RECEPTION' : 'DEFAULT_ROLE';
-    return user.roles.includes('ROLE_USER') ? 'ROLE_USER' : (user.roles.includes('ROLE_RECEPTION') ? 'ROLE_RECEPTION' : (user.roles.includes('ROLE_SPECIAL') ? 'ROLE_SPECIAL' : 'DEFAULT_ROLE'));
+    return user.roles.includes('ROLE_ADMIN') ? 'ROLE_ADMIN' : (user.roles.includes('ROLE_RECEPTION') ? 'ROLE_RECEPTION' : (user.roles.includes('ROLE_SPECIAL') ? 'ROLE_SPECIAL' : 'DEFAULT_ROLE'));
   }
 
   public getUserid(): number | null {

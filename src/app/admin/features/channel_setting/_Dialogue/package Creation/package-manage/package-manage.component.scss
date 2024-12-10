@@ -102,7 +102,9 @@
 }
 
 
-
+.display{
+    display: grid;
+}
 
 // -----------------------------------------------------------------------------------------------------
 .form-container1 {
@@ -324,7 +326,9 @@
     .table2 {
         margin-bottom: 0;
     }
-
+    .display {
+        display: grid;
+    }
 }
 
 @media screen and (max-width: 560px) {
@@ -341,6 +345,9 @@
 
     .cas {
         margin: 20px 10px;
+    }
+    .display {
+        display: grid;
     }
 }
 

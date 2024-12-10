@@ -41,7 +41,7 @@
                                 <label for="confirmPass">I agree to the above statement</label>
                             </div>
                         </div>
-                        <div class="col-4 col-md-6 col-sm-6 mb-3">
+                        <div class="col-4 col-md-12 col-sm-12 mb-3">
                             <label class="btn " [style.background-color]="isCheckboxChecked ? '#3d5e80' : '#d3d3d3'"
                                 [style.color]="isCheckboxChecked ? 'white' : 'black'"
                                 [style.cursor]="isCheckboxChecked ? 'pointer' : 'not-allowed'">
@@ -49,6 +49,7 @@
                                 <input type="file" style="display: none;" [disabled]="!isCheckboxChecked"
                                     (change)="handleFileInput($event)">
                             </label>
+                            <span class="mx-3" style="color:#0a21d0">{{filePath }} </span>
                         </div>
                         <div class="col-12 mb-3">
                             <select placeholder="Select the CAS" class="form-control" [(ngModel)]="castype"
@@ -59,22 +60,28 @@
                                 </option>
                             </select>
                         </div>
-
+                        <div *ngIf="submitted && !castype" class="text-danger" style="font-size: small;">
+                            CAS  is required
+                        </div>
                         <div class="col-12 mb-3">
                             <div class="col-12 mb-3">
                                 <mat-form-field class="w-100" appearance="outline">
+                                    <mat-label>Select Alacarte List by CAS type</mat-label>
                                     <mat-select [formControl]="toppings" multiple [(ngModel)]="alacarteList">
                                         <div class="input_box " style="padding: 1rem;">
                                             <input placeholder="Search..." [(ngModel)]="searchText"
-                                                (ngModelChange)="filterToppings()" />
+                                                (input)="filterToppings($event)" />
                                         </div>
                                         <mat-option *ngFor="let topping of toppingList" [value]="topping.id">{{
                                             topping.name }}</mat-option>
                                     </mat-select>
                                 </mat-form-field>
+                                <div *ngIf="submitted && !alacarteList" class="text-danger" style="font-size: small;">
+                                    Alacarte  is required
+                                </div>
                             </div>
                         </div>
-
+                      
                         <div class=" d-flex justify-content-end align-items-center mt-3">
                             <button type="submit" class="btn btn-success" (click)="submit()">Submit</button>
                         </div>
@@ -85,16 +92,17 @@
                 <div class="col-12 col-lg-8 d-flex justify-content-center">
                     <div class="card col-12">
                         <div class="title">
-                            <h3>BULK ADDON HISTORY</h3>
+                            <h5>BULK ADDON HISTORY</h5>
                         </div>
                         <div class="row d-flex align-items-center justify-content-center" style="padding: 0.5rem;">
                             <div class="col-12 mb-3">
                                 <div class="row align-items-center justify-content-center mb-3" style="gap:10px;">
                                     <div class="col-12 col-md-3 mb-2 mb-md-0">
-                                        <input class="date form-control" type="date" name="" id="" [(ngModel)]="date">
+                                        <input class="date form-control" type="date" name="" id=""
+                                            [(ngModel)]="selectedDate">
                                     </div>
                                     <div class="col-12 col-md-3 mb-2 mb-md-0">
-                                        <button class="btn btn-primary w-100" (click)="getData()">Get Data</button>
+                                        <button class="btn btn-secondary w-100" (click)="getData()">Get Data</button>
                                     </div>
                                     <div class="col-12 col-md-3 mb-2 mb-md-0">
                                         <button class="btn btn-secondary w-100" (click)="refresh()">Refresh</button>
@@ -114,46 +122,49 @@
 
         </div>
 
-
-
     </div>
     <div *ngIf="selectedTab === 'remove'">
         <div class="container ">
-            <div class="row justify-content-center align-items-center mb-2">
-                <!-- File Input -->
+            <div class="row justify-content-center align-items-baseline mb-2">
                 <div class="col-12 col-md-2 mb-3 d-flex justify-content-center align-items-center mt-3">
                     <label class="btn btn-outline-primary">
                         <i class="fa fa-plus"></i> Choose
                         <input type="file" style="display: none;" (change)="handleFileInput($event)">
                     </label>
+                    <span class="mx-3" style="color:#0a21d0">{{filePath }} </span>
                 </div>
-
-                <!-- First Select Input -->
                 <div class="col-12 col-md-3  mt-2">
-                    <select placeholder="Select the CAS" class="form-control" [(ngModel)]="castype"
-                        (change)="casPackageList()">
-                        <option value="0" selected>Select CAS</option>
-                        <option *ngFor="let casItem of cas" [value]="casItem.id">
-                            {{ casItem.name }}
-                        </option>
-                    </select>
+                    <mat-form-field class="example-full-width" appearance="outline">
+                        <mat-label>Select CAS type</mat-label>
+                        <input type="text" matInput [matAutocomplete]="auto" (input)="filterCas($event)"
+                            [(ngModel)]="selectedCas" [value]="selectedCas?.name" placeholder="Search CAS">
+                        <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayOperator">
+                            <mat-option *ngFor="let castype of cas" [value]="castype.name"
+                                (click)="onCaschange(castype)">
+                                {{ castype.name }}
+                            </mat-option>
+                        </mat-autocomplete>
+                    </mat-form-field>
+                    <div *ngIf="submitted && !selectedCas" class="text-danger" style="font-size: small;">
+                        CAS  is required
+                    </div>
                 </div>
-
-                <!-- Second Select Input -->
-                <div class="col-12 col-md-5 mt-2">
+                <div class="col-12 col-md-5 mt-2" style="height: 50px;">
                     <mat-form-field class="w-100" appearance="outline">
+                        <mat-label>Select Alacarte List by CAS type</mat-label>
                         <mat-select [formControl]="toppings" multiple [(ngModel)]="alacarteList">
                             <div class="input_box " style="padding: 1rem;">
                                 <input placeholder="Search..." [(ngModel)]="searchText"
-                                    (ngModelChange)="filterToppings()" />
+                                    (input)="filterToppings($event)" />
                             </div>
                             <mat-option *ngFor="let topping of toppingList" [value]="topping.id">{{
                                 topping.name }}</mat-option>
                         </mat-select>
                     </mat-form-field>
+                    <div *ngIf="submitted && !alacarteList" class="text-danger" style="font-size: small;">
+                        Alacarte is required
+                    </div>
                 </div>
-
-                <!-- Submit Button -->
                 <div
                     class="col-12 col-md-2 mt-2 d-flex justify-content-center justify-content-md-end align-items-center">
                     <button type="submit" class="btn btn-success w-100 w-md-auto" (click)="remove()">Remove</button>
@@ -174,7 +185,7 @@
                                 <input class="date form-control" type="date" [(ngModel)]="date">
                             </div>
                             <div class="col-12 col-md-3 mb-2 mb-md-0">
-                                <button class="btn btn-primary w-100" (click)="getData()">Get Data</button>
+                                <button class="btn btn-secondary w-100" (click)="getData()">Get Data</button>
                             </div>
                             <div class="col-12 col-md-3 mb-2 mb-md-0">
                                 <button class="btn btn-secondary w-100" (click)="refresh()">Refresh</button>

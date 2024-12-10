@@ -10,202 +10,201 @@
         <img height="38px" style="margin: 0px -6px 0px 3px;" [ngStyle]="{'visibility': !isHide ? 'hidden' : 'visible'}"
             src="/assets/images/icons/Logo1.png" alt="" srcset="">
         <h3 class="brand-text" style="margin: 0px 30px;"
-            [ngStyle]="{'visibility': !isSidebarOpen ? 'visible' : 'hidden'}">RSMS V-7.1 </h3>
+            [ngStyle]="{'visibility': !isSidebarOpen ? 'visible' : 'hidden'}">RSMS V-7.2 </h3>
     </a>
 
     <ul class="side-menu">
 
         <!-- ----------------------------------------------------------Admin & Reception role----------------------------------------- -->
         <li *ngIf="isUser || isReception "><a (click)="navgetToUrl('/home')" class="active"
-                (click)="setActiveTab($event)"><i class='bx bx-sm bxs-dashboard icon'></i>
-                Dashboard</a></li>
-        <li *ngIf="isUser  "><a (click)="navgetToUrl('/top_sub_detail')" (click)="setActiveTab($event)"><i
-                    class='bx bx-table bx-sm icon'></i>
-                Top Subscription Details</a></li>
-        <!-- <li><a (click)="navgetToUrl('/operatorlist')" class=""><i class='bx bx-table bx-sm icon'></i>
-                Operator</a></li> -->
-        <li *ngIf="isUser || isReception ">
-            <a> <i class="bx bx-user bx-sm icon "></i> Operator <i class='bx bx-chevron-right icon-right'></i></a>
-            <ul class="side-dropdown">
-                <li><a (click)="navgetToUrl('/operator_details')" (click)="setActiveTab($event)"> <i
-                            class='fa fa-fw fa-users  icon'></i> &nbsp;
-                        Operator Details</a></li>
-                <li><a (click)="navgetToUrl('/lco_recharge')" (click)="setActiveTab($event)"><i
-                            class='fa fa-fw fa-inr icon'></i> &nbsp;LCO
-                        Recharge</a></li>
-            </ul>
-        </li>
+            (click)="setActiveTab($event)"><i class='bx bx-sm bxs-dashboard icon'></i>
+            Dashboard</a></li>
+    <li *ngIf="isUser  "><a (click)="navgetToUrl('/top_sub_detail')" (click)="setActiveTab($event)"><i
+                class='bx bx-table bx-sm icon'></i>
+            Top Subscription Details</a></li>
+    <!-- <li><a (click)="navgetToUrl('/operatorlist')" class=""><i class='bx bx-table bx-sm icon'></i>
+            Operator</a></li> -->
+    <li *ngIf="isUser || isReception ">
+        <a> <i class="bx bx-user bx-sm icon "></i> Operator <i class='bx bx-chevron-right icon-right'></i></a>
+        <ul class="side-dropdown">
+            <li><a (click)="navgetToUrl('/operator_details')" (click)="setActiveTab($event)"> <i
+                        class='fa fa-fw fa-users  icon'></i> &nbsp;
+                    Operator Details</a></li>
+            <li><a (click)="navgetToUrl('/lco_recharge')" (click)="setActiveTab($event)"><i
+                class='fa-solid fa-indian-rupee-sign icon'></i> &nbsp;LCO
+                    Recharge</a></li>
+        </ul>
+    </li>
 
-        <li *ngIf="isUser || isReception ">
-            <a> <i class="bx bx-user-circle bx-sm icon "></i> Subscriber <i
-                    class='bx bx-chevron-right icon-right'></i></a>
-            <ul class="side-dropdown">
-                <li><a (click)="navgetToUrl('/Create_sub')" (click)="setActiveTab($event)"><i
-                            class="fa fa-fw fa-plus icon">&nbsp;</i>Create Subscriber
-                    </a> </li>
-                <li><a (click)="navgetToUrl('/subscriber')" (click)="setActiveTab($event)"><i
-                            class="fa fa-fw fa-user on icon">&nbsp;</i>
-                        SubscriberDetails</a></li>
-                <li><a (click)="navgetToUrl('/expiry')" (click)="setActiveTab($event)"><i
-                            class="fa fas fa-user-alt-slash icon">&nbsp;</i> Expiry
-                        Details </a>
-                </li>
-            </ul>
-        </li>
+    <li *ngIf="isUser || isReception ">
+        <a><mat-icon class="icon">local_library</mat-icon> Subscriber <i
+                class='bx bx-chevron-right icon-right'></i></a>
+        <ul class="side-dropdown">
+            <li><a (click)="navgetToUrl('/Create_sub')" (click)="setActiveTab($event)"><i
+                        class="fa fa-fw fa-plus icon">&nbsp;</i>Create Subscriber
+                </a> </li>
+            <li><a (click)="navgetToUrl('/subscriber')" (click)="setActiveTab($event)"><i
+                        class="fa fa-fw fa-user on icon">&nbsp;</i>
+                    Subscriber Details</a></li>
+            <li><a (click)="navgetToUrl('/expiry')" (click)="setActiveTab($event)"><i
+                        class="fa fas fa-user-alt-slash icon">&nbsp;</i> Expiry
+                    Details </a>
+            </li>
+        </ul>
+    </li>
 
-        <li *ngIf="isUser  ">
-            <a> <i class="bx bx-network-chart bx-sm icon "></i> Cas Operation <i
-                    class='bx bx-chevron-right icon-right'></i></a>
-            <ul class="side-dropdown">
-                <li><a (click)="navgetToUrl('/finger_print')" (click)="setActiveTab($event)"><i
-                            class="fas fa-fingerprint fa-lg icon ">&nbsp;</i>Finger
-                        Print</a> </li>
-                <li><a (click)="navgetToUrl('/scrolling')" (click)="setActiveTab($event)"><i
-                            class="fa fa-fw fa-gear icon">&nbsp;</i>Scrolling </a>
-                </li>
-                <li><a (click)="navgetToUrl('/message')" (click)="setActiveTab($event)"><i
-                            class="fa fa-fw fa-envelope icon">&nbsp;</i>
-                        Message Details</a></li>
-                <li><a (click)="navgetToUrl('/fource_tuning')" (click)="setActiveTab($event)"> <i
-                            class="fa fa-fw fa-circle-o icon">&nbsp;</i>Force
-                        Tuning </a></li>
-                <li><a (click)="navgetToUrl('/mail')" (click)="setActiveTab($event)"> <i
-                            class="fa fa-fw fa-comments icon">&nbsp;</i> Mail </a></li>
-            </ul>
-        </li>
-        <li *ngIf="isUser  ">
-            <a> <i class="fa fa-fw fa-film icon "></i> Channel Setting <i
-                    class='bx bx-chevron-right icon-right'></i></a>
-            <ul class="side-dropdown">
-                <li><a (click)="navgetToUrl('/Broadcast')" (click)="setActiveTab($event)"><i
-                            class="fa fa-fw fa-bullhorn icon">&nbsp;</i>Broadcaster
-                        Master
-                    </a> </li>
-                <li><a (click)="navgetToUrl('/Distributer')" (click)="setActiveTab($event)"><i
-                            class="fa fa-fw fa-sitemap icon ">&nbsp;</i>Distributor
-                        Master </a> </li>
-                <li><a (click)="navgetToUrl('/Channeltype')" (click)="setActiveTab($event)"><i
-                            class="fa fa-fw fa-envelope icon">&nbsp;</i> Channel
-                        Type Master </a></li>
-                <li><a (click)="navgetToUrl('/categery')" (click)="setActiveTab($event)"><i
-                            class="fa fa-fw fa-circle-o icon ">&nbsp;</i> Category
-                        Master </a></li>
-                <li><a (click)="navgetToUrl('/Channel')" (click)="setActiveTab($event)"><i
-                            class="fa fa-fw fa-comments icon ">&nbsp;</i> Channel</a>
-                </li>
-                <li><a (click)="navgetToUrl('/PackageCreation')" (click)="setActiveTab($event)"><i
-                            class="fa fa-fw fa-th icon ">&nbsp;</i>Package
-                        Creation </a></li>
-                <li><a (click)="navgetToUrl('/Addon')" (click)="setActiveTab($event)"><i
-                            class="fa fa-fw fa-plus-circle icon ">&nbsp;</i>Addon Package
-                    </a></li>
-                <li><a (click)="navgetToUrl('/PackageReference')" (click)="setActiveTab($event)"><i
-                            class="fa fa-fw fa-circle-o icon ">&nbsp;</i>Package
-                        Reference</a></li>
-                <li><a (click)="navgetToUrl('/PackageMaster')" (click)="setActiveTab($event)"><i
-                            class="fa fa-fw fa-cubes icon ">&nbsp;</i>Package
-                        Master </a></li>
-                <li><a (click)="navgetToUrl('/LcoCommission')" (click)="setActiveTab($event)"><i
-                            class="fa fa-fw fa-th-large icon ">&nbsp;</i>Lco
-                        Commission </a></li>
-                <li><a (click)="navgetToUrl('/PackagewiseOperator')" (click)="setActiveTab($event)"><i
-                            class="fa fa-fw fa-th icon">&nbsp;</i>Packagewise Operator</a></li>
-            </ul>
-        </li>
-        <li *ngIf="isUser || isReception ">
-            <a> <i class="fa fa-fw fa-globe icon "></i> Inventory <i class='bx bx-chevron-right icon-right'></i></a>
-            <ul class="side-dropdown">
-                <li><a (click)="navgetToUrl('/not_allacate_smartcard')" (click)="setActiveTab($event)"><i
-                            class="fa fa-fw fa-upload icon ">&nbsp;</i>Not Allocated Smartcard </a> </li>
+    <li *ngIf="isUser ">
+        <a> <i class="bx bx-network-chart bx-sm icon "></i> Cas Operation <i
+                class='bx bx-chevron-right icon-right'></i></a>
+        <ul class="side-dropdown">
+            <li><a (click)="navgetToUrl('/finger_print')" (click)="setActiveTab($event)"><i
+                        class="fas fa-fingerprint fa-lg icon ">&nbsp;</i>Finger
+                    Print</a> </li>
+            <li><a (click)="navgetToUrl('/scrolling')" (click)="setActiveTab($event)"><i
+                        class="fa fa-fw fa-gear icon">&nbsp;</i>Scrolling </a>
+            </li>
+            <li><a (click)="navgetToUrl('/message')" (click)="setActiveTab($event)"><i
+                        class="fa fa-fw fa-envelope icon">&nbsp;</i>
+                    Message Details</a></li>
+            <li><a (click)="navgetToUrl('/fource_tuning')" (click)="setActiveTab($event)"> <i
+                        class="fa fa-fw fa-circle-o icon">&nbsp;</i>Force
+                    Tuning </a></li>
+            <li><a (click)="navgetToUrl('/mail')" (click)="setActiveTab($event)"> <i
+                        class="fa fa-fw fa-comments icon">&nbsp;</i> Mail </a></li>
+        </ul>
+    </li>
+    <li *ngIf="isUser  ">
+        <a> <mat-icon class="icon">personal_video</mat-icon> Channel Setting <i
+                class='bx bx-chevron-right icon-right'></i></a>
+        <ul class="side-dropdown">
+            <li><a (click)="navgetToUrl('/Broadcast')" (click)="setActiveTab($event)"><i
+                        class="fa fa-fw fa-bullhorn icon">&nbsp;</i>Broadcaster
+                    Master
+                </a> </li>
+            <li><a (click)="navgetToUrl('/Distributer')" (click)="setActiveTab($event)"><i
+                        class="fa fa-fw fa-sitemap icon ">&nbsp;</i>Distributor
+                    Master </a> </li>
+            <li><a (click)="navgetToUrl('/Channeltype')" (click)="setActiveTab($event)"><i
+                        class="fa fa-fw fa-envelope icon">&nbsp;</i> Channel
+                    Type Master </a></li>
+            <li><a (click)="navgetToUrl('/categery')" (click)="setActiveTab($event)"><i
+                        class="fa fa-fw fa-circle-o icon ">&nbsp;</i> Category
+                    Master </a></li>
+            <li><a (click)="navgetToUrl('/Channel')" (click)="setActiveTab($event)"><i
+                        class="fa fa-fw fa-comments icon ">&nbsp;</i> Channel</a>
+            </li>
+            <li><a (click)="navgetToUrl('/PackageCreation')" (click)="setActiveTab($event)"><i
+                        class="fa fa-fw fa-th icon ">&nbsp;</i>Package
+                    Creation </a></li>
+            <li><a (click)="navgetToUrl('/Addon')" (click)="setActiveTab($event)"><i
+                class="fa-solid fa-layer-group icon ">&nbsp;</i>Addon Package
+                </a></li>
+            <li><a (click)="navgetToUrl('/PackageReference')" (click)="setActiveTab($event)"><i
+                class="fa-regular fa-snowflake icon ">&nbsp;</i>Package
+                    Reference</a></li>
+            <li><a (click)="navgetToUrl('/PackageMaster')" (click)="setActiveTab($event)"><i
+                        class="fa fa-fw fa-cubes icon ">&nbsp;</i>Package
+                    Master </a></li>
+            <li><a (click)="navgetToUrl('/LcoCommission')" (click)="setActiveTab($event)"><i
+                        class="fa fa-fw fa-th-large icon ">&nbsp;</i>Lco
+                    Commission </a></li>
+            <li><a (click)="navgetToUrl('/PackagewiseOperator')" (click)="setActiveTab($event)"><i
+                        class="fa fa-fw fa-th icon">&nbsp;</i>Packagewise Operator</a></li>
+        </ul>
+    </li>
+    <li *ngIf="isUser || isReception ">
+        <a>  <mat-icon class="icon">games</mat-icon> Inventory <i class='bx bx-chevron-right icon-right'></i></a>
+        <ul class="side-dropdown">
+            <li><a (click)="navgetToUrl('/not_allacate_smartcard')" (click)="setActiveTab($event)"><i
+                        class="fa fa-fw fa-upload icon ">&nbsp;</i>Not Allocated Smartcard </a> </li>
 
-                <li><a (click)="navgetToUrl('/allocate_smartcard')" (click)="setActiveTab($event)"><i
-                            class="fa fa-fw fa-gear icon ">&nbsp;</i>Allocated smartcard </a> </li>
+            <li><a (click)="navgetToUrl('/allocate_smartcard')" (click)="setActiveTab($event)"><i
+                        class="fa fa-fw fa-gear icon ">&nbsp;</i>Allocated smartcard </a> </li>
 
-                <li><a (click)="navgetToUrl('/smartcard_declaration')" (click)="setActiveTab($event)"><i
-                            class="fa fa-fw fa-thumbs-down icon">&nbsp;</i> Smartcard Deallocation</a></li>
+            <li><a (click)="navgetToUrl('/smartcard_declaration')" (click)="setActiveTab($event)"><i
+                        class="fa fa-fw fa-thumbs-down icon">&nbsp;</i> Smartcard Deallocation</a></li>
 
-                <li><a (click)="navgetToUrl('/smartcard_reallocation')" (click)="setActiveTab($event)"><i
-                            class="fa fa-fw fa-refresh icon ">&nbsp;</i>Smartcard Re Allocation </a></li>
+            <li><a (click)="navgetToUrl('/smartcard_reallocation')" (click)="setActiveTab($event)"><i
+                        class="fa fa-fw fa-refresh icon ">&nbsp;</i>Smartcard Re Allocation </a></li>
 
-                <li *ngIf="isUser"><a (click)="navgetToUrl('/defective_smart')" (click)="setActiveTab($event)"><i
-                            class="fa fa-fw fa-refresh icon ">&nbsp;</i>Defective Smartcard</a></li>
+            <li *ngIf="isUser"><a (click)="navgetToUrl('/defective_smart')" (click)="setActiveTab($event)"><i
+                        class="fa fa-fw fa-refresh icon ">&nbsp;</i>Defective Smartcard</a></li>
 
-                <li *ngIf="isUser"><a (click)="navgetToUrl('/insert_sub')" (click)="setActiveTab($event)"><i
-                            class="fa fa-fw fa-assistive-listening-systems icon">&nbsp;</i>Insert to Subscriber </a>
-                </li>
-            </ul>
-        </li>
-        <!-- <li>
-            <a> <i class="fa fa-fw fa-wrench icon "></i> VC/STB master <i
-                    class='bx bx-chevron-right icon-right'></i></a>
-            <ul class="side-dropdown">
-                <li><a (click)="navgetToUrl('/chipid')"><i class="fa fa-fw fa-microchip icon ">&nbsp;</i>ChipID and
-                        Model
-                    </a> </li>
-                <li><a (click)="navgetToUrl('/stb_bill')"><i class="fa fa-fw fa-dollar icon ">&nbsp;</i>STB Bill
-                    </a> </li>
-            </ul>
-        </li> -->
-        <li *ngIf="isUser">
-            <a> <i class="fa fa-fw fa-tasks icon "></i> Bulk operation <i
-                    class='bx bx-chevron-right icon-right'></i></a>
-            <ul class="side-dropdown">
-                <li><a (click)="navgetToUrl('/subscriber_import')" (click)="setActiveTab($event)"><i
-                            class="fa fa-fw fa-user icon">&nbsp;</i>Subscriber
-                        Import </a> </li>
-                <li><a (click)="navgetToUrl('/activation')" (click)="setActiveTab($event)"><i
-                            class="fa fa-fw fa-minus-square icon ">&nbsp;</i>Activation </a> </li>
-                <li><a (click)="navgetToUrl('/deactivation')" (click)="setActiveTab($event)"><i
-                            class="fa fa-fw fa-minus-square icon">&nbsp;</i>
-                        Deactivation</a></li>
-                <li><a (click)="navgetToUrl('/addon_activation')" (click)="setActiveTab($event)"><i
-                            class="fa fa-fw fa-plus-square icon">&nbsp;</i>Addon Activation </a></li>
-                <li><a (click)="navgetToUrl('/Alacarte_Activation')" (click)="setActiveTab($event)"><i
-                            class="fa fa-fw fa-minus-square icon">&nbsp;</i>Alacarte
-                        Activation</a></li>
-                <li><a (click)="navgetToUrl('/Bulk_Package_Updation')" (click)="setActiveTab($event)"><i
-                            class="fa fa-fw fa-circle-o icon">&nbsp;</i>Bulk Package Updation</a>
-                </li>
-                <li><a (click)="navgetToUrl('/Subscription_Extend')" (click)="setActiveTab($event)"><i
-                            class="fa fa-fw fa-cubes icon">&nbsp;</i>Subscription Extend</a>
-                </li>
-                <li><a (click)="navgetToUrl('/Bulk_Base_Change')" (click)="setActiveTab($event)"><i
-                            class="fa fa-fw fa-exchange icon">&nbsp;</i>Bulk
-                        Base Change</a>
-                </li>
-                <li><a (click)="navgetToUrl('/Bulk_Refresh')" (click)="setActiveTab($event)"><i
-                            class="fa fa-fw fa-refresh icon">&nbsp;</i>Bulk
-                        Refresh</a>
-                </li>
-                <li><a (click)="navgetToUrl('/Recurring')" (click)="setActiveTab($event)"><i
-                            class="fa fa-fw fa-recycle icon">&nbsp;</i>Recurring</a>
-                </li>
-            </ul>
-        </li>
+            <li *ngIf="isUser"><a (click)="navgetToUrl('/insert_sub')" (click)="setActiveTab($event)"><i
+                class="fa-solid fa-fire icon">&nbsp;</i>Insert to Subscriber </a>
+            </li>
+        </ul>
+    </li>
+    <!-- <li>
+        <a> <i class="fa fa-fw fa-wrench icon "></i> VC/STB master <i
+                class='bx bx-chevron-right icon-right'></i></a>
+        <ul class="side-dropdown">
+            <li><a (click)="navgetToUrl('/chipid')"><i class="fa fa-fw fa-microchip icon ">&nbsp;</i>ChipID and
+                    Model
+                </a> </li>
+            <li><a (click)="navgetToUrl('/stb_bill')"><i class="fa fa-fw fa-dollar icon ">&nbsp;</i>STB Bill
+                </a> </li>
+        </ul>
+    </li> -->
+    <li *ngIf="isUser">
+        <a >  <mat-icon class="icon">featured_play_list</mat-icon>  Bulk operation <i
+                class='bx bx-chevron-right icon-right'></i></a>
+        <ul class="side-dropdown">
+            <li><a (click)="navgetToUrl('/subscriber_import')" (click)="setActiveTab($event)"><i
+                        class="fa fa-fw fa-user icon">&nbsp;</i>Subscriber
+                    Import </a> </li>
+            <li><a (click)="navgetToUrl('/activation')" (click)="setActiveTab($event)"><i
+                        class="fa fa-fw fa-plus-square icon ">&nbsp;</i>Activation </a> </li>
+            <li><a (click)="navgetToUrl('/deactivation')" (click)="setActiveTab($event)"><i
+                        class="fa fa-fw fa-minus-square icon">&nbsp;</i>
+                    Deactivation</a></li>
+            <li><a (click)="navgetToUrl('/addon_activation')" (click)="setActiveTab($event)"><i
+                        class="fa fa-fw fa-plus-square icon">&nbsp;</i>Addon Activation </a></li>
+            <li><a (click)="navgetToUrl('/Alacarte_Activation')" (click)="setActiveTab($event)"><i
+                        class="fa fa-fw fa-plus-square icon">&nbsp;</i>Alacarte
+                    Activation</a></li>
+            <li><a (click)="navgetToUrl('/Bulk_Package_Updation')" (click)="setActiveTab($event)"><i
+                        class="fa fa-fw fa-circle-o icon">&nbsp;</i>Bulk Package Updation</a>
+            </li>
+            <li><a (click)="navgetToUrl('/Subscription_Extend')" (click)="setActiveTab($event)"><i
+                        class="fa fa-fw fa-cubes icon">&nbsp;</i>Subscription Extend</a>
+            </li>
+            <li><a (click)="navgetToUrl('/Bulk_Base_Change')" (click)="setActiveTab($event)"><i
+                        class="fa fa-fw fa-exchange icon">&nbsp;</i>Bulk
+                    Base Change</a>
+            </li>
+            <li><a (click)="navgetToUrl('/Bulk_Refresh')" (click)="setActiveTab($event)"><i
+                        class="fa fa-fw fa-refresh icon">&nbsp;</i>Bulk
+                    Refresh</a>
+            </li>
+            <li><a (click)="navgetToUrl('/Recurring')" (click)="setActiveTab($event)"><i
+                class="fa-regular fa-registered icon">&nbsp;</i>Recurring</a>
+            </li>
+        </ul>
+    </li>
 
-        <li *ngIf="isUser ">
-            <a> <i class="fa fa-fw fa-television icon"></i> Local Broadcasting <i
-                    class='bx bx-chevron-right icon-right'></i></a>
-            <ul class="side-dropdown">
-                <li><a (click)="navgetToUrl('/payment_channel')" (click)="setActiveTab($event)"><i
-                            class="	fa fa-toggle-right icon" style="margin-right: 0px;"></i>Payment Channel Master </a>
-                </li>
-                <li><a (click)="navgetToUrl('/local_payment')" (click)="setActiveTab($event)"><i
-                            class="fa fa-toggle-right icon " style="margin-right: 0px;"></i>Local Broadcaster
-                        Creation</a> </li>
-
-            </ul>
-        </li>
+    <li *ngIf="isUser ">
+        <a>  <mat-icon class="icon">control_camera</mat-icon> Local Broadcasting <i
+                class='bx bx-chevron-right icon-right'></i></a>
+        <ul class="side-dropdown">
+            <li><a (click)="navgetToUrl('/payment_channel')" (click)="setActiveTab($event)"><i
+                class="fa-regular fa-newspaper icon" style="margin-right: 0px;"></i>Payment Channel Master </a>
+            </li>
+            <li><a (click)="navgetToUrl('/local_payment')" (click)="setActiveTab($event)"><i
+                        class="fa fa-fw fa-recycle icon " style="margin-right: 0px;"></i>Local Broadcaster
+                    Creation</a> </li>
+        </ul>
+    </li>
         <!-- <li class="mb-3" *ngIf="isUser || isReception ">
             <a> <i class="fa fa-fw fa-history icon "></i> Reports <i class='bx bx-chevron-right icon-right'></i></a>
             <ul class="side-dropdown">
-                <li><a (click)="navgetToUrl('/')" (click)="setActiveTab($event)"><i
+                <li><a (click)="navgetToUrl('/traiReports')" (click)="setActiveTab($event)"><i
                             class="fa fa-fw fa-paper-plane icon">&nbsp;</i>TRAI Reports </a>
                 </li>
-                <li><a (click)="navgetToUrl('/')" (click)="setActiveTab($event)"><i
+                <li><a (click)="navgetToUrl('/msoReports')" (click)="setActiveTab($event)"><i
                             class="fa fa-fw fa-qq icon">&nbsp;</i>MSO
                         Reports </a> </li>
-                <li><a (click)="navgetToUrl('/')" (click)="setActiveTab($event)"><i
+                <li><a (click)="navgetToUrl('/historyReports')" (click)="setActiveTab($event)"><i
                             class="fa fa-fw fa-star icon">&nbsp;</i> HISTORY Reports</a></li>
 
             </ul>
@@ -384,6 +383,24 @@
                             <div class="tooltip">LOGOUT</div>
                         </div>
                     </div>
+                    <!-- <div class="container">
+                        <div class="navigation">
+                          <div class="user-box">
+                            <div class="image-box">
+                              <img src="https://i.pravatar.cc/150?img=49" alt="avatar">
+                            </div>
+                            <p class="username">Jenifer Lopez</p>
+                          </div>
+                          <div class="menu-toggle"></div>
+                          <ul class="menu"> 
+                            <li><a href="#"><ion-icon name="person-outline"></ion-icon>Profile</a></li>
+                            <li><a href="#"><ion-icon name="chatbox-outline"></ion-icon>Messages</a></li>
+                            <li><a href="#"><ion-icon name="notifications-outline"></ion-icon>Notification</a></li>
+                            <li><a href="#"><ion-icon name="cog-outline"></ion-icon>Settings</a></li>
+                        <li><a href="#"><ion-icon name="log-out-outline"></ion-icon>Logout</a></li>
+                        </ul>
+                      </div>
+                      </div> -->
                     <!-- <div class="user-profile d-flex align-items-center" style="color: rgb(212, 210, 210);">
                         <img src="assets/images/user.png" alt="User"
                             style="width: 28px; height: 28px; border-radius: 50%; margin-right: 8px;">

@@ -9,7 +9,7 @@
             <div class="input_box col-12 col-md-6">
                 <div class=" mb-3">
                     <span for="package_logo" class="form-label">Package Logo</span>
-                    <input type="file" class="" id="package_logo"
+                    <input type="file" class="" id="package_logo" formControlName="package_logo"
                         (change)="onFileChange($event)" placeholder="Enter package logo" accept=".png">
                         <div *ngIf="createpackageForm.get('package_logo')?.invalid && createpackageForm.get('package_logo')?.touched" class="error-message">
                             Package Logo is required.
@@ -98,7 +98,7 @@
                 <div class=" mb-3">
                     <span for="commission" class="me-2">Commission</span>
                     <input type="email" class="" id="commission" formControlName="commission"
-                        (input)="calculateMsoCommission()" placeholder="Enter Mso Commission">
+                        (input)="calculateMsoCommission('commission')" placeholder="Enter Mso Commission">
                     <div *ngIf="createpackageForm.get('commission')?.invalid && createpackageForm.get('commission')?.touched"
                         class="error-message">
                         Commission is required.
@@ -110,10 +110,10 @@
             <!-- Mso Commission -->
             <div class="input_box col-12 col-md-6">
                 <div class=" mb-3">
-                    <span for="package_desc" class="me-2">Mso Commission</span>
-                    <input type="text" class="" [disabled]="true"  [value]="mso_amount" readonly
+                    <span for="mso_amount" class="me-2">Mso Commission</span>
+                    <input type="text" class="" [disabled]="true"  [value]="mso_amount" readonly formControlName="mso_amount"
                         placeholder="Mso Commission">
-                    <div *ngIf="createpackageForm.get('package_desc')?.invalid && createpackageForm.get('package_desc')?.touched"
+                    <div *ngIf="createpackageForm.get('mso_amount')?.invalid && createpackageForm.get('mso_amount')?.touched"
                         class="error-message">
                         Mso Commission is required.
                     </div>
@@ -124,7 +124,7 @@
                     <span for="ispercentage" class="me-2">Is percentage</span>
                     <div class="toggle-button-cover">
                         <div class="button b2" id="button-10">
-                            <input type="checkbox" class="checkbox" checked id="ispercentage"  (input)="calculateMsoCommission()" formControlName="ispercentage" />
+                            <input type="checkbox" class="checkbox" checked id="ispercentage"  (input)="calculateMsoCommission('percentage')" formControlName="ispercentage" />
                             <div class="knobs">
                                 <span>YES</span>
                             </div>

@@ -30,10 +30,13 @@
                     <label class="label-text ">Select Membership</label>
                 </div>
                 <div class=" col-12 col-md-6">
-                    <select style="color: rgb(17, 0, 0);" [(ngModel)]="lcogroupid" >
-                        <option value="" selected style="color: rgb(19, 17, 17);">SELECT LCO MEMBERSHIP </option>
-                        <option *ngFor="let lcomember of lcomembershipList" [value]="lcomember.value">{{
-                            lcomember.name}}</option>
+                    <select style="color: rgb(17, 0, 0);" [(ngModel)]="lcogroupid">
+                        <option value="" selected style="color: rgb(19, 17, 17);">
+                            SELECT LCO MEMBERSHIP
+                        </option>
+                        <option *ngFor="let lcomember of lcomembershipList" [value]="lcomember.value">
+                            {{ lcomember.name }}
+                        </option>
                     </select>
                 </div>
             </div>

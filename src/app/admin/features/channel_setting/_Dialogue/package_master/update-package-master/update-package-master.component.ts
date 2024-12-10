@@ -3,6 +3,7 @@ import { FormBuilder, FormGroup } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { BaseService } from 'src/app/_core/service/base.service';
 import { StorageService } from 'src/app/_core/service/storage.service';
+import { SwalService } from 'src/app/_core/service/swal.service';
 import Swal from 'sweetalert2';
 interface updateRequestbody {
   username: any,
@@ -16,16 +17,18 @@ interface updateRequestbody {
 })
 export class UpdatePackageMasterComponent implements OnInit {
   product_id: any;
-  isactive: boolean = false;
+  ispercentage: boolean = false;
   username: any;
   role: any;
   packageMasterForm!: FormGroup;
-
+  submitted: boolean = false;
   constructor(public dialogRef: MatDialogRef<UpdatePackageMasterComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: any, private userService: BaseService, private storageService: StorageService,private fb: FormBuilder) {
+    @Inject(MAT_DIALOG_DATA) public data: any, private userService: BaseService, private swal: SwalService, private storageService: StorageService, private fb: FormBuilder) {
     console.log(data);
     this.product_id = data.cas_product_id;
-    this.isactive = data._active;
+    this.ispercentage = data.isactive;
+    console.log(this.ispercentage);
+    
     this.username = storageService.getUsername();
     this.role = storageService.getUserRole();
 
@@ -38,56 +41,42 @@ export class UpdatePackageMasterComponent implements OnInit {
   }
 
   UpdatePackagemaster() {
-    let requestBody: updateRequestbody = {
-      // broadcastername: broadcastername,
-      username: this.username,
-      role: this.role,
-      // isactive: isactive,
-      id: this.product_id,
-    };
-    console.log(requestBody); Swal.fire({
-      title: "Are you sure?",
-      text: "You won't be able to revert this!",
-      icon: "warning",
-      showCancelButton: true,
-      confirmButtonColor: "#3085d6",
-      cancelButtonColor: "#d33",
-      confirmButtonText: "Yes, Change it!"
-    }).then((result) => {
-      if (result.isConfirmed) {
+    this.submitted = true;
+    // let requestBody: updateRequestbody = {
+    //   // broadcastername: broadcastername,
+    //   username: this.username,
+    //   role: this.role,
+    //   isactive: this.ispercentage,
+    //   id: this.product_id,
+    // };
+    // console.log(requestBody);
+    this.swal.Loading();
+
+    this.userService.UpdatePackagemasterList(this.role, this.username, this.product_id,!this.ispercentage).subscribe(
+      (res) => {
+        console.log(res);
         Swal.fire({
-          title: 'Updateing...',
-          text: 'Please wait while the Product ID is being updated',
-          allowOutsideClick: false,
-          didOpen: () => {
-            Swal.showLoading(null); 
-          }
+          position: "center",
+          icon: "success",
+          title: "Your update was successful",
+          showConfirmButton: false,
+          timer: 1000
+        }).then(() => {
+          // window.location.reload();
         });
-        // this.userService.UpdatePackagemasterList(this.role,this.username, this.product_id,).subscribe(
-        //   (res) => {
-        //     console.log(res);
-        //     Swal.fire({
-        //       position: "center",
-        //       icon: "success",
-        //       title: "Your update was successful",
-        //       showConfirmButton: false,
-        //       timer: 1000
-        //     }).then(() => {
-        //       window.location.reload();
-        //     });
-        //   },
-        //   (err) => {
-        //     Swal.fire({
-        //       position: 'center',
-        //       icon: 'error',
-        //       title: 'Error',
-        //       text: err?.error?.message,
-        //       showConfirmButton: false,
-        //       timer: 1500
-        //     });
-        //   }
-        // );
+      },
+      (err) => {
+        Swal.fire({
+          position: 'center',
+          icon: 'error',
+          title: 'Error',
+          text: err?.error?.message,
+          showConfirmButton: false,
+          timer: 1500
+        });
       }
-    });
+    );
   }
+
 }
+

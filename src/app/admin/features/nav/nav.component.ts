@@ -34,13 +34,14 @@ export class NavComponent implements OnInit, AfterViewInit {
   isReception: boolean = false;
   isSpecial: boolean = false;
   isDropdownOpen: boolean = false;
+
   constructor(private router: Router, private breakpointObserver: BreakpointObserver, private cdr: ChangeDetectorRef, private userservice: BaseService, private storageservice: StorageService) {
     this.breakpointChanged();
     this.role = storageservice.getUserRole();
     console.log(this.role);
 
     this.username = storageservice.getUsername();
-    if (this.role.includes('ROLE_USER')) {
+    if (this.role.includes('ROLE_ADMIN')) {
       this.isUser = true;
       this.isReception = false;
       this.isSpecial = false;
@@ -56,6 +57,14 @@ export class NavComponent implements OnInit, AfterViewInit {
       this.isSpecial = true;
       this.role = 'SPECIAL';
     }
+    // let menuToggle = document.querySelector('.menu-toggle') as HTMLElement;
+    // let navigation = document.querySelector('.navigation') as HTMLElement;
+
+    // if (menuToggle && navigation) {
+    //   menuToggle.onclick = function () {
+    //     navigation.classList.toggle('active');
+    //   };
+    // }
 
   }
 
@@ -64,7 +73,7 @@ export class NavComponent implements OnInit, AfterViewInit {
     // setInterval(() => {
     //   this.currentTime = new Date();
     // }, 1000);
-    this.setActive("");
+    // this.setActive("");
     const sidemenuLinks = document.querySelectorAll('.side-menu li a');
     // const sidedropdownmenuLinks = document.querySelectorAll('.side-menu li ul li a');
     sidemenuLinks.forEach(link => {
@@ -81,6 +90,8 @@ export class NavComponent implements OnInit, AfterViewInit {
     //     link.classList.add('active');
     //   });
     // });
+
+
 
 
   }
@@ -211,7 +222,8 @@ export class NavComponent implements OnInit, AfterViewInit {
         // Handle error from the API call
         Swal.fire({
           title: 'Error!',
-          text: 'An error occurred while fetching subscriber details.',
+          text: error?.error?.getsmartcardlistbysubid.searchname
+            || 'An error occurred while fetching subscriber details.',
           icon: 'error',
           confirmButtonText: 'OK'
         });

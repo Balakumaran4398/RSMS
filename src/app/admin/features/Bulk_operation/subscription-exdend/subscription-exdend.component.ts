@@ -44,62 +44,65 @@ export class SubscriptionExdendComponent implements OnInit {
   username: any;
   remarks = 'update_subscription';
   date: any;
+  selectedDate: any;
   optype: any;
   constructor(private storageservice: StorageService, private excelService: ExcelService, private userservice: BaseService, private swal: SwalService) {
     this.role = storageservice.getUserRole();
     this.username = storageservice.getUsername();
   }
   ngOnInit(): void {
-
+    this.date = new Date().toISOString().split('T')[0];
+    this.selectedDate = this.date; 
+    this.refresh();
   }
   getData() {
-    this.userservice.getSubscriptionDataExtendList(this.role, this.username, this.date, this.remarks, 8)
-      // .subscribe((data: any) => {
-      //   this.rowData = data;
-      //   console.log(this.rowData);
-
-      // });
-      .subscribe(
-        (response: HttpResponse<any[]>) => { // Expect HttpResponse<any[]>
-          if (response.status === 200) {
-            this.rowData = response.body;
-            Swal.fire('Success', 'Data updated successfully!', 'success');
-          } else if (response.status === 204) {
-            Swal.fire('No Content', 'No data available for the given criteria.', 'info');
-          }
-        },
-        (error) => {
-          if (error.status === 400) {
-            Swal.fire('Error 400', 'Bad Request. Please check the input.', 'error');
-          } else if (error.status === 500) {
-            Swal.fire('Error 500', 'Internal Server Error. Please try again later.', 'error');
-          } else {
-            Swal.fire('Error', 'Something went wrong. Please try again.', 'error');
-          }
+    this.rowData=[];
+    const dateToPass = this.selectedDate || this.date;
+    console.log(dateToPass);
+    console.log(this.date);
+    
+    this.userservice.getSubscriptionDataExtendList(this.role, this.username, dateToPass, this.remarks, 8)
+    .subscribe(
+      (response: HttpResponse<any[]>) => { // Expect HttpResponse<any[]>
+        if (response.status === 200) {
+          this.rowData = response.body;
+          // this.swal.Success_200();
+        } else if (response.status === 204) {
+          this.swal.Success_204();
         }
-      );
+      },
+      (error) => {
+        if (error.status === 400) {
+          this.swal.Error_400();
+        } else if (error.status === 500) {
+          this.swal.Error_500();
+        } else {
+          Swal.fire('Error', 'Something went wrong. Please try again.', 'error');
+        }
+      }
+    );
   }
   refresh() {
     this.userservice.getBulkOperationRefreshList(this.role, this.username, this.remarks, 8)
-      .subscribe(
-        (response: HttpResponse<any[]>) => { // Expect HttpResponse<any[]>
-          if (response.status === 200) {
-            this.rowData = response.body;
-            Swal.fire('Success', 'Data updated successfully!', 'success');
-          } else if (response.status === 204) {
-            Swal.fire('No Content', 'No data available for the given criteria.', 'info');
-          }
-        },
-        (error) => {
-          if (error.status === 400) {
-            Swal.fire('Error 400', 'Bad Request. Please check the input.', 'error');
-          } else if (error.status === 500) {
-            Swal.fire('Error 500', 'Internal Server Error. Please try again later.', 'error');
-          } else {
-            Swal.fire('Error', 'Something went wrong. Please try again.', 'error');
-          }
+    .subscribe(
+      (response: HttpResponse<any[]>) => { // Expect HttpResponse<any[]>
+        if (response.status === 200) {
+          this.rowData = response.body;
+          // this.swal.Success_200();
+        } else if (response.status === 204) {
+          this.swal.Success_204();
         }
-      );
+      },
+      (error) => {
+        if (error.status === 400) {
+          this.swal.Error_400();
+        } else if (error.status === 500) {
+          this.swal.Error_500();
+        } else {
+          Swal.fire('Error', 'Something went wrong. Please try again.', 'error');
+        }
+      }
+    );
   }
   onGridReady = () => {
     // this.userservice.GetAllUser('all',this.token.getUsername(),'0000-00-00','0000-00-00').subscribe((data) => {

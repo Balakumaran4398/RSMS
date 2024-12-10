@@ -56,13 +56,23 @@ export class SpecialareachangeComponent implements OnInit {
   constructor(public dialog: MatDialog, private userservice: BaseService, private storageService: StorageService, private swal: SwalService) {
     this.username = storageService.getUsername();
     this.role = storageService.getUserRole();
+    this.columnDefs = [
+      { headerName: "S.No", lockPosition: true, headerCheckboxSelection: true, checkboxSelection: true, width: 100, },
+      { headerName: "CUSTOMER NAME", field: 'customername', width: 250 },
+      { headerName: "FATHER NAME	", field: 'fathername', width: 200 },
+      { headerName: "SMARTCARD", field: 'smartcard', width: 250 },
+      { headerName: "AREA NAME", field: 'areaname', width: 250 },
+      { headerName: "STREET NAME", field: 'streetname', width: 250 },
+      { headerName: "ADDRESS", field: 'address', width: 250 },
+      { headerName: "MOBILE NO", field: 'mobileno', width: 220 },
+    ];
   }
   ngOnInit(): void {
     this.operatorlist();
 
   }
   selectTab(tab: string) {
-    this.rowData = [];
+    // this.rowData = [];
     this.selectedTab = tab;
     this.lco = '';
     this.area = '';
@@ -75,29 +85,28 @@ export class SpecialareachangeComponent implements OnInit {
 
 
   private updateColumnDefs(tab: string): void {
-    console.log(tab);
-
+    console.log(this.rowData = []);
     if (tab === 'areachange') {
       this.columnDefs = [
-        { headerName: "S.No", lockPosition: true, headerCheckboxSelection: true, checkboxSelection: true, },
-        { headerName: "CUSTOMER NAME", field: 'customername' },
-        { headerName: "FATHER NAME	", field: 'fathername' },
-        { headerName: "SMARTCARD", field: 'smartcard' },
-        { headerName: "AREA NAME", field: 'areaname' },
-        { headerName: "STREET NAME", field: 'streetname' },
-        { headerName: "ADDRESS", field: 'address' },
-        { headerName: "MOBILE NO", field: 'mobileno' },
+        { headerName: "S.No", lockPosition: true, headerCheckboxSelection: true, checkboxSelection: true, width: 100, },
+        { headerName: "CUSTOMER NAME", field: 'customername', width: 250 },
+        { headerName: "FATHER NAME	", field: 'fathername', width: 200 },
+        { headerName: "SMARTCARD", field: 'smartcard', width: 250 },
+        { headerName: "AREA NAME", field: 'areaname', width: 250 },
+        { headerName: "STREET NAME", field: 'streetname', width: 250 },
+        { headerName: "ADDRESS", field: 'address', width: 250 },
+        { headerName: "MOBILE NO", field: 'mobileno', width: 220 },
       ];
     } else if (tab === 'lcochange') {
       this.columnDefs = [
-        { headerName: "S.No", lockPosition: true, headerCheckboxSelection: true, checkboxSelection: true, },
-        { headerName: "SMARTCARD", field: 'smartcard' },
-        { headerName: "BOXID", field: 'boxid' },
-        { headerName: "SUBSCRIBER NAME	", field: 'customername' },
-        { headerName: "MOBILE NO", field: 'mobileno' },
-        { headerName: "AREA NAME", field: 'areaname' },
-        { headerName: "STREET NAME", field: 'streetname' },
-        { headerName: "EXPIRY DATE", field: 'expirydate' },
+        { headerName: "S.No", lockPosition: true, headerCheckboxSelection: true, checkboxSelection: true, width: 100 },
+        { headerName: "SMARTCARD", field: 'smartcard', width: 250 },
+        { headerName: "BOXID", field: 'boxid', width: 200 },
+        { headerName: "SUBSCRIBER NAME	", field: 'customername', width: 250 },
+        { headerName: "MOBILE NO", field: 'mobileno', width: 250 },
+        { headerName: "AREA NAME", field: 'areaname', width: 250 },
+        { headerName: "STREET NAME", field: 'streetname', width: 250 },
+        { headerName: "EXPIRY DATE", field: 'expirydate', width: 200 },
       ];
     }
   }
@@ -132,15 +141,36 @@ export class SpecialareachangeComponent implements OnInit {
     if (this.lco) {
       this.userservice.getAreaListByOperatorid(this.role, this.username, this.lco)
         .subscribe((data: any) => {
+          console.log(data);
+          
           console.log(data?.areaid);
-          this.areaList = Object.keys(data?.areaid || {}).map(key => {
-            const name = key.replace(/\(\d+\)$/, '').trim();
-            const value = data.areaid[key];
+          this.areaList = Object.keys(data).map(key => {
+            const name = key.replace(/\(\d+\)$/, '').trim(); 
+            const value = data[key];
             return { name, value };
           });
           console.log(this.areaList);
         });
     }
+    this.userservice.getLcochangeSubscriberList(this.role, this.username, this.lco, this.area, 0).subscribe(
+      (response: HttpResponse<any[]>) => {
+        if (response.status === 200) {
+          this.rowData = response.body;
+          // this.swal.Success_200();
+        } else if (response.status === 204) {
+          this.swal.Success_204();
+        }
+      },
+      (error) => {
+        if (error.status === 400) {
+          this.swal.Error_400();
+        } else if (error.status === 500) {
+          this.swal.Error_500();
+        } else {
+          Swal.fire('Error', 'Something went wrong. Please try again.', 'error');
+        }
+      }
+    );
   }
   onSubscriberStatusLCOChange() {
     console.log(this.lco);
@@ -152,9 +182,9 @@ export class SpecialareachangeComponent implements OnInit {
           this.rowData = data;
           console.log(this.rowData);
           console.log(data?.areaid);
-          this.areaList = Object.keys(data?.areaid || {}).map(key => {
-            const name = key.replace(/\(\d+\)$/, '').trim();
-            const value = data.areaid[key];
+          this.areaList = Object.keys(data).map(key => {
+            const name = key.replace(/\(\d+\)$/, '').trim(); 
+            const value = data[key]; 
             return { name, value };
           });
           console.log(this.areaList);
@@ -190,15 +220,35 @@ export class SpecialareachangeComponent implements OnInit {
     if (this.area) {
       this.userservice.getStreetListByAreaid(this.role, this.username, this.area)
         .subscribe((data: any) => {
+          console.log(data);
           console.log(data?.streetid);
-          this.streetList = Object.keys(data?.streetid || {}).map(key => {
-            const name = key.replace(/\(\d+\)$/, '').trim();
-            const value = data.streetid[key];
+          this.streetList = Object.keys(data).map(key => {
+            const name = key.replace(/\(\d+\)$/, '').trim(); 
+            const value = data[key]; 
             return { name, value };
           });
           console.log(this.streetList);
         });
     }
+    this.userservice.getLcochangeSubscriberList(this.role, this.username, this.lco, this.area, 0).subscribe(
+      (response: HttpResponse<any[]>) => {
+        if (response.status === 200) {
+          this.rowData = response.body;
+          // this.swal.Success_200();
+        } else if (response.status === 204) {
+          this.swal.Success_204();
+        }
+      },
+      (error) => {
+        if (error.status === 400) {
+          this.swal.Error_400();
+        } else if (error.status === 500) {
+          this.swal.Error_500();
+        } else {
+          Swal.fire('Error', 'Something went wrong. Please try again.', 'error');
+        }
+      }
+    );
   }
   onAreaStatusLCOChange() {
     console.log(this.area);
@@ -208,9 +258,9 @@ export class SpecialareachangeComponent implements OnInit {
       this.userservice.getStreetListByAreaid(this.role, this.username, this.area)
         .subscribe((data: any) => {
           console.log(data?.streetid);
-          this.streetList = Object.keys(data?.streetid || {}).map(key => {
-            const name = key.replace(/\(\d+\)$/, '').trim();
-            const value = data.streetid[key];
+          this.streetList = Object.keys(data).map(key => {
+            const name = key.replace(/\(\d+\)$/, '').trim(); 
+            const value = data[key]; 
             return { name, value };
           });
           console.log(this.streetList);
@@ -238,7 +288,7 @@ export class SpecialareachangeComponent implements OnInit {
 
   }
   onSubscriberStreetLCOChange() {
-    this.rowData = [];
+    // this.rowData = [];
     console.log(this.street);
     this.userservice.getLcochangeSubscriberList(this.role, this.username, this.lco, this.area, this.street).subscribe(
       (response: HttpResponse<any[]>) => {
@@ -289,7 +339,8 @@ export class SpecialareachangeComponent implements OnInit {
         if (response.status === 200) {
           // this.updateColumnDefs(this.selectedTab);
           this.rowData = response.body;
-          this.swal.Success_200();
+          console.log(this.rowData);
+          // this.swal.Success_200();
         } else if (response.status === 204) {
           this.swal.Success_204();
         }

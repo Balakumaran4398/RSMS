@@ -5,6 +5,7 @@ import { StorageService } from 'src/app/_core/service/storage.service';
 import Swal from 'sweetalert2';
 import { DatePipe } from '@angular/common';
 import { SwalService } from 'src/app/_core/service/swal.service';
+import { Any } from 'node_modules1/@sigstore/protobuf-specs/dist/__generated__/google/protobuf/any';
 
 
 @Component({
@@ -20,49 +21,60 @@ export class CreateSubscriberComponent {
   exampleFormat: string | undefined;
   form!: FormGroup;
   operatorid: any;
+  operatorname: any;
   areaid: any;
   streetid: any;
   idproof: any;
   casformid: any;
   customername: any;
   isLinear = false;
-  // ProofForm: FormGroup ;
   selectedIdProof: string = '';
   selectedAddProof: string = '';
 
-  lco_list: { [key: string]: number } = {};
-  area_list: { [key: string]: number } = {};
-  street_list: { [key: string]: number } = {};
+  lco_list: any[] = [];
+  area_list: any[] = [];
+  street_list: any[] = [];
   id_proof_list: { [key: string]: number } = {};
   add_proof_list: { [key: string]: number } = {};
   filterd_proof_list: any[] = [];
 
   searchTerm: string = '';
+  searchAreaTerm: string = '';
+  searchStreetTerm: string = '';
+  searchIdTerm: string = '';
+  searchAddressTerm: string = '';
   username: any;
   role: any;
   selectedaddproof_1: any;
-  selectedAddProofType: string = '';  // To store the label like "Aadhaar Card"
+  selectedAddProofType: string = '';
   selectedIDProofType: string = '';
-  // proofType:any;
   installaddress: string = '';
   billingaddress: string = '';
 
   addressproof: any;
   idprooftypeid: any;
   idproofid: any;
+
+  filteredOperators: any[] = [];
+  filteredAreas: any[] = [];
+  filteredStreet: any[] = [];
+  selectedOperator: any;
+  selectedArea: any;
+  selectedStreet: any;
   constructor(private formBuilder: FormBuilder, private userservice: BaseService, private swal: SwalService, private cdr: ChangeDetectorRef, private storageservice: StorageService, private datePipe: DatePipe) {
     this.username = storageservice.getUsername();
     this.role = storageservice.getUserRole();
-    userservice.getOperatorListforSubInsert(this.role, this.username).subscribe((data: any) => {
-      console.log(data);
-      this.lco_list = data.operatorid;
-      console.log(this.lco_list);
+    this.userservice.getOperatorListforSubInsert(this.role, this.username).subscribe((data: any) => {
+      this.lco_list = Object.keys(data).map(key => {
+        const value = data[key];
+        const name = key;
+        return { name: name, value: value };
+      });
+      this.filteredOperators = this.lco_list;
     })
-
   }
 
   ngOnInit(): void {
-
     this.form = this.formBuilder.group(
       {
         operatorid: ['', Validators.required || 0],
@@ -82,14 +94,97 @@ export class CreateSubscriberComponent {
         addressproof: ['', [Validators.required] || 0],
         idproof: ['', [Validators.required] || 0],
         idprooftypeid: ['', Validators.required],
-        addressprooftypeid: ['', Validators.required]
+        addressprooftypeid: ['', Validators.required],
+        role: this.role,
+        username: this.username
       },
     );
+
+
     this.loadIdProofList();
     this.loadAddProofList();
   }
 
+  onSearchChange(event: any) {
+    this.searchTerm = event.target.value;;
 
+  }
+
+  onSearchAreaChange(event: any) {
+    this.searchAreaTerm = event.target.value;;
+  }
+  onSearchStreetChange(event: any) {
+    this.searchAreaTerm = event.target.value;;
+  }
+  onSearchIdChange(event: any) {
+    this.searchIdTerm = event.target.value;;
+  }
+  onSearchAddressChange(event: any) {
+    this.searchAddressTerm = event.target.value;
+  }
+  filterOperators(event: any): void {
+    const filterValue = event.target.value.toLowerCase();
+    this.filteredOperators = this.lco_list.filter(operator =>
+      operator.name.toLowerCase().includes(filterValue)
+    );
+
+  }
+  filterAreas(event: any): void {
+    const filterValue = event.target.value.toLowerCase();
+    this.filteredAreas = this.area_list.filter(area =>
+      area.name.toLowerCase().includes(filterValue)
+    );
+    this.area_list = Object.keys(event).map(key => {
+      const value = event[key];
+      const name = key;
+      return { name: name, value: value };
+    });
+  }
+  filterStreet(event: any): void {
+    const filterValue = event.target.value.toLowerCase();
+    this.filteredStreet = this.street_list.filter(street =>
+      street.name.toLowerCase().includes(filterValue)
+    );
+    this.street_list = Object.keys(event).map(key => {
+      const value = event[key];
+      const name = key;
+      return { name: name, value: value };
+    });
+  }
+
+  displayOperator(operator: any): string {
+    return operator ? operator.name : '';
+  }
+  displayArea(area: any): string {
+    return area ? area.name : '';
+  }
+  displayStreet(street: any): string {
+    return street ? street.name : '';
+  }
+
+  onAddProofChange(event: any): void {
+    const selectedValue = event.target.value;
+    this.selectedAddProofType = selectedValue.replace(/\(\d+\)/, '').trim();
+    this.form.get('addressproof')?.reset();
+    this.applyValidators(this.selectedAddProofType, 'addressproof');
+    const addressProofValue = this.form.get('addressproof')?.value;
+    if (addressProofValue && this.selectedAddProofType === this.selectedIDProofType) {
+      this.form.get('idproof')?.setValue(addressProofValue);
+      this.idproofid = addressProofValue;
+    }
+  }
+
+  onIDProofChange(event: any): void {
+    const selectedValue = event.target.value;
+    this.selectedIDProofType = selectedValue.replace(/\(\d+\)/, '').trim();
+    this.form.get('idproof')?.reset();
+    this.applyValidators(this.selectedIDProofType, 'idproof');
+    const addressProofValue = this.form.get('addressproof')?.value;
+    if (addressProofValue && this.selectedIDProofType === this.selectedAddProofType) {
+      this.form.get('idproof')?.setValue(addressProofValue);
+      this.idproofid = addressProofValue;
+    }
+  }
   filteredLcoKeys(): string[] {
     const keys = Object.keys(this.lco_list);
     if (!this.searchTerm) {
@@ -101,20 +196,23 @@ export class CreateSubscriberComponent {
   }
   filteredAreaKeys(): string[] {
     const keys = Object.keys(this.area_list);
-    if (!this.searchTerm) {
+    if (!this.searchAreaTerm) {
       return keys;
     }
     return keys.filter(key =>
-      key.toLowerCase().includes(this.searchTerm.toLowerCase())
+      key.toLowerCase().includes(this.searchAreaTerm.toLowerCase())
     );
   }
+
   filteredStreetKeys(): string[] {
-    const keys = Object.keys(this.street_list);
-    if (!this.searchTerm) {
+    const keys = Object.keys(this.street_list).map(key => key.replace(/\(\d+\)/, '').trim());
+
+    // const keys = Object.keys(this.street_list);
+    if (!this.searchStreetTerm) {
       return keys;
     }
     return keys.filter(key =>
-      key.toLowerCase().includes(this.searchTerm.toLowerCase())
+      key.toLowerCase().includes(this.searchStreetTerm.toLowerCase())
     );
   }
   filteredIdProofKeys(): string[] {
@@ -123,94 +221,23 @@ export class CreateSubscriberComponent {
   filteredADDProofKeys(): any[] {
     return Object.keys(this.add_proof_list);
   }
-  // filteredADDProofKeys(): { name: string, id: number }[] {
-  //   return Object.keys(this.add_proof_list)
-  //     .map(key => {
-  //       const name = key.split('(')[0].trim(); 
-  //       const id = this.add_proof_list[key];  
-  //       return { name, id };
-  //     })
-  //     .sort((a, b) => a.name.localeCompare(b.name)); // Sort alphabetically by name
-  // }
-
-  // onIDProofChange(event: any): void {
-  //   const selectedValue = event.target.value;
-  //   const match = selectedValue.match(/\((\d+)\)/);
-  //   const value = match ? match[1] : null;
-  //   this.selectedIDProofType = selectedValue.replace(/\(\d+\)/, '').trim();
-  //   this.form.get('idproof')?.reset();
-  //   this.applyValidators(this.selectedIDProofType, 'idproof');
-  // }
-  // onAddProofChange(event: any): void {
-  //   console.log(event.target.value);
-  //   console.log(this.form.value);
-
-  //   const selectedValue = event.target.value;
-  //   const match = selectedValue.match(/\((\d+)\)/);
-  //   const value = match ? match[1] : null;
-  //   this.selectedAddProofType = selectedValue.replace(/\(\d+\)/, '').trim();
-  //   console.log(this.selectedAddProofType);
-  //   this.form.get('addressproof')?.reset();
-  //   this.applyValidators(this.selectedAddProofType, 'addressproof');
-  // }
-
-  
-
-  
-
-
-  onAddProofChange(event: any): void {
-    const selectedValue = event.target.value;
-    this.selectedAddProofType = selectedValue.replace(/\(\d+\)/, '').trim();
-
-    // Reset and apply validators to addressproof
-    this.form.get('addressproof')?.reset();
-    this.applyValidators(this.selectedAddProofType, 'addressproof');
-
-    // Sync Address Proof value to ID Proof if applicable
-    const addressProofValue = this.form.get('addressproof')?.value;
-    if (addressProofValue && this.selectedAddProofType === this.selectedIDProofType) {
-      this.form.get('idproof')?.setValue(addressProofValue);
-      this.idproofid = addressProofValue; // Assign addressproof value to idproofid
-    }
-  }
-
-  onIDProofChange(event: any): void {
-    const selectedValue = event.target.value;
-    this.selectedIDProofType = selectedValue.replace(/\(\d+\)/, '').trim();
-
-    // Apply validators for the selected ID Proof type
-    this.form.get('idproof')?.reset();
-    this.applyValidators(this.selectedIDProofType, 'idproof');
-
-    // Sync ID Proof with Address Proof value if the types match
-    const addressProofValue = this.form.get('addressproof')?.value;
-    if (addressProofValue && this.selectedIDProofType === this.selectedAddProofType) {
-      this.form.get('idproof')?.setValue(addressProofValue);
-      this.idproofid = addressProofValue; // Assign addressproof value to idproofid
-    }
-  }
-
 
   validateAddressProof(control: AbstractControl): { [key: string]: boolean } | null {
-    console.log('address proof');
-
     const ebBillPattern = /^EB\d{9}$/;
     const gasBillPattern = /^GAS\d{8}$/;
     const value = control.value;
 
     if (ebBillPattern.test(value) || gasBillPattern.test(value)) {
-      return { invalidAddressProof: true };  // Return error if it matches EB or Gas Bill
+      return { invalidAddressProof: true };
     }
 
-    return null;  // Return null if no error
+    return null;
   }
 
   getMaxLength(proofType: string): number {
-    // console.log(" getMaxLength          " + proofType);
     switch (proofType) {
       case 'Aadhaar Card':
-        return 12; // Includes spaces
+        return 12;
       case 'Voter Id':
         return 10;
       case 'Ration Card':
@@ -224,13 +251,11 @@ export class CreateSubscriberComponent {
       case 'No Proof':
         return 1;
       default:
-        return 20; // Default max length
+        return 20;
     }
   }
 
   getPattern(proofType: string): string {
-    // console.log("getPattern           " + proofType);
-
     switch (proofType) {
       case 'Aadhaar Card':
         return '\\d{12}';
@@ -273,8 +298,6 @@ export class CreateSubscriberComponent {
   }
   applyValidators(proofType: string, controlName: string): void {
     const control = this.form.get(controlName);
-    console.log(proofType);
-
     if (control) {
       control.clearValidators();
 
@@ -397,7 +420,6 @@ export class CreateSubscriberComponent {
       (data: any) => {
         this.id_proof_list = data.idprooftypeid;
         this.cdr.detectChanges();
-        console.log("ID Proof List", this.id_proof_list);
       },
       error => {
         console.error('Error fetching ID Proof List', error);
@@ -408,9 +430,7 @@ export class CreateSubscriberComponent {
     this.userservice.getAddresProofList(this.role, this.username).subscribe(
       (data: any) => {
         this.add_proof_list = data.addressprooftypeid;
-        console.log(this.add_proof_list);
         this.cdr.detectChanges();
-        console.log("ADD Proof List", this.add_proof_list);
         this.filterd_proof_list = Object.keys(this.add_proof_list).map(key => {
           return {
             name: key.split('(')[0].trim(), // Extract name before '('
@@ -424,26 +444,25 @@ export class CreateSubscriberComponent {
     );
   }
   onSubmit(): void {
-
     this.submitted = true;
     let addressprooftypeid = this.form.get('addressprooftypeid')?.value
     const match = this.form.get('addressprooftypeid')?.value.match(/\((\d+)\)/);
-    const value = match ? match[1] : null;
+    const value = match ? match[1] : '';
     this.form.removeControl('addressprooftypeid');
     this.form.addControl('addressprooftypeid', new FormControl(value))
     let idprooftypeid = this.form.get('idprooftypeid')?.value
     const match1 = this.form.get('idprooftypeid')?.value.match(/\((\d+)\)/);
-    const value1 = match1 ? match[1] : null;
+    const value1 = match1 ? match[1] : '';
     this.form.removeControl('idprooftypeid');
     this.form.addControl('idprooftypeid', new FormControl(value1))
     let formsubmissiondate = this.form.get('formsubmissiondate')?.value
     let formsubmissiondateReplaced = formsubmissiondate.replace('T', ' ');
     this.form.removeControl('formsubmissiondate');
     this.form.addControl('formsubmissiondate', new FormControl(formsubmissiondateReplaced))
-    const errorFields = [
-      'address', 'customername', 'casformid', 'customernamelast', 'fathername',
-      'dateofbirth', 'installaddress', 'mobileno', 'landlineno', 'email',
-      'formsubmissiondate', 'addressproof', 'addressprooftypeid', 'idproof', 'idprooftypeid'
+    const errorFields = ['operatorid', 'areaid', 'streetid',
+      'customername', 'customernamelast', 'fathername',
+      'dateofbirth', 'mobileno', 'landlineno', 'email',
+      'formsubmissiondate', 'addressproof', 'addressprooftypeid', 'idproof', 'idprooftypeid', 'address', 'installaddress',
     ];
     this.swal.Loading();
     this.userservice.createSubscriber(this.form.value).subscribe(
@@ -460,10 +479,8 @@ export class CreateSubscriberComponent {
           timerProgressBar: true,
           showConfirmButton: false
         }).then(() => {
-          // this.ngOnInit()
           window.location.reload()
         });
-
       },
       (error) => {
         const errorMessage = errorFields
@@ -477,26 +494,17 @@ export class CreateSubscriberComponent {
           icon: 'error',
           title: 'Error',
           text: errorMessage,
-
-          // text: error?.error?.address || error?.error?.customername || error?.error?.casformid || error?.error?.customernamelast || error?.error?.fathername ||
-          //   error?.error?.dateofbirth || error?.error?.installaddress || error?.error?.mobileno || error?.error?.landlineno || error?.error?.email || error?.error?.formsubmissiondate || error?.error?.addressproof ||
-          //   error?.error?.addressprooftypeid || error?.error?.idproof || error?.error?.idprooftypeid || 'An error occurred while creating the subscriber.',
           timer: 3000,
           timerProgressBar: true,
           showConfirmButton: false
         }).then(() => {
           this.form.markAllAsTouched();
         });
-
-
-
       }
     );
   }
   onKeydown(event: KeyboardEvent) {
     const key = event.key;
-
-    // Allow digits only
     if (!/^\d$/.test(key) && key !== 'Backspace') {
       event.preventDefault();
     }
@@ -504,8 +512,6 @@ export class CreateSubscriberComponent {
   onKeydown_landline(event: KeyboardEvent) {
     const allowedKeys = ['Backspace', 'Tab', 'ArrowLeft', 'ArrowRight', '-', 'Delete'];
     const key = event.key;
-
-    // Allow digits (0-9), hyphen, and control keys
     if (!/^\d$/.test(key) && !allowedKeys.includes(key)) {
       event.preventDefault();
     }
@@ -513,41 +519,49 @@ export class CreateSubscriberComponent {
   get f(): { [key: string]: AbstractControl } {
     return this.form.controls;
   }
-  onSubscriberStatusChange() {
-    console.log(this.operatorid);
-    this.userservice.getAreaListByOperatorid(this.role, this.username, this.operatorid)
-      .subscribe((data: any) => {
-        console.log(data);
-        this.area_list = data.areaid || {};
-        console.log(this.area_list);
-        this.cdr.detectChanges();
+  onoperatorchange(operator: any): void {
+    this.selectedOperator = operator;
+    this.operatorid = operator.value;
+    this.form.patchValue({
+      operatorid: this.operatorid,
+    });
+    this.userservice.getAreaListByOperatorid(this.role, this.username, this.operatorid).subscribe((data: any) => {
+      this.area_list = Object.keys(data).map(key => {
+        const value = data[key];
+        const name = key;
+        return { name: name, value: value };
       });
+      this.filteredAreas = this.area_list;
+    })
   }
-  onAreaStatusChange() {
-    console.log(this.areaid);
-    this.form.patchValue({ streetid: '' });
-    this.userservice.getStreetListByAreaid(this.role, this.username, this.areaid)
-      .subscribe((data: any) => {
-        console.log(data);
-        this.street_list = data.streetid || {};
-        console.log(this.street_list);
-        this.cdr.detectChanges();
-      });
-  }
-  onStreetStatusChange() {
-    console.log('Selected Street:', this.streetid);
-    // this.userservice.Create_Street_list(this.role, this.username, this.street)
-    //   .subscribe((data: any) => {
-    //     console.log(data);
 
-    //   });
+  onAreaStatusChange(area: any): void {
+    this.selectedArea = area;
+    this.areaid = area.value;
+    this.form.patchValue({
+      areaid: this.areaid,
+    });
+    this.userservice.getStreetListByAreaid(this.role, this.username, this.areaid).subscribe((data: any) => {
+      this.street_list = Object.keys(data).map(key => {
+        const value = data[key];
+        const name = key;
+        return { name: name, value: value };
+      });
+      this.filteredStreet = this.street_list;
+    })
+  }
+
+  onStreetStatusChange(street: any) {
+    this.selectedStreet = street;
+    this.streetid = street.value;
+    this.form.patchValue({
+      streetid: this.streetid,
+    });
   }
   onReset(): void {
     this.submitted = false;
     this.form.reset();
   }
-
-
   onChange(event: Event) {
     const isChecked = (event.target as HTMLInputElement).checked;
     if (isChecked) {
@@ -557,14 +571,4 @@ export class CreateSubscriberComponent {
       this.installaddress = '';
     }
   }
-
-  // onChangeIdandAddress(event: Event) {
-  //   const isChecked = (event.target as HTMLInputElement).checked;
-  //   if (isChecked) {
-  //     this.idprooftypeid = this.addressproof;
-  //   } else {
-  //     this.addressproof = this.addressproof
-  //     this.installaddress = '';
-  //   }
-  // }
 }

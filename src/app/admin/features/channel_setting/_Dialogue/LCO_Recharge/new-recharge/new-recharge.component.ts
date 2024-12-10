@@ -24,6 +24,9 @@ export class NewRechargeComponent {
     { lable: "Cash", value: 2 },
     { lable: "Account Transfer", value: 3 },
   ];
+  filteredOperators: any[] = [];
+  selectedOperator: any;
+  operatorid: any;
   constructor(public dialogRef: MatDialogRef<NewRechargeComponent>, @Inject(MAT_DIALOG_DATA) public data: any, private fb: FormBuilder, private swal: SwalService, public dialog: MatDialog, public userService: BaseService, storageService: StorageService) {
     this.username = storageService.getUsername();
     this.role = storageService.getUserRole();
@@ -34,10 +37,34 @@ export class NewRechargeComponent {
         const name = key;
         return { name: name, value: value };
       });
+      this.filteredOperators = this.operatorList;
     })
   }
   toggleedit() {
     this.dialogRef.close();
+  }
+  onoperatorchange(operator: any): void {
+    console.log(operator);
+    this.selectedOperator = operator;
+    this.operatorid = operator.value;
+    if (operator.value === 0) {
+      this.operatorid = 0;
+      this.selectedOperator = { name: 'ALL Operator', value: 0 };
+    } else {
+      this.operatorid = operator.value;
+      console.log('operatorid', this.operatorid);
+    }
+    this.form.patchValue({
+      operatorid: this.operatorid,
+    });
+    this.userService.OperatorDetails(this.role, this.username, this.operatorid).subscribe(
+      (data: any) => {
+        console.log(data);
+        },
+      (error) => {
+        console.error('Error fetching operator details', error);
+      }
+    );
   }
   ngOnInit() {
     this.form = this.fb.group({
@@ -49,8 +76,16 @@ export class NewRechargeComponent {
       username: this.username
     });
   }
+  filterOperators(event: any): void {
+    const filterValue = event.target.value.toLowerCase();
+    this.filteredOperators = this.operatorList.filter(operator =>
+      operator.name.toLowerCase().includes(filterValue)
+    );
+  }
 
-
+  displayOperator(operator: any): string {
+    return operator ? operator.name : '';
+  }
 
   onSubmit() {
     if (this.form.valid) {
@@ -77,7 +112,7 @@ export class NewRechargeComponent {
         console.error(error);
         Swal.fire({
           title: 'Error!',
-          text: error?.error.message || error?.error.lcobusinessid || 'There was an issue adding the Recharge.',
+          text: error?.error.message || error?.error?.operatorid || error?.error.amount || error?.error.operatorid || error?.error.remarks || error?.error.lcobusinessid || 'There was an issue adding the Recharge.',
           icon: 'error'
         });
       }

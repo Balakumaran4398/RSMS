@@ -1,0 +1,184 @@
+<section class="wrapper ">
+    <div class="card">
+        <mat-accordion class="example-headers-align">
+            <mat-expansion-panel [expanded]="step() === 0" (opened)="setStep(0)" hideToggle>
+                <mat-expansion-panel-header>
+                    <mat-panel-title class="text2">Package based reports</mat-panel-title>
+                </mat-expansion-panel-header>
+                <div class="display">
+                    <main class="card_container mb-3 mx-2">
+                        <div class="info_container">
+                            <p class="description"> Logs of Creation and modification of packages for any particular
+                                period
+                            </p>
+                        </div>
+                        <div class="view_task_overlay"></div>
+                        <div class="left_overlay ENCOURS">
+                            <svg onClick="toggle_active_info(event)" class="plus_info_svg" fill="#ffffff" width="30px"
+                                height="30px" viewBox="0 0 36 36" version="1.1" preserveAspectRatio="xMidYMid meet"
+                                xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+                                stroke="#ffffff">
+                                <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                                <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
+                                <g id="SVGRepo_iconCarrier">
+                                    <path
+                                        d="M32,6H4A2,2,0,0,0,2,8V28a2,2,0,0,0,2,2H32a2,2,0,0,0,2-2V8A2,2,0,0,0,32,6Zm0,22H4V8H32Z"
+                                        class="clr-i-outline clr-i-outline-path-1"></path>
+                                    <path d="M9,14H27a1,1,0,0,0,0-2H9a1,1,0,0,0,0,2Z"
+                                        class="clr-i-outline clr-i-outline-path-2">
+                                    </path>
+                                    <path d="M9,18H27a1,1,0,0,0,0-2H9a1,1,0,0,0,0,2Z"
+                                        class="clr-i-outline clr-i-outline-path-3">
+                                    </path>
+                                    <path d="M9,22H19a1,1,0,0,0,0-2H9a1,1,0,0,0,0,2Z"
+                                        class="clr-i-outline clr-i-outline-path-4">
+                                    </path>
+                                    <rect x="0" y="0" width="36" height="36" fill-opacity="0"></rect>
+                                </g>
+                            </svg>
+                        </div>
+
+
+                    </main>
+                    <main class="card_container mb-3 mx-2">
+                        <section class="info_container">
+                            <!-- <span class="domain_status CLOTURER"> Done </span> -->
+                            <p class="description">Logs of Creation and modification of addonpackages for any particular
+                                period</p>
+
+                        </section>
+
+
+                        <div class="view_task_overlay"></div>
+                        <div class="left_overlay CLOTURER">
+                            <svg class="plus_info_svg" fill="#ffffff" width="30px" height="30px" viewBox="0 0 36 36"
+                                version="1.1" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg"
+                                xmlns:xlink="http://www.w3.org/1999/xlink" stroke="#ffffff">
+                                <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                                <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
+                                <g id="SVGRepo_iconCarrier">
+                                    <path
+                                        d="M32,6H4A2,2,0,0,0,2,8V28a2,2,0,0,0,2,2H32a2,2,0,0,0,2-2V8A2,2,0,0,0,32,6Zm0,22H4V8H32Z"
+                                        class="clr-i-outline clr-i-outline-path-1"></path>
+                                    <path d="M9,14H27a1,1,0,0,0,0-2H9a1,1,0,0,0,0,2Z"
+                                        class="clr-i-outline clr-i-outline-path-2">
+                                    </path>
+                                    <path d="M9,18H27a1,1,0,0,0,0-2H9a1,1,0,0,0,0,2Z"
+                                        class="clr-i-outline clr-i-outline-path-3">
+                                    </path>
+                                    <path d="M9,22H19a1,1,0,0,0,0-2H9a1,1,0,0,0,0,2Z"
+                                        class="clr-i-outline clr-i-outline-path-4">
+                                    </path>
+                                    <rect x="0" y="0" width="36" height="36" fill-opacity="0"></rect>
+                                </g>
+                            </svg>
+                        </div>
+
+                    </main>
+                    <main class="card_container mb-3 mx-2">
+                        <section class="info_container">
+                            <!-- <span class="domain_status ANNULE"> Canceled </span> -->
+                            <p class="description"> Logs of Creation and modification of Channels for any particular
+                                period
+                            </p>
+
+                        </section>
+
+
+
+                        <div class="view_task_overlay"></div>
+                        <div class="left_overlay ANNULE">
+                            <svg class="plus_info_svg" fill="#ffffff" width="30px" height="30px" viewBox="0 0 36 36"
+                                version="1.1" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg"
+                                xmlns:xlink="http://www.w3.org/1999/xlink" stroke="#ffffff">
+                                <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                                <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
+                                <g id="SVGRepo_iconCarrier">
+                                    <path
+                                        d="M32,6H4A2,2,0,0,0,2,8V28a2,2,0,0,0,2,2H32a2,2,0,0,0,2-2V8A2,2,0,0,0,32,6Zm0,22H4V8H32Z"
+                                        class="clr-i-outline clr-i-outline-path-1"></path>
+                                    <path d="M9,14H27a1,1,0,0,0,0-2H9a1,1,0,0,0,0,2Z"
+                                        class="clr-i-outline clr-i-outline-path-2">
+                                    </path>
+                                    <path d="M9,18H27a1,1,0,0,0,0-2H9a1,1,0,0,0,0,2Z"
+                                        class="clr-i-outline clr-i-outline-path-3">
+                                    </path>
+                                    <path d="M9,22H19a1,1,0,0,0,0-2H9a1,1,0,0,0,0,2Z"
+                                        class="clr-i-outline clr-i-outline-path-4">
+                                    </path>
+                                    <rect x="0" y="0" width="36" height="36" fill-opacity="0"></rect>
+                                </g>
+                            </svg>
+                        </div>
+
+                    </main>
+                    <main class="card_container mb-3 mx-2">
+                        <section class="info_container">
+                            <!-- <span class="domain_status ANNULE"> Canceled </span> -->
+                            <p class="description">Combo Packages Report</p>
+                            <!-- <p class="description"> Description </p> -->
+                            <!-- <p> ★★★☆☆ </p> -->
+                        </section>
+
+
+                        <div class="view_task_overlay"></div>
+                        <div class="left_overlay ANNULE">
+                            <svg class="plus_info_svg" fill="#ffffff" width="30px" height="30px" viewBox="0 0 36 36"
+                                version="1.1" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg"
+                                xmlns:xlink="http://www.w3.org/1999/xlink" stroke="#ffffff">
+                                <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                                <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
+                                <g id="SVGRepo_iconCarrier">
+                                    <path
+                                        d="M32,6H4A2,2,0,0,0,2,8V28a2,2,0,0,0,2,2H32a2,2,0,0,0,2-2V8A2,2,0,0,0,32,6Zm0,22H4V8H32Z"
+                                        class="clr-i-outline clr-i-outline-path-1"></path>
+                                    <path d="M9,14H27a1,1,0,0,0,0-2H9a1,1,0,0,0,0,2Z"
+                                        class="clr-i-outline clr-i-outline-path-2">
+                                    </path>
+                                    <path d="M9,18H27a1,1,0,0,0,0-2H9a1,1,0,0,0,0,2Z"
+                                        class="clr-i-outline clr-i-outline-path-3">
+                                    </path>
+                                    <path d="M9,22H19a1,1,0,0,0,0-2H9a1,1,0,0,0,0,2Z"
+                                        class="clr-i-outline clr-i-outline-path-4">
+                                    </path>
+                                    <rect x="0" y="0" width="36" height="36" fill-opacity="0"></rect>
+                                </g>
+                            </svg>
+                        </div>
+
+                    </main>
+                </div>
+            </mat-expansion-panel>
+        </mat-accordion>
+    </div>
+ 
+</section>
+<!-- <div id="main">
+    <div class="container">
+        <div class="accordion" id="faq">
+            <div class="card">
+                <div class="card-header" id="faqhead1">
+                    <a class="btn btn-header-link" data-toggle="collapse" data-target="#faq1"
+                        aria-expanded="true" aria-controls="faq1">S.S.S</a>
+                </div>
+
+                <div id="faq1" class="collapse show" aria-labelledby="faqhead1" data-parent="#faq">
+                    <div class="card-body">
+                        Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad
+                        squid. 3 wolf
+                        moon officia aute, non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt laborum
+                        eiusmod.
+                        Brunch 3 wolf moon tempor, sunt aliqua put a bird on it squid single-origin coffee nulla
+                        assumenda
+                        shoreditch et. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt
+                        sapiente ea
+                        proident. Ad vegan excepteur butcher vice lomo. Leggings occaecat craft beer farm-to-table,
+                        raw denim
+                        aesthetic synth nesciunt you probably haven't heard of them accusamus labore sustainable
+                        VHS.
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div> -->

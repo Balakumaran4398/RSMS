@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit, ViewChild } from '@angular/core';
 import { BreakpointObserver, Breakpoints, BreakpointState } from '@angular/cdk/layout';
 import { MatDialog } from '@angular/material/dialog';
 import { EditLcoComponent } from '../../channel_setting/_Dialogue/operator/edit-lco/edit-lco.component';
@@ -11,6 +11,8 @@ import { Router } from '@angular/router';
 import { LcodashboardComponent } from '../../channel_setting/_Dialogue/operator/lcodashboard/lcodashboard.component';
 import { DataService } from 'src/app/_core/service/Data.service';
 import { OperatordialogueComponent } from '../../channel_setting/_Dialogue/operator/operatordialogue/operatordialogue.component';
+import { MatPaginator, PageEvent } from '@angular/material/paginator';
+import { OperatorcancelsubreportComponent } from '../../channel_setting/_Dialogue/operator/operatorcancelsubreport/operatorcancelsubreport.component';
 @Component({
   selector: 'app-operator-details',
   templateUrl: './operator-details.component.html',
@@ -45,19 +47,31 @@ export class OperatorDetailsComponent implements OnInit {
   totalbox: any;
   activeItem: any;
   searchText: any = '';
-  filteredOperators: any[] = [];
+
   showDropdown: boolean = false;
   operatorList: any[] = [];
-  operator_details: any = [];
   businessList: any[] = [];
   dashboardDetails: any;
-  constructor(public responsive: BreakpointObserver, private dataService: DataService, private router: Router, public dialog: MatDialog, private userservice: BaseService, private storageservice: StorageService) {
+  operatorNameList: any;
+  filteredOperators: any[] = [];
+  selectedOperator: any;
+
+  operator_details: any = [];
+  pagedOperators: any = [];
+  pageSize = 10; 
+  pageIndex = 0;
+  totalLength = 0;
+  paginatedData: any;
+
+  constructor(public responsive: BreakpointObserver, private dataService: DataService, private cdr: ChangeDetectorRef, private router: Router, public dialog: MatDialog, private userservice: BaseService, private storageservice: StorageService) {
     this.role = storageservice.getUserRole();
     this.username = storageservice.getUsername();
     this.userservice.OperatorDetails(this.role, this.username, this.operatorid).subscribe(
       (data: any) => {
         this.operator_details = data;
         this.dashboardDetails = data.map((item: any) => item.list);
+        this.totalLength = data.length;
+        this.updatePageData();
       });
   }
   ngOnInit(): void {
@@ -75,65 +89,104 @@ export class OperatorDetailsComponent implements OnInit {
       this.businessList = data;
     })
     this.operatorlist();
-    // this.filteredOperators = this.operatorList;
+    this.loadOperators();
+    // this.fetchData(); 
+    this.updatePageData();
   }
-
-  // filterOperators() {
-  //   if (this.operatorid) {
-  //     this.filteredOperators = this.operatorList.filter(operator =>
-  //       operator.name.toLowerCase().includes(this.searchText.toLowerCase())
-  //     );
-  //     console.log(this.filteredOperators);
-  //   }
+  // fetchData() {
+  //   this.operator_details = [
+  //   ];
+  //   this.cdr.detectChanges();
+  //   this.updatePage();
   // }
-  filterOperators() {
-    console.log(this.operatorname);
 
-    if (this.operatorname) {
-      console.log(this.filteredOperators);
-      this.filteredOperators = this.operatorList.filter(operator =>
-        operator.name.toLowerCase().includes(this.operatorname.toLowerCase())
-      );
-      console.log(this.filteredOperators);
-    }
-
+  onPageChange(event: PageEvent): void {
+    this.cdr.detectChanges();
+    this.pageSize = event.pageSize;
+    this.pageIndex = event.pageIndex;
+    this.updatePageData();
   }
-  operatorlist() {
+
+ 
+
+
+  updatePageData() {
+    this.cdr.detectChanges();
+    const startIndex = this.pageIndex * this.pageSize;
+    this.pagedOperators = this.operator_details.slice(
+      startIndex,
+      startIndex + this.pageSize
+    );
+  }
+  filterOperators(event: any): void {
+    const filterValue = event.target.value.toLowerCase();
+    this.filteredOperators = this.operatorList.filter(operator =>
+      operator.name.toLowerCase().includes(filterValue)
+    );
+  }
+  displayOperator(operator: any): string {
+    return operator ? operator.name : '';
+  }
+
+
+  loadOperators() {
     this.userservice.getOeratorList(this.role, this.username).subscribe((data: any) => {
       console.log(data);
       this.operatorList = Object.keys(data).map(key => {
         const value = data[key];
-        // const name = key.replace(/\(\d+\)$/, '').trim();
+        return { name: key, value: value };
+      });
+      this.filteredOperators = this.operatorList;
+    });
+  }
+
+  operatorlist() {
+
+    this.userservice.getOeratorList(this.role, this.username).subscribe((data: any) => {
+      console.log(data);
+      this.operatorList = Object.keys(data).map(key => {
+        const value = data[key];
         const name = key;
         return { name: name, value: value };
       });
-      this.filteredOperators = this.operatorList
-    })
+
+      this.operatorNameList = this.operatorList;
+      this.filteredOperators = this.operatorList;
+    });
+  }
+  onFilterChange(filteredData: any): void {
+    this.filteredOperators = filteredData;
   }
   selectOperator(value: string, name: any) {
-
     console.log(this.filteredOperators);
     this.showDropdown = false;
     this.operatorid = value;
-    this.operatorname=name;
+    this.operatorname = name;
     this.onoperatorchange({ value });
   }
-  onoperatorchange(event: any) {
 
-    if (this.operatorid === 'ALL Operator') {
+  onoperatorchange(operator: any): void {
+    console.log(operator);
+    this.selectedOperator = operator;
+    this.operatorid = operator.value;
+    if (operator.value === 0) {
       this.operatorid = 0;
+      this.selectedOperator = { name: 'ALL Operator', value: 0 };
+    } else {
+      this.operatorid = operator.value;
     }
     this.userservice.OperatorDetails(this.role, this.username, this.operatorid).subscribe(
       (data: any) => {
         console.log(data);
-        this.operator_details = data;
-        console.log(this.operator_details);
+        // this.operator_details = data;
+        this.pagedOperators = data;
       },
       (error) => {
         console.error('Error fetching operator details', error);
       }
     );
   }
+
   checkDeviceType(): void {
     const width = window.innerWidth;
     if (width <= 660) {
@@ -223,18 +276,7 @@ export class OperatorDetailsComponent implements OnInit {
     console.log(detailsList);
 
   }
-  // navgetToUrl(operatorid: number) {
-  //   console.log(operatorid);
 
-  //   this.router.navigateByUrl(`/admin/lcodashboard/${operatorid}`);
-  //   let dialogData = { detailsList: this.operator_details.find((op:any) => op.operatorid === operatorid) };
-  //   console.log(dialogData);
-  // }
-  // navgetToUrl() {
-  //   this.router.navigate(['/lcodashboard'], {
-  //     queryParams: { data: JSON.stringify(this.operator_details) }
-  //   });
-  // }
   lcodashoard(type: string): void {
     let dialogData = { type: type, detailsList: this.operator_details, };
 
@@ -248,6 +290,15 @@ export class OperatorDetailsComponent implements OnInit {
     let dialogData = { type: type, detailsList: this.operator_details, };
 
     const dialogRef = this.dialog.open(OperatordialogueComponent, {
+      width: '500px',
+      panelClass: 'custom-dialog-container',
+      data: dialogData
+    });
+  }
+  opencancelsubDialog(type: string): void {
+    let dialogData = { type: type, detailsList: this.operator_details, };
+
+    const dialogRef = this.dialog.open(OperatorcancelsubreportComponent, {
       width: '500px',
       panelClass: 'custom-dialog-container',
       data: dialogData

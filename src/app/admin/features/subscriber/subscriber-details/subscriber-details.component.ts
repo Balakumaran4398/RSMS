@@ -330,7 +330,7 @@ export class SubscriberDetailsComponent implements OnInit {
     if (this.selectedStatusId === 0) {
       return;
     }
-
+    this.rowData=[];
     this.userservice.getsubscriberlist_subscriber(this.role, this.username, this.selectedStatusId)
       .subscribe((data: any) => {
         console.log(data);

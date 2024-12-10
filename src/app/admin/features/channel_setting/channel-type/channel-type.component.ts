@@ -58,7 +58,7 @@ export class ChannelTypeComponent {
     {
       headerName: 'CHANNEL TYPE NAME',
       field: 'name',
-      width: 300,
+      width: 700,
       editable: true,
       cellEditor: 'agTextCellEditor',
       onCellValueChanged: (event) => {
@@ -69,7 +69,7 @@ export class ChannelTypeComponent {
     {
       headerName: "ISACTIVE",
       field: 'isactive',
-      width: 350,
+      width: 670,
       cellRenderer: (params: any) => {
         const isActive = params.data.isactive;
         const toggleButton = document.createElement('button');

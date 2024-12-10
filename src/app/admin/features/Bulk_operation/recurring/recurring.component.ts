@@ -5,6 +5,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { ColDef } from 'ag-grid-community';
 import { BaseService } from 'src/app/_core/service/base.service';
 import { StorageService } from 'src/app/_core/service/storage.service';
+import { SwalService } from 'src/app/_core/service/swal.service';
 import Swal from 'sweetalert2';
 
 @Component({
@@ -18,8 +19,9 @@ export class RecurringComponent implements OnInit {
   cas: any;
   smartcard: any;
   CasFormControl: any;
-  operatorid: any = 0;
-  searchname: any = 0;
+  operatorid: any = '';
+  submitted: boolean = false;
+  searchname: any;
   operatorList: any[] = [];
   reccuringData: any;
   isrecurring = false;
@@ -29,16 +31,21 @@ export class RecurringComponent implements OnInit {
   selectedtypes: any[] = [];
   hasSelectedRows: boolean = true;
 
+  filteredOperators: any[] = [];
+  selectedOperator: any;
+  lco_list: any;
+  selectedLcoName: any[] = [];
+
   columnDefs: ColDef[] = [
     {
       headerName: "S.No", lockPosition: true, valueGetter: 'node.rowIndex+1', cellClass: 'locked-col', headerCheckboxSelection: true,
-      checkboxSelection: true,
+      checkboxSelection: true,width:100
     },
-    { headerName: "SUBSCRIBER NAME", field: 'customername' },
-    { headerName: "ADDRESS", field: 'address' },
-    { headerName: "SMARTCARD", field: 'smartcard' },
+    { headerName: "SUBSCRIBER NAME", field: 'customername',width:250 },
+    { headerName: "ADDRESS", field: 'address',width:250  },
+    { headerName: "SMARTCARD", field: 'smartcard',width:300  },
     {
-      headerName: "RECURRING", field: 'isrecurring',
+      headerName: "RECURRING", field: 'isrecurring',width:300 ,
       cellRenderer: (params: any) => {
         if (params.value === true) {
           return `<span style="color: green; font-weight: bold;">Activate</span>`;
@@ -47,8 +54,8 @@ export class RecurringComponent implements OnInit {
         }
       }
     },
-    { headerName: "BOXID	", field: 'boxid' },
-    { headerName: "EXPIRY DATE	", field: 'expirydate' },
+    { headerName: "BOXID	", field: 'boxid',width:300  },
+    { headerName: "EXPIRY DATE	", field: 'expirydate',width:300  },
   ];
   rowData: any;
   public rowSelection: any = "multiple";
@@ -63,7 +70,7 @@ export class RecurringComponent implements OnInit {
     paginationPageSize: 10,
     pagination: true,
   }
-  constructor(public dialog: MatDialog, private fb: FormBuilder, private userservice: BaseService, private storageService: StorageService) {
+  constructor(public dialog: MatDialog, private fb: FormBuilder, private userservice: BaseService, private storageService: StorageService, private swal: SwalService) {
     this.username = storageService.getUsername();
     this.role = storageService.getUserRole();
   }
@@ -91,55 +98,71 @@ export class RecurringComponent implements OnInit {
         const name = key;
         return { name: name, value: value };
       });
+      this.filteredOperators = this.operatorList;
     })
+  }
+  filterOperators(event: any): void {
+    const filterValue = event.target.value.toLowerCase();
+    this.filteredOperators = this.operatorList.filter((operator: any) =>
+      operator.name.toLowerCase().includes(filterValue)
+    );
+    console.log(this.filteredOperators);
+  }
+  displayOperator(operator: any): string {
+    return operator ? operator.name : '';
+  }
+  onSubscriberStatusChange(selectedOperator: any) {
+    console.log(selectedOperator);
+    this.selectedOperator = selectedOperator;
+    this.selectedLcoName = selectedOperator.value;
+    console.log(this.selectedLcoName);
   }
   onGridReady(params: { api: any; }) {
     this.gridApi = params.api;
   }
   submit(type: any) {
-    // Set type
-    this.userservice.getRecurringListByOperatorIdSearchnameAndIsrecurring(this.role, this.username, this.operatorid, this.searchname, type)
+    this.reccuringData=[];
+    this.submitted= true;
+    this.userservice.getRecurringListByOperatorIdSearchnameAndIsrecurring(this.role, this.username, this.operatorid, this.searchname || 0, type)
       .subscribe(
-        (response: HttpResponse<any[]>) => {
+        (response: HttpResponse<any[]>) => { // Expect HttpResponse<any[]>
           if (response.status === 200) {
             this.reccuringData = response.body;
-            Swal.fire('Success', 'Data updated successfully!', 'success');
-
+            this.swal.Success_200();
           } else if (response.status === 204) {
-            Swal.fire('No Content', 'No data available for the given criteria.', 'info');
+            this.swal.Success_204();
           }
         },
         (error) => {
           if (error.status === 400) {
-            Swal.fire('Error 400', 'Bad Request. Please check the input.', 'error');
+            this.swal.Error_400();
           } else if (error.status === 500) {
-            Swal.fire('Error 500', 'Internal Server Error. Please try again later.', 'error');
+            this.swal.Error_500();
           } else {
             Swal.fire('Error', 'Something went wrong. Please try again.', 'error');
           }
-
-          this.callAnotherApi();
+          // this.callAnotherApi();
         }
       );
   }
-  callAnotherApi() {
-    this.userservice.someOtherApiCall(this.role, this.username).subscribe(
-      (response: HttpResponse<any[]>) => {
-        if (response.status === 200) {
-          console.log('Second API call successful');
-        }
-        setTimeout(() => {
-          window.location.reload();
-        }, 3000);
-      },
-      (error: any) => {
-        console.log('Second API call failed', error);
-        setTimeout(() => {
-          window.location.reload();
-        }, 3000);
-      }
-    );
-  }
+  // callAnotherApi() {
+  //   this.userservice.someOtherApiCall(this.role, this.username).subscribe(
+  //     (response: HttpResponse<any[]>) => {
+  //       if (response.status === 200) {
+  //         console.log('Second API call successful');
+  //       }
+  //       setTimeout(() => {
+  //         window.location.reload();
+  //       }, 3000);
+  //     },
+  //     (error: any) => {
+  //       console.log('Second API call failed', error);
+  //       setTimeout(() => {
+  //         window.location.reload();
+  //       }, 3000);
+  //     }
+  //   );
+  // }
 
   Active() {
     Swal.fire({

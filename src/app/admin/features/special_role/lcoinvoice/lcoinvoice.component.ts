@@ -103,7 +103,7 @@ export class LcoinvoiceComponent implements OnInit {
       //     this.rowData = data;
       //   });
       .subscribe((res: any) => {
-        this.swal.success(res?.message);
+        // this.swal.success(res?.message);
         this.rowData = res;
       }, (err) => {
         this.swal.Error(err?.error?.message);

@@ -1,5 +1,5 @@
 import { CdkDrag, CdkDragDrop, CdkDropList, moveItemInArray, transferArrayItem } from '@angular/cdk/drag-drop';
-import { Component } from '@angular/core';
+import { ChangeDetectorRef, Component } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
 import { BaseService } from 'src/app/_core/service/base.service';
@@ -30,9 +30,9 @@ export class PackageManageComponent {
   modified: boolean = true;
   available_alacarte_list: any = [];
   alacarte_list_id: any = [];
-
+  searchTermAvailable: string = '';
   bouquet_list_id: any = [];
-  removed_channel_list: any = '';
+  removed_channel_list: any;
   added_alacarte_list_id: any = [];
   added_bouquet_list_id: any = [];
   added_alacarte_list: any = [];
@@ -42,10 +42,15 @@ export class PackageManageComponent {
 
   availableFilter: any;
   addedFilter: any;
-  searchTerm: any;
+  searchTermAlacarte: any;
+  searchTermAdded: any;
+  searchTermAddedBouquet: any;
+  searchTermAvailableBouquet: any;
 
   filteredAvailableAlacarteList: any = [];
   filteredAddedList: any = [];
+  filteredAvailableBouquetList: any = [];
+  filteredAddedBouquetList: any = [];
   // -------------------------------------------------------------------
   available_alacarte_channel: any[] = [];
 
@@ -57,14 +62,14 @@ export class PackageManageComponent {
   added_alacrte_count: any;
   available_bouquet_count: any;
   added_bouquet_count: any;
-  // filteredAvailableList: string[] = [...this.available_alacarte_list];
-  // filteredAddedList: string[] = [...this.added_alacarte_list];
-  constructor(public dialog: MatDialog, public router: Router, private route: ActivatedRoute, private swal:SwalService,private userService: BaseService, private storageservice: StorageService) {
+
+  constructor(public dialog: MatDialog, public router: Router, private cdr: ChangeDetectorRef, private route: ActivatedRoute, private swal: SwalService, private userService: BaseService, private storageservice: StorageService) {
     this.username = storageservice.getUsername();
     this.role = storageservice.getUserRole();
   }
 
   ngOnInit(): void {
+
     console.log(this.subcount);
     this.package_id = this.route.snapshot.paramMap.get('id');
     console.log('Package ID:', this.package_id);
@@ -91,6 +96,7 @@ export class PackageManageComponent {
       this.available_alacarte_list = data[0].Available_Alacarte.map((available_alacarte: any) => {
         return `${available_alacarte.channel_name} (${available_alacarte.channel_id}) - Rs.${available_alacarte.inr_amt}.0`;
       });
+
       this.added_alacarte_list = data[0].Added_Alacarte.map((addede_alacarte: any) => {
         return `${addede_alacarte.channel_name} (${addede_alacarte.channel_id}) - Rs.${addede_alacarte.inr_amt}.0`;
       });
@@ -98,15 +104,15 @@ export class PackageManageComponent {
 
 
       this.available_bouquet_list = data[0].Available_addon.map((available_bouquet: any) => {
-        return `${available_bouquet.addon_package_name} (${available_bouquet.id}) - Rs.${available_bouquet.addon_package_rate}.0`;
+        return `${available_bouquet.addon_package_name} (${available_bouquet.order_id}) - Rs.${available_bouquet.addon_package_rate}.0`;
       });
       this.added_bouquet_list = data[0].Added_addon.map((added_bouque: any) => {
-        return `${added_bouque.addon_package_name} (${added_bouque.id}) - Rs.${added_bouque.addon_package_rate}.0`;
+        return `${added_bouque.addon_package_name} (${added_bouque.order_id}) - Rs.${added_bouque.addon_package_rate}.0`;
       });
       this.alacarte_list_id = data[0].Available_Alacarte.map((available_alacarte: any) => available_alacarte.channel_id);
       // this.added_alacarte_list_id = data[0].Added_Alacarte.map((added_alacarte: any) => added_alacarte.channel_id)
       this.bouquet_list_id = data[0].Available_addon.map((available_bouquet: any) => {
-        return ` ${available_bouquet.id} `;
+        return ` ${available_bouquet.order_id} `;
       });
 
       // console.log('AVAILABE ALACARTE_ID    1   ' + this.alacarte_list_id);
@@ -116,29 +122,14 @@ export class PackageManageComponent {
       // console.log('ADDED ALACARTE    2  ' + this.added_alacarte_list_id);
       // console.log('AVAILABE BOUQUET      ' + this.bouquet_list_id);
       // console.log('ADDED BOUQUET   4   ' + this.added_bouquet_list_id);     
+      this.filteredAvailableAlacarteList = [...this.available_alacarte_list];
+      this.filteredAddedList = [...this.added_alacarte_list];
+      this.filteredAvailableBouquetList = [...this.available_bouquet_list];
+      this.filteredAddedBouquetList = [...this.added_bouquet_list];
     })
-    // this.filteredAvailableAlacarteList = this.available_alacarte_list;
   }
 
-  drop(event: CdkDragDrop<string[]>) {
-    console.log('drop event');
-    console.log(event);
 
-    if (event.previousContainer === event.container) {
-      console.log('sss');
-
-      moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
-    } else {
-      console.log('dfdlfjd');
-
-      transferArrayItem(
-        event.previousContainer.data,
-        event.container.data,
-        event.previousIndex,
-        event.currentIndex,
-      );
-    }
-  }
   back() {
     this.router.navigateByUrl("admin/PackageCreation");
   }
@@ -148,64 +139,62 @@ export class PackageManageComponent {
 
 
   pay_channel(type: any) {
+    console.log(type);
+    let width = '1500px';
+    if (type === 'pair') {
+      width = '1250px';
+    } 
+    if (type === 'paychannel') {
+      width = '805px'; // Set width to 805px for paychannel
+    } 
+    if (type === 'bouquet') {
+      width = '820px';
+    }
     let dialogData = { type: type, package_id: this.package_id }
     const dialogRef = this.dialog.open(PackageBASEDEMOComponent, {
-      width: '800px',
-      // height: '600px',
+      width: width, // Use the width variable here
       panelClass: 'custom-dialog-container',
       data: dialogData
     });
     dialogRef.afterClosed().subscribe(result => {
       console.log('The dialog was closed');
     });
-  }
+}
 
-  // pay_channel(type: any) {
-  //   let dialogData = { type: type, package_id: this.package_id };
 
-  //   let dialogHeight = '700px'; // Default height
-  //   if (type === 'paychannel') {
-  //     dialogHeight = '600px';
-  //   } else if (type === 'bouquet') {
-  //     dialogHeight = '300px';
-  //   }
-
-  //   const dialogRef = this.dialog.open(PackageBASEDEMOComponent, {
-  //     width: '800px',
-  //     height: dialogHeight,  // Set height dynamically
-  //     panelClass: 'custom-dialog-container',
-  //     data: dialogData
-  //   });
-
-  //   dialogRef.afterClosed().subscribe(result => {
-  //     console.log('The dialog was closed');
-  //   });
-  // }
-
-  // applyFilter(): void {
-  //   if (!this.searchTerm) {
-  //     this.filteredAvailableAlacarteList = this.available_alacarte_list;
-  //   } else {
-  //     this.filteredAvailableAlacarteList = this.available_alacarte_list.filter((item:any) =>
-  //       item.toLowerCase().includes(this.searchTerm.toLowerCase())
-  //     );
-  //   }
-  // }
   filterAvailableList(): void {
-    if (!this.searchTerm) {
-      this.filteredAvailableAlacarteList = this.available_alacarte_list;
-    } else {
-      this.filteredAvailableAlacarteList = this.available_alacarte_list.filter((item: any) =>
-        item.toLowerCase().includes(this.searchTerm.toLowerCase())
-      );
-    }
-  }
-
-  filterAddedList() {
-    this.filteredAddedList = this.added_alacarte_list.filter((item: string) =>
-      item.toLowerCase().includes(this.addedFilter.toLowerCase())
+    console.log(this.filteredAvailableAlacarteList);
+    const searchTerm = this.searchTermAlacarte ? this.searchTermAlacarte.toLowerCase() : '';
+    this.filteredAvailableAlacarteList = this.available_alacarte_list.filter((item: any) =>
+      item.toLowerCase().includes(searchTerm)
     );
+    this.cdr.detectChanges();
+
   }
+  filterAddedList(): void {
+    const searchTerm = this.searchTermAdded.toLowerCase();
+    this.filteredAddedList = this.added_alacarte_list.filter((item: any) =>
+      item.toLowerCase().includes(searchTerm)
+    );
+    this.cdr.detectChanges();
+
+  };
+  filterAvailableBouquetList(): void {
+    const searchTerm = this.searchTermAvailableBouquet.toLowerCase();
+    this.filteredAvailableBouquetList = this.available_bouquet_list.filter((item: any) =>
+      item.toLowerCase().includes(searchTerm)
+    );
+    this.cdr.detectChanges();
+
+  };
+
+  filterAddedBouquetList(): void {
+    const searchTerm = this.searchTermAddedBouquet.toLowerCase();
+    this.filteredAddedBouquetList = this.added_bouquet_list.filter((item: any) =>
+      item.toLowerCase().includes(searchTerm)
+    );
+    this.cdr.detectChanges();
+  };
 
 
 
@@ -215,6 +204,7 @@ export class PackageManageComponent {
     } else {
       this.selectedItems.add(item);
     }
+
   }
 
   isSelected(item: string): boolean {
@@ -232,6 +222,13 @@ export class PackageManageComponent {
           // console.log(this.added_alacarte_list.push(item));
         }
       });
+      this.containerData = this.added_alacarte_list.map((item: any) => {
+        const match = item.match(/\((.*?)\)/);
+        return match ? match[1] : null;
+      }).filter(Boolean);
+      // this.selectedItems.clear();
+      console.log(this.containerData);
+      // console.log(this.added_alacarte_list);
     } else if (direction === 'left') {
       this.selectedItems.forEach(item => {
         const index = this.added_alacarte_list.indexOf(item);
@@ -242,16 +239,93 @@ export class PackageManageComponent {
           // console.log(this.available_alacarte_list.push(item));
         }
       });
+      this.containerData = this.added_alacarte_list.map((item: any) => {
+        const match = item.match(/\((.*?)\)/);
+        return match ? match[1] : null;
+      }).filter(Boolean);
+      // this.selectedItems.clear();
+      console.log(this.containerData);
     }
     // this.available_alacarte_channel = Array.from(this.selectedItems);
     this.alacarte_list_id = Array.from(this.selectedItems).map(item => {
       const match = item.match(/\((\d+)\)/);
       return match ? match[1] : null;
     });
-    console.log(this.alacarte_list_id);
+    // console.log(this.alacarte_list_id);
+    console.log(this.added_alacarte_list);
+    // this.containerData = this.added_alacarte_list.map((item: any) => {
+    //   const match = item.match(/\((.*?)\)/);
+    //   return match ? match[1] : null;
+    // }).filter(Boolean);
+    // // this.selectedItems.clear();
+    // console.log(this.containerData);
+
+    this.filteredAvailableAlacarteList = [...this.available_alacarte_list];
+    this.filteredAddedList = [...this.added_alacarte_list];
     this.selectedItems.clear();
+    // console.log('Available Alacarte List:', this.available_alacarte_list);
+    // console.log('Added Alacarte List:', this.added_alacarte_list);
   }
-  moveSelected_bouquet_Items(direction: 'left' | 'right') {
+
+
+
+  moveSelectedBouquet_Items(direction: 'left' | 'right') {
+    const itemsToMove: any[] = [];
+    if (direction === 'right') {
+      this.selectedItems.forEach(item => {
+        const index = this.available_bouquet_list.indexOf(item);
+        if (index > -1) {
+          this.available_bouquet_list.splice(index, 1);
+          this.added_bouquet_list.push(item);
+          itemsToMove.push(item);
+        }
+      });
+      console.log(this.available_bouquet_list);
+
+      console.log(this.added_bouquet_list);
+      this.containerData = this.added_bouquet_list.map((item: any) => {
+        const match = item.match(/\((.*?)\)/);
+        return match ? match[1] : null;
+      }).filter(Boolean);
+      console.log(this.containerData);
+    } else if (direction === 'left') {
+      this.selectedItems.forEach(item => {
+        const index = this.added_bouquet_list.indexOf(item);
+        if (index > -1) {
+          this.added_bouquet_list.splice(index, 1);
+          this.available_bouquet_list.push(item);
+          itemsToMove.push(item);
+        }
+      });
+      console.log(this.available_bouquet_list);
+      this.removed_channel_list = itemsToMove.map((item: any) => {
+        const match = item.match(/\((.*?)\)/);
+        return match ? match[1] : null;
+      }).filter(Boolean);
+      console.log(this.added_bouquet_list);
+      this.containerData = this.added_bouquet_list.map((item: any) => {
+        const match = item.match(/\((.*?)\)/);
+        return match ? match[1] : null;
+      }).filter(Boolean);
+      console.log(this.containerData);
+      console.log(this.removed_channel_list);
+    }
+    // this.bouquet_list_id = Array.from(this.selectedItems).map(item => {
+    //   const match = item.match(/\((\d+)\)/);
+    //   return match ? match[1] : null;
+    // });
+
+    // this.containerData = this.added_bouquet_list.map((item: any) => {
+    //   const match = item.match(/\((.*?)\)/);
+    //   return match ? match[1] : null;
+    // }).filter(Boolean);
+    // console.log(this.containerData);
+    this.filteredAvailableBouquetList = [...this.available_bouquet_list]
+    this.filteredAddedBouquetList = [...this.added_bouquet_list]
+    this.selectedItems.clear();
+
+  }
+  moveSelectedLeft_bouquet_Items(direction: 'left' | 'right') {
     const itemsToMove: any[] = [];
     if (direction === 'right') {
       this.selectedItems.forEach(item => {
@@ -263,6 +337,8 @@ export class PackageManageComponent {
         }
         // console.log(this.added_bouquet_list.push(item));
       });
+      console.log(this.added_bouquet_list);
+
     } else if (direction === 'left') {
       this.selectedItems.forEach(item => {
         const index = this.added_bouquet_list.indexOf(item);
@@ -274,18 +350,29 @@ export class PackageManageComponent {
         // console.log(this.available_bouquet_list.push(item));
       });
     }
-    this.available_bouquet_channel = Array.from(this.selectedItems);
     this.bouquet_list_id = Array.from(this.selectedItems).map(item => {
       const match = item.match(/\((\d+)\)/);
       return match ? match[1] : null;
     });
-    console.log(this.bouquet_list_id);
-    console.log(this.available_bouquet_channel);
-    this.selectedItems.clear();
+    // console.log(this.bouquet_list_id);
+    // console.log(this.available_bouquet_list);
 
+    // this.selectedItems.clear();
+    this.containerData = this.added_bouquet_list.map((item: any) => {
+      const match = item.match(/\((.*?)\)/);
+      return match ? match[1] : null;
+    }).filter(Boolean);
+
+    this.containerData = this.available_bouquet_list.map((item: any) => {
+      const match = item.match(/\((.*?)\)/);
+      return match ? match[1] : null;
+    }).filter(Boolean);
+    this.filteredAvailableBouquetList = [...this.available_bouquet_list]
+    this.filteredAddedBouquetList = [...this.added_bouquet_list]
+    this.selectedItems.clear();
   }
 
-
+  alacarteId: any;
   moveAll_alacarte_Items(direction: 'left' | 'right') {
     if (direction === 'right') {
       this.added_alacarte_list.push(...this.available_alacarte_list);
@@ -293,24 +380,25 @@ export class PackageManageComponent {
         const match = item.match(/\((\d+)\)/);
         return match ? match[1] : null;
       });
-      console.log(this.alacarte_list_id);
-      this.available_alacarte_list = [];
-    } else if (direction === 'left') {
-      this.available_alacarte_list.push(...this.added_alacarte_list);
-      this.alacarte_list_id = this.added_alacarte_list.map((item: any) => {
+      this.containerData = this.added_alacarte_list.map((item: any) => {
         const match = item.match(/\((\d+)\)/);
         return match ? match[1] : null;
       });
-      console.log(this.alacarte_list_id);
+      this.available_alacarte_list = [];
+    } else if (direction === 'left') {
+      this.available_alacarte_list.push(...this.added_alacarte_list);
       this.added_alacarte_list = [];
+
     }
+    this.filteredAvailableAlacarteList = [...this.available_alacarte_list];
+    this.filteredAddedList = [...this.added_alacarte_list];
     this.selectedItems.clear();
   }
 
   moveAll_bouquet_Items(direction: 'left' | 'right') {
     if (direction === 'right') {
       this.added_bouquet_list.push(...this.available_bouquet_list);
-      this.bouquet_list_id = this.available_bouquet_list.map((item: any) => {
+      this.containerData = this.available_bouquet_list.map((item: any) => {
         const match = item.match(/\((\d+)\)/);
         return match ? match[1] : null;
       });
@@ -318,17 +406,46 @@ export class PackageManageComponent {
       this.available_bouquet_list = [];
     } else if (direction === 'left') {
       this.available_bouquet_list.push(...this.added_bouquet_list);
-      this.bouquet_list_id = this.added_bouquet_list.map((item: any) => {
-        const match = item.match(/\((\d+)\)/);
-        return match ? match[1] : null;
-      });
-      console.log(this.bouquet_list_id);
       this.added_bouquet_list = [];
     }
+    this.filteredAvailableBouquetList = [...this.available_bouquet_list]
+    this.filteredAddedBouquetList = [...this.added_bouquet_list]
     this.selectedItems.clear();
   }
+
+  containerData: any = [];
+  drop(event: CdkDragDrop<string[]>) {
+    console.log(event);
+
+    console.log(this.containerData);
+    if (event.previousContainer === event.container) {
+      console.log('sss');
+      moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
+    } else {
+      console.log('dfdlfjd');
+      transferArrayItem(
+        event.previousContainer.data,
+        event.container.data,
+        event.previousIndex,
+        event.currentIndex,
+      );
+    }
+    this.containerData = event.container.data.map(item => {
+      const match = item.match(/\((.*?)\)/);
+      return match ? match[1] : null;
+    }).filter(Boolean);
+
+    console.log("Updated container data:", this.containerData);
+  }
+  containerID: any;
   save() {
-    console.log('alert');
+    console.log(this.containerData);
+    console.log(this.alacarte_list_id);
+    console.log(this.added_alacarte_list);
+    console.log(this.alacarteId || 0);
+    this.containerID = this.alacarteId || 0
+    console.log(this.containerID);
+    this.containerData = this.containerData.length == 0 ? 0 : this.containerData;
     if (!this.modified || !this.alacarte_list_id || !this.role || !this.username || !this.package_id) {
       Swal.fire({
         icon: 'error',
@@ -337,64 +454,51 @@ export class PackageManageComponent {
       });
       return;
     }
-    if(this.alacarte_list_id){
-    console.log('save');
-    Swal.fire({
-      title: "Are you sure?",
-      text: "You won't be able to revert this!",
-      icon: "warning",
-      showCancelButton: true,
-      confirmButtonColor: "#3085d6",
-      cancelButtonColor: "#d33",
-      confirmButtonText: "Yes, Change it!"
-    }).then((result) => {
-      if (result.isConfirmed) {
-        Swal.fire({
-          title: 'Updating...',
-          text: 'Please wait for Alacarte channels to update....',
-          allowOutsideClick: false,
-          didOpen: () => {
-            Swal.showLoading(null);
-          }
-        });
-        this.userService.AddingdAlacarteTo_Base_Package(this.modified, this.alacarte_list_id, this.role, this.username, this.package_id).subscribe((res: any) => {
-          console.log(res);
+    if (this.alacarte_list_id) {
+      console.log('save');
+      Swal.fire({
+        title: "Are you sure?",
+        text: "You won't be able to revert this!",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Yes, Change it!"
+      }).then((result) => {
+        if (result.isConfirmed) {
           Swal.fire({
-            position: "center",
-            icon: "success",
-            title: "Your update was successful",
-            showConfirmButton: false,
-            timer: 1000
-          }).then(() => {
-            // window.location.reload();
+            title: 'Updating...',
+            text: 'Please wait for Alacarte channels to update....',
+            allowOutsideClick: false,
+            didOpen: () => {
+              Swal.showLoading(null);
+            }
           });
-        },
-          (err) => {
-            Swal.fire({
-              position: 'center',
-              icon: 'error',
-              title: 'Error',
-              text: err?.error?.message,
-              showConfirmButton: false,
-              timer: 1500
-            });
-          }
-        );
-      }
-    });
-  } else {
-    // this.swal.Invalid();
-    Swal.fire({
-      title: 'Warning!',
-      icon: 'warning',
-      text:'Invalid Input',
-      timer: 1000,
-      showConfirmButton: false
-    })
-  }
+          console.log(this.alacarte_list_id);
+          this.userService.AddingdAlacarteTo_Base_Package(this.modified, this.containerData, this.role, this.username, this.package_id).subscribe((res: any) => {
+            console.log(res);
+            this.swal.success(res?.message);
+          }, (err) => {
+            this.swal.Error(err?.error?.message || "channel list is must");
+          });
+        }
+      });
+    } else {
+      // this.swal.Invalid();
+      Swal.fire({
+        title: 'Warning!',
+        icon: 'warning',
+        text: 'Invalid Input',
+        timer: 1000,
+        showConfirmButton: false
+      })
+    }
     this.selectedItems.clear();
   }
   save1() {
+    console.log(this.containerData);
+    console.log(this.bouquet_list_id);
+    this.containerData = this.containerData.length == 0 ? 0 : this.containerData;
     if (this.bouquet_list_id) {
       Swal.fire({
         title: "Are you sure?",
@@ -414,37 +518,20 @@ export class PackageManageComponent {
               Swal.showLoading(null);
             }
           });
-          this.userService.AddingdbouquetTo_Base_Package(this.modified, this.bouquet_list_id, this.role, this.username, this.package_id, 0,).subscribe((res: any) => {
+          this.userService.AddingdbouquetTo_Base_Package(this.modified, this.containerData, this.role, this.username, this.package_id, this.removed_channel_list || 0,).subscribe((res: any) => {
             console.log(res);
-            Swal.fire({
-              position: "center",
-              icon: "success",
-              title: "Your update was successful",
-              showConfirmButton: false,
-              timer: 1000
-            }).then(() => {
-              // window.location.reload();
-            });
-          },
-            (err) => {
-              Swal.fire({
-                position: 'center',
-                icon: 'error',
-                title: 'Error',
-                text: err?.error?.message,
-                showConfirmButton: false,
-                timer: 1500
-              });
-            }
-          );
+            this.swal.success(res?.message);
+          }, (err) => {
+            this.swal.Error(err?.error?.message);
+          });
         }
       });
-    }else{
+    } else {
       // this.swal.Invalid();
       Swal.fire({
         title: 'Warning!',
         icon: 'warning',
-        text:'Invalid Input',
+        text: 'Invalid Input',
         timer: 1000,
         showConfirmButton: false
       })

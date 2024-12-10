@@ -15,13 +15,16 @@
                                             <label for="">CAS</label>
                                         </div>
                                         <div class="col-12 col-md-8">
-                                            <select placeholder="Select the CAS" formControlName="castype"
-                                                (ngModelChange)="onSelectionFingerPrint($event)">
-                                                <option value="" selected>Select CAS</option>
-                                                <option *ngFor="let casItem of cas" [value]="casItem.id">
+                                            <input type="text" placeholder="Search an CAS" formControlName="castype"
+                                                [(ngModel)]="casname" (input)="onSearchChange($event)"
+                                                [matAutocomplete]="auto" class="example-input">
+
+                                            <mat-autocomplete #auto="matAutocomplete">
+                                                <mat-option *ngFor="let casItem of filteredcas()" [value]="casItem.name"
+                                                    (click)="onSelectionFingerPrint(casItem)">
                                                     {{ casItem.name }}
-                                                </option>
-                                            </select>
+                                                </mat-option>
+                                            </mat-autocomplete>
                                             <div *ngIf="form.get('castype')?.invalid && form.get('castype')?.touched">
                                                 <small class="text-danger">CAS is required.</small>
                                             </div>
@@ -32,9 +35,9 @@
                                             <label for="">Intend To</label>
                                         </div>
                                         <div class="col-12 col-md-8">
-                                            <select formControlName="intendto"
+                                            <select formControlName="intendto" [(ngModel)]="intendto_1"
                                                 (ngModelChange)="onChangeIntendTo1($event)">
-                                                <option value="" selected> Select Intend</option>
+                                                <option value="" disabled> Select Intend</option>
                                                 <option value="" *ngFor="let in of intend" [value]="in.value">
                                                     {{in.lable}}
                                                 </option>
@@ -44,27 +47,26 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="input-box mb-3">
+                                    <div *ngIf="isSmartcardEnabled || isAreaCodeEnabled" class="input-box mb-3">
                                         <div class="col-12 col-md-4">
                                             <label for="">Intend ID</label>
                                         </div>
                                         <div class="col-12 col-md-8" *ngIf="isSmartcardEnabled">
                                             <input placeholder="Enter Smartcard" type="text" formControlName="intendid"
-                                                maxlength="20">
-                                            <div *ngIf="form.get('intendid')?.invalid && form.get('intendid')?.touched">
-                                                <small *ngIf="form.get('intendid')?.errors?.['required']"
-                                                    class="text-danger">Intend ID is required.</small>
-                                                <small
-                                                    *ngIf="form.get('intendid')?.errors?.['minlength'] || form.get('intendid')?.errors?.['maxlength']"
-                                                    class="text-danger">
-                                                    Intend ID must be exactly 20 digits long.
+                                                [(ngModel)]="intendid_1" (keypress)="onKeydown($event)"
+                                                [maxlength]="castype_1 != 6 ? 20 : 14" (input)="validateExactLength()">
+                                            <div *ngIf="isInvalidLength">
+                                                <small class="text-danger">
+                                                    Please enter exactly {{ castype_1 != 6 ? 20 : 14 }} digits.
                                                 </small>
-
+                                            </div>
+                                            <div *ngIf="form.get('intendid')?.invalid && form.get('indendid')?.touched">
+                                                <small class="text-danger">Indend Id is required.</small>
                                             </div>
                                         </div>
-                                        <div class="col-12 col-md-8" *ngIf="isMSOCodeEnabled"  style="display: none;">
+                                        <div class="col-12 col-md-8" *ngIf="isMSOCodeEnabled" style="display: none;">
                                             <input placeholder="Enter Smartcard" type="text" formControlName="intendid"
-                                                maxlength="20">
+                                                [(ngModel)]="intendid_1" maxlength="20">
                                             <div *ngIf="form.get('intendid')?.invalid && form.get('intendid')?.touched">
                                                 <small *ngIf="form.get('intendid')?.errors?.['required']"
                                                     class="text-danger">Intend ID is required.</small>
@@ -77,23 +79,47 @@
                                             </div>
                                         </div>
                                         <div class="col-12 col-md-8" *ngIf="isAreaCodeEnabled">
-                                            <select id="lcoName" formControlName="intendid">
-                                                <option value="" selected>Select a LCO Name</option>
-                                                <option *ngFor="let area of filteredIntendArea()" [value]="area.id">
+                                            <input type="text" placeholder="Search a Operator"
+                                                formControlName="intendid" [(ngModel)]="intendname"
+                                                (input)="onSearchAreaChange($event)" [matAutocomplete]="auto"
+                                                class="example-input">
+
+                                            <mat-autocomplete #auto="matAutocomplete">
+                                                <mat-option *ngFor="let area of filteredArea()" [value]="area.id"
+                                                    (click)="onAreaSelect(area)">
                                                     {{ area.name }}
-                                                </option>
-                                            </select>
+                                                </mat-option>
+                                            </mat-autocomplete>
                                             <div *ngIf="form.get('intendid')?.invalid && form.get('intendid')?.touched">
                                                 <small class="text-danger">Intend ID is required.</small>
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="input-box mb-3">
+                                    <div *ngIf="isdisplayTypeSelectDisabled" class="input-box mb-3">
+                                        <div class="col-sm-4">
+                                            <label for="">Display Type</label>
+                                        </div>
+                                        <div class="col-12 col-md-8">
+                                            <select placeholder="Select the display type" formControlName="display_type"
+                                                [(ngModel)]="display_type_1">
+                                                <option value="" disabled>Select a Display Type</option>
+                                                <option *ngFor="let fs of displayType" [value]="fs.value">{{fs.lable}}
+                                                </option>
+                                            </select>
+                                            <div
+                                                *ngIf="form.get('display_type')?.invalid && form.get('display_type')?.touched">
+                                                <small class="text-danger">Display Type is required.</small>
+                                            </div>
+                                        </div>
+                                    </div>
+
+
+                                    <div *ngIf="isDateDisabled" class="input-box mb-3">
                                         <div class="col-12 col-md-4">
                                             <label for="">Expiry</label>
                                         </div>
-                                        <div *ngIf="isDateDisabled" class="col-12 col-md-8">
-                                            <input placeholder="Enter Smartcard" type="date"
+                                        <div class="col-12 col-md-8">
+                                            <input placeholder="Enter Smartcard" type="date" [(ngModel)]="expirydate_1"
                                                 formControlName="expirydate">
                                             <div
                                                 *ngIf="form.get('expirydate')?.invalid && form.get('expirydate')?.touched">
@@ -108,7 +134,7 @@
                                         </div>
                                         <div class="col-12 col-md-8">
                                             <input placeholder="Enter Sender" type="text" style="height: 75px;"
-                                                formControlName="sender">
+                                                [(ngModel)]="sender_1" formControlName="sender">
                                             <div *ngIf="form.get('sender')?.invalid && form.get('sender')?.touched">
                                                 <small class="text-danger">Sender is required (min. 3
                                                     characters).</small>
@@ -117,17 +143,23 @@
                                         </div>
 
                                     </div>
-                                    <div class="input-box mb-3">
+                                    <div *ngIf="isTitle" class="input-box mb-3">
                                         <div class="col-12 col-md-4">
                                             <label for="">Title</label>
                                         </div>
                                         <div class="col-12 col-md-8">
-                                            <input placeholder="" type="text" style="height: 75px;"
-                                                formControlName="mailtitle">
+                                            <textarea placeholder="" type="text" style="height: 75px;"
+                                                [maxlength]="getMaxLengthTitle()"
+                                                (input)="updateRemainingCharsTitle($event)" formControlName="mailtitle"
+                                                [(ngModel)]="mailtitle_1"></textarea>
+                                            <div>
+                                                <small>{{ remainingTitleChars }} characters remaining</small>
+                                            </div>
                                             <div
                                                 *ngIf="form.get('mailtitle')?.invalid && form.get('mailtitle')?.touched">
                                                 <small class="text-danger">Title is required.</small>
                                             </div>
+
                                         </div>
 
                                     </div>
@@ -136,16 +168,21 @@
                                             <label for="">Message</label>
                                         </div>
                                         <div class="col-12 col-md-8">
-                                            <textarea placeholder="" type="text" formControlName="message"></textarea>
+                                            <textarea placeholder="" type="text" formControlName="message"
+                                                [(ngModel)]="message_1" [maxlength]="getMaxLength()"
+                                                (input)="updateRemainingChars($event)"></textarea>
+                                            <div>
+                                                <small>{{ remainingChars }} characters remaining</small>
+                                            </div>
                                             <div *ngIf="form.get('message')?.invalid && form.get('message')?.touched">
                                                 <small class="text-danger">Message is required.</small>
                                             </div>
+
                                         </div>
 
                                     </div>
                                 </div>
                             </div>
-
                         </div>
                         <div class="d-flex justify-content-center align-items-center">
                             <div class="d-flex justify-content-center align-items-center" style="padding: 10px;">
@@ -167,7 +204,7 @@
                 <div class="col-12 col-sm-12 col-md-12 mb-3">
                     <ag-grid-angular #agGrid id="myGrid" domLayout='autoHeight' class="ag-theme-alpine table-class"
                         rowAnimation [rowSelection]="rowSelection" [gridOptions]="gridOptions" [columnDefs]="columnDefs"
-                        [rowData]="rowData" (gridReady)="onGridReady()" [enableCellTextSelection]="true">
+                        [rowData]="rowData" [enableCellTextSelection]="true">
                     </ag-grid-angular>
                 </div>
             </div>

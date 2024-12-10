@@ -60,7 +60,7 @@
     </div>
 
     <div *ngIf="Dialogue">
-        <div class="d-flex justify-content-center  " >
+        <div class="d-flex justify-content-center  ">
             <div class="col-12 col-md-4  card p-4 file ">
                 <div class="d-flex justify-content-center align-items-center m-3">
                     <img src="/assets/images/icons/xlsx.png" class="img" alt="File Icon">
@@ -74,14 +74,28 @@
                     </span>
                 </span>
 
-                <div class="input_box col-12 col-md-12 d-flex justify-content-center align-items-center ">
-                    <select style="color: rgb(17, 0, 0);" [(ngModel)]="operatorid" (change)="onOperatorChange($event)">
-                        <option value="0" selected style="color: rgb(19, 17, 17);">ALL Operator </option>
+                <div class="input_box col-12 col-md-12 d-flex justify-content-center align-items-center mb-3">
+                    <!-- <select style="color: rgb(17, 0, 0);" [(ngModel)]="operatorid" (change)="onOperatorChange($event)">
+                        <option value="" selected style="color: rgb(19, 17, 1.7);">Select a operator </option>
                         <option *ngFor="let operator of operatorList" [value]="operator.value">{{ operator.name}}
                         </option>
-                    </select>
-                </div>
+                    </select> -->
+                    
+                    <input type="text" matInput [matAutocomplete]="auto" [(ngModel)]="operatorid" 
+                        (input)="filterPackage($event)" placeholder="Select a package"
+                        [matAutocompleteDisabled]="false" [value]="selectedPackageName">
 
+                    <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayOperator">
+                        <mat-option *ngFor="let operator of filteredPackage" [value]="operator.value"
+                            (click)="onOperatorChange(operator)">
+                            {{ operator.name }}
+                        </mat-option>
+                    </mat-autocomplete>
+                  
+                </div>
+                <div *ngIf="submitted && !operatorid" class="text-danger" style="font-size: small;">
+                    Package Name is required
+                </div>
                 <div class="checkbox-text mb-3">
                     <div class="checkbox-content">
                         <input type="checkbox" id="terms" [(ngModel)]="insert"
@@ -92,8 +106,7 @@
                 <div class="d-flex justify-content-end align-items-center mt-3 ">
                     <button type="button" class="btn btn-success mx-2" (click)="goBack()">Back &nbsp;<i
                             class="fa fa-arrow-left" aria-hidden="true"></i></button>
-                    <button type="submit" class="btn btn-success" [disabled]="!isCheckboxChecked_operator"
-                        (click)="bulkSubscriberImport()">Submit</button>
+                    <button type="submit" class="btn btn-success" (click)="bulkSubscriberImport()">Submit</button>
                 </div>
             </div>
         </div>

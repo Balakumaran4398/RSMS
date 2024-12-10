@@ -65,21 +65,81 @@ p {
     }
 }
 
+mat-option {
+    font-size: 14px;
+}
 
 .checkbox-content input:checked {
     accent-color: #09a223;
 }
 
-.box {
-    border: 1px ridge;
+.ag-body-viewport .ag-selectable {
+    max-height: 350px;
+    overflow: auto;
 }
+
+.box {
+    position: relative;
+    margin-top: 0%;
+}
+
+.new_d {
+    display: flex;
+}
+
+.option_input {
+    border: 1px solid #0a2e23;
+    background: white;
+    border-radius: 10px;
+    max-height: 10%;
+    position: sticky;
+    top: -2.5%;
+    z-index: 1;
+}
+
+.option_input:hover {
+    background: white; 
+}
+
+.option_input input {
+    background: white;
+}
+
+.option_input input:hover,
+.option_input input:focus {
+    background: white !important; 
+}
+
+  
 
 @media screen and (max-width:560px) {
     .display {
         display: block;
     }
-    .mobile{
+
+    .mobile {
         margin: auto;
+    }
+
+    .box {
+        position: relative;
+        margin-top: 25%;
+    }
+
+    .new_d {
+        display: block;
+
+        .tab {
+            text-align: center;
+        }
+    }
+
+    .stop_service {
+        text-align: center;
+    }
+
+    mat-option {
+        font-size: 13px;
     }
 }
 
@@ -87,7 +147,25 @@ p {
     .display {
         display: block;
     }
-    .mobile{
+
+    .stop_service .mobile {
         margin: auto;
+    }
+
+    .stop_service {
+        text-align: center;
+    }
+
+    .box {
+        position: relative;
+        margin-top: 25%;
+    }
+
+    .new_d {
+        display: block;
+    }
+
+    mat-option {
+        font-size: 13px;
     }
 }

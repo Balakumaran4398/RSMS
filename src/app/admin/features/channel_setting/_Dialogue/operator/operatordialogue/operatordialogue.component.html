@@ -1,48 +1,12 @@
-<!-- <div *ngIf="OType=='area'"
-    class="col d-flex justify-content-center align-items-center card transparent-background dialog-content">
-    <div class="card-content ">
-        <div class="Head d-flex justify-content-between align-items-center mb-3">
-            <h5 class="span" style="color: white;"> NEW AREA DETAILS</h5>
-            <i class="fa fa-close close-icon" style="cursor: pointer;" (click)="onNoClick()"></i>
-        </div>
-        <div class="card-body" style="padding: 1rem;">
-            <div class="input_box display align-items-center mb-3">
-                <div class="col-12 col-md-6">
-                    <span for="categoryName" class="me-2">AREA NAME</span>
-                </div>
-                <div class="col-12 col-md-6">
-                    <input type="text" [(ngModel)]="areaname">
-                </div>
-            </div>
-            <div class="input_box display align-items-center mb-3">
-                <div class="col-12 col-md-6">
-                    <span for="categoryName" class="me-2">PINCODE</span>
-                </div>
-                <div class="col-12 col-md-6">
-                    <input type="text" [(ngModel)]="pincode" maxlength="6" (keypress)="onKeydown($event)">
-                </div>
-            </div>
-            <div class="form-group d-flex justify-content-end align-items-center mb-3">
-                <button type="button" class="btn btn-success me-2" (click)="newArea()">Save</button>
-                <button type="button" class="btn btn-danger" (click)="onNoClick()">Cancel</button>
-            </div>
-        </div>
-    </div>
-</div> -->
-
 
 <div *ngIf="OType=='area'"
     class="col d-flex justify-content-center align-items-center card transparent-background dialog-content">
     <div class="card-content">
-        <!-- <div class="Head d-flex justify-content-between align-items-center mb-3">
-      <h5 class="span" style="color: white;"> NEW AREA DETAILS</h5>
-      <i class="fa fa-close close-icon" style="cursor: pointer;" (click)="onNoClick()"></i>
-    </div> -->
-        <div class="Head d-flex justify-content-between align-items-center mb-3" style="padding: 1rem;">
+         <div class="Head d-flex justify-content-between align-items-center mb-3" style="padding: 1rem;">
             <h6>NEW AREA DETAILS</h6>
             <i class="fa fa-close close-icon" style="cursor: pointer;" (click)="onNoClick()"></i>
         </div>
-        <div class="card-body" style="padding: 1rem;">
+        <div style="padding: 1rem;">
             <div class="input_box display align-items-center mb-3">
                 <div class="col-12 col-md-6">
                     <span for="areaname" class="me-2">AREA NAME</span>
@@ -78,47 +42,9 @@
     </div>
 </div>
 
-<!-- <div *ngIf="OType=='edit'"
-    class="col d-flex justify-content-center align-items-center card transparent-background dialog-content">
-    <div class="card-content ">
-        <div class="Head d-flex justify-content-between align-items-center mb-3">
-            <h5 class="span" style="color: white;"> NEW AREA DETAILS</h5>
-            <i class="fa fa-close close-icon" style="cursor: pointer;" (click)="onNoClick()"></i>
-        </div>
-        <div class="card-body" style="padding: 1rem;">
-            <div class="input_box display align-items-center mb-3">
-                <div class="col-12 col-md-6">
-                    <span for="categoryName" class="me-2">AREA NAME</span>
-                </div>
-                <div class="col-12 col-md-6">
-                    <input type="text" [(ngModel)]="areaname">
-                </div>
-            </div>
-            <div class="input_box display align-items-center mb-3">
-                <div class="col-12 col-md-6">
-                    <span for="categoryName" class="me-2">PINCODE</span>
-                </div>
-                <div class="col-12 col-md-6">
-                    <input type="text" [(ngModel)]="pincode" maxlength="6" (keypress)="onKeydown($event)">
-                </div>
-            </div>
-            <div class="form-group d-flex justify-content-center align-items-center mb-3">
-                <button type="button" class="btn btn-primary me-2" (click)="newArea()">Save</button>
-                <button type="button" class="btn btn-secondary" (click)="onNoClick()">Cancel</button>
-            </div>
-        </div>
-    </div>
-</div> -->
-
-
-
 <div *ngIf="OType=='edit'"
     class="col d-flex justify-content-center align-items-center card transparent-background dialog-content">
     <div class="card-content">
-        <!-- <div class="Head d-flex justify-content-between align-items-center mb-3">
-      <h5 class="span" style="color: white;"> EDIT AREA DETAILS</h5>
-      <i class="fa fa-close close-icon" style="cursor: pointer;" (click)="onNoClick()"></i>
-    </div> -->
         <div class="Head d-flex justify-content-between align-items-center mb-3" style="padding: 1rem;">
             <h6>EDIT AREA DETAILS</h6>
             <i class="fa fa-close close-icon" style="cursor: pointer;" (click)="onNoClick()"></i>
@@ -163,10 +89,6 @@
 
 <div *ngIf="OType=='recharge'">
     <div class="card">
-        <!-- <div class="Head d-flex justify-content-between align-items-center ">
-            <span class="span">CONFIRMATION FOR REPORT</span>
-            <i class="fa fa-close close-icon" (click)="onNoClick()"></i>
-        </div> -->
         <div class="Head d-flex justify-content-between align-items-center mb-3" style="padding: 1rem;">
             <h6>CONFIRMATION FOR REPORT</h6>
             <i class="fa fa-close close-icon" style="cursor: pointer;" (click)="onNoClick()"></i>
@@ -177,7 +99,7 @@
                 <span class="formlabel">Filter
                 </span>
             </div>
-            <div class="col-12 col-md-6">
+            <!-- <div class="col-12 col-md-6">
                 <mat-form-field>
                     <input matInput [matDatepicker]="dp" [formControl]="date">
                     <mat-datepicker-toggle matIconSuffix [for]="dp"></mat-datepicker-toggle>
@@ -185,8 +107,18 @@
                         panelClass="example-month-picker">
                     </mat-datepicker>
                 </mat-form-field>
-            </div>
-            <div class="col-12 col-md-3 d-flex justify-content-center align-items-center mb-3 tooltip-container">
+            </div> -->
+            <mat-form-field>
+                <input matInput [matDatepicker]="dp" placeholder="Month and Year" [formControl]="date">
+                <mat-datepicker-toggle matSuffix [for]="dp"></mat-datepicker-toggle>
+                <mat-datepicker #dp
+                                startView="multi-year"
+                                (yearSelected)="chosenYearHandler($event)"
+                                (monthSelected)="chosenMonthHandler($event, dp)"
+                                panelClass="example-month-picker">
+                </mat-datepicker>
+              </mat-form-field>
+            <div class="col-12 col-md-3 d-flex justify-content-center align-items-center mb-3 tooltip-container" style="cursor: pointer;">  
                 <div class="icon-container">
                     <img src="/assets/images/icons/pdf.png" width="40px">
                     <div class="tooltip">Pdf</div>
@@ -207,13 +139,13 @@
                 <span class="formlabel">Click You Need Report Format
                 </span>
             </div>
-            <div class="col-12 col-md-2 d-flex justify-content-center align-items-center tooltip-container">
+            <div class="col-12 col-md-2 d-flex justify-content-center align-items-center tooltip-container" style="cursor: pointer;"> 
                 <div class="icon-container ">
                     <img src="/assets/images/icons/Excel.png" width="40px">
                     <div class="tooltip">Excel</div>
                 </div>
             </div>
-            <div class="col-12 col-md-2 d-flex justify-content-center align-items-center tooltip-container ">
+            <div class="col-12 col-md-2 d-flex justify-content-center align-items-center tooltip-container" style="cursor: pointer;">
                 <div class="icon-container">
                     <img src="/assets/images/icons/pdf.png" width="40px">
                     <div class="tooltip">Pdf</div>
@@ -235,13 +167,13 @@
                 <span class="formlabel">Click You Need Report Format
                 </span>
             </div>
-            <div class="col-12 col-md-2 d-flex justify-content-center align-items-center tooltip-container">
+            <div class="col-12 col-md-2 d-flex justify-content-center align-items-center tooltip-container" style="cursor: pointer;">
                 <div class="icon-container ">
                     <img src="/assets/images/icons/Excel.png" width="40px">
                     <div class="tooltip">Excel</div>
                 </div>
             </div>
-            <div class="col-12 col-md-2 d-flex justify-content-center align-items-center tooltip-container ">
+            <div class="col-12 col-md-2 d-flex justify-content-center align-items-center tooltip-container" style="cursor: pointer;">
                 <div class="icon-container">
                     <img src="/assets/images/icons/pdf.png" width="40px">
                     <div class="tooltip">Pdf</div>
@@ -250,37 +182,7 @@
         </div>
     </div>
 </div>
-<div *ngIf="OType=='cancel_Subscription'">
-    <div class="card">
-        <div class="Head d-flex justify-content-between align-items-center mb-3" style="padding: 1rem;">
-            <h6>CONFIRMATION FOR REPORT</h6>
-            <i class="fa fa-close close-icon" style="cursor: pointer;" (click)="onNoClick()"></i>
-        </div>
-        <label class="header">CANCEL SUBSCRIPTION REPORT</label>
-        <div class="mb-3 display justify-content-center align-items-center " style="padding: 1rem;">
-            <div class="input_box col-12 col-md-3">
-                <span class="formlabel">Filter
-                </span>
-            </div>
-            <div class="col-12 col-md-6">
-                <mat-form-field appearance="outline" style="width: 100%;">
-                    <mat-date-range-input [rangePicker]="picker" [max]="maxDate">
-                        <input matStartDate matInput placeholder="Start date" (dateChange)="getFromDate($event)">
-                        <input matEndDate matInput placeholder="End date" (dateChange)="getToDate($event)">
-                    </mat-date-range-input>
-                    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-                    <mat-date-range-picker #picker></mat-date-range-picker>
-                </mat-form-field>
-            </div>
-            <div class="col-12 col-md-3 d-flex justify-content-center align-items-center mb-3 ">
-                <div class="icon-container">
-                    <img src="/assets/images/icons/pdf.png" width="40px">
-                    <div class="tooltip">Pdf</div>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
+
 <div *ngIf="OType=='productwise'">
     <div class="card">
         <div class="Head d-flex justify-content-between align-items-center mb-3" style="padding: 1rem;">
@@ -293,13 +195,13 @@
                 <span class="formlabel">Click You Need Report Format
                 </span>
             </div>
-            <div class="col-12 col-md-2 d-flex justify-content-center align-items-center tooltip-container">
+            <div class="col-12 col-md-2 d-flex justify-content-center align-items-center tooltip-container" style="cursor: pointer;">
                 <div class="icon-container ">
                     <img src="/assets/images/icons/Excel.png" width="40px">
                     <div class="tooltip">Excel</div>
                 </div>
             </div>
-            <div class="col-12 col-md-2 d-flex justify-content-center align-items-center tooltip-container ">
+            <div class="col-12 col-md-2 d-flex justify-content-center align-items-center tooltip-container" style="cursor: pointer;">
                 <div class="icon-container">
                     <img src="/assets/images/icons/pdf.png" width="40px">
                     <div class="tooltip">Pdf</div>
@@ -322,13 +224,13 @@
                 <span class="formlabel">Click You Need Report Format - >
                 </span>
             </div>
-            <div class="col-12 col-md-2 d-flex justify-content-center align-items-center tooltip-container">
+            <div class="col-12 col-md-2 d-flex justify-content-center align-items-center tooltip-container" style="cursor: pointer;">
                 <div class="icon-container ">
                     <img src="/assets/images/icons/Excel.png" width="40px">
                     <div class="tooltip">Excel</div>
                 </div>
             </div>
-            <div class="col-12 col-md-2 d-flex justify-content-center align-items-center tooltip-container ">
+            <div class="col-12 col-md-2 d-flex justify-content-center align-items-center tooltip-container" style="cursor: pointer;">
                 <div class="icon-container">
                     <img src="/assets/images/icons/pdf.png" width="40px">
                     <div class="tooltip">Pdf</div>
@@ -349,13 +251,13 @@
                 <span class="formlabel">Click You Need Report Format
                 </span>
             </div>
-            <div class="col-12 col-md-2 d-flex justify-content-center align-items-center tooltip-container">
+            <div class="col-12 col-md-2 d-flex justify-content-center align-items-center tooltip-container" style="cursor: pointer;">
                 <div class="icon-container ">
                     <img src="/assets/images/icons/Excel.png" width="40px">
                     <div class="tooltip">Excel</div>
                 </div>
             </div>
-            <div class="col-12 col-md-2 d-flex justify-content-center align-items-center tooltip-container ">
+            <div class="col-12 col-md-2 d-flex justify-content-center align-items-center tooltip-container" style="cursor: pointer;">
                 <div class="icon-container">
                     <img src="/assets/images/icons/pdf.png" width="40px">
                     <div class="tooltip">Pdf</div>
@@ -376,13 +278,13 @@
                 <span class="formlabel">Click You Need Report Format
                 </span>
             </div>
-            <div class="col-12 col-md-2 d-flex justify-content-center align-items-center tooltip-container">
+            <div class="col-12 col-md-2 d-flex justify-content-center align-items-center tooltip-container" style="cursor: pointer;">
                 <div class="icon-container ">
                     <img src="/assets/images/icons/Excel.png" width="40px">
                     <div class="tooltip">Excel</div>
                 </div>
             </div>
-            <div class="col-12 col-md-2 d-flex justify-content-center align-items-center tooltip-container ">
+            <div class="col-12 col-md-2 d-flex justify-content-center align-items-center tooltip-container " style="cursor: pointer;">
                 <div class="icon-container">
                     <img src="/assets/images/icons/pdf.png" width="40px">
                     <div class="tooltip">Pdf</div>
@@ -403,13 +305,13 @@
                 <span class="formlabel">Click You Need Report Format
                 </span>
             </div>
-            <div class="col-12 col-md-2 d-flex justify-content-center align-items-center tooltip-container">
+            <div class="col-12 col-md-2 d-flex justify-content-center align-items-center tooltip-container" style="cursor: pointer;">
                 <div class="icon-container ">
                     <img src="/assets/images/icons/Excel.png" width="40px">
                     <div class="tooltip">Excel</div>
                 </div>
             </div>
-            <div class="col-12 col-md-2 d-flex justify-content-center align-items-center tooltip-container ">
+            <div class="col-12 col-md-2 d-flex justify-content-center align-items-center tooltip-container " style="cursor: pointer;">
                 <div class="icon-container">
                     <img src="/assets/images/icons/pdf.png" width="40px">
                     <div class="tooltip">Pdf</div>
@@ -431,13 +333,13 @@
                 <span class="formlabel">Click You Need Report Format
                 </span>
             </div>
-            <div class="col-12 col-md-2 d-flex justify-content-center align-items-center tooltip-container">
+            <div class="col-12 col-md-2 d-flex justify-content-center align-items-center tooltip-container" style="cursor: pointer;">
                 <div class="icon-container ">
                     <img src="/assets/images/icons/Excel.png" width="40px">
                     <div class="tooltip">Excel</div>
                 </div>
             </div>
-            <div class="col-12 col-md-2 d-flex justify-content-center align-items-center tooltip-container ">
+            <div class="col-12 col-md-2 d-flex justify-content-center align-items-center tooltip-container " style="cursor: pointer;">
                 <div class="icon-container">
                     <img src="/assets/images/icons/pdf.png" width="40px">
                     <div class="tooltip">Pdf</div>

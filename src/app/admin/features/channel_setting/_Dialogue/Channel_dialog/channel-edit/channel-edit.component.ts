@@ -3,6 +3,7 @@ import { FormControl, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { BaseService } from 'src/app/_core/service/base.service';
 import { StorageService } from 'src/app/_core/service/storage.service';
+import { SwalService } from 'src/app/_core/service/swal.service';
 import Swal from 'sweetalert2';
 
 @Component({
@@ -35,6 +36,7 @@ export class ChannelEditComponent {
   broadcasterRate: any;
   channel_typename: any;
   channelname: any;
+  channelId: any;
   channel_rate: any;
   broadcaster_id: any;
   category_id: any;
@@ -43,7 +45,7 @@ export class ChannelEditComponent {
   isactive = '1';
   ispaid: boolean;
   categoryid: any;
-  type: number = 0;
+  type: number = 1;
   isYesActive: boolean | null = null;
   category: any;
   channelType: any;
@@ -52,26 +54,25 @@ export class ChannelEditComponent {
   addchannelGroup: any;
   selectbroadcaster: any;
 
-  constructor(public dialogRef: MatDialogRef<ChannelEditComponent>, @Inject(MAT_DIALOG_DATA) public data: any, private userservice: BaseService, private storageservice: StorageService) {
-
-
+  constructor(public dialogRef: MatDialogRef<ChannelEditComponent>, @Inject(MAT_DIALOG_DATA) public data: any, private swal:SwalService,private userservice: BaseService, private storageservice: StorageService) {
     this.role = storageservice.getUserRole();
     this.username = storageservice.getUsername();
     console.log(data);
     this.channelname = data.channel_name;
     console.log(this.channelname);
-
+    this.channelId = data.channel_id;
+    console.log('5456465654564564',this.channelId);
     this.channellogo = data.channel_logo;
     this.channelfreq = data.channel_freq;
     this.channeldesc = data.channel_desc;
     this.tsId = data.ts_id;
     this.serviceid = data.service_id;
     this.broadcasterRate = data.broadcaster_rate;
-    this.broadcastername = data.broadcaster_id;
+    this.broadcastername = data.broadcasterid;
     this.distributorid = data.distributor_id;
-    this.categoryname = data.category_id;
+    this.categoryname = data.categoryid;
     this.inrAmt = data.inr_amt;
-    this.channel_typename = data.channel_type_id;
+    this.channel_typename = data.channeltypeid;
     this.status = data.statusdisplay;
     // this.isactive = data.statusdisplay;;
 
@@ -79,7 +80,7 @@ export class ChannelEditComponent {
 
     this.ispaid = data.paidstatus;
     this.productid = data.product_id;
-    this.commission = data.lcocommission;
+    this.commission = data.customeramount;
     this.isPercentage = data.isPercentage;
     // this.channelid = data.channel_id
     // this.channel_rate = data.inr_amt;
@@ -168,6 +169,7 @@ export class ChannelEditComponent {
 
     const isActive = this.isactive === "Active";
     let requestbody = {
+      channel_id:this.channelId,
       channel_name: this.channelname,
       service_id: this.serviceid,
       broadcaster_rate: this.broadcasterRate,
@@ -179,37 +181,17 @@ export class ChannelEditComponent {
       isactive: isActive,
       product_id: this.productid,
       customer_amount: this.commission,
-      ispercentage: this.ispercentage,
+      ispercentage: !this.ispercentage,
       role: this.role,
       username: this.username
 
     };
-    this.userservice.UPDATE_CHANNEL(requestbody).subscribe(
-      (res) => {
-        console.log('1111111');
-        console.log(res);
-        Swal.fire({
-          position: "center",
-          icon: "success",
-          title: "Package Edit Successfull!!",
-          showConfirmButton: false,
-          timer: 1000
-        }).then(() => {
-          window.location.reload();
-          this.closeDialog();
-        });
-      },
-      (err) => {
-        Swal.fire({
-          position: 'center',
-          icon: 'error',
-          title: 'Error',
-          text: err?.error?.message || 'An error occurred',
-          showConfirmButton: false,
-          timer: 1500
-        });
-      }
-    );
+    this.userservice.UPDATE_CHANNEL(requestbody)
+      .subscribe((res: any) => {
+      this.swal.success(res?.message);
+    }, (err) => {
+      this.swal.Error(err?.error?.message);
+    });
   }
   timeout: any;
   breakLoad() {

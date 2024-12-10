@@ -102,7 +102,7 @@ export class PackageBaseViewComponent {
   private updateColumnDefs(tab: string): void {
     if (tab === '1') {
       this.columnDefs = [
-        { headerName: 'S.No', valueGetter: 'node.rowIndex + 1', width: 100 },
+        { headerName: 'S.No', valueGetter: 'node.rowIndex + 1', width: 80 },
         { headerName: 'CHANNEL NAME', field: 'channel_name', editable: true, width: 150 },
         { headerName: 'PRODUCT ID', field: 'product_id', editable: true, width: 150 },
         { headerName: 'SERVICE ID', field: 'service_id', editable: true, width: 140 },
@@ -111,17 +111,17 @@ export class PackageBaseViewComponent {
       ];
     } else if (tab === '2') {
       this.columnDefs = [
-        { headerName: 'S.No', valueGetter: 'node.rowIndex + 1', width: 100 },
+        { headerName: 'S.No', valueGetter: 'node.rowIndex + 1', width: 80 },
         { headerName: 'CHANNEL NAME', field: 'channel_name', editable: true, width: 150 },
-        { headerName: 'PRODUCT ID', field: 'product_id', editable: true, width: 150 },
-        { headerName: 'SERVICE ID', field: 'service_id', editable: true, width: 140 },
-        { headerName: 'TS ID', field: 't_id', editable: true, width: 150 },
-        { headerName: 'RATE', field: 'broadcaster_rate', editable: true, width: 150 },
-        { headerName: 'STATUS', field: 'statusdisplay', editable: true, width: 150 }
+        { headerName: 'PRODUCT ID', field: 'product_id', editable: true, width: 130 },
+        { headerName: 'SERVICE ID', field: 'service_id', editable: true, width: 120 },
+        { headerName: 'TS ID', field: 't_id', editable: true, width: 130 },
+        { headerName: 'RATE', field: 'broadcaster_rate', editable: true, width: 130 },
+        { headerName: 'STATUS', field: 'statusdisplay', editable: true, width: 130 }
       ];
     } else if (tab === '3') {
       this.columnDefs = [
-        { headerName: 'S.No', valueGetter: 'node.rowIndex + 1', width: 100 },
+        { headerName: 'S.No', valueGetter: 'node.rowIndex + 1', width: 80 },
         { headerName: 'CHANNEL NAME', field: 'channel_name', editable: true, width: 150 },
         { headerName: 'PRODUCT ID', field: 'product_id', editable: true, width: 150 },
         { headerName: 'RATE', field: 'broadcaster_rate', editable: true, width: 150 },
@@ -131,7 +131,7 @@ export class PackageBaseViewComponent {
       ];
     } else if (tab === 'addon_view') {
       this.columnDefs = [
-        { headerName: 'S.No', valueGetter: 'node.rowIndex + 1', width: 100 },
+        { headerName: 'S.No', valueGetter: 'node.rowIndex + 1', width: 80 },
         { headerName: 'CHANNEL NAME', field: 'channel_name', editable: true, width: 150 },
         { headerName: 'BROADCASTER NAME	', field: 'product_id', editable: true, width: 150 },
         { headerName: 'SERIVICE ID	', field: 'broadcaster_rate', editable: true, width: 150 },

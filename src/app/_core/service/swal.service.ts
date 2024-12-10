@@ -65,6 +65,18 @@ export class SwalService {
       // location.reload();
     });
   }
+  Error1(message: any) {
+    Swal.fire({
+      title: 'Error!',
+      text: message,
+      icon: 'error',
+      timer: 2000,
+      timerProgressBar: true,
+      showConfirmButton: false
+    }).then(() => {
+      location.reload();
+    });
+  }
   warning_1() {
     Swal.fire({
       title: 'Warning!',
@@ -104,6 +116,19 @@ export class SwalService {
       timerProgressBar: true,
       showConfirmButton: false
     });
+  }
+  Successadd_200() {
+    Swal.fire({
+      title: 'Success',
+      text: 'Data updated successfully!',
+      icon: 'success',
+      timer: 2000,
+      timerProgressBar: true,
+      showConfirmButton: false
+    }).then(() => {
+      location.reload();
+    });
+    ;
   }
   Success_204() {
     Swal.fire({

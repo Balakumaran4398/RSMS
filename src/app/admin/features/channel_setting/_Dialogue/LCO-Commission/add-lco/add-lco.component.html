@@ -20,12 +20,23 @@
                 </div>
                 <div class="d-block col-12 col-md-4 mb-2">
                     <span class="d-block mb-2" style="color: rgb(2, 8, 102);font-size: 15px;">MEMBERSHIP</span>
-                    <select style="color: rgb(17, 0, 0);" [(ngModel)]="lcogroupid"
+                    <!-- <select style="color: rgb(17, 0, 0);" [(ngModel)]="lcogroupid"
                         (change)="getproductMembershipList($event)">
                         <option value="0" selected style="color: rgb(19, 17, 17);">Select Membership </option>
                         <option *ngFor="let lcomember of lcomembershipList" [value]="lcomember.value">{{
                             lcomember.name}}</option>
-                    </select>
+                    </select> -->
+
+                    <input type="text" matInput [matAutocomplete]="auto" [(ngModel)]="lcogroupid" maxlength="20"
+                    (input)="filterOperators($event)" placeholder="Select a Operator" [matAutocompleteDisabled]="false"
+                    [value]="selectedOperator?.name">
+
+                <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayOperator">
+                    <mat-option *ngFor="let operator of filteredOperators" [value]="operator.value"
+                        (click)="getproductMembershipList(operator)">
+                        {{ operator.name }}
+                    </mat-option>
+                </mat-autocomplete>
                 </div>
             </div>
             <div class="card " style="border: 1px solid lightgray;" style="height: 600px;">
@@ -70,12 +81,24 @@
                 </div>
                 <div class="d-block col-12 col-md-4 mb-2">
                     <span class="d-block mb-2" style="color: rgb(2, 8, 102);font-size: 15px;">MEMBERSHIP</span>
-                    <select style="color: rgb(17, 0, 0);" [(ngModel)]="lcogroupid"
+                    <!-- <select style="color: rgb(17, 0, 0);" [(ngModel)]="lcogroupid"
                         (change)="getproductMembershipList($event)">
                         <option value="0" selected style="color: rgb(19, 17, 17);">Select Membership </option>
                         <option *ngFor="let lcomember of lcomembershipList" [value]="lcomember.value">{{
                             lcomember.name}}</option>
-                    </select>
+                    </select> -->
+
+
+                    <input type="text" matInput [matAutocomplete]="auto" [(ngModel)]="lcogroupid" maxlength="20"
+                    (input)="filterOperators($event)" placeholder="Select a Operator" [matAutocompleteDisabled]="false"
+                    [value]="selectedOperator?.name">
+
+                <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayOperator">
+                    <mat-option *ngFor="let operator of filteredOperators" [value]="operator.value"
+                        (click)="getproductMembershipList(operator)">
+                        {{ operator.name }}
+                    </mat-option>
+                </mat-autocomplete>
                 </div>
             </div>
             <div class="card " style="border: 1px solid lightgray;" style="height: 600px;">

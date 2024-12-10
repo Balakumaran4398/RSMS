@@ -1,5 +1,5 @@
 import { HttpResponse } from '@angular/common/http';
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { MatCalendarCellClassFunction } from '@angular/material/datepicker';
 import { MatDialog } from '@angular/material/dialog';
@@ -8,6 +8,9 @@ import { BaseService } from 'src/app/_core/service/base.service';
 import { StorageService } from 'src/app/_core/service/storage.service';
 import { SwalService } from 'src/app/_core/service/swal.service';
 import Swal from 'sweetalert2';
+import { EditInventoryComponent } from '../../channel_setting/_Dialogue/Inventory/edit-inventory/edit-inventory.component';
+import { BulkpackageupdationComponent } from '../../channel_setting/_Dialogue/BULK OPERATION/bulkpackageupdation/bulkpackageupdation.component';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-bulk-page-updation',
@@ -15,20 +18,32 @@ import Swal from 'sweetalert2';
   styleUrls: ['./bulk-page-updation.component.scss']
 })
 export class BulkPageUpdationComponent implements OnInit {
-  selectedTab: string = 'bulk_package';
+  selectedTab: string = 'pending';
   package: any;
   operatorid: any;
+  selectoperator: any;
   package_select: boolean = false;
   isCheckboxChecked: boolean = false;
   packageList: any[] = [];
+  filteredPackageList: any[] = [];
+  filteredOperatorList: any[] = [];
   operatorList: any[] = [];
   cas: any[] = [];
   typelist: any;
   alltypelist: any;
-
+  packageSearch: string = '';
   maxDate = new Date(2400, 11, 31);
   fromdate: any;
   todate: any;
+  date: any;
+  selectedDate: any;
+  gridApi: any;
+  gridColumnApi: any;
+  selectedIds: number[] = [];
+  selectedtypes: number[] = [];
+  rows: any[] = [];
+  isAnyRowSelected: boolean = false;
+  isSelectRow: boolean = false;
 
   type: any = [
     { label: "Select filter Type", value: 0 },
@@ -53,6 +68,7 @@ export class BulkPageUpdationComponent implements OnInit {
   username: any;
   role: any;
   status: any;
+  serviceStatus: any;
   CasFormControl: any;
   typeFormControl: any;
   LcoFormControl: any;
@@ -76,158 +92,279 @@ export class BulkPageUpdationComponent implements OnInit {
     },
     paginationPageSize: 10,
     pagination: true,
+    rowClassRules: {
+      'always-selected': (params: any) => params.data,
+    },
+    onFirstDataRendered: (params: { api: { forEachNode: (arg0: (node: any) => void) => void; }; }) => {
+      this.selectRowsBasedOnUsername(params);
+    },
+
+  }
+  selectRowsBasedOnUsername(params: { api: { forEachNode: (arg0: (node: any) => void) => void; }; }) {
+    params.api.forEachNode((node) => {
+      if (node.data) {
+        node.setSelected(true);
+      }
+    });
   }
   columnDefs: any;
-  constructor(public dialog: MatDialog, private fb: FormBuilder, private userservice: BaseService,  private storageService: StorageService, private swal: SwalService) {
-
+  constructor(public dialog: MatDialog, private fb: FormBuilder, private userservice: BaseService, private cdr: ChangeDetectorRef, private storageService: StorageService, private swal: SwalService) {
     this.username = storageService.getUsername();
     this.role = storageService.getUserRole();
     this.columnDefs = [
       { headerName: "S.No", lockPosition: true, valueGetter: 'node.rowIndex+1', cellClass: 'locked-col', width: 80, suppressNavigable: true, sortable: false, filter: false },
-      { headerName: "CUSTOMER NAME", field: 'intend_to' },
-      { headerName: "SMARTCARD", field: '' },
-      { headerName: "BOX ID", field: '' },
-      { headerName: "PACKAGE NAME", field: '' },
-      { headerName: "EXPIRY DATE", field: '' },
+      { headerName: "CUSTOMER NAME", field: 'customername', width: 350 },
+      { headerName: "SMARTCARD", field: 'smartcard', width: 300 },
+      { headerName: "BOX ID", field: 'boxid', width: 350 },
+      { headerName: "PACKAGE NAME", field: 'productname', width: 330 },
+      { headerName: "EXPIRY DATE", field: 'expirydate', width: 350 },
     ];
   }
 
   private updateColumnDefs(tab: string): void {
-    console.log(tab);
-
     if (tab === 'bulk_package') {
+      // console.log(this.rowData=[]);
+
       this.columnDefs = [
-        { headerName: "S.No", lockPosition: true, valueGetter: 'node.rowIndex+1', cellClass: 'locked-col', width: 80, suppressNavigable: true, sortable: false, filter: false },
-        { headerName: "CUSTOMER NAME", field: 'customername' },
-        { headerName: "SMARTCARD", field: 'smartcard' },
-        { headerName: "BOX ID", field: 'boxid' },
-        { headerName: "PACKAGE NAME", field: 'productname' },
-        { headerName: "EXPIRY DATE", field: 'expirydate' },
+        {
+          headerName: "S.No", lockPosition: true, valueGetter: 'node.rowIndex+1', cellClass: 'locked-col', width: 100,
+          headerCheckboxSelection: true, checkboxSelection: true
+        },
+        { headerName: "CUSTOMER NAME", field: 'customername', width: 350 },
+        { headerName: "SMARTCARD", field: 'smartcard', width: 300 },
+        { headerName: "BOX ID", field: 'boxid', width: 350 },
+        { headerName: "PACKAGE NAME", field: 'productname', width: 330 },
+        { headerName: "EXPIRY DATE", field: 'expirydate', width: 340 },
       ];
     } else if (tab === 'pending') {
+      // console.log(this.rowData = []);
       this.columnDefs = [
-        { headerName: "S.No", lockPosition: true, valueGetter: 'node.rowIndex+1', cellClass: 'locked-col', width: 80, suppressNavigable: true, sortable: false, filter: false },
-        { headerName: "OPERATOR NAME	", field: 'operatorname' },
-        { headerName: "CUSTOMER NAME	", field: 'customername' },
-        { headerName: "SMARTCARD", field: 'smartcard' },
-        { headerName: "BOX ID", field: 'boxid' },
-        { headerName: "CREATED DATE", field: 'createddate' },
-        { headerName: "PACKAGE NAME", field: 'expirydate' },
-        { headerName: "EXPIRY DATE", field: 'packagename' },
+        { headerName: "S.No", lockPosition: true, valueGetter: 'node.rowIndex+1', cellClass: 'locked-col', width: 80 },
+        { headerName: "CUSTOMER NAME	", field: 'customername', width: 200 },
+        { headerName: "SMARTCARD", field: 'smartcard', width: 250 },
+        { headerName: "BOX ID", field: 'boxid', width: 250 },
+        { headerName: "CREATED DATE", field: 'createddate', width: 250 },
+        { headerName: "PACKAGE NAME", field: 'expirydate', width: 250 },
+        { headerName: "EXPIRY DATE", field: 'packagename', width: 250 },
         {
-          headerName: "STATUS",
-          field: 'status',
-          cellRenderer: (params: any) => {
-            return params.value === 1 ? 'Active' : 'Deactive';
-          },
-          cellStyle: (params: any) => {
-            if (params.value === 1) {
-              return { color: 'green', fontWeight: 'bold' };
-            } else if (params.value === 0) {
-              return { color: 'red', fontWeight: 'bold' };
-            }
-            return null;
-          }
+          headerName: "STATUS", width: 230,
+          field: 'casresponse',
+          // field: 'status',
+          // cellRenderer: (params: any) => {
+          //   return params.value === 1 ? 'Active' : 'Deactive';
+          // },
+          // cellStyle: (params: any) => {
+          //   if (params.value === 1) {
+          //     return { color: 'green', fontWeight: 'bold' };
+          //   } else if (params.value === 0) {
+          //     return { color: 'red', fontWeight: 'bold' };
+          //   }
+          //   return null;
+          // }
         }
 
       ];
     } else if (tab === 'archive') {
+      // console.log(this.rowData = []);
       this.columnDefs = [
-        { headerName: "S.No", lockPosition: true, valueGetter: 'node.rowIndex+1', cellClass: 'locked-col', width: 80, suppressNavigable: true, sortable: false, filter: false },
-        { headerName: "OPERATOR NAME	", field: 'operatorname' },
-        { headerName: "CUSTOMER NAME	", field: 'customername' },
-        { headerName: "SMARTCARD", field: 'smartcard' },
-        { headerName: "BOX ID", field: 'boxid' },
-        { headerName: "CREATED DATE", field: 'createddate' },
-        { headerName: "PACKAGE NAME", field: 'expirydate' },
-        { headerName: "EXPIRY DATE", field: 'packagename' },
+        { headerName: "S.No", lockPosition: true, valueGetter: 'node.rowIndex+1', cellClass: 'locked-col', width: 80 },
+        { headerName: "OPERATOR NAME	", field: 'operatorname', width: 200 },
+        { headerName: "CUSTOMER NAME	", field: 'customername', width: 200 },
+        { headerName: "SMARTCARD", field: 'smartcard', width: 250 },
+        { headerName: "BOX ID", field: 'boxid', width: 200 },
+        { headerName: "CREATED DATE", field: 'createddate', width: 200 },
+        { headerName: "PACKAGE NAME", field: 'expirydate', width: 250 },
+        { headerName: "EXPIRY DATE", field: 'packagename', width: 200 },
         {
           headerName: "STATUS",
-          field: 'status',
-          cellRenderer: (params: any) => {
-            return params.value === 1 ? 'Active' : 'Deactive';
-          },
-          cellStyle: (params: any) => {
-            if (params.value === 1) {
-              return { color: 'green', fontWeight: 'bold' };
-            } else if (params.value === 0) {
-              return { color: 'red', fontWeight: 'bold' };
-            }
-            return null;
-          }
+          field: 'casresponse', width: 180
+          // field: 'status',
+          // cellRenderer: (params: any) => {
+          //   return params.value === 1 ? 'Active' : 'Deactive';
+          // },
+          // cellStyle: (params: any) => {
+          //   if (params.value === 1) {
+          //     return { color: 'green', fontWeight: 'bold' };
+          //   } else if (params.value === 0) {
+          //     return { color: 'red', fontWeight: 'bold' };
+          //   }
+          //   return null;
+          // }
         }
 
       ];
     }
   }
+
+  callApi(
+    apiMethod: Observable<HttpResponse<any[]>>,
+    successCallback: () => void,
+    errorCallback: () => void
+  ) {
+    apiMethod.subscribe(
+      (response: HttpResponse<any[]>) => {
+        if (response.status === 200) {
+          this.updateColumnDefs(this.selectedTab);
+          this.rowData = response.body;
+          this.swal.Success_200();
+          successCallback();
+        } else if (response.status === 204) {
+          this.swal.Success_204();
+          successCallback();
+        }
+      },
+      (error) => {
+        if (error.status === 400) {
+          this.swal.Error_400();
+        } else if (error.status === 500) {
+          this.swal.Error_500();
+        } else {
+          Swal.fire('Error', 'Something went wrong. Please try again.', 'error');
+        }
+        errorCallback();
+      }
+    );
+  }
+
   ngOnInit() {
+
+    this.date = new Date().toISOString().split('T')[0];
+    this.selectedDate = this.date;
     this.form = this.fb.group({
       package_select: [false],
       casSelect: [{ value: '', disabled: true }] // initially disabled
     });
 
-    this.form.get('package_select')?.valueChanges.subscribe(checked => {
-      if (checked) {
-        this.form.get('casSelect')?.enable();
-      } else {
-        this.form.get('casSelect')?.disable();
-      }
+    // this.form.get('package_select')?.valueChanges.subscribe(checked => {
+    //   if (checked) {
+    //     this.form.get('casSelect')?.enable();
+    //   } else {
+    //     this.form.get('casSelect')?.disable();
+    //   }
+    // });
+    this.form.get('package_select')?.valueChanges.subscribe((checked) => {
+      const casSelectControl = this.form.get('casSelect');
+      checked ? casSelectControl?.enable() : casSelectControl?.disable();
     });
 
+    const dateToPass = this.selectedDate || this.fromdate;
+    const dateToPass1 = this.selectedDate || this.todate;
 
+
+    this.callApi(
+      this.userservice.getAllBulkPackageListByFromdateTodateAndStatus(
+        this.role, this.username, this.selectedDate, this.selectedDate, 0, 3
+      ),
+      () => console.log('Success for Bulk Package 1'),
+      () => console.log('Error for Bulk Package 1')
+    );
+
+    this.callApi(
+      this.userservice.getAllBulkPackageListByFromdateTodateAndStatus(
+        this.role, this.username, dateToPass, dateToPass1, 0, 2
+      ),
+      () => console.log('Success for Bulk Package 2'),
+      () => console.log('Error for Bulk Package 2')
+    );
+
+
+    this.service();
     this.fetchPackageList();
     this.fetchOperatorList();
 
+
   }
   fetchPackageList() {
-    this.userservice.getPackageList(this.role, this.username, 1).subscribe((data: any) => {
+    this.userservice.getBulkPackageList(this.role, this.username, 1).subscribe((data: any) => {
       console.log(data);
-      // this.packageList = Object.keys(data.packageid); // Assuming packageid contains the necessary values
-      this.packageList = Object.keys(data.packageid).map(key => {
-        const value = data.packageid[key]; // Access the value for the corresponding key
-        // const name = key.split('(')[0].trim(); // Extract the name from the key, trimming any whitespace
+      this.packageList = Object.keys(data).map(key => {
+        const value = data[key];
         const name = key
-        return { name: name, value: value }; // Return an object with separated name and value
-      });
+        return { name: name, value: value };
+      })
+      this.filteredPackageList = [...this.packageList];
       console.log(this.packageList);
     });
   }
-
+  filteredPackage() {
+    this.filteredPackageList = this.packageList.filter(pkg =>
+      pkg.name.toLowerCase().includes(this.packageSearch.toLowerCase())
+    );
+  }
+  filteredOperator() {
+    this.filteredOperatorList = this.operatorList.filter(pkg =>
+      pkg.name.toLowerCase().includes(this.selectoperator.toLowerCase())
+    );
+  }
+  onDropdownClosed() {
+    this.packageSearch = '';
+    this.filteredPackageList = [...this.packageList];
+  }
+  onDropdownClosed1() {
+    this.selectoperator = '';
+    this.filteredOperatorList = [...this.operatorList];
+  }
   fetchOperatorList() {
     this.userservice.getOeratorList(this.role, this.username).subscribe((data: any) => {
-      console.log(data);
       this.operatorList = Object.keys(data).map(key => {
         const value = data[key];
         const name = key;
         return { name: name, value: value };
       });
-      console.log(this.operatorList);
+      this.cdr.detectChanges();
+      this.filteredOperatorList = [...this.operatorList];
     });
   }
-  // ngAfterViewInit(): void {
-  //   this.loadData(this.selectedTab);
-  // }
+
   selectbulk(tab: string) {
     this.selectedTab = tab;
+    this.package = '';
+    this.typelist = '';
+    this.fromdate = '';
+    this.todate = '';
+    this.operatorid = '';
     this.updateColumnDefs(tab);
   }
   selectPending(tab: string) {
     this.selectedTab = tab;
+    this.typelist = '';
+    this.fromdate = '';
+    this.todate = '';
+    this.operatorid = '';
+    this.rowData = [];
     this.updateColumnDefs(tab);
     this.service();
   }
   selectArchive(tab: string) {
     this.selectedTab = tab;
+    this.typelist = '';
+    this.alltypelist = '';
+    this.fromdate = '';
+    this.todate = '';
+    this.operatorid = '';
     this.updateColumnDefs(tab);
   }
 
 
+  onSelectionChanged() {
+    const selectedNodes = this.gridApi.getSelectedNodes();
+    const selectedData = selectedNodes.map((node: any) => node.data);
+    if (this.gridApi) {
+      const selectedRows = this.gridApi.getSelectedRows();
+      this.isAnyRowSelected = selectedRows.length > 0;
+      this.rows = selectedRows;
+    }
+    if (this.isAnyRowSelected) {
+      this.isSelectRow = true;
+    }
+
+  }
 
 
-
-  onGridReady = () => {
-
-
+  onGridReady = (params: any) => {
+    this.gridApi = params.api;
+    this.gridColumnApi = params.columnApi;
+    params.api.selectAll()
   }
 
   getFromDate(event: any) {
@@ -246,19 +383,10 @@ export class BulkPageUpdationComponent implements OnInit {
     return `${year}-${month}-${day}`; // Return date in "YYYY-MM-DD" format
   }
 
-  submit() {
-    console.log("Submitting with values: ", {
-      fromdate: this.fromdate,
-      todate: this.todate,
-      package: this.package,
-      operatorid: this.operatorid
-    });
-
-
-    this.userservice.getExpirySubscriberDetailsByDatePackAndOperatorId(
-      this.role, this.username, this.fromdate || null, this.todate || null, this.package || 0, this.operatorid || null
-    ).subscribe(
-      (response: HttpResponse<any[]>) => { // Expect HttpResponse<any[]>
+  filterData(apiCall: Observable<HttpResponse<any[]>>, successMessage?: string, errorMessage?: string) {
+    this.swal.Loading();
+    apiCall.subscribe(
+      (response: HttpResponse<any[]>) => {
         if (response.status === 200) {
           this.updateColumnDefs(this.selectedTab);
           this.rowData = response.body;
@@ -271,167 +399,326 @@ export class BulkPageUpdationComponent implements OnInit {
         if (error.status === 400) {
           this.swal.Error_400();
         } else if (error.status === 500) {
-           this.swal.Error_500();
+          this.swal.Error_500();
         } else {
           Swal.fire('Error', 'Something went wrong. Please try again.', 'error');
         }
       }
     );
   }
-  pendingFilter() {
 
-    console.log(this.typelist);
+
+  // submit() {
+  //   console.log("Submitting with values: ", {
+  //     fromdate: this.fromdate,
+  //     todate: this.todate,
+  //     package: this.package,
+  //     operatorid: this.operatorid
+  //   });
+  //   console.log(this.rowData = []);
+  //   this.rowData = [];
+  //   this.userservice.getExpirySubscriberDetailsByDatePackAndOperatorId(
+  //     this.role, this.username, this.fromdate || null, this.todate || null, this.package || 0, this.operatorid || null
+  //   ).subscribe(
+  //     (response: HttpResponse<any[]>) => { // Expect HttpResponse<any[]>
+  //       if (response.status === 200) {
+  //         this.updateColumnDefs(this.selectedTab);
+  //         this.rowData = response.body;
+  //         this.swal.Success_200();
+  //       } else if (response.status === 204) {
+  //         this.swal.Success_204();
+  //       }
+  //     },
+  //     (error) => {
+  //       if (error.status === 400) {
+  //         this.swal.Error_400();
+  //       } else if (error.status === 500) {
+  //         this.swal.Error_500();
+  //       } else {
+  //         Swal.fire('Error', 'Something went wrong. Please try again.', 'error');
+  //       }
+  //     }
+  //   );
+  // }
+
+
+  submit() {
+    console.log("Submitting with values: ", {
+      fromdate: this.fromdate,
+      todate: this.todate,
+      package: this.package,
+      operatorid: this.operatorid
+    });
+  
+    this.rowData = [];
+    const apiCall = this.userservice.getExpirySubscriberDetailsByDatePackAndOperatorId(
+      this.role, this.username, this.fromdate || null, this.todate || null, this.package || 0, this.operatorid || null
+    );
+  
+    this.filterData(apiCall, 'Submission data fetched successfully.');
+  }
+
+
+  pendingFilter() {
+    const apiCalls = [
+      { condition: this.typelist === 1, method: this.userservice.getAllBulkPackageListByOperatoridAndStatus(this.role, this.username, this.operatorid || null, 0, 1) },
+      { condition: this.typelist === 2, method: this.userservice.getAllBulkPackageListBySearchnameAndStatus(this.role, this.username, this.smartcard, 0, 1) },
+      { condition: this.typelist === 3, method: this.userservice.getAllBulkPackageListByFromdateTodateAndStatus(this.role, this.username, this.fromdate || null, this.todate, 0, 1) }
+    ];
+  
+    apiCalls.forEach(({ condition, method }) => {
+      if (condition) {
+        this.filterData(method, 'Pending data fetched successfully.');
+      }
+    });
+  }
+
+  // pendingFilter() {
+  //   if (this.typelist === 1) {
+  //     this.userservice.getAllBulkPackageListByOperatoridAndStatus(this.role, this.username, this.operatorid || null, 0, 1).subscribe(
+  //       (response: HttpResponse<any[]>) => { // Expect HttpResponse<any[]>
+  //         if (response.status === 200) {
+  //           this.updateColumnDefs(this.selectedTab);
+  //           this.rowData = response.body;
+  //           this.swal.Success_200();
+  //         } else if (response.status === 204) {
+  //           this.swal.Success_204();
+  //         }
+  //       },
+  //       (error) => {
+  //         if (error.status === 400) {
+  //           this.swal.Error_400();
+  //         } else if (error.status === 500) {
+  //           this.swal.Error_500();
+  //         } else {
+  //           Swal.fire('Error', 'Something went wrong. Please try again.', 'error');
+  //         }
+  //       }
+  //     );
+  //   } else if (this.typelist === 2) {
+  //     this.userservice.getAllBulkPackageListBySearchnameAndStatus(this.role, this.username, this.smartcard, 0, 1).subscribe(
+  //       (response: HttpResponse<any[]>) => {
+  //         if (response.status === 200) {
+  //           this.updateColumnDefs(this.selectedTab);
+  //           this.rowData = response.body;
+  //           this.swal.Success_200();
+  //         } else if (response.status === 204) {
+  //           this.swal.Success_204();
+  //         }
+  //       },
+  //       (error) => {
+  //         if (error.status === 400) {
+  //           this.swal.Error_400();
+  //         } else if (error.status === 500) {
+  //           this.swal.Error_500();
+  //         } else {
+  //           Swal.fire('Error', 'Something went wrong. Please try again.', 'error');
+  //         }
+  //       }
+  //     );
+  //   } else if (this.typelist === 3) {
+  //     this.userservice.getAllBulkPackageListByFromdateTodateAndStatus(this.role, this.username, this.fromdate || null, this.todate, 0, 1).subscribe(
+  //       (response: HttpResponse<any[]>) => {
+  //         if (response.status === 200) {
+  //           this.updateColumnDefs(this.selectedTab);
+  //           this.rowData = response.body;
+  //           this.swal.Success_200();
+  //         } else if (response.status === 204) {
+  //           this.swal.Success_204();
+  //         }
+  //       },
+  //       (error) => {
+  //         if (error.status === 400) {
+  //           this.swal.Error_400();
+  //         } else if (error.status === 500) {
+  //           this.swal.Error_500();
+  //         } else {
+  //           Swal.fire('Error', 'Something went wrong. Please try again.', 'error');
+  //         }
+  //       }
+  //     );
+  //   }
+  // }
+  // pendingFilter() {
+  //   const apiCalls = [
+  //     { condition: this.typelist === 1, method: this.userservice.getAllBulkPackageListByOperatoridAndStatus(this.role, this.username, this.operatorid || null, 0, 1) },
+  //     { condition: this.typelist === 2, method: this.userservice.getAllBulkPackageListBySearchnameAndStatus(this.role, this.username, this.smartcard, 0, 1) },
+  //     { condition: this.typelist === 3, method: this.userservice.getAllBulkPackageListByFromdateTodateAndStatus(this.role, this.username, this.fromdate || null, this.todate, 0, 1) }
+  //   ];
+
+  //   apiCalls.forEach(({ condition, method }) => {
+  //     if (condition) {
+  //       this.callApi(method, () => console.log('Success for Pending Filter'), () => console.log('Error for Pending Filter'));
+  //     }
+  //   });
+  // }
+  // archiveFilter() {
+  //   if (this.typelist === 1) {
+  //     this.swal.Loading();
+  //     this.userservice.getAllBulkPackageListByOperatoridAndStatus(this.role, this.username, this.operatorid, this.alltypelist, 2).subscribe(
+  //       (response: HttpResponse<any[]>) => {
+  //         if (response.status === 200) {
+  //           this.updateColumnDefs(this.selectedTab);
+  //           this.rowData = response.body;
+  //           this.swal.Success_200();
+  //         } else if (response.status === 204) {
+  //           this.swal.Success_204();
+  //         }
+  //       },
+  //       (error) => {
+  //         if (error.status === 400) {
+  //           this.swal.Error_400();
+  //         } else if (error.status === 500) {
+  //           this.swal.Error_500();
+  //         } else {
+  //           Swal.fire('Error', 'Something went wrong. Please try again.', 'error');
+  //         }
+  //       }
+  //     );
+  //   } else if (this.typelist === 2) {
+  //     this.swal.Loading();
+  //     this.userservice.getAllBulkPackageListBySearchnameAndStatus(this.role, this.username, this.smartcard, this.alltypelist, 2).subscribe(
+
+  //       (response: HttpResponse<any[]>) => {
+  //         if (response.status === 200) {
+  //           this.updateColumnDefs(this.selectedTab);
+  //           this.rowData = response.body;
+  //           this.swal.Success_200();
+  //         } else if (response.status === 204) {
+  //           this.swal.Success_204();
+  //         }
+  //       },
+  //       (error) => {
+  //         if (error.status === 400) {
+  //           this.swal.Error_400();
+  //         } else if (error.status === 500) {
+  //           this.swal.Error_500();
+  //         } else {
+  //           Swal.fire('Error', 'Something went wrong. Please try again.', 'error');
+  //         }
+  //       }
+  //     );
+  //   } else if (this.typelist === 3) {
+  //     this.swal.Loading();
+  //     const dateToPass = this.selectedDate || this.fromdate;
+  //     const dateToPass1 = this.selectedDate || this.todate;
+  //     this.userservice.getAllBulkPackageListByFromdateTodateAndStatus(this.role, this.username, this.fromdate || null, this.todate || null, this.alltypelist, 2).subscribe(
+  //       (response: HttpResponse<any[]>) => {
+  //         if (response.status === 200) {
+  //           this.updateColumnDefs(this.selectedTab);
+  //           this.rowData = response.body;
+  //           this.swal.Success_200();
+  //         } else if (response.status === 204) {
+  //           this.swal.Success_204();
+  //         }
+  //       },
+  //       (error) => {
+  //         if (error.status === 400) {
+  //           this.swal.Error_400();
+  //         } else if (error.status === 500) {
+  //           this.swal.Error_500();
+  //         } else {
+  //           Swal.fire('Error', 'Something went wrong. Please try again.', 'error');
+  //         }
+  //       }
+  //     );
+  //   }
+  // }
+
+
+
+  archiveFilter() {
+    this.swal.Loading();
+    let apiCall;
     if (this.typelist === 1) {
-      this.userservice.getAllBulkPackageListByOperatoridAndStatus(this.role, this.username, this.operatorid || null, 0).subscribe(
-        (response: HttpResponse<any[]>) => { // Expect HttpResponse<any[]>
-          if (response.status === 200) {
-            this.updateColumnDefs(this.selectedTab);
-            this.rowData = response.body;
-            this.swal.Success_200();
-          } else if (response.status === 204) {
-             this.swal.Success_204();
-          }
-        },
-        (error) => {
-          if (error.status === 400) {
-             this.swal.Error_400();
-          } else if (error.status === 500) {
-             this.swal.Error_500();
-          } else {
-            Swal.fire('Error', 'Something went wrong. Please try again.', 'error');
-          }
-        }
+      apiCall = this.userservice.getAllBulkPackageListByOperatoridAndStatus(
+        this.role, this.username, this.operatorid, this.alltypelist, 2
       );
     } else if (this.typelist === 2) {
-      this.userservice.getAllBulkPackageListBySearchnameAndStatus(this.role, this.username, this.smartcard, 0).subscribe(
-        (response: HttpResponse<any[]>) => {
-          if (response.status === 200) {
-            this.updateColumnDefs(this.selectedTab);
-            this.rowData = response.body;
-            this.swal.Success_200();
-          } else if (response.status === 204) {
-             this.swal.Success_204();
-          }
-        },
-        (error) => {
-          if (error.status === 400) {
-             this.swal.Error_400();
-          } else if (error.status === 500) {
-             this.swal.Error_500();
-          } else {
-            Swal.fire('Error', 'Something went wrong. Please try again.', 'error');
-          }
-        }
+      apiCall = this.userservice.getAllBulkPackageListBySearchnameAndStatus(
+        this.role, this.username, this.smartcard, this.alltypelist, 2
       );
     } else if (this.typelist === 3) {
-      this.userservice.getAllBulkPackageListByFromdateTodateAndStatus(this.role, this.username, this.fromdate || null, this.todate, 0).subscribe(
-        (response: HttpResponse<any[]>) => {
-          if (response.status === 200) {
-            this.updateColumnDefs(this.selectedTab);
-            this.rowData = response.body;
-            this.swal.Success_200();
-          } else if (response.status === 204) {
-             this.swal.Success_204();
-          }
-        },
-        (error) => {
-          if (error.status === 400) {
-             this.swal.Error_400();
-          } else if (error.status === 500) {
-             this.swal.Error_500();
-          } else {
-            Swal.fire('Error', 'Something went wrong. Please try again.', 'error');
-          }
-        }
+      const dateToPass = this.selectedDate || this.fromdate;
+      const dateToPass1 = this.selectedDate || this.todate;
+      apiCall = this.userservice.getAllBulkPackageListByFromdateTodateAndStatus(
+        this.role, this.username, dateToPass, dateToPass1, this.alltypelist, 2
       );
+    }
+
+    if (apiCall) {
+      this.handleApiResponse(apiCall);
     }
   }
-  archiveFilter() {
-    console.log(this.typelist);
-    if (this.typelist === 1) {
-      this.userservice.getAllBulkPackageListByOperatoridAndStatus(this.role, this.username, this.operatorid, this.alltypelist).subscribe(
-        (response: HttpResponse<any[]>) => {
-          if (response.status === 200) {
-            this.updateColumnDefs(this.selectedTab);
-            this.rowData = response.body;
-            this.swal.Success_200();
-          } else if (response.status === 204) {
-             this.swal.Success_204();
-          }
-        },
-        (error) => {
-          if (error.status === 400) {
-             this.swal.Error_400();
-          } else if (error.status === 500) {
-             this.swal.Error_500();
-          } else {
-            Swal.fire('Error', 'Something went wrong. Please try again.', 'error');
-          }
-        }
-      );
-    } else if (this.typelist === 2) {
-      this.userservice.getAllBulkPackageListBySearchnameAndStatus(this.role, this.username, this.smartcard, this.alltypelist).subscribe(
 
-        (response: HttpResponse<any[]>) => {
-          if (response.status === 200) {
-            this.updateColumnDefs(this.selectedTab);
-            this.rowData = response.body;
-            this.swal.Success_200();
-          } else if (response.status === 204) {
-             this.swal.Success_204();
-          }
-        },
-        (error) => {
-          if (error.status === 400) {
-             this.swal.Error_400();
-          } else if (error.status === 500) {
-             this.swal.Error_500();
-          } else {
-            Swal.fire('Error', 'Something went wrong. Please try again.', 'error');
-          }
+  private handleApiResponse(apiCall: Observable<HttpResponse<any[]>>) {
+    apiCall.subscribe(
+      (response: HttpResponse<any[]>) => {
+        if (response.status === 200) {
+          this.updateColumnDefs(this.selectedTab);
+          this.rowData = response.body;
+          this.swal.Success_200();
+        } else if (response.status === 204) {
+          this.swal.Success_204();
         }
-      );
-    } else if (this.typelist === 3) {
-      this.userservice.getAllBulkPackageListByFromdateTodateAndStatus(this.role, this.username, this.fromdate || null, this.todate || null, this.alltypelist).subscribe(
-
-        (response: HttpResponse<any[]>) => {
-          if (response.status === 200) {
-            this.updateColumnDefs(this.selectedTab);
-            this.rowData = response.body;
-            this.swal.Success_200();
-          } else if (response.status === 204) {
-             this.swal.Success_204();
-          }
-        },
-        (error) => {
-          if (error.status === 400) {
-             this.swal.Error_400();
-          } else if (error.status === 500) {
-             this.swal.Error_500();
-          } else {
-            Swal.fire('Error', 'Something went wrong. Please try again.', 'error');
-          }
+      },
+      (error) => {
+        if (error.status === 400) {
+          this.swal.Error_400();
+        } else if (error.status === 500) {
+          this.swal.Error_500();
+        } else {
+          Swal.fire('Error', 'Something went wrong. Please try again.', 'error');
         }
-      );
-    }
+      }
+    );
   }
 
   service() {
     this.userservice.getBulkPackageServiceStatus(this.role, this.username).subscribe((data: any) => {
       console.log(data);
       this.status = data.serviceState;
+      this.serviceStatus = data.serviceStatus;
       console.log(this.status);
 
     })
   }
   start() {
+    this.swal.Loading();
     this.userservice.StartOrStopBulkPackageService(this.role, this.username, this.status).subscribe((data: any) => {
       console.log(data);
     })
   }
   stop() {
+    this.swal.Loading();
     this.userservice.StartOrStopBulkPackageService(this.role, this.username, this.status).subscribe((data: any) => {
       console.log(data);
     })
+  }
+
+  openLoginPage(data: any, rowData: any): void {
+    console.log(data);
+    const dataToSend = {
+      status: data,
+      rowData: this.rows,
+      packageid: this.package,
+    };
+    let width = '600px';
+    console.log(dataToSend);
+
+    if (data = 'bulk') {
+      width = '2000px';
+
+    }
+    const dialogRef = this.dialog.open(BulkpackageupdationComponent, {
+      width: width,
+      maxWidth: '100vw',
+      panelClass: 'custom-dialog-container',
+      data: dataToSend
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      console.log('The dialog was closed');
+    });
   }
 }

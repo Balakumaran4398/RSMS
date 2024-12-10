@@ -31,16 +31,17 @@ export class BarChartComponent implements OnInit {
     if (input.value) {
       const selectedDate = new Date(input.value);
       const today = new Date();
-      if (selectedDate <= today) {
+      // if (selectedDate <= today) {
         this.date = input.value;
         this.loadChartData(this.date);
-      } else {
-        this.swal.warning_1();
-      }
+      // } else {
+        // this.swal.warning_1();
+      // }
     }
   }
 
   loadChartData(date: string): void {
+    
     this.userservice.getDashboardSubscribtionBarChartDetails(this.role, this.username, date).subscribe((data: any) => {
       this.updateChartData(data);
     });

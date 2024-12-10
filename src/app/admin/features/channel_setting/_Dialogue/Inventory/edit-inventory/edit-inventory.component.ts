@@ -17,8 +17,10 @@ export class EditInventoryComponent {
   rowData: any;
   selectedLcoName: any = 0;
   selectedCasType: any = 0;
+
   castype: { [key: string]: number } = {};
-  lco_list: { [key: string]: number } = {};
+  // lco_list: { [key: string]: number } = {};
+  lco_list: any[] = [];
   operatorid: any;
   smartcard: any;
   searchTerm: string = '';
@@ -28,17 +30,25 @@ export class EditInventoryComponent {
   CASFormControl = new FormControl('');
   LCOFormControl = new FormControl('');
   FileFormControl = new FormControl('');
+  filteredOperators: any[] = [];
+  selectedOperator: any;
+  submitted: boolean = false;
   isOperatorDisabled: boolean = false;
   constructor(
     public dialogRef: MatDialogRef<EditInventoryComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: any, public dialog: MatDialog, private userService: BaseService, private storageService: StorageService,  private swal: SwalService) {
+    @Inject(MAT_DIALOG_DATA) public data: any, public dialog: MatDialog, private userService: BaseService, private storageService: StorageService, private swal: SwalService) {
     this.username = storageService.getUsername();
     this.role = storageService.getUserRole();
     this.castype = data.castype;
     console.log(this.castype);
-    
-    this.lco_list = data.lco_list;
+
+    // this.lco_list = data.lco_list;
+    this.lco_list = Object.entries(data.lco_list).map(([key, value]) => {
+      return { name: key, value: value };
+    });
+
     this.smartcard = data.smartcard;
+    this.filteredOperators = this.lco_list;
   }
 
   onInventoryTypeChange(value: boolean): void {
@@ -53,6 +63,24 @@ export class EditInventoryComponent {
   onFileSelected(event: any) {
     this.selectedFile = event.target.files[0];
     console.log('Selected file:', this.selectedFile);
+  }
+
+  filterOperators(event: any): void {
+    const filterValue = event.target.value.toLowerCase();
+    this.filteredOperators = this.lco_list.filter(operator =>
+      operator.name.toLowerCase().includes(filterValue)
+    );
+    console.log(this.filterOperators);
+
+  }
+  displayOperator(operator: any): string {
+    return operator ? operator.name : '';
+  }
+  onSubscriberStatusChange(selectedOperator: any) {
+    console.log(selectedOperator);
+    this.selectedOperator = selectedOperator;
+    this.selectedLcoName = selectedOperator.value;
+    console.log(this.selectedLcoName);
   }
   filteredCasKeys(): string[] {
     const keys = Object.keys(this.castype);
@@ -76,7 +104,8 @@ export class EditInventoryComponent {
 
 
   submit() {
-  
+    console.log(this.selectedLcoName);
+    this.submitted = true;
     if (this.selectedFile) {
       // Show SweetAlert loading popup
       Swal.fire({
@@ -89,7 +118,7 @@ export class EditInventoryComponent {
           Swal.showLoading(null);
         }
       });
-  
+
       const formData = new FormData();
       formData.append('file', this.selectedFile);
       formData.append('role', this.role);
@@ -97,35 +126,35 @@ export class EditInventoryComponent {
       formData.append('operatorid', this.LCOFormControl.value || '0');
       formData.append('castype', this.CASFormControl.value || '');
       formData.append('isupload', this.BTNFormControl.value?.toString() || '');
-  
+      this.swal.Loading();
       this.userService.UploadInventory(formData)
-      // .subscribe(
-      //   (res: any) => {
-      //     Swal.fire({
-      //       icon: 'success',
-      //       title: 'Upload Successful',
-      //       text: res?.message,
-      //       confirmButtonText: 'OK'
-      //     }).then(() => {
-      //       window.location.reload();
-      //     });
-      //   },
-      //   (err) => {
-      //     Swal.fire({
-      //       icon: 'error',
-      //       title: 'Upload Failed',
-      //       text: err?.error?.message,
-      //       confirmButtonText: 'OK'
-      //     });
-      //   }
-      // );
+        // .subscribe(
+        //   (res: any) => {
+        //     Swal.fire({
+        //       icon: 'success',
+        //       title: 'Upload Successful',
+        //       text: res?.message,
+        //       confirmButtonText: 'OK'
+        //     }).then(() => {
+        //       window.location.reload();
+        //     });
+        //   },
+        //   (err) => {
+        //     Swal.fire({
+        //       icon: 'error',
+        //       title: 'Upload Failed',
+        //       text: err?.error?.message,
+        //       confirmButtonText: 'OK'
+        //     });
+        //   }
+        // );
 
-      .subscribe((res: any) => {
-        this.swal.success(res?.message);
-      }, (err) => {
-        this.swal.Error(err?.error?.message);
-      });
+        .subscribe((res: any) => {
+          this.swal.success(res?.message);
+        }, (err) => {
+          this.swal.Error(err?.error?.message);
+        });
     }
   }
-  
+
 }

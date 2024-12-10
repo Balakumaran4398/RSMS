@@ -1,10 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AlertService } from '../_core/service/alert.service';
 import { StorageService } from '../_core/service/storage.service';
 import { AuthService } from '../_core/service/auth.service';
 import Swal from 'sweetalert2';
+import { ChangeDetectable } from 'ag-charts-community/dist/types/src/scene/changeDetectable';
 interface requestBody {
   access_ip: any;
   action: any;
@@ -30,7 +31,8 @@ export class LoginComponent implements OnInit {
     private authService: AuthService,
     private storageService: StorageService,
     private router: Router,
-    private alertService: AlertService
+    private alertService: AlertService,
+    private cdr:ChangeDetectorRef,
   ) {
     this.signInform = this.fb.group({
       username: new FormControl('', [Validators.required]),
@@ -70,7 +72,7 @@ export class LoginComponent implements OnInit {
         (res: any) => {
           console.log(res);
           console.log(res.roles);
-          if (res.roles.includes('ROLE_USER') || res.roles.includes('ROLE_RECEPTION') || res.roles.includes('ROLE_SPECIAL')) {
+          if (res.roles.includes('ROLE_ADMIN') || res.roles.includes('ROLE_RECEPTION') || res.roles.includes('ROLE_SPECIAL')) {
             this.storageService.saveToken(res.accessToken);
             this.storageService.saveUser(res);
             this.idstorage = res.id;
@@ -81,7 +83,7 @@ export class LoginComponent implements OnInit {
             this.roles = user.roles;
             this.post();
             // const role = this.storageService.getUserRole();
-            let isUser = this.roles.includes('ROLE_USER');
+            let isUser = this.roles.includes('ROLE_ADMIN');
             let isReception = this.roles.includes('ROLE_RECEPTION');
             let isSpecial = this.roles.includes('ROLE_SPECIAL');
 
@@ -133,6 +135,10 @@ export class LoginComponent implements OnInit {
         }
       );
     }
+  }
+  toggleShowPassword() {
+    this.isShow = !this.isShow;
+    this.cdr.detectChanges(); // Ensure UI updates immediately
   }
   onReset() {
     this.submitted = false;

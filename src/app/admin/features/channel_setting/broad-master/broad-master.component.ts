@@ -65,7 +65,7 @@ export class BroadMasterComponent implements OnInit {
     {
       headerName: 'BroadCaster Name',
       field: 'broadcastername',
-      width: 250,
+      width: 690,
       editable: true,
       cellEditor: 'agTextCellEditor',
       onCellValueChanged: (event: { data: { broadcastername: string; isactive: boolean; id: number; }; }) => {
@@ -73,11 +73,10 @@ export class BroadMasterComponent implements OnInit {
         this.updateDeviceModelname(event.data.broadcastername, event.data.isactive, event.data.id);
       }
     },
-
     {
       headerName: "ISACTIVE",
       field: 'isactive',
-      width: 300,
+      width: 600,
       cellRenderer: (params: any) => {
         const isActive = params.data.isactive;
         const toggleButton = document.createElement('button');
@@ -119,8 +118,8 @@ export class BroadMasterComponent implements OnInit {
 
         const div = document.createElement('div');
         div.style.display = 'flex';
-        div.style.alignItems = 'center';
-        div.style.justifyContent = 'center';
+        // div.style.alignItems = 'center';
+        // div.style.justifyContent = 'center';
         div.appendChild(toggleButton);
         return div;
       },

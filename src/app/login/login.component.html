@@ -28,7 +28,7 @@
                         <input [type]="isShow?'text':'password'" formControlName="password" class="form-control mb-4"
                             placeholder="Password">
                         <span class="eye" >
-                            <mat-icon (click)="isShow=!isShow" style="color: rgb(114, 111, 111);cursor: pointer">
+                            <mat-icon (click)="toggleShowPassword()" style="color: rgb(114, 111, 111);cursor: pointer">
                                 {{ isShow ? 'visibility' : 'visibility_off' }}
                             </mat-icon>
                         </span>
@@ -37,11 +37,11 @@
                         <input type="submit" class="button" value="Sign In">
                     </div>
                     <div class="foot-lnk">
-                        <a href="home" style="text-decoration: underline;">Forgot Password?</a>
+                        <!-- <a href="home" style="text-decoration: underline;">Forgot Password?</a> -->
                     </div>
 
                     <div class="foot-lnk">
-                        <h6 style="color:#1f6764">RSMS 7.0</h6>
+                        <h6 style="color:#1f6764">RSMS 7.2</h6>
                     </div>
                     <!-- <div class="foot-lnk">
                         <h6 style="color:#1f6764">Powered by </h6>

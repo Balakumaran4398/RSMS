@@ -11,7 +11,7 @@ export class ExcelService {
 
   async generateExcel() {
     const ws1Header = [
-      'Cas Form Id','Cus Name First', 'Cus Name Last', 'Father Name', 'Date of Birth',
+      'Cas Form Id', 'Cus Name First', 'Cus Name Last', 'Father Name', 'Date of Birth',
       'Area Name', 'Street Name', 'Address', 'Address Proof No',
       'Mobile No', 'Landline No', 'Email', 'Smartcard No', 'Box Id'
     ];
@@ -27,7 +27,7 @@ export class ExcelService {
       ['Address', '', 'Yes'],
       ['Address Proof No', '12-digit', 'No'],
       ['Mobile No', '10-digit (Should be Unique)', 'Yes'],
-      ['Landline No', '', 'Yes'],
+      ['Landline No', '', 'No'],
       ['Email', '', 'No'],
       ['Smartcard No', 'Depends upon CAS', 'No'],
       ['Box Id', 'Depends upon CAS', 'No']
@@ -43,7 +43,7 @@ export class ExcelService {
       ['Address', '', 'Yes'],
       ['Address Proof No', '12-digit', 'No'],
       ['Mobile No', '10-digit (Should be Unique)', 'Yes'],
-      ['Landline No', '', 'Yes'],
+      ['Landline No', '', 'No'],
       ['Email', '', 'No'],
       ['Smartcard No', 'Depends upon CAS', 'Yes'],
       ['Box Id', 'Depends upon CAS', 'Yes']
@@ -223,7 +223,7 @@ export class ExcelService {
       fs.saveAs(blob, 'Bulk Box Deactivation.xlsx');
     });
   }
-  async generateBaseChangeExcel(type:any) {
+  async generateBaseChangeExcel(type: any) {
     const header = ['Smartcard (Mandatory) '];
     const workbook = new Excel.Workbook();
     const worksheet = workbook.addWorksheet('Sharing Data');
@@ -266,9 +266,9 @@ export class ExcelService {
 
     });
   }
-  async generatealacarteactivationExcel(type:any) {
+  async generatealacarteactivationExcel(type: any) {
     console.log(type);
-    
+
     const header = ['Smartcard (Mandatory)', 'Box ID (Non-Mandatory)'];
     const workbook = new Excel.Workbook();
     const worksheet = workbook.addWorksheet('Sharing Data');
@@ -428,5 +428,4 @@ export class ExcelService {
       fs.saveAs(blob, titles + '.xlsx');
     });
   }
-
 }

@@ -130,10 +130,10 @@ export class PackageReferenceComponent {
     {
       headerName: "S.No", lockPosition: true, valueGetter: 'node.rowIndex+1', width: 100, headerCheckboxSelection: true, checkboxSelection: true,
     },
-    { headerName: "CHANNEL NAME", field: 'productname', },
-    { headerName: "PACKAGE RATE", field: 'packagerate', },
-    { headerName: "REFERENCE ID", field: 'referenceid', },
-    { headerName: "PRODUCT ID", field: 'casproductid' },
+    { headerName: "CHANNEL NAME", field: 'productname', width: 400},
+    { headerName: "PACKAGE RATE", field: 'packagerate',width: 400},
+    { headerName: "REFERENCE ID", field: 'referenceid', width: 300},
+    { headerName: "PRODUCT ID", field: 'casproductid', width: 300},
 
   ]
   private updateColumnDefs(tab: string): void {
@@ -142,11 +142,11 @@ export class PackageReferenceComponent {
         {
           headerName: "S.No", lockPosition: true, valueGetter: 'node.rowIndex+1', width: 100, headerCheckboxSelection: true, checkboxSelection: true,
         },
-        { headerName: "CHANNEL NAME", field: 'productname', },
-        { headerName: "PACKAGE RATE", field: 'packagerate', },
-        { headerName: "REFERENCE ID", field: 'referenceid', },
+        { headerName: "CHANNEL NAME", field: 'productname',width: 400, },
+        { headerName: "PACKAGE RATE", field: 'packagerate',width: 400,cellStyle: { textAlign: 'center' }, },
+        { headerName: "REFERENCE ID", field: 'referenceid',width: 300,cellStyle: { textAlign: 'center' }, },
         {
-          headerName: "PRODUCT ID", field: 'casproductid',
+          headerName: "PRODUCT ID", field: 'casproductid',width: 300,cellStyle: { textAlign: 'center' },
           cellRenderer: (params: any) => {
             const span = document.createElement('span');
             span.innerText = params.value;
@@ -183,8 +183,6 @@ export class PackageReferenceComponent {
 
             return span;
           }
-
-
         },
       ]
     } else if (tab === '2') {
@@ -192,11 +190,11 @@ export class PackageReferenceComponent {
         {
           headerName: "S.No", lockPosition: true, valueGetter: 'node.rowIndex+1', width: 100, headerCheckboxSelection: true, checkboxSelection: true,
         },
-        { headerName: "CHANNEL NAME", field: 'productname', },
-        { headerName: "PACKAGE RATE", field: 'packagerate', },
-        { headerName: "REFERENCE ID", field: 'referenceid', },
+        { headerName: "CHANNEL NAME", field: 'productname',width: 400, },
+        { headerName: "PACKAGE RATE", field: 'packagerate',width: 400, },
+        { headerName: "REFERENCE ID", field: 'referenceid', width: 300,},
         {
-          headerName: "PRODUCT ID", field: 'casproductid',
+          headerName: "PRODUCT ID", field: 'casproductid',width: 300,
 
           cellRenderer: (params: any) => {
             const span = document.createElement('span');
@@ -242,11 +240,11 @@ export class PackageReferenceComponent {
         {
           headerName: "S.No", lockPosition: true, valueGetter: 'node.rowIndex+1', width: 100, headerCheckboxSelection: true, checkboxSelection: true,
         },
-        { headerName: "CHANNEL NAME", field: 'productname', },
-        { headerName: "PACKAGE RATE", field: 'packagerate', },
-        { headerName: "REFERENCE ID", field: 'referenceid', },
+        { headerName: "CHANNEL NAME", field: 'productname', width: 400 },
+        { headerName: "PACKAGE RATE", field: 'packagerate', width: 400 },
+        { headerName: "REFERENCE ID", field: 'referenceid', width: 300 },
         {
-          headerName: "PRODUCT ID", field: 'casproductid',
+          headerName: "PRODUCT ID", field: 'casproductid',width: 300,
           cellRenderer: (params: any) => {
             const span = document.createElement('span');
             span.innerText = params.value;

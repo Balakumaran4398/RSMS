@@ -1,58 +1,58 @@
-<div *ngIf="package_view" class="col">
-    <div class="Head d-flex justify-content-between align-items-center mb-3" style="padding: 1rem;">
-        <h6>CHANNEL DETAILS</h6>
-        <i class="fa fa-close close-icon" style="cursor: pointer;" (click)="onNoClick()"></i>
-    </div>
-    <div class="mobile">
-
-        <section class="col-12 d-flex justify-content-center ">
-            <div class="col-10 col-md-6 display justify-content-center align-items-center view">
-                <div class="input_box  col-12 col-md-12 display_1 justify-content-between align-items-center">
-                    <div class="col-6 col-md-6 ">
-                        <span for="">Package</span>
-                    </div>
-                    <div class="col-6 col-md-6 ">
-                        <p style="margin: auto;color: rgb(7 129 44);font-size: 17px;">{{package_name}}</p>
-                    </div>
-                </div>
-                <div class="input_box  col-12 col-6 display_1 justify-content-between align-items-center">
-                    <div class="col-6 col-md-6 ">
-                        <span for="">Package Rate</span>
-                    </div>
-                    <div class="col-6 col-md-6 ">
-                        <p style="margin: auto;color: rgb(23, 26, 189);font-size: 17px;">{{package_rate}}</p>
-                    </div>
-                </div>
-                <div class="input_box  col-12 col-6 display_1 justify-content-between align-items-center">
-                    <div class="col-6 col-md-6 ">
-                        <span for="">Package Viewing Count</span>
-                    </div>
-                    <div class="col-6 col-md-6 ">
-                        <p style="margin: auto;color: rgb(178, 38, 206);font-size: 17px;">{{package_viewing_count}}</p>
-                    </div>
-                </div>
-
-            </div>
-         
-        </section>
-
-        <section class="col-12 display justify-content-center">
-            <div class="col-xl-12 col-sm-6 col-12">
-                <div class="d-flex justify-content-center align-items-center my-3">
-                    <div class="tab" [class.active]="selectedTab === '1'" (click)="selectTab('1')">FTA CHANNELS</div>
-                    <div class="tab" [class.active]="selectedTab === '2'" (click)="selectTab('2')">PAY CHANNELS</div>
-                    <div class="tab" [class.active]="selectedTab === '3'" (click)="selectTab('3')">ALL CHANNELS</div>
-                </div>
-                <p style="text-align: center;color: rgb(19, 2, 14);font-size: 18px;font-weight: 600;">CHANNELS:- <span style="color: rgb(220, 43, 226);font-size: 20px;font-weight: 600;">{{count}}</span> </p>
-                <div class="">
-                    <div>
-                        <ag-grid-angular #agGrid id="myGrid" domLayout='autoHeight' class="ag-theme-alpine table-class"
-                            rowAnimation [gridOptions]="gridOptions" [columnDefs]="columnDefs" [rowData]="rowData"
-                            (gridReady)="onGridReady($event)" [enableCellTextSelection]="true">
-                        </ag-grid-angular>
-                    </div>
-                </div>
-            </div>
-        </section>
-    </div>
+<!-- <div *ngIf="package_view" class="col"> -->
+<div class="Head d-flex justify-content-between align-items-center mb-3" style="padding: 1rem;">
+    <h6>CHANNEL DETAILS</h6>
+    <i class="fa fa-close close-icon" style="cursor: pointer;" (click)="onNoClick()"></i>
 </div>
+<div class="mobile">
+    <section class="col-12 d-flex justify-content-center ">
+        <div class="col-10 col-md-6 display justify-content-center align-items-center view">
+            <div class="input_box  col-12 col-md-12 display_1 justify-content-between align-items-center">
+                <div class="col-6 col-md-6 ">
+                    <span for="">Package</span>
+                </div>
+                <div class="col-6 col-md-6 ">
+                    <p style="margin: auto;color: rgb(7 129 44);font-size: 17px;">{{package_name}}</p>
+                </div>
+            </div>
+            <div class="input_box  col-12 col-6 display_1 justify-content-between align-items-center">
+                <div class="col-6 col-md-6 ">
+                    <span for="">Package Rate</span>
+                </div>
+                <div class="col-6 col-md-6 ">
+                    <p style="margin: auto;color: rgb(23, 26, 189);font-size: 17px;">{{package_rate}}</p>
+                </div>
+            </div>
+            <div class="input_box  col-12 col-6 display_1 justify-content-between align-items-center">
+                <div class="col-6 col-md-6 ">
+                    <span for="">Package Viewing Count</span>
+                </div>
+                <div class="col-6 col-md-6 ">
+                    <p style="margin: auto;color: rgb(178, 38, 206);font-size: 17px;">{{package_viewing_count}}</p>
+                </div>
+            </div>
+
+        </div>
+
+    </section>
+
+    <section class="col-12 display justify-content-center " style="padding: 1rem;">
+        <div class="col-xl-12 col-sm-6 col-12">
+            <div class="d-flex justify-content-center align-items-center my-3">
+                <div class="tab" [class.active]="selectedTab === '1'" (click)="selectTab('1')">FTA CHANNELS</div>
+                <div class="tab" [class.active]="selectedTab === '2'" (click)="selectTab('2')">PAY CHANNELS</div>
+                <div class="tab" [class.active]="selectedTab === '3'" (click)="selectTab('3')">ALL CHANNELS</div>
+            </div>
+            <p style="text-align: center;color: rgb(19, 2, 14);font-size: 18px;font-weight: 600;">CHANNELS:- <span
+                    style="color: rgb(220, 43, 226);font-size: 20px;font-weight: 600;">{{count}}</span> </p>
+            <div class="">
+                <div>
+                    <ag-grid-angular #agGrid id="myGrid" domLayout='autoHeight' class="ag-theme-alpine table-class"
+                        rowAnimation [gridOptions]="gridOptions" [columnDefs]="columnDefs" [rowData]="rowData"
+                        (gridReady)="onGridReady($event)" [enableCellTextSelection]="true">
+                    </ag-grid-angular>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+<!-- </div> -->

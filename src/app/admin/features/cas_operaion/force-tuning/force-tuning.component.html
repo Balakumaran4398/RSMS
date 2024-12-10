@@ -27,16 +27,36 @@
                                         <div class="col-4">
                                             <label for="">Intend ID</label>
                                         </div>
-                                        <div class="col-12 col-md-3" *ngIf="isSmartcardEnabled">
-                                            <input placeholder="Enter Smartcard" formControlName="intendid" type="text">
+                                        <div class="col-12 col-md-6" *ngIf="isSmartcardEnabled">
+                                            <input placeholder="Enter Smartcard" formControlName="intendid" type="text"
+                                                (keypress)="onKeydown($event)" [ngModel]="intendid_1" maxlength="20">
+                                            <div *ngIf="submitted && !intendid" class="text-danger"
+                                                style="font-size: small;">
+                                                Indend Id is required
+                                            </div>
+                                            <!-- <div *ngIf="form.get('intendid')?.invalid && form.get('indendid')?.touched">
+                                                <small class="text-danger">Indend Id is required.</small>
+                                            </div> -->
                                         </div>
-                                        <div class="col-12 col-md-3" *ngIf="isLCOEnabled">
-                                            <select id="lcoName" formControlName="intendid">
-                                                <option value="0" selected>Select a Area</option>
-                                                <option *ngFor="let area of filteredIntendArea()" [value]="area.id">
+                                        <div class="col-12 col-md-6" *ngIf="isLCOEnabled">
+                                            <input type="text" placeholder="Search an LCO" [value]="LCO_name"
+                                                [ngModel]="intendid_1" formControlName="intendid"
+                                                (input)="onSearchLCOChange($event)" [matAutocomplete]="auto"
+                                                class="example-input">
+
+                                            <mat-autocomplete #auto="matAutocomplete">
+                                                <mat-option *ngFor="let area of filteredIntendArea()"
+                                                    [value]="area.name" (click)="onLCOSelect(area)">
                                                     {{ area.name }}
-                                                </option>
-                                            </select>
+                                                </mat-option>
+                                            </mat-autocomplete>
+                                            <div *ngIf="submitted && !intendid" class="text-danger"
+                                                style="font-size: small;">
+                                                Indend Id is required
+                                            </div>
+                                            <!-- <div *ngIf="form.get('intendid')?.invalid && form.get('indendid')?.touched">
+                                                <small class="text-danger">Indend Id is required.</small>
+                                            </div> -->
                                         </div>
                                     </div>
                                 </div>

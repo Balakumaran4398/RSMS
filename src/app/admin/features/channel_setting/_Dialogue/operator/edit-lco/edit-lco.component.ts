@@ -52,7 +52,7 @@ export class EditLcoComponent {
       this.paymentid = data.paymentid,
       // this.lcobusinessid = data.lcobusinessid,
       this.lcobusinessid = data.lcobusinessid || 0;
-     this.password = data.password,
+    this.password = data.password,
       this.userid = data.userid
 
 
@@ -72,7 +72,7 @@ export class EditLcoComponent {
       mail: ['', [Validators.required, Validators.email]],
       nameheader: ['', Validators.required],
       lcobusinessid: ['', Validators.required],
-      userid: ['', Validators.required],
+      userid: ['', [Validators.required, Validators.minLength(5), Validators.maxLength(10)]],
       password: ['', [Validators.required, Validators.minLength(6)]],
       paymentid: ['', Validators.required],
       role: this.role,
@@ -81,55 +81,9 @@ export class EditLcoComponent {
     this.PaymentGatewayList();
     this.Businesslist();
   }
-  // onSubmit() {
 
-  //   let requestbody = {
-  //     operatorid: this.operatorid,
-  //     operatorname: this.operatorname,
-  //     address: this.address,
-  //     area: this.area,
-  //     state: this.state,
-  //     pincode: this.pincode,
-  //     contactnumber1: this.contactnumber,
-  //     mail: this.mail,
-  //     nameheader: this.nameheader,
-  //     lcobusinessid: this.lcobusinessid,
-  //     userid: this.userid,
-  //     password: this.password,
-  //     paymentid: this.paymentid,
-  //     role: this.role,
-  //     username: this.username
-  //   }
-
-  //   this.userService.EditOperator(requestbody).subscribe(
-  //     (res: any) => {
-  //       console.log(res);
-  //       Swal.fire({
-  //         title: 'Success!',
-  //         text: res?.message || 'Operator edited successfully.',
-  //         icon: 'success',
-  //         timer: 2000,
-  //         showConfirmButton: false,
-  //       }).then(() => {
-  //         window.location.reload();
-  //       });
-
-  //     },
-  //     (error) => {
-  //       console.error(error);
-  //       Swal.fire({
-  //         title: 'Error!',
-  //         text: error?.error?.message || error?.error.lcobusinessid || error?.error.nameheader || 'Something went wrong. Please try again.',
-  //         icon: 'error',
-  //         confirmButtonText: 'OK',
-  //       });
-  //     }
-  //   );
-
-  // }
 
   onSubmit() {
-    // Creating the request body
     let requestbody = {
       operatorid: this.operatorid,
       operatorname: this.operatorname,
@@ -147,22 +101,7 @@ export class EditLcoComponent {
       role: this.role,
       username: this.username
     };
-
-    // Check for missing required fields
     const missingFields = Object.keys(requestbody);
-
-    // If there are missing fields, show validation error and stop
-    // if (missingFields.length > 0) {
-    //   Swal.fire({
-    //     title: 'Error!',
-    //     text: `The following fields are required: ${missingFields.join(', ')}`,
-    //     icon: 'error',
-    //     confirmButtonText: 'OK',
-    //   });
-    //   return;
-    // }
-
-    // If all fields are present, proceed with the API call
     this.userService.EditOperator(requestbody).subscribe(
       (res: any) => {
         console.log(res);
@@ -180,7 +119,10 @@ export class EditLcoComponent {
         console.error(error);
         Swal.fire({
           title: 'Error!',
-          text: error?.error?.message || 'Something went wrong. Please try again.',
+          text: error?.error?.message || error?.error?.lcobusinessid || error?.error?.paymentid || error?.error?.userid || error?.error?.pincode ||
+            error?.error?.state || error?.error?.operatorname || error?.error?.password || error?.error?.mail || error?.error?.contactnumber1 ||
+            error?.error?.area || error?.error?.address ||
+            'Something went wrong. Please try again.',
           icon: 'error',
           confirmButtonText: 'OK',
         });

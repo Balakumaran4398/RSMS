@@ -63,58 +63,20 @@
                             formControlName="contactnumber2">
                         <div *ngIf="form.get('contactnumber2')?.invalid && form.get('contactnumber2')?.touched">
 
-                            <small class="text-danger" *ngIf="form.get('contactnumber2')?.errors?.['required']">Mobile
+                            <!-- <small class="text-danger" *ngIf="form.get('contactnumber2')?.errors?.['required']">Mobile
                                 Number is
-                                required.</small>
+                                required.</small> -->
                         </div>
                     </div>
                 </div>
                 <div class="mb-3 edit">
                     <div class="col-12 col-md-4">
-                        <span class="form-label">Address Line</span>
+                        <span class="form-label">Address</span>
                     </div>
                     <div class="col-12 col-md-8">
                         <input class="" type="text" id="" name="" value="" formControlName="address">
                         <div *ngIf="form.get('address')?.invalid && form.get('address')?.touched">
                             <small class="text-danger">Address is required.</small>
-                        </div>
-                    </div>
-                </div>
-                <div class="mb-3 edit">
-                    <div class="col-12 col-md-4">
-                        <span class="form-label">State</span>
-                    </div>
-                    <div class="col-12 col-md-8">
-                        <input class="" type="text" formControlName="state">
-                        <div *ngIf="form.get('state')?.invalid && form.get('state')?.touched">
-                            <small class="text-danger">State is required.</small>
-                        </div>
-                    </div>
-                </div>
-                <div class="mb-3 edit">
-                    <div class="col-12 col-md-4">
-                        <span class="form-label">User ID</span>
-                    </div>
-                    <div class="col-12 col-md-8">
-                        <input class="" type="text" formControlName="userid">
-                        <div *ngIf="form.get('userid')?.invalid && form.get('userid')?.touched">
-                            <small class="text-danger">User ID is required.</small>
-                        </div>
-                    </div>
-                </div>
-
-
-                <div class="mb-3 edit">
-                    <div class="col-12 col-md-4">
-                        <span class="form-label">Email</span>
-                    </div>
-                    <div class="col-12 col-md-8">
-                        <input class="" type="mail" formControlName="mail">
-                        <div *ngIf="form.get('mail')?.invalid && form.get('mail')?.touched">
-                            <small class="text-danger" *ngIf="form.get('mail')?.errors?.['email']">Invalid email
-                                format.</small>
-                            <small class="text-danger" *ngIf="form.get('mail')?.errors?.['required']">Email is
-                                required.</small>
                         </div>
                     </div>
                 </div>
@@ -132,6 +94,33 @@
                 </div>
                 <div class="mb-3 edit">
                     <div class="col-12 col-md-4">
+                        <span class="form-label">State</span>
+                    </div>
+                    <div class="col-12 col-md-8">
+                        <input class="" type="text" formControlName="state">
+                        <div *ngIf="form.get('state')?.invalid && form.get('state')?.touched">
+                            <small class="text-danger">State is required.</small>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mb-3 edit">
+                    <div class="col-12 col-md-4">
+                        <span class="form-label">Email</span>
+                    </div>
+                    <div class="col-12 col-md-8">
+                        <input class="" type="mail" formControlName="mail">
+                        <div *ngIf="form.get('mail')?.invalid && form.get('mail')?.touched">
+                            <small class="text-danger" *ngIf="form.get('mail')?.errors?.['email']">Invalid email
+                                format.</small>
+                            <small class="text-danger" *ngIf="form.get('mail')?.errors?.['required']">Email is
+                                required.</small>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mb-3 edit">
+                    <div class="col-12 col-md-4">
                         <span class="form-label">Pincode</span>
                     </div>
                     <div class="col-12 col-md-8">
@@ -146,17 +135,36 @@
                 </div>
                 <div class="mb-3 edit">
                     <div class="col-12 col-md-4">
+                        <span class="form-label">User ID</span>
+                    </div>
+                    <div class="col-12 col-md-8">
+                        <input class="" type="text" formControlName="userid">
+                        <div *ngIf="form.get('userid')?.invalid && form.get('userid')?.touched">
+                            <small class="text-danger">User ID is required.</small>
+                            <small class="text-danger" *ngIf="form.get('userid')?.errors?.['minlength'] || form.get('userid')?.errors?.['maxlength']">
+                                The username length should be between 5 and 10 characters.
+                              </small>
+                        </div>
+                    </div>
+                </div>
+                <div class="mb-3 edit">
+                    <div class="col-12 col-md-4">
                         <span class="form-label">Password</span>
                     </div>
                     <div class="col-12 col-md-8">
                         <input class="" type="password" formControlName="password" maxlength="12">
                         <div *ngIf="form.get('password')?.invalid && form.get('password')?.touched">
-                            <small class="text-danger" *ngIf="form.get('password')?.errors?.['pattern']">Password
-                                must be 12
-                                digits.</small>
-                            <small class="text-danger" *ngIf="form.get('password')?.errors?.['required']">Password
-                                is
-                                required.</small>
+                            <small class="text-danger" *ngIf="form.get('password')?.errors?.['pattern']">
+                                Password must contain only digits and be 6 to 12 characters long.
+                              </small>
+                              <!-- Error for required field -->
+                              <small class="text-danger" *ngIf="form.get('password')?.errors?.['required']">
+                                Password is required.
+                              </small>
+                              <!-- Error for length constraints -->
+                              <!-- <small class="text-danger" *ngIf="form.get('password')?.errors?.['minlength'] || form.get('password')?.errors?.['maxlength']">
+                                Password length should be between 6 and 12 characters.
+                              </small> -->
                         </div>
                     </div>
                 </div>
@@ -165,7 +173,7 @@
                         <span class="form-label">Business Name</span>
                     </div>
                     <div class="col-12 col-md-8">
-                        <select class="form-select" formControlName="lcobusinessid">
+                        <select class="form-select" formControlName="lcobusinessid" >
                             <option value="0" selected>Select a Business Name</option>
                             <option *ngFor="let business of businessList" [value]="business.value">{{
                                 business.name}}</option>

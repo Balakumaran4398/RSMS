@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { ChangeDetectorRef, Component } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatDialogRef } from '@angular/material/dialog';
 import { BaseService } from 'src/app/_core/service/base.service';
@@ -27,11 +27,12 @@ export class PackageCreateComponent {
   selected: any
   proofFormControl: any = new FormControl();
   constructor(
-    public dialogRef: MatDialogRef<PackageCreateComponent>, private userservice: BaseService, private storageService: StorageService, private fb: FormBuilder
+    public dialogRef: MatDialogRef<PackageCreateComponent>, private userservice: BaseService, private storageService: StorageService, private cdr: ChangeDetectorRef, private fb: FormBuilder
   ) {
     this.username = storageService.getUsername();
     this.role = storageService.getUserRole();
     this.createpackageForm = this.fb.group({
+      package_logo: ['', Validators.required],
       proofFormControl: ['', Validators.required],
       package_name: ['', Validators.required],
       castype: ['', Validators.required],
@@ -42,56 +43,23 @@ export class PackageCreateComponent {
       customer_amount: ['', Validators.required],
       mso_amount: ['', Validators.required],
       order_id: ['', Validators.required],
-      ispercentage: [false, Validators.required],
+      ispercentage: [true, Validators.required],
     });
-    this.createpackageForm.get('isactive')?.valueChanges.subscribe(value => {
-      this.isPercentage = value;
-      this.calculateAmounts();  // Recalculate amounts whenever checkbox changes
-    });
+    // this.createpackageForm.get('ispercentage')?.valueChanges.subscribe(value => {
+    //   // this.isPercentage = value;
+    //   this.calculateAmounts();  // Recalculate amounts whenever checkbox changes
+    // });
     this.userservice.Cas_type(this.role, this.username).subscribe((data) => {
       this.cas = data;
       console.log(this.cas);
     });
   }
-  // onFileChange(event: any) {
-  //   const file = event.target.files[0];
-  //   if (file && file.type === 'image/png') {
-  //     this.selectedFile = file;
-  //     this.createpackageForm.patchValue({
-  //       package_logo: file
-  //     });
-  //     // this.createpackageForm.get('package_logo')?.markAsDirty();
-  //   } else {
-  //     this.selectedFile = null;
-  //     this.createpackageForm.patchValue({
-  //       package_logo: null
-  //     });
-  //     // this.createpackageForm.get('package_logo')?.markAsDirty();
-  //   }
-  //   console.log(file);
-
-  // }
+  
   onFileChange(event: any): void {
     this.selectedFile = event.target.files[0];
   }
 
-  // onFileSelected(event: any) {
-  //   this.selectedFile = <File>event.target.files[0];
-  //   let fileType = event.target.files[0].type;
-  //   if (fileType.match(/image\/*/)) {
-  //     let reader = new FileReader();
-  //     reader.readAsDataURL(event.target.files[0]);
-  //     reader.onload = (event: any) => {
-  //       console.log(this.url)
-  //       this.url = event.target.result;
-  //       console.log(this.url);
-  //       this.arrayFile.push(this.selected)
-  //     };
-  //   } else {
-  //     window.alert('Please select correct image format');
-  //   }
-  //   console.log(this.selectedFile);
-  // }
+  
 
   onKeyup(event: KeyboardEvent) {
     // Add your logic to handle keyup event here
@@ -115,95 +83,99 @@ export class PackageCreateComponent {
   }
 
 
-  calculateMsoCommission() {
-
+  
+  calculateMsoCommission(type:any) {
+    if (type == 'percentage') {
+      this.isPercentage = !this.isPercentage;
+    }
     const commission = parseFloat(this.createpackageForm.get('commission')?.value || '0');
+    if (this.customer_amount <= 0) {
+      console.error("Customer amount must be greater than 0");
+      this.mso_amount = 0;
+      this.createpackageForm.get('mso_amount')?.setValue(this.mso_amount, { emitEvent: false });
+      return;
+    }
+    console.log(this.isPercentage);
+    // this.isPercentage = !this.isPercentage;
     if (this.isPercentage) {
-      if (commission > 100) {
-        if ((this.customer_amount * commission) / 100 < this.customer_amount) {
-          this.mso_amount = this.customer_amount - (this.customer_amount * commission) / 100;
-        } else {
-          this.mso_amount = 0;
-          console.error("Percentage should be less than Customer Amount");
-        }
+      if (commission >= 0 && commission <= 100) {
+        this.mso_amount = this.customer_amount - (this.customer_amount * commission) / 100;
+        console.log(this.mso_amount);
+
       } else {
-        if (commission < 100) {
-          this.mso_amount = this.customer_amount - (this.customer_amount * commission) / 100;
-        } else {
-          this.mso_amount = 0;
-          console.error("Percentage should be less than 100%");
-        }
+        console.error("Commission percentage must be between 0 and 100");
+        this.mso_amount = 0;
       }
     } else {
-      if (commission < this.customer_amount) {
+      if (commission >= 0 && commission <= this.customer_amount) {
         this.mso_amount = this.customer_amount - commission;
+        console.log(this.mso_amount);
+
       } else {
+        console.error("Fixed commission must be less than or equal to the customer amount");
         this.mso_amount = 0;
-        console.error("Commission amount should be less than Customer amount");
       }
     }
+
     this.createpackageForm.get('mso_amount')?.setValue(this.mso_amount, { emitEvent: false });
+    this.cdr.detectChanges();
   }
   Createpackage() {
     if (this.createpackageForm.invalid) {
-
-
-    console.log(File);
-
-    const formData = new FormData();
-    formData.append('package_logo', this.selectedFile);
-    formData.append('package_name', this.createpackageForm.get('package_name')?.value);
-    // formData.append('castype', this.createpackageForm.get('castype')?.value);
-    formData.append('package_desc', this.createpackageForm.get('package_desc')?.value);
-    formData.append('package_rate', this.createpackageForm.get('package_rate')?.value || 0);
-    formData.append('tax_amount', this.tax_amount.toString());
-    formData.append('commission', this.createpackageForm.get('commission')?.value || 0);
-    formData.append('customer_amount', this.customer_amount.toString());
-    formData.append('mso_amount', this.mso_amount.toString());
-    formData.append('order_id', this.createpackageForm.get('order_id')?.value || 0);
-    formData.append('ispercentage', this.createpackageForm.get('ispercentage')?.value.toString());
-    formData.append('role', this.role);
-    formData.append('username', this.username);
-
-    console.log(formData);
-    Swal.fire({
-      title: 'Updating...',
-      text: 'Please wait while the Package Creation is being updated',
-      allowOutsideClick: false,
-      didOpen: () => {
-        Swal.showLoading(null);
-      }
-    });
-    this.userservice.CREATE_BASE_PACKAGE(formData).subscribe(
-      (res) => {
-        console.log(res);
-        Swal.fire({
-          position: "center",
-          icon: "success",
-          title: "Package Created Successfully!!",
-          showConfirmButton: false,
-          timer: 2000,
-          timerProgressBar: true
-        }).then(() => {
-          window.location.reload();
-          this.closeDialog();
-        });
-      },
-      (err) => {
-        Swal.fire({
-          position: 'center',
-          icon: 'error',
-          title: 'Error',
-          text: err?.error?.message || 'An error occurred',
-          showConfirmButton: false,
-          timer: 2000,
-          timerProgressBar: true
-        });
-      }
-    );
-    this.createpackageForm.markAllAsTouched();
-    return;
-  }
+      console.log(File);
+      const formData = new FormData();
+      formData.append('package_logo', this.selectedFile);
+      formData.append('package_name', this.createpackageForm.get('package_name')?.value);
+      // formData.append('castype', this.createpackageForm.get('castype')?.value);
+      formData.append('package_desc', this.createpackageForm.get('package_desc')?.value);
+      formData.append('package_rate', this.createpackageForm.get('package_rate')?.value || 0);
+      formData.append('tax_amount', this.tax_amount.toString());
+      formData.append('commission', this.createpackageForm.get('commission')?.value || 0);
+      formData.append('customer_amount', this.customer_amount.toString());
+      formData.append('mso_amount', this.mso_amount.toString());
+      formData.append('order_id', this.createpackageForm.get('order_id')?.value || 0);
+      formData.append('ispercentage', (!this.createpackageForm.get('ispercentage')?.value).toString());
+      formData.append('role', this.role);
+      formData.append('username', this.username);
+      console.log(formData);
+      Swal.fire({
+        title: 'Updating...',
+        text: 'Please wait while the Package Creation is being updated',
+        allowOutsideClick: false,
+        didOpen: () => {
+          Swal.showLoading(null);
+        }
+      });
+      this.userservice.CREATE_BASE_PACKAGE(formData).subscribe(
+        (res) => {
+          console.log(res);
+          Swal.fire({
+            position: "center",
+            icon: "success",
+            title: "Package Created Successfully!!",
+            showConfirmButton: false,
+            timer: 2000,
+            timerProgressBar: true
+          }).then(() => {
+            window.location.reload();
+            this.closeDialog();
+          });
+        },
+        (err) => {
+          Swal.fire({
+            position: 'center',
+            icon: 'error',
+            title: 'Error',
+            text: err?.error?.message || 'An error occurred',
+            showConfirmButton: false,
+            timer: 2000,
+            timerProgressBar: true
+          });
+        }
+      );
+      this.createpackageForm.markAllAsTouched();
+      return;
+    }
 
   }
 

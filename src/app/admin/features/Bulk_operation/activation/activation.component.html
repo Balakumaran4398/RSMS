@@ -32,7 +32,8 @@
                         </span>
                     </div>
                 </div>
-                <a class="mb-3" (click)="generateExcel('Activation')" style="cursor: pointer;">* Download Format File</a>
+                <a class="mb-3" (click)="generateExcel('Activation')" style="cursor: pointer;">* Download Format
+                    File</a>
                 <div class="checkbox-text mb-3">
                     <div class="checkbox-content">
                         <input type="checkbox" id="terms" (change)="onCheckboxChange($event)">
@@ -75,25 +76,44 @@
                     </span>
                     <img src="/assets/images/icons/dashboard.png" class="img" alt="File Icon">
                 </div>
-                <span class="mb-2" style="color:orangered;font-size: 16px;">Chosen File: <span style="color:#0a21d0">{{
-                        filePath }}
+                <span class="mb-2" style="color:orangered;font-size: 16px;">Chosen File: <span
+                        style="color:#0a21d0">{{filePath }}
                     </span>
                 </span>
                 <div class="input_box col-12 col-md-12 d-flex justify-content-center align-items-center mb-3">
-                    <select style="color: rgb(17, 0, 0);" [(ngModel)]="lcogroupid" (change)="onproducttypechange($event)">
+                    <!-- <select style="color: rgb(17, 0, 0);" [(ngModel)]="lcogroupid"
+                        (change)="onproducttypechange($event)">
                         <option value="0" selected style="color: rgb(19, 17, 17);">Select Package </option>
                         <option *ngFor="let lcomember of lcomembershipList" [value]="lcomember.value">{{lcomember.name}}
                         </option>
-                    </select>
+                    </select> -->
+
+                    <input type="text" matInput [matAutocomplete]="auto" [(ngModel)]="lcogroupid"
+                        (input)="filterPackage($event)" placeholder="Select a package" [matAutocompleteDisabled]="false"
+                        [value]="selectedPackageName">
+
+                    <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayOperator">
+                        <mat-option *ngFor="let operator of filteredPackage" [value]="operator.value"
+                            (click)="onproducttypechange(operator)">
+                            {{ operator.name }}
+                        </mat-option>
+                    </mat-autocomplete>
                 </div>
+                <div *ngIf="submitted && !lcogroupid" class="text-danger" style="font-size: small;">
+                    Package Name is required
+                </div>
+
                 <div class="col-12 col-md-12 d-flex justify-content-between align-items-center mb-3">
                     <div class="col-6 col-md-6 d-flex justify-content-start align-items-center">
-                        <span>Subscription days</span>
+                        <span>Subscription days :</span>
                     </div>
                     <div class="col-2 col-md-5 input_box d-flex justify-content-center align-items-center">
                         <input type="text" [(ngModel)]="plan" pattern="[0-9]*" maxlength="3"
                             (keypress)="onKeydown($event)" (input)="checkPlanValidity()" placeholder="Enter days">
                     </div>
+                </div>
+                <div *ngIf="submitted && !plan" class="text-danger" style="font-size: small;">
+                    please Enter the days.
                 </div>
                 <div class="d-flex justify-content-end align-items-center mt-3 ">
                     <button type="button" class="btn btn-success mx-2" (click)="goBack()">Back &nbsp;<i
@@ -113,10 +133,10 @@
                     <div class="col-12 mb-3">
                         <div class="row align-items-center justify-content-center mb-3" style="gap:10px;">
                             <div class="col-12 col-md-3 mb-2 mb-md-0">
-                                <input class="date form-control" type="date" name="" id="" [(ngModel)]="date">
+                                <input class="date form-control" type="date" name="" id="" [(ngModel)]="selectedDate">
                             </div>
                             <div class="col-12 col-md-3 mb-2 mb-md-0">
-                                <button class="btn btn-primary w-100" (click)="getData()">Get Data</button>
+                                <button class="btn btn-secondary w-100" (click)="getData()">Get Data</button>
                             </div>
                             <div class="col-12 col-md-3 mb-2 mb-md-0">
                                 <button class="btn btn-secondary w-100" (click)="refresh()">Refresh</button>

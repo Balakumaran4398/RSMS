@@ -11,13 +11,26 @@
             </div>
             <div class=" col-8">
                 <div class="">
-                    <select id="lcoName" [(ngModel)]="selectedLcoName">
+                    <!-- <select id="lcoName" [(ngModel)]="selectedLcoName">
                         <option value="0"  selected>Select a Subscriber</option>
                         <option *ngFor="let key of filteredLcoKeys()" [value]="sub_list[key]">
                             {{ key }}
                         </option>
-                        <!-- <option value="">{{sub_list}}</option> -->
-                    </select>
+                    </select> -->
+
+                    <input type="text" matInput [matAutocomplete]="auto" [(ngModel)]="selectedLcoName"
+                            maxlength="20" (input)="filterOperators($event)" placeholder="Select a Subscriber"
+                            [matAutocompleteDisabled]="false" [value]="selectedOperator?.name">
+
+                        <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayOperator">
+                            <mat-option *ngFor="let operator of filteredOperators" [value]="operator.value"
+                                (click)="onSubscriberStatusChange(operator)">
+                                {{ operator.name }}
+                            </mat-option>
+                        </mat-autocomplete>
+                        <div *ngIf="submitted && !selectedLcoName" class="text-danger" style="font-size: small;">
+                            Subscriber is required
+                        </div>
                 </div>
             </div>
 

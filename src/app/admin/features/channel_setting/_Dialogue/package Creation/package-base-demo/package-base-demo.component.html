@@ -14,39 +14,66 @@
 </div> -->
 <div *ngIf="dailogObj.type === 'paychannel' || dailogObj.type === 'bouquet'">
     <div class="Head d-flex justify-content-between align-items-center mb-3" style="padding: 1rem;">
-      <h6>{{ dailogObj.type === 'paychannel' ? 'PAY CHANNELS' : 'BOUQUET LIST' }}</h6>
-      <i class="fa fa-close close-icon" style="cursor: pointer;" (click)="onNoClick()"></i>
+        <h6>{{ dailogObj.type === 'paychannel' ? 'PAY CHANNELS' : 'BOUQUET LIST' }}</h6>
+        <i class="fa fa-close close-icon" style="cursor: pointer;" (click)="onNoClick()"></i>
     </div>
     <br>
-    <div class="card" style="padding: 1rem;"
-         [ngStyle]="{
-           'max-height': dailogObj.type === 'paychannel' ? '65vh' : '30vh',
-           'overflow': 'scroll'
-         }">
-      <ag-grid-angular #agGrid id="myGrid" style="text-align: center;" domLayout='autoHeight'
-                       class="ag-theme-alpine table-class" rowAnimation [gridOptions]="gridOptions"
-                       [columnDefs]="columnDefs" [rowData]="rowData" [enableCellTextSelection]="true">
-      </ag-grid-angular>
+    <div class="card" style="padding: 1rem;" [ngStyle]="{
+        'max-height': dailogObj.type === 'paychannel' ? '65vh' : 'auto',
+        'overflow': dailogObj.type === 'paychannel' ? 'scroll' : 'visible'
+      }">
+        <ag-grid-angular #agGrid id="myGrid" style="text-align: center;" domLayout='autoHeight'
+            class="ag-theme-alpine table-class" rowAnimation [gridOptions]="gridOptions" [columnDefs]="columnDefs"
+            [rowData]="rowData" [enableCellTextSelection]="true">
+        </ag-grid-angular>
     </div>
-  </div>
-  
+</div>
+
 <div *ngIf="dailogObj.type==='pair'">
     <div class="col d-block justify-content-center align-items-center">
         <div class="Head d-flex justify-content-between align-items-center mb-3" style="padding: 1rem;">
-            <h6>BASE DEMO PACK</h6>
+            <h6>BASE DEMO PACK - {{dailogObj.type}}</h6>
             <i class="fa fa-close close-icon" style="cursor: pointer;" (click)="onNoClick()"></i>
         </div>
-        <div style="padding: 1rem;max-height: 65vh;overflow: scroll;">
-            <br><br>
-            <div class="col-12 col-md-12">
+        <div class="display" style="padding: 1rem;max-height: 70vh;overflow: auto;">
+
+            <div class="col-12 col-md-6 mb-3">
                 <h4>Pair List</h4>
                 <ag-grid-angular #agGrid id="myGrid" style="text-align: center;" domLayout='autoHeight'
                     class="ag-theme-alpine table-class" rowAnimation [gridOptions]="gridOptions"
                     [columnDefs]="columnDefs" [rowData]="rowData" [enableCellTextSelection]="true">
                 </ag-grid-angular>
             </div>
-            <br><br>
-            <div class="col-12 col-md-12">
+            &nbsp;
+            <div class="col-12 col-md-6">
+                <h4>UnPair List</h4>
+                <ag-grid-angular #agGrid id="myGrid" style="text-align: center;" domLayout='autoHeight'
+                    class="ag-theme-alpine table-class" rowAnimation [gridOptions]="gridOptions"
+                    [columnDefs]="columnDefs" [rowData]="rowDataUnpair" [enableCellTextSelection]="true">
+                </ag-grid-angular>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div *ngIf="dailogObj.type==='addonpair'">
+
+    <div class="col d-block justify-content-center align-items-center">
+        <div class="Head d-flex justify-content-between align-items-center mb-3" style="padding: 1rem;">
+            <h6>BASE DEMO PACK - {{dailogObj.type}}</h6>
+            <i class="fa fa-close close-icon" style="cursor: pointer;" (click)="onNoClick()"></i>
+        </div>
+        <div class="display" style="padding: 1rem;max-height: 70vh;overflow: auto;">
+
+            <div class="col-12 col-md-6 mb-3 mx-3">
+                <h4>Pair List</h4>
+                <ag-grid-angular #agGrid id="myGrid" style="text-align: center;" domLayout='autoHeight'
+                    class="ag-theme-alpine table-class" rowAnimation [gridOptions]="gridOptions"
+                    [columnDefs]="columnDefs" [rowData]="rowData" [enableCellTextSelection]="true">
+                </ag-grid-angular>
+            </div>
+
+            <div class="col-12 col-md-6">
                 <h4>UnPair List</h4>
                 <ag-grid-angular #agGrid id="myGrid" style="text-align: center;" domLayout='autoHeight'
                     class="ag-theme-alpine table-class" rowAnimation [gridOptions]="gridOptions"

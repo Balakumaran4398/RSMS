@@ -6,6 +6,7 @@ import { ColDef } from 'ag-grid-community';
 import { BaseService } from 'src/app/_core/service/base.service';
 import { ExcelService } from 'src/app/_core/service/excel.service';
 import { StorageService } from 'src/app/_core/service/storage.service';
+import { SwalService } from 'src/app/_core/service/swal.service';
 import Swal from 'sweetalert2';
 
 @Component({
@@ -21,10 +22,14 @@ export class AlacarteActivationComponent {
   isCheckboxChecked: boolean = false;
   username: any;
   date: any;
+  selectedDate: any;
   role: any;
-  castype: any = 0;
-  alacarteList: any = 0;
+  castype: any = '';
+  selectedCas: any = '';
+  alacarteList: any = '';
   iscollected: boolean = false;
+  submittedRemove: boolean = false;
+  submitted: boolean = false;
   cas: any[] = [];
   area: any;
 
@@ -33,7 +38,7 @@ export class AlacarteActivationComponent {
   toppingList: any[] = [];
   casItem: any;
   searchText: any;
-  filteredToppingList = [...this.toppingList];
+  filteredToppingList: any;
   columnDefs: ColDef[] = [
     { headerName: "S.No", lockPosition: true, valueGetter: 'node.rowIndex+1', cellClass: 'locked-col', width: 80, suppressNavigable: true, sortable: false, filter: false },
     { headerName: "SMARTCARD", field: 'smartcard' },
@@ -59,10 +64,10 @@ export class AlacarteActivationComponent {
   ];
   columnDefs1: ColDef[] = [
     { headerName: "S.No", lockPosition: true, valueGetter: 'node.rowIndex+1', cellClass: 'locked-col', width: 80, suppressNavigable: true, sortable: false, filter: false },
-    { headerName: "SMARTCARD", field: 'smartcard' },
-    { headerName: "CHANNEL NAME", field: 'packagename' },
+    { headerName: "SMARTCARD", field: 'smartcard', width: 200, },
+    { headerName: "CHANNEL NAME", field: 'packagename', width: 300 },
     {
-      headerName: "STATUS	", field: 'status',
+      headerName: "STATUS	", field: 'status', width: 200,
       cellRenderer: (params: any) => {
         const status = params.value;
         if (status === 'Success') {
@@ -74,8 +79,8 @@ export class AlacarteActivationComponent {
         }
       }
     },
-    { headerName: "REMARKS", field: 'remarks' },
-    { headerName: "CREATED DATE	", field: 'createddate' },
+    { headerName: "REMARKS", field: 'remarks', width: 200 },
+    { headerName: "CREATED DATE	", field: 'createddate', width: 200 },
   ];
   rowData: any;
   public rowSelection: any = "multiple";
@@ -96,7 +101,7 @@ export class AlacarteActivationComponent {
     //   this.listUser = data;      
     // });
   }
-  constructor(public dialog: MatDialog, private fb: FormBuilder, private userservice: BaseService, private storageService: StorageService, private excelService: ExcelService) {
+  constructor(public dialog: MatDialog, private fb: FormBuilder, private swal: SwalService, private userservice: BaseService, private storageService: StorageService, private excelService: ExcelService) {
     this.form = this.fb.group({
       billingAddressCheckbox: [false]
 
@@ -112,6 +117,10 @@ export class AlacarteActivationComponent {
     //     casname: item.casname,
     //     id: item.id
     // }));
+    this.date = new Date().toISOString().split('T')[0];
+    this.selectedDate = this.date;
+    this.filteredToppingList = [...this.toppingList];
+    this.refresh();
     console.log(this.cas);
     this.userservice.Finger_print_List(this.role, this.username).subscribe((data) => {
       this.cas = Object.entries(data[0].caslist).map(([key, value]) => ({ name: key, id: value }));
@@ -127,6 +136,9 @@ export class AlacarteActivationComponent {
   }
   selectTab(tab: string) {
     this.selectedTab = tab;
+    this.selectedTab = tab;
+    this.castype = ''
+    this.alacarteList = ''
   }
   get billingAddressCheckbox() {
     return this.form.get('billingAddressCheckbox');
@@ -176,7 +188,18 @@ export class AlacarteActivationComponent {
       this.toppingList = Object.entries(data).map(([key, value]) => ({ name: key, id: value }));
     })
   }
+  onCaschange(selectedCas: any): void {
+    this.selectedCas = selectedCas;
+    this.castype = selectedCas.id;
+    console.log("Selected CAS type:", this.castype);
+    this.userservice.getAlacartelistByCasType(this.role, this.username, this.castype).subscribe((data: any) => {
+      console.log(data);
+      this.toppingList = Object.entries(data).map(([key, value]) => ({ name: key, id: value }));
+      console.log(this.toppingList);
+    });
+  }
   remove() {
+    this.submittedRemove = true;
     if (this.file) {
       console.log(this.file);
       Swal.fire({
@@ -197,25 +220,12 @@ export class AlacarteActivationComponent {
       formData.append('retailerid', '0');
       formData.append('optype', '4');
       formData.append('selectedlist', this.alacarteList);
-
-      this.userservice.uploadFileForAddonAndAlacarteActivation(formData).subscribe(
-        (res: any) => {
-          Swal.fire({
-            title: 'Upload Complete',
-            text: 'Your file has been successfully uploaded!',
-            icon: 'success',
-            confirmButtonText: 'OK'
-          });
-        },
-        (error: any) => {
-          Swal.fire({
-            title: 'Error',
-            text: 'There was an issue uploading your file. Please try again.',
-            icon: 'error',
-            confirmButtonText: 'OK'
-          });
-        }
-      );
+      this.userservice.uploadFileForAddonAndAlacarteActivation(formData)
+        .subscribe((res: any) => {
+          this.swal.success(res?.message);
+        }, (err) => {
+          this.swal.Error(err?.error?.message);
+        });
     } else {
       Swal.fire({
         title: 'No File',
@@ -226,6 +236,7 @@ export class AlacarteActivationComponent {
     }
   }
   submit() {
+    this.submitted = true;
     if (this.file) {
       console.log(this.file);
       Swal.fire({
@@ -247,24 +258,12 @@ export class AlacarteActivationComponent {
       formData.append('optype', '4');
       formData.append('selectedlist', this.alacarteList);
 
-      this.userservice.uploadFileForAddonAndAlacarteActivation(formData).subscribe(
-        (res: any) => {
-          Swal.fire({
-            title: 'Upload Complete',
-            text: 'Your file has been successfully uploaded!',
-            icon: 'success',
-            confirmButtonText: 'OK'
-          });
-        },
-        (error: any) => {
-          Swal.fire({
-            title: 'Error',
-            text: 'There was an issue uploading your file. Please try again.',
-            icon: 'error',
-            confirmButtonText: 'OK'
-          });
-        }
-      );
+      this.userservice.uploadFileForAddonAndAlacarteActivation(formData)
+        .subscribe((res: any) => {
+          this.swal.success(res?.message);
+        }, (err) => {
+          this.swal.Error(err?.error?.message);
+        });
     } else {
       Swal.fire({
         title: 'No File',
@@ -280,22 +279,24 @@ export class AlacarteActivationComponent {
 
 
   getData() {
-    this.userservice.getBulkOperationListByDate(this.role, this.username, 'alacarte_add', this.date, 4)
+    this.rowData = [];
+    const dateToPass = this.selectedDate || this.date;
+    this.userservice.getBulkOperationListByDate(this.role, this.username, 'alacarte_add', dateToPass, 4)
       .subscribe(
         (response: HttpResponse<any[]>) => { // Expect HttpResponse<any[]>
           if (response.status === 200) {
             this.rowData = response.body;
-            Swal.fire('Success', 'Data updated successfully!', 'success');
+            // this.swal.Success_200();
           } else if (response.status === 204) {
-            this.rowData = [];
-            Swal.fire('No Content', 'No data available for the given criteria.', 'info');
+            this.rowData = '';
+            this.swal.Success_204();
           }
         },
         (error) => {
           if (error.status === 400) {
-            Swal.fire('Error 400', 'Bad Request. Please check the input.', 'error');
+            this.swal.Error_400();
           } else if (error.status === 500) {
-            Swal.fire('Error 500', 'Internal Server Error. Please try again later.', 'error');
+            this.swal.Error_500();
           } else {
             Swal.fire('Error', 'Something went wrong. Please try again.', 'error');
           }
@@ -308,16 +309,17 @@ export class AlacarteActivationComponent {
         (response: HttpResponse<any[]>) => { // Expect HttpResponse<any[]>
           if (response.status === 200) {
             this.rowData = response.body;
-            Swal.fire('Success', 'Data updated successfully!', 'success');
+            // this.swal.Success_200();
           } else if (response.status === 204) {
-            Swal.fire('No Content', 'No data available for the given criteria.', 'info');
+            this.rowData = '';
+            this.swal.Success_204();
           }
         },
         (error) => {
           if (error.status === 400) {
-            Swal.fire('Error 400', 'Bad Request. Please check the input.', 'error');
+            this.swal.Error_400();
           } else if (error.status === 500) {
-            Swal.fire('Error 500', 'Internal Server Error. Please try again later.', 'error');
+            this.swal.Error_500();
           } else {
             Swal.fire('Error', 'Something went wrong. Please try again.', 'error');
           }

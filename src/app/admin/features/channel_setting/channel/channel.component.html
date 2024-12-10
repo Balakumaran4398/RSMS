@@ -9,7 +9,7 @@
                 </mat-select>
             </mat-form-field> -->
             <div class="input_box col-12 col-md-4 mx-2">
-                <select (change)="onTypeChange($event)" [(ngModel)]="selectType" > 
+                <select (change)="onTypeChange($event)" [(ngModel)]="selectType">
                     <option value="">Select a Type</option>
                     <option *ngFor="let option of type" [value]="option">{{ option }}</option>
                 </select>
@@ -58,7 +58,7 @@
     </div>
     <div class="row">
         <div class="col-12 col-sm-12  m-3">
-            <ag-grid-angular #agGrid id="myGrid" domLayout='autoHeight' class="ag-theme-alpine table-class" rowAnimation
+                 <ag-grid-angular #agGrid id="myGrid" domLayout='autoHeight' class="ag-theme-alpine table-class" rowAnimation
                 [rowSelection]="rowSelection" [gridOptions]="gridOptions" [columnDefs]="columnDefs" [rowData]="rowData"
                 (selectionChanged)="onSelectionChanged()" (gridReady)="onGridReady($event)"
                 [enableCellTextSelection]="true">

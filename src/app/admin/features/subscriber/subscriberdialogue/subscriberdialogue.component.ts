@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, Inject, OnInit, ViewEncapsulation } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { AbstractControl, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatDatepicker } from '@angular/material/datepicker';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import * as _moment from 'moment';
@@ -49,21 +49,24 @@ export const MY_FORMATS = {
 export class SubscriberdialogueComponent implements OnInit {
   myControl = new FormControl('');
   options: string[] = ['One', 'Two', 'Three'];
-  readonly date = new FormControl(moment());
+  readonly date = new FormControl<string>(moment().format('YYYY-MM'));
+
   columnDefs: any;
   finalrow: any = [];
-  setMonthAndYear(normalizedMonthAndYear: Moment, datepicker: MatDatepicker<Moment>) {
-    const ctrlValue = this.date.value ?? moment();
-    ctrlValue.month(normalizedMonthAndYear.month());
-    ctrlValue.year(normalizedMonthAndYear.year());
-    this.date.setValue(ctrlValue);
+
+  setMonthAndYear(normalizedMonthAndYear: Moment, datepicker: any) {
+    const formattedDate = normalizedMonthAndYear.format('YYYY-MM');
+    this.date.setValue(formattedDate);
     datepicker.close();
   }
-  type: number = 1;
 
+  type: number = 1;
+  isDisabled: boolean = true;
+  isActive: boolean = false;
   filteredPackageList: Observable<any[]> | undefined;
   filterControl = new FormControl();
-
+  addonConfirmationData: any;
+  alacarteConfirmationData: any;
 
   isEditSubscriberDetails: boolean = false;
   islogindetails: boolean = false;
@@ -75,13 +78,36 @@ export class SubscriberdialogueComponent implements OnInit {
   alacarteconfirmation: boolean = false;
   removeproduct: boolean = false;
   confirmation: boolean = false;
+  isConfirmationComplete = false;
   isSelectionMade: boolean = false;
+  rechargeToggle: boolean = false;
+  isaddalacarte: boolean = false;
+  isaddaddon: boolean = false;
+  isRemove: boolean = false;
+
+  add_proof_array: Array<{ key: string; value: number }> = [];
+  id_proof_array: Array<{ key: string; value: number }> = [];
+
+  filteredSmartcard: any[] = [];
+  filteredOperators: any[] = [];
+  filteredPackagenameList: any[] = [];
+  filteredAreas: any[] = [];
+  filteredStreet: any[] = [];
+  filteredSub: any[] = [];
+  selectedPackageName: any;
+  selectedSmartcard: any;
+  selectedOperator: any;
+  selectedArea: any;
+  selectedStreet: any;
+  selectedSub: any;
 
   pair: boolean = false;
   unpair: boolean = false;
   ischeck: boolean = false;
-  pairedSmartcard: any = 0;
-  pairedBoxid: any = 0;
+  pairedSmartcard: any;
+  packageMessage: any;
+  sendMessageName: any;
+  pairedBoxid: any;
 
   cardOldBalance: any;
   newexpiryDate: any;
@@ -102,9 +128,12 @@ export class SubscriberdialogueComponent implements OnInit {
   addsmartcardform!: FormGroup;
   role: any;
   username: any;
-  castype: any = 0;
+  castype: any;
+  castypeSmartcard: any = 0;
   lconame: any;
   smartcard: any = 0;
+  submitted: boolean = false;
+  // smartcard: any = 0;
   boxid: any = "";
   cas: any[] = [];
   lcoid: any = 0;
@@ -120,6 +149,7 @@ export class SubscriberdialogueComponent implements OnInit {
 
   pairBoxList: any[] = [];
   pairSmartcardList: any[] = [];
+  packageMessageList: any[] = [];
   subSmartcard: any;
   subBoxid: any;
   isUnpairDialogue: any;
@@ -128,7 +158,7 @@ export class SubscriberdialogueComponent implements OnInit {
   islock = false;
   password: any;
   subscribername: any;
-  baseplan: any;
+  boxstatus: any;
   subusername: any;
   Wallet: any;
 
@@ -156,6 +186,8 @@ export class SubscriberdialogueComponent implements OnInit {
   f_smartcard: any;
   f_plantype: any;
   f_date: any;
+  today: any;
+
   f_subid: any;
   boxno: any;
   message: any;
@@ -163,21 +195,24 @@ export class SubscriberdialogueComponent implements OnInit {
   box: boolean = false;
   status: any;
   smartcardno: any;
+  operatorname:any;
   mobile: any;
   cardbalance: any;
+  customwerAmount: any;
   expirydate: any;
   packagename: any;
   newpackagename: any = 0;
-  statusdisplay: any
+  statusdisplay: any;
+  baseplan: any;
   newpin: any;
   statusValue: any;
   statusSus: any;
   oldpin: any;
-  PVRstatus = false;
+  PVRstatus: boolean = false;
   forcemsg: any;
-  plantype: any = " ";
+  plantype: any = 0;
   rechargetype: any[] = [];
-  packagenameList: any = [];
+  packagenameList: any[] = [];
   subid_1: any;
   newSubid: any;
   p_name: any;
@@ -185,10 +220,15 @@ export class SubscriberdialogueComponent implements OnInit {
   selectedpackagetype: string = '0';
   datetype = false;
   isplantype = false;
+
+  isSelectplanType = false;
+  isSelectDateType = false;
+  isSelectdateToDateType = false;
   billtype: number = 0;
   paid: any;
   unpaid: any;
   iscollected = false;
+  showData = false
   timegap: any;
   duration: any;
   forcemessage: any;
@@ -196,6 +236,11 @@ export class SubscriberdialogueComponent implements OnInit {
   sus_reason: any;
   block_reason: any;
   new_boxid: any;
+  errorMessage: string = '';
+  errorMessage1: string = '';
+
+  lcoreFund: any;
+  lcoreExpirydate: any;
   rowData: any;
   rowData1: any[] = [];
   rowData3: any[] = [];
@@ -214,18 +259,43 @@ export class SubscriberdialogueComponent implements OnInit {
       floatingFilter: true
     },
   }
+  gridOptions1 = {
+    defaultColDef: {
+      sortable: true,
+      resizable: true,
+      filter: true,
+      // width: 320,
+      floatingFilter: true
+    },
+    paginationPageSize: 4,
+    pagination: true,
+  }
+  gridOptions2 = {
+    defaultColDef: {
+      sortable: true,
+      resizable: true,
+      filter: true,
+      floatingFilter: true
+    },
+    paginationPageSize: 3,
+    pagination: true,
+  }
   sType: any
   typeData: any;
   TotalLcoAmount: any;
   BTNFormControl = new FormControl('');
+  remainingChars: number = 117;
+  // plantypeSubject = new BehaviorSubject<{ [key: string]: number }>({});
+  plantypeSubject = new BehaviorSubject<{ displayKey: string; id: number }[]>([]);
 
-  plantypeSubject = new BehaviorSubject<{ [key: string]: number }>({});
-  plantype$ = this.plantypeSubject.asObservable();
+  // plantype$ = this.plantypeSubject.asObservable();
+  plantype$ = new BehaviorSubject<{ key: string, value: number }[]>([]);
+
   selectedaddproof_1: any;
 
   selectedAddProofType: string = '';
   selectedIDProofType: string = '';
-
+  idproofid: any;
   removeProductList: any;
   removeProductList_expiryDate: any;
   removeProductList_refund: any;
@@ -237,27 +307,42 @@ export class SubscriberdialogueComponent implements OnInit {
 
   id_proof_list: { [key: string]: number } = {};
   add_proof_list: { [key: string]: number } = {};
+
+  newRefreshSmartcard: any;
+  packageStatus: any;
+  isPlanTypeSelected(): boolean {
+    if (this.selectedRechargetype === '3') return true;
+    if ((this.datetype && this.f_date)) return true;
+    if (!!this.newpackagename && this.newpackagename !== '0') return true;
+    return !!this.newpackagename && this.newpackagename !== '0' && !!this.selectedRechargetype && this.selectedRechargetype !== '0' &&
+      ((this.isplantype && !!this.plantype && this.plantype !== '0') ||
+        (this.datetype && this.f_date));
+  }
+
+  isDateSelected(): boolean {
+    return !!this.f_date || this.datetype;
+  }
+
   constructor(public dialogRef: MatDialogRef<SubscriberdialogueComponent>, private swal: SwalService,
     @Inject(MAT_DIALOG_DATA) public data: any, public userservice: BaseService, private cdr: ChangeDetectorRef, public storageService: StorageService, private fb: FormBuilder, private zone: NgZone) {
+    console.log(data);
     this.role = storageService.getUserRole();
     this.username = storageService.getUsername();
-    console.log(data);
+    this.newRefreshSmartcard = data.refresh;
     this.subid_1 = data.subId;
-    console.log(this.subid_1);
     this.newSubid = data.newsubid;
     this.sType = data?.type;
     this.pairBoxList = data['pairBoxlist'].map((item: any) => item);
-    // this.pairSmartcardList = data['pairSmartcardlist'].map((item: any) => item);
+    this.pairSmartcardList = data['pairSmartcardlist'].map((item: any) => item);
+    this.packageMessage = data['packageMessage'];
     this.subSmartcard = data.subSmartcarList;
     this.subBoxid = data.subBoxList;
-
-    // this.ischeck = data.subBoxList || data.subSmartcarList
-    console.log(this.subSmartcard);
-    console.log(this.subBoxid);
-    this.pairSmartcardList = data['detailsList'].smartcardlist;
-    console.log(this.pairSmartcardList);
-
+    this.pairedSmartcard = this.pairSmartcardList;
+    this.pairedBoxid = this.pairBoxList;
     this.subscribername = data['detailsList'].customername;
+    this.packageStatus = data['detailsList'].package_status;
+    console.log(this.packageStatus);
+
     this.operatorid = data['detailsList'].operatorid;
     this.subid = data['detailsList'].subid;
     this.baseplan = data['detailsList'].baseplan;
@@ -265,6 +350,7 @@ export class SubscriberdialogueComponent implements OnInit {
     this.Wallet = data['detailsList'].balance;
     this.password = data['detailsList'].password;
     this.islock = data['detailsList'].islock;
+    this.boxstatus = data['detailsList'].boxstatus;
     this.subusername = data['detailsList'].username;
     this.subscribernameLast = data['detailsList'].customernamelast;
     this.casformid = data['detailsList'].casformid;
@@ -287,23 +373,28 @@ export class SubscriberdialogueComponent implements OnInit {
     this.statusSus = data['detailsList'].statusSus;
     this.smartcardno = data['detailsList'].smartcard;
     this.statusdisplay = data['detailsList'].statusdisplay;
+    console.log(this.statusdisplay);
     this.boxno = data['detailsList'].boxid;
-    if (this.boxno) {
-      this.box = true
-      this.smart = false
-    } else if (this.smartcardno) {
-      this.smart = true;
+    this.castype = data['detailsList'].castype;
+    if (this.boxno && this.smartcardno == 'No Smartcard') {
       this.box = false
+      this.smart = true
+    } else {
+      this.smart = false;
+      this.box = true
     }
-
+    if (this.statusdisplay == 'Active' && this.packageStatus == 'Not Expired') {
+      this.rechargeToggle = false;
+    } else if (this.statusdisplay == 'Active' || this.statusdisplay == 'Deactive' && this.packageStatus == 'Expired') {
+      this.rechargeToggle = true;
+    }
     this.expirydate = data['detailsList'].expirydate;
+    this.operatorname = data['detailsList'].operatorname;
     this.packagename = data['subdetaillist']?.[0]?.packagename;
-    console.log(this.packagename);
-
     this.message = data['accountsList']?.msgcontent;
     this.status = data['detailsList'].status;
     this.oldpin = data['detailsList'].pinnumber;
-    this.PVRstatus = data['detailsList'].pvrstatus;
+    this.PVRstatus = data['detailsList'].pvrsupport;
     this.forcemsg = data['detailsList'].isdeleteforcemessage;
     this.islogindetails = data.islogindetails || false;
     this.isEditSubscriberDetails = data.isEditSubscriberDetails || false;
@@ -311,14 +402,9 @@ export class SubscriberdialogueComponent implements OnInit {
     this.isaddSmartcard = data.isaddSmartcard || false;
     this.ischangeoperator = data.ischangeoperator || false;
     this.ischange_lco = data.ischange_lco || false;
-
-
-
-
-
     this.Editform = this.fb.group(
       {
-        id: this.newSubid,
+        id: this.subid_1,
         customername: ['', Validators.required],
         customerlastname: ['', Validators.required],
         dateofbirth: ['', [Validators.required]],
@@ -364,6 +450,8 @@ export class SubscriberdialogueComponent implements OnInit {
     );
   }
   ngOnInit(): void {
+    const currentDate = new Date();
+    this.today = currentDate.toISOString().split('T')[0];
     $("#single").select2({
       placeholder: "Select a programming language",
       allowClear: true
@@ -372,55 +460,84 @@ export class SubscriberdialogueComponent implements OnInit {
       startWith(''),
       map(value => this._filter(value || ''))
     );
-    console.log(this.filteredPackageList);
     const params = {
       api: this.gridApi
     };
     this.onGridReady(params);
-    this.userservice.PackageList(this.role, this.username, this.type).subscribe((data) => {
-      this.packagenameList = data;
-      this.cdr.detectChanges();
-    })
+    this.userservice.getAllBaselistbyOperatorIdCastypeType(this.role, this.username, this.operatorid, this.castype, this.type)
+      .subscribe((data) => {
+        this.packagenameList = Object.entries(data).map(([name, id]) => ({
+          packagename: name,
+          packageid: id as number
+        }));
+        this.cdr.detectChanges();
+        this.filteredPackagenameList = this.packagenameList;
+      });
     this.userservice.getActiveCasList(this.role, this.username).subscribe((data: any) => {
       let v = Object.entries(data).map(([key, value]) => ({ name: key, id: value }));
       this.cas = v
       this.cdr.detectChanges();
     });
-
-
     this.userservice.getNotinOperatorList(this.role, this.username, this.operatorid).subscribe((data: any) => {
-      this.lco_list = Object.entries(data).map(([key, value]) => ({ name: key, id: value }));
-      this.cdr.detectChanges();
-    })
-    // this.userservice.getActivePackagePlanList(this.role, this.username).subscribe((data: any) => {
-    //   this.plantype = Object.entries(data).map(([key, value]) => ({ name: key, id: value }));
-    //   this.selectedRechargetype = data;
-    // })
-    // this.userservice.getActivePackagePlanList(this.role, this.username).subscribe((data: any) => {
-    //   this.plantype = data;
+      // this.lco_list = Object.entries(data).map(([key, value]) => ({ name: key, id: value }));
 
-    //   console.log(this.plantype);
-    // });
-    this.userservice.getActivePackagePlanList(this.role, this.username).subscribe((data: any) => {
-      this.plantypeSubject.next(data);
-    });
+      this.lco_list = Object.keys(data).map(key => {
+        const value = data[key];
+        const name = key;
+        return { name: name, value: value };
+      });
+      this.cdr.detectChanges();
+      this.filteredOperators = this.lco_list;
+    })
     this.userservice.getPlanTypeList(this.role, this.username).subscribe((data: any) => {
       this.rechargetype = Object.entries(data).map(([key, value]) => ({ name: key, id: value }));
+      console.log(this.rechargetype);
       this.cdr.detectChanges();
     })
+
+    this.userservice.getActivePackagePlanList(this.role, this.username).subscribe((data: any) => {
+      const sortedData = Object.entries(data)
+        .map(([key, value]) => ({
+          key: key.replace(/\(\d+\)/, '').trim(),
+          value: value as number
+        }))
+      this.plantype$.next(sortedData);
+    });
     this.userservice.cancelSubscriptionOfSmartcardDetails(this.role, this.username, this.smartcardno).subscribe((data: any) => {
       this.TotalLcoAmount = data.totallcoamount;
       this.rowData1 = data.cancelproduct;
-      console.log(this.rowData1);
       this.cdr.detectChanges();
     })
     this.loadIdProofList();
     this.loadAddProofList();
   }
+
+  ngAfterViewInit() {
+    $('#smartcard').select2({
+      placeholder: 'Select a Smartcard',
+      allowClear: true
+    });
+    $('#smartcard').on('change', (event: any) => {
+      this.smartcard = event.target.value;
+      this.smartcardlist(event);
+    });
+    $('#package').select2({
+      placeholder: 'Select a Package Name',
+      allowClear: true
+    });
+    $('#package').on('change', (event: any) => {
+      this.newpackagename = event.target.value;
+      this.onSelectionrechargetype(event);
+    });
+  }
   loadIdProofList(): void {
     this.userservice.getIdProofList(this.role, this.username).subscribe(
       (data: any) => {
         this.id_proof_list = data.idprooftypeid;
+        this.id_proof_array = Object.entries(this.add_proof_list).map(([key, value]) => ({
+          key,
+          value
+        }));
         this.cdr.detectChanges();
       },
       error => {
@@ -432,7 +549,10 @@ export class SubscriberdialogueComponent implements OnInit {
     this.userservice.getAddresProofList(this.role, this.username).subscribe(
       (data: any) => {
         this.add_proof_list = data.addressprooftypeid;
-        console.log("ADD Proof List", this.add_proof_list);
+        this.add_proof_array = Object.entries(this.add_proof_list).map(([key, value]) => ({
+          key,
+          value
+        }));
         this.cdr.detectChanges();
       },
       error => {
@@ -440,28 +560,34 @@ export class SubscriberdialogueComponent implements OnInit {
       }
     );
   }
-
   filteredIdProofKeys(): string[] {
     return Object.keys(this.id_proof_list);
   }
   filteredADDProofKeys(): string[] {
     return Object.keys(this.add_proof_list);
   }
-  onIDProofChange(event: any): void {
-    const selectedValue = event.target.value;
-    const match = selectedValue.match(/\((\d+)\)/);
-    const value = match ? match[1] : null;
-    this.selectedIDProofType = selectedValue.replace(/\(\d+\)/, '').trim();
-    this.form.get('idproof')?.reset();
-    this.applyValidators(this.selectedIDProofType, 'idproof');
-  }
   onAddProofChange(event: any): void {
     const selectedValue = event.target.value;
-    const match = selectedValue.match(/\((\d+)\)/);
-    const value = match ? match[1] : null;
     this.selectedAddProofType = selectedValue.replace(/\(\d+\)/, '').trim();
     this.form.get('addressproof')?.reset();
     this.applyValidators(this.selectedAddProofType, 'addressproof');
+    const addressProofValue = this.form.get('addressproof')?.value;
+    if (addressProofValue && this.selectedAddProofType === this.selectedIDProofType) {
+      this.form.get('idproof')?.setValue(addressProofValue);
+      this.idproofid = addressProofValue;
+    }
+  }
+
+  onIDProofChange(event: any): void {
+    const selectedValue = event.target.value;
+    this.selectedIDProofType = selectedValue.replace(/\(\d+\)/, '').trim();
+    this.form.get('idproof')?.reset();
+    this.applyValidators(this.selectedIDProofType, 'idproof');
+    const addressProofValue = this.form.get('addressproof')?.value;
+    if (addressProofValue && this.selectedIDProofType === this.selectedAddProofType) {
+      this.form.get('idproof')?.setValue(addressProofValue);
+      this.idproofid = addressProofValue;
+    }
   }
   getMaxLength(proofType: any) {
     switch (proofType) {
@@ -481,10 +607,7 @@ export class SubscriberdialogueComponent implements OnInit {
         return 20;
     }
   }
-
   getPattern(proofType: string): string {
-    // console.log("getPattern           " + proofType);
-
     switch (proofType) {
       case 'Aadhaar Card':
         return '\\d{12}';
@@ -499,13 +622,11 @@ export class SubscriberdialogueComponent implements OnInit {
       case 'No Proof':
         return '0';
       default:
-        return '.*'; // Accept anything by default
+        return '.*';
     }
   }
 
   getExampleFormat(proofType: string): string {
-    // console.log("getExampleFormat        " + proofType);
-
     switch (proofType) {
       case 'Aadhaar Card':
         return '123456789123';
@@ -525,8 +646,6 @@ export class SubscriberdialogueComponent implements OnInit {
   }
   applyValidators(proofType: string, controlName: string): void {
     const control = this.form.get(controlName);
-    console.log(proofType);
-
     if (control) {
       control.clearValidators();
 
@@ -537,7 +656,6 @@ export class SubscriberdialogueComponent implements OnInit {
           this.exampleFormat = '123456789123';
           control.setValidators([
             Validators.required,
-            // Validators.pattern(/^\d{4} \d{4} \d{4}$/),
             Validators.pattern(/^\d{12}$/),
             Validators.maxLength(this.maxLength)
           ]);
@@ -564,6 +682,20 @@ export class SubscriberdialogueComponent implements OnInit {
             Validators.maxLength(this.maxLength)
           ]);
           break;
+
+        case 'Address proof':
+          this.maskPattern = '00A00000000';
+          this.maxLength = 11;
+          this.exampleFormat = '12A3456789';
+          control.setValidators([
+            Validators.required,
+            Validators.pattern(/^\d{2}[A-Z]\d{7}$/),
+            Validators.maxLength(this.maxLength),
+            this.validateAddressProof
+          ]);
+          break;
+
+
 
         case 'Driving Licence':
           this.maskPattern = 'AA00000000000';
@@ -609,159 +741,38 @@ export class SubscriberdialogueComponent implements OnInit {
       control.updateValueAndValidity();
     }
   }
-  // columnDefs: any[] = [
-  //   {
-  //     headerName: "S.No", valueGetter: 'node.rowIndex+1', width: 80, filter: false, headerCheckboxSelection: true,
-  //     checkboxSelection: true,
-  //   },
-
-  //   {
-  //     headerName: 'PACKAGE NAME	',
-  //     field: 'packagename', width: 200,
-  //   },
-  //   {
-  //     headerName: 'CAS PRODUCT ID	 ', width: 200,
-  //     field: 'casproductid',
-  //   },
-  //   {
-  //     headerName: 'BROADCASTER NAME	', width: 200,
-  //     field: 'broadcastername',
-  //   },
-  //   {
-  //     headerName: 'CUSTOMER AMOUNT', width: 150, filter: false,
-  //     field: 'customeramount',
-  //   },
-  //   {
-  //     headerName: 'PROGRAMS', width: 100, filter: false,
-  //     field: '',
-  //   },
-
-  // ]
-  // columnDefs2: any[] = [
-  //   {
-  //     headerName: "S.No", valueGetter: 'node.rowIndex+1', width: 100, filter: false, headerCheckboxSelection: true, checkboxSelection: true,
-  //   },
-  //   {
-  //     headerName: 'PACKAGE NAME	',
-  //     field: 'packagename', width: 150,
-  //   },
-  //   {
-  //     headerName: 'BROADCASTER NAME	 ', width: 250,
-  //     field: 'broadcastername',
-  //   },
-  //   {
-  //     headerName: 'CAS PRODUCT ID		', width: 250,
-  //     field: 'casproductid',
-  //   },
-  //   {
-  //     headerName: ' CUSTOMER AMOUNT ', width: 250, filter: false,
-  //     field: 'customeramount',
-  //   },
-
-
-  // ]
-
-  // private updateColumnDefs(stype: string): void {
-  //   console.log(stype);
-
-  //   if (stype === 'remove') {
-  //     this.columnDefs = [
-  //       {
-  //         headerName: "S.No", valueGetter: 'node.rowIndex+1', width: 100, filter: false, headerCheckboxSelection: true, checkboxSelection: true,
-
-  //       },
-  //       {
-  //         headerName: 'PACKAGE NAME	',
-  //         field: 'productname', width: 150,
-  //       },
-  //       {
-  //         headerName: 'PACKAGE TYPE		 ', width: 250,
-  //         field: 'producttypename',
-  //       },
-  //       {
-  //         headerName: 'REFUND AMOUNT		', width: 250,
-  //         field: 'refundproductrate',
-  //       },
-  //       {
-  //         headerName: 'DAYS', width: 250,
-  //         field: 'days',
-  //       },
-  //     ]
-  //   } else if (stype === 'cancelsubscription') {
-  //     this.columnDefs = [
-  //       {
-  //         headerName: "S.No", valueGetter: 'node.rowIndex+1', width: 100, filter: false
-
-  //       },
-  //       {
-  //         headerName: 'PACKAGE NAME	', field: 'productname', width: 150,        },
-  //       {
-  //         headerName: 'PACKAGE TYPE		 ', width: 250,
-  //         field: 'producttype',
-  //       },
-  //       {
-  //         headerName: 'REFUND AMOUNT		', width: 250,
-  //         field: 'refundproductrate',
-  //       },
-  //       {
-  //         headerName: 'DAYS', width: 250,
-  //         field: 'days',
-  //       },
-  //     ]
-  //   } else if (this.sType === 'addon') {
-  //     this.columnDefs = [
-  //       { headerName: "S.No", valueGetter: 'node.rowIndex+1', width: 100, filter: false, headerCheckboxSelection: true, checkboxSelection: true },
-  //       { headerName: 'PACKAGE NAME', field: 'channel_name', width: 150 },
-  //       { headerName: 'BROADCASTER NAME', field: 'broadcastername', width: 250 },
-  //       { headerName: 'CAS PRODUCT ID', field: 'casproductid', width: 250 },
-  //       { headerName: 'CUSTOMER AMOUNT', field: 'customeramount', width: 250, filter: false }
-  //     ];
-  //   } else if (this.sType === 'alacarte') {
-  //     this.columnDefs = [
-  //       { headerName: "S.No", valueGetter: 'node.rowIndex+1', width: 80, filter: false, headerCheckboxSelection: true, checkboxSelection: true },
-  //       { headerName: 'PACKAGE NAME', field: 'channel_name', width: 200 },
-  //       { headerName: 'CAS PRODUCT ID', field: 'casproductid', width: 200 },
-  //       { headerName: 'BROADCASTER NAME', field: 'broadcastername', width: 200 },
-  //       { headerName: 'CUSTOMER AMOUNT', field: 'customeramount', width: 200, filter: false },
-  //       { headerName: 'PROGRAMS', field: '', width: 100, filter: false }
-  //     ];
-  //   } else if (this.sType === 'remove') {
-  //     this.columnDefs = [
-  //       // Define the column definitions for the 'remove' case here
-  //       { headerName: "S.No", valueGetter: 'node.rowIndex+1', width: 80, filter: false, headerCheckboxSelection: true, checkboxSelection: true },
-  //       { headerName: 'PACKAGE NAME', field: 'channel_name', width: 200 },
-  //       { headerName: 'CAS PRODUCT ID', field: 'casproductid', width: 200 },
-  //       { headerName: 'BROADCASTER NAME', field: 'broadcastername', width: 200 },
-  //       { headerName: 'CUSTOMER AMOUNT', field: 'customeramount', width: 200, filter: false },
-  //       { headerName: 'PROGRAMS', field: '', width: 100, filter: false }
-  //     ];
-  //   }
-  // }
+  validateAddressProof(control: AbstractControl): { [key: string]: boolean } | null {
+    const ebBillPattern = /^EB\d{9}$/;
+    const gasBillPattern = /^GAS\d{8}$/;
+    const value = control.value;
+    if (ebBillPattern.test(value) || gasBillPattern.test(value)) {
+      return { invalidAddressProof: true };
+    }
+    return null;
+  }
   private updateColumnDefs(stype: string): void {
-    console.log(stype);
-
     if (stype === 'remove') {
       this.columnDefs = [
         { headerName: "S.No", valueGetter: 'node.rowIndex+1', width: 100, filter: false, headerCheckboxSelection: true, checkboxSelection: true },
-        { headerName: 'PACKAGE NAME', field: 'productname', width: 150 },
-        { headerName: 'PACKAGE TYPE', field: 'producttypename', width: 250 },
-        { headerName: 'REFUND AMOUNT', field: 'refundproductrate', width: 250 },
+        { headerName: 'PACKAGE NAME', field: 'productname', width: 200 },
+        { headerName: 'PACKAGE TYPE', field: 'producttypename', width: 200 },
+        { headerName: 'REFUND AMOUNT', field: 'refundproductrate', width: 200 },
         { headerName: 'DAYS', field: 'days', width: 250 },
       ];
     } else if (stype === 'cancelsubscription') {
       this.columnDefs = [
         { headerName: "S.No", valueGetter: 'node.rowIndex+1', width: 100, filter: false },
-        { headerName: 'PACKAGE NAME', field: 'productname', width: 150 },
-        { headerName: 'PACKAGE TYPE', field: 'producttype', width: 250 },
-        { headerName: 'REFUND AMOUNT', field: 'refundproductrate', width: 250 },
-        { headerName: 'DAYS', field: 'days', width: 250 },
+        { headerName: 'PACKAGE NAME', field: 'productname', width: 200 },
+        { headerName: 'PACKAGE TYPE', field: 'producttypename', width: 250 },
+        { headerName: 'REFUND AMOUNT', field: 'refundproductrate', width: 200 },
+        { headerName: 'DAYS', field: 'days', width: 200 },
       ];
     } else if (stype === 'addon') {
       this.columnDefs = [
         { headerName: "S.No", valueGetter: 'node.rowIndex+1', width: 100, filter: false, headerCheckboxSelection: true, checkboxSelection: true },
-        { headerName: 'PACKAGE NAME', field: 'productname', width: 150 },
-        { headerName: 'BROADCASTER NAME', field: 'broadcastername', width: 250 },
-        { headerName: 'CAS PRODUCT ID', field: 'casproductid', width: 250 },
+        { headerName: 'PACKAGE NAME', field: 'productname', width: 200 },
+        { headerName: 'BROADCASTER NAME', field: 'broadcastername', width: 200 },
+        { headerName: 'CAS PRODUCT ID', field: 'casproductid', width: 200 },
         { headerName: 'CUSTOMER AMOUNT', field: 'customeramount', width: 250, filter: false }
       ];
     } else if (stype === 'alacarte') {
@@ -769,9 +780,8 @@ export class SubscriberdialogueComponent implements OnInit {
         { headerName: "S.No", valueGetter: 'node.rowIndex+1', width: 80, filter: false, headerCheckboxSelection: true, checkboxSelection: true },
         { headerName: 'PACKAGE NAME', field: 'channel_name', width: 200 },
         { headerName: 'CAS PRODUCT ID', field: 'casproductid', width: 200 },
-        { headerName: 'BROADCASTER NAME', field: 'broadcastername', width: 200 },
-        { headerName: 'CUSTOMER AMOUNT', field: 'customeramount', width: 200, filter: false },
-        { headerName: 'PROGRAMS', field: '', width: 100, filter: false }
+        { headerName: 'BROADCASTER NAME', field: 'broadcastername', width: 210 },
+        { headerName: 'CUSTOMER AMOUNT', field: 'customeramount', width: 250, filter: false },
       ];
     }
   }
@@ -782,7 +792,7 @@ export class SubscriberdialogueComponent implements OnInit {
     },
     {
       headerName: 'SELECTED PACKAGES',
-      field: 'channel_name', width: 200,
+      field: 'channel_name', width: 350,
     },
   ]
   columnDefs2: any[] = [
@@ -791,7 +801,7 @@ export class SubscriberdialogueComponent implements OnInit {
     },
     {
       headerName: 'SELECTED PACKAGES',
-      field: 'productname', width: 200,
+      field: 'productname', width: 350,
     },
   ]
 
@@ -799,22 +809,13 @@ export class SubscriberdialogueComponent implements OnInit {
 
   onGridReady(params: { api: any; }) {
     this.gridApi = params.api;
-    console.log(this.sType);
-
     if (this.sType === 'addon') {
       this.userservice.getAddonpackageDetails(this.role, this.username, this.smartcardno).subscribe(
-        //   (res: any) => {
-        //   this.swal.success(res?.message);
-        //   this.rowData = res;
-        //   this.cdr.detectChanges();
-        // }, (err) => {
-        //   this.swal.Error(err?.error?.message);
-        // }
         (response: HttpResponse<any[]>) => {
           if (response.status === 200) {
             this.rowData = response.body;
             this.cdr.detectChanges();
-            Swal.fire('Success', 'Data updated successfully!', 'success');
+            // Swal.fire('Success', 'Data updated successfully!', 'success');
           } else if (response.status === 204) {
             Swal.fire('No Content', 'No data available for the given criteria.', 'info');
           }
@@ -832,18 +833,11 @@ export class SubscriberdialogueComponent implements OnInit {
       );
     } else if (this.sType === 'alacarte') {
       this.userservice.getAlacarteDetails(this.role, this.username, this.smartcardno).subscribe(
-        //   (res: any) => {
-        //   this.swal.success(res?.message);
-        //   this.rowData = res;
-        //   this.cdr.detectChanges();
-        // }, (err) => {
-        //   this.swal.Error(err?.error?.message);
-        // }
         (response: HttpResponse<any[]>) => {
           if (response.status === 200) {
             this.rowData = response.body;
             this.cdr.detectChanges();
-            Swal.fire('Success', 'Data updated successfully!', 'success');
+            // Swal.fire('Success', 'Data updated successfully!', 'success');
           } else if (response.status === 204) {
             Swal.fire('No Content', 'No data available for the given criteria.', 'info');
           }
@@ -861,18 +855,11 @@ export class SubscriberdialogueComponent implements OnInit {
 
     } else if (this.sType === 'remove') {
       this.userservice.removeProductDetails(this.role, this.username, this.smartcardno).subscribe(
-        //   (res: any) => {
-        //   this.swal.success(res?.message);
-        //   this.rowData = res;
-        //   this.cdr.detectChanges();
-        // }, (err) => {
-        //   this.swal.Error(err?.error?.message);
-        // }
         (response: HttpResponse<any[]>) => {
           if (response.status === 200) {
             this.rowData = response.body;
             this.cdr.detectChanges();
-            Swal.fire('Success', 'Data updated successfully!', 'success');
+            // Swal.fire('Success', 'Data updated successfully!', 'success');
           } else if (response.status === 204) {
             Swal.fire('No Content', 'No data available for the given criteria.', 'info');
           }
@@ -889,26 +876,27 @@ export class SubscriberdialogueComponent implements OnInit {
       );
 
     }
-
   }
+
+  updateRemainingChars(event: Event) {
+    this.cdr.detectChanges();
+    const input = event.target as HTMLTextAreaElement;
+    const maxLength = input.maxLength;
+    const currentLength = input.value.length;
+    this.remainingChars = maxLength - currentLength;
+  }
+
+
 
   onSelectionChanged() {
     if (this.gridApi) {
       const selectedRows = this.gridApi.getSelectedRows();
       this.isAnyRowSelected = selectedRows;
       if (this.finalrow.length > 0) {
-        console.log('if');
         this.rows = this.finalrow;
       } else {
-        console.log('else');
-
         this.rows = selectedRows;
       }
-      console.log(this.rows);
-      console.log(this.isAnyRowSelected);
-      console.log(this.finalrow);
-
-
     }
   }
   filteredIntendArea(): any[] {
@@ -937,6 +925,23 @@ export class SubscriberdialogueComponent implements OnInit {
       this.datetype = false;
       this.isplantype = false;
     }
+
+
+    if (this.selectedRechargetype == '2') {
+      this.plantype = 0
+    }
+    if (this.selectedRechargetype == '1') {
+      this.f_date = null
+    }
+    if (this.newpackagename != 0) {
+      if ((this.selectedRechargetype == '3') || (this.selectedRechargetype == '2') || (this.selectedRechargetype != '3' && this.plantype != 0) || (this.f_date)) {
+        this.isDisabled = false
+      } else {
+        this.isDisabled = true
+      }
+    } else {
+      this.isDisabled = true
+    }
   }
   loginDetails() {
     this.swal.Loading();
@@ -950,56 +955,46 @@ export class SubscriberdialogueComponent implements OnInit {
   }
 
 
-  // addSmartcard() {
-  //   this.userservice.addSmartcardToSubscriber(this.role, this.username, this.operatorid, this.castype, this.smartcard, this.boxid, this.subid)
-  //     .subscribe((res: any) => {
-  //       this.returndata = res;
-
-  //       this.swal.success(res?.message);
-  //     }, (err) => {
-  //       this.returndata = err?.error;
-  //       this.swal.Error(err?.error?.message);
-  //     });
-  // }
   addSmartcard() {
+    this.submitted = true
+    if (!this.smartcard && !this.boxid) {
+      return
+    }
     Swal.fire({
       title: 'Adding...',
       text: 'Please wait Smartcard Added.',
       icon: 'info',
       allowOutsideClick: false,
-      showConfirmButton: false, // Hide the confirm button
+      showConfirmButton: false,
       didOpen: () => {
         Swal.showLoading(null);
       }
     });
-    this.userservice.addSmartcardToSubscriber(this.role, this.username, this.operatorid, this.castype, this.smartcard, this.boxid, this.subid_1 || this.newSubid).subscribe(
+    this.userservice.addSmartcardToSubscriber(this.role, this.username, this.operatorid, this.castypeSmartcard, this.smartcard, this.boxid, this.subid_1 || this.newSubid).subscribe(
       (res: any) => {
         this.returndata = res;
         this.swal.success(res?.message);
       }, (err) => {
         this.swal.Error(err?.error?.message);
       });
-
   }
 
 
   onSubmit() {
-    // if (this.Editform.invalid) {
-    //   Swal.fire({
-    //     title: 'Invalid Form!',
-    //     text: 'Please fill in all required fields correctly.',
-    //     icon: 'error',
-    //     confirmButtonText: 'Okay'
-    //   });
-    //   return; 
-    // }
+    if (this.Editform.invalid) {
+      this.Editform.markAllAsTouched();
+      return;
+    }
     this.swal.Loading();
+    console.log('gfrgd');
+
     this.userservice.UpdateSubscriberDetails(this.Editform.value)
       .subscribe((res: any) => {
         this.swal.success(res?.message);
       }, (err) => {
-        this.swal.Error(err?.error?.message);
+        this.swal.Error(err?.error?.message || err?.error?.customerlastname || err?.error?.fathername);
       });
+
   }
 
 
@@ -1020,49 +1015,27 @@ export class SubscriberdialogueComponent implements OnInit {
       event.preventDefault();
     }
   }
-  // smartcardlist(event: Event) {
-  //   const target = event.target as HTMLSelectElement;
-  //   const smartcard = target.value;
-  //   this.userservice.getBoxidBySmartcard(this.role, this.username, this.smartcard).subscribe((data: any) => {
-  //     this.boxid = data;
-  //     let boxid: any = document.getElementById("boxid");
-  //     boxid!.value = data;
-  //   })
 
-  // }
-  // casTypelist(event: Event) {
-  //   const target = event.target as HTMLSelectElement;
-  //   const castype = target.value;
-  //   this.userservice.getNotallocatedSmartcardListByCastypeAndOperatorid(this.role, this.username, this.operatorid, castype).subscribe((data: any) => {
-  //     this.area = Object.entries(data).map(([key, value]) => ({ name: key, id: value }));
-  //     console.log(this.area);
-
-  //   })
-  // }
-  casTypelist(event: Event) {
+  casTypelist(event: any) {
     const target = event.target as HTMLSelectElement;
     const castype = target.value;
-
-    // Call API to fetch smartcard list based on selected CAS type
+    this.cdr.detectChanges;
     this.userservice.getNotallocatedSmartcardListByCastypeAndOperatorid(this.role, this.username, this.operatorid, castype)
       .subscribe((data: any) => {
-        // Check if any data is returned
         if (data && Object.keys(data).length > 0) {
-          // Populate the smartcard select options
           this.area = Object.entries(data).map(([key, value]) => ({ name: key, id: value }));
+          this.filteredSmartcard = this.area;
         } else {
-          // Show an alert if no data is available
           Swal.fire({
             icon: 'warning',
             title: 'No Smartcards Available',
             text: data?.message || 'No smartcards found for the selected CAS type.',
             confirmButtonText: 'OK'
           });
-          // Clear the smartcard list if no data is returned
           this.area = [];
+          this.cdr.detectChanges;
         }
       }, (err) => {
-        // Handle error and show an alert if the API call fails
         Swal.fire({
           icon: 'error',
           title: 'Error',
@@ -1072,21 +1045,168 @@ export class SubscriberdialogueComponent implements OnInit {
       });
   }
 
-  smartcardlist(event: Event) {
-    const target = event.target as HTMLSelectElement;
-    const smartcard = target.value;
 
-    // Call API to fetch box ID based on the selected smartcard
-    this.userservice.getBoxidBySmartcard(this.role, this.username, smartcard).subscribe((data: any) => {
-      // Set the box ID in the input field
-      this.boxid = data;
+  onSearchChange(event: any) {
+    this.searchTerm = event.target.value;;
+  }
 
+  filteredLcoKeys(): string[] {
+    const keys = Object.keys(this.cas);
+    if (!this.searchTerm) {
+      return keys;
+    }
+    return keys.filter(key =>
+      key.toLowerCase().includes(this.searchTerm.toLowerCase())
+    );
+  }
+
+
+  onSubscriberStatusChange(operator: any): void {
+    this.selectedOperator = operator;
+    this.lcoid = operator.value;
+    this.f_subid = '';
+    this.selectedSub = null;
+    this.filteredSub = [];
+    this.cdr.detectChanges();
+    this.userservice.getSubscriberIdListByOperatorid(this.role, this.username, this.lcoid).subscribe((data: any) => {
+      this.sub_list = Object.keys(data).map(key => {
+        const value = data[key];
+        const name = key;
+        return { name: name, value: value };
+      });
+      this.filteredSub = this.sub_list;
+    })
+  }
+  onsublist(sub: any): void {
+    this.selectedSub = '';
+    this.selectedSub = sub;
+    this.cdr.detectChanges();
+  }
+
+
+  onoperatorchange(operator: any): void {
+    this.selectedOperator = operator;
+    this.lcoid = operator.value;
+    this.userservice.getAreaListByOperatorid(this.role, this.username, this.lcoid).subscribe((data: any) => {
+      this.area_list = Object.keys(data).map(key => {
+        const value = data[key];
+        const name = key;
+        return { name: name, value: value };
+      });
+      this.filteredAreas = this.area_list;
+    })
+  }
+
+  onAreaStatusChange(area: any): void {
+    this.selectedArea = area;
+    this.lcoareaid = area.value;
+    this.userservice.getStreetListByAreaid(this.role, this.username, this.lcoareaid).subscribe((data: any) => {
+      this.street_list = Object.keys(data).map(key => {
+        const value = data[key];
+        const name = key;
+        return { name: name, value: value };
+      });
+      this.filteredStreet = this.street_list;
+    })
+  }
+
+  onStreetStatusChange(street: any) {
+    this.selectedStreet = street;
+    this.streetid = street.value;
+    this.cdr.detectChanges();
+  }
+
+
+  filterOperators(event: any): void {
+    const filterValue = event.target.value.toLowerCase();
+    this.filteredOperators = this.lco_list.filter(operator =>
+      operator.name.toLowerCase().includes(filterValue)
+    );
+    this.cdr.detectChanges();
+  }
+
+
+  filterSmartcard(event: any): void {
+    const filterValue = event.target.value.toLowerCase();
+    this.filteredSmartcard = this.area.filter((item: any) =>
+      item.name.toLowerCase().includes(filterValue)
+    );
+    this.cdr.detectChanges();
+  }
+
+  filterAreas(event: any): void {
+    const filterValue = event.target.value.toLowerCase();
+    this.filteredAreas = this.area_list.filter(area =>
+      area.name.toLowerCase().includes(filterValue)
+    );
+
+  }
+  filterStreet(event: any): void {
+    const filterValue = event.target.value.toLowerCase();
+    this.filteredStreet = this.street_list.filter(street =>
+      street.name.toLowerCase().includes(filterValue)
+    );
+  }
+  filterSub(event: any): void {
+    const filterValue = event.target.value.toLowerCase();
+    this.filteredSub = this.sub_list.filter(sub =>
+      sub.name.toLowerCase().includes(filterValue)
+    );
+  }
+  onSmartcardList(smartcard: any) {
+    this.selectedSmartcard = smartcard;
+    this.smartcard = smartcard.name;
+    // this.cdr.detectChanges();
+    this.userservice.getBoxidBySmartcard(this.role, this.username, this.smartcard).subscribe((data: any) => {
+      this.boxid = data.boxid;
+      console.log(this.boxid);
+      console.log(data);
+
+      this.cdr.detectChanges();
       let boxidElement: any = document.getElementById("boxid");
       if (boxidElement) {
         boxidElement.value = data;
       }
     }, (err) => {
-      // Handle error and show an alert if the API call fails
+      Swal.fire({
+        icon: 'error',
+        title: 'Error',
+        text: err?.error?.message || 'Failed to fetch box ID. Please try again later.',
+        // text:err,
+        confirmButtonText: 'OK'
+      });
+    });
+  }
+  onSubscriberPackagename(selectedOperator: any) {
+    const operatorString = selectedOperator;
+    const lastSpaceIndex = operatorString.lastIndexOf(' ');
+    const idMatch = operatorString.match(/\((\d+)\)/);
+    this.newpackagename = idMatch ? idMatch[1] : null;
+    this.selectedPackageName = selectedOperator;
+    this.cdr.detectChanges;
+  }
+  displayOperator(operator: any): string {
+    return operator ? operator.name : '';
+  }
+  displayArea(area: any): string {
+    return area ? area.name : '';
+  }
+  displayStreet(street: any): string {
+    return street ? street.name : '';
+  }
+  displaySub(sub: any): string {
+    return sub ? sub.name : '';
+  }
+  smartcardlist(event: Event) {
+    const target = event.target as HTMLSelectElement;
+    const smartcard = target.value;
+    this.userservice.getBoxidBySmartcard(this.role, this.username, smartcard).subscribe((data: any) => {
+      this.boxid = data;
+      let boxidElement: any = document.getElementById("boxid");
+      if (boxidElement) {
+        boxidElement.value = data;
+      }
+    }, (err) => {
       Swal.fire({
         icon: 'error',
         title: 'Error',
@@ -1095,37 +1215,13 @@ export class SubscriberdialogueComponent implements OnInit {
       });
     });
   }
-  onSubscriberStatusChange(event: Event) {
-    const target = event.target as HTMLSelectElement;
-    const lco = target.value;
-    this.userservice.getAreaListByOperatorid(this.role, this.username, lco)
-      .subscribe((data: any) => {
-        this.area_list = Object.entries(data.areaid).map(([key, value]) => ({ name: key, id: value }));
 
-      });
-  }
-  onAreaStatusChange(event: Event) {
-    const target = event.target as HTMLSelectElement;
-    const area = target.value;
-    this.userservice.getStreetListByAreaid(this.role, this.username, area)
-      .subscribe((data: any) => {
-        this.street_list = Object.entries(data.streetid).map(([key, value]) => ({ name: key, id: value }));
-      });
-  }
-  onStreetStatusChange(event: Event) {
-    const target = event.target as HTMLSelectElement;
-    this.lcostreetid = target.value;
-  }
-  onSubscriberlcoChange(event: Event) {
-    const target = event.target as HTMLSelectElement;
-    const lco = target.value;
-    this.userservice.getSubscriberIdListByOperatorid(this.role, this.username, lco).subscribe((data: any) => {
-      this.sub_list = Object.entries(data).map(([key, value]) => ({ name: key, id: value }));
-    })
-
-  }
   changeOperator() {
     this.swal.Loading();
+    if (!this.lcoid || !this.lcoareaid || !this.lcostreetid) {
+      this.swal.Error('All fields are required');
+      return;
+    }
     this.userservice.transferLcoToSmartcard(this.role, this.username, this.lcoid, this.lcoareaid, this.lcostreetid, this.subid_1, this.withsubscription, 0, 2)
       .subscribe((res: any) => {
         this.swal.success(res?.message);
@@ -1136,7 +1232,7 @@ export class SubscriberdialogueComponent implements OnInit {
 
   refreshSmartcard() {
     this.swal.Loading();
-    this.userservice.refreshSmartcard(this.role, this.username, this.smartcardno, 0, 3)
+    this.userservice.refreshSmartcard(this.role, this.username, this.smartcardno || this.newRefreshSmartcard.smartcard, 0, 3)
       .subscribe((res: any) => {
         this.swal.success(res?.message);
       }, (err) => {
@@ -1153,6 +1249,10 @@ export class SubscriberdialogueComponent implements OnInit {
       });
   }
   pinchange() {
+    if (!this.newpin) {
+      this.errorMessage = 'please Entered the Pin !!';
+      return;
+    }
     this.swal.Loading();
     this.userservice.pinchange(this.role, this.username, this.smartcardno, this.newpin, 3, 0)
       .subscribe((res: any) => {
@@ -1189,24 +1289,13 @@ export class SubscriberdialogueComponent implements OnInit {
         this.swal.Error(err?.error?.message);
       });
   }
-  boxIdChange() {
-    this.swal.Loading();
-    this.userservice.boxIdChange(this.role, this.username, this.smartcardno, this.new_boxid, 0, 2)
-      .subscribe((res: any) => {
-        this.swal.success(res?.message);
-      }, (err) => {
-        this.swal.Error(err?.error?.message);
-      });
+  onBoxIdInputChange() {
+    this.errorMessage = '';
+    this.errorMessage1 = '';
   }
+
   sendMessage() {
-    // if (this.Sendmseform.invalid) {
-    //   this.Sendmseform.markAllAsTouched();
-    //   return;
-    // }
-    // if (this.Sendmseform.invalid) {
     this.Sendmseform.markAllAsTouched();
-    // return;
-    // }
     const formValues = this.Sendmseform.value;
     const payload = {
       smartcard: formValues.smartcard,
@@ -1218,8 +1307,8 @@ export class SubscriberdialogueComponent implements OnInit {
       role: formValues.role,
       username: formValues.username
     };
+    this.swal.Loading();
     this.userservice.sendMessage(payload)
-
       .subscribe((res: any) => {
         this.swal.success(res?.message);
       }, (err) => {
@@ -1244,12 +1333,12 @@ export class SubscriberdialogueComponent implements OnInit {
     this.baseChangeofSmartcardPackage();
   }
   onFirstTimeActivationClick(): void {
-    this.baseChangeofSmartcardPackage();
+    this.getFirstTimeActivationConfirmation();
   }
 
   onActivationButtonClick(): void {
-    this.getFirstTimeActivationConfirmation();
     this.toggleConfirmation();
+    this.getFirstTimeActivationConfirmation();
   }
 
   onActivationClick(): void {
@@ -1264,73 +1353,63 @@ export class SubscriberdialogueComponent implements OnInit {
     this.addAddonConfirmation();
   }
   onAlacarteConfirmation(): void {
-    this.addAlacarteConfirmation();
     this.toggleAlacarteConfirmation();
+    this.addAlacarteConfirmation();
   }
   onAlacarte(): void {
     this.addAlacarteConfirmation();
   }
   onRemoveConfirmation(): void {
-    this.removeProductConfirmation();
     this.toggleRemoveConfirmation();
+    this.removeProductConfirmation();
   }
   onRemove(): void {
     this.removeProductConfirmation();
   }
   firsttimeActivationOfCard() {
+    this.confirmation = true;
+    this.finalrow = this.rows
+    this.isConfirmationComplete = true;
     let requestBody = {
       packageid: this.newpackagename,
       plantype: this.selectedRechargetype,
-      plan: this.plantype,
+      plan: this.plantype || this.f_date || 4,
       billtype: this.billtype,
       dueamt: 0.0,
       paidamt: this.First_list.customerPayAmount,
-      smartcard: this.smartcard,
-      type: 0,
+      smartcard: this.smartcardno,
+      type: 1,
       role: this.role,
       username: this.username,
     }
-    Swal.fire({
-      title: 'Processing...',
-      text: 'Please wait while we activate the card.',
-      icon: 'info',
-      allowOutsideClick: false,
-      showConfirmButton: false,
-      didOpen: () => {
-        Swal.showLoading(null);
-      }
-    });
-    this.userservice.firsttimeActivationOfCard(requestBody).subscribe(
-      (res: any) => {
-        Swal.fire({
-          title: 'Success',
-          text: res?.message,
-          icon: 'success',
-          confirmButtonText: 'OK',
-        }).then(() => {
-          window.location.reload();
-        });
-      },
-      (err) => {
-        Swal.fire({
-          title: 'Error',
-          text: err?.error?.message || 'Something went wrong!',
-          icon: 'error',
-          confirmButtonText: 'OK',
-        });
-      }
-    );
+    // Swal.fire({
+    //   title: 'Processing...',
+    //   text: 'Please wait while we activate the card.',
+    //   icon: 'info',
+    //   allowOutsideClick: false,
+    //   showConfirmButton: false,
+    //   didOpen: () => {
+    //     Swal.showLoading(null);
+    //   }
+    // });
+    this.swal.Loading();
+    this.userservice.firsttimeActivationOfCard(requestBody)
+      .subscribe((res: any) => {
+        this.swal.success(res?.message);
+      }, (err) => {
+        this.swal.Error(err?.error?.message);
+      });
   }
   ActivationOfCard() {
     let requestBody = {
       packageid: this.newpackagename,
       plantype: this.selectedRechargetype,
-      plan: this.plantype,
+      plan: this.plantype || this.f_date || 0,
       billtype: this.billtype,
       dueamt: 0.0,
       paidamt: this.First_list.customerPayAmount,
-      smartcard: this.smartcard,
-      type: 0,
+      smartcard: this.smartcardno,
+      type: 1,
       role: this.role,
       username: this.username,
     }
@@ -1344,41 +1423,21 @@ export class SubscriberdialogueComponent implements OnInit {
         Swal.showLoading(null);
       }
     });
-    this.userservice.ActivationOfCard(requestBody).subscribe(
-      (res: any) => {
-        Swal.fire({
-          title: 'Success',
-          text: res?.message,
-          icon: 'success',
-          confirmButtonText: 'OK',
-        }).then(() => {
-          window.location.reload();
-        });
-      },
-      (err) => {
-        Swal.fire({
-          title: 'Error',
-          text: err?.error?.message || 'Something went wrong!',
-          icon: 'error',
-          confirmButtonText: 'OK',
-        });
-      }
-    );
+    this.userservice.ActivationOfCard(requestBody).
+      subscribe((res: any) => {
+        this.swal.success(res?.message);
+      }, (err) => {
+        this.swal.Error(err?.error?.message);
+      });
   }
   baseChangeofSmartcardPackage() {
-    // Swal.fire({
-    //   title: 'Loading...',
-    //   text: 'Please wait while we process your request.',
-    //   allowOutsideClick: false, // Disable clicking outside the popup to close it
-    //   didOpen: () => {
-    //     Swal.showLoading(null);
-    //   }
-    // });
-
-    this.userservice.getBaseChangeConfirmation(this.role, this.username, this.newpackagename, this.selectedRechargetype, this.plantype || this.f_date, this.smartcardno, 8, 0)
+    this.isActive = true;
+    let plan = this.selectedRechargetype || ''
+    let plandata = this.plantype || this.f_date || 4
+    // this.swal.Loading();
+    this.userservice.getBaseChangeConfirmation(this.role, this.username, this.newpackagename, plan, plandata, this.smartcardno, 8, 0)
       .subscribe((data: any) => {
         this.changebase = data;
-        console.log(this.changebase);
         this.changebase_msoAmount = data.msoAmount;
         this.changebase_totalRefundToLco = data.totalRefundToLco;
         this.changebase_expiryDate = data.expiryDate;
@@ -1388,6 +1447,9 @@ export class SubscriberdialogueComponent implements OnInit {
       });
   }
   baseChangeofSmartcardPackageActivate() {
+    this.isActive = true;
+    this.confirmation = true;
+    this.isConfirmationComplete = true;
     let requestBody = {
       role: this.role,
       username: this.username,
@@ -1417,35 +1479,60 @@ export class SubscriberdialogueComponent implements OnInit {
     });
   }
   getFirstTimeActivationConfirmation() {
-    // Swal.fire({
-    //   title: 'Loading...',
-    //   text: 'Please wait while we process your request.',
-    //   allowOutsideClick: false, // Disable clicking outside the popup to close it
-    //   didOpen: () => {
-    //     Swal.showLoading(null);
-    //   }
-    // });
     this.swal.Loading();
-    this.userservice.getFirstTimeActivationConfirmation(this.role, this.username, this.newpackagename, this.selectedRechargetype, this.plantype || this.f_date, this.smartcardno, 1, 0)
+    this.isActive = true;
+    this.userservice.getFirstTimeActivationConfirmation(this.role, this.username, this.newpackagename, this.selectedRechargetype, this.f_date || this.plantype || 4, this.smartcardno, 1, 0)
       .subscribe((data: any) => {
         this.First_list = data;
         this.swal.success_1(data?.message);
         this.cdr.detectChanges();
+
       }, (err) => {
-        this.swal.Error(err?.error?.message);
+        this.swal.Error(err?.error?.message || err?.error?.getFirstTimeActivationConfirmation.plan);
       });
     // this.cdr.detectChanges();
   }
+
+
+
   lcotransferSinglesmartcard() {
-    this.swal.Loading();
-    this.userservice.lcotransferSinglesmartcard(this.role, this.username, this.operatorid, this.subid, this.f_subid, this.withsubscription, this.smartcardno, 0, 2)
-      .subscribe((res: any) => {
+    // Validate that both fields are selected
+    if (!this.lcoid || this.lcoid === 0) {
+      this.errorMessage = 'Please Select LCO Name!';
+    } else if (!this.f_subid || this.f_subid === 0) {
+      this.errorMessage1 = 'Please Select Subscriber Name!';
+    } else {
+      this.errorMessage = '';
+      this.swal.Loading();
+      this.userservice.lcotransferSinglesmartcard(
+        this.role, this.username, this.lcoid, this.subid,
+        this.f_subid, this.withsubscription, this.smartcardno, 0, 2
+      ).subscribe((res: any) => {
         this.swal.success(res?.message);
       }, (err) => {
         this.swal.Error(err?.error?.message);
       });
+    }
+  }
+  boxIdChange() {
+    if (!this.new_boxid) {
+      this.errorMessage = 'please Entered the Boxid !!';
+      return;
+    }
+    this.errorMessage = '';
+    this.swal.Loading();
+    this.userservice.boxIdChange(this.role, this.username, this.smartcardno, this.new_boxid, 0, 2)
+      .subscribe((res: any) => {
+        this.swal.success(res?.message);
+      }, (err) => {
+        this.swal.Error(err?.error?.message || err?.error?.boxidchange.boxid);
+      });
   }
   smartcardSuspend() {
+    if (!this.sus_reason) {
+      this.errorMessage = 'please Entered the Reason !!';
+      return;
+    }
     this.swal.Loading();
     this.userservice.smartcardSuspend(this.role, this.username, this.smartcardno, 0, 4, this.sus_reason)
       .subscribe((res: any) => {
@@ -1473,58 +1560,18 @@ export class SubscriberdialogueComponent implements OnInit {
       });
   }
   block() {
+    if (!this.block_reason) {
+      this.errorMessage = 'please Entered the Reason !!';
+      return;
+    }
+    this.swal.Loading();
+    this.userservice.blockSmartcard(this.role, this.username, this.smartcardno, 2, this.block_reason).subscribe(
+      (res: any) => {
+        this.swal.success(res?.message);
+      }, (err) => {
+        this.swal.Error(err?.error?.message);
+      });
 
-    Swal.fire({
-      title: "Are you sure?",
-      text: "You won't be able to Block  this!",
-      icon: "warning",
-      showCancelButton: true,
-      confirmButtonColor: "#3085d6",
-      cancelButtonColor: "#d33",
-      confirmButtonText: "Yes, Update it!"
-    }).then((result) => {
-      if (result.isConfirmed) {
-        Swal.fire({
-          title: 'Updating...',
-          text: 'Please wait ',
-          allowOutsideClick: false,
-          didOpen: () => {
-            Swal.showLoading(null);
-          }
-        });
-        this.userservice.blockSmartcard(this.role, this.username, this.smartcardno, 2, this.block_reason,).subscribe(
-          (res) => {
-            console.log(res);
-            Swal.fire({
-              position: "center",
-              icon: "success",
-              title: "Your update was successful",
-              showConfirmButton: false,
-              timer: 1000
-            }).then(() => {
-              window.location.reload();
-            });
-          },
-          (err) => {
-            Swal.fire({
-              position: 'center',
-              icon: 'error',
-              title: 'Error',
-              text: err?.error?.message,
-              showConfirmButton: false,
-              timer: 1500
-            });
-          }
-        );
-      }
-    });
-
-    // this.userservice.blockSmartcard(this.role, this.username, this.smartcardno, 2, this.block_reason,)
-    //   .subscribe((res: any) => {
-    //     this.swal.success(res?.message);
-    //   }, (err) => {
-    //     this.swal.Error(err?.error?.message);
-    //   });
   }
   cancelSmartcard() {
     this.swal.Loading();
@@ -1544,9 +1591,11 @@ export class SubscriberdialogueComponent implements OnInit {
   }
   toggleRemoveConfirmation() {
     this.removeproduct = !this.removeproduct;
+
   }
   // --------------------------------------------------addon--------------------------------------
   addAddonConfirmation() {
+    this.isaddaddon = true;
     this.finalrow = this.rows
     let requestBody = {
       role: this.role,
@@ -1556,29 +1605,19 @@ export class SubscriberdialogueComponent implements OnInit {
       retailerid: 0,
       addonlist: this.rows,
       managepackagelist: this.rowData,
+      iscollected: this.iscollected
     }
     this.userservice.addAddonConfirmation(requestBody).subscribe(
-      (response: HttpResponse<any[]>) => {
-        if (response.status === 200) {
-          this.rowData = response.body;
-          console.log(this.rowData);
-          // const selectedRows = this.gridApi.getSelectedRows();
-          // this.rowData3 = selectedRows.filter((row: any) => row.packagename);
-          console.log(this.rows?.length);
-          this.cdr.detectChanges();
-          console.log(this.rowData3);
-          this.swal.Success_200();
-        } else if (response.status === 204) {
-          this.swal.Success_204();
-          this.rowData = [];
-        }
-      },
-      (error) => {
-        this.handleApiError(error);
-      }
-    );
+      (res: any) => {
+        this.addonConfirmationData = res;
+        this.cdr.detectChanges;
+      }, (err) => {
+        this.swal.Error(err?.error?.message);
+      });
   }
   addAddonForSmartcard() {
+    this.confirmation = true;
+    this.isConfirmationComplete = true;
     this.finalrow = this.rows
     let requestBody = {
       role: this.role,
@@ -1605,7 +1644,7 @@ export class SubscriberdialogueComponent implements OnInit {
         if (response.status === 200) {
           this.typeData = response.body;
 
-          this.swal.Success_200();
+          this.swal.Successadd_200();
         } else if (response.status === 204) {
           this.swal.Success_204();
           this.rowData = [];
@@ -1618,6 +1657,7 @@ export class SubscriberdialogueComponent implements OnInit {
   }
   // ----------------------------------alacarte-----------------------------------------
   addAlacarteConfirmation() {
+    this.isaddalacarte = true;
     this.finalrow = this.rows
     let requestBody = {
       role: this.role,
@@ -1628,24 +1668,15 @@ export class SubscriberdialogueComponent implements OnInit {
       iscollected: this.iscollected,
       alacartelist: this.rows,
     }
-    console.log(requestBody);
-    this.swal.Loading();
     this.userservice.addAlacarteConfirmation(requestBody).subscribe(
-      (response: HttpResponse<any[]>) => {
-        if (response.status === 200) {
-          this.rowData = response.body;
-          console.log(this.rowData);
-          this.swal.Success_200();
-        } else if (response.status === 204) {
-          this.swal.Success_204();
-          this.rowData = [];
-        }
-      },
-      (error) => {
-        this.handleApiError(error);
-      }
-    );
-    // this.cdr.detectChanges();
+      (res: any) => {
+        this.alacarteConfirmationData = res;
+        this.cdr.detectChanges;
+        this.showData = true;
+        // this.swal.success(res?.message);
+      }, (err) => {
+        this.swal.Error(err?.error?.message);
+      });
   }
   addAlacarteSmartcard() {
     let requestBody = {
@@ -1669,7 +1700,7 @@ export class SubscriberdialogueComponent implements OnInit {
       (response: HttpResponse<any[]>) => {
         if (response.status === 200) {
           this.rowData = response.body;
-          this.swal.Success_200();
+          this.swal.Successadd_200();
         } else if (response.status === 204) {
           this.swal.Success_204();
           this.rowData = [];
@@ -1683,6 +1714,9 @@ export class SubscriberdialogueComponent implements OnInit {
   // -------------------------------------------------remove------------------------------------------------
 
   removeProductConfirmation() {
+    this.isRemove = true;
+    this.finalrow = this.rows;
+    this.cdr.detectChanges();
     let requestBody = {
       role: this.role,
       username: this.username,
@@ -1696,38 +1730,22 @@ export class SubscriberdialogueComponent implements OnInit {
       (response: HttpResponse<any[]>) => {
         if (response.status === 200) {
           this.rowData = response.body;
+          this.lcoreFund = this.rowData.totalRefundToLco;
+          this.lcoreExpirydate = this.rowData.expiryDate;
+          this.cdr.detectChanges();
           this.swal.Success_200();
         } else if (response.status === 204) {
           this.swal.Success_204();
           this.rowData = [];
+          this.cdr.detectChanges();
+
         }
       },
       (error) => {
         this.handleApiError(error);
       }
     );
-    //   (response: HttpResponse<any[]>) => {
-    //     if (response.status === 200) {
-    //       this.rowData = response.body;
-    //       const selectedRows = this.gridApi.getSelectedRows();
-    //       this.rowData3 = selectedRows.filter((row: any) => row.packagename);
-    //       console.log(this.rowData3);
-    //       Swal.fire('Success', 'Data updated successfully!', 'success');
-    //     } else if (response.status === 204) {
-    //       Swal.fire('No Content', 'No data available for the given criteria.', 'info');
-    //     }
-    //   },
-    //   (error) => {
-    //     if (error.status === 400) {
 
-    //       Swal.fire(error?.error?.message || error?.error?.addonlist || 'Error 400', 'Bad Request. Please check the input.', 'error');
-    //     } else if (error.status === 500) {
-    //       Swal.fire('Error 500', 'Internal Server Error. Please try again later.', 'error');
-    //     } else {
-    //       Swal.fire('Error', 'Something went wrong. Please try again.', 'error');
-    //     }
-    //   }
-    // );
   }
   removeProductForSmartcard() {
     let requestBody = {
@@ -1739,47 +1757,87 @@ export class SubscriberdialogueComponent implements OnInit {
       iscollected: this.iscollected,
       removeproductlist: this.rows,
     }
+    this.swal.Loading();
     this.userservice.removeProductForSmartcard(requestBody).subscribe(
-      (response: HttpResponse<any[]>) => {
-        if (response.status === 200) {
-          this.rowData = response.body;
-          this.swal.Success_200();
-        } else if (response.status === 204) {
-          this.swal.Success_204();
-          this.rowData = [];
-        }
-      },
-      (error) => {
-        this.handleApiError(error);
-      }
-    );
+      // (response: HttpResponse<any[]>) => {
+      //   if (response.status === 200) {
+      //     this.rowData = response.body;
+      //     // this.swal.Success_200();
+      //   } else if (response.status === 204) {
+      //     this.swal.Success_204();
+      //     this.rowData = [];
+      //   }
+      // },
+      // (res:any)=>{
+      //   console.log(res);
+
+      // },
+      // (error) => {
+      //   this.handleApiError(error);
+      // }
+      (res: any) => {
+        // this.alacarteConfirmationData = res;
+        this.cdr.detectChanges;
+        this.showData = true;
+        this.swal.success(res?.message);
+      }, (err) => {
+        this.swal.Error(err?.error?.message);
+      });
   }
   pairSmartcard() {
-    this.userservice.PairSmartcardOrBoxid(this.role, this.username, !this.ischeck, this.pairedSmartcard, this.subBoxid, 0, 2).subscribe((res: any) => {
+    this.swal.Loading();
+    this.userservice.PairSmartcardOrBoxid(this.role, this.username, !this.ischeck, this.pairedSmartcard, this.subBoxid, 0, 1).subscribe((res: any) => {
       this.swal.success(res?.message);
     }, (err) => {
       this.swal.Error(err?.error?.message);
     });
   }
+  pairBox() {
+    this.swal.Loading();
+    this.userservice.PairSmartcardOrBoxid(this.role, this.username, this.ischeck, this.subSmartcard, this.pairedBoxid, 0, 2).subscribe((res: any) => {
+      this.swal.success(res?.message);
+    }, (err) => {
+      this.swal.Error(err?.error?.message);
+    });
+  }
+  handleUnpair() {
+    if (this.ischeck) {
+      this.unPairBox();
+    } else {
+      this.unPairSmartcard();
+    }
+  }
   unPairSmartcard() {
-    this.userservice.UnpairSmartcardOrBoxId(this.role, this.username, !this.ischeck, this.subSmartcard, 0, 2).subscribe((res: any) => {
-      // this.swal.success(res?.message);
+    this.swal.Loading();
+    this.userservice.UnpairSmartcardOrBoxId(this.role, this.username, !this.ischeck, this.subSmartcard, 0, 1).subscribe((res: any) => {
+      this.swal.success(res?.message);
       this.isUnpairDialogue = res?.message;
       this.unpairtoggle();
     }, (err) => {
       this.swal.Error(err?.error?.message);
     });
-
   }
+  unPairBox() {
+    this.swal.Loading();
+    this.userservice.UnpairSmartcardOrBoxId(this.role, this.username, this.ischeck, this.subBoxid, 0, 2).subscribe((res: any) => {
+      this.swal.success(res?.message);
+      this.isUnpairDialogue = res?.message;
+      this.unpairtoggle();
+    }, (err) => {
+      this.swal.Error(err?.error?.message);
+    });
+  }
+
   unpairtoggle() {
     this.isUnpairDialogue = !this.isUnpairDialogue;
   }
 
   getPdfSubscriberRechargeDetails() {
-    this.userservice.getPdfSubscriberRechargeDetails(this.role, this.username, this.subid_1, this.date).subscribe((x: any) => {
-      console.log(x);
+    const dataObject = {
+      selectedDate: this.date.value,
+    };
+    this.userservice.getPdfSubscriberRechargeDetails(this.role, this.username, this.subid_1, dataObject.selectedDate).subscribe((x: any) => {
       let requestBodylogs: requestBodylogs = { access_ip: "", action: " PDF Bill Report", data: "From Date", remarks: "PDF Bill Report  ", };
-      console.log(requestBodylogs);
       const blob = new Blob([x], { type: 'application/pdf' });
       const data = window.URL.createObjectURL(blob);
       const link = document.createElement('a');

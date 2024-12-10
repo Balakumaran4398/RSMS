@@ -1,4 +1,4 @@
-import { Component, Inject, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, Inject, OnInit } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { Any } from 'node_modules1/@sigstore/protobuf-specs/dist/__generated__/google/protobuf/any';
 import { BaseService } from 'src/app/_core/service/base.service';
@@ -13,7 +13,7 @@ import { SwalService } from 'src/app/_core/service/swal.service';
 export class UpdateLtbComponent implements OnInit {
   isActive = false;
   opName: any;
-  istax: boolean = false;
+  istax: boolean = true;
   isactive: any;
   opNameList: any[] = [];
   localPaymentChannelList: any;
@@ -23,29 +23,44 @@ export class UpdateLtbComponent implements OnInit {
   lcnno: any;
   updateTax: any;
   updateLcoPrice: any;
+
+  filteredOperators: any[] = [];
+  selectedOperator: any;
+  selectedLcoName: any;
+
+
   constructor(
     public dialogRef: MatDialogRef<UpdateLtbComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: any, private userService: BaseService, private storageService: StorageService, private swal: SwalService) {
+    @Inject(MAT_DIALOG_DATA) public data: any, private userService: BaseService, private storageService: StorageService, private swal: SwalService, private cdr: ChangeDetectorRef) {
     console.log(data);
     this.username = storageService.getUsername();
     this.role = storageService.getUserRole();
     this.localPaymentChannelList = data;
-    console.log(this.localPaymentChannelList);
-    
     this.id = data.id;
     this.lcnno = data.lcn;
-    this.isactive = data.statusdisplay === '"Active"' ? true : false;
-   
+    this.opName = data.operatorid;
+    this.updateLcoPrice = data.lcoprice;
+    this.updateTax = data.tax;
+    console.log(this.opName);
 
-  }
-  ngOnInit(): void {
+    this.isactive = data.statusdisplay === '"Active"' ? true : false;
     this.userService.getLocalChannelOperatorList(this.role, this.username).subscribe((data: any) => {
-      console.log(data);
       this.opNameList = Object.keys(data).map(key => ({
         packagename: key,
         packageid: data[key]
       }));
+      this.filteredOperators = this.opNameList;
+      cdr.detectChanges();
     })
+  }
+  ngOnInit(): void {
+    // this.userService.getLocalChannelOperatorList(this.role, this.username).subscribe((data: any) => {
+    //   this.opNameList = Object.keys(data).map(key => ({
+    //     packagename: key,
+    //     packageid: data[key]
+    //   }));
+    //   this.filteredOperators = this.opNameList;
+    // })
   }
   onNoClick(): void {
     this.dialogRef.close();
@@ -67,17 +82,30 @@ export class UpdateLtbComponent implements OnInit {
       this.updateTax = data.tax;
       this.updateLcoPrice = data.lcoprice;
       // this.localPaymentChannelList = data;
+      this.cdr.detectChanges(); 
     })
-
   }
   submit() {
-    console.log(this.opName);
-
+    this.swal.Loading();
     this.userService.updateLocalChannel(this.role, this.username, this.localPaymentChannelList?.channelid, this.opName, this.localPaymentChannelList?.tax, this.localPaymentChannelList?.lcoprice, this.lcnno, this.localPaymentChannelList?.channelrate, !this.istax, this.id, this.isactive)
       .subscribe((res: any) => {
         this.swal.success(res?.message);
       }, (err) => {
         this.swal.Error(err?.error?.message);
       });
+  }
+  filterOperators(event: any): void {
+    // const filterValue = event.target.value.toLowerCase();
+    const filterValue = (event.target as HTMLInputElement).value.toLowerCase();
+    this.filteredOperators = this.opNameList.filter(operator =>
+      operator.packagename.toLowerCase().includes(filterValue)
+    );
+  }
+  displayOperator(operator: any): string {
+    return operator ? operator.packagename : '';
+  }
+  onSubscriberStatusChange(selectedOperator: any) {
+    this.selectedOperator = selectedOperator;
+    this.selectedLcoName = selectedOperator.value;
   }
 }

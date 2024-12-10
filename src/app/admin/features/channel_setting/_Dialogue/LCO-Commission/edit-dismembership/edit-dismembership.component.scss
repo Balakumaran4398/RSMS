@@ -30,22 +30,14 @@ h1 {
     border-radius: 5px;
 }
 
-// .example-box {
-//     margin-bottom: 5px;
-//     padding: 5px;
-//     background-color: #f1f1f1;
-//     border: 1px solid #ddd;
-//     border-radius: 3px;
-// }
 
 
 .btn {
     width: 50px;
     padding: 1px;
-    background-color: #4097a5;
+    background-color: #476987;
     color: #fff;
     margin: 5px;
-    /* Add margin to create space between buttons */
 }
 
 .btn:hover {
@@ -80,9 +72,7 @@ h1 {
     border-radius: 0.25rem;
 }
 
-.example-box.selected {
-    background-color: lightblue;
-  }
+
   
 
 
@@ -104,13 +94,16 @@ h1 {
     cursor: move;
 }
 
+.example-box.selected {
+    background-color: #e861ec;
+}
 @media (max-width: 767.98px) {
     .d-flex {
         // flex-direction: column;
     }
 
     .mobile {
-        max-height: 600px;
+        max-height: auto;
         overflow: auto;
     }
 

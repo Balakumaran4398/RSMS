@@ -63,7 +63,7 @@ export class CategoryComponent {
     {
       headerName: 'CATEGORY NAME',
       field: 'name',
-      width: 340,
+      width: 690,
       editable: true,
       cellEditor: 'agTextCellEditor',
       onCellValueChanged: (event) => {
@@ -75,7 +75,7 @@ export class CategoryComponent {
     {
       headerName: "ISACTIVE",
       field: 'isactive',
-      width: 300,
+      width: 600,
       cellRenderer: (params: any) => {
         const isActive = params.data.isactive;
         const toggleButton = document.createElement('button');

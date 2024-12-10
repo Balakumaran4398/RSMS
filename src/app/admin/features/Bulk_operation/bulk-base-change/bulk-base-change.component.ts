@@ -8,6 +8,7 @@ import type from 'node_modules1/ajv/dist/vocabularies/jtd/type';
 import { BaseService } from 'src/app/_core/service/base.service';
 import { ExcelService } from 'src/app/_core/service/excel.service';
 import { StorageService } from 'src/app/_core/service/storage.service';
+import { SwalService } from 'src/app/_core/service/swal.service';
 import Swal from 'sweetalert2';
 
 @Component({
@@ -41,21 +42,35 @@ export class BulkBaseChangeComponent implements OnInit {
   }
   username: any;
   role: any;
-  packageid: any=0;
+  packageid: any = 0;
   file: File | null = null;
   date: any;
+  selectedDate: any;
   isFileSelected: boolean = false;
   packageList: any[] = [];
   package: any;
-  constructor(public dialog: MatDialog, private fb: FormBuilder, private userservice: BaseService, private storageService: StorageService, private excelService: ExcelService) {
+
+  filteredPackage: any[] = [];
+  selectedPackage: any;
+  selectedPackageName: any;
+  constructor(public dialog: MatDialog, private fb: FormBuilder, private userservice: BaseService, private swal: SwalService, private storageService: StorageService, private excelService: ExcelService) {
     this.username = storageService.getUsername();
     this.role = storageService.getUserRole();
   }
   ngOnInit() {
-    this.userservice.getPackageList(this.role, this.username, 1).subscribe((data:any) => {
+    this.date = new Date().toISOString().split('T')[0]; // Set default current date
+    this.selectedDate = this.date;
+    this.refresh();
+    this.userservice.getPackageList(this.role, this.username, 1).subscribe((data: any) => {
       console.log(data);
-      this.packageList = Object.keys(data.packageid);
-      console.log(this.packageList);
+      // this.packageList = Object.keys(data.packageid);
+      // console.log(this.packageList);
+      this.packageList = Object.keys(data).map(key => {
+        const value = data[key];
+        const name = key;
+        return { name: name, value: value };
+      });
+      this.filteredPackage = this.packageList
     });
 
   }
@@ -95,6 +110,22 @@ export class BulkBaseChangeComponent implements OnInit {
   generateExcel(type: string) {
     this.excelService.generateBaseChangeExcel(type);
   }
+
+  filterPackage(event: any): void {
+    const filterValue = event.target.value.toLowerCase();
+    this.filteredPackage = this.packageList.filter((operator: any) =>
+      operator.name.toLowerCase().includes(filterValue)
+    );
+    // this.filteredPackage = this.packageList;
+    console.log(this.filteredPackage);
+  }
+  displayOperator(operator: any): string {
+    return operator ? operator.name : '';
+  }
+  onproducttypechange(selectedOperator: any) {
+    this.selectedPackage = selectedOperator;
+    this.selectedPackageName = selectedOperator.name;
+  }
   submit() {
     if (this.file) {
       console.log(this.file);
@@ -110,7 +141,7 @@ export class BulkBaseChangeComponent implements OnInit {
       formData.append('role', this.role);
       formData.append('username', this.username);
       formData.append('file', this.file);
-      formData.append('packageid', this.packageid);
+      formData.append('packageid', this.package);
       formData.append('type', '8');
       formData.append('optype', '8');
       formData.append('billtype', '1');
@@ -154,16 +185,17 @@ export class BulkBaseChangeComponent implements OnInit {
         (response: HttpResponse<any[]>) => { // Expect HttpResponse<any[]>
           if (response.status === 200) {
             this.rowData = response.body;
-            Swal.fire('Success', 'Data updated successfully!', 'success');
+            // this.swal.Success_200();
           } else if (response.status === 204) {
-            Swal.fire('No Content', 'No data available for the given criteria.', 'info');
+            this.rowData = '';
+            this.swal.Success_204();
           }
         },
         (error) => {
           if (error.status === 400) {
-            Swal.fire('Error 400', 'Bad Request. Please check the input.', 'error');
+            this.swal.Error_400();
           } else if (error.status === 500) {
-            Swal.fire('Error 500', 'Internal Server Error. Please try again later.', 'error');
+            this.swal.Error_500();
           } else {
             Swal.fire('Error', 'Something went wrong. Please try again.', 'error');
           }
@@ -171,21 +203,24 @@ export class BulkBaseChangeComponent implements OnInit {
       );
   }
   getData() {
-    this.userservice.getBulkOperationListByDate(this.role, this.username, 'Bulk Base Change', this.date || null, 9)
+    this.rowData = [];
+    const dateToPass = this.selectedDate || this.date;
+    this.userservice.getBulkOperationListByDate(this.role, this.username, 'Bulk Base Change', dateToPass, 9)
       .subscribe(
         (response: HttpResponse<any[]>) => { // Expect HttpResponse<any[]>
           if (response.status === 200) {
             this.rowData = response.body;
-            Swal.fire('Success', 'Data updated successfully!', 'success');
+            // this.swal.Success_200();
           } else if (response.status === 204) {
-            Swal.fire('No Content', 'No data available for the given criteria.', 'info');
+            this.rowData = '';
+            this.swal.Success_204();
           }
         },
         (error) => {
           if (error.status === 400) {
-            Swal.fire('Error 400', 'Bad Request. Please check the input.', 'error');
+            this.swal.Error_400();
           } else if (error.status === 500) {
-            Swal.fire('Error 500', 'Internal Server Error. Please try again later.', 'error');
+            this.swal.Error_500();
           } else {
             Swal.fire('Error', 'Something went wrong. Please try again.', 'error');
           }

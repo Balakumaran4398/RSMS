@@ -14,9 +14,11 @@ export class TopSubDetailComponent {
   rowData: any[] = [];
   gridOptions = {
     defaultColDef: {
- 
-      width: 250,
-
+      sortable: true,
+      resizable: true,
+      filter: true,
+      floatingFilter: true,
+      width:250
     },
     headerComponentParams: { textAlign: 'center' },
     // pagination: true,
@@ -28,7 +30,7 @@ export class TopSubDetailComponent {
   addonRowData: any[] = [];
   alacarteRowData: any[] = [];
   columnDefs: any[] = [
-    { headerName: "PACKAGE NAME", field: 'productname', filter:false},
+    { headerName: "PACKAGE NAME", field: 'productname',  filter: true,},
     { headerName: 'COUNT', field: 'count', filter:false},
   ];
   constructor(private userservise: BaseService, private storageservice: StorageService) {

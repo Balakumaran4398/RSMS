@@ -1,5 +1,3 @@
-
-
 .head span {
     color: var(--primary-color);
     font-size: 17px;
@@ -20,9 +18,30 @@
     color: white;
     border-radius: 10px;
 }
+
 ::ng-deep {
     .ag-center-cols-viewport {
         max-height: 100%;
         overflow: scroll;
+    }
+}
+
+.display {
+    display: flex;
+}
+
+@media screen and (max-width:560px) {
+    .display {
+        display: block;
+    }
+}
+@media screen and (max-width:770px) {
+    .display {
+        display: block;
+    }
+}
+@media screen and (max-width:900px) {
+    .display {
+        display: block;
     }
 }

@@ -1,5 +1,5 @@
 <div>
-   
+
     <div class="Head d-flex justify-content-between align-items-center mb-3" style="padding: 1rem;">
         <h6>Create New LTB</h6>
         <i class="fa fa-close close-icon" style="cursor: pointer;" (click)="onNoClick()"></i>
@@ -11,13 +11,22 @@
                     <span for="">Local Channel Name</span>
                 </div>
                 <div class="col-12 col-md-6">
-                    <select [(ngModel)]="channel">
+                    <!-- <select [(ngModel)]="channel">
                         <option value="0" selected>Selected channel Name</option>
                         <option *ngFor="let op of chNameList" [value]="op.channelid">
                             {{ op.channelname }}
                         </option>
-                    </select>
+                    </select> -->
+                    <input type="text" matInput [matAutocomplete]="autochannel" [(ngModel)]="channel" maxlength="20"
+                        (input)="filterChannels($event)" placeholder="Selected CHANGE Name"
+                        [matAutocompleteDisabled]="false" [value]="selectedChannelName">
 
+                    <mat-autocomplete #autochannel="matAutocomplete" [displayWith]="displayChannel">
+                        <mat-option *ngFor="let channel of filteredChannels" [value]="channel.channelid"
+                            (click)="onChannelStatusChange(channel)">
+                            {{ channel.channelname }}
+                        </mat-option>
+                    </mat-autocomplete>
                 </div>
             </div>
             <div class="input_box display mb-1">
@@ -25,12 +34,23 @@
                     <span for="">LTB name</span>
                 </div>
                 <div class="col-12 col-md-6">
-                    <select [(ngModel)]="opName">
+                    <!-- <select [(ngModel)]="opName">
                         <option value="0" selected>Selected Operator Name</option>
                         <option *ngFor="let op of opNameList" [value]="op.packageid">
                             {{ op.packagename }}
                         </option>
-                    </select>
+                    </select> -->
+
+                    <input type="text" matInput [matAutocomplete]="auto" [(ngModel)]="opName" maxlength="20"
+                        (input)="filterOperators($event)" placeholder="Selected Operator Name"
+                        [matAutocompleteDisabled]="false" [value]="selectedOperator?.packagename">
+
+                    <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayOperator">
+                        <mat-option *ngFor="let operator of filteredOperators" [value]="operator.packageid"
+                            (click)="onSubscriberStatusChange(operator)">
+                            {{ operator.packagename }}
+                        </mat-option>
+                    </mat-autocomplete>
                 </div>
             </div>
 
@@ -39,7 +59,7 @@
                     <span for="">LCN No</span>
                 </div>
                 <div class="col-12 col-md-6 ">
-                    <input type="text" placeholder="Enter  No" [(ngModel)]="lcnNo" maxlength="20">
+                    <input type="text" placeholder="Enter  No" [(ngModel)]="lcnNo" maxlength="4" (keypress)="onKeydown($event)">
                 </div>
             </div>
 
@@ -48,7 +68,7 @@
                     <span for="">Channel Rate </span>
                 </div>
                 <div class="col-12 col-md-6 ">
-                    <input type="text" placeholder="Enter Channel Rate" [(ngModel)]="chRate" (change)="onChange()" />
+                    <input type="text" placeholder="Enter Channel Rate" [(ngModel)]="chRate" (ngModelChange)="onChange()" maxlength="4" (keypress)="onKeydown($event)"/>
                     <!-- <input type="text" placeholder="Enter Channel Rate" [(ngModel)]="chRate"> -->
                 </div>
             </div>
@@ -57,7 +77,6 @@
                     <span for="">With Tax </span>
                 </div>
                 <div class="col-12 col-md-6 ">
-
                     <div class="toggle-button-cover">
                         <div class="button b2" id="button-10">
                             <input type="checkbox" class="checkbox" [(ngModel)]="istax" (change)="onChange()" />

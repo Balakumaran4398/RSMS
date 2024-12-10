@@ -22,6 +22,8 @@ export class ChannelUploadComponent {
     defaultColDef: {
       width: 180,
     },
+    paginationPageSize: 5,
+    pagination: true,
   };
   constructor(public dialogRef: MatDialogRef<ChannelUploadComponent>, private userservice: BaseService, private storageService: StorageService) {
     this.username = storageService.getUsername();
@@ -30,7 +32,7 @@ export class ChannelUploadComponent {
 
   columnDefs: ColDef[] = [
     { headerName: 'S.No', valueGetter: 'node.rowIndex + 1', width: 100 },
-    { headerName: 'CHANNEL NAME', field: 'channel', editable: true, width: 150 },
+    { headerName: 'CHANNEL NAME', field: 'channel', editable: true, width: 250 },
     { headerName: 'SERVICE ID', field: 'serviceId', editable: true, width: 150 },
     { headerName: 'PRODUCT ID', field: 'productId', editable: true, width: 140 },
     { headerName: 'INR AMOUNT', field: 'inr_amt', editable: true, width: 150 }

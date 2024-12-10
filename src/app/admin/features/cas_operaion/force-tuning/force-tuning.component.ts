@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { ChangeDetectorRef, Component } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { BaseService } from 'src/app/_core/service/base.service';
 import { StorageService } from 'src/app/_core/service/storage.service';
@@ -14,20 +14,31 @@ export class ForceTuningComponent {
   IntendFormControl: any;
   username: any;
   role: any;
-
-  isSmartcardEnabled = true;
-  isLCOEnabled = true;
+  submitted: boolean = false;
+  intendid_1: any;
+  LCO_name: any;
+  LCO_id: any;
+  searchLCOTerm: any;
+  lcoid: any;
+  intendid: any;
+  Lconame: any;
+  selectedOperator: any;
+  isSmartcardEnabled = false;
+  isLCOEnabled = false;
   selectedAreaCodeFormControl = new FormControl('');
   area: any[] = [];
+  filteredOperators: any[] = [];
+  filteredLcoList: { name: string; id: number }[] = [];
+
   // area: any = 0;
   intend: any = [
-    { lable: "MSO", value: 0 },
-    { lable: "Smartcard", value: 1 },
-    { lable: "LCO", value: 2 },
+    { lable: "MSO", value: 1 },
+    { lable: "Smartcard", value: 2 },
+    { lable: "LCO", value: 3 },
   ];
   lco_name: any = 0;
   searchTerm: any;
-  constructor(private userservice: BaseService, private storageService: StorageService, private fb: FormBuilder) {
+  constructor(private userservice: BaseService, private storageService: StorageService, private fb: FormBuilder, private cdr: ChangeDetectorRef) {
     this.username = storageService.getUsername();
     this.role = storageService.getUserRole();
     this.form = this.fb.group({
@@ -43,19 +54,21 @@ export class ForceTuningComponent {
       console.log(data);
       this.area = Object.entries(data[0].arealist).map(([key, value]) => ({ name: key, id: value }));
       console.log(this.area);
+      this.filteredOperators = this.area;
     })
   }
   onChangeIntendTo1(event: any) {
     console.log('111111111111');
+    this.intendid_1 = '';
     const selectedValue = event.target.value;
     console.log(selectedValue);
-    if (selectedValue == 1) { // SMARTCARD
+    if (selectedValue == 2) { // SMARTCARD
       this.isSmartcardEnabled = true;
       this.isLCOEnabled = false;
-    } else if (selectedValue == 2) { // AREA CODE
+    } else if (selectedValue == 3) { // AREA CODE
       this.isLCOEnabled = true;
       this.isSmartcardEnabled = false;
-    } else if (selectedValue == 0) { // MSO
+    } else if (selectedValue == 1) { // MSO
       this.isLCOEnabled = false;
       this.isSmartcardEnabled = false;
     }
@@ -64,16 +77,71 @@ export class ForceTuningComponent {
       this.isLCOEnabled = true;
     }
   }
-  filteredIntendArea(): any[] {
-    if (!this.searchTerm) {
+
+
+  // filteredIntendArea(): any[] {
+  //   if (!this.searchTerm) {
+  //     return this.area;
+  //   }
+  //   return this.area.filter((area: any) =>
+  //     area.lable.toLowerCase().includes(this.searchTerm.toLowerCase())
+  //   );
+  // }
+  filterOperators(event: any): void {
+    const filterValue = event.target.value.toLowerCase();
+    this.filteredOperators = this.area.filter(operator =>
+      operator.name.toLowerCase().includes(filterValue)
+    );
+
+  }
+  filteredIntendArea(): { name: string; id: number }[] {
+    if (!this.searchLCOTerm) {
       return this.area;
     }
-    return this.area.filter((area: any) =>
-      area.lable.toLowerCase().includes(this.searchTerm.toLowerCase())
+    return this.area.filter((area: { name: string }) =>
+      area.name.toLowerCase().includes(this.searchLCOTerm.toLowerCase())
     );
   }
-
+  onSearchLCOChange(event: any) {
+    this.searchLCOTerm = event.target.value;
+    this.filteredLcoList = this.filteredIntendArea();
+  }
+  onLCOSelect(LCO: { name: string; id: number }) {
+    this.LCO_name = LCO.name;
+    this.LCO_id = LCO.id;
+    this.form.patchValue({ intendid: this.LCO_id });
+  }
+  onKeydown(event: KeyboardEvent) {
+    const key = event.key;
+    if (!/^\d$/.test(key) && key !== 'Backspace') {
+      event.preventDefault();
+    }
+  }
+  onSubscriberStatusChange(operator: any): void {
+    this.selectedOperator = operator;
+    this.intendid = operator.id;
+    this.Lconame = operator.name;
+    console.log(this.intendid);
+    console.log(this.Lconame);
+    this.form.patchValue({ intendid: this.intendid });
+    this.cdr.detectChanges();
+    this.userservice.getSubscriberIdListByOperatorid(this.role, this.username, this.intendid).subscribe((data: any) => {
+      console.log(data);
+      this.area = Object.keys(data).map(key => {
+        const value = data[key];
+        const name = key;
+        return { name: name, value: value };
+      });
+      // this.filteredSub = this.sub_list;
+      // console.log(this.filteredSub);
+    })
+  }
   onSubmit() {
+    this.submitted = true;
+    // if (this.form.valid) {
+    // } else {
+    //   this.form.markAllAsTouched();
+    // }
     this.userservice.CreateForce(this.form.value).subscribe(
       (res: any) => {
         console.log(res);
@@ -91,7 +159,7 @@ export class ForceTuningComponent {
       (error: any) => {
         Swal.fire({
           title: 'Error!',
-          text: error?.error.message || 'There was an issue submitting the form.',
+          text: error?.error.intendid || error?.error.message ||'There was an issue submitting the form.',
           icon: 'error',
           confirmButtonText: 'OK',
           timer: 2000,
@@ -100,5 +168,7 @@ export class ForceTuningComponent {
       }
     );
   }
-
+  displayOperator(operator: any): string {
+    return operator ? operator.name : '';
+  }
 }

@@ -43,7 +43,7 @@ export class LocalPaymentComponent {
 
     },
     {
-      headerName: 'BALANCE', width: 300,
+      headerName: 'BALANCE', width: 400,
       field: 'balance',
       valueFormatter: (params) => {
         return ` ${params.value}`;
@@ -56,7 +56,7 @@ export class LocalPaymentComponent {
 
     },
     {
-      headerName: 'ADDRESS', width: 400,
+      headerName: 'ADDRESS', width: 500,
       field: 'address',
     },
 

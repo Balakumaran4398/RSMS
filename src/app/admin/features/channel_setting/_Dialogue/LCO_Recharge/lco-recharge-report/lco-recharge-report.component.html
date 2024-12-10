@@ -32,18 +32,28 @@
             </div> -->
 
             <div class="custom-select input_box col-10 col-md-3 mb-2 mx-2">
-                <input type="text" placeholder="Search Operator" [disabled]="!isCheckboxChecked"
+                <!-- <input type="text" placeholder="Search Operator" [disabled]="!isCheckboxChecked"
                     [(ngModel)]="operatorname" (input)="filterOperators()" (focus)="showDropdown = false"
                     (click)="showDropdown = true">
 
                 <ul class="dropdown" *ngIf="showDropdown">
-                    <!-- <li (click)="selectOperator('0','ALL Operator')">ALL Operator</li> -->
                     <li *ngFor="let operator of filteredOperators"
-                        (click)="selectOperator(operator.value,operator.name  )">
+                        (click)="selectOperator1(operator.value,operator.name  )">
                         {{ operator.name }}
                     </li>
-                </ul>
+                </ul> -->
+
+                <input type="text" matInput [matAutocomplete]="auto" [disabled]="!isCheckboxChecked" (input)="filterOperators($event)" placeholder="Select a Operator"
+                    [matAutocompleteDisabled]="false" [value]="selectedOperator?.name">
+
+                <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayOperator">
+                    <mat-option *ngFor="let operator of filteredOperators" [value]="operator.name"
+                        (click)="onoperaRechargelLog(operator)">
+                        {{ operator.name }}
+                    </mat-option>
+                </mat-autocomplete>
             </div>
+
             <button class="btn mx-2" style="background-color: rgb(26, 129, 133);border-radius: 5px;"
                 (click)="RechargeLog()"><span style="color: white;">Report</span></button>
         </div>
@@ -162,8 +172,10 @@
             </ag-grid-angular>
         </div>
         <div class="col-12 col-md-12 d-flex align-items-center justify-content-center" style="background-color: #c0d3d3;height: 31px;
-      font-size: 16px;font-weight: 600;color: red;">TOTAL AMOUNT : <span
-                style="color:rgb(17, 22, 54);font-size: 18px;margin-left: 10px;">{{Totalamount}}</span>
+      font-size: 16px;font-weight: 600;color: red;">TOTAL AMOUNT : <span><i
+                    style="color:rgb(17, 22, 54);font-size: 18px;margin-left: 10px;" class="fa fa-inr"
+                    aria-hidden="true"></i></span>
+            <span style="color:rgb(17, 22, 54);font-size: 18px;margin-left: 3px;">{{Totalamount}}</span>
         </div>
     </div>
     <div *ngIf="selectedTab === '3'" class="display justify-content-center align-item-center  flex-wrap">
@@ -178,7 +190,7 @@
             </div> -->
 
             <div class=" custom-select input_box  col-10 col-md-4 mb-2 mx-2">
-                <input type="text" placeholder="Search Operator" [(ngModel)]="operatorname" (input)="filterOperators()"
+                <!-- <input type="text" placeholder="Search Operator" [(ngModel)]="operatorname" (input)="filterOperators()"
                     (focus)="showDropdown = false" (click)="showDropdown = true">
 
                 <ul class="dropdown" *ngIf="showDropdown">
@@ -186,7 +198,16 @@
                         (click)="selectOperator(operator.value,operator.name  )">
                         {{ operator.name }}
                     </li>
-                </ul>
+                </ul> -->
+                <input type="text" matInput [matAutocomplete]="auto" (input)="filterOperators($event)" placeholder="Select a Operator"
+                    [matAutocompleteDisabled]="false" [value]="selectedOperator?.name">
+
+                <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayOperator">
+                    <mat-option *ngFor="let operator of filteredOperators" [value]="operator.name"
+                        (click)="onoperatorchange(operator)">
+                        {{ operator.name }}
+                    </mat-option>
+                </mat-autocomplete>
             </div>
             <input class="mx-2" type="checkbox" [(ngModel)]="isCheckboxChecked" style="width: 30px;height: 25px;">
             <div class="input_box ">
@@ -206,4 +227,3 @@
         </div>
     </div>
 </div>
-

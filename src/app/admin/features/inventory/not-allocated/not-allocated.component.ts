@@ -45,36 +45,37 @@ export class NotAllocatedComponent {
     this.username = storageService.getUsername();
     this.role = storageService.getUserRole();
     this.userService.Not_Allocated(this.role, this.username).subscribe((data: any) => {
+      console.log(data);
       this.rowData = data[0].notallocatedsmartcard;
       this.lco_list = data[0].operatorid;
       this.caslist = data[0].castype;
       this.isemi = data[0].isemi;
-
     })
   }
   columnDefs: ColDef[] = [
     {
-      lockPosition: true, headerCheckboxSelection: true, checkboxSelection: true, width: 80
+      headerName: 'S.No',
+      lockPosition: true, headerCheckboxSelection: true, checkboxSelection: true, width: 100,
     },
     {
-      headerName: 'SMARTCARD',
+      headerName: 'SMARTCARD', width: 300,
       field: 'smartcard',
     },
     {
-      headerName: 'BOX_ID',
+      headerName: 'BOX_ID', width: 250,
       field: 'boxid',
     },
     {
-      headerName: 'CARTON BOX',
+      headerName: 'CARTON BOX', width: 250,
       field: 'cottonbox',
 
     },
     {
-      headerName: 'CAS TYPE',
+      headerName: 'CAS TYPE', width: 250,
       field: 'casname',
     },
     {
-      headerName: 'IS ALLOCATED',
+      headerName: 'IS ALLOCATED', width: 300,
       field: 'isallocated',
       cellRenderer: (params: any) => {
         if (params.value === true) {
@@ -86,7 +87,7 @@ export class NotAllocatedComponent {
     },
 
     {
-      headerName: "Edit",
+      headerName: "Edit", width: 300,
       editable: true,
       cellRenderer: (params: any) => {
         const editButton = document.createElement('button');

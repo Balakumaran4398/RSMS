@@ -119,7 +119,7 @@ export class DistributorMasterComponent {
     },
     { headerName: "DISTRIBUTOR ADDRESS", field: 'address', editable: true, cellEditor: 'agTextCellEditor', width: 300, },
     { headerName: "DISTRIBUTOR CONTACT", field: 'contact', editable: true, cellEditor: 'agTextCellEditor', width: 300 },
-    { headerName: "DISTRIBUTOR EMAIL", field: 'email', editable: true, cellEditor: 'agTextCellEditor', width: 300, },
+    { headerName: "DISTRIBUTOR EMAIL", field: 'email', editable: true, cellEditor: 'agTextCellEditor', width: 290, },
   ]
 
 

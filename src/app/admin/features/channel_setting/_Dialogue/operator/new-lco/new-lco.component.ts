@@ -40,11 +40,11 @@ export class NewLcoComponent {
       contactnumber2: ['', [Validators.required, Validators.pattern('^[0-9]{10}$')]],
       address: ['', Validators.required],
       state: ['', Validators.required],
-      userid: ['', Validators.required],
+      userid: ['', [Validators.required,Validators.minLength(5),Validators.maxLength(10)]],
       mail: ['', [Validators.required, Validators.email]],
       area: ['', Validators.required],
       pincode: ['', [Validators.required, Validators.pattern('^[0-9]{6}$')]],
-      password: ['', [Validators.required, Validators.minLength(6)]],
+      password: ['', [Validators.required,Validators.minLength(6),Validators.maxLength(12)]],
       lcobusinessid: ['', Validators.required],
       role: this.role,
       username: this.username
@@ -55,7 +55,7 @@ export class NewLcoComponent {
 
   onSubmit() {
     if (this.form.valid) {
-    
+
     } else {
       this.form.markAllAsTouched();
     }
@@ -78,7 +78,8 @@ export class NewLcoComponent {
         console.error(error);
         Swal.fire({
           title: 'Error!',
-          text: error?.error.message || error?.error.lcobusinessid || 'There was an issue adding the operator.',
+          text: error?.error.operatorname ||error?.error.contactnumber2 || error?.error.address || error?.error.area || error?.error.state ||
+            error?.error.mail || error?.error.lcobusinessid ||error?.error.message || 'There was an issue adding the operator.',
           icon: 'error'
         });
       }

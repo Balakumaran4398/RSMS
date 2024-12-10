@@ -1,4 +1,4 @@
-import { Component, Inject } from '@angular/core';
+import { ChangeDetectorRef, Component, Inject } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { BaseService } from 'src/app/_core/service/base.service';
 import { StorageService } from 'src/app/_core/service/storage.service';
@@ -19,25 +19,34 @@ export class UpdateLcoComponent {
   lcomembershipList: any = [];
   id: any;
   constructor(
-    public dialogRef: MatDialogRef<UpdateLcoComponent>, @Inject(MAT_DIALOG_DATA) public data: any, private userservice: BaseService, private storageservice: StorageService) {
+    public dialogRef: MatDialogRef<UpdateLcoComponent>, @Inject(MAT_DIALOG_DATA) public data: any, private userservice: BaseService, private cdr: ChangeDetectorRef, private storageservice: StorageService) {
     this.role = storageservice.getUserRole();
     this.username = storageservice.getUsername();
     this.lcogroupname = data.groupname;
+    this.lcogroupid = data.lcogroupid;
     this.id = data.id;
     this.usedcount = data.usedcount;
     this.sharedcount = data.sharecount;
+    console.log('Initial Data:', data);
+    console.log('Initial lcogroupid:', this.lcogroupid);
+    console.log('Initial lcogroupname:', this.lcogroupname);
+    
 
     userservice.getLcoGroupMasterList(this.role, this.username).subscribe((data: any) => {
       this.lcomembershipList = Object.keys(data).map(key => {
         return { name: key, value: data[key] }; // Mapping data to name and value
       });
-
+      cdr.detectChanges();
       // Set lcogroupid based on the selected lcogroupname
-      const selectedGroup = this.lcomembershipList.find((group: any) => group.name === this.lcogroupname);
-      this.lcogroupid = selectedGroup ? selectedGroup.value : ''; // Set lcogroupid
+      const selectedGroup = this.lcomembershipList.find((group: any) => group.value === this.lcogroupid);
+      // this.lcogroupid = selectedGroup ? selectedGroup.value : ''; 
+      if (!selectedGroup) {
+        console.warn('lcogroupid does not match any value in lcomembershipList');
+      }
+        
     });
   }
-  onNoClick(): void {
+  onNoClick(): void { 
     this.dialogRef.close();
   }
   change() {
@@ -68,7 +77,7 @@ export class UpdateLcoComponent {
                 text: res?.message,
                 icon: 'success',
                 timer: 2000,
-                timerProgressBar:true,
+                timerProgressBar: true,
                 showConfirmButton: false
               }).then(() => {
                 this.dialogRef.close();
@@ -81,7 +90,7 @@ export class UpdateLcoComponent {
                 icon: 'error',
                 confirmButtonText: 'OK',
                 timer: 2000,
-                timerProgressBar:true,
+                timerProgressBar: true,
               });
             }
           );

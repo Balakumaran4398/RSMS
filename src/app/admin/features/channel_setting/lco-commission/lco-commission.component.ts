@@ -38,6 +38,10 @@ export class LcoCommissionComponent {
   selectedname: any[] = [];
   rows: any[] = [];
 
+  filteredOperators: any[] = [];
+  selectedOperator: any=1;
+  selectedLcoName: any;
+
   @ViewChild('agGrid') agGrid: any;
   constructor(public dialog: MatDialog, private userservice: BaseService, private storageservice: StorageService, private cdr: ChangeDetectorRef, private swal: SwalService) {
     this.role = storageservice.getUserRole();
@@ -58,6 +62,7 @@ export class LcoCommissionComponent {
       this.lcomembershipid = this.lcomembershipList[0]?.value
       this.onOperatorChange("")
       this.onmembershipchange("")
+      this.filteredOperators=this.lcomembershipList;
     })
     this.LcoGroupDetails();
     // this.lcomembershipidNotInLcogroupId();
@@ -142,9 +147,22 @@ export class LcoCommissionComponent {
     }
   }
 
-
-
-
+  filterOperators(event: any): void {
+    const filterValue = event.target.value.toLowerCase();
+    this.filteredOperators = this.lcomembershipList.filter((operator:any) =>
+      operator.name.toLowerCase().includes(filterValue)
+    );
+    console.log(this.filteredOperators);
+  }
+  displayOperator(operator: any): string {
+    return operator ? operator.name : '';
+  }
+  onSubscriberStatusChange(selectedOperator: any) { 
+    console.log(selectedOperator);
+    this.selectedOperator = selectedOperator;
+    this.selectedLcoName = selectedOperator.value;
+    console.log(this.selectedLcoName);
+  }
 
   loadTableData(selectedTab: any) {
     console.log(`Selected Tab: ${selectedTab}`);
@@ -155,7 +173,7 @@ export class LcoCommissionComponent {
         },
         { headerName: "PRODUCT NAME", field: 'productname', width: 300 },
         { headerName: "PRODUCT ID", field: 'productid', width: 150 },
-        { headerName: "PRODUCT TYPE", field: 'producttype', width: 200 },
+        { headerName: "PRODUCT TYPE", field: 'producttype', width: 230 },
         {
           headerName: "CUSTOMER AMOUNT", field: 'customeramount', width: 250, cellRenderer: (params: any) => `<span style="color: #035203;
           font-weight: bold;;">₹</span> ${params.value}`
@@ -164,9 +182,9 @@ export class LcoCommissionComponent {
           headerName: "SUB MSO AMOUNT", field: 'msoamount', width: 250, cellRenderer: (params: any) => `<span style="color: #035203;
           font-weight: bold;;">₹</span> ${params.value}`
         },
-        { headerName: "COMMISSION", field: 'commissionvalue', width: 180 },
+        { headerName: "COMMISSION", field: 'commissionvalue', width: 220 },
         {
-          headerName: "EDIT", field: '', width: 100,
+          headerName: "EDIT", field: '', width: 150,
           cellRenderer: (params: any) => {
             const editButton = document.createElement('button');
             editButton.innerHTML = '<i class="fas fa-pen-square" style="font-size:30px"></i>';
@@ -261,7 +279,7 @@ export class LcoCommissionComponent {
         },
         { headerName: "COMMISSION", field: 'commissionvalue', width: 180 },
         {
-          headerName: "	IS PERCENTAGE", field: 'ispercentage', width: 150,
+          headerName: "	IS PERCENTAGE", field: 'ispercentage', width: 200,
           cellRenderer: (params: any) => {
             if (params.value === true) {
               return `<span style="color: green;">YES</span>`;
@@ -365,9 +383,9 @@ export class LcoCommissionComponent {
       headerName: "S.No", lockPosition: true, valueGetter: 'node.rowIndex+1', width: 100, headerCheckboxSelection: true,
       checkboxSelection: true,
     },
-    { headerName: "OPERATOR NAME", field: 'operatorname', width: 250, filter: true, },
-    { headerName: "OPERATOR ID", field: 'operatorid', width: 200, filter: true, },
-    { headerName: "JOINING DATE", field: 'lcogroupupdateddate', width: 220, },
+    { headerName: "OPERATOR NAME", field: 'operatorname', width: 270,},
+    { headerName: "OPERATOR ID", field: 'operatorid', width: 220,},
+    { headerName: "JOINING DATE", field: 'lcogroupupdateddate', width: 250,filter: true, },
   ];
   columnDefs3: any[] = [
     {
@@ -402,9 +420,10 @@ export class LcoCommissionComponent {
 
 
   ]
-  onOperatorChange(event: any) {
+  onOperatorChange(selectedOperator: any) {
     console.log('this.selectedTab', this.selectedTab);
-
+    this.selectedOperator = selectedOperator;
+    this.selectedLcoName = selectedOperator.name;
     if (this.selectedTab === 'dis_commission') {
       if (this.lcomembershipid === '0') {
         this.lcomembershipid = 0;
@@ -454,32 +473,27 @@ export class LcoCommissionComponent {
     }
 
   }
-  onmembershipchange(event: any) {
+  onmembershipchange(selectedOperator: any) {
+    this.selectedOperator = selectedOperator;
+    this.selectedLcoName = selectedOperator.name;
     this.userservice.getOperatorlistByGroupId(this.role, this.username, this.lcomembershipid).subscribe(
-    //   (data: any) => {
-    //     this.rowData2 = data;
-    //   },
-    //   (error) => {
-    //     console.error('Error fetching lcomembershipid details', error);
-    //   }
-    // );
-    (response: HttpResponse<any[]>) => {
-      if (response.status === 200) {
-        this.rowData2 = response.body;
-        // this.swal.Success_200();
-      } else if (response.status === 204) {
-        this.swal.Success_204();
-      }
-    },
-    (error) => {
-      if (error.status === 400) {
-        this.swal.Error_400();
-      } else if (error.status === 500) {
-        this.swal.Error_500();
-      } else {
-        Swal.fire('Error', 'Something went wrong. Please try again.', 'error');
-      }
-    });
+      (response: HttpResponse<any[]>) => {
+        if (response.status === 200) {
+          this.rowData2 = response.body;
+          // this.swal.Success_200();
+        } else if (response.status === 204) {
+          this.swal.Success_204();
+        }
+      },
+      (error) => {
+        if (error.status === 400) {
+          this.swal.Error_400();
+        } else if (error.status === 500) {
+          this.swal.Error_500();
+        } else {
+          Swal.fire('Error', 'Something went wrong. Please try again.', 'error');
+        }
+      });
   }
   LcoGroupDetails() {
     if (this.selectedTab == 'membership') {

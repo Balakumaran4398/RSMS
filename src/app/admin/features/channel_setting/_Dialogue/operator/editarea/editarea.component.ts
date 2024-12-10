@@ -29,7 +29,10 @@ export class EditareaComponent implements OnInit {
     this.id = data.id;
     this.areaname = data.name;
     this.pincode = data.pincode;
+    this.isdelete=data.isdelete;
+    this.operatorid=data.operatorid;
     console.log(data);
+    console.log(this.isdelete);
 
   }
   ngOnInit(): void {
@@ -48,9 +51,9 @@ export class EditareaComponent implements OnInit {
       role: this.role,
       username: this.username,
       name: this.areaname,
-      operatorid: this.editarea.operatorid,
+      operatorid: this.operatorid,
       pincode: this.pincode,
-      isdelete: this.editarea.isdelete,
+      isdelete: this.isdelete,
       id: this.id
     };
     this.swal.Loading();

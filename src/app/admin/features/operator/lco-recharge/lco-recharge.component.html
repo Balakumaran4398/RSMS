@@ -11,8 +11,8 @@
       <div *ngIf="form.get('password')?.invalid && form.get('password')?.touched" class="text-danger">
         <small>Password is required.</small>
       </div>
-      <div class="col-12 col-md-6 d-flex justify-content-between align-items-center" style="gap: 20px;">
-        <button class="btn" type="button" (click)="submit()" [disabled]="form.invalid">
+      <div class="col-12 col-md-6 d-flex justify-content-between align-items-center mb-3" style="gap: 20px;">
+        <button class="btn" type="submit" (click)="submit()" [disabled]="form.invalid">
           Login
         </button>
         <button class="btn" type="button" (click)="exit()">Exit</button>

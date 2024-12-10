@@ -12,14 +12,17 @@
                                 <label for="">CAS</label>
                             </div>
                             <div class="col-12 col-md-8">
-                                <select placeholder="Select the CAS" formControlName="castype" [(ngModel)]="castype_1"
-                                    (ngModelChange)="onSelectionFingerPrint($event)">
-                                    <option value="">Select CAS</option>
-                                    <option *ngFor="let casItem of cas" [value]="casItem.id">
+                                <input type="text" placeholder="Search an CAS" formControlName="castypedisplay"
+                                    (input)="onSearchChange($event)" [(ngModel)]="castype_1" [value]="casname"
+                                    [matAutocomplete]="auto" class="example-input">
+
+                                <mat-autocomplete #auto="matAutocomplete">
+                                    <mat-option *ngFor="let casItem of filteredcas()" [value]="casItem.name"
+                                        (click)="onSelectionFingerPrint(casItem)">
                                         {{ casItem.name }}
-                                    </option>
-                                </select>
-                                <div *ngIf="form.get('castype')?.invalid && form.get('castype')?.touched">
+                                    </mat-option>
+                                </mat-autocomplete>
+                                <div *ngIf="form.get('castypedisplay')?.invalid && form.get('castypedisplay')?.touched">
                                     <small class="text-danger">CAS is required.</small>
                                 </div>
                             </div>
@@ -29,8 +32,7 @@
                                 <label for="">FP Type</label>
                             </div>
                             <div class="col-12 col-md-8">
-                                <select formControlName="fptype" [(ngModel)]="finger"
-                                    (ngModelChange)="onSelectionFingerPrint($event)">
+                                <select formControlName="fptype" [(ngModel)]="finger" (ngModelChange)="onForce($event)">
                                     <select-filter [placeholder]="'Find Fingerprint'" [displayMember]="'lable'"
                                         [array]="fingerprint" (filteredReturn)="fingerprint =$event">
                                     </select-filter>
@@ -42,24 +44,28 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="input-box mb-3">
+                        <div *ngIf="isServiceName" class="input-box mb-3">
                             <div class="col-sm-4">
                                 <label for="">Service Name</label>
                             </div>
-                            <div class="col-12 col-md-8" *ngIf="showServiceNameField">
-                                <select id="lcoName" formControlName="serviceid" [(ngModel)]="service_1">
-                                    <option value="" selected>Select a Service</option>
-                                    <option *ngFor="let service of filteredIntendSerivice()" [value]="service.id">
+                            <div class="col-12 col-md-8">
+                                <input type="text" placeholder="Search an Service" formControlName="servicename"
+                                    (input)="onSearchServiceChange($event)" [(ngModel)]="service_1"
+                                    [value]="servicename" [matAutocomplete]="auto" class="example-input">
+
+                                <mat-autocomplete #auto="matAutocomplete">
+                                    <mat-option *ngFor="let service of filteredService()" [value]="service.id"
+                                        (click)="onServiceSelect(service)">
                                         {{ service.name }}
-                                    </option>
-                                </select>
-                                <div *ngIf="form.get('serviceid')?.invalid && form.get('serviceid')?.touched">
+                                    </mat-option>
+                                </mat-autocomplete>
+                                <div *ngIf="form.get('servicename')?.invalid && form.get('servicename')?.touched">
                                     <small class="text-danger">Service Name is required.</small>
                                 </div>
                             </div>
                         </div>
 
-                        <div class="input-box mb-3">
+                        <div *ngIf="force" class="input-box mb-3">
                             <div class="col-sm-4">
                                 <label for="">Force</label>
                             </div>
@@ -76,14 +82,14 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="input-box mb-3">
+                        <div *ngIf="isIntendto" class="input-box mb-3">
                             <div class="col-sm-4">
                                 <label for="">Intend To</label>
                             </div>
                             <div class="col-12 col-md-3 mb-8">
                                 <select formControlName="intendto" [(ngModel)]="intend_1"
                                     (ngModelChange)="onChangeIntendTo1($event)">
-                                    <option value="0" selected>Select Intend</option>
+                                    <option value="0" disabled>Select Intend</option>
                                     <option *ngFor="let Intend of intend" [value]="Intend.value">{{Intend.lable}}
                                     </option>
                                 </select>
@@ -91,23 +97,37 @@
                                     <small class="text-danger">Intend To is required.</small>
                                 </div>
                             </div>
-                            <div class="col-12 col-md-5" *ngIf="isSmartcardEnabled" [(ngModel)]="intendid_1">
-                                <input placeholder="Enter Smartcard" type="text" (keypress)="onKeydown($event)"
-                                    formControlName="intendid">
+                            <div class="col-12 col-md-5" *ngIf="isSmartcardEnabled">
+                                <!-- <input placeholder="Enter Smartcard" type="text" (keypress)="onKeydown($event)"
+                                    [(ngModel)]="intendid_1" [maxlength]="castype != 6 ? 20 : 14"
+                                    formControlName="intendid"> -->
+                                <input placeholder="Enter Smartcard" type="text" formControlName="intendid"
+                                    [(ngModel)]="intendid_1" (keypress)="onKeydown($event)"
+                                    [maxlength]="castype != 6 ? 20 : 14" (input)="validateExactLength()">
+                                <div *ngIf="isInvalidLength">
+                                    <small class="text-danger">
+                                        Please enter exactly {{ castype != 6 ? 20 : 14 }} digits.
+                                    </small>
+                                </div>
                                 <div *ngIf="form.get('intendid')?.invalid && form.get('indendid')?.touched">
                                     <small class="text-danger">Indend Id is required.</small>
                                 </div>
                             </div>
 
                             <div class="col-12 col-md-5" *ngIf="isAreaCodeEnabled">
-                                <select id="lcoName" formControlName="intendid" [(ngModel)]="intendid_1">
-                                    <option value="" selected>Select a Area</option>
-                                    <option *ngFor="let area of filteredIntendArea()" [value]="area.id">
+                                <input type="text" placeholder="Search an LCO" [value]="intendidLco"
+                                    [ngModel]="intendidLco" formControlName="intendlco"
+                                    (input)="onSearchLCOChange($event)" [matAutocomplete]="auto" class="example-input">
+
+                                <mat-autocomplete #auto="matAutocomplete">
+                                    <mat-option *ngFor="let area of filteredIntendArea()" [value]="area.name"
+                                        (click)="onLCOSelect(area)">
                                         {{ area.name }}
-                                    </option>
-                                </select>
-                                <div *ngIf="form.get('intendid')?.invalid && form.get('indendid')?.touched">
-                                    <small class="text-danger">Indend Id is required.</small>
+                                    </mat-option>
+                                </mat-autocomplete>
+
+                                <div *ngIf="form.get('intendlco')?.invalid && form.get('intendlco')?.touched">
+                                    <small class="text-danger">LCO Name is required.</small>
                                 </div>
                             </div>
                         </div>
@@ -118,8 +138,9 @@
                             </div>
                             <div class="col-12 col-md-8">
                                 <select placeholder="Select the type" formControlName="type" [(ngModel)]="type_1">
-                                    <option value="" selected>Select a Type</option>
-                                    <option value="" *ngFor="let ty of type" [value]="ty.value">{{ty.lable}}</option>
+                                    <option value="0" disabled>Select a Type</option>
+                                    <option value="" *ngFor="let ty of type" [value]="ty.value"
+                                        [disabled]="castype == 6 && ty.value === 3">{{ty.lable}}</option>
                                 </select>
                                 <div *ngIf="form.get('type')?.invalid && form.get('type')?.touched">
                                     <small class="text-danger">Type is required.</small>
@@ -135,14 +156,19 @@
                                     [(ngModel)]="positiontype_1" (ngModelChange)="onChangePositionType($event)">
                                     <select-filter [placeholder]="'Find Position'" [displayMember]="'lable'"
                                         [array]="positiontype" (filteredReturn)="positiontype = $event"></select-filter>
-                                    <option value="" selected>Position Type</option>
-                                    <option value="" *ngFor="let pt of positiontype" [value]="pt.value">{{ pt.lable }}
+                                    <option value="" disabled>Position Type</option>
+                                    <option *ngFor="let pt of positiontype" [value]="pt.value"
+                                        [disabled]="isOptionDisabled(pt.value)">{{ pt.lable }}
                                     </option>
+
+                                    <!-- [disabled]="castype === 1 && castype === 6 &&  pt.value === 3" -->
                                 </select>
+
                                 <div *ngIf="form.get('positiontype')?.invalid && form.get('positiontype')?.touched">
                                     <small class="text-danger">Position Type is required.</small>
                                 </div>
                             </div>
+
                             <div class="input-box mb-3 display" *ngIf="isPositionXYVisible">
                                 <div class="display_1 mb-3 justify-content-between align-items-center">
                                     <div *ngIf="isPositionXYVisible_mobile" class="col-6 col-md-2">
@@ -152,7 +178,8 @@
                                         <p for="positionX">X</p>
                                     </div>
                                     <div class="col-6 col-md-8">
-                                        <input id="positionX" type="text" formControlName="x" [(ngModel)]="x">
+                                        <input id="positionX" type="text" formControlName="x" [(ngModel)]="x"
+                                            maxlength="4">
                                     </div>
                                 </div>
                                 <div class="display_1 mb-3 justify-content-between align-items-center">
@@ -163,19 +190,22 @@
                                         <p for="positionY">Y</p>
                                     </div>
                                     <div class="col-6 col-md-8">
-                                        <input id="positionY" type="text" formControlName="y" [(ngModel)]="y">
+                                        <input id="positionY" type="text" formControlName="y" [(ngModel)]="y"
+                                            maxlength="3">
                                     </div>
                                 </div>
                             </div>
+
                         </div>
-                        <div class="input-box mb-3" *ngIf="!ispositiondisabled">
+
+                        <div class="input-box mb-3" *ngIf="ispositiondisabled">
                             <div class="col-sm-4">
                                 <label for="">Position</label>
                             </div>
                             <div class="col-12 col-md-8">
                                 <select placeholder="Select the position" formControlName="position"
                                     [(ngModel)]="position_1">
-                                    <option value="" selected>Select a Position</option>
+                                    <option value="0" disabled>Select a Position</option>
                                     <option *ngFor="let po of position" [value]="po.value">{{po.lable}}</option>
                                 </select>
                                 <div *ngIf="form.get('position')?.invalid && form.get('position')?.touched">
@@ -183,22 +213,51 @@
                                 </div>
                             </div>
                         </div>
+
+                        <div *ngIf="isShowStyle" class="input-box mb-3">
+                            <div class="col-sm-4">
+                                <label for="">Show Style</label>
+                            </div>
+                            <div class="col-12 col-md-8">
+                                <select placeholder="Select the type" formControlName="type" [(ngModel)]="s_Style">
+                                    <option value="0" disabled>Select a Show Style</option>
+                                    <option value="" *ngFor="let ty of showStyle" [value]="ty.value"
+                                        [disabled]="castype == 4 && ty.value == 3">{{ty.lable}} </option>
+                                </select>
+                                <div *ngIf=" form.get('type')?.invalid && form.get('type')?.touched">
+                                    <small class="text-danger">Show Style is required.</small>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div *ngIf="isFontStyleSelectDisabled" class="input-box mb-3">
+                            <div class="col-sm-4">
+                                <label for="">Font Style</label>
+                            </div>
+                            <div class="col-12 col-md-8">
+                                <select placeholder="Select the fontstyle" formControlName="font_style"
+                                    [(ngModel)]="fontstyle_1">
+                                    <option value="0" disabled>Select a Font Style</option>
+                                    <option *ngFor="let fs of fontstyle" [value]="fs.value">{{fs.lable}}</option>
+                                </select>
+                            </div>
+                        </div>
                     </div>
                 </div>
                 <div class="col-md-6 col-sm-12 col-sm-6 mobile" style="padding: 1.5rem;">
                     <div class="row">
-                        <div class="input-box mb-3">
+                        <!-- <div class="input-box mb-3">
                             <div class="col-sm-4">
                                 <label for="">Font Size</label>
                             </div>
-                            <div class="col-12 col-md-8" *ngIf="!isFontSizeSelectDisabled">
+                            <div class="col-12 col-md-8" *ngIf="isFontSizeSelectDisabled">
                                 <select placeholder="Select the fontsize" formControlName="fontsize"
                                     [(ngModel)]="fontsize_1">
                                     <option value="">Select a Font Size</option>
                                     <option *ngFor="let fs of fontsize" [value]="fs.value">{{fs.lable}}</option>
                                 </select>
                             </div>
-                            <div class="col-12 col-md-8" *ngIf="!isFontSizeDisabled">
+                            <div class="col-12 col-md-8" *ngIf="isFontSizeDisabled">
                                 <input type="text" placeholder="Enter Font size" pattern="[0-9]*" maxlength="2"
                                     [(ngModel)]="fontsize_1" (keypress)="onKeydown($event)" step="1"
                                     formControlName="fontsize">
@@ -206,15 +265,60 @@
                                     <small class="text-danger">Fontsize is required.</small>
                                 </div>
                             </div>
+                        </div> -->
+
+
+
+                        <div class="input-box mb-3">
+                            <div class="col-sm-4">
+                                <label for="">Font Size</label>
+                            </div>
+                            <div class="col-12 col-md-8" *ngIf="isFontSizeSelectDisabled">
+                                <select placeholder="Select the fontsize" formControlName="fontsize"
+                                    [(ngModel)]="fontsize_1">
+                                    <option value="0" disabled>Select a Font Size</option>
+                                    <option *ngFor="let fs of fontsize" [value]="fs.value">{{fs.lable}}</option>
+                                </select>
+                            </div>
+                            <div class="col-12 col-md-8" *ngIf="isFontSizeSelectDigit">
+                                <select placeholder="Select the fontsize" formControlName="fontsize"
+                                    [(ngModel)]="fontsize_1">
+                                    <option value="0" disabled>Select a Font Size</option>
+                                    <option *ngFor="let fs of fontsizeDigit" [value]="fs.value">{{fs.lable}}</option>
+                                </select>
+                            </div>
+                            <div class="col-12 col-md-8" *ngIf="isFontSizeDisabled">
+                                <input type="text" placeholder="Enter Font size" pattern="[0-9]*" maxlength="3"
+                                    [(ngModel)]="fontsize_1" (keypress)="onKeydown($event)" step="1"
+                                    formControlName="fontsize">
+                                <div *ngIf="form.get('fontsize')?.invalid && form.get('fontsize')?.touched">
+                                    <small class="text-danger">Fontsize is required.</small>
+                                </div>
+                            </div>
                         </div>
+
+
+
                         <div class="input-box mb-3">
                             <div class="col-sm-4">
                                 <label for="">Background Color</label>
                             </div>
-                            <div class="col-12 col-md-8">
-                                <select formControlName="bgcolor" [(ngModel)]="bgcolor_1">
-                                    <option value="">Select a Background Color</option>
+
+                            <div *ngIf="isbackgroundcolor" class="col-12 col-md-8">
+                                <select formControlName="bgcolor" [(ngModel)]="bgcolor_id">
+                                    <option value="0" disabled>Select a Background Color</option>
                                     <option *ngFor="let bc of bgcolor" [value]="bc.value">{{bc.lable}}</option>
+
+                                </select>
+                                <div *ngIf="form.get('bgcolor')?.invalid && form.get('bgcolor')?.touched">
+                                    <small class="text-danger">Background Color is required.</small>
+                                </div>
+
+                            </div>
+                            <div *ngIf="isCasbackgroundcolor" class="col-12 col-md-8">
+                                <select formControlName="bgcolor" [(ngModel)]="bgcolor_id">
+                                    <option value="0" disabled>Select a cas Background Color</option>
+                                    <option *ngFor="let bc of gcolor1" [value]="bc.value">{{bc.lable}}</option>
                                 </select>
                                 <div *ngIf="form.get('bgcolor')?.invalid && form.get('bgcolor')?.touched">
                                     <small class="text-danger">Background Color is required.</small>
@@ -225,21 +329,55 @@
                             <div class="col-sm-4">
                                 <label for="">Font Color</label>
                             </div>
-                            <div class="col-12 col-md-8">
-                                <select formControlName="fontcolor" [(ngModel)]="fontcolor_1">
-                                    <option value="">Select a Font Color</option>
+                            <div *ngIf="isfontColor" class="col-12 col-md-8">
+                                <select formControlName="fontcolor" [(ngModel)]="fontcolor_1" [value]="fontcolor_1">
+                                    <option value="0" disabled>Select a Font Color</option>
                                     <option *ngFor="let fc of fontcolor" [value]="fc.value">{{fc.lable}}</option>
                                 </select>
                                 <div *ngIf="form.get('fontcolor')?.invalid && form.get('fontcolor')?.touched">
                                     <small class="text-danger">Font Color is required.</small>
                                 </div>
                             </div>
+                            <div *ngIf="isCasfontColor" class="col-12 col-md-8">
+                                <select formControlName="fontcolor" [(ngModel)]="fontcolor_1" [value]="fontcolor_1">
+                                    <option value="0" disabled>Select a Font casColor</option>
+                                    <option *ngFor="let fc of fontcolor1" [value]="fc.value">{{fc.lable}}</option>
+                                </select>
+                                <div *ngIf="form.get('fontcolor')?.invalid && form.get('fontcolor')?.touched">
+                                    <small class="text-danger">Font Color is required.</small>
+                                </div>
+                            </div>
                         </div>
-                        <div class="input-box transparancy mb-3">
+                        <div *ngIf="isLocationVisible" class="input-box mb-3">
+                            <div class="col-sm-4">
+                                <label for="">Location</label>
+                            </div>
+                            <div class="input-box mb-3 display">
+                                <div class="display_1 mb-3 justify-content-between align-items-center">
+                                    <div class="col-6 col-md-2">
+                                        <p for="positionX">X</p>
+                                    </div>
+                                    <div class="col-6 col-md-8">
+                                        <input id="positionX" type="text" formControlName="locationx"
+                                            [(ngModel)]="locationx">
+                                    </div>
+                                </div>
+                                <div class="display_1 mb-3 justify-content-between align-items-center">
+                                    <div class="col-6 col-md-2">
+                                        <p for="positionY">Y</p>
+                                    </div>
+                                    <div class="col-6 col-md-8">
+                                        <input id="positionY" type="text" formControlName="locationy"
+                                            [(ngModel)]="locationy">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div *ngIf="isTranparancy" class="input-box transparancy mb-3">
                             <div class="col-sm-4">
                                 <label for="">Transparancy</label>
                             </div>
-                            <div class="col-12 col-md-8" *ngIf="!isTransparency_select_Disabled">
+                            <div class="col-12 col-md-8" *ngIf="isTransparency_select_Disabled">
                                 <select placeholder="Select the transparancy" [(ngModel)]="transparancy_1"
                                     formControlName="transparancy" [disabled]="force">
                                     <select-filter [placeholder]="'Find font transparancy'" [displayMember]="'lable'"
@@ -250,39 +388,65 @@
                                     <small class="text-danger">Transparancy is required.</small>
                                 </div>
                             </div>
-                            <div class="col-12 col-md-8" *ngIf="!isTransparencyDisabled">
+                            <div class="col-12 col-md-8" *ngIf="isTransparencyDisabled">
                                 <input type="text" matInput placeholder="Enter minutes" (keypress)="onKeydown($event)"
-                                    [(ngModel)]="transparancy_1" formControlName="transparancy">
+                                    pattern="[0-9]*" maxlength="3" [(ngModel)]="transparancy_1"
+                                    formControlName="transparancy">
                                 <div *ngIf="form.get('transparancy')?.invalid && form.get('transparancy')?.touched">
                                     <small class="text-danger">Transparancy is required.</small>
                                 </div>
                             </div>
                         </div>
-                        <div class="input-box mb-3" *ngIf="!isrepeatfordisabled">
+                        <div class="input-box mb-3" *ngIf="isrepeatfordisabled">
                             <div class="col-sm-4">
                                 <label for="">Repeatfor</label>
                             </div>
                             <div class="col-12 col-md-8">
-                                <input type="text" matInput placeholder="" [(ngModel)]="repeatfor_1"
+                                <input type="text" matInput placeholder="" [(ngModel)]="repeatfor_1" maxlength="3"
                                     formControlName="repeatfor">
                                 <div *ngIf="form.get('repeatfor')?.invalid && form.get('repeatfor')?.touched">
                                     <small class="text-danger">Repaeatfor is required.</small>
                                 </div>
                             </div>
                         </div>
-                        <div class="input-box mb-3">
+                        <div *ngIf="isDuration" class="input-box mb-3">
                             <div class="col-sm-4">
                                 <label for="">Duration</label>
                             </div>
                             <div class="col-12 col-md-8">
                                 <input type="text" matInput placeholder="Enter duration" (keypress)="onKeydown($event)"
-                                    formControlName="duration" [(ngModel)]="duration_1">
+                                    pattern="[0-9]*" maxlength="3" formControlName="duration" [(ngModel)]="duration_1">
                                 <div *ngIf="form.get('duration')?.invalid && form.get('duration')?.touched">
                                     <small class="text-danger">Duration is required.</small>
                                 </div>
                             </div>
                         </div>
-                        <div class="input-box mb-3">
+                        <div *ngIf="isDisplayDuration" class="input-box mb-3">
+                            <div class="col-sm-4">
+                                <label for="">Display Duration</label>
+                            </div>
+
+                            <div *ngIf="isminDidDuration" class="col-12 col-md-8">
+                                <input type="text" matInput placeholder="Enter Display duration"
+                                    (keypress)="onKeydown($event)" pattern="[0-9]*" maxlength="2"
+                                    formControlName="display_duration" [(ngModel)]="display_duration">
+                                <div
+                                    *ngIf="form.get('display_duration')?.invalid && form.get('display_duration')?.touched">
+                                    <small class="text-danger">Display Duration is required.</small>
+                                </div>
+                            </div>
+
+                            <div *ngIf="ismaxDidDuration" class="col-12 col-md-8">
+                                <input type="text" matInput placeholder="Enter Display duration"
+                                    (keypress)="onKeydown($event)" pattern="[0-9]*" maxlength="3"
+                                    formControlName="display_duration" [(ngModel)]="display_duration">
+                                <div
+                                    *ngIf="form.get('display_duration')?.invalid && form.get('display_duration')?.touched">
+                                    <small class="text-danger"> Display Duration is required.</small>
+                                </div>
+                            </div>
+                        </div>
+                        <div *ngIf="isTimeGap" class="input-box mb-3">
                             <div class="col-sm-4">
                                 <label for="">Time Gap </label>
                             </div>
@@ -298,15 +462,15 @@
                             <div class="col-sm-4">
                                 <label for="">Time Span</label>
                             </div>
-                            <div class=" col-4 col-md-3">
+                            <div *ngIf="!isHH" class=" col-4 col-md-4">
                                 <input type="number" formControlName="hh" [(ngModel)]="hh" pattern="[0-9]" maxlength="2"
                                     (keypress)="onKeydown($event)" placeholder="HH" type="text" value="0">
                             </div>
-                            <div class="col-4 col-md-3">
+                            <div *ngIf="!isMM" class="col-4 col-md-2">
                                 <input type="number" formControlName="mm" [(ngModel)]="mm" pattern="[0-9]" maxlength="2"
                                     (keypress)="onKeydown($event)" placeholder="MM" type="text" value="0">
                             </div>
-                            <div class="col-4 col-md-3">
+                            <div class="col-4 col-md-2">
                                 <input type="number" formControlName="ss" [(ngModel)]="ss" pattern="[0-9]" maxlength="2"
                                     (keypress)="onKeydown($event)" placeholder="SS" type="text" value="0">
                             </div>
@@ -323,7 +487,7 @@
 
             </div>
             <div class=" d-flex justify-content-end align-items-center mb-3" style="color: red;">
-                Service is Not Running
+                {{display_status}}
             </div>
         </form>
     </div>

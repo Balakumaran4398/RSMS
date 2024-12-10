@@ -17,11 +17,15 @@ export class ChannellistComponent implements OnInit {
   packageid: any;
   productType: any;
   count: any;
+  packagename:any;
+
   rowData: any[] = [];
   gridOptions = {
     defaultColDef: {
       // width: 205
     },
+    paginationPageSize: 10,
+    pagination: true,
   }
 
   constructor(public dialogRef: MatDialogRef<ChannellistComponent>, private swal: SwalService,
@@ -46,6 +50,8 @@ export class ChannellistComponent implements OnInit {
     this.userService.getChannellistByPackageIdAndProductType(this.role, this.username, this.packageid, this.productType).subscribe((data: any) => {
       console.log(data);
       this.count = data.count;
+      this.packagename= data.packagename;
+      console.log(this.packagename)
       this.rowData = data.channeldetails;
     })
   }

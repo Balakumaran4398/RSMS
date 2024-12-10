@@ -1,6 +1,6 @@
 <div class="opt">
-    <div class=" col-12 col-md-12 mb-4 display justify-content-start align-items-center    ">
-        <div class="custom-select input_box  col-12 col-md-4 mb-2 mx-2">
+    <div class=" col-12 col-md-12 mb-4 display justify-content-start align-items-baseline ">
+        <!-- <div class="custom-select input_box  col-12 col-md-4 mb-2 mx-2">
             <input type="text" placeholder="Search Operator" [(ngModel)]="operatorname" (input)="filterOperators()"
                 (focus)="showDropdown = false" (click)="showDropdown = true">
 
@@ -10,27 +10,48 @@
                     {{ operator.name }}
                 </li>
             </ul>
+        </div> -->
+        <mat-form-field class="example-full-width" appearance="outline">
+            <mat-label>Select Operator</mat-label>
+            <input type="text" matInput [matAutocomplete]="auto" (input)="filterOperators($event)"
+                [matAutocompleteDisabled]="false" [value]="selectedOperator?.name">
+
+            <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayOperator">
+                <mat-option (click)="onoperatorchange({ name: 'ALL Operator', value: 0 })">ALL Operator</mat-option>
+                <mat-option *ngFor="let operator of filteredOperators" [value]="operator.name"
+                    (click)="onoperatorchange(operator)">
+                    {{ operator.name }}
+                </mat-option>
+            </mat-autocomplete>
+        </mat-form-field>
+
+
+
+        <div class="d-flex justify-content-center mb-2" style="align-items: baseline;">
+            <button class="btn btn-outline-info mx-1" mat-raised-button color="custom-select"
+                style="background-color: #0c5e85;color: white;" type="button" (click)="New_lco()"> <i
+                    class="fa fa-plus mx-2" style="padding-right: 1px;font-size: 14px"></i>
+                NEW LCO
+            </button>
         </div>
-
-
-        <div class="col-12 col-md-2 mb-2 mx-2 card  d-flex align-items-center " (click)="New_lco()">
-            <p>
-                <i class="fa fa-plus mx-2" style="padding-right: 3px;font-size: 14px"></i>NEW LCO
-
-            </p>
-            <!-- <button class="btn btn-success"><i class="fa fa-plus mx-2"
-                    style="padding-right: 3px;font-size: 14px"></i>NEW LCO </button> -->
-        </div>
-        <div class="col-12 col-md-2 mb-2 mx-2 card d-flex align-items-center" (click)="New_lco_business()">
-            <p> <i class="fa fa-plus mx-2" style="padding-right: 3px;font-size: 14px"></i>New LCO Business</p>
-            <!-- <button class="btn btn-success"><i class="fa fa-plus mx-2"
-                style="padding-right: 3px;font-size: 14px"></i>NEW LCO  Business</button> -->
+        <div class="d-flex justify-content-center mb-2" style="align-items: baseline;">
+            <button class="btn btn-outline-info mx-1" mat-raised-button color="custom-select"
+                style="background-color: #0c5e85;color: white;" type="button" (click)="New_lco_business()"> <i
+                    class="fa fa-plus mx-2" style="padding-right: 1px;font-size: 14px"></i>
+                New LCO Business
+            </button>
         </div>
     </div>
-    <div class="" style="grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); display: grid; gap: 10px; ">
+    <div class="d-flex justify-content-center align-items-center" style="padding: 0.5rem;">
+        <mat-paginator [length]="totalLength" [pageSize]="pageSize" [pageSizeOptions]="[5, 10, 25, 100]"
+            (page)="onPageChange($event)">
+        </mat-paginator>
+    </div>
+    <div class="grid-container">
         <!-- <span class="k col-12 col-md-4" *ngFor="let operator of operator_details"> -->
-        <div *ngFor="let operator of operator_details">
-            <mat-card class=" " style="height: 100%;width: min-content;">
+            <div *ngFor="let operator of pagedOperators">
+        <!-- <div *ngFor="let operator of operator_details"> -->
+            <mat-card class="card" style="height: 100%;">
                 <mat-card-header>
                     <mat-card-subtitle class="sub-tittle mb-3">
                         {{operator?.operatorname || 'empty'}} [ {{operator?.balance}}]
@@ -160,22 +181,18 @@
                             </div>
 
 
-                            <div class="files tooltip-container mx-2" (click)="openDialog('recharge')">
-                                <!-- <img src="../assets/images/icons/Document_icon.png" alt="Dashboard"> -->
+                            <!-- <div class="files tooltip-container mx-2" (click)="openDialog('recharge')">
                                 <i class="fa-solid fa-book" style="font-size:20px;color:var(--primary-color)"></i>
                                 <span class="tooltip">LCO RECHARGE REPORT
                                 </span>
                             </div>
 
                             <div class="files tooltip-container mx-2" (click)="openDialog('retailer')">
-                                <!-- <img src="../assets/images/icons/Document_icon.png" alt="Report"> -->
                                 <i class="fa-solid fa-person-chalkboard"
                                     style="font-size:20px;color:var(--primary-color)"></i>
                                 <span class="tooltip">LCO WISE RETAILER REPORT </span>
                             </div>
                             <div class="files tooltip-container mx-2" (click)="openDialog('areawise')">
-                                <!-- <img src="../assets/images/icons/Document_icon.png" alt="Report"> -->
-
                                 <i class="fa fa-calculator" style="font-size:20px;color:var(--primary-color)"
                                     aria-hidden="true"></i>
                                 <span class="tooltip">AREAWISE CONECTION COUNT REPORT
@@ -183,27 +200,27 @@
                             </div>
 
                             <div class="files tooltip-container mx-2" (click)="openDialog('cancel_Subscription')">
-                                <!-- <img src="../assets/images/icons/Document_icon.png" alt="Report"> -->
                                 <i class="fa-solid fa-file-lines" style="font-size:20px;color:var(--primary-color)"></i>
                                 <span class="tooltip">CANCEL SUBSCRIPTION REPORT
                                 </span>
                             </div>
                             <div class="files tooltip-container mx-2" (click)="openDialog('productwise')">
-                                <!-- <img src="../assets/images/icons/Document_icon.png" alt="Report"> -->
                                 <i class="fa-solid fa-address-book"
                                     style="font-size:20px;color:var(--primary-color)"></i>
                                 <span class="tooltip">PRODUCTWISE CURRENT COUNT
                                 </span>
-                            </div>
+                            </div> -->
 
                             <div class="files mx-2">
                                 <a (click)="navgetTosublcoUrl(operator.operatorid)" class="tooltip-container">
-                                    <!-- <img src="../assets/images/icons/dashboard_icon.png" alt="Dashboard"> -->
                                     <i class='fa-solid fa-people-group'
                                         style="font-size:25px;color:var(--primary-color)"></i>
                                     <span class="tooltip">TO CLICK SUBLCO DETAILS</span>
                                 </a>
                             </div>
+
+
+
 
                             <!-- <div class="files tooltip-container mx-2">
                                 <a (click)="navgetToUrl(operator.operatorid)" class="tooltip-container">

@@ -14,20 +14,26 @@ export class ReallocationComponent {
   username: any;
   rowData: any;
   selectedLcoName: any = 0;
-  lco_list: { [key: string]: number } = {};
+  lco_list: any[] = [];
   searchTerm: string = '';
   smartcardlist: any[] = [];
+  filteredOperators: any[] = [];
+  selectedOperator: any;
+  submitted: boolean = false;
   constructor(
     public dialogRef: MatDialogRef<ReallocationComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any, private userService: BaseService, private storageService: StorageService) {
     console.log(data);
     this.username = storageService.getUsername();
     this.role = storageService.getUserRole();
-    this.lco_list = data.lco_list;
+    // this.lco_list = data.lco_list;
+    this.lco_list = Object.entries(data.lco_list).map(([key, value]) => {
+      return { name: key, value: value };
+    });
     console.log(this.lco_list);
     this.smartcardlist = data.smartcard;
     console.log(this.smartcardlist);
-
+    this.filteredOperators=this.lco_list;
 
   }
   onNoClick(): void {
@@ -49,11 +55,27 @@ export class ReallocationComponent {
   //   })
   // }
 
+  filterOperators(event: any): void {
+    const filterValue = event.target.value.toLowerCase();
+    this.filteredOperators = this.lco_list.filter(operator =>
+      operator.name.toLowerCase().includes(filterValue)
+    );
+  }
+  displayOperator(operator: any): string {
+    return operator ? operator.name : '';
+  }
+  onSubscriberStatusChange(selectedOperator: any) {
+    console.log(selectedOperator);
+    this.selectedOperator = selectedOperator;
+    this.selectedLcoName = selectedOperator.value;
+    console.log(this.selectedLcoName);
+  }
+
   submit() {
-    // Validation to check if the necessary fields are set
-
-
-    // Call the service to perform the operation
+    this.submitted = true;
+    if (!this.selectedLcoName) {
+      return
+    }
     this.userService.ReAllocate_Smartcard(this.role, this.username, this.smartcardlist, this.selectedLcoName).subscribe((res: any) => {
       console.log(res);
       Swal.fire({
@@ -63,7 +85,6 @@ export class ReallocationComponent {
         timer: 3000,
         showConfirmButton: false
       }).then(() => {
-        // Close the dialog or perform any other necessary actions
         this.dialogRef.close();
       });
     },

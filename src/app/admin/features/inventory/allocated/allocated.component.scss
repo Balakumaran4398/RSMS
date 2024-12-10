@@ -3,6 +3,10 @@
     display: inline-block;
 }
 
+.display {
+    display: flex;
+}
+
 .icon-container:hover .tooltip {
     visibility: visible;
     opacity: 1;
@@ -75,6 +79,7 @@ img {
     font-family: 'Poppins', sans-serif;
     transition: all 120ms ease-out 0s;
 }
+
 .tooltip-container {
     position: relative;
     display: inline-block;
@@ -101,4 +106,15 @@ img {
 .tooltip-container:hover .tooltip {
     visibility: visible;
     opacity: 1;
+}
+
+@media screen and (max-width:560px) {
+    .display {
+        display: block;
+    }
+}
+@media screen and (max-width:770px) {
+    .display {
+        display: block;
+    }
 }

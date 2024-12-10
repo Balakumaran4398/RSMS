@@ -148,6 +148,11 @@ import { SpeciallcochangeComponent } from "./features/special_role/Bulk operaton
 import { SpecialeditbulkpackageComponent } from "./features/special_role/Dialogue/Bulk operation/specialeditbulkpackage/specialeditbulkpackage.component";
 import { SpeciallcotransferComponent } from "./features/special_role/Bulk operaton/speciallcotransfer/speciallcotransfer.component";
 import { AddonManageComponent } from "./features/channel_setting/_Dialogue/Addon_package/addon-manage/addon-manage.component";
+import { OperatorcancelsubreportComponent } from "./features/channel_setting/_Dialogue/operator/operatorcancelsubreport/operatorcancelsubreport.component";
+import { LcologinpageComponent } from "./features/subscriber/lcologinpage/lcologinpage.component";
+import { LoginrefundComponent } from "./features/channel_setting/_Dialogue/LCO_Recharge/loginrefund/loginrefund.component";
+import { BulkpackageupdationComponent } from "./features/channel_setting/_Dialogue/BULK OPERATION/bulkpackageupdation/bulkpackageupdation.component";
+import { TraiReportComponent } from "./features/channel_setting/Reports/trai-report/trai-report.component";
 @NgModule({
     declarations: [
         AdminBaseComponent, NavComponent, HomeComponent, NavbarComponent, MsodetailsComponent, CasmasterComponent,
@@ -159,8 +164,9 @@ import { AddonManageComponent } from "./features/channel_setting/_Dialogue/Addon
         // -----------------------------------------operator----------------------------------
         OperatorlistComponent, OperatorDetailsComponent, LcoRechargeComponent, EditLcoComponent, SpecialPermissionComponent, NewLcoComponent, NewstreetComponent,
         AddLcoBusinessComponent, LcodashboardComponent, LcochartComponent, LcopiechartComponent, OperatordialogueComponent, StreetComponent, EditareaComponent,
+        OperatorcancelsubreportComponent,LoginrefundComponent,
         // --------------LCO RECHARGE-----------------
-        LcoRechargeReportComponent, NewRechargeComponent, BulkRechargeComponent, RefundComponent,
+        LcoRechargeReportComponent, NewRechargeComponent, BulkRechargeComponent, RefundComponent,BulkpackageupdationComponent,
         //==========================================channel_setting==============================================
         AddonPackageComponent, BroadMasterComponent, ChannelComponent, ChannelTypeComponent, DistributorMasterComponent,
         CreateDistributorComponent, LcoCommissionComponent, PackageReferenceComponent, PackageCreationComponent, PackageMasterComponent,
@@ -182,7 +188,7 @@ import { AddonManageComponent } from "./features/channel_setting/_Dialogue/Addon
         AddLcoComponent, ChangeMembershipComponent, UpdateLcoCommissionComponent, CreateLcoComponent, UpdateLcoComponent, CreateLcoMembershipComponent,
         // -------------------------------Subscriber---------------------------------
         CreateSubscriberComponent, SubscriberDetailsComponent, ExpiryDetailsComponent, SubDashboardComponent, SubscriberdialogueComponent,
-        SubloginComponent, ChannellistComponent,
+        SubloginComponent, ChannellistComponent,LcologinpageComponent,
         // -----------------------------------------Cas Operation---------------------------------
         FingerPrintComponent, ScrollingComponent, MessageComponent, ForceTuningComponent, MailComponent, CasDialogueComponent,
         // -------------------------------Inventory---------------------------------
@@ -205,6 +211,8 @@ import { AddonManageComponent } from "./features/channel_setting/_Dialogue/Addon
         AddednotaddedComponent, PackageplanComponent, PackageplandialogueComponent, ChanneldetailsComponent, ChanneldialogueComponent, AdsdetailsComponent, AdsdialogueComponent, LoginsettingsComponent,
         TaxComponent, ProofComponent,ProofdetailsComponent,TaxdetailsComponent,LogindialogueComponent,EditDismembershipComponent,SpecialBulkpackageComponent,
         SpecialcancelsubscriptionComponent,SpecialareachangeComponent,SpeciallcochangeComponent,SpecialeditbulkpackageComponent,SpeciallcotransferComponent,
+        // =====================================================Reports=========================================
+        TraiReportComponent,
     ],
     imports: [
         CommonModule,

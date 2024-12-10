@@ -1,115 +1,84 @@
+<div class="Head d-flex justify-content-between align-items-center mb-3" style="padding: 1rem;">
+    <h6>UPDATE ADDON PACKAGE</h6>
+    <i class="fa fa-close close-icon" style="cursor: pointer;" (click)="onNoClick()"></i>
+</div>
+<div class="col-12 col-md-12" style="padding: 1rem;">
+    <div class="mobile">
+        <div class="input_box col-12 col-md-12 display mb-1">
+            <div class="col-12 col-md-6 ">
+                <span>Package Name</span>
+            </div>
+            <div class="col-12 col-md-6 ">
+                <input matInput class="" id="addon_package_name" style="height: 50px;" [(ngModel)]="addon_package_name">
+            </div>
+        </div>
+        <div class="input_box col-12 col-md-12 display mb-1">
+            <div class="col-12 col-md-6 ">
+                <span>Package Rate</span>
+            </div>
+            <div class="col-12 col-md-6">
+                <input type="text" id="addon_package_rate" class="" maxlength="10" pattern="[0-9]*"
+                    (keydown)="onKeydown($event)" [(ngModel)]="addon_package_rate">
+            </div>
+        </div>
+        <div class="input_box col-12 col-md-12 display mb-1">
+            <div class="col-12 col-md-6 ">
+                <span>Broadcaster </span>
+            </div>
+            <div class="col-12 col-md-6">
+                <select [(ngModel)]="broadcaster_id" class="form-select" (change)="onBroadcasterChange($event)">
+                    <option *ngFor="let broadcaster of broadcaster_list" [value]="broadcaster.value.id">
+                        {{ broadcaster.value.broadcastername }}
+                    </option>
+                </select>
+            </div>
+        </div>
+        <div class="input_box col-12 col-md-12 display mb-1">
+            <div class="col-12 col-md-6 ">
+                <span>Description</span>
+            </div>
+            <div class="col-12 col-md-6">
+                <input matInput class="" id="addon_package_description" style="height: 50px;"
+                    [(ngModel)]="addon_package_description">
+            </div>
+        </div>
+        <div class="input_box col-12 col-md-12 display mb-1">
+            <div class="col-12 col-md-6 ">
+                <span>Reference Id</span>
+            </div>
+            <div class="col-12 col-md-6">
+                <input type="text" id="order_id" class="" [disabled]="true" [(ngModel)]="order_id">
+            </div>
+        </div>
 
-
-    <div class="Head d-flex justify-content-between align-items-center mb-3" style="padding: 1rem;">
-        <h6>UPDATE ADDON PACKAGE</h6>
-        <i class="fa fa-close close-icon" style="cursor: pointer;" (click)="onNoClick()"></i>
-    </div>
-    <div class="col-12 col-md-12" style="padding: 1rem;">
-        <div class="mobile">
-            <div class="input_box col-12 col-md-12 display mb-1">
-                <div class="col-12 col-md-6 ">
-                    <span>Package Name</span>
-                </div>
-                <div class="col-12 col-md-6 ">
-                    <input matInput class="" id="addon_package_name" style="height: 50px;"
-                        [(ngModel)]="addon_package_name">
-                </div>
+        <div class="input_box col-12 col-md-12 display mb-1">
+            <div class="col-12 col-md-6 ">
+                <span>Commission</span>
             </div>
-            <div class="input_box col-12 col-md-12 display mb-1">
-                <!-- <label class="col-12 col-md-6 ">Description</label> -->
-                <div class="col-12 col-md-6 ">
-                    <span>Description</span>
-                </div>
-                <div class="col-12 col-md-6">
-                    <input matInput class="" id="addon_package_description" style="height: 50px;"
-                        [(ngModel)]="addon_package_description">
-                </div>
+            <div class="col-12 col-md-6">
+                <input type="text" id="commission" class="" maxlength="10" (keydown)="onKeydown1($event)"
+                    (focus)="onFocus()" (blur)="onBlur()" [value]="commission || '0'" [(ngModel)]="commission">
             </div>
-            <div class="input_box col-12 col-md-12 display mb-1">
-                <!-- <label class="col-12 col-md-6 ">Reference Id</label> -->
-                <div class="col-12 col-md-6 ">
-                    <span>Reference Id</span>
-                </div>
-                <div class="col-12 col-md-6">
-                    <input type="text" id="order_id" class="" [disabled]="true" [(ngModel)]="order_id">
-                </div>
+        </div>
+        <div class="input_box col-12 col-md-12 display mb-1">
+            <div class="col-12 col-md-6 ">
+                <span>Is percentage</span>
             </div>
-            <div class="input_box col-12 col-md-12 display mb-1">
-                <!-- <label class="col-12 col-md-6 ">Broadcaster Id</label> -->
-                <div class="col-12 col-md-6 ">
-                    <span>Broadcaster Id</span>
-                </div>
-                <div class="col-12 col-md-6">
-                    <input type="text" id="broadcaster_id" class="" [disabled]="true" [(ngModel)]="broadcaster_id">
-                </div>
-            </div>
-            <div class="input_box col-12 col-md-12 display mb-1">
-                <!-- <label class="col-12 col-md-6">Package Rate</label> -->
-                <div class="col-12 col-md-6 ">
-                    <span>Package Rate</span>
-                </div>
-                <div class="col-12 col-md-6">
-                    <input type="text" id="addon_package_rate" class="" maxlength="10" pattern="[0-9]*"
-                        (keydown)="onKeydown($event)" [(ngModel)]="addon_package_rate">
-                </div>
-            </div>
-            <div class="input_box col-12 col-md-12 display mb-1">
-                <!-- <label class="col-12 col-md-6 ">Tax Amount</label> -->
-                <div class="col-12 col-md-6 ">
-                    <span>Tax Amount</span>
-                </div>
-                <div class="col-12 col-md-6">
-                    <input type="text" id="tax_amount" class="" [(ngModel)]="tax_amount">
-                </div>
-            </div>
-            <div class="input_box col-12 col-md-12 display mb-1">
-                <!-- <label class="col-12 col-md-6 ">MRP (Customer Amounr)</label> -->
-                <div class="col-12 col-md-6 ">
-                    <span>MRP (Customer Amount)</span>
-                </div>
-                <div class="col-12 col-md-6">
-                    <input type="text" id="customer_amount" class="" [(ngModel)]="customer_amount">
-                </div>
-            </div>
-            <div class="input_box col-12 col-md-12 display mb-1">
-                <!-- <label class="col-12 col-md-6">Commission</label> -->
-                <div class="col-12 col-md-6 ">
-                    <span>Commission</span>
-                </div>
-                <div class="col-12 col-md-6">
-                    <input type="text" id="commission" class="" maxlength="10" (keydown)="onKeydown1($event)"
-                        (focus)="onFocus()" (blur)="onBlur()" [value]="commission || '0'" [(ngModel)]="commission">
-                </div>
-            </div>
-            <div class="input_box col-12 col-md-12 display mb-1">
-                <!-- <label class="col-12 col-md-6 ">MSO Commission</label>  -->
-                <div class="col-12 col-md-6 ">
-                    <span>MSO Commission</span>
-                </div>
-                <div class="col-12 col-md-6">
-                    <input type="text" id="mso_amount" class="" [(ngModel)]="mso_amount">
-                </div>
-            </div>
-            <div class="input_box col-12 col-md-12 display mb-1">
-                <!-- <label class="col-12 col-md-6  ">Is percentage</label> -->
-                <div class="col-12 col-md-6 ">
-                    <label>Is percentage</label>
-                </div>
-                <div class="col-12 col-md-6">
-                    <div class="toggle-button-cover">
-                        <div class="button b2" id="button-10">
-                            <input type="checkbox" class="checkbox" checked id="isactive" [(ngModel)]="ispercentage" />
-                            <div class="knobs">
-                                <span>YES</span>
-                            </div>
-                            <div class="layer"></div>
+            <div class="col-12 col-md-6">
+                <div class="toggle-button-cover">
+                    <div class="button b2" id="button-10">
+                        <input type="checkbox" class="checkbox" checked id="ispercentage" [(ngModel)]="ispercentage" />
+                        <div class="knobs">
+                            <span>YES</span>
                         </div>
+                        <div class="layer"></div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-    <div class="input_box d-flex justify-content-center align-items-center mb-3" style="padding: 1rem;">
-        <button type="button" class="btn btn-primary me-2" (click)="Update_Addon_package()">Update</button>
-        <button type="button" class="btn btn-secondary" (click)="onNoClick()">Cancel</button>
-    </div>
+</div>
+<div class="input_box d-flex justify-content-center align-items-center mb-3" style="padding: 1rem;">
+    <button type="button" class="btn btn-primary me-2" (click)="Update_Addon_package()">Update</button>
+    <button type="button" class="btn btn-secondary " (click)="onNoClick()">Cancel</button>
+</div>

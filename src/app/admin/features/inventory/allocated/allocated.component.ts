@@ -23,7 +23,9 @@ export class AllocatedComponent {
   smartcard: any;
   caslist: any;
   selectedLcoName: any = 0;
-  lco_list: { [key: string]: number } = {};
+  submitted: boolean = false;
+  // lco_list: { [key: string]: number } = {};
+  lco_list: any[] = [];
   searchTerm: string = '';
   isAnyRowSelected: any = false;
   selectedIds: number[] = [];
@@ -40,14 +42,22 @@ export class AllocatedComponent {
     paginationPageSize: 10,
     pagination: true,
   }
-
+  filteredOperators: any[] = [];
+  selectedOperator: any;
   constructor(public dialog: MatDialog, public userService: BaseService, private storageService: StorageService, private swal: SwalService) {
     this.username = storageService.getUsername();
     this.role = storageService.getUserRole();
     this.userService.Allocated_smartcard_List(this.role, this.username).subscribe((data: any) => {
       // this.rowData = data[0].allocatedsmartcard;
+      console.log(data);
+
       console.log(this.rowData);
-      this.lco_list = data[0].operatorid;
+      // this.lco_list = data[0].operatorid;
+      console.log(this.lco_list);
+      this.lco_list = Object.entries(data[0].operatorid).map(([key, value]) => {
+        return { name: key, value: value };
+      });
+      this.filteredOperators=this.lco_list;
       console.log(this.lco_list);
       this.caslist = data[0].castype;
       console.log(this.caslist);
@@ -70,43 +80,60 @@ export class AllocatedComponent {
     }
   }
 
-  filteredLcoKeys(): string[] {
-    const keys = Object.keys(this.lco_list);
+  // filteredLcoKeys(): string[] {
+  //   const keys = Object.keys(this.lco_list);
 
-    if (!this.searchTerm) {
-      return keys;
-    }
+  //   if (!this.searchTerm) {
+  //     return keys;
+  //   }
 
-    return keys.filter(key =>
-      key.toLowerCase().includes(this.searchTerm.toLowerCase())
+  //   return keys.filter(key =>
+  //     key.toLowerCase().includes(this.searchTerm.toLowerCase())
+  //   );
+  // }
+  filterOperators(event: any): void {
+    const filterValue = event.target.value.toLowerCase();
+    this.filteredOperators = this.lco_list.filter(operator =>
+      operator.name.toLowerCase().includes(filterValue)
     );
+    console.log(this.filteredOperators);
+
+  }
+  displayOperator(operator: any): string {
+    return operator ? operator.name : '';
+  }
+  onSubscriberStatusChange(selectedOperator: any) {
+    console.log(selectedOperator);
+    this.selectedOperator = selectedOperator;
+    this.selectedLcoName = selectedOperator.value;
+    console.log(this.selectedLcoName);
   }
   columnDefs: ColDef[] = [
     // {
     //   lockPosition: true, headerCheckboxSelection: true, checkboxSelection: true, width: 80
     // },
     {
-      headerName: 'SMARTCARD',
+      headerName: 'SMARTCARD', width: 200,
       field: 'smartcard',
 
     },
     {
-      headerName: 'BOX_ID',
+      headerName: 'BOX_ID',width: 250,
       field: 'boxid',
 
     },
     {
-      headerName: 'CARTON BOX',
+      headerName: 'CARTON BOX',width: 230,
       field: 'cottonbox',
 
     },
     {
-      headerName: 'CAS',
+      headerName: 'CAS',width: 200,
       field: 'casname',
 
     },
     {
-      headerName: 'IS_ALLOCATED',
+      headerName: 'IS_ALLOCATED',width: 200,
       field: 'isallocated',
       cellRenderer: (params: any) => {
         if (params.value === true) {
@@ -117,7 +144,7 @@ export class AllocatedComponent {
       },
     },
     {
-      headerName: 'IS_DEFECTIVE',
+      headerName: 'IS_DEFECTIVE',width: 200,
       field: 'isdefective',
       cellRenderer: (params: any) => {
         if (params.value === true) {
@@ -128,7 +155,7 @@ export class AllocatedComponent {
       },
     },
     {
-      headerName: 'IS_EMI',
+      headerName: 'IS_EMI',width: 250,
       field: 'isemi',
       cellRenderer: (params: any) => {
         if (params.value === true) {
@@ -139,7 +166,7 @@ export class AllocatedComponent {
       },
     },
     {
-      headerName: 'LCO_NAME',
+      headerName: 'LCO_NAME',width: 250,
       field: 'operatorname',
 
     },
@@ -158,25 +185,37 @@ export class AllocatedComponent {
     //   });
     //   return;
     // }
+    this.submitted = true;
+    if (!this.smartcard || !this.selectedLcoName) {
+      // Swal.fire({
+      //   icon: 'warning',
+      //   title: 'Validation Error',
+      //   text: 'Please fill out all required fields.',
+      // });
+      return;
+    }
     console.log(this.selectedLcoName);
-    this.swal.Loading();
-    this.userService.getsearchforallocated_smartcard_List(this.role, this.username, this.selectedLcoName, this.smartcard || null).subscribe((data: any) => {
-      this.rowData = data;
-      Swal.fire({
-        icon: 'success',
-        title: 'Search Completed',
-        text: data.message || 'Search results have been retrieved successfully.',
-        confirmButtonText: 'OK'
+    // this.swal.Loading();
+    this.userService.getsearchforallocated_smartcard_List(this.role, this.username, this.selectedLcoName, this.smartcard || null)
+      .subscribe((data: any) => {
+        this.rowData = data;
+        Swal.fire({
+          icon: 'success',
+          title: 'Search Completed',
+          text: data.message || 'Search results have been retrieved successfully.',
+          confirmButtonText: 'OK',
+          timer: 3000,
+          timerProgressBar: true,
+        });
+        console.log(data);
+      }, error => {
+        Swal.fire({
+          icon: 'error',
+          title: 'Error',
+          text: error?.error.message || 'There was an error performing the search. Please try again.',
+          confirmButtonText: 'OK'
+        });
       });
-      console.log(data);
-    }, error => {
-      Swal.fire({
-        icon: 'error',
-        title: 'Error',
-        text: error?.error.message || 'There was an error performing the search. Please try again.',
-        confirmButtonText: 'OK'
-      });
-    });
   }
   submit(): void {
     const dataToSend = {
@@ -184,6 +223,7 @@ export class AllocatedComponent {
       lco_list: this.lco_list,
       castype: this.caslist,
     };
+    console.log(dataToSend);
 
     const dialogRef = this.dialog.open(AllocatedInventoryComponent, {
       width: '450px',

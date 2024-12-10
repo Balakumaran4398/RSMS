@@ -21,11 +21,13 @@ export class AddonActivationComponent {
   isCheckboxChecked: boolean = false;
   iscollected: boolean = false;
   isFileSelected: boolean = false;
+  submitted: boolean = false;
   username: any;
   role: any;
   date: any;
-  castype: any = 0;
-  alacarteList: any = 0;
+  selectedDate: any;
+  castype: any = '';
+  alacarteList: any = '';
   cas: any[] = [];
   area: any;
   CasFormControl: any = 0;
@@ -34,7 +36,12 @@ export class AddonActivationComponent {
   toppingList: any[] = [];
   // rowData: any;
   searchText: any;
-  filteredToppingList = [...this.toppingList];
+  filteredToppingList: any;
+  selectedCas: any;
+  remark: any;
+
+  filteredCasList: any[] = [];
+  casList: any[] = [];
 
   columnDefs: ColDef[] = [
     { headerName: "S.No", lockPosition: true, valueGetter: 'node.rowIndex+1', cellClass: 'locked-col', width: 80, suppressNavigable: true, sortable: false, filter: false },
@@ -98,7 +105,7 @@ export class AddonActivationComponent {
     //   this.listUser = data;      
     // });
   }
-  constructor(public dialog: MatDialog, private fb: FormBuilder, private userservice: BaseService,private swal:SwalService, private storageService: StorageService, private excelService: ExcelService) {
+  constructor(public dialog: MatDialog, private fb: FormBuilder, private userservice: BaseService, private swal: SwalService, private storageService: StorageService, private excelService: ExcelService) {
     this.form = this.fb.group({
       billingAddressCheckbox: [false]
 
@@ -108,27 +115,37 @@ export class AddonActivationComponent {
   }
   selectedTab: string = 'activation';
   ngOnInit() {
+    this.date = new Date().toISOString().split('T')[0];
+    this.selectedDate = this.date;
+    this.filteredToppingList = [...this.toppingList];
+    // this.userservice.Finger_print_List(this.role, this.username).subscribe((data) => {
+    //   this.cas = Object.entries(data[0].caslist).map(([key, value]) => ({ name: key, id: value }));
+    //   console.log(this.cas);
+    // });
+    this.refresh()
     this.userservice.Finger_print_List(this.role, this.username).subscribe((data) => {
-      this.cas = Object.entries(data[0].caslist).map(([key, value]) => ({ name: key, id: value }));
+      this.casList = Object.entries(data[0].caslist).map(([key, value]) => ({ name: key, id: value }));
+      this.cas = [...this.casList];
       console.log(this.cas);
-
     });
   }
 
 
-  filterToppings() {
-    this.filteredToppingList = this.toppingList.filter(topping =>
-      topping.name.toLowerCase().includes(this.searchText.toLowerCase())
-    );
-  }
+
   getData() {
-    this.userservice.getBulkOperationListByDate(this.role, this.username, 'addon_add', this.date, 4)
+    this.rowData = []
+    const dateToPass = this.selectedDate || this.date;
+    if (this.selectedTab == 'activation') {
+      this.remark = 'activation'
+    } else {
+      this.remark = 'remove'
+    }
+    this.userservice.getBulkOperationListByDate(this.role, this.username, this.remark, dateToPass, 4)
       .subscribe(
         (response: HttpResponse<any[]>) => { // Expect HttpResponse<any[]>
           if (response.status === 200) {
-
             this.rowData = response.body;
-            this.swal.Success_200();
+            // this.swal.Success_200();
           } else if (response.status === 204) {
             this.swal.Success_204();
           }
@@ -145,13 +162,20 @@ export class AddonActivationComponent {
       );
   }
   refresh() {
-    this.userservice.getBulkOperationRefreshList(this.role, this.username, 'addon_add', 4)
-     .subscribe(
+    console.log(this.selectedTab);
+    if (this.selectedTab == 'activation') {
+      this.remark = 'activation'
+    } else {
+      this.remark = 'remove'
+    }
+    console.log(this.remark);
+
+    this.userservice.getBulkOperationRefreshList(this.role, this.username, this.remark, 4)
+      .subscribe(
         (response: HttpResponse<any[]>) => { // Expect HttpResponse<any[]>
           if (response.status === 200) {
-
             this.rowData = response.body;
-            this.swal.Success_200();
+            // this.swal.Success_200();
           } else if (response.status === 204) {
             this.swal.Success_204();
           }
@@ -168,7 +192,11 @@ export class AddonActivationComponent {
       );
   }
   selectTab(tab: string) {
+    console.log(tab);
     this.selectedTab = tab;
+    this.selectedCas = ''
+    this.castype = ''
+    this.alacarteList = ''
   }
   get billingAddressCheckbox() {
     return this.form.get('billingAddressCheckbox');
@@ -202,17 +230,29 @@ export class AddonActivationComponent {
     }
   }
 
+  // casPackageList() {
+  //   console.log(event);
+  //   this.userservice.getAlacartelistByCasType(this.role, this.username, this.castype).subscribe((data: any) => {
+  //     console.log(data);
+  //     this.toppingList = Object.entries(data).map(([key, value]) => ({ name: key, id: value }));
+  //     console.log(this.toppingList);
+  //   })
+  // }
+
   casPackageList() {
-    console.log(event);
+    console.log(this.castype);
     this.userservice.getAlacartelistByCasType(this.role, this.username, this.castype).subscribe((data: any) => {
       console.log(data);
-      this.toppingList = Object.entries(data).map(([key, value]) => ({ name: key, id: value }));
+      this.toppingList = Object.entries(data)
+        .map(([key, value]) => ({ name: key, id: value }))
+        .sort((a, b) => a.name.localeCompare(b.name)); // Sort by name alphabetically
       console.log(this.toppingList);
-
-    })
+    });
   }
 
+
   submit() {
+    this.submitted = true;
     if (this.file) {
       console.log(this.file);
       Swal.fire({
@@ -234,24 +274,12 @@ export class AddonActivationComponent {
       formData.append('optype', '3');
       formData.append('selectedlist', this.alacarteList);
 
-      this.userservice.uploadFileForAddonAndAlacarteActivation(formData).subscribe(
-        (res: any) => {
-          Swal.fire({
-            title: 'Upload Complete',
-            text: 'Your file has been successfully uploaded!',
-            icon: 'success',
-            confirmButtonText: 'OK'
-          });
-        },
-        (error: any) => {
-          Swal.fire({
-            title: 'Error',
-            text: 'There was an issue uploading your file. Please try again.',
-            icon: 'error',
-            confirmButtonText: 'OK'
-          });
-        }
-      );
+      this.userservice.uploadFileForAddonAndAlacarteActivation(formData)
+        .subscribe((res: any) => {
+          this.swal.success(res?.message);
+        }, (err) => {
+          this.swal.Error(err?.error?.message);
+        });
     } else {
       Swal.fire({
         title: 'No File',
@@ -262,6 +290,7 @@ export class AddonActivationComponent {
     }
   }
   remove() {
+    this.submitted = true;
     if (this.file) {
       console.log(this.file);
       Swal.fire({
@@ -277,30 +306,18 @@ export class AddonActivationComponent {
       formData.append('username', this.username);
       formData.append('file', this.file);
       formData.append('castype', this.castype);
-      formData.append('type', '6');
+      formData.append('type', '7');
       formData.append('iscollected', this.iscollected.toString());
       formData.append('retailerid', '0');
       formData.append('optype', '3');
       formData.append('selectedlist', this.alacarteList);
 
-      this.userservice.uploadFileForAddonAndAlacarteActivation(formData).subscribe(
-        (res: any) => {
-          Swal.fire({
-            title: 'Upload Complete',
-            text: 'Your file has been successfully uploaded!',
-            icon: 'success',
-            confirmButtonText: 'OK'
-          });
-        },
-        (error: any) => {
-          Swal.fire({
-            title: 'Error',
-            text: 'There was an issue uploading your file. Please try again.',
-            icon: 'error',
-            confirmButtonText: 'OK'
-          });
-        }
-      );
+      this.userservice.uploadFileForAddonAndAlacarteActivation(formData)
+        .subscribe((res: any) => {
+          this.swal.success(res?.message);
+        }, (err) => {
+          this.swal.Error(err?.error?.message);
+        });
     } else {
       Swal.fire({
         title: 'No File',
@@ -312,5 +329,36 @@ export class AddonActivationComponent {
   }
   generateExcel(type: string) {
     this.excelService.generatealacarteactivationExcel(type);
+  }
+
+
+  filterCas(event: any): void {
+    const filterValue = event.target.value.toLowerCase();
+    this.cas = this.casList.filter((cas: any) => cas.name.toLowerCase().includes(filterValue));
+  }
+  
+  filterToppings(event: any) {
+    console.log(event);
+    const filterValue = event.target.value.toLowerCase();
+
+    this.filteredToppingList = this.toppingList.filter(topping =>
+      topping.name.toLowerCase().includes(filterValue)
+    );
+    console.log(this.filteredToppingList);
+
+  }
+  casname: any;
+  onCaschange(selectedCas: any): void {
+    this.selectedCas = selectedCas;
+    this.castype = selectedCas.id;
+    console.log("Selected CAS type:", this.castype);
+    this.userservice.getAlacartelistByCasType(this.role, this.username, this.castype).subscribe((data: any) => {
+      console.log(data);
+      this.toppingList = Object.entries(data).map(([key, value]) => ({ name: key, id: value }));
+      console.log(this.toppingList);
+    });
+  }
+  displayOperator(cas: any): string {
+    return cas ? cas.name : '';
   }
 }

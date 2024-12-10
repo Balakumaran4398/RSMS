@@ -1,0 +1,209 @@
+<div *ngIf="Type=='start'">
+    <div class="Head d-flex justify-content-between align-items-center mb-3" style="padding: 1rem;">
+        <h6>Confirmation</h6>
+        <i class="fa fa-close close-icon" style="cursor: pointer;" (click)="onNoClick()"></i>
+    </div>
+
+    <div class="mobileview">
+        <div class="mb-3">
+            <div class="input_box col-12 col-md-12 d-flex justify-content-center align-items-center"
+                style="padding: 1rem;">
+                <label for="password" class="me-2">ARE YOU SURE WANT TO START BULK SPACKAGE SERVICE</label>
+            </div>
+        </div>
+        <div class="col-12 col-md-12 d-flex justify-content-center align-item-center mb-3">
+            <div class="d-flex align-item-center mx-3">
+                <button type="button" class="btn btn-success me-2" (click)="start()">yes</button>
+                <button type="button" class="btn btn-danger" (click)="onNoClick()">No</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div *ngIf="Type=='stop'">
+    <div class="Head d-flex justify-content-between align-items-center mb-3" style="padding: 1rem;">
+        <h6>Confirmation</h6>
+        <i class="fa fa-close close-icon" style="cursor: pointer;" (click)="onNoClick()"></i>
+    </div>
+    <div class="mobileview">
+        <div class="mb-3">
+            <div class="input_box col-12 col-md-12 d-flex justify-content-center align-items-center "
+                style="padding: 1rem;">
+                <label for="password" class="me-2">ARE YOU SURE WANT TO STOP BULK SPACKAGE SERVICE</label>
+            </div>
+        </div>
+        <div class="col-12 col-md-12 d-flex justify-content-center align-item-center mb-3">
+            <div class="d-flex align-item-center mx-3">
+                <button type="button" class="btn btn-success me-2" (click)="stop()">Yes</button>
+                <button type="button" class="btn btn-danger" (click)="onNoClick()">No</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div *ngIf="Type=='bulk'">
+    <div class="Head d-flex justify-content-between align-items-center mb-3" style="padding: 1rem;">
+        <h6>Confirmation</h6>
+        <i class="fa fa-close close-icon" style="cursor: pointer;" (click)="onNoClick()"></i>
+    </div>
+    <div class="mobile1">
+        <div style="padding: 1rem;">
+            <div class="cancel_sub display_mobile mb-2  align-items-center justify-content-center row">
+                <div class="col-12 col-md-4 display_moile justify-content-start lign-items-center">
+                    <div class="input_box  mb-3">
+                        <div class="d-flex align-items-center justify-content-center">
+                            <div class="col-5 col-md-5">
+                                <span for="password" class="me-2">LCO NAME</span>
+                            </div>
+                            <div class="col-1 col-md-1">
+                                <span class="me-2">:</span>
+                            </div>
+                            <div class="col-5 col-md-5 value">
+                                {{bulkDatas?.operatorname}}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="input_box Isactive mb-3">
+                        <div class="d-flex align-items-center justify-content-center">
+                            <div class="col-5 col-md-5">
+                                <span class="me-2"> LCO CONTACT NUMBER</span>
+                            </div>
+                            <div class="col-1 col-md-1">
+                                <span class="me-2">:</span>
+                            </div>
+                           
+                            <div class="col-5 col-md-5 value">
+                                {{bulkDatas?.mobileno}}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-12 col-md-4 display_moile justify-content-end lign-items-center">
+                    <div class="input_box  mb-3">
+                        <div class="d-flex align-items-center justify-content-center">
+                            <div class="col-5 col-md-5">
+                                <span class="me-2">LCO ID</span>
+                            </div>
+                            <div class="col-1 col-md-1">
+                                <span class="me-2">:</span>
+                            </div>
+                            <div class="col-5 col-md-5 value">
+                                {{bulkDatas?.operatorid}}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="input_box  mb-3">
+                        <div class="d-flex align-items-center justify-content-center">
+                            <div class="col-5 col-md-5">
+                                <span class="me-2">LCO A/C BALANCE</span>
+                            </div>
+                            <div class="col-1 col-md-1">
+                                <span class="me-2">:</span>
+                            </div>
+                            <div class="col-5 col-md-5 value">
+                                {{bulkDatas?.balance}}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-12 col-md-4 display_moile justify-content-end lign-items-center">
+                    <div class="input_box  mb-3">
+                        <div class=" d-flex align-items-center justify-content-center">
+                            <div class="col-5 col-md-5">
+                                <span class="me-2">LCO ADDRESS </span>
+                            </div>
+                            <div class="col-1 col-md-1">
+                                <span class="me-2">:</span>
+                            </div>
+                            <div class="col-5 col-md-5 value">
+                                {{bulkDatas?.address}}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row mb-3" style="padding: 1rem;">
+            <div class="col-12 col-sm-6" style="padding: 1rem;">
+                <div class="Head1 d-flex justify-content-between align-items-center" style="padding: 1rem;">
+                    <h6>CUSTOMER DETAILS</h6>
+                </div>
+                <ag-grid-angular #agGrid id="myGrid" domLayout='autoHeight' class="ag-theme-alpine table-class"
+                    rowAnimation [gridOptions]="gridOptions" [columnDefs]="columnDefs" [rowData]="rowData"
+                    [enableCellTextSelection]="true">
+                </ag-grid-angular>
+            </div>
+            <div class="col-12 col-sm-6" style="padding: 1rem;">
+                <div class="Head1 d-flex justify-content-between align-items-center" style="padding: 1rem;">
+                    <h6>BILLING DETAILS</h6>
+                </div>
+                <ag-grid-angular #agGrid id="myGrid" domLayout='autoHeight' class="ag-theme-alpine table-class"
+                    rowAnimation [gridOptions]="gridOptions" [columnDefs]="columnDefs1" [rowData]="rowData1"
+                    [enableCellTextSelection]="true">
+                </ag-grid-angular>
+            </div>
+        </div>
+        <div class=" col-12 col-sm-6  mb-3 mobile2" style="padding: 1rem;">
+            <div class="card d-flex justify-content-center align-item-center mb-3 ">
+                <div class="checkbox-text mb-3" style="margin-top: 2%;">
+                    <div class="checkbox-content">
+                        <input type="checkbox" id="terms" (change)="onCheckboxPackageChange($event)">
+                        <label for="confirmPass" style="color: orangered;">Click to Subscription Update With New
+                            Base</label>
+                    </div>
+                </div>
+                <div *ngIf="isCheckboxPackageChecked" class="input_box  mb-3">
+                    <div class="col-12 col-md-10 display align-items-center justify-content-center">
+                        <div class="col-12 col-md-4">
+                            <span for="">Package Name </span>
+                        </div>
+                        <!-- <div class="dis">
+                            <span for="">: </span>
+                        </div> -->
+                        <div class=" col-12 col-md-5">
+                            <input type="text" matInput [matAutocomplete]="auto" [(ngModel)]="packageid" 
+                                (input)="filterPackage($event)" placeholder="Select a package"
+                                [matAutocompleteDisabled]="false" [value]="selectedPackageName">
+
+                            <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayOperator"  > 
+                                <mat-option value=""> Select a operator</mat-option>
+                                <mat-option *ngFor="let operator of filteredPackage" [value]="operator.value"
+                                    (click)="onproducttypechange(operator)">
+                                    {{ operator.name }}
+                                </mat-option>
+                            </mat-autocomplete>
+                        </div>
+                    </div>
+                </div>
+                <!-- <div class="checkbox-text mb-3 ">
+                    <div class="checkbox-content">
+                        <input type="checkbox" id="terms" [(ngModel)]="isallpack">
+                        <label for="confirmPass" style="color: rgb(1, 72, 131);">Click to Subscription Update With
+                            Active
+                            Addon/Alacarte</label>
+                    </div>
+                </div> -->
+                <div class="input_box  mb-3">
+                    <div class="col-12 col-md-10 display align-items-center justify-content-center  mb-3">
+                        <div class="col-12 col-md-4">
+                            <span for="">Plan </span>
+                        </div>
+                        <!-- <div class=" dis">
+                            <span for="">: </span>
+                        </div> -->
+                        <div class=" col-12 col-md-5">
+                            <select [(ngModel)]="plantype" (ngModelChange)="changePlan()">
+                                <option value="0" selected disabled>Selected Plan</option>
+                                <option *ngFor="let plan of plantype$ | async" [value]="plan.value">
+                                    {{ plan.key }}
+                                </option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group d-flex justify-content-center align-items-center  mb-3">
+                    <button type="button" class="btn btn-primary me-2" (click)="Submit()">Submit</button>
+                    <button type="button" class="btn btn-secondary" (click)="onNoClick()">Cancel</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

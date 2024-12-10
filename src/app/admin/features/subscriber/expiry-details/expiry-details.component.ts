@@ -21,13 +21,14 @@ export class ExpiryDetailsComponent {
   format: any = 1;
   format_1: any = 2;
   selectedLcoName: any = 0;
+  selectedOperator: any;
   lco_list: { [key: string]: number } = {};
   searchTerm: string = '';
   searchText: any = '';
   filteredOperators: any[] = [];
   showDropdown: boolean = false;
   operatorList: any[] = [];
-  operatorname: any = 'Select a Operator';
+  operatorname: any;
   lconame: any;
   rowData: any;
   constructor(private userservice: BaseService, private storageservice: StorageService, private swal: SwalService, private cdr: ChangeDetectorRef, private excelService: ExcelService) {
@@ -47,10 +48,29 @@ export class ExpiryDetailsComponent {
         this.lconame = key.match(/\d+/)?.[0];
         return { name: key, id: this.lconame };
       });
-      this.filteredOperators = this.operatorList
+      this.filteredOperators = this.operatorList;
     })
   }
 
+
+  // filterOperators(event: any): void {
+  //   const filterValue = event.target.value.toLowerCase();
+  //   this.filteredOperators = this.operatorList.filter((operator: any) =>
+  //     operator.name.toLowerCase().includes(filterValue)
+  //   );
+  // }
+  // displayOperator(operator: any): string {
+  //   return operator ? operator.name : '';
+  // }
+  // onSubscriberStatusChange(selectedOperator: any) {
+  //   console.log(selectedOperator);
+  //   this.selectedOperator = selectedOperator;
+  //   this.selectedLcoName = selectedOperator.name;
+  //   this.operatorid = selectedOperator.id;
+  //    this.filteredOperators = [];
+  //    this.cdr.detectChanges();
+
+  // }
   filterOperators() {
     if (this.operatorname) {
       this.filteredOperators = this.operatorList.filter(operator =>
@@ -104,6 +124,8 @@ export class ExpiryDetailsComponent {
   //   })
   // }
   exportAsXLSX(): void {
+    console.log(this.operatorid);
+
     this.cdr.detectChanges();
     this.userservice.getExpirySubscriberByOperator(this.role, this.username, this.operatorid, this.fromdate || null, this.todate || null, this.format)
       .subscribe(

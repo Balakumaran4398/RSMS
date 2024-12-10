@@ -1,8 +1,32 @@
 .chart-container {
     // position: relative;
     width: 100%;
-    height: 400px; /* Adjust height as needed */
+    height: 370px; /* Adjust height as needed */
 }
 ::ng-deep .canvasjs-chart-credit {
     display: none !important;
 }
+
+.inventory-chart-container {
+    display: flex;
+    align-items: flex-start;
+  }
+  
+  .data-points-list {
+    margin-right: 20px;
+    font-size: 16px;
+  }
+  
+  .data-point-item {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+  }
+  
+  .color-box {
+    width: 20px;
+    height: 20px;
+    margin-right: 8px;
+    border-radius: 4px;
+  }
+  

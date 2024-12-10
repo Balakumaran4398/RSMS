@@ -35,14 +35,12 @@ export class UpdateLcoCommissionComponent {
     console.log(data);
     this.type = data.type;
     console.log(this.type);
-
-    this.productname = data?.data?.productname;
+      this.productname = data?.data?.productname;
     this.producttype = data?.data?.productTypeDisplay;
     this.id = data?.data?.id;
     this.productrate = data?.data?.rate;
     this.commissionvalue = data?.data?.commissionvalue;
     this.isPercentage = data?.data?.ispercentage;
-    console.log(this.id);
     this.disProductname = data?.data?.productname;
     this.disProducttype = data?.data?.productTypeDisplay;
     this.disProductrate = data?.data?.rate;
@@ -94,7 +92,7 @@ export class UpdateLcoCommissionComponent {
     });
 
     // Make the API call
-    this.userservice.updateDistributorCommission(this.role, this.username, this.id,this.msoamount)
+    this.userservice.updateDistributorCommission(this.role, this.username, this.id, this.msoamount)
       .subscribe((res: any) => {
         this.swal.success(res?.message);
       }, (err) => {

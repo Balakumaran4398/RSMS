@@ -3,29 +3,41 @@
 
     <div class=" display justify-content-center align-items-center mb-3">
         <div class="col-12 col-md-4">
-            <select style="color: rgb(17, 0, 0);" [(ngModel)]="operatorid">
+            <!-- <select style="color: rgb(17, 0, 0);" [(ngModel)]="operatorid">
                 <option value="0" selected style="color: rgb(19, 17, 17);">ALL Operator </option>
                 <option *ngFor="let operator of operatorList" [value]="operator.value">{{ operator.name}}</option>
-            </select>
+            </select> -->
+
+            <input type="text" matInput [matAutocomplete]="auto" [(ngModel)]="operatorid" maxlength="20"
+                (input)="filterOperators($event)" placeholder="Select a Operator" [matAutocompleteDisabled]="false"
+                [value]="selectedOperator?.name">
+
+            <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayOperator">
+                <mat-option *ngFor="let operator of filteredOperators" [value]="operator.value"
+                    (click)="onSubscriberStatusChange(operator)">
+                    {{ operator.name }}
+                </mat-option>
+            </mat-autocomplete>
+            <div *ngIf="submitted && !operatorid" class="text-danger" style="font-size: small;">
+                Operator Name is required
+            </div>
         </div>
 
         <div class="col-12 col-md-4 d-flex justify-content-center align-items-center">
             <mat-radio-group aria-label="Select an option" [(ngModel)]="status">
                 <mat-radio-button value="true">Active</mat-radio-button>
-                <mat-radio-button value="false">Deactive</mat-radio-button>
+                <mat-radio-button value="false" >Deactive</mat-radio-button>
             </mat-radio-group>
         </div>
         <div class="col-12 col-md-4 d-flex justify-content-center align-items-center">
-            <button type="submit" class="btn btn-success align-item-center" (click)="Submit()">Submit</button>
+            <button type="submit" class="btn custom-btn  align-item-center" (click)="Submit()">Submit</button>
         </div>
     </div>
-
-
 
     <div class="row d-flex align-items-center justify-content-center border" style="padding: 0.5rem;">
         <div class="col-12">
             <div class="title">
-                <h6 class="text-center mb-2" style="color: rgb(1, 90, 86);">BULK REACTIVE HISTORY</h6>
+                <h6 class="text-center mb-3" style="color: rgb(1, 90, 86);">BULK REACTIVE HISTORY</h6>
                 <div class="display">
                     <div class="col-12 display justify-content-center align-items-center mb-3">
                         <!-- <mat-form-field class="example-full-width"  appearance="outline">
@@ -35,7 +47,7 @@
                             <mat-datepicker [dateClass]="dateClass" #picker></mat-datepicker>
                         </mat-form-field> -->
                         <div class="mx-1 mb-3">
-                            <input type="date" class="input" [(ngModel)]="date">
+                            <input type="date" class="input" [(ngModel)]="selectedDate">
                         </div>
 
                         <button class="btn custom-btn mx-3 mb-3" type="button" (click)="getData()">

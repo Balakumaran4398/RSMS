@@ -8,7 +8,7 @@ import { BaseService } from 'src/app/_core/service/base.service';
 import { StorageService } from 'src/app/_core/service/storage.service';
 import { SwalService } from 'src/app/_core/service/swal.service';
 import Swal from 'sweetalert2';
-
+import { formatDate } from '@angular/common';
 @Component({
   selector: 'app-refresh',
   templateUrl: './refresh.component.html',
@@ -18,12 +18,19 @@ export class RefreshComponent {
   username: any;
   role: any;
   cas: any;
-  operatorid: any = 0;
+  operatorid: any = '';
   status: boolean = false;
+  submitted: boolean = false;
   CasFormControl: any;
   operator_details: any = [];
   operatorList: any[] = [];
   date: any;
+  selectedDate: any;
+  filteredOperators: any[] = [];
+  selectedOperator: any;
+  lco_list: any;
+  selectedLcoName: any[] = [];
+
   type: any = [
     { label: "Select filter Type", value: 0 },
     { lable: "LCO", value: 1 },
@@ -47,16 +54,37 @@ export class RefreshComponent {
   constructor(public dialog: MatDialog, private fb: FormBuilder, private userservice: BaseService, private storageService: StorageService, private swal: SwalService) {
     this.username = storageService.getUsername();
     this.role = storageService.getUserRole();
-
+    const currentDate = new Date();
+    const formattedDate = formatDate(currentDate, 'yyyy-MM-dd', 'en-US');
+    this.userservice.getBulkOperationListByDate(this.role, this.username, 'Bulk Reactivate', formattedDate, 3)
+      .subscribe(
+        (response: HttpResponse<any[]>) => { // Expect HttpResponse<any[]>
+          if (response.status === 200) {
+            this.rowData = response.body;
+            // this.swal.Success_200();
+          } else if (response.status === 204) {
+            // this.swal.Success_204();
+          }
+        },
+        (error) => {
+          if (error.status === 400) {
+            this.swal.Error_400();
+          } else if (error.status === 500) {
+            this.swal.Error_500();
+          } else {
+            Swal.fire('Error', 'Something went wrong. Please try again.', 'error');
+          }
+        }
+      );
   }
   columnDefs: ColDef[] = [
-    { headerName: "S.No", lockPosition: true, valueGetter: 'node.rowIndex+1', cellClass: 'locked-col', width: 80, suppressNavigable: true, sortable: false, filter: false },
-    { headerName: "SMARTCARD", field: 'smartcard' },
-    { headerName: "PACKAGE ID", field: 'packageid' },
+    { headerName: "S.No", lockPosition: true, valueGetter: 'node.rowIndex+1', cellClass: 'locked-col', width:120, suppressNavigable: true, sortable: false, filter: false },
+    { headerName: "SMARTCARD", field: 'smartcard', width: 350 },
+    { headerName: "PACKAGE ID", field: 'packageid', width: 300 },
     {
-      headerName: "STATUS",
+      headerName: "STATUS", width: 300,
       field: 'status',
-      cellRenderer: (params:any) => {
+      cellRenderer: (params: any) => {
         // Check the value of status and apply conditional styling
         if (params.value === 'Success') {
           return `<span style="color: green; font-weight: bold;">${params.value}</span>`;
@@ -65,17 +93,36 @@ export class RefreshComponent {
         }
       }
     },
-    
-    { headerName: "REMARKS", field: 'remarks' },
-    { headerName: "CREATED DATE", field: 'createddate' },
+
+    { headerName: "REMARKS", field: 'remarks', width: 350 },
+    { headerName: "CREATED DATE", field: 'createddate', width: 350 },
   ];
   rowData: any;
   ngOnInit() {
+    this.date = new Date().toISOString().split('T')[0];
+    this.selectedDate = this.date; 
+    this.refresh();
     this.operatorlist();
 
   }
   onGridReady() {
 
+  }
+  filterOperators(event: any): void {
+    const filterValue = event.target.value.toLowerCase();
+    this.filteredOperators = this.operatorList.filter((operator: any) =>
+      operator.name.toLowerCase().includes(filterValue)
+    );
+    console.log(this.filteredOperators);
+  }
+  displayOperator(operator: any): string {
+    return operator ? operator.name : '';
+  }
+  onSubscriberStatusChange(selectedOperator: any) {
+    console.log(selectedOperator);
+    this.selectedOperator = selectedOperator;
+    this.selectedLcoName = selectedOperator.value;
+    console.log(this.selectedLcoName);
   }
   onoperatorchange(event: any) {
     if (this.operatorid === '0') {
@@ -101,9 +148,12 @@ export class RefreshComponent {
         return { name: name, value: value };
       });
       console.log(this.operatorList);
+      this.filteredOperators = this.operatorList;
     })
   }
   Submit() {
+    this.submitted= true;
+    this.swal.Loading();
     this.userservice.BulkReactivationByOperatorId(this.role, this.username, this.operatorid, 0, 3, this.status)
       .subscribe((res: any) => {
         this.swal.success(res?.message);
@@ -123,45 +173,51 @@ export class RefreshComponent {
   };
 
   refresh() {
+    // this.swal.Loading();
     this.userservice.getBulkOperationRefreshList(this.role, this.username, 'Bulk Reactivate', 3)
       .subscribe(
         (response: HttpResponse<any[]>) => { // Expect HttpResponse<any[]>
           if (response.status === 200) {
             this.rowData = response.body;
-            Swal.fire('Success', 'Data updated successfully!', 'success');
+            // this.swal.Success_200();
           } else if (response.status === 204) {
-            Swal.fire('No Content', 'No data available for the given criteria.', 'info');
+            this.swal.Success_204();
           }
         },
         (error) => {
           if (error.status === 400) {
-            Swal.fire('Error 400', 'Bad Request. Please check the input.', 'error');
+            this.swal.Error_400();
           } else if (error.status === 500) {
-            Swal.fire('Error 500', 'Internal Server Error. Please try again later.', 'error');
+            this.swal.Error_500();
           } else {
             Swal.fire('Error', 'Something went wrong. Please try again.', 'error');
           }
         }
       );
+
   }
 
 
   getData() {
-    this.userservice.getBulkOperationListByDate(this.role, this.username, 'Bulk Reactivate', this.date || null, 3)
+    this.rowData=[];
+    // this.swal.Loading();
+    const dateToPass = this.selectedDate || this.date;
+    this.userservice.getBulkOperationListByDate(this.role, this.username, 'Bulk Reactivate', dateToPass, 3)
       .subscribe(
         (response: HttpResponse<any[]>) => { // Expect HttpResponse<any[]>
           if (response.status === 200) {
             this.rowData = response.body;
-            Swal.fire('Success', 'Data updated successfully!', 'success');
+            // this.swal.Success_200();
           } else if (response.status === 204) {
-            Swal.fire('No Content', 'No data available for the given criteria.', 'info');
+            this.rowData = '';
+            this.swal.Success_204();
           }
         },
         (error) => {
           if (error.status === 400) {
-            Swal.fire('Error 400', 'Bad Request. Please check the input.', 'error');
+            this.swal.Error_400();
           } else if (error.status === 500) {
-            Swal.fire('Error 500', 'Internal Server Error. Please try again later.', 'error');
+            this.swal.Error_500();
           } else {
             Swal.fire('Error', 'Something went wrong. Please try again.', 'error');
           }

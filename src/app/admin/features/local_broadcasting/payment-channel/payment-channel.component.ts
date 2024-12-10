@@ -34,9 +34,160 @@ export class PaymentChannelComponent {
     this.role = storageservice.getUserRole();
     this.username = storageservice.getUsername();
   }
+  // columnDefs: ColDef[] = [
+  //   {
+  //     headerName: "S.No", lockPosition: true, valueGetter: 'node.rowIndex+1',
+  //   },
+  //   {
+  //     headerName: 'CHANNEL NAME',
+  //     field: 'channelname',
+
+  //   },
+  //   {
+  //     headerName: 'SERVICE ID',
+  //     field: 'serviceid',
+
+  //   },
+  //   {
+  //     headerName: 'LTB',
+  //     field: 'operatorname',
+
+  //   },
+  //   {
+  //     headerName: 'LTB BALANCE',
+  //     field: 'balance',
+  //     // valueFormatter: (params) => {
+  //     //   return `₹ ${params.value}`;
+  //     // }
+  //   },
+  //   {
+  //     headerName: 'LCN',
+  //     field: 'lcn',
+
+  //   },
+  //   {
+  //     headerName: 'CHANNEL RATE',
+  //     field: 'channelrate',
+
+  //   },
+  //   {
+  //     headerName: 'TAX',
+  //     field: 'tax',
+
+  //   },
+  //   {
+  //     headerName: 'SELLING PRICE',
+  //     field: 'lcoprice',
+
+  //   },
+  //   {
+  //     headerName: 'PAY',
+  //     field: '',
+  //     cellRenderer: (params: any) => {
+  //       const isActive = params.data.statusdisplay === 'Active';
+  //       const payButton = document.createElement('button');
+  //       payButton.innerHTML = '<img src="/assets/images/icons/Pay2.png" style="width:70px">';
+  //       payButton.style.backgroundColor = 'transparent';
+  //       payButton.style.color = 'rgb(2 85 13)';
+  //       payButton.style.border = 'none';
+  //       payButton.style.cursor = 'pointer';
+  //       payButton.style.marginRight = '6px';
+  //       payButton.addEventListener('click', () => {
+  //         this.openEditDialog(params.data);
+  //       });
+  //       if (!isActive) {
+  //         payButton.disabled = true;
+  //         payButton.style.opacity = '0.5';
+  //         payButton.title = 'Cannot pay, status is Deactive';
+
+  //       } else {
+  //         payButton.addEventListener('click', () => {
+  //           this.openEditDialog(params.data);
+  //         });
+  //         payButton.title = 'Pay Now, status is Active';
+
+  //       }
+  //       const div = document.createElement('div');
+  //       div.appendChild(payButton);
+  //       return div;
+  //     }
+
+  //   },
+
+  //   {
+  //     headerName: 'EXPIRY DATE',
+  //     field: 'expirydate',
+
+  //   },
+  //   {
+  //     headerName: 'IS ACTIVE	',
+  //     field: 'statusdisplay',
+  //     cellRenderer: (params: any) => {
+  //       const isActive = params.data.statusdisplay === "Active";
+  //       const toggleButton = document.createElement('button');
+  //       toggleButton.style.backgroundColor = 'transparent';
+  //       toggleButton.style.border = 'none';
+  //       toggleButton.style.fontSize = '22px';
+  //       toggleButton.style.display = 'flex';
+  //       toggleButton.style.alignItems = 'center';
+  //       toggleButton.style.justifyContent = 'center';
+  //       const icon = document.createElement('i');
+  //       icon.className = 'fa';
+  //       toggleButton.appendChild(icon);
+  //       const updateButtonStyle = (Active: boolean) => {
+  //         if (Active) {
+  //           icon.className = 'fa-solid fa-toggle-on';
+  //           toggleButton.style.color = 'rgb(3 87 6)';
+  //           toggleButton.style.fontSize = '24px';
+  //           icon.style.fontSize = '24px';
+  //         } else {
+  //           icon.className = 'fa-solid fa-toggle-off';
+  //           toggleButton.style.color = 'rgb(248 16 77)';
+  //           toggleButton.style.fontSize = '24px';
+  //           icon.style.fontSize = '24px';
+  //         }
+  //       };
+
+  //       updateButtonStyle(isActive);
+  //       const div = document.createElement('div');
+  //       div.style.display = 'flex';
+  //       div.style.alignItems = 'center';
+  //       div.style.justifyContent = 'center';
+  //       div.appendChild(toggleButton);
+  //       return div;
+  //     },
+  //   },
+  //   {
+  //     headerName: '',
+
+  //     cellRenderer: (params: any) => {
+  //       const payButton = document.createElement('button');
+  //       // payButton.innerHTML = ' <img src="/assets/images/icons/edit2.png" style="width:35px">';
+  //       payButton.innerHTML = '<img src="/assets/images/icons/EditLTP.png" style="width:75px">';
+  //       payButton.style.backgroundColor = 'transparent';
+  //       payButton.style.color = 'rgb(2 85 13)';
+  //       payButton.style.border = 'none';
+  //       payButton.title = 'Edit the Customer';
+  //       payButton.style.cursor = 'pointer';
+  //       payButton.style.marginRight = '6px';
+  //       payButton.addEventListener('click', () => {
+  //         this.openEditDialog1(params.data);
+  //       });
+
+  //       const div = document.createElement('div');
+  //       div.appendChild(payButton);
+  //       return div;
+  //     }
+  //   },
+
+
+
+  // ]
+
+
   columnDefs: ColDef[] = [
     {
-      headerName: "S.No", lockPosition: true, valueGetter: 'node.rowIndex+1', 
+      headerName: "S.No", lockPosition: true, valueGetter: 'node.rowIndex+1', width: 100,
     },
     {
       headerName: 'CHANNEL NAME',
@@ -45,56 +196,68 @@ export class PaymentChannelComponent {
     },
     {
       headerName: 'SERVICE ID',
-      field: 'serviceid',
+      field: 'serviceid', width: 130,
 
     },
     {
       headerName: 'LTB',
-      field: 'operatorname',
+      field: 'operatorname', width: 150,
 
     },
     {
       headerName: 'LTB BALANCE',
-      field: 'balance',
-      valueFormatter: (params) => {
-        return `₹ ${params.value}`;
-      }
+      field: 'balance', width: 150,
+      // valueFormatter: (params) => {
+      //   return `₹ ${params.value}`;
+      // }
     },
     {
       headerName: 'LCN',
-      field: 'lcn',
+      field: 'lcn', width: 100,
 
     },
     {
       headerName: 'CHANNEL RATE',
-      field: 'channelrate',
+      field: 'channelrate', width: 150,
 
     },
     {
       headerName: 'TAX',
-      field: 'tax',
+      field: 'tax', width: 100,
 
     },
     {
       headerName: 'SELLING PRICE',
-      field: 'lcoprice',
+      field: 'lcoprice', width: 140,
 
     },
     {
       headerName: 'PAY',
-      field: '',
+      field: '', width: 120,
       cellRenderer: (params: any) => {
+        const isActive = params.data.statusdisplay === 'Active';
         const payButton = document.createElement('button');
-        payButton.innerHTML = ' <img src="/assets/images/icons/pay4.png" style="width:45px">';
+        payButton.innerHTML = '<img src="/assets/images/icons/Pay2.png" style="width:70px">';
         payButton.style.backgroundColor = 'transparent';
         payButton.style.color = 'rgb(2 85 13)';
         payButton.style.border = 'none';
-        payButton.title = 'Edit the Customer';
         payButton.style.cursor = 'pointer';
         payButton.style.marginRight = '6px';
         payButton.addEventListener('click', () => {
           this.openEditDialog(params.data);
         });
+        if (!isActive) {
+          payButton.disabled = true;
+          payButton.style.opacity = '0.5';
+          payButton.title = 'Cannot pay, status is Deactive';
+
+        } else {
+          payButton.addEventListener('click', () => {
+            this.openEditDialog(params.data);
+          });
+          payButton.title = 'Pay Now, status is Active';
+
+        }
         const div = document.createElement('div');
         div.appendChild(payButton);
         return div;
@@ -102,24 +265,53 @@ export class PaymentChannelComponent {
     },
     {
       headerName: 'EXPIRY DATE',
-      field: 'expirydate',
+      field: 'expirydate', width: 200,
 
     },
     {
       headerName: 'IS ACTIVE	',
-      field: 'statusdisplay',
-      cellRenderer: (params: { value: any; }) => {
-        const color = params.value ? 'red' : 'Green';
-        const text = params.value ? 'Deactive' : 'Active';
-        return `<span style="color: ${color}">${text}</span>`;
-      }
+      field: 'statusdisplay', width: 120,
+      cellRenderer: (params: any) => {
+        const isActive = params.data.statusdisplay === "Active";
+        const toggleButton = document.createElement('button');
+        toggleButton.style.backgroundColor = 'transparent';
+        toggleButton.style.border = 'none';
+        toggleButton.style.fontSize = '22px';
+        toggleButton.style.display = 'flex';
+        toggleButton.style.alignItems = 'center';
+        toggleButton.style.justifyContent = 'center';
+        toggleButton.style.marginTop = '10px';
+        const icon = document.createElement('i');
+        icon.className = 'fa';
+        toggleButton.appendChild(icon);
+        const updateButtonStyle = (Active: boolean) => {
+          if (Active) {
+            icon.className = 'fa-solid fa-toggle-on';
+            toggleButton.style.color = 'rgb(3 87 6)';
+            toggleButton.style.fontSize = '24px';
+            icon.style.fontSize = '24px';
+          } else {
+            icon.className = 'fa-solid fa-toggle-off';
+            toggleButton.style.color = 'rgb(248 16 77)';
+            toggleButton.style.fontSize = '24px';
+            icon.style.fontSize = '24px';
+          }
+        };
+
+        updateButtonStyle(isActive);
+        const div = document.createElement('div');
+        div.style.display = 'flex';
+        div.style.alignItems = 'center';
+        div.style.justifyContent = 'center';
+        div.appendChild(toggleButton);
+        return div;
+      },
     },
     {
-      headerName: '',
-   
+      headerName: 'EDIT', width: 150,
       cellRenderer: (params: any) => {
         const payButton = document.createElement('button');
-        payButton.innerHTML = ' <img src="/assets/images/icons/edit2.png" style="width:35px">';
+        payButton.innerHTML = ' <img src="/assets/images/icons/EditLTP.png" style="width:70px">';
         // payButton.innerHTML = '<i class="fas fa-pen-square" style="font-size:30px"></i>';
         payButton.style.backgroundColor = 'transparent';
         payButton.style.color = 'rgb(2 85 13)';
@@ -136,10 +328,9 @@ export class PaymentChannelComponent {
         return div;
       }
     },
-
-
-
   ]
+
+
   rowData: any[] = [];
   onGridReady(params: { api: any; }) {
     this.gridApi = params.api;

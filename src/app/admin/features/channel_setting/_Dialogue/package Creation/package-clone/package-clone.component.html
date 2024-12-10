@@ -1,75 +1,77 @@
-
-    <div class="Head d-flex justify-content-between align-items-center mb-3" style="padding: 1rem;">
-        <h6>NEW PACKAGE CREATION</h6>
-        <i class="fa fa-close close-icon" style="cursor: pointer;" (click)="onNoClick()"></i>
-    </div>
-    <div class="col" style="padding: 1rem;">
-        <div class="card mb-3">
-            <div class="input_box col-12 col-md-12 d-flex align-items-center mb-2">
-                <span class="col-6 col-md-6 col-sm-6">Clone Package</span>
-                <div class="col-6 col-md-6 col-sm-6">
-                    <p style="margin: auto;color: rgb(7 129 44);font-size: 17px;">{{package_name}}</p>
-                </div>
-            </div>
-            <div class="input_box col-12 col-md-12 d-flex align-items-center mb-2">
-                <span class="col- col-md-6 col-sm-6">Package Rate</span>
-                <div class="col-6 col-md-6 col-sm-6">
-                    <p style="margin: auto;color: rgb(23, 26, 189);font-size: 17px;">{{package_rate}}</p>
-                </div>
-            </div>
-            <div class="input_box col-12 col-md-12 d-flex align-items-center mb-2">
-                <span class="col-6 col-md-6 col-sm-6">Package Viewing Count</span>
-                <div class="col-6 col-md-6 col-sm-6">
-                    <p style="margin: auto;color: rgb(178, 38, 206);font-size: 17px;">{{package_view_count}}</p>
-                </div>  
+<div class="Head d-flex justify-content-between align-items-center mb-3" style="padding: 1rem;">
+    <h6>NEW PACKAGE CREATION</h6>
+    <i class="fa fa-close close-icon" style="cursor: pointer;" (click)="onNoClick()"></i>
+</div>
+<div class="col" style="padding: 1rem;">
+    <div class="card mb-3">
+        <div class="input_box col-12 col-md-12 d-flex align-items-center mb-2">
+            <span class="col-6 col-md-6 col-sm-6">Clone Package</span>
+            <div class="col-6 col-md-6 col-sm-6">
+                <p style="margin: auto;color: rgb(7 129 44);font-size: 17px;">{{package_name}}</p>
             </div>
         </div>
-
-
-        <div class="card-body col-12 col-md-12 mb-3">
-            <div class="input_box display align-items-center mb-1">
-                <div class="col-12 col-md-6">
-                    <span>Package Name</span>
-                </div>
-                <div class="col-12 col-md-6 ">
-                    <!-- <input type="text" id="package_name" class="" [(ngModel)]="package_name"> -->
-                    <select id="single" [(ngModel)]="newpackagename" class=" js-states ">
-                        <option value="0" selected>Selected Package Name</option>
-                        <option *ngFor="let package of packagenameList" [value]="package.packageid">
-                            {{ package.packagename }}
-                        </option>
-                    </select>
-                </div>
+        <div class="input_box col-12 col-md-12 d-flex align-items-center mb-2">
+            <span class="col- col-md-6 col-sm-6">Package Rate</span>
+            <div class="col-6 col-md-6 col-sm-6">
+                <p style="margin: auto;color: rgb(23, 26, 189);font-size: 17px;">{{package_rate}}</p>
             </div>
-            <div class="input_box display align-items-center mb-1">
-                <div class="col-12 col-md-6">
-                    <span>Package Rate</span>
-                </div>
-                <div class="col-12 col-md-6">
-                    <input type="text" id="package_rate" class="" maxlength="10" pattern="[0-9]*"
-                        (keydown)="onKeydown($event)" [(ngModel)]="package_rate">
-                </div>
-            </div>
-            <div class="input_box display align-items-center mb-1">
-                <div class="col-12 col-md-6">
-                    <span>Description</span>
-                </div>
-                <div class="col-12 col-md-6">
-                    <input type="text" id="package_desc" class="" [(ngModel)]="package_desc">
-                </div>
-            </div>
-            <div class="input_box display align-items-center mb-3">
-                <div class="col-12 col-md-6">
-                    <span>Reference Id</span>
-                </div>
-                <div class="col-12 col-md-6">
-                    <input type="text" id="Reference_id" class="" maxlength="10" pattern="[0-9]*"
-                        (keydown)="onKeydown($event)" [(ngModel)]="Reference_id">
-                </div>
-            </div>
-            <div class="input_box d-flex justify-content-center align-items-center mb-2">
-                <button type="button" class="btn btn-primary me-2" (click)="Create()">Save</button>
-                <button type="button" class="btn btn-secondary" (click)="onNoClick()">Cancel</button>
+        </div>
+        <div class="input_box col-12 col-md-12 d-flex align-items-center mb-2">
+            <span class="col-6 col-md-6 col-sm-6">Package Viewing Count</span>
+            <div class="col-6 col-md-6 col-sm-6">
+                <p style="margin: auto;color: rgb(178, 38, 206);font-size: 17px;">{{package_view_count}}</p>
             </div>
         </div>
     </div>
+
+
+    <div class="card-body col-12 col-md-12 mb-3">
+        <div class="input_box display align-items-center mb-1">
+            <div class="col-12 col-md-6">
+                <span>Package Name</span>
+            </div>
+            <div class="col-12 col-md-6 ">
+                <input type="text" id="newpackagename" class="" [(ngModel)]="newpackagename">
+                <div *ngIf="submitted && !newpackagename" class="text-danger" style="font-size: small;">
+                    Package Name is required </div>
+            </div>
+        </div>
+        <div class="input_box display align-items-center mb-1">
+            <div class="col-12 col-md-6">
+                <span>Package Rate</span>
+            </div>
+            <div class="col-12 col-md-6">
+                <input type="text" id="packageRate" class="" maxlength="10" pattern="[0-9]*"
+                    (keydown)="onKeydown($event)" [(ngModel)]="packageRate">
+                <div *ngIf="submitted && !packageRate" class="text-danger" style="font-size: small;">
+                    Package Rate is required </div>
+            </div>
+        </div>
+        <div class="input_box display align-items-center mb-1">
+            <div class="col-12 col-md-6">
+                <span>Description</span>
+            </div>
+            <div class="col-12 col-md-6">
+                <input type="text" id="package_desc" class="" [(ngModel)]="package_desc">
+                <div *ngIf="submitted && !package_desc" class="text-danger" style="font-size: small;">
+                    Description is required </div>
+            </div>
+          
+        </div>
+        <div class="input_box display align-items-center mb-3">
+            <div class="col-12 col-md-6">
+                <span>Reference Id</span>
+            </div>
+            <div class="col-12 col-md-6">
+                <input type="text" id="Reference_id" class="" maxlength="10" pattern="[0-9]*"
+                    (keydown)="onKeydown($event)" [(ngModel)]="Reference_id">
+                <div *ngIf="submitted && !Reference_id" class="text-danger" style="font-size: small;">
+                    Reference Id is required </div>
+            </div>
+        </div>
+        <div class="input_box d-flex justify-content-center align-items-center mb-2">
+            <button type="button" class="btn btn-primary me-2" (click)="Create()">Save</button>
+            <button type="button" class="btn btn-secondary" (click)="onNoClick()">Cancel</button>
+        </div>
+    </div>
+</div>

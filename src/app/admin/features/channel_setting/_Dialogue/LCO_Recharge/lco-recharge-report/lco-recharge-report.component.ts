@@ -112,9 +112,10 @@ export class LcoRechargeReportComponent implements OnInit {
   operatorname: any = 'Select Filter';
   filteredOperators: any[] = [];
   operator_details: any = [];
+  selectedOperator: any;
 
   columnDefs: any;
-
+  currentDate: any;
   constructor(private userservice: BaseService, private storageservice: StorageService, private swal: SwalService, public dialog: MatDialog, private dateAdapter: DateAdapter<Moment>, private cdr: ChangeDetectorRef) {
     this.role = storageservice.getUserRole();
     this.username = storageservice.getUsername();
@@ -125,13 +126,19 @@ export class LcoRechargeReportComponent implements OnInit {
         const name = key;
         return { name: name, value: value };
       });
-      this.filteredOperators = this.operatorList
+      this.filteredOperators = this.operatorList;
+      this.currentDate = new Date().toISOString().split('T')[0];
+
     })
+  }
+  displayOperator(operator: any): string {
+    return operator ? operator.name : '';
   }
   ngOnInit(): void {
     this.generateMonths();
     this.generateYears();
-    this.getrefundData('');
+    // this.getrefundData('');
+    this.getRechargeLog('1');
   }
 
   generateMonths() {
@@ -217,36 +224,42 @@ export class LcoRechargeReportComponent implements OnInit {
     console.log('dsfsdfdsf', tab);
     this.operatorid = '';
     this.operatorname = '';
-
+    this.isCheckboxChecked = false;
     this.selectedTab = tab;
     this.rowData = [];
     if (this.agGrid) {
       let newRowData;
-
       if (this.selectedTab === '1') {
-        newRowData = this.getrefundData('1');
+        // newRowData = this.getrefundData('1');
+        newRowData = this.getRechargeLog('1');
       } else if (this.selectedTab === '2') {
         newRowData = this.getLogrechargeReport('2');
       } else if (this.selectedTab === '3') {
-        newRowData = this.getRechargeLog('3');
+        // newRowData = this.getRechargeLog('3');
+        newRowData = this.getrefundData('3');
       }
       this.agGrid.api.setRowData(newRowData);
     }
   }
-  filterOperators() {
-    console.log(this.operatorname);
+  // filterOperators() {
+  //   console.log(this.operatorname);
 
-    if (this.operatorname) {
-      console.log(this.filteredOperators);
-      this.filteredOperators = this.operatorList.filter(operator =>
-        operator.name.toLowerCase().includes(this.operatorname.toLowerCase())
-      );
-      console.log(this.filteredOperators);
-    }
+  //   if (this.operatorname) {
+  //     console.log(this.filteredOperators);
+  //     this.filteredOperators = this.operatorList.filter(operator =>
+  //       operator.name.toLowerCase().includes(this.operatorname.toLowerCase())
+  //     );
+  //     console.log(this.filteredOperators);
+  //   }
 
+  // }
+  filterOperators(event: any): void {
+    const filterValue = event.target.value.toLowerCase();
+    this.filteredOperators = this.operatorList.filter(operator =>
+      operator.name.toLowerCase().includes(filterValue)
+    );
   }
   selectOperator(value: string, name: any) {
-
     console.log(this.filteredOperators);
     this.showDropdown = false;
     this.operatorid = value;
@@ -254,45 +267,84 @@ export class LcoRechargeReportComponent implements OnInit {
     this.onoperatorchange({ value });
     this.selectoperatorList();
   }
+  selectOperator1(value: string, name: any) {
+    console.log(this.filteredOperators);
+    this.showDropdown = false;
+    this.operatorid = value;
+    this.operatorname = name;
+    this.onoperatorchange({ value });
+    // this.selectoperatorList();
+  }
 
-  onoperatorchange(event: any) {
+  // onoperatorchange(event: any) {
 
-    if (this.operatorid === 'ALL Operator') {
-      this.operatorid = 0;
-    }
-    this.userservice.OperatorDetails(this.role, this.username, this.operatorid).subscribe(
-      (data: any) => {
-        console.log(data);
-        this.operator_details = data;
-        console.log(this.operator_details);
-      },
-      (error) => {
-        console.error('Error fetching operator details', error);
-      }
-    );
+  //   if (this.operatorid === 'ALL Operator') {
+  //     this.operatorid = 0;
+  //   }
+  //   this.userservice.OperatorDetails(this.role, this.username, this.operatorid).subscribe(
+  //     (data: any) => {
+  //       console.log(data);
+  //       this.operator_details = data;
+  //       console.log(this.operator_details);
+  //     },
+  //     (error) => {
+  //       console.error('Error fetching operator details', error);
+  //     }
+  //   );
+  // }
+  onoperaRechargelLog(operator: any): void {
+    console.log(operator);
+    this.selectedOperator = operator;
+    this.operatorid = operator.value;
+  }
+  onoperatorchange(operator: any): void {
+    console.log(operator);
+    this.selectedOperator = operator;
+    this.operatorid = operator.value;
+    console.log(this.operatorid);
+    // this.userservice.OperatorDetails(this.role, this.username, this.operatorid).subscribe(
+    this.userservice.getRefundListByOperatorId(this.role, this.username, this.operatorid, false).
+       subscribe(
+        (response: HttpResponse<any[]>) => {
+          if (response.status === 200) {
+            this.rowData = response.body;
+            // this.swal.Success_200();
+          } else if (response.status === 204) {
+            this.swal.Success_204();
+            this.rowData = [];
+          }
+          return [this.rowData];
+        },
+        (error) => {
+          this.handleApiError(error);
+        }
+        
+      );
+      
   }
   onGridReady(params: any) {
     this.gridApi = params.api;
     this.gridColumnApi = params.columnApi;
   }
   getrefundData(event: any) {
-    this.userservice.getRechargeDetailsByFdTdOpid(this.role, this.username, this.fromdate, this.todate, 0)
-      .subscribe(
-        (response: HttpResponse<any[]>) => {
-          if (response.status === 200) {
-            this.rowData = response.body;
-            this.updateColumnDefs(this.selectedTab);
-            // this.swal.Success_200();
-          } else if (response.status === 204) {
-            // this.swal.Success_204();
-            this.rowData = [];
-          }
-        },
-        (error) => {
-          this.handleApiError(error);
-        }
-      );
+    // this.userservice.getRechargeDetailsByFdTdOpid(this.role, this.username, this.fromdate || null, this.todate || null, 0)
+    // this.userservice.getRefundListByOperatorIdAndSmartcard(this.role, this.username, this.operatorid || 0, this.smartcard || '').subscribe(
+    //   (response: HttpResponse<any[]>) => {
+    // if (response.status === 200) {
+    //   this.rowData = response.body;
+    this.updateColumnDefs(this.selectedTab);
+    // this.swal.Success_200();
+    // } else if (response.status === 204) {
+    // this.swal.Success_204();
+    // this.rowData = [];
     return [this.rowData];
+    // }
+    // },
+    // (error) => {
+    //   this.handleApiError(error);
+    // }
+    // );
+    // return [this.rowData];
 
   }
   getLogrechargeReport(event: any) {
@@ -300,6 +352,23 @@ export class LcoRechargeReportComponent implements OnInit {
     return [this.rowData];
   }
   getRechargeLog(event: any) {
+
+    this.userservice.getRechargeDetailsByFdTdOpid(this.role, this.username, this.fromdate || this.currentDate, this.todate || this.currentDate, 0)
+      .subscribe(
+        (response: HttpResponse<any[]>) => {
+          if (response.status === 200) {
+            this.rowData = response.body;
+            this.updateColumnDefs(this.selectedTab);
+            // this.swal.Success_200();
+          } else if (response.status === 204) {
+            this.swal.Success_204();
+            this.rowData = [];
+          }
+        },
+        (error) => {
+          this.handleApiError(error);
+        }
+      );
     this.updateColumnDefs(this.selectedTab);
     return [this.rowData];
   }
@@ -314,27 +383,43 @@ export class LcoRechargeReportComponent implements OnInit {
 
   RefundAmount() {
     this.rowData = [];
-    this.swal.Loading();
-    this.userservice.getRefundListByOperatorIdAndSmartcard(this.role, this.username, this.operatorid, this.smartcard)
+    // this.swal.Loading();
+    this.userservice.getRefundListByOperatorIdAndSmartcard(this.role, this.username, this.operatorid, this.smartcard || '')
       .subscribe(
-        (response: HttpResponse<any[]>) => { // Expect HttpResponse<any[]>
+        (response: HttpResponse<any[]>) => {
+          console.log(response);
+
           if (response.status === 200) {
             this.updateColumnDefs(this.selectedTab);
             this.rowData = response.body;
-            this.swal.Success_200();
+            // this.swal.Success_200();
           } else if (response.status === 204) {
             this.swal.Success_204();
           }
         },
         (error) => {
-          if (error.status === 400) {
-            this.swal.Error_400();
-          } else if (error.status === 500) {
-            this.swal.Error_500();
+          console.log(error?.error?.message);
+          console.log(error?.error?.getrefundlistbyoperatoridandsmartcard?.smartcard);
+
+          // Check if 'smartcard' is missing in the response body
+          if (error?.error?.getrefundlistbyoperatoridandsmartcard?.smartcard || "Smartcard is required") {
+            const errorMessage = "Smartcard is required";
+            Swal.fire({
+              title: 'Error!',
+              text: errorMessage,
+              icon: 'error',
+            });
           } else {
-            Swal.fire('Error', 'Something went wrong. Please try again.', 'error');
+            const errorMessage = error?.error?.message || "An unexpected error occurred";
+            Swal.fire({
+              title: 'Error!',
+              text: errorMessage,
+              icon: 'error',
+            });
           }
+          this.handleApiError(error);
         }
+
       );
 
   }
@@ -347,7 +432,7 @@ export class LcoRechargeReportComponent implements OnInit {
           if (response.status === 200) {
             this.updateColumnDefs(this.selectedTab);
             this.rowData = response.body;
-            this.swal.Success_200();
+            // this.swal.Success_200();
           } else if (response.status === 204) {
             this.swal.Success_204();
           }
@@ -364,12 +449,18 @@ export class LcoRechargeReportComponent implements OnInit {
       );
 
   }
-
+  isValidDate(date: string): boolean {
+    const parsedDate = new Date(date);
+    return !isNaN(parsedDate.getTime());
+  }
   LogRechargeReport() {
     this.rowData = [];
     if (this.isDateEnabled) {
       const formattedDate = this.formatDate(this.date);
-      this.userservice.getRechargeDetailsByDate(this.role, this.username, formattedDate)
+      const dateToUse = formattedDate && this.isValidDate(formattedDate) ? formattedDate : this.currentDate;
+      console.log(formattedDate);
+      console.log(dateToUse);
+      this.userservice.getRechargeDetailsByDate(this.role, this.username, dateToUse)
         .subscribe(
           (response: HttpResponse<any>) => {
             if (response.status === 200) {
@@ -378,16 +469,23 @@ export class LcoRechargeReportComponent implements OnInit {
                 this.rowData = responseBody.rechargelist;
                 this.Totalamount = responseBody.totalamount;
                 console.log(this.rowData);
-                this.swal.Success_200();
+                // this.swal.Success_200();
                 this.updateColumnDefs(this.selectedTab);
               } else {
                 Swal.fire('Error', 'Response body is empty', 'error');
               }
-            } else if (response.status === 204) {
+            }
+            else if (response.status === 204) {
               this.swal.Success_204();
             }
           },
           (error) => {
+            const errorMessage = error?.error?.message
+            Swal.fire({
+              title: 'Error!',
+              text: errorMessage,
+              icon: 'error'
+            });
             this.handleApiError(error);
           }
         );
@@ -401,12 +499,13 @@ export class LcoRechargeReportComponent implements OnInit {
                 this.rowData = responseBody.rechargelist;
                 this.Totalamount = responseBody.totalamount;
                 console.log(this.rowData);
-                this.swal.Success_200();
+                // this.swal.Success_200();
                 this.updateColumnDefs(this.selectedTab);
               } else {
                 Swal.fire('Error', 'Response body is empty', 'error');
               }
-            } else if (response.status === 204) {
+            }
+            else if (response.status === 204) {
               this.swal.Success_204();
             }
           },
@@ -425,15 +524,22 @@ export class LcoRechargeReportComponent implements OnInit {
                 this.rowData = responseBody.rechargelist;
                 this.Totalamount = responseBody.totalamount;
                 console.log(this.rowData);
-                this.swal.Success_200();
+                // this.swal.Success_200();
               } else {
                 Swal.fire('Error', 'Response body is empty', 'error');
               }
-            } else if (response.status === 204) {
+            }
+            else if (response.status === 204) {
               this.swal.Success_204();
             }
           },
           (error) => {
+            const errorMessage = error?.error?.message
+            Swal.fire({
+              title: 'Error!',
+              text: errorMessage,
+              icon: 'error'
+            });
             this.handleApiError(error);
           }
         );
@@ -443,7 +549,7 @@ export class LcoRechargeReportComponent implements OnInit {
   RechargeLog() {
     this.rowData = [];
     this.swal.Loading();
-
+    const currentDate = new Date().toISOString().split('T')[0];
     this.userservice.getRechargeDetailsByFdTdOpid(this.role, this.username, this.fromdate || null, this.todate || null, this.operatorid)
       .subscribe(
         (response: HttpResponse<any[]>) => {
@@ -466,10 +572,24 @@ export class LcoRechargeReportComponent implements OnInit {
 
 
   handleApiError(error: any) {
+    console.log(error?.error?.message);
+
     if (error.status === 400) {
-      this.swal.Error_400();
+      // this.swal.Error_400();
+      const errorMessage = error?.error?.message;
+      Swal.fire({
+        title: 'Error!',
+        text: errorMessage,
+        icon: 'error',
+      });
     } else if (error.status === 500) {
-      this.swal.Error_500();
+      // this.swal.Error_500();
+      const errorMessage = error?.error?.message;
+      Swal.fire({
+        title: 'Error!',
+        text: errorMessage,
+        icon: 'error',
+      });
     } else {
       Swal.fire('Error', 'Something went wrong. Please try again.', 'error');
     }
@@ -480,11 +600,16 @@ export class LcoRechargeReportComponent implements OnInit {
     if (tab === '1') {
       this.columnDefs = [
         {
-          headerName: "S.No", lockPosition: true, valueGetter: 'node.rowIndex+1', width: 100, headerCheckboxSelection: true, checkboxSelection: true,
+          headerName: "S.No", valueGetter: 'node.rowIndex+1', width: 100,
         },
         { headerName: "OPERATOR NAME", field: 'operatorname', },
         { headerName: "TRANSACTION GROUP TYPE", field: 'transactiongroupname', },
-        { headerName: "AMOUNT", field: 'lcoamount', },
+        {
+          headerName: "AMOUNT", field: 'lcoamount',
+          // cellRenderer: (params: any) => {
+          //   return `<span>₹ ${params.value}</span>`;
+          // }
+        },
         { headerName: "REMARKS", field: 'transactionremarks' },
         { headerName: "TRANSACTION DATE", field: 'transactiondate' },
         { headerName: "BILL", field: '', filter: false },
@@ -493,11 +618,16 @@ export class LcoRechargeReportComponent implements OnInit {
 
       this.columnDefs = [
         {
-          headerName: "S.No", lockPosition: true, valueGetter: 'node.rowIndex+1', width: 100, headerCheckboxSelection: true, checkboxSelection: true,
+          headerName: "S.No", valueGetter: 'node.rowIndex+1', width: 100,
         },
         { headerName: "OPERATOR NAME", field: 'operatorname', },
         { headerName: "OPERATOR ID", field: 'operatorid', },
-        { headerName: "AMOUNT", field: 'lcoamount', },
+        {
+          headerName: "AMOUNT", field: 'amount',
+          // cellRenderer: (params: any) => {
+          //   return `<span>₹ ${params.value}</span>`;
+          // }
+        },
         { headerName: "REMARKS", field: 'transactionremarks' },
         { headerName: "TRANSACTION DATE", field: 'transactiondate' },
         { headerName: "OPERATOR ADDRESS	", field: 'address', },
@@ -506,11 +636,12 @@ export class LcoRechargeReportComponent implements OnInit {
     } else if (tab === '3') {
       this.columnDefs = [
         {
-          headerName: "S.No", lockPosition: true, valueGetter: 'node.rowIndex+1', width: 100, headerCheckboxSelection: true, checkboxSelection: true,
+          headerName: "S.No", valueGetter: 'node.rowIndex+1', width: 100,
         },
         { headerName: "OPERATOR NAME", field: 'operatorname', },
+        { headerName: "PACKAGE NAME", field: 'packagename', },
         { headerName: "REFUND AMOUNT	", field: 'amount', },
-        { headerName: "CURRENT BALANCE	", field: 'currentbalance', },
+        { headerName: "CURRENT BALANCE	", field: 'balance', },
         { headerName: "REFERENCE ID	", field: 'referenceid' },
         { headerName: "TRANSACTION DATE", field: 'transactiondate' },
         {

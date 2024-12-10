@@ -5,6 +5,7 @@ import { StorageService } from 'src/app/_core/service/storage.service';
 import { HttpResponse } from '@angular/common/http';
 import Swal from 'sweetalert2';
 import { ExcelService } from 'src/app/_core/service/excel.service';
+import { SwalService } from 'src/app/_core/service/swal.service';
 @Component({
   selector: 'app-activation',
   templateUrl: './activation.component.html',
@@ -17,12 +18,12 @@ export class ActivationComponent implements OnInit {
 
   isCheckboxChecked: boolean = false;
   columnDefs: ColDef[] = [
-    { headerName: "S.No", lockPosition: true, valueGetter: 'node.rowIndex+1', cellClass: 'locked-col', width: 80, suppressNavigable: true, sortable: false, filter: false },
+    { headerName: "S.No", lockPosition: true, valueGetter: 'node.rowIndex+1', cellClass: 'locked-col', width: 100, suppressNavigable: true, sortable: false, filter: false },
     { headerName: "SMARTCARD", field: 'smartcard', width: 300 },
     {
       headerName: "STATUS",
       field: 'status',
-      width: 200,
+      width: 250,
       cellRenderer: (params: any) => {
         if (params.value === 'Success') {
           return `<span style="color: green;">${params.value}</span>`;
@@ -34,9 +35,8 @@ export class ActivationComponent implements OnInit {
         return params.value;
       }
     },
-
-    { headerName: "REMARKS", field: 'remarks', width: 220 },
-    { headerName: "CREATED DATE	", field: 'createddate', width: 250 },
+    { headerName: "REMARKS", field: 'remarks', width: 250 },
+    { headerName: "CREATED DATE	", field: 'createddate', width: 270 },
   ];
   rowData: any;
   public rowSelection: any = "multiple";
@@ -52,6 +52,7 @@ export class ActivationComponent implements OnInit {
     pagination: true,
   }
   date: any;
+  selectedDate: any;
   packageid: any;
   type: any;
   plantype: any;
@@ -62,19 +63,23 @@ export class ActivationComponent implements OnInit {
   closeDialogue: boolean = true;
   isFileSelected: boolean = false;
   isCheckboxChecked_operator: boolean = false;
+  submitted: boolean = false;
   isPlanValid: boolean = false;
-
-
-  lcogroupid: any = 0;
+  lcogroupid: any = '';
   producttype: any = 1;
   lcomembershipList: any[] = [];
-
-  constructor(private userservice: BaseService, private storageservice: StorageService, private excelService: ExcelService) {
+  filteredPackage: any[] = [];
+  selectedPackage: any;
+  selectedPackageName: any;
+  constructor(private userservice: BaseService, private swal: SwalService, private storageservice: StorageService, private excelService: ExcelService) {
     this.role = storageservice.getUserRole();
     this.username = storageservice.getUsername();
 
   }
   ngOnInit(): void {
+    this.date = new Date().toISOString().split('T')[0];
+    this.selectedDate = this.date;
+    this.refresh();
     this.onproducttypechange("");
   }
   onGridReady = () => {
@@ -88,7 +93,6 @@ export class ActivationComponent implements OnInit {
   }
   handleFileInput(event: Event): void {
     const input = event.target as HTMLInputElement;
-
     if (input.files && input.files.length > 0) {
       this.isFileSelected = true;
       this.file = input.files[0];
@@ -100,7 +104,17 @@ export class ActivationComponent implements OnInit {
       this.filePath = '';
     }
   }
-
+  filterPackage(event: any): void {
+    const filterValue = event.target.value.toLowerCase();
+    this.filteredPackage = this.lcomembershipList.filter((operator: any) =>
+      operator.name.toLowerCase().includes(filterValue)
+    );
+    // this.filteredPackage = this.operatorList;
+    console.log(this.filteredPackage);
+  }
+  displayOperator(operator: any): string {
+    return operator ? operator.name : '';
+  }
   goBack(): void {
     this.closeDialogue = !this.closeDialogue;
     this.Dialogue = !this.Dialogue;
@@ -121,39 +135,49 @@ export class ActivationComponent implements OnInit {
       event.preventDefault();
     }
   }
-  onproducttypechange(event: any) {
-    this.userservice.getLcoGroupMasterList(this.role, this.username).subscribe((data: any) => {
+  onproducttypechange(selectedOperator: any) {
+    this.selectedPackage = selectedOperator;
+    this.selectedPackageName = selectedOperator.name;
+    this.userservice.getPackageList(this.role, this.username, 1).subscribe((data: any) => {
+      console.log(data);
+      // this.lcomembershipList = Object.keys(data.packageid);
       this.lcomembershipList = Object.keys(data).map(key => {
         const value = data[key];
         const name = key;
         return { name: name, value: value };
       });
-    })
+      console.log(this.lcomembershipList);
+      this.filteredPackage = this.lcomembershipList
+    });
   }
   getData() {
-    this.userservice.getBulkOperationListByDate(this.role, this.username, 'first_time_activation', this.date,4)
+    this.rowData = [];
+    const dateToPass = this.selectedDate || this.date;
+    this.userservice.getBulkOperationListByDate(this.role, this.username, 'first_time_activation', dateToPass, 4)
       .subscribe(
-        (response: HttpResponse<any[]>) => { 
+        (response: HttpResponse<any[]>) => { // Expect HttpResponse<any[]>
           if (response.status === 200) {
             this.rowData = response.body;
-            Swal.fire('Success', 'Data updated successfully!', 'success');
+            // this.swal.Success_200();
           } else if (response.status === 204) {
-            Swal.fire('No Content', 'No data available for the given criteria.', 'info');
+            this.swal.Success_204();
           }
         },
         (error) => {
           if (error.status === 400) {
-            Swal.fire('Error 400', 'Bad Request. Please check the input.', 'error');
+            this.swal.Error_400();
           } else if (error.status === 500) {
-            Swal.fire('Error 500', 'Internal Server Error. Please try again later.', 'error');
+            this.swal.Error_500();
           } else {
             Swal.fire('Error', 'Something went wrong. Please try again.', 'error');
           }
+          // this.callAnotherApi();
         }
       );
 
   }
   bulkActivation() {
+    this.submitted = true;
     if (this.file) {
       console.log(this.file);
       Swal.fire({
@@ -163,7 +187,6 @@ export class ActivationComponent implements OnInit {
         allowOutsideClick: false,
         showConfirmButton: false,
       });
-
       const formData = new FormData();
       formData.append('role', this.role);
       formData.append('username', this.username);
@@ -173,26 +196,12 @@ export class ActivationComponent implements OnInit {
       formData.append('plantype', '5');
       formData.append('plan', this.plan);
 
-      this.userservice.uploadFirsttimeActivation(formData).subscribe(
-        (res: any) => {
-          console.log(res);
-          Swal.fire({
-            title: 'Success!',
-            text: res?.message || 'File uploaded successfully.',
-            icon: 'success',
-            confirmButtonText: 'OK'
-          });
-        },
-        (error) => {
-          console.error("File upload failed", error);
-          Swal.fire({
-            title: 'Error!',
-            text: error?.error?.message || 'There was a problem uploading your file. Please try again.',
-            icon: 'error',
-            confirmButtonText: 'OK'
-          });
-        }
-      );
+      this.userservice.uploadFirsttimeActivation(formData)
+        .subscribe((res: any) => {
+          this.swal.success(res?.message);
+        }, (err) => {
+          this.swal.Error(err?.error?.message);
+        });
     } else {
       Swal.fire({
         title: 'Error!',
@@ -204,28 +213,29 @@ export class ActivationComponent implements OnInit {
   }
 
   refresh() {
-    this.userservice.getBulkOperationRefreshList(this.role, this.username, 'first_time_activation',4)
+    this.userservice.getBulkOperationRefreshList(this.role, this.username, 'first_time_activation', 4)
       .subscribe(
         (response: HttpResponse<any[]>) => { // Expect HttpResponse<any[]>
           if (response.status === 200) {
             this.rowData = response.body;
-            Swal.fire('Success', 'Data updated successfully!', 'success');
+            // this.swal.Success_200();
           } else if (response.status === 204) {
-            Swal.fire('No Content', 'No data available for the given criteria.', 'info');
+            this.swal.Success_204();
           }
         },
         (error) => {
           if (error.status === 400) {
-            Swal.fire('Error 400', 'Bad Request. Please check the input.', 'error');
+            this.swal.Error_400();
           } else if (error.status === 500) {
-            Swal.fire('Error 500', 'Internal Server Error. Please try again later.', 'error');
+            this.swal.Error_500();
           } else {
             Swal.fire('Error', 'Something went wrong. Please try again.', 'error');
           }
+          // this.callAnotherApi();
         }
       );
   }
-  generateExcel(type:string) {
+  generateExcel(type: string) {
     this.excelService.generatealacarteactivationExcel(type);
   }
 }

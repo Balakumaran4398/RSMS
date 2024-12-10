@@ -3,6 +3,7 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { ColDef } from 'ag-grid-community';
 import { BaseService } from 'src/app/_core/service/base.service';
 import { StorageService } from 'src/app/_core/service/storage.service';
+import { SwalService } from 'src/app/_core/service/swal.service';
 import Swal from 'sweetalert2';
 
 @Component({
@@ -24,7 +25,7 @@ export class PackageBASEDEMOComponent {
   type: any;
   constructor(
     public dialogRef: MatDialogRef<PackageBASEDEMOComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: any, private userService: BaseService, private storageservice: StorageService) {
+    @Inject(MAT_DIALOG_DATA) public data: any, private userService: BaseService, private storageservice: StorageService, private swal:SwalService) {
     this.dailogObj = data;
     this.type = data.type
     this.package_id = data.package_id;
@@ -75,40 +76,29 @@ export class PackageBASEDEMOComponent {
     }
 
   }
-  // pair() {
 
-  //   this.userService.RcasPackageChannelList(this.role, this.username, 1, this.package_id).subscribe(
-  //     (response: any) => {
-  //       this.packagename = response.packagename;
-  //       this.packagerate = response.packagerate;
-  //       this.subcount = response.subcount;
-  //       this.rowData = response[0].availablechannellist;
-  //       this.rowDataUnpair = response[0].unavailablechannellist;
-  //       console.log(response);
-  //     },
-  //     (error) => {
-  //       console.error('Error fetching addon package channel list', error);
-  //     }
-  //   );
-  // }
   pair() {
-    Swal.fire({
-      title: 'Loading...',
-      html: 'Fetching package channel list...',
-      allowOutsideClick: false,
-      didOpen: () => {
-        Swal.showLoading(null);
-      }
-    });
-
+    // Swal.fire({
+    //   title: 'Loading...',
+    //   html: 'Fetching package channel list...',
+    //   allowOutsideClick: false,
+    //   didOpen: () => {
+    //     Swal.showLoading(null);
+    //   }
+    // });
+    this.swal.Loading();
     this.userService.RcasPackageChannelList(this.role, this.username, 1, this.package_id).subscribe(
       (response: any) => {
+        console.log(response);
         this.packagename = response.packagename;
         this.packagerate = response.packagerate;
         this.subcount = response.subcount;
-        this.rowData = response[0].availablechannellist;
-        this.rowDataUnpair = response[0].unavailablechannellist;
+        this.rowData = response.availablechannellist;
+        this.rowDataUnpair = response.unavailablechannellist;
         console.log(response);
+        console.log(this.rowData);
+        console.log(this.rowDataUnpair);
+
         Swal.close();
       },
       (error) => {
@@ -119,6 +109,44 @@ export class PackageBASEDEMOComponent {
           title: 'Error',
           text: 'Failed to fetch addon package channel list'
         });
+        window.location.reload();
+      }
+    );
+  }
+
+  addonPair() {
+    // Swal.fire({
+    //   title: 'Loading...',
+    //   html: 'Fetching package channel list...',
+    //   allowOutsideClick: false,
+    //   didOpen: () => {
+    //     Swal.showLoading(null);
+    //   }
+    // });
+    this.swal.Loading();
+    this.userService.RcasPackageChannelList(this.role, this.username, 2, this.package_id).subscribe(
+      (response: any) => {
+        console.log(response);
+        this.packagename = response.packagename;
+        this.packagerate = response.packagerate;
+        this.subcount = response.subcount;
+        this.rowData = response.availablechannellist;
+        this.rowDataUnpair = response.unavailablechannellist;
+        console.log(response);
+        console.log(this.rowData);
+        console.log(this.rowDataUnpair);
+
+        Swal.close();
+      },
+      (error) => {
+        console.error('Error fetching addon package channel list', error);
+
+        Swal.fire({
+          icon: 'error',
+          title: 'Error',
+          text: 'Failed to fetch addon package channel list'
+        });
+        window.location.reload();
       }
     );
   }
@@ -127,6 +155,8 @@ export class PackageBASEDEMOComponent {
     // });
     if (this.dailogObj.type === 'pair') {
       this.pair();
+    }else if (this.dailogObj.type === 'addonpair'){
+      this.addonPair();
     }
     if (this.dailogObj.type === 'paychannel' || this.dailogObj.type === 'bouquet') {
       this.loadAddonPackageChannelList();
@@ -162,10 +192,17 @@ export class PackageBASEDEMOComponent {
       ];
     } else if (this.dailogObj.type === 'pair') {
       this.columnDefs = [
-        { headerName: 'S.No', valueGetter: 'node.rowIndex + 1', width: 100 },
-        { headerName: 'CHANNEL NAME', field: 'channelname', width: 300 },
-        { headerName: 'PRODUCT ID', field: 'productid', width: 300 },
-        { headerName: 'CHANNEL ID', field: 'channelid', width: 300 },
+        { headerName: 'S.No', valueGetter: 'node.rowIndex + 1', width: 80 },
+        { headerName: 'CHANNEL NAME', field: 'channelname', width: 200 },
+        { headerName: 'PRODUCT ID', field: 'productid', width: 130 },
+        { headerName: 'CHANNEL ID', field: 'channelid', width: 150 },
+      ];
+    }else if (this.dailogObj.type === 'addonpair') {
+      this.columnDefs = [
+        { headerName: 'S.No', valueGetter: 'node.rowIndex + 1', width: 80 },
+        { headerName: 'CHANNEL NAME', field: 'channelname', width: 200 },
+        { headerName: 'PRODUCT ID', field: 'productid', width: 130 },
+        { headerName: 'CHANNEL ID', field: 'channelid', width: 150 },
       ];
     }
   }
@@ -177,6 +214,8 @@ export class PackageBASEDEMOComponent {
     defaultColDef: {
       // width: 300,
     },
+    paginationPageSize: 10,
+    pagination: true,
   };
 
 

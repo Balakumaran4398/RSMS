@@ -17,7 +17,8 @@ export class InsertSubComponent {
   public rowSelection: any = "multiple";
   selectedLcoName: any = 0;
   isLcoSelected: boolean = false;
-  lco_list: { [key: string]: number } = {};
+  // lco_list: { [key: string]: number } = {};
+  lco_list: any[] = [];
   searchTerm: string = '';
   username: any;
   role: any;
@@ -41,14 +42,26 @@ export class InsertSubComponent {
     paginationPageSize: 10,
     pagination: true,
   }
+
+  filteredOperators: any[] = [];
+  selectedOperator: any;
+
+
+
+  submitted: boolean = false;
   constructor(private userService: BaseService, private storageService: StorageService, public dialog: MatDialog) {
     this.username = storageService.getUsername();
     this.role = storageService.getUserRole();
     // this.rowData=data;
     userService.getsmartcardallocationSubscriberList(this.role, this.username).subscribe((data: any) => {
       console.log(data);
-      this.lco_list = data[0].operatorid;
+      // this.lco_list = data[0].operatorid;
       console.log(this.lco_list);
+      this.lco_list = Object.entries(data[0].operatorid).map(([key, value]) => {
+        return { name: key, value: value };
+      });
+      console.log(this.lco_list);
+      this.filteredOperators = this.lco_list;
     })
   }
   columnDefs: ColDef[] = [
@@ -57,19 +70,19 @@ export class InsertSubComponent {
     },
     {
       headerName: 'SMARTCARD',
-      field: 'smartcard',
+      field: 'smartcard', width: 200
     },
     {
       headerName: 'BOX_ID',
-      field: 'boxid',
+      field: 'boxid',width: 300
     },
 
     {
       headerName: 'CAS',
-      field: 'casname',
+      field: 'casname',width: 300
     },
     {
-      headerName: 'IS_ALLOCATED',
+      headerName: 'IS_ALLOCATED',width: 300,
       field: 'isallocated',
       cellRenderer: (params: any) => {
         if (params.value === true) {
@@ -80,7 +93,7 @@ export class InsertSubComponent {
       },
     },
     {
-      headerName: 'IS_DEFECTIVE',
+      headerName: 'IS_DEFECTIVE',width: 300,
       field: 'isdefective',
       cellRenderer: (params: any) => {
         if (params.value === true) {
@@ -91,7 +104,28 @@ export class InsertSubComponent {
       },
     },
   ]
+  filterOperators(event: any): void {
+    const filterValue = event.target.value.toLowerCase();
+    this.filteredOperators = this.lco_list.filter(operator =>
+      operator.name.toLowerCase().includes(filterValue)
+    );
+    console.log(this.filteredOperators);
+  }
+  displayOperator(operator: any): string {
+    return operator ? operator.name : '';
+  }
+  onSubscriberStatusChange(selectedOperator: any) {
+    console.log(selectedOperator);
+    this.selectedOperator = selectedOperator;
+    this.selectedLcoName = selectedOperator.value;
+    console.log(this.selectedLcoName);
+  }
   Search() {
+    console.log(this.selectedLcoName);
+    this.submitted = true;
+    if (!this.selectedLcoName) {
+      return
+    }
     this.userService.getOperatorWiseSubscriberList(this.role, this.username, this.selectedLcoName).subscribe((data: any) => {
       console.log(data);
       this.rowData = data;
@@ -105,14 +139,14 @@ export class InsertSubComponent {
       this.selectedtypes = selectedRows.map((e: any) => e.isactive);
     }
   }
-  updateOperatorIds() {
-    this.operatorid = [];
-    this.selectedLcoKeys.forEach(key => {
-      if (this.lco_list[key] !== undefined) {
-        this.operatorid.push(this.lco_list[key]);
-      }
-    });
-  }
+  // updateOperatorIds() {
+  //   this.operatorid = [];
+  //   this.selectedLcoKeys.forEach(key => {
+  //     if (this.lco_list[key] !== undefined) {
+  //       this.operatorid.push(this.lco_list[key]);
+  //     }
+  //   });
+  // }
   filteredLcoKeys(): string[] {
     const keys = Object.keys(this.lco_list);
     if (!this.searchTerm) {

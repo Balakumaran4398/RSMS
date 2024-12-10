@@ -17,7 +17,7 @@ export class PackageEditComponent implements OnInit {
   username: any;
   order_id: any;
   ispercentage: boolean = false;
-  commission: any= '0.0';
+  commission: any;
   role: any;
   value: any;
   constructor(
@@ -33,19 +33,21 @@ export class PackageEditComponent implements OnInit {
     this.package_rate = data.packagerate;
     this.order_id = data.orderid;
     // this.broadcaster_id=data.broadcaster_id;
-    // this.commission = data.commission;
+    this.commission = data.customeramount;
+    console.log(this.commission);
+    
     this.ispercentage = data.isactive;
     this.package_id = data.packageid;
 
 
   }
   ngOnInit(): void {
-    this.userService.Package_CloneList(this.role, this.username, this.package_id).subscribe((data: any) => {
-      console.log(data);
-      this.commission = data.customeramount;
-      console.log(this.value);
+    // this.userService.Package_CloneList(this.role, this.username, this.package_id).subscribe((data: any) => {
+    //   console.log(data);
+    //   this.commission = data.customeramount;
+    //   console.log(this.commission);
 
-    })
+    // }) 
   }
 
   onKeydown1(event: KeyboardEvent) {
@@ -89,7 +91,7 @@ export class PackageEditComponent implements OnInit {
         Swal.showLoading(null);
       }
     });
-    this.userService.Package_Update(this.package_name, this.package_desc, this.package_rate, this.order_id, this.role, this.username, this.commission, this.ispercentage, this.package_id,).subscribe((res: any) => {
+    this.userService.Package_Update(this.package_name, this.package_desc, this.package_rate, this.order_id, this.role, this.username, this.commission, !this.ispercentage, this.package_id,).subscribe((res: any) => {
       console.log(res);
       Swal.fire({
         position: "center",

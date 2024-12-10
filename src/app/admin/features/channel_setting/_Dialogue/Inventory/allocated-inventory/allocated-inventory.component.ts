@@ -16,13 +16,16 @@ export class AllocatedInventoryComponent {
   smartcard: any;
   boxid: any;
   castype: { [key: string]: number } = {};
-  lco_list: { [key: string]: number } = {};
+  // lco_list: { [key: string]: number } = {};
+  lco_list: any[] = [];
   operatorid: { [key: string]: number } = {};
-  selectedCasType:any  = 0;
-  selectedLcoName: any  = 0;
+  selectedCasType: any = 0;
+  selectedLcoName: any;
   searchTerm: string = '';
   key: any;
-
+  filteredOperators: any[] = [];
+  selectedOperator: any;
+  submitted: boolean = false;
   constructor(
     public dialogRef: MatDialogRef<AllocatedInventoryComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any, private userService: BaseService, private storageService: StorageService) {
@@ -33,17 +36,36 @@ export class AllocatedInventoryComponent {
     this.castype = data.castype;
     this.lco_list = data.lco_list;
     console.log(this.castype);
+    this.filteredOperators=this.lco_list;
 
   }
-  filteredLcoKeys(): string[] {
-    const keys = Object.keys(this.lco_list);
-    if (!this.searchTerm) {
-      return keys;
-    }
-    return keys.filter(key =>
-      key.toLowerCase().includes(this.searchTerm.toLowerCase())
+
+  filterOperators(event: any): void {
+    const filterValue = event.target.value.toLowerCase();
+    this.filteredOperators = this.lco_list.filter(operator =>
+      operator.name.toLowerCase().includes(filterValue)
     );
+    console.log(this.filteredOperators);
+
   }
+  displayOperator(operator: any): string {
+    return operator ? operator.name : '';
+  }
+  onSubscriberStatusChange(selectedOperator: any) {
+    console.log(selectedOperator);
+    this.selectedOperator = selectedOperator;
+    this.selectedLcoName = selectedOperator.value;
+    console.log(this.selectedLcoName);
+  }
+  // filteredLcoKeys(): string[] {
+  //   const keys = Object.keys(this.lco_list);
+  //   if (!this.searchTerm) {
+  //     return keys;
+  //   }
+  //   return keys.filter(key =>
+  //     key.toLowerCase().includes(this.searchTerm.toLowerCase())
+  //   );
+  // }
   filteredCasKeys(): string[] {
     const keys = Object.keys(this.castype);
     if (!this.searchTerm) {
@@ -66,33 +88,38 @@ export class AllocatedInventoryComponent {
 
 
   submit() {
-    // Ensure that the required values are available before making the API call
+    this.submitted = true;
+    console.log(this.selectedLcoName);
+    console.log(this.selectedCasType);
+    console.log(this.smartcard);
+    console.log(this.boxid);
+
     if (!this.selectedLcoName || !this.selectedCasType || !this.smartcard || !this.boxid) {
-      Swal.fire({
-        icon: 'warning',
-        title: 'Incomplete Information',
-        text: 'Please fill in all required fields before submitting.',
-        timer:3000,
-        timerProgressBar: true,
-      });
+      // Swal.fire({
+      //   icon: 'warning',
+      //   title: 'Incomplete Information',
+      //   text: 'Please fill in all required fields before submitting.',
+      //   timer:3000,
+      //   timerProgressBar: true,
+      // });
       return;
     }
     this.userService.Create_Allocated(
-      this.selectedLcoName,  
-      this.selectedCasType,  
-      this.smartcard,        
-      this.boxid,            
-      this.role,             
-      this.username          
+      this.selectedLcoName,
+      this.selectedCasType,
+      this.smartcard,
+      this.boxid,
+      this.role,
+      this.username
     ).subscribe((data: any) => {
       // Show success alert
       Swal.fire({
         icon: 'success',
         title: 'Created!',
         text: data?.message || 'Smartcard allocation has been created successfully.',
-        timer:3000,
+        timer: 3000,
         timerProgressBar: true,
-        
+
       }).then(() => {
         window.location.reload();
       });
@@ -101,8 +128,9 @@ export class AllocatedInventoryComponent {
       Swal.fire({
         icon: 'error',
         title: 'Error',
-        text: error?.error?.message || 'There was an error creating the smartcard allocation. Please try again.',
-        timer:3000,
+        text: error?.error?.message || error?.error?.createnewsmartcardallocation.boxid ||
+        'There was an error creating the smartcard allocation. Please try again.',
+        timer: 3000,
         timerProgressBar: true,
 
       });

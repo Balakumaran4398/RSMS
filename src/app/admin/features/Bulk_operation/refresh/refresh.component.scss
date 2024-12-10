@@ -86,13 +86,23 @@ button.example-custom-date-class {
     display: flex;
 }
 
-.custom-btn {
-    background-color: var(--primary-color);
-    color: white;
+// .custom-btn {
+//     background-color: var(--primary-color);
+//     color: white;
 
+// }
+// .custom-btn :hover {
+//     font-weight: bold;
+// }
+.custom-btn {
+    color: var(--primary-color);
+    background-color: lightgray;
+    border: 1px solid #6c757d;
 }
-.custom-btn :hover {
-    font-weight: bold;
+
+.custom-btn:hover {
+    color: white;
+    background-color: var(--primary-color);
 }
 select,
 input {

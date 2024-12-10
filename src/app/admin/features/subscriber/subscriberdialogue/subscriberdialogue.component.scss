@@ -6,6 +6,27 @@
   font-weight: bold;
 }
 
+#smartcard,#package {
+  width: auto !important;
+  height: 45px;
+  border: none;
+  outline: none;
+  border-radius: 5px;
+  padding: 0px 10px;
+  border-top: 2px solid #b0afaf;
+  border-bottom: 0.9px solid lightgray;
+  border-left: 0.9px solid lightgray;
+  border-right: 0.9px solid lightgray;
+  box-shadow: 0px 0px 0px 1px rgba(0, 0, 0, 0.1);
+  background-color: #f6f8fa;
+  font-family: 'Poppins', sans-serif;
+  transition: all 120ms ease-out 0s;
+}
+
+#cas {
+  width: auto !important;
+}
+
 .display {
   display: flex;
 }
@@ -63,6 +84,8 @@
   background-color: rgb(8, 79, 212);
   color: white;
 }
+
+
 
 @media screen and (max-width:560px) {
   .display {
@@ -180,54 +203,16 @@ body {
   font-size: 20px;
   color: #243359;
 }
-
-// .input_box label::after {
-//     content: " *";
-//     color: red;
+// ::ng-deep {
+  .select2-container .select2-selection--single {
+    box-sizing: border-box;
+    cursor: pointer;
+    display: block;
+    height: 33px !important;
+    user-select: none;
+    -webkit-user-select: none;
+}
 // }
-
-// .input_box select option {
-//     padding: 7px 0;
-// }
-
-// .input_box input {
-//     width: 100%;
-//     height: 45px;
-//     border: none;
-//     outline: none;
-//     border-radius: 5px;
-//     // font-size: 16px;
-//     // padding-left: 15px;
-//     padding: 0px 12px;
-//     border-top: 2px solid #b0afaf;
-//     border-bottom: 0.9px solid lightgray;
-//     border-left: 0.9px solid lightgray;
-//     border-right: 0.9px solid lightgray;
-//     box-shadow: 0px 0px 0px 1px rgba(0, 0, 0, 0.1);
-//     background-color: #f6f8fa;
-//     font-family: 'Poppins', sans-serif;
-//     transition: all 120ms ease-out 0s;
-// }
-
-// .input_box select {
-//     width: 100%;
-//     height: 45px;
-//     border: none;
-//     outline: none;
-//     border-radius: 5px;
-//     // font-size: 16px;
-//     // padding-left: 15px;
-//     box-shadow: 0px 0px 0px 1px rgba(0, 0, 0, 0.1);
-//     background-color: #f6f8fa;
-//     font-family: 'Poppins', sans-serif;
-//     transition: all 120ms ease-out 0s;
-//     padding: 0px 12px;
-//     border-top: 2px solid #b0afaf;
-//     border-bottom: 0.9px solid lightgray;
-//     border-left: 0.9px solid lightgray;
-//     border-right: 0.9px solid lightgray;
-// }
-
 @media screen and (max-width:560px) {
   .display {
     display: block;
@@ -260,15 +245,15 @@ body {
   border-color: #09a223;
 }
 
-::ng-deep .ag-header-viewport {
-  text-align: center !important;
-  background: #3d5857 !important;
-}
+// ::ng-deep .ag-header-viewport {
+//   text-align: center !important;
+//   background: #3d5857 !important;
+// }
 
-.ag-root-wrapper {
-  max-height: 300px !important;
-  overflow: scroll;
-}
+// .ag-root-wrapper {
+//   max-height: 600px !important;
+//   overflow: scroll;
+// }
 
 // ------------------------report-----------
 .header {
@@ -391,6 +376,7 @@ body {
 .card {
   box-shadow: 1px 1px 5px black;
 }
+
 .card1 {
   box-shadow: 1px 1px 5px #8a9892;
 }
@@ -419,7 +405,7 @@ body {
   }
 
   .btn {
-    width: 7rem;
+    // width: 7rem;
     height: 2rem;
   }
 
@@ -717,19 +703,17 @@ body {
 
   }
 
-  // Default values for .can-toggle class
   @include can-toggle-branding;
   @include can-toggle-appearance;
 
-  // Create toggles of different sizes by overriding the can-toggle-appearance mixin defaults
   &.can-toggle--size-small {
-    @include can-toggle-appearance (90px, // Toggle width
-      28px, // Toggle height
-      2px, // Toggle border radius
-      1px, // Offset (distance btw switch and box)
-      13px, // Label font size
-      10px, // Switch font size
-      0 2px 2px rgba(black, 0.4) // Switch shadow on hover/focus
+    @include can-toggle-appearance (90px,
+      28px, 
+      2px, 
+      1px,
+      13px, 
+      10px,
+      0 2px 2px rgba(black, 0.4) 
     );
   }
 }

@@ -4,8 +4,8 @@
         <i class="fa fa-close close-icon" style="cursor: pointer;" (click)="onNoClick()"></i>
     </div>
 
-    <div class="display justify-content-center align-items-center">
-        <div class="row" style="padding: 1rem;">
+    <div class="col-12 col-md-5 display justify-content-center align-items-center">
+        <div class="" style="padding: 1rem;">
             <div class="col-12 col-md-12 d-flex  justify-content-center align-items-center">
                 <div class="col-5 col-md-5" style="font-size: 17px;color: black;">
                     <label for="">NAME </label>
@@ -30,8 +30,8 @@
             </div>
         </div>
     </div>
-    <section>
-        <div class="d-flex flex-column flex-lg-row justify-content-center align-items-center mobile">
+    <section class="mobile">
+        <div class="d-flex flex-column flex-lg-row justify-content-center align-items-center ">
             <div class="col-lg-5 col-12 mb-3 mb-lg-0">
                 <div class="card">
                     <div class="input_box">
@@ -40,15 +40,15 @@
                     </div>
 
                     <div class="table1 mb-3">
-                        <p style="color: white;">NOT ADDED</p>
+                        <p style="color: white;">NOT ADDED - {{NotaddedList.length}}</p>
                         <div class="row inp">
                             <div class="col-12 example-container">
                                 <div cdkDropList #todoList="cdkDropList" [cdkDropListData]="filteredNotaddedList"
                                     [cdkDropListConnectedTo]="[doneList]" class="example-list"
                                     (cdkDropListDropped)="drop($event)">
                                     <div *ngFor="let item of filteredNotaddedList" class="example-box"
-                                        (click)="toggleSelection(item.id)" [class.selected]="isSelected(item.id)"
-                                        cdkDrag [cdkDragData]="item">
+                                        (click)="toggleSelection(item.id)" cdkDrag
+                                        [cdkDragData]="item" [class.selected]="isSelected(item)">
                                         {{ item.name }}
                                     </div>
                                 </div>
@@ -71,15 +71,15 @@
                             (input)="filterAddedList()">
                     </div>
                     <div class="table2 mb-3">
-                        <p style="color: white;">ADDED</p>
+                        <p style="color: white;">ADDED - {{addedList.length}}</p>
                         <div class="row inp">
                             <div class="col-12 example-container">
                                 <div cdkDropList #doneList="cdkDropList" [cdkDropListData]="filteredAddedList"
                                     [cdkDropListConnectedTo]="[todoList]" class="example-list"
                                     (cdkDropListDropped)="drop($event)">
                                     <div *ngFor="let item of filteredAddedList" class="example-box"
-                                        (click)="toggleSelection(item.id)" [class.selected]="isSelected(item.id)"
-                                        cdkDrag [cdkDragData]="item">
+                                        (click)="toggleSelection(item.id)" cdkDrag
+                                        [cdkDragData]="item" [class.selected]="isSelected(item)">
                                         {{ item.name }}
                                     </div>
                                 </div>
@@ -103,8 +103,8 @@
         <i class="fa fa-close close-icon" style="cursor: pointer;" (click)="onNoClick()"></i>
     </div>
 
-    <div class="display justify-content-center align-items-center">
-        <div class="row" style="padding: 1rem;">
+    <div class="col-12 col-md-5 display justify-content-center align-items-center">
+        <div class="" style="padding: 1rem;">
             <div class="col-12 col-md-12 d-flex  justify-content-center align-items-center">
                 <div class="col-5 col-md-5" style="font-size: 17px;color: black;">
                     <label for="">NAME </label>
@@ -129,8 +129,8 @@
             </div>
         </div>
     </div>
-    <section>
-        <div class="d-flex flex-column flex-lg-row justify-content-center align-items-center mobile">
+    <section class="mobile" >
+        <div class="d-flex flex-column flex-lg-row justify-content-center align-items-center ">
             <div class="col-lg-5 col-12 mb-3 mb-lg-0">
                 <div class="card">
                     <div class="input_box">
@@ -138,15 +138,15 @@
                             (input)="filterNotPermissionList()">
                     </div>
                     <div class="table1 mb-3">
-                        <p style="color: white;">NOT ADDED</p>
+                        <p style="color: white;">NOT ADDED - {{NotpermissionList.length}}</p>
                         <div class="row inp">
                             <div class="col-12 example-container">
                                 <div cdkDropList #todoList="cdkDropList" [cdkDropListData]="filteredNotPermissionList"
                                     [cdkDropListConnectedTo]="[doneList]" class="example-list"
                                     (cdkDropListDropped)="drop($event)">
                                     <div *ngFor="let item of filteredNotPermissionList" class="example-box"
-                                        (click)="toggleSelection(item.id)" [class.selected]="isSelected(item.id)"
-                                        cdkDrag [cdkDragData]="item">
+                                        (click)="toggleSelection(item.id)" cdkDrag
+                                        [cdkDragData]="item" [class.selected]="isSelected(item)">
                                         {{ item.name }}
                                     </div>
                                 </div>
@@ -170,15 +170,15 @@
                             (input)="filterPermissionList()">
                     </div>
                     <div class="table2 mb-3">
-                        <p style="color: white;">ADDED</p>
+                        <p style="color: white;">ADDED - {{permissionList.length}}</p>
                         <div class="row inp">
                             <div class="col-12 example-container">
                                 <div cdkDropList #doneList="cdkDropList" [cdkDropListData]="filteredPermissionList"
                                     [cdkDropListConnectedTo]="[todoList]" class="example-list"
                                     (cdkDropListDropped)="drop($event)">
                                     <div *ngFor="let item of filteredPermissionList" class="example-box"
-                                        (click)="toggleSelection(item.id)" [class.selected]="isSelected(item.id)"
-                                        cdkDrag [cdkDragData]="item">
+                                        (click)="toggleSelection(item.id)" cdkDrag
+                                        [cdkDragData]="item" [class.selected]="isSelected(item)">
                                         {{ item.name }}
                                     </div>
                                 </div>

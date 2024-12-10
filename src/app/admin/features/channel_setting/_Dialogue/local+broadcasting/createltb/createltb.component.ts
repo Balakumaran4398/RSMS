@@ -1,4 +1,4 @@
-import { Component, Inject, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, Inject, OnInit } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { BaseService } from 'src/app/_core/service/base.service';
 import { StorageService } from 'src/app/_core/service/storage.service';
@@ -21,12 +21,20 @@ export class CreateltbComponent implements OnInit {
   istax: boolean = false;
   tax: any;
   lcoprice: any;
-  updateTax: string='0.0';
-  updateLcoPrice: string='0.0';
+  updateTax: string = '0.0';
+  updateLcoPrice: string = '0.0';
+
+
+  filteredOperators: any[] = [];
+  filteredChannels: any[] = [];
+  selectedOperator: any;
+  selectedLcoName: any;
+  selectedChannel: any;
+  selectedChannelName: any;
 
   constructor(
     public dialogRef: MatDialogRef<CreateltbComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: any, private userService: BaseService, private storageService: StorageService,private swal:SwalService) {
+    @Inject(MAT_DIALOG_DATA) public data: any, private userService: BaseService, private storageService: StorageService, private swal: SwalService,private cdr: ChangeDetectorRef) {
     console.log('Data received:', data);
     this.username = storageService.getUsername();
     this.role = storageService.getUserRole();
@@ -39,6 +47,8 @@ export class CreateltbComponent implements OnInit {
         packagename: key,
         packageid: data[key]
       }));
+      this.filteredOperators = this.opNameList;
+      console.log(this.opNameList);
     })
     this.userService.getLocalChannelList(this.role, this.username).subscribe((data: any) => {
       console.log(data);
@@ -46,6 +56,9 @@ export class CreateltbComponent implements OnInit {
         channelname: key,
         channelid: data[key]
       }));
+      this.filteredChannels = this.chNameList;
+      console.log(this.chNameList);
+
     })
   }
   onNoClick(): void {
@@ -55,11 +68,12 @@ export class CreateltbComponent implements OnInit {
     this.userService.getLocalCreationAmountDetails(this.role, this.username, this.chRate, !this.istax).subscribe((data: any) => {
       this.updateTax = data.tax;
       this.updateLcoPrice = data.lcoprice;
-  
+      this.cdr.detectChanges(); 
     })
 
   }
   submit() {
+    this.swal.Loading();
     this.userService.createLocalChannel(this.role, this.username, this.channel, this.opName, this.updateTax, this.updateLcoPrice, this.lcnNo, this.chRate, this.istax)
       .subscribe((res: any) => {
         this.swal.success(res?.message);
@@ -67,5 +81,46 @@ export class CreateltbComponent implements OnInit {
         this.swal.Error(err?.error?.message);
       });
   }
+  filterOperators(event: any): void {
+    const filterValue = event.target.value.toLowerCase();
+    this.filteredOperators = this.opNameList.filter(operator =>
+      operator.packagename.toLowerCase().includes(filterValue)
+    );
+    console.log(this.filteredOperators);
+  }
+  displayOperator(operator: any): string {
+    return operator ? operator.name : '';
+  }
+  onSubscriberStatusChange(selectedOperator: any) {
+    console.log(selectedOperator);
+    this.selectedOperator = selectedOperator;
+    this.selectedLcoName = selectedOperator.value;
+    console.log(this.selectedLcoName);
+  }
 
+
+  filterChannels(event: any): void {
+    console.log(event.target.value);
+
+    const filterValue = event.target.value.toLowerCase();
+    this.filteredChannels = this.chNameList.filter(channel =>
+      channel.channelname.toLowerCase().includes(filterValue)
+    );
+    console.log(this.filteredChannels);
+  }
+  displayChannel(channel: any): string {
+    return channel ? channel.name : '';
+  }
+  onChannelStatusChange(selectedLcoName: any) {
+    console.log(selectedLcoName);
+    this.selectedChannel = selectedLcoName;
+    this.selectedChannelName = selectedLcoName.channelname;
+    console.log(this.selectedChannelName);
+  }
+  onKeydown(event: KeyboardEvent) {
+    const key = event.key;
+    if (!/^\d$/.test(key) && key !== 'Backspace') {
+      event.preventDefault();
+    }
+  }
 }

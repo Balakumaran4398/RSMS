@@ -38,9 +38,12 @@ label {
     height: 30px;
     border-radius: 5px;
 }
-
+.mobileview{
+    // max-width: 1000px;
+}
 .card {
     width: 100%;
+    // max-width: 1000px;
     height: 90%;
     border: none;
     outline: none;
@@ -57,7 +60,6 @@ label {
 }
 
 .card1 {
-
     width: 100%;
     height: 100%;
     border: none;
@@ -97,25 +99,29 @@ label {
 
 }
 
-::ng-deep .ag-header-viewport {
-    text-align: center !important;
-    // background: #51586e;
-    // background: #b2cfc0;
-    background: var(--primary-color);
-}
-
-::ng-deep .ag-header-cell-text {
-    color: white;
-}
-
-// ::ng-deep {
-//     .ag-center-cols-viewport {
-//         max-height: 220px !important;
-//         overflow: scroll;
-//     }
+// ::ng-deep .ag-header-viewport {
+//     text-align: center !important;
+//     // background: #51586e;
+//     // background: #b2cfc0;
+//     background: var(--primary-color);
 // }
+
+// ::ng-deep .ag-header-cell-text {
+//     color: white;
+// }
+
+::ng-deep {
+    .ag-center-cols-viewport {
+        max-height: 300px !important;
+        overflow: auto;
+    }
+}
+
 @media screen and (max-width:560px) {
     .display_mobile {
+        display: block;
+    }
+    .mobileview {
         display: block;
     }
 
@@ -123,10 +129,14 @@ label {
         display: block;
 
     }
+
 }
 
 @media screen and (max-width:720px) {
     .display_mobile {
+        display: block;
+    }
+    .mobileview {
         display: block;
     }
 
@@ -138,8 +148,33 @@ label {
 
 @media screen and (max-width:900px) {
     .display_mobile {
-        display: inline-block;
-        width: 100%;
+        display: block;
+    }
+    .mobileview {
+        display: block;
+    }
+
+    .display {
+        display: block;
+
+    }
+}
+@media screen and (max-width:1200px) {
+    .display_mobile {
+        display: block;
+    }
+    .mobileview {
+        display: block;
+    }
+
+    .display {
+        display: block;
+
+    }
+}
+@media screen and (max-width:1400px) {
+    .display_mobile {
+        display: block;
     }
 
     .display {

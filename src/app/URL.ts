@@ -15,5 +15,4 @@ export default class URLs {
         // return "http://192.168.1.115:8081/api";       //BALA
         // return "http://192.168.70.201:8585/rsms/api";    //QC
     }
-
 }

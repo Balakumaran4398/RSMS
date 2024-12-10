@@ -82,6 +82,10 @@ body {
     // background: linear-gradient(to right, #058372, #acf3cc);
 }
 
+#smartcard {
+    width: auto !important;
+}
+
 .ag-header-column-resize {
     color: darkgreen;
 }
@@ -92,11 +96,18 @@ body {
 
 .ag-cell {
     // text-align: center !important;
-    text-align: left !important;
+    // text-align: left !important;
 }
 
 .Head {
     background-color: var(--primary-color);
+    box-shadow: 0px 10px 8px rgba(0, 0, 0, 0.1);
+    color: white;
+    padding: 0.5rem;
+}
+
+.Head1 {
+    background-color:#5d6560;
     box-shadow: 0px 10px 8px rgba(0, 0, 0, 0.1);
     color: white;
     padding: 0.5rem;
@@ -107,6 +118,13 @@ body {
 }
 
 .Head p {
+    font-size: 20px;
+}
+.Head1 h6 {
+    text-transform: uppercase;
+}
+
+.Head1 p {
     font-size: 20px;
 }
 
@@ -145,8 +163,8 @@ body {
 }
 
 .ag-header-cell-label {
-    align-items: center;
-    justify-content: center;
+    align-items: left;
+    justify-content: left;
 }
 
 .ag-header-row {
@@ -320,11 +338,13 @@ body {
 
 .ag-header-viewport {
     text-align: center !important;
-    background: #3d5857 !important;
+    background: #a2d3c8 !important;
+    // background: #3d5857 !important;
 }
 
 .ag-header-cell-text {
-    color: white;
+    color: #243359;
+    // color: white;
 }
 
 .line {
@@ -455,8 +475,16 @@ input:checked+.slider:before {
 .dropdown li:hover {
     background-color: #eee;
 }
+
+// .input_box select :disabled {
+//     color: rgb(64, 64, 233);
+// }
+
 @media screen and (max-width:775px) {
-    .ag-paging-panel{
+    .ag-paging-panel {
         display: grid !important;
     }
 }
+
+
+// ===========================================select option =============================

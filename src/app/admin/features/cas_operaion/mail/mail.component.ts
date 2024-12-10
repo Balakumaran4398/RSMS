@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { ChangeDetectorRef, Component } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { ColDef } from 'ag-grid-community';
 import { BaseService } from 'src/app/_core/service/base.service';
@@ -21,8 +21,11 @@ export class MailComponent {
   isSmartcardEnabled: boolean = false;
   isAreaCodeEnabled: boolean = false;
   isMSOCodeEnabled: boolean = false;
-  isButtonEnable: boolean = false;
-  isDateDisabled: boolean = true;
+  isDateDisabled: boolean = false;
+  isInvalidLength: boolean = false;;
+  isTitle: boolean = false;
+  isdisplayTypeSelectDisabled: boolean = false;
+  casId: any;
   CasFormControl: any;
   selectedIntendFormControl: any;
   selectedAreaCodeFormControl = new FormControl('');
@@ -31,14 +34,28 @@ export class MailComponent {
   intendIdLcoFormControl: any;
   area: any[] = [];
   cas: any[] = [];
+  service: any[] = [];
   lco_list: any[] = [];
+  remainingChars: number = 0;
+  remainingTitleChars: number = 0;
   searchTerm: string = '';
+  searchAreaTerm: string = '';
+  searchSearchTerm: string = '';
+  filteredCasList: { name: string; id: number }[] = [];
+  filteredServiceList: { name: string; id: number }[] = [];
+  filteredAreaList: { name: string; id: number }[] = [];
   intend: any = [
-    { lable: "MSO", value: 0 },
-    { lable: "Smartcard", value: 1 },
-    { lable: "LCO", value: 2 },
+    { lable: "MSO", value: 1 },
+    { lable: "Smartcard", value: 2 },
+    { lable: "LCO", value: 3 },
   ];
-
+  displayType: any[] = [
+    // { lable: "Select Display ", value: null },
+    { lable: "User deletable", value: 0 },
+    { lable: "One time viewable", value: 1 },
+    { lable: "Persistent", value: 2 },
+    { lable: "Alert", value: 3 },
+  ];
   public rowSelection: any = "multiple";
   gridOptions = {
     defaultColDef: {
@@ -52,10 +69,23 @@ export class MailComponent {
     pagination: true,
   }
   rowData = [];
-  onGridReady = () => {
 
-  }
-  constructor(private userservice: BaseService, private storageService: StorageService, private fb: FormBuilder, public dialog: MatDialog) {
+
+  castype_1: any;
+  casname: any;
+  intendto_1: any = '';
+  intendid_1: any;
+  intendname: any;
+  display_type_1: any='';
+  sender_1: any;
+  mailtitle_1: any;
+  expirydate_1: any;
+  isresend_1: any;
+  message_1: any;
+  d_type: any = 0;
+
+  submitted: boolean = false;
+  constructor(private userservice: BaseService, private storageService: StorageService, private fb: FormBuilder, public dialog: MatDialog, private cdr: ChangeDetectorRef,) {
     this.username = storageService.getUsername();
     this.role = storageService.getUserRole();
     userservice.GetMail_List(this.role, this.username).subscribe((data: any) => {
@@ -70,7 +100,37 @@ export class MailComponent {
 
       console.log(this.lco_list);
     })
+    this.remainingChars = this.getMaxLength();
   }
+  getMaxLength(): number {
+    switch (this.castype_1) {
+      case 1:
+        return 130;
+      case 2:
+        return 1023;
+      case 6:
+        return 255;
+      case 2023:
+        return 2023;
+      default:
+        return 1024;
+    }
+  }
+  getMaxLengthTitle(): number {
+    switch (this.castype_1) {
+      case 1:
+        return 50;
+      case 2:
+        return 15;
+      case 6:
+        return 255;
+      case 63:
+        return 2023;
+      default:
+        return 15;
+    }
+  }
+
   columnDefs: ColDef[] = [
     { headerName: "S.No", lockPosition: true, valueGetter: 'node.rowIndex+1', cellClass: 'locked-col', width: 80, suppressNavigable: true, sortable: false, filter: false },
     { headerName: "INTEND ID", field: 'intendid' },
@@ -83,25 +143,17 @@ export class MailComponent {
       headerName: "ACTION",
       cellRenderer: (params: any) => {
         const div = document.createElement('div');
-
         const MailButton = document.createElement('button');
-        MailButton.innerHTML = '<button style="width: 5em;background-color: #6f8fde;color:white;border-radius: 5px;height: 2em;color:white"><p style="margin-top:-6px">RS</p></button>';
+        MailButton.innerHTML = '<button style="width: 5em;background-color: #2d5c73;color:white;border-radius: 5px;height: 2em;color:white"><p style="margin-top:-6px">Resend</p></button>';
         MailButton.style.backgroundColor = 'transparent';
         MailButton.style.border = 'none';
         MailButton.title = 'Mail';
         MailButton.style.cursor = 'pointer';
         MailButton.style.marginLeft = '20px';
-
-        // Add click event listener to Stop Button
         MailButton.addEventListener('click', () => {
-          // Assuming 'this' refers to the component instance
           this.openDialog(params.data, 'mail');
         });
-
-        // Append Stop Button to div
         div.appendChild(MailButton);
-
-        // Return the div containing the Stop Button
         return div;
       }
     }
@@ -115,12 +167,17 @@ export class MailComponent {
       this.area = data[0].arealist;
       console.log(this.area);
       this.area = Object.entries(data[0].arealist).map(([key, value]) => ({ name: key, id: value }));
+      this.filteredAreaList = this.area;
       this.cas = Object.entries(data[0].caslist).map(([key, value]) => ({ name: key, id: value }));
+      this.filteredCasList = this.cas;
+      this.service = Object.entries(data[0].servicelist).map(([key, value]) => ({ name: key, id: value }));
+      this.filteredServiceList = this.service;
     })
     this.form = this.fb.group({
       castype: ['', Validators.required],
       intendto: ['', Validators.required],
       intendid: ['', Validators.required],
+      display_type: ['0', Validators.required],
       sender: ['', Validators.required],
       mailtitle: ['', Validators.required],
       expirydate: [0, Validators.required],
@@ -130,25 +187,76 @@ export class MailComponent {
       role: this.role,
       username: this.username,
     })
-    
+
+  }
+  customValidationErrors: any = {
+    castype: false,
+    intendto: false,
+    intendid: false,
+    sender: false,
+    mailtitle: false,
+    message: false,
+    expirydate: false,
+    isresend: false,
+    display_type: false,
+    d_type: false,
+  };
+  validateForm(): boolean {
+    this.customValidationErrors = {
+      castype: !this.castype_1 || this.castype_1.trim() === '',
+      intendto: !this.intendto_1 || this.intendto_1.trim() === '',
+      intendid: !this.intendid_1 || this.intendid_1.trim() === '',
+      sender: !this.sender_1 || this.sender_1.trim().length < 3,
+      mailtitle: this.isTitle && (!this.mailtitle_1 || this.mailtitle_1.trim() === ''),
+      message: !this.message_1 || this.message_1.trim() === '',
+      display_type: this.display_type_1 || null,
+      expirydate: this.expirydate_1 || null,
+      isresend: this.isresend_1 || null,
+      d_type: 0,
+    };
+
+    return Object.values(this.customValidationErrors).every((isValid) => !isValid);
+  }
+  validateExactLength(): void {
+    const requiredLength = this.castype_1 !== 6 ? 20 : 14;
+    this.isInvalidLength = this.intendid_1.length > 0 && this.intendid_1.length !== requiredLength;
+    const control = this.form.get('intendid');
+    if (control) {
+      control.setErrors(this.isInvalidLength ? { incorrectLength: true } : null);
+    }
+  }
+  onSearchChange(event: any) {
+    this.searchTerm = event.target.value;
+    this.filteredCasList = this.filteredcas();
+    console.log(this.filteredCasList);
+
+  }
+  filteredcas(): { name: string; id: number }[] {
+    if (!this.searchTerm) {
+      return this.cas;
+    }
+    return this.cas.filter(casItem =>
+      casItem.name.toLowerCase().includes(this.searchTerm.toLowerCase())
+    );
   }
   onChangeIntendTo1(selectedValue: any) {
+    this.intendid_1 = '';
     this.isSmartcardEnabled = false;
     this.isAreaCodeEnabled = false;
-    console.log('enabled             =' + selectedValue);
-    if (selectedValue == 0) {
+    console.log('enabled  =' + selectedValue);
+    if (selectedValue == 1) {
       this.isSmartcardEnabled = false;
       this.isAreaCodeEnabled = false
       this.isMSOCodeEnabled = false
       console.log('Smartcard enabled');
     }
-    if (selectedValue == 1) {
+    if (selectedValue == 2) {
       this.isSmartcardEnabled = true;
       this.isAreaCodeEnabled = false
       console.log('Smartcard enabled');
     }
 
-    if (selectedValue == 2) {
+    if (selectedValue == 3) {
       this.isAreaCodeEnabled = true;
       this.isSmartcardEnabled = false
       console.log('Area code enabled');
@@ -157,15 +265,49 @@ export class MailComponent {
       console.log('Both disabled');
     }
   }
-  onSelectionFingerPrint(selectedCas: string) {
-    console.log(selectedCas);
-    const casId = Number(selectedCas);
-    if (casId == 1) {
+  onSelectionFingerPrint(selectedValue: { name: any, id: any }) {
+    // this.casId = Number(selectedValue);
+    console.log(this.casId);
+    console.log(this.castype_1 = selectedValue.id);
+    console.log(this.casname = selectedValue.name);
+    this.cdr.detectChanges();
+    this.castype_1 = selectedValue.id;
+    this.casname = selectedValue.name;
+    console.log(this.castype_1);
+
+    if (this.castype_1 == 6 || this.castype_1 == 4 || this.castype_1 == 1) {
       this.isDateDisabled = false;
+
     } else {
       this.isDateDisabled = true;
     }
+    if (this.castype_1 == 4) {
+      this.isTitle = false;
+    } else {
+      this.isTitle = true;
+    }
+    if (this.castype_1 == 6) {
+      this.isdisplayTypeSelectDisabled = true;
+    } else {
+      this.isdisplayTypeSelectDisabled = false;
+    }
+    if (this.castype_1 == 1) {
+
+    } else {
+
+    }
   }
+  updateRemainingChars(event: Event): void {
+    this.cdr.detectChanges();
+    const input = event.target as HTMLTextAreaElement;
+    this.remainingChars = this.getMaxLength() - input.value.length;
+  }
+  updateRemainingCharsTitle(event: Event): void {
+    this.cdr.detectChanges();
+    const input = event.target as HTMLTextAreaElement;
+    this.remainingTitleChars = this.getMaxLengthTitle() - input.value.length;
+  }
+
   filteredIntendArea(): any[] {
     if (!this.searchTerm) {
       return this.area;
@@ -174,88 +316,96 @@ export class MailComponent {
       area.lable.toLowerCase().includes(this.searchTerm.toLowerCase())
     );
   }
-  // onSubmit() {
-  //   // if (this.form.valid) {
-  //     Swal.fire({
-  //       title: 'Updateing...',
-  //       text: 'Please wait while the Mail is being updated',
-  //       allowOutsideClick: false,
-  //       didOpen: () => {
-  //         Swal.showLoading(null);
-  //       }
-  //     });
-  //   this.userservice.CreateMail(this.form.value).subscribe(
-  //     (res: any) => {
-  //       console.log(res);
-  //       Swal.fire({
-  //         title: 'Success!',
-  //         text: res.message || 'Your mail has been created successfully.',
-  //         icon: 'success',
-  //         timer: 3000, // 3 seconds
-  //         showConfirmButton: false
-  //       }).then(() => {
-  //         // window.location.reload();
-  //         this.ngOnInit();
-  //       });
-  //     },
-  //     (error) => {
-  //       console.error(error);
-  //       Swal.fire({
-  //         title: 'Error!',
-  //         text: error?.error.message || 'There was an issue creating your mail. Please try again later.',
-  //         icon: 'error',
-  //         confirmButtonText: 'OK'
-  //       });
-  //     }
-  //   );
-  // // } else {
-  // //   this.form.markAllAsTouched();
-  // // }
-  // }
+  onSearchAreaChange(event: any) {
+    this.searchAreaTerm = event.target.value;
+    this.filteredAreaList = this.filteredArea();
+    // this.filteredAreaList = this.filteredIntendArea();
+  }
 
+  filteredService(): { name: string; id: number }[] {
+    if (!this.searchSearchTerm) {
+      return this.service;
+    }
+    return this.service.filter((service: any) =>
+      service.name.toLowerCase().includes(this.searchSearchTerm.toLowerCase())
+    );
+  }
+  filteredArea(): { name: string; id: number }[] {
+    if (!this.searchAreaTerm) {
+      return this.area;
+    }
+    return this.area.filter((area: any) =>
+      area.name.toLowerCase().includes(this.searchAreaTerm.toLowerCase())
+    );
+  }
+  onAreaSelect(area: { name: string; id: number }) {
+    this.intendid_1 = area.id;
+    this.intendname = area.name;
+    console.log(this.intendid_1);
+    console.log(this.intendname);
+  }
+  onKeydown(event: KeyboardEvent) {
+    const key = event.key;
+
+    // Allow digits only
+    if (!/^\d$/.test(key) && key !== 'Backspace') {
+      event.preventDefault();
+    }
+  }
   onSubmit() {
-    // Check if the form is valid
     if (this.form.valid) {
-      Swal.fire({
-        title: 'Updating...',
-        text: 'Please wait while the Mail is being updated',
-        allowOutsideClick: false,
-        didOpen: () => {
-          Swal.showLoading(null);
-        }
-      });
-
-      // Call the API to create the mail
-      this.userservice.CreateMail(this.form.value).subscribe(
-        (res: any) => {
-          console.log(res);
-          Swal.fire({
-            title: 'Success!',
-            text: res.message || 'Your mail has been created successfully.',
-            icon: 'success',
-            timer: 2000,
-            timerProgressBar: true,
-          }).then(() => {
-            // Optionally reload the page or refresh data
-            this.ngOnInit();
-          });
-        },
-        (error) => {
-          console.error(error);
-          Swal.fire({
-            title: 'Error!',
-            text: error?.error.message || 'There was an issue creating your mail. Please try again later.',
-            icon: 'error',
-            confirmButtonText: 'OK',
-            timer: 2000,
-            timerProgressBar: true,
-          });
-        }
-      );
     } else {
-      // If the form is invalid, mark all controls as touched to trigger validation messages
       this.form.markAllAsTouched();
     }
+    let requestBody = {
+      castype: this.castype_1,
+      intendto: this.intendto_1 || 1,
+      intendid: this.intendid_1 || 1,
+      display_type: this.display_type_1 || 0,
+      sender: this.sender_1,
+      mailtitle: this.mailtitle_1,
+      expirydate: this.expirydate_1,
+      isresend: this.isresend_1 || false,
+      message: this.message_1,
+      d_type: 0,
+      role: this.role,
+      username: this.username,
+    }
+    Swal.fire({
+      title: 'Updating...',
+      text: 'Please wait while the Mail is being updated',
+      allowOutsideClick: false,
+      didOpen: () => {
+        Swal.showLoading(null);
+      }
+    });
+
+    this.userservice.CreateMail(requestBody).subscribe(
+      (res: any) => {
+        console.log(res);
+        Swal.fire({
+          title: 'Success!',
+          text: res.message || 'Your mail has been created successfully.',
+          icon: 'success',
+          timer: 2000,
+          timerProgressBar: true,
+        }).then(() => {
+          this.ngOnInit();
+        });
+      },
+      (error) => {
+        console.error(error);
+        Swal.fire({
+          title: 'Error!',
+          text: error?.error.castype || error?.error.intendto || error?.error.intendid || error?.error.mailtitle || error?.error.sender || error?.error.isresend ||
+            error?.error.display_type || error?.error.message,
+          icon: 'error',
+          confirmButtonText: 'OK',
+          timer: 2000,
+          timerProgressBar: true,
+        });
+      }
+    );
   }
 
 

@@ -3,29 +3,35 @@
         <p>
             BULK PACKAGE UPDATION</p>
     </div>
-    <div class="d-flex tablist justify-content-center align-items-center my-3 new_d">
-        <div class="tab" [class.active]="selectedTab === 'bulk_package'" (click)="selectbulk('bulk_package')"> BULK
+    <div class=" tablist justify-content-center align-items-center my-3 new_d">
+        <div class="tab mb-3" [class.active]="selectedTab === 'bulk_package'" (click)="selectbulk('bulk_package')"> BULK
             PACKAGE </div>
-        <div class="tab" [class.active]="selectedTab === 'pending'" (click)="selectPending('pending')">PENDING </div>
-        <div class="tab" [class.active]="selectedTab === 'archive'" (click)="selectArchive('archive')"> ARCHIVE </div>
+        <div class="tab mb-3" [class.active]="selectedTab === 'pending'" (click)="selectPending('pending')">PENDING
+        </div>
+        <div class="tab mb-3" [class.active]="selectedTab === 'archive'" (click)="selectArchive('archive')"> ARCHIVE
+        </div>
     </div>
     <div *ngIf="selectedTab === 'bulk_package'" class="commission">
         <div class="col-12 col-md-12  box  display justify-content-center align-items-center ">
-
             <div class="checkbox-text mb-3 mx-2">
                 <div class="checkbox-content">
                     <mat-checkbox [(ngModel)]="isCheckboxChecked" id="terms"> </mat-checkbox>
                 </div>
             </div>
-
-
-            <mat-form-field appearance="fill" appearance="outline" class="w-25 mx-2">
+            <mat-form-field appearance="outline" class="mx-2">
                 <mat-label>Select Package</mat-label>
-                <mat-select [(ngModel)]="package" [disabled]="!isCheckboxChecked">
-                    <mat-option value="">Select Package</mat-option>
-                    <mat-option *ngFor="let pkg of packageList" [value]="pkg.value">{{ pkg.name }}</mat-option>
+                <mat-select [(ngModel)]="package" [disabled]="!isCheckboxChecked" panelClass="custom-select-panel"
+                    (closed)="onDropdownClosed()">
+                    <mat-option class="option_input">
+                        <input matInput [(ngModel)]="packageSearch" placeholder="Type to search..."
+                            (input)="filteredPackage()" (click)="$event.stopPropagation()" class="search-input" />
+                    </mat-option>
+                    <mat-option *ngFor="let pkg of filteredPackageList" [value]="pkg.value">
+                        {{ pkg.name }}
+                    </mat-option>
                 </mat-select>
             </mat-form-field>
+
 
             <mat-form-field appearance="outline" class="mx-2">
                 <mat-label>Enter a date range</mat-label>
@@ -38,19 +44,31 @@
                 <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
                 <mat-date-range-picker #picker></mat-date-range-picker>
             </mat-form-field>
+            <!-- <mat-form-field appearance="outline" class="mx-2">
+                    <mat-label>Select LCO</mat-label>
+                    <mat-select [(ngModel)]="operatorid">
+                        <mat-option value="">Select Operator</mat-option>
+                        <mat-option *ngFor="let operator of operatorList" [value]="operator.value">
+                            {{ operator.name }}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field> -->
 
 
             <mat-form-field appearance="outline" class="mx-2">
-                <mat-label>Select LCO</mat-label>
-                <mat-select [(ngModel)]="operatorid">
-                    <mat-option value="">Select Operator</mat-option>
-                    <mat-option *ngFor="let operator of operatorList" [value]="operator.value">
+                <mat-label> Select LCO</mat-label>
+                <mat-select [(ngModel)]="operatorid" panelClass="custom-select-panel" (closed)="onDropdownClosed1()">
+                    <mat-option class="option_input">
+                        <input matInput [(ngModel)]="selectoperator" (input)="filteredOperator()"
+                            (click)="$event.stopPropagation()" placeholder="Type to search..." class="search-input" />
+                    </mat-option>
+                    <mat-option *ngFor="let operator of filteredOperatorList" [value]="operator.value">
                         {{ operator.name }}
                     </mat-option>
                 </mat-select>
             </mat-form-field>
 
-            <div class="mobile mb-3">
+            <div class="mobile  d-flex justify-content-center align-items-center  mb-3">
                 <button type="submit" class="btn btn-success align-item-center" (click)="submit()">Submit</button>
             </div>
         </div>
@@ -64,13 +82,23 @@
                 </div>
                 <ag-grid-angular #agGrid id="myGrid" domLayout='autoHeight' class="ag-theme-alpine table-class"
                     rowAnimation [rowSelection]="rowSelection" [gridOptions]="gridOptions" [columnDefs]="columnDefs"
-                    [rowData]="rowData" (gridReady)="onGridReady()" [enableCellTextSelection]="true">
+                    [rowData]="rowData" (gridReady)="onGridReady($event)" [enableCellTextSelection]="true"
+                    [rowSelection]="'multiple'" (selectionChanged)="onSelectionChanged()">
                 </ag-grid-angular>
+            </div>
+        </div>
+        <div class="d-flex justify-content-center align-items-center ">
+            <div *ngIf="isSelectRow"> <button class="btn btn-primary me-2"
+                    (click)="openLoginPage('bulk','')"><i class="fa-solid fa-truck-fast"></i></button></div>
+            <div>
+                <h6 [ngStyle]="{'color': serviceStatus === 'SERVICE RUNNING' ? 'green' : 'red', 'font-size': '18px'}">
+                    {{ serviceStatus }}
+                </h6>
             </div>
         </div>
     </div>
     <div *ngIf="selectedTab === 'pending'" class="commission">
-        <div class="col-12 col-md-12 box d-flex justify-content-center align-item-center">
+        <div class="col-12 col-md-12 box display justify-content-center align-item-center">
             <mat-form-field class="me-3 " appearance="outline">
                 <mat-label>Select Filter </mat-label>
                 <mat-select placeholder="Select the filter" [(ngModel)]="typelist">
@@ -82,11 +110,25 @@
             </mat-form-field>
 
             <div *ngIf="typelist === 1">
-                <mat-form-field appearance="outline" class="mx-2">
+                <!-- <mat-form-field appearance="outline" class="mx-2">
                     <mat-label>Select LCO</mat-label>
                     <mat-select [(ngModel)]="operatorid">
                         <mat-option value="">Select Operator</mat-option>
                         <mat-option *ngFor="let operator of operatorList" [value]="operator.value">
+                            {{ operator.name }}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field> -->
+                <mat-form-field appearance="outline" class="mx-2">
+                    <mat-label> Select LCO</mat-label>
+                    <mat-select [(ngModel)]="operatorid" panelClass="custom-select-panel"
+                        (closed)="onDropdownClosed1()">
+                        <mat-option class="option_input">
+                            <input matInput [(ngModel)]="selectoperator" (input)="filteredOperator()"
+                                (click)="$event.stopPropagation()" placeholder="Type to search..."
+                                class="search-input" />
+                        </mat-option>
+                        <mat-option *ngFor="let operator of filteredOperatorList" [value]="operator.value">
                             {{ operator.name }}
                         </mat-option>
                     </mat-select>
@@ -127,18 +169,19 @@
                 </div>
                 <ag-grid-angular #agGrid id="myGrid" domLayout='autoHeight' class="ag-theme-alpine table-class"
                     rowAnimation [rowSelection]="rowSelection" [gridOptions]="gridOptions" [columnDefs]="columnDefs"
-                    [rowData]="rowData" (gridReady)="onGridReady()" [enableCellTextSelection]="true">
+                    [rowData]="rowData" [enableCellTextSelection]="true" (selectionChanged)="onSelectionChanged()">
                 </ag-grid-angular>
             </div>
         </div>
 
-        <div class="col-12 col-md-6 display justify-content-center align-items-center" style="margin: 10px auto;">
-            <div> <button [disabled]="status==false" class="btn btn-secondary me-2" (click)="start()">Start Service</button></div>
-            <div> <button [disabled]="status==true" class="btn btn-secondary me-2" (click)="stop()">Stop Service</button></div>
-            <div>
-                <h6 style="color: green;font-size: 18px;">SERVICE RUNNING</h6>
-            </div>
+        <div class="display justify-content-center align-items-center stop_service">
+            <button class="btn btn-secondary mb-2 me-2" (click)="openLoginPage('start','')">Start Service</button>
 
+            <button class="btn btn-secondary mb-2 me-2" (click)="openLoginPage('stop','')">Stop Service</button>
+
+            <h6 [ngStyle]="{'color': serviceStatus === 'SERVICE RUNNING' ? 'green' : 'red', 'font-size': '18px'}">
+                {{ serviceStatus }}
+              </h6>
 
         </div>
     </div>
@@ -162,11 +205,25 @@
                 </mat-select>
             </mat-form-field>
             <div *ngIf="typelist === 1">
-                <mat-form-field appearance="outline" class="mx-2">
+                <!-- <mat-form-field appearance="outline" class="mx-2">
                     <mat-label>Select LCO</mat-label>
                     <mat-select [(ngModel)]="operatorid">
                         <mat-option value="">Select Operator</mat-option>
                         <mat-option *ngFor="let operator of operatorList" [value]="operator.value">
+                            {{ operator.name }}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field> -->
+                <mat-form-field appearance="outline" class="mx-2">
+                    <mat-label> Select LCO</mat-label>
+                    <mat-select [(ngModel)]="operatorid" panelClass="custom-select-panel"
+                        (closed)="onDropdownClosed1()">
+                        <mat-option class="option_input">
+                            <input matInput [(ngModel)]="selectoperator" (input)="filteredOperator()"
+                                (click)="$event.stopPropagation()" placeholder="Type to search..."
+                                class="search-input" />
+                        </mat-option>
+                        <mat-option *ngFor="let operator of filteredOperatorList" [value]="operator.value">
                             {{ operator.name }}
                         </mat-option>
                     </mat-select>
@@ -206,7 +263,7 @@
                 </div>
                 <ag-grid-angular #agGrid id="myGrid" domLayout='autoHeight' class="ag-theme-alpine table-class"
                     rowAnimation [rowSelection]="rowSelection" [gridOptions]="gridOptions" [columnDefs]="columnDefs"
-                    [rowData]="rowData" (gridReady)="onGridReady()" [enableCellTextSelection]="true">
+                    [rowData]="rowData" [enableCellTextSelection]="true">
                 </ag-grid-angular>
             </div>
         </div>

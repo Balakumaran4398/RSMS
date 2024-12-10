@@ -16,8 +16,12 @@ export class InsertSubDialogComponent {
   operatorid: any;
   id: any;
   selectedLcoName: any = 0;
-  sub_list: { [key: string]: number } = {};
+  // sub_list: { [key: string]: number } = {};
+  sub_list: any[]=[];
   searchTerm: string = '';
+  filteredOperators: any[] = [];
+  selectedOperator: any;
+  submitted: boolean = false;
   constructor(
     public dialogRef: MatDialogRef<InsertSubDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any, private userService: BaseService, private storageService: StorageService) {
@@ -33,32 +37,51 @@ export class InsertSubDialogComponent {
       console.log(data);
       this.sub_list = data[0];
       console.log(this.sub_list);
-
+      this.sub_list = Object.entries(data[0]).map(([key, value]) => {
+        return { name: key, value: value };
+      });
+      this.filteredOperators= this.sub_list;
     })
   }
   onNoClick(): void {
     this.dialogRef.close();
   }
-  filteredLcoKeys(): string[] {
-    const keys = Object.keys(this.sub_list);
-    if (!this.searchTerm) {
-      return keys;
-    }
-    return keys.filter(key =>
-      key.toLowerCase().includes(this.searchTerm.toLowerCase())
+  // filteredLcoKeys(): string[] {
+  //   const keys = Object.keys(this.sub_list);
+  //   if (!this.searchTerm) {
+  //     return keys;
+  //   }
+  //   return keys.filter(key =>
+  //     key.toLowerCase().includes(this.searchTerm.toLowerCase())
+  //   );
+  // }
+  filterOperators(event: any): void {
+    const filterValue = event.target.value.toLowerCase();
+    this.filteredOperators = this.sub_list.filter(operator =>
+      operator.name.toLowerCase().includes(filterValue)
     );
+    console.log(this.filteredOperators);
+  }
+  displayOperator(operator: any): string {
+    return operator ? operator.name : '';
+  }
+  onSubscriberStatusChange(selectedOperator: any) {
+    console.log(selectedOperator);
+    this.selectedOperator = selectedOperator;
+    this.selectedLcoName = selectedOperator.value;
+    console.log(this.selectedLcoName);
   }
 
-
   Submit() {
+    this.submitted= true;
     if (!this.selectedLcoName || !this.id || !this.operatorid) {
-      Swal.fire({
-        icon: 'error',
-        title: 'Submission Failed',
-        text: 'Please make sure all required fields are filled and items are selected.',
-        timer: 3000,
-        showConfirmButton: true
-      });
+      // Swal.fire({
+      //   icon: 'error',
+      //   title: 'Submission Failed',
+      //   text: 'Please make sure all required fields are filled and items are selected.',
+      //   timer: 3000,
+      //   showConfirmButton: true
+      // });
       return;
     }
     this.userService.Defective_Insert_Allocated(this.role, this.username, this.selectedLcoName, this.id, this.operatorid)
