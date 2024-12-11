@@ -1,9 +1,12 @@
-import { ChangeDetectorRef, Component, Inject, OnInit } from '@angular/core';
+import { HttpResponse } from '@angular/common/http';
+import { ChangeDetectorRef, Component, Inject, OnInit, ViewChild } from '@angular/core';
+import { MatAutocompleteTrigger } from '@angular/material/autocomplete';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { BehaviorSubject } from 'rxjs';
 import { BaseService } from 'src/app/_core/service/base.service';
 import { StorageService } from 'src/app/_core/service/storage.service';
 import { SwalService } from 'src/app/_core/service/swal.service';
+import Swal from 'sweetalert2';
 declare var $: any;
 // const moment = _rollupMoment || _moment;
 @Component({
@@ -26,6 +29,7 @@ export class BulkpackageupdationComponent implements OnInit {
   packagenameList: any[] = [];
   filteredPackagenameList: any[] = [];
   lcomembershipList: any[] = [];
+  filteredPackageList: any[] = [];
   filteredPackage: any[] = [];
   selectedPackage: any;
   selectedPackageName: any;
@@ -33,7 +37,12 @@ export class BulkpackageupdationComponent implements OnInit {
   isCheckboxPlanChecked: boolean = false;
   plantype: any = 0;
   bulkDatas: any;
+  castype: any='';
+  casname: any='';
   isallpack: boolean = false;
+  searchTerm: any;
+  cas: any;
+  filteredCasList: { name: string; id: number }[] = [];
   plantype$ = new BehaviorSubject<{ key: string, value: number }[]>([]);
   gridOptions = {
     defaultColDef: {
@@ -53,14 +62,21 @@ export class BulkpackageupdationComponent implements OnInit {
     this.role = storageService.getUserRole();
     console.log(data);
     this.Type = data?.status;
+    this.castype = data?.castype;
     this.bulkDatas = data?.rowData[0];
     console.log(this.bulkDatas);
     this.rowData = data?.rowData
     console.log(this.bulkDatas?.mobileno);
-
   }
   ngOnInit(): void {
-    this.userservice.getPackageList(this.role, this.username, 1).subscribe((data: any) => {
+
+    this.userservice.Finger_print_List(this.role, this.username).subscribe((data) => {
+      this.cas = Object.entries(data[0].caslist).map(([key, value]) => ({ name: key, id: value }));
+      this.filteredCasList = this.cas;
+    })
+
+
+    this.userservice.getBulkPackageList(this.role, this.username, this.castype).subscribe((data: any) => {
       console.log(data);
       this.lcomembershipList = Object.keys(data).map(key => {
         const value = data[key];
@@ -99,6 +115,68 @@ export class BulkpackageupdationComponent implements OnInit {
   onNoClick(): void {
     this.dialogRef.close();
   }
+  onSearchChange(event: any) {
+    this.searchTerm = event.target.value;
+    this.filteredCasList = this.filteredcas();
+  }
+  filteredcas(): { name: string; id: number }[] {
+    if (!this.searchTerm) {
+      return this.cas;
+    }
+    return this.cas.filter((casItem:any) =>
+      casItem.name.toLowerCase().includes(this.searchTerm.toLowerCase())
+    );
+  }
+  @ViewChild(MatAutocompleteTrigger) autocompleteTrigger!: MatAutocompleteTrigger;
+
+  onSelectionFingerPrint(selectedValue: any, autocompleteInput: HTMLInputElement) {
+    console.log(selectedValue);
+    this.castype = selectedValue.id;
+    this.casname = selectedValue.name;
+    console.log(this.casname);
+    console.log(this.castype);
+    this.autocompleteTrigger.closePanel();
+    autocompleteInput.blur();
+    this.fetchPackageList();
+  }
+  fetchPackageList() {
+    console.log(this.castype);
+    
+    this.userservice.getBulkPackageList(this.role, this.username, this.castype).subscribe(
+      (response: HttpResponse<any>) => {
+        if (response.status === 200 && response.body) {
+          console.log(response.body);
+          if (typeof response.body === 'object' && response.body !== null) {
+            this.lcomembershipList = Object.entries(response.body).map(([key, value]) => ({
+              name: key,
+              value: value
+            }));
+            this.filteredPackageList = [...this.lcomembershipList];
+            console.log('Transformed Package List:', this.lcomembershipList);
+            this.cdr.detectChanges();
+            this.swal.Success_200();
+          } else {
+            console.error('Response body is not a valid object:', response.body);
+            this.swal.Error_400();
+          }
+        } else if (response.status === 204) {
+          this.swal.Success_204();
+          this.filteredPackageList = [];
+        }
+      },
+      (error) => {
+        console.error('Error fetching package list:', error);
+
+        if (error.status === 400) {
+          this.swal.Error_400(); // Bad request
+        } else if (error.status === 500) {
+          this.swal.Error_500(); // Internal server error
+        } else {
+          Swal.fire('Error', 'Something went wrong. Please try again.', 'error'); // Generic error
+        }
+      }
+    );
+  }
   start() {
     this.swal.Loading();
     this.userservice.StartOrStopBulkPackageService(this.role, this.username, 'true')
@@ -130,6 +208,17 @@ export class BulkpackageupdationComponent implements OnInit {
   }
   onCheckboxPackageChange(event: Event): void {
     this.isCheckboxPackageChecked = (event.target as HTMLInputElement).checked;
+    // this.setCheckboxState(checked); 
+  }
+  setCheckboxState(checked: boolean): void {
+    this.isCheckboxPackageChecked = checked;
+    if (!checked) {
+      this.packageid = null;
+      // this.packageSearch = '';
+      this.filteredPackageList = [];
+    } else {
+      this.fetchPackageList();
+    }
   }
   onCheckboxPlanChange(event: Event): void {
     this.isCheckboxPlanChecked = (event.target as HTMLInputElement).checked;
@@ -149,6 +238,9 @@ export class BulkpackageupdationComponent implements OnInit {
   }
   displayOperator(operator: any): string {
     return operator ? operator.name : '';
+  }
+  displayCas(casItem: any): string {
+    return casItem ? casItem.name : '';
   }
 
   changePlan() {
@@ -181,7 +273,7 @@ export class BulkpackageupdationComponent implements OnInit {
       packageid: this.packageid || this.data?.packageid || 0,
       plantype: this.plantype,
       isallpack: this.isallpack,
-      expiredsubscriberlist: this.rowData
+      expiredsubscriberlist: this.rowData,
     }
     this.swal.Loading();
     this.userservice.bulkPackageUpdation(requestBody)

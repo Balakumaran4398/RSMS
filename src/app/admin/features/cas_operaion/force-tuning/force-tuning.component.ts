@@ -2,6 +2,7 @@ import { ChangeDetectorRef, Component } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { BaseService } from 'src/app/_core/service/base.service';
 import { StorageService } from 'src/app/_core/service/storage.service';
+import { SwalService } from 'src/app/_core/service/swal.service';
 import Swal from 'sweetalert2';
 
 @Component({
@@ -38,7 +39,7 @@ export class ForceTuningComponent {
   ];
   lco_name: any = 0;
   searchTerm: any;
-  constructor(private userservice: BaseService, private storageService: StorageService, private fb: FormBuilder, private cdr: ChangeDetectorRef) {
+  constructor(private userservice: BaseService, private storageService: StorageService, private swal: SwalService, private fb: FormBuilder, private cdr: ChangeDetectorRef) {
     this.username = storageService.getUsername();
     this.role = storageService.getUserRole();
     this.form = this.fb.group({
@@ -142,6 +143,7 @@ export class ForceTuningComponent {
     // } else {
     //   this.form.markAllAsTouched();
     // }
+    this.swal.Loading();
     this.userservice.CreateForce(this.form.value).subscribe(
       (res: any) => {
         console.log(res);
@@ -159,7 +161,7 @@ export class ForceTuningComponent {
       (error: any) => {
         Swal.fire({
           title: 'Error!',
-          text: error?.error.intendid || error?.error.message ||'There was an issue submitting the form.',
+          text: error?.error.intendid || error?.error.message || 'There was an issue submitting the form.',
           icon: 'error',
           confirmButtonText: 'OK',
           timer: 2000,

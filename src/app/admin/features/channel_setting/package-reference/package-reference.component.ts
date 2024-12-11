@@ -144,7 +144,7 @@ export class PackageReferenceComponent {
         },
         { headerName: "CHANNEL NAME", field: 'productname',width: 400, },
         { headerName: "PACKAGE RATE", field: 'packagerate',width: 400,cellStyle: { textAlign: 'center' }, },
-        { headerName: "REFERENCE ID", field: 'referenceid',width: 300,cellStyle: { textAlign: 'center' }, },
+        { headerName: "REFERENCE ID", field: 'orderid',width: 300,cellStyle: { textAlign: 'center' }, },
         {
           headerName: "PRODUCT ID", field: 'casproductid',width: 300,cellStyle: { textAlign: 'center' },
           cellRenderer: (params: any) => {
@@ -192,7 +192,7 @@ export class PackageReferenceComponent {
         },
         { headerName: "CHANNEL NAME", field: 'productname',width: 400, },
         { headerName: "PACKAGE RATE", field: 'packagerate',width: 400, },
-        { headerName: "REFERENCE ID", field: 'referenceid', width: 300,},
+        { headerName: "REFERENCE ID", field: 'orderid', width: 300,},
         {
           headerName: "PRODUCT ID", field: 'casproductid',width: 300,
 
@@ -242,7 +242,7 @@ export class PackageReferenceComponent {
         },
         { headerName: "CHANNEL NAME", field: 'productname', width: 400 },
         { headerName: "PACKAGE RATE", field: 'packagerate', width: 400 },
-        { headerName: "REFERENCE ID", field: 'referenceid', width: 300 },
+        { headerName: "REFERENCE ID", field: 'orderid', width: 300 },
         {
           headerName: "PRODUCT ID", field: 'casproductid',width: 300,
           cellRenderer: (params: any) => {

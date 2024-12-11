@@ -76,9 +76,12 @@ export class NavComponent implements OnInit, AfterViewInit {
     // this.setActive("");
     const sidemenuLinks = document.querySelectorAll('.side-menu li a');
     // const sidedropdownmenuLinks = document.querySelectorAll('.side-menu li ul li a');
+    console.log("click");
     sidemenuLinks.forEach(link => {
+
       link?.classList?.remove('active');
       link.addEventListener("click", () => {
+        console.log("click");
         sidemenuLinks.forEach(link => link.classList.remove('active'));
         link.classList.add('active');
       });
@@ -90,28 +93,30 @@ export class NavComponent implements OnInit, AfterViewInit {
     //     link.classList.add('active');
     //   });
     // });
-
-
-
-
   }
   setActive(event: any): void {
     const dropdownLinks = document.querySelectorAll('.side-dropdown li a');
     dropdownLinks.forEach(link => link.classList.remove('active'));
-
     event.target.classList.add('active');
   }
   setActiveTab(event: Event) {
-    const activeTabs = document.querySelectorAll('.side-menu a.active');
+    // const activeTabs = document.querySelectorAll('.side-menu li a.active');
+    const activeTabs = document.querySelectorAll('.side-menu li a.active');
     activeTabs.forEach((tab) => {
       tab.classList.remove('active');
     });
-
-    // Add 'active' class to the clicked element
+    const clickedElement = event.currentTarget as HTMLElement;  
+    clickedElement.classList.add('active');
+  }
+  setActiveLinkTab(event: Event) {
+    // const activeTabs = document.querySelectorAll('.side-dropdown a.active');
+    const activeTabs = document.querySelectorAll('.side-dropdown li a.active');
+    activeTabs.forEach((tab) => {
+      tab.classList.remove('active');
+    });
     const clickedElement = event.currentTarget as HTMLElement;
     clickedElement.classList.add('active');
   }
-
   onsubscriberlist(value: any) {
     this.showDropdown = true;
     // this.userservice.getSearchDetailsSubscriber(this.role, this.username, value).subscribe((data: any) => {

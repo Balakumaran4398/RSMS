@@ -949,9 +949,9 @@ export class BaseService {
       BASE_URL + "/bulk/getPackageListForFirstTimeActivation?role=" + role + "&username=" + username + "&type=" + type, {}
     );
   }
-  getBulkPackageList(role: any, username: any, type: any): Observable<any[]> {
+  getBulkPackageList(role: any, username: any, castype: any): Observable<HttpResponse<any[]>> {
     return this.http.get<any[]>(
-      BASE_URL + "/bulk/getPackageListBulkPackageUpdation?role=" + role + "&username=" + username + "&type=" + type, {}
+      BASE_URL + "/bulk/getPackageListBulkPackageUpdation?role=" + role + "&username=" + username + "&castype=" + castype,  { observe: 'response' }
     );
   }
   getBulkPackageServiceStatus(role: any, username: any): Observable<any[]> {

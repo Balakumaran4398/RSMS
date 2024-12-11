@@ -36,7 +36,9 @@ export class PackageEditComponent implements OnInit {
     this.commission = data.customeramount;
     console.log(this.commission);
     
-    this.ispercentage = data.isactive;
+    this.ispercentage = !data.ispercentage;
+    console.log(data.isactive);
+    
     this.package_id = data.packageid;
 
 

@@ -98,7 +98,7 @@ mat-option {
 }
 
 .option_input:hover {
-    background: white; 
+    background: white;
 }
 
 .option_input input {
@@ -107,10 +107,10 @@ mat-option {
 
 .option_input input:hover,
 .option_input input:focus {
-    background: white !important; 
+    background: white !important;
 }
 
-  
+
 
 @media screen and (max-width:560px) {
     .display {
@@ -124,6 +124,10 @@ mat-option {
     .box {
         position: relative;
         margin-top: 25%;
+    }
+
+    .mobileview {
+        width: 332px;
     }
 
     .new_d {
@@ -167,5 +171,8 @@ mat-option {
 
     mat-option {
         font-size: 13px;
+    }
+    .mobileview {
+        width: 332px;
     }
 }

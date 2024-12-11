@@ -15,10 +15,26 @@
         <div class="col-12 col-md-12  box  display justify-content-center align-items-center ">
             <div class="checkbox-text mb-3 mx-2">
                 <div class="checkbox-content">
-                    <mat-checkbox [(ngModel)]="isCheckboxChecked" id="terms"> </mat-checkbox>
+                    <mat-checkbox [(ngModel)]="isCheckboxChecked" (change)="setCheckboxState($event.checked)" id="terms"> </mat-checkbox>
                 </div>
             </div>
-            <mat-form-field appearance="outline" class="mx-2">
+            <div class="input_box mb-3"  *ngIf="isCheckboxChecked">
+                <input type="text" placeholder="Search an CAS" formControlName="castypedisplay"
+                    (input)="onSearchChange($event)" [(ngModel)]="castype"     
+                    [value]="casname" [matAutocomplete]="auto"
+                    class="example-input">
+
+                <mat-autocomplete #auto="matAutocomplete">
+                    <mat-option *ngFor="let casItem of filteredcas()" [value]="casItem.name" 
+                        (click)="onSelectionFingerPrint(casItem)">
+                        {{ casItem.name }}
+                    </mat-option>
+                </mat-autocomplete>
+                <div *ngIf="form.get('castypedisplay')?.invalid && form.get('castypedisplay')?.touched">
+                    <small class="text-danger">CAS is required.</small>
+                </div>
+            </div>
+            <mat-form-field appearance="outline" class="mx-2 mobileview">
                 <mat-label>Select Package</mat-label>
                 <mat-select [(ngModel)]="package" [disabled]="!isCheckboxChecked" panelClass="custom-select-panel"
                     (closed)="onDropdownClosed()">
@@ -33,7 +49,7 @@
             </mat-form-field>
 
 
-            <mat-form-field appearance="outline" class="mx-2">
+            <mat-form-field appearance="outline" class="mx-2 mobileview">
                 <mat-label>Enter a date range</mat-label>
                 <mat-date-range-input [rangePicker]="picker" [max]="maxDate">
                     <input matStartDate matInput placeholder="Start date" [(ngModel)]="fromdate"
@@ -55,7 +71,7 @@
                 </mat-form-field> -->
 
 
-            <mat-form-field appearance="outline" class="mx-2">
+            <mat-form-field appearance="outline" class="mx-2 mobileview">
                 <mat-label> Select LCO</mat-label>
                 <mat-select [(ngModel)]="operatorid" panelClass="custom-select-panel" (closed)="onDropdownClosed1()">
                     <mat-option class="option_input">
@@ -88,8 +104,8 @@
             </div>
         </div>
         <div class="d-flex justify-content-center align-items-center ">
-            <div *ngIf="isSelectRow"> <button class="btn btn-primary me-2"
-                    (click)="openLoginPage('bulk','')"><i class="fa-solid fa-truck-fast"></i></button></div>
+            <div *ngIf="isSelectRow"> <button class="btn btn-primary me-2" (click)="openLoginPage('bulk','')"><i
+                        class="fa-solid fa-truck-fast"></i></button></div>
             <div>
                 <h6 [ngStyle]="{'color': serviceStatus === 'SERVICE RUNNING' ? 'green' : 'red', 'font-size': '18px'}">
                     {{ serviceStatus }}
@@ -181,7 +197,7 @@
 
             <h6 [ngStyle]="{'color': serviceStatus === 'SERVICE RUNNING' ? 'green' : 'red', 'font-size': '18px'}">
                 {{ serviceStatus }}
-              </h6>
+            </h6>
 
         </div>
     </div>

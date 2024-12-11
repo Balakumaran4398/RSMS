@@ -428,4 +428,122 @@ export class ExcelService {
       fs.saveAs(blob, titles + '.xlsx');
     });
   }
+  async generateIMAGEExcel1(areatitle: string, headers: any, dataRow: any[], titles: any, cellSize: any, areasub: any, sub: any) {
+
+    const subtitle = sub;
+    const title = titles;
+    const header = headers;
+
+    const workbook = new Excel.Workbook();
+    const worksheet = workbook.addWorksheet('Sheet 1');
+
+    //==========TITLE=============
+    const titleRow = worksheet.addRow([title]);
+    titleRow.font = {
+      family: 4,
+      size: 16,
+      color: { argb: 'FFFFFF' },
+      bold: true,
+    };
+    titleRow.alignment = { horizontal: 'center' };
+    titleRow.eachCell((cell: any) => {
+      cell.fill = {
+        type: 'pattern',
+        pattern: 'solid',
+        fgColor: { argb: '34495e' },
+        bgColor: { argb: '34495e' },
+      };
+      cell.border = {
+        top: { style: 'thin' },
+        left: { style: 'thin' },
+        bottom: { style: 'thin' },
+        right: { style: 'thin' },
+      };
+    });
+    worksheet.mergeCells(areatitle);
+
+    //==========SUBTITLE=============
+    const subtitleRow = worksheet.addRow([subtitle]);
+    subtitleRow.font = {
+      family: 4,
+      size: 12,
+      color: { argb: '000000' },
+      bold: true,
+    };
+    subtitleRow.height = 20;
+    subtitleRow.alignment = { horizontal: 'center' };
+    subtitleRow.eachCell((cell: any) => {
+      cell.fill = {
+        type: 'pattern',
+        pattern: 'solid',
+        fgColor: { argb: 'b2b2b2' },
+        bgColor: { argb: 'b2b2b2' },
+      };
+      cell.border = {
+        top: { style: 'thin' },
+        left: { style: 'thin' },
+        bottom: { style: 'thin' },
+        right: { style: 'thin' },
+      };
+    });
+    worksheet.mergeCells(areasub);
+
+    //==========COLUMN HEADERS============
+    const headerRow = worksheet.addRow(header);
+    headerRow.font = { bold: true, color: { argb: 'FFFFFF' } };
+    headerRow.alignment = { vertical: 'middle', horizontal: 'center' };
+    headerRow.height = 20;
+
+    headerRow.eachCell((cell: any, number: any) => {
+      cell.fill = {
+        type: 'pattern',
+        pattern: 'solid',
+        fgColor: { argb: '333333' }, // Adjusted color
+        bgColor: { argb: '333333' },
+      };
+      cell.border = {
+        top: { style: 'thin' },
+        left: { style: 'thin' },
+        bottom: { style: 'thin' },
+        right: { style: 'thin' },
+      };
+    });
+
+    //==========DATA ROWS=============
+    dataRow.forEach((d) => {
+      const row = worksheet.addRow(d);
+      row.alignment = { vertical: 'middle', horizontal: 'center' };
+      row.height = 20;
+      row.eachCell((cell: any) => {
+        cell.border = {
+          // top: { style: 'thin' },
+          left: { style: 'thin' },
+          // bottom: { style: 'thin' },
+          right: { style: 'thin' },
+        };
+      });
+    });
+
+    worksheet.columns = [
+      { key: 'a', width: 20 }, // LCO Name
+      { key: 'b', width: 20 }, // Customer Name
+      { key: 'c', width: 25 }, // Smartcard
+      { key: 'd', width: 18 }, // Box ID
+      { key: 'e', width: 30 }, // Address
+      { key: 'f', width: 15 }, // Mobile No
+      { key: 'g', width: 30 }, // Package Name
+      { key: 'h', width: 25 }, // Expiry Date
+      { key: 'i', width: 25 }, // Activation Date
+      { key: 'j', width: 25 }, // Area id
+      { key: 'k', width: 25 }, // Customer No
+    ];
+
+    // Save the Excel file
+    workbook.xlsx.writeBuffer().then((data: any) => {
+      const blob = new Blob([data], {
+        type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+      });
+      fs.saveAs(blob, titles + '.xlsx');
+    });
+  }
 }

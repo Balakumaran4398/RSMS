@@ -18,8 +18,8 @@ import { Observable } from 'rxjs';
   styleUrls: ['./bulk-page-updation.component.scss']
 })
 export class BulkPageUpdationComponent implements OnInit {
-  selectedTab: string = 'pending';
-  package: any;
+  selectedTab: string = 'archive';
+  package: any = '';
   operatorid: any;
   selectoperator: any;
   package_select: boolean = false;
@@ -29,6 +29,8 @@ export class BulkPageUpdationComponent implements OnInit {
   filteredOperatorList: any[] = [];
   operatorList: any[] = [];
   cas: any[] = [];
+  castype: any;
+  casname: any = '';
   typelist: any;
   alltypelist: any;
   packageSearch: string = '';
@@ -44,7 +46,8 @@ export class BulkPageUpdationComponent implements OnInit {
   rows: any[] = [];
   isAnyRowSelected: boolean = false;
   isSelectRow: boolean = false;
-
+  searchTerm: any;
+  filteredCasList: { name: string; id: number }[] = [];
   type: any = [
     { label: "Select filter Type", value: 0 },
     { label: "LCO", value: 1 },
@@ -107,6 +110,26 @@ export class BulkPageUpdationComponent implements OnInit {
       }
     });
   }
+  onSearchChange(event: any) {
+    this.searchTerm = event.target.value;
+    this.filteredCasList = this.filteredcas();
+  }
+  filteredcas(): { name: string; id: number }[] {
+    if (!this.searchTerm) {
+      return this.cas;
+    }
+    return this.cas.filter(casItem =>
+      casItem.name.toLowerCase().includes(this.searchTerm.toLowerCase())
+    );
+  }
+  onSelectionFingerPrint(selectedValue: any) {
+    console.log(selectedValue);
+    this.castype = selectedValue.id;
+    this.casname = selectedValue.name;
+    console.log(this.casname);
+    console.log(this.castype);
+    this.fetchPackageList();
+  }
   columnDefs: any;
   constructor(public dialog: MatDialog, private fb: FormBuilder, private userservice: BaseService, private cdr: ChangeDetectorRef, private storageService: StorageService, private swal: SwalService) {
     this.username = storageService.getUsername();
@@ -123,7 +146,7 @@ export class BulkPageUpdationComponent implements OnInit {
 
   private updateColumnDefs(tab: string): void {
     if (tab === 'bulk_package') {
-      // console.log(this.rowData=[]);
+      console.log(this.rowData = []);
 
       this.columnDefs = [
         {
@@ -137,7 +160,7 @@ export class BulkPageUpdationComponent implements OnInit {
         { headerName: "EXPIRY DATE", field: 'expirydate', width: 340 },
       ];
     } else if (tab === 'pending') {
-      // console.log(this.rowData = []);
+      console.log(this.rowData = []);
       this.columnDefs = [
         { headerName: "S.No", lockPosition: true, valueGetter: 'node.rowIndex+1', cellClass: 'locked-col', width: 80 },
         { headerName: "CUSTOMER NAME	", field: 'customername', width: 200 },
@@ -165,7 +188,7 @@ export class BulkPageUpdationComponent implements OnInit {
 
       ];
     } else if (tab === 'archive') {
-      // console.log(this.rowData = []);
+      console.log(this.rowData = []);
       this.columnDefs = [
         { headerName: "S.No", lockPosition: true, valueGetter: 'node.rowIndex+1', cellClass: 'locked-col', width: 80 },
         { headerName: "OPERATOR NAME	", field: 'operatorname', width: 200 },
@@ -247,10 +270,12 @@ export class BulkPageUpdationComponent implements OnInit {
       checked ? casSelectControl?.enable() : casSelectControl?.disable();
     });
 
+    this.userservice.Finger_print_List(this.role, this.username).subscribe((data) => {
+      this.cas = Object.entries(data[0].caslist).map(([key, value]) => ({ name: key, id: value }));
+      this.filteredCasList = this.cas;
+    })
     const dateToPass = this.selectedDate || this.fromdate;
     const dateToPass1 = this.selectedDate || this.todate;
-
-
     this.callApi(
       this.userservice.getAllBulkPackageListByFromdateTodateAndStatus(
         this.role, this.username, this.selectedDate, this.selectedDate, 0, 3
@@ -269,22 +294,71 @@ export class BulkPageUpdationComponent implements OnInit {
 
 
     this.service();
-    this.fetchPackageList();
+    // this.fetchPackageList();
     this.fetchOperatorList();
-
-
   }
+
+  setCheckboxState(checked: boolean): void {
+    this.isCheckboxChecked = checked;
+    if (!checked) {
+      this.package = null;
+      this.packageSearch = '';
+      this.filteredPackageList = [];
+    } else {
+      this.fetchPackageList();
+    }
+  }
+
+
+
   fetchPackageList() {
-    this.userservice.getBulkPackageList(this.role, this.username, 1).subscribe((data: any) => {
-      console.log(data);
-      this.packageList = Object.keys(data).map(key => {
-        const value = data[key];
-        const name = key
-        return { name: name, value: value };
-      })
-      this.filteredPackageList = [...this.packageList];
-      console.log(this.packageList);
-    });
+    console.log(this.castype);
+    // this.userservice.getBulkPackageList(this.role, this.username, this.castype,1)
+    // .subscribe((data: any) => {
+    //   console.log(data);
+    //   this.packageList = Object.keys(data).map(key => {
+    //     const value = data[key];
+    //     const name = key
+    //     return { name: name, value: value };
+    //   })
+    //   this.filteredPackageList = [...this.packageList];
+    //   this.cdr.detectChanges();
+    //   console.log(this.packageList);
+    // });
+    this.userservice.getBulkPackageList(this.role, this.username, this.castype).subscribe(
+      (response: HttpResponse<any>) => {
+        if (response.status === 200 && response.body) {
+          console.log(response.body);
+          if (typeof response.body === 'object' && response.body !== null) {
+            this.packageList = Object.entries(response.body).map(([key, value]) => ({
+              name: key,
+              value: value
+            }));
+            this.filteredPackageList = [...this.packageList];
+            console.log('Transformed Package List:', this.packageList);
+            this.cdr.detectChanges();
+            this.swal.Success_200();
+          } else {
+            console.error('Response body is not a valid object:', response.body);
+            this.swal.Error_400();
+          }
+        } else if (response.status === 204) {
+          this.swal.Success_204();
+          this.filteredPackageList = [];
+        }
+      },
+      (error) => {
+        console.error('Error fetching package list:', error);
+
+        if (error.status === 400) {
+          this.swal.Error_400(); // Bad request
+        } else if (error.status === 500) {
+          this.swal.Error_500(); // Internal server error
+        } else {
+          Swal.fire('Error', 'Something went wrong. Please try again.', 'error'); // Generic error
+        }
+      }
+    );
   }
   filteredPackage() {
     this.filteredPackageList = this.packageList.filter(pkg =>
@@ -378,9 +452,9 @@ export class BulkPageUpdationComponent implements OnInit {
   formatDate(date: Date): string {
     const d = new Date(date);
     const year = d.getFullYear();
-    const month = (d.getMonth() + 1).toString().padStart(2, '0'); // Ensure month is 2 digits
-    const day = d.getDate().toString().padStart(2, '0'); // Ensure day is 2 digits
-    return `${year}-${month}-${day}`; // Return date in "YYYY-MM-DD" format
+    const month = (d.getMonth() + 1).toString().padStart(2, '0');
+    const day = d.getDate().toString().padStart(2, '0'); 
+    return `${year}-${month}-${day}`;
   }
 
   filterData(apiCall: Observable<HttpResponse<any[]>>, successMessage?: string, errorMessage?: string) {
@@ -449,12 +523,12 @@ export class BulkPageUpdationComponent implements OnInit {
       package: this.package,
       operatorid: this.operatorid
     });
-  
+
     this.rowData = [];
     const apiCall = this.userservice.getExpirySubscriberDetailsByDatePackAndOperatorId(
       this.role, this.username, this.fromdate || null, this.todate || null, this.package || 0, this.operatorid || null
     );
-  
+
     this.filterData(apiCall, 'Submission data fetched successfully.');
   }
 
@@ -465,7 +539,7 @@ export class BulkPageUpdationComponent implements OnInit {
       { condition: this.typelist === 2, method: this.userservice.getAllBulkPackageListBySearchnameAndStatus(this.role, this.username, this.smartcard, 0, 1) },
       { condition: this.typelist === 3, method: this.userservice.getAllBulkPackageListByFromdateTodateAndStatus(this.role, this.username, this.fromdate || null, this.todate, 0, 1) }
     ];
-  
+
     apiCalls.forEach(({ condition, method }) => {
       if (condition) {
         this.filterData(method, 'Pending data fetched successfully.');
@@ -647,32 +721,32 @@ export class BulkPageUpdationComponent implements OnInit {
     }
 
     if (apiCall) {
-      this.handleApiResponse(apiCall);
+      this.filterData(apiCall);
     }
   }
 
-  private handleApiResponse(apiCall: Observable<HttpResponse<any[]>>) {
-    apiCall.subscribe(
-      (response: HttpResponse<any[]>) => {
-        if (response.status === 200) {
-          this.updateColumnDefs(this.selectedTab);
-          this.rowData = response.body;
-          this.swal.Success_200();
-        } else if (response.status === 204) {
-          this.swal.Success_204();
-        }
-      },
-      (error) => {
-        if (error.status === 400) {
-          this.swal.Error_400();
-        } else if (error.status === 500) {
-          this.swal.Error_500();
-        } else {
-          Swal.fire('Error', 'Something went wrong. Please try again.', 'error');
-        }
-      }
-    );
-  }
+  // private handleApiResponse(apiCall: Observable<HttpResponse<any[]>>) {
+  //   apiCall.subscribe(
+  //     (response: HttpResponse<any[]>) => {
+  //       if (response.status === 200) {
+  //         this.updateColumnDefs(this.selectedTab);
+  //         this.rowData = response.body;
+  //         this.swal.Success_200();
+  //       } else if (response.status === 204) {
+  //         this.swal.Success_204();
+  //       }
+  //     },
+  //     (error) => {
+  //       if (error.status === 400) {
+  //         this.swal.Error_400();
+  //       } else if (error.status === 500) {
+  //         this.swal.Error_500();
+  //       } else {
+  //         Swal.fire('Error', 'Something went wrong. Please try again.', 'error');
+  //       }
+  //     }
+  //   );
+  // }
 
   service() {
     this.userservice.getBulkPackageServiceStatus(this.role, this.username).subscribe((data: any) => {
@@ -702,10 +776,10 @@ export class BulkPageUpdationComponent implements OnInit {
       status: data,
       rowData: this.rows,
       packageid: this.package,
+      castype: this.castype,
     };
     let width = '600px';
     console.log(dataToSend);
-
     if (data = 'bulk') {
       width = '2000px';
 

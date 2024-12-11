@@ -69,7 +69,7 @@
                             <div class="col-1 col-md-1">
                                 <span class="me-2">:</span>
                             </div>
-                           
+
                             <div class="col-5 col-md-5 value">
                                 {{bulkDatas?.mobileno}}
                             </div>
@@ -150,6 +150,24 @@
                             Base</label>
                     </div>
                 </div>
+                <div class="input_box mb-3" *ngIf="isCheckboxPackageChecked">
+                    <div class="col-12 col-md-10 display align-items-center justify-content-center">
+                        <div class="col-12 col-md-4">
+                            <span for="">CAS Type </span>
+                        </div>
+                        <div class=" col-12 col-md-5">
+                            <input type="text" placeholder="Search an CAS" formControlName="castypedisplay"
+                                (input)="onSearchChange($event)" [(ngModel)]="castype" [value]="casname"
+                                [matAutocomplete]="auto" class="example-input" #autocompleteInput>
+                            <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayCas">
+                                <mat-option *ngFor="let casItem of filteredcas()" [value]="casItem.name"
+                                    (click)="onSelectionFingerPrint(casItem,autocompleteInput)">
+                                    {{ casItem.name }}
+                                </mat-option>
+                            </mat-autocomplete>
+                        </div>
+                    </div>
+                </div>
                 <div *ngIf="isCheckboxPackageChecked" class="input_box  mb-3">
                     <div class="col-12 col-md-10 display align-items-center justify-content-center">
                         <div class="col-12 col-md-4">
@@ -159,13 +177,13 @@
                             <span for="">: </span>
                         </div> -->
                         <div class=" col-12 col-md-5">
-                            <input type="text" matInput [matAutocomplete]="auto" [(ngModel)]="packageid" 
+                            <input type="text" matInput [matAutocomplete]="auto" [(ngModel)]="packageid"
                                 (input)="filterPackage($event)" placeholder="Select a package"
                                 [matAutocompleteDisabled]="false" [value]="selectedPackageName">
 
-                            <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayOperator"  > 
+                            <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayOperator">
                                 <mat-option value=""> Select a operator</mat-option>
-                                <mat-option *ngFor="let operator of filteredPackage" [value]="operator.value"
+                                <mat-option *ngFor="let operator of filteredPackageList" [value]="operator.value"
                                     (click)="onproducttypechange(operator)">
                                     {{ operator.name }}
                                 </mat-option>
@@ -182,7 +200,7 @@
                     </div>
                 </div> -->
                 <div class="input_box  mb-3">
-                    <div class="col-12 col-md-10 display align-items-center justify-content-center  mb-3">
+                    <div class="col-12 col-md-10 display align-items-center justify-content-center ">
                         <div class="col-12 col-md-4">
                             <span for="">Plan </span>
                         </div>
@@ -199,7 +217,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="form-group d-flex justify-content-center align-items-center  mb-3">
+                <div class="form-group d-flex justify-content-center align-items-center  mb-1">
                     <button type="button" class="btn btn-primary me-2" (click)="Submit()">Submit</button>
                     <button type="button" class="btn btn-secondary" (click)="onNoClick()">Cancel</button>
                 </div>

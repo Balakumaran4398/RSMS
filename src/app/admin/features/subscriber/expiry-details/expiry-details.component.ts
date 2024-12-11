@@ -111,6 +111,11 @@ export class ExpiryDetailsComponent {
     this.todate = year + "-" + month + "-" + date
     console.log(this.todate);
   }
+
+
+
+
+  
   // Submit() {
 
   //   this.userservice.getExpirySubscriberByOperator(this.role, this.username, this.selectedLcoName, this.fromdate, this.todate, this.format).subscribe((data: any) => {
@@ -168,15 +173,15 @@ export class ExpiryDetailsComponent {
           const areasub = 'A3:I3';
           const title = 'EXPIRY HISTORY REPORT';
           const sub = 'MSO ADDRESS: QC 28, Savaripadayatchi Street Nellithope Puducherry-605005 7708440965 babums238@gmail.com'
-          const header = ['LCO NAME', 'CUSTOMER NAME', 'SMARTCARD', 'BOX ID', 'ADDRESS', 'MOBILE NO', 'PACKAGE NAME', 'EXPIRY DATE', 'ACTIVATION DATE'];
+          const header = ['LCO NAME', 'CUSTOMER NAME', 'SMARTCARD', 'BOX ID', 'ADDRESS', 'MOBILE NO', 'PACKAGE NAME', 'EXPIRY DATE', 'AREA ID','CUSTOMER NO'];
           const data = this.rowData;
           const datas: Array<any> = [];
           data.forEach((d: any) => {
-            const row = [d.operatorname, d.customername, d.smartcard, d.boxid, d.address, d.mobileno, d.productname, d.expirydate];
+            const row = [d.operatorname, d.customername, d.smartcard, d.boxid, d.address, d.mobileno, d.productname, d.expirydate,d.areaid,d.customerno];
             datas.push(row);
           });
           const cellsize = { a: 20, b: 20, c: 20, d: 28, e: 20 };
-          this.excelService.generateIMAGEExcel(areatitle, header, datas, title, cellsize, areasub, sub);
+          this.excelService.generateIMAGEExcel1(areatitle, header, datas, title, cellsize, areasub, sub);
         } else if (response.status === 204) {
           this.swal.Success_204();
           this.rowData = [];

@@ -146,7 +146,7 @@ const routes: Routes = [
       // --------------------------------------Reports-----------------------------------
       { path: 'traiReports', component: TraiReportComponent },
       { path: 'msoReports', component: MsoreportsComponent },
-      { path: 'historyReports', component: HistoryComponent },
+      { path: 'historyReports', component: HistoryReportsComponent },
       
       // ------------------------------------Special role-------------------------------------------
       { path: 'msodetails', component: MsodetailsComponent },
