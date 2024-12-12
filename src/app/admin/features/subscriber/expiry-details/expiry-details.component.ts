@@ -1,5 +1,5 @@
 import { HttpResponse } from '@angular/common/http';
-import { ChangeDetectorRef, Component } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { BaseService } from 'src/app/_core/service/base.service';
 import { ExcelService } from 'src/app/_core/service/excel.service';
 import { StorageService } from 'src/app/_core/service/storage.service';
@@ -11,7 +11,7 @@ import Swal from 'sweetalert2';
   templateUrl: './expiry-details.component.html',
   styleUrls: ['./expiry-details.component.scss']
 })
-export class ExpiryDetailsComponent {
+export class ExpiryDetailsComponent implements OnInit{
   maxDate = new Date();
   fromdate: any;
   todate: any;
@@ -31,6 +31,7 @@ export class ExpiryDetailsComponent {
   operatorname: any;
   lconame: any;
   rowData: any;
+  msodetails: any;
   constructor(private userservice: BaseService, private storageservice: StorageService, private swal: SwalService, private cdr: ChangeDetectorRef, private excelService: ExcelService) {
     this.username = storageservice.getUsername();
     this.role = storageservice.getUserRole();
@@ -41,6 +42,12 @@ export class ExpiryDetailsComponent {
     })
     this.operatorlist();
   }
+  ngOnInit(): void {
+    this.userservice.getMsoDetails(this.role, this.username).subscribe((data: any) => {
+      console.log(data);
+      this.msodetails = `${data.msoName} ${data.msoStreet}, ${data.msoArea}, ${data.msoState}, ${data.msoPincode}, ${data.msoEmail}`;
+      console.log(this.msodetails);
+    })  }
 
   operatorlist() {
     this.userservice.getsmartcardallocationSubscriberList(this.role, this.username).subscribe((data: any) => {
@@ -142,7 +149,7 @@ export class ExpiryDetailsComponent {
             const areatitle = 'A1:I2'
             const areasub = 'A3:I3';
             const title = 'EXPIRY HISTORY REPORT';
-            const sub = 'MSO ADDRESS: QC 28, Savaripadayatchi Street Nellithope Puducherry-605005 7708440965 babums238@gmail.com'
+            const sub = 'MSO ADDRESS: ' + this.msodetails;
             const header = ['LCO NAME', 'CUSTOMER NAME', 'SMARTCARD', 'BOX ID', 'ADDRESS', 'MOBILE NO', 'PACKAGE NAME', 'EXPIRY DATE', 'ACTIVATION DATE'];
             const data = this.rowData;
             const datas: Array<any> = [];
@@ -172,7 +179,7 @@ export class ExpiryDetailsComponent {
           const areatitle = 'A1:I2'
           const areasub = 'A3:I3';
           const title = 'EXPIRY HISTORY REPORT';
-          const sub = 'MSO ADDRESS: QC 28, Savaripadayatchi Street Nellithope Puducherry-605005 7708440965 babums238@gmail.com'
+          const sub = 'MSO ADDRESS:' + this.msodetails;
           const header = ['LCO NAME', 'CUSTOMER NAME', 'SMARTCARD', 'BOX ID', 'ADDRESS', 'MOBILE NO', 'PACKAGE NAME', 'EXPIRY DATE', 'AREA ID','CUSTOMER NO'];
           const data = this.rowData;
           const datas: Array<any> = [];

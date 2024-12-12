@@ -5,6 +5,7 @@ import { Component, OnInit } from '@angular/core';
 import { BaseService } from '../../service/base.service';
 import { StorageService } from '../../service/storage.service';
 import { CanvasJS } from '@canvasjs/angular-charts';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-inventory-chart',
@@ -16,9 +17,9 @@ export class InventoryChartComponent implements OnInit {
   username: string;
   chart: any; 
   chartOptions: any;
-  dataPoints: { name: string; y: number; color: string }[] = [];
+  dataPoints: { name: string; y: number; color: string ,click?: () => void;}[] = [];
 
-  constructor(private userservice: BaseService, private storageservice: StorageService) {
+  constructor(private userservice: BaseService, private storageservice: StorageService,private router: Router) {
     this.role = this.storageservice.getUserRole();
     this.username = this.storageservice.getUsername();
   }
@@ -61,9 +62,9 @@ export class InventoryChartComponent implements OnInit {
 
   updateChartData(apiData: any): void {
     this.dataPoints = [
-      { name: "New box in LCO End", y: apiData["New box in LCO End"], color: "#33a5d6" },
-      { name: "New box in MSO Hand", y: apiData["New box in MSO Hand"], color: "#77edd0" },
-      { name: "New in Customer End", y: apiData["New in Customer End"], color: "#20c931" }
+      { name: "New box in LCO End", y: apiData["New box in LCO End"], color: "#33a5d6",click: () => this.navigateToPage('BOX IN MSO HAND') },
+      { name: "New box in MSO Hand", y: apiData["New box in MSO Hand"], color: "#77edd0",click: () => this.navigateToPage('BOX IN LCO HAND') },
+      { name: "New in Customer End", y: apiData["New in Customer End"], color: "#20c931",click: () => this.navigateToPage('BOX IN CUSTOMER HAND') }
     ];
 
     this.chartOptions = {
@@ -96,4 +97,24 @@ export class InventoryChartComponent implements OnInit {
     this.chart = new CanvasJS.Chart("inventarychartContainer", this.chartOptions);
     this.chart.render();
   }
+
+
+  navigateToPage(status: string): void {
+		let packageId: string;
+		switch (status) {
+			case 'BOX IN MSO HAND':
+				packageId = '11';
+				break;
+			case 'BOX IN LCO HAND':
+				packageId = '12';
+				break;
+			case 'BOX IN CUSTOMER HAND':
+				packageId = '13';
+				break;
+			
+			default:
+				packageId = '';
+		}
+		this.router.navigate(['admin/inventoryReport/' + packageId]);
+	}
 }

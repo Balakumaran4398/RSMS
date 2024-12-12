@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { StorageService } from '../../service/storage.service';
 import { BaseService } from '../../service/base.service';
 import { CanvasJS } from '@canvasjs/angular-charts';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-package-chart',
@@ -14,7 +15,7 @@ export class PackageChartComponent implements OnInit {
   chart: any;
   chartOptions: any;
 
-  constructor(private userservice: BaseService, private storageservice: StorageService) {
+  constructor(private userservice: BaseService, private storageservice: StorageService, private router: Router) {
     this.role = this.storageservice.getUserRole();
     this.username = this.storageservice.getUsername();
   }
@@ -24,7 +25,7 @@ export class PackageChartComponent implements OnInit {
       (data: any) => {
         console.log('API Data:', data);
         if (data) {
-          this.updateChartData(data); 
+          this.updateChartData(data);
         }
       },
       (error) => {
@@ -35,12 +36,12 @@ export class PackageChartComponent implements OnInit {
 
   updateChartData(apiData: any): void {
     const dataPoints = [
-      { name: "Addon Package", y: apiData["Addon Package"] || 0, color: "#bfa628" },
-      { name: "Base Package", y: apiData["Base Package"] || 0, color: "#396ba8" },
-      { name: "FTA Channels", y: apiData["FTA Channels"] || 0, color: "#147a2a" },
-      { name: "Pay Channels", y: apiData["Pay Channels"] || 0, color: "#3bada6" }
+      { name: "Addon Package", y: apiData["Addon Package"] || 0, color: "#bfa628", click: () => this.navigateToPage('ADDON PACKAGE') },
+      { name: "Base Package", y: apiData["Base Package"] || 0, color: "#396ba8", click: () => this.navigateToPage('BASE PACKAGE') },
+      { name: "FTA Channels", y: apiData["FTA Channels"] || 0, color: "#147a2a", click: () => this.navigateToPage('FTA CHANNEL') },
+      { name: "Pay Channels", y: apiData["Pay Channels"] || 0, color: "#3bada6", click: () => this.navigateToPage('PAYCHANNEL') }
     ];
-    
+
     this.chartOptions = {
       animationEnabled: true,
       theme: 'light2',
@@ -57,7 +58,7 @@ export class PackageChartComponent implements OnInit {
         //   const name = `<span style="color: blue; margin-right:10px">${e.dataPoint.name}</span>`;
         //   const colon = `<span style="margin-right:10px">    :     </span>`;
         //   const value = `<span style="color: green;  float: right;">${e.dataPoint.y}</span>`;
-      
+
         //   return `${name} ${colon} ${value}`;
         // },
       },
@@ -70,7 +71,27 @@ export class PackageChartComponent implements OnInit {
 
     this.renderChart();
   }
+  navigateToPage(status: string): void {
+    let packageId: string;
+    switch (status) {
+      case 'BASE PACKAGE':
+        packageId = '7';
+        break;
+      case 'ADDON PACKAGE':
+        packageId = '8';
+        break;
+      case 'PAYCHANNEL':
+        packageId = '9';
+        break;
+      case 'FTA CHANNEL':
+        packageId = '10';
+        break;
 
+      default:
+        packageId = '';
+    }
+    this.router.navigate(['admin/packageReport/' + packageId]);
+  }
   renderChart(): void {
     if (document.getElementById('packagechartContainer')) {
       this.chart = new CanvasJS.Chart('packagechartContainer', this.chartOptions);

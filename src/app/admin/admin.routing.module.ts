@@ -75,12 +75,19 @@ import { HistoryReportsComponent } from './features/channel_setting/Reports/hist
 import { MsoreportsComponent } from './features/channel_setting/Reports/msoreports/msoreports.component';
 import { TraiReportComponent } from './features/channel_setting/Reports/trai-report/trai-report.component';
 import { HistoryComponent } from './features/channel_setting/Reports/history/history.component';
+import { ChartInventoryReportComponent } from '../_core/Chart-Reports/chart-inventory-report/chart-inventory-report.component';
+import { ChartPackageReportComponent } from '../_core/Chart-Reports/chart-package-report/chart-package-report.component';
+import { ChartSTBReportComponent } from '../_core/Chart-Reports/chart-stbreport/chart-stbreport.component';
 
 
 const routes: Routes = [
   {
     path: "", children: [
       { path: 'home', component: HomeComponent, },
+      // --------------------------------------------Dashboard  Reports -------------------------------------
+      { path: 'inventoryReport/:id', component: ChartInventoryReportComponent, },
+      { path: 'packageReport/:id', component: ChartPackageReportComponent, },
+      { path: 'STBReport/:id', component: ChartSTBReportComponent, },
       // ---------------------------------------------Operator-----------------------------------
       { path: 'operator_details', component: OperatorDetailsComponent, },
       { path: 'lco_recharge', component: LcoRechargeComponent, },

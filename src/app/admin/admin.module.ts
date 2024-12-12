@@ -153,12 +153,17 @@ import { LcologinpageComponent } from "./features/subscriber/lcologinpage/lcolog
 import { LoginrefundComponent } from "./features/channel_setting/_Dialogue/LCO_Recharge/loginrefund/loginrefund.component";
 import { BulkpackageupdationComponent } from "./features/channel_setting/_Dialogue/BULK OPERATION/bulkpackageupdation/bulkpackageupdation.component";
 import { TraiReportComponent } from "./features/channel_setting/Reports/trai-report/trai-report.component";
+import { ChartInventoryReportComponent } from "../_core/Chart-Reports/chart-inventory-report/chart-inventory-report.component";
+import { ChartPackageReportComponent } from "../_core/Chart-Reports/chart-package-report/chart-package-report.component";
+import { ChartSTBReportComponent } from "../_core/Chart-Reports/chart-stbreport/chart-stbreport.component";
 @NgModule({
     declarations: [
         AdminBaseComponent, NavComponent, HomeComponent, NavbarComponent, MsodetailsComponent, CasmasterComponent,
         // -------------------------Dashboard-----------------------------
         BarChartComponent, InventoryChartComponent, LcoCommissionChartComponent,
         PackageChartComponent, StbChartComponent,
+        // -------------------------------------Dashboard Report--------------------------------
+        ChartSTBReportComponent,ChartPackageReportComponent,ChartInventoryReportComponent,
         // -------------------------------------Top_subscriber_Details------------------------------------
         TopSubDetailComponent,
         // -----------------------------------------operator----------------------------------

@@ -358,24 +358,23 @@ export class SublcooperatordialogueComponent implements OnInit {
       );
   }
 
-
   getmonthwisereport() {
     this.rowData = [];
     this.userservice.getsublcoMonthwiseReport(this.role, this.username, this.retailerid, this.operatorid, this.selectedMonth, this.selectedYear)
       .subscribe(
-        (response: HttpResponse<any[]>) => { // Expect HttpResponse<any[]>
+        (response: HttpResponse<any[]>) => {
           if (response.status === 200) {
             this.updateColumnDefs(this.selectedTab);
             this.rowData = response.body;
-            this.isReportReady = true; // Enable PDF report button
+            this.isReportReady = true;
             this.swal.Success_200();
           } else if (response.status === 204) {
-            this.isReportReady = false; // Disable PDF report button
+            this.isReportReady = false;
             this.swal.Success_204();
           }
         },
         (error) => {
-          this.isReportReady = false; // Disable PDF report button on error
+          this.isReportReady = false;
           if (error.status === 400) {
             this.swal.Error_400();
           } else if (error.status === 500) {
