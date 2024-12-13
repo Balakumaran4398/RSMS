@@ -265,11 +265,7 @@ export class ChartSTBReportComponent implements OnInit {
         (error) => {
           this.handleApiError(error);
         }
-      );
-
-
-
-   
+      );  
   }
   getPDF() {
     this.userService.getDashboardPDFReport(this.username, this.role, this.type, 1)

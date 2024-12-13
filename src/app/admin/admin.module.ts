@@ -156,6 +156,7 @@ import { TraiReportComponent } from "./features/channel_setting/Reports/trai-rep
 import { ChartInventoryReportComponent } from "../_core/Chart-Reports/chart-inventory-report/chart-inventory-report.component";
 import { ChartPackageReportComponent } from "../_core/Chart-Reports/chart-package-report/chart-package-report.component";
 import { ChartSTBReportComponent } from "../_core/Chart-Reports/chart-stbreport/chart-stbreport.component";
+import { HistoryReportsComponent } from "./features/channel_setting/Reports/history-reports/history-reports.component";
 @NgModule({
     declarations: [
         AdminBaseComponent, NavComponent, HomeComponent, NavbarComponent, MsodetailsComponent, CasmasterComponent,
@@ -163,7 +164,7 @@ import { ChartSTBReportComponent } from "../_core/Chart-Reports/chart-stbreport/
         BarChartComponent, InventoryChartComponent, LcoCommissionChartComponent,
         PackageChartComponent, StbChartComponent,
         // -------------------------------------Dashboard Report--------------------------------
-        ChartSTBReportComponent,ChartPackageReportComponent,ChartInventoryReportComponent,
+        ChartSTBReportComponent,ChartPackageReportComponent,ChartInventoryReportComponent,HistoryReportsComponent,
         // -------------------------------------Top_subscriber_Details------------------------------------
         TopSubDetailComponent,
         // -----------------------------------------operator----------------------------------

@@ -1,184 +1,238 @@
-<section class="wrapper ">
-    <div class="card">
-        <mat-accordion class="example-headers-align">
-            <mat-expansion-panel [expanded]="step() === 0" (opened)="setStep(0)" hideToggle>
-                <mat-expansion-panel-header>
-                    <mat-panel-title class="text2">Package based reports</mat-panel-title>
-                </mat-expansion-panel-header>
-                <div class="display">
-                    <main class="card_container mb-3 mx-2">
-                        <div class="info_container">
-                            <p class="description"> Logs of Creation and modification of packages for any particular
-                                period
-                            </p>
-                        </div>
-                        <div class="view_task_overlay"></div>
-                        <div class="left_overlay ENCOURS">
-                            <svg onClick="toggle_active_info(event)" class="plus_info_svg" fill="#ffffff" width="30px"
-                                height="30px" viewBox="0 0 36 36" version="1.1" preserveAspectRatio="xMidYMid meet"
-                                xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
-                                stroke="#ffffff">
-                                <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
-                                <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
-                                <g id="SVGRepo_iconCarrier">
-                                    <path
-                                        d="M32,6H4A2,2,0,0,0,2,8V28a2,2,0,0,0,2,2H32a2,2,0,0,0,2-2V8A2,2,0,0,0,32,6Zm0,22H4V8H32Z"
-                                        class="clr-i-outline clr-i-outline-path-1"></path>
-                                    <path d="M9,14H27a1,1,0,0,0,0-2H9a1,1,0,0,0,0,2Z"
-                                        class="clr-i-outline clr-i-outline-path-2">
-                                    </path>
-                                    <path d="M9,18H27a1,1,0,0,0,0-2H9a1,1,0,0,0,0,2Z"
-                                        class="clr-i-outline clr-i-outline-path-3">
-                                    </path>
-                                    <path d="M9,22H19a1,1,0,0,0,0-2H9a1,1,0,0,0,0,2Z"
-                                        class="clr-i-outline clr-i-outline-path-4">
-                                    </path>
-                                    <rect x="0" y="0" width="36" height="36" fill-opacity="0"></rect>
-                                </g>
-                            </svg>
-                        </div>
-
-
-                    </main>
-                    <main class="card_container mb-3 mx-2">
-                        <section class="info_container">
-                            <!-- <span class="domain_status CLOTURER"> Done </span> -->
-                            <p class="description">Logs of Creation and modification of addonpackages for any particular
-                                period</p>
-
-                        </section>
-
-
-                        <div class="view_task_overlay"></div>
-                        <div class="left_overlay CLOTURER">
-                            <svg class="plus_info_svg" fill="#ffffff" width="30px" height="30px" viewBox="0 0 36 36"
-                                version="1.1" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg"
-                                xmlns:xlink="http://www.w3.org/1999/xlink" stroke="#ffffff">
-                                <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
-                                <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
-                                <g id="SVGRepo_iconCarrier">
-                                    <path
-                                        d="M32,6H4A2,2,0,0,0,2,8V28a2,2,0,0,0,2,2H32a2,2,0,0,0,2-2V8A2,2,0,0,0,32,6Zm0,22H4V8H32Z"
-                                        class="clr-i-outline clr-i-outline-path-1"></path>
-                                    <path d="M9,14H27a1,1,0,0,0,0-2H9a1,1,0,0,0,0,2Z"
-                                        class="clr-i-outline clr-i-outline-path-2">
-                                    </path>
-                                    <path d="M9,18H27a1,1,0,0,0,0-2H9a1,1,0,0,0,0,2Z"
-                                        class="clr-i-outline clr-i-outline-path-3">
-                                    </path>
-                                    <path d="M9,22H19a1,1,0,0,0,0-2H9a1,1,0,0,0,0,2Z"
-                                        class="clr-i-outline clr-i-outline-path-4">
-                                    </path>
-                                    <rect x="0" y="0" width="36" height="36" fill-opacity="0"></rect>
-                                </g>
-                            </svg>
-                        </div>
-
-                    </main>
-                    <main class="card_container mb-3 mx-2">
-                        <section class="info_container">
-                            <!-- <span class="domain_status ANNULE"> Canceled </span> -->
-                            <p class="description"> Logs of Creation and modification of Channels for any particular
-                                period
-                            </p>
-
-                        </section>
-
-
-
-                        <div class="view_task_overlay"></div>
-                        <div class="left_overlay ANNULE">
-                            <svg class="plus_info_svg" fill="#ffffff" width="30px" height="30px" viewBox="0 0 36 36"
-                                version="1.1" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg"
-                                xmlns:xlink="http://www.w3.org/1999/xlink" stroke="#ffffff">
-                                <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
-                                <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
-                                <g id="SVGRepo_iconCarrier">
-                                    <path
-                                        d="M32,6H4A2,2,0,0,0,2,8V28a2,2,0,0,0,2,2H32a2,2,0,0,0,2-2V8A2,2,0,0,0,32,6Zm0,22H4V8H32Z"
-                                        class="clr-i-outline clr-i-outline-path-1"></path>
-                                    <path d="M9,14H27a1,1,0,0,0,0-2H9a1,1,0,0,0,0,2Z"
-                                        class="clr-i-outline clr-i-outline-path-2">
-                                    </path>
-                                    <path d="M9,18H27a1,1,0,0,0,0-2H9a1,1,0,0,0,0,2Z"
-                                        class="clr-i-outline clr-i-outline-path-3">
-                                    </path>
-                                    <path d="M9,22H19a1,1,0,0,0,0-2H9a1,1,0,0,0,0,2Z"
-                                        class="clr-i-outline clr-i-outline-path-4">
-                                    </path>
-                                    <rect x="0" y="0" width="36" height="36" fill-opacity="0"></rect>
-                                </g>
-                            </svg>
-                        </div>
-
-                    </main>
-                    <main class="card_container mb-3 mx-2">
-                        <section class="info_container">
-                            <!-- <span class="domain_status ANNULE"> Canceled </span> -->
-                            <p class="description">Combo Packages Report</p>
-                            <!-- <p class="description"> Description </p> -->
-                            <!-- <p> ★★★☆☆ </p> -->
-                        </section>
-
-
-                        <div class="view_task_overlay"></div>
-                        <div class="left_overlay ANNULE">
-                            <svg class="plus_info_svg" fill="#ffffff" width="30px" height="30px" viewBox="0 0 36 36"
-                                version="1.1" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg"
-                                xmlns:xlink="http://www.w3.org/1999/xlink" stroke="#ffffff">
-                                <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
-                                <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
-                                <g id="SVGRepo_iconCarrier">
-                                    <path
-                                        d="M32,6H4A2,2,0,0,0,2,8V28a2,2,0,0,0,2,2H32a2,2,0,0,0,2-2V8A2,2,0,0,0,32,6Zm0,22H4V8H32Z"
-                                        class="clr-i-outline clr-i-outline-path-1"></path>
-                                    <path d="M9,14H27a1,1,0,0,0,0-2H9a1,1,0,0,0,0,2Z"
-                                        class="clr-i-outline clr-i-outline-path-2">
-                                    </path>
-                                    <path d="M9,18H27a1,1,0,0,0,0-2H9a1,1,0,0,0,0,2Z"
-                                        class="clr-i-outline clr-i-outline-path-3">
-                                    </path>
-                                    <path d="M9,22H19a1,1,0,0,0,0-2H9a1,1,0,0,0,0,2Z"
-                                        class="clr-i-outline clr-i-outline-path-4">
-                                    </path>
-                                    <rect x="0" y="0" width="36" height="36" fill-opacity="0"></rect>
-                                </g>
-                            </svg>
-                        </div>
-
-                    </main>
-                </div>
-            </mat-expansion-panel>
-        </mat-accordion>
-    </div>
- 
-</section>
-<!-- <div id="main">
-    <div class="container">
-        <div class="accordion" id="faq">
-            <div class="card">
-                <div class="card-header" id="faqhead1">
-                    <a class="btn btn-header-link" data-toggle="collapse" data-target="#faq1"
-                        aria-expanded="true" aria-controls="faq1">S.S.S</a>
-                </div>
-
-                <div id="faq1" class="collapse show" aria-labelledby="faqhead1" data-parent="#faq">
-                    <div class="card-body">
-                        Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad
-                        squid. 3 wolf
-                        moon officia aute, non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt laborum
-                        eiusmod.
-                        Brunch 3 wolf moon tempor, sunt aliqua put a bird on it squid single-origin coffee nulla
-                        assumenda
-                        shoreditch et. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt
-                        sapiente ea
-                        proident. Ad vegan excepteur butcher vice lomo. Leggings occaecat craft beer farm-to-table,
-                        raw denim
-                        aesthetic synth nesciunt you probably haven't heard of them accusamus labore sustainable
-                        VHS.
+<!-- ------------------------------PACKAGE BASED REPORT---------------------------------------------- -->
+<section>
+    <mat-accordion class="example-headers-align">
+        <mat-expansion-panel [expanded]="step() === 0" (opened)="setStep(0)" hideToggle>
+            <mat-expansion-panel-header>
+                <mat-panel-title class="text2">PACKAGE BASED REPORTS</mat-panel-title>
+            </mat-expansion-panel-header>
+            <div class="cardContainer">
+                <div class="card"><i class="fas fa-layer-group"></i>
+                    <div><strong>Logs of Creation and modification of packages for any particular period</strong>
                     </div>
                 </div>
+                <div class="card"><i class="fas fa-cube"></i>
+                    <div><strong>Logs of Creation and modification of addonpackages for any particular
+                            period</strong>
+                    </div>
+                </div>
+                <div class="card"><i class="fas fa-calendar-alt"></i>
+                    <div><strong>Logs of Creation and modification of Channels for any particular period</strong>
+                    </div>
+                </div>
+                <div class="card"><i class="fas fa-file-invoice"></i>
+
+                    <div><strong>Combo Package Report</strong> </div>
+                </div>
             </div>
-        </div>
-    </div>
-</div> -->
+        </mat-expansion-panel>
+    </mat-accordion>
+</section>
+<!-- ----------------------------------Subscription based reports--------------------------------- -->
+<section>
+    <mat-accordion class="example-headers-align">
+        <mat-expansion-panel [expanded]="step() === 0" (opened)="setStep(0)" hideToggle>
+            <mat-expansion-panel-header>
+                <mat-panel-title class="text2">Subscription based reports</mat-panel-title>
+            </mat-expansion-panel-header>
+            <div class="cardContainer">
+                <div class="card"><i class="fas fa-rocket"></i>
+                    <div><strong>Historical Package/Addon/Alacarte report (Product Type Wise)</strong> </div>
+                </div>
+                <div class="card"><i class="fas fa-ban"></i>
+                    <div><strong>Weekly Active/Deactive Subscription Report</strong> </div>
+                </div>
+                <div class="card"> <i class="fas fa-cloud-upload-alt"></i>
+                    <div><strong>As on Date Active/Deactive Subscription Report (Base Package)</strong> </div>
+                </div>
+                <div class="card"><i class="fas fa-th-list"></i>
+                    <div><strong>As on Date Active/Deactive Subscription Report (Addon Package)</strong> </div>
+                </div>
+                <div class="card"><i class="fas fa-file-alt"></i>
+                    <div><strong>As on Date Active/Deactive Subscription Report (Alacarte)</strong> </div>
+                </div>
+                <div class="card"><i class="fas fa-file-alt"></i>
+                    <div><strong>As on Date Active/Deactive Subscription Report (All Type of Products)</strong> </div>
+                </div>
+                <div class="card"><i class="fas fa-file-alt"></i>
+                    <div><strong>Synchronization Report</strong> </div>
+                </div>
+            </div>
+        </mat-expansion-panel>
+    </mat-accordion>
+</section>
+<!-- ------------------------------------------Broadcaster Reports----------------------------------- -->
+<section>
+    <mat-accordion class="example-headers-align">
+        <mat-expansion-panel [expanded]="step() === 0" (opened)="setStep(0)" hideToggle>
+            <mat-expansion-panel-header>
+                <mat-panel-title class="text2">Broadcaster Reports</mat-panel-title>
+            </mat-expansion-panel-header>
+            <div class="cardContainer">
+                <div class="card"><i class="fas fa-check-circle"></i>
+                    <div><strong>Monthly Broadcaster Reception</strong> </div>
+                </div>
+                <div class="card"><i class="fas fa-tv"></i>
+                    <div><strong>Over All Product Report</strong> </div>
+                </div>
+                <div class="card"><i class="fas fa-file-upload"></i>
+                    <div><strong>Over All Base Product Report / Universal Count Report</strong> </div>
+                </div>
+                <div class="card"><i class="fas fa-store"></i>
+                    <div><strong>Over All Base Product Report</strong> </div>
+                </div>
+                <div class="card"><i class="fas fa-boxes"></i>
+                    <div><strong>Monthly Broadcaster Caswise Report</strong> </div>
+                </div>
+
+            </div>
+        </mat-expansion-panel>
+    </mat-accordion>
+</section>
+<!-- ---------------------------------------History Reports-------------------------------------------------------- -->
+<section>
+    <mat-accordion class="example-headers-align">
+        <mat-expansion-panel [expanded]="step() === 0" (opened)="setStep(0)" hideToggle>
+            <mat-expansion-panel-header>
+                <mat-panel-title class="text2">History Reports</mat-panel-title>
+            </mat-expansion-panel-header>
+            <div class="cardContainer">
+                <div class="card"><i class="fas fa-check-circle"></i>
+                    <div><strong>All Service Report</strong> </div>
+                </div>
+                <div class="card"><i class="fas fa-tv"></i>
+                    <div><strong>Total Smartcard List Report</strong> </div>
+                </div>
+                <div class="card"><i class="fas fa-file-upload"></i>
+                    <div><strong>Paired Smartcard/Boxid Report</strong> </div>
+                </div>
+                <div class="card"><i class="fas fa-store"></i>
+                    <div><strong>Block List Report</strong> </div>
+                </div>
+            </div>
+        </mat-expansion-panel>
+    </mat-accordion>
+</section>
+<!-- ----------------------------------Suspend reports----------------------------------------------------------- -->
+<section>
+    <mat-accordion class="example-headers-align">
+        <mat-expansion-panel [expanded]="step() === 0" (opened)="setStep(0)" hideToggle>
+            <mat-expansion-panel-header>
+                <mat-panel-title class="text2">Suspend reports</mat-panel-title>
+            </mat-expansion-panel-header>
+            <div class="cardContainer">
+                <div class="card"><i class="fas fa-check-circle"></i>
+                    <div><strong>As On Date Suspend Report</strong> </div>
+                </div>
+                <div class="card"><i class="fas fa-tv"></i>
+                    <div><strong>Suspend Report for Particular Duration</strong> </div>
+                </div>
+                <div class="card"><i class="fas fa-file-upload"></i>
+                    <div><strong>Suspend History Report</strong> </div>
+                </div>
+            </div>
+        </mat-expansion-panel>
+    </mat-accordion>
+</section>
+<!-- -----------------------------CAS operation reports (Historical Reports)----------------------------------------------------- -->
+<section>
+    <mat-accordion class="example-headers-align">
+        <mat-expansion-panel [expanded]="step() === 0" (opened)="setStep(0)" hideToggle>
+            <mat-expansion-panel-header>
+                <mat-panel-title class="text2">CAS operation reports (Historical Reports)</mat-panel-title>
+            </mat-expansion-panel-header>
+            <div class="cardContainer">
+                <div class="card"><i class="fas fa-check-circle"></i>
+                    <div><strong>Scroll History Report</strong> </div>
+                </div>
+                <div class="card"><i class="fas fa-tv"></i>
+                    <div><strong>Mail History Report</strong> </div>
+                </div>
+                <div class="card"><i class="fas fa-file-upload"></i>
+                    <div><strong>Finger History Report</strong> </div>
+                </div>
+                <div class="card"><i class="fas fa-store"></i>
+                    <div><strong>Message History Report</strong> </div>
+                </div>
+
+            </div>
+        </mat-expansion-panel>
+    </mat-accordion>
+</section>
+<!-- -------------------------------------Channel Based reports-------------------------------------------------------- -->
+<section>
+    <mat-accordion class="example-headers-align">
+        <mat-expansion-panel [expanded]="step() === 0" (opened)="setStep(0)" hideToggle>
+            <mat-expansion-panel-header>
+                <mat-panel-title class="text2">Channel Based reports</mat-panel-title>
+            </mat-expansion-panel-header>
+            <!-- <div class="cardContainer">
+                <div class="card"><i class="fas fa-check-circle"></i>
+                    <div><strong>First Time Activation History</strong> </div>
+                </div>
+                <div class="card"><i class="fas fa-tv"></i>
+                    <div><strong>Channel Update History</strong> </div>
+                </div>
+                <div class="card"><i class="fas fa-file-upload"></i>
+                    <div><strong>Invertory Upload Report</strong> </div>
+                </div>
+                <div class="card"><i class="fas fa-store"></i>
+                    <div><strong>Smartcard Update History</strong> </div>
+                </div>
+                <div class="card"><i class="fas fa-boxes"></i>
+                    <div><strong>Force Tuning History</strong> </div>
+                </div>
+                <div class="card"><i class="fas fa-exclamation-circle"></i>
+                    <div><strong>Not Allocated Smartcard</strong> </div>
+                </div>
+            </div> -->
+        </mat-expansion-panel>
+    </mat-accordion>
+</section>
+<!-- --------------------------------------count reports---------------------------------------------------------- -->
+<section>
+    <mat-accordion class="example-headers-align">
+        <mat-expansion-panel [expanded]="step() === 0" (opened)="setStep(0)" hideToggle>
+            <mat-expansion-panel-header>
+                <mat-panel-title class="text2">count reports</mat-panel-title>
+            </mat-expansion-panel-header>
+            <div class="cardContainer">
+                <div class="card"><i class="fas fa-check-circle"></i>
+                    <div><strong>Network Smartcard Status Count Report</strong> </div>
+                </div>
+                <div class="card"><i class="fas fa-tv"></i>
+                    <div><strong>Network Smartcard Active/Deactive Status Count Report</strong> </div>
+                </div>
+            </div>
+        </mat-expansion-panel>
+    </mat-accordion>
+</section>
+<!-- ---------------------------------Smartcard Based Reports------------------------------------------------------------ -->
+<section>
+    <mat-accordion class="example-headers-align">
+        <mat-expansion-panel [expanded]="step() === 0" (opened)="setStep(0)" hideToggle>
+            <mat-expansion-panel-header>
+                <mat-panel-title class="text2">Smartcard Based Reports</mat-panel-title>
+            </mat-expansion-panel-header>
+            <!-- <div class="cardContainer">
+                <div class="card"><i class="fas fa-check-circle"></i>
+                    <div><strong>First Time Activation History</strong> </div>
+                </div>
+                <div class="card"><i class="fas fa-tv"></i>
+                    <div><strong>Channel Update History</strong> </div>
+                </div>
+                <div class="card"><i class="fas fa-file-upload"></i>
+                    <div><strong>Invertory Upload Report</strong> </div>
+                </div>
+                <div class="card"><i class="fas fa-store"></i>
+                    <div><strong>Smartcard Update History</strong> </div>
+                </div>
+                <div class="card"><i class="fas fa-boxes"></i>
+                    <div><strong>Force Tuning History</strong> </div>
+                </div>
+                <div class="card"><i class="fas fa-exclamation-circle"></i>
+                    <div><strong>Not Allocated Smartcard</strong> </div>
+                </div>
+            </div> -->
+        </mat-expansion-panel>
+    </mat-accordion>
+</section>

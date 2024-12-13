@@ -37,8 +37,8 @@ export class BulkpackageupdationComponent implements OnInit {
   isCheckboxPlanChecked: boolean = false;
   plantype: any = 0;
   bulkDatas: any;
-  castype: any='';
-  casname: any='';
+  castype: any = '';
+  casname: any = '';
   isallpack: boolean = false;
   searchTerm: any;
   cas: any;
@@ -123,38 +123,45 @@ export class BulkpackageupdationComponent implements OnInit {
     if (!this.searchTerm) {
       return this.cas;
     }
-    return this.cas.filter((casItem:any) =>
+    return this.cas.filter((casItem: any) =>
       casItem.name.toLowerCase().includes(this.searchTerm.toLowerCase())
     );
   }
   @ViewChild(MatAutocompleteTrigger) autocompleteTrigger!: MatAutocompleteTrigger;
-
   onSelectionFingerPrint(selectedValue: any, autocompleteInput: HTMLInputElement) {
     console.log(selectedValue);
     this.castype = selectedValue.id;
     this.casname = selectedValue.name;
+    this.fetchPackageList();
     console.log(this.casname);
     console.log(this.castype);
     this.autocompleteTrigger.closePanel();
     autocompleteInput.blur();
-    this.fetchPackageList();
+   
   }
   fetchPackageList() {
     console.log(this.castype);
-    
+    console.log('checking 1');
     this.userservice.getBulkPackageList(this.role, this.username, this.castype).subscribe(
       (response: HttpResponse<any>) => {
+        console.log('checking 2');
         if (response.status === 200 && response.body) {
           console.log(response.body);
           if (typeof response.body === 'object' && response.body !== null) {
+            console.log('checking 3');
             this.lcomembershipList = Object.entries(response.body).map(([key, value]) => ({
               name: key,
               value: value
             }));
+            this.cdr.detectChanges();
             this.filteredPackageList = [...this.lcomembershipList];
+            console.log('checking 4');
+
             console.log('Transformed Package List:', this.lcomembershipList);
             this.cdr.detectChanges();
-            this.swal.Success_200();
+            console.log('checking 5');
+
+            // this.swal.Success_200();
           } else {
             console.error('Response body is not a valid object:', response.body);
             this.swal.Error_400();

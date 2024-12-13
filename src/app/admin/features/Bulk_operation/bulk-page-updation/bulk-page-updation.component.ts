@@ -300,13 +300,18 @@ export class BulkPageUpdationComponent implements OnInit {
 
   setCheckboxState(checked: boolean): void {
     this.isCheckboxChecked = checked;
+    console.log('fdgdfgdf');
+    
     if (!checked) {
+      console.log('fdgdfgddfgdsdsfdsf');
       this.package = null;
       this.packageSearch = '';
       this.filteredPackageList = [];
-    } else {
-      this.fetchPackageList();
     }
+    //  else {
+    //   console.log('fdgd45545454fgddfgdsdsfdsf');
+    //   this.fetchPackageList();
+    // }
   }
 
 
@@ -337,7 +342,7 @@ export class BulkPageUpdationComponent implements OnInit {
             this.filteredPackageList = [...this.packageList];
             console.log('Transformed Package List:', this.packageList);
             this.cdr.detectChanges();
-            this.swal.Success_200();
+            // this.swal.Success_200();
           } else {
             console.error('Response body is not a valid object:', response.body);
             this.swal.Error_400();

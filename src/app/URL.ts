@@ -13,6 +13,6 @@ export default class URLs {
     static BASE_URL(): String {
         return "http://192.168.1.102:8081/api";     //JAYA AKKA 
         // return "http://192.168.1.115:8081/api";       //BALA
-        // return "http://192.168.70.201:8585/rsms/api";    //QC
+        // return "http://192.168.70.201:8585/rsms/api";    //QC 
     }
 }

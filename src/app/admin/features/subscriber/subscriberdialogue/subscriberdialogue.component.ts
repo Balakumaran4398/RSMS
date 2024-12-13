@@ -195,7 +195,7 @@ export class SubscriberdialogueComponent implements OnInit {
   box: boolean = false;
   status: any;
   smartcardno: any;
-  operatorname:any;
+  operatorname: any;
   mobile: any;
   cardbalance: any;
   customwerAmount: any;
@@ -330,7 +330,10 @@ export class SubscriberdialogueComponent implements OnInit {
     this.username = storageService.getUsername();
     this.newRefreshSmartcard = data.refresh;
     this.subid_1 = data.subId;
+    console.log(this.subid_1);
+
     this.newSubid = data.newsubid;
+    console.log(this.newSubid);
     this.sType = data?.type;
     this.pairBoxList = data['pairBoxlist'].map((item: any) => item);
     this.pairSmartcardList = data['pairSmartcardlist'].map((item: any) => item);
@@ -437,6 +440,7 @@ export class SubscriberdialogueComponent implements OnInit {
       role: [this.role],
       username: [this.username]
     });
+    console.log(this.Sendmseform);
 
     this.addsmartcardform == this.fb.group({
 
@@ -1222,7 +1226,8 @@ export class SubscriberdialogueComponent implements OnInit {
       this.swal.Error('All fields are required');
       return;
     }
-    this.userservice.transferLcoToSmartcard(this.role, this.username, this.lcoid, this.lcoareaid, this.lcostreetid, this.subid_1, this.withsubscription, 0, 2)
+    console.log(this.subid_1);
+    this.userservice.transferLcoToSmartcard(this.role, this.username, this.lcoid, this.lcoareaid, this.lcostreetid, this.subid_1 || this.newSubid, this.withsubscription, 0, 2)
       .subscribe((res: any) => {
         this.swal.success(res?.message);
       }, (err) => {
@@ -1297,6 +1302,8 @@ export class SubscriberdialogueComponent implements OnInit {
   sendMessage() {
     this.Sendmseform.markAllAsTouched();
     const formValues = this.Sendmseform.value;
+    console.log('formValues', formValues);
+
     const payload = {
       smartcard: formValues.smartcard,
       duration: formValues.duration || 0,
@@ -1307,6 +1314,8 @@ export class SubscriberdialogueComponent implements OnInit {
       role: formValues.role,
       username: formValues.username
     };
+    console.log('payload', payload);
+
     this.swal.Loading();
     this.userservice.sendMessage(payload)
       .subscribe((res: any) => {

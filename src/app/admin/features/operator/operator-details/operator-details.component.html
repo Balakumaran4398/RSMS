@@ -134,91 +134,97 @@
                             </div>
 
 
-                            <!-- <div class="files tooltip-container mx-2" (click)="openDialog('recharge')"> -->
-                            <!-- <div class="files tooltip-container mx-2">
-                                <i class="fa-solid fa-book" style="font-size:20px;color:var(--primary-color)"></i>
-                                <span class="tooltip">LCO RECHARGE REPORT
-                                </span>
+                            <!-- <div class="files tooltip-container mx-2" (click)="openDialog('recharge',operator.operatorid)">
+                                <div class="files tooltip-container ">
+                                    <i class="fa-solid fa-book" style="font-size:20px;color:var(--primary-color)"></i>
+                                    <span class="tooltip">LCO RECHARGE REPORT
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="files tooltip-container mx-2" (click)="openDialog('retailer',operator.operatorid)">
+                                <div class="files tooltip-container ">
+                                    <i class="fa-solid fa-person-chalkboard"
+                                        style="font-size:20px;color:var(--primary-color)"></i>
+                                    <span class="tooltip">LCO WISE RETAILER REPORT </span>
+                                </div>
+                            </div>
+                            <div class="files tooltip-container mx-2" (click)="openDialog('areawise',operator.operatorid)">
+                                <div class="files tooltip-container ">
+                                    <i class="fa fa-calculator" style="font-size:20px;color:var(--primary-color)"
+                                        aria-hidden="true"></i>
+                                    <span class="tooltip">AREAWISE CONECTION COUNT REPORT
+                                    </span>
+                                </div>
+                            </div>
+
+                            <div class="files tooltip-container mx-2"
+                                (click)="opencancelsubDialog('cancel_Subscription')">
+                                <div class="files tooltip-container ">
+                                    <i class="fa-solid fa-file-lines"
+                                        style="font-size:20px;color:var(--primary-color)"></i>
+                                    <span class="tooltip">CANCEL SUBSCRIPTION REPORT
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="files tooltip-container mx-2" (click)="openDialog('productwise',operator.operatorid)">
+                                <div class="files tooltip-container">
+                                    <i class="fa-solid fa-address-book"
+                                        style="font-size:20px;color:var(--primary-color)"></i>
+                                    <span class="tooltip">PRODUCTWISE CURRENT COUNT
+                                    </span>
+                                </div>
                             </div> -->
-
-                            <!-- <div class="files tooltip-container mx-2" (click)="openDialog('retailer')"> -->
-                            <!-- <div class="files tooltip-container mx-2">
-                                <i class="fa-solid fa-person-chalkboard"
-                                    style="font-size:20px;color:var(--primary-color)"></i>
-                                <span class="tooltip">LCO WISE RETAILER REPORT </span>
-                            </div> -->
-                            <!-- <div class="files tooltip-container mx-2" (click)="openDialog('areawise')"> -->
-                            <!-- <div class="files tooltip-container mx-2">
-                                <i class="fa fa-calculator" style="font-size:20px;color:var(--primary-color)"
-                                    aria-hidden="true"></i>
-                                <span class="tooltip">AREAWISE CONECTION COUNT REPORT
-                                </span>
-                            </div> -->
-
-                            <!-- <div class="files tooltip-container mx-2" (click)="opencancelsubDialog('cancel_Subscription')"> -->
-                            <!-- <div class="files tooltip-container mx-2">
-                                <i class="fa-solid fa-file-lines" style="font-size:20px;color:var(--primary-color)"></i>
-                                <span class="tooltip">CANCEL SUBSCRIPTION REPORT
-                                </span>
-                            </div> -->
-                            <!-- <div class="files tooltip-container mx-2" (click)="openDialog('productwise')"> -->
-                            <!-- <div class="files tooltip-container mx-2">
-                                <i class="fa-solid fa-address-book"
-                                    style="font-size:20px;color:var(--primary-color)"></i>
-                                <span class="tooltip">PRODUCTWISE CURRENT COUNT
-                                </span>
-                            </div> -->
-
-
-
-
-
                         </div>
                     </div>
                     <div class="child-card col-12">
-                        <!-- <div class="col-2 vertical tooltip-container" (click)="openDialog('connection')"> -->
-                        <div class="col-2 vertical tooltip-container">
-                            <!-- <p class="sub-text">Connection</p> -->
-                            <span style="color: #0e610b;">
-                                <div class="circle" style="background-color: rgb(240, 120, 9);"><span
-                                        class="circle-text">{{operator?.connectioncount}}</span></div>
-                            </span>
-                            <span class="tooltip">Connection</span>
+                        <div class="col-2 vertical tooltip-container" (click)="openDialog('connection',operator.operatorid)">
+                            <div class="col-2 vertical tooltip-container">
+                                <!-- <p class="sub-text">Connection</p> -->
+                                <span style="color: #0e610b;">
+                                    <div class="circle" style="background-color: rgb(240, 120, 9);"><span
+                                            class="circle-text">{{operator?.connectioncount}}</span></div>
+                                </span>
+                                <span class="tooltip">Connection</span>
+                            </div>
                         </div>
-                        <!-- <div class="col-2 vertical tooltip-container" (click)="openDialog('notexpiry')"> -->
-                        <div class="col-2 vertical tooltip-container">
-                            <!-- <p class="sub-text">NotExpiry</p> -->
-                            <span style="color: #0e610b;">
-                                <div class="circle" style="background-color: rgb(122, 64, 129);"><span
-                                        class="circle-text">{{operator?.activecount}}</span></div>
-                            </span>
-                            <span class="tooltip">NotExpiry</span>
+                        <div class="col-2 vertical tooltip-container" (click)="openDialog('notexpiry',operator.operatorid)">
+                            <div class="col-2 vertical tooltip-container">
+                                <!-- <p class="sub-text">NotExpiry</p> -->
+                                <span style="color: #0e610b;">
+                                    <div class="circle" style="background-color: rgb(122, 64, 129);"><span
+                                            class="circle-text">{{operator?.activecount}}</span></div>
+                                </span>
+                                <span class="tooltip">NotExpiry</span>
+                            </div>
                         </div>
-                        <!-- <div class="col-2 vertical tooltip-container" (click)="openDialog('expired')"> -->
-                        <div class="col-2 vertical tooltip-container">
-                            <!-- <p class="sub-text">Expired</p> -->
-                            <span style="color: #0e610b;">
-                                <div class="circle" style="background-color: rgb(202, 9, 9);"><span
-                                        class="circle-text">{{operator?.expiredcount}}</span></div>
-                            </span>
-                            <span class="tooltip">Expired</span>
+                        <div class="col-2 vertical tooltip-container" (click)="openDialog('expired',operator.operatorid)">
+                            <div class="col-2 vertical tooltip-container">
+                                <!-- <p class="sub-text">Expired</p> -->
+                                <span style="color: #0e610b;">
+                                    <div class="circle" style="background-color: rgb(202, 9, 9);"><span
+                                            class="circle-text">{{operator?.expiredcount}}</span></div>
+                                </span>
+                                <span class="tooltip">Expired</span>
+                            </div>
                         </div>
-                        <!-- <div class="col-2 vertical tooltip-container" (click)="openDialog('new')"> -->
-                        <div class="col-2 vertical tooltip-container">
-                            <!-- <p class="sub-text">New</p> -->
-                            <span style="color: #0e610b;">
-                                <div class="circle" style="background-color: rgb(13 131 33);"><span
-                                        class="circle-text">{{operator?.newcount}}</span></div>
-                            </span> <span class="tooltip">New</span>
+                        <div class="col-2 vertical tooltip-container" (click)="openDialog('new',operator.operatorid)">
+                            <div class="col-2 vertical tooltip-container">
+                                <!-- <p class="sub-text">New</p> -->
+                                <span style="color: #0e610b;">
+                                    <div class="circle" style="background-color: rgb(13 131 33);"><span
+                                            class="circle-text">{{operator?.newcount}}</span></div>
+                                </span> <span class="tooltip">New</span>
+                            </div>
                         </div>
-                        <!-- <div class="col-2 vertical tooltip-container" (click)="openDialog('block')"> -->
-                        <div class="col-2 vertical tooltip-container">
-                            <!-- <p class="sub-text">Block</p> -->
-                            <span style="color: #0e610b;">
-                                <div class="circle" style="background-color: rgb(148, 122, 8);"><span
-                                        class="circle-text">{{operator?.blockcount}}</span></div>
-                            </span>
-                            <span class="tooltip">Block</span>
+                        <div class="col-2 vertical tooltip-container" (click)="openDialog('block',operator.operatorid)">
+                            <div class="col-2 vertical tooltip-container">
+                                <!-- <p class="sub-text">Block</p> -->
+                                <span style="color: #0e610b;">
+                                    <div class="circle" style="background-color: rgb(148, 122, 8);"><span
+                                            class="circle-text">{{operator?.blockcount}}</span></div>
+                                </span>
+                                <span class="tooltip">Block</span>
+                            </div>
                         </div>
                     </div>
                 </mat-card-content>

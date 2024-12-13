@@ -1035,9 +1035,10 @@
                         <label class="me-2">Message </label>
                     </div>
                     <div class="col-6 col-md-6 value">
-                        <textarea name="" id="" placeholder="N/A" [(ngModel)]="packageMessage.msgcontent"
-                            formControlName="message" [maxlength]="117" (input)="updateRemainingChars($event)"
-                            (input)="updateRemainingChars($event)"></textarea>
+                        <!-- <textarea name="" id="" placeholder="N/A" [(ngModel)]="packageMessage.msgcontent"
+                            formControlName="message" [maxlength]="117" (input)="updateRemainingChars($event)"></textarea> -->
+                        <textarea name="" id="" placeholder="N/A" 
+                            formControlName="message" [maxlength]="117" (input)="updateRemainingChars($event)"></textarea>
                         <div>
                             <small>{{ remainingChars }} characters remaining</small>
                         </div>

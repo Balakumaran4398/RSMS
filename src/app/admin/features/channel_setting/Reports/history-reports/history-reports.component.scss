@@ -1,6 +1,21 @@
+section {
+  border: 1px solid lightgray;
+  margin-bottom: 15px;
+}
 
 .display {
   display: flex;
+}
+
+.text2 {
+  padding: 0.5rem;
+  font-size: 17px;
+  // color: #202c2c;
+  color: #300a26;
+  font-weight: 700;
+  display: flex;
+  justify-content: left;
+  align-items: center;
 }
 
 body {
@@ -19,6 +34,7 @@ body {
   text-transform: capitalize;
   display: flex;
   flex-wrap: wrap;
+  background: #cfd1d2;
   // justify-content: space-between;
   gap: 4%;
 }
@@ -27,15 +43,18 @@ body {
   padding: 20px;
   border-radius: 15px;
   background-color: white;
-  width: 22%;
-  min-height: 30px;
+  // width: 22%;
+  flex: 1 1 calc(23.33% - 20px);
+  max-width: calc(30.33% - 20px);
   color: grey;
   margin: 15px 0;
   box-shadow: 3px 4px 8px 2px rgba(0, 0, 0, 0.5);
   // display: flex;
   display: -webkit-inline-box;
-  justify-content: space-between;
+  // justify-content: space-between;
   gap: 5%;
+  // box-sizing: border-box;
+
 }
 
 .card div {
@@ -43,7 +62,7 @@ body {
   flex-direction: column;
   gap: 10px;
   flex-basis: 70%;
-  text-align: center;
+  text-align: left;
 }
 
 .card i {
@@ -53,10 +72,10 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
-  height: 50px;
-  width: 50px;
-  padding: 20px;
-  font-size: 25px;
+  height: 40px;
+  width: 40px;
+  padding: 15px;
+  font-size: 20px;
 }
 
 // .card * {
@@ -67,11 +86,13 @@ body {
   font-weight: 400;
   font-size: 16px;
 }
-h5{
+
+h5 {
   padding: 0.5rem;
   background-color: #e5f0f0;
   border: 2px solid lightgray;
 }
+
 @media (max-width: 850px) {
   .cardContainer {
     justify-content: space-between;
@@ -79,26 +100,27 @@ h5{
   }
 
   .card {
-    width: 49%;
-  }
+    flex: 1 1 calc(49% - 20px); /* Two cards per row */
+    max-width: calc(49% - 20px);
+}
 
   .display {
     display: block;
   }
 }
 
-@media (max-width: 400px) {
+@media (max-width: 600px) {
   .cardContainer {
     justify-content: center;
   }
 
   .card {
-    width: 100%;
-  }
+    flex: 1 1 100%; /* One card per row */
+    max-width: 100%;
+}
 
   .display {
     display: block;
   }
 }
 
-/*         //  حذيفة، المغرب،العيون */

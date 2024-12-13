@@ -1322,12 +1322,20 @@ export class BaseService {
   }
   // ---------------------------------------------------Reports-----------------------------------------------------------------------------
   // ========================================Dashboard Reports=================================================================
-  getDashboardReport(role: any, username: any, type: any, reporttype: any):  Observable<HttpResponse<any[]>> {
+  getDashboardReport(role: any, username: any, type: any, reporttype: any): Observable<HttpResponse<any[]>> {
     return this.http.get<any[]>(
       BASE_URL + "/report/GetDashboardReportPdf?role=" + role + "&username=" + username + "&type=" + type + "&reporttype=" + reporttype, { observe: 'response' });
   }
   getDashboardPDFReport(role: any, username: any, type: any, reporttype: any): Observable<Blob> {
-    return this.http.get(BASE_URL + "/report/GetDashboardReportPdf?role=" + role + "&username=" + username + "&type=" + type + "&reporttype=" + reporttype, {responseType: 'blob'});
+    return this.http.get(BASE_URL + "/report/GetDashboardReportPdf?role=" + role + "&username=" + username + "&type=" + type + "&reporttype=" + reporttype, { responseType: 'blob' });
   }
+  // =======================================Operator Dashboard Reports=========================================================
 
-} 
+  getOperatorDashboardExcelReport(role: any, username: any, type: any, reporttype: any, operatorid: any): Observable<HttpResponse<any[]>> {
+    return this.http.get<any[]>(
+      BASE_URL + "/report/GetOperatorDashboardPdfReport?role=" + role + "&username=" + username + "&type=" + type + "&reporttype=" + reporttype + "&operatorid=" + operatorid, { observe: 'response' });
+  }
+  getOperatorDashboardPDFReport(role: any, username: any, type: any, reporttype: any, operatorid: any): Observable<Blob> {
+    return this.http.get(BASE_URL + "/report/GetOperatorDashboardPdfReport?role=" + role + "&username=" + username + "&type=" + type + "&reporttype=" + reporttype + "&operatorid=" + operatorid, { responseType: 'blob' });
+  }
+}

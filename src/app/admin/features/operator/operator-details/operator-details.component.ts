@@ -58,7 +58,7 @@ export class OperatorDetailsComponent implements OnInit {
 
   operator_details: any = [];
   pagedOperators: any = [];
-  pageSize = 10; 
+  pageSize = 10;
   pageIndex = 0;
   totalLength = 0;
   paginatedData: any;
@@ -107,7 +107,7 @@ export class OperatorDetailsComponent implements OnInit {
     this.updatePageData();
   }
 
- 
+
 
 
   updatePageData() {
@@ -283,16 +283,21 @@ export class OperatorDetailsComponent implements OnInit {
     const dialogRef = this.dialog.open(LcodashboardComponent, {
       width: '1000px',
       panelClass: 'custom-dialog-container',
-      data: dialogData
+      data: dialogData,
     });
   }
-  openDialog(type: string): void {
-    let dialogData = { type: type, detailsList: this.operator_details, };
+  openDialog(type: string, operatorid: any): void {
+    const detailsList = this.operator_details.find((op: any) => op.operatorid === operatorid);
+    console.log(detailsList);
+    console.log(detailsList.operatorname);
 
+    let dialogData = { type: type, detailsList: this.operator_details, operator: detailsList.operatorid,operatorname: detailsList.operatorname, };
+    console.log(dialogData);
     const dialogRef = this.dialog.open(OperatordialogueComponent, {
       width: '500px',
       panelClass: 'custom-dialog-container',
-      data: dialogData
+      data: dialogData,
+     
     });
   }
   opencancelsubDialog(type: string): void {
