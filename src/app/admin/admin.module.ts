@@ -157,6 +157,8 @@ import { ChartInventoryReportComponent } from "../_core/Chart-Reports/chart-inve
 import { ChartPackageReportComponent } from "../_core/Chart-Reports/chart-package-report/chart-package-report.component";
 import { ChartSTBReportComponent } from "../_core/Chart-Reports/chart-stbreport/chart-stbreport.component";
 import { HistoryReportsComponent } from "./features/channel_setting/Reports/history-reports/history-reports.component";
+import { PackageBasedComponent } from "./features/channel_setting/Reports_page/Trai/package-based/package-based.component";
+import { SubscriptionBasedComponent } from "./features/channel_setting/Reports_page/Trai/subscription-based/subscription-based.component";
 @NgModule({
     declarations: [
         AdminBaseComponent, NavComponent, HomeComponent, NavbarComponent, MsodetailsComponent, CasmasterComponent,
@@ -164,7 +166,7 @@ import { HistoryReportsComponent } from "./features/channel_setting/Reports/hist
         BarChartComponent, InventoryChartComponent, LcoCommissionChartComponent,
         PackageChartComponent, StbChartComponent,
         // -------------------------------------Dashboard Report--------------------------------
-        ChartSTBReportComponent,ChartPackageReportComponent,ChartInventoryReportComponent,HistoryReportsComponent,
+        ChartSTBReportComponent,ChartPackageReportComponent,ChartInventoryReportComponent,
         // -------------------------------------Top_subscriber_Details------------------------------------
         TopSubDetailComponent,
         // -----------------------------------------operator----------------------------------
@@ -218,7 +220,7 @@ import { HistoryReportsComponent } from "./features/channel_setting/Reports/hist
         TaxComponent, ProofComponent,ProofdetailsComponent,TaxdetailsComponent,LogindialogueComponent,EditDismembershipComponent,SpecialBulkpackageComponent,
         SpecialcancelsubscriptionComponent,SpecialareachangeComponent,SpeciallcochangeComponent,SpecialeditbulkpackageComponent,SpeciallcotransferComponent,
         // =====================================================Reports=========================================
-        TraiReportComponent,
+        TraiReportComponent,SubscriptionBasedComponent,HistoryReportsComponent,PackageBasedComponent,
     ],
     imports: [
         CommonModule,

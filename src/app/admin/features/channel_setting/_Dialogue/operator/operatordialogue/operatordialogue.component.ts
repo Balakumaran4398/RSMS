@@ -61,7 +61,7 @@ export class OperatordialogueComponent implements OnInit {
     ctrlValue.year(normalizedYear.year());
     this.date.setValue(ctrlValue);
     console.log(this.date);
-    
+
   }
 
   chosenMonthHandler(normalizedMonth: Moment, datepicker: MatDatepicker<Moment>) {
@@ -76,6 +76,9 @@ export class OperatordialogueComponent implements OnInit {
   passSelectedDate(selectedDate: moment.Moment) {
     console.log('Selected Date:', selectedDate.format('YYYY-MM'));
     // Add your logic to handle the selected date here
+    this.monthYear = selectedDate.format('YYYY-MM');
+    console.log('MonthYear',this.monthYear);
+    
   }
   pincode: any;
   areaname: any;
@@ -88,7 +91,7 @@ export class OperatordialogueComponent implements OnInit {
   id: any
   rowData: any;
   type: any;
-
+  monthYear: any;
   msodetails: any;
 
   constructor(public dialogRef: MatDialogRef<OperatordialogueComponent>, private swal: SwalService, private userService: BaseService, private excelService: ExcelService, private storageservice: StorageService, @Inject(MAT_DIALOG_DATA) public data: any,) {
@@ -273,7 +276,7 @@ export class OperatordialogueComponent implements OnInit {
 
 
   getExcel() {
-    this.userService.getOperatorDashboardExcelReport(this.role, this.username, this.type, 2, this.operatorid)
+    this.userService.getOperatorDashboardExcelReport(this.role, this.username, this.type, 2, this.operatorid, 0, 0, 0, 0)
       .subscribe(
         (response: HttpResponse<any[]>) => { // Expect HttpResponse<any[]>
           console.log(this.type);
@@ -337,7 +340,31 @@ export class OperatordialogueComponent implements OnInit {
   getPDF() {
     console.log(this.operatorid);
     console.log(this.type);
-    this.userService.getOperatorDashboardPDFReport(this.role, this.username, this.type, 1, this.operatorid)
+    this.userService.getOperatorDashboardPDFReport(this.role, this.username, this.type, 1, this.operatorid, 0, 0, 0, 0)
+      .subscribe((x: Blob) => {
+        const blob = new Blob([x], { type: 'application/pdf' });
+        const data = window.URL.createObjectURL(blob);
+        const link = document.createElement('a');
+        link.href = data;
+        link.download = (this.operatorname + ' - ' + this.OType + ".pdf").toUpperCase();
+        link.dispatchEvent(new MouseEvent('click', { bubbles: true, cancelable: true, view: window }));
+        setTimeout(() => {
+          window.URL.revokeObjectURL(data);
+          link.remove();
+        }, 100);
+      },
+        (error: any) => {
+          Swal.fire({
+            title: 'Error!',
+            text: error?.error?.message || 'There was an issue generating the PDF CAS form report.',
+            icon: 'error',
+            confirmButtonText: 'Ok'
+          });
+        });
+  }
+
+  getRechargePDF() {
+    this.userService.getOperatorDashboardPDFReport(this.role, this.username, 8, 1, this.operatorid, this.monthYear, 0, 0, 0)
       .subscribe((x: Blob) => {
         const blob = new Blob([x], { type: 'application/pdf' });
         const data = window.URL.createObjectURL(blob);

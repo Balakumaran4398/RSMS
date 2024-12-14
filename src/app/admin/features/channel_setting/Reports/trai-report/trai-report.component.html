@@ -6,21 +6,20 @@
                 <mat-panel-title class="text2">PACKAGE BASED REPORTS</mat-panel-title>
             </mat-expansion-panel-header>
             <div class="cardContainer">
-                <div class="card"><i class="fas fa-layer-group"></i>
+                <div class="card" (click)="openPackageBaseDialogue('package')"><i class="fas fa-layer-group"></i>
                     <div><strong>Logs of Creation and modification of packages for any particular period</strong>
                     </div>
                 </div>
-                <div class="card"><i class="fas fa-cube"></i>
+                <div class="card" (click)="openPackageBaseDialogue('addon_package')"><i class="fas fa-cube" ></i>
                     <div><strong>Logs of Creation and modification of addonpackages for any particular
                             period</strong>
                     </div>
                 </div>
-                <div class="card"><i class="fas fa-calendar-alt"></i>
+                <div class="card" (click)="openPackageBaseDialogue('channel_history')"><i class="fas fa-calendar-alt"></i>
                     <div><strong>Logs of Creation and modification of Channels for any particular period</strong>
                     </div>
                 </div>
-                <div class="card"><i class="fas fa-file-invoice"></i>
-
+                <div class="card" (click)="openPackageBaseDialogue('combo')"><i class="fas fa-file-invoice"></i>
                     <div><strong>Combo Package Report</strong> </div>
                 </div>
             </div>
@@ -35,22 +34,22 @@
                 <mat-panel-title class="text2">Subscription based reports</mat-panel-title>
             </mat-expansion-panel-header>
             <div class="cardContainer">
-                <div class="card"><i class="fas fa-rocket"></i>
+                <div class="card"  (click)="openPackageBaseDialogue('bouquetAlacarte')"><i class="fas fa-rocket"></i>
                     <div><strong>Historical Package/Addon/Alacarte report (Product Type Wise)</strong> </div>
                 </div>
-                <div class="card"><i class="fas fa-ban"></i>
+                <div class="card" ><i class="fas fa-ban"></i>
                     <div><strong>Weekly Active/Deactive Subscription Report</strong> </div>
                 </div>
-                <div class="card"> <i class="fas fa-cloud-upload-alt"></i>
+                <div class="card" (click)="openSubscriptionDialogue('base_package')"> <i class="fas fa-cloud-upload-alt"></i>
                     <div><strong>As on Date Active/Deactive Subscription Report (Base Package)</strong> </div>
                 </div>
-                <div class="card"><i class="fas fa-th-list"></i>
+                <div class="card" (click)="openSubscriptionDialogue('addon_package')"><i class="fas fa-th-list"></i>
                     <div><strong>As on Date Active/Deactive Subscription Report (Addon Package)</strong> </div>
                 </div>
-                <div class="card"><i class="fas fa-file-alt"></i>
+                <div class="card" (click)="openSubscriptionDialogue('alacarte')"><i class="fas fa-file-alt"></i>
                     <div><strong>As on Date Active/Deactive Subscription Report (Alacarte)</strong> </div>
                 </div>
-                <div class="card"><i class="fas fa-file-alt"></i>
+                <div class="card" (click)="openSubscriptionDialogue('date_subscription')"><i class="fas fa-file-alt"></i>
                     <div><strong>As on Date Active/Deactive Subscription Report (All Type of Products)</strong> </div>
                 </div>
                 <div class="card"><i class="fas fa-file-alt"></i>

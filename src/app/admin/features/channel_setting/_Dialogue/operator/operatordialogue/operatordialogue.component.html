@@ -40,7 +40,6 @@
         </div>
     </div>
 </div>
-
 <div *ngIf="OType=='edit'"
     class="col d-flex justify-content-center align-items-center card transparent-background dialog-content">
     <div class="card-content">
@@ -84,8 +83,6 @@
         </div>
     </div>
 </div>
-
-
 <div *ngIf="OType=='recharge'">
     <div class="card">
         <div class="Head d-flex justify-content-between align-items-center mb-3" style="padding: 1rem;">
@@ -116,7 +113,7 @@
             </mat-form-field>
             <div class="col-12 col-md-3 d-flex justify-content-center align-items-center mb-3 tooltip-container"
                 style="cursor: pointer;">
-                <div class="icon-container">
+                <div class="icon-container" (click)="getRechargePDF()">
                     <img src="/assets/images/icons/pdf.png" width="40px">
                     <div class="tooltip">Pdf</div>
                 </div>
@@ -183,7 +180,6 @@
         </div>
     </div>
 </div>
-
 <div *ngIf="OType=='productwise'">
     <div class="card">
         <div class="Head d-flex justify-content-between align-items-center mb-3" style="padding: 1rem;">

@@ -1331,11 +1331,33 @@ export class BaseService {
   }
   // =======================================Operator Dashboard Reports=========================================================
 
-  getOperatorDashboardExcelReport(role: any, username: any, type: any, reporttype: any, operatorid: any): Observable<HttpResponse<any[]>> {
+  getOperatorDashboardExcelReport(role: any, username: any, type: any, reporttype: any, operatorid: any, month: any, year: any, fromdate: any, todate: any): Observable<HttpResponse<any[]>> {
     return this.http.get<any[]>(
-      BASE_URL + "/report/GetOperatorDashboardPdfReport?role=" + role + "&username=" + username + "&type=" + type + "&reporttype=" + reporttype + "&operatorid=" + operatorid, { observe: 'response' });
+      BASE_URL + "/report/GetOperatorDashboardPdfReport?role=" + role + "&username=" + username + "&type=" + type + "&reporttype=" + reporttype + "&operatorid=" + operatorid + '&month=' + month + "&year=" + year + '&fromdate=' + fromdate + '&todate=' + todate, { observe: 'response' });
   }
-  getOperatorDashboardPDFReport(role: any, username: any, type: any, reporttype: any, operatorid: any): Observable<Blob> {
-    return this.http.get(BASE_URL + "/report/GetOperatorDashboardPdfReport?role=" + role + "&username=" + username + "&type=" + type + "&reporttype=" + reporttype + "&operatorid=" + operatorid, { responseType: 'blob' });
+  getOperatorDashboardPDFReport(role: any, username: any, type: any, reporttype: any, operatorid: any, month: any, year: any, fromdate: any, todate: any): Observable<Blob> {
+    return this.http.get(BASE_URL + "/report/GetOperatorDashboardPdfReport?role=" + role + "&username=" + username + "&type=" + type + "&reporttype=" + reporttype + "&operatorid=" + operatorid + '&month=' + month + "&year=" + year + '&fromdate=' + fromdate + '&todate=' + todate, { responseType: 'blob' });
+  }
+  // ==================================================Trai Reports================================================================================
+  // -------------------------------------------------Package Based & Addon Package Reports------------------------------------------------------------
+  getPackageModificationExcelReport(role: any, username: any, fromdate: any, todate: any, castype: any, type: any, reporttype: any): Observable<HttpResponse<any[]>> {
+    return this.http.get<any[]>(BASE_URL + "/report/getPackageModificationPdfReport?role=" + role + "&username=" + username + '&fromdate=' + fromdate + '&todate=' + todate + "&castype=" + castype + "&type=" + type + "&reporttype=" + reporttype, { observe: 'response' });
+  }
+  getPackageModificationPdfReport(role: any, username: any, fromdate: any, todate: any, castype: any, type: any, reporttype: any): Observable<Blob> {
+    return this.http.get(BASE_URL + "/report/getPackageModificationPdfReport?role=" + role + "&username=" + username + '&fromdate=' + fromdate + '&todate=' + todate + "&castype=" + castype + "&type=" + type + "&reporttype=" + reporttype, { responseType: 'blob' });
+  }
+  // -------------------------------------------------Channel History Reports------------------------------------------------------------
+  getChannelModificationExcelReport(role: any, username: any, fromdate: any, todate: any, reporttype: any): Observable<HttpResponse<any[]>> {
+    return this.http.get<any[]>(BASE_URL + "/report/getChannelModificationPdfReport?role=" + role + "&username=" + username + '&fromdate=' + fromdate + '&todate=' + todate + "&reporttype=" + reporttype, { observe: 'response' });
+  }
+  getChannelModificationPdfReport(role: any, username: any, fromdate: any, todate: any, reporttype: any): Observable<Blob> {
+    return this.http.get(BASE_URL + "/report/getChannelModificationPdfReport?role=" + role + "&username=" + username + '&fromdate=' + fromdate + '&todate=' + todate + "&reporttype=" + reporttype, { responseType: 'blob' });
+  }
+  // -------------------------------------------------Combo History Reports------------------------------------------------------------
+  getComboModificationExcelReport(role: any, username: any, reporttype: any): Observable<HttpResponse<any[]>> {
+    return this.http.get<any[]>(BASE_URL + "/report/getComboModificationPdfReport?role=" + role + "&username=" + username + "&reporttype=" + reporttype, { observe: 'response' });
+  }
+  getComboModificationPdfReport(role: any, username: any, reporttype: any): Observable<Blob> {
+    return this.http.get(BASE_URL + "/report/getComboModificationPdfReport?role=" + role + "&username=" + username + "&reporttype=" + reporttype, { responseType: 'blob' });
   }
 }

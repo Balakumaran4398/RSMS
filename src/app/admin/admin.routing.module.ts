@@ -78,6 +78,7 @@ import { HistoryComponent } from './features/channel_setting/Reports/history/his
 import { ChartInventoryReportComponent } from '../_core/Chart-Reports/chart-inventory-report/chart-inventory-report.component';
 import { ChartPackageReportComponent } from '../_core/Chart-Reports/chart-package-report/chart-package-report.component';
 import { ChartSTBReportComponent } from '../_core/Chart-Reports/chart-stbreport/chart-stbreport.component';
+import { PackageBasedComponent } from './features/channel_setting/Reports_page/Trai/package-based/package-based.component';
 
 
 const routes: Routes = [
@@ -88,6 +89,7 @@ const routes: Routes = [
       { path: 'inventoryReport/:id', component: ChartInventoryReportComponent, },
       { path: 'packageReport/:id', component: ChartPackageReportComponent, },
       { path: 'STBReport/:id', component: ChartSTBReportComponent, },
+      { path: 'packageBase', component: PackageBasedComponent, },
       // ---------------------------------------------Operator-----------------------------------
       { path: 'operator_details', component: OperatorDetailsComponent, },
       { path: 'lco_recharge', component: LcoRechargeComponent, },

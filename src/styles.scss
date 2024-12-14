@@ -116,7 +116,9 @@ body {
 .Head h6 {
     text-transform: uppercase;
 }
-
+.Head i {
+    cursor: pointer;
+}
 .Head p {
     font-size: 20px;
 }

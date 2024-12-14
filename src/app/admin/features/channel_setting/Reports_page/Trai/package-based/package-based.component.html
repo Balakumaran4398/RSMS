@@ -1,0 +1,162 @@
+<div *ngIf="type == 'package' || type == 'addon_package'">
+    <div class="Head d-flex justify-content-between align-items-center mb-3">
+
+        <span class="span">
+            {{ type === 'package' ? 'PACKAGE MODIFICATION REPORT' : 'ADDON PACKAGE MODIFICATION REPORT' }}
+        </span>
+        <i class="fa fa-close close-icon" (click)="onNoClick()"></i>
+    </div>
+
+    <div class="mb-3 display justify-content-center align-items-center ">
+        <!-- <div class="input_box col-12 col-md-3">
+            <span class="formlabel">Filter
+            </span>
+        </div> -->
+        <div class="col-12 col-md-6 d-flex justify-content-center align-items-center tooltip-container">
+            <mat-form-field appearance="outline" style="width: 100%;">
+                <mat-date-range-input [rangePicker]="picker">
+                    <input matStartDate matInput placeholder="Start date" (dateChange)="getFromDate($event)">
+                    <input matEndDate matInput placeholder="End date" (dateChange)="getToDate($event)">
+                </mat-date-range-input>
+                <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                <mat-date-range-picker #picker></mat-date-range-picker>
+            </mat-form-field>
+        </div>
+        <div class="mobile">
+            <div class="col-6 col-md-2 d-flex justify-content-center align-items-center tooltip-container"
+                style="cursor: pointer;margin-top: -4%;">
+                <div class="icon-container" (click)="getExcel()">
+                    <img src="/assets/images/icons/Excel.png" width="40px">
+                    <div class="tooltip">Excel</div>
+                </div>
+            </div>
+            <div class="col-6 col-md-2 d-flex justify-content-center align-items-center tooltip-container"
+                style="cursor: pointer;margin-top: -4%;">
+                <div class="icon-container" (click)="getPDF()">
+                    <img src="/assets/images/icons/pdf.png" width="40px">
+                    <div class="tooltip">Pdf</div>
+                </div>
+            </div>
+        </div>
+
+
+    </div>
+</div>
+
+<!-- <div *ngIf="type == 'addon_package'">
+    <div class="Head d-flex justify-content-between align-items-center mb-3">
+        <span class="span">ADDON PACKAGE MODIFICATION REPORT</span>
+        <i class="fa fa-close close-icon" (click)="onNoClick()"></i>
+    </div>
+</div> -->
+<div *ngIf="type == 'channel_history'">
+    <div class="Head d-flex justify-content-between align-items-center mb-3">
+        <span class="span">Channel Update History Log</span>
+        <i class="fa fa-close close-icon" (click)="onNoClick()"></i>
+    </div>
+    <div class="mb-3 display justify-content-center align-items-center ">
+        <!-- <div class="input_box col-12 col-md-3">
+            <span class="formlabel">Filter
+            </span>
+        </div> -->
+        <div class="col-12 col-md-6 d-flex justify-content-center align-items-center tooltip-container">
+            <mat-form-field appearance="outline" style="width: 100%;">
+                <mat-date-range-input [rangePicker]="picker">
+                    <input matStartDate matInput placeholder="Start date" (dateChange)="getFromDate($event)">
+                    <input matEndDate matInput placeholder="End date" (dateChange)="getToDate($event)">
+                </mat-date-range-input>
+                <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                <mat-date-range-picker #picker></mat-date-range-picker>
+            </mat-form-field>
+        </div>
+        <div class="mobile">
+            <div class="col-6 col-md-2 d-flex justify-content-center align-items-center tooltip-container"
+                style="cursor: pointer;margin-top: -4%;">
+                <div class="icon-container" (click)="getChannelExcel()">
+                    <img src="/assets/images/icons/Excel.png" width="40px">
+                    <div class="tooltip">Excel</div>
+                </div>
+            </div>
+            <div class="col-6 col-md-2 d-flex justify-content-center align-items-center tooltip-container"
+                style="cursor: pointer;margin-top: -4%;">
+                <div class="icon-container" (click)="getPDF()">
+                    <img src="/assets/images/icons/pdf.png" width="40px">
+                    <div class="tooltip">Pdf</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div *ngIf="type == 'combo'">
+    <div class="Head d-flex justify-content-between align-items-center mb-3">
+        <span class="span">Combo Package Details</span>
+        <i class="fa fa-close close-icon" (click)="onNoClick()"></i>
+    </div>
+    <div class="mb-3 display justify-content-center align-items-center ">
+        <div class="mobile">
+            <div class="col-4 col-md-6 d-flex justify-content-center align-items-center tooltip-container">
+                <span>Get Report</span>
+            </div>
+            <div class="col-4 col-md-2 d-flex justify-content-center align-items-center tooltip-container"
+                style="cursor: pointer;">
+                <div class="icon-container" (click)="getComboExcel()">
+                    <img src="/assets/images/icons/Excel.png" width="40px">
+                    <div class="tooltip">Excel</div>
+                </div>
+            </div>
+            <div class="col-4 col-md-2 d-flex justify-content-center align-items-center tooltip-container"
+                style="cursor: pointer;">
+                <div class="icon-container" (click)="getComboPDF()">
+                    <img src="/assets/images/icons/pdf.png" width="40px">
+                    <div class="tooltip">Pdf</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div *ngIf="type == 'bouquetAlacarte'">
+    <div class="Head d-flex justify-content-between align-items-center mb-3">
+        <span class="span">BOUQUET ALACARTE PACKAGE REPORT</span>
+        <i class="fa fa-close close-icon" (click)="onNoClick()"></i>
+    </div>
+    <div class="mb-3 display justify-content-start align-items-center ">
+        <div class="">
+            <div class="display">
+                <div class="mx-2 col-12 col-md-6 d-flex justify-content-center align-items-center ">
+                    <mat-form-field appearance="outline" style="width: 100%;">
+                        <mat-date-range-input [rangePicker]="picker">
+                            <input matStartDate matInput placeholder="Start date" (dateChange)="getFromDate($event)">
+                            <input matEndDate matInput placeholder="End date" (dateChange)="getToDate($event)">
+                        </mat-date-range-input>
+                        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                        <mat-date-range-picker #picker></mat-date-range-picker>
+                    </mat-form-field>
+                </div>
+
+                <div class="input-box mx-2 col-12 col-md-5 d-flex justify-content-center align-items-center "
+                    style="margin-top: -4%;">
+                    <select placeholder="Select the Product Type" [(ngModel)]="productType">
+                        <option value="" disabled>Select a Product Type</option>
+                        <option *ngFor="let po of product" [value]="po.value">{{po.lable}}</option>
+                    </select>
+                </div>
+                <div class="mobile report">
+                    <div class="col-4 col-md-1 mx-2  d-flex justify-content-center align-items-center"
+                        style="cursor: pointer;">
+                        <div class="icon-container" (click)="getComboExcel()">
+                            <img src="/assets/images/icons/Excel.png" width="40px">
+                            <div class="tooltip">Excel</div>
+                        </div>
+                    </div>
+                    <div class="col-4 col-md-1 mx-2   d-flex justify-content-center align-items-center "
+                        style="cursor: pointer;">
+                        <div class="icon-container" (click)="getComboPDF()">
+                            <img src="/assets/images/icons/pdf.png" width="40px">
+                            <div class="tooltip">Pdf</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
