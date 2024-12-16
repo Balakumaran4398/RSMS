@@ -1020,5 +1020,174 @@ export class ExcelService {
       fs.saveAs(blob, `${titles}.xlsx`);
     });
   }
+  async generateExcelFile(
+    areatitle: string,
+    headers: any,
+    dataRow: any[],
+    titles: any,
+    areasub: any,
+    sub: any,
+    columns: any[],
+    fileName: string
+  ) {
+    const workbook = new Excel.Workbook();
+    const worksheet = workbook.addWorksheet('Sheet 1');
 
+    // Helper to style and merge a row
+    const styleAndMergeRow = (rowData: any, options: any, mergeArea: string) => {
+      const row = worksheet.addRow([rowData]);
+      row.font = options.font;
+      row.alignment = options.alignment;
+      row.height = options.height || undefined;
+
+      row.eachCell((cell: any) => {
+        cell.fill = options.fill;
+        cell.border = options.border;
+      });
+
+      worksheet.mergeCells(mergeArea);
+    };
+
+    // Title
+    styleAndMergeRow(titles, {
+      font: { family: 4, size: 16, color: { argb: 'FFFFFF' }, bold: true },
+      alignment: { horizontal: 'center' },
+      fill: {
+        type: 'pattern',
+        pattern: 'solid',
+        fgColor: { argb: '34495e' },
+        bgColor: { argb: '34495e' },
+      },
+      border: {
+        top: { style: 'thin' },
+        left: { style: 'thin' },
+        bottom: { style: 'thin' },
+        right: { style: 'thin' },
+      },
+    }, areatitle);
+
+    // Subtitle
+    styleAndMergeRow(sub, {
+      font: { family: 4, size: 12, color: { argb: '000000' }, bold: true },
+      alignment: { horizontal: 'center' },
+      height: 20,
+      fill: {
+        type: 'pattern',
+        pattern: 'solid',
+        fgColor: { argb: 'cce0d8' },
+        bgColor: { argb: 'cce0d8' },
+      },
+      border: {
+        top: { style: 'thin' },
+        left: { style: 'thin' },
+        bottom: { style: 'thin' },
+        right: { style: 'thin' },
+      },
+    }, areasub);
+
+    // Column Headers
+    const headerRow = worksheet.addRow(headers);
+    headerRow.font = { bold: true, color: { argb: 'FFFFFF' } };
+    headerRow.alignment = { vertical: 'middle', horizontal: 'center' };
+    headerRow.height = 20;
+
+    headerRow.eachCell((cell: any) => {
+      cell.fill = {
+        type: 'pattern',
+        pattern: 'solid',
+        fgColor: { argb: '333333' },
+        bgColor: { argb: '333333' },
+      };
+      cell.border = {
+        top: { style: 'thin' },
+        left: { style: 'thin' },
+        bottom: { style: 'thin' },
+        right: { style: 'thin' },
+      };
+    });
+
+    // Data Rows
+    dataRow.forEach((rowData) => {
+      const row = worksheet.addRow(rowData);
+      row.alignment = { vertical: 'middle', horizontal: 'center' };
+      row.height = 20;
+      row.eachCell((cell: any) => {
+        cell.border = {
+          left: { style: 'thin' },
+          right: { style: 'thin' },
+        };
+      });
+    });
+
+    // Configure Worksheet Columns
+    worksheet.columns = columns;
+
+    // Export the Excel File
+    workbook.xlsx.writeBuffer().then((data: any) => {
+      const blob = new Blob([data], {
+        type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+      });
+      fs.saveAs(blob, `${fileName}.xlsx`);
+    });
+  }
+
+  async generateBouquetExcel(
+    areatitle: string,
+    headers: any,
+    dataRow: any[],
+    titles: any,
+    areasub: any,
+    sub: any
+  ) {
+    const columns = [
+      { key: 'a', width: 25 }, //SMARTCARD
+      { key: 'b', width: 21 }, // BOXID
+      { key: 'c', width: 28 }, // PRODUCT ID
+      { key: 'd', width: 25 }, //PRODUCT NAME
+      { key: 'e', width: 25 }, // LOG DATE
+      { key: 'f', width: 25 }, // ACTIVATION DATE
+      { key: 'g', width: 25 },// EXPIRY DATE
+      { key: 'h', width: 25 },// ACTIVITY
+      { key: 'i', width: 25 }, // STATUS
+    ];
+    await this.generateExcelFile(
+      areatitle,
+      headers,
+      dataRow,
+      titles,
+      areasub,
+      sub,
+      columns,
+      'Bouquet'
+    );
+  }
+  async generateRetailerExcel(
+    areatitle: string,
+    headers: any,
+    dataRow: any[],
+    titles: any,
+    areasub: any,
+    sub: any
+  ) {
+    const columns = [
+      { key: 'a', width: 25 }, //Balance
+      { key: 'b', width: 21 }, // MOBILE NUMBER
+      { key: 'c', width: 20 }, // RETAILER ID
+      { key: 'd', width: 30 }, //RETAILER NAME
+      { key: 'e', width: 25 }, // STATUS 
+      { key: 'f', width: 20 }, // USERNAME
+
+    ];
+    await this.generateExcelFile(
+      areatitle,
+      headers,
+      dataRow,
+      titles,
+      areasub,
+      sub,
+      columns,
+      'Bouquet'
+    );
+  }
+  
 }

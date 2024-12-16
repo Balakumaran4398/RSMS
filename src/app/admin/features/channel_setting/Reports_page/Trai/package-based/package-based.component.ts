@@ -22,13 +22,16 @@ export class PackageBasedComponent implements OnInit {
   role: any;
   rowData: any;
   msodetails: any;
-  productType:any='';
+  productType: any = '';
   product: any = [
     { lable: "Base", value: 1 },
     { lable: "Addon", value: 2 },
     { lable: "Alacarte", value: 3 },
     { lable: "All", value: 4 },
   ];
+  file: File | null = null;
+  filePath: string = '';
+  isFileSelected: boolean = false;
 
   constructor(public dialogRef: MatDialogRef<PackageBasedComponent>, private swal: SwalService, @Inject(MAT_DIALOG_DATA) public data: any, private excelService: ExcelService, public userService: BaseService, private cdr: ChangeDetectorRef, public storageservice: StorageService,) {
     this.username = storageservice.getUsername();
@@ -68,6 +71,21 @@ export class PackageBasedComponent implements OnInit {
 
   fromdate: any;
   todate: any;
+
+  handleFileInput(event: Event): void {
+    const input = event.target as HTMLInputElement;
+
+    if (input.files && input.files.length > 0) {
+      this.isFileSelected = true;
+      this.file = input.files[0];
+      this.filePath = input.files[0].name;
+      console.log(this.file);
+    } else {
+      this.isFileSelected = false;
+      this.file = null;
+      this.filePath = '';
+    }
+  }
   getFromDate(event: any) {
     console.log(event.value);
     const date = new Date(event.value).getDate();
@@ -83,9 +101,7 @@ export class PackageBasedComponent implements OnInit {
     const year = new Date(event.value).getFullYear();
     this.todate = year + "-" + month + "-" + date
     console.log(this.todate);
-
-
-  }
+ }
   getExcel() {
     console.log(this.packageType);
     this.userService.getPackageModificationExcelReport(this.role, this.username, this.fromdate, this.todate, 1, this.packageType, 2)
@@ -114,14 +130,14 @@ export class PackageBasedComponent implements OnInit {
 
             this.excelService.generateTraiPackageBaseExcel(areatitle, header, datas, title, areasub, sub);
 
-            } else if (response.status === 204) {
-              this.swal.Success_204();
-              this.rowData = [];
-            }
-          },
-          (error) => {
-            this.handleApiError(error);
+          } else if (response.status === 204) {
+            this.swal.Success_204();
+            this.rowData = [];
           }
+        },
+        (error) => {
+          this.handleApiError(error);
+        }
       );
   }
   getPDF() {
@@ -247,6 +263,70 @@ export class PackageBasedComponent implements OnInit {
   getComboPDF() {
     console.log('type 1 and 4', this.type);
     this.userService.getComboModificationPdfReport(this.role, this.username, 1)
+      .subscribe((x: Blob) => {
+        const blob = new Blob([x], { type: 'application/pdf' });
+        const data = window.URL.createObjectURL(blob);
+        const link = document.createElement('a');
+        link.href = data;
+        link.download = (this.type + ".pdf").toUpperCase();
+        link.dispatchEvent(new MouseEvent('click', { bubbles: true, cancelable: true, view: window }));
+        setTimeout(() => {
+          window.URL.revokeObjectURL(data);
+          link.remove();
+        }, 100);
+      },
+        (error: any) => {
+          Swal.fire({
+            title: 'Error!',
+            text: error?.error?.message || 'There was an issue generating the PDF CAS form report.',
+            icon: 'error',
+            confirmButtonText: 'Ok'
+          });
+        });
+  }
+
+  getBouquetAlacarteExcel() {
+    this.userService.getBouquetSubscriptionExcelReport(this.role, this.username, this.fromdate, this.todate, this.productType, 2)
+      .subscribe(
+        (response: HttpResponse<any[]>) => { // Expect HttpResponse<any[]>
+          console.log(this.type);
+          if (response.status === 200) {
+            this.rowData = response.body;
+            console.log(this.rowData);
+            console.log(this.type);
+            const title = (this.type + ' REPORT').toUpperCase();
+            const sub = 'MSO ADDRESS:' + this.msodetails;
+            let areatitle = '';
+            let areasub = '';
+            let header: string[] = [];
+            const datas: Array<any> = [];
+            // if (this.type == 1) {
+            areatitle = 'A1:I2';
+            areasub = 'A3:I3';
+            // header = ['CHANNEL ID', 'CHANNEL NAME', 'RATE'];
+            header = ['SMARTCARD', 'BOXID', 'PRODUCT ID', 'PRODUCT NAME', 'LOG DATE', 'ACTIVATION DATE', 'EXPIRY DATE', 'ACTIVITY', 'STATUS'];
+
+            this.rowData.forEach((d: any) => {
+              const row = [d.smartcard, d.boxid,d.orderid, d.packagename, d.logdate, d.logdate , d.expirydated, d.activity, d.status];
+              console.log('type 1 and 4', row);
+              datas.push(row);
+            });
+
+            this.excelService.generateBouquetExcel(areatitle, header, datas, title, areasub, sub);
+
+          } else if (response.status === 204) {
+            this.swal.Success_204();
+            this.rowData = [];
+          }
+        },
+        (error) => {
+          this.handleApiError(error);
+        }
+      );
+  }
+  getBouquetAlacartePDF() {
+    console.log('type 1 and 4', this.type);
+    this.userService.getBouquetSubscriptionPdfReport(this.role, this.username, this.fromdate, this.todate, this.productType, 1)
       .subscribe((x: Blob) => {
         const blob = new Blob([x], { type: 'application/pdf' });
         const data = window.URL.createObjectURL(blob);

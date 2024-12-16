@@ -42,13 +42,6 @@
 
     </div>
 </div>
-
-<!-- <div *ngIf="type == 'addon_package'">
-    <div class="Head d-flex justify-content-between align-items-center mb-3">
-        <span class="span">ADDON PACKAGE MODIFICATION REPORT</span>
-        <i class="fa fa-close close-icon" (click)="onNoClick()"></i>
-    </div>
-</div> -->
 <div *ngIf="type == 'channel_history'">
     <div class="Head d-flex justify-content-between align-items-center mb-3">
         <span class="span">Channel Update History Log</span>
@@ -79,7 +72,7 @@
             </div>
             <div class="col-6 col-md-2 d-flex justify-content-center align-items-center tooltip-container"
                 style="cursor: pointer;margin-top: -4%;">
-                <div class="icon-container" (click)="getPDF()">
+                <div class="icon-container" (click)="getChannelPDF()">
                     <img src="/assets/images/icons/pdf.png" width="40px">
                     <div class="tooltip">Pdf</div>
                 </div>
@@ -119,40 +112,123 @@
         <span class="span">BOUQUET ALACARTE PACKAGE REPORT</span>
         <i class="fa fa-close close-icon" (click)="onNoClick()"></i>
     </div>
-    <div class="mb-3 display justify-content-start align-items-center ">
-        <div class="">
-            <div class="display">
-                <div class="mx-2 col-12 col-md-6 d-flex justify-content-center align-items-center ">
-                    <mat-form-field appearance="outline" style="width: 100%;">
-                        <mat-date-range-input [rangePicker]="picker">
-                            <input matStartDate matInput placeholder="Start date" (dateChange)="getFromDate($event)">
-                            <input matEndDate matInput placeholder="End date" (dateChange)="getToDate($event)">
-                        </mat-date-range-input>
-                        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-                        <mat-date-range-picker #picker></mat-date-range-picker>
-                    </mat-form-field>
-                </div>
+        <div class="container">
+        <div class="card d-block justify-content-center align-items-center mb-3"
+            style="border: 1px solid #055478;padding: 1rem;">
+            <div class="col-12 display align-items-center">
+                <div class="col-12 col-md-12  justify-content-center align-items-center  ">
 
-                <div class="input-box mx-2 col-12 col-md-5 d-flex justify-content-center align-items-center "
-                    style="margin-top: -4%;">
-                    <select placeholder="Select the Product Type" [(ngModel)]="productType">
-                        <option value="" disabled>Select a Product Type</option>
-                        <option *ngFor="let po of product" [value]="po.value">{{po.lable}}</option>
-                    </select>
-                </div>
-                <div class="mobile report">
-                    <div class="col-4 col-md-1 mx-2  d-flex justify-content-center align-items-center"
-                        style="cursor: pointer;">
-                        <div class="icon-container" (click)="getComboExcel()">
-                            <img src="/assets/images/icons/Excel.png" width="40px">
-                            <div class="tooltip">Excel</div>
+                    <div class="input_box display mb-3">
+                        <div class="col-12 col-md-6 sidename">
+                            <span for="">Select Date</span>
+                        </div>
+                        <div class="col-12 col-md-6">
+                            <mat-form-field appearance="outline" style="width: 100%;">
+                                <mat-date-range-input [rangePicker]="picker">
+                                    <input matStartDate matInput placeholder="Start date"
+                                        (dateChange)="getFromDate($event)">
+                                    <input matEndDate matInput placeholder="End date" (dateChange)="getToDate($event)">
+                                </mat-date-range-input>
+                                <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                                <mat-date-range-picker #picker></mat-date-range-picker>
+                            </mat-form-field>
                         </div>
                     </div>
-                    <div class="col-4 col-md-1 mx-2   d-flex justify-content-center align-items-center "
-                        style="cursor: pointer;">
-                        <div class="icon-container" (click)="getComboPDF()">
-                            <img src="/assets/images/icons/pdf.png" width="40px">
-                            <div class="tooltip">Pdf</div>
+                    <div class="input_box display mb-3">
+                        <div class="col-12 col-md-6 sidename">
+                            <span for="">Select Product</span>
+                        </div>
+                        <div class="col-12 col-md-6">
+                            <select placeholder="Select the Product Type" [(ngModel)]="productType">
+                                <option value="" disabled>Select a Product Type</option>
+                                <option *ngFor="let po of product" [value]="po.value">{{po.lable}}</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="input_box display1 mb-3">
+                        <div class="col-6 col-md-6 sidename">
+                            <span for="">Reports</span>
+                        </div>
+                        <div class="col-6 col-md-6 display1">
+                            <div class="icon-container" (click)="getBouquetAlacarteExcel()">
+                                <img src="/assets/images/icons/Excel.png" width="40px">
+                                <div class="tooltip">Excel</div>
+                            </div>
+                            <div class="icon-container" (click)="getBouquetAlacartePDF()">
+                                <img src="/assets/images/icons/pdf.png" width="40px">
+                                <div class="tooltip">Pdf</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div *ngIf="type == 'Synchronization'">
+    <div class="Head d-flex justify-content-between align-items-center mb-3">
+        <span class="span">Synchronization REPORT</span>
+        <i class="fa fa-close close-icon" (click)="onNoClick()"></i>
+    </div>
+    <div class="container">
+        <div class="card d-block justify-content-center align-items-center mb-3"
+            style="border: 1px solid #055478;padding: 1rem;">
+            <div class="col-12 display align-items-center">
+                <div class="col-12 col-md-12  justify-content-center align-items-center  ">
+                    <div class="input_box display mb-3">
+                        <div class="col-12 col-md-6 mb-2">
+                            <span for="">File Upload</span>
+                        </div>
+                        <div class="col-12 col-md-6">
+                            <label class="btn custom-btn mb-2">
+                                <i class="fa fa-plus"></i> Choose
+                                <input type="file" style="display: none;" (change)="handleFileInput($event)">
+                            </label>
+                            <span class="mx-3" style="color:#0a21d0">{{filePath }} </span>
+
+                        </div>
+                    </div>
+                    <div class="input_box display mb-3">
+                        <div class="col-12 col-md-6 sidename">
+                            <span for="">Select Date</span>
+                        </div>
+                        <div class="col-12 col-md-6">
+                            <mat-form-field appearance="outline" style="width: 100%;">
+                                <mat-date-range-input [rangePicker]="picker">
+                                    <input matStartDate matInput placeholder="Start date"
+                                        (dateChange)="getFromDate($event)">
+                                    <input matEndDate matInput placeholder="End date" (dateChange)="getToDate($event)">
+                                </mat-date-range-input>
+                                <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                                <mat-date-range-picker #picker></mat-date-range-picker>
+                            </mat-form-field>
+                        </div>
+                    </div>
+                    <div class="input_box display mb-3">
+                        <div class="col-12 col-md-6 sidename">
+                            <span for="">Select Product</span>
+                        </div>
+                        <div class="col-12 col-md-6">
+                            <select placeholder="Select the Product Type" [(ngModel)]="productType">
+                                <option value="" disabled>Select a Product Type</option>
+                                <option *ngFor="let po of product" [value]="po.value">{{po.lable}}</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="input_box display1 mb-3">
+                        <div class="col-6 col-md-6 sidename">
+                            <span for="">Reports</span>
+                        </div>
+                        <div class="col-6 col-md-6 display1">
+                            <div class="export-icon col-6 col-md-3 mx-2" (click)="getExcel()">
+                                <img src="/assets/images/icons/Excel.png" alt="Excel Icon" width="40px">
+                                <div class="tooltip">Excel</div>
+                            </div>
+                            <div class="export-icon col-6 col-md-3" (click)="getPDF()">
+                                <img src="/assets/images/icons/pdf.png" alt="PDF Icon" width="40px">
+                                <div class="tooltip">Pdf</div>
+                            </div>
                         </div>
                     </div>
                 </div>

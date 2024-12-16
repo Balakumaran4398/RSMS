@@ -1331,12 +1331,12 @@ export class BaseService {
   }
   // =======================================Operator Dashboard Reports=========================================================
 
-  getOperatorDashboardExcelReport(role: any, username: any, type: any, reporttype: any, operatorid: any, month: any, year: any, fromdate: any, todate: any): Observable<HttpResponse<any[]>> {
+  getOperatorDashboardExcelReport(role: any, username: any, type: any, reporttype: any, operatorid: any, yearmonth: any, fromdate: any, todate: any): Observable<HttpResponse<any[]>> {
     return this.http.get<any[]>(
-      BASE_URL + "/report/GetOperatorDashboardPdfReport?role=" + role + "&username=" + username + "&type=" + type + "&reporttype=" + reporttype + "&operatorid=" + operatorid + '&month=' + month + "&year=" + year + '&fromdate=' + fromdate + '&todate=' + todate, { observe: 'response' });
+      BASE_URL + "/report/GetOperatorDashboardPdfReport?role=" + role + "&username=" + username + "&type=" + type + "&reporttype=" + reporttype + "&operatorid=" + operatorid + '&yearmonth=' + yearmonth + '&fromdate=' + fromdate + '&todate=' + todate, { observe: 'response' });
   }
-  getOperatorDashboardPDFReport(role: any, username: any, type: any, reporttype: any, operatorid: any, month: any, year: any, fromdate: any, todate: any): Observable<Blob> {
-    return this.http.get(BASE_URL + "/report/GetOperatorDashboardPdfReport?role=" + role + "&username=" + username + "&type=" + type + "&reporttype=" + reporttype + "&operatorid=" + operatorid + '&month=' + month + "&year=" + year + '&fromdate=' + fromdate + '&todate=' + todate, { responseType: 'blob' });
+  getOperatorDashboardPDFReport(role: any, username: any, type: any, reporttype: any, operatorid: any, yearmonth: any, fromdate: any, todate: any): Observable<Blob> {
+    return this.http.get(BASE_URL + "/report/GetOperatorDashboardPdfReport?role=" + role + "&username=" + username + "&type=" + type + "&reporttype=" + reporttype + "&operatorid=" + operatorid + '&yearmonth=' + yearmonth + '&fromdate=' + fromdate + '&todate=' + todate, { responseType: 'blob' });
   }
   // ==================================================Trai Reports================================================================================
   // -------------------------------------------------Package Based & Addon Package Reports------------------------------------------------------------
@@ -1359,5 +1359,36 @@ export class BaseService {
   }
   getComboModificationPdfReport(role: any, username: any, reporttype: any): Observable<Blob> {
     return this.http.get(BASE_URL + "/report/getComboModificationPdfReport?role=" + role + "&username=" + username + "&reporttype=" + reporttype, { responseType: 'blob' });
+  }
+  // ------------------------------------------------------SUBSCRIPTION BASED REPORTS-----------------------------------------------------------------------------------
+  getBouquetSubscriptionExcelReport(role: any, username: any, fromdate: any, todate: any, producttype: any, reporttype: any): Observable<HttpResponse<any[]>> {
+    return this.http.get<any[]>(BASE_URL + "/report/getProductwiseHistoricalPackAddonAndAlacarteReport?role=" + role + "&username=" + username + "&fromdate=" + fromdate + "&todate=" + todate + "&producttype=" + producttype + "&reporttype=" + reporttype, { observe: 'response' });
+  }
+  getBouquetSubscriptionPdfReport(role: any, username: any, fromdate: any, todate: any, producttype: any, reporttype: any): Observable<Blob> {
+    return this.http.get(BASE_URL + "/report/getProductwiseHistoricalPackAddonAndAlacarteReport?role=" + role + "&username=" + username + "&fromdate=" + fromdate + "&todate=" + todate + "&producttype=" + producttype + "&reporttype=" + reporttype, { responseType: 'blob' });
+  }
+
+  // --------------------------Weekly-------------------
+  getWeeklyActiveOrDeactiveSubscriptionExcelReport(role: any, username: any, month: any, year: any, datetype: any, type: any, reporttype: any): Observable<HttpResponse<any[]>> {
+    return this.http.get<any[]>(BASE_URL + "/report/getWeeklyActiveOrDeactiveSubscriptionReport?role=" + role + "&username=" + username + "&month=" + month + "&year=" + year + "&datetype=" + datetype + "&type=" + type + "&reporttype=" + reporttype, { observe: 'response' });
+  }
+  getWeeklyActiveOrDeactiveSubscriptionPDFReport(role: any, username: any, month: any, year: any, datetype: any, type: any, reporttype: any): Observable<Blob> {
+    return this.http.get(BASE_URL + "/report/getWeeklyActiveOrDeactiveSubscriptionReport?role=" + role + "&username=" + username + "&month=" + month + "&year=" + year + "&datetype=" + datetype + "&type=" + type + "&reporttype=" + reporttype, { responseType: 'blob' });
+  }
+
+  // ----------------------------------Base package -------------------------------
+
+  getasOnDateBaseActiveOrDeactiveExcelReport(role: any, username: any, operatorid: any, date: any,  type: any, reporttype: any): Observable<HttpResponse<any[]>> {
+    return this.http.get<any[]>(BASE_URL + "/report/asOnDateBaseActiveOrDeactiveSubscriptionReport?role=" + role + "&username=" + username + "&operatorid=" + operatorid + "&date=" + date + "&type=" + type + "&reporttype=" + reporttype, { observe: 'response' });
+  }
+  getasOnDateBaseActiveOrDeactivePDFReport(role: any, username: any,  operatorid: any, date: any, type: any, reporttype: any): Observable<Blob> {
+    return this.http.get(BASE_URL + "/report/asOnDateBaseActiveOrDeactiveSubscriptionReport?role=" + role + "&username=" + username + "&operatorid=" + operatorid + "&date=" + date + "&type=" + type + "&reporttype=" + reporttype, { responseType: 'blob' });
+  }
+  // --------------------------------------Addon Package-----------------------------
+  getasOnDateAddonActiveOrDeactiveExcelReport(role: any, username: any, operatorid: any, date: any,  type: any, reporttype: any): Observable<HttpResponse<any[]>> {
+    return this.http.get<any[]>(BASE_URL + "/report/asOnDateAddonActiveOrDeactiveSubscriptionReport?role=" + role + "&username=" + username + "&operatorid=" + operatorid + "&date=" + date + "&type=" + type + "&reporttype=" + reporttype, { observe: 'response' });
+  }
+  getasOnDateAddonActiveOrDeactivePDFReport(role: any, username: any,  operatorid: any, date: any, type: any, reporttype: any): Observable<Blob> {
+    return this.http.get(BASE_URL + "/report/asOnDateAddonActiveOrDeactiveSubscriptionReport?role=" + role + "&username=" + username + "&operatorid=" + operatorid + "&date=" + date + "&type=" + type + "&reporttype=" + reporttype, { responseType: 'blob' });
   }
 }

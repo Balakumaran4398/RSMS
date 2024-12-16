@@ -300,8 +300,10 @@ export class OperatorDetailsComponent implements OnInit {
      
     });
   }
-  opencancelsubDialog(type: string): void {
-    let dialogData = { type: type, detailsList: this.operator_details, };
+  opencancelsubDialog(type: string,operatorid:any): void {
+    const detailsList = this.operator_details.find((op: any) => op.operatorid === operatorid);
+
+    let dialogData = { type: type, detailsList: this.operator_details,operator: detailsList.operatorid,operatorname: detailsList.operatorname, };
 
     const dialogRef = this.dialog.open(OperatorcancelsubreportComponent, {
       width: '500px',

@@ -1,9 +1,11 @@
+import { HttpResponse } from '@angular/common/http';
 import { ChangeDetectorRef, Component, Inject, OnInit } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { BaseService } from 'src/app/_core/service/base.service';
 import { ExcelService } from 'src/app/_core/service/excel.service';
 import { StorageService } from 'src/app/_core/service/storage.service';
 import { SwalService } from 'src/app/_core/service/swal.service';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-subscription-based',
@@ -34,26 +36,87 @@ export class SubscriptionBasedComponent implements OnInit {
     { lable: "Alacarte", value: 3 },
     { lable: "All", value: 4 },
   ];
+  date: any;
+  isActive: boolean = false;
 
-  
+  months: any[] = [];
+  years: any[] = [];
+  Date: any[] = [];
+
+  selectedMonth: any = 0;
+  selectedYear: any = 0;
+  selectedweek: any = 0;
+  isDateDisabled: boolean = true;
+  cur_date: any;
   constructor(public dialogRef: MatDialogRef<SubscriptionBasedComponent>, private swal: SwalService, @Inject(MAT_DIALOG_DATA) public data: any, private excelService: ExcelService, public userService: BaseService, private cdr: ChangeDetectorRef, public storageservice: StorageService,) {
     this.username = storageservice.getUsername();
     this.role = storageservice.getUserRole();
-    console.log(data);
     this.type = data.type
-    // this.setType(this.type);
-    // if (this.type === 'package') {
-    //   this.packageType = 1;
-    // } else if (this.type === 'addon_package') {
-    //   this.packageType = 2;
-    // } else {
-    //   this.packageType = 0;
-    // }
     this.getHeaderTitle(this.type);
-
   }
   ngOnInit(): void {
     this.loadOperators();
+    this.generateMonths();
+    this.generateYears();
+  }
+  formatDate(date: Date): string {
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, '0'); // Months are 0-indexed
+    const day = String(date.getDate()).padStart(2, '0');
+    return `${year}-${month}-${day}`;
+  }
+
+  logValues(): void {
+    const formattedDate = this.date ? this.formatDate(this.date) : 'No date selected';
+    console.log('Selected Date:', formattedDate);
+    console.log('Is Active:', this.isActive);
+    this.cur_date= formattedDate;
+    console.log(this.cur_date);
+    
+
+  }
+  generateMonths() {
+    this.months = [
+      { value: '01', name: 'January' },
+      { value: '02', name: 'February' },
+      { value: '03', name: 'March' },
+      { value: '04', name: 'April' },
+      { value: '05', name: 'May' },
+      { value: '06', name: 'June' },
+      { value: '07', name: 'July' },
+      { value: '08', name: 'August' },
+      { value: '09', name: 'September' },
+      { value: '10', name: 'October' },
+      { value: '11', name: 'November' },
+      { value: '12', name: 'December' }
+    ];
+  }
+  onMonthChange() {
+    if (this.selectedMonth !== '0') {
+      const selectedMonthName = this.months.find(month => month.value === this.selectedMonth)?.name || '';
+      this.isDateDisabled = false;
+      this.generateDates(selectedMonthName);
+    } else {
+      this.isDateDisabled = true;
+      this.Date = [];
+    }
+  }
+  generateDates(selectedMonthName: string) {
+    this.Date = [
+      { value: '1', name: '07 ' + selectedMonthName },
+      { value: '2', name: '14 ' + selectedMonthName },
+      { value: '3', name: '21 ' + selectedMonthName },
+      { value: '4', name: 'All' }
+    ];
+  }
+
+  generateYears() {
+    const startYear = 2012;
+    const currentYear = new Date().getFullYear();
+    this.years = [];
+    for (let year = currentYear; year >= startYear; year--) {
+      this.years.push(year);
+    }
   }
   getHeaderTitle(type: string): string {
     switch (type) {
@@ -95,6 +158,8 @@ export class SubscriptionBasedComponent implements OnInit {
     console.log(operator);
     this.selectedOperator = operator;
     this.operatorid = operator.value;
+    console.log(this.operatorid);
+
     // if (operator.value === 0) {
     //   this.operatorid = 0;
     //   this.selectedOperator = { name: 'ALL Operator', value: 0 };
@@ -115,10 +180,196 @@ export class SubscriptionBasedComponent implements OnInit {
   displayOperator(operator: any): string {
     return operator ? operator.name : '';
   }
-  getExcel() {
+  getWeeklySubscriptionExcel() {
+    this.userService.getWeeklyActiveOrDeactiveSubscriptionExcelReport(this.role, this.username, this.selectedMonth, this.selectedYear, this.selectedweek, this.isActive, 2)
+      .subscribe(
+        (response: HttpResponse<any[]>) => { // Expect HttpResponse<any[]>
+          console.log(this.type);
+          if (response.status === 200) {
+            this.rowData = response.body;
+            console.log(this.type);
+            const title = (this.type + ' REPORT').toUpperCase();
+            const sub = 'MSO ADDRESS:' + this.msodetails;
+            let areatitle = '';
+            let areasub = '';
+            let header: string[] = [];
+            const datas: Array<any> = [];
+            // if (this.type == 1) {
+            areatitle = 'A1:F2';
+            areasub = 'A3:F3';
+            header = ['PACKAGE NAME PREVIOUS', 'PACKAGE NAME CURRENR', 'PACKAGE ID', 'PRODUCT ID', 'OLD CHANNEL LIST', 'NEW CHANNEL LIST', 'ADDED CHANNEL LIST', 'REMOVED CHANNEL LIST', 'UPDATED DATE', 'COUNT'];
 
+            this.rowData.forEach((d: any) => {
+              const row = [d.packagenamepre, d.packagenamecur, d.packageid, d.casproductid, d.channelnamepre, d.chanenlnamecur, d.addedchannels, d.removedchannels, d.updateddate, d.count];
+              // console.log('type 1 and 4', row);
+              datas.push(row);
+            });
+
+            this.excelService.generateTraiPackageBaseExcel(areatitle, header, datas, title, areasub, sub);
+
+          } else if (response.status === 204) {
+            this.swal.Success_204();
+            this.rowData = [];
+          }
+        },
+        (error) => {
+          this.handleApiError(error);
+        }
+      );
   }
-  getPDF() {
+  getWeeklySubscriptionPDF() {
+    this.userService.getWeeklyActiveOrDeactiveSubscriptionPDFReport(this.role, this.username, this.selectedMonth, this.selectedYear, this.selectedweek, this.isActive, 1)
+      .subscribe((x: Blob) => {
+        const blob = new Blob([x], { type: 'application/pdf' });
+        const data = window.URL.createObjectURL(blob);
+        const link = document.createElement('a');
+        link.href = data;
+        link.download = (this.type + ".pdf").toUpperCase();
+        link.dispatchEvent(new MouseEvent('click', { bubbles: true, cancelable: true, view: window }));
+        setTimeout(() => {
+          window.URL.revokeObjectURL(data);
+          link.remove();
+        }, 100);
+      },
+        (error: any) => {
+          Swal.fire({
+            title: 'Error!',
+            text: error?.error?.message || 'There was an issue generating the PDF CAS form report.',
+            icon: 'error',
+            confirmButtonText: 'Ok'
+          });
+        });
+  }
+  // ============================================================weekly Subscription above=========================
 
+  getBaseSubscriptionExcel() {
+    this.userService.getasOnDateBaseActiveOrDeactiveExcelReport(this.role, this.username, this.operatorid, this.cur_date, this.isActive, 2)
+      .subscribe(
+        (response: HttpResponse<any[]>) => { // Expect HttpResponse<any[]>
+          console.log(this.type);
+          if (response.status === 200) {
+            this.rowData = response.body;
+            console.log(this.type);
+            const title = (this.type + ' REPORT').toUpperCase();
+            const sub = 'MSO ADDRESS:' + this.msodetails;
+            let areatitle = '';
+            let areasub = '';
+            let header: string[] = [];
+            const datas: Array<any> = [];
+            // if (this.type == 1) {
+            areatitle = 'A1:F2';
+            areasub = 'A3:F3';
+            header = ['PACKAGE NAME PREVIOUS', 'PACKAGE NAME CURRENR', 'PACKAGE ID', 'PRODUCT ID', 'OLD CHANNEL LIST', 'NEW CHANNEL LIST', 'ADDED CHANNEL LIST', 'REMOVED CHANNEL LIST', 'UPDATED DATE', 'COUNT'];
+
+            this.rowData.forEach((d: any) => {
+              const row = [d.packagenamepre, d.packagenamecur, d.packageid, d.casproductid, d.channelnamepre, d.chanenlnamecur, d.addedchannels, d.removedchannels, d.updateddate, d.count];
+              // console.log('type 1 and 4', row);
+              datas.push(row);
+            });
+
+            this.excelService.generateTraiPackageBaseExcel(areatitle, header, datas, title, areasub, sub);
+
+          } else if (response.status === 204) {
+            this.swal.Success_204();
+            this.rowData = [];
+          }
+        },
+        (error) => {
+          this.handleApiError(error);
+        }
+      );
+  }
+  getBaseSubscriptionPDF() {
+    this.userService.getasOnDateBaseActiveOrDeactivePDFReport(this.role, this.username, this.operatorid, this.cur_date, this.isActive, 1)
+      .subscribe((x: Blob) => {
+        const blob = new Blob([x], { type: 'application/pdf' });
+        const data = window.URL.createObjectURL(blob);
+        const link = document.createElement('a');
+        link.href = data;
+        link.download = (this.type + ".pdf").toUpperCase();
+        link.dispatchEvent(new MouseEvent('click', { bubbles: true, cancelable: true, view: window }));
+        setTimeout(() => {
+          window.URL.revokeObjectURL(data);
+          link.remove();
+        }, 100);
+      },
+        (error: any) => {
+          Swal.fire({
+            title: 'Error!',
+            text: error?.error?.message || 'There was an issue generating the PDF CAS form report.',
+            icon: 'error',
+            confirmButtonText: 'Ok'
+          });
+        });
+  }
+  // ====================================================================Base Subscription Above========================
+  getAddonSubscriptionExcel() {
+    this.userService.getasOnDateAddonActiveOrDeactiveExcelReport(this.role, this.username, this.operatorid, this.cur_date, this.isActive, 2)
+      .subscribe(
+        (response: HttpResponse<any[]>) => { // Expect HttpResponse<any[]>
+          console.log(this.type);
+          if (response.status === 200) {
+            this.rowData = response.body;
+            console.log(this.type);
+            const title = (this.type + ' REPORT').toUpperCase();
+            const sub = 'MSO ADDRESS:' + this.msodetails;
+            let areatitle = '';
+            let areasub = '';
+            let header: string[] = [];
+            const datas: Array<any> = [];
+            // if (this.type == 1) {
+            areatitle = 'A1:F2';
+            areasub = 'A3:F3';
+            header = ['PACKAGE NAME PREVIOUS', 'PACKAGE NAME CURRENR', 'PACKAGE ID', 'PRODUCT ID', 'OLD CHANNEL LIST', 'NEW CHANNEL LIST', 'ADDED CHANNEL LIST', 'REMOVED CHANNEL LIST', 'UPDATED DATE', 'COUNT'];
+
+            this.rowData.forEach((d: any) => {
+              const row = [d.packagenamepre, d.packagenamecur, d.packageid, d.casproductid, d.channelnamepre, d.chanenlnamecur, d.addedchannels, d.removedchannels, d.updateddate, d.count];
+              // console.log('type 1 and 4', row);
+              datas.push(row);
+            });
+
+            this.excelService.generateTraiPackageBaseExcel(areatitle, header, datas, title, areasub, sub);
+
+          } else if (response.status === 204) {
+            this.swal.Success_204();
+            this.rowData = [];
+          }
+        },
+        (error) => {
+          this.handleApiError(error);
+        }
+      );
+  }
+  getAddonSubscriptionPDF() {
+    this.userService.getasOnDateAddonActiveOrDeactivePDFReport(this.role, this.username, this.operatorid, this.cur_date, this.isActive, 1)
+      .subscribe((x: Blob) => {
+        const blob = new Blob([x], { type: 'application/pdf' });
+        const data = window.URL.createObjectURL(blob);
+        const link = document.createElement('a');
+        link.href = data;
+        link.download = (this.type + ".pdf").toUpperCase();
+        link.dispatchEvent(new MouseEvent('click', { bubbles: true, cancelable: true, view: window }));
+        setTimeout(() => {
+          window.URL.revokeObjectURL(data);
+          link.remove();
+        }, 100);
+      },
+        (error: any) => {
+          Swal.fire({
+            title: 'Error!',
+            text: error?.error?.message || 'There was an issue generating the PDF CAS form report.',
+            icon: 'error',
+            confirmButtonText: 'Ok'
+          });
+        });
+  }
+  handleApiError(error: any) {
+    if (error.status === 400) {
+      this.swal.Error_400();
+    } else if (error.status === 500) {
+      this.swal.Error_500();
+    } else {
+      Swal.fire('Error', 'Something went wrong. Please try again.', 'error');
+    }
   }
 }

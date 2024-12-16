@@ -36,8 +36,7 @@
     gap: 5px;
 }
 
-select
- {
+select {
     width: 100%;
     height: 53px;
     border-radius: 4px;
@@ -51,6 +50,22 @@ select
 // .report {
 //     margin-top: -4%;
 // }
+.input_box label {
+    font-weight: 500;
+    margin-bottom: 5px;
+    display: inline !important;
+    font-size: 16px;
+    color: #243359;
+}
+
+.display1 {
+    display: flex;
+}
+
+.sidename {
+    display: flex;
+    align-items: center;
+}
 
 @media screen and (max-width:560px) {
     .display {
@@ -62,7 +77,16 @@ select
         display: flex;
     }
 
-    .report img{
+    .mobile1 {
+        display: block;
+    }
+
+    .display1 {
+        display: flex;
+        align-items: baseline;
+    }
+
+    .report img {
         margin-bottom: 5% !important;
     }
 }
@@ -73,11 +97,50 @@ select
         display: block;
     }
 
+    .display1 {
+        display: flex;
+        align-items: baseline;
+    }
+
     .mobile {
         display: flex;
+    }
+
+    .mobile1 {
+        display: block;
     }
 
     .report img {
         margin-bottom: 5% !important;
     }
+}
+
+
+// ===========================================================button===========================================================================
+
+.custom-btn {
+    background-color: #bab8ad;
+    color: #000;
+    border: 1px solid #2b2a2a;
+    border-radius: 5px;
+    // padding: 10px 20px; 
+    font-size: 16px;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+}
+
+.custom-btn i {
+    margin-right: 8px;
+}
+
+.custom-btn:hover {
+    background-color: #5bc49b;
+    color: #fff;
+    border-color: #1a4091;
+}
+
+.custom-btn:active {
+    background-color: #1a8879;
+    color: #079ea3;
 }

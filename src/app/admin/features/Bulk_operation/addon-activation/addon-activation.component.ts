@@ -17,10 +17,11 @@ import Swal from 'sweetalert2';
 export class AddonActivationComponent {
   file: File | null = null;
   filePath: string = '';
+  isFileSelected: boolean = false;
   form: FormGroup;
   isCheckboxChecked: boolean = false;
   iscollected: boolean = false;
-  isFileSelected: boolean = false;
+
   submitted: boolean = false;
   username: any;
   role: any;

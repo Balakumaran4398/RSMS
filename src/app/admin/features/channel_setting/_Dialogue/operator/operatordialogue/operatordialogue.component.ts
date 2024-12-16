@@ -61,7 +61,6 @@ export class OperatordialogueComponent implements OnInit {
     ctrlValue.year(normalizedYear.year());
     this.date.setValue(ctrlValue);
     console.log(this.date);
-
   }
 
   chosenMonthHandler(normalizedMonth: Moment, datepicker: MatDatepicker<Moment>) {
@@ -71,14 +70,19 @@ export class OperatordialogueComponent implements OnInit {
     this.date.setValue(ctrlValue);
     datepicker.close();
     this.passSelectedDate(ctrlValue);
+    console.log(ctrlValue);
 
+  }
+  getMonthandyear(){
+    console.log(this.date);
+    
   }
   passSelectedDate(selectedDate: moment.Moment) {
     console.log('Selected Date:', selectedDate.format('YYYY-MM'));
     // Add your logic to handle the selected date here
     this.monthYear = selectedDate.format('YYYY-MM');
-    console.log('MonthYear',this.monthYear);
-    
+    console.log('MonthYear', this.monthYear);
+
   }
   pincode: any;
   areaname: any;
@@ -137,11 +141,23 @@ export class OperatordialogueComponent implements OnInit {
       case 'block':
         this.type = 5;
         break;
-      case 'box in hand':
+      case 'boxinhand':
         this.type = 6;
         break;
-      case 'total box':
+      case 'totalbox':
         this.type = 7;
+        break;
+      case 'recharge':
+        this.type = 8;
+        break;
+      case 'retailer':
+        this.type = 9;
+        break;
+      case 'cancel_Subscription':
+        this.type = 10;
+        break;
+      case 'productwise':
+        this.type = 11;
         break;
       default:
         this.type = 0;
@@ -191,92 +207,8 @@ export class OperatordialogueComponent implements OnInit {
       event.preventDefault();
     }
   }
-  // getExcel() {   
-  //   this.userService.getOperatorDashboardExcelReport(this.role,this.username,  this.type, 2, this.operatorid)
-  //     .subscribe(
-  //       (response: HttpResponse<any[]>) => { // Expect HttpResponse<any[]>
-  //         console.log(this.type);
-  //         if (response.status === 200) {
-  //           this.rowData = response.body;
-  //           console.log(this.type);
-  //           if (this.type == 1 || this.type == 4) {
-  //             console.log(this.type);
-  //             const areatitle = 'A1:K2';
-  //             const areasub = 'A3:K3';
-  //             const title = (this.operatorname + ' - ' + this.OType + ' REPORT').toUpperCase();
-  //             console.log(title);
-
-  //             const sub = 'MSO ADDRESS:' + this.msodetails;
-  //             const header = ['CUSTOMER ID', 'SUBSCRIBER NAME', 'SUBSCRIBER LAST NAME', 'ADDRESS', 'AREA NAME', 'MOBILE NO', 'SMARTCARD', 'BOXID', 'PACKAGE STATUS', 'ACTIVATION DATE', 'EXPIRY DATE'];
-  //             const data = this.rowData;
-  //             const datas: Array<any> = [];
-  //             data.forEach((d: any) => {
-  //               const row = [d.subid, d.customername, d.customernamelast, d.address, d.areaname, d.mobileno, d.smartcard, d.boxid,d.statusdisplay, d.activationdate, d.expirydate];
-  //               console.log('type 1 and 2', row);
-  //               datas.push(row);
-  //             });
-  //             // this.excelService.generateOperatorDashboardExcel(areatitle, header, datas, title, areasub, sub);
-  //           } else if (this.type == 2 || this.type == 3 || this.type == 6) {
-  //             console.log(this.type);
-  //             const areatitle = 'A1:G2';
-  //             const areasub = 'A3:G3';
-  //             const title = (this.operatorname + ' - ' + this.OType + ' REPORT').toUpperCase();
-  //             console.log(title);
-  //             const sub = 'MSO ADDRESS:' + this.msodetails;
-  //             const header = ['CUSTOMER ID', 'SUBSCRIBER NAME', 'SUBSCRIBER LAST NAME', 'ADDRESS', 'MOBILE NO', 'SMARTCARD', 'BOXID', 'PACKAGE NAME', 'PACKAGE STATUS', 'EXPIRY DATE'];
-  //             const data = this.rowData;
-  //             const datas: Array<any> = [];
-  //             data.forEach((d: any) => {
-  //               const row = [d.subid, d.customername, d.customernamelast, d.address,  d.mobileno, d.smartcard, d.boxid,d.d.statusdisplay,  d.expirydate];
-  //               console.log('type 3', row);
-  //               datas.push(row);
-  //             });
-  //             // this.excelService.generateOperatorDashboardExcel(areatitle, header, datas, title, areasub, sub);
-  //           } else if (this.type == 4 || this.type == 5) {
-  //             const areatitle = 'A1:J2';
-  //             const areasub = 'A3:J3';
-  //             const title = (this.operatorname + ' - ' + this.OType + ' REPORT').toUpperCase();
-  //             console.log(title);
-  //             const sub = 'MSO ADDRESS:' + this.msodetails;
-  //             const header = ['SUB ID', 'OPERATOR NAME', 'CUSTOMER NAME', 'SMARTCARD', 'BOX ID', 'CAS NAME', 'PRODUCT NAME', 'PRODUCT ID', 'CREATION DATE', 'EXPIRY DATE'];
-  //             const data = this.rowData;
-  //             const datas: Array<any> = [];
-  //             data.forEach((d: any) => {
-  //               const row = [d.subid,d.operatorname, d.customername, d.smartcard, d.boxid,d.casname,d.statusdisplay,  d.expirydate];
-  //               console.log('type 4 and 5', row);
-  //               datas.push(row);
-  //             });
-  //             // this.excelService.generateOperatorDashboardExcel(areatitle, header, datas, title, areasub, sub);
-  //           } else if (this.type == 6) {
-  //             const areatitle = 'A1:J2';
-  //             const areasub = 'A3:J3';
-  //             const title = (this.operatorname + ' - ' + this.OType + ' REPORT').toUpperCase();
-  //             console.log(title);
-  //             const sub = 'MSO ADDRESS:' + this.msodetails;
-  //             const header = ['SUB ID', 'OPERATOR NAME', 'CUSTOMER NAME', 'MOBILE NUMBER', 'SMARTCARD', 'BOX ID', 'CAS NAME', 'PACKAGE', 'BLOCKED DATE', 'EXPIRY DATE'];
-  //             const data = this.rowData;
-  //             const datas: Array<any> = [];
-  //             data.forEach((d: any) => {
-  //               const row = [d.subid, d.operatorname, d.customername, d.mobileno, d.smartcard, d.boxid, d.casname, d.productname, d.blockeddate, d.expirydate];
-  //               console.log('type 6', row);
-  //               datas.push(row);
-  //             });
-  //             // this.excelService.generateOperatorDashboardExcel(areatitle, header, datas, title, areasub, sub);
-  //           }
-  //         } else if (response.status === 204) {
-  //           this.swal.Success_204();
-  //           this.rowData = [];
-  //         }
-  //       },
-  //       (error) => {
-  //         this.handleApiError(error);
-  //       }
-  //     );
-  // }
-
-
   getExcel() {
-    this.userService.getOperatorDashboardExcelReport(this.role, this.username, this.type, 2, this.operatorid, 0, 0, 0, 0)
+    this.userService.getOperatorDashboardExcelReport(this.role, this.username, this.type, 2, this.operatorid, 0, 0, 0)
       .subscribe(
         (response: HttpResponse<any[]>) => { // Expect HttpResponse<any[]>
           console.log(this.type);
@@ -299,7 +231,7 @@ export class OperatordialogueComponent implements OnInit {
                 console.log('type 1 and 4', row);
                 datas.push(row);
               });
-
+              this.excelService.generateOperatorDashboardExcel(areatitle, header, datas, title, areasub, sub);
             } else if (this.type == 2 || this.type == 3 || this.type == 6) {
               areatitle = 'A1:I2';
               areasub = 'A3:I3';
@@ -310,6 +242,7 @@ export class OperatordialogueComponent implements OnInit {
                 console.log('type 2, 3, and 6', row);
                 datas.push(row);
               });
+              this.excelService.generateOperatorDashboardExcel(areatitle, header, datas, title, areasub, sub);
 
             } else if (this.type == 4 || this.type == 5) {
               areatitle = 'A1:J2';
@@ -321,10 +254,24 @@ export class OperatordialogueComponent implements OnInit {
                 console.log('type 4 and 5', row);
                 datas.push(row);
               });
+              this.excelService.generateOperatorDashboardExcel(areatitle, header, datas, title, areasub, sub);
+            }
+            else if (this.type == 9) {
+              areatitle = 'A1:F2';
+              areasub = 'A3:F3';
+              header = ['BALANCE', 'MOBILE NUMBER', 'RETAILER ID', 'RETAILER NAME', 'STATUS ', 'USERNAME'];
+
+              this.rowData.forEach((d: any) => {
+                const row = [d.balance, d.mobileno, d.retailerid, d.retailername, d.statusdisplay, d.username];
+                console.log('type 4 and 5', row);
+                datas.push(row);
+              });
+              this.excelService.generateRetailerExcel(areatitle, header, datas, title, areasub, sub);
+
             }
 
             // Uncomment below to generate the Excel report after integrating the Excel service
-            this.excelService.generateOperatorDashboardExcel(areatitle, header, datas, title, areasub, sub);
+
 
           } else if (response.status === 204) {
             this.swal.Success_204();
@@ -337,10 +284,13 @@ export class OperatordialogueComponent implements OnInit {
       );
   }
 
+  getRetailerExcel() {
+
+  }
   getPDF() {
     console.log(this.operatorid);
     console.log(this.type);
-    this.userService.getOperatorDashboardPDFReport(this.role, this.username, this.type, 1, this.operatorid, 0, 0, 0, 0)
+    this.userService.getOperatorDashboardPDFReport(this.role, this.username, this.type, 1, this.operatorid, 0, 0, 0)
       .subscribe((x: Blob) => {
         const blob = new Blob([x], { type: 'application/pdf' });
         const data = window.URL.createObjectURL(blob);
@@ -364,7 +314,7 @@ export class OperatordialogueComponent implements OnInit {
   }
 
   getRechargePDF() {
-    this.userService.getOperatorDashboardPDFReport(this.role, this.username, 8, 1, this.operatorid, this.monthYear, 0, 0, 0)
+    this.userService.getOperatorDashboardPDFReport(this.role, this.username, 8, 1, this.operatorid, this.monthYear,  0, 0)
       .subscribe((x: Blob) => {
         const blob = new Blob([x], { type: 'application/pdf' });
         const data = window.URL.createObjectURL(blob);

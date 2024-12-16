@@ -5,7 +5,6 @@
                 <mat-label>Select Operator</mat-label>
                 <input type="text" matInput [matAutocomplete]="auto" (input)="filterOperators($event)"
                     [matAutocompleteDisabled]="false" [value]="selectedOperator?.name">
-
                 <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayOperator">
                     <mat-option (click)="onoperatorchange({ name: 'ALL Operator', value: 0 })">ALL Operator</mat-option>
                     <mat-option *ngFor="let operator of filteredOperators" [value]="operator.name"
@@ -119,7 +118,8 @@
 
 
                     <br>
-
+                    
+               
                     <div class="report d-flex justify-content-center">
                         <div class="file-container">
                             <div class="files mx-2">
@@ -134,31 +134,34 @@
                             </div>
 
 
-                            <div class="files tooltip-container mx-2" (click)="openDialog('recharge',operator.operatorid)">
+                            <div class="files tooltip-container mx-2"
+                                (click)="openDialog('recharge',operator.operatorid)">
                                 <div class="files tooltip-container ">
                                     <i class="fa-solid fa-book" style="font-size:20px;color:var(--primary-color)"></i>
                                     <span class="tooltip">LCO RECHARGE REPORT
                                     </span>
                                 </div>
                             </div>
-                            <div class="files tooltip-container mx-2" (click)="openDialog('retailer',operator.operatorid)">
+                            <div class="files tooltip-container mx-2"
+                                (click)="openDialog('retailer',operator.operatorid)">
                                 <div class="files tooltip-container ">
                                     <i class="fa-solid fa-person-chalkboard"
                                         style="font-size:20px;color:var(--primary-color)"></i>
                                     <span class="tooltip">LCO WISE RETAILER REPORT </span>
                                 </div>
                             </div>
-                            <div class="files tooltip-container mx-2" (click)="openDialog('areawise',operator.operatorid)">
+                            <!-- <div class="files tooltip-container mx-2"
+                                (click)="openDialog('areawise',operator.operatorid)">
                                 <div class="files tooltip-container ">
                                     <i class="fa fa-calculator" style="font-size:20px;color:var(--primary-color)"
                                         aria-hidden="true"></i>
                                     <span class="tooltip">AREAWISE CONECTION COUNT REPORT
                                     </span>
                                 </div>
-                            </div>
+                            </div> -->
 
                             <div class="files tooltip-container mx-2"
-                                (click)="opencancelsubDialog('cancel_Subscription')">
+                                (click)="opencancelsubDialog('cancel_Subscription',operator.operatorid)">
                                 <div class="files tooltip-container ">
                                     <i class="fa-solid fa-file-lines"
                                         style="font-size:20px;color:var(--primary-color)"></i>
@@ -166,18 +169,20 @@
                                     </span>
                                 </div>
                             </div>
-                            <div class="files tooltip-container mx-2" (click)="openDialog('productwise',operator.operatorid)">
+                            <!-- <div class="files tooltip-container mx-2"
+                                (click)="openDialog('productwise',operator.operatorid)">
                                 <div class="files tooltip-container">
                                     <i class="fa-solid fa-address-book"
                                         style="font-size:20px;color:var(--primary-color)"></i>
                                     <span class="tooltip">PRODUCTWISE CURRENT COUNT
                                     </span>
                                 </div>
-                            </div>
+                            </div> -->
                         </div>
                     </div>
                     <div class="child-card col-12">
-                        <div class="col-2 vertical tooltip-container" (click)="openDialog('connection',operator.operatorid)">
+                        <div class="col-2 vertical tooltip-container"
+                            (click)="openDialog('connection',operator.operatorid)">
                             <div class="col-2 vertical tooltip-container">
                                 <!-- <p class="sub-text">Connection</p> -->
                                 <span style="color: #0e610b;">
@@ -187,7 +192,8 @@
                                 <span class="tooltip">Connection</span>
                             </div>
                         </div>
-                        <div class="col-2 vertical tooltip-container" (click)="openDialog('notexpiry',operator.operatorid)">
+                        <div class="col-2 vertical tooltip-container"
+                            (click)="openDialog('notexpiry',operator.operatorid)">
                             <div class="col-2 vertical tooltip-container">
                                 <!-- <p class="sub-text">NotExpiry</p> -->
                                 <span style="color: #0e610b;">
@@ -197,7 +203,8 @@
                                 <span class="tooltip">NotExpiry</span>
                             </div>
                         </div>
-                        <div class="col-2 vertical tooltip-container" (click)="openDialog('expired',operator.operatorid)">
+                        <div class="col-2 vertical tooltip-container"
+                            (click)="openDialog('expired',operator.operatorid)">
                             <div class="col-2 vertical tooltip-container">
                                 <!-- <p class="sub-text">Expired</p> -->
                                 <span style="color: #0e610b;">
@@ -224,6 +231,28 @@
                                             class="circle-text">{{operator?.blockcount}}</span></div>
                                 </span>
                                 <span class="tooltip">Block</span>
+                            </div>
+                        </div>
+                    </div>
+                    <span style="font-size: 17px;color: rgb(1, 29, 29);">Inventory</span>
+                    <div class="report d-flex " style="justify-content: space-between;" >
+                        <div class="col-6 vertical tooltip-container" (click)="openDialog('boxinhand',operator.operatorid)">
+                            <p class="sub-text">Box in Hand</p>
+                            <div class="col-2 vertical tooltip-container">
+                                <span style="color: #0e610b;">
+                                    <div class="circle" style="background-color: rgb(36, 51, 138);"><span
+                                            class="circle-text">{{operator?.newcount}}</span></div>
+                                </span> <span class="tooltip">Box in Hand</span>
+                            </div>
+                        </div>
+                        <div class="col-6 vertical tooltip-container" (click)="openDialog('totalbox',operator.operatorid)">
+                            <p class="sub-text">Total Box</p>
+                            <div class="col-2 vertical tooltip-container">
+                                <span style="color: #0e610b;">
+                                    <div class="circle" style="background-color: rgb(77, 18, 23);"><span
+                                            class="circle-text">{{operator?.blockcount}}</span></div>
+                                </span>
+                                <span class="tooltip">Total Box</span>
                             </div>
                         </div>
                     </div>

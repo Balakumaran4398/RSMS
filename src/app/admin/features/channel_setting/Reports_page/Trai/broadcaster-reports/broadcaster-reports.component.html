@@ -1,0 +1,89 @@
+<div *ngIf="type == 'monthly_broad'">
+    <div class="Head d-flex justify-content-between align-items-center mb-3">
+        <span class="span">Monthly Broadcaster Report</span>
+        <i class="fa fa-close close-icon" (click)="onNoClick()"></i>
+    </div>
+    <div class="container">
+        <div class="card d-block justify-content-center align-items-center mb-3"
+            style="border: 1px solid #055478;padding: 1rem;">
+            <div class="col-12 display align-items-center">
+                <div class="col-12 col-md-12  justify-content-center align-items-center  ">
+                    <div class="input_box display mb-3">
+                        <div class="col-12 col-md-6">
+                            <label for="">Select Year</label>
+                        </div>
+                        <div class="col-12 col-md-6">
+                            <select name="year" id="year" [(ngModel)]="selectedYear">
+                                <option value="0" selected>Select Year</option>
+                                <option *ngFor="let year of years" [value]="year">{{ year }}</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="input_box display mb-3">
+                        <div class="col-12 col-md-6">
+                            <label for="">Select Month</label>
+                        </div>
+                        <div class="col-12 col-md-6">
+                            <select name="month" id="month" [(ngModel)]="selectedMonth" (change)="onMonthChange()">
+                                <option value="0" selected>Select Month</option>
+                                <option *ngFor="let month of months" [value]="month.value">{{ month.name }}
+                                </option>
+                            </select>
+
+                        </div>
+                    </div>
+                    <div class="input_box display mb-3">
+                        <div class="col-12 col-md-6">
+                            <label for="">Select Week</label>
+                        </div>
+                        <div class="col-12 col-md-6">
+                            <select name="date" id="date" [(ngModel)]="selectedDate" [disabled]="isDateDisabled">
+                                <option value="0" selected>Select Date</option>
+                                <option *ngFor="let date of Date" [value]="date.value">{{ date.name }}
+                                </option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="input_box display  mb-3">
+                        <div class="col-6 col-md-6">
+                            <label for="">Broadcaster</label>
+                        </div>
+                        <div class="col-12 col-md-6">
+                            <select [(ngModel)]="broadcasterid">
+                                <option value="0"> Select a Broadcastername</option>
+                                <option *ngFor="let Type of broadcasterList" [value]="Type.value">{{Type.name}}</option>
+                            </select>
+
+                            <input type="text" placeholder="Seleac a Broadcaster"  [(ngModel)]="broadcasterid"
+                                (input)="onSearchChange($event)" [value]="broadcaster"
+                                [matAutocomplete]="auto" class="example-input">
+
+                            <mat-autocomplete #auto="matAutocomplete">
+                                <mat-option *ngFor="let casItem of filteredBraoadcaster()" [value]="casItem.name"
+                                    (click)="onSelectionFingerPrint(casItem)">
+                                    {{ casItem.name }}
+                                </mat-option>
+                            </mat-autocomplete>
+                        </div>
+                    </div>
+                    <div class="input_box display1 mb-3">
+                        <div class="col-6 col-md-6">
+                            <label for="">Reports</label>
+                        </div>
+                        <div class="col-6 col-md-6 display1">
+                            <div class="export-icon col-6 col-md-3 mx-2" (click)="getExcel()">
+                                <img src="/assets/images/icons/Excel.png" alt="Excel Icon" width="40px">
+                                <div class="tooltip">Excel</div>
+                            </div>
+                            <div class="export-icon col-6 col-md-3" (click)="getPDF()">
+                                <img src="/assets/images/icons/pdf.png" alt="PDF Icon" width="40px">
+                                <div class="tooltip">Pdf</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- dfds -->
+    </div>
+</div>

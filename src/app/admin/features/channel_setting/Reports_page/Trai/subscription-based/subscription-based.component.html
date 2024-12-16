@@ -4,50 +4,177 @@
         <i class="fa fa-close close-icon" (click)="onNoClick()"></i>
     </div>
 
-    <div class="content-wrapper d-flex flex-wrap align-items-center" style="padding: 2rem;">
-        <div class="col-12 col-md-12 d-flex flex-wrap align-items-center">
-            <span class="label">Operator</span>
-            <mat-form-field class="input-field" appearance="outline">
-                <mat-label>Select Operator</mat-label>
-                <input type="text" matInput [matAutocomplete]="auto" (input)="filterOperators($event)"
-                    [value]="selectedOperator?.name">
-                <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayOperator">
-                    <mat-option *ngFor="let operator of filteredOperators" [value]="operator.name"
-                        (click)="onoperatorchange(operator)">
-                        {{ operator.name }}
-                    </mat-option>
-                </mat-autocomplete>
-            </mat-form-field>
-        </div>
+    <div class="container">
+        <div class="card d-block justify-content-center align-items-center mb-3"
+            style="border: 1px solid #055478;padding: 1rem;">
+            <div class="col-12 display align-items-center">
+                <div class="col-12 col-md-12  justify-content-center align-items-center  ">
+                    <div class="input_box display mb-3">
+                        <div class="col-12 col-md-6 sidename">
+                            <span> Select a Operator</span>
+                        </div>
+                        <div class="col-12 col-md-6">
+                            <mat-form-field class="input-field" appearance="outline">
+                                <mat-label>Select Operator</mat-label>
+                                <input type="text" matInput [matAutocomplete]="auto" (input)="filterOperators($event)"
+                                    [value]="selectedOperator?.name">
+                                <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayOperator">
+                                    <!-- <mat-option value="0" >All Operator</mat-option> -->
+                                    <mat-option *ngFor="let operator of filteredOperators" [value]="operator.name"
+                                        (click)="onoperatorchange(operator)">
+                                        {{ operator.name }}
+                                    </mat-option>
+                                </mat-autocomplete>
+                            </mat-form-field>
+                        </div>
+                    </div>
+                    <div class="input_box display mb-3">
+                        <div class="col-12 col-md-6 sidename">
+                            <span>Select a Date</span>
+                        </div>
 
-        <div class="col-12 col-md-12 d-flex flex-wrap align-items-center">
-            <span class="label">Select a Date</span>
-            <mat-form-field class="input-field" appearance="outline">
-                <mat-label>Choose a date</mat-label>
-                <input matInput [matDatepicker]="picker" placeholder="Select a Date" readonly>
-                <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
-                <mat-datepicker #picker></mat-datepicker>
-            </mat-form-field>
-        </div>
-        <div class="col-12 col-md-12 d-flex flex-wrap align-items-center">
-            <span class="label">Choose Active/Deactive</span>
-            <div class="switch">
-                <input id="checkbox1" class="look" type="checkbox">
-                <label for="checkbox1"></label>
-              </div>        </div>
+                        <div class="col-12 col-md-6">
+                            <mat-form-field class="input-field" appearance="outline" (dateChange)="logValues()">
+                                <mat-label>Choose a date</mat-label>
+                                <input matInput [matDatepicker]="picker" [(ngModel)]="date" placeholder="Select a Date"
+                                    readonly>
+                                <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+                                <mat-datepicker #picker></mat-datepicker>
+                            </mat-form-field>
+                        </div>
+                    </div>
+                    <div class="input_box display mb-3">
+                        <div class="col-12 col-md-6">
+                            <span>Status</span>
+                        </div>
 
-        <div class="col-12 col-md-12 d-flex flex-wrap align-items-center">
-            <span class="label">Get Reports</span>
-            <div class="export-buttons d-flex">
-                <div class="export-icon" (click)="getExcel()">
-                    <img src="/assets/images/icons/Excel.png" alt="Excel Icon" width="40px">
-                    <div class="tooltip">Excel</div>
+                        <div class="switch col-12 col-md-6">
+                            <input id="checkbox1" class="look" type="checkbox" [(ngModel)]="isActive"
+                                (change)="logValues()">
+                            <label for="checkbox1"></label>
+                        </div>
+                    </div>
+                    <!-- <div *mgIf="type == 'base_package'"> -->
+                        <div class="input_box display1 mb-3">
+                            <div class="col-6 col-md-6 sidename">
+                                <span>Reports</span>
+                            </div>
+
+                            <div class="col-6 col-md-6">
+                                <div class="export-buttons d-flex">
+                                    <div class="export-icon col-6 col-md-3 mx-2" (click)="getBaseSubscriptionExcel()">
+                                        <img src="/assets/images/icons/Excel.png" alt="Excel Icon" width="40px">
+                                        <div class="tooltip">Excel</div>
+                                    </div>
+                                    <div class="export-icon col-6 col-md-3 mx-2" (click)="getBaseSubscriptionPDF()">
+                                        <img src="/assets/images/icons/pdf.png" alt="PDF Icon" width="40px">
+                                        <div class="tooltip">Pdf</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    <!-- </div> -->
+                    <div *mgIf="type == 'addon_package'">
+                        <div class="input_box display1 mb-3">
+                            <div class="col-6 col-md-6 sidename">
+                                <span>Reports</span>
+                            </div>
+
+                            <div class="col-6 col-md-6">
+                                <div class="export-buttons d-flex">
+                                    <div class="export-icon col-6 col-md-3 mx-2" (click)="getAddonSubscriptionExcel()">
+                                        <img src="/assets/images/icons/Excel.png" alt="Excel Icon" width="40px">
+                                        <div class="tooltip">Excel</div>
+                                    </div>
+                                    <div class="export-icon col-6 col-md-3 mx-2" (click)="getAddonSubscriptionPDF()">
+                                        <img src="/assets/images/icons/pdf.png" alt="PDF Icon" width="40px">
+                                        <div class="tooltip">Pdf</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-                <div class="export-icon" (click)="getPDF()">
-                    <img src="/assets/images/icons/pdf.png" alt="PDF Icon" width="40px">
-                    <div class="tooltip">Pdf</div>
+            </div>
+
+        </div>
+    </div>
+</div>
+<div *ngIf="type == 'weekly_based'">
+    <div class="Head d-flex justify-content-between align-items-center mb-3">
+        <span class="span">Weekly Product Report</span>
+        <i class="fa fa-close close-icon" (click)="onNoClick()"></i>
+    </div>
+    <div class="container">
+        <div class="card d-block justify-content-center align-items-center mb-3"
+            style="border: 1px solid #055478;padding: 1rem;">
+            <div class="col-12 display align-items-center">
+                <div class="col-12 col-md-12  justify-content-center align-items-center  ">
+                    <div class="input_box display mb-3">
+                        <div class="col-12 col-md-6">
+                            <span for="">Select Month</span>
+                        </div>
+                        <div class="col-12 col-md-6">
+                            <select name="month" id="month" [(ngModel)]="selectedMonth" (change)="onMonthChange()">
+                                <option value="0" selected>Select Month</option>
+                                <option *ngFor="let month of months" [value]="month.value">{{ month.name }}
+                                </option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="input_box display mb-3">
+                        <div class="col-12 col-md-6">
+                            <span for="">Select year</span>
+                        </div>
+                        <div class="col-12 col-md-6">
+                            <select name="year" id="year" [(ngModel)]="selectedYear">
+                                <option value="0" selected>Select Year</option>
+                                <option *ngFor="let year of years" [value]="year">{{ year }}</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="input_box display mb-3">
+                        <div class="col-12 col-md-6">
+                            <span for="">Select Date</span>
+                        </div>
+                        <div class="col-12 col-md-6">
+                            <select name="date" id="date" [(ngModel)]="selectedweek" [disabled]="isDateDisabled">
+                                <option value="0" selected>Select Week</option>
+                                <option *ngFor="let date of Date" [value]="date.value">{{ date.name }}
+                                </option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="input_box display1 mb-3">
+                        <div class="col-6 col-md-6">
+                            <span for="">Status</span>
+                        </div>
+                        <!-- <div class=""> -->
+                        <div class="switch col-6 col-md-6">
+                            <input id="checkbox1" class="look" type="checkbox" [(ngModel)]="isActive"
+                                (change)="logValues()">
+                            <label for="checkbox1"></label>
+                        </div>
+                        <!-- </div> -->
+                    </div>
+                    <div class="input_box display1 mb-3">
+                        <div class="col-6 col-md-6">
+                            <span for="">Reports</span>
+                        </div>
+                        <div class="col-6 col-md-6 display1">
+                            <div class="export-icon col-6 col-md-3 mx-2" (click)="getWeeklySubscriptionExcel()">
+                                <img src="/assets/images/icons/Excel.png" alt="Excel Icon" width="40px">
+                                <div class="tooltip">Excel</div>
+                            </div>
+                            <div class="export-icon col-6 col-md-3" (click)="getWeeklySubscriptionPDF()">
+                                <img src="/assets/images/icons/pdf.png" alt="PDF Icon" width="40px">
+                                <div class="tooltip">Pdf</div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
+        <!-- dfds -->
     </div>
 </div>

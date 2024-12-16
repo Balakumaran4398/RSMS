@@ -159,6 +159,7 @@ import { ChartSTBReportComponent } from "../_core/Chart-Reports/chart-stbreport/
 import { HistoryReportsComponent } from "./features/channel_setting/Reports/history-reports/history-reports.component";
 import { PackageBasedComponent } from "./features/channel_setting/Reports_page/Trai/package-based/package-based.component";
 import { SubscriptionBasedComponent } from "./features/channel_setting/Reports_page/Trai/subscription-based/subscription-based.component";
+import { BroadcasterReportsComponent } from "./features/channel_setting/Reports_page/Trai/broadcaster-reports/broadcaster-reports.component";
 @NgModule({
     declarations: [
         AdminBaseComponent, NavComponent, HomeComponent, NavbarComponent, MsodetailsComponent, CasmasterComponent,
@@ -220,7 +221,7 @@ import { SubscriptionBasedComponent } from "./features/channel_setting/Reports_p
         TaxComponent, ProofComponent,ProofdetailsComponent,TaxdetailsComponent,LogindialogueComponent,EditDismembershipComponent,SpecialBulkpackageComponent,
         SpecialcancelsubscriptionComponent,SpecialareachangeComponent,SpeciallcochangeComponent,SpecialeditbulkpackageComponent,SpeciallcotransferComponent,
         // =====================================================Reports=========================================
-        TraiReportComponent,SubscriptionBasedComponent,HistoryReportsComponent,PackageBasedComponent,
+        TraiReportComponent,SubscriptionBasedComponent,HistoryReportsComponent,PackageBasedComponent,BroadcasterReportsComponent,
     ],
     imports: [
         CommonModule,
