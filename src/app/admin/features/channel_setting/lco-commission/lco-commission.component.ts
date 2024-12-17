@@ -189,7 +189,8 @@ export class LcoCommissionComponent {
             const editButton = document.createElement('button');
             editButton.innerHTML = '<i class="fas fa-pen-square" style="font-size:30px"></i>';
             editButton.style.backgroundColor = 'transparent';
-            editButton.style.color = 'rgb(2 85 13)';
+            // editButton.style.color = 'rgb(2 85 13)';
+            editButton.style.color = '(rgb(29 1 11)';
             editButton.style.border = 'none';
             editButton.title = 'Update Commission';
             editButton.style.cursor = 'pointer';
@@ -219,7 +220,8 @@ export class LcoCommissionComponent {
             const editButton = document.createElement('button');
             editButton.innerHTML = '<i class="fas fa-pen-square" style="font-size:30px"></i>';
             editButton.style.backgroundColor = 'transparent';
-            editButton.style.color = 'rgb(2 85 13)';
+            // editButton.style.color = 'rgb(2 85 13)';
+            editButton.style.color = '(rgb(29 1 11)';
             editButton.style.border = 'none';
             editButton.title = 'Edit Status';
             editButton.style.cursor = 'pointer';
@@ -253,7 +255,8 @@ export class LcoCommissionComponent {
             const editButton = document.createElement('button');
             editButton.innerHTML = '<i class="fas fa-pen-square" style="font-size:30px"></i>';
             editButton.style.backgroundColor = 'transparent';
-            editButton.style.color = 'rgb(2 85 13)';
+            // editButton.style.color = 'rgb(2 85 13)';
+            editButton.style.color = '(rgb(29 1 11)';
             editButton.style.border = 'none';
             editButton.title = 'Edit the Customer';
             editButton.style.cursor = 'pointer';
@@ -308,7 +311,8 @@ export class LcoCommissionComponent {
         const editButton = document.createElement('button');
         editButton.innerHTML = '<i class="fas fa-pen-square" style="font-size:30px"></i>';
         editButton.style.backgroundColor = 'transparent';
-        editButton.style.color = 'rgb(2 85 13)';
+        // editButton.style.color = 'rgb(2 85 13)';
+        editButton.style.color = '(rgb(29 1 11)';
         editButton.style.border = 'none';
         editButton.title = 'Edit the Customer';
         editButton.style.cursor = 'pointer';

@@ -101,7 +101,7 @@ export class PackageBasedComponent implements OnInit {
     const year = new Date(event.value).getFullYear();
     this.todate = year + "-" + month + "-" + date
     console.log(this.todate);
- }
+  }
   getExcel() {
     console.log(this.packageType);
     this.userService.getPackageModificationExcelReport(this.role, this.username, this.fromdate, this.todate, 1, this.packageType, 2)
@@ -226,7 +226,7 @@ export class PackageBasedComponent implements OnInit {
   getComboExcel() {
     this.userService.getComboModificationExcelReport(this.role, this.username, 2)
       .subscribe(
-        (response: HttpResponse<any[]>) => { // Expect HttpResponse<any[]>
+        (response: HttpResponse<any[]>) => {
           console.log(this.type);
           if (response.status === 200) {
             this.rowData = response.body;
@@ -237,24 +237,45 @@ export class PackageBasedComponent implements OnInit {
             let areasub = '';
             let header: string[] = [];
             const datas: Array<any> = [];
-            // if (this.type == 1) {
-            areatitle = 'A1:K2';
-            areasub = 'A3:K3';
-            header = ['CHANNEL ID', 'CHANNEL NAME', 'RATE'];
-
-            this.rowData.forEach((d: any) => {
-              const row = [d.channellist.channelid, d.channellist.channelname, d.channellist.inramt];
-              console.log('type 1 and 4', row);
-              datas.push(row);
-            });
-
-            this.excelService.generateTraiPackageBaseExcel(areatitle, header, datas, title, areasub, sub);
-
+            if (this.rowData.addonlist && this.rowData.addonlist.length > 0) {
+              areatitle = 'A1:E2';
+              areasub = 'A3:E3';
+              header = ['CHANNEL ID', 'CHANNEL NAME', 'RATE'];
+              this.rowData.forEach((d: any) => {
+                const row = [d.addonlist.channelid, d.addonlist.channelname, d.addonlist.inramt];
+                console.log('addonlist', row);
+                datas.push(row);
+              });
+              // this.excelService.generateComboExcel(areatitle, header, datas, title, areasub, sub);
+            }
+            if (this.rowData.channellist && this.rowData.channellist.length > 0) {
+              areatitle = 'A1:E2';
+              areasub = 'A3:E3';
+              header = ['CHANNEL ID', 'CHANNEL NAME', 'RATE'];
+              this.rowData.channellist.forEach((d: any) => {
+                const row = [d.channelid, d.channelname, d.inramt];
+                console.log('channellist ', row);
+                datas.push(row);
+              });
+              // this.excelService.generateComboExcel(areatitle, header, datas, title, areasub, sub);
+            }
+            if (this.rowData.combomodificationlist && this.rowData.combomodificationlist.length > 0) {
+              areatitle = 'A1:D2';
+              areasub = 'A3:D3';
+              header = ['PACKAGE ID', 'PACKAGE NAME', 'PRODUCT TYPE', 'PRODUCT TYPE NAME'];
+              this.rowData.combomodificationlist.forEach((d: any) => {
+                const row = [d.packageid, d.packagename, d.producttype, d.producttypename];
+                console.log('combomodificationlist', row);
+                datas.push(row);
+              });
+            }
+            this.excelService.generateComboExcel(areatitle, header, datas, title, areasub, sub);
           } else if (response.status === 204) {
             this.swal.Success_204();
             this.rowData = [];
           }
         },
+
         (error) => {
           this.handleApiError(error);
         }
@@ -294,7 +315,7 @@ export class PackageBasedComponent implements OnInit {
             this.rowData = response.body;
             console.log(this.rowData);
             console.log(this.type);
-            const title = (this.type + ' REPORT').toUpperCase();
+            const title = (this.type + '  REPORT').toUpperCase();
             const sub = 'MSO ADDRESS:' + this.msodetails;
             let areatitle = '';
             let areasub = '';
@@ -307,7 +328,7 @@ export class PackageBasedComponent implements OnInit {
             header = ['SMARTCARD', 'BOXID', 'PRODUCT ID', 'PRODUCT NAME', 'LOG DATE', 'ACTIVATION DATE', 'EXPIRY DATE', 'ACTIVITY', 'STATUS'];
 
             this.rowData.forEach((d: any) => {
-              const row = [d.smartcard, d.boxid,d.orderid, d.packagename, d.logdate, d.logdate , d.expirydated, d.activity, d.status];
+              const row = [d.smartcard, d.boxid, d.orderid, d.packagename, d.logdate, d.logdate, d.expirydate, d.activity, d.status];
               console.log('type 1 and 4', row);
               datas.push(row);
             });

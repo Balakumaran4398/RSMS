@@ -55,13 +55,14 @@ export class AddonPackageComponent {
         const manageButton = document.createElement('button');
         const viewButton = document.createElement('button');
         // Edit button
-        editButton.innerHTML = '<i class="fa-solid fa-pen" style="font-size:20px;color:black"></i>';
+        editButton.innerHTML = '<i class="fa fa-pencil-square" aria-hidden="true"></i>';
         editButton.style.backgroundColor = 'transparent';
+        editButton.style.color = '(rgb(29 1 11)';
         editButton.style.border = 'none';
         editButton.title = 'Edit';
         editButton.style.cursor = 'pointer';
         editButton.style.marginRight = '10px';
-        editButton.style.fontSize = "18px";
+        editButton.style.fontSize = "30px";
         editButton.addEventListener('click', () => {
           this.openEditDialog({ addon: true }, params.data);
           // this.openEditDialog(params.data);
@@ -100,12 +101,12 @@ export class AddonPackageComponent {
 
     },
     // { headerName: "BROADCASTER NAME", field: 'city', },
-    { headerName: "ORDER ID", field: 'order_id',width:300 },
-    { headerName: "RATE", field: 'addon_package_rate',width:200 },
+    { headerName: "ORDER ID", field: 'order_id', width: 300 },
+    { headerName: "RATE", field: 'addon_package_rate', width: 200 },
 
 
     {
-      headerName: "EXPORT", field: 'report',width:150,
+      headerName: "EXPORT", field: 'report', width: 150,
       cellRenderer: (params: any) => {
         const editButton = document.createElement('button');
         editButton.innerHTML = '<i class="far fa-file-pdf" style="font-size:20px;color:red"></i>';
@@ -169,8 +170,8 @@ export class AddonPackageComponent {
       console.log('The dialog was closed');
     });
   }
-  openViewDialog( data: any): void {
-    const dialogData = {...data };
+  openViewDialog(data: any): void {
+    const dialogData = { ...data };
     const dialogRef = this.dialog.open(AddonViewComponent, {
       width: '1000px',
       panelClass: 'custom-dialog-container',
@@ -181,7 +182,7 @@ export class AddonPackageComponent {
       console.log('The dialog was closed');
     });
   }
- 
+
   // openEditDialog1(data: any): void {
   //   let dialogData = {};
 

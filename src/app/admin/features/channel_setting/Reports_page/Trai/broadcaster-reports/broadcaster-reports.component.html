@@ -54,7 +54,7 @@
                                 <option *ngFor="let Type of broadcasterList" [value]="Type.value">{{Type.name}}</option>
                             </select>
 
-                            <input type="text" placeholder="Seleac a Broadcaster"  [(ngModel)]="broadcasterid"
+                            <input type="text" placeholder="Select a Broadcaster"  [(ngModel)]="broadcasterid"
                                 (input)="onSearchChange($event)" [value]="broadcaster"
                                 [matAutocomplete]="auto" class="example-input">
 

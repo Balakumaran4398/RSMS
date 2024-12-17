@@ -73,9 +73,9 @@ export class OperatordialogueComponent implements OnInit {
     console.log(ctrlValue);
 
   }
-  getMonthandyear(){
+  getMonthandyear() {
     console.log(this.date);
-    
+
   }
   passSelectedDate(selectedDate: moment.Moment) {
     console.log('Selected Date:', selectedDate.format('YYYY-MM'));
@@ -222,27 +222,27 @@ export class OperatordialogueComponent implements OnInit {
             let header: string[] = [];
             const datas: Array<any> = [];
             if (this.type == 1 || this.type == 4) {
-              areatitle = 'A1:K2';
-              areasub = 'A3:K3';
-              header = ['CUSTOMER ID', 'SUBSCRIBER NAME', 'SUBSCRIBER LAST NAME', 'ADDRESS', 'AREA NAME', 'MOBILE NO', 'SMARTCARD', 'BOXID', 'PACKAGE STATUS', 'ACTIVATION DATE', 'EXPIRY DATE'];
+              areatitle = 'A1:J2';
+              areasub = 'A3:J3';
+              header = ['CUSTOMER ID', 'SUBSCRIBER NAME', 'ADDRESS', 'AREA NAME', 'MOBILE NO', 'SMARTCARD', 'BOXID', 'PACKAGE STATUS', 'ACTIVATION DATE', 'EXPIRY DATE'];
 
               this.rowData.forEach((d: any) => {
-                const row = [d.subid, d.customername, d.customernamelast, d.address, d.areaname, d.mobileno, d.smartcard, d.boxid, d.statusdisplay, d.activationdate, d.expirydate];
+                const row = [d.subid, d.customername, d.address, d.areaname, d.mobileno, d.smartcard, d.boxid, d.statusdisplay, d.activationdate, d.expirydate];
                 console.log('type 1 and 4', row);
                 datas.push(row);
               });
               this.excelService.generateOperatorDashboardExcel(areatitle, header, datas, title, areasub, sub);
-            } else if (this.type == 2 || this.type == 3 || this.type == 6) {
-              areatitle = 'A1:I2';
-              areasub = 'A3:I3';
-              header = ['CUSTOMER ID', 'SUBSCRIBER NAME', 'SUBSCRIBER LAST NAME', 'ADDRESS', 'MOBILE NO', 'SMARTCARD', 'BOXID', 'PACKAGE STATUS', 'EXPIRY DATE'];
+            } else if (this.type == 2 || this.type == 3) {
+              areatitle = 'A1:H2';
+              areasub = 'A3:H3';
+              header = ['CUSTOMER ID', 'SUBSCRIBER NAME', 'ADDRESS', 'MOBILE NO', 'SMARTCARD', 'BOXID', 'PACKAGE STATUS', 'EXPIRY DATE'];
 
               this.rowData.forEach((d: any) => {
-                const row = [d.subid, d.customername, d.customernamelast, d.address, d.mobileno, d.smartcard, d.boxid, d.statusdisplay, d.expirydate];
+                const row = [d.subid, d.customername, d.address, d.mobileno, d.smartcard, d.boxid, d.statusdisplay, d.expirydate];
                 console.log('type 2, 3, and 6', row);
                 datas.push(row);
               });
-              this.excelService.generateOperatorDashboardExcel(areatitle, header, datas, title, areasub, sub);
+              this.excelService.generateNotExpiryExcel(areatitle, header, datas, title, areasub, sub);
 
             } else if (this.type == 4 || this.type == 5) {
               areatitle = 'A1:J2';
@@ -255,6 +255,17 @@ export class OperatordialogueComponent implements OnInit {
                 datas.push(row);
               });
               this.excelService.generateOperatorDashboardExcel(areatitle, header, datas, title, areasub, sub);
+            } else if (this.type == 6 || this.type == 7) {
+              areatitle = 'A1:D2';
+              areasub = 'A3:D3';
+              header = ['SMARTCARD', 'BOX ID', 'CAS NAME', 'ALLOCATION DATE'];
+
+              this.rowData.forEach((d: any) => {
+                const row = [d.smartcard, d.boxid, d.casname, d.connectiondate];
+                console.log('type 4 and 5', row);
+                datas.push(row);
+              });
+              this.excelService.generateBoxinhandExcel(areatitle, header, datas, title, areasub, sub);
             }
             else if (this.type == 9) {
               areatitle = 'A1:F2';
@@ -314,7 +325,7 @@ export class OperatordialogueComponent implements OnInit {
   }
 
   getRechargePDF() {
-    this.userService.getOperatorDashboardPDFReport(this.role, this.username, 8, 1, this.operatorid, this.monthYear,  0, 0)
+    this.userService.getOperatorDashboardPDFReport(this.role, this.username, 8, 1, this.operatorid, this.monthYear, 0, 0)
       .subscribe((x: Blob) => {
         const blob = new Blob([x], { type: 'application/pdf' });
         const data = window.URL.createObjectURL(blob);

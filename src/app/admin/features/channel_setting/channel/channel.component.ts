@@ -86,7 +86,7 @@ export class ChannelComponent {
         const editButton = document.createElement('button');
         editButton.innerHTML = '<i class="fa fa-pencil-square" aria-hidden="true"></i>';
         editButton.style.backgroundColor = 'transparent';
-        editButton.style.color = 'rgb(1 31 78)';
+        editButton.style.color = 'rgb(64 113 114)';
         editButton.style.border = 'none';
         editButton.title = 'Edit the Customer';
         editButton.style.cursor = 'pointer';

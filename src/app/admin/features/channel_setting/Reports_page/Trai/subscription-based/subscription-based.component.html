@@ -54,12 +54,11 @@
                             <label for="checkbox1"></label>
                         </div>
                     </div>
-                    <!-- <div *mgIf="type == 'base_package'"> -->
+                    <div *ngIf="type == 'base_package'">
                         <div class="input_box display1 mb-3">
                             <div class="col-6 col-md-6 sidename">
                                 <span>Reports</span>
                             </div>
-
                             <div class="col-6 col-md-6">
                                 <div class="export-buttons d-flex">
                                     <div class="export-icon col-6 col-md-3 mx-2" (click)="getBaseSubscriptionExcel()">
@@ -73,13 +72,12 @@
                                 </div>
                             </div>
                         </div>
-                    <!-- </div> -->
-                    <div *mgIf="type == 'addon_package'">
+                    </div>
+                    <div *ngIf="type == 'addon_package'">
                         <div class="input_box display1 mb-3">
                             <div class="col-6 col-md-6 sidename">
                                 <span>Reports</span>
                             </div>
-
                             <div class="col-6 col-md-6">
                                 <div class="export-buttons d-flex">
                                     <div class="export-icon col-6 col-md-3 mx-2" (click)="getAddonSubscriptionExcel()">

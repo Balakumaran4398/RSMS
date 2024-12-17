@@ -56,13 +56,14 @@ export class PackageCreationComponent {
 
 
         // Edit button
-        editButton.innerHTML = '<i class="fa-solid fa-pen" style="font-size:20px;color:black"></i>';
+        editButton.innerHTML = '<i class="fa fa-pencil-square" aria-hidden="true"></i>';
         editButton.style.backgroundColor = 'transparent';
+        editButton.style.color = '(rgb(29 1 11)';
         editButton.style.border = 'none';
         editButton.title = 'Edit';
         editButton.style.cursor = 'pointer';
         editButton.style.marginRight = '10px';
-        editButton.style.fontSize = "18px";
+        editButton.style.fontSize = "30px";
         editButton.addEventListener('click', () => {
           this.openEditDialog({ package_cr: true }, params.data);
           // this.openEditDialog(params.data);

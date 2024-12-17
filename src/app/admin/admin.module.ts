@@ -221,7 +221,7 @@ import { BroadcasterReportsComponent } from "./features/channel_setting/Reports_
         TaxComponent, ProofComponent,ProofdetailsComponent,TaxdetailsComponent,LogindialogueComponent,EditDismembershipComponent,SpecialBulkpackageComponent,
         SpecialcancelsubscriptionComponent,SpecialareachangeComponent,SpeciallcochangeComponent,SpecialeditbulkpackageComponent,SpeciallcotransferComponent,
         // =====================================================Reports=========================================
-        TraiReportComponent,SubscriptionBasedComponent,HistoryReportsComponent,PackageBasedComponent,BroadcasterReportsComponent,
+        TraiReportComponent,SubscriptionBasedComponent,HistoryReportsComponent,PackageBasedComponent,BroadcasterReportsComponent
     ],
     imports: [
         CommonModule,

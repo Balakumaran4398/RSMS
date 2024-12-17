@@ -26,7 +26,7 @@ export class SubscriptionBasedComponent implements OnInit {
   filteredOperators: any[] = [];
   operatorList: any[] = [];
   selectedOperator: any;
-  operatorid: any;
+  operatorid: any = 0;
   pagedOperators: any;
 
 
@@ -55,6 +55,11 @@ export class SubscriptionBasedComponent implements OnInit {
     this.getHeaderTitle(this.type);
   }
   ngOnInit(): void {
+    this.userService.getMsoDetails(this.role, this.username).subscribe((data: any) => {
+      console.log(data);
+      this.msodetails = `${data.msoName} ${data.msoStreet}, ${data.msoArea}, ${data.msoState}, ${data.msoPincode}, ${data.msoEmail}`;
+      console.log(this.msodetails);
+    })
     this.loadOperators();
     this.generateMonths();
     this.generateYears();
@@ -70,9 +75,9 @@ export class SubscriptionBasedComponent implements OnInit {
     const formattedDate = this.date ? this.formatDate(this.date) : 'No date selected';
     console.log('Selected Date:', formattedDate);
     console.log('Is Active:', this.isActive);
-    this.cur_date= formattedDate;
+    this.cur_date = formattedDate;
     console.log(this.cur_date);
-    
+
 
   }
   generateMonths() {
@@ -195,17 +200,29 @@ export class SubscriptionBasedComponent implements OnInit {
             let header: string[] = [];
             const datas: Array<any> = [];
             // if (this.type == 1) {
-            areatitle = 'A1:F2';
-            areasub = 'A3:F3';
-            header = ['PACKAGE NAME PREVIOUS', 'PACKAGE NAME CURRENR', 'PACKAGE ID', 'PRODUCT ID', 'OLD CHANNEL LIST', 'NEW CHANNEL LIST', 'ADDED CHANNEL LIST', 'REMOVED CHANNEL LIST', 'UPDATED DATE', 'COUNT'];
+              // worksheet.columns = [
+              //   { header: 'CUSTOMER NAME', key: 'customername', width: 25 },
+              //   { header: 'SMARTCARD', key: 'smartcard', width: 20 },
+              //   { header: 'BOX ID', key: 'boxid', width: 20 },
+              //   { header: 'CAS', key: 'casname', width: 20 },
+              //   { header: 'PACKAGE', key: 'productname', width: 20 },
+              //   { header: 'PRODUCT ID', key: 'casproductid', width: 20 },
+              //   { header: 'TYPE', key: 'type', width: 20 },
+              //   { header: 'SUBSCRIPTION START DATE', key: 'logdate', width: 20 },
+              //   { header: 'SUBSCRIPTION END DATE', key: 'expirydate', width: 20 },
+              //   // Add other columns here...
+              // ];
+            areatitle = 'A1:I2';
+            areasub = 'A3:I3';
+            header = ['CUSTOMER NAME', 'SMARTCARD', 'BOXID', 'CAS', 'PACKAGE', 'PRODUCT ID', 'TYPE', 'SUBSCRIPTION START DATE', 'SUBSCRIPTION END DATE'];
 
             this.rowData.forEach((d: any) => {
-              const row = [d.packagenamepre, d.packagenamecur, d.packageid, d.casproductid, d.channelnamepre, d.chanenlnamecur, d.addedchannels, d.removedchannels, d.updateddate, d.count];
+              const row = [d.customername, d.smartcard, d.boxid, d.casname, d.productname, d.casproductid, d.type, d.logdate, d.expirydate];
               // console.log('type 1 and 4', row);
               datas.push(row);
             });
 
-            this.excelService.generateTraiPackageBaseExcel(areatitle, header, datas, title, areasub, sub);
+            this.excelService.generateWeeklySubscriptionExcel(areatitle, header, datas, title, areasub, sub);
 
           } else if (response.status === 204) {
             this.swal.Success_204();
@@ -257,17 +274,19 @@ export class SubscriptionBasedComponent implements OnInit {
             let header: string[] = [];
             const datas: Array<any> = [];
             // if (this.type == 1) {
-            areatitle = 'A1:F2';
-            areasub = 'A3:F3';
-            header = ['PACKAGE NAME PREVIOUS', 'PACKAGE NAME CURRENR', 'PACKAGE ID', 'PRODUCT ID', 'OLD CHANNEL LIST', 'NEW CHANNEL LIST', 'ADDED CHANNEL LIST', 'REMOVED CHANNEL LIST', 'UPDATED DATE', 'COUNT'];
+            areatitle = 'A1:G2';
+            areasub = 'A3:G3';
+            // header = ['PACKAGE NAME PREVIOUS', 'PACKAGE NAME CURRENR', 'PACKAGE ID', 'PRODUCT ID', 'OLD CHANNEL LIST', 'NEW CHANNEL LIST', 'ADDED CHANNEL LIST', 'REMOVED CHANNEL LIST', 'UPDATED DATE', 'COUNT'];
+            header = ['CUSTOMER NAME', 'SMARTCARD', 'BOXID', 'PACKAGE', 'PRODUCT ID', 'SUBSCRIPTION START DATE', 'SUBSCRIPTION END DATE'];
 
             this.rowData.forEach((d: any) => {
-              const row = [d.packagenamepre, d.packagenamecur, d.packageid, d.casproductid, d.channelnamepre, d.chanenlnamecur, d.addedchannels, d.removedchannels, d.updateddate, d.count];
+              // const row = [d.packagenamepre, d.packagenamecur, d.packageid, d.casproductid, d.channelnamepre, d.chanenlnamecur, d.addedchannels, d.removedchannels, d.updateddate, d.count];
+              const row = [d.customername, d.smartcard, d.boxid, d.productname, d.orderid, d.logdate, d.expirydate];
               // console.log('type 1 and 4', row);
               datas.push(row);
             });
 
-            this.excelService.generateTraiPackageBaseExcel(areatitle, header, datas, title, areasub, sub);
+            this.excelService.generateBaseSubscriptionExcel(areatitle, header, datas, title, areasub, sub);
 
           } else if (response.status === 204) {
             this.swal.Success_204();
@@ -318,17 +337,17 @@ export class SubscriptionBasedComponent implements OnInit {
             let header: string[] = [];
             const datas: Array<any> = [];
             // if (this.type == 1) {
-            areatitle = 'A1:F2';
-            areasub = 'A3:F3';
-            header = ['PACKAGE NAME PREVIOUS', 'PACKAGE NAME CURRENR', 'PACKAGE ID', 'PRODUCT ID', 'OLD CHANNEL LIST', 'NEW CHANNEL LIST', 'ADDED CHANNEL LIST', 'REMOVED CHANNEL LIST', 'UPDATED DATE', 'COUNT'];
+            areatitle = 'A1:H2';
+            areasub = 'A3:H3';
+            header = ['OPERATOR NAME', 'CUSTOMER NAME', 'SMARTCARD', 'BOX ID', 'PACKAGE', 'PRODUCT ID', 'SUBSCRIPTION START DATE', 'SUBSCRIPTION END DATE'];
 
             this.rowData.forEach((d: any) => {
-              const row = [d.packagenamepre, d.packagenamecur, d.packageid, d.casproductid, d.channelnamepre, d.chanenlnamecur, d.addedchannels, d.removedchannels, d.updateddate, d.count];
+              const row = [d.operatorname, d.customername, d.smartcard, d.boxid, d.productname, d.orderid, d.logdate, d.expirydate];
               // console.log('type 1 and 4', row);
               datas.push(row);
             });
 
-            this.excelService.generateTraiPackageBaseExcel(areatitle, header, datas, title, areasub, sub);
+            this.excelService.generateAddonSubscriptionExcel(areatitle, header, datas, title, areasub, sub);
 
           } else if (response.status === 204) {
             this.swal.Success_204();

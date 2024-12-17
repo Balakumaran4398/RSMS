@@ -63,52 +63,100 @@ export class DistributorMasterComponent {
       headerName: "ISACTIVE",
       field: 'isactive',
 
+      // cellRenderer: (params: any) => {
+      //   const isActive = params.data.isactive;
+      //   const toggleButton = document.createElement('button');
+      //   toggleButton.style.backgroundColor = 'transparent';
+      //   toggleButton.style.border = 'none';
+      //   toggleButton.style.marginRight = '6px';
+      //   toggleButton.style.fontSize = '22px';
+      //   toggleButton.style.cursor = 'auto';
+      //   const icon = document.createElement('i');
+      //   icon.className = 'fa';
+      //   toggleButton.appendChild(icon);
+      //   const updateButtonStyle = (active: boolean) => {
+      //     if (active) {
+      //       icon.className = 'fa-solid fa-toggle-on';
+      //       toggleButton.style.color = '#4CAF50';
+      //       toggleButton.style.fontSize = '24px'; // Medium size for the button
+      //       icon.style.fontSize = '24px';
+      //       toggleButton.title = 'Deactivate the Customer';
+      //     } else {
+      //       icon.className = 'fa-solid fa-toggle-off';
+      //       toggleButton.style.color = 'rgb(248 92 133)';
+      //       toggleButton.style.fontSize = '24px'; // Medium size for the button
+      //       icon.style.fontSize = '24px';
+      //       toggleButton.title = 'Activate the Customer';
+      //     }
+      //   };
+      //   updateButtonStyle(isActive);
+      //   toggleButton.addEventListener('click', () => {
+      //   });
+
+      //   const div = document.createElement('div');
+      //   div.appendChild(toggleButton);
+      //   return div;
+      // },
+
       cellRenderer: (params: any) => {
         const isActive = params.data.isactive;
-        const toggleButton = document.createElement('button');
-        toggleButton.style.backgroundColor = 'transparent';
-        toggleButton.style.border = 'none';
-        toggleButton.style.marginRight = '6px';
-        toggleButton.style.fontSize = '22px';
-        toggleButton.style.cursor = 'auto';
-        const icon = document.createElement('i');
-        icon.className = 'fa';
-        toggleButton.appendChild(icon);
-        const updateButtonStyle = (active: boolean) => {
-          if (active) {
-            icon.className = 'fa-solid fa-toggle-on';
-            toggleButton.style.color = '#4CAF50';
-            toggleButton.style.fontSize = '24px'; // Medium size for the button
-            icon.style.fontSize = '24px';
-            toggleButton.title = 'Deactivate the Customer';
-          } else {
-            icon.className = 'fa-solid fa-toggle-off';
-            toggleButton.style.color = 'rgb(248 92 133)';
-            toggleButton.style.fontSize = '24px'; // Medium size for the button
-            icon.style.fontSize = '24px';
-            toggleButton.title = 'Activate the Customer';
-          }
-        };
-        updateButtonStyle(isActive);
-        toggleButton.addEventListener('click', () => {
-        });
 
-        const div = document.createElement('div');
-        div.appendChild(toggleButton);
-        return div;
-      },
+        const toggleContainer = document.createElement('div');
+        toggleContainer.style.display = 'flex';
+        toggleContainer.style.alignItems = 'left';
+        toggleContainer.style.justifyContent = 'left';
+
+        const toggleSwitch = document.createElement('div');
+        toggleSwitch.style.width = '45px';
+        toggleSwitch.style.height = '25px';
+        toggleSwitch.style.borderRadius = '15px';
+        toggleSwitch.style.backgroundColor = isActive ? '#4CAF50' : '#616060';
+        toggleSwitch.style.position = 'relative';
+        toggleSwitch.style.cursor = 'pointer';
+        toggleSwitch.style.transition = 'background-color 0.3s ease';
+
+        const toggleCircle = document.createElement('div');
+        toggleCircle.style.width = '15px';
+        toggleCircle.style.height = '15px';
+        toggleCircle.style.borderRadius = '50%';
+        toggleCircle.style.backgroundColor = '#fff';
+        toggleCircle.style.position = 'absolute';
+        toggleCircle.style.top = '50%';
+        toggleCircle.style.transform = 'translateY(-50%)';
+        toggleCircle.style.left = isActive ? 'calc(100% - 22px)' : '3px';
+        toggleCircle.style.transition = 'left 0.3s ease';
+
+        toggleSwitch.appendChild(toggleCircle);
+
+        const updateToggleStyle = (active: boolean) => {
+          toggleSwitch.style.backgroundColor = active ? '#4CAF50' : '#616060';
+          toggleCircle.style.left = active ? 'calc(100% - 22px)' : '3px';
+          toggleSwitch.title = active ? 'Deactivate the Customer' : 'Activate the Customer';
+        };
+
+        toggleSwitch.addEventListener('click', () => {
+          const currentStatus = params.data.isactive;
+          const newStatus = !currentStatus;
+          params.data.isactive = newStatus; 
+          updateToggleStyle(newStatus);
+
+          console.log(`Status changed to: ${newStatus ? 'Active' : 'Inactive'}`);
+        });
+        toggleContainer.appendChild(toggleSwitch);
+        return toggleContainer;
+      }
     },
     {
       headerName: "Edit", editable: true, cellRenderer: (params: any) => {
         const editButton = document.createElement('button');
         editButton.innerHTML = '<i class="fa fa-pencil-square" aria-hidden="true"></i>';
         editButton.style.backgroundColor = 'transparent';
-        editButton.style.color = 'rgb(2 85 13)';
+        editButton.style.color = 'rgb(64 113 114)';
         editButton.style.border = 'none';
         editButton.title = 'Edit the Customer';
         editButton.style.cursor = 'pointer';
         editButton.style.marginRight = '6px';
-        editButton.style.fontSize = "28px";
+        editButton.style.fontSize = "30px";
         editButton.addEventListener('click', () => {
           this.openEditDialog(params.data);
         });
