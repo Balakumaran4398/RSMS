@@ -359,7 +359,7 @@ export class FingerPrintComponent {
           timerProgressBar: true,
         }).then(() => {
           window.location.reload();
-        });;
+        });
       },
       (error) => {
         console.error(error);
@@ -402,6 +402,8 @@ export class FingerPrintComponent {
           icon: 'success',
           timer: 3000,
           timerProgressBar: true,
+        }).then(() => {
+          window.location.reload();
         });
       },
       (error) => {

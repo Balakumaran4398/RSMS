@@ -147,7 +147,6 @@ import { SpecialareachangeComponent } from "./features/special_role/Bulk operato
 import { SpeciallcochangeComponent } from "./features/special_role/Bulk operaton/speciallcochange/speciallcochange.component";
 import { SpecialeditbulkpackageComponent } from "./features/special_role/Dialogue/Bulk operation/specialeditbulkpackage/specialeditbulkpackage.component";
 import { SpeciallcotransferComponent } from "./features/special_role/Bulk operaton/speciallcotransfer/speciallcotransfer.component";
-import { AddonManageComponent } from "./features/channel_setting/_Dialogue/Addon_package/addon-manage/addon-manage.component";
 import { OperatorcancelsubreportComponent } from "./features/channel_setting/_Dialogue/operator/operatorcancelsubreport/operatorcancelsubreport.component";
 import { LcologinpageComponent } from "./features/subscriber/lcologinpage/lcologinpage.component";
 import { LoginrefundComponent } from "./features/channel_setting/_Dialogue/LCO_Recharge/loginrefund/loginrefund.component";
@@ -160,6 +159,7 @@ import { HistoryReportsComponent } from "./features/channel_setting/Reports/hist
 import { PackageBasedComponent } from "./features/channel_setting/Reports_page/Trai/package-based/package-based.component";
 import { SubscriptionBasedComponent } from "./features/channel_setting/Reports_page/Trai/subscription-based/subscription-based.component";
 import { BroadcasterReportsComponent } from "./features/channel_setting/Reports_page/Trai/broadcaster-reports/broadcaster-reports.component";
+import { HistoryAllReportsComponent } from "./features/channel_setting/Reports_page/Trai/History/history-all-reports/history-all-reports.component";
 @NgModule({
     declarations: [
         AdminBaseComponent, NavComponent, HomeComponent, NavbarComponent, MsodetailsComponent, CasmasterComponent,
@@ -167,15 +167,15 @@ import { BroadcasterReportsComponent } from "./features/channel_setting/Reports_
         BarChartComponent, InventoryChartComponent, LcoCommissionChartComponent,
         PackageChartComponent, StbChartComponent,
         // -------------------------------------Dashboard Report--------------------------------
-        ChartSTBReportComponent,ChartPackageReportComponent,ChartInventoryReportComponent,
+        ChartSTBReportComponent, ChartPackageReportComponent, ChartInventoryReportComponent,
         // -------------------------------------Top_subscriber_Details------------------------------------
         TopSubDetailComponent,
         // -----------------------------------------operator----------------------------------
         OperatorlistComponent, OperatorDetailsComponent, LcoRechargeComponent, EditLcoComponent, SpecialPermissionComponent, NewLcoComponent, NewstreetComponent,
         AddLcoBusinessComponent, LcodashboardComponent, LcochartComponent, LcopiechartComponent, OperatordialogueComponent, StreetComponent, EditareaComponent,
-        OperatorcancelsubreportComponent,LoginrefundComponent,
+        OperatorcancelsubreportComponent, LoginrefundComponent,
         // --------------LCO RECHARGE-----------------
-        LcoRechargeReportComponent, NewRechargeComponent, BulkRechargeComponent, RefundComponent,BulkpackageupdationComponent,
+        LcoRechargeReportComponent, NewRechargeComponent, BulkRechargeComponent, RefundComponent, BulkpackageupdationComponent,
         //==========================================channel_setting==============================================
         AddonPackageComponent, BroadMasterComponent, ChannelComponent, ChannelTypeComponent, DistributorMasterComponent,
         CreateDistributorComponent, LcoCommissionComponent, PackageReferenceComponent, PackageCreationComponent, PackageMasterComponent,
@@ -197,7 +197,7 @@ import { BroadcasterReportsComponent } from "./features/channel_setting/Reports_
         AddLcoComponent, ChangeMembershipComponent, UpdateLcoCommissionComponent, CreateLcoComponent, UpdateLcoComponent, CreateLcoMembershipComponent,
         // -------------------------------Subscriber---------------------------------
         CreateSubscriberComponent, SubscriberDetailsComponent, ExpiryDetailsComponent, SubDashboardComponent, SubscriberdialogueComponent,
-        SubloginComponent, ChannellistComponent,LcologinpageComponent,
+        SubloginComponent, ChannellistComponent, LcologinpageComponent,
         // -----------------------------------------Cas Operation---------------------------------
         FingerPrintComponent, ScrollingComponent, MessageComponent, ForceTuningComponent, MailComponent, CasDialogueComponent,
         // -------------------------------Inventory---------------------------------
@@ -218,11 +218,10 @@ import { BroadcasterReportsComponent } from "./features/channel_setting/Reports_
         LcoinvoiceComponent, CasdialogueComponent, EditmsoComponent, SpecialoperatorComponent, SpecialoperatordialogueComponent, SublcooperatorComponent, SublcooperatordialogueComponent,
 
         AddednotaddedComponent, PackageplanComponent, PackageplandialogueComponent, ChanneldetailsComponent, ChanneldialogueComponent, AdsdetailsComponent, AdsdialogueComponent, LoginsettingsComponent,
-        TaxComponent, ProofComponent,ProofdetailsComponent,TaxdetailsComponent,LogindialogueComponent,EditDismembershipComponent,SpecialBulkpackageComponent,
-        SpecialcancelsubscriptionComponent,SpecialareachangeComponent,SpeciallcochangeComponent,SpecialeditbulkpackageComponent,SpeciallcotransferComponent,
+        TaxComponent, ProofComponent, ProofdetailsComponent, TaxdetailsComponent, LogindialogueComponent, EditDismembershipComponent, SpecialBulkpackageComponent,
+        SpecialcancelsubscriptionComponent, SpecialareachangeComponent, SpeciallcochangeComponent, SpecialeditbulkpackageComponent, SpeciallcotransferComponent,
         // =====================================================Reports=========================================
-        TraiReportComponent,SubscriptionBasedComponent,HistoryReportsComponent,PackageBasedComponent,BroadcasterReportsComponent
-    ],
+        TraiReportComponent, SubscriptionBasedComponent, HistoryReportsComponent, PackageBasedComponent, BroadcasterReportsComponent, HistoryAllReportsComponent],
     imports: [
         CommonModule,
         CoreModule,

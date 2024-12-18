@@ -1,0 +1,237 @@
+<div *ngIf="allType== '1'">
+    <h3>All Service Report</h3>
+
+    <div class="row " style="padding: 1rem;">
+        <div class="col-12 col-md-2 d-flex  justify-content-start align-items-start">
+            <button type="button" class="btn btn-primary" (click)="goBack()"><i
+                    class="fa-solid fa-reply mx-2"></i>Back</button>
+        </div>
+        <div class="row d-flex align-items-center justify-content-center">
+            <div class="col-12 col-sm-12 m-3">
+                <div class="col display justify-content-between align-items-end mb-3">
+                    <!-- <div class="col  mb-3"> -->
+                    <div class="display">
+                        <div class="input_box mx-2 mb-2">
+                            <input type="text" placeholder="Enter Smartcard" [(ngModel)]="smartcard">
+                        </div>
+                        <div class="mx-2 ">
+                            <mat-form-field appearance="outline">
+                                <mat-date-range-input [rangePicker]="picker">
+                                    <input matStartDate matInput placeholder="Start date"
+                                        (dateChange)="getFromDate($event)">
+                                    <input matEndDate matInput placeholder="End date" (dateChange)="getToDate($event)">
+                                </mat-date-range-input>
+                                <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                                <mat-date-range-picker #picker></mat-date-range-picker>
+                            </mat-form-field>
+                        </div>
+                        <div class="allreport mb-2">
+                            <a class="btn btn-success mx-1" (click)="getAllServicereport()">
+                                Get Report
+                            </a>
+                        </div>
+                    </div>
+                    <div class="mobileView">
+                        <button class="btn btn-outline-info mx-1" mat-raised-button color="primary" type="button"
+                            (click)="getAllServiceExcel()">
+                            Excel
+                        </button>
+                        <button class="btn btn-outline-info mx-1" mat-raised-button color="accent" type="button"
+                            (click)="getAllServicePDF()">
+                            PDF
+                        </button>
+                    </div>
+                    <!-- </div> -->
+                </div>
+                <h5>All Service List - {{rowData.length}} </h5>
+                <div class="display justify-content-between align-item-center allsmart">
+                    <div>
+
+                        <span class="label">SMARTCARD: </span>
+                        <span class="value"> {{smartcardid}} </span>
+                    </div>
+                    <div class="display justify-content-end align-items-center allsmart">
+                        <div>
+                            <span class="label">Form:</span>
+                            <span class="value">{{ fromdate }}</span>
+                            <span class="label">To:</span>
+                            <span class="value">{{ todate }}</span>
+                        </div>
+                    </div>
+                </div>
+                <ag-grid-angular #agGrid id="myGrid" domLayout='autoHeight' class="ag-theme-alpine table-class"
+                    rowAnimation [gridOptions]="gridOptions" [columnDefs]="columnDefs" [rowData]="rowData"
+                    (gridReady)="onGridReady($event)" [enableCellTextSelection]="true">
+                </ag-grid-angular>
+            </div>
+        </div>
+    </div>
+</div>
+<div *ngIf="allType== '2'">
+    <h3>Total Smartcard List Report</h3>
+    <div class="row " style="padding: 1rem;">
+        <div class="row d-flex align-items-center justify-content-center">
+            <div class="col-12 col-sm-6 m-3">
+                <div class="col d-flex justify-content-between align-items-end mb-3 total">
+                    <div>
+                        <button type="button" class="btn btn-primary" (click)="goBack()"><i
+                                class="fa-solid fa-reply mx-2"></i>Back</button>
+                    </div>
+                    <div>
+                        <span style="font-size: 18px;color:rgb(37, 26, 63);font-weight: 600;">
+                            Get Report
+                        </span>
+
+                        <button class="btn btn-outline-info mx-1" mat-raised-button color="primary" type="button"
+                            (click)="getTotalExcel()">
+                            Excel
+                        </button>
+                        <button class="btn btn-outline-info mx-1" mat-raised-button color="accent" type="button"
+                            (click)="getTotalPDF()">
+                            PDF
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div *ngIf="allType== '3'">
+    <h3>Paired Smartcard</h3>
+    <div class="row " style="padding: 1rem;">
+        <div class="row d-flex align-items-center justify-content-center">
+            <div class="col-12 col-sm-12 m-3">
+                <div class="col d-flex justify-content-between align-items-end mb-3">
+                    <div>
+                        <button type="button" class="btn btn-primary" (click)="goBack()"><i
+                                class="fa-solid fa-reply mx-2"></i>Back</button>
+                    </div>
+                    <div>
+                        <a class="btn btn-success mx-1" (click)="getPairedReport()">
+                            Get Report
+                        </a>
+                        <button class="btn btn-outline-info mx-1" mat-raised-button color="primary" type="button"
+                            (click)="getPairedExcel()">
+                            Excel
+                        </button>
+                        <button class="btn btn-outline-info mx-1" mat-raised-button color="accent" type="button"
+                            (click)="getPairedPDF()">
+                            PDF
+                        </button>
+                    </div>
+                </div>
+                <div>
+                    <h5>Paired Box And Smartcard List - {{rowData.length}}</h5>
+                </div>
+                <ag-grid-angular #agGrid id="myGrid" domLayout='autoHeight' class="ag-theme-alpine table-class"
+                    rowAnimation [gridOptions]="gridOptions" [columnDefs]="columnDefs" [rowData]="rowData"
+                    (gridReady)="onGridReady($event)" [enableCellTextSelection]="true">
+                </ag-grid-angular>
+            </div>
+        </div>
+    </div>
+</div>
+<div *ngIf="allType== '4'">
+    <h3>Blocked Smartcard</h3>
+    <div class="row " style="padding: 1rem;">
+        <div class="row d-flex align-items-center justify-content-center">
+            <div class="col-12 col-sm-12 m-3">
+                <div class="col d-flex justify-content-between align-items-end mb-3">
+                    <div>
+                        <button type="button" class="btn btn-primary" (click)="goBack()"><i
+                                class="fa-solid fa-reply mx-2"></i>Back</button>
+                    </div>
+                    <div>
+                        <a class="btn btn-success mx-1" (click)="getBlockedReport()">
+                            Get Report
+                        </a>
+                        <button class="btn btn-outline-info mx-1" mat-raised-button color="primary" type="button"
+                            (click)="getBlockedExcel()">
+                            Excel
+                        </button>
+                        <button class="btn btn-outline-info mx-1" mat-raised-button color="accent" type="button"
+                            (click)="getBlockedPDF()">
+                            PDF
+                        </button>
+                    </div>
+                </div>
+                <div>
+                    <h5>Block List - {{rowData.length}}</h5>
+                </div>
+                <ag-grid-angular #agGrid id="myGrid" domLayout='autoHeight' class="ag-theme-alpine table-class"
+                    rowAnimation [gridOptions]="gridOptions" [columnDefs]="columnDefs" [rowData]="rowData"
+                    (gridReady)="onGridReady($event)" [enableCellTextSelection]="true">
+                </ag-grid-angular>
+            </div>
+        </div>
+    </div>
+</div>
+<div *ngIf="allType== '5'">
+    <h3>SCROLL HISTORY REPORT</h3>
+    <div class="row " style="padding: 1rem;">
+        <div class="col-12 col-md-2 d-flex  justify-content-start align-items-start">
+            <button type="button" class="btn btn-primary" (click)="goBack()"><i
+                    class="fa-solid fa-reply mx-2"></i>Back</button>
+        </div>
+        <div class="row d-flex align-items-center justify-content-center">
+            <div class="col-12 col-sm-12 m-3">
+                <div class="col display justify-content-between align-items-end mb-3">
+                    <!-- <div class="col  mb-3"> -->
+                    <div class="display">
+                        <div class="mx-2 ">
+                            <mat-form-field appearance="outline">
+                                <mat-date-range-input [rangePicker]="picker">
+                                    <input matStartDate matInput placeholder="Start date"
+                                        (dateChange)="getFromDate($event)">
+                                    <input matEndDate matInput placeholder="End date" (dateChange)="getToDate($event)">
+                                </mat-date-range-input>
+                                <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                                <mat-date-range-picker #picker></mat-date-range-picker>
+                            </mat-form-field>
+                        </div>
+                        <div class="allreport mb-2">
+                            <a class="btn btn-success mx-1" (click)="getScrollReport()">
+                                Get Report
+                            </a>
+                        </div>
+                    </div>
+                    <div class="mobileView">
+                        <button class="btn btn-outline-info mx-1" mat-raised-button color="primary" type="button"
+                            (click)="getScrollExcel()">
+                            Excel
+                        </button>
+                        <button class="btn btn-outline-info mx-1" mat-raised-button color="accent" type="button"
+                            (click)="getScrollPDF()">
+                            PDF
+                        </button>
+                    </div>
+                    <!-- </div> -->
+                </div>
+                <h5>Scroll list - {{rowData.length}} </h5>
+                <!-- <div class="display justify-content-end align-item-center allsmart">
+
+                    <div>
+                        <span>FormDate  : {{fromdate}} ToDate  : {{todate}} </span>
+                    </div>
+                </div> -->
+                <div class="display justify-content-end align-items-center allsmart">
+                    <div>
+                        <span class="label">FormDate:</span>
+                        <span class="value">{{ fromdate }}</span>
+                        <span class="label">ToDate:</span>
+                        <span class="value">{{ todate }}</span>
+                    </div>
+                </div>
+
+
+                <ag-grid-angular #agGrid id="myGrid" domLayout='autoHeight' class="ag-theme-alpine table-class"
+                    rowAnimation [gridOptions]="gridOptions" [columnDefs]="columnDefs" [rowData]="rowData"
+                    (gridReady)="onGridReady($event)" [enableCellTextSelection]="true">
+                </ag-grid-angular>
+            </div>
+        </div>
+    </div>
+</div>
+<div *ngIf="allType== '6'">mail</div>
+<div *ngIf="allType== '7'">finger print</div>
+<div *ngIf="allType== '8'">message</div>

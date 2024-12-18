@@ -1,6 +1,6 @@
 import { ChangeDetectorRef, Component, OnInit, signal } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, Router, Routes } from '@angular/router';
 import { data } from 'jquery';
 import { BaseService } from 'src/app/_core/service/base.service';
 import { StorageService } from 'src/app/_core/service/storage.service';
@@ -9,6 +9,9 @@ import { ChannellistComponent } from '../../../subscriber/channellist/channellis
 import { PackageBasedComponent } from '../../Reports_page/Trai/package-based/package-based.component';
 import { SubscriptionBasedComponent } from '../../Reports_page/Trai/subscription-based/subscription-based.component';
 import { BroadcasterReportsComponent } from '../../Reports_page/Trai/broadcaster-reports/broadcaster-reports.component';
+import { HistoryAllReportsComponent } from '../../Reports_page/Trai/History/history-all-reports/history-all-reports.component';
+
+
 
 @Component({
   selector: 'app-trai-report',
@@ -17,7 +20,7 @@ import { BroadcasterReportsComponent } from '../../Reports_page/Trai/broadcaster
 })
 export class TraiReportComponent implements OnInit {
 
-  constructor(private route: ActivatedRoute, private userservice: BaseService, private swal: SwalService, private router: Router, private storageservice: StorageService, public dialog: MatDialog, private cdr: ChangeDetectorRef) {
+  constructor(private route: ActivatedRoute, private userservice: BaseService, private swal: SwalService, private router: Router, private storageservice: StorageService, public dialog: MatDialog,) {
 
   }
   ngOnInit(): void {
@@ -38,6 +41,8 @@ export class TraiReportComponent implements OnInit {
     console.log(event);
     let width = '500px';
     if (event == 'bouquetAlacarte') {
+      width = '600px';
+    } else if (event == 'Synchronization') {
       width = '600px';
     }
     let dialogData = { type: event };
@@ -80,4 +85,12 @@ export class TraiReportComponent implements OnInit {
     });
   }
 
+  openHistoryDialog(event: number) {
+    console.log(event);
+    this.router.navigate(['admin/historyAllReports/'+ event]);
+  }
+  openCasoperationDialog(event: number) {
+    console.log(event);
+    this.router.navigate(['admin/casoperationReports/'+ event]);
+  }
 }

@@ -9,9 +9,9 @@
             style="border: 1px solid #055478;padding: 1rem;">
             <div class="col-12 display align-items-center">
                 <div class="col-12 col-md-12  justify-content-center align-items-center  ">
-                    <div class="input_box display mb-3">
+                    <div  *ngIf="type != 'alacarte'" class=" display mb-3">
                         <div class="col-12 col-md-6 sidename">
-                            <span> Select a Operator</span>
+                            <span style="color: #243359;"> Select a Operator</span>
                         </div>
                         <div class="col-12 col-md-6">
                             <mat-form-field class="input-field" appearance="outline">
@@ -28,11 +28,10 @@
                             </mat-form-field>
                         </div>
                     </div>
-                    <div class="input_box display mb-3">
+                    <div class=" display mb-3">
                         <div class="col-12 col-md-6 sidename">
-                            <span>Select a Date</span>
+                            <span style="color: #243359;">Select a Date</span>
                         </div>
-
                         <div class="col-12 col-md-6">
                             <mat-form-field class="input-field" appearance="outline" (dateChange)="logValues()">
                                 <mat-label>Choose a date</mat-label>
@@ -74,6 +73,45 @@
                         </div>
                     </div>
                     <div *ngIf="type == 'addon_package'">
+                        <div class="input_box display1 mb-3">
+                            <div class="col-6 col-md-6 sidename">
+                                <span>Reports</span>
+                            </div>
+                            <div class="col-6 col-md-6">
+                                <div class="export-buttons d-flex">
+                                    <div class="export-icon col-6 col-md-3 mx-2" (click)="getAddonSubscriptionExcel()">
+                                        <img src="/assets/images/icons/Excel.png" alt="Excel Icon" width="40px">
+                                        <div class="tooltip">Excel</div>
+                                    </div>
+                                    <div class="export-icon col-6 col-md-3 mx-2" (click)="getAddonSubscriptionPDF()">
+                                        <img src="/assets/images/icons/pdf.png" alt="PDF Icon" width="40px">
+                                        <div class="tooltip">Pdf</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                   
+                    <div *ngIf="type == 'alacarte'">
+                        <div class="input_box display1 mb-3">
+                            <div class="col-6 col-md-6 sidename">
+                                <span>Reports</span>
+                            </div>
+                            <div class="col-6 col-md-6">
+                                <div class="export-buttons d-flex">
+                                    <div class="export-icon col-6 col-md-3 mx-2" (click)="getAlacarteSubscriptionExcel()">
+                                        <img src="/assets/images/icons/Excel.png" alt="Excel Icon" width="40px">
+                                        <div class="tooltip">Excel</div>
+                                    </div>
+                                    <div class="export-icon col-6 col-md-3 mx-2" (click)="getAlacarteSubscriptionPDF()">
+                                        <img src="/assets/images/icons/pdf.png" alt="PDF Icon" width="40px">
+                                        <div class="tooltip">Pdf</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div *ngIf="type == 'date_subscription'">
                         <div class="input_box display1 mb-3">
                             <div class="col-6 col-md-6 sidename">
                                 <span>Reports</span>

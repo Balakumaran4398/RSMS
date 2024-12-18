@@ -200,18 +200,18 @@ export class SubscriptionBasedComponent implements OnInit {
             let header: string[] = [];
             const datas: Array<any> = [];
             // if (this.type == 1) {
-              // worksheet.columns = [
-              //   { header: 'CUSTOMER NAME', key: 'customername', width: 25 },
-              //   { header: 'SMARTCARD', key: 'smartcard', width: 20 },
-              //   { header: 'BOX ID', key: 'boxid', width: 20 },
-              //   { header: 'CAS', key: 'casname', width: 20 },
-              //   { header: 'PACKAGE', key: 'productname', width: 20 },
-              //   { header: 'PRODUCT ID', key: 'casproductid', width: 20 },
-              //   { header: 'TYPE', key: 'type', width: 20 },
-              //   { header: 'SUBSCRIPTION START DATE', key: 'logdate', width: 20 },
-              //   { header: 'SUBSCRIPTION END DATE', key: 'expirydate', width: 20 },
-              //   // Add other columns here...
-              // ];
+            // worksheet.columns = [
+            //   { header: 'CUSTOMER NAME', key: 'customername', width: 25 },
+            //   { header: 'SMARTCARD', key: 'smartcard', width: 20 },
+            //   { header: 'BOX ID', key: 'boxid', width: 20 },
+            //   { header: 'CAS', key: 'casname', width: 20 },
+            //   { header: 'PACKAGE', key: 'productname', width: 20 },
+            //   { header: 'PRODUCT ID', key: 'casproductid', width: 20 },
+            //   { header: 'TYPE', key: 'type', width: 20 },
+            //   { header: 'SUBSCRIPTION START DATE', key: 'logdate', width: 20 },
+            //   { header: 'SUBSCRIPTION END DATE', key: 'expirydate', width: 20 },
+            //   // Add other columns here...
+            // ];
             areatitle = 'A1:I2';
             areasub = 'A3:I3';
             header = ['CUSTOMER NAME', 'SMARTCARD', 'BOXID', 'CAS', 'PACKAGE', 'PRODUCT ID', 'TYPE', 'SUBSCRIPTION START DATE', 'SUBSCRIPTION END DATE'];
@@ -274,15 +274,11 @@ export class SubscriptionBasedComponent implements OnInit {
             let header: string[] = [];
             const datas: Array<any> = [];
             // if (this.type == 1) {
-            areatitle = 'A1:G2';
-            areasub = 'A3:G3';
-            // header = ['PACKAGE NAME PREVIOUS', 'PACKAGE NAME CURRENR', 'PACKAGE ID', 'PRODUCT ID', 'OLD CHANNEL LIST', 'NEW CHANNEL LIST', 'ADDED CHANNEL LIST', 'REMOVED CHANNEL LIST', 'UPDATED DATE', 'COUNT'];
-            header = ['CUSTOMER NAME', 'SMARTCARD', 'BOXID', 'PACKAGE', 'PRODUCT ID', 'SUBSCRIPTION START DATE', 'SUBSCRIPTION END DATE'];
-
-            this.rowData.forEach((d: any) => {
-              // const row = [d.packagenamepre, d.packagenamecur, d.packageid, d.casproductid, d.channelnamepre, d.chanenlnamecur, d.addedchannels, d.removedchannels, d.updateddate, d.count];
-              const row = [d.customername, d.smartcard, d.boxid, d.productname, d.orderid, d.logdate, d.expirydate];
-              // console.log('type 1 and 4', row);
+            areatitle = 'A1:J2';
+            areasub = 'A3:J3';
+            header = ['S.NO','SUB ID','OPERATOR ID','CUSTOMER NAME', 'SMARTCARD', 'BOXID', 'PACKAGE', 'PRODUCT ID', 'SUBSCRIPTION START DATE', 'SUBSCRIPTION END DATE'];
+            this.rowData.forEach((d: any,index: number) => {
+              const row = [ index + 1, d.subid,d.operatorid,d.customername, d.smartcard, d.boxid, d.productname, d.orderid, d.logdate, d.expirydate];
               datas.push(row);
             });
 
@@ -382,6 +378,128 @@ export class SubscriptionBasedComponent implements OnInit {
           });
         });
   }
+
+  // -------------------------------------------------------Alacarte Subscription -----------------------------------
+  getAlacarteSubscriptionExcel() {
+    this.userService.getasOnDateAlacarteActiveOrDeactiveSubscriptionExcelReport(this.role, this.username, this.cur_date, this.isActive, 2)
+      .subscribe(
+        (response: HttpResponse<any[]>) => { // Expect HttpResponse<any[]>
+          console.log(this.type);
+          if (response.status === 200) {
+            this.rowData = response.body;
+            console.log(this.type);
+            const title = (this.type + ' REPORT').toUpperCase();
+            const sub = 'MSO ADDRESS:' + this.msodetails;
+            let areatitle = '';
+            let areasub = '';
+            let header: string[] = [];
+            const datas: Array<any> = [];
+            // if (this.type == 1) {
+            areatitle = 'A1:F2';
+            areasub = 'A3:F3';
+            header = ['SMARTCARD', 'BOX ID', 'PRODUCT ID ', 'PRODUCT NAME', 'ACTIVATION DATE', 'EXPIRY DATE'];
+            this.rowData.forEach((d: any) => {
+              const row = [d.smartcard, d.boxid, d.productid, d.productname, d.logdate, d.expirydate];
+              // console.log('type 1 and 4', row);
+              datas.push(row);
+            });
+
+            this.excelService.generateAlacarteSubscriptionExcel(areatitle, header, datas, title, areasub, sub);
+
+          } else if (response.status === 204) {
+            this.swal.Success_204();
+            this.rowData = [];
+          }
+        },
+        (error) => {
+          this.handleApiError(error);
+        }
+      );
+  }
+  getAlacarteSubscriptionPDF() {
+    this.userService.getasOnDateAlacarteActiveOrDeactiveSubscriptionPDFReport(this.role, this.username, this.cur_date, this.isActive, 1)
+      .subscribe((x: Blob) => {
+        const blob = new Blob([x], { type: 'application/pdf' });
+        const data = window.URL.createObjectURL(blob);
+        const link = document.createElement('a');
+        link.href = data;
+        link.download = (this.type + ".pdf").toUpperCase();
+        link.dispatchEvent(new MouseEvent('click', { bubbles: true, cancelable: true, view: window }));
+        setTimeout(() => {
+          window.URL.revokeObjectURL(data);
+          link.remove();
+        }, 100);
+      },
+        (error: any) => {
+          Swal.fire({
+            title: 'Error!',
+            text: error?.error?.message || 'There was an issue generating the PDF CAS form report.',
+            icon: 'error',
+            confirmButtonText: 'Ok'
+          });
+        });
+  }
+// -------------------------------------------------ALL TYPES-------------------------------------
+getAllTypesExcel() {
+  this.userService.getasOnDateAlacarteActiveOrDeactiveSubscriptionExcelReport(this.role, this.username, this.cur_date, this.isActive, 2)
+    .subscribe(
+      (response: HttpResponse<any[]>) => { // Expect HttpResponse<any[]>
+        console.log(this.type);
+        if (response.status === 200) {
+          this.rowData = response.body;
+          console.log(this.type);
+          const title = (this.type + ' REPORT').toUpperCase();
+          const sub = 'MSO ADDRESS:' + this.msodetails;
+          let areatitle = '';
+          let areasub = '';
+          let header: string[] = [];
+          const datas: Array<any> = [];
+          // if (this.type == 1) {
+          areatitle = 'A1:I2';
+          areasub = 'A3:I3';
+          header = ['S.NO','SUB ID','OPERATOR NAME','CUSTOMER NAME','SMARTCARD', 'BOX ID','CAS', 'PACKAGE','PRODUCT ID ', 'PRODUCT TYPE', 'SUBSCRIPTION START DATE', 'SUBSCRIPTION END DATE'];
+          this.rowData.forEach((d: any) => {
+            const row = [d.smartcard, d.boxid, d.productid, d.productname, d.logdate, d.expirydate];
+            // console.log('type 1 and 4', row);
+            datas.push(row);
+          });
+
+          this.excelService.generateAllTypesExcel(areatitle, header, datas, title, areasub, sub);
+
+        } else if (response.status === 204) {
+          this.swal.Success_204();
+          this.rowData = [];
+        }
+      },
+      (error) => {
+        this.handleApiError(error);
+      }
+    );
+}
+getAllTypesPDF() {
+  this.userService.getasOnDateAlacarteActiveOrDeactiveSubscriptionPDFReport(this.role, this.username, this.cur_date, this.isActive, 1)
+    .subscribe((x: Blob) => {
+      const blob = new Blob([x], { type: 'application/pdf' });
+      const data = window.URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.href = data;
+      link.download = (this.type + ".pdf").toUpperCase();
+      link.dispatchEvent(new MouseEvent('click', { bubbles: true, cancelable: true, view: window }));
+      setTimeout(() => {
+        window.URL.revokeObjectURL(data);
+        link.remove();
+      }, 100);
+    },
+      (error: any) => {
+        Swal.fire({
+          title: 'Error!',
+          text: error?.error?.message || 'There was an issue generating the PDF CAS form report.',
+          icon: 'error',
+          confirmButtonText: 'Ok'
+        });
+      });
+}
+// ---------------------------------------------------------------------------------------------------------------------------------------
   handleApiError(error: any) {
     if (error.status === 400) {
       this.swal.Error_400();

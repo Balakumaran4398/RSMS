@@ -1226,24 +1226,20 @@ export class ExcelService {
     areasub: any,
     sub: any
   ) {
-    // const columns = [
-      // { key: 'a', width: 25 }, //Balance
-      // { key: 'b', width: 21 }, // MOBILE NUMBER
-      // { key: 'c', width: 20 }, // RETAILER ID
-      // { key: 'd', width: 30 }, //RETAILER NAME
-      // { key: 'e', width: 25 }, // STATUS 
-      // { key: 'f', width: 20 }, // USERNAME
 
-      const columns = [
-        { key: 'a', width: 25 }, //Customer Name 
-        { key: 'b', width: 21 }, // Smartcard
-        { key: 'c', width: 20 }, // Box ID
-        { key: 'd', width: 30 }, // Package
-        { key: 'e', width: 25 }, // Product id
-        { key: 'f', width: 20 }, // Subscription start date
-        { key: 'g', width: 20 }, // Subscription end date
-  
-      ];
+
+    const columns = [
+      { key: 'a', width: 15 }, // S.NO
+      { key: 'b', width: 15 }, // SUB ID 
+      { key: 'c', width: 15 }, // OPERATOR ID 
+      { key: 'd', width: 25 }, // CUSTOMER NAME
+      { key: 'e', width: 25 }, // Smartcard
+      { key: 'f', width: 25 }, // Box ID
+      { key: 'g', width: 30 }, // Package
+      { key: 'h', width: 20 }, // Product id
+      { key: 'i', width: 30 }, // Subscription start date
+      { key: 'j', width: 30 }, // Subscription end date
+    ];
 
     // ];
     await this.generateExcelFile(
@@ -1384,13 +1380,13 @@ export class ExcelService {
   ) {
     const columns = [
       { key: 'a', width: 30 }, // OPERATOR NAME
-      { key: 'b', width: 25 }, // CUSTOMER NAME
-      { key: 'c', width: 35 }, // SMARTCARD
+      { key: 'b', width: 20 }, // CUSTOMER NAME
+      { key: 'c', width: 30 }, // SMARTCARD
       { key: 'd', width: 20 }, // BOX ID
       { key: 'e', width: 30 }, // PACKAGE 
-      { key: 'f', width: 20 }, // PROCUCT ID
-      { key: 'g', width: 35 }, // SUBSCRIPTION START DATE
-      { key: 'h', width: 35 }, // SUBSCRIPTION END DATE
+      { key: 'f', width: 15 }, // PROCUCT ID
+      { key: 'g', width: 30 }, // SUBSCRIPTION START DATE
+      { key: 'h', width: 30 }, // SUBSCRIPTION END DATE
 
     ];
     await this.generateExcelFile(
@@ -1402,6 +1398,193 @@ export class ExcelService {
       sub,
       columns,
       'Addon Subscription'
+    );
+  }
+  async generateAlacarteSubscriptionExcel(
+    areatitle: string,
+    headers: any,
+    dataRow: any[],
+    titles: any,
+    areasub: any,
+    sub: any
+  ) {
+    const columns = [
+      { key: 'a', width: 30 }, // SMARTCARD
+      { key: 'b', width: 25 }, // BOX ID
+      { key: 'c', width: 35 }, // PRODUCT ID
+      { key: 'd', width: 30 }, // PRODUCT NAME
+      { key: 'e', width: 35 }, // ACTIVATION DATE
+      { key: 'f', width: 35 }, // EXPIRY DATE
+    ];
+    await this.generateExcelFile(
+      areatitle,
+      headers,
+      dataRow,
+      titles,
+      areasub,
+      sub,
+      columns,
+      'Alacarte Subscription'
+    );
+  }
+  async generateAllTypesExcel(
+    areatitle: string,
+    headers: any,
+    dataRow: any[],
+    titles: any,
+    areasub: any,
+    sub: any
+  ) {
+    const columns = [
+      { key: 'a', width: 10 }, // S.NO
+      { key: 'b', width: 20 }, // SUB ID
+      { key: 'c', width: 30 }, // OPERATOR NAME
+      { key: 'd', width: 30 }, // CUSTOMER NAME
+      { key: 'e', width: 30 }, // SMARTCARD
+      { key: 'f', width: 30 }, // BOX ID
+      { key: 'g', width: 15 }, // CAS
+      { key: 'h', width: 25 }, // PACKAGE
+      { key: 'i', width: 20 }, // PRODUCT ID
+      { key: 'j', width: 20 }, // PRODUCT TYPE
+      { key: 'k', width: 30 }, // SUBSCRIPTION START DATE
+      { key: 'l', width: 30 }, // SUBSCRIPTION END DATE
+    ];
+    await this.generateExcelFile(
+      areatitle,
+      headers,
+      dataRow,
+      titles,
+      areasub,
+      sub,
+      columns,
+      'All Types Subscription'
+    );
+  }
+  async generateTotalSmartcardExcel(
+    areatitle: string,
+    headers: any,
+    dataRow: any[],
+    titles: any,
+    areasub: any,
+    sub: any
+  ) {
+    const columns = [
+      { key: 'a', width: 10 }, // S.NO
+      { key: 'b', width: 20 }, // Customer ID
+      { key: 'c', width: 25 }, // Customer Name
+      { key: 'd', width: 15 }, // CAS FORM ID
+      { key: 'e', width: 15 }, // MOBILE NO
+      { key: 'f', width: 30 }, // ADDRESS
+      { key: 'g', width: 30 }, // INSTALL ADDRESS
+      { key: 'h', width: 35 }, // EMAIL
+      { key: 'i', width: 20 }, // LANDLINE NO
+      { key: 'j', width: 30 }, // SMARTCARD
+      { key: 'k', width: 25 }, // BOXID
+      { key: 'l', width: 15 }, // STATUS
+      { key: 'm', width: 30 }, // CREATED DATE
+      { key: 'n', width: 20 }, // USER NAME
+      { key: 'o', width: 20 }, // PASSWORD
+      { key: 'p', width: 20 }, // APP LOCK STATUS
+      { key: 'q', width: 25 }, // PACKAGE NAME
+    ];
+    await this.generateExcelFile(
+      areatitle,
+      headers,
+      dataRow,
+      titles,
+      areasub,
+      sub,
+      columns,
+      'Total Smartcard'
+    );
+  }
+  async generatePairedExcel(
+    areatitle: string,
+    headers: any,
+    dataRow: any[],
+    titles: any,
+    areasub: any,
+    sub: any
+  ) {
+    const columns = [
+      { key: 'a', width: 10 }, // S.NO
+      { key: 'b', width: 20 }, // SUBSCRIBER ID
+      { key: 'c', width: 30 }, // SUBSCRIBER NAME
+      { key: 'd', width: 30 }, // SMARTCARD
+      { key: 'e', width: 30 }, // BOXID
+      { key: 'f', width: 30 }, // ADDRESS
+      { key: 'g', width: 30 }, // INSTALL DATE
+ 
+    ];
+    await this.generateExcelFile(
+      areatitle,
+      headers,
+      dataRow,
+      titles,
+      areasub,
+      sub,
+      columns,
+      'Paired Smartcard'
+    );
+  }
+  async generateAllServiceExcel(
+    areatitle: string,
+    headers: any,
+    dataRow: any[],
+    titles: any,
+    areasub: any,
+    sub: any
+  ) {
+    const columns = [
+      { key: 'a', width: 10 }, // S.NO
+      { key: 'b', width: 30 }, // SMARTCARD
+      { key: 'c', width: 30 }, // LOG DATE
+      { key: 'd', width: 20 }, // ACTION
+      { key: 'e', width: 100 }, // REMARKS
+
+ 
+    ];
+    await this.generateExcelFile(
+      areatitle,
+      headers,
+      dataRow,
+      titles,
+      areasub,
+      sub,
+      columns,
+      'All Service List'
+    );
+  }
+  async generateScrollExcel(
+    areatitle: string,
+    headers: any,
+    dataRow: any[],
+    titles: any,
+    areasub: any,
+    sub: any
+  ) {
+    const columns = [
+      { key: 'a', width: 10 }, // S.NO
+      { key: 'b', width: 15 }, // INTEND ID
+      { key: 'c', width: 15 }, // INTENT TO
+      { key: 'd', width: 25 }, // MESSAGE
+      { key: 'e', width: 20}, // FONT COLOR
+      { key: 'f', width: 25 }, // BACKGROUND COLOR
+      { key: 'g', width: 15 }, // FONT SIZE
+      { key: 'h', width: 15 }, // POSITION
+      { key: 'i', width: 20 }, // REPEAT FOR
+      { key: 'j', width: 30 }, // CREATED DATE
+ 
+    ];
+    await this.generateExcelFile(
+      areatitle,
+      headers,
+      dataRow,
+      titles,
+      areasub,
+      sub,
+      columns,
+      'Scroll History'
     );
   }
 }

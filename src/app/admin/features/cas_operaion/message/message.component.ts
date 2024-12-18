@@ -514,7 +514,7 @@ export class MessageComponent {
           timer: 3000,
           timerProgressBar: true,
         }).then(() => {
-          // window.location.reload();
+          window.location.reload();
         });
       },
       (error) => {

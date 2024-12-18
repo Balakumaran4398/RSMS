@@ -46,7 +46,6 @@ export class PackageBasedComponent implements OnInit {
     } else {
       this.packageType = 0;
     }
-
   }
   formatDate(date: Date): string {
     const year = date.getFullYear();

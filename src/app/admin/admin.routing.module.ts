@@ -79,6 +79,7 @@ import { ChartInventoryReportComponent } from '../_core/Chart-Reports/chart-inve
 import { ChartPackageReportComponent } from '../_core/Chart-Reports/chart-package-report/chart-package-report.component';
 import { ChartSTBReportComponent } from '../_core/Chart-Reports/chart-stbreport/chart-stbreport.component';
 import { PackageBasedComponent } from './features/channel_setting/Reports_page/Trai/package-based/package-based.component';
+import { HistoryAllReportsComponent } from './features/channel_setting/Reports_page/Trai/History/history-all-reports/history-all-reports.component';
 
 
 const routes: Routes = [
@@ -156,6 +157,7 @@ const routes: Routes = [
       { path: 'traiReports', component: TraiReportComponent },
       { path: 'msoReports', component: MsoreportsComponent },
       { path: 'historyReports', component: HistoryReportsComponent },
+      { path: 'historyAllReports/:id', component: HistoryAllReportsComponent },
       
       // ------------------------------------Special role-------------------------------------------
       { path: 'msodetails', component: MsodetailsComponent },

@@ -1378,17 +1378,63 @@ export class BaseService {
 
   // ----------------------------------Base package -------------------------------
 
-  getasOnDateBaseActiveOrDeactiveExcelReport(role: any, username: any, operatorid: any, date: any,  type: any, reporttype: any): Observable<HttpResponse<any[]>> {
+  getasOnDateBaseActiveOrDeactiveExcelReport(role: any, username: any, operatorid: any, date: any, type: any, reporttype: any): Observable<HttpResponse<any[]>> {
     return this.http.get<any[]>(BASE_URL + "/report/asOnDateBaseActiveOrDeactiveSubscriptionReport?role=" + role + "&username=" + username + "&operatorid=" + operatorid + "&date=" + date + "&type=" + type + "&reporttype=" + reporttype, { observe: 'response' });
   }
-  getasOnDateBaseActiveOrDeactivePDFReport(role: any, username: any,  operatorid: any, date: any, type: any, reporttype: any): Observable<Blob> {
+  getasOnDateBaseActiveOrDeactivePDFReport(role: any, username: any, operatorid: any, date: any, type: any, reporttype: any): Observable<Blob> {
     return this.http.get(BASE_URL + "/report/asOnDateBaseActiveOrDeactiveSubscriptionReport?role=" + role + "&username=" + username + "&operatorid=" + operatorid + "&date=" + date + "&type=" + type + "&reporttype=" + reporttype, { responseType: 'blob' });
   }
   // --------------------------------------Addon Package-----------------------------
-  getasOnDateAddonActiveOrDeactiveExcelReport(role: any, username: any, operatorid: any, date: any,  type: any, reporttype: any): Observable<HttpResponse<any[]>> {
+  getasOnDateAddonActiveOrDeactiveExcelReport(role: any, username: any, operatorid: any, date: any, type: any, reporttype: any): Observable<HttpResponse<any[]>> {
     return this.http.get<any[]>(BASE_URL + "/report/asOnDateAddonActiveOrDeactiveSubscriptionReport?role=" + role + "&username=" + username + "&operatorid=" + operatorid + "&date=" + date + "&type=" + type + "&reporttype=" + reporttype, { observe: 'response' });
   }
-  getasOnDateAddonActiveOrDeactivePDFReport(role: any, username: any,  operatorid: any, date: any, type: any, reporttype: any): Observable<Blob> {
+  getasOnDateAddonActiveOrDeactivePDFReport(role: any, username: any, operatorid: any, date: any, type: any, reporttype: any): Observable<Blob> {
     return this.http.get(BASE_URL + "/report/asOnDateAddonActiveOrDeactiveSubscriptionReport?role=" + role + "&username=" + username + "&operatorid=" + operatorid + "&date=" + date + "&type=" + type + "&reporttype=" + reporttype, { responseType: 'blob' });
+  }
+  // ------------------------------------------------------Alacarte---------------------------------
+  getasOnDateAlacarteActiveOrDeactiveSubscriptionExcelReport(role: any, username: any, date: any, type: any, reporttype: any): Observable<HttpResponse<any[]>> {
+    return this.http.get<any[]>(BASE_URL + "/report/asOnDateAlacarteActiveOrDeactiveSubscriptionReport?role=" + role + "&username=" + username + "&date=" + date + "&type=" + type + "&reporttype=" + reporttype, { observe: 'response' });
+  }
+  getasOnDateAlacarteActiveOrDeactiveSubscriptionPDFReport(role: any, username: any, date: any, type: any, reporttype: any): Observable<Blob> {
+    return this.http.get(BASE_URL + "/report/asOnDateAlacarteActiveOrDeactiveSubscriptionReport?role=" + role + "&username=" + username + "&date=" + date + "&type=" + type + "&reporttype=" + reporttype, { responseType: 'blob' });
+  }
+  // --------------------------------------------------History REPORTS========================
+  // ------------------------------------------------All Service Report------------------------------------------------
+  getAllServiceHistoryExcelReport(role: any, username: any, fromdate: any, todate: any, smartcard: any, reporttype: any): Observable<HttpResponse<any[]>> {
+    return this.http.get<any[]>(BASE_URL + "/report/GetAllServiceHistoryReport?role=" + role + "&username=" + username + "&fromdate=" + fromdate + "&todate=" + todate + "&smartcard=" + smartcard + "&reporttype=" + reporttype, { observe: 'response' });
+  }
+  getAllServiceHistoryPDFReport(role: any, username: any, fromdate: any, todate: any, smartcard: any, reporttype: any): Observable<Blob> {
+    return this.http.get(BASE_URL + "/report/GetAllServiceHistoryReport?role=" + role + "&username=" + username + "&fromdate=" + fromdate + "&todate=" + todate + "&smartcard=" + smartcard + "&reporttype=" + reporttype, { responseType: 'blob' });
+  }
+  // ------------------------------------------------------Total Smartcard------------------------
+
+  getTotalSmartcardExcelReport(role: any, username: any, reporttype: any): Observable<HttpResponse<any[]>> {
+    return this.http.get<any[]>(BASE_URL + "/report/GetTotalSmartcardReport?role=" + role + "&username=" + username + "&reporttype=" + reporttype, { observe: 'response' });
+  }
+  getTotalSmartcardPDFReport(role: any, username: any, reporttype: any): Observable<Blob> {
+    return this.http.get(BASE_URL + "/report/GetTotalSmartcardReport?role=" + role + "&username=" + username + "&reporttype=" + reporttype, { responseType: 'blob' });
+  }
+  // -------------------------------------------------------paired Smartcard---------------------------------
+
+  getPairedSmartcardExcelReport(role: any, username: any, reporttype: any): Observable<HttpResponse<any[]>> {
+    return this.http.get<any[]>(BASE_URL + "/report/GetPairedSmartcardReport?role=" + role + "&username=" + username + "&reporttype=" + reporttype, { observe: 'response' });
+  }
+  getPairedSmartcardPDFReport(role: any, username: any, reporttype: any): Observable<Blob> {
+    return this.http.get(BASE_URL + "/report/GetPairedSmartcardReport?role=" + role + "&username=" + username + "&reporttype=" + reporttype, { responseType: 'blob' });
+  }
+  // -------------------------------------------------Blocked Smartcard---------------------------
+  getBlockSmartcardExcelReport(role: any, username: any, reporttype: any): Observable<HttpResponse<any[]>> {
+    return this.http.get<any[]>(BASE_URL + "/report/GetBlockSmartcardReport?role=" + role + "&username=" + username + "&reporttype=" + reporttype, { observe: 'response' });
+  }
+  getBlockSmartcardPDFReport(role: any, username: any, reporttype: any): Observable<Blob> {
+    return this.http.get(BASE_URL + "/report/GetBlockSmartcardReport?role=" + role + "&username=" + username + "&reporttype=" + reporttype, { responseType: 'blob' });
+  }
+  // ======================================CAS OPERATION================
+  // -----------------------------------------------scroll------------------------------------------
+  getScrollHistoryExcelReport(role: any, username: any, fromdate: any, todate: any, reporttype: any): Observable<HttpResponse<any[]>> {
+    return this.http.get<any[]>(BASE_URL + "/report/GetScrollHistoryReport?role=" + role + "&username=" + username + "&fromdate=" + fromdate + "&todate=" + todate + "&reporttype=" + reporttype, { observe: 'response' });
+  }
+  getScrollHistoryPDFReport(role: any, username: any, fromdate: any, todate: any, reporttype: any): Observable<Blob> {
+    return this.http.get(BASE_URL + "/report/GetScrollHistoryReport?role=" + role + "&username=" + username + "&fromdate=" + fromdate + "&todate=" + todate + "&reporttype=" + reporttype, { responseType: 'blob' });
   }
 }

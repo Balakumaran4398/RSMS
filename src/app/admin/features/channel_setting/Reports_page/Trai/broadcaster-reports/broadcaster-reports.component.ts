@@ -22,15 +22,16 @@ export class BroadcasterReportsComponent implements OnInit {
   selectedMonth: any = 0;
   selectedYear: any = 0;
 
-  broadcasterid:any;
-  broadcaster:any;
+  broadcasterid: any;
+  broadcastername: any;
+  selectedValue: any;
 
   months: any[] = [];
   years: any[] = [];
   Date: any[] = [];
   broadcasterList: any[] = [];
   filteredBraoadcasterList: any[] = [];
-  searchTerm:any;
+  searchTerm: any;
   isDateDisabled: boolean = true;
 
   constructor(public dialogRef: MatDialogRef<BroadcasterReportsComponent>, private swal: SwalService, @Inject(MAT_DIALOG_DATA) public data: any, private excelService: ExcelService,
@@ -43,14 +44,13 @@ export class BroadcasterReportsComponent implements OnInit {
     this.dialogRef.close(this.returndata);
   }
   ngOnInit(): void {
-    this.userService.BroadcasterList(this.role, this.username, 1).subscribe((data:any) => {
+    this.userService.BroadcasterList(this.role, this.username, 1).subscribe((data: any) => {
       console.log(data);
       this.broadcasterList = data.map((item: any) => ({
         name: item.broadcastername,
         value: item.id,
       }));
       console.log(this.broadcasterList);
-
     })
     this.generateMonths();
     this.generateYears();
@@ -69,9 +69,9 @@ export class BroadcasterReportsComponent implements OnInit {
   }
   onSelectionFingerPrint(selectedValue: any) {
     console.log(selectedValue);
-    this.broadcasterid = selectedValue.id;
-    this.broadcaster = selectedValue.name;
-    console.log(this.broadcaster);
+    this.broadcasterid = selectedValue.value;
+    this.broadcastername = selectedValue.name;
+    console.log(this.broadcastername);
     console.log(this.broadcasterid);
   }
   getExcel() {

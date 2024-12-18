@@ -49,14 +49,14 @@
                             <label for="">Broadcaster</label>
                         </div>
                         <div class="col-12 col-md-6">
-                            <select [(ngModel)]="broadcasterid">
+                            <!-- <select [(ngModel)]="broadcasterid">
                                 <option value="0"> Select a Broadcastername</option>
                                 <option *ngFor="let Type of broadcasterList" [value]="Type.value">{{Type.name}}</option>
-                            </select>
+                            </select> -->
 
-                            <input type="text" placeholder="Select a Broadcaster"  [(ngModel)]="broadcasterid"
-                                (input)="onSearchChange($event)" [value]="broadcaster"
-                                [matAutocomplete]="auto" class="example-input">
+                            <input type="text" placeholder="Select a Broadcaster"
+                                [(ngModel)]="broadcastername" (input)="onSearchChange($event)" [matAutocomplete]="auto"
+                                class="example-input">
 
                             <mat-autocomplete #auto="matAutocomplete">
                                 <mat-option *ngFor="let casItem of filteredBraoadcaster()" [value]="casItem.name"

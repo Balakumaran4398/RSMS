@@ -1,0 +1,76 @@
+.input_box input {
+    width: 100%;
+    height: 55px;
+    border: none;
+    outline: none;
+    border-radius: 5px;
+    padding: 0px 12px;
+    border-top: 2px solid #b0afaf;
+    border-bottom: 0.9px solid lightgray;
+    border-left: 0.9px solid lightgray;
+    border-right: 0.9px solid lightgray;
+    box-shadow: 0px 0px 0px 1px rgba(0, 0, 0, 0.1);
+    background-color: #f6f8fa;
+    font-family: 'Poppins', sans-serif;
+    transition: all 120ms ease-out 0s;
+}
+
+.display {
+    display: flex;
+}
+
+.allreport {
+    position: relative;
+    top: 12px;
+}
+
+.mobileView {
+    position: relative;
+    top: -30px;
+}
+
+h5 {
+    color: rgb(36, 54, 51);
+}
+
+.allsmart {
+    padding: 1rem;
+    background: #008391;
+    color: white;
+    font-size: 17px;
+    font-weight: bold;
+
+    .label {
+        color: #ffffff;
+        margin-right: 1rem; 
+        font-weight: bold;
+    }
+
+    .value {
+        color: #010f1b; 
+        margin-right: 1rem; 
+        // font-weight: bold;
+    }
+}
+
+
+.total {
+    padding: 2rem;
+    // background-color: #008391;
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3);}
+
+@media screen and (max-width:790px) {
+    .display {
+        display: block;
+    }
+
+    .allreport {
+        position: relative;
+        top: 2px;
+    }
+
+    .mobileView {
+        position: relative;
+        top: 0px !important;
+    }
+}
