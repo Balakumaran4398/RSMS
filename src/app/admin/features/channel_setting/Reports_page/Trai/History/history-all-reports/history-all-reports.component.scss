@@ -42,13 +42,13 @@ h5 {
 
     .label {
         color: #ffffff;
-        margin-right: 1rem; 
+        margin-right: 1rem;
         font-weight: bold;
     }
 
     .value {
-        color: #010f1b; 
-        margin-right: 1rem; 
+        color: #010f1b;
+        margin-right: 1rem;
         // font-weight: bold;
     }
 }
@@ -57,7 +57,16 @@ h5 {
 .total {
     padding: 2rem;
     // background-color: #008391;
-    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3);}
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3);
+}
+
+.finger {
+    font-size: 18px;
+    color: rgb(37, 26, 63);
+    font-weight: 600;
+    position: relative;
+    top: 15px
+}
 
 @media screen and (max-width:790px) {
     .display {
@@ -72,5 +81,12 @@ h5 {
     .mobileView {
         position: relative;
         top: 0px !important;
+    }
+    .finger {
+        font-size: 18px;
+        color: rgb(37, 26, 63);
+        font-weight: 600;
+        position: relative;
+        top: 0px
     }
 }

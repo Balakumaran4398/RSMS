@@ -1,10 +1,11 @@
 import { ChangeDetectorRef, Component, Inject, OnInit } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { ActivatedRoute } from '@angular/router';
 import { BaseService } from 'src/app/_core/service/base.service';
 import { ExcelService } from 'src/app/_core/service/excel.service';
 import { StorageService } from 'src/app/_core/service/storage.service';
 import { SwalService } from 'src/app/_core/service/swal.service';
-
+import { Location } from '@angular/common';
 @Component({
   selector: 'app-broadcaster-reports',
   templateUrl: './broadcaster-reports.component.html',
@@ -34,14 +35,30 @@ export class BroadcasterReportsComponent implements OnInit {
   searchTerm: any;
   isDateDisabled: boolean = true;
 
-  constructor(public dialogRef: MatDialogRef<BroadcasterReportsComponent>, private swal: SwalService, @Inject(MAT_DIALOG_DATA) public data: any, private excelService: ExcelService,
+  allType: any;
+  reportTitle: any;
+  gridOptions = {
+    defaultColDef: {
+      sortable: true,
+      resizable: true,
+      filter: true,
+      floatingFilter: true
+    },
+    paginationPageSize: 10,
+    pagination: true,
+  }
+  gridApi: any;
+
+  constructor(private route: ActivatedRoute, private swal: SwalService, private excelService: ExcelService, private location: Location,
     public userService: BaseService, private cdr: ChangeDetectorRef, public storageservice: StorageService) {
+    this.allType = this.route.snapshot.paramMap.get('id');
+    console.log('dfdsfdsfdsf', this.allType);
     this.username = storageservice.getUsername();
     this.role = storageservice.getUserRole();
-    this.type = data.type
+    // this.type = data.type
   }
   onNoClick(): void {
-    this.dialogRef.close(this.returndata);
+    // this.dialogRef.close(this.returndata);
   }
   ngOnInit(): void {
     this.userService.BroadcasterList(this.role, this.username, 1).subscribe((data: any) => {
@@ -54,6 +71,58 @@ export class BroadcasterReportsComponent implements OnInit {
     })
     this.generateMonths();
     this.generateYears();
+    this.setReportTitle();
+    this.onColumnDefs();
+  }
+
+  setReportTitle() {
+    switch (this.allType) {
+      case '1':
+        this.reportTitle = 'Monthly Broadcaster Report';
+        break;
+      case '2':
+        this.reportTitle = 'Over All Product Report';
+        break;
+      case '3':
+        this.reportTitle = 'Over All Base Product / Universal Count Report';
+        break;
+      case '4':
+        this.reportTitle = 'Over All Base Product Report';
+        break;
+      case '5':
+        this.reportTitle = 'Monthly Broadcaster Caswise Report';
+        break;
+      default:
+        this.reportTitle = 'Unknown Report';
+    }
+  }
+  columnDefs = [
+    { headerName: "S.No", lockPosition: true, valueGetter: 'node.rowIndex+1', headerCheckboxSelection: true, checkboxSelection: true, width: 90 },
+    { headerName: 'PRODUCT NAME', field: '', width: 350 },
+    { headerName: 'PRODUCTID', field: '', width: 340 },
+    { headerName: 'CAS', field: '', width: 340 },
+    { headerName: 'SUBS COUNT AS 7TH	', field: '', width: 350 },
+    { headerName: 'SUBS COUNT AS 14TH	', field: '', width: 350 },
+    { headerName: 'AVERAGE', field: '', width: 350 },
+    { headerName: 'MONTH AND YEAR', field: '', width: 350 },
+  ]
+  private onColumnDefs() {
+    console.log('colmnDefs', this.allType);
+
+    if (this.allType == '1') {
+      this.columnDefs = [
+        { headerName: "S.No", lockPosition: true, valueGetter: 'node.rowIndex+1', headerCheckboxSelection: false, checkboxSelection: false, width: 90 },
+        { headerName: 'SMARTCARD', field: 'smartcard', width: 300 },
+        { headerName: 'LOG DATE', field: 'logdate', width: 280 },
+        { headerName: 'ACTION', field: 'activity', width: 200 },
+        { headerName: 'REMARKS', field: 'remarks', width: 900 },
+      ]
+    } else {
+      console.warn('Unknown allType:', this.allType);
+    }
+  }
+  onGridReady(params: { api: any; }) {
+    this.gridApi = params.api;
   }
   onSearchChange(event: any) {
     this.searchTerm = event.target.value;
@@ -116,6 +185,8 @@ export class BroadcasterReportsComponent implements OnInit {
     ];
   }
 
+
+  
   generateYears() {
     const startYear = 2012;
     const currentYear = new Date().getFullYear();
@@ -123,5 +194,8 @@ export class BroadcasterReportsComponent implements OnInit {
     for (let year = currentYear; year >= startYear; year--) {
       this.years.push(year);
     }
+  }
+  goBack(): void {
+    this.location.back();
   }
 }

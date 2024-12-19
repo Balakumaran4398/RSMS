@@ -78,7 +78,6 @@ export class SubscriptionBasedComponent implements OnInit {
     this.cur_date = formattedDate;
     console.log(this.cur_date);
 
-
   }
   generateMonths() {
     this.months = [

@@ -176,7 +176,6 @@
         <div class="row d-flex align-items-center justify-content-center">
             <div class="col-12 col-sm-12 m-3">
                 <div class="col display justify-content-between align-items-end mb-3">
-                    <!-- <div class="col  mb-3"> -->
                     <div class="display">
                         <div class="mx-2 ">
                             <mat-form-field appearance="outline">
@@ -205,15 +204,8 @@
                             PDF
                         </button>
                     </div>
-                    <!-- </div> -->
                 </div>
                 <h5>Scroll list - {{rowData.length}} </h5>
-                <!-- <div class="display justify-content-end align-item-center allsmart">
-
-                    <div>
-                        <span>FormDate  : {{fromdate}} ToDate  : {{todate}} </span>
-                    </div>
-                </div> -->
                 <div class="display justify-content-end align-items-center allsmart">
                     <div>
                         <span class="label">FormDate:</span>
@@ -222,8 +214,6 @@
                         <span class="value">{{ todate }}</span>
                     </div>
                 </div>
-
-
                 <ag-grid-angular #agGrid id="myGrid" domLayout='autoHeight' class="ag-theme-alpine table-class"
                     rowAnimation [gridOptions]="gridOptions" [columnDefs]="columnDefs" [rowData]="rowData"
                     (gridReady)="onGridReady($event)" [enableCellTextSelection]="true">
@@ -232,6 +222,433 @@
         </div>
     </div>
 </div>
-<div *ngIf="allType== '6'">mail</div>
-<div *ngIf="allType== '7'">finger print</div>
-<div *ngIf="allType== '8'">message</div>
+<div *ngIf="allType== '6'">
+    <h3>MAIL HISTORY REPORT</h3>
+    <div class="row " style="padding: 1rem;">
+        <div class="col-12 col-md-2 d-flex  justify-content-start align-items-start">
+            <button type="button" class="btn btn-primary" (click)="goBack()"><i
+                    class="fa-solid fa-reply mx-2"></i>Back</button>
+        </div>
+        <div class="row d-flex align-items-center justify-content-center">
+            <div class="col-12 col-sm-12 m-3">
+                <div class="col display justify-content-between align-items-end mb-3">
+                    <div class="display">
+                        <div class="mx-2 ">
+                            <mat-form-field appearance="outline">
+                                <mat-date-range-input [rangePicker]="picker">
+                                    <input matStartDate matInput placeholder="Start date"
+                                        (dateChange)="getFromDate($event)">
+                                    <input matEndDate matInput placeholder="End date" (dateChange)="getToDate($event)">
+                                </mat-date-range-input>
+                                <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                                <mat-date-range-picker #picker></mat-date-range-picker>
+                            </mat-form-field>
+                        </div>
+                        <div class="allreport mb-2">
+                            <a class="btn btn-success mx-1" (click)="getMailReport()">
+                                Get Report
+                            </a>
+                        </div>
+                    </div>
+                    <div class="mobileView">
+                        <button class="btn btn-outline-info mx-1" mat-raised-button color="primary" type="button"
+                            (click)="getMailExcel()">
+                            Excel
+                        </button>
+                        <button class="btn btn-outline-info mx-1" mat-raised-button color="accent" type="button"
+                            (click)="getMailPDF()">
+                            PDF
+                        </button>
+                    </div>
+                </div>
+                <h5>Mail list - {{rowData.length}} </h5>
+                <div class="display justify-content-end align-items-center allsmart">
+                    <div>
+                        <span class="label">FormDate:</span>
+                        <span class="value">{{ fromdate }}</span>
+                        <span class="label">ToDate:</span>
+                        <span class="value">{{ todate }}</span>
+                    </div>
+                </div>
+                <ag-grid-angular #agGrid id="myGrid" domLayout='autoHeight' class="ag-theme-alpine table-class"
+                    rowAnimation [gridOptions]="gridOptions" [columnDefs]="columnDefs" [rowData]="rowData"
+                    (gridReady)="onGridReady($event)" [enableCellTextSelection]="true">
+                </ag-grid-angular>
+            </div>
+        </div>
+    </div>
+</div>
+<div *ngIf="allType== '7'">
+    <h3>Finger print Report</h3>
+    <div class="col-12 col-md-2 d-flex  justify-content-start align-items-start">
+        <button type="button" class="btn btn-primary" (click)="goBack()"><i
+                class="fa-solid fa-reply mx-2"></i>Back</button>
+    </div>
+    <div class="row " style="padding: 1rem;">
+        <div class="row d-flex align-items-center justify-content-center">
+            <div class="col-12 col-sm-8 mb-3 total">
+                <div class="col display justify-content-between align-items-end mb-3">
+                    <div class="display">
+                        <span class="finger">
+                            Select Date
+                        </span>
+                        <div class="mx-2 ">
+                            <mat-form-field appearance="outline">
+                                <mat-date-range-input [rangePicker]="picker">
+                                    <input matStartDate matInput placeholder="Start date"
+                                        (dateChange)="getFromDate($event)">
+                                    <input matEndDate matInput placeholder="End date" (dateChange)="getToDate($event)">
+                                </mat-date-range-input>
+                                <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                                <mat-date-range-picker #picker></mat-date-range-picker>
+                            </mat-form-field>
+                        </div>
+                        <div class="allreport mb-2">
+                            <button class="btn btn-outline-info mx-1" mat-raised-button color="primary" type="button"
+                                (click)="getFingerprintExcel()">
+                                Excel
+                            </button>
+                            <button class="btn btn-outline-info mx-1" mat-raised-button color="accent" type="button"
+                                (click)="getFingerprintPDF()">
+                                PDF
+                            </button>
+                        </div>
+                    </div>
+                    <!-- <div class="mobileView">
+                        <button class="btn btn-outline-info mx-1" mat-raised-button color="primary" type="button"
+                            (click)="getFingerprintExcel()">
+                            Excel
+                        </button>
+                        <button class="btn btn-outline-info mx-1" mat-raised-button color="accent" type="button"
+                            (click)="getFingerprintPDF()">
+                            PDF
+                        </button>
+                    </div> -->
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div *ngIf="allType== '8'">
+    <h3>MESSAGE HISTORY REPORT</h3>
+    <div class="row " style="padding: 1rem;">
+        <div class="col-12 col-md-2 d-flex  justify-content-start align-items-start">
+            <button type="button" class="btn btn-primary" (click)="goBack()"><i
+                    class="fa-solid fa-reply mx-2"></i>Back</button>
+        </div>
+        <div class="row d-flex align-items-center justify-content-center">
+            <div class="col-12 col-sm-12 m-3">
+                <div class="col display justify-content-between align-items-end mb-3">
+                    <div class="display">
+                        <div class="mx-2 ">
+                            <mat-form-field appearance="outline">
+                                <mat-date-range-input [rangePicker]="picker">
+                                    <input matStartDate matInput placeholder="Start date"
+                                        (dateChange)="getFromDate($event)">
+                                    <input matEndDate matInput placeholder="End date" (dateChange)="getToDate($event)">
+                                </mat-date-range-input>
+                                <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                                <mat-date-range-picker #picker></mat-date-range-picker>
+                            </mat-form-field>
+                        </div>
+                        <div class="allreport mb-2">
+                            <a class="btn btn-success mx-1" (click)="getMessageReport()">
+                                Get Report
+                            </a>
+                        </div>
+                    </div>
+                    <div class="mobileView">
+                        <button class="btn btn-outline-info mx-1" mat-raised-button color="primary" type="button"
+                            (click)="getMessageExcel()">
+                            Excel
+                        </button>
+                        <button class="btn btn-outline-info mx-1" mat-raised-button color="accent" type="button"
+                            (click)="getMessagePDF()">
+                            PDF
+                        </button>
+                    </div>
+                </div>
+                <h5>Message List - {{rowData.length}} </h5>
+                <div class="display justify-content-end align-items-center allsmart">
+                    <div>
+                        <span class="label">FormDate:</span>
+                        <span class="value">{{ fromdate }}</span>
+                        <span class="label">ToDate:</span>
+                        <span class="value">{{ todate }}</span>
+                    </div>
+                </div>
+                <ag-grid-angular #agGrid id="myGrid" domLayout='autoHeight' class="ag-theme-alpine table-class"
+                    rowAnimation [gridOptions]="gridOptions" [columnDefs]="columnDefs" [rowData]="rowData"
+                    (gridReady)="onGridReady($event)" [enableCellTextSelection]="true">
+                </ag-grid-angular>
+            </div>
+        </div>
+    </div>
+</div>
+<div *ngIf="allType== '9'">
+    <h3>Network Smartcard Status Count Report</h3>
+    <div class="col-12 col-md-2 d-flex  justify-content-start align-items-start">
+        <button type="button" class="btn btn-primary" (click)="goBack()"><i
+                class="fa-solid fa-reply mx-2"></i>Back</button>
+    </div>
+    <div class="row " style="padding: 1rem;">
+        <div class="row d-flex align-items-center justify-content-center">
+            <div class="col-12 col-sm-8 mb-3 ">
+                <div class="col display justify-content-between align-items-end mb-3">
+                    <div class="display">
+                        <span class="finger">
+                            Select Date
+                        </span>
+                        <div class="mx-2 ">
+                            <mat-form-field class="input-field" appearance="outline">
+                                <mat-label>Choose a date</mat-label>
+                                <input matInput [matDatepicker]="picker" (dateChange)="logValues($event)"
+                                    [(ngModel)]="date" placeholder="Select a Date" readonly>
+                                <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+                                <mat-datepicker #picker></mat-datepicker>
+                            </mat-form-field>
+                        </div>
+                        <div class="allreport mb-2">
+                            <button class="btn btn-outline-info mx-1" mat-raised-button color="primary" type="button"
+                                (click)="getNetworkSmartcardStatusExcel()">
+                                Excel
+                            </button>
+                            <button class="btn btn-outline-info mx-1" mat-raised-button color="accent" type="button"
+                                (click)="getNetworkSmartcardStatusPDF()">
+                                PDF
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-12 col-sm-8 mb-3 ">
+                <!-- <div>
+                    <span> To Download Overall Network Count</span>
+                </div> -->
+                <div class=" mb-2">
+                    <span> To Download Overall Network Count</span>
+
+                    <div class="export-buttons d-flex">
+                        <div class="export-icon col-6 col-md-3 mx-2" (click)="getNetworkSmartcardStatusExcel()">
+                            <img src="/assets/images/icons/Excel.png" alt="Excel Icon" width="40px">
+                            <div class="tooltip">Excel</div>
+                        </div>
+                        <div class="export-icon col-6 col-md-3 mx-2" (click)="getNetworkSmartcardStatusPDF()">
+                            <img src="/assets/images/icons/pdf.png" alt="PDF Icon" width="40px">
+                            <div class="tooltip">Pdf</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-12 col-sm-8 mb-3 ">
+                    <!-- <div>
+                        <span> To Download Operator Wise Network Count</span>
+                    </div> -->
+                    <div class=" mb-2">
+                        <span> To Download Operator Wise Network Count</span>
+
+                        <div class="export-buttons d-flex">
+                            <div class="export-icon col-6 col-md-3 mx-2" (click)="getNetworkSmartcardStatusExcel()">
+                                <img src="/assets/images/icons/Excel.png" alt="Excel Icon" width="40px">
+                                <div class="tooltip">Excel</div>
+                            </div>
+                            <div class="export-icon col-6 col-md-3 mx-2" (click)="getNetworkSmartcardStatusPDF()">
+                                <img src="/assets/images/icons/pdf.png" alt="PDF Icon" width="40px">
+                                <div class="tooltip">Pdf</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div *ngIf="allType== '10'">
+    <h3>Network Smartcard Active /Deactive Status Count Report</h3>
+    <div class="col-12 col-md-2 d-flex  justify-content-start align-items-start">
+        <button type="button" class="btn btn-primary" (click)="goBack()"><i
+                class="fa-solid fa-reply mx-2"></i>Back</button>
+    </div>
+    <div class="row " style="padding: 1rem;">
+        <div class="row d-flex align-items-center justify-content-center">
+            <div class="col-12 col-sm-8 mb-3 total">
+                <div class="col display justify-content-between align-items-end mb-3">
+                    <div class="display">
+                        <span class="finger">
+                            Select Date
+                        </span>
+                        <div class="mx-2 ">
+                            <mat-form-field class="input-field" appearance="outline">
+                                <mat-label>Choose a date</mat-label>
+                                <input matInput [matDatepicker]="picker" (dateChange)="logValues($event)"
+                                    [(ngModel)]="date" placeholder="Select a Date" readonly>
+                                <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+                                <mat-datepicker #picker></mat-datepicker>
+                            </mat-form-field>
+                        </div>
+                        <div class="allreport mb-2">
+                            <button class="btn btn-outline-info mx-1" mat-raised-button color="primary" type="button"
+                                (click)="getNetworkSmartcardActiveDeactiveStatusExcel()">
+                                Excel
+                            </button>
+                            <button class="btn btn-outline-info mx-1" mat-raised-button color="accent" type="button"
+                                (click)="getNetworkSmartcardActiveDeactiveStatusPDF()">
+                                PDF
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div *ngIf="allType== '11'">
+    <h3>AS ON DATE SMARTCARD SUSPEND REPORT</h3>
+    <div class="row " style="padding: 1rem;">
+        <div class="col-12 col-md-2 d-flex  justify-content-start align-items-start">
+            <button type="button" class="btn btn-primary" (click)="goBack()"><i
+                    class="fa-solid fa-reply mx-2"></i>Back</button>
+        </div>
+        <div class="row d-flex align-items-center justify-content-center">
+            <div class="col-12 col-sm-12 m-3">
+                <div class="col display justify-content-between align-items-end mb-3">
+                    <!-- <div class="col  mb-3"> -->
+                    <div class="display">
+                        <div class="mx-2 ">
+                            <mat-form-field class="input-field" appearance="outline">
+                                <mat-label>Choose a date</mat-label>
+                                <input matInput [matDatepicker]="picker" (dateChange)="logValues($event)"
+                                    [(ngModel)]="date" placeholder="Select a Date" readonly>
+                                <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+                                <mat-datepicker #picker></mat-datepicker>
+                            </mat-form-field>
+                        </div>
+                        <div class="allreport mb-2">
+                            <a class="btn btn-success mx-1" (click)="getSmartcardSuspendReport()">
+                                Get Report
+                            </a>
+                        </div>
+                    </div>
+                    <div class="mobileView">
+                        <button class="btn btn-outline-info mx-1" mat-raised-button color="primary" type="button"
+                            (click)="getSmartcardSuspendExcel()">
+                            Excel
+                        </button>
+                        <button class="btn btn-outline-info mx-1" mat-raised-button color="accent" type="button"
+                            (click)="getSmartcardSuspendPDF()">
+                            PDF
+                        </button>
+                    </div>
+                    <!-- </div> -->
+                </div>
+                <ag-grid-angular #agGrid id="myGrid" domLayout='autoHeight' class="ag-theme-alpine table-class"
+                    rowAnimation [gridOptions]="gridOptions" [columnDefs]="columnDefs" [rowData]="rowData"
+                    (gridReady)="onGridReady($event)" [enableCellTextSelection]="true">
+                </ag-grid-angular>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div *ngIf="allType== '12'">
+    <h3>AS ON DATE SMARTCARD SUSPEND REPORT</h3>
+    <div class="row " style="padding: 1rem;">
+        <div class="col-12 col-md-2 d-flex  justify-content-start align-items-start">
+            <button type="button" class="btn btn-primary" (click)="goBack()"><i
+                    class="fa-solid fa-reply mx-2"></i>Back</button>
+        </div>
+        <div class="row d-flex align-items-center justify-content-center">
+            <div class="col-12 col-sm-12 m-3">
+                <div class="col display justify-content-between align-items-end mb-3">
+                    <!-- <div class="col  mb-3"> -->
+                    <div class="display">
+                        <div class="mx-2 ">
+                            <mat-form-field appearance="outline">
+                                <mat-date-range-input [rangePicker]="picker">
+                                    <input matStartDate matInput placeholder="Start date"
+                                        (dateChange)="getFromDate($event)">
+                                    <input matEndDate matInput placeholder="End date" (dateChange)="getToDate($event)">
+                                </mat-date-range-input>
+                                <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                                <mat-date-range-picker #picker></mat-date-range-picker>
+                            </mat-form-field>
+                        </div>
+                        <div class="allreport mb-2">
+                            <a class="btn btn-success mx-1" (click)="getDatewiseSuspendReport()">
+                                Get Report
+                            </a>
+                        </div>
+                    </div>
+                    <div class="mobileView">
+                        <button class="btn btn-outline-info mx-1" mat-raised-button color="primary" type="button"
+                            (click)="getDatewiseSuspendExcel()">
+                            Excel
+                        </button>
+                        <button class="btn btn-outline-info mx-1" mat-raised-button color="accent" type="button"
+                            (click)="getDatewiseSuspendPDF()">
+                            PDF
+                        </button>
+                    </div>
+                    <!-- </div> -->
+                </div>
+                <ag-grid-angular #agGrid id="myGrid" domLayout='autoHeight' class="ag-theme-alpine table-class"
+                    rowAnimation [gridOptions]="gridOptions" [columnDefs]="columnDefs" [rowData]="rowData"
+                    (gridReady)="onGridReady($event)" [enableCellTextSelection]="true">
+                </ag-grid-angular>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div *ngIf="allType== '13'">
+    <h3>DATE WISE SMARTCARD SUSPEND REPORT</h3>
+    <div class="row " style="padding: 1rem;">
+        <div class="col-12 col-md-2 d-flex  justify-content-start align-items-start">
+            <button type="button" class="btn btn-primary" (click)="goBack()"><i
+                    class="fa-solid fa-reply mx-2"></i>Back</button>
+        </div>
+        <div class="row d-flex align-items-center justify-content-center">
+            <div class="col-12 col-sm-12 m-3">
+                <div class="col display justify-content-between align-items-end mb-3">
+                    <!-- <div class="col  mb-3"> -->
+                    <div class="display">
+                        <div class="input_box mx-2 mb-2">
+                            <input type="text" placeholder="Enter Smartcard" [(ngModel)]="smartcard">
+                        </div>
+                        <div class="mx-2 ">
+                            <mat-form-field appearance="outline">
+                                <mat-date-range-input [rangePicker]="picker">
+                                    <input matStartDate matInput placeholder="Start date"
+                                        (dateChange)="getFromDate($event)">
+                                    <input matEndDate matInput placeholder="End date" (dateChange)="getToDate($event)">
+                                </mat-date-range-input>
+                                <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                                <mat-date-range-picker #picker></mat-date-range-picker>
+                            </mat-form-field>
+                        </div>
+                        <div class="allreport mb-2">
+                            <a class="btn btn-success mx-1" (click)="getSuspendReport()">
+                                Get Report
+                            </a>
+                        </div>
+                    </div>
+                    <div class="mobileView">
+                        <button class="btn btn-outline-info mx-1" mat-raised-button color="primary" type="button"
+                            (click)="getSuspendExcel()">
+                            Excel
+                        </button>
+                        <button class="btn btn-outline-info mx-1" mat-raised-button color="accent" type="button"
+                            (click)="getSuspendPDF()">
+                            PDF
+                        </button>
+                    </div>
+                    <!-- </div> -->
+                </div>
+                <ag-grid-angular #agGrid id="myGrid" domLayout='autoHeight' class="ag-theme-alpine table-class"
+                    rowAnimation [gridOptions]="gridOptions" [columnDefs]="columnDefs" [rowData]="rowData"
+                    (gridReady)="onGridReady($event)" [enableCellTextSelection]="true">
+                </ag-grid-angular>
+            </div>
+        </div>
+    </div>
+</div>

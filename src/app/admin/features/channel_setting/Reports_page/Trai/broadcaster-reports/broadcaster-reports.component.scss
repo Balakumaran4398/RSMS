@@ -58,6 +58,24 @@
     align-items: center;
 }
 
+label {
+    font-size: 17px;
+    font-weight: 600;
+}
+
+span {
+    font-size: 17px;
+    font-weight: 600;
+}
+
+.tab {
+    padding: 0.5rem;
+    display: flex;
+    justify-content: center;
+    background: cadetblue;
+    color: white;
+}
+
 @media screen and (max-width: 560px) {
     .label {
         flex: 0 0 100%;

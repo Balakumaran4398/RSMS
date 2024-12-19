@@ -69,28 +69,29 @@ export class TraiReportComponent implements OnInit {
       console.log('The dialog was closed', result);
     });
   }
-  openBroadcasterDialogue(event: any) {
-    console.log(event);
-    let width = '500px';
-    // if (event == 'weekly_based') {
-    //   width = '500px';
-    // }
-    let dialogData = { type: event };
-    const dialogRef = this.dialog.open(BroadcasterReportsComponent, {
-      width: width, // Updated width
-      data: dialogData,
-    });
-    dialogRef.afterClosed().subscribe(result => {
-      console.log('The dialog was closed', result);
-    });
-  }
+  // openBroadcasterDialogue(event: any) {
+  //   console.log(event);
+  //   let width = '500px';
+  //   // if (event == 'weekly_based') {
+  //   //   width = '500px';
+  //   // }
+  //   let dialogData = { type: event };
+  //   const dialogRef = this.dialog.open(BroadcasterReportsComponent, {
+  //     width: width, // Updated width
+  //     data: dialogData,
+  //   });
+  //   dialogRef.afterClosed().subscribe(result => {
+  //     console.log('The dialog was closed', result);
+  //   });
+  // }
 
   openHistoryDialog(event: number) {
     console.log(event);
     this.router.navigate(['admin/historyAllReports/'+ event]);
   }
-  openCasoperationDialog(event: number) {
+  openBroadcasterDialog(event: number) {
     console.log(event);
-    this.router.navigate(['admin/casoperationReports/'+ event]);
+    this.router.navigate(['admin/broadcasterReports/'+ event]);
   }
+ 
 }

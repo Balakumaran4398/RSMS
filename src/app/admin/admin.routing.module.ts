@@ -80,6 +80,7 @@ import { ChartPackageReportComponent } from '../_core/Chart-Reports/chart-packag
 import { ChartSTBReportComponent } from '../_core/Chart-Reports/chart-stbreport/chart-stbreport.component';
 import { PackageBasedComponent } from './features/channel_setting/Reports_page/Trai/package-based/package-based.component';
 import { HistoryAllReportsComponent } from './features/channel_setting/Reports_page/Trai/History/history-all-reports/history-all-reports.component';
+import { BroadcasterReportsComponent } from './features/channel_setting/Reports_page/Trai/broadcaster-reports/broadcaster-reports.component';
 
 
 const routes: Routes = [
@@ -158,6 +159,7 @@ const routes: Routes = [
       { path: 'msoReports', component: MsoreportsComponent },
       { path: 'historyReports', component: HistoryReportsComponent },
       { path: 'historyAllReports/:id', component: HistoryAllReportsComponent },
+      { path: 'broadcasterReports/:id', component: BroadcasterReportsComponent },
       
       // ------------------------------------Special role-------------------------------------------
       { path: 'msodetails', component: MsodetailsComponent },

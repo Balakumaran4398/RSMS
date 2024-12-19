@@ -1437,4 +1437,69 @@ export class BaseService {
   getScrollHistoryPDFReport(role: any, username: any, fromdate: any, todate: any, reporttype: any): Observable<Blob> {
     return this.http.get(BASE_URL + "/report/GetScrollHistoryReport?role=" + role + "&username=" + username + "&fromdate=" + fromdate + "&todate=" + todate + "&reporttype=" + reporttype, { responseType: 'blob' });
   }
+  // -------------------------------------------------Mail History---------------------------------------------------
+  getMailHistoryExcelReport(role: any, username: any, fromdate: any, todate: any, reporttype: any): Observable<HttpResponse<any[]>> {
+    return this.http.get<any[]>(BASE_URL + "/report/GetMailHistoryReport?role=" + role + "&username=" + username + "&fromdate=" + fromdate + "&todate=" + todate + "&reporttype=" + reporttype, { observe: 'response' });
+  }
+  getMaillHistoryPDFReport(role: any, username: any, fromdate: any, todate: any, reporttype: any): Observable<Blob> {
+    return this.http.get(BASE_URL + "/report/GetMailHistoryReport?role=" + role + "&username=" + username + "&fromdate=" + fromdate + "&todate=" + todate + "&reporttype=" + reporttype, { responseType: 'blob' });
+  }
+  // ------------------------------------------------------Finger print-----------------------
+  getFingerprintHistoryExcelReport(role: any, username: any, fromdate: any, todate: any, reporttype: any): Observable<HttpResponse<any[]>> {
+    return this.http.get<any[]>(BASE_URL + "/report/GetFingerPrintHistoryReport?role=" + role + "&username=" + username + "&fromdate=" + fromdate + "&todate=" + todate + "&reporttype=" + reporttype, { observe: 'response' });
+  }
+  getFingerprintPDFReport(role: any, username: any, fromdate: any, todate: any, reporttype: any): Observable<Blob> {
+    return this.http.get(BASE_URL + "/report/GetFingerPrintHistoryReport?role=" + role + "&username=" + username + "&fromdate=" + fromdate + "&todate=" + todate + "&reporttype=" + reporttype, { responseType: 'blob' });
+  }
+  // -----------------------------------------------Message--------------------------------------------
+  getMessageExcelReport(role: any, username: any, fromdate: any, todate: any, reporttype: any): Observable<HttpResponse<any[]>> {
+    return this.http.get<any[]>(BASE_URL + "/report/GetMessageHistoryReport?role=" + role + "&username=" + username + "&fromdate=" + fromdate + "&todate=" + todate + "&reporttype=" + reporttype, { observe: 'response' });
+  }
+  getMessageHistoryPDFReport(role: any, username: any, fromdate: any, todate: any, reporttype: any): Observable<Blob> {
+    return this.http.get(BASE_URL + "/report/GetMessageHistoryReport?role=" + role + "&username=" + username + "&fromdate=" + fromdate + "&todate=" + todate + "&reporttype=" + reporttype, { responseType: 'blob' });
+  }
+  // -----------------------------------------------------Count Report-------------------------------------
+
+  getNetworkSmartcardCountReport(role: any, username: any, date: any, reporttype: any): Observable<HttpResponse<any[]>> {
+    return this.http.get<any[]>(BASE_URL + "/report/GetNetworkSmartcardCountReport?role=" + role + "&username=" + username + "&date=" + date + "&reporttype=" + reporttype, { observe: 'response' });
+  }
+  getNetworkSmartcardCountPDFReport(role: any, username: any, date: any, reporttype: any): Observable<Blob> {
+    return this.http.get(BASE_URL + "/report/GetNetworkSmartcardCountReport?role=" + role + "&username=" + username + "&date=" + date + "&reporttype=" + reporttype, { responseType: 'blob' });
+  }
+  // -----------------------------------------------------Status Count Report-------------------------------------
+
+  getNetworkSmartcardStatusCountReport(role: any, username: any, date: any, reporttype: any): Observable<HttpResponse<any[]>> {
+    return this.http.get<any[]>(BASE_URL + "/report/GetNetworkSmartcardStatusCountReport?role=" + role + "&username=" + username + "&date=" + date + "&reporttype=" + reporttype, { observe: 'response' });
+  }
+  getNetworkSmartcardCountStatusPDFReport(role: any, username: any, date: any, reporttype: any): Observable<Blob> {
+    return this.http.get(BASE_URL + "/report/GetNetworkSmartcardStatusCountReport?role=" + role + "&username=" + username + "&date=" + date + "&reporttype=" + reporttype, { responseType: 'blob' });
+  }
+  // -----------------------------------------------------OERATOR WISE Count Report-------------------------------------
+  getNetworkSmartcardOperatorwiseReport(role: any, username: any, date: any, reporttype: any): Observable<HttpResponse<any[]>> {
+    return this.http.get<any[]>(BASE_URL + "/report/GetNetworkSmartcardCountOperatorwiseReport?role=" + role + "&username=" + username + "&date=" + date + "&reporttype=" + reporttype, { observe: 'response' });
+  }
+  getNetworkSmartcardOperatorwisePDFReport(role: any, username: any, date: any, reporttype: any): Observable<Blob> {
+    return this.http.get(BASE_URL + "/report/GetNetworkSmartcardCountOperatorwiseReport?role=" + role + "&username=" + username + "&date=" + date + "&reporttype=" + reporttype, { responseType: 'blob' });
+  }
+  // -----------------------------------------------------ason date suspend report-------------------------------------
+  getAsonDateSuspendReport(role: any, username: any, date: any, reporttype: any): Observable<HttpResponse<any[]>> {
+    return this.http.get<any[]>(BASE_URL + "/report/GetAsonDateSuspendReport?role=" + role + "&username=" + username + "&date=" + date + "&reporttype=" + reporttype, { observe: 'response' });
+  }
+  getAsonDateSuspendPDFReport(role: any, username: any, date: any, reporttype: any): Observable<Blob> {
+    return this.http.get(BASE_URL + "/report/GetAsonDateSuspendReport?role=" + role + "&username=" + username + "&date=" + date + "&reporttype=" + reporttype, { responseType: 'blob' });
+  }
+  // -----------------------------------------------------suspend report particular period-------------------------------------
+  getSuspendReportByDurationExcelReport(role: any, username: any, fromdate: any, todate: any, reporttype: any): Observable<HttpResponse<any[]>> {
+    return this.http.get<any[]>(BASE_URL + "/report/GetSuspendReportByDuration?role=" + role + "&username=" + username + "&fromdate=" + fromdate + "&todate=" + todate + "&reporttype=" + reporttype, { observe: 'response' });
+  }
+  getSuspendReportByDurationPDFReport(role: any, username: any, fromdate: any, todate: any, reporttype: any): Observable<Blob> {
+    return this.http.get(BASE_URL + "/report/GetSuspendReportByDuration?role=" + role + "&username=" + username + "&fromdate=" + fromdate + "&todate=" + todate + "&reporttype=" + reporttype, { responseType: 'blob' });
+  }
+  // ------------------------------------------------------suspend history report-----------------------------------------------
+  getSuspendHistoryExcelReport(role: any, username: any, fromdate: any, todate: any, smartcard: any, reporttype: any): Observable<HttpResponse<any[]>> {
+    return this.http.get<any[]>(BASE_URL + "/report/GetSuspendHistoryReport?role=" + role + "&username=" + username + "&fromdate=" + fromdate + "&todate=" + todate + "&smartcard=" + smartcard + "&reporttype=" + reporttype, { observe: 'response' });
+  }
+  getSuspendHistoryPDFReport(role: any, username: any, fromdate: any, todate: any, smartcard: any, reporttype: any): Observable<Blob> {
+    return this.http.get(BASE_URL + "/report/GetSuspendHistoryReport?role=" + role + "&username=" + username + "&fromdate=" + fromdate + "&todate=" + todate + "&smartcard=" + smartcard + "&reporttype=" + reporttype, { responseType: 'blob' });
+  }
 }
