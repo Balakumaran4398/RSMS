@@ -180,26 +180,32 @@ export class DeactivationComponent implements OnInit{
       formData.append('type', '2');
 
 
-      this.userservice.uploadFileforDeactivation(formData).subscribe(
-        (res: any) => {
-          console.log(res);
-          Swal.fire({
-            title: 'Success!',
-            text: res?.message || 'File uploaded successfully.',
-            icon: 'success',
-            confirmButtonText: 'OK'
-          });
-        },
-        (error) => {
-          console.error("File upload failed", error);
-          Swal.fire({
-            title: 'Error!',
-            text: error?.error?.message || 'There was a problem uploading your file. Please try again.',
-            icon: 'error',
-            confirmButtonText: 'OK'
-          });
-        }
-      );
+      this.userservice.uploadFileforDeactivation(formData)
+      // .subscribe(
+      //   (res: any) => {
+      //     console.log(res);
+      //     Swal.fire({
+      //       title: 'Success!',
+      //       text: res?.message || 'File uploaded successfully.',
+      //       icon: 'success',
+      //       confirmButtonText: 'OK'
+      //     });
+      //   },
+      //   (error) => {
+      //     console.error("File upload failed", error);
+      //     Swal.fire({
+      //       title: 'Error!',
+      //       text: error?.error?.message || 'There was a problem uploading your file. Please try again.',
+      //       icon: 'error',
+      //       confirmButtonText: 'OK'
+      //     });
+      //   }
+      // );
+      .subscribe((res: any) => {
+        this.swal.success(res?.message);
+      }, (err) => {
+        this.swal.Error(err?.error?.message);
+      });
     } else {
       Swal.fire({
         title: 'Error!',

@@ -470,8 +470,9 @@
                                 </div>
                                 <div class="col-12 col-md-8">
                                     <input type="text" matInput [matAutocomplete]="auto" [(ngModel)]="lcoid"
-                                        name="lcoName" (input)="filterOperators($event)" placeholder="Select a Operator"
-                                        [matAutocompleteDisabled]="false" [value]="selectedOperator?.name">
+                                        name="lcoName" (ngModelChange)="filterOperators($event)" placeholder="Select a Operator"
+                                        [matAutocompleteDisabled]="false" [value]="selectedOperator?.name"
+                                        (focus)="onInputFocus()" (blur)="onInputBlur()">
 
                                     <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayOperator">
                                         <mat-option *ngFor="let operator of filteredOperators" [value]="operator.value"
@@ -1037,8 +1038,8 @@
                     <div class="col-6 col-md-6 value">
                         <!-- <textarea name="" id="" placeholder="N/A" [(ngModel)]="packageMessage.msgcontent"
                             formControlName="message" [maxlength]="117" (input)="updateRemainingChars($event)"></textarea> -->
-                        <textarea name="" id="" placeholder="N/A" 
-                            formControlName="message" [maxlength]="117" (input)="updateRemainingChars($event)"></textarea>
+                        <textarea name="" id="" placeholder="N/A" formControlName="message" [maxlength]="117"
+                            (input)="updateRemainingChars($event)"></textarea>
                         <div>
                             <small>{{ remainingChars }} characters remaining</small>
                         </div>
@@ -1822,7 +1823,7 @@
                     </div>
                     <div class="col-6 col-md-6">
                         <select [(ngModel)]="plantype" (ngModelChange)="onSelectionrechargetype($event)">
-                            <option value="0"  disabled>Selected Plan</option>
+                            <option value="0" disabled>Selected Plan</option>
                             <option *ngFor="let plan of plantype$ | async" [value]="plan.value">
                                 {{ plan.key }}
                             </option>

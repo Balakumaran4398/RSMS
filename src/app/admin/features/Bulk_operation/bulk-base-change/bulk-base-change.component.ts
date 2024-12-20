@@ -21,11 +21,11 @@ export class BulkBaseChangeComponent implements OnInit {
   isCheckboxChecked: boolean = false;
   columnDefs: ColDef[] = [
     { headerName: "S.No", lockPosition: true, valueGetter: 'node.rowIndex+1', cellClass: 'locked-col', width: 80, suppressNavigable: true, sortable: false, filter: false },
-    { headerName: "EXTENDED DATE", field: 'intend_to' },
-    { headerName: "STATUS", field: '' },
-    { headerName: "REMARKS", field: '' },
-    { headerName: "CREATED DATE	", field: '' },
-    { headerName: "UPDATED DATE	", field: '' },
+    { headerName: "EXTENDED DATE", field: 'extenddate', width: 200, },
+    { headerName: "STATUS", field: 'status', width: 200 },
+    { headerName: "REMARKS", field: 'remarks', width: 250 },
+    { headerName: "CREATED DATE	", field: 'createddate', width: 230 },
+    { headerName: "UPDATED DATE	", field: 'updateddate', width: 230 },
   ];
   rowData: any;
   public rowSelection: any = "multiple";
@@ -149,26 +149,12 @@ export class BulkBaseChangeComponent implements OnInit {
       formData.append('paidamount', '0.00');
       formData.append('dueamount', '0.00');
 
-      this.userservice.uploadFileForBaseChange(formData).subscribe(
-        (res: any) => {
-          console.log(res);
-          Swal.fire({
-            title: 'Success!',
-            text: res?.message || 'File uploaded successfully.',
-            icon: 'success',
-            confirmButtonText: 'OK'
-          });
-        },
-        (error) => {
-          console.error("File upload failed", error);
-          Swal.fire({
-            title: 'Error!',
-            text: error?.error?.message || 'There was a problem uploading your file. Please try again.',
-            icon: 'error',
-            confirmButtonText: 'OK'
-          });
-        }
-      );
+      this.userservice.uploadFileForBaseChange(formData)
+        .subscribe((res: any) => {
+          this.swal.success(res?.message);
+        }, (err) => {
+          this.swal.Error(err?.error?.message);
+        });
     } else {
       Swal.fire({
         title: 'Error!',

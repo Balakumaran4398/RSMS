@@ -92,6 +92,12 @@ export class BroadcasterReportsComponent implements OnInit {
       case '5':
         this.reportTitle = 'Monthly Broadcaster Caswise Report';
         break;
+      case '6':
+        this.reportTitle = 'Channel Aging Report';
+        break;
+      case '7':
+        this.reportTitle = 'Package Aging Report';
+        break;
       default:
         this.reportTitle = 'Unknown Report';
     }
@@ -116,6 +122,24 @@ export class BroadcasterReportsComponent implements OnInit {
         { headerName: 'LOG DATE', field: 'logdate', width: 280 },
         { headerName: 'ACTION', field: 'activity', width: 200 },
         { headerName: 'REMARKS', field: 'remarks', width: 900 },
+      ]
+    } else if (this.allType == '6' || this.allType == '7') {
+      this.columnDefs = [
+        { headerName: "S.No", lockPosition: true, valueGetter: 'node.rowIndex+1', headerCheckboxSelection: false, checkboxSelection: false, width: 90 },
+        { headerName: 'PRODUCT ID	', field: 'smartcard', width: 150 },
+        { headerName: 'PRODUCT NAME', field: 'logdate', width: 200 },
+        { headerName: 'CAS', field: 'activity', width: 150 },
+        { headerName: '0-30', field: 'remarks', width: 120 },
+        { headerName: '31-60', field: 'remarks', width: 120 },
+        { headerName: '61-90', field: 'remarks', width: 120 },
+        { headerName: '91-120', field: 'remarks', width: 100 },
+        { headerName: '121-150', field: 'remarks', width: 100 },
+        { headerName: '151-180', field: 'remarks', width: 100 },
+        { headerName: '181-210', field: 'remarks', width: 100 },
+        { headerName: '211-240', field: 'remarks', width: 100 },
+        { headerName: '241-270', field: 'remarks', width: 100 },
+        { headerName: '271-300', field: 'remarks', width: 100 },
+        { headerName: '301-365', field: 'remarks', width: 100 },
       ]
     } else {
       console.warn('Unknown allType:', this.allType);
@@ -186,7 +210,7 @@ export class BroadcasterReportsComponent implements OnInit {
   }
 
 
-  
+
   generateYears() {
     const startYear = 2012;
     const currentYear = new Date().getFullYear();

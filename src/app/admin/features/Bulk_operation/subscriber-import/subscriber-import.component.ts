@@ -52,8 +52,15 @@ export class SubscriberImportComponent implements OnInit {
 
   }
 
+ 
+  ngOnInit(): void {
+    this.operatorlist();
+
+    // this.filteredPackage = this.operatorList;
+  }
   operatorlist() {
-    this.userservice.getPackageList(this.role, this.username,1  ).subscribe((data: any) => {
+    // this.userservice.getPackageList(this.role, this.username,1  ).subscribe((data: any) => {
+    this.userservice.getOeratorList(this.role, this.username  ).subscribe((data: any) => {
       console.log(data);
       this.cdr.detectChanges();
       this.operatorList = Object.keys(data).map(key => {
@@ -66,11 +73,6 @@ export class SubscriberImportComponent implements OnInit {
 
       this.filteredPackage = this.operatorList;
     })
-  }
-  ngOnInit(): void {
-    this.operatorlist();
-
-    // this.filteredPackage = this.operatorList;
   }
   onOperatorChange(selectedOperator: any) {
     this.selectedPackage = selectedOperator;

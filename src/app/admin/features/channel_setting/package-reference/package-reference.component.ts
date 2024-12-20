@@ -130,10 +130,10 @@ export class PackageReferenceComponent {
     {
       headerName: "S.No", lockPosition: true, valueGetter: 'node.rowIndex+1', width: 100, headerCheckboxSelection: true, checkboxSelection: true,
     },
-    { headerName: "CHANNEL NAME", field: 'productname', width: 400},
-    { headerName: "PACKAGE RATE", field: 'packagerate',width: 400},
-    { headerName: "REFERENCE ID", field: 'referenceid', width: 300},
-    { headerName: "PRODUCT ID", field: 'casproductid', width: 300},
+    { headerName: "CHANNEL NAME", field: 'productname', width: 400 },
+    { headerName: "PACKAGE RATE", field: 'packagerate', width: 400 },
+    { headerName: "REFERENCE ID", field: 'referenceid', width: 300 },
+    { headerName: "PRODUCT ID", field: 'casproductid', width: 300 },
 
   ]
   private updateColumnDefs(tab: string): void {
@@ -142,11 +142,11 @@ export class PackageReferenceComponent {
         {
           headerName: "S.No", lockPosition: true, valueGetter: 'node.rowIndex+1', width: 100, headerCheckboxSelection: true, checkboxSelection: true,
         },
-        { headerName: "CHANNEL NAME", field: 'productname',width: 400, },
-        { headerName: "PACKAGE RATE", field: 'packagerate',width: 400,cellStyle: { textAlign: 'center' }, },
-        { headerName: "REFERENCE ID", field: 'orderid',width: 300,cellStyle: { textAlign: 'center' }, },
+        { headerName: "CHANNEL NAME", field: 'productname', width: 400, },
+        { headerName: "PACKAGE RATE", field: 'packagerate', width: 400, cellStyle: { textAlign: 'center' }, },
+        { headerName: "REFERENCE ID", field: 'orderid', width: 300, cellStyle: { textAlign: 'center' }, },
         {
-          headerName: "PRODUCT ID", field: 'casproductid',width: 300,cellStyle: { textAlign: 'center' },
+          headerName: "PRODUCT ID", field: 'casproductid', width: 300, cellStyle: { textAlign: 'center' },
           cellRenderer: (params: any) => {
             const span = document.createElement('span');
             span.innerText = params.value;
@@ -190,11 +190,11 @@ export class PackageReferenceComponent {
         {
           headerName: "S.No", lockPosition: true, valueGetter: 'node.rowIndex+1', width: 100, headerCheckboxSelection: true, checkboxSelection: true,
         },
-        { headerName: "CHANNEL NAME", field: 'productname',width: 400, },
-        { headerName: "PACKAGE RATE", field: 'packagerate',width: 400, },
-        { headerName: "REFERENCE ID", field: 'orderid', width: 300,},
+        { headerName: "CHANNEL NAME", field: 'productname', width: 400, },
+        { headerName: "PACKAGE RATE", field: 'packagerate', width: 400, },
+        { headerName: "REFERENCE ID", field: 'orderid', width: 300, },
         {
-          headerName: "PRODUCT ID", field: 'casproductid',width: 300,
+          headerName: "PRODUCT ID", field: 'casproductid', width: 300,
 
           cellRenderer: (params: any) => {
             const span = document.createElement('span');
@@ -244,7 +244,7 @@ export class PackageReferenceComponent {
         { headerName: "PACKAGE RATE", field: 'packagerate', width: 400 },
         { headerName: "REFERENCE ID", field: 'orderid', width: 300 },
         {
-          headerName: "PRODUCT ID", field: 'casproductid',width: 300,
+          headerName: "PRODUCT ID", field: 'casproductid', width: 300,
           cellRenderer: (params: any) => {
             const span = document.createElement('span');
             span.innerText = params.value;
@@ -339,7 +339,7 @@ export class PackageReferenceComponent {
       (error) => {
         Swal.fire({
           title: 'Error!',
-          text: error.error.message || 'Failed to update Product ID.',
+          text: error?.error?.message || error?.error?.baselist || 'Failed to update Product ID.',
           icon: 'error',
           confirmButtonText: 'OK',
           timer: 2000,

@@ -467,6 +467,7 @@ export class FingerPrintComponent {
       this.intend_1 = this.fplistLastObj.intendto;
       console.log('                  ' + this.intend_1);
       this.display_status = this.fplistLastObj.display_status;
+      console.log('display_status' + this.display_status);
 
       this.type_1 = this.fplistLastObj.type;
       this.intendid_1 = this.fplistLastObj.intendid;
@@ -904,5 +905,13 @@ export class FingerPrintComponent {
       return true;
     }
     return false;
+  }
+  getStatusClass(): string {
+    if (this.display_status === 'SERVICE IS RUNNING') {
+      return 'status-running';
+    } else if (this.display_status === 'SERVICE IS NOT RUNNING') {
+      return 'status-stopped';
+    }
+    return '';
   }
 }

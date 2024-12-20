@@ -28,7 +28,6 @@
                 New LCO Business
             </button>
         </div>
-
     </div>
     <div class="grid-container">
         <div *ngFor="let operator of pagedOperators">
@@ -118,8 +117,8 @@
 
 
                     <br>
-                    
-               
+
+
                     <div class="report d-flex justify-content-center">
                         <div class="file-container">
                             <div class="files mx-2">
@@ -184,7 +183,7 @@
                         <div class="col-2 vertical tooltip-container"
                             (click)="openDialog('connection',operator.operatorid)">
                             <div class="col-2 vertical tooltip-container">
-                                <!-- <p class="sub-text">Connection</p> -->
+                                <p class="sub-text">Connection</p>
                                 <span style="color: #0e610b;">
                                     <div class="circle" style="background-color: rgb(240, 120, 9);"><span
                                             class="circle-text">{{operator?.connectioncount}}</span></div>
@@ -195,7 +194,7 @@
                         <div class="col-2 vertical tooltip-container"
                             (click)="openDialog('notexpiry',operator.operatorid)">
                             <div class="col-2 vertical tooltip-container">
-                                <!-- <p class="sub-text">NotExpiry</p> -->
+                                <p class="sub-text">NotExpiry</p>
                                 <span style="color: #0e610b;">
                                     <div class="circle" style="background-color: rgb(122, 64, 129);"><span
                                             class="circle-text">{{operator?.activecount}}</span></div>
@@ -206,7 +205,7 @@
                         <div class="col-2 vertical tooltip-container"
                             (click)="openDialog('expired',operator.operatorid)">
                             <div class="col-2 vertical tooltip-container">
-                                <!-- <p class="sub-text">Expired</p> -->
+                                <p class="sub-text">Expired</p>
                                 <span style="color: #0e610b;">
                                     <div class="circle" style="background-color: rgb(202, 9, 9);"><span
                                             class="circle-text">{{operator?.expiredcount}}</span></div>
@@ -216,7 +215,7 @@
                         </div>
                         <div class="col-2 vertical tooltip-container" (click)="openDialog('new',operator.operatorid)">
                             <div class="col-2 vertical tooltip-container">
-                                <!-- <p class="sub-text">New</p> -->
+                                <p class="sub-text">New</p>
                                 <span style="color: #0e610b;">
                                     <div class="circle" style="background-color: rgb(13 131 33);"><span
                                             class="circle-text">{{operator?.newcount}}</span></div>
@@ -225,7 +224,7 @@
                         </div>
                         <div class="col-2 vertical tooltip-container" (click)="openDialog('block',operator.operatorid)">
                             <div class="col-2 vertical tooltip-container">
-                                <!-- <p class="sub-text">Block</p> -->
+                                <p class="sub-text">Block</p>
                                 <span style="color: #0e610b;">
                                     <div class="circle" style="background-color: rgb(148, 122, 8);"><span
                                             class="circle-text">{{operator?.blockcount}}</span></div>
@@ -234,9 +233,10 @@
                             </div>
                         </div>
                     </div>
-                    <span style="font-size: 17px;color: rgb(1, 29, 29);">Inventory</span>
-                    <div class="report d-flex " style="justify-content: space-between;" >
-                        <div class="col-6 vertical tooltip-container" (click)="openDialog('boxinhand',operator.operatorid)">
+                    <span style="font-size: 17px;color: #000d33;">Inventory</span>
+                    <div class="report d-flex " style="justify-content: space-between;">
+                        <div class="col-6 vertical tooltip-container"
+                            (click)="openDialog('boxinhand',operator.operatorid)">
                             <p class="sub-text">Box in Hand</p>
                             <div class="col-2 vertical tooltip-container">
                                 <span style="color: #0e610b;">
@@ -245,7 +245,8 @@
                                 </span> <span class="tooltip">Box in Hand</span>
                             </div>
                         </div>
-                        <div class="col-6 vertical tooltip-container" (click)="openDialog('totalbox',operator.operatorid)">
+                        <div class="col-6 vertical tooltip-container"
+                            (click)="openDialog('totalbox',operator.operatorid)">
                             <p class="sub-text">Total Box</p>
                             <div class="col-2 vertical tooltip-container">
                                 <span style="color: #0e610b;">

@@ -91,7 +91,16 @@ input {
     display: flex;
 }
 
-
+.status-running {
+    color: green;
+    font-weight: bold;
+  }
+  
+  .status-stopped {
+    color: red;
+    font-weight: bold;
+  }
+  
   
 @media screen and (max-width:560px) {
     .main {

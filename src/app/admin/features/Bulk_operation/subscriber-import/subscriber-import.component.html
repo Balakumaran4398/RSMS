@@ -82,7 +82,7 @@
                     </select> -->
                     
                     <input type="text" matInput [matAutocomplete]="auto" [(ngModel)]="operatorid" 
-                        (input)="filterPackage($event)" placeholder="Select a package"
+                        (input)="filterPackage($event)" placeholder="Select a operator"
                         [matAutocompleteDisabled]="false" [value]="selectedPackageName">
 
                     <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayOperator">

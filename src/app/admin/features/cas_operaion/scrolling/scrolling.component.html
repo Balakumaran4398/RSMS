@@ -307,13 +307,13 @@
                                         <label for="">Scrolling Type</label>
                                     </div>
                                     <div class="col-12 col-md-8">
-                                        <select placeholder="Select the Scroll type" formControlName="scrolltype"
+                                        <select placeholder="Select the Scroll type" formControlName="languagetype"
                                             [(ngModel)]="scrollType1">
                                             <option value="" disabled>Select a Scroll type</option>
                                             <option *ngFor="let st of scrollType" [value]="st.value">{{st.lable}}
                                             </option>
                                         </select>
-                                        <div *ngIf="form.get('scrolltype')?.invalid && form.get('scrolltype')?.touched">
+                                        <div *ngIf="form.get('languagetype')?.invalid && form.get('languagetype')?.touched">
                                             <small class="text-danger">Scroll Type is required.</small>
                                         </div>
                                     </div>

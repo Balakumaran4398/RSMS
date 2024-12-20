@@ -8,8 +8,6 @@ import Swal from 'sweetalert2';
 import { BehaviorSubject } from 'rxjs';
 import { ChannellistComponent } from '../channellist/channellist.component';
 import { SwalService } from 'src/app/_core/service/swal.service';
-import jsPDF from 'jspdf';
-import { iTerm } from 'node_modules1/ansi-escapes';
 import { LcologinpageComponent } from '../lcologinpage/lcologinpage.component';
 interface requestBodylogs {
   access_ip: any;
@@ -394,18 +392,20 @@ export class SubDashboardComponent implements OnInit, AfterViewInit {
           }
 
           if (!item.boxstatus) {
-            console.log('item.status', item.status + '         tem.statussuspend', item.statussuspend, '   item.suspendstatus ', item.suspendstatus, "    item.noofdays  ", item.noofdays);
-            if ((item.status != 1 || item.suspendstatus == 1) || (!item.statussuspend) || (item.noofdays > 1)) {
-              console.log('suspend  this loop working', this.suspend);
-              this.suspend = true; //disable
-              console.log('suspend last ', this.suspend);
-            } else {
-              console.log('else loogp working');
+            console.log('Status:', item.status);
+            console.log('Suspend Status:', item.suspendstatus);
+            console.log('Suspend State:', item.statussuspend);
+            console.log('Number of Days:', item.noofdays);
+            if (item.noofdays != 0 && (item.status == 1 || item.suspendstatus != 1) && !item.statussuspend) {
               this.suspend = false;
+              console.log('correct');
+            } else {
+              this.suspend = true;
+              console.log('wrong');
             }
-          } else {
-            console.log('main else working');
-            this.suspend = false;
+          }
+          else {
+            this.suspend = true;
           }
 
           if (!item.boxstatus) {
@@ -654,18 +654,33 @@ export class SubDashboardComponent implements OnInit, AfterViewInit {
             //   this.suspend = false;
             // }
 
+
+
+
+            // if (!item.boxstatus) {
+            //   console.log(item.noofdays);
+            //   if ((item.statusdisplay == 'Active' || (item.noofdays > 1))) {
+            //     this.suspend = false;
+            //   } else {
+            //     this.suspend = true;
+            //   }
+            // } else {
+            //   this.suspend = false;
+            // }
             if (!item.boxstatus) {
-              console.log('item.status', item.status + '         tem.statussuspend', item.statussuspend, '   item.suspendstatus ', item.suspendstatus, "    item.noofdays  ", item.noofdays);
-              if ((item.status != 1 || item.suspendstatus === 1) || (!item.statussuspend) || (item.noofdays > 1)) {
-                console.log('suspend  this loop working', this.suspend);
-                this.suspend = true; //disable
-                console.log('suspend last ', this.suspend);
-              } else {
-                console.log('else loogp working');
+              console.log('Status:', item.status);
+              console.log('Suspend Status:', item.suspendstatus);
+              console.log('Suspend State:', item.statussuspend);
+              console.log('Number of Days:', item.noofdays);
+              if (item.noofdays != 0 && (item.status == 1 || item.suspendstatus != 1) && !item.statussuspend) {
                 this.suspend = false;
+                console.log('correct');
+              } else {
+                this.suspend = true;
+                console.log('wrong');
               }
-            } else {
-              console.log('main else working');
+            }
+            else {
               this.suspend = true;
             }
 
@@ -916,32 +931,24 @@ export class SubDashboardComponent implements OnInit, AfterViewInit {
               this.boxchange = false;
             }
 
-            // if (!item.boxstatus) {
-            //   console.log('item.status', item.status + '         tem.statussuspend', item.statussuspend, '   item.suspendstatus ', item.suspendstatus, "    item.noofdays  ", item.noofdays);
-            //   if ((item.status != 1 || item.suspendstatus == 1) || !item.statussuspend || item.noofdays <= 1) {
-            //     console.log('suspend', this.suspend);
-            //     this.suspend = true;
-            //   } else {
-            //     this.suspend = false;
-            //   }
-            // } else {
-            //   this.suspend = false;
-            // }
 
             if (!item.boxstatus) {
-              console.log('item.status', item.status + '         tem.statussuspend', item.statussuspend, '   item.suspendstatus ', item.suspendstatus, "    item.noofdays  ", item.noofdays);
-              if ((item.status != 1 || item.suspendstatus === 1) || (!item.statussuspend) || (item.noofdays > 1)) {
-                console.log('suspend  this loop working', this.suspend);
-                this.suspend = true; //disable
-                console.log('suspend last ', this.suspend);
-              } else {
-                console.log('else loogp working');
+              console.log('Status:', item.status);
+              console.log('Suspend Status:', item.suspendstatus);
+              console.log('Suspend State:', item.statussuspend);
+              console.log('Number of Days:', item.noofdays);
+              if (item.noofdays != 0 && (item.status == 1 || item.suspendstatus != 1) && !item.statussuspend) {
                 this.suspend = false;
+                console.log('correct');
+              } else {
+                this.suspend = true;
+                console.log('wrong');
               }
-            } else {
-              console.log('main else working');
+            }
+            else {
               this.suspend = true;
             }
+
 
             if (!item.boxstatus) {
               console.log('item.status', item.status + '         tem.suspendstatus', item.suspendstatus)
@@ -1191,33 +1198,40 @@ export class SubDashboardComponent implements OnInit, AfterViewInit {
               this.boxchange = false;
             }
 
+
+
             // if (!item.boxstatus) {
             //   console.log('item.status', item.status + '         tem.statussuspend', item.statussuspend, '   item.suspendstatus ', item.suspendstatus, "    item.noofdays  ", item.noofdays);
-            //   if ((item.status != 1 || item.suspendstatus == 1) || !item.statussuspend || item.noofdays <= 1) {
-            //     console.log('suspend', this.suspend);
-            //     this.suspend = true;
+            //   if ((item.status != 1 || item.suspendstatus === 1) || (!item.statussuspend) || (item.noofdays < 1)) {
+            //     console.log('suspend  this loop working', this.suspend);
+            //     this.suspend = true; //disable
+            //     console.log('suspend last ', this.suspend);
             //   } else {
+            //     console.log('else loogp working');
             //     this.suspend = false;
             //   }
             // } else {
-            //   this.suspend = false;
+            //   console.log('main else working');
+            //   this.suspend = true;
             // }
 
-
             if (!item.boxstatus) {
-              console.log('item.status', item.status + '         tem.statussuspend', item.statussuspend, '   item.suspendstatus ', item.suspendstatus, "    item.noofdays  ", item.noofdays);
-              if ((item.status != 1 || item.suspendstatus === 1) || (!item.statussuspend) || (item.noofdays < 1)) {
-                console.log('suspend  this loop working', this.suspend);
-                this.suspend = true; //disable
-                console.log('suspend last ', this.suspend);
-              } else {
-                console.log('else loogp working');
+              console.log('Status:', item.status);
+              console.log('Suspend Status:', item.suspendstatus);
+              console.log('Suspend State:', item.statussuspend);
+              console.log('Number of Days:', item.noofdays);
+              if (item.noofdays != 0 && (item.status == 1 || item.suspendstatus != 1) && !item.statussuspend) {
                 this.suspend = false;
+                console.log('correct');
+              } else {
+                this.suspend = true;
+                console.log('wrong');
               }
-            } else {
-              console.log('main else working');
+            }
+            else {
               this.suspend = true;
             }
+
 
             console.log('suspend-final', this.suspend);
             if (!item.boxstatus) {

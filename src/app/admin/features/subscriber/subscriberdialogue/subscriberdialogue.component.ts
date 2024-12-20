@@ -101,6 +101,8 @@ export class SubscriberdialogueComponent implements OnInit {
   selectedStreet: any;
   selectedSub: any;
 
+  showOperators = false;
+
   pair: boolean = false;
   unpair: boolean = false;
   ischeck: boolean = false;
@@ -330,10 +332,7 @@ export class SubscriberdialogueComponent implements OnInit {
     this.username = storageService.getUsername();
     this.newRefreshSmartcard = data.refresh;
     this.subid_1 = data.subId;
-    console.log(this.subid_1);
-
     this.newSubid = data.newsubid;
-    console.log(this.newSubid);
     this.sType = data?.type;
     this.pairBoxList = data['pairBoxlist'].map((item: any) => item);
     this.pairSmartcardList = data['pairSmartcardlist'].map((item: any) => item);
@@ -344,8 +343,6 @@ export class SubscriberdialogueComponent implements OnInit {
     this.pairedBoxid = this.pairBoxList;
     this.subscribername = data['detailsList'].customername;
     this.packageStatus = data['detailsList'].package_status;
-    console.log(this.packageStatus);
-
     this.operatorid = data['detailsList'].operatorid;
     this.subid = data['detailsList'].subid;
     this.baseplan = data['detailsList'].baseplan;
@@ -376,7 +373,6 @@ export class SubscriberdialogueComponent implements OnInit {
     this.statusSus = data['detailsList'].statusSus;
     this.smartcardno = data['detailsList'].smartcard;
     this.statusdisplay = data['detailsList'].statusdisplay;
-    console.log(this.statusdisplay);
     this.boxno = data['detailsList'].boxid;
     this.castype = data['detailsList'].castype;
     if (this.boxno && this.smartcardno == 'No Smartcard') {
@@ -440,10 +436,7 @@ export class SubscriberdialogueComponent implements OnInit {
       role: [this.role],
       username: [this.username]
     });
-    console.log(this.Sendmseform);
-
     this.addsmartcardform == this.fb.group({
-
     })
     this.updateColumnDefs(this.sType);
   }
@@ -490,12 +483,11 @@ export class SubscriberdialogueComponent implements OnInit {
         const name = key;
         return { name: name, value: value };
       });
-      this.cdr.detectChanges();
       this.filteredOperators = this.lco_list;
+      this.cdr.detectChanges;
     })
     this.userservice.getPlanTypeList(this.role, this.username).subscribe((data: any) => {
       this.rechargetype = Object.entries(data).map(([key, value]) => ({ name: key, id: value }));
-      console.log(this.rechargetype);
       this.cdr.detectChanges();
     })
 
@@ -990,8 +982,6 @@ export class SubscriberdialogueComponent implements OnInit {
       return;
     }
     this.swal.Loading();
-    console.log('gfrgd');
-
     this.userservice.UpdateSubscriberDetails(this.Editform.value)
       .subscribe((res: any) => {
         this.swal.success(res?.message);
@@ -1098,6 +1088,7 @@ export class SubscriberdialogueComponent implements OnInit {
         return { name: name, value: value };
       });
       this.filteredAreas = this.area_list;
+      this.cdr.detectChanges();
     })
   }
 
@@ -1111,6 +1102,7 @@ export class SubscriberdialogueComponent implements OnInit {
         return { name: name, value: value };
       });
       this.filteredStreet = this.street_list;
+      this.cdr.detectChanges();
     })
   }
 
@@ -1123,19 +1115,19 @@ export class SubscriberdialogueComponent implements OnInit {
 
   filterOperators(event: any): void {
     const filterValue = event.target.value.toLowerCase();
+    this.cdr.detectChanges;
     this.filteredOperators = this.lco_list.filter(operator =>
       operator.name.toLowerCase().includes(filterValue)
     );
-    this.cdr.detectChanges();
   }
 
 
   filterSmartcard(event: any): void {
     const filterValue = event.target.value.toLowerCase();
+    this.cdr.detectChanges;
     this.filteredSmartcard = this.area.filter((item: any) =>
       item.name.toLowerCase().includes(filterValue)
     );
-    this.cdr.detectChanges();
   }
 
   filterAreas(event: any): void {
@@ -1157,15 +1149,20 @@ export class SubscriberdialogueComponent implements OnInit {
       sub.name.toLowerCase().includes(filterValue)
     );
   }
+  onInputFocus(): void {
+    this.showOperators = true;
+  }
+  onInputBlur(): void {
+    setTimeout(() => {
+      this.showOperators = false;
+    }, 200);
+  }
   onSmartcardList(smartcard: any) {
     this.selectedSmartcard = smartcard;
     this.smartcard = smartcard.name;
     // this.cdr.detectChanges();
     this.userservice.getBoxidBySmartcard(this.role, this.username, this.smartcard).subscribe((data: any) => {
       this.boxid = data.boxid;
-      console.log(this.boxid);
-      console.log(data);
-
       this.cdr.detectChanges();
       let boxidElement: any = document.getElementById("boxid");
       if (boxidElement) {
@@ -1226,7 +1223,6 @@ export class SubscriberdialogueComponent implements OnInit {
       this.swal.Error('All fields are required');
       return;
     }
-    console.log(this.subid_1);
     this.userservice.transferLcoToSmartcard(this.role, this.username, this.lcoid, this.lcoareaid, this.lcostreetid, this.subid_1 || this.newSubid, this.withsubscription, 0, 2)
       .subscribe((res: any) => {
         this.swal.success(res?.message);
@@ -1302,8 +1298,6 @@ export class SubscriberdialogueComponent implements OnInit {
   sendMessage() {
     this.Sendmseform.markAllAsTouched();
     const formValues = this.Sendmseform.value;
-    console.log('formValues', formValues);
-
     const payload = {
       smartcard: formValues.smartcard,
       duration: formValues.duration || 0,
@@ -1314,8 +1308,6 @@ export class SubscriberdialogueComponent implements OnInit {
       role: formValues.role,
       username: formValues.username
     };
-    console.log('payload', payload);
-
     this.swal.Loading();
     this.userservice.sendMessage(payload)
       .subscribe((res: any) => {
@@ -1768,24 +1760,7 @@ export class SubscriberdialogueComponent implements OnInit {
     }
     this.swal.Loading();
     this.userservice.removeProductForSmartcard(requestBody).subscribe(
-      // (response: HttpResponse<any[]>) => {
-      //   if (response.status === 200) {
-      //     this.rowData = response.body;
-      //     // this.swal.Success_200();
-      //   } else if (response.status === 204) {
-      //     this.swal.Success_204();
-      //     this.rowData = [];
-      //   }
-      // },
-      // (res:any)=>{
-      //   console.log(res);
-
-      // },
-      // (error) => {
-      //   this.handleApiError(error);
-      // }
       (res: any) => {
-        // this.alacarteConfirmationData = res;
         this.cdr.detectChanges;
         this.showData = true;
         this.swal.success(res?.message);

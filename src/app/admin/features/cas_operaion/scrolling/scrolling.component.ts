@@ -151,10 +151,10 @@ export class ScrollingComponent {
     { lable: "Brown", value: "10" },
   ];
   scrollType: any = [
-    { lable: "Scroll Only", value: "1" },
-    { lable: "Scroll With STB id", value: "2" },
-    { lable: "Scroll With Smartcard", value: "3" },
-    { lable: "Scroll With STB id and Smartcard", value: "4" }
+    { lable: "Scroll Only", value: "0" },
+    { lable: "Scroll With STB id", value: "1" },
+    { lable: "Scroll With Smartcard", value: "2" },
+    { lable: "Scroll With STB id and Smartcard", value: "3" }
   ];
   transparency: any;
   force: boolean = true;
@@ -229,9 +229,9 @@ export class ScrollingComponent {
       transparency: [0, Validators.required],
       duration: [0, Validators.required],
       timegap: [0, Validators.required],
-      scrolltype: [0, Validators.required],
+      languagetype: [0, Validators.required],
       message: ['', Validators.required],
-      languagetype: 0,
+      scrollType: 0,
       marque: 0,
       e_date: 0,
       role: this.role,
