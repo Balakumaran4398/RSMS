@@ -30,7 +30,7 @@ export class NewRechargeComponent {
   constructor(public dialogRef: MatDialogRef<NewRechargeComponent>, @Inject(MAT_DIALOG_DATA) public data: any, private fb: FormBuilder, private swal: SwalService, public dialog: MatDialog, public userService: BaseService, storageService: StorageService) {
     this.username = storageService.getUsername();
     this.role = storageService.getUserRole();
-    this.userService.getOeratorList(this.role, this.username).subscribe((data: any) => {
+    this.userService.getOeratorList(this.role, this.username,1).subscribe((data: any) => {
       console.log(data);
       this.operatorList = Object.keys(data).map(key => {
         const value = data[key];

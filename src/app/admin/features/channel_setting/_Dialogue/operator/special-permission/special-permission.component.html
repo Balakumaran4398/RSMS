@@ -3,6 +3,7 @@
     <h6>Special Permission</h6>
     <i class="fa fa-close close-icon" style="cursor: pointer;" (click)="onNoClick()"></i>
 </div>
+<h4 style="color: #260225;"> {{operatorname}} </h4>
 <div class="card">
     <!-- <div class="Head d-flex justify-content-between align-items-center mb-3">
         <p class="span">Special Permission</p>
@@ -55,6 +56,20 @@
                         <span class="slider"></span>
                     </label>
                 </div>
+                <div class="input_box d-flex justify-content-between align-items-center mb-3">
+                    <span for="lcoLabel" class="form-label">Remote</span>
+                    <label class="switch">
+                        <input type="checkbox" id="lcoLabel" name="lcoLabel" [(ngModel)]="remote">
+                        <span class="slider"></span>
+                    </label>
+                </div>
+                <div class="input_box d-flex justify-content-between align-items-center mb-3">
+                    <span for="lcoLabel" class="form-label"> IS Suspend</span>
+                    <label class="switch">
+                        <input type="checkbox" id="lcoLabel" name="lcoLabel" [(ngModel)]="isSuspend">
+                        <span class="slider"></span>
+                    </label>
+                </div>
 
             </div>
 
@@ -88,20 +103,20 @@
                         <span class="slider"></span>
                     </label>
                 </div>
-                <!-- <div class="input_box d-flex justify-content-between align-items-center mb-3">
-                        <label for="chat" class="form-label">Chat</label>
-                        <label class="switch">
-                            <input type="checkbox" id="chat" name="chat"  formControlName="offlinepaymentsublco" [(ngModel)]="offlinepaymentsublco" >
-                            <span class="slider"></span>
-                        </label>
-                    </div>
-                    <div class="input_box d-flex justify-content-between align-items-center mb-3">
-                        <label for="dateAdjustment" class="form-label">Date Adjustment</label>
-                        <label class="switch">
-                            <input type="checkbox" id="dateAdjustment" name="dateAdjustment"  formControlName="offlinepaymentsublco" [(ngModel)]="offlinepaymentsublco" >
-                            <span class="slider"></span>
-                        </label>
-                    </div> -->
+                <div class="input_box d-flex justify-content-between align-items-center mb-3">
+                    <span for="enableForce" class="form-label">Chat</span>
+                    <label class="switch">
+                        <input type="checkbox" id="enableForce" name="enableForce" [(ngModel)]="chat">
+                        <span class="slider"></span>
+                    </label>
+                </div>
+                <div class="input_box d-flex justify-content-between align-items-center mb-3">
+                    <span for="bulkRecharge" class="form-label">Date Adjustment</span>
+                    <label class="switch">
+                        <input type="checkbox" id="bulkRecharge" name="bulkRecharge" [(ngModel)]="dateAdjust">
+                        <span class="slider"></span>
+                    </label>
+                </div>
                 <div class="input_box d-flex justify-content-between align-items-center mb-3">
                     <span for="fullRefund" class="form-label">Full Refund</span>
                     <label class="switch">
@@ -161,8 +176,8 @@
             </div>
         </div>
         <div class="d-flex justify-content-center align-item-center mx-3 mb-4">
+            <button type="button" class="btn btn-danger me-2" (click)="togglepermission()">Cancel</button>
             <button type="button" (click)="onSubmit()" class="btn btn-success me-2">Update</button>
-            <button type="button" class="btn btn-danger " (click)="togglepermission()">Cancel</button>
         </div>
     </div>
     <!-- </form> -->

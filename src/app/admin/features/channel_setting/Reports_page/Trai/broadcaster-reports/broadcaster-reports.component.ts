@@ -6,6 +6,8 @@ import { ExcelService } from 'src/app/_core/service/excel.service';
 import { StorageService } from 'src/app/_core/service/storage.service';
 import { SwalService } from 'src/app/_core/service/swal.service';
 import { Location } from '@angular/common';
+import Swal from 'sweetalert2';
+import { HttpResponse } from '@angular/common/http';
 @Component({
   selector: 'app-broadcaster-reports',
   templateUrl: './broadcaster-reports.component.html',
@@ -123,7 +125,20 @@ export class BroadcasterReportsComponent implements OnInit {
         { headerName: 'ACTION', field: 'activity', width: 200 },
         { headerName: 'REMARKS', field: 'remarks', width: 900 },
       ]
-    } else if (this.allType == '6' || this.allType == '7') {
+    } else if (this.allType == '2') {
+      this.columnDefs = [
+        { headerName: "S.No", lockPosition: true, valueGetter: 'node.rowIndex+1', headerCheckboxSelection: true, checkboxSelection: true, width: 90 },
+        { headerName: 'PRODUCT NAME', field: 'productname', width: 350 },
+        { headerName: 'PRODUCTID', field: 'casproductid', width: 340 },
+        { headerName: 'CAS', field: 'casname', width: 340 },
+        { headerName: 'SUBS COUNT AS 7TH	', field: 'w1', width: 240 },
+        { headerName: 'SUBS COUNT AS 14TH	', field: 'w2', width: 250 },
+        { headerName: 'SUBS COUNT AS 21TH	', field: 'w3', width: 250 },
+        { headerName: 'AVERAGE', field: 'avg', width: 350 },
+        { headerName: 'MONTH AND YEAR', field: 'monthyear', width: 350 },
+      ]
+    }
+    else if (this.allType == '6' || this.allType == '7') {
       this.columnDefs = [
         { headerName: "S.No", lockPosition: true, valueGetter: 'node.rowIndex+1', headerCheckboxSelection: false, checkboxSelection: false, width: 90 },
         { headerName: 'PRODUCT ID	', field: 'smartcard', width: 150 },
@@ -167,12 +182,7 @@ export class BroadcasterReportsComponent implements OnInit {
     console.log(this.broadcastername);
     console.log(this.broadcasterid);
   }
-  getExcel() {
 
-  }
-  getPDF() {
-
-  }
 
   generateMonths() {
     this.months = [
@@ -221,5 +231,150 @@ export class BroadcasterReportsComponent implements OnInit {
   }
   goBack(): void {
     this.location.back();
+  }
+
+  getExcel() {
+
+  }
+  getPDF() {
+
+  }
+  // ---------------------------------------Universal report-------------------------
+
+  getUniversalExcel() {
+    this.userService.getUniversalExcelReport(this.role, this.username, this.selectedMonth, this.selectedYear, this.selectedDate, 2)
+      .subscribe(
+        (response: HttpResponse<any>) => {
+          if (response.status === 200) {
+            this.rowData = response.body;
+            console.log(this.reportTitle);
+            const title = (this.reportTitle).toUpperCase();
+            const sub = 'MSO ADDRESS:' + this.msodetails;
+            let areatitle = '';
+            let areasub = '';
+            let header: string[] = [];
+            const datas: Array<any> = [];
+            areatitle = 'A1:H2';
+            areasub = 'A3:H3';
+            const headers = ['S.NO', 'PACKAGE ID', 'PACKAGE NAME', 'CAS', 'AS ON 07th', 'AS ON 14th', 'AVERAGE', 'MONTH & YEAR'];
+            this.rowData.forEach((d: any, index: number) => {
+              const row = [index + 1, d.customername, d.mobileno, d.smartcard, d.boxid, d.casname, d.productname, d.createddate];
+              datas.push(row);
+            });
+            this.excelService.generatUniversalExcel(areatitle, headers, datas, title, areasub, sub);
+          } else if (response.status === 204) {
+            this.swal.Success_204();
+            this.rowData = [];
+          }
+        },
+        (error) => {
+          this.handleApiError(error);
+        }
+      );
+  }
+  getUniversalPDF() {
+    this.userService.getUniversalPDFReport(this.role, this.username, this.selectedMonth, this.selectedYear, this.selectedDate, 1)
+      .subscribe((x: Blob) => {
+        const blob = new Blob([x], { type: 'application/pdf' });
+        const data = window.URL.createObjectURL(blob);
+        const link = document.createElement('a');
+        link.href = data;
+        link.download = (this.reportTitle + ".pdf").toUpperCase();
+        link.dispatchEvent(new MouseEvent('click', { bubbles: true, cancelable: true, view: window }));
+        setTimeout(() => {
+          window.URL.revokeObjectURL(data);
+          link.remove();
+        }, 100);
+      },
+        (error: any) => {
+          Swal.fire({
+            title: 'Error!',
+            text: error?.error?.message || 'There was an issue generating the PDF CAS form report.',
+            icon: 'error',
+            confirmButtonText: 'Ok'
+          });
+        });
+  }
+  // ------------------------------------------------OverAll Report-------------------------------------------
+  grtOverAllReport() {
+    this.userService.getOverAllExcelReport(this.role, this.username, this.selectedMonth, this.selectedYear, this.selectedDate, 2)
+      .subscribe(
+        (response: HttpResponse<any>) => {
+          if (response.status === 200) {
+            this.rowData = response.body;
+          } else if (response.status === 204) {
+            this.swal.Success_204();
+            this.rowData = [];
+          }
+        },
+        (error) => {
+          this.handleApiError(error);
+        }
+      );
+  }
+  getOverAllExcel() {
+    this.userService.getOverAllExcelReport(this.role, this.username, this.selectedMonth, this.selectedYear, this.selectedDate, 2)
+      .subscribe(
+        (response: HttpResponse<any>) => {
+          if (response.status === 200) {
+            this.rowData = response.body;
+            console.log(this.reportTitle);
+            const title = (this.reportTitle).toUpperCase();
+            const sub = 'MSO ADDRESS:' + this.msodetails;
+            const subtitle = this.rowData;
+            let areatitle = '';
+            let areasub = '';
+            let header: string[] = [];
+            const datas: Array<any> = [];
+            areatitle = 'A1:H2';
+            areasub = 'A3:H3';
+            const headers = ['S.NO', 'PACKAGE ID', 'PACKAGE NAME', 'CAS', 'AS ON 07th', 'AS ON 14th', 'AVERAGE', 'MONTH & YEAR'];
+            this.rowData.forEach((d: any, index: number) => {
+              const row = [index + 1, d.customername, d.mobileno, d.smartcard, d.boxid, d.casname, d.productname, d.createddate];
+              datas.push(row);
+            });
+            this.excelService.generatUniversalExcel(areatitle, headers, datas, title, areasub, sub);
+          } else if (response.status === 204) {
+            this.swal.Success_204();
+            this.rowData = [];
+          }
+        },
+        (error) => {
+          this.handleApiError(error);
+        }
+      );
+  }
+  getOverAllPDF() {
+    this.userService.getOverAllPDFReport(this.role, this.username, this.selectedMonth, this.selectedYear, this.selectedDate, 1)
+      .subscribe((x: Blob) => {
+        const blob = new Blob([x], { type: 'application/pdf' });
+        const data = window.URL.createObjectURL(blob);
+        const link = document.createElement('a');
+        link.href = data;
+        link.download = (this.reportTitle + ".pdf").toUpperCase();
+        link.dispatchEvent(new MouseEvent('click', { bubbles: true, cancelable: true, view: window }));
+        setTimeout(() => {
+          window.URL.revokeObjectURL(data);
+          link.remove();
+        }, 100);
+      },
+        (error: any) => {
+          Swal.fire({
+            title: 'Error!',
+            text: error?.error?.message || 'There was an issue generating the PDF CAS form report.',
+            icon: 'error',
+            confirmButtonText: 'Ok'
+          });
+        });
+  }
+  // ---------------------------------------------------------------------------------------------------------------------------------------
+  handleApiError(error: any) {
+    if (error.status === 400) {
+      this.swal.Error_400();
+    } else if (error.status === 500) {
+      this.swal.Error_500();
+    } else {
+      Swal.fire('Error', 'Something went wrong. Please try again.', 'error');
+    }
   }
 }

@@ -384,7 +384,7 @@ export class BulkPageUpdationComponent implements OnInit {
     this.filteredOperatorList = [...this.operatorList];
   }
   fetchOperatorList() {
-    this.userservice.getOeratorList(this.role, this.username).subscribe((data: any) => {
+    this.userservice.getOeratorList(this.role, this.username,1).subscribe((data: any) => {
       this.operatorList = Object.keys(data).map(key => {
         const value = data[key];
         const name = key;

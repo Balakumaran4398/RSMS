@@ -70,8 +70,11 @@ export class BaseService {
   getLcoBusinesslist(role: any, username: string): Observable<any[]> {
     return this.http.get<any[]>(BASE_URL + "/operator/getlcoBusinesslist?role=" + role + "&username=" + username);
   }
-  getOeratorList(role: any, username: string): Observable<any[]> {
-    return this.http.get<any[]>(BASE_URL + "/operator/getOperatorlist?role=" + role + "&username=" + username);
+  // getOeratorList(role: any, username: string): Observable<any[]> {
+  //   return this.http.get<any[]>(BASE_URL + "/operator/getOperatorlist?role=" + role + "&username=" + username);
+  // }
+  getOeratorList(role: any, username: string, type: any): Observable<any[]> {
+    return this.http.get<any[]>(BASE_URL + "/operator/getOperatorlist?role=" + role + "&username=" + username + "&type=" + type);
   }
   // ----------------------------------------Edit Operator----------------------------------------
   getpaymentgatwaylist(role: any, username: string): Observable<any[]> {
@@ -568,9 +571,10 @@ export class BaseService {
     return this.http.get<any[]>(
       BASE_URL + "/subscriber/getPdfSmartcardRechargeReport?role=" + role + "&username=" + username + "&smartcard=" + smartcard);
   }
-  getPdfSubscriberRechargeDetails(role: any, username: any, subid: any, input: any): Observable<any[]> {
-    return this.http.get<any[]>(
-      BASE_URL + "/subscriber/getPdfSubscriberRechargeDetails?role=" + role + "&username=" + username + "&subid=" + subid + "&input=" + input);
+
+  getPdfSubscriberRechargeDetails(role: any, username: any, subid: any, input: any): Observable<Blob> {
+    return this.http.get(
+      BASE_URL + "/subscriber/getPdfSubscriberRechargeDetails?role=" + role + "&username=" + username + "&subid=" + subid + "&input=" + input, { responseType: 'blob' });
   }
 
   lcotransferSinglesmartcard(role: any, username: any, operatorid: any, oldsubid: boolean, newsubid: any, withsubscription: any, smartcard: any, retailerid: any, type: any): Observable<any[]> {
@@ -645,6 +649,10 @@ export class BaseService {
   getOperatorListforSubInsert(role: any, username: any,): Observable<any[]> {
     return this.http.get<any[]>(
       BASE_URL + "/subscriber/getOperatorListforSubInsert?role=" + role + "&username=" + username,);
+  }
+  getOperatorListOP_Dash(role: any, username: any, type: any): Observable<any[]> {
+    return this.http.get<any[]>(
+      BASE_URL + "/operator/getOperatorlist?role=" + role + "&username=" + username + "&type=" + type,);
   }
   getAreaListByOperatorid(role: any, username: any, operatorid: any): Observable<any[]> {
     return this.http.get<any[]>(
@@ -1501,5 +1509,26 @@ export class BaseService {
   }
   getSuspendHistoryPDFReport(role: any, username: any, fromdate: any, todate: any, smartcard: any, reporttype: any): Observable<Blob> {
     return this.http.get(BASE_URL + "/report/GetSuspendHistoryReport?role=" + role + "&username=" + username + "&fromdate=" + fromdate + "&todate=" + todate + "&smartcard=" + smartcard + "&reporttype=" + reporttype, { responseType: 'blob' });
+  }
+  // ============================================================Broadcaster report==============================
+  // ------------------------------------------------Universal Report-------------------------------------
+  getUniversalExcelReport(role: any, username: any, month: any, year: any, datetype: any, reporttype: any): Observable<HttpResponse<any[]>> {
+    return this.http.get<any[]>(BASE_URL + "/report/getOverallUniversalReport?role=" + role + "&username=" + username + "&month=" + month + "&year=" + year + "&datetype=" + datetype + "&reporttype=" + reporttype, { observe: 'response' });
+  }
+  getUniversalPDFReport(role: any, username: any, month: any, year: any, datetype: any, reporttype: any): Observable<Blob> {
+    return this.http.get(BASE_URL + "/report/getOverallUniversalReport?role=" + role + "&username=" + username + "&fromdate=" + "&month=" + month + "&year=" + year + "&datetype=" + datetype + "&reporttype=" + reporttype, { responseType: 'blob' });
+  }
+  // ----------------------------------------Over All Report---------------------------------------
+  getOverAllExcelReport(role: any, username: any, month: any, year: any, datetype: any, reporttype: any): Observable<HttpResponse<any[]>> {
+    return this.http.get<any[]>(BASE_URL + "/report/getOverallReport?role=" + role + "&username=" + username + "&month=" + month + "&year=" + year + "&datetype=" + datetype + "&reporttype=" + reporttype, { observe: 'response' });
+  }
+  getOverAllPDFReport(role: any, username: any, month: any, year: any, datetype: any, reporttype: any): Observable<Blob> {
+    return this.http.get(BASE_URL + "/report/getOverallReport?role=" + role + "&username=" + username + "&fromdate=" + "&month=" + month + "&year=" + year + "&datetype=" + datetype + "&reporttype=" + reporttype, { responseType: 'blob' });
+  }
+
+  // ====================================================LCO RECHARGE [OPERATOR]===============================================
+  // -----------------------------------------------getRechargeLogReport-----------------------------
+  getRechargeLogPDFReport(role: any, username: any, fromdate: any, todate: any, operatorid: any): Observable<Blob> {
+    return this.http.get(BASE_URL + "/report/getRechargeLogReport?role=" + role + "&username=" + username + "&fromdate=" + fromdate+"&todate=" + todate + "&operatorid=" + operatorid, { responseType: 'blob' });
   }
 }

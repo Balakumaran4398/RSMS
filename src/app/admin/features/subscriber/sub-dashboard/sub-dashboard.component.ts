@@ -1404,15 +1404,15 @@ export class SubDashboardComponent implements OnInit, AfterViewInit {
       headerName: "S.No", valueGetter: 'node.rowIndex+1', width: 80,
     },
     {
-      headerName: 'SMARTCARD', width: 350,
+      headerName: 'SMARTCARD', width: 270,
       field: 'smartcard',
     },
     {
-      headerName: 'CAS ', width: 250,
+      headerName: 'CAS ', width: 220,
       field: 'casname',
     },
     {
-      headerName: 'EXPIRY DATE	', width: 300,
+      headerName: 'EXPIRY DATE	', width: 250,
       field: 'expirydate',
     },
     {
@@ -1518,22 +1518,22 @@ export class SubDashboardComponent implements OnInit, AfterViewInit {
     },
     {
       headerName: 'PACKAGE NAME	',
-      field: 'productname', width: 300,
+      field: 'productname', width: 250,
     },
     {
-      headerName: 'PRODUCT TYPE	 ', width: 300,
+      headerName: 'PRODUCT TYPE	 ', width: 220,
       field: 'ptype',
     },
     {
-      headerName: 'PRODUCT ID	', width: 250,
+      headerName: 'PRODUCT ID	', width: 220,
       field: 'casproductid',
     },
     {
-      headerName: 'DAYS REMAINING	', width: 250,
+      headerName: 'DAYS REMAINING	', width: 220,
       field: 'noofdays',
     },
     {
-      headerName: 'PROGRAMS', width: 230,
+      headerName: 'PROGRAMS', width: 215,
       cellRenderer: (params: any) => {
         // Check if the producttype is "BASE" or "ADDON"
         if (params.data.ptype === 'BASE' || params.data.ptype === 'ADDON') {
@@ -1586,22 +1586,22 @@ export class SubDashboardComponent implements OnInit, AfterViewInit {
     },
     {
       headerName: 'PACKAGE NAME	',
-      field: 'productname', width: 300,
+      field: 'productname', width: 250,
     },
     {
-      headerName: 'PRODUCT TYPE	 ', width: 300,
+      headerName: 'PRODUCT TYPE	 ', width: 220,
       field: 'ptype',
     },
     {
-      headerName: 'PRODUCT ID	', width: 250,
+      headerName: 'PRODUCT ID	', width: 220,
       field: 'casproductid',
     },
     {
-      headerName: 'DAYS REMAINING	', width: 250,
+      headerName: 'DAYS REMAINING	', width: 220,
       field: 'noofdays',
     },
     {
-      headerName: 'PROGRAMS', width: 230,
+      headerName: 'PROGRAMS', width: 215,
       cellRenderer: (params: any) => {
         // Check if the producttype is "BASE" or "ADDON"
         if (params.data.ptype === 'BASE' || params.data.ptype === 'ADDON') {
@@ -2089,40 +2089,56 @@ export class SubDashboardComponent implements OnInit, AfterViewInit {
   //   })
   // }
   getPdfCasformReport() {
-    this.userservice.getPdfCasformReport(this.role, this.username, this.subdetailsList.subid)
-      .subscribe((x: Blob) => {
-        // Log request body
-        let requestBodylogs: requestBodylogs = {
-          access_ip: "",
-          action: "PDF CAS Form Report",
-          data: "From Date",
-          remarks: "PDF CAS Form Report"
-        };
-        console.log(requestBodylogs);
+    // this.userservice.getPdfCasformReport(this.role, this.username, this.subdetailsList.subid)
+    //   .subscribe((x: Blob) => {
+    //     // Log request body
+    //     let requestBodylogs: requestBodylogs = {
+    //       access_ip: "",
+    //       action: "PDF CAS Form Report",
+    //       data: "From Date",
+    //       remarks: "PDF CAS Form Report"
+    //     };
+    //     console.log(requestBodylogs);
 
-        // Create a blob and download the PDF
-        const blob = new Blob([x], { type: 'application/pdf' });
-        const data = window.URL.createObjectURL(blob);
-        const link = document.createElement('a');
-        link.href = data;
-        link.download = "PDF CAS Form Report.pdf";
-        link.dispatchEvent(new MouseEvent('click', { bubbles: true, cancelable: true, view: window }));
+    //     // Create a blob and download the PDF
+    //     const blob = new Blob([x], { type: 'application/pdf' });
+    //     const data = window.URL.createObjectURL(blob);
+    //     const link = document.createElement('a');
+    //     link.href = data;
+    //     link.download = "PDF CAS Form Report.pdf";
+    //     link.dispatchEvent(new MouseEvent('click', { bubbles: true, cancelable: true, view: window }));
 
-        // Clean up the URL object after a short delay
-        setTimeout(() => {
-          window.URL.revokeObjectURL(data);
-          link.remove();
-        }, 100);
-      },
-        (error: any) => {
-          // Handle any errors in report generation
-          Swal.fire({
-            title: 'Error!',
-            text: error?.error?.message || 'There was an issue generating the PDF CAS form report.',
-            icon: 'error',
-            confirmButtonText: 'Ok'
-          });
-        });
+    //     // Clean up the URL object after a short delay
+    //     setTimeout(() => {
+    //       window.URL.revokeObjectURL(data);
+    //       link.remove();
+    //     }, 100);
+    //   },
+    //     (error: any) => {
+    //       // Handle any errors in report generation
+    //       Swal.fire({
+    //         title: 'Error!',
+    //         text: error?.error?.message || 'There was an issue generating the PDF CAS form report.',
+    //         icon: 'error',
+    //         confirmButtonText: 'Ok'
+    //       });
+    //     });
+
+
+    this.userservice.getPdfCasformReport(this.role, this.username, this.subdetailsList.subid).subscribe((x: Blob) => {
+      // let requestBodylogs: requestBodylogs = { access_ip: "", action: " PDF Bill Report", data: "From Date", remarks: "PDF Bill Report  ", };
+    
+      const blob = new Blob([x], { type: 'application/pdf' });
+      const data = window.URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.href = data;
+      link.download = "PDF CAS Form Report.pdf";
+      link.dispatchEvent(new MouseEvent('click', { bubbles: true, cancelable: true, view: window }));
+      setTimeout(function () {
+        window.URL.revokeObjectURL(data);
+        link.remove();
+      }, 100);
+    })
   }
   managepackageSelection(): boolean {
     if (this.selectedRechargetype === '3') return true;

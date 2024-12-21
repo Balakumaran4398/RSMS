@@ -116,6 +116,36 @@ label {
         overflow: auto;
     }
 }
+.active-status {
+    color: green;
+    font-weight: bold;
+}
+
+.deactive-status {
+    color: red;
+    font-weight: bold;
+}
+
+.toggle-switch {
+    width: 45px;
+    height: 25px;
+    border-radius: 15px;
+    position: relative;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    display: inline-block;
+}
+
+.toggle-circle {
+    width: 15px;
+    height: 15px;
+    border-radius: 50%;
+    background-color: #fff;
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    transition: left 0.3s ease;
+}
 
 @media screen and (max-width:560px) {
     .display_mobile {

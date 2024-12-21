@@ -1820,7 +1820,7 @@ export class SubscriberdialogueComponent implements OnInit {
     const dataObject = {
       selectedDate: this.date.value,
     };
-    this.userservice.getPdfSubscriberRechargeDetails(this.role, this.username, this.subid_1, dataObject.selectedDate).subscribe((x: any) => {
+    this.userservice.getPdfSubscriberRechargeDetails(this.role, this.username, this.subid_1, dataObject.selectedDate).subscribe((x: Blob) => {
       let requestBodylogs: requestBodylogs = { access_ip: "", action: " PDF Bill Report", data: "From Date", remarks: "PDF Bill Report  ", };
       const blob = new Blob([x], { type: 'application/pdf' });
       const data = window.URL.createObjectURL(blob);
@@ -1833,6 +1833,30 @@ export class SubscriberdialogueComponent implements OnInit {
         link.remove();
       }, 100);
     })
+
+
+    // this.userService.getOverAllPDFReport(this.role, this.username, this.selectedMonth, this.selectedYear, this.selectedDate, 1)
+    // .subscribe((x: Blob) => {
+    //   const blob = new Blob([x], { type: 'application/pdf' });
+    //   const data = window.URL.createObjectURL(blob);
+    //   const link = document.createElement('a');
+    //   link.href = data;
+    //   link.download = (this.reportTitle + ".pdf").toUpperCase();
+    //   link.dispatchEvent(new MouseEvent('click', { bubbles: true, cancelable: true, view: window }));
+    //   setTimeout(() => {
+    //     window.URL.revokeObjectURL(data);
+    //     link.remove();
+    //   }, 100);
+    // },
+    //   (error: any) => {
+    //     Swal.fire({
+    //       title: 'Error!',
+    //       text: error?.error?.message || 'There was an issue generating the PDF CAS form report.',
+    //       icon: 'error',
+    //       confirmButtonText: 'Ok'
+    //     });
+    //   });
+
   }
 
 

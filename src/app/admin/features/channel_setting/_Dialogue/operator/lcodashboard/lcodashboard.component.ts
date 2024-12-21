@@ -31,13 +31,13 @@ export class LcodashboardComponent implements OnInit {
   area: any;
   state: any;
   Totalamount: any;
-    gridOptions = {
-      defaultColDef: {
-        sortable: true,
-        resizable: true,
-        filter: true,
-        floatingFilter: true
-      },
+  gridOptions = {
+    defaultColDef: {
+      sortable: true,
+      resizable: true,
+      filter: true,
+      floatingFilter: true
+    },
     paginationPageSize: 10,
     pagination: true,
     paginationPageSizeOptions: [5, 10, 15, 20, 25],
@@ -79,6 +79,8 @@ export class LcodashboardComponent implements OnInit {
       this.operatorid = +params['operatorid'];
       this.dialogData = this.dataService.getDialogData();
       if (this.dialogData) {
+        console.log('dsadsadsadsad', this.dialogData);
+
         this.operatorname = this.dialogData.detailsList.operatorname;
         this.mobile = this.dialogData.detailsList.contactnumber1;
         this.mailid = this.dialogData.detailsList.mail;
@@ -88,6 +90,7 @@ export class LcodashboardComponent implements OnInit {
         this.state = this.dialogData.detailsList.state;
         this.pincode = this.dialogData.detailsList.pincode;
         this.password = this.dialogData.detailsList.password;
+        this.isactive = this.dialogData.detailsList.isactive;
       } else {
         console.log('No dialog data available.');
       }
@@ -101,6 +104,8 @@ export class LcodashboardComponent implements OnInit {
       this.rowData = data;
       console.log(data);
       this.isactive = data.find((item: any) => item)?.isactive;
+      console.log(this.isactive);
+      
       this.Areaname = data.find((item: any) => item)?.name;
       this.Areapincode = data.find((item: any) => item)?.pincode;
       this.Areaid = data.find((item: any) => item)?.id;
@@ -419,7 +424,7 @@ export class LcodashboardComponent implements OnInit {
               markerType: 'square',
               right: '10px',
               itemWrap: true,
-              itemTextFormatter: (e: any) => `${e.dataPoint.name}   : ₹${e.dataPoint.y}`, 
+              itemTextFormatter: (e: any) => `${e.dataPoint.name}   : ₹${e.dataPoint.y}`,
             },
             data: [{
               type: 'pie',
@@ -442,24 +447,68 @@ export class LcodashboardComponent implements OnInit {
 
   columnDefs: any[] = [
     {
-      headerName: "S.No", valueGetter: 'node.rowIndex+1', width: 80,   filter: false,
+      headerName: "S.No", valueGetter: 'node.rowIndex+1', width: 80, filter: false,
     },
-    { headerName: 'AREA NAME', width: 170, field: 'name',filter:true },
-    { headerName: 'SUBSCRIBER COUNT	', width: 170, field: 'subscribercount',    filter: false,},
-    { headerName: 'PINCODE ', field: 'pincode', width: 150,   filter: false, },
+    { headerName: 'AREA NAME', width: 170, field: 'name', filter: true },
+    { headerName: 'SUBSCRIBER COUNT	', width: 170, field: 'subscribercount', filter: false, },
+    { headerName: 'PINCODE ', field: 'pincode', width: 150, filter: false, },
     {
-      headerName: 'STATUS', field: 'statusdisplay', width: 170,   filter: false,
+      headerName: 'STATUS', field: 'statusdisplay', width: 130, filter: false,
       // editable: true,
+      // cellRenderer: (params: { value: any; data: any }) => {
+      //   const status = params.data?.statusdisplay;
+      //   const color = status === 'Active' ? 'green' : 'red';
+      //   const text = status === 'Active' ? 'Active' : 'Deactive';
+      //   return `<span style="color: ${color}; ">${text}</span>`;
+      // }
       cellRenderer: (params: { value: any; data: any }) => {
-        const status = params.data?.statusdisplay;
-        const color = status === 'Active' ? 'green' : 'red';
-        const text = status === 'Active' ? 'Active' : 'Deactive';
-        return `<span style="color: ${color}; ">${text}</span>`;
+        const status = params.data?.statusdisplay === 'Active';
+    
+        const toggleContainer = document.createElement('div');
+        toggleContainer.style.display = 'flex';
+        toggleContainer.style.alignItems = 'center';
+        toggleContainer.style.justifyContent = 'center';
+    
+        const toggleSwitch = document.createElement('div');
+        toggleSwitch.style.width = '45px';
+        toggleSwitch.style.height = '20px';
+        toggleSwitch.style.borderRadius = '15px';
+        toggleSwitch.style.backgroundColor = status ? '#4CAF50' : '#616060';
+        toggleSwitch.style.position = 'relative';
+        toggleSwitch.style.cursor = 'pointer';
+        toggleSwitch.style.transition = 'background-color 0.3s ease';
+    
+        const toggleCircle = document.createElement('div');
+        toggleCircle.style.width = '15px';
+        toggleCircle.style.height = '15px';
+        toggleCircle.style.borderRadius = '50%';
+        toggleCircle.style.backgroundColor = '#fff';
+        toggleCircle.style.position = 'absolute';
+        toggleCircle.style.top = '50%';
+        toggleCircle.style.transform = 'translateY(-50%)';
+        toggleCircle.style.left = status ? 'calc(100% - 22px)' : '3px';
+        toggleCircle.style.transition = 'left 0.3s ease';
+    
+        toggleSwitch.appendChild(toggleCircle);
+    
+        // toggleSwitch.addEventListener('click', () => {
+        //     const newStatus = !status;
+        //     params.data.statusdisplay = newStatus ? 'Active' : 'Deactive';
+    
+        //     // Update styles
+        //     toggleSwitch.style.backgroundColor = newStatus ? '#4CAF50' : '#616060';
+        //     toggleCircle.style.left = newStatus ? 'calc(100% - 22px)' : '3px';
+        // });
+    
+        toggleContainer.appendChild(toggleSwitch);
+        return toggleContainer;
       }
+    
+    
 
     },
     {
-      headerName: 'STREET DETAILS', width: 100,   filter: false,
+      headerName: 'STREET DETAILS', width: 100, filter: false,
       cellRenderer: (params: any) => {
         const editButton = document.createElement('button');
         editButton.innerHTML = '<img src="/assets/images/icons/streetlist2.webp" style="width:30px;background-color:none">';
@@ -476,7 +525,7 @@ export class LcodashboardComponent implements OnInit {
       }
     },
     {
-      headerName: 'EDIT', width: 80,   filter: false,
+      headerName: 'EDIT', width: 80, filter: false,
 
       cellRenderer: (params: any) => {
         const editButton = document.createElement('button');

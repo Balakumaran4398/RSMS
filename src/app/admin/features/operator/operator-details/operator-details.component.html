@@ -39,9 +39,13 @@
                                 style="color: rgb(1, 1, 14);font-weight: 600;">[{{operator?.operatorid}}]</span> - [
                             {{operator?.balance}}]
                         </div>
-                        <div style="text-align: left;font-size: 15px; color: rgb(26, 23, 23); margin-top: 8px; text-transform: capitalize;"
-                            class=""> &nbsp; Phone:
-                            {{operator?.contactnumber1 || operator?.contactnumber2}}</div>
+                        <div class="sub-tittle mb-3 col-md-10" style="text-align: left;color: rgb(26, 23, 23);font-weight: 600;">
+                            Phone: <span style="color: rgb(19, 4, 104);">{{operator?.contactnumber1 || operator?.contactnumber2}}</span>
+                                
+                        </div>
+                        <!-- <div  style="text-align: left;font-size: 15px; color: rgb(26, 23, 23); text-transform: capitalize;font-weight: 600;"
+                            class="col-md-10"> &nbsp; Phone:
+                            {{operator?.contactnumber1 || operator?.contactnumber2}}</div> -->
                     </div>
                 </mat-card-header>
 
@@ -54,26 +58,30 @@
                             <div style="display: flex; justify-content: center;">
                                 <img class="toggle1" src="/assets/images/login/contact1.png" alt="Toggle">
                             </div>
+                            <p class="text" [ngClass]="operator?.isactive ? 'active-text' : 'deactive-text'">
+                                <span class="label">Status</span>
+                                <span class="separator1">:</span>
+                                <span class="last1">{{ operator?.isactive ? 'Active' : 'Deactive' }}</span>
+                            </p>
                             <p class="text">
                                 <span class="label label1">user id</span>
                                 <span class="separator">:</span>
                                 <span class="last">{{operator?.userid}}</span>
                             </p>
+                        
                             <p class="text">
                                 <span class="label label2">password</span>
                                 <span class="separator">:</span>
                                 <span class="last">{{operator?.password}}</span>
                             </p>
-                            <!-- <p class="text">
-                                <span class="label">online payment</span>
-                                <span class="separator">:</span>
-                                <span class="last">{{operator?.isonlinepayment}}</span>
-                            </p> -->
+
+
                             <p class="text" [ngClass]="operator?.isonlinepayment ? 'active-text' : 'deactive-text'">
                                 <span class="label">online payment</span>
                                 <span class="separator1">:</span>
                                 <span class="last1">{{ operator?.isonlinepayment ? 'Active' : 'Deactive' }}</span>
                             </p>
+
 
 
                         </div>

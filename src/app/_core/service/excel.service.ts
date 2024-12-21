@@ -883,11 +883,11 @@ export class ExcelService {
       });
     });
     worksheet.columns = [
-      { key: 'a', width: 16 }, // CUSTOMER ID
+      { key: 'a', width: 20 }, // CUSTOMER ID
       { key: 'b', width: 21 }, // SUBSCRIBER NAME
-      { key: 'c', width: 28 }, // SUBSCRIBER LAST NAME
-      { key: 'd', width: 15 }, // ADDRESS
-      { key: 'e', width: 15 }, // AREA NAME
+      { key: 'c', width: 20 }, // ADDRESS
+      { key: 'd', width: 20 }, // MOBILE NO
+      { key: 'e', width: 25 }, // SMARTCARD
       { key: 'f', width: 25 }, // MOBILE NO
       { key: 'g', width: 25 }, //SMARTCARD
       { key: 'h', width: 25 }, //BOXID
@@ -1727,7 +1727,36 @@ export class ExcelService {
       areasub,
       sub,
       columns,
-      'NetworkSmartcardStatus History'
+      'Overall Network Count History'
+    );
+  }
+  async generatNetworkOperatorwiseSmartcardStatusExcel(
+    areatitle: string,
+    headers: any,
+    dataRow: any[],
+    titles: any,
+    areasub: any,
+    sub: any
+  ) {
+    const columns = [
+      { key: 'a', width: 15 }, // S.NO
+      { key: 'b', width: 30 }, // OPERATOR
+      { key: 'c', width: 20 }, // ACTIVE
+      { key: 'd', width: 20 }, // DEACTIVE
+      // { key: 'e', width: 20 }, // TOTAL
+      { key: 'e', width: 35 }, // ACTIVE SUBSCRIPTION
+      { key: 'f', width: 35 }, // DEACTIVE SUBSCRIPTION
+      { key: 'g', width: 25 }, // BLOCK
+    ];
+    await this.generateExcelFile(
+      areatitle,
+      headers,
+      dataRow,
+      titles,
+      areasub,
+      sub,
+      columns,
+      'Operator Wise Network Count History'
     );
   }
   async generatSmartcardSuspendExcel(
@@ -1792,6 +1821,94 @@ export class ExcelService {
       sub,
       columns,
       'Smartcard Suspend Report'
+    );
+  }
+
+  async generatUniversalExcel(
+    areatitle: string,
+    headers: any,
+    dataRow: any[],
+    titles: any,
+    areasub: any,
+    sub: any
+  ) {
+    const columns = [
+      { key: 'a', width: 15 }, // S.NO
+      { key: 'b', width: 20 }, // PACKAGE ID
+      { key: 'c', width: 30 }, // PACKAGE NAME
+      { key: 'd', width: 15 }, // CAS
+      { key: 'e', width: 20 }, // AS ON 07th
+      { key: 'f', width: 20 }, // AS ON 14th
+      { key: 'g', width: 20 }, // AVERAGE
+      { key: 'h', width: 25 }, // MONTH & YEAR
+
+    ];
+    await this.generateExcelFile(
+      areatitle,
+      headers,
+      dataRow,
+      titles,
+      areasub,
+      sub,
+      columns,
+      'Over All Base / Universal Count Report'
+    );
+  }
+  async generateRechargeExcel(
+    areatitle: string,
+    headers: any,
+    dataRow: any[],
+    titles: any,
+    areasub: any,
+    sub: any
+  ) {
+    const columns = [
+      { key: 'a', width: 30 }, // OPERATOR NAME
+      { key: 'b', width: 30 }, // TRANSACTION GROUP TIME
+      { key: 'c', width: 20 }, // LCO AMOUNT
+      { key: 'd', width: 25 }, // OLD BALANCE
+      { key: 'e', width: 25 }, // CURRENT BALANCE
+      { key: 'f', width: 30 }, // TRANSACTION DATE 
+
+    ];
+    await this.generateExcelFile(
+      areatitle,
+      headers,
+      dataRow,
+      titles,
+      areasub,
+      sub,
+      columns,
+      'Recharge Log'
+    );
+  }
+  async generateLCORechargeExcel(
+    areatitle: string,
+    headers: any,
+    dataRow: any[],
+    titles: any,
+    areasub: any,
+    sub: any
+  ) {
+    const columns = [
+      { key: 'a', width: 30 }, // OPERATOR NAME
+      { key: 'b', width: 30 }, // OPERATOR ID
+      { key: 'c', width: 20 }, // AMOUNT
+      { key: 'd', width: 20 }, // REMARKS
+      { key: 'e', width: 30 }, // TRANSACTION DATE 
+      { key: 'f', width: 30 }, // OPERATION ADDRESS
+      { key: 'g', width: 30 }, // CONTACT NUMBER
+
+    ];
+    await this.generateExcelFile(
+      areatitle,
+      headers,
+      dataRow,
+      titles,
+      areasub,
+      sub,
+      columns,
+      'LCORecharge Log'
     );
   }
 }

@@ -29,12 +29,17 @@ export class SpecialPermissionComponent {
   iscancel = false;
   fullrefund = false;
   isridpay = false;
+  remote = false;
+  isSuspend = false;
+  dateAdjust = false;
+  chat = false;
   plan = false;
   date = false;
   datetodate = false;
   subscriberlock = false;
-  isactive = true;
+  isactive = "false";
   operatorid: any;
+  operatorname: any;
 
   constructor(public dialogRef: MatDialogRef<SpecialPermissionComponent>, @Inject(MAT_DIALOG_DATA) public data: any, public dialog: MatDialog,
     public userService: BaseService, storageService: StorageService, private fb: FormBuilder) {
@@ -42,8 +47,13 @@ export class SpecialPermissionComponent {
     this.role = storageService.getUserRole();
     console.log('Received operator data:', data);
     this.operatorid = data.operatorid;
+    this.operatorname = data.operatorname;
     this.islabel = data.islabel;
     this.onlinepaymentstatus = data.isonlinepayment
+    this.remote = data.isremote
+    this.dateAdjust = data.isdateadjust
+    this.chat = data.ischat
+    this.isSuspend = data.issuspend
     this.offlinepaymentsublco = data.offlinepaymentsublco
     this.enableforce = data.enableforce
     this.walletshare = data.walletshare
@@ -61,7 +71,7 @@ export class SpecialPermissionComponent {
 
   }
   ngOninit() {
-   
+
   }
   togglepermission() {
     this.dialogRef.close();
@@ -70,21 +80,25 @@ export class SpecialPermissionComponent {
     console.log('111111111');
     let requestbody = {
       operatorid: this.operatorid,
-      islabel:this.islabel,
-      onlinepaymentstatus:this.onlinepaymentstatus,
+      islabel: this.islabel,
+      onlinepaymentstatus: this.onlinepaymentstatus,
       offlinepaymentsublco: this.offlinepaymentsublco,
       enableforce: this.enableforce,
-      walletshare:this.walletshare,
+      walletshare: this.walletshare,
       bulk: this.bulk,
-      recurring:this.recurring,
-      iscancel:  this.iscancel,
-      fullrefund:this.fullrefund,
+      recurring: this.recurring,
+      iscancel: this.iscancel,
+      fullrefund: this.fullrefund,
       isridpay: this.isridpay,
       plan: this.plan,
       date: this.date,
-      datetodate:this.datetodate,
+      datetodate: this.datetodate,
       subscriberlock: this.subscriberlock,
       isactive: this.isactive,
+      isremote: this.remote,
+      isdateadjust: this.dateAdjust,
+      ischat: this.chat,
+      issuspend: this.isSuspend,
       role: this.role,
       username: this.username
     }
@@ -105,7 +119,7 @@ export class SpecialPermissionComponent {
         console.error(error);
         Swal.fire({
           title: 'Error!',
-          text: error?.error?.message  || 'Something went wrong. Please try again.',
+          text: error?.error?.message || 'Something went wrong. Please try again.',
           icon: 'error',
           confirmButtonText: 'OK',
         });

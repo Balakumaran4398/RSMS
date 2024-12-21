@@ -1039,6 +1039,93 @@ export class HistoryAllReportsComponent implements OnInit {
           });
         });
   }
+
+  // ---------------------------------------------------Network smartcard  status (Operator wise) count report--------------------------------------------
+  getNetworkOperatorwiseSmartcardStatusReport() {
+    // this.swal.Loading();
+    this.userService.getNetworkSmartcardOperatorwiseReport(this.role, this.username, this.cur_date, 2)
+      .subscribe(
+        (response: HttpResponse<any[]>) => {
+          console.log(this.reportTitle);
+          if (response.status === 200) {
+            this.rowData = response.body;
+          } else if (response.status === 204) {
+            this.swal.Success_204();
+            this.rowData = [];
+          }
+        },
+        (error) => {
+          this.handleApiError(error);
+        }
+      );
+  }
+
+  getNetworkOperatorwiseSmartcardStatusExcel() {
+    console.log(this.cur_date);
+
+    this.userService.getNetworkSmartcardOperatorwiseReport(this.role, this.username, this.cur_date, 2)
+      .subscribe(
+        (response: HttpResponse<any[]>) => {
+          console.log(this.reportTitle);
+          if (response.status === 200) {
+            this.rowData = response.body;
+            console.log(this.reportTitle);
+            const title = (this.reportTitle).toUpperCase();
+            const sub = 'MSO ADDRESS:' + this.msodetails;
+            let areatitle = '';
+            let areasub = '';
+            const datas: Array<any> = [];
+            areatitle = 'A1:G2';
+            areasub = 'A3:G3';
+            const headers = ['S.NO', 'OPERATOR', 'ACTIVE COUNT', 'DEACTIVE COUNT', 'ACTIVE SUBSCRIPTION COUNT', 'DEACTIVE SUBSCRIPTION COUNT', 'BLOCK COUNT'];
+            this.rowData.operatorlist.forEach((item: any, index: number) => {
+              datas.push([
+                  index + 1, // S.NO
+                  item.operatorname, // OPERATOR
+                  item.acount, // ACTIVE COUNT
+                  item.dcount, // DEACTIVE COUNT
+                  item.notexpirycount, // ACTIVE SUBSCRIPTION COUNT
+                  item.expirycount, // DEACTIVE SUBSCRIPTION COUNT
+                  item.blockcount // BLOCK COUNT
+              ]);
+          });
+            this.excelService.generatNetworkOperatorwiseSmartcardStatusExcel(areatitle, headers, datas, title, areasub, sub);
+          } else if (response.status === 204) {
+            this.swal.Success_204();
+            this.rowData = [];
+          }
+        },
+        (error) => {
+          this.handleApiError(error);
+        }
+      );
+  }
+
+  getNetworkOperatorwiseSmartcardStatusPDF() {
+    // this.swal.Loading();
+    console.log(this.cur_date);
+    this.userService.getNetworkSmartcardOperatorwisePDFReport(this.role, this.username, this.cur_date, 1)
+      .subscribe((x: Blob) => {
+        const blob = new Blob([x], { type: 'application/pdf' });
+        const data = window.URL.createObjectURL(blob);
+        const link = document.createElement('a');
+        link.href = data;
+        link.download = (this.reportTitle + ".pdf").toUpperCase();
+        link.dispatchEvent(new MouseEvent('click', { bubbles: true, cancelable: true, view: window }));
+        setTimeout(() => {
+          window.URL.revokeObjectURL(data);
+          link.remove();
+        }, 100);
+      },
+        (error: any) => {
+          Swal.fire({
+            title: 'Error!',
+            text: error?.error?.message || 'There was an issue generating the PDF CAS form report.',
+            icon: 'error',
+            confirmButtonText: 'Ok'
+          });
+        });
+  }
   // ------------------------------------------------Smartcard suspend------------------------------------
   getSmartcardSuspendReport() {
     // this.swal.Loading();
@@ -1122,7 +1209,7 @@ export class HistoryAllReportsComponent implements OnInit {
   // ------------------------------------------------ SUSPEND REPORT FOR PARTICULAR DURATION------------------------------------
   getDatewiseSuspendReport() {
     // this.swal.Loading();
-    this.userService.getSuspendReportByDurationExcelReport(this.role, this.username, this.fromdate,this.todate, 2)
+    this.userService.getSuspendReportByDurationExcelReport(this.role, this.username, this.fromdate, this.todate, 2)
       .subscribe(
         (response: HttpResponse<any[]>) => {
           console.log(this.reportTitle);
@@ -1142,7 +1229,7 @@ export class HistoryAllReportsComponent implements OnInit {
   getDatewiseSuspendExcel() {
     console.log(this.cur_date);
 
-    this.userService.getSuspendReportByDurationExcelReport(this.role, this.username, this.fromdate,this.todate, 2)
+    this.userService.getSuspendReportByDurationExcelReport(this.role, this.username, this.fromdate, this.todate, 2)
       .subscribe(
         (response: HttpResponse<any[]>) => {
           console.log(this.reportTitle);
@@ -1177,7 +1264,7 @@ export class HistoryAllReportsComponent implements OnInit {
   getDatewiseSuspendPDF() {
     // this.swal.Loading();
     console.log(this.cur_date);
-    this.userService.getSuspendReportByDurationPDFReport(this.role, this.username,this.fromdate,this.todate, 1)
+    this.userService.getSuspendReportByDurationPDFReport(this.role, this.username, this.fromdate, this.todate, 1)
       .subscribe((x: Blob) => {
         const blob = new Blob([x], { type: 'application/pdf' });
         const data = window.URL.createObjectURL(blob);
@@ -1201,10 +1288,10 @@ export class HistoryAllReportsComponent implements OnInit {
   }
 
 
-   // ------------------------------------------------DATE WISE SMARTCARD SUSPEND------------------------------------
-   getSuspendReport() {
+  // ------------------------------------------------DATE WISE SMARTCARD SUSPEND------------------------------------
+  getSuspendReport() {
     // this.swal.Loading();
-    this.userService.getSuspendHistoryExcelReport(this.role, this.username, this.fromdate,this.todate,this.smartcard, 2)
+    this.userService.getSuspendHistoryExcelReport(this.role, this.username, this.fromdate, this.todate, this.smartcard, 2)
       .subscribe(
         (response: HttpResponse<any[]>) => {
           console.log(this.reportTitle);
@@ -1224,7 +1311,7 @@ export class HistoryAllReportsComponent implements OnInit {
   getSuspendExcel() {
     console.log(this.cur_date);
 
-    this.userService.getSuspendHistoryExcelReport(this.role, this.username, this.fromdate,this.todate,this.smartcard, 2)
+    this.userService.getSuspendHistoryExcelReport(this.role, this.username, this.fromdate, this.todate, this.smartcard, 2)
       .subscribe(
         (response: HttpResponse<any[]>) => {
           console.log(this.reportTitle);
@@ -1239,9 +1326,9 @@ export class HistoryAllReportsComponent implements OnInit {
             const datas: Array<any> = [];
             areatitle = 'A1:L2';
             areasub = 'A3:L3';
-            const headers = ['S.NO', 'SUBSCRIBER NAME', 'MOBILE NO', 'SMARTCARD', 'STATUS', 'SUSPEND DATE', 'RESUME DATE', 'OLD EXPIRY DATE','NEW EXPIRY DATE','REMAINING DAYS','CAS','PACKAGE'];
+            const headers = ['S.NO', 'SUBSCRIBER NAME', 'MOBILE NO', 'SMARTCARD', 'STATUS', 'SUSPEND DATE', 'RESUME DATE', 'OLD EXPIRY DATE', 'NEW EXPIRY DATE', 'REMAINING DAYS', 'CAS', 'PACKAGE'];
             this.rowData.forEach((d: any, index: number) => {
-              const row = [index + 1, d.customername, d.mobileno, d.smartcard, d.status, d.createddate, d.updateddate, d.oldexpirydate,d.newexpirydate,d.remainingdays,d.casname,d.productname];
+              const row = [index + 1, d.customername, d.mobileno, d.smartcard, d.status, d.createddate, d.updateddate, d.oldexpirydate, d.newexpirydate, d.remainingdays, d.casname, d.productname];
               datas.push(row);
             });
             this.excelService.generatSuspendExcel(areatitle, headers, datas, title, areasub, sub);
@@ -1259,7 +1346,7 @@ export class HistoryAllReportsComponent implements OnInit {
   getSuspendPDF() {
     // this.swal.Loading();
     console.log(this.cur_date);
-    this.userService.getSuspendHistoryPDFReport(this.role, this.username,this.fromdate,this.todate,this.smartcard, 1)
+    this.userService.getSuspendHistoryPDFReport(this.role, this.username, this.fromdate, this.todate, this.smartcard, 1)
       .subscribe((x: Blob) => {
         const blob = new Blob([x], { type: 'application/pdf' });
         const data = window.URL.createObjectURL(blob);

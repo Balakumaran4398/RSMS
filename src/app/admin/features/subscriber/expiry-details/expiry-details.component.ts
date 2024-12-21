@@ -176,8 +176,8 @@ export class ExpiryDetailsComponent implements OnInit{
         if (response.status === 200) {
           this.rowData = response.body;
           // this.swal.Success_200();
-          const areatitle = 'A1:I2'
-          const areasub = 'A3:I3';
+          const areatitle = 'A1:J2'
+          const areasub = 'A3:J3';
           const title = 'EXPIRY HISTORY REPORT';
           const sub = 'MSO ADDRESS:' + this.msodetails;
           const header = ['LCO NAME', 'CUSTOMER NAME', 'SMARTCARD', 'BOX ID', 'ADDRESS', 'MOBILE NO', 'PACKAGE NAME', 'EXPIRY DATE', 'AREA ID','CUSTOMER NO'];

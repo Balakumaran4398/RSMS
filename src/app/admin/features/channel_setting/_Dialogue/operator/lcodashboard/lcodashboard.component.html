@@ -1,5 +1,3 @@
-
-
 <div id="Customer-page">
     <section class="mb-3">
         <div style="margin: 0px;position: sticky">
@@ -17,10 +15,10 @@
                         </div>
                         <div class="card align-item-strech">
                             <div class="d-flex">
-                                <div class="col-2 col-md-2 " style="padding: 3rem 2rem;">
-                                    <img [src]="'/assets/images/login/contact1.png'" alt="Customer Photo"
+                                <!-- <div class="col-2 col-md-2 " style="padding: 3rem 2rem;">
+                                    <img [src]="'/assets/images/icons/user.jpg'" alt="Customer Photo"
                                         style="width: 50px;">
-                                </div>
+                                </div> -->
                                 <div class=" col-10  " style="padding: 0.5rem;">
                                     <div class="d-flex">
                                         <div class="col-5 text2 ">
@@ -96,6 +94,17 @@
                                         {{pincode }}
                                     </div>
                                 </div>
+                                <!-- <div class="d-flex">
+                                    <div class="col-4  mb-1 text2">
+                                        STATUS </div>
+                                    <div class="col-1  mb-1 text2">
+                                        : </div>
+                                    <div class="col-7 ">
+                                        <span [ngClass]="isactive ? 'active-status' : 'deactive-status'">
+                                            {{ isactive ? 'Active' : 'Deactive' }}
+                                        </span>
+                                    </div>
+                                </div> -->
                             </div>
                         </div>
                     </div>
@@ -109,7 +118,7 @@
                             <p style="text-align: center;color: rgb(250, 81, 95);">This chart shows package-wise total
                                 recharged amount of the current year</p>
                             <div class="line mb-2"></div>
-                            <div class=" input_box justify-content-end align-item-center mb-2">
+                            <div class=" input_box d-flex justify-content-end align-item-center mb-2">
                                 <div class="col-12 col-md-4 d-flex  justify-content-center align-items-center">
                                     <span for="">SELECT PACKAGE </span>
                                 </div>

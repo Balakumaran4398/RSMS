@@ -97,11 +97,13 @@ export class OperatordialogueComponent implements OnInit {
   type: any;
   monthYear: any;
   msodetails: any;
-
+  submitted: boolean = false;
   constructor(public dialogRef: MatDialogRef<OperatordialogueComponent>, private swal: SwalService, private userService: BaseService, private excelService: ExcelService, private storageservice: StorageService, @Inject(MAT_DIALOG_DATA) public data: any,) {
     this.username = storageservice.getUsername();
     this.role = storageservice.getUserRole();
     this.OType = data.type;
+    console.log('datya', data);
+
     this.operatorid = data.operator;
     this.operatorname = data.operatorname;
     console.log(data);
@@ -114,7 +116,7 @@ export class OperatordialogueComponent implements OnInit {
     console.log(this.type);
   }
   ngOnInit(): void {
-    this.userService.getAreaDetailsById(this.role, this.username, this.id).subscribe((data: any) => {
+    this.userService.getAreaDetailsById(this.role, this.username, this.operatorid).subscribe((data: any) => {
       console.log(data);
       this.rowData = data;
     })
@@ -172,14 +174,15 @@ export class OperatordialogueComponent implements OnInit {
     this.dialogRef.close();
   }
   newArea() {
-    if (!this.areaname || this.areaname.trim() === '') {
-      this.swal.Error("Area Name is required.");
-      return;
-    }
-    if (!this.validatePincode(this.pincode)) {
-      this.swal.Error("Invalid Pincode. Please enter a valid 6-digit number.");
-      return;
-    }
+    this.submitted = true;
+    // if (!this.areaname || this.areaname.trim() === '') {
+    //   this.swal.Error("Area Name is required.");
+    //   return;
+    // }
+    // if (!this.validatePincode(this.pincode)) {
+    //   this.swal.Error("Invalid Pincode. Please enter a valid 6-digit number.");
+    //   return;
+    // }
     let requestBody = {
       role: this.role,
       username: this.username,
@@ -191,7 +194,7 @@ export class OperatordialogueComponent implements OnInit {
     this.userService.createArea(requestBody).subscribe((res: any) => {
       this.swal.success(res?.message);
     }, (err) => {
-      this.swal.Error(err?.error?.message);
+      this.swal.Error(err?.error?.message || err?.error?.operatorid);
     });
   }
 
@@ -224,18 +227,19 @@ export class OperatordialogueComponent implements OnInit {
             if (this.type == 1 || this.type == 4) {
               areatitle = 'A1:J2';
               areasub = 'A3:J3';
-              header = ['CUSTOMER ID', 'SUBSCRIBER NAME', 'ADDRESS', 'AREA NAME', 'MOBILE NO', 'SMARTCARD', 'BOXID', 'PACKAGE STATUS', 'ACTIVATION DATE', 'EXPIRY DATE'];
+              header = ['SUBSCRIBER ID', 'SUBSCRIBER NAME', 'ADDRESS', 'MOBILE NO', 'SMARTCARD', 'BOXID', 'PACKAGE STATUS', 'AREA NAME', 'ACTIVATION DATE', 'EXPIRY DATE'];
 
               this.rowData.forEach((d: any) => {
-                const row = [d.subid, d.customername, d.address, d.areaname, d.mobileno, d.smartcard, d.boxid, d.statusdisplay, d.activationdate, d.expirydate];
+                const row = [d.subid, d.customername, d.address, d.mobileno, d.smartcard, d.boxid, d.statusdisplay, d.areaname, d.activationdate, d.expirydate];
                 console.log('type 1 and 4', row);
                 datas.push(row);
               });
               this.excelService.generateOperatorDashboardExcel(areatitle, header, datas, title, areasub, sub);
             } else if (this.type == 2 || this.type == 3) {
+              const title = (this.operatorname + ' - ' + this.OType + ' REPORT').toUpperCase();
               areatitle = 'A1:H2';
               areasub = 'A3:H3';
-              header = ['CUSTOMER ID', 'SUBSCRIBER NAME', 'ADDRESS', 'MOBILE NO', 'SMARTCARD', 'BOXID', 'PACKAGE STATUS', 'EXPIRY DATE'];
+              header = ['SUBSCRIBER ID', 'SUBSCRIBER NAME', 'ADDRESS', 'MOBILE NO', 'SMARTCARD', 'BOXID', 'PACKAGE STATUS', 'EXPIRY DATE'];
 
               this.rowData.forEach((d: any) => {
                 const row = [d.subid, d.customername, d.address, d.mobileno, d.smartcard, d.boxid, d.statusdisplay, d.expirydate];

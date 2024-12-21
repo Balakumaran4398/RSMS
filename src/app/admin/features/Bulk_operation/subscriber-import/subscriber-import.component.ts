@@ -60,7 +60,7 @@ export class SubscriberImportComponent implements OnInit {
   }
   operatorlist() {
     // this.userservice.getPackageList(this.role, this.username,1  ).subscribe((data: any) => {
-    this.userservice.getOeratorList(this.role, this.username  ).subscribe((data: any) => {
+    this.userservice.getOeratorList(this.role, this.username,1  ).subscribe((data: any) => {
       console.log(data);
       this.cdr.detectChanges();
       this.operatorList = Object.keys(data).map(key => {

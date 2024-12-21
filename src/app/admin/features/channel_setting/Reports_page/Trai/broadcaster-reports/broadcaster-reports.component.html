@@ -1,5 +1,5 @@
 <div *ngIf="allType == '1'">
-    <div class="col-12 col-md-2 d-flex  justify-content-start align-items-start">
+    <div class="col-12 col-md-2 d-flex  justify-content-start align-items-start mb-3">
         <button type="button" class="btn btn-primary" (click)="goBack()"><i
                 class="fa-solid fa-reply mx-2"></i>Back</button>
     </div>
@@ -144,7 +144,7 @@
     </div>
 </div>
 <div *ngIf="allType== '2'">
-    <div class="col-12 col-md-2 d-flex  justify-content-start align-items-start">
+    <div class="col-12 col-md-2 d-flex  justify-content-start align-items-start mb-3">
         <button type="button" class="btn btn-primary" (click)="goBack()"><i
                 class="fa-solid fa-reply mx-2"></i>Back</button>
     </div>
@@ -177,18 +177,18 @@
                                 </option>
                             </select>
                         </div>
-                        <div class="allreport mb-2">
+                        <div class="allreport mb-2" (click)="grtOverAllReport()">
                             <a class="btn btn-success mx-1">
                                 Get Report
                             </a>
                         </div>
                     </div>
                     <div class="display1">
-                        <div class="export-icon col-6 col-md-3 mx-3" (click)="getExcel()">
+                        <div class="export-icon col-6 col-md-3 mx-3" (click)="getOverAllExcel()">
                             <img src="/assets/images/icons/Excel.png" alt="Excel Icon" width="40px">
                             <div class="tooltip">Excel</div>
                         </div>
-                        <div class="export-icon col-6 col-md-3" (click)="getPDF()">
+                        <div class="export-icon col-6 col-md-3" (click)="getOverAllPDF()">
                             <img src="/assets/images/icons/pdf.png" alt="PDF Icon" width="40px">
                             <div class="tooltip">Pdf</div>
                         </div>
@@ -228,7 +228,7 @@
     </div>
 </div>
 <div *ngIf="allType == '3'">
-    <div class="col-12 col-md-2 d-flex  justify-content-start align-items-start">
+    <div class="col-12 col-md-2 d-flex  justify-content-start align-items-start mb-3">
         <button type="button" class="btn btn-primary" (click)="goBack()"><i
                 class="fa-solid fa-reply mx-2"></i>Back</button>
     </div>
@@ -282,11 +282,11 @@
                             <span style="color: #243359;" for="">Get Report</span>
                         </div>
                         <div class=" display1">
-                            <div class="export-icon col-6 col-md-3 mx-3" (click)="getExcel()">
+                            <div class="export-icon col-6 col-md-3 mx-3" (click)="getUniversalExcel()">
                                 <img src="/assets/images/icons/Excel.png" alt="Excel Icon" width="40px">
                                 <div class="tooltip">Excel</div>
                             </div>
-                            <div class="export-icon col-6 col-md-3" (click)="getPDF()">
+                            <div class="export-icon col-6 col-md-3" (click)="getUniversalPDF()">
                                 <img src="/assets/images/icons/pdf.png" alt="PDF Icon" width="40px">
                                 <div class="tooltip">Pdf</div>
                             </div>
@@ -298,7 +298,7 @@
     </div>
 </div>
 <div *ngIf="allType== '4'">
-    <div class="col-12 col-md-2 d-flex  justify-content-start align-items-start">
+    <div class="col-12 col-md-2 d-flex  justify-content-start align-items-start mb-3">
         <button type="button" class="btn btn-primary" (click)="goBack()"><i
                 class="fa-solid fa-reply mx-2"></i>Back</button>
     </div>
@@ -382,7 +382,7 @@
     </div>
 </div>
 <div *ngIf="allType == '5'">
-    <div class="col-12 col-md-2 d-flex  justify-content-start align-items-start">
+    <div class="col-12 col-md-2 d-flex  justify-content-start align-items-start mb-3">
         <button type="button" class="btn btn-primary" (click)="goBack()"><i
                 class="fa-solid fa-reply mx-2"></i>Back</button>
     </div>
@@ -497,9 +497,8 @@
         </div>
     </div>
 </div>
-
 <div *ngIf="allType== '6'">
-    <div class="col-12 col-md-2 d-flex  justify-content-start align-items-start">
+    <div class="col-12 col-md-2 d-flex  justify-content-start align-items-start mb-3">
         <button type="button" class="btn btn-primary" (click)="goBack()"><i
                 class="fa-solid fa-reply mx-2"></i>Back</button>
     </div>
@@ -525,9 +524,9 @@
                             <img src="/assets/images/icons/pdf.png" alt="PDF Icon" width="40px">
                             <div class="tooltip">Pdf</div>
                         </div>
-                
+
                     </div>
-                   
+
                     <!-- </div> -->
                 </div>
                 <!-- <h5>OVER ALL PRODUCT REPORT</h5> -->
@@ -546,7 +545,7 @@
     </div>
 </div>
 <div *ngIf="allType== '7'">
-    <div class="col-12 col-md-2 d-flex  justify-content-start align-items-start">
+    <div class="col-12 col-md-2 d-flex  justify-content-start align-items-start mb-3">
         <button type="button" class="btn btn-primary" (click)="goBack()"><i
                 class="fa-solid fa-reply mx-2"></i>Back</button>
     </div>
@@ -573,9 +572,9 @@
                             <img src="/assets/images/icons/pdf.png" alt="PDF Icon" width="40px">
                             <div class="tooltip">Pdf</div>
                         </div>
-                
+
                     </div>
-                   
+
                     <!-- </div> -->
                 </div>
                 <!-- <h5>OVER ALL PRODUCT REPORT</h5> -->

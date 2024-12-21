@@ -91,7 +91,7 @@ export class RecurringComponent implements OnInit {
     }
   }
   ngOnInit(): void {
-    this.userservice.getOeratorList(this.role, this.username).subscribe((data: any) => {
+    this.userservice.getOeratorList(this.role, this.username,1).subscribe((data: any) => {
       console.log(data);
       this.operatorList = Object.keys(data).map(key => {
         const value = data[key];
