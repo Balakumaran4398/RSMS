@@ -24,16 +24,20 @@ export class RefundComponent {
   Referenceid: any;
   refuntlist: any;
   operatorid: any;
+
+  submitted: boolean = false;
+
   constructor(public dialogRef: MatDialogRef<RefundComponent>, @Inject(MAT_DIALOG_DATA) public data: any, public dialog: MatDialog, private swal: SwalService, private userservice: BaseService, private storageservice: StorageService) {
     console.log(this.data);
-    this.amount = data.amount;
+    this.amount = data?.data.amount;
     // this.remarks = data.transactionremarks1;
-    this.id = data.id;
+    this.id = data?.data.id;
     this.role = storageservice.getUserRole();
     this.username = storageservice.getUsername();
-    this.refuntlist = data;
-    this.operatorid = data.operatorid
-
+    this.refuntlist = data?.data;
+    this.operatorid = data?.data.operatorid,
+      this.isenablesmartcard = data.smartcard
+    console.log(this.operatorid);
   }
 
 
@@ -86,12 +90,8 @@ export class RefundComponent {
   // }
 
   onSubmit() {
-    if (!this.remarks) {
-      Swal.fire({
-        title: 'Error!',
-        text: 'Refund remarks cannot be empty.',
-        icon: 'error'
-      });
+    this.submitted = true;
+    if (!this.amount || !this.remarks) {
       return;
     }
 
@@ -102,37 +102,37 @@ export class RefundComponent {
     });
 
     dialogRef.afterClosed().subscribe((dialogResult) => {
-    console.log('dfdsfdsfsd',dialogResult );
+      console.log('dfdsfdsfsd', dialogResult);
 
-    if (this.data) {
-    this.swal.Loading();
-    this.userservice
-      .getRefund(this.role, this.username, this.id, this.amount, this.remarks, this.operatorid, this.isenablesmartcard)
-      .subscribe(
-        (res: any) => {
-          Swal.fire({
-            title: 'Success!',
-            text: res.message || 'Recharge has been added successfully.',
-            icon: 'success',
-            timer: 2000,
-            timerProgressBar: true,
-            willClose: () => {
-              window.location.reload();
+      if (this.data) {
+        this.swal.Loading();
+        this.userservice
+          .getRefund(this.role, this.username, this.id, this.amount, this.remarks, this.operatorid, this.isenablesmartcard)
+          .subscribe(
+            (res: any) => {
+              Swal.fire({
+                title: 'Success!',
+                text: res.message || 'Recharge has been added successfully.',
+                icon: 'success',
+                timer: 2000,
+                timerProgressBar: true,
+                willClose: () => {
+                  window.location.reload();
+                }
+              });
+            },
+            (error: any) => {
+              console.error(error);
+              Swal.fire({
+                title: 'Error!',
+                text: error?.error.message || error?.error.refundamount.remarks || 'There was an issue adding the Recharge.',
+                icon: 'error'
+              });
             }
-          });
-        },
-        (error: any) => {
-          console.error(error);
-          Swal.fire({
-            title: 'Error!',
-            text: error?.error.message || error?.error.refundamount.remarks || 'There was an issue adding the Recharge.',
-            icon: 'error'
-          });
-        }
-      );
-    } else {
-      console.log('Dialog closed without success');
-    }
+          );
+      } else {
+        console.log('Dialog closed without success');
+      }
     });
   }
 

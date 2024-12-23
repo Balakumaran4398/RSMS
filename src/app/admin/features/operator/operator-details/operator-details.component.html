@@ -150,7 +150,7 @@
                                 </div>
                             </div>
                             <div class="files tooltip-container mx-2"
-                                (click)="openDialog('retailer',operator.operatorid)">
+                                (click)="openDialog('lcowise_retailer',operator.operatorid)">
                                 <div class="files tooltip-container ">
                                     <i class="fa-solid fa-person-chalkboard"
                                         style="font-size:20px;color:var(--primary-color)"></i>
@@ -176,20 +176,20 @@
                                     </span>
                                 </div>
                             </div>
-                            <!-- <div class="files tooltip-container mx-2"
-                                (click)="openDialog('productwise',operator.operatorid)">
+                            <div class="files tooltip-container mx-2"
+                                (click)="openDialog('productwise_current',operator.operatorid)">
                                 <div class="files tooltip-container">
                                     <i class="fa-solid fa-address-book"
                                         style="font-size:20px;color:var(--primary-color)"></i>
                                     <span class="tooltip">PRODUCTWISE CURRENT COUNT
                                     </span>
                                 </div>
-                            </div> -->
+                            </div>
                         </div>
                     </div>
                     <div class="child-card col-12">
                         <div class="col-2 vertical tooltip-container"
-                            (click)="openDialog('connection',operator.operatorid)">
+                            (click)="openDialog('total_smartcard_connection',operator.operatorid)">
                             <div class="col-2 vertical tooltip-container">
                                 <p class="sub-text">Connection</p>
                                 <span style="color: #0e610b;">
@@ -200,18 +200,18 @@
                             </div>
                         </div>
                         <div class="col-2 vertical tooltip-container"
-                            (click)="openDialog('notexpiry',operator.operatorid)">
+                            (click)="openDialog('active_smartcard_connection',operator.operatorid)">
                             <div class="col-2 vertical tooltip-container">
                                 <p class="sub-text">NotExpiry</p>
                                 <span style="color: #0e610b;">
                                     <div class="circle" style="background-color: rgb(122, 64, 129);"><span
                                             class="circle-text">{{operator?.activecount}}</span></div>
                                 </span>
-                                <span class="tooltip">NotExpiry</span>
+                                <span class="tooltip">Active</span>
                             </div>
                         </div>
                         <div class="col-2 vertical tooltip-container"
-                            (click)="openDialog('expired',operator.operatorid)">
+                            (click)="openDialog('expired_smartcard_connection',operator.operatorid)">
                             <div class="col-2 vertical tooltip-container">
                                 <p class="sub-text">Expired</p>
                                 <span style="color: #0e610b;">
@@ -221,7 +221,7 @@
                                 <span class="tooltip">Expired</span>
                             </div>
                         </div>
-                        <div class="col-2 vertical tooltip-container" (click)="openDialog('new',operator.operatorid)">
+                        <div class="col-2 vertical tooltip-container" (click)="openDialog('new_smartcard_connection',operator.operatorid)">
                             <div class="col-2 vertical tooltip-container">
                                 <p class="sub-text">New</p>
                                 <span style="color: #0e610b;">
@@ -230,7 +230,7 @@
                                 </span> <span class="tooltip">New</span>
                             </div>
                         </div>
-                        <div class="col-2 vertical tooltip-container" (click)="openDialog('block',operator.operatorid)">
+                        <div class="col-2 vertical tooltip-container" (click)="openDialog('block_smartcard_connection',operator.operatorid)">
                             <div class="col-2 vertical tooltip-container">
                                 <p class="sub-text">Block</p>
                                 <span style="color: #0e610b;">
@@ -244,7 +244,7 @@
                     <span style="font-size: 17px;color: #000d33;">Inventory</span>
                     <div class="report d-flex " style="justify-content: space-between;">
                         <div class="col-6 vertical tooltip-container"
-                            (click)="openDialog('boxinhand',operator.operatorid)">
+                            (click)="openDialog('box_in_hand',operator.operatorid)">
                             <p class="sub-text">Box in Hand</p>
                             <div class="col-2 vertical tooltip-container">
                                 <span style="color: #0e610b;">
@@ -254,7 +254,7 @@
                             </div>
                         </div>
                         <div class="col-6 vertical tooltip-container"
-                            (click)="openDialog('totalbox',operator.operatorid)">
+                            (click)="openDialog('total_smartcard',operator.operatorid)">
                             <p class="sub-text">Total Box</p>
                             <div class="col-2 vertical tooltip-container">
                                 <span style="color: #0e610b;">

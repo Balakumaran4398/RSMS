@@ -360,8 +360,6 @@ export class ExcelService {
       cell.fill = {
         type: 'pattern',
         pattern: 'solid',
-        // fgColor: { argb: 'b2b2b2' },
-        // bgColor: { argb: 'b2b2b2' },
         fgColor: { argb: 'cce0d8' },
         bgColor: { argb: 'cce0d8' },
       };
@@ -883,17 +881,18 @@ export class ExcelService {
       });
     });
     worksheet.columns = [
-      { key: 'a', width: 20 }, // CUSTOMER ID
-      { key: 'b', width: 21 }, // SUBSCRIBER NAME
-      { key: 'c', width: 20 }, // ADDRESS
-      { key: 'd', width: 20 }, // MOBILE NO
-      { key: 'e', width: 25 }, // SMARTCARD
-      { key: 'f', width: 25 }, // MOBILE NO
-      { key: 'g', width: 25 }, //SMARTCARD
-      { key: 'h', width: 25 }, //BOXID
-      { key: 'i', width: 20 }, //PACKAGE STATUS
-      { key: 'j', width: 21 }, //ACTIVATION DATE
+      { key: 'a', width: 15 }, // S.NO
+      { key: 'b', width: 30 }, // CUSTOMER ID
+      { key: 'c', width: 30 }, // SUBSCRIBER NAME
+      { key: 'd', width: 25 }, // ADDRESS
+      { key: 'e', width: 25 }, // MOBILE NO
+      { key: 'f', width: 25 }, // SMARTCARD
+      { key: 'g', width: 25 }, // MOBILE NO
+      { key: 'h', width: 25 }, //SMARTCARD
+      { key: 'i', width: 25 }, //BOXID
+      { key: 'j', width: 20 }, //PACKAGE STATUS
       { key: 'k', width: 21 }, //ACTIVATION DATE
+      { key: 'l', width: 21 }, //ACTIVATION DATE
     ];
     workbook.xlsx.writeBuffer().then((data: any) => {
       const blob = new Blob([data], {
@@ -1489,7 +1488,7 @@ export class ExcelService {
       areasub,
       sub,
       columns,
-      'Total Smartcard'
+      'TOTAL SMARTCARD'
     );
   }
   async generateBlockExcel(
@@ -1550,7 +1549,7 @@ export class ExcelService {
       areasub,
       sub,
       columns,
-      'Paired Smartcard'
+      'PAIRED SMARTCARD'
     );
   }
   async generateAllServiceExcel(
@@ -1623,7 +1622,7 @@ export class ExcelService {
   ) {
     const columns = [
       { key: 'a', width: 10 }, // S.NO
-      { key: 'b', width: 15 }, // INTEND ID
+      { key: 'b', width: 30 }, // INTEND ID
       { key: 'c', width: 15 }, // INTENT TO
       { key: 'd', width: 25 }, // TITLE
       { key: 'e', width: 20 }, // SENDER
@@ -1680,9 +1679,9 @@ export class ExcelService {
   ) {
     const columns = [
       { key: 'a', width: 10 }, // S.NO
-      { key: 'b', width: 15 }, // INTEND ID
+      { key: 'b', width: 25 }, // INTEND ID
       { key: 'c', width: 15 }, // INTENT TO
-      { key: 'd', width: 25 }, // MESSAGE
+      { key: 'd', width: 30 }, // MESSAGE
       { key: 'e', width: 20 }, // FONT COLOR
       { key: 'f', width: 30 }, // BACKGROUND COLOR
       { key: 'g', width: 20 }, // REPEAT FOR
@@ -1700,7 +1699,7 @@ export class ExcelService {
       areasub,
       sub,
       columns,
-      'Message History'
+      'MESSAGE HISTORY'
     );
   }
   async generatNetworkSmartcardStatusExcel(
@@ -1786,7 +1785,7 @@ export class ExcelService {
       areasub,
       sub,
       columns,
-      'Smartcard Suspend Report'
+      'SMARTCARD SUSPEND REPORT'
     );
   }
   async generatSuspendExcel(
@@ -1863,12 +1862,13 @@ export class ExcelService {
     sub: any
   ) {
     const columns = [
-      { key: 'a', width: 30 }, // OPERATOR NAME
-      { key: 'b', width: 30 }, // TRANSACTION GROUP TIME
-      { key: 'c', width: 20 }, // LCO AMOUNT
-      { key: 'd', width: 25 }, // OLD BALANCE
-      { key: 'e', width: 25 }, // CURRENT BALANCE
-      { key: 'f', width: 30 }, // TRANSACTION DATE 
+      { key: 'a', width: 10 }, // S.NO
+      { key: 'b', width: 30 }, // OPERATOR NAME
+      { key: 'c', width: 30 }, // TRANSACTION GROUP TIME
+      { key: 'd', width: 20 }, // LCO AMOUNT
+      { key: 'e', width: 25 }, // OLD BALANCE
+      { key: 'f', width: 25 }, // CURRENT BALANCE
+      { key: 'g', width: 30 }, // TRANSACTION DATE 
 
     ];
     await this.generateExcelFile(
@@ -1879,7 +1879,7 @@ export class ExcelService {
       areasub,
       sub,
       columns,
-      'Recharge Log'
+      'RECHARGE LOG'
     );
   }
   async generateLCORechargeExcel(
@@ -1908,7 +1908,262 @@ export class ExcelService {
       areasub,
       sub,
       columns,
-      'LCORecharge Log'
+      'LCO RECHARGE LOG'
     );
   }
+
+
+  // --------------------------------Syncronization--------------------
+  async generateSynchronizationExcel(
+    areatitle: string,
+    headers: any,
+    dataRow: any[],
+    title: string,
+    areasub: string,
+    subtitle: string,
+    additionalSubheaders: any
+  ) {
+    const workbook = new Excel.Workbook();
+    const worksheet = workbook.addWorksheet('Sheet 1');
+
+    //========== TITLE ==========
+    const titleRow = worksheet.addRow([title]);
+    titleRow.font = {
+      family: 4,
+      size: 16,
+      color: { argb: 'FFFFFF' },
+      bold: true,
+    };
+    titleRow.alignment = { horizontal: 'center' };
+    titleRow.eachCell((cell: any) => {
+      cell.fill = {
+        type: 'pattern',
+        pattern: 'solid',
+        fgColor: { argb: '34495e' },
+      };
+      cell.border = {
+        top: { style: 'thin' },
+        left: { style: 'thin' },
+        bottom: { style: 'thin' },
+        right: { style: 'thin' },
+      };
+    });
+    worksheet.mergeCells(areatitle);
+
+    //========== SUBTITLE ==========
+    const subtitleRow = worksheet.addRow([subtitle]);
+    subtitleRow.font = {
+      family: 4,
+      size: 12,
+      color: { argb: '000000' },
+      bold: true,
+    };
+    subtitleRow.height = 20;
+    subtitleRow.alignment = { horizontal: 'center' };
+    subtitleRow.eachCell((cell: any) => {
+      cell.fill = {
+        type: 'pattern',
+        pattern: 'solid',
+        fgColor: { argb: 'cce0d8' },
+      };
+      cell.border = {
+        top: { style: 'thin' },
+        left: { style: 'thin' },
+        bottom: { style: 'thin' },
+        right: { style: 'thin' },
+      };
+    });
+    worksheet.mergeCells(areasub);
+
+    //========== ADDITIONAL SUBHEADERS ==========
+    const subheaderValues = [
+      `From Date: ${additionalSubheaders['From Date']}`,
+      `To Date: ${additionalSubheaders['To Date']}`,
+      `Package Type: ${additionalSubheaders['Package Type']}`,
+    ];
+    const subheaderRow = worksheet.addRow(subheaderValues);
+    subheaderRow.font = {
+      family: 4,
+      size: 12,
+      color: { argb: '000000' },
+      bold: false,
+    };
+    subheaderRow.height = 20;
+    subheaderRow.alignment = { horizontal: 'center', vertical: 'middle' };
+    subheaderRow.eachCell((cell: any) => {
+      cell.fill = {
+        type: 'pattern',
+        pattern: 'solid',
+        fgColor: { argb: 'e8f8f5' },
+      };
+      cell.border = {
+        top: { style: 'thin' },
+        left: { style: 'thin' },
+        bottom: { style: 'thin' },
+        right: { style: 'thin' },
+      };
+    });
+
+    worksheet.columns = [
+      { width: 30 }, // From Date column
+      { width: 30 }, // To Date column
+      { width: 30 }, // Package Type column
+      { width: 30 }, // Package Type column
+      { width: 30 }, // Package Type column
+      { width: 30 }, // Package Type column
+      { width: 20 }, // Package Type column
+    ];
+
+    //========== COLUMN HEADERS ==========
+    const headerRow = worksheet.addRow(headers);
+    headerRow.font = { bold: true, color: { argb: 'FFFFFF' } };
+    headerRow.alignment = { vertical: 'middle', horizontal: 'center' };
+    headerRow.height = 20;
+
+    headerRow.eachCell((cell: any) => {
+      cell.fill = {
+        type: 'pattern',
+        pattern: 'solid',
+        fgColor: { argb: '333333' },
+      };
+      cell.border = {
+        top: { style: 'thin' },
+        left: { style: 'thin' },
+        bottom: { style: 'thin' },
+        right: { style: 'thin' },
+      };
+    });
+
+    //========== DATA ROWS ==========
+    dataRow.forEach((d) => {
+      const row = worksheet.addRow(d);
+      row.alignment = { vertical: 'middle', horizontal: 'center' };
+      row.height = 20;
+      row.eachCell((cell: any) => {
+        cell.border = {
+          left: { style: 'thin' },
+          right: { style: 'thin' },
+        };
+      });
+    });
+
+    // Save the Excel file
+    workbook.xlsx.writeBuffer().then((data: any) => {
+      const blob = new Blob([data], {
+        type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+      });
+      fs.saveAs(blob, `${title}.xlsx`);
+    });
+  }
+  generateExcelReport(addonList: any[], alacarteList: any[], baseList: any[], title: string, sub: string) {
+    const workbook = new Excel.Workbook();
+    const worksheet = workbook.addWorksheet('Package Data');
+
+    // Add title and subtitle
+    worksheet.mergeCells('A1:H1');
+    worksheet.getCell('A1').value = title;
+    worksheet.getCell('A1').font = { bold: true, size: 16 };
+    worksheet.getCell('A1').alignment = { horizontal: 'center' };
+
+    worksheet.mergeCells('A2:H2');
+    worksheet.getCell('A2').value = sub;
+    worksheet.getCell('A2').font = { bold: true, size: 12 };
+    worksheet.getCell('A2').alignment = { horizontal: 'center' };
+
+    let startRow = 4;
+
+    // Add Addon List
+    if (addonList.length) {
+      console.log('addonList', addonList);
+
+      worksheet.getRow(startRow).values = ['Addon List'];
+      worksheet.getRow(startRow).font = { bold: true, size: 14 };
+      startRow++;
+
+      const addonHeader = ['S.NO', 'Customer Name', 'Mobile No', 'Smartcard', 'Box ID', 'CAS Name', 'Product Name', 'Created Date'];
+      worksheet.addRow(addonHeader).eachCell((cell) => {
+        cell.font = { bold: true };
+      });
+      addonList.forEach((item, index) => {
+        worksheet.addRow([
+          index + 1,
+          item.customername,
+          item.mobileno,
+          item.smartcard,
+          item.boxid,
+          item.casname,
+          item.productname,
+          item.createddate,
+        ]);
+      });
+      startRow += addonList.length + 2;
+    }
+
+    // Add Alacarte List
+    if (alacarteList.length) {
+      console.log('alacarteList', alacarteList);
+
+      worksheet.getRow(startRow).values = ['Alacarte Package List'];
+      worksheet.getRow(startRow).font = { bold: true, size: 14 };
+      startRow++;
+
+      const alacarteHeader = ['S.NO', 'Product Name', 'CAS Product ID', 'CAS Name'];
+      worksheet.addRow(alacarteHeader).eachCell((cell) => {
+        cell.font = { bold: true };
+      });
+      alacarteList.forEach((item, index) => {
+        worksheet.addRow([
+          index + 1,
+          item.productname,
+          item.casproductid,
+          item.casname,
+        ]);
+      });
+      startRow += alacarteList.length + 2;
+    }
+
+    // Add Base List
+    if (baseList.length) {
+      console.log('baselist', baseList);
+
+      worksheet.getRow(startRow).values = ['Base Package List'];
+      worksheet.getRow(startRow).font = { bold: true, size: 14 };
+      startRow++;
+
+      const baseHeader = ['S.NO', 'Product Name', 'CAS Product ID', 'CAS Name', 'W1', 'W2', 'W3', 'W4', 'Average', 'Month & Year'];
+      worksheet.addRow(baseHeader).eachCell((cell) => {
+        cell.font = { bold: true };
+      });
+      baseList.forEach((item, index) => {
+        worksheet.addRow([
+          index + 1,
+          item.productname,
+          item.casproductid,
+          item.casname,
+          item.w1,
+          item.w2,
+          item.w3,
+          item.w4,
+          item.avg,
+          item.monthyear,
+        ]);
+      });
+    }
+
+    // Adjust column widths
+    worksheet.columns.forEach((column) => {
+      column.width = 20; // Adjust as necessary
+    });
+
+    // Save the Excel file
+    workbook.xlsx.writeBuffer().then((data: any) => {
+      const blob = new Blob([data], {
+        type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+      });
+      fs.saveAs(blob, 'Overall_Report.xlsx');
+    });
+  }
+
+
+
 }

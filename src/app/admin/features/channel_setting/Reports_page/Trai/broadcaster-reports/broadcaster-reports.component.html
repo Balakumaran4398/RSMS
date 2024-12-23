@@ -201,7 +201,7 @@
                         <span>BASE Package </span>
                     </div>
                     <ag-grid-angular #agGrid id="myGrid" domLayout='autoHeight' class="ag-theme-alpine table-class"
-                        rowAnimation [gridOptions]="gridOptions" [columnDefs]="columnDefs" [rowData]="rowData"
+                        rowAnimation [gridOptions]="gridOptions" [columnDefs]="columnDefs" [rowData]="baselist"
                         (gridReady)="onGridReady($event)" [enableCellTextSelection]="true">
                     </ag-grid-angular>
                 </div>
@@ -210,7 +210,7 @@
                         <span>ADD ON Package </span>
                     </div>
                     <ag-grid-angular #agGrid id="myGrid" domLayout='autoHeight' class="ag-theme-alpine table-class"
-                        rowAnimation [gridOptions]="gridOptions" [columnDefs]="columnDefs" [rowData]="rowData"
+                        rowAnimation [gridOptions]="gridOptions" [columnDefs]="columnDefs" [rowData]="addonlist"
                         (gridReady)="onGridReady($event)" [enableCellTextSelection]="true">
                     </ag-grid-angular>
                 </div>
@@ -219,7 +219,7 @@
                         <span>ALACARTE </span>
                     </div>
                     <ag-grid-angular #agGrid id="myGrid" domLayout='autoHeight' class="ag-theme-alpine table-class"
-                        rowAnimation [gridOptions]="gridOptions" [columnDefs]="columnDefs" [rowData]="rowData"
+                        rowAnimation [gridOptions]="gridOptions" [columnDefs]="columnDefs" [rowData]="alacartelist"
                         (gridReady)="onGridReady($event)" [enableCellTextSelection]="true">
                     </ag-grid-angular>
                 </div>

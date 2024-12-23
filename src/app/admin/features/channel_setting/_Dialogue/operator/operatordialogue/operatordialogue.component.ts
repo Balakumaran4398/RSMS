@@ -128,37 +128,37 @@ export class OperatordialogueComponent implements OnInit {
   }
   setType(OType: string) {
     switch (OType) {
-      case 'connection':
+      case 'total_smartcard_connection':
         this.type = 1;
         break;
-      case 'notexpiry':
+      case 'active_smartcard_connection':
         this.type = 2;
         break;
-      case 'expired':
+      case 'expired_smartcard_connection':
         this.type = 3;
         break;
-      case 'new':
+      case 'new_smartcard_connection':
         this.type = 4;
         break;
-      case 'block':
+      case 'block_smartcard_connection':
         this.type = 5;
         break;
-      case 'boxinhand':
+      case 'box_in_hand':
         this.type = 6;
         break;
-      case 'totalbox':
+      case 'total_smartcard':
         this.type = 7;
         break;
       case 'recharge':
         this.type = 8;
         break;
-      case 'retailer':
+      case 'lcowise_retailer':
         this.type = 9;
         break;
       case 'cancel_Subscription':
         this.type = 10;
         break;
-      case 'productwise':
+      case 'productwise_current':
         this.type = 11;
         break;
       default:
@@ -210,6 +210,7 @@ export class OperatordialogueComponent implements OnInit {
       event.preventDefault();
     }
   }
+  
   getExcel() {
     this.userService.getOperatorDashboardExcelReport(this.role, this.username, this.type, 2, this.operatorid, 0, 0, 0)
       .subscribe(
@@ -225,63 +226,65 @@ export class OperatordialogueComponent implements OnInit {
             let header: string[] = [];
             const datas: Array<any> = [];
             if (this.type == 1 || this.type == 4) {
-              areatitle = 'A1:J2';
-              areasub = 'A3:J3';
-              header = ['SUBSCRIBER ID', 'SUBSCRIBER NAME', 'ADDRESS', 'MOBILE NO', 'SMARTCARD', 'BOXID', 'PACKAGE STATUS', 'AREA NAME', 'ACTIVATION DATE', 'EXPIRY DATE'];
-
-              this.rowData.forEach((d: any) => {
-                const row = [d.subid, d.customername, d.address, d.mobileno, d.smartcard, d.boxid, d.statusdisplay, d.areaname, d.activationdate, d.expirydate];
-                console.log('type 1 and 4', row);
+              areatitle = 'A1:K2';
+              areasub = 'A3:K3';
+              header = ['S.NO', 'SUBSCRIBER ID', 'SUBSCRIBER NAME', 'ADDRESS', 'AREA NAME', 'MOBILE NO', 'SMARTCARD', 'BOXID', 'ACTIVATION DATE', 'EXPIRY DATE', 'PACKAGE STATUS',];
+              this.rowData.forEach((d: any, index: number) => {
+                const row = [index + 1, d.subid, d.customername, d.address, d.areaname, d.mobileno, d.smartcard, d.boxid, d.activationdate, d.expirydate, d.statusdisplay];
                 datas.push(row);
               });
               this.excelService.generateOperatorDashboardExcel(areatitle, header, datas, title, areasub, sub);
             } else if (this.type == 2 || this.type == 3) {
               const title = (this.operatorname + ' - ' + this.OType + ' REPORT').toUpperCase();
-              areatitle = 'A1:H2';
-              areasub = 'A3:H3';
-              header = ['SUBSCRIBER ID', 'SUBSCRIBER NAME', 'ADDRESS', 'MOBILE NO', 'SMARTCARD', 'BOXID', 'PACKAGE STATUS', 'EXPIRY DATE'];
-
-              this.rowData.forEach((d: any) => {
-                const row = [d.subid, d.customername, d.address, d.mobileno, d.smartcard, d.boxid, d.statusdisplay, d.expirydate];
-                console.log('type 2, 3, and 6', row);
-                datas.push(row);
-              });
-              this.excelService.generateNotExpiryExcel(areatitle, header, datas, title, areasub, sub);
-
-            } else if (this.type == 4 || this.type == 5) {
               areatitle = 'A1:J2';
               areasub = 'A3:J3';
-              header = ['SUB ID', 'OPERATOR NAME', 'CUSTOMER NAME', 'SMARTCARD', 'BOX ID', 'CAS NAME', 'PRODUCT NAME', 'PRODUCT ID', 'CREATION DATE', 'EXPIRY DATE'];
+              header = ['S.NO', 'SUBSCRIBER ID', 'SUBSCRIBER NAME', 'ADDRESS', 'MOBILE NO', 'SMARTCARD', 'BOXID', 'PACKAGE NAME', 'EXPIRY DATE', ' STATUS'];
+              this.rowData.forEach((d: any, index: number) => {
+                const row = [index + 1, d.subid, d.customername, d.address, d.mobileno, d.smartcard, d.boxid, d.productname, d.expirydate, d.statusdisplay];
+                datas.push(row);
+              });
+              this.excelService.generateOperatorDashboardExcel(areatitle, header, datas, title, areasub, sub);
 
-              this.rowData.forEach((d: any) => {
-                const row = [d.subid, d.operatorname, d.customername, d.smartcard, d.boxid, d.casname, d.productname, d.productid, d.creationdate, d.expirydate];
-                console.log('type 4 and 5', row);
+            } else if ( this.type == 5) {
+              areatitle = 'A1:K2';
+              areasub = 'A3:K3';
+              header = ['S.NO', 'SUB ID', 'OPERATOR NAME', 'CUSTOMER NAME', 'SMARTCARD', 'BOX ID', 'CAS NAME', 'PRODUCT NAME', 'PRODUCT ID', 'CREATION DATE', 'EXPIRY DATE'];
+              this.rowData.forEach((d: any, index: number) => {
+                const row = [index + 1, d.subid, d.operatorname, d.customername, d.smartcard, d.boxid, d.casname, d.productname, d.productid, d.creationdate, d.expirydate];
                 datas.push(row);
               });
               this.excelService.generateOperatorDashboardExcel(areatitle, header, datas, title, areasub, sub);
             } else if (this.type == 6 || this.type == 7) {
-              areatitle = 'A1:D2';
-              areasub = 'A3:D3';
-              header = ['SMARTCARD', 'BOX ID', 'CAS NAME', 'ALLOCATION DATE'];
-
-              this.rowData.forEach((d: any) => {
-                const row = [d.smartcard, d.boxid, d.casname, d.connectiondate];
-                console.log('type 4 and 5', row);
+              areatitle = 'A1:E2';
+              areasub = 'A3:E3';
+              header = ['S.NO', 'SMARTCARD', 'BOX ID', 'CAS', 'ALLOCATION DATE'];
+              this.rowData.forEach((d: any, index: number) => {
+                const row = [index + 1, d.smartcard, d.boxid, d.casname, d.connectiondate];
                 datas.push(row);
               });
-              this.excelService.generateBoxinhandExcel(areatitle, header, datas, title, areasub, sub);
+              this.excelService.generateOperatorDashboardExcel(areatitle, header, datas, title, areasub, sub);
             }
             else if (this.type == 9) {
               areatitle = 'A1:F2';
               areasub = 'A3:F3';
-              header = ['BALANCE', 'MOBILE NUMBER', 'RETAILER ID', 'RETAILER NAME', 'STATUS ', 'USERNAME'];
-
-              this.rowData.forEach((d: any) => {
-                const row = [d.balance, d.mobileno, d.retailerid, d.retailername, d.statusdisplay, d.username];
-                console.log('type 4 and 5', row);
+              // header = ['S.NO', 'MOBILE NUMBER', 'RETAILER ID', 'RETAILER NAME', 'STATUS ', 'USERNAME'];
+              header = ['S.NO', 'RETAILER NAME', 'MOBILE NUMBER', 'AREA', 'USERNAME', 'BALANCE',];
+              this.rowData.forEach((d: any, index: number) => {
+                const row = [index + 1, d.retailername, d.mobileno, d.retailerid, d.username, d.balance];
                 datas.push(row);
               });
-              this.excelService.generateRetailerExcel(areatitle, header, datas, title, areasub, sub);
+              this.excelService.generateOperatorDashboardExcel(areatitle, header, datas, title, areasub, sub);
+
+            }
+            else if (this.type == 11) {
+              areatitle = 'A1:F2';
+              areasub = 'A3:F3';
+              header = ['S.NO', 'SUBSCRIBER NAME', 'MOBILE NUMBER', 'SMARTCARD', 'BOX ID', 'EXPIRY DATE',];
+              this.rowData.forEach((d: any, index: number) => {
+                const row = [index + 1, d.retailername, d.mobileno, d.retailerid, d.username, d.balance];
+                datas.push(row);
+              });
+              this.excelService.generateOperatorDashboardExcel(areatitle, header, datas, title, areasub, sub);
 
             }
 

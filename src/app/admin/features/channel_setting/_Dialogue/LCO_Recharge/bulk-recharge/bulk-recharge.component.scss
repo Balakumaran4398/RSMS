@@ -88,12 +88,12 @@
 .display_1{
     display: block;
 }
-::ng-deep {
-    .ag-center-cols-viewport {
-        max-height: 1500px;
-        overflow: auto;
-    }
-}
+// ::ng-deep {
+//     .ag-center-cols-viewport {
+//         max-height: 1500px;
+//         overflow: auto;
+//     }
+// }
 @media screen and (max-width:560px) {
     .display {
         display: block;

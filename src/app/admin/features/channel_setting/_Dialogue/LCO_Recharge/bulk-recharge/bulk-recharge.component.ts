@@ -34,7 +34,10 @@ export class BulkRechargeComponent {
       width: 320,
       floatingFilter: true
     },
+    paginationPageSize: 10,
+    pagination: true,
   }
+  
   columnDefs: any[] = [
     {
       headerName: "S.No", lockPosition: true, valueGetter: 'node.rowIndex+1', width: 100, headerCheckboxSelection: true,

@@ -69,28 +69,26 @@
 </div>
 <div *ngIf="allType== '2'">
     <h3>Total Smartcard List Report</h3>
+    <div>
+        <button type="button" class="btn btn-primary" (click)="goBack()"><i
+                class="fa-solid fa-reply mx-2"></i>Back</button>
+    </div>
     <div class="row " style="padding: 1rem;">
         <div class="row d-flex align-items-center justify-content-center">
             <div class="col-12 col-sm-6 m-3">
                 <div class="col d-flex justify-content-between align-items-end mb-3 total">
-                    <div>
-                        <button type="button" class="btn btn-primary" (click)="goBack()"><i
-                                class="fa-solid fa-reply mx-2"></i>Back</button>
-                    </div>
-                    <div>
-                        <span style="font-size: 18px;color:rgb(37, 26, 63);font-weight: 600;">
-                            Get Report
-                        </span>
+                    <span style="font-size: 18px;color:rgb(37, 26, 63);font-weight: 600;">
+                        Get Report
+                    </span>
 
-                        <button class="btn btn-outline-info mx-1" mat-raised-button color="primary" type="button"
-                            (click)="getTotalExcel()">
-                            Excel
-                        </button>
-                        <button class="btn btn-outline-info mx-1" mat-raised-button color="accent" type="button"
-                            (click)="getTotalPDF()">
-                            PDF
-                        </button>
-                    </div>
+                    <button class="btn btn-outline-info mx-1" mat-raised-button color="primary" type="button"
+                        (click)="getTotalExcel()">
+                        Excel
+                    </button>
+                    <button class="btn btn-outline-info mx-1" mat-raised-button color="accent" type="button"
+                        (click)="getTotalPDF()">
+                        PDF
+                    </button>
                 </div>
             </div>
         </div>
@@ -415,7 +413,8 @@
                     </div>
                     <div class=" input_box display1 mb-3">
                         <div class="col-6 col-md-6">
-                            <span style="color: #243359; font-size: 15px;" for="">To Download Overall Network Count</span>
+                            <span style="color: #243359; font-size: 15px;" for="">To Download Overall Network
+                                Count</span>
                         </div>
                         <div class="col-6 col-md-6 display1">
                             <div class="export-icon col-6 col-md-3 mx-2" (click)="getNetworkSmartcardStatusExcel()">
@@ -430,14 +429,17 @@
                     </div>
                     <div class="input_box display1 mb-3">
                         <div class="col-6 col-md-6">
-                            <span style="color: #243359;font-size: 15px;" for="">To Download Operator Wise Network Count</span>
+                            <span style="color: #243359;font-size: 15px;" for="">To Download Operator Wise Network
+                                Count</span>
                         </div>
                         <div class="col-6 col-md-6 display1">
-                            <div class="export-icon col-6 col-md-3 mx-2" (click)="getNetworkOperatorwiseSmartcardStatusExcel()">
+                            <div class="export-icon col-6 col-md-3 mx-2"
+                                (click)="getNetworkOperatorwiseSmartcardStatusExcel()">
                                 <img src="/assets/images/icons/Excel.png" alt="Excel Icon" width="40px">
                                 <div class="tooltip">Excel</div>
                             </div>
-                            <div class="export-icon col-6 col-md-3" (click)="getNetworkOperatorwiseSmartcardStatusPDF()">
+                            <div class="export-icon col-6 col-md-3"
+                                (click)="getNetworkOperatorwiseSmartcardStatusPDF()">
                                 <img src="/assets/images/icons/pdf.png" alt="PDF Icon" width="40px">
                                 <div class="tooltip">Pdf</div>
                             </div>

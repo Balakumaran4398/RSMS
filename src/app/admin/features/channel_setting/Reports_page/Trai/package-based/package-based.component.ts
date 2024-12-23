@@ -102,46 +102,80 @@ export class PackageBasedComponent implements OnInit {
     console.log(this.todate);
   }
   getExcel() {
-    console.log(this.packageType);
-    this.userService.getPackageModificationExcelReport(this.role, this.username, this.fromdate, this.todate, 1, this.packageType, 2)
-      .subscribe(
-        (response: HttpResponse<any[]>) => { // Expect HttpResponse<any[]>
-          console.log(this.type);
-          if (response.status === 200) {
-            this.rowData = response.body;
+    if (this.file) {
+      console.log(this.file);
+      const formData = new FormData();
+      formData.append('role', this.role);
+      formData.append('username', this.username);
+      formData.append('file', this.file);
+      formData.append('fromdate', this.fromdate);
+      formData.append('todate', this.todate);
+      formData.append('reporttype', '2');
+      formData.append('type', this.productType);
+      // this.swal.Loading();
+      this.userService.getSynchronizationExcelReport(formData)
+        .subscribe(
+          (response: any) => {
+            console.log(this.type);
+            this.rowData = response;
             console.log(this.type);
             const title = (this.type + ' REPORT').toUpperCase();
             const sub = 'MSO ADDRESS:' + this.msodetails;
             let areatitle = '';
             let areasub = '';
+            let additionalSubheaders = {
+              'From Date': this.fromdate,
+              'To Date': this.todate,
+              'Package Type': this.productType,
+            };
             let header: string[] = [];
             const datas: Array<any> = [];
-            // if (this.type == 1) {
-            areatitle = 'A1:F2';
-            areasub = 'A3:F3';
-            header = ['PACKAGE NAME PREVIOUS', 'PACKAGE NAME CURRENR', 'PACKAGE ID', 'PRODUCT ID', 'OLD CHANNEL LIST', 'NEW CHANNEL LIST', 'ADDED CHANNEL LIST', 'REMOVED CHANNEL LIST', 'UPDATED DATE', 'COUNT'];
+            areatitle = 'A1:G2';
+            areasub = 'A3:G3';
+            header = ['SMARTCARD', 'PRODUCT ID', 'ACTIVATION DATE', 'EXPIRY DATE', 'ACTIVITY', 'STATUS', 'TYPE'];
 
             this.rowData.forEach((d: any) => {
-              const row = [d.packagenamepre, d.packagenamecur, d.packageid, d.casproductid, d.channelnamepre, d.chanenlnamecur, d.addedchannels, d.removedchannels, d.updateddate, d.count];
-              // console.log('type 1 and 4', row);
+              const row = [d.smartcard, d.orderid, d.logdate, d.expirydate, d.activity, d.status, d.type];
               datas.push(row);
             });
 
-            this.excelService.generateTraiPackageBaseExcel(areatitle, header, datas, title, areasub, sub);
-
-          } else if (response.status === 204) {
-            this.swal.Success_204();
-            this.rowData = [];
+            // this.excelService.generateSynchronizationExcel( areatitle, header, datas, title,  areasub, sub, additionalSubheaders);
+            this.excelService.generateSynchronizationExcel(
+              'A1:G2',
+              ['SMARTCARD', 'PRODUCT ID', 'ACTIVATION DATE', 'EXPIRY DATE', 'ACTIVITY', 'STATUS', 'TYPE'],
+              datas,
+              title,
+              'A3:G3',
+              sub,
+              additionalSubheaders
+            );
+          },
+          (error) => {
+            this.handleApiError(error);
           }
-        },
-        (error) => {
-          this.handleApiError(error);
-        }
-      );
+        );
+    } else {
+      Swal.fire({
+        title: 'Error!',
+        text: 'No file selected. Please choose a file to upload.',
+        icon: 'error',
+        confirmButtonText: 'OK'
+      });
+    }
+
   }
   getPDF() {
-    this.userService.getPackageModificationPdfReport(this.role, this.username, this.fromdate, this.todate, 1, this.packageType, 1)
-      .subscribe((x: Blob) => {
+    if (this.file) {
+      console.log(this.file);
+      const formData = new FormData();
+      formData.append('role', this.role);
+      formData.append('username', this.username);
+      formData.append('file', this.file);
+      formData.append('fromdate', this.fromdate);
+      formData.append('todate', this.todate);
+      formData.append('reporttype', '2');
+      formData.append('type', this.productType);
+      this.userService.getSynchronizationPDFReport(formData).subscribe((x: Blob) => {
         const blob = new Blob([x], { type: 'application/pdf' });
         const data = window.URL.createObjectURL(blob);
         const link = document.createElement('a');
@@ -161,6 +195,14 @@ export class PackageBasedComponent implements OnInit {
             confirmButtonText: 'Ok'
           });
         });
+    } else {
+      Swal.fire({
+        title: 'Error!',
+        text: 'No file selected. Please choose a file to upload.',
+        icon: 'error',
+        confirmButtonText: 'OK'
+      });
+    }
   }
   getChannelExcel() {
     this.userService.getChannelModificationExcelReport(this.role, this.username, this.fromdate, this.todate, 2)

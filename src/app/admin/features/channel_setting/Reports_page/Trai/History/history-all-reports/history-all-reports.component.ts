@@ -142,15 +142,15 @@ export class HistoryAllReportsComponent implements OnInit {
         { headerName: 'SMARTCARD', field: 'smartcard', width: 300 },
         { headerName: 'LOG DATE', field: 'logdate', width: 280 },
         { headerName: 'ACTION', field: 'activity', width: 200 },
-        { headerName: 'REMARKS', field: 'remarks', width: 900 },
+        { headerName: 'REMARKS', field: 'remarks', width: 680 },
       ]
     } else if (this.allType == '3') {
       this.columnDefs = [
         { headerName: "S.No", lockPosition: true, valueGetter: 'node.rowIndex+1', headerCheckboxSelection: false, checkboxSelection: false, width: 90 },
-        { headerName: 'SUBSCRIBER ID', field: 'subid', width: 200 },
-        { headerName: 'SUBSCRIBER NAME', field: 'customername', width: 200 },
-        { headerName: 'SMARTCARD', field: 'smartcard', width: 300 },
-        { headerName: 'BOX ID', field: 'boxid', width: 250 },
+        { headerName: 'SUBSCRIBER ID', field: 'subid', width: 150 },
+        { headerName: 'SUBSCRIBER NAME', field: 'customername', width: 150 },
+        { headerName: 'SMARTCARD', field: 'smartcard', width: 250 },
+        { headerName: 'BOX ID', field: 'boxid', width: 200 },
         { headerName: 'ADDRESS', field: 'address', width: 350 },
         { headerName: 'INSTALLED DATE', field: 'createddate', width: 350 },
       ]
@@ -198,27 +198,27 @@ export class HistoryAllReportsComponent implements OnInit {
         { headerName: "S.No", lockPosition: true, valueGetter: 'node.rowIndex+1', headerCheckboxSelection: false, checkboxSelection: false, width: 90 },
         { headerName: 'INTEND ID', field: 'intendid', width: 150 },
         { headerName: 'INTENT TO', field: 'intendto', width: 200 },
-        { headerName: 'MESSAGE', field: 'scrollmessage', width: 200 },
-        { headerName: 'FONT COLOR	', field: 'scrollcolordisplay', width: 200 },
-        { headerName: 'BACKGROUND COLOR	', field: 'scrollbgcolordisplay', width: 150 },
+        { headerName: 'MESSAGE', field: 'messagecontent', width: 200 },
+        { headerName: 'FONT COLOR	', field: 'fontcolordisplay', width: 200 },
+        { headerName: 'BACKGROUND COLOR	', field: 'bgcolordisplay', width: 150 },
         { headerName: 'REPEAT FOR	', field: 'repeatfor', width: 200 },
-        { headerName: 'TRANSPARANCY', field: 'fontsize', width: 200 },
-        { headerName: 'DURATION', field: 'scrollposition', width: 150 },
-        { headerName: 'TIME GAP	', field: 'scrollposition', width: 150 },
-        { headerName: 'CAS', field: 'scrollposition', width: 150 },
-        { headerName: 'SEND DATE', field: 'createddate', width: 200 },
+        { headerName: 'TRANSPARANCY', field: 'transparency', width: 200 },
+        { headerName: 'DURATION', field: 'duration', width: 150 },
+        { headerName: 'TIME GAP	', field: 'timegap', width: 150 },
+        { headerName: 'CAS', field: 'casname', width: 150 },
+        { headerName: 'SEND DATE', field: 'sentdate', width: 200 },
       ]
     } else if (this.allType == '11' || this.allType == '12') {
       console.log('colmnDefs', this.allType, '6');
       this.columnDefs = [
         { headerName: "S.No", lockPosition: true, valueGetter: 'node.rowIndex+1', headerCheckboxSelection: false, checkboxSelection: false, width: 90 },
-        { headerName: 'CUSTOMER NAME', field: 'customername', width: 250 },
+        { headerName: 'CUSTOMER NAME', field: 'customername', width: 200 },
         { headerName: 'MOBILE NO', field: 'mobileno', width: 200 },
         { headerName: 'SMARTCARD', field: 'smartcard', width: 250 },
-        { headerName: 'BOX ID	', field: 'boxid', width: 250 },
+        { headerName: 'BOX ID	', field: 'boxid', width: 200 },
         { headerName: 'CAS', field: 'casname', width: 150 },
-        { headerName: 'PACKAGE', field: 'productname', width: 250 },
-        { headerName: 'SUBSCRIPTION END DATE', field: 'createddate', width: 300 },
+        { headerName: 'PACKAGE', field: 'productname', width: 200 },
+        { headerName: 'SUBSCRIPTION END DATE', field: 'createddate', width: 250 },
       ]
     }
     else if (this.allType == '13') {
@@ -832,11 +832,11 @@ export class HistoryAllReportsComponent implements OnInit {
             let areasub = '';
             let header: string[] = [];
             const datas: Array<any> = [];
-            areatitle = 'A1:J2';
-            areasub = 'A3:J3';
+            areatitle = 'A1:L2';
+            areasub = 'A3:L3';
             header = ['S.NO', 'INTEND ID', 'INTEND TO', 'MESSAGE', 'FONT COLOR', 'BACKGROUND COLOR', 'REPEAT FOR', 'TRANSPARANCY', 'DURATION', 'TIME GAP', 'CAS', 'SEND DATE'];
             this.rowData.forEach((d: any, index: number) => {
-              const row = [index + 1, d.intendid, d.intendto, d.scrollmessage, d.scrollcolordisplay, d.scrollbgcolordisplay, d.fontsize, d.scrollposition, d.repeatfor, d.createddate];
+              const row = [index + 1, d.intendid, d.intendto, d.messagecontent, d.fontcolordisplay, d.bgcolordisplay, d.repeatfor, d.transparency, d.duration, d.timegap,d.casname,d.sentdate];
               datas.push(row);
             });
             this.excelService.generatMessageExcel(areatitle, header, datas, title, areasub, sub);

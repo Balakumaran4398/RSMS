@@ -19,6 +19,9 @@ export class BroadcasterReportsComponent implements OnInit {
   username: any;
   role: any;
   rowData: any;
+  addonlist: any;
+  alacartelist: any;
+  baselist: any;
   msodetails: any;
 
   selectedDate: any = 0;
@@ -69,7 +72,6 @@ export class BroadcasterReportsComponent implements OnInit {
         name: item.broadcastername,
         value: item.id,
       }));
-      console.log(this.broadcasterList);
     })
     this.generateMonths();
     this.generateYears();
@@ -106,13 +108,13 @@ export class BroadcasterReportsComponent implements OnInit {
   }
   columnDefs = [
     { headerName: "S.No", lockPosition: true, valueGetter: 'node.rowIndex+1', headerCheckboxSelection: true, checkboxSelection: true, width: 90 },
-    { headerName: 'PRODUCT NAME', field: '', width: 350 },
-    { headerName: 'PRODUCTID', field: '', width: 340 },
-    { headerName: 'CAS', field: '', width: 340 },
-    { headerName: 'SUBS COUNT AS 7TH	', field: '', width: 350 },
-    { headerName: 'SUBS COUNT AS 14TH	', field: '', width: 350 },
-    { headerName: 'AVERAGE', field: '', width: 350 },
-    { headerName: 'MONTH AND YEAR', field: '', width: 350 },
+    { headerName: 'PRODUCT NAME', field: 'productname', width: 350 },
+    { headerName: 'PRODUCTID', field: 'casproductid', width: 340 },
+    { headerName: 'CAS', field: 'casname', width: 340 },
+    { headerName: 'SUBS COUNT AS 7TH	', field: 'w1', width: 350 },
+    { headerName: 'SUBS COUNT AS 14TH	', field: 'w2', width: 350 },
+    { headerName: 'AVERAGE', field: 'avg', width: 350 },
+    { headerName: 'MONTH AND YEAR', field: 'monthyear', width: 350 },
   ]
   private onColumnDefs() {
     console.log('colmnDefs', this.allType);
@@ -297,11 +299,16 @@ export class BroadcasterReportsComponent implements OnInit {
   }
   // ------------------------------------------------OverAll Report-------------------------------------------
   grtOverAllReport() {
+    console.log('fdgdfgfdjgkfdj');
+
     this.userService.getOverAllExcelReport(this.role, this.username, this.selectedMonth, this.selectedYear, this.selectedDate, 2)
       .subscribe(
         (response: HttpResponse<any>) => {
           if (response.status === 200) {
-            this.rowData = response.body;
+            console.log(response);
+            this.addonlist = response.body.addonList;
+            this.alacartelist = response.body.alacartePackageList;
+            this.baselist = response.body.basePackageList;
           } else if (response.status === 204) {
             this.swal.Success_204();
             this.rowData = [];
@@ -312,28 +319,56 @@ export class BroadcasterReportsComponent implements OnInit {
         }
       );
   }
+  // getOverAllExcel() {
+  //   this.userService.getOverAllExcelReport(this.role, this.username, this.selectedMonth, this.selectedYear, this.selectedDate, 2)
+  //     .subscribe(
+  //       (response: HttpResponse<any>) => {
+  //         if (response.status === 200) {
+  //           this.rowData = response.body;
+  //           console.log(this.reportTitle);
+  //           const title = (this.reportTitle).toUpperCase();
+  //           const sub = 'MSO ADDRESS:' + this.msodetails;
+  //           const subtitle = this.rowData;
+  //           let areatitle = '';
+  //           let areasub = '';
+  //           let header: string[] = [];
+  //           const datas: Array<any> = [];
+  //           areatitle = 'A1:H2';
+  //           areasub = 'A3:H3';
+  //           const headers = ['S.NO', 'PACKAGE ID', 'PACKAGE NAME', 'CAS', 'AS ON 07th', 'AS ON 14th', 'AVERAGE', 'MONTH & YEAR'];
+  //           this.rowData.forEach((d: any, index: number) => {
+  //             const row = [index + 1, d.customername, d.mobileno, d.smartcard, d.boxid, d.casname, d.productname, d.createddate];
+  //             datas.push(row);
+  //           });
+  //           this.excelService.generatUniversalExcel(areatitle, headers, datas, title, areasub, sub);
+  //         } else if (response.status === 204) {
+  //           this.swal.Success_204();
+  //           this.rowData = [];
+  //         }
+  //       },
+  //       (error) => {
+  //         this.handleApiError(error);
+  //       }
+  //     );
+  // }
+
   getOverAllExcel() {
     this.userService.getOverAllExcelReport(this.role, this.username, this.selectedMonth, this.selectedYear, this.selectedDate, 2)
       .subscribe(
         (response: HttpResponse<any>) => {
           if (response.status === 200) {
-            this.rowData = response.body;
+            // this.rowData = response.body.addonList; // Extract addonList
+            this.addonlist = response.body.addonList;
+            this.alacartelist = response.body.alacartePackageList;
+            this.baselist = response.body.basePackageList;
+
             console.log(this.reportTitle);
             const title = (this.reportTitle).toUpperCase();
-            const sub = 'MSO ADDRESS:' + this.msodetails;
-            const subtitle = this.rowData;
-            let areatitle = '';
-            let areasub = '';
-            let header: string[] = [];
-            const datas: Array<any> = [];
-            areatitle = 'A1:H2';
-            areasub = 'A3:H3';
-            const headers = ['S.NO', 'PACKAGE ID', 'PACKAGE NAME', 'CAS', 'AS ON 07th', 'AS ON 14th', 'AVERAGE', 'MONTH & YEAR'];
-            this.rowData.forEach((d: any, index: number) => {
-              const row = [index + 1, d.customername, d.mobileno, d.smartcard, d.boxid, d.casname, d.productname, d.createddate];
-              datas.push(row);
-            });
-            this.excelService.generatUniversalExcel(areatitle, headers, datas, title, areasub, sub);
+            const sub = 'MSO ADDRESS: ' + this.msodetails;
+
+            // Generate the unified Excel report
+            this.excelService.generateExcelReport(this.addonlist, this.alacartelist, this.baselist, title, sub);
+
           } else if (response.status === 204) {
             this.swal.Success_204();
             this.rowData = [];
@@ -344,6 +379,7 @@ export class BroadcasterReportsComponent implements OnInit {
         }
       );
   }
+
   getOverAllPDF() {
     this.userService.getOverAllPDFReport(this.role, this.username, this.selectedMonth, this.selectedYear, this.selectedDate, 1)
       .subscribe((x: Blob) => {

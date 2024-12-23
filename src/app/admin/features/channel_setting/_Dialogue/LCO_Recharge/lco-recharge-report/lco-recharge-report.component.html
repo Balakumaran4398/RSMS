@@ -43,10 +43,12 @@
                     </li>
                 </ul> -->
 
-                <input type="text" matInput [matAutocomplete]="auto" [disabled]="!isCheckboxChecked" (input)="filterOperators($event)" placeholder="Select a Operator"
-                    [matAutocompleteDisabled]="false" [value]="selectedOperator?.name">
+                <input type="text" matInput [matAutocomplete]="auto" [disabled]="!isCheckboxChecked"
+                    (input)="filterOperators($event)" placeholder="Select a Operator" [matAutocompleteDisabled]="false"
+                    [value]="selectedOperator?.name">
 
                 <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayOperator">
+                    <!-- <mat-option value="0" selcted>All Operator</mat-option> -->
                     <mat-option *ngFor="let operator of filteredOperators" [value]="operator.name"
                         (click)="onoperaRechargelLog(operator)">
                         {{ operator.name }}
@@ -59,12 +61,14 @@
         </div>
         <div class="d-flex col-12 col-md-2 d-flex  justify-content-center align-items-center ">
             <div class="col-12 col-md-3 d-flex justify-content-start align-items-center mb-3">
-                <div class="icon-container d-flex align-items-center" style="cursor: pointer;" (click)="getRechargeExcel()">
+                <div class="icon-container d-flex align-items-center" style="cursor: pointer;"
+                    (click)="getRechargeExcel()">
                     <img src="/assets/images/icons/Excel.png" width="40px">
                     <div class="tooltip">Excel</div>
                 </div>
                 &nbsp;&nbsp;
-                <div class="icon-container d-flex align-items-center" style="cursor: pointer;" (click)="getRechargePDF()">
+                <div class="icon-container d-flex align-items-center" style="cursor: pointer;"
+                    (click)="getRechargePDF()">
                     <img src="/assets/images/icons/pdf.png" width="40px">
                     <div class="tooltip">Pdf</div>
                 </div>
@@ -153,11 +157,14 @@
 
         <div class="col-12 col-md-4 d-flex justify-content-end align-items-center mb-3">
             <div class="d-flex justify-content-center align-items-center">
-                <div class="icon-container d-flex align-items-center mx-2" style="cursor: pointer;" (click)="getLCORechargeExcel()">
+                <div *ngIf="isDateEnabled || isMonthYearEnabled || isYearEnabled"
+                    class="icon-container d-flex align-items-center mx-2" style="cursor: pointer;"
+                    (click)="getLCORechargeExcel()">
                     <img src="/assets/images/icons/Excel.png" width="40px">
                     <div class="tooltip">Excel</div>
                 </div>
-                <div class="icon-container d-flex align-items-center mx-2">
+                <div *ngIf="isDateEnabled || isMonthYearEnabled || isYearEnabled"
+                    class="icon-container d-flex align-items-center mx-2" (click)="getLCORechargeFReport()">
                     <img src="/assets/images/icons/pdf.png" width="40px">
                     <div class="tooltip">Pdf</div>
                 </div>
@@ -199,8 +206,8 @@
                         {{ operator.name }}
                     </li>
                 </ul> -->
-                <input type="text" matInput [matAutocomplete]="auto" (input)="filterOperators($event)" placeholder="Select a Operator"
-                    [matAutocompleteDisabled]="false" [value]="selectedOperator?.name">
+                <input type="text" matInput [matAutocomplete]="auto" (input)="filterOperators($event)"
+                    placeholder="Select a Operator" [matAutocompleteDisabled]="false" [value]="selectedOperator?.name">
 
                 <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayOperator">
                     <mat-option *ngFor="let operator of filteredOperators" [value]="operator.name"

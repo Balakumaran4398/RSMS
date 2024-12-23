@@ -1,4 +1,3 @@
-
 <div class="Head d-flex justify-content-between align-items-center mb-3" style="padding: 1rem;">
     <h6>DO YOU WANT TO DECUCT/REFUND AMOUNT</h6>
     <i class="fa fa-close close-icon" style="cursor: pointer;" (click)="onNoClick()"></i>
@@ -31,27 +30,27 @@
                         <span class="form-label">Amount</span>
                     </div>
                     <div class="col-12 col-md-6">
-                        <input class="" type="text" [(ngModel)]="amount"
-                            (keypress)="onKeydown($event)">
+                        <input class="" type="text" [(ngModel)]="amount" (keypress)="onKeydown($event)">
+                        <div *ngIf="submitted && !amount" class="text-danger" style="font-size: small;">
+                            Amount is required
+                        </div>
                     </div>
                 </div>
+
                 <div class="mb-3 display justify-content-center align-item-center">
                     <div class="col-12 col-md-6">
                         <span class="form-label">Refund remarks </span>
                     </div>
                     <div class="col-12 col-md-6">
-                        <textarea class="" type="text"  [(ngModel)]="remarks"
-                            placeholder="Text Message"></textarea>
-                           
+                        <textarea class="" type="text" [(ngModel)]="remarks" placeholder="Text Message"></textarea>
+                        <div *ngIf="submitted && !remarks" class="text-danger" style="font-size: small;">
+                            Remarks is required
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
-
-
     </div>
-
-
 </div>
 <div class="d-flex justify-content-center align-item-center mx-5 mb-4">
     <button type="button" class="btn btn-danger me-2" (click)="toggleedit()">Cancel</button>

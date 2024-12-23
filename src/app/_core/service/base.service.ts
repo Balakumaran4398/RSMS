@@ -1525,10 +1525,23 @@ export class BaseService {
   getOverAllPDFReport(role: any, username: any, month: any, year: any, datetype: any, reporttype: any): Observable<Blob> {
     return this.http.get(BASE_URL + "/report/getOverallReport?role=" + role + "&username=" + username + "&fromdate=" + "&month=" + month + "&year=" + year + "&datetype=" + datetype + "&reporttype=" + reporttype, { responseType: 'blob' });
   }
+  // ---------------------------------------------------Synchronizatio Reports-----------------------------
+  getSynchronizationExcelReport(requestBody: any): Observable<any[]> {
+    return this.http.post<any[]>(BASE_URL + "/report/uploadFileForSynchronizationReport", requestBody,);
+  }
+  getSynchronizationPDFReport(requestBody: any): Observable<Blob> {
+    return this.http.post(BASE_URL + "/report/uploadFileForSynchronizationReport", requestBody, { responseType: 'blob' });
+  }
 
   // ====================================================LCO RECHARGE [OPERATOR]===============================================
   // -----------------------------------------------getRechargeLogReport-----------------------------
   getRechargeLogPDFReport(role: any, username: any, fromdate: any, todate: any, operatorid: any): Observable<Blob> {
-    return this.http.get(BASE_URL + "/report/getRechargeLogReport?role=" + role + "&username=" + username + "&fromdate=" + fromdate+"&todate=" + todate + "&operatorid=" + operatorid, { responseType: 'blob' });
+    return this.http.get(BASE_URL + "/report/getRechargeLogReport?role=" + role + "&username=" + username + "&fromdate=" + fromdate + "&todate=" + todate + "&operatorid=" + operatorid, { responseType: 'blob' });
+  }
+  getRechargeLogFilterWiseReport(role: any, username: any, date: any, month: any, year: any, type: any): Observable<Blob> {
+    return this.http.get(BASE_URL + "/report/getRechargeLogFilterWiseReport?role=" + role + "&username=" + username + "&date=" + date + "&month=" + month + "&year=" + year + "&type=" + type, { responseType: 'blob' });
+  }
+  getPrintBillReport(role: any, username: any, id: any): Observable<Blob> {
+    return this.http.get(BASE_URL + "/report/getPrintBillReport?role=" + role + "&username=" + username + "&id=" + id, { responseType: 'blob' });
   }
 }

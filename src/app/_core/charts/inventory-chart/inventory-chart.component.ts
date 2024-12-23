@@ -62,8 +62,8 @@ export class InventoryChartComponent implements OnInit {
 
   updateChartData(apiData: any): void {
     this.dataPoints = [
-      { name: "New box in LCO End", y: apiData["New box in LCO End"], color: "#33a5d6",click: () => this.navigateToPage('BOX IN LCO HAND') },
       { name: "New box in MSO Hand", y: apiData["New box in MSO Hand"], color: "#77edd0",click: () => this.navigateToPage('BOX IN MSO HAND') },
+      { name: "New box in LCO End", y: apiData["New box in LCO End"], color: "#33a5d6",click: () => this.navigateToPage('BOX IN LCO HAND') },
       { name: "New in Customer End", y: apiData["New in Customer End"], color: "#20c931",click: () => this.navigateToPage('BOX IN CUSTOMER HAND') }
     ];
 

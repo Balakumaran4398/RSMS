@@ -118,7 +118,7 @@
         </div>
     </div>
 </div>
-<div *ngIf="OType=='retailer'">
+<div *ngIf="OType=='lcowise_retailer'">
     <div class="card">
         <div class="Head d-flex justify-content-between align-items-center mb-3" style="padding: 1rem;">
             <h6>CONFIRMATION FOR REPORT</h6>
@@ -177,7 +177,7 @@
         </div>
     </div>
 </div>
-<div *ngIf="OType=='productwise'">
+<div *ngIf="OType=='productwise_current'">
     <div class="card">
         <div class="Head d-flex justify-content-between align-items-center mb-3" style="padding: 1rem;">
             <h6>CONFIRMATION FOR REPORT</h6>
@@ -189,13 +189,13 @@
                 <span class="formlabel">Click You Need Report Format
                 </span>
             </div>
-            <div class="col-12 col-md-2 d-flex justify-content-center align-items-center tooltip-container"
+            <!-- <div class="col-12 col-md-2 d-flex justify-content-center align-items-center tooltip-container"
                 style="cursor: pointer;">
                 <div class="icon-container" (click)="getExcel()">
                     <img src="/assets/images/icons/Excel.png" width="40px">
                     <div class="tooltip">Excel</div>
                 </div>
-            </div>
+            </div> -->
             <div class="col-12 col-md-2 d-flex justify-content-center align-items-center tooltip-container"
                 style="cursor: pointer;">
                 <div class="icon-container" (click)="getPDF()">
@@ -208,7 +208,7 @@
 </div>
 
 <!-- ------------------------------------------------------------------------------------------ -->
-<div *ngIf="OType=='connection'">
+<div *ngIf="OType=='total_smartcard_connection'">
     <div class="card">
         <div class="Head d-flex justify-content-between align-items-center mb-3" style="padding: 1rem;">
             <h6>CONFIRMATION FOR REPORT</h6>
@@ -239,7 +239,7 @@
         </div>
     </div>
 </div>
-<div *ngIf="OType=='notexpiry'">
+<div *ngIf="OType=='active_smartcard_connection'">
     <div class="card">
         <div class="Head d-flex justify-content-between align-items-center mb-3" style="padding: 1rem;">
             <h6>CONFIRMATION FOR REPORT</h6>
@@ -270,7 +270,7 @@
         </div>
     </div>
 </div>
-<div *ngIf="OType=='expired'">
+<div *ngIf="OType=='expired_smartcard_connection'">
     <div class="card">
         <div class="Head d-flex justify-content-between align-items-center mb-3" style="padding: 1rem;">
             <h6>CONFIRMATION FOR REPORT</h6>
@@ -301,7 +301,7 @@
         </div>
     </div>
 </div>
-<div *ngIf="OType=='new'">
+<div *ngIf="OType=='new_smartcard_connection'">
     <div class="card">
         <div class="Head d-flex justify-content-between align-items-center mb-3" style="padding: 1rem;">
             <h6>CONFIRMATION FOR REPORT</h6>
@@ -332,7 +332,7 @@
         </div>
     </div>
 </div>
-<div *ngIf="OType=='block'">
+<div *ngIf="OType=='block_smartcard_connection'">
     <div class="card">
         <div class="Head d-flex justify-content-between align-items-center mb-3" style="padding: 1rem;">
             <h6>CONFIRMATION FOR REPORT</h6>
@@ -364,7 +364,7 @@
         </div>
     </div>
 </div>
-<div *ngIf="OType=='totalbox'">
+<div *ngIf="OType=='total_smartcard'">
     <div class="card">
         <div class="Head d-flex justify-content-between align-items-center mb-3" style="padding: 1rem;">
             <h6>CONFIRMATION FOR REPORT</h6>
@@ -397,7 +397,7 @@
         </div>
     </div>
 </div>
-<div *ngIf="OType=='boxinhand'">
+<div *ngIf="OType=='box_in_hand'">
     <div class="card">
         <div class="Head d-flex justify-content-between align-items-center mb-3" style="padding: 1rem;">
             <h6>CONFIRMATION FOR REPORT</h6>

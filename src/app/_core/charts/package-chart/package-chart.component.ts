@@ -36,10 +36,10 @@ export class PackageChartComponent implements OnInit {
 
   updateChartData(apiData: any): void {
     const dataPoints = [
-      { name: "Addon Package", y: apiData["Addon Package"] || 0, color: "#bfa628", click: () => this.navigateToPage('ADDON PACKAGE') },
       { name: "Base Package", y: apiData["Base Package"] || 0, color: "#396ba8", click: () => this.navigateToPage('BASE PACKAGE') },
+      { name: "Addon Package", y: apiData["Addon Package"] || 0, color: "#bfa628", click: () => this.navigateToPage('ADDON PACKAGE') },
+      { name: "Pay Channels", y: apiData["Pay Channels"] || 0, color: "#3bada6", click: () => this.navigateToPage('PAYCHANNEL') },
       { name: "FTA Channels", y: apiData["FTA Channels"] || 0, color: "#147a2a", click: () => this.navigateToPage('FTA CHANNEL') },
-      { name: "Pay Channels", y: apiData["Pay Channels"] || 0, color: "#3bada6", click: () => this.navigateToPage('PAYCHANNEL') }
     ];
 
     this.chartOptions = {
