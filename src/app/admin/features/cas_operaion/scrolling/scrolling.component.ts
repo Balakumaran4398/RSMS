@@ -9,6 +9,7 @@ import { SwalService } from 'src/app/_core/service/swal.service';
 import { CasDialogueComponent } from '../../channel_setting/_Dialogue/cas-dialogue/cas-dialogue.component';
 import { MatDialog } from '@angular/material/dialog';
 import { FALSE } from 'node_modules1/sass/types';
+import { log } from 'console';
 
 @Component({
   selector: 'app-scrolling',
@@ -486,7 +487,8 @@ export class ScrollingComponent {
   onSelectionFingerPrint(selectedValue: { name: any, id: any }): void {
     this.castype = selectedValue.id;
     this.casname = selectedValue.name;
-    this.casId = Number(selectedValue);
+    console.log(this.castype);
+    // this.casId = Number(selectedValue);
     this.form.patchValue({ castype: this.castype });
 
     // if (this.castype == 6 || this.castype == 1 || this.castype == 2 || this.castype == 3 || this.castype == 5) {
@@ -589,17 +591,20 @@ export class ScrollingComponent {
     this.isAreaCodeEnabled = false;
     console.log('enabled             =' + selectedValue);
     if (selectedValue == 1) {
+      this.intendid_1 = '1';
       this.isSmartcardEnabled = false;
       this.isAreaCodeEnabled = false
       console.log('Smartcard enabled');
     }
     if (selectedValue == 2) {
+      this.intendid_1 = '';
       this.isSmartcardEnabled = true;
       this.isAreaCodeEnabled = false
       console.log('Smartcard enabled');
     }
 
     if (selectedValue == 3) {
+      this.intendid_1 = '';
       this.isAreaCodeEnabled = true;
       this.isSmartcardEnabled = false
       console.log('Area code enabled');

@@ -434,7 +434,7 @@ export class LcoRechargeReportComponent implements OnInit {
         const data = window.URL.createObjectURL(blob);
         const link = document.createElement('a');
         link.href = data;
-        link.download = ("Recharge Log .pdf").toUpperCase();
+        link.download = ("RECHARGE LOG REPORT .pdf").toUpperCase();
         link.dispatchEvent(new MouseEvent('click', { bubbles: true, cancelable: true, view: window }));
         setTimeout(() => {
           window.URL.revokeObjectURL(data);
@@ -490,32 +490,35 @@ export class LcoRechargeReportComponent implements OnInit {
       this.userservice.getRechargeDetailsByDate(this.role, this.username, this.date)
         .subscribe(
           (response: HttpResponse<any>) => {
-            // if (response.status === 200) {
-            const responseBody = response.body;
-            if (responseBody) {
-              this.rowData = responseBody.rechargelist;
-              this.Totalamount = responseBody.totalamount;
-              const title = ('DATEWISE LOG RECHARGE REPORT').toUpperCase();
-              const sub = 'MSO ADDRESS:' + this.msodetails;
-              let areatitle = '';
-              let areasub = '';
-              let header: string[] = [];
-              const datas: Array<any> = [];
-              areatitle = 'A1:G2';
-              areasub = 'A3:G3';
-              header = ['OPERATOR NAME', 'OPERATOR ID', 'AMOUNT', 'REMARKS', 'TRANSACTION DATE', 'OPERATION ADDRESS', 'CONTACT NUMBER'];
-              this.rowData.forEach((d: any) => {
-                const row = [d.operatorname, d.operatorid, d.amount, d.transactionremarks, d.transactiondate, d.address, d.contactnumber];
-                datas.push(row);
-              });
-              this.excelService.generateLCORechargeExcel(areatitle, header, datas, title, areasub, sub);
-            } else {
-              Swal.fire('Error', 'Response body is empty', 'error');
+            if (response.status === 200) {
+              const responseBody = response.body;
+              if (responseBody) {
+                this.rowData = responseBody.rechargelist;
+                this.Totalamount = responseBody.totalamount;
+                const title = ('DATEWISE LOG RECHARGE REPORT').toUpperCase();
+                const sub = 'MSO ADDRESS:' + this.msodetails;
+
+                const header: string[] = ['S.NO', 'OPERATOR NAME', 'OPERATOR ID', 'AMOUNT', 'REMARKS', 'TRANSACTION DATE', 'OPERATION ADDRESS', 'CONTACT NUMBER'];
+                const datas: Array<any> = [];
+
+                // Prepare the data rows
+                this.rowData.forEach((d: any, index: number) => {
+                  const row = [index + 1, d.operatorname, d.operatorid, d.amount, d.transactionremarks, d.transactiondate, d.address, d.contactnumber];
+                  datas.push(row);
+                });
+
+                // Add Total Amount as the last row
+                const totalRow = ['', '', '', '', '', '','Total:', this.Totalamount, ];
+
+                // Pass all values to the Excel service
+                this.excelService.generateLCO_dateRechargeExcel(header, datas, title, sub, totalRow);
+              } else {
+                Swal.fire('Error', 'Response body is empty', 'error');
+              }
             }
-            // }
-            // else if (response.status === 204) {
-            //   this.swal.Success_204();
-            // }
+            else if (response.status === 204) {
+              this.swal.Success_204();
+            }
           },
           (error) => {
             const errorMessage = error?.error?.message
@@ -538,18 +541,18 @@ export class LcoRechargeReportComponent implements OnInit {
               this.Totalamount = responseBody.totalamount;
               const title = ('MONTHWISE LOG RECHARGE REPORT').toUpperCase();
               const sub = 'MSO ADDRESS:' + this.msodetails;
-              let areatitle = '';
-              let areasub = '';
-              let header: string[] = [];
+
+              const header: string[] = ['S.NO', 'OPERATOR NAME', 'OPERATOR ID', 'AMOUNT', 'REMARKS', 'TRANSACTION DATE', 'OPERATION ADDRESS', 'CONTACT NUMBER'];
               const datas: Array<any> = [];
-              areatitle = 'A1:G2';
-              areasub = 'A3:G3';
-              header = ['OPERATOR NAME', 'OPERATOR ID', 'AMOUNT', 'REMARKS', 'TRANSACTION DATE', 'OPERATION ADDRESS', 'CONTACT NUMBER'];
-              this.rowData.forEach((d: any) => {
-                const row = [d.operatorname, d.operatorid, d.amount, d.transactionremarks, d.transactiondate, d.address, d.contactnumber];
+
+              this.rowData.forEach((d: any, index: number) => {
+                const row = [index + 1, d.operatorname, d.operatorid, d.amount, d.transactionremarks, d.transactiondate, d.address, d.contactnumber];
                 datas.push(row);
               });
-              this.excelService.generateLCORechargeExcel(areatitle, header, datas, title, areasub, sub);
+
+              const totalRow = ['', '', '', '', '', '','Total:', this.Totalamount, ];
+
+              this.excelService.generateLCO_dateRechargeExcel(header, datas, title, sub, totalRow);
             } else {
               Swal.fire('Error', 'Response body is empty', 'error');
             }
@@ -574,18 +577,18 @@ export class LcoRechargeReportComponent implements OnInit {
                 this.Totalamount = responseBody.totalamount;
                 const title = ('YEARWISE LOG RECHARGE REPORT').toUpperCase();
                 const sub = 'MSO ADDRESS:' + this.msodetails;
-                let areatitle = '';
-                let areasub = '';
-                let header: string[] = [];
+  
+                const header: string[] = ['S.NO', 'OPERATOR NAME', 'OPERATOR ID', 'AMOUNT', 'REMARKS', 'TRANSACTION DATE', 'OPERATION ADDRESS', 'CONTACT NUMBER'];
                 const datas: Array<any> = [];
-                areatitle = 'A1:G2';
-                areasub = 'A3:G3';
-                header = ['OPERATOR NAME', 'OPERATOR ID', 'AMOUNT', 'REMARKS', 'TRANSACTION DATE', 'OPERATION ADDRESS', 'CONTACT NUMBER'];
-                this.rowData.forEach((d: any) => {
-                  const row = [d.operatorname, d.operatorid, d.amount, d.transactionremarks, d.transactiondate, d.address, d.contactnumber];
+  
+                this.rowData.forEach((d: any, index: number) => {
+                  const row = [index + 1, d.operatorname, d.operatorid, d.amount, d.transactionremarks, d.transactiondate, d.address, d.contactnumber];
                   datas.push(row);
                 });
-                this.excelService.generateLCORechargeExcel(areatitle, header, datas, title, areasub, sub);
+  
+                const totalRow = ['', '', '', '', '', '','Total:', this.Totalamount, ];
+  
+                this.excelService.generateLCO_dateRechargeExcel(header, datas, title, sub, totalRow);
               } else {
                 Swal.fire('Error', 'Response body is empty', 'error');
               }
@@ -627,9 +630,6 @@ export class LcoRechargeReportComponent implements OnInit {
           datewise = ''
         }
         link.download = `${datewise} LOG RECHARGE REPORT.pdf`.toUpperCase();
-
-
-
         link.dispatchEvent(new MouseEvent('click', { bubbles: true, cancelable: true, view: window }));
         setTimeout(() => {
           window.URL.revokeObjectURL(data);
@@ -860,14 +860,14 @@ export class LcoRechargeReportComponent implements OnInit {
   private updateColumnDefs(tab: string): void {
     if (tab === '1') {
       this.columnDefs = [
-        { headerName: "S.No", valueGetter: 'node.rowIndex+1', width: 100,  },
-        { headerName: "OPERATOR NAME", field: 'operatorname',width: 350, },
-        { headerName: "TRANSACTION GROUP TYPE", field: 'transactiongroupname',width: 350, },
-        { headerName: "AMOUNT", field: 'lcoamount', width: 200,},
-        { headerName: "REMARKS", field: 'transactionremarks',width: 200, },
-        { headerName: "TRANSACTION DATE", field: 'transactiondate',width: 200, },
+        { headerName: "S.No", valueGetter: 'node.rowIndex+1', width: 100, },
+        { headerName: "OPERATOR NAME", field: 'operatorname', width: 350, },
+        { headerName: "TRANSACTION GROUP TYPE", field: 'transactiongroupname', width: 350, },
+        { headerName: "AMOUNT", field: 'lcoamount', width: 200, },
+        { headerName: "REMARKS", field: 'transactionremarks', width: 200, },
+        { headerName: "TRANSACTION DATE", field: 'transactiondate', width: 200, },
         {
-          headerName: "BILL", filter: false,width: 200,
+          headerName: "BILL", filter: false, width: 200,
           cellRenderer: (params: any) => {
             const button = document.createElement("button");
             button.className = "btn btn-success mx-1";
@@ -882,28 +882,28 @@ export class LcoRechargeReportComponent implements OnInit {
     } else if (tab === '2') {
 
       this.columnDefs = [
-        { headerName: "S.No", valueGetter: 'node.rowIndex+1', width: 100,  },
-        { headerName: "OPERATOR NAME", field: 'operatorname',width: 250, },
-        { headerName: "OPERATOR ID", field: 'operatorid',width: 250, },
-        { headerName: "AMOUNT", field: 'amount',width: 200,},
-        { headerName: "REMARKS", field: 'transactionremarks' ,width: 200,},
-        { headerName: "TRANSACTION DATE", field: 'transactiondate',width: 200,},
-        { headerName: "OPERATOR ADDRESS	", field: 'address',width: 200, },
-        { headerName: " CONTACT NUMBER", field: 'contactnumber', width: 200,},
+        { headerName: "S.No", valueGetter: 'node.rowIndex+1', width: 100, },
+        { headerName: "OPERATOR NAME", field: 'operatorname', width: 250, },
+        { headerName: "OPERATOR ID", field: 'operatorid', width: 250, },
+        { headerName: "AMOUNT", field: 'amount', width: 200, },
+        { headerName: "REMARKS", field: 'transactionremarks', width: 200, },
+        { headerName: "TRANSACTION DATE", field: 'transactiondate', width: 200, },
+        { headerName: "OPERATOR ADDRESS	", field: 'address', width: 200, },
+        { headerName: " CONTACT NUMBER", field: 'contactnumber', width: 200, },
       ]
     } else if (tab === '3') {
       this.columnDefs = [
         {
           headerName: "S.No", valueGetter: 'node.rowIndex+1', width: 100,
         },
-        { headerName: "OPERATOR NAME", field: 'operatorname',width: 250, },
-        { headerName: "PACKAGE NAME", field: 'packagename',width: 250, },
-        { headerName: "REFUND AMOUNT	", field: 'amount', width: 200,},
-        { headerName: "CURRENT BALANCE	", field: 'balance', width: 200,},
-        { headerName: "REFERENCE ID	", field: 'referenceid', width: 200,},
-        { headerName: "TRANSACTION DATE", field: 'transactiondate' ,width: 200,},
+        { headerName: "OPERATOR NAME", field: 'operatorname', width: 250, },
+        { headerName: "PACKAGE NAME", field: 'packagename', width: 250, },
+        { headerName: "REFUND AMOUNT	", field: 'amount', width: 200, },
+        { headerName: "CURRENT BALANCE	", field: 'balance', width: 200, },
+        { headerName: "REFERENCE ID	", field: 'referenceid', width: 200, },
+        { headerName: "TRANSACTION DATE", field: 'transactiondate', width: 200, },
         {
-          headerName: "REFUND", editable: true,width: 200, cellRenderer: (params: any) => {
+          headerName: "REFUND", editable: true, width: 200, cellRenderer: (params: any) => {
             const editButton = document.createElement('button');
             editButton.innerHTML = '<i class="fa fa-pencil-square" aria-hidden="true"></i>';
             editButton.style.backgroundColor = 'transparent';

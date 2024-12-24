@@ -644,16 +644,17 @@ export class ExcelService {
 
     // Columns
     worksheet.columns = [
-      { key: 'a', width: 20 }, // SUB ID
-      { key: 'b', width: 20 }, // OPERATOR NAME
-      { key: 'c', width: 23 }, // CUSTOMER NAME
-      { key: 'd', width: 25 }, // SMARTCARD
-      { key: 'e', width: 30 }, // BOX ID
-      { key: 'f', width: 15 }, // CAS NAME
-      { key: 'g', width: 30 }, // PRODUCT NAME
-      { key: 'h', width: 20 }, // PRODUCT ID
-      { key: 'i', width: 25 }, //ACTIVATION DATE
-      { key: 'j', width: 25 }, // EXPIRY DATE
+      { key: 'a', width: 10 }, // S.NO
+      { key: 'b', width: 20 }, // SUB ID
+      { key: 'c', width: 30 }, // OPERATOR NAME
+      { key: 'd', width: 23 }, // CUSTOMER NAME
+      { key: 'e', width: 25 }, // SMARTCARD
+      { key: 'f', width: 30 }, // BOX ID
+      { key: 'g', width: 30 }, // CAS NAME
+      { key: 'h', width: 30 }, // PRODUCT NAME
+      { key: 'i', width: 20 }, // PRODUCT ID
+      { key: 'j', width: 25 }, //ACTIVATION DATE
+      { key: 'k', width: 25 }, // EXPIRY DATE
     ];
 
     // Save the Excel file
@@ -664,6 +665,189 @@ export class ExcelService {
       fs.saveAs(blob, `${titles}.xlsx`);
     });
   }
+
+  async generateboxinlcoExcel(
+    areatitle: string,
+    headers: any,
+    dataRow: any[],
+    titles: any,
+    areasub: any,
+    sub: any
+  ) {
+    const columns = [
+      { key: 'a', width: 15 }, // S.NO
+      { key: 'a', width: 30 }, // OPERATOR NAME
+      { key: 'b', width: 30 }, // OPERATOR ID
+      { key: 'c', width: 20 }, // AMOUNT
+      { key: 'd', width: 20 }, // REMARKS
+      { key: 'e', width: 30 }, // TRANSACTION DATE 
+      { key: 'f', width: 30 }, // OPERATION ADDRESS
+      { key: 'g', width: 30 }, // CONTACT NUMBER
+
+    ];
+    await this.generateExcelFile(
+      areatitle,
+      headers,
+      dataRow,
+      titles,
+      areasub,
+      sub,
+      columns,
+      'BOX IN LCO HAND'
+    );
+  }
+  async generateboxinCustomerExcel(
+    areatitle: string,
+    headers: any,
+    dataRow: any[],
+    titles: any,
+    areasub: any,
+    sub: any
+  ) {
+    const columns = [
+      { key: 'a', width: 15 }, // S.NO
+      { key: 'b', width: 30 }, // SMARTCARD
+      { key: 'c', width: 20 }, // BOX ID
+      { key: 'd', width: 20 }, // CAS 
+      { key: 'e', width: 20 }, // ISALLOCATED
+      { key: 'f', width: 20 }, // STATUS
+      { key: 'g', width: 30 }, // OPERATOR NAME 
+      { key: 'h', width: 25 }, // SUBSCRIBER NAME
+      { key: 'i', width: 20 }, // SUBSCRIBER MOBILE NUMBER
+
+    ];
+    await this.generateExcelFile(
+      areatitle,
+      headers,
+      dataRow,
+      titles,
+      areasub,
+      sub,
+      columns,
+      'BOX IN CUSTOMER HAND'
+    );
+  }
+  async generateBasePackageExcel(
+    areatitle: string,
+    headers: any,
+    dataRow: any[],
+    titles: any,
+    areasub: any,
+    sub: any
+  ) {
+    const columns = [
+      { key: 'a', width: 15 }, // S.NO
+      { key: 'b', width: 30 }, // SMARTCARD
+      { key: 'c', width: 20 }, // BOX ID
+      { key: 'd', width: 20 }, // CAS 
+      { key: 'e', width: 20 }, // ISALLOCATED
+      { key: 'f', width: 20 }, // STATUS
+      { key: 'g', width: 30 }, // OPERATOR NAME 
+      { key: 'h', width: 25 }, // SUBSCRIBER NAME
+      { key: 'i', width: 20 }, // SUBSCRIBER MOBILE NUMBER
+
+    ];
+    await this.generateExcelFile(
+      areatitle,
+      headers,
+      dataRow,
+      titles,
+      areasub,
+      sub,
+      columns,
+      'BASE PACKAGE REPORT'
+    );
+  }
+  async generateAddonExcel(
+    areatitle: string,
+    headers: any,
+    dataRow: any[],
+    titles: any,
+    areasub: any,
+    sub: any
+  ) {
+    const columns = [
+      { key: 'a', width: 15 }, // S.NO
+      { key: 'b', width: 30 }, // SMARTCARD
+      { key: 'c', width: 30 }, // BOX ID
+      { key: 'd', width: 20 }, // CAS 
+      { key: 'e', width: 20 }, // ISALLOCATED
+      { key: 'f', width: 20 }, // STATUS
+      { key: 'g', width: 30 }, // OPERATOR NAME 
+      { key: 'h', width: 25 }, // SUBSCRIBER NAME
+      { key: 'i', width: 20 }, // SUBSCRIBER MOBILE NUMBER
+
+    ];
+    await this.generateExcelFile(
+      areatitle,
+      headers,
+      dataRow,
+      titles,
+      areasub,
+      sub,
+      columns,
+      'ADDON PACKAGE'
+    );
+  }
+  async generatePaychannelExcel(
+    areatitle: string,
+    headers: any,
+    dataRow: any[],
+    titles: any,
+    areasub: any,
+    sub: any
+  ) {
+    const columns = [
+      { key: 'a', width: 15 }, // S.NO
+      { key: 'b', width: 30 }, // CHANNEL NAME
+      { key: 'c', width: 20 }, // PRODUCT ID
+      { key: 'd', width: 20 }, // SERVICE ID
+      { key: 'e', width: 20 }, // CHANNEL RATE
+      { key: 'f', width: 30 }, // CREATED DATE
+
+
+
+    ];
+    await this.generateExcelFile(
+      areatitle,
+      headers,
+      dataRow,
+      titles,
+      areasub,
+      sub,
+      columns,
+      'PAY CHANNEL'
+    );
+  }
+  async generateFTAExcel(
+    areatitle: string,
+    headers: any,
+    dataRow: any[],
+    titles: any,
+    areasub: any,
+    sub: any
+  ) {
+    const columns = [
+      { key: 'a', width: 15 }, // S.NO
+      { key: 'b', width: 30 }, // CHANNEL NAME 
+      { key: 'c', width: 20 }, // PRODUCT ID
+      { key: 'd', width: 20 }, // SERVICE ID
+      { key: 'e', width: 20 }, // CHANNEL RATE
+      { key: 'f', width: 20 }, //CREATED DATE
+
+
+    ];
+    await this.generateExcelFile(
+      areatitle,
+      headers,
+      dataRow,
+      titles,
+      areasub,
+      sub,
+      columns,
+      'FTA CHANNEL'
+    );
+  }
   async generateDashboardInventoryExcel(
     areatitle: string,
     headers: any,
@@ -672,115 +856,28 @@ export class ExcelService {
     areasub: any,
     sub: any
   ) {
-    const workbook = new Excel.Workbook();
-    const worksheet = workbook.addWorksheet('Sheet 1');
+    const columns = [
+      { key: 'a', width: 15 }, // S.NO
+      { key: 'b', width: 30 }, // SMARTCARD
+      { key: 'c', width: 20 }, // BOX ID
+      { key: 'd', width: 20 }, // CAS 
+      { key: 'e', width: 20 }, // ISALLOCATED
+      { key: 'f', width: 20 }, // STATUS
+      { key: 'g', width: 30 }, // OPERATOR NAME 
+      { key: 'h', width: 25 }, // SUBSCRIBER NAME
+      { key: 'i', width: 20 }, // SUBSCRIBER MOBILE NUMBER
 
-    // Helper to style and merge a row
-    const styleAndMergeRow = (rowData: any, options: any, mergeArea: string) => {
-      const row = worksheet.addRow([rowData]);
-      row.font = options.font;
-      row.alignment = options.alignment;
-      row.height = options.height || undefined;
-
-      row.eachCell((cell: any) => {
-        cell.fill = options.fill;
-        cell.border = options.border;
-      });
-
-      worksheet.mergeCells(mergeArea);
-    };
-
-    // Title
-    styleAndMergeRow(titles, {
-      font: { family: 4, size: 16, color: { argb: 'FFFFFF' }, bold: true },
-      alignment: { horizontal: 'center' },
-      fill: {
-        type: 'pattern',
-        pattern: 'solid',
-        fgColor: { argb: '34495e' },
-        bgColor: { argb: '34495e' },
-      },
-      border: {
-        top: { style: 'thin' },
-        left: { style: 'thin' },
-        bottom: { style: 'thin' },
-        right: { style: 'thin' },
-      },
-    }, areatitle);
-
-    // Subtitle
-    styleAndMergeRow(sub, {
-      font: { family: 4, size: 12, color: { argb: '000000' }, bold: true },
-      alignment: { horizontal: 'center' },
-      height: 20,
-      fill: {
-        type: 'pattern',
-        pattern: 'solid',
-        // fgColor: { argb: 'b2b2b2' },
-        // bgColor: { argb: 'b2b2b2' },
-        fgColor: { argb: 'cce0d8' },
-        bgColor: { argb: 'cce0d8' },
-      },
-      border: {
-        top: { style: 'thin' },
-        left: { style: 'thin' },
-        bottom: { style: 'thin' },
-        right: { style: 'thin' },
-      },
-    }, areasub);
-
-    // Column Headers
-    const headerRow = worksheet.addRow(headers);
-    headerRow.font = { bold: true, color: { argb: 'FFFFFF' } };
-    headerRow.alignment = { vertical: 'middle', horizontal: 'center' };
-    headerRow.height = 20;
-
-    headerRow.eachCell((cell: any) => {
-      cell.fill = {
-        type: 'pattern',
-        pattern: 'solid',
-        fgColor: { argb: '333333' },
-        bgColor: { argb: '333333' },
-      };
-      cell.border = {
-        top: { style: 'thin' },
-        left: { style: 'thin' },
-        bottom: { style: 'thin' },
-        right: { style: 'thin' },
-      };
-    });
-
-    // Data Rows
-    dataRow.forEach((rowData) => {
-      const row = worksheet.addRow(rowData);
-      row.alignment = { vertical: 'middle', horizontal: 'center' };
-      row.height = 20;
-      row.eachCell((cell: any) => {
-        cell.border = {
-          left: { style: 'thin' },
-          right: { style: 'thin' },
-        };
-      });
-    });
-
-    // Columns
-    worksheet.columns = [
-      { key: 'a', width: 30 }, // SMARTCARD
-      { key: 'b', width: 30 }, // BOX ID
-      { key: 'c', width: 30 }, // CARTON BOX
-      { key: 'd', width: 30 }, // CAS NAME
-      { key: 'e', width: 30 }, // IS ALLOCATED
-      { key: 'f', width: 30 }, // STATUS
-      { key: 'g', width: 30 }, //OPERATOR NAME
     ];
-
-    // Save the Excel file
-    workbook.xlsx.writeBuffer().then((data: any) => {
-      const blob = new Blob([data], {
-        type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
-      });
-      fs.saveAs(blob, `${titles}.xlsx`);
-    });
+    await this.generateExcelFile(
+      areatitle,
+      headers,
+      dataRow,
+      titles,
+      areasub,
+      sub,
+      columns,
+      'BASE PACKAGE'
+    );
   }
   async generateOperatorDashboardExcel(
     areatitle: string,
@@ -911,8 +1008,8 @@ export class ExcelService {
   ) {
     const workbook = new Excel.Workbook();
     const worksheet = workbook.addWorksheet('Sheet 1');
-
-    // Helper to style and merge a row
+    // const maxLength = Math.max(...dataRow.map(row => row[6].length)); 
+    // const columnWidth = Math.min(Math.max(maxLength + 2, 40), 60);
     const styleAndMergeRow = (rowData: any, options: any, mergeArea: string) => {
       const row = worksheet.addRow([rowData]);
       row.font = options.font;
@@ -1000,16 +1097,18 @@ export class ExcelService {
       });
     });
     worksheet.columns = [
-      { key: 'a', width: 33 }, // CUSTOMER ID
-      { key: 'b', width: 33 }, // SUBSCRIBER NAME
-      { key: 'c', width: 35 }, // SUBSCRIBER LAST NAME
-      { key: 'd', width: 35 }, // ADDRESS
-      { key: 'e', width: 40 }, // AREA NAME
-      { key: 'f', width: 40 }, // MOBILE NO
-      { key: 'g', width: 40 }, //SMARTCARD
-      { key: 'h', width: 30 }, //SMARTCARD
-      { key: 'i', width: 30 }, //SMARTCARD
-      { key: 'j', width: 20 }, //SMARTCARD
+      { key: 'a', width: 10 }, // S.NO
+      { key: 'b', width: 30 }, // PACKAGE NAME PREVIOUS
+      { key: 'c', width: 30 }, // PACKAGE NAME CURRENT
+      { key: 'd', width: 20 }, // PACKAGE ID
+      { key: 'e', width: 20 }, // RCAS PRODUCT ID
+      { key: 'f', width: 30 }, // ENSCURITY PRODUCT
+      { key: 'g', width: 40 }, // OLD CHANNEL LIST
+      { key: 'h', width: 40 }, // NEW CHANNEL LIST
+      { key: 'i', width: 30 }, // ADDED
+      { key: 'j', width: 30 }, // REMOVED
+      { key: 'k', width: 20 }, // UPDATED DATE
+      { key: 'l', width: 20 }, // COUNT
 
     ];
     workbook.xlsx.writeBuffer().then((data: any) => {
@@ -1136,15 +1235,16 @@ export class ExcelService {
     sub: any
   ) {
     const columns = [
-      { key: 'a', width: 25 }, //SMARTCARD
-      { key: 'b', width: 21 }, // BOXID
-      { key: 'c', width: 28 }, // PRODUCT ID
-      { key: 'd', width: 25 }, //PRODUCT NAME
-      { key: 'e', width: 25 }, // LOG DATE
-      { key: 'f', width: 25 }, // ACTIVATION DATE
-      { key: 'g', width: 25 },// EXPIRY DATE
-      { key: 'h', width: 25 },// ACTIVITY
-      { key: 'i', width: 25 }, // STATUS
+      { key: 'a', width: 10 }, // S.NO
+      { key: 'b', width: 25 }, //SMARTCARD
+      { key: 'c', width: 21 }, // BOXID
+      { key: 'd', width: 28 }, // PRODUCT ID
+      { key: 'e', width: 25 }, //PRODUCT NAME
+      { key: 'f', width: 25 }, // LOG DATE
+      { key: 'g', width: 25 }, // ACTIVATION DATE
+      { key: 'h', width: 25 },// EXPIRY DATE
+      { key: 'i', width: 25 },// ACTIVITY
+      { key: '', width: 25 }, // STATUS
     ];
     await this.generateExcelFile(
       areatitle,
@@ -1154,7 +1254,7 @@ export class ExcelService {
       areasub,
       sub,
       columns,
-      'Bouquet'
+      'BOUQUET ALACARTE'
     );
   }
   async generateRetailerExcel(
@@ -1182,7 +1282,7 @@ export class ExcelService {
       areasub,
       sub,
       columns,
-      'Retailer '
+      'RETAILER '
     );
   }
   async generateComboExcel(
@@ -1248,35 +1348,6 @@ export class ExcelService {
       'Base Subscription'
     );
   }
-  // async generateAddonSubscriptionExcel(
-  //   areatitle: string,
-  //   headers: any,
-  //   dataRow: any[],
-  //   titles: any,
-  //   areasub: any,
-  //   sub: any
-  // ) {
-  //   const columns = [
-  //     { key: 'a', width: 25 }, //Customer Name 
-  //     { key: 'b', width: 21 }, // Smartcard
-  //     { key: 'c', width: 20 }, // Box ID
-  //     { key: 'd', width: 30 }, // Package
-  //     { key: 'e', width: 25 }, // Product id
-  //     { key: 'f', width: 20 }, // Subscription start date
-  //     { key: 'g', width: 20 }, // Subscription end date
-
-  //   ];
-  //   await this.generateExcelFile(
-  //     areatitle,
-  //     headers,
-  //     dataRow,
-  //     titles,
-  //     areasub,
-  //     sub,
-  //     columns,
-  //     'Addon Subscription'
-  //   );
-  // }
   async generateWeeklySubscriptionExcel(
     areatitle: string,
     headers: any,
@@ -1549,7 +1620,7 @@ export class ExcelService {
       areasub,
       sub,
       columns,
-      'PAIRED SMARTCARD'
+      'PAIRED SMARTCARD REPORT'
     );
   }
   async generateAllServiceExcel(
@@ -1577,7 +1648,7 @@ export class ExcelService {
       areasub,
       sub,
       columns,
-      'All Service List'
+      'ALL SERVICE LIST REPORT'
     );
   }
   async generateScrollExcel(
@@ -1590,8 +1661,8 @@ export class ExcelService {
   ) {
     const columns = [
       { key: 'a', width: 10 }, // S.NO
-      { key: 'b', width: 15 }, // INTEND ID
-      { key: 'c', width: 15 }, // INTENT TO
+      { key: 'b', width: 25 }, // INTEND ID
+      { key: 'c', width: 25 }, // INTENT TO
       { key: 'd', width: 25 }, // MESSAGE
       { key: 'e', width: 20 }, // FONT COLOR
       { key: 'f', width: 25 }, // BACKGROUND COLOR
@@ -1609,7 +1680,7 @@ export class ExcelService {
       areasub,
       sub,
       columns,
-      'Scroll History'
+      'SCROLL HISTORY REPORT'
     );
   }
   async generateMailExcel(
@@ -1638,7 +1709,7 @@ export class ExcelService {
       areasub,
       sub,
       columns,
-      'Mail History'
+      'MAIL HISTORY REPORT'
     );
   }
   async generatFingerprintExcel(
@@ -1666,7 +1737,7 @@ export class ExcelService {
       areasub,
       sub,
       columns,
-      'Fingerprint History'
+      'FINGER PRINT HISTORY'
     );
   }
   async generatMessageExcel(
@@ -1699,7 +1770,7 @@ export class ExcelService {
       areasub,
       sub,
       columns,
-      'MESSAGE HISTORY'
+      'MESSAGE HISTORY REPORT'
     );
   }
   async generatNetworkSmartcardStatusExcel(
@@ -1726,7 +1797,7 @@ export class ExcelService {
       areasub,
       sub,
       columns,
-      'Overall Network Count History'
+      'NETWORK SMARTCARD STATUS COUNT'
     );
   }
   async generatNetworkOperatorwiseSmartcardStatusExcel(
@@ -1755,7 +1826,8 @@ export class ExcelService {
       areasub,
       sub,
       columns,
-      'Operator Wise Network Count History'
+      'OPERATORWISE NETWORK SMARTCARD STATUS COUNT'
+      // ''
     );
   }
   async generatSmartcardSuspendExcel(
@@ -1786,6 +1858,36 @@ export class ExcelService {
       sub,
       columns,
       'SMARTCARD SUSPEND REPORT'
+    );
+  }
+  async generatSmartcardSuspendDurationExcel(
+    areatitle: string,
+    headers: any,
+    dataRow: any[],
+    titles: any,
+    areasub: any,
+    sub: any
+  ) {
+    const columns = [
+      { key: 'a', width: 15 }, // S.NO
+      { key: 'b', width: 25 }, // CUSTOMER NAME	
+      { key: 'c', width: 20 }, // MOBILE NO	
+      { key: 'd', width: 30 }, // SMARTCARD	
+      { key: 'e', width: 20 }, // BOX ID	
+      { key: 'f', width: 20 }, // CAS
+      { key: 'g', width: 30 }, // PACKAGE
+      { key: 'h', width: 35 }, // SUBSCRIPTION END DATE
+
+    ];
+    await this.generateExcelFile(
+      areatitle,
+      headers,
+      dataRow,
+      titles,
+      areasub,
+      sub,
+      columns,
+      'SUSPEND REPORT FOR PARTICULAR DURATION'
     );
   }
   async generatSuspendExcel(
@@ -1819,10 +1921,9 @@ export class ExcelService {
       areasub,
       sub,
       columns,
-      'Smartcard Suspend Report'
+      'DATE WISE SMARTCARD SUSPEND'
     );
   }
-
   async generatUniversalExcel(
     areatitle: string,
     headers: any,
@@ -1882,7 +1983,117 @@ export class ExcelService {
       'RECHARGE LOG'
     );
   }
-  async generateLCORechargeExcel(
+  generateLCO_dateRechargeExcel(
+    header: string[],
+    datas: any[],
+    title: string,
+    sub: string,
+    totalRow: any[]
+  ) {
+    const workbook = new Excel.Workbook();
+    const worksheet = workbook.addWorksheet('Recharge Report');
+
+    // Title Row
+    const titleRow = worksheet.addRow([title]);
+    titleRow.font = { bold: true, size: 17, color: { argb: 'FFFFFF' } };
+    titleRow.alignment = { horizontal: 'center' };
+    titleRow.height = 30;
+    titleRow.eachCell((cell) => {
+      cell.fill = {
+        type: 'pattern',
+        pattern: 'solid',
+        fgColor: { argb: '34495e' },
+      };
+      cell.font = { color: { argb: 'FFFFFF' }, bold: true };
+    });
+    worksheet.mergeCells(`A1:H1`);
+    // Subtitle Row
+    const subTitleRow = worksheet.addRow([sub]);
+    subTitleRow.font = { bold: true, size: 15, color: { argb: 'FFFFFF' } };
+    subTitleRow.alignment = { horizontal: 'center' };
+    subTitleRow.height = 25;
+    subTitleRow.eachCell((cell) => {
+      cell.fill = {
+        type: 'pattern',
+        pattern: 'solid',
+        fgColor: { argb: 'cce0d8' },
+      };
+      cell.font = { color: { argb: '000000' }, bold: true };
+    });
+    worksheet.mergeCells(`A2:H2`);
+    // Header Row
+    const headerRow = worksheet.addRow(header);
+    headerRow.font = { bold: true, size: 13, color: { argb: 'FFFFFF' } };
+    headerRow.height = 23;
+    headerRow.eachCell((cell) => {
+      cell.fill = {
+        type: 'pattern',
+        pattern: 'solid',
+        fgColor: { argb: '2c2e2d' },
+      };
+      cell.alignment = { horizontal: 'center', vertical: 'middle' };
+      cell.border = {
+        top: { style: 'thin' },
+        left: { style: 'thin' },
+        bottom: { style: 'thin' },
+        right: { style: 'thin' },
+      };
+    });
+    datas.forEach((rowData) => {
+      const row = worksheet.addRow(rowData);
+      row.alignment = { vertical: 'middle', horizontal: 'center' };
+      row.height = 20;
+      row.eachCell((cell: any) => {
+        cell.border = {
+          left: { style: 'thin' },
+          right: { style: 'thin' },
+        };
+      });
+    });
+    // Total Row
+    const totalRowIndex = worksheet.addRow(totalRow);
+    totalRowIndex.eachCell((cell, colNumber) => {
+      if (colNumber === 7 || colNumber === 8) {
+        totalRowIndex.height = 20;
+        totalRowIndex.alignment = { vertical: 'middle', horizontal: 'center' };
+        totalRowIndex.font = { bold: true, size: 13, color: { argb: 'FFFFFF' } };
+        cell.fill = {
+          type: 'pattern',
+          pattern: 'solid',
+          fgColor: { argb: '016b4d' },
+        };
+        cell.alignment = { horizontal: 'center', vertical: 'middle' };
+        cell.border = {
+          top: { style: 'thin' },
+          left: { style: 'thin' },
+          bottom: { style: 'thin' },
+          right: { style: 'thin' },
+        };
+        cell.font = { color: { argb: 'FFFFFF' }, bold: true };
+      }
+    });
+
+    // Set Column Widths
+    worksheet.columns = [
+      { key: 'a', width: 10 }, // S.NO
+      { key: 'b', width: 30 }, // OPERATOR NAME
+      { key: 'c', width: 20 }, // OPERATOR ID
+      { key: 'd', width: 15 }, // AMOUNT
+      { key: 'e', width: 20 }, // REMARKS
+      { key: 'f', width: 25 }, // TRANSACTION DATE
+      { key: 'g', width: 50 }, // OPERATION ADDRESS
+      { key: 'h', width: 25 }, // CONTACT NUMBER
+    ];
+
+    // Save the file
+    workbook.xlsx.writeBuffer().then((data: any) => {
+      const blob = new Blob([data], {
+        type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+      });
+      fs.saveAs(blob, `${title}.xlsx`);
+    });
+  }
+  async generateLCO_monthRechargeExcel(
     areatitle: string,
     headers: any,
     dataRow: any[],
@@ -1908,11 +2119,38 @@ export class ExcelService {
       areasub,
       sub,
       columns,
-      'LCO RECHARGE LOG'
+      'MONTHWISE LOG RECHARGE REPORT'
     );
   }
+  async generateLCO_yearRechargeExcel(
+    areatitle: string,
+    headers: any,
+    dataRow: any[],
+    titles: any,
+    areasub: any,
+    sub: any
+  ) {
+    const columns = [
+      { key: 'a', width: 30 }, // OPERATOR NAME
+      { key: 'b', width: 30 }, // OPERATOR ID
+      { key: 'c', width: 20 }, // AMOUNT
+      { key: 'd', width: 20 }, // REMARKS
+      { key: 'e', width: 30 }, // TRANSACTION DATE 
+      { key: 'f', width: 30 }, // OPERATION ADDRESS
+      { key: 'g', width: 30 }, // CONTACT NUMBER
 
-
+    ];
+    await this.generateExcelFile(
+      areatitle,
+      headers,
+      dataRow,
+      titles,
+      areasub,
+      sub,
+      columns,
+      'YEARWISE LOG RECHARGE REPORT'
+    );
+  }
   // --------------------------------Syncronization--------------------
   async generateSynchronizationExcel(
     areatitle: string,
@@ -2163,7 +2401,5 @@ export class ExcelService {
       fs.saveAs(blob, 'Overall_Report.xlsx');
     });
   }
-
-
 
 }

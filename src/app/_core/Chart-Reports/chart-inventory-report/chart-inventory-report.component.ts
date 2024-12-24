@@ -41,6 +41,7 @@ export class ChartInventoryReportComponent {
 
   }
   ngOnInit(): void {
+    this.onColumnDefs();
     switch (this.type) {
       case '11':
         this.id = 'BOX IN MSO HAND';
@@ -53,6 +54,7 @@ export class ChartInventoryReportComponent {
         break;
       default:
         this.id = '';
+
     }
     this.userService.getDashboardReport(this.username, this.role, this.type, 2)
       .subscribe(
@@ -78,25 +80,98 @@ export class ChartInventoryReportComponent {
     })
   }
   columnDefs: any[] = [
-    { headerName: "S.No", lockPosition: true, valueGetter: 'node.rowIndex+1', width: 80, },
-    { headerName: "SMARTCARD", field: 'smartcard', width: 350, },
-    { headerName: "BOX ID", field: 'boxid', width: 350, },
-    { headerName: "CARTON BOX", field: 'cottonboxdisplay', width: 350, },
-    { headerName: "CAS NAME", field: 'casname', width: 350, },
-    { headerName: "IS ALLOCATED", field: 'isallocated', width: 330, 
-      cellRenderer: (params: any) => {
-        const value = params.value; 
-        const color = value === true || value === 'true' ? 'green' : 'red';
-        const text = value === true || value === 'true' ? 'TRUE' : 'FALSE';
-        return `<span style="color: ${color}; font-weight: bold;">${text}</span>`;
-      }
-    },
-    {
-      headerName: "STATUS", field: 'statusdisplay', width: 330, 
-      
-    },
-    { headerName: "OPERATOR NAME", field: 'operatorname', width: 330, },
+    // { headerName: "S.No", lockPosition: true, valueGetter: 'node.rowIndex+1', width: 80, },
+    // { headerName: "SMARTCARD", field: 'smartcard', width: 250, },
+    // { headerName: "BOX ID", field: 'boxid', width: 200, },
+    // { headerName: "CARTON BOX", field: 'cottonboxdisplay', width: 200, },
+    // { headerName: "CAS NAME", field: 'casname', width: 200, },
+    // {
+    //   headerName: "IS ALLOCATED", field: 'isallocated', width: 200,
+    //   cellRenderer: (params: any) => {
+    //     const value = params.value;
+    //     const color = value === true || value === 'true' ? 'green' : 'red';
+    //     const text = value === true || value === 'true' ? 'TRUE' : 'FALSE';
+    //     return `<span style="color: ${color}; font-weight: bold;">${text}</span>`;
+    //   }
+    // },
+    // {
+    //   headerName: "STATUS", field: 'statusdisplay', width: 200,
+
+    // },
+    // { headerName: "OPERATOR NAME", field: 'operatorname', width: 250, },
   ]
+
+  private onColumnDefs() {
+    if (this.type == 11) {
+      this.columnDefs = [
+        { headerName: "S.No", lockPosition: true, valueGetter: 'node.rowIndex+1', width: 80, },
+        { headerName: "SMARTCARD", field: 'smartcard', width: 300, },
+        { headerName: "BOX ID", field: 'boxid', width: 250, },
+        { headerName: "CARTON BOX", field: 'cottonboxdisplay', width: 250, },
+        { headerName: "CAS NAME", field: 'casname', width: 300, },
+        {
+          headerName: "IS ALLOCATED", field: 'isallocated', width: 200,
+          cellRenderer: (params: any) => {
+            const value = params.value;
+            const color = value === true || value === 'true' ? 'green' : 'red';
+            const text = value === true || value === 'true' ? 'TRUE' : 'FALSE';
+            return `<span style="color: ${color}; font-weight: bold;">${text}</span>`;
+          }
+        },
+        {
+          headerName: "STATUS", field: 'statusdisplay', width: 200,
+
+        },
+
+      ]
+    } else if (this.type == 12) {
+      this.columnDefs = [
+        { headerName: "S.No", lockPosition: true, valueGetter: 'node.rowIndex+1', width: 80, },
+        { headerName: "SMARTCARD", field: 'smartcard', width: 250, },
+        { headerName: "BOX ID", field: 'boxid', width: 200, },
+        { headerName: "CARTON BOX", field: 'cottonboxdisplay', width: 200, },
+        { headerName: "CAS NAME", field: 'casname', width: 200, },
+        {
+          headerName: "IS ALLOCATED", field: 'isallocated', width: 200,
+          cellRenderer: (params: any) => {
+            const value = params.value;
+            const color = value === true || value === 'true' ? 'green' : 'red';
+            const text = value === true || value === 'true' ? 'TRUE' : 'FALSE';
+            return `<span style="color: ${color}; font-weight: bold;">${text}</span>`;
+          }
+        },
+        {
+          headerName: "STATUS", field: 'statusdisplay', width: 200,
+
+        },
+        { headerName: "OPERATOR NAME", field: 'operatorname', width: 250, },
+      ]
+    } else if (this.type == 13) {
+      this.columnDefs = [
+        { headerName: "S.No", lockPosition: true, valueGetter: 'node.rowIndex+1', width: 80, },
+        { headerName: "SMARTCARD", field: 'smartcard', width: 250, },
+        { headerName: "BOX ID", field: 'boxid', width: 150, },
+        { headerName: "SUBSCRIBER NAME", field: 'customername', width: 200, },
+        { headerName: "MOBILE NUMBER", field: 'mobilno', width: 200, },
+        { headerName: "CAS NAME", field: 'casname', width: 150, },
+        {
+          headerName: "IS ALLOCATED", field: 'isallocated', width: 150,
+          cellRenderer: (params: any) => {
+            const value = params.value;
+            const color = value === true || value === 'true' ? 'green' : 'red';
+            const text = value === true || value === 'true' ? 'TRUE' : 'FALSE';
+            return `<span style="color: ${color}; font-weight: bold;">${text}</span>`;
+          }
+        },
+        {
+          headerName: "STATUS", field: 'statusdisplay', width: 150,
+
+        },
+        { headerName: "OPERATOR NAME", field: 'operatorname', width: 250, },
+      ]
+    }
+  }
+
   getExcel() {
     console.log(this.type);
     this.userService.getDashboardReport(this.username, this.role, this.type, 2)
@@ -106,23 +181,50 @@ export class ChartInventoryReportComponent {
           if (response.status === 200) {
             this.rowData = response.body;
             console.log(this.type);
-            if (this.type == 11 || this.type == 12 || this.type == 13) {
+            if (this.type == 11) {
               console.log(this.type);
-              const areatitle = 'A1:F2';
-              const areasub = 'A3:F3';
+              const areatitle = 'A1:H2';
+              const areasub = 'A3:H3';
               const title = this.id + ' REPORT';
               const sub = 'MSO ADDRESS:' + this.msodetails;
-              const header = ['SMARTCARD', 'BOX ID', 'CARTON BOX', 'CAS NAME',  'STATUS', 'OPERATOR NAME'];
+              const header = ['S.NO', 'CARTON BOX', 'SMARTCARD', 'BOX ID', 'CAS TYPE', 'ISALLOCATED', 'STATUS'];
               const data = this.rowData;
               const datas: Array<any> = [];
-              data.forEach((d: any) => {
-                const row = [d.smartcard, d.boxid, d.cottonboxdisplay, d.casname,  d.statusdisplay, d.operatorname];
+              data.forEach((d: any, index: number) => {
+                const row = [index + 1, d.cottonboxdisplay, d.smartcard, d.boxid, d.casname, d.isallocated, d.statusdisplay];
                 datas.push(row);
               });
               this.excelService.generateDashboardInventoryExcel(areatitle, header, datas, title, areasub, sub);
+            } else if (this.type == 12) {
+              const areatitle = 'A1:H2';
+              const areasub = 'A3:H3';
+              const title = this.id + ' REPORT';
+              const sub = 'MSO ADDRESS:' + this.msodetails;
+              const header = ['S.NO', 'CARTON BOX', 'SMARTCARD', 'BOX ID', 'CAS TYPE', 'ISALLOCATED', 'STATUS', 'OPERATOR NAME'];
+              const data = this.rowData;
+              const datas: Array<any> = [];
+              data.forEach((d: any, index: number) => {
+                const row = [index + 1, d.cottonboxdisplay, d.smartcard, d.boxid, d.casname, d.isallocated, d.statusdisplay, d.operatorname];
+                datas.push(row);
+              });
+              this.excelService.generateboxinlcoExcel(areatitle, header, datas, title, areasub, sub);
             }
-
-          } else if (response.status === 204) {
+            else if (this.type == 13) {
+              const areatitle = 'A1:I2';
+              const areasub = 'A3:I3';
+              const title = this.id + ' REPORT';
+              const sub = 'MSO ADDRESS:' + this.msodetails;
+              const header = ['S.NO','SMARTCARD','BOX ID', 'CAS TYPE','ISALLOCATED', 'STATUS', 'OPERATOR NAME','SUBSCRIBER NAME',' MOBILE NUMBER'];
+              const data = this.rowData;
+              const datas: Array<any> = [];
+              data.forEach((d: any,index:number) => {
+                const row = [index+1, d.smartcard, d.boxid, d.casname, d.isallocated,d.statusdisplay, d.operatorname,d.customername,d.mobilno];
+                datas.push(row);
+              });
+              this.excelService.generateboxinCustomerExcel(areatitle, header, datas, title, areasub, sub);
+            }
+          }
+          else if (response.status === 204) {
             this.swal.Success_204();
             this.rowData = [];
           }

@@ -89,43 +89,43 @@ export class ChartPackageReportComponent {
       case '7': // BASE PACKAGE
         this.columnDefs = [
           { headerName: "S.No", lockPosition: true, valueGetter: 'node.rowIndex+1', width: 80, },
-          { headerName: "PACKAGE ID", field: 'packageid', width: 350, },
-          { headerName: "PACKAGE NAME", field: 'productname', width: 350, },
-          { headerName: "PACKAGE RATE", field: 'rate', width: 350, },
-          { headerName: "PRODUCT ID", field: 'casproductid', width: 350, },
-          { headerName: "CAS TYPE", field: 'casname', width: 330, },
+          { headerName: "PACKAGE ID", field: 'packageid', width: 300, },
+          { headerName: "PACKAGE NAME", field: 'productname', width: 300, },
+          { headerName: "PACKAGE RATE", field: 'rate', width: 300, },
+          { headerName: "PRODUCT ID", field: 'casproductid', width: 300, },
+          { headerName: "CAS TYPE", field: 'casname', width: 310, },
         ];
         break;
 
       case '8': // ADDON PACKAGE
         this.columnDefs = [
           { headerName: "S.No", lockPosition: true, valueGetter: 'node.rowIndex+1', width: 80, },
-          { headerName: "PACKAGE ID", field: 'packageid', width: 350, },
-          { headerName: "PACKAGE NAME", field: 'productname', width: 350, },
-          { headerName: "PACKAGE RATE", field: 'rate', width: 350, },
-          { headerName: "PRODUCT ID", field: 'casproductid', width: 350, },
-          { headerName: "CAS TYPE", field: 'casname', width: 330, },
+          { headerName: "PACKAGE ID", field: 'packageid', width: 300, },
+          { headerName: "PACKAGE NAME", field: 'productname', width: 300, },
+          { headerName: "PACKAGE RATE", field: 'rate', width: 300, },
+          { headerName: "PRODUCT ID", field: 'casproductid', width: 300, },
+          { headerName: "CAS TYPE", field: 'casname', width: 310, },
         ];
         break;
 
       case '9': // PAYCHANNEL
         this.columnDefs = [
           { headerName: "S.No", lockPosition: true, valueGetter: 'node.rowIndex+1', width: 80, },
-          { headerName: "CHANNEL NAME", field: 'channelname', width: 350, },
-          { headerName: "PRODUCT ID", field: 'productid', width: 350, },
-          { headerName: "RATE", field: 'rate', width: 350, },
-          { headerName: "SERVICE ID", field: 'serviceid', width: 350, },
-          { headerName: "CREATED DATE", field: 'createddate', width: 330, },
+          { headerName: "CHANNEL NAME", field: 'channelname', width: 300, },
+          { headerName: "PRODUCT ID", field: 'productid', width: 300, },
+          { headerName: "RATE", field: 'rate', width: 300, },
+          { headerName: "SERVICE ID", field: 'serviceid', width: 300, },
+          { headerName: "CREATED DATE", field: 'createddate', width: 310, },
         ];
         break;
       case '10': // FTA CHANNEL
         this.columnDefs = [
           { headerName: "S.No", lockPosition: true, valueGetter: 'node.rowIndex+1', width: 80, },
-          { headerName: "CHANNEL NAME", field: 'channelname', width: 350, },
-          { headerName: "PRODUCT ID", field: 'productid', width: 350, },
-          { headerName: "RATE", field: 'rate', width: 350, },
-          { headerName: "SERVICE ID", field: 'serviceid', width: 350, },
-          { headerName: "CREATED DATE", field: 'createddate', width: 330, },
+          { headerName: "CHANNEL NAME", field: 'channelname', width: 300, },
+          { headerName: "PRODUCT ID", field: 'productid', width: 300, },
+          { headerName: "RATE", field: 'rate', width: 300, },
+          { headerName: "SERVICE ID", field: 'serviceid', width: 300, },
+          { headerName: "CREATED DATE", field: 'createddate', width: 310, },
         ];
         break;
 
@@ -157,52 +157,52 @@ export class ChartPackageReportComponent {
                 console.log('type 7', row);
                 datas.push(row);
               });
-              this.excelService.generateDashboardInventoryExcel(areatitle, header, datas, title, areasub, sub);
+              this.excelService.generateBasePackageExcel(areatitle, header, datas, title, areasub, sub);
             } else if (this.type == 8) {
               console.log(this.type);
-              const areatitle = 'A1:E2';
-              const areasub = 'A3:E3';
+              const areatitle = 'A1:F2';
+              const areasub = 'A3:F3';
               const title = this.id + ' REPORT';
               const sub = 'MSO ADDRESS:' + this.msodetails;
-              const header = ['PACKAGE ID', 'PACKAGE NAME', 'PACKAGE RATE', 'PRODUCT ID', 'CAS TYPE'];
+              const header = ['S.NO','PACKAGE ID', 'PACKAGE NAME', 'PACKAGE RATE', 'PRODUCT ID', 'CAS TYPE'];
               const data = this.rowData;
               const datas: Array<any> = [];
-              data.forEach((d: any) => {
-                const row = [d.packageid, d.productname, d.rate, d.casproductid, d.casname];
+              data.forEach((d: any,index:number) => {
+                const row = [index+1,d.packageid, d.productname, d.rate, d.casproductid, d.casname];
                 console.log('type 8', row);
                 datas.push(row);
               });
-              this.excelService.generateDashboardInventoryExcel(areatitle, header, datas, title, areasub, sub);
+              this.excelService.generateAddonExcel(areatitle, header, datas, title, areasub, sub);
             } else if (this.type == 9) {
               console.log(this.type);
-              const areatitle = 'A1:E2';
-              const areasub = 'A3:E3';
+              const areatitle = 'A1:F2';
+              const areasub = 'A3:F3';
               const title = this.id + ' REPORT';
               const sub = 'MSO ADDRESS:' + this.msodetails;
-              const header = ['CHANNEL NAME', 'PRODUCT ID', 'RATE', 'SERVICE ID', 'CREATION DATE'];
+              const header = ['S.NO','CHANNEL NAME', 'PRODUCT ID','SERVICE ID', 'CHANNEL RATE', 'CREATION DATE'];
               const data = this.rowData;
               const datas: Array<any> = [];
-              data.forEach((d: any) => {
-                const row = [d.channelname, d.productid, d.rate, d.serviceid, d.createddate];
+              data.forEach((d: any,index:number) => {
+                const row = [index+1,d.channelname, d.productid,d.serviceid, d.rate,  d.createddate];
                 console.log('type 9', row);
                 datas.push(row);
               });
-              this.excelService.generateDashboardInventoryExcel(areatitle, header, datas, title, areasub, sub);
+              this.excelService.generatePaychannelExcel(areatitle, header, datas, title, areasub, sub);
             } else if (this.type == 10) {
               console.log(this.type);
-              const areatitle = 'A1:E2';
-              const areasub = 'A3:E3';
+              const areatitle = 'A1:F2';
+              const areasub = 'A3:F3';
               const title = this.id + ' REPORT';
               const sub = 'MSO ADDRESS:' + this.msodetails;
-              const header = ['CHANNEL NAME', 'PRODUCT ID', 'RATE', 'SERVICE ID', 'CREATION DATE'];
+              const header = ['S.NO','CHANNEL NAME', 'PRODUCT ID', 'SERVICE ID','CHANNEL RATE',  'CREATION DATE'];
               const data = this.rowData;
               const datas: Array<any> = [];
-              data.forEach((d: any) => {
-                const row = [d.channelname, d.productid, d.rate, d.serviceid, d.createddate];
+              data.forEach((d: any,index:number) => {
+                const row = [index+1,d.channelname, d.productid,d.serviceid, d.rate,  d.createddate];
                 console.log('type 10', row);
                 datas.push(row);
               });
-              this.excelService.generateDashboardInventoryExcel(areatitle, header, datas, title, areasub, sub);
+              this.excelService.generateFTAExcel(areatitle, header, datas, title, areasub, sub);
             }
           } else if (response.status === 204) {
             this.swal.Success_204();

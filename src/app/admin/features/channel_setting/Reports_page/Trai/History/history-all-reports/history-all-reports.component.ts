@@ -45,6 +45,8 @@ export class HistoryAllReportsComponent implements OnInit {
     this.role = storageservice.getUserRole();
   }
   ngOnInit(): void {
+
+
     this.allType = this.route.snapshot.paramMap.get('id');
     console.log('dfdsfdsfdsf', this.allType);
     this.userService.getMsoDetails(this.role, this.username).subscribe((data: any) => {
@@ -53,14 +55,31 @@ export class HistoryAllReportsComponent implements OnInit {
       console.log(this.msodetails);
     })
     this.setReportTitle();
-
-    this.onColumnDefs();
     this.fromdate = this.fromdate ? this.formatDate(this.fromdate) : this.formatDate(new Date());
     this.todate = this.todate ? this.formatDate(this.todate) : this.formatDate(new Date());
-    // this.getAllServicereport();
-    // this.getPairedReport();
-    // this.getBlockedReport();
     this.logValues('');
+    console.log(this.allType);
+    this.onColumnDefs();
+    if (this.allType == 1) {
+      console.log('sdsds', this.allType);
+      this.getAllServicereport();
+    } else if (this.allType == '3') {
+      this.getPairedReport();
+    } else if (this.allType == '4') {
+      this.getBlockedReport();
+    } else if (this.allType == '5') {
+      this.getScrollReport();
+    } else if (this.allType == '6') {
+      this.getMailReport();
+    } else if (this.allType == '8') {
+      this.getMessageReport();
+    } else if (this.allType == '11') {
+      this.getSmartcardSuspendReport();
+    } else if (this.allType == '12') {
+      this.getDatewiseSuspendReport();
+    } else if (this.allType == '13') {
+      this.getSuspendReport();
+    }
   }
   formatDate(date: Date): string {
     const year = date.getFullYear();
@@ -69,10 +88,11 @@ export class HistoryAllReportsComponent implements OnInit {
     return `${year}-${month}-${day}`;
   }
   setReportTitle() {
+    console.log(this.allType);
     switch (this.allType) {
       case '1':
+        this.getAllServicereport();
         this.reportTitle = 'All Service Report';
-        // this.getAllServicereport();
         break;
       case '2':
         this.reportTitle = 'Total Smartcard List Report';
@@ -101,7 +121,7 @@ export class HistoryAllReportsComponent implements OnInit {
         // this.getMessageReport();
         break;
       case '9':
-        this.reportTitle = 'Network Smartcard Status Count Report report';
+        this.reportTitle = 'Network Smartcard Status Count report';
         // this.getMessageReport();
         break;
       case '10':
@@ -123,6 +143,7 @@ export class HistoryAllReportsComponent implements OnInit {
       default:
         this.reportTitle = 'Unknown Report';
     }
+
   }
   columnDefs = [
     { headerName: "S.No", lockPosition: true, valueGetter: 'node.rowIndex+1', headerCheckboxSelection: true, checkboxSelection: true, width: 90 },
@@ -136,7 +157,7 @@ export class HistoryAllReportsComponent implements OnInit {
   private onColumnDefs() {
     console.log('colmnDefs', this.allType);
 
-    if (this.allType == '1') {
+    if (this.allType == 1) {
       this.columnDefs = [
         { headerName: "S.No", lockPosition: true, valueGetter: 'node.rowIndex+1', headerCheckboxSelection: false, checkboxSelection: false, width: 90 },
         { headerName: 'SMARTCARD', field: 'smartcard', width: 300 },
@@ -144,7 +165,7 @@ export class HistoryAllReportsComponent implements OnInit {
         { headerName: 'ACTION', field: 'activity', width: 200 },
         { headerName: 'REMARKS', field: 'remarks', width: 680 },
       ]
-    } else if (this.allType == '3') {
+    } else if (this.allType == 3) {
       this.columnDefs = [
         { headerName: "S.No", lockPosition: true, valueGetter: 'node.rowIndex+1', headerCheckboxSelection: false, checkboxSelection: false, width: 90 },
         { headerName: 'SUBSCRIBER ID', field: 'subid', width: 150 },
@@ -170,12 +191,12 @@ export class HistoryAllReportsComponent implements OnInit {
     } else if (this.allType == '5') {
       this.columnDefs = [
         { headerName: "S.No", lockPosition: true, valueGetter: 'node.rowIndex+1', headerCheckboxSelection: false, checkboxSelection: false, width: 90 },
-        { headerName: 'INTEND ID', field: 'intendid', width: 150 },
-        { headerName: 'INTENT TO', field: 'intendto', width: 200 },
+        { headerName: 'INTEND ID', field: 'intendid', width: 120 },
+        { headerName: 'INTENT TO', field: 'intendto', width: 150 },
         { headerName: 'MESSAGE', field: 'scrollmessage', width: 200 },
-        { headerName: 'FONT COLOR	', field: 'scrollcolordisplay', width: 200 },
+        { headerName: 'FONT COLOR	', field: 'scrollcolordisplay', width: 150 },
         { headerName: 'BACKGROUND COLOR	', field: 'scrollbgcolordisplay', width: 150 },
-        { headerName: 'FONT SIZE', field: 'fontsize', width: 200 },
+        { headerName: 'FONT SIZE', field: 'fontsize', width: 150 },
         { headerName: 'POSITION', field: 'scrollposition', width: 150 },
         { headerName: 'REPEAT FOR	', field: 'repeatfor', width: 200 },
         { headerName: 'CREATED DATE', field: 'createddate', width: 200 },
@@ -184,13 +205,13 @@ export class HistoryAllReportsComponent implements OnInit {
       console.log('colmnDefs', this.allType, '6');
       this.columnDefs = [
         { headerName: "S.No", lockPosition: true, valueGetter: 'node.rowIndex+1', headerCheckboxSelection: false, checkboxSelection: false, width: 90 },
-        { headerName: 'INTEND ID', field: 'intendid', width: 150 },
+        { headerName: 'INTEND ID', field: 'intendid', width: 200 },
         { headerName: 'INTENT TO', field: 'intendto', width: 200 },
         { headerName: 'TITLE', field: 'mailtitle', width: 200 },
         { headerName: 'SENDER', field: 'sender', width: 200 },
-        { headerName: 'MESSAGE', field: 'message', width: 150 },
+        { headerName: 'MESSAGE', field: 'message', width: 250 },
         { headerName: 'SENT DATE', field: 'sentdate', width: 200 },
-        { headerName: 'EXPIRY DATE', field: 'expirydate', width: 150 },
+        { headerName: 'EXPIRY DATE', field: 'expirydate', width: 200 },
       ]
     } else if (this.allType == '8') {
       console.log('colmnDefs', this.allType, '6');
@@ -259,7 +280,6 @@ export class HistoryAllReportsComponent implements OnInit {
     this.cur_date = formattedDate;
     console.log(this.cur_date);
   }
-  // ---------------------------------------ALL SERVICE----------------------
   getFromDate(event: any) {
     console.log(event.value);
     const date = new Date(event.value).getDate();
@@ -276,7 +296,12 @@ export class HistoryAllReportsComponent implements OnInit {
     this.todate = year + "-" + month + "-" + date
     console.log(this.todate);
   }
+
+  // ---------------------------------------ALL SERVICE----------------------
+
   getAllServicereport() {
+    console.log('sadsasadsadsadsadsad');
+
     this.smartcard = this.smartcardid
     // this.swal.Loading();
     this.userService.getAllServiceHistoryExcelReport(this.role, this.username, this.fromdate, this.todate, this.smartcard, 2)
@@ -305,7 +330,7 @@ export class HistoryAllReportsComponent implements OnInit {
           if (response.status === 200) {
             this.rowData = response.body;
             console.log(this.reportTitle);
-            const title = (this.reportTitle).toUpperCase();
+            const title = (this.reportTitle ).toUpperCase();
             const sub = 'MSO ADDRESS:' + this.msodetails;
             let areatitle = '';
             let areasub = '';
@@ -440,7 +465,7 @@ export class HistoryAllReportsComponent implements OnInit {
           if (response.status === 200) {
             this.rowData = response.body;
             console.log(this.reportTitle);
-            const title = (this.reportTitle).toUpperCase();
+            const title = (this.reportTitle ).toUpperCase();
             const sub = 'MSO ADDRESS:' + this.msodetails;
             let areatitle = '';
             let areasub = '';
@@ -518,7 +543,7 @@ export class HistoryAllReportsComponent implements OnInit {
           if (response.status === 200) {
             this.rowData = response.body;
             console.log(this.reportTitle);
-            const title = (this.reportTitle).toUpperCase();
+            const title = (this.reportTitle ).toUpperCase();
             const sub = 'MSO ADDRESS:' + this.msodetails;
             let areatitle = '';
             let areasub = '';
@@ -595,7 +620,7 @@ export class HistoryAllReportsComponent implements OnInit {
           if (response.status === 200) {
             this.rowData = response.body;
             console.log(this.reportTitle);
-            const title = (this.reportTitle).toUpperCase();
+            const title = (this.reportTitle ).toUpperCase();
             const sub = 'MSO ADDRESS:' + this.msodetails;
             let areatitle = '';
             let areasub = '';
@@ -672,7 +697,7 @@ export class HistoryAllReportsComponent implements OnInit {
           if (response.status === 200) {
             this.rowData = response.body;
             console.log(this.reportTitle);
-            const title = (this.reportTitle).toUpperCase();
+            const title = (this.reportTitle ).toUpperCase();
             const sub = 'MSO ADDRESS:' + this.msodetails;
             let areatitle = '';
             let areasub = '';
@@ -749,7 +774,7 @@ export class HistoryAllReportsComponent implements OnInit {
           if (response.status === 200) {
             this.rowData = response.body;
             console.log(this.reportTitle);
-            const title = (this.reportTitle).toUpperCase();
+            const title = (this.reportTitle ).toUpperCase();
             const sub = 'MSO ADDRESS:' + this.msodetails;
             let areatitle = '';
             let areasub = '';
@@ -826,7 +851,7 @@ export class HistoryAllReportsComponent implements OnInit {
           if (response.status === 200) {
             this.rowData = response.body;
             console.log(this.reportTitle);
-            const title = (this.reportTitle).toUpperCase();
+            const title = (this.reportTitle ).toUpperCase();
             const sub = 'MSO ADDRESS:' + this.msodetails;
             let areatitle = '';
             let areasub = '';
@@ -836,7 +861,7 @@ export class HistoryAllReportsComponent implements OnInit {
             areasub = 'A3:L3';
             header = ['S.NO', 'INTEND ID', 'INTEND TO', 'MESSAGE', 'FONT COLOR', 'BACKGROUND COLOR', 'REPEAT FOR', 'TRANSPARANCY', 'DURATION', 'TIME GAP', 'CAS', 'SEND DATE'];
             this.rowData.forEach((d: any, index: number) => {
-              const row = [index + 1, d.intendid, d.intendto, d.messagecontent, d.fontcolordisplay, d.bgcolordisplay, d.repeatfor, d.transparency, d.duration, d.timegap,d.casname,d.sentdate];
+              const row = [index + 1, d.intendid, d.intendto, d.messagecontent, d.fontcolordisplay, d.bgcolordisplay, d.repeatfor, d.transparency, d.duration, d.timegap, d.casname, d.sentdate];
               datas.push(row);
             });
             this.excelService.generatMessageExcel(areatitle, header, datas, title, areasub, sub);
@@ -883,7 +908,7 @@ export class HistoryAllReportsComponent implements OnInit {
           if (response.status === 200) {
             const activeData = response.body.activecount || [];
             const deactiveData = response.body.deactivecount || [];
-            const title = (this.reportTitle).toUpperCase();
+            const title = (this.reportTitle ).toUpperCase();
             const sub = 'MSO ADDRESS:' + this.msodetails;
             const headers = ['S.NO', 'TYPE', 'CAS', 'TOTAL COUNT'];
             const dataRows: Array<any[]> = [];
@@ -918,7 +943,7 @@ export class HistoryAllReportsComponent implements OnInit {
               'A3:D3',
               sub,
               columns,
-              'NetworkSmartcardStatusReport'
+              'NETWORK SMARTCARD ACTIVE /DEACTIVE STATUS COUNT '
             );
           } else if (response.status === 204) {
             this.swal.Success_204();
@@ -940,7 +965,7 @@ export class HistoryAllReportsComponent implements OnInit {
         const data = window.URL.createObjectURL(blob);
         const link = document.createElement('a');
         link.href = data;
-        link.download = (this.reportTitle + ".pdf").toUpperCase();
+        link.download = ("NETWORK SMARTCARD ACTIVE /DEACTIVE STATUS COUNT .pdf").toUpperCase();
         link.dispatchEvent(new MouseEvent('click', { bubbles: true, cancelable: true, view: window }));
         setTimeout(() => {
           window.URL.revokeObjectURL(data);
@@ -986,7 +1011,7 @@ export class HistoryAllReportsComponent implements OnInit {
           if (response.status === 200) {
             this.rowData = response.body;
             console.log(this.reportTitle);
-            const title = (this.reportTitle).toUpperCase();
+            const title = (this.reportTitle ).toUpperCase();
             const sub = 'MSO ADDRESS:' + this.msodetails;
             let areatitle = '';
             let areasub = '';
@@ -1070,7 +1095,7 @@ export class HistoryAllReportsComponent implements OnInit {
           if (response.status === 200) {
             this.rowData = response.body;
             console.log(this.reportTitle);
-            const title = (this.reportTitle).toUpperCase();
+            const title = ('OPERATORWISE NETWORK SMARTCARD STATUS COUNT REPORT').toUpperCase();
             const sub = 'MSO ADDRESS:' + this.msodetails;
             let areatitle = '';
             let areasub = '';
@@ -1080,15 +1105,15 @@ export class HistoryAllReportsComponent implements OnInit {
             const headers = ['S.NO', 'OPERATOR', 'ACTIVE COUNT', 'DEACTIVE COUNT', 'ACTIVE SUBSCRIPTION COUNT', 'DEACTIVE SUBSCRIPTION COUNT', 'BLOCK COUNT'];
             this.rowData.operatorlist.forEach((item: any, index: number) => {
               datas.push([
-                  index + 1, // S.NO
-                  item.operatorname, // OPERATOR
-                  item.acount, // ACTIVE COUNT
-                  item.dcount, // DEACTIVE COUNT
-                  item.notexpirycount, // ACTIVE SUBSCRIPTION COUNT
-                  item.expirycount, // DEACTIVE SUBSCRIPTION COUNT
-                  item.blockcount // BLOCK COUNT
+                index + 1, // S.NO
+                item.operatorname, // OPERATOR
+                item.acount, // ACTIVE COUNT
+                item.dcount, // DEACTIVE COUNT
+                item.notexpirycount, // ACTIVE SUBSCRIPTION COUNT
+                item.expirycount, // DEACTIVE SUBSCRIPTION COUNT
+                item.blockcount // BLOCK COUNT
               ]);
-          });
+            });
             this.excelService.generatNetworkOperatorwiseSmartcardStatusExcel(areatitle, headers, datas, title, areasub, sub);
           } else if (response.status === 204) {
             this.swal.Success_204();
@@ -1110,7 +1135,7 @@ export class HistoryAllReportsComponent implements OnInit {
         const data = window.URL.createObjectURL(blob);
         const link = document.createElement('a');
         link.href = data;
-        link.download = (this.reportTitle + ".pdf").toUpperCase();
+        link.download = ("OPERATORWISE NETWORK SMARTCARD STATUS COUNT.pdf").toUpperCase();
         link.dispatchEvent(new MouseEvent('click', { bubbles: true, cancelable: true, view: window }));
         setTimeout(() => {
           window.URL.revokeObjectURL(data);
@@ -1156,7 +1181,7 @@ export class HistoryAllReportsComponent implements OnInit {
           if (response.status === 200) {
             this.rowData = response.body;
             console.log(this.reportTitle);
-            const title = (this.reportTitle).toUpperCase();
+            const title = (this.reportTitle ).toUpperCase();
             const sub = 'MSO ADDRESS:' + this.msodetails;
             let areatitle = '';
             let areasub = '';
@@ -1190,7 +1215,7 @@ export class HistoryAllReportsComponent implements OnInit {
         const data = window.URL.createObjectURL(blob);
         const link = document.createElement('a');
         link.href = data;
-        link.download = (this.reportTitle + ".pdf").toUpperCase();
+        link.download = ("SMARTCARD SUSPEND.pdf").toUpperCase();
         link.dispatchEvent(new MouseEvent('click', { bubbles: true, cancelable: true, view: window }));
         setTimeout(() => {
           window.URL.revokeObjectURL(data);
@@ -1236,7 +1261,7 @@ export class HistoryAllReportsComponent implements OnInit {
           if (response.status === 200) {
             this.rowData = response.body;
             console.log(this.reportTitle);
-            const title = (this.reportTitle).toUpperCase();
+            const title = (this.reportTitle ).toUpperCase();
             const sub = 'MSO ADDRESS:' + this.msodetails;
             let areatitle = '';
             let areasub = '';
@@ -1249,7 +1274,7 @@ export class HistoryAllReportsComponent implements OnInit {
               const row = [index + 1, d.customername, d.mobileno, d.smartcard, d.boxid, d.casname, d.productname, d.createddate];
               datas.push(row);
             });
-            this.excelService.generatSmartcardSuspendExcel(areatitle, headers, datas, title, areasub, sub);
+            this.excelService.generatSmartcardSuspendDurationExcel(areatitle, headers, datas, title, areasub, sub);
           } else if (response.status === 204) {
             this.swal.Success_204();
             this.rowData = [];
@@ -1318,7 +1343,7 @@ export class HistoryAllReportsComponent implements OnInit {
           if (response.status === 200) {
             this.rowData = response.body;
             console.log(this.reportTitle);
-            const title = (this.reportTitle).toUpperCase();
+            const title = (this.reportTitle ).toUpperCase();
             const sub = 'MSO ADDRESS:' + this.msodetails;
             let areatitle = '';
             let areasub = '';
@@ -1352,7 +1377,7 @@ export class HistoryAllReportsComponent implements OnInit {
         const data = window.URL.createObjectURL(blob);
         const link = document.createElement('a');
         link.href = data;
-        link.download = (this.reportTitle + ".pdf").toUpperCase();
+        link.download = ("DATE WISE SMARTCARD SUSPEND.pdf").toUpperCase();
         link.dispatchEvent(new MouseEvent('click', { bubbles: true, cancelable: true, view: window }));
         setTimeout(() => {
           window.URL.revokeObjectURL(data);

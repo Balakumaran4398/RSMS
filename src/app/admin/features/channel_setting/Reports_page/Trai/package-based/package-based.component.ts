@@ -101,6 +101,78 @@ export class PackageBasedComponent implements OnInit {
     this.todate = year + "-" + month + "-" + date
     console.log(this.todate);
   }
+  getPackage_AddonExcel() {
+    this.userService.getPackageModificationExcelReport(this.role, this.username, this.fromdate, this.todate, 1, this.packageType, 2)
+      .subscribe(
+        (response: HttpResponse<any[]>) => { // Expect HttpResponse<any[]>
+          console.log(this.type);
+          if (response.status === 200) {
+            this.rowData = response.body;
+            console.log(this.type);
+            const title = (this.type + ' REPORT').toUpperCase();
+            const sub = 'MSO ADDRESS:' + this.msodetails;
+            let areatitle = '';
+            let areasub = '';
+            let header: string[] = [];
+            const datas: Array<any> = [];
+            // if (this.type == 1) {
+            areatitle = 'A1:L2';
+            areasub = 'A3:L3';
+            header = ['S.NO', 'PACKAGE NAME PREVIOUS', 'PACKAGE NAME CURRENT', 'PACKAGE ID', 'RCAS PRODUCT ID', 'ENSCURITY PRODUCT', 'OLD CHANNEL LIST', 'NEW CHANNEL LIST', 'ADDED', 'REMOVED', 'UPDATED DATE', 'COUNT'];
+
+            this.rowData.forEach((d: any, index: number) => {
+              const row = [index + 1, d.packagenamepre, d.packagenamecur, d.packageid, d.rcasproductid, d.rcasproductid, d.channelnamepre, d.chanenlnamecur,d.addedchannels,d.removedchannels,d.updateddate,d.count];
+              console.log('type 1 and 4', row);
+              datas.push(row);
+            });
+
+            this.excelService.generateTraiPackageBaseExcel(areatitle, header, datas, title, areasub, sub);
+
+          } else if (response.status === 204) {
+            // this.swal.Success_204();
+            const title = (this.type + ' REPORT').toUpperCase();
+            const sub = 'MSO ADDRESS:' + this.msodetails;
+            let areatitle = '';
+            let areasub = '';
+            let header: string[] = [];
+            const datas: Array<any> = [];
+            // if (this.type == 1) {
+            areatitle = 'A1:L2';
+            areasub = 'A3:L3';
+            header = ['S.NO', 'PACKAGE NAME PREVIOUS', 'PACKAGE NAME CURRENT', 'PACKAGE ID', 'RCAS PRODUCT ID', 'ENSCURITY PRODUCT', 'OLD CHANNEL LIST', 'NEW CHANNEL LIST', 'ADDED', 'REMOVED', 'UPDATED DATE', 'COUNT'];
+            this.excelService.generateTraiPackageBaseExcel(areatitle, header, datas, title, areasub, sub);
+            this.rowData = [];
+          }
+        },
+        (error) => {
+          this.handleApiError(error);
+        }
+      );
+  }
+  getPackage_AddonPDF() {
+    this.userService.getPackageModificationPdfReport(this.role, this.username, this.fromdate, this.todate, 1, this.packageType, 1)
+      .subscribe((x: Blob) => {
+        const blob = new Blob([x], { type: 'application/pdf' });
+        const data = window.URL.createObjectURL(blob);
+        const link = document.createElement('a');
+        link.href = data;
+        link.download = (this.type + ".pdf").toUpperCase();
+        link.dispatchEvent(new MouseEvent('click', { bubbles: true, cancelable: true, view: window }));
+        setTimeout(() => {
+          window.URL.revokeObjectURL(data);
+          link.remove();
+        }, 100);
+      },
+        (error: any) => {
+          Swal.fire({
+            title: 'Error!',
+            text: error?.error?.message || 'There was an issue generating the PDF CAS form report.',
+            icon: 'error',
+            confirmButtonText: 'Ok'
+          });
+        });
+  }
+  // ============================SYNCHRONIZATION==========================
   getExcel() {
     if (this.file) {
       console.log(this.file);
@@ -130,22 +202,22 @@ export class PackageBasedComponent implements OnInit {
             };
             let header: string[] = [];
             const datas: Array<any> = [];
-            areatitle = 'A1:G2';
-            areasub = 'A3:G3';
-            header = ['SMARTCARD', 'PRODUCT ID', 'ACTIVATION DATE', 'EXPIRY DATE', 'ACTIVITY', 'STATUS', 'TYPE'];
+            areatitle = 'A1:H2';
+            areasub = 'A3:H3';
+            header = ['S.NO', 'SMARTCARD', 'PRODUCT ID', 'ACTIVATION DATE', 'EXPIRY DATE', 'ACTIVITY', 'STATUS', 'TYPE'];
 
-            this.rowData.forEach((d: any) => {
-              const row = [d.smartcard, d.orderid, d.logdate, d.expirydate, d.activity, d.status, d.type];
+            this.rowData.forEach((d: any, index: number) => {
+              const row = [index + 1, d.smartcard, d.orderid, d.logdate, d.expirydate, d.activity, d.status, d.type];
               datas.push(row);
             });
 
             // this.excelService.generateSynchronizationExcel( areatitle, header, datas, title,  areasub, sub, additionalSubheaders);
             this.excelService.generateSynchronizationExcel(
-              'A1:G2',
-              ['SMARTCARD', 'PRODUCT ID', 'ACTIVATION DATE', 'EXPIRY DATE', 'ACTIVITY', 'STATUS', 'TYPE'],
+              'A1:H2',
+              ['S.NO', 'SMARTCARD', 'PRODUCT ID', 'ACTIVATION DATE', 'EXPIRY DATE', 'ACTIVITY', 'STATUS', 'TYPE'],
               datas,
               title,
-              'A3:G3',
+              'A3:H3',
               sub,
               additionalSubheaders
             );
@@ -219,12 +291,12 @@ export class PackageBasedComponent implements OnInit {
             let header: string[] = [];
             const datas: Array<any> = [];
             // if (this.type == 1) {
-            areatitle = 'A1:G2';
-            areasub = 'A3:G3';
-            header = ['CHANNEL NAME PREVIOUS', 'CHANNEL NAME CURRENT', 'BROADCASTER NAME PREVIOUS', 'BROADCASTER NAME CURRENT', 'SERVICE ID PREVIOUS', 'SERVICE ID CURRENT', 'CREATED DATE'];
+            areatitle = 'A1:H2';
+            areasub = 'A3:H3';
+            header = ['S.NO', 'CHANNEL NAME PREVIOUS', 'CHANNEL NAME CURRENT', 'BROADCASTER NAME PREVIOUS', 'BROADCASTER NAME CURRENT', 'SERVICE ID PREVIOUS', 'SERVICE ID CURRENT', 'CREATED DATE'];
 
-            this.rowData.forEach((d: any) => {
-              const row = [d.channelnamepre, d.channelnamecur, d.broadcasternamepre, d.broadcasternamecur, d.serviceidpre, d.serviceidcur, d.createddate];
+            this.rowData.forEach((d: any, index: number) => {
+              const row = [index + 1, d.channelnamepre, d.channelnamecur, d.broadcasternamepre, d.broadcasternamecur, d.serviceidpre, d.serviceidcur, d.createddate];
               console.log('type 1 and 4', row);
               datas.push(row);
             });
@@ -232,7 +304,25 @@ export class PackageBasedComponent implements OnInit {
             this.excelService.generateTraiPackageBaseExcel(areatitle, header, datas, title, areasub, sub);
 
           } else if (response.status === 204) {
-            this.swal.Success_204();
+            // this.swal.Success_204();
+            const title = (this.type + ' REPORT').toUpperCase();
+            const sub = 'MSO ADDRESS:' + this.msodetails;
+            let areatitle = '';
+            let areasub = '';
+            let header: string[] = [];
+            const datas: Array<any> = [];
+            // if (this.type == 1) {
+            areatitle = 'A1:H2';
+            areasub = 'A3:H3';
+            header = ['S.NO', 'CHANNEL NAME PREVIOUS', 'CHANNEL NAME CURRENT', 'BROADCASTER NAME PREVIOUS', 'BROADCASTER NAME CURRENT', 'SERVICE ID PREVIOUS', 'SERVICE ID CURRENT', 'CREATED DATE'];
+
+            // this.rowData.forEach((d: any) => {
+            //   const row = [d.channelnamepre, d.channelnamecur, d.broadcasternamepre, d.broadcasternamecur, d.serviceidpre, d.serviceidcur, d.createddate];
+            //   console.log('type 1 and 4', row);
+            //   datas.push(row);
+            // });
+
+            this.excelService.generateTraiPackageBaseExcel(areatitle, header, datas, title, areasub, sub);
             this.rowData = [];
           }
         },
@@ -264,64 +354,78 @@ export class PackageBasedComponent implements OnInit {
           });
         });
   }
+
   getComboExcel() {
     this.userService.getComboModificationExcelReport(this.role, this.username, 2)
       .subscribe(
         (response: HttpResponse<any[]>) => {
           console.log(this.type);
-          if (response.status === 200) {
-            this.rowData = response.body;
-            console.log(this.rowData);
-            const title = (this.type + ' REPORT').toUpperCase();
-            const sub = 'MSO ADDRESS:' + this.msodetails;
-            let areatitle = '';
-            let areasub = '';
-            let header: string[] = [];
-            const datas: Array<any> = [];
-            if (this.rowData.addonlist && this.rowData.addonlist.length > 0) {
-              areatitle = 'A1:E2';
-              areasub = 'A3:E3';
-              header = ['CHANNEL ID', 'CHANNEL NAME', 'RATE'];
-              this.rowData.forEach((d: any) => {
-                const row = [d.addonlist.channelid, d.addonlist.channelname, d.addonlist.inramt];
-                console.log('addonlist', row);
-                datas.push(row);
-              });
-              // this.excelService.generateComboExcel(areatitle, header, datas, title, areasub, sub);
-            }
-            if (this.rowData.channellist && this.rowData.channellist.length > 0) {
-              areatitle = 'A1:E2';
-              areasub = 'A3:E3';
-              header = ['CHANNEL ID', 'CHANNEL NAME', 'RATE'];
-              this.rowData.channellist.forEach((d: any) => {
-                const row = [d.channelid, d.channelname, d.inramt];
-                console.log('channellist ', row);
-                datas.push(row);
-              });
-              // this.excelService.generateComboExcel(areatitle, header, datas, title, areasub, sub);
-            }
-            if (this.rowData.combomodificationlist && this.rowData.combomodificationlist.length > 0) {
-              areatitle = 'A1:D2';
-              areasub = 'A3:D3';
-              header = ['PACKAGE ID', 'PACKAGE NAME', 'PRODUCT TYPE', 'PRODUCT TYPE NAME'];
-              this.rowData.combomodificationlist.forEach((d: any) => {
-                const row = [d.packageid, d.packagename, d.producttype, d.producttypename];
-                console.log('combomodificationlist', row);
-                datas.push(row);
-              });
-            }
-            this.excelService.generateComboExcel(areatitle, header, datas, title, areasub, sub);
-          } else if (response.status === 204) {
-            this.swal.Success_204();
-            this.rowData = [];
-          }
-        },
+          this.rowData = response.body;
+          console.log(this.rowData);
 
+          const title = (this.type + ' REPORT').toUpperCase();
+          const sub = 'MSO ADDRESS:' + this.msodetails;
+
+          const datas: Array<any> = [];
+          const columns: any[] = [];
+
+          let areaTitle = 'A1:E2';
+          let areaSub = 'A3:E3';
+          console.log('addonlist');
+          // Handle Addon List
+          if (this.rowData.addonlist && this.rowData.addonlist.length > 0) {
+            columns.push(['S.NO', 'CHANNEL ID', 'CHANNEL NAME', 'RATE']);
+            this.rowData.addonlist.forEach((d: any, index: number) => {
+              const row = [index + 1, d.channelid, d.channelname, d.inramt];
+              console.log('addonlist', row);
+              datas.push(row);
+            });
+          } else {
+            columns.push(['S.NO', 'CHANNEL ID', 'CHANNEL NAME', 'RATE']);
+            datas.push(['No data available']); // Placeholders if no data exists
+          }
+          datas.push(['', '', '']); // Add a blank row to separate sections
+
+          console.log('channellist');
+
+          // Handle Channel List
+          if (this.rowData.channellist && this.rowData.channellist.length > 0) {
+            columns.push(['S.NO', 'CHANNEL ID', 'CHANNEL NAME', 'RATE']);
+            this.rowData.channellist.forEach((d: any, index: number) => {
+              const row = [index + 1, d.channelid, d.channelname, d.inramt];
+              console.log('channellist', row);
+              datas.push(row);
+            });
+          } else {
+            columns.push(['S.NO', 'CHANNEL ID', 'CHANNEL NAME', 'RATE']);
+            datas.push(['No data available']);
+          }
+          datas.push(['', '', '']);
+
+          console.log('combomodificationlist');
+
+          // Handle Combo Modification List
+          if (this.rowData.combomodificationlist && this.rowData.combomodificationlist.length > 0) {
+
+            columns.push(['S.NO', 'PACKAGE ID', 'PACKAGE NAME', 'PRODUCT TYPE', 'PRODUCT TYPE NAME']);
+            this.rowData.combomodificationlist.forEach((d: any, index: number) => {
+              const row = [index + 1, d.packageid, d.packagename, d.producttype, d.producttypename];
+              console.log('combomodificationlist', row);
+              datas.push(row);
+            });
+          } else {
+            columns.push(['S.NO', 'PACKAGE ID', 'PACKAGE NAME', 'PRODUCT TYPE', 'PRODUCT TYPE NAME']);
+            datas.push(['No data available']);
+          }
+
+          this.excelService.generateComboExcel(areaTitle, columns[0], datas, title, areaSub, sub,);
+        },
         (error) => {
           this.handleApiError(error);
         }
       );
   }
+
   getComboPDF() {
     console.log('type 1 and 4', this.type);
     this.userService.getComboModificationPdfReport(this.role, this.username, 1)
@@ -363,13 +467,13 @@ export class PackageBasedComponent implements OnInit {
             let header: string[] = [];
             const datas: Array<any> = [];
             // if (this.type == 1) {
-            areatitle = 'A1:I2';
-            areasub = 'A3:I3';
+            areatitle = 'A1:J2';
+            areasub = 'A3:J3';
             // header = ['CHANNEL ID', 'CHANNEL NAME', 'RATE'];
-            header = ['SMARTCARD', 'BOXID', 'PRODUCT ID', 'PRODUCT NAME', 'LOG DATE', 'ACTIVATION DATE', 'EXPIRY DATE', 'ACTIVITY', 'STATUS'];
+            header = ['S.NO', 'SMARTCARD', 'BOXID', 'PRODUCT ID', 'PRODUCT NAME', 'LOG DATE', 'ACTIVATION DATE', 'EXPIRY DATE', 'ACTIVITY', 'STATUS'];
 
-            this.rowData.forEach((d: any) => {
-              const row = [d.smartcard, d.boxid, d.orderid, d.packagename, d.logdate, d.logdate, d.expirydate, d.activity, d.status];
+            this.rowData.forEach((d: any, index: number) => {
+              const row = [index + 1, d.smartcard, d.boxid, d.orderid, d.packagename, d.logdate, d.logdate, d.expirydate, d.activity, d.status];
               console.log('type 1 and 4', row);
               datas.push(row);
             });
@@ -377,7 +481,18 @@ export class PackageBasedComponent implements OnInit {
             this.excelService.generateBouquetExcel(areatitle, header, datas, title, areasub, sub);
 
           } else if (response.status === 204) {
-            this.swal.Success_204();
+            // this.swal.Success_204();
+
+            const title = (this.type + '  REPORT').toUpperCase();
+            const sub = 'MSO ADDRESS:' + this.msodetails;
+            let areatitle = '';
+            let areasub = '';
+            let header: string[] = [];
+            const datas: Array<any> = [];
+            areatitle = 'A1:J2';
+            areasub = 'A3:J3';
+            header = ['S.NO', 'SMARTCARD', 'BOXID', 'PRODUCT ID', 'PRODUCT NAME', 'LOG DATE', 'ACTIVATION DATE', 'EXPIRY DATE', 'ACTIVITY', 'STATUS'];
+            this.excelService.generateBouquetExcel(areatitle, header, datas, title, areasub, sub);
             this.rowData = [];
           }
         },

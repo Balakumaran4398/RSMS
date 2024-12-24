@@ -211,97 +211,107 @@ export class OperatordialogueComponent implements OnInit {
     }
   }
   
+  
+
   getExcel() {
+    const generateExcelReport = (areatitle: string, areasub: string, header: string[], datas: any[]) => {
+      const title = (this.operatorname + ' - ' + this.OType + ' REPORT').toUpperCase();
+      const sub = 'MSO ADDRESS:' + this.msodetails;
+      this.excelService.generateOperatorDashboardExcel(areatitle, header, datas, title, areasub, sub);
+    };
+  
     this.userService.getOperatorDashboardExcelReport(this.role, this.username, this.type, 2, this.operatorid, 0, 0, 0)
-      .subscribe(
-        (response: HttpResponse<any[]>) => { // Expect HttpResponse<any[]>
-          console.log(this.type);
-          if (response.status === 200) {
-            this.rowData = response.body;
-            console.log(this.type);
-            const title = (this.operatorname + ' - ' + this.OType + ' REPORT').toUpperCase();
-            const sub = 'MSO ADDRESS:' + this.msodetails;
-            let areatitle = '';
-            let areasub = '';
-            let header: string[] = [];
-            const datas: Array<any> = [];
-            if (this.type == 1 || this.type == 4) {
-              areatitle = 'A1:K2';
-              areasub = 'A3:K3';
-              header = ['S.NO', 'SUBSCRIBER ID', 'SUBSCRIBER NAME', 'ADDRESS', 'AREA NAME', 'MOBILE NO', 'SMARTCARD', 'BOXID', 'ACTIVATION DATE', 'EXPIRY DATE', 'PACKAGE STATUS',];
-              this.rowData.forEach((d: any, index: number) => {
-                const row = [index + 1, d.subid, d.customername, d.address, d.areaname, d.mobileno, d.smartcard, d.boxid, d.activationdate, d.expirydate, d.statusdisplay];
-                datas.push(row);
-              });
-              this.excelService.generateOperatorDashboardExcel(areatitle, header, datas, title, areasub, sub);
-            } else if (this.type == 2 || this.type == 3) {
-              const title = (this.operatorname + ' - ' + this.OType + ' REPORT').toUpperCase();
-              areatitle = 'A1:J2';
-              areasub = 'A3:J3';
-              header = ['S.NO', 'SUBSCRIBER ID', 'SUBSCRIBER NAME', 'ADDRESS', 'MOBILE NO', 'SMARTCARD', 'BOXID', 'PACKAGE NAME', 'EXPIRY DATE', ' STATUS'];
-              this.rowData.forEach((d: any, index: number) => {
-                const row = [index + 1, d.subid, d.customername, d.address, d.mobileno, d.smartcard, d.boxid, d.productname, d.expirydate, d.statusdisplay];
-                datas.push(row);
-              });
-              this.excelService.generateOperatorDashboardExcel(areatitle, header, datas, title, areasub, sub);
-
-            } else if ( this.type == 5) {
-              areatitle = 'A1:K2';
-              areasub = 'A3:K3';
-              header = ['S.NO', 'SUB ID', 'OPERATOR NAME', 'CUSTOMER NAME', 'SMARTCARD', 'BOX ID', 'CAS NAME', 'PRODUCT NAME', 'PRODUCT ID', 'CREATION DATE', 'EXPIRY DATE'];
-              this.rowData.forEach((d: any, index: number) => {
-                const row = [index + 1, d.subid, d.operatorname, d.customername, d.smartcard, d.boxid, d.casname, d.productname, d.productid, d.creationdate, d.expirydate];
-                datas.push(row);
-              });
-              this.excelService.generateOperatorDashboardExcel(areatitle, header, datas, title, areasub, sub);
-            } else if (this.type == 6 || this.type == 7) {
-              areatitle = 'A1:E2';
-              areasub = 'A3:E3';
-              header = ['S.NO', 'SMARTCARD', 'BOX ID', 'CAS', 'ALLOCATION DATE'];
-              this.rowData.forEach((d: any, index: number) => {
-                const row = [index + 1, d.smartcard, d.boxid, d.casname, d.connectiondate];
-                datas.push(row);
-              });
-              this.excelService.generateOperatorDashboardExcel(areatitle, header, datas, title, areasub, sub);
-            }
-            else if (this.type == 9) {
-              areatitle = 'A1:F2';
-              areasub = 'A3:F3';
-              // header = ['S.NO', 'MOBILE NUMBER', 'RETAILER ID', 'RETAILER NAME', 'STATUS ', 'USERNAME'];
-              header = ['S.NO', 'RETAILER NAME', 'MOBILE NUMBER', 'AREA', 'USERNAME', 'BALANCE',];
-              this.rowData.forEach((d: any, index: number) => {
-                const row = [index + 1, d.retailername, d.mobileno, d.retailerid, d.username, d.balance];
-                datas.push(row);
-              });
-              this.excelService.generateOperatorDashboardExcel(areatitle, header, datas, title, areasub, sub);
-
-            }
-            else if (this.type == 11) {
-              areatitle = 'A1:F2';
-              areasub = 'A3:F3';
-              header = ['S.NO', 'SUBSCRIBER NAME', 'MOBILE NUMBER', 'SMARTCARD', 'BOX ID', 'EXPIRY DATE',];
-              this.rowData.forEach((d: any, index: number) => {
-                const row = [index + 1, d.retailername, d.mobileno, d.retailerid, d.username, d.balance];
-                datas.push(row);
-              });
-              this.excelService.generateOperatorDashboardExcel(areatitle, header, datas, title, areasub, sub);
-
-            }
-
-            // Uncomment below to generate the Excel report after integrating the Excel service
-
-
-          } else if (response.status === 204) {
-            this.swal.Success_204();
-            this.rowData = [];
+      .subscribe((response: HttpResponse<any[]>) => {
+        if (response.status === 200) {
+          this.rowData = response.body;
+          const datas: any[] = [];
+          let areatitle = '';
+          let areasub = '';
+          let header: string[] = [];
+  
+          const generateDataRows = (fields: string[], rowData: any[]) => {
+            rowData.forEach((d: any, index: number) => {
+              const row = fields.map(field => d[field]);
+              datas.push([index + 1, ...row]);
+            });
+          };
+  
+          if (this.type === 1 || this.type === 4) {
+            areatitle = 'A1:K2';
+            areasub = 'A3:K3';
+            header = ['S.NO', 'SUBSCRIBER ID', 'SUBSCRIBER NAME', 'ADDRESS', 'AREA NAME', 'MOBILE NO', 'SMARTCARD', 'BOXID', 'ACTIVATION DATE', 'EXPIRY DATE', 'PACKAGE STATUS'];
+            generateDataRows(['subid', 'customername', 'address', 'areaname', 'mobileno', 'smartcard', 'boxid', 'activationdate', 'expirydate', 'statusdisplay'], this.rowData);
+          } else if (this.type === 2 || this.type === 3) {
+            areatitle = 'A1:J2';
+            areasub = 'A3:J3';
+            header = ['S.NO', 'SUBSCRIBER ID', 'SUBSCRIBER NAME', 'ADDRESS', 'MOBILE NO', 'SMARTCARD', 'BOXID', 'PACKAGE NAME', 'EXPIRY DATE', 'STATUS'];
+            generateDataRows(['subid', 'customername', 'address', 'mobileno', 'smartcard', 'boxid', 'productname', 'expirydate', 'statusdisplay'], this.rowData);
+          } else if (this.type === 5) {
+            areatitle = 'A1:K2';
+            areasub = 'A3:K3';
+            header = ['S.NO', 'SUB ID', 'OPERATOR NAME', 'CUSTOMER NAME', 'SMARTCARD', 'BOX ID', 'CAS NAME', 'PRODUCT NAME', 'PRODUCT ID', 'CREATION DATE', 'EXPIRY DATE'];
+            generateDataRows(['subid', 'operatorname', 'customername', 'smartcard', 'boxid', 'casname', 'productname', 'productid', 'creationdate', 'expirydate'], this.rowData);
+          } else if (this.type === 6 || this.type === 7) {
+            areatitle = 'A1:E2';
+            areasub = 'A3:E3';
+            header = ['S.NO', 'SMARTCARD', 'BOX ID', 'CAS', 'ALLOCATION DATE'];
+            generateDataRows(['smartcard', 'boxid', 'casname', 'connectiondate'], this.rowData);
+          } else if (this.type === 9) {
+            areatitle = 'A1:F2';
+            areasub = 'A3:F3';
+            header = ['S.NO', 'RETAILER NAME', 'MOBILE NUMBER', 'AREA', 'USERNAME', 'BALANCE'];
+            generateDataRows(['retailername', 'mobileno', 'retailerid', 'username', 'balance'], this.rowData);
+          } else if (this.type === 11) {
+            areatitle = 'A1:F2';
+            areasub = 'A3:F3';
+            header = ['S.NO', 'SUBSCRIBER NAME', 'MOBILE NUMBER', 'SMARTCARD', 'BOX ID', 'EXPIRY DATE'];
+            generateDataRows(['retailername', 'mobileno', 'retailerid', 'username', 'balance'], this.rowData);
           }
-        },
-        (error) => {
-          this.handleApiError(error);
+  
+          generateExcelReport(areatitle, areasub, header, datas);
+        } else if (response.status === 204) {
+          const title = (this.operatorname + ' - ' + this.OType + ' REPORT').toUpperCase();
+          const sub = 'MSO ADDRESS:' + this.msodetails;
+          const datas: any[] = [];
+          let areatitle = '';
+          let areasub = '';
+          let header: string[] = [];
+  
+          // Handle empty data for no records
+          if (this.type === 1 || this.type === 4) {
+            areatitle = 'A1:K2';
+            areasub = 'A3:K3';
+            header = ['S.NO', 'SUBSCRIBER ID', 'SUBSCRIBER NAME', 'ADDRESS', 'AREA NAME', 'MOBILE NO', 'SMARTCARD', 'BOXID', 'ACTIVATION DATE', 'EXPIRY DATE', 'PACKAGE STATUS'];
+          } else if (this.type === 2 || this.type === 3) {
+            areatitle = 'A1:J2';
+            areasub = 'A3:J3';
+            header = ['S.NO', 'SUBSCRIBER ID', 'SUBSCRIBER NAME', 'ADDRESS', 'MOBILE NO', 'SMARTCARD', 'BOXID', 'PACKAGE NAME', 'EXPIRY DATE', 'STATUS'];
+          } else if (this.type === 5) {
+            areatitle = 'A1:K2';
+            areasub = 'A3:K3';
+            header = ['S.NO', 'SUB ID', 'OPERATOR NAME', 'CUSTOMER NAME', 'SMARTCARD', 'BOX ID', 'CAS NAME', 'PRODUCT NAME', 'PRODUCT ID', 'CREATION DATE', 'EXPIRY DATE'];
+          } else if (this.type === 6 || this.type === 7) {
+            areatitle = 'A1:E2';
+            areasub = 'A3:E3';
+            header = ['S.NO', 'SMARTCARD', 'BOX ID', 'CAS', 'ALLOCATION DATE'];
+          } else if (this.type === 9) {
+            areatitle = 'A1:F2';
+            areasub = 'A3:F3';
+            header = ['S.NO', 'RETAILER NAME', 'MOBILE NUMBER', 'AREA', 'USERNAME', 'BALANCE'];
+          } else if (this.type === 11) {
+            areatitle = 'A1:F2';
+            areasub = 'A3:F3';
+            header = ['S.NO', 'SUBSCRIBER NAME', 'MOBILE NUMBER', 'SMARTCARD', 'BOX ID', 'EXPIRY DATE'];
+          }
+  
+          generateExcelReport(areatitle, areasub, header, datas);
+          this.rowData = [];
         }
-      );
+      }, (error) => {
+        this.handleApiError(error);
+      });
   }
-
+  
   getRetailerExcel() {
 
   }

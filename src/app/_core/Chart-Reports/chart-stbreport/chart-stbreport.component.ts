@@ -199,15 +199,15 @@ export class ChartSTBReportComponent implements OnInit {
             console.log(this.type);
             if (this.type == 1 || this.type == 2) {
               console.log(this.type);
-              const areatitle = 'A1:J2';
-              const areasub = 'A3:J3';
+              const areatitle = 'A1:K2';
+              const areasub = 'A3:K3';
               const title = this.id + ' REPORT';
               const sub = 'MSO ADDRESS:' + this.msodetails;
-              const header = ['SUB ID', 'OPERATOR NAME', 'CUSTOMER NAME', 'SMARTCARD', 'BOX ID', 'CAS NAME', 'PRODUCT NAME', 'PRODUCT ID', 'ACTIVATION DATE', 'EXPIRY DATE'];
+              const header = ['S.NO','SUB ID', 'OPERATOR NAME', 'SUBSCRIBER NAME', 'SMARTCARD', 'BOX ID', 'CAS NAME', 'PRODUCT NAME', 'PRODUCT ID', 'ACTIVATION DATE', 'EXPIRY DATE'];
               const data = this.rowData;
               const datas: Array<any> = [];
-              data.forEach((d: any) => {
-                const row = [d.subid, d.operatorname, d.customername, d.smartcard, d.boxid, d.casname, d.productname, d.packageid, d.activationdate, d.expirydate];
+              data.forEach((d: any,index:number) => {
+                const row = [index+1,d.subid, d.operatorname, d.customername, d.smartcard, d.boxid, d.casname, d.productname, d.packageid, d.activationdate, d.expirydate];
                 console.log('type 1 and 2', row);
                 datas.push(row);
               });
@@ -215,29 +215,29 @@ export class ChartSTBReportComponent implements OnInit {
             } else if (this.type == 3) {
               console.log(this.type);
 
-              const areatitle = 'A1:G2';
-              const areasub = 'A3:G3';
+              const areatitle = 'A1:H2';
+              const areasub = 'A3:H3';
               const title = this.id + ' REPORT';
               const sub = 'MSO ADDRESS:' + this.msodetails;
-              const header = ['SUB ID', 'OPERATOR NAME', 'CUSTOMER NAME', 'SMARTCARD', 'BOX ID', 'CAS NAME', 'CREATION DATE'];
+              const header = ['S.NO','SUB ID', 'OPERATOR NAME', 'SUBSCRIBER NAME', 'SMARTCARD', 'BOX ID', 'CAS NAME', 'CREATION DATE'];
               const data = this.rowData;
               const datas: Array<any> = [];
-              data.forEach((d: any) => {
-                const row = [d.subid, d.operatorname, d.customername, d.smartcard, d.boxid, d.casname, d.createddate];
+              data.forEach((d: any,index:number) => {
+                const row = [index+1,d.subid, d.operatorname, d.customername, d.smartcard, d.boxid, d.casname, d.createddate];
                 console.log('type 3', row);
                 datas.push(row);
               });
               this.excelService.generateDashboardSTBExcel(areatitle, header, datas, title, areasub, sub);
             } else if (this.type == 4 || this.type == 5) {
-              const areatitle = 'A1:J2';
-              const areasub = 'A3:J3';
+              const areatitle = 'A1:K2';
+              const areasub = 'A3:K3';
               const title = this.id + ' REPORT';
               const sub = 'MSO ADDRESS:' + this.msodetails;
-              const header = ['SUB ID', 'OPERATOR NAME', 'CUSTOMER NAME', 'SMARTCARD', 'BOX ID', 'CAS NAME', 'PRODUCT NAME', 'PRODUCT ID', 'CREATION DATE', 'EXPIRY DATE'];
+              const header = ['S.NO','SUB ID', 'OPERATOR NAME', 'SUBSCRIBER NAME', 'SMARTCARD', 'BOX ID', 'CAS NAME', 'PRODUCT NAME', 'PRODUCT ID', 'CREATION DATE', 'EXPIRY DATE'];
               const data = this.rowData;
               const datas: Array<any> = [];
-              data.forEach((d: any) => {
-                const row = [d.subid, d.operatorname, d.customername, d.smartcard, d.boxid, d.casname, d.productname, d.casproductid, d.updateddate, d.expirydate];
+              data.forEach((d: any,index:number) => {
+                const row = [index+1,d.subid, d.operatorname, d.customername, d.smartcard, d.boxid, d.casname, d.productname, d.casproductid, d.updateddate, d.expirydate];
                 console.log('type 4 and 5', row);
                 datas.push(row);
               });
@@ -247,11 +247,11 @@ export class ChartSTBReportComponent implements OnInit {
               const areasub = 'A3:J3';
               const title = this.id + ' REPORT';
               const sub = 'MSO ADDRESS:' + this.msodetails;
-              const header = ['SUB ID', 'OPERATOR NAME', 'CUSTOMER NAME', 'MOBILE NUMBER', 'SMARTCARD', 'BOX ID', 'CAS NAME', 'PACKAGE', 'BLOCKED DATE', 'EXPIRY DATE'];
+              const header = ['S.N0','SUB ID', 'OPERATOR NAME', 'SUBSCRIBER NAME', 'MOBILE NUMBER', 'SMARTCARD', 'BOX ID', 'CAS NAME', 'PACKAGE', 'BLOCKED DATE', 'EXPIRY DATE'];
               const data = this.rowData;
               const datas: Array<any> = [];
-              data.forEach((d: any) => {
-                const row = [d.subid, d.operatorname, d.customername, d.mobileno, d.smartcard, d.boxid, d.casname, d.productname, d.blockeddate, d.expirydate];
+              data.forEach((d: any,index:number) => {
+                const row = [index+1,d.subid, d.operatorname, d.customername, d.mobileno, d.smartcard, d.boxid, d.casname, d.productname, d.blockeddate, d.expirydate];
                 console.log('type 6', row);
                 datas.push(row);
               });

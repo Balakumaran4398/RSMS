@@ -39,9 +39,11 @@
                                 style="color: rgb(1, 1, 14);font-weight: 600;">[{{operator?.operatorid}}]</span> - [
                             {{operator?.balance}}]
                         </div>
-                        <div class="sub-tittle mb-3 col-md-10" style="text-align: left;color: rgb(26, 23, 23);font-weight: 600;">
-                            Phone: <span style="color: rgb(19, 4, 104);">{{operator?.contactnumber1 || operator?.contactnumber2}}</span>
-                                
+                        <div class="sub-tittle mb-3 col-md-10"
+                            style="text-align: left;color: rgb(26, 23, 23);font-weight: 600;">
+                            Phone: <span style="color: rgb(19, 4, 104);">{{operator?.contactnumber1 ||
+                                operator?.contactnumber2}}</span>
+
                         </div>
                         <!-- <div  style="text-align: left;font-size: 15px; color: rgb(26, 23, 23); text-transform: capitalize;font-weight: 600;"
                             class="col-md-10"> &nbsp; Phone:
@@ -68,7 +70,7 @@
                                 <span class="separator">:</span>
                                 <span class="last">{{operator?.userid}}</span>
                             </p>
-                        
+
                             <p class="text">
                                 <span class="label label2">password</span>
                                 <span class="separator">:</span>
@@ -100,17 +102,21 @@
                             <mat-card class="inventory">
                                 <p>Box Inventory </p>
                                 <div class="row" style="display: flex;">
-                                    <div class="col-6">
+                                    <div class="col-6 tooltip-container" style="cursor: pointer;">
                                         <span style="font-size: 13px;"> In hand</span>
-                                        <mat-card class="card-inside">
+                                        <mat-card class="card-inside"
+                                            (click)="openDialog('box_in_hand',operator.operatorid)">
                                             <span style="color: var(--primary-color)">{{operator?.boxinhand}}</span>
                                         </mat-card>
+                                        <span class="tooltip">Box In Hand</span>
                                     </div>
-                                    <div class="col-6">
+                                    <div class="col-6 tooltip-container" style="cursor: pointer;">
                                         <span style="font-size: 13px;">Total</span>
-                                        <mat-card class="card-inside">
+                                        <mat-card class="card-inside"
+                                            (click)="openDialog('total_smartcard',operator.operatorid)">
                                             <span style="color: var(--primary-color)">{{operator?.totalbox}}</span>
                                         </mat-card>
+                                        <span class="tooltip">Total Box</span>
                                     </div>
                                 </div>
                             </mat-card>
@@ -221,7 +227,8 @@
                                 <span class="tooltip">Expired</span>
                             </div>
                         </div>
-                        <div class="col-2 vertical tooltip-container" (click)="openDialog('new_smartcard_connection',operator.operatorid)">
+                        <div class="col-2 vertical tooltip-container"
+                            (click)="openDialog('new_smartcard_connection',operator.operatorid)">
                             <div class="col-2 vertical tooltip-container">
                                 <p class="sub-text">New</p>
                                 <span style="color: #0e610b;">
@@ -230,7 +237,8 @@
                                 </span> <span class="tooltip">New</span>
                             </div>
                         </div>
-                        <div class="col-2 vertical tooltip-container" (click)="openDialog('block_smartcard_connection',operator.operatorid)">
+                        <div class="col-2 vertical tooltip-container"
+                            (click)="openDialog('block_smartcard_connection',operator.operatorid)">
                             <div class="col-2 vertical tooltip-container">
                                 <p class="sub-text">Block</p>
                                 <span style="color: #0e610b;">
@@ -238,30 +246,6 @@
                                             class="circle-text">{{operator?.blockcount}}</span></div>
                                 </span>
                                 <span class="tooltip">Block</span>
-                            </div>
-                        </div>
-                    </div>
-                    <span style="font-size: 17px;color: #000d33;">Inventory</span>
-                    <div class="report d-flex " style="justify-content: space-between;">
-                        <div class="col-6 vertical tooltip-container"
-                            (click)="openDialog('box_in_hand',operator.operatorid)">
-                            <p class="sub-text">Box in Hand</p>
-                            <div class="col-2 vertical tooltip-container">
-                                <span style="color: #0e610b;">
-                                    <div class="circle" style="background-color: rgb(36, 51, 138);"><span
-                                            class="circle-text">{{operator?.newcount}}</span></div>
-                                </span> <span class="tooltip">Box in Hand</span>
-                            </div>
-                        </div>
-                        <div class="col-6 vertical tooltip-container"
-                            (click)="openDialog('total_smartcard',operator.operatorid)">
-                            <p class="sub-text">Total Box</p>
-                            <div class="col-2 vertical tooltip-container">
-                                <span style="color: #0e610b;">
-                                    <div class="circle" style="background-color: rgb(77, 18, 23);"><span
-                                            class="circle-text">{{operator?.blockcount}}</span></div>
-                                </span>
-                                <span class="tooltip">Total Box</span>
                             </div>
                         </div>
                     </div>

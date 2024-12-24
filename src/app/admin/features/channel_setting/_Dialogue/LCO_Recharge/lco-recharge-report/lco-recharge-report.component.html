@@ -17,7 +17,7 @@
                 Date:</p>
             <mat-form-field appearance="outline" class="mx-2">
                 <mat-date-range-input [rangePicker]="picker" [max]="maxDate">
-                    <input matStartDate matInput placeholder="Start date" (dateChange)="getFromDate($event)">
+                    <input matStartDate matInput placeholder="Start date"  (dateChange)="getFromDate($event)">
                     <input matEndDate matInput placeholder="End date" (dateChange)="getToDate($event)">
                 </mat-date-range-input>
                 <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>

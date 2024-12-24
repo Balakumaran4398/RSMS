@@ -15,7 +15,7 @@
         <div class="col-12 col-md-6 d-flex justify-content-center align-items-center tooltip-container">
             <mat-form-field appearance="outline" style="width: 100%;">
                 <mat-date-range-input [rangePicker]="picker">
-                    <input matStartDate matInput placeholder="Start date" (dateChange)="getFromDate($event)">
+                    <input matStartDate matInput placeholder="Start date"  (dateChange)="getFromDate($event)">
                     <input matEndDate matInput placeholder="End date" (dateChange)="getToDate($event)">
                 </mat-date-range-input>
                 <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
@@ -25,14 +25,14 @@
         <div class="mobile">
             <div class="col-6 col-md-2 d-flex justify-content-center align-items-center tooltip-container"
                 style="cursor: pointer;margin-top: -4%;">
-                <div class="icon-container" (click)="getExcel()">
+                <div class="icon-container" (click)="getPackage_AddonExcel()">
                     <img src="/assets/images/icons/Excel.png" width="40px">
                     <div class="tooltip">Excel</div>
                 </div>
             </div>
             <div class="col-6 col-md-2 d-flex justify-content-center align-items-center tooltip-container"
                 style="cursor: pointer;margin-top: -4%;">
-                <div class="icon-container" (click)="getPDF()">
+                <div class="icon-container" (click)="getPackage_AddonPDF()">
                     <img src="/assets/images/icons/pdf.png" width="40px">
                     <div class="tooltip">Pdf</div>
                 </div>
@@ -92,10 +92,10 @@
             </div>
             <div class="col-4 col-md-2 d-flex justify-content-center align-items-center tooltip-container"
                 style="cursor: pointer;">
-                <!-- <div class="icon-container" (click)="getComboExcel()">
+                <div class="icon-container" (click)="getComboExcel()">
                     <img src="/assets/images/icons/Excel.png" width="40px">
                     <div class="tooltip">Excel</div>
-                </div> -->
+                </div>
             </div>
             <div class="col-4 col-md-2 d-flex justify-content-center align-items-center tooltip-container"
                 style="cursor: pointer;">
