@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, signal } from '@angular/core';
 
 @Component({
   selector: 'app-msoreports',
@@ -6,5 +6,16 @@ import { Component } from '@angular/core';
   styleUrls: ['./msoreports.component.scss']
 })
 export class MsoreportsComponent {
+step = signal(0);
+  setStep(index: number) {
+    this.step.set(index);
+  }
 
+  nextStep() {
+    this.step.update(i => i + 1);
+  }
+
+  prevStep() {
+    this.step.update(i => i - 1);
+  }
 }

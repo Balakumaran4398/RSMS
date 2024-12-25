@@ -17,7 +17,7 @@
                 Date:</p>
             <mat-form-field appearance="outline" class="mx-2">
                 <mat-date-range-input [rangePicker]="picker" [max]="maxDate">
-                    <input matStartDate matInput placeholder="Start date"  (dateChange)="getFromDate($event)">
+                    <input matStartDate matInput placeholder="Start date" (dateChange)="getFromDate($event)">
                     <input matEndDate matInput placeholder="End date" (dateChange)="getToDate($event)">
                 </mat-date-range-input>
                 <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
@@ -48,7 +48,7 @@
                     [value]="selectedOperator?.name">
 
                 <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayOperator">
-                    <!-- <mat-option value="0" selcted>All Operator</mat-option> -->
+                    <mat-option value="0" selcted >All Operator</mat-option>
                     <mat-option *ngFor="let operator of filteredOperators" [value]="operator.name"
                         (click)="onoperaRechargelLog(operator)">
                         {{ operator.name }}
@@ -77,10 +77,9 @@
         </div>
         <div class="col-12 col-md-12 align-items-center justify-content-center responsive-container mb-3"
             style="margin: auto;">
-            <ag-grid-angular #agGrid id="myGrid" style="text-align: center;" domLayout='autoHeight'
-                class="ag-theme-alpine table-class" rowAnimation [gridOptions]="gridOptions"
-                (gridReady)="onGridReady($event)" [columnDefs]="columnDefs" [rowData]="rowData"
-                [enableCellTextSelection]="true">
+            <ag-grid-angular #agGrid id="myGrid" domLayout='autoHeight' class="ag-theme-alpine table-class" rowAnimation
+                [gridOptions]="gridOptions" (gridReady)="onGridReady($event)" [columnDefs]="columnDefs"
+                [rowData]="rowData" [enableCellTextSelection]="true">
             </ag-grid-angular>
         </div>
 
@@ -173,9 +172,9 @@
 
         <div class="col-12 col-md-12 align-items-center justify-content-center responsive-container mb-3"
             style="margin: auto;">
-            <ag-grid-angular #agGrid id="myGrid" style="text-align: center;" domLayout='autoHeight'
-                class="ag-theme-alpine table-class" rowAnimation [gridOptions]="gridOptions" [columnDefs]="columnDefs"
-                [rowData]="rowData" [enableCellTextSelection]="true">
+            <ag-grid-angular #agGrid id="myGrid" domLayout='autoHeight' class="ag-theme-alpine table-class" rowAnimation
+                [gridOptions]="gridOptions" [columnDefs]="columnDefs" [rowData]="rowData"
+                [enableCellTextSelection]="true">
             </ag-grid-angular>
         </div>
         <div class="col-12 col-md-12 d-flex align-items-center justify-content-center" style="background-color: #c0d3d3;height: 31px;
@@ -227,9 +226,9 @@
 
         <div class="col-12 col-md-12 align-items-center justify-content-center responsive-container mb-3"
             style="margin: auto;">
-            <ag-grid-angular #agGrid id="myGrid" style="text-align: center;" domLayout='autoHeight'
-                class="ag-theme-alpine table-class" rowAnimation [gridOptions]="gridOptions" [columnDefs]="columnDefs"
-                [rowData]="rowData" [enableCellTextSelection]="true">
+            <ag-grid-angular #agGrid id="myGrid" domLayout='autoHeight' class="ag-theme-alpine table-class" rowAnimation
+                [gridOptions]="gridOptions" [columnDefs]="columnDefs" [rowData]="rowData"
+                [enableCellTextSelection]="true">
             </ag-grid-angular>
         </div>
     </div>

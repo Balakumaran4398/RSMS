@@ -86,9 +86,7 @@ body {
     width: auto !important;
 }
 
-.ag-header-column-resize {
-    color: darkgreen;
-}
+
 
 .chart {
     margin: 10px 0px;
@@ -159,7 +157,9 @@ body {
 //     // background: #b2cfc0;
 //     background: #b2cfc0;
 // }
-
+.ag-header-column-resize {
+    color: darkgreen;
+}
 .ag-root-wrapper {
     border-radius: 7px !important;
 }
@@ -168,12 +168,11 @@ body {
     align-items: center;
     justify-content: center;
 }
-
 .ag-header-row {
     color: #000 !important;
     // color: #fff !important;
-    align-items: center;
-    text-align: center;
+    align-items: left;
+    text-align: left;
 }
 
 .tooltip-container {

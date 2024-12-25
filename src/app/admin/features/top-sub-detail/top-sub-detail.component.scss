@@ -1,6 +1,42 @@
 ::ng-deep {
     .ag-center-cols-viewport {
-        max-height: 300px !important;
+        max-height: 500px !important;
         overflow: scroll;
     }
 }
+.row {
+    display: flex;
+    flex-wrap: wrap; /* Ensures rows break when width is constrained */
+    margin: 0; /* Avoid extra spacing */
+}
+
+.col-12 {
+    flex: 0 0 100%;
+    max-width: 100%;
+}
+
+.col-md-6 {
+    flex: 0 0 50%;
+    max-width: 50%;
+}
+
+.col-lg-4 {
+    flex: 0 0 33.3333%;
+    max-width: 33.3333%;
+}
+
+/* Responsive adjustments */
+@media (max-width: 992px) {
+    .col-lg-4 {
+        flex: 0 0 50%;
+        max-width: 50%;
+    }
+}
+
+@media (max-width: 768px) {
+    .col-md-6 {
+        flex: 0 0 100%;
+        max-width: 100%;
+    }
+}
+

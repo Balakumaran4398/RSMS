@@ -30,8 +30,15 @@ export class SubloginComponent {
   submit() {
     if (this.form.valid) {
       const { userid, password } = this.form.value;
-
-      this.userservice.checkLoginCredenticals(this.role, this.username, userid, password,1).subscribe(
+      let requestBody = {
+        role: this.role,
+        username: this.username,
+        userid: userid,
+        password: password,
+        type: 1
+      }
+      // this.userservice.checkLoginCredenticals(this.role, this.username, userid, password,1).subscribe(
+        this.userservice.checkLoginCredenticals(requestBody).subscribe(
         (res: any) => {
           Swal.fire({
             title: 'Login Successful',

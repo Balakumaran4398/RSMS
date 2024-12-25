@@ -9,6 +9,7 @@ import Swal from 'sweetalert2';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { RefundComponent } from '../refund/refund.component';
 import { D } from 'node_modules1/@angular/cdk/keycodes';
+import { SwalService } from 'src/app/_core/service/swal.service';
 
 
 @Component({
@@ -29,7 +30,7 @@ export class LoginrefundComponent {
   pairBoxList: any[] = [];
   pairSmartcardList: any[] = [];
   planType: any[] = [];
-  constructor(public dialogRef: MatDialogRef<LoginrefundComponent>, @Inject(MAT_DIALOG_DATA) public data: any, private userservice: BaseService, private storageservice: StorageService, private fb: FormBuilder, private router: Router, public dialog: MatDialog,) {
+  constructor(public dialogRef: MatDialogRef<LoginrefundComponent>, @Inject(MAT_DIALOG_DATA) public data: any,private swal: SwalService, private userservice: BaseService, private storageservice: StorageService, private fb: FormBuilder, private router: Router, public dialog: MatDialog,) {
     this.role = storageservice.getUserRole();
     this.username = storageservice.getUsername();
     this.form = fb.group({
@@ -60,8 +61,53 @@ export class LoginrefundComponent {
   submit() {
     if (this.form.valid) {
       const { userid, password } = this.form.value;
+      let requestBody = {
+        role: this.role,
+        username: this.username,
+        userid: userid,
+        password: password,
+        type: 1,
+      }
+      // this.userservice.checkLoginCredenticals(this.role, this.username, userid, password, 1).subscribe(
+      //   (res: any) => {
+      //     Swal.fire({
+      //       title: 'Login Successful',
+      //       text: res?.message || 'You will be redirected shortly.',
+      //       icon: 'success',
+      //       timer: 1000,
+      //       showConfirmButton: false
+      //     }).then(() => {
+      //       this.closeLoginPage();
 
-      this.userservice.checkLoginCredenticals(this.role, this.username, userid, password, 1).subscribe(
+      //       const dialogRef = this.dialog.open(RefundComponent, {
+      //         data: res?.message,
+      //         width: '500px'
+      //       });
+      //       console.log();
+
+      //       dialogRef.afterClosed().subscribe((result) => {
+      //         if (result && result.success) {
+      //           console.log('Dialog result:', result);
+      //           // Use the returned data
+      //         } else {
+      //           console.log('Dialog was closed without action or success.');
+      //         }
+      //       });
+
+      //     });
+      //   },
+      //   (error: any) => {
+      //     // Handle login failure
+      //     Swal.fire({
+      //       title: 'Login Failed',
+      //       text: error?.error?.message || 'Username or password is incorrect. Please try again.',
+      //       icon: 'error',
+      //       confirmButtonText: 'Retry'
+      //     });
+      //     console.log('Error:', error?.error?.message);
+      //   }
+      // );
+      this.userservice.checkLoginCredenticals(requestBody).subscribe(
         (res: any) => {
           Swal.fire({
             title: 'Login Successful',
@@ -98,8 +144,8 @@ export class LoginrefundComponent {
             confirmButtonText: 'Retry'
           });
           console.log('Error:', error?.error?.message);
-        }
-      );
+        
+        });
     } else {
       Swal.fire({
         title: 'Invalid Form',

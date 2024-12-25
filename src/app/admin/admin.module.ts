@@ -160,6 +160,8 @@ import { PackageBasedComponent } from "./features/channel_setting/Reports_page/T
 import { SubscriptionBasedComponent } from "./features/channel_setting/Reports_page/Trai/subscription-based/subscription-based.component";
 import { BroadcasterReportsComponent } from "./features/channel_setting/Reports_page/Trai/broadcaster-reports/broadcaster-reports.component";
 import { HistoryAllReportsComponent } from "./features/channel_setting/Reports_page/Trai/History/history-all-reports/history-all-reports.component";
+import { MsoreportsComponent } from "./features/channel_setting/Reports/msoreports/msoreports.component";
+import { TopSubLoginComponent } from "./features/top_sub_login/top-sub-login/top-sub-login.component";
 @NgModule({
     declarations: [
         AdminBaseComponent, NavComponent, HomeComponent, NavbarComponent, MsodetailsComponent, CasmasterComponent,
@@ -171,7 +173,7 @@ import { HistoryAllReportsComponent } from "./features/channel_setting/Reports_p
         // -------------------------------------Top_subscriber_Details------------------------------------
         TopSubDetailComponent,
         // -----------------------------------------operator----------------------------------
-        OperatorlistComponent, OperatorDetailsComponent, LcoRechargeComponent, EditLcoComponent, SpecialPermissionComponent, NewLcoComponent, NewstreetComponent,
+        OperatorlistComponent, OperatorDetailsComponent, LcoRechargeComponent, TopSubLoginComponent,EditLcoComponent, SpecialPermissionComponent, NewLcoComponent, NewstreetComponent,
         AddLcoBusinessComponent, LcodashboardComponent, LcochartComponent, LcopiechartComponent, OperatordialogueComponent, StreetComponent, EditareaComponent,
         OperatorcancelsubreportComponent, LoginrefundComponent,
         // --------------LCO RECHARGE-----------------
@@ -221,7 +223,7 @@ import { HistoryAllReportsComponent } from "./features/channel_setting/Reports_p
         TaxComponent, ProofComponent, ProofdetailsComponent, TaxdetailsComponent, LogindialogueComponent, EditDismembershipComponent, SpecialBulkpackageComponent,
         SpecialcancelsubscriptionComponent, SpecialareachangeComponent, SpeciallcochangeComponent, SpecialeditbulkpackageComponent, SpeciallcotransferComponent,
         // =====================================================Reports=========================================
-        TraiReportComponent, SubscriptionBasedComponent, HistoryReportsComponent, PackageBasedComponent, BroadcasterReportsComponent, HistoryAllReportsComponent],
+        TraiReportComponent, SubscriptionBasedComponent, HistoryReportsComponent, PackageBasedComponent, BroadcasterReportsComponent, HistoryAllReportsComponent,MsoreportsComponent],
     imports: [
         CommonModule,
         CoreModule,

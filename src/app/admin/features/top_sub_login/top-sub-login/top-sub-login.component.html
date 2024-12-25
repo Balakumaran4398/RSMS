@@ -1,0 +1,23 @@
+<div class="container " *ngIf="!isLoggedIn">
+    <div class="row justify-content-center align-items-center" style="height: 80vh;">
+   
+      <form class="form" [formGroup]="form">
+        <p class="title">CHECK MSO</p>
+        <input placeholder="Username" class="username input" type="text" formControlName="userid" />
+        <div *ngIf="form.get('userid')?.invalid && form.get('userid')?.touched" class="text-danger">
+          <small>Username is required.</small>
+        </div>
+        <input placeholder="Password" class="password input" type="password" formControlName="password" />
+        <div *ngIf="form.get('password')?.invalid && form.get('password')?.touched" class="text-danger">
+          <small>Password is required.</small>
+        </div>
+        <div class="col-12 col-md-6 d-flex justify-content-between align-items-center mb-3" style="gap: 20px;">
+          <button class="btn" type="submit" (click)="submit()" [disabled]="form.invalid">
+            Login
+          </button>
+          <button class="btn" type="button" (click)="exit()">Exit</button>
+        </div>
+      </form>
+  
+    </div>
+  </div>

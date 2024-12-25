@@ -54,18 +54,30 @@ export class BroadcasterReportsComponent implements OnInit {
   }
   gridApi: any;
 
+  isVisible: boolean = false;
+
+  castype: any;
+  casname: any = '';
+  cas: any[] = [];
+  filteredCasList: { name: string; id: number }[] = [];
+
   constructor(private route: ActivatedRoute, private swal: SwalService, private excelService: ExcelService, private location: Location,
     public userService: BaseService, private cdr: ChangeDetectorRef, public storageservice: StorageService) {
     this.allType = this.route.snapshot.paramMap.get('id');
-    console.log('dfdsfdsfdsf', this.allType);
     this.username = storageservice.getUsername();
     this.role = storageservice.getUserRole();
-    // this.type = data.type
   }
   onNoClick(): void {
     // this.dialogRef.close(this.returndata);
   }
   ngOnInit(): void {
+    this.userService.Finger_print_List(this.role, this.username).subscribe((data: any) => {
+      console.log(data);
+      this.cas = Object.entries(data[0].caslist).map(([key, value]) => ({ name: key, id: value }));
+      console.log(this.cas);
+
+      this.filteredCasList = this.cas;
+    })
     this.userService.BroadcasterList(this.role, this.username, 1).subscribe((data: any) => {
       console.log(data);
       this.broadcasterList = data.map((item: any) => ({
@@ -106,6 +118,30 @@ export class BroadcasterReportsComponent implements OnInit {
         this.reportTitle = 'Unknown Report';
     }
   }
+  setVisible(value: boolean, selectedType: string = '0') {
+    this.isVisible = value;
+    this.type = selectedType;
+    switch (this.type) {
+      case '0':
+        this.reportTitle = 'Cas Grouped';
+        break;
+      case '1':
+        this.reportTitle = 'Cas Combined';
+        break;
+      case '2':
+        this.reportTitle = 'Channel Wise';
+        break;
+      case '3':
+        this.reportTitle = 'Channel wise DPO';
+        break;
+      case '4':
+        this.reportTitle = 'AddonWise Channel';
+        break;
+      default:
+        this.reportTitle = 'CAS Grouped';
+    }
+  }
+
   columnDefs = [
     { headerName: "S.No", lockPosition: true, valueGetter: 'node.rowIndex+1', headerCheckboxSelection: true, checkboxSelection: true, width: 90 },
     { headerName: 'PRODUCT NAME', field: 'productname', width: 350 },
@@ -165,11 +201,15 @@ export class BroadcasterReportsComponent implements OnInit {
   onGridReady(params: { api: any; }) {
     this.gridApi = params.api;
   }
-  onSearchChange(event: any) {
+  onSearchBroadcaster(event: any) {
     this.searchTerm = event.target.value;
-    this.filteredBraoadcasterList = this.filteredBraoadcaster();
+    this.filteredBraoadcasterList = this.filteredBroadcaster();
   }
-  filteredBraoadcaster(): { name: string; id: number }[] {
+  onSearchCas(event: any) {
+    this.searchTerm = event.target.value;
+    this.filteredCasList = this.filteredcas();
+  }
+  filteredBroadcaster(): { name: string; id: number }[] {
     if (!this.searchTerm) {
       return this.broadcasterList;
     }
@@ -177,12 +217,27 @@ export class BroadcasterReportsComponent implements OnInit {
       casItem.name.toLowerCase().includes(this.searchTerm.toLowerCase())
     );
   }
-  onSelectionFingerPrint(selectedValue: any) {
+  filteredcas(): { name: string; id: number }[] {
+    if (!this.searchTerm) {
+      return this.cas;
+    }
+    return this.cas.filter(casItem =>
+      casItem.name.toLowerCase().includes(this.searchTerm.toLowerCase())
+    );
+  }
+  onSelectionBroadcaster(selectedValue: any) {
     console.log(selectedValue);
     this.broadcasterid = selectedValue.value;
     this.broadcastername = selectedValue.name;
-    console.log(this.broadcastername);
     console.log(this.broadcasterid);
+
+  }
+  onSelectioncas(selectedValue: any) {
+    console.log(selectedValue);
+    this.castype = selectedValue.id;
+    this.casname = selectedValue.name;
+    console.log(this.castype);
+
   }
 
 
@@ -220,7 +275,12 @@ export class BroadcasterReportsComponent implements OnInit {
       { value: '04', name: 'All' }
     ];
   }
-
+  onVisible() {
+    this.userService.getBroadcasterVisible(this.role, this.username, this.selectedMonth, this.selectedYear).subscribe((data: any) => {
+      console.log(data);
+      this.isVisible = data;
+    })
+  }
 
 
   generateYears() {
@@ -236,10 +296,33 @@ export class BroadcasterReportsComponent implements OnInit {
   }
 
   getExcel() {
+    this.userService.getBroadcasterReport(this.role, this.username, this.selectedMonth, this.selectedYear, this.selectedDate, this.broadcasterid, this.allType, 2).subscribe((data: any) => {
+      console.log(data);
 
+
+    })
   }
   getPDF() {
-
+    this.userService.getBroadcasterPDFReport(this.role, this.username, this.selectedMonth, this.selectedYear, this.selectedDate, this.broadcasterid, this.allType, 1).subscribe((x: Blob) => {
+        const blob = new Blob([x], { type: 'application/pdf' });
+        const data = window.URL.createObjectURL(blob);
+        const link = document.createElement('a');
+        link.href = data;
+        link.download = (this.reportTitle + ".pdf").toUpperCase();
+        link.dispatchEvent(new MouseEvent('click', { bubbles: true, cancelable: true, view: window }));
+        setTimeout(() => {
+          window.URL.revokeObjectURL(data);
+          link.remove();
+        }, 100);
+      },
+        (error: any) => {
+          Swal.fire({
+            title: 'Error!',
+            text: error?.error?.message || 'There was an issue generating the PDF CAS form report.',
+            icon: 'error',
+            confirmButtonText: 'Ok'
+          });
+        });
   }
   // ---------------------------------------Universal report-------------------------
 

@@ -1,8 +1,8 @@
-
+<!-- 
 <section class="row">
     <div class="col-12 col-sm-12 col-md-12 d-flex align-items-center justify-content-center">
         <div class="row w-100">
-            <div class="col-12 col-md-4 mb-4">
+            <div class="col-12 col-sm-4 mb-4">
                 <div>
                     <h5 class="text-center text-md-left">TOP BASE PACKAGE</h5>
                     <ag-grid-angular domLayout="autoHeight" [enableCellTextSelection]="true"
@@ -11,13 +11,13 @@
                         (gridReady)="onGridReady($event)"></ag-grid-angular>
                 </div>
             </div>
-            <div class="col-12 col-md-4 mb-4">
+            <div class="col-12 col-sm-4 mb-4">
                 <h5 class="text-center text-md-left">TOP ADD-ON PACKAGE</h5>
                 <ag-grid-angular domLayout="autoHeight" [enableCellTextSelection]="true" style="width:100%;"
                     [columnDefs]="columnDefs" [gridOptions]="gridOptions"  [rowData]="addonRowData" 
                     class="ag-theme-alpine table-class" (gridReady)="onGridReady($event)"></ag-grid-angular>
             </div>
-            <div class="col-12 col-md-4 mb-4">
+            <div class="col-12 col-sm-4 mb-4">
                 <h5 class="text-center text-md-left">TOP ALACARTE</h5>
                 <ag-grid-angular domLayout="autoHeight" [enableCellTextSelection]="true" style="width:100%;"
                     [columnDefs]="columnDefs" [gridOptions]="gridOptions"  [rowData]="alacarteRowData"
@@ -25,4 +25,52 @@
             </div>
         </div>
     </div>
-</section>
+</section> -->
+
+<div class="col-xl-12 col-sm-12 col-12 mb-3">
+    <div class="card">
+        <div class="card-body">
+            <div class="row">
+                <div class="col">
+                    <app-stb-chart></app-stb-chart>
+                    <!-- jkjhk -->
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="card">
+    <section class="row">
+        <!-- <div class="col-12">
+            <div class="row"> -->
+                <!-- Base Package -->
+                <div class="col-12 col-md-6 col-lg-4 mb-4">
+                    <h5 class="text-center text-md-left">TOP BASE PACKAGE</h5>
+                    <ag-grid-angular domLayout="autoHeight" [enableCellTextSelection]="true" [columnDefs]="columnDefs"
+                        [gridOptions]="gridOptions" [rowData]="baseRowData" class="ag-theme-alpine table-class"
+                        (gridReady)="onGridReady($event)">
+                    </ag-grid-angular>
+                </div>
+
+                <!-- Add-On Package -->
+                <div class="col-12 col-md-6 col-lg-4 mb-4">
+                    <h5 class="text-center text-md-left">TOP ADD-ON PACKAGE</h5>
+                    <ag-grid-angular domLayout="autoHeight" [enableCellTextSelection]="true" [columnDefs]="columnDefs"
+                        [gridOptions]="gridOptions" [rowData]="addonRowData" class="ag-theme-alpine table-class"
+                        (gridReady)="onGridReady($event)">
+                    </ag-grid-angular>
+                </div>
+
+                <!-- Alacarte -->
+                <div class="col-12 col-md-6 col-lg-4 mb-4">
+                    <h5 class="text-center text-md-left">TOP ALACARTE</h5>
+                    <ag-grid-angular domLayout="autoHeight" [enableCellTextSelection]="true" [columnDefs]="columnDefs"
+                        [gridOptions]="gridOptions" [rowData]="alacarteRowData" class="ag-theme-alpine table-class"
+                        (gridReady)="onGridReady($event)">
+                    </ag-grid-angular>
+                </div>
+            <!-- </div>
+        </div> -->
+    </section>
+</div>

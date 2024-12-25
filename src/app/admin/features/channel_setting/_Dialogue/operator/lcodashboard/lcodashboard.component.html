@@ -130,12 +130,12 @@
                                         </option>
                                     </select> -->
 
-                                    <select name="packages" id="packages" (change)="onPackageSelect($event)"
+                                    <select name="packages" id="packages" (ngModelChange)="onPackageSelect($event)"
                                         [(ngModel)]="package">
                                         <option value="">Selected Package</option>
-                                        <option *ngFor="let pack of packageid"
-                                            [value]="pack.basePackage || pack.addonPackage || pack.alacartePackage">
-                                            {{ getPackageName(pack) }}
+                                        <option *ngFor="let pack of packageid"  [value]="pack.value">
+                                            <!-- {{ getPackageName(pack) }} -->
+                                              {{pack.label}}
                                         </option>
                                     </select>
 
@@ -183,7 +183,7 @@
         <div class="col-12 col-md-12 ">
             <div class="col-12 col-md-12 mx-2 mb-3">
                 <div class="mb-2" style="padding: 0.5rem;background-color: #213d4d;">
-                    <h5 style="color: white;font-weight: 600;">Packagewise Recharge Count </h5>
+                    <h5 style="color: white;font-weight: 600;">CURRENT YEAR PACKAGE WISE RECHARGE COUNT </h5>
                 </div>
                 <div class="card1 ">
                     <!-- <h4 style="text-align: center;">Packagewise Recharge Count</h4>

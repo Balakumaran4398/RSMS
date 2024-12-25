@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute } from '@angular/router';
 import { DataService } from 'src/app/_core/service/Data.service';
@@ -48,10 +48,15 @@ export class LcodashboardComponent implements OnInit {
   role: any;
   username: any;
   package: any = 2;
+  // packageid: any[] = [
+  //   { basePackage: 2 },
+  //   { addonPackage: 3 },
+  //   { alacartePackage: 4 }
+  // ];
   packageid: any[] = [
-    { basePackage: 2 },
-    { addonPackage: 3 },
-    { alacartePackage: 4 }
+    { lable: "basePackage", value: 2 },
+    { lable: "addonPackage", value: 3 },
+    { lable: "alacartePackage", value: 4 },
   ];
 
   rowData: any[] = [];
@@ -70,7 +75,7 @@ export class LcodashboardComponent implements OnInit {
   Areapincode: any;
   Areaid: any;
   public rowSelection: any = "multiple";
-  constructor(private route: ActivatedRoute, private swal: SwalService, private dataService: DataService, public dialog: MatDialog, private userservice: BaseService, private storageservice: StorageService) {
+  constructor(private route: ActivatedRoute, private swal: SwalService, private cdr: ChangeDetectorRef, private dataService: DataService, public dialog: MatDialog, private userservice: BaseService, private storageservice: StorageService) {
     this.role = storageservice.getUserRole();
     this.username = storageservice.getUsername();
   }
@@ -105,7 +110,7 @@ export class LcodashboardComponent implements OnInit {
       console.log(data);
       this.isactive = data.find((item: any) => item)?.isactive;
       console.log(this.isactive);
-      
+
       this.Areaname = data.find((item: any) => item)?.name;
       this.Areapincode = data.find((item: any) => item)?.pincode;
       this.Areaid = data.find((item: any) => item)?.id;
@@ -379,10 +384,13 @@ export class LcodashboardComponent implements OnInit {
   //   return packageObj[Object.keys(packageObj)[0]];
   // }
 
+
   onPackageSelect(event: any): void {
     const selectedPackageId = event?.target?.value ?? this.package;
-    console.log('Selected Package ID:', selectedPackageId); this.userservice.getPackagewiseRechargeDetailsforPiechart(this.role, this.username, this.package, this.operatorid)
+    console.log('Selected Package ID:', selectedPackageId);
+    this.userservice.getPackagewiseRechargeDetailsforPiechart(this.role, this.username, this.package, this.operatorid)
       .subscribe((data: any) => {
+        this.cdr.detectChanges();
         if (!data || !data['rechargelist'] || data['rechargelist'].length === 0) {
           Swal.fire({
             icon: 'warning',
@@ -440,10 +448,8 @@ export class LcodashboardComponent implements OnInit {
           };
 
         }
-
       });
   }
-
 
   columnDefs: any[] = [
     {
@@ -463,12 +469,12 @@ export class LcodashboardComponent implements OnInit {
       // }
       cellRenderer: (params: { value: any; data: any }) => {
         const status = params.data?.statusdisplay === 'Active';
-    
+
         const toggleContainer = document.createElement('div');
         toggleContainer.style.display = 'flex';
         toggleContainer.style.alignItems = 'center';
         toggleContainer.style.justifyContent = 'center';
-    
+
         const toggleSwitch = document.createElement('div');
         toggleSwitch.style.width = '45px';
         toggleSwitch.style.height = '20px';
@@ -477,7 +483,7 @@ export class LcodashboardComponent implements OnInit {
         toggleSwitch.style.position = 'relative';
         toggleSwitch.style.cursor = 'pointer';
         toggleSwitch.style.transition = 'background-color 0.3s ease';
-    
+
         const toggleCircle = document.createElement('div');
         toggleCircle.style.width = '15px';
         toggleCircle.style.height = '15px';
@@ -488,23 +494,23 @@ export class LcodashboardComponent implements OnInit {
         toggleCircle.style.transform = 'translateY(-50%)';
         toggleCircle.style.left = status ? 'calc(100% - 22px)' : '3px';
         toggleCircle.style.transition = 'left 0.3s ease';
-    
+
         toggleSwitch.appendChild(toggleCircle);
-    
+
         // toggleSwitch.addEventListener('click', () => {
         //     const newStatus = !status;
         //     params.data.statusdisplay = newStatus ? 'Active' : 'Deactive';
-    
+
         //     // Update styles
         //     toggleSwitch.style.backgroundColor = newStatus ? '#4CAF50' : '#616060';
         //     toggleCircle.style.left = newStatus ? 'calc(100% - 22px)' : '3px';
         // });
-    
+
         toggleContainer.appendChild(toggleSwitch);
         return toggleContainer;
       }
-    
-    
+
+
 
     },
     {

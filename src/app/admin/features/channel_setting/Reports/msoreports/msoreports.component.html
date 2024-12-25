@@ -1,38 +1,107 @@
+<h4>MSO REPORTS</h4>
 <section>
-    <div class="container">
-      <div class="card front-face">
-        <header>
-          <span class="logo">
-            <!--<img src="images/logo.png" alt="" />-->
-            <h5>Platinum Card</h5>
-          </span>
-         <!--<img src="images/chip.png" alt="" class="chip" />-->
-        </header>
-        <div class="card-details">
-          <div class="name-number">
-            <h6>Card Number</h6>
-            <h5 class="number">3024 1233 5010 2055</h5>
-            <h5 class="name">Customers Name</h5>
-          </div>
-          <div class="valid-date">
-            <h6>Valid Thru</h6>
-            <h5>08/27</h5>
-          </div>
+  <mat-accordion class="example-headers-align">
+    <mat-expansion-panel [expanded]="step() === 0" (opened)="setStep(0)" hideToggle>
+      <mat-expansion-panel-header>
+        <mat-panel-title class="text2">LCO BILL REPORTS</mat-panel-title>
+      </mat-expansion-panel-header>
+      <!-- <h5>PRODUCT HISTORY</h5> -->
+      <div class="cardContainer">
+        <div class="card"><i class="fas fa-layer-group"></i>
+          <div><strong>Recharge/Deduction <br> Report - Including GST</strong> </div>
         </div>
+        <div class="card"><i class="fas fa-cube"></i>
+          <div><strong>Recharge Invoice Report</strong> </div>
+        </div>
+        <div class="card"><i class="fas fa-calendar-alt"></i>
+          <div><strong>Recharge History Report</strong> </div>
+        </div>
+        <div class="card"><i class="fas fa-file-invoice"></i>
+          <div><strong>Operator Online Payment</strong> </div>
+        </div>
+        <div class="card"><i class="fas fa-clipboard-list"></i>
+          <div><strong> Subscriber Online <br> Payment History</strong> </div>
+        </div>
+        <div class="card"><i class="fas fa-clipboard-list"></i>
+          <div><strong> Sublco Online <br> Payment History</strong> </div>
+        </div>
+        <div class="card"><i class="fas fa-clipboard-list"></i>
+          <div><strong> Sublco Offline <br> Payment History</strong> </div>
+        </div>
+        <div class="card"><i class="fas fa-clipboard-list"></i>
+          <div><strong> Wallet Share Report</strong> </div>
+        </div>
+        <div class="card"><i class="fas fa-clipboard-list"></i>
+          <div><strong>Monthly Datewise <br> Payment Collection Report</strong> </div>
+        </div>
+        <div class="card"><i class="fas fa-clipboard-list"></i>
+          <div><strong>Subscriber Bill</strong> </div>
+        </div>
+        <div class="card"><i class="fas fa-clipboard-list"></i>
+          <div><strong>User Recharge History</strong> </div>
+        </div>
+        <div class="card"><i class="fas fa-clipboard-list"></i>
+          <div><strong>Unpair Smartcard <br> Recharge Details</strong> </div>
+        </div>
+        
       </div>
-      <div class="card back-face">
-        <h6>
-          For customer service call +633 5050 4040 or email at
-          contact@mastercard.com
-        </h6>
-        <span class="magnetic-strip"></span>
-        <div class="signature"><i>077</i></div>
-        <h5>
-          Lorem ipsum dolor sit amet, consectetur adipisicing elit. Officia
-          maiores sed doloremque nesciunt neque beatae voluptatibus doloribus.
-          Libero et quis magni magnam nihil temporibus? Facere consectetur
-          dolore reiciendis et veniam.
-        </h5>
+    </mat-expansion-panel>
+  </mat-accordion>
+</section>
+<section>
+  <mat-accordion class="example-headers-align">
+    <mat-expansion-panel [expanded]="step() === 0" (opened)="setStep(0)" hideToggle>
+      <mat-expansion-panel-header>
+        <mat-panel-title class="text2">PACKAGE REPORTS</mat-panel-title>
+      </mat-expansion-panel-header>
+      <!-- <h5>SMARTCARD HISTORY</h5> -->
+      <div class="cardContainer">
+        <div class="card"><i class="fas fa-rocket"></i>
+          <div><strong>Lcowise Expiry <br> Count Difference</strong> </div>
+        </div>
+        <div class="card"><i class="fas fa-ban"></i>
+          <div><strong>Customer Activation Form</strong> </div>
+        </div>
+        <div class="card"> <i class="fas fa-cloud-upload-alt"></i>
+          <div><strong>Lcowise Active <br> Subscription Count</strong> </div>
+        </div>
+        <!-- <div class="card"><i class="fas fa-th-list"></i>
+          <div><strong>Alacarte Log</strong> </div>
+        </div>
+        <div class="card"><i class="fas fa-file-alt"></i>
+          <div><strong>Box Update Report</strong> </div>
+        </div> -->
       </div>
-    </div>
-  </section>
+    </mat-expansion-panel>
+  </mat-accordion>
+</section>
+<section>
+  <mat-accordion class="example-headers-align">
+    <mat-expansion-panel [expanded]="step() === 0" (opened)="setStep(0)" hideToggle>
+      <mat-expansion-panel-header>
+        <mat-panel-title class="text2">PACKAGE COUNT REPORTS</mat-panel-title>
+      </mat-expansion-panel-header>
+      <!-- <h5>CAS OPERATION HISTORY</h5> -->
+      <div class="cardContainer">
+        <div class="card"><i class="fas fa-check-circle"></i>
+          <div><strong>Total Lco </strong> </div>
+        </div>
+        <div class="card"><i class="fas fa-tv"></i>
+          <div><strong>Lco Transfer Details</strong> </div>
+        </div>
+        <!-- <div class="card"><i class="fas fa-file-upload"></i>
+          <div><strong>Invertory Upload Report</strong> </div>
+        </div>
+        <div class="card"><i class="fas fa-store"></i>
+          <div><strong>Smartcard Update History</strong> </div>
+        </div>
+        <div class="card"><i class="fas fa-boxes"></i>
+          <div><strong>Force Tuning History</strong> </div>
+        </div>
+        <div class="card"><i class="fas fa-exclamation-circle"></i>
+          <div><strong>Not Allocated Smartcard</strong> </div>
+        </div> -->
+      </div>
+    </mat-expansion-panel>
+  </mat-accordion>
+</section>

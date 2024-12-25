@@ -96,6 +96,7 @@ export class BaseService {
   LCOLogin(role: any, username: any, userid: any, password: any, type: any): Observable<any[]> {
     return this.http.get<any[]>(BASE_URL + "/operator/CheckRechargeCredentials?role=" + role + "&username=" + username + "&userid=" + userid + "&password=" + password + "&type=" + type)
   }
+ 
   getRechargeDetailsByFdTdOpid(role: any, username: any, fromdate: any, todate: any, operatorid: any): Observable<HttpResponse<any[]>> {
     return this.http.get<any[]>(BASE_URL + "/operator/GetRechargeDetailsByFdTdOpid?role=" + role + "&username=" + username + "&fromdate=" + fromdate + "&todate=" + todate + "&operatorid=" + operatorid, { observe: 'response' })
   }
@@ -581,9 +582,13 @@ export class BaseService {
     return this.http.post<any[]>(
       BASE_URL + "/subscriber/lcotransferSinglesmartcard?role=" + role + "&username=" + username + "&operatorid=" + operatorid + "&oldsubid=" + oldsubid + "&newsubid=" + newsubid + "&withsubscription=" + withsubscription + "&smartcard=" + smartcard + "&retailerid=" + retailerid + "&type=" + type, {});
   }
-  checkLoginCredenticals(role: any, username: any, userid: any, password: boolean, type: any): Observable<any[]> {
-    return this.http.post<any[]>(
-      BASE_URL + "/subscriber/checkLoginCredenticals?role=" + role + "&username=" + username + "&userid=" + userid + "&password=" + password + "&type=" + type, {});
+  // checkLoginCredenticals(role: any, username: any, userid: any, password: boolean, type: any): Observable<any[]> {
+  //   return this.http.post<any[]>(
+  //     BASE_URL + "/subscriber/checkLoginCredenticals?role=" + role + "&username=" + username + "&userid=" + userid + "&password=" + password + "&type=" + type, {});
+  // }
+
+  checkLoginCredenticals(requestBody: any): Observable<HttpResponse<any[]>> {
+    return this.http.post<any[]>(BASE_URL + "/subscriber/checkLoginCredenticals", requestBody, { observe: "response" });
   }
   PairSmartcardOrBoxid(role: any, username: any, ischeck: any, smartcard: boolean, boxid: any, retailerid: any, type: any): Observable<any[]> {
     return this.http.post<any[]>(
@@ -1511,6 +1516,20 @@ export class BaseService {
     return this.http.get(BASE_URL + "/report/GetSuspendHistoryReport?role=" + role + "&username=" + username + "&fromdate=" + fromdate + "&todate=" + todate + "&smartcard=" + smartcard + "&reporttype=" + reporttype, { responseType: 'blob' });
   }
   // ============================================================Broadcaster report==============================
+  // -----------------------------------------Monthly broadcaster reception--------------------------------------
+  getBroadcasterReport(role: any, username: any, month: any, year: any, datetype: any, broadcasterid: any, type: any, reporttype: any): Observable<HttpResponse<any[]>> {
+    return this.http.get<any[]>(BASE_URL + "/report/getBroadcasterReport?role=" + role + "&username=" + username + "&month=" + month + "&year=" + year + "&datetype=" + datetype + "&broadcasterid=" + broadcasterid + "&type=" + type + "&reporttype=" + reporttype, { observe: 'response' });
+  }
+  getBroadcasterPDFReport(role: any, username: any, month: any, year: any, datetype: any, broadcasterid: any, type: any, reporttype: any): Observable<Blob> {
+    return this.http.get(BASE_URL + "/report/getBroadcasterReport?role=" + role + "&username=" + username + "&month=" + month + "&year=" + year + "&datetype=" + datetype + "&broadcasterid=" + broadcasterid + "&type=" + type + "&reporttype=" + reporttype, { responseType: 'blob' });
+  }
+  getBroadcasterVisible(role: any, username: any, month: any, year: any): Observable<HttpResponse<any[]>> {
+    return this.http.get<any[]>(BASE_URL + "/report/getIsvisible?role=" + role + "&username=" + username + "&month=" + month + "&year=" + year, { observe: 'response' });
+  }
+  // -----------------------------------------Over all product report--------------------------------------
+  getOverallBaseReport(role: any, username: any, month: any, year: any, datetype: any, reporttype: any): Observable<HttpResponse<any[]>> {
+    return this.http.get<any[]>(BASE_URL + "/report/getOverallBaseReport?role=" + role + "&username=" + username + "&month=" + month + "&year=" + year + "&datetype=" + datetype + "&reporttype=" + reporttype, { observe: 'response' });
+  }
   // ------------------------------------------------Universal Report-------------------------------------
   getUniversalExcelReport(role: any, username: any, month: any, year: any, datetype: any, reporttype: any): Observable<HttpResponse<any[]>> {
     return this.http.get<any[]>(BASE_URL + "/report/getOverallUniversalReport?role=" + role + "&username=" + username + "&month=" + month + "&year=" + year + "&datetype=" + datetype + "&reporttype=" + reporttype, { observe: 'response' });

@@ -40,7 +40,8 @@
                             <label for="">Select Week</label>
                         </div>
                         <div class="col-12 col-md-6">
-                            <select name="date" id="date" [(ngModel)]="selectedDate" [disabled]="isDateDisabled">
+                            <select name="date" id="date" [(ngModel)]="selectedDate" [disabled]="isDateDisabled"
+                                (ngModelChange)="onVisible()">
                                 <option value="0" selected>Select Date</option>
                                 <option *ngFor="let date of Date" [value]="date.value">{{ date.name }}
                                 </option>
@@ -53,88 +54,90 @@
                         </div>
                         <div class="col-12 col-md-6">
                             <input type="text" placeholder="Select a Broadcaster" [(ngModel)]="broadcastername"
-                                (input)="onSearchChange($event)" [matAutocomplete]="auto" class="example-input">
+                                (input)="onSearchBroadcaster($event)" [matAutocomplete]="auto" class="example-input">
 
                             <mat-autocomplete #auto="matAutocomplete">
-                                <mat-option *ngFor="let casItem of filteredBraoadcaster()" [value]="casItem.name"
-                                    (click)="onSelectionFingerPrint(casItem)">
+                                <mat-option *ngFor="let casItem of filteredBroadcaster()" [value]="casItem.name"
+                                    (click)="onSelectionBroadcaster(casItem)">
                                     {{ casItem.name }}
                                 </mat-option>
                             </mat-autocomplete>
                         </div>
                     </div>
-                    <div class="input_box display1 mb-3">
-                        <div class="col-6 col-md-6">
-                            <span style="color: #243359;" for="">CAS Grouped</span>
-                        </div>
-                        <div class="col-6 col-md-6 display1">
-                            <div class="export-icon col-6 col-md-3 mx-2" (click)="getExcel()">
-                                <img src="/assets/images/icons/Excel.png" alt="Excel Icon" width="40px">
-                                <div class="tooltip">Excel</div>
+                    <div *ngIf="isVisible">
+                        <div *ngIf="type == '0'" class="input_box display1 mb-3">
+                            <div class="col-6 col-md-6">
+                                <span style="color: #243359;" for="">CAS Grouped</span>
                             </div>
-                            <div class="export-icon col-6 col-md-3" (click)="getPDF()">
-                                <img src="/assets/images/icons/pdf.png" alt="PDF Icon" width="40px">
-                                <div class="tooltip">Pdf</div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="input_box display1 mb-3">
-                        <div class="col-6 col-md-6">
-                            <span style="color: #243359;" for="">CAS Combined</span>
-                        </div>
-                        <div class="col-6 col-md-6 display1">
-                            <div class="export-icon col-6 col-md-3 mx-2" (click)="getExcel()">
-                                <img src="/assets/images/icons/Excel.png" alt="Excel Icon" width="40px">
-                                <div class="tooltip">Excel</div>
-                            </div>
-                            <div class="export-icon col-6 col-md-3" (click)="getPDF()">
-                                <img src="/assets/images/icons/pdf.png" alt="PDF Icon" width="40px">
-                                <div class="tooltip">Pdf</div>
+                            <div class="col-6 col-md-6 display1">
+                                <div class="export-icon col-6 col-md-3 mx-2" (click)="getExcel()">
+                                    <img src="/assets/images/icons/Excel.png" alt="Excel Icon" width="40px">
+                                    <div class="tooltip">Excel</div>
+                                </div>
+                                <div class="export-icon col-6 col-md-3" (click)="getPDF()">
+                                    <img src="/assets/images/icons/pdf.png" alt="PDF Icon" width="40px">
+                                    <div class="tooltip">Pdf</div>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                    <div class="input_box display1 mb-3">
-                        <div class="col-6 col-md-6">
-                            <span style="color: #243359;" for="">Channel wise</span>
-                        </div>
-                        <div class="col-6 col-md-6 display1">
-                            <div class="export-icon col-6 col-md-3 mx-2" (click)="getExcel()">
-                                <img src="/assets/images/icons/Excel.png" alt="Excel Icon" width="40px">
-                                <div class="tooltip">Excel</div>
+                        <div *ngIf="type == '1'" class="input_box display1 mb-3">
+                            <div class="col-6 col-md-6">
+                                <span style="color: #243359;" for="">CAS Combined</span>
                             </div>
-                            <div class="export-icon col-6 col-md-3" (click)="getPDF()">
-                                <img src="/assets/images/icons/pdf.png" alt="PDF Icon" width="40px">
-                                <div class="tooltip">Pdf</div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="input_box display1 mb-3">
-                        <div class="col-6 col-md-6">
-                            <span style="color: #243359;" for="">Channel wise DPO</span>
-                        </div>
-                        <div class="col-6 col-md-6 display1">
-                            <div class="export-icon col-6 col-md-3 mx-2" (click)="getExcel()">
-                                <img src="/assets/images/icons/Excel.png" alt="Excel Icon" width="40px">
-                                <div class="tooltip">Excel</div>
-                            </div>
-                            <div class="export-icon col-6 col-md-3" (click)="getPDF()">
-                                <img src="/assets/images/icons/pdf.png" alt="PDF Icon" width="40px">
-                                <div class="tooltip">Pdf</div>
+                            <div class="col-6 col-md-6 display1">
+                                <div class="export-icon col-6 col-md-3 mx-2" (click)="getExcel()">
+                                    <img src="/assets/images/icons/Excel.png" alt="Excel Icon" width="40px">
+                                    <div class="tooltip">Excel</div>
+                                </div>
+                                <div class="export-icon col-6 col-md-3" (click)="getPDF()">
+                                    <img src="/assets/images/icons/pdf.png" alt="PDF Icon" width="40px">
+                                    <div class="tooltip">Pdf</div>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                    <div class="input_box display1 mb-3">
-                        <div class="col-6 col-md-6">
-                            <span style="color: #243359;" for="">AddonWise Channel</span>
-                        </div>
-                        <div class="col-6 col-md-6 display1">
-                            <div class="export-icon col-6 col-md-3 mx-2" (click)="getExcel()">
-                                <img src="/assets/images/icons/Excel.png" alt="Excel Icon" width="40px">
-                                <div class="tooltip">Excel</div>
+                        <div *ngIf="type == '2'" class="input_box display1 mb-3">
+                            <div class="col-6 col-md-6">
+                                <span style="color: #243359;" for="">Channel wise</span>
                             </div>
-                            <div class="export-icon col-6 col-md-3" (click)="getPDF()">
-                                <img src="/assets/images/icons/pdf.png" alt="PDF Icon" width="40px">
-                                <div class="tooltip">Pdf</div>
+                            <div class="col-6 col-md-6 display1">
+                                <div class="export-icon col-6 col-md-3 mx-2" (click)="getExcel()">
+                                    <img src="/assets/images/icons/Excel.png" alt="Excel Icon" width="40px">
+                                    <div class="tooltip">Excel</div>
+                                </div>
+                                <div class="export-icon col-6 col-md-3" (click)="getPDF()">
+                                    <img src="/assets/images/icons/pdf.png" alt="PDF Icon" width="40px">
+                                    <div class="tooltip">Pdf</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div *ngIf="type == '3'" class="input_box display1 mb-3">
+                            <div class="col-6 col-md-6">
+                                <span style="color: #243359;" for="">Channel wise DPO</span>
+                            </div>
+                            <div class="col-6 col-md-6 display1">
+                                <div class="export-icon col-6 col-md-3 mx-2" (click)="getExcel()">
+                                    <img src="/assets/images/icons/Excel.png" alt="Excel Icon" width="40px">
+                                    <div class="tooltip">Excel</div>
+                                </div>
+                                <div class="export-icon col-6 col-md-3" (click)="getPDF()">
+                                    <img src="/assets/images/icons/pdf.png" alt="PDF Icon" width="40px">
+                                    <div class="tooltip">Pdf</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div *ngIf="type == '4'" class="input_box display1 mb-3">
+                            <div class="col-6 col-md-6">
+                                <span style="color: #243359;" for="">AddonWise Channel</span>
+                            </div>
+                            <div class="col-6 col-md-6 display1">
+                                <div class="export-icon col-6 col-md-3 mx-2" (click)="getExcel()">
+                                    <img src="/assets/images/icons/Excel.png" alt="Excel Icon" width="40px">
+                                    <div class="tooltip">Excel</div>
+                                </div>
+                                <div class="export-icon col-6 col-md-3" (click)="getPDF()">
+                                    <img src="/assets/images/icons/pdf.png" alt="PDF Icon" width="40px">
+                                    <div class="tooltip">Pdf</div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -436,11 +439,11 @@
                         </div>
                         <div class="col-12 col-md-6">
                             <input type="text" placeholder="Select a Broadcaster" [(ngModel)]="broadcastername"
-                                (input)="onSearchChange($event)" [matAutocomplete]="auto" class="example-input">
+                                (input)="onSearchBroadcaster($event)" [matAutocomplete]="auto" class="example-input">
 
                             <mat-autocomplete #auto="matAutocomplete">
-                                <mat-option *ngFor="let casItem of filteredBraoadcaster()" [value]="casItem.name"
-                                    (click)="onSelectionFingerPrint(casItem)">
+                                <mat-option *ngFor="let casItem of filteredBroadcaster()" [value]="casItem.name"
+                                    (click)="onSelectionBroadcaster(casItem)">
                                     {{ casItem.name }}
                                 </mat-option>
                             </mat-autocomplete>
@@ -451,12 +454,23 @@
                             <label for="">CAS</label>
                         </div>
                         <div class="col-12 col-md-6">
-                            <input type="text" placeholder="Select a Broadcaster" [(ngModel)]="broadcastername"
-                                (input)="onSearchChange($event)" [matAutocomplete]="auto" class="example-input">
+                            <!-- <input type="text" placeholder="Select a Cas"[(ngModel)]="broadcastername"
+                                (input)="onSearchBroadcaster($event)" [matAutocomplete]="auto" class="example-input">
 
                             <mat-autocomplete #auto="matAutocomplete">
-                                <mat-option *ngFor="let casItem of filteredBraoadcaster()" [value]="casItem.name"
-                                    (click)="onSelectionFingerPrint(casItem)">
+                                <mat-option *ngFor="let casItem of filteredBroadcaster()" [value]="casItem.name"
+                                    (click)="onSelectionBroadcaster(casItem)">
+                                    {{ casItem.name }}
+                                </mat-option>
+                            </mat-autocomplete> -->
+
+                            <input type="text" placeholder="Search an CAS" (input)="onSearchCas($event)"
+                                [value]="casname" [matAutocomplete]="auto1" class="example-input">
+
+                            <mat-autocomplete #auto1="matAutocomplete">
+                                <mat-option value=" " selected>Select a Cas type</mat-option>
+                                <mat-option *ngFor="let casItem of filteredcas()" [value]="casItem.name"
+                                    (click)="onSelectioncas(casItem)">
                                     {{ casItem.name }}
                                 </mat-option>
                             </mat-autocomplete>

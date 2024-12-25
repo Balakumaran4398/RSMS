@@ -1,34 +1,22 @@
-import { Component, Inject } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Component } from '@angular/core';
+import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-
 import { BaseService } from 'src/app/_core/service/base.service';
 import { StorageService } from 'src/app/_core/service/storage.service';
 import Swal from 'sweetalert2';
-import { SubscriberdialogueComponent } from '../subscriberdialogue/subscriberdialogue.component';
-import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
-
 
 @Component({
-  selector: 'app-lcologinpage',
-  templateUrl: './lcologinpage.component.html',
-  styleUrls: ['./lcologinpage.component.scss']
+  selector: 'app-top-sub-login',
+  templateUrl: './top-sub-login.component.html',
+  styleUrls: ['./top-sub-login.component.scss']
 })
-export class LcologinpageComponent {
-
+export class TopSubLoginComponent {
   form!: FormGroup;
   isLoggedIn = false; // Track login status
 
   username: any;
   role: any;
-  type: any;
-  newSubid: any;
-  subId: any;
-  detailsList: any[] = [];
-  pairBoxList: any[] = [];
-  pairSmartcardList: any[] = [];
-  planType: any[] = [];
-  constructor(public dialogRef: MatDialogRef<LcologinpageComponent>, @Inject(MAT_DIALOG_DATA) public data: any, private userservice: BaseService, private storageservice: StorageService, private fb: FormBuilder, private router: Router, public dialog: MatDialog,) {
+  constructor(private userservice: BaseService, private storageservice: StorageService, private fb: FormBuilder, private router: Router) {
     this.role = storageservice.getUserRole();
     this.username = storageservice.getUsername();
     this.form = fb.group({
@@ -37,16 +25,6 @@ export class LcologinpageComponent {
       role: this.role,
       username: this.username
     })
-    console.log(data);
-    this.type = data.type;
-    this.newSubid = data.newsubid;
-    this.subId = data.subId;
-    this.detailsList = data.detailsList;
-    this.pairBoxList = data.pairBoxlist
-    this.pairSmartcardList = data.pairSmartcardlist;
-    this.planType = data.plantype;
-    console.log(this.detailsList);
-
   }
 
   ngOnInit() {
@@ -55,9 +33,8 @@ export class LcologinpageComponent {
       password: ['', Validators.required], // password is required
     });
   }
-
-
-  submit() {  
+  submit() {
+    console.log('submit ');
     if (this.form.valid) {
       const { userid, password } = this.form.value;
       let requestBody = {
@@ -65,39 +42,29 @@ export class LcologinpageComponent {
         username: this.username,
         userid: userid,
         password: password,
-        type: 1,
+        type: 4,
       }
-      // this.userservice.checkLoginCredenticals(this.role, this.username, userid, password, 1).subscribe(
+      // this.userservice.checkLoginCredenticals(this.role, this.username, userid, password, 4).subscribe(
         this.userservice.checkLoginCredenticals(requestBody).subscribe(
         (res: any) => {
+          const role = this.storageservice.getUserRole();
+          const user = this.storageservice.getUser();
           Swal.fire({
             title: 'Login Successful',
             text: res?.message || 'You will be redirected shortly.',
             icon: 'success',
             timer: 1000,
-            showConfirmButton: false
+            showConfirmButton: false,
           }).then(() => {
-            let dialogData = {
-              type: this.type,
-              detailsList: this.detailsList,
-              newsubid: this.newSubid,
-              subId: this.subId,
-              pairBoxlist: this.pairBoxList,
-              pairSmartcardlist: this.pairSmartcardList,
-              plantype: this.planType,
-            };
-            const dialogRef = this.dialog.open(SubscriberdialogueComponent, {
-              data: dialogData,
-              width: '500px'
-            });
-            dialogRef.afterClosed().subscribe(result => {
-              console.log('The dialog was closed', result);
-            });
-            this.onNoClick();
+            if (role === 'ROLE_ADMIN' || role === 'ROLE_RECEPTION') {
+              this.router.navigate(['admin/top_sub_detail']).then(() => {
+                console.log('Navigated to lcorecharge page');
+              });
+            }
           });
+
         },
         (error: any) => {
-          // Handle login failure
           Swal.fire({
             title: 'Login Failed',
             text: error?.error?.message || 'Username or password is incorrect. Please try again.',
@@ -107,7 +74,8 @@ export class LcologinpageComponent {
           console.log('Error:', error?.error?.message);
         }
       );
-    } else {
+    }
+    else {
       Swal.fire({
         title: 'Invalid Form',
         text: 'Please fill in all required fields.',
@@ -115,10 +83,6 @@ export class LcologinpageComponent {
         confirmButtonText: 'OK'
       });
     }
-  }
-
-  onNoClick(): void {
-    this.dialogRef.close();
   }
 
   exit() {
@@ -135,7 +99,7 @@ export class LcologinpageComponent {
       cancelButtonText: 'Cancel'
     }).then((result) => {
       if (result.isConfirmed) {
-        if (role === 'ROLE_USER' || role === 'ROLE_RECEPTION') {
+        if (role === 'ROLE_ADMIN' || role === 'ROLE_RECEPTION') {
           this.router.navigate(['admin/home']).then(() => {
           });
         }

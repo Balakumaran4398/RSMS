@@ -292,7 +292,7 @@ export class OperatorDetailsComponent implements OnInit {
     console.log(detailsList);
     console.log(detailsList.operatorname);
 
-    let dialogData = { type: type, detailsList: this.operator_details, operator: detailsList.operatorid,operatorname: detailsList.operatorname, };
+    let dialogData = { type: type, detailsList: this.operator_details, operatorid: detailsList.operatorid,operatorname: detailsList.operatorname, };
     console.log(dialogData);
     const dialogRef = this.dialog.open(OperatordialogueComponent, {
       width: '500px',

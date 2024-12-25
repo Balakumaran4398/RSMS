@@ -2,7 +2,7 @@
   <div class="row justify-content-center align-items-center" style="height: 80vh;">
  
     <form class="form" [formGroup]="form">
-      <p class="title">CHECK MSO</p>
+      <p class="title">CHECK LCO</p>
       <input placeholder="Username" class="username input" type="text" formControlName="userid" />
       <div *ngIf="form.get('userid')?.invalid && form.get('userid')?.touched" class="text-danger">
         <small>Username is required.</small>

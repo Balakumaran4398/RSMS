@@ -104,8 +104,8 @@ export class OperatordialogueComponent implements OnInit {
     this.OType = data.type;
     console.log('datya', data);
 
-    this.operatorid = data.operator;
-    this.operatorname = data.operatorname;
+    this.operatorid = data.operatorid;
+    this.operatorname = data.type;
     console.log(data);
     console.log('operatorid', this.operatorid);
     console.log('operatorname', this.operatorname);
@@ -242,10 +242,10 @@ export class OperatordialogueComponent implements OnInit {
             header = ['S.NO', 'SUBSCRIBER ID', 'SUBSCRIBER NAME', 'ADDRESS', 'AREA NAME', 'MOBILE NO', 'SMARTCARD', 'BOXID', 'ACTIVATION DATE', 'EXPIRY DATE', 'PACKAGE STATUS'];
             generateDataRows(['subid', 'customername', 'address', 'areaname', 'mobileno', 'smartcard', 'boxid', 'activationdate', 'expirydate', 'statusdisplay'], this.rowData);
           } else if (this.type === 2 || this.type === 3) {
-            areatitle = 'A1:J2';
-            areasub = 'A3:J3';
-            header = ['S.NO', 'SUBSCRIBER ID', 'SUBSCRIBER NAME', 'ADDRESS', 'MOBILE NO', 'SMARTCARD', 'BOXID', 'PACKAGE NAME', 'EXPIRY DATE', 'STATUS'];
-            generateDataRows(['subid', 'customername', 'address', 'mobileno', 'smartcard', 'boxid', 'productname', 'expirydate', 'statusdisplay'], this.rowData);
+            areatitle = 'A1:K2';
+            areasub = 'A3:K3';
+            header = ['S.NO', 'SUBSCRIBER ID', 'SUBSCRIBER NAME', 'ADDRESS', 'MOBILE NO', 'SMARTCARD', 'BOXID', 'PACKAGE NAME','ACTIVATION DATE', 'EXPIRY DATE', 'STATUS'];
+            generateDataRows(['subid', 'customername', 'address', 'mobileno', 'smartcard', 'boxid', 'productname', 'activationdate','expirydate', 'statusdisplay'], this.rowData);
           } else if (this.type === 5) {
             areatitle = 'A1:K2';
             areasub = 'A3:K3';

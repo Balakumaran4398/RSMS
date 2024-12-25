@@ -18,7 +18,7 @@ export class TopSubDetailComponent {
       resizable: true,
       filter: true,
       floatingFilter: true,
-      width:250
+     
     },
     headerComponentParams: { textAlign: 'center' },
     // pagination: true,
@@ -30,8 +30,8 @@ export class TopSubDetailComponent {
   addonRowData: any[] = [];
   alacarteRowData: any[] = [];
   columnDefs: any[] = [
-    { headerName: "PACKAGE NAME", field: 'productname',  filter: true,},
-    { headerName: 'COUNT', field: 'count', filter:false},
+    { headerName: "PACKAGE NAME", field: 'productname', width:350,  filter: true,},
+    { headerName: 'COUNT', field: 'count', width:150, filter:false},
   ];
   constructor(private userservise: BaseService, private storageservice: StorageService) {
     this.username = storageservice.getUsername();

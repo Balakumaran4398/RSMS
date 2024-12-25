@@ -153,8 +153,8 @@ export class ScrollingComponent {
   ];
   scrollType: any = [
     { lable: "Scroll Only", value: "0" },
-    { lable: "Scroll With STB id", value: "1" },
-    { lable: "Scroll With Smartcard", value: "2" },
+    { lable: "Scroll With Smartcard", value: "1" },
+    { lable: "Scroll With STB id", value: "2" },
     { lable: "Scroll With STB id and Smartcard", value: "3" }
   ];
   transparency: any;

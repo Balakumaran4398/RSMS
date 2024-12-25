@@ -70,17 +70,16 @@ import { SpecialareachangeComponent } from './features/special_role/Bulk operato
 import { SpecialcancelsubscriptionComponent } from './features/special_role/Bulk operaton/specialcancelsubscription/specialcancelsubscription.component';
 import { SpeciallcochangeComponent } from './features/special_role/Bulk operaton/speciallcochange/speciallcochange.component';
 import { SpeciallcotransferComponent } from './features/special_role/Bulk operaton/speciallcotransfer/speciallcotransfer.component';
-import { TraiComponent } from './features/channel_setting/Reports/trai/trai.component';
 import { HistoryReportsComponent } from './features/channel_setting/Reports/history-reports/history-reports.component';
 import { MsoreportsComponent } from './features/channel_setting/Reports/msoreports/msoreports.component';
 import { TraiReportComponent } from './features/channel_setting/Reports/trai-report/trai-report.component';
-import { HistoryComponent } from './features/channel_setting/Reports/history/history.component';
 import { ChartInventoryReportComponent } from '../_core/Chart-Reports/chart-inventory-report/chart-inventory-report.component';
 import { ChartPackageReportComponent } from '../_core/Chart-Reports/chart-package-report/chart-package-report.component';
 import { ChartSTBReportComponent } from '../_core/Chart-Reports/chart-stbreport/chart-stbreport.component';
 import { PackageBasedComponent } from './features/channel_setting/Reports_page/Trai/package-based/package-based.component';
 import { HistoryAllReportsComponent } from './features/channel_setting/Reports_page/Trai/History/history-all-reports/history-all-reports.component';
 import { BroadcasterReportsComponent } from './features/channel_setting/Reports_page/Trai/broadcaster-reports/broadcaster-reports.component';
+import { TopSubLoginComponent } from './features/top_sub_login/top-sub-login/top-sub-login.component';
 
 
 const routes: Routes = [
@@ -95,6 +94,7 @@ const routes: Routes = [
       // ---------------------------------------------Operator-----------------------------------
       { path: 'operator_details', component: OperatorDetailsComponent, },
       { path: 'lco_recharge', component: LcoRechargeComponent, },
+      { path: 'top_subscription', component: TopSubLoginComponent, },
       { path: 'operatorlist', component: OperatorlistComponent, },
       { path: 'nav', component: NavbarComponent, },
       { path: 'lcorecharge', component: LcoRechargeReportComponent, },

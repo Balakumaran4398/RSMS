@@ -32,16 +32,16 @@ export class BarChartComponent implements OnInit {
       const selectedDate = new Date(input.value);
       const today = new Date();
       // if (selectedDate <= today) {
-        this.date = input.value;
-        this.loadChartData(this.date);
+      this.date = input.value;
+      this.loadChartData(this.date);
       // } else {
-        // this.swal.warning_1();
+      // this.swal.warning_1();
       // }
     }
   }
 
   loadChartData(date: string): void {
-    
+
     this.userservice.getDashboardSubscribtionBarChartDetails(this.role, this.username, date).subscribe((data: any) => {
       this.updateChartData(data);
     });
@@ -49,11 +49,6 @@ export class BarChartComponent implements OnInit {
 
   updateChartData(data: any): void {
     const dataPoints = [];
-    // for (const date in data) {
-    //   if (data.hasOwnProperty(date)) {
-    //     dataPoints.push({ x: new Date(date), y: data[date], label: date });
-    //   }
-    // }
     for (const date in data) {
       if (data.hasOwnProperty(date)) {
         let color;
@@ -64,17 +59,16 @@ export class BarChartComponent implements OnInit {
           color = "#d1ae2e";
         }
 
-        // dataPoints.push({ x: new Date(date), y: count, label: date, color: color });
         dataPoints.push({
-          x: new Date(date), 
-          y: count, 
-          label: date, 
+          x: new Date(date),
+          y: count,
+          label: date,
           color: color,
-          indexLabel: count.toString(), // Display the count on top of the bar
-          indexLabelFontColor: "#5A5757", // Font color for the count
-          indexLabelFontSize: 14, // Adjust font size of the label
-          indexLabelPlacement: "outside", // Position the label above the bar
-          indexLabelAlign: "center" // Align the label to be centered on the bar
+          indexLabel: count.toString(),
+          indexLabelFontColor: "#5A5757",
+          indexLabelFontSize: 14,
+          indexLabelPlacement: "outside",
+          indexLabelAlign: "right"
         });
       }
     }
@@ -92,18 +86,28 @@ export class BarChartComponent implements OnInit {
         labelFontColor: "#5A5757",
         gridThickness: 0
       },
+      axisX: {
+        title: "Dates",
+        labelFontSize: 14,
+        labelFontColor: "#001716",
+        labelAlign: "left",
+        interval: 1,
+
+      },
       data: [{
         type: "column",
         dataPoints: dataPoints,
         indexLabelFontColor: "#5A5757",
         indexLabelPlacement: "inside",
-        width: 30,
-        color: (dataPoints: any) => {
-          if (dataPoints.y > 0) {
-            return "#3bada6";
-          }
-          return "#d1ae2e";
-        }
+        width: 10,
+        indexLabelAlign: "left",
+        color: (e: any) => e.dataPoint.color,
+        // color: (dataPoints: any) => {
+        //   if (dataPoints.y > 0) {
+        //     return "#3bada6";
+        //   }
+        //   return "#d1ae2e";
+        // }
       }]
     });
 

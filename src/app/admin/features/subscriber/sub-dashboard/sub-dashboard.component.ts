@@ -229,10 +229,18 @@ export class SubDashboardComponent implements OnInit, AfterViewInit {
     this.userservice.getNewsubscriberDetails(this.role, this.username, this.subscriberid || this.smartcard || this.boxid)
       .subscribe((data: any) => {
         console.log(data);
+  
         this.newSmartcard = data.smartcardlist?.[data.smartcardlist.length - 1]?.smartcard || null;;
         this.statusNewSmartcard = data.smartcardlist?.[data.smartcardlist.length - 1]?.statusdisplay || null;;
         console.log(this.newSmartcard);
         console.log(this.statusNewSmartcard);
+        if (this.statusNewSmartcard === 'Active') {
+          console.log(this.statusNewSmartcard);
+          this.newsubscrierdashoard = true;
+          this.subscriersmartcarddashoard = true;
+          this.expandale = true;
+          this.loadNewSmartcardDashboard();
+        }
         if (this.statusNewSmartcard === 'New') {
           console.log(this.statusNewSmartcard);
           this.newsubscrierdashoard = true;
@@ -1197,24 +1205,6 @@ export class SubDashboardComponent implements OnInit, AfterViewInit {
               this.smartcardchange = false;
               this.boxchange = false;
             }
-
-
-
-            // if (!item.boxstatus) {
-            //   console.log('item.status', item.status + '         tem.statussuspend', item.statussuspend, '   item.suspendstatus ', item.suspendstatus, "    item.noofdays  ", item.noofdays);
-            //   if ((item.status != 1 || item.suspendstatus === 1) || (!item.statussuspend) || (item.noofdays < 1)) {
-            //     console.log('suspend  this loop working', this.suspend);
-            //     this.suspend = true; //disable
-            //     console.log('suspend last ', this.suspend);
-            //   } else {
-            //     console.log('else loogp working');
-            //     this.suspend = false;
-            //   }
-            // } else {
-            //   console.log('main else working');
-            //   this.suspend = true;
-            // }
-
             if (!item.boxstatus) {
               console.log('Status:', item.status);
               console.log('Suspend Status:', item.suspendstatus);
@@ -2127,7 +2117,7 @@ export class SubDashboardComponent implements OnInit, AfterViewInit {
 
     this.userservice.getPdfCasformReport(this.role, this.username, this.subdetailsList.subid).subscribe((x: Blob) => {
       // let requestBodylogs: requestBodylogs = { access_ip: "", action: " PDF Bill Report", data: "From Date", remarks: "PDF Bill Report  ", };
-    
+
       const blob = new Blob([x], { type: 'application/pdf' });
       const data = window.URL.createObjectURL(blob);
       const link = document.createElement('a');
