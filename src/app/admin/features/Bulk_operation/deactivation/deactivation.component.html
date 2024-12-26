@@ -70,7 +70,7 @@
                 <div class="d-flex justify-content-end align-items-center mt-3 ">
                     <button type="button" class="btn btn-success mx-2" (click)="goBack()">Back &nbsp;<i
                             class="fa fa-arrow-left" aria-hidden="true"></i></button>
-                    <button type="submit" class="btn btn-success" (click)="bulkDeactivation()">Submit</button>
+                    <button type="submit" class="btn btn-success" [disabled]="!remark" (click)="bulkDeactivation()">Submit</button>
                 </div>
 
             </div>

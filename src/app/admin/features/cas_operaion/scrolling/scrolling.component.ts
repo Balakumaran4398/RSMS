@@ -244,8 +244,19 @@ export class ScrollingComponent {
     // this.onSelectionFingerPrint;
   }
   ngOnInit() {
+
+
+    this.userservice.getOeratorList(this.role, this.username, 1).subscribe((data: any) => {
+      console.log(data);
+      this.area = Object.keys(data).map(key => {
+        const value = data[key];
+        const name = key;
+        return { name: name, id: value };
+      });
+      // this.filteredAreaList = this.area;
+    })
     this.userservice.Finger_print_List(this.role, this.username).subscribe((data) => {
-      this.area = Object.entries(data[0].arealist).map(([key, value]) => ({ name: key, id: value }));
+      // this.area = Object.entries(data[0].arealist).map(([key, value]) => ({ name: key, id: value }));
       this.cas = Object.entries(data[0].caslist).map(([key, value]) => ({ name: key, id: value }));
       this.service = Object.entries(data[0].servicelist).map(([key, value]) => ({ name: key, id: value }));
       console.log(this.area);

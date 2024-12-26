@@ -193,13 +193,20 @@ export class MessageComponent {
     this.setInitialRemainingChars();
   }
   ngOnInit() {
+    this.userservice.getOeratorList(this.role, this.username, 1).subscribe((data: any) => {
+      console.log(data);
+      this.area = Object.keys(data).map(key => {
+        const value = data[key];
+        const name = key;
+        return { name: name, id: value };
+      });
+      // this.filteredLcoList = this.area;
+    })
+
     this.userservice.Finger_print_List(this.role, this.username).subscribe((data) => {
       console.log(data);
-      this.area = data[0].arealist;
-      console.log(this.area);
-      this.area = Object.entries(data[0].arealist).map(([key, value]) => ({ name: key, id: value }));
-      console.log(this.area);
-
+      // this.area = data[0].arealist;
+      // this.area = Object.entries(data[0].arealist).map(([key, value]) => ({ name: key, id: value }));
       this.cas = Object.entries(data[0].caslist).map(([key, value]) => ({ name: key, id: value }));
       this.filteredCasList = this.cas;
       this.service = Object.entries(data[0].servicelist).map(([key, value]) => ({ name: key, id: value }));
@@ -290,7 +297,7 @@ export class MessageComponent {
     } else {
       this.isFource = true;
     }
-    
+
   }
 
   onChangeIntendTo1(selectedValue: any) {
@@ -478,15 +485,15 @@ export class MessageComponent {
   }
   onSubmit() {
     this.submitted = true;
-    if (this.isSmartcardEnabled) {
-      this.form.patchValue({
-        intendid: this.form.get('intendid')?.value
-      });
-    } else if (this.isAreaCodeEnabled) {
-      this.form.patchValue({
-        intendid: this.form.get('intendid')?.value
-      });
-    }
+    // if (this.isSmartcardEnabled) {
+    //   this.form.patchValue({
+    //     intendid: this.form.get('intendid')?.value
+    //   });
+    // } else if (this.isAreaCodeEnabled) {
+    //   this.form.patchValue({
+    //     intendid: this.form.get('intendid')?.value
+    //   });
+    // }
 
     if (this.form.valid) {
     } else {

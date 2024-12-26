@@ -100,6 +100,10 @@ export class AddonActivationComponent {
     paginationPageSize: 10,
     pagination: true,
   }
+
+  isFormValid(): boolean {
+    return this.filePath !== '' && this.alacarteList.length > 0;
+  }
   onGridReady = () => {
     // this.userservice.GetAllUser('all',this.token.getUsername(),'0000-00-00','0000-00-00').subscribe((data) => {
     //   this.gridApi.setRowData(data);
@@ -129,6 +133,7 @@ export class AddonActivationComponent {
       this.cas = [...this.casList];
       console.log(this.cas);
     });
+    this.onCaschange('');
   }
 
 
@@ -137,7 +142,7 @@ export class AddonActivationComponent {
     this.rowData = []
     const dateToPass = this.selectedDate || this.date;
     if (this.selectedTab == 'activation') {
-      this.remark = 'activation'
+      this.remark = 'addon_add'
     } else {
       this.remark = 'remove'
     }
@@ -165,7 +170,7 @@ export class AddonActivationComponent {
   refresh() {
     console.log(this.selectedTab);
     if (this.selectedTab == 'activation') {
-      this.remark = 'activation'
+      this.remark = 'addon_add'
     } else {
       this.remark = 'remove'
     }
@@ -268,13 +273,13 @@ export class AddonActivationComponent {
       formData.append('role', this.role);
       formData.append('username', this.username);
       formData.append('file', this.file);
-      formData.append('castype', this.castype);
+      // formData.append('castype', this.castype);
       formData.append('type', '6');
       formData.append('iscollected', this.iscollected.toString());
       formData.append('retailerid', '0');
       formData.append('optype', '3');
       formData.append('selectedlist', this.alacarteList);
-
+      this.swal.Loading();
       this.userservice.uploadFileForAddonAndAlacarteActivation(formData)
         .subscribe((res: any) => {
           this.swal.success(res?.message);
@@ -353,7 +358,12 @@ export class AddonActivationComponent {
     this.selectedCas = selectedCas;
     this.castype = selectedCas.id;
     console.log("Selected CAS type:", this.castype);
-    this.userservice.getAlacartelistByCasType(this.role, this.username, this.castype).subscribe((data: any) => {
+    // this.userservice.getAlacartelistByCasType(this.role, this.username, this.castype).subscribe((data: any) => {
+    //   console.log(data);
+    //   this.toppingList = Object.entries(data).map(([key, value]) => ({ name: key, id: value }));
+    //   console.log(this.toppingList);
+    // });
+    this.userservice.getAddonListforbulk(this.role, this.username).subscribe((data: any) => {
       console.log(data);
       this.toppingList = Object.entries(data).map(([key, value]) => ({ name: key, id: value }));
       console.log(this.toppingList);

@@ -144,7 +144,7 @@ export class BulkpackageupdationComponent implements OnInit {
     console.log('checking 1');
     this.userservice.getBulkPackageList(this.role, this.username, this.castype).subscribe(
       (response: HttpResponse<any>) => {
-        console.log('checking 2');
+        console.log('checking 2',response);
         if (response.status === 200 && response.body) {
           console.log(response.body);
           if (typeof response.body === 'object' && response.body !== null) {

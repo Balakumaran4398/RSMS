@@ -14,6 +14,7 @@ import { MAT_MOMENT_DATE_ADAPTER_OPTIONS, MomentDateAdapter } from '@angular/mat
 import { HttpResponse } from '@angular/common/http';
 import { SwalService } from 'src/app/_core/service/swal.service';
 import { ExcelService } from 'src/app/_core/service/excel.service';
+import { log } from 'console';
 
 export const MY_FORMATS: MatDateFormats = {
   parse: {
@@ -130,7 +131,7 @@ export class LcoRechargeReportComponent implements OnInit {
         const name = key;
         return { name: name, value: value };
       });
-      this.filteredOperators = [{ name: 'All Operator', id: 0 }, ...this.operatorList,];
+      this.filteredOperators = [{ name: 'All Operator', value: 0 }, ...this.operatorList,];
       this.currentDate = new Date().toISOString().split('T')[0];
 
     })
@@ -367,7 +368,17 @@ export class LcoRechargeReportComponent implements OnInit {
             });
             this.excelService.generateRechargeExcel(areatitle, header, datas, title, areasub, sub);
           } else if (response.status === 204) {
-            this.swal.Success_204();
+            this.rowData = response.body;
+            const title = ('RECHARGE LOG REPORT').toUpperCase();
+            const sub = 'MSO ADDRESS:' + this.msodetails;
+            let areatitle = '';
+            let areasub = '';
+            let header: string[] = [];
+            const datas: Array<any> = [];
+            areatitle = 'A1:G2';
+            areasub = 'A3:G3';
+            header = ['S.NO', 'OPERATOR NAME', 'TRANSACTION GROUP TIME', 'LCO AMOUNT', 'OLD BALANCE', 'CURRENT BALANCE', 'TRANSACTION DATE'];
+            this.excelService.generateRechargeExcel(areatitle, header, datas, title, areasub, sub);
             this.rowData = [];
           }
         },
@@ -383,7 +394,7 @@ export class LcoRechargeReportComponent implements OnInit {
         const data = window.URL.createObjectURL(blob);
         const link = document.createElement('a');
         link.href = data;
-        link.download = ("RECHARGE LOG REPORT .pdf").toUpperCase();
+        link.download = ("LCO RECHARGE LOG REPORT .pdf").toUpperCase();
         link.dispatchEvent(new MouseEvent('click', { bubbles: true, cancelable: true, view: window }));
         setTimeout(() => {
           window.URL.revokeObjectURL(data);
@@ -436,7 +447,7 @@ export class LcoRechargeReportComponent implements OnInit {
     console.log('date dflgdgfd', this.date);
     if (this.isDateEnabled) {
       console.log('date dflgdgfd', this.date);
-      this.userservice.getRechargeDetailsByDate(this.role, this.username, this.date)
+      this.userservice.getRechargeDetailsByDate(this.role, this.username, this.date || this.currentDate)
         .subscribe(
           (response: HttpResponse<any>) => {
             if (response.status === 200) {
@@ -446,27 +457,36 @@ export class LcoRechargeReportComponent implements OnInit {
                 this.Totalamount = responseBody.totalamount;
                 const title = ('DATEWISE LOG RECHARGE REPORT').toUpperCase();
                 const sub = 'MSO ADDRESS:' + this.msodetails;
-
                 const header: string[] = ['S.NO', 'OPERATOR NAME', 'OPERATOR ID', 'AMOUNT', 'REMARKS', 'TRANSACTION DATE', 'OPERATION ADDRESS', 'CONTACT NUMBER'];
                 const datas: Array<any> = [];
-
-                // Prepare the data rows
                 this.rowData.forEach((d: any, index: number) => {
                   const row = [index + 1, d.operatorname, d.operatorid, d.amount, d.transactionremarks, d.transactiondate, d.address, d.contactnumber];
                   datas.push(row);
                 });
-
-                // Add Total Amount as the last row
                 const totalRow = ['', '', '', '', '', '', 'Total:', this.Totalamount,];
-
-                // Pass all values to the Excel service
                 this.excelService.generateLCO_dateRechargeExcel(header, datas, title, sub, totalRow);
               } else {
                 Swal.fire('Error', 'Response body is empty', 'error');
               }
             }
             else if (response.status === 204) {
-              this.swal.Success_204();
+              // const responseBody = response.body;
+              // if (responseBody) {
+              //   this.rowData = responseBody.rechargelist;
+              //   this.Totalamount = responseBody.totalamount;
+                const title = ('DATEWISE LOG RECHARGE REPORT').toUpperCase();
+                const sub = 'MSO ADDRESS:' + this.msodetails;
+                const header: string[] = ['S.NO', 'OPERATOR NAME', 'OPERATOR ID', 'AMOUNT', 'REMARKS', 'TRANSACTION DATE', 'OPERATION ADDRESS', 'CONTACT NUMBER'];
+                const datas: Array<any> = [];
+                // this.rowData.forEach((d: any, index: number) => {
+                //   const row = [index + 1, d.operatorname, d.operatorid, d.amount, d.transactionremarks, d.transactiondate, d.address, d.contactnumber];
+                //   datas.push(row);
+                // });
+                const totalRow = ['', '', '', '', '', '', 'Total:', this.Totalamount,];
+                this.excelService.generateLCO_dateRechargeExcel(header, datas, title, sub, totalRow);
+              // } else {
+              //   Swal.fire('Error', 'Response body is empty', 'error');
+              // }
             }
           },
           (error) => {
@@ -483,32 +503,48 @@ export class LcoRechargeReportComponent implements OnInit {
       this.userservice.getRecharegDetailsByYearAndMonth(this.role, this.username, this.selectedYear, this.selectedMonth)
         .subscribe(
           (response: HttpResponse<any>) => {
-            // if (response.status === 200) {
-            const responseBody = response.body;
-            if (responseBody) {
-              this.rowData = responseBody.rechargelist;
-              this.Totalamount = responseBody.totalamount;
-              const title = ('MONTHWISE LOG RECHARGE REPORT').toUpperCase();
-              const sub = 'MSO ADDRESS:' + this.msodetails;
+            if (response.status === 200) {
+              const responseBody = response.body;
+              if (responseBody) {
+                this.rowData = responseBody.rechargelist;
+                this.Totalamount = responseBody.totalamount;
+                const title = ('MONTHWISE LOG RECHARGE REPORT').toUpperCase();
+                const sub = 'MSO ADDRESS:' + this.msodetails;
 
-              const header: string[] = ['S.NO', 'OPERATOR NAME', 'OPERATOR ID', 'AMOUNT', 'REMARKS', 'TRANSACTION DATE', 'OPERATION ADDRESS', 'CONTACT NUMBER'];
-              const datas: Array<any> = [];
+                const header: string[] = ['S.NO', 'OPERATOR NAME', 'OPERATOR ID', 'AMOUNT', 'REMARKS', 'TRANSACTION DATE', 'OPERATION ADDRESS', 'CONTACT NUMBER'];
+                const datas: Array<any> = [];
 
-              this.rowData.forEach((d: any, index: number) => {
-                const row = [index + 1, d.operatorname, d.operatorid, d.amount, d.transactionremarks, d.transactiondate, d.address, d.contactnumber];
-                datas.push(row);
-              });
+                this.rowData.forEach((d: any, index: number) => {
+                  const row = [index + 1, d.operatorname, d.operatorid, d.amount, d.transactionremarks, d.transactiondate, d.address, d.contactnumber];
+                  datas.push(row);
+                });
 
-              const totalRow = ['', '', '', '', '', '', 'Total:', this.Totalamount,];
+                const totalRow = ['', '', '', '', '', '', 'Total:', this.Totalamount,];
 
-              this.excelService.generateLCO_dateRechargeExcel(header, datas, title, sub, totalRow);
-            } else {
-              Swal.fire('Error', 'Response body is empty', 'error');
+                this.excelService.generateLCO_dateRechargeExcel(header, datas, title, sub, totalRow);
+              } else {
+                Swal.fire('Error', 'Response body is empty', 'error');
+              }
             }
-            // }
-            // else if (response.status === 204) {
-            //   this.swal.Success_204();
-            // }
+            else if (response.status === 204) {
+              // this.swal.Success_204();
+            
+                const title = ('MONTHWISE LOG RECHARGE REPORT').toUpperCase();
+                const sub = 'MSO ADDRESS:' + this.msodetails;
+
+                const header: string[] = ['S.NO', 'OPERATOR NAME', 'ADDRESS', 'CONTACT NUMBER', 'AMOUNT', 'TRANSACTION DATE', 'OPERATION ADDRESS', 'CONTACT NUMBER'];
+                const datas: Array<any> = [];
+
+                // this.rowData.forEach((d: any, index: number) => {
+                //   const row = [index + 1, d.operatorname, d.operatorid, d.amount, d.transactionremarks, d.transactiondate, d.address, d.contactnumber];
+                //   datas.push(row);
+                // });
+
+                const totalRow = ['', '', '', '', '', '', 'Total:', this.Totalamount,];
+
+                this.excelService.generateLCO_dateRechargeExcel(header, datas, title, sub, totalRow);
+        
+            }
           },
           (error) => {
             this.handleApiError(error);
@@ -543,8 +579,31 @@ export class LcoRechargeReportComponent implements OnInit {
               }
             }
             else if (response.status === 204) {
-              this.swal.Success_204();
+              // this.swal.Success_204();
+
+              const responseBody = response.body;
+              if (responseBody) {
+                this.rowData = responseBody.rechargelist;
+                this.Totalamount = responseBody.totalamount;
+                const title = ('YEARWISE LOG RECHARGE REPORT').toUpperCase();
+                const sub = 'MSO ADDRESS:' + this.msodetails;
+
+                const header: string[] = ['S.NO', 'OPERATOR NAME', 'OPERATOR ID', 'AMOUNT', 'REMARKS', 'TRANSACTION DATE', 'OPERATION ADDRESS', 'CONTACT NUMBER'];
+                const datas: Array<any> = [];
+
+                // this.rowData.forEach((d: any, index: number) => {
+                //   const row = [index + 1, d.operatorname, d.operatorid, d.amount, d.transactionremarks, d.transactiondate, d.address, d.contactnumber];
+                //   datas.push(row);
+                // });
+
+                const totalRow = ['', '', '', '', '', '', 'Total:', this.Totalamount,];
+
+                this.excelService.generateLCO_dateRechargeExcel(header, datas, title, sub, totalRow);
+              } else {
+                Swal.fire('Error', 'Response body is empty', 'error');
+              }
             }
+
           },
           (error) => {
             const errorMessage = error?.error?.message
@@ -929,6 +988,8 @@ export class LcoRechargeReportComponent implements OnInit {
       data: dialogData
     });
     dialogRef.afterClosed().subscribe(result => {
+      console.log(result);
+
     });
 
   }

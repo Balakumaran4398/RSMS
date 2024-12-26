@@ -63,6 +63,8 @@ export class OperatorDetailsComponent implements OnInit {
   totalLength = 0;
   paginatedData: any;
 
+  operator: any;
+
   constructor(public responsive: BreakpointObserver, private dataService: DataService, private cdr: ChangeDetectorRef, private router: Router, public dialog: MatDialog, private userservice: BaseService, private storageservice: StorageService) {
     this.role = storageservice.getUserRole();
     this.username = storageservice.getUsername();
@@ -74,7 +76,12 @@ export class OperatorDetailsComponent implements OnInit {
         this.updatePageData();
       });
   }
+  setOperator(data: { isactive: string }) {
+    this.operator.isactive = data.isactive === 'true'; // Convert string to boolean
+  }
   ngOnInit(): void {
+    const response = { isactive: 'true' }; 
+    this.setOperator(response);
     this.responsive
       .observe([Breakpoints.HandsetPortrait])
       .subscribe((state: BreakpointState) => {
@@ -130,7 +137,7 @@ export class OperatorDetailsComponent implements OnInit {
 
 
   loadOperators() {
-    this.userservice.getOeratorList(this.role, this.username,2).subscribe((data: any) => {
+    this.userservice.getOeratorList(this.role, this.username, 2).subscribe((data: any) => {
       console.log(data);
       this.operatorList = Object.keys(data).map(key => {
         const value = data[key];
@@ -143,7 +150,7 @@ export class OperatorDetailsComponent implements OnInit {
   operatorlist() {
 
     // this.userservice.getOeratorList(this.role, this.username).subscribe((data: any) => {
-      this.userservice.getOperatorListOP_Dash(this.role, this.username,2).subscribe((data: any) => {
+    this.userservice.getOperatorListOP_Dash(this.role, this.username, 2).subscribe((data: any) => {
       console.log(data);
       this.operatorList = Object.keys(data).map(key => {
         const value = data[key];
@@ -292,19 +299,19 @@ export class OperatorDetailsComponent implements OnInit {
     console.log(detailsList);
     console.log(detailsList.operatorname);
 
-    let dialogData = { type: type, detailsList: this.operator_details, operatorid: detailsList.operatorid,operatorname: detailsList.operatorname, };
+    let dialogData = { type: type, detailsList: this.operator_details, operatorid: detailsList.operatorid, operatorname: detailsList.operatorname, };
     console.log(dialogData);
     const dialogRef = this.dialog.open(OperatordialogueComponent, {
       width: '500px',
       panelClass: 'custom-dialog-container',
       data: dialogData,
-     
+
     });
   }
-  opencancelsubDialog(type: string,operatorid:any): void {
+  opencancelsubDialog(type: string, operatorid: any): void {
     const detailsList = this.operator_details.find((op: any) => op.operatorid === operatorid);
 
-    let dialogData = { type: type, detailsList: this.operator_details,operator: detailsList.operatorid,operatorname: detailsList.operatorname, };
+    let dialogData = { type: type, detailsList: this.operator_details, operator: detailsList.operatorid, operatorname: detailsList.operatorname, };
 
     const dialogRef = this.dialog.open(OperatorcancelsubreportComponent, {
       width: '500px',

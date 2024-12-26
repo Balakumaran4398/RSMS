@@ -95,14 +95,14 @@ export class RefundComponent {
       return;
     }
 
-    // Open the dialog first
-    const dialogRef = this.dialog.open(LoginrefundComponent, {
-      width: '500px',
-      panelClass: 'custom-dialog-container',
-    });
+    // const dialogRef = this.dialog.open(LoginrefundComponent, {
+    //   width: '500px',
+    //   panelClass: 'custom-dialog-container',
+    //   data:'dfsfsd'
+    // });
 
-    dialogRef.afterClosed().subscribe((dialogResult) => {
-      console.log('dfdsfdsfsd', dialogResult);
+    // dialogRef.afterClosed().subscribe((data) => {
+    //   console.log('dfdsfdsfsd', data);
 
       if (this.data) {
         this.swal.Loading();
@@ -133,7 +133,7 @@ export class RefundComponent {
       } else {
         console.log('Dialog closed without success');
       }
-    });
+    // });
   }
 
 

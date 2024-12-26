@@ -967,6 +967,16 @@ export class BaseService {
       BASE_URL + "/bulk/getPackageListBulkPackageUpdation?role=" + role + "&username=" + username + "&castype=" + castype, { observe: 'response' }
     );
   }
+  getBulkPackageUpdationList(role: any, username: any, ): Observable<any[]> {
+    return this.http.get<any[]>(
+      BASE_URL + "/package/getpackageListforbulk?role=" + role + "&username=" + username , 
+    );
+  }
+  getAddonListforbulk(role: any, username: any, ): Observable<any[]> {
+    return this.http.get<any[]>(
+      BASE_URL + "/package/getAddonListforbulk?role=" + role + "&username=" + username , 
+    );
+  }
   getBulkPackageServiceStatus(role: any, username: any): Observable<any[]> {
     return this.http.get<any[]>(
       BASE_URL + "/bulk/getBulkPackageServiceStatus?role=" + role + "&username=" + username, {}

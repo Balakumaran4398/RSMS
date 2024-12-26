@@ -10,6 +10,7 @@ import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dial
 import { RefundComponent } from '../refund/refund.component';
 import { D } from 'node_modules1/@angular/cdk/keycodes';
 import { SwalService } from 'src/app/_core/service/swal.service';
+import { Location } from '@angular/common';
 
 
 @Component({
@@ -30,7 +31,7 @@ export class LoginrefundComponent {
   pairBoxList: any[] = [];
   pairSmartcardList: any[] = [];
   planType: any[] = [];
-  constructor(public dialogRef: MatDialogRef<LoginrefundComponent>, @Inject(MAT_DIALOG_DATA) public data: any,private swal: SwalService, private userservice: BaseService, private storageservice: StorageService, private fb: FormBuilder, private router: Router, public dialog: MatDialog,) {
+  constructor(public dialogRef: MatDialogRef<LoginrefundComponent>, @Inject(MAT_DIALOG_DATA) public data: any, private location: Location, private swal: SwalService, private userservice: BaseService, private storageservice: StorageService, private fb: FormBuilder, private router: Router, public dialog: MatDialog,) {
     this.role = storageservice.getUserRole();
     this.username = storageservice.getUsername();
     this.form = fb.group({
@@ -116,13 +117,14 @@ export class LoginrefundComponent {
             timer: 1000,
             showConfirmButton: false
           }).then(() => {
-            this.closeLoginPage();
+            // this.closeLoginPage();
 
             const dialogRef = this.dialog.open(RefundComponent, {
               data: res?.message,
-              width: '500px'
+              width: '500px',
+
             });
-            console.log();
+            console.log('res?.message', res?.message);
 
             dialogRef.afterClosed().subscribe((result) => {
               if (result && result.success) {
@@ -144,7 +146,7 @@ export class LoginrefundComponent {
             confirmButtonText: 'Retry'
           });
           console.log('Error:', error?.error?.message);
-        
+
         });
     } else {
       Swal.fire({
@@ -159,9 +161,6 @@ export class LoginrefundComponent {
     this.dialogRef.close(); // Closes the dialog
   }
   onNoClick(): void {
-    this.dialogRef.close();
-  }
-  exit() {
     const role = this.storageservice.getUserRole();
     this.form.reset();
     this.isLoggedIn = false;
@@ -172,18 +171,44 @@ export class LoginrefundComponent {
       icon: 'info',
       showCancelButton: true,
       confirmButtonText: 'OK',
-      cancelButtonText: 'Cancel'
+      // cancelButtonText: 'Cancel'
     }).then((result) => {
       if (result.isConfirmed) {
         if (role === 'ROLE_USER' || role === 'ROLE_RECEPTION') {
           this.router.navigate(['admin/home']).then(() => {
+            // this.dialog.open(RefundComponent)
           });
+      
         }
       } else if (result.dismiss === Swal.DismissReason.cancel) {
-        this.router.navigate(['admin/lco_recharge']).then(() => {
-        });
+        this.location.back();
       }
     });
   }
+
+  // exit() {
+  //   const role = this.storageservice.getUserRole();
+  //   this.form.reset();
+  //   this.isLoggedIn = false;
+
+  //   Swal.fire({
+  //     title: 'Exited',
+  //     text: 'You have exited the login form.',
+  //     icon: 'info',
+  //     showCancelButton: true,
+  //     confirmButtonText: 'OK',
+  //     cancelButtonText: 'Cancel'
+  //   }).then((result) => {
+  //     if (result.isConfirmed) {
+  //       if (role === 'ROLE_USER' || role === 'ROLE_RECEPTION') {
+  //         this.router.navigate(['admin/home']).then(() => {
+  //         });
+  //       }
+  //     } else if (result.dismiss === Swal.DismissReason.cancel) {
+  //       this.router.navigate(['admin/lco_recharge']).then(() => {
+  //       });
+  //     }
+  //   });
+  // }
 
 }

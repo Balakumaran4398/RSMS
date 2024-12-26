@@ -11,6 +11,7 @@ import { tuesday } from 'ag-charts-community/dist/types/src/sparklines-util';
 import { SwalService } from 'src/app/_core/service/swal.service';
 import { EditareaComponent } from '../editarea/editarea.component';
 import { filter } from 'node_modules1/jszip';
+import { CanvasJS } from '@canvasjs/angular-charts';
 
 @Component({
   selector: 'app-lcodashboard',
@@ -48,17 +49,23 @@ export class LcodashboardComponent implements OnInit {
   role: any;
   username: any;
   package: any = 2;
+  selectedPackage: number | null = null;
+
   // packageid: any[] = [
   //   { basePackage: 2 },
   //   { addonPackage: 3 },
   //   { alacartePackage: 4 }
   // ];
+  // packageid: any[] = [
+  //   { lable: "basePackage", value: 2 },
+  //   { lable: "addonPackage", value: 3 },
+  //   { lable: "alacartePackage", value: 4 },
+  // ];
   packageid: any[] = [
-    { lable: "basePackage", value: 2 },
-    { lable: "addonPackage", value: 3 },
-    { lable: "alacartePackage", value: 4 },
+    { type: 'basePackage', id: 2 },
+    { type: 'addonPackage', id: 3 },
+    { type: 'alacartePackage', id: 4 }
   ];
-
   rowData: any[] = [];
   barchart: any;
   chartOptions: any = {};
@@ -102,7 +109,7 @@ export class LcodashboardComponent implements OnInit {
     });
     this.barChart();
     this.tableData();
-    this.onPackageSelect("");
+    // this.onPackageSelect("");
   }
   tableData() {
     this.userservice.getAreaListByOperatorId(this.role, this.username, this.operatorid).subscribe((data: any) => {
@@ -368,14 +375,19 @@ export class LcodashboardComponent implements OnInit {
   }
 
   getPackageName(pack: any): string {
-    if (pack.basePackage) {
-      return 'Base Package';
-    } else if (pack.addonPackage) {
-      return 'Addon Package';
-    } else if (pack.alacartePackage) {
-      return 'Alacarte Package';
+    switch (pack.type) {
+      case 'basePackage':
+        return 'Base Package';
+      case 'addonPackage':
+        return 'Addon Package';
+      case 'alacartePackage':
+        return 'Alacarte Package';
+      default:
+        return '';
     }
-    return '';
+  }
+  getPackageValue(pack: any): number {
+    return pack.id;
   }
   // getPackageName(packageObj: any): string {
   //   return Object.keys(packageObj)[0];
@@ -385,12 +397,82 @@ export class LcodashboardComponent implements OnInit {
   // }
 
 
+  // onPackageSelect(event: any): void {
+  //   const selectedPackageId = event?.target?.value ?? this.package;
+  //   console.log('Selected Package ID:', selectedPackageId);
+  //   this.userservice.getPackagewiseRechargeDetailsforPiechart(this.role, this.username, this.package, this.operatorid)
+  //     .subscribe((data: any) => {
+  //       this.cdr.detectChanges();
+  //       if (!data || !data['rechargelist'] || data['rechargelist'].length === 0) {
+  //         Swal.fire({
+  //           icon: 'warning',
+  //           title: 'No Data Available',
+  //           text: data?.message,
+  //           confirmButtonText: 'Reload',
+  //           allowOutsideClick: true
+  //         })
+  //       } else {
+  //         this.Totalamount = data.totalamount;
+  //         const monthColors: { [key: string]: string } = {
+  //           "January": "#103f2f",
+  //           "February": "#464878",
+  //           "March": "#9e5972",
+  //           "April": "#0f94a3",
+  //           "May": "#402033",
+  //           "June": "#377a58",
+  //           "July": "#415e27",
+  //           "August": "#007787",
+  //           "September": "#3c445e",
+  //           "October": "#8c8b8b",
+  //           "November": "#012d3b",
+  //           "December": "#8ba7b0"
+  //         };
+  //         const dataPoints = data['rechargelist'].map((item: any) => ({
+  //           name: item.monthname,
+  //           y: item.amount,
+  //           color: monthColors[item.monthname] || "#000000"
+  //         }));
+
+  //         this.chartOptions = {
+  //           animationEnabled: true,
+  //           theme: 'light2',
+  //           legend: {
+  //             verticalAlign: 'center',
+  //             horizontalAlign: 'right',
+  //             fontSize: 14,
+  //             fontFamily: 'Arial',
+  //             markerType: 'square',
+  //             right: '10px',
+  //             itemWrap: true,
+  //             itemTextFormatter: (e: any) => `${e.dataPoint.name}   : ₹${e.dataPoint.y}`,
+  //           },
+  //           data: [{
+  //             type: 'pie',
+  //             startAngle: 90,
+  //             cursor: 'pointer',
+  //             explodeOnClick: false,
+  //             showInLegend: true,
+  //             legendMarkerType: 'square',
+  //             indexLabelPlacement: 'inside',
+  //             indexLabelFontColor: 'white',
+  //             dataPoints: dataPoints
+  //           }]
+  //         };
+
+  //       }
+  //     });
+  // }
+
+
   onPackageSelect(event: any): void {
-    const selectedPackageId = event?.target?.value ?? this.package;
+    const selectedPackageId = event;
     console.log('Selected Package ID:', selectedPackageId);
-    this.userservice.getPackagewiseRechargeDetailsforPiechart(this.role, this.username, this.package, this.operatorid)
+
+    this.userservice
+      .getPackagewiseRechargeDetailsforPiechart(this.role, this.username, selectedPackageId, this.operatorid)
       .subscribe((data: any) => {
-        this.cdr.detectChanges();
+        console.log(data);
+
         if (!data || !data['rechargelist'] || data['rechargelist'].length === 0) {
           Swal.fire({
             icon: 'warning',
@@ -398,30 +480,29 @@ export class LcodashboardComponent implements OnInit {
             text: data?.message,
             confirmButtonText: 'Reload',
             allowOutsideClick: true
-          })
+          });
         } else {
           this.Totalamount = data.totalamount;
           const monthColors: { [key: string]: string } = {
-            "January": "#103f2f",
-            "February": "#464878",
-            "March": "#9e5972",
-            "April": "#0f94a3",
-            "May": "#402033",
-            "June": "#377a58",
-            "July": "#415e27",
-            "August": "#007787",
-            "September": "#3c445e",
-            "October": "#8c8b8b",
-            "November": "#012d3b",
-            "December": "#8ba7b0"
+            January: '#103f2f',
+            February: '#464878',
+            March: '#9e5972',
+            April: '#0f94a3',
+            May: '#402033',
+            June: '#377a58',
+            July: '#415e27',
+            August: '#007787',
+            September: '#3c445e',
+            October: '#8c8b8b',
+            November: '#012d3b',
+            December: '#8ba7b0'
           };
           const dataPoints = data['rechargelist'].map((item: any) => ({
-            name: item.monthname,
+            name: item.monthname.toString(),
             y: item.amount,
-            color: monthColors[item.monthname] || "#000000"
+            color: monthColors[item.monthname] || '#000000'
           }));
-
-          this.chartOptions = {
+          const chart = new CanvasJS.Chart('chartContainer', {
             animationEnabled: true,
             theme: 'light2',
             legend: {
@@ -432,24 +513,31 @@ export class LcodashboardComponent implements OnInit {
               markerType: 'square',
               right: '10px',
               itemWrap: true,
-              itemTextFormatter: (e: any) => `${e.dataPoint.name}   : ₹${e.dataPoint.y}`,
+              itemTextFormatter: (e: any) => `${e.dataPoint.name}   : ₹${e.dataPoint.y}`
             },
-            data: [{
-              type: 'pie',
-              startAngle: 90,
-              cursor: 'pointer',
-              explodeOnClick: false,
-              showInLegend: true,
-              legendMarkerType: 'square',
-              indexLabelPlacement: 'inside',
-              indexLabelFontColor: 'white',
-              dataPoints: dataPoints
-            }]
-          };
+
+            data: [
+              {
+                type: 'pie',
+                startAngle: 90,
+                cursor: 'pointer',
+                explodeOnClick: false,
+                showInLegend: true,
+                legendMarkerType: 'square',
+                indexLabelPlacement: 'inside',
+                indexLabelFontColor: 'white',
+                dataPoints: dataPoints
+              }
+            ]
+          });
+          this.cdr.detectChanges();
+          chart.render();
 
         }
       });
+
   }
+
 
   columnDefs: any[] = [
     {

@@ -48,7 +48,7 @@
                     [value]="selectedOperator?.name">
 
                 <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayOperator">
-                    <mat-option value="0" selcted >All Operator</mat-option>
+                    <!-- <mat-option value="0" selcted >All Operator</mat-option> -->
                     <mat-option *ngFor="let operator of filteredOperators" [value]="operator.name"
                         (click)="onoperaRechargelLog(operator)">
                         {{ operator.name }}

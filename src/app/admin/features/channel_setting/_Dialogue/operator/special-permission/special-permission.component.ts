@@ -37,7 +37,8 @@ export class SpecialPermissionComponent {
   date = false;
   datetodate = false;
   subscriberlock = false;
-  isactive = "false";
+  // isactive = "false";
+  isactive: boolean = false;
   operatorid: any;
   operatorname: any;
 
@@ -66,7 +67,9 @@ export class SpecialPermissionComponent {
     this.date = data.date
     this.datetodate = data.datetodate
     this.subscriberlock = data.subscriberlock
-    this.isactive = data.isactive
+    // this.isactive = data.isactive
+    this.isactive = data.isactive === 'true';
+
     console.log(this.isactive);
 
   }

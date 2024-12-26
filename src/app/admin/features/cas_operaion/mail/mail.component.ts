@@ -76,7 +76,7 @@ export class MailComponent {
   intendto_1: any = '';
   intendid_1: any;
   intendname: any;
-  display_type_1: any='';
+  display_type_1: any = '';
   sender_1: any;
   mailtitle_1: any;
   expirydate_1: any;
@@ -92,14 +92,14 @@ export class MailComponent {
       this.rowData = data;
       console.log(this.rowData);
     })
-    userservice.getsmartcardallocationSubscriberList(this.role, this.username).subscribe((data: any) => {
-      console.log(data);
-      // this.lco_list = data[0].operatorid;
-      this.lco_list = Object.entries(data[0].operatorid).map(([key, value]) => ({ name: key, id: value }));
-      console.log(this.lco_list);
+    // userservice.getsmartcardallocationSubscriberList(this.role, this.username).subscribe((data: any) => {
+    //   console.log(data);
+    //   // this.lco_list = data[0].operatorid;
+    //   this.lco_list = Object.entries(data[0].operatorid).map(([key, value]) => ({ name: key, id: value }));
+    //   console.log(this.lco_list);
 
-      console.log(this.lco_list);
-    })
+    //   console.log(this.lco_list);
+    // })
     this.remainingChars = this.getMaxLength();
   }
   getMaxLength(): number {
@@ -162,12 +162,24 @@ export class MailComponent {
   ];
 
   ngOnInit() {
+
+    this.userservice.getOeratorList(this.role, this.username, 1).subscribe((data: any) => {
+      console.log(data);
+      this.area = Object.keys(data).map(key => {
+        const value = data[key];
+        const name = key;
+        return { name: name, id: value };
+      });
+      this.filteredAreaList = this.area;
+    })
+
+
     this.userservice.Finger_print_List(this.role, this.username).subscribe((data) => {
       console.log(data);
-      this.area = data[0].arealist;
-      console.log(this.area);
-      this.area = Object.entries(data[0].arealist).map(([key, value]) => ({ name: key, id: value }));
-      this.filteredAreaList = this.area;
+      // this.area = data[0].arealist;
+      // this.area = Object.entries(data[0].arealist).map(([key, value]) => ({ name: key, id: value }));
+      // console.log(this.area);
+      // this.filteredAreaList = this.area;
       this.cas = Object.entries(data[0].caslist).map(([key, value]) => ({ name: key, id: value }));
       this.filteredCasList = this.cas;
       this.service = Object.entries(data[0].servicelist).map(([key, value]) => ({ name: key, id: value }));
@@ -390,7 +402,8 @@ export class MailComponent {
           timer: 2000,
           timerProgressBar: true,
         }).then(() => {
-          this.ngOnInit();
+          // this.ngOnInit();
+          window.location.reload();
         });
       },
       (error) => {

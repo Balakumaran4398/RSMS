@@ -89,7 +89,7 @@
                     </select> -->
 
                     <input type="text" matInput [matAutocomplete]="auto" [(ngModel)]="lcogroupid"
-                        (input)="filterPackage($event)" placeholder="Select a package" [matAutocompleteDisabled]="false"
+                        (input)="filterPackage($event)" placeholder="Select  package" [matAutocompleteDisabled]="false"
                         [value]="selectedPackageName">
 
                     <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayOperator">
@@ -118,7 +118,7 @@
                 <div class="d-flex justify-content-end align-items-center mt-3 ">
                     <button type="button" class="btn btn-success mx-2" (click)="goBack()">Back &nbsp;<i
                             class="fa fa-arrow-left" aria-hidden="true"></i></button>
-                    <button type="submit" class="btn btn-success" (click)="bulkActivation()">Submit</button>
+                    <button type="submit" class="btn btn-success"  [disabled]="!lcogroupid  || !plan"  (click)="bulkActivation()">Submit</button>
                 </div>
 
             </div>

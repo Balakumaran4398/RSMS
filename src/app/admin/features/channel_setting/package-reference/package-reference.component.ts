@@ -130,10 +130,10 @@ export class PackageReferenceComponent {
     {
       headerName: "S.No", lockPosition: true, valueGetter: 'node.rowIndex+1', width: 100, headerCheckboxSelection: true, checkboxSelection: true,
     },
-    { headerName: "CHANNEL NAME", field: 'productname', width: 400 },
-    { headerName: "PACKAGE RATE", field: 'packagerate', width: 400 },
-    { headerName: "REFERENCE ID", field: 'referenceid', width: 300 },
-    { headerName: "PRODUCT ID", field: 'casproductid', width: 300 },
+    { headerName: "CHANNEL NAME", field: '', width: 450 },
+    { headerName: "PACKAGE RATE", field: '', width: 450 },
+    { headerName: "REFERENCE ID", field: '', width: 300 },
+    { headerName: "PRODUCT ID", field: '', width: 300 },
 
   ]
   private updateColumnDefs(tab: string): void {
@@ -142,8 +142,8 @@ export class PackageReferenceComponent {
         {
           headerName: "S.No", lockPosition: true, valueGetter: 'node.rowIndex+1', width: 100, headerCheckboxSelection: true, checkboxSelection: true,
         },
-        { headerName: "CHANNEL NAME", field: 'productname', width: 400, },
-        { headerName: "PACKAGE RATE", field: 'packagerate', width: 400, cellStyle: { textAlign: 'center' }, },
+        { headerName: "CHANNEL NAME", field: 'productname', width: 450, },
+        { headerName: "PACKAGE RATE", field: 'packagerate', width: 450, cellStyle: { textAlign: 'center' }, },
         { headerName: "REFERENCE ID", field: 'orderid', width: 300, cellStyle: { textAlign: 'center' }, },
         {
           headerName: "PRODUCT ID", field: 'casproductid', width: 300, cellStyle: { textAlign: 'center' },
@@ -190,8 +190,8 @@ export class PackageReferenceComponent {
         {
           headerName: "S.No", lockPosition: true, valueGetter: 'node.rowIndex+1', width: 100, headerCheckboxSelection: true, checkboxSelection: true,
         },
-        { headerName: "CHANNEL NAME", field: 'productname', width: 400, },
-        { headerName: "PACKAGE RATE", field: 'packagerate', width: 400, },
+        { headerName: "CHANNEL NAME", field: 'productname', width: 450, },
+        { headerName: "PACKAGE RATE", field: 'packagerate', width: 450, },
         { headerName: "REFERENCE ID", field: 'orderid', width: 300, },
         {
           headerName: "PRODUCT ID", field: 'casproductid', width: 300,
@@ -237,11 +237,9 @@ export class PackageReferenceComponent {
       ]
     } else if (tab === '3') {
       this.columnDefs = [
-        {
-          headerName: "S.No", lockPosition: true, valueGetter: 'node.rowIndex+1', width: 100, headerCheckboxSelection: true, checkboxSelection: true,
-        },
-        { headerName: "CHANNEL NAME", field: 'productname', width: 400 },
-        { headerName: "PACKAGE RATE", field: 'packagerate', width: 400 },
+        { headerName: "S.No", lockPosition: true, valueGetter: 'node.rowIndex+1', width: 100, headerCheckboxSelection: true, checkboxSelection: true, },
+        { headerName: "CHANNEL NAME", field: 'productname', width: 450 },
+        { headerName: "PACKAGE RATE", field: 'packagerate', width: 450 },
         { headerName: "REFERENCE ID", field: 'orderid', width: 300 },
         {
           headerName: "PRODUCT ID", field: 'casproductid', width: 300,

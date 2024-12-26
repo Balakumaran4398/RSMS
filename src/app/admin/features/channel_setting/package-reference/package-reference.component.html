@@ -1,8 +1,8 @@
 <div class="chart">
     <h3>Product Reference Details</h3>
 
-    <hr>
-    <section class="Tab col-xl-12 col-sm-12 col-12 mb-3" style="max-height: 73vh;overflow: auto;">
+    <!-- <hr> -->
+    <section class="Tab col-xl-12 col-sm-12 col-12 mb-3" style="max-height: 76vh;overflow: auto;">
         <div class="display tablist justify-content-center align-items-center  mb-3">
             <div class="tab mb-3" [class.active]="selectedTab === '1'" (click)="selectTab('1')">BASE PACKAGE
             </div>
@@ -27,9 +27,9 @@
         </div>
 
         <div *ngIf="selectedTab">
-            <div class="col-12 col-sm-10 align-items-center justify-content-center responsive-container"
+            <div class="col-12 col-sm-12 align-items-center justify-content-center responsive-container"
                 style="margin: auto;">
-                <ag-grid-angular #agGrid id="myGrid" style="text-align: center;" domLayout='autoHeight'
+                <ag-grid-angular #agGrid id="myGrid"  domLayout='autoHeight'
                     class="ag-theme-alpine table-class" rowAnimation [gridOptions]="gridOptions"
                     [rowSelection]="rowSelection" [columnDefs]="columnDefs" [rowData]="rowData"
                     [enableCellTextSelection]="true" (selectionChanged)="onSelectionChanged()"

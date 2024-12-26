@@ -115,7 +115,7 @@ export class FingerPrintComponent {
   isPositionXYVisible_mobile: boolean = false;
 
   isInvalidLength: boolean = false;
-  
+
 
   area: any[] = [];
   smartcardFormControl = new FormControl();
@@ -432,12 +432,29 @@ export class FingerPrintComponent {
     //   this.cas = data;
     //   console.log(this.cas);
     // });
+
+    this.userservice.getOeratorList(this.role, this.username, 1).subscribe((data: any) => {
+      console.log(data);
+      this.area = Object.keys(data).map(key => {
+        const value = data[key];
+        const name = key;
+        return { name: name, id: value };
+      });
+      this.filteredAreaList = this.area;
+    })
+
+    this.userservice.getOeratorList(this.role, this.username, 1).subscribe((data) => {
+      this.area = Object.entries(data[0].arealist).map(([key, value]) => ({ name: key, id: value }));
+      console.log(this.area);
+      console.log('sdffdsfsfds', this.area);
+      this.filteredAreaList = this.area;
+    });
     this.userservice.Finger_print_List(this.role, this.username).subscribe((data) => {
       console.log(data);
       // this.area = data[0].arealist;
       // this.cas = data[0].caslist;
-      this.area = Object.entries(data[0].arealist).map(([key, value]) => ({ name: key, id: value }));
-      this.filteredAreaList = this.area;
+      // this.area = Object.entries(data[0].arealist).map(([key, value]) => ({ name: key, id: value }));
+      // this.filteredAreaList = this.area;
       // this.cas = Object.entries(data[0].caslist).map(([key, value]) => ({ name: key, id: value }));
       this.cas = Object.entries(data[0].caslist).map(([key, value]) => ({ name: key, id: value }));
       this.filteredCasList = this.cas;
@@ -541,7 +558,7 @@ export class FingerPrintComponent {
       }
       this.onSelectionFingerPrint(selectvalue);
       console.log(selectvalue);
-      
+
     })
     this.updateDisplayValue();
     this.checkScreenSize();
@@ -632,7 +649,8 @@ export class FingerPrintComponent {
   }
   onSearchLCOChange(event: any) {
     this.searchLCOTerm = event.target.value;
-    this.filteredLcoList = this.filteredIntendArea();
+    // this.filteredLcoList = this.filteredIntendArea();
+    this.filteredAreaList = this.filteredIntendArea();
   }
   onLCOSelect(LCO: { name: string; id: number }) {
     this.intendidLco = LCO.name;

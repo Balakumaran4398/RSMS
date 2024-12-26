@@ -144,23 +144,34 @@ export class ExpiryDetailsComponent implements OnInit{
         (response: HttpResponse<any[]>) => { // Expect HttpResponse<any[]>
           if (response.status === 200) {
             this.rowData = response.body;
-            // this.swal.Success_200();
             console.log(this.rowData);
-            const areatitle = 'A1:I2'
-            const areasub = 'A3:I3';
-            const title = 'EXPIRY HISTORY REPORT';
+            const areatitle = 'A1:J2'
+            const areasub = 'A3:J3';
+            const title = 'EXPIRY HISTORY REPORT - FORMAT 1';
             const sub = 'MSO ADDRESS: ' + this.msodetails;
-            const header = ['LCO NAME', 'CUSTOMER NAME', 'SMARTCARD', 'BOX ID', 'ADDRESS', 'MOBILE NO', 'PACKAGE NAME', 'EXPIRY DATE', 'ACTIVATION DATE'];
+            const header = ['S.NO','LCO NAME', 'CUSTOMER NAME', 'SMARTCARD', 'BOX ID', 'ADDRESS', 'MOBILE NO', 'PACKAGE NAME', 'EXPIRY DATE', 'ACTIVATION DATE'];
             const data = this.rowData;
             const datas: Array<any> = [];
-            data.forEach((d: any) => {
-              const row = [d.operatorname, d.customername, d.smartcard, d.boxid, d.address, d.mobileno, d.productname, d.expirydate];
+            data.forEach((d: any,index:number) => {
+              const row = [index+1,d.operatorname, d.customername, d.smartcard, d.boxid, d.address, d.mobileno, d.productname, d.expirydate];
               datas.push(row);
             });
             const cellsize = { a: 20, b: 20, c: 20, d: 28, e: 20 };
             this.excelService.generateIMAGEExcel(areatitle, header, datas, title, cellsize, areasub, sub);
           } else if (response.status === 204) {
-            this.swal.Success_204();
+            // this.swal.Success_204();
+            this.rowData = response.body;
+            console.log(this.rowData);
+            const areatitle = 'A1:I2'
+            const areasub = 'A3:I3';
+            const title = 'EXPIRY HISTORY REPORT';
+            const sub = 'MSO ADDRESS: ' + this.msodetails;
+            const header = ['S.NO','LCO NAME', 'CUSTOMER NAME', 'SMARTCARD', 'BOX ID', 'ADDRESS', 'MOBILE NO', 'PACKAGE NAME', 'EXPIRY DATE', 'ACTIVATION DATE'];
+            const data = this.rowData;
+            const datas: Array<any> = [];
+
+            const cellsize = { a: 20, b: 20, c: 20, d: 28, e: 20 };
+            this.excelService.generateIMAGEExcel(areatitle, header, datas, title, cellsize, areasub, sub);
             this.rowData = [];
           }
         },
@@ -175,22 +186,31 @@ export class ExpiryDetailsComponent implements OnInit{
       (response: HttpResponse<any[]>) => { // Expect HttpResponse<any[]>
         if (response.status === 200) {
           this.rowData = response.body;
-          // this.swal.Success_200();
-          const areatitle = 'A1:J2'
-          const areasub = 'A3:J3';
-          const title = 'EXPIRY HISTORY REPORT';
+          const areatitle = 'A1:L2'
+          const areasub = 'A3:L3';
+          const title = 'EXPIRY HISTORY REPORT - FORMAT 2';
           const sub = 'MSO ADDRESS:' + this.msodetails;
-          const header = ['LCO NAME', 'CUSTOMER NAME', 'SMARTCARD', 'BOX ID', 'ADDRESS', 'MOBILE NO', 'PACKAGE NAME', 'EXPIRY DATE', 'AREA ID','CUSTOMER NO'];
+          const header = ['S.NO','LCO NAME', 'CUSTOMER NAME', 'SMARTCARD', 'BOX ID', 'ADDRESS', 'MOBILE NO', 'PACKAGE NAME', 'EXPIRY DATE', 'AREA ID','CUSTOMER NO'];
           const data = this.rowData;
           const datas: Array<any> = [];
-          data.forEach((d: any) => {
-            const row = [d.operatorname, d.customername, d.smartcard, d.boxid, d.address, d.mobileno, d.productname, d.expirydate,d.areaid,d.customerno];
+          data.forEach((d: any,index:number) => {
+            const row = [index+1,,d.operatorname, d.customername, d.smartcard, d.boxid, d.address, d.mobileno, d.productname, d.expirydate,d.areaid,d.customerno];
             datas.push(row);
           });
           const cellsize = { a: 20, b: 20, c: 20, d: 28, e: 20 };
           this.excelService.generateIMAGEExcel1(areatitle, header, datas, title, cellsize, areasub, sub);
         } else if (response.status === 204) {
-          this.swal.Success_204();
+          this.rowData = response.body;
+          const areatitle = 'A1:J2'
+          const areasub = 'A3:J3';
+          const title = 'EXPIRY HISTORY REPORT';
+          const sub = 'MSO ADDRESS:' + this.msodetails;
+          const header = ['S.NO','LCO NAME', 'CUSTOMER NAME', 'SMARTCARD', 'BOX ID', 'ADDRESS', 'MOBILE NO', 'PACKAGE NAME', 'EXPIRY DATE', 'AREA ID','CUSTOMER NO'];
+          const data = this.rowData;
+          const datas: Array<any> = [];
+
+          const cellsize = { a: 20, b: 20, c: 20, d: 28, e: 20 };
+          this.excelService.generateIMAGEExcel1(areatitle, header, datas, title, cellsize, areasub, sub);
           this.rowData = [];
         }
       },

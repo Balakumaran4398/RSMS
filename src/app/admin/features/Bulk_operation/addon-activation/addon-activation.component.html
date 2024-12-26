@@ -9,6 +9,9 @@
             </div>
         </div>
         <div *ngIf="selectedTab === 'activation'" class="commission">
+            <div class="title">
+                <h5>BULK ADDON HISTORY</h5>
+            </div>
             <div class="row">
                 <!-- Left Column (File Upload and Instructions) -->
                 <div class="col-12 col-lg-4 d-flex justify-content-center align-items-center mb-4 mb-lg-0">
@@ -51,7 +54,7 @@
                             </label>
                             <span class="mx-3" style="color:#0a21d0">{{filePath }} </span>
                         </div>
-                        <div class="col-12 mb-3">
+                        <!-- <div class="col-12 mb-3">
                             <select placeholder="Select the CAS" class="form-control" [(ngModel)]="castype"
                                 (change)="casPackageList()">
                                 <option value="0" selected>Select CAS</option>
@@ -59,12 +62,12 @@
                                     {{ casItem.name }}
                                 </option>
                             </select>
-                        </div>
-                        <div *ngIf="submitted && !castype" class="text-danger" style="font-size: small;">
+                        </div> -->
+                        <!-- <div *ngIf="submitted && !castype" class="text-danger" style="font-size: small;">
                             CAS  is required
-                        </div>
+                        </div> -->
                         <div class="col-12 mb-3">
-                            <div class="col-12 mb-3">
+                            <!-- <div class="col-12 mb-3">
                                 <mat-form-field class="w-100" appearance="outline">
                                     <mat-label>Select Alacarte List by CAS type</mat-label>
                                     <mat-select [formControl]="toppings" multiple [(ngModel)]="alacarteList">
@@ -79,11 +82,28 @@
                                 <div *ngIf="submitted && !alacarteList" class="text-danger" style="font-size: small;">
                                     Alacarte  is required
                                 </div>
+                            </div> -->
+
+                            <div class="col-12 mb-3">
+                                <mat-form-field class="w-100" appearance="outline">
+                                    <mat-label>Select Addon</mat-label>
+                                    <mat-select [formControl]="toppings" multiple [(ngModel)]="alacarteList">
+                                        <div class="input_box " style="padding: 1rem;">
+                                            <input placeholder="Search..." [(ngModel)]="searchText"
+                                                (input)="filterToppings($event)" />
+                                        </div>
+                                        <mat-option *ngFor="let topping of toppingList" [value]="topping.id">{{
+                                            topping.name }}</mat-option>
+                                    </mat-select>
+                                </mat-form-field>
+                                <div *ngIf="submitted && !alacarteList" class="text-danger" style="font-size: small;">
+                                    Addon is required
+                                </div>
                             </div>
-                        </div>
+                        </div> 
                       
                         <div class=" d-flex justify-content-end align-items-center mt-3">
-                            <button type="submit" class="btn btn-success" (click)="submit()">Submit</button>
+                            <button type="submit" class="btn btn-success"   [disabled]="!isFormValid()"  (click)="submit()">Submit</button>
                         </div>
                     </div>
                 </div>
@@ -91,9 +111,7 @@
                 <!-- Right Column (Bulk Alacarte History) -->
                 <div class="col-12 col-lg-8 d-flex justify-content-center">
                     <div class="card col-12">
-                        <div class="title">
-                            <h5>BULK ADDON HISTORY</h5>
-                        </div>
+              
                         <div class="row d-flex align-items-center justify-content-center" style="padding: 0.5rem;">
                             <div class="col-12 mb-3">
                                 <div class="row align-items-center justify-content-center mb-3" style="gap:10px;">
@@ -124,6 +142,9 @@
 
     </div>
     <div *ngIf="selectedTab === 'remove'">
+        <div class="title">
+            <h5>BULK ADDON REMOVE HISTORY</h5>
+        </div>
         <div class="container ">
             <div class="row justify-content-center align-items-baseline mb-2">
                 <div class="col-12 col-md-2 mb-3 d-flex justify-content-center align-items-center mt-3">
@@ -133,7 +154,7 @@
                     </label>
                     <span class="mx-3" style="color:#0a21d0">{{filePath }} </span>
                 </div>
-                <div class="col-12 col-md-3  mt-2">
+                <!-- <div class="col-12 col-md-3  mt-2">
                     <mat-form-field class="example-full-width" appearance="outline">
                         <mat-label>Select CAS type</mat-label>
                         <input type="text" matInput [matAutocomplete]="auto" (input)="filterCas($event)"
@@ -148,10 +169,10 @@
                     <div *ngIf="submitted && !selectedCas" class="text-danger" style="font-size: small;">
                         CAS  is required
                     </div>
-                </div>
+                </div> -->
                 <div class="col-12 col-md-5 mt-2" style="height: 50px;">
                     <mat-form-field class="w-100" appearance="outline">
-                        <mat-label>Select Alacarte List by CAS type</mat-label>
+                        <mat-label>Select Addon</mat-label>
                         <mat-select [formControl]="toppings" multiple [(ngModel)]="alacarteList">
                             <div class="input_box " style="padding: 1rem;">
                                 <input placeholder="Search..." [(ngModel)]="searchText"
@@ -162,12 +183,12 @@
                         </mat-select>
                     </mat-form-field>
                     <div *ngIf="submitted && !alacarteList" class="text-danger" style="font-size: small;">
-                        Alacarte is required
+                        Addon is required
                     </div>
                 </div>
                 <div
                     class="col-12 col-md-2 mt-2 d-flex justify-content-center justify-content-md-end align-items-center">
-                    <button type="submit" class="btn btn-success w-100 w-md-auto" (click)="remove()">Remove</button>
+                    <button type="submit"  [disabled]="!isFormValid()" class="btn btn-success w-100 w-md-auto" (click)="remove()">Remove</button>
                 </div>
             </div>
         </div>
@@ -175,9 +196,7 @@
         <div class="col-12 col-lg-8 d-flex justify-content-center align-item-center"
             style="margin:auto;padding-top: 5%;">
             <div class="card col-12">
-                <div class="title">
-                    <h3>BULK ADDON REMOVE HISTORY</h3>
-                </div>
+             
                 <div class="row d-flex align-items-center justify-content-center" style="padding: 0.5rem;">
                     <div class="col-12 mb-3">
                         <div class="row align-items-center justify-content-center mb-3" style="gap:10px;">

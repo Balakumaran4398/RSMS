@@ -409,15 +409,16 @@ export class ExcelService {
     });
 
     worksheet.columns = [
-      { key: 'a', width: 20 }, // LCO Name
-      { key: 'b', width: 20 }, // Customer Name
-      { key: 'c', width: 25 }, // Smartcard
-      { key: 'd', width: 18 }, // Box ID
-      { key: 'e', width: 30 }, // Address
-      { key: 'f', width: 15 }, // Mobile No
-      { key: 'g', width: 30 }, // Package Name
-      { key: 'h', width: 25 }, // Expiry Date
-      { key: 'i', width: 25 }, // Activation Date
+      { key: 'a', width: 10 }, // S.NO
+      { key: 'b', width: 20 }, // LCO Name
+      { key: 'c', width: 20 }, // Customer Name
+      { key: 'd', width: 25 }, // Smartcard
+      { key: 'e', width: 18 }, // Box ID
+      { key: 'f', width: 30 }, // Address
+      { key: 'g', width: 15 }, // Mobile No
+      { key: 'h', width: 30 }, // Package Name
+      { key: 'i', width: 25 }, // Expiry Date
+      { key: 'j', width: 25 }, // Activation Date
     ];
 
     // Save the Excel file
@@ -524,17 +525,18 @@ export class ExcelService {
     });
 
     worksheet.columns = [
-      { key: 'a', width: 20 }, // LCO Name
-      { key: 'b', width: 20 }, // Customer Name
-      { key: 'c', width: 25 }, // Smartcard
-      { key: 'd', width: 18 }, // Box ID
-      { key: 'e', width: 30 }, // Address
-      { key: 'f', width: 15 }, // Mobile No
-      { key: 'g', width: 30 }, // Package Name
-      { key: 'h', width: 25 }, // Expiry Date
-      { key: 'i', width: 25 }, // Activation Date
-      { key: 'j', width: 25 }, // Area id
-      { key: 'k', width: 25 }, // Customer No
+      { key: 'a', width: 10 }, // S.NO
+      { key: 'b', width: 20 }, // LCO Name
+      { key: 'c', width: 20 }, // Customer Name
+      { key: 'd', width: 25 }, // Smartcard
+      { key: 'e', width: 18 }, // Box ID
+      { key: 'f', width: 30 }, // Address
+      { key: 'g', width: 15 }, // Mobile No
+      { key: 'h', width: 30 }, // Package Name
+      { key: 'i', width: 25 }, // Expiry Date
+      { key: 'j', width: 25 }, // Activation Date
+      { key: 'k', width: 25 }, // Area id
+      { key: 'l', width: 25 }, // Customer No
     ];
 
     // Save the Excel file
@@ -1980,7 +1982,7 @@ export class ExcelService {
       areasub,
       sub,
       columns,
-      'RECHARGE LOG'
+      'LCO RECHARGE LOG REPORT'
     );
   }
   generateLCO_dateRechargeExcel(

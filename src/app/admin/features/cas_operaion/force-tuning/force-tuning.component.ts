@@ -51,10 +51,20 @@ export class ForceTuningComponent {
     })
   }
   ngOnInit() {
-    this.userservice.Finger_print_List(this.role, this.username).subscribe((data) => {
+    // this.userservice.Finger_print_List(this.role, this.username).subscribe((data) => {
+    //   console.log(data);
+    //   this.area = Object.entries(data[0].arealist).map(([key, value]) => ({ name: key, id: value }));
+    //   console.log(this.area);
+    //   this.filteredOperators = this.area;
+    // })
+
+    this.userservice.getOeratorList(this.role, this.username, 1).subscribe((data: any) => {
       console.log(data);
-      this.area = Object.entries(data[0].arealist).map(([key, value]) => ({ name: key, id: value }));
-      console.log(this.area);
+      this.area = Object.keys(data).map(key => {
+        const value = data[key];
+        const name = key;
+        return { name: name, id: value };
+      });
       this.filteredOperators = this.area;
     })
   }

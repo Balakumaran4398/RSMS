@@ -138,7 +138,8 @@ export class ActivationComponent implements OnInit {
   onproducttypechange(selectedOperator: any) {
     this.selectedPackage = selectedOperator;
     this.selectedPackageName = selectedOperator.name;
-    this.userservice.getPackageList(this.role, this.username, 1).subscribe((data: any) => {
+    // this.userservice.getPackageList(this.role, this.username, 1).subscribe((data: any) => {
+    this.userservice.getBulkPackageUpdationList(this.role, this.username).subscribe((data: any) => {
       console.log(data);
       // this.lcomembershipList = Object.keys(data.packageid);
       this.lcomembershipList = Object.keys(data).map(key => {
@@ -146,7 +147,7 @@ export class ActivationComponent implements OnInit {
         const name = key;
         return { name: name, value: value };
       });
-      console.log(this.lcomembershipList);
+      // console.log(this.lcomembershipList);
       this.filteredPackage = this.lcomembershipList
     });
   }
