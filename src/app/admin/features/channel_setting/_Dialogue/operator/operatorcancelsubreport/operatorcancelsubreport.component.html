@@ -6,15 +6,15 @@
         </div>
         <label class="header">CANCEL SUBSCRIPTION REPORT</label>
         <div class="mb-3 display justify-content-center align-items-center " style="padding: 1rem;">
-            <div class="input_box col-12 col-md-3">
+            <div class="input_box col-12 col-md-2">
                 <span class="formlabel">Filter
                 </span>
             </div>
-            <div class="col-12 col-md-6">
+            <div class="col-12 col-md-7">
                 <mat-form-field appearance="outline" style="width: 100%;">
-                    <mat-date-range-input [rangePicker]="picker" [max]="maxDate">
-                        <input matStartDate matInput placeholder="Start date" (dateChange)="getFromDate($event)">
-                        <input matEndDate matInput placeholder="End date" (dateChange)="getToDate($event)">
+                    <mat-date-range-input [rangePicker]="picker" >
+                        <input matStartDate matInput placeholder="Start date" [(ngModel)]="fromdate" (dateChange)="getFromDate($event)">
+                        <input matEndDate matInput placeholder="End date"  [(ngModel)]="todate" (dateChange)="getToDate($event)">
                     </mat-date-range-input>
                     <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
                     <mat-date-range-picker #picker></mat-date-range-picker>

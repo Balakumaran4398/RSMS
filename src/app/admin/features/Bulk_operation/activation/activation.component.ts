@@ -196,6 +196,7 @@ export class ActivationComponent implements OnInit {
       formData.append('type', '1');
       formData.append('plantype', '5');
       formData.append('plan', this.plan);
+      formData.append('retialerid', '0');
 
       this.userservice.uploadFirsttimeActivation(formData)
         .subscribe((res: any) => {

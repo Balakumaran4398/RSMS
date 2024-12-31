@@ -12,7 +12,8 @@
                 </div>
                 <div class="mb-3">
                     <div class="mb-3">
-                        <span class="p" style="font-weight: 500;"><span style="display: none;">p p</span> 1) Before activation, make
+                        <span class="p" style="font-weight: 500;"><span style="display: none;">p p</span> 1) Before
+                            activation, make
                             sure that the LCO wallet has a sufficient cash balance, Will be
                             activated only as long as there is a <span style="color: red;">cash balance in the LCO
                                 wallet</span>.
@@ -20,13 +21,15 @@
                     </div>
                     <div class="mb-3">
                         <span class="p" style="font-weight: 500;"><span style="display: none;">p p</span>
-                           2) Must have kept the data according to the format file (Please check the format file by below
+                            2) Must have kept the data according to the format file (Please check the format file by
+                            below
                             download option) and fill the Smartcard number without incorrect otherwise <span
                                 style="color: red;"> package not will be activate</span>.
                         </span>
                     </div>
                 </div>
-                <a class="mb-3"(click)="generateExcel('Update Subscription')" style="cursor: pointer;">* Download Format File</a>
+                <a class="mb-3" (click)="generateExcel('Update Subscription')" style="cursor: pointer;">* Download
+                    Format File</a>
                 <div class="checkbox-text mb-3">
                     <div class="checkbox-content">
                         <input type="checkbox" id="terms" formControlName="billingAddressCheckbox"
@@ -39,16 +42,19 @@
                         [style.color]="isCheckboxChecked ? 'white' : 'black'"
                         [style.cursor]="isCheckboxChecked ? 'pointer' : 'not-allowed'">
                         <i class="fa fa-plus"></i> Choose
-                        <input type="file" style="display: none;" [disabled]="!isCheckboxChecked" (change)="handleFileInput($event)">
+                        <input type="file" style="display: none;" [disabled]="!isCheckboxChecked"
+                            (change)="handleFileInput($event)">
                     </label>
                     <span class="mx-3" style="color:#0a21d0">{{filePath}}</span>
                 </div>
                 <div class=" col-12 col-md-6 col-sm-6 mb-3 input_box d-flex  align-item-center  justify-content-center">
                     <div class="col-5 col-12 col-md-6 col-sm-6">
-                        <div  style="color: rgb(1, 89, 92);font-weight: 400;font-size: 15px;" for="" >No of Days :</div>
+                        <div style="color: rgb(1, 89, 92);font-weight: 400;font-size: 15px;" for="">No of Days :</div>
                     </div>
-                    <input type="text" [(ngModel)]="days">
+                    <input (input)="validateLength($event)" type="number" maxlength="3"
+                        [(ngModel)]="days">
                 </div>
+                <!-- <div *ngIf="daysInvalid" style="color: red;">Please enter exactly 3 digits.</div> -->
                 <div class=" d-flex justify-content-end align-items-center mt-3">
                     <button type="submit" class="btn btn-success " (click)="submit()">Submit</button>
                 </div>
@@ -65,7 +71,8 @@
                     <div class="col-12 mb-3">
                         <div class="row align-items-center justify-content-center mb-3" style="gap:10px;">
                             <div class="col-12 col-md-3 mb-2 mb-md-0">
-                                <input class="date" placeholder="Select Date" type="date" name="" id="" [(ngModel)]="selectedDate">
+                                <input class="date" placeholder="Select Date" type="date" name="" id=""
+                                    [(ngModel)]="selectedDate">
                             </div>
                             <div class="col-12 col-md-3 mb-2 mb-md-0">
                                 <button class="btn btn-secondary w-100" (click)="getData()">Get Data</button>

@@ -410,10 +410,10 @@
                                         <option *ngFor="let area of filteredIntendArea()" [value]="area.name">
                                             {{ area.name }}
                                         </option>
-                              
                                     </select> -->
 
-                                    <input type="text" matInput [matAutocomplete]="auto" [(ngModel)]="smartcard"
+                                    <input [disabled]="!castypeSmartcard || filteredSmartcard.length === 0" type="text"
+                                        matInput [matAutocomplete]="auto" [(ngModel)]="smartcard"
                                         (input)="filterSmartcard($event)" placeholder="Select a Smartcard"
                                         [matAutocompleteDisabled]="false" [value]="selectedSmartcard?.name">
 
@@ -470,9 +470,10 @@
                                 </div>
                                 <div class="col-12 col-md-8">
                                     <input type="text" matInput [matAutocomplete]="auto" [(ngModel)]="lcoid"
-                                        name="lcoName" (ngModelChange)="filterOperators($event)" placeholder="Select a Operator"
-                                        [matAutocompleteDisabled]="false" [value]="selectedOperator?.name"
-                                        (focus)="onInputFocus()" (blur)="onInputBlur()">
+                                        name="lcoName" (ngModelChange)="filterOperators($event)"
+                                        placeholder="Select a Operator" [matAutocompleteDisabled]="false"
+                                        [value]="selectedOperator?.name" (focus)="onInputFocus()"
+                                        (blur)="onInputBlur()">
 
                                     <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayOperator">
                                         <mat-option *ngFor="let operator of filteredOperators" [value]="operator.value"
@@ -538,6 +539,23 @@
                                         Street Name is required
                                     </div>
                                     <!-- </div> -->
+                                </div>
+                            </div>
+
+                            <div *ngIf="packageStatus !== 'Expired'" class="card mb-3">
+                                <div class=" d-flex align-items-center justify-content-center">
+                                    <div class="input_box col-12 col-md-6">
+                                        <span>Cancel Current Subscription</span>
+                                    </div>
+                                    <div class="col-6 col-md-4 value">
+                                        <mat-radio-group class="radio-group" aria-labelledby="status"
+                                            [(ngModel)]="withsubscription">
+                                            <mat-radio-button class="radio-button" [value]="true">Yes
+                                            </mat-radio-button>&nbsp;
+                                            <mat-radio-button class="radio-button" [value]="false">No
+                                            </mat-radio-button>
+                                        </mat-radio-group>
+                                    </div>
                                 </div>
                             </div>
                             <!-- <div ngIf="" class="input_box display mb-3">
@@ -1030,19 +1048,21 @@
                     </div>
                 </div>
             </div>
+            <!-- {{packageMessage.msgcontent}} -->
             <div class=" input_box mb-3">
                 <div class="d-flex align-items-center justify-content-center">
                     <div class=" col-6 col-md-6">
                         <label class="me-2">Message </label>
                     </div>
                     <div class="col-6 col-md-6 value">
-                        <!-- <textarea name="" id="" placeholder="N/A" [(ngModel)]="packageMessage.msgcontent"
+                        <!-- <textarea name="" id="" placeholder="N/A" [value]="packageMessage"
                             formControlName="message" [maxlength]="117" (input)="updateRemainingChars($event)"></textarea> -->
-                        <textarea name="" id="" placeholder="N/A" formControlName="message" [maxlength]="117"
-                            (input)="updateRemainingChars($event)"></textarea>
-                        <div>
+                        <textarea name="" id="" placeholder="N/A" formControlName="message"
+                            [(ngModel)]="packageMessage.msgcontent" [maxlength]="117"></textarea>
+                        <!-- (input)="updateRemainingChars($event)"></textarea> -->
+                        <!-- <div>
                             <small>{{ remainingChars }} characters remaining</small>
-                        </div>
+                        </div> -->
                         <div *ngIf="Sendmseform.get('message')?.invalid && Sendmseform.get('message')?.touched">
                             <small class="text-danger">Message is required.</small>
                         </div>
@@ -1359,7 +1379,7 @@
 <div *ngIf="sType=='smartcardchange'">
 
     <div class="Head d-flex justify-content-between align-items-center mb-3">
-        <span class="span">LCO TRANSFER</span>
+        <span class="span">SMARTCARD TRANSFER</span>
         <i class="fa fa-close close-icon" (click)="onNoClick()"></i>
     </div>
     <div class="mobileview">
@@ -1422,6 +1442,7 @@
                 <div class="  col-6 col-md-6">
                     <label class="me-2">New LCO Name</label>
                 </div>
+                <!-- {{operatname}} -->
                 <div class="col-6 col-md-6 value">
                     <!-- <select id="lcoName" [(ngModel)]="lcoid" (change)="onSubscriberlcoChange($event)"
                         (input)="onBoxIdInputChange()">
@@ -1431,9 +1452,9 @@
                         </option>
                     </select> -->
 
-                    <input type="text" matInput [matAutocomplete]="auto" [(ngModel)]="lcoid"
+                    <input type="text" matInput [matAutocomplete]="auto" [value]="operatname"
                         (input)="filterOperators($event)" placeholder="Select a Operator"
-                        [matAutocompleteDisabled]="false" [value]="selectedOperator?.name">
+                        [matAutocompleteDisabled]="false">
 
                     <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayOperator">
                         <mat-option *ngFor="let operator of filteredOperators" [value]="operator.value"
@@ -1460,9 +1481,8 @@
                     </select> -->
 
 
-                    <input type="text" matInput [matAutocomplete]="autosub" [(ngModel)]="f_subid"
-                        (input)="filterSub($event)" placeholder="Select a Subscriber" [matAutocompleteDisabled]="false"
-                        [value]="selectedSub?.name">
+                    <input type="text" matInput [matAutocomplete]="autosub" [value]="servicename"
+                        (input)="filterSub($event)" placeholder="Select a Subscriber" [matAutocompleteDisabled]="false">
 
                     <mat-autocomplete #autosub="matAutocomplete" [displayWith]="displaySub">
                         <mat-option *ngFor="let sub of filteredSub" [value]="sub.value" (click)="onsublist(sub)">
@@ -1472,6 +1492,21 @@
                     <div *ngIf="errorMessage1" class="text-danger mt-2">{{ errorMessage1 }}</div>
                 </div>
 
+            </div>
+        </div>
+        <div *ngIf="packageStatus !== 'Expired'" class="card  mb-3">
+            <div class="d-flex align-items-center justify-content-center">
+                <div class="input_box ">
+                    <span>Cancel Current Subscription</span>
+                </div>
+                <!-- <div class="col-6 col-md-4 value"> -->
+                <mat-radio-group class="radio-group" aria-labelledby="status" [(ngModel)]="withsubscription">
+                    <mat-radio-button class="radio-button" [value]="true">Yes
+                    </mat-radio-button>&nbsp;
+                    <mat-radio-button class="radio-button" [value]="false">No
+                    </mat-radio-button>
+                </mat-radio-group>
+                <!-- </div> -->
             </div>
         </div>
     </div>
@@ -1908,7 +1943,7 @@
     </div>
     <div class=" d-flex justify-content-center align-item-center  mb-2">
         <button *ngIf="confirmation" type="button" class="btn confirm me-2" (click)="onActivationClick()"
-            [disabled]="!isPlanTypeSelected() || isDateSelected()">
+            [disabled]="isPlanTypeSelected()">
             Confirmation
         </button>
         <button *ngIf="!confirmation" type="button" class="btn confirm me-2" (click)="onActivationButtonClick()"
@@ -1919,6 +1954,23 @@
             (click)="ActivationOfCard()">Activate</button>
         <button type="button" class="btn btn-danger me-2" (click)="onNoClick()">Cancel</button>
     </div>
+
+
+
+    <!-- <button *ngIf="confirmation" type="button" class="btn confirm me-2" (click)="onFirstTimeActivationClick()"
+    [disabled]="!isPlanTypeSelected()">
+    Confirmation
+</button>
+
+<button *ngIf="!confirmation" type="button" class="btn confirm me-2"
+    (click)="onFirstTimeActivationButtonClick()" [disabled]="isDisabled">
+    Confirmation
+</button>
+<button type="button" class="btn  recharge me-2" (click)="firsttimeActivationOfCard()"
+    [disabled]="!isActive">Activate</button>
+<button type="button" class="btn btn-danger me-2" (click)="onNoClick()">Cancel</button> -->
+
+
 </div>
 <div *ngIf="sType=='BASE'">
     <div class="Head d-flex justify-content-between align-items-center mb-3">
@@ -2241,16 +2293,16 @@
                         </div>
                     </div>
                 </div>
-                <div class="input_box  mb-3">
-                    <div class="d-flex align-items-center justify-content-center">
-                        <div class="col-5 col-md-3">
-                            <span class="me-2">Card Balance</span>
+                <!-- <div class="input_box  mb-3">
+                    <div class="d-flex align-items-center justify-content-center" >
+                        <div class="col-5 col-md-3" >
+                            <span class="me-2" >Card Balance</span>
                         </div>
                         <div class="col-7 col-md-6 value">
                             {{cardbalance}}
                         </div>
                     </div>
-                </div>
+                </div> -->
 
             </div>
         </div>

@@ -1,4 +1,4 @@
-<div class="d-flex justify-content-center align-item-center">
+<div class="display justify-content-center align-item-center">
     <div class="col-12 col-md-6 p-3">
         <div class="card">
             <div class="title">
@@ -11,12 +11,12 @@
                             <div class="col-12 col-sm-12 col-md-12" style="padding: 1rem;">
                                 <div class="row">
                                     <div class="input-box display mb-3 ">
-                                        <div class="col-4">
+                                        <div class="col-12 col-sm-6">
                                             <label for="">Intend To</label>
                                         </div>
-                                        <div class="col-12 col-md-6">
-                                            <select formControlName="intendto" (change)="onChangeIntendTo1($event)">
-                                                <option value="" selected> Select Intend</option>
+                                        <div class="col-12 col-sm-6">
+                                            <select formControlName="intendto"  (change)="onChangeIntendTo1($event)">
+                                                <option value="" disabled> Select Intend</option>
                                                 <option value="" *ngFor="let in of intend" [value]="in.value">
                                                     {{in.lable}}
                                                 </option>
@@ -24,21 +24,18 @@
                                         </div>
                                     </div>
                                     <div class="input-box display mb-3">
-                                        <div class="col-4">
+                                        <div class="col-12 col-sm-6">
                                             <label for="">Intend ID</label>
                                         </div>
-                                        <div class="col-12 col-md-6" *ngIf="isSmartcardEnabled">
+                                        <div class="col-12 col-sm-6" *ngIf="isMsoEnabled">
+                                            <input  formControlName="intendid" type="text" 
+                                                (keypress)="onKeydown($event)" [ngModel]="intendid" readonly>
+                                        </div>
+                                        <div class="col-12 col-sm-6 " *ngIf="isSmartcardEnabled">
                                             <input placeholder="Enter Smartcard" formControlName="intendid" type="text"
                                                 (keypress)="onKeydown($event)" [ngModel]="intendid_1" maxlength="20">
-                                            <!-- <div *ngIf="submitted && !intendid_1" class="text-danger"
-                                                style="font-size: small;">
-                                                Indend Id is required
-                                            </div> -->
-                                            <!-- <div *ngIf="form.get('intendid')?.invalid && form.get('indendid')?.touched">
-                                                <small class="text-danger">Indend Id is required.</small>
-                                            </div> -->
                                         </div>
-                                        <div class="col-12 col-md-6" *ngIf="isLCOEnabled">
+                                        <div class="col-12 col-sm-6" *ngIf="isLCOEnabled">
                                             <input type="text" placeholder="Search an LCO" [value]="LCO_name"
                                                 [ngModel]="intendid_1" formControlName="intendid"
                                                 (input)="onSearchLCOChange($event)" [matAutocomplete]="auto"
@@ -50,13 +47,7 @@
                                                     {{ area.name }}
                                                 </mat-option>
                                             </mat-autocomplete>
-                                            <!-- <div *ngIf="submitted && !intendid_1" class="text-danger"
-                                                style="font-size: small;">
-                                                Indend Id is required
-                                            </div> -->
-                                            <!-- <div *ngIf="form.get('intendid')?.invalid && form.get('indendid')?.touched">
-                                                <small class="text-danger">Indend Id is required.</small>
-                                            </div> -->
+                                   
                                         </div>
                                     </div>
                                 </div>
@@ -71,6 +62,21 @@
 
                         </div>
                     </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-12 col-md-6 p-3">
+        <div class="card">
+            <div class="title">
+                <p>Force Tuning History</p>
+            </div>
+            <div class="row d-flex align-items-center justify-content-center" style="padding: 0.5rem;">
+                <div class="col-12 col-sm-12 col-md-12 mb-3">
+                    <ag-grid-angular #agGrid id="myGrid" domLayout='autoHeight' class="ag-theme-alpine table-class"
+                        rowAnimation  [gridOptions]="gridOptions" [columnDefs]="columnDefs"
+                        [rowData]="rowData" [enableCellTextSelection]="true">
+                    </ag-grid-angular>
                 </div>
             </div>
         </div>

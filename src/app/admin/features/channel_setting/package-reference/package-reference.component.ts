@@ -17,6 +17,7 @@ export class PackageReferenceComponent {
   rowData: any[] = [];
   cas: any[] = [];
   gridApi: any;
+  gridColumnApi: any;
   isAnyRowSelected: any = false;
   selectedIds: number[] = [];
   selectedtypes: number[] = [];
@@ -29,6 +30,12 @@ export class PackageReferenceComponent {
       width: 300,
       floatingFilter: true
     },
+    rowClassRules: {
+      'always-selected': (params: any) => params.data,
+    },
+    // onFirstDataRendered: (params: { api: { forEachNode: (arg0: (node: any) => void) => void; }; }) => {
+    //   this.selectRowsBasedOnUsername(params);
+    // },
     paginationPageSize: 10,
     pagination: true,
   }
@@ -110,15 +117,32 @@ export class PackageReferenceComponent {
   onGridReady(params: { api: any; }) {
     // this.gridApi.sizeColumnsToFit();
     this.gridApi = params.api;
+    // this.gridColumnApi = params.columnApi;
+    this.gridApi.selectAll();
   }
   onSelectionChanged() {
+    // if (this.gridApi) {
+    //   const selectedRows = this.gridApi.getSelectedRows();
+    //   this.isAnyRowSelected = selectedRows.length > 0;
+    //   console.log("Selected Rows:", selectedRows);
+    //   this.rows = selectedRows;
+    //   this.selectedIds = selectedRows.map((e: any) => e.id);
+    //   this.selectedtypes = selectedRows.map((e: any) => e.isactive);
+    // }
+
     if (this.gridApi) {
       const selectedRows = this.gridApi.getSelectedRows();
       this.isAnyRowSelected = selectedRows.length > 0;
+
+      // If no rows are selected, select all rows
+      if (!this.isAnyRowSelected) {
+        this.gridApi.selectAll();
+      }
+
       console.log("Selected Rows:", selectedRows);
-      this.rows = selectedRows;
-      this.selectedIds = selectedRows.map((e: any) => e.id);
-      this.selectedtypes = selectedRows.map((e: any) => e.isactive);
+      this.rows = selectedRows.length > 0 ? selectedRows : this.gridApi.getDisplayedRowAtIndex(0);
+      this.selectedIds = this.rows.map((e: any) => e.id);
+      this.selectedtypes = this.rows.map((e: any) => e.isactive);
     }
   }
   private loadData(tab: any): void {
@@ -130,23 +154,23 @@ export class PackageReferenceComponent {
     {
       headerName: "S.No", lockPosition: true, valueGetter: 'node.rowIndex+1', width: 100, headerCheckboxSelection: true, checkboxSelection: true,
     },
-    { headerName: "CHANNEL NAME", field: '', width: 450 },
-    { headerName: "PACKAGE RATE", field: '', width: 450 },
-    { headerName: "REFERENCE ID", field: '', width: 300 },
-    { headerName: "PRODUCT ID", field: '', width: 300 },
+    { headerName: "CHANNEL NAME", field: '', width: 280 },
+    { headerName: "PACKAGE RATE", field: '', width: 250 },
+    { headerName: "REFERENCE ID", field: '', width: 220 },
+    { headerName: "PRODUCT ID", field: '', width: 220 },
 
   ]
   private updateColumnDefs(tab: string): void {
     if (tab === '1') {
       this.columnDefs = [
         {
-          headerName: "S.No", lockPosition: true, valueGetter: 'node.rowIndex+1', width: 100, headerCheckboxSelection: true, checkboxSelection: true,
+          headerName: "S.No", lockPosition: true, valueGetter: 'node.rowIndex+1', width: 100, headerCheckboxSelection: true,
         },
-        { headerName: "CHANNEL NAME", field: 'productname', width: 450, },
-        { headerName: "PACKAGE RATE", field: 'packagerate', width: 450, cellStyle: { textAlign: 'center' }, },
-        { headerName: "REFERENCE ID", field: 'orderid', width: 300, cellStyle: { textAlign: 'center' }, },
+        { headerName: "CHANNEL NAME", field: 'productname', width: 270, },
+        { headerName: "PACKAGE RATE", field: 'packagerate', width: 250, cellStyle: { textAlign: 'center' }, },
+        { headerName: "REFERENCE ID", field: 'orderid', width: 220, cellStyle: { textAlign: 'center' }, },
         {
-          headerName: "PRODUCT ID", field: 'casproductid', width: 300, cellStyle: { textAlign: 'center' },
+          headerName: "PRODUCT ID", field: 'casproductid', width: 220, cellStyle: { textAlign: 'center' },
           cellRenderer: (params: any) => {
             const span = document.createElement('span');
             span.innerText = params.value;
@@ -188,13 +212,13 @@ export class PackageReferenceComponent {
     } else if (tab === '2') {
       this.columnDefs = [
         {
-          headerName: "S.No", lockPosition: true, valueGetter: 'node.rowIndex+1', width: 100, headerCheckboxSelection: true, checkboxSelection: true,
+          headerName: "S.No", lockPosition: true, valueGetter: 'node.rowIndex+1', width: 100, headerCheckboxSelection: true,
         },
-        { headerName: "CHANNEL NAME", field: 'productname', width: 450, },
-        { headerName: "PACKAGE RATE", field: 'packagerate', width: 450, },
-        { headerName: "REFERENCE ID", field: 'orderid', width: 300, },
+        { headerName: "CHANNEL NAME", field: 'productname', width: 270, },
+        { headerName: "PACKAGE RATE", field: 'packagerate', width: 250, },
+        { headerName: "REFERENCE ID", field: 'orderid', width: 220, },
         {
-          headerName: "PRODUCT ID", field: 'casproductid', width: 300,
+          headerName: "PRODUCT ID", field: 'casproductid', width: 220,
 
           cellRenderer: (params: any) => {
             const span = document.createElement('span');
@@ -237,12 +261,12 @@ export class PackageReferenceComponent {
       ]
     } else if (tab === '3') {
       this.columnDefs = [
-        { headerName: "S.No", lockPosition: true, valueGetter: 'node.rowIndex+1', width: 100, headerCheckboxSelection: true, checkboxSelection: true, },
-        { headerName: "CHANNEL NAME", field: 'productname', width: 450 },
-        { headerName: "PACKAGE RATE", field: 'packagerate', width: 450 },
-        { headerName: "REFERENCE ID", field: 'orderid', width: 300 },
+        { headerName: "S.No", lockPosition: true, valueGetter: 'node.rowIndex+1', width: 100, headerCheckboxSelection: true, },
+        { headerName: "CHANNEL NAME", field: 'productname', width: 270 },
+        { headerName: "PACKAGE RATE", field: 'packagerate', width: 250 },
+        { headerName: "REFERENCE ID", field: 'orderid', width: 220 },
         {
-          headerName: "PRODUCT ID", field: 'casproductid', width: 300,
+          headerName: "PRODUCT ID", field: 'casproductid', width: 220,
           cellRenderer: (params: any) => {
             const span = document.createElement('span');
             span.innerText = params.value;
@@ -291,29 +315,37 @@ export class PackageReferenceComponent {
       username: this.username,
       type: this.selectedTab
     } as any;
-
-    if (this.selectedTab == 1) {
-      requestBody['baselist'] = this.rows.map(item => ({
-        productname: item.productname,
-        casproductid: item.casproductid,
-        packagerate: item.packagerate,
-        orderid: item.orderid
-      }));
-    } else if (this.selectedTab == 2) {
-      requestBody['baselist'] = this.rows.map(item => ({
-        productname: item.productname,
-        casproductid: item.casproductid,
-        packagerate: item.packagerate,
-        orderid: item.orderid
-      }));
-    } else if (this.selectedTab == 3) {
-      requestBody['baselist'] = this.rows.map(item => ({
-        productname: item.productname,
-        casproductid: item.casproductid,
-        packagerate: item.packagerate,
-        orderid: item.orderid
-      }));
+    if (this.rows.length === 0) {
+      this.rows = this.gridApi.getDisplayedRowAtIndex(0); 
     }
+    requestBody['baselist'] = this.rows;
+    console.log(this.rows);
+
+    // if (this.selectedTab == 1) {
+    //   requestBody['baselist'] = this.rows.map(item => ({
+    //     productname: item.productname,
+    //     casproductid: item.casproductid,
+    //     packagerate: item.packagerate,
+    //     orderid: item.orderid
+    //   }));
+    //   requestBody['baselist'] = this.rows;
+    // } else if (this.selectedTab == 2) {
+    //   requestBody['baselist'] = this.rows.map(item => ({
+    //     productname: item.productname,
+    //     casproductid: item.casproductid,
+    //     packagerate: item.packagerate,
+    //     orderid: item.orderid
+    //   }));
+    //   requestBody['baselist'] = this.rows
+    // } else if (this.selectedTab == 3) {
+    //   requestBody['baselist'] = this.rows.map(item => ({
+    //     productname: item.productname,
+    //     casproductid: item.casproductid,
+    //     packagerate: item.packagerate,
+    //     orderid: item.orderid
+    //   }));
+    //   requestBody['baselist'] = this.rows
+    // }
     Swal.fire({
       title: 'Updating...',
       // text: 'Please wait while the  is being updated',
@@ -330,8 +362,8 @@ export class PackageReferenceComponent {
           text: response.message || 'Product ID updated successfully.',
           icon: 'success',
           timer: 2000,
-          timerProgressBar: true,
-          showConfirmButton: false
+          // timerProgressBar: true,
+          // showConfirmButton: false
         });
       },
       (error) => {

@@ -97,7 +97,8 @@
                                 : </div>
                             <div class="col-6 col-md-6 d-flex justify-content-start align-items-center"
                                 style="color: rgb(66, 0, 128);">
-                                {{subdetailsList?.operatorname}} {{subdetails?.operatorname}}
+                                {{subdetailsList?.operatorname}} {{subdetails?.operatorname}} -
+                                {{subdetailsList?.operatorid}}{{subdetails?.operatorid}}
                             </div>
 
                         </div>
@@ -125,7 +126,7 @@
                                 {{newOperatorContact}}
                             </div>
                         </div>
-                                        </div>
+                    </div>
 
                 </div>
             </div>
@@ -178,7 +179,7 @@
                         style="color: green;padding: 5px;font-size: 16px;">
                         {{subdetailsList?.smartpackagename}}
                     </div>
-                              <div class="progress-container">
+                    <div class="progress-container">
                         <div class="progress" style="position: relative; height: 30px;">
                             <div class="progress-bar progress-bar-striped bg-success" role="progressbar"
                                 style="width: 100%;" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100">
@@ -261,10 +262,10 @@
                             Addon Package
                         </div>
                         <div class="col-3 col-md-3 text" style="color: rgb(71, 70, 69);text-align: center;">
-                            {{subdetailsList?.acount}} {{subdetails?.acount}}
+                            {{subdetailsList?.tcount}} {{subdetails?.tcount}}
                         </div>
                         <div class="col-3 col-md-3 text" style="color: green;text-align: center;">
-                            {{subdetailsList?.bcount}} {{subdetails?.bcount}} </div>
+                            {{subdetailsList?.acount}} {{subdetails?.acount}} </div>
                         <div class="col-3 col-md-3 text" style="color: red;text-align: center;">
                             {{subdetailsList?.dcount}} {{subdetails?.dcount}}
                         </div>
@@ -277,12 +278,12 @@
                             {{subdetailsList?.totalchannels}} {{subdetails?.totalchannels}}
                         </div>
                         <div class="col-3 col-md-3 text" style="color: green;text-align: center;">
-                            {{subdetailsList?.ftachannels}} {{subdetails?.ftachannels}} </div>
+                            {{subdetailsList?.dchannels}} {{subdetails?.dchannels}} </div>
                         <div class="col-3 col-md-3 text" style="color: red;text-align: center;">
-                            {{subdetailsList?.paychannels}} {{subdetails?.paychannels}}
+                            {{subdetailsList?.achannels}} {{subdetails?.achannels}}
                         </div>
                     </div>
-                    </div>
+                </div>
             </div>
             <div class="col-12 col-md-8 col-md-8 mx-2">
                 <div class="card">
@@ -293,7 +294,7 @@
                                 {{subdetails?.smartcard}}
                             </h6>
                         </div>
-                                    </div>
+                    </div>
                     <div class="line"></div>
                     <div class="mobile">
                         <div class="col-12 col-md-5  mobile1">
@@ -395,19 +396,17 @@
                                         (click)="openDialog('pvrchange','')"> <i class="fa-solid fa-video"></i><span>PVR
                                             Option</span></button>
                                 </div>
-
                             </div>
+
                             <div class="col-12 col-md-12 display_btn1">
                                 <div class="col-12 col-md-6 d-flex justify-content-center align-items-center  text3">
-                                    <!-- *ngIf="!sendmessage"> -->
-                                    <button class="btn  d-flex justify-content-between" [disabled]="sendmessage"
+                                    <button class="btn  d-flex justify-content-between" [disabled]="isSendDeleteMessage"
                                         (click)="openDialog('sendmessage','')">
                                         <i class="fa-solid fa-message"></i><span>Send Message</span></button>
                                 </div>
                                 <div class="col-12 col-md-6 d-flex justify-content-center align-items-center  text3">
-                                    <!-- *ngIf="sendmessage"> -->
-                                    <button class="btn  d-flex justify-content-between" [disabled]="deletemessage"
-                                        (click)="openDialog('deletemessage','')">
+                                    <button class="btn  d-flex justify-content-between"
+                                        [disabled]="!isSendDeleteMessage" (click)="openDialog('deletemessage','')">
                                         <i class="fas fa-trash"></i><span>Delete Message</span></button>
                                 </div>
 
@@ -503,7 +502,7 @@
 
                     <div class="col-12 col-md-12 col-md-8 mx-2">
                         <div class="">
-                            <section class="Tab col-xl-12 col-sm-6 col-12 " >
+                            <section class="Tab col-xl-12 col-sm-6 col-12 ">
                                 <div class="display_tab tablist justify-content-center align-items-center">
                                     <div *ngIf="!addon" class="tab mb-3" (click)="managePackage('addon')">ADDON ADD
                                     </div>
@@ -541,7 +540,8 @@
                         </div>
 
                     </div>
-                    <div *ngIf="!rechargeType" class="col-12 col-md-12 display justify-content-center align-items-center">
+                    <div *ngIf="!rechargeType"
+                        class="col-12 col-md-12 display justify-content-center align-items-center">
                         <div class="input_box col-12 col-md-9">
                             <div class=" display_tab justify-content-start align-items-center">
                                 <div class="col-12 col-md-4 display justify-content-start align-items-center mb-3">
@@ -562,7 +562,7 @@
                                 <div *ngIf="isplantype"
                                     class=" col-12 col-md-4 display justify-content-center align-items-center mb-3">
                                     <div class="col-12 col-md-6">
-                                        <select [(ngModel)]="plantype" (ngModelChange)="onSelectionplantype($event)">
+                                        <select [(ngModel)]="plantype" (click)="onSelectionplantype(plantype)">
                                             <option value="0" selected>Selected Plan</option>
                                             <option *ngFor="let plan of plantype$ | async " [value]="plan.value">
                                                 {{ plan.key }}
@@ -575,7 +575,7 @@
                                     <div class="col-12 col-md-6">
                                         <input type="date" [(ngModel)]="f_date"
                                             [min]="subdetailsList?.expirydate | date:'yyyy-MM-dd'"
-                                            (ngModelChange)="onSelectionplantype($event)">
+                                            (ngModelChange)="onSelectiondatetype($event)">
                                     </div>
                                 </div>
                             </div>
@@ -629,7 +629,8 @@
                                                 <div class="input_box col-6 col-md-6">
                                                     <span class="me-2">Customer pay </span>
                                                 </div>
-                                                <div class="col-6 col-md-6 display justify-content-start align-items-center toggle">
+                                                <div
+                                                    class="col-6 col-md-6 display justify-content-start align-items-center toggle">
                                                     <div class="can-toggle">
                                                         <input id="a" type="checkbox" [(ngModel)]="iscollected"
                                                             (change)="onBillTypeChange()">

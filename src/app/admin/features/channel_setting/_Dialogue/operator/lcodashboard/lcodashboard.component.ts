@@ -37,7 +37,15 @@ export class LcodashboardComponent implements OnInit {
       sortable: true,
       resizable: true,
       filter: true,
-      floatingFilter: true
+      floatingFilter: true,
+      comparator: (valueA: any, valueB: any) => {
+        if (!isNaN(valueA) && !isNaN(valueB)) {
+          return Number(valueA) - Number(valueB); 
+        }
+        if (!valueA) valueA = '';
+        if (!valueB) valueB = '';
+        return valueA.toLowerCase().localeCompare(valueB.toLowerCase());
+      },
     },
     paginationPageSize: 10,
     pagination: true,
@@ -49,23 +57,16 @@ export class LcodashboardComponent implements OnInit {
   role: any;
   username: any;
   package: any = 2;
-  selectedPackage: number | null = null;
-
-  // packageid: any[] = [
-  //   { basePackage: 2 },
-  //   { addonPackage: 3 },
-  //   { alacartePackage: 4 }
-  // ];
-  // packageid: any[] = [
-  //   { lable: "basePackage", value: 2 },
-  //   { lable: "addonPackage", value: 3 },
-  //   { lable: "alacartePackage", value: 4 },
-  // ];
+   
   packageid: any[] = [
     { type: 'basePackage', id: 2 },
     { type: 'addonPackage', id: 3 },
     { type: 'alacartePackage', id: 4 }
   ];
+  // selectedPackage: number | null = null;
+  selectedPackage: number = this.packageid.find(pack => pack.type === 'basePackage')?.id || null;
+
+
   rowData: any[] = [];
   barchart: any;
   chartOptions: any = {};
@@ -109,8 +110,9 @@ export class LcodashboardComponent implements OnInit {
     });
     this.barChart();
     this.tableData();
-    // this.onPackageSelect("");
-  }
+    if (this.selectedPackage) {
+      this.onPackageSelect(this.selectedPackage);
+    }  }
   tableData() {
     this.userservice.getAreaListByOperatorId(this.role, this.username, this.operatorid).subscribe((data: any) => {
       this.rowData = data;
@@ -389,80 +391,6 @@ export class LcodashboardComponent implements OnInit {
   getPackageValue(pack: any): number {
     return pack.id;
   }
-  // getPackageName(packageObj: any): string {
-  //   return Object.keys(packageObj)[0];
-  // }
-  // getPackageId(packageObj: any): number {
-  //   return packageObj[Object.keys(packageObj)[0]];
-  // }
-
-
-  // onPackageSelect(event: any): void {
-  //   const selectedPackageId = event?.target?.value ?? this.package;
-  //   console.log('Selected Package ID:', selectedPackageId);
-  //   this.userservice.getPackagewiseRechargeDetailsforPiechart(this.role, this.username, this.package, this.operatorid)
-  //     .subscribe((data: any) => {
-  //       this.cdr.detectChanges();
-  //       if (!data || !data['rechargelist'] || data['rechargelist'].length === 0) {
-  //         Swal.fire({
-  //           icon: 'warning',
-  //           title: 'No Data Available',
-  //           text: data?.message,
-  //           confirmButtonText: 'Reload',
-  //           allowOutsideClick: true
-  //         })
-  //       } else {
-  //         this.Totalamount = data.totalamount;
-  //         const monthColors: { [key: string]: string } = {
-  //           "January": "#103f2f",
-  //           "February": "#464878",
-  //           "March": "#9e5972",
-  //           "April": "#0f94a3",
-  //           "May": "#402033",
-  //           "June": "#377a58",
-  //           "July": "#415e27",
-  //           "August": "#007787",
-  //           "September": "#3c445e",
-  //           "October": "#8c8b8b",
-  //           "November": "#012d3b",
-  //           "December": "#8ba7b0"
-  //         };
-  //         const dataPoints = data['rechargelist'].map((item: any) => ({
-  //           name: item.monthname,
-  //           y: item.amount,
-  //           color: monthColors[item.monthname] || "#000000"
-  //         }));
-
-  //         this.chartOptions = {
-  //           animationEnabled: true,
-  //           theme: 'light2',
-  //           legend: {
-  //             verticalAlign: 'center',
-  //             horizontalAlign: 'right',
-  //             fontSize: 14,
-  //             fontFamily: 'Arial',
-  //             markerType: 'square',
-  //             right: '10px',
-  //             itemWrap: true,
-  //             itemTextFormatter: (e: any) => `${e.dataPoint.name}   : ₹${e.dataPoint.y}`,
-  //           },
-  //           data: [{
-  //             type: 'pie',
-  //             startAngle: 90,
-  //             cursor: 'pointer',
-  //             explodeOnClick: false,
-  //             showInLegend: true,
-  //             legendMarkerType: 'square',
-  //             indexLabelPlacement: 'inside',
-  //             indexLabelFontColor: 'white',
-  //             dataPoints: dataPoints
-  //           }]
-  //         };
-
-  //       }
-  //     });
-  // }
-
 
   onPackageSelect(event: any): void {
     const selectedPackageId = event;
@@ -542,9 +470,10 @@ export class LcodashboardComponent implements OnInit {
   columnDefs: any[] = [
     {
       headerName: "S.No", valueGetter: 'node.rowIndex+1', width: 80, filter: false,
+      
     },
-    { headerName: 'AREA NAME', width: 170, field: 'name', filter: true },
-    { headerName: 'SUBSCRIBER COUNT	', width: 170, field: 'subscribercount', filter: false, },
+    { headerName: 'AREA NAME', width: 170, field: 'name', filter: true, },
+    { headerName: 'SUBSCRIBER COUNT	', width: 170, field: 'subscribercount', filter: false,  },
     { headerName: 'PINCODE ', field: 'pincode', width: 150, filter: false, },
     {
       headerName: 'STATUS', field: 'statusdisplay', width: 130, filter: false,

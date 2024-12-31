@@ -4,6 +4,7 @@ import { BaseService } from 'src/app/_core/service/base.service';
 import { StorageService } from 'src/app/_core/service/storage.service';
 import { SwalService } from 'src/app/_core/service/swal.service';
 import Swal from 'sweetalert2';
+import { ColDef } from 'ag-grid-community';
 
 @Component({
   selector: 'app-force-tuning',
@@ -21,16 +22,17 @@ export class ForceTuningComponent {
   LCO_id: any;
   searchLCOTerm: any;
   lcoid: any;
-  intendid: any;
+  intendid: any = 1;
   Lconame: any;
   selectedOperator: any;
+  isMsoEnabled = false;
   isSmartcardEnabled = false;
   isLCOEnabled = false;
   selectedAreaCodeFormControl = new FormControl('');
   area: any[] = [];
   filteredOperators: any[] = [];
   filteredLcoList: { name: string; id: number }[] = [];
-
+  selectedIntendTo: number = 1;
   // area: any = 0;
   intend: any = [
     { lable: "MSO", value: 1 },
@@ -39,6 +41,24 @@ export class ForceTuningComponent {
   ];
   lco_name: any = 0;
   searchTerm: any;
+  gridOptions = {
+    defaultColDef: {
+      sortable: true,
+      resizable: true,
+      filter: true,
+      width: 180,
+      floatingFilter: true,
+      comparator: (valueA: string, valueB: string) => {
+        if (!valueA) valueA = '';
+        if (!valueB) valueB = '';
+        return valueA.toLowerCase().localeCompare(valueB.toLowerCase());
+      },
+    },
+    paginationPageSize: 10,
+    pagination: true,
+  }
+  rowData = [];
+
   constructor(private userservice: BaseService, private storageService: StorageService, private swal: SwalService, private fb: FormBuilder, private cdr: ChangeDetectorRef) {
     this.username = storageService.getUsername();
     this.role = storageService.getUserRole();
@@ -50,6 +70,17 @@ export class ForceTuningComponent {
       username: this.username
     })
   }
+
+
+   columnDefs: ColDef[] = [
+      { headerName: "S.No", lockPosition: true, valueGetter: 'node.rowIndex+1', cellClass: 'locked-col', width: 80, suppressNavigable: true, sortable: false, filter: false },
+      { headerName: "INTEND ID", field: 'intendiddisplay' ,width: 250,},
+      { headerName: "INTEND TO", field: 'intendto',width: 150, },
+      { headerName: "STATUS", field: 'status',width: 120, },
+      { headerName: "CAS NAME	", field: 'casname',width: 150, },
+      { headerName: "LOG DATE	", field: 'logdate',width: 200, },
+
+   ]
   ngOnInit() {
     // this.userservice.Finger_print_List(this.role, this.username).subscribe((data) => {
     //   console.log(data);
@@ -67,21 +98,30 @@ export class ForceTuningComponent {
       });
       this.filteredOperators = this.area;
     })
+
+    this.userservice.getForceTuningList(this.role, this.username).subscribe((data: any) => {
+      this.rowData = data;
+      console.log(this.rowData);
+    })
   }
   onChangeIntendTo1(event: any) {
     console.log('111111111111');
     this.intendid_1 = '';
-    const selectedValue = event.target.value;
+    const selectedValue =  event.target.value;
+    this.isMsoEnabled = true;
     console.log(selectedValue);
     if (selectedValue == 2) { // SMARTCARD
       this.isSmartcardEnabled = true;
       this.isLCOEnabled = false;
+      this.isMsoEnabled = false;
     } else if (selectedValue == 3) { // AREA CODE
       this.isLCOEnabled = true;
       this.isSmartcardEnabled = false;
+      this.isMsoEnabled = false;
     } else if (selectedValue == 1) { // MSO
       this.isLCOEnabled = false;
       this.isSmartcardEnabled = false;
+      this.isMsoEnabled = true;
     }
     else {
       this.isSmartcardEnabled = true;

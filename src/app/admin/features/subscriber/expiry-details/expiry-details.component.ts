@@ -11,13 +11,13 @@ import Swal from 'sweetalert2';
   templateUrl: './expiry-details.component.html',
   styleUrls: ['./expiry-details.component.scss']
 })
-export class ExpiryDetailsComponent implements OnInit{
+export class ExpiryDetailsComponent implements OnInit {
   maxDate = new Date();
   fromdate: any;
   todate: any;
   username: any;
   role: any;
-  operatorid: any;
+  operatorid: any = 0;
   format: any = 1;
   format_1: any = 2;
   selectedLcoName: any = 0;
@@ -47,8 +47,16 @@ export class ExpiryDetailsComponent implements OnInit{
       console.log(data);
       this.msodetails = `${data.msoName} ${data.msoStreet}, ${data.msoArea}, ${data.msoState}, ${data.msoPincode}, ${data.msoEmail}`;
       console.log(this.msodetails);
-    })  }
-
+    })
+    this.fromdate = this.fromdate ? this.formatDate(this.fromdate) : this.formatDate(new Date());
+    this.todate = this.todate ? this.formatDate(this.todate) : this.formatDate(new Date());
+  }
+  formatDate(date: Date): string {
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, '0'); // Months are zero-based
+    const day = String(date.getDate()).padStart(2, '0');
+    return `${year}-${month}-${day}`;
+  }
   operatorlist() {
     this.userservice.getsmartcardallocationSubscriberList(this.role, this.username).subscribe((data: any) => {
       this.operatorList = Object.keys(data[0].operatorid).map(key => {
@@ -122,7 +130,7 @@ export class ExpiryDetailsComponent implements OnInit{
 
 
 
-  
+
   // Submit() {
 
   //   this.userservice.getExpirySubscriberByOperator(this.role, this.username, this.selectedLcoName, this.fromdate, this.todate, this.format).subscribe((data: any) => {
@@ -147,13 +155,13 @@ export class ExpiryDetailsComponent implements OnInit{
             console.log(this.rowData);
             const areatitle = 'A1:J2'
             const areasub = 'A3:J3';
-            const title = 'EXPIRY HISTORY REPORT - FORMAT 1';
+            const title = `From Date: ${this.fromdate} To Date: ${this.todate} EXPIRY HISTORY REPORT - FORMAT 1`;
             const sub = 'MSO ADDRESS: ' + this.msodetails;
-            const header = ['S.NO','LCO NAME', 'CUSTOMER NAME', 'SMARTCARD', 'BOX ID', 'ADDRESS', 'MOBILE NO', 'PACKAGE NAME', 'EXPIRY DATE', 'ACTIVATION DATE'];
+            const header = ['S.NO', 'LCO NAME', 'CUSTOMER NAME', 'SMARTCARD', 'BOX ID', 'ADDRESS', 'MOBILE NO', 'PACKAGE NAME', 'EXPIRY DATE', 'ACTIVATION DATE'];
             const data = this.rowData;
             const datas: Array<any> = [];
-            data.forEach((d: any,index:number) => {
-              const row = [index+1,d.operatorname, d.customername, d.smartcard, d.boxid, d.address, d.mobileno, d.productname, d.expirydate];
+            data.forEach((d: any, index: number) => {
+              const row = [index + 1, d.operatorname, d.customername, d.smartcard, d.boxid, d.address, d.mobileno, d.productname, d.expirydate];
               datas.push(row);
             });
             const cellsize = { a: 20, b: 20, c: 20, d: 28, e: 20 };
@@ -162,11 +170,11 @@ export class ExpiryDetailsComponent implements OnInit{
             // this.swal.Success_204();
             this.rowData = response.body;
             console.log(this.rowData);
-            const areatitle = 'A1:I2'
-            const areasub = 'A3:I3';
-            const title = 'EXPIRY HISTORY REPORT';
+            const areatitle = 'A1:J2'
+            const areasub = 'A3:J3';
+            const title = `From Date: ${this.fromdate} To Date: ${this.todate} EXPIRY HISTORY REPORT - FORMAT 1`;
             const sub = 'MSO ADDRESS: ' + this.msodetails;
-            const header = ['S.NO','LCO NAME', 'CUSTOMER NAME', 'SMARTCARD', 'BOX ID', 'ADDRESS', 'MOBILE NO', 'PACKAGE NAME', 'EXPIRY DATE', 'ACTIVATION DATE'];
+            const header = ['S.NO', 'LCO NAME', 'CUSTOMER NAME', 'SMARTCARD', 'BOX ID', 'ADDRESS', 'MOBILE NO', 'PACKAGE NAME', 'EXPIRY DATE', 'ACTIVATION DATE'];
             const data = this.rowData;
             const datas: Array<any> = [];
 
@@ -186,26 +194,26 @@ export class ExpiryDetailsComponent implements OnInit{
       (response: HttpResponse<any[]>) => { // Expect HttpResponse<any[]>
         if (response.status === 200) {
           this.rowData = response.body;
-          const areatitle = 'A1:L2'
-          const areasub = 'A3:L3';
-          const title = 'EXPIRY HISTORY REPORT - FORMAT 2';
+          const areatitle = 'A1:K2'
+          const areasub = 'A3:K3';
+          const title =  `From Date: ${this.fromdate} To Date: ${this.todate}EXPIRY HISTORY REPORT - FORMAT `;
           const sub = 'MSO ADDRESS:' + this.msodetails;
-          const header = ['S.NO','LCO NAME', 'CUSTOMER NAME', 'SMARTCARD', 'BOX ID', 'ADDRESS', 'MOBILE NO', 'PACKAGE NAME', 'EXPIRY DATE', 'AREA ID','CUSTOMER NO'];
+          const header = ['S.NO', 'LCO NAME', 'CUSTOMER NAME', 'SMARTCARD', 'BOX ID', 'ADDRESS', 'MOBILE NO', 'PACKAGE NAME', 'EXPIRY DATE', 'AREA ID', 'CUSTOMER NO'];
           const data = this.rowData;
           const datas: Array<any> = [];
-          data.forEach((d: any,index:number) => {
-            const row = [index+1,,d.operatorname, d.customername, d.smartcard, d.boxid, d.address, d.mobileno, d.productname, d.expirydate,d.areaid,d.customerno];
+          data.forEach((d: any, index: number) => {
+            const row = [index + 1,d.operatorname, d.customername, d.smartcard, d.boxid, d.address, d.mobileno, d.productname, d.expirydate, d.areaid, d.customerno];
             datas.push(row);
           });
           const cellsize = { a: 20, b: 20, c: 20, d: 28, e: 20 };
           this.excelService.generateIMAGEExcel1(areatitle, header, datas, title, cellsize, areasub, sub);
         } else if (response.status === 204) {
           this.rowData = response.body;
-          const areatitle = 'A1:J2'
-          const areasub = 'A3:J3';
-          const title = 'EXPIRY HISTORY REPORT';
+          const areatitle = 'A1:K2'
+          const areasub = 'A3:K3';
+          const title = `From Date: ${this.fromdate} To Date: ${this.todate}EXPIRY HISTORY REPORT - FORMAT `;
           const sub = 'MSO ADDRESS:' + this.msodetails;
-          const header = ['S.NO','LCO NAME', 'CUSTOMER NAME', 'SMARTCARD', 'BOX ID', 'ADDRESS', 'MOBILE NO', 'PACKAGE NAME', 'EXPIRY DATE', 'AREA ID','CUSTOMER NO'];
+          const header = ['S.NO', 'LCO NAME', 'CUSTOMER NAME', 'SMARTCARD', 'BOX ID', 'ADDRESS', 'MOBILE NO', 'PACKAGE NAME', 'EXPIRY DATE', 'AREA ID', 'CUSTOMER NO'];
           const data = this.rowData;
           const datas: Array<any> = [];
 

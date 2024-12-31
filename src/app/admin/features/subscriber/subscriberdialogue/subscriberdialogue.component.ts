@@ -133,6 +133,7 @@ export class SubscriberdialogueComponent implements OnInit {
   castype: any;
   castypeSmartcard: any = 0;
   lconame: any;
+
   smartcard: any = 0;
   submitted: boolean = false;
   // smartcard: any = 0;
@@ -258,7 +259,15 @@ export class SubscriberdialogueComponent implements OnInit {
       resizable: true,
       filter: true,
       // width: 320,
-      floatingFilter: true
+      floatingFilter: true,
+      comparator: (valueA: any, valueB: any) => {
+        if (!isNaN(valueA) && !isNaN(valueB)) {
+          return Number(valueA) - Number(valueB);
+        }
+        if (!valueA) valueA = '';
+        if (!valueB) valueB = '';
+        return valueA.toLowerCase().localeCompare(valueB.toLowerCase());
+      },
     },
   }
   gridOptions1 = {
@@ -267,7 +276,15 @@ export class SubscriberdialogueComponent implements OnInit {
       resizable: true,
       filter: true,
       // width: 320,
-      floatingFilter: true
+      floatingFilter: true,
+      comparator: (valueA: any, valueB: any) => {
+        if (!isNaN(valueA) && !isNaN(valueB)) {
+          return Number(valueA) - Number(valueB);
+        }
+        if (!valueA) valueA = '';
+        if (!valueB) valueB = '';
+        return valueA.toLowerCase().localeCompare(valueB.toLowerCase());
+      },
     },
     paginationPageSize: 4,
     pagination: true,
@@ -277,7 +294,15 @@ export class SubscriberdialogueComponent implements OnInit {
       sortable: true,
       resizable: true,
       filter: true,
-      floatingFilter: true
+      floatingFilter: true,
+      comparator: (valueA: any, valueB: any) => {
+        if (!isNaN(valueA) && !isNaN(valueB)) {
+          return Number(valueA) - Number(valueB);
+        }
+        if (!valueA) valueA = '';
+        if (!valueB) valueB = '';
+        return valueA.toLowerCase().localeCompare(valueB.toLowerCase());
+      },
     },
     paginationPageSize: 3,
     pagination: true,
@@ -312,6 +337,12 @@ export class SubscriberdialogueComponent implements OnInit {
 
   newRefreshSmartcard: any;
   packageStatus: any;
+  Smartcard_operatorid: any;
+  operatname: any;
+  servicename: any;
+  cancel_current: any;
+  basePackageId: any;
+  isCancelCurrentVisible: boolean = false;
   isPlanTypeSelected(): boolean {
     if (this.selectedRechargetype === '3') return true;
     if ((this.datetype && this.f_date)) return true;
@@ -337,6 +368,8 @@ export class SubscriberdialogueComponent implements OnInit {
     this.pairBoxList = data['pairBoxlist'].map((item: any) => item);
     this.pairSmartcardList = data['pairSmartcardlist'].map((item: any) => item);
     this.packageMessage = data['packageMessage'];
+    console.log('packagemessage', this.packageMessage);
+    // this.isCancelCurrentVisible= this.packageMessage
     this.subSmartcard = data.subSmartcarList;
     this.subBoxid = data.subBoxList;
     this.pairedSmartcard = this.pairSmartcardList;
@@ -375,6 +408,9 @@ export class SubscriberdialogueComponent implements OnInit {
     this.statusdisplay = data['detailsList'].statusdisplay;
     this.boxno = data['detailsList'].boxid;
     this.castype = data['detailsList'].castype;
+    this.operatname = data['detailsList'].operatorname;
+    this.servicename = data['detailsList'].customername;
+    this.basePackageId = data['detailsList'].packageid;
     if (this.boxno && this.smartcardno == 'No Smartcard') {
       this.box = false
       this.smart = true
@@ -403,7 +439,7 @@ export class SubscriberdialogueComponent implements OnInit {
     this.ischange_lco = data.ischange_lco || false;
     this.Editform = this.fb.group(
       {
-        id: this.subid_1,
+        id: this.subid_1 || this.newSubid,
         customername: ['', Validators.required],
         customerlastname: ['', Validators.required],
         dateofbirth: ['', [Validators.required]],
@@ -436,6 +472,9 @@ export class SubscriberdialogueComponent implements OnInit {
       role: [this.role],
       username: [this.username]
     });
+
+    // this.onSubscriberStatusChange(this.operatorid);
+
     this.addsmartcardform == this.fb.group({
     })
     this.updateColumnDefs(this.sType);
@@ -461,8 +500,10 @@ export class SubscriberdialogueComponent implements OnInit {
       api: this.gridApi
     };
     this.onGridReady(params);
-    this.userservice.getAllBaselistbyOperatorIdCastypeType(this.role, this.username, this.operatorid, this.castype, this.type)
+    this.userservice.getAllBaselistByExceptPackId(this.role, this.username, this.operatorid, this.castype, this.type, this.basePackageId)
       .subscribe((data) => {
+        console.log('packagenameList', this.packagenameList);
+
         this.packagenameList = Object.entries(data).map(([name, id]) => ({
           packagename: name,
           packageid: id as number
@@ -475,7 +516,8 @@ export class SubscriberdialogueComponent implements OnInit {
       this.cas = v
       this.cdr.detectChanges();
     });
-    this.userservice.getNotinOperatorList(this.role, this.username, this.operatorid).subscribe((data: any) => {
+    // this.userservice.getNotinOperatorList(this.role, this.username, this.operatorid).subscribe((data: any) => {
+    this.userservice.getOeratorList(this.role, this.username, 1).subscribe((data: any) => {
       // this.lco_list = Object.entries(data).map(([key, value]) => ({ name: key, id: value }));
 
       this.lco_list = Object.keys(data).map(key => {
@@ -506,6 +548,18 @@ export class SubscriberdialogueComponent implements OnInit {
     })
     this.loadIdProofList();
     this.loadAddProofList();
+    console.log('operatorid', this.operatorid);
+
+    // this.onSubscriberStatusChange(this.operatorid);
+    this.userservice.getSubscriberIdListByOperatorid(this.role, this.username, this.operatorid).subscribe((data: any) => {
+      this.sub_list = Object.keys(data).map(key => {
+        const value = data[key];
+        const name = key;
+        return { name: name, value: value };
+      });
+      this.filteredSub = this.sub_list;
+
+    })
   }
 
   ngAfterViewInit() {
@@ -874,13 +928,13 @@ export class SubscriberdialogueComponent implements OnInit {
     }
   }
 
-  updateRemainingChars(event: Event) {
-    this.cdr.detectChanges();
-    const input = event.target as HTMLTextAreaElement;
-    const maxLength = input.maxLength;
-    const currentLength = input.value.length;
-    this.remainingChars = maxLength - currentLength;
-  }
+  // updateRemainingChars(event: Event) {
+  //   this.cdr.detectChanges();
+  //   const input = event.target as HTMLTextAreaElement;
+  //   const maxLength = input.maxLength;
+  //   const currentLength = input.value.length;
+  //   this.remainingChars = maxLength - currentLength;
+  // }
 
 
 
@@ -908,6 +962,7 @@ export class SubscriberdialogueComponent implements OnInit {
   }
 
   onSelectionrechargetype(selectedValue: string) {
+    console.log('selectedValue', selectedValue);
     const rechargetype = Number(selectedValue);
     if (rechargetype == 1) {
       this.isplantype = true;
@@ -935,9 +990,10 @@ export class SubscriberdialogueComponent implements OnInit {
       } else {
         this.isDisabled = true
       }
-    } else {
-      this.isDisabled = true
     }
+    // } else {
+    //   this.isDisabled = true
+    // }
   }
   loginDetails() {
     this.swal.Loading();
@@ -977,10 +1033,14 @@ export class SubscriberdialogueComponent implements OnInit {
 
 
   onSubmit() {
-    if (this.Editform.invalid) {
-      this.Editform.markAllAsTouched();
-      return;
-    }
+    console.log('xfgvxfgfiesfjlsehj', this.newSubid || this.subid_1);
+
+    // if (this.Editform.invalid) {
+    //   this.Editform.markAllAsTouched();
+    //   return;
+    // }
+    console.log('1111');
+
     this.swal.Loading();
     this.userservice.UpdateSubscriberDetails(this.Editform.value)
       .subscribe((res: any) => {
@@ -988,6 +1048,7 @@ export class SubscriberdialogueComponent implements OnInit {
       }, (err) => {
         this.swal.Error(err?.error?.message || err?.error?.customerlastname || err?.error?.fathername);
       });
+    console.log('222');
 
   }
 
@@ -1020,13 +1081,17 @@ export class SubscriberdialogueComponent implements OnInit {
           this.area = Object.entries(data).map(([key, value]) => ({ name: key, id: value }));
           this.filteredSmartcard = this.area;
         } else {
+          this.area = [];
           Swal.fire({
             icon: 'warning',
             title: 'No Smartcards Available',
             text: data?.message || 'No smartcards found for the selected CAS type.',
-            confirmButtonText: 'OK'
+            confirmButtonText: 'OK',
+            // timer: 2000,
+            // timerProgressBar: true,
+            // showConfirmButton: false
           });
-          this.area = [];
+        
           this.cdr.detectChanges;
         }
       }, (err) => {
@@ -1034,9 +1099,13 @@ export class SubscriberdialogueComponent implements OnInit {
           icon: 'error',
           title: 'Error',
           text: err?.error?.message || 'Failed to fetch smartcard list. Please try again later.',
-          confirmButtonText: 'OK'
+          confirmButtonText: 'OK',
+          // timer: 2000,
+          // timerProgressBar: true,
+          // showConfirmButton: false
         });
       });
+      
   }
 
 
@@ -1056,24 +1125,38 @@ export class SubscriberdialogueComponent implements OnInit {
 
 
   onSubscriberStatusChange(operator: any): void {
+    console.log('OPERATOR', operator);
+
+    // this.servicename = '';
+    this.operatname = operator.name;
     this.selectedOperator = operator;
-    this.lcoid = operator.value;
+    this.operatorid = operator.value;
+    console.log('lcoid', this.operatorid);
+
     this.f_subid = '';
     this.selectedSub = null;
     this.filteredSub = [];
+    this.servicename = '';
     this.cdr.detectChanges();
-    this.userservice.getSubscriberIdListByOperatorid(this.role, this.username, this.lcoid).subscribe((data: any) => {
+    this.userservice.getSubscriberIdListByOperatorid(this.role, this.username, this.operatorid).subscribe((data: any) => {
       this.sub_list = Object.keys(data).map(key => {
         const value = data[key];
         const name = key;
         return { name: name, value: value };
       });
       this.filteredSub = this.sub_list;
+      console.log('filteredSub', this.filteredSub);
+
     })
+
   }
   onsublist(sub: any): void {
-    this.selectedSub = '';
-    this.selectedSub = sub;
+    // this.f_subid = '';
+    this.servicename = sub.name;
+    // this.f_subid = sub.value;
+    this.subid = sub.value;
+    console.log('subid',this.subid);
+
     this.cdr.detectChanges();
   }
 
@@ -1161,21 +1244,33 @@ export class SubscriberdialogueComponent implements OnInit {
     this.selectedSmartcard = smartcard;
     this.smartcard = smartcard.name;
     // this.cdr.detectChanges();
-    this.userservice.getBoxidBySmartcard(this.role, this.username, this.smartcard).subscribe((data: any) => {
+    this.userservice.getBoxidBySmartcard(this.role, this.username, this.smartcard)
+    // .subscribe((data: any) => {
+    //   this.boxid = data.boxid;
+    //   this.cdr.detectChanges();
+    //   let boxidElement: any = document.getElementById("boxid");
+    //   if (boxidElement) {
+    //     boxidElement.value = data;
+    //   }
+    // }, (err) => {
+    //   Swal.fire({
+    //     icon: 'error',
+    //     title: 'Error',
+    //     text: err?.error?.message ,
+    //     // text:err,
+    //     confirmButtonText: 'OK'
+    //   });
+    // });
+    .subscribe((data: any) => {
       this.boxid = data.boxid;
       this.cdr.detectChanges();
       let boxidElement: any = document.getElementById("boxid");
       if (boxidElement) {
         boxidElement.value = data;
       }
+      // this.swal.success(data?.message);
     }, (err) => {
-      Swal.fire({
-        icon: 'error',
-        title: 'Error',
-        text: err?.error?.message || 'Failed to fetch box ID. Please try again later.',
-        // text:err,
-        confirmButtonText: 'OK'
-      });
+      this.swal.Error(err?.error?.message);
     });
   }
   onSubscriberPackagename(selectedOperator: any) {
@@ -1298,6 +1393,9 @@ export class SubscriberdialogueComponent implements OnInit {
   sendMessage() {
     this.Sendmseform.markAllAsTouched();
     const formValues = this.Sendmseform.value;
+    console.log('formvalues', formValues);
+    console.log('message', formValues.message);
+
     const payload = {
       smartcard: formValues.smartcard,
       duration: formValues.duration || 0,
@@ -1498,22 +1596,37 @@ export class SubscriberdialogueComponent implements OnInit {
 
   lcotransferSinglesmartcard() {
     // Validate that both fields are selected
-    if (!this.lcoid || this.lcoid === 0) {
-      this.errorMessage = 'Please Select LCO Name!';
-    } else if (!this.f_subid || this.f_subid === 0) {
-      this.errorMessage1 = 'Please Select Subscriber Name!';
+    // if (this.operatname || this.lcoid === 0) {
+    //   this.errorMessage = 'Please Select LCO Name!';
+    // } else if ( this.servicename || this.f_subid === 0) {
+    //   this.errorMessage1 = 'Please Select Subscriber Name!';
+    // } else {
+    let isFirstCall = true;
+    let subscriptionId: string;
+    let subscriptionOperatorid: string;
+
+    if (isFirstCall) {
+      console.log('if');
+
+      subscriptionId = this.subid;
+      subscriptionOperatorid = this.operatorid;
+      isFirstCall = false;
     } else {
-      this.errorMessage = '';
-      this.swal.Loading();
-      this.userservice.lcotransferSinglesmartcard(
-        this.role, this.username, this.lcoid, this.subid,
-        this.f_subid, this.withsubscription, this.smartcardno, 0, 2
-      ).subscribe((res: any) => {
-        this.swal.success(res?.message);
-      }, (err) => {
-        this.swal.Error(err?.error?.message);
-      });
+      console.log('else');
+      subscriptionId = this.f_subid;
+      subscriptionOperatorid = this.lcoid;
     }
+    console.log(subscriptionId);
+    console.log(subscriptionOperatorid);
+    this.errorMessage = '';
+    this.swal.Loading();
+    this.userservice.lcotransferSinglesmartcard(this.role, this.username, subscriptionOperatorid, this.subid,  this.withsubscription, this.smartcardno, 0, 2
+    ).subscribe((res: any) => {
+      this.swal.success(res?.message);
+    }, (err) => {
+      this.swal.Error(err?.error?.message);
+    });
+    // }
   }
   boxIdChange() {
     if (!this.new_boxid) {

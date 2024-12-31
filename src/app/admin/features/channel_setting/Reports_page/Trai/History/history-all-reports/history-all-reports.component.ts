@@ -91,7 +91,7 @@ export class HistoryAllReportsComponent implements OnInit {
     console.log(this.allType);
     switch (this.allType) {
       case '1':
-        this.getAllServicereport();
+        // this.getAllServicereport();
         this.reportTitle = 'All Service Report';
         break;
       case '2':
@@ -129,7 +129,7 @@ export class HistoryAllReportsComponent implements OnInit {
         // this.getMessageReport();
         break;
       case '11':
-        this.reportTitle = 'As on Suspend Report';
+        this.reportTitle = 'As on date Suspend Report';
         // this.getMessageReport();
         break;
       case '12':
@@ -302,7 +302,7 @@ export class HistoryAllReportsComponent implements OnInit {
   getAllServicereport() {
     console.log('sadsasadsadsadsadsad');
 
-    this.smartcard = this.smartcardid
+    // this.smartcard = this.smartcardid
     // this.swal.Loading();
     this.userService.getAllServiceHistoryExcelReport(this.role, this.username, this.fromdate, this.todate, this.smartcard, 2)
       .subscribe(
@@ -330,7 +330,7 @@ export class HistoryAllReportsComponent implements OnInit {
           if (response.status === 200) {
             this.rowData = response.body;
             console.log(this.reportTitle);
-            const title = (this.reportTitle ).toUpperCase();
+            const title = (this.reportTitle + '  [FROM DATE : ' + this.fromdate + 'TO DATE : ' + this.todate + ']').toUpperCase();
             const sub = 'MSO ADDRESS:' + this.msodetails;
             let areatitle = '';
             let areasub = '';
@@ -343,9 +343,26 @@ export class HistoryAllReportsComponent implements OnInit {
               const row = [index + 1, d.smartcard, d.logdate, d.activity, d.remarks];
               datas.push(row);
             });
-            this.excelService.generateAllServiceExcel(areatitle, header, datas, title, areasub, sub);
+            // this.excelService.generateAllServiceExcel(areatitle, header, datas, title, areasub, sub);
+            this.excelService.generatedAllServiceExcel(areatitle, header, datas, title, areasub, sub);
+
           } else if (response.status === 204) {
-            this.swal.Success_204();
+            // this.swal.Success_204();
+            this.rowData = response.body;
+            console.log(this.reportTitle);
+            const title = (this.reportTitle + '  [ FROM DATE : ' + this.fromdate + 'TO DATE : ' + this.todate + ']').toUpperCase();
+            const sub = 'MSO ADDRESS:' + this.msodetails;
+            let areatitle = '';
+            let areasub = '';
+            let header: string[] = [];
+            const datas: Array<any> = [];
+            areatitle = 'A1:E2';
+            areasub = 'A3:E3';
+            header = ['S.NO', 'SMARTCARD', 'LOG DATE', 'ACTION', 'REMARKS',];
+
+            // this.excelService.generateAllServiceExcel(areatitle, header, datas, title, areasub, sub);
+            this.excelService.generatedAllServiceExcel(areatitle, header, datas, title, areasub, sub);
+
             this.rowData = [];
           }
         },
@@ -356,13 +373,15 @@ export class HistoryAllReportsComponent implements OnInit {
   }
   getAllServicePDF() {
     // this.swal.Loading();
-    this.userService.getAllServiceHistoryPDFReport(this.role, this.username, this.fromdate, this.todate, this.smartcard, 2)
+    this.userService.getAllServiceHistoryPDFReport(this.role, this.username, this.fromdate, this.todate, this.smartcard, 1)
       .subscribe((x: Blob) => {
         const blob = new Blob([x], { type: 'application/pdf' });
         const data = window.URL.createObjectURL(blob);
         const link = document.createElement('a');
         link.href = data;
-        link.download = (this.reportTitle + ".pdf").toUpperCase();
+        // link.download = (this.reportTitle +  ".pdf").toUpperCase();
+        link.download = `${this.reportTitle}   FROM DATE : ${this.fromdate} TO DATE : ${this.todate}.pdf`.toUpperCase();
+
         link.dispatchEvent(new MouseEvent('click', { bubbles: true, cancelable: true, view: window }));
         setTimeout(() => {
           window.URL.revokeObjectURL(data);
@@ -465,7 +484,7 @@ export class HistoryAllReportsComponent implements OnInit {
           if (response.status === 200) {
             this.rowData = response.body;
             console.log(this.reportTitle);
-            const title = (this.reportTitle ).toUpperCase();
+            const title = (this.reportTitle).toUpperCase();
             const sub = 'MSO ADDRESS:' + this.msodetails;
             let areatitle = '';
             let areasub = '';
@@ -480,7 +499,23 @@ export class HistoryAllReportsComponent implements OnInit {
             });
             this.excelService.generatePairedExcel(areatitle, header, datas, title, areasub, sub);
           } else if (response.status === 204) {
-            this.swal.Success_204();
+            // this.swal.Success_204();
+            this.rowData = response.body;
+            console.log(this.reportTitle);
+            const title = (this.reportTitle).toUpperCase();
+            const sub = 'MSO ADDRESS:' + this.msodetails;
+            let areatitle = '';
+            let areasub = '';
+            let header: string[] = [];
+            const datas: Array<any> = [];
+            areatitle = 'A1:G2';
+            areasub = 'A3:G3';
+            header = ['S.NO', 'SUBSCRIBER ID', 'SUBSCRIBER NAME', 'SMARTCARD', 'BOX ID', 'ADDRESS', 'INSTALL DATE'];
+            this.rowData.forEach((d: any, index: number) => {
+              const row = [index + 1, d.subid, d.customername, d.smartcard, d.boxid, d.address, d.createddate];
+              datas.push(row);
+            });
+            this.excelService.generatePairedExcel(areatitle, header, datas, title, areasub, sub);
             this.rowData = [];
           }
         },
@@ -543,14 +578,14 @@ export class HistoryAllReportsComponent implements OnInit {
           if (response.status === 200) {
             this.rowData = response.body;
             console.log(this.reportTitle);
-            const title = (this.reportTitle ).toUpperCase();
+            const title = ('BLOCK LIST HISTORY REPORT').toUpperCase();
             const sub = 'MSO ADDRESS:' + this.msodetails;
             let areatitle = '';
             let areasub = '';
             let header: string[] = [];
             const datas: Array<any> = [];
-            areatitle = 'A1:J2';
-            areasub = 'A3:J3';
+            areatitle = 'A1:K2';
+            areasub = 'A3:K3';
             header = ['S.NO', 'OPERATOR NAME', 'SUBSCRIBER ID', 'SUBSCRIBER NAME', 'MOBILE NO', 'SMARTCARD', 'BOX ID', 'CAS', 'PACKAGE ID', 'PRODUCT NAME', 'EXPIRY DATE'];
             this.rowData.forEach((d: any, index: number) => {
               const row = [index + 1, d.operatorname, d.subid, d.customername, d.mobileno, d.smartcard, d.boxid, d.address, d.casname, d.packageid, d.productname, d.expirydate];
@@ -558,7 +593,20 @@ export class HistoryAllReportsComponent implements OnInit {
             });
             this.excelService.generateBlockExcel(areatitle, header, datas, title, areasub, sub);
           } else if (response.status === 204) {
-            this.swal.Success_204();
+            // this.swal.Success_204();
+            this.rowData = response.body;
+            console.log(this.reportTitle);
+            const title = ('BLOCK LIST HISTORY REPORT').toUpperCase();
+            const sub = 'MSO ADDRESS:' + this.msodetails;
+            let areatitle = '';
+            let areasub = '';
+            let header: string[] = [];
+            const datas: Array<any> = [];
+            areatitle = 'A1:K2';
+            areasub = 'A3:K3';
+            header = ['S.NO', 'OPERATOR NAME', 'SUBSCRIBER ID', 'SUBSCRIBER NAME', 'MOBILE NO', 'SMARTCARD', 'BOX ID', 'CAS', 'PACKAGE ID', 'PRODUCT NAME', 'EXPIRY DATE'];
+
+            this.excelService.generateBlockExcel(areatitle, header, datas, title, areasub, sub);
             this.rowData = [];
           }
         },
@@ -575,7 +623,7 @@ export class HistoryAllReportsComponent implements OnInit {
         const data = window.URL.createObjectURL(blob);
         const link = document.createElement('a');
         link.href = data;
-        link.download = (this.reportTitle + ".pdf").toUpperCase();
+        link.download = ('BLOCK LIST HISTORY REPORT.pdf').toUpperCase();
         link.dispatchEvent(new MouseEvent('click', { bubbles: true, cancelable: true, view: window }));
         setTimeout(() => {
           window.URL.revokeObjectURL(data);
@@ -620,7 +668,7 @@ export class HistoryAllReportsComponent implements OnInit {
           if (response.status === 200) {
             this.rowData = response.body;
             console.log(this.reportTitle);
-            const title = (this.reportTitle ).toUpperCase();
+            const title = (this.reportTitle).toUpperCase();
             const sub = 'MSO ADDRESS:' + this.msodetails;
             let areatitle = '';
             let areasub = '';
@@ -635,7 +683,20 @@ export class HistoryAllReportsComponent implements OnInit {
             });
             this.excelService.generateScrollExcel(areatitle, header, datas, title, areasub, sub);
           } else if (response.status === 204) {
-            this.swal.Success_204();
+            // this.swal.Success_204();
+            this.rowData = response.body;
+            console.log(this.reportTitle);
+            const title = (this.reportTitle).toUpperCase();
+            const sub = 'MSO ADDRESS:' + this.msodetails;
+            let areatitle = '';
+            let areasub = '';
+            let header: string[] = [];
+            const datas: Array<any> = [];
+            areatitle = 'A1:J2';
+            areasub = 'A3:J3';
+            header = ['S.NO', 'INTEND ID', 'INTEND TO', 'MESSAGE', 'FONT COLOR', 'BACKGROUND COLOR', 'FONT SIZE', 'POSITION', 'REPEAT FOR', 'CREATED DATE'];
+        
+            this.excelService.generateScrollExcel(areatitle, header, datas, title, areasub, sub);
             this.rowData = [];
           }
         },
@@ -697,7 +758,7 @@ export class HistoryAllReportsComponent implements OnInit {
           if (response.status === 200) {
             this.rowData = response.body;
             console.log(this.reportTitle);
-            const title = (this.reportTitle ).toUpperCase();
+            const title = (this.reportTitle).toUpperCase();
             const sub = 'MSO ADDRESS:' + this.msodetails;
             let areatitle = '';
             let areasub = '';
@@ -712,7 +773,20 @@ export class HistoryAllReportsComponent implements OnInit {
             });
             this.excelService.generateMailExcel(areatitle, header, datas, title, areasub, sub);
           } else if (response.status === 204) {
-            this.swal.Success_204();
+            // this.swal.Success_204();
+            this.rowData = response.body;
+            console.log(this.reportTitle);
+            const title = (this.reportTitle).toUpperCase();
+            const sub = 'MSO ADDRESS:' + this.msodetails;
+            let areatitle = '';
+            let areasub = '';
+            let header: string[] = [];
+            const datas: Array<any> = [];
+            areatitle = 'A1:H2';
+            areasub = 'A3:H3';
+            header = ['S.NO', 'INTEND ID', 'INTEND TO', 'TITLE', 'SENDER', 'MESSAGE', 'SEND DATE', 'EXPIRY DATE'];
+       
+            this.excelService.generateMailExcel(areatitle, header, datas, title, areasub, sub);
             this.rowData = [];
           }
         },
@@ -774,7 +848,7 @@ export class HistoryAllReportsComponent implements OnInit {
           if (response.status === 200) {
             this.rowData = response.body;
             console.log(this.reportTitle);
-            const title = (this.reportTitle ).toUpperCase();
+            const title = (this.reportTitle).toUpperCase();
             const sub = 'MSO ADDRESS:' + this.msodetails;
             let areatitle = '';
             let areasub = '';
@@ -789,7 +863,19 @@ export class HistoryAllReportsComponent implements OnInit {
             });
             this.excelService.generatFingerprintExcel(areatitle, header, datas, title, areasub, sub);
           } else if (response.status === 204) {
-            this.swal.Success_204();
+            // this.swal.Success_204();
+            this.rowData = response.body;
+            console.log(this.reportTitle);
+            const title = (this.reportTitle).toUpperCase();
+            const sub = 'MSO ADDRESS:' + this.msodetails;
+            let areatitle = '';
+            let areasub = '';
+            let header: string[] = [];
+            const datas: Array<any> = [];
+            areatitle = 'A1:G2';
+            areasub = 'A3:G3';
+            header = ['S.NO', 'ID', 'POSITION', 'FONT COLOR', 'BACKGROUND COLOR', 'FONT SIZE', 'DATE'];
+          
             this.rowData = [];
           }
         },
@@ -851,7 +937,7 @@ export class HistoryAllReportsComponent implements OnInit {
           if (response.status === 200) {
             this.rowData = response.body;
             console.log(this.reportTitle);
-            const title = (this.reportTitle ).toUpperCase();
+            const title = (this.reportTitle).toUpperCase();
             const sub = 'MSO ADDRESS:' + this.msodetails;
             let areatitle = '';
             let areasub = '';
@@ -866,7 +952,20 @@ export class HistoryAllReportsComponent implements OnInit {
             });
             this.excelService.generatMessageExcel(areatitle, header, datas, title, areasub, sub);
           } else if (response.status === 204) {
-            this.swal.Success_204();
+            // this.swal.Success_204();
+            this.rowData = response.body;
+            console.log(this.reportTitle);
+            const title = (this.reportTitle).toUpperCase();
+            const sub = 'MSO ADDRESS:' + this.msodetails;
+            let areatitle = '';
+            let areasub = '';
+            let header: string[] = [];
+            const datas: Array<any> = [];
+            areatitle = 'A1:L2';
+            areasub = 'A3:L3';
+            header = ['S.NO', 'INTEND ID', 'INTEND TO', 'MESSAGE', 'FONT COLOR', 'BACKGROUND COLOR', 'REPEAT FOR', 'TRANSPARANCY', 'DURATION', 'TIME GAP', 'CAS', 'SEND DATE'];
+
+            this.excelService.generatMessageExcel(areatitle, header, datas, title, areasub, sub);
             this.rowData = [];
           }
         },
@@ -908,7 +1007,7 @@ export class HistoryAllReportsComponent implements OnInit {
           if (response.status === 200) {
             const activeData = response.body.activecount || [];
             const deactiveData = response.body.deactivecount || [];
-            const title = (this.reportTitle ).toUpperCase();
+            const title = (this.reportTitle).toUpperCase();
             const sub = 'MSO ADDRESS:' + this.msodetails;
             const headers = ['S.NO', 'TYPE', 'CAS', 'TOTAL COUNT'];
             const dataRows: Array<any[]> = [];
@@ -1011,7 +1110,7 @@ export class HistoryAllReportsComponent implements OnInit {
           if (response.status === 200) {
             this.rowData = response.body;
             console.log(this.reportTitle);
-            const title = (this.reportTitle ).toUpperCase();
+            const title = (this.reportTitle).toUpperCase();
             const sub = 'MSO ADDRESS:' + this.msodetails;
             let areatitle = '';
             let areasub = '';
@@ -1181,7 +1280,8 @@ export class HistoryAllReportsComponent implements OnInit {
           if (response.status === 200) {
             this.rowData = response.body;
             console.log(this.reportTitle);
-            const title = (this.reportTitle ).toUpperCase();
+            // const title = ('Date:' + this.cur_date + '_' + this.reportTitle).toUpperCase();
+            const title = ('AS ON DATE SMARTCARD SUSPEND REPORT [ Date:' + this.cur_date + ']').toUpperCase();
             const sub = 'MSO ADDRESS:' + this.msodetails;
             let areatitle = '';
             let areasub = '';
@@ -1194,9 +1294,27 @@ export class HistoryAllReportsComponent implements OnInit {
               const row = [index + 1, d.customername, d.mobileno, d.smartcard, d.boxid, d.casname, d.productname, d.createddate];
               datas.push(row);
             });
-            this.excelService.generatSmartcardSuspendExcel(areatitle, headers, datas, title, areasub, sub);
+            // this.excelService.generatSmartcardSuspendExcel(areatitle, headers, datas, title, areasub, sub);
+            this.excelService.generateSuspendBasedExcel(areatitle, headers, datas, title, areasub, sub);
+
           } else if (response.status === 204) {
-            this.swal.Success_204();
+            this.rowData = response.body;
+            console.log(this.reportTitle);
+            // const title = (this.reportTitle + ' [ Date:' + this.cur_date + ' ]').toUpperCase();
+            const title = ('AS ON DATE SMARTCARD SUSPEND REPORT [ Date:' + this.cur_date + ']').toUpperCase();
+
+            const sub = 'MSO ADDRESS:' + this.msodetails;
+            let areatitle = '';
+            let areasub = '';
+            let header: string[] = [];
+            const datas: Array<any> = [];
+            areatitle = 'A1:H2';
+            areasub = 'A3:H3';
+            const headers = ['S.NO', 'SUBSCRIBER NAME', 'MOBILE NO', 'SMARTCARD', 'BOX ID', 'CAS', 'PACKAGE', 'SUBSCRIPTION END DATE'];
+            // this.excelService.generatSmartcardSuspendExcel(areatitle, headers, datas, title, areasub, sub);
+            this.excelService.generateSuspendBasedExcel(areatitle, headers, datas, title, areasub, sub);
+
+            // this.swal.Success_204();
             this.rowData = [];
           }
         },
@@ -1215,7 +1333,7 @@ export class HistoryAllReportsComponent implements OnInit {
         const data = window.URL.createObjectURL(blob);
         const link = document.createElement('a');
         link.href = data;
-        link.download = ("SMARTCARD SUSPEND.pdf").toUpperCase();
+        link.download = ((this.cur_date) + "  SMARTCARD SUSPEND.pdf").toUpperCase();
         link.dispatchEvent(new MouseEvent('click', { bubbles: true, cancelable: true, view: window }));
         setTimeout(() => {
           window.URL.revokeObjectURL(data);
@@ -1261,7 +1379,7 @@ export class HistoryAllReportsComponent implements OnInit {
           if (response.status === 200) {
             this.rowData = response.body;
             console.log(this.reportTitle);
-            const title = (this.reportTitle ).toUpperCase();
+            const title = ('AS ON DATE SMARTCARD SUSPEND REPORT [ FROM DATE :' + this.fromdate + 'TO DATE :' + this.todate + ' ]').toUpperCase();
             const sub = 'MSO ADDRESS:' + this.msodetails;
             let areatitle = '';
             let areasub = '';
@@ -1274,9 +1392,30 @@ export class HistoryAllReportsComponent implements OnInit {
               const row = [index + 1, d.customername, d.mobileno, d.smartcard, d.boxid, d.casname, d.productname, d.createddate];
               datas.push(row);
             });
-            this.excelService.generatSmartcardSuspendDurationExcel(areatitle, headers, datas, title, areasub, sub);
+            // this.excelService.generatSmartcardSuspendDurationExcel(areatitle, headers, datas, title, areasub, sub);
+            this.excelService.generateSuspendBasedExcel(areatitle, headers, datas, title, areasub, sub);
+
           } else if (response.status === 204) {
-            this.swal.Success_204();
+            // this.swal.Success_204();
+            this.rowData = response.body;
+            console.log(this.reportTitle);
+            const title = ('AS ON DATE SMARTCARD SUSPEND REPORT [ FROM DATE :' + this.fromdate + 'TO DATE :' + this.todate + ' ]').toUpperCase();
+
+            const sub = 'MSO ADDRESS:' + this.msodetails;
+            let areatitle = '';
+            let areasub = '';
+            let header: string[] = [];
+            const datas: Array<any> = [];
+            areatitle = 'A1:H2';
+            areasub = 'A3:H3';
+            const headers = ['S.NO', 'SUBSCRIBER NAME', 'MOBILE NO', 'SMARTCARD', 'BOX ID', 'CAS', 'PACKAGE', 'SUBSCRIPTION END DATE'];
+            this.rowData.forEach((d: any, index: number) => {
+              const row = [index + 1, d.customername, d.mobileno, d.smartcard, d.boxid, d.casname, d.productname, d.createddate];
+              datas.push(row);
+            });
+            // this.excelService.generatSmartcardSuspendDurationExcel(areatitle, headers, datas, title, areasub, sub);
+            this.excelService.generateSuspendBasedExcel(areatitle, headers, datas, title, areasub, sub);
+
             this.rowData = [];
           }
         },
@@ -1295,7 +1434,9 @@ export class HistoryAllReportsComponent implements OnInit {
         const data = window.URL.createObjectURL(blob);
         const link = document.createElement('a');
         link.href = data;
-        link.download = (this.reportTitle + ".pdf").toUpperCase();
+        // link.download = (this.reportTitle + ".pdf").toUpperCase();
+        link.download = `AS ON DATE SMARTCARD SUSPEND REPORT [ FROM DATE : ${this.fromdate} TO DATE : ${this.todate} ].pdf`.toUpperCase();
+
         link.dispatchEvent(new MouseEvent('click', { bubbles: true, cancelable: true, view: window }));
         setTimeout(() => {
           window.URL.revokeObjectURL(data);
@@ -1343,7 +1484,8 @@ export class HistoryAllReportsComponent implements OnInit {
           if (response.status === 200) {
             this.rowData = response.body;
             console.log(this.reportTitle);
-            const title = (this.reportTitle ).toUpperCase();
+            // const title = (this.reportTitle).toUpperCase();
+            const title = (this.reportTitle + '  [  FROM DATE :' + this.fromdate + 'TO DATE :' + this.todate + ' ]').toUpperCase();
             const sub = 'MSO ADDRESS:' + this.msodetails;
             let areatitle = '';
             let areasub = '';
@@ -1356,9 +1498,25 @@ export class HistoryAllReportsComponent implements OnInit {
               const row = [index + 1, d.customername, d.mobileno, d.smartcard, d.status, d.createddate, d.updateddate, d.oldexpirydate, d.newexpirydate, d.remainingdays, d.casname, d.productname];
               datas.push(row);
             });
-            this.excelService.generatSuspendExcel(areatitle, headers, datas, title, areasub, sub);
+            // this.excelService.generatSuspendExcel(areatitle, headers, datas, title, areasub, sub);
+            this.excelService.generateSuspendBasedExcel(areatitle, headers, datas, title, areasub, sub);
+
           } else if (response.status === 204) {
-            this.swal.Success_204();
+            // this.swal.Success_204();
+            this.rowData = response.body;
+            console.log(this.reportTitle);
+            // const title = (this.reportTitle).toUpperCase();
+            const title = (this.reportTitle + '  [ FROM DATE :' + this.fromdate + 'TO DATE :' + this.todate + ' ]').toUpperCase();
+            const sub = 'MSO ADDRESS:' + this.msodetails;
+            let areatitle = '';
+            let areasub = '';
+            let header: string[] = [];
+            const datas: Array<any> = [];
+            areatitle = 'A1:L2';
+            areasub = 'A3:L3';
+            const headers = ['S.NO', 'SUBSCRIBER NAME', 'MOBILE NO', 'SMARTCARD', 'STATUS', 'SUSPEND DATE', 'RESUME DATE', 'OLD EXPIRY DATE', 'NEW EXPIRY DATE', 'REMAINING DAYS', 'CAS', 'PACKAGE'];
+            // this.excelService.generatSuspendExcel(areatitle, headers, datas, title, areasub, sub);
+            this.excelService.generateSuspendBasedExcel(areatitle, headers, datas, title, areasub, sub);
             this.rowData = [];
           }
         },
@@ -1377,7 +1535,9 @@ export class HistoryAllReportsComponent implements OnInit {
         const data = window.URL.createObjectURL(blob);
         const link = document.createElement('a');
         link.href = data;
-        link.download = ("DATE WISE SMARTCARD SUSPEND.pdf").toUpperCase();
+        // link.download = (`DATE WISE SMARTCARD SUSPEND [ FROM DATE :' ${ this.fromdate}+ ' TO DATE :' ${this.todate} ' ]`.pdf").toUpperCase();
+        link.download = `DATE WISE SMARTCARD SUSPEND [ FROM DATE : ${this.fromdate} TO DATE : ${this.todate} ].pdf`.toUpperCase();
+
         link.dispatchEvent(new MouseEvent('click', { bubbles: true, cancelable: true, view: window }));
         setTimeout(() => {
           window.URL.revokeObjectURL(data);

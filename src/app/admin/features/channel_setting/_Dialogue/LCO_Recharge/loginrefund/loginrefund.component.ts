@@ -42,19 +42,13 @@ export class LoginrefundComponent {
     })
     console.log(data);
     this.type = 1;
-    // this.newSubid = data.newsubid;
-    // this.subId = data.subId;
-    // this.detailsList = data.detailsList;
-    // this.pairBoxList = data.pairBoxlist
-    // this.pairSmartcardList = data.pairSmartcardlist;
-    // this.planType = data.plantype;
-    // console.log(this.detailsList);
+   
   }
 
   ngOnInit() {
     this.form = this.fb.group({
-      userid: ['', Validators.required],  // username is required
-      password: ['', Validators.required], // password is required
+      userid: ['', Validators.required],  
+      password: ['', Validators.required], 
     });
   }
 
@@ -69,46 +63,7 @@ export class LoginrefundComponent {
         password: password,
         type: 1,
       }
-      // this.userservice.checkLoginCredenticals(this.role, this.username, userid, password, 1).subscribe(
-      //   (res: any) => {
-      //     Swal.fire({
-      //       title: 'Login Successful',
-      //       text: res?.message || 'You will be redirected shortly.',
-      //       icon: 'success',
-      //       timer: 1000,
-      //       showConfirmButton: false
-      //     }).then(() => {
-      //       this.closeLoginPage();
-
-      //       const dialogRef = this.dialog.open(RefundComponent, {
-      //         data: res?.message,
-      //         width: '500px'
-      //       });
-      //       console.log();
-
-      //       dialogRef.afterClosed().subscribe((result) => {
-      //         if (result && result.success) {
-      //           console.log('Dialog result:', result);
-      //           // Use the returned data
-      //         } else {
-      //           console.log('Dialog was closed without action or success.');
-      //         }
-      //       });
-
-      //     });
-      //   },
-      //   (error: any) => {
-      //     // Handle login failure
-      //     Swal.fire({
-      //       title: 'Login Failed',
-      //       text: error?.error?.message || 'Username or password is incorrect. Please try again.',
-      //       icon: 'error',
-      //       confirmButtonText: 'Retry'
-      //     });
-      //     console.log('Error:', error?.error?.message);
-      //   }
-      // );
-      this.userservice.checkLoginCredenticals(requestBody).subscribe(
+          this.userservice.checkLoginCredenticals(requestBody).subscribe(
         (res: any) => {
           Swal.fire({
             title: 'Login Successful',
@@ -117,28 +72,10 @@ export class LoginrefundComponent {
             timer: 1000,
             showConfirmButton: false
           }).then(() => {
-            // this.closeLoginPage();
-
-            const dialogRef = this.dialog.open(RefundComponent, {
-              data: res?.message,
-              width: '500px',
-
-            });
-            console.log('res?.message', res?.message);
-
-            dialogRef.afterClosed().subscribe((result) => {
-              if (result && result.success) {
-                console.log('Dialog result:', result);
-                // Use the returned data
-              } else {
-                console.log('Dialog was closed without action or success.');
-              }
-            });
-
+            this.closeLoginPage();
           });
         },
         (error: any) => {
-          // Handle login failure
           Swal.fire({
             title: 'Login Failed',
             text: error?.error?.message || 'Username or password is incorrect. Please try again.',
@@ -158,7 +95,10 @@ export class LoginrefundComponent {
     }
   }
   closeLoginPage() {
-    this.dialogRef.close(); // Closes the dialog
+    this.dialogRef.close({ success: true });
+  }
+  onClick_Close() {
+    this.dialogRef.close();
   }
   onNoClick(): void {
     const role = this.storageservice.getUserRole();
@@ -178,7 +118,7 @@ export class LoginrefundComponent {
           this.router.navigate(['admin/home']).then(() => {
             // this.dialog.open(RefundComponent)
           });
-      
+
         }
       } else if (result.dismiss === Swal.DismissReason.cancel) {
         this.location.back();

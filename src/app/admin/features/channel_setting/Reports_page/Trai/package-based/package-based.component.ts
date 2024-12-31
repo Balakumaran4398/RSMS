@@ -22,7 +22,7 @@ export class PackageBasedComponent implements OnInit {
   role: any;
   rowData: any;
   msodetails: any;
-  productType: any = '';
+  productType: any = 4;
   product: any = [
     { lable: "Base", value: 1 },
     { lable: "Addon", value: 2 },
@@ -32,6 +32,7 @@ export class PackageBasedComponent implements OnInit {
   file: File | null = null;
   filePath: string = '';
   isFileSelected: boolean = false;
+  submitted: boolean = false;
 
   constructor(public dialogRef: MatDialogRef<PackageBasedComponent>, private swal: SwalService, @Inject(MAT_DIALOG_DATA) public data: any, private excelService: ExcelService, public userService: BaseService, private cdr: ChangeDetectorRef, public storageservice: StorageService,) {
     this.username = storageservice.getUsername();
@@ -109,7 +110,7 @@ export class PackageBasedComponent implements OnInit {
           if (response.status === 200) {
             this.rowData = response.body;
             console.log(this.type);
-            const title = (this.type + ' REPORT').toUpperCase();
+            const title = (this.type + ' REPORT [FROM DATE: ' + this.fromdate + ' - TO DATE: ' + this.todate + ']').toUpperCase();
             const sub = 'MSO ADDRESS:' + this.msodetails;
             let areatitle = '';
             let areasub = '';
@@ -130,7 +131,7 @@ export class PackageBasedComponent implements OnInit {
 
           } else if (response.status === 204) {
             // this.swal.Success_204();
-            const title = (this.type + ' REPORT').toUpperCase();
+            const title = (this.type + ' REPORT [FROM DATE: ' + this.fromdate + ' - TO DATE: ' + this.todate + ']').toUpperCase();
             const sub = 'MSO ADDRESS:' + this.msodetails;
             let areatitle = '';
             let areasub = '';
@@ -156,7 +157,7 @@ export class PackageBasedComponent implements OnInit {
         const data = window.URL.createObjectURL(blob);
         const link = document.createElement('a');
         link.href = data;
-        link.download = (this.type + ".pdf").toUpperCase();
+        link.download = `${this.type} REPORT - [FROM DATE: ${this.fromdate} - TO DATE: ${this.todate}].pdf`.toUpperCase();
         link.dispatchEvent(new MouseEvent('click', { bubbles: true, cancelable: true, view: window }));
         setTimeout(() => {
           window.URL.revokeObjectURL(data);
@@ -191,7 +192,7 @@ export class PackageBasedComponent implements OnInit {
             console.log(this.type);
             this.rowData = response;
             console.log(this.type);
-            const title = (this.type + ' REPORT').toUpperCase();
+            const title = (this.type + ' REPORT [FROM DATE: ' + this.fromdate + ' - TO DATE: ' + this.todate + ']').toUpperCase();
             const sub = 'MSO ADDRESS:' + this.msodetails;
             let areatitle = '';
             let areasub = '';
@@ -252,7 +253,7 @@ export class PackageBasedComponent implements OnInit {
         const data = window.URL.createObjectURL(blob);
         const link = document.createElement('a');
         link.href = data;
-        link.download = (this.type + ".pdf").toUpperCase();
+        link.download = `${this.type} REPORT - [FROM DATE: ${this.fromdate} - TO DATE: ${this.todate}].pdf`.toUpperCase();
         link.dispatchEvent(new MouseEvent('click', { bubbles: true, cancelable: true, view: window }));
         setTimeout(() => {
           window.URL.revokeObjectURL(data);
@@ -284,16 +285,16 @@ export class PackageBasedComponent implements OnInit {
           if (response.status === 200) {
             this.rowData = response.body;
             console.log(this.type);
-            const title = (this.type + ' REPORT').toUpperCase();
+            const title = (this.type + ' REPORT [FROM DATE: ' + this.fromdate + ' - TO DATE: ' + this.todate + ']').toUpperCase();
             const sub = 'MSO ADDRESS:' + this.msodetails;
             let areatitle = '';
             let areasub = '';
             let header: string[] = [];
             const datas: Array<any> = [];
             // if (this.type == 1) {
-            areatitle = 'A1:H2';
-            areasub = 'A3:H3';
-            header = ['S.NO', 'CHANNEL NAME PREVIOUS', 'CHANNEL NAME CURRENT', 'BROADCASTER NAME PREVIOUS', 'BROADCASTER NAME CURRENT', 'SERVICE ID PREVIOUS', 'SERVICE ID CURRENT', 'CREATED DATE'];
+            areatitle = 'A1:I2';
+            areasub = 'A3:I3';
+            header = ['S.NO', 'CHANNEL NAME PREVIOUS', 'CHANNEL NAME NEW', 'BROADCASTER NAME PREVIOUS', 'BROADCASTER NAME NEW', 'SERVICE ID PREVIOUS', 'SERVICE ID NEW', 'CREATED DATE'];
 
             this.rowData.forEach((d: any, index: number) => {
               const row = [index + 1, d.channelnamepre, d.channelnamecur, d.broadcasternamepre, d.broadcasternamecur, d.serviceidpre, d.serviceidcur, d.createddate];
@@ -305,15 +306,15 @@ export class PackageBasedComponent implements OnInit {
 
           } else if (response.status === 204) {
             // this.swal.Success_204();
-            const title = (this.type + ' REPORT').toUpperCase();
+            const title = (this.type + ' REPORT [FROM DATE: ' + this.fromdate + ' - TO DATE: ' + this.todate + ']').toUpperCase();
             const sub = 'MSO ADDRESS:' + this.msodetails;
             let areatitle = '';
             let areasub = '';
             let header: string[] = [];
             const datas: Array<any> = [];
             // if (this.type == 1) {
-            areatitle = 'A1:H2';
-            areasub = 'A3:H3';
+            areatitle = 'A1:I2';
+            areasub = 'A3:I3';
             header = ['S.NO', 'CHANNEL NAME PREVIOUS', 'CHANNEL NAME CURRENT', 'BROADCASTER NAME PREVIOUS', 'BROADCASTER NAME CURRENT', 'SERVICE ID PREVIOUS', 'SERVICE ID CURRENT', 'CREATED DATE'];
 
             // this.rowData.forEach((d: any) => {
@@ -338,7 +339,7 @@ export class PackageBasedComponent implements OnInit {
         const data = window.URL.createObjectURL(blob);
         const link = document.createElement('a');
         link.href = data;
-        link.download = (this.type + ".pdf").toUpperCase();
+        link.download = `${this.type} REPORT - [FROM DATE: ${this.fromdate} - TO DATE: ${this.todate}].pdf`.toUpperCase();
         link.dispatchEvent(new MouseEvent('click', { bubbles: true, cancelable: true, view: window }));
         setTimeout(() => {
           window.URL.revokeObjectURL(data);
@@ -369,8 +370,8 @@ export class PackageBasedComponent implements OnInit {
           const datas: Array<any> = [];
           const columns: any[] = [];
 
-          let areaTitle = 'A1:E2';
-          let areaSub = 'A3:E3';
+          let areaTitle = 'A1:D2';
+          let areaSub = 'A3:D3';
           console.log('addonlist');
           // Handle Addon List
           if (this.rowData.addonlist && this.rowData.addonlist.length > 0) {
@@ -427,7 +428,6 @@ export class PackageBasedComponent implements OnInit {
   }
 
   getComboPDF() {
-    console.log('type 1 and 4', this.type);
     this.userService.getComboModificationPdfReport(this.role, this.username, 1)
       .subscribe((x: Blob) => {
         const blob = new Blob([x], { type: 'application/pdf' });
@@ -452,6 +452,9 @@ export class PackageBasedComponent implements OnInit {
   }
 
   getBouquetAlacarteExcel() {
+    if (!this.productType) {
+      this.submitted = true;
+    } else {
     this.userService.getBouquetSubscriptionExcelReport(this.role, this.username, this.fromdate, this.todate, this.productType, 2)
       .subscribe(
         (response: HttpResponse<any[]>) => { // Expect HttpResponse<any[]>
@@ -460,7 +463,7 @@ export class PackageBasedComponent implements OnInit {
             this.rowData = response.body;
             console.log(this.rowData);
             console.log(this.type);
-            const title = (this.type + '  REPORT').toUpperCase();
+            const title = (this.type + ' REPORT [FROM DATE: ' + this.fromdate + ' - TO DATE: ' + this.todate + ']').toUpperCase();
             const sub = 'MSO ADDRESS:' + this.msodetails;
             let areatitle = '';
             let areasub = '';
@@ -500,16 +503,18 @@ export class PackageBasedComponent implements OnInit {
           this.handleApiError(error);
         }
       );
+    }
   }
   getBouquetAlacartePDF() {
-    console.log('type 1 and 4', this.type);
-    this.userService.getBouquetSubscriptionPdfReport(this.role, this.username, this.fromdate, this.todate, this.productType, 1)
+    if (!this.productType) {
+      this.submitted = true;
+    } else {    this.userService.getBouquetSubscriptionPdfReport(this.role, this.username, this.fromdate, this.todate, this.productType, 1)
       .subscribe((x: Blob) => {
         const blob = new Blob([x], { type: 'application/pdf' });
         const data = window.URL.createObjectURL(blob);
         const link = document.createElement('a');
         link.href = data;
-        link.download = (this.type + ".pdf").toUpperCase();
+        link.download = `${this.type} REPORT - [FROM DATE: ${this.fromdate} - TO DATE: ${this.todate}].pdf`.toUpperCase();
         link.dispatchEvent(new MouseEvent('click', { bubbles: true, cancelable: true, view: window }));
         setTimeout(() => {
           window.URL.revokeObjectURL(data);
@@ -524,7 +529,9 @@ export class PackageBasedComponent implements OnInit {
             confirmButtonText: 'Ok'
           });
         });
+      }
   }
+  // ------------------------------------------------------------------------------------------------
   handleApiError(error: any) {
     if (error.status === 400) {
       this.swal.Error_400();

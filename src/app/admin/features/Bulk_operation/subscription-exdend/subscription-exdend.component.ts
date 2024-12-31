@@ -46,6 +46,10 @@ export class SubscriptionExdendComponent implements OnInit {
   date: any;
   selectedDate: any;
   optype: any;
+
+  // days: any;
+  daysInvalid = false;
+
   constructor(private storageservice: StorageService, private excelService: ExcelService, private userservice: BaseService, private swal: SwalService) {
     this.role = storageservice.getUserRole();
     this.username = storageservice.getUsername();
@@ -54,6 +58,14 @@ export class SubscriptionExdendComponent implements OnInit {
     this.date = new Date().toISOString().split('T')[0];
     this.selectedDate = this.date; 
     this.refresh();
+  }
+  validateLength(event: any): void {
+    const value = event.target.value;
+    if (value.length > 3) {
+      event.target.value = value.slice(0, 3); // Trim to 3 digits
+      this.days = event.target.value; // Update the model
+    }
+    this.daysInvalid = value.length !== 3; // Check validity
   }
   getData() {
     this.rowData=[];
@@ -66,7 +78,7 @@ export class SubscriptionExdendComponent implements OnInit {
       (response: HttpResponse<any[]>) => { // Expect HttpResponse<any[]>
         if (response.status === 200) {
           this.rowData = response.body;
-          // this.swal.Success_200();
+          this.swal.Success_200();
         } else if (response.status === 204) {
           this.swal.Success_204();
         }
@@ -88,7 +100,7 @@ export class SubscriptionExdendComponent implements OnInit {
       (response: HttpResponse<any[]>) => { // Expect HttpResponse<any[]>
         if (response.status === 200) {
           this.rowData = response.body;
-          // this.swal.Success_200();
+          this.swal.Success_200();
         } else if (response.status === 204) {
           this.swal.Success_204();
         }

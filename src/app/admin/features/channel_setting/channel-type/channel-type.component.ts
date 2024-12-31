@@ -58,25 +58,25 @@ export class ChannelTypeComponent {
     {
       headerName: 'CHANNEL TYPE NAME',
       field: 'name',
-      width: 700,
-      editable: true,
-      cellEditor: 'agTextCellEditor',
-      onCellValueChanged: (event) => {
-        this.updateDeviceModelname(event.data.name, event.data.isactive, event.data.id);
-      }
+      width: 700,cellStyle: { textAlign: 'left' },
+      // editable: true,
+      // cellEditor: 'agTextCellEditor',
+      // onCellValueChanged: (event) => {
+      //   this.updateDeviceModelname(event.data.name, event.data.isactive, event.data.id);
+      // }
     },
 
     {
       headerName: "ISACTIVE",
       field: 'isactive',
-      width: 670,
+      width: 500,
      cellRenderer: (params: any) => {
         const isActive = params.data.isactive;
 
         const toggleContainer = document.createElement('div');
         toggleContainer.style.display = 'flex';
-        toggleContainer.style.alignItems = 'left';
-        toggleContainer.style.justifyContent = 'left';
+        toggleContainer.style.alignItems = 'center';
+        toggleContainer.style.justifyContent = 'center';
 
         const toggleSwitch = document.createElement('div');
         toggleSwitch.style.width = '45px';

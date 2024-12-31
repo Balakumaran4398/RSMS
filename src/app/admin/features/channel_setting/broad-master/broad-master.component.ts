@@ -28,7 +28,12 @@ export class BroadMasterComponent implements OnInit {
       sortable: true,
       resizable: true,
       filter: true,
-      floatingFilter: true
+      floatingFilter: true,
+      comparator: (valueA: string, valueB: string) => {
+        if (!valueA) valueA = '';
+        if (!valueB) valueB = '';
+        return valueA.toLowerCase().localeCompare(valueB.toLowerCase());
+      },
     },
     paginationPageSize: 10,
     pagination: true,
@@ -66,74 +71,19 @@ export class BroadMasterComponent implements OnInit {
       headerName: 'BroadCaster Name',
       field: 'broadcastername',
       width: 690,
-      editable: true,
-      cellEditor: 'agTextCellEditor',
       cellStyle: { textAlign: 'left' },
-      onCellValueChanged: (event: { data: { broadcastername: string; isactive: boolean; id: number; }; }) => {
-        console.log('Cell value changed:', event.data.broadcastername);
-        this.updateDeviceModelname(event.data.broadcastername, event.data.isactive, event.data.id);
-      }
     },
     {
       headerName: "ISACTIVE",
       field: 'isactive',
-      width: 600,
-      // cellRenderer: (params: any) => {
-      //   const isActive = params.data.isactive;
-      //   const toggleButton = document.createElement('button');
-      //   toggleButton.style.backgroundColor = 'transparent';
-      //   toggleButton.style.border = 'none';
-      //   toggleButton.style.cursor = 'pointer';
-      //   toggleButton.style.fontSize = '22px';
-      //   toggleButton.style.display = 'flex';
-      //   toggleButton.style.alignItems = 'center';
-      //   toggleButton.style.justifyContent = 'center';
-      //   const icon = document.createElement('i');
-      //   icon.className = 'fa';
-      //   toggleButton.appendChild(icon);
-      //   const updateButtonStyle = (active: boolean) => {
-      //     if (active) {
-      //       icon.className = 'fa-solid fa-toggle-on';
-      //       toggleButton.style.color = '#4CAF50';
-      //       toggleButton.style.fontSize = '24px';
-      //       icon.style.fontSize = '24px';
-      //       toggleButton.title = 'Deactivate the Customer';
-      //     } else {
-      //       icon.className = 'fa-solid fa-toggle-off';
-      //       toggleButton.style.color = 'rgb(248 92 133)';
-      //       toggleButton.style.fontSize = '24px';
-      //       icon.style.fontSize = '24px';
-      //       toggleButton.title = 'Activate the Customer';
-      //     }
-      //   };
-
-      //   updateButtonStyle(isActive);
-      //   toggleButton.addEventListener('click', () => {
-      //     const newIsActive = !params.data.isactive;
-      //     params.data.isactive = newIsActive;
-      //     updateButtonStyle(newIsActive);
-      //     params.node.setDataValue('isactive', newIsActive);
-      //     console.log('Toggle button clicked:', newIsActive);
-      //     this.updateDeviceModelname(params.data.broadcastername, newIsActive, params.data.id);
-      //   });
-
-      //   const div = document.createElement('div');
-      //   div.style.display = 'flex';
-      //   // div.style.alignItems = 'center';
-      //   // div.style.justifyContent = 'center';
-      //   div.appendChild(toggleButton);
-      //   return div;
-      // },
-
-
-
+      width: 400, cellStyle: { textAlign: 'center' },
       cellRenderer: (params: any) => {
         const isActive = params.data.isactive;
 
         const toggleContainer = document.createElement('div');
         toggleContainer.style.display = 'flex';
-        toggleContainer.style.alignItems = 'left';
-        toggleContainer.style.justifyContent = 'left';
+        toggleContainer.style.alignItems = 'center';
+        toggleContainer.style.justifyContent = 'center';
 
         const toggleSwitch = document.createElement('div');
         toggleSwitch.style.width = '45px';
@@ -166,7 +116,7 @@ export class BroadMasterComponent implements OnInit {
         toggleSwitch.addEventListener('click', () => {
           const currentStatus = params.data.isactive;
           const newStatus = !currentStatus;
-          params.data.isactive = newStatus; 
+          params.data.isactive = newStatus;
           updateToggleStyle(newStatus);
 
           console.log(`Status changed to: ${newStatus ? 'Active' : 'Inactive'}`);

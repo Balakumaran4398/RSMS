@@ -107,6 +107,10 @@
                         [disabled]="!isAnyRowSelected" (click)="Active()">
                         Active
                     </button>
+                    <button class="btn btn-outline-info mx-1" mat-raised-button color="accent" type="button"
+                    [disabled]="!isAnyRowSelected" (click)="Deactive()">
+                    Deactive
+                </button>
                   
                 </div>
                 <ag-grid-angular #agGrid id="myGrid" domLayout='autoHeight' class="ag-theme-alpine table-class"

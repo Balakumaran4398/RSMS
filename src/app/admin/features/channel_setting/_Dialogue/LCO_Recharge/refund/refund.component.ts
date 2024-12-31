@@ -26,12 +26,13 @@ export class RefundComponent {
   operatorid: any;
 
   submitted: boolean = false;
-
+  dataid: any;
   constructor(public dialogRef: MatDialogRef<RefundComponent>, @Inject(MAT_DIALOG_DATA) public data: any, public dialog: MatDialog, private swal: SwalService, private userservice: BaseService, private storageservice: StorageService) {
     console.log(this.data);
     this.amount = data?.data.amount;
     // this.remarks = data.transactionremarks1;
     this.id = data?.data.id;
+    this.dataid = data?.id;
     this.role = storageservice.getUserRole();
     this.username = storageservice.getUsername();
     this.refuntlist = data?.data;
@@ -43,7 +44,7 @@ export class RefundComponent {
 
 
   toggleedit() {
-    this.dialogRef.close();
+    this.dialogRef.close({ success: true });
   }
   onKeydown(event: KeyboardEvent) {
     const key = event.key;
@@ -52,59 +53,21 @@ export class RefundComponent {
     }
   }
 
-  // onSubmit() {
-  //   if (!this.remarks) {
-  //     Swal.fire({
-  //       title: 'Error!',
-  //       text: 'Refund remarks cannot be empty.',
-  //       icon: 'error'
-  //     });
-  //     return;
-  //   }
-  //   this.swal.Loading();
-  //   this.userservice.getRefund(this.role, this.username, this.id, this.amount, this.remarks, this.operatorid, this.isenablesmartcard).subscribe(
-  //     (res: any) => {
-
-  //       Swal.fire({
-  //         title: 'Success!',
-  //         text: res.message || 'Recharge has been added successfully.',
-  //         icon: 'success',
-  //         timer: 2000,
-  //         timerProgressBar: true,
-  //         willClose: () => {
-  //           window.location.reload();
-  //         }
-  //       });
-  //     },
-  //     (error: any) => {
-  //       console.error(error);
-  //       Swal.fire({
-  //         title: 'Error!',
-  //         text: error?.error.message || error?.error.refundamount.remarks || 'There was an issue adding the Recharge.',
-  //         icon: 'error'
-  //       });
-  //     }
-  //   );
-
-
-  // }
-
   onSubmit() {
     this.submitted = true;
     if (!this.amount || !this.remarks) {
       return;
     }
 
-    // const dialogRef = this.dialog.open(LoginrefundComponent, {
-    //   width: '500px',
-    //   panelClass: 'custom-dialog-container',
-    //   data:'dfsfsd'
-    // });
-
-    // dialogRef.afterClosed().subscribe((data) => {
-    //   console.log('dfdsfdsfsd', data);
-
-      if (this.data) {
+    const dialogRef = this.dialog.open(LoginrefundComponent, {
+      width: '500px',
+      panelClass: 'custom-dialog-container',
+      data: '1'
+    });
+ 
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result && result.success) {
+        console.log('dsfsdfdsfdsfdsf', result);
         this.swal.Loading();
         this.userservice
           .getRefund(this.role, this.username, this.id, this.amount, this.remarks, this.operatorid, this.isenablesmartcard)
@@ -133,7 +96,7 @@ export class RefundComponent {
       } else {
         console.log('Dialog closed without success');
       }
-    // });
+    });
   }
 
 

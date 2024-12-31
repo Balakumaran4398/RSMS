@@ -23,11 +23,12 @@ export class BroadcasterReportsComponent implements OnInit {
   alacartelist: any;
   baselist: any;
   msodetails: any;
+  selectedMonthName: any;
 
   selectedDate: any = 0;
   selectedMonth: any = 0;
   selectedYear: any = 0;
-
+  submitted: boolean = false;
   broadcasterid: any;
   broadcastername: any;
   selectedValue: any;
@@ -71,13 +72,18 @@ export class BroadcasterReportsComponent implements OnInit {
     // this.dialogRef.close(this.returndata);
   }
   ngOnInit(): void {
-    this.userService.Finger_print_List(this.role, this.username).subscribe((data: any) => {
-      console.log(data);
-      this.cas = Object.entries(data[0].caslist).map(([key, value]) => ({ name: key, id: value }));
+
+    this.userService.Cas_type(this.role, this.username).subscribe((data) => {
+      this.cas = data;
+      console.log('dfdsfdsfsd', this.cas);
+      this.cas = data.map((item: any) => ({
+        id: item.id,
+        name: item.casname
+      }));
+      this.filteredCasList = this.cas;
       console.log(this.cas);
 
-      this.filteredCasList = this.cas;
-    })
+    });
     this.userService.BroadcasterList(this.role, this.username, 1).subscribe((data: any) => {
       console.log(data);
       this.broadcasterList = data.map((item: any) => ({
@@ -119,7 +125,7 @@ export class BroadcasterReportsComponent implements OnInit {
     }
   }
   setVisible(value: boolean, selectedType: string = '0') {
-    this.isVisible = value;
+    // this.isVisible = value;
     this.type = selectedType;
     switch (this.type) {
       case '0':
@@ -259,9 +265,12 @@ export class BroadcasterReportsComponent implements OnInit {
   }
   onMonthChange() {
     if (this.selectedMonth !== '0') {
-      const selectedMonthName = this.months.find(month => month.value === this.selectedMonth)?.name || '';
+      this.selectedMonthName = this.months.find(month => month.value === this.selectedMonth)?.name || '';
       this.isDateDisabled = false;
-      this.generateDates(selectedMonthName);
+      console.log(this.selectedMonth);
+      console.log(this.selectedMonthName);
+
+      this.generateDates(this.selectedMonthName);
     } else {
       this.isDateDisabled = true;
       this.Date = [];
@@ -278,11 +287,15 @@ export class BroadcasterReportsComponent implements OnInit {
   onVisible() {
     this.userService.getBroadcasterVisible(this.role, this.username, this.selectedMonth, this.selectedYear).subscribe((data: any) => {
       console.log(data);
-      this.isVisible = data;
+      this.isVisible = data.isVisible;
+      console.log( this.isVisible);
+      
     })
   }
 
-
+  toggleVisibility() {
+    this.isVisible = !this.isVisible; 
+  }
   generateYears() {
     const startYear = 2012;
     const currentYear = new Date().getFullYear();
@@ -296,14 +309,19 @@ export class BroadcasterReportsComponent implements OnInit {
   }
 
   getExcel() {
-    this.userService.getBroadcasterReport(this.role, this.username, this.selectedMonth, this.selectedYear, this.selectedDate, this.broadcasterid, this.allType, 2).subscribe((data: any) => {
-      console.log(data);
-
-
-    })
+    if (!this.selectedYear && !this.selectedMonth && !this.selectedDate && !this.broadcasterid && !this.allType) {
+      this.submitted = true;
+    } else {
+      this.userService.getBroadcasterReport(this.role, this.username, this.selectedMonth, this.selectedYear, this.selectedDate, this.broadcasterid, this.allType, 2).subscribe((data: any) => {
+        console.log(data);
+      })
+    }
   }
   getPDF() {
-    this.userService.getBroadcasterPDFReport(this.role, this.username, this.selectedMonth, this.selectedYear, this.selectedDate, this.broadcasterid, this.allType, 1).subscribe((x: Blob) => {
+    if (!this.selectedYear && !this.selectedMonth && !this.selectedDate && !this.broadcasterid && !this.allType) {
+      this.submitted = true;
+    } else {
+      this.userService.getBroadcasterPDFReport(this.role, this.username, this.selectedMonth, this.selectedYear, this.selectedDate, this.broadcasterid, this.allType, 1).subscribe((x: Blob) => {
         const blob = new Blob([x], { type: 'application/pdf' });
         const data = window.URL.createObjectURL(blob);
         const link = document.createElement('a');
@@ -323,84 +341,97 @@ export class BroadcasterReportsComponent implements OnInit {
             confirmButtonText: 'Ok'
           });
         });
+    }
   }
   // ---------------------------------------Universal report-------------------------
 
   getUniversalExcel() {
-    this.userService.getUniversalExcelReport(this.role, this.username, this.selectedMonth, this.selectedYear, this.selectedDate, 2)
-      .subscribe(
-        (response: HttpResponse<any>) => {
-          if (response.status === 200) {
-            this.rowData = response.body;
-            console.log(this.reportTitle);
-            const title = (this.reportTitle).toUpperCase();
-            const sub = 'MSO ADDRESS:' + this.msodetails;
-            let areatitle = '';
-            let areasub = '';
-            let header: string[] = [];
-            const datas: Array<any> = [];
-            areatitle = 'A1:H2';
-            areasub = 'A3:H3';
-            const headers = ['S.NO', 'PACKAGE ID', 'PACKAGE NAME', 'CAS', 'AS ON 07th', 'AS ON 14th', 'AVERAGE', 'MONTH & YEAR'];
-            this.rowData.forEach((d: any, index: number) => {
-              const row = [index + 1, d.customername, d.mobileno, d.smartcard, d.boxid, d.casname, d.productname, d.createddate];
-              datas.push(row);
-            });
-            this.excelService.generatUniversalExcel(areatitle, headers, datas, title, areasub, sub);
-          } else if (response.status === 204) {
-            this.swal.Success_204();
-            this.rowData = [];
+    if (!this.selectedYear && !this.selectedMonth && !this.selectedDate) {
+      this.submitted = true;
+    } else {
+      this.userService.getUniversalExcelReport(this.role, this.username, this.selectedMonth, this.selectedYear, this.selectedDate, 2)
+        .subscribe(
+          (response: HttpResponse<any>) => {
+            if (response.status === 200) {
+              this.rowData = response.body;
+              console.log(this.reportTitle);
+              const title = (this.reportTitle).toUpperCase();
+              const sub = 'MSO ADDRESS:' + this.msodetails;
+              let areatitle = '';
+              let areasub = '';
+              let header: string[] = [];
+              const datas: Array<any> = [];
+              areatitle = 'A1:H2';
+              areasub = 'A3:H3';
+              const headers = ['S.NO', 'PACKAGE ID', 'PACKAGE NAME', 'CAS', 'AS ON 07th', 'AS ON 14th', 'AVERAGE', 'MONTH & YEAR'];
+              this.rowData.forEach((d: any, index: number) => {
+                const row = [index + 1, d.customername, d.mobileno, d.smartcard, d.boxid, d.casname, d.productname, d.createddate];
+                datas.push(row);
+              });
+              this.excelService.generatUniversalExcel(areatitle, headers, datas, title, areasub, sub);
+            } else if (response.status === 204) {
+              this.swal.Success_204();
+              this.rowData = [];
+            }
+          },
+          (error) => {
+            this.handleApiError(error);
           }
-        },
-        (error) => {
-          this.handleApiError(error);
-        }
-      );
+        );
+    }
   }
   getUniversalPDF() {
-    this.userService.getUniversalPDFReport(this.role, this.username, this.selectedMonth, this.selectedYear, this.selectedDate, 1)
-      .subscribe((x: Blob) => {
-        const blob = new Blob([x], { type: 'application/pdf' });
-        const data = window.URL.createObjectURL(blob);
-        const link = document.createElement('a');
-        link.href = data;
-        link.download = (this.reportTitle + ".pdf").toUpperCase();
-        link.dispatchEvent(new MouseEvent('click', { bubbles: true, cancelable: true, view: window }));
-        setTimeout(() => {
-          window.URL.revokeObjectURL(data);
-          link.remove();
-        }, 100);
-      },
-        (error: any) => {
-          Swal.fire({
-            title: 'Error!',
-            text: error?.error?.message || 'There was an issue generating the PDF CAS form report.',
-            icon: 'error',
-            confirmButtonText: 'Ok'
+    if (!this.selectedYear && !this.selectedMonth && !this.selectedDate) {
+      this.submitted = true;
+    } else {
+      this.userService.getUniversalPDFReport(this.role, this.username, this.selectedMonth, this.selectedYear, this.selectedDate, 1)
+        .subscribe((x: Blob) => {
+          const blob = new Blob([x], { type: 'application/pdf' });
+          const data = window.URL.createObjectURL(blob);
+          const link = document.createElement('a');
+          link.href = data;
+          link.download = (this.reportTitle + ".pdf").toUpperCase();
+          link.dispatchEvent(new MouseEvent('click', { bubbles: true, cancelable: true, view: window }));
+          setTimeout(() => {
+            window.URL.revokeObjectURL(data);
+            link.remove();
+          }, 100);
+        },
+          (error: any) => {
+            Swal.fire({
+              title: 'Error!',
+              text: error?.error?.message || 'There was an issue generating the PDF CAS form report.',
+              icon: 'error',
+              confirmButtonText: 'Ok'
+            });
           });
-        });
+    }
   }
   // ------------------------------------------------OverAll Report-------------------------------------------
   grtOverAllReport() {
     console.log('fdgdfgfdjgkfdj');
-
-    this.userService.getOverAllExcelReport(this.role, this.username, this.selectedMonth, this.selectedYear, this.selectedDate, 2)
-      .subscribe(
-        (response: HttpResponse<any>) => {
-          if (response.status === 200) {
-            console.log(response);
-            this.addonlist = response.body.addonList;
-            this.alacartelist = response.body.alacartePackageList;
-            this.baselist = response.body.basePackageList;
-          } else if (response.status === 204) {
-            this.swal.Success_204();
-            this.rowData = [];
+    this.submitted = true;
+    if (!this.selectedYear && !this.selectedMonth && !this.selectedDate) {
+      this.submitted = true;
+    } else {
+      this.userService.getOverAllExcelReport(this.role, this.username, this.selectedMonth, this.selectedYear, this.selectedDate, 2)
+        .subscribe(
+          (response: HttpResponse<any>) => {
+            if (response.status === 200) {
+              console.log(response);
+              this.addonlist = response.body.addonList;
+              this.alacartelist = response.body.alacartePackageList;
+              this.baselist = response.body.basePackageList;
+            } else if (response.status === 204) {
+              this.swal.Success_204();
+              this.rowData = [];
+            }
+          },
+          (error) => {
+            this.handleApiError(error);
           }
-        },
-        (error) => {
-          this.handleApiError(error);
-        }
-      );
+        );
+    }
   }
   // getOverAllExcel() {
   //   this.userService.getOverAllExcelReport(this.role, this.username, this.selectedMonth, this.selectedYear, this.selectedDate, 2)
@@ -436,57 +467,178 @@ export class BroadcasterReportsComponent implements OnInit {
   // }
 
   getOverAllExcel() {
-    this.userService.getOverAllExcelReport(this.role, this.username, this.selectedMonth, this.selectedYear, this.selectedDate, 2)
-      .subscribe(
-        (response: HttpResponse<any>) => {
-          if (response.status === 200) {
-            // this.rowData = response.body.addonList; // Extract addonList
-            this.addonlist = response.body.addonList;
-            this.alacartelist = response.body.alacartePackageList;
-            this.baselist = response.body.basePackageList;
+    if (!this.selectedYear && !this.selectedMonth && !this.selectedDate) {
+      this.submitted = true;
+    } else {
+      this.userService.getOverAllExcelReport(this.role, this.username, this.selectedMonth, this.selectedYear, this.selectedDate, 2)
+        .subscribe(
+          (response: HttpResponse<any>) => {
+            if (response.status === 200) {
+              // this.rowData = response.body.addonList; // Extract addonList
+              this.addonlist = response.body.addonList;
+              this.alacartelist = response.body.alacartePackageList;
+              this.baselist = response.body.basePackageList;
 
-            console.log(this.reportTitle);
-            const title = (this.reportTitle).toUpperCase();
-            const sub = 'MSO ADDRESS: ' + this.msodetails;
+              console.log(this.reportTitle);
+              // const title = (this.reportTitle).toUpperCase();
+              const title = (this.type + ' REPORT - [YEAR : ' + this.selectedYear + ' - MONTH : ' + this.selectedMonthName + ']').toUpperCase();
 
-            // Generate the unified Excel report
-            this.excelService.generateExcelReport(this.addonlist, this.alacartelist, this.baselist, title, sub);
+              const sub = 'MSO ADDRESS: ' + this.msodetails;
 
-          } else if (response.status === 204) {
-            this.swal.Success_204();
-            this.rowData = [];
+              // Generate the unified Excel report
+              this.excelService.generateExcelReport(this.addonlist, this.alacartelist, this.baselist, title, sub);
+
+            } else if (response.status === 204) {
+              this.swal.Success_204();
+              this.rowData = [];
+            }
+          },
+          (error) => {
+            this.handleApiError(error);
           }
-        },
-        (error) => {
-          this.handleApiError(error);
-        }
-      );
+        );
+    }
   }
 
   getOverAllPDF() {
-    this.userService.getOverAllPDFReport(this.role, this.username, this.selectedMonth, this.selectedYear, this.selectedDate, 1)
-      .subscribe((x: Blob) => {
-        const blob = new Blob([x], { type: 'application/pdf' });
-        const data = window.URL.createObjectURL(blob);
-        const link = document.createElement('a');
-        link.href = data;
-        link.download = (this.reportTitle + ".pdf").toUpperCase();
-        link.dispatchEvent(new MouseEvent('click', { bubbles: true, cancelable: true, view: window }));
-        setTimeout(() => {
-          window.URL.revokeObjectURL(data);
-          link.remove();
-        }, 100);
-      },
-        (error: any) => {
-          Swal.fire({
-            title: 'Error!',
-            text: error?.error?.message || 'There was an issue generating the PDF CAS form report.',
-            icon: 'error',
-            confirmButtonText: 'Ok'
+    if (!this.selectedYear && !this.selectedMonth && !this.selectedDate) {
+      this.submitted = true;
+    } else {
+      this.userService.getOverAllPDFReport(this.role, this.username, this.selectedMonth, this.selectedYear, this.selectedDate, 1)
+        .subscribe((x: Blob) => {
+          const blob = new Blob([x], { type: 'application/pdf' });
+          const data = window.URL.createObjectURL(blob);
+          const link = document.createElement('a');
+          link.href = data;
+          // link.download = (this.reportTitle + ".pdf").toUpperCase();
+          link.download = `${this.reportTitle} REPORT - [YEAR : ${this.selectedYear} - MONTH : ${this.selectedMonthName}].pdf`.toUpperCase();
+
+          link.dispatchEvent(new MouseEvent('click', { bubbles: true, cancelable: true, view: window }));
+          setTimeout(() => {
+            window.URL.revokeObjectURL(data);
+            link.remove();
+          }, 100);
+        },
+          (error: any) => {
+            Swal.fire({
+              title: 'Error!',
+              text: error?.error?.message || 'There was an issue generating the PDF CAS form report.',
+              icon: 'error',
+              confirmButtonText: 'Ok'
+            });
           });
-        });
+    }
   }
-  // ---------------------------------------------------------------------------------------------------------------------------------------
+  // ----------------------------------------------over all base report-----------------------------------------------------------------------------------------
+  grtOverAllBaseReport() {
+    console.log('fdgdfgfdjgkfdj');
+    this.submitted = true;
+    if (!this.selectedYear && !this.selectedMonth && !this.selectedDate) {
+      this.submitted = true;
+    } else {
+      this.userService.getOverBaseExcelReport(this.role, this.username, this.selectedMonth, this.selectedYear, this.selectedDate, 2)
+        .subscribe(
+          (response: HttpResponse<any>) => {
+            if (response.status === 200) {
+              console.log(response);
+              this.addonlist = response.body.addonList;
+              this.alacartelist = response.body.alacartePackageList;
+              this.baselist = response.body.basePackageList;
+            } else if (response.status === 204) {
+              this.swal.Success_204();
+              this.rowData = [];
+            }
+          },
+          (error) => {
+            this.handleApiError(error);
+          }
+        );
+    }
+  }
+  grtOverAllBaseExcelReport() {
+    if (!this.selectedYear && !this.selectedMonth && !this.selectedDate) {
+      this.submitted = true;
+    } else {
+      this.userService.getOverAllExcelReport(this.role, this.username, this.selectedMonth, this.selectedYear, this.selectedDate, 2)
+        .subscribe(
+          (response: HttpResponse<any>) => {
+          },
+          (error) => {
+            this.handleApiError(error);
+          }
+        );
+    }
+  }
+
+  grtOverAllBasePDFReport() {
+    if (!this.selectedYear && !this.selectedMonth && !this.selectedDate) {
+      this.submitted = true;
+    } else {
+      this.userService.getOverAllPDFReport(this.role, this.username, this.selectedMonth, this.selectedYear, this.selectedDate, 1)
+        .subscribe((x: Blob) => {
+          const blob = new Blob([x], { type: 'application/pdf' });
+          const data = window.URL.createObjectURL(blob);
+          const link = document.createElement('a');
+          link.href = data;
+          // link.download = (this.reportTitle + ".pdf").toUpperCase();
+          link.download = `${this.reportTitle} REPORT - [YEAR : ${this.selectedYear} - MONTH : ${this.selectedMonthName}].pdf`.toUpperCase();
+
+          link.dispatchEvent(new MouseEvent('click', { bubbles: true, cancelable: true, view: window }));
+          setTimeout(() => {
+            window.URL.revokeObjectURL(data);
+            link.remove();
+          }, 100);
+        },
+          (error: any) => {
+            Swal.fire({
+              title: 'Error!',
+              text: error?.error?.message || 'There was an issue generating the PDF CAS form report.',
+              icon: 'error',
+              confirmButtonText: 'Ok'
+            });
+          });
+    }
+  }
+
+  // ---------------------------------------------------------------MonrhlyCaswiseExcel------------------------------------------
+
+  // getCAS_GroupMonrhlyCaswiseExcel(){
+  //   if (!this.selectedYear && !this.selectedMonth && !this.selectedDate && !this.broadcasterid && !this.castype) {
+  //     this.submitted = true;
+  //   } else {
+  //     this.userService.getMonthlyBroadcasterCaswiseReport(this.role, this.username, this.selectedMonth, this.selectedYear, this.selectedDate, this.broadcasterid, this.castype,this.allType, 2).subscribe((data: any) => {
+  //       console.log(data);
+  //     })
+  //   }
+  // }
+  // getCAS_GroupMonrhlyCaswisePDF(){
+  //   if (!this.selectedYear && !this.selectedMonth && !this.selectedDate && !this.broadcasterid && !this.castype) {
+  //     this.submitted = true;
+  //   } else {
+  //     this.userService.getMonthlyBroadcasterCaswisePDFReport(this.role, this.username, this.selectedMonth, this.selectedYear, this.selectedDate, this.broadcasterid, this.castype,this.allType, 2).subscribe((data: any) => {
+  //       console.log(data);
+  //     })
+  //   }
+  // }
+  getCASMonrhlyCaswiseExcel() {
+    if (!this.selectedYear && !this.selectedMonth && !this.selectedDate && !this.broadcasterid && !this.castype) {
+      this.submitted = true;
+    } else {
+      this.userService.getMonthlyBroadcasterCaswiseReport(this.role, this.username, this.selectedMonth, this.selectedYear, this.selectedDate, this.broadcasterid, this.castype, this.allType, 2).subscribe((data: any) => {
+        console.log(data);
+      })
+    }
+  }
+  getCASMonrhlyCaswisePDF() {
+    if (!this.selectedYear && !this.selectedMonth && !this.selectedDate && !this.broadcasterid && !this.castype) {
+      this.submitted = true;
+    } else {
+      this.userService.getMonthlyBroadcasterCaswisePDFReport(this.role, this.username, this.selectedMonth, this.selectedYear, this.selectedDate, this.broadcasterid, this.castype, this.allType, 2).subscribe((data: any) => {
+        console.log(data);
+      })
+    }
+  }
+  // -----------------------------------------------------------------------------------------------------------------------------
   handleApiError(error: any) {
     if (error.status === 400) {
       this.swal.Error_400();

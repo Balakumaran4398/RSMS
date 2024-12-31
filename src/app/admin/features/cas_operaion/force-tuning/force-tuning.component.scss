@@ -20,17 +20,17 @@
 .card .title p {
     font-size: 25px;
     font-weight: 500;
-    position: relative;
+    // position: relative;
 }
 
 .card .title p::before {
     content: "";
-    position: absolute;
+    // position: absolute;
     bottom: 0px;
     left: 0;
     width: 100px;
     height: 3px;
-    background: linear-gradient(to right, #058372, #acf3cc);
+    // background: linear-gradient(to right, #058372, #acf3cc);
 }
 
 .card {

@@ -43,11 +43,11 @@
                     </li>
                 </ul> -->
 
-                <input type="text" matInput [matAutocomplete]="auto" [disabled]="!isCheckboxChecked"
+                <input type="text" matInput [matAutocomplete]="auto1" [disabled]="!isCheckboxChecked"
                     (input)="filterOperators($event)" placeholder="Select a Operator" [matAutocompleteDisabled]="false"
                     [value]="selectedOperator?.name">
 
-                <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayOperator">
+                <mat-autocomplete #auto1="matAutocomplete" [displayWith]="displayOperator">
                     <!-- <mat-option value="0" selcted >All Operator</mat-option> -->
                     <mat-option *ngFor="let operator of filteredOperators" [value]="operator.name"
                         (click)="onoperaRechargelLog(operator)">
@@ -156,14 +156,14 @@
 
         <div class="col-12 col-md-4 d-flex justify-content-end align-items-center mb-3">
             <div class="d-flex justify-content-center align-items-center">
-                <div *ngIf="isDateEnabled || isMonthYearEnabled || isYearEnabled"
+                <!-- <div *ngIf="isDateEnabled || isMonthYearEnabled || isYearEnabled"
                     class="icon-container d-flex align-items-center mx-2" style="cursor: pointer;"
                     (click)="getLCORechargeExcel()">
                     <img src="/assets/images/icons/Excel.png" width="40px">
                     <div class="tooltip">Excel</div>
-                </div>
+                </div> -->
                 <div *ngIf="isDateEnabled || isMonthYearEnabled || isYearEnabled"
-                    class="icon-container d-flex align-items-center mx-2" (click)="getLCORechargeFReport()">
+                    class="icon-container d-flex align-items-center mx-2" (click)="getLCORechargeFReport()" style="cursor: pointer;">
                     <img src="/assets/images/icons/pdf.png" width="40px">
                     <div class="tooltip">Pdf</div>
                 </div>
@@ -209,22 +209,36 @@
                     placeholder="Select a Operator" [matAutocompleteDisabled]="false" [value]="selectedOperator?.name">
 
                 <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayOperator">
-                    <mat-option *ngFor="let operator of filteredOperators" [value]="operator.name"
+                    <mat-option *ngFor="let operator of filteredOperators1" [value]="operator.name"
                         (click)="onoperatorchange(operator)">
                         {{ operator.name }}
                     </mat-option>
                 </mat-autocomplete>
+                <div *ngIf="submitted && !operatorid" class="text-danger" style="font-size: small;">
+                    Operator is required
+                </div>
             </div>
             <input class="mx-2" type="checkbox" [(ngModel)]="isCheckboxChecked" style="width: 30px;height: 25px;">
             <div class="input_box ">
                 <input type="text" placeholder="Enter Smartcard" [(ngModel)]="smartcard"
                     [disabled]="!isCheckboxChecked">
+                    <div *ngIf="submitted && !smartcard" class="text-danger" style="font-size: small;">
+                        Smartcard is required
+                    </div>
             </div>
+
             <button class="btn mx-2" style="background-color: rgb(26, 129, 133);border-radius: 5px;"
-                (click)="RefundAmount()"><span style="color: white;">Report</span></button>
+                (click)="RefundAmount()"><span style="color: white;">submit</span></button>
         </div>
 
-        <div class="col-12 col-md-12 align-items-center justify-content-center responsive-container mb-3"
+        <div *ngIf="!smartcard" class="col-12 col-md-12 align-items-center justify-content-center responsive-container mb-3"
+            style="margin: auto;">
+            <ag-grid-angular #agGrid id="myGrid" domLayout='autoHeight' class="ag-theme-alpine table-class" rowAnimation
+                [gridOptions]="gridOptions" [columnDefs]="columnDefs1" [rowData]="rowData"
+                [enableCellTextSelection]="true">
+            </ag-grid-angular>
+        </div>
+        <div *ngIf="operatorid && smartcard"  class="col-12 col-md-12 align-items-center justify-content-center responsive-container mb-3"
             style="margin: auto;">
             <ag-grid-angular #agGrid id="myGrid" domLayout='autoHeight' class="ag-theme-alpine table-class" rowAnimation
                 [gridOptions]="gridOptions" [columnDefs]="columnDefs" [rowData]="rowData"

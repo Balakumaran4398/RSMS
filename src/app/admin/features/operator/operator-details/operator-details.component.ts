@@ -68,6 +68,7 @@ export class OperatorDetailsComponent implements OnInit {
   constructor(public responsive: BreakpointObserver, private dataService: DataService, private cdr: ChangeDetectorRef, private router: Router, public dialog: MatDialog, private userservice: BaseService, private storageservice: StorageService) {
     this.role = storageservice.getUserRole();
     this.username = storageservice.getUsername();
+    this.loadOperators();
     this.userservice.OperatorDetails(this.role, this.username, this.operatorid).subscribe(
       (data: any) => {
         this.operator_details = data;
@@ -77,10 +78,10 @@ export class OperatorDetailsComponent implements OnInit {
       });
   }
   setOperator(data: { isactive: string }) {
-    this.operator.isactive = data.isactive === 'true'; // Convert string to boolean
+    this.operator.isactive = data.isactive === 'true';
   }
   ngOnInit(): void {
-    const response = { isactive: 'true' }; 
+    const response = { isactive: 'true' };
     this.setOperator(response);
     this.responsive
       .observe([Breakpoints.HandsetPortrait])
@@ -94,8 +95,12 @@ export class OperatorDetailsComponent implements OnInit {
     this.checkDeviceType();
     this.userservice.getLcoBusinesslist(this.role, this.username).subscribe((data: any) => {
       this.businessList = data;
+      console.log(data);
+
     })
-    this.operatorlist();
+
+
+    // this.operatorlist();
     this.loadOperators();
     // this.fetchData(); 
     this.updatePageData();
@@ -130,6 +135,8 @@ export class OperatorDetailsComponent implements OnInit {
     this.filteredOperators = this.operatorList.filter(operator =>
       operator.name.toLowerCase().includes(filterValue)
     );
+    console.log(this.filteredOperators);
+
   }
   displayOperator(operator: any): string {
     return operator ? operator.name : '';
@@ -147,21 +154,19 @@ export class OperatorDetailsComponent implements OnInit {
     });
   }
 
-  operatorlist() {
+  // operatorlist() {
+  //   this.userservice.getOeratorList(this.role, this.username, 2).subscribe((data: any) => {
+  //     console.log(data);
+  //     this.operatorList = Object.keys(data).map(key => {
+  //       const value = data[key];
+  //       const name = key;
+  //       return { name: name, value: value };
+  //     });
 
-    // this.userservice.getOeratorList(this.role, this.username).subscribe((data: any) => {
-    this.userservice.getOperatorListOP_Dash(this.role, this.username, 2).subscribe((data: any) => {
-      console.log(data);
-      this.operatorList = Object.keys(data).map(key => {
-        const value = data[key];
-        const name = key;
-        return { name: name, value: value };
-      });
-
-      this.operatorNameList = this.operatorList;
-      this.filteredOperators = this.operatorList;
-    });
-  }
+  //     this.operatorNameList = this.operatorList;
+  //     this.filteredOperators = this.operatorList;
+  //   });
+  // }
   onFilterChange(filteredData: any): void {
     this.filteredOperators = filteredData;
   }

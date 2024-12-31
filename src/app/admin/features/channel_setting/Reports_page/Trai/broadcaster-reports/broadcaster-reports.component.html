@@ -20,6 +20,9 @@
                                 <option value="0" selected>Select Year</option>
                                 <option *ngFor="let year of years" [value]="year">{{ year }}</option>
                             </select>
+                            <div *ngIf="submitted && !selectedYear" class="text-danger" style="font-size: small;">
+                                Year is required
+                            </div>
                         </div>
                     </div>
                     <div class="input_box display mb-3">
@@ -32,6 +35,9 @@
                                 <option *ngFor="let month of months" [value]="month.value">{{ month.name }}
                                 </option>
                             </select>
+                            <div *ngIf="submitted && !selectedMonth" class="text-danger" style="font-size: small;">
+                                Month is required
+                            </div>
 
                         </div>
                     </div>
@@ -46,6 +52,9 @@
                                 <option *ngFor="let date of Date" [value]="date.value">{{ date.name }}
                                 </option>
                             </select>
+                            <div *ngIf="submitted && !selectedDate" class="text-danger" style="font-size: small;">
+                                Week is required
+                            </div>
                         </div>
                     </div>
                     <div class="input_box display  mb-3">
@@ -62,10 +71,30 @@
                                     {{ casItem.name }}
                                 </mat-option>
                             </mat-autocomplete>
+                            <div *ngIf="submitted && !broadcastername" class="text-danger" style="font-size: small;">
+                                Broadcaster is required
+                            </div>
+                        </div>
+                    </div>
+                    <div *ngIf="isVisible== false" class="input_box display1 mb-3">
+                        <!-- <div *ngIf="type == '1'" class="input_box display1 mb-3"> -->
+                        <div class="col-6 col-md-6">
+                            <span style="color: #243359;" for="">CAS Grouped</span>
+                        </div>
+                        <div class="col-6 col-md-6 display1">
+                            <div class="export-icon col-6 col-md-3 mx-2" (click)="getExcel()">
+                                <img src="/assets/images/icons/Excel.png" alt="Excel Icon" width="40px">
+                                <div class="tooltip">Excel</div>
+                            </div>
+                            <div class="export-icon col-6 col-md-3" (click)="getPDF()">
+                                <img src="/assets/images/icons/pdf.png" alt="PDF Icon" width="40px">
+                                <div class="tooltip">Pdf</div>
+                            </div>
                         </div>
                     </div>
                     <div *ngIf="isVisible">
-                        <div *ngIf="type == '0'" class="input_box display1 mb-3">
+                        <div class="input_box display1 mb-3">
+                            <!-- <div *ngIf="type == '1'" class="input_box display1 mb-3"> -->
                             <div class="col-6 col-md-6">
                                 <span style="color: #243359;" for="">CAS Grouped</span>
                             </div>
@@ -80,7 +109,10 @@
                                 </div>
                             </div>
                         </div>
-                        <div *ngIf="type == '1'" class="input_box display1 mb-3">
+
+                        <!-- <div *ngIf="isVisible"> -->
+                        <div class="input_box display1 mb-3">
+                            <!-- <div *ngIf="type == '1'" class="input_box display1 mb-3"> -->
                             <div class="col-6 col-md-6">
                                 <span style="color: #243359;" for="">CAS Combined</span>
                             </div>
@@ -95,7 +127,8 @@
                                 </div>
                             </div>
                         </div>
-                        <div *ngIf="type == '2'" class="input_box display1 mb-3">
+                        <div class="input_box display1 mb-3">
+                            <!-- <div *ngIf="type == '2'" class="input_box display1 mb-3"> -->
                             <div class="col-6 col-md-6">
                                 <span style="color: #243359;" for="">Channel wise</span>
                             </div>
@@ -110,7 +143,8 @@
                                 </div>
                             </div>
                         </div>
-                        <div *ngIf="type == '3'" class="input_box display1 mb-3">
+                        <div class="input_box display1 mb-3">
+                            <!-- <div *ngIf="type == '3'" class="input_box display1 mb-3"> -->
                             <div class="col-6 col-md-6">
                                 <span style="color: #243359;" for="">Channel wise DPO</span>
                             </div>
@@ -125,7 +159,8 @@
                                 </div>
                             </div>
                         </div>
-                        <div *ngIf="type == '4'" class="input_box display1 mb-3">
+                        <div class="input_box display1 mb-3">
+                            <!-- <div *ngIf="type == '4'" class="input_box display1 mb-3"> -->
                             <div class="col-6 col-md-6">
                                 <span style="color: #243359;" for="">AddonWise Channel</span>
                             </div>
@@ -140,6 +175,7 @@
                                 </div>
                             </div>
                         </div>
+                        <!-- </div> -->
                     </div>
                 </div>
             </div>
@@ -166,20 +202,32 @@
                                 <option *ngFor="let month of months" [value]="month.value">{{ month.name }}
                                 </option>
                             </select>
+                            <div *ngIf="submitted && !selectedMonth" class="text-danger" style="font-size: small;">
+                                Month is required
+                            </div>
                         </div>
+
                         <div class="input_box mx-2 ">
                             <select name="year" id="year" [(ngModel)]="selectedYear">
                                 <option value="0" selected>Select Year</option>
                                 <option *ngFor="let year of years" [value]="year">{{ year }}</option>
                             </select>
+                            <div *ngIf="submitted && !selectedYear" class="text-danger" style="font-size: small;">
+                                Year is required
+                            </div>
                         </div>
+
                         <div class="input_box mx-2 mb-2">
                             <select name="date" id="date" [(ngModel)]="selectedDate" [disabled]="isDateDisabled">
                                 <option value="0" selected>Select Week</option>
                                 <option *ngFor="let date of Date" [value]="date.value">{{ date.name }}
                                 </option>
                             </select>
+                            <div *ngIf="submitted && !selectedDate" class="text-danger" style="font-size: small;">
+                                Week is required
+                            </div>
                         </div>
+
                         <div class="allreport mb-2" (click)="grtOverAllReport()">
                             <a class="btn btn-success mx-1">
                                 Get Report
@@ -252,6 +300,9 @@
                                 <option value="0" selected>Select Year</option>
                                 <option *ngFor="let year of years" [value]="year">{{ year }}</option>
                             </select>
+                            <div *ngIf="submitted && !selectedYear" class="text-danger" style="font-size: small;">
+                                Year is required
+                            </div>
                         </div>
                     </div>
                     <div class="input_box display mb-3">
@@ -264,7 +315,9 @@
                                 <option *ngFor="let month of months" [value]="month.value">{{ month.name }}
                                 </option>
                             </select>
-
+                            <div *ngIf="submitted && !selectedMonth" class="text-danger" style="font-size: small;">
+                                Month is required
+                            </div>
                         </div>
                     </div>
                     <div class="input_box display mb-3">
@@ -277,6 +330,9 @@
                                 <option *ngFor="let date of Date" [value]="date.value">{{ date.name }}
                                 </option>
                             </select>
+                            <div *ngIf="submitted && !selectedDate" class="text-danger" style="font-size: small;">
+                                Week is required
+                            </div>
                         </div>
                     </div>
 
@@ -320,12 +376,18 @@
                                 <option *ngFor="let month of months" [value]="month.value">{{ month.name }}
                                 </option>
                             </select>
+                            <div *ngIf="submitted && !selectedMonth" class="text-danger" style="font-size: small;">
+                                Month is required
+                            </div>
                         </div>
                         <div class="input_box mx-2 ">
                             <select name="year" id="year" [(ngModel)]="selectedYear">
                                 <option value="0" selected>Select Year</option>
                                 <option *ngFor="let year of years" [value]="year">{{ year }}</option>
                             </select>
+                            <div *ngIf="submitted && !selectedYear" class="text-danger" style="font-size: small;">
+                                Year is required
+                            </div>
                         </div>
                         <div class="input_box mx-2 mb-2">
                             <select name="date" id="date" [(ngModel)]="selectedDate" [disabled]="isDateDisabled">
@@ -333,19 +395,22 @@
                                 <option *ngFor="let date of Date" [value]="date.value">{{ date.name }}
                                 </option>
                             </select>
+                            <div *ngIf="submitted && !selectedDate" class="text-danger" style="font-size: small;">
+                                Week is required
+                            </div>
                         </div>
-                        <div class="allreport mb-2">
+                        <div class="allreport mb-2" (click)="grtOverAllBaseReport()">
                             <a class="btn btn-success mx-1">
                                 Get Report
                             </a>
                         </div>
                     </div>
                     <div class="display1">
-                        <div class="export-icon col-6 col-md-3 mx-3" (click)="getExcel()">
+                        <div class="export-icon col-6 col-md-3 mx-3" (click)="grtOverAllBaseExcelReport()">
                             <img src="/assets/images/icons/Excel.png" alt="Excel Icon" width="40px">
                             <div class="tooltip">Excel</div>
                         </div>
-                        <div class="export-icon col-6 col-md-3" (click)="getPDF()">
+                        <div class="export-icon col-6 col-md-3" (click)="grtOverAllBasePDFReport()">
                             <img src="/assets/images/icons/pdf.png" alt="PDF Icon" width="40px">
                             <div class="tooltip">Pdf</div>
                         </div>
@@ -406,6 +471,9 @@
                                 <option value="0" selected>Select Year</option>
                                 <option *ngFor="let year of years" [value]="year">{{ year }}</option>
                             </select>
+                            <div *ngIf="submitted && !selectedYear" class="text-danger" style="font-size: small;">
+                                Year is required
+                            </div>
                         </div>
                     </div>
                     <div class="input_box display mb-3">
@@ -418,6 +486,9 @@
                                 <option *ngFor="let month of months" [value]="month.value">{{ month.name }}
                                 </option>
                             </select>
+                            <div *ngIf="submitted && !selectedMonth" class="text-danger" style="font-size: small;">
+                                Month is required
+                            </div>
 
                         </div>
                     </div>
@@ -431,6 +502,9 @@
                                 <option *ngFor="let date of Date" [value]="date.value">{{ date.name }}
                                 </option>
                             </select>
+                            <div *ngIf="submitted && !selectedDate" class="text-danger" style="font-size: small;">
+                                Week is required
+                            </div>
                         </div>
                     </div>
                     <div class="input_box display  mb-3">
@@ -442,11 +516,15 @@
                                 (input)="onSearchBroadcaster($event)" [matAutocomplete]="auto" class="example-input">
 
                             <mat-autocomplete #auto="matAutocomplete">
+                                <mat-option value=" " selected>Select a Broadcaster</mat-option>
                                 <mat-option *ngFor="let casItem of filteredBroadcaster()" [value]="casItem.name"
                                     (click)="onSelectionBroadcaster(casItem)">
                                     {{ casItem.name }}
                                 </mat-option>
                             </mat-autocomplete>
+                            <div *ngIf="submitted && !broadcastername" class="text-danger" style="font-size: small;">
+                                Broadcaster is required
+                            </div>
                         </div>
                     </div>
                     <div class="input_box display  mb-3">
@@ -454,16 +532,6 @@
                             <label for="">CAS</label>
                         </div>
                         <div class="col-12 col-md-6">
-                            <!-- <input type="text" placeholder="Select a Cas"[(ngModel)]="broadcastername"
-                                (input)="onSearchBroadcaster($event)" [matAutocomplete]="auto" class="example-input">
-
-                            <mat-autocomplete #auto="matAutocomplete">
-                                <mat-option *ngFor="let casItem of filteredBroadcaster()" [value]="casItem.name"
-                                    (click)="onSelectionBroadcaster(casItem)">
-                                    {{ casItem.name }}
-                                </mat-option>
-                            </mat-autocomplete> -->
-
                             <input type="text" placeholder="Search an CAS" (input)="onSearchCas($event)"
                                 [value]="casname" [matAutocomplete]="auto1" class="example-input">
 
@@ -474,6 +542,9 @@
                                     {{ casItem.name }}
                                 </mat-option>
                             </mat-autocomplete>
+                            <div *ngIf="submitted && !castype" class="text-danger" style="font-size: small;">
+                                Cas is required
+                            </div>
                         </div>
                     </div>
                     <div class="input_box display1 mb-3">
@@ -481,11 +552,11 @@
                             <span style="color: #243359;" for="">CAS Grouped</span>
                         </div>
                         <div class="col-6 col-md-6 display1">
-                            <div class="export-icon col-6 col-md-3 mx-2" (click)="getExcel()">
+                            <div class="export-icon col-6 col-md-3 mx-2" (click)="getCASMonrhlyCaswiseExcel()">
                                 <img src="/assets/images/icons/Excel.png" alt="Excel Icon" width="40px">
                                 <div class="tooltip">Excel</div>
                             </div>
-                            <div class="export-icon col-6 col-md-3" (click)="getPDF()">
+                            <div class="export-icon col-6 col-md-3" (click)="getCASMonrhlyCaswisePDF()">
                                 <img src="/assets/images/icons/pdf.png" alt="PDF Icon" width="40px">
                                 <div class="tooltip">Pdf</div>
                             </div>
@@ -496,11 +567,11 @@
                             <span style="color: #243359;" for="">AddonWise Channel</span>
                         </div>
                         <div class="col-6 col-md-6 display1">
-                            <div class="export-icon col-6 col-md-3 mx-2" (click)="getExcel()">
+                            <div class="export-icon col-6 col-md-3 mx-2" (click)="getCASMonrhlyCaswiseExcel()">
                                 <img src="/assets/images/icons/Excel.png" alt="Excel Icon" width="40px">
                                 <div class="tooltip">Excel</div>
                             </div>
-                            <div class="export-icon col-6 col-md-3" (click)="getPDF()">
+                            <div class="export-icon col-6 col-md-3" (click)="getCASMonrhlyCaswisePDF()">
                                 <img src="/assets/images/icons/pdf.png" alt="PDF Icon" width="40px">
                                 <div class="tooltip">Pdf</div>
                             </div>

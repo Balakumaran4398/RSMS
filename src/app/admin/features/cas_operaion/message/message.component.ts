@@ -202,18 +202,38 @@ export class MessageComponent {
       });
       // this.filteredLcoList = this.area;
     })
-
-    this.userservice.Finger_print_List(this.role, this.username).subscribe((data) => {
+    this.userservice.ServiceList(this.role, this.username).subscribe((data: any) => {
       console.log(data);
-      // this.area = data[0].arealist;
-      // this.area = Object.entries(data[0].arealist).map(([key, value]) => ({ name: key, id: value }));
-      this.cas = Object.entries(data[0].caslist).map(([key, value]) => ({ name: key, id: value }));
-      this.filteredCasList = this.cas;
-      this.service = Object.entries(data[0].servicelist).map(([key, value]) => ({ name: key, id: value }));
+      this.service = Object.keys(data).map(key => {
+        const value = data[key];
+        const name = key;
+        return { name: name, id: value };
+      });
+      // this.filteredLcoList = this.area;
     })
+
+    this.userservice.Cas_type(this.role, this.username).subscribe((data) => {
+      this.cas = data;
+      console.log('dfdsfdsfsd', this.cas);
+      this.cas = data.map((item: any) => ({
+        id: item.id,
+        name: item.casname
+      }));
+      this.filteredCasList = this.cas;
+      console.log(this.cas);
+
+    });
+    // this.userservice.Finger_print_List(this.role, this.username).subscribe((data) => {
+    //   console.log(data);
+    //   // this.area = data[0].arealist;
+    //   // this.area = Object.entries(data[0].arealist).map(([key, value]) => ({ name: key, id: value }));
+    //   // this.cas = Object.entries(data[0].caslist).map(([key, value]) => ({ name: key, id: value }));
+    //   // this.filteredCasList = this.cas;
+    //   // this.service = Object.entries(data[0].servicelist).map(([key, value]) => ({ name: key, id: value }));
+    // })
   }
 
-  onSelectionFingerPrint(selectedValue: { name: any, id: any }): void {
+  onSelection(selectedValue: { name: any, id: any }): void {
     console.log(selectedValue);
     this.casId = Number(selectedValue);
     this.castype = selectedValue.id;
@@ -340,6 +360,16 @@ export class MessageComponent {
   columnDefs: ColDef[] = [
     { headerName: "S.No", lockPosition: true, valueGetter: 'node.rowIndex+1', cellClass: 'locked-col', width: 80, suppressNavigable: true, sortable: false, filter: false },
     { headerName: "INTEND ID", field: 'intendid' },
+    { headerName: "FORCE TYPE", field: 'forcedis' ,
+      cellRenderer: (params: { value: any; }) => {
+        if (params.value === 'Force') {
+          return `<span style="color: green; ">${params.value}</span>`;
+        } else if (params.value === 'Not Force') {
+          return `<span style="color: red; ">${params.value}</span>`;
+        }
+        return params.value;
+      },
+    },
     { headerName: "INTEND TO", field: 'intendto' },
     { headerName: "MESSAGE", field: 'msgcontent' },
     { headerName: "FONT COLOR	", field: 'fontcolordisplay' },
@@ -401,7 +431,12 @@ export class MessageComponent {
       resizable: true,
       filter: true,
       width: 180,
-      floatingFilter: true
+      floatingFilter: true,
+      comparator: (valueA: string, valueB: string) => {
+        if (!valueA) valueA = '';
+        if (!valueB) valueB = '';
+        return valueA.toLowerCase().localeCompare(valueB.toLowerCase());
+      },
     },
     paginationPageSize: 15,
     pagination: true,

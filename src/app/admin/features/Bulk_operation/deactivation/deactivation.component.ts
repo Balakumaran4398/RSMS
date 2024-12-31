@@ -178,6 +178,7 @@ export class DeactivationComponent implements OnInit{
       formData.append('file', this.file);
       formData.append('reason', this.remark);
       formData.append('type', '2');
+      formData.append('retailerid', '0');
 
 
       this.userservice.uploadFileforDeactivation(formData)

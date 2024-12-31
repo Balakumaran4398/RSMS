@@ -180,7 +180,12 @@ export class ScrollingComponent {
       resizable: true,
       filter: true,
       width: 180,
-      floatingFilter: true
+      floatingFilter: true,
+      comparator: (valueA: string, valueB: string) => {
+        if (!valueA) valueA = '';
+        if (!valueB) valueB = '';
+        return valueA.toLowerCase().localeCompare(valueB.toLowerCase());
+      },
     },
     paginationPageSize: 10,
     pagination: true,
@@ -253,38 +258,71 @@ export class ScrollingComponent {
         const name = key;
         return { name: name, id: value };
       });
-      // this.filteredAreaList = this.area;
     })
-    this.userservice.Finger_print_List(this.role, this.username).subscribe((data) => {
-      // this.area = Object.entries(data[0].arealist).map(([key, value]) => ({ name: key, id: value }));
-      this.cas = Object.entries(data[0].caslist).map(([key, value]) => ({ name: key, id: value }));
-      this.service = Object.entries(data[0].servicelist).map(([key, value]) => ({ name: key, id: value }));
-      console.log(this.area);
-      console.log(data);
 
-      // this.castype_1 = data[0].fplist[0].castype;
-      // this.isforce = data[0].fplist[0].isforce;
-      // this.service_1 = data[0].fplist[0].serviceid;
-      // this.intend_1 = data[0].fplist[0].intendto;
-      // this.intendid_1 = data[0].fplist[0].intendid;
-      // this.BG_color_1 = data[0].fplist[0].bgcolor;
-      // this.Duration_1 = data[0].fplist[0].duration;
-      // this.Scrool_color_1 = data[0].fplist[0].fontcolor;
-      // this.fontsize_1 = data[0].fplist[0].fontsize;
-      // this.position_1 = data[0].fplist[0].positiontype;
-      // this.position_1 = data[0].fplist[0].position;
-      // this.Repeatfor_1 = data[0].fplist[0].repeatfor;
-      // this.Timegap_1 = data[0].fplist[0].timegap;
-      // this.message_1 = data[0].fplist[0].message
-      // this.Transparancy_1 = data[0].fplist[0].transparancy;
+
+    this.userservice.Cas_type(this.role, this.username).subscribe((data) => {
+      this.cas = data;
+      console.log('dfdsfdsfsd', this.cas);
+      this.cas = data.map((item: any) => ({
+        id: item.id,
+        name: item.casname
+      }));
+      this.filteredCasList = this.cas;
+      console.log(this.cas);
+
+    });
+    this.userservice.ServiceList(this.role, this.username).subscribe((data: any) => {
+      console.log(data);
+      this.service = Object.keys(data).map(key => {
+        const value = data[key];
+        const name = key;
+        return { name: name, id: value };
+      });
       // this.filteredLcoList = this.area;
-      this.filteredServiceList = this.service;
     })
+    // this.userservice.Finger_print_List(this.role, this.username).subscribe((data) => {
+    //   // this.area = Object.entries(data[0].arealist).map(([key, value]) => ({ name: key, id: value }));
+    //   // this.cas = Object.entries(data[0].caslist).map(([key, value]) => ({ name: key, id: value }));
+    //   this.service = Object.entries(data[0].servicelist).map(([key, value]) => ({ name: key, id: value }));
+    //   console.log(this.area);
+    //   console.log(data);
+
+    //   // this.castype_1 = data[0].fplist[0].castype;
+    //   // this.isforce = data[0].fplist[0].isforce;
+    //   // this.service_1 = data[0].fplist[0].serviceid;
+    //   // this.intend_1 = data[0].fplist[0].intendto;
+    //   // this.intendid_1 = data[0].fplist[0].intendid;
+    //   // this.BG_color_1 = data[0].fplist[0].bgcolor;
+    //   // this.Duration_1 = data[0].fplist[0].duration;
+    //   // this.Scrool_color_1 = data[0].fplist[0].fontcolor;
+    //   // this.fontsize_1 = data[0].fplist[0].fontsize;
+    //   // this.position_1 = data[0].fplist[0].positiontype;
+    //   // this.position_1 = data[0].fplist[0].position;
+    //   // this.Repeatfor_1 = data[0].fplist[0].repeatfor;
+    //   // this.Timegap_1 = data[0].fplist[0].timegap;
+    //   // this.message_1 = data[0].fplist[0].message
+    //   // this.Transparancy_1 = data[0].fplist[0].transparancy;
+    //   // this.filteredLcoList = this.area;
+    //   this.filteredServiceList = this.service;
+    // })
   }
 
   columnDefs: ColDef[] = [
     { headerName: "S.No", lockPosition: true, valueGetter: 'node.rowIndex+1', cellClass: 'locked-col', width: 80, suppressNavigable: true, sortable: false, filter: false },
     { headerName: "INTEND ID", field: 'intendid' },
+    {
+      headerName: "FORCE TYPE",
+      field: 'forcemsg',
+      cellRenderer: (params: { value: any; }) => {
+        if (params.value === 'Force') {
+          return `<span style="color: green;">${params.value}</span>`;
+        } else if (params.value === 'Not Force') {
+          return `<span style="color: red;">${params.value}</span>`;
+        }
+        return params.value;
+      },
+    },
     { headerName: "INTEND TO", field: 'intendto' },
     { headerName: "MESSAGE", field: 'scrollmsg' },
     { headerName: "FONT COLOR	", field: 'fontcolordisplay' },
@@ -443,7 +481,6 @@ export class ScrollingComponent {
         });
       }
     );
-
   }
   onSearchChange(event: any) {
     this.searchTerm = event.target.value;

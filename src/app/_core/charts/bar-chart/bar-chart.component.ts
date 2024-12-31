@@ -68,14 +68,14 @@ export class BarChartComponent implements OnInit {
           indexLabelFontColor: "#5A5757",
           indexLabelFontSize: 14,
           indexLabelPlacement: "outside",
-          indexLabelAlign: "right"
+          indexLabelAlign: "left"
         });
       }
     }
     const chart = new CanvasJS.Chart("barchartContainer", {
       title: {
         text: "NEXT 7 DAYS SUBSCRIPTION EXPIRED COUNT",
-        fontSize: 20,
+        fontSize: 18,
         fontWeight: 600
       },
       animationEnabled: true,
@@ -90,7 +90,7 @@ export class BarChartComponent implements OnInit {
         title: "Dates",
         labelFontSize: 14,
         labelFontColor: "#001716",
-        labelAlign: "left",
+        labelAlign: "center",
         interval: 1,
 
       },
@@ -100,7 +100,7 @@ export class BarChartComponent implements OnInit {
         indexLabelFontColor: "#5A5757",
         indexLabelPlacement: "inside",
         width: 10,
-        indexLabelAlign: "left",
+        indexLabelAlign: "center",
         color: (e: any) => e.dataPoint.color,
         // color: (dataPoints: any) => {
         //   if (dataPoints.y > 0) {

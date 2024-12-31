@@ -19,7 +19,15 @@ export class ChartSTBReportComponent implements OnInit {
       sortable: true,
       resizable: true,
       filter: true,
-      floatingFilter: true
+      floatingFilter: true,
+      comparator: (valueA: any, valueB: any) => {
+        if (!isNaN(valueA) && !isNaN(valueB)) {
+          return Number(valueA) - Number(valueB); 
+        }
+        if (!valueA) valueA = '';
+        if (!valueB) valueB = '';
+        return valueA.toLowerCase().localeCompare(valueB.toLowerCase());
+      },
     },
     paginationPageSize: 10,
     pagination: true,

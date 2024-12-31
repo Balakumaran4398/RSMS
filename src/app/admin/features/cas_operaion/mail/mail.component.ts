@@ -63,7 +63,12 @@ export class MailComponent {
       resizable: true,
       filter: true,
       width: 180,
-      floatingFilter: true
+      floatingFilter: true,
+      comparator: (valueA: string, valueB: string) => {
+        if (!valueA) valueA = '';
+        if (!valueB) valueB = '';
+        return valueA.toLowerCase().localeCompare(valueB.toLowerCase());
+      },
     },
     paginationPageSize: 10,
     pagination: true,
@@ -173,18 +178,26 @@ export class MailComponent {
       this.filteredAreaList = this.area;
     })
 
-
-    this.userservice.Finger_print_List(this.role, this.username).subscribe((data) => {
-      console.log(data);
-      // this.area = data[0].arealist;
-      // this.area = Object.entries(data[0].arealist).map(([key, value]) => ({ name: key, id: value }));
-      // console.log(this.area);
-      // this.filteredAreaList = this.area;
-      this.cas = Object.entries(data[0].caslist).map(([key, value]) => ({ name: key, id: value }));
+    this.userservice.Cas_type(this.role, this.username).subscribe((data) => {
+      this.cas = data;
+      console.log('dfdsfdsfsd', this.cas);
+      this.cas = data.map((item: any) => ({
+        id: item.id,
+        name: item.casname
+      }));
       this.filteredCasList = this.cas;
-      this.service = Object.entries(data[0].servicelist).map(([key, value]) => ({ name: key, id: value }));
-      this.filteredServiceList = this.service;
-    })
+      console.log(this.cas);
+
+    });
+
+    // this.userservice.Finger_print_List(this.role, this.username).subscribe((data) => {
+    //   console.log(data);
+
+    //   // this.cas = Object.entries(data[0].caslist).map(([key, value]) => ({ name: key, id: value }));
+    //   // this.filteredCasList = this.cas;
+    //   this.service = Object.entries(data[0].servicelist).map(([key, value]) => ({ name: key, id: value }));
+    //   this.filteredServiceList = this.service;
+    // })
     this.form = this.fb.group({
       castype: ['', Validators.required],
       intendto: ['', Validators.required],

@@ -25,7 +25,15 @@ export class SubscriberDetailsComponent implements OnInit {
       resizable: true,
       filter: true,
       width: 220,
-      floatingFilter: true
+      floatingFilter: true,
+      comparator: (valueA: any, valueB: any) => {
+        if (!isNaN(valueA) && !isNaN(valueB)) {
+          return Number(valueA) - Number(valueB); 
+        }
+        if (!valueA) valueA = '';
+        if (!valueB) valueB = '';
+        return valueA.toLowerCase().localeCompare(valueB.toLowerCase());
+      },
     },
     paginationPageSize: 10,
     pagination: true,
@@ -54,9 +62,9 @@ export class SubscriberDetailsComponent implements OnInit {
     { headerName: 'AREA NAME', field: 'areaname', },
     { headerName: 'ADDRESS', field: 'address', },
     { headerName: 'MOBILE NUMBER', field: 'mobileno', },
-    { headerName: 'USER NAME', field: 'username', },
+    { headerName: 'USER NAME', field: 'username',  cellStyle: { textAlign: 'left' },},
     { headerName: 'PASSWORD', field: 'password', },
-    { headerName: 'BALANCE', field: 'balance', },
+    { headerName: 'BALANCE', field: 'balance', cellStyle: { textAlign: 'left' },},
     { headerName: 'VERIFICATION STATUS', field: 'vstatus_display', }
 
   ]
@@ -96,9 +104,9 @@ export class SubscriberDetailsComponent implements OnInit {
         { headerName: 'AREA NAME', field: 'areaname', },
         { headerName: 'ADDRESS', field: 'address', },
         { headerName: 'MOBILE NUMBER', field: 'mobileno', },
-        { headerName: 'USER NAME', field: 'username', },
+        { headerName: 'USER NAME', field: 'username', cellStyle: { textAlign: 'left' }, },
         { headerName: 'PASSWORD', field: 'password', },
-        { headerName: 'BALANCE', field: 'balance', },
+        { headerName: 'BALANCE', field: 'balance', cellStyle: { textAlign: 'left' }, },
         { headerName: 'VERIFICATION STATUS', field: 'vstatus_display', }
 
       ]
@@ -139,9 +147,9 @@ export class SubscriberDetailsComponent implements OnInit {
         { headerName: 'AREA NAME', field: 'areaname', },
         { headerName: 'ADDRESS', field: 'address', },
         { headerName: 'MOBILE NUMBER', field: 'mobileno', },
-        { headerName: 'USER NAME', field: 'username', },
+        { headerName: 'USER NAME', field: 'username', cellStyle: { textAlign: 'left' }, },
         { headerName: 'PASSWORD', field: 'password', },
-        { headerName: 'BALANCE', field: 'balance', },
+        { headerName: 'BALANCE', field: 'balance', cellStyle: { textAlign: 'left' }, },
         { headerName: 'VERIFICATION STATUS', field: 'vstatus_display', }
 
       ]
@@ -181,9 +189,9 @@ export class SubscriberDetailsComponent implements OnInit {
         { headerName: 'AREA NAME', field: 'areaname', },
         { headerName: 'ADDRESS', field: 'address', },
         { headerName: 'MOBILE NUMBER', field: 'mobileno', },
-        { headerName: 'USER NAME', field: 'username', },
+        { headerName: 'USER NAME', field: 'username',  cellStyle: { textAlign: 'left' },},
         { headerName: 'PASSWORD', field: 'password', },
-        { headerName: 'BALANCE', field: 'balance', },
+        { headerName: 'BALANCE', field: 'balance',  cellStyle: { textAlign: 'left' },},
         { headerName: 'VERIFICATION STATUS', field: 'vstatus_display', }
 
       ]
@@ -223,9 +231,9 @@ export class SubscriberDetailsComponent implements OnInit {
         { headerName: 'AREA NAME', field: 'areaname', },
         { headerName: 'ADDRESS', field: 'address', },
         { headerName: 'MOBILE NUMBER', field: 'mobileno', },
-        { headerName: 'USER NAME', field: 'username', },
+        { headerName: 'USER NAME', field: 'username',  cellStyle: { textAlign: 'left' },},
         { headerName: 'PASSWORD', field: 'password', },
-        { headerName: 'BALANCE', field: 'balance', },
+        { headerName: 'BALANCE', field: 'balance',  cellStyle: { textAlign: 'left' },},
         { headerName: 'VERIFICATION STATUS', field: 'vstatus_display', }
 
       ]
@@ -266,9 +274,9 @@ export class SubscriberDetailsComponent implements OnInit {
         { headerName: 'AREA NAME', field: 'areaname', },
         { headerName: 'ADDRESS', field: 'address', },
         { headerName: 'MOBILE NUMBER', field: 'mobileno', },
-        { headerName: 'USER NAME', field: 'username', },
+        { headerName: 'USER NAME', field: 'username',  cellStyle: { textAlign: 'left' },},
         { headerName: 'PASSWORD', field: 'password', },
-        { headerName: 'BALANCE', field: 'balance', },
+        { headerName: 'BALANCE', field: 'balance', cellStyle: { textAlign: 'left' }, },
         { headerName: 'VERIFICATION STATUS', field: 'vstatus_display', }
 
       ]
@@ -309,9 +317,9 @@ export class SubscriberDetailsComponent implements OnInit {
         { headerName: 'AREA NAME', field: 'areaname', },
         { headerName: 'ADDRESS', field: 'address', },
         { headerName: 'MOBILE NUMBER', field: 'mobileno', },
-        { headerName: 'USER NAME', field: 'username', },
+        { headerName: 'USER NAME', field: 'username', cellStyle: { textAlign: 'left' }, },
         { headerName: 'PASSWORD', field: 'password', },
-        { headerName: 'BALANCE', field: 'balance', },
+        { headerName: 'BALANCE', field: 'balance',  cellStyle: { textAlign: 'left' },},
         { headerName: 'VERIFICATION STATUS', field: 'vstatus_display', }
 
       ]

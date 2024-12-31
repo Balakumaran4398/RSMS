@@ -143,6 +143,9 @@
                                 <option value="" disabled>Select a Product Type</option>
                                 <option *ngFor="let po of product" [value]="po.value">{{po.lable}}</option>
                             </select>
+                            <div *ngIf="submitted && !productType" class="text-danger" style="font-size: small;">
+                                Product Type is required
+                            </div>
                         </div>
                     </div>
                     <div class="input_box display1 mb-3">
@@ -203,6 +206,9 @@
                                 <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
                                 <mat-date-range-picker #picker></mat-date-range-picker>
                             </mat-form-field>
+                            <!-- <div *ngIf="submitted && !date" class="text-danger" style="font-size: small;">
+                                Date is required
+                           </div> -->
                         </div>
                     </div>
                     <div class="input_box display mb-3">

@@ -62,6 +62,11 @@ export class PackageChartComponent implements OnInit {
         //   return `${name} ${colon} ${value}`;
         // },
       },
+      title: {
+        text: "PACKAGE DETAILS",
+        fontSize: 18,
+        fontWeight: 600
+      },
       data: [{
         type: 'pie',
         dataPoints: dataPoints,

@@ -69,7 +69,9 @@ export class FingerPrintComponent {
 
   intendIdFormControl = new FormControl('');
   forceFormControl = new FormControl(false);
-  isStopButtonEnabled = false;
+  // isStopButtonEnabled = false;
+  isStopButtonEnabled: boolean = false;
+  // isforce: boolean = false;
   searchTerm: any;
   searchServiceTerm: any;
   searchLCOTerm: any;
@@ -135,7 +137,7 @@ export class FingerPrintComponent {
   intend: any = [
     { lable: "MSO", value: 1 },
     { lable: "SMARTCARD", value: 2 },
-    { lable: "AREA CODE", value: 3 },
+    { lable: "LCO", value: 3 },
   ];
 
   intend_area: any[] = [];
@@ -449,15 +451,22 @@ export class FingerPrintComponent {
       console.log('sdffdsfsfds', this.area);
       this.filteredAreaList = this.area;
     });
+
+    this.userservice.Cas_type(this.role, this.username).subscribe((data) => {
+      this.cas = data;
+      console.log('dfdsfdsfsd', this.cas);
+      this.cas = data.map((item: any) => ({
+        id: item.id,
+        name: item.casname
+      }));
+      this.filteredCasList = this.cas;
+      console.log(this.cas);
+
+    });
     this.userservice.Finger_print_List(this.role, this.username).subscribe((data) => {
       console.log(data);
-      // this.area = data[0].arealist;
-      // this.cas = data[0].caslist;
-      // this.area = Object.entries(data[0].arealist).map(([key, value]) => ({ name: key, id: value }));
-      // this.filteredAreaList = this.area;
       // this.cas = Object.entries(data[0].caslist).map(([key, value]) => ({ name: key, id: value }));
-      this.cas = Object.entries(data[0].caslist).map(([key, value]) => ({ name: key, id: value }));
-      this.filteredCasList = this.cas;
+      // this.filteredCasList = this.cas;
       this.service = Object.entries(data[0].servicelist).map(([key, value]) => ({ name: key, id: value }));
       this.filteredServiceList = this.service;
 
@@ -475,461 +484,462 @@ export class FingerPrintComponent {
       this.finger = this.fplistLastObj.fptype;
       this.serviceNameId = this.fplistLastObj.serviceid;
       this.service_1 = this.fplistLastObj.servicename;
+      // this.service_1 = this.fplistLastObj.isforce;
       console.log(this.service_1);
       console.log(this.serviceNameId);
 
       this.isforce = this.fplistLastObj.isforce;
+      console.log('dsfdsfsdfsf', this.isforce = this.fplistLastObj.isforce)
 
+    this.intend_1 = this.fplistLastObj.intendto;
+    console.log('                  ' + this.intend_1);
+    this.display_status = this.fplistLastObj.display_status;
+    console.log('display_status' + this.display_status);
 
-      this.intend_1 = this.fplistLastObj.intendto;
-      console.log('                  ' + this.intend_1);
-      this.display_status = this.fplistLastObj.display_status;
-      console.log('display_status' + this.display_status);
+    this.type_1 = this.fplistLastObj.type;
+    this.intendid_1 = this.fplistLastObj.intendid;
+    console.log(this.intendid_1);
+    this.intendidSmartcard = this.fplistLastObj.intendid;
+    console.log(this.intendidSmartcard);
 
-      this.type_1 = this.fplistLastObj.type;
-      this.intendid_1 = this.fplistLastObj.intendid;
-      console.log(this.intendid_1);
-      this.intendidSmartcard = this.fplistLastObj.intendid;
-      console.log(this.intendidSmartcard);
+    this.intendidLco = this.fplistLastObj.lconame;
+    console.log(this.intendidLco);
+    this.covertype_1 = this.fplistLastObj.covertype;
+    this.bgcolor_value = this.fplistLastObj.bgcolor;
+    this.bgcolor_id = this.fplistLastObj.bgcolordisplay;
+    console.log(this.fontcolor1);
+    this.duration_1 = this.fplistLastObj.duration;
+    this.display_duration = this.fplistLastObj.duration;
+    // this.fontcolor_1 = this.fplistLastObj.fontcolor;
+    this.fontcolor_1 = this.fplistLastObj.fontcolordisplay;
+    console.log(this.fontcolor1);
 
-      this.intendidLco = this.fplistLastObj.lconame;
-      console.log(this.intendidLco);
-      this.covertype_1 = this.fplistLastObj.covertype;
-      this.bgcolor_value = this.fplistLastObj.bgcolor;
-      this.bgcolor_id = this.fplistLastObj.bgcolordisplay;
-      console.log(this.fontcolor1);
-      this.duration_1 = this.fplistLastObj.duration;
-      this.display_duration = this.fplistLastObj.duration;
-      // this.fontcolor_1 = this.fplistLastObj.fontcolor;
-      this.fontcolor_1 = this.fplistLastObj.fontcolordisplay;
-      console.log(this.fontcolor1);
+    this.fontsize_1 = this.fplistLastObj.fontsize;
+    this.fontstyle_1 = this.fplistLastObj.fontsize;
+    this.positiontype_1 = this.fplistLastObj.positiontype;
+    this.position_1 = this.fplistLastObj.position;
+    this.repeatfor_1 = this.fplistLastObj.repeatfor;
+    this.timegap_1 = this.fplistLastObj.timegap;
+    this.transparancy_1 = this.fplistLastObj.transparancy;
+    this.s_Style = this.fplistLastObj.transparancy;
+    this.hh = this.fplistLastObj.hh;
+    this.mm = this.fplistLastObj.mm;
+    this.ss = this.fplistLastObj.ss;
+    this.x = this.fplistLastObj.x;
+    this.y = this.fplistLastObj.y;
+    this.locationy = this.fplistLastObj.y;
+    this.locationx = this.fplistLastObj.x;
+    console.log('dfdfd');
 
-      this.fontsize_1 = this.fplistLastObj.fontsize;
-      this.fontstyle_1 = this.fplistLastObj.fontsize;
-      this.positiontype_1 = this.fplistLastObj.positiontype;
-      this.position_1 = this.fplistLastObj.position;
-      this.repeatfor_1 = this.fplistLastObj.repeatfor;
-      this.timegap_1 = this.fplistLastObj.timegap;
-      this.transparancy_1 = this.fplistLastObj.transparancy;
-      this.s_Style = this.fplistLastObj.transparancy;
-      this.hh = this.fplistLastObj.hh;
-      this.mm = this.fplistLastObj.mm;
-      this.ss = this.fplistLastObj.ss;
-      this.x = this.fplistLastObj.x;
-      this.y = this.fplistLastObj.y;
-      this.locationy = this.fplistLastObj.y;
-      this.locationx = this.fplistLastObj.x;
-      console.log('dfdfd');
+    this.form.patchValue({ castype: this.fplistLastObj.castype });
+    this.form.patchValue({ castypedisplay: this.fplistLastObj.casname });
+    this.form.patchValue({ serviceid: this.fplistLastObj.serviceid });
+    this.form.patchValue({ servicename: this.fplistLastObj.servicename });
 
-      this.form.patchValue({ castype: this.fplistLastObj.castype });
-      this.form.patchValue({ castypedisplay: this.fplistLastObj.casname });
-      this.form.patchValue({ serviceid: this.fplistLastObj.serviceid });
-      this.form.patchValue({ servicename: this.fplistLastObj.servicename });
+    this.form.patchValue({ intendid: this.fplistLastObj.intendid });
+    this.form.patchValue({ intendlco: this.fplistLastObj.lconame });
 
-      this.form.patchValue({ intendid: this.fplistLastObj.intendid });
-      this.form.patchValue({ intendlco: this.fplistLastObj.lconame });
+    console.log(this.form.value);
+    const preSelectedbgColor = this.bgcolor_id;
+    const matchingbgColor = this.bgcolor.find(color => color.lable === preSelectedbgColor);
+    if (matchingbgColor) {
+      this.bgcolor_id = matchingbgColor.value;
+    }
+    const preSelectedFontColor = this.fontcolor_1;
+    const matchingFontColor = this.fontcolor.find((color: any) => color.lable === preSelectedFontColor);
+    if (matchingFontColor) {
+      this.fontcolor_1 = matchingFontColor.value;
+    }
 
-      console.log(this.form.value);
-      const preSelectedbgColor = this.bgcolor_id;
-      const matchingbgColor = this.bgcolor.find(color => color.lable === preSelectedbgColor);
-      if (matchingbgColor) {
-        this.bgcolor_id = matchingbgColor.value;
-      }
-      const preSelectedFontColor = this.fontcolor_1;
-      const matchingFontColor = this.fontcolor.find((color: any) => color.lable === preSelectedFontColor);
-      if (matchingFontColor) {
-        this.fontcolor_1 = matchingFontColor.value;
-      }
+    const preSelectedbgColor1 = this.bgcolor_id;
+    const matchingbg1Color1 = this.gcolor1.find((color: any) => color.lable === preSelectedbgColor1);
+    if (matchingbg1Color1) {
+      this.bgcolor_id = matchingbg1Color1.value;
+    }
+    const preSelectedFontColor1 = this.fontcolor_1;
+    const matchingFontColor1 = this.fontcolor1.find((color: any) => color.lable === preSelectedFontColor1);
+    if (matchingFontColor) {
+      this.fontcolor_1 = matchingFontColor.value;
+    }
+    console.log(this.castype_1);
+    let selectvalue = {
+      id: this.castypeid,
+      name: this.castype_1
+    }
+    this.onSelectionFingerPrint(selectvalue);
+    console.log(selectvalue);
 
-      const preSelectedbgColor1 = this.bgcolor_id;
-      const matchingbg1Color1 = this.gcolor1.find((color: any) => color.lable === preSelectedbgColor1);
-      if (matchingbg1Color1) {
-        this.bgcolor_id = matchingbg1Color1.value;
-      }
-      const preSelectedFontColor1 = this.fontcolor_1;
-      const matchingFontColor1 = this.fontcolor1.find((color: any) => color.lable === preSelectedFontColor1);
-      if (matchingFontColor) {
-        this.fontcolor_1 = matchingFontColor.value;
-      }
-      console.log(this.castype_1);
-      let selectvalue = {
-        id: this.castypeid,
-        name: this.castype_1
-      }
-      this.onSelectionFingerPrint(selectvalue);
-      console.log(selectvalue);
-
-    })
+  })
     this.updateDisplayValue();
-    this.checkScreenSize();
+this.checkScreenSize();
 
-    this.forceFormControl.valueChanges.subscribe((value) => {
-      this.isStopButtonEnabled = value === true;
-    });
+this.forceFormControl.valueChanges.subscribe((value) => {
+  this.isStopButtonEnabled = value === true;
+});
     // this.onSelectionFingerPrint(this.castype_1);
 
   }
-  displayFn(casItem?: any): string {
-    return casItem ? casItem.name : '';
-  }
-  onChangeForce1() {
-    this.isStopButtonEnabled = this.isforce === true;
-  }
-  @HostListener('window:resize', ['$event'])
-  onResize(event: any) {
-    this.checkScreenSize();
-  }
+displayFn(casItem ?: any): string {
+  return casItem ? casItem.name : '';
+}
+onChangeForce1() {
+  this.isStopButtonEnabled = this.isforce;
+}
+@HostListener('window:resize', ['$event'])
+onResize(event: any) {
+  this.checkScreenSize();
+}
 
-  checkScreenSize() {
-    const screenWidth = window.innerWidth;
-    this.isPositionXYVisible_mobile = screenWidth <= 720;
+checkScreenSize() {
+  const screenWidth = window.innerWidth;
+  this.isPositionXYVisible_mobile = screenWidth <= 720;
+}
+updateDisplayValue() {
+  const selectedCas = this.cas.find(casItem => casItem.id === this.castype_1);
+  if (selectedCas) {
+    this.searchTerm = selectedCas.name;
   }
-  updateDisplayValue() {
-    const selectedCas = this.cas.find(casItem => casItem.id === this.castype_1);
-    if (selectedCas) {
-      this.searchTerm = selectedCas.name;
-    }
+}
+onKeydown(event: KeyboardEvent) {
+  const key = event.key;
+  if (!/^\d$/.test(key) && key !== 'Backspace') {
+    event.preventDefault();
   }
-  onKeydown(event: KeyboardEvent) {
-    const key = event.key;
-    if (!/^\d$/.test(key) && key !== 'Backspace') {
-      event.preventDefault();
-    }
-  }
-
-
-  filteredcas(): { name: string; id: number }[] {
-    if (!this.searchTerm) {
-      return this.cas;
-    }
-    return this.cas.filter(casItem =>
-      casItem.name.toLowerCase().includes(this.searchTerm.toLowerCase())
-    );
-  }
-  filteredService(): { name: string; id: number }[] {
-    if (!this.searchServiceTerm) {
-      return this.service;
-    }
-    return this.service.filter((service: any) =>
-      service.name.toLowerCase().includes(this.searchServiceTerm.toLowerCase())
-    );
-  }
-  filteredArea(): { name: string; id: number }[] {
-    if (!this.searchAreaTerm) {
-      return this.area;
-    }
-    return this.area.filter((area: any) =>
-      area.name.toLowerCase().includes(this.searchAreaTerm.toLowerCase())
-    );
-  }
-
-  onSearchChange(event: any) {
-    this.searchTerm = event.target.value;
-    this.filteredCasList = this.filteredcas();
-  }
-  onSearchServiceChange(event: any) {
-    this.searchServiceTerm = event.target.value;
-    this.filteredServiceList = this.filteredService();
-  }
-  onSearchAreaChange(event: any) {
-    this.searchAreaTerm = event.target.value;
-    // this.filteredAreaList = this.filteredArea();
-    this.filteredAreaList = this.filteredIntendArea();
-  }
-
-  onSearchCasChange(cas: { name: string; id: number }) {
-    this.castype_1 = cas.name;
-    console.log(this.castype_1);
-    this.onSelectionFingerPrint(cas.id);
-  }
-
-  onAreaSelect(area: { name: string; id: number }) {
-    this.intendid_1 = area.name;
-    this.onSelectionFingerPrint(area.id);
-  }
-  onSearchLCOChange(event: any) {
-    this.searchLCOTerm = event.target.value;
-    // this.filteredLcoList = this.filteredIntendArea();
-    this.filteredAreaList = this.filteredIntendArea();
-  }
-  onLCOSelect(LCO: { name: string; id: number }) {
-    this.intendidLco = LCO.name;
-    this.LCO_id = LCO.id;
-    this.form.patchValue({ intendidLco: this.intendidLco });
-    this.form.patchValue({ intendid: this.LCO_id });
-  }
-  onServiceSelect(service: { name: string; id: number }) {
-    console.log(service);
-    this.service_1 = service.name;
-    this.serviceNameId = service.id;
-    this.searchServiceTerm = service.name;
-    this.form.patchValue({ serviceid: this.serviceNameId });
-    this.form.patchValue({ servicename: this.service_1 });
-  }
-  ischange: Boolean = false;
-  onSelectionFingerPrint(selectedValue: any) {
-    console.log(selectedValue);
-    this.ischange = true;
-    this.castype_1 = selectedValue.id;
-    console.log(this.castype_1);
-    this.castype = selectedValue.id;
-    this.casname = selectedValue.name;
-    this.form.patchValue({ castype: this.castype });
-    this.form.patchValue({ castypedisplay: selectedValue.name });
-    if (this.finger == 'ecm') {
-      this.isServiceName = true;
-    } else {
-      this.isServiceName = false;
-    }
-
-    if (this.castype != 6 && this.finger == 'emm') {
-      this.force = true;
-    } else {
-      this.force = false;
-    }
-
-    if (([6, 1, 3].includes(this.castype) && this.finger == 'emm') || ![6, 1, 3].includes(this.castype)) {
-      this.isIntendto = true;
-    } else {
-      this.isIntendto = false;
-    }
+}
 
 
-    if (this.castype == 6) {
-      this.isFontStyleSelectDisabled = true;
-    } else {
-      this.isFontStyleSelectDisabled = false;
-    }
-    if (this.castype == 6) {
-      this.ispositiondisabled = false;
-    } else if (this.castype == 4 || this.castype == 3 || this.castype == 2) {
-      this.ispositiondisabled = false;
-    } else {
-      this.ispositiondisabled = true;
-    }
-    if (this.castype == 6) {
-      this.isbackgroundcolor = false;
-      this.isCasbackgroundcolor = true;
-    } else {
-      this.isbackgroundcolor = true;
-      this.isCasbackgroundcolor = false;
-    }
-    if (this.castype == 6) {
-      this.isfontColor = false;
-      this.isCasfontColor = true;
-    } else {
-      this.isfontColor = true;
-      this.isCasfontColor = false;
-    }
+filteredcas(): { name: string; id: number } [] {
+  if (!this.searchTerm) {
+    return this.cas;
+  }
+  return this.cas.filter(casItem =>
+    casItem.name.toLowerCase().includes(this.searchTerm.toLowerCase())
+  );
+}
+filteredService(): { name: string; id: number } [] {
+  if (!this.searchServiceTerm) {
+    return this.service;
+  }
+  return this.service.filter((service: any) =>
+    service.name.toLowerCase().includes(this.searchServiceTerm.toLowerCase())
+  );
+}
+filteredArea(): { name: string; id: number } [] {
+  if (!this.searchAreaTerm) {
+    return this.area;
+  }
+  return this.area.filter((area: any) =>
+    area.name.toLowerCase().includes(this.searchAreaTerm.toLowerCase())
+  );
+}
+
+onSearchChange(event: any) {
+  this.searchTerm = event.target.value;
+  this.filteredCasList = this.filteredcas();
+}
+onSearchServiceChange(event: any) {
+  this.searchServiceTerm = event.target.value;
+  this.filteredServiceList = this.filteredService();
+}
+onSearchAreaChange(event: any) {
+  this.searchAreaTerm = event.target.value;
+  // this.filteredAreaList = this.filteredArea();
+  this.filteredAreaList = this.filteredIntendArea();
+}
+
+onSearchCasChange(cas: { name: string; id: number }) {
+  this.castype_1 = cas.name;
+  console.log(this.castype_1);
+  this.onSelectionFingerPrint(cas.id);
+}
+
+onAreaSelect(area: { name: string; id: number }) {
+  this.intendid_1 = area.name;
+  this.onSelectionFingerPrint(area.id);
+}
+onSearchLCOChange(event: any) {
+  this.searchLCOTerm = event.target.value;
+  // this.filteredLcoList = this.filteredIntendArea();
+  this.filteredAreaList = this.filteredIntendArea();
+}
+onLCOSelect(LCO: { name: string; id: number }) {
+  this.intendidLco = LCO.name;
+  this.LCO_id = LCO.id;
+  this.form.patchValue({ intendidLco: this.intendidLco });
+  this.form.patchValue({ intendid: this.LCO_id });
+}
+onServiceSelect(service: { name: string; id: number }) {
+  console.log(service);
+  this.service_1 = service.name;
+  this.serviceNameId = service.id;
+  this.searchServiceTerm = service.name;
+  this.form.patchValue({ serviceid: this.serviceNameId });
+  this.form.patchValue({ servicename: this.service_1 });
+}
+ischange: Boolean = false;
+onSelectionFingerPrint(selectedValue: any) {
+  console.log(selectedValue);
+  this.ischange = true;
+  this.castype_1 = selectedValue.id;
+  console.log(this.castype_1);
+  this.castype = selectedValue.id;
+  this.casname = selectedValue.name;
+  this.form.patchValue({ castype: this.castype });
+  this.form.patchValue({ castypedisplay: selectedValue.name });
+  if (this.finger == 'ecm') {
+    this.isServiceName = true;
+  } else {
+    this.isServiceName = false;
+  }
+
+  if (this.castype != 6 && this.finger == 'emm') {
+    this.force = true;
+  } else {
+    this.force = false;
+  }
+
+  if (([6, 1, 3].includes(this.castype) && this.finger == 'emm') || ![6, 1, 3].includes(this.castype)) {
+    this.isIntendto = true;
+  } else {
+    this.isIntendto = false;
+  }
 
 
-    if (this.castype == 1) {
-      this.isFontSizeDisabled = false;
-      this.isFontSizeSelectDigit = true;
-      this.isFontSizeSelectDisabled = false;
-    }
-    if (this.castype != 1) {
-      this.isFontSizeSelectDigit = false;
-      this.isFontSizeDisabled = true;
-      this.isFontSizeSelectDisabled = false;
-    }
-    if (this.castype == 6) {
-      this.isFontSizeSelectDisabled = true;
-      this.isFontSizeSelectDigit = false;
-      this.isFontSizeDisabled = false;
-    }
+  if (this.castype == 6) {
+    this.isFontStyleSelectDisabled = true;
+  } else {
+    this.isFontStyleSelectDisabled = false;
+  }
+  if (this.castype == 6) {
+    this.ispositiondisabled = false;
+  } else if (this.castype == 4 || this.castype == 3 || this.castype == 2) {
+    this.ispositiondisabled = false;
+  } else {
+    this.ispositiondisabled = true;
+  }
+  if (this.castype == 6) {
+    this.isbackgroundcolor = false;
+    this.isCasbackgroundcolor = true;
+  } else {
+    this.isbackgroundcolor = true;
+    this.isCasbackgroundcolor = false;
+  }
+  if (this.castype == 6) {
+    this.isfontColor = false;
+    this.isCasfontColor = true;
+  } else {
+    this.isfontColor = true;
+    this.isCasfontColor = false;
+  }
 
 
-    if (this.castype == 6) {
-      this.isLocationVisible = true;
-    } else {
-      this.isLocationVisible = false;
-    }
-    if (this.castype != 6) {
-      this.isTranparancy = true;
-    } else {
-      this.isTranparancy = false;
-    }
+  if (this.castype == 1) {
+    this.isFontSizeDisabled = false;
+    this.isFontSizeSelectDigit = true;
+    this.isFontSizeSelectDisabled = false;
+  }
+  if (this.castype != 1) {
+    this.isFontSizeSelectDigit = false;
+    this.isFontSizeDisabled = true;
+    this.isFontSizeSelectDisabled = false;
+  }
+  if (this.castype == 6) {
+    this.isFontSizeSelectDisabled = true;
+    this.isFontSizeSelectDigit = false;
+    this.isFontSizeDisabled = false;
+  }
 
-    if (this.castype != 1) {
-      this.isTransparency_select_Disabled = false;
-      this.isTransparencyDisabled = true;
-    } else if (this.castype == 1) {
-      this.isTransparency_select_Disabled = true;
-      this.isTransparencyDisabled = false;
-    }
 
-    // if (this.castype == 6) {
-    //   this.isTranparancy = false;
-    //   if (this.castype != 1) {
-    //     this.isTransparency_select_Disabled = false;
-    //     this.isTransparencyDisabled = true;
-    //   }
-    // } else {
-    //   this.isTranparancy = true;
-    //   if (this.castype == 1) {
-    //     this.isTransparencyDisabled = false;
-    //     this.isTransparency_select_Disabled = true;
-    //   } else {
-    //     this.isTransparency_select_Disabled = false;
-    //     this.isTransparencyDisabled = true;
-    //   }
-    // }
-    if (this.castype == 6) {
-      this.isDuration = false;
-    } else {
-      this.isDuration = true;
-    }
-    // if (this.casId === 6) {
-    //   this.isDisplayDuration == true;
-    //   if (this.finger = "ecm")
-    //     this.isminDidDuration = true;
-    //   this.ismaxDidDuration = false;
-    // } else if (this.finger = "emm") {
-    //   this.isminDidDuration = false;
-    //   this.ismaxDidDuration = true;
-    // }
-    // else {
-    //   this.isDisplayDuration == false;
-    // }
-    console.log('finger', this.finger == "ecm");
-    if (this.castype == 6) {
-      this.isDisplayDuration = true;
-      if (this.finger == "ecm") {
-        console.log('finger', this.finger == "ecm");
-        this.isminDidDuration = false;
-        this.ismaxDidDuration = true;
-      }
-    } else if (this.finger == "emm") {
-      console.log('finger', this.finger == "emm");
+  if (this.castype == 6) {
+    this.isLocationVisible = true;
+  } else {
+    this.isLocationVisible = false;
+  }
+  if (this.castype != 6) {
+    this.isTranparancy = true;
+  } else {
+    this.isTranparancy = false;
+  }
+
+  if (this.castype != 1) {
+    this.isTransparency_select_Disabled = false;
+    this.isTransparencyDisabled = true;
+  } else if (this.castype == 1) {
+    this.isTransparency_select_Disabled = true;
+    this.isTransparencyDisabled = false;
+  }
+
+  // if (this.castype == 6) {
+  //   this.isTranparancy = false;
+  //   if (this.castype != 1) {
+  //     this.isTransparency_select_Disabled = false;
+  //     this.isTransparencyDisabled = true;
+  //   }
+  // } else {
+  //   this.isTranparancy = true;
+  //   if (this.castype == 1) {
+  //     this.isTransparencyDisabled = false;
+  //     this.isTransparency_select_Disabled = true;
+  //   } else {
+  //     this.isTransparency_select_Disabled = false;
+  //     this.isTransparencyDisabled = true;
+  //   }
+  // }
+  if (this.castype == 6) {
+    this.isDuration = false;
+  } else {
+    this.isDuration = true;
+  }
+  // if (this.casId === 6) {
+  //   this.isDisplayDuration == true;
+  //   if (this.finger = "ecm")
+  //     this.isminDidDuration = true;
+  //   this.ismaxDidDuration = false;
+  // } else if (this.finger = "emm") {
+  //   this.isminDidDuration = false;
+  //   this.ismaxDidDuration = true;
+  // }
+  // else {
+  //   this.isDisplayDuration == false;
+  // }
+  console.log('finger', this.finger == "ecm");
+  if (this.castype == 6) {
+    this.isDisplayDuration = true;
+    if (this.finger == "ecm") {
+      console.log('finger', this.finger == "ecm");
       this.isminDidDuration = false;
       this.ismaxDidDuration = true;
-    } else {
-      this.isDisplayDuration = false;
     }
-
-
-    if (this.castype != 1 && this.castype != 6 && this.castype != 2) {
-      this.isTimeGap = true;
-    } else if (this.castype == 4) {
-      this.isTimeGap = true;
-    } else {
-      this.isTimeGap = false;
-    }
-
-
-
-
-    if (this.castype != 6 && this.castype != 1) {
-      this.isShowStyle = true;
-    } else {
-      this.isShowStyle = false;
-    }
-
-    if (this.castype == 6) {
-
-    }
-    // if (this.castype != 2) {
-    //   this.isTimeSpan = true;
-    // } else {
-    //   this.isTimeSpan = false;
-    // }
-
-    if (this.castype != 2) {
-      this.isHH = false;
-      this.isMM = false;
-    } else {
-      this.isHH = true;
-      this.isMM = true;
-    }
-
-
-    // if (this.castype != 6 && this.castype != 2 && this.castype != 1) {
-    if (this.castype != 6 && this.castype != 1) {
-      this.isrepeatfordisabled = true;
-    } else {
-      this.isrepeatfordisabled = false;
-    }
-  }
-
-  onForce(selectForce: any) {
-    console.log(selectForce);
-    if (this.finger == 'ecm') {
-      this.isServiceName = true;
-    } else {
-      this.isServiceName = false;
-    }
-    if (this.castype != 6 && this.finger == 'emm') {
-      this.force = true;
-    } else {
-      this.force = false;
-    }
-    if (([6, 1, 3].includes(this.castype) && this.finger == 'emm') || ![6, 1, 3].includes(this.castype)) {
-      this.isIntendto = true;
-    } else {
-      this.isIntendto = false;
-    }
-    // if (([6, 1, 3].includes(this.castype) && this.finger == 'ecm') || ![6, 1, 3].includes(this.castype)) {
-    //   this.isIntendto = false;
-    // } else {
-    //   this.isIntendto = true;
-    // }
+  } else if (this.finger == "emm") {
+    console.log('finger', this.finger == "emm");
+    this.isminDidDuration = false;
+    this.ismaxDidDuration = true;
+  } else {
+    this.isDisplayDuration = false;
   }
 
 
-  onChangeIntendTo1(selectedValue: any) {
+  if (this.castype != 1 && this.castype != 6 && this.castype != 2) {
+    this.isTimeGap = true;
+  } else if (this.castype == 4) {
+    this.isTimeGap = true;
+  } else {
+    this.isTimeGap = false;
+  }
+
+
+
+
+  if (this.castype != 6 && this.castype != 1) {
+    this.isShowStyle = true;
+  } else {
+    this.isShowStyle = false;
+  }
+
+  if (this.castype == 6) {
+
+  }
+  // if (this.castype != 2) {
+  //   this.isTimeSpan = true;
+  // } else {
+  //   this.isTimeSpan = false;
+  // }
+
+  if (this.castype != 2) {
+    this.isHH = false;
+    this.isMM = false;
+  } else {
+    this.isHH = true;
+    this.isMM = true;
+  }
+
+
+  // if (this.castype != 6 && this.castype != 2 && this.castype != 1) {
+  if (this.castype != 6 && this.castype != 1) {
+    this.isrepeatfordisabled = true;
+  } else {
+    this.isrepeatfordisabled = false;
+  }
+}
+
+onForce(selectForce: any) {
+  console.log(selectForce);
+  if (this.finger == 'ecm') {
+    this.isServiceName = true;
+  } else {
+    this.isServiceName = false;
+  }
+  if (this.castype != 6 && this.finger == 'emm') {
+    this.force = true;
+  } else {
+    this.force = false;
+  }
+  if (([6, 1, 3].includes(this.castype) && this.finger == 'emm') || ![6, 1, 3].includes(this.castype)) {
+    this.isIntendto = true;
+  } else {
+    this.isIntendto = false;
+  }
+  // if (([6, 1, 3].includes(this.castype) && this.finger == 'ecm') || ![6, 1, 3].includes(this.castype)) {
+  //   this.isIntendto = false;
+  // } else {
+  //   this.isIntendto = true;
+  // }
+}
+
+
+onChangeIntendTo1(selectedValue: any) {
+  this.isSmartcardEnabled = false;
+  this.isAreaCodeEnabled = false;
+  if (selectedValue == 1) {
     this.isSmartcardEnabled = false;
-    this.isAreaCodeEnabled = false;
-    if (selectedValue == 1) {
-      this.isSmartcardEnabled = false;
-      this.isAreaCodeEnabled = false
-    }
-    if (selectedValue == 2) {
-      this.isSmartcardEnabled = true;
-      this.isAreaCodeEnabled = false
-    }
-    if (selectedValue == 3) {
-      this.isAreaCodeEnabled = true;
-      this.isSmartcardEnabled = false
-    }
-    if (selectedValue !== 2 && selectedValue !== 3) {
-      console.log('Both disabled');
-    }
+    this.isAreaCodeEnabled = false
   }
-  validateExactLength(): void {
-    const requiredLength = this.castype !== 6 ? 20 : 14;
-    this.isInvalidLength = this.intendid_1.length > 0 && this.intendid_1.length !== requiredLength;
-    const control = this.form.get('intendid');
-    if (control) {
-      control.setErrors(this.isInvalidLength ? { incorrectLength: true } : null);
-    }
+  if (selectedValue == 2) {
+    this.isSmartcardEnabled = true;
+    this.isAreaCodeEnabled = false
   }
-  onChangePositionType(value: number) {
-    if (value == 3) {
-      this.isPositionXYVisible = true;
-    } else {
-      this.isPositionXYVisible = false;
-    }
-    if (value != 3) {
-      this.x = '0';
-      this.y = '0';
-    }
+  if (selectedValue == 3) {
+    this.isAreaCodeEnabled = true;
+    this.isSmartcardEnabled = false
   }
-  isOptionDisabled(value: number): boolean {
-    if ((this.castype == 1 || this.castype == 6) && value === 3) {
-      return true;
-    }
-    if (this.castype === 2 && value === 1) {
-      return true;
-    }
-    return false;
+  if (selectedValue !== 2 && selectedValue !== 3) {
+    console.log('Both disabled');
   }
-  getStatusClass(): string {
-    if (this.display_status === 'SERVICE IS RUNNING') {
-      return 'status-running';
-    } else if (this.display_status === 'SERVICE IS NOT RUNNING') {
-      return 'status-stopped';
-    }
-    return '';
+}
+validateExactLength(): void {
+  const requiredLength = this.castype !== 6 ? 20 : 14;
+  this.isInvalidLength = this.intendid_1.length > 0 && this.intendid_1.length !== requiredLength;
+  const control = this.form.get('intendid');
+  if(control) {
+    control.setErrors(this.isInvalidLength ? { incorrectLength: true } : null);
   }
+}
+onChangePositionType(value: number) {
+  if (value == 3) {
+    this.isPositionXYVisible = true;
+  } else {
+    this.isPositionXYVisible = false;
+  }
+  if (value != 3) {
+    this.x = '0';
+    this.y = '0';
+  }
+}
+isOptionDisabled(value: number): boolean {
+  if ((this.castype == 1 || this.castype == 6) && value === 3) {
+    return true;
+  }
+  if (this.castype === 2 && value === 1) {
+    return true;
+  }
+  return false;
+}
+getStatusClass(): string {
+  if (this.display_status === 'SERVICE IS RUNNING') {
+    return 'status-running';
+  } else if (this.display_status === 'SERVICE IS NOT RUNNING') {
+    return 'status-stopped';
+  }
+  return '';
+}
 }

@@ -51,11 +51,13 @@
             <p>ALACARTE</p>
             <div class="row ">
                 <div class="col-12 col-md-5 example-container input_box ">
-                    <input type="text" placeholder="search" [(ngModel)]="searchTermAlacarte"  (ngModelChange)="filterAvailableList()">
+                    <input type="text" placeholder="search" [(ngModel)]="searchTermAlacarte"
+                        (ngModelChange)="filterAvailableList()">
                     <!-- <h6 class="av">Available -{{Available_alacarte_count}} </h6> -->
                     <h6 class="av">Available -{{available_alacarte_list.length}} </h6>
                     <div cdkDropList #todoList="cdkDropList" [cdkDropListData]="filteredAvailableAlacarteList"
-                        [cdkDropListConnectedTo]="[doneList]" class="example-list" (cdkDropListDropped)="drop($event)">
+                        [cdkDropListConnectedTo]="[doneList]" class="example-list"
+                        (cdkDropListDropped)="drop2($event,1)">
                         <div *ngFor="let item of filteredAvailableAlacarteList" class="example-box"
                             (click)="toggleSelection(item)" [class.selected]="isSelected(item)" cdkDrag>{{ item }}</div>
                     </div>
@@ -71,11 +73,13 @@
                             class="bx bx-arrow-to-left"></i></button>
                 </div>
                 <div class="col-12 col-md-5 example-container input_box ">
-                    <input type="text" placeholder="search" [(ngModel)]="searchTermAdded" (ngModelChange)="filterAddedList()">
+                    <input type="text" placeholder="search" [(ngModel)]="searchTermAdded"
+                        (ngModelChange)="filterAddedList()">
                     <!-- <h6 class="ad">Added - {{Added_alacarte_count}} </h6> -->
                     <h6 class="ad">Added - {{added_alacarte_list.length }} </h6>
                     <div cdkDropList #doneList="cdkDropList" [cdkDropListData]="filteredAddedList"
-                        [cdkDropListConnectedTo]="[todoList]" class="example-list" (cdkDropListDropped)="drop($event)">
+                        [cdkDropListConnectedTo]="[todoList]" class="example-list"
+                        (cdkDropListDropped)="drop2($event,2)">
                         <div *ngFor="let item of filteredAddedList" class="example-box" cdkDrag
                             (click)="toggleSelection(item)" [class.selected]="isSelected(item)">{{ item }}</div>
                     </div>
@@ -87,19 +91,16 @@
             <p>ADDON</p>
             <div class="row mb-3">
                 <div class="col-12 col-md-5 example-container input_box">
-                    <input type="text" placeholder="search" [(ngModel)]="searchTermAvailableBouquet" (ngModelChange)="filterAvailableBouquetList()">
-                    <!-- <h6 class="av">Available - {{Available_addon_count }}</h6> -->
+                    <input type="text" placeholder="search" [(ngModel)]="searchTermAvailableBouquet"
+                        (ngModelChange)="filterAvailableBouquetList()">
                     <h6 class="av">Available - {{available_bouquet_list.length }}</h6>
                     <div cdkDropList #todoList1="cdkDropList" [cdkDropListData]="filteredAvailableBouquetList"
-                        [cdkDropListConnectedTo]="[doneList1]" class="example-list" (cdkDropListDropped)="drop($event)">
+                        [cdkDropListConnectedTo]="[doneList1]" class="example-list"
+                        (cdkDropListDropped)="drop1($event,1)">
                         <div *ngFor="let item of filteredAvailableBouquetList" class="example-box"
                             (click)="toggleSelection(item)" [class.selected]="isSelected(item)" cdkDrag>{{ item }}</div>
                     </div>
-                    <!-- <div cdkDropList #todoList="cdkDropList" [cdkDropListData]="available_bouquet_list"
-                        [cdkDropListConnectedTo]="[doneList]" class="example-list" (cdkDropListDropped)="drop($event)">
-                        <div *ngFor="let item of available_bouquet_list" class="example-box"
-                            (click)="toggleSelection(item)" [class.selected]="isSelected(item)" cdkDrag>{{ item }}</div>
-                    </div> -->
+
                 </div>
                 <div class="d-grid col-1">
                     <button class="button2" (click)="moveSelectedBouquet_Items('right')"><i
@@ -112,19 +113,15 @@
                             class="bx bx-arrow-to-left"></i></button>
                 </div>
                 <div class="col-12 col-md-5 example-container input_box ">
-                    <input type="text" placeholder="search" [(ngModel)]="searchTermAddedBouquet" (ngModelChange)="filterAddedBouquetList()">
-                    <!-- <h6 class="ad">Added -{{Added_addon_count}} </h6> -->
+                    <input type="text" placeholder="search" [(ngModel)]="searchTermAddedBouquet"
+                        (ngModelChange)="filterAddedBouquetList()">
                     <h6 class="ad">Added -{{added_bouquet_list.length}} </h6>
                     <div cdkDropList #doneList1="cdkDropList" [cdkDropListData]="filteredAddedBouquetList"
-                        [cdkDropListConnectedTo]="[todoList1]" class="example-list" (cdkDropListDropped)="drop($event)">
+                        [cdkDropListConnectedTo]="[todoList1]" class="example-list"
+                        (cdkDropListDropped)="drop1($event,2)">
                         <div *ngFor="let item of filteredAddedBouquetList" class="example-box" cdkDrag
                             (click)="toggleSelection(item)" [class.selected]="isSelected(item)">{{ item }}</div>
                     </div>
-                        <!-- <div cdkDropList #doneList="cdkDropList" [cdkDropListData]="added_bouquet_list"
-                        [cdkDropListConnectedTo]="[todoList]" class="example-list" (cdkDropListDropped)="drop($event)">
-                        <div *ngFor="let item of added_bouquet_list" class="example-box" cdkDrag
-                            (click)="toggleSelection(item)" [class.selected]="isSelected(item)">{{ item }}</div>
-                    </div> -->
                 </div>
             </div>
             <button type="button" class="btn" style="background:#058372;color: white;" (click)="save1()">Save</button>

@@ -63,48 +63,15 @@ export class DistributorMasterComponent {
       headerName: "ISACTIVE",
       field: 'isactive',
 
-      // cellRenderer: (params: any) => {
-      //   const isActive = params.data.isactive;
-      //   const toggleButton = document.createElement('button');
-      //   toggleButton.style.backgroundColor = 'transparent';
-      //   toggleButton.style.border = 'none';
-      //   toggleButton.style.marginRight = '6px';
-      //   toggleButton.style.fontSize = '22px';
-      //   toggleButton.style.cursor = 'auto';
-      //   const icon = document.createElement('i');
-      //   icon.className = 'fa';
-      //   toggleButton.appendChild(icon);
-      //   const updateButtonStyle = (active: boolean) => {
-      //     if (active) {
-      //       icon.className = 'fa-solid fa-toggle-on';
-      //       toggleButton.style.color = '#4CAF50';
-      //       toggleButton.style.fontSize = '24px'; // Medium size for the button
-      //       icon.style.fontSize = '24px';
-      //       toggleButton.title = 'Deactivate the Customer';
-      //     } else {
-      //       icon.className = 'fa-solid fa-toggle-off';
-      //       toggleButton.style.color = 'rgb(248 92 133)';
-      //       toggleButton.style.fontSize = '24px'; // Medium size for the button
-      //       icon.style.fontSize = '24px';
-      //       toggleButton.title = 'Activate the Customer';
-      //     }
-      //   };
-      //   updateButtonStyle(isActive);
-      //   toggleButton.addEventListener('click', () => {
-      //   });
-
-      //   const div = document.createElement('div');
-      //   div.appendChild(toggleButton);
-      //   return div;
-      // },
+   
 
       cellRenderer: (params: any) => {
         const isActive = params.data.isactive;
 
         const toggleContainer = document.createElement('div');
         toggleContainer.style.display = 'flex';
-        toggleContainer.style.alignItems = 'left';
-        toggleContainer.style.justifyContent = 'left';
+        toggleContainer.style.alignItems = 'center';
+        toggleContainer.style.justifyContent = 'center';
 
         const toggleSwitch = document.createElement('div');
         toggleSwitch.style.width = '45px';
@@ -147,7 +114,7 @@ export class DistributorMasterComponent {
       }
     },
     {
-      headerName: "Edit", editable: true, cellRenderer: (params: any) => {
+      headerName: "Edit", editable: true, cellStyle: { textAlign: 'left' },width: 190,cellRenderer: (params: any) => {
         const editButton = document.createElement('button');
         editButton.innerHTML = '<i class="fa fa-pencil-square" aria-hidden="true"></i>';
         editButton.style.backgroundColor = 'transparent';
@@ -165,8 +132,8 @@ export class DistributorMasterComponent {
         return div;
       }
     },
-    { headerName: "DISTRIBUTOR ADDRESS", field: 'address', editable: true, cellEditor: 'agTextCellEditor', width: 300, },
-    { headerName: "DISTRIBUTOR CONTACT", field: 'contact', editable: true, cellEditor: 'agTextCellEditor', width: 300 },
+    { headerName: "DISTRIBUTOR ADDRESS", field: 'address', editable: true, cellEditor: 'agTextCellEditor', width: 200, },
+    { headerName: "DISTRIBUTOR CONTACT", field: 'contact', editable: true, cellEditor: 'agTextCellEditor', width: 200 },
     { headerName: "DISTRIBUTOR EMAIL", field: 'email', editable: true, cellEditor: 'agTextCellEditor', width: 290, },
   ]
 

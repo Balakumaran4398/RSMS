@@ -60,7 +60,7 @@
                         (ngModelChange)="filterAvailableList()">
                     <h6 class="av">Available - {{available_alacarte_list.length}} </h6>
                     <div cdkDropList #todoList="cdkDropList" [cdkDropListData]="filteredAvailableAlacarteList"
-                        [cdkDropListConnectedTo]="[doneList]" class="example-list" (cdkDropListDropped)="drop($event)">
+                        [cdkDropListConnectedTo]="[doneList]" class="example-list" (cdkDropListDropped)="drop2($event,1)">
                         <div *ngFor="let item of filteredAvailableAlacarteList" class="example-box"
                             (click)="toggleSelection(item)" [class.selected]="isSelected(item)" cdkDrag>{{ item }}</div>
                     </div>
@@ -80,7 +80,7 @@
                     <!-- <h6 class="ad">Added - {{added_alacrte_count}} </h6> -->
                     <h6 class="ad">Added - {{added_alacarte_list.length}} </h6>
                     <div cdkDropList #doneList="cdkDropList" [cdkDropListData]="filteredAddedList"
-                        [cdkDropListConnectedTo]="[todoList]" class="example-list" (cdkDropListDropped)="drop($event)">
+                        [cdkDropListConnectedTo]="[todoList]" class="example-list" (cdkDropListDropped)="drop2($event,2)">
                         <div *ngFor="let item of filteredAddedList" class="example-box" (click)="toggleSelection(item)"
                             [class.selected]="isSelected(item)" cdkDrag>{{ item }}</div>
                     </div>
@@ -99,7 +99,7 @@
                         (ngModelChange)="filterAvailableBouquetList()">
                     <h6 class="av">Available - {{available_bouquet_list.length }}</h6>
                     <div cdkDropList #todoList1="cdkDropList" [cdkDropListData]="filteredAvailableBouquetList"
-                        [cdkDropListConnectedTo]="[doneList1]" class="example-list" (cdkDropListDropped)="drop($event)">
+                        [cdkDropListConnectedTo]="[doneList1]" class="example-list" (cdkDropListDropped)="drop1($event,1)">
                         <div *ngFor="let item of filteredAvailableBouquetList" class="example-box"
                             (click)="toggleSelection(item)" [class.selected]="isSelected(item)" cdkDrag>{{ item }}</div>
                     </div>
@@ -119,7 +119,7 @@
                         (ngModelChange)="filterAddedBouquetList()">
                     <h6 class="ad">Added -{{added_bouquet_list.length}} </h6>
                     <div cdkDropList #doneList1="cdkDropList" [cdkDropListData]="filteredAddedBouquetList"
-                        [cdkDropListConnectedTo]="[todoList1]" class="example-list" (cdkDropListDropped)="drop($event)">
+                        [cdkDropListConnectedTo]="[todoList1]" class="example-list" (cdkDropListDropped)="drop1($event,2)">
                         <div *ngFor="let item of filteredAddedBouquetList" class="example-box"
                             (click)="toggleSelection(item)" [class.selected]="isSelected(item)" cdkDrag>{{ item }}</div>
                     </div>

@@ -1,47 +1,67 @@
 <h4>MSO REPORTS</h4>
+<!-- <div style="background-color: rgba(109, 107, 107, 0.8);padding: 1rem;">
+  <h6 style="color: rgb(255, 255, 255);">LCO BILL REPORTS</h6>
+</div> -->
 <section>
   <mat-accordion class="example-headers-align">
     <mat-expansion-panel [expanded]="step() === 0" (opened)="setStep(0)" hideToggle>
       <mat-expansion-panel-header>
+        <!-- <mat-panel-title class="text2">LCO BILL REPORTS</mat-panel-title> -->
         <mat-panel-title class="text2">LCO BILL REPORTS</mat-panel-title>
       </mat-expansion-panel-header>
       <!-- <h5>PRODUCT HISTORY</h5> -->
       <div class="cardContainer">
-        <div class="card"><i class="fas fa-layer-group"></i>
+        <div class="card royal-card tooltip-container" (click)="openMsoDialog('monthly_datewise')"><i class="fas fa-layer-group"></i>
           <div><strong>Recharge/Deduction <br> Report - Including GST</strong> </div>
+          <div class="tooltip">Including GST</div>
         </div>
-        <div class="card"><i class="fas fa-cube"></i>
+        <div class="card royal-card tooltip-container" (click)="openMsoDialog('recharge_deduction')"><i class="fas fa-layer-group"></i>
+          <div><strong>Recharge/Deduction <br> Report - Excluding GST</strong> </div>
+          <div class="tooltip">Excluding GST</div>
+        </div>
+        <div class="card royal-card tooltip-container" (click)="openMsoDialog('recharge_invoice')"><i class="fas fa-cube"></i>
           <div><strong>Recharge Invoice Report</strong> </div>
+          <div class="tooltip">Recharge Invoice</div>
         </div>
-        <div class="card"><i class="fas fa-calendar-alt"></i>
+        <div class="card royal-card tooltip-container" (click)="openMsoDialog('recharge_history')"><i class="fas fa-calendar-alt"></i>
           <div><strong>Recharge History Report</strong> </div>
+          <div class="tooltip">Recharge History</div>
         </div>
-        <div class="card"><i class="fas fa-file-invoice"></i>
-          <div><strong>Operator Online Payment</strong> </div>
+        <div class="card royal-card tooltip-container" (click)="openMsoDialog('online_payment')"><i class="fas fa-file-invoice"></i>
+          <div><strong> Online Payment</strong> </div>
+          <div class="tooltip">Operator/Subscriber/Sublco Online Payment</div>
         </div>
-        <div class="card"><i class="fas fa-clipboard-list"></i>
+        <!-- <div class="card royal-card tooltip-container"><i class="fas fa-clipboard-list"></i>
           <div><strong> Subscriber Online <br> Payment History</strong> </div>
+          <div class="tooltip">Subscriber Online Payment</div>
         </div>
-        <div class="card"><i class="fas fa-clipboard-list"></i>
+        <div class="card royal-card tooltip-container"><i class="fas fa-clipboard-list"></i>
           <div><strong> Sublco Online <br> Payment History</strong> </div>
-        </div>
-        <div class="card"><i class="fas fa-clipboard-list"></i>
+          <div class="tooltip">Sublco Online Payment</div>
+        </div> -->
+        <div class="card royal-card tooltip-container" (click)="openMsoDialog('sublco_online')"><i class="fas fa-clipboard-list"></i>
           <div><strong> Sublco Offline <br> Payment History</strong> </div>
+          <div class="tooltip">Sublco Offline Payment</div>
         </div>
-        <div class="card"><i class="fas fa-clipboard-list"></i>
+        <div class="card royal-card tooltip-container" (click)="openMsoDialog('walletShare')"><i class="fas fa-clipboard-list"></i>
           <div><strong> Wallet Share Report</strong> </div>
+          <div class="tooltip">Recharge Invoice</div>
         </div>
-        <div class="card"><i class="fas fa-clipboard-list"></i>
+        <div class="card royal-card tooltip-container" (click)="openMsoDialog('monthly_datewise')"><i class="fas fa-clipboard-list"></i>
           <div><strong>Monthly Datewise <br> Payment Collection Report</strong> </div>
+          <!-- <div class="tooltip">Recharge Invoice</div> -->
         </div>
-        <div class="card"><i class="fas fa-clipboard-list"></i>
+        <div class="card royal-card tooltip-container" (click)="openMsoDialog('subscriber_bill')"><i class="fas fa-clipboard-list"></i>
           <div><strong>Subscriber Bill</strong> </div>
+          <!-- <div class="tooltip">Recharge Invoice</div> -->
         </div>
-        <div class="card"><i class="fas fa-clipboard-list"></i>
+        <div class="card royal-card tooltip-container" (click)="openMsoDialog('user_rechargehistory')"><i class="fas fa-clipboard-list"></i>
           <div><strong>User Recharge History</strong> </div>
+          <!-- <div class="tooltip">Recharge Invoice</div> -->
         </div>
-        <div class="card"><i class="fas fa-clipboard-list"></i>
+        <div class="card royal-card tooltip-container" (click)="openMsoDialog('unpair_smartcard')"><i class="fas fa-clipboard-list"></i>
           <div><strong>Unpair Smartcard <br> Recharge Details</strong> </div>
+          <div class="tooltip">Unpair Smartcard Recharge</div>
         </div>
         
       </div>
@@ -56,13 +76,13 @@
       </mat-expansion-panel-header>
       <!-- <h5>SMARTCARD HISTORY</h5> -->
       <div class="cardContainer">
-        <div class="card"><i class="fas fa-rocket"></i>
+        <div class="card royal-card tooltip-container"><i class="fas fa-rocket"></i>
           <div><strong>Lcowise Expiry <br> Count Difference</strong> </div>
         </div>
-        <div class="card"><i class="fas fa-ban"></i>
+        <div class="card royal-card tooltip-container"><i class="fas fa-ban"></i>
           <div><strong>Customer Activation Form</strong> </div>
         </div>
-        <div class="card"> <i class="fas fa-cloud-upload-alt"></i>
+        <div class="card royal-card tooltip-container"> <i class="fas fa-cloud-upload-alt"></i>
           <div><strong>Lcowise Active <br> Subscription Count</strong> </div>
         </div>
         <!-- <div class="card"><i class="fas fa-th-list"></i>
@@ -83,10 +103,10 @@
       </mat-expansion-panel-header>
       <!-- <h5>CAS OPERATION HISTORY</h5> -->
       <div class="cardContainer">
-        <div class="card"><i class="fas fa-check-circle"></i>
+        <div class="card royal-card tooltip-container"><i class="fas fa-check-circle"></i>
           <div><strong>Total Lco </strong> </div>
         </div>
-        <div class="card"><i class="fas fa-tv"></i>
+        <div class="card royal-card tooltip-container"><i class="fas fa-tv"></i>
           <div><strong>Lco Transfer Details</strong> </div>
         </div>
         <!-- <div class="card"><i class="fas fa-file-upload"></i>

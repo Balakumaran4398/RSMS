@@ -80,6 +80,8 @@ import { PackageBasedComponent } from './features/channel_setting/Reports_page/T
 import { HistoryAllReportsComponent } from './features/channel_setting/Reports_page/Trai/History/history-all-reports/history-all-reports.component';
 import { BroadcasterReportsComponent } from './features/channel_setting/Reports_page/Trai/broadcaster-reports/broadcaster-reports.component';
 import { TopSubLoginComponent } from './features/top_sub_login/top-sub-login/top-sub-login.component';
+import { LoginrefundComponent } from './features/channel_setting/_Dialogue/LCO_Recharge/loginrefund/loginrefund.component';
+import { MsorDialogueportsComponent } from './features/channel_setting/Reports_page/MSO/msor-dialogueports/msor-dialogueports.component';
 
 
 const routes: Routes = [
@@ -98,6 +100,7 @@ const routes: Routes = [
       { path: 'operatorlist', component: OperatorlistComponent, },
       { path: 'nav', component: NavbarComponent, },
       { path: 'lcorecharge', component: LcoRechargeReportComponent, },
+      { path: 'loginreund/:id', component: LoginrefundComponent, },
       // --------------------------------------------Top-Subscriber-Details---------------------------------
       { path: 'top_sub_detail', component: TopSubDetailComponent, },
       // -------------------------Channel-Setting----------------------------
@@ -160,6 +163,7 @@ const routes: Routes = [
       { path: 'historyReports', component: HistoryReportsComponent },
       { path: 'historyAllReports/:id', component: HistoryAllReportsComponent },
       { path: 'broadcasterReports/:id', component: BroadcasterReportsComponent },
+      { path: 'msodialogueReports/:id', component: MsorDialogueportsComponent },
       
       // ------------------------------------Special role-------------------------------------------
       { path: 'msodetails', component: MsodetailsComponent },

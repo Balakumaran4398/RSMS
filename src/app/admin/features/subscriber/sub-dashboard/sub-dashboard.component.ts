@@ -23,6 +23,7 @@ interface requestBodylogs {
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SubDashboardComponent implements OnInit, AfterViewInit {
+
   role: any;
   checkingObj: any = {};
   username: any;
@@ -59,6 +60,7 @@ export class SubDashboardComponent implements OnInit, AfterViewInit {
   selectedtypes: number[] = [];
   rows: any[] = [];
   isAnyRowSelected: boolean = false;
+  isSendDeleteMessage: boolean = false;
   gridOptions = {
     defaultColDef: {
       // width: 205
@@ -69,6 +71,7 @@ export class SubDashboardComponent implements OnInit, AfterViewInit {
     onFirstDataRendered: (params: { api: { forEachNode: (arg0: (node: any) => void) => void; }; }) => {
       this.selectRowsBasedOnUsername(params);
     },
+     isRowSelectable: (node: any) => node.data.ptype === 'BASE',
   }
 
 
@@ -155,6 +158,7 @@ export class SubDashboardComponent implements OnInit, AfterViewInit {
   };
   daysText = '';
 
+  nextDay: string = '';
   public rowSelection: any = "multiple";
   setStep(index: number) {
     this.step.set(index);
@@ -175,6 +179,7 @@ export class SubDashboardComponent implements OnInit, AfterViewInit {
     this.status = this.route.snapshot.paramMap.get('status');
     this.loaddata()
     console.log(this.subscriberid);
+    console.log(this.subscribersubid);
     console.log(this.status);
 
     let splitValues = this.subscriberid.split("**");
@@ -187,11 +192,11 @@ export class SubDashboardComponent implements OnInit, AfterViewInit {
     this.userservice.getPlanTypeList(this.role, this.username).subscribe((data: any) => {
       this.rechargetype = Object.entries(data).map(([key, value]) => ({ name: key, id: value }));
       console.log(this.rechargetype);
-      this.cdr.detectChanges;
+      this.cdr.detectChanges();
     })
   }
   ngAfterViewInit(): void {
-
+    // this.setNextDay();
   }
   onBillTypeChange() {
     this.billtype = this.billtype ? 1 : 0;
@@ -207,8 +212,10 @@ export class SubDashboardComponent implements OnInit, AfterViewInit {
 
   ngOnInit(): void {
     this.userservice.getActivePackagePlanList(this.role, this.username).subscribe((data: any) => {
-      this.plantypeSubject.next(data);
+      // this.plantypeSubject.next(data);
       this.packagePlan = data;
+      console.log('packageplan', this.packagePlan);
+
       const sortedData = Object.entries(data)
         .map(([key, value]) => ({
           key: key.replace(/\(\d+\)/, '').trim(),
@@ -216,6 +223,12 @@ export class SubDashboardComponent implements OnInit, AfterViewInit {
         }))
 
       this.plantype$.next(sortedData);
+      if (this.selectedRechargetype === 1) {
+        const defaultPlan = sortedData.find(plan => plan.key === '1month');
+        if (defaultPlan) {
+          this.plantype = defaultPlan.value;
+        }
+      }
     });
     // this.userservice.getPlanTypeList(this.role, this.username).subscribe((data: any) => {
     //   this.rechargetype = Object.entries(data).map(([key, value]) => ({ name: key, id: value }));
@@ -223,13 +236,23 @@ export class SubDashboardComponent implements OnInit, AfterViewInit {
     //   this.cdr.detectChanges;
     // })
     // this.calculateProgress();
+    // this.setNextDay();
+  }
+  setNextDay(): void {
+    const expiryDate = new Date(this.subdetailsList?.expirydate);
+    expiryDate.setDate(expiryDate.getDate() + 1);
+    this.nextDay = expiryDate.toISOString().split('T')[0];
   }
   loadNewDashboard() {
     // for (let index = 0; index < 2; index++) {
     this.userservice.getNewsubscriberDetails(this.role, this.username, this.subscriberid || this.smartcard || this.boxid)
       .subscribe((data: any) => {
         console.log(data);
-  
+        this.packageMessage = data['message'];
+        console.log('packagemanage', this.packageMessage);
+        this.isSendDeleteMessage = this.packageMessage?.forcemsg || false; 
+        console.log('dsffdsfdsfdf v     isSendDeleteMessage'),this.isSendDeleteMessage;
+        
         this.newSmartcard = data.smartcardlist?.[data.smartcardlist.length - 1]?.smartcard || null;;
         this.statusNewSmartcard = data.smartcardlist?.[data.smartcardlist.length - 1]?.statusdisplay || null;;
         console.log(this.newSmartcard);
@@ -305,7 +328,8 @@ export class SubDashboardComponent implements OnInit, AfterViewInit {
         this.packageobject = data['packageobject'];
         this.packageMessage = data['message'];
         console.log(this.packageMessage);
-
+        this.isSendDeleteMessage = this.packageMessage?.forcemsg || false; 
+        console.log('dsffdsfdsfdf v     isSendDeleteMessage'),this.isSendDeleteMessage;
         this.packdateobj = data['packdateobj'];
         this.rowData1 = data['managepacklist_notexp'];
         console.log(this.rowData1);
@@ -564,6 +588,8 @@ export class SubDashboardComponent implements OnInit, AfterViewInit {
           this.packdateobj = data['packdateobj'];
           this.packageMessage = data['message'];
           console.log(this.packageMessage);
+          this.isSendDeleteMessage = this.packageMessage?.forcemsg || false; 
+          console.log('dsffdsfdsfdf v     isSendDeleteMessage'),this.isSendDeleteMessage;
           // this.rowData1 = data['selectedmanpacknotexp'];
           this.rowData1 = data['managepacklist_notexp'];
           this.rowData = data['smartcardlist'];
@@ -831,7 +857,9 @@ export class SubDashboardComponent implements OnInit, AfterViewInit {
           this.packageobject = data['packageobject'];
           this.packdateobj = data['packdateobj'];
           this.packageMessage = data['message'];
-          console.log(this.packageMessage);
+          console.log('packagemanage', this.packageMessage);
+          this.isSendDeleteMessage = this.packageMessage?.forcemsg; 
+          console.log('dsffdsfdsfdf v     isSendDeleteMessage',this.isSendDeleteMessage),
           // this.rowData1 = data['selectedmanpacknotexp'];
           this.rowData1 = data['managepacklist_notexp'];
           this.rowData = data['smartcardlist'];
@@ -1099,7 +1127,9 @@ export class SubDashboardComponent implements OnInit, AfterViewInit {
           this.packageobject = data['packageobject'];
           this.packdateobj = data['packdateobj'];
           this.packageMessage = data['message'];
-          console.log(this.packageMessage);
+          console.log('packagemanage', this.packageMessage);
+          this.isSendDeleteMessage = this.packageMessage?.forcemsg || false; 
+          console.log('dsffdsfdsfdf v     isSendDeleteMessage'),this.isSendDeleteMessage;
           this.rowData1 = data['managepacklist_notexp'];
           this.rowData = data['smartcardlist'];
           this.subdetailsList = data['subscriberdetails']
@@ -1508,22 +1538,22 @@ export class SubDashboardComponent implements OnInit, AfterViewInit {
     },
     {
       headerName: 'PACKAGE NAME	',
-      field: 'productname', width: 250,
+      field: 'productname', width: 300,
     },
     {
-      headerName: 'PRODUCT TYPE	 ', width: 220,
+      headerName: 'PRODUCT TYPE	 ', width: 270, cellStyle: { textAlign: 'center' },
       field: 'ptype',
     },
     {
-      headerName: 'PRODUCT ID	', width: 220,
+      headerName: 'PRODUCT ID	', width: 270,
       field: 'casproductid',
     },
     {
-      headerName: 'DAYS REMAINING	', width: 220,
+      headerName: 'DAYS REMAINING	', width: 270, cellStyle: { textAlign: 'center' },
       field: 'noofdays',
     },
     {
-      headerName: 'PROGRAMS', width: 215,
+      headerName: 'PROGRAMS', width: 300,
       cellRenderer: (params: any) => {
         // Check if the producttype is "BASE" or "ADDON"
         if (params.data.ptype === 'BASE' || params.data.ptype === 'ADDON') {
@@ -1562,36 +1592,32 @@ export class SubDashboardComponent implements OnInit, AfterViewInit {
         }
       },
     },
-    {
-      headerName: 'PACKAGE NAME',
-      field: 'productname',
-      width: 300,
-    },
+
 
   ]
   columnDefs2: any[] = [
     {
       headerName: "S.No", valueGetter: 'node.rowIndex+1', width: 100, headerCheckboxSelection: true,
-      checkboxSelection: true, isSelected: true
+
     },
     {
       headerName: 'PACKAGE NAME	',
-      field: 'productname', width: 250,
+      field: 'productname', width: 300,
     },
     {
-      headerName: 'PRODUCT TYPE	 ', width: 220,
+      headerName: 'PRODUCT TYPE	 ', width: 270, cellStyle: { textAlign: 'center' },
       field: 'ptype',
     },
     {
-      headerName: 'PRODUCT ID	', width: 220,
+      headerName: 'PRODUCT ID	', width: 270, cellStyle: { textAlign: 'center' },
       field: 'casproductid',
     },
     {
-      headerName: 'DAYS REMAINING	', width: 220,
+      headerName: 'DAYS REMAINING	', width: 270, cellStyle: { textAlign: 'center' },
       field: 'noofdays',
     },
     {
-      headerName: 'PROGRAMS', width: 215,
+      headerName: 'PROGRAMS', width: 300,
       cellRenderer: (params: any) => {
         // Check if the producttype is "BASE" or "ADDON"
         if (params.data.ptype === 'BASE' || params.data.ptype === 'ADDON') {
@@ -1630,11 +1656,7 @@ export class SubDashboardComponent implements OnInit, AfterViewInit {
         }
       },
     },
-    {
-      headerName: 'PACKAGE NAME',
-      field: 'productname',
-      width: 300,
-    },
+
 
   ]
   rowData1: any[] = [];
@@ -1864,19 +1886,29 @@ export class SubDashboardComponent implements OnInit, AfterViewInit {
     if (rechargetype == 1) {
       this.isplantype = true;
       this.datetype = false;
+      const defaultPlan = this.plantype$.getValue().find(plan => plan.key === '1month');
+      if (defaultPlan) {
+        this.plantype = defaultPlan.value;
+      }
     }
     if (rechargetype == 2) {
       this.isplantype = false;
       this.datetype = true;
+      this.plantype = 0;
     }
     if (rechargetype == 3) {
       this.dateTodate;
       this.isplantype = false;
       this.datetype = false;
+      this.plantype = 0;
     }
   }
-  onSelectionplantype(selectedValue: string) {
+
+  onSelectiondatetype(selectedValue: string) {
+    this.cdr.detectChanges();
     const rechargetype = Number(selectedValue);
+    console.log('selectrdvalue', selectedValue);
+
     if (rechargetype == 1) {
       this.isplantype = true;
       this.datetype = false;
@@ -1889,6 +1921,42 @@ export class SubDashboardComponent implements OnInit, AfterViewInit {
       this.datetype = false;
       this.isplantype = false;
     }
+  }
+  onSelectionplantype(selectedValue: string) {
+    this.cdr.detectChanges();
+    const rechargetype = Number(selectedValue);
+    console.log('selectrdvalue', selectedValue);
+    console.log('packagePlan',this.packagePlan);
+    
+    if (rechargetype == 1) {
+      this.isplantype = true;
+      this.datetype = false;
+    }
+    if (rechargetype == 2) {
+      this.isplantype = false;
+      this.datetype = true;
+    }
+    if (rechargetype == 3) {
+      this.datetype = false;
+      this.isplantype = false;
+    }
+
+    // if (rechargetype === 1) {
+    //   this.isplantype = true;
+    //   this.datetype = false;
+    //   // this.updatePlanOptions(1); // Update plan options dynamically
+    // } else if (rechargetype === 2) {
+    //   this.isplantype = true;
+    //   this.datetype = false;
+    //   // this.updatePlanOptions(2); // Update plan options dynamically
+    // } else if (rechargetype === 3) {
+    //   this.isplantype = false;
+    //   this.datetype = true;
+    // } else {
+    //   this.isplantype = false;
+    //   this.datetype = false;
+    // }
+
     console.log(this.plantype);
 
     console.log(this.selectedRechargetype);
@@ -1908,6 +1976,20 @@ export class SubDashboardComponent implements OnInit, AfterViewInit {
     }
 
     console.log(selectedValue);
+  }
+
+  updatePlanOptions(rechargetype: number) {
+    if (rechargetype === 1) {
+      this.plantype = [
+        { key: '1 Month Plan', value: 1 },
+        { key: '2 Months Plan', value: 2 },
+      ];
+    } else if (rechargetype === 2) {
+      this.plantype = [
+        { key: '2 Months Plan', value: 2 },
+        { key: '3 Months Plan', value: 3 },
+      ];
+    }
   }
   rechargetoggleConfirmation() {
     this.ManagePackageCalculation();
@@ -2114,8 +2196,9 @@ export class SubDashboardComponent implements OnInit, AfterViewInit {
     //       });
     //     });
 
+    console.log(this.subdetailsList.subid || this.subscriberid);
 
-    this.userservice.getPdfCasformReport(this.role, this.username, this.subdetailsList.subid).subscribe((x: Blob) => {
+    this.userservice.getPdfCasformReport(this.role, this.username, this.subdetailsList.subid || this.subscriberid).subscribe((x: Blob) => {
       // let requestBodylogs: requestBodylogs = { access_ip: "", action: " PDF Bill Report", data: "From Date", remarks: "PDF Bill Report  ", };
 
       const blob = new Blob([x], { type: 'application/pdf' });

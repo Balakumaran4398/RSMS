@@ -60,11 +60,17 @@
                             <!-- <div style="display: flex; justify-content: center;">
                                 <img class="toggle1" src="/assets/images/login/contact1.png" alt="Toggle">
                             </div> -->
-                            <p class="text" [ngClass]="operator?.isactive ? 'active-text' : 'deactive-text'">
+                            <!-- <p class="text" [ngClass]="operator?.isactive ? 'active-text' : 'deactive-text'">
                                 <span class="label">Status</span>
                                 <span class="separator1">:</span>
                                 <span class="last1">{{ operator?.isactive ? 'Active' : 'Deactive' }}</span>
+                            </p> -->
+                            <p class="text" [ngClass]="operator?.isactive === 'true' ? 'active-text' : 'deactive-text'">
+                                <span class="label">Status</span>
+                                <span class="separator1">:</span>
+                                <span class="last1">{{ operator?.isactive === 'true' ? 'Active' : 'Deactive' }}</span>
                             </p>
+                            
                             <p class="text">
                                 <span class="label label1">user id</span>
                                 <span class="separator">:</span>

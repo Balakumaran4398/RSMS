@@ -20,7 +20,18 @@ export class AddonPackageComponent {
       resizable: true,
       filter: true,
       // width: 210,
-      floatingFilter: true
+      floatingFilter: true,
+      comparator: (valueA: string, valueB: string) => {
+        if (!valueA) valueA = '';
+        if (!valueB) valueB = '';
+  
+        // Case-insensitive comparison
+        const lowerA = valueA.toLowerCase();
+        const lowerB = valueB.toLowerCase();
+  
+        // Sort alphabetically, considering letters before numbers
+        return lowerA.localeCompare(lowerB);
+      },
     },
     paginationPageSize: 10,
     pagination: true,
@@ -48,6 +59,7 @@ export class AddonPackageComponent {
   columnDefs: ColDef[] = [
     { headerName: "S.No", lockPosition: true, valueGetter: 'node.rowIndex+1', cellClass: 'locked-col', width: 120 },
     { headerName: "PACKAGE NAME", field: 'addon_package_name', },
+    { headerName: "BROADCASTER NAME", field: 'broadcaster_name', },
     {
       headerName: 'Actions', width: 400,
       cellRenderer: (params: any) => {

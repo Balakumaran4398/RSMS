@@ -30,7 +30,7 @@ export class StbChartComponent implements OnInit {
 		const chart = new CanvasJS.Chart("stbchartContainer", {
 			title: {
 				text: "STB DETAILS",
-				fontSize: 20,
+				fontSize: 18,
 				fontWeight: 600
 			},
 			animationEnabled: true,
@@ -46,7 +46,7 @@ export class StbChartComponent implements OnInit {
 				indexLabelFontColor: "#5A5757",
 				indexLabelFontSize: 14,
 				indexLabelPlacement: "outside",
-				indexLabelAlign: "center",	
+				indexLabelAlign: "center",
 				dataPoints: [
 					{ label: "Active", y: data["ACTIVE STB's"], color: "#1a8a38", indexLabel: data["ACTIVE STB's"].toString(), click: () => this.navigateToPage('Active') },
 					{ label: "Deactive", y: data["DEACTIVE STB's"], color: "#db635a", indexLabel: data["DEACTIVE STB's"].toString(), click: () => this.navigateToPage('Deactive') },

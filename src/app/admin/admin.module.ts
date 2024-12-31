@@ -162,6 +162,7 @@ import { BroadcasterReportsComponent } from "./features/channel_setting/Reports_
 import { HistoryAllReportsComponent } from "./features/channel_setting/Reports_page/Trai/History/history-all-reports/history-all-reports.component";
 import { MsoreportsComponent } from "./features/channel_setting/Reports/msoreports/msoreports.component";
 import { TopSubLoginComponent } from "./features/top_sub_login/top-sub-login/top-sub-login.component";
+import { MsorDialogueportsComponent } from "./features/channel_setting/Reports_page/MSO/msor-dialogueports/msor-dialogueports.component";
 @NgModule({
     declarations: [
         AdminBaseComponent, NavComponent, HomeComponent, NavbarComponent, MsodetailsComponent, CasmasterComponent,
@@ -223,7 +224,8 @@ import { TopSubLoginComponent } from "./features/top_sub_login/top-sub-login/top
         TaxComponent, ProofComponent, ProofdetailsComponent, TaxdetailsComponent, LogindialogueComponent, EditDismembershipComponent, SpecialBulkpackageComponent,
         SpecialcancelsubscriptionComponent, SpecialareachangeComponent, SpeciallcochangeComponent, SpecialeditbulkpackageComponent, SpeciallcotransferComponent,
         // =====================================================Reports=========================================
-        TraiReportComponent, SubscriptionBasedComponent, HistoryReportsComponent, PackageBasedComponent, BroadcasterReportsComponent, HistoryAllReportsComponent,MsoreportsComponent],
+        TraiReportComponent, SubscriptionBasedComponent, HistoryReportsComponent, PackageBasedComponent, BroadcasterReportsComponent, HistoryAllReportsComponent,MsoreportsComponent,
+        MsorDialogueportsComponent  ],
     imports: [
         CommonModule,
         CoreModule,

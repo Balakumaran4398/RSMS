@@ -69,10 +69,10 @@ export class AddonActivationComponent {
   ];
   columnDefs1: ColDef[] = [
     { headerName: "S.No", lockPosition: true, valueGetter: 'node.rowIndex+1', cellClass: 'locked-col', width: 80, suppressNavigable: true, sortable: false, filter: false },
-    { headerName: "SMARTCARD", field: 'smartcard' },
-    { headerName: "PACKAGE NAME", field: 'packagename' },
+    { headerName: "SMARTCARD", field: 'smartcard',width: 250, },
+    { headerName: "PACKAGE NAME", field: 'packagename',width: 300, },
     {
-      headerName: "STATUS	", field: 'status',
+      headerName: "STATUS	", field: 'status',width: 300,
       cellRenderer: (params: any) => {
         const status = params.value;
         if (status === 'Success') {
@@ -85,7 +85,7 @@ export class AddonActivationComponent {
       }
     },
     { headerName: "REMARKS", field: 'remarks' },
-    { headerName: "CREATED DATE	", field: 'createddate' },
+    { headerName: "CREATED DATE	", field: 'createddate' ,width: 200,},
   ];
   rowData: any;
   public rowSelection: any = "multiple";
@@ -141,12 +141,12 @@ export class AddonActivationComponent {
   getData() {
     this.rowData = []
     const dateToPass = this.selectedDate || this.date;
-    if (this.selectedTab == 'activation') {
-      this.remark = 'addon_add'
-    } else {
-      this.remark = 'remove'
-    }
-    this.userservice.getBulkOperationListByDate(this.role, this.username, this.remark, dateToPass, 4)
+    // if (this.selectedTab == 'activation') {
+    //   this.remark = 'addon_add'
+    // } else {
+    //   this.remark = 'addon_remove'
+    // }
+    this.userservice.getBulkOperationListByDate(this.role, this.username, 'addon_add', this.date, 4)
       .subscribe(
         (response: HttpResponse<any[]>) => { // Expect HttpResponse<any[]>
           if (response.status === 200) {
@@ -168,15 +168,74 @@ export class AddonActivationComponent {
       );
   }
   refresh() {
-    console.log(this.selectedTab);
-    if (this.selectedTab == 'activation') {
-      this.remark = 'addon_add'
-    } else {
-      this.remark = 'remove'
-    }
-    console.log(this.remark);
+    // console.log(this.selectedTab);
+    // if (this.selectedTab == 'activation') {
+    //   this.remark = 'addon_add'
+    // } else {
+    //   this.remark = 'addon_remove'
+    // }
+    // console.log(this.remark);
 
-    this.userservice.getBulkOperationRefreshList(this.role, this.username, this.remark, 4)
+    this.userservice.getBulkOperationRefreshList(this.role, this.username, 'addon_remove', 6)
+      .subscribe(
+        (response: HttpResponse<any[]>) => { // Expect HttpResponse<any[]>
+          if (response.status === 200) {
+            this.rowData = response.body;
+            // this.swal.Success_200();
+          } else if (response.status === 204) {
+            this.swal.Success_204();
+          }
+        },
+        (error) => {
+          if (error.status === 400) {
+            this.swal.Error_400();
+          } else if (error.status === 500) {
+            this.swal.Error_500();
+          } else {
+            Swal.fire('Error', 'Something went wrong. Please try again.', 'error');
+          }
+        }
+      );
+  }
+  addongetData() {
+    this.rowData = []
+    const dateToPass = this.selectedDate || this.date;
+    // if (this.selectedTab == 'activation') {
+    //   this.remark = 'addon_add'
+    // } else {
+    //   this.remark = 'addon_remove'
+    // }
+    this.userservice.getBulkOperationListByDate(this.role, this.username, 'addon_add', this.date, 4)
+      .subscribe(
+        (response: HttpResponse<any[]>) => { // Expect HttpResponse<any[]>
+          if (response.status === 200) {
+            this.rowData = response.body;
+            // this.swal.Success_200();
+          } else if (response.status === 204) {
+            this.swal.Success_204();
+          }
+        },
+        (error) => {
+          if (error.status === 400) {
+            this.swal.Error_400();
+          } else if (error.status === 500) {
+            this.swal.Error_500();
+          } else {
+            Swal.fire('Error', 'Something went wrong. Please try again.', 'error');
+          }
+        }
+      );
+  }
+  removerefresh() {
+    // console.log(this.selectedTab);
+    // if (this.selectedTab == 'activation') {
+    //   this.remark = 'addon_add'
+    // } else {
+    //   this.remark = 'addon_remove'
+    // }
+    // console.log(this.remark);
+
+    this.userservice.getBulkOperationRefreshList(this.role, this.username, 'addon_remove', 6)
       .subscribe(
         (response: HttpResponse<any[]>) => { // Expect HttpResponse<any[]>
           if (response.status === 200) {
@@ -203,6 +262,7 @@ export class AddonActivationComponent {
     this.selectedCas = ''
     this.castype = ''
     this.alacarteList = ''
+    this.rowData = [];
   }
   get billingAddressCheckbox() {
     return this.form.get('billingAddressCheckbox');
@@ -315,7 +375,7 @@ export class AddonActivationComponent {
       formData.append('type', '7');
       formData.append('iscollected', this.iscollected.toString());
       formData.append('retailerid', '0');
-      formData.append('optype', '3');
+      formData.append('optype', '5');
       formData.append('selectedlist', this.alacarteList);
 
       this.userservice.uploadFileForAddonAndAlacarteActivation(formData)

@@ -35,6 +35,7 @@ export class AddonManageComponent {
   addodn_added_list: any[] = [];
   alacarte_list_id: any = [];
   bouquet_list_id: any;
+  bouquet_removelist_id: any = [];
   available_alacarte_list: any = [];
   added_alacarte_list: any = [];
   available_bouquet_list: any = [];
@@ -57,6 +58,11 @@ export class AddonManageComponent {
   filteredAddedList: any = [];
   filteredAvailableBouquetList: any = [];
   filteredAddedBouquetList: any = [];
+
+  takenAlacarte: any;
+  placedAlacarte: any;
+  alacarteOutput: any;
+  adalarteOutput: any;
 
 
   constructor(public dialog: MatDialog, public router: Router, private route: ActivatedRoute, private cdr: ChangeDetectorRef, private swal: SwalService, private userService: BaseService, private storageservice: StorageService) {
@@ -110,48 +116,142 @@ export class AddonManageComponent {
 
   done = ['Get up', 'Brush teeth', 'Take a shower', 'Check e-mail'];
   containerData: any = [];
-  drop(event: CdkDragDrop<string[]>) {
+  
 
-    console.log(event);
-    // this.containerData = event.container.data;
-    // console.log(event.container.data);
-    // console.log(this.containerData);
-    // this.containerData = event.container.data.map(item => {
-    //   const match = item.match(/\((.*?)\)/);
-    //   return match ? match[1] : null;
-    // });
-    console.log(this.containerData);
+  drop(event: CdkDragDrop<string[]>, val: number) {
     if (event.previousContainer === event.container) {
-      console.log('sss');
       moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
     } else {
-      console.log('dfdlfjd');
-      transferArrayItem(
-        event.previousContainer.data,
-        event.container.data,
-        event.previousIndex,
-        event.currentIndex,
-      );
-    }
-    console.log(event.previousContainer.data);  
-    
-    // this.containerData = event.previousContainer.data.map(item => {
-    //   const match = item.match(/\((.*?)\)/);
-    //   return match ? match[1] : null;
-    // }).filter(Boolean);
-    this.containerData = event.container.data.map(item => {
-      const match = item.match(/\((.*?)\)/);
-      return match ? match[1] : null;
-    }).filter(Boolean);
+      transferArrayItem(event.previousContainer.data, event.container.data, event.previousIndex, event.currentIndex);
+      this.available_alacarte_list = event.previousContainer.data;
+          this.added_alacarte_list = event.container.data;
+       if (val === 1) {
+        this.alacarteOutput = this.available_alacarte_list;
+      } else if (val === 2) {
+        this.adalarteOutput = this.added_alacarte_list;
+      }
+       const alacarteIds = (this.alacarteOutput || this.adalarteOutput).map((item: any) => {
+        const match = item.match(/\((\d+)\)/);
+        return match ? Number(match[1]) : null;
+      }).filter((id: any) => id !== null);
 
-    console.log("Updated container data:", this.containerData);
+      this.containerData = [...alacarteIds];
+    }
   }
+
+  drop1(event: CdkDragDrop<string[]>, val: number) {
+    const draggedItem = event.item; 
+    const draggedElement = draggedItem.element.nativeElement; 
+    const draggedData = draggedItem.data;
+    console.log('Dragged data:', draggedData);
+    console.log('Dragged element:', draggedElement);
+    console.log('Item dropped:', event.item);
+    console.log(event);
+    console.log(val);
+    console.log("ddddd")
+    console.log(available_old_bouquet_list);
+    console.log(this.available_bouquet_list);
+    var available_old_bouquet_list = this.available_bouquet_list;
+    console.log(this.bouquet_removelist_id);
+    if (event.previousContainer === event.container) {
+      moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
+    } else {
+      transferArrayItem(event.previousContainer.data, event.container.data, event.previousIndex, event.currentIndex);
+      if (val == 1) {
+        this.available_bouquet_list = event.container.data;
+        this.added_bouquet_list = event.previousContainer.data;
+        console.log('else condition')
+        const textContent = draggedElement.textContent || draggedElement.innerText;
+        console.log(textContent);
+        console.log("1111")
+        const match = textContent.match(/\((\d+)\)/);
+        console.log("222")
+        console.log(match);
+        if (match) {
+          console.log("333")
+          const id = match[1];
+          console.log("4444")
+          console.log(id);
+          this.bouquet_removelist_id.push(id);
+          console.log("5555")
+        } else {
+          console.log("6666")
+          console.log('No ID found');
+        }
+      } else {
+        console.log("7777")
+        this.added_bouquet_list = event.container.data;
+        console.log("888")
+        this.available_bouquet_list = event.previousContainer.data;
+        console.log("99")
+        console.log('bouquet list',this.bouquet_removelist_id);
+        
+      }
+      this.containerData = this.added_bouquet_list.map((item: any) => {
+        console.log("10")
+        const match = item.match(/\((.*?)\)/);
+        return match ? match[1] : null;
+      }).filter(Boolean);
+      console.log('container',this.containerData);
+      console.log("11")
+    }
+    console.log("-------------------------------------------------")
+    console.log(this.bouquet_removelist_id)
+  }
+  drop2(event: CdkDragDrop<string[]>, val: number) {
+    const draggedItem = event.item; // CdkDrag instance of the dragged element
+    const draggedElement = draggedItem.element.nativeElement; // Actual DOM element
+    const draggedData = draggedItem.data;
+    console.log('Dragged data:', draggedData);
+    console.log('Dragged element:', draggedElement);
+    console.log('Item dropped:', event.item);
+    console.log(event);
+    console.log(val);
+    console.log("ddddd")
+    console.log(available_old_bouquet_list);
+    var available_old_bouquet_list = this.available_alacarte_list;
+    console.log(this.bouquet_removelist_id);
+    if (event.previousContainer === event.container) {
+      moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
+    } else {
+      transferArrayItem(event.previousContainer.data, event.container.data, event.previousIndex, event.currentIndex);
+      if (val == 1) {
+        this.available_alacarte_list = event.container.data;
+        this.added_alacarte_list = event.previousContainer.data;
+        console.log('else condition')
+        const textContent = draggedElement.textContent || draggedElement.innerText;
+        console.log(textContent);
+        const match = textContent.match(/\((\d+)\)/);
+        console.log(match);
+        if (match) {
+          const id = match[1];
+          console.log(id);
+          this.bouquet_removelist_id.push(id);
+        } else {
+          console.log('No ID found');
+        }
+      } else {
+        this.added_alacarte_list = event.container.data;
+        this.available_alacarte_list = event.previousContainer.data;
+      }
+      this.containerData = this.added_alacarte_list.map((item: any) => {
+        const match = item.match(/\((.*?)\)/);
+        return match ? match[1] : null;
+      }).filter(Boolean);
+      console.log(this.containerData);
+    }
+    console.log("-------------------------------------------------")
+    console.log(this.bouquet_removelist_id)
+  }
+
+
+
+
   back() {
     this.router.navigateByUrl("admin/Addon");
-    // this.router.navigateByUrl("/drag_drop");
   }
   trackByFn(index: number, item: string) {
-    return index; // or item, depending on the uniqueness of items
+    return index; 
   }
   pay_channel(type: any) {
     let dialogData = { type: type, package_id: this.id }
@@ -227,8 +327,6 @@ export class AddonManageComponent {
 
 
   moveSelectedBouquet_Items(direction: 'left' | 'right') {
-    console.log(event);
-
     const itemsToMove: any[] = [];
     if (direction === 'right') {
       this.selectedItems.forEach(item => {
@@ -244,7 +342,6 @@ export class AddonManageComponent {
         return match ? match[1] : null;
       }).filter(Boolean);
       console.log(this.containerData);
-
       console.log(this.added_bouquet_list);
     } else if (direction === 'left') {
       this.selectedItems.forEach(item => {
@@ -254,7 +351,6 @@ export class AddonManageComponent {
           this.available_bouquet_list.push(item);
           itemsToMove.push(item);
         }
-        // console.log(this.available_bouquet_list.push(item));
       });
       this.bouquet_list_id = Array.from(this.selectedItems).map(item => {
         const match = item.match(/\((\d+)\)/);
@@ -266,20 +362,9 @@ export class AddonManageComponent {
       }).filter(Boolean);
       console.log(this.containerData);
     }
-
-   
-    console.log(this.bouquet_list_id);
-    console.log(this.available_bouquet_list);
-    // this.containerData = this.added_bouquet_list.map((item: any) => {
-    //   const match = item.match(/\((.*?)\)/);
-    //   return match ? match[1] : null;
-    // }).filter(Boolean);
-    // console.log(this.containerData);
-
     this.filteredAvailableBouquetList = [...this.available_bouquet_list];
     this.filteredAddedBouquetList = [...this.added_bouquet_list];
     this.selectedItems.clear();
-    // console.log(this.containerData);
   }
 
 
@@ -309,16 +394,18 @@ export class AddonManageComponent {
 
   moveAll_bouquet_Items(direction: 'left' | 'right') {
     if (direction === 'right') {
+      console.log('right to left');
+      
       this.added_bouquet_list.push(...this.available_bouquet_list);
-      // this.available_bouquet_list.forEach((item: any) => {
-      //   if (!this.added_bouquet_list.includes(item)) {
-      //     this.added_bouquet_list.push(item);
-      //   }
-      // });
-      this.bouquet_list_id = this.available_bouquet_list.map((item: any) => {
-        const match = item.match(/\((\d+)\)/);
-        return match ? match[1] : null;
+      this.available_bouquet_list.forEach((item: any) => {
+        if (!this.added_bouquet_list.includes(item)) {
+          this.added_bouquet_list.push(item);
+        }
       });
+      // this.bouquet_list_id = this.available_bouquet_list.map((item: any) => {
+      //   const match = item.match(/\((\d+)\)/);
+      //   return match ? match[1] : null;
+      // });
       this.containerData = this.added_bouquet_list.map((item: any) => {
         const match = item.match(/\((\d+)\)/);
         return match ? match[1] : null;
@@ -326,15 +413,17 @@ export class AddonManageComponent {
       console.log(this.containerData);
       this.available_bouquet_list = [];
     } else if (direction === 'left') {
-      // this.added_bouquet_list.forEach((item: any) => {
-      //   if (!this.available_bouquet_list.includes(item)) {
-      //     this.available_bouquet_list.push(item);
-      //   }
-      // });
-      // this.bouquet_list_id = this.available_bouquet_list.map((item: any) => {
-      //   const match = item.match(/\((\d+)\)/);
-      //   return match ? match[1] : null;
-      // });
+      console.log('left to right');
+
+      this.added_bouquet_list.forEach((item: any) => {
+        if (!this.available_bouquet_list.includes(item)) {
+          this.available_bouquet_list.push(item);
+        }
+      });
+      this.bouquet_list_id = this.available_bouquet_list.map((item: any) => {
+        const match = item.match(/\((\d+)\)/);
+        return match ? match[1] : null;
+      });
       console.log(this.bouquet_list_id);
       this.available_bouquet_list.push(...this.added_bouquet_list);
       this.added_bouquet_list = [];
@@ -442,6 +531,10 @@ export class AddonManageComponent {
   save1() {
     this.containerData = this.containerData.length == 0 ? 0 : this.containerData;
     console.log(this.containerData);
+    console.log('bouquet_list_id', this.bouquet_list_id);
+    var bouquetId = this.bouquet_removelist_id || 0;
+    console.log('bouquet_removelist_id', bouquetId);
+
     Swal.fire({
       title: "Are you sure?",
       text: "You won't be able to revert this!",
@@ -460,7 +553,10 @@ export class AddonManageComponent {
             Swal.showLoading(null);
           }
         });
-        this.userService.AddingdbouquetTo_Addon_Package(this.modified, this.containerData, this.role, this.username, this.id, this.bouquet_list_id || 0,).subscribe((res: any) => {
+        if (bouquetId == null || bouquetId == undefined || bouquetId == '') {
+          bouquetId = 0;
+        }
+        this.userService.AddingdbouquetTo_Addon_Package(this.modified, this.containerData, this.role, this.username, this.id, bouquetId || this.bouquet_list_id || 0,).subscribe((res: any) => {
           console.log(res);
           this.swal.success(res?.message);
         }, (err) => {

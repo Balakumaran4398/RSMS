@@ -39,13 +39,13 @@ export class RecurringComponent implements OnInit {
   columnDefs: ColDef[] = [
     {
       headerName: "S.No", lockPosition: true, valueGetter: 'node.rowIndex+1', cellClass: 'locked-col', headerCheckboxSelection: true,
-      checkboxSelection: true,width:100
+      checkboxSelection: true, width: 100
     },
-    { headerName: "SUBSCRIBER NAME", field: 'customername',width:250 },
-    { headerName: "ADDRESS", field: 'address',width:250  },
-    { headerName: "SMARTCARD", field: 'smartcard',width:300  },
+    { headerName: "SUBSCRIBER NAME", field: 'customername', width: 250 },
+    { headerName: "ADDRESS", field: 'address', width: 250 },
+    { headerName: "SMARTCARD", field: 'smartcard', width: 300 },
     {
-      headerName: "RECURRING", field: 'isrecurring',width:300 ,
+      headerName: "RECURRING", field: 'isrecurring', width: 300,
       cellRenderer: (params: any) => {
         if (params.value === true) {
           return `<span style="color: green; font-weight: bold;">Activate</span>`;
@@ -54,8 +54,8 @@ export class RecurringComponent implements OnInit {
         }
       }
     },
-    { headerName: "BOXID	", field: 'boxid',width:300  },
-    { headerName: "EXPIRY DATE	", field: 'expirydate',width:300  },
+    { headerName: "BOXID	", field: 'boxid', width: 300 },
+    { headerName: "EXPIRY DATE	", field: 'expirydate', width: 300 },
   ];
   rowData: any;
   public rowSelection: any = "multiple";
@@ -91,7 +91,7 @@ export class RecurringComponent implements OnInit {
     }
   }
   ngOnInit(): void {
-    this.userservice.getOeratorList(this.role, this.username,1).subscribe((data: any) => {
+    this.userservice.getOeratorList(this.role, this.username, 1).subscribe((data: any) => {
       console.log(data);
       this.operatorList = Object.keys(data).map(key => {
         const value = data[key];
@@ -121,8 +121,8 @@ export class RecurringComponent implements OnInit {
     this.gridApi = params.api;
   }
   submit(type: any) {
-    this.reccuringData=[];
-    this.submitted= true;
+    this.reccuringData = [];
+    this.submitted = true;
     this.userservice.getRecurringListByOperatorIdSearchnameAndIsrecurring(this.role, this.username, this.operatorid, this.searchname || 0, type)
       .subscribe(
         (response: HttpResponse<any[]>) => { // Expect HttpResponse<any[]>
@@ -188,21 +188,77 @@ export class RecurringComponent implements OnInit {
           role: this.role,
           username: this.username,
           recurringlist: this.selectedIds,
+          isrecurring: 'true',
         }
-        this.userservice.bulkIsRecurring(requestBody).subscribe((res: any) => {
-          Swal.fire({
-            title: 'Activated!',
-            text: res.message,
-            icon: 'success'
-          });
-          this.ngOnInit();
+        this.userservice.bulkIsRecurring(requestBody)
+        // .subscribe((res: any) => {
+        //   Swal.fire({
+        //     title: 'Activated!',
+        //     text: res.message,
+        //     icon: 'success'
+        //   });
+        //   this.ngOnInit();
+        // }, (err) => {
+        //   Swal.fire({
+        //     title: 'Error!',
+        //     text: err?.error?.message,
+        //     icon: 'error'
+        //   });
+        // });
+        .subscribe((res: any) => {
+          this.swal.success(res?.message);
         }, (err) => {
-          Swal.fire({
-            title: 'Error!',
-            text: err?.error?.message,
-            icon: 'error'
-          });
+          this.swal.Error(err?.error?.message);
         });
+      }
+    });
+  }
+  Deactive() {
+    Swal.fire({
+      title: "Are you sure?",
+      text: "You won't be able to Active this!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, Active it!"
+    }).then((result) => {
+      if (result.isConfirmed) {
+        Swal.fire({
+          title: 'Updateing...',
+          text: 'Please wait while the Recurring is being updated',
+          allowOutsideClick: false,
+          didOpen: () => {
+            Swal.showLoading(null);
+          }
+        });
+
+        let requestBody = {
+          role: this.role,
+          username: this.username,
+          recurringlist: this.selectedIds,
+          isrecurring: 'false',
+        }
+        this.userservice.bulkIsRecurring(requestBody)
+        // .subscribe((res: any) => {
+        //   Swal.fire({
+        //     title: 'Activated!',
+        //     text: res.message,
+        //     icon: 'success'
+        //   });
+          .subscribe((res: any) => {
+            this.swal.success(res?.message);
+          }, (err) => {
+            this.swal.Error(err?.error?.message);
+          });
+        //   this.ngOnInit();
+        // }, (err) => {
+        //   Swal.fire({
+        //     title: 'Error!',
+        //     text: err?.error?.message,
+        //     icon: 'error'
+        //   });
+        // });
       }
     });
   }

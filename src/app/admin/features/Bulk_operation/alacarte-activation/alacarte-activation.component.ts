@@ -64,10 +64,10 @@ export class AlacarteActivationComponent {
   ];
   columnDefs1: ColDef[] = [
     { headerName: "S.No", lockPosition: true, valueGetter: 'node.rowIndex+1', cellClass: 'locked-col', width: 80, suppressNavigable: true, sortable: false, filter: false },
-    { headerName: "SMARTCARD", field: 'smartcard', width: 200, },
+    { headerName: "SMARTCARD", field: 'smartcard', width: 250, },
     { headerName: "CHANNEL NAME", field: 'packagename', width: 300 },
     {
-      headerName: "STATUS	", field: 'status', width: 200,
+      headerName: "STATUS	", field: 'status', width: 250,
       cellRenderer: (params: any) => {
         const status = params.value;
         if (status === 'Success') {
@@ -80,7 +80,7 @@ export class AlacarteActivationComponent {
       }
     },
     { headerName: "REMARKS", field: 'remarks', width: 200 },
-    { headerName: "CREATED DATE	", field: 'createddate', width: 200 },
+    { headerName: "CREATED DATE	", field: 'createddate', width: 250 },
   ];
   rowData: any;
   public rowSelection: any = "multiple";
@@ -120,13 +120,14 @@ export class AlacarteActivationComponent {
     this.date = new Date().toISOString().split('T')[0];
     this.selectedDate = this.date;
     this.filteredToppingList = [...this.toppingList];
-    this.refresh();
+    // this.refresh();
     console.log(this.cas);
     this.userservice.Finger_print_List(this.role, this.username).subscribe((data) => {
       this.cas = Object.entries(data[0].caslist).map(([key, value]) => ({ name: key, id: value }));
       console.log(this.cas);
 
     });
+    this.onCaschange('');
 
   }
   filterToppings() {
@@ -139,6 +140,7 @@ export class AlacarteActivationComponent {
     this.selectedTab = tab;
     this.castype = ''
     this.alacarteList = ''
+    this.rowData = [];
   }
   get billingAddressCheckbox() {
     return this.form.get('billingAddressCheckbox');
@@ -192,7 +194,12 @@ export class AlacarteActivationComponent {
     this.selectedCas = selectedCas;
     this.castype = selectedCas.id;
     console.log("Selected CAS type:", this.castype);
-    this.userservice.getAlacartelistByCasType(this.role, this.username, this.castype).subscribe((data: any) => {
+    // this.userservice.getAlacartelistByCasType(this.role, this.username, this.castype).subscribe((data: any) => {
+    //   console.log(data);
+    //   this.toppingList = Object.entries(data).map(([key, value]) => ({ name: key, id: value }));
+    //   console.log(this.toppingList);
+    // });
+    this.userservice.getAlacarteListforbulk(this.role, this.username).subscribe((data: any) => {
       console.log(data);
       this.toppingList = Object.entries(data).map(([key, value]) => ({ name: key, id: value }));
       console.log(this.toppingList);
@@ -215,10 +222,10 @@ export class AlacarteActivationComponent {
       formData.append('username', this.username);
       formData.append('file', this.file);
       formData.append('castype', this.castype);
-      formData.append('type', '6');
+      formData.append('type', '7');
       formData.append('iscollected', this.iscollected.toString());
       formData.append('retailerid', '0');
-      formData.append('optype', '4');
+      formData.append('optype', '6');
       formData.append('selectedlist', this.alacarteList);
       this.userservice.uploadFileForAddonAndAlacarteActivation(formData)
         .subscribe((res: any) => {
@@ -278,15 +285,15 @@ export class AlacarteActivationComponent {
   }
 
 
-  getData() {
+  getAddonData() {
     this.rowData = [];
     const dateToPass = this.selectedDate || this.date;
-    this.userservice.getBulkOperationListByDate(this.role, this.username, 'alacarte_add', dateToPass, 4)
+    this.userservice.getBulkOperationListByDate(this.role, this.username, 'alacarte_add', this.date, 5)
       .subscribe(
         (response: HttpResponse<any[]>) => { // Expect HttpResponse<any[]>
           if (response.status === 200) {
             this.rowData = response.body;
-            // this.swal.Success_200();
+            this.swal.Success_200();
           } else if (response.status === 204) {
             this.rowData = '';
             this.swal.Success_204();
@@ -303,13 +310,61 @@ export class AlacarteActivationComponent {
         }
       );
   }
-  refresh() {
-    this.userservice.getBulkOperationRefreshList(this.role, this.username, 'alacarte_add', 4)
+  getremoveData() {
+    this.rowData = [];
+    const dateToPass = this.selectedDate || this.date;
+    this.userservice.getBulkOperationListByDate(this.role, this.username, 'alacarte_remove', this.date, 7)
       .subscribe(
         (response: HttpResponse<any[]>) => { // Expect HttpResponse<any[]>
           if (response.status === 200) {
             this.rowData = response.body;
-            // this.swal.Success_200();
+            this.swal.Success_200();
+          } else if (response.status === 204) {
+            this.rowData = '';
+            this.swal.Success_204();
+          }
+        },
+        (error) => {
+          if (error.status === 400) {
+            this.swal.Error_400();
+          } else if (error.status === 500) {
+            this.swal.Error_500();
+          } else {
+            Swal.fire('Error', 'Something went wrong. Please try again.', 'error');
+          }
+        }
+      );
+  }
+  addonrefresh() {
+    this.userservice.getBulkOperationRefreshList(this.role, this.username, 'alacarte_add', 5)
+      .subscribe(
+        (response: HttpResponse<any[]>) => { // Expect HttpResponse<any[]>
+          if (response.status === 200) {
+            this.rowData = response.body;
+            this.swal.Success_200();
+          } else if (response.status === 204) {
+            this.rowData = '';
+            this.swal.Success_204();
+          }
+        },
+        (error) => {
+          if (error.status === 400) {
+            this.swal.Error_400();
+          } else if (error.status === 500) {
+            this.swal.Error_500();
+          } else {
+            Swal.fire('Error', 'Something went wrong. Please try again.', 'error');
+          }
+        }
+      );
+  }
+  removerefresh() {
+    this.userservice.getBulkOperationRefreshList(this.role, this.username, 'alacarte_remove', 7)
+      .subscribe(
+        (response: HttpResponse<any[]>) => { // Expect HttpResponse<any[]>
+          if (response.status === 200) {
+            this.rowData = response.body;
+            this.swal.Success_200();
           } else if (response.status === 204) {
             this.rowData = '';
             this.swal.Success_204();

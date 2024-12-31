@@ -9,8 +9,10 @@
             </div>
         </div>
         <div *ngIf="selectedTab === 'activation'" class="commission">
+            <div class="title">
+                <h5>BULK ALACARTE HISTORY</h5>
+            </div>
             <div class="row">
-                <!-- Left Column (File Upload and Instructions) -->
                 <div class="col-12 col-lg-4 d-flex justify-content-center align-items-center mb-4 mb-lg-0">
                     <div class="card p-4 file ">
                         <div class="d-flex justify-content-center align-items-center mb-3">
@@ -52,7 +54,7 @@
                             </label>
                             <span class="mx-3" style="color:#0a21d0">{{filePath }} </span>
                         </div>
-                        <div class="col-12 mb-3">
+                        <!-- <div class="col-12 mb-3">
                             <select placeholder="Select the CAS" class="form-control" [(ngModel)]="castype"
                                 (change)="casPackageList()">
                                 <option value="" disaled>Select CAS</option>
@@ -63,11 +65,11 @@
                             <div *ngIf="submitted && !castype" class="text-danger" style="font-size: small;">
                                 CAS  is required
                             </div>
-                        </div>
+                        </div> -->
 
                         <div *ngIf="castype !== '0'" class="col-12 mb-3">
                             <mat-form-field class="w-100" appearance="outline">
-                                <mat-label>Select Alacarte List by CAS type</mat-label>
+                                <mat-label>Select Alacarte </mat-label>
                                 <mat-select [formControl]="toppings" multiple [(ngModel)]="alacarteList">
                                     <div class="input_box " style="padding: 1rem;">
                                         <input placeholder="Search..." [(ngModel)]="searchText"
@@ -88,9 +90,7 @@
                 <!-- Right Column (Bulk Alacarte History) -->
                 <div class="col-12 col-lg-8 d-flex justify-content-center">
                     <div class="card col-12">
-                        <div class="title">
-                            <h5>BULK ALACARTE HISTORY</h5>
-                        </div>
+                      
                         <div class="row d-flex align-items-center justify-content-center" style="padding: 0.5rem;">
                             <div class="col-12 mb-3">
                                 <div class="row align-items-center justify-content-center mb-3" style="gap:10px;">
@@ -98,10 +98,10 @@
                                         <input class="date form-control" type="date" [(ngModel)]="date" >
                                     </div>
                                     <div class="col-12 col-md-3 mb-2 mb-md-0">
-                                        <button class="btn btn-secondary w-100" (click)="getData()">Get Data</button>
+                                        <button class="btn btn-secondary w-100" (click)="getAddonData()">Get Data</button>
                                     </div>
                                     <div class="col-12 col-md-3 mb-2 mb-md-0">
-                                        <button class="btn btn-secondary w-100" (click)="refresh()">Refresh</button>
+                                        <button class="btn btn-secondary w-100" (click)="addonrefresh()">Refresh</button>
                                     </div>
                                 </div>
 
@@ -118,6 +118,9 @@
         </div>
     </div>
     <div *ngIf="selectedTab === 'remove'">
+        <div class="title">
+            <h5>BULK ALACARTE REMOVE HISTORY</h5>
+        </div>
         <div class="container ">
             <div class="row justify-content-center align-items-center mb-2">
                 <!-- File Input -->
@@ -130,7 +133,7 @@
                 </div>
 
                 <!-- First Select Input -->
-                <div class="col-12 col-md-3  mt-2">
+                <!-- <div class="col-12 col-md-3  mt-2">
                     <select placeholder="Select the CAS" class="form-control" [(ngModel)]="castype"
                         (change)="casPackageList()">
                         <option value="" selected>Select CAS</option>
@@ -141,12 +144,12 @@
                     <div *ngIf="submittedRemove && !castype" class="text-danger" style="font-size: small;">
                         CAS  is required
                     </div>
-                </div>
+                </div> -->
 
                 <!-- Second Select Input -->
                 <div class="col-12 col-md-5 mt-2 ">
                     <mat-form-field class="w-100" appearance="outline">
-                        <mat-label>Select Alacarte List by CAS type</mat-label>
+                        <mat-label>Select Alacarte </mat-label>
                         <mat-select [formControl]="toppings" multiple [(ngModel)]="alacarteList">
                             <div class="input_box " style="padding: 1rem;">
                                 <input placeholder="Search..." [(ngModel)]="searchText"
@@ -169,23 +172,20 @@
             </div>
         </div>
 
-        <div class="col-12 col-lg-8 d-flex justify-content-center align-item-center"
+        <div class="col-12 col-lg-10 d-flex justify-content-center align-item-center"
             style="margin:auto;padding-top: 5%;">
             <div class="card col-12">
-                <div class="title">
-                    <h5>BULK ALACARTE REMOVE HISTORY</h5>
-                </div>
-                <div class="row d-flex align-items-center justify-content-center" style="padding: 0.5rem;">
+                        <div class="row d-flex align-items-center justify-content-center" style="padding: 0.5rem;">
                     <div class="col-12 mb-3">
                         <div class="row align-items-center justify-content-center mb-3" style="gap:10px;">
                             <div class="col-12 col-md-3 mb-2 mb-md-0">
-                                <input class="date form-control" type="date" [(ngModel)]="selectedDate">
+                                <input class="date form-control" type="date" [(ngModel)]="date">
                             </div>
                             <div class="col-12 col-md-3 mb-2 mb-md-0">
-                                <button class="btn btn-secondary w-100" (click)="getData()">Get Data</button>
+                                <button class="btn btn-secondary w-100" (click)="getremoveData()">Get Data</button>
                             </div>
                             <div class="col-12 col-md-3 mb-2 mb-md-0">
-                                <button class="btn btn-secondary w-100" (click)="refresh()">Refresh</button>
+                                <button class="btn btn-secondary w-100" (click)="removerefresh()">Refresh</button>
                             </div>
                         </div>
 

@@ -30,6 +30,7 @@ export class PackageManageComponent {
   modified: boolean = true;
   available_alacarte_list: any = [];
   alacarte_list_id: any = [];
+  bouquet_removelist_id: any = [];
   searchTermAvailable: string = '';
   bouquet_list_id: any = [];
   removed_channel_list: any;
@@ -62,6 +63,8 @@ export class PackageManageComponent {
   added_alacrte_count: any;
   available_bouquet_count: any;
   added_bouquet_count: any;
+
+  containerID: any;
 
   constructor(public dialog: MatDialog, public router: Router, private cdr: ChangeDetectorRef, private route: ActivatedRoute, private swal: SwalService, private userService: BaseService, private storageservice: StorageService) {
     this.username = storageservice.getUsername();
@@ -143,10 +146,10 @@ export class PackageManageComponent {
     let width = '1500px';
     if (type === 'pair') {
       width = '1250px';
-    } 
+    }
     if (type === 'paychannel') {
       width = '805px'; // Set width to 805px for paychannel
-    } 
+    }
     if (type === 'bouquet') {
       width = '820px';
     }
@@ -159,7 +162,7 @@ export class PackageManageComponent {
     dialogRef.afterClosed().subscribe(result => {
       console.log('The dialog was closed');
     });
-}
+  }
 
 
   filterAvailableList(): void {
@@ -395,24 +398,49 @@ export class PackageManageComponent {
     this.selectedItems.clear();
   }
 
+
+
   moveAll_bouquet_Items(direction: 'left' | 'right') {
     if (direction === 'right') {
+      console.log('right to left');
+
       this.added_bouquet_list.push(...this.available_bouquet_list);
-      this.containerData = this.available_bouquet_list.map((item: any) => {
+      this.available_bouquet_list.forEach((item: any) => {
+        if (!this.added_bouquet_list.includes(item)) {
+          this.added_bouquet_list.push(item);
+        }
+      });
+      // this.bouquet_list_id = this.available_bouquet_list.map((item: any) => {
+      //   const match = item.match(/\((\d+)\)/);
+      //   return match ? match[1] : null;
+      // });
+      this.containerData = this.added_bouquet_list.map((item: any) => {
+        const match = item.match(/\((\d+)\)/);
+        return match ? match[1] : null;
+      });
+      console.log(this.containerData);
+      this.available_bouquet_list = [];
+    } else if (direction === 'left') {
+      console.log('left to right');
+
+      this.added_bouquet_list.forEach((item: any) => {
+        if (!this.available_bouquet_list.includes(item)) {
+          this.available_bouquet_list.push(item);
+        }
+      });
+      this.bouquet_list_id = this.available_bouquet_list.map((item: any) => {
         const match = item.match(/\((\d+)\)/);
         return match ? match[1] : null;
       });
       console.log(this.bouquet_list_id);
-      this.available_bouquet_list = [];
-    } else if (direction === 'left') {
       this.available_bouquet_list.push(...this.added_bouquet_list);
       this.added_bouquet_list = [];
     }
-    this.filteredAvailableBouquetList = [...this.available_bouquet_list]
-    this.filteredAddedBouquetList = [...this.added_bouquet_list]
+
+    this.filteredAvailableBouquetList = [...this.available_bouquet_list];
+    this.filteredAddedBouquetList = [...this.added_bouquet_list];
     this.selectedItems.clear();
   }
-
   containerData: any = [];
   drop(event: CdkDragDrop<string[]>) {
     console.log(event);
@@ -437,7 +465,114 @@ export class PackageManageComponent {
 
     console.log("Updated container data:", this.containerData);
   }
-  containerID: any;
+
+  // -----------------------------------------------------------------------------------------
+
+  drop1(event: CdkDragDrop<string[]>, val: number) {
+    const draggedItem = event.item;
+    const draggedElement = draggedItem.element.nativeElement;
+    const draggedData = draggedItem.data;
+    console.log('Dragged data:', draggedData);
+    console.log('Dragged element:', draggedElement);
+    console.log('Item dropped:', event.item);
+    console.log(event);
+    console.log(val);
+    console.log("ddddd")
+    console.log(available_old_bouquet_list);
+    console.log(this.available_bouquet_list);
+    var available_old_bouquet_list = this.available_bouquet_list;
+    console.log(this.bouquet_removelist_id);
+    if (event.previousContainer === event.container) {
+      moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
+    } else {
+      transferArrayItem(event.previousContainer.data, event.container.data, event.previousIndex, event.currentIndex);
+      if (val == 1) {
+        this.available_bouquet_list = event.container.data;
+        this.added_bouquet_list = event.previousContainer.data;
+        console.log('else condition')
+        const textContent = draggedElement.textContent || draggedElement.innerText;
+        console.log(textContent);
+        console.log("1111")
+        const match = textContent.match(/\((\d+)\)/);
+        console.log("222")
+        console.log(match);
+        if (match) {
+          console.log("333")
+          const id = match[1];
+          console.log("4444")
+          console.log(id);
+          this.bouquet_removelist_id.push(id);
+          console.log("5555")
+        } else {
+          console.log("6666")
+          console.log('No ID found');
+        }
+      } else {
+        console.log("7777")
+        this.added_bouquet_list = event.container.data;
+        console.log("888")
+        this.available_bouquet_list = event.previousContainer.data;
+        console.log("99")
+        console.log('bouquet list', this.bouquet_removelist_id);
+
+      }
+      this.containerData = this.added_bouquet_list.map((item: any) => {
+        const match = item.match(/\((.*?)\)/);
+        return match ? match[1] : null;
+      }).filter(Boolean);
+      console.log('container', this.containerData);
+      console.log("11")
+    }
+    console.log("-------------------------------------------------")
+    console.log(this.bouquet_removelist_id)
+  }
+  drop2(event: CdkDragDrop<string[]>, val: number) {
+    const draggedItem = event.item; // CdkDrag instance of the dragged element
+    const draggedElement = draggedItem.element.nativeElement; // Actual DOM element
+    const draggedData = draggedItem.data;
+    console.log('Dragged data:', draggedData);
+    console.log('Dragged element:', draggedElement);
+    console.log('Item dropped:', event.item);
+    console.log(event);
+    console.log(val);
+    console.log("ddddd")
+    console.log(available_old_bouquet_list);
+    var available_old_bouquet_list = this.available_alacarte_list;
+    console.log(this.bouquet_removelist_id);
+    if (event.previousContainer === event.container) {
+      moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
+    } else {
+      transferArrayItem(event.previousContainer.data, event.container.data, event.previousIndex, event.currentIndex);
+      if (val == 1) {
+        this.available_alacarte_list = event.container.data;
+        this.added_alacarte_list = event.previousContainer.data;
+        // console.log('else condition')
+        // const textContent = draggedElement.textContent || draggedElement.innerText;
+        // console.log(textContent);
+        // const match = textContent.match(/\((\d+)\)/);
+        // console.log(match);
+        // if (match) {
+        //   const id = match[1];
+        //   console.log(id);
+        //   this.bouquet_removelist_id.push(id);
+        // } else {
+        //   console.log('No ID found');
+        // }
+      } else {
+        this.added_alacarte_list = event.container.data;
+        this.available_alacarte_list = event.previousContainer.data;
+        console.log('bouquet list id', this.bouquet_removelist_id);
+
+      }
+      this.containerData = this.added_alacarte_list.map((item: any) => {
+        const match = item.match(/\((.*?)\)/);
+        return match ? match[1] : null;
+      }).filter(Boolean);
+      console.log('container data', this.containerData);
+    }
+    console.log("-------------------------------------------------")
+    console.log(this.bouquet_removelist_id)
+  }
   save() {
     console.log(this.containerData);
     console.log(this.alacarte_list_id);
@@ -496,10 +631,18 @@ export class PackageManageComponent {
     this.selectedItems.clear();
   }
   save1() {
-    console.log(this.containerData);
-    console.log(this.bouquet_list_id);
+    // console.log('container data', this.containerData);
+    // console.log('bouquet list', this.bouquet_list_id);
+    // var bouquetId = this.bouquet_removelist_id || 0;
+    // console.log('bouquet_removelist_id', this.bouquet_removelist_id);
+    // console.log('this.bouquet_removelist_id.length', this.bouquet_removelist_id);
+    // this.containerData = this.containerData.length == 0 ? 0 : this.containerData;
     this.containerData = this.containerData.length == 0 ? 0 : this.containerData;
-    if (this.bouquet_list_id) {
+    console.log(this.containerData);
+    console.log('bouquet_list_id', this.bouquet_list_id);
+    var bouquetId = this.bouquet_removelist_id || 0;
+    console.log('bouquet_removelist_id', bouquetId);
+    // if (this.bouquet_list_id) {
       Swal.fire({
         title: "Are you sure?",
         text: "You won't be able to revert this!",
@@ -518,7 +661,12 @@ export class PackageManageComponent {
               Swal.showLoading(null);
             }
           });
-          this.userService.AddingdbouquetTo_Base_Package(this.modified, this.containerData, this.role, this.username, this.package_id, this.removed_channel_list || 0,).subscribe((res: any) => {
+          if (bouquetId == null || bouquetId == undefined || bouquetId == '') {
+            bouquetId = 0;
+          }
+          console.log('bouquetId',bouquetId);
+          
+          this.userService.AddingdbouquetTo_Base_Package(this.modified, this.containerData, this.role, this.username, this.package_id, bouquetId ,).subscribe((res: any) => {
             console.log(res);
             this.swal.success(res?.message);
           }, (err) => {
@@ -526,15 +674,18 @@ export class PackageManageComponent {
           });
         }
       });
-    } else {
-      // this.swal.Invalid();
-      Swal.fire({
-        title: 'Warning!',
-        icon: 'warning',
-        text: 'Invalid Input',
-        timer: 1000,
-        showConfirmButton: false
-      })
-    }
+    // } else {
+    //   // this.swal.Invalid();
+    //   Swal.fire({
+    //     title: 'Warning!',
+    //     icon: 'warning',
+    //     text: 'Invalid Input',
+    //     timer: 1000,
+    //     showConfirmButton: false
+    //   })
+    // }
   }
+
+
+
 }

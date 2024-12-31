@@ -117,7 +117,7 @@
                                 <div class="row align-items-center justify-content-center mb-3" style="gap:10px;">
                                     <div class="col-12 col-md-3 mb-2 mb-md-0">
                                         <input class="date form-control" type="date" name="" id=""
-                                            [(ngModel)]="selectedDate">
+                                            [(ngModel)]="date">
                                     </div>
                                     <div class="col-12 col-md-3 mb-2 mb-md-0">
                                         <button class="btn btn-secondary w-100" (click)="getData()">Get Data</button>
@@ -193,7 +193,7 @@
             </div>
         </div>
 
-        <div class="col-12 col-lg-8 d-flex justify-content-center align-item-center"
+        <div class="col-12 col-lg-10 d-flex justify-content-center align-item-center"
             style="margin:auto;padding-top: 5%;">
             <div class="card col-12">
              
@@ -204,10 +204,10 @@
                                 <input class="date form-control" type="date" [(ngModel)]="date">
                             </div>
                             <div class="col-12 col-md-3 mb-2 mb-md-0">
-                                <button class="btn btn-secondary w-100" (click)="getData()">Get Data</button>
+                                <button class="btn btn-secondary w-100" (click)="addongetData()">Get Data</button>
                             </div>
                             <div class="col-12 col-md-3 mb-2 mb-md-0">
-                                <button class="btn btn-secondary w-100" (click)="refresh()">Refresh</button>
+                                <button class="btn btn-secondary w-100" (click)="removerefresh()">Refresh</button>
                             </div>
                         </div>
 

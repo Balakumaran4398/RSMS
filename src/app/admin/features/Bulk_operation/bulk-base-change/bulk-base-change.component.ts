@@ -25,7 +25,7 @@ export class BulkBaseChangeComponent implements OnInit {
     { headerName: "STATUS", field: 'status', width: 200 },
     { headerName: "REMARKS", field: 'remarks', width: 250 },
     { headerName: "CREATED DATE	", field: 'createddate', width: 230 },
-    { headerName: "UPDATED DATE	", field: 'updateddate', width: 230 },
+    // { headerName: "UPDATED DATE	", field: 'updateddate', width: 230 },
   ];
   rowData: any;
   public rowSelection: any = "multiple";
@@ -37,8 +37,8 @@ export class BulkBaseChangeComponent implements OnInit {
       width: 180,
       floatingFilter: true
     },
-    // paginationPageSize: 15,
-    // pagination: true,
+    paginationPageSize: 15,
+    pagination: true,
   }
   username: any;
   role: any;
@@ -61,7 +61,7 @@ export class BulkBaseChangeComponent implements OnInit {
     this.date = new Date().toISOString().split('T')[0]; // Set default current date
     this.selectedDate = this.date;
     this.refresh();
-    this.userservice.getPackageList(this.role, this.username, 1).subscribe((data: any) => {
+    this.userservice.getBulkPackageUpdationList(this.role, this.username).subscribe((data: any) => {
       console.log(data);
       // this.packageList = Object.keys(data.packageid);
       // console.log(this.packageList);

@@ -32,7 +32,15 @@ export class BulkRechargeComponent {
       resizable: true,
       filter: true,
       width: 320,
-      floatingFilter: true
+      floatingFilter: true,
+      comparator: (valueA: any, valueB: any) => {
+        if (!isNaN(valueA) && !isNaN(valueB)) {
+          return Number(valueA) - Number(valueB); 
+        }
+        if (!valueA) valueA = '';
+        if (!valueB) valueB = '';
+        return valueA.toLowerCase().localeCompare(valueB.toLowerCase());
+      },
     },
     paginationPageSize: 10,
     pagination: true,
@@ -54,7 +62,8 @@ export class BulkRechargeComponent {
     public userService: BaseService, storageService: StorageService, private swal: SwalService) {
     this.username = storageService.getUsername();
     this.role = storageService.getUserRole();
-    this.userService.OperatorDetails(this.role, this.username, 0).subscribe(
+    // this.userService.OperatorDetails(this.role, this.username, 0).subscribe(
+    this.userService.getAllOperatorDetails(this.role, this.username, 1).subscribe(
       (data: any) => {
         console.log(data);
         this.rowData = data;
