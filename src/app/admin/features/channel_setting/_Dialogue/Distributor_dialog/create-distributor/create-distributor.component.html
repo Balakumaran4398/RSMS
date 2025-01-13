@@ -73,16 +73,21 @@
                     <label for="distributor_email" class="me-2">Distributor Email </label>
                 </div>
                 <div class="col-12 col-md-6">
-                    <input type="email" class="" id="distributor_email" formControlName="distributor_email"
+                    <input id="email" type="email" class="" id="distributor_email" formControlName="distributor_email"
                         placeholder="Enter Distributor Email" data-toggle="tooltip" data-placement="bottom">
                     <div *ngIf="distributorForm.get('distributor_email')?.invalid && distributorForm.get('distributor_email')?.touched"
                         class="error-message">
-                        <div *ngIf="distributorForm.get('distributor_email')?.errors?.required">
-                            Email ID is required.
-                        </div>
-                        <div *ngIf="distributorForm.get('distributor_email')?.errors?.email">
-                            Please enter a valid email (e.g., 123@gmail.com).
-                        </div>
+                        <div *ngIf="distributorForm.get('distributor_email')?.invalid && distributorForm.get('distributor_email')?.touched" class="error-message">
+                            <div *ngIf="distributorForm.get('distributor_email')?.hasError('required')">
+                              Email is required.
+                            </div>
+                            <div *ngIf="!distributorForm.get('distributor_email')?.hasError('required') && distributorForm.get('distributor_email')?.hasError('email')">
+                              Please enter a valid email format.
+                            </div>
+                            <div *ngIf="!distributorForm.get('distributor_email')?.hasError('required') && !distributorForm.get('distributor_email')?.hasError('email') && distributorForm.get('distributor_email')?.hasError('invalidEmail')">
+                              Email must include ".in" or ".com" after letters.
+                            </div>
+                          </div>
                     </div>
 
                 </div>

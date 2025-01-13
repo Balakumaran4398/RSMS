@@ -199,17 +199,17 @@ export class SubscriptionBasedComponent implements OnInit {
               this.rowData = response.body;
               console.log(this.type);
               // const title = (this.type + ' REPORT').toUpperCase();
-              const title = (`WEEKLY   ${this.isActive ? 'Active' : 'Deactive'} SUBSCRIPTION REPORT - [ YEAR : '${this.selectedYear} ' - MONTH : '${this.selectedMonthName} ' ']`).toUpperCase();
+              const title = (`WEEKLY   ${this.isActive ? 'Active' : 'Deactive'} SUBSCRIPTION REPORT - [ YEAR : ${this.selectedYear}  - MONTH : ${this.selectedMonthName}  ]`).toUpperCase();
               const sub = 'MSO ADDRESS:' + this.msodetails;
               let areatitle = '';
               let areasub = '';
               let header: string[] = [];
               const datas: Array<any> = [];
-              areatitle = 'A1:J2';
-              areasub = 'A3:J3';
-              header = ['S.NO', 'CUSTOMER NAME', 'SMARTCARD', 'BOXID', 'CAS', 'PACKAGE', 'PRODUCT ID', 'TYPE', 'SUBSCRIPTION START DATE', 'SUBSCRIPTION END DATE'];
+              areatitle = 'A1:K2';
+              areasub = 'A3:K3';
+              header = ['S.NO', 'SUB ID','CUSTOMER NAME', 'SMARTCARD', 'BOXID', 'CAS','TYPE', 'PACKAGE', 'PRODUCT ID',  'SUBSCRIPTION START DATE', 'SUBSCRIPTION END DATE'];
               this.rowData.forEach((d: any,index:number) => {
-                const row = [index +1,d.customername, d.smartcard, d.boxid, d.casname, d.productname, d.casproductid, d.type, d.logdate, d.expirydate];
+                const row = [index +1,d.customername, d.subid,d.smartcard, d.boxid, d.casname,  d.type,d.productname, d.casproductid, d.logdate, d.expirydate];
                 datas.push(row);
               });
 
@@ -221,7 +221,7 @@ export class SubscriptionBasedComponent implements OnInit {
               this.rowData = response.body;
               console.log(this.type);
               // const title = (this.type + ' REPORT').toUpperCase();
-              const title = (`WEEKLY   ${this.isActive ? 'Active' : 'Deactive'} SUBSCRIPTION REPORT - [ YEAR : '${this.selectedYear} ' - MONTH : '${this.selectedMonthName} ' ']`).toUpperCase();
+              const title = (`WEEKLY   ${this.isActive ? 'Active' : 'Deactive'} SUBSCRIPTION REPORT - [ YEAR : ${this.selectedYear}  - MONTH : ${this.selectedMonthName}  ]`).toUpperCase();
               const sub = 'MSO ADDRESS:' + this.msodetails;
               let areatitle = '';
               let areasub = '';
@@ -229,7 +229,7 @@ export class SubscriptionBasedComponent implements OnInit {
               const datas: Array<any> = [];
               areatitle = 'A1:J2';
               areasub = 'A3:J3';
-              header = ['S.NO', 'CUSTOMER NAME', 'SMARTCARD', 'BOXID', 'CAS', 'PACKAGE', 'PRODUCT ID', 'TYPE', 'SUBSCRIPTION START DATE', 'SUBSCRIPTION END DATE'];
+              header = ['S.NO', 'SUB ID','CUSTOMER NAME', 'SMARTCARD', 'BOXID', 'CAS','TYPE', 'PACKAGE', 'PRODUCT ID',  'SUBSCRIPTION START DATE', 'SUBSCRIPTION END DATE'];
               // this.excelService.generateWeeklySubscriptionExcel(areatitle, header, datas, title, areasub, sub);
               this.excelService.generateSuspendBasedExcel(areatitle, header, datas, title, areasub, sub);
 
@@ -252,7 +252,7 @@ export class SubscriptionBasedComponent implements OnInit {
           const data = window.URL.createObjectURL(blob);
           const link = document.createElement('a');
           link.href = data;
-          link.download = (this.type + ".pdf").toUpperCase();
+          // link.download = (this.type + ".pdf").toUpperCase();
           link.download = `WEEKLY  ${this.isActive ? 'Active' : 'Deactive'} SUBCRIPTION REPORT - [YEAR : ${this.selectedMonth} - MONTH : ${this.selectedMonthName}].pdf`.toUpperCase();
 
           link.dispatchEvent(new MouseEvent('click', { bubbles: true, cancelable: true, view: window }));
@@ -288,7 +288,7 @@ export class SubscriptionBasedComponent implements OnInit {
               console.log(this.type);
               // const title = (this.type + ' REPORT').toUpperCase();
               // const title = (this.type + ' REPORT - [ LCO : ' + this.selectedOperator.name + ' - DATE : ' + this.cur_date + ']').toUpperCase();
-              const title = (`As On Date  ${this.isActive ? 'Active' : 'Deactive'}  Subscription History REPORT - [ LCO : ${this.selectedOperator.name}' - DATE : ' ${this.cur_date} ']`).toUpperCase();
+              const title = (`As On Date  ${this.isActive ? 'Active    ' : 'Deactive    '} ${this.type} Subscription History REPORT - [ LCO : ${this.selectedOperator.name} - DATE :  ${this.cur_date} ]`).toUpperCase();
 
               const sub = 'MSO ADDRESS:' + this.msodetails;
               let areatitle = '';
@@ -312,7 +312,7 @@ export class SubscriptionBasedComponent implements OnInit {
               console.log(this.type);
               // const title = (this.type + ' REPORT').toUpperCase();
               // const title = (this.type + ' REPORT - [ LCO : ' + this.selectedOperator.name + ' - DATE : ' + this.cur_date + ']').toUpperCase();
-              const title = (`As On Date  ${this.isActive ? 'Active' : 'Deactive'}  Subscription History REPORT - [ LCO : ${this.selectedOperator.name}' - DATE : ' ${this.cur_date} ']`).toUpperCase();
+              const title = (`As On Date  ${this.isActive ? 'Active    ' : 'Deactive    '} ${this.type} Subscription History REPORT - [ LCO : ${this.selectedOperator.name} - DATE :  ${this.cur_date} ]`).toUpperCase();
 
               const sub = 'MSO ADDRESS:' + this.msodetails;
               let areatitle = '';
@@ -377,7 +377,7 @@ export class SubscriptionBasedComponent implements OnInit {
               this.rowData = response.body;
               console.log(this.type);
               // const title = (this.type + ' REPORT').toUpperCase();
-              const title = (`As On Date  ${this.isActive ? 'Active' : 'Deactive'}  Subscription History REPORT - [ LCO : ${this.selectedOperator.name}' - DATE : ' ${this.cur_date} ']`).toUpperCase();
+              const title = (`As On Date  ${this.isActive ? 'Active  ' : 'Deactive  '}  ${this.type} Subscription History REPORT - [ LCO : ${this.selectedOperator.name}' - DATE : ${this.cur_date} ]`).toUpperCase();
               const sub = 'MSO ADDRESS:' + this.msodetails;
               let areatitle = '';
               let areasub = '';
@@ -401,7 +401,7 @@ export class SubscriptionBasedComponent implements OnInit {
               this.rowData = response.body;
               console.log(this.type);
               // const title = (this.type + ' REPORT').toUpperCase();
-              const title = (`As On Date  ${this.isActive ? 'Active' : 'Deactive'}  Subscription History REPORT - [ LCO : ${this.selectedOperator.name}' - DATE : ' ${this.cur_date} ']`).toUpperCase();
+              const title = (`As On Date  ${this.isActive ? 'Active  ' : 'Deactive  '}  ${this.type} Subscription History REPORT - [ LCO : ${this.selectedOperator.name}' - DATE : ${this.cur_date} ]`).toUpperCase();
               const sub = 'MSO ADDRESS:' + this.msodetails;
               let areatitle = '';
               let areasub = '';
@@ -433,7 +433,7 @@ export class SubscriptionBasedComponent implements OnInit {
           const link = document.createElement('a');
           link.href = data;
           // link.download = (this.type + ".pdf").toUpperCase();
-          link.download = `As On Date  ${this.isActive ? 'Active' : 'Deactive'}  Subscription History REPORT - [LCO : ${this.selectedOperator.nsame} - DATE : ${this.cur_date}].pdf`.toUpperCase();
+          link.download = `As On Date  ${this.isActive ? 'Active ' : 'Deactive '}  ${this.type} Subscription History REPORT - [LCO : ${this.selectedOperator.nsame} - DATE : ${this.cur_date}].pdf`.toUpperCase();
 
           link.dispatchEvent(new MouseEvent('click', { bubbles: true, cancelable: true, view: window }));
           setTimeout(() => {
@@ -466,7 +466,7 @@ export class SubscriptionBasedComponent implements OnInit {
               console.log(this.type);
               // const title = (this.type + ' REPORT').toUpperCase();
               // const title = ('As On Date A-la-carte  Subscription History REPORT - [  DATE : ' + this.cur_date + ']').toUpperCase();
-              const title = `As On Date A-la-carte ${this.isActive ? 'Active' : 'Deactive'} Subscription History REPORT - [ DATE : ${this.cur_date}]`.toUpperCase();
+              const title = `As On Date A-la-carte ${this.isActive ? 'Active  ' : 'Deactive  '} ${this.type} Subscription History REPORT - [ DATE : ${this.cur_date}]`.toUpperCase();
 
               const sub = 'MSO ADDRESS:' + this.msodetails;
               let areatitle = '';
@@ -491,7 +491,7 @@ export class SubscriptionBasedComponent implements OnInit {
               console.log(this.type);
               // const title = (this.type + ' REPORT').toUpperCase();
               // const title = ('As On Date A-la-carte Deactive Subscription History REPORT - [  DATE : ' + this.cur_date + ']').toUpperCase();
-              const title = `As On Date A-la-carte ${this.isActive ? 'Active' : 'Deactive'} Subscription History REPORT - [ DATE : ${this.cur_date}]`.toUpperCase();
+              const title = `As On Date A-la-carte ${this.isActive ? 'Active  ' : 'Deactive  '} ${this.type} Subscription History REPORT - [ DATE : ${this.cur_date}]`.toUpperCase();
 
               const sub = 'MSO ADDRESS:' + this.msodetails;
               let areatitle = '';
@@ -524,7 +524,7 @@ export class SubscriptionBasedComponent implements OnInit {
           const link = document.createElement('a');
           link.href = data;
           // link.download = (this.type + ".pdf").toUpperCase();
-          link.download = `As On Date A-la-carte ${this.isActive ? 'Active' : 'Deactive'} Subscription History REPORT - [ DATE : ${this.cur_date}]`.toUpperCase();
+          link.download = `As On Date A-la-carte ${this.isActive ? 'Active ' : 'Deactive '} ${this.type } Subscription History REPORT - [ DATE : ${this.cur_date}]`.toUpperCase();
 
           link.dispatchEvent(new MouseEvent('click', { bubbles: true, cancelable: true, view: window }));
           setTimeout(() => {

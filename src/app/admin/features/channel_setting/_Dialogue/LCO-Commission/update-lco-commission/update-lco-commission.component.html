@@ -36,6 +36,18 @@
                         {{productrate}}
                     </div>
                 </div>
+                <div class="input_box display align-items-center mb-3 ">
+                    <div class="col-12 col-md-6">
+                        <span class="label-text"
+                            style="font-weight: 500;margin-bottom: 5px;display: block; font-size: 16px;color: #243359;">Commission
+                            value </span>
+                    </div>
+
+                    <div class="col-12 col-md-6">
+                        <input type="text" placeholder="Enter Commission value" [(ngModel)]="commissionvalue"
+                            [value]="">
+                    </div>
+                </div>
                 <div class=" display align-items-center mb-3 w-100">
                     <div class="col-12 col-md-6">
                         <label class="label-text "
@@ -44,28 +56,16 @@
                     </div>
 
                     <div class="col-12 col-md-6  " style="display: flex;gap: 20px;">
-                        <div class="col-6 col-md-3">
-                            <button class="btn btn-outline-primary " [(ngModel)]="isYesActive"
-                                [class.active]="isYesActive === true">Yes</button>
-                        </div>
-                        <div class="col-6 col-md-3">
-                            <button class="btn btn-outline-info " [(ngModel)]="isYesActive"
-                                [class.active]="isYesActive === false">No</button>
-                        </div>
+                        <mat-radio-group class="radio-group" aria-labelledby="status" [(ngModel)]="isYesActive">
+                            <mat-radio-button class="radio-button" [value]="true">Yes
+                            </mat-radio-button>&nbsp;
+                            <mat-radio-button class="radio-button" [value]="false">No
+                            </mat-radio-button>
+                        </mat-radio-group>
                     </div>
                 </div>
             </div>
-            <div class="input_box display align-items-center mb-3 ">
-                <div class="col-12 col-md-6">
-                    <span class="label-text"
-                        style="font-weight: 500;margin-bottom: 5px;display: block; font-size: 16px;color: #243359;">Commission
-                        value </span>
-                </div>
-              
-                <div class="col-12 col-md-6">
-                    <input type="text" placeholder="Enter Commission value" [(ngModel)]="commissionvalue">
-                </div>
-            </div>
+
             <div class="Percentage display align-items-center mb-3 w-100">
                 <div class="col-12 col-md-6 display justify-content-start align-items-center">
                     <label class="label-text"
@@ -131,8 +131,8 @@
             <div class="input_box display align-items-center mb-3 ">
                 <div class="col-12 col-md-6">
                     <span class="label-text"
-                        style="font-weight: 500;margin-bottom: 5px;display: block; font-size: 16px;color: #243359;">MSO
-                        Amount </span>
+                        style="font-weight: 500;margin-bottom: 5px;display: block; font-size: 16px;color: #243359;"> SUB
+                        MSO Amount </span>
                 </div>
                 <div class="col-12 col-md-6">
                     <input type="text" placeholder="Enter MSO Amount" [(ngModel)]="msoamount">

@@ -128,27 +128,6 @@ export class EditInventoryComponent {
       formData.append('isupload', this.BTNFormControl.value?.toString() || '');
       this.swal.Loading();
       this.userService.UploadInventory(formData)
-        // .subscribe(
-        //   (res: any) => {
-        //     Swal.fire({
-        //       icon: 'success',
-        //       title: 'Upload Successful',
-        //       text: res?.message,
-        //       confirmButtonText: 'OK'
-        //     }).then(() => {
-        //       window.location.reload();
-        //     });
-        //   },
-        //   (err) => {
-        //     Swal.fire({
-        //       icon: 'error',
-        //       title: 'Upload Failed',
-        //       text: err?.error?.message,
-        //       confirmButtonText: 'OK'
-        //     });
-        //   }
-        // );
-
         .subscribe((res: any) => {
           this.swal.success(res?.message);
         }, (err) => {

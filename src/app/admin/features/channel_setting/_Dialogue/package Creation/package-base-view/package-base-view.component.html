@@ -46,6 +46,7 @@
                     style="color: rgb(220, 43, 226);font-size: 20px;font-weight: 600;">{{count}}</span> </p>
             <div class="">
                 <div>
+                    <!-- {{selectedTab}} -->
                     <ag-grid-angular #agGrid id="myGrid" domLayout='autoHeight' class="ag-theme-alpine table-class"
                         rowAnimation [gridOptions]="gridOptions" [columnDefs]="columnDefs" [rowData]="rowData"
                         (gridReady)="onGridReady($event)" [enableCellTextSelection]="true">

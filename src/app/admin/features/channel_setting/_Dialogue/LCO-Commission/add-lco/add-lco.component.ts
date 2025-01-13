@@ -18,11 +18,12 @@ export class AddLcoComponent {
   producttype: any = 1;
   lcomembershipList: any[] = [];
   lcogroupid: any = 1;
-  rowData: any;
+  // rowData: any;
+  rowData: any[] = [];
 
-  filteredOperators:any=[];
-  selectedOperator:any;
-  selectedLcoName:any;
+  filteredOperators: any = [];
+  selectedOperator: any;
+  selectedLcoName: any;
 
   gridApi: any;
   isAnyRowSelected: any = false;
@@ -56,7 +57,7 @@ export class AddLcoComponent {
       sortable: true,
       resizable: true,
       filter: true,
-      width: 130,
+
       floatingFilter: true
     },
     paginationPageSize: 10,
@@ -68,37 +69,168 @@ export class AddLcoComponent {
       headerName: "S.No", lockPosition: true, valueGetter: 'node.rowIndex+1', width: 100, headerCheckboxSelection: true,
       checkboxSelection: true,
     },
-    { headerName: "PRODUCT NAME", field: 'productname',  width: 300,},
-    { headerName: "PRODUCT ID", field: 'productid',  width: 250,},
+    { headerName: "PRODUCT NAME", field: 'productname', width: 200, cellStyle: { textAlign: 'left' }, },
+    { headerName: "PRODUCT ID", field: 'productid', width: 200, },
     {
-      headerName: "PRODUCT RATE", field: 'rate', width: 220, cellRenderer: (params: any) => `<span style="color: #035203;
+      headerName: "PRODUCT RATE", field: 'rate', width: 250, cellRenderer: (params: any) => `<span style="color: #035203;
+      font-weight: bold;;">₹</span> ${params.value}`
+    },
+    { headerName: "CUSTOMER AMOUNT", field: 'customeramount', width: 250, },
+    {
+      headerName: "MSO AMOUNT",
+      field: 'msoamount',
+      width: 250,
+
+    },
+
+    {
+      headerName: "COMMISSION", width: 250,
+      field: 'commission',
+      editable: true,
+
+      cellStyle: (params) => {
+        if (params.value) {
+          return {
+            color: 'blue',
+            fontWeight: 'bold'
+          };
+        } else {
+          return {
+            color: 'blue',
+            fontWeight: 'bold'
+          };
+        }
+      },
+      tooltipField: 'Edit',
+      cellRenderer: (params: any) => {
+        const editButton = document.createElement('button');
+        editButton.style.border = 'none';
+        editButton.title = 'Edit the Commision Value';
+        editButton.innerText = params.value;
+        editButton.style.cursor = 'pointer';
+        editButton.style.color = 'blue';
+        editButton.addEventListener('click', (event) => {
+          console.log('Edit button clicked for MSO Amount:', params.value);
+        });
+
+        return editButton;
+      }
+
+    },
+
+    // {
+    //   headerName: "	IS PERCENTAGE", field: 'ispercentage', width: 200, editable: true, cellStyle: { textAlign: 'center' },
+    //   cellRenderer: (params: any) => {
+    //     const container = document.createElement('div');
+    //     container.style.display = 'flex';
+    //     container.style.alignItems = 'center';
+    //     container.style.gap = '8px';
+
+    //     // Conditional text span
+    //     const textSpan = document.createElement('span');
+    //     textSpan.style.color = params.value === true ? 'green' : 'red';
+    //     textSpan.innerText = params.value === true ? 'YES' : 'NO';
+    //     container.appendChild(textSpan);
+
+    //     // Edit button
+    //     const editButton = document.createElement('button');
+    //     editButton.style.border = 'none';
+    //     editButton.style.background = 'transparent';
+    //     editButton.style.cursor = 'pointer';
+    //     editButton.style.color = '#007bff'; // Blue color for button text
+    //     editButton.title = 'Edit IsPercentage';
+    //     editButton.addEventListener('click', () => {
+    //       console.log('Edit button clicked for IsPercentage:', params.value);
+    //     });
+
+    //     container.appendChild(editButton);
+
+    //     return container;
+    //   }
+    // },
+  ]
+  columnDefs1: ColDef[] = [
+    {
+      headerName: "S.No", lockPosition: true, valueGetter: 'node.rowIndex+1', width: 100, headerCheckboxSelection: true,
+      checkboxSelection: true,
+    },
+    { headerName: "PRODUCT NAME", field: 'productname', width: 200, cellStyle: { textAlign: 'left' }, },
+    { headerName: "PRODUCT ID", field: 'productid', width: 200, },
+    {
+      headerName: "PRODUCT RATE", field: 'rate', width: 200, cellRenderer: (params: any) => `<span style="color: #035203;
       font-weight: bold;;">₹</span> ${params.value}`
     },
     { headerName: "CUSTOMER AMOUNT", field: 'customeramount', width: 200, },
     {
-      headerName: "MSO AMOUNT", field: 'msoamount', width: 200,   },
-    {
-      headerName: "COMMISSION",
-      field: 'commission',
+      headerName: "MSO AMOUNT",
+      field: 'msoamount',
+      width: 200,
       editable: true,
+
       cellStyle: (params) => {
         if (params.value) {
-          return { color: 'green' };
+          return {
+            color: 'blue',
+            fontWeight: 'bold'
+          };
         } else {
-          return { color: 'blue' };
+          return {
+            color: 'blue',
+            fontWeight: 'bold'
+          };
         }
+      },
+      tooltipField: 'Edit',
+      cellRenderer: (params: any) => {
+        const editButton = document.createElement('button');
+        editButton.style.border = 'none';
+        editButton.title = 'Edit MSO Amount';
+        editButton.innerText = params.value;
+        editButton.style.cursor = 'pointer';
+        editButton.style.color = 'blue';
+        editButton.addEventListener('click', (event) => {
+          console.log('Edit button clicked for MSO Amount:', params.value);
+        });
+
+        return editButton;
       }
     },
 
     {
-      headerName: "	IS PERCENTAGE", field: 'ispercentage', width: 200,
+      headerName: "COMMISSION VALUE" , width: 200,
+      field: 'commission',
+
+    },
+
+    {
+      headerName: "	IS PERCENTAGE", field: 'ispercentage', width: 200, editable: true, cellStyle: { textAlign: 'center' },
       cellRenderer: (params: any) => {
-        if (params.value === true) {
-          return `<span style="color: green;">YES</span>`;
-        } else {
-          return `<span style="color: red;">NO</span>`;
-        }
-      },
+        const container = document.createElement('div');
+        container.style.display = 'flex';
+        container.style.alignItems = 'center';
+        container.style.gap = '8px';
+
+        // Conditional text span
+        const textSpan = document.createElement('span');
+        textSpan.style.color = params.value === true ? 'green' : 'red';
+        textSpan.innerText = params.value === true ? 'YES' : 'NO';
+        container.appendChild(textSpan);
+
+        // Edit button
+        const editButton = document.createElement('button');
+        editButton.style.border = 'none';
+        editButton.style.background = 'transparent';
+        editButton.style.cursor = 'pointer';
+        editButton.style.color = '#007bff';
+        editButton.title = 'Edit IsPercentage';
+        editButton.addEventListener('click', () => {
+          console.log('Edit button clicked for IsPercentage:', params.value);
+        });
+
+        container.appendChild(editButton);
+
+        return container;
+      }
     },
   ]
   onGridReady(params: { api: any; }) {
@@ -106,16 +238,16 @@ export class AddLcoComponent {
   }
   filterOperators(event: any): void {
     const filterValue = event.target.value.toLowerCase();
-    this.filteredOperators = this.lcomembershipList.filter((operator:any) =>
+    this.filteredOperators = this.lcomembershipList.filter((operator: any) =>
       operator.name.toLowerCase().includes(filterValue)
     );
     console.log(this.filteredOperators);
-    
+
   }
   displayOperator(operator: any): string {
     return operator ? operator.name : '';
   }
-  onSubscriberStatusChange(selectedOperator: any) { 
+  onSubscriberStatusChange(selectedOperator: any) {
     console.log(selectedOperator);
     this.selectedOperator = selectedOperator;
     this.selectedLcoName = selectedOperator.value;
@@ -198,14 +330,15 @@ export class AddLcoComponent {
     console.log(selectedOperator);
     this.selectedOperator = selectedOperator;
     this.selectedLcoName = selectedOperator.value;
-    const successHandler = (response: HttpResponse<any[]>) => {
-      if (response.status === 200) {
-        this.rowData = response.body;
-        console.log(this.rowData);
-        // this.swal.Success_200();
-      } else if (response.status === 204) {
-        this.swal.Success_204();
-      }
+    // const successHandler = (response: HttpResponse<any[]>) => {
+    const successHandler = (response: any) => {
+      // if (response.status === 200) {
+      this.rowData = response;
+      console.log(this.rowData);
+      // this.swal.Success_200();
+      // } else if (response.status === 204) {
+      // this.swal.Success_204();
+      // }
     };
     const errorHandler = (error: any) => {
       const errorStatusHandlers: { [key: number]: () => void } = {

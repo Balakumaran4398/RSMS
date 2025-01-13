@@ -15,8 +15,8 @@
         <div class="col-12 col-md-6 d-flex justify-content-center align-items-center tooltip-container">
             <mat-form-field appearance="outline" style="width: 100%;">
                 <mat-date-range-input [rangePicker]="picker">
-                    <input matStartDate matInput placeholder="Start date"  (dateChange)="getFromDate($event)">
-                    <input matEndDate matInput placeholder="End date" (dateChange)="getToDate($event)">
+                    <input matStartDate matInput placeholder="Start date" value="fromdate"  (dateChange)="getFromDate($event)">
+                    <input matEndDate matInput placeholder="End date" value="todate" (dateChange)="getToDate($event)">
                 </mat-date-range-input>
                 <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
                 <mat-date-range-picker #picker></mat-date-range-picker>

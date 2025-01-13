@@ -11,10 +11,10 @@
                     <span for="package_logo" class="form-label">Package Logo</span>
                     <input type="file" class="" id="package_logo" formControlName="package_logo"
                         (change)="onFileChange($event)" placeholder="Enter package logo" accept=".png">
-                        <div *ngIf="createpackageForm.get('package_logo')?.invalid && createpackageForm.get('package_logo')?.touched" class="error-message">
+                    <!-- <div *ngIf="createpackageForm.get('package_logo')?.invalid && createpackageForm.get('package_logo')?.touched" class="error-message">
                             Package Logo is required.
-                          </div>
-                 
+                          </div> -->
+
                 </div>
             </div>
             <div class="input_box col-12 col-md-6">
@@ -59,8 +59,9 @@
             <div class="input_box col-12 col-md-6">
                 <div class=" mb-3">
                     <span for="package_rate" class="form-label">Package Rate</span>
-                    <input type="text" class="" id="package_rate" formControlName="package_rate" (keydown)="onKeydown($event)"
-                        (keyup)="calculateAmounts()" placeholder="Enter Package Rate">
+                    <input type="text" class="" id="package_rate" formControlName="package_rate"
+                        [(ngModel)]="package_rate" (keydown)="onKeydown($event)" (keyup)="calculateAmounts()"
+                        placeholder="Enter Package Rate">
                     <div *ngIf="createpackageForm.get('package_rate')?.invalid && createpackageForm.get('package_rate')?.touched"
                         class="error-message">
                         Package Rate is required.
@@ -97,8 +98,17 @@
             <div class="input_box col-12 col-md-6">
                 <div class=" mb-3">
                     <span for="commission" class="me-2">Commission</span>
-                    <input type="email" class="" id="commission" formControlName="commission"
-                        (input)="calculateMsoCommission('commission')" placeholder="Enter Mso Commission">
+                    <!-- <input type="email" class="" id="commission" formControlName="commission" [(ngModel)]="commission_Value" (input)="commissionValue()"
+                        (input)="calculateMsoCommission('commission')"
+                        placeholder="Enter Mso Commission"> -->
+                    <!-- <input type="number" class="" id="commission" formControlName="commission"
+                        [(ngModel)]="commission_Value" (input)="calculateMsoCommission('commission')"
+                        placeholder="Enter Mso Commission"> -->
+
+                    <input type="number" class="" id="commission" formControlName="commission"
+                        [(ngModel)]="commission_Value" (input)="calculateMsoCommission('commission')"
+                        placeholder="Enter Mso Commission">
+
                     <div *ngIf="createpackageForm.get('commission')?.invalid && createpackageForm.get('commission')?.touched"
                         class="error-message">
                         Commission is required.
@@ -111,8 +121,8 @@
             <div class="input_box col-12 col-md-6">
                 <div class=" mb-3">
                     <span for="mso_amount" class="me-2">Mso Commission</span>
-                    <input type="text" class="" [disabled]="true"  [value]="mso_amount" readonly formControlName="mso_amount"
-                        placeholder="Mso Commission">
+                    <input type="text" class="" [disabled]="true" [value]="mso_amount" readonly
+                        formControlName="mso_amount" placeholder="Mso Commission">
                     <div *ngIf="createpackageForm.get('mso_amount')?.invalid && createpackageForm.get('mso_amount')?.touched"
                         class="error-message">
                         Mso Commission is required.
@@ -122,13 +132,16 @@
             <div class="input_box col-12 col-md-6">
                 <div class=" mb-3">
                     <span for="ispercentage" class="me-2">Is percentage</span>
-                    <div class="toggle-button-cover">
-                        <div class="button b2" id="button-10">
-                            <input type="checkbox" class="checkbox" checked id="ispercentage"  (input)="calculateMsoCommission('percentage')" formControlName="ispercentage" />
-                            <div class="knobs">
-                                <span>YES</span>
-                            </div>
-                            <div class="layer"></div>
+                    <div class="radiocs">
+                        <div class="tabs">
+                            <input value="true" name="fav_language" id="html" type="radio" class="input1"
+                                (change)="percentageValue(true)" />
+                            <label for="html" class="label"><span
+                                    style="z-index: 1000;color:white;margin-top:4px">Yes</span></label>
+                            <input checked="" value="false" name="fav_language" id="css" type="radio" class="input1"
+                                (change)="percentageValue(false)" />
+                            <label for="css" class="label"><span
+                                    style="z-index: 1000;color:white;margin-top:4px">No</span></label>
                         </div>
                     </div>
                 </div>
@@ -147,10 +160,17 @@
                     </select>
                 </div>
             </div> -->
+            <p class="errorcase" *ngIf="!isPercentage && issave">*Note: Fixed commission must be less than or equal to
+                the customer amount!!</p>
+            <p class="errorcase" *ngIf="isPercentage && issave">*Note: Commission percentage must be between 0 and
+                100!!</p>
+
         </div>
+
     </div>
+
     <div class="form-group d-flex justify-content-center align-items-center mb-3">
-        <button type="button" class="btn btn-primary me-2" (click)="Createpackage()">Save</button>
+        <button type="button" class="btn btn-primary me-2" [disabled]="issave" (click)="Createpackage()">Save</button>
         <button type="button" class="btn btn-secondary" (click)="onNoClick()">Cancel</button>
     </div>
 

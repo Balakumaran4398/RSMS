@@ -10,7 +10,7 @@ import Swal from 'sweetalert2';
 import { tuesday } from 'ag-charts-community/dist/types/src/sparklines-util';
 import { SwalService } from 'src/app/_core/service/swal.service';
 import { EditareaComponent } from '../editarea/editarea.component';
-import { filter } from 'node_modules1/jszip';
+// import { filter } from 'node_modules1/jszip';
 import { CanvasJS } from '@canvasjs/angular-charts';
 
 @Component({

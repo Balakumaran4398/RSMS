@@ -46,7 +46,14 @@ export class ActivationComponent implements OnInit {
       resizable: true,
       filter: true,
       // width: 180,
-      floatingFilter: true
+      floatingFilter: true,
+      comparator: (valueA: any, valueB: any) => {
+        const normalizedA = valueA ? valueA.toString().trim().toLowerCase() : '';
+        const normalizedB = valueB ? valueB.toString().trim().toLowerCase() : '';
+        if (normalizedA < normalizedB) return -1;
+        if (normalizedA > normalizedB) return 1;
+        return 0;
+      },
     },
     paginationPageSize: 10,
     pagination: true,
@@ -196,7 +203,7 @@ export class ActivationComponent implements OnInit {
       formData.append('type', '1');
       formData.append('plantype', '5');
       formData.append('plan', this.plan);
-      formData.append('retialerid', '0');
+      formData.append('retailerid', '0');
 
       this.userservice.uploadFirsttimeActivation(formData)
         .subscribe((res: any) => {

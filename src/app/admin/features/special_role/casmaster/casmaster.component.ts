@@ -4,7 +4,7 @@ import { BaseService } from 'src/app/_core/service/base.service';
 import { StorageService } from 'src/app/_core/service/storage.service';
 import { SwalService } from 'src/app/_core/service/swal.service';
 import Swal from 'sweetalert2';
-import { filter } from 'node_modules1/jszip';
+// import { filter } from 'node_modules1/jszip';
 import { MatDialog } from '@angular/material/dialog';
 import { CasdialogueComponent } from '../Dialogue/casdialogue/casdialogue.component';
 import { AnyCatcher } from 'rxjs/internal/AnyCatcher';

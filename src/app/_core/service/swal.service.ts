@@ -53,6 +53,16 @@ export class SwalService {
       location.reload();
     });
   }
+  info1(message: any) {
+    Swal.fire({
+      title: 'Info!',
+      text: message,
+      icon: 'info',
+      timer: 2000,
+      timerProgressBar: true,
+      showConfirmButton: false
+    })
+  }
   Error(message: any) {
     Swal.fire({
       title: 'Error!',
@@ -97,6 +107,8 @@ export class SwalService {
     });
 
   }
+
+
   Invalid() {
     Swal.fire({
       title: 'Warning!',
@@ -144,6 +156,17 @@ export class SwalService {
     Swal.fire({
       title: 'Error',
       text: 'Bad Request. Please check the input.',
+      icon: 'error',
+      timer: 3000,
+      timerProgressBar: true,
+      showConfirmButton: true
+    });
+  }
+
+  Custom_Error_400(error: any) {
+    Swal.fire({
+      title: 'Error',
+      text: error,
       icon: 'error',
       timer: 3000,
       timerProgressBar: true,

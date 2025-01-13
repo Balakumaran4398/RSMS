@@ -10,7 +10,7 @@ import { MatDatepicker } from '@angular/material/datepicker';
 import { MomentDateAdapter, MAT_MOMENT_DATE_ADAPTER_OPTIONS } from '@angular/material-moment-adapter';
 import { DateAdapter, MAT_DATE_LOCALE, MAT_DATE_FORMATS } from '@angular/material/core';
 import Swal from 'sweetalert2';
-import { G } from 'node_modules1/@angular/cdk/keycodes';
+// import { G } from 'node_modules1/@angular/cdk/keycodes';
 import { ExcelService } from 'src/app/_core/service/excel.service';
 import { HttpResponse } from '@angular/common/http';
 
@@ -161,6 +161,9 @@ export class OperatordialogueComponent implements OnInit {
       case 'productwise_current':
         this.type = 11;
         break;
+      case 'areawise':
+        this.type = 12;
+        break;
       default:
         this.type = 0;
         break;
@@ -239,19 +242,19 @@ export class OperatordialogueComponent implements OnInit {
           console.log('type dfdfsf', this.type)
 
           if (this.type === 1) {
-            console.log('type',this.type);
+            console.log('type', this.type);
             areatitle = 'A1:K2';
             areasub = 'A3:K3';
             header = ['S.NO', 'SUBSCRIBER ID', 'SUBSCRIBER NAME', 'ADDRESS', 'AREA NAME', 'MOBILE NO', 'SMARTCARD', 'BOXID', 'ACTIVATION DATE', 'EXPIRY DATE', 'PACKAGE STATUS'];
             generateDataRows(['subid', 'customername', 'address', 'areaname', 'mobileno', 'smartcard', 'boxid', 'activationdate', 'expirydate', 'statusdisplay'], this.rowData);
           } else if (this.type === 2) {
-            console.log('type',this.type);
+            console.log('type', this.type);
             areatitle = 'A1:K2';
             areasub = 'A3:K3';
             header = ['S.NO', 'SUBSCRIBER ID', 'SUBSCRIBER NAME', 'ADDRESS', 'MOBILE NO', 'SMARTCARD', 'BOXID', 'PACKAGE NAME', 'ACTIVATION DATE', 'EXPIRY DATE', 'STATUS'];
             generateDataRows(['subid', 'customername', 'address', 'mobileno', 'smartcard', 'boxid', 'productname', 'activationdate', 'expirydate', 'statusdisplay'], this.rowData);
           } else if (this.type === 3) {
-            console.log('type',this.type);
+            console.log('type', this.type);
             areatitle = 'A1:I2';
             areasub = 'A3:I3';
             header = ['S.NO', 'SUBSCRIBER ID', 'SUBSCRIBER NAME', 'ADDRESS', 'MOBILE NO', 'SMARTCARD', 'BOXID', 'PACKAGE NAME', 'EXPIRY DATE',];
@@ -295,17 +298,17 @@ export class OperatordialogueComponent implements OnInit {
           let header: string[] = [];
 
           // Handle empty data for no records
-          if (this.type === 1 ) {
+          if (this.type === 1) {
             areatitle = 'A1:K2';
             areasub = 'A3:K3';
             header = ['S.NO', 'SUBSCRIBER ID', 'SUBSCRIBER NAME', 'ADDRESS', 'AREA NAME', 'MOBILE NO', 'SMARTCARD', 'BOXID', 'ACTIVATION DATE', 'EXPIRY DATE', 'PACKAGE STATUS'];
           } else if (this.type === 2) {
-            console.log('type',this.type);
+            console.log('type', this.type);
             areatitle = 'A1:K2';
             areasub = 'A3:K3';
             header = ['S.NO', 'SUBSCRIBER ID', 'SUBSCRIBER NAME', 'ADDRESS', 'MOBILE NO', 'SMARTCARD', 'BOXID', 'PACKAGE NAME', 'ACTIVATION DATE', 'EXPIRY DATE', 'STATUS'];
           } else if (this.type === 3) {
-            console.log('type',this.type);
+            console.log('type', this.type);
             areatitle = 'A1:I2';
             areasub = 'A3:I3';
             header = ['S.NO', 'SUBSCRIBER ID', 'SUBSCRIBER NAME', 'ADDRESS', 'MOBILE NO', 'SMARTCARD', 'BOXID', 'PACKAGE NAME', 'EXPIRY DATE',];
@@ -314,7 +317,7 @@ export class OperatordialogueComponent implements OnInit {
             areatitle = 'A1:I2';
             areasub = 'A3:I3';
             header = ['S.NO', 'SUBSCRIBER ID', 'SUBSCRIBER NAME', 'ADDRESS', 'AREA NAME', 'MOBILE NO', 'SMARTCARD', 'BOXID', 'STATUS'];
-          }else if (this.type === 5) {
+          } else if (this.type === 5) {
             areatitle = 'A1:K2';
             areasub = 'A3:K3';
             header = ['S.NO', 'SUB ID', 'OPERATOR NAME', 'CUSTOMER NAME', 'SMARTCARD', 'BOX ID', 'CAS NAME', 'PRODUCT NAME', 'PRODUCT ID', 'CREATION DATE', 'EXPIRY DATE'];
@@ -344,7 +347,7 @@ export class OperatordialogueComponent implements OnInit {
 
   }
   getPDF() {
-   
+
     this.userService.getOperatorDashboardPDFReport(this.role, this.username, this.type, 1, this.operatorid, 0, 0, 0)
       .subscribe((x: Blob) => {
         const blob = new Blob([x], { type: 'application/pdf' });
@@ -400,4 +403,59 @@ export class OperatordialogueComponent implements OnInit {
       Swal.fire('Error', 'Something went wrong. Please try again.', 'error');
     }
   }
+
+  getAreawiseReportDownload(reporttype: number) {
+
+    this.processingSwal();
+    this.userService.getOperatorDashboardPDFReport(this.role, this.username, this.type, reporttype, this.operatorid, 0, 0, 0)
+      .subscribe((x: Blob) => {
+        if (reporttype == 1) {
+          this.reportMaking(x, "LCO_ID_" + this.operatorid + "_AREAWISE_CONECTION_COUNT_REPORT.pdf", 'application/pdf');
+        } else if (reporttype == 2) {
+          this.reportMaking(x, "LCO_ID_" + this.operatorid + "_AREAWISE_CONECTION_COUNT_REPORT.xlsx", 'application/xlsx');
+        }
+      },
+        (error: any) => {
+          this.pdfswalError(error?.error.message);
+        });
+
+  }
+
+  // -----------------------------------------------------common method for pdf and excel------------------------------------------------------------------------
+
+
+  reportMaking(x: Blob, reportname: any, reporttype: any) {
+    const blob = new Blob([x], { type: reporttype });
+    const data = window.URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.href = data;
+    link.download = reportname.toUpperCase();
+    link.dispatchEvent(new MouseEvent('click', { bubbles: true, cancelable: true, view: window }));
+    setTimeout(() => {
+      window.URL.revokeObjectURL(data);
+      link.remove();
+    }, 100);
+    Swal.close();
+  }
+  pdfswalError(error: any) {
+    Swal.close();
+    Swal.fire({
+      title: 'Error!',
+      text: error || 'There was an issue generating the PDF CAS form report.',
+      icon: 'error',
+      confirmButtonText: 'Ok'
+    });
+  }
+  processingSwal() {
+    Swal.fire({
+      title: "Processing",
+      text: "Please wait while the report is being generated...",
+      showConfirmButton: false,
+      didOpen: () => {
+        Swal.showLoading(null);
+      }
+    });
+
+  }
+
 }

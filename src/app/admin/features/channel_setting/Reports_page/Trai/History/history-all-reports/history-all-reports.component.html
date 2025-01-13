@@ -3,7 +3,7 @@
 
     <div class="row " style="padding: 1rem;">
         <div class="col-12 col-md-2 d-flex  justify-content-start align-items-start">
-            <button type="button" class="btn btn-primary" (click)="goBack()"><i
+            <button type="button" class="btn btn-primary bttn" (click)="goBack()"><i
                     class="fa-solid fa-reply mx-2"></i>Back</button>
         </div>
         <div class="row d-flex align-items-center justify-content-center">
@@ -17,33 +17,34 @@
                         <div class="mx-2 ">
                             <mat-form-field appearance="outline">
                                 <mat-date-range-input [rangePicker]="picker">
-                                    <input matStartDate matInput placeholder="Start date" 
+                                    <input matStartDate matInput placeholder="Start date"
                                         (dateChange)="getFromDate($event)">
-                                    <input matEndDate matInput placeholder="End date"  (dateChange)="getToDate($event)">
+                                    <input matEndDate matInput placeholder="End date" (dateChange)="getToDate($event)">
                                 </mat-date-range-input>
                                 <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
                                 <mat-date-range-picker #picker></mat-date-range-picker>
                             </mat-form-field>
                         </div>
                         <div class="allreport mb-2">
-                            <a class="btn btn-success mx-1" (click)="getAllServicereport()">
+                            <a class="btn btn-success mx-1 bttn" (click)="getAllServicereport()">
                                 Get Report
                             </a>
                         </div>
                     </div>
                     <div class="mobileView">
-                        <button class="btn btn-outline-info mx-1" mat-raised-button color="primary" type="button"
+                        <button class="btn btn-outline-info mx-1 bttn" mat-raised-button color="primary" type="button"
                             (click)="getAllServiceExcel()">
                             Excel
                         </button>
-                        <button class="btn btn-outline-info mx-1" mat-raised-button color="accent" type="button"
+                        <button class="btn btn-outline-info mx-1 bttn" mat-raised-button color="accent" type="button"
                             (click)="getAllServicePDF()">
                             PDF
                         </button>
                     </div>
                     <!-- </div> -->
                 </div>
-                <h5>All Service List - {{rowData.length}} </h5>
+                <h5 *ngIf="rowData!=null && rowData!=undefined">All Service List - {{rowData.length}} </h5>
+                <h5 *ngIf="rowData==null && rowData==undefined">All Service List</h5>
                 <div class="display justify-content-between align-item-center allsmart">
                     <div>
 
@@ -70,22 +71,22 @@
 <div *ngIf="allType== '2'">
     <h3>Total Smartcard List Report</h3>
     <div>
-        <button type="button" class="btn btn-primary" (click)="goBack()"><i
+        <button type="button" class="btn btn-primary bttn" (click)="goBack()"><i
                 class="fa-solid fa-reply mx-2"></i>Back</button>
     </div>
     <div class="row " style="padding: 1rem;">
         <div class="row d-flex align-items-center justify-content-center">
             <div class="col-12 col-sm-6 m-3">
-                <div class="col d-flex justify-content-between align-items-end mb-3 total">
+                <div class="col d-flex justify-content-between align-items-end mb-3 total bttn">
                     <span style="font-size: 18px;color:rgb(37, 26, 63);font-weight: 600;">
                         Get Report
                     </span>
 
-                    <button class="btn btn-outline-info mx-1" mat-raised-button color="primary" type="button"
+                    <button class="btn btn-outline-info mx-1 bttn" mat-raised-button color="primary" type="button"
                         (click)="getTotalExcel()">
                         Excel
                     </button>
-                    <button class="btn btn-outline-info mx-1" mat-raised-button color="accent" type="button"
+                    <button class="btn btn-outline-info mx-1 bttn" mat-raised-button color="accent" type="button"
                         (click)="getTotalPDF()">
                         PDF
                     </button>
@@ -101,25 +102,28 @@
             <div class="col-12 col-sm-12 m-3">
                 <div class="col d-flex justify-content-between align-items-end mb-3">
                     <div>
-                        <button type="button" class="btn btn-primary" (click)="goBack()"><i
+                        <button type="button" class="btn btn-primary bttn" (click)="goBack()"><i
                                 class="fa-solid fa-reply mx-2"></i>Back</button>
                     </div>
                     <div>
-                        <a class="btn btn-success mx-1" (click)="getPairedReport()">
+                        <a class="btn btn-success mx-1 bttn" (click)="getPairedReport()">
                             Get Report
                         </a>
-                        <button class="btn btn-outline-info mx-1" mat-raised-button color="primary" type="button"
+                        <button class="btn btn-outline-info mx-1 bttn" mat-raised-button color="primary" type="button"
                             (click)="getPairedExcel()">
                             Excel
                         </button>
-                        <button class="btn btn-outline-info mx-1" mat-raised-button color="accent" type="button"
+                        <button class="btn btn-outline-info mx-1 bttn" mat-raised-button color="accent" type="button"
                             (click)="getPairedPDF()">
                             PDF
                         </button>
                     </div>
                 </div>
                 <div>
-                    <h5>Paired Box And Smartcard List - {{rowData.length}}</h5>
+                    <h5 *ngIf="rowData!=null && rowData!=undefined">Paired Box And Smartcard List - {{rowData.length}}
+                    </h5>
+                    <h5 *ngIf="rowData===null || rowData==undefined">Paired Box And Smartcard List
+                    </h5>
                 </div>
                 <ag-grid-angular #agGrid id="myGrid" domLayout='autoHeight' class="ag-theme-alpine table-class"
                     rowAnimation [gridOptions]="gridOptions" [columnDefs]="columnDefs" [rowData]="rowData"
@@ -136,25 +140,26 @@
             <div class="col-12 col-sm-12 m-3">
                 <div class="col d-flex justify-content-between align-items-end mb-3">
                     <div>
-                        <button type="button" class="btn btn-primary" (click)="goBack()"><i
+                        <button type="button" class="btn btn-primary bttn" (click)="goBack()"><i
                                 class="fa-solid fa-reply mx-2"></i>Back</button>
                     </div>
                     <div>
-                        <a class="btn btn-success mx-1" (click)="getBlockedReport()">
+                        <a class="btn btn-success mx-1 bttn" (click)="getBlockedReport()">
                             Get Report
                         </a>
-                        <button class="btn btn-outline-info mx-1" mat-raised-button color="primary" type="button"
+                        <button class="btn btn-outline-info mx-1 bttn" mat-raised-button color="primary" type="button"
                             (click)="getBlockedExcel()">
                             Excel
                         </button>
-                        <button class="btn btn-outline-info mx-1" mat-raised-button color="accent" type="button"
+                        <button class="btn btn-outline-info mx-1 bttn" mat-raised-button color="accent" type="button"
                             (click)="getBlockedPDF()">
                             PDF
                         </button>
                     </div>
                 </div>
                 <div>
-                    <h5>Block List - {{rowData.length}}</h5>
+                    <h5 *ngIf="rowData!=null && rowData!=undefined">Block List - {{rowData.length}}</h5>
+                    <h5 *ngIf="rowData==null && rowData==undefined">Block List</h5>
                 </div>
                 <ag-grid-angular #agGrid id="myGrid" domLayout='autoHeight' class="ag-theme-alpine table-class"
                     rowAnimation [gridOptions]="gridOptions" [columnDefs]="columnDefs" [rowData]="rowData"
@@ -168,7 +173,7 @@
     <h3>SCROLL HISTORY REPORT</h3>
     <div class="row " style="padding: 1rem;">
         <div class="col-12 col-md-2 d-flex  justify-content-start align-items-start">
-            <button type="button" class="btn btn-primary" (click)="goBack()"><i
+            <button type="button" class="btn btn-primary bttn" (click)="goBack()"><i
                     class="fa-solid fa-reply mx-2"></i>Back</button>
         </div>
         <div class="row d-flex align-items-center justify-content-center">
@@ -187,23 +192,24 @@
                             </mat-form-field>
                         </div>
                         <div class="allreport mb-2">
-                            <a class="btn btn-success mx-1" (click)="getScrollReport()">
+                            <a class="btn btn-success mx-1 bttn" (click)="getScrollReport()">
                                 Get Report
                             </a>
                         </div>
                     </div>
                     <div class="mobileView">
-                        <button class="btn btn-outline-info mx-1" mat-raised-button color="primary" type="button"
+                        <button class="btn btn-outline-info mx-1 bttn" mat-raised-button color="primary" type="button"
                             (click)="getScrollExcel()">
                             Excel
                         </button>
-                        <button class="btn btn-outline-info mx-1" mat-raised-button color="accent" type="button"
+                        <button class="btn btn-outline-info mx-1 bttn" mat-raised-button color="accent" type="button"
                             (click)="getScrollPDF()">
                             PDF
                         </button>
                     </div>
                 </div>
-                <h5>Scroll list - {{rowData.length}} </h5>
+                <h5 *ngIf="rowData!=null && rowData!=undefined">Scroll list - {{rowData.length}} </h5>
+                <h5 *ngIf="rowData==null && rowData==undefined">Scroll List</h5>
                 <div class="display justify-content-end align-items-center allsmart">
                     <div>
                         <span class="label">FormDate:</span>
@@ -224,7 +230,7 @@
     <h3>MAIL HISTORY REPORT</h3>
     <div class="row " style="padding: 1rem;">
         <div class="col-12 col-md-2 d-flex  justify-content-start align-items-start">
-            <button type="button" class="btn btn-primary" (click)="goBack()"><i
+            <button type="button" class="btn btn-primary bttn" (click)="goBack()"><i
                     class="fa-solid fa-reply mx-2"></i>Back</button>
         </div>
         <div class="row d-flex align-items-center justify-content-center">
@@ -243,23 +249,24 @@
                             </mat-form-field>
                         </div>
                         <div class="allreport mb-2">
-                            <a class="btn btn-success mx-1" (click)="getMailReport()">
+                            <a class="btn btn-success mx-1 bttn" (click)="getMailReport()">
                                 Get Report
                             </a>
                         </div>
                     </div>
                     <div class="mobileView">
-                        <button class="btn btn-outline-info mx-1" mat-raised-button color="primary" type="button"
+                        <button class="btn btn-outline-info mx-1 bttn" mat-raised-button color="primary" type="button"
                             (click)="getMailExcel()">
                             Excel
                         </button>
-                        <button class="btn btn-outline-info mx-1" mat-raised-button color="accent" type="button"
+                        <button class="btn btn-outline-info mx-1 bttn" mat-raised-button color="accent" type="button"
                             (click)="getMailPDF()">
                             PDF
                         </button>
                     </div>
                 </div>
-                <h5>Mail list - {{rowData.length}} </h5>
+                <h5 *ngIf="rowData!=null && rowData!=undefined">Mail list - {{rowData.length}} </h5>
+                <h5 *ngIf="rowData==null && rowData==undefined">Mail List</h5>
                 <div class="display justify-content-end align-items-center allsmart">
                     <div>
                         <span class="label">FormDate:</span>
@@ -279,7 +286,7 @@
 <div *ngIf="allType== '7'">
     <h3>Finger print Report</h3>
     <div class="col-12 col-md-2 d-flex  justify-content-start align-items-start">
-        <button type="button" class="btn btn-primary" (click)="goBack()"><i
+        <button type="button" class="btn btn-primary bttn" (click)="goBack()"><i
                 class="fa-solid fa-reply mx-2"></i>Back</button>
     </div>
     <div class="row " style="padding: 1rem;">
@@ -302,22 +309,22 @@
                             </mat-form-field>
                         </div>
                         <div class="allreport mb-2">
-                            <button class="btn btn-outline-info mx-1" mat-raised-button color="primary" type="button"
-                                (click)="getFingerprintExcel()">
+                            <button class="btn btn-outline-info mx-1 bttn" mat-raised-button color="primary"
+                                type="button" (click)="getFingerprintExcel()">
                                 Excel
                             </button>
-                            <button class="btn btn-outline-info mx-1" mat-raised-button color="accent" type="button"
-                                (click)="getFingerprintPDF()">
+                            <button class="btn btn-outline-info mx-1 bttn" mat-raised-button color="accent"
+                                type="button" (click)="getFingerprintPDF()">
                                 PDF
                             </button>
                         </div>
                     </div>
                     <!-- <div class="mobileView">
-                        <button class="btn btn-outline-info mx-1" mat-raised-button color="primary" type="button"
+                        <button class="btn btn-outline-info mx-1 bttn" mat-raised-button color="primary" type="button"
                             (click)="getFingerprintExcel()">
                             Excel
                         </button>
-                        <button class="btn btn-outline-info mx-1" mat-raised-button color="accent" type="button"
+                        <button class="btn btn-outline-info mx-1 bttn" mat-raised-button color="accent" type="button"
                             (click)="getFingerprintPDF()">
                             PDF
                         </button>
@@ -331,7 +338,7 @@
     <h3>MESSAGE HISTORY REPORT</h3>
     <div class="row " style="padding: 1rem;">
         <div class="col-12 col-md-2 d-flex  justify-content-start align-items-start">
-            <button type="button" class="btn btn-primary" (click)="goBack()"><i
+            <button type="button" class="btn btn-primary bttn" (click)="goBack()"><i
                     class="fa-solid fa-reply mx-2"></i>Back</button>
         </div>
         <div class="row d-flex align-items-center justify-content-center">
@@ -350,23 +357,24 @@
                             </mat-form-field>
                         </div>
                         <div class="allreport mb-2">
-                            <a class="btn btn-success mx-1" (click)="getMessageReport()">
+                            <a class="btn btn-success mx-1 bttn" (click)="getMessageReport()">
                                 Get Report
                             </a>
                         </div>
                     </div>
                     <div class="mobileView">
-                        <button class="btn btn-outline-info mx-1" mat-raised-button color="primary" type="button"
+                        <button class="btn btn-outline-info mx-1 bttn" mat-raised-button color="primary" type="button"
                             (click)="getMessageExcel()">
                             Excel
                         </button>
-                        <button class="btn btn-outline-info mx-1" mat-raised-button color="accent" type="button"
+                        <button class="btn btn-outline-info mx-1 bttn" mat-raised-button color="accent" type="button"
                             (click)="getMessagePDF()">
                             PDF
                         </button>
                     </div>
                 </div>
-                <h5>Message List - {{rowData.length}} </h5>
+                <h5 *ngIf="rowData!=null && rowData!=undefined">Message List - {{rowData.length}} </h5>
+                <h5 *ngIf="rowData==null && rowData==undefined">Message List</h5>
                 <div class="display justify-content-end align-items-center allsmart">
                     <div>
                         <span class="label">FormDate:</span>
@@ -385,7 +393,7 @@
 </div>
 <div *ngIf="allType== '9'">
     <div class="col-12 col-md-2 d-flex  justify-content-start align-items-start mb-3">
-        <button type="button" class="btn btn-primary" (click)="goBack()"><i
+        <button type="button" class="btn btn-primary bttn" (click)="goBack()"><i
                 class="fa-solid fa-reply mx-2"></i>Back</button>
     </div>
 
@@ -393,8 +401,8 @@
         <div class=" Head d-flex justify-content-center align-items-center mb-1">
             <span class="span">Network Smartcard Status Count Report</span>
         </div>
-        <div class="card  d-block justify-content-center align-items-center mb-3"
-            style="border: 1px solid #055478;padding: 1rem;">
+        <div class="card  d-block justify-content-center align-items-center mb-3 onlinebox"
+            style="padding: 1rem;">
             <div class="col-12  display justify-content-center align-items-center">
                 <div class="col-12 col-md-12  justify-content-center align-items-center  ">
                     <div class=" display mb-3">
@@ -453,15 +461,15 @@
 </div>
 <div *ngIf="allType== '10'">
     <div class="col-12 col-md-2 d-flex  justify-content-start align-items-start mb-3">
-        <button type="button" class="btn btn-primary" (click)="goBack()"><i
+        <button type="button" class="btn btn-primary bttn" (click)="goBack()"><i
                 class="fa-solid fa-reply mx-2"></i>Back</button>
     </div>
     <div class="col-sm-6 container d-block justify-content-center align-item-center">
         <div class=" Head d-flex justify-content-center align-items-center mb-1">
             <span class="span">Network Smartcard Active /Deactive Status Count Report</span>
         </div>
-        <div class="card  d-block justify-content-center align-items-center mb-3"
-            style="border: 1px solid #055478;padding: 1rem;">
+        <div class="card  d-block justify-content-center align-items-center mb-3 onlinebox"
+            style="padding: 1rem;">
             <div class="col-12  display justify-content-center align-items-center">
                 <div class="col-12 col-md-12  justify-content-center align-items-center  ">
                     <div class=" display mb-3">
@@ -504,7 +512,7 @@
     <h3>AS ON DATE SMARTCARD SUSPEND REPORT</h3>
     <div class="row " style="padding: 1rem;">
         <div class="col-12 col-md-2 d-flex  justify-content-start align-items-start">
-            <button type="button" class="btn btn-primary" (click)="goBack()"><i
+            <button type="button" class="btn btn-primary bttn" (click)="goBack()"><i
                     class="fa-solid fa-reply mx-2"></i>Back</button>
         </div>
         <div class="row d-flex align-items-center justify-content-center">
@@ -515,24 +523,24 @@
                         <div class="mx-2 ">
                             <mat-form-field class="input-field" appearance="outline">
                                 <mat-label>Choose a date</mat-label>
-                                <input matInput [matDatepicker]="picker" (dateChange)="logValues($event)" 
-                                  [value]="cur_date" placeholder="Select a Date" readonly>
+                                <input matInput [matDatepicker]="picker" (dateChange)="logValues($event)"
+                                    [value]="cur_date" placeholder="Select a Date" readonly>
                                 <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
                                 <mat-datepicker #picker></mat-datepicker>
                             </mat-form-field>
                         </div>
                         <div class="allreport mb-2">
-                            <a class="btn btn-success mx-1" (click)="getSmartcardSuspendReport()">
+                            <a class="btn btn-success mx-1 bttn" (click)="getSmartcardSuspendReport()">
                                 Get Report
                             </a>
                         </div>
                     </div>
                     <div class="mobileView">
-                        <button class="btn btn-outline-info mx-1" mat-raised-button color="primary" type="button"
+                        <button class="btn btn-outline-info mx-1 bttn" mat-raised-button color="primary" type="button"
                             (click)="getSmartcardSuspendExcel()">
                             Excel
                         </button>
-                        <button class="btn btn-outline-info mx-1" mat-raised-button color="accent" type="button"
+                        <button class="btn btn-outline-info mx-1 bttn" mat-raised-button color="accent" type="button"
                             (click)="getSmartcardSuspendPDF()">
                             PDF
                         </button>
@@ -552,7 +560,7 @@
     <h3>AS ON DATE SMARTCARD SUSPEND REPORT</h3>
     <div class="row " style="padding: 1rem;">
         <div class="col-12 col-md-2 d-flex  justify-content-start align-items-start">
-            <button type="button" class="btn btn-primary" (click)="goBack()"><i
+            <button type="button" class="btn btn-primary bttn" (click)="goBack()"><i
                     class="fa-solid fa-reply mx-2"></i>Back</button>
         </div>
         <div class="row d-flex align-items-center justify-content-center">
@@ -563,7 +571,7 @@
                         <div class="mx-2 ">
                             <mat-form-field appearance="outline">
                                 <mat-date-range-input [rangePicker]="picker">
-                                    <input matStartDate matInput placeholder="Start date" 
+                                    <input matStartDate matInput placeholder="Start date"
                                         (dateChange)="getFromDate($event)">
                                     <input matEndDate matInput placeholder="End date" (dateChange)="getToDate($event)">
                                 </mat-date-range-input>
@@ -572,17 +580,17 @@
                             </mat-form-field>
                         </div>
                         <div class="allreport mb-2">
-                            <a class="btn btn-success mx-1" (click)="getDatewiseSuspendReport()">
+                            <a class="btn btn-success mx-1 bttn" (click)="getDatewiseSuspendReport()">
                                 Get Report
                             </a>
                         </div>
                     </div>
                     <div class="mobileView">
-                        <button class="btn btn-outline-info mx-1" mat-raised-button color="primary" type="button"
+                        <button class="btn btn-outline-info mx-1 bttn" mat-raised-button color="primary" type="button"
                             (click)="getDatewiseSuspendExcel()">
                             Excel
                         </button>
-                        <button class="btn btn-outline-info mx-1" mat-raised-button color="accent" type="button"
+                        <button class="btn btn-outline-info mx-1 bttn" mat-raised-button color="accent" type="button"
                             (click)="getDatewiseSuspendPDF()">
                             PDF
                         </button>
@@ -603,7 +611,7 @@
     <h3>DATE WISE SMARTCARD SUSPEND REPORT</h3>
     <div class="row " style="padding: 1rem;">
         <div class="col-12 col-md-2 d-flex  justify-content-start align-items-start">
-            <button type="button" class="btn btn-primary" (click)="goBack()"><i
+            <button type="button" class="btn btn-primary bttn" (click)="goBack()"><i
                     class="fa-solid fa-reply mx-2"></i>Back</button>
         </div>
         <div class="row d-flex align-items-center justify-content-center">
@@ -617,26 +625,26 @@
                         <div class="mx-2 ">
                             <mat-form-field appearance="outline">
                                 <mat-date-range-input [rangePicker]="picker">
-                                    <input matStartDate matInput placeholder="Start date" 
+                                    <input matStartDate matInput placeholder="Start date"
                                         (dateChange)="getFromDate($event)">
-                                    <input matEndDate matInput placeholder="End date"  (dateChange)="getToDate($event)">
+                                    <input matEndDate matInput placeholder="End date" (dateChange)="getToDate($event)">
                                 </mat-date-range-input>
                                 <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
                                 <mat-date-range-picker #picker></mat-date-range-picker>
                             </mat-form-field>
                         </div>
                         <div class="allreport mb-2">
-                            <a class="btn btn-success mx-1" (click)="getSuspendReport()">
+                            <a class="btn btn-success mx-1 bttn" (click)="getSuspendReport()">
                                 Get Report
                             </a>
                         </div>
                     </div>
                     <div class="mobileView">
-                        <button class="btn btn-outline-info mx-1" mat-raised-button color="primary" type="button"
+                        <button class="btn btn-outline-info mx-1 bttn" mat-raised-button color="primary" type="button"
                             (click)="getSuspendExcel()">
                             Excel
                         </button>
-                        <button class="btn btn-outline-info mx-1" mat-raised-button color="accent" type="button"
+                        <button class="btn btn-outline-info mx-1 bttn" mat-raised-button color="accent" type="button"
                             (click)="getSuspendPDF()">
                             PDF
                         </button>

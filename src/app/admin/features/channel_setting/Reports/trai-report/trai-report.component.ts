@@ -1,7 +1,7 @@
 import { ChangeDetectorRef, Component, OnInit, signal } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute, Router, Routes } from '@angular/router';
-import { data } from 'jquery';
+// import { data } from 'jquery';
 import { BaseService } from 'src/app/_core/service/base.service';
 import { StorageService } from 'src/app/_core/service/storage.service';
 import { SwalService } from 'src/app/_core/service/swal.service';
@@ -87,11 +87,11 @@ export class TraiReportComponent implements OnInit {
 
   openHistoryDialog(event: number) {
     console.log(event);
-    this.router.navigate(['admin/historyAllReports/'+ event]);
+    this.router.navigate(['admin/historyAllReports/' + event]);
   }
   openBroadcasterDialog(event: number) {
     console.log(event);
-    this.router.navigate(['admin/broadcasterReports/'+ event]);
+    this.router.navigate(['admin/broadcasterReports/' + event]);
   }
- 
+
 }

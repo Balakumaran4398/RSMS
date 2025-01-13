@@ -181,18 +181,20 @@ export class NavComponent implements OnInit, AfterViewInit {
 
     this.userservice.getSearchDetailsSubscriber(this.role, this.username, value).subscribe(
       (data: any) => {
-        console.log(data);
+        // console.log(data);
 
         // Check if data is empty or null
         if (!data || Object.keys(data).length === 0) {
           console.log('No data found');
-          Swal.fire({
-            title: 'No Data',
-            text: 'No subscriber details found for this search.',
-            icon: 'warning',
-            confirmButtonText: 'OK'
-          });
+          // Swal.fire({
+          //   title: 'No Data',
+          //   text: 'No subscriber details found for this search.',
+          //   icon: 'warning',
+          //   confirmButtonText: 'OK'
+          // });
+          this.subscriberList=[];
           return;
+          
         }
 
         // Process the subscriber data if it's not empty

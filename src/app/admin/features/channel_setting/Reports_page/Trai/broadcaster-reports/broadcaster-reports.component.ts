@@ -25,21 +25,24 @@ export class BroadcasterReportsComponent implements OnInit {
   msodetails: any;
   selectedMonthName: any;
 
-  selectedDate: any = 0;
-  selectedMonth: any = 0;
-  selectedYear: any = 0;
+  selectedDate: any;
+  selectedMonth: any;
+  selectedYear: any;
   submitted: boolean = false;
-  broadcasterid: any;
+  broadcasterid: any = 0;;
   broadcastername: any;
   selectedValue: any;
+  monthlyReportCastitle: any;
 
   months: any[] = [];
   years: any[] = [];
   Date: any[] = [];
+
+
   broadcasterList: any[] = [];
   filteredBraoadcasterList: any[] = [];
   searchTerm: any;
-  isDateDisabled: boolean = true;
+  isDateDisabled: boolean = false;
 
   allType: any;
   reportTitle: any;
@@ -48,12 +51,22 @@ export class BroadcasterReportsComponent implements OnInit {
       sortable: true,
       resizable: true,
       filter: true,
-      floatingFilter: true
+      floatingFilter: true,
+      comparator: (valueA: any, valueB: any) => {
+        const normalizedA = valueA ? valueA.toString().trim().toLowerCase() : '';
+        const normalizedB = valueB ? valueB.toString().trim().toLowerCase() : '';
+        if (normalizedA < normalizedB) return -1;
+        if (normalizedA > normalizedB) return 1;
+        return 0;
+      },
     },
     paginationPageSize: 10,
     pagination: true,
+    overlayNoRowsTemplate: `<span class="custom-overlay">No data to display</span>`,
+
   }
   gridApi: any;
+  gridColumnApi: any;
 
   isVisible: boolean = false;
 
@@ -84,6 +97,7 @@ export class BroadcasterReportsComponent implements OnInit {
       console.log(this.cas);
 
     });
+
     this.userService.BroadcasterList(this.role, this.username, 1).subscribe((data: any) => {
       console.log(data);
       this.broadcasterList = data.map((item: any) => ({
@@ -91,34 +105,49 @@ export class BroadcasterReportsComponent implements OnInit {
         value: item.id,
       }));
     })
+    const currentDate = new Date();
+
+    const currentMonth = (currentDate.getMonth() + 1).toString().padStart(2, '0'); // Current month as 2-digit string
+    const currentYear = currentDate.getFullYear();
+    const currentWeek = this.calculateCurrentWeek(currentDate, this.selectedMonth);
+    this.selectedDate = currentWeek;
+    console.log('current week', this.selectedDate);
+
+    this.selectedMonth = currentMonth;
+    this.selectedYear = currentYear;
     this.generateMonths();
     this.generateYears();
     this.setReportTitle();
     this.onColumnDefs();
+    this.selectedMonthName = this.months.find(month => month.value === this.selectedMonth)?.name || '';
+
+    this.generateDates(this.selectedMonthName)
+    this.calculateCurrentWeek(currentDate, currentMonth);
+    this.onVisible();
   }
 
   setReportTitle() {
     switch (this.allType) {
       case '1':
-        this.reportTitle = 'Monthly Broadcaster Report';
+        this.reportTitle = 'Monthly Broadcaster ';
         break;
       case '2':
-        this.reportTitle = 'Over All Product Report';
+        this.reportTitle = 'Over All Product ';
         break;
       case '3':
-        this.reportTitle = 'Over All Base Product / Universal Count Report';
+        this.reportTitle = 'Over All Base Product / Universal Count ';
         break;
       case '4':
-        this.reportTitle = 'Over All Base Product Report';
+        this.reportTitle = 'Over All Base Product ';
         break;
       case '5':
-        this.reportTitle = 'Monthly Broadcaster Caswise Report';
+        this.reportTitle = 'Monthly Broadcaster Caswise ';
         break;
       case '6':
-        this.reportTitle = 'Channel Aging Report';
+        this.reportTitle = 'Channel Aging ';
         break;
       case '7':
-        this.reportTitle = 'Package Aging Report';
+        this.reportTitle = 'Package Aging ';
         break;
       default:
         this.reportTitle = 'Unknown Report';
@@ -149,12 +178,12 @@ export class BroadcasterReportsComponent implements OnInit {
   }
 
   columnDefs = [
-    { headerName: "S.No", lockPosition: true, valueGetter: 'node.rowIndex+1', headerCheckboxSelection: true, checkboxSelection: true, width: 90 },
+    { headerName: "S.No", lockPosition: true, valueGetter: 'node.rowIndex+1', width: 90 },
     { headerName: 'PRODUCT NAME', field: 'productname', width: 350 },
-    { headerName: 'PRODUCTID', field: 'casproductid', width: 340 },
-    { headerName: 'CAS', field: 'casname', width: 340 },
-    { headerName: 'SUBS COUNT AS 7TH	', field: 'w1', width: 350 },
-    { headerName: 'SUBS COUNT AS 14TH	', field: 'w2', width: 350 },
+    { headerName: 'PRODUCTID', field: 'casproductid', width: 340, cellStyle: { textAlign: 'center' }, },
+    { headerName: 'CAS', field: 'casname', width: 340, },
+    { headerName: 'SUBS COUNT AS 7TH	', field: 'w1', width: 350, cellStyle: { textAlign: 'center' }, },
+    { headerName: 'SUBS COUNT AS 14TH	', field: 'w2', width: 350, cellStyle: { textAlign: 'center' }, },
     { headerName: 'AVERAGE', field: 'avg', width: 350 },
     { headerName: 'MONTH AND YEAR', field: 'monthyear', width: 350 },
   ]
@@ -163,7 +192,7 @@ export class BroadcasterReportsComponent implements OnInit {
 
     if (this.allType == '1') {
       this.columnDefs = [
-        { headerName: "S.No", lockPosition: true, valueGetter: 'node.rowIndex+1', headerCheckboxSelection: false, checkboxSelection: false, width: 90 },
+        { headerName: "S.No", lockPosition: true, valueGetter: 'node.rowIndex+1', width: 90 },
         { headerName: 'SMARTCARD', field: 'smartcard', width: 300 },
         { headerName: 'LOG DATE', field: 'logdate', width: 280 },
         { headerName: 'ACTION', field: 'activity', width: 200 },
@@ -171,34 +200,34 @@ export class BroadcasterReportsComponent implements OnInit {
       ]
     } else if (this.allType == '2') {
       this.columnDefs = [
-        { headerName: "S.No", lockPosition: true, valueGetter: 'node.rowIndex+1', headerCheckboxSelection: true, checkboxSelection: true, width: 90 },
-        { headerName: 'PRODUCT NAME', field: 'productname', width: 350 },
-        { headerName: 'PRODUCTID', field: 'casproductid', width: 340 },
-        { headerName: 'CAS', field: 'casname', width: 340 },
-        { headerName: 'SUBS COUNT AS 7TH	', field: 'w1', width: 240 },
-        { headerName: 'SUBS COUNT AS 14TH	', field: 'w2', width: 250 },
-        { headerName: 'SUBS COUNT AS 21TH	', field: 'w3', width: 250 },
-        { headerName: 'AVERAGE', field: 'avg', width: 350 },
-        { headerName: 'MONTH AND YEAR', field: 'monthyear', width: 350 },
+        { headerName: "S.No", lockPosition: true, valueGetter: 'node.rowIndex+1', width: 90 },
+        { headerName: 'PRODUCT NAME', field: 'productname', width: 250 },
+        { headerName: 'PRODUCTID', field: 'casproductid', width: 150, cellStyle: { textAlign: 'center' }, },
+        { headerName: 'CAS', field: 'casname', width: 140 },
+        { headerName: 'SUBS COUNT AS 7TH	', field: 'w1', width: 200, cellStyle: { textAlign: 'center' }, },
+        { headerName: 'SUBS COUNT AS 14TH	', field: 'w2', width: 200, cellStyle: { textAlign: 'center' }, },
+        { headerName: 'SUBS COUNT AS 21TH	', field: 'w3', width: 200, cellStyle: { textAlign: 'center' }, },
+        { headerName: 'AVERAGE', field: 'avg', width: 150 },
+        { headerName: 'MONTH AND YEAR', field: 'monthyear', width: 150 },
       ]
     }
     else if (this.allType == '6' || this.allType == '7') {
       this.columnDefs = [
-        { headerName: "S.No", lockPosition: true, valueGetter: 'node.rowIndex+1', headerCheckboxSelection: false, checkboxSelection: false, width: 90 },
-        { headerName: 'PRODUCT ID	', field: 'smartcard', width: 150 },
+        { headerName: "S.No", lockPosition: true, valueGetter: 'node.rowIndex+1', width: 90 },
+        { headerName: 'PRODUCT ID	', field: 'smartcard', width: 150, cellStyle: { textAlign: 'center' }, },
         { headerName: 'PRODUCT NAME', field: 'logdate', width: 200 },
-        { headerName: 'CAS', field: 'activity', width: 150 },
-        { headerName: '0-30', field: 'remarks', width: 120 },
-        { headerName: '31-60', field: 'remarks', width: 120 },
-        { headerName: '61-90', field: 'remarks', width: 120 },
-        { headerName: '91-120', field: 'remarks', width: 100 },
-        { headerName: '121-150', field: 'remarks', width: 100 },
-        { headerName: '151-180', field: 'remarks', width: 100 },
-        { headerName: '181-210', field: 'remarks', width: 100 },
-        { headerName: '211-240', field: 'remarks', width: 100 },
-        { headerName: '241-270', field: 'remarks', width: 100 },
-        { headerName: '271-300', field: 'remarks', width: 100 },
-        { headerName: '301-365', field: 'remarks', width: 100 },
+        { headerName: 'CAS', field: 'activity', width: 150, cellStyle: { textAlign: 'center' }, },
+        { headerName: '0-30', field: 'remarks', width: 120, cellStyle: { textAlign: 'center' }, },
+        { headerName: '31-60', field: 'remarks', width: 120, cellStyle: { textAlign: 'center' }, },
+        { headerName: '61-90', field: 'remarks', width: 120, cellStyle: { textAlign: 'center' }, },
+        { headerName: '91-120', field: 'remarks', width: 100, cellStyle: { textAlign: 'center' }, },
+        { headerName: '121-150', field: 'remarks', width: 100, cellStyle: { textAlign: 'center' }, },
+        { headerName: '151-180', field: 'remarks', width: 100, cellStyle: { textAlign: 'center' }, },
+        { headerName: '181-210', field: 'remarks', width: 100, cellStyle: { textAlign: 'center' }, },
+        { headerName: '211-240', field: 'remarks', width: 100, cellStyle: { textAlign: 'center' }, },
+        { headerName: '241-270', field: 'remarks', width: 100, cellStyle: { textAlign: 'center' }, },
+        { headerName: '271-300', field: 'remarks', width: 100, cellStyle: { textAlign: 'center' }, },
+        { headerName: '301-365', field: 'remarks', width: 100, cellStyle: { textAlign: 'center' }, },
       ]
     } else {
       console.warn('Unknown allType:', this.allType);
@@ -206,6 +235,16 @@ export class BroadcasterReportsComponent implements OnInit {
   }
   onGridReady(params: { api: any; }) {
     this.gridApi = params.api;
+    this.gridColumnApi = params.api;
+
+    // Simulate fetching data after a delay
+    // setTimeout(() => {
+    //   this.rowData = [
+    //     { col1: 'Data 1', col2: 'Data 2', col3: 'Data 3' },
+    //     { col1: 'Data A', col2: 'Data B', col3: 'Data C' },
+    //   ];
+    //   params.api.setRowData(this.rowData); // Update the grid with new data
+    // }, 2000);
   }
   onSearchBroadcaster(event: any) {
     this.searchTerm = event.target.value;
@@ -263,38 +302,132 @@ export class BroadcasterReportsComponent implements OnInit {
       { value: '12', name: 'December' }
     ];
   }
+  onYearChange() {
+    if (this.selectedMonth == null || this.selectedMonth == undefined || this.selectedMonth == '' || this.selectedMonth <= 0) {
+      const currentDate = new Date();
+      this.selectedMonth = (currentDate.getMonth() + 1).toString().padStart(2, '0');
+      this.selectedMonthName = this.months.find(month => month.value === this.selectedMonth)?.name || '';
+    }
+    this.generateDates(this.selectedMonthName);
+
+  }
   onMonthChange() {
     if (this.selectedMonth !== '0') {
       this.selectedMonthName = this.months.find(month => month.value === this.selectedMonth)?.name || '';
       this.isDateDisabled = false;
-      console.log(this.selectedMonth);
-      console.log(this.selectedMonthName);
-
       this.generateDates(this.selectedMonthName);
+      const currentDate = new Date();
+      const currentWeek = this.calculateCurrentWeek(currentDate, this.selectedMonth);
+      this.selectedDate = currentWeek;
+
     } else {
       this.isDateDisabled = true;
       this.Date = [];
     }
   }
+  // generateDates(selectedMonthName: string) {
+  //   this.Date = [
+  //     { value: '01', name: '07 ' + selectedMonthName },
+  //     { value: '02', name: '14 ' + selectedMonthName },
+  //     { value: '03', name: '21 ' + selectedMonthName },
+  //     { value: '04', name: 'All' }
+  //   ];
+  // }
+  // calculateCurrentWeek(date: Date, selectedMonth: string): string {
+  //   const currentMonth = (date.getMonth() + 1).toString().padStart(2, '0');
+  //   const currentDay = date.getDate();
+  //   if (currentMonth === selectedMonth) {
+  //     if (currentDay <= 7) {
+  //       return '01';
+  //     } else if (currentDay <= 14) {
+  //       return '02';
+  //     } else if (currentDay <= 21) {
+  //       return '03';
+  //     }
+  //   }
+  //   return '04';
+  // }
+
+
   generateDates(selectedMonthName: string) {
+    console.log(selectedMonthName);
     this.Date = [
-      { value: '01', name: '07 ' + selectedMonthName },
-      { value: '02', name: '14 ' + selectedMonthName },
-      { value: '03', name: '21 ' + selectedMonthName },
-      { value: '04', name: 'All' }
+      { value: '01', name: '07 ' + this.selectedMonthName, isEnabled: this.checkIfDateIsFuture(this.selectedYear, this.selectedMonth, 7) },
+      { value: '02', name: '14 ' + this.selectedMonthName, isEnabled: this.checkIfDateIsFuture(this.selectedYear, this.selectedMonth, 14) },
+      { value: '03', name: '21 ' + this.selectedMonthName, isEnabled: this.checkIfDateIsFuture(this.selectedYear, this.selectedMonth, 21) },
+      { value: '04', name: 'All', isEnabled: this.checkIfDateIsFuture(this.selectedYear, this.selectedMonth, 28) }
     ];
+
+
+    const currentDate = new Date();
+    const currentMonth = (currentDate.getMonth() + 1).toString().padStart(2, '0');
+    const currentWeek = this.calculateCurrentWeek(currentDate, currentMonth);
+
+    const currentYear = currentDate.getFullYear();
+    const selectedYear = parseInt(this.selectedMonthName.split(' ')[1], 10); // Assuming selectedMonthName contains the full month name with year
+
+    // if (this.selectedMonth === currentMonth && selectedYear === currentYear) {
+    //   this.Date.forEach(date => (date.isEnabled = date.value === currentWeek));
+    // }
+    // // else if (this.selectedMonth < currentMonth || selectedYear < currentYear) {
+    // //   this.Date.forEach(date => (date.isEnabled = false));
+    // // }
+    // else if (this.selectedMonth > currentMonth || selectedYear > currentYear) {
+    //   this.Date.forEach(date => (date.isEnabled = true));
+    // }
+    // else {
+    //   this.Date.forEach(date => (date.isEnabled = true));
+    // }
   }
+
+  checkIfDateIsFuture(year: number, month: number, day: number): boolean {
+    // Construct the date from the provided year, month, and day
+    const inputDate = new Date(year, month - 1, day); // Month is 0-based in JavaScript Date
+    const currentDate = new Date(); // Get the current date and time
+
+    // Set time to the beginning of the day for accurate comparison
+    inputDate.setHours(0, 0, 0, 0);
+    currentDate.setHours(0, 0, 0, 0);
+
+    // Return true if the input date is in the future
+    return inputDate <= currentDate;
+  }
+
+
+  calculateCurrentWeek(date: Date, selectedMonth: string) {
+    console.log(date);
+    console.log(selectedMonth);
+
+
+    console.log('1111111111111111currentWeek', date);
+
+    const currentMonth = (date.getMonth() + 1).toString().padStart(2, '0');
+    const currentDay = date.getDate();
+    if (currentMonth === selectedMonth) {
+      if (currentDay <= 7) {
+        return '01';
+      } else if (currentDay <= 14) {
+        return '02';
+      } else if (currentDay <= 21) {
+        return '03';
+      } else {
+        return '04';
+      }
+    }
+    return currentMonth;
+  }
+
   onVisible() {
     this.userService.getBroadcasterVisible(this.role, this.username, this.selectedMonth, this.selectedYear).subscribe((data: any) => {
       console.log(data);
       this.isVisible = data.isVisible;
-      console.log( this.isVisible);
-      
+      console.log(this.isVisible);
+
     })
   }
 
   toggleVisibility() {
-    this.isVisible = !this.isVisible; 
+    this.isVisible = !this.isVisible;
   }
   generateYears() {
     const startYear = 2012;
@@ -308,78 +441,127 @@ export class BroadcasterReportsComponent implements OnInit {
     this.location.back();
   }
 
-  getExcel() {
-    if (!this.selectedYear && !this.selectedMonth && !this.selectedDate && !this.broadcasterid && !this.allType) {
-      this.submitted = true;
+  getExcel(event: number) {
+    console.log(event);
+    if (event === 0) {
+      this.monthlyReportCastitle = 'CAS GROUPED';
+    } else if (event === 1) {
+      this.monthlyReportCastitle = 'CAS COMBINED';
+    } else if (event === 2) {
+      this.monthlyReportCastitle = 'CHANNEL WISE';
+    } else if (event === 3) {
+      this.monthlyReportCastitle = 'CHANNEL WISE DPO';
+    } else if (event === 4) {
+      this.monthlyReportCastitle = 'ADDON WISE CHANNEL';
     } else {
-      this.userService.getBroadcasterReport(this.role, this.username, this.selectedMonth, this.selectedYear, this.selectedDate, this.broadcasterid, this.allType, 2).subscribe((data: any) => {
-        console.log(data);
-      })
+      return; // Exit if event is not matched
+    }
+    this.submitted = true;
+    if (!this.selectedYear && !this.selectedMonth && !this.selectedDate && !this.broadcasterid) {
+      this.submitted = true;
+    }
+
+    // this.swal.Loading();
+    if (this.broadcasterid > 0) {
+      Swal.fire({
+        title: "Processing",
+        text: "Please wait while the report is being generated...",
+        showConfirmButton: false,
+        didOpen: () => {
+          Swal.showLoading(null);
+        }
+      });
+      this.userService.getBroadcasterReport(this.role, this.username, this.selectedMonth, this.selectedYear, this.selectedDate, this.broadcasterid, event, 2)
+        .subscribe((x: Blob) => {
+          const blob = new Blob([x], { type: 'application/xlsx' });
+          const data = window.URL.createObjectURL(blob);
+          const link = document.createElement('a');
+          link.href = data;
+          link.download = (this.broadcastername + '' + this.reportTitle + '  ' + this.monthlyReportCastitle + ' ' + this.selectedMonthName + '-' + this.selectedYear + ".xlsx").toUpperCase();
+          link.dispatchEvent(new MouseEvent('click', { bubbles: true, cancelable: true, view: window }));
+          setTimeout(() => {
+            window.URL.revokeObjectURL(data);
+            link.remove();
+          }, 100);
+          Swal.close();
+        },
+          (error: any) => {
+            Swal.close();
+            Swal.fire({
+              title: 'Error!',
+              text: error?.error?.message || 'There was an issue generating the PDF CAS form report.',
+              icon: 'error',
+              confirmButtonText: 'Ok'
+            });
+          });
+    } else {
+      this.swal.Custom_Error_400("Kinldy select the broadcaster!!");
     }
   }
-  getPDF() {
-    if (!this.selectedYear && !this.selectedMonth && !this.selectedDate && !this.broadcasterid && !this.allType) {
-      this.submitted = true;
+  getPDF(event: number) {
+
+    console.log(event);
+    if (event === 0) {
+      this.monthlyReportCastitle = 'CAS GROUPED';
+    } else if (event === 1) {
+      this.monthlyReportCastitle = 'CAS COMBINED';
+    } else if (event === 2) {
+      this.monthlyReportCastitle = 'CHANNEL WISE';
+    } else if (event === 3) {
+      this.monthlyReportCastitle = 'CHANNEL WISE DPO';
+    } else if (event === 4) {
+      this.monthlyReportCastitle = 'ADDON WISE CHANNEL';
     } else {
-      this.userService.getBroadcasterPDFReport(this.role, this.username, this.selectedMonth, this.selectedYear, this.selectedDate, this.broadcasterid, this.allType, 1).subscribe((x: Blob) => {
-        const blob = new Blob([x], { type: 'application/pdf' });
-        const data = window.URL.createObjectURL(blob);
-        const link = document.createElement('a');
-        link.href = data;
-        link.download = (this.reportTitle + ".pdf").toUpperCase();
-        link.dispatchEvent(new MouseEvent('click', { bubbles: true, cancelable: true, view: window }));
-        setTimeout(() => {
-          window.URL.revokeObjectURL(data);
-          link.remove();
-        }, 100);
-      },
-        (error: any) => {
-          Swal.fire({
-            title: 'Error!',
-            text: error?.error?.message || 'There was an issue generating the PDF CAS form report.',
-            icon: 'error',
-            confirmButtonText: 'Ok'
-          });
-        });
+      return; // Exit if event is not matched
     }
+    console.log(this.monthlyReportCastitle);
+    this.submitted = true;
+    if (!this.selectedYear && !this.selectedMonth && !this.selectedDate && !this.broadcasterid) {
+      this.submitted = true;
+    }
+    if (this.broadcasterid > 0) {
+      Swal.fire({
+        title: "Processing",
+        text: "Please wait while the report is being generated...",
+        showConfirmButton: false,
+        didOpen: () => {
+          Swal.showLoading(null);
+        }
+      });
+      // this.swal.Loading();
+      this.userService.getBroadcasterPDFReport(this.role, this.username, this.selectedMonth, this.selectedYear, this.selectedDate, this.broadcasterid, event, 1)
+        .subscribe((x: Blob) => {
+          const blob = new Blob([x], { type: 'application/pdf' });
+          const data = window.URL.createObjectURL(blob);
+          const link = document.createElement('a');
+          link.href = data;
+
+          link.download = (this.broadcastername + '' + this.reportTitle + '  ' + this.monthlyReportCastitle + ' ' + this.selectedMonthName + '-' + this.selectedYear + ".pdf").toUpperCase();
+          link.dispatchEvent(new MouseEvent('click', { bubbles: true, cancelable: true, view: window }));
+          setTimeout(() => {
+            window.URL.revokeObjectURL(data);
+            link.remove();
+          }, 100);
+          Swal.close();
+        },
+          (error: any) => {
+            Swal.close();
+            Swal.fire({
+              title: 'Error!',
+              text: error?.error?.message || 'There was an issue generating the PDF CAS form report.',
+              icon: 'error',
+              confirmButtonText: 'Ok'
+            });
+          });
+    } else {
+      this.swal.Custom_Error_400("Kinldy select the broadcaster!!");
+
+    }
+
   }
   // ---------------------------------------Universal report-------------------------
 
-  getUniversalExcel() {
-    if (!this.selectedYear && !this.selectedMonth && !this.selectedDate) {
-      this.submitted = true;
-    } else {
-      this.userService.getUniversalExcelReport(this.role, this.username, this.selectedMonth, this.selectedYear, this.selectedDate, 2)
-        .subscribe(
-          (response: HttpResponse<any>) => {
-            if (response.status === 200) {
-              this.rowData = response.body;
-              console.log(this.reportTitle);
-              const title = (this.reportTitle).toUpperCase();
-              const sub = 'MSO ADDRESS:' + this.msodetails;
-              let areatitle = '';
-              let areasub = '';
-              let header: string[] = [];
-              const datas: Array<any> = [];
-              areatitle = 'A1:H2';
-              areasub = 'A3:H3';
-              const headers = ['S.NO', 'PACKAGE ID', 'PACKAGE NAME', 'CAS', 'AS ON 07th', 'AS ON 14th', 'AVERAGE', 'MONTH & YEAR'];
-              this.rowData.forEach((d: any, index: number) => {
-                const row = [index + 1, d.customername, d.mobileno, d.smartcard, d.boxid, d.casname, d.productname, d.createddate];
-                datas.push(row);
-              });
-              this.excelService.generatUniversalExcel(areatitle, headers, datas, title, areasub, sub);
-            } else if (response.status === 204) {
-              this.swal.Success_204();
-              this.rowData = [];
-            }
-          },
-          (error) => {
-            this.handleApiError(error);
-          }
-        );
-    }
-  }
+
   getUniversalPDF() {
     if (!this.selectedYear && !this.selectedMonth && !this.selectedDate) {
       this.submitted = true;
@@ -390,7 +572,9 @@ export class BroadcasterReportsComponent implements OnInit {
           const data = window.URL.createObjectURL(blob);
           const link = document.createElement('a');
           link.href = data;
-          link.download = (this.reportTitle + ".pdf").toUpperCase();
+          // link.download = (this.reportTitle + ".pdf").toUpperCase();
+          link.download = `${this.reportTitle} REPORT - [YEAR : ${this.selectedYear} - MONTH : ${this.selectedMonthName}].pdf`.toUpperCase();
+
           link.dispatchEvent(new MouseEvent('click', { bubbles: true, cancelable: true, view: window }));
           setTimeout(() => {
             window.URL.revokeObjectURL(data);
@@ -409,17 +593,16 @@ export class BroadcasterReportsComponent implements OnInit {
   }
   // ------------------------------------------------OverAll Report-------------------------------------------
   grtOverAllReport() {
-    console.log('fdgdfgfdjgkfdj');
     this.submitted = true;
     if (!this.selectedYear && !this.selectedMonth && !this.selectedDate) {
       this.submitted = true;
     } else {
-      this.userService.getOverAllExcelReport(this.role, this.username, this.selectedMonth, this.selectedYear, this.selectedDate, 2)
+      this.userService.getOverAllReport(this.role, this.username, this.selectedMonth, this.selectedYear, this.selectedDate, 3)
         .subscribe(
           (response: HttpResponse<any>) => {
             if (response.status === 200) {
               console.log(response);
-              this.addonlist = response.body.addonList;
+              this.addonlist = response.body.addonPackageList;
               this.alacartelist = response.body.alacartePackageList;
               this.baselist = response.body.basePackageList;
             } else if (response.status === 204) {
@@ -470,33 +653,31 @@ export class BroadcasterReportsComponent implements OnInit {
     if (!this.selectedYear && !this.selectedMonth && !this.selectedDate) {
       this.submitted = true;
     } else {
+
       this.userService.getOverAllExcelReport(this.role, this.username, this.selectedMonth, this.selectedYear, this.selectedDate, 2)
-        .subscribe(
-          (response: HttpResponse<any>) => {
-            if (response.status === 200) {
-              // this.rowData = response.body.addonList; // Extract addonList
-              this.addonlist = response.body.addonList;
-              this.alacartelist = response.body.alacartePackageList;
-              this.baselist = response.body.basePackageList;
 
-              console.log(this.reportTitle);
-              // const title = (this.reportTitle).toUpperCase();
-              const title = (this.type + ' REPORT - [YEAR : ' + this.selectedYear + ' - MONTH : ' + this.selectedMonthName + ']').toUpperCase();
+        .subscribe((x: Blob) => {
+          const blob = new Blob([x], { type: 'application/xlsx' });
+          const data = window.URL.createObjectURL(blob);
+          const link = document.createElement('a');
+          link.href = data;
+          // link.download = (this.reportTitle + ".pdf").toUpperCase();
+          link.download = `${this.reportTitle} REPORT - [YEAR : ${this.selectedYear} - MONTH : ${this.selectedMonthName}].xlsx`.toUpperCase();
 
-              const sub = 'MSO ADDRESS: ' + this.msodetails;
-
-              // Generate the unified Excel report
-              this.excelService.generateExcelReport(this.addonlist, this.alacartelist, this.baselist, title, sub);
-
-            } else if (response.status === 204) {
-              this.swal.Success_204();
-              this.rowData = [];
-            }
-          },
-          (error) => {
-            this.handleApiError(error);
-          }
-        );
+          link.dispatchEvent(new MouseEvent('click', { bubbles: true, cancelable: true, view: window }));
+          setTimeout(() => {
+            window.URL.revokeObjectURL(data);
+            link.remove();
+          }, 100);
+        },
+          (error: any) => {
+            Swal.fire({
+              title: 'Error!',
+              text: error?.error?.message || 'There was an issue generating the PDF CAS form report.',
+              icon: 'error',
+              confirmButtonText: 'Ok'
+            });
+          });
     }
   }
 
@@ -536,14 +717,16 @@ export class BroadcasterReportsComponent implements OnInit {
     if (!this.selectedYear && !this.selectedMonth && !this.selectedDate) {
       this.submitted = true;
     } else {
-      this.userService.getOverBaseExcelReport(this.role, this.username, this.selectedMonth, this.selectedYear, this.selectedDate, 2)
+      this.userService.getOverBaseExcelReport(this.role, this.username, this.selectedMonth, this.selectedYear, this.selectedDate, 3)
         .subscribe(
           (response: HttpResponse<any>) => {
             if (response.status === 200) {
               console.log(response);
-              this.addonlist = response.body.addonList;
-              this.alacartelist = response.body.alacartePackageList;
-              this.baselist = response.body.basePackageList;
+              // this.addonlist = response.body.addonList;
+              // this.alacartelist = response.body.alacartePackageList;
+              this.rowData = response.body.basePackageList;
+              console.log(this.rowData);
+
             } else if (response.status === 204) {
               this.swal.Success_204();
               this.rowData = [];
@@ -560,13 +743,28 @@ export class BroadcasterReportsComponent implements OnInit {
       this.submitted = true;
     } else {
       this.userService.getOverAllExcelReport(this.role, this.username, this.selectedMonth, this.selectedYear, this.selectedDate, 2)
-        .subscribe(
-          (response: HttpResponse<any>) => {
-          },
-          (error) => {
-            this.handleApiError(error);
-          }
-        );
+        .subscribe((x: Blob) => {
+          const blob = new Blob([x], { type: 'application/xlsx' });
+          const data = window.URL.createObjectURL(blob);
+          const link = document.createElement('a');
+          link.href = data;
+          // link.download = (this.reportTitle + ".pdf").toUpperCase();
+          link.download = `${this.reportTitle} REPORT - [YEAR : ${this.selectedYear} - MONTH : ${this.selectedMonthName}].xlsx`.toUpperCase();
+
+          link.dispatchEvent(new MouseEvent('click', { bubbles: true, cancelable: true, view: window }));
+          setTimeout(() => {
+            window.URL.revokeObjectURL(data);
+            link.remove();
+          }, 100);
+        },
+          (error: any) => {
+            Swal.fire({
+              title: 'Error!',
+              text: error?.error?.message || 'There was an issue generating the PDF CAS form report.',
+              icon: 'error',
+              confirmButtonText: 'Ok'
+            });
+          });
     }
   }
 
@@ -574,7 +772,7 @@ export class BroadcasterReportsComponent implements OnInit {
     if (!this.selectedYear && !this.selectedMonth && !this.selectedDate) {
       this.submitted = true;
     } else {
-      this.userService.getOverAllPDFReport(this.role, this.username, this.selectedMonth, this.selectedYear, this.selectedDate, 1)
+      this.userService.getOverAllBroadcasterPDFReport(this.role, this.username, this.selectedMonth, this.selectedYear, this.selectedDate, 1)
         .subscribe((x: Blob) => {
           const blob = new Blob([x], { type: 'application/pdf' });
           const data = window.URL.createObjectURL(blob);
@@ -620,23 +818,102 @@ export class BroadcasterReportsComponent implements OnInit {
   //     })
   //   }
   // }
-  getCASMonrhlyCaswiseExcel() {
+  getCASMonrhlyCaswiseExcel(event: number) {
+    console.log(event);
+    if (event === 0) {
+      this.monthlyReportCastitle = 'CAS GROUPED';
+    } else if (event === 1) {
+      this.monthlyReportCastitle = 'ADDON WISE CHANNEL';
+    } else {
+      return; // Exit if event is not matched
+    }
+    this.submitted = true;
     if (!this.selectedYear && !this.selectedMonth && !this.selectedDate && !this.broadcasterid && !this.castype) {
       this.submitted = true;
-    } else {
-      this.userService.getMonthlyBroadcasterCaswiseReport(this.role, this.username, this.selectedMonth, this.selectedYear, this.selectedDate, this.broadcasterid, this.castype, this.allType, 2).subscribe((data: any) => {
-        console.log(data);
-      })
     }
+    Swal.fire({
+      title: "Processing",
+      text: "Please wait while the report is being generated...",
+      showConfirmButton: false,
+      didOpen: () => {
+        Swal.showLoading(null);
+      }
+    });
+    this.userService.getMonthlyBroadcasterCaswiseExcelReport(this.role, this.username, this.selectedMonth, this.selectedYear, this.selectedDate, this.broadcasterid, event, this.castype, 2)
+      // .subscribe((data: any) => {
+      //   console.log(data);
+      // })
+      .subscribe((x: Blob) => {
+        const blob = new Blob([x], { type: 'application/xlsx' });
+        const data = window.URL.createObjectURL(blob);
+        const link = document.createElement('a');
+        link.href = data;
+        link.download = (this.broadcastername + '' + this.reportTitle + '' + this.monthlyReportCastitle + ' ' + this.selectedMonthName + '-' + this.selectedYear + ".xlsx").toUpperCase();
+        link.dispatchEvent(new MouseEvent('click', { bubbles: true, cancelable: true, view: window }));
+        setTimeout(() => {
+          window.URL.revokeObjectURL(data);
+          link.remove();
+        }, 100);
+        Swal.close();
+      },
+        (error: any) => {
+          Swal.close();
+          Swal.fire({
+            title: 'Error!',
+            text: error?.error?.message || 'There was an issue generating the PDF CAS form report.',
+            icon: 'error',
+            confirmButtonText: 'Ok'
+          });
+        });
+
   }
-  getCASMonrhlyCaswisePDF() {
+  getCASMonrhlyCaswisePDF(event: number) {
+    console.log(event);
+    if (event === 0) {
+      this.monthlyReportCastitle = 'CAS GROUPED';
+    } else if (event === 1) {
+      this.monthlyReportCastitle = 'ADDON WISE CHANNEL';
+    } else {
+      return; // Exit if event is not matched
+    }
+    this.submitted = true;
     if (!this.selectedYear && !this.selectedMonth && !this.selectedDate && !this.broadcasterid && !this.castype) {
       this.submitted = true;
-    } else {
-      this.userService.getMonthlyBroadcasterCaswisePDFReport(this.role, this.username, this.selectedMonth, this.selectedYear, this.selectedDate, this.broadcasterid, this.castype, this.allType, 2).subscribe((data: any) => {
-        console.log(data);
-      })
     }
+    Swal.fire({
+      title: "Processing",
+      text: "Please wait while the report is being generated...",
+      showConfirmButton: false,
+      didOpen: () => {
+        Swal.showLoading(null);
+      }
+    });
+    this.userService.getMonthlyBroadcasterCaswisePDFReport(this.role, this.username, this.selectedMonth, this.selectedYear, this.selectedDate, this.broadcasterid, event, this.castype, 1)
+      // .subscribe((data: any) => {
+      //   console.log(data);
+      // })
+      .subscribe((x: Blob) => {
+        const blob = new Blob([x], { type: 'application/pdf' });
+        const data = window.URL.createObjectURL(blob);
+        const link = document.createElement('a');
+        link.href = data;
+        link.download = (this.broadcastername + '' + this.reportTitle + '  ' + this.monthlyReportCastitle + ' ' + this.selectedMonthName + '-' + this.selectedYear + ".pdf").toUpperCase();
+        link.dispatchEvent(new MouseEvent('click', { bubbles: true, cancelable: true, view: window }));
+        setTimeout(() => {
+          window.URL.revokeObjectURL(data);
+          link.remove();
+        }, 100);
+        Swal.close();
+      },
+        (error: any) => {
+          Swal.close();
+          Swal.fire({
+            title: 'Error!',
+            text: error?.error?.message || 'There was an issue generating the PDF CAS form report.',
+            icon: 'error',
+            confirmButtonText: 'Ok'
+          });
+        });
   }
   // -----------------------------------------------------------------------------------------------------------------------------
   handleApiError(error: any) {

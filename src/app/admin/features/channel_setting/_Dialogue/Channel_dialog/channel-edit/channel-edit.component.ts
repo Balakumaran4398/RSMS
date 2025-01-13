@@ -1,4 +1,4 @@
-import { Component, Inject } from '@angular/core';
+import { ChangeDetectorRef, Component, Inject } from '@angular/core';
 import { FormControl, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { BaseService } from 'src/app/_core/service/base.service';
@@ -19,6 +19,7 @@ export class ChannelEditComponent {
   isupload: boolean = false;
   isaddnew: boolean = false;
   broadcastername: any;
+  oldBroadcastername: any;
   distributorid: any;
   tsId: any;
   productid: any;
@@ -26,8 +27,9 @@ export class ChannelEditComponent {
   customerAmount: any;
   status: string = 'Active';
   commission: any;
-  ispercentage: boolean = false;
+  ispercentage: boolean = true;
   categoryname: any;
+  oldcategoryname: any;
   inrAmt: any;
   channelid: any
   channellogo: any;
@@ -54,26 +56,30 @@ export class ChannelEditComponent {
   addchannelGroup: any;
   selectbroadcaster: any;
 
-  constructor(public dialogRef: MatDialogRef<ChannelEditComponent>, @Inject(MAT_DIALOG_DATA) public data: any, private swal:SwalService,private userservice: BaseService, private storageservice: StorageService) {
+  issave: boolean = false;
+  constructor(private cdr: ChangeDetectorRef, public dialogRef: MatDialogRef<ChannelEditComponent>, @Inject(MAT_DIALOG_DATA) public data: any, private swal: SwalService, private userservice: BaseService, private storageservice: StorageService) {
     this.role = storageservice.getUserRole();
     this.username = storageservice.getUsername();
     console.log(data);
     this.channelname = data.channel_name;
     console.log(this.channelname);
     this.channelId = data.channel_id;
-    console.log('5456465654564564',this.channelId);
+    console.log('5456465654564564', this.channelId);
     this.channellogo = data.channel_logo;
     this.channelfreq = data.channel_freq;
     this.channeldesc = data.channel_desc;
     this.tsId = data.ts_id;
     this.serviceid = data.service_id;
     this.broadcasterRate = data.broadcaster_rate;
+    this.oldBroadcastername = data.broadcastername;
     this.broadcastername = data.broadcasterid;
     this.distributorid = data.distributor_id;
     this.categoryname = data.categoryid;
+    this.oldcategoryname = data.categoryname;
     this.inrAmt = data.inr_amt;
     this.channel_typename = data.channeltypeid;
     this.status = data.statusdisplay;
+    // this.status = data.isactive;
     // this.isactive = data.statusdisplay;;
 
     console.log(this.isactive);
@@ -106,6 +112,7 @@ export class ChannelEditComponent {
     this.Broadcaster_list();
     this.Category_list();
     this.Channel_type_list();
+    this.checkMaxValue();
     // this.setDefaultLogo();
   }
   // async setDefaultLogo() {
@@ -167,9 +174,9 @@ export class ChannelEditComponent {
     console.log(this.isactive);
 
 
-    const isActive = this.isactive === "Active";
+    const isActive = this.status === "Active";
     let requestbody = {
-      channel_id:this.channelId,
+      channel_id: this.channelId,
       channel_name: this.channelname,
       service_id: this.serviceid,
       broadcaster_rate: this.broadcasterRate,
@@ -186,12 +193,14 @@ export class ChannelEditComponent {
       username: this.username
 
     };
+    this.swal.Loading();
     this.userservice.UPDATE_CHANNEL(requestbody)
       .subscribe((res: any) => {
-      this.swal.success(res?.message);
-    }, (err) => {
-      this.swal.Error(err?.error?.message);
-    });
+        this.swal.success(res?.message);
+      }, (err) => {
+        this.swal.Error(err?.error?.message || err?.error?.channel_name || err?.error?.inr_amt || err?.error?.broadcaster_id || err?.error?.product_id
+          || err?.error?.service_id || err?.error?.customer_amount);
+      });
   }
   timeout: any;
   breakLoad() {
@@ -204,6 +213,23 @@ export class ChannelEditComponent {
   closeDialog() {
     this.dialogRef.close();
   }
+  percentageValue(value: boolean) {
+    this.isPercentage = value;
+    this.checkMaxValue();
+  }
+  checkMaxValue(): void {
+
+    var inramt = this.inrAmt - this.commission
+    if (!this.isPercentage && (inramt.toString().includes('-'))) {
+      this.issave = true;
+    } else if (this.isPercentage && this.commission > 100) {
+      this.issave = true;
+    } else {
+      this.issave = false;
+    }
+    this.cdr.detectChanges();
+  }
+
 }
 export class EditChannelModel {
   constructor(public list: any) {

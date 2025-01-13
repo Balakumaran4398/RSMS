@@ -1,4 +1,3 @@
-
 <div class="Head d-flex justify-content-between align-items-center mb-3" style="padding: 1rem;">
     <h6>CREATE ADDON PACKAGE</h6>
     <i class="fa fa-close close-icon" style="cursor: pointer;" (click)="onNoClick()"></i>
@@ -118,7 +117,8 @@
                     </div>
                     <div class="col-12 col-md-12">
                         <input type="email" id="commission" formControlName="commission"
-                            (input)="calculateMsoCommission()" placeholder="Enter Mso Commission">
+                            (input)="percentageValue(createpackageForm.get('ispercentage')?.value)"
+                            placeholder="Enter Mso Commission">
                         <div *ngIf="createpackageForm.get('commission')?.invalid && createpackageForm.get('commission')?.touched"
                             class="error-message">
                             Commission is required.
@@ -192,7 +192,7 @@
                             formControlName="isactive">
                         <div class="toggle-switch"></div>
                     </label> -->
-                    <div class="col-12 col-md-12">
+                    <!-- <div class="col-12 col-md-12">
                         <div class="toggle-button-cover">
                             <div class="button b2" id="button-10">
                                 <input type="checkbox" class="checkbox" checked id="isactive"
@@ -203,13 +203,32 @@
                                 <div class="layer"></div>
                             </div>
                         </div>
+                    </div> -->
+                    <div class="radiocs">
+                        <div class="tabs">
+                            <input value="true" name="fav_language" id="html" type="radio" class="input1"
+                                (change)="percentageValue(true)" />
+                            <label for="html" class="label"><span
+                                    style="z-index: 1000;color:white;margin-top:4px">Yes</span></label>
+                            <input checked="" value="false" name="fav_language" id="css" type="radio" class="input1"
+                                (change)="percentageValue(false)" />
+                            <label for="css" class="label"><span
+                                    style="z-index: 1000;color:white;margin-top:4px">No</span></label>
+                        </div>
                     </div>
                 </div>
             </div>
+
+
         </div>
+        <p class="errorcase" *ngIf="!isPercentage && issave">*Note: Fixed commission must be less than or equal to
+            the Package rate!!</p>
+        <p class="errorcase" *ngIf="isPercentage && issave">*Note: Commission percentage must be between 0 and
+            100!!</p>
+
     </div>
     <div class="form-group d-flex justify-content-center align-items-center">
-        <button type="button" class="btn btn-primary me-2" (click)="Createpackage()">Create</button>
+        <button type="button" class="btn btn-primary me-2" [disabled]="issave" (click)="Createpackage()">Create</button>
         <button type="button" class="btn btn-secondary" (click)="onNoClick()">Cancel</button>
     </div>
 

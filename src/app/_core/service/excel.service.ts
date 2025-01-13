@@ -309,6 +309,58 @@ export class ExcelService {
       fs.saveAs(blob, `Bulk ${type}.xlsx`);
     });
   }
+  async generateChannelDetailsExcel() {
+
+    const header = ['S.NO','TS ID', 'FREQUENCY','SERVICE NAME','SERVICE ID','PRODUCT ID','INRAMT','CATEGORY NAME','BROADCASTER NAME','CHANNEL TYPE NAME','DISTRIBUTOR NAME','CHANNEL STATUS'];
+    const workbook = new Excel.Workbook();
+    const worksheet = workbook.addWorksheet('Sharing Data');
+    const headerRow = worksheet.addRow(header);
+    headerRow.eachCell((cell) => {
+      cell.fill = {
+        type: 'pattern',
+        pattern: 'solid',
+        fgColor: { argb: '326D41' },
+      };
+      cell.font = {
+        color: { argb: 'FFFFFF' },
+        bold: true,
+      };
+      cell.alignment = {
+        horizontal: 'center',
+        vertical: 'middle',
+      };
+      cell.border = {
+        top: { style: 'thin' },
+        left: { style: 'thin' },
+        bottom: { style: 'thin' },
+        right: { style: 'thin' },
+      };
+    });
+
+    worksheet.getColumn(1).width = 10;
+    worksheet.getColumn(2).width = 20;
+    worksheet.getColumn(3).width = 30;
+    worksheet.getColumn(4).width = 30;
+    worksheet.getColumn(5).width = 30;
+    worksheet.getColumn(6).width = 30;
+    worksheet.getColumn(7).width = 30;
+    worksheet.getColumn(8).width = 30;
+    worksheet.getColumn(9).width = 30;
+    worksheet.getColumn(10).width = 30;
+    worksheet.getColumn(11).width = 30;
+    worksheet.getColumn(12).width = 30;
+
+    headerRow.height = 30;
+
+    worksheet.addRow([]);
+
+    workbook.xlsx.writeBuffer().then((data: any) => {
+      const blob = new Blob([data], {
+        type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+      });
+      fs.saveAs(blob, `Channel Details.xlsx`);
+    });
+  }
 
 
 
@@ -529,7 +581,7 @@ export class ExcelService {
 
     worksheet.columns = [
       { key: 'a', width: 10 }, // S.NO
-      { key: 'b', width: 20 }, // LCO Name
+      { key: 'b', width: 25 }, // LCO Name
       { key: 'c', width: 25 }, // Customer Name
       { key: 'd', width: 25 }, // Smartcard
       { key: 'e', width: 25 }, // Box ID

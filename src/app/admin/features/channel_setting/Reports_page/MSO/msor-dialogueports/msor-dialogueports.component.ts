@@ -1,69 +1,1475 @@
-import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { BaseService } from 'src/app/_core/service/base.service';
 import { ExcelService } from 'src/app/_core/service/excel.service';
 import { StorageService } from 'src/app/_core/service/storage.service';
 import { SwalService } from 'src/app/_core/service/swal.service';
+import { Location } from '@angular/common';
+import { HttpResponse } from '@angular/common/http';
+import Swal from 'sweetalert2';
+import { MatTableDataSource } from '@angular/material/table';
+import { MatPaginator } from '@angular/material/paginator';
+import { MatSort } from '@angular/material/sort';
+
+export interface SubscriberData {
+  smartcard: string;
+  date: string;
+  expiryDate: string;
+  package: string;
+  plan: number;
+  amount: number;
+}
 
 @Component({
   selector: 'app-msor-dialogueports',
   templateUrl: './msor-dialogueports.component.html',
   styleUrls: ['./msor-dialogueports.component.scss']
 })
-export class MsorDialogueportsComponent implements OnInit{
-type:any;
-username:any;
-role:any;
-reportTitle: any;
-gridOptions = {
-  defaultColDef: {
-    sortable: true,
-    resizable: true,
-    filter: true,
-    floatingFilter: true
-  },
-  paginationPageSize: 10,
-  pagination: true,
-}
-gridApi: any;
-  constructor(private route: ActivatedRoute, 
-    public userService: BaseService, private cdr: ChangeDetectorRef, public storageservice: StorageService) {
+
+
+export class MsorDialogueportsComponent implements OnInit {
+  type: any;
+  username: any;
+  role: any;
+  reportTitle: any;
+  gridOptions = {
+    defaultColDef: {
+      sortable: true,
+      resizable: true,
+      filter: true,
+      floatingFilter: true
+    },
+    paginationPageSize: 10,
+    pagination: true,
+  }
+
+  selectedDate: any;
+  selectedDateType: any = '';
+
+  selectedMonth: any = 0;
+  selectedYear: any = 0;
+  selectedType: any = 3;
+  selectedStatus: any = 3;
+  selectedAmount: any = 4;
+
+  smartcard: any;
+  useragent: any = 0;
+
+  filteredOperators: any[] = [];
+  filteredSubLcoList: any[] = [];
+  lco_list: any[] = [];
+  sublco_list: any[] = [];
+  selectedOperator: any
+
+  selectedUser: any
+
+
+  userlist: any[] = [];
+  filtereduserlist: any[] = [];
+
+  selectedSubOperator: any;
+  selectedLcoName: any = 0;
+  selectedSubLcoName: any = 0;
+  submitted: boolean = false;
+
+  isSmartcard: boolean = false;
+  isOperator: boolean = false;
+  isUseragent: boolean = false;
+  isSubLCO: boolean = false;
+  selectedRechargeType: any = 3
+  isDateEnabled: boolean = false;
+  isMonthYearEnabled: boolean = false;
+  isYearEnabled: boolean = false;
+
+
+  today = new Date();
+  selectedOnlineType: any = "1";
+
+
+  LcoTransfer: any[] = [
+    { label: "LCO", value: 1 },
+    { label: "SMARTCARD", value: 2 },
+    { label: "DATE", value: 3 },
+  ];
+  Date: any[] = [
+    { label: "Datewise", value: 1 },
+    { label: "Monthwise", value: 2 },
+    // { label: "Yearwise", value: 3 },
+  ];
+  Date1: any[] = [
+    { label: "Datewise", value: 2 },
+    { label: "Monthwise", value: 1 },
+    // { label: "Yearwise", value: 3 },
+  ];
+  RechargeType: any[] = [
+    { label: "Operator", value: 1 },
+    { label: "Smartcard", value: 2 },
+    { label: "All", value: 3 },
+  ]
+  TypeIncluding: any[] = [
+    { label: "ALL", value: 3 },
+    { label: "RECHARGE", value: 1 },
+    { label: "DEDUCTION", value: 6 },
+  ];
+  TypeExcluding: any[] = [
+    { label: "ALL", value: 3 },
+    { label: "RECHARGE", value: 1 },
+    { label: "DEDUCTION", value: 6 },
+  ];
+  UserAgent: any[] = [
+
+    { label: "MSO", value: 1 },
+    { label: "LCO APP", value: 2 },
+    { label: "LCO WEB", value: 3 },
+    { label: "SUB LCO", value: 4 },
+    { label: "SUBSCRIBER", value: 5 },
+  ];
+  Status: any[] = [
+    { label: "ALL", value: 3 },
+    { label: "ONLINE", value: 1 },
+    { label: "OFFLINE", value: 2 },
+  ]
+  onlineType: any[] = [
+    { label: "OPERATOR", value: 1 },
+    { label: "SUBLCO", value: 2 },
+    { label: "SUBSCRIBER", value: 3 },
+
+  ]
+  Amount: any[] = [
+    { label: "CHEQUE", value: 0 },
+    { label: "CASH", value: 1 },
+    { label: "ACCOUNT TRANSFER", value: 2 },
+    { label: "ONLINE", value: 3 },
+    { label: "ALL", value: 4 },
+  ]
+  casList: any[] = [
+    { label: "RCAS", value: 1 },
+    { label: "ALL CAS", value: 0 },
+
+  ]
+  date: any;
+  months: any[] = [];
+  years: any[] = [];
+
+  fromdate: any = 0;
+  todate: any = 0;
+  rowData: any[] = []
+  columnDefs: any[] = []
+  gridApi: any;
+  // --------------------lcowiseactive report-----------
+  selectedlcocas: any = '0';
+  selectedlcoModel: any;
+  batch: boolean = false;
+
+  selectedLcotransfer: any = '';
+  isLcoOperator: boolean = false;
+  isLcoSmartcard: boolean = false;
+  // ------------------------------------------------
+  selectedMonthName: any;
+  constructor(private route: ActivatedRoute, private location: Location,
+    public userService: BaseService, private cdr: ChangeDetectorRef, public storageservice: StorageService, private swal: SwalService) {
     this.type = this.route.snapshot.paramMap.get('id');
     this.username = storageservice.getUsername();
     this.role = storageservice.getUserRole();
     console.log(this.type);
-    this.setReportTitle();
+    this.selectedOperator = { name: 'All Operator', value: 0 };
+    this.selectedLcoName = this.selectedOperator.name; // Ensure ngModel is updated
+
+    // this.setReportTitle();
+
+
   }
+
+  // -----------------------------------------------------------------subscriber bill varaibales-------------------------------
+
+  ELEMENT_DATA: SubscriberData[] = [
+    { smartcard: '1000500000000000464', date: '19-12-2024 10:55:36', expiryDate: '2024-12-21 23:59:59', package: 'QC PACK 11', plan: 3, amount: 29.5 },
+    { smartcard: '1000500000000000464', date: '31-12-2024 10:09:06', expiryDate: '2024-12-31 10:09:06', package: 'QC PACK 11', plan: 0, amount: 0.0 },
+    { smartcard: '1000500000000000464', date: '31-12-2024 10:09:32', expiryDate: '2025-01-29 23:59:59', package: 'added clone packag', plan: 30, amount: 59.0 },
+    { smartcard: '1000500000000000464', date: '31-12-2024 10:19:47', expiryDate: '2024-12-31 10:19:46', package: 'added clone packag', plan: 29, amount: 57.03 },
+    { smartcard: '1000500000000000464', date: '31-12-2024 10:20:05', expiryDate: '2025-02-28 23:59:59', package: 'added clone packag', plan: 60, amount: 118.0 },
+    { smartcard: '1000500000000000464', date: '31-12-2024 12:51:13', expiryDate: '2025-05-29 23:59:59', package: 'added clone packag', plan: 150, amount: 295.0 },
+  ];
+  displayedColumns: string[] = ['smartcard', 'date', 'expiryDate', 'package', 'plan', 'amount'];
+  dataSource = new MatTableDataSource<SubscriberData>(this.ELEMENT_DATA);
+  @ViewChild(MatPaginator) paginator!: MatPaginator;
+  @ViewChild(MatSort) sort!: MatSort;
+
+
   ngOnInit(): void {
     // this.setReportTitle();
+    this.onColumnDefs();
+    this.generateMonths();
+    this.generateYears();
+    this.operatorList();
+    // this.subLcoList('')
+    this.onRechargeType(this.selectedRechargeType);
+    this.onDateChange();
+    this.dataSource.paginator = this.paginator;
+    this.dataSource.sort = this.sort;
+
+
   }
-  setReportTitle() {
-    console.log('type',this.type);
-    
-    switch (this.type) {
-      case '1':
-        // this.reportTitle = 'Monthly Broadcaster Report';
-        break;
-      case '2':
-        // this.reportTitle = 'Over All Product Report';
-        break;
-      case '3':
-        // this.reportTitle = 'Over All Base Product / Universal Count Report';
-        break;
-      case '4':
-        // this.reportTitle = 'Over All Base Product Report';
-        break;
-      case '5':
-        // this.reportTitle = 'Monthly Broadcaster Caswise Report';
-        break;
-      case '6':
-        // this.reportTitle = 'Channel Aging Report';
-        break;
-      case '7':
-        // this.reportTitle = 'Package Aging Report';
-        break;
-      default:
-        // this.reportTitle = 'Unknown Report';
+
+  onDateChange() {
+    if (this.type == 'online_payment') {
+      this.getToDate(null);
+      this.getFromDate(null);
+      this.getOnline();
+      this.isOperator = true;
+    } else {
+      this.isOperator = false
+    }
+  }
+  // setReportTitle() {
+  //   console.log('type',this.type);
+
+  //   switch (this.type) {
+  //     case '1':
+  //       // this.reportTitle = 'Monthly Broadcaster Report';
+  //       break;
+  //     case '2':
+  //       // this.reportTitle = 'Over All Product Report';
+  //       break;
+  //     case '3':
+  //       // this.reportTitle = 'Over All Base Product / Universal Count Report';
+  //       break;
+  //     case '4':
+  //       // this.reportTitle = 'Over All Base Product Report';
+  //       break;
+  //     case '5':
+  //       // this.reportTitle = 'Monthly Broadcaster Caswise Report';
+  //       break;
+  //     case '6':
+  //       // this.reportTitle = 'Channel Aging Report';
+  //       break;
+  //     case '7':
+  //       // this.reportTitle = 'Package Aging Report';
+  //       break;
+  //     default:
+  //       // this.reportTitle = 'Unknown Report';
+  //   }
+  // }
+
+  generateMonths() {
+    this.months = [
+      { value: '01', name: 'January' },
+      { value: '02', name: 'February' },
+      { value: '03', name: 'March' },
+      { value: '04', name: 'April' },
+      { value: '05', name: 'May' },
+      { value: '06', name: 'June' },
+      { value: '07', name: 'July' },
+      { value: '08', name: 'August' },
+      { value: '09', name: 'September' },
+      { value: '10', name: 'October' },
+      { value: '11', name: 'November' },
+      { value: '12', name: 'December' }
+    ];
+  }
+  onMonthChange(event: any) {
+    // this.selectedMonthName = event.target.name;
+    console.log(event);
+
+    if (this.selectedMonth !== '0') {
+      this.selectedMonthName = this.months.find(month => month.value === this.selectedMonth)?.name || '';
+    }
+    console.log(this.selectedMonthName);
+    this.checkDataForBill();
+
+  }
+  generateYears() {
+    const startYear = 2012;
+    const currentYear = new Date().getFullYear();
+    this.years = []; // Initialize the array
+    for (let year = currentYear; year >= startYear; year--) {
+      this.years.push(year);
+    }
+  }
+
+  onChangeDateType(selectedValue: any) {
+    if (selectedValue == 0) {
+      this.isDateEnabled = false;
+      this.isMonthYearEnabled = false;
+      this.isYearEnabled = false;
+      this.fromdate = 0;
+      this.todate = 0;
+    } else if (selectedValue == 1) {
+      this.isDateEnabled = true;
+      this.isMonthYearEnabled = false;
+      this.isYearEnabled = false;
+      this.fromdate = 0;
+      this.todate = 0;
+    } else if (selectedValue == 2) {
+      this.isMonthYearEnabled = true;
+      this.isDateEnabled = false;
+      this.isYearEnabled = false;
+      this.fromdate = 0;
+      this.todate = 0;
+    } else if (selectedValue == 3) {
+      this.isDateEnabled = false;
+      this.isMonthYearEnabled = false;
+      this.isYearEnabled = true;
+      this.fromdate = 0;
+      this.todate = 0;
+    }
+  }
+  onChangeDateType1(selectedValue: any) {
+    if (selectedValue == 2) {
+      this.isDateEnabled = true;
+      this.isMonthYearEnabled = false;
+      this.isYearEnabled = false;
+      this.fromdate = 0;
+      this.todate = 0;
+    } else if (selectedValue == 1) {
+      this.isDateEnabled = false;
+      this.isMonthYearEnabled = true;
+      this.isYearEnabled = true;
+      this.fromdate = 0;
+      this.todate = 0;
+    }
+  }
+
+  onChangeLcoTransferType(selectedValue: any) {
+    if (selectedValue == 1) {
+      this.isDateEnabled = false;
+      this.isLcoOperator = true;
+      this.isLcoSmartcard = false;
+      this.fromdate = 0;
+      this.todate = 0;
+    } else if (selectedValue == 2) {
+      this.isDateEnabled = false;
+      this.isLcoOperator = false;
+      this.isLcoSmartcard = true;
+      this.fromdate = 0;
+      this.todate = 0;
+    } else if (selectedValue == 3) {
+      this.isDateEnabled = true;
+      this.isLcoOperator = false;
+      this.isLcoSmartcard = false;
+      this.fromdate = 0;
+      this.todate = 0;
+    }
+  }
+  onRechargeType(selectedValue: any) {
+    console.log('onRechargeType');
+
+    console.log(this.type);
+
+    if (this.type != 'online_payment') {
+      console.log('if condition');
+
+      if (selectedValue == 1) {
+        this.isSmartcard = false;
+        this.isOperator = true;
+        this.isUseragent = true;
+        this.isSubLCO = false;
+        this.fromdate = 0;
+        this.todate = 0;
+        this.selectedLcoName = 0;
+        this.selectedSubLcoName = 0;
+        this.useragent = 0;
+        this.smartcard = '';
+      } else if (selectedValue == 2) {
+        this.isSmartcard = true;
+        this.isOperator = false;
+        this.isUseragent = true;
+        this.isSubLCO = false;
+        this.fromdate = 0;
+        this.todate = 0;
+        this.selectedLcoName = 0;
+        this.selectedSubLcoName = 0;
+        this.useragent = 0;
+        this.smartcard = '';
+      } else if (selectedValue == 3) {
+        this.isSmartcard = false;
+        this.isOperator = true;
+        this.isUseragent = false;
+        this.isSubLCO = false;
+
+        this.fromdate = 0;
+        this.todate = 0;
+        this.selectedLcoName = 0;
+        this.selectedSubLcoName = 0;
+        this.useragent = 0;
+        this.smartcard = '';
+      }
+    }
+  }
+
+  onUserAgentType(selectedValue: any) {
+    console.log(selectedValue);
+
+    if (selectedValue == 1) {
+      this.isSubLCO = false;
+    } else if (selectedValue == 2) {
+      this.isSubLCO = false;
+    } else if (selectedValue == 3) {
+      this.isSubLCO = false;
+    } else if (selectedValue == 4) {
+      this.isSubLCO = true;
+    } else if (selectedValue == 5) {
+      this.isSubLCO = false;
+    }
+
+  }
+
+
+  onOnlineType(selectedValue: any) {
+    console.log(selectedValue);
+
+    if (selectedValue == 1) {
+      this.isSmartcard = false;
+      this.isOperator = true;
+      this.isSubLCO = false;
+      this.fromdate = 0;
+      this.todate = 0;
+      this.selectedLcoName = 0;
+      this.selectedSubLcoName = 0;
+      this.smartcard = '';
+    } else if (selectedValue == 2) {
+      this.isSmartcard = false;
+      this.isOperator = true;
+      this.isSubLCO = true;
+      this.fromdate = 0;
+      this.todate = 0;
+      this.selectedLcoName = 0;
+      this.selectedSubLcoName = 0;
+      this.smartcard = '';
+    } else if (selectedValue == 3) {
+      this.isSmartcard = true;
+      this.isOperator = false;
+      this.isSubLCO = false;
+      this.fromdate = 0;
+      this.todate = 0;
+      this.selectedLcoName = 0;
+      this.selectedSubLcoName = 0;
+      this.smartcard = '';
+    }
+  }
+  // ------------------------------------------------------------------------------------------
+  operatorList() {
+    this.userService.getOeratorList(this.role, this.username, 1).subscribe((data: any) => {
+      console.log(data);
+      this.lco_list = Object.keys(data).map(key => {
+        const value = data[key];
+        const name = key;
+        return { name: name, value: value };
+      });
+      this.filteredOperators = this.lco_list;
+    })
+  }
+  filterOperators(event: any): void {
+    const filterValue = event.target.value.toLowerCase();
+    this.filteredOperators = this.lco_list.filter(operator =>
+      operator.name.toLowerCase().includes(filterValue)
+    );
+    console.log(this.filteredOperators);
+
+  }
+
+  filterUsers(event: any): void {
+    const filterValue = event.target.value.toLowerCase();
+    this.filtereduserlist = this.userlist.filter(sub =>
+      sub.name.toLowerCase().includes(filterValue)
+    );
+    console.log(this.filteredOperators);
+
+  }
+
+  filterSubLco(event: any): void {
+    const filterValue = event.target.value.toLowerCase();
+    this.filteredSubLcoList = this.sublco_list.filter(operator =>
+      operator.name.toLowerCase().includes(filterValue)
+    );
+    console.log(this.filteredSubLcoList);
+  }
+  displayOperator(operator: any): string {
+    return operator ? operator.name : '';
+  }
+  displaysublco(operator: any): string {
+    return operator ? operator.name : '';
+  }
+
+  displayUser(user: any): string {
+    return user ? user.name : '';
+  }
+
+  subLcoList(event: any) {
+    this.filteredSubLcoList = [];
+    this.userService.getAllSublcoList(this.role, this.username, this.selectedOperator.value)
+      .subscribe(
+        (response: HttpResponse<any[]>) => { // Expect HttpResponse<any[]>
+          if (response.status === 200 && response.body) { // Ensure the body exists
+            this.sublco_list = response.body.map((item: any) => ({
+              operatorId: item.operatorId,
+              retailerName: item.retailerName,
+            }));
+            console.log(this.sublco_list);
+
+            this.filteredSubLcoList = this.sublco_list;
+          } else if (response.status === 204) {
+            this.swal.Success_204();
+          }
+        },
+        (error) => {
+          if (error.status === 400) {
+            this.swal.Error_400();
+          } else if (error.status === 500) {
+            this.swal.Error_500();
+          } else {
+            Swal.fire('Error', 'Something went wrong. Please try again.', 'error');
+          }
+        }
+      );
+
+
+  }
+  onSubscriberStatusChange(selectedOperator: any) {
+    console.log(selectedOperator);
+    this.selectedOperator = selectedOperator;
+    this.selectedLcoName = selectedOperator.value;
+    console.log(this.selectedOnlineType);
+    console.log(this.type);
+
+    if (this.type == 'online_payment' && this.selectedOnlineType == 1) {
+      console.log('if codition working');
+    } else if (this.type == 'recharge_deduction_excluding') {
+
+    } else {
+      this.subLcoList(this.selectedOperator.value)
+    }
+  }
+  onSublcochange(selectedOperator: any) {
+    console.log(selectedOperator);
+    this.selectedSubOperator = selectedOperator;
+    this.selectedSubLcoName = selectedOperator.operatorId;
+    console.log(this.selectedSubLcoName);
+  }
+  onOperatorStatusChange(selectedOperator: any) {
+    if (selectedOperator.value === 0) {
+      this.selectedLcoName = 0;
+      this.selectedOperator = selectedOperator;
+      console.log(this.selectedOperator);
+
+    } else {
+      this.selectedLcoName = 0;
+    }
+  }
+  onOperatorBandwidth(selectedOperator: any) {
+    if (selectedOperator.value === -1) {
+      this.selectedLcoName = -1;
+      this.selectedOperator = selectedOperator;
+      console.log(this.selectedOperator);
+
+    } else {
+      this.selectedLcoName = 0;
+    }
+  }
+
+  onUserChange(selecteduser: any) {
+    this.selectedUser = selecteduser;
+  }
+  onSublcoChange(selectedOperator: any) {
+    if (selectedOperator.value === 0) {
+      this.selectedSubLcoName = 0;
+      this.selectedSubOperator = selectedOperator;
+      console.log(this.selectedOperator);
+
+    } else {
+      this.selectedSubLcoName = 0;
+    }
+  }
+  // -------------------------------------------------------------
+  private onColumnDefs() {
+    if (this.type == 'walletShare') {
+      this.columnDefs = [
+        { headerName: "S.No", lockPosition: true, valueGetter: 'node.rowIndex+1', headerCheckboxSelection: false, checkboxSelection: false, width: 90 },
+        { headerName: 'DATE', field: 'logdate', Flex: 1 },
+        { headerName: 'SHARED AMOUNT	', field: 'amount', Flex: 1, cellStyle: { textAlign: 'center', color: 'green' } },
+        {
+          headerName: 'FROM OPERATOR	', field: 'activity', width: 500, cellRenderer: (params: { data: { fromopname: string; fromopoldbalance: number; fromopnewbalance: number; }; }) => {
+            return `
+            <div>
+              <strong style="color:#6f6f6f">${params.data.fromopname}</strong><br>
+              <span>Old Balance:  <b style="color:#ef3333"> ₹ ${params.data.fromopoldbalance}</b></span><br>
+              <span>New Balance:  <b style="color:#239b28"> ₹ ${params.data.fromopnewbalance}</b></span>
+            </div>
+          `;
+          }
+        },
+        {
+          headerName: 'TO OPERATOR	', field: 'activity', width: 500, cellRenderer: (params: { data: { toopname: string; toopoldbalance: number; toopnewbalance: number; }; }) => {
+            return `
+            <div>
+              <strong style="color:#6f6f6f">${params.data.toopname}</strong><br>
+              <span>Old Balance: <b style="color:#ef3333"> ₹${params.data.toopoldbalance}</b></span><br>
+              <span>New Balance: <b style="color:#239b28"> ₹${params.data.toopnewbalance}</b></span>
+            </div>
+          `;
+          }
+        },
+      ]
+    } else if (this.type == 'recharge_deduction_excluding') {
+
+
+      if (this.selectedOperator.value == 0) {
+        this.columnDefs = [
+          { headerName: "S.No", lockPosition: true, valueGetter: 'node.rowIndex+1', headerCheckboxSelection: false, checkboxSelection: false, width: 80 },
+          { headerName: 'LCO ID', field: 'operatorid', width: 150 },
+          { headerName: 'LCO NAME', field: 'operatorname', width: 300 },
+          { headerName: 'TOTAL	', field: 'total', width: 200 },
+          { headerName: 'TYPE	', field: 'transactiongroupname', width: 200 },
+          // { headerName: 'LOG DATE	', field: 'transaction_date', width: 250 },
+          { headerName: 'ADDRESS	', field: 'address', width: 350 },
+          { headerName: 'MOBILE', field: 'contactnumber', width: 250 },
+
+        ]
+      } else {
+        this.columnDefs = [
+          { headerName: "S.No", lockPosition: true, valueGetter: 'node.rowIndex+1', headerCheckboxSelection: false, checkboxSelection: false, width: 80 },
+          { headerName: 'LCO ID', field: 'operatorid', width: 150 },
+          { headerName: 'LCO NAME', field: 'operatorname', width: 300 },
+          { headerName: 'TOTAL	', field: 'total', width: 200 },
+          { headerName: 'TYPE	', field: 'transactiongroupname', width: 200 },
+          { headerName: 'LOG DATE	', field: 'transactiondate', width: 250 },
+          { headerName: 'ADDRESS	', field: 'address', width: 350 },
+          { headerName: 'MOBILE', field: 'contactnumber', width: 250 },
+
+        ]
+      }
+
+    } else if (this.type == 'recharge_deduction_including') {
+      this.columnDefs = [
+        { headerName: "S.No", lockPosition: true, valueGetter: 'node.rowIndex+1', headerCheckboxSelection: false, checkboxSelection: false, width: 70 },
+        { headerName: 'LCO ID', field: 'operatorid', width: 80 },
+        { headerName: 'LCO NAME', field: 'operatorname', width: 250 },
+        { headerName: 'PAYMENT MODE', field: 'packagename', width: 230 },
+        // { headerName: 'ORDER ID	', field: 'boxid', width: 150 },
+        { headerName: 'TRANSACTION ID', field: 'transactionid', width: 150 },
+        { headerName: 'TRANSACTION DATE', field: 'transactiondate', width: 250 },
+        { headerName: 'REMARKS', field: 'transactionremarks', width: 200 },
+        { headerName: 'TYPE', field: 'transactiongroupname', width: 200 },
+        // { headerName: 'TRANSACTION DATE	', field: 'transaction_date', width: 350 },
+        { headerName: 'AMOUNT', field: 'total', width: 150, cellStyle: { textAlign: 'center', color: 'green' } },
+      ]
+    }
+    else if (this.type == 'recharge_history') {
+      this.columnDefs = [
+        { headerName: "S.No", lockPosition: true, valueGetter: 'node.rowIndex+1', headerCheckboxSelection: false, checkboxSelection: false, width: 90 },
+        { headerName: 'CUSTOMER NAME', field: 'customername', width: 150 },
+        { headerName: 'AREA ID', field: 'dummyarea', width: 150, cellStyle: { textAlign: 'center' }, },
+        { headerName: 'CUSTOMER NO', field: 'customerno', width: 150, cellStyle: { textAlign: 'center' }, },
+        { headerName: 'SMARTCARD	', field: 'referenceid', width: 200 },
+        { headerName: 'PACKAGE NAME', field: 'productname', width: 150 },
+        { headerName: 'ACTION', field: 'remarks2', width: 150 },
+        { headerName: 'TRANSACTION TYPE', field: 'remarks', width: 150, cellStyle: { textAlign: 'center' }, },
+        { headerName: 'DAYS	', field: 'days', width: 120, cellStyle: { textAlign: 'center' }, },
+        { headerName: 'BEFORE BALANCE	', field: 'oldbalance', width: 150, cellStyle: { textAlign: 'center' }, },
+        { headerName: 'LCO AMOUNT		', field: 'lcoamount', width: 150, cellStyle: { textAlign: 'center', color: 'green' }, },
+        { headerName: 'AFTER BALANCE	', field: 'currentbalance', width: 150, cellStyle: { textAlign: 'center' }, },
+        { headerName: 'TRANSACTION DATE	', field: 'transactiondate', width: 150 },
+        { headerName: 'EXPIRY DATE', field: 'expirydate', width: 150 },
+        {
+          headerName: 'USER AGENT	', field: 'useragent', width: 150,
+          valueGetter: (params: any) => {
+            const useragent = params.data.useragent || '';
+            const remarks1 = params.data.remarks1 || '';
+            const operatorname = params.data.operatorname || '';
+            return `${useragent} -[( ${operatorname})-( ${remarks1})]`;
+          },
+        },
+        { headerName: 'ADDRESS	', field: 'address', width: 150 },
+        { headerName: 'AREA NAME	', field: 'areaname', width: 150 },
+        { headerName: 'COMMENT', field: 'comment', width: 150 },
+      ]
+    }
+    else if (this.type == 'online_payment') {
+      this.columnDefs = [
+        { headerName: "S.No", lockPosition: true, valueGetter: 'node.rowIndex+1', headerCheckboxSelection: false, checkboxSelection: false, width: 90 },
+        { headerName: 'OPERATOR NAME', field: 'operatorname', width: 250 },
+        { headerName: 'ORDER ID', field: 'orderid', width: 250, cellStyle: { textAlign: 'center' }, },
+        { headerName: 'AMOUNT', field: 'amount', width: 220, cellStyle: { textAlign: 'center', color: 'green' }, },
+        { headerName: 'STATUS	', field: 'status', width: 200, cellStyle: { textAlign: 'center' } },
+        { headerName: 'RESPONSE', field: 'response', width: 200 },
+        { headerName: 'TRANSACTION DATE', field: 'logdate', width: 200 },
+        // { headerName: 'RE STATUS', field: 'restatus', width: 150, cellStyle: { textAlign: 'center' }, },
+        {
+          headerName: "RE STATUS",
+          editable: true,
+          cellRenderer: (params: any) => {
+            // if (params.data.status === "success") {
+            const replaceButton = document.createElement('button');
+            replaceButton.style.marginRight = '5px';
+            replaceButton.style.cursor = 'pointer';
+            replaceButton.style.fontSize = '12px';
+            replaceButton.style.padding = '0px 15px';
+            replaceButton.style.fontWeight = 'bold';
+            replaceButton.style.height = '38px';
+            replaceButton.style.background = 'linear-gradient(rgb(255, 217, 70), rgb(225, 167, 92))';
+            replaceButton.style.color = 'rgb(104, 102, 102)';
+            replaceButton.style.border = '1px solid rgb(255, 220, 138)';
+            // replaceButton.style.marginTop = '3%';
+            replaceButton.innerText = 'Refresh';
+
+            replaceButton.addEventListener('mouseenter', () => {
+              replaceButton.style.color = 'white';
+            });
+            replaceButton.addEventListener('mouseleave', () => {
+              replaceButton.style.color = 'rgb(104, 102, 102)';
+            });
+            replaceButton.addEventListener('click', () => {
+              // this.openEditDialog(params.data);
+              this.refreshData(params.data);
+            });
+            if (params.data.status === "success") {
+              replaceButton.disabled = true;
+              replaceButton.style.cursor = 'not-allowed';
+              replaceButton.style.background = 'linear-gradient(rgb(251 234 170), rgb(229 200 164))';
+            }
+            const div = document.createElement('div');
+            div.appendChild(replaceButton);
+            return div;
+            // } else {
+            //   return '';
+            // }
+          }
+        }
+      ]
+    } else if (this.type == 'user_rechargehistory') {
+      this.columnDefs = [
+        { headerName: "S.No", lockPosition: true, valueGetter: 'node.rowIndex+1', headerCheckboxSelection: false, checkboxSelection: false, width: 90 },
+        { headerName: 'OPERATOR NAME', field: 'operatorname', flex: 1 },
+        { headerName: 'CUSTOMER NAME', field: 'operatorname', flex: 1 },
+        { headerName: 'MOBILE NUMBER', field: 'orderid', flex: 1, cellStyle: { textAlign: 'center' }, },
+        { headerName: 'SMARTCARD', field: 'amount', flex: 1, cellStyle: { textAlign: 'center', color: 'green' }, },
+        { headerName: 'PRODUCT NAME	', field: 'status', flex: 1, cellStyle: { textAlign: 'center' } },
+        { headerName: 'ACTION', field: 'response', flex: 1 },
+        { headerName: 'CUSTOMER AMOUNT', field: 'logdate', flex: 1 },
+        { headerName: 'LCO AMOUNT', field: 'logdate', flex: 1 },
+        { headerName: 'MSO AMOUNT', field: 'logdate', flex: 1 },
+        { headerName: 'LOG DATE', field: 'logdate', flex: 1 },
+        { headerName: 'EXPIRY DATE', field: 'logdate', flex: 1 },
+      ]
+    } else if (this.type == 'lco_active_subscription') {
+      this.columnDefs = [
+        { headerName: "S.No", lockPosition: true, valueGetter: 'node.rowIndex+1', headerCheckboxSelection: false, checkboxSelection: false, width: 90 },
+        { headerName: 'OPERATOR ID', field: 'operatorname', flex: 1 },
+        { headerName: 'OPERATOR NAME', field: 'operatorname', flex: 1 },
+        { headerName: 'MOBILE NUMBER', field: 'orderid', flex: 1, cellStyle: { textAlign: 'center' }, },
+        { headerName: 'AREA NAME', field: 'amount', flex: 1, cellStyle: { textAlign: 'center', color: 'green' }, },
+        { headerName: 'LCO INVENTORY', field: 'status', flex: 1, cellStyle: { textAlign: 'center' } },
+        { headerName: 'SUBSCRIBER INVENTORY', field: 'response', flex: 1 },
+        { headerName: 'ACTIVE', field: 'logdate', flex: 1 },
+        { headerName: 'EXPIRY', field: 'logdate', flex: 1 },
+        { headerName: 'TOTAL', field: 'logdate', flex: 1 },
+      ]
+    } else if (this.type == 'lcowiseExpiryCountDiff') {
+      this.columnDefs = [
+        { headerName: "S.No", lockPosition: true, valueGetter: 'node.rowIndex+1', filter: false, headerCheckboxSelection: false, checkboxSelection: false, width: 90 },
+        { headerName: 'OPERATOR ID', field: 'operatorname', flex: 1 },
+        { headerName: 'OPERATOR NAME', field: 'operatorname', flex: 1 },
+        { headerName: 'MOBILE NUMBER', field: 'orderid', flex: 1, cellStyle: { textAlign: 'center' }, filter: false, },
+        { headerName: 'AREA NAME', field: 'amount', flex: 1, cellStyle: { textAlign: 'center', color: 'green', }, filter: false },
+        { headerName: 'ACTIVE COUNT', field: 'status', flex: 1, cellStyle: { textAlign: 'center' } },
+        { headerName: 'EXPIRY COUNT', field: 'response', flex: 1 },
+        { headerName: 'EXPIRY COUNT JANUARY', field: 'logdate', flex: 1 },
+        // { headerName: 'DIFFERENCE', field: 'logdate', flex: 1 },
+        { headerName: 'DIFFERENCE', field: 'logdate', flex: 1 },
+      ]
+    } else if (this.type == 'total_lco') {
+      this.columnDefs = [
+        { headerName: "S.No", lockPosition: true, valueGetter: 'node.rowIndex+1', filter: false, headerCheckboxSelection: false, checkboxSelection: false, width: 90 },
+        { headerName: 'LCO NAME', field: 'operatorname', flex: 1, filter: false },
+        { headerName: 'LCO ID', field: 'operatorname', flex: 1, filter: false },
+        { headerName: 'AREA', field: 'amount', flex: 1, cellStyle: { textAlign: 'center', color: 'green', }, filter: false },
+        { headerName: 'ADDRESS', field: 'status', flex: 1, cellStyle: { textAlign: 'center' }, filter: false },
+        { headerName: 'PINCODE', field: 'response', flex: 1, filter: false },
+        { headerName: 'MOBILE NUMBER', field: 'orderid', flex: 1, cellStyle: { textAlign: 'center' }, filter: false, },
+        { headerName: 'USER ID', field: 'logdate', flex: 1, filter: false },
+      ]
+    } else if (this.type == 'lco_transfer_details') {
+      this.columnDefs = [
+        { headerName: "S.No", lockPosition: true, valueGetter: 'node.rowIndex+1', filter: false, headerCheckboxSelection: false, checkboxSelection: false, width: 90 },
+        { headerName: 'SMARTCARD', field: 'operatorname', flex: 1, filter: false },
+        { headerName: 'OLD CUSTOMER NAME', field: 'operatorname', flex: 1, filter: false },
+        { headerName: 'NEW CUSTOMER NAME', field: 'amount', flex: 1, cellStyle: { textAlign: 'center', color: 'green', }, filter: false },
+        { headerName: 'OLD OPERATOR	', field: 'status', flex: 1, cellStyle: { textAlign: 'center' }, filter: false },
+        { headerName: 'NEW OPERATOR	', field: 'response', flex: 1, filter: false },
+        { headerName: 'LOG DATE', field: 'orderid', flex: 1, cellStyle: { textAlign: 'center' }, filter: false, },
+      ]
+    }
+
+  }
+
+
+
+  onGridReady(params: { api: any; }) {
+    this.gridApi = params.api;
+  }
+  formatDate(date: Date): string {
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, '0'); // Months are zero-based
+    const day = String(date.getDate()).padStart(2, '0');
+    return `${year}-${month}-${day}`;
+  }
+
+  getFromDate(event: any) {
+    var date = new Date();
+    if (event != null && event != undefined) {
+      date = new Date(event.value);
+    }
+    const formattedDate = this.formatDate(date); // Use the formatDate method
+    this.fromdate = formattedDate;
+
+    this.cdr.detectChanges();
+
+
+  }
+  getToDate(event: any) {
+
+    var date = new Date();
+    if (event != null && event != undefined) {
+      date = new Date(event.value);
+    }
+    this.todate = this.formatDate(date);
+    console.log(this.todate);
+    this.cdr.detectChanges();
+
+
+  }
+  goBack(): void {
+    this.location.back();
+  }
+  // ------------------------------------------------------integration---------------------------------------------
+  // -----------------------------------------------monthwisePaymentCollection-----------------------------------------------------------
+  monthwisePaymentCollectionExcel() {
+    this.submitted = true;
+    if (!this.selectedYear && !this.selectedMonth && !this.selectedDate) {
+      this.submitted = true;
+    }
+    Swal.fire({
+      title: "Processing",
+      text: "Please wait while the report is being generated...",
+      showConfirmButton: false,
+      didOpen: () => {
+        Swal.showLoading(null);
+      }
+    });
+    // this.swal.Loading();
+    console.log('dfdsfdsfdsfdsf', event);
+    this.userService.getMonthwisePaymentCollection(this.role, this.username, this.selectedMonth, this.selectedYear, 2)
+      .subscribe((x: Blob) => {
+        const blob = new Blob([x], { type: 'application/xlsx' });
+        const data = window.URL.createObjectURL(blob);
+        const link = document.createElement('a');
+        link.href = data;
+
+        link.download = (this.type + '  ' + this.selectedMonthName + '-' + this.selectedYear + ".xlsx").toUpperCase();
+        link.dispatchEvent(new MouseEvent('click', { bubbles: true, cancelable: true, view: window }));
+        setTimeout(() => {
+          window.URL.revokeObjectURL(data);
+          link.remove();
+        }, 100);
+        Swal.close();
+      },
+        (error: any) => {
+          Swal.close();
+          Swal.fire({
+            title: 'Error!',
+            text: error?.error?.message || 'There was an issue generating the PDF CAS form report.',
+            icon: 'error',
+            confirmButtonText: 'Ok'
+          });
+        });
+  }
+  monthwisePaymentCollectionPdf() {
+    if (!this.selectedYear && !this.selectedMonth && !this.selectedDate) {
+      this.submitted = true;
+    }
+    Swal.fire({
+      title: "Processing",
+      text: "Please wait while the report is being generated...",
+      showConfirmButton: false,
+      didOpen: () => {
+        Swal.showLoading(null);
+      }
+    });
+    // this.swal.Loading();
+    console.log('dfdsfdsfdsfdsf', event);
+    this.userService.getMonthwisePaymentCollection(this.role, this.username, this.selectedMonth, this.selectedYear, 1)
+      .subscribe((x: Blob) => {
+        const blob = new Blob([x], { type: 'application/pdf' });
+        const data = window.URL.createObjectURL(blob);
+        const link = document.createElement('a');
+        link.href = data;
+
+        link.download = (this.type + '  ' + this.selectedMonthName + '-' + this.selectedYear + ".pdf").toUpperCase();
+        link.dispatchEvent(new MouseEvent('click', { bubbles: true, cancelable: true, view: window }));
+        setTimeout(() => {
+          window.URL.revokeObjectURL(data);
+          link.remove();
+        }, 100);
+        Swal.close();
+      },
+        (error: any) => {
+          Swal.close();
+          Swal.fire({
+            title: 'Error!',
+            text: error?.error?.message || 'There was an issue generating the PDF CAS form report.',
+            icon: 'error',
+            confirmButtonText: 'Ok'
+          });
+        });
+  }
+  // -----------------------------------------------------------Recharge history report----------------------
+
+  smartcardChange(smartcard: any) {
+    if (this.smartcard == null || this.smartcard == undefined || this.smartcard == '') {
+      return 0
+    } else {
+      return smartcard;
+    }
+  }
+  getRecharge() {
+
+    this.smartcard = this.smartcardChange(this.smartcard);
+    Swal.fire({
+      title: "Processing",
+      text: "Please wait while the report is being generated...",
+      showConfirmButton: false,
+      didOpen: () => {
+        Swal.showLoading(null);
+      }
+
+    });
+    // this.swal.Loading();
+    this.userService.getRechargeHistory(this.role, this.username, this.selectedRechargeType, this.selectedOperator.value, this.fromdate, this.todate, this.smartcard, this.useragent,
+      this.selectedSubLcoName, 3
+    ).subscribe(
+      (response: HttpResponse<any>) => {
+        if (response.status === 200) {
+          console.log(response);
+          this.rowData = response.body;
+          // this.fromdate = '';
+          // this.todate = '';
+          this.swal.Success_200();
+        } else if (response.status === 204) {
+          this.swal.Success_204();
+          this.rowData = [];
+        }
+        Swal.close();
+      },
+      (error) => {
+        this.handleApiError(error.error, error.status);
+      }
+    );
+  }
+
+  getRechargeExcel() {
+
+    this.smartcard = this.smartcardChange(this.smartcard);
+
+    Swal.fire({
+      title: "Processing",
+      text: "Please wait while the report is being generated...",
+      showConfirmButton: false,
+      didOpen: () => {
+        Swal.showLoading(null);
+      }
+
+    });
+    console.log('dfdsfdsfdsfdsf', event);
+    this.userService.getRechargeHistoryReport(this.role, this.username, this.selectedRechargeType, this.selectedOperator.value, this.fromdate, this.todate, this.smartcard, this.useragent,
+      this.selectedSubLcoName, 2
+    )
+      .subscribe((x: Blob) => {
+        const blob = new Blob([x], { type: 'application/xlsx' });
+        const data = window.URL.createObjectURL(blob);
+        const link = document.createElement('a');
+        link.href = data;
+
+        link.download = ("SUB ONLINE REPORT.xlsx").toUpperCase();
+        link.dispatchEvent(new MouseEvent('click', { bubbles: true, cancelable: true, view: window }));
+        setTimeout(() => {
+          window.URL.revokeObjectURL(data);
+          link.remove();
+        }, 100);
+        Swal.close();
+      },
+        (error: any) => {
+          Swal.close();
+          Swal.fire({
+            title: 'Error!',
+            text: error?.error?.message || 'There was an issue generating the PDF CAS form report.',
+            icon: 'error',
+            confirmButtonText: 'Ok'
+          });
+        });
+    // this.fromdate = '';
+    // this.todate = '';
+  }
+  getRerchargePdf() {
+
+    this.smartcard = this.smartcardChange(this.smartcard);
+
+    Swal.fire({
+      title: "Processing",
+      text: "Please wait while the report is being generated...",
+      showConfirmButton: false,
+      didOpen: () => {
+        Swal.showLoading(null);
+      }
+    });
+    console.log('dfdsfdsfdsfdsf', event);
+    this.userService.getRechargeHistoryReport(this.role, this.username, this.selectedRechargeType, this.selectedOperator.value, this.fromdate, this.todate, this.smartcard, this.useragent,
+      this.selectedSubLcoName, 1
+    )
+      .subscribe((x: Blob) => {
+        const blob = new Blob([x], { type: 'application/pdf' });
+        const data = window.URL.createObjectURL(blob);
+        const link = document.createElement('a');
+        link.href = data;
+
+        link.download = ("SUB ONLINE REPORT.pdf").toUpperCase();
+        link.dispatchEvent(new MouseEvent('click', { bubbles: true, cancelable: true, view: window }));
+        setTimeout(() => {
+          window.URL.revokeObjectURL(data);
+          link.remove();
+        }, 100);
+        Swal.close();
+      },
+        (error: any) => {
+          Swal.close();
+          Swal.fire({
+            title: 'Error!',
+            text: error?.error?.message || 'There was an issue generating the PDF CAS form report.',
+            icon: 'error',
+            confirmButtonText: 'Ok'
+          });
+        });
+    // this.fromdate = '';
+    // this.todate = '';
+  }
+  // -----------------------------------------------------------Online history report----------------------
+
+  getOnline() {
+    this.smartcard = this.smartcardChange(this.smartcard);
+
+
+    Swal.fire({
+      title: "Processing",
+      text: "Please wait while the report is being generated...",
+      showConfirmButton: false,
+      didOpen: () => {
+        Swal.showLoading(null);
+      }
+
+    });
+    this.userService.getOnlinePaymentHistory(this.role, this.username, this.fromdate, this.todate, this.selectedOperator.value, this.selectedSubLcoName, this.smartcard, this.selectedOnlineType, 3)
+      .subscribe(
+        (response: HttpResponse<any>) => {
+          if (response.status === 200) {
+            console.log(response);
+            this.rowData = response.body;
+            this.swal.Success_200();
+          } else if (response.status === 204) {
+            this.swal.Success_204();
+            this.rowData = [];
+          }
+          Swal.close();
+        },
+        (error) => {
+          this.handleApiError(error.error, error.status);
+        }
+      );
+  }
+
+  getOnlineExcel() {
+
+    this.smartcard = this.smartcardChange(this.smartcard);
+
+    Swal.fire({
+      title: "Processing",
+      text: "Please wait while the report is being generated...",
+      showConfirmButton: false,
+      didOpen: () => {
+        Swal.showLoading(null);
+      }
+
+    });
+    this.userService.getOnlinePaymentHistoryReport(this.role, this.username, this.fromdate, this.todate, this.selectedOperator.value, this.selectedSubLcoName, this.smartcard, this.selectedOnlineType, 2)
+      .subscribe((x: Blob) => {
+        const blob = new Blob([x], { type: 'application/xlsx' });
+        const data = window.URL.createObjectURL(blob);
+        const link = document.createElement('a');
+        link.href = data;
+
+        link.download = ("SUB ONLINE REPORT.xlsx").toUpperCase();
+        link.dispatchEvent(new MouseEvent('click', { bubbles: true, cancelable: true, view: window }));
+        setTimeout(() => {
+          window.URL.revokeObjectURL(data);
+          link.remove();
+        }, 100);
+        Swal.close();
+      },
+        (error: any) => {
+          Swal.close();
+          Swal.fire({
+            title: 'Error!',
+            text: error?.error?.message || 'There was an issue generating the PDF CAS form report.',
+            icon: 'error',
+            confirmButtonText: 'Ok'
+          });
+        });
+    // this.fromdate = '';
+    // this.todate = '';
+  }
+  getOnlinePdf() {
+    this.smartcard = this.smartcardChange(this.smartcard);
+
+    Swal.fire({
+      title: "Processing",
+      text: "Please wait while the report is being generated...",
+      showConfirmButton: false,
+      didOpen: () => {
+        Swal.showLoading(null);
+      }
+    });
+    console.log('dfdsfdsfdsfdsf', event);
+    this.userService.getOnlinePaymentHistoryReport(this.role, this.username, this.fromdate, this.todate, this.selectedOperator.value, this.selectedSubLcoName, this.smartcard, this.selectedOnlineType, 1)
+      .subscribe((x: Blob) => {
+        const blob = new Blob([x], { type: 'application/pdf' });
+        const data = window.URL.createObjectURL(blob);
+        const link = document.createElement('a');
+        link.href = data;
+
+        link.download = ("SUB ONLINE REPORT.pdf").toUpperCase();
+        link.dispatchEvent(new MouseEvent('click', { bubbles: true, cancelable: true, view: window }));
+        setTimeout(() => {
+          window.URL.revokeObjectURL(data);
+          link.remove();
+        }, 100);
+        Swal.close();
+      },
+        (error: any) => {
+          Swal.close();
+          Swal.fire({
+            title: 'Error!',
+            text: error?.error?.message || 'There was an issue generating the PDF CAS form report.',
+            icon: 'error',
+            confirmButtonText: 'Ok'
+          });
+        });
+    // this.fromdate = '';
+    // this.todate = '';
+  }
+  // ------------------------------------------------------------------------------------------------------------------
+  getExcluding() {
+    if (!this.selectedYear && !this.selectedMonth && !this.selectedDate) {
+      this.submitted = true;
+    }
+    this.onColumnDefs();
+    this.processingSwal();
+
+    this.userService.getExcluding(this.role, this.username, this.fromdate, this.todate, this.selectedMonth, this.selectedYear, this.selectedDateType, this.selectedType,
+      this.selectedStatus, this.selectedOperator.value, 3
+    ).subscribe(
+      (response: HttpResponse<any>) => {
+        if (response.status === 200) {
+          console.log(response);
+          this.rowData = response.body;
+          // this.fromdate = '';
+          // this.todate = '';
+          this.swal.Success_200();
+        } else if (response.status === 204) {
+          this.swal.Success_204();
+          this.rowData = [];
+        }
+        Swal.close();
+      },
+      (error) => {
+        this.handleApiError(error.error, error.status);
+      }
+    );
+  }
+
+  getExcludingReportDownload(type: number) {
+    if (!this.selectedYear && !this.selectedMonth && !this.selectedDate) {
+      this.submitted = true;
+    }
+    this.processingSwal();
+    this.userService.getExcludingReport(this.role, this.username, this.fromdate, this.todate, this.selectedMonth, this.selectedYear, this.selectedDateType, this.selectedType,
+      this.selectedStatus, this.selectedOperator.value, type
+    )
+      .subscribe((x: Blob) => {
+        if (type == 1) {
+          this.reportMaking(x, this.type + '  ' + this.selectedMonthName + '-' + this.selectedYear + ".pdf", 'application/pdf');
+        } else if (type == 2) {
+          this.reportMaking(x, this.type + '  ' + this.selectedMonthName + '-' + this.selectedYear + ".xlsx", 'application/xlsx');
+        }
+      },
+        (error: any) => {
+          this.pdfswalError(error?.error.message);
+        });
+
+  }
+  // ================================================MSO LCOWISE SUBSCRIPTION COUNT===============================
+
+  lcowiseActiveSubCount() {
+
+    // this.swal.Loading();
+    this.userService.getLcowiseActiveSubCount(this.role, this.username, this.selectedOperator.value, this.selectedlcoModel, 3, this.batch, this.selectedlcocas).subscribe(
+      (response: HttpResponse<any>) => {
+        if (response.status === 200) {
+          console.log(response);
+          this.rowData = response.body;
+          this.swal.Success_200();
+        } else if (response.status === 204) {
+          this.swal.Success_204();
+          this.rowData = [];
+        }
+      },
+      (error) => {
+        this.handleApiError(error.error, error.status);
+      }
+    );
+  }
+
+
+  lcowiseActiveSubCountReport(type: number) {
+    // if (!this.selectedYear && !this.selectedMonth && !this.selectedDate) {
+    //   this.submitted = true;
+    // }
+    this.processingSwal();
+    this.userService.getLcowiseActiveSubCountReport(this.role, this.username, this.selectedOperator.value, this.selectedlcoModel, 2, this.batch, this.selectedlcocas).subscribe(
+      (x: Blob) => {
+        if (type == 2) {
+          this.reportMaking(x, this.type + '  ' + this.selectedOperator.name + ".xlsx", 'application/xlsx');
+        }
+      },
+      (error: any) => {
+        this.pdfswalError(error?.error.message);
+      });
+  }
+  // ================================================including report===============================
+
+  getIncluding() {
+    if (!this.selectedYear && !this.selectedMonth && !this.selectedDate) {
+      this.submitted = true;
+    }
+    // this.swal.Loading();
+
+    this.userService.getIncluding(this.role, this.username, this.fromdate, this.todate, this.selectedMonth, this.selectedYear, this.selectedDateType, this.selectedType,
+      this.selectedAmount, this.selectedOperator.value || 0, 3
+    ).subscribe(
+      (response: HttpResponse<any>) => {
+        if (response.status === 200) {
+          console.log(response);
+          this.rowData = response.body;
+          this.swal.Success_200();
+        } else if (response.status === 204) {
+          this.swal.Success_204();
+          this.rowData = [];
+        }
+      },
+      (error) => {
+        this.handleApiError(error.error, error.status);
+      }
+    );
+  }
+
+  getIncludeReportDownload(type: number) {
+    if (!this.selectedYear && !this.selectedMonth && !this.selectedDate) {
+      this.submitted = true;
+    }
+    this.processingSwal();
+    this.userService.getIncludingReport(this.role, this.username, this.fromdate, this.todate, this.selectedMonth, this.selectedYear, this.selectedDateType, this.selectedType,
+      this.selectedAmount, this.selectedOperator.value || 0, type
+    )
+      .subscribe((x: Blob) => {
+        if (type == 1) {
+          this.reportMaking(x, this.type + '  ' + this.selectedMonthName + '-' + this.selectedYear + ".pdf", 'application/pdf');
+        } else if (type == 2) {
+          this.reportMaking(x, this.type + '  ' + this.selectedMonthName + '-' + this.selectedYear + ".xlsx", 'application/xlsx');
+        }
+      },
+        (error: any) => {
+          this.pdfswalError(error?.error.message);
+        });
+  }
+  // ================================================RefreshData===============================
+  refreshData(event: any) {
+    console.log(event);
+    let transactionid = event.orderid;
+    this.userService.getrefreshData(this.role, this.username, event.operatorid, event.userid, transactionid, this.selectedOnlineType)
+      .subscribe((res: any) => {
+        this.swal.success_1(res?.message);
+      }, (err) => {
+        this.swal.Error(err?.error?.message);
+      });
+
+    setTimeout(() => {
+      this.getOnline()
+    }, 2000);
+
+  }
+  // ================================================walletshare===============================
+
+  getWalletreport() {
+    this.userService.getWalletShareReport(this.role, this.username, this.fromdate, this.todate, this.selectedOperator.value, 3)
+      .subscribe((res: any) => {
+        this.rowData = res;
+      }, (err) => {
+        this.swal.Error(err?.error?.message);
+      });
+  }
+  getWalletReportDownload(type: number) {
+    this.processingSwal();
+    this.userService.getWalletShareReportDownload(this.role, this.username, this.fromdate, this.todate, this.selectedOperator.value, type)
+      .subscribe((x: Blob) => {
+        if (type == 1) {
+          this.reportMaking(x, "Wallet_Share_Report(" + this.fromdate + "-" + this.todate + ").pdf", 'application/pdf');
+        } else if (type == 2) {
+          this.reportMaking(x, "Wallet_Share_Report(" + this.fromdate + "-" + this.todate + ").xlsx", 'application/xlsx');
+        }
+      },
+        (error: any) => {
+          this.pdfswalError(error?.error.message);
+        });
+  }
+
+  // ================================================walletshare===============================
+
+  getSubscriberBill() {
+    this.userService.getSubscriberBill(this.role, this.username, this.selectedMonth, this.selectedYear, 3, this.smartcard)
+      .subscribe((res: any) => {
+        console.log(res);
+      }, (err) => {
+        this.swal.Error(err?.error?.message);
+      });
+
+  }
+
+  getSubscriberBillDownload(type: number) {
+    this.processingSwal();
+    this.userService.getSubscriberBillDownload(this.role, this.username, this.selectedMonth, this.selectedYear, type, this.smartcard)
+      .subscribe((x: Blob) => {
+        if (type == 1) {
+          this.reportMaking(x, "Subscriber_Recharge_Details(" + this.smartcard + ").pdf", 'application/pdf');
+        } else if (type == 2) {
+          this.reportMaking(x, "Subscriber_Recharge_Details(" + this.smartcard + ").xlsx", 'application/xlsx');
+        }
+      },
+        (error: any) => {
+          this.pdfswalError(error?.error.message);
+        });
+  }
+  isshowpdf: boolean = true;
+  checkDataForBill() {
+    if (this.smartcard != null && this.smartcard != '' && this.smartcard != undefined && this.selectedMonth != null && this.selectedMonth != 0 && this.selectedMonth != undefined && this.selectedYear != null && this.selectedYear != 0 && this.selectedYear != undefined) {
+      this.isshowpdf = false;
+    } else {
+      this.isshowpdf = true;
+    }
+  }
+
+  // ================================================userrechargehistory===============================
+
+  getUserRechargeHistory() {
+    this.userService.getUserRecharegeHistory(this.role, this.username, this.fromdate, this.todate, this.selectedUser.value, 3)
+      .subscribe((res: any) => {
+        console.log(res);
+      }, (err) => {
+        this.swal.Error(err?.error?.message);
+      });
+
+  }
+
+  getUserRechargeHistoryDownload(type: number) {
+    this.processingSwal();
+    this.userService.getUserRecharegeHistoryDownload(this.role, this.username, this.fromdate, this.todate, this.selectedUser.value, type)
+      .subscribe((x: Blob) => {
+        if (type == 1) {
+          this.reportMaking(x, "Subscriber_Recharge_History(" + this.selectedUser.name + ").pdf", 'application/pdf');
+        } else if (type == 2) {
+          this.reportMaking(x, "Subscriber_Recharge_History(" + this.selectedUser.name + ").xlsx", 'application/xlsx');
+        }
+      },
+        (error: any) => {
+          this.pdfswalError(error?.error.message);
+        });
+  }
+
+  // -----------------------------------------------------------------------------------------------------------------------------
+  handleApiError(error: any, status: number) {
+    console.log(status);
+
+    if (status === 400) {
+      this.swal.Custom_Error_400(error);
+    } else if (status === 500) {
+      this.swal.Error_500();
+    } else {
+      Swal.fire('Error', 'Something went wrong. Please try again.', 'error');
+    }
+  }
+
+  // -----------------------------------------------------common method for pdf and excel------------------------------------------------------------------------
+
+
+  reportMaking(x: Blob, reportname: any, reporttype: any) {
+    const blob = new Blob([x], { type: reporttype });
+    const data = window.URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.href = data;
+    link.download = reportname.toUpperCase();
+    link.dispatchEvent(new MouseEvent('click', { bubbles: true, cancelable: true, view: window }));
+    setTimeout(() => {
+      window.URL.revokeObjectURL(data);
+      link.remove();
+    }, 100);
+    Swal.close();
+  }
+  pdfswalError(error: any) {
+    Swal.close();
+    Swal.fire({
+      title: 'Error!',
+      text: error || 'There was an issue generating the PDF CAS form report.',
+      icon: 'error',
+      confirmButtonText: 'Ok'
+    });
+  }
+  processingSwal() {
+    Swal.fire({
+      title: "Processing",
+      text: "Please wait while the report is being generated...",
+      showConfirmButton: false,
+      didOpen: () => {
+        Swal.showLoading(null);
+      }
+    });
+
+  }
+
+  // -----------------------------------------CUSTOMER ACTIVATION FORM------------------------------------------------------------------------------------
+
+
+  getCustomerActivationform(type: number) {
+    if (!this.smartcard) {
+      this.submitted = true;
+    } else {
+      this.processingSwal();
+      this.userService.getIncludingReport(this.role, this.username, this.fromdate, this.todate, this.selectedMonth, this.selectedYear, this.selectedDateType, this.selectedType,
+        this.selectedAmount, this.selectedOperator.value || 0, type
+      )
+        .subscribe((x: Blob) => {
+          if (type == 1) {
+            this.reportMaking(x, this.type + '  ' + this.smartcard + ".pdf", 'application/pdf');
+          }
+        },
+          (error: any) => {
+            this.pdfswalError(error?.error.message);
+          });
     }
   }
 }

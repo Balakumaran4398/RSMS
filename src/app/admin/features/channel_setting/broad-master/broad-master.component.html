@@ -2,19 +2,20 @@
     <h3>Broadcaster Details</h3>
     <div class="row " style="padding: 1rem;">
         <div class="">
-          
+
             <div class="row d-flex align-items-center justify-content-center">
-                <div class="col-12 col-sm-10 m-3">
+                <div class=" col-md-2 col-lg-2"></div>
+                <div class="col-12 co-sm-12 col-md-8 col-lg-8">
                     <div class="col d-flex justify-content-end align-items-end mb-3">
-                        <a class="btn btn-outline-success mx-1" (click)="addnew()">
+                        <a class="btn btn-outline-success mx-1  bttn" (click)="addnew()">
                             <i class="fa fa-plus"></i> New
                         </a>
-                        <button class="btn btn-outline-info mx-1" mat-raised-button color="primary" type="button"
-                            [disabled]="!isAnyRowSelected" (click)="Active()">
+                        <button class="btn btn-outline-info mx-1 bttn" mat-raised-button color="primary" type="button"
+                            [disabled]="!isAnyRowSelected" (click)="Active(this.selectedIds)">
                             Active
                         </button>
-                        <button class="btn btn-outline-info mx-1" mat-raised-button color="accent" type="button"
-                            [disabled]="!isAnyRowSelected" (click)="Deactive()">
+                        <button class="btn btn-outline-info mx-1 bttn" mat-raised-button color="accent" type="button"
+                            [disabled]="!isAnyRowSelected" (click)="Deactive(this.selectedIds)">
                             Deactive
                         </button>
                     </div>
@@ -24,6 +25,8 @@
                         [enableCellTextSelection]="true">
                     </ag-grid-angular>
                 </div>
+                <div class=" col-md-2 col-lg-2"></div>
+
             </div>
 
         </div>

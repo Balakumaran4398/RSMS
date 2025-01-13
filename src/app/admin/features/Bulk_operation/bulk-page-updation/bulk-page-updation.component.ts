@@ -91,7 +91,14 @@ export class BulkPageUpdationComponent implements OnInit {
       resizable: true,
       filter: true,
       width: 250,
-      floatingFilter: true
+      floatingFilter: true,
+      comparator: (valueA: any, valueB: any) => {
+        const normalizedA = valueA ? valueA.toString().trim().toLowerCase() : '';
+        const normalizedB = valueB ? valueB.toString().trim().toLowerCase() : '';
+        if (normalizedA < normalizedB) return -1;
+        if (normalizedA > normalizedB) return 1;
+        return 0;
+      },
     },
     paginationPageSize: 10,
     pagination: true,

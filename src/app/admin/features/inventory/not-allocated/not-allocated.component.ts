@@ -33,6 +33,13 @@ export class NotAllocatedComponent {
       filter: true,
       floatingFilter: true,
       width: 250,
+      comparator: (valueA: any, valueB: any) => {
+        const normalizedA = valueA ? valueA.toString().trim().toLowerCase() : '';
+        const normalizedB = valueB ? valueB.toString().trim().toLowerCase() : '';
+        if (normalizedA < normalizedB) return -1;
+        if (normalizedA > normalizedB) return 1;
+        return 0;
+      },
     },
     paginationPageSize: 10,
     pagination: true,
@@ -75,8 +82,8 @@ export class NotAllocatedComponent {
       field: 'casname',
     },
     {
-      headerName: 'IS ALLOCATED', width: 300,
-      field: 'isallocated',
+      headerName: 'IS ALLOCATED', width: 200,
+      field: 'isallocated', cellStyle: { textAlign: 'center' },
       cellRenderer: (params: any) => {
         if (params.value === true) {
           return `<span style="color: green;">YES</span>`;
@@ -87,8 +94,8 @@ export class NotAllocatedComponent {
     },
 
     {
-      headerName: "Edit", width: 300,
-      editable: true,
+      headerName: "Edit", width: 200,
+      editable: true, cellStyle: { textAlign: 'center' },
       cellRenderer: (params: any) => {
         const editButton = document.createElement('button');
         editButton.innerHTML = '<i class="fas fa-pen-square" style="font-size:30px"></i>';
@@ -182,4 +189,77 @@ export class NotAllocatedComponent {
       console.log('The dialog was closed');
     });
   }
+
+  getPDF() {
+    Swal.fire({
+      title: "Processing",
+      text: "Please wait while the report is being generated...",
+      showConfirmButton: false,
+      didOpen: () => {
+        Swal.showLoading(null);
+      }
+    });
+    // this.swal.Loading();
+    console.log('dfdsfdsfdsfdsf', event);
+    this.userService.getNotAllocatedReport(this.role, this.username, 1)
+      .subscribe((x: Blob) => {
+        const blob = new Blob([x], { type: 'application/pdf' });
+        const data = window.URL.createObjectURL(blob);
+        const link = document.createElement('a');
+        link.href = data;
+
+        link.download = ("Not Allocatted report.pdf").toUpperCase();
+        link.dispatchEvent(new MouseEvent('click', { bubbles: true, cancelable: true, view: window }));
+        setTimeout(() => {
+          window.URL.revokeObjectURL(data);
+          link.remove();
+        }, 100);
+        Swal.close();
+      },
+        (error: any) => {
+          Swal.close();
+          Swal.fire({
+            title: 'Error!',
+            text: error?.error?.message || 'There was an issue generating the PDF CAS form report.',
+            icon: 'error',
+            confirmButtonText: 'Ok'
+          });
+        });
+  }
+  getExcel() {
+    Swal.fire({
+      title: "Processing",
+      text: "Please wait while the report is being generated...",
+      showConfirmButton: false,
+      didOpen: () => {
+        Swal.showLoading(null);
+      }
+    });
+    // this.swal.Loading();
+    console.log('dfdsfdsfdsfdsf', event);
+    this.userService.getNotAllocatedReport(this.role, this.username, 2)
+      .subscribe((x: Blob) => {
+        const blob = new Blob([x], { type: 'application/xlsx' });
+        const data = window.URL.createObjectURL(blob);
+        const link = document.createElement('a');
+        link.href = data;
+
+        link.download = ("Not Allocatted report.xlsx").toUpperCase();
+        link.dispatchEvent(new MouseEvent('click', { bubbles: true, cancelable: true, view: window }));
+        setTimeout(() => {
+          window.URL.revokeObjectURL(data);
+          link.remove();
+        }, 100);
+        Swal.close();
+      },
+        (error: any) => {
+          Swal.close();
+          Swal.fire({
+            title: 'Error!',
+            text: error?.error?.message || 'There was an issue generating the PDF CAS form report.',
+            icon: 'error',
+            confirmButtonText: 'Ok'
+          });
+        });
+   }
 }

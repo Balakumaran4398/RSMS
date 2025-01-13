@@ -131,7 +131,7 @@
                         <div class="mb-3">
                             <label class="form-label">Address Proof ID
                             </label>
-                            <select class="form-select" [(ngModel)]="addressprooftypeid"
+                            <select class="form-select" [(ngModel)]="addressprooftypeid" (change)="resetData('addressproof')"
                                 formControlName="addressprooftypeid">
                                 <option *ngFor="let key of add_proof_list | keyvalue" [value]="key.value">
                                     {{ key.key }}
@@ -212,7 +212,7 @@
                             <div class="checkbox-text mb-3">
                                 <div class="checkbox-content">
                                     <input class="form-check-input date" type="checkbox" [(ngModel)]="livetv"
-                                        formControlName="livetv">
+                                        formControlName="islivetv">
                                 </div>
                             </div>
                         </div>
@@ -280,7 +280,7 @@
                         <div class="mb-3">
                             <label class="form-label">Identity Proof ID
                             </label>
-                            <select class="form-select" [(ngModel)]="idprooftypeid" formControlName="idprooftypeid">
+                            <select class="form-select" [(ngModel)]="idprooftypeid" formControlName="idprooftypeid" (change)="resetData('idproof')">
                                 <option *ngFor="let key of id_proof_list | keyvalue" [value]="key.value">
                                     {{ key.key }}
                                 </option>
@@ -330,8 +330,8 @@
                 </div>
             </div>
             <div class="d-flex justify-content-center align-item-center  mb-4">
-                <button type="button" class="btn btn-success mx-3" (click)="onSubmit()">Update</button>
-                <button type="button" class="btn btn-danger me-2" (click)="onNoClick()">Cancel</button>
+                <button type="button" class="btn btn-success mx-3 bttn" (click)="onSubmit()">Update</button>
+                <button type="button" class="btn btn-danger me-2 bttn" (click)="onNoClick()">Cancel</button>
             </div>
         </form>
     </div>
@@ -457,7 +457,7 @@
             <span class="span">CHANGE OPERATOR</span>
             <i class="fa fa-close close-icon" (click)="onNoClick()"></i>
         </div>
-        <div class=" d-flex justify-content-center align-item-center">
+        <div class=" d-flex justify-content-center align-item-center" style="padding:6px 9px">
             <div class="">
                 <div class="col display justify-content-center align-items-center">
                     <div class="col-12 col-sm-12 col-md-12" style="padding: 1rem;">
@@ -542,10 +542,13 @@
                                 </div>
                             </div>
 
-                            <div *ngIf="packageStatus !== 'Expired'" class="card mb-3">
+                            <!-- <div *ngIf=" packageStatus !== 'Expired' || 0" class="card mb-3"> -->
+                            <!-- <div class="card mb-3"> -->
+                            <div class="cancelcard">
                                 <div class=" d-flex align-items-center justify-content-center">
                                     <div class="input_box col-12 col-md-6">
-                                        <span>Cancel Current Subscription</span>
+                                        <span style="font-size:14px;font-weight:600;color:#259bb7">Cancel Current
+                                            Subscription</span>
                                     </div>
                                     <div class="col-6 col-md-4 value">
                                         <mat-radio-group class="radio-group" aria-labelledby="status"
@@ -576,10 +579,10 @@
                     </div>
                 </div>
                 <div class="d-flex justify-content-center align-item-center mx-3 mb-4">
-                    <button type="button" class="btn btn-success mx-3"
+                    <button type="button" class="btn btn-success mx-3 bttn"
                         [disabled]="lcoid.invalid || lcoareaid.invalid || lcostreetid.invalid"
                         (click)="changeOperator()">Submit</button>
-                    <button type="button" class="btn btn-danger me-2" (click)="onNoClick()">Cancel</button>
+                    <button type="button" class="btn btn-danger me-2 bttn" (click)="onNoClick()">Cancel</button>
                 </div>
             </div>
         </div>
@@ -660,8 +663,8 @@
         </div>
     </div>
     <div class="d-flex justify-content-center align-item-center mx-4 mb-3">
-        <button type="button" class="btn btn-success me-2" (click)="refreshSmartcard()">Yes</button>
-        <button type="button" class="btn btn-danger" (click)="onNoClick()">No</button>
+        <button type="button" class="btn btn-success me-2 bttn" (click)="refreshSmartcard()">Yes</button>
+        <button type="button" class="btn btn-danger bttn" (click)="onNoClick()">No</button>
     </div>
 </div>
 <div *ngIf="sType=='deactive'">
@@ -734,8 +737,8 @@
         </div>
     </div>
     <div class="d-flex justify-content-center align-item-center mx-4 mb-3">
-        <button type="button" class="btn btn-success me-2" (click)="deactivationofSmartcard()">Yes</button>
-        <button type="button" class="btn btn-danger" (click)="onNoClick()">No</button>
+        <button type="button" class="btn btn-success me-2 bttn" (click)="deactivationofSmartcard()">Yes</button>
+        <button type="button" class="btn btn-danger bttn" (click)="onNoClick()">No</button>
     </div>
 </div>
 <div *ngIf="sType=='pinchange'">
@@ -817,8 +820,8 @@
         </div>
     </div>
     <div class="d-flex justify-content-center align-item-center mx-4 mb-3">
-        <button type="button" class="btn btn-success me-2" (click)="pinchange()">Update</button>
-        <button type="button" class="btn btn-danger" (click)="onNoClick()">Cancel</button>
+        <button type="button" class="btn btn-success me-2 bttn" (click)="pinchange()">Update</button>
+        <button type="button" class="btn btn-danger bttn" (click)="onNoClick()">Cancel</button>
     </div>
 </div>
 <div *ngIf="sType=='pvrchange'">
@@ -885,8 +888,8 @@
         </div>
     </div>
     <div class="d-flex justify-content-center align-item-center mx-4 mb-3">
-        <button type="button" class="btn btn-success me-2" (click)="pvrchange()">Update</button>
-        <button type="button" class="btn btn-danger" (click)="onNoClick()">Cancel</button>
+        <button type="button" class="btn btn-success me-2 bttn" (click)="pvrchange()">Update</button>
+        <button type="button" class="btn btn-danger bttn" (click)="onNoClick()">Cancel</button>
     </div>
 </div>
 <div *ngIf="sType=='deletemessage'">
@@ -956,8 +959,8 @@
         </div>
     </div>
     <div class="d-flex justify-content-center align-item-center mx-4 mb-3">
-        <button type="button" class="btn btn-success me-2" (click)="deleteForceMessage()">Yes</button>
-        <button type="button" class="btn btn-danger" (click)="onNoClick()">No</button>
+        <button type="button" class="btn btn-success me-2 bttn" (click)="deleteForceMessage()">Yes</button>
+        <button type="button" class="btn btn-danger bttn" (click)="onNoClick()">No</button>
     </div>
 </div>
 <div *ngIf="sType=='sendmessage'">
@@ -1071,8 +1074,8 @@
             </div>
         </div>
         <div class="d-flex justify-content-center align-item-center mx-4 mb-2">
-            <button type="button" class="btn btn-success me-2" (click)="sendMessage()">Send</button>
-            <button type="button" class="btn btn-danger" (click)="onNoClick()">Cancel</button>
+            <button type="button" class="btn btn-success me- bttn" (click)="sendMessage()">Send</button>
+            <button type="button" class="btn btn-danger bttn" (click)="onNoClick()">Cancel</button>
         </div>
     </form>
 </div>
@@ -1143,8 +1146,8 @@
         </div>
     </div>
     <div class="d-flex justify-content-center align-item-center mx-4 mb-3">
-        <button type="button" class="btn btn-success me-2" (click)="forcetuning()">Yes</button>
-        <button type="button" class="btn btn-danger" (click)="onNoClick()">No</button>
+        <button type="button" class="btn btn-success me-2 bttn" (click)="forcetuning()">Yes</button>
+        <button type="button" class="btn btn-danger bttn" (click)="onNoClick()">No</button>
     </div>
 </div>
 <div *ngIf="sType=='reactivation'">
@@ -1217,8 +1220,8 @@
         </div>
     </div>
     <div class="d-flex justify-content-center align-item-center mx-4 mb-3">
-        <button type="button" class="btn btn-success me-2" (click)="reactivationofSmartcard()">Yes</button>
-        <button type="button" class="btn btn-danger" (click)="onNoClick()">No</button>
+        <button type="button" class="btn btn-success me-2 bttn" (click)="reactivationofSmartcard()">Yes</button>
+        <button type="button" class="btn btn-danger bttn" (click)="onNoClick()">No</button>
     </div>
 </div>
 <div *ngIf="sType=='block'">
@@ -1302,8 +1305,8 @@
         </div>
     </div>
     <div class="d-flex justify-content-center align-item-center mx-4 mb-3">
-        <button type="button" class="btn btn-success me-2" (click)="block()">Yes</button>
-        <button type="button" class="btn btn-danger" (click)="onNoClick()">No</button>
+        <button type="button" class="btn btn-success me-2 bttn" (click)="block()">Yes</button>
+        <button type="button" class="btn btn-danger bttn" (click)="onNoClick()">No</button>
     </div>
 </div>
 <div *ngIf="sType=='boxchange'">
@@ -1372,8 +1375,8 @@
 
     </div>
     <div class="d-flex justify-content-center align-item-center mx-4 mb-3">
-        <button type="button" class="btn btn-success me-2" (click)="boxIdChange()">Yes</button>
-        <button type="button" class="btn btn-danger" (click)="onNoClick()">No</button>
+        <button type="button" class="btn btn-success me-2 bttn" (click)="boxIdChange()">Yes</button>
+        <button type="button" class="btn btn-danger bttn" (click)="onNoClick()">No</button>
     </div>
 </div>
 <div *ngIf="sType=='smartcardchange'">
@@ -1511,8 +1514,8 @@
         </div>
     </div>
     <div class="d-flex justify-content-center align-item-center mx-4 mb-3">
-        <button type="button" class="btn btn-success me-2" (click)="lcotransferSinglesmartcard()">Submit</button>
-        <button type="button" class="btn btn-danger" (click)="onNoClick()">Cancel</button>
+        <button type="button" class="btn btn-success me-2 bttn" (click)="lcotransferSinglesmartcard()">Submit</button>
+        <button type="button" class="btn btn-danger bttn" (click)="onNoClick()">Cancel</button>
     </div>
 </div>
 <div *ngIf="sType=='resumechange'">
@@ -1595,8 +1598,8 @@
         </div>
     </div>
     <div class="d-flex justify-content-center align-item-center mx-3 mb-2">
-        <button type="button" class="btn btn-success me-2" (click)="resume()">Yes</button>
-        <button type="button" class="btn btn-danger" (click)="onNoClick()">No</button>
+        <button type="button" class="btn btn-success me-2 bttn" (click)="resume()">Yes</button>
+        <button type="button" class="btn btn-danger bttn" (click)="onNoClick()">No</button>
     </div>
 </div>
 <div *ngIf="sType=='packagactivation'">
@@ -1671,7 +1674,7 @@
                         <label for="">Plan Type</label>
                     </div>
                     <div class="col-6 col-md-6">
-                        <select [(ngModel)]="plantype" (ngModelChange)="onSelectionrechargetype($event)">
+                        <select [(ngModel)]="plantype" (ngModelChange)="onSelectionplantype($event)">
                             <option value="0" selected disabled>Selected Plan</option>
                             <option *ngFor="let plan of plantype$ | async" [value]="plan.value">
                                 {{ plan.key }}
@@ -1758,18 +1761,18 @@
     <div class=" d-flex justify-content-center align-item-center  mb-2">
         <!-- <button *ngIf="confirmation" type="button" class="btn confirm me-2" (click)="onFirstTimeActivationClick()"
             [disabled]="!isPlanTypeSelected() || isDateSelected()"> -->
-        <button *ngIf="confirmation" type="button" class="btn confirm me-2" (click)="onFirstTimeActivationClick()"
+        <button *ngIf="confirmation" type="button" class="btn confirm me-2 bttn" (click)="onFirstTimeActivationClick()"
             [disabled]="!isPlanTypeSelected()">
             Confirmation
         </button>
 
-        <button *ngIf="!confirmation" type="button" class="btn confirm me-2"
+        <button *ngIf="!confirmation" type="button" class="btn confirm me-2 bttn"
             (click)="onFirstTimeActivationButtonClick()" [disabled]="isDisabled">
             Confirmation
         </button>
-        <button type="button" class="btn  recharge me-2" (click)="firsttimeActivationOfCard()"
+        <button type="button" class="btn  recharge me-2 bttn" (click)="firsttimeActivationOfCard()"
             [disabled]="!isActive">Activate</button>
-        <button type="button" class="btn btn-danger me-2" (click)="onNoClick()">Cancel</button>
+        <button type="button" class="btn btn-danger me-2 bttn" (click)="onNoClick()">Cancel</button>
     </div>
 
 </div>
@@ -1799,7 +1802,6 @@
                 </div>
             </div>
         </div>
-
         <div class="input_box  mb-3">
             <div class="d-flex align-items-center justify-content-center">
                 <div class="col-6 col-md-6">
@@ -1810,7 +1812,6 @@
                 </div>
             </div>
         </div>
-
         <div class="input_box  mb-3">
             <div class="d-flex align-items-center justify-content-center">
                 <div class="col-6 col-md-6">
@@ -1857,7 +1858,7 @@
                         <label for="">Plan Type</label>
                     </div>
                     <div class="col-6 col-md-6">
-                        <select [(ngModel)]="plantype" (ngModelChange)="onSelectionrechargetype($event)">
+                        <select [(ngModel)]="plantype" (ngModelChange)="onSelectionplantype($event)">
                             <option value="0" disabled>Selected Plan</option>
                             <option *ngFor="let plan of plantype$ | async" [value]="plan.value">
                                 {{ plan.key }}
@@ -1942,17 +1943,17 @@
         </div>
     </div>
     <div class=" d-flex justify-content-center align-item-center  mb-2">
-        <button *ngIf="confirmation" type="button" class="btn confirm me-2" (click)="onActivationClick()"
-            [disabled]="isPlanTypeSelected()">
+        <button *ngIf="confirmation" type="button" class="btn confirm me-2 bttn" (click)="onActivationClick()"
+            [disabled]="!isPlanTypeSelected()">
             Confirmation
         </button>
-        <button *ngIf="!confirmation" type="button" class="btn confirm me-2" (click)="onActivationButtonClick()"
+        <button *ngIf="!confirmation" type="button" class="btn confirm me-2 bttn" (click)="onActivationButtonClick()"
             [disabled]="isDisabled">
             Confirmation
         </button>
-        <button type="button" class="btn  recharge me-2" [disabled]="!isActive"
+        <button type="button" class="btn  recharge me-2 bttn" [disabled]="!isActive"
             (click)="ActivationOfCard()">Activate</button>
-        <button type="button" class="btn btn-danger me-2" (click)="onNoClick()">Cancel</button>
+        <button type="button" class="btn btn-danger me-2 bttn" (click)="onNoClick()">Cancel</button>
     </div>
 
 
@@ -1998,15 +1999,27 @@
                 </div>
             </div>
         </div>
+        <div class="input_box Isactive mb-3">
+            <div class="d-flex align-items-center justify-content-center">
+                <div class="col-6 col-md-6">
+                    <span class="me-2"> Current Package </span>
+                </div>
+                <div class="col-6 col-md-6 value">
+                    {{currentPackagename}}
+                </div>
+            </div>
+        </div>
 
 
         <div class="input_box  mb-3">
             <div class="d-flex align-items-center justify-content-center">
                 <div class="col-6 col-md-6">
-                    <span class="me-2">Card Balance</span>
+                    <!-- <span class="me-2">Card Balance</span> -->
+                    <span class="me-2">No of Days</span>
                 </div>
                 <div class="col-6 col-md-6 value">
-                    {{cardbalance}}
+                    <!-- {{cardbalance}} -->
+                    {{noOfDays}}
                 </div>
             </div>
         </div>
@@ -2081,7 +2094,7 @@
                         <label for="">Plan Type</label>
                     </div>
                     <div class="col-6 col-md-6">
-                        <select [(ngModel)]="plantype" (ngModelChange)="onSelectionrechargetype($event)">
+                        <select [(ngModel)]="plantype" (ngModelChange)="onSelectionplantype($event)">
                             <option value="0" selected disabled>Selected Plan</option>
                             <option *ngFor="let plan of plantype$ | async" [value]="plan.value">
                                 {{ plan.key }}
@@ -2158,15 +2171,15 @@
     </div>
 
     <div class=" d-flex justify-content-center align-item-center  mb-2">
-        <button *ngIf="!confirmation" type="button" class="btn confirm me-2"
+        <button *ngIf="!confirmation" type="button" class="btn confirm me-2 bttn"
             (click)="onChangeBaseActivationButtonClick()">Confirmation</button>
 
-        <button *ngIf="confirmation" type="button" class="btn confirm me-2" (click)="onChangeBaseActivationClick()"
+        <button *ngIf="confirmation" type="button" class="btn confirm me-2 bttn" (click)="onChangeBaseActivationClick()"
             [disabled]="!isActive">Confirmation</button>
 
-        <button type="button" class="btn  recharge me-2" (click)="baseChangeofSmartcardPackageActivate()"
+        <button type="button" class="btn  recharge me-2 bttn" (click)="baseChangeofSmartcardPackageActivate()"
             [disabled]="!isActive">Activate</button>
-        <button type="button" class="btn btn-danger me-2" (click)="onNoClick()">Cancel</button>
+        <button type="button" class="btn btn-danger me-2 bttn" (click)="onNoClick()">Cancel</button>
     </div>
 </div>
 <div *ngIf="sType=='suspend'">
@@ -2249,8 +2262,8 @@
         </div>
     </div>
     <div class=" d-flex justify-content-center align-item-center mx-4 mb-2">
-        <button type="button" class="btn btn-success me-2" (click)="smartcardSuspend()">Yes</button>
-        <button type="button" class="btn btn-danger me-2" (click)="onNoClick()">No</button>
+        <button type="button" class="btn btn-success me-2 bttn" (click)="smartcardSuspend()">Yes</button>
+        <button type="button" class="btn btn-danger me-2 bttn" (click)="onNoClick()">No</button>
     </div>
 </div>
 <div *ngIf="sType=='cancelsubscription'">
@@ -2321,8 +2334,8 @@
         </div>
     </div>
     <div class="d-flex justify-content-center align-item-center mx-3 mb-2">
-        <button type="button" class="btn btn-success me-2" (click)="cancelSmartcard()">Submit</button>
-        <button type="button" class="btn btn-danger" (click)="onNoClick()">Cancel</button>
+        <button type="button" class="btn btn-success me-2 bttn" (click)="cancelSmartcard()">Submit</button>
+        <button type="button" class="btn btn-danger bttn" (click)="onNoClick()">Cancel</button>
     </div>
 </div>
 
@@ -2459,13 +2472,14 @@
                     </div>
                 </div>
                 <div class=" d-flex  align-item-center mx-3 mb-2 " style="margin-block: auto;">
-                    <button *ngIf="!addonconfirmation" type="button" class="btn btn-warning me-2" style="height: 40px;"
-                        [disabled]="!isAnyRowSelected " (click)="onAddonConfirmation()">Confirmation</button>
-                    <button *ngIf="addonconfirmation" type="button" class="btn btn-warning me-2" style="height: 40px;"
-                        [disabled]="!isAnyRowSelected || (rows?.length > 1)" (click)="onAddon()">Confirmation</button>
-                    <button type="button" class="btn btn-success me-2" style="height: 40px;" [disabled]="!isaddaddon"
-                        (click)="addAddonForSmartcard()">ADD</button>
-                    <button type="button" class="btn btn-danger" style="height: 40px;"
+                    <button *ngIf="!addonconfirmation" type="button" class="btn btn-warning me-2 bttn"
+                        style="height: 40px;" [disabled]="!isAnyRowSelected "
+                        (click)="onAddonConfirmation()">Confirmation</button>
+                    <button *ngIf="addonconfirmation" type="button" class="btn btn-warning me-2 bttn"
+                        style="height: 40px;" [disabled]="!isAnyRowSelected" (click)="onAddon()">Confirmation</button>
+                    <button type="button" class="btn btn-success me-2 bttn" style="height: 40px;"
+                        [disabled]="!isaddaddon" (click)="addAddonForSmartcard()">ADD</button>
+                    <button type="button" class="btn btn-danger bttn" style="height: 40px;"
                         (click)="onNoClick()">Cancel</button>
                 </div>
             </div>
@@ -2614,15 +2628,15 @@
                     </div>
                 </div>
                 <div class=" d-flex  align-item-center mx-3 mb-2 " style="margin-block: auto;">
-                    <button *ngIf="!alacarteconfirmation" type="button" class="btn btn-warning me-2"
+                    <button *ngIf="!alacarteconfirmation" type="button" class="btn btn-warning me-2 bttn"
                         style="height: 40px;" [disabled]="!isAnyRowSelected"
                         (click)="onAlacarteConfirmation()">Confirmation</button>
-                    <button *ngIf="alacarteconfirmation" type="button" class="btn btn-warning me-2"
-                        style="height: 40px;" [disabled]="!isAnyRowSelected || (rows?.length > 1)"
+                    <button *ngIf="alacarteconfirmation" type="button" class="btn btn-warning me-2 bttn"
+                        style="height: 40px;" [disabled]="!isAnyRowSelected"
                         (click)="onAlacarte()">Confirmation</button>
-                    <button type="button" class="btn btn-success me-2" style="height: 40px;" [disabled]="!isaddalacarte"
-                        (click)="addAlacarteSmartcard()">ADD</button>
-                    <button type="button" class="btn btn-danger" style="height: 40px;"
+                    <button type="button" class="btn btn-success me-2 bttn" style="height: 40px;"
+                        [disabled]="!isaddalacarte" (click)="addAlacarteSmartcard()">ADD</button>
+                    <button type="button" class="btn btn-danger bttn" style="height: 40px;"
                         (click)="onNoClick()">Cancel</button>
                 </div>
             </div>
@@ -2676,13 +2690,14 @@
                 </div>
             </div>
             <div class=" d-flex justify-content-center align-item-center mx-3 mb-2 " style="margin-block: auto;">
-                <button *ngIf="!removeproduct" type="button" class="btn btn-warning me-2" style="height: 40px;"
+                <button type="button" class="btn btn-warning me-2 bttn" style="height: 40px;"
                     [disabled]="!isAnyRowSelected" (click)="onRemoveConfirmation()">Confirmation</button>
                 <!-- <button *ngIf="removeproduct" type="button" class="btn btn-warning me-2" style="height: 40px;"
                     [disabled]="!isAnyRowSelected || (rows?.length > 1)" (click)="onRemove()">Confirmation</button> -->
-                <button type="button" class="btn btn-success me-2" style="height: 40px;" [disabled]="!isRemove"
+                <button type="button" class="btn btn-success me-2 bttn" style="height: 40px;" [disabled]="!isRemove"
                     (click)="removeProductForSmartcard()">Remove</button>
-                <button type="button" class="btn btn-danger" style="height: 40px;" (click)="onNoClick()">Cancel</button>
+                <button type="button" class="btn btn-danger bttn" style="height: 40px;"
+                    (click)="onNoClick()">Cancel</button>
             </div>
         </div>
         <!-- </div> -->
@@ -2725,8 +2740,9 @@
                 </div>
                 <div class="col-12 col-md-12 d-flex justify-content-center align-item-center  mb-3">
                     <div class=" d-flex  align-item-center mx-3 ">
-                        <button type="button" class="btn btn-success me-2" (click)="pairSmartcard()">Submit</button>
-                        <button type="button" class="btn btn-danger" (click)="onNoClick()">Cancel</button>
+                        <button type="button" class="btn btn-success me-2 bttn"
+                            (click)="pairSmartcard()">Submit</button>
+                        <button type="button" class="btn btn-danger bttn" (click)="onNoClick()">Cancel</button>
                     </div>
                 </div>
             </div>
@@ -2760,8 +2776,8 @@
                 </div>
                 <div class="col-12 col-md-12 d-flex justify-content-center align-item-center  mb-3">
                     <div class=" d-flex  align-item-center mx-3 ">
-                        <button type="button" class="btn btn-success me-2" (click)="pairBox()">Submit</button>
-                        <button type="button" class="btn btn-danger" (click)="onNoClick()">Cancel</button>
+                        <button type="button" class="btn btn-success me-2 bttn" (click)="pairBox()">Submit</button>
+                        <button type="button" class="btn btn-danger bttn" (click)="onNoClick()">Cancel</button>
                     </div>
                 </div>
             </div>
@@ -2797,8 +2813,8 @@
         </div>
         <div class="col-12 col-md-12 d-flex justify-content-center align-item-center mb-3">
             <div class="d-flex align-item-center mx-3">
-                <button type="button" class="btn btn-success me-2" (click)="handleUnpair()">Submit</button>
-                <button type="button" class="btn btn-danger" (click)="onNoClick()">Cancel</button>
+                <button type="button" class="btn btn-success me-2 bttn" (click)="handleUnpair()">Submit</button>
+                <button type="button" class="btn btn-danger bttn" (click)="onNoClick()">Cancel</button>
             </div>
         </div>
     </div>

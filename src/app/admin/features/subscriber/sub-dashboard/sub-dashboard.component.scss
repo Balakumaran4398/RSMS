@@ -38,6 +38,15 @@ label {
   color: #000957;
   // font-weight: 700;
 }
+.bttn{
+  /* border: 1px solid #ccc; */
+  border-radius: 5px;
+  transition: background-color 0.3s ease;
+  background: palegoldenrod;
+  font-size: smaller;
+  font-weight: 700;
+  border:none !important
+}
 
 .icon-item {
   padding: 0.5rem;
@@ -275,7 +284,7 @@ label {
 
 ::ng-deep {
   .ag-center-cols-viewport {
-    max-height: 400px !important;
+    // max-height: 400px !important;
     overflow: auto;
   }
 }
@@ -719,3 +728,30 @@ label {
   background-color: #dc3545 !important;
   /* Red */
 }
+
+.table-class {
+  overflow: auto; /* Ensure scrolling is enabled */
+  height: 400px; /* Adjust height as needed */
+  border-bottom: 1px solid rgb(156, 154, 154);
+}
+
+// #myGrid {
+//   height: 400px;
+// }
+
+// #myGrid::-webkit-scrollbar {
+//   width: 10px; /* Visible scrollbar width */
+// }
+
+// #myGrid::-webkit-scrollbar-thumb {
+//   background-color: #888; /* Make scrollbar visible */
+//   border-radius: 5px;
+// }
+
+// #myGrid::-webkit-scrollbar-thumb:hover {
+//   background-color: #555;
+// }
+
+// #myGrid::-webkit-scrollbar-track {
+//   background: #f1f1f1;
+// }

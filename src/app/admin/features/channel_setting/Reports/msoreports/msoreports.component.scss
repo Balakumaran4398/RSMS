@@ -7,16 +7,29 @@ section {
   display: flex;
 }
 
-.text2 {
-  padding: 0.5rem;
-  font-size: 17px;
-  // color: #202c2c;
-  color: #300a26;
-  font-weight: 700;
-  display: flex;
-  justify-content: left;
-  align-items: center;
-}
+// .text2 {
+//   padding: 0.5rem;
+//   font-size: 17px;
+//   // color: #202c2c;
+//   color: white;
+//   font-weight: 700;
+//   display: flex;
+//   justify-content: left;
+//   align-items: center;
+//   background: #006a66;
+// }
+
+// .text2 {
+//   margin: 1em 0 0.5em 0;
+//   color: #000000;
+//   font-weight: normal;
+//   /* font-family: "Ultra", sans-serif; */
+//   font-size: 22px;
+//   line-height: 42px;
+//   text-transform: uppercase;
+//   text-shadow: 0 2px white, 0 3px #a5a1a1;
+// }
+
 
 body {
   display: flex;
@@ -108,8 +121,8 @@ body {
 }
 
 .card i {
-  background: #b3f0ff;
-  color: #00a3cc;
+  background: #a7bbba;
+  color: #006a66;
   border-radius: 50%;
   display: flex;
   align-items: center;
@@ -120,7 +133,7 @@ body {
   font-size: 20px;
 }
 
-.royal-card {
+.royal-card1 {
   position: relative;
   background-size: cover;
   background-position: center;
@@ -132,6 +145,25 @@ body {
   // /* Align text left for better positioning */
   box-shadow: 3px 2px 0px 1px rgba(44, 44, 44, 0.5);
   transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.royal-card {
+  position: relative;
+  background-size: cover;
+  background-position: center;
+  border-radius: 5px;
+  color: white;
+  font-family: "Times New Roman", Times, serif;
+  text-align: left;
+  // box-shadow: none !important;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  border: none;
+  border-top-width: medium;
+  border-top-style: none;
+  border-top-color: currentcolor;
+  // border-top: 4px solid #5da5d0;
+  box-shadow: rgba(50, 50, 93, 0.25) 0px 30px 60px -12px inset, rgba(0, 0, 0, 0.3) 0px 18px 36px -18px inset !important;
+
 }
 
 .royal-card:hover {
@@ -169,8 +201,8 @@ body {
 // }
 .card strong {
   color: black;
-  font-weight: 400;
-  font-size: 16px;
+  font-weight: bold;
+  font-size: 14px;
 }
 
 h5 {
@@ -217,6 +249,7 @@ h5 {
     max-width: calc(50% - 20px);
   }
 }
+
 @media (max-width: 850px) {
   .card {
     flex: 1 1 calc(90%);
@@ -224,9 +257,11 @@ h5 {
     max-width: calc(90%);
   }
 }
+
 @media (max-width: 650px) {
   .card {
-    flex: 1 1 100%; /* One card per row on smaller screens */
+    flex: 1 1 100%;
+    /* One card per row on smaller screens */
     max-width: 100%;
   }
 }
@@ -235,4 +270,10 @@ h5 {
   .card i {
     display: none;
   }
+}
+
+.pannel {
+  border: none !important;
+  box-shadow: none !important;
+  border-color: transparent !important;
 }

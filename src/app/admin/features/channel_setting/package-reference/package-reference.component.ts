@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { ChangeDetectorRef, Component } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { BaseService } from 'src/app/_core/service/base.service';
 import { StorageService } from 'src/app/_core/service/storage.service';
@@ -22,13 +22,22 @@ export class PackageReferenceComponent {
   selectedIds: number[] = [];
   selectedtypes: number[] = [];
   hasSelectedRows: boolean = true;
+  isshow: boolean = true;
+
   gridOptions = {
     defaultColDef: {
       sortable: true,
       resizable: true,
       filter: true,
       width: 300,
-      floatingFilter: true
+      floatingFilter: true,
+      comparator: (valueA: any, valueB: any) => {
+        const normalizedA = valueA ? valueA.toString().trim().toLowerCase() : '';
+        const normalizedB = valueB ? valueB.toString().trim().toLowerCase() : '';
+        if (normalizedA < normalizedB) return -1;
+        if (normalizedA > normalizedB) return 1;
+        return 0;
+      },
     },
     rowClassRules: {
       'always-selected': (params: any) => params.data,
@@ -44,12 +53,13 @@ export class PackageReferenceComponent {
   public rowSelection: any = "multiple";
   agGrid: any;
 
-  constructor(public dialog: MatDialog, public userservice: BaseService, storageService: StorageService) {
+  constructor(private cdr: ChangeDetectorRef, public dialog: MatDialog, public userservice: BaseService, storageService: StorageService) {
     this.username = storageService.getUsername();
     this.role = storageService.getUserRole();
   }
   selectTab(tab: string) {
     this.selectedTab = tab;
+    this.rowData = [];
     if (this.gridOptions) {
       let newRowData;
       if (this.selectedTab === '1') {
@@ -59,10 +69,13 @@ export class PackageReferenceComponent {
       } else if (this.selectedTab === '3') {
         newRowData = this.getAlacarteData('3');
       }
+      this.gridApi.selectAll();
     }
+
   }
   getBasePackageData(event: any) {
     this.onSubscriberStatusChange(event)
+
     return [this.rowData];
   }
   getAddonPackageData(event: any) {
@@ -78,6 +91,7 @@ export class PackageReferenceComponent {
     this.loadData(this.selectedTab);
   }
   onSubscriberStatusChange(event: any) {
+    this.isshow = false;
     this.userservice.ProductTeference(this.role, this.username, this.Castype, this.selectedTab).subscribe((data: any) => {
       if (this.selectedTab === '1') {
         this.rowData = data.baselist;
@@ -90,6 +104,13 @@ export class PackageReferenceComponent {
       }
 
       this.updateColumnDefs(this.selectedTab);
+      console.log(this.rowData.length);
+
+      if (this.gridApi) {
+        this.gridApi.selectAll();
+      }
+
+
       // Swal.fire({
       //   title: 'Success!',
       //   text: 'Data loaded successfully.',
@@ -117,32 +138,36 @@ export class PackageReferenceComponent {
   onGridReady(params: { api: any; }) {
     // this.gridApi.sizeColumnsToFit();
     this.gridApi = params.api;
+    console.log('on grid ready calling');
+
     // this.gridColumnApi = params.columnApi;
-    this.gridApi.selectAll();
   }
-  onSelectionChanged() {
-    // if (this.gridApi) {
-    //   const selectedRows = this.gridApi.getSelectedRows();
-    //   this.isAnyRowSelected = selectedRows.length > 0;
-    //   console.log("Selected Rows:", selectedRows);
-    //   this.rows = selectedRows;
-    //   this.selectedIds = selectedRows.map((e: any) => e.id);
-    //   this.selectedtypes = selectedRows.map((e: any) => e.isactive);
-    // }
+  onSelectionChanged(event: any) {
+
+    console.log(event);
 
     if (this.gridApi) {
       const selectedRows = this.gridApi.getSelectedRows();
       this.isAnyRowSelected = selectedRows.length > 0;
+
+      console.log(this.isAnyRowSelected);
+
+      const selectedNodes = event.api.getSelectedNodes();
+      const isHeaderSelected = selectedNodes.length === event.api.getDisplayedRowCount();
+
+      if (isHeaderSelected) {
+        console.log('Header checkbox selected');
+      }
 
       // If no rows are selected, select all rows
       if (!this.isAnyRowSelected) {
         this.gridApi.selectAll();
       }
 
-      console.log("Selected Rows:", selectedRows);
+      console.log("Selected Rows:", selectedRows.length);
       this.rows = selectedRows.length > 0 ? selectedRows : this.gridApi.getDisplayedRowAtIndex(0);
-      this.selectedIds = this.rows.map((e: any) => e.id);
-      this.selectedtypes = this.rows.map((e: any) => e.isactive);
+      // this.selectedIds = this.rows.map((e: any) => e.id);
+      // this.selectedtypes = this.rows.map((e: any) => e.isactive);
     }
   }
   private loadData(tab: any): void {
@@ -152,8 +177,10 @@ export class PackageReferenceComponent {
   }
   columnDefs: any[] = [
     {
-      headerName: "S.No", lockPosition: true, valueGetter: 'node.rowIndex+1', width: 100, headerCheckboxSelection: true, checkboxSelection: true,
+      headerName: "S.No", lockPosition: true, valueGetter: 'node.rowIndex+1', headerCheckboxSelection: true,
+      checkboxSelection: true,
     },
+
     { headerName: "CHANNEL NAME", field: '', width: 280 },
     { headerName: "PACKAGE RATE", field: '', width: 250 },
     { headerName: "REFERENCE ID", field: '', width: 220 },
@@ -164,8 +191,10 @@ export class PackageReferenceComponent {
     if (tab === '1') {
       this.columnDefs = [
         {
-          headerName: "S.No", lockPosition: true, valueGetter: 'node.rowIndex+1', width: 100, headerCheckboxSelection: true,
+          headerName: "S.No", lockPosition: true, valueGetter: 'node.rowIndex+1', headerCheckboxSelection: true,
+          checkboxSelection: true,
         },
+
         { headerName: "CHANNEL NAME", field: 'productname', width: 270, },
         { headerName: "PACKAGE RATE", field: 'packagerate', width: 250, cellStyle: { textAlign: 'center' }, },
         { headerName: "REFERENCE ID", field: 'orderid', width: 220, cellStyle: { textAlign: 'center' }, },
@@ -212,8 +241,10 @@ export class PackageReferenceComponent {
     } else if (tab === '2') {
       this.columnDefs = [
         {
-          headerName: "S.No", lockPosition: true, valueGetter: 'node.rowIndex+1', width: 100, headerCheckboxSelection: true,
+          headerName: "S.No", lockPosition: true, valueGetter: 'node.rowIndex+1', headerCheckboxSelection: true,
+          checkboxSelection: true,
         },
+
         { headerName: "CHANNEL NAME", field: 'productname', width: 270, },
         { headerName: "PACKAGE RATE", field: 'packagerate', width: 250, },
         { headerName: "REFERENCE ID", field: 'orderid', width: 220, },
@@ -261,7 +292,10 @@ export class PackageReferenceComponent {
       ]
     } else if (tab === '3') {
       this.columnDefs = [
-        { headerName: "S.No", lockPosition: true, valueGetter: 'node.rowIndex+1', width: 100, headerCheckboxSelection: true, },
+        {
+          headerName: "S.No", lockPosition: true, valueGetter: 'node.rowIndex+1', headerCheckboxSelection: true,
+          checkboxSelection: true,
+        },
         { headerName: "CHANNEL NAME", field: 'productname', width: 270 },
         { headerName: "PACKAGE RATE", field: 'packagerate', width: 250 },
         { headerName: "REFERENCE ID", field: 'orderid', width: 220 },
@@ -316,10 +350,11 @@ export class PackageReferenceComponent {
       type: this.selectedTab
     } as any;
     if (this.rows.length === 0) {
-      this.rows = this.gridApi.getDisplayedRowAtIndex(0); 
+      this.rows = this.gridApi.getDisplayedRowAtIndex(0);
     }
     requestBody['baselist'] = this.rows;
-    console.log(this.rows);
+    console.log(requestBody);
+
 
     // if (this.selectedTab == 1) {
     //   requestBody['baselist'] = this.rows.map(item => ({

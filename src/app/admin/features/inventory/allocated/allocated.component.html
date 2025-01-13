@@ -1,13 +1,14 @@
 <div class="card">
     <!-- <div class="input_box col-12 col-md-6 col-sm-6 d-flex justify-content-center align-items-center mb-3"> -->
-    <div class="input_box col-12 col-md-6 col-lg-4 display justify-content-center align-items-center" style="margin-left: 3rem;">
+    <div class="input_box col-12 col-md-6 col-lg-4 display justify-content-center align-items-center"
+        style="margin-left: 3rem;">
         <!-- <div class="col-12 col-sm-6 col-lg-4"> -->
         <span style="font-size: medium;font-weight: 700;">Search:</span> &nbsp;
         <div class="mb-3 col-10 col-md-5 ">
             <input type="text" placeholder="Search for Smartcard or Boxid" [(ngModel)]="smartcard">
-            <div *ngIf="submitted && !smartcard" class="text-danger" style="font-size: small;">
+            <!-- <div *ngIf="submitted && !smartcard" class="text-danger" style="font-size: small;">
                 Smartcard is required
-            </div>
+            </div> -->
         </div>
         &nbsp;
         <div class="col-10 col-md-5 mb-3">
@@ -21,12 +22,13 @@
                     {{ operator.name }}
                 </mat-option>
             </mat-autocomplete>
-            <div *ngIf="submitted && !selectedLcoName" class="text-danger" style="font-size: small;">
+            <!-- <div *ngIf="submitted && !selectedLcoName" class="text-danger" style="font-size: small;">
                 LCO Name is required
-            </div>
+            </div> -->
         </div>
         &nbsp;
-        <button class="btn" (click)="Search()" style="background-color: rgb(144, 188, 245);">
+        <button class="btn  bttn" (click)="Search()" style="background-color: rgb(144, 188, 245);    margin-top: -2vh;
+    line-height: 3vh;">
             <i class="fa " aria-hidden="true">Search</i>
         </button>
     </div>
@@ -35,18 +37,19 @@
         <div class="col-12 col-sm-12 col-md-12  m-3">
             <div class="d-flex justify-content-end align-items-center mb-3">
                 <div class="icon-container d-flex align-items-center ">
-                    <button type="button" class="btn" (click)="submit()"><i class="fa fa-plus" aria-hidden="true"></i>
+                    <button type="button" class="btn  bttn" (click)="submit()"><i class="fa fa-plus"
+                            aria-hidden="true"></i>
                         New
                     </button>
                 </div>
                 &nbsp;&nbsp;
                 <div class="icon-container d-flex align-items-center ">
-                    <img src="/assets/images/icons/Excel.png" width="40px">
+                    <img src="/assets/images/icons/Excel.png" width="40px" (click)="generateExcel()">
                     <!-- <div class="tooltip">Excel</div> -->
                 </div>
                 &nbsp;&nbsp;
                 <div class="icon-container d-flex align-items-center ">
-                    <img src="/assets/images/icons/pdf.png" width="40px">
+                    <img src="/assets/images/icons/pdf.png" width="40px" (click)="generatePDF()">
                     <!-- <div class="tooltip">Pdf</div> -->
                 </div>
             </div>

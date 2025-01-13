@@ -59,13 +59,23 @@ export class EditDismembershipComponent implements OnInit {
     return this.selectedItems.has(item);
   }
 
-  toggleSelection(id: string) {
-    const index = this.selectedIds.indexOf(id);
+  toggleSelection(item: any) {
+
+    if (this.selectedItems.has(item)) {
+      this.selectedItems.delete(item);
+    } else {
+      this.selectedItems.add(item);
+    }
+
+    const index = this.selectedIds.indexOf(item.id);
     if (index > -1) {
       this.selectedIds.splice(index, 1);
     } else {
-      this.selectedIds.push(id);
+      this.selectedIds.push(item.id);
     }
+
+    console.log(this.selectedIds);
+
   }
   onNoClick(): void {
     this.dialogRef.close();
@@ -159,15 +169,21 @@ export class EditDismembershipComponent implements OnInit {
   }
 
 
-  drop(event: CdkDragDrop<any[]>) {
+  drop(event: CdkDragDrop<any[]>, val: number) {
     const droppedItemId = event.item.data?.id;
     if (droppedItemId) {
       this.selectedIds.push(droppedItemId);
     }
     console.log(this.selectedIds);
-    
+    var data;
     if (event.previousContainer === event.container) {
       moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
+      if (val == 1) {
+        data = event.previousContainer.data;
+      } else if (val == 2) {
+        data = event.container.data;
+
+      }
     } else {
       transferArrayItem(
         event.previousContainer.data,
@@ -175,14 +191,21 @@ export class EditDismembershipComponent implements OnInit {
         event.previousIndex,
         event.currentIndex,
       );
+
+      if (val == 1) {
+        data = event.previousContainer.data;
+      } else if (val == 2) {
+        data = event.container.data;
+
+      }
     }
-    this.containerData = event.container.data.map((item: { name: string, id: number }) => ({
+    this.containerData = data?.map((item: { name: string, id: number }) => ({
       name: item.name,
       id: item.id
     }));
     this.containerID = this.containerData.map((item: any) => item.id);
     console.log('Container Data:', this.containerData);
-    console.log('Container IDs:', this.containerID);      
+    console.log('Container IDs:', this.containerID);
   }
 
 
@@ -192,9 +215,9 @@ export class EditDismembershipComponent implements OnInit {
     console.log('containerID:', this.containerID);
     console.log('selectedIds:', this.selectedIds);
     console.log('IDs to pass:', idsToPass);
-    // this.swal.Loading();
+    this.swal.Loading();
     this.userservice.updateDistributor(this.role, this.username, this.distributorid,idsToPass).subscribe((res: any) => {
-      // this.swal.success(res?.message);
+      this.swal.success(res?.message);
     }, (err) => {
       this.swal.Error(err?.error?.message);
     });

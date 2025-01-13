@@ -37,7 +37,14 @@ export class InsertSubComponent {
       resizable: true,
       filter: true,
       width: 315,
-      floatingFilter: true
+      floatingFilter: true,
+      comparator: (valueA: any, valueB: any) => {
+        const normalizedA = valueA ? valueA.toString().trim().toLowerCase() : '';
+        const normalizedB = valueB ? valueB.toString().trim().toLowerCase() : '';
+        if (normalizedA < normalizedB) return -1;
+        if (normalizedA > normalizedB) return 1;
+        return 0;
+      },
     },
     paginationPageSize: 10,
     pagination: true,
@@ -53,15 +60,28 @@ export class InsertSubComponent {
     this.username = storageService.getUsername();
     this.role = storageService.getUserRole();
     // this.rowData=data;
-    userService.getsmartcardallocationSubscriberList(this.role, this.username).subscribe((data: any) => {
+    // userService.getsmartcardallocationSubscriberList(this.role, this.username).subscribe((data: any) => {
+    //   console.log(data);
+    //   // this.lco_list = data[0].operatorid;
+    //   console.log(this.lco_list);
+    //   this.lco_list = Object.entries(data[0].operatorid).map(([key, value]) => {
+    //     return { name: key, value: value };
+    //   });
+    //   console.log(this.lco_list);
+    //   this.filteredOperators = this.lco_list;
+    // })
+    this.operatorList();
+  }
+
+  operatorList(){
+    this.userService.getOeratorList(this.role, this.username,1).subscribe((data: any) => {
       console.log(data);
-      // this.lco_list = data[0].operatorid;
-      console.log(this.lco_list);
-      this.lco_list = Object.entries(data[0].operatorid).map(([key, value]) => {
-        return { name: key, value: value };
+      this.lco_list = Object.keys(data).map(key => {
+        const value = data[key];
+        const name = key;
+        return { name: name, value: value };
       });
-      console.log(this.lco_list);
-      this.filteredOperators = this.lco_list;
+      this.filteredOperators=this.lco_list;
     })
   }
   columnDefs: ColDef[] = [
@@ -78,12 +98,12 @@ export class InsertSubComponent {
     },
 
     {
-      headerName: 'CAS',
-      field: 'casname',width: 300
+      headerName: 'CAS', cellStyle: { textAlign: 'center' },
+      field: 'casname',width: 200
     },
     {
-      headerName: 'IS_ALLOCATED',width: 300,
-      field: 'isallocated',
+      headerName: 'IS_ALLOCATED',width: 230,
+      field: 'isallocated', cellStyle: { textAlign: 'center' },
       cellRenderer: (params: any) => {
         if (params.value === true) {
           return `<span style="color: #06991a;">YES</span>`;
@@ -94,7 +114,7 @@ export class InsertSubComponent {
     },
     {
       headerName: 'IS_DEFECTIVE',width: 300,
-      field: 'isdefective',
+      field: 'isdefective', cellStyle: { textAlign: 'center' },
       cellRenderer: (params: any) => {
         if (params.value === true) {
           return `<span style="color: #06991a;">YES</span>`;

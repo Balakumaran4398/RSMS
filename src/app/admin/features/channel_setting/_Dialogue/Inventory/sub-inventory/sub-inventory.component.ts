@@ -15,7 +15,8 @@ export class SubInventoryComponent {
   username: any;
   rowData: any;
   selectedLcoName: any = 0;
-  submitted:boolean= false;
+  dueAmount: any = 0;
+  submitted: boolean = false;
   // lco_list: { [key: string]: number } = {};
   lco_list: any[] = [];
   searchTerm: string = '';
@@ -35,7 +36,7 @@ export class SubInventoryComponent {
     this.lco_list = Object.entries(data.lco_list).map(([key, value]) => {
       return { name: key, value: value };
     });
-    
+
     console.log(this.lco_list);
     this.smartcard = data.smartcard;
     console.log(this.smartcard);
@@ -79,17 +80,6 @@ export class SubInventoryComponent {
   Submit() {
     console.log(this.selectedLcoName);
     this.submitted = true;
-
-    // Validate form fields before submission
-    if (!this.smartcard || !this.role || !this.username || !this.ismei || !this.selectedLcoName) {
-      // Swal.fire({
-      //   icon: 'warning',
-      //   title: 'Validation Error',
-      //   text: 'Please fill out all required fields.',
-      // });
-      return;
-    }
-
     Swal.fire({
       title: 'Are you sure?',
       text: 'Do you want to allocate the smartcard?',
@@ -100,28 +90,17 @@ export class SubInventoryComponent {
       confirmButtonText: 'Yes, allocate it!',
     }).then((result) => {
       if (result.isConfirmed) {
-        // Proceed with API call if confirmed
-        this.userService.ALLOCATED_SMARTCARD_TO_LCO(this.smartcard, this.role, this.username, this.ismei, '0.0', this.selectedLcoName)
-          // .subscribe(
-          //   (res: any) => {
-          //     // Success message
-          //     Swal.fire({
-          //       icon: 'success',
-          //       title: 'Success!',
-          //       text:res.message|| 'Smartcard has been successfully allocated.',
-          //     });
-          //     console.log(res);
-          //   },
-          //   (error) => {
-          //     // Error handling
-          //     Swal.fire({
-          //       icon: 'error',
-          //       title: 'Error!',
-          //       text: error.error?.message || 'Something went wrong. Please try again later.',
-          //     });
-          //     console.error(error);
-          //   }
-          // );
+        let requestBody = {
+          smartcardlist: this.smartcard,
+          role: this.role,
+          username: this.username,
+          isemi: this.ismei,
+          totalamount: this.dueAmount,
+          operatorid: this.selectedLcoName
+        }
+        this.swal.Loading();
+        // this.userService.ALLOCATED_SMARTCARD_TO_LCO(this.smartcard, this.role, this.username, this.ismei, this.dueAmount, this.selectedLcoName)
+        this.userService.ALLOCATED_SMARTCARD_TO_LCO(requestBody)
           .subscribe((res: any) => {
             this.swal.success(res?.message);
           }, (err) => {

@@ -58,13 +58,22 @@ export class ExpiryDetailsComponent implements OnInit {
     return `${year}-${month}-${day}`;
   }
   operatorlist() {
-    this.userservice.getsmartcardallocationSubscriberList(this.role, this.username).subscribe((data: any) => {
-      this.operatorList = Object.keys(data[0].operatorid).map(key => {
-        this.lconame = key.match(/\d+/)?.[0];
-        return { name: key, id: this.lconame };
+    this.userservice.getOeratorList(this.role, this.username, 2).subscribe((data: any) => {
+      console.log(data);
+      this.operatorList = Object.keys(data).map(key => {
+        const value = data[key];
+        const name = key;
+        return { name: name, id: value };
       });
       this.filteredOperators = this.operatorList;
     })
+    // this.userservice.getsmartcardallocationSubscriberList(this.role, this.username).subscribe((data: any) => {
+    //   this.operatorList = Object.keys(data[0].operatorid).map(key => {
+    //     this.lconame = key.match(/\d+/)?.[0];
+    //     return { name: key, id: this.lconame };
+    //   });
+    //   this.filteredOperators = this.operatorList;
+    // })
   }
 
 
@@ -196,13 +205,13 @@ export class ExpiryDetailsComponent implements OnInit {
           this.rowData = response.body;
           const areatitle = 'A1:K2'
           const areasub = 'A3:K3';
-          const title =  `From Date: ${this.fromdate} To Date: ${this.todate}EXPIRY HISTORY REPORT - FORMAT `;
+          const title = `From Date: ${this.fromdate} To Date: ${this.todate}EXPIRY HISTORY REPORT - FORMAT `;
           const sub = 'MSO ADDRESS:' + this.msodetails;
           const header = ['S.NO', 'LCO NAME', 'CUSTOMER NAME', 'SMARTCARD', 'BOX ID', 'ADDRESS', 'MOBILE NO', 'PACKAGE NAME', 'EXPIRY DATE', 'AREA ID', 'CUSTOMER NO'];
           const data = this.rowData;
           const datas: Array<any> = [];
           data.forEach((d: any, index: number) => {
-            const row = [index + 1,d.operatorname, d.customername, d.smartcard, d.boxid, d.address, d.mobileno, d.productname, d.expirydate, d.areaid, d.customerno];
+            const row = [index + 1, d.operatorname, d.customername, d.smartcard, d.boxid, d.address, d.mobileno, d.productname, d.expirydate, d.areaid, d.customerno];
             datas.push(row);
           });
           const cellsize = { a: 20, b: 20, c: 20, d: 28, e: 20 };

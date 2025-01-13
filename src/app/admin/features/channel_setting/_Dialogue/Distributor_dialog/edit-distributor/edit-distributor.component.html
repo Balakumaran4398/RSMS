@@ -13,9 +13,23 @@
                 <div class="col-12 col-md-6">
                     <input type="text" class="" id="distributor_name" formControlName="distributor_name"
                         placeholder="Enter Distributor Name" data-toggle="tooltip" data-placement="bottom">
-                    <div *ngIf="distributorForm.get('distributor_name')?.invalid && distributorForm.get('distributor_name')?.touched"
+                    <!-- <div *ngIf="distributorForm.get('distributor_name')?.invalid && distributorForm.get('distributor_name')?.touched"
                         class="error-message">
                         Distributor name is required.
+                    </div> -->
+                    <div *ngIf="distributorForm.get('distributor_email')?.invalid && distributorForm.get('distributor_email')?.touched"
+                        class="error-message">
+                        <div *ngIf="distributorForm.get('distributor_email')?.invalid && distributorForm.get('distributor_email')?.touched" class="error-message">
+                            <div *ngIf="distributorForm.get('distributor_email')?.hasError('required')">
+                              Email is required.
+                            </div>
+                            <div *ngIf="!distributorForm.get('distributor_email')?.hasError('required') && distributorForm.get('distributor_email')?.hasError('email')">
+                              Please enter a valid email format.
+                            </div>
+                            <div *ngIf="!distributorForm.get('distributor_email')?.hasError('required') && !distributorForm.get('distributor_email')?.hasError('email') && distributorForm.get('distributor_email')?.hasError('invalidEmail')">
+                              Email must include ".in" or ".com" after letters.
+                            </div>
+                          </div>
                     </div>
                 </div>
             </div>

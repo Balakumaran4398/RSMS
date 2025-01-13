@@ -8,6 +8,9 @@ import { ChannelCreateComponent } from '../_Dialogue/Channel_dialog/channel-crea
 import { ChannelEditComponent } from '../_Dialogue/Channel_dialog/channel-edit/channel-edit.component';
 import { ChannelUploadComponent } from '../_Dialogue/Channel_dialog/channel-upload/channel-upload.component';
 import { MatSelectChange } from '@angular/material/select';
+import { SwalService } from 'src/app/_core/service/swal.service';
+import { HttpResponse } from '@angular/common/http';
+import { ExcelService } from 'src/app/_core/service/excel.service';
 
 @Component({
   selector: 'app-channel',
@@ -23,6 +26,13 @@ export class ChannelComponent {
       resizable: true,
       filter: true,
       floatingFilter: true,
+      comparator: (valueA: any, valueB: any) => {
+        const normalizedA = valueA ? valueA.toString().trim().toLowerCase() : '';
+        const normalizedB = valueB ? valueB.toString().trim().toLowerCase() : '';
+        if (normalizedA < normalizedB) return -1;
+        if (normalizedA > normalizedB) return 1;
+        return 0;
+      },
     },
     paginationPageSize: 10,
     pagination: true,
@@ -37,11 +47,12 @@ export class ChannelComponent {
   username: string;
   role: string;
   rowData: any;
+  msodetails: any;
   type: string[] = ['All', 'Active', 'Deactive'];
-  selectType:any='All';
+  selectType: any = 'All';
   selectedType: string = 'All';
 
-  constructor(public dialog: MatDialog, public userService: BaseService, storageService: StorageService) {
+  constructor(public dialog: MatDialog, public userService: BaseService, storageService: StorageService, private swal: SwalService, private excelService: ExcelService,) {
     this.username = storageService.getUsername();
     this.role = storageService.getUserRole();
     console.log(this.username)
@@ -50,6 +61,11 @@ export class ChannelComponent {
   }
   ngOnInit(): void {
     this.getChannelList(this.selectedType);
+    this.userService.getMsoDetails(this.role, this.username).subscribe((data: any) => {
+      console.log(data);
+      this.msodetails = `${data.msoName} ${data.msoStreet}, ${data.msoArea}, ${data.msoState}, ${data.msoPincode}, ${data.msoEmail}`;
+      console.log(this.msodetails);
+    })
   }
   getChannelList(selectedType: string): void {
     this.userService.ChannelList(this.role, this.username, selectedType).subscribe((data) => {
@@ -65,23 +81,23 @@ export class ChannelComponent {
   onTypeChange(event: Event): void {
     const selectElement = event.target as HTMLSelectElement;
     const selectedType = selectElement.value;
-  
+
     this.selectedType = selectedType;
     this.getChannelList(this.selectedType);
   }
-  
+
   onGridReady(params: { api: any; }) {
     this.gridApi = params.api;
   }
   columnDefs: any[] = [
     {
-      headerName: "S.No", lockPosition: true, valueGetter: 'node.rowIndex+1', width: 100,headerCheckboxSelection: true,
+      headerName: "S.No", lockPosition: true, valueGetter: 'node.rowIndex+1', width: 100, headerCheckboxSelection: true,
       checkboxSelection: true,
     },
-    { headerName: "CHANNEL NAME", field: 'channel_name', editable: true, },
-    { headerName: "BROADCASTER", field: 'broadcastername', editable: true, },
+    { headerName: "CHANNEL NAME", field: 'channel_name', },
+    { headerName: "BROADCASTER", field: 'broadcastername', },
     {
-      headerName: 'Actions', minWidth: 140,
+      headerName: 'Actions', minWidth: 80, cellStyle: { textAlign: 'center' },
       cellRenderer: (params: any) => {
         const editButton = document.createElement('button');
         editButton.innerHTML = '<i class="fa fa-pencil-square" aria-hidden="true"></i>';
@@ -100,28 +116,28 @@ export class ChannelComponent {
         return div;
       }
     },
-    { headerName: "SERVICE ID", field: 'service_id', editable: true, width: 130 },
-    { headerName: "PRODUCT ID", field: 'product_id', editable: true },
+    { headerName: "SERVICE ID", field: 'service_id', width: 100, cellStyle: { textAlign: 'center' }, },
+    { headerName: "PRODUCT ID", field: 'product_id', cellStyle: { textAlign: 'center' }, },
     {
-      headerName: "STATUS", field: 'statusdisplay', editable: true,
+      headerName: "STATUS", field: 'statusdisplay',
       cellRenderer: (params: { value: any; }) => {
         const isActive = params.value === 'Active'; // Check if the value is 'Active'
         const color = isActive ? 'green' : 'red';  // 'Active' is green, 'Deactive' is red
         return `<span style="color: ${color}">${params.value}</span>`;
       }
-      
-      
-    },
-    { headerName: "INR AMOUNT", field: 'inr_amt', editable: true },
-    { headerName: "STATUS", field: 'paidstatus', editable: true },
-    { headerName: "LOGO", field: 'channel_logo', editable: true },
 
-   
+
+    },
+    { headerName: "INR AMOUNT", field: 'inr_amt', cellStyle: { textAlign: 'center' }, },
+    { headerName: "STATUS", field: 'paidstatus', },
+    // { headerName: "LOGO", field: 'channel_logo', editable: true },
+
+
   ];
   onSelectionChange(event: MatSelectChange): void {
     this.selectedType = event.value;
     this.getChannelList(this.selectedType);
-  } 
+  }
   onSelectionChanged() {
     if (this.gridApi) {
       const selectedRows = this.gridApi.getSelectedRows();
@@ -165,7 +181,7 @@ export class ChannelComponent {
   openDialog(): void {
     const dialogRef = this.dialog.open(ChannelCreateComponent, {
       width: '700px',
-      maxHeight:700,
+      maxHeight: 700,
       // height: '900px',
       panelClass: 'custom-dialog-container'
     });
@@ -183,6 +199,7 @@ export class ChannelComponent {
       confirmButtonColor: "#3085d6",
       cancelButtonColor: "#d33",
       confirmButtonText: "Yes, Active it!"
+
     }).then((result) => {
       if (result.isConfirmed) {
         Swal.fire({
@@ -197,8 +214,12 @@ export class ChannelComponent {
           Swal.fire({
             title: 'Activated!',
             text: res.message,
-            icon: 'success'
+            icon: 'success',
+            timer: 2000,
+            timerProgressBar: true,
+            showConfirmButton: false
           });
+
           this.ngOnInit();
         }, (err) => {
           Swal.fire({
@@ -218,12 +239,12 @@ export class ChannelComponent {
       showCancelButton: true,
       confirmButtonColor: "#3085d6",
       cancelButtonColor: "#d33",
-      confirmButtonText: "Yes, delete it!"
+      confirmButtonText: "Yes, Deactivate it!"
     }).then((result) => {
       if (result.isConfirmed) {
         Swal.fire({
-          title: 'Deleting...',
-          text: 'Please wait while the Channel is being deleted',
+          title: 'Deactivating...',
+          text: 'Please wait while the Channel is being Deactivated',
           allowOutsideClick: false,
           didOpen: () => {
             Swal.showLoading(null);
@@ -231,9 +252,12 @@ export class ChannelComponent {
         });
         this.userService.deleteChannel(this.role, this.username, this.selectedIds).subscribe((res: any) => {
           Swal.fire({
-            title: 'Deleted!',
+            title: 'Deactivated!',
             text: res.message,
-            icon: 'success'
+            icon: 'success',
+            timer: 2000,
+            timerProgressBar: true,
+            showConfirmButton: false
           });
           this.ngOnInit();
         }, (err) => {
@@ -245,5 +269,117 @@ export class ChannelComponent {
         });
       }
     });
+  }
+  // -------------------------------report-------------------------
+  getExcel() {
+    Swal.fire({
+      title: "Processing",
+      text: "Please wait while the report is being generated...",
+      showConfirmButton: false,
+      didOpen: () => {
+        Swal.showLoading(null);
+      }
+    });
+    this.userService.getChannelExcelReport(this.role, this.username, this.selectedType)
+      .subscribe(
+        (response: HttpResponse<any[]>) => {
+          console.log(this.type);
+          if (response.status === 200) {
+            this.rowData = response.body;
+            console.log(this.type);
+            // const title = (this.type + ' REPORT').toUpperCase();
+            const title = (`${this.selectedType} CHANNEL DETAILS REPORT`).toUpperCase();
+            const sub = 'MSO ADDRESS:' + this.msodetails;
+            let areatitle = '';
+            let areasub = '';
+            let header: string[] = [];
+            const datas: Array<any> = [];
+            // if (this.type == 1) {
+            areatitle = 'A1:L2';
+            areasub = 'A3:L3';
+            header = ['S.NO', 'TS ID', 'FREQUENCY', 'SERVICE NAME', 'SERVICE ID', 'PRODUCT ID', 'INR AMOUNT', 'CATEGORY NAME', 'BROADCASTER NAME', 'CHANNEL TYPE NAME', 'DISTRIBUTOR NAME', 'CHANNEL STATUS'];
+
+            this.rowData.forEach((d: any, index: number) => {
+              const row = [index + 1, d.t_id, d.channel_freq, d.channel_name, d.service_id, d.product_id, d.inr_amt, d.categoryname, d.broadcastername, d.channeltypename, d.distributorname, d.statusdisplay];
+              // console.log('type 1 and 4', row);
+              datas.push(row);
+            });
+            Swal.close();
+            this.excelService.generateSuspendBasedExcel(areatitle, header, datas, title, areasub, sub);
+
+          } else if (response.status === 204) {
+            // this.swal.Success_204();
+            this.rowData = response.body;
+            console.log(this.type);
+            // const title = (this.type + ' REPORT').toUpperCase();
+            const title = (`${this.selectedType} CHANNEL DETAILS REPORT`).toUpperCase();
+            const sub = 'MSO ADDRESS:' + this.msodetails;
+            let areatitle = '';
+            let areasub = '';
+            let header: string[] = [];
+            const datas: Array<any> = [];
+            // if (this.type == 1) {
+            areatitle = 'A1:L2';
+            areasub = 'A3:L3';
+            header = ['S.NO', 'TS ID', 'FREQUENCY', 'SERVICE NAME', 'SERVICE ID', 'PRODUCT ID', 'INR AMOUNT', 'CATEGORY NAME', 'BROADCASTER NAME', 'CHANNEL TYPE NAME', 'DISTRIBUTOR NAME', 'CHANNEL STATUS'];
+            Swal.close();
+            this.excelService.generateSuspendBasedExcel(areatitle, header, datas, title, areasub, sub);
+            this.rowData = [];
+          }
+        },
+        (error) => {
+          this.handleApiError(error);
+        }
+      );
+  }
+
+  getPDF() {
+    Swal.fire({
+      title: "Processing",
+      text: "Please wait while the report is being generated...",
+      showConfirmButton: false,
+      didOpen: () => {
+        Swal.showLoading(null);
+      }
+    });
+    this.userService.getChannelPDFReport(this.role, this.username, this.selectedType)
+
+      .subscribe((x: Blob) => {
+        const blob = new Blob([x], { type: 'application/xlsx' });
+        const data = window.URL.createObjectURL(blob);
+        const link = document.createElement('a');
+        link.href = data;
+        // link.download = (this.reportTitle + ".pdf").toUpperCase();
+        link.download = `${this.selectedType} CHANNEL DETAILS REPORT.pdf`.toUpperCase();
+
+        link.dispatchEvent(new MouseEvent('click', { bubbles: true, cancelable: true, view: window }));
+        setTimeout(() => {
+          window.URL.revokeObjectURL(data);
+          link.remove();
+        }, 100);
+        Swal.close();
+      },
+        (error: any) => {
+          Swal.close();
+          Swal.fire({
+            title: 'Error!',
+            text: error?.error?.message || 'There was an issue generating the PDF.',
+            icon: 'error',
+            confirmButtonText: 'Ok'
+          });
+        });
+  }
+  generateExcel() {
+    this.excelService.generateChannelDetailsExcel();
+  }
+  // ---------------------------------------------------------------------------------------------------------------------------------------
+  handleApiError(error: any) {
+    if (error.status === 400) {
+      this.swal.Error_400();
+    } else if (error.status === 500) {
+      this.swal.Error_500();
+    } else {
+      Swal.fire('Error', 'Something went wrong. Please try again.', 'error');
+    }
   }
 }

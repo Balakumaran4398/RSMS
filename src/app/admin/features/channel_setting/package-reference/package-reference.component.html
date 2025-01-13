@@ -1,14 +1,14 @@
 <div class="chart">
-    <h3>Product Reference Details</h3>
+    <h4>PACKAGE REFERENCE DETAILS</h4>
 
     <!-- <hr> -->
     <section class="Tab col-xl-12 col-sm-12 col-12 mb-3" style="max-height: 76vh;overflow: auto;">
         <div class="display tablist justify-content-center align-items-center  mb-3">
-            <div class="tab mb-3" [class.active]="selectedTab === '1'" (click)="selectTab('1')">BASE PACKAGE
+            <div class="tab mb-3 bttn bg" [class.active]="selectedTab === '1'" (click)="selectTab('1')">BASE PACKAGE
             </div>
-            <div class="tab mb-3" [class.active]="selectedTab === '2'" (click)="selectTab('2')">ADDON PACKAGE
+            <div class="tab mb-3 bttn bg" [class.active]="selectedTab === '2'" (click)="selectTab('2')">ADDON PACKAGE
             </div>
-            <div class="tab mb-3" [class.active]="selectedTab === '3'" (click)="selectTab('3')">ALACARTE
+            <div class="tab mb-3 bttn bg" [class.active]="selectedTab === '3'" (click)="selectTab('3')">ALACARTE
             </div>
         </div>
         <div class="input_box col-12 col-md-8  d-flex justify-content-end align-items-center mb-1">
@@ -29,17 +29,24 @@
         <div *ngIf="selectedTab">
             <div class="col-12 col-sm-8 align-items-center justify-content-center responsive-container"
                 style="margin: auto;">
-                <ag-grid-angular #agGrid id="myGrid"  domLayout='autoHeight'
+                <!-- <ag-grid-angular #agGrid id="myGrid"  domLayout='autoHeight'
                     class="ag-theme-alpine table-class" rowAnimation [gridOptions]="gridOptions"
                     [columnDefs]="columnDefs" [rowData]="rowData"
                     [enableCellTextSelection]="true" (selectionChanged)="onSelectionChanged()"
-                    (gridReady)="onGridReady($event)">
+                    (gridReady)="onGridReady($event)"> -->
+
+                <ag-grid-angular #agGrid id="myGrid" domLayout='autoHeight' class="ag-theme-alpine table-class"
+                    rowSelection="multiple" rowAnimation [rowSelection]="rowSelection" [gridOptions]="gridOptions"
+                    [columnDefs]="columnDefs" [rowData]="rowData" (selectionChanged)="onSelectionChanged($event)"
+                    (gridReady)="onGridReady($event)" [enableCellTextSelection]="true">
                 </ag-grid-angular>
+
+                <!-- </ag-grid-angular> -->
             </div>
         </div>
 
     </section>
     <div class="col-12 col-md-12 d-flex justify-content-center align-items-center">
-        <button (click)="save()" class="btn btn-success">Save</button>
+        <button (click)="save()" [disabled]="isshow" class="btn btn-success bttn">Save</button>
     </div>
 </div>

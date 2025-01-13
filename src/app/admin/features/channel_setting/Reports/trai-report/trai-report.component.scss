@@ -68,18 +68,36 @@ section {
 .card i {
   font-size: 25px;
   color: #00566b;
-  // background: #b3f0ff;
+  // background: #a7bbba;
   border-radius: 50%;
   // padding: 15px;
   display: flex;
   align-items: center;
   justify-content: center;
+  // height: 4vh;
+  // font-size: medium;
+  // width: 4vh;
+  // margin-top: -3%;
 }
+
+// .card i {
+//   background: #a7bbba;
+//   color: #006a66;
+//   border-radius: 50%;
+//   display: flex;
+//   align-items: center;
+//   justify-content: center;
+//   height: 40px;
+//   width: 40px;
+//   padding: 15px;
+//   font-size: 20px;
+// }
+
 
 .card strong {
   color: black;
-  font-weight: 500;
-  font-size: 15px;
+  font-weight: bold;
+  font-size: 14px;
 }
 
 .card .royal-content {
@@ -93,14 +111,20 @@ section {
   background-size: cover;
   background-position: center;
   border-radius: 5px;
-  // padding: 20px;
   color: white;
-  font-family: 'Times New Roman', Times, serif;
+  font-family: "Times New Roman", Times, serif;
   text-align: left;
-  // /* Align text left for better positioning */
-  box-shadow: 3px 2px 0px 1px rgba(44, 44, 44, 0.5);
+  // box-shadow: none !important;
   transition: transform 0.3s ease, box-shadow 0.3s ease;
+  border: none;
+  border-top-width: medium;
+  border-top-style: none;
+  border-top-color: currentcolor;
+  // border-top: 4px solid #5da5d0;
+  box-shadow: rgba(50, 50, 93, 0.25) 0px 30px 60px -12px inset, rgba(0, 0, 0, 0.3) 0px 18px 36px -18px inset !important;
+
 }
+
 
 .royal-card:hover {
   transform: scale(1.05);
@@ -160,4 +184,10 @@ section {
   .card i {
     display: none;
   }
+}
+
+.pannel {
+  border: none !important;
+  box-shadow: none !important;
+  border-color: transparent !important;
 }

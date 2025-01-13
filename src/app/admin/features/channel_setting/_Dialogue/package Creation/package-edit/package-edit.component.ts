@@ -1,4 +1,4 @@
-import { Component, Inject, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, Inject, OnInit } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { BaseService } from 'src/app/_core/service/base.service';
 import { StorageService } from 'src/app/_core/service/storage.service';
@@ -20,9 +20,11 @@ export class PackageEditComponent implements OnInit {
   commission: any;
   role: any;
   value: any;
+
+  invalid: boolean = false;
   constructor(
     public dialogRef: MatDialogRef<PackageEditComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: any, private userService: BaseService, private storageService: StorageService) {
+    @Inject(MAT_DIALOG_DATA) public data: any, private userService: BaseService, private storageService: StorageService, private cdr: ChangeDetectorRef) {
     console.log(data);
 
     this.username = storageService.getUsername();
@@ -35,30 +37,64 @@ export class PackageEditComponent implements OnInit {
     // this.broadcaster_id=data.broadcaster_id;
     this.commission = data.customeramount;
     console.log(this.commission);
-    
-    this.ispercentage = !data.ispercentage;
+
+    this.ispercentage = data.ispercentage;
     console.log(data.isactive);
-    
+
     this.package_id = data.packageid;
 
 
   }
   ngOnInit(): void {
+    this.checkMaxValue();
+
     // this.userService.Package_CloneList(this.role, this.username, this.package_id).subscribe((data: any) => {
     //   console.log(data);
     //   this.commission = data.customeramount;
     //   console.log(this.commission);
 
     // }) 
+
   }
 
-  onKeydown1(event: KeyboardEvent) {
+  onKeydown1(event: any) {
     const input = event.target as HTMLInputElement;
     const value = input.value;
     if (['Backspace', 'ArrowLeft', 'ArrowRight', 'Tab'].includes(event.key) || /^[0-9.]*$/.test(event.key)) {
       return;
     }
     event.preventDefault();
+    this.checkMaxValue();
+  }
+
+
+  percentageChange(value: boolean) {
+    this.ispercentage = value;
+    this.checkMaxValue();
+  }
+  checkMaxValue(): void {
+    if (!this.ispercentage && (this.commission > this.package_rate)) {
+      console.log('if');
+
+      this.invalid = true;
+    } else if (this.ispercentage && this.commission > 100) {
+      console.log('else');
+
+      this.invalid = true;
+    } else {
+      console.log('final else');
+
+      this.invalid = false;
+    }
+    this.cdr.detectChanges();
+    console.log(this.ispercentage);
+    console.log(this.commission);
+    console.log(this.package_rate);
+
+
+
+    console.log('invalid-------------------------------' + this.invalid);
+
   }
 
   onFocus() {
@@ -93,7 +129,7 @@ export class PackageEditComponent implements OnInit {
         Swal.showLoading(null);
       }
     });
-    this.userService.Package_Update(this.package_name, this.package_desc, this.package_rate, this.order_id, this.role, this.username, this.commission, !this.ispercentage, this.package_id,).subscribe((res: any) => {
+    this.userService.Package_Update(this.package_name, this.package_desc, this.package_rate, this.order_id, this.role, this.username, this.commission, this.ispercentage, this.package_id,).subscribe((res: any) => {
       console.log(res);
       Swal.fire({
         position: "center",

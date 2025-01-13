@@ -8,8 +8,8 @@ import { StorageService } from 'src/app/_core/service/storage.service';
 import { SwalService } from 'src/app/_core/service/swal.service';
 import Swal from 'sweetalert2';
 import { CasDialogueComponent } from '../../channel_setting/_Dialogue/cas-dialogue/cas-dialogue.component';
-import { TRUE } from 'node_modules1/sass/types';
-import tree from 'node_modules1/@angular/material/schematics/ng-generate/tree';
+// import { TRUE } from 'node_modules1/sass/types';
+// import tree from 'node_modules1/@angular/material/schematics/ng-generate/tree';
 // export class MyErrorStateMatcher implements ErrorStateMatcher {
 //   isErrorState(control: FormControl | null, form: FormGroupDirective | NgForm | null): boolean {
 //     const isSubmitted = form && form.submitted;
@@ -374,10 +374,10 @@ export class MessageComponent {
     { headerName: "MESSAGE", field: 'msgcontent' },
     { headerName: "FONT COLOR	", field: 'fontcolordisplay' },
     { headerName: "BACKGROUND COLOR	", field: 'bgcolordisplay' },
-    { headerName: "REPEAT FOR", field: 'repeatfor' },
-    { headerName: "TRANSPARENCY	", field: 'transparency' },
-    { headerName: "DURATION", field: 'duration' },
-    { headerName: "TIME GAP	", field: 'timegap' },
+    { headerName: "REPEAT FOR", field: 'repeatfor', cellStyle: { textAlign: 'center' }, },
+    { headerName: "TRANSPARENCY	", field: 'transparency', cellStyle: { textAlign: 'center' }, },
+    { headerName: "DURATION", field: 'duration', cellStyle: { textAlign: 'center' }, },
+    { headerName: "TIME GAP	", field: 'timegap', cellStyle: { textAlign: 'center' }, },
     { headerName: "CAS", field: 'casname' },
     {
       headerName: 'ACTIONS',
@@ -432,10 +432,12 @@ export class MessageComponent {
       filter: true,
       width: 180,
       floatingFilter: true,
-      comparator: (valueA: string, valueB: string) => {
-        if (!valueA) valueA = '';
-        if (!valueB) valueB = '';
-        return valueA.toLowerCase().localeCompare(valueB.toLowerCase());
+      comparator: (valueA: any, valueB: any) => {
+        const normalizedA = valueA ? valueA.toString().trim().toLowerCase() : '';
+        const normalizedB = valueB ? valueB.toString().trim().toLowerCase() : '';
+        if (normalizedA < normalizedB) return -1;
+        if (normalizedA > normalizedB) return 1;
+        return 0;
       },
     },
     paginationPageSize: 15,

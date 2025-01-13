@@ -2,6 +2,7 @@ import { Component, Inject } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { BaseService } from 'src/app/_core/service/base.service';
 import { StorageService } from 'src/app/_core/service/storage.service';
+import { SwalService } from 'src/app/_core/service/swal.service';
 import Swal from 'sweetalert2';
 
 @Component({
@@ -15,7 +16,7 @@ export class AllocatedInventoryComponent {
   rowData: any;
   smartcard: any;
   boxid: any;
-  castype: { [key: string]: number } = {};
+  castype: any[] = [];
   // lco_list: { [key: string]: number } = {};
   lco_list: any[] = [];
   operatorid: { [key: string]: number } = {};
@@ -28,12 +29,15 @@ export class AllocatedInventoryComponent {
   submitted: boolean = false;
   constructor(
     public dialogRef: MatDialogRef<AllocatedInventoryComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: any, private userService: BaseService, private storageService: StorageService) {
+    @Inject(MAT_DIALOG_DATA) public data: any, private userService: BaseService, private storageService: StorageService,private swal:SwalService) {
     console.log('Data received:', data);
     this.username = storageService.getUsername();
     this.role = storageService.getUserRole();
     console.log(data);
+    // this.castype = data.castype;
     this.castype = data.castype;
+    console.log(this.castype);
+    
     this.lco_list = data.lco_list;
     console.log(this.castype);
     this.filteredOperators=this.lco_list;
@@ -51,11 +55,34 @@ export class AllocatedInventoryComponent {
   displayOperator(operator: any): string {
     return operator ? operator.name : '';
   }
+  onCasChange(){
+    this.userService.getAllocationMsoSmartcardListByCastype(this.role, this.username, this.selectedCasType).subscribe(
+      (res: any) => {
+        // this.returndata = res;
+        console.log(res);
+        this.smartcard= res.smartcard;
+        this.boxid= res.boxid;
+
+        // this.swal.success(res?.message);
+      }, (err) => {
+        this.swal.Error(err?.error?.message);
+      });
+  }
   onSubscriberStatusChange(selectedOperator: any) {
     console.log(selectedOperator);
     this.selectedOperator = selectedOperator;
     this.selectedLcoName = selectedOperator.value;
     console.log(this.selectedLcoName);
+
+    // this.userService.getAllocationMsoSmartcardListByCastype(this.role, this.username, this.selectedCasType).subscribe(
+    //   (res: any) => {
+    //     // this.returndata = res;
+    //     console.log(res);
+        
+    //     // this.swal.success(res?.message);
+    //   }, (err) => {
+    //     // this.swal.Error(err?.error?.message);
+    //   });
   }
   // filteredLcoKeys(): string[] {
   //   const keys = Object.keys(this.lco_list);
@@ -66,15 +93,15 @@ export class AllocatedInventoryComponent {
   //     key.toLowerCase().includes(this.searchTerm.toLowerCase())
   //   );
   // }
-  filteredCasKeys(): string[] {
-    const keys = Object.keys(this.castype);
-    if (!this.searchTerm) {
-      return keys;
-    }
-    return keys.filter(cas =>
-      cas.toLowerCase().includes(this.searchTerm.toLowerCase())
-    );
-  }
+  // filteredCasKeys(): string[] {
+  //   const keys = Object.keys(this.castype);
+  //   if (!this.searchTerm) {
+  //     return keys;
+  //   }
+  //   return keys.filter(cas =>
+  //     cas.toLowerCase().includes(this.searchTerm.toLowerCase())
+  //   );
+  // }
   onKeydown(event: KeyboardEvent) {
     const allowedKeys = ['Backspace', 'ArrowLeft', 'ArrowRight', 'Tab', 'Delete'];
     if (!/^[0-9]$/.test(event.key) && !allowedKeys.includes(event.key)) {

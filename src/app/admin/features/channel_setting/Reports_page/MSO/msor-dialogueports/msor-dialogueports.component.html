@@ -1,33 +1,1085 @@
-<div *ngIf="type== '1'">
-    monthly_datewise
+<div *ngIf="type== 'monthly_datewise'">
+    <div class="container">
+        <div class="mb-3">
+            <h4>MONTHLY DATEWISE PAYMENT COLLECTION </h4>
+        </div>
+        <div class="card col-md-12 d-block justify-content-center align-items-center onlinebox" style="padding: 1rem;">
+            <div class="col-12 col-md-12  justify-content-center align-items-center  ">
+                <div class="input_box_old display_datewise justify-content-center align-item-center">
+
+                    <div class="input_box_old display mb-3">
+                        <div class="col-12 col-md-6">
+                            <label for="">Select Year</label>
+                        </div>
+                        <div class="col-12 col-md-6">
+                            <select name="year" id="year" [(ngModel)]="selectedYear">
+                                <option value="0" selected>Select Year</option>
+                                <option *ngFor="let year of years" [value]="year">{{ year }}</option>
+                            </select>
+                            <!-- <div *ngIf="submitted && !selectedYear" class="text-danger" style="font-size: small;">
+                                Year is required
+                            </div> -->
+                        </div>
+                    </div>
+
+                    <div class="display mb-3">
+                        <div class="col-12 col-md-6">
+                            <label for="">Select Month</label>
+                        </div>
+                        <div class="col-12 col-md-6">
+                            <select name="month" id="month" [(ngModel)]="selectedMonth"
+                                (change)="onMonthChange($event)">
+                                <option value="0" selected>Select Month</option>
+                                <option *ngFor="let month of months" [value]="month.value">{{ month.name }}
+                                </option>
+                            </select>
+                            <!-- <div *ngIf="submitted && !selectedMonth" class="text-danger" style="font-size: small;">
+                                Month is required
+                            </div> -->
+
+                        </div>
+                    </div>
+                    <div class="display1 mb-3">
+                        <!-- <div *ngIf="type == '1'" class="input_box_old display1 mb-3"> -->
+                        <div class="col-6 col-md-6">
+                            <span style="color: #243359;" for="">Reports</span>
+                        </div>
+                        <div class="col-6 col-md-6 display1">
+                            <div class="export-icon col-6 col-md-3 mx-2" (click)="monthwisePaymentCollectionExcel()">
+                                <img src="/assets/images/icons/Excel.png" alt="Excel Icon" width="40px">
+                                <div class="tooltip">Excel</div>
+                            </div>
+                            <!-- <div class="export-icon col-6 col-md-3" (click)="monthwisePaymentCollectionPdf()">
+                                <img src="/assets/images/icons/pdf.png" alt="PDF Icon" width="40px">
+                                <div class="tooltip">Pdf</div>
+                            </div> -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- <div class="d-flex justify-content-end align-items-end">
+                <button class="btn btn-outline-info mx-1" mat-raised-button color="primary" type="button"
+                    (click)="getWalletExcel()">
+                    Excel
+                </button>
+                <button class="btn btn-outline-info mx-1" mat-raised-button color="accent" type="button"
+                    (click)="getWalletPDF()">
+                    PDF
+                </button>
+            </div> -->
+        </div>
+
+
+    </div>
 </div>
-<div *ngIf="type== '2'">
-    recharge_deduction
+<div *ngIf="type== 'recharge_deduction_including'">
+    <div class="mb-3">
+        <h4>Operators Recharge and Deduction Report <span> - (Including GST)</span></h4>
+    </div>
+    <div class="col-12 col-md-2 d-flex  justify-content-start align-items-start">
+        <button type="button" class="btn btn-primary bttn" (click)="goBack()"><i
+                class="fa-solid fa-reply mx-2"></i>Back</button>
+    </div>
+    <div class="col-12 col-md-12 display justify-content-start align-items-center mb-3">
+        <div class="display justify-content-start align-items-center">
+            <p class="mx-2 mb-0" style="text-align: center;color: rgb(0, 12, 22); font-size: 16px;font-weight: 600;">
+                Report types:</p>
+            <div class="input_box mx-2 mb-2">
+                <select (ngModelChange)="onChangeDateType($event)" [(ngModel)]="selectedDateType">
+                    <option value='' disabled>Select Type</option>
+                    <option *ngFor="let Type of Date" [value]="Type.value">{{ Type.label }}</option>
+                </select>
+            </div>
+
+            <div *ngIf="isDateEnabled" class="mx-2 mb-2">
+                <div class=" d-flex justify-content-center align-item-center">
+                    <!-- <input type="date" [(ngModel)]="date"> -->
+                    <mat-form-field appearance="outline">
+                        <mat-date-range-input [rangePicker]="picker" [max]="today">
+                            <input matStartDate matInput placeholder="Start date" (dateChange)="getFromDate($event)">
+                            <input matEndDate matInput placeholder="End date" (dateChange)="getToDate($event)">
+                        </mat-date-range-input>
+                        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                        <mat-date-range-picker #picker></mat-date-range-picker>
+                    </mat-form-field>
+                </div>
+            </div>
+
+            <div *ngIf="isMonthYearEnabled" class="mx-2 mb-2">
+                <div class="input_box d-flex justify-content-center align-item-center">
+                    <div class="mx-3">
+                        <select name="month" id="month" [(ngModel)]="selectedMonth" (change)="onMonthChange($event)">
+                            <option value="0" selected>Select Month</option>
+                            <option *ngFor="let month of months" [value]="month.value">{{ month.name }}</option>
+                        </select>
+                    </div>
+                    <div class="mx-2">
+                        <select name="year" id="year" [(ngModel)]="selectedYear">
+                            <option value="0" selected>Select Year</option>
+                            <option *ngFor="let year of years" [value]="year">{{ year }}</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <div class="input_box d-flex justify-content-center align-item-center mx-2 mb-2">
+                <select name="type" id="type" [(ngModel)]="selectedType">
+                    <!-- <option value="0" selected>Select Type</option> -->
+                    <option *ngFor="let type of TypeIncluding" [value]="type.value">{{ type.label }}</option>
+                </select>
+            </div>
+            <div class="input_box d-flex justify-content-center align-item-center mx-2 mb-2">
+                <select name="amount" id="amount" [(ngModel)]="selectedAmount">
+                    <!-- <option value="0" selected>Select Type</option> -->
+                    <option *ngFor="let amount of Amount" [value]="amount.value">{{ amount.label }}</option>
+                </select>
+            </div>
+            <button class="btn mx-2 bttn" style="background-color: rgb(26, 129, 133); border-radius: 5px;"
+                (click)="getIncluding()">
+                <span style="color: white;">Submit</span>
+            </button>
+        </div>
+
+        <div class=" display1">
+            <div class="export-icon  mx-2">
+                <img src="/assets/images/icons/Excel.png" alt="Excel Icon" width="40px"
+                    (click)="getIncludeReportDownload(2)">
+                <div class="tooltip">Excel</div>
+            </div>
+            <div class="export-icon ">
+                <img src="/assets/images/icons/pdf.png" alt="PDF Icon" width="40px"
+                    (click)="getIncludeReportDownload(1)">
+                <div class="tooltip">Pdf</div>
+            </div>
+        </div>
+    </div>
+    <ag-grid-angular #agGrid id="myGrid" domLayout='autoHeight' class="ag-theme-alpine table-class" rowAnimation
+        [gridOptions]="gridOptions" [columnDefs]="columnDefs" [rowData]="rowData" (gridReady)="onGridReady($event)"
+        [enableCellTextSelection]="true">
+    </ag-grid-angular>
 </div>
-<div *ngIf="type== '3'">
+<div *ngIf="type== 'recharge_deduction_excluding'">
+
+    <div class="mb-3">
+        <h4>Operators Recharge and Deduction Report <span> - (Excluding GST)</span></h4>
+    </div>
+    <div class="col-12 col-md-2 d-flex mx-2 mb-2">
+        <button type="button" class="btn btn-primary bttn" (click)="goBack()"><i
+                class="fa-solid fa-reply mx-2"></i>Back</button>
+    </div><br /><br />
+    <div class="col-12 col-md-12 display justify-content-start align-items-center mb-3">
+        <!-- First Section -->
+        <div class="display justify-content-start align-items-center">
+            <!-- <p class="mx-2 mb-0" style="text-align: center; color: rgb(0, 12, 22); font-size: 16px; font-weight: 600;">
+                Report types:
+            </p> -->
+            <div class="input_box mx-2 mb-2">
+                <select (ngModelChange)="onChangeDateType1($event)" [(ngModel)]="selectedDateType">
+                    <option value="" disabled>Select Type</option>
+                    <option *ngFor="let Type of Date1" [value]="Type.value">{{ Type.label }}</option>
+                </select>
+            </div>
+
+            <div *ngIf="isDateEnabled" class="mx-2 mb-2">
+                <div class="d-flex justify-content-center align-item-center">
+                    <mat-form-field appearance="outline">
+                        <mat-date-range-input [rangePicker]="picker" [max]="today">
+                            <input matStartDate matInput placeholder="Start date" (dateChange)="getFromDate($event)" />
+                            <input matEndDate matInput placeholder="End date" (dateChange)="getToDate($event)" />
+                        </mat-date-range-input>
+                        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                        <mat-date-range-picker #picker></mat-date-range-picker>
+                    </mat-form-field>
+                </div>
+            </div>
+
+            <div *ngIf="isMonthYearEnabled" class="mx-2 mb-2">
+                <div class="input_box d-flex justify-content-center align-item-center">
+                    <div class="mx-3">
+                        <select name="month" id="month" [(ngModel)]="selectedMonth" (change)="onMonthChange($event)">
+                            <option value="0" selected>Select Month</option>
+                            <option *ngFor="let month of months" [value]="month.value">{{ month.name }}</option>
+                        </select>
+                    </div>
+                    <div class="mx-2">
+                        <select name="year" id="year" [(ngModel)]="selectedYear">
+                            <option value="0" selected>Select Year</option>
+                            <option *ngFor="let year of years" [value]="year">{{ year }}</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <div class="input_box d-flex justify-content-center align-item-center mx-2 mb-2">
+                <select name="type" id="type" [(ngModel)]="selectedType">
+                    <option *ngFor="let type of TypeExcluding" [value]="type.value">{{ type.label }}</option>
+                </select>
+            </div>
+            <div class="input_box d-flex justify-content-center align-item-center mx-2 mb-2">
+                <select name="status" id="status" [(ngModel)]="selectedStatus">
+                    <option *ngFor="let status of Status" [value]="status.value">{{ status.label }}</option>
+                </select>
+            </div>
+
+            <div class="input_box col-10 col-md-3 mx-2 mb-2">
+                <input type="text" matInput [matAutocomplete]="auto" maxlength="20" (input)="filterOperators($event)"
+                    placeholder="Select Operator" [matAutocompleteDisabled]="false" [value]="selectedOperator?.name" />
+
+                <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayOperator">
+                    <mat-option [value]="0" selected
+                        (click)="onOperatorStatusChange({ value: 0, name: 'All Operator' })">
+                        All Operator
+                    </mat-option>
+                    <mat-option *ngFor="let operator of filteredOperators" [value]="operator.value"
+                        (click)="onSubscriberStatusChange(operator)">
+                        {{ operator.name }}
+                    </mat-option>
+                </mat-autocomplete>
+            </div>
+        </div>
+
+        <div class="input_box col-10 col-md-3 mx-2 mb-2">
+            <div class="display justify-content-start align-items-center" style="display: flex;">
+                <button class="btn mx-2 bttn" style="background-color: rgb(26, 129, 133); border-radius: 5px;"
+                    (click)="getExcluding()">
+                    <span style="color: white;">Submit</span>
+                </button>
+
+                <div class="export-icon mx-2">
+                    <img src="/assets/images/icons/Excel.png" alt="Excel Icon" width="40px"
+                        (click)="getExcludingReportDownload(2)" />
+                    <div class="tooltip">Excel</div>
+                </div>
+                <div class="export-icon mx-2">
+                    <img src="/assets/images/icons/pdf.png" alt="PDF Icon" width="40px"
+                        (click)="getExcludingReportDownload(1)" />
+                    <div class="tooltip">Pdf</div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <ag-grid-angular #agGrid id="myGrid" domLayout='autoHeight' class="ag-theme-alpine table-class" rowAnimation
+        [gridOptions]="gridOptions" [columnDefs]="columnDefs" [rowData]="rowData" (gridReady)="onGridReady($event)"
+        [enableCellTextSelection]="true">
+    </ag-grid-angular>
+</div>
+<div *ngIf="type== 'recharge_invoice'">
     recharge_invoice
 </div>
-<div *ngIf="type== '4'">
-    recharge_history
+<div *ngIf="type== 'recharge_history'">
+    <div class="mb-3">
+        <h4>RECHARGE HISTORY</h4>
+    </div>
+
+    <!-- <div class=" d-block justify-content-center align-item-center">
+        <div class="col-12 col-md-12 display justify-content-start align-items-center mb-3">
+            <div class="display justify-content-start align-items-center">
+                <p class="mx-2 mb-0"
+                    style="text-align: center;color: rgb(0, 12, 22); font-size: 16px;font-weight: 600;">
+                    Types:</p>
+                <div class="input_box mx-2 mb-2">
+                    <select (ngModelChange)="onRechargeType($event)">
+                        <option value='' disabled>Select Type</option>
+                        <option *ngFor="let Type of RechargeType" [value]="Type.value">{{ Type.label }}</option>
+                    </select>
+                </div>
+
+
+                <div class=" d-flex justify-content-center align-item-center">
+                    <mat-form-field appearance="outline">
+                        <mat-date-range-input [rangePicker]="picker">
+                            <input matStartDate matInput placeholder="Start date" (dateChange)="getFromDate($event)">
+                            <input matEndDate matInput placeholder="End date" (dateChange)="getToDate($event)">
+                        </mat-date-range-input>
+                        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                        <mat-date-range-picker #picker></mat-date-range-picker>
+                    </mat-form-field>
+                </div>
+
+
+                <div *ngIf="!isSmartcard" class="mx-2 mb-2">
+                    <div class="input_box d-flex justify-content-center align-item-center">
+                        <div class="mx-3">
+                      
+                            <input type="text" placeholder="Enter Smartcard" [(ngModel)]="smartcard">
+                        </div>
+
+                    </div>
+                </div>
+                <div *ngIf="!isOperator" class="input_box col-10 col-md-2 mx-2 mb-2">
+                    <input type="text" matInput [matAutocomplete]="auto" [(ngModel)]="selectedLcoName" maxlength="20"
+                        (input)="filterOperators($event)" placeholder="Select  Operator"
+                        [matAutocompleteDisabled]="false" [value]="selectedOperator?.name">
+
+                    <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayOperator">
+                        <mat-option [value]="0" selected
+                            (click)="onOperatorStatusChange({ value: 0, name: 'All Operator' })">All
+                            Operator</mat-option>
+                        <mat-option *ngFor="let operator of filteredOperators" [value]="operator.value"
+                            (click)="onSubscriberStatusChange(operator)">
+                            {{ operator.name }}
+                        </mat-option>
+                    </mat-autocomplete>
+                 
+                </div>
+                <div *ngIf="!isUseragent" class="input_box d-flex justify-content-center align-item-center mx-2 mb-2">
+                    <select name="user" id="user" [(ngModel)]="useragent">
+                        <option *ngFor="let user of UserAgent" [value]="user.value">{{ user.label }}</option>
+                    </select>
+                </div>
+
+
+                <div class="input_box col-10 col-md-2 mx-2 mb-2">
+                    <input type="text" matInput [matAutocomplete]="auto1" [(ngModel)]="selectedSubLcoName"
+                        maxlength="20" (input)="filterSubLco($event)" placeholder="Select Sub Lco"
+                        [matAutocompleteDisabled]="false" [value]="selectedSubOperator?.retailerName">
+
+                    <mat-autocomplete #auto1="matAutocomplete" [displayWith]="displaysublco">
+                        <mat-option *ngFor="let operator of filteredSubLcoList" [value]="operator.operatorId"
+                            (click)="onSublcochange(operator)">
+                            {{ operator.retailerName }}
+                        </mat-option>
+                    </mat-autocomplete>
+
+                </div>
+
+                <button class="btn mx-2" style="background-color: rgb(26, 129, 133); border-radius: 5px;"
+                    (click)="getExcluding()">
+                    <span style="color: white;">Submit</span>
+                </button>
+            </div>
+            <div class=" display1" (click)="getExcludingExcel()">
+                <div class="export-icon  mx-2">
+                    <img src="/assets/images/icons/Excel.png" alt="Excel Icon" width="40px">
+                    <div class="tooltip">Excel</div>
+                </div>
+                <div class="export-icon " (click)="getExcludingPdf()">
+                    <img src="/assets/images/icons/pdf.png" alt="PDF Icon" width="40px">
+                    <div class="tooltip">Pdf</div>
+                </div>
+            </div>
+        </div>
+    </div> -->
+
+    <div class="row">
+        <div class="col-md-12 d-flex justify-content-center align-items-start mb-3">
+            <div class="col-12 d-flex justify-content-start align-items-center flex-wrap">
+                <!-- Online Type -->
+                <div class="input_box me-3">
+                    <select (ngModelChange)="onRechargeType($event)" [(ngModel)]="selectedRechargeType">
+                        <option value='' disabled>Select Type</option>
+                        <option *ngFor="let Type of RechargeType" [value]="Type.value">{{ Type.label }}</option>
+                    </select>
+                </div>
+
+                <!-- Select Operator -->
+                <div class="input_box me-3">
+                    <mat-form-field appearance="outline">
+                        <mat-date-range-input [rangePicker]="picker" [max]="today">
+                            <input style="margin-left: -10%;width: 22vh;" matStartDate matInput placeholder="Start date"
+                                (dateChange)="getFromDate($event)">
+                            <input matEndDate matInput placeholder="End date" (dateChange)="getToDate($event)">
+                        </mat-date-range-input>
+                        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                        <mat-date-range-picker #picker></mat-date-range-picker>
+                    </mat-form-field>
+                </div>
+
+                <!-- Select Sub LCO -->
+                <div class="input_box me-3">
+                    <div class="">
+                        <input type="text" placeholder="Enter Smartcard" [(ngModel)]="smartcard"
+                            [disabled]="!isSmartcard">
+                    </div>
+                </div>
+
+                <!-- Smartcard -->
+                <div class="input_box me-3">
+                    <input type="text" matInput [matAutocomplete]="auto" [(ngModel)]="selectedLcoName"
+                        [disabled]="!isOperator" maxlength="20" (input)="filterOperators($event)"
+                        placeholder="Select  Operator" [matAutocompleteDisabled]="false"
+                        [value]="selectedOperator?.name">
+
+                    <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayOperator">
+                        <mat-option [value]="0" selected
+                            (click)="onOperatorStatusChange({ value: 0, name: 'All Operator' })">All
+                            Operator</mat-option>
+                        <mat-option *ngFor="let operator of filteredOperators" [value]="operator.value"
+                            (click)="onSubscriberStatusChange(operator)">
+                            {{ operator.name }}
+                        </mat-option>
+                    </mat-autocomplete>
+                </div>
+
+                <!-- Date Range -->
+                <div class="input_box me-3">
+                    <select name="user" id="user" [(ngModel)]="useragent" (ngModelChange)="onUserAgentType($event)"
+                        [disabled]="!isUseragent">
+                        <option value="0" disabled>Filter By All User Agent</option>
+                        <option *ngFor="let user of UserAgent" [value]="user.value">{{ user.label }}</option>
+                    </select>
+                </div>
+
+
+                <div class="input_box me-3">
+                    <input type="text" matInput [matAutocomplete]="auto1" [(ngModel)]="selectedSubLcoName"
+                        [disabled]="!isSubLCO" maxlength="20" (input)="filterSubLco($event)"
+                        placeholder="Select Sub Lco" [matAutocompleteDisabled]="false"
+                        [value]="selectedSubOperator?.retailerName">
+
+                    <mat-autocomplete #auto1="matAutocomplete" [displayWith]="displaysublco">
+                        <!-- <mat-option [value]="0" selected   (click)="onSublcoChange({ operatorId: 0, retailerName: 'All Sub lco' })">All Sub LCO</mat-option> -->
+                        <mat-option *ngFor="let operator of filteredSubLcoList" [value]="operator.operatorId"
+                            (click)="onSublcochange(operator)">
+                            {{ operator.retailerName }}
+                        </mat-option>
+                    </mat-autocomplete>
+                </div>
+
+
+                <!-- Submit -->
+                <div class="d-flex align-items-center submit">
+                    <button class="btn btn-primary me-2 bttn" (click)="getRecharge()">Submit</button>
+                    <div class="export-icon me-2" (click)="getRechargeExcel()">
+                        <img src="/assets/images/icons/Excel.png" alt="Excel Icon">
+                    </div>
+                    <div class="export-icon" (click)="getRerchargePdf()">
+                        <img src="/assets/images/icons/pdf.png" alt="PDF Icon">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <ag-grid-angular #agGrid id="myGrid" domLayout='autoHeight' class="ag-theme-alpine table-class" rowAnimation
+        [gridOptions]="gridOptions" [columnDefs]="columnDefs" [rowData]="rowData" (gridReady)="onGridReady($event)"
+        [enableCellTextSelection]="true">
+    </ag-grid-angular>
 </div>
-<div *ngIf="type== '5'">
-    online_payment
+<div *ngIf="type== 'online_payment'">
+    <div class="mb-3">
+        <h4>Online Payment History</h4>
+    </div>
+    <div class="row">
+        <div class="col-md-12 d-flex justify-content-center align-items-start mb-3">
+            <div class="col-12 d-flex justify-content-start align-items-center flex-wrap">
+                <!-- Online Type -->
+                <div class="input_box me-3">
+                    <select (ngModelChange)="onOnlineType($event)" [(ngModel)]="selectedOnlineType">
+                        <option value="" disabled>Select Type</option>
+                        <option *ngFor="let online of onlineType" [value]="online.value">{{ online.label }}</option>
+                    </select>
+                </div>
+
+                <!-- Select Operator -->
+                <div *ngIf="isOperator" class="input_box me-3">
+                    <input type="text" matInput [matAutocomplete]="auto" maxlength="20"
+                        (input)="filterOperators($event)" placeholder="Select Operator"
+                        [matAutocompleteDisabled]="false" [value]="selectedOperator?.name">
+                    <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayOperator">
+                        <mat-option [value]="0" selected
+                            (click)="onOperatorStatusChange({ value: 0, name: 'All Operator' })">
+                            All Operator
+                        </mat-option>
+                        <mat-option *ngFor="let operator of filteredOperators" [value]="operator.value"
+                            (click)="onSubscriberStatusChange(operator)">
+                            {{ operator.name }}
+                        </mat-option>
+                    </mat-autocomplete>
+                </div>
+
+                <!-- Select Sub LCO -->
+                <div *ngIf="isSubLCO" class="input_box me-3">
+                    <input type="text" matInput [matAutocomplete]="auto1" [(ngModel)]="selectedSubLcoName"
+                        maxlength="20" (input)="filterSubLco($event)" placeholder="Select Sub LCO"
+                        [matAutocompleteDisabled]="false" [value]="selectedSubOperator?.retailerName">
+                    <mat-autocomplete #auto1="matAutocomplete" [displayWith]="displaysublco">
+                        <mat-option *ngFor="let operator of filteredSubLcoList" [value]="operator.operatorId"
+                            (click)="onSublcochange(operator)">
+                            {{ operator.retailerName }}
+                        </mat-option>
+                    </mat-autocomplete>
+                </div>
+
+                <!-- Smartcard -->
+                <div *ngIf="isSmartcard" class="input_box me-3">
+                    <input type="text" placeholder="Enter Smartcard" [(ngModel)]="smartcard" class="form-control">
+                </div>
+                <!-- Date Range -->
+                <div class="input_box me-3">
+                    <mat-form-field appearance="outline">
+                        <mat-date-range-input [rangePicker]="picker" [max]="today">
+                            <input style="margin-left: -10%;width: 22vh;" matStartDate matInput placeholder="Start date"
+                                [(ngModel)]="fromdate" (change)="getFromDate($event)">
+                            <input matEndDate matInput placeholder="End date" [(ngModel)]="todate"
+                                (change)="getToDate($event)">
+                        </mat-date-range-input>
+                        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                        <mat-date-range-picker #picker></mat-date-range-picker>
+                    </mat-form-field>
+                </div>
+
+                <!-- Submit -->
+                <div class="d-flex align-items-center submit">
+                    <button class="btn btn-primary me-2 bttn" (click)="getOnline()">Submit</button>
+                    <div class="export-icon me-2" (click)="getOnlineExcel()">
+                        <img src="/assets/images/icons/Excel.png" alt="Excel Icon">
+                    </div>
+                    <div class="export-icon" (click)="getOnlinePdf()">
+                        <img src="/assets/images/icons/pdf.png" alt="PDF Icon">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <ag-grid-angular #agGrid id="myGrid" domLayout='autoHeight' class="ag-theme-alpine table-class" rowAnimation
+        [gridOptions]="gridOptions" [columnDefs]="columnDefs" [rowData]="rowData" (gridReady)="onGridReady($event)"
+        [enableCellTextSelection]="true">
+    </ag-grid-angular>
 </div>
-<div *ngIf="type== '6'">
+<div *ngIf="type== 'sublco_online'">
     sublco_online
 </div>
-<div *ngIf="type== '7'">
-    dsfgsdfsdfsd
+<div *ngIf="type== 'walletShare'">
+    <h4>WALLET SHARE REPORT</h4>
+    <div class="row " style="padding: 1rem;">
+        <div class="col-12 col-md-2 d-flex  justify-content-start align-items-start">
+            <button type="button" class="btn btn-primary bttn" (click)="goBack()"><i
+                    class="fa-solid fa-reply mx-2"></i>Back</button>
+        </div><br /><br />
+        <div class="row">
+            <div class="col-md-12 d-flex justify-content-center align-items-start mb-3">
+                <div class="col-12 d-flex justify-content-start align-items-center flex-wrap">
+
+                    <div class="input_box me-3">
+                        <mat-form-field appearance="outline">
+                            <mat-date-range-input [rangePicker]="picker" [max]="today">
+                                <input matStartDate matInput placeholder="Start date"
+                                    style="margin-left: -10%;width: 22vh;" (dateChange)="getFromDate($event)">
+                                <input matEndDate matInput placeholder="End date" (dateChange)="getToDate($event)"
+                                    [max]="today">
+                            </mat-date-range-input>
+                            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                            <mat-date-range-picker #picker></mat-date-range-picker>
+                        </mat-form-field>
+                    </div>
+
+                    <div class="input_box me-3">
+                        <input type="text" matInput [matAutocomplete]="auto" maxlength="20"
+                            (input)="filterOperators($event)" placeholder="Select Operator"
+                            [matAutocompleteDisabled]="false" [value]="selectedOperator?.name">
+                        <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayOperator">
+                            <mat-option [value]="0" selected
+                                (click)="onOperatorStatusChange({ value: 0, name: 'All Operator' })">
+                                All Operator
+                            </mat-option>
+                            <mat-option *ngFor="let operator of filteredOperators" [value]="operator.value"
+                                (click)="onSubscriberStatusChange(operator)">
+                                {{ operator.name }}
+                            </mat-option>
+                        </mat-autocomplete>
+                    </div>
+
+                    <!-- Submit -->
+                    <div class="d-flex align-items-center submit">
+                        <button class="btn btn-primary me-2 bttn" (click)="getWalletreport()">Submit</button>
+                        <div class="export-icon me-2" (click)="getWalletReportDownload(2)">
+                            <img src="/assets/images/icons/Excel.png" alt="Excel Icon">
+                        </div>
+                        <div class="export-icon" (click)="getWalletReportDownload(1)">
+                            <img src="/assets/images/icons/pdf.png" alt="PDF Icon">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+
+
+            <ag-grid-angular #agGrid id="myGrid" domLayout='autoHeight' class="ag-theme-alpine table-class" rowAnimation
+                [gridOptions]="gridOptions" [columnDefs]="columnDefs" [rowData]="rowData" [rowHeight]="150"
+                (gridReady)="onGridReady($event)" [enableCellTextSelection]="true">
+            </ag-grid-angular>
+        </div>
+    </div>
 </div>
-<div *ngIf="type== '8'">
-    monthly_datewise
+
+<div *ngIf="type== 'subscriber_bill'">
+    <h4>SUBSCRIBER BILL</h4>
+    <div class="row " style="padding: 1rem;">
+        <!-- <div class="col-12 col-md-2 d-flex  justify-content-start align-items-start">
+            <button type="button" class="btn btn-primary bttn" (click)="goBack()"><i
+                    class="fa-solid fa-reply mx-2"></i>Back</button>
+        </div> -->
+        <br /><br />
+        <input placeholder="Enter the smartcard..." type="text" name="text" class="input_sb"
+            (input)="checkDataForBill()" [(ngModel)]="smartcard"><br /><br />
+
+        <div class="row" style="margin-top: 2%;">
+            <div class="col-md-12 d-flex justify-content-center align-items-start mb-3">
+                <div class="col-12 d-flex justify-content-start align-items-center flex-wrap">
+                    <div class="input_box display mb-3">
+                        <select name="year" id="year" [(ngModel)]="selectedYear" (change)="checkDataForBill()">
+                            <option value="0" selected>Select Year</option>
+                            <option *ngFor="let year of years" [value]="year">{{ year }}</option>
+                        </select>
+                    </div>
+
+                    <div class="input_box display mb-3">
+                        <select name="month" id="month" [(ngModel)]="selectedMonth" (change)="onMonthChange($event)">
+                            <option value="0" selected>Select Month</option>
+                            <option *ngFor="let month of months" [value]="month.value">{{ month.name }}
+                            </option>
+                        </select>
+
+                    </div>
+                    <!-- Submit -->
+                    <div class="input_box display mb-3" style="margin-left: 2%;">
+                        <div class="d-flex align-items-center submit">
+                            <!-- <button class="btn btn-primary me-2 bttn" (click)="getSubscriberBill()">Submit</button> -->
+                            <button class="btn btn-primary me-2 bttn" [disabled]="isshowpdf"
+                                (click)="getSubscriberBillDownload(1)"><mat-icon>download</mat-icon>Get PDF</button>
+
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            <br />
+            <!-- /  to enable this kindly remove the ngtemplate tag -->
+            <ng-template *ngIf="false" ]>
+
+                <div class="sb-headbox">
+                    <h5 class="sb-heading">SUBSCRIBER'S RECHARGE BILL</h5>
+                    <div class="sb-detail">
+                        <div class="d-flex">
+                            <span style="flex:1">BILL NO : </span>
+                            <span style="flex:1;font-weight: 100;">20241279244</span>
+                        </div>
+                        <div class="d-flex">
+                            <span style="flex:1">DATE : </span>
+                            <span style="flex:1;font-weight: 100;">09/01/2025</span>
+                        </div>
+                    </div>
+                </div>
+                <hr />
+                <div class="sb-headbox">
+                    <div class="sb-detailbox" style="border-color: #3D87A3;">
+                        <h6 class="detailbox-heading" style="background-color: #3D87A3;">SUBSCRIBER DETAILS</h6>
+                        <div>
+                            <div class="d-flex padding">
+                                <span style="flex:1">SUBSCRIBER ID : </span>
+                                <span style="flex:1;font-weight: 100;">20241279244</span>
+                            </div>
+                            <div class="d-flex padding">
+                                <span style="flex:1">SUBSCRIBER NAME : </span>
+                                <span style="flex:1;font-weight: 100;">20241279244</span>
+                            </div>
+                            <div class="d-flex padding">
+                                <span style="flex:1">MOBILE NUMBER : </span>
+                                <span style="flex:1;font-weight: 100;">20241279244</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="sb-detailbox" style="border-color: #9967C6;">
+                        <h6 class="detailbox-heading" style="background-color: #9967C6;">OPERATOR DETAILS</h6>
+                        <div>
+                            <div class="d-flex padding">
+                                <span style="flex:1">OPERATOR ID : </span>
+                                <span style="flex:1;font-weight: 100;">20241279244</span>
+                            </div>
+                            <div class="d-flex padding">
+                                <span style="flex:1">OPERATOR NAME : </span>
+                                <span style="flex:1;font-weight: 100;">20241279244</span>
+                            </div>
+                            <div class="d-flex padding">
+                                <span style="flex:1">MOBILE NUMBER : </span>
+                                <span style="flex:1;font-weight: 100;">20241279244</span>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+                <div>
+                    <div class="table-container">
+                        <table mat-table [dataSource]="dataSource" matSort class="mat-elevation-z8">
+
+                            <!-- Smartcard Column -->
+                            <ng-container matColumnDef="smartcard">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header> SMARTCARD </th>
+                                <td mat-cell *matCellDef="let element"> {{element.smartcard}} </td>
+                            </ng-container>
+
+                            <!-- Date Column -->
+                            <ng-container matColumnDef="date">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header> DATE </th>
+                                <td mat-cell *matCellDef="let element"> {{element.date}} </td>
+                            </ng-container>
+
+                            <!-- Expiry Date Column -->
+                            <ng-container matColumnDef="expiryDate">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header> EXPIRY DATE </th>
+                                <td mat-cell *matCellDef="let element"> {{element.expiryDate}} </td>
+                            </ng-container>
+
+                            <!-- Package Column -->
+                            <ng-container matColumnDef="package">
+                                <th mat-header-cell *matHeaderCellDef> PACKAGE </th>
+                                <td mat-cell *matCellDef="let element"> {{element.package}} </td>
+                            </ng-container>
+
+                            <!-- Plan Column -->
+                            <ng-container matColumnDef="plan">
+                                <th mat-header-cell *matHeaderCellDef> PLAN </th>
+                                <td mat-cell *matCellDef="let element"> {{element.plan}} </td>
+                            </ng-container>
+
+                            <!-- Amount Column -->
+                            <ng-container matColumnDef="amount">
+                                <th mat-header-cell *matHeaderCellDef> AMOUNT </th>
+                                <td mat-cell *matCellDef="let element"> {{element.amount}} </td>
+                            </ng-container>
+
+                            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                            <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+                        </table>
+
+                        <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
+                    </div>
+
+
+                </div>
+            </ng-template>
+
+        </div>
+    </div>
 </div>
-<div *ngIf="type== '9'">
-    subscriber_bill
+<div *ngIf="type== 'user_rechargehistory'">
+    <div class="mb-3">
+        <h4>USER RECHARGE HISTORY</h4>
+    </div>
+    <div class="col-12 col-md-2 d-flex mx-2 mb-2">
+        <button type="button" class="btn btn-primary bttn" (click)="goBack()"><i
+                class="fa-solid fa-reply mx-2"></i>Back</button>
+    </div><br /><br />
+    <div class="col-12 col-md-12 display justify-content-start align-items-center mb-3">
+        <!-- First Section -->
+
+        <div class="display justify-content-start align-items-center">
+            <div class="input_box_old col-10 col-md-4 mx-2 mb-2">
+                <input type="text" matInput [matAutocomplete]="auto" maxlength="20" (input)="filterUsers($event)"
+                    placeholder="Select user" [matAutocompleteDisabled]=" false" [value]="selectedUser?.name" />
+
+                <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayUser">
+                    <mat-option [value]="0" selected (click)="onUserChange({ value: 0, name: 'All User' })">
+                        All Users
+                    </mat-option>
+                    <mat-option *ngFor="let user of filtereduserlist" [value]="user.value" (click)="onUserChange(user)">
+                        {{ user.name }}
+                    </mat-option>
+                </mat-autocomplete>
+            </div>
+            <div class="input_box_old me-3">
+                <mat-form-field appearance="outline">
+                    <mat-date-range-input [rangePicker]="picker" [max]="today">
+                        <input style="margin-left: -10%;width: 22vh;" matStartDate matInput placeholder="Start date"
+                            (dateChange)="getFromDate($event)">
+                        <input matEndDate matInput placeholder="End date" (dateChange)="getToDate($event)">
+                    </mat-date-range-input>
+                    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                    <mat-date-range-picker #picker></mat-date-range-picker>
+                </mat-form-field>
+            </div>
+        </div>
+
+        <div class="input_box col-10 col-md-3 mx-2 mb-2">
+            <div class="display justify-content-start align-items-center" style="display: flex;">
+                <button class="btn mx-2 bttn" style="background-color: rgb(26, 129, 133); border-radius: 5px;"
+                    (click)="getUserRechargeHistory()">
+                    <span style="color: white;">Submit</span>
+                </button>
+
+                <div class="export-icon mx-2">
+                    <img src="/assets/images/icons/Excel.png" alt="Excel Icon" width="40px"
+                        (click)="getUserRechargeHistoryDownload(2)" />
+                    <div class="tooltip">Excel</div>
+                </div>
+                <div class="export-icon mx-2">
+                    <img src="/assets/images/icons/pdf.png" alt="PDF Icon" width="40px"
+                        (click)="getUserRechargeHistoryDownload(1)" />
+                    <div class="tooltip">Pdf</div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <ag-grid-angular #agGrid id="myGrid" domLayout='autoHeight' class="ag-theme-alpine table-class" rowAnimation
+        [gridOptions]="gridOptions" [columnDefs]="columnDefs" [rowData]="rowData" (gridReady)="onGridReady($event)"
+        [enableCellTextSelection]="true">
+    </ag-grid-angular>
 </div>
-<div *ngIf="type== '10'">
-    user_rechargehistory
+<div *ngIf="type== 'lco_active_subscription'">
+    <div class="mb-3">
+        <h4>LCOWISE ACTIVE SUBSCRIPTION COUNT</h4>
+    </div>
+    <div class="col-12 col-md-2 mb-2 d-flex  justify-content-start align-items-start">
+        <button type="button" class="btn btn-primary bttn" (click)="goBack()"><i
+                class="fa-solid fa-reply mx-2"></i>Back</button>
+    </div>
+    <div class="col-12 col-md-12 display justify-content-start align-items-center mb-3">
+        <div class="display justify-content-start align-items-center">
+
+            <div class=" input_box mx-2 mb-2">
+                <input type="text" style="max-width: 200px;" matInput [matAutocomplete]="auto"
+                    (input)="filterOperators($event)" placeholder="Select Operator" [matAutocompleteDisabled]="false"
+                    [value]="selectedOperator?.name" />
+
+                <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayOperator">
+                    <mat-option [value]="0" selected
+                        (click)="onOperatorStatusChange({ value: 0, name: 'All Operator' })">
+                        All Operator
+                    </mat-option>
+                    <mat-option [value]="-1" selected
+                        (click)="onOperatorBandwidth({ value: -1, name: 'Bandwidth Operator' })">
+                        Bandwidth Operator
+                    </mat-option>
+                    <mat-option *ngFor="let operator of filteredOperators" [value]="operator.value"
+                        (click)="onSubscriberStatusChange(operator)">
+                        {{ operator.name }}
+                    </mat-option>
+                </mat-autocomplete>
+            </div>
+            <div class="input_box d-flex justify-content-center align-item-center mx-2 mb-2">
+                <select name="type" id="type" [(ngModel)]="selectedlcoModel">
+                    <!-- <option value="0" selected>Select Type</option> -->
+                    <option *ngFor="let type of TypeIncluding" [value]="type.value">{{ type.label }}</option>
+                </select>
+            </div>
+            <div class="input_box d-flex justify-content-center align-item-center mx-2 mb-2">
+                <select name="cas" id="cas" [(ngModel)]="selectedlcocas">
+                    <option disabled>Select One</option>
+                    <option *ngFor="let cas of casList" [value]="cas.value">{{ cas.label }}</option>
+                </select>
+            </div>
+            <div class=" d-flex justify-content-center align-item-center mx-2 mb-2">
+                <mat-radio-group class="radio-group" aria-labelledby="status" [(ngModel)]="batch">
+                    <mat-radio-button class="radio-button" [value]="false">Active
+                    </mat-radio-button>&nbsp;
+                    <mat-radio-button class="radio-button" [value]="true">24 Batch
+                    </mat-radio-button>
+                </mat-radio-group>
+            </div>
+            <button class="btn mx-2 bttn" style="background-color: rgb(26, 129, 133); border-radius: 5px;"
+                (click)="lcowiseActiveSubCount()">
+                <span style="color: white;">Submit</span>
+            </button>
+        </div>
+
+        <div class=" display1">
+            <div class="export-icon  mx-2">
+                <img src="/assets/images/icons/Excel.png" alt="Excel Icon" width="40px"
+                    (click)="lcowiseActiveSubCountReport(2)">
+                <div class="tooltip">Excel</div>
+            </div>
+
+        </div>
+    </div>
+    <ag-grid-angular #agGrid id="myGrid" domLayout='autoHeight' class="ag-theme-alpine table-class" rowAnimation
+        [gridOptions]="gridOptions" [columnDefs]="columnDefs" [rowData]="rowData" (gridReady)="onGridReady($event)"
+        [enableCellTextSelection]="true">
+    </ag-grid-angular>
 </div>
-<div *ngIf="type== '11'">
-    unpair_smartcard
+
+<div *ngIf="type== 'lcowiseExpiryCountDiff'">
+    <div class="mb-3">
+        <h4>LCOWISE EXPIRY COUNT DIFFERENCE REPORT</h4>
+    </div>
+    <div class="col-12 col-md-2 mb-2 d-flex  justify-content-start align-items-start">
+        <button type="button" class="btn btn-primary bttn" (click)="goBack()"><i
+                class="fa-solid fa-reply mx-2"></i>Back</button>
+    </div>
+    <div class="col-12 col-md-12 display justify-content-start align-items-center mb-3">
+        <div class="display justify-content-start align-items-center">
+
+            <div class="input_box col-12 col-md-4 display">
+
+                <div class="">
+                    <select name="year" id="year" [(ngModel)]="selectedYear">
+                        <option value="0" selected>Select Year</option>
+                        <option *ngFor="let year of years" [value]="year">{{ year }}</option>
+                    </select>
+
+                </div>
+            </div>
+
+            <div class="input_box col-12 col-md-4 display ">
+
+                <div class="">
+                    <select name="month" id="month" [(ngModel)]="selectedMonth" (change)="onMonthChange($event)">
+                        <option value="0" selected>Select Month</option>
+                        <option *ngFor="let month of months" [value]="month.value">{{ month.name }}
+                        </option>
+                    </select>
+                </div>
+            </div>
+
+
+            <div class="input_box col-12 col-md-6 ">
+                <input type="date" placeholder="Select Date " required [max]="today"
+                    [ngClass]="{ 'is-invalid': submitted }" />
+            </div>
+            <button class="btn mx-2 bttn" style="background-color: rgb(26, 129, 133); border-radius: 5px;"
+                (click)="getIncluding()">
+                <span style="color: white;">Submit</span>
+            </button>
+        </div>
+
+        <div class=" display1">
+            <div class="export-icon  mx-2">
+                <img src="/assets/images/icons/Excel.png" alt="Excel Icon" width="40px"
+                    (click)="getIncludeReportDownload(2)">
+                <div class="tooltip">Excel</div>
+            </div>
+
+        </div>
+    </div>
+    <ag-grid-angular #agGrid id="myGrid" domLayout='autoHeight' class="ag-theme-alpine table-class" rowAnimation
+        [gridOptions]="gridOptions" [columnDefs]="columnDefs" [rowData]="rowData" (gridReady)="onGridReady($event)"
+        [enableCellTextSelection]="true">
+    </ag-grid-angular>
+</div>
+<div *ngIf="type== 'total_lco'">
+    <h4>Total lco Report</h4>
+    <div class="col-12 col-md-2 d-flex  justify-content-start align-items-start">
+        <button type="button" class="btn btn-primary bttn" (click)="goBack()"><i
+                class="fa-solid fa-reply mx-2"></i>Back</button>
+    </div>
+    <div class="col-12 col-md-12 display justify-content-end align-items-center mb-3">
+        <div class=" display1">
+            <div class="export-icon  mx-2">
+                <img src="/assets/images/icons/Excel.png" alt="Excel Icon" width="40px"
+                    (click)="getIncludeReportDownload(2)">
+                <div class="tooltip">Excel</div>
+            </div>
+        </div>
+        <div class=" display1">
+            <div class="export-icon  mx-2">
+                <img src="/assets/images/icons/pdf.png" alt="PDF Icon" width="40px"
+                    (click)="getIncludeReportDownload(1)">
+                <div class="tooltip">Pdf</div>
+            </div>
+        </div>
+    </div>
+    <ag-grid-angular #agGrid id="myGrid" domLayout='autoHeight' class="ag-theme-alpine table-class" rowAnimation
+        [columnDefs]="columnDefs" [rowData]="rowData" (gridReady)="onGridReady($event)"
+        [enableCellTextSelection]="true">
+    </ag-grid-angular>
+</div>
+
+<div *ngIf="type== 'customer_activation_form'">
+    <h4>CUSTOMER ACTIVATION FORM</h4>
+    <div class="col-12 col-md-2 d-flex  justify-content-start align-items-start">
+        <button type="button" class="btn btn-primary bttn" (click)="goBack()"><i
+                class="fa-solid fa-reply mx-2"></i>Back</button>
+    </div>
+    <div class="display">
+        <div class="row col-12 col-md-5" style="padding: 1rem;">
+            <input placeholder="Enter the smartcard..." type="text" name="text" class="input_sb"
+                [(ngModel)]="smartcard">
+            <div *ngIf="submitted && !selectedYear" class="text-danger" style="font-size: small;">
+                Smartcard is must..
+            </div>
+        </div>
+        <div class=" display1 col-12 col-md-1">
+            <div class="export-icon  mx-2">
+                <img src="/assets/images/icons/pdf.png" alt="PDF Icon" width="40px"
+                    (click)="getCustomerActivationform(2)">
+                <div class="tooltip">Excel</div>
+            </div>
+        </div>
+    </div>
+</div>
+<div *ngIf="type== 'lco_transfer_details'">
+    <div class="mb-3">
+        <h4>Operators Recharge and Deduction Report <span> - (Including GST)</span></h4>
+    </div>
+    <div class="col-12 col-md-2 d-flex  justify-content-start align-items-start">
+        <button type="button" class="btn btn-primary bttn" (click)="goBack()"><i
+                class="fa-solid fa-reply mx-2"></i>Back</button>
+    </div>
+    <div class="col-12 col-md-12 display justify-content-start align-items-center mb-3">
+        <div class="display justify-content-start align-items-center">
+            <p class="mx-2 mb-0" style="text-align: center;color: rgb(0, 12, 22); font-size: 16px;font-weight: 600;">
+                Select types:</p>
+            <div class="input_box mx-2 mb-2">
+                <select (ngModelChange)="onChangeLcoTransferType($event)" [(ngModel)]="selectedLcotransfer">
+                    <option value='' disabled>Select Type</option>
+                    <option *ngFor="let Type of LcoTransfer" [value]="Type.value">{{ Type.label }}</option>
+                </select>
+            </div>
+
+            <div *ngIf="isDateEnabled" class="mx-2 mb-2">
+                <div class=" d-flex justify-content-center align-item-center">
+                    <mat-form-field appearance="outline">
+                        <mat-date-range-input [rangePicker]="picker" [max]="today">
+                            <input matStartDate matInput placeholder="Start date" (dateChange)="getFromDate($event)">
+                            <input matEndDate matInput placeholder="End date" (dateChange)="getToDate($event)">
+                        </mat-date-range-input>
+                        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                        <mat-date-range-picker #picker></mat-date-range-picker>
+                    </mat-form-field>
+                </div>
+            </div>
+
+            <div *ngIf="isLcoOperator" class=" input_box mx-2 mb-2">
+                <input type="text" style="max-width: 200px;" matInput [matAutocomplete]="auto"
+                    (input)="filterOperators($event)" placeholder="Select Operator" [matAutocompleteDisabled]="false"
+                    [value]="selectedOperator?.name" />
+
+                <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayOperator">
+                    <mat-option [value]="0" selected
+                        (click)="onOperatorStatusChange({ value: 0, name: 'All Operator' })">
+                        All Operator
+                    </mat-option>
+
+                    <mat-option *ngFor="let operator of filteredOperators" [value]="operator.value"
+                        (click)="onSubscriberStatusChange(operator)">
+                        {{ operator.name }}
+                    </mat-option>
+                </mat-autocomplete>
+            </div>
+
+            <div *ngIf="isLcoSmartcard" class="row col-12 col-md-5" style="padding: 1rem;">
+                <input placeholder="Enter the smartcard..." type="text" name="text" class="input_sb"
+                    [(ngModel)]="smartcard">
+                <div *ngIf="submitted && !selectedYear" class="text-danger" style="font-size: small;">
+                    Smartcard is must..
+                </div>
+            </div>
+            <button class="btn mx-2 bttn" style="background-color: rgb(26, 129, 133); border-radius: 5px;"
+                (click)="getIncluding()">
+                <span style="color: white;">Submit</span>
+            </button>
+        </div>
+
+        <div class=" display1">
+            <div class="export-icon  mx-2">
+                <img src="/assets/images/icons/Excel.png" alt="Excel Icon" width="40px"
+                    (click)="getIncludeReportDownload(2)">
+                <div class="tooltip">Excel</div>
+            </div>
+            <div class="export-icon ">
+                <img src="/assets/images/icons/pdf.png" alt="PDF Icon" width="40px"
+                    (click)="getIncludeReportDownload(1)">
+                <div class="tooltip">Pdf</div>
+            </div>
+        </div>
+    </div>
+    <ag-grid-angular #agGrid id="myGrid" domLayout='autoHeight' class="ag-theme-alpine table-class" rowAnimation
+        [columnDefs]="columnDefs" [rowData]="rowData" (gridReady)="onGridReady($event)"
+        [enableCellTextSelection]="true">
+    </ag-grid-angular>
 </div>

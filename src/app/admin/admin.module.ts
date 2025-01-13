@@ -224,8 +224,8 @@ import { MsorDialogueportsComponent } from "./features/channel_setting/Reports_p
         TaxComponent, ProofComponent, ProofdetailsComponent, TaxdetailsComponent, LogindialogueComponent, EditDismembershipComponent, SpecialBulkpackageComponent,
         SpecialcancelsubscriptionComponent, SpecialareachangeComponent, SpeciallcochangeComponent, SpecialeditbulkpackageComponent, SpeciallcotransferComponent,
         // =====================================================Reports=========================================
-        TraiReportComponent, SubscriptionBasedComponent, HistoryReportsComponent, PackageBasedComponent, BroadcasterReportsComponent, HistoryAllReportsComponent,MsoreportsComponent,
-        MsorDialogueportsComponent  ],
+        TraiReportComponent, SubscriptionBasedComponent, HistoryReportsComponent, PackageBasedComponent, BroadcasterReportsComponent, HistoryAllReportsComponent,MsoreportsComponent,MsorDialogueportsComponent
+          ],
     imports: [
         CommonModule,
         CoreModule,
@@ -242,4 +242,5 @@ import { MsorDialogueportsComponent } from "./features/channel_setting/Reports_p
     schemas: [CUSTOM_ELEMENTS_SCHEMA],
 
 })
+
 export class AdminModule { }

@@ -4,21 +4,11 @@
         <div class="col-lg-5 col-12 mb-3 mb-lg-0">
             <div class="card">
                 <div class="input_box mb-3">
-                    <select id="producttypelist" formControlName="producttypelist" (change)="onProductType($event)">
-                        <option value="0" selected>Select an Product Type</option>
+                    <select id="producttypelist"  (change)="onProductType($event)">
+                        <option value="0" selected>Select a Product Type</option>
                         <option *ngFor="let item of producttypeList" [value]="item.value">{{ item.key }}</option>
                     </select>
 
-                    <!-- <input type="text" placeholder="Search an Operator" formControlName="producttypelist"
-                        [(ngModel)]="operatorid" [matAutocomplete]="auto" class="example-input"
-                        (input)="onSearchChange($event)">
-
-                    <mat-autocomplete #auto="matAutocomplete">
-                        <mat-option *ngFor="let key of filteredLcoKeys()" [value]="key"
-                            (click)="onProductType(key)">
-                            {{ key }}
-                        </mat-option>
-                    </mat-autocomplete> -->
                 </div>
                 <div class="input_box">
                     <input type="text" placeholder="Search Available" [(ngModel)]="searchTermAvailable"
@@ -30,7 +20,7 @@
                         <div class="col-12 example-container">
                             <div cdkDropList #todoList="cdkDropList" [cdkDropListData]="filteredAvailableList"
                                 [cdkDropListConnectedTo]="[doneList]" class="example-list"
-                                (cdkDropListDropped)="drop($event)">
+                                (cdkDropListDropped)="drop_modified($event,1)">
                                 <div *ngFor="let item of filteredAvailableList" class="example-box" cdkDrag
                                     (click)="toggleSelection(item)" [class.selected]="isSelected(item)">{{
                                     item.operatorname }}
@@ -42,22 +32,22 @@
             </div>
         </div>
         <div class="display my-3 my-lg-0 mx-lg-3">
-            <button class="btn" (click)="moveSelectedRight_BouquetItems('right')"><i
+            <button class="btn bttn" (click)="moveSelectedRight_BouquetItems('right')"><i
                     class="bx bx-right-arrow-alt"></i></button>
-            <button class="btn" (click)="moveAllSelected('right')"><i class="bx bx-arrow-to-right"></i></button>
-            <button class="btn" (click)="moveSelectedLeft_BouquetItems('left')"><i
+            <button class="btn bttn" (click)="moveAllSelected('right')"><i class="bx bx-arrow-to-right"></i></button>
+            <button class="btn bttn" (click)="moveSelectedLeft_BouquetItems('left')"><i
                     class="bx bx-left-arrow-alt"></i></button>
-            <button class="btn" (click)="moveAllSelected('left')"><i class="bx bx-arrow-to-left"></i></button>
+            <button class="btn bttn" (click)="moveAllSelected('left')"><i class="bx bx-arrow-to-left"></i></button>
         </div>
         <div class="col-lg-5 col-12">
             <div class="card">
                 <div class="input_box mb-3">
-                    <select id="productlist" formControlName="productlist" (change)="onProductlist($event)">
-                        <option value="0" selected>Select a Product Type</option>
+                    <select id="productlist"  (change)="onProductlist($event)">
+                        <option value="0" selected>Select a Package</option>
                         <option *ngFor="let product of filteredProductTypes" [value]="product.id">{{ product.name }}
                         </option>
                     </select>
-                </div>
+                </div>  
                 <div class="input_box">
                     <input type="text" placeholder="Search Added" [(ngModel)]="searchTermAdded"
                         (input)="filterAddedList()">
@@ -68,7 +58,7 @@
                         <div class="col-12 example-container">
                             <div cdkDropList #doneList="cdkDropList" [cdkDropListData]="filteredAddedList"
                                 [cdkDropListConnectedTo]="[todoList]" class="example-list"
-                                (cdkDropListDropped)="drop($event)">
+                                (cdkDropListDropped)="drop_modified($event,2)">
                                 <div *ngFor="let item of filteredAddedList" class="example-box" cdkDrag
                                     (click)="toggleSelection(item)" [class.selected]="isSelected(item)">{{
                                     item.operatorname }}
@@ -81,7 +71,7 @@
         </div>
     </div>
     <div class="col-12 d-flex justify-content-center align-items-center">
-        <button type="button" class="btn" style="background:#058372;color: white;height: 2pc; width: 5pc"
+        <button type="button" class="btn  bttn" style="background:#058372;color: white;height: 2pc; width: 5pc" [disabled]="isshow"
             (click)="save()">Save</button>
     </div>
 </section>

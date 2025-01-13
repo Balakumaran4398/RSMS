@@ -4,11 +4,11 @@
             BULK PACKAGE UPDATION</p>
     </div>
     <div class=" tablist justify-content-center align-items-center my-3 new_d">
-        <div class="tab mb-3" [class.active]="selectedTab === 'bulk_package'" (click)="selectbulk('bulk_package')"> BULK
+        <div class="tab mb-3 bttn" [class.active]="selectedTab === 'bulk_package'" (click)="selectbulk('bulk_package')"> BULK
             PACKAGE </div>
-        <div class="tab mb-3" [class.active]="selectedTab === 'pending'" (click)="selectPending('pending')">PENDING
+        <div class="tab mb-3 bttn" [class.active]="selectedTab === 'pending'" (click)="selectPending('pending')">PENDING
         </div>
-        <div class="tab mb-3" [class.active]="selectedTab === 'archive'" (click)="selectArchive('archive')"> ARCHIVE
+        <div class="tab mb-3 bttn" [class.active]="selectedTab === 'archive'" (click)="selectArchive('archive')"> ARCHIVE
         </div>
     </div>
     <div *ngIf="selectedTab === 'bulk_package'" class="commission">
@@ -114,7 +114,7 @@
         </div>
     </div>
     <div *ngIf="selectedTab === 'pending'" class="commission">
-        <div class="col-12 col-md-12 box display justify-content-center align-item-center">
+        <div class="col-12 col-md-12 box display justify-content-center align-item-center ">
             <mat-form-field class="me-3 " appearance="outline">
                 <mat-label>Select Filter </mat-label>
                 <mat-select placeholder="Select the filter" [(ngModel)]="typelist">
@@ -171,7 +171,7 @@
                 </mat-form-field>
             </div>
             <div class="mobile d-flex justify-content-center align-items-center mb-3">
-                <button type="submit" class="btn btn-success align-item-center"
+                <button type="submit" class="btn btn-success align-item-center  "
                     (click)="pendingFilter()">Filter</button>
             </div>
 
@@ -266,7 +266,7 @@
                 </mat-form-field>
             </div>
             <div class="mobile d-flex justify-content-center align-items-center mb-3">
-                <button type="submit" class="btn btn-success align-item-center"
+                <button type="submit" class="btn btn-success align-item-center bttn"
                     (click)="archiveFilter()">Filter</button>
             </div>
 

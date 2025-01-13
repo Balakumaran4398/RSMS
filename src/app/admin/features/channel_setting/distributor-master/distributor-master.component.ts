@@ -32,7 +32,14 @@ export class DistributorMasterComponent {
       resizable: true,
       filter: true,
       width: 180,
-      floatingFilter: true
+      floatingFilter: true,
+      comparator: (valueA: any, valueB: any) => {
+        const normalizedA = valueA ? valueA.toString().trim().toLowerCase() : '';
+        const normalizedB = valueB ? valueB.toString().trim().toLowerCase() : '';
+        if (normalizedA < normalizedB) return -1;
+        if (normalizedA > normalizedB) return 1;
+        return 0;
+      },
     },
     paginationPageSize: 10,
     pagination: true,
@@ -58,12 +65,12 @@ export class DistributorMasterComponent {
   enterPressed: boolean = false;
   columnDefs: any[] = [
     { headerName: "S.No", lockPosition: true, valueGetter: 'node.rowIndex+1', width: 100, headerCheckboxSelection: true, checkboxSelection: true },
-    { headerName: "DISTRIBUTOR NAME", field: 'name', editable: true, cellEditor: 'agTextCellEditor', width: 300, },
+    { headerName: "DISTRIBUTOR NAME", field: 'name', cellEditor: 'agTextCellEditor', width: 300, },
     {
-      headerName: "ISACTIVE",
+      headerName: "STATUS",
       field: 'isactive',
 
-   
+
 
       cellRenderer: (params: any) => {
         const isActive = params.data.isactive;
@@ -77,7 +84,7 @@ export class DistributorMasterComponent {
         toggleSwitch.style.width = '45px';
         toggleSwitch.style.height = '25px';
         toggleSwitch.style.borderRadius = '15px';
-        toggleSwitch.style.backgroundColor = isActive ? '#4CAF50' : '#616060';
+        toggleSwitch.style.backgroundColor = isActive ? '#93b6eb' : 'rgb(115 115 115)';
         toggleSwitch.style.position = 'relative';
         toggleSwitch.style.cursor = 'pointer';
         toggleSwitch.style.transition = 'background-color 0.3s ease';
@@ -95,26 +102,26 @@ export class DistributorMasterComponent {
 
         toggleSwitch.appendChild(toggleCircle);
 
-        const updateToggleStyle = (active: boolean) => {
-          toggleSwitch.style.backgroundColor = active ? '#4CAF50' : '#616060';
-          toggleCircle.style.left = active ? 'calc(100% - 22px)' : '3px';
-          toggleSwitch.title = active ? 'Deactivate the Customer' : 'Activate the Customer';
-        };
+        // const updateToggleStyle = (active: boolean) => {
+        //   toggleSwitch.style.backgroundColor = active ? '#4CAF50' : '#616060';
+        //   toggleCircle.style.left = active ? 'calc(100% - 22px)' : '3px';
+        //   toggleSwitch.title = active ? 'Deactivate the Customer' : 'Activate the Customer';
+        // };
 
-        toggleSwitch.addEventListener('click', () => {
-          const currentStatus = params.data.isactive;
-          const newStatus = !currentStatus;
-          params.data.isactive = newStatus; 
-          updateToggleStyle(newStatus);
+        // toggleSwitch.addEventListener('click', () => {
+        //   const currentStatus = params.data.isactive;
+        //   const newStatus = !currentStatus;
+        //   params.data.isactive = newStatus; 
+        //   updateToggleStyle(newStatus);
 
-          console.log(`Status changed to: ${newStatus ? 'Active' : 'Inactive'}`);
-        });
+        //   console.log(`Status changed to: ${newStatus ? 'Active' : 'Inactive'}`);
+        // });
         toggleContainer.appendChild(toggleSwitch);
         return toggleContainer;
       }
     },
     {
-      headerName: "Edit", editable: true, cellStyle: { textAlign: 'left' },width: 190,cellRenderer: (params: any) => {
+      headerName: "Edit", cellStyle: { textAlign: 'left' }, width: 190, cellRenderer: (params: any) => {
         const editButton = document.createElement('button');
         editButton.innerHTML = '<i class="fa fa-pencil-square" aria-hidden="true"></i>';
         editButton.style.backgroundColor = 'transparent';
@@ -133,8 +140,8 @@ export class DistributorMasterComponent {
       }
     },
     { headerName: "DISTRIBUTOR ADDRESS", field: 'address', editable: true, cellEditor: 'agTextCellEditor', width: 200, },
-    { headerName: "DISTRIBUTOR CONTACT", field: 'contact', editable: true, cellEditor: 'agTextCellEditor', width: 200 },
-    { headerName: "DISTRIBUTOR EMAIL", field: 'email', editable: true, cellEditor: 'agTextCellEditor', width: 290, },
+    { headerName: "DISTRIBUTOR CONTACT", field: 'contact', cellEditor: 'agTextCellEditor', width: 200 },
+    { headerName: "DISTRIBUTOR EMAIL", field: 'email', cellEditor: 'agTextCellEditor', width: 290, },
   ]
 
 
@@ -227,12 +234,12 @@ export class DistributorMasterComponent {
       showCancelButton: true,
       confirmButtonColor: "#3085d6",
       cancelButtonColor: "#d33",
-      confirmButtonText: "Yes, delete it!"
+      confirmButtonText: "Yes, Deactive it!"
     }).then((result) => {
       if (result.isConfirmed) {
         Swal.fire({
-          title: 'Deleting...',
-          text: 'Please wait while the Distributor is being deleted',
+          title: 'Deactivating...',
+          text: 'Please wait while the Distributor is being Deactivated',
           allowOutsideClick: false,
           didOpen: () => {
             Swal.showLoading(null);
@@ -241,7 +248,7 @@ export class DistributorMasterComponent {
 
         this.userService.deleteDistributor(this.role, this.username, this.selectedIds).subscribe((res: any) => {
           Swal.fire({
-            title: 'Deleted!',
+            title: 'Deactivated!',
             text: res.message,
             icon: 'success'
           });

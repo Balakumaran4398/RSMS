@@ -42,35 +42,39 @@ export class SmartcardInventoryComponent {
       showCancelButton: true,
       confirmButtonColor: '#3085d6',
       cancelButtonColor: '#d33',
-      confirmButtonText: 'Yes, delete it!',
+      confirmButtonText: 'Yes, Deallocation it!',
       cancelButtonText: 'Cancel',
-      timer: 3000,
       timerProgressBar: true,
-      allowOutsideClick: false, // Prevent the user from closing the dialog by clicking outside of it
-      didOpen: () => {
-        Swal.showLoading(null); 
-      }
+      allowOutsideClick: false,
+
     }).then((result) => {
       if (result.isConfirmed) {
-        // If the user confirmed the deletion
+        // Swal.fire({
+        //   title: 'Processing...',
+        //   text: 'Please wait Loading Onprogrss.',
+        //   allowOutsideClick: false,
+        //   didOpen: () => {
+        //     Swal.showLoading(null);
+        //   }
+        // });
         this.userService.delete_Smartcard_boxid(this.role, this.username, this.id).subscribe((data: any) => {
           Swal.fire({
             icon: 'success',
-            title: 'Deleted!',
-            text: data?.message || 'Smartcard and Box ID have been deleted successfully.',
+            title: 'Deallocated!',
+            text: data?.message || 'Smartcard and Box ID have been Deallocated successfully.',
             imageUrl: 'path/to/success-image.png',
             imageHeight: 100,
             showConfirmButton: false,
             timer: 3000,
             timerProgressBar: true,
           }).then(() => {
-            window.location.reload(); // Reload the page after the success message
+            window.location.reload();
           });
         }, error => {
           Swal.fire({
             icon: 'error',
             title: 'Error',
-            text: error?.error?.message || 'There was an error deleting the Smartcard and Box ID. Please try again.',
+            text: error?.error?.message || 'There was an error Deallocating the Smartcard and Box ID. Please try again.',
             confirmButtonText: 'OK',
             timer: 3000,
             timerProgressBar: true,

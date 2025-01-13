@@ -4,23 +4,7 @@
 </div>
 <div style="padding: 1rem;">
     <div class="col-12 col-md-12  justify-content-center align-items-center  mobile">
-        <div class="input_box display mb-1">
-            <div class="col-12 col-md-6">
-                <label for="">CAS type</label>
-            </div>
-            <div class="col-12 col-md-6">
-                <select id="casType" [(ngModel)]="selectedCasType">
-                    <option value="0" selected>Select a CAS Name</option>
-                    <option *ngFor="let key of filteredCasKeys()" [value]="castype[key]">
-                        {{ key }}
-                    </option>
-                </select>
 
-                <div *ngIf="submitted && !selectedCasType" class="text-danger" style="font-size: small;">
-                    CAS type is required
-                </div>
-            </div>
-        </div>
         <div class="input_box display mb-1">
             <div class="col-12 col-md-6">
                 <label for="">LCO Name</label>
@@ -32,7 +16,6 @@
                         {{ key }}
                     </option>
                 </select> -->
-
                 <input type="text" matInput [matAutocomplete]="auto" [(ngModel)]="selectedLcoName" maxlength="20"
                     (input)="filterOperators($event)" placeholder="Select a Operator" [matAutocompleteDisabled]="false"
                     [value]="selectedOperator?.name">
@@ -48,18 +31,35 @@
                 </div>
             </div>
         </div>
+        <div class="input_box display mb-1">
+            <div class="col-12 col-md-6">
+                <label for="">CAS type</label>
+            </div>
+            <div class="col-12 col-md-6">
+                <select id="casType" [(ngModel)]="selectedCasType" (change)="onCasChange()">
+                    <option value="0" selected>Select a CAS Name</option>
+                    <option *ngFor="let key of castype" [value]="key.id">
+                        {{ key.name }}
+                    </option>
+                </select>
 
+                <div *ngIf="submitted && !selectedCasType" class="text-danger" style="font-size: small;">
+                    CAS type is required
+                </div>
+            </div>
+        </div>
         <div class="input_box display mb-1">
             <div class="col-12 col-md-6 ">
                 <label for="">Smartcard</label>
             </div>
             <div class="col-12 col-md-6 ">
-                <input type="text" placeholder="Enter Smartcard" [(ngModel)]="smartcard" maxlength="20">
+                <!-- [disabled]="!castypeSmartcard || filteredSmartcard.length === 0" -->
+                <input  type="text" placeholder="Enter Smartcard" [(ngModel)]="smartcard" maxlength="20" readonly>
                 <div *ngIf="submitted && !smartcard" class="text-danger" style="font-size: small;">
                     Smartcard is required
                 </div>
             </div>
-           
+
         </div>
 
         <div class="input_box display mb-1">
@@ -67,12 +67,12 @@
                 <label for="">Box ID</label>
             </div>
             <div class="col-12 col-md-6 ">
-                <input type="text" placeholder="Enter BoxID" [(ngModel)]="boxid">
+                <input type="text" placeholder="Enter BoxID" [(ngModel)]="boxid" readonly>
                 <div *ngIf="submitted && !boxid" class="text-danger" style="font-size: small;">
                     Boxid is required
                 </div>
             </div>
-           
+
         </div>
     </div>
 </div>

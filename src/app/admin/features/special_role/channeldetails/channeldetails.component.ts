@@ -4,7 +4,7 @@ import { BaseService } from 'src/app/_core/service/base.service';
 import { StorageService } from 'src/app/_core/service/storage.service';
 import { SwalService } from 'src/app/_core/service/swal.service';
 import { ChanneldialogueComponent } from '../Dialogue/channeldialogue/channeldialogue.component';
-import { filter } from 'node_modules1/jszip';
+// import { filter } from 'node_modules1/jszip';
 
 @Component({
   selector: 'app-channeldetails',

@@ -32,8 +32,8 @@
                     <div class="input_box">
                         <label>Area Name</label>
                         <input type="text" matInput [matAutocomplete]="autoArea" formControlName="areaid"
-                            (input)="filterAreas($event)" placeholder="Select Area"
-                            [matAutocompleteDisabled]="false" [value]="selectedArea?.name">
+                            (input)="filterAreas($event)" placeholder="Select Area" [matAutocompleteDisabled]="false"
+                            [value]="selectedArea?.name">
 
                         <mat-autocomplete #autoArea="matAutocomplete" [displayWith]="displayArea">
                             <mat-option *ngFor="let area of filteredAreas" [value]="area.name"
@@ -48,9 +48,9 @@
                     </div>
                     <div class="input_box">
                         <label>Street Name</label>
-                        <input type="text" placeholder="Select Street" formControlName="streetid"
-                            [(ngModel)]="streetid" [matAutocomplete]="autoStreet" class="example-input"
-                            [value]="selectedStreet?.name" (input)="filterStreet($event)">
+                        <input type="text" placeholder="Select Street" formControlName="streetid" [(ngModel)]="streetid"
+                            [matAutocomplete]="autoStreet" class="example-input" [value]="selectedStreet?.name"
+                            (input)="filterStreet($event)">
                         <mat-autocomplete #autoStreet="matAutocomplete" [displayWith]="displayStreet">
                             <mat-option *ngFor="let key of filteredStreet" [value]="key.value"
                                 (click)="onStreetStatusChange(key)">
@@ -109,7 +109,7 @@
                             <label>Date of Birth</label>
                         </div>
                         <input type="date" formControlName="dateofbirth" placeholder="Select Date Of Birth" required
-                            [ngClass]="{ 'is-invalid': submitted && f['dateofbirth'].errors }" />
+                            [max]="today" [ngClass]="{ 'is-invalid': submitted && f['dateofbirth'].errors }" />
                         <div style="position: relative; font-size: small;" *ngIf="submitted && f['dateofbirth'].errors"
                             class="invalid-feedback">
                             <div *ngIf="f['dateofbirth'].errors['required']">Date Of Birth is required
@@ -140,26 +140,26 @@
                             (keypress)="onKeydown($event)" placeholder="Enter Landline No"
                             [ngClass]="{'is-invalid': submitted && f['landlineno'].errors }" required />
 
-                        <div style="position: relative; font-size: small;" *ngIf="submitted && f['landlineno'].errors"
+                        <!-- <div style="position: relative; font-size: small;" *ngIf="submitted && f['landlineno'].errors"
                             class="invalid-feedback">
                             <div *ngIf="f['landlineno'].errors['required']">
                                 Landline Number is required
                             </div>
-                        </div>
+                        </div> -->
                     </div>
                     <div class="input_box">
                         <label for="confirmPass">Email ID</label>
-                        <input type="text" formControlName="email" placeholder="Enter Email ID"
+                        <input type="text" formControlName="email" placeholder="Ex. example@gmail.com"
                             [ngClass]="{ 'is-invalid': submitted && f['email'].errors }" required />
                         <div style="position: relative; font-size: small;" *ngIf="submitted && f['email'].errors"
                             class="invalid-feedback">
                             <div *ngIf="f['email'].errors['required']">Email ID is required</div>
-                            <div *ngIf="f['email'].errors['email']">Please enter a valid email 123@gmail.com</div>
+                            <div *ngIf="f['email'].errors['email']">Please enter a valid email</div>
                         </div>
                     </div>
                     <div class="input_box">
                         <label for="confirmPass">Form Submission Date</label>
-                        <input type="date" step='1' placeholder="Form Submission Date"
+                        <input type="date" step='1' placeholder="Form Submission Date" [max]="today"
                             formControlName="formsubmissiondate"
                             [ngClass]="{ 'is-invalid': submitted && f['formsubmissiondate'].errors }" required>
 
@@ -248,8 +248,8 @@
                     </div>
                     <div class="input_box">
                         <label for="email">Install Address</label>
-                        <input type="text" formControlName="installaddress" placeholder="Enter the Install address" required
-                            [(ngModel)]="installaddress"
+                        <input type="text" formControlName="installaddress" placeholder="Enter the Install address"
+                            required [(ngModel)]="installaddress"
                             [ngClass]="{ 'is-invalid': submitted && f['installaddress'].errors }" />
 
                         <div style="position: relative;font-size: small;"
@@ -260,14 +260,15 @@
                     </div>
                 </div>
                 <div class="d-flex justify-content-center align-items-center" style="padding: 10px;">
-                    <button type="button" (click)="onReset()" class="btn btn-danger">
-                        Reset
-                    </button>
-                    &nbsp; &nbsp;
                     <div>
-                        <button type="submit" class="btn"
+                        <button type="submit" class="btn me-3 bttn"
                             style="background:#058372;color: white;">Confirm</button>&nbsp;&nbsp;&nbsp;
                     </div>
+                    <button type="button" (click)="onReset()" class="btn btn-danger bttn">
+                        Reset
+                    </button>
+
+
                 </div>
             </div>
         </div>

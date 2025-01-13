@@ -3,8 +3,8 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { ColDef } from 'ag-grid-community';
-import { getData } from 'node_modules1/ajv/dist/compile/validate';
-import type from 'node_modules1/ajv/dist/vocabularies/jtd/type';
+// import { getData } from 'node_modules1/ajv/dist/compile/validate';
+// import type from 'node_modules1/ajv/dist/vocabularies/jtd/type';
 import { BaseService } from 'src/app/_core/service/base.service';
 import { ExcelService } from 'src/app/_core/service/excel.service';
 import { StorageService } from 'src/app/_core/service/storage.service';
@@ -35,7 +35,14 @@ export class BulkBaseChangeComponent implements OnInit {
       resizable: true,
       filter: true,
       width: 180,
-      floatingFilter: true
+      floatingFilter: true,
+      comparator: (valueA: any, valueB: any) => {
+        const normalizedA = valueA ? valueA.toString().trim().toLowerCase() : '';
+        const normalizedB = valueB ? valueB.toString().trim().toLowerCase() : '';
+        if (normalizedA < normalizedB) return -1;
+        if (normalizedA > normalizedB) return 1;
+        return 0;
+      },
     },
     paginationPageSize: 15,
     pagination: true,

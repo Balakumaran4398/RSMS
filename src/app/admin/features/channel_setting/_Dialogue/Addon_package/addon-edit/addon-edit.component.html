@@ -56,15 +56,16 @@
                 <span>Commission</span>
             </div>
             <div class="col-12 col-md-6">
-                <input type="text" id="commission" class="" maxlength="10" (keydown)="onKeydown1($event)"
+                <input type="text" id="commission" class="" maxlength="10" (input)="onKeydown1($event)"
                     (focus)="onFocus()" (blur)="onBlur()" [value]="commission || '0'" [(ngModel)]="commission">
             </div>
         </div>
+        <br />
         <div class="input_box col-12 col-md-12 display mb-1">
             <div class="col-12 col-md-6 ">
                 <span>Is percentage</span>
             </div>
-            <div class="col-12 col-md-6">
+            <!-- <div class="col-12 col-md-6">
                 <div class="toggle-button-cover">
                     <div class="button b2" id="button-10">
                         <input type="checkbox" class="checkbox" checked id="ispercentage" [(ngModel)]="ispercentage" />
@@ -74,11 +75,28 @@
                         <div class="layer"></div>
                     </div>
                 </div>
+            </div> -->
+            <div class="radiocs">
+                <div class="tabs">
+                    <input value="true" name="fav_language" id="html" type="radio" class="input1"
+                        [checked]="ispercentage" (change)="percentageChange(true)" />
+                    <label for="html" class="label"><span
+                            style="z-index: 1000;color:white;margin-top:4px">Yes</span></label>
+                    <input value="false" name="fav_language" id="css" type="radio" class="input1"
+                        [checked]="!ispercentage" (change)="percentageChange(false)" />
+                    <label for="css" class="label"><span
+                            style="z-index: 1000;color:white;margin-top:4px">No</span></label>
+                </div>
             </div>
         </div>
     </div>
+    <p class="errorcase" *ngIf="!ispercentage && invalid">*Note: Fixed commission must be less than or equal to
+        the Package rate!!</p>
+    <p class="errorcase" *ngIf="ispercentage && invalid">*Note: Commission percentage must be between 0 and
+        100!!</p>
 </div>
 <div class="input_box d-flex justify-content-center align-items-center mb-3" style="padding: 1rem;">
-    <button type="button" class="btn btn-primary me-2" (click)="Update_Addon_package()">Update</button>
+    <button type="button" class="btn btn-primary me-2" [disabled]="invalid"
+        (click)="Update_Addon_package()">Update</button>
     <button type="button" class="btn btn-secondary " (click)="onNoClick()">Cancel</button>
 </div>

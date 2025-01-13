@@ -7,6 +7,7 @@ import { StorageService } from 'src/app/_core/service/storage.service';
 import { AddonEditComponent } from '../_Dialogue/Addon_package/addon-edit/addon-edit.component';
 import { AddonViewComponent } from '../_Dialogue/Addon_package/addon-view/addon-view.component';
 import { AddonCreationComponent } from '../_Dialogue/Addon_package/addon-creation/addon-creation.component';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-addon-package',
@@ -24,11 +25,11 @@ export class AddonPackageComponent {
       comparator: (valueA: string, valueB: string) => {
         if (!valueA) valueA = '';
         if (!valueB) valueB = '';
-  
+
         // Case-insensitive comparison
         const lowerA = valueA.toLowerCase();
         const lowerB = valueB.toLowerCase();
-  
+
         // Sort alphabetically, considering letters before numbers
         return lowerA.localeCompare(lowerB);
       },
@@ -128,9 +129,9 @@ export class AddonPackageComponent {
         editButton.title = 'Edit';
         editButton.style.cursor = 'pointer';
         editButton.style.fontSize = "18px";
-        // editButton.addEventListener('click', () => {
-        //   this.addnew('channeltype');  // Pass any type you need here
-        // });
+        editButton.addEventListener('click', () => {
+          this.generatePdf(params.data.id, params.data.addon_package_name);
+        });
         const div = document.createElement('div');
         div.appendChild(editButton);
         return div;
@@ -138,6 +139,31 @@ export class AddonPackageComponent {
     },
   ]
 
+
+  generatePdf(id: number, name: any) {
+    this.processingSwal();
+    if (id == 0) {
+      this.userService.getAllAddonExportReportDownload(this.role, this.username)
+        .subscribe((x: Blob) => {
+          this.reportMaking(x, "All_Addon_Details_Report.pdf", 'application/pdf');
+        },
+          (error: any) => {
+            this.pdfswalError(error?.error.message);
+          });
+
+
+    } else {
+      this.userService.getAddonExportReportDownload(this.role, this.username, id)
+        .subscribe((x: Blob) => {
+          this.reportMaking(x, name + ".pdf", 'application/pdf');
+        },
+          (error: any) => {
+            this.pdfswalError(error?.error.message);
+          });
+
+    }
+
+  }
 
   addnew(): void {
     const dialogRef = this.dialog.open(AddonCreationComponent, {
@@ -195,6 +221,39 @@ export class AddonPackageComponent {
     });
   }
 
+
+  reportMaking(x: Blob, reportname: any, reporttype: any) {
+    const blob = new Blob([x], { type: reporttype });
+    const data = window.URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.href = data;
+    link.download = reportname.toUpperCase();
+    link.dispatchEvent(new MouseEvent('click', { bubbles: true, cancelable: true, view: window }));
+    setTimeout(() => {
+      window.URL.revokeObjectURL(data);
+      link.remove();
+    }, 100);
+    Swal.close();
+  }
+  pdfswalError(error: any) {
+    Swal.close();
+    Swal.fire({
+      title: 'Error!',
+      text: error || 'There was an issue generating the PDF CAS form report.',
+      icon: 'error',
+      confirmButtonText: 'Ok'
+    });
+  }
+  processingSwal() {
+    Swal.fire({
+      title: "Processing",
+      text: "Please wait while the report is being generated...",
+      showConfirmButton: false,
+      didOpen: () => {
+        Swal.showLoading(null);
+      }
+    });
+  }
   // openEditDialog1(data: any): void {
   //   let dialogData = {};
 

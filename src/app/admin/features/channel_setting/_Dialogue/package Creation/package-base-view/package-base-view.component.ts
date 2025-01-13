@@ -1,4 +1,4 @@
-import { Component, Inject } from '@angular/core';
+import { ChangeDetectorRef, Component, Inject } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { BaseService } from 'src/app/_core/service/base.service';
 import { StorageService } from 'src/app/_core/service/storage.service';
@@ -14,7 +14,7 @@ import { StorageService } from 'src/app/_core/service/storage.service';
 export class PackageBaseViewComponent {
   selectedTab: string = '1';
   rowData: any[] = [];
-  count:any;
+  count: any;
   username: string;
   role: string;
   package_id: number;
@@ -30,8 +30,15 @@ export class PackageBaseViewComponent {
       sortable: true,
       resizable: true,
       filter: true,
-      minWidth: 195,
-      floatingFilter: true
+      // minWidth: 195,
+      floatingFilter: true,
+      comparator: (valueA: any, valueB: any) => {
+        const normalizedA = valueA ? valueA.toString().trim().toLowerCase() : '';
+        const normalizedB = valueB ? valueB.toString().trim().toLowerCase() : '';
+        if (normalizedA < normalizedB) return -1;
+        if (normalizedA > normalizedB) return 1;
+        return 0;
+      },
     },
     pagination: true,
     paginationPageSize: 5,
@@ -40,16 +47,16 @@ export class PackageBaseViewComponent {
     // onGridReady: (event: any) => event.api.sizeColumnsToFit()
   };
   columnDefs: any[] = [
-    { headerName: 'S.No', valueGetter: 'node.rowIndex + 1', width: 100 },
-    { headerName: 'CHANNEL NAME', field: 'channel', editable: true, width: 170 },
-    { headerName: 'PRODUCT ID', field: 'serviceId', editable: true, width: 170 },
-    { headerName: 'SERVICE ID', field: 'productId', editable: true, width: 170 },
-    { headerName: 'TS ID', field: 'broadcaster', editable: true, width: 150 },
-    { headerName: 'STATUS', field: 'status', editable: true, width: 150 }
+    { headerName: 'S.No', valueGetter: 'node.rowIndex + 1', width: 80 },
+    { headerName: 'CHANNEL NAME', field: 'channel', width: 150 },
+    { headerName: 'PRODUCT ID', field: 'serviceId', width: 120 },
+    { headerName: 'SERVICE ID', field: 'productId', width: 120 },
+    { headerName: 'TS ID', field: 't_id', width: 120 },
+    { headerName: 'STATUS', field: 'status', width: 120 }
   ];
   constructor(
     public dialogRef: MatDialogRef<PackageBaseViewComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: any, private userService: BaseService, private storageService: StorageService) {
+    @Inject(MAT_DIALOG_DATA) public data: any, private userService: BaseService, private storageService: StorageService, private cdr: ChangeDetectorRef) {
     console.log(data);
     this.package_name = data.packagename;
     this.package_rate = data.packagerate;
@@ -75,8 +82,8 @@ export class PackageBaseViewComponent {
   }
   selectTab(tab: any): void {
     this.selectedTab = tab;
-    // console.log(tab);
     this.loadData(tab);
+    // this.rowData = this.data;
   }
 
   packagename: any;
@@ -90,55 +97,60 @@ export class PackageBaseViewComponent {
   }
   private loadData(tab: any): void {
     console.log(tab);
-    this.userService.Base_PackageChannelList(this.role, this.username, tab,this.package_id).subscribe((data: any) => {
+    this.userService.Base_PackageChannelList(this.role, this.username, tab, this.package_id).subscribe((data: any) => {
       this.packagename = data.packagename;
       this.packagerate = data.packagerate;
       this.subcount = data.subcount;
       this.rowData = data;
-      this.count=data.length;
+      this.count = data.length;
       this.updateColumnDefs(tab);
+      this.cdr.detectChanges();
+
     });
   }
   private updateColumnDefs(tab: string): void {
+    console.log('Tab', tab);
+
     if (tab === '1') {
       this.columnDefs = [
-        { headerName: 'S.No', valueGetter: 'node.rowIndex + 1', width: 80 },
-        { headerName: 'CHANNEL NAME', field: 'channel_name', editable: true, width: 150 },
-        { headerName: 'PRODUCT ID', field: 'product_id', editable: true, width: 150 },
-        { headerName: 'SERVICE ID', field: 'service_id', editable: true, width: 140 },
-        { headerName: 'TS ID', field: 't_id', editable: true, width: 150 },
-        { headerName: 'STATUS', field: 'status', editable: true, width: 150 }
+        { headerName: 'S.No', valueGetter: 'node.rowIndex + 1', width: 100, cellStyle: { textAlign: 'center' }, },
+        { headerName: 'CHANNEL NAME', field: 'channel_name', width: 250, },
+        { headerName: 'PRODUCT ID', field: 'product_id', width: 150, cellStyle: { textAlign: 'center' }, },
+        { headerName: 'SERVICE ID', field: 'service_id', width: 150, cellStyle: { textAlign: 'center' }, },
+        { headerName: 'TS ID', field: 't_id', width: 200, cellStyle: { textAlign: 'center' }, },
+        { headerName: 'STATUS', field: 'statusdisplay', width: 200 }
       ];
     } else if (tab === '2') {
       this.columnDefs = [
-        { headerName: 'S.No', valueGetter: 'node.rowIndex + 1', width: 80 },
-        { headerName: 'CHANNEL NAME', field: 'channel_name', editable: true, width: 150 },
-        { headerName: 'PRODUCT ID', field: 'product_id', editable: true, width: 130 },
-        { headerName: 'SERVICE ID', field: 'service_id', editable: true, width: 120 },
-        { headerName: 'TS ID', field: 't_id', editable: true, width: 130 },
-        { headerName: 'RATE', field: 'broadcaster_rate', editable: true, width: 130 },
-        { headerName: 'STATUS', field: 'statusdisplay', editable: true, width: 130 }
+        { headerName: 'S.No', valueGetter: 'node.rowIndex + 1', width: 100, cellStyle: { textAlign: 'center' }, },
+        { headerName: 'CHANNEL NAME', field: 'channel_name', width: 200 },
+        { headerName: 'PRODUCT ID', field: 'product_id', width: 150, cellStyle: { textAlign: 'center' }, },
+        { headerName: 'SERVICE ID', field: 'service_id', width: 150 },
+        { headerName: 'TS ID', field: 't_id', cellStyle: { textAlign: 'center' }, width: 200 },
+        { headerName: 'RATE', field: 'broadcaster_rate', cellStyle: { textAlign: 'center' }, width: 200 },
+        { headerName: 'STATUS', field: 'statusdisplay', width: 200 }
       ];
     } else if (tab === '3') {
       this.columnDefs = [
-        { headerName: 'S.No', valueGetter: 'node.rowIndex + 1', width: 80 },
-        { headerName: 'CHANNEL NAME', field: 'channel_name', editable: true, width: 150 },
-        { headerName: 'PRODUCT ID', field: 'product_id', editable: true, width: 150 },
-        { headerName: 'RATE', field: 'broadcaster_rate', editable: true, width: 150 },
-        { headerName: 'SERVICE ID', field: 'service_id', editable: true, width: 140 },
-        { headerName: 'TS ID', field: 't_id', editable: true, width: 150 },
-        { headerName: 'STATUS', field: 'statusdisplay', editable: true, width: 150 }
-      ];
-    } else if (tab === 'addon_view') {
-      this.columnDefs = [
-        { headerName: 'S.No', valueGetter: 'node.rowIndex + 1', width: 80 },
-        { headerName: 'CHANNEL NAME', field: 'channel_name', editable: true, width: 150 },
-        { headerName: 'BROADCASTER NAME	', field: 'product_id', editable: true, width: 150 },
-        { headerName: 'SERIVICE ID	', field: 'broadcaster_rate', editable: true, width: 150 },
-        { headerName: 'RATE	', field: 'service_id', editable: true, width: 140 },
-        { headerName: 'STATUS', field: 'statusdisplay', editable: true, width: 150 }
+        { headerName: 'S.No', valueGetter: 'node.rowIndex + 1', width: 100, cellStyle: { textAlign: 'center' }, },
+        { headerName: 'CHANNEL NAME', field: 'channel_name', width: 200 },
+        { headerName: 'PRODUCT ID', field: 'product_id', cellStyle: { textAlign: 'center' }, width: 150 },
+        { headerName: 'RATE', field: 'broadcaster_rate', cellStyle: { textAlign: 'center' }, width: 150 },
+        { headerName: 'SERVICE ID', field: 'service_id', cellStyle: { textAlign: 'center' }, width: 200 },
+        { headerName: 'TS ID', field: 't_id', cellStyle: { textAlign: 'center' }, width: 200 },
+        { headerName: 'STATUS', field: 'statusdisplay', width: 200 }
       ];
     }
+    // else if (tab === 'addon_view') {
+    //   this.columnDefs = [
+    //     { headerName: 'S.No', valueGetter: 'node.rowIndex + 1', width: 80 },
+    //     { headerName: 'CHANNEL NAME', field: 'channel_name', width: 150 },
+    //     { headerName: 'BROADCASTER NAME	', field: 'product_id', width: 150 },
+    //     { headerName: 'SERIVICE ID	', field: 'broadcaster_rate', width: 150 },
+    //     { headerName: 'RATE	', field: 'service_id', width: 140 },
+    //     { headerName: 'STATUS', field: 'statusdisplay', width: 150 }
+    //   ];
+    // }
     // if (this.gridApi) {
     //   this.gridApi.setColumnDefs(this.columnDefs);
     // }

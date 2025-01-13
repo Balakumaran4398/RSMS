@@ -5,7 +5,7 @@ import { AlertService } from '../_core/service/alert.service';
 import { StorageService } from '../_core/service/storage.service';
 import { AuthService } from '../_core/service/auth.service';
 import Swal from 'sweetalert2';
-import { ChangeDetectable } from 'ag-charts-community/dist/types/src/scene/changeDetectable';
+// import { ChangeDetectable } from 'ag-charts-community/dist/types/src/scene/changeDetectable';
 interface requestBody {
   access_ip: any;
   action: any;

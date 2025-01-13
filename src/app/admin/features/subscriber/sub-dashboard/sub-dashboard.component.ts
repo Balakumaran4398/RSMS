@@ -1,4 +1,4 @@
-import { AfterViewInit, ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit, signal } from '@angular/core';
+import { AfterViewInit, ChangeDetectionStrategy, ChangeDetectorRef, Component, ElementRef, OnInit, signal, SimpleChanges, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
 import { BaseService } from 'src/app/_core/service/base.service';
@@ -23,6 +23,7 @@ interface requestBodylogs {
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SubDashboardComponent implements OnInit, AfterViewInit {
+  @ViewChild('dateInput') dateInput!: ElementRef<HTMLInputElement>;
 
   role: any;
   checkingObj: any = {};
@@ -66,12 +67,17 @@ export class SubDashboardComponent implements OnInit, AfterViewInit {
       // width: 205
     },
     rowClassRules: {
-      'always-selected': (params: any) => params.data.type === 1,
+      'always-selected': (params: any) => params.data.ptype === 'BASE',
     },
     onFirstDataRendered: (params: { api: { forEachNode: (arg0: (node: any) => void) => void; }; }) => {
       this.selectRowsBasedOnUsername(params);
     },
-     isRowSelectable: (node: any) => node.data.ptype === 'BASE',
+
+    onRowSelected: (event: any) => {
+      if (event.node.data.ptype === 'BASE' && !event.node.isSelected()) {
+        event.node.setSelected(true);
+      }
+    },
   }
 
 
@@ -119,7 +125,7 @@ export class SubDashboardComponent implements OnInit, AfterViewInit {
   selectedTab: any = 'BASE';
   confirmation: boolean = false;
   isConfirmationComplete = false;
-  isRecharge = false;
+  isRecharge: boolean = true;
   activeItem: any;
   step = signal(0);
 
@@ -144,6 +150,7 @@ export class SubDashboardComponent implements OnInit, AfterViewInit {
   plantypeSubject = new BehaviorSubject<{ [key: string]: number }>({});
   // plantype$ = this.plantypeSubject.asObservable();
   plantype$ = new BehaviorSubject<{ key: string, value: number }[]>([]);
+  // plantype:any;
   packagePlan: any;
   billtype: number = 0;
   boxid: any;
@@ -197,7 +204,10 @@ export class SubDashboardComponent implements OnInit, AfterViewInit {
   }
   ngAfterViewInit(): void {
     // this.setNextDay();
+
   }
+
+
   onBillTypeChange() {
     this.billtype = this.billtype ? 1 : 0;
   }
@@ -250,9 +260,9 @@ export class SubDashboardComponent implements OnInit, AfterViewInit {
         console.log(data);
         this.packageMessage = data['message'];
         console.log('packagemanage', this.packageMessage);
-        this.isSendDeleteMessage = this.packageMessage?.forcemsg || false; 
-        console.log('dsffdsfdsfdf v     isSendDeleteMessage'),this.isSendDeleteMessage;
-        
+        this.isSendDeleteMessage = this.packageMessage?.forcemsg || false;
+        console.log('dsffdsfdsfdf v     isSendDeleteMessage'), this.isSendDeleteMessage;
+
         this.newSmartcard = data.smartcardlist?.[data.smartcardlist.length - 1]?.smartcard || null;;
         this.statusNewSmartcard = data.smartcardlist?.[data.smartcardlist.length - 1]?.statusdisplay || null;;
         console.log(this.newSmartcard);
@@ -328,11 +338,11 @@ export class SubDashboardComponent implements OnInit, AfterViewInit {
         this.packageobject = data['packageobject'];
         this.packageMessage = data['message'];
         console.log(this.packageMessage);
-        this.isSendDeleteMessage = this.packageMessage?.forcemsg || false; 
-        console.log('dsffdsfdsfdf v     isSendDeleteMessage'),this.isSendDeleteMessage;
+        this.isSendDeleteMessage = this.packageMessage?.forcemsg || false;
+        console.log('dsffdsfdsfdf v     isSendDeleteMessage'), this.isSendDeleteMessage;
         this.packdateobj = data['packdateobj'];
         this.rowData1 = data['managepacklist_notexp'];
-        console.log(this.rowData1);
+
         this.rowData = data['smartcardlist'];
         this.subdetailsList = data['subscriberdetails']
         this.statusdisplay = this.subdetailsList.statusdisplay
@@ -588,8 +598,8 @@ export class SubDashboardComponent implements OnInit, AfterViewInit {
           this.packdateobj = data['packdateobj'];
           this.packageMessage = data['message'];
           console.log(this.packageMessage);
-          this.isSendDeleteMessage = this.packageMessage?.forcemsg || false; 
-          console.log('dsffdsfdsfdf v     isSendDeleteMessage'),this.isSendDeleteMessage;
+          this.isSendDeleteMessage = this.packageMessage?.forcemsg || false;
+          console.log('dsffdsfdsfdf v     isSendDeleteMessage'), this.isSendDeleteMessage;
           // this.rowData1 = data['selectedmanpacknotexp'];
           this.rowData1 = data['managepacklist_notexp'];
           this.rowData = data['smartcardlist'];
@@ -858,10 +868,10 @@ export class SubDashboardComponent implements OnInit, AfterViewInit {
           this.packdateobj = data['packdateobj'];
           this.packageMessage = data['message'];
           console.log('packagemanage', this.packageMessage);
-          this.isSendDeleteMessage = this.packageMessage?.forcemsg; 
-          console.log('dsffdsfdsfdf v     isSendDeleteMessage',this.isSendDeleteMessage),
-          // this.rowData1 = data['selectedmanpacknotexp'];
-          this.rowData1 = data['managepacklist_notexp'];
+          this.isSendDeleteMessage = this.packageMessage?.forcemsg;
+          console.log('dsffdsfdsfdf v     isSendDeleteMessage', this.isSendDeleteMessage),
+            // this.rowData1 = data['selectedmanpacknotexp'];
+            this.rowData1 = data['managepacklist_notexp'];
           this.rowData = data['smartcardlist'];
           this.subdetailsList = data['subscriberdetails']
           this.smartdetailList = data['smartcardlist']
@@ -1128,8 +1138,8 @@ export class SubDashboardComponent implements OnInit, AfterViewInit {
           this.packdateobj = data['packdateobj'];
           this.packageMessage = data['message'];
           console.log('packagemanage', this.packageMessage);
-          this.isSendDeleteMessage = this.packageMessage?.forcemsg || false; 
-          console.log('dsffdsfdsfdf v     isSendDeleteMessage'),this.isSendDeleteMessage;
+          this.isSendDeleteMessage = this.packageMessage?.forcemsg || false;
+          console.log('dsffdsfdsfdf v     isSendDeleteMessage'), this.isSendDeleteMessage;
           this.rowData1 = data['managepacklist_notexp'];
           this.rowData = data['smartcardlist'];
           this.subdetailsList = data['subscriberdetails']
@@ -1424,19 +1434,19 @@ export class SubDashboardComponent implements OnInit, AfterViewInit {
       headerName: "S.No", valueGetter: 'node.rowIndex+1', width: 80,
     },
     {
-      headerName: 'SMARTCARD', width: 270,
+      headerName: 'SMARTCARD', flex:1,
       field: 'smartcard',
     },
     {
-      headerName: 'CAS ', width: 220,
+      headerName: 'CAS ', flex:1,
       field: 'casname',
     },
     {
-      headerName: 'EXPIRY DATE	', width: 250,
+      headerName: 'EXPIRY DATE	', flex:1,
       field: 'expirydate',
     },
     {
-      headerName: 'ACTION', width: 200,
+      headerName: 'ACTION', flex:1,
       field: 'action',
       cellRenderer: (params: any) => {
         const container = document.createElement('div');
@@ -1538,22 +1548,22 @@ export class SubDashboardComponent implements OnInit, AfterViewInit {
     },
     {
       headerName: 'PACKAGE NAME	',
-      field: 'productname', width: 300,
+      field: 'productname', flex: 1,
     },
     {
-      headerName: 'PRODUCT TYPE	 ', width: 270, cellStyle: { textAlign: 'center' },
+      headerName: 'PRODUCT TYPE	 ', flex: 1, cellStyle: { textAlign: 'center' },
       field: 'ptype',
     },
     {
-      headerName: 'PRODUCT ID	', width: 270,
+      headerName: 'PRODUCT ID	', flex: 1,
       field: 'casproductid',
     },
     {
-      headerName: 'DAYS REMAINING	', width: 270, cellStyle: { textAlign: 'center' },
+      headerName: 'DAYS REMAINING	', flex: 1, cellStyle: { textAlign: 'center' },
       field: 'noofdays',
     },
     {
-      headerName: 'PROGRAMS', width: 300,
+      headerName: 'PROGRAMS', flex:1,
       cellRenderer: (params: any) => {
         // Check if the producttype is "BASE" or "ADDON"
         if (params.data.ptype === 'BASE' || params.data.ptype === 'ADDON') {
@@ -1673,8 +1683,13 @@ export class SubDashboardComponent implements OnInit, AfterViewInit {
   // }
   onGridReady(params: { api: any; }) {
     this.gridApi = params.api;
-
+    this.gridApi.forEachNode((node: any) => {
+      if (node.data.ptype === 'BASE') {
+        node.setSelected(true);
+      }
+    });
   }
+
 
   onGridReady1(params: any) {
     this.gridApi = params.api;
@@ -1836,6 +1851,16 @@ export class SubDashboardComponent implements OnInit, AfterViewInit {
     });
   }
 
+  getNextDay(dateString: string): string | null {
+    if (!dateString) {
+      return null;
+    }
+    const date = new Date(dateString);
+    date.setDate(date.getDate() + 1); // Add one day
+    return date.toISOString().split('T')[0]; // Format as 'yyyy-MM-dd'
+  }
+
+
   managePackage(type: string): void {
     let dialogData = { type: type, detailsList: this.subdetailsList, pairBoxlist: this.subPairedboxid, pairSmartcardlist: this.subPairedsmartcard, subSmartcarList: this.subdetailsList?.smartcard, subBoxList: this.subdetailsList?.boxid };
     // switch (type) {
@@ -1867,7 +1892,8 @@ export class SubDashboardComponent implements OnInit, AfterViewInit {
     const dialogRef = this.dialog.open(SubscriberdialogueComponent, {
       width: '1000px',
       panelClass: 'custom-dialog-container',
-      data: dialogData
+      data: dialogData,
+      maxHeight: '80vh'
     });
   }
   openChannellistDialogue(data: any): void {
@@ -1890,22 +1916,32 @@ export class SubDashboardComponent implements OnInit, AfterViewInit {
       if (defaultPlan) {
         this.plantype = defaultPlan.value;
       }
+      this.isDisabled = false;
+
     }
     if (rechargetype == 2) {
       this.isplantype = false;
       this.datetype = true;
       this.plantype = 0;
+      this.isDisabled = true;
+      // this.f_date = this.subdetailsList.expiryDate;
+
     }
     if (rechargetype == 3) {
       this.dateTodate;
       this.isplantype = false;
       this.datetype = false;
       this.plantype = 0;
+      this.f_date = null;
+      this.isDisabled = false;
+
     }
+    this.isRecharge = true;
+
   }
 
   onSelectiondatetype(selectedValue: string) {
-    this.cdr.detectChanges();
+    // this.cdr.detectChanges();
     const rechargetype = Number(selectedValue);
     console.log('selectrdvalue', selectedValue);
 
@@ -1921,25 +1957,32 @@ export class SubDashboardComponent implements OnInit, AfterViewInit {
       this.datetype = false;
       this.isplantype = false;
     }
+
+    if ((this.selectedRechargetype == '3') || (this.selectedRechargetype != '3' && this.plantype != 0) || (this.f_date)) {
+      this.isDisabled = false
+    } else {
+      this.isDisabled = true
+    }
+
+
   }
-  onSelectionplantype(selectedValue: string) {
-    this.cdr.detectChanges();
-    const rechargetype = Number(selectedValue);
+  onSelectionplantype(selectedValue: number) {
+    // this.cdr.detectChanges();
+    // const rechargetype = Number(selectedValue);
     console.log('selectrdvalue', selectedValue);
-    console.log('packagePlan',this.packagePlan);
-    
-    if (rechargetype == 1) {
+
+    if (selectedValue) {
       this.isplantype = true;
-      this.datetype = false;
+      // this.datetype = false;
     }
-    if (rechargetype == 2) {
-      this.isplantype = false;
-      this.datetype = true;
-    }
-    if (rechargetype == 3) {
-      this.datetype = false;
-      this.isplantype = false;
-    }
+    // if (selectedValue == 2) {
+    //   this.isplantype = false;
+    //   this.datetype = true;
+    // }
+    // if (selectedValue == 3) {
+    //   this.datetype = false;
+    //   this.isplantype = false;
+    // }
 
     // if (rechargetype === 1) {
     //   this.isplantype = true;
@@ -1962,12 +2005,12 @@ export class SubDashboardComponent implements OnInit, AfterViewInit {
     console.log(this.selectedRechargetype);
     console.log(this.f_date);
 
-    if (this.selectedRechargetype == '2') {
-      this.plantype = 0
-    }
-    if (this.selectedRechargetype == '1') {
-      this.f_date = null
-    }
+    // if (this.selectedRechargetype == '2') {
+    //   this.plantype = 0
+    // }
+    // if (this.selectedRechargetype == '1') {
+    //   this.f_date = null
+    // }
 
     if ((this.selectedRechargetype == '3') || (this.selectedRechargetype != '3' && this.plantype != 0) || (this.f_date)) {
       this.isDisabled = false
@@ -1978,19 +2021,19 @@ export class SubDashboardComponent implements OnInit, AfterViewInit {
     console.log(selectedValue);
   }
 
-  updatePlanOptions(rechargetype: number) {
-    if (rechargetype === 1) {
-      this.plantype = [
-        { key: '1 Month Plan', value: 1 },
-        { key: '2 Months Plan', value: 2 },
-      ];
-    } else if (rechargetype === 2) {
-      this.plantype = [
-        { key: '2 Months Plan', value: 2 },
-        { key: '3 Months Plan', value: 3 },
-      ];
-    }
-  }
+  // updatePlanOptions(rechargetype: number) {
+  //   if (rechargetype === 1) {
+  //     this.plantype = [
+  //       { key: '1 Month Plan', value: 1 },
+  //       { key: '2 Months Plan', value: 2 },
+  //     ];
+  //   } else if (rechargetype === 2) {
+  //     this.plantype = [
+  //       { key: '2 Months Plan', value: 2 },
+  //       { key: '3 Months Plan', value: 3 },
+  //     ];
+  //   }
+  // }
   rechargetoggleConfirmation() {
     this.ManagePackageCalculation();
   }
@@ -2104,12 +2147,8 @@ export class SubDashboardComponent implements OnInit, AfterViewInit {
   }
 
   getPdfSmartcardRechargeReport(event: any) {
-    console.log(event.smartcard);
-    console.log(this.subdetailsList.subid);
-    console.log(this.smartcardValue);
-
     // this.swal.Loading();
-    this.userservice.getPdfBillReport(this.role, this.username, this.subdetailsList.subid || this.subscriberid, event.smartcard).subscribe((x: any) => {
+    this.userservice.getPdfSmartcardRechargeReport(this.role, this.username, event.smartcard).subscribe((x: Blob) => {
       // Swal.fire({
       //   title: 'Loading...',
       //   text: 'Please wait while we process your request.',
@@ -2237,8 +2276,10 @@ export class SubDashboardComponent implements OnInit, AfterViewInit {
   ManagePackageCalculation1() {
     // this.selectedRechargetype= '';
     this.plandata = '';
-    this.isRecharge = true;
+    // this.isRecharge = true;
     console.log('plandata', this.plandata);
+    console.log(this.f_date);
+
 
     this.plandata = this.plantype || this.f_date || 4
     console.log('plandata', this.plandata);
@@ -2253,14 +2294,16 @@ export class SubDashboardComponent implements OnInit, AfterViewInit {
       selectedpacklist: this.rowData1,
       retailerid: 0
     }
-    console.log(requestBody);
+    console.log("_______________________________________________________");
 
     this.userservice.ManagePackageCalculation(requestBody).subscribe((res: any) => {
       // this.swal.success(res?.message);
-      console.log(res);
-      this.manageData = res;
-      console.log(this.manageData);
+      console.log('res came');
 
+      console.log(res.oldExpiryDate);
+      this.manageData = res;
+      this.isRecharge = false;
+      this.cdr.detectChanges();
     }, (err) => {
       this.swal.Error(err?.error?.message || err?.error?.selectedpacklist);
     });
@@ -2268,7 +2311,7 @@ export class SubDashboardComponent implements OnInit, AfterViewInit {
   ManagePackageCalculation() {
     // this.selectedRechargetype= '';
     this.plandata = '';
-    this.isRecharge = true;
+    // this.isRecharge = true;
     console.log('plandata', this.plandata);
 
     this.plandata = this.plantype || this.f_date || 4
@@ -2289,8 +2332,10 @@ export class SubDashboardComponent implements OnInit, AfterViewInit {
 
     this.userservice.ManagePackageCalculation(requestBody).subscribe((res: any) => {
       // this.swal.success(res?.message);
-      console.log(res);
+      console.log(res.oldExpiryDate);
       this.manageData = res;
+      this.isRecharge = false;
+      this.cdr.detectChanges();
       console.log(this.manageData);
 
     }, (err) => {

@@ -18,8 +18,26 @@
                     <span for="channelLogo" class="me-2">Channel Rate </span>
                 </div>
                 <div class="col-12 col-md-6">
-                    <input type="text" [(ngModel)]="inrAmt" class=" flex-grow-1">
+                    <input type="text" [(ngModel)]="inrAmt" class=" flex-grow-1" (input)="checkMaxValue()">
                 </div>
+            </div>
+            <div class="input_box  col-12 col-md-12  display align-items-center mb-3">
+                <div class="col-12 col-md-6 ">
+                    <span for="channelLogo" class="me-2">Broadcaster Name </span>
+                </div>
+                {{oldBroadcastername}}
+                <!-- <div class="col-12 col-md-6">
+                    <input type="text" [(ngModel)]="oldBroadcastername" class=" flex-grow-1">
+                </div> -->
+            </div>
+            <div class="input_box  col-12 col-md-12  display align-items-center mb-3">
+                <div class="col-12 col-md-6 ">
+                    <span for="channelLogo" class="me-2">Category Name </span>
+                </div>
+                {{oldcategoryname}}
+                <!-- <div class="col-12 col-md-6">
+                    <input type="text" [(ngModel)]="oldBroadcastername" class=" flex-grow-1">
+                </div> -->
             </div>
 
             <div class="input_box col-12 col-md-12 display align-items-center mb-3">
@@ -91,6 +109,10 @@
                         <mat-radio-button id="active" value="Active">Active</mat-radio-button>
                         <mat-radio-button id="deactiv" value="Deactive">Deactive</mat-radio-button>
                     </mat-radio-group>
+                    <!-- <mat-radio-group class="d-flex" [(ngModel)]="status">
+                        <mat-radio-button id="active" value="true">Active</mat-radio-button>
+                        <mat-radio-button id="deactiv" value="false">Deactive</mat-radio-button>
+                    </mat-radio-group> -->
                 </div>
             </div>
 
@@ -100,14 +122,16 @@
                 </div>
                 <div class="col-12 col-md-6 ">
                     <input type="text" [(ngModel)]="commission" (keypress)="onKeydown($event)" class=" flex-grow-1"
-                        placeholder="Commission Amount">
+                        (input)="checkMaxValue()" placeholder="Commission Amount">
                 </div>
             </div>
+            <br>
+            <div class="form-group input_box" style="margin: auto;">
+                <div class="col-12 col-md-6 ">
+                    <span for="isPercentage" class="me-2">Is Percentage</span>
+                </div>
 
-            <div class="form-group" style="margin: auto;">
-                <label for="isPercentage">Is Percentage</label>
-                <br>
-                <div class="toggle-button-cover">
+                <!-- <div class="toggle-button-cover">
                     <div class="button b2" id="button-10">
                         <input type="checkbox" class="checkbox" [(ngModel)]="ispercentage" />
                         <div class="knobs">
@@ -115,12 +139,33 @@
                         </div>
                         <div class="layer"></div>
                     </div>
+                </div> -->
+                <div class="radiocs col-12 col-md-6">
+                    <div class="tabs">
+                        <input value="true" name="fav_language" id="html" type="radio" class="input1"
+                            [checked]="isPercentage" (change)="percentageValue(true)" />
+                        <label for="html" class="label"><span
+                                style="z-index: 1000;color:white;margin-top:4px">Yes</span></label>
+                        <input checked="" value="false" name="fav_language" id="css" type="radio" class="input1"
+                            [checked]="!isPercentage" (change)="percentageValue(false)" />
+                        <label for="css" class="label"><span
+                                style="z-index: 1000;color:white;margin-top:4px">No</span></label>
+                    </div>
                 </div>
             </div>
         </div>
+
+        <p class="errorcase" *ngIf="!isPercentage && issave ">*Note: Fixed commission must be less than or equal to
+            the customer amount!!</p>
+        <p class="errorcase" *ngIf="isPercentage && issave ">*Note: Commission percentage must be between 0 and
+            100!!</p>
         <div class="text-center">
             <div class="input_box d-flex justify-content-end align-items-center">
-                <button type="button" class="btn btn-primary" (click)="onSubmit()" style="color: white;">Update</button>
+                <button type="button" class="btn btn-primary" (click)="onSubmit()" [disabled]="issave"
+                    style="color: white;">Update</button>
+                <button type="button" class="btn btn-danger" (click)="onNoClick()"
+                    style="color: white;">cancel</button>
+
             </div>
         </div>
     </div>

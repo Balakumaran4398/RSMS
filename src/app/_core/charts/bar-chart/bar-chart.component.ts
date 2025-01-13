@@ -44,6 +44,8 @@ export class BarChartComponent implements OnInit {
 
     this.userservice.getDashboardSubscribtionBarChartDetails(this.role, this.username, date).subscribe((data: any) => {
       this.updateChartData(data);
+      console.log(data);
+      
     });
   }
 
@@ -60,7 +62,7 @@ export class BarChartComponent implements OnInit {
         }
 
         dataPoints.push({
-          x: new Date(date),
+          // x: new Date(date),
           y: count,
           label: date,
           color: color,
@@ -101,6 +103,7 @@ export class BarChartComponent implements OnInit {
         indexLabelPlacement: "inside",
         width: 10,
         indexLabelAlign: "center",
+        indexTextAlign: "center",
         color: (e: any) => e.dataPoint.color,
         // color: (dataPoints: any) => {
         //   if (dataPoints.y > 0) {

@@ -4,8 +4,11 @@ import { BaseService } from 'src/app/_core/service/base.service';
 import { StorageService } from 'src/app/_core/service/storage.service';
 import Swal from 'sweetalert2';
 import { UpdatePackageMasterComponent } from '../_Dialogue/package_master/update-package-master/update-package-master.component';
-import { filter } from 'node_modules1/jszip';
+// import { filter } from 'node_modules1/jszip';
 import { isTemplateMiddle } from 'typescript';
+import { HttpResponse } from '@angular/common/http';
+import { ExcelService } from 'src/app/_core/service/excel.service';
+import { SwalService } from 'src/app/_core/service/swal.service';
 
 @Component({
   selector: 'app-package-master',
@@ -24,17 +27,28 @@ export class PackageMasterComponent {
       sortable: true,
       resizable: true,
       filter: true,
-      floatingFilter: true
+      floatingFilter: true,
+      comparator: (valueA: any, valueB: any) => {
+        const normalizedA = valueA ? valueA.toString().trim().toLowerCase() : '';
+        const normalizedB = valueB ? valueB.toString().trim().toLowerCase() : '';
+        if (normalizedA < normalizedB) return -1;
+        if (normalizedA > normalizedB) return 1;
+        return 0;
+      },
     },
   }
   username: any;
   user_role: any;
   rowData: any;
+  msodetails: any;
+
+  selectType: any;
+
   type: number = 0;
   Castype: any = 0;
   cas: any[] = [];
   public rowSelection: any = "multiple";
-  constructor(public dialog: MatDialog, public userService: BaseService, storageService: StorageService) {
+  constructor(public dialog: MatDialog, public userService: BaseService, storageService: StorageService, private swal: SwalService, private excelService: ExcelService,) {
     this.username = storageService.getUsername();
     this.user_role = storageService.getUserRole();
   }
@@ -48,6 +62,12 @@ export class PackageMasterComponent {
     this.userService.Cas_type(this.user_role, this.username).subscribe((data) => {
       this.cas = data;
     });
+
+    this.userService.getMsoDetails(this.user_role, this.username).subscribe((data: any) => {
+      console.log(data);
+      this.msodetails = `${data.msoName} ${data.msoStreet}, ${data.msoArea}, ${data.msoState}, ${data.msoPincode}, ${data.msoEmail}`;
+      console.log(this.msodetails);
+    })
   }
 
   ngAfterViewInit(): void {
@@ -83,7 +103,7 @@ export class PackageMasterComponent {
       checkboxSelection: true,
     },
     { headerName: "PRODUCT NAME", field: 'productname', width: 150, },
-    { headerName: "CAS TYPE", field: 'castype', },
+    { headerName: "CAS TYPE", field: 'casname', },
     { headerName: "REFERENCE ID", field: 'referenceid', },
     { headerName: "CAS PRODUCT_ID", field: 'casproductid', },
     { headerName: "TYPE", field: 'type', },
@@ -158,7 +178,7 @@ export class PackageMasterComponent {
           headerName: "S.No", lockPosition: true, valueGetter: 'node.rowIndex+1', headerCheckboxSelection: true, filter: false,
           checkboxSelection: true,
         },
-        { headerName: "PRODUCT NAME", field: 'productname', width: 150, },
+        { headerName: "PRODUCT NAME", field: 'productname', width: 200, cellStyle: { textAlign: 'left' }, },
         {
           headerName: 'ACTION', width: 150,
           cellRenderer: (params: any) => {
@@ -182,7 +202,7 @@ export class PackageMasterComponent {
             return div;
           }
         },
-        { headerName: "CAS TYPE", field: 'castype', },
+        { headerName: "CAS TYPE", field: 'casname', },
         { headerName: "REFERENCE ID", field: 'referenceid', },
         { headerName: "CAS PRODUCT_ID", field: 'casproductid', },
         { headerName: "TYPE", field: 'type', },
@@ -217,7 +237,7 @@ export class PackageMasterComponent {
           headerName: "S.No", lockPosition: true, valueGetter: 'node.rowIndex+1', headerCheckboxSelection: true, filter: false,
           checkboxSelection: true,
         },
-        { headerName: "PRODUCT NAME", field: 'productname', width: 150, },
+        { headerName: "PRODUCT NAME", field: 'productname', width: 200, cellStyle: { textAlign: 'left' }, },
         {
           headerName: 'ACTION', width: 150,
           cellRenderer: (params: any) => {
@@ -242,7 +262,7 @@ export class PackageMasterComponent {
           }
         },
 
-        { headerName: "CAS TYPE", field: 'castype', },
+        { headerName: "CAS TYPE", field: 'casname', },
         { headerName: "REFERENCE ID", field: 'referenceid', },
         { headerName: "CAS PRODUCT_ID", field: 'casproductid', },
         { headerName: "TYPE", field: 'type', },
@@ -277,7 +297,7 @@ export class PackageMasterComponent {
           headerName: "S.No", lockPosition: true, valueGetter: 'node.rowIndex+1', headerCheckboxSelection: true, filter: false,
           checkboxSelection: true,
         },
-        { headerName: "PRODUCT NAME", field: 'productname', width: 150, },
+        { headerName: "PRODUCT NAME", field: 'productname', width: 200, cellStyle: { textAlign: 'left' }, },
         {
           headerName: 'ACTION', width: 150,
           cellRenderer: (params: any) => {
@@ -301,7 +321,7 @@ export class PackageMasterComponent {
             return div;
           }
         },
-        { headerName: "CAS TYPE", field: 'castype', },
+        { headerName: "CAS TYPE", field: 'casname', },
         { headerName: "REFERENCE ID", field: 'referenceid', },
         { headerName: "CAS PRODUCT_ID", field: 'casproductid', },
         { headerName: "TYPE", field: 'type', },
@@ -336,7 +356,7 @@ export class PackageMasterComponent {
           headerName: "S.No", lockPosition: true, valueGetter: 'node.rowIndex+1', headerCheckboxSelection: true, filter: false,
           checkboxSelection: true,
         },
-        { headerName: "PRODUCT NAME", field: 'productname', width: 150, },
+        { headerName: "PRODUCT NAME", field: 'productname', width: 200, cellStyle: { textAlign: 'left' }, },
         {
           headerName: 'ACTION', width: 150,
           cellRenderer: (params: any) => {
@@ -360,7 +380,7 @@ export class PackageMasterComponent {
             return div;
           }
         },
-        { headerName: "CAS TYPE", field: 'castype', },
+        { headerName: "CAS TYPE", field: 'casname', },
         { headerName: "REFERENCE ID", field: 'referenceid', },
         { headerName: "CAS PRODUCT_ID", field: 'casproductid', },
         { headerName: "TYPE", field: 'type', },
@@ -400,63 +420,6 @@ export class PackageMasterComponent {
     dialogRef.afterClosed().subscribe(result => {
     });
   }
-  // adddelete() {
-  //   Swal.fire({
-  //     title: "Are you sure?",
-  //     text: "You won't be able to revert this!",
-  //     icon: "warning",
-  //     showCancelButton: true,
-  //     confirmButtonColor: "#3085d6",
-  //     cancelButtonColor: "#d33",
-  //     confirmButtonText: "Yes, delete it!"
-  //   }).then((result) => {
-  //     if (result.isConfirmed) {
-  //       Swal.fire({
-  //         title: "Deleted!",
-  //         text: "Your file has been deleted.",
-  //         icon: "success",
-  //       });
-  //     }
-  //   });
-  //   Swal.fire({
-  //     title: 'Are you sure?',
-  //     text: 'You won\'t be able to revert this!',
-  //     icon: 'warning',
-  //     showCancelButton: true,
-  //     confirmButtonColor: '#3085d6',
-  //     cancelButtonColor: '#d33',
-  //     confirmButtonText: 'Yes, delete it!'
-  //   }).then((result) => {
-  //     Swal.fire({
-  //       title: 'Deleting...',
-  //       text: 'Please wait while the Broadcaster is being deleted',
-  //       allowOutsideClick: false,
-  //       didOpen: () => {
-  //         Swal.showLoading();
-  //       }
-  //     });
-  //     if (result.isConfirmed) {
-  //       this.userService.UpdatePackagemasterList(this.user_role, this.username, this.selectedIds).subscribe((res: any) => {
-  //         console.log(this.selectedIds);
-  //         Swal.fire({
-  //           title: 'Deleted!',
-  //           text: res.message,
-  //           icon: 'success'
-  //         })
-  //         this.ngOnInit();
-  //       }, (err: { error: { message: any; }; }) => {
-  //         Swal.fire({
-  //           title: 'Error!',
-  //           text: err?.error?.message,
-  //           icon: 'error'
-  //         })
-  //       });
-  //       window.location.reload();
-  //     };
-  //   });
-  // }
-
-
 
   Deactive() {
     Swal.fire({
@@ -539,4 +502,178 @@ export class PackageMasterComponent {
       }
     });
   }
+  // -------------------------------report-------------------------
+  getExcel() {
+    Swal.fire({
+      title: "Processing",
+      text: "Please wait while the report is being generated...",
+      showConfirmButton: false,
+      didOpen: () => {
+        Swal.showLoading(null);
+      }
+    });
+    if (this.selectedTab === '0') {
+      this.selectType = 'ALL';
+    } else if (this.selectedTab === '1') {
+      this.selectType = 'BASE';
+    } else if (this.selectedTab === '2') {
+      this.selectType = 'ADDON';
+    } else if (this.selectedTab === '3') {
+      this.selectType = 'ALACARTE';
+    } else {
+      return;
+    }
+
+    this.userService.getPackageExcelReport(this.user_role, this.username, this.selectedTab, this.Castype).subscribe(
+      (response: HttpResponse<any[]>) => {
+        console.log(this.type);
+        if (response.status === 200) {
+          this.rowData = response.body;
+          console.log(this.rowData);
+          // const title = (this.type + ' REPORT').toUpperCase();
+          const title = (`${this.selectType} PRODUCT DETAILS REPORT`).toUpperCase();
+          const sub = 'MSO ADDRESS:' + this.msodetails;
+          let areatitle = '';
+          let areasub = '';
+          let header: string[] = [];
+          const datas: Array<any> = [];
+          // if (this.type == 1) {
+          areatitle = 'A1:F2';
+          areasub = 'A3:F3';
+          header = ['S.NO', 'PRODUCT ID', 'PRODUCT NAME', 'PRODUCT STATUS', 'PROGRAMS', 'MSO AMOUNT'];
+
+          this.rowData.forEach((d: any, index: number) => {
+            const row = [index + 1, d.casproductid, d.productname, d.statusdisplay, d.msoamount, d.msoamount];
+            datas.push(row);
+          });
+          Swal.close();
+          this.excelService.generateSuspendBasedExcel(areatitle, header, datas, title, areasub, sub);
+
+        } else if (response.status === 204) {
+          // this.swal.Success_204();
+          this.rowData = response.body;
+          console.log(this.type);
+          // const title = (this.type + ' REPORT').toUpperCase();
+          const title = (`${this.selectType} PRODUCT DETAILS REPORT`).toUpperCase();
+          const sub = 'MSO ADDRESS:' + this.msodetails;
+          let areatitle = '';
+          let areasub = '';
+          let header: string[] = [];
+          const datas: Array<any> = [];
+          // if (this.type == 1) {
+          areatitle = 'A1:F2';
+          areasub = 'A3:F3';
+          header = ['S.NO', 'PRODUCT ID', 'PRODUCT NAME', 'PRODUCT STATUS', 'PROGRAMS', 'MSO AMOUNT'];
+          Swal.close();
+          this.excelService.generateSuspendBasedExcel(areatitle, header, datas, title, areasub, sub);
+          this.rowData = [];
+        }
+      },
+      (error) => {
+        this.handleApiError(error);
+      }
+    );
+  }
+
+
+  getPDF() {
+    Swal.fire({
+      title: "Processing",
+      text: "Please wait while the report is being generated...",
+      showConfirmButton: false,
+      didOpen: () => {
+        Swal.showLoading(null);
+      }
+    });
+    // this.userService.getChannelPDFReport(this.user_role, this.username, this.selectedTab)
+
+    //   .subscribe((x: Blob) => {
+    //     const blob = new Blob([x], { type: 'application/pdf' });
+    //     const data = window.URL.createObjectURL(blob);
+    //     const link = document.createElement('a');
+    //     link.href = data;
+    //     // link.download = (this.selectType + ".pdf").toUpperCase();
+    //     link.download = `${this.selectedTab} PRODUCT DETAILS REPORT.pdf`.toUpperCase();
+
+    //     link.dispatchEvent(new MouseEvent('click', { bubbles: true, cancelable: true, view: window }));
+    //     setTimeout(() => {
+    //       window.URL.revokeObjectURL(data);
+    //       link.remove();
+    //     }, 100);
+    //     Swal.close();
+    //   },
+    //     (error: any) => {
+    //       Swal.close();
+    //       Swal.fire({
+    //         title: 'Error!',
+    //         text: error?.error?.message || 'There was an issue generating the PDF.',
+    //         icon: 'error',
+    //         confirmButtonText: 'Ok'
+    //       });
+    //     });
+  }
+  // ---------------------------------------------------------------------------------------------------------------------------------------
+  handleApiError(error: any) {
+    if (error.status === 400) {
+      this.swal.Error_400();
+    } else if (error.status === 500) {
+      this.swal.Error_500();
+    } else {
+      Swal.fire('Error', 'Something went wrong. Please try again.', 'error');
+    }
+  }
+
+  reportDownload(type: number) {
+    if (this.Castype > 0) {
+      this.processingSwal();
+      this.userService.getPakcageHistoryDownload(this.user_role, this.username, this.Castype, type)
+        .subscribe((x: Blob) => {
+          if (type == 1) {
+            this.reportMaking(x, "PRODUCT DETAILS REPORT.pdf", 'application/pdf');
+          } else if (type == 2) {
+            this.reportMaking(x, "PRODUCT DETAILS REPORT.xlsx", 'application/xlsx');
+          }
+        },
+          (error: any) => {
+            this.pdfswalError(error?.error.message);
+          });
+    } else {
+      this.swal.Custom_Error_400("Kindly select the cas!!");
+    }
+  }
+
+  reportMaking(x: Blob, reportname: any, reporttype: any) {
+    const blob = new Blob([x], { type: reporttype });
+    const data = window.URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.href = data;
+    link.download = reportname.toUpperCase();
+    link.dispatchEvent(new MouseEvent('click', { bubbles: true, cancelable: true, view: window }));
+    setTimeout(() => {
+      window.URL.revokeObjectURL(data);
+      link.remove();
+    }, 100);
+    Swal.close();
+  }
+  pdfswalError(error: any) {
+    Swal.close();
+    Swal.fire({
+      title: 'Error!',
+      text: error || 'There was an issue generating the PDF CAS form report.',
+      icon: 'error',
+      confirmButtonText: 'Ok'
+    });
+  }
+  processingSwal() {
+    Swal.fire({
+      title: "Processing",
+      text: "Please wait while the report is being generated...",
+      showConfirmButton: false,
+      didOpen: () => {
+        Swal.showLoading(null);
+      }
+    });
+
+  }
+
 }

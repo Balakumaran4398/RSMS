@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { ChangeDetectorRef, Component } from '@angular/core';
 import { AbstractControl, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialogRef } from '@angular/material/dialog';
 import { BaseService } from 'src/app/_core/service/base.service';
@@ -22,11 +22,14 @@ export class ChannelCreateComponent {
   broadcaster_id: any;
   broadcaster: any[] = [];
 
+  issave: boolean = true;
+  iserror: boolean = false;
+
   ts_id: any; service_id: any; product_id: any; ispercentage: boolean = false; inr_amt: any; channel_type_id: any; category_id: any;
   role: any; distributor_id: any; commssion: any; isactive: boolean = true; channel_desc: any;
   selectedFile: File | null = null;
   channel_name: any;
-  constructor(
+  constructor(private cdr: ChangeDetectorRef,
     public dialogRef: MatDialogRef<ChannelCreateComponent>, private formBuilder: FormBuilder, private swal: SwalService, private userservice: BaseService, private storageService: StorageService
   ) {
     this.username = storageService.getUsername();
@@ -159,5 +162,26 @@ export class ChannelCreateComponent {
     if (!/^[0-9]$/.test(event.key) && !allowedKeys.includes(event.key)) {
       event.preventDefault();
     }
+    this.checkMaxValue();
+
   }
+  percentageValue(value: boolean) {
+    this.ispercentage = value;
+    this.checkMaxValue();
+  }
+
+  checkMaxValue(): void {
+
+    var inramt = this.form.get('inr_amt')?.value - this.form.get('customer_amount')?.value;
+    if (!this.ispercentage && (inramt.toString().includes('-'))) {
+      this.issave = true;
+    } else if (this.ispercentage && this.form.get('customer_amount')?.value > 100) {
+      this.issave = true;
+    } else {
+      this.issave = false;
+    }
+    this.iserror = this.form.get('customer_amount')?.valid && this.form.get('inr_amt')?.valid ? true : false;
+    this.cdr.detectChanges();
+  }
+
 }

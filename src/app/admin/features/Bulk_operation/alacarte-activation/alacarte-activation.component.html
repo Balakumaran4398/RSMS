@@ -1,10 +1,10 @@
 <section class="Tab col-12">
     <div>
         <div class="d-flex tablist justify-content-center align-items-center my-3 new_d">
-            <div class="tab" [class.active]="selectedTab === 'activation'" (click)="selectTab('activation')">BULK
+            <div class="tab bttn" [class.active]="selectedTab === 'activation'" (click)="selectTab('activation')">BULK
                 ALACARTE ACTIVATION
             </div>
-            <div class="tab" [class.active]="selectedTab === 'remove'" (click)="selectTab('remove')"> BULK ALACARTE
+            <div class="tab  bttn" [class.active]="selectedTab === 'remove'" (click)="selectTab('remove')"> BULK ALACARTE
                 REMOVE
             </div>
         </div>
@@ -95,13 +95,13 @@
                             <div class="col-12 mb-3">
                                 <div class="row align-items-center justify-content-center mb-3" style="gap:10px;">
                                     <div class="col-12 col-md-3 mb-2 mb-md-0">
-                                        <input class="date form-control" type="date" [(ngModel)]="date" >
+                                        <input class="date form-control bttn" type="date" [(ngModel)]="date" >
                                     </div>
                                     <div class="col-12 col-md-3 mb-2 mb-md-0">
-                                        <button class="btn btn-secondary w-100" (click)="getAddonData()">Get Data</button>
+                                        <button class="btn btn-secondary w-100 bttn" (click)="getAlacarteData()">Get Data</button>
                                     </div>
                                     <div class="col-12 col-md-3 mb-2 mb-md-0">
-                                        <button class="btn btn-secondary w-100" (click)="addonrefresh()">Refresh</button>
+                                        <button class="btn btn-secondary w-100 bttn" (click)="getRefreshData()">Refresh</button>
                                     </div>
                                 </div>
 
@@ -182,10 +182,10 @@
                                 <input class="date form-control" type="date" [(ngModel)]="date">
                             </div>
                             <div class="col-12 col-md-3 mb-2 mb-md-0">
-                                <button class="btn btn-secondary w-100" (click)="getremoveData()">Get Data</button>
+                                <button class="btn btn-secondary w-100" (click)="getRemovedata()">Get Data</button>
                             </div>
                             <div class="col-12 col-md-3 mb-2 mb-md-0">
-                                <button class="btn btn-secondary w-100" (click)="removerefresh()">Refresh</button>
+                                <button class="btn btn-secondary w-100" (click)="getRemoveRefresh()">Refresh</button>
                             </div>
                         </div>
 

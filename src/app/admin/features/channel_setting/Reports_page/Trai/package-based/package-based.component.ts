@@ -33,6 +33,7 @@ export class PackageBasedComponent implements OnInit {
   filePath: string = '';
   isFileSelected: boolean = false;
   submitted: boolean = false;
+$event: any;
 
   constructor(public dialogRef: MatDialogRef<PackageBasedComponent>, private swal: SwalService, @Inject(MAT_DIALOG_DATA) public data: any, private excelService: ExcelService, public userService: BaseService, private cdr: ChangeDetectorRef, public storageservice: StorageService,) {
     this.username = storageservice.getUsername();
@@ -93,6 +94,7 @@ export class PackageBasedComponent implements OnInit {
     const year = new Date(event.value).getFullYear();
     this.fromdate = year + "-" + month + "-" + date
     console.log(this.fromdate);
+    return this.fromdate;
 
   }
   getToDate(event: any) {
@@ -101,6 +103,7 @@ export class PackageBasedComponent implements OnInit {
     const year = new Date(event.value).getFullYear();
     this.todate = year + "-" + month + "-" + date
     console.log(this.todate);
+    return this.todate;
   }
   getPackage_AddonExcel() {
     this.userService.getPackageModificationExcelReport(this.role, this.username, this.fromdate, this.todate, 1, this.packageType, 2)
@@ -480,8 +483,9 @@ export class PackageBasedComponent implements OnInit {
               console.log('type 1 and 4', row);
               datas.push(row);
             });
+            this.excelService.generateSuspendBasedExcel(areatitle, header, datas, title, areasub, sub);
 
-            this.excelService.generateBouquetExcel(areatitle, header, datas, title, areasub, sub);
+            // this.excelService.generateBouquetExcel(areatitle, header, datas, title, areasub, sub);
 
           } else if (response.status === 204) {
             // this.swal.Success_204();

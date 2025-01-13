@@ -39,12 +39,11 @@ export class ReplaceInventoryComponent {
     this.userService.Defective_Replace_Allocated(this.role, this.username, this.id, this.smartcard, this.boxid).subscribe(
       (data: any) => {
         console.log(data);
-        // Handle success response, show Swal alert and close dialog
         Swal.fire({
           icon: 'success',
           title: 'Replacement Successful',
           text: data?.message || 'The smartcard and box ID have been successfully replaced.',
-          timer: 3000, // Display the message for 3 seconds
+          timer: 3000, 
           timerProgressBar: true,
           showConfirmButton: false
         }).then(() => {
@@ -53,7 +52,6 @@ export class ReplaceInventoryComponent {
       },
       (error: any) => {
         console.error(error);
-        // Handle error response, show Swal alert
         Swal.fire({
           icon: 'error',
           title: 'Replacement Failed',

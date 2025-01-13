@@ -26,11 +26,11 @@
                 </div>
                 <div class="col d-flex justify-content-end align-items-center mb-3">
 
-                    <button class="btn btn-outline-info mx-1" mat-raised-button color="primary" type="button"
+                    <button class="btn btn-outline-info mx-1  bttn" mat-raised-button color="primary" type="button"
                         [disabled]="!isAnyRowSelected" (click)="Active()">
                         Active
                     </button>
-                    <button class="btn btn-outline-info mx-1" mat-raised-button color="accent" type="button"
+                    <button class="btn btn-outline-info mx-1  bttn" mat-raised-button color="accent" type="button"
                         [disabled]="!isAnyRowSelected" (click)="Deactive()">
                         Deactive
                     </button>
@@ -44,13 +44,13 @@
                     </a>
                 </div> -->
                 <div class="d-flex justify-content-end align-items-center mb-3">
-                    <div class="icon-container d-flex align-items-center">
-                        <img src="/assets/images/icons/Excel.png" width="40px">
+                    <div class="icon-container d-flex align-items-center" (click)="reportDownload(2)">
+                        <img src="/assets/images/icons/Excel.png" width="40px" style="cursor: pointer;">
                         <div class="tooltip">Excel</div>
                     </div>
                     &nbsp;&nbsp;
-                    <div class="icon-container d-flex align-items-center">
-                        <img src="/assets/images/icons/pdf.png" width="40px">
+                    <div class="icon-container d-flex align-items-center" (click)="reportDownload(1)">
+                        <img src="/assets/images/icons/pdf.png" width="40px" style="cursor: pointer;">
                         <div class="tooltip">Pdf</div>
                     </div>
                 </div>

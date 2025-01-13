@@ -44,7 +44,7 @@ export const MY_FORMATS = {
     { provide: MAT_DATE_FORMATS, useValue: MY_FORMATS }
   ],
   encapsulation: ViewEncapsulation.None,
-  changeDetection: ChangeDetectionStrategy.OnPush,
+  changeDetection: ChangeDetectionStrategy.Default,
 })
 export class SubscriberdialogueComponent implements OnInit {
   myControl = new FormControl('');
@@ -178,6 +178,7 @@ export class SubscriberdialogueComponent implements OnInit {
   casformid: any
   livetv = false;
   addressproof: any;
+
   idproof: any;
   addressprooftypeid: any;
   idprooftypeid: any;
@@ -201,6 +202,8 @@ export class SubscriberdialogueComponent implements OnInit {
   operatorname: any;
   mobile: any;
   cardbalance: any;
+  currentPackagename: any;
+  noOfDays: any;
   customwerAmount: any;
   expirydate: any;
   packagename: any;
@@ -261,14 +264,14 @@ export class SubscriberdialogueComponent implements OnInit {
       // width: 320,
       floatingFilter: true,
       comparator: (valueA: any, valueB: any) => {
-        if (!isNaN(valueA) && !isNaN(valueB)) {
-          return Number(valueA) - Number(valueB);
-        }
-        if (!valueA) valueA = '';
-        if (!valueB) valueB = '';
-        return valueA.toLowerCase().localeCompare(valueB.toLowerCase());
+        const normalizedA = valueA ? valueA.toString().trim().toLowerCase() : '';
+        const normalizedB = valueB ? valueB.toString().trim().toLowerCase() : '';
+        if (normalizedA < normalizedB) return -1;
+        if (normalizedA > normalizedB) return 1;
+        return 0;
       },
     },
+
   }
   gridOptions1 = {
     defaultColDef: {
@@ -278,12 +281,11 @@ export class SubscriberdialogueComponent implements OnInit {
       // width: 320,
       floatingFilter: true,
       comparator: (valueA: any, valueB: any) => {
-        if (!isNaN(valueA) && !isNaN(valueB)) {
-          return Number(valueA) - Number(valueB);
-        }
-        if (!valueA) valueA = '';
-        if (!valueB) valueB = '';
-        return valueA.toLowerCase().localeCompare(valueB.toLowerCase());
+        const normalizedA = valueA ? valueA.toString().trim().toLowerCase() : '';
+        const normalizedB = valueB ? valueB.toString().trim().toLowerCase() : '';
+        if (normalizedA < normalizedB) return -1;
+        if (normalizedA > normalizedB) return 1;
+        return 0;
       },
     },
     paginationPageSize: 4,
@@ -343,6 +345,7 @@ export class SubscriberdialogueComponent implements OnInit {
   cancel_current: any;
   basePackageId: any;
   isCancelCurrentVisible: boolean = false;
+  subscriberdata: any;
   isPlanTypeSelected(): boolean {
     if (this.selectedRechargetype === '3') return true;
     if ((this.datetype && this.f_date)) return true;
@@ -359,6 +362,7 @@ export class SubscriberdialogueComponent implements OnInit {
   constructor(public dialogRef: MatDialogRef<SubscriberdialogueComponent>, private swal: SwalService,
     @Inject(MAT_DIALOG_DATA) public data: any, public userservice: BaseService, private cdr: ChangeDetectorRef, public storageService: StorageService, private fb: FormBuilder, private zone: NgZone) {
     console.log(data);
+    this.subscriberdata = data;
     this.role = storageService.getUserRole();
     this.username = storageService.getUsername();
     this.newRefreshSmartcard = data.refresh;
@@ -391,6 +395,8 @@ export class SubscriberdialogueComponent implements OnInit {
     this.fathername = data['detailsList'].fathername;
     this.lconame = data['detailsList'].operatorname;
     this.cardbalance = data['detailsList'].cardbalance;
+    this.currentPackagename = data['detailsList'].smartpackagename;
+    this.noOfDays = data['detailsList'].noofdays
     this.customerid = data['detailsList'].customerid ? data['detailsList'].customerid : 0;
     this.address = data['detailsList'].address;
     this.mobileno = data['detailsList'].mobileno;
@@ -445,7 +451,7 @@ export class SubscriberdialogueComponent implements OnInit {
         dateofbirth: ['', [Validators.required]],
         address: ['', [Validators.required]],
         landlineno: ['', [Validators.required, Validators.pattern('^0\\d{8,10}$')]],
-        livetv: [false, [Validators.required]],
+        islivetv: [false, [Validators.required]],
         casformid: ['', Validators.required],
         fathername: ['', [Validators.required]],
         mobileno: ['', [Validators.required, Validators.pattern('^[0-9]{10}$')]],
@@ -939,15 +945,42 @@ export class SubscriberdialogueComponent implements OnInit {
 
 
   onSelectionChanged() {
+    console.log('calling');
+
     if (this.gridApi) {
+      console.log('gripd api is not null');
+
       const selectedRows = this.gridApi.getSelectedRows();
-      this.isAnyRowSelected = selectedRows;
-      if (this.finalrow.length > 0) {
-        this.rows = this.finalrow;
-      } else {
-        this.rows = selectedRows;
-      }
+      console.log(selectedRows.length);
+
+      this.isAnyRowSelected = selectedRows.length > 0 ? true : false;
+      // if (this.finalrow.length > 0) {
+      //   this.rows = this.finalrow;
+      // } else {
+      //   this.rows = selectedRows;
+      // }
+      this.rows = selectedRows;
+      this.isaddaddon = false;
+      this.isaddalacarte = false;
+      this.isRemove = false;
+      // if (this.addonconfirmation && this.isAnyRowSelected) {
+      //   this.isaddaddon = true;
+      // } else {
+      //   this.isaddaddon = false;
+      // }
+      // if (this.alacarteconfirmation && this.isAnyRowSelected) {
+      //   this.isaddalacarte = true;
+      // } else {
+      //   this.isaddalacarte = false;
+      // }
+
+      // if (this.removeproduct && this.isAnyRowSelected) {
+      //   this.isRemove = true;
+      // } else {
+      //   this.isRemove = false;
+      // }
     }
+
   }
   filteredIntendArea(): any[] {
     if (!this.searchTerm) {
@@ -960,13 +993,24 @@ export class SubscriberdialogueComponent implements OnInit {
   onNoClick(): void {
     this.dialogRef.close(this.returndata);
   }
+  onSelectionplantype(selectedValue: string) {
+    console.log('selectrdvalue', selectedValue);
 
+    if (selectedValue) {
+      this.isplantype = true;
+      // this.datetype = false;
+    }
+  }
   onSelectionrechargetype(selectedValue: string) {
     console.log('selectedValue', selectedValue);
     const rechargetype = Number(selectedValue);
     if (rechargetype == 1) {
       this.isplantype = true;
       this.datetype = false;
+      const defaultPlan = this.plantype$.getValue().find(plan => plan.key === '1month');
+      if (defaultPlan) {
+        this.plantype = defaultPlan.value;
+      }
     }
     if (rechargetype == 2) {
       this.isplantype = false;
@@ -1039,7 +1083,7 @@ export class SubscriberdialogueComponent implements OnInit {
     //   this.Editform.markAllAsTouched();
     //   return;
     // }
-    console.log('1111');
+    console.log(this.Editform.value);
 
     this.swal.Loading();
     this.userservice.UpdateSubscriberDetails(this.Editform.value)
@@ -1091,7 +1135,7 @@ export class SubscriberdialogueComponent implements OnInit {
             // timerProgressBar: true,
             // showConfirmButton: false
           });
-        
+
           this.cdr.detectChanges;
         }
       }, (err) => {
@@ -1105,7 +1149,7 @@ export class SubscriberdialogueComponent implements OnInit {
           // showConfirmButton: false
         });
       });
-      
+
   }
 
 
@@ -1155,7 +1199,7 @@ export class SubscriberdialogueComponent implements OnInit {
     this.servicename = sub.name;
     // this.f_subid = sub.value;
     this.subid = sub.value;
-    console.log('subid',this.subid);
+    console.log('subid', this.subid);
 
     this.cdr.detectChanges();
   }
@@ -1245,33 +1289,33 @@ export class SubscriberdialogueComponent implements OnInit {
     this.smartcard = smartcard.name;
     // this.cdr.detectChanges();
     this.userservice.getBoxidBySmartcard(this.role, this.username, this.smartcard)
-    // .subscribe((data: any) => {
-    //   this.boxid = data.boxid;
-    //   this.cdr.detectChanges();
-    //   let boxidElement: any = document.getElementById("boxid");
-    //   if (boxidElement) {
-    //     boxidElement.value = data;
-    //   }
-    // }, (err) => {
-    //   Swal.fire({
-    //     icon: 'error',
-    //     title: 'Error',
-    //     text: err?.error?.message ,
-    //     // text:err,
-    //     confirmButtonText: 'OK'
-    //   });
-    // });
-    .subscribe((data: any) => {
-      this.boxid = data.boxid;
-      this.cdr.detectChanges();
-      let boxidElement: any = document.getElementById("boxid");
-      if (boxidElement) {
-        boxidElement.value = data;
-      }
-      // this.swal.success(data?.message);
-    }, (err) => {
-      this.swal.Error(err?.error?.message);
-    });
+      // .subscribe((data: any) => {
+      //   this.boxid = data.boxid;
+      //   this.cdr.detectChanges();
+      //   let boxidElement: any = document.getElementById("boxid");
+      //   if (boxidElement) {
+      //     boxidElement.value = data;
+      //   }
+      // }, (err) => {
+      //   Swal.fire({
+      //     icon: 'error',
+      //     title: 'Error',
+      //     text: err?.error?.message ,
+      //     // text:err,
+      //     confirmButtonText: 'OK'
+      //   });
+      // });
+      .subscribe((data: any) => {
+        this.boxid = data.boxid;
+        this.cdr.detectChanges();
+        let boxidElement: any = document.getElementById("boxid");
+        if (boxidElement) {
+          boxidElement.value = data;
+        }
+        // this.swal.success(data?.message);
+      }, (err) => {
+        this.swal.Error(err?.error?.message);
+      });
   }
   onSubscriberPackagename(selectedOperator: any) {
     const operatorString = selectedOperator;
@@ -1459,7 +1503,7 @@ export class SubscriberdialogueComponent implements OnInit {
     this.addAlacarteConfirmation();
   }
   onRemoveConfirmation(): void {
-    this.toggleRemoveConfirmation();
+    // this.toggleRemoveConfirmation();
     this.removeProductConfirmation();
   }
   onRemove(): void {
@@ -1541,6 +1585,7 @@ export class SubscriberdialogueComponent implements OnInit {
         this.changebase_totalRefundToLco = data.totalRefundToLco;
         this.changebase_expiryDate = data.expiryDate;
         this.cdr.detectChanges();
+        // this.isActive = true;
       }, (err) => {
         this.swal.Error(err?.error?.message);
       });
@@ -1620,7 +1665,7 @@ export class SubscriberdialogueComponent implements OnInit {
     console.log(subscriptionOperatorid);
     this.errorMessage = '';
     this.swal.Loading();
-    this.userservice.lcotransferSinglesmartcard(this.role, this.username, subscriptionOperatorid, this.subid,  this.withsubscription, this.smartcardno, 0, 2
+    this.userservice.lcotransferSinglesmartcard(this.role, this.username, subscriptionOperatorid, this.subid, this.withsubscription, this.smartcardno, 0, 2
     ).subscribe((res: any) => {
       this.swal.success(res?.message);
     }, (err) => {
@@ -1711,6 +1756,7 @@ export class SubscriberdialogueComponent implements OnInit {
   addAddonConfirmation() {
     this.isaddaddon = true;
     this.finalrow = this.rows
+
     let requestBody = {
       role: this.role,
       username: this.username,
@@ -1721,13 +1767,22 @@ export class SubscriberdialogueComponent implements OnInit {
       managepackagelist: this.rowData,
       iscollected: this.iscollected
     }
+
+    console.log(this.rows);
+
     this.userservice.addAddonConfirmation(requestBody).subscribe(
       (res: any) => {
         this.addonConfirmationData = res;
+        console.log('response came');
         this.cdr.detectChanges;
+        console.log('dect changes completed');
+
+
       }, (err) => {
         this.swal.Error(err?.error?.message);
       });
+
+
   }
   addAddonForSmartcard() {
     this.confirmation = true;
@@ -1828,9 +1883,11 @@ export class SubscriberdialogueComponent implements OnInit {
   // -------------------------------------------------remove------------------------------------------------
 
   removeProductConfirmation() {
-    this.isRemove = true;
+    this.removeproduct = true;
+    this.isRemove = this.removeproduct && this.isAnyRowSelected ? true : false;
+
+
     this.finalrow = this.rows;
-    this.cdr.detectChanges();
     let requestBody = {
       role: this.role,
       username: this.username,
@@ -1840,26 +1897,22 @@ export class SubscriberdialogueComponent implements OnInit {
       iscollected: this.iscollected,
       removeproductlist: this.rows,
     }
+
     this.userservice.removeProductConfirmation(requestBody).subscribe(
-      (response: HttpResponse<any[]>) => {
-        if (response.status === 200) {
-          this.rowData = response.body;
-          this.lcoreFund = this.rowData.totalRefundToLco;
-          this.lcoreExpirydate = this.rowData.expiryDate;
-          this.cdr.detectChanges();
-          this.swal.Success_200();
-        } else if (response.status === 204) {
-          this.swal.Success_204();
-          this.rowData = [];
-          this.cdr.detectChanges();
+      (res: any) => {
+        console.log(res);
 
-        }
-      },
-      (error) => {
-        this.handleApiError(error);
-      }
-    );
+        const resposne = res.body;
+        this.lcoreFund = resposne.totalRefundToLco;
+        console.log(this.lcoreFund);
 
+        this.lcoreExpirydate = resposne.expiryDate;
+        this.cdr.detectChanges;
+        this.showData = true;
+        // this.swal.success(res?.message);
+      }, (err) => {
+        this.swal.Error(err?.error?.message);
+      });
   }
   removeProductForSmartcard() {
     let requestBody = {
@@ -1871,6 +1924,7 @@ export class SubscriberdialogueComponent implements OnInit {
       iscollected: this.iscollected,
       removeproductlist: this.rows,
     }
+
     this.swal.Loading();
     this.userservice.removeProductForSmartcard(requestBody).subscribe(
       (res: any) => {
@@ -1974,8 +2028,10 @@ export class SubscriberdialogueComponent implements OnInit {
 
 
   handleApiError(error: any) {
+    console.log(error);
+
     if (error.status === 400) {
-      this.swal.Error_400();
+      this.Error_400(error.error.message);
     } else if (error.status === 500) {
       this.swal.Error_500();
     } else {
@@ -1983,5 +2039,35 @@ export class SubscriberdialogueComponent implements OnInit {
     }
   }
 
+  Error_400(message: any) {
+    Swal.fire({
+      title: 'Error',
+      text: message,
+      icon: 'error',
+      timer: 3000,
+      timerProgressBar: true,
+      showConfirmButton: true
+    });
+  }
+
+
+  resetData(type: any) {
+    console.log(this.subscriberdata.detailsList.idproof);
+    console.log(this.subscriberdata.detailsList.addressproof);
+
+    if (type == 'addressproof') {
+      if (this.addressprooftypeid == this.subscriberdata.detailsList.addressprooftypeid) {
+        this.addressproof = this.subscriberdata.detailsList.addressproof
+      } else {
+        this.addressproof = 0
+      }
+    } else if (type == 'idproof') {
+      if (this.idprooftypeid == this.subscriberdata.detailsList.idprooftypeid) {
+        this.idproof = this.subscriberdata.detailsList.idproof
+      } else {
+        this.idproof = ''
+      }
+    }
+  }
 }
 

@@ -26,8 +26,14 @@ export class SmartcardAllocationComponent {
       sortable: true,
       resizable: true,
       filter: true,
-      width: 167,
-      floatingFilter: true
+      floatingFilter: true,
+      comparator: (valueA: any, valueB: any) => {
+        const normalizedA = valueA ? valueA.toString().trim().toLowerCase() : '';
+        const normalizedB = valueB ? valueB.toString().trim().toLowerCase() : '';
+        if (normalizedA < normalizedB) return -1;
+        if (normalizedA > normalizedB) return 1;
+        return 0;
+      },
     },
     paginationPageSize: 10,
     pagination: true,
@@ -46,28 +52,28 @@ export class SmartcardAllocationComponent {
       lockPosition: true, headerCheckboxSelection: true, checkboxSelection: true, width: 80
     },
     {
-      headerName: 'SMARTCARD',
+      headerName: 'SMARTCARD', width: 250,
       field: 'smartcard',
 
     },
     {
-      headerName: 'BOX_ID',
+      headerName: 'BOX_ID', width: 200,
       field: 'boxid',
 
     },
     {
-      headerName: 'CARTON BOX',
+      headerName: 'CARTON BOX', width: 200,
       field: 'cottonbox',
 
     },
     {
-      headerName: 'CAS ',
+      headerName: 'CAS ', width: 100,
       field: 'casname',
 
     },
     {
-      headerName: 'IS_ALLOCATED',
-      field: 'isallocated',
+      headerName: 'IS_ALLOCATED', width: 150,
+      field: 'isactive', cellStyle: { textAlign: 'center' },
       cellRenderer: (params: any) => {
         if (params.value === true) {
           return `<span style="color: #06991a;">YES</span>`;
@@ -77,7 +83,7 @@ export class SmartcardAllocationComponent {
       },
     },
     {
-      headerName: 'DE_ALLOCATED',
+      headerName: 'DE_ALLOCATED', width: 150, cellStyle: { textAlign: 'center' },
       field: 'deallocated',
       cellRenderer: (params: any) => {
         if (params.value === true) {
@@ -88,8 +94,8 @@ export class SmartcardAllocationComponent {
       },
     },
     {
-      headerName: 'IS_DEFECTIVE',
-      field: 'isdefective',
+      headerName: 'IS_DEFECTIVE', width: 150,
+      field: 'isdefective', cellStyle: { textAlign: 'center' },
       cellRenderer: (params: any) => {
         if (params.value === true) {
           return `<span style="color: #06991a;">YES</span>`;
@@ -99,13 +105,13 @@ export class SmartcardAllocationComponent {
       },
     },
     {
-      headerName: 'LCO_NAME',
+      headerName: 'LCO_NAME', width: 150,
       field: 'operatorname',
 
     },
     {
-      headerName: "Delete",
-      editable: true,
+      headerName: "Delete", width: 150,
+      editable: true, cellStyle: { textAlign: 'center' },
       cellRenderer: (params: any) => {
         const deleteButton = document.createElement('button');
         // deleteButton.innerHTML = '<img src="/assets/images/icons/delete1.png" style="width:25px">';
@@ -174,32 +180,87 @@ export class SmartcardAllocationComponent {
       // If a row is selected, proceed with the deallocation
       this.userService.DeAllocate_Smartcard(this.role, this.username, this.selectedIds)
         .subscribe((res: any) => {
-          console.log(res);        
-            Swal.fire({
-              icon: 'success',
-              title: 'Deallocation Successful',
-              text: res.message || 'Smartcards have been successfully deallocated.',
-              timer: 3000,
-              timerProgressBar: true,
-              showConfirmButton: false
-            }).then(() => {
-              // Reload the page after the alert is closed
-              window.location.reload();
-            });
-        
+          console.log(res);
+          Swal.fire({
+            icon: 'success',
+            title: 'Deallocation Successful',
+            text: res.message || 'Smartcards have been successfully deallocated.',
+            timer: 3000,
+            timerProgressBar: true,
+            showConfirmButton: false
+          }).then(() => {
+            // Reload the page after the alert is closed
+            window.location.reload();
+          });
+
         }, (error) => {
           // Handle HTTP errors or server issues
           Swal.fire({
             icon: 'error',
             title: 'Deallocation Error',
             text: error?.error?.message || 'A server error occurred. Please try again later.',
-            timer: 3000,timerProgressBar: true,
+            timer: 3000, timerProgressBar: true,
             showConfirmButton: true
           });
           console.error('Error:', error);
         });
     }
   }
-  
+
+  generateExcel() {
+    this.userService.getDeallocatedSmartcardReport(this.role, this.username, 2)
+      .subscribe((x: Blob) => {
+        const blob = new Blob([x], { type: 'application/xlsx' });
+        const data = window.URL.createObjectURL(blob);
+        const link = document.createElement('a');
+        link.href = data;
+        // link.download = (this.reportTitle + ".pdf").toUpperCase();
+        link.download = `Smartcard Deallocation Report.xlsx`.toUpperCase();
+
+        link.dispatchEvent(new MouseEvent('click', { bubbles: true, cancelable: true, view: window }));
+        setTimeout(() => {
+          window.URL.revokeObjectURL(data);
+          link.remove();
+        }, 100);
+      },
+        (error: any) => {
+          Swal.fire({
+            title: 'Error!',
+            text: error?.error?.message || 'There was an issue generating the Excel for Deallocation report.',
+            icon: 'error',
+            confirmButtonText: 'Ok'
+          });
+        });
+
+  }
+
+  generatePDF() {
+    this.userService.getDeallocatedSmartcardReport(this.role, this.username, 1)
+      .subscribe((x: Blob) => {
+        const blob = new Blob([x], { type: 'application/pdf' });
+        const data = window.URL.createObjectURL(blob);
+        const link = document.createElement('a');
+        link.href = data;
+        // link.download = (this.reportTitle + ".pdf").toUpperCase();
+        link.download = `Smartcard Deallocation Report.pdf`.toUpperCase();
+
+        link.dispatchEvent(new MouseEvent('click', { bubbles: true, cancelable: true, view: window }));
+        setTimeout(() => {
+          window.URL.revokeObjectURL(data);
+          link.remove();
+        }, 100);
+      },
+        (error: any) => {
+          Swal.fire({
+            title: 'Error!',
+            text: error?.error?.message || 'There was an issue generating the Pdf for Deallocation report.',
+            icon: 'error',
+            confirmButtonText: 'Ok'
+          });
+        });
+
+
+
+  }
 
 }

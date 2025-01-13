@@ -13,15 +13,17 @@ import { SwalService } from 'src/app/_core/service/swal.service';
   templateUrl: './allocated.component.html',
   styleUrls: ['./allocated.component.scss']
 })
-export class AllocatedComponent {
+export class  AllocatedComponent {
   // rowData: any[] | null | undefined;
   gridApi: any;
   public rowSelection: any = "multiple";
   role: any;
   username: any;
-  rowData: any;
+  rowData: any[] = [];
+  allocatedhistory: any
   smartcard: any;
-  caslist: any;
+  caslist: any[] = [];
+  cas: any
   selectedLcoName: any = 0;
   submitted: boolean = false;
   // lco_list: { [key: string]: number } = {};
@@ -37,7 +39,14 @@ export class AllocatedComponent {
       resizable: true,
       filter: true,
       width: 195,
-      floatingFilter: true
+      floatingFilter: true,
+      comparator: (valueA: any, valueB: any) => {
+        const normalizedA = valueA ? valueA.toString().trim().toLowerCase() : '';
+        const normalizedB = valueB ? valueB.toString().trim().toLowerCase() : '';
+        if (normalizedA < normalizedB) return -1;
+        if (normalizedA > normalizedB) return 1;
+        return 0;
+      },
     },
     paginationPageSize: 10,
     pagination: true,
@@ -57,11 +66,38 @@ export class AllocatedComponent {
       this.lco_list = Object.entries(data[0].operatorid).map(([key, value]) => {
         return { name: key, value: value };
       });
-      this.filteredOperators=this.lco_list;
+      this.filteredOperators = this.lco_list;
       console.log(this.lco_list);
       this.caslist = data[0].castype;
       console.log(this.caslist);
     })
+
+    this.operatorList();
+    this.casList();
+  }
+  operatorList() {
+    this.userService.getOeratorList(this.role, this.username, 1).subscribe((data: any) => {
+      console.log(data);
+      this.lco_list = Object.keys(data).map(key => {
+        const value = data[key];
+        const name = key;
+        return { name: name, value: value };
+      });
+      this.filteredOperators = this.lco_list;
+    })
+  }
+  casList() {
+    this.userService.Cas_type(this.role, this.username).subscribe((data) => {
+      this.cas = data;
+      console.log('dfdsfdsfsd', this.cas);
+      this.cas = data.map((item: any) => ({
+        id: item.id,
+        name: item.casname
+      }));
+      this.caslist = this.cas;
+      console.log(this.cas);
+
+    });
   }
   onSelectionChanged() {
     if (this.gridApi) {
@@ -113,38 +149,39 @@ export class AllocatedComponent {
     //   lockPosition: true, headerCheckboxSelection: true, checkboxSelection: true, width: 80
     // },
     {
-      headerName: 'SMARTCARD', width: 200,
+      headerName: 'SMARTCARD', width: 250,
       field: 'smartcard',
 
     },
     {
-      headerName: 'BOX_ID',width: 250,
+      headerName: 'BOX_ID', width: 250,
       field: 'boxid',
 
     },
     {
-      headerName: 'CARTON BOX',width: 230,
+      headerName: 'CARTON BOX', width: 230,
       field: 'cottonbox',
 
     },
     {
-      headerName: 'CAS',width: 200,
+      headerName: 'CAS', width: 150, cellStyle: { textAlign: 'center' },
       field: 'casname',
 
     },
     {
-      headerName: 'IS_ALLOCATED',width: 200,
-      field: 'isallocated',
+      headerName: 'IS_ALLOCATED', width: 200,
+      field: 'allocationstatus', cellStyle: { textAlign: 'center' },
       cellRenderer: (params: any) => {
-        if (params.value === true) {
-          return `<span style="color: #06991a;">YES</span>`;
+
+        if (params.value === "Allocated") {
+          return `<span style="color: #06991a;">${params.value}</span>`;
         } else {
-          return `<span style="color: red;">NO</span>`;
+          return `<span style="color: red;">${params.value}</span>`;
         }
       },
     },
     {
-      headerName: 'IS_DEFECTIVE',width: 200,
+      headerName: 'IS_DEFECTIVE', width: 150, cellStyle: { textAlign: 'center' },
       field: 'isdefective',
       cellRenderer: (params: any) => {
         if (params.value === true) {
@@ -155,18 +192,18 @@ export class AllocatedComponent {
       },
     },
     {
-      headerName: 'IS_EMI',width: 250,
+      headerName: 'IS_EMI', width: 150, cellStyle: { textAlign: 'center' },
       field: 'isemi',
       cellRenderer: (params: any) => {
         if (params.value === true) {
-          return `<span style="color: #06991a;">True</span>`;
+          return `<span style="color: #06991a;">YES</span>`;
         } else {
-          return `<span style="color: red;">False</span>`;
+          return `<span style="color: red;">NO</span>`;
         }
       },
     },
     {
-      headerName: 'LCO_NAME',width: 250,
+      headerName: 'LCO_NAME', width: 200,
       field: 'operatorname',
 
     },
@@ -186,36 +223,44 @@ export class AllocatedComponent {
     //   return;
     // }
     this.submitted = true;
-    if (!this.smartcard || !this.selectedLcoName) {
-      // Swal.fire({
-      //   icon: 'warning',
-      //   title: 'Validation Error',
-      //   text: 'Please fill out all required fields.',
-      // });
+    // if (!this.smartcard || !this.selectedLcoName) {
+    //   // Swal.fire({
+    //   //   icon: 'warning',
+    //   //   title: 'Validation Error',
+    //   //   text: 'Please fill out all required fields.',
+    //   // });
+    //   return;
+    // }
+
+    console.log(this.selectedLcoName);
+    console.log(this.smartcard);
+
+    // this.swal.Loading();
+    if ((this.smartcard != null && this.smartcard != undefined && this.smartcard > 0) || (this.selectedLcoName != null && this.selectedLcoName != undefined && this.selectedLcoName > 0)) {
+      this.userService.getsearchforallocated_smartcard_List(this.role, this.username, this.selectedLcoName, this.smartcard || 0)
+        .subscribe((data: any) => {
+          this.rowData = data;
+          this.allocatedhistory = data;
+          Swal.fire({
+            icon: 'success',
+            title: 'Search Completed',
+            text: data.message || 'Search results have been retrieved successfully.',
+            confirmButtonText: 'OK',
+            timer: 3000,
+            timerProgressBar: true,
+          });
+          console.log(data);
+        }, error => {
+          Swal.fire({
+            icon: 'error',
+            title: 'Error',
+            text: error?.error.message || 'There was an error performing the search. Please try again.',
+            confirmButtonText: 'OK'
+          });
+        });
+    } else {
       return;
     }
-    console.log(this.selectedLcoName);
-    // this.swal.Loading();
-    this.userService.getsearchforallocated_smartcard_List(this.role, this.username, this.selectedLcoName, this.smartcard || null)
-      .subscribe((data: any) => {
-        this.rowData = data;
-        Swal.fire({
-          icon: 'success',
-          title: 'Search Completed',
-          text: data.message || 'Search results have been retrieved successfully.',
-          confirmButtonText: 'OK',
-          timer: 3000,
-          timerProgressBar: true,
-        });
-        console.log(data);
-      }, error => {
-        Swal.fire({
-          icon: 'error',
-          title: 'Error',
-          text: error?.error.message || 'There was an error performing the search. Please try again.',
-          confirmButtonText: 'OK'
-        });
-      });
   }
   submit(): void {
     const dataToSend = {
@@ -234,4 +279,63 @@ export class AllocatedComponent {
       console.log('The dialog was closed');
     });
   }
+
+  generateExcel() {
+    if ((this.smartcard != null && this.smartcard != undefined && this.smartcard > 0) || (this.selectedLcoName != null && this.selectedLcoName != undefined && this.selectedLcoName > 0)) {
+      this.userService.getAllocatedSmartcardReport(this.role, this.username, this.selectedLcoName, this.smartcard || 0, 2)
+        .subscribe((x: Blob) => {
+          const blob = new Blob([x], { type: 'application/xlsx' });
+          const data = window.URL.createObjectURL(blob);
+          const link = document.createElement('a');
+          link.href = data;
+          // link.download = (this.reportTitle + ".pdf").toUpperCase();
+          link.download = `Smartcard Allocation Report.xlsx`.toUpperCase();
+
+          link.dispatchEvent(new MouseEvent('click', { bubbles: true, cancelable: true, view: window }));
+          setTimeout(() => {
+            window.URL.revokeObjectURL(data);
+            link.remove();
+          }, 100);
+        },
+          (error: any) => {
+            Swal.fire({
+              title: 'Error!',
+              text: error?.error?.message || 'There was an issue generating the Excel for allocation report.',
+              icon: 'error',
+              confirmButtonText: 'Ok'
+            });
+          });
+    }
+  }
+
+  generatePDF() {
+    if ((this.smartcard != null && this.smartcard != undefined && this.smartcard > 0) || (this.selectedLcoName != null && this.selectedLcoName != undefined && this.selectedLcoName > 0)) {
+      this.userService.getAllocatedSmartcardReport(this.role, this.username, this.selectedLcoName, this.smartcard || 0, 1)
+        .subscribe((x: Blob) => {
+          const blob = new Blob([x], { type: 'application/pdf' });
+          const data = window.URL.createObjectURL(blob);
+          const link = document.createElement('a');
+          link.href = data;
+          // link.download = (this.reportTitle + ".pdf").toUpperCase();
+          link.download = `Smartcard Allocation Report.pdf`.toUpperCase();
+
+          link.dispatchEvent(new MouseEvent('click', { bubbles: true, cancelable: true, view: window }));
+          setTimeout(() => {
+            window.URL.revokeObjectURL(data);
+            link.remove();
+          }, 100);
+        },
+          (error: any) => {
+            Swal.fire({
+              title: 'Error!',
+              text: error?.error?.message || 'There was an issue generating the Pdf for allocation report.',
+              icon: 'error',
+              confirmButtonText: 'Ok'
+            });
+          });
+
+    }
+
+  }
 }
+

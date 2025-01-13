@@ -1,4 +1,4 @@
-import { Component, signal } from '@angular/core';
+import { Component, OnInit, signal } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
 import { BaseService } from 'src/app/_core/service/base.service';
@@ -10,11 +10,25 @@ import { SwalService } from 'src/app/_core/service/swal.service';
   templateUrl: './msoreports.component.html',
   styleUrls: ['./msoreports.component.scss']
 })
-export class MsoreportsComponent {
-   constructor(private route: ActivatedRoute, private userservice: BaseService, private swal: SwalService, private router: Router, private storageservice: StorageService, public dialog: MatDialog,) {
-  
-    }
-step = signal(0);
+export class MsoreportsComponent implements OnInit {
+  constructor(private route: ActivatedRoute, private userservice: BaseService, private swal: SwalService, private router: Router, private storageservice: StorageService, public dialog: MatDialog,) {
+
+  }
+
+  role: any;
+  username: any;
+
+  isshow: boolean = false;
+  ngOnInit(): void {
+    this.role = this.storageservice.getUserRole();
+    this.username = this.storageservice.getUsername();
+
+    this.userservice.getMsoDetails(this.role, this.username).subscribe((res: any) => {
+      console.log(res);
+      this.isshow = res.msoName == 'AJK' ? true : false;
+    });
+  }
+  step = signal(0);
   setStep(index: number) {
     this.step.set(index);
   }
@@ -30,7 +44,9 @@ step = signal(0);
   openMsoDialog(event: any) {
     console.log(event);
     console.log(event);
-    this.router.navigate(['admin/msodialogueReports/'+ event]);
+    this.router.navigate(['admin/msodialogueReports/' + event]);
   }
+
+  // 
 }
 

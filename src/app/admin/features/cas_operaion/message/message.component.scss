@@ -8,31 +8,6 @@
 //     overflow: hidden;
 // }
 
-.card .title1 {
-    padding: 5px;
-    background: #f6f8fa;
-}
-
-.card .title1 p {
-    font-size: 25px;
-    font-weight: 500;
-    // position: relative;
-}
-
-.card .title1 p::before {
-    content: "";
-    // position: absolute;
-    bottom: 0px;
-    left: 0;
-    width: 100px;
-    height: 3px;
-    // background: linear-gradient(to right, #058372, #acf3cc);
-}
-
-.card {
-    padding: 0.5rem;
-}
-
 
 .input-box label {
     font-weight: 500;

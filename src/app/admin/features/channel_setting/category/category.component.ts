@@ -31,7 +31,14 @@ export class CategoryComponent {
       resizable: true,
       filter: true,
       // width: 180,
-      floatingFilter: true
+      floatingFilter: true,
+      comparator: (valueA: any, valueB: any) => {
+        const normalizedA = valueA ? valueA.toString().trim().toLowerCase() : '';
+        const normalizedB = valueB ? valueB.toString().trim().toLowerCase() : '';
+        if (normalizedA < normalizedB) return -1;
+        if (normalizedA > normalizedB) return 1;
+        return 0;
+      },
     },
     paginationPageSize: 10,
     pagination: true,
@@ -63,7 +70,7 @@ export class CategoryComponent {
     {
       headerName: 'CATEGORY NAME',
       field: 'name',
-      width: 690,
+      flex: 1,
       editable: true,
       cellEditor: 'agTextCellEditor',
       onCellValueChanged: (event) => {
@@ -73,70 +80,22 @@ export class CategoryComponent {
     },
 
     {
-      headerName: "ISACTIVE",
+      headerName: "ACTIVE STATUS",
       field: 'isactive',
-      width: 600,
-      // cellRenderer: (params: any) => {
-      //   const isActive = params.data.isactive;
-      //   const toggleButton = document.createElement('button');
-      //   toggleButton.style.backgroundColor = 'transparent';
-      //   toggleButton.style.border = 'none';
-      //   toggleButton.style.cursor = 'pointer';
-      //   toggleButton.style.marginRight = '6px';
-      //   toggleButton.style.fontSize = '22px';
-      //   const icon = document.createElement('i');
-      //   icon.className = 'fa';
-      //   toggleButton.appendChild(icon);
-      //   const updateButtonStyle = (active: boolean) => {
-      //     if (active) {
-      //       icon.className = 'fa-solid fa-toggle-on';
-      //       toggleButton.style.color = '#4CAF50';
-      //       toggleButton.style.fontSize = '24px'; // Medium size for the button
-      //       icon.style.fontSize = '24px';
-      //       toggleButton.title = 'Deactivate the Customer';
-      //     } else {
-      //       icon.className = 'fa-solid fa-toggle-off';
-      //       toggleButton.style.color = 'rgb(248 92 133)';
-      //       toggleButton.style.fontSize = '24px'; // Medium size for the button
-      //       icon.style.fontSize = '24px';
-      //       toggleButton.title = 'Activate the Customer';
-      //     }
-      //   };
-      //   updateButtonStyle(isActive);
-      //   toggleButton.addEventListener('click', () => {
-      //     const newIsActive = !params.data.isactive;
-      //     params.data.isactive = newIsActive;
-      //     updateButtonStyle(newIsActive);
-      //     params.node.setDataValue('isactive', newIsActive);
-      //     console.log('Toggle button clicked:', newIsActive);
-      //     this.updateDeviceModelname(params.data.name, newIsActive, params.data.id);
-      //   });
-
-      //   const div = document.createElement('div');
-      //   div.appendChild(toggleButton);
-      //   return div;
-      // },
-      // cellEditor: 'agTextCellEditor',
-      // onCellValueChanged: (event) => {
-      //   console.log('Cell value changed:', event.data.name);
-      //   this.updateDeviceModelname(event.data.name, event.data.isactive, event.data.id);
-      // }
-
-
-
+      flex: 1,
       cellRenderer: (params: any) => {
         const isActive = params.data.isactive;
 
         const toggleContainer = document.createElement('div');
         toggleContainer.style.display = 'flex';
-        toggleContainer.style.alignItems = 'left';
-        toggleContainer.style.justifyContent = 'left';
+        toggleContainer.style.alignItems = 'center';
+        toggleContainer.style.justifyContent = 'center';
 
         const toggleSwitch = document.createElement('div');
         toggleSwitch.style.width = '45px';
         toggleSwitch.style.height = '25px';
         toggleSwitch.style.borderRadius = '15px';
-        toggleSwitch.style.backgroundColor = isActive ? '#4CAF50' : '#616060';
+        toggleSwitch.style.backgroundColor = isActive ? '#93b6eb' : 'rgb(115 115 115)';
         toggleSwitch.style.position = 'relative';
         toggleSwitch.style.cursor = 'pointer';
         toggleSwitch.style.transition = 'background-color 0.3s ease';
@@ -154,20 +113,20 @@ export class CategoryComponent {
 
         toggleSwitch.appendChild(toggleCircle);
 
-        const updateToggleStyle = (active: boolean) => {
-          toggleSwitch.style.backgroundColor = active ? '#4CAF50' : '#616060';
-          toggleCircle.style.left = active ? 'calc(100% - 22px)' : '3px';
-          toggleSwitch.title = active ? 'Deactivate the Customer' : 'Activate the Customer';
-        };
+        // const updateToggleStyle = (active: boolean) => {
+        //   toggleSwitch.style.backgroundColor = active ? '#4CAF50' : '#616060';
+        //   toggleCircle.style.left = active ? 'calc(100% - 22px)' : '3px';
+        //   toggleSwitch.title = active ? 'Deactivate the Customer' : 'Activate the Customer';
+        // };
 
-        toggleSwitch.addEventListener('click', () => {
-          const currentStatus = params.data.isactive;
-          const newStatus = !currentStatus;
-          params.data.isactive = newStatus; 
-          updateToggleStyle(newStatus);
+        // toggleSwitch.addEventListener('click', () => {
+        //   const currentStatus = params.data.isactive;
+        //   const newStatus = !currentStatus;
+        //   params.data.isactive = newStatus; 
+        //   updateToggleStyle(newStatus);
 
-          console.log(`Status changed to: ${newStatus ? 'Active' : 'Inactive'}`);
-        });
+        //   console.log(`Status changed to: ${newStatus ? 'Active' : 'Inactive'}`);
+        // });
         toggleContainer.appendChild(toggleSwitch);
         return toggleContainer;
       }
@@ -180,6 +139,7 @@ export class CategoryComponent {
 
   onGridReady(params: { api: any; }) {
     this.gridApi = params.api;
+    this.gridApi.sizeColumnsToFit();
   }
   onSelectionChanged() {
     if (this.gridApi) {
@@ -296,12 +256,12 @@ export class CategoryComponent {
       showCancelButton: true,
       confirmButtonColor: "#3085d6",
       cancelButtonColor: "#d33",
-      confirmButtonText: "Yes, delete it!"
+      confirmButtonText: "Yes, Deactive it!"
     }).then((result) => {
       if (result.isConfirmed) {
         Swal.fire({
-          title: 'Deleting...',
-          text: 'Please wait while the Category is being deleted',
+          title: 'Deactivating...',
+          text: 'Please wait while the Category is being Deactivated',
           allowOutsideClick: false,
           didOpen: () => {
             Swal.showLoading(null);
@@ -310,7 +270,7 @@ export class CategoryComponent {
 
         this.userService.deleteCategory(this.role, this.username, this.selectedIds).subscribe((res: any) => {
           Swal.fire({
-            title: 'Deleted!',
+            title: 'Deactivated!',
             text: res.message,
             icon: 'success',
             timer: 2000,

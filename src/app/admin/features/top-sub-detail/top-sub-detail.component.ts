@@ -19,14 +19,12 @@ export class TopSubDetailComponent implements OnInit {
       filter: false,
       floatingFilter: true,
       comparator: (valueA: any, valueB: any) => {
-        if (!isNaN(valueA) && !isNaN(valueB)) {
-          return Number(valueA) - Number(valueB); 
-        }
-        if (!valueA) valueA = '';
-        if (!valueB) valueB = '';
-        return valueA.toLowerCase().localeCompare(valueB.toLowerCase());
+        const normalizedA = valueA ? valueA.toString().trim().toLowerCase() : '';
+        const normalizedB = valueB ? valueB.toString().trim().toLowerCase() : '';
+        if (normalizedA < normalizedB) return -1;
+        if (normalizedA > normalizedB) return 1;
+        return 0;
       },
-
     },
 
     // pagination: true,
@@ -38,26 +36,29 @@ export class TopSubDetailComponent implements OnInit {
   addonRowData: any[] = [];
   alacarteRowData: any[] = [];
   columnDefs: any[] = [
-    { headerName: "PACKAGE NAME", field: 'productname', width: 350, filter: true, },
-    { headerName: 'COUNT', field: 'count', width: 150, filter: false,
-      
-     },
+    { headerName: "PACKAGE NAME", field: 'productname', flex: 1, filter: true,  sortable: true, },
+    {
+      headerName: 'COUNT', field: 'count', flex: 1, filter: false,  sortable: true,
+
+    },
   ];
   constructor(private userservise: BaseService, private storageservice: StorageService) {
     this.username = storageservice.getUsername();
     this.role = storageservice.getUserRole();
-    userservise.getAllSubscriptionDetails(this.role, this.username).subscribe((data: any) => {
+
+  }
+  ngOnInit(): void {
+    this.userservise.getAllSubscriptionDetails(this.role, this.username).subscribe((data: any) => {
       console.log(data);
       this.baseRowData = data.baselist || [];
       this.addonRowData = data.addonlist || [];
       this.alacarteRowData = data.alacartelist || [];
     })
   }
-  ngOnInit(): void {
-
-  }
 
   onGridReady(params: any) {
     this.gridApi = params.api;
+      this.gridApi.sizeColumnsToFit();
+
   }
 }

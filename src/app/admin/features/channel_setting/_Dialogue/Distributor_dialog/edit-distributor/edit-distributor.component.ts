@@ -1,5 +1,5 @@
 import { Component, Inject } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { AbstractControl, FormBuilder, FormGroup, ValidationErrors, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { BaseService } from 'src/app/_core/service/base.service';
 import { StorageService } from 'src/app/_core/service/storage.service';
@@ -50,12 +50,26 @@ export class EditDistributorComponent {
       distributor_name: [data.name, Validators.required],
       distributor_contact: [data.contact, [Validators.required, Validators.pattern('^[0-9]*$'), Validators.maxLength(10)]],
       distributor_address: [data.address, Validators.required],
-      distributor_email: [data.email, [Validators.required, Validators.email]],
+      // distributor_email: [data.email, [Validators.required, Validators.email]],
+      distributor_email: [
+        '', 
+        [Validators.required, Validators.email, this.customEmailValidator()]
+      ],
       distributor_isactive: [data.isactive]
     });
   }
 
+ customEmailValidator() {
+    return (control: AbstractControl): ValidationErrors | null => {
+      const email = control.value;
+      const emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.(in|com)$/;
 
+      if (email && !emailPattern.test(email)) {
+        return { invalidEmail: true }; 
+      }
+      return null; 
+    };
+  }
   ngOnInit() {
 
   }

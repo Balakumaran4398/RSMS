@@ -9,6 +9,7 @@ import Swal from 'sweetalert2';
 import { PackageBASEDEMOComponent } from '../../package Creation/package-base-demo/package-base-demo.component';
 import { FormsModule } from '@angular/forms';
 import { SwalService } from 'src/app/_core/service/swal.service';
+import { Location } from '@angular/common';
 
 @Component({
   selector: 'app-addon-manage',
@@ -40,6 +41,10 @@ export class AddonManageComponent {
   added_alacarte_list: any = [];
   available_bouquet_list: any = [];
   added_bouquet_list: any = [];
+  before_available_alacarte_list: any = [];
+  before_added_alacarte_list: any = [];
+  before_available_bouquet_list: any = [];
+  before_added_bouquet_list: any = [];
   selectedItems = new Set<string>();
   availableFilter: any;
   addedFilter: any;
@@ -64,8 +69,12 @@ export class AddonManageComponent {
   alacarteOutput: any;
   adalarteOutput: any;
 
+  originalAvailableAlacarteList: any[] = [];
+  originalAddedAlacarteList: any[] = [];
+  originalAvailableBouquetList: any[] = [];
+  originalAddedBouquetList: any[] = [];
 
-  constructor(public dialog: MatDialog, public router: Router, private route: ActivatedRoute, private cdr: ChangeDetectorRef, private swal: SwalService, private userService: BaseService, private storageservice: StorageService) {
+  constructor(public dialog: MatDialog, public router: Router, private route: ActivatedRoute, private location: Location, private cdr: ChangeDetectorRef, private swal: SwalService, private userService: BaseService, private storageservice: StorageService) {
     this.username = storageservice.getUsername();
     this.role = storageservice.getUserRole();
   }
@@ -116,7 +125,7 @@ export class AddonManageComponent {
 
   done = ['Get up', 'Brush teeth', 'Take a shower', 'Check e-mail'];
   containerData: any = [];
-  
+
 
   drop(event: CdkDragDrop<string[]>, val: number) {
     if (event.previousContainer === event.container) {
@@ -124,13 +133,13 @@ export class AddonManageComponent {
     } else {
       transferArrayItem(event.previousContainer.data, event.container.data, event.previousIndex, event.currentIndex);
       this.available_alacarte_list = event.previousContainer.data;
-          this.added_alacarte_list = event.container.data;
-       if (val === 1) {
+      this.added_alacarte_list = event.container.data;
+      if (val === 1) {
         this.alacarteOutput = this.available_alacarte_list;
       } else if (val === 2) {
         this.adalarteOutput = this.added_alacarte_list;
       }
-       const alacarteIds = (this.alacarteOutput || this.adalarteOutput).map((item: any) => {
+      const alacarteIds = (this.alacarteOutput || this.adalarteOutput).map((item: any) => {
         const match = item.match(/\((\d+)\)/);
         return match ? Number(match[1]) : null;
       }).filter((id: any) => id !== null);
@@ -139,9 +148,12 @@ export class AddonManageComponent {
     }
   }
 
+  goBack(): void {
+    this.location.back();
+  }
   drop1(event: CdkDragDrop<string[]>, val: number) {
-    const draggedItem = event.item; 
-    const draggedElement = draggedItem.element.nativeElement; 
+    const draggedItem = event.item;
+    const draggedElement = draggedItem.element.nativeElement;
     const draggedData = draggedItem.data;
     console.log('Dragged data:', draggedData);
     console.log('Dragged element:', draggedElement);
@@ -184,15 +196,15 @@ export class AddonManageComponent {
         console.log("888")
         this.available_bouquet_list = event.previousContainer.data;
         console.log("99")
-        console.log('bouquet list',this.bouquet_removelist_id);
-        
+        console.log('bouquet list', this.bouquet_removelist_id);
+
       }
       this.containerData = this.added_bouquet_list.map((item: any) => {
         console.log("10")
         const match = item.match(/\((.*?)\)/);
         return match ? match[1] : null;
       }).filter(Boolean);
-      console.log('container',this.containerData);
+      console.log('container', this.containerData);
       console.log("11")
     }
     console.log("-------------------------------------------------")
@@ -251,7 +263,7 @@ export class AddonManageComponent {
     this.router.navigateByUrl("admin/Addon");
   }
   trackByFn(index: number, item: string) {
-    return index; 
+    return index;
   }
   pay_channel(type: any) {
     let dialogData = { type: type, package_id: this.id }
@@ -281,6 +293,9 @@ export class AddonManageComponent {
   moveSelectedAlacarte_Items(direction: 'left' | 'right') {
     console.log(event);
     const itemsToMove: any[] = [];
+    this.before_added_alacarte_list = this.added_alacarte_list.length;
+    this.before_available_alacarte_list = this.available_alacarte_list.length;
+    console.log(' this.before_added_alacarte_list', this.before_added_alacarte_list);
     if (direction === 'right') {
       this.selectedItems.forEach(item => {
         const index = this.available_alacarte_list.indexOf(item);
@@ -289,6 +304,7 @@ export class AddonManageComponent {
           this.added_alacarte_list.push(item);
           itemsToMove.push(item);
           // console.log(this.added_alacarte_list.push(item));
+          console.log(this.added_alacarte_list.length);
         }
         this.containerData = this.added_alacarte_list.map((item: any) => {
           const match = item.match(/\((.*?)\)/);
@@ -296,6 +312,7 @@ export class AddonManageComponent {
         }).filter(Boolean);
         console.log(this.containerData);
         // console.log(this.added_alacarte_list);
+
       });
     } else if (direction === 'left') {
       this.selectedItems.forEach(item => {
@@ -307,6 +324,7 @@ export class AddonManageComponent {
         }
       });
       // console.log(this.available_alacarte_list);
+      console.log(this.added_alacarte_list.length);
       this.containerData = this.added_alacarte_list.map((item: any) => {
         const match = item.match(/\((.*?)\)/);
         return match ? match[1] : null;
@@ -328,6 +346,12 @@ export class AddonManageComponent {
 
   moveSelectedBouquet_Items(direction: 'left' | 'right') {
     const itemsToMove: any[] = [];
+    this.before_available_alacarte_list = this.available_alacarte_list.length
+    this.before_available_bouquet_list = this.available_bouquet_list.length;
+    this.added_bouquet_list = this.added_bouquet_list.length;
+    console.log('1111111111111', this.before_available_alacarte_list);
+
+
     if (direction === 'right') {
       this.selectedItems.forEach(item => {
         const index = this.available_bouquet_list.indexOf(item);
@@ -335,6 +359,7 @@ export class AddonManageComponent {
           this.available_bouquet_list.splice(index, 1);
           this.added_bouquet_list.push(item);
           itemsToMove.push(item);
+          console.log('22222222222222', this.available_bouquet_list.length);
         }
       });
       this.containerData = this.added_bouquet_list.map((item: any) => {
@@ -343,6 +368,7 @@ export class AddonManageComponent {
       }).filter(Boolean);
       console.log(this.containerData);
       console.log(this.added_bouquet_list);
+      console.log(this.added_bouquet_list.length);
     } else if (direction === 'left') {
       this.selectedItems.forEach(item => {
         const index = this.added_bouquet_list.indexOf(item);
@@ -361,6 +387,8 @@ export class AddonManageComponent {
         return match ? match[1] : null;
       }).filter(Boolean);
       console.log(this.containerData);
+      console.log(this.added_bouquet_list.length);
+
     }
     this.filteredAvailableBouquetList = [...this.available_bouquet_list];
     this.filteredAddedBouquetList = [...this.added_bouquet_list];
@@ -395,7 +423,7 @@ export class AddonManageComponent {
   moveAll_bouquet_Items(direction: 'left' | 'right') {
     if (direction === 'right') {
       console.log('right to left');
-      
+
       this.added_bouquet_list.push(...this.available_bouquet_list);
       this.available_bouquet_list.forEach((item: any) => {
         if (!this.added_bouquet_list.includes(item)) {
@@ -488,21 +516,59 @@ export class AddonManageComponent {
     );
   }
 
+
   save() {
+    console.log('this.before_available_alacarte_list', this.before_available_alacarte_list.length);
+    console.log('this.available_alacarte_list', this.available_alacarte_list.length);
+    console.log('this.before_available_bouquet_list', this.before_available_bouquet_list.length);
+    console.log('this.available_bouquet_list', this.available_bouquet_list.length);
+    console.log('this.before_added_alacarte_list', this.before_added_alacarte_list.length);
+    console.log('this.added_alacarte_list', this.added_alacarte_list.length);
+
+    if (this.before_available_alacarte_list == this.available_alacarte_list.length) {
+      this.modified = !(
+        JSON.stringify(this.available_alacarte_list) === JSON.stringify(this.filteredAvailableAlacarteList) &&
+        JSON.stringify(this.added_alacarte_list) === JSON.stringify(this.filteredAddedList)
+      );
+      console.log('11111  if modified');
+
+    } else if (this.before_available_alacarte_list == !this.available_alacarte_list.length) {
+      this.modified = (
+        JSON.stringify(this.available_alacarte_list) === JSON.stringify(this.filteredAvailableAlacarteList) &&
+        JSON.stringify(this.added_alacarte_list) === JSON.stringify(this.filteredAddedList)
+      );
+      console.log('22222222 if modified');
+
+    }
+    if (this.before_added_alacarte_list === !this.added_alacarte_list.length) {
+      this.modified = !(
+        JSON.stringify(this.available_alacarte_list) === JSON.stringify(this.filteredAvailableAlacarteList) &&
+        JSON.stringify(this.added_alacarte_list) === JSON.stringify(this.filteredAddedList)
+      );
+      console.log('11111111 else modified');
+
+    } else if (this.before_added_alacarte_list === this.added_alacarte_list.length) {
+      this.modified = (
+        JSON.stringify(this.available_alacarte_list) === JSON.stringify(this.filteredAvailableAlacarteList) &&
+        JSON.stringify(this.added_alacarte_list) === JSON.stringify(this.filteredAddedList)
+      );
+      console.log('22222222 else modified');
+
+    }
     this.containerData = this.containerData.length == 0 ? 0 : this.containerData;
     console.log(this.containerData);
-    if (!this.modified || !this.alacarte_list_id || !this.role || !this.username || !this.id) {
-      Swal.fire({
-        icon: 'error',
-        title: 'Error',
-        text: 'All fields are required!',
-      });
-      return;
-    }
+    // if (this.modified || !this.alacarte_list_id || !this.role || !this.username || !this.id) {
+    //   Swal.fire({
+    //     icon: 'error',
+    //     title: 'Error',
+    //     text: 'All fields are required!',
+    //   });
+    //   return;
+    // }
     console.log('save');
     Swal.fire({
       title: "Are you sure?",
-      text: "You won't be able to revert this!",
+      // text: "You won't be able to revert this!",
       icon: "warning",
       showCancelButton: true,
       confirmButtonColor: "#3085d6",
@@ -520,13 +586,16 @@ export class AddonManageComponent {
         });
         this.userService.AddingdAlacarteTo_Addon_Package(this.modified, this.containerData, this.role, this.username, this.id).subscribe((res: any) => {
           console.log(res)
-          this.swal.success(res?.message);
+          // this.swal.success(res?.message);
+          this.filteredAvailableAlacarteList = [...this.available_alacarte_list];
+          this.filteredAddedList = [...this.added_alacarte_list];
         }, (err) => {
           this.swal.Error(err?.error?.message);
         });
       }
     });
     this.selectedItems.clear();
+
   }
   save1() {
     this.containerData = this.containerData.length == 0 ? 0 : this.containerData;
@@ -537,7 +606,7 @@ export class AddonManageComponent {
 
     Swal.fire({
       title: "Are you sure?",
-      text: "You won't be able to revert this!",
+      // text: "You won't be able to revert this!",
       icon: "warning",
       showCancelButton: true,
       confirmButtonColor: "#3085d6",

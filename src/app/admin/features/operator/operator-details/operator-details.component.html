@@ -15,14 +15,14 @@
             </mat-form-field>
         </div>
         <div class="d-flex justify-content-center mb-2" style="align-items: baseline;">
-            <button class="btn btn-outline-info mx-1" mat-raised-button color="custom-select"
+            <button class="btn btn-outline-info mx-1 bttn" mat-raised-button color="custom-select"
                 style="background-color: #0c5e85;color: white;" type="button" (click)="New_lco()"> <i
                     class="fa fa-plus mx-2" style="padding-right: 1px;font-size: 14px"></i>
                 NEW LCO
             </button>
         </div>
         <div class="d-flex justify-content-center mb-2" style="align-items: baseline;">
-            <button class="btn btn-outline-info mx-1" mat-raised-button color="custom-select"
+            <button class="btn btn-outline-info mx-1 bttn" mat-raised-button color="custom-select"
                 style="background-color: #0c5e85;color: white;" type="button" (click)="New_lco_business()"> <i
                     class="fa fa-plus mx-2" style="padding-right: 1px;font-size: 14px"></i>
                 New LCO Business
@@ -70,7 +70,7 @@
                                 <span class="separator1">:</span>
                                 <span class="last1">{{ operator?.isactive === 'true' ? 'Active' : 'Deactive' }}</span>
                             </p>
-                            
+
                             <p class="text">
                                 <span class="label label1">user id</span>
                                 <span class="separator">:</span>
@@ -169,7 +169,7 @@
                                     <span class="tooltip">LCO WISE RETAILER REPORT </span>
                                 </div>
                             </div>
-                            <!-- <div class="files tooltip-container mx-2"
+                            <div class="files tooltip-container mx-2"
                                 (click)="openDialog('areawise',operator.operatorid)">
                                 <div class="files tooltip-container ">
                                     <i class="fa fa-calculator" style="font-size:20px;color:var(--primary-color)"
@@ -177,7 +177,7 @@
                                     <span class="tooltip">AREAWISE CONECTION COUNT REPORT
                                     </span>
                                 </div>
-                            </div> -->
+                            </div>
 
                             <div class="files tooltip-container mx-2"
                                 (click)="opencancelsubDialog('cancel_Subscription',operator.operatorid)">
@@ -214,7 +214,7 @@
                         <div class="col-2 vertical tooltip-container"
                             (click)="openDialog('active_smartcard_connection',operator.operatorid)">
                             <div class="col-2 vertical tooltip-container">
-                                <p class="sub-text">NotExpiry</p>
+                                <p class="sub-text">Active</p>
                                 <span style="color: #0e610b;">
                                     <div class="circle" style="background-color: rgb(122, 64, 129);"><span
                                             class="circle-text">{{operator?.activecount}}</span></div>

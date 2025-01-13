@@ -95,7 +95,14 @@ export class AddonActivationComponent {
       resizable: true,
       filter: true,
       width: 180,
-      floatingFilter: true
+      floatingFilter: true,
+      comparator: (valueA: any, valueB: any) => {
+        const normalizedA = valueA ? valueA.toString().trim().toLowerCase() : '';
+        const normalizedB = valueB ? valueB.toString().trim().toLowerCase() : '';
+        if (normalizedA < normalizedB) return -1;
+        if (normalizedA > normalizedB) return 1;
+        return 0;
+      },
     },
     paginationPageSize: 10,
     pagination: true,
@@ -176,7 +183,7 @@ export class AddonActivationComponent {
     // }
     // console.log(this.remark);
 
-    this.userservice.getBulkOperationRefreshList(this.role, this.username, 'addon_remove', 6)
+    this.userservice.getBulkOperationRefreshList(this.role, this.username, 'addon_add', 4)
       .subscribe(
         (response: HttpResponse<any[]>) => { // Expect HttpResponse<any[]>
           if (response.status === 200) {
@@ -197,7 +204,7 @@ export class AddonActivationComponent {
         }
       );
   }
-  addongetData() {
+  removegetData() {
     this.rowData = []
     const dateToPass = this.selectedDate || this.date;
     // if (this.selectedTab == 'activation') {
@@ -205,7 +212,7 @@ export class AddonActivationComponent {
     // } else {
     //   this.remark = 'addon_remove'
     // }
-    this.userservice.getBulkOperationListByDate(this.role, this.username, 'addon_add', this.date, 4)
+    this.userservice.getBulkOperationListByDate(this.role, this.username, 'addon_remove', this.date, 6)
       .subscribe(
         (response: HttpResponse<any[]>) => { // Expect HttpResponse<any[]>
           if (response.status === 200) {

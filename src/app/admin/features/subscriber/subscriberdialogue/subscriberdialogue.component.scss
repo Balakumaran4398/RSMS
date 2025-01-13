@@ -30,7 +30,9 @@
 .display {
   display: flex;
 }
-
+.cancelcard{
+  
+}
 .close-icon {
   font-size: 19px;
   cursor: pointer;
@@ -275,7 +277,7 @@ body {
 
 .container {
   margin: auto;
-  display: flex;
+  // display: flex;
   justify-content: center;
   align-items: center;
 }

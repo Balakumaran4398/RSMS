@@ -28,8 +28,15 @@ export class ChannelTypeComponent {
       sortable: true,
       resizable: true,
       filter: true,
-      // width: 300,
-      floatingFilter: true
+      floatingFilter: true,
+      comparator: (valueA: any, valueB: any) => {
+        const normalizedA = valueA ? valueA.toString().trim().toLowerCase() : '';
+        const normalizedB = valueB ? valueB.toString().trim().toLowerCase() : '';
+        if (normalizedA < normalizedB) return -1;
+        if (normalizedA > normalizedB) return 1;
+        return 0;
+      },
+
     },
     paginationPageSize: 10,
     pagination: true,
@@ -52,26 +59,34 @@ export class ChannelTypeComponent {
   }
   columnDefs: ColDef[] = [
     {
-      headerName: "S.No", lockPosition: true, valueGetter: 'node.rowIndex+1',  headerCheckboxSelection: true,
-      checkboxSelection: true,width:140,
+      headerName: "S.No", lockPosition: true, valueGetter: 'node.rowIndex+1', headerCheckboxSelection: true,
+      checkboxSelection: true, width: 140,
     },
     {
       headerName: 'CHANNEL TYPE NAME',
       field: 'name',
-      width: 700,cellStyle: { textAlign: 'left' },
-      // editable: true,
-      // cellEditor: 'agTextCellEditor',
-      // onCellValueChanged: (event) => {
-      //   this.updateDeviceModelname(event.data.name, event.data.isactive, event.data.id);
-      // }
+      flex: 1, cellStyle: { textAlign: 'left' },
+      editable: true,
+      cellEditor: 'agTextCellEditor',
+      onCellValueChanged: (event) => {
+        this.updateDeviceModelname(event.data.name, event.data.isactive, event.data.id);
+      },
+      tooltipValueGetter: (params) => {
+        return `Channel: ${params.value}`; // Customize tooltip text
+      },
+      cellRenderer: (params: any) => {
+        const editButton = document.createElement('button');
+        editButton.title = 'Edit the Channel';
+        return params.value;
+      },
     },
 
     {
-      headerName: "ISACTIVE",
+      headerName: "STATUS",
       field: 'isactive',
-      width: 500,
-     cellRenderer: (params: any) => {
-        const isActive = params.data.isactive;
+      flex: 1,
+      cellRenderer: (params: any) => {
+        var isActive = params.data.isactive;
 
         const toggleContainer = document.createElement('div');
         toggleContainer.style.display = 'flex';
@@ -82,7 +97,7 @@ export class ChannelTypeComponent {
         toggleSwitch.style.width = '45px';
         toggleSwitch.style.height = '25px';
         toggleSwitch.style.borderRadius = '15px';
-        toggleSwitch.style.backgroundColor = isActive ? '#4CAF50' : '#616060';
+        toggleSwitch.style.backgroundColor = isActive ? '#93b6eb' : 'rgb(115 115 115)';
         toggleSwitch.style.position = 'relative';
         toggleSwitch.style.cursor = 'pointer';
         toggleSwitch.style.transition = 'background-color 0.3s ease';
@@ -100,20 +115,37 @@ export class ChannelTypeComponent {
 
         toggleSwitch.appendChild(toggleCircle);
 
-        const updateToggleStyle = (active: boolean) => {
-          toggleSwitch.style.backgroundColor = active ? '#4CAF50' : '#616060';
-          toggleCircle.style.left = active ? 'calc(100% - 22px)' : '3px';
-          toggleSwitch.title = active ? 'Deactivate the Customer' : 'Activate the Customer';
-        };
 
         toggleSwitch.addEventListener('click', () => {
-          const currentStatus = params.data.isactive;
-          const newStatus = !currentStatus;
-          params.data.isactive = newStatus; 
-          updateToggleStyle(newStatus);
+          // Toggle the isActive value
+          isActive = !isActive;
+          // Change the background color of the toggle switch
+          toggleSwitch.style.backgroundColor = isActive ? '#93b6eb' : 'rgb(115 115 115)';
 
-          console.log(`Status changed to: ${newStatus ? 'Active' : 'Inactive'}`);
+          // Move the toggle circle
+          toggleCircle.style.left = isActive ? 'calc(100% - 22px)' : '3px';
+
+          if (isActive) {
+            this.Active(params.data.id);
+          } else {
+            this.Deactive(params.data.id);
+          }
         });
+
+        // const updateToggleStyle = (active: boolean) => {
+        //   toggleSwitch.style.backgroundColor = active ? '#4CAF50' : '#616060';
+        //   toggleCircle.style.left = active ? 'calc(100% - 22px)' : '3px';
+        //   toggleSwitch.title = active ? 'Deactivate the Customer' : 'Activate the Customer';
+        // };
+
+        // toggleSwitch.addEventListener('click', () => {
+        //   const currentStatus = params.data.isactive;
+        //   const newStatus = !currentStatus;
+        //   params.data.isactive = newStatus; 
+        //   updateToggleStyle(newStatus);
+
+        //   console.log(`Status changed to: ${newStatus ? 'Active' : 'Inactive'}`);
+        // });
         toggleContainer.appendChild(toggleSwitch);
         return toggleContainer;
       }
@@ -157,7 +189,7 @@ export class ChannelTypeComponent {
           }
         });
         this.userService.ChannelType_update(requestBody).subscribe(
-          (res:any) => {
+          (res: any) => {
             Swal.fire({
               position: "center",
               icon: "success",
@@ -237,7 +269,7 @@ export class ChannelTypeComponent {
       };
     });
   }
-  Active() {
+  Active(ids: any) {
     Swal.fire({
       title: "Are you sure?",
       text: "You won't be able to Active this!",
@@ -256,7 +288,7 @@ export class ChannelTypeComponent {
             Swal.showLoading(null);
           }
         });
-        this.userService.ActiveChannelTpe(this.role, this.username, this.selectedIds).subscribe((res: any) => {
+        this.userService.ActiveChannelTpe(this.role, this.username, ids).subscribe((res: any) => {
           Swal.fire({
             title: 'Activated!',
             text: res.message,
@@ -277,7 +309,7 @@ export class ChannelTypeComponent {
       }
     });
   }
-  Deactive() {
+  Deactive(ids: any) {
     Swal.fire({
       title: "Are you sure?",
       text: "You won't be able to revert this!",
@@ -285,20 +317,20 @@ export class ChannelTypeComponent {
       showCancelButton: true,
       confirmButtonColor: "#3085d6",
       cancelButtonColor: "#d33",
-      confirmButtonText: "Yes, delete it!"
+      confirmButtonText: "Yes, Deactivate it!"
     }).then((result) => {
       if (result.isConfirmed) {
         Swal.fire({
-          title: 'Deleting...',
-          text: 'Please wait while the Channel Type is being deleted',
+          title: 'Deactivating...',
+          text: 'Please wait while the Channel Type is being Deactivate',
           allowOutsideClick: false,
           didOpen: () => {
             Swal.showLoading(null);
           }
         });
-        this.userService.deleteChannelType(this.role, this.username, this.selectedIds).subscribe((res: any) => {
+        this.userService.deleteChannelType(this.role, this.username, ids).subscribe((res: any) => {
           Swal.fire({
-            title: 'Deleted!',
+            title: 'Deactivated!',
             text: res.message,
             icon: 'success',
             timer: 2000,

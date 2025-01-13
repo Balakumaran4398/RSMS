@@ -5,7 +5,7 @@ import { StorageService } from 'src/app/_core/service/storage.service';
 import Swal from 'sweetalert2';
 import { DatePipe } from '@angular/common';
 import { SwalService } from 'src/app/_core/service/swal.service';
-import { Any } from 'node_modules1/@sigstore/protobuf-specs/dist/__generated__/google/protobuf/any';
+// import { Any } from 'node_modules1/@sigstore/protobuf-specs/dist/__generated__/google/protobuf/any';
 
 
 @Component({
@@ -55,6 +55,8 @@ export class CreateSubscriberComponent {
   idprooftypeid: any;
   idproofid: any;
 
+
+  today = new Date();
   filteredOperators: any[] = [];
   filteredAreas: any[] = [];
   filteredStreet: any[] = [];
@@ -163,9 +165,16 @@ export class CreateSubscriberComponent {
   }
 
   onAddProofChange(event: any): void {
+
     const selectedValue = event.target.value;
+    console.log(selectedValue);
+
     this.selectedAddProofType = selectedValue.replace(/\(\d+\)/, '').trim();
-    this.form.get('addressproof')?.reset();
+    if (selectedValue.includes('No Proof')) {
+      this.form.get('addressproof')?.setValue('0');
+    } else {
+      this.form.get('addressproof')?.reset();
+    }
     this.applyValidators(this.selectedAddProofType, 'addressproof');
     const addressProofValue = this.form.get('addressproof')?.value;
     if (addressProofValue && this.selectedAddProofType === this.selectedIDProofType) {
@@ -464,6 +473,7 @@ export class CreateSubscriberComponent {
       'dateofbirth', 'mobileno', 'landlineno', 'email',
       'formsubmissiondate', 'addressproof', 'addressprooftypeid', 'idproof', 'idprooftypeid', 'address', 'installaddress',
     ];
+
     this.swal.Loading();
     this.userservice.createSubscriber(this.form.value).subscribe(
       (data: any) => {
@@ -483,9 +493,12 @@ export class CreateSubscriberComponent {
         });
       },
       (error) => {
+        console.log(error);
+
         const errorMessage = errorFields
           .map(field => error?.error?.[field])
           .find(message => message) || 'An error occurred while creating the subscriber.'
+
         this.form.removeControl('addressprooftypeid');
         this.form.addControl('addressprooftypeid', new FormControl(addressprooftypeid))
         this.form.removeControl('idprooftypeid');

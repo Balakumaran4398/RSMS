@@ -288,3 +288,9 @@ body {
 #button-10 .checkbox:checked~.layer {
     background-color: #fcebeb;
 }
+
+
+.input_box label::after {
+    color:transparent !important ;
+  }
+  

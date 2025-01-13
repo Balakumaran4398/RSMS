@@ -1,0 +1,437 @@
+.display {
+    display: flex;
+}
+
+.allreport {
+    position: relative;
+    top: 12px;
+}
+
+.mobileView {
+    position: relative;
+    top: -30px;
+}
+
+h5 {
+    color: rgb(36, 54, 51);
+}
+
+.allsmart {
+    padding: 1rem;
+    background: #008391;
+    color: white;
+    font-size: 17px;
+    font-weight: bold;
+
+    .label {
+        color: #ffffff;
+        margin-right: 1rem;
+        font-weight: bold;
+    }
+
+    .value {
+        color: #010f1b;
+        margin-right: 1rem;
+        // font-weight: bold;
+    }
+}
+
+
+.total {
+    padding: 2rem;
+    // background-color: #008391;
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3);
+}
+
+.finger {
+    font-size: 18px;
+    color: rgb(37, 26, 63);
+    font-weight: 600;
+    position: relative;
+    top: 15px
+}
+
+label {
+    font-size: 15px;
+    font-weight: 600;
+}
+
+span {
+    font-size: 15px;
+    font-weight: 600;
+}
+
+.display1 {
+    display: flex;
+}
+
+.display_datewise {
+    display: block;
+}
+
+.mat-mdc-form-field {
+    flex-direction: row;
+}
+
+@media screen and (max-width:790px) {
+    .display {
+        display: block;
+    }
+
+    .display1 {
+        display: flex;
+        align-items: baseline;
+    }
+
+    .allreport {
+        position: relative;
+        top: 2px;
+    }
+
+    .mobileView {
+        position: relative;
+        top: 0px !important;
+    }
+
+}
+
+@media screen and (max-width:960px) {
+    .display {
+        display: block;
+    }
+
+    .display1 {
+        display: flex;
+        align-items: baseline;
+    }
+
+    .allreport {
+        position: relative;
+        top: 2px;
+    }
+
+    .mobileView {
+        position: relative;
+        top: 0px !important;
+    }
+
+}
+
+
+// .input_box {
+//     display: flex;
+//     align-items: center;
+// }
+
+// .input_box select,
+// .input_box input {
+//     width: 150px;
+//     margin-left: 8px;
+// }
+
+// .export-icon {
+//     cursor: pointer;
+//     display: flex;
+//     align-items: center;
+//     font-size: smaller;
+// }
+
+// .export-icon img {
+//     transition: transform 0.3s ease;
+//     width: 40px;
+//     height: 40px;
+// }
+
+// .export-icon img:hover {
+//     transform: scale(1.1);
+// }
+
+// .card {
+//     padding: 15px;
+// }
+
+// @media (max-width: 768px) {
+//     .input_box {
+//         flex-direction: column;
+//         align-items: stretch;
+//         width: 80%;
+//         /* line-height: 12vh; */
+//         margin-top: 2vh;
+//         margin-left: 5%;
+//     }
+
+//     .input_box select,
+//     .input_box input,
+//     mat-form-field {
+//         width: 100%;
+//     }
+
+//     .d-flex {
+//         flex-wrap: wrap;
+//         /* Wrap items in smaller screens */
+//         justify-content: center;
+//     }
+
+//     .export-icon img {
+//         width: 50px;
+//         margin: 5px 0;
+//     }
+
+//     .mat-mdc-form-field {
+//         flex-direction: row;
+//         height: 9vh;
+//         margin-left: 1vh;
+//     }
+
+//     .submit{
+//         margin-left: 7%;
+//     }
+// }
+
+
+.input_box {
+    display: flex;
+    align-items: center;
+}
+
+.input_box select,
+.input_box input {
+    max-width: 150px;
+    margin-left: 8px;
+    // min-width: 20vh;
+    height: 6vh;
+}
+
+.export-icon {
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    font-size: smaller;
+}
+
+.export-icon img {
+    transition: transform 0.3s ease;
+    width: 40px;
+    height: 40px;
+}
+
+.export-icon img:hover {
+    transform: scale(1.1);
+}
+
+.card {
+    padding: 15px;
+}
+
+.btn-submit {
+    background-color: rgb(26, 129, 133);
+    color: white;
+    height: 35px;
+    border: none;
+    cursor: pointer;
+}
+
+.mat-mdc-form-field {
+    height: 6vh;
+    margin-top: -4px;
+    
+}
+
+.btn-submit:hover {
+    background-color: rgb(20, 100, 105);
+}
+
+@media (max-width: 768px) {
+    .input_box {
+        flex-direction: column;
+        align-items: stretch;
+        width: 80%;
+        margin-top: 2vh;
+        margin-left: 5%;
+        margin-left: 8px;
+
+    }
+
+    .input_box select,
+    .input_box input,
+    mat-form-field {
+        width: 100% !important;
+        min-width: 100%;
+        max-width: 100%;
+        height: 6vh;
+    }
+
+    .d-flex {
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+
+    .export-icon img {
+        width: 50px;
+        margin: 5px 0;
+    }
+
+    .mat-mdc-form-field {
+        flex-direction: row;
+        height: 6vh;
+        margin-left: 1vh;
+    }
+
+    .submit {
+        margin-left: 7%;
+    }
+}
+
+
+.input_sb {
+    width: 98%;
+    max-width: 98%;
+    height: 45px;
+    padding: 12px;
+    border-radius: 12px;
+    border: 1.5px solid lightgrey;
+    outline: none;
+    transition: all 0.3s cubic-bezier(0.19, 1, 0.22, 1);
+    box-shadow: 0px 0px 20px -18px;
+    margin-left: 1%;
+}
+
+.input_sb:hover {
+    border: 2px solid lightgrey;
+    box-shadow: 0px 0px 20px -17px;
+}
+
+.input_sb:active {
+    transform: scale(0.95);
+    box-shadow: 0px 0px 20px -17px rgb(77, 189, 233);
+
+}
+
+.input_sb:focus {
+    border: 2px solid grey;
+}
+
+//   ========================================subscriber bill================================================
+
+.sb-headbox {
+    width: 100%;
+    display: flex;
+    margin-top: 2%;
+    grid-gap: 2%;
+}
+
+.sb-heading {
+    width: 78%;
+    font-weight: bold;
+    color: #0C1F7E;
+}
+
+.sb-detail {
+    width: 22%;
+}
+
+.sb-detailbox {
+    width: 50%;
+    border: 1px solid;
+    padding: 1vh 1vh;
+    border-radius: 5px;
+}
+
+.detailbox-heading {
+    color: white;
+    font-weight: bold;
+    border-radius: 3px;
+    padding: 1vh 1vh;
+    text-align: center;
+}
+
+.padding {
+    padding: 1vh 1vh
+}
+
+
+.mat-icon {
+    font-size: medium;
+    width: 3vh;
+    height: 14px;
+    margin-left: -11%;
+}
+
+/* Container styling */
+.table-container {
+    margin: 20px;
+    overflow: auto;
+    background-color: #f9f9f9;
+    /* Light background for the table */
+    padding: 16px;
+    border-radius: 8px;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+    /* Soft shadow effect */
+}
+
+
+
+/* General table styling */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    /* Removes extra space between table borders */
+}
+
+/* Header styling */
+th {
+    background-color: #3f51b5;
+    /* Primary color for header background */
+    color: #0d6efd;
+    /* White text for header */
+    font-weight: bold !important;
+    text-align: left;
+    padding: 12px;
+    font-size: 14px;
+    text-transform: uppercase;
+}
+
+/* Row styling */
+td {
+    padding: 12px;
+    font-size: 14px;
+    color: #333;
+    /* Dark text color */
+}
+
+/* Alternating row colors for better readability */
+tr:nth-child(even) {
+    background-color: #f2f2f2;
+    /* Light gray for even rows */
+}
+
+tr:nth-child(odd) {
+    background-color: #ffffff;
+    /* White for odd rows */
+}
+
+/* Hover effect for rows */
+tr:hover {
+    background-color: #e3f2fd;
+    /* Light blue background on hover */
+    cursor: pointer;
+}
+
+/* Footer and paginator styling */
+.mat-paginator {
+    background-color: #ffffff;
+    /* Matches the table container */
+    box-shadow: 0 -1px 4px rgba(0, 0, 0, 0.1);
+    padding: 8px 16px;
+}
+
+/* Sort icons (optional styling) */
+.mat-sort-header-container {
+    display: flex;
+    align-items: center;
+}
+
+.mat-sort-header-arrow {
+    color: white;
+    /* Match the header text color */
+}

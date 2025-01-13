@@ -2,6 +2,7 @@ import { Component, Inject } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { BaseService } from 'src/app/_core/service/base.service';
 import { StorageService } from 'src/app/_core/service/storage.service';
+import { SwalService } from 'src/app/_core/service/swal.service';
 import Swal from 'sweetalert2';
 
 @Component({
@@ -24,7 +25,7 @@ export class InsertSubDialogComponent {
   submitted: boolean = false;
   constructor(
     public dialogRef: MatDialogRef<InsertSubDialogComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: any, private userService: BaseService, private storageService: StorageService) {
+    @Inject(MAT_DIALOG_DATA) public data: any, private userService: BaseService, private storageService: StorageService,private swal:SwalService) {
     console.log(data);
     this.username = storageService.getUsername();
     this.role = storageService.getUserRole();
@@ -75,13 +76,13 @@ export class InsertSubDialogComponent {
   Submit() {
     this.submitted= true;
     if (!this.selectedLcoName || !this.id || !this.operatorid) {
-      // Swal.fire({
-      //   icon: 'error',
-      //   title: 'Submission Failed',
-      //   text: 'Please make sure all required fields are filled and items are selected.',
-      //   timer: 3000,
-      //   showConfirmButton: true
-      // });
+      Swal.fire({
+        icon: 'error',
+        title: 'Submission Failed',
+        text: 'Please make sure all required fields are filled and items are selected.',
+        timer: 3000,
+        showConfirmButton: true
+      });
       return;
     }
     this.userService.Defective_Insert_Allocated(this.role, this.username, this.selectedLcoName, this.id, this.operatorid)
@@ -95,8 +96,7 @@ export class InsertSubDialogComponent {
             timer: 3000,
             showConfirmButton: false
           }).then(() => {
-            // Close the dialog or perform any other necessary actions
-            this.dialogRef.close();
+            window.location.reload();
           });
         },
         (error) => {
@@ -104,12 +104,20 @@ export class InsertSubDialogComponent {
             icon: 'error',
             title: 'Submission Failed',
             text: error?.error?.message || 'An unexpected error occurred. Please try again later.',
-            timer: 3000,
-            showConfirmButton: true
+            timer: 2000,
+            showConfirmButton: true,
+            timerProgressBar: true,
+          }).then(() => {
+            window.location.reload();
           });
           console.error('Error:', error);
         }
       );
+      // .subscribe((res: any) => {
+      //   this.swal.success(res?.message);
+      // }, (err) => {
+      //   this.swal.Error(err?.error?.message);
+      // });
   }
 
 

@@ -26,6 +26,7 @@ export class AddonEditComponent implements OnInit {
   mso_amount: any = '0.0';
   ispercentage: boolean = true;
   role: any;
+  invalid: boolean = false;
 
   broadcaster_list: any[] = [];
   constructor(
@@ -34,7 +35,7 @@ export class AddonEditComponent implements OnInit {
     console.log(data);
     this.username = storageService.getUsername();
     this.role = storageService.getUserRole();
-    this.id=data.id;
+    this.id = data.id;
     this.order_id = data.order_id;
     this.broadcaster_id = data.broadcaster_id;
     this.commission = data.customeramount;
@@ -50,6 +51,7 @@ export class AddonEditComponent implements OnInit {
 
   ngOnInit(): void {
     this.loadBroadcasterList();
+    this.checkMaxValue();
   }
   loadBroadcasterList(): void {
     this.userService.BroadcasterList(this.role, this.username, 1).subscribe(
@@ -67,7 +69,7 @@ export class AddonEditComponent implements OnInit {
   }
   onBroadcasterChange(event: Event): void {
     const selectedValue = (event.target as HTMLSelectElement).value;
-    this.broadcaster_id = selectedValue; 
+    this.broadcaster_id = selectedValue;
   }
   onNoClick(): void {
     this.dialogRef.close();
@@ -78,12 +80,13 @@ export class AddonEditComponent implements OnInit {
       event.preventDefault();
     }
   }
-  onKeydown1(event: KeyboardEvent) {
+  onKeydown1(event: any) {
     const input = event.target as HTMLInputElement;
     const value = input.value;
     if (['Backspace', 'ArrowLeft', 'ArrowRight', 'Tab'].includes(event.key) || /^[0-9.]*$/.test(event.key)) {
       return;
     }
+    this.checkMaxValue();
     event.preventDefault();
   }
   onFocus() {
@@ -97,6 +100,36 @@ export class AddonEditComponent implements OnInit {
       this.commission = '0.0';
     }
   }
+
+  percentageChange(value: boolean) {
+    this.ispercentage = value;
+    this.checkMaxValue();
+  }
+  checkMaxValue(): void {
+    if (!this.ispercentage && (this.commission > this.addon_package_rate)) {
+      console.log('if');
+
+      this.invalid = true;
+    } else if (this.ispercentage && this.commission > 100) {
+      console.log('else');
+
+      this.invalid = true;
+    } else {
+      console.log('final else');
+
+      this.invalid = false;
+    }
+    this.cdr.detectChanges();
+    console.log(this.ispercentage);
+    console.log(this.commission);
+    console.log(this.addon_package_rate);
+
+
+
+    console.log('invalid-------------------------------' + this.invalid);
+
+  }
+
   Update_Addon_package() {
     const request = {
       id: this.id,

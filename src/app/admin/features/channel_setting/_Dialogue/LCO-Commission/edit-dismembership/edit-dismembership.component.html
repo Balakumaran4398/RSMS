@@ -25,9 +25,9 @@
                         <div class="col-12 example-container">
                             <div cdkDropList #todoList="cdkDropList" [cdkDropListData]="filteredAvailableList"
                                 [cdkDropListConnectedTo]="[doneList]" class="example-list"
-                                (cdkDropListDropped)="drop($event)">
+                                (cdkDropListDropped)="drop($event,1)">
                                 <div *ngFor="let item of filteredAvailableList" class="example-box"
-                                    (click)="toggleSelection(item.id)"  cdkDrag
+                                    (click)="toggleSelection(item)"  cdkDrag
                                     [cdkDragData]="item" [class.selected]="isSelected(item)">
                                     {{ item.name }}
                                 </div>
@@ -55,9 +55,9 @@
                         <div class="col-12 example-container">
                             <div cdkDropList #doneList="cdkDropList" [cdkDropListData]="filteredAddedList"
                                 [cdkDropListConnectedTo]="[todoList]" class="example-list"
-                                (cdkDropListDropped)="drop($event)">
+                                (cdkDropListDropped)="drop($event,2)">
                                 <div *ngFor="let item of filteredAddedList" class="example-box"
-                                    (click)="toggleSelection(item.id)"  cdkDrag
+                                    (click)="toggleSelection(item)"  cdkDrag
                                     [cdkDragData]="item" [class.selected]="isSelected(item)">
                                     {{ item.name }}
                                 </div>

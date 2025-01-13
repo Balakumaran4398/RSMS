@@ -1,5 +1,5 @@
 <div class="chart">
-    <p>Channel Details</p>
+    <h3>Channel Details</h3>
     <div class="row mb-3">
         <div class=" col d-flex justify-content-start align-items-center">
             <span style="font-size: large;align-items: center;justify-content: center;">Status:</span>
@@ -15,13 +15,13 @@
                 </select>
             </div>
             <div class="d-flex justify-content-end align-items-center ">
-                <div class="icon-container d-flex align-items-center">
-                    <img src="/assets/images/icons/Excel.png" width="40px">
+                <div class="icon-container d-flex align-items-center" (click)="getExcel()">
+                    <img src="/assets/images/icons/Excel.png" width="40px" style="cursor: pointer;">
                     <div class="tooltip">Excel</div>
                 </div>
                 &nbsp;&nbsp;
-                <div class="icon-container d-flex align-items-center">
-                    <img src="/assets/images/icons/pdf.png" width="40px">
+                <div class="icon-container d-flex align-items-center" (click)="getPDF()">
+                    <img src="/assets/images/icons/pdf.png" width="40px" style="cursor: pointer;">
                     <div class="tooltip">Pdf</div>
                 </div>
             </div>
@@ -39,17 +39,18 @@
         </div>
 
         <div class="col d-flex justify-content-end align-items-center">
-            <a class="btn btn-outline-success mx-1" (click)="upload('data')">
+            <a class="btn btn-success mx-1  bttn" (click)="generateExcel()" style="cursor: pointer;">Download File</a>
+            <a class="btn btn-outline-success mx-1  bttn" (click)="upload('data')">
                 <i class="fa fa-upload" aria-hidden="true"></i> Upload
             </a>
-            <a class="btn btn-outline-warning mx-1" (click)="openDialog()">
+            <a class="btn btn-outline-warning mx-1  bttn" (click)="openDialog()">
                 <span>+</span> New
             </a>
-            <button class="btn btn-outline-info mx-1" mat-raised-button color="primary" type="button"
+            <button class="btn btn-outline-info mx-1  bttn" mat-raised-button color="primary" type="button"
                 [disabled]="!isAnyRowSelected" (click)="Active()">
                 Active
             </button>
-            <button class="btn btn-outline-info mx-1" mat-raised-button color="accent" type="button"
+            <button class="btn btn-outline-info mx-1  bttn" mat-raised-button color="accent" type="button"
                 [disabled]="!isAnyRowSelected" (click)="Deactive()">
                 Deactive
             </button>
@@ -58,7 +59,7 @@
     </div>
     <div class="row">
         <div class="col-12 col-sm-12  m-3">
-                 <ag-grid-angular #agGrid id="myGrid" domLayout='autoHeight' class="ag-theme-alpine table-class" rowAnimation
+            <ag-grid-angular #agGrid id="myGrid" domLayout='autoHeight' class="ag-theme-alpine table-class" rowAnimation
                 [rowSelection]="rowSelection" [gridOptions]="gridOptions" [columnDefs]="columnDefs" [rowData]="rowData"
                 (selectionChanged)="onSelectionChanged()" (gridReady)="onGridReady($event)"
                 [enableCellTextSelection]="true">

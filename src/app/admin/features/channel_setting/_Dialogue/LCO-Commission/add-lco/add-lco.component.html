@@ -28,7 +28,7 @@
                     </select> -->
 
                     <input type="text" matInput [matAutocomplete]="auto" [(ngModel)]="lcogroupid" maxlength="20"
-                    (input)="filterOperators($event)" placeholder="Select a Operator" [matAutocompleteDisabled]="false"
+                    (input)="filterOperators($event)" placeholder="Select An Membership" [matAutocompleteDisabled]="false"
                     [value]="selectedOperator?.name">
 
                 <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayOperator">
@@ -41,7 +41,7 @@
             </div>
             <div class="card " style="border: 1px solid lightgray;" style="height: 600px;">
                 <div class="head d-flex justify-content-center align-items-center mb-3">
-                    <span>AVAILABLE PRODUCT FOR MEMBERSHIP</span>
+                    <h6>AVAILABLE PRODUCT FOR MEMBERSHIP</h6>
                 </div>
                 <ag-grid-angular #agGrid id="myGrid" style="text-align: center;" domLayout='autoHeight'
                     [rowSelection]="rowSelection" class="ag-theme-alpine table-class" rowAnimation
@@ -90,7 +90,7 @@
 
 
                     <input type="text" matInput [matAutocomplete]="auto" [(ngModel)]="lcogroupid" maxlength="20"
-                    (input)="filterOperators($event)" placeholder="Select a Operator" [matAutocompleteDisabled]="false"
+                    (input)="filterOperators($event)" placeholder="Select An Membership" [matAutocompleteDisabled]="false"
                     [value]="selectedOperator?.name">
 
                 <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayOperator">
@@ -107,7 +107,7 @@
                 </div>
                 <ag-grid-angular #agGrid id="myGrid" style="text-align: center;" domLayout='autoHeight'
                     [rowSelection]="rowSelection" class="ag-theme-alpine table-class" rowAnimation
-                    [gridOptions]="gridOptions" [columnDefs]="columnDefs" (selectionChanged)="onSelectionChanged()"
+                    [gridOptions]="gridOptions" [columnDefs]="columnDefs1" (selectionChanged)="onSelectionChanged()"
                     (gridReady)="onGridReady($event)" [rowData]="rowData" [enableCellTextSelection]="true">
                 </ag-grid-angular>
             </div>

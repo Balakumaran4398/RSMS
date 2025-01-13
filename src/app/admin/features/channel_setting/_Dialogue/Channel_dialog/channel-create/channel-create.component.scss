@@ -37,7 +37,7 @@
 .input_box label {
     font-weight: 500;
     margin-bottom: 5px;
-    display: block;
+    // display: block;
 }
 
 .input_box label::after {
@@ -272,4 +272,17 @@ form .gender {
 
 #button-10 .checkbox:checked~.layer {
     background-color: #fcebeb;
+}
+
+.input_box label::after {
+    color: transparent !important;
+}
+
+
+.errorcase {
+    color: red;
+}
+
+.input1 {
+    color: white;
 }

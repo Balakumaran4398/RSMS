@@ -90,7 +90,14 @@ export class AlacarteActivationComponent {
       resizable: true,
       filter: true,
       width: 180,
-      floatingFilter: true
+      floatingFilter: true,
+      comparator: (valueA: any, valueB: any) => {
+        const normalizedA = valueA ? valueA.toString().trim().toLowerCase() : '';
+        const normalizedB = valueB ? valueB.toString().trim().toLowerCase() : '';
+        if (normalizedA < normalizedB) return -1;
+        if (normalizedA > normalizedB) return 1;
+        return 0;
+      },
     },
     paginationPageSize: 10,
     pagination: true,
@@ -285,7 +292,7 @@ export class AlacarteActivationComponent {
   }
 
 
-  getAddonData() {
+  getAlacarteData() {
     this.rowData = [];
     const dateToPass = this.selectedDate || this.date;
     this.userservice.getBulkOperationListByDate(this.role, this.username, 'alacarte_add', this.date, 5)
@@ -310,10 +317,10 @@ export class AlacarteActivationComponent {
         }
       );
   }
-  getremoveData() {
+  getRefreshData() {
     this.rowData = [];
     const dateToPass = this.selectedDate || this.date;
-    this.userservice.getBulkOperationListByDate(this.role, this.username, 'alacarte_remove', this.date, 7)
+    this.userservice.getBulkOperationListByDate(this.role, this.username, 'alacarte_add', this.date, 5)
       .subscribe(
         (response: HttpResponse<any[]>) => { // Expect HttpResponse<any[]>
           if (response.status === 200) {
@@ -335,8 +342,8 @@ export class AlacarteActivationComponent {
         }
       );
   }
-  addonrefresh() {
-    this.userservice.getBulkOperationRefreshList(this.role, this.username, 'alacarte_add', 5)
+  getRemovedata() {
+    this.userservice.getBulkOperationRefreshList(this.role, this.username, 'alacarte_remove', 7)
       .subscribe(
         (response: HttpResponse<any[]>) => { // Expect HttpResponse<any[]>
           if (response.status === 200) {
@@ -358,7 +365,7 @@ export class AlacarteActivationComponent {
         }
       );
   }
-  removerefresh() {
+  getRemoveRefresh() {
     this.userservice.getBulkOperationRefreshList(this.role, this.username, 'alacarte_remove', 7)
       .subscribe(
         (response: HttpResponse<any[]>) => { // Expect HttpResponse<any[]>

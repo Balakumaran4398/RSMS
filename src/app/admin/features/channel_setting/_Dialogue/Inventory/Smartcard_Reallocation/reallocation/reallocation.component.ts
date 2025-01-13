@@ -2,6 +2,7 @@ import { Component, Inject } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { BaseService } from 'src/app/_core/service/base.service';
 import { StorageService } from 'src/app/_core/service/storage.service';
+import { SwalService } from 'src/app/_core/service/swal.service';
 import Swal from 'sweetalert2';
 
 @Component({
@@ -22,7 +23,7 @@ export class ReallocationComponent {
   submitted: boolean = false;
   constructor(
     public dialogRef: MatDialogRef<ReallocationComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: any, private userService: BaseService, private storageService: StorageService) {
+    @Inject(MAT_DIALOG_DATA) public data: any, private userService: BaseService, private storageService: StorageService, private swal: SwalService) {
     console.log(data);
     this.username = storageService.getUsername();
     this.role = storageService.getUserRole();
@@ -33,7 +34,7 @@ export class ReallocationComponent {
     console.log(this.lco_list);
     this.smartcardlist = data.smartcard;
     console.log(this.smartcardlist);
-    this.filteredOperators=this.lco_list;
+    this.filteredOperators = this.lco_list;
 
   }
   onNoClick(): void {
@@ -76,29 +77,40 @@ export class ReallocationComponent {
     if (!this.selectedLcoName) {
       return
     }
-    this.userService.ReAllocate_Smartcard(this.role, this.username, this.smartcardlist, this.selectedLcoName).subscribe((res: any) => {
-      console.log(res);
-      Swal.fire({
-        icon: 'success',
-        title: 'Submission Successful',
-        text: res.message || 'Your data has been successfully submitted.',
-        timer: 3000,
-        showConfirmButton: false
-      }).then(() => {
-        this.dialogRef.close();
-      });
-    },
-      (error) => {
+    this.swal.Loading();
+    this.userService.ReAllocate_Smartcard(this.role, this.username, this.smartcardlist, this.selectedLcoName)
+      .subscribe((res: any) => {
+        console.log(res);
         Swal.fire({
-          icon: 'error',
-          title: 'Submission Failed',
-          text: error?.error?.message || 'An unexpected error occurred. Please try again later.',
-          timer: 3000,
-          showConfirmButton: true
+          icon: 'success',
+          title: 'Reallocated Successful',
+          text: res.message || 'Your data has been successfully submitted.',
+          timer: 2000,
+          timerProgressBar: true,
+          showConfirmButton: false
+        }).then(() => {
+          window.location.reload();
         });
-        console.error('Error:', error);
-      }
-    );
+      },
+        (error) => {
+          Swal.fire({
+            icon: 'error',
+            title: 'Reallocated Failed',
+            text: error?.error?.message || 'An unexpected error occurred. Please try again later.',
+            timer: 2000,
+              showConfirmButton: true,
+              timerProgressBar: true,
+            }).then(() => {
+              window.location.reload();
+            });
+          console.error('Error:', error);
+        }
+      );
+      // .subscribe((res: any) => {
+      //   this.swal.success(res?.message);
+      // }, (err) => {
+      //   this.swal.Error(err?.error?.message);
+      // });
   }
 
 }

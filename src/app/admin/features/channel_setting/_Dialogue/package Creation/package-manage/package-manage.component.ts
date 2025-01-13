@@ -9,6 +9,7 @@ import Swal from 'sweetalert2';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { SwalService } from 'src/app/_core/service/swal.service';
+import { Location } from '@angular/common';
 
 @Component({
   selector: 'app-package-manage',
@@ -66,7 +67,7 @@ export class PackageManageComponent {
 
   containerID: any;
 
-  constructor(public dialog: MatDialog, public router: Router, private cdr: ChangeDetectorRef, private route: ActivatedRoute, private swal: SwalService, private userService: BaseService, private storageservice: StorageService) {
+  constructor(public dialog: MatDialog, public router: Router, private cdr: ChangeDetectorRef, private location: Location, private route: ActivatedRoute, private swal: SwalService, private userService: BaseService, private storageservice: StorageService) {
     this.username = storageservice.getUsername();
     this.role = storageservice.getUserRole();
   }
@@ -131,7 +132,9 @@ export class PackageManageComponent {
       this.filteredAddedBouquetList = [...this.added_bouquet_list];
     })
   }
-
+  goBack(): void {
+    this.location.back();
+  }
 
   back() {
     this.router.navigateByUrl("admin/PackageCreation");
@@ -593,7 +596,6 @@ export class PackageManageComponent {
       console.log('save');
       Swal.fire({
         title: "Are you sure?",
-        text: "You won't be able to revert this!",
         icon: "warning",
         showCancelButton: true,
         confirmButtonColor: "#3085d6",
@@ -645,7 +647,7 @@ export class PackageManageComponent {
     // if (this.bouquet_list_id) {
       Swal.fire({
         title: "Are you sure?",
-        text: "You won't be able to revert this!",
+        // text: "You won't be able to revert this!",
         icon: "warning",
         showCancelButton: true,
         confirmButtonColor: "#3085d6",

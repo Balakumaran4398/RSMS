@@ -18,7 +18,7 @@ export class UpdateInventoryComponent {
   username: any;
   constructor(
     public dialogRef: MatDialogRef<UpdateInventoryComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: any, private userService: BaseService, private storageService: StorageService,private swal:SwalService) {
+    @Inject(MAT_DIALOG_DATA) public data: any, private userService: BaseService, private storageService: StorageService, private swal: SwalService) {
     this.username = storageService.getUsername();
     this.role = storageService.getUserRole();
     console.log(data);
@@ -66,14 +66,17 @@ export class UpdateInventoryComponent {
     }).then((result) => {
       if (result.isConfirmed) {
         this.swal.Loading();
-        this.userService.Update_smartcard_Allocated(this.role, this.username, this.Id, this.Boxid, this.Smartcard)
+        this.userService.Update_smartcard_Allocated(this.role, this.username, this.Id, this.Smartcard, this.Boxid,)
           .subscribe(
             (res: any) => {
               Swal.fire({
                 icon: 'success',
                 title: 'Updated!',
-                text: 'Smartcard allocation has been updated successfully.',
+                timer: 2000,
+                timerProgressBar: true,
                 confirmButtonText: 'OK',
+                text: res?.message || 'Smartcard allocation has been updated successfully.',
+             
               });
               window.location.reload();
             },
@@ -81,10 +84,13 @@ export class UpdateInventoryComponent {
               Swal.fire({
                 icon: 'error',
                 title: 'Update Failed',
-                text: 'There was an error updating the smartcard allocation. Please try again later.',
+                timer: 2000,
+                timerProgressBar: true,
                 confirmButtonText: 'OK',
+                text: error?.error?.message || 'There was an error updating the smartcard allocation. Please try again later.',
+        
               }).then(() => {
-                window.location.reload();
+                // window.location.reload();
               });
             }
           );

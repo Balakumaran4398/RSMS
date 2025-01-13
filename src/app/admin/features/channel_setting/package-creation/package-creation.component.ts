@@ -7,6 +7,7 @@ import { PackageCloneComponent } from '../_Dialogue/package Creation/package-clo
 import { PackageCreateComponent } from '../_Dialogue/package Creation/package-create/package-create.component';
 import { PackageEditComponent } from '../_Dialogue/package Creation/package-edit/package-edit.component';
 import { Router } from '@angular/router';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-package-creation',
@@ -20,7 +21,14 @@ export class PackageCreationComponent {
       resizable: true,
       filter: true,
       width: 180,
-      floatingFilter: true
+      floatingFilter: true,
+      comparator: (valueA: any, valueB: any) => {
+        const normalizedA = valueA ? valueA.toString().trim().toLowerCase() : '';
+        const normalizedB = valueB ? valueB.toString().trim().toLowerCase() : '';
+        if (normalizedA < normalizedB) return -1;
+        if (normalizedA > normalizedB) return 1;
+        return 0;
+      },
     },
     paginationPageSize: 10,
     pagination: true,
@@ -113,10 +121,10 @@ export class PackageCreationComponent {
       },
 
     },
-    { headerName: "ORDER ID", field: 'orderid', width: 280 },
-    { headerName: "PACKAGE RATE", field: 'packagerate', width: 260 },
+    { headerName: "ORDER ID", field: 'orderid', width: 150, cellStyle: { textAlign: 'center' }, },
+    { headerName: "PACKAGE RATE", field: 'packagerate', width: 200, cellStyle: { textAlign: 'center' }, },
     {
-      headerName: "REPORT", field: 'report', width: 170,
+      headerName: "REPORT", field: 'report', width: 170, cellStyle: { textAlign: 'center' },
       cellRenderer: (params: any) => {
         const editButton = document.createElement('button');
         editButton.innerHTML = '<i class="far fa-file-pdf" style="font-size:20px;color:red"></i>';
@@ -127,8 +135,11 @@ export class PackageCreationComponent {
         editButton.style.cursor = 'pointer';
         editButton.style.fontSize = "18px";
         editButton.addEventListener('click', () => {
-          // this.addnew('channeltype');  // Pass any type you need here
+          // this.addnew('channeltype');  
+          this.getPdfSmartcardRechargeReport(params.data);
+
         });
+
         const div = document.createElement('div');
         div.appendChild(editButton);
         return div;
@@ -137,6 +148,45 @@ export class PackageCreationComponent {
 
 
   ]
+
+  getPdfSmartcardRechargeReport(event: any) {
+    console.log(event);
+
+    Swal.fire({
+      title: "Processing",
+      text: "Please wait while the report is being generated...",
+      showConfirmButton: false,
+      didOpen: () => {
+        Swal.showLoading(null);
+      }
+    });
+    this.userService.getPackageReport(this.role, this.username, event.packageid)
+      // .subscribe((data: any) => {
+      //   console.log(data);
+      // })
+      .subscribe((x: Blob) => {
+        const blob = new Blob([x], { type: 'application/pdf' });
+        const data = window.URL.createObjectURL(blob);
+        const link = document.createElement('a');
+        link.href = data;
+        link.download = (event.packagename + ".pdf").toUpperCase();
+        link.dispatchEvent(new MouseEvent('click', { bubbles: true, cancelable: true, view: window }));
+        setTimeout(() => {
+          window.URL.revokeObjectURL(data);
+          link.remove();
+        }, 100);
+        Swal.close();
+      },
+        (error: any) => {
+          Swal.close();
+          Swal.fire({
+            title: 'Error!',
+            text: error?.error?.message || 'There was an issue generating the PDF CAS form report.',
+            icon: 'error',
+            confirmButtonText: 'Ok'
+          });
+        });
+  }
   addnew(): void {
     const dialogRef = this.dialog.open(PackageCreateComponent, {
       width: '700px',
@@ -172,7 +222,7 @@ export class PackageCreationComponent {
     const dialogRef = this.dialog.open(PackageBaseViewComponent, {
       width: '1200px',
       maxWidth: '100vw',
-      height: '600px',
+      // height: '600px',
       panelClass: 'custom-dialog-container',
       data: dialogData
     });
@@ -181,5 +231,5 @@ export class PackageCreationComponent {
     });
   }
 
-  
+
 }

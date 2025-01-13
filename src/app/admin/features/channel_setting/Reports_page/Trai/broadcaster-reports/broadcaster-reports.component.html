@@ -1,14 +1,14 @@
 <div *ngIf="allType == '1'">
     <div class="col-12 col-md-2 d-flex  justify-content-start align-items-start mb-3">
-        <button type="button" class="btn btn-primary" (click)="goBack()"><i
+        <button type="button" class="btn btn-primary bttn" (click)="goBack()"><i
                 class="fa-solid fa-reply mx-2"></i>Back</button>
     </div>
     <div class="container">
         <div class="col-md-12 Head d-flex justify-content-center align-items-center mb-3">
             <span class="span">Monthly Broadcaster Report</span>
         </div>
-        <div class="card col-md-12 d-block justify-content-center align-items-center mb-3"
-            style="border: 1px solid #055478;padding: 1rem;">
+        <div class="card col-md-12 d-block justify-content-center align-items-center mb-3 onlinebox" 
+            style="padding: 1rem;">
             <div class="col-12  display justify-content-center align-items-center">
                 <div class="col-12 col-md-12  justify-content-center align-items-center  ">
                     <div class="input_box display mb-3">
@@ -16,7 +16,7 @@
                             <label for="">Select Year</label>
                         </div>
                         <div class="col-12 col-md-6">
-                            <select name="year" id="year" [(ngModel)]="selectedYear">
+                            <select name="year" id="year" [(ngModel)]="selectedYear" (change)="onYearChange()">
                                 <option value="0" selected>Select Year</option>
                                 <option *ngFor="let year of years" [value]="year">{{ year }}</option>
                             </select>
@@ -49,7 +49,8 @@
                             <select name="date" id="date" [(ngModel)]="selectedDate" [disabled]="isDateDisabled"
                                 (ngModelChange)="onVisible()">
                                 <option value="0" selected>Select Date</option>
-                                <option *ngFor="let date of Date" [value]="date.value">{{ date.name }}
+                                <option *ngFor="let date of Date" [value]="date.value" [disabled]="!date.isEnabled">{{
+                                    date.name }}
                                 </option>
                             </select>
                             <div *ngIf="submitted && !selectedDate" class="text-danger" style="font-size: small;">
@@ -66,6 +67,7 @@
                                 (input)="onSearchBroadcaster($event)" [matAutocomplete]="auto" class="example-input">
 
                             <mat-autocomplete #auto="matAutocomplete">
+                                <mat-option value=" " disabled>Select a Broadcaster</mat-option>
                                 <mat-option *ngFor="let casItem of filteredBroadcaster()" [value]="casItem.name"
                                     (click)="onSelectionBroadcaster(casItem)">
                                     {{ casItem.name }}
@@ -82,11 +84,11 @@
                             <span style="color: #243359;" for="">CAS Grouped</span>
                         </div>
                         <div class="col-6 col-md-6 display1">
-                            <div class="export-icon col-6 col-md-3 mx-2" (click)="getExcel()">
+                            <div class="export-icon col-6 col-md-3 mx-2" (click)="getExcel(0)">
                                 <img src="/assets/images/icons/Excel.png" alt="Excel Icon" width="40px">
                                 <div class="tooltip">Excel</div>
                             </div>
-                            <div class="export-icon col-6 col-md-3" (click)="getPDF()">
+                            <div class="export-icon col-6 col-md-3" (click)="getPDF(0)">
                                 <img src="/assets/images/icons/pdf.png" alt="PDF Icon" width="40px">
                                 <div class="tooltip">Pdf</div>
                             </div>
@@ -99,11 +101,11 @@
                                 <span style="color: #243359;" for="">CAS Grouped</span>
                             </div>
                             <div class="col-6 col-md-6 display1">
-                                <div class="export-icon col-6 col-md-3 mx-2" (click)="getExcel()">
+                                <div class="export-icon col-6 col-md-3 mx-2" (click)="getExcel(0)">
                                     <img src="/assets/images/icons/Excel.png" alt="Excel Icon" width="40px">
                                     <div class="tooltip">Excel</div>
                                 </div>
-                                <div class="export-icon col-6 col-md-3" (click)="getPDF()">
+                                <div class="export-icon col-6 col-md-3" (click)="getPDF(0)">
                                     <img src="/assets/images/icons/pdf.png" alt="PDF Icon" width="40px">
                                     <div class="tooltip">Pdf</div>
                                 </div>
@@ -117,11 +119,11 @@
                                 <span style="color: #243359;" for="">CAS Combined</span>
                             </div>
                             <div class="col-6 col-md-6 display1">
-                                <div class="export-icon col-6 col-md-3 mx-2" (click)="getExcel()">
+                                <div class="export-icon col-6 col-md-3 mx-2" (click)="getExcel(1)">
                                     <img src="/assets/images/icons/Excel.png" alt="Excel Icon" width="40px">
                                     <div class="tooltip">Excel</div>
                                 </div>
-                                <div class="export-icon col-6 col-md-3" (click)="getPDF()">
+                                <div class="export-icon col-6 col-md-3" (click)="getPDF(1)">
                                     <img src="/assets/images/icons/pdf.png" alt="PDF Icon" width="40px">
                                     <div class="tooltip">Pdf</div>
                                 </div>
@@ -133,11 +135,11 @@
                                 <span style="color: #243359;" for="">Channel wise</span>
                             </div>
                             <div class="col-6 col-md-6 display1">
-                                <div class="export-icon col-6 col-md-3 mx-2" (click)="getExcel()">
+                                <div class="export-icon col-6 col-md-3 mx-2" (click)="getExcel(2)">
                                     <img src="/assets/images/icons/Excel.png" alt="Excel Icon" width="40px">
                                     <div class="tooltip">Excel</div>
                                 </div>
-                                <div class="export-icon col-6 col-md-3" (click)="getPDF()">
+                                <div class="export-icon col-6 col-md-3" (click)="getPDF(2)">
                                     <img src="/assets/images/icons/pdf.png" alt="PDF Icon" width="40px">
                                     <div class="tooltip">Pdf</div>
                                 </div>
@@ -149,11 +151,11 @@
                                 <span style="color: #243359;" for="">Channel wise DPO</span>
                             </div>
                             <div class="col-6 col-md-6 display1">
-                                <div class="export-icon col-6 col-md-3 mx-2" (click)="getExcel()">
+                                <div class="export-icon col-6 col-md-3 mx-2" (click)="getExcel(3)">
                                     <img src="/assets/images/icons/Excel.png" alt="Excel Icon" width="40px">
                                     <div class="tooltip">Excel</div>
                                 </div>
-                                <div class="export-icon col-6 col-md-3" (click)="getPDF()">
+                                <div class="export-icon col-6 col-md-3" (click)="getPDF(3)">
                                     <img src="/assets/images/icons/pdf.png" alt="PDF Icon" width="40px">
                                     <div class="tooltip">Pdf</div>
                                 </div>
@@ -165,11 +167,11 @@
                                 <span style="color: #243359;" for="">AddonWise Channel</span>
                             </div>
                             <div class="col-6 col-md-6 display1">
-                                <div class="export-icon col-6 col-md-3 mx-2" (click)="getExcel()">
+                                <!-- <div class="export-icon col-6 col-md-3 mx-2" (click)="getExcel(4)">
                                     <img src="/assets/images/icons/Excel.png" alt="Excel Icon" width="40px">
                                     <div class="tooltip">Excel</div>
-                                </div>
-                                <div class="export-icon col-6 col-md-3" (click)="getPDF()">
+                                </div> -->
+                                <div class="export-icon col-6 col-md-3 mx-2" (click)="getPDF(4)">
                                     <img src="/assets/images/icons/pdf.png" alt="PDF Icon" width="40px">
                                     <div class="tooltip">Pdf</div>
                                 </div>
@@ -184,18 +186,28 @@
 </div>
 <div *ngIf="allType== '2'">
     <div class="col-12 col-md-2 d-flex  justify-content-start align-items-start mb-3">
-        <button type="button" class="btn btn-primary" (click)="goBack()"><i
+        <button type="button" class="btn btn-primary bttn" (click)="goBack()"><i
                 class="fa-solid fa-reply mx-2"></i>Back</button>
     </div>
-    <div style="position: sticky;top: 6%;z-index: 1000;background-color: rgba(255, 255, 255, 0.8);padding: 1rem;">
+    <div style="position: sticky;top: 6%;z-index: 1000;background-color: rgba(252, 252, 252, 0.8);padding: 1rem;">
         <h3>OVER ALL PRODUCT REPORT</h3>
     </div>
     <div class="row " style="padding: 1rem;">
         <div class="row d-flex align-items-center justify-content-center">
             <div class="col-12 col-sm-12 m-3">
-                <div class="col display justify-content-between align-items-end mb-3">
+                <div class="col display justify-content-between align-items-end mb-3"
+                    style="position: sticky;top: 15%;z-index: 1000;background-color: rgb(255, 253, 253);padding: 1rem;">
                     <!-- <div class="col  mb-3"> -->
                     <div class="display">
+                        <div class="input_box mx-2 ">
+                            <select name="year" id="year" [(ngModel)]="selectedYear">
+                                <option value="0" selected>Select Year</option>
+                                <option *ngFor="let year of years" [value]="year">{{ year }}</option>
+                            </select>
+                            <div *ngIf="submitted && !selectedYear" class="text-danger" style="font-size: small;">
+                                Year is required
+                            </div>
+                        </div>
                         <div class="input_box mx-2 mb-2">
                             <select name="month" id="month" [(ngModel)]="selectedMonth" (change)="onMonthChange()">
                                 <option value="0" selected>Select Month</option>
@@ -207,20 +219,14 @@
                             </div>
                         </div>
 
-                        <div class="input_box mx-2 ">
-                            <select name="year" id="year" [(ngModel)]="selectedYear">
-                                <option value="0" selected>Select Year</option>
-                                <option *ngFor="let year of years" [value]="year">{{ year }}</option>
-                            </select>
-                            <div *ngIf="submitted && !selectedYear" class="text-danger" style="font-size: small;">
-                                Year is required
-                            </div>
-                        </div>
+
+
 
                         <div class="input_box mx-2 mb-2">
-                            <select name="date" id="date" [(ngModel)]="selectedDate" [disabled]="isDateDisabled">
+                            <select name="date" id="date" [(ngModel)]="selectedDate">
                                 <option value="0" selected>Select Week</option>
-                                <option *ngFor="let date of Date" [value]="date.value">{{ date.name }}
+                                <option *ngFor="let date of Date" [value]="date.value" [disabled]="!date.isEnabled">{{
+                                    date.name }}
                                 </option>
                             </select>
                             <div *ngIf="submitted && !selectedDate" class="text-danger" style="font-size: small;">
@@ -236,11 +242,11 @@
                     </div>
                     <div class="display1">
                         <div class="export-icon col-6 col-md-3 mx-3" (click)="getOverAllExcel()">
-                            <img src="/assets/images/icons/Excel.png" alt="Excel Icon" width="40px">
+                            <img src="/assets/images/icons/Excel.png" alt="Excel Icon" width="40px" style="cursor: pointer;">
                             <div class="tooltip">Excel</div>
                         </div>
                         <div class="export-icon col-6 col-md-3" (click)="getOverAllPDF()">
-                            <img src="/assets/images/icons/pdf.png" alt="PDF Icon" width="40px">
+                            <img src="/assets/images/icons/pdf.png" alt="PDF Icon" width="40px" style="cursor: pointer;">
                             <div class="tooltip">Pdf</div>
                         </div>
                     </div>
@@ -280,7 +286,7 @@
 </div>
 <div *ngIf="allType == '3'">
     <div class="col-12 col-md-2 d-flex  justify-content-start align-items-start mb-3">
-        <button type="button" class="btn btn-primary" (click)="goBack()"><i
+        <button type="button" class="btn btn-primary bttn" (click)="goBack()"><i
                 class="fa-solid fa-reply mx-2"></i>Back</button>
     </div>
     <div class="container">
@@ -327,7 +333,8 @@
                         <div class="col-12 col-md-6">
                             <select name="date" id="date" [(ngModel)]="selectedDate" [disabled]="isDateDisabled">
                                 <option value="0" selected>Select Date</option>
-                                <option *ngFor="let date of Date" [value]="date.value">{{ date.name }}
+                                <option *ngFor="let date of Date" [value]="date.value" [disabled]="!date.isEnabled">{{
+                                    date.name }}
                                 </option>
                             </select>
                             <div *ngIf="submitted && !selectedDate" class="text-danger" style="font-size: small;">
@@ -341,10 +348,10 @@
                             <span style="color: #243359;" for="">Get Report</span>
                         </div>
                         <div class=" display1">
-                            <div class="export-icon col-6 col-md-3 mx-3" (click)="getUniversalExcel()">
+                            <!-- <div class="export-icon col-6 col-md-3 mx-3" (click)="getUniversalExcel()">
                                 <img src="/assets/images/icons/Excel.png" alt="Excel Icon" width="40px">
                                 <div class="tooltip">Excel</div>
-                            </div>
+                            </div> -->
                             <div class="export-icon col-6 col-md-3" (click)="getUniversalPDF()">
                                 <img src="/assets/images/icons/pdf.png" alt="PDF Icon" width="40px">
                                 <div class="tooltip">Pdf</div>
@@ -358,7 +365,7 @@
 </div>
 <div *ngIf="allType== '4'">
     <div class="col-12 col-md-2 d-flex  justify-content-start align-items-start mb-3">
-        <button type="button" class="btn btn-primary" (click)="goBack()"><i
+        <button type="button" class="btn btn-primary bttn" (click)="goBack()"><i
                 class="fa-solid fa-reply mx-2"></i>Back</button>
     </div>
     <div style="position: sticky;top: 6%;z-index: 1000;background-color: rgba(255, 255, 255, 0.8);padding: 1rem;">
@@ -370,16 +377,6 @@
                 <div class="col display justify-content-between align-items-end mb-3">
                     <!-- <div class="col  mb-3"> -->
                     <div class="display">
-                        <div class="input_box mx-2 mb-2">
-                            <select name="month" id="month" [(ngModel)]="selectedMonth" (change)="onMonthChange()">
-                                <option value="0" selected>Select Month</option>
-                                <option *ngFor="let month of months" [value]="month.value">{{ month.name }}
-                                </option>
-                            </select>
-                            <div *ngIf="submitted && !selectedMonth" class="text-danger" style="font-size: small;">
-                                Month is required
-                            </div>
-                        </div>
                         <div class="input_box mx-2 ">
                             <select name="year" id="year" [(ngModel)]="selectedYear">
                                 <option value="0" selected>Select Year</option>
@@ -390,9 +387,21 @@
                             </div>
                         </div>
                         <div class="input_box mx-2 mb-2">
+                            <select name="month" id="month" [(ngModel)]="selectedMonth" (change)="onMonthChange()">
+                                <option value="0" selected>Select Month</option>
+                                <option *ngFor="let month of months" [value]="month.value">{{ month.name }}
+                                </option>
+                            </select>
+                            <div *ngIf="submitted && !selectedMonth" class="text-danger" style="font-size: small;">
+                                Month is required
+                            </div>
+                        </div>
+
+                        <div class="input_box mx-2 mb-2">
                             <select name="date" id="date" [(ngModel)]="selectedDate" [disabled]="isDateDisabled">
                                 <option value="0" selected>Select Week</option>
-                                <option *ngFor="let date of Date" [value]="date.value">{{ date.name }}
+                                <option *ngFor="let date of Date" [value]="date.value" [disabled]="!date.isEnabled">{{
+                                    date.name }}
                                 </option>
                             </select>
                             <div *ngIf="submitted && !selectedDate" class="text-danger" style="font-size: small;">
@@ -451,7 +460,7 @@
 </div>
 <div *ngIf="allType == '5'">
     <div class="col-12 col-md-2 d-flex  justify-content-start align-items-start mb-3">
-        <button type="button" class="btn btn-primary" (click)="goBack()"><i
+        <button type="button" class="btn btn-primary bttn" (click)="goBack()"><i
                 class="fa-solid fa-reply mx-2"></i>Back</button>
     </div>
     <div class="container">
@@ -499,7 +508,8 @@
                         <div class="col-12 col-md-6">
                             <select name="date" id="date" [(ngModel)]="selectedDate" [disabled]="isDateDisabled">
                                 <option value="0" selected>Select Date</option>
-                                <option *ngFor="let date of Date" [value]="date.value">{{ date.name }}
+                                <option *ngFor="let date of Date" [value]="date.value" [disabled]="!date.isEnabled">{{
+                                    date.name }}
                                 </option>
                             </select>
                             <div *ngIf="submitted && !selectedDate" class="text-danger" style="font-size: small;">
@@ -516,7 +526,7 @@
                                 (input)="onSearchBroadcaster($event)" [matAutocomplete]="auto" class="example-input">
 
                             <mat-autocomplete #auto="matAutocomplete">
-                                <mat-option value=" " selected>Select a Broadcaster</mat-option>
+                                <mat-option value=" " disabled>Select a Broadcaster</mat-option>
                                 <mat-option *ngFor="let casItem of filteredBroadcaster()" [value]="casItem.name"
                                     (click)="onSelectionBroadcaster(casItem)">
                                     {{ casItem.name }}
@@ -552,11 +562,11 @@
                             <span style="color: #243359;" for="">CAS Grouped</span>
                         </div>
                         <div class="col-6 col-md-6 display1">
-                            <div class="export-icon col-6 col-md-3 mx-2" (click)="getCASMonrhlyCaswiseExcel()">
+                            <div class="export-icon col-6 col-md-3 mx-2" (click)="getCASMonrhlyCaswiseExcel(0)">
                                 <img src="/assets/images/icons/Excel.png" alt="Excel Icon" width="40px">
                                 <div class="tooltip">Excel</div>
                             </div>
-                            <div class="export-icon col-6 col-md-3" (click)="getCASMonrhlyCaswisePDF()">
+                            <div class="export-icon col-6 col-md-3" (click)="getCASMonrhlyCaswisePDF(0)">
                                 <img src="/assets/images/icons/pdf.png" alt="PDF Icon" width="40px">
                                 <div class="tooltip">Pdf</div>
                             </div>
@@ -567,11 +577,11 @@
                             <span style="color: #243359;" for="">AddonWise Channel</span>
                         </div>
                         <div class="col-6 col-md-6 display1">
-                            <div class="export-icon col-6 col-md-3 mx-2" (click)="getCASMonrhlyCaswiseExcel()">
+                            <div class="export-icon col-6 col-md-3 mx-2" (click)="getCASMonrhlyCaswiseExcel(1)">
                                 <img src="/assets/images/icons/Excel.png" alt="Excel Icon" width="40px">
                                 <div class="tooltip">Excel</div>
                             </div>
-                            <div class="export-icon col-6 col-md-3" (click)="getCASMonrhlyCaswisePDF()">
+                            <div class="export-icon col-6 col-md-3" (click)="getCASMonrhlyCaswisePDF(1)">
                                 <img src="/assets/images/icons/pdf.png" alt="PDF Icon" width="40px">
                                 <div class="tooltip">Pdf</div>
                             </div>
@@ -584,7 +594,7 @@
 </div>
 <div *ngIf="allType== '6'">
     <div class="col-12 col-md-2 d-flex  justify-content-start align-items-start mb-3">
-        <button type="button" class="btn btn-primary" (click)="goBack()"><i
+        <button type="button" class="btn btn-primary bttn" (click)="goBack()"><i
                 class="fa-solid fa-reply mx-2"></i>Back</button>
     </div>
     <div style="position: sticky;top: 6%;z-index: 1000;background-color: rgba(255, 255, 255, 0.8);padding: 1rem;">
@@ -631,7 +641,7 @@
 </div>
 <div *ngIf="allType== '7'">
     <div class="col-12 col-md-2 d-flex  justify-content-start align-items-start mb-3">
-        <button type="button" class="btn btn-primary" (click)="goBack()"><i
+        <button type="button" class="btn btn-primary bttn" (click)="goBack()"><i
                 class="fa-solid fa-reply mx-2"></i>Back</button>
     </div>
     <div style="position: sticky;top: 6%;z-index: 1000;background-color: rgba(255, 255, 255, 0.8);padding: 1rem;">

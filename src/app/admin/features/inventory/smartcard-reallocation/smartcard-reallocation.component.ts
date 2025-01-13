@@ -30,8 +30,14 @@ export class SmartcardReallocationComponent {
       sortable: true,
       resizable: true,
       filter: true,
-      width: 250,
-      floatingFilter: true
+      floatingFilter: true,
+      comparator: (valueA: any, valueB: any) => {
+        const normalizedA = valueA ? valueA.toString().trim().toLowerCase() : '';
+        const normalizedB = valueB ? valueB.toString().trim().toLowerCase() : '';
+        if (normalizedA < normalizedB) return -1;
+        if (normalizedA > normalizedB) return 1;
+        return 0;
+      },
     },
     paginationPageSize: 10,
     pagination: true,
@@ -57,22 +63,22 @@ export class SmartcardReallocationComponent {
       lockPosition: true, headerCheckboxSelection: true, checkboxSelection: true, width: 80
     },
     {
-      headerName: 'SMARTCARD',
+      headerName: 'SMARTCARD', width: 250,
       field: 'smartcard',
 
     },
     {
-      headerName: 'BOX_ID',
+      headerName: 'BOX_ID', width: 250,
       field: 'boxid',
     },
     {
-      headerName: 'CARTON BOX',
+      headerName: 'CARTON BOX', width: 250, cellStyle: { textAlign: 'center' },
       field: 'cottonbox',
     },
 
     {
       headerName: 'IS_ALLOCATED',
-      field: 'isallocated',
+      field: 'isallocated', width: 200, cellStyle: { textAlign: 'center' },
       cellRenderer: (params: any) => {
         if (params.value === true) {
           return `<span style="color: #06991a;">YES</span>`;
@@ -82,27 +88,29 @@ export class SmartcardReallocationComponent {
       },
     },
     {
-      headerName: 'DE_ALLOCATED',
-      field: 'deallocated',
+      headerName: 'DE_ALLOCATED', width: 200, cellStyle: { textAlign: 'center' },
+      field: 'deallocateddisplay',
       cellRenderer: (params: any) => {
-        if (params.value === true) {
-          return `<span style="color: #06991a;">YES</span>`;
-        } else {
-          return `<span style="color: red;">NO</span>`;
-        }
+        const value = params.value?.toString().toUpperCase();
+        const color = value === 'YES' ? '#06991a' : value === 'NO' ? 'red' : 'black';
+        return `<span style="color: ${color};">${value}</span>`;
       },
     },
     {
       headerName: 'IS_DEFECTIVE',
-      field: 'isdefective',
+      field: 'defectivedisplay', width: 200, cellStyle: { textAlign: 'center' },
+      // cellRenderer: (params: any) => {
+      //   if (params.value) {
+      //     return `<span style="color: #06991a;">YES</span>`;
+      //   } else {
+      //     return `<span style="color: red;">NO</span>`;
+      //   }
+      // },
       cellRenderer: (params: any) => {
-        if (params.value === true) {
-          return `<span style="color: #06991a;">YES</span>`;
-        } else {
-          return `<span style="color: red;">NO</span>`;
-        }
+        const value = params.value?.toString().toUpperCase();
+        const color = value === 'YES' ? '#06991a' : value === 'NO' ? 'red' : 'black';
+        return `<span style="color: ${color};">${value}</span>`;
       },
-
     },
 
   ]
@@ -153,5 +161,63 @@ export class SmartcardReallocationComponent {
       dialogRef.afterClosed().subscribe(result => {
       });
     }
+  }
+
+  generateExcel() {
+    this.userService.getReallocatedSmartcardReport(this.role, this.username, 2)
+      .subscribe((x: Blob) => {
+        console.log(x);
+
+        const blob = new Blob([x], { type: 'application/xlsx' });
+        const data = window.URL.createObjectURL(blob);
+        const link = document.createElement('a');
+        link.href = data;
+        // link.download = (this.reportTitle + ".pdf").toUpperCase();
+        link.download = `Smartcard AllocReallocationation Report.xlsx`.toUpperCase();
+        console.log("came");
+        link.dispatchEvent(new MouseEvent('click', { bubbles: true, cancelable: true, view: window }));
+        setTimeout(() => {
+          window.URL.revokeObjectURL(data);
+          link.remove();
+        }, 100);
+      },
+        (error: any) => {
+          Swal.fire({
+            title: 'Error!',
+            text: error?.error?.message || 'There was an issue generating the Excel for Reallocation report.',
+            icon: 'error',
+            confirmButtonText: 'Ok'
+          });
+        });
+
+  }
+
+  generatePDF() {
+    this.userService.getReallocatedSmartcardReport(this.role, this.username, 1)
+      .subscribe((x: Blob) => {
+        const blob = new Blob([x], { type: 'application/pdf' });
+        const data = window.URL.createObjectURL(blob);
+        const link = document.createElement('a');
+        link.href = data;
+        // link.download = (this.reportTitle + ".pdf").toUpperCase();
+        link.download = `Smartcard Reallocation Report.pdf`.toUpperCase();
+
+        link.dispatchEvent(new MouseEvent('click', { bubbles: true, cancelable: true, view: window }));
+        setTimeout(() => {
+          window.URL.revokeObjectURL(data);
+          link.remove();
+        }, 100);
+      },
+        (error: any) => {
+          Swal.fire({
+            title: 'Error!',
+            text: error?.error?.message || 'There was an issue generating the Pdf for Reallocation report.',
+            icon: 'error',
+            confirmButtonText: 'Ok'
+          });
+        });
+
+
+
   }
 }

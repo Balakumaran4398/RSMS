@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { ChangeDetectorRef, Component } from '@angular/core';
 import { AbstractControl, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialogRef } from '@angular/material/dialog';
 import { BaseService } from 'src/app/_core/service/base.service';
@@ -26,6 +26,9 @@ export class AddonCreationComponent {
   mso_amount: number = 0.0;
   isPercentage: boolean = true;
   taxRate: number = 1;
+
+  issave: boolean = false;
+
   // type: any = [
   //   { lable: "MSO", value: 1 },
   //   { lable: "SMARTCARD", value: 2 },
@@ -34,7 +37,7 @@ export class AddonCreationComponent {
   type: any[] = [];
   TypeFormControl: any = 0;
   constructor(
-    public dialogRef: MatDialogRef<AddonCreationComponent>, private userservice: BaseService, private storageService: StorageService, private fb: FormBuilder
+    public dialogRef: MatDialogRef<AddonCreationComponent>, private cdr: ChangeDetectorRef, private userservice: BaseService, private storageService: StorageService, private fb: FormBuilder
   ) {
     this.username = storageService.getUsername();
     this.role = storageService.getUserRole();
@@ -57,14 +60,15 @@ export class AddonCreationComponent {
       customer_amount: [0, Validators.required],
       mso_amount: [0, Validators.required],
       order_id: ['', Validators.required],
-      ispercentage: [true, Validators.required],
+      ispercentage: [false, Validators.required],
       role: this.role,
       username: this.username,
     });
-    this.createpackageForm.get('isactive')?.valueChanges.subscribe(value => {
-      this.isPercentage = value;
-      // this.calculateAmounts();  // Recalculate amounts whenever checkbox changes
-    });
+    this.isPercentage = false;
+    // this.createpackageForm.get('isactive')?.valueChanges.subscribe(value => {
+    //   this.isPercentage = value;
+    //   // this.calculateAmounts();  // Recalculate amounts whenever checkbox changes
+    // });
 
   }
   onKeydown1(event: KeyboardEvent) {
@@ -115,34 +119,34 @@ export class AddonCreationComponent {
   // }
 
 
-  calculateMsoCommission() {
-    const commission = parseFloat(this.createpackageForm.get('commission')?.value || '0');
-    if (this.isPercentage) {
-      if (commission > 100) {
-        if ((this.customer_amount * commission) / 100 < this.customer_amount) {
-          this.mso_amount = this.customer_amount - (this.customer_amount * commission) / 100;
-        } else {
-          this.mso_amount = 0;
-          console.error("Percentage should be less than Customer Amount");
-        }
-      } else {
-        if (commission < 100) {
-          this.mso_amount = this.customer_amount - (this.customer_amount * commission) / 100;
-        } else {
-          this.mso_amount = 0;
-          console.error("Percentage should be less than 100%");
-        }
-      }
-    } else {
-      if (commission < this.customer_amount) {
-        this.mso_amount = this.customer_amount - commission;
-      } else {
-        this.mso_amount = 0;
-        console.error("Commission amount should be less than Customer amount");
-      }
-    }
-    this.createpackageForm.get('mso_amount')?.setValue(this.mso_amount, { emitEvent: false });
-  }
+  // calculateMsoCommission() {
+  //   const commission = parseFloat(this.createpackageForm.get('commission')?.value || '0');
+  //   if (this.isPercentage) {
+  //     if (commission > 100) {
+  //       if ((this.customer_amount * commission) / 100 < this.customer_amount) {
+  //         this.mso_amount = this.customer_amount - (this.customer_amount * commission) / 100;
+  //       } else {
+  //         this.mso_amount = 0;
+  //         console.error("Percentage should be less than Customer Amount");
+  //       }
+  //     } else {
+  //       if (commission < 100) {
+  //         this.mso_amount = this.customer_amount - (this.customer_amount * commission) / 100;
+  //       } else {
+  //         this.mso_amount = 0;
+  //         console.error("Percentage should be less than 100%");
+  //       }
+  //     }
+  //   } else {
+  //     if (commission < this.customer_amount) {
+  //       this.mso_amount = this.customer_amount - commission;
+  //     } else {
+  //       this.mso_amount = 0;
+  //       console.error("Commission amount should be less than Customer amount");
+  //     }
+  //   }
+  //   this.createpackageForm.get('mso_amount')?.setValue(this.mso_amount, { emitEvent: false });
+  // }
   Createpackage() {
 
     // const formData = new FormData();
@@ -189,4 +193,51 @@ export class AddonCreationComponent {
   closeDialog() {
     this.dialogRef.close();
   }
+
+  percentageValue(value: boolean) {
+    console.log('workingdsjfklsdjl', value);
+    this.isPercentage = value;
+
+    this.createpackageForm.get('ispercentage')?.setValue(value);
+
+
+
+
+    var msoamt = 0;
+    if (value) {
+      console.log('if');
+
+      msoamt = Math.round(Number(this.createpackageForm.get('addon_package_rate')?.value * (this.createpackageForm.get('commission')?.value / 100)));
+    } else {
+      console.log('else');
+      msoamt = Math.round(Number(this.createpackageForm.get('addon_package_rate')?.value - (this.createpackageForm.get('commission')?.value)));
+
+
+    }
+
+
+    this.createpackageForm.get('mso_amount')?.setValue(msoamt);
+
+    console.log(this.createpackageForm.get('mso_amount')?.value);
+
+    this.checkMaxValue();
+  }
+
+  checkMaxValue(): void {
+
+    console.log(this.createpackageForm.value);
+    
+    
+    if (!this.isPercentage && (this.createpackageForm.get('mso_amount')?.value.toString().includes('-'))) {
+      this.issave = true;
+    } else if (this.isPercentage && this.createpackageForm.get('commission')?.value > 100) {
+      this.issave = true;
+    } else {
+      this.issave = false;
+    }
+    console.log('isave---------------------------' + this.issave);
+
+    this.cdr.detectChanges();
+  }
+
 }

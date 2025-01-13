@@ -8,10 +8,10 @@ import Swal from 'sweetalert2';
 import { SwalService } from 'src/app/_core/service/swal.service';
 import { CasDialogueComponent } from '../../channel_setting/_Dialogue/cas-dialogue/cas-dialogue.component';
 import { MatDialog } from '@angular/material/dialog';
-import { FALSE } from 'node_modules1/sass/types';
-import { log } from 'console';
+// import { FALSE } from 'node_modules1/sass/types';
+// import { log } from 'console';
 
-@Component({
+@Component({ 
   selector: 'app-scrolling',
   templateUrl: './scrolling.component.html',
   styleUrls: ['./scrolling.component.scss']
@@ -181,10 +181,12 @@ export class ScrollingComponent {
       filter: true,
       width: 180,
       floatingFilter: true,
-      comparator: (valueA: string, valueB: string) => {
-        if (!valueA) valueA = '';
-        if (!valueB) valueB = '';
-        return valueA.toLowerCase().localeCompare(valueB.toLowerCase());
+      comparator: (valueA: any, valueB: any) => {
+        const normalizedA = valueA ? valueA.toString().trim().toLowerCase() : '';
+        const normalizedB = valueB ? valueB.toString().trim().toLowerCase() : '';
+        if (normalizedA < normalizedB) return -1;
+        if (normalizedA > normalizedB) return 1;
+        return 0;
       },
     },
     paginationPageSize: 10,
@@ -327,10 +329,10 @@ export class ScrollingComponent {
     { headerName: "MESSAGE", field: 'scrollmsg' },
     { headerName: "FONT COLOR	", field: 'fontcolordisplay' },
     { headerName: "BACKGROUND COLOR	", field: 'bgcolordisplay' },
-    { headerName: "REPEAT FOR", field: 'repeatfor' },
-    { headerName: "TRANSPARANCY	", field: 'transparency' },
-    { headerName: "DURATION", field: 'duration' },
-    { headerName: "TIME GAP	", field: 'timegap' },
+    { headerName: "REPEAT FOR", field: 'repeatfor', cellStyle: { textAlign: 'center' }, },
+    { headerName: "TRANSPARANCY	", field: 'transparency' , cellStyle: { textAlign: 'center' },},
+    { headerName: "DURATION", field: 'duration' , cellStyle: { textAlign: 'center' },},
+    { headerName: "TIME GAP	", field: 'timegap', cellStyle: { textAlign: 'center' }, },
     { headerName: "CAS", field: 'casname' },
     {
       headerName: 'ACTIONS',

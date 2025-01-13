@@ -28,7 +28,14 @@ export class DefectiveSmartcardComponent {
       resizable: true,
       filter: true,
       width: 250,
-      floatingFilter: true
+      floatingFilter: true,
+      comparator: (valueA: any, valueB: any) => {
+        const normalizedA = valueA ? valueA.toString().trim().toLowerCase() : '';
+        const normalizedB = valueB ? valueB.toString().trim().toLowerCase() : '';
+        if (normalizedA < normalizedB) return -1;
+        if (normalizedA > normalizedB) return 1;
+        return 0;
+      },
     },
     paginationPageSize: 10,
     pagination: true,
@@ -44,27 +51,25 @@ export class DefectiveSmartcardComponent {
   }
   columnDefs: ColDef[] = [
     { lockPosition: true, headerCheckboxSelection: true, checkboxSelection: true, width: 80 },
-    { headerName: 'SMARTCARD', field: 'smartcard', },
-    { headerName: 'BOX_ID', field: 'boxid', },
-    { headerName: 'CAS', field: 'casname', },
+    { headerName: 'SMARTCARD', field: 'smartcard', width: 250 },
+    { headerName: 'BOX_ID', field: 'boxid', width: 200 },
+    { headerName: 'CAS', field: 'casname', width: 200, cellStyle: { textAlign: 'center' }, },
 
-    { headerName: 'LCO NAME', field: 'operatorname', },
+    { headerName: 'LCO NAME', field: 'operatorname', width: 200 },
 
     {
-      headerName: 'IS_DEFECTIVE', field: 'isdefective',
+      headerName: 'IS_DEFECTIVE', field: 'defectivedisplay', cellStyle: { textAlign: 'center' },
       cellRenderer: (params: any) => {
-        if (params.value === true) {
-          return `<span style="color: #06991a;">YES</span>`;
-        } else {
-          return `<span style="color: red;">NO</span>`;
-        }
+        const value = params.value?.toString().toUpperCase(); 
+        const color = value === 'YES' ? '#06991a' : value === 'NO' ? 'red' : 'black'; 
+        return `<span style="color: ${color};">${value}</span>`;
       },
     },
     {
       headerName: "Action",
       editable: true,
-           cellRenderer: (params: any) => {
-        if (params.data.isdefective) {
+      cellRenderer: (params: any) => {
+        if (params.data.defectivedisplay === "Yes") {
           const replaceButton = document.createElement('button');
           replaceButton.innerHTML = `<i class="fas fa-sync-alt"></i> Replace`;
           replaceButton.style.backgroundColor = '#767e7e';

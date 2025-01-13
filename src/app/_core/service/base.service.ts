@@ -2,7 +2,7 @@ import { HttpClient, HttpHeaders, HttpResponse } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import URLs from "src/app/URL";
 import { Observable, Subscriber } from 'rxjs';
-import dashboard from "node_modules1/@angular/material/schematics/ng-generate/dashboard";
+// import dashboard from "node_modules1/@/material/schematics/ng-generate/dashboard";
 const AUTH_URL = URLs.AUTH_URL();
 const BASE_URL = URLs.BASE_URL();
 const httpOptions = {
@@ -36,6 +36,15 @@ export class BaseService {
     return this.http.get<any[]>(BASE_URL + "/subscriber/getDashboardBoxPieChart?role=" + role + "&username=" + username);
   }
   //  ------------------------------PackageDetails------------------------------
+  gettaxdetailsbyRate(role: any, username: string, rate: any): Observable<any[]> {
+    return this.http.get<any[]>(BASE_URL + "/package/gettaxdetailsbyRate?role=" + role + "&username=" + username + "&rate=" + rate);
+  }
+  getCommissionvalue(role: any, username: string, commission: any, customer_amount: any): Observable<any[]> {
+    return this.http.get<any[]>(BASE_URL + "/package/getCommissionvalue?commission=" + commission + "&customer_amount=" + customer_amount + "&role=" + role + "&username=" + username);
+  }
+  getpercentageValue(role: any, username: string, commission: any, ispercentage: boolean, customer_amount: any): Observable<any[]> {
+    return this.http.get<any[]>(BASE_URL + "/package/getpercentageValue?commission=" + commission + "&ispercentage=" + ispercentage + "&customer_amount=" + customer_amount + "&role=" + role + "&username=" + username);
+  }
   getDashboardProductDetails(role: any, username: string): Observable<any[]> {
     return this.http.get<any[]>(BASE_URL + "/subscriber/getDashboardProductDetails?role=" + role + "&username=" + username);
   }
@@ -210,7 +219,7 @@ export class BaseService {
   }
 
   ActiveChannel(role: any, username: any, id: any) {
-    return this.http.post<any[]>(BASE_URL + "/master/multiselectChannelActive?role=" + role + "&username=" + username + "&id=" + id, {})
+    return this.http.post<any[]>(BASE_URL + "/package/multiselectChannelActive?role=" + role + "&username=" + username + "&id=" + id, {})
   }
   CREATE_CHANNEL(requestBody: any): Observable<any[]> {
     return this.http.post<any[]>(BASE_URL + "/package/createChannel", requestBody, {});
@@ -231,6 +240,16 @@ export class BaseService {
   }
   Upload_channel_list(role: any, u_name: any, filepath: any): Observable<any[]> {
     return this.http.post<any[]>(BASE_URL + "/package/saveUploadchannellist?&role=" + role + "&username=" + u_name + "&filepath=" + filepath, {});
+  }
+  // getPdfCasformReport(role: any, username: any, subid: any): Observable<Blob> {
+  //   return this.http.get(BASE_URL + "/subscriber/getPdfCasformReport?role=" + role + "&username=" + username + "&subid=" + subid, { responseType: 'blob' });
+  // }
+  getChannelPDFReport(role: any, u_name: any, type: any): Observable<Blob> {
+    return this.http.get(BASE_URL + "/report/getChannelReport?&role=" + role + "&username=" + u_name + "&type=" + type, { responseType: 'blob' });
+  }
+  getChannelExcelReport(role: any, username: string, type: string): Observable<HttpResponse<any[]>> {
+    console.log(role);
+    return this.http.get<any[]>(BASE_URL + "/package/getallChannellist?role=" + role + "&username=" + username + "&type=" + type, { observe: 'response' });
   }
   // ===========================================================CHANNELTYPE LIST-========================================================
   ChannelTypeList(role: any, username: string, type: number): Observable<any[]> {
@@ -296,6 +315,10 @@ export class BaseService {
   // =================================================================Package=========================================================
   PackageList(role: any, username: string, type: number): Observable<any[]> {
     return this.http.get<any[]>(BASE_URL + "/package/getpackageList?role=" + role + "&username=" + username + "&type=" + type);
+  }
+  // ----------------------------report-------------------
+  getPackageReport(role: any, username: any, packageid: any): Observable<Blob> {
+    return this.http.get(BASE_URL + "/report/getPackageReport?role=" + role + "&username=" + username + "&packageid=" + packageid, { responseType: 'blob' });
   }
   Package_CloneList(role: any, username: string, packageid: any): Observable<any[]> {
     return this.http.get<any[]>(BASE_URL + "/package/getBasePackDetailsByPackageId?role=" + role + "&username=" + username + "&packageid=" + packageid);
@@ -376,6 +399,13 @@ export class BaseService {
     console.log(role);
     return this.http.get<any[]>(BASE_URL + "/package/getpackagemasterBaseList?role=" + role + "&username=" + username + "&type=" + type + "&castype=" + castype);
   }
+  // ---------------------------------------REPORTS-----------------------------------------------
+  getPackagePDFReport(role: any, u_name: any, type: any): Observable<Blob> {
+    return this.http.get(BASE_URL + "/report/getChannelReport?&role=" + role + "&username=" + u_name + "&type=" + type, { responseType: 'blob' });
+  }
+  getPackageExcelReport(role: any, username: string, id: any, type: string): Observable<HttpResponse<any[]>> {
+    return this.http.get<any[]>(BASE_URL + "/package/getpackagemasterBaseList?role=" + role + "&username=" + username + "&type=" + id + "&castype=" + type, { observe: 'response' });
+  }
   // ============================================================Package Master=========================================
   UpdatePackagemasterList(role: any, username: string, id: any, type: any): Observable<any[]> {
     console.log(role);
@@ -426,6 +456,10 @@ export class BaseService {
   getNotallocatedSmartcardListByCastypeAndOperatorid(role: any, username: any, operatorid: any, castype: any): Observable<any[]> {
     return this.http.get<any[]>(
       BASE_URL + "/subscriber/getNotallocatedSmartcardListByCastypeAndOperatorid?role=" + role + "&username=" + username + "&operatorid=" + operatorid + "&castype=" + castype,);
+  }
+  getAllocationMsoSmartcardListByCastype(role: any, username: any, castype: any): Observable<any[]> {
+    return this.http.get<any[]>(
+      BASE_URL + "/allocation/getAllocationMsoSmartcardListByCastype?role=" + role + "&username=" + username + "&castype=" + castype,);
   }
   getNotinOperatorList(role: any, username: any, operatorid: any): Observable<any[]> {
     return this.http.get<any[]>(
@@ -571,13 +605,15 @@ export class BaseService {
   getPdfBillReport(role: any, username: any, subid: any, smartcard: any): Observable<Blob> {
     return this.http.get(BASE_URL + "/subscriber/getPdfBillReport?role=" + role + "&username=" + username + "&subid=" + subid + "&smartcard=" + smartcard, { responseType: 'blob' });
   }
+
+
   getPdfCasformReport(role: any, username: any, subid: any): Observable<Blob> {
     return this.http.get(BASE_URL + "/subscriber/getPdfCasformReport?role=" + role + "&username=" + username + "&subid=" + subid, { responseType: 'blob' });
   }
 
-  getPdfSmartcardRechargeReport(role: any, username: any, smartcard: any): Observable<any[]> {
-    return this.http.get<any[]>(
-      BASE_URL + "/subscriber/getPdfSmartcardRechargeReport?role=" + role + "&username=" + username + "&smartcard=" + smartcard);
+  getPdfSmartcardRechargeReport(role: any, username: any, smartcard: any): Observable<Blob> {
+    return this.http.get(
+      BASE_URL + "/subscriber/getPdfSmartcardRechargeReport?role=" + role + "&username=" + username + "&smartcard=" + smartcard, { responseType: 'blob' });
   }
 
   getPdfSubscriberRechargeDetails(role: any, username: any, subid: any, input: any): Observable<Blob> {
@@ -585,9 +621,9 @@ export class BaseService {
       BASE_URL + "/subscriber/getPdfSubscriberRechargeDetails?role=" + role + "&username=" + username + "&subid=" + subid + "&input=" + input, { responseType: 'blob' });
   }
 
-  lcotransferSinglesmartcard(role: any, username: any, operatorid: any,  newsubid: any, withsubscription: any, smartcard: any, retailerid: any, type: any): Observable<any[]> {
+  lcotransferSinglesmartcard(role: any, username: any, operatorid: any, newsubid: any, withsubscription: any, smartcard: any, retailerid: any, type: any): Observable<any[]> {
     return this.http.post<any[]>(
-      BASE_URL + "/subscriber/lcotransferSinglesmartcard?role=" + role + "&username=" + username + "&operatorid=" + operatorid +  "&newsubid=" + newsubid + "&withsubscription=" + withsubscription + "&smartcard=" + smartcard + "&retailerid=" + retailerid + "&type=" + type, {});
+      BASE_URL + "/subscriber/lcotransferSinglesmartcard?role=" + role + "&username=" + username + "&operatorid=" + operatorid + "&newsubid=" + newsubid + "&withsubscription=" + withsubscription + "&smartcard=" + smartcard + "&retailerid=" + retailerid + "&type=" + type, {});
   }
   // checkLoginCredenticals(role: any, username: any, userid: any, password: boolean, type: any): Observable<any[]> {
   //   return this.http.post<any[]>(
@@ -704,8 +740,11 @@ export class BaseService {
   getDistributorCommissionListByLcoGroupId(role: any, username: any, lcogroupid: any): Observable<HttpResponse<any[]>> {
     return this.http.get<any[]>(BASE_URL + "/lcocommission/getDistributorCommissionListByLcoGroupId?role=" + role + "&username=" + username + "&lcogroupid=" + lcogroupid, { observe: "response" })
   }
-  getDistributroProductMembershipList(role: any, username: any, producttype: any, lcogroupid: any): Observable<HttpResponse<any[]>> {
-    return this.http.get<any[]>(BASE_URL + "/lcocommission/getDistributroProductMembershipList?role=" + role + "&username=" + username + "&producttype=" + producttype + "&lcogroupid=" + lcogroupid, { observe: "response" })
+  // getDistributroProductMembershipList(role: any, username: any, producttype: any, lcogroupid: any): Observable<HttpResponse<any[]>> {
+  //   return this.http.get<any[]>(BASE_URL + "/lcocommission/getDistributroProductMembershipList?role=" + role + "&username=" + username + "&producttype=" + producttype + "&lcogroupid=" + lcogroupid, { observe: "response" })
+  // }
+  getDistributroProductMembershipList(role: any, username: any, producttype: any, lcogroupid: any): Observable<any> {
+    return this.http.get<any[]>(BASE_URL + "/lcocommission/getDistributroProductMembershipList?role=" + role + "&username=" + username + "&producttype=" + producttype + "&lcogroupid=" + lcogroupid, {})
   }
   updateDistributorCommission(role: any, username: any, id: any, msoamount: any): Observable<any> {
     return this.http.post<any[]>(BASE_URL + "/lcocommission/updateDistributorCommission?role=" + role + "&username=" + username + "&id=" + id + "&msoamount=" + msoamount, {})
@@ -716,8 +755,11 @@ export class BaseService {
     return this.http.post<any[]>(BASE_URL + "/lcocommission/updateLcoCommission?role=" + role + "&username=" + username + "&id=" + id + "&istax=" + istax + "&ispercentage=" + ispercentage + "&commission=" + commission + "&rate=" + rate, {})
   }
   // -----------------------------------------------ADD PRODUCT / COMMISSION MEMBERSHIP-----------------------------------------
-  getproductMembershipList(role: any, username: any, producttype: any, lcogroupid: any,): Observable<HttpResponse<any[]>> {
-    return this.http.get<any[]>(BASE_URL + "/lcocommission/getproductMembershipList?role=" + role + "&username=" + username + "&producttype=" + producttype + "&lcogroupid=" + lcogroupid, { observe: "response" })
+  // getproductMembershipList(role: any, username: any, producttype: any, lcogroupid: any,): Observable<HttpResponse<any[]>> {
+  //   return this.http.get<any[]>(BASE_URL + "/lcocommission/getproductMembershipList?role=" + role + "&username=" + username + "&producttype=" + producttype + "&lcogroupid=" + lcogroupid, { observe: "response" })
+  // }
+  getproductMembershipList(role: any, username: any, producttype: any, lcogroupid: any,): Observable<any> {
+    return this.http.get<any[]>(BASE_URL + "/lcocommission/getproductMembershipList?role=" + role + "&username=" + username + "&producttype=" + producttype + "&lcogroupid=" + lcogroupid, {})
   }
 
   addProductMembership(requestBody: any): Observable<any[]> {
@@ -751,6 +793,9 @@ export class BaseService {
   getOperatorlistByGroupId(role: any, username: any, lcogroupid: any): Observable<HttpResponse<any[]>> {
     return this.http.get<any[]>(BASE_URL + "/lcocommission/getOperatorlistByGroupId?role=" + role + "&username=" + username + "&lcogroupid=" + lcogroupid, { observe: 'response' })
   }
+  // getOperatorlistByGroupId(role: any, username: any, lcogroupid: any):Observable<any> {
+  //   return this.http.get<any[]>(BASE_URL + "/lcocommission/getOperatorlistByGroupId?role=" + role + "&username=" + username + "&lcogroupid=" + lcogroupid, {  })
+  // }
   getAvailableAndNotAvailableDistributorList(role: any, username: any, distributorid: any): Observable<any> {
     return this.http.get<any[]>(BASE_URL + "/lcocommission/getAvailableAndNotAvailableDistributorList?role=" + role + "&username=" + username + "&distributorid=" + distributorid)
   }
@@ -792,6 +837,12 @@ export class BaseService {
     );
   }
 
+  // -------------------------------------report-------------------
+  getNotAllocatedReport(role: any, username: any, reporttype: any): Observable<Blob> {
+    return this.http.get(
+      BASE_URL + "/report/getNotAllocatedReport?role=" + role + "&username=" + username + "&reporttype=" + reporttype, { responseType: 'blob' });
+  }
+
   Allocated_smartcard_List(role: any, username: any): Observable<any[]> {
     return this.http.get<any[]>(
       BASE_URL + "/allocation/getallocatedSmartcardList?role=" + role + "&username=" + username, {}
@@ -802,6 +853,25 @@ export class BaseService {
       BASE_URL + "/allocation/getsearchforallocatedSmartcardList?role=" + role + "&username=" + username + "&operatorid=" + operatorid + "&searchname=" + searchname, {}
     );
   }
+  getAllocatedSmartcardReport(role: any, username: any, operatorid: any, smartcard: any, reporttype: number): Observable<Blob> {
+    return this.http.get(
+      BASE_URL + "/report/getAllocatedSmartcardReport?role=" + role + "&username=" + username + "&operatorid=" + operatorid + "&smartcard=" + smartcard + "&reporttype=" + reporttype, { responseType: 'blob' }
+    );
+  }
+
+  getDeallocatedSmartcardReport(role: any, username: any, reporttype: number): Observable<Blob> {
+    return this.http.get(
+      BASE_URL + "/report/getDallocatedSmartcardReport?role=" + role + "&username=" + username + "&reporttype=" + reporttype, { responseType: 'blob' }
+    );
+  }
+
+  getReallocatedSmartcardReport(role: any, username: any, reporttype: number): Observable<Blob> {
+    return this.http.get(BASE_URL + "/report/getReallocatedSmartcardReport?role=" + role + "&username=" + username + "&reporttype=" + reporttype, { responseType: 'blob' });
+
+  }
+
+
+
   getDeallocate_smartcard_List(role: any, username: any): Observable<any[]> {
     return this.http.get<any[]>(
       BASE_URL + "/allocation/getDeallocatedsmartcardlist?role=" + role + "&username=" + username, {}
@@ -854,9 +924,15 @@ export class BaseService {
       {}
     );
   }
-  ALLOCATED_SMARTCARD_TO_LCO(smartcardlist: any, role: any, username: any, isemi: boolean, totalamount: any, operatorid: any): Observable<any[]> {
-    return this.http.post<any[]>(BASE_URL + "/allocation/allocateSmartcardToOperator?smartcardlist=" + smartcardlist + "&role=" + role + "&username=" + username + "&isemi=" + isemi + "&totalamount=" + totalamount + "&operatorid=" + operatorid, {});
+  // UploadInventory(requestBody: any): Observable<any[]> {
+  //   return this.http.post<any[]>(BASE_URL + "/allocation/uploadInventoryfile", requestBody, {});
+  // }
+  ALLOCATED_SMARTCARD_TO_LCO(requestBody: any): Observable<any[]> {
+    return this.http.post<any[]>(BASE_URL + "/allocation/allocateSmartcardToOperator", requestBody, {});
   }
+  // ALLOCATED_SMARTCARD_TO_LCO(smartcardlist: any, role: any, username: any, isemi: boolean, totalamount: any, operatorid: any): Observable<any[]> {
+  //   return this.http.post<any[]>(BASE_URL + "/allocation/allocateSmartcardToOperator?smartcardlist=" + smartcardlist + "&role=" + role + "&username=" + username + "&isemi=" + isemi + "&totalamount=" + totalamount + "&operatorid=" + operatorid, {});
+  // }
   Create_Allocated(operatorid: any, castype: any, smartcard: any, boxid: any, role: any, username: any,): Observable<any[]> {
     return this.http.post<any[]>(BASE_URL + "/allocation/createNewSmartcardAllocation?role=" + role + "&username=" + username + "&castype=" + castype + "&operatorid=" + operatorid + "&smartcard=" + smartcard + "&boxid=" + boxid, {});
   }
@@ -1207,6 +1283,10 @@ export class BaseService {
     return this.http.get<any[]>(
       BASE_URL + "/sublco/getAllSublcoListByOperatorId?role=" + role + "&username=" + username + "&operatorid=" + operatorid, {});
   }
+  getAllSublcoList(role: any, username: any, operatorid: any): Observable<HttpResponse<any[]>> {
+    return this.http.get<any[]>(
+      BASE_URL + "/sublco/getAllSublcoListByOperatorId?role=" + role + "&username=" + username + "&operatorid=" + operatorid, { observe: 'response' });
+  }
   sublcoCreate(requestBody: any): Observable<any[]> {
     return this.http.post<any[]>(BASE_URL + "/sublco/sublcoCreate", requestBody, {});
   }
@@ -1545,32 +1625,46 @@ export class BaseService {
   }
   // ============================================================Broadcaster report==============================
   // -----------------------------------------Monthly broadcaster reception--------------------------------------
-  getBroadcasterReport(role: any, username: any, month: any, year: any, datetype: any, broadcasterid: any, type: any, reporttype: any): Observable<HttpResponse<any[]>> {
-    return this.http.get<any[]>(BASE_URL + "/report/getBroadcasterReport?role=" + role + "&username=" + username + "&month=" + month + "&year=" + year + "&datetype=" + datetype + "&broadcasterid=" + broadcasterid + "&type=" + type + "&reporttype=" + reporttype, { observe: 'response' });
+  // getBroadcasterReport(role: any, username: any, month: any, year: any, datetype: any, broadcasterid: any, type: any, reporttype: any): Observable<HttpResponse<any[]>> {
+  //   return this.http.get<any[]>(BASE_URL + "/report/getBroadcasterReport?role=" + role + "&username=" + username + "&month=" + month + "&year=" + year + "&datetype=" + datetype + "&broadcasterid=" + broadcasterid + "&type=" + type + "&reporttype=" + reporttype, { observe: 'response' });
+  // }
+  getBroadcasterReport(role: any, username: any, month: any, year: any, datetype: any, broadcasterid: any, type: any, reporttype: any): Observable<Blob> {
+    return this.http.get(BASE_URL + "/report/getBroadcasterReport?role=" + role + "&username=" + username + "&month=" + month + "&year=" + year + "&datetype=" + datetype + "&broadcasterid=" + broadcasterid + "&type=" + type + "&reporttype=" + reporttype, { responseType: 'blob' });
   }
   getBroadcasterPDFReport(role: any, username: any, month: any, year: any, datetype: any, broadcasterid: any, type: any, reporttype: any): Observable<Blob> {
     return this.http.get(BASE_URL + "/report/getBroadcasterReport?role=" + role + "&username=" + username + "&month=" + month + "&year=" + year + "&datetype=" + datetype + "&broadcasterid=" + broadcasterid + "&type=" + type + "&reporttype=" + reporttype, { responseType: 'blob' });
   }
   getBroadcasterVisible(role: any, username: any, month: any, year: any): Observable<any[]> {
-    return this.http.get<any[]>(BASE_URL + "/report/getIsvisible?role=" + role + "&username=" + username + "&month=" + month + "&year=" + year, {  });
+    return this.http.get<any[]>(BASE_URL + "/report/getIsvisible?role=" + role + "&username=" + username + "&month=" + month + "&year=" + year, {});
   }
   // -----------------------------------------Over all product report--------------------------------------
   getOverallBaseReport(role: any, username: any, month: any, year: any, datetype: any, reporttype: any): Observable<HttpResponse<any[]>> {
     return this.http.get<any[]>(BASE_URL + "/report/getOverallBaseReport?role=" + role + "&username=" + username + "&month=" + month + "&year=" + year + "&datetype=" + datetype + "&reporttype=" + reporttype, { observe: 'response' });
   }
   // ------------------------------------------------Universal Report-------------------------------------
-  getUniversalExcelReport(role: any, username: any, month: any, year: any, datetype: any, reporttype: any): Observable<HttpResponse<any[]>> {
-    return this.http.get<any[]>(BASE_URL + "/report/getOverallUniversalReport?role=" + role + "&username=" + username + "&month=" + month + "&year=" + year + "&datetype=" + datetype + "&reporttype=" + reporttype, { observe: 'response' });
+  // getUniversalExcelReport(role: any, username: any, month: any, year: any, datetype: any, reporttype: any): Observable<HttpResponse<any[]>> {
+  //   return this.http.get<any[]>(BASE_URL + "/report/getOverallUniversalReport?role=" + role + "&username=" + username + "&month=" + month + "&year=" + year + "&datetype=" + datetype + "&reporttype=" + reporttype, { observe: 'response' });
+  // }
+  getUniversalExcelReport(role: any, username: any, month: any, year: any, datetype: any, reporttype: any): Observable<Blob> {
+    return this.http.get(BASE_URL + "/report/getOverallUniversalReport?role=" + role + "&username=" + username + "&month=" + month + "&year=" + year + "&datetype=" + datetype + "&reporttype=" + reporttype, { responseType: 'blob' });
   }
   getUniversalPDFReport(role: any, username: any, month: any, year: any, datetype: any, reporttype: any): Observable<Blob> {
     return this.http.get(BASE_URL + "/report/getOverallUniversalReport?role=" + role + "&username=" + username + "&fromdate=" + "&month=" + month + "&year=" + year + "&datetype=" + datetype + "&reporttype=" + reporttype, { responseType: 'blob' });
   }
   // ----------------------------------------Over All Report---------------------------------------
-  getOverAllExcelReport(role: any, username: any, month: any, year: any, datetype: any, reporttype: any): Observable<HttpResponse<any[]>> {
+  getOverAllReport(role: any, username: any, month: any, year: any, datetype: any, reporttype: any): Observable<HttpResponse<any[]>> {
     return this.http.get<any[]>(BASE_URL + "/report/getOverallReport?role=" + role + "&username=" + username + "&month=" + month + "&year=" + year + "&datetype=" + datetype + "&reporttype=" + reporttype, { observe: 'response' });
   }
+  getOverAllExcelReport(role: any, username: any, month: any, year: any, datetype: any, reporttype: any): Observable<Blob> {
+    return this.http.get(BASE_URL + "/report/getOverallBaseReport?role=" + role + "&username=" + username + "&month=" + month + "&year=" + year + "&datetype=" + datetype + "&reporttype=" + reporttype, { responseType: 'blob' });
+  }
+
+  getOverAllBroadcasterPDFReport(role: any, username: any, month: any, year: any, datetype: any, reporttype: any): Observable<Blob> {
+    return this.http.get(BASE_URL + "/report/getOverallBaseReport?role=" + role + "&username=" + username + "&fromdate=" + "&month=" + month + "&year=" + year + "&datetype=" + datetype + "&reporttype=" + reporttype, { responseType: 'blob' });
+  }
+
   getOverAllPDFReport(role: any, username: any, month: any, year: any, datetype: any, reporttype: any): Observable<Blob> {
-    return this.http.get(BASE_URL + "/report/getOverallReport?role=" + role + "&username=" + username + "&fromdate=" + "&month=" + month + "&year=" + year + "&datetype=" + datetype + "&reporttype=" + reporttype, { responseType: 'blob' });
+    return this.http.get(BASE_URL + "/report/getOverallReport?role=" + role + "&username=" + username + "&month=" + month + "&year=" + year + "&datetype=" + datetype + "&reporttype=" + reporttype, { responseType: 'blob' });
   }
   // -----------------------------------------------------Over all base report -------------------------------------
   getOverBaseExcelReport(role: any, username: any, month: any, year: any, datetype: any, reporttype: any): Observable<HttpResponse<any[]>> {
@@ -1581,12 +1675,16 @@ export class BaseService {
   }
 
   // -----------------------------------------MonthlyCASWISE broadcaster reception--------------------------------------
-  getMonthlyBroadcasterCaswiseReport(role: any, username: any, month: any, year: any, datetype: any, castype: any, broadcasterid: any, type: any, reporttype: any): Observable<HttpResponse<any[]>> {
-    return this.http.get<any[]>(BASE_URL + "/report/getBroadcastercaswiseReport?role=" + role + "&username=" + username + "&month=" + month + "&year=" + year + "&datetype=" + datetype + "&broadcasterid=" + broadcasterid + "&type=" + type + "&castype=" + castype + "&reporttype=" + reporttype, { observe: 'response' });
+  // getMonthlyBroadcasterCaswiseReport(role: any, username: any, month: any, year: any, datetype: any, castype: any, broadcasterid: any, type: any, reporttype: any): Observable<HttpResponse<any[]>> {
+  //   return this.http.get<any[]>(BASE_URL + "/report/getBroadcastercaswiseReport?role=" + role + "&username=" + username + "&month=" + month + "&year=" + year + "&datetype=" + datetype + "&broadcasterid=" + broadcasterid + "&type=" + type + "&castype=" + castype + "&reporttype=" + reporttype, { observe: 'response' });
+  // }
+  getMonthlyBroadcasterCaswiseExcelReport(role: any, username: any, month: any, year: any, datetype: any, broadcasterid: any, type: any, castype: any, reporttype: any): Observable<Blob> {
+    return this.http.get(BASE_URL + "/report/getBroadcasterReportCaswise?role=" + role + "&username=" + username + "&month=" + month + "&year=" + year + "&datetype=" + datetype + "&broadcasterid=" + broadcasterid + "&type=" + type + "&castype=" + castype + "&reporttype=" + reporttype, { responseType: 'blob' });
   }
   getMonthlyBroadcasterCaswisePDFReport(role: any, username: any, month: any, year: any, datetype: any, broadcasterid: any, type: any, castype: any, reporttype: any): Observable<Blob> {
-    return this.http.get(BASE_URL + "/report/getBroadcastercaswiseReport?role=" + role + "&username=" + username + "&month=" + month + "&year=" + year + "&datetype=" + datetype + "&broadcasterid=" + broadcasterid + "&type=" + type + "&castype=" + castype + "&reporttype=" + reporttype, { responseType: 'blob' });
+    return this.http.get(BASE_URL + "/report/getBroadcasterReportCaswise?role=" + role + "&username=" + username + "&month=" + month + "&year=" + year + "&datetype=" + datetype + "&broadcasterid=" + broadcasterid + "&type=" + type + "&castype=" + castype + "&reporttype=" + reporttype, { responseType: 'blob' });
   }
+
   // ---------------------------------------------------Synchronizatio Reports-----------------------------
   getSynchronizationExcelReport(requestBody: any): Observable<any[]> {
     return this.http.post<any[]>(BASE_URL + "/report/uploadFileForSynchronizationReport", requestBody,);
@@ -1606,4 +1704,107 @@ export class BaseService {
   getPrintBillReport(role: any, username: any, id: any): Observable<Blob> {
     return this.http.get(BASE_URL + "/report/getPrintBillReport?role=" + role + "&username=" + username + "&id=" + id, { responseType: 'blob' });
   }
+
+  // =============================================================MSO REPORTS+=================================
+
+  getMonthwisePaymentCollection(role: any, username: any, month: any, year: any, reportgentype: any): Observable<Blob> {
+    return this.http.get(BASE_URL + "/report/getMonthwisePaymentCollection?role=" + role + "&username=" + username + "&month=" + month + "&year=" + year + "&reportgentype=" + reportgentype, { responseType: 'blob' });
+  }
+
+  // -----------------------------------------------ExcludingReport-------------------------------------------------------
+  getExcluding(role: any, username: any, fromdate: any, todate: any, month: any, year: any, datetype: any, type: any, reporttype: any, operatorid: any, reportgentype: any): Observable<HttpResponse<any[]>> {
+    return this.http.get<any[]>(BASE_URL + "/report/getExcludingReport?role=" + role + "&username=" + username + "&fromdate=" + fromdate + "&todate=" + todate + "&month=" + month + "&year=" + year + "&datetype=" + datetype + "&type=" + type + "&reporttype=" + reporttype + "&operatorid=" + operatorid + "&reportgentype=" + reportgentype, { observe: 'response' });
+  }
+  getExcludingReport(role: any, username: any, fromdate: any, todate: any, month: any, year: any, datetype: any, type: any, reporttype: any, operatorid: any, reportgentype: any): Observable<Blob> {
+    return this.http.get(BASE_URL + "/report/getExcludingReport?role=" + role + "&username=" + username + "&fromdate=" + fromdate + "&todate=" + todate + "&month=" + month + "&year=" + year + "&datetype=" + datetype + "&type=" + type + "&reporttype=" + reporttype + "&operatorid=" + operatorid + "&reportgentype=" + reportgentype, { responseType: 'blob' });
+  }
+  // -----------------------------------------------IncludingReport-------------------------------------------------------
+  getIncluding(role: any, username: any, fromdate: any, todate: any, month: any, year: any, datetype: any, type: any, reporttype: any, operatorid: any, reportgentype: any): Observable<HttpResponse<any[]>> {
+    console.log(reporttype);
+
+    return this.http.get<any>(BASE_URL + "/report/getIncludingReport?role=" + role + "&username=" + username + "&fromdate=" + fromdate + "&todate=" + todate + "&month=" + month + "&year=" + year + "&datetype=" + datetype + "&type=" + type + "&reporttype=" + reporttype + "&operatorid=" + operatorid + "&reportgentype=" + reportgentype, { observe: 'response' });
+  }
+  getIncludingReport(role: any, username: any, fromdate: any, todate: any, month: any, year: any, datetype: any, type: any, reporttype: any, operatorid: any, reportgentype: any): Observable<Blob> {
+    return this.http.get(BASE_URL + "/report/getIncludingReport?role=" + role + "&username=" + username + "&fromdate=" + fromdate + "&todate=" + todate + "&month=" + month + "&year=" + year + "&datetype=" + datetype + "&type=" + type + "&reporttype=" + reporttype + "&operatorid=" + operatorid + "&reportgentype=" + reportgentype, { responseType: 'blob' });
+  }
+  // -----------------------------------------------MSO -LCO WISE -------------------------------------------------------
+  getLcowiseActiveSubCount(role: any, username: any, operatorid: any, model: any, reporttype: any, batch: any, castype: any,): Observable<HttpResponse<any[]>> {
+    return this.http.get<any>(BASE_URL + "/report/lcowiseactivesubscription?role=" + role + "&username=" + username + "&operatorid=" + operatorid + "&model=" + model + "&reporttype=" + reporttype + "&batch=" + batch + "&castype=" + castype, { observe: 'response' });
+  }
+  getLcowiseActiveSubCountReport(role: any, username: any, operatorid: any, model: any, reporttype: any, batch: any, castype: any,): Observable<Blob> {
+    return this.http.get(BASE_URL + "/report/lcowiseactivesubscription?role=" + role + "&username=" + username + "&operatorid=" + operatorid + "&model=" + model + "&reporttype=" + reporttype + "&batch=" + batch + "&castype=" + castype, { responseType: 'blob' });
+  }
+  // -------------------------------------------------------Rechargr History report-------------------------------
+
+  getRechargeHistoryReport(role: any, username: any, type: any, operatorid: any, fromdate: any, todate: any, smartcard: any, useragent: any, sublcoid: any, reporttype: any,): Observable<Blob> {
+    return this.http.get(BASE_URL + "/report/GetRechargeHistoryReport?role=" + role + "&username=" + username + "&type=" + type + "&operatorid=" + operatorid + "&fromdate=" + fromdate + "&todate=" + todate + "&smartcard=" + smartcard + "&useragent=" + useragent + "&sublcoid=" + sublcoid + "&reporttype=" + reporttype, { responseType: 'blob' });
+  }
+
+  getRechargeHistory(role: any, username: any, type: any, operatorid: any, fromdate: any, todate: any, smartcard: any, useragent: any, sublcoid: any, reporttype: any,): Observable<HttpResponse<any[]>> {
+    return this.http.get<any[]>(BASE_URL + "/report/GetRechargeHistoryReport?role=" + role + "&username=" + username + "&type=" + type + "&operatorid=" + operatorid + "&fromdate=" + fromdate + "&todate=" + todate + "&smartcard=" + smartcard + "&useragent=" + useragent + "&sublcoid=" + sublcoid + "&reporttype=" + reporttype, { observe: 'response' });
+  }
+
+  // ---------------------------------------------------------OnlinePaymentHistory--------------------------------------------
+
+
+  getOnlinePaymentHistoryReport(role: any, username: any, fromdate: any, todate: any, operatorid: any, sublcoid: any, smartcard: any, type: any, reporttype: any,): Observable<Blob> {
+    return this.http.get(BASE_URL + "/report/GetOnlinePaymentHistory?role=" + role + "&username=" + username + "&fromdate=" + fromdate + "&todate=" + todate + "&operatorid=" + operatorid + "&sublcoid=" + sublcoid + "&smartcard=" + smartcard + "&type=" + type + "&reporttype=" + reporttype, { responseType: 'blob' });
+  }
+  getOnlinePaymentHistory(role: any, username: any, fromdate: any, todate: any, operatorid: any, sublcoid: any, smartcard: any, type: any, reporttype: any,): Observable<HttpResponse<any[]>> {
+    return this.http.get<any[]>(BASE_URL + "/report/GetOnlinePaymentHistory?role=" + role + "&username=" + username + "&fromdate=" + fromdate + "&todate=" + todate + "&operatorid=" + operatorid + "&sublcoid=" + sublcoid + "&smartcard=" + smartcard + "&type=" + type + "&reporttype=" + reporttype, { observe: 'response' });
+  }
+  // ----------------------------------------------------------refresh-----------------------
+  getrefreshData(role: any, username: any, operatorid: any, subid: any, transactionid: any, type: any): Observable<any[]> {
+    console.log("/report/GetRefreshData?role=" + role + "&username=" + username + "&operatorid=" + operatorid + "&subid=" + subid + "&transactionid=" + transactionid + "&type=" + type);
+    return this.http.get<any[]>(BASE_URL + "/report/GetRefreshData?role=" + role + "&username=" + username + "&operatorid=" + operatorid + "&subid=" + subid + "&transactionid=" + transactionid + "&type=" + type,);
+  }
+
+  // -----------------------------------------------Wallet Share report-------------------------------------------------------
+
+
+  getWalletShareReport(role: any, username: any, fromdate: any, todate: any, operatorid: any, reporttype: any): Observable<any[]> {
+    return this.http.get<any[]>(BASE_URL + "/report/WalletShareReport?role=" + role + "&username=" + username + "&fromdate=" + fromdate + "&todate=" + todate + "&operatorid=" + operatorid + "&reporttype=" + reporttype);
+  }
+
+  getWalletShareReportDownload(role: any, username: any, fromdate: any, todate: any, operatorid: any, reporttype: any): Observable<Blob> {
+    return this.http.get(BASE_URL + "/report/WalletShareReport?role=" + role + "&username=" + username + "&fromdate=" + fromdate + "&todate=" + todate + "&operatorid=" + operatorid + "&reporttype=" + reporttype, { responseType: 'blob' });
+  }
+  // -----------------------------------------------Subscriber bill-------------------------------------------------------
+
+  getSubscriberBill(role: any, username: any, month: any, year: any, reporttype: any, smartcard: any): Observable<any[]> {
+    return this.http.get<any[]>(BASE_URL + "/report/getSubscriberBill?role=" + role + "&username=" + username + "&month=" + month + "&year=" + year + "&reportgentype=" + reporttype + "&smartcard=" + smartcard);
+  }
+
+
+  getSubscriberBillDownload(role: any, username: any, month: any, year: any, reporttype: any, smartcard: any): Observable<Blob> {
+    return this.http.get(BASE_URL + "/report/getSubscriberBill?role=" + role + "&username=" + username + "&month=" + month + "&year=" + year + "&reportgentype=" + reporttype + "&smartcard=" + smartcard, { responseType: 'blob' });
+  }
+
+  // -----------------------------------------------Addon Individual report-------------------------------------------------------
+
+  getAddonExportReportDownload(role: any, username: any, id: number): Observable<Blob> {
+    return this.http.get(BASE_URL + "/report/getAddonReport?role=" + role + "&username=" + username + "&id=" + id, { responseType: 'blob' });
+  }
+
+  getAllAddonExportReportDownload(role: any, username: any): Observable<Blob> {
+    return this.http.get(BASE_URL + "/report/getAllAddonReport?role=" + role + "&username=" + username, { responseType: 'blob' });
+  }
+  // -----------------------------------------------Package Master Report Download-------------------------------------------------------
+
+
+  getPakcageHistoryDownload(role: any, username: any, castype: number, reporttype: number): Observable<Blob> {
+    return this.http.get(BASE_URL + "/report/getPackageMasterReport?role=" + role + "&username=" + username + "&castype=" + castype + "&reporttype=" + reporttype, { responseType: 'blob' });
+  }
+
+  // -----------------------------------------------User Recharge History-------------------------------------------------------
+
+  getUserRecharegeHistory(role: any, username: any, fromdate: any, todate: any, userid: number, reporttype: number): Observable<any[]> {
+    return this.http.get<any[]>(BASE_URL + "/report/UserRechargeHistory?role=" + role + "&username=" + username + "&fromdate=" + fromdate + "&todate=" + todate + "&userid=" + reporttype + "&smartcard=" + reporttype);
+  }
+
+
+  getUserRecharegeHistoryDownload(role: any, username: any, fromdate: any, todate: any, userid: number, reporttype: number): Observable<Blob> {
+    return this.http.get(BASE_URL + "/report/UserRechargeHistory?role=" + role + "&username=" + username + "&fromdate=" + fromdate + "&todate=" + todate + "&userid=" + reporttype + "&smartcard=" + reporttype, { responseType: 'blob' });
+  }
+
 }

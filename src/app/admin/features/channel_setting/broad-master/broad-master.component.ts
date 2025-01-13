@@ -4,6 +4,8 @@ import { BaseService } from 'src/app/_core/service/base.service';
 import { StorageService } from 'src/app/_core/service/storage.service';
 import Swal from 'sweetalert2';
 import { BroadCreateDialogComponent } from '../_Dialogue/broad-create-dialog/broad-create-dialog.component';
+import { Tooltip } from 'chart.js';
+import { TooltipPosition } from 'ag-charts-community/dist/types/src/module-support';
 interface updateRequestbody {
   broadcastername: any,
   username: any,
@@ -29,10 +31,12 @@ export class BroadMasterComponent implements OnInit {
       resizable: true,
       filter: true,
       floatingFilter: true,
-      comparator: (valueA: string, valueB: string) => {
-        if (!valueA) valueA = '';
-        if (!valueB) valueB = '';
-        return valueA.toLowerCase().localeCompare(valueB.toLowerCase());
+      comparator: (valueA: any, valueB: any) => {
+        const normalizedA = valueA ? valueA.toString().trim().toLowerCase() : '';
+        const normalizedB = valueB ? valueB.toString().trim().toLowerCase() : '';
+        if (normalizedA < normalizedB) return -1;
+        if (normalizedA > normalizedB) return 1;
+        return 0;
       },
     },
     paginationPageSize: 10,
@@ -64,21 +68,34 @@ export class BroadMasterComponent implements OnInit {
 
   columnDefs: any[] = [
     {
-      headerName: "S.No", lockPosition: true, valueGetter: 'node.rowIndex+1', headerCheckboxSelection: true,
+      headerName: "S.No", lockPosition: true, valueGetter: 'node.rowIndex+1', headerCheckboxSelection: true, flex: 1,
       checkboxSelection: true,
     },
     {
       headerName: 'BroadCaster Name',
       field: 'broadcastername',
-      width: 690,
+      flex: 1,
       cellStyle: { textAlign: 'left' },
+      editable: true,
+      cellEditor: 'agTextCellEditor',
+      tooltipValueGetter: () => 'Double click to change broadcaster name',
+      onCellValueChanged: (event: any) => {
+        console.log('Cell value changed:', event.data.name);
+        this.updateDeviceModelname(event.data.broadcastername, event.data.isactive, event.data.id);
+      },
+      onCellMouseOver: (event: any) => {
+        console.log('calling');
+
+        event.eGridCell.style.cursor = 'pointer'; // Change cursor to indicate editable cell
+      }
+
     },
     {
-      headerName: "ISACTIVE",
+      headerName: "Status",
       field: 'isactive',
-      width: 400, cellStyle: { textAlign: 'center' },
+      flex: 1, cellStyle: { textAlign: 'center' },
       cellRenderer: (params: any) => {
-        const isActive = params.data.isactive;
+        var isActive = params.data.isactive;
 
         const toggleContainer = document.createElement('div');
         toggleContainer.style.display = 'flex';
@@ -89,7 +106,7 @@ export class BroadMasterComponent implements OnInit {
         toggleSwitch.style.width = '45px';
         toggleSwitch.style.height = '25px';
         toggleSwitch.style.borderRadius = '15px';
-        toggleSwitch.style.backgroundColor = isActive ? '#4CAF50' : '#616060';
+        toggleSwitch.style.backgroundColor = isActive ? '#93b6eb' : 'rgb(115 115 115)';
         toggleSwitch.style.position = 'relative';
         toggleSwitch.style.cursor = 'pointer';
         toggleSwitch.style.transition = 'background-color 0.3s ease';
@@ -107,20 +124,43 @@ export class BroadMasterComponent implements OnInit {
 
         toggleSwitch.appendChild(toggleCircle);
 
-        const updateToggleStyle = (active: boolean) => {
-          toggleSwitch.style.backgroundColor = active ? '#4CAF50' : '#616060';
-          toggleCircle.style.left = active ? 'calc(100% - 22px)' : '3px';
-          toggleSwitch.title = active ? 'Deactivate the Customer' : 'Activate the Customer';
-        };
-
         toggleSwitch.addEventListener('click', () => {
-          const currentStatus = params.data.isactive;
-          const newStatus = !currentStatus;
-          params.data.isactive = newStatus;
-          updateToggleStyle(newStatus);
+          // Toggle the isActive value
+          isActive = !isActive;
+          console.log(isActive);
 
-          console.log(`Status changed to: ${newStatus ? 'Active' : 'Inactive'}`);
+          // Change the background color of the toggle switch
+          toggleSwitch.style.backgroundColor = isActive ? '#93b6eb' : 'rgb(115 115 115)';
+
+          // Move the toggle circle
+          toggleCircle.style.left = isActive ? 'calc(100% - 22px)' : '3px';
+
+          console.log(params.data.id);
+          if (isActive) {
+            this.Active(params.data.id);
+          } else {
+            this.Deactive(params.data.id);
+          }
+
+          // Call the API here when toggled
         });
+
+
+
+        // const updateToggleStyle = (active: boolean) => {
+        //   toggleSwitch.style.backgroundColor = active ? '#4CAF50' : '#616060';
+        //   toggleCircle.style.left = active ? 'calc(100% - 22px)' : '3px';
+        //   toggleSwitch.title = active ? 'Deactivate the Customer' : 'Activate the Customer';
+        // };
+
+        // toggleSwitch.addEventListener('click', () => {
+        //   const currentStatus = params.data.isactive;
+        //   const newStatus = !currentStatus;
+        //   params.data.isactive = newStatus;
+        //   updateToggleStyle(newStatus);
+
+        //   console.log(`Status changed to: ${newStatus ? 'Active' : 'Inactive'}`);
+        // });
         toggleContainer.appendChild(toggleSwitch);
         return toggleContainer;
       }
@@ -136,6 +176,7 @@ export class BroadMasterComponent implements OnInit {
   onGridReady(params: { api: any; }) {
     // this.gridApi.sizeColumnsToFit();
     this.gridApi = params.api;
+    this.gridApi.sizeColumnsToFit();
   }
 
   onSelectionChanged() {
@@ -167,6 +208,7 @@ export class BroadMasterComponent implements OnInit {
     });
   }
   updateDeviceModelname(broadcastername: string, isactive: boolean, id: number) {
+
     let requestBody: updateRequestbody = {
       broadcastername: broadcastername,
       username: this.username,
@@ -214,6 +256,9 @@ export class BroadMasterComponent implements OnInit {
               text: err?.error?.message,
               showConfirmButton: false,
               timer: 1500
+            }).then(() => {
+              window.location.reload();
+
             });
           }
         );
@@ -221,7 +266,9 @@ export class BroadMasterComponent implements OnInit {
     });
   }
 
-  Deactive() {
+
+
+  Deactive(ids: any) {
     Swal.fire({
       title: "Are you sure?",
       text: "You won't be able to revert this!",
@@ -229,21 +276,20 @@ export class BroadMasterComponent implements OnInit {
       showCancelButton: true,
       confirmButtonColor: "#3085d6",
       cancelButtonColor: "#d33",
-      confirmButtonText: "Yes, delete it!"
+      confirmButtonText: "Yes, Deactive it!"
     }).then((result) => {
       if (result.isConfirmed) {
         Swal.fire({
-          title: 'Deleting...',
-          text: 'Please wait while the Broadcaster is being deleted',
+          title: 'Deactivating...',
+          text: 'Please wait while the Broadcaster is being Deactivated',
           allowOutsideClick: false,
           didOpen: () => {
             Swal.showLoading(null);
           }
         });
-
-        this.userService.deleteBroadcaster(this.role, this.username, this.selectedIds).subscribe((res: any) => {
+        this.userService.deleteBroadcaster(this.role, this.username, ids).subscribe((res: any) => {
           Swal.fire({
-            title: 'Deleted!',
+            title: 'Deactivated!',
             text: res.message,
             icon: 'success',
             timer: 2000,
@@ -262,8 +308,7 @@ export class BroadMasterComponent implements OnInit {
       }
     });
   }
-
-  Active() {
+  Active(ids: any) {
     Swal.fire({
       title: "Are you sure?",
       text: "You won't be able to Active this!",
@@ -282,7 +327,7 @@ export class BroadMasterComponent implements OnInit {
             Swal.showLoading(null);
           }
         });
-        this.userService.ActiveBroadcaster(this.role, this.username, this.selectedIds).subscribe((res: any) => {
+        this.userService.ActiveBroadcaster(this.role, this.username, ids).subscribe((res: any) => {
           Swal.fire({
             title: 'Activated!',
             text: res.message,

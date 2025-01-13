@@ -14,7 +14,7 @@ import { MAT_MOMENT_DATE_ADAPTER_OPTIONS, MomentDateAdapter } from '@angular/mat
 import { HttpResponse } from '@angular/common/http';
 import { SwalService } from 'src/app/_core/service/swal.service';
 import { ExcelService } from 'src/app/_core/service/excel.service';
-import { log } from 'console';
+// import { log } from 'console';
 
 export const MY_FORMATS: MatDateFormats = {
   parse: {
@@ -110,7 +110,6 @@ export class LcoRechargeReportComponent implements OnInit {
   Totalamount: any;
   selectedDateType: number = 0;
   Date: any[] = [
-    // { lable: "", value: 0 },
     { lable: "Datewise", value: 1 },
     { lable: "Monthwise", value: 2 },
     { lable: "Yearwise", value: 3 },

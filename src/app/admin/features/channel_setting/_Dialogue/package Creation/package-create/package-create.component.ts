@@ -1,8 +1,9 @@
-import { ChangeDetectorRef, Component } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatDialogRef } from '@angular/material/dialog';
 import { BaseService } from 'src/app/_core/service/base.service';
 import { StorageService } from 'src/app/_core/service/storage.service';
+import { SwalService } from 'src/app/_core/service/swal.service';
 import Swal from 'sweetalert2';
 
 @Component({
@@ -10,7 +11,7 @@ import Swal from 'sweetalert2';
   templateUrl: './package-create.component.html',
   styleUrls: ['./package-create.component.scss']
 })
-export class PackageCreateComponent {
+export class PackageCreateComponent implements OnInit {
   username: any;
   role: any;
   toppings = new FormControl('');
@@ -20,19 +21,29 @@ export class PackageCreateComponent {
   toppingsArray: string[] = ['ENSCURITY', 'RCAS', 'ABVCAS'];
   createpackageForm!: FormGroup;
   tax_amount: number = 0.0;
+  // tax_amount: any;
+  package_rate: any;
+  tax_Value: any;
+  commission_Value: any;
+  percentage_Value: any;
+
+  commission: any;
+  commissionData: any;
   customer_amount: number = 0.0;
   mso_amount: number = 0.0;
   isPercentage: boolean = false;
   cas: any[] = [];
   selected: any
+
+  issave: boolean = false;
   proofFormControl: any = new FormControl();
   constructor(
-    public dialogRef: MatDialogRef<PackageCreateComponent>, private userservice: BaseService, private storageService: StorageService, private cdr: ChangeDetectorRef, private fb: FormBuilder
+    public dialogRef: MatDialogRef<PackageCreateComponent>, private userservice: BaseService, private swal: SwalService, private storageService: StorageService, private cdr: ChangeDetectorRef, private fb: FormBuilder
   ) {
     this.username = storageService.getUsername();
     this.role = storageService.getUserRole();
     this.createpackageForm = this.fb.group({
-      package_logo: ['', Validators.required],
+      package_logo: [null, Validators.required],
       proofFormControl: ['', Validators.required],
       package_name: ['', Validators.required],
       castype: ['', Validators.required],
@@ -43,23 +54,28 @@ export class PackageCreateComponent {
       customer_amount: ['', Validators.required],
       mso_amount: ['', Validators.required],
       order_id: ['', Validators.required],
-      ispercentage: [true, Validators.required],
+      ispercentage: [false, Validators.required],
     });
     // this.createpackageForm.get('ispercentage')?.valueChanges.subscribe(value => {
     //   // this.isPercentage = value;
     //   this.calculateAmounts();  // Recalculate amounts whenever checkbox changes
     // });
+
+  }
+  ngOnInit(): void {
     this.userservice.Cas_type(this.role, this.username).subscribe((data) => {
       this.cas = data;
       console.log(this.cas);
     });
+    this.checkMaxValue();
+    // this.taxdetailsbyRate();
   }
-  
+
   onFileChange(event: any): void {
     this.selectedFile = event.target.files[0];
   }
 
-  
+
 
   onKeyup(event: KeyboardEvent) {
     // Add your logic to handle keyup event here
@@ -83,8 +99,8 @@ export class PackageCreateComponent {
   }
 
 
-  
-  calculateMsoCommission(type:any) {
+
+  calculateMsoCommission(type: any) {
     if (type == 'percentage') {
       this.isPercentage = !this.isPercentage;
     }
@@ -99,19 +115,26 @@ export class PackageCreateComponent {
     // this.isPercentage = !this.isPercentage;
     if (this.isPercentage) {
       if (commission >= 0 && commission <= 100) {
+        this.issave = false;
         this.mso_amount = this.customer_amount - (this.customer_amount * commission) / 100;
         console.log(this.mso_amount);
 
       } else {
+        this.issave = true;
         console.error("Commission percentage must be between 0 and 100");
         this.mso_amount = 0;
       }
     } else {
+      console.log(commission);
+
       if (commission >= 0 && commission <= this.customer_amount) {
+        this.issave = false;
         this.mso_amount = this.customer_amount - commission;
         console.log(this.mso_amount);
 
+
       } else {
+        this.issave = true;
         console.error("Fixed commission must be less than or equal to the customer amount");
         this.mso_amount = 0;
       }
@@ -123,8 +146,13 @@ export class PackageCreateComponent {
   Createpackage() {
     if (this.createpackageForm.invalid) {
       console.log(File);
+
       const formData = new FormData();
-      formData.append('package_logo', this.selectedFile);
+      if (this.selectedFile) {
+        formData.append('package_logo', this.selectedFile);
+      } else {
+        formData.append('package_logo', this.selectedFile || null);
+      }
       formData.append('package_name', this.createpackageForm.get('package_name')?.value);
       // formData.append('castype', this.createpackageForm.get('castype')?.value);
       formData.append('package_desc', this.createpackageForm.get('package_desc')?.value);
@@ -134,10 +162,10 @@ export class PackageCreateComponent {
       formData.append('customer_amount', this.customer_amount.toString());
       formData.append('mso_amount', this.mso_amount.toString());
       formData.append('order_id', this.createpackageForm.get('order_id')?.value || 0);
-      formData.append('ispercentage', (!this.createpackageForm.get('ispercentage')?.value).toString());
+      formData.append('ispercentage', (this.createpackageForm.get('ispercentage')?.value).toString());
       formData.append('role', this.role);
       formData.append('username', this.username);
-      console.log(formData);
+      console.log(this.createpackageForm);
       Swal.fire({
         title: 'Updating...',
         text: 'Please wait while the Package Creation is being updated',
@@ -146,39 +174,77 @@ export class PackageCreateComponent {
           Swal.showLoading(null);
         }
       });
-      this.userservice.CREATE_BASE_PACKAGE(formData).subscribe(
-        (res) => {
-          console.log(res);
-          Swal.fire({
-            position: "center",
-            icon: "success",
-            title: "Package Created Successfully!!",
-            showConfirmButton: false,
-            timer: 2000,
-            timerProgressBar: true
-          }).then(() => {
-            window.location.reload();
-            this.closeDialog();
-          });
-        },
-        (err) => {
-          Swal.fire({
-            position: 'center',
-            icon: 'error',
-            title: 'Error',
-            text: err?.error?.message || 'An error occurred',
-            showConfirmButton: false,
-            timer: 2000,
-            timerProgressBar: true
-          });
-        }
-      );
+      this.userservice.CREATE_BASE_PACKAGE(formData)
+        .subscribe((res: any) => {
+          this.swal.success(res?.message);
+        }, (err) => {
+          this.swal.Error(err?.error?.message);
+        });
       this.createpackageForm.markAllAsTouched();
       return;
     }
 
   }
+  // taxdetailsbyRate() {
+  //   this.userservice.gettaxdetailsbyRate(this.role, this.username, this.package_rate).subscribe((data) => {
+  //     // this.cas = data;
+  //     console.log(data);
+  //     this.tax_Value = data;
+  //     this.tax_amount = this.tax_Value.customer_amount;
+  //     this.commission = this.tax_Value.commission;
+  //     console.log('tax_amount', this.tax_amount);
+  //     console.log('commission', this.commission);
 
+  //   });
+  // }
+  private isFirstCall: boolean = true;
+
+  commissionValue() {
+    console.log(this.commission_Value);
+    this.userservice.getCommissionvalue(this.role, this.username, this.commission_Value, this.customer_amount,).subscribe((data) => {
+      console.log(data);
+      //   this.commissionData = data;
+      //   this.commission = this.commissionData.commission;
+      //   this.mso_amount = this.commissionData.mso_amount;
+      //   console.log(this.commission);
+      // }, (err) => {
+      //   this.swal.info(err?.error?.message);
+      // });
+      if (!this.isFirstCall) {
+        console.log(data);
+        this.commissionData = data;
+        this.commission = this.commissionData.commission;
+        this.mso_amount = this.commissionData.mso_amount;
+        console.log(this.commission);
+      }
+      this.isFirstCall = false;
+    },
+      (err) => {
+        this.swal.info1(err?.error?.message);
+      }
+    );
+  }
+  percentageValue(value: boolean) {
+    this.isPercentage = value;
+
+    this.createpackageForm.get('ispercentage')?.setValue(value);
+    // this.userservice.getpercentageValue(this.role, this.username, this.commission_Value, this.isPercentage, this.customer_amount).subscribe((data) => {
+    //   this.percentage_Value = data;
+    //   console.log(this.cas);
+    //   this.mso_amount = this.percentage_Value.mso_amount;
+    // });
+    if (this.isPercentage) {
+      var amount = this.createpackageForm.get('customer_amount')?.value * (this.createpackageForm.get('commission')?.value / 100);
+      this.mso_amount = Math.round(Number(amount));
+    } else {
+      this.mso_amount = Math.round(Number((this.createpackageForm.get('customer_amount')?.value - this.createpackageForm.get('commission')?.value)));
+    }
+
+    this.checkMaxValue();
+    console.log(this.mso_amount);
+
+
+  }
   closeDialog() {
     this.dialogRef.close();
   }
@@ -192,4 +258,16 @@ export class PackageCreateComponent {
       event.preventDefault();
     }
   }
+
+  checkMaxValue(): void {
+    if (!this.isPercentage && (this.createpackageForm.get('commission')?.value > this.createpackageForm.get('package_rate')?.value)) {
+      this.issave = true;
+    } else if (this.isPercentage && this.createpackageForm.get('commission')?.value > 100) {
+      this.issave = true;
+    } else {
+      this.issave = false;
+    }
+    this.cdr.detectChanges();
+  }
+
 }

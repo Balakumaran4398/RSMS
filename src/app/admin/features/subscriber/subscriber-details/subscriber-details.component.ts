@@ -27,13 +27,13 @@ export class SubscriberDetailsComponent implements OnInit {
       width: 220,
       floatingFilter: true,
       comparator: (valueA: any, valueB: any) => {
-        if (!isNaN(valueA) && !isNaN(valueB)) {
-          return Number(valueA) - Number(valueB); 
-        }
-        if (!valueA) valueA = '';
-        if (!valueB) valueB = '';
-        return valueA.toLowerCase().localeCompare(valueB.toLowerCase());
+        const normalizedA = valueA ? valueA.toString().trim().toLowerCase() : '';
+        const normalizedB = valueB ? valueB.toString().trim().toLowerCase() : '';
+        if (normalizedA < normalizedB) return -1;
+        if (normalizedA > normalizedB) return 1;
+        return 0;
       },
+
     },
     paginationPageSize: 10,
     pagination: true,
@@ -62,9 +62,9 @@ export class SubscriberDetailsComponent implements OnInit {
     { headerName: 'AREA NAME', field: 'areaname', },
     { headerName: 'ADDRESS', field: 'address', },
     { headerName: 'MOBILE NUMBER', field: 'mobileno', },
-    { headerName: 'USER NAME', field: 'username',  cellStyle: { textAlign: 'left' },},
+    { headerName: 'USER NAME', field: 'username', cellStyle: { textAlign: 'left' }, },
     { headerName: 'PASSWORD', field: 'password', },
-    { headerName: 'BALANCE', field: 'balance', cellStyle: { textAlign: 'left' },},
+    { headerName: 'BALANCE', field: 'balance', cellStyle: { textAlign: 'left' }, },
     { headerName: 'VERIFICATION STATUS', field: 'vstatus_display', }
 
   ]
@@ -85,7 +85,7 @@ export class SubscriberDetailsComponent implements OnInit {
             }
           },
           cellRenderer: (params: any) => {
-            return `<a href="javascript:void(0)" style="color: blue; text-decoration: underline;">
+            return `<a href="javascript:void(0)" style="color: blue; text-decoration: none;color:#0d6efd">
                       ${params.value}
                     </a>`;
           },
@@ -125,7 +125,7 @@ export class SubscriberDetailsComponent implements OnInit {
             }
           },
           cellRenderer: (params: any) => {
-            return `<a href="javascript:void(0)" style="color: blue; text-decoration: underline;">
+            return `<a href="javascript:void(0)" style="color: blue; text-decoration: none;color:#0d6efd">
                       ${params.value}
                     </a>`;
           },
@@ -168,7 +168,7 @@ export class SubscriberDetailsComponent implements OnInit {
             }
           },
           cellRenderer: (params: any) => {
-            return `<a href="javascript:void(0)" style="color: blue; text-decoration: underline;">
+            return `<a href="javascript:void(0)" style="color: blue; text-decoration: none;color:#0d6efd">
                       ${params.value}
                     </a>`;
           },
@@ -189,9 +189,9 @@ export class SubscriberDetailsComponent implements OnInit {
         { headerName: 'AREA NAME', field: 'areaname', },
         { headerName: 'ADDRESS', field: 'address', },
         { headerName: 'MOBILE NUMBER', field: 'mobileno', },
-        { headerName: 'USER NAME', field: 'username',  cellStyle: { textAlign: 'left' },},
+        { headerName: 'USER NAME', field: 'username', cellStyle: { textAlign: 'left' }, },
         { headerName: 'PASSWORD', field: 'password', },
-        { headerName: 'BALANCE', field: 'balance',  cellStyle: { textAlign: 'left' },},
+        { headerName: 'BALANCE', field: 'balance', cellStyle: { textAlign: 'left' }, },
         { headerName: 'VERIFICATION STATUS', field: 'vstatus_display', }
 
       ]
@@ -210,7 +210,7 @@ export class SubscriberDetailsComponent implements OnInit {
             }
           },
           cellRenderer: (params: any) => {
-            return `<a href="javascript:void(0)" style="color: blue; text-decoration: underline;">
+            return `<a href="javascript:void(0)" style="color: blue; text-decoration: none;color:#0d6efd">
                       ${params.value}
                     </a>`;
           },
@@ -231,9 +231,9 @@ export class SubscriberDetailsComponent implements OnInit {
         { headerName: 'AREA NAME', field: 'areaname', },
         { headerName: 'ADDRESS', field: 'address', },
         { headerName: 'MOBILE NUMBER', field: 'mobileno', },
-        { headerName: 'USER NAME', field: 'username',  cellStyle: { textAlign: 'left' },},
+        { headerName: 'USER NAME', field: 'username', cellStyle: { textAlign: 'left' }, },
         { headerName: 'PASSWORD', field: 'password', },
-        { headerName: 'BALANCE', field: 'balance',  cellStyle: { textAlign: 'left' },},
+        { headerName: 'BALANCE', field: 'balance', cellStyle: { textAlign: 'left' }, },
         { headerName: 'VERIFICATION STATUS', field: 'vstatus_display', }
 
       ]
@@ -252,7 +252,7 @@ export class SubscriberDetailsComponent implements OnInit {
             }
           },
           cellRenderer: (params: any) => {
-            return `<a href="javascript:void(0)" style="color: blue; text-decoration: underline;">
+            return `<a href="javascript:void(0)" style="color: blue; text-decoration: none;color:#0d6efd">
                       ${params.value}
                     </a>`;
           },
@@ -274,7 +274,7 @@ export class SubscriberDetailsComponent implements OnInit {
         { headerName: 'AREA NAME', field: 'areaname', },
         { headerName: 'ADDRESS', field: 'address', },
         { headerName: 'MOBILE NUMBER', field: 'mobileno', },
-        { headerName: 'USER NAME', field: 'username',  cellStyle: { textAlign: 'left' },},
+        { headerName: 'USER NAME', field: 'username', cellStyle: { textAlign: 'left' }, },
         { headerName: 'PASSWORD', field: 'password', },
         { headerName: 'BALANCE', field: 'balance', cellStyle: { textAlign: 'left' }, },
         { headerName: 'VERIFICATION STATUS', field: 'vstatus_display', }
@@ -295,7 +295,7 @@ export class SubscriberDetailsComponent implements OnInit {
             }
           },
           cellRenderer: (params: any) => {
-            return `<a href="javascript:void(0)" style="color: blue; text-decoration: underline;">
+            return `<a href="javascript:void(0)" style="color: blue; text-decoration: none;color:#0d6efd">
                       ${params.value}
                     </a>`;
           },
@@ -319,7 +319,7 @@ export class SubscriberDetailsComponent implements OnInit {
         { headerName: 'MOBILE NUMBER', field: 'mobileno', },
         { headerName: 'USER NAME', field: 'username', cellStyle: { textAlign: 'left' }, },
         { headerName: 'PASSWORD', field: 'password', },
-        { headerName: 'BALANCE', field: 'balance',  cellStyle: { textAlign: 'left' },},
+        { headerName: 'BALANCE', field: 'balance', cellStyle: { textAlign: 'left' }, },
         { headerName: 'VERIFICATION STATUS', field: 'vstatus_display', }
 
       ]
@@ -338,7 +338,7 @@ export class SubscriberDetailsComponent implements OnInit {
     if (this.selectedStatusId === 0) {
       return;
     }
-    this.rowData=[];
+    this.rowData = [];
     this.userservice.getsubscriberlist_subscriber(this.role, this.username, this.selectedStatusId)
       .subscribe((data: any) => {
         console.log(data);
