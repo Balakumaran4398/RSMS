@@ -1,4 +1,4 @@
-<section class="Tab col-12">
+<section class="Tab col-12" style="max-height: 775px;overflow: scroll;">
     <div>
         <div class="d-flex tablist justify-content-center align-items-center my-3 new_d">
             <div class="tab  bttn" [class.active]="selectedTab === 'activation'" (click)="selectTab('activation')">
@@ -13,7 +13,6 @@
                 <h5>BULK ADDON HISTORY</h5>
             </div>
             <div class="row">
-                <!-- Left Column (File Upload and Instructions) -->
                 <div class="col-12 col-lg-4 d-flex justify-content-center align-items-center mb-4 mb-lg-0">
                     <div class="card p-4 file ">
                         <div class="d-flex justify-content-center align-items-center mb-3">
@@ -54,36 +53,8 @@
                             </label>
                             <span class="mx-3" style="color:#0a21d0">{{filePath }} </span>
                         </div>
-                        <!-- <div class="col-12 mb-3">
-                            <select placeholder="Select the CAS" class="form-control" [(ngModel)]="castype"
-                                (change)="casPackageList()">
-                                <option value="0" selected>Select CAS</option>
-                                <option *ngFor="let casItem of cas" [value]="casItem.id">
-                                    {{ casItem.name }}
-                                </option>
-                            </select>
-                        </div> -->
-                        <!-- <div *ngIf="submitted && !castype" class="text-danger" style="font-size: small;">
-                            CAS  is required
-                        </div> -->
-                        <div class="col-12 mb-3">
-                            <!-- <div class="col-12 mb-3">
-                                <mat-form-field class="w-100" appearance="outline">
-                                    <mat-label>Select Alacarte List by CAS type</mat-label>
-                                    <mat-select [formControl]="toppings" multiple [(ngModel)]="alacarteList">
-                                        <div class="input_box " style="padding: 1rem;">
-                                            <input placeholder="Search..." [(ngModel)]="searchText"
-                                                (input)="filterToppings($event)" />
-                                        </div>
-                                        <mat-option *ngFor="let topping of toppingList" [value]="topping.id">{{
-                                            topping.name }}</mat-option>
-                                    </mat-select>
-                                </mat-form-field>
-                                <div *ngIf="submitted && !alacarteList" class="text-danger" style="font-size: small;">
-                                    Alacarte  is required
-                                </div>
-                            </div> -->
 
+                        <div class="col-12 mb-3">
                             <div class="col-12 mb-3">
                                 <mat-form-field class="w-100" appearance="outline">
                                     <mat-label>Select Addon</mat-label>
@@ -100,10 +71,11 @@
                                     Addon is required
                                 </div>
                             </div>
-                        </div> 
-                      
+                        </div>
+
                         <div class=" d-flex justify-content-end align-items-center mt-3">
-                            <button type="submit" class="btn btn-success"   [disabled]="!isFormValid()"  (click)="submit()">Submit</button>
+                            <button type="submit" class="btn btn-success" [disabled]="!isFormValid()"
+                                (click)="submit()">Submit</button>
                         </div>
                     </div>
                 </div>
@@ -111,7 +83,7 @@
                 <!-- Right Column (Bulk Alacarte History) -->
                 <div class="col-12 col-lg-8 d-flex justify-content-center">
                     <div class="card col-12">
-              
+
                         <div class="row d-flex align-items-center justify-content-center" style="padding: 0.5rem;">
                             <div class="col-12 mb-3">
                                 <div class="row align-items-center justify-content-center mb-3" style="gap:10px;">
@@ -120,17 +92,20 @@
                                             [(ngModel)]="date">
                                     </div>
                                     <div class="col-12 col-md-3 mb-2 mb-md-0">
-                                        <button class="btn btn-secondary w-100  bttn" (click)="getData()">Get Data</button>
+                                        <button class="btn btn-secondary w-100  bttn" (click)="getData()">Get
+                                            Data</button>
                                     </div>
                                     <div class="col-12 col-md-3 mb-2 mb-md-0">
-                                        <button class="btn btn-secondary w-100 bttn" (click)="refresh()">Refresh</button>
+                                        <button class="btn btn-secondary w-100 bttn"
+                                            (click)="refresh()">Refresh</button>
                                     </div>
                                 </div>
 
                                 <ag-grid-angular #agGrid id="myGrid" domLayout='autoHeight'
                                     class="ag-theme-alpine table-class" rowAnimation [rowSelection]="rowSelection"
-                                    [gridOptions]="gridOptions" [columnDefs]="columnDefs" [rowData]="rowData"
-                                    (gridReady)="onGridReady()" [enableCellTextSelection]="true">
+                                    style="max-height: 775px;overflow: scroll;" [gridOptions]="gridOptions"
+                                    [columnDefs]="columnDefs" [rowData]="rowData" (gridReady)="onGridReady()"
+                                    [enableCellTextSelection]="true">
                                 </ag-grid-angular>
                             </div>
                         </div>
@@ -154,22 +129,7 @@
                     </label>
                     <span class="mx-3" style="color:#0a21d0">{{filePath }} </span>
                 </div>
-                <!-- <div class="col-12 col-md-3  mt-2">
-                    <mat-form-field class="example-full-width" appearance="outline">
-                        <mat-label>Select CAS type</mat-label>
-                        <input type="text" matInput [matAutocomplete]="auto" (input)="filterCas($event)"
-                            [(ngModel)]="selectedCas" [value]="selectedCas?.name" placeholder="Search CAS">
-                        <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayOperator">
-                            <mat-option *ngFor="let castype of cas" [value]="castype.name"
-                                (click)="onCaschange(castype)">
-                                {{ castype.name }}
-                            </mat-option>
-                        </mat-autocomplete>
-                    </mat-form-field>
-                    <div *ngIf="submitted && !selectedCas" class="text-danger" style="font-size: small;">
-                        CAS  is required
-                    </div>
-                </div> -->
+
                 <div class="col-12 col-md-5 mt-2" style="height: 50px;">
                     <mat-form-field class="w-100" appearance="outline">
                         <mat-label>Select Addon</mat-label>
@@ -188,7 +148,8 @@
                 </div>
                 <div
                     class="col-12 col-md-2 mt-2 d-flex justify-content-center justify-content-md-end align-items-center">
-                    <button type="submit"  [disabled]="!isFormValid()" class="btn btn-success w-100 w-md-auto" (click)="remove()">Remove</button>
+                    <button type="submit" [disabled]="!isFormValid()" class="btn btn-success w-100 w-md-auto"
+                        (click)="remove()">Remove</button>
                 </div>
             </div>
         </div>
@@ -196,7 +157,7 @@
         <div class="col-12 col-lg-10 d-flex justify-content-center align-item-center"
             style="margin:auto;padding-top: 5%;">
             <div class="card col-12">
-             
+
                 <div class="row d-flex align-items-center justify-content-center" style="padding: 0.5rem;">
                     <div class="col-12 mb-3">
                         <div class="row align-items-center justify-content-center mb-3" style="gap:10px;">
@@ -212,9 +173,9 @@
                         </div>
 
                         <ag-grid-angular #agGrid id="myGrid" domLayout='autoHeight' class="ag-theme-alpine table-class"
-                            rowAnimation [rowSelection]="rowSelection" [gridOptions]="gridOptions"
-                            [columnDefs]="columnDefs1" [rowData]="rowData" (gridReady)="onGridReady()"
-                            [enableCellTextSelection]="true">
+                            style="max-height: 775px;overflow: scroll;" rowAnimation [rowSelection]="rowSelection"
+                            [gridOptions]="gridOptions" [columnDefs]="columnDefs1" [rowData]="rowData"
+                            (gridReady)="onGridReady()" [enableCellTextSelection]="true">
                         </ag-grid-angular>
                     </div>
                 </div>

@@ -73,7 +73,7 @@ export class PackageManageComponent {
   }
 
   ngOnInit(): void {
-
+    this.modified = false;
     console.log(this.subcount);
     this.package_id = this.route.snapshot.paramMap.get('id');
     console.log('Package ID:', this.package_id);
@@ -217,6 +217,7 @@ export class PackageManageComponent {
     return this.selectedItems.has(item);
   }
   moveSelected_alacarte_Items(direction: 'left' | 'right') {
+    this.modified = true;
     const itemsToMove: any[] = [];
     if (direction === 'right') {
       this.selectedItems.forEach(item => {
@@ -276,6 +277,7 @@ export class PackageManageComponent {
 
 
   moveSelectedBouquet_Items(direction: 'left' | 'right') {
+    this.modified = true;
     const itemsToMove: any[] = [];
     if (direction === 'right') {
       this.selectedItems.forEach(item => {
@@ -380,6 +382,7 @@ export class PackageManageComponent {
 
   alacarteId: any;
   moveAll_alacarte_Items(direction: 'left' | 'right') {
+    this.modified = true;
     if (direction === 'right') {
       this.added_alacarte_list.push(...this.available_alacarte_list);
       this.alacarte_list_id = this.available_alacarte_list.map((item: any) => {
@@ -404,6 +407,7 @@ export class PackageManageComponent {
 
 
   moveAll_bouquet_Items(direction: 'left' | 'right') {
+    this.modified = true;
     if (direction === 'right') {
       console.log('right to left');
 
@@ -472,6 +476,7 @@ export class PackageManageComponent {
   // -----------------------------------------------------------------------------------------
 
   drop1(event: CdkDragDrop<string[]>, val: number) {
+    this.modified = true;
     const draggedItem = event.item;
     const draggedElement = draggedItem.element.nativeElement;
     const draggedData = draggedItem.data;
@@ -530,8 +535,9 @@ export class PackageManageComponent {
     console.log(this.bouquet_removelist_id)
   }
   drop2(event: CdkDragDrop<string[]>, val: number) {
-    const draggedItem = event.item; // CdkDrag instance of the dragged element
-    const draggedElement = draggedItem.element.nativeElement; // Actual DOM element
+    this.modified = true;
+    const draggedItem = event.item; 
+    const draggedElement = draggedItem.element.nativeElement;
     const draggedData = draggedItem.data;
     console.log('Dragged data:', draggedData);
     console.log('Dragged element:', draggedElement);
@@ -615,6 +621,7 @@ export class PackageManageComponent {
           this.userService.AddingdAlacarteTo_Base_Package(this.modified, this.containerData, this.role, this.username, this.package_id).subscribe((res: any) => {
             console.log(res);
             this.swal.success(res?.message);
+            this.modified = false;
           }, (err) => {
             this.swal.Error(err?.error?.message || "channel list is must");
           });
@@ -671,6 +678,7 @@ export class PackageManageComponent {
           this.userService.AddingdbouquetTo_Base_Package(this.modified, this.containerData, this.role, this.username, this.package_id, bouquetId ,).subscribe((res: any) => {
             console.log(res);
             this.swal.success(res?.message);
+            this.modified = false;
           }, (err) => {
             this.swal.Error(err?.error?.message);
           });

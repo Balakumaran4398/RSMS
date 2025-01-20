@@ -8,7 +8,7 @@
                 <i class="fas fa-sync-alt" aria-hidden="true"></i> Defective Smartcard
             </button>
         </div>
-            <ag-grid-angular #agGrid id="myGrid" domLayout='autoHeight' class="ag-theme-alpine table-class" rowAnimation
+            <ag-grid-angular #agGrid id="myGrid" domLayout='autoHeight' class="ag-theme-alpine table-class" rowAnimation style="max-height: 775px;overflow: scroll;"
                 [rowSelection]="rowSelection" [gridOptions]="gridOptions" [columnDefs]="columnDefs" [rowData]="rowData"
                 (selectionChanged)="onSelectionChanged()" (gridReady)="onGridReady($event)"
                 [enableCellTextSelection]="true">

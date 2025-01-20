@@ -1,4 +1,4 @@
-<section class="Tab col-12">
+<section class="Tab col-12" style="max-height: 775px;overflow: scroll;">
 
     <div class="display tablist justify-content-center align-items-center mb-3 ">
         <div class="tab mb-2  bttn" [class.active]="selectedTab === 'dis_commission'" style="text-align: center;"
@@ -26,9 +26,11 @@
         <div class="display input_box com_select">
             <div class="col display justify-content-start align-items-center mb-3">
                 <span style="font-size:17px;color: red;">SELECT DISTRIBUTOR MEMBERSHIP</span> &nbsp;&nbsp;
-                <input type="text" matInput [matAutocomplete]="auto" [(ngModel)]="lcomembershipid" maxlength="20"
-                    (input)="filterOperators($event)" placeholder="Select An Membership"
-                    [matAutocompleteDisabled]="false" [value]="selectedOperator?.name">
+                {{lcomembershipname}}
+                <input type="text" matInput [matAutocomplete]="auto"
+                    [value]="lcomembershipname || selectedOperator?.name" [(ngModel)]="lcomembershipid"
+                    (ngModelChange)="filterOperators($event)" placeholder="Select An Membership"
+                    [matAutocompleteDisabled]="false">
 
                 <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayOperator">
                     <mat-option *ngFor="let operator of filteredOperators" [value]="operator.value"
@@ -39,7 +41,8 @@
 
             </div>
             <div class="col display justify-content-end align-items-center">
-                <a class="btn btn-outline-success mx-1  bttn" style="background: rgb(250, 250, 165);" (click)="add('dis_commission')">
+                <a class="btn btn-outline-success mx-1  bttn" style="background: rgb(250, 250, 165);"
+                    (click)="add('dis_commission')">
                     <!-- <i class="fa fa-plus" aria-hidden="true"></i>  -->
                     <span style="font-weight: 600;"> ADD PRODUCT / COMMISSION AT MEMBERSHIP</span>
                 </a>
@@ -103,8 +106,9 @@
                             <ag-grid-angular #agGrid id="myGrid" style="text-align: center;"
                                 style="text-align: center; max-height: 500px;overflow: auto;" domLayout='autoHeight'
                                 class="ag-theme-alpine table-class" rowAnimation [rowSelection]="rowSelection"
-                                [columnDefs]="columnDefs2" [rowData]="rowData" (selectionChanged)="onSelectionChanged()"
-                                (gridReady)="onGridReady($event)" [enableCellTextSelection]="true">
+                                [columnDefs]="columnDefs2" [rowData]="rowData2"
+                                (selectionChanged)="onSelectionChanged()" (gridReady)="onGridReady($event)"
+                                [enableCellTextSelection]="true">
                             </ag-grid-angular>
                             <div class="col d-flex justify-content-center align-items-center new_d">
                                 <button class="btn btn-outline-info mx-1    bttn " type="button"
@@ -167,7 +171,7 @@
     <!-- --------------------------------------------- MEBERSHIP--------------------------- -->
 
     <div *ngIf="selectedTab === 'membership'">
-        <div class="row">
+        <div class="row" >
             <div class="col-12 d-flex flex-column flex-xl-row">
                 <div class="col-12 col-xl-6 mb-4 mx-3">
                     <div>

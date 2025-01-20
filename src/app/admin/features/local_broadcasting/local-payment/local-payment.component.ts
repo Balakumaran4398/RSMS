@@ -58,12 +58,11 @@ export class LocalPaymentComponent {
 
     },
     {
-      headerName: 'MOBILE NO', width: 400,
-      field: 'contactnumber1',
+      headerName: 'MOBILE NO', width: 270,  field: 'contactnumber1',
 
     },
     {
-      headerName: 'ADDRESS', width: 500,
+      headerName: 'ADDRESS', width: 400,cellStyle: { textAlign: 'left' } ,
       field: 'address',
     },
 

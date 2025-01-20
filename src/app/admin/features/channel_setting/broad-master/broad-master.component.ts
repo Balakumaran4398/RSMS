@@ -86,7 +86,7 @@ export class BroadMasterComponent implements OnInit {
       onCellMouseOver: (event: any) => {
         console.log('calling');
 
-        event.eGridCell.style.cursor = 'pointer'; // Change cursor to indicate editable cell
+        event.eGridCell.style.cursor = 'pointer'; 
       }
 
     },

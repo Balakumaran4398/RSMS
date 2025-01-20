@@ -1,5 +1,5 @@
 import { ChangeDetectorRef, Component, ViewChild } from '@angular/core';
-import { AbstractControl, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { AbstractControl, FormBuilder, FormControl, FormGroup, ValidationErrors, Validators } from '@angular/forms';
 import { BaseService } from 'src/app/_core/service/base.service';
 import { StorageService } from 'src/app/_core/service/storage.service';
 import Swal from 'sweetalert2';
@@ -91,7 +91,9 @@ export class CreateSubscriberComponent {
         installaddress: ['', [Validators.required]],
         mobileno: ['', [Validators.required, Validators.pattern('^[0-9]{10}$')]],
         landlineno: ['', [Validators.required, Validators.pattern('^[0-9]{10}$')]],
-        email: ['', [Validators.required, Validators.email]],
+        // email: ['', [Validators.required, Validators.email]],
+        email: ['',
+          [Validators.required, Validators.email, this.customEmailValidator()]],
         formsubmissiondate: ['', [Validators.required]],
         addressproof: ['', [Validators.required] || 0],
         idproof: ['', [Validators.required] || 0],
@@ -106,7 +108,17 @@ export class CreateSubscriberComponent {
     this.loadIdProofList();
     this.loadAddProofList();
   }
+  customEmailValidator() {
+    return (control: AbstractControl): ValidationErrors | null => {
+      const email = control.value;
+      const emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.(in|com)$/;
 
+      if (email && !emailPattern.test(email)) {
+        return { invalidEmail: true };
+      }
+      return null;
+    };
+  }
   onSearchChange(event: any) {
     this.searchTerm = event.target.value;;
 

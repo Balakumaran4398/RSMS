@@ -1,4 +1,4 @@
-<div class="card">
+<div class="">
     <h5>INSERT TO SUBSCRIBER</h5>
     <div class="input_box col-12 col-md-6 col-sm-3 d-flex justify-content-start align-items-center mb-3">
         <div class="col-12 col-md-3">
@@ -42,7 +42,7 @@
                     <i class="fa  fa-plus" aria-hidden="true"></i> ALLOCATED
                 </button>
             </div>
-            <ag-grid-angular #agGrid id="myGrid" domLayout='autoHeight' class="ag-theme-alpine table-class" rowAnimation
+            <ag-grid-angular #agGrid id="myGrid" domLayout='autoHeight' class="ag-theme-alpine table-class" rowAnimation style="max-height: 775px;overflow: scroll;"
                 [rowSelection]="rowSelection" [gridOptions]="gridOptions" [columnDefs]="columnDefs" [rowData]="rowData"
                 (selectionChanged)="onSelectionChanged()" (gridReady)="onGridReady($event)"
                 [enableCellTextSelection]="true">

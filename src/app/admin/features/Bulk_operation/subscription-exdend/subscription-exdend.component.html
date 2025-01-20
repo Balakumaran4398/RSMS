@@ -1,4 +1,4 @@
-<section class="Tab col-12">
+<section class="Tab col-12" style="max-height: 775px;overflow: scroll;">
     <div class="title">
         <p>Subscription Date Extend (For Active Subscription)
         </p>
@@ -51,7 +51,7 @@
                     <div class="col-5 col-12 col-md-6 col-sm-6">
                         <div style="color: rgb(1, 89, 92);font-weight: 400;font-size: 15px;" for="">No of Days :</div>
                     </div>
-                    <input (input)="validateLength($event)" type="number" maxlength="3"
+                    <input (input)="validateLength($event)" type="number" maxlength="3" min="0"
                         [(ngModel)]="days">
                 </div>
                 <!-- <div *ngIf="daysInvalid" style="color: red;">Please enter exactly 3 digits.</div> -->

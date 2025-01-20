@@ -29,11 +29,11 @@ export class DeactivationComponent implements OnInit{
 
   columnDefs: ColDef[] = [
     { headerName: "S.No", lockPosition: true, valueGetter: 'node.rowIndex+1', cellClass: 'locked-col', width: 80, suppressNavigable: true, sortable: false, filter: false },
-    { headerName: "SMARTCARD", field: 'smartcard', width: 300 },
+    { headerName: "SMARTCARD", field: 'smartcard', width: 250 },
     {
       headerName: "STATUS",
       field: 'status',
-      width: 300,
+      width: 200,
       cellRenderer: (params: any) => {
         if (params.value === 'Deactivation Successfully') {
           return `<span style="color: green;">${params.value}</span>`;
@@ -66,7 +66,7 @@ export class DeactivationComponent implements OnInit{
         return 0;
       },
     },
-    paginationPageSize: 15,
+    paginationPageSize: 10,
     pagination: true,
   }
 

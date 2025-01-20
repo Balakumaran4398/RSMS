@@ -407,7 +407,7 @@ export class OperatordialogueComponent implements OnInit {
   getAreawiseReportDownload(reporttype: number) {
 
     this.processingSwal();
-    this.userService.getOperatorDashboardPDFReport(this.role, this.username, this.type, reporttype, this.operatorid, 0, 0, 0)
+    this.userService.getOperatorDashboardPDFReport(this.role, this.username, 12, reporttype, this.operatorid, 0, 0, 0)
       .subscribe((x: Blob) => {
         if (reporttype == 1) {
           this.reportMaking(x, "LCO_ID_" + this.operatorid + "_AREAWISE_CONECTION_COUNT_REPORT.pdf", 'application/pdf');

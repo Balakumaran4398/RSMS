@@ -22,7 +22,7 @@
                             <!-- <div class="tooltip">Pdf</div> -->
                         </div>
                     </div>
-                    <ag-grid-angular #agGrid id="myGrid" domLayout='autoHeight' class="ag-theme-alpine table-class"
+                    <ag-grid-angular #agGrid id="myGrid" domLayout='autoHeight' class="ag-theme-alpine table-class" style="max-height: 775px;overflow: scroll;"
                         rowAnimation [rowSelection]="rowSelection" [gridOptions]="gridOptions" [columnDefs]="columnDefs"
                         [rowData]="rowData" (selectionChanged)="onSelectionChanged()" (gridReady)="onGridReady($event)"
                         [enableCellTextSelection]="true">

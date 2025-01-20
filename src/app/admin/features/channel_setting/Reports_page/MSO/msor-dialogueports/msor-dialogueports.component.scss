@@ -118,75 +118,7 @@ span {
 }
 
 
-// .input_box {
-//     display: flex;
-//     align-items: center;
-// }
 
-// .input_box select,
-// .input_box input {
-//     width: 150px;
-//     margin-left: 8px;
-// }
-
-// .export-icon {
-//     cursor: pointer;
-//     display: flex;
-//     align-items: center;
-//     font-size: smaller;
-// }
-
-// .export-icon img {
-//     transition: transform 0.3s ease;
-//     width: 40px;
-//     height: 40px;
-// }
-
-// .export-icon img:hover {
-//     transform: scale(1.1);
-// }
-
-// .card {
-//     padding: 15px;
-// }
-
-// @media (max-width: 768px) {
-//     .input_box {
-//         flex-direction: column;
-//         align-items: stretch;
-//         width: 80%;
-//         /* line-height: 12vh; */
-//         margin-top: 2vh;
-//         margin-left: 5%;
-//     }
-
-//     .input_box select,
-//     .input_box input,
-//     mat-form-field {
-//         width: 100%;
-//     }
-
-//     .d-flex {
-//         flex-wrap: wrap;
-//         /* Wrap items in smaller screens */
-//         justify-content: center;
-//     }
-
-//     .export-icon img {
-//         width: 50px;
-//         margin: 5px 0;
-//     }
-
-//     .mat-mdc-form-field {
-//         flex-direction: row;
-//         height: 9vh;
-//         margin-left: 1vh;
-//     }
-
-//     .submit{
-//         margin-left: 7%;
-//     }
-// }
 
 
 .input_box {
@@ -201,6 +133,11 @@ span {
     // min-width: 20vh;
     height: 6vh;
 }
+.input_box1 input {
+    margin-left: 8px;
+    height: 6vh;
+}
+
 
 .export-icon {
     cursor: pointer;
@@ -241,6 +178,13 @@ span {
     background-color: rgb(20, 100, 105);
 }
 
+
+.dropdown-menu.show {
+    display: contents;
+    top: 36px;
+    height: 10%;
+    overflow: scroll;
+}
 @media (max-width: 768px) {
     .input_box {
         flex-direction: column;

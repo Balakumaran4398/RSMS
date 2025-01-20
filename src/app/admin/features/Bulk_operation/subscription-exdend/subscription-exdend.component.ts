@@ -15,7 +15,7 @@ import Swal from 'sweetalert2';
 export class SubscriptionExdendComponent implements OnInit {
   file: File | null = null;
   filePath: string = '';
-  days:any=0;
+  days: any = 0;
   iscollected: boolean = false;
   isFileSelected: boolean = false;
   isCheckboxChecked: boolean = false;
@@ -63,65 +63,88 @@ export class SubscriptionExdendComponent implements OnInit {
   }
   ngOnInit(): void {
     this.date = new Date().toISOString().split('T')[0];
-    this.selectedDate = this.date; 
+    this.selectedDate = this.date;
     this.refresh();
   }
+  // validateLength(event: any): void {
+  //   let value = event.target.value;
+
+  //   if (value.length > 3) {
+  //     event.target.value = value.slice(0, 3);
+  //     this.days = event.target.value;
+  //   }
+  //   this.daysInvalid = value.length !== 3;
+
+  // }
   validateLength(event: any): void {
-    const value = event.target.value;
-    if (value.length > 3) {
-      event.target.value = value.slice(0, 3); // Trim to 3 digits
-      this.days = event.target.value; // Update the model
+    let value = event.target.value;
+  
+    // Ensure the value is positive
+    if (value < 0) {
+      value = Math.abs(value); // Convert to positive value
     }
-    this.daysInvalid = value.length !== 3; // Check validity
+  
+    // Limit to 3 digits
+    if (value.toString().length > 3) {
+      value = value.toString().slice(0, 3); // Trim to 3 digits
+    }
+  
+    // Update the input and the model
+    event.target.value = value;
+    this.days = value;
+  
+    // Validate length
+    this.daysInvalid = value.toString().length !== 3;
   }
+  
   getData() {
-    this.rowData=[];
+    this.rowData = [];
     const dateToPass = this.selectedDate || this.date;
     console.log(dateToPass);
     console.log(this.date);
-    
+
     this.userservice.getSubscriptionDataExtendList(this.role, this.username, dateToPass, this.remarks, 8)
-    .subscribe(
-      (response: HttpResponse<any[]>) => { // Expect HttpResponse<any[]>
-        if (response.status === 200) {
-          this.rowData = response.body;
-          this.swal.Success_200();
-        } else if (response.status === 204) {
-          this.swal.Success_204();
+      .subscribe(
+        (response: HttpResponse<any[]>) => { // Expect HttpResponse<any[]>
+          if (response.status === 200) {
+            this.rowData = response.body;
+            this.swal.Success_200();
+          } else if (response.status === 204) {
+            this.swal.Success_204();
+          }
+        },
+        (error) => {
+          if (error.status === 400) {
+            this.swal.Error_400();
+          } else if (error.status === 500) {
+            this.swal.Error_500();
+          } else {
+            Swal.fire('Error', 'Something went wrong. Please try again.', 'error');
+          }
         }
-      },
-      (error) => {
-        if (error.status === 400) {
-          this.swal.Error_400();
-        } else if (error.status === 500) {
-          this.swal.Error_500();
-        } else {
-          Swal.fire('Error', 'Something went wrong. Please try again.', 'error');
-        }
-      }
-    );
+      );
   }
   refresh() {
     this.userservice.getBulkOperationRefreshList(this.role, this.username, this.remarks, 8)
-    .subscribe(
-      (response: HttpResponse<any[]>) => { // Expect HttpResponse<any[]>
-        if (response.status === 200) {
-          this.rowData = response.body;
-          this.swal.Success_200();
-        } else if (response.status === 204) {
-          this.swal.Success_204();
+      .subscribe(
+        (response: HttpResponse<any[]>) => { // Expect HttpResponse<any[]>
+          if (response.status === 200) {
+            this.rowData = response.body;
+            this.swal.Success_200();
+          } else if (response.status === 204) {
+            this.swal.Success_204();
+          }
+        },
+        (error) => {
+          if (error.status === 400) {
+            this.swal.Error_400();
+          } else if (error.status === 500) {
+            this.swal.Error_500();
+          } else {
+            Swal.fire('Error', 'Something went wrong. Please try again.', 'error');
+          }
         }
-      },
-      (error) => {
-        if (error.status === 400) {
-          this.swal.Error_400();
-        } else if (error.status === 500) {
-          this.swal.Error_500();
-        } else {
-          Swal.fire('Error', 'Something went wrong. Please try again.', 'error');
-        }
-      }
-    );
+      );
   }
   onGridReady = () => {
     // this.userservice.GetAllUser('all',this.token.getUsername(),'0000-00-00','0000-00-00').subscribe((data) => {

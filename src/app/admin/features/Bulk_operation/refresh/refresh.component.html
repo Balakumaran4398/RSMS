@@ -1,4 +1,4 @@
-<div>
+<div style="max-height: 775px;overflow: scroll;">
     <p>BULK REACTIVE</p>
 
     <div class=" display justify-content-center align-items-center mb-3">
@@ -60,7 +60,7 @@
                 </div>
             </div>
 
-            <ag-grid-angular #agGrid id="myGrid" domLayout="autoHeight" class="ag-theme-alpine table-class" rowAnimation
+            <ag-grid-angular #agGrid id="myGrid" domLayout="autoHeight" class="ag-theme-alpine table-class" rowAnimation style="max-height: 775px;overflow: scroll;"
                 [rowSelection]="rowSelection" [gridOptions]="gridOptions" [columnDefs]="columnDefs" [rowData]="rowData"
                 (gridReady)="onGridReady()" [enableCellTextSelection]="true">
             </ag-grid-angular>

@@ -602,9 +602,15 @@ export class BroadcasterReportsComponent implements OnInit {
           (response: HttpResponse<any>) => {
             if (response.status === 200) {
               console.log(response);
-              this.addonlist = response.body.addonPackageList;
-              this.alacartelist = response.body.alacartePackageList;
-              this.baselist = response.body.basePackageList;
+              this.addonlist = response.body;
+              this.alacartelist = response.body;
+              this.baselist = response.body;
+
+
+              // this.addonlist = response.body.addonPackageList;
+              // this.alacartelist = response.body.alacartePackageList;
+              // this.baselist = response.body.basePackageList;
+              
             } else if (response.status === 204) {
               this.swal.Success_204();
               this.rowData = [];

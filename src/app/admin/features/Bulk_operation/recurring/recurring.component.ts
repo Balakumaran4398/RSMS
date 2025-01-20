@@ -39,13 +39,13 @@ export class RecurringComponent implements OnInit {
   columnDefs: ColDef[] = [
     {
       headerName: "S.No", lockPosition: true, valueGetter: 'node.rowIndex+1', cellClass: 'locked-col', headerCheckboxSelection: true,
-      checkboxSelection: true, width: 100
+      checkboxSelection: true, width: 80
     },
-    { headerName: "SUBSCRIBER NAME", field: 'customername', width: 250 },
-    { headerName: "ADDRESS", field: 'address', width: 250 },
+    { headerName: "SUBSCRIBER NAME", field: 'customername', width: 250,cellStyle: { textAlign: 'left' } },
+    { headerName: "ADDRESS", field: 'address', width: 250,cellStyle: { textAlign: 'left' } },
     { headerName: "SMARTCARD", field: 'smartcard', width: 300 },
     {
-      headerName: "RECURRING", field: 'isrecurring', width: 300,
+      headerName: "RECURRING", field: 'isrecurring', width: 200,
       cellRenderer: (params: any) => {
         if (params.value === true) {
           return `<span style="color: green; font-weight: bold;">Activate</span>`;
@@ -54,8 +54,8 @@ export class RecurringComponent implements OnInit {
         }
       }
     },
-    { headerName: "BOXID	", field: 'boxid', width: 300 },
-    { headerName: "EXPIRY DATE	", field: 'expirydate', width: 300 },
+    { headerName: "BOXID	", field: 'boxid', width: 200,cellStyle: { textAlign: 'left' } },
+    { headerName: "EXPIRY DATE	", field: 'expirydate', width: 300,cellStyle: { textAlign: 'left' } },
   ];
   rowData: any;
   public rowSelection: any = "multiple";

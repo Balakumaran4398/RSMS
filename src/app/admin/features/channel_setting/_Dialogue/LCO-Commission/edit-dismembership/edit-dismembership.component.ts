@@ -60,6 +60,7 @@ export class EditDismembershipComponent implements OnInit {
   }
 
   toggleSelection(item: any) {
+    console.log('item', item);
 
     if (this.selectedItems.has(item)) {
       this.selectedItems.delete(item);
@@ -210,13 +211,12 @@ export class EditDismembershipComponent implements OnInit {
 
 
   save() {
-    const idsToPass = this.containerID?.length > 0 ? this.containerID : this.selectedIds;
-
-    console.log('containerID:', this.containerID);
-    console.log('selectedIds:', this.selectedIds);
-    console.log('IDs to pass:', idsToPass);
+    console.log(this.addedList.map((item: any) => item.id));
+    let addlist = this.addedList.map((item: any) => item.id)
+    // const idsToPass = this.containerID?.length > 0 ? this.containerID : this.selectedIds;
+    const idsToPass = this.containerID?.length > 0 ? this.containerID : (addlist.length > 0 ? addlist : 0);
     this.swal.Loading();
-    this.userservice.updateDistributor(this.role, this.username, this.distributorid,idsToPass).subscribe((res: any) => {
+    this.userservice.updateDistributor(this.role, this.username, this.distributorid, idsToPass).subscribe((res: any) => {
       this.swal.success(res?.message);
     }, (err) => {
       this.swal.Error(err?.error?.message);

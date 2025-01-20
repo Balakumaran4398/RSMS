@@ -25,17 +25,6 @@
                     <div class="tooltip">Pdf</div>
                 </div>
             </div>
-
-            <!-- <div>
-                <a class="btn btn-outline-primary mx-1">
-                    <i class="fa fa-file-pdf-o" aria-hidden="true"></i> EXCEL
-                </a>
-            </div>
-            <div>
-                <a class="btn btn-outline-danger mx-1">
-                    <i class="fa fa-file-excel-o" aria-hidden="true"></i> PDF
-                </a>
-            </div> -->
         </div>
 
         <div class="col d-flex justify-content-end align-items-center">
@@ -57,9 +46,9 @@
 
         </div>
     </div>
-    <div class="row">
+    <div class="row" >
         <div class="col-12 col-sm-12  m-3">
-            <ag-grid-angular #agGrid id="myGrid" domLayout='autoHeight' class="ag-theme-alpine table-class" rowAnimation
+            <ag-grid-angular #agGrid id="myGrid" domLayout='autoHeight' class="ag-theme-alpine table-class" style="max-height: 775px;overflow: scroll;" rowAnimation
                 [rowSelection]="rowSelection" [gridOptions]="gridOptions" [columnDefs]="columnDefs" [rowData]="rowData"
                 (selectionChanged)="onSelectionChanged()" (gridReady)="onGridReady($event)"
                 [enableCellTextSelection]="true">

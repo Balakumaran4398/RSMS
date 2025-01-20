@@ -199,6 +199,19 @@ form .gender {
     height: 50px !important;
     flex: auto;
 }
+.has-error input {
+    border-color: red;
+}
+
+.error-message {
+    color: red;
+    font-size: 0.9em;
+    margin-top: 0.5em;
+}
+
+.small {
+    color: red;
+}
 @media screen and (max-width: 584px) {
     .container .title {
         padding: 13px;

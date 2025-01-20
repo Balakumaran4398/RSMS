@@ -25,11 +25,13 @@ export class LcoCommissionComponent {
   username: any;
   rowData: any;
   rowData1: any[] = [];
-  rowData2: any[] = [];
+  // rowData2: any[] = [];
+  rowData2: any;
   rowData3: any[] = [];
   NotInLcogroupId: any[] = [];
-  lcomembershipid: any = 0;
-  lcomembershipList: any = 1;
+  lcomembershipid: any;
+  lcomembershipname: any;
+  lcomembershipList: any = '1';
 
 
   gridApi: any;
@@ -39,7 +41,7 @@ export class LcoCommissionComponent {
   rows: any[] = [];
 
   filteredOperators: any[] = [];
-  selectedOperator: any = 1;
+  selectedOperator: any;
   selectedLcoName: any;
 
   @ViewChild('agGrid') agGrid: any;
@@ -60,6 +62,11 @@ export class LcoCommissionComponent {
       });
       console.log(this.lcomembershipList);
       this.lcomembershipid = this.lcomembershipList[0]?.value
+      console.log(this.lcomembershipid);
+      this.lcomembershipname = this.lcomembershipList[0]?.name
+      console.log(this.lcomembershipname);
+
+
       this.onOperatorChange("")
       // this.onmembershipchange("")
       this.filteredOperators = this.lcomembershipList;
@@ -81,6 +88,7 @@ export class LcoCommissionComponent {
         newRowData = this.getCommissionData('commission');
       } else if (this.selectedTab === 'dmembership') {
         newRowData = this.getMembershipData('membership');
+
       }
       this.agGrid.api.setRowData(newRowData);
     }
@@ -101,11 +109,13 @@ export class LcoCommissionComponent {
   getDisMembershipData(event: any) {
     console.log(event);
     this.rowData = [];
+    this.rowData2 = [];
     this.loadTableData(event);
     return [this.rowData];
   }
   getMembershipData(event: any) {
     console.log(event);
+    this.rowData2 = [];
     this.rowData = [];
     this.loadTableData(event);
     return [this.rowData];
@@ -242,7 +252,7 @@ export class LcoCommissionComponent {
         {
           headerName: "S.No", lockPosition: true, valueGetter: 'node.rowIndex+1', width: 100,
         },
-        { headerName: "PRODUCT NAME", field: 'productname',  width: 250, cellStyle: { textAlign: 'left' }, },
+        { headerName: "PRODUCT NAME", field: 'productname', width: 250, cellStyle: { textAlign: 'left' }, },
         { headerName: "PRODUCT ID", field: 'productid', width: 150 },
         { headerName: "PRODUCT TYPE", field: 'productTypeDisplay', width: 150 },
         {
@@ -427,55 +437,53 @@ export class LcoCommissionComponent {
   onOperatorChange(selectedOperator: any) {
     console.log('this.selectedTab', selectedOperator);
     this.selectedOperator = selectedOperator;
-    this.selectedLcoName = selectedOperator.name;
+    // this.lcomembershipid = selectedOperator.value;
+    this.selectedOperator = selectedOperator.name;
+    console.log(this.selectedOperator);
+
     if (this.selectedTab === 'dis_commission') {
-      if (this.lcomembershipid === '0') {
-        this.lcomembershipid = 0;
+      if (this.lcomembershipid === 1) {
+        this.lcomembershipid = 1;
       }
       this.rowData = [];
-      this.userservice.getDistributorCommissionListByLcoGroupId(this.role, this.username, this.lcomembershipid).subscribe(
-        (response: HttpResponse<any[]>) => {
-          if (response.status === 200) {
-            this.rowData = response.body;
-            // this.swal.Success_200();
-          } else if (response.status === 204) {
-            this.swal.Success_204();
-          }
-        },
-        (error) => {
-          if (error.status === 400) {
-            this.swal.Error_400();
-          } else if (error.status === 500) {
-            this.swal.Error_500();
-          } else {
-            Swal.fire('Error', 'Something went wrong. Please try again.', 'error');
-          }
-        });
+      this.userservice.getDistributorCommissionListByLcoGroupId(this.role, this.username, this.lcomembershipid)
+        .subscribe(
+          (response: HttpResponse<any[]>) => {
+            if (response.status === 200) {
+              this.rowData = response.body;
+            } else if (response.status === 204) {
+              this.swal.Success_204();
+            }
+          },
+          (error) => this.handleError(error)
+        );
     } else if (this.selectedTab === 'commission') {
       if (this.lcomembershipid === '0') {
         this.lcomembershipid = 0;
       }
       this.rowData = [];
-      this.userservice.getLcoCommissionListByLcoGroupId(this.role, this.username, this.lcomembershipid).subscribe(
-        (response: HttpResponse<any[]>) => {
-          if (response.status === 200) {
-            this.rowData = response.body;
-            // this.swal.Success_200();
-          } else if (response.status === 204) {
-            this.swal.Success_204();
-          }
-        },
-        (error) => {
-          if (error.status === 400) {
-            this.swal.Error_400();
-          } else if (error.status === 500) {
-            this.swal.Error_500();
-          } else {
-            Swal.fire('Error', 'Something went wrong. Please try again.', 'error');
-          }
-        });
+      this.userservice.getLcoCommissionListByLcoGroupId(this.role, this.username, this.lcomembershipid)
+        .subscribe(
+          (response: HttpResponse<any[]>) => {
+            if (response.status === 200) {
+              this.rowData = response.body;
+            } else if (response.status === 204) {
+              this.swal.Success_204();
+            }
+          },
+          (error) => this.handleError(error)
+        );
     }
 
+  }
+  handleError(error: any) {
+    if (error.status === 400) {
+      this.swal.Error_400();
+    } else if (error.status === 500) {
+      this.swal.Error_500();
+    } else {
+      Swal.fire('Error', 'Something went wrong. Please try again.', 'error');
+    }
   }
   onmembershipchange(selectedOperator: any) {
     this.selectedOperator = selectedOperator;
@@ -483,10 +491,12 @@ export class LcoCommissionComponent {
     this.userservice.getOperatorlistByGroupId(this.role, this.username, this.lcomembershipid).subscribe(
       (response: HttpResponse<any[]>) => {
         if (response.status === 200) {
-          this.rowData = response.body;
+          this.rowData2 = response.body;
           this.swal.Success_200();
+          // this.lcomembershipid='';
         } else if (response.status === 204) {
           this.swal.Success_204();
+          this.rowData2 = [];
         }
       },
       (error) => {

@@ -143,38 +143,41 @@ export class BulkPageUpdationComponent implements OnInit {
     this.role = storageService.getUserRole();
     this.columnDefs = [
       { headerName: "S.No", lockPosition: true, valueGetter: 'node.rowIndex+1', cellClass: 'locked-col', width: 80, suppressNavigable: true, sortable: false, filter: false },
-      { headerName: "CUSTOMER NAME", field: 'customername', width: 350 },
+      { headerName: "CUSTOMER NAME", field: 'customername', width: 250,cellStyle: { textAlign: 'center' }, },
       { headerName: "SMARTCARD", field: 'smartcard', width: 300 },
-      { headerName: "BOX ID", field: 'boxid', width: 350 },
-      { headerName: "PACKAGE NAME", field: 'productname', width: 330 },
+      { headerName: "BOX ID", field: 'boxid', width: 250 },
+      { headerName: "PACKAGE NAME", field: 'productname', width: 250,cellStyle: { textAlign: 'center' }, },
       { headerName: "EXPIRY DATE", field: 'expirydate', width: 350 },
     ];
   }
+  onTypeChanged() {
+    console.log('1111111111');
 
+    this.rowData = [];
+  }
   private updateColumnDefs(tab: string): void {
     if (tab === 'bulk_package') {
       console.log(this.rowData = []);
-
       this.columnDefs = [
         {
           headerName: "S.No", lockPosition: true, valueGetter: 'node.rowIndex+1', cellClass: 'locked-col', width: 100,
           headerCheckboxSelection: true, checkboxSelection: true
         },
-        { headerName: "CUSTOMER NAME", field: 'customername', width: 350 },
+        { headerName: "CUSTOMER NAME", field: 'customername',width: 250,cellStyle: { textAlign: 'left' }},
         { headerName: "SMARTCARD", field: 'smartcard', width: 300 },
-        { headerName: "BOX ID", field: 'boxid', width: 350 },
-        { headerName: "PACKAGE NAME", field: 'productname', width: 330 },
-        { headerName: "EXPIRY DATE", field: 'expirydate', width: 340 },
+        { headerName: "BOX ID", field: 'boxid', width: 330 },
+        { headerName: "PACKAGE NAME", field: 'productname',width: 250,cellStyle: { textAlign: 'left' }},
+        { headerName: "EXPIRY DATE", field: 'expirydate', width: 300 },
       ];
     } else if (tab === 'pending') {
       console.log(this.rowData = []);
       this.columnDefs = [
         { headerName: "S.No", lockPosition: true, valueGetter: 'node.rowIndex+1', cellClass: 'locked-col', width: 80 },
-        { headerName: "CUSTOMER NAME	", field: 'customername', width: 200 },
+        { headerName: "CUSTOMER NAME	", field: 'customername',width: 250,cellStyle: { textAlign: 'left' } },
         { headerName: "SMARTCARD", field: 'smartcard', width: 250 },
         { headerName: "BOX ID", field: 'boxid', width: 250 },
         { headerName: "CREATED DATE", field: 'createddate', width: 250 },
-        { headerName: "PACKAGE NAME", field: 'expirydate', width: 250 },
+        { headerName: "PACKAGE NAME", field: 'expirydate',width: 250,cellStyle: { textAlign: 'left' }  },
         { headerName: "EXPIRY DATE", field: 'packagename', width: 250 },
         {
           headerName: "STATUS", width: 230,
@@ -198,13 +201,13 @@ export class BulkPageUpdationComponent implements OnInit {
       console.log(this.rowData = []);
       this.columnDefs = [
         { headerName: "S.No", lockPosition: true, valueGetter: 'node.rowIndex+1', cellClass: 'locked-col', width: 80 },
-        { headerName: "OPERATOR NAME	", field: 'operatorname', width: 200 },
-        { headerName: "CUSTOMER NAME	", field: 'customername', width: 200 },
+        { headerName: "OPERATOR NAME	", field: 'operatorname', width: 250,cellStyle: { textAlign: 'left' } },
+        { headerName: "CUSTOMER NAME	", field: 'customername',width: 250,cellStyle: { textAlign: 'left' }  },
         { headerName: "SMARTCARD", field: 'smartcard', width: 250 },
         { headerName: "BOX ID", field: 'boxid', width: 200 },
         { headerName: "CREATED DATE", field: 'createddate', width: 200 },
-        { headerName: "PACKAGE NAME", field: 'expirydate', width: 250 },
-        { headerName: "EXPIRY DATE", field: 'packagename', width: 200 },
+        { headerName: "PACKAGE NAME", field: 'packagename', width: 200,cellStyle: { textAlign: 'left' }  },
+        { headerName: "EXPIRY DATE", field: 'expirydate', width: 200,cellStyle: { textAlign: 'left' } },
         {
           headerName: "STATUS",
           field: 'casresponse', width: 180
@@ -394,6 +397,7 @@ export class BulkPageUpdationComponent implements OnInit {
     this.fromdate = '';
     this.todate = '';
     this.operatorid = '';
+
     this.updateColumnDefs(tab);
   }
 
@@ -481,7 +485,7 @@ export class BulkPageUpdationComponent implements OnInit {
     const apiCalls = [
       { condition: this.typelist === 1, method: this.userservice.getAllBulkPackageListByOperatoridAndStatus(this.role, this.username, this.operatorid || null, 0, 1) },
       { condition: this.typelist === 2, method: this.userservice.getAllBulkPackageListBySearchnameAndStatus(this.role, this.username, this.smartcard, 0, 1) },
-      { condition: this.typelist === 3, method: this.userservice.getAllBulkPackageListByFromdateTodateAndStatus(this.role, this.username, this.fromdate || null, this.todate, 0, 1) }
+      { condition: this.typelist === 3, method: this.userservice.getAllBulkPackageListByFromdateTodateAndStatus(this.role, this.username, this.fromdate, this.todate, 0, 1) }
     ];
 
     apiCalls.forEach(({ condition, method }) => {
@@ -503,8 +507,8 @@ export class BulkPageUpdationComponent implements OnInit {
         this.role, this.username, this.smartcard, this.alltypelist, 2
       );
     } else if (this.typelist === 3) {
-      const dateToPass = this.selectedDate || this.fromdate;
-      const dateToPass1 = this.selectedDate || this.todate;
+      const dateToPass = this.fromdate;
+      const dateToPass1 = this.todate;
       apiCall = this.userservice.getAllBulkPackageListByFromdateTodateAndStatus(
         this.role, this.username, dateToPass, dateToPass1, this.alltypelist, 2
       );

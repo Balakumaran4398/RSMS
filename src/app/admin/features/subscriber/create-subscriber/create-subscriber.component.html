@@ -1,4 +1,4 @@
-<div id="Customer-page" #formContent>
+<div id="Customer-page" #formContent style="max-height: 775px;overflow: scroll;">
     <div>
         <h3>
             SUBSCRIBER CREATION
@@ -71,7 +71,7 @@
                             [ngClass]="{ 'is-invalid': submitted && f['casformid'].errors }" />
                     </div>
                     <div class="input_box">
-                        <label for="email">Subscriber Name</label>
+                        <label for="customername">Subscriber Name</label>
                         <input type="text" formControlName="customername" placeholder="Enter Subscriber Name" required
                             [ngClass]="{ 'is-invalid': submitted && f['customername'].errors }" />
 
@@ -148,14 +148,28 @@
                         </div> -->
                     </div>
                     <div class="input_box">
-                        <label for="confirmPass">Email ID</label>
+                        <label for="email">Email ID</label>
                         <input type="text" formControlName="email" placeholder="Ex. example@gmail.com"
                             [ngClass]="{ 'is-invalid': submitted && f['email'].errors }" required />
-                        <div style="position: relative; font-size: small;" *ngIf="submitted && f['email'].errors"
+                        <!-- <div style="position: relative; font-size: small;" *ngIf="submitted && f['email'].errors"
                             class="invalid-feedback">
                             <div *ngIf="f['email'].errors['required']">Email ID is required</div>
                             <div *ngIf="f['email'].errors['email']">Please enter a valid email</div>
-                        </div>
+                        </div> -->
+                        <div *ngIf="form.get('email')?.invalid && form.get('email')?.touched"
+                        class="error-message">
+                        <div *ngIf="form.get('email')?.invalid && form.get('email')?.touched" class="error-message">
+                            <div *ngIf="form.get('email')?.hasError('required')">
+                              Email is required.
+                            </div>
+                            <div *ngIf="!form.get('email')?.hasError('required') && form.get('email')?.hasError('email')">
+                              Please enter a valid email format.
+                            </div>
+                            <div *ngIf="!form.get('email')?.hasError('required') && !form.get('email')?.hasError('email') && form.get('email')?.hasError('invalidEmail')">
+                              Email must include ".in" or ".com" after letters.
+                            </div>
+                          </div>
+                    </div>
                     </div>
                     <div class="input_box">
                         <label for="confirmPass">Form Submission Date</label>
@@ -203,7 +217,7 @@
                     </div>
 
                     <div class="input_box">
-                        <label>Id Proof Name</label>
+                        <label>ID Proof Name</label>
                         <select id="idprooftypeid" formControlName="idprooftypeid" (change)="onIDProofChange($event)">
                             <option value="0" disabled>Select a ID Proof</option>
                             <option *ngFor="let key of filteredIdProofKeys()" [value]="key"> {{ key}} </option>
@@ -247,7 +261,7 @@
                         <input type="checkbox" style="width: 30px;height: 25px;" (change)="onChange($event)" />
                     </div>
                     <div class="input_box">
-                        <label for="email">Install Address</label>
+                        <label for="installaddress">Install Address</label>
                         <input type="text" formControlName="installaddress" placeholder="Enter the Install address"
                             required [(ngModel)]="installaddress"
                             [ngClass]="{ 'is-invalid': submitted && f['installaddress'].errors }" />

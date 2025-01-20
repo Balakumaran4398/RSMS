@@ -184,3 +184,27 @@ mat-raised-button{
 .custom-dialog-container .mat-dialog-container {
     background: rgba(255, 255, 255, 0.8);
 }
+
+#myGrid {
+    width: 100%;
+    height: 600px;
+    text-align: center;
+  }
+  .responsive-grid {
+    width: 100%;
+    max-width: 1200px; 
+    margin: auto;
+  }
+  
+  
+  @media (max-width: 768px) {
+    .responsive-grid {
+        width: 100%;
+    }
+  }
+  ::ng-deep .ag-header{
+    background-color: #557c9b !important;
+  }
+  .custom{
+    background-color: lightslategrey;
+  }

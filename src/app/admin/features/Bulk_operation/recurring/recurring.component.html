@@ -1,4 +1,4 @@
-<section>
+<section style="max-height: 775px;overflow: scroll;">
     <div class=" border p-3">
         <div class=" display justify-content-center align-items-center">
             <div class="col-12 col-md-12 mobile display justify-content-center align-items-center">
@@ -114,7 +114,7 @@
                   
                 </div>
                 <ag-grid-angular #agGrid id="myGrid" domLayout='autoHeight' class="ag-theme-alpine table-class"
-                    rowAnimation [rowSelection]="rowSelection" [gridOptions]="gridOptions" [columnDefs]="columnDefs"
+                    rowAnimation [rowSelection]="rowSelection" [gridOptions]="gridOptions" [columnDefs]="columnDefs" style="max-height: 775px;overflow: scroll;"
                     [rowData]="reccuringData" (gridReady)="onGridReady($event)" [enableCellTextSelection]="true" (selectionChanged)="onSelectionChanged()">
                 </ag-grid-angular>
             </div>

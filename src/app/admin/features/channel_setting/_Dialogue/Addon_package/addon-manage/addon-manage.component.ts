@@ -79,6 +79,7 @@ export class AddonManageComponent {
     this.role = storageservice.getUserRole();
   }
   ngOnInit(): void {
+    this.modified = false;
     console.log(this.subcount);
     this.id = this.route.snapshot.paramMap.get('id');
     console.log('Package ID:', this.id);
@@ -152,6 +153,7 @@ export class AddonManageComponent {
     this.location.back();
   }
   drop1(event: CdkDragDrop<string[]>, val: number) {
+    this.modified = true;
     const draggedItem = event.item;
     const draggedElement = draggedItem.element.nativeElement;
     const draggedData = draggedItem.data;
@@ -211,6 +213,7 @@ export class AddonManageComponent {
     console.log(this.bouquet_removelist_id)
   }
   drop2(event: CdkDragDrop<string[]>, val: number) {
+    this.modified = true;
     const draggedItem = event.item; // CdkDrag instance of the dragged element
     const draggedElement = draggedItem.element.nativeElement; // Actual DOM element
     const draggedData = draggedItem.data;
@@ -292,6 +295,7 @@ export class AddonManageComponent {
   }
   moveSelectedAlacarte_Items(direction: 'left' | 'right') {
     console.log(event);
+    this.modified = true;
     const itemsToMove: any[] = [];
     this.before_added_alacarte_list = this.added_alacarte_list.length;
     this.before_available_alacarte_list = this.available_alacarte_list.length;
@@ -345,6 +349,7 @@ export class AddonManageComponent {
 
 
   moveSelectedBouquet_Items(direction: 'left' | 'right') {
+    this.modified = true;
     const itemsToMove: any[] = [];
     this.before_available_alacarte_list = this.available_alacarte_list.length
     this.before_available_bouquet_list = this.available_bouquet_list.length;
@@ -398,6 +403,7 @@ export class AddonManageComponent {
 
 
   moveAll_alacarte_Items(direction: 'left' | 'right') {
+    this.modified = true;
     if (direction === 'right') {
       this.added_alacarte_list.push(...this.available_alacarte_list);
       this.alacarte_list_id = this.available_alacarte_list.map((item: any) => {
@@ -421,6 +427,7 @@ export class AddonManageComponent {
 
 
   moveAll_bouquet_Items(direction: 'left' | 'right') {
+    this.modified = true;
     if (direction === 'right') {
       console.log('right to left');
 
@@ -518,43 +525,7 @@ export class AddonManageComponent {
 
 
   save() {
-    console.log('this.before_available_alacarte_list', this.before_available_alacarte_list.length);
-    console.log('this.available_alacarte_list', this.available_alacarte_list.length);
-    console.log('this.before_available_bouquet_list', this.before_available_bouquet_list.length);
-    console.log('this.available_bouquet_list', this.available_bouquet_list.length);
-    console.log('this.before_added_alacarte_list', this.before_added_alacarte_list.length);
-    console.log('this.added_alacarte_list', this.added_alacarte_list.length);
 
-    if (this.before_available_alacarte_list == this.available_alacarte_list.length) {
-      this.modified = !(
-        JSON.stringify(this.available_alacarte_list) === JSON.stringify(this.filteredAvailableAlacarteList) &&
-        JSON.stringify(this.added_alacarte_list) === JSON.stringify(this.filteredAddedList)
-      );
-      console.log('11111  if modified');
-
-    } else if (this.before_available_alacarte_list == !this.available_alacarte_list.length) {
-      this.modified = (
-        JSON.stringify(this.available_alacarte_list) === JSON.stringify(this.filteredAvailableAlacarteList) &&
-        JSON.stringify(this.added_alacarte_list) === JSON.stringify(this.filteredAddedList)
-      );
-      console.log('22222222 if modified');
-
-    }
-    if (this.before_added_alacarte_list === !this.added_alacarte_list.length) {
-      this.modified = !(
-        JSON.stringify(this.available_alacarte_list) === JSON.stringify(this.filteredAvailableAlacarteList) &&
-        JSON.stringify(this.added_alacarte_list) === JSON.stringify(this.filteredAddedList)
-      );
-      console.log('11111111 else modified');
-
-    } else if (this.before_added_alacarte_list === this.added_alacarte_list.length) {
-      this.modified = (
-        JSON.stringify(this.available_alacarte_list) === JSON.stringify(this.filteredAvailableAlacarteList) &&
-        JSON.stringify(this.added_alacarte_list) === JSON.stringify(this.filteredAddedList)
-      );
-      console.log('22222222 else modified');
-
-    }
     this.containerData = this.containerData.length == 0 ? 0 : this.containerData;
     console.log(this.containerData);
     // if (this.modified || !this.alacarte_list_id || !this.role || !this.username || !this.id) {
@@ -586,9 +557,10 @@ export class AddonManageComponent {
         });
         this.userService.AddingdAlacarteTo_Addon_Package(this.modified, this.containerData, this.role, this.username, this.id).subscribe((res: any) => {
           console.log(res)
-          // this.swal.success(res?.message);
+          this.swal.success(res?.message);
           this.filteredAvailableAlacarteList = [...this.available_alacarte_list];
           this.filteredAddedList = [...this.added_alacarte_list];
+          this.modified = false; 
         }, (err) => {
           this.swal.Error(err?.error?.message);
         });
@@ -628,6 +600,7 @@ export class AddonManageComponent {
         this.userService.AddingdbouquetTo_Addon_Package(this.modified, this.containerData, this.role, this.username, this.id, bouquetId || this.bouquet_list_id || 0,).subscribe((res: any) => {
           console.log(res);
           this.swal.success(res?.message);
+          this.modified = false;
         }, (err) => {
           this.swal.Error(err?.error?.message);
         });

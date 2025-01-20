@@ -197,7 +197,7 @@ export class AddLcoComponent {
     },
 
     {
-      headerName: "COMMISSION VALUE" , width: 200,
+      headerName: "COMMISSION VALUE", width: 200,
       field: 'commission',
 
     },
@@ -272,7 +272,9 @@ export class AddLcoComponent {
         const name = key.replace(/\s*\(.*?\)\s*/g, '').trim();
         return { name: name, value: value };
       });
-      this.filteredOperators = this.lcomembershipList
+      this.filteredOperators = this.lcomembershipList;
+      this.lcogroupid=''
+      this.rowData = [];
       this.lcomembershipList.sort((a: any, b: any) => {
         if (a.value > b.value) return 1;
         if (a.value < b.value) return -1;

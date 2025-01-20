@@ -20,16 +20,16 @@
                         (input)="filterAvailableList()">
                 </div>
                 <div class="table1 mb-3">
-                    <p style="color: white;">AVAILABLE LCO  - {{availableList.length}}</p>
+                    <p style="color: white;">AVAILABLE LCO - {{availableList.length}}</p>
                     <div class="row inp">
                         <div class="col-12 example-container">
                             <div cdkDropList #todoList="cdkDropList" [cdkDropListData]="filteredAvailableList"
                                 [cdkDropListConnectedTo]="[doneList]" class="example-list"
                                 (cdkDropListDropped)="drop($event,1)">
                                 <div *ngFor="let item of filteredAvailableList" class="example-box"
-                                    (click)="toggleSelection(item)"  cdkDrag
-                                    [cdkDragData]="item" [class.selected]="isSelected(item)">
-                                    {{ item.name }}
+                                    (click)="toggleSelection(item)" cdkDrag [cdkDragData]="item"
+                                    [class.selected]="isSelected(item)">
+                                    {{ item.name }}-({{item.id}})
                                 </div>
                             </div>
                         </div>
@@ -57,9 +57,9 @@
                                 [cdkDropListConnectedTo]="[todoList]" class="example-list"
                                 (cdkDropListDropped)="drop($event,2)">
                                 <div *ngFor="let item of filteredAddedList" class="example-box"
-                                    (click)="toggleSelection(item)"  cdkDrag
-                                    [cdkDragData]="item" [class.selected]="isSelected(item)">
-                                    {{ item.name }}
+                                    (click)="toggleSelection(item)" cdkDrag [cdkDragData]="item"
+                                    [class.selected]="isSelected(item)">
+                                    {{ item.name }}-({{item.id}})
                                 </div>
                             </div>
                         </div>

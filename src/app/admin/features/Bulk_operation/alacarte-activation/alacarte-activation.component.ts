@@ -65,9 +65,9 @@ export class AlacarteActivationComponent {
   columnDefs1: ColDef[] = [
     { headerName: "S.No", lockPosition: true, valueGetter: 'node.rowIndex+1', cellClass: 'locked-col', width: 80, suppressNavigable: true, sortable: false, filter: false },
     { headerName: "SMARTCARD", field: 'smartcard', width: 250, },
-    { headerName: "CHANNEL NAME", field: 'packagename', width: 300 },
+    { headerName: "CHANNEL NAME", field: 'packagename', width: 250 },
     {
-      headerName: "STATUS	", field: 'status', width: 250,
+      headerName: "STATUS	", field: 'status', width: 250,cellStyle: { textAlign: 'center' },
       cellRenderer: (params: any) => {
         const status = params.value;
         if (status === 'Success') {

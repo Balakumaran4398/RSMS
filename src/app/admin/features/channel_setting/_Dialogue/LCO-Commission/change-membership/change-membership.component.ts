@@ -55,7 +55,11 @@ export class ChangeMembershipComponent {
   }
   columnDefs: ColDef[] = [
     { headerName: "S.No", lockPosition: true, valueGetter: 'node.rowIndex+1', width: 100 },
-    { headerName: "OPERATOR", field: 'operatorname', width: 450 },
+    { 
+      headerName: "OPERATOR", 
+      valueGetter: params => `${params.data.operatorname} (${params.data.operatorid})`, 
+      width: 400 
+    },
   ]
   membershiplist() {
     this.userservice.getLcoGroupMasterListNotInLcogroupId(this.role, this.username, this.lcogroupid).subscribe(

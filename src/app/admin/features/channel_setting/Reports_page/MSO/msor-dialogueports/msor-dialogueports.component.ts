@@ -76,7 +76,7 @@ export class MsorDialogueportsComponent implements OnInit {
   isOperator: boolean = false;
   isUseragent: boolean = false;
   isSubLCO: boolean = false;
-  selectedRechargeType: any = 3
+  selectedRechargeType: any = 3;
   isDateEnabled: boolean = false;
   isMonthYearEnabled: boolean = false;
   isYearEnabled: boolean = false;
@@ -84,6 +84,10 @@ export class MsorDialogueportsComponent implements OnInit {
 
   today = new Date();
   selectedOnlineType: any = "1";
+
+  showDropdown: boolean = true;
+  subscriberList: any[] = [];
+  subscriber: any;
 
 
   LcoTransfer: any[] = [
@@ -151,20 +155,24 @@ export class MsorDialogueportsComponent implements OnInit {
   months: any[] = [];
   years: any[] = [];
 
-  fromdate: any = 0;
-  todate: any = 0;
+  fromdate: any;
+  todate: any;
   rowData: any[] = []
   columnDefs: any[] = []
   gridApi: any;
   // --------------------lcowiseactive report-----------
   selectedlcocas: any = '0';
-  selectedlcoModel: any;
+  selectedlcoModel: any = '0';
   batch: boolean = false;
 
   selectedLcotransfer: any = '';
   isLcoOperator: boolean = false;
   isLcoSmartcard: boolean = false;
-  // ------------------------------------------------
+  // ---------------Model List---------------------------------
+  modelname: any;
+  model: any;
+  currentMonth: any;
+  // --------------------------------------------
   selectedMonthName: any;
   constructor(private route: ActivatedRoute, private location: Location,
     public userService: BaseService, private cdr: ChangeDetectorRef, public storageservice: StorageService, private swal: SwalService) {
@@ -174,9 +182,9 @@ export class MsorDialogueportsComponent implements OnInit {
     console.log(this.type);
     this.selectedOperator = { name: 'All Operator', value: 0 };
     this.selectedLcoName = this.selectedOperator.name; // Ensure ngModel is updated
+    this.currentMonth = new Date().toLocaleString('default', { month: 'long' });
 
     // this.setReportTitle();
-
 
   }
 
@@ -208,7 +216,8 @@ export class MsorDialogueportsComponent implements OnInit {
     this.dataSource.paginator = this.paginator;
     this.dataSource.sort = this.sort;
 
-
+    this.onModelList();
+    this.getTotalOperatorReport();
   }
 
   onDateChange() {
@@ -286,7 +295,13 @@ export class MsorDialogueportsComponent implements OnInit {
       this.years.push(year);
     }
   }
-
+  onModelList() {
+    this.userService.getLcowiseActiveModelList(this.username, this.role).subscribe((data: any) => {
+      console.log(data);
+      this.model = data;
+      this.modelname = data.modelname;
+    })
+  }
   onChangeDateType(selectedValue: any) {
     if (selectedValue == 0) {
       this.isDateEnabled = false;
@@ -495,6 +510,12 @@ export class MsorDialogueportsComponent implements OnInit {
     return user ? user.name : '';
   }
 
+
+
+
+
+
+  // ========================================================================
   subLcoList(event: any) {
     this.filteredSubLcoList = [];
     this.userService.getAllSublcoList(this.role, this.username, this.selectedOperator.value)
@@ -509,7 +530,7 @@ export class MsorDialogueportsComponent implements OnInit {
 
             this.filteredSubLcoList = this.sublco_list;
           } else if (response.status === 204) {
-            this.swal.Success_204();
+            // this.swal.Success_204();
           }
         },
         (error) => {
@@ -756,26 +777,27 @@ export class MsorDialogueportsComponent implements OnInit {
         { headerName: "S.No", lockPosition: true, valueGetter: 'node.rowIndex+1', headerCheckboxSelection: false, checkboxSelection: false, width: 90 },
         { headerName: 'OPERATOR ID', field: 'operatorname', flex: 1 },
         { headerName: 'OPERATOR NAME', field: 'operatorname', flex: 1 },
-        { headerName: 'MOBILE NUMBER', field: 'orderid', flex: 1, cellStyle: { textAlign: 'center' }, },
-        { headerName: 'AREA NAME', field: 'amount', flex: 1, cellStyle: { textAlign: 'center', color: 'green' }, },
-        { headerName: 'LCO INVENTORY', field: 'status', flex: 1, cellStyle: { textAlign: 'center' } },
-        { headerName: 'SUBSCRIBER INVENTORY', field: 'response', flex: 1 },
-        { headerName: 'ACTIVE', field: 'logdate', flex: 1 },
-        { headerName: 'EXPIRY', field: 'logdate', flex: 1 },
-        { headerName: 'TOTAL', field: 'logdate', flex: 1 },
+        { headerName: 'MOBILE NUMBER', field: 'mobileno', flex: 1, cellStyle: { textAlign: 'center' }, },
+        { headerName: 'AREA NAME', field: 'areaname', flex: 1, cellStyle: { textAlign: 'center', color: 'green' }, },
+        { headerName: 'LCO INVENTORY', field: 'lcoend', flex: 1, cellStyle: { textAlign: 'center' } },
+        { headerName: 'SUBSCRIBER INVENTORY', field: 'subscriberend', flex: 1, cellStyle: { textAlign: 'center' } },
+        { headerName: 'ACTIVE', field: 'active', flex: 1, cellStyle: { textAlign: 'center' } },
+        { headerName: 'EXPIRY', field: 'expiry', flex: 1, cellStyle: { textAlign: 'center' } },
+        { headerName: 'TOTAL', field: 'total', flex: 1, cellStyle: { textAlign: 'center' } },
       ]
     } else if (this.type == 'lcowiseExpiryCountDiff') {
       this.columnDefs = [
         { headerName: "S.No", lockPosition: true, valueGetter: 'node.rowIndex+1', filter: false, headerCheckboxSelection: false, checkboxSelection: false, width: 90 },
-        { headerName: 'OPERATOR ID', field: 'operatorname', flex: 1 },
-        { headerName: 'OPERATOR NAME', field: 'operatorname', flex: 1 },
-        { headerName: 'MOBILE NUMBER', field: 'orderid', flex: 1, cellStyle: { textAlign: 'center' }, filter: false, },
-        { headerName: 'AREA NAME', field: 'amount', flex: 1, cellStyle: { textAlign: 'center', color: 'green', }, filter: false },
-        { headerName: 'ACTIVE COUNT', field: 'status', flex: 1, cellStyle: { textAlign: 'center' } },
-        { headerName: 'EXPIRY COUNT', field: 'response', flex: 1 },
-        { headerName: 'EXPIRY COUNT JANUARY', field: 'logdate', flex: 1 },
+        { headerName: 'OPERATOR ID', field: 'operator_id', flex: 1, cellStyle: { textAlign: 'center' } },
+        { headerName: 'OPERATOR NAME', field: 'name', flex: 1 },
+        { headerName: 'MOBILE NUMBER', field: 'mobileno', flex: 1 },
+        { headerName: 'AREA NAME', field: 'area', flex: 1 },
+        { headerName: 'ACTIVE COUNT', field: 'active', flex: 1, cellStyle: { textAlign: 'center' } },
+        { headerName: 'EXPIRY COUNT', field: 'deactive', flex: 1, cellStyle: { textAlign: 'center' } },
+        { headerName: `EXPIRY COUNT ${this.currentMonth.toUpperCase()}`, field: 'expiryfrom', flex: 1, cellStyle: { textAlign: 'center' } },
+        { headerName: `EXPIRY COUNT ${this.currentMonth.toUpperCase()}`, field: 'expiryto', flex: 1, cellStyle: { textAlign: 'center' } },
         // { headerName: 'DIFFERENCE', field: 'logdate', flex: 1 },
-        { headerName: 'DIFFERENCE', field: 'logdate', flex: 1 },
+        { headerName: 'DIFFERENCE', field: 'difference', flex: 1, cellStyle: { textAlign: 'center' } },
       ]
     } else if (this.type == 'total_lco') {
       this.columnDefs = [
@@ -809,34 +831,65 @@ export class MsorDialogueportsComponent implements OnInit {
   }
   formatDate(date: Date): string {
     const year = date.getFullYear();
-    const month = String(date.getMonth() + 1).padStart(2, '0'); // Months are zero-based
+    const month = String(date.getMonth() + 1).padStart(2, '0');
     const day = String(date.getDate()).padStart(2, '0');
     return `${year}-${month}-${day}`;
   }
 
+  // getFromDate(event: any) {
+  //   var date = new Date();
+  //   if (event != null && event != undefined) {
+  //     date = new Date(event.value);
+  //   }
+  //   const formattedDate = this.formatDate(date);
+  //   this.fromdate = formattedDate;
+
+  //   this.cdr.detectChanges();
+
+
+  // }
+  // getToDate(event: any) {
+
+  //   var date = new Date();
+  //   if (event != null && event != undefined) {
+  //     date = new Date(event.value);
+  //   }
+  //   this.todate = this.formatDate(date);
+  //   console.log(this.todate);
+  //   this.cdr.detectChanges();
+
+
+  // }
+  formatDate1(date: Date): string {
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, '0'); // Months are 0-indexed
+    const day = String(date.getDate()).padStart(2, '0');
+    return `${year}-${month}-${day}`;
+  }
+  cur_date: any;
+  logValues(event: any): void {
+    const selectedDate: Date = event.value || new Date();
+    const formattedDate = this.formatDate1(selectedDate);
+    console.log('Selected Date:', formattedDate);
+    this.cur_date = formattedDate;
+    console.log(this.cur_date);
+  }
+
   getFromDate(event: any) {
-    var date = new Date();
-    if (event != null && event != undefined) {
-      date = new Date(event.value);
-    }
-    const formattedDate = this.formatDate(date); // Use the formatDate method
-    this.fromdate = formattedDate;
-
-    this.cdr.detectChanges();
-
+    console.log(event.value);
+    const date = new Date(event.value).getDate();
+    const month = new Date(event.value).getMonth() + 1;
+    const year = new Date(event.value).getFullYear();
+    this.fromdate = year + "-" + month + "-" + date
+    console.log(this.fromdate);
 
   }
   getToDate(event: any) {
-
-    var date = new Date();
-    if (event != null && event != undefined) {
-      date = new Date(event.value);
-    }
-    this.todate = this.formatDate(date);
+    const date = new Date(event.value).getDate();
+    const month = new Date(event.value).getMonth() + 1;
+    const year = new Date(event.value).getFullYear();
+    this.todate = year + "-" + month + "-" + date
     console.log(this.todate);
-    this.cdr.detectChanges();
-
-
   }
   goBack(): void {
     this.location.back();
@@ -1224,14 +1277,18 @@ export class MsorDialogueportsComponent implements OnInit {
         if (response.status === 200) {
           console.log(response);
           this.rowData = response.body;
-          this.swal.Success_200();
+          // this.swal.Success_200();
+
         } else if (response.status === 204) {
           this.swal.Success_204();
           this.rowData = [];
         }
       },
       (error) => {
-        this.handleApiError(error.error, error.status);
+        console.log(error);
+
+        this.handleApiError(error?.error.message, error.status);
+        this.rowData = [];
       }
     );
   }
@@ -1373,6 +1430,49 @@ export class MsorDialogueportsComponent implements OnInit {
       this.isshowpdf = true;
     }
   }
+  // ================================================Lco Wise Expiry Count Report===============================
+
+  getLcowiseExpiryCount() {
+    if (!this.selectedYear && !this.selectedMonth && !this.selectedDate) {
+      this.submitted = true;
+    }
+    // this.swal.Loading();
+
+    this.userService.getLcowiseExpirySubCount(this.role, this.username, this.selectedYear, this.selectedMonth, this.selectedDate, 3
+    ).subscribe(
+      (response: HttpResponse<any>) => {
+        if (response.status === 200) {
+          console.log(response);
+          this.rowData = response.body;
+          this.swal.Success_200();
+        } else if (response.status === 204) {
+          this.swal.Success_204();
+          this.rowData = [];
+        }
+      },
+      (error) => {
+        this.handleApiError(error.error, error.status);
+      }
+    );
+  }
+
+  getLcowiseExpiryCountReport(type: number) {
+    if (!this.selectedYear && !this.selectedMonth && !this.selectedDate) {
+      this.submitted = true;
+    }
+    this.processingSwal();
+    this.userService.getLcowiseExpirySubCountReport(this.role, this.username, this.selectedYear, this.selectedMonth, this.selectedDate, type)
+      .subscribe((x: Blob) => {
+        if (type == 1) {
+          this.reportMaking(x, this.type + '  ' + this.selectedMonthName + '-' + this.selectedYear + '-' + this.selectedDate + ".pdf", 'application/pdf');
+        } else if (type == 2) {
+          this.reportMaking(x, this.type + '  ' + this.selectedMonthName + '-' + this.selectedYear + '-' + this.selectedDate + ".xlsx", 'application/xlsx');
+        }
+      },
+        (error: any) => {
+          this.pdfswalError(error?.error.message);
+        });
+  }
 
   // ================================================userrechargehistory===============================
 
@@ -1471,5 +1571,109 @@ export class MsorDialogueportsComponent implements OnInit {
             this.pdfswalError(error?.error.message);
           });
     }
+  }
+  // ---------------------------------------casform actvation----------------
+
+  onsubscriberlist(value: any) {
+    this.showDropdown = true;
+    this.userService.getSearchDetailsSubscriber(this.role, this.username, value).subscribe(
+      (data: any) => {
+        if (!data || Object.keys(data).length === 0) {
+          this.subscriberList = [];
+          return;
+        }
+        this.subscriber = data;
+        this.subscriberList = Object.keys(data).map(key => {
+          const value = data[key];
+          const name = key;
+          return { name: name, value: value };
+        });
+        this.subscriberList.sort((a: any, b: any) => {
+          if (a.value > b.value) return 1;
+          if (a.value < b.value) return -1;
+          return 0;
+        });
+        if (this.subscriberList.length === 0) {
+          console.log('No matching data after sorting');
+          Swal.fire({
+            title: 'No Matching Results',
+            text: 'No subscribers match your search criteria.',
+            icon: 'info',
+            confirmButtonText: 'OK'
+          });
+        }
+
+        console.log(this.subscriberList);
+      },
+      (error) => {
+        Swal.fire({
+          title: 'Error!',
+          text: error?.error?.getsmartcardlistbysubid.searchname
+            || 'An error occurred while fetching subscriber details.',
+          icon: 'error',
+          confirmButtonText: 'OK'
+        });
+      }
+    );
+  }
+
+  goToSubscriberDashboard(lcomember: any) {
+    this.smartcard = lcomember.value;
+    console.log('Selected value:', this.smartcard);
+    // const targetUrl = `/admin/subscriber-full-info/${this.lcomember}//dashoard`;
+
+    // if (this.router.url === targetUrl) {
+    //   window.location.reload();
+    // } else {
+    //   this.router.navigate([targetUrl]).then(() => {
+    //     console.log('Navigated to:', targetUrl);
+    //     window.location.reload();
+    //   });
+    // }
+    this.showDropdown = false;
+  }
+
+
+  getCasformActivation(type: number) {
+    if (!this.smartcard) {
+      this.submitted = true;
+    } else {
+      this.processingSwal();
+      this.userService.getCasFormActivationReport(this.role, this.username, this.smartcard, type
+      )
+        .subscribe((x: Blob) => {
+          if (type == 1) {
+            this.reportMaking(x, this.type + '  ' + this.smartcard + ".pdf", 'application/pdf');
+          }
+        },
+          (error: any) => {
+            this.pdfswalError(error?.error.message);
+          });
+    }
+  }
+  // ================================================TOTAL LCO REPORT===============================
+
+  getTotalOperatorReport() {
+    this.userService.getTotalOperatorReport(this.role, this.username, 3)
+      .subscribe((res: any) => {
+        console.log(res);
+      }, (err) => {
+        this.swal.Error(err?.error?.message);
+      });
+  }
+
+  getTotalOperatorReportDownload(type: number) {
+    this.processingSwal();
+    this.userService.getTotalOperatorReportDownload(this.role, this.username, type)
+      .subscribe((x: Blob) => {
+        if (type == 1) {
+          this.reportMaking(x, "Total Lco report.pdf", 'application/pdf');
+        } else if (type == 2) {
+          this.reportMaking(x, "Total Lco report .xlsx", 'application/xlsx');
+        }
+      },
+        (error: any) => {
+          this.pdfswalError(error?.error.message);
+        });
   }
 }

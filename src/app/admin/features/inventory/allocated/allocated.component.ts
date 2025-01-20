@@ -154,7 +154,7 @@ export class  AllocatedComponent {
 
     },
     {
-      headerName: 'BOX_ID', width: 250,
+      headerName: 'BOX_ID', width: 200,
       field: 'boxid',
 
     },

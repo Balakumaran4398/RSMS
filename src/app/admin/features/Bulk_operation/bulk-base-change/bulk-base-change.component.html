@@ -1,4 +1,4 @@
-<section class="Tab col-12">
+<section class="Tab col-12" style="max-height: 775px;overflow: scroll;">
     <div class="title">
         <p>BASE CHANGE (For Active Subscription)
         </p>
@@ -88,7 +88,7 @@
                             </div>
                         </div>
 
-                        <ag-grid-angular #agGrid id="myGrid" domLayout='autoHeight' class="ag-theme-alpine table-class"
+                        <ag-grid-angular #agGrid id="myGrid" domLayout='autoHeight' class="ag-theme-alpine table-class" style="max-height: 775px;overflow: scroll;"
                             rowAnimation [rowSelection]="rowSelection" [gridOptions]="gridOptions"
                             [columnDefs]="columnDefs" [rowData]="rowData" (gridReady)="onGridReady()"
                             [enableCellTextSelection]="true">

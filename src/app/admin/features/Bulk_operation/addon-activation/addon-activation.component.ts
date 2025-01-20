@@ -72,7 +72,7 @@ export class AddonActivationComponent {
     { headerName: "SMARTCARD", field: 'smartcard',width: 250, },
     { headerName: "PACKAGE NAME", field: 'packagename',width: 300, },
     {
-      headerName: "STATUS	", field: 'status',width: 300,
+      headerName: "STATUS	", field: 'status',width: 250,
       cellRenderer: (params: any) => {
         const status = params.value;
         if (status === 'Success') {

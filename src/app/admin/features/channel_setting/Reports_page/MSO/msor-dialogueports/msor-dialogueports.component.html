@@ -398,9 +398,8 @@
                 <!-- Smartcard -->
                 <div class="input_box me-3">
                     <input type="text" matInput [matAutocomplete]="auto" [(ngModel)]="selectedLcoName"
-                        [disabled]="!isOperator" maxlength="20" (input)="filterOperators($event)"
-                        placeholder="Select  Operator" [matAutocompleteDisabled]="false"
-                        [value]="selectedOperator?.name">
+                        [disabled]="!isOperator" (input)="filterOperators($event)" placeholder="Select  Operator"
+                        [matAutocompleteDisabled]="false" [value]="selectedOperator?.name">
 
                     <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayOperator">
                         <mat-option [value]="0" selected
@@ -509,11 +508,9 @@
                 <!-- Date Range -->
                 <div class="input_box me-3">
                     <mat-form-field appearance="outline">
-                        <mat-date-range-input [rangePicker]="picker" [max]="today">
-                            <input style="margin-left: -10%;width: 22vh;" matStartDate matInput placeholder="Start date"
-                                [(ngModel)]="fromdate" (change)="getFromDate($event)">
-                            <input matEndDate matInput placeholder="End date" [(ngModel)]="todate"
-                                (change)="getToDate($event)">
+                        <mat-date-range-input [rangePicker]="picker">
+                            <input matStartDate matInput placeholder="Start date" (dateChange)="getFromDate($event)">
+                            <input matEndDate matInput placeholder="End date" (dateChange)="getToDate($event)">
                         </mat-date-range-input>
                         <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
                         <mat-date-range-picker #picker></mat-date-range-picker>
@@ -587,9 +584,9 @@
                         <div class="export-icon me-2" (click)="getWalletReportDownload(2)">
                             <img src="/assets/images/icons/Excel.png" alt="Excel Icon">
                         </div>
-                        <div class="export-icon" (click)="getWalletReportDownload(1)">
+                        <!-- <div class="export-icon" (click)="getWalletReportDownload(1)">
                             <img src="/assets/images/icons/pdf.png" alt="PDF Icon">
-                        </div>
+                        </div> -->
                     </div>
                 </div>
             </div>
@@ -640,7 +637,6 @@
                             <!-- <button class="btn btn-primary me-2 bttn" (click)="getSubscriberBill()">Submit</button> -->
                             <button class="btn btn-primary me-2 bttn" [disabled]="isshowpdf"
                                 (click)="getSubscriberBillDownload(1)"><mat-icon>download</mat-icon>Get PDF</button>
-
                         </div>
                     </div>
                 </div>
@@ -854,8 +850,8 @@
             </div>
             <div class="input_box d-flex justify-content-center align-item-center mx-2 mb-2">
                 <select name="type" id="type" [(ngModel)]="selectedlcoModel">
-                    <!-- <option value="0" selected>Select Type</option> -->
-                    <option *ngFor="let type of TypeIncluding" [value]="type.value">{{ type.label }}</option>
+                    <option value="0" selected>All Model</option>
+                    <option *ngFor="let type of model" [value]="type.id">{{ type.modelname }}</option>
                 </select>
             </div>
             <div class="input_box d-flex justify-content-center align-item-center mx-2 mb-2">
@@ -928,23 +924,23 @@
 
 
             <div class="input_box col-12 col-md-6 ">
-                <input type="date" placeholder="Select Date " required [max]="today"
+                <input type="date" placeholder="Select Date " required [max]="today" [(ngModel)]="selectedDate"
                     [ngClass]="{ 'is-invalid': submitted }" />
             </div>
             <button class="btn mx-2 bttn" style="background-color: rgb(26, 129, 133); border-radius: 5px;"
-                (click)="getIncluding()">
+                (click)="getLcowiseExpiryCount()">
                 <span style="color: white;">Submit</span>
             </button>
-        </div>
+            <div class=" display1">
+                <div class="export-icon  mx-2">
+                    <img src="/assets/images/icons/Excel.png" alt="Excel Icon" width="40px"
+                        (click)="getLcowiseExpiryCountReport(2)">
+                    <div class="tooltip">Excel</div>
+                </div>
 
-        <div class=" display1">
-            <div class="export-icon  mx-2">
-                <img src="/assets/images/icons/Excel.png" alt="Excel Icon" width="40px"
-                    (click)="getIncludeReportDownload(2)">
-                <div class="tooltip">Excel</div>
             </div>
-
         </div>
+
     </div>
     <ag-grid-angular #agGrid id="myGrid" domLayout='autoHeight' class="ag-theme-alpine table-class" rowAnimation
         [gridOptions]="gridOptions" [columnDefs]="columnDefs" [rowData]="rowData" (gridReady)="onGridReady($event)"
@@ -961,14 +957,14 @@
         <div class=" display1">
             <div class="export-icon  mx-2">
                 <img src="/assets/images/icons/Excel.png" alt="Excel Icon" width="40px"
-                    (click)="getIncludeReportDownload(2)">
+                    (click)="getTotalOperatorReportDownload(2)">
                 <div class="tooltip">Excel</div>
             </div>
         </div>
         <div class=" display1">
             <div class="export-icon  mx-2">
                 <img src="/assets/images/icons/pdf.png" alt="PDF Icon" width="40px"
-                    (click)="getIncludeReportDownload(1)">
+                    (click)="getTotalOperatorReportDownload(1)">
                 <div class="tooltip">Pdf</div>
             </div>
         </div>
@@ -986,18 +982,23 @@
                 class="fa-solid fa-reply mx-2"></i>Back</button>
     </div>
     <div class="display">
-        <div class="row col-12 col-md-5" style="padding: 1rem;">
-            <input placeholder="Enter the smartcard..." type="text" name="text" class="input_sb"
-                [(ngModel)]="smartcard">
+        <div class="row col-12 col-md-5 input_box1 " style="padding: 1rem;">
+            <input placeholder="Enter the smartcard..." id="searchitem" #searchitem style="font-size: 14px;"
+                (keyup)="onsubscriberlist( searchitem?.value)" [(ngModel)]="smartcard">
+            <div style="width: 50%;" class="dropdown-menu input"
+                [ngClass]="(subscriberList.length != 0 && searchitem?.value?.length != 0 && showDropdown) ? 'show' : 'hide'"
+                aria-labelledby="dropdownMenuButton">
+                <a (click)="goToSubscriberDashboard(lcomember)" *ngFor="let lcomember of subscriberList"
+                    class="dropdown-item"> {{ lcomember.name }}</a>
+            </div>
             <div *ngIf="submitted && !selectedYear" class="text-danger" style="font-size: small;">
                 Smartcard is must..
             </div>
         </div>
-        <div class=" display1 col-12 col-md-1">
-            <div class="export-icon  mx-2">
-                <img src="/assets/images/icons/pdf.png" alt="PDF Icon" width="40px"
-                    (click)="getCustomerActivationform(2)">
-                <div class="tooltip">Excel</div>
+        <div class=" col-12 col-md-1 " style="margin-top: 2%;">
+            <div class="export-icon  mx-2 mb-2">
+                <img src="/assets/images/icons/pdf.png" alt="PDF Icon" width="40px" (click)="getCasformActivation(1)">
+                <div class="tooltip">PDF</div>
             </div>
         </div>
     </div>

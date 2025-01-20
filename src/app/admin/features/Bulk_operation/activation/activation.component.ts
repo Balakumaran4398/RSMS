@@ -19,11 +19,11 @@ export class ActivationComponent implements OnInit {
   isCheckboxChecked: boolean = false;
   columnDefs: ColDef[] = [
     { headerName: "S.No", lockPosition: true, valueGetter: 'node.rowIndex+1', cellClass: 'locked-col', width: 100, suppressNavigable: true, sortable: false, filter: false },
-    { headerName: "SMARTCARD", field: 'smartcard', width: 300 },
+    { headerName: "SMARTCARD", field: 'smartcard', width: 250 },
     {
       headerName: "STATUS",
       field: 'status',
-      width: 250,
+      width: 200,
       cellRenderer: (params: any) => {
         if (params.value === 'Success') {
           return `<span style="color: green;">${params.value}</span>`;
@@ -35,8 +35,8 @@ export class ActivationComponent implements OnInit {
         return params.value;
       }
     },
-    { headerName: "REMARKS", field: 'remarks', width: 250 },
-    { headerName: "CREATED DATE	", field: 'createddate', width: 270 },
+    { headerName: "REMARKS", field: 'remarks', width: 200 },
+    { headerName: "CREATED DATE	", field: 'createddate', width: 220 },
   ];
   rowData: any;
   public rowSelection: any = "multiple";

@@ -1459,6 +1459,12 @@ export class BaseService {
   getOperatorDashboardPDFReport(role: any, username: any, type: any, reporttype: any, operatorid: any, yearmonth: any, fromdate: any, todate: any): Observable<Blob> {
     return this.http.get(BASE_URL + "/report/GetOperatorDashboardPdfReport?role=" + role + "&username=" + username + "&type=" + type + "&reporttype=" + reporttype + "&operatorid=" + operatorid + '&yearmonth=' + yearmonth + '&fromdate=' + fromdate + '&todate=' + todate, { responseType: 'blob' });
   }
+
+
+
+
+
+
   // ==================================================Trai Reports================================================================================
   // -------------------------------------------------Package Based & Addon Package Reports------------------------------------------------------------
   getPackageModificationExcelReport(role: any, username: any, fromdate: any, todate: any, castype: any, type: any, reporttype: any): Observable<HttpResponse<any[]>> {
@@ -1734,6 +1740,14 @@ export class BaseService {
   getLcowiseActiveSubCountReport(role: any, username: any, operatorid: any, model: any, reporttype: any, batch: any, castype: any,): Observable<Blob> {
     return this.http.get(BASE_URL + "/report/lcowiseactivesubscription?role=" + role + "&username=" + username + "&operatorid=" + operatorid + "&model=" + model + "&reporttype=" + reporttype + "&batch=" + batch + "&castype=" + castype, { responseType: 'blob' });
   }
+
+
+  getLcowiseExpirySubCount(role: any, username: any, month: any, year: any, todate: any, reporttype: any): Observable<HttpResponse<any[]>> {
+    return this.http.get<any>(BASE_URL + "/report/lcowiseactiveexpirycount?role=" + role + "&username=" + username + "&month=" + month + "&year=" + year + "&todate=" + todate + "&reporttype=" + reporttype, { observe: 'response' });
+  }
+  getLcowiseExpirySubCountReport(role: any, username: any, month: any, year: any, todate: any, reporttype: any): Observable<Blob> {
+    return this.http.get(BASE_URL + "/report/lcowiseactiveexpirycount?role=" + role + "&username=" + username + "&month=" + month + "&year=" + year + "&todate=" + todate + "&reporttype=" + reporttype, { responseType: 'blob' });
+  }
   // -------------------------------------------------------Rechargr History report-------------------------------
 
   getRechargeHistoryReport(role: any, username: any, type: any, operatorid: any, fromdate: any, todate: any, smartcard: any, useragent: any, sublcoid: any, reporttype: any,): Observable<Blob> {
@@ -1799,12 +1813,43 @@ export class BaseService {
   // -----------------------------------------------User Recharge History-------------------------------------------------------
 
   getUserRecharegeHistory(role: any, username: any, fromdate: any, todate: any, userid: number, reporttype: number): Observable<any[]> {
-    return this.http.get<any[]>(BASE_URL + "/report/UserRechargeHistory?role=" + role + "&username=" + username + "&fromdate=" + fromdate + "&todate=" + todate + "&userid=" + reporttype + "&smartcard=" + reporttype);
+    return this.http.get<any[]>(BASE_URL + "/report/UserRechargeHistory?role=" + role + "&username=" + username + "&fromdate=" + fromdate + "&todate=" + todate + "&userid=" + userid + "&reporttype=" + reporttype);
   }
 
 
   getUserRecharegeHistoryDownload(role: any, username: any, fromdate: any, todate: any, userid: number, reporttype: number): Observable<Blob> {
-    return this.http.get(BASE_URL + "/report/UserRechargeHistory?role=" + role + "&username=" + username + "&fromdate=" + fromdate + "&todate=" + todate + "&userid=" + reporttype + "&smartcard=" + reporttype, { responseType: 'blob' });
+    return this.http.get(BASE_URL + "/report/UserRechargeHistory?role=" + role + "&username=" + username + "&fromdate=" + fromdate + "&todate=" + todate + "&userid=" + userid + "&reporttype=" + reporttype, { responseType: 'blob' });
+  }
+  // ----------------------------------------Package Reports (lco wise active subscription count - model list)------------------------------------------------------
+  getLcowiseActiveModelList(role: any, username: any): Observable<any[]> {
+    return this.http.get<any[]>(BASE_URL + "/report/getModelDetails?role=" + role + "&username=" + username);
+  }
+  // --------------------------------------getCasFormActivationReport-------------------------
+
+  getCasFormActivationReport(role: any, username: any, searchname: any, reporttype: any): Observable<Blob> {
+    return this.http.get(BASE_URL + "/subscriber/getCasFormActivationReport?role=" + role + "&username=" + username + "&searchname=" + searchname + "&reporttype=" + reporttype, { responseType: 'blob' });
   }
 
+
+  // ------------------------------------------TOTAL LCO REPORT----------------------
+
+  getTotalOperatorReport(role: any, username: any, reporttype: number): Observable<any[]> {
+    return this.http.get<any[]>(BASE_URL + "/report/GetTotalOperatorReport?role=" + role + "&username=" + username + "&reporttype=" + reporttype);
+  }
+
+
+  getTotalOperatorReportDownload(role: any, username: any, reporttype: number): Observable<Blob> {
+    return this.http.get(BASE_URL + "/report/GetTotalOperatorReport?role=" + role + "&username=" + username + "&reporttype=" + reporttype, { responseType: 'blob' });
+  }
+
+  // ------------------------------------------getLcoTransferReport----------------------
+
+  getLcoTransferReport(role: any, username: any, smartcard: any, operatorid: any, fromdate: any, todate: any, reporttype: number): Observable<any[]> {
+    return this.http.get<any[]>(BASE_URL + "/report/getLcoTransferReport?role=" + role + "&username=" + username + "&smartcard=" + smartcard + "&operatorid=" + operatorid + "&fromdate=" + fromdate + "&todate=" + todate + "&reporttype=" + reporttype);
+  }
+
+
+  getLcoTransferReportDownload(role: any, username: any, smartcard: any, operatorid: any, fromdate: any, todate: any, reporttype: number): Observable<Blob> {
+    return this.http.get(BASE_URL + "/report/getLcoTransferReport?role=" + role + "&username=" + username + "&smartcard=" + smartcard + "&operatorid=" + operatorid + "&fromdate=" + fromdate + "&todate=" + todate + "&reporttype=" + reporttype, { responseType: 'blob' });
+  }
 }

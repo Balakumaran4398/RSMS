@@ -35,7 +35,7 @@
                     [enableCellTextSelection]="true" (selectionChanged)="onSelectionChanged()"
                     (gridReady)="onGridReady($event)"> -->
 
-                <ag-grid-angular #agGrid id="myGrid" domLayout='autoHeight' class="ag-theme-alpine table-class"
+                <ag-grid-angular #agGrid id="myGrid" domLayout='autoHeight' class="ag-theme-alpine table-class" style="max-height: 775px;overflow: scroll;" 
                     rowSelection="multiple" rowAnimation [rowSelection]="rowSelection" [gridOptions]="gridOptions"
                     [columnDefs]="columnDefs" [rowData]="rowData" (selectionChanged)="onSelectionChanged($event)"
                     (gridReady)="onGridReady($event)" [enableCellTextSelection]="true">

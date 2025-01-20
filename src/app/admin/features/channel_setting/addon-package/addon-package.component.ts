@@ -59,10 +59,10 @@ export class AddonPackageComponent {
   }
   columnDefs: ColDef[] = [
     { headerName: "S.No", lockPosition: true, valueGetter: 'node.rowIndex+1', cellClass: 'locked-col', width: 120 },
-    { headerName: "PACKAGE NAME", field: 'addon_package_name', },
-    { headerName: "BROADCASTER NAME", field: 'broadcaster_name', },
+    { headerName: "PACKAGE NAME", field: 'addon_package_name',width: 250 , cellStyle: { textAlign: 'left' }, },
+    { headerName: "BROADCASTER NAME", field: 'broadcaster_name',width: 250, cellStyle: { textAlign: 'left' }, },
     {
-      headerName: 'Actions', width: 400,
+      headerName: 'Actions', width: 250,
       cellRenderer: (params: any) => {
         const editButton = document.createElement('button');
         const manageButton = document.createElement('button');
@@ -113,9 +113,8 @@ export class AddonPackageComponent {
       },
 
     },
-    // { headerName: "BROADCASTER NAME", field: 'city', },
-    { headerName: "ORDER ID", field: 'order_id', width: 300 },
-    { headerName: "RATE", field: 'addon_package_rate', width: 200 },
+    { headerName: "ORDER ID", field: 'order_id', width: 150 },
+    { headerName: "RATE", field: 'addon_package_rate', width: 150 },
 
 
     {
