@@ -1893,7 +1893,7 @@ export class SubDashboardComponent implements OnInit, AfterViewInit {
       width: '1000px',
       panelClass: 'custom-dialog-container',
       data: dialogData,
-      maxHeight: '80vh'
+      maxHeight: '100vh'
     });
   }
   openChannellistDialogue(data: any): void {

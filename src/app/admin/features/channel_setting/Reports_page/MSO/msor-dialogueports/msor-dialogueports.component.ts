@@ -53,6 +53,7 @@ export class MsorDialogueportsComponent implements OnInit {
   selectedAmount: any = 4;
 
   smartcard: any;
+  smartcard1: any;
   useragent: any = 0;
 
   filteredOperators: any[] = [];
@@ -60,6 +61,7 @@ export class MsorDialogueportsComponent implements OnInit {
   lco_list: any[] = [];
   sublco_list: any[] = [];
   selectedOperator: any
+  selectedOperator1: any
 
   selectedUser: any
 
@@ -158,6 +160,7 @@ export class MsorDialogueportsComponent implements OnInit {
   fromdate: any;
   todate: any;
   rowData: any[] = []
+  rowData1: any[] = []
   columnDefs: any[] = []
   gridApi: any;
   // --------------------lcowiseactive report-----------
@@ -181,7 +184,8 @@ export class MsorDialogueportsComponent implements OnInit {
     this.role = storageservice.getUserRole();
     console.log(this.type);
     this.selectedOperator = { name: 'All Operator', value: 0 };
-    this.selectedLcoName = this.selectedOperator.name; // Ensure ngModel is updated
+    this.selectedOperator1 = { name: 'All Operator', value: 0 };
+    this.selectedLcoName = this.selectedOperator.name;
     this.currentMonth = new Date().toLocaleString('default', { month: 'long' });
 
     // this.setReportTitle();
@@ -218,6 +222,8 @@ export class MsorDialogueportsComponent implements OnInit {
 
     this.onModelList();
     this.getTotalOperatorReport();
+    this.fromdate = this.fromdate ? this.formatDate(this.fromdate) : this.formatDate(new Date());
+    this.todate = this.todate ? this.formatDate(this.todate) : this.formatDate(new Date());
   }
 
   onDateChange() {
@@ -379,8 +385,8 @@ export class MsorDialogueportsComponent implements OnInit {
         this.isOperator = true;
         this.isUseragent = true;
         this.isSubLCO = false;
-        this.fromdate = 0;
-        this.todate = 0;
+        // this.fromdate = 0;
+        // this.todate = 0;
         this.selectedLcoName = 0;
         this.selectedSubLcoName = 0;
         this.useragent = 0;
@@ -390,8 +396,8 @@ export class MsorDialogueportsComponent implements OnInit {
         this.isOperator = false;
         this.isUseragent = true;
         this.isSubLCO = false;
-        this.fromdate = 0;
-        this.todate = 0;
+        // this.fromdate = 0;
+        // this.todate = 0;
         this.selectedLcoName = 0;
         this.selectedSubLcoName = 0;
         this.useragent = 0;
@@ -402,8 +408,8 @@ export class MsorDialogueportsComponent implements OnInit {
         this.isUseragent = false;
         this.isSubLCO = false;
 
-        this.fromdate = 0;
-        this.todate = 0;
+        // this.fromdate = 0;
+        // this.todate = 0;
         this.selectedLcoName = 0;
         this.selectedSubLcoName = 0;
         this.useragent = 0;
@@ -441,7 +447,7 @@ export class MsorDialogueportsComponent implements OnInit {
       this.todate = 0;
       this.selectedLcoName = 0;
       this.selectedSubLcoName = 0;
-      this.smartcard = '';
+      // this.smartcard = '';
     } else if (selectedValue == 2) {
       this.isSmartcard = false;
       this.isOperator = true;
@@ -450,7 +456,7 @@ export class MsorDialogueportsComponent implements OnInit {
       this.todate = 0;
       this.selectedLcoName = 0;
       this.selectedSubLcoName = 0;
-      this.smartcard = '';
+      // this.smartcard = '';
     } else if (selectedValue == 3) {
       this.isSmartcard = true;
       this.isOperator = false;
@@ -459,7 +465,7 @@ export class MsorDialogueportsComponent implements OnInit {
       this.todate = 0;
       this.selectedLcoName = 0;
       this.selectedSubLcoName = 0;
-      this.smartcard = '';
+      // this.smartcard = '';
     }
   }
   // ------------------------------------------------------------------------------------------
@@ -778,7 +784,7 @@ export class MsorDialogueportsComponent implements OnInit {
         { headerName: 'OPERATOR ID', field: 'operatorname', flex: 1 },
         { headerName: 'OPERATOR NAME', field: 'operatorname', flex: 1 },
         { headerName: 'MOBILE NUMBER', field: 'mobileno', flex: 1, cellStyle: { textAlign: 'center' }, },
-        { headerName: 'AREA NAME', field: 'areaname', flex: 1, cellStyle: { textAlign: 'center', color: 'green' }, },
+        { headerName: 'AREA NAME', field: 'areaname', flex: 1, cellStyle: { textAlign: 'left', color: 'green' }, },
         { headerName: 'LCO INVENTORY', field: 'lcoend', flex: 1, cellStyle: { textAlign: 'center' } },
         { headerName: 'SUBSCRIBER INVENTORY', field: 'subscriberend', flex: 1, cellStyle: { textAlign: 'center' } },
         { headerName: 'ACTIVE', field: 'active', flex: 1, cellStyle: { textAlign: 'center' } },
@@ -802,23 +808,32 @@ export class MsorDialogueportsComponent implements OnInit {
     } else if (this.type == 'total_lco') {
       this.columnDefs = [
         { headerName: "S.No", lockPosition: true, valueGetter: 'node.rowIndex+1', filter: false, headerCheckboxSelection: false, checkboxSelection: false, width: 90 },
-        { headerName: 'LCO NAME', field: 'operatorname', flex: 1, filter: false },
-        { headerName: 'LCO ID', field: 'operatorname', flex: 1, filter: false },
-        { headerName: 'AREA', field: 'amount', flex: 1, cellStyle: { textAlign: 'center', color: 'green', }, filter: false },
-        { headerName: 'ADDRESS', field: 'status', flex: 1, cellStyle: { textAlign: 'center' }, filter: false },
-        { headerName: 'PINCODE', field: 'response', flex: 1, filter: false },
-        { headerName: 'MOBILE NUMBER', field: 'orderid', flex: 1, cellStyle: { textAlign: 'center' }, filter: false, },
-        { headerName: 'USER ID', field: 'logdate', flex: 1, filter: false },
+        { headerName: 'LCO NAME', field: 'Operator_Name', flex: 1, filter: false },
+        { headerName: 'LCO ID', field: 'Operator_ID', flex: 1, filter: false, cellStyle: { textAlign: 'center', }, },
+        { headerName: 'AREA', field: 'Area', flex: 1, filter: false },
+        { headerName: 'ADDRESS', field: 'address', flex: 1, },
+        { headerName: 'PINCODE', field: 'pincode', flex: 1, filter: false, cellStyle: { textAlign: 'center' } },
+        { headerName: 'MOBILE NUMBER', field: 'Contact_Number1', flex: 1, cellStyle: { textAlign: 'center' }, filter: false, },
+        { headerName: 'USER ID', field: 'user_id', flex: 1, filter: false },
       ]
     } else if (this.type == 'lco_transfer_details') {
       this.columnDefs = [
         { headerName: "S.No", lockPosition: true, valueGetter: 'node.rowIndex+1', filter: false, headerCheckboxSelection: false, checkboxSelection: false, width: 90 },
-        { headerName: 'SMARTCARD', field: 'operatorname', flex: 1, filter: false },
-        { headerName: 'OLD CUSTOMER NAME', field: 'operatorname', flex: 1, filter: false },
-        { headerName: 'NEW CUSTOMER NAME', field: 'amount', flex: 1, cellStyle: { textAlign: 'center', color: 'green', }, filter: false },
-        { headerName: 'OLD OPERATOR	', field: 'status', flex: 1, cellStyle: { textAlign: 'center' }, filter: false },
-        { headerName: 'NEW OPERATOR	', field: 'response', flex: 1, filter: false },
-        { headerName: 'LOG DATE', field: 'orderid', flex: 1, cellStyle: { textAlign: 'center' }, filter: false, },
+        { headerName: 'SMARTCARD', field: 'smartcard', flex: 1, filter: false },
+        { headerName: 'OLD CUSTOMER NAME', field: 'oldcustomername', flex: 1, filter: false },
+        { headerName: 'NEW CUSTOMER NAME', field: 'newcustomername', flex: 1, cellStyle: { textAlign: 'left', color: 'green', }, filter: false },
+        { headerName: 'OLD OPERATOR	', field: 'oldoperatorname', flex: 1, cellStyle: { textAlign: 'left' }, filter: false },
+        { headerName: 'NEW OPERATOR	', field: 'newoperatorname', flex: 1, filter: false, cellStyle: { textAlign: 'left', color: 'green', }, },
+        { headerName: 'LOG DATE', field: 'logdate', flex: 1, cellStyle: { textAlign: 'center' }, filter: false, },
+      ]
+    } else if (this.type == 'subscriber_bill') {
+      this.columnDefs = [
+        { headerName: 'SMARTCARD', field: 'referenceid', flex: 1, filter: false },
+        { headerName: 'DATE', field: 'transactiondate', flex: 1, filter: false },
+        { headerName: 'EXPIRY DATE', field: 'expirydate', flex: 1, cellStyle: { textAlign: 'center',   }, filter: false },
+        { headerName: 'PACKAGE', field: 'packagename', flex: 1,filter: false },
+        { headerName: 'PLAN', field: 'days', flex: 1, filter: false, cellStyle: { textAlign: 'center' }, },
+        { headerName: 'AMOUNT', field: 'customeramount', flex: 1, cellStyle: { textAlign: 'center' }, filter: false, },
       ]
     }
 
@@ -1397,11 +1412,32 @@ export class MsorDialogueportsComponent implements OnInit {
   }
 
   // ================================================walletshare===============================
-
+  total: number = 0;
+  subscriberBill: any;
+  bill: any;
+  sub_id: any;
+  sub_name: any;
+  sub_mobileno: any;
+  op_id: any;
+  op_name: any;
+  op_mobileno: any;
   getSubscriberBill() {
-    this.userService.getSubscriberBill(this.role, this.username, this.selectedMonth, this.selectedYear, 3, this.smartcard)
+    this.userService.getSubscriberBill(this.role, this.username, this.selectedMonth, this.selectedYear, 2, this.smartcard)
       .subscribe((res: any) => {
-        console.log(res);
+        this.subscriberBill = res;
+        this.bill = this.subscriberBill.billNo
+        this.sub_id = this.subscriberBill?.subscriber?.id
+        this.sub_name = this.subscriberBill?.subscriber?.customername
+        this.sub_mobileno = this.subscriberBill?.subscriber?.mobileno
+        this.op_id = this.subscriberBill?.operator?.operatorid
+        this.op_name = this.subscriberBill?.operator?.operatorname
+        this.op_mobileno = this.subscriberBill?.operator?.contactnumber1
+        this.total = this.subscriberBill?.totalCustomerAmount;
+        this.rowData = this.subscriberBill?.rechargeList;
+
+
+        console.log(this.rowData );
+        console.log(this.subscriberBill);
       }, (err) => {
         this.swal.Error(err?.error?.message);
       });
@@ -1616,6 +1652,48 @@ export class MsorDialogueportsComponent implements OnInit {
       }
     );
   }
+  onSmartcardlist(value: any) {
+    this.showDropdown = true;
+    this.userService.getSearchSmartcardData(this.role, this.username, value).subscribe(
+      (data: any) => {
+        if (!data || Object.keys(data).length === 0) {
+          this.subscriberList = [];
+          return;
+        }
+        this.subscriber = data;
+        this.subscriberList = Object.keys(data).map(key => {
+          const value = data[key];
+          const name = key;
+          return { name: name, value: value };
+        });
+        this.subscriberList.sort((a: any, b: any) => {
+          if (a.value > b.value) return 1;
+          if (a.value < b.value) return -1;
+          return 0;
+        });
+        if (this.subscriberList.length === 0) {
+          console.log('No matching data after sorting');
+          Swal.fire({
+            title: 'No Matching Results',
+            text: 'No subscribers match your search criteria.',
+            icon: 'info',
+            confirmButtonText: 'OK'
+          });
+        }
+
+        console.log(this.subscriberList);
+      },
+      (error) => {
+        Swal.fire({
+          title: 'Error!',
+          text: error?.error?.getsmartcardlistbysubid.searchname
+            || 'An error occurred while fetching subscriber details.',
+          icon: 'error',
+          confirmButtonText: 'OK'
+        });
+      }
+    );
+  }
 
   goToSubscriberDashboard(lcomember: any) {
     this.smartcard = lcomember.value;
@@ -1655,11 +1733,30 @@ export class MsorDialogueportsComponent implements OnInit {
 
   getTotalOperatorReport() {
     this.userService.getTotalOperatorReport(this.role, this.username, 3)
-      .subscribe((res: any) => {
-        console.log(res);
-      }, (err) => {
-        this.swal.Error(err?.error?.message);
-      });
+      // .subscribe((res: any) => {
+      //   console.log(res);
+      //   this.rowData = res;
+      // }, (err) => {
+      //   this.swal.Error(err?.error?.message);
+      // });
+      .subscribe(
+        (response: HttpResponse<any>) => {
+          if (response.status === 200) {
+            console.log(response);
+            this.rowData1 = response.body;
+            // this.fromdate = '';
+            // this.todate = '';
+            this.swal.Success_200();
+          } else if (response.status === 204) {
+            this.swal.Success_204();
+            this.rowData1 = [];
+          }
+          Swal.close();
+        },
+        (error) => {
+          this.handleApiError(error.error, error.status);
+        }
+      );
   }
 
   getTotalOperatorReportDownload(type: number) {
@@ -1670,6 +1767,50 @@ export class MsorDialogueportsComponent implements OnInit {
           this.reportMaking(x, "Total Lco report.pdf", 'application/pdf');
         } else if (type == 2) {
           this.reportMaking(x, "Total Lco report .xlsx", 'application/xlsx');
+        }
+      },
+        (error: any) => {
+          this.pdfswalError(error?.error.message);
+        });
+  }
+  // ================================================ LCO TRANSFER DETAILS REPORT===============================
+
+  getLcoTransferReport() {
+    this.userService.getLcoTransferReport(this.role, this.username, this.smartcard1, this.selectedOperator.value, this.fromdate, this.todate, 3)
+      // .subscribe((res: any) => {
+      //   // console.log(res);
+      //   this.rowData = res;
+      // }, (err) => {
+      //   this.swal.Error(err?.error?.message);
+      // });
+      .subscribe(
+        (response: HttpResponse<any>) => {
+          if (response.status === 200) {
+            console.log(response);
+            this.rowData = response.body;
+            // this.fromdate = '';
+            // this.todate = '';
+            this.swal.Success_200();
+          } else if (response.status === 204) {
+            this.rowData = [];
+            this.swal.Success_204();
+          }
+          Swal.close();
+        },
+        (error) => {
+          this.handleApiError(error.error, error.status);
+        }
+      );
+  }
+
+  getLcoTransferReportDownload(type: number) {
+    this.processingSwal();
+    this.userService.getLcoTransferReportDownload(this.role, this.username, this.smartcard1, this.selectedOperator.value, this.fromdate, this.todate, type)
+      .subscribe((x: Blob) => {
+        if (type == 1) {
+          this.reportMaking(x, "Lco Transfer Details report.pdf", 'application/pdf');
+        } else if (type == 2) {
+          this.reportMaking(x, "Lco Transfer Details report .xlsx", 'application/xlsx');
         }
       },
         (error: any) => {

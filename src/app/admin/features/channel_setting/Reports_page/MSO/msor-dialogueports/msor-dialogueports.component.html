@@ -226,10 +226,10 @@
                     placeholder="Select Operator" [matAutocompleteDisabled]="false" [value]="selectedOperator?.name" />
 
                 <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayOperator">
-                    <mat-option [value]="0" selected
+                    <!-- <mat-option [value]="0" selected
                         (click)="onOperatorStatusChange({ value: 0, name: 'All Operator' })">
                         All Operator
-                    </mat-option>
+                    </mat-option> -->
                     <mat-option *ngFor="let operator of filteredOperators" [value]="operator.value"
                         (click)="onSubscriberStatusChange(operator)">
                         {{ operator.name }}
@@ -460,6 +460,10 @@
     <div class="mb-3">
         <h4>Online Payment History</h4>
     </div>
+    <div class="col-12 col-md-2 d-flex  justify-content-start align-items-start">
+        <button type="button" class="btn btn-primary bttn" (click)="goBack()"><i
+                class="fa-solid fa-reply mx-2"></i>Back</button>
+    </div>
     <div class="row">
         <div class="col-md-12 d-flex justify-content-center align-items-start mb-3">
             <div class="col-12 d-flex justify-content-start align-items-center flex-wrap">
@@ -477,10 +481,10 @@
                         (input)="filterOperators($event)" placeholder="Select Operator"
                         [matAutocompleteDisabled]="false" [value]="selectedOperator?.name">
                     <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayOperator">
-                        <mat-option [value]="0" selected
+                        <!-- <mat-option [value]="0" selected
                             (click)="onOperatorStatusChange({ value: 0, name: 'All Operator' })">
                             All Operator
-                        </mat-option>
+                        </mat-option> -->
                         <mat-option *ngFor="let operator of filteredOperators" [value]="operator.value"
                             (click)="onSubscriberStatusChange(operator)">
                             {{ operator.name }}
@@ -508,8 +512,9 @@
                 <!-- Date Range -->
                 <div class="input_box me-3">
                     <mat-form-field appearance="outline">
-                        <mat-date-range-input [rangePicker]="picker">
-                            <input matStartDate matInput placeholder="Start date" (dateChange)="getFromDate($event)">
+                        <mat-date-range-input [rangePicker]="picker" [max]="today">
+                            <input style="margin-left: -10%;width: 22vh;" matStartDate matInput placeholder="Start date"
+                                (dateChange)="getFromDate($event)">
                             <input matEndDate matInput placeholder="End date" (dateChange)="getToDate($event)">
                         </mat-date-range-input>
                         <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
@@ -604,26 +609,52 @@
 
 <div *ngIf="type== 'subscriber_bill'">
     <h4>SUBSCRIBER BILL</h4>
-    <div class="row " style="padding: 1rem;">
+    <div class="row " style="padding: 1rem;max-height: 775px;overflow: scroll;">
         <!-- <div class="col-12 col-md-2 d-flex  justify-content-start align-items-start">
             <button type="button" class="btn btn-primary bttn" (click)="goBack()"><i
                     class="fa-solid fa-reply mx-2"></i>Back</button>
         </div> -->
         <br /><br />
-        <input placeholder="Enter the smartcard..." type="text" name="text" class="input_sb"
-            (input)="checkDataForBill()" [(ngModel)]="smartcard"><br /><br />
-
+        <!-- <input placeholder="Enter the smartcard..." type="text" name="text" class="input_sb"
+            (input)="checkDataForBill()" [(ngModel)]="smartcard"><br /><br /> -->
+        <!-- <div class="row col-12 col-md-5 input_box1 " style="padding: 1rem;"> -->
+        <input placeholder="Enter the smartcard..." id="searchitem" #searchitem style="font-size: 14px;"
+            (keyup)="onSmartcardlist( searchitem?.value)" [(ngModel)]="smartcard">
+        <div style="width: 50%;" class="dropdown-menu input"
+            [ngClass]="(subscriberList.length != 0 && searchitem?.value?.length != 0 && showDropdown) ? 'show' : 'hide'"
+            aria-labelledby="dropdownMenuButton">
+            <a (click)="goToSubscriberDashboard(lcomember)" *ngFor="let lcomember of subscriberList"
+                class="dropdown-item"> {{ lcomember.value }}</a>
+        </div>
+        <div *ngIf="submitted && !selectedYear" class="text-danger" style="font-size: small;">
+            Smartcard is must..
+        </div>
+        <!-- </div> -->
         <div class="row" style="margin-top: 2%;">
             <div class="col-md-12 d-flex justify-content-center align-items-start mb-3">
                 <div class="col-12 d-flex justify-content-start align-items-center flex-wrap">
-                    <div class="input_box display mb-3">
+                    <!-- <div class="row col-12 col-md-5 input_box1 " style="padding: 1rem;">
+                        <input placeholder="Enter the smartcard..." id="searchitem" #searchitem style="font-size: 14px;"
+                            (keyup)="onsubscriberlist( searchitem?.value)" [(ngModel)]="smartcard">
+                        <div style="width: 50%;" class="dropdown-menu input"
+                            [ngClass]="(subscriberList.length != 0 && searchitem?.value?.length != 0 && showDropdown) ? 'show' : 'hide'"
+                            aria-labelledby="dropdownMenuButton">
+                            <a (click)="goToSubscriberDashboard(lcomember)" *ngFor="let lcomember of subscriberList"
+                                class="dropdown-item"> {{ lcomember.name }}</a>
+                        </div>
+                        <div *ngIf="submitted && !selectedYear" class="text-danger" style="font-size: small;">
+                            Smartcard is must..
+                        </div>
+                    </div> -->
+
+                    <div class="input_box display mb-3" style="margin-top: 2%;">
                         <select name="year" id="year" [(ngModel)]="selectedYear" (change)="checkDataForBill()">
                             <option value="0" selected>Select Year</option>
                             <option *ngFor="let year of years" [value]="year">{{ year }}</option>
                         </select>
                     </div>
 
-                    <div class="input_box display mb-3">
+                    <div class="input_box display mb-3" style="margin-top: 2%;">
                         <select name="month" id="month" [(ngModel)]="selectedMonth" (change)="onMonthChange($event)">
                             <option value="0" selected>Select Month</option>
                             <option *ngFor="let month of months" [value]="month.value">{{ month.name }}
@@ -632,10 +663,11 @@
 
                     </div>
                     <!-- Submit -->
-                    <div class="input_box display mb-3" style="margin-left: 2%;">
+                    <div class="input_box display mb-3" style="margin-left: 2%;margin-top: 2%;">
                         <div class="d-flex align-items-center submit">
-                            <!-- <button class="btn btn-primary me-2 bttn" (click)="getSubscriberBill()">Submit</button> -->
-                            <button class="btn btn-primary me-2 bttn" [disabled]="isshowpdf"
+                            <button class="btn btn-primary me-2 bttn" (click)="getSubscriberBill()">Submit</button>
+                            <!-- [disabled]="isshowpdf" -->
+                            <button class="btn btn-primary me-2 bttn"
                                 (click)="getSubscriberBillDownload(1)"><mat-icon>download</mat-icon>Get PDF</button>
                         </div>
                     </div>
@@ -644,111 +676,122 @@
             </div>
             <br />
             <!-- /  to enable this kindly remove the ngtemplate tag -->
-            <ng-template *ngIf="false" ]>
+            <!-- <ng-template *ngIf="false" > -->
 
-                <div class="sb-headbox">
-                    <h5 class="sb-heading">SUBSCRIBER'S RECHARGE BILL</h5>
-                    <div class="sb-detail">
-                        <div class="d-flex">
-                            <span style="flex:1">BILL NO : </span>
-                            <span style="flex:1;font-weight: 100;">20241279244</span>
+            <div class="sb-headbox">
+                <h5 class="sb-heading">SUBSCRIBER'S RECHARGE BILL</h5>
+                <div class="sb-detail">
+                    <div class="d-flex">
+                        <span style="flex:1">BILL NO : </span>
+                        <span style="flex:1;font-weight: 100;">{{bill}}</span>
+                    </div>
+                    <div class="d-flex">
+                        <span style="flex:1">DATE : </span>
+                        <span style="flex:1;font-weight: 100;">{{fromdate}}</span>
+                    </div>
+                </div>
+            </div>
+            <hr />
+            <div class="sb-headbox">
+                <div class="sb-detailbox" style="border-color: #3D87A3;">
+                    <h6 class="detailbox-heading" style="background-color: #3D87A3;">SUBSCRIBER DETAILS</h6>
+                    <div>
+                        <div class="d-flex padding">
+                            <span style="flex:1">SUBSCRIBER ID : </span>
+                            <span style="flex:1;font-weight: 100;">{{sub_id}}</span>
                         </div>
-                        <div class="d-flex">
-                            <span style="flex:1">DATE : </span>
-                            <span style="flex:1;font-weight: 100;">09/01/2025</span>
+                        <div class="d-flex padding">
+                            <span style="flex:1">SUBSCRIBER NAME : </span>
+                            <span style="flex:1;font-weight: 100;">{{sub_name}}</span>
+                        </div>
+                        <div class="d-flex padding">
+                            <span style="flex:1">MOBILE NUMBER : </span>
+                            <span style="flex:1;font-weight: 100;">{{sub_mobileno}}</span>
                         </div>
                     </div>
                 </div>
-                <hr />
-                <div class="sb-headbox">
-                    <div class="sb-detailbox" style="border-color: #3D87A3;">
-                        <h6 class="detailbox-heading" style="background-color: #3D87A3;">SUBSCRIBER DETAILS</h6>
-                        <div>
-                            <div class="d-flex padding">
-                                <span style="flex:1">SUBSCRIBER ID : </span>
-                                <span style="flex:1;font-weight: 100;">20241279244</span>
-                            </div>
-                            <div class="d-flex padding">
-                                <span style="flex:1">SUBSCRIBER NAME : </span>
-                                <span style="flex:1;font-weight: 100;">20241279244</span>
-                            </div>
-                            <div class="d-flex padding">
-                                <span style="flex:1">MOBILE NUMBER : </span>
-                                <span style="flex:1;font-weight: 100;">20241279244</span>
-                            </div>
+                <div class="sb-detailbox" style="border-color: #9967C6;">
+                    <h6 class="detailbox-heading" style="background-color: #9967C6;">OPERATOR DETAILS</h6>
+                    <div>
+                        <div class="d-flex padding">
+                            <span style="flex:1">OPERATOR ID : </span>
+                            <span style="flex:1;font-weight: 100;">{{op_id}}</span>
+                        </div>
+                        <div class="d-flex padding">
+                            <span style="flex:1">OPERATOR NAME : </span>
+                            <span style="flex:1;font-weight: 100;">{{op_name}}</span>
+                        </div>
+                        <div class="d-flex padding">
+                            <span style="flex:1">MOBILE NUMBER : </span>
+                            <span style="flex:1;font-weight: 100;">{{op_mobileno}}</span>
                         </div>
                     </div>
-                    <div class="sb-detailbox" style="border-color: #9967C6;">
-                        <h6 class="detailbox-heading" style="background-color: #9967C6;">OPERATOR DETAILS</h6>
-                        <div>
-                            <div class="d-flex padding">
-                                <span style="flex:1">OPERATOR ID : </span>
-                                <span style="flex:1;font-weight: 100;">20241279244</span>
-                            </div>
-                            <div class="d-flex padding">
-                                <span style="flex:1">OPERATOR NAME : </span>
-                                <span style="flex:1;font-weight: 100;">20241279244</span>
-                            </div>
-                            <div class="d-flex padding">
-                                <span style="flex:1">MOBILE NUMBER : </span>
-                                <span style="flex:1;font-weight: 100;">20241279244</span>
-                            </div>
+                </div>
+
+            </div>
+
+            <div>
+                <div class="table-container">
+                    <!-- <table mat-table [dataSource]="dataSource" matSort class="mat-elevation-z8">
+
+                        Smartcard Column
+                        <ng-container matColumnDef="smartcard">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header> SMARTCARD </th>
+                            <td mat-cell *matCellDef="let element"> {{element.smartcard}} </td>
+                        </ng-container>
+
+                        Date Column
+                        <ng-container matColumnDef="date">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header> DATE </th>
+                            <td mat-cell *matCellDef="let element"> {{element.date}} </td>
+                        </ng-container>
+
+                        Expiry Date Column
+                        <ng-container matColumnDef="expiryDate">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header> EXPIRY DATE </th>
+                            <td mat-cell *matCellDef="let element"> {{element.expiryDate}} </td>
+                        </ng-container>
+
+                        Package Column
+                        <ng-container matColumnDef="package">
+                            <th mat-header-cell *matHeaderCellDef> PACKAGE </th>
+                            <td mat-cell *matCellDef="let element"> {{element.package}} </td>
+                        </ng-container>
+
+                        Plan Column
+                        <ng-container matColumnDef="plan">
+                            <th mat-header-cell *matHeaderCellDef> PLAN </th>
+                            <td mat-cell *matCellDef="let element"> {{element.plan}} </td>
+                        </ng-container>
+
+                        Amount Column
+                        <ng-container matColumnDef="amount">
+                            <th mat-header-cell *matHeaderCellDef> AMOUNT </th>
+                            <td mat-cell *matCellDef="let element"> {{element.amount}} </td>
+                        </ng-container>
+
+                        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+                    </table>
+
+                    <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator> -->
+                    <ag-grid-angular #agGrid id="myGrid" domLayout='autoHeight' class="ag-theme-alpine table-class mb-3"
+                        rowAnimation [columnDefs]="columnDefs" [rowData]="rowData" (gridReady)="onGridReady($event)"
+                        [enableCellTextSelection]="true">
+                    </ag-grid-angular>
+
+                    <div class="col-md-12  d-flex justify-content-end align-items-end" >
+                        <div style="flex:1" style="margin-right: 6%;">
+                            TOTAL: <span [style.color]="total > 0 ? 'green' : 'gray'">
+                              RS. {{ total > 0 ? total : '0.0' }}
+                            </span>
                         </div>
+                          
                     </div>
-
                 </div>
 
-                <div>
-                    <div class="table-container">
-                        <table mat-table [dataSource]="dataSource" matSort class="mat-elevation-z8">
-
-                            <!-- Smartcard Column -->
-                            <ng-container matColumnDef="smartcard">
-                                <th mat-header-cell *matHeaderCellDef mat-sort-header> SMARTCARD </th>
-                                <td mat-cell *matCellDef="let element"> {{element.smartcard}} </td>
-                            </ng-container>
-
-                            <!-- Date Column -->
-                            <ng-container matColumnDef="date">
-                                <th mat-header-cell *matHeaderCellDef mat-sort-header> DATE </th>
-                                <td mat-cell *matCellDef="let element"> {{element.date}} </td>
-                            </ng-container>
-
-                            <!-- Expiry Date Column -->
-                            <ng-container matColumnDef="expiryDate">
-                                <th mat-header-cell *matHeaderCellDef mat-sort-header> EXPIRY DATE </th>
-                                <td mat-cell *matCellDef="let element"> {{element.expiryDate}} </td>
-                            </ng-container>
-
-                            <!-- Package Column -->
-                            <ng-container matColumnDef="package">
-                                <th mat-header-cell *matHeaderCellDef> PACKAGE </th>
-                                <td mat-cell *matCellDef="let element"> {{element.package}} </td>
-                            </ng-container>
-
-                            <!-- Plan Column -->
-                            <ng-container matColumnDef="plan">
-                                <th mat-header-cell *matHeaderCellDef> PLAN </th>
-                                <td mat-cell *matCellDef="let element"> {{element.plan}} </td>
-                            </ng-container>
-
-                            <!-- Amount Column -->
-                            <ng-container matColumnDef="amount">
-                                <th mat-header-cell *matHeaderCellDef> AMOUNT </th>
-                                <td mat-cell *matCellDef="let element"> {{element.amount}} </td>
-                            </ng-container>
-
-                            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-                            <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-                        </table>
-
-                        <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
-                    </div>
-
-
-                </div>
-            </ng-template>
-
+            </div>
+            <!-- </ng-template> -->
         </div>
     </div>
 </div>
@@ -893,6 +936,7 @@
     <div class="mb-3">
         <h4>LCOWISE EXPIRY COUNT DIFFERENCE REPORT</h4>
     </div>
+
     <div class="col-12 col-md-2 mb-2 d-flex  justify-content-start align-items-start">
         <button type="button" class="btn btn-primary bttn" (click)="goBack()"><i
                 class="fa-solid fa-reply mx-2"></i>Back</button>
@@ -949,32 +993,33 @@
 </div>
 <div *ngIf="type== 'total_lco'">
     <h4>Total lco Report</h4>
-    <div class="col-12 col-md-2 d-flex  justify-content-start align-items-start">
-        <button type="button" class="btn btn-primary bttn" (click)="goBack()"><i
-                class="fa-solid fa-reply mx-2"></i>Back</button>
-    </div>
-    <div class="col-12 col-md-12 display justify-content-end align-items-center mb-3">
-        <div class=" display1">
-            <div class="export-icon  mx-2">
-                <img src="/assets/images/icons/Excel.png" alt="Excel Icon" width="40px"
-                    (click)="getTotalOperatorReportDownload(2)">
-                <div class="tooltip">Excel</div>
+    <div style="max-height: 775px;overflow: scroll;">
+        <div class="col-12 col-md-2 d-flex  justify-content-start align-items-start">
+            <button type="button" class="btn btn-primary bttn" (click)="goBack()"><i
+                    class="fa-solid fa-reply mx-2"></i>Back</button>
+        </div>
+        <div class="col-12 col-md-12 display justify-content-end align-items-center mb-3">
+            <div class=" display1">
+                <div class="export-icon  mx-2">
+                    <img src="/assets/images/icons/Excel.png" alt="Excel Icon" width="40px"
+                        (click)="getTotalOperatorReportDownload(2)">
+                    <div class="tooltip">Excel</div>
+                </div>
+            </div>
+            <div class=" display1">
+                <div class="export-icon  mx-2">
+                    <img src="/assets/images/icons/pdf.png" alt="PDF Icon" width="40px"
+                        (click)="getTotalOperatorReportDownload(1)">
+                    <div class="tooltip">Pdf</div>
+                </div>
             </div>
         </div>
-        <div class=" display1">
-            <div class="export-icon  mx-2">
-                <img src="/assets/images/icons/pdf.png" alt="PDF Icon" width="40px"
-                    (click)="getTotalOperatorReportDownload(1)">
-                <div class="tooltip">Pdf</div>
-            </div>
-        </div>
+        <ag-grid-angular #agGrid id="myGrid" domLayout='autoHeight' class="ag-theme-alpine table-class" rowAnimation
+            [columnDefs]="columnDefs" [rowData]="rowData1" (gridReady)="onGridReady($event)"
+            [enableCellTextSelection]="true">
+        </ag-grid-angular>
     </div>
-    <ag-grid-angular #agGrid id="myGrid" domLayout='autoHeight' class="ag-theme-alpine table-class" rowAnimation
-        [columnDefs]="columnDefs" [rowData]="rowData" (gridReady)="onGridReady($event)"
-        [enableCellTextSelection]="true">
-    </ag-grid-angular>
 </div>
-
 <div *ngIf="type== 'customer_activation_form'">
     <h4>CUSTOMER ACTIVATION FORM</h4>
     <div class="col-12 col-md-2 d-flex  justify-content-start align-items-start">
@@ -1005,7 +1050,7 @@
 </div>
 <div *ngIf="type== 'lco_transfer_details'">
     <div class="mb-3">
-        <h4>Operators Recharge and Deduction Report <span> - (Including GST)</span></h4>
+        <h4>LCO TRANSFER DETAILS</h4>
     </div>
     <div class="col-12 col-md-2 d-flex  justify-content-start align-items-start">
         <button type="button" class="btn btn-primary bttn" (click)="goBack()"><i
@@ -1041,10 +1086,10 @@
                     [value]="selectedOperator?.name" />
 
                 <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayOperator">
-                    <mat-option [value]="0" selected
+                    <!-- <mat-option [value]="0" selected
                         (click)="onOperatorStatusChange({ value: 0, name: 'All Operator' })">
                         All Operator
-                    </mat-option>
+                    </mat-option> -->
 
                     <mat-option *ngFor="let operator of filteredOperators" [value]="operator.value"
                         (click)="onSubscriberStatusChange(operator)">
@@ -1055,13 +1100,13 @@
 
             <div *ngIf="isLcoSmartcard" class="row col-12 col-md-5" style="padding: 1rem;">
                 <input placeholder="Enter the smartcard..." type="text" name="text" class="input_sb"
-                    [(ngModel)]="smartcard">
+                    [(ngModel)]="smartcard1">
                 <div *ngIf="submitted && !selectedYear" class="text-danger" style="font-size: small;">
                     Smartcard is must..
                 </div>
             </div>
             <button class="btn mx-2 bttn" style="background-color: rgb(26, 129, 133); border-radius: 5px;"
-                (click)="getIncluding()">
+                (click)="getLcoTransferReport()">
                 <span style="color: white;">Submit</span>
             </button>
         </div>
@@ -1069,12 +1114,12 @@
         <div class=" display1">
             <div class="export-icon  mx-2">
                 <img src="/assets/images/icons/Excel.png" alt="Excel Icon" width="40px"
-                    (click)="getIncludeReportDownload(2)">
+                    (click)="getLcoTransferReportDownload(2)">
                 <div class="tooltip">Excel</div>
             </div>
             <div class="export-icon ">
                 <img src="/assets/images/icons/pdf.png" alt="PDF Icon" width="40px"
-                    (click)="getIncludeReportDownload(1)">
+                    (click)="getLcoTransferReportDownload(1)">
                 <div class="tooltip">Pdf</div>
             </div>
         </div>

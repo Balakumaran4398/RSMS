@@ -73,9 +73,25 @@ export class CategoryComponent {
       flex: 1,
       editable: true,
       cellEditor: 'agTextCellEditor',
-      onCellValueChanged: (event) => {
+      cellStyle: { textAlign: 'left'}, 
+      // onCellValueChanged: (event) => {
+      //   console.log('Cell value changed:', event.data.name);
+      //   this.updateDeviceModelname(event.data.name, event.data.isactive, event.data.id);
+      // },
+
+      tooltipValueGetter: (params: any) => {
+        return `Edit The Category: ${params.value || ''}`; 
+      },
+      onCellValueChanged: (event: any) => {
         console.log('Cell value changed:', event.data.name);
         this.updateDeviceModelname(event.data.name, event.data.isactive, event.data.id);
+      },
+      cellRenderer: (params: any) => {
+        const toggleSwitch = document.createElement('div');
+        toggleSwitch.textContent = params.value; 
+        toggleSwitch.style.cursor = 'pointer'; 
+        toggleSwitch.title = `Edit The Category: ${params.value || ''}`; 
+        return toggleSwitch;
       }
     },
 
@@ -84,7 +100,7 @@ export class CategoryComponent {
       field: 'isactive',
       flex: 1,
       cellRenderer: (params: any) => {
-        const isActive = params.data.isactive;
+        var isActive = params.data.isactive;
 
         const toggleContainer = document.createElement('div');
         toggleContainer.style.display = 'flex';
@@ -112,7 +128,22 @@ export class CategoryComponent {
         toggleCircle.style.transition = 'left 0.3s ease';
 
         toggleSwitch.appendChild(toggleCircle);
+        toggleSwitch.addEventListener('click', () => {
+          isActive = !isActive;
+          console.log(isActive);
 
+          toggleSwitch.style.backgroundColor = isActive ? '#93b6eb' : 'rgb(115 115 115)';
+
+          toggleCircle.style.left = isActive ? 'calc(100% - 22px)' : '3px';
+
+          console.log(params.data.id);
+          if (isActive) {
+            this.Active(params.data.id);
+          } else {
+            this.Deactive(params.data.id);
+          }
+
+        });
         // const updateToggleStyle = (active: boolean) => {
         //   toggleSwitch.style.backgroundColor = active ? '#4CAF50' : '#616060';
         //   toggleCircle.style.left = active ? 'calc(100% - 22px)' : '3px';
@@ -208,7 +239,7 @@ export class CategoryComponent {
     });
   }
 
-  Active() {
+  Active(ids:any) {
     Swal.fire({
       title: "Are you sure?",
       text: "You won't be able to Active this!",
@@ -248,7 +279,7 @@ export class CategoryComponent {
       }
     });
   }
-  Deactive() {
+  Deactive(ids:any) {
     Swal.fire({
       title: "Are you sure?",
       text: "You won't be able to revert this!",

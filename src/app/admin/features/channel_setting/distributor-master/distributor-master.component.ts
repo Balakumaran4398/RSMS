@@ -65,7 +65,7 @@ export class DistributorMasterComponent {
   enterPressed: boolean = false;
   columnDefs: any[] = [
     { headerName: "S.No", lockPosition: true, valueGetter: 'node.rowIndex+1', width: 100, headerCheckboxSelection: true, checkboxSelection: true },
-    { headerName: "DISTRIBUTOR NAME", field: 'name', cellEditor: 'agTextCellEditor', width: 300, },
+    { headerName: "DISTRIBUTOR NAME", field: 'name', cellEditor: 'agTextCellEditor', width: 300, cellStyle: { textAlign: 'left'}, },
     {
       headerName: "STATUS",
       field: 'isactive',

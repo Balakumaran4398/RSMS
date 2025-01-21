@@ -21,10 +21,10 @@
                 <span for="channel_logo" class="form-label">Channel Logo</span>
                 <input type="file" class="" id="channel_logo" formControlName="channel_logo"
                     (change)="onFileChange($event)" placeholder="Enter package logo" accept=".png">
-                <div *ngIf="form.get('channel_logo')?.invalid && form.get('channel_logo')?.touched"
+                <!-- <div *ngIf="form.get('channel_logo')?.invalid && form.get('channel_logo')?.touched"
                     class="error-message">
                     Channel Logo is required.
-                </div>
+                </div> -->
             </div>
             <div class="input_box form-group">
                 <label for="channel_freq" class="form-label">Channel Frequency</label>

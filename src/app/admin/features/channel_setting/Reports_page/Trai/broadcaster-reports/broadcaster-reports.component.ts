@@ -201,7 +201,7 @@ export class BroadcasterReportsComponent implements OnInit {
     } else if (this.allType == '2') {
       this.columnDefs = [
         { headerName: "S.No", lockPosition: true, valueGetter: 'node.rowIndex+1', width: 90 },
-        { headerName: 'PRODUCT NAME', field: 'productname', width: 250 },
+        { headerName: 'PRODUCT NAME', field: 'productname', width: 200 },
         { headerName: 'PRODUCTID', field: 'casproductid', width: 150, cellStyle: { textAlign: 'center' }, },
         { headerName: 'CAS', field: 'casname', width: 140 },
         { headerName: 'SUBS COUNT AS 7TH	', field: 'w1', width: 200, cellStyle: { textAlign: 'center' }, },
@@ -602,14 +602,14 @@ export class BroadcasterReportsComponent implements OnInit {
           (response: HttpResponse<any>) => {
             if (response.status === 200) {
               console.log(response);
-              this.addonlist = response.body;
-              this.alacartelist = response.body;
-              this.baselist = response.body;
+              // this.addonlist = response.body;
+              // this.alacartelist = response.body;
+              // this.baselist = response.body;
 
 
-              // this.addonlist = response.body.addonPackageList;
-              // this.alacartelist = response.body.alacartePackageList;
-              // this.baselist = response.body.basePackageList;
+              this.addonlist = response.body.addonPackageList;
+              this.alacartelist = response.body.alacartePackageList;
+              this.baselist = response.body.basePackageList;
               
             } else if (response.status === 204) {
               this.swal.Success_204();

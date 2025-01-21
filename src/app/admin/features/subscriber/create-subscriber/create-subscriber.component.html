@@ -156,20 +156,21 @@
                             <div *ngIf="f['email'].errors['required']">Email ID is required</div>
                             <div *ngIf="f['email'].errors['email']">Please enter a valid email</div>
                         </div> -->
-                        <div *ngIf="form.get('email')?.invalid && form.get('email')?.touched"
-                        class="error-message">
                         <div *ngIf="form.get('email')?.invalid && form.get('email')?.touched" class="error-message">
-                            <div *ngIf="form.get('email')?.hasError('required')">
-                              Email is required.
+                            <div *ngIf="form.get('email')?.invalid && form.get('email')?.touched" class="error-message">
+                                <div *ngIf="form.get('email')?.hasError('required')">
+                                    Email is required.
+                                </div>
+                                <div
+                                    *ngIf="!form.get('email')?.hasError('required') && form.get('email')?.hasError('email')">
+                                    Please enter a valid email format.
+                                </div>
+                                <div
+                                    *ngIf="!form.get('email')?.hasError('required') && !form.get('email')?.hasError('email') && form.get('email')?.hasError('invalidEmail')">
+                                    Email must include ".in" or ".com" after letters.
+                                </div>
                             </div>
-                            <div *ngIf="!form.get('email')?.hasError('required') && form.get('email')?.hasError('email')">
-                              Please enter a valid email format.
-                            </div>
-                            <div *ngIf="!form.get('email')?.hasError('required') && !form.get('email')?.hasError('email') && form.get('email')?.hasError('invalidEmail')">
-                              Email must include ".in" or ".com" after letters.
-                            </div>
-                          </div>
-                    </div>
+                        </div>
                     </div>
                     <div class="input_box">
                         <label for="confirmPass">Form Submission Date</label>
@@ -194,8 +195,11 @@
 
                     </div>
 
-                    <div class="input_box" *ngIf="selectedAddProofType">
-                        <label for="addressproof">{{ selectedAddProofType }} Number</label>
+                    <!-- <div class="input_box" *ngIf="selectedAddProofType"> -->
+                    <div class="input_box">
+                        <!-- <label for="addressproof">{{ selectedAddProofType }} Number</label> -->
+                        <label *ngIf="!selectedAddProofType">Address Proof</label>
+                        <label *ngIf="selectedAddProofType">{{ selectedAddProofType }} Number</label>
                         <input type="text" formControlName="addressproof"
                             [attr.maxlength]="getMaxLength(selectedAddProofType)"
                             [attr.placeholder]="'Enter ' + selectedAddProofType + ' Number'"
@@ -223,8 +227,13 @@
                             <option *ngFor="let key of filteredIdProofKeys()" [value]="key"> {{ key}} </option>
                         </select>
                     </div>
-                    <div class="input_box" *ngIf="selectedIDProofType">
-                        <label for="idproof">{{ selectedIDProofType }} Number</label>
+                    <div class="input_box">
+                        <!-- <div class="input_box" *ngIf="selectedIDProofType"> -->
+                        <!-- <label for="idproof">{{ selectedIDProofType }} Number</label> -->
+                        <!-- <label for="idproof"> -->
+                        <label *ngIf="!selectedIDProofType">ID Proof</label>
+                        <label *ngIf="selectedIDProofType">{{ selectedIDProofType }} Number</label>
+                        <!-- </label> -->
                         <input type="text" formControlName="idproof"
                             [attr.maxlength]="getMaxLength(selectedIDProofType)"
                             [attr.placeholder]="'Enter ' + selectedIDProofType + ' idproof'"

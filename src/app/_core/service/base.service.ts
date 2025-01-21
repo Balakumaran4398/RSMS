@@ -1833,8 +1833,8 @@ export class BaseService {
 
   // ------------------------------------------TOTAL LCO REPORT----------------------
 
-  getTotalOperatorReport(role: any, username: any, reporttype: number): Observable<any[]> {
-    return this.http.get<any[]>(BASE_URL + "/report/GetTotalOperatorReport?role=" + role + "&username=" + username + "&reporttype=" + reporttype);
+  getTotalOperatorReport(role: any, username: any, reporttype: number):  Observable<HttpResponse<any[]>>  {
+    return this.http.get<any[]>(BASE_URL + "/report/GetTotalOperatorReport?role=" + role + "&username=" + username + "&reporttype=" + reporttype,{ observe: 'response' });
   }
 
 
@@ -1844,12 +1844,19 @@ export class BaseService {
 
   // ------------------------------------------getLcoTransferReport----------------------
 
-  getLcoTransferReport(role: any, username: any, smartcard: any, operatorid: any, fromdate: any, todate: any, reporttype: number): Observable<any[]> {
-    return this.http.get<any[]>(BASE_URL + "/report/getLcoTransferReport?role=" + role + "&username=" + username + "&smartcard=" + smartcard + "&operatorid=" + operatorid + "&fromdate=" + fromdate + "&todate=" + todate + "&reporttype=" + reporttype);
+  getLcoTransferReport(role: any, username: any, smartcard: any, operatorid: any, fromdate: any, todate: any, reporttype: number): Observable<HttpResponse<any[]>> {
+    return this.http.get<any[]>(BASE_URL + "/report/getLcoTransferReport?role=" + role + "&username=" + username + "&smartcard=" + smartcard + "&operatorid=" + operatorid + "&fromdate=" + fromdate + "&todate=" + todate + "&reporttype=" + reporttype,{ observe: 'response' });
   }
 
 
   getLcoTransferReportDownload(role: any, username: any, smartcard: any, operatorid: any, fromdate: any, todate: any, reporttype: number): Observable<Blob> {
     return this.http.get(BASE_URL + "/report/getLcoTransferReport?role=" + role + "&username=" + username + "&smartcard=" + smartcard + "&operatorid=" + operatorid + "&fromdate=" + fromdate + "&todate=" + todate + "&reporttype=" + reporttype, { responseType: 'blob' });
   }
+// --------------------------------------------smartcard list----------------------------
+
+getSearchSmartcardData(role: any, username: any, searchname: any): Observable<any[]> {
+  return this.http.get<any[]>(
+    BASE_URL + "/subscriber/getSearchSmartcard?role=" + role + "&username=" + username + "&searchname=" + searchname,);
+}
+
 }

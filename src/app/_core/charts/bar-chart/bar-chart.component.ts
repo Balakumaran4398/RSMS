@@ -77,7 +77,7 @@ export class BarChartComponent implements OnInit {
     const chart = new CanvasJS.Chart("barchartContainer", {
       title: {
         text: "NEXT 7 DAYS SUBSCRIPTION EXPIRED COUNT",
-        fontSize: 18,
+        fontSize: 15,
         fontWeight: 600
       },
       animationEnabled: true,

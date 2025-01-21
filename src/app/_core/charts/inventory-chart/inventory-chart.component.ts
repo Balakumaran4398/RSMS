@@ -81,7 +81,7 @@ export class InventoryChartComponent implements OnInit {
       },
       title: {
         text: "INVENTORY DETAILS",
-        fontSize: 18,
+        fontSize: 15,
         fontWeight: 600
       },
       data: [{

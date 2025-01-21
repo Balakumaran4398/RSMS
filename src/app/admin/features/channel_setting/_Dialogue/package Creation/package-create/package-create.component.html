@@ -105,9 +105,9 @@
                         [(ngModel)]="commission_Value" (input)="calculateMsoCommission('commission')"
                         placeholder="Enter Mso Commission"> -->
 
-                    <input type="number" class="" id="commission" formControlName="commission"
+                    <input type="number"  id="commission" formControlName="commission"
                         [(ngModel)]="commission_Value" (input)="calculateMsoCommission('commission')"
-                        placeholder="Enter Mso Commission">
+                        placeholder="Enter LCO Commission" min="0" (keydown)="preventnegativeInput($event)">
 
                     <div *ngIf="createpackageForm.get('commission')?.invalid && createpackageForm.get('commission')?.touched"
                         class="error-message">

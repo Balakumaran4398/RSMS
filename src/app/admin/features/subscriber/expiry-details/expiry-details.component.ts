@@ -156,7 +156,7 @@ export class ExpiryDetailsComponent implements OnInit {
     console.log(this.operatorid);
 
     this.cdr.detectChanges();
-    this.userservice.getExpirySubscriberByOperator(this.role, this.username, this.operatorid, this.fromdate || null, this.todate || null, this.format)
+    this.userservice.getExpirySubscriberByOperator(this.role, this.username, this.operatorid, this.fromdate , this.todate, this.format)
       .subscribe(
         (response: HttpResponse<any[]>) => { // Expect HttpResponse<any[]>
           if (response.status === 200) {
@@ -199,7 +199,7 @@ export class ExpiryDetailsComponent implements OnInit {
   }
   exportAsXLSX1(): void {
     this.cdr.detectChanges();
-    this.userservice.getExpirySubscriberByOperator(this.role, this.username, this.operatorid, this.fromdate || null, this.todate || null, this.format_1).subscribe(
+    this.userservice.getExpirySubscriberByOperator(this.role, this.username, this.operatorid, this.fromdate , this.todate , this.format_1).subscribe(
       (response: HttpResponse<any[]>) => { // Expect HttpResponse<any[]>
         if (response.status === 200) {
           this.rowData = response.body;

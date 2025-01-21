@@ -183,7 +183,12 @@ export class PackageCreateComponent implements OnInit {
       this.createpackageForm.markAllAsTouched();
       return;
     }
+  }
 
+  preventnegativeInput(event: KeyboardEvent): void {
+    if (event.key === '-' || event.key === 'e') {
+      event.preventDefault();
+    }
   }
   // taxdetailsbyRate() {
   //   this.userservice.gettaxdetailsbyRate(this.role, this.username, this.package_rate).subscribe((data) => {

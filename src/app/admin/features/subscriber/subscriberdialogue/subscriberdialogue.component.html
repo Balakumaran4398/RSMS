@@ -413,7 +413,7 @@
                                     </select> -->
 
                                     <input [disabled]="!castypeSmartcard || filteredSmartcard.length === 0" type="text"
-                                        matInput [matAutocomplete]="auto" [(ngModel)]="smartcard"
+                                        matInput [matAutocomplete]="auto" [(ngModel)]="smartcard" 
                                         (input)="filterSmartcard($event)" placeholder="Select a Smartcard"
                                         [matAutocompleteDisabled]="false" [value]="selectedSmartcard?.name">
 
@@ -2345,7 +2345,7 @@
         <span class="span">ADDON ADD</span>
         <i class="fa fa-close close-icon" (click)="onNoClick()"></i>
     </div>
-    <div class="mobile">
+    <div class="mobile" >
         <div style="padding: 1rem;">
             <div class="cancel_sub mb-2 display_mobile align-items-center justify-content-center">
                 <div class="col-12 col-md-6 display_moile justify-content-start lign-items-center">
@@ -2395,7 +2395,8 @@
             </div>
         </div>
         <div class="col-12 col-md-12  mb-3" style="padding: 1rem;">
-            <ag-grid-angular #agGrid id="myGrid" domLayout='autoHeight' class="ag-theme-alpine table-class" rowAnimation
+            <ag-grid-angular #agGrid id="myGrid" domLayout='autoHeight' class="ag-theme-alpine table-class" 
+            rowAnimation style="max-height: 775px;overflow: scroll;"
                 [gridOptions]="gridOptions1" [columnDefs]="columnDefs" [rowData]="rowData"
                 (gridReady)="onGridReady($event)" [enableCellTextSelection]="true"
                 (selectionChanged)="onSelectionChanged()" [rowSelection]="rowSelection">

@@ -2,7 +2,7 @@
 
     <div class="Head d-flex justify-content-between align-items-center mb-3" style="padding: 1rem;">
         <!-- <h6>ALLOCATED SMARTCARD TO LCO</h6> -->
-        <h6>ALLOCATE</h6>
+        <h6>ALLOCATE SMARTCARD TO LCO</h6>
         <i class="fa fa-close close-icon" style="cursor: pointer;" (click)="onNoClick()"></i>
     </div>
     <div class="display justify-content-center align-items-center" style="padding: 1rem;">
@@ -46,8 +46,6 @@
                 <div class="">
                     <input type="text" [disabled]="!ismei" [(ngModel)]="dueAmount" (input)="filterOperators($event)"
                         placeholder="Enter Due Amount">
-
-
                     <!-- <div *ngIf="submitted && !dueAmount" class="text-danger" style="font-size: small;">
                         Due Amount is required
                     </div> -->
@@ -57,7 +55,7 @@
     </div>
     <div class="d-flex justify-content-center align-items-center" style="padding: 10px;">
         <button type="button" class="btn" (click)="Submit()"><i class="fa fa-plus" aria-hidden="true"></i>
-            Allocation
+            ALLOCATE
         </button>
 
     </div>

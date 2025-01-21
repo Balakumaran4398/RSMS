@@ -53,7 +53,7 @@ export class PackageCreationComponent {
     {
       headerName: "S.No", lockPosition: true, valueGetter: 'node.rowIndex+1', width: 120,
     },
-    { headerName: "PACKAGE NAME", field: 'packagename', width: 300 },
+    { headerName: "PACKAGE NAME", field: 'packagename', width: 300,cellStyle: { textAlign: 'left'},  },
     {
       headerName: 'Actions', width: 380, filter: false,
       cellRenderer: (params: any) => {

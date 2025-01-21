@@ -205,6 +205,7 @@ export class PackageReferenceComponent {
             span.innerText = params.value;
             span.style.color = 'blue';
             span.style.cursor = 'pointer';
+            span.title = 'Edit product id';
             span.addEventListener('click', () => {
               const input = document.createElement('input');
               input.type = 'text';

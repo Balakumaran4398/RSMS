@@ -87,11 +87,9 @@
             </ul>
         </li>
         <li *ngIf="isUser  ">
-            <a> <mat-icon class="icon">personal_video</mat-icon> Channel Setting <i
-                    class='bx bx-chevron-right icon-right'></i></a>
+            <a> <mat-icon class="icon">personal_video</mat-icon> Channel Setting <i class='bx bx-chevron-right icon-right'></i></a>
             <ul class="side-dropdown">
-                <li><a (click)="navgetToUrl('/Broadcast');setActiveLinkTab($event)"><i
-                            class="fa fa-fw fa-bullhorn icon">&nbsp;</i>Broadcaster
+                <li><a (click)="navgetToUrl('/Broadcast');setActiveLinkTab($event)"><i class="fa fa-fw fa-bullhorn icon">&nbsp;</i>Broadcaster
                         Master
                     </a> </li>
                 <li><a (click)="navgetToUrl('/Distributer');setActiveLinkTab($event)"><i

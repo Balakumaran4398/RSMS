@@ -115,8 +115,8 @@ export class PackageBaseViewComponent {
       this.columnDefs = [
         { headerName: 'S.No', valueGetter: 'node.rowIndex + 1', width: 100, cellStyle: { textAlign: 'center' }, },
         { headerName: 'CHANNEL NAME', field: 'channel_name', width: 250, },
-        { headerName: 'PRODUCT ID', field: 'product_id', width: 150, cellStyle: { textAlign: 'center' }, },
-        { headerName: 'SERVICE ID', field: 'service_id', width: 150, cellStyle: { textAlign: 'center' }, },
+        { headerName: 'PRODUCT ID', field: 'product_id', width: 200, cellStyle: { textAlign: 'center' }, },
+        { headerName: 'SERVICE ID', field: 'service_id', width: 200, cellStyle: { textAlign: 'center' }, },
         { headerName: 'TS ID', field: 't_id', width: 200, cellStyle: { textAlign: 'center' }, },
         { headerName: 'STATUS', field: 'statusdisplay', width: 200 }
       ];
@@ -128,7 +128,7 @@ export class PackageBaseViewComponent {
         { headerName: 'SERVICE ID', field: 'service_id', width: 150 },
         { headerName: 'TS ID', field: 't_id', cellStyle: { textAlign: 'center' }, width: 200 },
         { headerName: 'RATE', field: 'broadcaster_rate', cellStyle: { textAlign: 'center' }, width: 200 },
-        { headerName: 'STATUS', field: 'statusdisplay', width: 200 }
+        { headerName: 'STATUS', field: 'statusdisplay', width: 160 }
       ];
     } else if (tab === '3') {
       this.columnDefs = [
@@ -138,7 +138,7 @@ export class PackageBaseViewComponent {
         { headerName: 'RATE', field: 'broadcaster_rate', cellStyle: { textAlign: 'center' }, width: 150 },
         { headerName: 'SERVICE ID', field: 'service_id', cellStyle: { textAlign: 'center' }, width: 200 },
         { headerName: 'TS ID', field: 't_id', cellStyle: { textAlign: 'center' }, width: 200 },
-        { headerName: 'STATUS', field: 'statusdisplay', width: 200 }
+        { headerName: 'STATUS', field: 'statusdisplay', width: 160 }
       ];
     }
     // else if (tab === 'addon_view') {

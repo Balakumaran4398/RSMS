@@ -590,14 +590,14 @@ export class PackageManageComponent {
     this.containerID = this.alacarteId || 0
     console.log(this.containerID);
     this.containerData = this.containerData.length == 0 ? 0 : this.containerData;
-    if (!this.modified || !this.alacarte_list_id || !this.role || !this.username || !this.package_id) {
-      Swal.fire({
-        icon: 'error',
-        title: 'Error',
-        text: 'All fields are required!',
-      });
-      return;
-    }
+    // if (!this.modified || !this.alacarte_list_id || !this.role || !this.username || !this.package_id) {
+    //   Swal.fire({
+    //     icon: 'error',
+    //     title: 'Error',
+    //     text: 'All fields are required!',
+    //   });
+    //   return;
+    // }
     if (this.alacarte_list_id) {
       console.log('save');
       Swal.fire({

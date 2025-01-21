@@ -26,11 +26,10 @@
         <div class="display input_box com_select">
             <div class="col display justify-content-start align-items-center mb-3">
                 <span style="font-size:17px;color: red;">SELECT DISTRIBUTOR MEMBERSHIP</span> &nbsp;&nbsp;
-                {{lcomembershipname}}
-                <input type="text" matInput [matAutocomplete]="auto"
-                    [value]="lcomembershipname || selectedOperator?.name" [(ngModel)]="lcomembershipid"
+                <!-- {{lcomembershipname}} -->
+                <input type="text" matInput [matAutocomplete]="auto" 
                     (ngModelChange)="filterOperators($event)" placeholder="Select An Membership"
-                    [matAutocompleteDisabled]="false">
+                    [matAutocompleteDisabled]="false" [value]="lcomembershipname || selectedOperator"   [(ngModel)]="lcomembershipid">
 
                 <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayOperator">
                     <mat-option *ngFor="let operator of filteredOperators" [value]="operator.value"
@@ -171,7 +170,7 @@
     <!-- --------------------------------------------- MEBERSHIP--------------------------- -->
 
     <div *ngIf="selectedTab === 'membership'">
-        <div class="row" >
+        <div class="row">
             <div class="col-12 d-flex flex-column flex-xl-row">
                 <div class="col-12 col-xl-6 mb-4 mx-3">
                     <div>

@@ -159,6 +159,13 @@ export class PackageEditComponent implements OnInit {
     );
 
   }
+
+
+  preventnegativeInput(event: KeyboardEvent): void {
+    if (event.key === '-' || event.key === 'e') {
+      event.preventDefault();
+    }
+  }
   onNoClick(): void {
     this.dialogRef.close();
   }

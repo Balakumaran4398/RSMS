@@ -22,10 +22,22 @@
                                             </option>
                                         </select> -->
 
-                                        <input type="text" placeholder="Search an CAS" formControlName="castype"
+                                        <!-- <input type="text" placeholder="Search an CAS" formControlName="castype"
                                             [value]="casname" (input)="onSearchChange($event)" [matAutocomplete]="auto"
-                                            class="example-input">
+                                            class="example-input"> -->
 
+                                            <div class="input-container">
+                                                <input
+                                                  type="text"
+                                                  placeholder="Search a CAS"
+                                                  formControlName="castype"
+                                                  [value]="casname"
+                                                  (input)="onSearchChange($event)"
+                                                  [matAutocomplete]="auto"
+                                                  class="example-input"
+                                                />
+                                                <i class="bx bx-chevron-down icon-right"></i>
+                                              </div>
                                         <mat-autocomplete #auto="matAutocomplete">
                                             <mat-option *ngFor="let casItem of filteredcas()" [value]="casItem.name"
                                                 (click)="onSelectionFingerPrint(casItem)">

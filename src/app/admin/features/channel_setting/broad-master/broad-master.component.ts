@@ -71,24 +71,46 @@ export class BroadMasterComponent implements OnInit {
       headerName: "S.No", lockPosition: true, valueGetter: 'node.rowIndex+1', headerCheckboxSelection: true, flex: 1,
       checkboxSelection: true,
     },
+    // {
+    //   headerName: 'BroadCaster Name',
+    //   field: 'broadcastername',
+    //   flex: 1,
+    //   cellStyle: { textAlign: 'left' },
+    //   editable: true,
+    //   cellEditor: 'agTextCellEditor',
+    //   tooltipValueGetter: () => 'Double click to change broadcaster name',
+    //   onCellValueChanged: (event: any) => {
+    //     console.log('Cell value changed:', event.data.name);
+    //     this.updateDeviceModelname(event.data.broadcastername, event.data.isactive, event.data.id);
+    //   },
+    //   onCellMouseOver: (event: any) => {
+    //     console.log('calling');
+
+    //     event.eGridCell.style.cursor = 'pointer'; 
+    //   }
+
+    // },
     {
       headerName: 'BroadCaster Name',
       field: 'broadcastername',
       flex: 1,
-      cellStyle: { textAlign: 'left' },
+      cellStyle: { textAlign: 'left', cursor: 'pointer' }, 
       editable: true,
       cellEditor: 'agTextCellEditor',
-      tooltipValueGetter: () => 'Double click to change broadcaster name',
+      tooltipValueGetter: (params: any) => {
+        return `Edit The Broadcaster: ${params.value || ''}`; 
+      },
       onCellValueChanged: (event: any) => {
         console.log('Cell value changed:', event.data.name);
         this.updateDeviceModelname(event.data.broadcastername, event.data.isactive, event.data.id);
       },
-      onCellMouseOver: (event: any) => {
-        console.log('calling');
-
-        event.eGridCell.style.cursor = 'pointer'; 
+      cellRenderer: (params: any) => {
+        const toggleSwitch = document.createElement('div');
+        toggleSwitch.textContent = params.value; 
+        toggleSwitch.style.cursor = 'pointer'; 
+        toggleSwitch.title = `Edit The Broadcaster: ${params.value || ''}`; 
+        return toggleSwitch;
       }
-
     },
     {
       headerName: "Status",
@@ -125,14 +147,11 @@ export class BroadMasterComponent implements OnInit {
         toggleSwitch.appendChild(toggleCircle);
 
         toggleSwitch.addEventListener('click', () => {
-          // Toggle the isActive value
           isActive = !isActive;
           console.log(isActive);
 
-          // Change the background color of the toggle switch
           toggleSwitch.style.backgroundColor = isActive ? '#93b6eb' : 'rgb(115 115 115)';
 
-          // Move the toggle circle
           toggleCircle.style.left = isActive ? 'calc(100% - 22px)' : '3px';
 
           console.log(params.data.id);
@@ -142,7 +161,6 @@ export class BroadMasterComponent implements OnInit {
             this.Deactive(params.data.id);
           }
 
-          // Call the API here when toggled
         });
 
 

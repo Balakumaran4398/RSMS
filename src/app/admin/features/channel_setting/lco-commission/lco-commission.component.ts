@@ -183,18 +183,22 @@ export class LcoCommissionComponent {
         },
         { headerName: "PRODUCT NAME", field: 'productname', width: 250, cellStyle: { textAlign: 'left' }, },
         { headerName: "PRODUCT ID", field: 'productid', width: 150 },
-        { headerName: "PRODUCT TYPE", field: 'producttype', width: 200 },
+        { headerName: "PRODUCT TYPE", field: 'producttype', width: 150 },
         {
-          headerName: "CUSTOMER AMOUNT", field: 'customeramount', width: 200, cellRenderer: (params: any) => `<span style="color: #035203;
+          headerName: "CUSTOMER AMOUNT", field: 'customeramount', width: 180, cellRenderer: (params: any) => `<span style="color: #035203;
           font-weight: bold;;">₹</span> ${params.value}`
         },
         {
-          headerName: "SUB MSO AMOUNT", field: 'msoamount', width: 200, cellRenderer: (params: any) => `<span style="color: #035203;
+          headerName: "MSO AMOUNT", field: 'msoamount', width: 180, cellRenderer: (params: any) => `<span style="color: #035203;
           font-weight: bold;;">₹</span> ${params.value}`
         },
-        { headerName: "COMMISSION", field: 'commissionvalue', width: 220 },
         {
-          headerName: "EDIT", field: '', width: 150,
+          headerName: "SUB MSO AMOUNT", field: 'msoamount', width: 180, cellRenderer: (params: any) => `<span style="color: #035203;
+          font-weight: bold;;">₹</span> ${params.value}`
+        },
+        { headerName: "COMMISSION", field: 'commissionvalue', width: 170 },
+        {
+          headerName: "EDIT", field: '', width: 100,
           cellRenderer: (params: any) => {
             const editButton = document.createElement('button');
             editButton.innerHTML = '<i class="fas fa-pen-square" style="font-size:30px"></i>';
@@ -255,10 +259,10 @@ export class LcoCommissionComponent {
         { headerName: "PRODUCT NAME", field: 'productname', width: 250, cellStyle: { textAlign: 'left' }, },
         { headerName: "PRODUCT ID", field: 'productid', width: 150 },
         { headerName: "PRODUCT TYPE", field: 'productTypeDisplay', width: 150 },
-        {
-          headerName: "PRODUCT RATE", field: 'rate', width: 150, cellRenderer: (params: any) => `<span style="color: #035203;
-          font-weight: bold;;">₹</span> ${params.value}`
-        },
+        // {
+        //   headerName: "PRODUCT RATE", field: 'rate', width: 150, cellRenderer: (params: any) => `<span style="color: #035203;
+        //   font-weight: bold;;">₹</span> ${params.value}`
+        // },
         {
           headerName: "EDIT", field: '', width: 100,
           cellRenderer: (params: any) => {
@@ -281,16 +285,15 @@ export class LcoCommissionComponent {
           }
         },
         {
-          headerName: "CUSTOMER AMOUNT", field: 'customeramount', width: 200,
+          headerName: "CUSTOMER AMOUNT", field: 'customeramount', width: 180,
           cellRenderer: (params: any) => `<span style="color: #035203;
           font-weight: bold;;">₹</span> ${params.value}`
         },
         {
-          headerName: "MSO AMOUNT", field: 'msoamount', width: 180,
-          cellRenderer: (params: any) => `<span style="color: #035203;
-    font-weight: bold;;">₹</span> ${params.value}`
+          headerName: "MSO AMOUNT", field: 'msoamount', width: 150,
+          cellRenderer: (params: any) => `<span style="color: #035203;font-weight: bold;;">₹</span> ${params.value}`
         },
-        { headerName: "COMMISSION", field: 'commissionvalue', width: 180 },
+        { headerName: "COMMISSION", field: 'commissionvalue', width: 160 },
         {
           headerName: "	IS PERCENTAGE", field: 'ispercentage', width: 150,
           cellRenderer: (params: any) => {

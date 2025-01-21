@@ -68,17 +68,33 @@ export class ChannelTypeComponent {
       flex: 1, cellStyle: { textAlign: 'left' },
       editable: true,
       cellEditor: 'agTextCellEditor',
-      onCellValueChanged: (event) => {
+      // onCellValueChanged: (event) => {
+      //   this.updateDeviceModelname(event.data.name, event.data.isactive, event.data.id);
+      // },
+      // tooltipValueGetter: (params) => {
+      //   return `Channel: ${params.value}`; // Customize tooltip text
+      // },
+      // cellRenderer: (params: any) => {
+      //   const editButton = document.createElement('button');
+      //   editButton.title = 'Edit the Channel';
+      //   return params.value;
+      // },
+
+
+      tooltipValueGetter: (params: any) => {
+        return `Edit The Channel: ${params.value || ''}`; 
+      },
+      onCellValueChanged: (event: any) => {
+        console.log('Cell value changed:', event.data.name);
         this.updateDeviceModelname(event.data.name, event.data.isactive, event.data.id);
       },
-      tooltipValueGetter: (params) => {
-        return `Channel: ${params.value}`; // Customize tooltip text
-      },
       cellRenderer: (params: any) => {
-        const editButton = document.createElement('button');
-        editButton.title = 'Edit the Channel';
-        return params.value;
-      },
+        const toggleSwitch = document.createElement('div');
+        toggleSwitch.textContent = params.value; 
+        toggleSwitch.style.cursor = 'pointer'; 
+        toggleSwitch.title = `Edit The Channel: ${params.value || ''}`; 
+        return toggleSwitch;
+      }
     },
 
     {
