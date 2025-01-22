@@ -13,10 +13,17 @@
                 <div class="user_details">
                     <div class="input_box">
                         <label>LCO Name</label>
-                        <input type="text" matInput [matAutocomplete]="auto" formControlName="operatorid"
+                        <!-- <input type="text" matInput [matAutocomplete]="auto" formControlName="operatorid"
                             (input)="filterOperators($event)" placeholder="Select Operator"
-                            [matAutocompleteDisabled]="false" [value]="selectedOperator?.name">
+                            [matAutocompleteDisabled]="false" [value]="selectedOperator?.name"> -->
 
+
+                            <div class="input-container">
+                                <input type="text" matInput [matAutocomplete]="auto" formControlName="operatorid"
+                                (input)="filterOperators($event)" placeholder="Select Operator"
+                                [matAutocompleteDisabled]="false" [value]="selectedOperator?.name">
+                                <i class="bx bx-chevron-down icon-right"></i>
+                              </div>
                         <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayOperator">
                             <mat-option *ngFor="let operator of filteredOperators" [value]="operator.name"
                                 (click)="onoperatorchange(operator)">
@@ -31,10 +38,15 @@
                     </div>
                     <div class="input_box">
                         <label>Area Name</label>
-                        <input type="text" matInput [matAutocomplete]="autoArea" formControlName="areaid"
+                        <!-- <input type="text" matInput [matAutocomplete]="autoArea" formControlName="areaid"
                             (input)="filterAreas($event)" placeholder="Select Area" [matAutocompleteDisabled]="false"
-                            [value]="selectedArea?.name">
-
+                            [value]="selectedArea?.name"> -->
+                            <div class="input-container">
+                                <input type="text" matInput [matAutocomplete]="autoArea" formControlName="areaid"
+                                (input)="filterAreas($event)" placeholder="Select Area" [matAutocompleteDisabled]="false"
+                                [value]="selectedArea?.name">
+                                <i class="bx bx-chevron-down icon-right"></i>
+                              </div>
                         <mat-autocomplete #autoArea="matAutocomplete" [displayWith]="displayArea">
                             <mat-option *ngFor="let area of filteredAreas" [value]="area.name"
                                 (click)="onAreaStatusChange(area)">
@@ -48,9 +60,17 @@
                     </div>
                     <div class="input_box">
                         <label>Street Name</label>
-                        <input type="text" placeholder="Select Street" formControlName="streetid" [(ngModel)]="streetid"
+                        <!-- <input type="text" placeholder="Select Street" formControlName="streetid" [(ngModel)]="streetid"
                             [matAutocomplete]="autoStreet" class="example-input" [value]="selectedStreet?.name"
-                            (input)="filterStreet($event)">
+                            (input)="filterStreet($event)"> -->
+
+                            
+                            <div class="input-container">
+                                <input type="text" placeholder="Select Street" formControlName="streetid" [(ngModel)]="streetid"
+                                [matAutocomplete]="autoStreet" class="example-input" [value]="selectedStreet?.name"
+                                (input)="filterStreet($event)">
+                                <i class="bx bx-chevron-down icon-right"></i>
+                              </div>
                         <mat-autocomplete #autoStreet="matAutocomplete" [displayWith]="displayStreet">
                             <mat-option *ngFor="let key of filteredStreet" [value]="key.value"
                                 (click)="onStreetStatusChange(key)">

@@ -18,18 +18,12 @@
                                             <!-- <input type="text" placeholder="Search an CAS" formControlName="castype"
                                                 [(ngModel)]="casname" (input)="onSearchChange($event)"
                                                 [matAutocomplete]="auto" class="example-input"> -->
-                                                <div class="input-container">
-                                                    <input
-                                                      type="text"
-                                                      placeholder="Search a CAS"
-                                                      formControlName="castype"
-                                                      [value]="casname"
-                                                      (input)="onSearchChange($event)"
-                                                      [matAutocomplete]="auto"
-                                                      class="example-input"
-                                                    />
-                                                    <i class="bx bx-chevron-down icon-right"></i>
-                                                  </div>
+                                            <div class="input-container">
+                                                <input type="text" placeholder="Search a CAS" formControlName="castype"
+                                                    [value]="casname" (input)="onSearchChange($event)"
+                                                    [matAutocomplete]="auto" class="example-input" />
+                                                <i class="bx bx-chevron-down icon-right"></i>
+                                            </div>
 
                                             <mat-autocomplete #auto="matAutocomplete">
                                                 <mat-option *ngFor="let casItem of filteredcas()" [value]="casItem.name"
@@ -64,13 +58,27 @@
                                             <label for="">Intend ID</label>
                                         </div>
                                         <div class="col-12 col-md-8" *ngIf="isSmartcardEnabled">
-                                            <input placeholder="Enter Smartcard" type="text" formControlName="intendid"
+                                            <!-- <input placeholder="Enter Smartcard" type="text" formControlName="intendid"
                                                 [(ngModel)]="intendid_1" (keypress)="onKeydown($event)"
                                                 [maxlength]="castype_1 != 6 ? 20 : 14" (input)="validateExactLength()">
                                             <div *ngIf="isInvalidLength">
                                                 <small class="text-danger">
                                                     Please enter exactly {{ castype_1 != 6 ? 20 : 14 }} digits.
                                                 </small>
+                                            </div> -->
+
+                                            <input placeholder="Enter the smartcard..." class="input_sb" id="searchitem"
+                                                #searchitem style="font-size: 14px;"
+                                                (input)="validateExactLength()"
+                                                formControlName="intendid" (keyup)="onSmartcardlist( searchitem?.value)"
+                                                [(ngModel)]="intendid_1">
+                                            <div style="width: 60%; max-height: 150px;overflow: scroll;;"
+                                                class="dropdown-menu input"
+                                                [ngClass]="(subscriberList.length != 0 && searchitem?.value?.length != 0 && showDropdown) ? 'show' : 'hide'"
+                                                aria-labelledby="dropdownMenuButton">
+                                                <a (click)="goToSubscriberDashboard(lcomember)"
+                                                    *ngFor="let lcomember of subscriberList" class="dropdown-item"> {{
+                                                    lcomember.value }}</a>
                                             </div>
                                             <div *ngIf="form.get('intendid')?.invalid && form.get('indendid')?.touched">
                                                 <small class="text-danger">Indend Id is required.</small>

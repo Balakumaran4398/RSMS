@@ -360,7 +360,8 @@ export class MessageComponent {
   columnDefs: ColDef[] = [
     { headerName: "S.No", lockPosition: true, valueGetter: 'node.rowIndex+1', cellClass: 'locked-col', width: 80, suppressNavigable: true, sortable: false, filter: false },
     { headerName: "INTEND ID", field: 'intendid' },
-    { headerName: "FORCE TYPE", field: 'forcedis' ,
+    {
+      headerName: "FORCE TYPE", field: 'forcedis',
       cellRenderer: (params: { value: any; }) => {
         if (params.value === 'Force') {
           return `<span style="color: green; ">${params.value}</span>`;
@@ -619,5 +620,57 @@ export class MessageComponent {
     dialogRef.afterClosed().subscribe(result => {
       console.log('The dialog was closed');
     });
+  }
+
+
+  showDropdown: boolean = true;
+  subscriberList: any[] = [];
+  subscriber: any;
+  onSmartcardlist(value: any) {
+    this.showDropdown = true;
+    this.userservice.getSearchSmartcardData(this.role, this.username, value).subscribe(
+      (data: any) => {
+        if (!data || Object.keys(data).length === 0) {
+          this.subscriberList = [];
+          return;
+        }
+        this.subscriber = data;
+        this.subscriberList = Object.keys(data).map(key => {
+          const value = data[key];
+          const name = key;
+          return { name: name, value: value };
+        });
+        this.subscriberList.sort((a: any, b: any) => {
+          if (a.value > b.value) return 1;
+          if (a.value < b.value) return -1;
+          return 0;
+        });
+        if (this.subscriberList.length === 0) {
+          console.log('No matching data after sorting');
+          Swal.fire({
+            title: 'No Matching Results',
+            text: 'No subscribers match your search criteria.',
+            icon: 'info',
+            confirmButtonText: 'OK'
+          });
+        }
+
+        console.log(this.subscriberList);
+      },
+      (error) => {
+        Swal.fire({
+          title: 'Error!',
+          text: error?.error?.getsmartcardlistbysubid.searchname
+            || 'An error occurred while fetching subscriber details.',
+          icon: 'error',
+          confirmButtonText: 'OK'
+        });
+      }
+    );
+  }
+
+  goToSubscriberDashboard(lcomember: any) {
+    this.intendid_1 = lcomember.value;
+    this.showDropdown = false;
   }
 }

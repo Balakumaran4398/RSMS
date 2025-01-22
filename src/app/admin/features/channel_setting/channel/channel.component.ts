@@ -11,6 +11,7 @@ import { MatSelectChange } from '@angular/material/select';
 import { SwalService } from 'src/app/_core/service/swal.service';
 import { HttpResponse } from '@angular/common/http';
 import { ExcelService } from 'src/app/_core/service/excel.service';
+import { LcologinpageComponent } from '../../subscriber/lcologinpage/lcologinpage.component';
 
 @Component({
   selector: 'app-channel',
@@ -370,6 +371,12 @@ export class ChannelComponent {
         });
   }
   generateExcel() {
+
+    const dialogRef = this.dialog.open(LcologinpageComponent, {
+    });
+    dialogRef.afterClosed().subscribe(result => {
+      console.log('The dialog was closed', result);
+    });
     this.excelService.generateChannelDetailsExcel();
   }
   // ---------------------------------------------------------------------------------------------------------------------------------------

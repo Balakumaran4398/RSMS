@@ -15,7 +15,7 @@
                                             <label for="">Intend To</label>
                                         </div>
                                         <div class="col-12 col-sm-6">
-                                            <select formControlName="intendto"  (change)="onChangeIntendTo1($event)">
+                                            <select formControlName="intendto" (change)="onChangeIntendTo1($event)">
                                                 <option value="" disabled> Select Intend</option>
                                                 <option value="" *ngFor="let in of intend" [value]="in.value">
                                                     {{in.lable}}
@@ -28,12 +28,25 @@
                                             <label for="">Intend ID</label>
                                         </div>
                                         <div class="col-12 col-sm-6" *ngIf="isMsoEnabled">
-                                            <input  formControlName="intendid" type="text" 
-                                                (keypress)="onKeydown($event)" [ngModel]="intendid" readonly>
+                                            <input formControlName="intendid" type="text" (keypress)="onKeydown($event)"
+                                                [ngModel]="intendid" readonly>
                                         </div>
                                         <div class="col-12 col-sm-6 " *ngIf="isSmartcardEnabled">
-                                            <input placeholder="Enter Smartcard" formControlName="intendid" type="text"
-                                                (keypress)="onKeydown($event)" [ngModel]="intendid_1" maxlength="20">
+                                            <!-- <input placeholder="Enter Smartcard" formControlName="intendid" type="text"
+                                                (keypress)="onKeydown($event)" [ngModel]="intendid_1" maxlength="20"> -->
+
+                                            <input placeholder="Enter the smartcard..." class="input_sb" id="searchitem"
+                                                #searchitem style="font-size: 14px;"
+                                                formControlName="intendid" (keyup)="onSmartcardlist( searchitem?.value)"
+                                                [(ngModel)]="intendid_1">
+                                            <div style="width: 60%; max-height: 150px;overflow: scroll;;"
+                                                class="dropdown-menu input"
+                                                [ngClass]="(subscriberList.length != 0 && searchitem?.value?.length != 0 && showDropdown) ? 'show' : 'hide'"
+                                                aria-labelledby="dropdownMenuButton">
+                                                <a (click)="goToSubscriberDashboard(lcomember)"
+                                                    *ngFor="let lcomember of subscriberList" class="dropdown-item"> {{
+                                                    lcomember.value }}</a>
+                                            </div>
                                         </div>
                                         <div class="col-12 col-sm-6" *ngIf="isLCOEnabled">
                                             <input type="text" placeholder="Search an LCO" [value]="LCO_name"
@@ -47,7 +60,7 @@
                                                     {{ area.name }}
                                                 </mat-option>
                                             </mat-autocomplete>
-                                   
+
                                         </div>
                                     </div>
                                 </div>
@@ -74,8 +87,8 @@
             <div class="row d-flex align-items-center justify-content-center" style="padding: 0.5rem;">
                 <div class="col-12 col-sm-12 col-md-12 mb-3">
                     <ag-grid-angular #agGrid id="myGrid" domLayout='autoHeight' class="ag-theme-alpine table-class"
-                        rowAnimation  [gridOptions]="gridOptions" [columnDefs]="columnDefs"
-                        [rowData]="rowData" [enableCellTextSelection]="true">
+                        rowAnimation [gridOptions]="gridOptions" [columnDefs]="columnDefs" [rowData]="rowData"
+                        [enableCellTextSelection]="true">
                     </ag-grid-angular>
                 </div>
             </div>

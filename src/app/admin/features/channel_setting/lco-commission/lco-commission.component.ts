@@ -44,6 +44,24 @@ export class LcoCommissionComponent {
   selectedOperator: any;
   selectedLcoName: any;
 
+
+  gridOptions = {
+    defaultColDef: {
+      sortable: true,
+      resizable: true,
+      filter: true,
+      floatingFilter: true,
+      comparator: (valueA: any, valueB: any) => {
+        const normalizedA = valueA ? valueA.toString().trim().toLowerCase() : '';
+        const normalizedB = valueB ? valueB.toString().trim().toLowerCase() : '';
+        if (normalizedA < normalizedB) return -1;
+        if (normalizedA > normalizedB) return 1;
+        return 0;
+      },
+    },
+    paginationPageSize: 10,
+    pagination: true,
+  }
   @ViewChild('agGrid') agGrid: any;
   constructor(public dialog: MatDialog, private userservice: BaseService, private storageservice: StorageService, private cdr: ChangeDetectorRef, private swal: SwalService) {
     this.role = storageservice.getUserRole();
@@ -124,17 +142,17 @@ export class LcoCommissionComponent {
 
 
   public rowSelection: any = "multiple";
-  gridOptions: any = {
-    defaultany: {
-      sortable: true,
-      resizable: true,
-      filter: true,
-      // width: 180,
-      floatingFilter: true
-    },
-    paginationPageSize: 10,
-    pagination: true,
-  }
+  // gridOptions: any = {
+  //   defaultany: {
+  //     sortable: true,
+  //     resizable: true,
+  //     filter: true,
+  //     // width: 180,
+  //     floatingFilter: true
+  //   },
+  //   paginationPageSize: 10,
+  //   pagination: true,
+  // }
   discolumnnDefs: any[] = [];
   domLayout: 'normal' | 'autoHeight' | 'print' = 'autoHeight';
 
@@ -193,7 +211,7 @@ export class LcoCommissionComponent {
           font-weight: bold;;">₹</span> ${params.value}`
         },
         {
-          headerName: "SUB MSO AMOUNT", field: 'msoamount', width: 180, cellRenderer: (params: any) => `<span style="color: #035203;
+          headerName: "SUB MSO AMOUNT", field: 'submsoamount', width: 180, cellRenderer: (params: any) => `<span style="color: #035203;
           font-weight: bold;;">₹</span> ${params.value}`
         },
         { headerName: "COMMISSION", field: 'commissionvalue', width: 170 },
@@ -449,6 +467,7 @@ export class LcoCommissionComponent {
         this.lcomembershipid = 1;
       }
       this.rowData = [];
+      // this.userservice.getDistributorMembershipDetailsByLcogroupid(this.role, this.username, this.lcomembershipid)
       this.userservice.getDistributorCommissionListByLcoGroupId(this.role, this.username, this.lcomembershipid)
         .subscribe(
           (response: HttpResponse<any[]>) => {
@@ -491,10 +510,40 @@ export class LcoCommissionComponent {
   onmembershipchange(selectedOperator: any) {
     this.selectedOperator = selectedOperator;
     this.selectedLcoName = selectedOperator.name;
+    // this.userservice.getOperatorlistByGroupId(this.role, this.username, this.lcomembershipid).subscribe(
     this.userservice.getOperatorlistByGroupId(this.role, this.username, this.lcomembershipid).subscribe(
       (response: HttpResponse<any[]>) => {
         if (response.status === 200) {
           this.rowData2 = response.body;
+          this.swal.Success_200();
+          // this.lcomembershipid='';
+        } else if (response.status === 204) {
+          this.swal.Success_204();
+          this.rowData2 = [];
+        }
+      },
+      (error) => {
+        if (error.status === 400) {
+          this.swal.Error_400();
+        } else if (error.status === 500) {
+          this.swal.Error_500();
+        } else {
+          Swal.fire('Error', 'Something went wrong. Please try again.', 'error');
+        }
+      });
+  }
+  onMembershipchange(selectedOperator: any) {
+    console.log(selectedOperator);
+    
+    this.selectedOperator = selectedOperator;
+    this.selectedLcoName = selectedOperator.name;
+    this.userservice.getDistributorMembershipDetailsByLcogroupid(this.role, this.username, selectedOperator.value).subscribe(
+    // this.userservice.getOperatorlistByGroupId(this.role, this.username, this.lcomembershipid).subscribe(
+      (response: HttpResponse<any[]>) => {
+        if (response.status === 200) {
+          this.rowData2 = response.body;
+          console.log(response);
+          
           this.swal.Success_200();
           // this.lcomembershipid='';
         } else if (response.status === 204) {

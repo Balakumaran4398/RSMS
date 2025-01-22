@@ -591,10 +591,13 @@ export class FingerPrintComponent {
   }
   onChangeForce1() {
     this.isStopButtonEnabled = this.isforce;
-    console.log(this.isStopButtonEnabled);
-    console.log(this.isforce);
-
-
+    if (this.isforce) {
+      this.isDuration = false;
+      this.isTimeSpan = false;
+    } else {
+      this.isDuration = true;
+      this.isTimeSpan = true;
+    }
   }
   @HostListener('window:resize', ['$event'])
   onResize(event: any) {
@@ -967,4 +970,55 @@ export class FingerPrintComponent {
       this.issend = false;
     }
   }
+
+  showDropdown: boolean = true;
+    subscriberList: any[] = [];
+    subscriber: any;
+    onSmartcardlist(value: any) {
+      this.showDropdown = true;
+      this.userservice.getSearchSmartcardData(this.role, this.username, value).subscribe(
+        (data: any) => {
+          if (!data || Object.keys(data).length === 0) {
+            this.subscriberList = [];
+            return;
+          }
+          this.subscriber = data;
+          this.subscriberList = Object.keys(data).map(key => {
+            const value = data[key];
+            const name = key;
+            return { name: name, value: value };
+          });
+          this.subscriberList.sort((a: any, b: any) => {
+            if (a.value > b.value) return 1;
+            if (a.value < b.value) return -1;
+            return 0;
+          });
+          if (this.subscriberList.length === 0) {
+            console.log('No matching data after sorting');
+            Swal.fire({
+              title: 'No Matching Results',
+              text: 'No subscribers match your search criteria.',
+              icon: 'info',
+              confirmButtonText: 'OK'
+            });
+          }
+  
+          console.log(this.subscriberList);
+        },
+        (error) => {
+          Swal.fire({
+            title: 'Error!',
+            text: error?.error?.getsmartcardlistbysubid.searchname
+              || 'An error occurred while fetching subscriber details.',
+            icon: 'error',
+            confirmButtonText: 'OK'
+          });
+        }
+      );
+    }
+  
+    goToSubscriberDashboard(lcomember: any) {
+      this.intendid_1 = lcomember.value;
+      this.showDropdown = false;
+    }
 }

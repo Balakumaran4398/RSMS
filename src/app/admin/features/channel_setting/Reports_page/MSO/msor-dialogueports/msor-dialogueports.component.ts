@@ -78,7 +78,7 @@ export class MsorDialogueportsComponent implements OnInit {
   isOperator: boolean = false;
   isUseragent: boolean = false;
   isSubLCO: boolean = false;
-  selectedRechargeType: any = 3;
+  selectedRechargeType: any = 1;
   isDateEnabled: boolean = false;
   isMonthYearEnabled: boolean = false;
   isYearEnabled: boolean = false;
@@ -187,25 +187,12 @@ export class MsorDialogueportsComponent implements OnInit {
     this.selectedOperator1 = { name: 'All Operator', value: 0 };
     this.selectedLcoName = this.selectedOperator.name;
     this.currentMonth = new Date().toLocaleString('default', { month: 'long' });
-
-    // this.setReportTitle();
-
   }
 
   // -----------------------------------------------------------------subscriber bill varaibales-------------------------------
 
-  ELEMENT_DATA: SubscriberData[] = [
-    { smartcard: '1000500000000000464', date: '19-12-2024 10:55:36', expiryDate: '2024-12-21 23:59:59', package: 'QC PACK 11', plan: 3, amount: 29.5 },
-    { smartcard: '1000500000000000464', date: '31-12-2024 10:09:06', expiryDate: '2024-12-31 10:09:06', package: 'QC PACK 11', plan: 0, amount: 0.0 },
-    { smartcard: '1000500000000000464', date: '31-12-2024 10:09:32', expiryDate: '2025-01-29 23:59:59', package: 'added clone packag', plan: 30, amount: 59.0 },
-    { smartcard: '1000500000000000464', date: '31-12-2024 10:19:47', expiryDate: '2024-12-31 10:19:46', package: 'added clone packag', plan: 29, amount: 57.03 },
-    { smartcard: '1000500000000000464', date: '31-12-2024 10:20:05', expiryDate: '2025-02-28 23:59:59', package: 'added clone packag', plan: 60, amount: 118.0 },
-    { smartcard: '1000500000000000464', date: '31-12-2024 12:51:13', expiryDate: '2025-05-29 23:59:59', package: 'added clone packag', plan: 150, amount: 295.0 },
-  ];
-  displayedColumns: string[] = ['smartcard', 'date', 'expiryDate', 'package', 'plan', 'amount'];
-  dataSource = new MatTableDataSource<SubscriberData>(this.ELEMENT_DATA);
-  @ViewChild(MatPaginator) paginator!: MatPaginator;
-  @ViewChild(MatSort) sort!: MatSort;
+
+
 
 
   ngOnInit(): void {
@@ -217,8 +204,7 @@ export class MsorDialogueportsComponent implements OnInit {
     // this.subLcoList('')
     this.onRechargeType(this.selectedRechargeType);
     this.onDateChange();
-    this.dataSource.paginator = this.paginator;
-    this.dataSource.sort = this.sort;
+
 
     this.onModelList();
     this.getTotalOperatorReport();
@@ -529,7 +515,7 @@ export class MsorDialogueportsComponent implements OnInit {
         (response: HttpResponse<any[]>) => { // Expect HttpResponse<any[]>
           if (response.status === 200 && response.body) { // Ensure the body exists
             this.sublco_list = response.body.map((item: any) => ({
-              operatorId: item.operatorId,
+              operatorId: item.retailerId,
               retailerName: item.retailerName,
             }));
             console.log(this.sublco_list);
@@ -830,10 +816,33 @@ export class MsorDialogueportsComponent implements OnInit {
       this.columnDefs = [
         { headerName: 'SMARTCARD', field: 'referenceid', flex: 1, filter: false },
         { headerName: 'DATE', field: 'transactiondate', flex: 1, filter: false },
-        { headerName: 'EXPIRY DATE', field: 'expirydate', flex: 1, cellStyle: { textAlign: 'center',   }, filter: false },
-        { headerName: 'PACKAGE', field: 'packagename', flex: 1,filter: false },
+        { headerName: 'EXPIRY DATE', field: 'expirydate', flex: 1, cellStyle: { textAlign: 'center', }, filter: false },
+        { headerName: 'PACKAGE', field: 'packagename', flex: 1, filter: false },
         { headerName: 'PLAN', field: 'days', flex: 1, filter: false, cellStyle: { textAlign: 'center' }, },
         { headerName: 'AMOUNT', field: 'customeramount', flex: 1, cellStyle: { textAlign: 'center' }, filter: false, },
+      ]
+    } else if (this.type == 'sublco_offline') {
+      this.columnDefs = [
+        { headerName: "S.No", lockPosition: true, valueGetter: 'node.rowIndex+1', filter: false, headerCheckboxSelection: false, checkboxSelection: false, width: 90 },
+        { headerName: 'RETAILER ID', field: 'retailerid', flex: 1, cellStyle: { textAlign: 'center', }, },
+        { headerName: 'RETAILER NAME', field: 'retailername', flex: 1, },
+        { headerName: 'AMOUNT	', field: 'lcoamount', flex: 1, cellStyle: { textAlign: 'center', }, filter: false },
+        { headerName: 'OPERATOR NAME', field: 'operatorname', flex: 1, },
+        { headerName: 'LOG DATE', field: 'transactiondate', flex: 1, filter: false, cellStyle: { textAlign: 'center' }, },
+        { headerName: 'MOBILE', field: 'contact', flex: 1, cellStyle: { textAlign: 'center' }, },
+        { headerName: 'REMARKS', field: 'transactionremarks', flex: 1, cellStyle: { textAlign: 'center' }, },
+      ]
+    } else if (this.type == 'unpair_smartcard') {
+      this.columnDefs = [
+        { headerName: 'CUSTOMER NAME', field: 'referenceid', flex: 1, },
+        { headerName: 'AREA ID', field: 'transactiondate', flex: 1, },
+        { headerName: 'CUSTOMER NO', field: 'expirydate', flex: 1, cellStyle: { textAlign: 'center', }, },
+        { headerName: 'OPERATOR NAME', field: 'packagename', flex: 1, },
+        { headerName: 'SMARTCARD', field: 'days', flex: 1, cellStyle: { textAlign: 'center' }, },
+        { headerName: 'PACKAGE NAME', field: 'customeramount', flex: 1, cellStyle: { textAlign: 'center' }, },
+        { headerName: 'ACTION', field: 'customeramount', flex: 1, cellStyle: { textAlign: 'center' }, },
+        { headerName: 'TRANSACTION TYPE', field: 'customeramount', flex: 1, cellStyle: { textAlign: 'center' }, },
+        { headerName: 'DAYS', field: 'customeramount', flex: 1, cellStyle: { textAlign: 'center' }, filter: false, },
       ]
     }
 
@@ -1000,7 +1009,6 @@ export class MsorDialogueportsComponent implements OnInit {
     }
   }
   getRecharge() {
-
     this.smartcard = this.smartcardChange(this.smartcard);
     Swal.fire({
       title: "Processing",
@@ -1035,9 +1043,7 @@ export class MsorDialogueportsComponent implements OnInit {
   }
 
   getRechargeExcel() {
-
     this.smartcard = this.smartcardChange(this.smartcard);
-
     Swal.fire({
       title: "Processing",
       text: "Please wait while the report is being generated...",
@@ -1436,7 +1442,7 @@ export class MsorDialogueportsComponent implements OnInit {
         this.rowData = this.subscriberBill?.rechargeList;
 
 
-        console.log(this.rowData );
+        console.log(this.rowData);
         console.log(this.subscriberBill);
       }, (err) => {
         this.swal.Error(err?.error?.message);
@@ -1811,6 +1817,42 @@ export class MsorDialogueportsComponent implements OnInit {
           this.reportMaking(x, "Lco Transfer Details report.pdf", 'application/pdf');
         } else if (type == 2) {
           this.reportMaking(x, "Lco Transfer Details report .xlsx", 'application/xlsx');
+        }
+      },
+        (error: any) => {
+          this.pdfswalError(error?.error.message);
+        });
+  }
+  // ================================================ SUB LCO OFFLINE DETAILS REPORT===============================
+
+  getSubLcoOfflineDetailsReport() {
+    this.userService.getsubLcoOfflineReport(this.role, this.username, this.fromdate, this.todate, this.selectedOperator.value, this.selectedSubLcoName, 3)
+      .subscribe(
+        (response: HttpResponse<any>) => {
+          if (response.status === 200) {
+            console.log(response);
+            this.rowData = response.body;
+            this.swal.Success_200();
+          } else if (response.status === 204) {
+            this.rowData = [];
+            this.swal.Success_204();
+          }
+          Swal.close();
+        },
+        (error) => {
+          this.handleApiError(error.error, error.status);
+        }
+      );
+  }
+
+  getSubLcoOfflinerDetailsDownload(type: number) {
+    this.processingSwal();
+    this.userService.getsubLcoOfflineDownload(this.role, this.username, this.fromdate, this.todate, this.selectedOperator.value, this.selectedSubLcoName, type)
+      .subscribe((x: Blob) => {
+        if (type == 1) {
+          this.reportMaking(x, "Sub LCO Offline Payment History (" + this.fromdate + "-" + this.todate + ").pdf", 'application/pdf');
+        } else if (type == 2) {
+          this.reportMaking(x, "Sub LCO Offline Payment History (" + this.fromdate + "-" + this.todate + ").xlsx", 'application/xlsx');
         }
       },
         (error: any) => {

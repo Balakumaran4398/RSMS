@@ -112,6 +112,46 @@ export class ChangeMembershipComponent {
       }
     });
   }
+  changeMembership() {
+    let requestBody = {
+      role: this.role,
+      username: this.username,
+      lcogroupid: this.lcomembershipid,
+      lcomembershiplist: []
+    } as any;
+    requestBody.lcomembershiplist = this.rowData.map(item => ({
+      operatorname: item.operatorname,
+      operatorid: item.operatorid,
+      lcogroupupdateddate: item.lcogroupupdateddate,
+      lcogroupid: item.lcogroupid,
+    }));
+    console.log(requestBody);
+    Swal.fire({
+      title: 'Are you sure?',
+      text: 'Do you want to apply these changes?',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonText: 'Yes, apply changes!',
+      cancelButtonText: 'No, cancel'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        Swal.fire({
+          title: 'Processing...',
+          text: 'Please wait while we Change the LCO Membership.',
+          allowOutsideClick: false,
+          didOpen: () => {
+            Swal.showLoading(null);
+          }
+        });
+        this.userservice.updateDistributorMembership(requestBody)
+          .subscribe((res: any) => {
+            this.swal.success(res?.message);
+          }, (err) => {
+            this.swal.Error(err?.error?.message);
+          });
+      }
+    });
+  }
 
 
 }

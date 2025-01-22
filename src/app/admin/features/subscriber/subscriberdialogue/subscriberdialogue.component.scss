@@ -6,7 +6,8 @@
   font-weight: bold;
 }
 
-#smartcard,#package {
+#smartcard,
+#package {
   width: auto !important;
   height: 45px;
   border: none;
@@ -30,9 +31,9 @@
 .display {
   display: flex;
 }
-.cancelcard{
-  
-}
+
+.cancelcard {}
+
 .close-icon {
   font-size: 19px;
   cursor: pointer;
@@ -205,15 +206,17 @@ body {
   font-size: 20px;
   color: #243359;
 }
+
 // ::ng-deep {
-  .select2-container .select2-selection--single {
-    box-sizing: border-box;
-    cursor: pointer;
-    display: block;
-    height: 33px !important;
-    user-select: none;
-    -webkit-user-select: none;
+.select2-container .select2-selection--single {
+  box-sizing: border-box;
+  cursor: pointer;
+  display: block;
+  height: 33px !important;
+  user-select: none;
+  -webkit-user-select: none;
 }
+
 // }
 @media screen and (max-width:560px) {
   .display {
@@ -245,6 +248,10 @@ body {
 
   background-color: #09a223;
   border-color: #09a223;
+}
+
+.select2-container {
+  width: 270px !important;
 }
 
 // ::ng-deep .ag-header-viewport {
@@ -710,12 +717,11 @@ body {
 
   &.can-toggle--size-small {
     @include can-toggle-appearance (90px,
-      28px, 
-      2px, 
+      28px,
+      2px,
       1px,
-      13px, 
+      13px,
       10px,
-      0 2px 2px rgba(black, 0.4) 
-    );
+      0 2px 2px rgba(black, 0.4));
   }
 }

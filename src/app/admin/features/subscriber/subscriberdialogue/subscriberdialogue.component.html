@@ -131,8 +131,8 @@
                         <div class="mb-3">
                             <label class="form-label">Address Proof ID
                             </label>
-                            <select class="form-select" [(ngModel)]="addressprooftypeid" (change)="resetData('addressproof')"
-                                formControlName="addressprooftypeid">
+                            <select class="form-select" [(ngModel)]="addressprooftypeid"
+                                (change)="resetData('addressproof')" formControlName="addressprooftypeid">
                                 <option *ngFor="let key of add_proof_list | keyvalue" [value]="key.value">
                                     {{ key.key }}
                                 </option>
@@ -280,7 +280,8 @@
                         <div class="mb-3">
                             <label class="form-label">Identity Proof ID
                             </label>
-                            <select class="form-select" [(ngModel)]="idprooftypeid" formControlName="idprooftypeid" (change)="resetData('idproof')">
+                            <select class="form-select" [(ngModel)]="idprooftypeid" formControlName="idprooftypeid"
+                                (change)="resetData('idproof')">
                                 <option *ngFor="let key of id_proof_list | keyvalue" [value]="key.value">
                                     {{ key.key }}
                                 </option>
@@ -426,6 +427,14 @@
                                     <div *ngIf="submitted && !smartcard" class="text-danger" style="font-size: small;">
                                         Smartcard is required
                                     </div>
+
+                                    <!-- <select id="smartcard" [(ngModel)]="smartcard" class="js-states"
+                                        (ngModelChange)="onSmartcardList($event)">
+                                        <option value="0" selected>Select smartcard</option>
+                                        <option *ngFor="let smartcard of filteredSmartcard" [value]="smartcard.name">
+                                            {{ smartcard.name}}
+                                        </option>
+                                    </select> -->
                                 </div>
                             </div>
                             <div class="input_box display mb-3">
@@ -2345,7 +2354,7 @@
         <span class="span">ADDON ADD</span>
         <i class="fa fa-close close-icon" (click)="onNoClick()"></i>
     </div>
-    <div class="mobile" >
+    <div class="mobile">
         <div style="padding: 1rem;">
             <div class="cancel_sub mb-2 display_mobile align-items-center justify-content-center">
                 <div class="col-12 col-md-6 display_moile justify-content-start lign-items-center">
@@ -2395,10 +2404,9 @@
             </div>
         </div>
         <div class="col-12 col-md-12  mb-3" style="padding: 1rem;">
-            <ag-grid-angular #agGrid id="myGrid" domLayout='autoHeight' class="ag-theme-alpine table-class" 
-            rowAnimation style="max-height: 775px;overflow: scroll;"
-                [gridOptions]="gridOptions1" [columnDefs]="columnDefs" [rowData]="rowData"
-                (gridReady)="onGridReady($event)" [enableCellTextSelection]="true"
+            <ag-grid-angular #agGrid id="myGrid" domLayout='autoHeight' class="ag-theme-alpine table-class" rowAnimation
+                style="max-height: 775px;overflow: scroll;" [gridOptions]="gridOptions1" [columnDefs]="columnDefs"
+                [rowData]="rowData" (gridReady)="onGridReady($event)" [enableCellTextSelection]="true"
                 (selectionChanged)="onSelectionChanged()" [rowSelection]="rowSelection">
             </ag-grid-angular>
         </div>

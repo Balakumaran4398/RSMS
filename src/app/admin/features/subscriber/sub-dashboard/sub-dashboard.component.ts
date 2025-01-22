@@ -1547,23 +1547,23 @@ export class SubDashboardComponent implements OnInit, AfterViewInit {
       checkboxSelection: true, isSelected: true
     },
     {
-      headerName: 'PACKAGE NAME	',
+      headerName: 'PACKAGE NAME	',width: 300,
       field: 'productname', flex: 1,
     },
     {
-      headerName: 'PRODUCT TYPE	 ', flex: 1, cellStyle: { textAlign: 'center' },
+      headerName: 'PRODUCT TYPE	 ', flex: 1,width: 270, cellStyle: { textAlign: 'center' },
       field: 'ptype',
     },
     {
-      headerName: 'PRODUCT ID	', flex: 1,
+      headerName: 'PRODUCT ID	', flex: 1,width: 270,
       field: 'casproductid',
     },
     {
-      headerName: 'DAYS REMAINING	', flex: 1, cellStyle: { textAlign: 'center' },
+      headerName: 'DAYS REMAINING	', flex: 1,width: 270, cellStyle: { textAlign: 'center' },
       field: 'noofdays',
     },
     {
-      headerName: 'PROGRAMS', flex:1,
+      headerName: 'PROGRAMS', flex:1, width: 300,
       cellRenderer: (params: any) => {
         // Check if the producttype is "BASE" or "ADDON"
         if (params.data.ptype === 'BASE' || params.data.ptype === 'ADDON') {

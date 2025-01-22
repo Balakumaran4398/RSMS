@@ -99,10 +99,11 @@
                             style="color: rgb(11, 67, 170);font-size: 20px;font-weight: 600;">-
                             {{rowData?.length}}</span></h5>
                 </div>
-                <ag-grid-angular #agGrid id="myGrid" domLayout='autoHeight' class="ag-theme-alpine table-class" style="max-height: 775px;overflow: scroll;"
-                    rowAnimation [rowSelection]="rowSelection" [gridOptions]="gridOptions" [columnDefs]="columnDefs"
-                    [rowData]="rowData" (gridReady)="onGridReady($event)" [enableCellTextSelection]="true"
-                    [rowSelection]="'multiple'" (selectionChanged)="onSelectionChanged()">
+                <ag-grid-angular #agGrid id="myGrid" domLayout='autoHeight' class="ag-theme-alpine table-class"
+                    style="max-height: 775px;overflow: scroll;" rowAnimation [rowSelection]="rowSelection"
+                    [gridOptions]="gridOptions" [columnDefs]="columnDefs" [rowData]="rowData"
+                    (gridReady)="onGridReady($event)" [enableCellTextSelection]="true" [rowSelection]="'multiple'"
+                    (selectionChanged)="onSelectionChanged()">
                 </ag-grid-angular>
             </div>
         </div>
@@ -186,9 +187,10 @@
                             style="color: rgb(11, 67, 170);font-size: 20px;font-weight: 600;">-
                             {{rowData?.length}}</span></h5>
                 </div>
-                <ag-grid-angular #agGrid id="myGrid" domLayout='autoHeight' class="ag-theme-alpine table-class" style="max-height: 775px;overflow: scroll;"
-                    rowAnimation [rowSelection]="rowSelection" [gridOptions]="gridOptions" [columnDefs]="columnDefs"
-                    [rowData]="rowData" [enableCellTextSelection]="true" (selectionChanged)="onSelectionChanged()">
+                <ag-grid-angular #agGrid id="myGrid" domLayout='autoHeight' class="ag-theme-alpine table-class"
+                    style="max-height: 775px;overflow: scroll;" rowAnimation [rowSelection]="rowSelection"
+                    [gridOptions]="gridOptions" [columnDefs]="columnDefs" [rowData]="rowData"
+                    [enableCellTextSelection]="true" (selectionChanged)="onSelectionChanged()">
                 </ag-grid-angular>
             </div>
         </div>
@@ -247,17 +249,6 @@
             </div>
 
             <div *ngIf="typelist === 3">
-                <!-- <mat-form-field appearance="outline" class="mx-2">
-                    <mat-label>Enter a date range</mat-label>
-                    <mat-date-range-input [rangePicker]="picker" [max]="maxDate">
-                        <input matStartDate matInput placeholder="Start date" [(ngModel)]="fromdate"
-                            (dateChange)="getFromDate($event)">
-                        <input matEndDate matInput placeholder="End date" [(ngModel)]="todate"
-                            (dateChange)="getToDate($event)">
-                    </mat-date-range-input>
-                    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-                    <mat-date-range-picker #picker></mat-date-range-picker>
-                </mat-form-field> -->
                 <mat-form-field appearance="outline" class="mx-2 mobileview">
                     <mat-label>Enter a date range</mat-label>
                     <mat-date-range-input [rangePicker]="picker">
@@ -282,9 +273,10 @@
                     <h5>ARCHIVED LIST STATUS <span style="color: rgb(11, 67, 170);font-size: 20px;font-weight: 600;">-
                             {{rowData?.length}}</span> </h5>
                 </div>
-                <ag-grid-angular #agGrid id="myGrid" domLayout='autoHeight' class="ag-theme-alpine table-class" style="max-height: 775px;overflow: scroll;"
-                    rowAnimation [rowSelection]="rowSelection" [gridOptions]="gridOptions" [columnDefs]="columnDefs"
-                    [rowData]="rowData" [enableCellTextSelection]="true">
+                <ag-grid-angular #agGrid id="myGrid" domLayout='autoHeight' class="ag-theme-alpine table-class"
+                    style="max-height: 775px;overflow: scroll;" rowAnimation [rowSelection]="rowSelection"
+                    [gridOptions]="gridOptions" [columnDefs]="columnDefs" [rowData]="rowData"
+                    [enableCellTextSelection]="true">
                 </ag-grid-angular>
             </div>
         </div>

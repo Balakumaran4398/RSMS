@@ -11,7 +11,7 @@ import { MatDialog } from '@angular/material/dialog';
 // import { FALSE } from 'node_modules1/sass/types';
 // import { log } from 'console';
 
-@Component({ 
+@Component({
   selector: 'app-scrolling',
   templateUrl: './scrolling.component.html',
   styleUrls: ['./scrolling.component.scss']
@@ -77,6 +77,7 @@ export class ScrollingComponent {
   message_1: any;
   isStopButtonEnabled = false;
   scrollfontsize: any = '';
+
 
 
   cas: any[] = [];
@@ -283,31 +284,7 @@ export class ScrollingComponent {
       });
       // this.filteredLcoList = this.area;
     })
-    // this.userservice.Finger_print_List(this.role, this.username).subscribe((data) => {
-    //   // this.area = Object.entries(data[0].arealist).map(([key, value]) => ({ name: key, id: value }));
-    //   // this.cas = Object.entries(data[0].caslist).map(([key, value]) => ({ name: key, id: value }));
-    //   this.service = Object.entries(data[0].servicelist).map(([key, value]) => ({ name: key, id: value }));
-    //   console.log(this.area);
-    //   console.log(data);
 
-    //   // this.castype_1 = data[0].fplist[0].castype;
-    //   // this.isforce = data[0].fplist[0].isforce;
-    //   // this.service_1 = data[0].fplist[0].serviceid;
-    //   // this.intend_1 = data[0].fplist[0].intendto;
-    //   // this.intendid_1 = data[0].fplist[0].intendid;
-    //   // this.BG_color_1 = data[0].fplist[0].bgcolor;
-    //   // this.Duration_1 = data[0].fplist[0].duration;
-    //   // this.Scrool_color_1 = data[0].fplist[0].fontcolor;
-    //   // this.fontsize_1 = data[0].fplist[0].fontsize;
-    //   // this.position_1 = data[0].fplist[0].positiontype;
-    //   // this.position_1 = data[0].fplist[0].position;
-    //   // this.Repeatfor_1 = data[0].fplist[0].repeatfor;
-    //   // this.Timegap_1 = data[0].fplist[0].timegap;
-    //   // this.message_1 = data[0].fplist[0].message
-    //   // this.Transparancy_1 = data[0].fplist[0].transparancy;
-    //   // this.filteredLcoList = this.area;
-    //   this.filteredServiceList = this.service;
-    // })
   }
 
   columnDefs: ColDef[] = [
@@ -330,8 +307,8 @@ export class ScrollingComponent {
     { headerName: "FONT COLOR	", field: 'fontcolordisplay' },
     { headerName: "BACKGROUND COLOR	", field: 'bgcolordisplay' },
     { headerName: "REPEAT FOR", field: 'repeatfor', cellStyle: { textAlign: 'center' }, },
-    { headerName: "TRANSPARANCY	", field: 'transparency' , cellStyle: { textAlign: 'center' },},
-    { headerName: "DURATION", field: 'duration' , cellStyle: { textAlign: 'center' },},
+    { headerName: "TRANSPARANCY	", field: 'transparency', cellStyle: { textAlign: 'center' }, },
+    { headerName: "DURATION", field: 'duration', cellStyle: { textAlign: 'center' }, },
     { headerName: "TIME GAP	", field: 'timegap', cellStyle: { textAlign: 'center' }, },
     { headerName: "CAS", field: 'casname' },
     {
@@ -339,7 +316,6 @@ export class ScrollingComponent {
       width: 320,
       cellRenderer: (params: any) => {
         const div = document.createElement('div');
-
         if ((params.data.isforce === true && params.data.isdelete === false) || (params.data.isdelete === 2) || (params.data.isdelete === 5 && params.data.isdelete === false)) {
           const StopButton = document.createElement('button');
           StopButton.innerHTML = '<button style="width: 5em;background-color: #998f68;border-radius: 5px;height: 2em;"><p style="margin-top:-6px">STOP</p></button>';
@@ -353,7 +329,8 @@ export class ScrollingComponent {
           });
 
           div.appendChild(StopButton);
-        } else {
+        }
+        else {
           const DisabledStopButton = document.createElement('button');
           DisabledStopButton.innerHTML = '<button style="width: 5em;background-color: grey;border-radius: 5px;height: 2em;" disabled><p style="margin-top:-6px">STOP</p></button>';
           DisabledStopButton.style.backgroundColor = 'transparent';
@@ -664,7 +641,56 @@ export class ScrollingComponent {
     }
   }
 
+  showDropdown: boolean = true;
+  subscriberList: any[] = [];
+  subscriber: any;
+  onSmartcardlist(value: any) {
+    this.showDropdown = true;
+    this.userservice.getSearchSmartcardData(this.role, this.username, value).subscribe(
+      (data: any) => {
+        if (!data || Object.keys(data).length === 0) {
+          this.subscriberList = [];
+          return;
+        }
+        this.subscriber = data;
+        this.subscriberList = Object.keys(data).map(key => {
+          const value = data[key];
+          const name = key;
+          return { name: name, value: value };
+        });
+        this.subscriberList.sort((a: any, b: any) => {
+          if (a.value > b.value) return 1;
+          if (a.value < b.value) return -1;
+          return 0;
+        });
+        if (this.subscriberList.length === 0) {
+          console.log('No matching data after sorting');
+          Swal.fire({
+            title: 'No Matching Results',
+            text: 'No subscribers match your search criteria.',
+            icon: 'info',
+            confirmButtonText: 'OK'
+          });
+        }
 
+        console.log(this.subscriberList);
+      },
+      (error) => {
+        Swal.fire({
+          title: 'Error!',
+          text: error?.error?.getsmartcardlistbysubid.searchname
+            || 'An error occurred while fetching subscriber details.',
+          icon: 'error',
+          confirmButtonText: 'OK'
+        });
+      }
+    );
+  }
+
+  goToSubscriberDashboard(lcomember: any) {
+    this.intendid_1 = lcomember.value;
+    this.showDropdown = false;
+  }
 }
 
 

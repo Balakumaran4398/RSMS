@@ -121,7 +121,7 @@ export class PackageCreationComponent {
       },
 
     },
-    { headerName: "ORDER ID", field: 'orderid', width: 150, cellStyle: { textAlign: 'center' }, },
+    { headerName: "REFERENCE ID", field: 'orderid', width: 150, cellStyle: { textAlign: 'center' }, },
     { headerName: "PACKAGE RATE", field: 'packagerate', width: 200, cellStyle: { textAlign: 'center' }, },
     {
       headerName: "REPORT", field: 'report', width: 170, cellStyle: { textAlign: 'center' },

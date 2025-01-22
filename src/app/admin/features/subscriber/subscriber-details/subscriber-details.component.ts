@@ -323,6 +323,61 @@ export class SubscriberDetailsComponent implements OnInit {
         { headerName: 'VERIFICATION STATUS', field: 'vstatus_display', }
 
       ]
+    } else if (selectedStatusId === '6') {
+      this.columnDefs = [
+        {
+          headerName: "S.No", lockPosition: true, valueGetter: 'node.rowIndex+1', width: 100,
+        },
+    
+        {
+          headerName: 'SMARTCARD', field: 'smartcard',
+          cellStyle: params => {
+            if (params.data.someCondition) {
+              return { backgroundColor: '#f4cccc' };
+            } else {
+              return null;
+            }
+          },
+          cellRenderer: (params: any) => {
+            return `<a href="javascript:void(0)" style="color: blue; text-decoration: none;color:#0d6efd">
+                      ${params.value}
+                    </a>`;
+          },
+
+          onCellClicked: (params) => {
+            const subid = params.data.id;
+            const smartcard = params.data.smartcard;
+            console.log('Sub ID:', subid);
+            console.log('Smartcard:', smartcard);
+            if (smartcard) {
+              this.router.navigate([`/admin/subscriber-full-info/${smartcard}/subsmartcard`]);
+            } else if (subid) {
+              this.router.navigate([`/admin/subscriber-full-info/${subid}/new`]);
+            }
+          },
+          width: 220
+        },
+        {
+          headerName: 'SUBSCRIBER NAME',
+          field: 'customername',
+          cellStyle: params => {
+            if (params.data.someCondition) {
+              return { backgroundColor: '#f4cccc' };
+            } else {
+              return null;
+            }
+          },
+        },
+        { headerName: 'LCO NAME', field: 'operatorname', },
+        { headerName: 'AREA NAME', field: 'areaname', },
+        { headerName: 'ADDRESS', field: 'address', },
+        { headerName: 'MOBILE NUMBER', field: 'mobileno', },
+        { headerName: 'USER NAME', field: 'username', cellStyle: { textAlign: 'left' }, },
+        { headerName: 'PASSWORD', field: 'password', },
+        { headerName: 'BALANCE', field: 'balance', cellStyle: { textAlign: 'left' }, },
+        { headerName: 'VERIFICATION STATUS', field: 'vstatus_display', }
+
+      ]
     }
   }
   onGridReady(params: { api: any; }) {

@@ -2,6 +2,7 @@ import { ChangeDetectorRef, Component, Inject } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { BaseService } from 'src/app/_core/service/base.service';
 import { StorageService } from 'src/app/_core/service/storage.service';
+import { SwalService } from 'src/app/_core/service/swal.service';
 import Swal from 'sweetalert2';
 
 @Component({
@@ -19,7 +20,7 @@ export class UpdateLcoComponent {
   lcomembershipList: any = [];
   id: any;
   constructor(
-    public dialogRef: MatDialogRef<UpdateLcoComponent>, @Inject(MAT_DIALOG_DATA) public data: any, private userservice: BaseService, private cdr: ChangeDetectorRef, private storageservice: StorageService) {
+    public dialogRef: MatDialogRef<UpdateLcoComponent>, @Inject(MAT_DIALOG_DATA) public data: any, private swal: SwalService, private userservice: BaseService, private cdr: ChangeDetectorRef, private storageservice: StorageService) {
     this.role = storageservice.getUserRole();
     this.username = storageservice.getUsername();
     this.lcogroupname = data.groupname;
@@ -30,7 +31,7 @@ export class UpdateLcoComponent {
     console.log('Initial Data:', data);
     console.log('Initial lcogroupid:', this.lcogroupid);
     console.log('Initial lcogroupname:', this.lcogroupname);
-    
+
 
     userservice.getLcoGroupMasterList(this.role, this.username).subscribe((data: any) => {
       this.lcomembershipList = Object.keys(data).map(key => {
@@ -43,10 +44,10 @@ export class UpdateLcoComponent {
       if (!selectedGroup) {
         console.warn('lcogroupid does not match any value in lcomembershipList');
       }
-        
+
     });
   }
-  onNoClick(): void { 
+  onNoClick(): void {
     this.dialogRef.close();
   }
   change() {
@@ -70,30 +71,35 @@ export class UpdateLcoComponent {
           }
         });
         this.userservice.UpdatecomembershipFUP(this.role, this.username, this.id, this.sharedcount, this.lcogroupid)
-          .subscribe(
-            (res: any) => {
-              Swal.fire({
-                title: 'Success!',
-                text: res?.message,
-                icon: 'success',
-                timer: 2000,
-                timerProgressBar: true,
-                showConfirmButton: false
-              }).then(() => {
-                this.dialogRef.close();
-              });
-            },
-            (err: any) => {
-              Swal.fire({
-                title: 'Error!',
-                text: err?.error?.message,
-                icon: 'error',
-                confirmButtonText: 'OK',
-                timer: 2000,
-                timerProgressBar: true,
-              });
-            }
-          );
+          // .subscribe(
+          //   (res: any) => {
+          //     Swal.fire({
+          //       title: 'Success!',
+          //       text: res?.message,
+          //       icon: 'success',
+          //       timer: 2000,
+          //       timerProgressBar: true,
+          //       showConfirmButton: false
+          //     }).then(() => {
+          //       this.dialogRef.close();
+          //     });
+          //   },
+          //   (err: any) => {
+          //     Swal.fire({
+          //       title: 'Error!',
+          //       text: err?.error?.message,
+          //       icon: 'error',
+          //       confirmButtonText: 'OK',
+          //       timer: 2000,
+          //       timerProgressBar: true,
+          //     });
+          //   }
+          .subscribe((res: any) => {
+            this.swal.success(res?.message);
+          }, (err) => {
+            this.swal.Error(err?.error?.message);
+          });
+
       }
     });
   }

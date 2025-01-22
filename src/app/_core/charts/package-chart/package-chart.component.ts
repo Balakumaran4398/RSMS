@@ -64,7 +64,7 @@ export class PackageChartComponent implements OnInit {
       },
       title: {
         text: "PACKAGE DETAILS",
-        fontSize: 15,
+        fontSize: 18,
         fontWeight: 600
       },
       data: [{
