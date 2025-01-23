@@ -62,16 +62,39 @@ export class PackagewiseOperatorComponent {
       this.fetchProductList(this.selectedProductTypeId);
     }
     this.checkValidation();
+    console.log('11111111');
+
+  }
+  onProductlist(event: any): void {
+    console.log('fddsfdsfds',event);
+    
+    // this.fetchProductList(this.selectedProductTypeId);
+    const selectedProductId = (event.target as HTMLSelectElement).value;
+    this.productId = selectedProductId;
+    console.log(selectedProductId);
+    
+    this.userservice.ProductListForOperator(this.role, this.username, this.selectedProductTypeId, selectedProductId).subscribe((data: any) => {
+      console.log(data);
+      this.allocated = data.operatorlist.notallocated || [];
+      this.todo = data.operatorlist.allocated || [];
+      this.filteredAvailableList = [...this.todo];
+      this.filteredAddedList = [...this.allocated];
+    })
+    this.checkValidation();
 
   }
   fetchProductList(productTypeId: number): void {
     this.userservice.ProductList(this.username, this.role, productTypeId).subscribe((data: any) => {
+      console.log(data);
+      
       if (data.referenceid) {
         this.producttypelistKeys = Object.keys(data.referenceid).map(key => ({
           name: key,
           id: data.referenceid[key]
         }));
         this.filteredProductTypes = this.producttypelistKeys;
+        console.log(this.filteredProductTypes);
+        
       }
     });
   }
@@ -111,20 +134,7 @@ export class PackagewiseOperatorComponent {
   }
 
 
-  onProductlist(event: Event): void {
-    this.fetchProductList(this.selectedProductTypeId);
-    const selectedProductId = (event.target as HTMLSelectElement).value;
-    this.productId = selectedProductId;
-    this.userservice.ProductListForOperator(this.role, this.username, this.selectedProductTypeId, selectedProductId).subscribe((data: any) => {
-      console.log(data);
-      this.allocated = data.operatorlist.notallocated || [];
-      this.todo = data.operatorlist.allocated || [];
-      this.filteredAvailableList = [...this.todo];
-      this.filteredAddedList = [...this.allocated];
-    })
-    this.checkValidation();
 
-  }
 
 
   drop(event: CdkDragDrop<string[]>) {
@@ -401,9 +411,10 @@ export class PackagewiseOperatorComponent {
           title: 'Success!',
           text: res.message || 'The operator has been allocated to the product successfully.',
           confirmButtonText: 'OK',
-          timer: 3000
+          timer: 3000,
+          timerProgressBar: true,
         }).then(() => {
-          // window.location.reload();
+          window.location.reload();
         });
       },
       (error: any) => {
@@ -412,7 +423,8 @@ export class PackagewiseOperatorComponent {
           title: 'Error!',
           text: error?.error.message || 'Failed to allocate the operator. Please try again.',
           confirmButtonText: 'OK',
-          timer: 3000
+          timer: 3000,
+          timerProgressBar: true,
         });
       }
     );

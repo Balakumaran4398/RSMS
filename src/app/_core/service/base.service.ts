@@ -807,8 +807,8 @@ export class BaseService {
   }
  
   // -------------------------------------------LCO MEMBERSHIP FUP----------------------------------
-  getOperatorMembershipFUP(role: any, username: any): Observable<any> {
-    return this.http.get<any[]>(BASE_URL + "/lcocommission/getOperatorMembershipFUP?role=" + role + "&username=" + username)
+  getOperatorMembershipFUP(role: any, username: any):  Observable<HttpResponse<any[]>> {
+    return this.http.get<any[]>(BASE_URL + "/lcocommission/getOperatorMembershipFUP?role=" + role + "&username=" + username,{ observe: 'response' })
   }
   createlcomembershipFUP(role: any, username: any, operatorid: any, usedcount: any, sharecount: any): Observable<any> {
     return this.http.post<any[]>(BASE_URL + "/lcocommission/createlcomembershipFUP?role=" + role + "&username=" + username + "&operatorid=" + operatorid + "&usedcount=" + usedcount + "&sharecount=" + sharecount, {})

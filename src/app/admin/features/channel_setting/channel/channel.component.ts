@@ -371,14 +371,29 @@ export class ChannelComponent {
         });
   }
   generateExcel() {
-
-    const dialogRef = this.dialog.open(LcologinpageComponent, {
-    });
-    dialogRef.afterClosed().subscribe(result => {
-      console.log('The dialog was closed', result);
-    });
-    this.excelService.generateChannelDetailsExcel();
+     this.excelService.generateChannelDetailsExcel();
   }
+  // generateExcel() {
+  //   const dialogData = {
+  //     type: 'someTypeValue',
+  //     newsubid: 'newSubidValue',
+  //     subId: 'subIdValue',
+  //     detailsList: [],
+  //     pairBoxlist: [],
+  //     pairSmartcardlist: [],
+  //     plantype: []
+  //   };
+
+  //   const dialogRef = this.dialog.open(LcologinpageComponent, {
+  //     data: dialogData,
+  //   });
+  //   dialogRef.afterClosed().subscribe(result => {
+  //     console.log('The dialog was closed', result);
+  //     this.excelService.generateChannelDetailsExcel();
+  //   });
+  // }
+
+
   // ---------------------------------------------------------------------------------------------------------------------------------------
   handleApiError(error: any) {
     if (error.status === 400) {

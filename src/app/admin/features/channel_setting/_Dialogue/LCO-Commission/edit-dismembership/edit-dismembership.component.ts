@@ -105,7 +105,6 @@ export class EditDismembershipComponent implements OnInit {
         if (index > -1) {
           this.availableList.splice(index, 1);
           this.addedList.push(this.availableList[index]);
-          // console.log(this.addedList.push(this.availableList[index]));
           console.log('    console.log(this.selectedIds);', this.selectedIds);
         }
       });

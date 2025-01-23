@@ -162,31 +162,9 @@ export class BroadMasterComponent implements OnInit {
           }
 
         });
-
-
-
-        // const updateToggleStyle = (active: boolean) => {
-        //   toggleSwitch.style.backgroundColor = active ? '#4CAF50' : '#616060';
-        //   toggleCircle.style.left = active ? 'calc(100% - 22px)' : '3px';
-        //   toggleSwitch.title = active ? 'Deactivate the Customer' : 'Activate the Customer';
-        // };
-
-        // toggleSwitch.addEventListener('click', () => {
-        //   const currentStatus = params.data.isactive;
-        //   const newStatus = !currentStatus;
-        //   params.data.isactive = newStatus;
-        //   updateToggleStyle(newStatus);
-
-        //   console.log(`Status changed to: ${newStatus ? 'Active' : 'Inactive'}`);
-        // });
         toggleContainer.appendChild(toggleSwitch);
         return toggleContainer;
       }
-      // cellEditor: 'agTextCellEditor',
-      // onCellValueChanged: (event: { data: { broadcastername: string; isactive: boolean; id: number; }; }) => {
-      //   console.log('Cell value changed:', event.data.broadcastername);
-      //   this.updateDeviceModelname(event.data.broadcastername, event.data.isactive, event.data.id);
-      // }
     },
 
   ]

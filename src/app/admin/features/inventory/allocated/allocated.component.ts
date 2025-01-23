@@ -193,7 +193,7 @@ export class  AllocatedComponent {
     },
     {
       headerName: 'IS_EMI', width: 150, cellStyle: { textAlign: 'center' },
-      field: 'isemi',
+      field: 'emidisplay',
       cellRenderer: (params: any) => {
         if (params.value === true) {
           return `<span style="color: #06991a;">YES</span>`;
@@ -236,8 +236,8 @@ export class  AllocatedComponent {
     console.log(this.smartcard);
 
     // this.swal.Loading();
-    if ((this.smartcard != null && this.smartcard != undefined && this.smartcard > 0) || (this.selectedLcoName != null && this.selectedLcoName != undefined && this.selectedLcoName > 0)) {
-      this.userService.getsearchforallocated_smartcard_List(this.role, this.username, this.selectedLcoName, this.smartcard || 0)
+    // if ((this.smartcard != null && this.smartcard != undefined && this.smartcard > 0) || (this.selectedLcoName != null && this.selectedLcoName != undefined && this.selectedLcoName > 0)) {
+      this.userService.getsearchforallocated_smartcard_List(this.role, this.username, this.selectedLcoName || 0, this.smartcard || 0)
         .subscribe((data: any) => {
           this.rowData = data;
           this.allocatedhistory = data;
@@ -258,9 +258,9 @@ export class  AllocatedComponent {
             confirmButtonText: 'OK'
           });
         });
-    } else {
-      return;
-    }
+    // } else {
+    //   return;
+    // }
   }
   submit(): void {
     const dataToSend = {

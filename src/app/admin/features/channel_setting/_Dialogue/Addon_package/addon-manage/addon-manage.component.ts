@@ -351,12 +351,10 @@ export class AddonManageComponent {
   moveSelectedBouquet_Items(direction: 'left' | 'right') {
     this.modified = true;
     const itemsToMove: any[] = [];
-    this.before_available_alacarte_list = this.available_alacarte_list.length
-    this.before_available_bouquet_list = this.available_bouquet_list.length;
-    this.added_bouquet_list = this.added_bouquet_list.length;
+    // this.before_available_alacarte_list = this.available_alacarte_list.length
+    // this.before_available_bouquet_list = this.available_bouquet_list.length;
+    // this.added_bouquet_list = this.added_bouquet_list.length;
     console.log('1111111111111', this.before_available_alacarte_list);
-
-
     if (direction === 'right') {
       this.selectedItems.forEach(item => {
         const index = this.available_bouquet_list.indexOf(item);
@@ -560,7 +558,7 @@ export class AddonManageComponent {
           this.swal.success(res?.message);
           this.filteredAvailableAlacarteList = [...this.available_alacarte_list];
           this.filteredAddedList = [...this.added_alacarte_list];
-          this.modified = false; 
+          this.modified = false;
         }, (err) => {
           this.swal.Error(err?.error?.message);
         });

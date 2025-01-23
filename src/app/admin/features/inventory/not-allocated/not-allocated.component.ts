@@ -20,6 +20,7 @@ export class NotAllocatedComponent {
   selectedIds: number[] = [];
   selectsmartcard: number[] = [];
   selectedtypes: number[] = [];
+  selectedisEmi: boolean = false;
   hasSelectedRows: boolean = true;
   username: any;
   role: any;
@@ -125,6 +126,7 @@ export class NotAllocatedComponent {
       this.selectedIds = selectedRows.map((e: any) => e.id);
       this.selectsmartcard = selectedRows.map((e: any) => e.smartcard);
       this.selectedtypes = selectedRows.map((e: any) => e.isactive);
+      this.selectedisEmi = selectedRows.map((e: any) => e.isemi);
     }
   }
   onGridReady(params: { api: any; }) {
@@ -165,6 +167,7 @@ export class NotAllocatedComponent {
         castype: this.caslist,
         smartcard: this.selectsmartcard,
         isemi: this.isemi,
+        subIsemi: this.selectedisEmi,
       };
       console.log(dataToSend);
 
@@ -261,5 +264,5 @@ export class NotAllocatedComponent {
             confirmButtonText: 'Ok'
           });
         });
-   }
+  }
 }

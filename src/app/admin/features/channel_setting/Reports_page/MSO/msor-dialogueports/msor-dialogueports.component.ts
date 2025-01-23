@@ -76,6 +76,7 @@ export class MsorDialogueportsComponent implements OnInit {
 
   isSmartcard: boolean = false;
   isOperator: boolean = false;
+  isRechargeOperator: boolean = false;
   isUseragent: boolean = false;
   isSubLCO: boolean = false;
   selectedRechargeType: any = 1;
@@ -359,49 +360,49 @@ export class MsorDialogueportsComponent implements OnInit {
     }
   }
   onRechargeType(selectedValue: any) {
-    console.log('onRechargeType');
+    console.log(selectedValue);
 
-    console.log(this.type);
+    // if (this.type != 'recharge_history') {
+    //   console.log('if condition');
+    if (selectedValue == 1) {
+      console.log('dfsfdsfdsf', this.isOperator);
 
-    if (this.type != 'online_payment') {
-      console.log('if condition');
+      this.isSmartcard = false;
+      this.isRechargeOperator = true;
+      this.isUseragent = true;
+      this.isSubLCO = false;
 
-      if (selectedValue == 1) {
-        this.isSmartcard = false;
-        this.isOperator = true;
-        this.isUseragent = true;
-        this.isSubLCO = false;
-        // this.fromdate = 0;
-        // this.todate = 0;
-        this.selectedLcoName = 0;
-        this.selectedSubLcoName = 0;
-        this.useragent = 0;
-        this.smartcard = '';
-      } else if (selectedValue == 2) {
-        this.isSmartcard = true;
-        this.isOperator = false;
-        this.isUseragent = true;
-        this.isSubLCO = false;
-        // this.fromdate = 0;
-        // this.todate = 0;
-        this.selectedLcoName = 0;
-        this.selectedSubLcoName = 0;
-        this.useragent = 0;
-        this.smartcard = '';
-      } else if (selectedValue == 3) {
-        this.isSmartcard = false;
-        this.isOperator = true;
-        this.isUseragent = false;
-        this.isSubLCO = false;
+      this.selectedLcoName = 0;
+      this.selectedSubLcoName = 0;
+      this.useragent = 0;
+      this.smartcard = '';
+    } else if (selectedValue == 2) {
+      this.isSmartcard = true;
+      this.isRechargeOperator = false;
+      this.isUseragent = true;
+      this.isSubLCO = false;
+      // this.fromdate = 0;
+      // this.todate = 0;
+      this.selectedLcoName = 0;
+      this.selectedSubLcoName = 0;
+      this.useragent = 0;
+      this.smartcard = '';
+    } else if (selectedValue == 3) {
+      this.isSmartcard = false;
+      this.isRechargeOperator = true;
+      this.isUseragent = false;
+      this.isSubLCO = false;
 
-        // this.fromdate = 0;
-        // this.todate = 0;
-        this.selectedLcoName = 0;
-        this.selectedSubLcoName = 0;
-        this.useragent = 0;
-        this.smartcard = '';
-      }
+      // this.fromdate = 0;
+      // this.todate = 0;
+      this.selectedLcoName = 0;
+      this.selectedSubLcoName = 0;
+      this.useragent = 0;
+      this.smartcard = '';
+    } else {
+      return
     }
+    // }
   }
 
   onUserAgentType(selectedValue: any) {

@@ -84,7 +84,7 @@ export class AddLcoComponent {
     },
 
     {
-      headerName: "COMMISSION", width: 250,
+      headerName: "COMMISSION", width: 240,
       field: 'commission',
       editable: true,
 
@@ -118,36 +118,6 @@ export class AddLcoComponent {
 
     },
 
-    // {
-    //   headerName: "	IS PERCENTAGE", field: 'ispercentage', width: 200, editable: true, cellStyle: { textAlign: 'center' },
-    //   cellRenderer: (params: any) => {
-    //     const container = document.createElement('div');
-    //     container.style.display = 'flex';
-    //     container.style.alignItems = 'center';
-    //     container.style.gap = '8px';
-
-    //     // Conditional text span
-    //     const textSpan = document.createElement('span');
-    //     textSpan.style.color = params.value === true ? 'green' : 'red';
-    //     textSpan.innerText = params.value === true ? 'YES' : 'NO';
-    //     container.appendChild(textSpan);
-
-    //     // Edit button
-    //     const editButton = document.createElement('button');
-    //     editButton.style.border = 'none';
-    //     editButton.style.background = 'transparent';
-    //     editButton.style.cursor = 'pointer';
-    //     editButton.style.color = '#007bff'; // Blue color for button text
-    //     editButton.title = 'Edit IsPercentage';
-    //     editButton.addEventListener('click', () => {
-    //       console.log('Edit button clicked for IsPercentage:', params.value);
-    //     });
-
-    //     container.appendChild(editButton);
-
-    //     return container;
-    //   }
-    // },
   ]
   columnDefs1: ColDef[] = [
     {
@@ -180,7 +150,6 @@ export class AddLcoComponent {
           };
         }
       },
-      tooltipField: 'Edit',
       cellRenderer: (params: any) => {
         const editButton = document.createElement('button');
         editButton.style.border = 'none';
@@ -203,7 +172,7 @@ export class AddLcoComponent {
     },
 
     {
-      headerName: "	IS PERCENTAGE", field: 'ispercentage', width: 200, editable: true, cellStyle: { textAlign: 'center' },
+      headerName: "	IS PERCENTAGE", field: 'ispercentage', width: 180, editable: true, cellStyle: { textAlign: 'center' },
       cellRenderer: (params: any) => {
         const container = document.createElement('div');
         container.style.display = 'flex';
@@ -273,7 +242,7 @@ export class AddLcoComponent {
         return { name: name, value: value };
       });
       this.filteredOperators = this.lcomembershipList;
-      this.lcogroupid=''
+      this.lcogroupid = ''
       this.rowData = [];
       this.lcomembershipList.sort((a: any, b: any) => {
         if (a.value > b.value) return 1;

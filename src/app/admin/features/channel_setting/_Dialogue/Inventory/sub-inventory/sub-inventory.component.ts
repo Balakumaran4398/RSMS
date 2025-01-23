@@ -21,6 +21,7 @@ export class SubInventoryComponent {
   lco_list: any[] = [];
   searchTerm: string = '';
   ismei: any;
+  sub_ismei: any;
   totalamount: any;
   smartcard: any;
   operatorid: any;
@@ -29,7 +30,7 @@ export class SubInventoryComponent {
   constructor(
     public dialogRef: MatDialogRef<SubInventoryComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any, private userService: BaseService, private storageService: StorageService, private swal: SwalService) {
-    console.log(data.lco_list);
+    console.log(data);
     this.username = storageService.getUsername();
     this.role = storageService.getUserRole();
     // this.lco_list = data.lco_list;
@@ -41,7 +42,7 @@ export class SubInventoryComponent {
     this.smartcard = data.smartcard;
     console.log(this.smartcard);
     this.ismei = data.isemi;
-    console.log(this.ismei);
+    this.sub_ismei = data.subIsemi[0];
     this.filteredOperators = this.lco_list;
   }
   onNoClick(): void {

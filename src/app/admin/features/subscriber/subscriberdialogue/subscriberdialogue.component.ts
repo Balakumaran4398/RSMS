@@ -573,7 +573,7 @@ export class SubscriberdialogueComponent implements OnInit {
     });
     $('#smartcard').on('change', (event: any) => {
       this.smartcard = event.target.value;
-      this.onSmartcardList(event);
+      this.onSmartcardList( this.smartcard );
     });
     $('#package').select2({
       placeholder: 'Select a Package Name',
@@ -1123,7 +1123,7 @@ export class SubscriberdialogueComponent implements OnInit {
           this.area = Object.entries(data).map(([key, value]) => ({ name: key, id: value }));
           this.filteredSmartcard = this.area;
           console.log(this.filteredSmartcard);
-          
+
         } else {
           this.area = [];
           Swal.fire({
@@ -1286,13 +1286,12 @@ export class SubscriberdialogueComponent implements OnInit {
   }
   onSmartcardList(smartcard: any): void {
     console.log(smartcard);
-
     this.selectedSmartcard = smartcard;
-    this.smartcard = smartcard.name;
+    // this.smartcard = smartcard.name;
+    this.smartcard = smartcard;
     this.userservice.getBoxidBySmartcard(this.role, this.username, this.smartcard)
       .subscribe((data: any) => {
         this.boxid = data.boxid;
-        console.log('fgfdgfdgfdgdfg', this.boxid);
         this.cdr.detectChanges();
         let boxidElement: any = document.getElementById("boxid");
         if (boxidElement) {

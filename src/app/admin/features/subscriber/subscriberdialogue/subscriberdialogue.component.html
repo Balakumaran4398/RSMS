@@ -406,14 +406,14 @@
                                     <label for="">Smartcard</label>
                                 </div>
                                 <div class="col-12 col-md-8">
-                                    <!-- <select id="smartcard" [(ngModel)]="smartcard" (change)="smartcardlist($event)">
+                                    <select id="smartcard" [(ngModel)]="smartcard" >
                                         <option value="0" selected>Select a Smartcard</option>
-                                        <option *ngFor="let area of filteredIntendArea()" [value]="area.name">
+                                        <option *ngFor="let area of filteredIntendArea()" [value]="area.name" (ngMOdelChange)="onSmartcardList($event)">
                                             {{ area.name }}
                                         </option>
-                                    </select> -->
+                                    </select>
 
-                                    <input [disabled]="!castypeSmartcard || filteredSmartcard.length === 0" type="text"
+                                    <!-- <input [disabled]="!castypeSmartcard || filteredSmartcard.length === 0" type="text"
                                         matInput [matAutocomplete]="auto" [(ngModel)]="smartcard" 
                                         (input)="filterSmartcard($event)" placeholder="Select a Smartcard"
                                         [matAutocompleteDisabled]="false" [value]="selectedSmartcard?.name">
@@ -423,7 +423,7 @@
                                             (click)="onSmartcardList(smartcard)">
                                             {{ smartcard.name}}
                                         </mat-option>
-                                    </mat-autocomplete>
+                                    </mat-autocomplete> -->
                                     <div *ngIf="submitted && !smartcard" class="text-danger" style="font-size: small;">
                                         Smartcard is required
                                     </div>
@@ -1793,50 +1793,50 @@
     <div class="mobileview">
         <div class="input_box  mb-3">
             <div class="d-flex align-items-center justify-content-center">
-                <div class="col-6 col-md-6">
+                <div class="col-6 col-md-5">
                     <span for="Subscriber_name" class="me-2">Subscriber Name</span>
                 </div>
-                <div class="col-6 col-md-6 value">
+                <div class="col-6 col-md-7 value">
                     {{subscribername}}
                 </div>
             </div>
         </div>
         <div class="input_box Isactive mb-3">
             <div class="d-flex align-items-center justify-content-center">
-                <div class="col-6 col-md-6">
+                <div class="col-6 col-md-5">
                     <span class="me-2"> Boxid</span>
                 </div>
-                <div class="col-6 col-md-6 value">
+                <div class="col-6 col-md-7 value">
                     {{boxno}}
                 </div>
             </div>
         </div>
         <div class="input_box  mb-3">
             <div class="d-flex align-items-center justify-content-center">
-                <div class="col-6 col-md-6">
+                <div class="col-6 col-md-5">
                     <span class="me-2">LCO Name</span>
                 </div>
-                <div class="col-6 col-md-6 value">
+                <div class="col-6 col-md-7 value">
                     {{operatorname}}
                 </div>
             </div>
         </div>
         <div class="input_box  mb-3">
             <div class="d-flex align-items-center justify-content-center">
-                <div class="col-6 col-md-6">
+                <div class="col-6 col-md-5">
                     <span for="password" class="me-2">Smartcard</span>
                 </div>
-                <div class="col-6 col-md-6 value">
+                <div class="col-6 col-md-7 value">
                     {{smartcardno}}
                 </div>
             </div>
         </div>
         <div class="input_box  mb-3">
             <div class="d-flex align-items-center justify-content-center  mb-3">
-                <div class="  col-6 col-md-6">
+                <div class="  col-6 col-md-5">
                     <label for="">Package Name </label>
                 </div>
-                <div class=" col-6 col-md-6 ">
+                <div class=" col-6 col-md-7 ">
                     <select id="package" [(ngModel)]="newpackagename" class="js-states"
                         (ngModelChange)="onSelectionrechargetype($event)">
                         <option value="0" selected disabled>Select Package Name</option>
@@ -1849,10 +1849,10 @@
         </div>
         <div class="input_box  mb-3">
             <div class="d-flex align-items-center justify-content-center mb-3">
-                <div class="col-6 col-md-6">
+                <div class="col-6 col-md-5">
                     <label for="">Recharge Type</label>
                 </div>
-                <div class="col-6 col-md-6 ">
+                <div class="col-6 col-md-7 ">
                     <select [(ngModel)]="selectedRechargetype" (ngModelChange)="onSelectionrechargetype($event)">
                         <option value="0" selected disabled>Selected Recharge</option>
                         <option *ngFor="let rt of rechargetype" [value]="rt.id">
@@ -1863,10 +1863,10 @@
             </div>
             <div *ngIf="isplantype" class="mb-3">
                 <div class="d-flex align-items-center justify-content-center">
-                    <div class="col-6 col-md-6 ">
+                    <div class="col-6 col-md-5 ">
                         <label for="">Plan Type</label>
                     </div>
-                    <div class="col-6 col-md-6">
+                    <div class="col-6 col-md-7">
                         <select [(ngModel)]="plantype" (ngModelChange)="onSelectionplantype($event)">
                             <option value="0" disabled>Selected Plan</option>
                             <option *ngFor="let plan of plantype$ | async" [value]="plan.value">
@@ -1878,10 +1878,10 @@
             </div>
             <div *ngIf="datetype" class="mb-3">
                 <div class="d-flex align-items-center justify-content-center">
-                    <div class="col-6 col-md-6 ">
+                    <div class="col-6 col-md-5 ">
                         <label for="">Date</label>
                     </div>
-                    <div class="col-6 col-md-6">
+                    <div class="col-6 col-md-7">
                         <input type="date" [(ngModel)]="f_date" (ngModelChange)="onSelectionrechargetype($event)"
                             [min]="today">
                     </div>
@@ -2612,7 +2612,7 @@
                     <div class="input_box  mb-1">
                         <div class="d-flex align-items-center justify-content-center">
                             <div class="col-5 col-md-6">
-                                <span for="password" class="me-2">Selected Addon count</span>
+                                <span for="password" class="me-2">Selected Alacarte count</span>
                             </div>
                             <div class="col-7 col-md-6 value">
                                 {{rows?.length}}

@@ -27,7 +27,7 @@ export class ChannelCreateComponent {
 
   ts_id: any; service_id: any; product_id: any; ispercentage: boolean = false; inr_amt: any; channel_type_id: any; category_id: any;
   role: any; distributor_id: any; commssion: any; isactive: boolean = true; channel_desc: any;
-  selectedFile: File | null = null;
+  selectedFile: File | any = null;
   channel_name: any;
   constructor(private cdr: ChangeDetectorRef,
     public dialogRef: MatDialogRef<ChannelCreateComponent>, private formBuilder: FormBuilder, private swal: SwalService, private userservice: BaseService, private storageService: StorageService
@@ -43,8 +43,8 @@ export class ChannelCreateComponent {
         ts_id: ['', [Validators.required,]],
         service_id: ['', [Validators.required]],
         product_id: ['', [Validators.required]],
-        ispercentage: [false, [Validators.required]],
-        ispaid: [false, [Validators.required]],
+        ispercentage: ['', [Validators.required]],
+        ispaid: ['', [Validators.required]],
         inr_amt: ['', [Validators.required]],
         channel_type_id: ['', [Validators.required]],
         category_id: ['', [Validators.required]],
@@ -127,7 +127,14 @@ export class ChannelCreateComponent {
     this.form.markAllAsTouched();
     const fd = new FormData();
     fd.append('channel_name', this.form?.get('channel_name')?.value);
-    fd.append('channel_logo', this.selectedFile as File);
+    // fd.append('channel_logo', this.selectedFile as File);
+
+
+    if (this.selectedFile) {
+      fd.append('channel_logo', this.selectedFile );
+    } else {
+      fd.append('channel_logo', this.selectedFile || null);
+    }
     fd.append('channel_freq', this.form?.get('channel_freq')?.value);
     fd.append('channel_desc', this.form?.get('channel_desc')?.value);
     fd.append('ts_id', this.form?.get('ts_id')?.value);
@@ -168,6 +175,8 @@ export class ChannelCreateComponent {
   percentageValue(value: boolean) {
     this.ispercentage = value;
     this.checkMaxValue();
+    console.log(this.ispercentage);
+    
   }
 
   checkMaxValue(): void {

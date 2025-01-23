@@ -48,7 +48,7 @@ export class UpdateLcoCommissionComponent implements OnInit {
     this.disProducttype = data?.data?.productTypeDisplay;
     this.disProductrate = data?.data?.rate;
     this.disCommissionvalue = data?.data?.commissionvalue;
-    this.msoamount = data?.data?.msoamount;
+    this.msoamount = data?.data?.submsoamount;
 
   }
   ngOnInit(): void {

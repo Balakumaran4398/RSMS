@@ -109,29 +109,29 @@ export class SmartcardAllocationComponent {
       field: 'operatorname',
 
     },
-    {
-      headerName: "Delete", width: 150,
-      editable: true, cellStyle: { textAlign: 'center' },
-      cellRenderer: (params: any) => {
-        const deleteButton = document.createElement('button');
-        // deleteButton.innerHTML = '<img src="/assets/images/icons/delete1.png" style="width:25px">';
-        deleteButton.innerHTML = '<i class="fas fa-trash"></i>';
-        deleteButton.style.backgroundColor = 'transparent';
-        deleteButton.style.color = 'rgb(2 85 13)';
-        deleteButton.style.fontSize = '35px';
-        deleteButton.style.border = 'none';
-        this.renderer.setAttribute(deleteButton, 'matTooltip', 'Delete'); // Angular Material tooltip
-        this.renderer.setAttribute(deleteButton, 'matTooltipPosition', 'above'); // Tooltip position
-        deleteButton.style.cursor = 'pointer';
-        deleteButton.style.marginRight = '6px';
-        deleteButton.addEventListener('click', () => {
-          this.openEditDialog(params.data);
-        });
-        const div = document.createElement('div');
-        div.appendChild(deleteButton);
-        return div;
-      }
-    }
+    // {
+    //   headerName: "Delete", width: 150,
+    //   editable: true, cellStyle: { textAlign: 'center' },
+    //   cellRenderer: (params: any) => {
+    //     const deleteButton = document.createElement('button');
+    //     // deleteButton.innerHTML = '<img src="/assets/images/icons/delete1.png" style="width:25px">';
+    //     deleteButton.innerHTML = '<i class="fas fa-trash"></i>';
+    //     deleteButton.style.backgroundColor = 'transparent';
+    //     deleteButton.style.color = 'rgb(2 85 13)';
+    //     deleteButton.style.fontSize = '35px';
+    //     deleteButton.style.border = 'none';
+    //     this.renderer.setAttribute(deleteButton, 'matTooltip', 'Delete'); // Angular Material tooltip
+    //     this.renderer.setAttribute(deleteButton, 'matTooltipPosition', 'above'); // Tooltip position
+    //     deleteButton.style.cursor = 'pointer';
+    //     deleteButton.style.marginRight = '6px';
+    //     deleteButton.addEventListener('click', () => {
+    //       this.openEditDialog(params.data);
+    //     });
+    //     const div = document.createElement('div');
+    //     div.appendChild(deleteButton);
+    //     return div;
+    //   }
+    // }
   ]
 
   onSelectionChanged() {

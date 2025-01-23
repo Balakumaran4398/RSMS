@@ -5,6 +5,7 @@ import { StorageService } from 'src/app/_core/service/storage.service';
 import Swal from 'sweetalert2';
 import { DatePipe } from '@angular/common';
 import { SwalService } from 'src/app/_core/service/swal.service';
+declare var $: any;
 // import { Any } from 'node_modules1/@sigstore/protobuf-specs/dist/__generated__/google/protobuf/any';
 
 
@@ -79,9 +80,9 @@ export class CreateSubscriberComponent {
   ngOnInit(): void {
     this.form = this.formBuilder.group(
       {
-        operatorid: ['', Validators.required || 0],
-        areaid: ['', Validators.required || 0],
-        streetid: ['', Validators.required || 0],
+        operatorid: ['', Validators.required || this.operatorid],
+        areaid: ['', Validators.required || this.areaid],
+        streetid: ['', Validators.required || this.streetid],
         casformid: ['', Validators.required],
         customername: ['', [Validators.required,]],
         customernamelast: ['', [Validators.required]],
@@ -103,10 +104,36 @@ export class CreateSubscriberComponent {
         username: this.username
       },
     );
-
-
     this.loadIdProofList();
     this.loadAddProofList();
+  }
+  ngAfterViewInit() {
+    $('#Lco').select2({
+      placeholder: 'Select an Operator',
+      allowClear: true
+    });
+    $('#Lco').on('change', (event: any) => {
+      this.operatorid = event.target.value;
+      console.log('operator   dsfdsfsdfdsfds');
+
+      this.onOperatorChange(this.operatorid);
+    });
+    $('#Area').select2({
+      placeholder: 'Select Area',
+      allowClear: true
+    });
+    $('#Area').on('change', (event: any) => {
+      this.areaid = event.target.value;
+      this.onAreaStatusChange(this.areaid);
+    });
+    $('#Street').select2({
+      placeholder: 'Select Street',
+      allowClear: true
+    });
+    $('#Street').on('change', (event: any) => {
+      this.streetid = event.target.value;
+      this.onStreetStatusChange(this.streetid);
+    });
   }
   customEmailValidator() {
     return (control: AbstractControl): ValidationErrors | null => {
@@ -506,7 +533,6 @@ export class CreateSubscriberComponent {
       },
       (error) => {
         console.log(error);
-
         const errorMessage = errorFields
           .map(field => error?.error?.[field])
           .find(message => message) || 'An error occurred while creating the subscriber.'
@@ -544,44 +570,107 @@ export class CreateSubscriberComponent {
   get f(): { [key: string]: AbstractControl } {
     return this.form.controls;
   }
-  onoperatorchange(operator: any): void {
-    this.selectedOperator = operator;
-    this.operatorid = operator.value;
-    this.form.patchValue({
-      operatorid: this.operatorid,
-    });
-    this.userservice.getAreaListByOperatorid(this.role, this.username, this.operatorid).subscribe((data: any) => {
-      this.area_list = Object.keys(data).map(key => {
-        const value = data[key];
-        const name = key;
-        return { name: name, value: value };
-      });
-      this.filteredAreas = this.area_list;
-    })
-  }
+  // onOperatorChange(operator: any): void {
+  //   console.log('1111111111111',operator);
+
+  //   this.selectedOperator = operator;
+  //   console.log(this.selectedOperator);
+
+  //   this.operatorid = operator.value;
+  //   console.log(this.operatorid);
+
+  //   this.form.patchValue({
+  //     operatorid: this.operatorid,
+  //   });
+  //   this.userservice.getAreaListByOperatorid(this.role, this.username, this.operatorid).subscribe((data: any) => {
+  //     this.area_list = Object.keys(data).map(key => {
+  //       const value = data[key];
+  //       const name = key;
+  //       return { name: name, value: value };
+  //     });
+  //     this.filteredAreas = this.area_list;
+  //   })
+  // }
 
   onAreaStatusChange(area: any): void {
-    this.selectedArea = area;
-    this.areaid = area.value;
-    this.form.patchValue({
-      areaid: this.areaid,
-    });
-    this.userservice.getStreetListByAreaid(this.role, this.username, this.areaid).subscribe((data: any) => {
-      this.street_list = Object.keys(data).map(key => {
-        const value = data[key];
-        const name = key;
-        return { name: name, value: value };
-      });
-      this.filteredStreet = this.street_list;
-    })
-  }
+    console.log('selecterd Area', area);
 
+
+    const match = area.match(/^(.+)\((\d+)\)$/);
+
+    if (match) {
+      const areaName = match[1].trim();
+      const areaId = match[2];
+      this.selectedArea = areaName;
+      this.areaid = areaId;
+      console.log(this.areaid);
+      console.log(this.selectedArea);
+
+      // this.selectedArea = area;
+      // this.areaid = area.value;
+      this.form.patchValue({
+        areaid: this.areaid,
+      });
+      this.userservice.getStreetListByAreaid(this.role, this.username, this.areaid).subscribe((data: any) => {
+        this.street_list = Object.keys(data).map(key => {
+          const value = data[key];
+          const name = key;
+          return { name: name, value: value };
+        });
+        this.filteredStreet = this.street_list;
+      })
+    } else {
+      console.error('Invalid Area format. Expected "Name (ID)" format.');
+    }
+  }
+  onOperatorChange(operator: any): void {
+    const match = operator.match(/^(.+)\((\d+)\)$/);
+
+    if (match) {
+      const operatorName = match[1].trim();
+      const operatorId = match[2];
+      this.selectedOperator = operatorName;
+      this.operatorid = operatorId;
+      this.form.patchValue({
+        operatorid: this.operatorid,
+      });
+      this.selectedOperator = operator;
+      // console.log(this.selectedOperator);
+
+      // this.operatorid = operator.value;
+      // console.log(this.operatorid);
+
+      this.form.patchValue({
+        operatorid: this.operatorid,
+      });
+      this.userservice.getAreaListByOperatorid(this.role, this.username, this.operatorid).subscribe((data: any) => {
+        this.area_list = Object.keys(data).map(key => {
+          const value = data[key];
+          const name = key;
+          return { name: name, value: value };
+        });
+        this.filteredAreas = this.area_list;
+      })
+    } else {
+      console.error('Invalid operator format. Expected "Name (ID)" format.');
+    }
+  }
   onStreetStatusChange(street: any) {
-    this.selectedStreet = street;
-    this.streetid = street.value;
-    this.form.patchValue({
-      streetid: this.streetid,
-    });
+    console.log('selected Street', street);
+    const match = street.match(/^(.+)\((\d+)\)$/);
+    if (match) {
+      const streetname = match[1].trim();
+      const streetid = match[2];
+      this.selectedStreet = streetname;
+      this.streetid = streetid;
+      // this.selectedStreet = street;
+      // this.streetid = street.value;
+      this.form.patchValue({
+        streetid: this.streetid,
+      });
+    } else {
+      console.error('Invalid street format. Expected "Name (ID)" format.');
+    }
   }
   onReset(): void {
     this.submitted = false;

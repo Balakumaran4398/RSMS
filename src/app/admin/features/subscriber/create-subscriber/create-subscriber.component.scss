@@ -199,6 +199,7 @@ form .gender {
     height: 50px !important;
     flex: auto;
 }
+
 .has-error input {
     border-color: red;
 }
@@ -212,6 +213,7 @@ form .gender {
 .small {
     color: red;
 }
+
 @media screen and (max-width: 584px) {
     .container .title {
         padding: 13px;
@@ -242,6 +244,7 @@ form .gender {
     .gender .category {
         flex-direction: column;
     }
+
 }
 
 
@@ -267,4 +270,19 @@ form .gender {
     font-size: 19px;
     font-weight: 600;
 
+}
+
+
+
+::ng-deep .select2-container .select2-selection--single {
+    height: 45px !important;
+    margin-top: 1%;
+}
+
+::ng-deep .select2-container .select2-selection--single .select2-selection__rendered {
+    margin-top: 7px;
+}
+
+::ng-deep .select2-container--default .select2-selection--single .select2-selection__arrow {
+    top: 10px;
 }

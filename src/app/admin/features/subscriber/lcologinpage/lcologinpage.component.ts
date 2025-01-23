@@ -15,10 +15,8 @@ import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dial
   styleUrls: ['./lcologinpage.component.scss']
 })
 export class LcologinpageComponent {
-
   form!: FormGroup;
-  isLoggedIn = false; // Track login status
-
+  isLoggedIn = false;
   username: any;
   role: any;
   type: any;
@@ -57,7 +55,7 @@ export class LcologinpageComponent {
   }
 
 
-  submit() {  
+  submit() {
     if (this.form.valid) {
       const { userid, password } = this.form.value;
       let requestBody = {
@@ -67,8 +65,7 @@ export class LcologinpageComponent {
         password: password,
         type: 1,
       }
-      // this.userservice.checkLoginCredenticals(this.role, this.username, userid, password, 1).subscribe(
-        this.userservice.checkLoginCredenticals(requestBody).subscribe(
+      this.userservice.checkLoginCredenticals(requestBody).subscribe(
         (res: any) => {
           Swal.fire({
             title: 'Login Successful',

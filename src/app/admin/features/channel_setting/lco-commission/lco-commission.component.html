@@ -26,11 +26,12 @@
         <div class="display input_box com_select">
             <div class="col display justify-content-start align-items-center mb-3">
                 <span style="font-size:17px;color: red;">SELECT DISTRIBUTOR MEMBERSHIP</span> &nbsp;&nbsp;
-                <!-- {{lcomembershipname}} -->
-                <input type="text" matInput [matAutocomplete]="auto"
-                    [value]="selectedOperator?.name" [(ngModel)]="lcomembershipid"
-                    (ngModelChange)="filterOperators($event)" placeholder="Select An Membership"
-                    [matAutocompleteDisabled]="false">
+
+
+
+                <input type="text" matInput [matAutocomplete]="auto" maxlength="20"
+                    (input)="filterOperators($event)" placeholder="Select An Membership"
+                    [matAutocompleteDisabled]="false" [value]="selectedOperator?.name">
 
                 <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayOperator">
                     <mat-option *ngFor="let operator of filteredOperators" [value]="operator.value"
@@ -92,7 +93,7 @@
                         <div class="row input_box">
                             <div class="col d-flex justify-content-start align-items-center mb-3">
                                 <span style="font-size:17px;color: red;">SELECT LCO MEMBERSHIP</span> &nbsp;&nbsp;
-                                <input type="text" matInput [matAutocomplete]="auto" [(ngModel)]="lcomembershipid"
+                                <input type="text" matInput [matAutocomplete]="auto" 
                                     maxlength="20" (input)="filterOperators($event)" placeholder="Select LCO MEMBERSHIP"
                                     [matAutocompleteDisabled]="false" [value]="selectedOperator?.name">
 
@@ -104,7 +105,7 @@
                                 </mat-autocomplete>
                             </div>
                             <ag-grid-angular #agGrid id="myGrid" style="text-align: center;"
-                                style="text-align: center; max-height: 500px;overflow: auto;" domLayout='autoHeight' 
+                                style="text-align: center; max-height: 500px;overflow: auto;" domLayout='autoHeight'
                                 class="ag-theme-alpine table-class" rowAnimation [rowSelection]="rowSelection"
                                 [columnDefs]="columnDefs2" [rowData]="rowData2"
                                 (selectionChanged)="onSelectionChanged()" (gridReady)="onGridReady($event)"
@@ -139,7 +140,7 @@
                     <option *ngFor="let lcomember of lcomembershipList" [value]="lcomember.value">{{
                         lcomember.name}}</option>
                 </select> -->
-                <input type="text" matInput [matAutocomplete]="auto" [(ngModel)]="lcomembershipid" maxlength="20"
+                <input type="text" matInput [matAutocomplete]="auto"  maxlength="20"
                     (input)="filterOperators($event)" placeholder="Select LCO Membership"
                     [matAutocompleteDisabled]="false" [value]="selectedOperator?.name">
 
@@ -171,7 +172,7 @@
     <!-- --------------------------------------------- MEBERSHIP--------------------------- -->
 
     <div *ngIf="selectedTab === 'membership'">
-        <div class="row" >
+        <div class="row">
             <div class="col-12 d-flex flex-column flex-xl-row">
                 <div class="col-12 col-xl-6 mb-4 mx-3">
                     <div>
@@ -221,7 +222,7 @@
                                         lcomember.name}}</option>
                                 </select> -->
 
-                                <input type="text" matInput [matAutocomplete]="auto" [(ngModel)]="lcomembershipid"
+                                <input type="text" matInput [matAutocomplete]="auto" 
                                     maxlength="20" (input)="filterOperators($event)" placeholder="Select LCO Membership"
                                     [matAutocompleteDisabled]="false" [value]="selectedOperator?.name">
 

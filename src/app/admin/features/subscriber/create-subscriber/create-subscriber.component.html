@@ -13,23 +13,37 @@
                 <div class="user_details">
                     <div class="input_box">
                         <label>LCO Name</label>
-                        <!-- <input type="text" matInput [matAutocomplete]="auto" formControlName="operatorid"
-                            (input)="filterOperators($event)" placeholder="Select Operator"
-                            [matAutocompleteDisabled]="false" [value]="selectedOperator?.name"> -->
+                        
+                        <!-- <select id="Lco" class="js-states" formControlName="operatorid" [(ngModel)]="operatorid"
+                            >
+                            <option value="0" selected disabled>Select Operator</option>
+                            <option *ngFor="let operator of filteredOperators" [value]="operator.name"  >
+                                {{ operator.name }}
+                            </option>
+                        </select> -->
 
-
-                            <div class="input-container">
-                                <input type="text" matInput [matAutocomplete]="auto" formControlName="operatorid"
+                        <select id="Lco" class="js-states" formControlName="operatorid" [(ngModel)]="operatorid" >
+                            <option value="0" selected disabled>Select Operator</option>
+                            <option 
+                              *ngFor="let operator of filteredOperators" 
+                              [value]="operator.name" 
+                              (ngModelChange)="onOperatorChange($event)">
+                              {{ operator.name }}
+                            </option>
+                          </select>
+                          
+                        <!-- <div class="input-container">
+                            <input type="text" matInput [matAutocomplete]="auto" formControlName="operatorid"
                                 (input)="filterOperators($event)" placeholder="Select Operator"
                                 [matAutocompleteDisabled]="false" [value]="selectedOperator?.name">
-                                <i class="bx bx-chevron-down icon-right"></i>
-                              </div>
+                            <i class="bx bx-chevron-down icon-right"></i>
+                        </div>
                         <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayOperator">
                             <mat-option *ngFor="let operator of filteredOperators" [value]="operator.name"
                                 (click)="onoperatorchange(operator)">
                                 {{ operator.name }}
                             </mat-option>
-                        </mat-autocomplete>
+                        </mat-autocomplete> -->
 
                         <div style="position:relative;font-size: small;">
                             <div *ngIf="submitted && f['operatorid'].errors?.['required']" class="text-danger">
@@ -38,21 +52,28 @@
                     </div>
                     <div class="input_box">
                         <label>Area Name</label>
-                        <!-- <input type="text" matInput [matAutocomplete]="autoArea" formControlName="areaid"
-                            (input)="filterAreas($event)" placeholder="Select Area" [matAutocompleteDisabled]="false"
-                            [value]="selectedArea?.name"> -->
-                            <div class="input-container">
-                                <input type="text" matInput [matAutocomplete]="autoArea" formControlName="areaid"
-                                (input)="filterAreas($event)" placeholder="Select Area" [matAutocompleteDisabled]="false"
-                                [value]="selectedArea?.name">
-                                <i class="bx bx-chevron-down icon-right"></i>
-                              </div>
+
+                        <select id="Area" class="js-states" formControlName="areaid"
+                        [(ngModel)]="areaid"   >
+                            <option value="0" selected disabled>Select Area</option>
+                            <option *ngFor="let area of filteredAreas" [value]="area.name"  (ngModelChange)="onAreaStatusChange($event)">
+                                {{ area.name }}
+                            </option>
+                        </select>
+
+                       
+                        <!-- <div class="input-container">
+                            <input type="text" matInput [matAutocomplete]="autoArea" formControlName="areaid"
+                                (input)="filterAreas($event)" placeholder="Select Area"
+                                [matAutocompleteDisabled]="false" [value]="selectedArea?.name">
+                            <i class="bx bx-chevron-down icon-right"></i>
+                        </div>
                         <mat-autocomplete #autoArea="matAutocomplete" [displayWith]="displayArea">
                             <mat-option *ngFor="let area of filteredAreas" [value]="area.name"
                                 (click)="onAreaStatusChange(area)">
                                 {{ area.name }}
                             </mat-option>
-                        </mat-autocomplete>
+                        </mat-autocomplete> -->
                         <div style="position: relative; font-size: small;">
                             <div *ngIf="submitted && f['areaid'].errors?.['required']" class="text-danger">
                                 Area Name is required</div>
@@ -60,23 +81,27 @@
                     </div>
                     <div class="input_box">
                         <label>Street Name</label>
-                        <!-- <input type="text" placeholder="Select Street" formControlName="streetid" [(ngModel)]="streetid"
-                            [matAutocomplete]="autoStreet" class="example-input" [value]="selectedStreet?.name"
-                            (input)="filterStreet($event)"> -->
+                        <select id="Street" class="js-states" formControlName="streetid" [(ngModel)]="streetid"
+                        (click)="onStreetStatusChange($event)">
+                        <option value="0" selected disabled>Select Street</option>
+                        <option *ngFor="let key of filteredStreet" [value]="key.value">
+                            {{ key.name }}
+                        </option>
+                    </select>
 
-                            
-                            <div class="input-container">
-                                <input type="text" placeholder="Select Street" formControlName="streetid" [(ngModel)]="streetid"
-                                [matAutocomplete]="autoStreet" class="example-input" [value]="selectedStreet?.name"
-                                (input)="filterStreet($event)">
-                                <i class="bx bx-chevron-down icon-right"></i>
-                              </div>
+
+                        <!-- <div class="input-container">
+                            <input type="text" placeholder="Select Street" formControlName="streetid"
+                                [(ngModel)]="streetid" [matAutocomplete]="autoStreet" class="example-input"
+                                [value]="selectedStreet?.name" (input)="filterStreet($event)">
+                            <i class="bx bx-chevron-down icon-right"></i>
+                        </div>
                         <mat-autocomplete #autoStreet="matAutocomplete" [displayWith]="displayStreet">
                             <mat-option *ngFor="let key of filteredStreet" [value]="key.value"
                                 (click)="onStreetStatusChange(key)">
                                 {{ key.name }}
                             </mat-option>
-                        </mat-autocomplete>
+                        </mat-autocomplete> -->
                         <div style="position: relative;font-size: small;">
                             <div *ngIf="submitted && f['streetid'].errors?.['required']" class="text-danger">
                                 STREET Name is required</div>
@@ -155,7 +180,7 @@
                     </div>
 
                     <div class="input_box">
-                        <label for="pass">Landline No</label>
+                        <span for="pass">Landline No</span>
                         <input pattern="^0\d{2,4}\d{6,8}$" maxlength="10" type="text" formControlName="landlineno"
                             (keypress)="onKeydown($event)" placeholder="Enter Landline No"
                             [ngClass]="{'is-invalid': submitted && f['landlineno'].errors }" required />

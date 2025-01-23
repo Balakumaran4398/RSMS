@@ -346,16 +346,16 @@
                 </div>
 
                 <button class="btn mx-2" style="background-color: rgb(26, 129, 133); border-radius: 5px;"
-                    (click)="getExcluding()">
+                    (click)="getRecharge()">
                     <span style="color: white;">Submit</span>
                 </button>
             </div>
-            <div class=" display1" (click)="getExcludingExcel()">
+            <div class=" display1" (click)="getRechargeExcel()">
                 <div class="export-icon  mx-2">
                     <img src="/assets/images/icons/Excel.png" alt="Excel Icon" width="40px">
                     <div class="tooltip">Excel</div>
                 </div>
-                <div class="export-icon " (click)="getExcludingPdf()">
+                <div class="export-icon " (click)="getRechargeExcel()">
                     <img src="/assets/images/icons/pdf.png" alt="PDF Icon" width="40px">
                     <div class="tooltip">Pdf</div>
                 </div>
@@ -366,7 +366,6 @@
     <div class="row">
         <div class="col-md-12 d-flex justify-content-center align-items-start mb-3">
             <div class="col-12 d-flex justify-content-start align-items-center flex-wrap">
-                <!-- Online Type -->
                 <div class="input_box me-3">
                     <select (ngModelChange)="onRechargeType($event)" [(ngModel)]="selectedRechargeType">
                         <option value='' disabled>Select Type</option>
@@ -374,7 +373,6 @@
                     </select>
                 </div>
 
-                <!-- Select Operator -->
                 <div class="input_box me-3">
                     <mat-form-field appearance="outline">
                         <mat-date-range-input [rangePicker]="picker" [max]="today">
@@ -387,7 +385,6 @@
                     </mat-form-field>
                 </div>
 
-                <!-- Select Sub LCO -->
                 <div class="input_box me-3">
                     <div class="">
                         <input type="text" placeholder="Enter Smartcard" [(ngModel)]="smartcard"
@@ -395,10 +392,9 @@
                     </div>
                 </div>
 
-                <!-- Smartcard -->
                 <div class="input_box me-3">
-                    <input type="text" matInput [matAutocomplete]="auto" [(ngModel)]="selectedLcoName"
-                        [disabled]="!isOperator" (input)="filterOperators($event)" placeholder="Select  Operator"
+                    <input type="text" matInput [matAutocomplete]="auto" [(ngModel)]="selectedLcoName" 
+                        [disabled]="!isRechargeOperator" (input)="filterOperators($event)" placeholder="Select Operator"
                         [matAutocompleteDisabled]="false" [value]="selectedOperator?.name">
 
                     <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayOperator">
@@ -412,7 +408,6 @@
                     </mat-autocomplete>
                 </div>
 
-                <!-- Date Range -->
                 <div class="input_box me-3">
                     <select name="user" id="user" [(ngModel)]="useragent" (ngModelChange)="onUserAgentType($event)"
                         [disabled]="!isUseragent">
@@ -429,7 +424,6 @@
                         [value]="selectedSubOperator?.retailerName">
 
                     <mat-autocomplete #auto1="matAutocomplete" [displayWith]="displaysublco">
-                        <!-- <mat-option [value]="0" selected   (click)="onSublcoChange({ operatorId: 0, retailerName: 'All Sub lco' })">All Sub LCO</mat-option> -->
                         <mat-option *ngFor="let operator of filteredSubLcoList" [value]="operator.operatorId"
                             (click)="onSublcochange(operator)">
                             {{ operator.retailerName }}
@@ -438,7 +432,6 @@
                 </div>
 
 
-                <!-- Submit -->
                 <div class="d-flex align-items-center submit">
                     <button class="btn btn-primary me-2 bttn" (click)="getRecharge()">Submit</button>
                     <div class="export-icon me-2" (click)="getRechargeExcel()">

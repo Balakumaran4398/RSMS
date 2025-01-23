@@ -286,6 +286,7 @@ export class PackageManageComponent {
           this.available_bouquet_list.splice(index, 1);
           this.added_bouquet_list.push(item);
           itemsToMove.push(item);
+          console.log('22222222222222', this.available_bouquet_list.length);
         }
       });
       console.log(this.available_bouquet_list);

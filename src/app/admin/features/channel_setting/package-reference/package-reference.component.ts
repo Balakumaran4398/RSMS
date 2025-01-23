@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component } from '@angular/core';
+import { Component } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { BaseService } from 'src/app/_core/service/base.service';
 import { StorageService } from 'src/app/_core/service/storage.service';
@@ -29,7 +29,7 @@ export class PackageReferenceComponent {
       sortable: true,
       resizable: true,
       filter: true,
-     
+
       floatingFilter: true,
       comparator: (valueA: any, valueB: any) => {
         const normalizedA = valueA ? valueA.toString().trim().toLowerCase() : '';
@@ -39,21 +39,19 @@ export class PackageReferenceComponent {
         return 0;
       },
     },
-    rowClassRules: {
-      'always-selected': (params: any) => params.data,
-    },
-    // onFirstDataRendered: (params: { api: { forEachNode: (arg0: (node: any) => void) => void; }; }) => {
-    //   this.selectRowsBasedOnUsername(params);
+    // rowClassRules: {
+    //   'always-selected': (params: any) => params.data,
     // },
+
     paginationPageSize: 10,
     pagination: true,
   }
   rows: any[] = [];
 
-  public rowSelection: any = "multiple";
+  // public rowSelection: any = "multiple";
   agGrid: any;
 
-  constructor(private cdr: ChangeDetectorRef, public dialog: MatDialog, public userservice: BaseService, storageService: StorageService) {
+  constructor(public dialog: MatDialog, public userservice: BaseService, storageService: StorageService) {
     this.username = storageService.getUsername();
     this.role = storageService.getUserRole();
   }
@@ -109,29 +107,7 @@ export class PackageReferenceComponent {
       if (this.gridApi) {
         this.gridApi.selectAll();
       }
-
-
-      // Swal.fire({
-      //   title: 'Success!',
-      //   text: 'Data loaded successfully.',
-      //   icon: 'success',
-      //   timer: 2000,  // 2 seconds
-      //   timerProgressBar: true,
-      //   showConfirmButton: false,
-      //   // willClose: () => {
-      //   //   window.location.reload();  // Reload the page after the timer ends
-      //   // }
-      // });
     },
-      // (error) => {
-      //   // Show error message
-      //   Swal.fire({
-      //     title: 'Error!',
-      //     text: 'There was an error loading the data.',
-      //     icon: 'error',
-      //     confirmButtonText: 'OK'
-      //   });
-      // }
     )
 
   }
@@ -141,35 +117,52 @@ export class PackageReferenceComponent {
     console.log('on grid ready calling');
 
     // this.gridColumnApi = params.columnApi;
+    this.gridApi.forEachNode((node: any) => node.setSelected(true));
+
   }
   onSelectionChanged(event: any) {
-
     console.log(event);
-
     if (this.gridApi) {
       const selectedRows = this.gridApi.getSelectedRows();
-      this.isAnyRowSelected = selectedRows.length > 0;
-
+      // this.isAnyRowSelected = selectedRows.length > 0;
       console.log(this.isAnyRowSelected);
-
       const selectedNodes = event.api.getSelectedNodes();
       const isHeaderSelected = selectedNodes.length === event.api.getDisplayedRowCount();
-
       if (isHeaderSelected) {
         console.log('Header checkbox selected');
       }
-
-      // If no rows are selected, select all rows
-      if (!this.isAnyRowSelected) {
+      if (this.isAnyRowSelected) {
         this.gridApi.selectAll();
       }
-
       console.log("Selected Rows:", selectedRows.length);
       this.rows = selectedRows.length > 0 ? selectedRows : this.gridApi.getDisplayedRowAtIndex(0);
-      // this.selectedIds = this.rows.map((e: any) => e.id);
-      // this.selectedtypes = this.rows.map((e: any) => e.isactive);
     }
   }
+
+  // onSelectionChanged(event: any) {
+  //   if (this.gridApi) {
+  //     const selectedRows = this.gridApi.getSelectedRows();
+  //     const displayedRows = this.gridApi.getDisplayedRowCount();
+  
+  //     const selectedNodes = event.api.getSelectedNodes();
+  //     const isHeaderSelected = selectedNodes.length === displayedRows;
+  
+  
+  //     if (isHeaderSelected || selectedRows.length === 0) {
+  //       // Select all rows programmatically if header is selected or no rows are selected
+  //       this.gridApi.selectAll();
+  //     }
+  
+  //     console.log("Selected Rows:", selectedRows);
+  //     this.rows = this.gridApi.getSelectedRows(); // Ensure all rows are captured
+  //   }
+  // }
+  
+
+  // onHeaderCheckboxClick() {
+  //   const allRowsSelected = this.gridApi.getSelectedNodes().length === this.rowData.length;
+  //   this.gridApi.forEachNode((node: any) => node.setSelected(!allRowsSelected));
+  // }
   private loadData(tab: any): void {
     this.userservice.Cas_type(this.role, this.username).subscribe((data) => {
       this.cas = data;
@@ -178,13 +171,13 @@ export class PackageReferenceComponent {
   columnDefs: any[] = [
     {
       headerName: "S.No", lockPosition: true, valueGetter: 'node.rowIndex+1', headerCheckboxSelection: true,
-      checkboxSelection: true,
+      checkboxSelection: true,width: 100
     },
 
-    { headerName: "CHANNEL NAME", field: '', width: 250 },
-    { headerName: "PACKAGE RATE", field: '', width: 200 },
-    { headerName: "REFERENCE ID", field: '', width: 200 },
-    { headerName: "PRODUCT ID", field: '', width: 200 },
+    { headerName: "CHANNEL NAME", field: '', width: 300 },
+    { headerName: "PACKAGE RATE", field: '', width: 290 },
+    { headerName: "REFERENCE ID", field: '', width: 250 },
+    { headerName: "PRODUCT ID", field: '', width: 250 },
 
   ]
   private updateColumnDefs(tab: string): void {
@@ -192,14 +185,14 @@ export class PackageReferenceComponent {
       this.columnDefs = [
         {
           headerName: "S.No", lockPosition: true, valueGetter: 'node.rowIndex+1', headerCheckboxSelection: true,
-          checkboxSelection: true,
+          checkboxSelection: true, width: 100,
         },
 
-        { headerName: "CHANNEL NAME", field: 'productname', width: 250, cellStyle: { textAlign: 'left' }, },
-        { headerName: "PACKAGE RATE", field: 'packagerate', width: 200, cellStyle: { textAlign: 'center' }, },
-        { headerName: "REFERENCE ID", field: 'orderid', width: 200, cellStyle: { textAlign: 'center' }, },
+        { headerName: "CHANNEL NAME", field: 'productname', width: 300, cellStyle: { textAlign: 'left' }, },
+        { headerName: "PACKAGE RATE", field: 'packagerate', width: 290, cellStyle: { textAlign: 'center' }, },
+        { headerName: "REFERENCE ID", field: 'orderid', width: 250, cellStyle: { textAlign: 'center' }, },
         {
-          headerName: "PRODUCT ID", field: 'casproductid', width: 200, cellStyle: { textAlign: 'center' },
+          headerName: "PRODUCT ID", field: 'casproductid', width: 250, cellStyle: { textAlign: 'center' },
           cellRenderer: (params: any) => {
             const span = document.createElement('span');
             span.innerText = params.value;
@@ -243,14 +236,14 @@ export class PackageReferenceComponent {
       this.columnDefs = [
         {
           headerName: "S.No", lockPosition: true, valueGetter: 'node.rowIndex+1', headerCheckboxSelection: true,
-          checkboxSelection: true,
+          checkboxSelection: true, width: 100,
         },
 
-        { headerName: "CHANNEL NAME", field: 'productname', width: 250,  cellStyle: { textAlign: 'left' },},
-        { headerName: "PACKAGE RATE", field: 'packagerate', width: 200, },
-        { headerName: "REFERENCE ID", field: 'orderid', width: 200, },
+        { headerName: "CHANNEL NAME", field: 'productname', width: 300, cellStyle: { textAlign: 'left' }, },
+        { headerName: "PACKAGE RATE", field: 'packagerate', width: 290, },
+        { headerName: "REFERENCE ID", field: 'orderid', width: 250, },
         {
-          headerName: "PRODUCT ID", field: 'casproductid', width: 200,
+          headerName: "PRODUCT ID", field: 'casproductid', width: 250,
 
           cellRenderer: (params: any) => {
             const span = document.createElement('span');
@@ -295,13 +288,13 @@ export class PackageReferenceComponent {
       this.columnDefs = [
         {
           headerName: "S.No", lockPosition: true, valueGetter: 'node.rowIndex+1', headerCheckboxSelection: true,
-          checkboxSelection: true,
+          checkboxSelection: true, width: 100,
         },
-        { headerName: "CHANNEL NAME", field: 'productname', width: 250 , cellStyle: { textAlign: 'left' },},
-        { headerName: "PACKAGE RATE", field: 'packagerate', width: 200 },
-        { headerName: "REFERENCE ID", field: 'orderid', width: 200 },
+        { headerName: "CHANNEL NAME", field: 'productname', minwidth: 300, cellStyle: { textAlign: 'left' }, },
+        { headerName: "PACKAGE RATE", field: 'packagerate', minwidth: 290 },
+        { headerName: "REFERENCE ID", field: 'orderid', minwidth: 250 },
         {
-          headerName: "PRODUCT ID", field: 'casproductid', width: 200,
+          headerName: "PRODUCT ID", field: 'casproductid', minwidth: 250,
           cellRenderer: (params: any) => {
             const span = document.createElement('span');
             span.innerText = params.value;
@@ -350,6 +343,7 @@ export class PackageReferenceComponent {
       username: this.username,
       type: this.selectedTab
     } as any;
+    // this.rows = this.gridApi.getSelectedRows();
     if (this.rows.length === 0) {
       this.rows = this.gridApi.getDisplayedRowAtIndex(0);
     }
@@ -357,35 +351,8 @@ export class PackageReferenceComponent {
     console.log(requestBody);
 
 
-    // if (this.selectedTab == 1) {
-    //   requestBody['baselist'] = this.rows.map(item => ({
-    //     productname: item.productname,
-    //     casproductid: item.casproductid,
-    //     packagerate: item.packagerate,
-    //     orderid: item.orderid
-    //   }));
-    //   requestBody['baselist'] = this.rows;
-    // } else if (this.selectedTab == 2) {
-    //   requestBody['baselist'] = this.rows.map(item => ({
-    //     productname: item.productname,
-    //     casproductid: item.casproductid,
-    //     packagerate: item.packagerate,
-    //     orderid: item.orderid
-    //   }));
-    //   requestBody['baselist'] = this.rows
-    // } else if (this.selectedTab == 3) {
-    //   requestBody['baselist'] = this.rows.map(item => ({
-    //     productname: item.productname,
-    //     casproductid: item.casproductid,
-    //     packagerate: item.packagerate,
-    //     orderid: item.orderid
-    //   }));
-    //   requestBody['baselist'] = this.rows
-    // }
     Swal.fire({
       title: 'Updating...',
-      // text: 'Please wait while the  is being updated',
-      // allowOutsideClick: false,
       didOpen: () => {
         Swal.showLoading(null);
       }
@@ -398,8 +365,6 @@ export class PackageReferenceComponent {
           text: response.message || 'Product ID updated successfully.',
           icon: 'success',
           timer: 2000,
-          // timerProgressBar: true,
-          // showConfirmButton: false
         });
       },
       (error) => {

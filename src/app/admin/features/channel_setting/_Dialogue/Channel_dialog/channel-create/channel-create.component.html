@@ -81,11 +81,11 @@
             <div class="input_box" style="position: relative;">
                 <label for="paid">Is Paid</label>
                 <mat-form-field appearance="outline" style="margin-top:-0px; width: 100%;">
-                    <mat-select placeholder="Choose IS Paid" formControlName="ispercentage">
+                    <mat-select placeholder="Choose IS Paid" formControlName="ispaid">
                         <mat-option [value]="false">FREE CHANNEL</mat-option>
                         <mat-option [value]="true">PAY CHANNEL</mat-option>
                     </mat-select>
-                    <div *ngIf="form.get('ispercentage')?.invalid && form.get('ispercentage')?.touched"
+                    <div *ngIf="form.get('ispaid')?.invalid && form.get('ispaid')?.touched"
                         class="error-message" style="position: absolute; bottom: -20px; left: 0; font-size: small;">
                         Is Paid is required
                     </div>
