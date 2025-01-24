@@ -26,18 +26,18 @@
                     <span for="channelLogo" class="me-2">Broadcaster Name </span>
                 </div>
                 {{oldBroadcastername}}
-                <!-- <div class="col-12 col-md-6">
-                    <input type="text" [(ngModel)]="oldBroadcastername" class=" flex-grow-1">
-                </div> -->
             </div>
             <div class="input_box  col-12 col-md-12  display align-items-center mb-3">
                 <div class="col-12 col-md-6 ">
                     <span for="channelLogo" class="me-2">Category Name </span>
                 </div>
                 {{oldcategoryname}}
-                <!-- <div class="col-12 col-md-6">
-                    <input type="text" [(ngModel)]="oldBroadcastername" class=" flex-grow-1">
-                </div> -->
+            </div>
+            <div class="input_box  col-12 col-md-12  display align-items-center mb-3">
+                <div class="col-12 col-md-6 ">
+                    <span for="channelLogo" class="me-2">Channel Type </span>
+                </div>
+                {{oldChannelType}}
             </div>
 
             <div class="input_box col-12 col-md-12 display align-items-center mb-3">
@@ -121,8 +121,8 @@
                     <span for="commission" class="me-2">Commission</span>
                 </div>
                 <div class="col-12 col-md-6 ">
-                    <input type="text" [(ngModel)]="commission"  class=" flex-grow-1"
-                        (input)="checkMaxValue()" placeholder="Commission Amount">
+                    <input type="text" [(ngModel)]="commission" class=" flex-grow-1" (input)="checkMaxValue()"
+                        placeholder="Commission Amount">
                 </div>
             </div>
             <br>
@@ -163,8 +163,7 @@
             <div class="input_box d-flex justify-content-end align-items-center">
                 <button type="button" class="btn btn-primary" (click)="onSubmit()" [disabled]="issave"
                     style="color: white;">Update</button>
-                <button type="button" class="btn btn-danger" (click)="onNoClick()"
-                    style="color: white;">cancel</button>
+                <button type="button" class="btn btn-danger" (click)="onNoClick()" style="color: white;">cancel</button>
 
             </div>
         </div>

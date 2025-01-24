@@ -88,7 +88,7 @@ export class LcoCommissionComponent {
       this.lcomembershipname = this.lcomembershipList[0]?.name
       console.log(this.lcomembershipname);
 
-      console.log(this.selectedOperator);
+      console.log(this.selectedOperator.value);
       this.onOperatorChange(this.selectedOperator)
       this.onmembershipchange(this.selectedOperator)
       this.filteredOperators = this.lcomembershipList;
@@ -105,14 +105,25 @@ export class LcoCommissionComponent {
     if (this.agGrid) {
       let newRowData;
       if (this.selectedTab === 'dis_commission') {
+        console.log('dis_commission', this.selectedOperator);
+        this.onOperatorChange(this.selectedOperator);
         newRowData = this.getDisCommissionData('dis_commission');
+        // this.selectedOperator = '';
       } else if (this.selectedTab === 'dis_membership') {
+        console.log('dis_membership',this.selectedOperator);
+        this.onMembershipchange(this.selectedOperator);
         newRowData = this.getDisMembershipData('dis_membership');
+        // this.selectedOperator = '';
       } else if (this.selectedTab === 'commission') {
+        console.log('commission',this.selectedOperator);
+        this.onOperatorChange(this.selectedOperator);
         newRowData = this.getCommissionData('commission');
+        // this.selectedOperator = '';
       } else if (this.selectedTab === 'dmembership') {
+        console.log('dmembership',this.selectedOperator);
+        this.onmembershipchange(this.selectedOperator);
         newRowData = this.getMembershipData('membership');
-
+        // this.selectedOperator = '';
       }
       // this.agGrid.api.setRowData(newRowData);
     }
@@ -148,17 +159,7 @@ export class LcoCommissionComponent {
 
 
   public rowSelection: any = "multiple";
-  // gridOptions: any = {
-  //   defaultany: {
-  //     sortable: true,
-  //     resizable: true,
-  //     filter: true,
-  //     // width: 180,
-  //     floatingFilter: true
-  //   },
-  //   paginationPageSize: 10,
-  //   pagination: true,
-  // }
+ 
   discolumnnDefs: any[] = [];
   domLayout: 'normal' | 'autoHeight' | 'print' = 'autoHeight';
 
@@ -428,7 +429,7 @@ export class LcoCommissionComponent {
       headerName: "S.No", lockPosition: true, valueGetter: 'node.rowIndex+1', width: 100, headerCheckboxSelection: true,
       checkboxSelection: true,
     },
-    { headerName: "OPERATOR NAME", field: 'operatorname', width: 270, },
+    { headerName: "OPERATOR NAME", field: 'operatorname', width: 270, cellStyle: { textAlign: 'left' },},
     { headerName: "OPERATOR ID", field: 'operatorid', width: 220, },
     { headerName: "JOINING DATE", field: 'lcogroupupdateddate', width: 250, filter: true, },
   ];
@@ -436,7 +437,7 @@ export class LcoCommissionComponent {
     {
       headerName: "S.No", lockPosition: true, valueGetter: 'node.rowIndex+1', width: 100,
     },
-    { headerName: "OPERATOR NAME", field: 'operatorname', width: 200 },
+    { headerName: "OPERATOR NAME", field: 'operatorname', width: 200,cellStyle: { textAlign: 'left' }, },
     {
       headerName: 'Actions', minWidth: 140,
       cellRenderer: (params: any) => {
@@ -482,24 +483,29 @@ export class LcoCommissionComponent {
     console.log(this.lcomembershipid);
 
     this.selectedOperator = selectedOperator;
-    this.lcomembershipid = selectedOperator.value
+    this.lcomembershipid = selectedOperator.value;
+    console.log(this.lcomembershipid);
     // this.selectedLcoName = selectedOperator.name;
     // this.lcomembershipname= selectedOperator.name;
     if (this.selectedTab === 'dis_commission') {
 
       this.rowData = [];
       // this.userservice.getDistributorMembershipDetailsByLcogroupid(this.role, this.username, this.lcomembershipid)
-      this.userservice.getDistributorCommissionListByLcoGroupId(this.role, this.username, this.lcomembershipid)
-        .subscribe(
-          (response: HttpResponse<any[]>) => {
-            if (response.status === 200) {
-              this.rowData = response.body;
-            } else if (response.status === 204) {
-              this.swal.Success_204();
-            }
-          },
-          (error) => this.handleError(error)
-        );
+      this.userservice.getDistributorCommissionListByLcoGroupId(this.role, this.username, this.lcomembershipid).subscribe(
+        (response: HttpResponse<any[]>) => {
+          if (response.status === 200) {
+            this.rowData = response.body;
+            // this.lcomembershipid = '';
+            // this.selectedOperator = '';
+          } else if (response.status === 204) {
+            // this.swal.Success_204();
+          }
+        },
+        (error) => this.handleError(error)
+      );
+      console.log(this.selectedOperator);
+
+      // this.selectedOperator = '';
     } else if (this.selectedTab === 'commission') {
       if (this.lcomembershipid === '0') {
         this.lcomembershipid = 0;
@@ -511,7 +517,7 @@ export class LcoCommissionComponent {
             if (response.status === 200) {
               this.rowData = response.body;
             } else if (response.status === 204) {
-              this.swal.Success_204();
+              // this.swal.Success_204();
             }
           },
           (error) => this.handleError(error)
@@ -531,16 +537,16 @@ export class LcoCommissionComponent {
   onmembershipchange(selectedOperator: any) {
     this.selectedOperator = selectedOperator;
     this.selectedLcoName = selectedOperator.name;
-    this.lcomembershipid= selectedOperator.value;
+    this.lcomembershipid = selectedOperator.value;
     // this.userservice.getOperatorlistByGroupId(this.role, this.username, this.lcomembershipid).subscribe(
     this.userservice.getOperatorlistByGroupId(this.role, this.username, this.lcomembershipid).subscribe(
       (response: HttpResponse<any[]>) => {
         if (response.status === 200) {
           this.rowData2 = response.body;
-          this.swal.Success_200();
+          // this.swal.Success_200();
           // this.lcomembershipid='';
         } else if (response.status === 204) {
-          this.swal.Success_204();
+          // this.swal.Success_204();
           this.rowData2 = [];
         }
       },
@@ -573,11 +579,10 @@ export class LcoCommissionComponent {
         if (response.status === 200) {
           this.rowData2 = response.body;
           console.log(response);
-
-          this.swal.Success_200();
+          // this.swal.Success_200();
           // this.lcomembershipid='';
         } else if (response.status === 204) {
-          this.swal.Success_204();
+          // this.swal.Success_204();
           this.rowData2 = [];
         }
       },
@@ -618,7 +623,7 @@ export class LcoCommissionComponent {
         (response: HttpResponse<any[]>) => {
           if (response.status === 200) {
             this.rowData3 = response.body;
-            this.swal.Success_200();
+            // this.swal.Success_200();
             // this.lcomembershipid='';
           } else if (response.status === 204) {
             // this.swal.Success_204();

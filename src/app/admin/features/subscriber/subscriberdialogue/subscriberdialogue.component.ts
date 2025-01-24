@@ -15,6 +15,7 @@ import { SwalService } from 'src/app/_core/service/swal.service';
 import { dateToNumber } from 'ag-charts-community/dist/types/src/module-support';
 import { HttpResponse } from '@angular/common/http';
 import { ChangeDetectorRef } from '@angular/core';
+import { Router } from '@angular/router';
 declare var $: any;
 const moment = _rollupMoment || _moment;
 interface requestBodylogs {
@@ -359,7 +360,7 @@ export class SubscriberdialogueComponent implements OnInit {
     return !!this.f_date || this.datetype;
   }
 
-  constructor(public dialogRef: MatDialogRef<SubscriberdialogueComponent>, private swal: SwalService,
+  constructor(private router: Router, public dialogRef: MatDialogRef<SubscriberdialogueComponent>, private swal: SwalService,
     @Inject(MAT_DIALOG_DATA) public data: any, public userservice: BaseService, private cdr: ChangeDetectorRef, public storageService: StorageService, private fb: FormBuilder, private zone: NgZone) {
     console.log(data);
     this.subscriberdata = data;
@@ -573,7 +574,7 @@ export class SubscriberdialogueComponent implements OnInit {
     });
     $('#smartcard').on('change', (event: any) => {
       this.smartcard = event.target.value;
-      this.onSmartcardList( this.smartcard );
+      this.onSmartcardList(this.smartcard);
     });
     $('#package').select2({
       placeholder: 'Select a Package Name',
@@ -1359,7 +1360,21 @@ export class SubscriberdialogueComponent implements OnInit {
     this.swal.Loading();
     this.userservice.refreshSmartcard(this.role, this.username, this.smartcardno || this.newRefreshSmartcard.smartcard, 0, 3)
       .subscribe((res: any) => {
-        this.swal.success(res?.message);
+        // this.swal.success(res?.message);
+        Swal.fire({
+          title: 'Success!',
+          text: res.message,
+          icon: 'success',
+          timer: 2000,
+          timerProgressBar: true,
+          showConfirmButton: false
+        }).then(() => {
+          // location.reload();
+           this.router.navigate([`/admin/subscriber-full-info/${this.smartcardno}/subsmartcard`]);
+          this.dialogRef.close({ success: true, smartcard: this.smartcardno });
+
+        });
+        // this.dialogRef.close({ success: true });
       }, (err) => {
         this.swal.Error(err?.error?.message);
       });
@@ -1368,7 +1383,18 @@ export class SubscriberdialogueComponent implements OnInit {
     this.swal.Loading();
     this.userservice.deactivationofSmartcard(this.role, this.username, this.smartcardno, 2)
       .subscribe((res: any) => {
-        this.swal.success(res?.message);
+        // this.swal.success(res?.message);
+        Swal.fire({
+          title: 'Success!',
+          text: res.message,
+          icon: 'success',
+          timer: 2000,
+          timerProgressBar: true,
+          showConfirmButton: false
+        }).then(() => {
+           this.router.navigate([`/admin/subscriber-full-info/${this.smartcardno}/subsmartcard`]);
+          this.dialogRef.close({ success: true, smartcard: this.smartcardno });
+        });
       }, (err) => {
         this.swal.Error(err?.error?.message);
       });
@@ -1381,7 +1407,18 @@ export class SubscriberdialogueComponent implements OnInit {
     this.swal.Loading();
     this.userservice.pinchange(this.role, this.username, this.smartcardno, this.newpin, 3, 0)
       .subscribe((res: any) => {
-        this.swal.success(res?.message);
+        // this.swal.success(res?.message);
+        Swal.fire({
+          title: 'Success!',
+          text: res.message,
+          icon: 'success',
+          timer: 2000,
+          timerProgressBar: true,
+          showConfirmButton: false
+        }).then(() => {
+           this.router.navigate([`/admin/subscriber-full-info/${this.smartcardno}/subsmartcard`]);
+          this.dialogRef.close({ success: true, smartcard: this.smartcardno });
+        });
       }, (err) => {
         this.swal.Error(err?.error?.message);
       });
@@ -1390,7 +1427,18 @@ export class SubscriberdialogueComponent implements OnInit {
     this.swal.Loading();
     this.userservice.pvrChange(this.role, this.username, this.smartcardno, this.PVRstatus, 3, 0)
       .subscribe((res: any) => {
-        this.swal.success(res?.message);
+        // this.swal.success(res?.message);
+        Swal.fire({
+          title: 'Success!',
+          text: res.message,
+          icon: 'success',
+          timer: 2000,
+          timerProgressBar: true,
+          showConfirmButton: false
+        }).then(() => {
+           this.router.navigate([`/admin/subscriber-full-info/${this.smartcardno}/subsmartcard`]);
+          this.dialogRef.close({ success: true, smartcard: this.smartcardno });
+        });
       }, (err) => {
         this.swal.Error(err?.error?.message);
       });
@@ -1400,7 +1448,18 @@ export class SubscriberdialogueComponent implements OnInit {
     this.swal.Loading();
     this.userservice.deleteForceMessage(this.role, this.username, this.smartcardno)
       .subscribe((res: any) => {
-        this.swal.success(res?.message);
+        // this.swal.success(res?.message);
+        Swal.fire({
+          title: 'Success!',
+          text: res.message,
+          icon: 'success',
+          timer: 2000,
+          timerProgressBar: true,
+          showConfirmButton: false
+        }).then(() => {
+           this.router.navigate([`/admin/subscriber-full-info/${this.smartcardno}/subsmartcard`]);
+          this.dialogRef.close({ success: true, smartcard: this.smartcardno });
+        });
       }, (err) => {
         this.swal.Error(err?.error?.message);
       });
@@ -1409,7 +1468,18 @@ export class SubscriberdialogueComponent implements OnInit {
     this.swal.Loading();
     this.userservice.forceTuning(this.role, this.username, this.smartcardno)
       .subscribe((res: any) => {
-        this.swal.success(res?.message);
+        // this.swal.success(res?.message);
+        Swal.fire({
+          title: 'Success!',
+          text: res.message,
+          icon: 'success',
+          timer: 2000,
+          timerProgressBar: true,
+          showConfirmButton: false
+        }).then(() => {
+           this.router.navigate([`/admin/subscriber-full-info/${this.smartcardno}/subsmartcard`]);
+          this.dialogRef.close({ success: true, smartcard: this.smartcardno });
+        });
       }, (err) => {
         this.swal.Error(err?.error?.message);
       });
@@ -1438,7 +1508,18 @@ export class SubscriberdialogueComponent implements OnInit {
     this.swal.Loading();
     this.userservice.sendMessage(payload)
       .subscribe((res: any) => {
-        this.swal.success(res?.message);
+        // this.swal.success(res?.message);
+        Swal.fire({
+          title: 'Success!',
+          text: res.message,
+          icon: 'success',
+          timer: 2000,
+          timerProgressBar: true,
+          showConfirmButton: false
+        }).then(() => {
+           this.router.navigate([`/admin/subscriber-full-info/${this.smartcardno}/subsmartcard`]);
+          this.dialogRef.close({ success: true, smartcard: this.smartcardno });
+        });
       }, (err) => {
         this.swal.Error(err?.error?.message);
       });
@@ -1510,20 +1591,23 @@ export class SubscriberdialogueComponent implements OnInit {
       role: this.role,
       username: this.username,
     }
-    // Swal.fire({
-    //   title: 'Processing...',
-    //   text: 'Please wait while we activate the card.',
-    //   icon: 'info',
-    //   allowOutsideClick: false,
-    //   showConfirmButton: false,
-    //   didOpen: () => {
-    //     Swal.showLoading(null);
-    //   }
-    // });
     this.swal.Loading();
     this.userservice.firsttimeActivationOfCard(requestBody)
       .subscribe((res: any) => {
-        this.swal.success(res?.message);
+        // this.swal.success(res?.message);
+        Swal.fire({
+          title: 'Success!',
+          text: res.message,
+          icon: 'success',
+          timer: 2000,
+          timerProgressBar: true,
+          showConfirmButton: false
+        }).then(() => {
+           this.router.navigate([`/admin/subscriber-full-info/${this.smartcardno}/subsmartcard`]);
+          this.dialogRef.close({ success: true, smartcard: this.smartcardno });
+          // location.reload();
+          this.dialogRef.close({ success: true, smartcard: this.smartcardno });
+        });
       }, (err) => {
         this.swal.Error(err?.error?.message);
       });
@@ -1553,7 +1637,18 @@ export class SubscriberdialogueComponent implements OnInit {
     });
     this.userservice.ActivationOfCard(requestBody).
       subscribe((res: any) => {
-        this.swal.success(res?.message);
+        // this.swal.success(res?.message);
+        Swal.fire({
+          title: 'Success!',
+          text: res.message,
+          icon: 'success',
+          timer: 2000,
+          timerProgressBar: true,
+          showConfirmButton: false
+        }).then(() => {
+           this.router.navigate([`/admin/subscriber-full-info/${this.smartcardno}/subsmartcard`]);
+          this.dialogRef.close({ success: true, smartcard: this.smartcardno });
+        });
       }, (err) => {
         this.swal.Error(err?.error?.message);
       });
@@ -1613,7 +1708,7 @@ export class SubscriberdialogueComponent implements OnInit {
     this.userservice.getFirstTimeActivationConfirmation(this.role, this.username, this.newpackagename, this.selectedRechargetype, this.f_date || this.plantype || 4, this.smartcardno, 1, 0)
       .subscribe((data: any) => {
         this.First_list = data;
-        this.swal.success_1(data?.message);
+        // this.swal.success_1(data?.message);
         this.cdr.detectChanges();
 
       }, (err) => {
@@ -1652,7 +1747,18 @@ export class SubscriberdialogueComponent implements OnInit {
     this.swal.Loading();
     this.userservice.lcotransferSinglesmartcard(this.role, this.username, subscriptionOperatorid, this.subid, this.withsubscription, this.smartcardno, 0, 2
     ).subscribe((res: any) => {
-      this.swal.success(res?.message);
+      // this.swal.success(res?.message);
+      Swal.fire({
+        title: 'Success!',
+        text: res.message,
+        icon: 'success',
+        timer: 2000,
+        timerProgressBar: true,
+        showConfirmButton: false
+      }).then(() => {
+         this.router.navigate([`/admin/subscriber-full-info/${this.smartcardno}/subsmartcard`]);
+          this.dialogRef.close({ success: true, smartcard: this.smartcardno });
+      });
     }, (err) => {
       this.swal.Error(err?.error?.message);
     });
@@ -1667,7 +1773,18 @@ export class SubscriberdialogueComponent implements OnInit {
     this.swal.Loading();
     this.userservice.boxIdChange(this.role, this.username, this.smartcardno, this.new_boxid, 0, 2)
       .subscribe((res: any) => {
-        this.swal.success(res?.message);
+        // this.swal.success(res?.message);
+        Swal.fire({
+          title: 'Success!',
+          text: res.message,
+          icon: 'success',
+          timer: 2000,
+          timerProgressBar: true,
+          showConfirmButton: false
+        }).then(() => {
+           this.router.navigate([`/admin/subscriber-full-info/${this.smartcardno}/subsmartcard`]);
+          this.dialogRef.close({ success: true, smartcard: this.smartcardno });
+           });
       }, (err) => {
         this.swal.Error(err?.error?.message || err?.error?.boxidchange.boxid);
       });
@@ -1680,7 +1797,18 @@ export class SubscriberdialogueComponent implements OnInit {
     this.swal.Loading();
     this.userservice.smartcardSuspend(this.role, this.username, this.smartcardno, 0, 4, this.sus_reason)
       .subscribe((res: any) => {
-        this.swal.success(res?.message);
+        // this.swal.success(res?.message);
+        Swal.fire({
+          title: 'Success!',
+          text: res.message,
+          icon: 'success',
+          timer: 2000,
+          timerProgressBar: true,
+          showConfirmButton: false
+        }).then(() => {
+           this.router.navigate([`/admin/subscriber-full-info/${this.smartcardno}/subsmartcard`]);
+          this.dialogRef.close({ success: true, smartcard: this.smartcardno });
+           });
       }, (err) => {
         this.swal.Error(err?.error?.message);
       });
@@ -1689,7 +1817,18 @@ export class SubscriberdialogueComponent implements OnInit {
     this.swal.Loading();
     this.userservice.reactivationofSmartcard(this.role, this.username, this.smartcardno, 0, 3)
       .subscribe((res: any) => {
-        this.swal.success(res?.message);
+        // this.swal.success(res?.message);
+        Swal.fire({
+          title: 'Success!',
+          text: res.message,
+          icon: 'success',
+          timer: 2000,
+          timerProgressBar: true,
+          showConfirmButton: false
+        }).then(() => {
+           this.router.navigate([`/admin/subscriber-full-info/${this.smartcardno}/subsmartcard`]);
+          this.dialogRef.close({ success: true, smartcard: this.smartcardno });
+           });
       }, (err) => {
         this.swal.Error(err?.error?.message);
       });
@@ -1698,7 +1837,18 @@ export class SubscriberdialogueComponent implements OnInit {
     this.swal.Loading();
     this.userservice.smartcardResume(this.role, this.username, this.smartcardno, 0, 5,)
       .subscribe((res: any) => {
-        this.swal.success(res?.message);
+        // this.swal.success(res?.message);
+        Swal.fire({
+          title: 'Success!',
+          text: res.message,
+          icon: 'success',
+          timer: 2000,
+          timerProgressBar: true,
+          showConfirmButton: false
+        }).then(() => {
+           this.router.navigate([`/admin/subscriber-full-info/${this.smartcardno}/subsmartcard`]);
+          this.dialogRef.close({ success: true, smartcard: this.smartcardno });
+           });
       }, (err) => {
         this.swal.Error(err?.error?.message);
       });
@@ -1711,7 +1861,18 @@ export class SubscriberdialogueComponent implements OnInit {
     this.swal.Loading();
     this.userservice.blockSmartcard(this.role, this.username, this.smartcardno, 2, this.block_reason).subscribe(
       (res: any) => {
-        this.swal.success(res?.message);
+        // this.swal.success(res?.message);
+        Swal.fire({
+          title: 'Success!',
+          text: res.message,
+          icon: 'success',
+          timer: 2000,
+          timerProgressBar: true,
+          showConfirmButton: false
+        }).then(() => {
+           this.router.navigate([`/admin/subscriber-full-info/${this.smartcardno}/subsmartcard`]);
+          this.dialogRef.close({ success: true, smartcard: this.smartcardno });
+           });
       }, (err) => {
         this.swal.Error(err?.error?.message);
       });
@@ -1721,7 +1882,18 @@ export class SubscriberdialogueComponent implements OnInit {
     this.swal.Loading();
     this.userservice.cancelSmartcard(this.role, this.username, this.smartcardno, 2, 0,)
       .subscribe((res: any) => {
-        this.swal.success(res?.message);
+        // this.swal.success(res?.message);
+        Swal.fire({
+          title: 'Success!',
+          text: res.message,
+          icon: 'success',
+          timer: 2000,
+          timerProgressBar: true,
+          showConfirmButton: false
+        }).then(() => {
+           this.router.navigate([`/admin/subscriber-full-info/${this.smartcardno}/subsmartcard`]);
+          this.dialogRef.close({ success: true, smartcard: this.smartcardno });
+           });
       }, (err) => {
         this.swal.Error(err?.error?.message);
       });
@@ -1923,7 +2095,7 @@ export class SubscriberdialogueComponent implements OnInit {
   pairSmartcard() {
     this.swal.Loading();
     this.userservice.PairSmartcardOrBoxid(this.role, this.username, !this.ischeck, this.pairedSmartcard, this.subBoxid, 0, 1).subscribe((res: any) => {
-      this.swal.success(res?.message);
+      // this.swal.success(res?.message);
     }, (err) => {
       this.swal.Error(err?.error?.message);
     });

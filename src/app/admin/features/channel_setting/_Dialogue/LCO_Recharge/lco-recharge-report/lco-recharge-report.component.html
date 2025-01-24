@@ -1,5 +1,5 @@
-<div class="">
-    <section class="Tab col-xl-12 col-sm-6 col-12 mb-3 " style="max-height: 73vh;overflow: scroll;">
+<div class="" style="max-height: 800px;overflow: scroll;">
+    <section class="Tab col-xl-12 col-sm-6 col-12 mb-3 " >
         <div class="display tablist justify-content-center align-items-center  mb-3">
             <div class="tab mb-3" [class.active]="selectedTab === '1'" (click)="selectTab('1')">RECHARGE LOG
             </div>
@@ -78,6 +78,7 @@
         <div class="col-12 col-md-12 align-items-center justify-content-center responsive-container mb-3"
             style="margin: auto;">
             <ag-grid-angular #agGrid id="myGrid" domLayout='autoHeight' class="ag-theme-alpine table-class" rowAnimation
+             style="max-height: 775px;overflow: scroll;"
                 [gridOptions]="gridOptions" (gridReady)="onGridReady($event)" [columnDefs]="columnDefs"
                 [rowData]="rowData" [enableCellTextSelection]="true">
             </ag-grid-angular>
@@ -173,7 +174,7 @@
         <div class="col-12 col-md-12 align-items-center justify-content-center responsive-container mb-3"
             style="margin: auto;">
             <ag-grid-angular #agGrid id="myGrid" domLayout='autoHeight' class="ag-theme-alpine table-class" rowAnimation
-                [gridOptions]="gridOptions" [columnDefs]="columnDefs" [rowData]="rowData"
+                [gridOptions]="gridOptions" [columnDefs]="columnDefs" [rowData]="rowData" style="max-height: 775px;overflow: scroll;"
                 [enableCellTextSelection]="true">
             </ag-grid-angular>
         </div>
@@ -205,10 +206,10 @@
                         {{ operator.name }}
                     </li>
                 </ul> -->
-                <input type="text" matInput [matAutocomplete]="auto" (input)="filterOperators($event)"
+                <input type="text" matInput [matAutocomplete]="auto1" (input)="filterOperators($event)"
                     placeholder="Select a Operator" [matAutocompleteDisabled]="false" [value]="selectedOperator?.name">
 
-                <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayOperator">
+                <mat-autocomplete #auto1="matAutocomplete" [displayWith]="displayOperator">
                     <mat-option *ngFor="let operator of filteredOperators1" [value]="operator.name"
                         (click)="onoperatorchange(operator)">
                         {{ operator.name }}
@@ -234,14 +235,14 @@
         <div *ngIf="!smartcard" class="col-12 col-md-12 align-items-center justify-content-center responsive-container mb-3"
             style="margin: auto;">
             <ag-grid-angular #agGrid id="myGrid" domLayout='autoHeight' class="ag-theme-alpine table-class" rowAnimation
-                [gridOptions]="gridOptions" [columnDefs]="columnDefs1" [rowData]="rowData"
+                [gridOptions]="gridOptions" [columnDefs]="columnDefs1" [rowData]="rowData" style="max-height: 775px;overflow: scroll;"
                 [enableCellTextSelection]="true">
             </ag-grid-angular>
         </div>
         <div *ngIf="operatorid && smartcard"  class="col-12 col-md-12 align-items-center justify-content-center responsive-container mb-3"
             style="margin: auto;">
             <ag-grid-angular #agGrid id="myGrid" domLayout='autoHeight' class="ag-theme-alpine table-class" rowAnimation
-                [gridOptions]="gridOptions" [columnDefs]="columnDefs" [rowData]="rowData"
+                [gridOptions]="gridOptions" [columnDefs]="columnDefs" [rowData]="rowData" style="max-height: 775px;overflow: scroll;"
                 [enableCellTextSelection]="true">
             </ag-grid-angular>
         </div>

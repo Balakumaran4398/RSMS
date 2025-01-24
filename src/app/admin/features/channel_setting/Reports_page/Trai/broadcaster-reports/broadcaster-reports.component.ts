@@ -18,10 +18,10 @@ export class BroadcasterReportsComponent implements OnInit {
   returndata: any;
   username: any;
   role: any;
-  rowData: any;
-  addonlist: any;
-  alacartelist: any;
-  baselist: any;
+  rowData: any[]=[];
+  addonlist: any[]=[];
+  alacartelist: any[]=[];
+  baselist: any[]=[];
   msodetails: any;
   selectedMonthName: any;
 
@@ -236,15 +236,6 @@ export class BroadcasterReportsComponent implements OnInit {
   onGridReady(params: { api: any; }) {
     this.gridApi = params.api;
     this.gridColumnApi = params.api;
-
-    // Simulate fetching data after a delay
-    // setTimeout(() => {
-    //   this.rowData = [
-    //     { col1: 'Data 1', col2: 'Data 2', col3: 'Data 3' },
-    //     { col1: 'Data A', col2: 'Data B', col3: 'Data C' },
-    //   ];
-    //   params.api.setRowData(this.rowData); // Update the grid with new data
-    // }, 2000);
   }
   onSearchBroadcaster(event: any) {
     this.searchTerm = event.target.value;
@@ -622,45 +613,14 @@ export class BroadcasterReportsComponent implements OnInit {
         );
     }
   }
-  // getOverAllExcel() {
-  //   this.userService.getOverAllExcelReport(this.role, this.username, this.selectedMonth, this.selectedYear, this.selectedDate, 2)
-  //     .subscribe(
-  //       (response: HttpResponse<any>) => {
-  //         if (response.status === 200) {
-  //           this.rowData = response.body;
-  //           console.log(this.reportTitle);
-  //           const title = (this.reportTitle).toUpperCase();
-  //           const sub = 'MSO ADDRESS:' + this.msodetails;
-  //           const subtitle = this.rowData;
-  //           let areatitle = '';
-  //           let areasub = '';
-  //           let header: string[] = [];
-  //           const datas: Array<any> = [];
-  //           areatitle = 'A1:H2';
-  //           areasub = 'A3:H3';
-  //           const headers = ['S.NO', 'PACKAGE ID', 'PACKAGE NAME', 'CAS', 'AS ON 07th', 'AS ON 14th', 'AVERAGE', 'MONTH & YEAR'];
-  //           this.rowData.forEach((d: any, index: number) => {
-  //             const row = [index + 1, d.customername, d.mobileno, d.smartcard, d.boxid, d.casname, d.productname, d.createddate];
-  //             datas.push(row);
-  //           });
-  //           this.excelService.generatUniversalExcel(areatitle, headers, datas, title, areasub, sub);
-  //         } else if (response.status === 204) {
-  //           this.swal.Success_204();
-  //           this.rowData = [];
-  //         }
-  //       },
-  //       (error) => {
-  //         this.handleApiError(error);
-  //       }
-  //     );
-  // }
+ 
 
   getOverAllExcel() {
     if (!this.selectedYear && !this.selectedMonth && !this.selectedDate) {
       this.submitted = true;
     } else {
 
-      this.userService.getOverAllExcelReport(this.role, this.username, this.selectedMonth, this.selectedYear, this.selectedDate, 2)
+      this.userService.getOverAllPDFReport(this.role, this.username, this.selectedMonth, this.selectedYear, this.selectedDate, 2)
 
         .subscribe((x: Blob) => {
           const blob = new Blob([x], { type: 'application/xlsx' });

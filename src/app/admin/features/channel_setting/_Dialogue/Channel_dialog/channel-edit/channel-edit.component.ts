@@ -30,6 +30,7 @@ export class ChannelEditComponent {
   ispercentage: boolean = true;
   categoryname: any;
   oldcategoryname: any;
+  oldChannelType: any;
   inrAmt: any;
   channelid: any
   channellogo: any;
@@ -76,6 +77,7 @@ export class ChannelEditComponent {
     this.distributorid = data.distributor_id;
     this.categoryname = data.categoryid;
     this.oldcategoryname = data.categoryname;
+    this.oldChannelType  = data.channeltypename;
     this.inrAmt = data.inr_amt;
     this.channel_typename = data.channeltypeid;
     this.status = data.statusdisplay;

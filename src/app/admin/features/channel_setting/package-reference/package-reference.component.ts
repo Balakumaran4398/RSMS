@@ -343,10 +343,10 @@ export class PackageReferenceComponent {
       username: this.username,
       type: this.selectedTab
     } as any;
-    // this.rows = this.gridApi.getSelectedRows();
-    if (this.rows.length === 0) {
-      this.rows = this.gridApi.getDisplayedRowAtIndex(0);
-    }
+    this.rows = this.gridApi.getSelectedRows();
+    // if (this.rows.length === 0) {
+    //   this.rows = this.gridApi.getDisplayedRowAtIndex(0);
+    // }
     requestBody['baselist'] = this.rows;
     console.log(requestBody);
 

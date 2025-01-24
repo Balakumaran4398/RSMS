@@ -132,7 +132,7 @@ span {
 
 .input_box select,
 .input_box input {
-    max-width: 150px;
+    // max-width: 150px;
     margin-left: 8px;
     // min-width: 20vh;
     height: 6vh;
@@ -390,3 +390,18 @@ tr:hover {
     color: white;
     /* Match the header text color */
 }
+
+.enabled-field {
+    // color: gray; 
+    background-color: #f5f5f5; 
+    border: 1px solid #130101; 
+  }
+  
+  /* Define styles for the disabled state */
+  .disabled-field {
+    // color: gray; 
+    background-color: #f5f5f5; 
+    border: 1px solid #ddd; 
+    cursor: not-allowed; 
+  }
+  

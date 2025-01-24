@@ -60,8 +60,8 @@ export class RefundComponent {
     }
 
     const dialogRef = this.dialog.open(LoginrefundComponent, {
-      width: '500px',
-      panelClass: 'custom-dialog-container',
+      // width: '500px',
+      // panelClass: 'custom-dialog-container',
       data: '1'
     });
  

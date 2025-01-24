@@ -12,6 +12,7 @@ import { SwalService } from 'src/app/_core/service/swal.service';
 import { HttpResponse } from '@angular/common/http';
 import { ExcelService } from 'src/app/_core/service/excel.service';
 import { LcologinpageComponent } from '../../subscriber/lcologinpage/lcologinpage.component';
+import { LoginrefundComponent } from '../_Dialogue/LCO_Recharge/loginrefund/loginrefund.component';
 
 @Component({
   selector: 'app-channel',
@@ -95,8 +96,8 @@ export class ChannelComponent {
       headerName: "S.No", lockPosition: true, valueGetter: 'node.rowIndex+1', width: 100, headerCheckboxSelection: true,
       checkboxSelection: true,
     },
-    { headerName: "CHANNEL NAME", field: 'channel_name', },
-    { headerName: "BROADCASTER", field: 'broadcastername', },
+    { headerName: "CHANNEL NAME", field: 'channel_name', cellStyle: { textAlign: 'left' }, },
+    { headerName: "BROADCASTER", field: 'broadcastername', cellStyle: { textAlign: 'left' }, },
     {
       headerName: 'Actions', minWidth: 80, cellStyle: { textAlign: 'center' },
       cellRenderer: (params: any) => {
@@ -371,7 +372,16 @@ export class ChannelComponent {
         });
   }
   generateExcel() {
-     this.excelService.generateChannelDetailsExcel();
+    const dialogRef = this.dialog.open(LoginrefundComponent, {
+      data: '1'
+    });
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result && result.success) {
+        this.excelService.generateChannelDetailsExcel();
+      } else {
+        console.log('Dialog closed without success');
+      }
+    });
   }
   // generateExcel() {
   //   const dialogData = {

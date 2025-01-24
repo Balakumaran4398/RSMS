@@ -34,7 +34,7 @@
             </div>
             <div class=" col-8">
                 <div class="">
-                    <input type="checkbox" [(ngModel)]="sub_ismei" style="width: 35px;height: 20px;">
+                    <input type="checkbox" [disabled]="!ismei" [(ngModel)]="sub_ismei" style="width: 35px;height: 20px;">
                 </div>
             </div>
         </div>
@@ -44,7 +44,7 @@
             </div>
             <div class=" col-8">
                 <div class="">
-                    <input type="text" [disabled]="!ismei" [(ngModel)]="dueAmount" (input)="filterOperators($event)"
+                    <input type="text" [disabled]="!sub_ismei" [(ngModel)]="dueAmount" (input)="filterOperators($event)" (keypress)="onKeydown($event)"
                         placeholder="Enter Due Amount">
                     <!-- <div *ngIf="submitted && !dueAmount" class="text-danger" style="font-size: small;">
                         Due Amount is required

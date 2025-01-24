@@ -63,6 +63,13 @@ export class SubInventoryComponent {
 
   //   })
   // }
+
+  onKeydown(event: KeyboardEvent) {
+    const key = event.key;
+    if (!/^\d$/.test(key) && key !== 'Backspace') {
+      event.preventDefault();
+    }
+  }
   filterOperators(event: any): void {
     const filterValue = event.target.value.toLowerCase();
     this.filteredOperators = this.lco_list.filter(operator =>

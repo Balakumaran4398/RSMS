@@ -1,8 +1,13 @@
 <div *ngIf="type== 'monthly_datewise'">
+    <div class="col-12 col-md-2 d-flex  justify-content-start align-items-start mb-2">
+        <button type="button" class="btn btn-primary bttn" (click)="goBack()"><i
+                class="fa-solid fa-reply mx-2"></i>Back</button>
+    </div>
     <div class="container">
         <div class="mb-3">
             <h4>MONTHLY DATEWISE PAYMENT COLLECTION </h4>
         </div>
+
         <div class="card col-md-12 d-block justify-content-center align-items-center onlinebox" style="padding: 1rem;">
             <div class="col-12 col-md-12  justify-content-center align-items-center  ">
                 <div class="input_box_old display_datewise justify-content-center align-item-center">
@@ -222,14 +227,11 @@
             </div>
 
             <div class="input_box col-10 col-md-3 mx-2 mb-2">
-                <input type="text" matInput [matAutocomplete]="auto" maxlength="20" (input)="filterOperators($event)"
-                    placeholder="Select Operator" [matAutocompleteDisabled]="false" [value]="selectedOperator?.name" />
+                <input type="text" matInput [matAutocomplete]="auto" [(ngModel)]="selectedLcoName"
+                    (input)="filterOperators($event)" placeholder="Select  Operator" [matAutocompleteDisabled]="false"
+                    [value]="selectedOperator?.name">
 
                 <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayOperator">
-                    <!-- <mat-option [value]="0" selected
-                        (click)="onOperatorStatusChange({ value: 0, name: 'All Operator' })">
-                        All Operator
-                    </mat-option> -->
                     <mat-option *ngFor="let operator of filteredOperators" [value]="operator.value"
                         (click)="onSubscriberStatusChange(operator)">
                         {{ operator.name }}
@@ -272,97 +274,10 @@
     <div class="mb-3">
         <h4>RECHARGE HISTORY</h4>
     </div>
-
-    <!-- <div class=" d-block justify-content-center align-item-center">
-        <div class="col-12 col-md-12 display justify-content-start align-items-center mb-3">
-            <div class="display justify-content-start align-items-center">
-                <p class="mx-2 mb-0"
-                    style="text-align: center;color: rgb(0, 12, 22); font-size: 16px;font-weight: 600;">
-                    Types:</p>
-                <div class="input_box mx-2 mb-2">
-                    <select (ngModelChange)="onRechargeType($event)">
-                        <option value='' disabled>Select Type</option>
-                        <option *ngFor="let Type of RechargeType" [value]="Type.value">{{ Type.label }}</option>
-                    </select>
-                </div>
-
-
-                <div class=" d-flex justify-content-center align-item-center">
-                    <mat-form-field appearance="outline">
-                        <mat-date-range-input [rangePicker]="picker">
-                            <input matStartDate matInput placeholder="Start date" (dateChange)="getFromDate($event)">
-                            <input matEndDate matInput placeholder="End date" (dateChange)="getToDate($event)">
-                        </mat-date-range-input>
-                        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-                        <mat-date-range-picker #picker></mat-date-range-picker>
-                    </mat-form-field>
-                </div>
-
-
-                <div *ngIf="!isSmartcard" class="mx-2 mb-2">
-                    <div class="input_box d-flex justify-content-center align-item-center">
-                        <div class="mx-3">
-                      
-                            <input type="text" placeholder="Enter Smartcard" [(ngModel)]="smartcard">
-                        </div>
-
-                    </div>
-                </div>
-                <div *ngIf="!isOperator" class="input_box col-10 col-md-2 mx-2 mb-2">
-                    <input type="text" matInput [matAutocomplete]="auto" [(ngModel)]="selectedLcoName" maxlength="20"
-                        (input)="filterOperators($event)" placeholder="Select  Operator"
-                        [matAutocompleteDisabled]="false" [value]="selectedOperator?.name">
-
-                    <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayOperator">
-                        <mat-option [value]="0" selected
-                            (click)="onOperatorStatusChange({ value: 0, name: 'All Operator' })">All
-                            Operator</mat-option>
-                        <mat-option *ngFor="let operator of filteredOperators" [value]="operator.value"
-                            (click)="onSubscriberStatusChange(operator)">
-                            {{ operator.name }}
-                        </mat-option>
-                    </mat-autocomplete>
-                 
-                </div>
-                <div *ngIf="!isUseragent" class="input_box d-flex justify-content-center align-item-center mx-2 mb-2">
-                    <select name="user" id="user" [(ngModel)]="useragent">
-                        <option *ngFor="let user of UserAgent" [value]="user.value">{{ user.label }}</option>
-                    </select>
-                </div>
-
-
-                <div class="input_box col-10 col-md-2 mx-2 mb-2">
-                    <input type="text" matInput [matAutocomplete]="auto1" [(ngModel)]="selectedSubLcoName"
-                        maxlength="20" (input)="filterSubLco($event)" placeholder="Select Sub Lco"
-                        [matAutocompleteDisabled]="false" [value]="selectedSubOperator?.retailerName">
-
-                    <mat-autocomplete #auto1="matAutocomplete" [displayWith]="displaysublco">
-                        <mat-option *ngFor="let operator of filteredSubLcoList" [value]="operator.operatorId"
-                            (click)="onSublcochange(operator)">
-                            {{ operator.retailerName }}
-                        </mat-option>
-                    </mat-autocomplete>
-
-                </div>
-
-                <button class="btn mx-2" style="background-color: rgb(26, 129, 133); border-radius: 5px;"
-                    (click)="getRecharge()">
-                    <span style="color: white;">Submit</span>
-                </button>
-            </div>
-            <div class=" display1" (click)="getRechargeExcel()">
-                <div class="export-icon  mx-2">
-                    <img src="/assets/images/icons/Excel.png" alt="Excel Icon" width="40px">
-                    <div class="tooltip">Excel</div>
-                </div>
-                <div class="export-icon " (click)="getRechargeExcel()">
-                    <img src="/assets/images/icons/pdf.png" alt="PDF Icon" width="40px">
-                    <div class="tooltip">Pdf</div>
-                </div>
-            </div>
-        </div>
-    </div> -->
-
+    <div class="col-12 col-md-2 d-flex  justify-content-start align-items-start mb-2">
+        <button type="button" class="btn btn-primary bttn" (click)="goBack()"><i
+                class="fa-solid fa-reply mx-2"></i>Back</button>
+    </div>
     <div class="row">
         <div class="col-md-12 d-flex justify-content-center align-items-start mb-3">
             <div class="col-12 d-flex justify-content-start align-items-center flex-wrap">
@@ -373,11 +288,10 @@
                     </select>
                 </div>
 
-                <div class="input_box me-3">
+                <div class=" me-3">
                     <mat-form-field appearance="outline">
                         <mat-date-range-input [rangePicker]="picker" [max]="today">
-                            <input style="margin-left: -10%;width: 22vh;" matStartDate matInput placeholder="Start date"
-                                (dateChange)="getFromDate($event)">
+                            <input matStartDate matInput placeholder="Start date" (dateChange)="getFromDate($event)">
                             <input matEndDate matInput placeholder="End date" (dateChange)="getToDate($event)">
                         </mat-date-range-input>
                         <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
@@ -388,14 +302,16 @@
                 <div class="input_box me-3">
                     <div class="">
                         <input type="text" placeholder="Enter Smartcard" [(ngModel)]="smartcard"
-                            [disabled]="!isSmartcard">
+                            [disabled]="!isSmartcard"
+                            [ngClass]="{ 'enabled-field': isSmartcard, 'disabled-field': !isSmartcard }">
                     </div>
                 </div>
 
                 <div class="input_box me-3">
-                    <input type="text" matInput [matAutocomplete]="auto" [(ngModel)]="selectedLcoName" 
+                    <input type="text" matInput [matAutocomplete]="auto" [(ngModel)]="selectedLcoName"
                         [disabled]="!isRechargeOperator" (input)="filterOperators($event)" placeholder="Select Operator"
-                        [matAutocompleteDisabled]="false" [value]="selectedOperator?.name">
+                        [matAutocompleteDisabled]="false" [value]="selectedOperator?.name"
+                        [ngClass]="{ 'enabled-field': isRechargeOperator, 'disabled-field': !isRechargeOperator }">
 
                     <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayOperator">
                         <mat-option [value]="0" selected
@@ -410,18 +326,18 @@
 
                 <div class="input_box me-3">
                     <select name="user" id="user" [(ngModel)]="useragent" (ngModelChange)="onUserAgentType($event)"
-                        [disabled]="!isUseragent">
-                        <option value="0" disabled>Filter By All User Agent</option>
+                        [disabled]="!isUseragent"
+                        [ngClass]="{ 'enabled-field': isUseragent, 'disabled-field': !isUseragent }">
+                        <option value="0" selected>Filter By All User Agent</option>
                         <option *ngFor="let user of UserAgent" [value]="user.value">{{ user.label }}</option>
                     </select>
                 </div>
-
-
                 <div class="input_box me-3">
                     <input type="text" matInput [matAutocomplete]="auto1" [(ngModel)]="selectedSubLcoName"
                         [disabled]="!isSubLCO" maxlength="20" (input)="filterSubLco($event)"
                         placeholder="Select Sub Lco" [matAutocompleteDisabled]="false"
-                        [value]="selectedSubOperator?.retailerName">
+                        [value]="selectedSubOperator?.retailerName"
+                        [ngClass]="{ 'enabled-field': isSubLCO, 'disabled-field': !isSubLCO }">
 
                     <mat-autocomplete #auto1="matAutocomplete" [displayWith]="displaysublco">
                         <mat-option *ngFor="let operator of filteredSubLcoList" [value]="operator.operatorId"
@@ -445,7 +361,7 @@
         </div>
     </div>
     <ag-grid-angular #agGrid id="myGrid" domLayout='autoHeight' class="ag-theme-alpine table-class" rowAnimation
-        [gridOptions]="gridOptions" [columnDefs]="columnDefs" [rowData]="rowData" (gridReady)="onGridReady($event)"
+        [gridOptions]="gridOptions" [columnDefs]="columnDefs2" [rowData]="rowData" (gridReady)="onGridReady($event)"
         [enableCellTextSelection]="true">
     </ag-grid-angular>
 </div>
@@ -453,7 +369,7 @@
     <div class="mb-3">
         <h4>Online Payment History</h4>
     </div>
-    <div class="col-12 col-md-2 d-flex  justify-content-start align-items-start">
+    <div class="col-12 col-md-2 d-flex  justify-content-start align-items-start mb-2">
         <button type="button" class="btn btn-primary bttn" (click)="goBack()"><i
                 class="fa-solid fa-reply mx-2"></i>Back</button>
     </div>
@@ -470,14 +386,11 @@
 
                 <!-- Select Operator -->
                 <div *ngIf="isOperator" class="input_box me-3">
-                    <input type="text" matInput [matAutocomplete]="auto" maxlength="20"
-                        (input)="filterOperators($event)" placeholder="Select Operator"
+                    <input type="text" matInput [matAutocomplete]="auto" [(ngModel)]="selectedLcoName"
+                        (input)="filterOperators($event)" placeholder="Select  Operator"
                         [matAutocompleteDisabled]="false" [value]="selectedOperator?.name">
+
                     <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayOperator">
-                        <!-- <mat-option [value]="0" selected
-                            (click)="onOperatorStatusChange({ value: 0, name: 'All Operator' })">
-                            All Operator
-                        </mat-option> -->
                         <mat-option *ngFor="let operator of filteredOperators" [value]="operator.value"
                             (click)="onSubscriberStatusChange(operator)">
                             {{ operator.name }}
@@ -503,10 +416,10 @@
                     <input type="text" placeholder="Enter Smartcard" [(ngModel)]="smartcard" class="form-control">
                 </div>
                 <!-- Date Range -->
-                <div class="input_box me-3">
+                <div class=" me-3">
                     <mat-form-field appearance="outline">
                         <mat-date-range-input [rangePicker]="picker" [max]="today">
-                            <input style="margin-left: -10%;width: 22vh;" matStartDate matInput placeholder="Start date"
+                            <input style="width: 22vh;" matStartDate matInput placeholder="Start date"
                                 (dateChange)="getFromDate($event)">
                             <input matEndDate matInput placeholder="End date" (dateChange)="getToDate($event)">
                         </mat-date-range-input>
@@ -535,16 +448,17 @@
 </div>
 <div *ngIf="type== 'sublco_offline'">
     <h4>SUBLCO OFFLINE REPORT</h4>
+    <div class="col-12 col-md-2 d-flex  justify-content-start align-items-start mb-2">
+        <button type="button" class="btn btn-primary bttn" (click)="goBack()"><i
+                class="fa-solid fa-reply mx-2"></i>Back</button>
+    </div>
     <div class="row">
         <div class="col-md-12 d-flex justify-content-center align-items-start mb-3">
             <div class="col-12 d-flex justify-content-start align-items-center flex-wrap">
-
-
-                <div class=" input_box2 me-3" >
-                    <input type="text" matInput [matAutocomplete]="auto" [(ngModel)]="selectedLcoName" 
+                <div class=" input_box2 me-3">
+                    <input type="text" matInput [matAutocomplete]="auto" [(ngModel)]="selectedLcoName"
                         (input)="filterOperators($event)" placeholder="Select  Operator"
                         [matAutocompleteDisabled]="false" [value]="selectedOperator?.name">
-
                     <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayOperator">
                         <mat-option *ngFor="let operator of filteredOperators" [value]="operator.value"
                             (click)="onSubscriberStatusChange(operator)">
@@ -555,9 +469,8 @@
 
                 <div class="input_box2 me-3">
                     <input type="text" matInput [matAutocomplete]="auto1" [(ngModel)]="selectedSubLcoName"
-                         maxlength="20" (input)="filterSubLco($event)"
-                        placeholder="Select Sub Lco" [matAutocompleteDisabled]="false"
-                        [value]="selectedSubOperator?.retailerName">
+                        maxlength="20" (input)="filterSubLco($event)" placeholder="Select Sub Lco"
+                        [matAutocompleteDisabled]="false" [value]="selectedSubOperator?.retailerName">
 
                     <mat-autocomplete #auto1="matAutocomplete" [displayWith]="displaysublco">
                         <!-- <mat-option [value]="0" selected   (click)="onSublcoChange({ operatorId: 0, retailerName: 'All Sub lco' })">All Sub LCO</mat-option> -->
@@ -569,10 +482,10 @@
                 </div>
 
                 <!-- Select Operator -->
-                <div class="input_box me-3">
+                <div class=" me-3">
                     <mat-form-field appearance="outline">
                         <mat-date-range-input [rangePicker]="picker" [max]="today">
-                            <input style="margin-left: -10%;width: 22vh;" matStartDate matInput placeholder="Start date"
+                            <input style="width: 22vh;" matStartDate matInput placeholder="Start date"
                                 (dateChange)="getFromDate($event)">
                             <input matEndDate matInput placeholder="End date" (dateChange)="getToDate($event)">
                         </mat-date-range-input>
@@ -582,7 +495,8 @@
                 </div>
                 <!-- Submit -->
                 <div class="d-flex align-items-center submit">
-                    <button class="btn btn-primary me-2 bttn" (click)="  getSubLcoOfflineDetailsReport()">Submit</button>
+                    <button class="btn btn-primary me-2 bttn"
+                        (click)="  getSubLcoOfflineDetailsReport()">Submit</button>
                     <div class="export-icon me-2" (click)="getSubLcoOfflinerDetailsDownload(2)">
                         <img src="/assets/images/icons/Excel.png" alt="Excel Icon">
                     </div>
@@ -657,11 +571,11 @@
             <div class="col-md-12 d-flex justify-content-center align-items-start mb-3">
                 <div class="col-12 d-flex justify-content-start align-items-center flex-wrap">
 
-                    <div class="input_box me-3">
+                    <div class=" me-3">
                         <mat-form-field appearance="outline">
                             <mat-date-range-input [rangePicker]="picker" [max]="today">
-                                <input matStartDate matInput placeholder="Start date"
-                                    style="margin-left: -10%;width: 22vh;" (dateChange)="getFromDate($event)">
+                                <input matStartDate matInput placeholder="Start date" style="width: 22vh;"
+                                    (dateChange)="getFromDate($event)">
                                 <input matEndDate matInput placeholder="End date" (dateChange)="getToDate($event)"
                                     [max]="today">
                             </mat-date-range-input>
@@ -711,13 +625,13 @@
 </div>
 
 <div *ngIf="type== 'subscriber_bill'">
+    <div class="col-12 col-md-2 d-flex  justify-content-start align-items-start mb-2">
+        <button type="button" class="btn btn-primary bttn" (click)="goBack()"><i
+                class="fa-solid fa-reply mx-2"></i>Back</button>
+    </div>
     <div class="row " style="padding: 1rem;max-height: 775px;overflow: scroll;">
         <h4>SUBSCRIBER BILL</h4>
-        <!-- <div class="col-12 col-md-2 d-flex  justify-content-start align-items-start">
-            <button type="button" class="btn btn-primary bttn" (click)="goBack()"><i
-                    class="fa-solid fa-reply mx-2"></i>Back</button>
-        </div> -->
-        <br /><br />
+          <br /><br />
         <!-- <input placeholder="Enter the smartcard..." type="text" name="text" class="input_sb"
             (input)="checkDataForBill()" [(ngModel)]="smartcard"><br /><br /> -->
         <!-- <div class="row col-12 col-md-5 input_box1 " style="padding: 1rem;"> -->
@@ -924,10 +838,10 @@
                     </mat-option>
                 </mat-autocomplete>
             </div>
-            <div class="input_box_old me-3">
+            <div class=" me-3">
                 <mat-form-field appearance="outline">
                     <mat-date-range-input [rangePicker]="picker" [max]="today">
-                        <input style="margin-left: -10%;width: 22vh;" matStartDate matInput placeholder="Start date"
+                        <input style="width: 22vh;" matStartDate matInput placeholder="Start date"
                             (dateChange)="getFromDate($event)">
                         <input matEndDate matInput placeholder="End date" (dateChange)="getToDate($event)">
                     </mat-date-range-input>
@@ -1178,21 +1092,18 @@
             </div>
 
             <div *ngIf="isLcoOperator" class=" input_box mx-2 mb-2">
-                <input type="text" style="max-width: 200px;" matInput [matAutocomplete]="auto"
-                    (input)="filterOperators($event)" placeholder="Select Operator" [matAutocompleteDisabled]="false"
-                    [value]="selectedOperator?.name" />
+
+                <input type="text" matInput [matAutocomplete]="auto" [(ngModel)]="selectedLcoName"
+                    (input)="filterOperators($event)" placeholder="Select  Operator" [matAutocompleteDisabled]="false"
+                    [value]="selectedOperator?.name">
 
                 <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayOperator">
-                    <!-- <mat-option [value]="0" selected
-                        (click)="onOperatorStatusChange({ value: 0, name: 'All Operator' })">
-                        All Operator
-                    </mat-option> -->
-
                     <mat-option *ngFor="let operator of filteredOperators" [value]="operator.value"
                         (click)="onSubscriberStatusChange(operator)">
                         {{ operator.name }}
                     </mat-option>
                 </mat-autocomplete>
+
             </div>
 
             <div *ngIf="isLcoSmartcard" class="row col-12 col-md-5" style="padding: 1rem;">

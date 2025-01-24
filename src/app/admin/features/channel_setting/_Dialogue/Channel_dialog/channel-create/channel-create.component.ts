@@ -38,6 +38,7 @@ export class ChannelCreateComponent {
       {
         channel_name: ['', Validators.required],
         channel_logo: [null, Validators.required],
+        type: ['', Validators.required],
         channel_freq: ['', Validators.required],
         channel_desc: ['', Validators.required],
         ts_id: ['', [Validators.required,]],
@@ -131,9 +132,12 @@ export class ChannelCreateComponent {
 
 
     if (this.selectedFile) {
-      fd.append('channel_logo', this.selectedFile );
+      fd.append('channel_logo', this.selectedFile);
+      fd.append('type', 'true'); 
     } else {
-      fd.append('channel_logo', this.selectedFile || null);
+      const dummyFile = new Blob(['Dummy content'], { type: 'text/plain' });
+      fd.append('channel_logo', dummyFile, 'dummy.txt'); 
+      fd.append('type', 'false'); 
     }
     fd.append('channel_freq', this.form?.get('channel_freq')?.value);
     fd.append('channel_desc', this.form?.get('channel_desc')?.value);

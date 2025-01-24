@@ -513,46 +513,105 @@ export class CreateSubscriberComponent {
       'formsubmissiondate', 'addressproof', 'addressprooftypeid', 'idproof', 'idprooftypeid', 'address', 'installaddress',
     ];
 
-    this.swal.Loading();
-    this.userservice.createSubscriber(this.form.value).subscribe(
-      (data: any) => {
-        this.form.removeControl('addressprooftypeid');
-        this.form.addControl('addressprooftypeid', new FormControl(addressprooftypeid));
-        this.form.removeControl('idprooftypeid');
-        this.form.addControl('idprooftypeid', new FormControl(idprooftypeid));
-        Swal.fire({
-          icon: 'success',
-          title: 'Success',
-          text: data.message || 'Subscriber created successfully!',
-          timer: 3000,
-          timerProgressBar: true,
-          showConfirmButton: false
-        }).then(() => {
-          window.location.reload()
-        });
-      },
-      (error) => {
-        console.log(error);
-        const errorMessage = errorFields
-          .map(field => error?.error?.[field])
-          .find(message => message) || 'An error occurred while creating the subscriber.'
+    // if (this.form.invalid) {
+    //   this.form.markAllAsTouched();
+    //   console.log('45353453');
+      
+    //   // Swal.fire({
+    //   //   icon: 'warning',
+    //   //   title: 'Validation Error',
+    //   //   text: 'Please fill in all required fields correctly.',
+    //   //   timer: 3000,
+    //   //   timerProgressBar: true,
+    //   //   showConfirmButton: false
+    //   // });
+    //   // return;
+    // }
+    // this.swal.Loading();
+    // this.userservice.createSubscriber(this.form.value).subscribe(
+    //   (data: any) => {
+    //     this.form.removeControl('addressprooftypeid');
+    //     this.form.addControl('addressprooftypeid', new FormControl(addressprooftypeid));
+    //     this.form.removeControl('idprooftypeid');
+    //     this.form.addControl('idprooftypeid', new FormControl(idprooftypeid));
+    //     Swal.fire({
+    //       icon: 'success',
+    //       title: 'Success',
+    //       text: data.message || 'Subscriber created successfully!',
+    //       timer: 3000,
+    //       timerProgressBar: true,
+    //       showConfirmButton: false
+    //     }).then(() => {
+    //       window.location.reload()
+    //     });
+    //   },
+    //   (error) => {
+    //     console.log(error);
+    //     const errorMessage = errorFields
+    //       .map(field => error?.error?.[field])
+    //       .find(message => message) || 'An error occurred while creating the subscriber.'
 
-        this.form.removeControl('addressprooftypeid');
-        this.form.addControl('addressprooftypeid', new FormControl(addressprooftypeid))
-        this.form.removeControl('idprooftypeid');
-        this.form.addControl('idprooftypeid', new FormControl(idprooftypeid));
-        Swal.fire({
-          icon: 'error',
-          title: 'Error',
-          text: errorMessage,
-          timer: 3000,
-          timerProgressBar: true,
-          showConfirmButton: false
-        }).then(() => {
-          this.form.markAllAsTouched();
-        });
+    //     this.form.removeControl('addressprooftypeid');
+    //     this.form.addControl('addressprooftypeid', new FormControl(addressprooftypeid))
+    //     this.form.removeControl('idprooftypeid');
+    //     this.form.addControl('idprooftypeid', new FormControl(idprooftypeid));
+    //     Swal.fire({
+    //       icon: 'error',
+    //       title: 'Error',
+    //       text: errorMessage,
+    //       timer: 3000,
+    //       timerProgressBar: true,
+    //       showConfirmButton: false
+    //     })
+    //   }
+    // );
+
+  
+      // Check if the form is invalid
+      if (this.form.invalid) {
+        this.form.markAllAsTouched(); // Highlight all invalid fields
+        console.log('Form Validation Failed:', this.form.value);
+ 
+        return; 
       }
-    );
+    
+      this.swal.Loading();
+    
+      this.userservice.createSubscriber(this.form.invalid).subscribe(
+        (data: any) => {
+          Swal.fire({
+            icon: 'success',
+            title: 'Success',
+            text: data.message || 'Subscriber created successfully!',
+            timer: 3000,
+            timerProgressBar: true,
+            showConfirmButton: false
+          }).then(() => {
+            window.location.reload(); // Refresh the page after success
+          });
+        },
+        (error) => {
+          console.log('Form Submission Error:', error); // Debug logs
+          const errorFields = ['addressprooftypeid', 'idprooftypeid']; // Adjust as per your fields
+          const errorMessage = errorFields
+            .map(field => error?.error?.[field])
+            .find(message => message) || 'An error occurred while creating the subscriber.';
+    
+          // Display error popup
+          Swal.fire({
+            icon: 'error',
+            title: 'Error',
+            text: errorMessage,
+            timer: 3000,
+            timerProgressBar: true,
+            showConfirmButton: false
+          });
+        }
+      );
+    
+    
+    //   return;
+    // }
   }
   onKeydown(event: KeyboardEvent) {
     const key = event.key;
@@ -591,41 +650,8 @@ export class CreateSubscriberComponent {
   //     this.filteredAreas = this.area_list;
   //   })
   // }
-
-  onAreaStatusChange(area: any): void {
-    console.log('selecterd Area', area);
-
-
-    const match = area.match(/^(.+)\((\d+)\)$/);
-
-    if (match) {
-      const areaName = match[1].trim();
-      const areaId = match[2];
-      this.selectedArea = areaName;
-      this.areaid = areaId;
-      console.log(this.areaid);
-      console.log(this.selectedArea);
-
-      // this.selectedArea = area;
-      // this.areaid = area.value;
-      this.form.patchValue({
-        areaid: this.areaid,
-      });
-      this.userservice.getStreetListByAreaid(this.role, this.username, this.areaid).subscribe((data: any) => {
-        this.street_list = Object.keys(data).map(key => {
-          const value = data[key];
-          const name = key;
-          return { name: name, value: value };
-        });
-        this.filteredStreet = this.street_list;
-      })
-    } else {
-      console.error('Invalid Area format. Expected "Name (ID)" format.');
-    }
-  }
   onOperatorChange(operator: any): void {
     const match = operator.match(/^(.+)\((\d+)\)$/);
-
     if (match) {
       const operatorName = match[1].trim();
       const operatorId = match[2];
@@ -635,11 +661,6 @@ export class CreateSubscriberComponent {
         operatorid: this.operatorid,
       });
       this.selectedOperator = operator;
-      // console.log(this.selectedOperator);
-
-      // this.operatorid = operator.value;
-      // console.log(this.operatorid);
-
       this.form.patchValue({
         operatorid: this.operatorid,
       });
@@ -655,6 +676,32 @@ export class CreateSubscriberComponent {
       console.error('Invalid operator format. Expected "Name (ID)" format.');
     }
   }
+  onAreaStatusChange(area: any): void {
+    console.log('selecterd Area', area);
+    const match = area.match(/^(.+)\((\d+)\)$/);
+    if (match) {
+      const areaName = match[1].trim();
+      const areaId = match[2];
+      this.selectedArea = areaName;
+      this.areaid = areaId;
+      console.log(this.areaid);
+      console.log(this.selectedArea);
+      this.form.patchValue({
+        areaid: this.areaid,
+      });
+      this.userservice.getStreetListByAreaid(this.role, this.username, this.areaid).subscribe((data: any) => {
+        this.street_list = Object.keys(data).map(key => {
+          const value = data[key];
+          const name = key;
+          return { name: name, value: value };
+        });
+        this.filteredStreet = this.street_list;
+      })
+    } else {
+      console.error('Invalid Area format. Expected "Name (ID)" format.');
+    }
+  }
+
   onStreetStatusChange(street: any) {
     console.log('selected Street', street);
     const match = street.match(/^(.+)\((\d+)\)$/);
@@ -663,15 +710,16 @@ export class CreateSubscriberComponent {
       const streetid = match[2];
       this.selectedStreet = streetname;
       this.streetid = streetid;
-      // this.selectedStreet = street;
-      // this.streetid = street.value;
       this.form.patchValue({
         streetid: this.streetid,
       });
+      this.filteredStreet = this.street_list;
     } else {
       console.error('Invalid street format. Expected "Name (ID)" format.');
     }
   }
+
+
   onReset(): void {
     this.submitted = false;
     this.form.reset();

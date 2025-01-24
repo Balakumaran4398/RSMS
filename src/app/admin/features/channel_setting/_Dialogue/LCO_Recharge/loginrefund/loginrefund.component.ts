@@ -126,29 +126,6 @@ export class LoginrefundComponent {
     });
   }
 
-  // exit() {
-  //   const role = this.storageservice.getUserRole();
-  //   this.form.reset();
-  //   this.isLoggedIn = false;
-
-  //   Swal.fire({
-  //     title: 'Exited',
-  //     text: 'You have exited the login form.',
-  //     icon: 'info',
-  //     showCancelButton: true,
-  //     confirmButtonText: 'OK',
-  //     cancelButtonText: 'Cancel'
-  //   }).then((result) => {
-  //     if (result.isConfirmed) {
-  //       if (role === 'ROLE_USER' || role === 'ROLE_RECEPTION') {
-  //         this.router.navigate(['admin/home']).then(() => {
-  //         });
-  //       }
-  //     } else if (result.dismiss === Swal.DismissReason.cancel) {
-  //       this.router.navigate(['admin/lco_recharge']).then(() => {
-  //       });
-  //     }
-  //   });
-  // }
+  
 
 }

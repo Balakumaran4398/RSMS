@@ -10,6 +10,7 @@ import Swal from 'sweetalert2';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
+import { LogarithmicScale } from 'chart.js';
 
 export interface SubscriberData {
   smartcard: string;
@@ -86,7 +87,7 @@ export class MsorDialogueportsComponent implements OnInit {
 
 
   today = new Date();
-  selectedOnlineType: any = "1";
+  selectedOnlineType: any = 1;
 
   showDropdown: boolean = true;
   subscriberList: any[] = [];
@@ -113,6 +114,7 @@ export class MsorDialogueportsComponent implements OnInit {
     { label: "Smartcard", value: 2 },
     { label: "All", value: 3 },
   ]
+
   TypeIncluding: any[] = [
     { label: "ALL", value: 3 },
     { label: "RECHARGE", value: 1 },
@@ -163,6 +165,8 @@ export class MsorDialogueportsComponent implements OnInit {
   rowData: any[] = []
   rowData1: any[] = []
   columnDefs: any[] = []
+  columnDefs2: any[] = []
+
   gridApi: any;
   // --------------------lcowiseactive report-----------
   selectedlcocas: any = '0';
@@ -204,6 +208,11 @@ export class MsorDialogueportsComponent implements OnInit {
     this.operatorList();
     // this.subLcoList('')
     this.onRechargeType(this.selectedRechargeType);
+
+    this.onOnlineType( this.selectedOnlineType)
+    console.log(this.selectedRechargeType);
+    console.log(this.selectedOnlineType);
+
     this.onDateChange();
 
 
@@ -211,6 +220,14 @@ export class MsorDialogueportsComponent implements OnInit {
     this.getTotalOperatorReport();
     this.fromdate = this.fromdate ? this.formatDate(this.fromdate) : this.formatDate(new Date());
     this.todate = this.todate ? this.formatDate(this.todate) : this.formatDate(new Date());
+
+    // const selectedType = this.RechargeType.find((type) => type.label === "All");
+
+    // if (selectedType) {
+    //   console.log(selectedType);
+    //   this.RechargeType = selectedType.label;
+    //   console.log(this.RechargeType);
+    // }
   }
 
   onDateChange() {
@@ -223,36 +240,6 @@ export class MsorDialogueportsComponent implements OnInit {
       this.isOperator = false
     }
   }
-  // setReportTitle() {
-  //   console.log('type',this.type);
-
-  //   switch (this.type) {
-  //     case '1':
-  //       // this.reportTitle = 'Monthly Broadcaster Report';
-  //       break;
-  //     case '2':
-  //       // this.reportTitle = 'Over All Product Report';
-  //       break;
-  //     case '3':
-  //       // this.reportTitle = 'Over All Base Product / Universal Count Report';
-  //       break;
-  //     case '4':
-  //       // this.reportTitle = 'Over All Base Product Report';
-  //       break;
-  //     case '5':
-  //       // this.reportTitle = 'Monthly Broadcaster Caswise Report';
-  //       break;
-  //     case '6':
-  //       // this.reportTitle = 'Channel Aging Report';
-  //       break;
-  //     case '7':
-  //       // this.reportTitle = 'Package Aging Report';
-  //       break;
-  //     default:
-  //       // this.reportTitle = 'Unknown Report';
-  //   }
-  // }
-
   generateMonths() {
     this.months = [
       { value: '01', name: 'January' },
@@ -270,9 +257,6 @@ export class MsorDialogueportsComponent implements OnInit {
     ];
   }
   onMonthChange(event: any) {
-    // this.selectedMonthName = event.target.name;
-    console.log(event);
-
     if (this.selectedMonth !== '0') {
       this.selectedMonthName = this.months.find(month => month.value === this.selectedMonth)?.name || '';
     }
@@ -283,7 +267,7 @@ export class MsorDialogueportsComponent implements OnInit {
   generateYears() {
     const startYear = 2012;
     const currentYear = new Date().getFullYear();
-    this.years = []; // Initialize the array
+    this.years = []; 
     for (let year = currentYear; year >= startYear; year--) {
       this.years.push(year);
     }
@@ -359,14 +343,15 @@ export class MsorDialogueportsComponent implements OnInit {
       this.todate = 0;
     }
   }
+  rechargeOperatorValue: any;
   onRechargeType(selectedValue: any) {
     console.log(selectedValue);
+    this.rechargeOperatorValue = selectedValue;
+    console.log(this.rechargeOperatorValue);
 
-    // if (this.type != 'recharge_history') {
-    //   console.log('if condition');
+
     if (selectedValue == 1) {
       console.log('dfsfdsfdsf', this.isOperator);
-
       this.isSmartcard = false;
       this.isRechargeOperator = true;
       this.isUseragent = true;
@@ -399,10 +384,75 @@ export class MsorDialogueportsComponent implements OnInit {
       this.selectedSubLcoName = 0;
       this.useragent = 0;
       this.smartcard = '';
+
     } else {
       return
     }
-    // }
+    console.log(this.rechargeOperatorValue);
+
+    this.columnDefs2 = this.rechargeOperatorValue == 3
+      ? [
+        { headerName: "S.No", lockPosition: true, valueGetter: 'node.rowIndex+1', headerCheckboxSelection: false, checkboxSelection: false, width: 90 },
+        { headerName: 'CUSTOMER NAME', field: 'customername', width: 150 },
+        { headerName: 'AREA ID', field: 'dummyarea', width: 150, cellStyle: { textAlign: 'center' } },
+        { headerName: 'CUSTOMER NO', field: 'customerno', width: 150, cellStyle: { textAlign: 'center' } },
+        { headerName: 'SMARTCARD', field: 'referenceid', width: 200 },
+        { headerName: 'PACKAGE NAME', field: 'productname', width: 150 },
+        { headerName: 'ACTION', field: 'remarks2', width: 150 },
+        { headerName: 'TRANSACTION TYPE', field: 'remarks', width: 150, cellStyle: { textAlign: 'center' } },
+        { headerName: 'DAYS', field: 'days', width: 120, cellStyle: { textAlign: 'center' } },
+        { headerName: 'DISOLDBALANCE', field: 'disoldbalance', width: 120, cellStyle: { textAlign: 'center' } },
+        { headerName: 'DISAMOUNT', field: 'disamount', width: 120, cellStyle: { textAlign: 'center' } },
+        { headerName: 'DISCURRENTBALANCE', field: 'disnewbalance', width: 120, cellStyle: { textAlign: 'center' } },
+        { headerName: 'SUBLCOOLDBALANCE', field: 'sublcooldbalance', width: 120, cellStyle: { textAlign: 'center' } },
+        { headerName: 'SUBLCOAMOUNT', field: 'sublcoamount', width: 120, cellStyle: { textAlign: 'center' } },
+        { headerName: 'SUBLCONEWBALANCE', field: 'sublconewbalance', width: 120, cellStyle: { textAlign: 'center' } },
+        { headerName: 'BEFORE BALANCE', field: 'oldbalance', width: 150, cellStyle: { textAlign: 'center' } },
+        { headerName: 'LCO AMOUNT', field: 'lcoamount', width: 150, cellStyle: { textAlign: 'center', color: 'green' } },
+        { headerName: 'AFTER BALANCE', field: 'currentbalance', width: 150, cellStyle: { textAlign: 'center' } },
+        { headerName: 'TRANSACTION DATE', field: 'transactiondate', width: 150 },
+        { headerName: 'EXPIRY DATE', field: 'expirydate', width: 150 },
+        {
+          headerName: 'USER AGENT', field: 'useragent', width: 150,
+          valueGetter: (params: any) => {
+            const useragent = params.data.useragent || '';
+            const remarks1 = params.data.remarks1 || '';
+            const operatorname = params.data.operatorname || '';
+            return `${useragent} -[( ${operatorname})-( ${remarks1})]`;
+          },
+        },
+        { headerName: 'ADDRESS', field: 'address', width: 150 },
+        { headerName: 'AREA NAME', field: 'areaname', width: 150 },
+        { headerName: 'COMMENT', field: 'comment', width: 150 },
+      ]
+      : [
+        { headerName: "S.No", lockPosition: true, valueGetter: 'node.rowIndex+1', headerCheckboxSelection: false, checkboxSelection: false, width: 90 },
+        { headerName: 'CUSTOMER NAME', field: 'customername', width: 150 },
+        { headerName: 'AREA ID', field: 'dummyarea', width: 150, cellStyle: { textAlign: 'center' } },
+        { headerName: 'CUSTOMER NO', field: 'customerno', width: 150, cellStyle: { textAlign: 'center' } },
+        { headerName: 'SMARTCARD', field: 'referenceid', width: 200 },
+        { headerName: 'PACKAGE NAME', field: 'productname', width: 150 },
+        { headerName: 'ACTION', field: 'remarks2', width: 150 },
+        { headerName: 'TRANSACTION TYPE', field: 'remarks', width: 150, cellStyle: { textAlign: 'center' } },
+        { headerName: 'DAYS', field: 'days', width: 120, cellStyle: { textAlign: 'center' } },
+        { headerName: 'BEFORE BALANCE', field: 'oldbalance', width: 150, cellStyle: { textAlign: 'center' } },
+        { headerName: 'LCO AMOUNT', field: 'lcoamount', width: 150, cellStyle: { textAlign: 'center', color: 'green' } },
+        { headerName: 'AFTER BALANCE', field: 'currentbalance', width: 150, cellStyle: { textAlign: 'center' } },
+        { headerName: 'TRANSACTION DATE', field: 'transactiondate', width: 150 },
+        { headerName: 'EXPIRY DATE', field: 'expirydate', width: 150 },
+        {
+          headerName: 'USER AGENT', field: 'useragent', width: 150,
+          valueGetter: (params: any) => {
+            const useragent = params.data.useragent || '';
+            const remarks1 = params.data.remarks1 || '';
+            const operatorname = params.data.operatorname || '';
+            return `${useragent} -[( ${operatorname})-( ${remarks1})]`;
+          },
+        },
+        { headerName: 'ADDRESS', field: 'address', width: 150 },
+        { headerName: 'AREA NAME', field: 'areaname', width: 150 },
+        { headerName: 'COMMENT', field: 'comment', width: 150 },
+      ];
   }
 
   onUserAgentType(selectedValue: any) {
@@ -425,6 +475,7 @@ export class MsorDialogueportsComponent implements OnInit {
 
   onOnlineType(selectedValue: any) {
     console.log(selectedValue);
+    console.log('ONLINE PAYMENT');
 
     if (selectedValue == 1) {
       this.isSmartcard = false;
@@ -625,8 +676,6 @@ export class MsorDialogueportsComponent implements OnInit {
         },
       ]
     } else if (this.type == 'recharge_deduction_excluding') {
-
-
       if (this.selectedOperator.value == 0) {
         this.columnDefs = [
           { headerName: "S.No", lockPosition: true, valueGetter: 'node.rowIndex+1', headerCheckboxSelection: false, checkboxSelection: false, width: 80 },
@@ -668,36 +717,7 @@ export class MsorDialogueportsComponent implements OnInit {
         { headerName: 'AMOUNT', field: 'total', width: 150, cellStyle: { textAlign: 'center', color: 'green' } },
       ]
     }
-    else if (this.type == 'recharge_history') {
-      this.columnDefs = [
-        { headerName: "S.No", lockPosition: true, valueGetter: 'node.rowIndex+1', headerCheckboxSelection: false, checkboxSelection: false, width: 90 },
-        { headerName: 'CUSTOMER NAME', field: 'customername', width: 150 },
-        { headerName: 'AREA ID', field: 'dummyarea', width: 150, cellStyle: { textAlign: 'center' }, },
-        { headerName: 'CUSTOMER NO', field: 'customerno', width: 150, cellStyle: { textAlign: 'center' }, },
-        { headerName: 'SMARTCARD	', field: 'referenceid', width: 200 },
-        { headerName: 'PACKAGE NAME', field: 'productname', width: 150 },
-        { headerName: 'ACTION', field: 'remarks2', width: 150 },
-        { headerName: 'TRANSACTION TYPE', field: 'remarks', width: 150, cellStyle: { textAlign: 'center' }, },
-        { headerName: 'DAYS	', field: 'days', width: 120, cellStyle: { textAlign: 'center' }, },
-        { headerName: 'BEFORE BALANCE	', field: 'oldbalance', width: 150, cellStyle: { textAlign: 'center' }, },
-        { headerName: 'LCO AMOUNT		', field: 'lcoamount', width: 150, cellStyle: { textAlign: 'center', color: 'green' }, },
-        { headerName: 'AFTER BALANCE	', field: 'currentbalance', width: 150, cellStyle: { textAlign: 'center' }, },
-        { headerName: 'TRANSACTION DATE	', field: 'transactiondate', width: 150 },
-        { headerName: 'EXPIRY DATE', field: 'expirydate', width: 150 },
-        {
-          headerName: 'USER AGENT	', field: 'useragent', width: 150,
-          valueGetter: (params: any) => {
-            const useragent = params.data.useragent || '';
-            const remarks1 = params.data.remarks1 || '';
-            const operatorname = params.data.operatorname || '';
-            return `${useragent} -[( ${operatorname})-( ${remarks1})]`;
-          },
-        },
-        { headerName: 'ADDRESS	', field: 'address', width: 150 },
-        { headerName: 'AREA NAME	', field: 'areaname', width: 150 },
-        { headerName: 'COMMENT', field: 'comment', width: 150 },
-      ]
-    }
+
     else if (this.type == 'online_payment') {
       this.columnDefs = [
         { headerName: "S.No", lockPosition: true, valueGetter: 'node.rowIndex+1', headerCheckboxSelection: false, checkboxSelection: false, width: 90 },
@@ -707,12 +727,10 @@ export class MsorDialogueportsComponent implements OnInit {
         { headerName: 'STATUS	', field: 'status', width: 200, cellStyle: { textAlign: 'center' } },
         { headerName: 'RESPONSE', field: 'response', width: 200 },
         { headerName: 'TRANSACTION DATE', field: 'logdate', width: 200 },
-        // { headerName: 'RE STATUS', field: 'restatus', width: 150, cellStyle: { textAlign: 'center' }, },
         {
           headerName: "RE STATUS",
           editable: true,
           cellRenderer: (params: any) => {
-            // if (params.data.status === "success") {
             const replaceButton = document.createElement('button');
             replaceButton.style.marginRight = '5px';
             replaceButton.style.cursor = 'pointer';
@@ -851,6 +869,7 @@ export class MsorDialogueportsComponent implements OnInit {
 
 
 
+
   onGridReady(params: { api: any; }) {
     this.gridApi = params.api;
   }
@@ -900,18 +919,33 @@ export class MsorDialogueportsComponent implements OnInit {
     console.log(this.cur_date);
   }
 
+  // getFromDate(event: any) {
+  //   console.log(event.value);
+  //   const date = new Date(event.value).getDate();
+  //   const month = new Date(event.value).getMonth() + 1;
+  //   const year = new Date(event.value).getFullYear();
+  //   this.fromdate = year + "-" + month + "-" + date
+  //   console.log(this.fromdate);
+
+  // }
+  // getToDate(event: any) {
+  //   const date = new Date(event.value).getDate();
+  //   const month = new Date(event.value).getMonth() + 1;
+  //   const year = new Date(event.value).getFullYear();
+  //   this.todate = year + "-" + month + "-" + date
+  //   console.log(this.todate);
+  // }
   getFromDate(event: any) {
     console.log(event.value);
-    const date = new Date(event.value).getDate();
-    const month = new Date(event.value).getMonth() + 1;
+    const date = new Date(event.value).getDate().toString().padStart(2, '0');
+    const month = (new Date(event.value).getMonth() + 1).toString().padStart(2, '0');
     const year = new Date(event.value).getFullYear();
     this.fromdate = year + "-" + month + "-" + date
     console.log(this.fromdate);
-
   }
   getToDate(event: any) {
-    const date = new Date(event.value).getDate();
-    const month = new Date(event.value).getMonth() + 1;
+    const date = new Date(event.value).getDate().toString().padStart(2, '0');
+    const month = (new Date(event.value).getMonth() + 1).toString().padStart(2, '0');
     const year = new Date(event.value).getFullYear();
     this.todate = year + "-" + month + "-" + date
     console.log(this.todate);

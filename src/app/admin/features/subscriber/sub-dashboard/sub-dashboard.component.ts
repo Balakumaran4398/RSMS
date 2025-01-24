@@ -315,7 +315,7 @@ export class SubDashboardComponent implements OnInit, AfterViewInit {
       this.expandale = false;
       this.loadNewDashboard();
     }
-    else if (this.status === 'dashoard') {
+    else if (this.status === 'dashboard') {
       this.newsubscrierdashoard = true;
       this.subscriersmartcarddashoard = true;
       this.expandale = true;
@@ -331,8 +331,9 @@ export class SubDashboardComponent implements OnInit, AfterViewInit {
 
 
   loadSubscriberDashboard() {
+
     // for (let index = 0; index < 2; index++) {
-    this.userservice.getQuickOperationDetailsBySearchname(this.role, this.username, (this.subscriberid || this.smartcardValue || this.boxid)).subscribe(
+    this.userservice.getQuickOperationDetailsBySearchname(this.role, this.username, (this.smartcard || this.subscriberid || this.smartcardValue || this.boxid)).subscribe(
       (data: any) => {
         console.log(data);
         this.packageobject = data['packageobject'];
@@ -1434,19 +1435,19 @@ export class SubDashboardComponent implements OnInit, AfterViewInit {
       headerName: "S.No", valueGetter: 'node.rowIndex+1', width: 80,
     },
     {
-      headerName: 'SMARTCARD', flex:1,
+      headerName: 'SMARTCARD', flex: 1,
       field: 'smartcard',
     },
     {
-      headerName: 'CAS ', flex:1,
+      headerName: 'CAS ', flex: 1,
       field: 'casname',
     },
     {
-      headerName: 'EXPIRY DATE	', flex:1,
+      headerName: 'EXPIRY DATE	', flex: 1,
       field: 'expirydate',
     },
     {
-      headerName: 'ACTION', flex:1,
+      headerName: 'ACTION', flex: 1,
       field: 'action',
       cellRenderer: (params: any) => {
         const container = document.createElement('div');
@@ -1547,23 +1548,23 @@ export class SubDashboardComponent implements OnInit, AfterViewInit {
       checkboxSelection: true, isSelected: true
     },
     {
-      headerName: 'PACKAGE NAME	',width: 300,
+      headerName: 'PACKAGE NAME	', width: 300,
       field: 'productname', flex: 1,
     },
     {
-      headerName: 'PRODUCT TYPE	 ', flex: 1,width: 270, cellStyle: { textAlign: 'center' },
+      headerName: 'PRODUCT TYPE	 ', flex: 1, width: 270, cellStyle: { textAlign: 'center' },
       field: 'ptype',
     },
     {
-      headerName: 'PRODUCT ID	', flex: 1,width: 270,
+      headerName: 'PRODUCT ID	', flex: 1, width: 270,
       field: 'casproductid',
     },
     {
-      headerName: 'DAYS REMAINING	', flex: 1,width: 270, cellStyle: { textAlign: 'center' },
+      headerName: 'DAYS REMAINING	', flex: 1, width: 270, cellStyle: { textAlign: 'center' },
       field: 'noofdays',
     },
     {
-      headerName: 'PROGRAMS', flex:1, width: 300,
+      headerName: 'PROGRAMS', flex: 1, width: 300,
       cellRenderer: (params: any) => {
         // Check if the producttype is "BASE" or "ADDON"
         if (params.data.ptype === 'BASE' || params.data.ptype === 'ADDON') {
@@ -1778,7 +1779,14 @@ export class SubDashboardComponent implements OnInit, AfterViewInit {
       data: dialogData
     });
     dialogRef.afterClosed().subscribe(result => {
-      console.log('The dialog was closed', result);
+      if (result && result.success) {
+        console.log('The dialog was closed', result);
+        this.smartcard = result.smartcard;
+        console.log(this.smartcard);
+        location.reload();
+      } else {
+        console.log('Dialog closed without success');
+      }
     });
   }
 
@@ -1829,25 +1837,20 @@ export class SubDashboardComponent implements OnInit, AfterViewInit {
     console.log('refresh', data);
 
     console.log(dialogData);
-    // const isDataInvalid = Object.values(dialogData).some(value => value === undefined || value === null);
-    // console.log(isDataInvalid);
-    // console.log(dialogData);
-    // if (isDataInvalid) {
-    //   Swal.fire({
-    //     icon: 'error',
-    //     title: 'Invalid Data',
-    //     text: 'Some required data is missing or undefined. Please check and try again.',
-    //     confirmButtonText: 'OK'
-    //   });
-    //   return;
-    // }
     const dialogRef = this.dialog.open(SubscriberdialogueComponent, {
       data: dialogData,
       width: width
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      console.log('The dialog was closed', result);
+      if (result && result.success) {
+        console.log('The dialog was closed', result);
+        this.smartcard = result.smartcard;
+        console.log(this.smartcard);
+        location.reload();
+      } else {
+        console.log('Dialog closed without success');
+      }
     });
   }
 
@@ -1894,6 +1897,16 @@ export class SubDashboardComponent implements OnInit, AfterViewInit {
       panelClass: 'custom-dialog-container',
       data: dialogData,
       maxHeight: '100vh'
+    });
+    dialogRef.afterClosed().subscribe(result => {
+      if (result && result.success) {
+        console.log('The dialog was closed', result);
+        this.smartcard = result.smartcard;
+        console.log(this.smartcard);
+        location.reload();
+      } else {
+        console.log('Dialog closed without success');
+      }
     });
   }
   openChannellistDialogue(data: any): void {

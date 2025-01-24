@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { BaseService } from '../../service/base.service';
 import { StorageService } from '../../service/storage.service';
+import { FONT_WEIGHT } from 'ag-charts-community/dist/types/src/chart/themes/constants';
 
 
 @Component({
@@ -37,7 +38,8 @@ export class LcoCommissionChartComponent {
       markerType: 'square',
       fontSize: 14,
       itemWrap: true,
-      itemTextFormatter: (e: any) => `${e.dataPoint.name}: ${e.dataPoint.y}`,
+      // itemTextFormatter: (e: any) => `${e.dataPoint.name}: ${e.dataPoint.y}`,
+      itemTextFormatter: (e: any) => `${e.dataPoint.name}`,
     },
     data: [{
       type: 'pie',
@@ -47,8 +49,11 @@ export class LcoCommissionChartComponent {
       showInLegend: true,
       legendMarkerType: 'square',
       indexLabelPlacement: 'inside',
-      indexLabelFontColor: 'white',
-      dataPoints: []
+      indexLabelFontColor: 'block',
+      indexLabelFontSize: 16,
+      indexLabelFontWeight: "bold",
+      dataPoints: [],
+      indexLabelFormatter: (e: any) => `${e.dataPoint.y}%`,
     }]
   };
 
