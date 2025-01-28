@@ -114,6 +114,7 @@ export class FingerPrintComponent {
   isButtonEnable: boolean = false;
   isSmartcardEnabled: boolean = true;
   isAreaCodeEnabled: boolean = false;
+  isMsoEnabled: boolean = false;
   isPositionXYVisible: boolean = false;
   isPositionXYVisible_mobile: boolean = false;
 
@@ -906,22 +907,56 @@ export class FingerPrintComponent {
   onChangeIntendTo1(selectedValue: any) {
     this.isSmartcardEnabled = false;
     this.isAreaCodeEnabled = false;
+    this.isMsoEnabled = false;
     if (selectedValue == 1) {
+      this.intendid_1 = 1 || this.intendid_1;
       this.isSmartcardEnabled = false;
       this.isAreaCodeEnabled = false
+      this.isMsoEnabled = true;
+
     }
     if (selectedValue == 2) {
+      this.intendid_1 = this.intendid_1;
       this.isSmartcardEnabled = true;
       this.isAreaCodeEnabled = false
+      this.isMsoEnabled = false;
+
     }
     if (selectedValue == 3) {
+      this.intendid_1 = this.intendid_1;
       this.isAreaCodeEnabled = true;
       this.isSmartcardEnabled = false
+      this.isMsoEnabled = false;
+
     }
     if (selectedValue !== 2 && selectedValue !== 3) {
       console.log('Both disabled');
     }
   }
+
+
+  //   onChangeIntendTo1(selectedValue: any): void {
+  //   this.isSmartcardEnabled = false;
+  //   this.isAreaCodeEnabled = false;
+  //   this.isMsoEnabled = false;
+
+  //   switch (selectedValue) {
+  //     case 1:
+  //       this.intendid_1 = this.intendid_1 || '1'; // Default value for MSO
+  //       this.isMsoEnabled = true;
+  //       break;
+  //     case 2:
+  //       this.isSmartcardEnabled = true;
+  //       break;
+  //     case 3:
+  //       this.isAreaCodeEnabled = true;
+  //       break;
+  //     default:
+  //       console.log('Both disabled');
+  //       break;
+  //   }
+  // }
+
   validateExactLength(): void {
     const requiredLength = this.castype !== 6 ? 20 : 14;
     this.isInvalidLength = this.intendid_1.length > 0 && this.intendid_1.length !== requiredLength;
@@ -972,53 +1007,53 @@ export class FingerPrintComponent {
   }
 
   showDropdown: boolean = true;
-    subscriberList: any[] = [];
-    subscriber: any;
-    onSmartcardlist(value: any) {
-      this.showDropdown = true;
-      this.userservice.getSearchSmartcardData(this.role, this.username, value).subscribe(
-        (data: any) => {
-          if (!data || Object.keys(data).length === 0) {
-            this.subscriberList = [];
-            return;
-          }
-          this.subscriber = data;
-          this.subscriberList = Object.keys(data).map(key => {
-            const value = data[key];
-            const name = key;
-            return { name: name, value: value };
-          });
-          this.subscriberList.sort((a: any, b: any) => {
-            if (a.value > b.value) return 1;
-            if (a.value < b.value) return -1;
-            return 0;
-          });
-          if (this.subscriberList.length === 0) {
-            console.log('No matching data after sorting');
-            Swal.fire({
-              title: 'No Matching Results',
-              text: 'No subscribers match your search criteria.',
-              icon: 'info',
-              confirmButtonText: 'OK'
-            });
-          }
-  
-          console.log(this.subscriberList);
-        },
-        (error) => {
+  subscriberList: any[] = [];
+  subscriber: any;
+  onSmartcardlist(value: any) {
+    this.showDropdown = true;
+    this.userservice.getSearchSmartcardData(this.role, this.username, value).subscribe(
+      (data: any) => {
+        if (!data || Object.keys(data).length === 0) {
+          this.subscriberList = [];
+          return;
+        }
+        this.subscriber = data;
+        this.subscriberList = Object.keys(data).map(key => {
+          const value = data[key];
+          const name = key;
+          return { name: name, value: value };
+        });
+        this.subscriberList.sort((a: any, b: any) => {
+          if (a.value > b.value) return 1;
+          if (a.value < b.value) return -1;
+          return 0;
+        });
+        if (this.subscriberList.length === 0) {
+          console.log('No matching data after sorting');
           Swal.fire({
-            title: 'Error!',
-            text: error?.error?.getsmartcardlistbysubid.searchname
-              || 'An error occurred while fetching subscriber details.',
-            icon: 'error',
+            title: 'No Matching Results',
+            text: 'No subscribers match your search criteria.',
+            icon: 'info',
             confirmButtonText: 'OK'
           });
         }
-      );
-    }
-  
-    goToSubscriberDashboard(lcomember: any) {
-      this.intendid_1 = lcomember.value;
-      this.showDropdown = false;
-    }
+
+        console.log(this.subscriberList);
+      },
+      (error) => {
+        Swal.fire({
+          title: 'Error!',
+          text: error?.error?.getsmartcardlistbysubid.searchname
+            || 'An error occurred while fetching subscriber details.',
+          icon: 'error',
+          confirmButtonText: 'OK'
+        });
+      }
+    );
+  }
+
+  goToSubscriberDashboard(lcomember: any) {
+    this.intendid_1 = lcomember.value;
+    this.showDropdown = false;
+  }
 }

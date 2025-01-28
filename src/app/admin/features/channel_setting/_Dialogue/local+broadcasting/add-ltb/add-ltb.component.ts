@@ -1,5 +1,5 @@
 import { Component, Inject } from '@angular/core';
-import { AbstractControl, FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { AbstractControl, FormBuilder, FormGroup, ValidationErrors, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 // import { Role } from 'node_modules1/@tufjs/models/dist/role';
 import { BaseService } from 'src/app/_core/service/base.service';
@@ -16,6 +16,7 @@ export class AddLtbComponent {
   submitted = false;
   role: any;
   username: any;
+  nameheader: any = 0;
   constructor(
     public dialogRef: MatDialogRef<AddLtbComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any, private formBuilder: FormBuilder, private userService: BaseService, private storageService: StorageService,
@@ -35,19 +36,25 @@ export class AddLtbComponent {
       {
         nameheader: ['', Validators.required],
         operatorname: ['', Validators.required],
-        mobileno: ['', Validators.required],
-        email: ['', [Validators.required, Validators.email]],
+        // mobileno: ['', Validators.required],
+        mobileno: ['', [Validators.required, Validators.pattern('^[0-9]{10}$')]],
+        // email: ['', [Validators.required, Validators.email]],
+        email: ['',
+          [Validators.required, Validators.email, this.customEmailValidator()]],
         address: ['', [Validators.required,]],
         area: ['', [Validators.required]],
         state: ['', [Validators.required]],
-        pincode: ['', [Validators.required]],
+        pincode: ['', [Validators.required, Validators.pattern('^[0-9]{6}$')]],
         userid: ['', [Validators.required]],
         password: ['', [Validators.required]],
       });
   }
 
   onSubmit(form: any): void {
-    this.submitted = true;
+    Object.keys(this.form.controls).forEach(key => {
+      const control = this.form.get(key);
+      console.log(`${key} - Status: ${control?.status}, Errors:`, control?.errors);
+    });
     let requestBody = {
       role: this.role,
       username: this.username,
@@ -62,14 +69,50 @@ export class AddLtbComponent {
       userid: form.value.userid,
       password: form.value.password,
     }
-
+    if (this.form.invalid) {
+    this.submitted = true;
+    } else {
     this.userService.createLocalChannelLTB(requestBody)
       .subscribe((res: any) => {
         this.swal.success(res?.message);
       }, (err) => {
         this.swal.Error(err?.error?.message);
       });
+    }
   }
+
+  // onSubmit(form: any): void {
+  //   this.submitted = true;
+
+  //   if (this.form.invalid) {
+  //     this.swal.Error('Please correct the errors in the form.');
+  //     return;
+  //   }
+
+  //   let requestBody = {
+  //     role: this.role,
+  //     username: this.username,
+  //     nameheader: this.form.value.nameheader,
+  //     operatorname: this.form.value.operatorname,
+  //     mobileno: this.form.value.mobileno,
+  //     mail: this.form.value.email,
+  //     address: this.form.value.address,
+  //     state: this.form.value.state,
+  //     area: this.form.value.area,
+  //     pincode: this.form.value.pincode,
+  //     userid: this.form.value.userid,
+  //     password: this.form.value.password,
+  //   };
+
+  //   this.userService.createLocalChannelLTB(requestBody).subscribe(
+  //     (res: any) => {
+  //       this.swal.success(res?.message);
+  //     },
+  //     (err) => {
+  //       this.swal.Error(err?.error?.message);
+  //     }
+  //   );
+  // }
 
   onKeydown(e: any) {
     var key = e.keyCode;
@@ -81,5 +124,15 @@ export class AddLtbComponent {
     this.submitted = false;
     this.form.reset();
   }
+  customEmailValidator() {
+    return (control: AbstractControl): ValidationErrors | null => {
+      const email = control.value;
+      const emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.(in|com)$/;
 
+      if (email && !emailPattern.test(email)) {
+        return { invalidEmail: true };
+      }
+      return null;
+    };
+  }
 }

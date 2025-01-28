@@ -14,7 +14,7 @@
             <div class="tab d-flex justify-content-center align-items-center mb-3">
                 <label class="btn btn-outline-info mx-1">
                     <span>+</span> Choose
-                    <input type="file" style="display: none;" (change)="handleFileInput($event)">
+                    <input type="file" style="display: none;" accept=".xls,.xlsx,.csv" (change)="handleFileInput($event)">
                 </label>
                 <a class="btn btn-outline-success mx-1" [class.disabled]="!file"
                     (click)="file ? uploadData($event) : null">

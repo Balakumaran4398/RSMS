@@ -129,13 +129,13 @@ export class AlacarteActivationComponent {
     this.filteredToppingList = [...this.toppingList];
     // this.refresh();
     console.log(this.cas);
-    this.userservice.Finger_print_List(this.role, this.username).subscribe((data) => {
-      this.cas = Object.entries(data[0].caslist).map(([key, value]) => ({ name: key, id: value }));
-      console.log(this.cas);
+    // this.userservice.Finger_print_List(this.role, this.username).subscribe((data) => {
+    //   this.cas = Object.entries(data[0].caslist).map(([key, value]) => ({ name: key, id: value }));
+    //   console.log(this.cas);
 
-    });
+    // });
     this.onCaschange('');
-
+    this.getRefreshData();
   }
   filterToppings() {
     this.filteredToppingList = this.toppingList.filter(topping =>
@@ -148,6 +148,13 @@ export class AlacarteActivationComponent {
     this.castype = ''
     this.alacarteList = ''
     this.rowData = [];
+    if (tab === 'activation') {
+      console.log(tab);
+      this.getRefreshData();
+    } else if (tab === 'remove') {
+      console.log(tab);
+      this.getRemoveRefresh();
+    }
   }
   get billingAddressCheckbox() {
     return this.form.get('billingAddressCheckbox');
@@ -320,7 +327,7 @@ export class AlacarteActivationComponent {
   getRefreshData() {
     this.rowData = [];
     const dateToPass = this.selectedDate || this.date;
-    this.userservice.getBulkOperationListByDate(this.role, this.username, 'alacarte_add', this.date, 5)
+    this.userservice.getBulkOperationRefreshList(this.role, this.username, 'alacarte_add',  5)
       .subscribe(
         (response: HttpResponse<any[]>) => { // Expect HttpResponse<any[]>
           if (response.status === 200) {

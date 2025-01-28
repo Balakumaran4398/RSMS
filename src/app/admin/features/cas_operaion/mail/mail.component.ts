@@ -19,6 +19,7 @@ export class MailComponent {
   role: any;
   isIntendto: boolean = true;
   isSmartcardEnabled: boolean = false;
+  isMsoEnabled: boolean = false;
   isAreaCodeEnabled: boolean = false;
   isMSOCodeEnabled: boolean = false;
   isDateDisabled: boolean = false;
@@ -269,23 +270,32 @@ export class MailComponent {
   onChangeIntendTo1(selectedValue: any) {
     this.intendid_1 = '';
     this.isSmartcardEnabled = false;
+    this.isMsoEnabled = false;
+    
     this.isAreaCodeEnabled = false;
     console.log('enabled  =' + selectedValue);
     if (selectedValue == 1) {
+      this.intendid_1 = 1;
       this.isSmartcardEnabled = false;
+      this.isMsoEnabled = true;
       this.isAreaCodeEnabled = false
-      this.isMSOCodeEnabled = false
+      this.isMSOCodeEnabled = true
       console.log('Smartcard enabled');
     }
     if (selectedValue == 2) {
+      this.intendid_1 = '';
       this.isSmartcardEnabled = true;
       this.isAreaCodeEnabled = false
+      this.isMsoEnabled = false;
+      this.isMSOCodeEnabled = false
       console.log('Smartcard enabled');
     }
 
     if (selectedValue == 3) {
+      this.intendid_1 = '';
       this.isAreaCodeEnabled = true;
       this.isSmartcardEnabled = false
+      this.isMsoEnabled = false;
       console.log('Area code enabled');
     }
     if (selectedValue !== 2 && selectedValue !== 3) {

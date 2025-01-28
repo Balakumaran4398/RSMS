@@ -35,7 +35,7 @@ export class ChannelUploadComponent {
     { headerName: 'CHANNEL NAME', field: 'channel', editable: true, width: 250 },
     { headerName: 'SERVICE ID', field: 'serviceId', editable: true, width: 150 },
     { headerName: 'PRODUCT ID', field: 'productId', editable: true, width: 140 },
-    { headerName: 'INR AMOUNT', field: 'inr_amt', editable: true, width: 150 }
+    { headerName: 'INR AMOUNT', field: 'inr_amt', editable: true, width: 140 }
   ];
   // columnDefs: any
 
@@ -54,6 +54,7 @@ export class ChannelUploadComponent {
       this.file = false;
       this.filePath = '';
     }
+   
   }
 
   processExcelData(data: any[]): void {
@@ -126,6 +127,8 @@ export class ChannelUploadComponent {
               title: 'Upload Successful',
               text: res.message || 'Your file has been uploaded successfully.',
               confirmButtonText: 'OK',
+              timer: 2000,
+              timerProgressBar: true,
             }).then(() => {
               location.reload();
             });

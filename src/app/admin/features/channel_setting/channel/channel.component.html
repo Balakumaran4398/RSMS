@@ -8,7 +8,7 @@
                     <mat-option *ngFor="let option of type" [value]="option">{{ option }}</mat-option>
                 </mat-select>
             </mat-form-field> -->
-            <div class="input_box col-12 col-md-4 mx-2">
+            <div class="input_box col-6 col-md-4 mx-2">
                 <select (change)="onTypeChange($event)" [(ngModel)]="selectType">
                     <option value="">Select a Type</option>
                     <option *ngFor="let option of type" [value]="option">{{ option }}</option>
@@ -28,7 +28,7 @@
         </div>
 
         <div class="col d-flex justify-content-end align-items-center">
-            <a class="btn btn-success mx-1  bttn" (click)="generateExcel()" style="cursor: pointer;">Download File</a>
+            <a class="btn btn-success mx-1  bttn" (click)="generateExcel()" style="cursor: pointer;">Samaple Format </a>
             <a class="btn btn-outline-success mx-1  bttn" (click)="upload('data')">
                 <i class="fa fa-upload" aria-hidden="true"></i> Upload
             </a>

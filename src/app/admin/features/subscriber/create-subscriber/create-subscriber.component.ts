@@ -64,6 +64,8 @@ export class CreateSubscriberComponent {
   selectedOperator: any;
   selectedArea: any;
   selectedStreet: any;
+  addressProoftypeid: any = '';
+  idProoftypeid: any = '';
   constructor(private formBuilder: FormBuilder, private userservice: BaseService, private swal: SwalService, private cdr: ChangeDetectorRef, private storageservice: StorageService, private datePipe: DatePipe) {
     this.username = storageservice.getUsername();
     this.role = storageservice.getUserRole();
@@ -83,7 +85,7 @@ export class CreateSubscriberComponent {
         operatorid: ['', Validators.required || this.operatorid],
         areaid: ['', Validators.required || this.areaid],
         streetid: ['', Validators.required || this.streetid],
-        casformid: ['', Validators.required],
+        casformid: ['',],
         customername: ['', [Validators.required,]],
         customernamelast: ['', [Validators.required]],
         fathername: ['', [Validators.required]],
@@ -91,13 +93,13 @@ export class CreateSubscriberComponent {
         address: ['', [Validators.required]],
         installaddress: ['', [Validators.required]],
         mobileno: ['', [Validators.required, Validators.pattern('^[0-9]{10}$')]],
-        landlineno: ['', [Validators.required, Validators.pattern('^[0-9]{10}$')]],
+        landlineno: ['',],
         // email: ['', [Validators.required, Validators.email]],
         email: ['',
           [Validators.required, Validators.email, this.customEmailValidator()]],
         formsubmissiondate: ['', [Validators.required]],
-        addressproof: ['', [Validators.required] || 0],
-        idproof: ['', [Validators.required] || 0],
+        addressproof: ['', [Validators.required]],
+        idproof: ['', [Validators.required]],
         idprooftypeid: ['', Validators.required],
         addressprooftypeid: ['', Validators.required],
         role: this.role,
@@ -512,73 +514,27 @@ export class CreateSubscriberComponent {
       'dateofbirth', 'mobileno', 'landlineno', 'email',
       'formsubmissiondate', 'addressproof', 'addressprooftypeid', 'idproof', 'idprooftypeid', 'address', 'installaddress',
     ];
+    console.log(this.form);
 
-    // if (this.form.invalid) {
-    //   this.form.markAllAsTouched();
-    //   console.log('45353453');
-      
-    //   // Swal.fire({
-    //   //   icon: 'warning',
-    //   //   title: 'Validation Error',
-    //   //   text: 'Please fill in all required fields correctly.',
-    //   //   timer: 3000,
-    //   //   timerProgressBar: true,
-    //   //   showConfirmButton: false
-    //   // });
-    //   // return;
-    // }
-    // this.swal.Loading();
-    // this.userservice.createSubscriber(this.form.value).subscribe(
-    //   (data: any) => {
-    //     this.form.removeControl('addressprooftypeid');
-    //     this.form.addControl('addressprooftypeid', new FormControl(addressprooftypeid));
-    //     this.form.removeControl('idprooftypeid');
-    //     this.form.addControl('idprooftypeid', new FormControl(idprooftypeid));
-    //     Swal.fire({
-    //       icon: 'success',
-    //       title: 'Success',
-    //       text: data.message || 'Subscriber created successfully!',
-    //       timer: 3000,
-    //       timerProgressBar: true,
-    //       showConfirmButton: false
-    //     }).then(() => {
-    //       window.location.reload()
-    //     });
-    //   },
-    //   (error) => {
-    //     console.log(error);
-    //     const errorMessage = errorFields
-    //       .map(field => error?.error?.[field])
-    //       .find(message => message) || 'An error occurred while creating the subscriber.'
+    Object.keys(this.form.controls).forEach(key => {
+      const control = this.form.get(key);
+      console.log(`${key} - Status: ${control?.status}, Errors:`, control?.errors);
+    });
 
-    //     this.form.removeControl('addressprooftypeid');
-    //     this.form.addControl('addressprooftypeid', new FormControl(addressprooftypeid))
-    //     this.form.removeControl('idprooftypeid');
-    //     this.form.addControl('idprooftypeid', new FormControl(idprooftypeid));
-    //     Swal.fire({
-    //       icon: 'error',
-    //       title: 'Error',
-    //       text: errorMessage,
-    //       timer: 3000,
-    //       timerProgressBar: true,
-    //       showConfirmButton: false
-    //     })
-    //   }
-    // );
+    if (this.form.invalid) {
+      this.form.markAllAsTouched();
+      console.log('45353453');
 
-  
-      // Check if the form is invalid
-      if (this.form.invalid) {
-        this.form.markAllAsTouched(); // Highlight all invalid fields
-        console.log('Form Validation Failed:', this.form.value);
- 
-        return; 
-      }
-    
+    } else {
+      console.log('came');
+
       this.swal.Loading();
-    
-      this.userservice.createSubscriber(this.form.invalid).subscribe(
+      this.userservice.createSubscriber(this.form.value).subscribe(
         (data: any) => {
+          this.form.removeControl('addressprooftypeid');
+          this.form.addControl('addressprooftypeid', new FormControl(addressprooftypeid));
+          this.form.removeControl('idprooftypeid');
+          this.form.addControl('idprooftypeid', new FormControl(idprooftypeid));
           Swal.fire({
             icon: 'success',
             title: 'Success',
@@ -587,17 +543,19 @@ export class CreateSubscriberComponent {
             timerProgressBar: true,
             showConfirmButton: false
           }).then(() => {
-            window.location.reload(); // Refresh the page after success
+            window.location.reload()
           });
         },
         (error) => {
-          console.log('Form Submission Error:', error); // Debug logs
-          const errorFields = ['addressprooftypeid', 'idprooftypeid']; // Adjust as per your fields
+          console.log(error);
           const errorMessage = errorFields
-            .map(field => error?.error?.[field])
-            .find(message => message) || 'An error occurred while creating the subscriber.';
-    
-          // Display error popup
+            .map(field => error?.error?.[field] || error?.error.message)
+            .find(message => message) || 'An error occurred while creating the subscriber.'
+
+          this.form.removeControl('addressprooftypeid');
+          this.form.addControl('addressprooftypeid', new FormControl(addressprooftypeid))
+          this.form.removeControl('idprooftypeid');
+          this.form.addControl('idprooftypeid', new FormControl(idprooftypeid));
           Swal.fire({
             icon: 'error',
             title: 'Error',
@@ -605,14 +563,25 @@ export class CreateSubscriberComponent {
             timer: 3000,
             timerProgressBar: true,
             showConfirmButton: false
-          });
+          })
         }
       );
-    
-    
-    //   return;
-    // }
+    }
+
+    // Check if the form is invalid
+    if (this.form.invalid) {
+      // this.form.markAllAsTouched(); 
+      // this.submitted = true;
+      console.log('Form Validation Failed:', this.form.value);
+
+      return;
+    }
+
+
   }
+
+
+
   onKeydown(event: KeyboardEvent) {
     const key = event.key;
     if (!/^\d$/.test(key) && key !== 'Backspace') {
@@ -629,27 +598,7 @@ export class CreateSubscriberComponent {
   get f(): { [key: string]: AbstractControl } {
     return this.form.controls;
   }
-  // onOperatorChange(operator: any): void {
-  //   console.log('1111111111111',operator);
 
-  //   this.selectedOperator = operator;
-  //   console.log(this.selectedOperator);
-
-  //   this.operatorid = operator.value;
-  //   console.log(this.operatorid);
-
-  //   this.form.patchValue({
-  //     operatorid: this.operatorid,
-  //   });
-  //   this.userservice.getAreaListByOperatorid(this.role, this.username, this.operatorid).subscribe((data: any) => {
-  //     this.area_list = Object.keys(data).map(key => {
-  //       const value = data[key];
-  //       const name = key;
-  //       return { name: name, value: value };
-  //     });
-  //     this.filteredAreas = this.area_list;
-  //   })
-  // }
   onOperatorChange(operator: any): void {
     const match = operator.match(/^(.+)\((\d+)\)$/);
     if (match) {

@@ -45,7 +45,7 @@ export class LocalPaymentComponent {
      
     },
     {
-      headerName: 'LTB NAME', width: 360,
+      headerName: 'LTB NAME', width: 360, cellStyle: { textAlign: 'left', }, 
       field: 'operatorname',
 
     },

@@ -60,17 +60,27 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div *ngIf="isSmartcardEnabled || isAreaCodeEnabled" class="input-box mb-3">
+                                <div *ngIf="isMsoEnabled || isSmartcardEnabled || isAreaCodeEnabled"
+                                    class="input-box mb-3">
                                     <div class="col-12 col-md-4">
                                         <label for="">Intend ID</label>
+                                    </div>
+                                    <div class="col-12 col-md-8" *ngIf="isMsoEnabled">
+                                        <input class="input_sb" readOnly style="font-size: 14px;"
+                                            formControlName="intendid" [(ngModel)]="intendid_1">
+
+                                        <div *ngIf="form.get('intendid')?.invalid && form.get('intendid')?.touched">
+                                            <small *ngIf="form.get('intendid')?.errors?.['required']"
+                                                class="text-danger">Intend ID is required.</small>
+                                        </div>
                                     </div>
                                     <div class="col-12 col-md-8" *ngIf="isSmartcardEnabled">
                                         <!-- <input placeholder="Enter Smartcard" type="text" formControlName="intendid"
                                             [(ngModel)]="intendid_1" (keypress)="onKeydown($event)"
                                             [maxlength]="castype != 6 ? 20 : 14" (input)="validateExactLength()"> -->
 
-                                        <input placeholder="Enter the smartcard..." class="input_sb" id="searchitem"
-                                            #searchitem style="font-size: 14px;" [maxlength]="castype != 6 ? 20 : 14"
+                                        <input placeholder="Enter the smartcard..." class="input_sb" #searchitem
+                                            style="font-size: 14px;" [maxlength]="castype != 6 ? 20 : 14"
                                             (input)="validateExactLength()" formControlName="intendid"
                                             (keyup)="onSmartcardlist( searchitem?.value)" [(ngModel)]="intendid_1">
                                         <div style="width: 60%;

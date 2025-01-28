@@ -1,40 +1,50 @@
-<div style="max-height: 775px;overflow: scroll;">
+<div style="max-height: 850px;overflow: scroll;">
     <p>BULK REACTIVE</p>
 
-    <div class=" display justify-content-center align-items-center mb-3">
-        <div class="col-12 col-md-4">
+    <div class=" display justify-content-start align-items-center mb-3">
+        <div class="col-12 col-md-4 mx-3">
             <!-- <select style="color: rgb(17, 0, 0);" [(ngModel)]="operatorid">
                 <option value="0" selected style="color: rgb(19, 17, 17);">ALL Operator </option>
                 <option *ngFor="let operator of operatorList" [value]="operator.value">{{ operator.name}}</option>
             </select> -->
-
-            <input type="text" matInput [matAutocomplete]="auto" [(ngModel)]="operatorid" maxlength="20"
-                (input)="filterOperators($event)" placeholder="Select a Operator" [matAutocompleteDisabled]="false"
-                [value]="selectedOperator?.name">
-
+            <!-- <div class="input-container">
+                <input type="text" matInput [matAutocomplete]="auto" [(ngModel)]="operatorid" maxlength="20"
+                    (input)="filterOperators($event)" placeholder="Select a Operator" [matAutocompleteDisabled]="false"
+                    [value]="selectedOperator?.name">
+                <i class="bx bx-chevron-down icon-right"></i>
+            </div>
             <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayOperator">
                 <mat-option *ngFor="let operator of filteredOperators" [value]="operator.value"
                     (click)="onSubscriberStatusChange(operator)">
                     {{ operator.name }}
                 </mat-option>
-            </mat-autocomplete>
+            </mat-autocomplete> -->
+
+
+
+            <select id="ltb" [(ngModel)]="operatorid">
+                <option value="0" selected style="color: rgb(19, 17, 17);">ALL Operator </option>
+                <option *ngFor="let operator of operatorList" [value]="operator.value"
+                    (ngModelChange)="onSubscriberStatusChange($event)">{{ operator.name}}</option>
+
+            </select>
             <div *ngIf="submitted && !operatorid" class="text-danger" style="font-size: small;">
                 Operator Name is required
             </div>
         </div>
 
-        <div class="col-12 col-md-4 d-flex justify-content-center align-items-center">
+        <div class=" d-flex justify-content-center align-items-center mx-3">
             <mat-radio-group aria-label="Select an option" [(ngModel)]="status">
                 <mat-radio-button value="true">Active</mat-radio-button>
-                <mat-radio-button value="false" >Deactive</mat-radio-button>
+                <mat-radio-button value="false">Deactive</mat-radio-button>
             </mat-radio-group>
         </div>
-        <div class="col-12 col-md-4 d-flex justify-content-center align-items-center">
+        <div class=" d-flex justify-content-center align-items-center">
             <button type="submit" class="btn custom-btn  align-item-center  bttn" (click)="Submit()">Submit</button>
         </div>
     </div>
 
-    <div class="row d-flex align-items-center justify-content-center border" style="padding: 0.5rem;">
+    <div class="row d-flex align-items-center justify-content-center border mx-3" style="padding: 0.5rem;">
         <div class="col-12">
             <div class="title">
                 <h6 class="text-center mb-3" style="color: rgb(1, 90, 86);">BULK REACTIVE HISTORY</h6>
@@ -60,9 +70,10 @@
                 </div>
             </div>
 
-            <ag-grid-angular #agGrid id="myGrid" domLayout="autoHeight" class="ag-theme-alpine table-class" rowAnimation style="max-height: 775px;overflow: scroll;"
-                [rowSelection]="rowSelection" [gridOptions]="gridOptions" [columnDefs]="columnDefs" [rowData]="rowData"
-                (gridReady)="onGridReady()" [enableCellTextSelection]="true">
+            <ag-grid-angular #agGrid id="myGrid" domLayout="autoHeight" class="ag-theme-alpine table-class" rowAnimation
+                style="max-height: 775px;overflow: scroll;" [rowSelection]="rowSelection" [gridOptions]="gridOptions"
+                [columnDefs]="columnDefs" [rowData]="rowData" (gridReady)="onGridReady()"
+                [enableCellTextSelection]="true">
             </ag-grid-angular>
         </div>
     </div>

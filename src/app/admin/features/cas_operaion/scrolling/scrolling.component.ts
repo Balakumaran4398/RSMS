@@ -171,6 +171,7 @@ export class ScrollingComponent {
   isIntendto: boolean = true;
   isIntendForLco: boolean = false;
   isSmartcardEnabled: boolean = false;
+  isMsoEnabled: boolean = false;
   isAreaCodeEnabled: boolean = false;
   username: any;
   role: any;
@@ -615,16 +616,20 @@ export class ScrollingComponent {
   onChangeIntendTo1(selectedValue: any) {
     this.intendid_1 = '';
     this.isSmartcardEnabled = false;
+    this. isMsoEnabled = false;
     this.isAreaCodeEnabled = false;
     console.log('enabled             =' + selectedValue);
     if (selectedValue == 1) {
-      this.intendid_1 = '1';
+      this.intendid_1 = 1;
       this.isSmartcardEnabled = false;
       this.isAreaCodeEnabled = false
+      this. isMsoEnabled = true;
+
       console.log('Smartcard enabled');
     }
     if (selectedValue == 2) {
       this.intendid_1 = '';
+      this. isMsoEnabled = false;
       this.isSmartcardEnabled = true;
       this.isAreaCodeEnabled = false
       console.log('Smartcard enabled');
@@ -632,6 +637,7 @@ export class ScrollingComponent {
 
     if (selectedValue == 3) {
       this.intendid_1 = '';
+      this. isMsoEnabled = false;
       this.isAreaCodeEnabled = true;
       this.isSmartcardEnabled = false
       console.log('Area code enabled');

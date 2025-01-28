@@ -166,6 +166,7 @@ export class MsorDialogueportsComponent implements OnInit {
   rowData1: any[] = []
   columnDefs: any[] = []
   columnDefs2: any[] = []
+  columnDefslcoExpiry: any[] = []
 
   gridApi: any;
   // --------------------lcowiseactive report-----------
@@ -182,6 +183,7 @@ export class MsorDialogueportsComponent implements OnInit {
   currentMonth: any;
   // --------------------------------------------
   selectedMonthName: any;
+  selectedDateMonthName: any;
   constructor(private route: ActivatedRoute, private location: Location,
     public userService: BaseService, private cdr: ChangeDetectorRef, public storageservice: StorageService, private swal: SwalService) {
     this.type = this.route.snapshot.paramMap.get('id');
@@ -192,6 +194,8 @@ export class MsorDialogueportsComponent implements OnInit {
     this.selectedOperator1 = { name: 'All Operator', value: 0 };
     this.selectedLcoName = this.selectedOperator.name;
     this.currentMonth = new Date().toLocaleString('default', { month: 'long' });
+    console.log('selectedDate',this.selectedDate);
+    
   }
 
   // -----------------------------------------------------------------subscriber bill varaibales-------------------------------
@@ -209,7 +213,7 @@ export class MsorDialogueportsComponent implements OnInit {
     // this.subLcoList('')
     this.onRechargeType(this.selectedRechargeType);
 
-    this.onOnlineType( this.selectedOnlineType)
+    this.onOnlineType(this.selectedOnlineType)
     console.log(this.selectedRechargeType);
     console.log(this.selectedOnlineType);
 
@@ -220,14 +224,7 @@ export class MsorDialogueportsComponent implements OnInit {
     this.getTotalOperatorReport();
     this.fromdate = this.fromdate ? this.formatDate(this.fromdate) : this.formatDate(new Date());
     this.todate = this.todate ? this.formatDate(this.todate) : this.formatDate(new Date());
-
-    // const selectedType = this.RechargeType.find((type) => type.label === "All");
-
-    // if (selectedType) {
-    //   console.log(selectedType);
-    //   this.RechargeType = selectedType.label;
-    //   console.log(this.RechargeType);
-    // }
+    console.log(this.selectedDate);
   }
 
   onDateChange() {
@@ -256,25 +253,42 @@ export class MsorDialogueportsComponent implements OnInit {
       { value: '12', name: 'December' }
     ];
   }
+  getMonthNameFromDate(dateString: string): string {
+    if (!dateString) return '';
+    const [year, month] = dateString.split('-'); 
+    const monthObject = this.months.find(m => m.value === month); 
+    return monthObject ? monthObject.name : ''; 
+  }
+  
+  logValues(event: any): void {
+    this.selectedDate = event.target.value;
+    this.selectedDateMonthName = this.getMonthNameFromDate(this.selectedDate); 
+    console.log('Selected Date:', this.selectedDate);
+    console.log('Selected Month:', this.selectedDateMonthName); 
+    this.onColumnDefs();
+  }
   onMonthChange(event: any) {
     if (this.selectedMonth !== '0') {
       this.selectedMonthName = this.months.find(month => month.value === this.selectedMonth)?.name || '';
     }
     console.log(this.selectedMonthName);
     this.checkDataForBill();
-
+    this.onColumnDefs();
+  }
+  getSelectedDateMonth(): string {
+    return this.selectedDateMonthName || '';
   }
   generateYears() {
     const startYear = 2012;
     const currentYear = new Date().getFullYear();
-    this.years = []; 
+    this.years = [];
     for (let year = currentYear; year >= startYear; year--) {
       this.years.push(year);
     }
   }
+
   onModelList() {
     this.userService.getLcowiseActiveModelList(this.username, this.role).subscribe((data: any) => {
-      console.log(data);
       this.model = data;
       this.modelname = data.modelname;
     })
@@ -389,7 +403,6 @@ export class MsorDialogueportsComponent implements OnInit {
       return
     }
     console.log(this.rechargeOperatorValue);
-
     this.columnDefs2 = this.rechargeOperatorValue == 3
       ? [
         { headerName: "S.No", lockPosition: true, valueGetter: 'node.rowIndex+1', headerCheckboxSelection: false, checkboxSelection: false, width: 90 },
@@ -407,9 +420,27 @@ export class MsorDialogueportsComponent implements OnInit {
         { headerName: 'SUBLCOOLDBALANCE', field: 'sublcooldbalance', width: 120, cellStyle: { textAlign: 'center' } },
         { headerName: 'SUBLCOAMOUNT', field: 'sublcoamount', width: 120, cellStyle: { textAlign: 'center' } },
         { headerName: 'SUBLCONEWBALANCE', field: 'sublconewbalance', width: 120, cellStyle: { textAlign: 'center' } },
-        { headerName: 'BEFORE BALANCE', field: 'oldbalance', width: 150, cellStyle: { textAlign: 'center' } },
-        { headerName: 'LCO AMOUNT', field: 'lcoamount', width: 150, cellStyle: { textAlign: 'center', color: 'green' } },
-        { headerName: 'AFTER BALANCE', field: 'currentbalance', width: 150, cellStyle: { textAlign: 'center' } },
+        {
+          headerName: 'BEFORE BALANCE', field: 'oldbalance', width: 150, cellStyle: { textAlign: 'center' },
+          valueFormatter: (params: any) => {
+            const value = params.value;
+            return value !== undefined && value !== null ? value.toFixed(2) : '0.00';
+          }
+        },
+        {
+          headerName: 'LCO AMOUNT', field: 'lcoamount', width: 150, cellStyle: { textAlign: 'center', color: 'green' },
+          valueFormatter: (params: any) => {
+            const value = params.value;
+            return value !== undefined && value !== null ? value.toFixed(2) : '0.00';
+          }
+        },
+        {
+          headerName: 'AFTER BALANCE', field: 'currentbalance', width: 150, cellStyle: { textAlign: 'center' },
+          valueFormatter: (params: any) => {
+            const value = params.value;
+            return value !== undefined && value !== null ? value.toFixed(2) : '0.00';
+          }
+        },
         { headerName: 'TRANSACTION DATE', field: 'transactiondate', width: 150 },
         { headerName: 'EXPIRY DATE', field: 'expirydate', width: 150 },
         {
@@ -435,9 +466,27 @@ export class MsorDialogueportsComponent implements OnInit {
         { headerName: 'ACTION', field: 'remarks2', width: 150 },
         { headerName: 'TRANSACTION TYPE', field: 'remarks', width: 150, cellStyle: { textAlign: 'center' } },
         { headerName: 'DAYS', field: 'days', width: 120, cellStyle: { textAlign: 'center' } },
-        { headerName: 'BEFORE BALANCE', field: 'oldbalance', width: 150, cellStyle: { textAlign: 'center' } },
-        { headerName: 'LCO AMOUNT', field: 'lcoamount', width: 150, cellStyle: { textAlign: 'center', color: 'green' } },
-        { headerName: 'AFTER BALANCE', field: 'currentbalance', width: 150, cellStyle: { textAlign: 'center' } },
+        {
+          headerName: 'BEFORE BALANCE', field: 'oldbalance', width: 150, cellStyle: { textAlign: 'center' }, valueFormatter: (params: any) => {
+            const value = params.value;
+            return value !== undefined && value !== null ? value.toFixed(2) : '0.00';
+          }
+        },
+        // { headerName: 'LCO AMOUNT', field: 'lcoamount', width: 150, cellStyle: { textAlign: 'center', color: 'green' } },
+        {
+          headerName: 'LCO AMOUNT', field: 'lcoamount', width: 150, cellStyle: { textAlign: 'center', color: 'green' },
+          valueFormatter: (params: any) => {
+            const value = params.value;
+            return value !== undefined && value !== null ? value.toFixed(2) : '0.00';
+          }
+        },
+        {
+          headerName: 'AFTER BALANCE', field: 'currentbalance', width: 150, cellStyle: { textAlign: 'center' },
+          valueFormatter: (params: any) => {
+            const value = params.value;
+            return value !== undefined && value !== null ? value.toFixed(2) : '0.00';
+          }
+        },
         { headerName: 'TRANSACTION DATE', field: 'transactiondate', width: 150 },
         { headerName: 'EXPIRY DATE', field: 'expirydate', width: 150 },
         {
@@ -647,6 +696,8 @@ export class MsorDialogueportsComponent implements OnInit {
   }
   // -------------------------------------------------------------
   private onColumnDefs() {
+    console.log('1111111111111111111');
+    
     if (this.type == 'walletShare') {
       this.columnDefs = [
         { headerName: "S.No", lockPosition: true, valueGetter: 'node.rowIndex+1', headerCheckboxSelection: false, checkboxSelection: false, width: 90 },
@@ -678,14 +729,14 @@ export class MsorDialogueportsComponent implements OnInit {
     } else if (this.type == 'recharge_deduction_excluding') {
       if (this.selectedOperator.value == 0) {
         this.columnDefs = [
-          { headerName: "S.No", lockPosition: true, valueGetter: 'node.rowIndex+1', headerCheckboxSelection: false, checkboxSelection: false, width: 80 },
+          { headerName: "S.No", lockPosition: true, valueGetter: 'node.rowIndex+1', headerCheckboxSelection: false, checkboxSelection: false, width: 100 },
           { headerName: 'LCO ID', field: 'operatorid', width: 150 },
           { headerName: 'LCO NAME', field: 'operatorname', width: 300 },
           { headerName: 'TOTAL	', field: 'total', width: 200 },
-          { headerName: 'TYPE	', field: 'transactiongroupname', width: 200 },
+          { headerName: 'TYPE	', field: 'transactiongroupname', width: 250 },
           // { headerName: 'LOG DATE	', field: 'transaction_date', width: 250 },
           { headerName: 'ADDRESS	', field: 'address', width: 350 },
-          { headerName: 'MOBILE', field: 'contactnumber', width: 250 },
+          { headerName: 'MOBILE', field: 'contactnumber', width: 270 },
 
         ]
       } else {
@@ -796,7 +847,10 @@ export class MsorDialogueportsComponent implements OnInit {
         { headerName: 'EXPIRY', field: 'expiry', flex: 1, cellStyle: { textAlign: 'center' } },
         { headerName: 'TOTAL', field: 'total', flex: 1, cellStyle: { textAlign: 'center' } },
       ]
-    } else if (this.type == 'lcowiseExpiryCountDiff') {
+    }
+     else if (this.type == 'lcowiseExpiryCountDiff') {
+      console.log('selected month',this.selectedMonthName);
+      console.log('selected month',this.selectedDateMonthName);
       this.columnDefs = [
         { headerName: "S.No", lockPosition: true, valueGetter: 'node.rowIndex+1', filter: false, headerCheckboxSelection: false, checkboxSelection: false, width: 90 },
         { headerName: 'OPERATOR ID', field: 'operator_id', flex: 1, cellStyle: { textAlign: 'center' } },
@@ -805,12 +859,12 @@ export class MsorDialogueportsComponent implements OnInit {
         { headerName: 'AREA NAME', field: 'area', flex: 1 },
         { headerName: 'ACTIVE COUNT', field: 'active', flex: 1, cellStyle: { textAlign: 'center' } },
         { headerName: 'EXPIRY COUNT', field: 'deactive', flex: 1, cellStyle: { textAlign: 'center' } },
-        { headerName: `EXPIRY COUNT ${this.currentMonth.toUpperCase()}`, field: 'expiryfrom', flex: 1, cellStyle: { textAlign: 'center' } },
-        { headerName: `EXPIRY COUNT ${this.currentMonth.toUpperCase()}`, field: 'expiryto', flex: 1, cellStyle: { textAlign: 'center' } },
-        // { headerName: 'DIFFERENCE', field: 'logdate', flex: 1 },
+        { headerName: `EXPIRY COUNT ${this.selectedMonthName}`, field: 'expiryfrom', flex: 1, cellStyle: { textAlign: 'center' } },
+        { headerName: `EXPIRY COUNT ${this.selectedDateMonthName}`, field: 'expiryto', flex: 1, cellStyle: { textAlign: 'center' } },
         { headerName: 'DIFFERENCE', field: 'difference', flex: 1, cellStyle: { textAlign: 'center' } },
       ]
-    } else if (this.type == 'total_lco') {
+    }
+     else if (this.type == 'total_lco') {
       this.columnDefs = [
         { headerName: "S.No", lockPosition: true, valueGetter: 'node.rowIndex+1', filter: false, headerCheckboxSelection: false, checkboxSelection: false, width: 90 },
         { headerName: 'LCO NAME', field: 'Operator_Name', flex: 1, filter: false },
@@ -823,13 +877,13 @@ export class MsorDialogueportsComponent implements OnInit {
       ]
     } else if (this.type == 'lco_transfer_details') {
       this.columnDefs = [
-        { headerName: "S.No", lockPosition: true, valueGetter: 'node.rowIndex+1', filter: false, headerCheckboxSelection: false, checkboxSelection: false, width: 90 },
-        { headerName: 'SMARTCARD', field: 'smartcard', flex: 1, filter: false },
-        { headerName: 'OLD CUSTOMER NAME', field: 'oldcustomername', flex: 1, filter: false },
-        { headerName: 'NEW CUSTOMER NAME', field: 'newcustomername', flex: 1, cellStyle: { textAlign: 'left', color: 'green', }, filter: false },
-        { headerName: 'OLD OPERATOR	', field: 'oldoperatorname', flex: 1, cellStyle: { textAlign: 'left' }, filter: false },
-        { headerName: 'NEW OPERATOR	', field: 'newoperatorname', flex: 1, filter: false, cellStyle: { textAlign: 'left', color: 'green', }, },
-        { headerName: 'LOG DATE', field: 'logdate', flex: 1, cellStyle: { textAlign: 'center' }, filter: false, },
+        { headerName: "S.No", lockPosition: true, valueGetter: 'node.rowIndex+1', headerCheckboxSelection: false, checkboxSelection: false, width: 90 },
+        { headerName: 'SMARTCARD', field: 'smartcard', flex: 1, },
+        { headerName: 'OLD CUSTOMER NAME', field: 'oldcustomername', flex: 1, },
+        { headerName: 'NEW CUSTOMER NAME', field: 'newcustomername', flex: 1, cellStyle: { textAlign: 'left', color: 'green', }, },
+        { headerName: 'OLD OPERATOR	', field: 'oldoperatorname', flex: 1, cellStyle: { textAlign: 'left' }, },
+        { headerName: 'NEW OPERATOR	', field: 'newoperatorname', flex: 1, cellStyle: { textAlign: 'left', color: 'green', }, },
+        { headerName: 'LOG DATE', field: 'logdate', flex: 1, cellStyle: { textAlign: 'center' }, },
       ]
     } else if (this.type == 'subscriber_bill') {
       this.columnDefs = [
@@ -911,13 +965,13 @@ export class MsorDialogueportsComponent implements OnInit {
     return `${year}-${month}-${day}`;
   }
   cur_date: any;
-  logValues(event: any): void {
-    const selectedDate: Date = event.value || new Date();
-    const formattedDate = this.formatDate1(selectedDate);
-    console.log('Selected Date:', formattedDate);
-    this.cur_date = formattedDate;
-    console.log(this.cur_date);
-  }
+  // logValues(event: any): void {
+  //   const selectedDate: Date = event.value || new Date();
+  //   const formattedDate = this.formatDate1(selectedDate);
+  //   console.log('Selected Date:', formattedDate);
+  //   this.cur_date = formattedDate;
+  //   console.log(this.cur_date);
+  // }
 
   // getFromDate(event: any) {
   //   console.log(event.value);
@@ -1510,6 +1564,7 @@ export class MsorDialogueportsComponent implements OnInit {
   // ================================================Lco Wise Expiry Count Report===============================
 
   getLcowiseExpiryCount() {
+    console.log(this.selectedDate)
     if (!this.selectedYear && !this.selectedMonth && !this.selectedDate) {
       this.submitted = true;
     }
@@ -1528,7 +1583,7 @@ export class MsorDialogueportsComponent implements OnInit {
         }
       },
       (error) => {
-        this.handleApiError(error.error, error.status);
+        this.handleApiError(error.error.message, error.status);
       }
     );
   }
@@ -1817,7 +1872,8 @@ export class MsorDialogueportsComponent implements OnInit {
   // ================================================ LCO TRANSFER DETAILS REPORT===============================
 
   getLcoTransferReport() {
-    this.userService.getLcoTransferReport(this.role, this.username, this.smartcard1, this.selectedOperator.value, this.fromdate, this.todate, 3)
+    this.submitted = true;
+    this.userService.getLcoTransferReport(this.role, this.username, this.smartcard1 || 0, this.selectedOperator.value, this.fromdate, this.todate, 3)
       // .subscribe((res: any) => {
       //   // console.log(res);
       //   this.rowData = res;

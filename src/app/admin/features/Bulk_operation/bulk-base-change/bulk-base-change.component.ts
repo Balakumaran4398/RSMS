@@ -21,8 +21,23 @@ export class BulkBaseChangeComponent implements OnInit {
   isCheckboxChecked: boolean = false;
   columnDefs: ColDef[] = [
     { headerName: "S.No", lockPosition: true, valueGetter: 'node.rowIndex+1', cellClass: 'locked-col', width: 80, suppressNavigable: true, sortable: false, filter: false },
+    { headerName: "SMARTCARD", field: 'smartcard', width: 200, },
+    { headerName: "OLD PACK", field: 'oldpackagename', width: 150, },
+    { headerName: "NEW PACK", field: 'packagename', width: 150, },
     { headerName: "EXTENDED DATE", field: 'extenddate', width: 200, },
-    { headerName: "STATUS", field: 'status', width: 200 },
+    {
+      headerName: "STATUS", field: 'status', width: 200,
+      cellRenderer: (params: any) => {
+        if (params.value === "Success") {
+          return `<span style="color: green;">Success</span>`;
+        } else if (params.value === "Please Recharge") {
+          return `<span style="color: #811762;">Please Recharge</span>`;
+        } else {
+          return `<span style="color: red;">${params.value}</span>`;
+        }
+
+      },
+    },
     { headerName: "REMARKS", field: 'remarks', width: 250 },
     { headerName: "CREATED DATE	", field: 'createddate', width: 230 },
     // { headerName: "UPDATED DATE	", field: 'updateddate', width: 230 },
@@ -44,7 +59,7 @@ export class BulkBaseChangeComponent implements OnInit {
         return 0;
       },
     },
-    paginationPageSize: 15,
+    paginationPageSize: 10,
     pagination: true,
   }
   username: any;

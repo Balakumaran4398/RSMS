@@ -37,6 +37,7 @@ export class BulkpackageupdationComponent implements OnInit {
   isCheckboxPlanChecked: boolean = false;
   plantype: any = 0;
   bulkDatas: any;
+  operatorid: any;
   castype: any = '';
   casname: any = '';
   isallpack: boolean = false;
@@ -64,6 +65,7 @@ export class BulkpackageupdationComponent implements OnInit {
     this.Type = data?.status;
     this.castype = data?.castype;
     this.bulkDatas = data?.rowData[0];
+    this.operatorid = data?.rowData[0].operatorid;
     console.log(this.bulkDatas);
     this.rowData = data?.rowData
     console.log(this.bulkDatas?.mobileno);
@@ -254,7 +256,7 @@ export class BulkpackageupdationComponent implements OnInit {
     let requestBody = {
       role: this.role,
       username: this.username,
-      operatorid: 1,
+      operatorid: this.operatorid,
       packageid: this.packageid || this.data?.packageid || 0,
       plantype: this.plantype,
       // isallpack: this.isallpack,

@@ -13,7 +13,7 @@
                 <div class="user_details">
                     <div class="input_box">
                         <label>LCO Name</label>
-                        
+
                         <!-- <select id="Lco" class="js-states" formControlName="operatorid" [(ngModel)]="operatorid"
                             >
                             <option value="0" selected disabled>Select Operator</option>
@@ -22,16 +22,14 @@
                             </option>
                         </select> -->
 
-                        <select id="Lco" class="js-states" formControlName="operatorid" [(ngModel)]="operatorid" >
+                        <select id="Lco" class="js-states" formControlName="operatorid" [(ngModel)]="operatorid">
                             <option value="0" selected disabled>Select Operator</option>
-                            <option 
-                              *ngFor="let operator of filteredOperators" 
-                              [value]="operator.name" 
-                              (ngModelChange)="onOperatorChange($event)">
-                              {{ operator.name }}
+                            <option *ngFor="let operator of filteredOperators" [value]="operator.name"
+                                (ngModelChange)="onOperatorChange($event)">
+                                {{ operator.name }}
                             </option>
-                          </select>
-                          
+                        </select>
+
                         <!-- <div class="input-container">
                             <input type="text" matInput [matAutocomplete]="auto" formControlName="operatorid"
                                 (input)="filterOperators($event)" placeholder="Select Operator"
@@ -53,15 +51,15 @@
                     <div class="input_box">
                         <label>Area Name</label>
 
-                        <select id="Area" class="js-states" formControlName="areaid"
-                        [(ngModel)]="areaid"   >
+                        <select id="Area" class="js-states" formControlName="areaid" [(ngModel)]="areaid">
                             <option value="0" selected disabled>Select Area</option>
-                            <option *ngFor="let area of filteredAreas" [value]="area.name"  (ngModelChange)="onAreaStatusChange($event)">
+                            <option *ngFor="let area of filteredAreas" [value]="area.name"
+                                (ngModelChange)="onAreaStatusChange($event)">
                                 {{ area.name }}
                             </option>
                         </select>
 
-                       
+
                         <!-- <div class="input-container">
                             <input type="text" matInput [matAutocomplete]="autoArea" formControlName="areaid"
                                 (input)="filterAreas($event)" placeholder="Select Area"
@@ -82,12 +80,12 @@
                     <div class="input_box">
                         <label>Street Name</label>
                         <select id="Street" class="js-states" formControlName="streetid" [(ngModel)]="streetid"
-                        (click)="onStreetStatusChange($event)">
-                        <option value="0" selected disabled>Select Street</option>
-                        <option *ngFor="let key of filteredStreet" [value]="key.value">
-                            {{ key.name }}
-                        </option>
-                    </select>
+                            (click)="onStreetStatusChange($event)">
+                            <option value="0" selected disabled>Select Street</option>
+                            <option *ngFor="let key of filteredStreet" [value]="key.value">
+                                {{ key.name }}
+                            </option>
+                        </select>
 
 
                         <!-- <div class="input-container">
@@ -111,9 +109,8 @@
 
                     <div class="input_box">
                         <span for="username">CAS Form Id</span>
-                        <input type="text" formControlName="casformid" placeholder="Enter CAS Form Id" pattern="[0-9]*"
-                            maxlength="6" (keypress)="onKeydown($event)" required
-                            [ngClass]="{ 'is-invalid': submitted && f['casformid'].errors }" />
+                        <input type="text" formControlName="casformid" placeholder="Enter CAS Form Id" maxlength="6"
+                            (keypress)="onKeydown($event)" />
                     </div>
                     <div class="input_box">
                         <label for="customername">Subscriber Name</label>
@@ -181,9 +178,8 @@
 
                     <div class="input_box">
                         <span for="pass">Landline No</span>
-                        <input pattern="^0\d{2,4}\d{6,8}$" maxlength="10" type="text" formControlName="landlineno"
-                            (keypress)="onKeydown($event)" placeholder="Enter Landline No"
-                            [ngClass]="{'is-invalid': submitted && f['landlineno'].errors }" required />
+                        <input maxlength="10" type="text" formControlName="landlineno" (keypress)="onKeydown($event)"
+                            placeholder="Enter Landline No" />
 
                         <!-- <div style="position: relative; font-size: small;" *ngIf="submitted && f['landlineno'].errors"
                             class="invalid-feedback">
@@ -233,11 +229,19 @@
                     <div class="input_box">
                         <label>Address Proof Name</label>
                         <select id="addressprooftypeid" formControlName="addressprooftypeid"
-                            (change)="onAddProofChange($event)">
-                            <option value="0" disabled>Select an Address Proof</option>
+                            [(ngModel)]="addressProoftypeid" (change)="onAddProofChange($event)">
+                            <option value="" disabled>Select an Address Proof</option>
                             <option *ngFor="let key of filteredADDProofKeys()" [value]="key"> {{ key}} </option>
                         </select>
-
+                        <!-- <div style="position: relative; font-size: small;" *ngIf="submitted && f['addressprooftypeid'].errors"
+                            class="invalid-feedback">
+                            <div *ngIf="f['addressprooftypeid'].errors['required']">
+                                Address Proof is required
+                            </div>
+                        </div> -->
+                        <div *ngIf="submitted && f['addressprooftypeid'].invalid" class="text-danger error-message">
+                            Address Proof is required
+                        </div>
                     </div>
 
                     <!-- <div class="input_box" *ngIf="selectedAddProofType"> -->
@@ -267,10 +271,17 @@
 
                     <div class="input_box">
                         <label>ID Proof Name</label>
-                        <select id="idprooftypeid" formControlName="idprooftypeid" (change)="onIDProofChange($event)">
-                            <option value="0" disabled>Select a ID Proof</option>
+                        <select id="idprooftypeid" formControlName="idprooftypeid" (change)="onIDProofChange($event)"
+                            [(ngModel)]="idProoftypeid">
+                            <option value="" disabled>Select a ID Proof</option>
                             <option *ngFor="let key of filteredIdProofKeys()" [value]="key"> {{ key}} </option>
                         </select>
+                        <div style="position: relative; font-size: small;"
+                            *ngIf="submitted && f['idprooftypeid'].errors" class="invalid-feedback">
+                            <div *ngIf="f['idprooftypeid'].errors['required']">
+                                Id Proof is required
+                            </div>
+                        </div>
                     </div>
                     <div class="input_box">
                         <!-- <div class="input_box" *ngIf="selectedIDProofType"> -->

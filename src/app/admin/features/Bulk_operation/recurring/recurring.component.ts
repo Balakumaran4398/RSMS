@@ -23,7 +23,7 @@ export class RecurringComponent implements OnInit {
   submitted: boolean = false;
   searchname: any;
   operatorList: any[] = [];
-  reccuringData: any;
+  reccuringData: any[]=[];
   isrecurring = false;
   gridApi: any;
   isAnyRowSelected: any = false;
@@ -39,7 +39,7 @@ export class RecurringComponent implements OnInit {
   columnDefs: ColDef[] = [
     {
       headerName: "S.No", lockPosition: true, valueGetter: 'node.rowIndex+1', cellClass: 'locked-col', headerCheckboxSelection: true,
-      checkboxSelection: true, width: 80
+      checkboxSelection: true, width: 100
     },
     { headerName: "SUBSCRIBER NAME", field: 'customername', width: 250,cellStyle: { textAlign: 'left' } },
     { headerName: "ADDRESS", field: 'address', width: 250,cellStyle: { textAlign: 'left' } },
@@ -125,13 +125,13 @@ export class RecurringComponent implements OnInit {
     this.submitted = true;
     this.userservice.getRecurringListByOperatorIdSearchnameAndIsrecurring(this.role, this.username, this.operatorid, this.searchname || 0, type)
       .subscribe(
-        (response: HttpResponse<any[]>) => { // Expect HttpResponse<any[]>
-          if (response.status === 200) {
-            this.reccuringData = response.body;
-            this.swal.Success_200();
-          } else if (response.status === 204) {
-            this.swal.Success_204();
-          }
+        (response:any) => { // Expect HttpResponse<any[]>
+          // if (response.status === 200) {
+            this.reccuringData = response;
+            // this.swal.Success_200();
+          // } else if (response.status === 204) {
+            // this.swal.Success_204();
+          // }
         },
         (error) => {
           if (error.status === 400) {
@@ -262,4 +262,57 @@ export class RecurringComponent implements OnInit {
       }
     });
   }
+
+  //  getActivationReport(type: number) {
+  //     this.processingSwal();
+
+  
+  //     this.userservice.getBulkFirstTimeActivationDownload(this.role, this.username, 0, 1, 1, type)
+  //       .subscribe((x: Blob) => {
+  //         if (type == 1) {
+  //           this.reportMaking(x, "Bulk First Time Activation -" + 0 + ".pdf", 'application/pdf');
+  //         } else if (type == 2) {
+  //           this.reportMaking(x, "Bulk First Time Activation -" + 0 + ".xlsx", 'application/xlsx');
+  //         }
+  //       },
+  //         (error: any) => {
+  //           this.pdfswalError(error?.error.message);
+  //         });
+  //   }
+  //   // -----------------------------------------------------common method for pdf and excel------------------------------------------------------------------------
+  
+  
+  //   reportMaking(x: Blob, reportname: any, reporttype: any) {
+  //     const blob = new Blob([x], { type: reporttype });
+  //     const data = window.URL.createObjectURL(blob);
+  //     const link = document.createElement('a');
+  //     link.href = data;
+  //     link.download = reportname.toUpperCase();
+  //     link.dispatchEvent(new MouseEvent('click', { bubbles: true, cancelable: true, view: window }));
+  //     setTimeout(() => {
+  //       window.URL.revokeObjectURL(data);
+  //       link.remove();
+  //     }, 100);
+  //     Swal.close();
+  //   }
+  //   pdfswalError(error: any) {
+  //     Swal.close();
+  //     Swal.fire({
+  //       title: 'Error!',
+  //       text: error || 'There was an issue generating the PDF CAS form report.',
+  //       icon: 'error',
+  //       confirmButtonText: 'Ok'
+  //     });
+  //   }
+  //   processingSwal() {
+  //     Swal.fire({
+  //       title: "Processing",
+  //       text: "Please wait while the report is being generated...",
+  //       showConfirmButton: false,
+  //       didOpen: () => {
+  //         Swal.showLoading(null);
+  //       }
+  //     });
+  
+  //   }
 }

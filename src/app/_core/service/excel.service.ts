@@ -310,11 +310,36 @@ export class ExcelService {
     });
   }
   async generateChannelDetailsExcel() {
-
-    const header = ['S.NO','TS ID', 'FREQUENCY','SERVICE NAME','SERVICE ID','PRODUCT ID','INRAMT','CATEGORY NAME','BROADCASTER NAME','CHANNEL TYPE NAME','DISTRIBUTOR NAME','CHANNEL STATUS'];
+    const mainHeader = 'CHANNEL DETAIL REPORT'
+    const header = ['TS ID', 'FREQUENCY', 'SERVICE NAME', 'SERVICE ID', 'PRODUCT ID', 'INRAMT', 'CATEGORY NAME', 'BROADCASTER NAME', 'CHANNEL TYPE NAME', 'DISTRIBUTOR NAME', 'CHANNEL STATUS'];
     const workbook = new Excel.Workbook();
     const worksheet = workbook.addWorksheet('Sharing Data');
+    const headerMainRow = worksheet.addRow([mainHeader]);
     const headerRow = worksheet.addRow(header);
+    worksheet.mergeCells('A1:K1');
+    headerMainRow.eachCell((cell) => {
+      cell.fill = {
+        type: 'pattern',
+        pattern: 'solid',
+        fgColor: { argb: '013047' },
+      };
+      cell.font = {
+        color: { argb: 'FFFFFF' },
+        bold: true,
+      };
+      cell.alignment = {
+        horizontal: 'center',
+        vertical: 'middle',
+      };
+      cell.border = {
+        top: { style: 'thin' },
+        left: { style: 'thin' },
+        bottom: { style: 'thin' },
+        right: { style: 'thin' },
+      };
+    });
+    headerMainRow.height = 30;
+
     headerRow.eachCell((cell) => {
       cell.fill = {
         type: 'pattern',
@@ -483,7 +508,127 @@ export class ExcelService {
   }
 
 
-  async generateSuspendBasedExcel(areatitle: string, headers: any, dataRow: any[], titles: any,  areasub: any, sub: any) {
+  async generateChannelExcel(areatitle: string, headers: any, dataRow: any[], titles: any,) {
+
+    // const subtitle = sub;
+    const title = titles;
+    const header = headers;
+
+    const workbook = new Excel.Workbook();
+    const worksheet = workbook.addWorksheet('Sheet 1');
+
+    //==========TITLE=============
+    const titleRow = worksheet.addRow([title]);
+    titleRow.font = {
+      family: 4,
+      size: 13,
+      color: { argb: 'FFFFFF' },
+      bold: true,
+    };
+    titleRow.alignment = { horizontal: 'center' };
+    titleRow.eachCell((cell: any) => {
+      cell.fill = {
+        type: 'pattern',
+        pattern: 'solid',
+        fgColor: { argb: '34495e' },
+        bgColor: { argb: '34495e' },
+      };
+      cell.border = {
+        top: { style: 'thin' },
+        left: { style: 'thin' },
+        bottom: { style: 'thin' },
+        right: { style: 'thin' },
+      };
+    });
+    worksheet.mergeCells(areatitle);
+
+    //==========SUBTITLE=============
+    // const subtitleRow = worksheet.addRow([subtitle]);
+    // subtitleRow.font = {
+    //   family: 4,
+    //   size: 12,
+    //   color: { argb: '000000' },
+    //   bold: true,
+    // };
+    // subtitleRow.height = 20;
+    // subtitleRow.alignment = { horizontal: 'center' };
+    // subtitleRow.eachCell((cell: any) => {
+    //   cell.fill = {
+    //     type: 'pattern',
+    //     pattern: 'solid',
+    //     fgColor: { argb: 'cce0d8' },
+    //     bgColor: { argb: 'cce0d8' },
+    //   };
+    //   cell.border = {
+    //     top: { style: 'thin' },
+    //     left: { style: 'thin' },
+    //     bottom: { style: 'thin' },
+    //     right: { style: 'thin' },
+    //   };
+    // });
+    // worksheet.mergeCells(areasub);
+
+    //==========COLUMN HEADERS============
+    const headerRow = worksheet.addRow(header);
+    headerRow.font = { bold: true, color: { argb: 'FFFFFF' } };
+    headerRow.alignment = { vertical: 'middle', horizontal: 'center' };
+    headerRow.height = 20;
+
+    headerRow.eachCell((cell: any, number: any) => {
+      cell.fill = {
+        type: 'pattern',
+        pattern: 'solid',
+        fgColor: { argb: '333333' }, // Adjusted color
+        bgColor: { argb: '333333' },
+      };
+      cell.border = {
+        top: { style: 'thin' },
+        left: { style: 'thin' },
+        bottom: { style: 'thin' },
+        right: { style: 'thin' },
+      };
+    });
+
+    //==========DATA ROWS=============
+    dataRow.forEach((d) => {
+      const row = worksheet.addRow(d);
+      row.alignment = { vertical: 'middle', horizontal: 'center' };
+      row.height = 20;
+      row.eachCell((cell: any) => {
+        cell.border = {
+          // top: { style: 'thin' },
+          left: { style: 'thin' },
+          // bottom: { style: 'thin' },
+          right: { style: 'thin' },
+        };
+      });
+    });
+
+    worksheet.columns = [
+      // { key: 'a', width: 10 }, // S.NO
+      { key: 'a', width: 25 }, // LCO Name
+      { key: 'b', width: 25 }, // Customer Name
+      { key: 'c', width: 25 }, // Smartcard
+      { key: 'd', width: 25 }, // Box ID
+      { key: 'e', width: 25 }, // Address
+      { key: 'f', width: 30 }, // Mobile No
+      { key: 'g', width: 30 }, // Package Name
+      { key: 'h', width: 30 }, // Expiry Date
+      { key: 'i', width: 30 }, // Activation Date
+      { key: 'j', width: 30 }, // Activation Date
+      { key: 'k', width: 30 }, // Activation Date
+      { key: 'l', width: 25 }, // Activation Date
+    ];
+
+    // Save the Excel file
+    workbook.xlsx.writeBuffer().then((data: any) => {
+      const blob = new Blob([data], {
+        type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+      });
+      fs.saveAs(blob, titles + '.xlsx');
+    });
+  }
+  async generateSuspendBasedExcel(areatitle: string, headers: any, dataRow: any[], titles: any, areasub: any, sub: any) {
 
     const subtitle = sub;
     const title = titles;
@@ -604,7 +749,7 @@ export class ExcelService {
     });
   }
 
-  async generatedAllServiceExcel(areatitle: string, headers: any, dataRow: any[], titles: any,  areasub: any, sub: any) {
+  async generatedAllServiceExcel(areatitle: string, headers: any, dataRow: any[], titles: any, areasub: any, sub: any) {
 
     const subtitle = sub;
     const title = titles;

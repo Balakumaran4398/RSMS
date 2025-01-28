@@ -88,3 +88,30 @@ input {
         overflow: scroll;
     }
 }
+/* Input Styles */
+.email-input {
+    border: 1px solid #ced4da;
+    border-radius: 4px;
+    padding: 0.5rem;
+    width: 100%;
+  }
+  
+  /* Valid Input */
+  .email-input.is-valid {
+    border-color: green;
+    background-color: #e6ffe6;
+  }
+  
+  /* Invalid Input */
+  .email-input.is-invalid {
+    border-color: red;
+    background-color: #ffe6e6;
+  }
+  
+  /* Error Message Styling */
+  .error-message {
+    color: red;
+    font-size: 0.85rem;
+    margin-top: 0.25rem;
+  }
+  

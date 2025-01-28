@@ -60,7 +60,7 @@
                 <div class=" mb-3">
                     <span for="package_rate" class="form-label">Package Rate</span>
                     <input type="text" class="" id="package_rate" formControlName="package_rate"
-                        [(ngModel)]="package_rate" (keydown)="onKeydown($event)" (keyup)="calculateAmounts()"
+                        [(ngModel)]="package_rate" (keydown)="onKeydown($event)" (input)="calculateAmounts()"
                         placeholder="Enter Package Rate">
                     <div *ngIf="createpackageForm.get('package_rate')?.invalid && createpackageForm.get('package_rate')?.touched"
                         class="error-message">
@@ -138,7 +138,7 @@
                                 (change)="percentageValue(true)" />
                             <label for="html" class="label"><span
                                     style="z-index: 1000;color:white;margin-top:4px">Yes</span></label>
-                            <input checked="" value="false" name="fav_language" id="css" type="radio" class="input1"
+                            <input checked=""   value="false" name="fav_language" id="css" type="radio" class="input1"
                                 (change)="percentageValue(false)" />
                             <label for="css" class="label"><span
                                     style="z-index: 1000;color:white;margin-top:4px">No</span></label>
@@ -160,6 +160,7 @@
                     </select>
                 </div>
             </div> -->
+            
             <p class="errorcase" *ngIf="!isPercentage && issave">*Note: Fixed commission must be less than or equal to
                 the customer amount!!</p>
             <p class="errorcase" *ngIf="isPercentage && issave">*Note: Commission percentage must be between 0 and

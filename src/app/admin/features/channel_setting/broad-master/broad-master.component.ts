@@ -94,7 +94,7 @@ export class BroadMasterComponent implements OnInit {
       headerName: 'BroadCaster Name',
       field: 'broadcastername',
       flex: 1,
-      cellStyle: { textAlign: 'left', cursor: 'pointer' }, 
+      cellStyle: { textAlign: 'left', }, 
       editable: true,
       cellEditor: 'agTextCellEditor',
       tooltipValueGetter: (params: any) => {

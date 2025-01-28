@@ -96,22 +96,49 @@ input {
     width: 100%;
     height: 600px;
     text-align: center;
-  }
-  .responsive-grid {
+}
+
+.responsive-grid {
     width: 100%;
-    max-width: 1200px; 
+    max-width: 1200px;
     margin: auto;
-  }
-  
-  
-  @media (max-width: 768px) {
+}
+
+
+@media (max-width: 768px) {
     .responsive-grid {
         width: 100%;
     }
-  }
-  ::ng-deep .ag-header{
+}
+
+::ng-deep .ag-header {
     background-color: #557c9b !important;
-  }
-  .custom{
+}
+
+.custom {
     background-color: lightslategrey;
-  }
+}
+
+.input-container {
+    position: relative;
+    display: inline-block;
+    width: 100%;
+}
+
+.example-input {
+    width: 100%;
+    padding-right: 2rem;
+    box-sizing: border-box;
+}
+
+.icon-right {
+    position: absolute;
+    top: 50%;
+    right: 0px;
+    transform: translateY(-50%);
+    pointer-events: none;
+    color: #050505;
+    font-size: 19px;
+    font-weight: 600;
+
+}

@@ -29,6 +29,16 @@ export class SwalService {
       showConfirmButton: false
     });
   }
+  success_2(message: any) {
+    Swal.fire({
+      title: 'Success!',
+      text: message,
+      icon: 'success',
+      timer: 2000,
+      timerProgressBar: true,
+      showConfirmButton: false
+    });
+  }
   warning(message: any) {
     Swal.fire({
       title: 'Warning!',

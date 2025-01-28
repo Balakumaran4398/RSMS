@@ -15,11 +15,15 @@ import { SwalService } from 'src/app/_core/service/swal.service';
 export class ActivationComponent implements OnInit {
   file: File | null = null;
   filePath: string = '';
-
+  remark: any = 'first_time_activation';
   isCheckboxChecked: boolean = false;
   columnDefs: ColDef[] = [
     { headerName: "S.No", lockPosition: true, valueGetter: 'node.rowIndex+1', cellClass: 'locked-col', width: 100, suppressNavigable: true, sortable: false, filter: false },
     { headerName: "SMARTCARD", field: 'smartcard', width: 250 },
+    { headerName: "LCO NAME", field: 'operatorname', width: 200, cellStyle: { textAlign: 'left', }, },
+    { headerName: "REMARKS", field: 'remarks', width: 200 },
+    { headerName: "PACKAGE NAME", field: 'packagename', width: 200 },
+    { headerName: "NO OF DAYS", field: 'days', width: 200 },
     {
       headerName: "STATUS",
       field: 'status',
@@ -35,8 +39,8 @@ export class ActivationComponent implements OnInit {
         return params.value;
       }
     },
-    { headerName: "REMARKS", field: 'remarks', width: 200 },
     { headerName: "CREATED DATE	", field: 'createddate', width: 220 },
+    { headerName: "END DATE	", field: 'expirydate', width: 220 },
   ];
   rowData: any;
   public rowSelection: any = "multiple";
@@ -88,6 +92,7 @@ export class ActivationComponent implements OnInit {
     this.selectedDate = this.date;
     this.refresh();
     this.onproducttypechange("");
+
   }
   onGridReady = () => {
 
@@ -161,7 +166,10 @@ export class ActivationComponent implements OnInit {
   getData() {
     this.rowData = [];
     const dateToPass = this.selectedDate || this.date;
-    this.userservice.getBulkOperationListByDate(this.role, this.username, 'first_time_activation', dateToPass, 4)
+    console.log(this.selectedDate);
+    console.log(this.date);
+
+    this.userservice.getBulkOperationListByDate(this.role, this.username, this.remark, dateToPass, 1)
       .subscribe(
         (response: HttpResponse<any[]>) => { // Expect HttpResponse<any[]>
           if (response.status === 200) {
@@ -222,7 +230,7 @@ export class ActivationComponent implements OnInit {
   }
 
   refresh() {
-    this.userservice.getBulkOperationRefreshList(this.role, this.username, 'first_time_activation', 4)
+    this.userservice.getBulkOperationRefreshList(this.role, this.username, this.remark, 1)
       .subscribe(
         (response: HttpResponse<any[]>) => { // Expect HttpResponse<any[]>
           if (response.status === 200) {
@@ -243,6 +251,92 @@ export class ActivationComponent implements OnInit {
           // this.callAnotherApi();
         }
       );
+      this.selectedDate = 0;
+
+  }
+
+  // getActivationReport(type: number,) {
+  //   this.processingSwal();
+  //   const dateToPass = this.selectedDate || this.date;
+  //   console.log('selected Date', this.selectedDate);
+  //   console.log(' Date', this.date);
+
+  //   this.userservice.getBulkFirstTimeActivationDownload(this.role, this.username, this.selectedDate, this.remark, 1, type)
+  //     .subscribe((x: Blob) => {
+  //       if (type == 1) {
+  //         this.reportMaking(x, "Bulk First Time Activation -" + dateToPass + ".pdf", 'application/pdf');
+  //       } else if (type == 2) {
+  //         this.reportMaking(x, "Bulk First Time Activation -" + dateToPass + ".xlsx", 'application/xlsx');
+  //       }
+  //     },
+  //       (error: any) => {
+  //         this.pdfswalError(error?.error.message);
+  //       });
+  // }
+
+  getActivationReport(type: number) {
+    this.processingSwal();
+    const dateToPass = this.selectedDate || 0; 
+    console.log('Date passed to report:', dateToPass);
+  
+    this.userservice
+      .getBulkFirstTimeActivationDownload(this.role, this.username, dateToPass, this.remark, 1, type)
+      .subscribe(
+        (x: Blob) => {
+          if (type === 1) {
+            this.reportMaking(
+              x,
+              `Bulk First Time Activation - ${dateToPass || 'All Dates'}.pdf`,
+              'application/pdf'
+            );
+          } else if (type === 2) {
+            this.reportMaking(
+              x,
+              `Bulk First Time Activation - ${dateToPass || 'All Dates'}.xlsx`,
+              'application/xlsx'
+            );
+          }
+        },
+        (error: any) => {
+          this.pdfswalError(error?.error.message);
+        }
+      );
+  }
+  // -----------------------------------------------------common method for pdf and excel------------------------------------------------------------------------
+
+
+  reportMaking(x: Blob, reportname: any, reporttype: any) {
+    const blob = new Blob([x], { type: reporttype });
+    const data = window.URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.href = data;
+    link.download = reportname.toUpperCase();
+    link.dispatchEvent(new MouseEvent('click', { bubbles: true, cancelable: true, view: window }));
+    setTimeout(() => {
+      window.URL.revokeObjectURL(data);
+      link.remove();
+    }, 100);
+    Swal.close();
+  }
+  pdfswalError(error: any) {
+    Swal.close();
+    Swal.fire({
+      title: 'Error!',
+      text: error || 'There was an issue generating the PDF CAS form report.',
+      icon: 'error',
+      confirmButtonText: 'Ok'
+    });
+  }
+  processingSwal() {
+    Swal.fire({
+      title: "Processing",
+      text: "Please wait while the report is being generated...",
+      showConfirmButton: false,
+      didOpen: () => {
+        Swal.showLoading(null);
+      }
+    });
+
   }
   generateExcel(type: string) {
     this.excelService.generatealacarteactivationExcel(type);

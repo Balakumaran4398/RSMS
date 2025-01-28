@@ -195,7 +195,7 @@ export class  AllocatedComponent {
       headerName: 'IS_EMI', width: 150, cellStyle: { textAlign: 'center' },
       field: 'emidisplay',
       cellRenderer: (params: any) => {
-        if (params.value === true) {
+        if (params.value) {
           return `<span style="color: #06991a;">YES</span>`;
         } else {
           return `<span style="color: red;">NO</span>`;

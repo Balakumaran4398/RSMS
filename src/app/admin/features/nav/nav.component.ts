@@ -36,10 +36,8 @@ export class NavComponent implements OnInit, AfterViewInit {
   isDropdownOpen: boolean = false;
 
   constructor(private router: Router, private breakpointObserver: BreakpointObserver, private cdr: ChangeDetectorRef, private userservice: BaseService, private storageservice: StorageService) {
-    this.breakpointChanged();
+    // this.breakpointChanged();
     this.role = storageservice.getUserRole();
-    console.log(this.role);
-
     this.username = storageservice.getUsername();
     if (this.role.includes('ROLE_ADMIN')) {
       this.isUser = true;
@@ -57,28 +55,13 @@ export class NavComponent implements OnInit, AfterViewInit {
       this.isSpecial = true;
       this.role = 'SPECIAL';
     }
-    // let menuToggle = document.querySelector('.menu-toggle') as HTMLElement;
-    // let navigation = document.querySelector('.navigation') as HTMLElement;
-
-    // if (menuToggle && navigation) {
-    //   menuToggle.onclick = function () {
-    //     navigation.classList.toggle('active');
-    //   };
-    // }
-
   }
 
   ngOnInit() {
     this.checkDeviceType();
-    // setInterval(() => {
-    //   this.currentTime = new Date();
-    // }, 1000);
-    // this.setActive("");
     const sidemenuLinks = document.querySelectorAll('.side-menu li a');
-    // const sidedropdownmenuLinks = document.querySelectorAll('.side-menu li ul li a');
     console.log("click");
     sidemenuLinks.forEach(link => {
-
       link?.classList?.remove('active');
       link.addEventListener("click", () => {
         console.log("click");
@@ -86,13 +69,7 @@ export class NavComponent implements OnInit, AfterViewInit {
         link.classList.add('active');
       });
     });
-    // sidedropdownmenuLinks.forEach(link => {
-    //   link?.classList?.remove('active');
-    //   link.addEventListener("click", () => {
-    //     sidedropdownmenuLinks.forEach(link => link.classList.remove('active'));
-    //     link.classList.add('active');
-    //   });
-    // });
+
   }
   setActive(event: any): void {
     const dropdownLinks = document.querySelectorAll('.side-dropdown li a');
@@ -100,7 +77,6 @@ export class NavComponent implements OnInit, AfterViewInit {
     event.target.classList.add('active');
   }
   setActiveTab(event: Event) {
-    // const activeTabs = document.querySelectorAll('.side-menu li a.active');
     const activeTabs = document.querySelectorAll('.side-menu li a.active');
     activeTabs.forEach((tab) => {
       tab.classList.remove('active');
@@ -175,27 +151,11 @@ export class NavComponent implements OnInit, AfterViewInit {
     this.isDropdownOpen = !this.isDropdownOpen;
   }
 
-  // goToSubscriberDashboard(lcomember: any) {
-  //   this.lcomember = lcomember.value;
-  //   console.log('Selected value:', this.lcomember);
-  //   if (this.router.url == `/admin/subscriber-full-info/${this.lcomember}`) {
-  //     window.location.reload();
-  //     this.router.navigateByUrl('/', { skipLocationChange: true }).then(() => {
-  //       window.location.reload();
-  //       this.router.navigate([`/admin/subscriber-full-info/${this.lcomember}`]);
-  //       console.log(this.lcomember);
-  //       window.location.reload();
-  //     });
-  //   } else {
-  //     this.router.navigateByUrl(`/admin/subscriber-full-info/${this.lcomember}`);
-  //     window.location.reload();
-  //   }
-  //   this.showDropdown = false;
-  // }
+
   goToSubscriberDashboard(lcomember: any) {
     this.lcomember = lcomember.value;
     console.log('Selected value:', this.lcomember);
-    const targetUrl = `/admin/subscriber-full-info/${this.lcomember}//dashoard`;
+    const targetUrl = `/admin/subscriber-full-info/${this.lcomember}//dashboard`;
 
     if (this.router.url === targetUrl) {
       window.location.reload();
@@ -248,7 +208,7 @@ export class NavComponent implements OnInit, AfterViewInit {
     });
 
     // SIDEBAR COLLAPSE
-    const toggleSidebar = document.querySelector('nav .toggle-sidebar');
+    const toggleSidebar = document.querySelector('#nav .toggle-sidebar');
     const allSideDivider = document.querySelectorAll('#sidebar .divider');
     if (sidebar?.classList?.contains('hide')) {
       allSideDivider.forEach(item => {
@@ -267,7 +227,6 @@ export class NavComponent implements OnInit, AfterViewInit {
       this.cdr.detectChanges();
     }
     toggleSidebar?.addEventListener('click', () => {
-      // sidebar?.classList.toggle('hide');
       this.isHide = sidebar?.classList.toggle('hide');
       this.cdr.detectChanges();
       if (sidebar?.classList?.contains('hide')) {
@@ -285,8 +244,6 @@ export class NavComponent implements OnInit, AfterViewInit {
         })
       }
     })
-
-
 
 
     sidebar?.addEventListener('mouseleave', function () {
@@ -326,7 +283,6 @@ export class NavComponent implements OnInit, AfterViewInit {
     function closeAllDropdowns() {
       const dropdowns = document.querySelectorAll('.dropdown');
       const arrows = document.querySelectorAll('.arrow');
-
       dropdowns.forEach(dropdown => dropdown.classList.remove('show'));
       arrows.forEach(arrow => arrow.classList.remove('arrow'));
     }
@@ -365,28 +321,28 @@ export class NavComponent implements OnInit, AfterViewInit {
   }
   isMobile = false;
   currentBreakpoint: any;
-  private breakpointChanged() {
-    if (this.breakpointObserver.isMatched(Breakpoints.Large)) {
-      this.currentBreakpoint = Breakpoints.Large;
-      // console.log(this.currentBreakpoint);
-      this.isMobile = false;
-    } else if (this.breakpointObserver.isMatched(Breakpoints.Medium)) {
-      this.currentBreakpoint = Breakpoints.Medium;
-      // console.log(this.currentBreakpoint);
-      this.isMobile = false;
-    } else if (this.breakpointObserver.isMatched(Breakpoints.Small)) {
-      this.currentBreakpoint = Breakpoints.Small;
-      // console.log(this.currentBreakpoint);
-      this.isMobile = false;
-    } else if (this.breakpointObserver.isMatched('(min-width: 500px)')) {
-      this.currentBreakpoint = '(min-width: 500px)';
-      // console.log(this.currentBreakpoint);
-      this.isMobile = true;
-    } else {
-      this.isMobile = true;
-    }
-    console.log(this.isMobile);
-  }
+  // private breakpointChanged() {
+  //   if (this.breakpointObserver.isMatched(Breakpoints.Large)) {
+  //     this.currentBreakpoint = Breakpoints.Large;
+  //     // console.log(this.currentBreakpoint);
+  //     this.isMobile = false;
+  //   } else if (this.breakpointObserver.isMatched(Breakpoints.Medium)) {
+  //     this.currentBreakpoint = Breakpoints.Medium;
+  //     // console.log(this.currentBreakpoint);
+  //     this.isMobile = false;
+  //   } else if (this.breakpointObserver.isMatched(Breakpoints.Small)) {
+  //     this.currentBreakpoint = Breakpoints.Small;
+  //     // console.log(this.currentBreakpoint);
+  //     this.isMobile = false;
+  //   } else if (this.breakpointObserver.isMatched('(min-width: 500px)')) {
+  //     this.currentBreakpoint = '(min-width: 500px)';
+  //     // console.log(this.currentBreakpoint);
+  //     this.isMobile = true;
+  //   } else {
+  //     this.isMobile = true;
+  //   }
+  //   console.log(this.isMobile);
+  // }
   isAdmin = false;
   navgetToUrl(id: any,) {
     // console.log(id);
@@ -404,36 +360,4 @@ export class NavComponent implements OnInit, AfterViewInit {
     sidebar?.classList?.contains('hide') ? sidebar?.classList?.remove('hide') : sidebar?.classList?.add('hide')
   }
 }
-// class NotificationHandler {
-//   private notificationTimeElement: HTMLElement | null;
 
-//   constructor() {
-//     this.notificationTimeElement = document.getElementById('notificationTime');
-//     // Assuming you have an event or condition to trigger time update, call updateNotificationTime here
-//     // For example:
-//     this.updateNotificationTime();
-//   }
-
-//   // Call this method to update the notification time when needed
-//   public updateNotificationTime() {
-//     const now = new Date();
-//     const timeString = now.toLocaleTimeString();
-
-//     if (this.notificationTimeElement) {
-//       this.notificationTimeElement.textContent = `${timeString}`;
-//     }
-//   }
-// }
-
-// Example usage:
-// Initialize the NotificationHandler when the DOM is loaded
-// document.addEventListener('DOMContentLoaded', () => {
-//   const notificationHandler = new NotificationHandler();
-
-//   const updateButton = document.getElementById('updateButton');
-//   if (updateButton) {
-//     updateButton.addEventListener('click', () => {
-//       notificationHandler.updateNotificationTime();
-//     });
-//   }
-// });

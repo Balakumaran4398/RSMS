@@ -819,7 +819,18 @@ export class SubscriberdialogueComponent implements OnInit {
         { headerName: "S.No", valueGetter: 'node.rowIndex+1', width: 100, filter: false },
         { headerName: 'PACKAGE NAME', field: 'productname', width: 200 },
         { headerName: 'PACKAGE TYPE', field: 'producttypename', width: 250 },
-        { headerName: 'REFUND AMOUNT', field: 'refundproductrate', width: 200 },
+        // {
+        //   headerName: 'REFUND AMOUNT', field: 'refundproductrate', width: 200, valueFormatter: (params: any) => {
+        //     return params.value ? params.value.toFixed(2) : '';
+        //   }
+        // },
+        {
+          headerName: 'REFUND AMOUNT', field: 'refundproductrate', width: 200, 
+          valueFormatter: (params: any) => {
+            const value = params.value;
+            return value !== undefined && value !== null ? value.toFixed(2) : '0.00';
+          }
+        },
         { headerName: 'DAYS', field: 'days', width: 200 },
       ];
     } else if (stype === 'addon') {
@@ -1370,7 +1381,7 @@ export class SubscriberdialogueComponent implements OnInit {
           showConfirmButton: false
         }).then(() => {
           // location.reload();
-           this.router.navigate([`/admin/subscriber-full-info/${this.smartcardno}/subsmartcard`]);
+          this.router.navigate([`/admin/subscriber-full-info/${this.smartcardno}/subsmartcard`]);
           this.dialogRef.close({ success: true, smartcard: this.smartcardno });
 
         });
@@ -1392,7 +1403,7 @@ export class SubscriberdialogueComponent implements OnInit {
           timerProgressBar: true,
           showConfirmButton: false
         }).then(() => {
-           this.router.navigate([`/admin/subscriber-full-info/${this.smartcardno}/subsmartcard`]);
+          this.router.navigate([`/admin/subscriber-full-info/${this.smartcardno}/subsmartcard`]);
           this.dialogRef.close({ success: true, smartcard: this.smartcardno });
         });
       }, (err) => {
@@ -1416,7 +1427,7 @@ export class SubscriberdialogueComponent implements OnInit {
           timerProgressBar: true,
           showConfirmButton: false
         }).then(() => {
-           this.router.navigate([`/admin/subscriber-full-info/${this.smartcardno}/subsmartcard`]);
+          this.router.navigate([`/admin/subscriber-full-info/${this.smartcardno}/subsmartcard`]);
           this.dialogRef.close({ success: true, smartcard: this.smartcardno });
         });
       }, (err) => {
@@ -1436,7 +1447,7 @@ export class SubscriberdialogueComponent implements OnInit {
           timerProgressBar: true,
           showConfirmButton: false
         }).then(() => {
-           this.router.navigate([`/admin/subscriber-full-info/${this.smartcardno}/subsmartcard`]);
+          this.router.navigate([`/admin/subscriber-full-info/${this.smartcardno}/subsmartcard`]);
           this.dialogRef.close({ success: true, smartcard: this.smartcardno });
         });
       }, (err) => {
@@ -1457,7 +1468,7 @@ export class SubscriberdialogueComponent implements OnInit {
           timerProgressBar: true,
           showConfirmButton: false
         }).then(() => {
-           this.router.navigate([`/admin/subscriber-full-info/${this.smartcardno}/subsmartcard`]);
+          this.router.navigate([`/admin/subscriber-full-info/${this.smartcardno}/subsmartcard`]);
           this.dialogRef.close({ success: true, smartcard: this.smartcardno });
         });
       }, (err) => {
@@ -1477,7 +1488,7 @@ export class SubscriberdialogueComponent implements OnInit {
           timerProgressBar: true,
           showConfirmButton: false
         }).then(() => {
-           this.router.navigate([`/admin/subscriber-full-info/${this.smartcardno}/subsmartcard`]);
+          this.router.navigate([`/admin/subscriber-full-info/${this.smartcardno}/subsmartcard`]);
           this.dialogRef.close({ success: true, smartcard: this.smartcardno });
         });
       }, (err) => {
@@ -1517,7 +1528,7 @@ export class SubscriberdialogueComponent implements OnInit {
           timerProgressBar: true,
           showConfirmButton: false
         }).then(() => {
-           this.router.navigate([`/admin/subscriber-full-info/${this.smartcardno}/subsmartcard`]);
+          this.router.navigate([`/admin/subscriber-full-info/${this.smartcardno}/subsmartcard`]);
           this.dialogRef.close({ success: true, smartcard: this.smartcardno });
         });
       }, (err) => {
@@ -1603,7 +1614,7 @@ export class SubscriberdialogueComponent implements OnInit {
           timerProgressBar: true,
           showConfirmButton: false
         }).then(() => {
-           this.router.navigate([`/admin/subscriber-full-info/${this.smartcardno}/subsmartcard`]);
+          this.router.navigate([`/admin/subscriber-full-info/${this.smartcardno}/subsmartcard`]);
           this.dialogRef.close({ success: true, smartcard: this.smartcardno });
           // location.reload();
           this.dialogRef.close({ success: true, smartcard: this.smartcardno });
@@ -1646,7 +1657,7 @@ export class SubscriberdialogueComponent implements OnInit {
           timerProgressBar: true,
           showConfirmButton: false
         }).then(() => {
-           this.router.navigate([`/admin/subscriber-full-info/${this.smartcardno}/subsmartcard`]);
+          this.router.navigate([`/admin/subscriber-full-info/${this.smartcardno}/subsmartcard`]);
           this.dialogRef.close({ success: true, smartcard: this.smartcardno });
         });
       }, (err) => {
@@ -1697,13 +1708,24 @@ export class SubscriberdialogueComponent implements OnInit {
       }
     });
     this.userservice.baseChangeofSmartcardPackage(requestBody).subscribe((res: any) => {
-      this.swal.success(res?.message);
+      // this.swal.success(res?.message);
+      Swal.fire({
+        title: 'Success!',
+        text: res.message,
+        icon: 'success',
+        timer: 2000,
+        timerProgressBar: true,
+        showConfirmButton: false
+      }).then(() => {
+        this.router.navigate([`/admin/subscriber-full-info/${this.smartcardno}/subsmartcard`]);
+        this.dialogRef.close({ success: true, smartcard: this.smartcardno });
+      });
     }, (err) => {
       this.swal.Error(err?.error?.message);
     });
   }
   getFirstTimeActivationConfirmation() {
-    this.swal.Loading();
+    // this.swal.Loading();
     this.isActive = true;
     this.userservice.getFirstTimeActivationConfirmation(this.role, this.username, this.newpackagename, this.selectedRechargetype, this.f_date || this.plantype || 4, this.smartcardno, 1, 0)
       .subscribe((data: any) => {
@@ -1756,8 +1778,8 @@ export class SubscriberdialogueComponent implements OnInit {
         timerProgressBar: true,
         showConfirmButton: false
       }).then(() => {
-         this.router.navigate([`/admin/subscriber-full-info/${this.smartcardno}/subsmartcard`]);
-          this.dialogRef.close({ success: true, smartcard: this.smartcardno });
+        this.router.navigate([`/admin/subscriber-full-info/${this.smartcardno}/subsmartcard`]);
+        this.dialogRef.close({ success: true, smartcard: this.smartcardno });
       });
     }, (err) => {
       this.swal.Error(err?.error?.message);
@@ -1782,9 +1804,9 @@ export class SubscriberdialogueComponent implements OnInit {
           timerProgressBar: true,
           showConfirmButton: false
         }).then(() => {
-           this.router.navigate([`/admin/subscriber-full-info/${this.smartcardno}/subsmartcard`]);
+          this.router.navigate([`/admin/subscriber-full-info/${this.smartcardno}/subsmartcard`]);
           this.dialogRef.close({ success: true, smartcard: this.smartcardno });
-           });
+        });
       }, (err) => {
         this.swal.Error(err?.error?.message || err?.error?.boxidchange.boxid);
       });
@@ -1806,9 +1828,9 @@ export class SubscriberdialogueComponent implements OnInit {
           timerProgressBar: true,
           showConfirmButton: false
         }).then(() => {
-           this.router.navigate([`/admin/subscriber-full-info/${this.smartcardno}/subsmartcard`]);
+          this.router.navigate([`/admin/subscriber-full-info/${this.smartcardno}/subsmartcard`]);
           this.dialogRef.close({ success: true, smartcard: this.smartcardno });
-           });
+        });
       }, (err) => {
         this.swal.Error(err?.error?.message);
       });
@@ -1826,9 +1848,9 @@ export class SubscriberdialogueComponent implements OnInit {
           timerProgressBar: true,
           showConfirmButton: false
         }).then(() => {
-           this.router.navigate([`/admin/subscriber-full-info/${this.smartcardno}/subsmartcard`]);
+          this.router.navigate([`/admin/subscriber-full-info/${this.smartcardno}/subsmartcard`]);
           this.dialogRef.close({ success: true, smartcard: this.smartcardno });
-           });
+        });
       }, (err) => {
         this.swal.Error(err?.error?.message);
       });
@@ -1846,9 +1868,9 @@ export class SubscriberdialogueComponent implements OnInit {
           timerProgressBar: true,
           showConfirmButton: false
         }).then(() => {
-           this.router.navigate([`/admin/subscriber-full-info/${this.smartcardno}/subsmartcard`]);
+          this.router.navigate([`/admin/subscriber-full-info/${this.smartcardno}/subsmartcard`]);
           this.dialogRef.close({ success: true, smartcard: this.smartcardno });
-           });
+        });
       }, (err) => {
         this.swal.Error(err?.error?.message);
       });
@@ -1870,9 +1892,9 @@ export class SubscriberdialogueComponent implements OnInit {
           timerProgressBar: true,
           showConfirmButton: false
         }).then(() => {
-           this.router.navigate([`/admin/subscriber-full-info/${this.smartcardno}/subsmartcard`]);
+          this.router.navigate([`/admin/subscriber-full-info/${this.smartcardno}/subsmartcard`]);
           this.dialogRef.close({ success: true, smartcard: this.smartcardno });
-           });
+        });
       }, (err) => {
         this.swal.Error(err?.error?.message);
       });
@@ -1891,9 +1913,9 @@ export class SubscriberdialogueComponent implements OnInit {
           timerProgressBar: true,
           showConfirmButton: false
         }).then(() => {
-           this.router.navigate([`/admin/subscriber-full-info/${this.smartcardno}/subsmartcard`]);
+          this.router.navigate([`/admin/subscriber-full-info/${this.smartcardno}/subsmartcard`]);
           this.dialogRef.close({ success: true, smartcard: this.smartcardno });
-           });
+        });
       }, (err) => {
         this.swal.Error(err?.error?.message);
       });

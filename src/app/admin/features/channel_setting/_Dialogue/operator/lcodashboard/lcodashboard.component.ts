@@ -47,7 +47,7 @@ export class LcodashboardComponent implements OnInit {
         return valueA.toLowerCase().localeCompare(valueB.toLowerCase());
       },
     },
-    paginationPageSize: 10,
+    paginationPageSize: 5,
     pagination: true,
     paginationPageSizeOptions: [5, 10, 15, 20, 25],
   }

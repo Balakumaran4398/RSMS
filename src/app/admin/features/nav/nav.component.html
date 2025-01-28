@@ -87,9 +87,11 @@
             </ul>
         </li>
         <li *ngIf="isUser  ">
-            <a> <mat-icon class="icon">personal_video</mat-icon> Channel Setting <i class='bx bx-chevron-right icon-right'></i></a>
+            <a> <mat-icon class="icon">personal_video</mat-icon> Channel Setting <i
+                    class='bx bx-chevron-right icon-right'></i></a>
             <ul class="side-dropdown">
-                <li><a (click)="navgetToUrl('/Broadcast');setActiveLinkTab($event)"><i class="fa fa-fw fa-bullhorn icon">&nbsp;</i>Broadcaster
+                <li><a (click)="navgetToUrl('/Broadcast');setActiveLinkTab($event)"><i
+                            class="fa fa-fw fa-bullhorn icon">&nbsp;</i>Broadcaster
                         Master
                     </a> </li>
                 <li><a (click)="navgetToUrl('/Distributer');setActiveLinkTab($event)"><i
@@ -185,8 +187,7 @@
                         Base Change</a>
                 </li>
                 <li><a (click)="navgetToUrl('/Bulk_Refresh');setActiveLinkTab($event)"><i
-                            class="fa fa-fw fa-refresh icon">&nbsp;</i>Bulk
-                        Refresh</a>
+                            class="fa fa-fw fa-refresh icon">&nbsp;</i>Bulk Reactive</a>
                 </li>
                 <li><a (click)="navgetToUrl('/Recurring');setActiveLinkTab($event)"><i
                             class="fa-regular fa-registered icon">&nbsp;</i>Recurring</a>
@@ -381,16 +382,12 @@
 
 <!-- NAVBAR -->
 <section id="content">
-    <!-- NAVBAR -->
     <div class="" style="position: sticky; top: 0;z-index: 10;">
-
         <div class="nav-sub">
-            <div class="nav-container"
-                style="z-index: 100; font-size: large; text-transform: capitalize; color: aliceblue; width: 100vw; min-height: 50px; max-height: 65px; background: #2d584e; display: flex; padding: 0 10px; align-items: center;">
-                <nav style="color: #f0f0f0">
+            <div class="nav-container">
+                <div id="nav" style="color: #f0f0f0">
                     <i class='bx bx-menu toggle-sidebar' style="font-size: 2rem;"></i>
-
-                </nav>
+                </div>
                 &nbsp;
                 &nbsp;
                 &nbsp;
@@ -424,13 +421,12 @@
             </div>
         </div>
     </div>
-    <!-- NAVBAR -->
 
-    <!-- MAIN -->
     <main>
         <router-outlet></router-outlet>
     </main>
-    <!-- MAIN -->
 
 </section>
-<!-- NAVBAR -->
+
+
+

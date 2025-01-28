@@ -168,7 +168,7 @@ export class ChannelComponent {
     const dialogRef = this.dialog.open(ChannelUploadComponent, {
       width: '800px',
       // height: '500px',
-      panelClass: 'custom-dialog-container',
+      // panelClass: 'custom-dialog-container',
       data: data
     });
 
@@ -297,17 +297,17 @@ export class ChannelComponent {
             let header: string[] = [];
             const datas: Array<any> = [];
             // if (this.type == 1) {
-            areatitle = 'A1:L2';
-            areasub = 'A3:L3';
-            header = ['S.NO', 'TS ID', 'FREQUENCY', 'SERVICE NAME', 'SERVICE ID', 'PRODUCT ID', 'INR AMOUNT', 'CATEGORY NAME', 'BROADCASTER NAME', 'CHANNEL TYPE NAME', 'DISTRIBUTOR NAME', 'CHANNEL STATUS'];
+            areatitle = 'A1:K1';
+            // areasub = 'A2:L2';
+            header = ['TS ID', 'FREQUENCY', 'SERVICE NAME', 'SERVICE ID', 'PRODUCT ID', 'INR AMOUNT', 'CATEGORY NAME', 'BROADCASTER NAME', 'CHANNEL TYPE NAME', 'DISTRIBUTOR NAME', 'CHANNEL STATUS'];
 
             this.rowData.forEach((d: any, index: number) => {
-              const row = [index + 1, d.t_id, d.channel_freq, d.channel_name, d.service_id, d.product_id, d.inr_amt, d.categoryname, d.broadcastername, d.channeltypename, d.distributorname, d.statusdisplay];
+              const row = [d.t_id, d.channel_freq, d.channel_name, d.service_id, d.product_id, d.inr_amt, d.categoryname, d.broadcastername, d.channeltypename, d.distributorname, d.statusdisplay];
               // console.log('type 1 and 4', row);
               datas.push(row);
             });
             Swal.close();
-            this.excelService.generateSuspendBasedExcel(areatitle, header, datas, title, areasub, sub);
+            this.excelService.generateChannelExcel(areatitle, header, datas, title, );
 
           } else if (response.status === 204) {
             // this.swal.Success_204();

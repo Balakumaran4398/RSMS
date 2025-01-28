@@ -631,13 +631,13 @@
     </div>
     <div class="row " style="padding: 1rem;max-height: 775px;overflow: scroll;">
         <h4>SUBSCRIBER BILL</h4>
-          <br /><br />
+        <br /><br />
         <!-- <input placeholder="Enter the smartcard..." type="text" name="text" class="input_sb"
             (input)="checkDataForBill()" [(ngModel)]="smartcard"><br /><br /> -->
         <!-- <div class="row col-12 col-md-5 input_box1 " style="padding: 1rem;"> -->
-        <input placeholder="Enter the smartcard..." class="input_sb" id="searchitem" #searchitem
-            style="font-size: 14px;" (keyup)="onSmartcardlist( searchitem?.value)" [(ngModel)]="smartcard">
-        <div style="width: 50%;" class="dropdown-menu input"
+        <!-- <input placeholder="Enter the smartcard..." class="input_sb" #searchitem style="font-size: 14px;"
+            (keyup)="onSmartcardlist( searchitem?.value)" [(ngModel)]="smartcard">
+        <div class="dropdown-menu input"
             [ngClass]="(subscriberList.length != 0 && searchitem?.value?.length != 0 && showDropdown) ? 'show' : 'hide'"
             aria-labelledby="dropdownMenuButton">
             <a (click)="goToSubscriberDashboard(lcomember)" *ngFor="let lcomember of subscriberList"
@@ -645,50 +645,48 @@
         </div>
         <div *ngIf="submitted && !selectedYear" class="text-danger" style="font-size: small;">
             Smartcard is must..
-        </div>
+        </div> -->
+
         <!-- </div> -->
-        <div class="row" style="margin-top: 2%;">
-            <div class="col-md-12 d-flex justify-content-center align-items-start mb-3">
-                <div class="col-12 d-flex justify-content-start align-items-center flex-wrap">
-                    <!-- <div class="row col-12 col-md-5 input_box1 " style="padding: 1rem;">
-                        <input placeholder="Enter the smartcard..." id="searchitem" #searchitem style="font-size: 14px;"
-                            (keyup)="onsubscriberlist( searchitem?.value)" [(ngModel)]="smartcard">
-                        <div style="width: 50%;" class="dropdown-menu input"
-                            [ngClass]="(subscriberList.length != 0 && searchitem?.value?.length != 0 && showDropdown) ? 'show' : 'hide'"
-                            aria-labelledby="dropdownMenuButton">
-                            <a (click)="goToSubscriberDashboard(lcomember)" *ngFor="let lcomember of subscriberList"
-                                class="dropdown-item"> {{ lcomember.name }}</a>
-                        </div>
-                        <div *ngIf="submitted && !selectedYear" class="text-danger" style="font-size: small;">
-                            Smartcard is must..
-                        </div>
-                    </div> -->
+        <div class="row">
+            <div class="col-md-12 d-flex justify-content-start align-items-start mb-3">
+                <div class="  mb-3" >
+                    <!-- <div class="col-12 d-flex justify-content-start align-items-center flex-wrap"> -->
 
-                    <div class="input_box display mb-3" style="margin-top: 2%;">
-                        <select name="year" id="year" [(ngModel)]="selectedYear" (change)="checkDataForBill()">
-                            <option value="0" selected>Select Year</option>
-                            <option *ngFor="let year of years" [value]="year">{{ year }}</option>
-                        </select>
+                    <input placeholder="Enter the smartcard..." #searchitem style="font-size: 14px;"  class="input_sb"
+                        (keyup)="onSmartcardlist( searchitem?.value)" [(ngModel)]="smartcard">
+                    <div class="dropdown-menu input"
+                        [ngClass]="(subscriberList.length != 0 && searchitem?.value?.length != 0 && showDropdown) ? 'show' : 'hide'"
+                        aria-labelledby="dropdownMenuButton">
+                        <a (click)="goToSubscriberDashboard(lcomember)" *ngFor="let lcomember of subscriberList"
+                            class="dropdown-item"> {{ lcomember.value }}</a>
                     </div>
-
-                    <div class="input_box display mb-3" style="margin-top: 2%;">
-                        <select name="month" id="month" [(ngModel)]="selectedMonth" (change)="onMonthChange($event)">
-                            <option value="0" selected>Select Month</option>
-                            <option *ngFor="let month of months" [value]="month.value">{{ month.name }}
-                            </option>
-                        </select>
-
-                    </div>
-                    <!-- Submit -->
-                    <div class="input_box display mb-3" style="margin-left: 2%;margin-top: 2%;">
-                        <div class="d-flex align-items-center submit">
-                            <button class="btn btn-primary me-2 bttn" (click)="getSubscriberBill()">Submit</button>
-                            <!-- [disabled]="isshowpdf" -->
-                            <button class="btn btn-primary me-2 bttn"
-                                (click)="getSubscriberBillDownload(1)"><mat-icon>download</mat-icon>Get PDF</button>
-                        </div>
+                    <div *ngIf="submitted && !selectedYear" class="text-danger" style="font-size: small;">
+                        Smartcard is must..
                     </div>
                 </div>
+                <div class="input_box display mb-3" >
+                    <select name="year" id="year" [(ngModel)]="selectedYear" (change)="checkDataForBill()">
+                        <option value="0" selected>Select Year</option>
+                        <option *ngFor="let year of years" [value]="year">{{ year }}</option>
+                    </select>
+                </div>
+                <div class="input_box display mb-3" >
+                    <select name="month" id="month" [(ngModel)]="selectedMonth" (change)="onMonthChange($event)">
+                        <option value="0" selected>Select Month</option>
+                        <option *ngFor="let month of months" [value]="month.value">{{ month.name }}
+                        </option>
+                    </select>
+
+                </div>
+                <div class="input_box display mb-3" style="margin-left: 2%;margin-top: 1%;">
+                    <div class="d-flex align-items-center submit">
+                        <button class="btn btn-primary me-2 bttn" (click)="getSubscriberBill()">Submit</button>
+                        <button class="btn btn-primary me-2 bttn"
+                            (click)="getSubscriberBillDownload(1)"><mat-icon>download</mat-icon>Get PDF</button>
+                    </div>
+                </div>
+                <!-- </div> -->
 
             </div>
             <br />
@@ -979,7 +977,7 @@
 
             <span>To</span>
             <div class="input_box col-12 col-md-6 ">
-                <input type="date" placeholder="Select Date " required [max]="today" [(ngModel)]="selectedDate"
+                <input type="date" placeholder="Select Date " required [max]="today" [(ngModel)]="selectedDate"  (change)="logValues($event)"
                     [ngClass]="{ 'is-invalid': submitted }" />
             </div>
             <button class="btn mx-2 bttn" style="background-color: rgb(26, 129, 133); border-radius: 5px;"
@@ -1039,7 +1037,7 @@
     </div>
     <div class="display">
         <div class="row col-12 col-md-5 input_box1 " style="padding: 1rem;">
-            <input placeholder="Enter the smartcard..." id="searchitem" #searchitem style="font-size: 14px;"
+            <input placeholder="Enter the smartcard..." #searchitem style="font-size: 14px;"
                 (keyup)="onsubscriberlist( searchitem?.value)" [(ngModel)]="smartcard">
             <div style="width: 50%;" class="dropdown-menu input"
                 [ngClass]="(subscriberList.length != 0 && searchitem?.value?.length != 0 && showDropdown) ? 'show' : 'hide'"
@@ -1063,77 +1061,85 @@
     <div class="mb-3">
         <h4>LCO TRANSFER DETAILS</h4>
     </div>
-    <div class="col-12 col-md-2 d-flex  justify-content-start align-items-start">
-        <button type="button" class="btn btn-primary bttn" (click)="goBack()"><i
-                class="fa-solid fa-reply mx-2"></i>Back</button>
-    </div>
-    <div class="col-12 col-md-12 display justify-content-start align-items-center mb-3">
-        <div class="display justify-content-start align-items-center">
-            <p class="mx-2 mb-0" style="text-align: center;color: rgb(0, 12, 22); font-size: 16px;font-weight: 600;">
-                Select types:</p>
-            <div class="input_box mx-2 mb-2">
-                <select (ngModelChange)="onChangeLcoTransferType($event)" [(ngModel)]="selectedLcotransfer">
-                    <option value='' disabled>Select Type</option>
-                    <option *ngFor="let Type of LcoTransfer" [value]="Type.value">{{ Type.label }}</option>
-                </select>
+    <div style="max-height: 800px;overflow: scroll;">
+
+
+        <div class="col-12 col-md-2 d-flex  justify-content-start align-items-start">
+            <button type="button" class="btn btn-primary bttn" (click)="goBack()"><i
+                    class="fa-solid fa-reply mx-2"></i>Back</button>
+        </div>
+        <div class="col-12 col-md-12 display justify-content-start align-items-center mb-3">
+            <div class="display justify-content-start align-items-center">
+                <p class="mx-2 mb-0"
+                    style="text-align: center;color: rgb(0, 12, 22); font-size: 16px;font-weight: 600;">
+                    Select types:</p>
+                <div class="input_box mx-2 mb-2">
+                    <select (ngModelChange)="onChangeLcoTransferType($event)" [(ngModel)]="selectedLcotransfer">
+                        <option value='' disabled>Select Type</option>
+                        <option *ngFor="let Type of LcoTransfer" [value]="Type.value">{{ Type.label }}</option>
+                    </select>
+                </div>
+
+                <div *ngIf="isDateEnabled" class="mx-2 mb-2">
+                    <div class=" d-flex justify-content-center align-item-center">
+                        <mat-form-field appearance="outline">
+                            <mat-date-range-input [rangePicker]="picker" [max]="today">
+                                <input matStartDate matInput placeholder="Start date"
+                                    (dateChange)="getFromDate($event)">
+                                <input matEndDate matInput placeholder="End date" (dateChange)="getToDate($event)">
+                            </mat-date-range-input>
+                            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                            <mat-date-range-picker #picker></mat-date-range-picker>
+                        </mat-form-field>
+                    </div>
+                </div>
+
+                <div *ngIf="isLcoOperator" class=" input_box mx-2 mb-2">
+                    <input type="text" matInput [matAutocomplete]="auto" [(ngModel)]="selectedLcoName"
+                        (input)="filterOperators($event)" placeholder="Select  Operator"
+                        [matAutocompleteDisabled]="false" [value]="selectedOperator?.name">
+
+                    <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayOperator">
+                        <mat-option *ngFor="let operator of filteredOperators" [value]="operator.value"
+                            (click)="onSubscriberStatusChange(operator)">
+                            {{ operator.name }}
+                        </mat-option>
+                    </mat-autocomplete>
+                    <div *ngIf="submitted && !selectedLcoName" class="text-danger" style="font-size: small;">
+                        Lco is Requred
+                    </div>
+                </div>
+
+
+                <div *ngIf="isLcoSmartcard" class="row col-12 col-md-5" style="padding: 1rem;">
+                    <input placeholder="Enter the smartcard..." type="text" name="text" class="input_sb"
+                        [(ngModel)]="smartcard1">
+                    <div *ngIf="submitted && !smartcard1" class="text-danger" style="font-size: small;">
+                        Smartcard is Required
+                    </div>
+                </div>
+                <button class="btn mx-2 bttn" style="background-color: rgb(26, 129, 133); border-radius: 5px;"
+                    (click)="getLcoTransferReport()">
+                    <span style="color: white;">Submit</span>
+                </button>
             </div>
 
-            <div *ngIf="isDateEnabled" class="mx-2 mb-2">
-                <div class=" d-flex justify-content-center align-item-center">
-                    <mat-form-field appearance="outline">
-                        <mat-date-range-input [rangePicker]="picker" [max]="today">
-                            <input matStartDate matInput placeholder="Start date" (dateChange)="getFromDate($event)">
-                            <input matEndDate matInput placeholder="End date" (dateChange)="getToDate($event)">
-                        </mat-date-range-input>
-                        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-                        <mat-date-range-picker #picker></mat-date-range-picker>
-                    </mat-form-field>
+            <div class=" display1">
+                <div class="export-icon  mx-2">
+                    <img src="/assets/images/icons/Excel.png" alt="Excel Icon" width="40px"
+                        (click)="getLcoTransferReportDownload(2)">
+                    <div class="tooltip">Excel</div>
+                </div>
+                <div class="export-icon ">
+                    <img src="/assets/images/icons/pdf.png" alt="PDF Icon" width="40px"
+                        (click)="getLcoTransferReportDownload(1)">
+                    <div class="tooltip">Pdf</div>
                 </div>
             </div>
-
-            <div *ngIf="isLcoOperator" class=" input_box mx-2 mb-2">
-
-                <input type="text" matInput [matAutocomplete]="auto" [(ngModel)]="selectedLcoName"
-                    (input)="filterOperators($event)" placeholder="Select  Operator" [matAutocompleteDisabled]="false"
-                    [value]="selectedOperator?.name">
-
-                <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayOperator">
-                    <mat-option *ngFor="let operator of filteredOperators" [value]="operator.value"
-                        (click)="onSubscriberStatusChange(operator)">
-                        {{ operator.name }}
-                    </mat-option>
-                </mat-autocomplete>
-
-            </div>
-
-            <div *ngIf="isLcoSmartcard" class="row col-12 col-md-5" style="padding: 1rem;">
-                <input placeholder="Enter the smartcard..." type="text" name="text" class="input_sb"
-                    [(ngModel)]="smartcard1">
-                <div *ngIf="submitted && !selectedYear" class="text-danger" style="font-size: small;">
-                    Smartcard is must..
-                </div>
-            </div>
-            <button class="btn mx-2 bttn" style="background-color: rgb(26, 129, 133); border-radius: 5px;"
-                (click)="getLcoTransferReport()">
-                <span style="color: white;">Submit</span>
-            </button>
         </div>
-
-        <div class=" display1">
-            <div class="export-icon  mx-2">
-                <img src="/assets/images/icons/Excel.png" alt="Excel Icon" width="40px"
-                    (click)="getLcoTransferReportDownload(2)">
-                <div class="tooltip">Excel</div>
-            </div>
-            <div class="export-icon ">
-                <img src="/assets/images/icons/pdf.png" alt="PDF Icon" width="40px"
-                    (click)="getLcoTransferReportDownload(1)">
-                <div class="tooltip">Pdf</div>
-            </div>
-        </div>
+        <ag-grid-angular #agGrid id="myGrid" domLayout='autoHeight' class="ag-theme-alpine table-class" rowAnimation
+            style="max-height:740px;overflow: scroll;" [columnDefs]="columnDefs" [rowData]="rowData"
+            (gridReady)="onGridReady($event)" [gridOptions]="gridOptions" [enableCellTextSelection]="true">
+        </ag-grid-angular>
     </div>
-    <ag-grid-angular #agGrid id="myGrid" domLayout='autoHeight' class="ag-theme-alpine table-class" rowAnimation
-        [columnDefs]="columnDefs" [rowData]="rowData" (gridReady)="onGridReady($event)"
-        [enableCellTextSelection]="true">
-    </ag-grid-angular>
 </div>

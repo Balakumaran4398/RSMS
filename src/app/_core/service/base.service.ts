@@ -1093,6 +1093,11 @@ export class BaseService {
       BASE_URL + "/bulk/getBulkOperationRefreshList?role=" + role + "&username=" + username + "&remarks=" + remarks + "&optype=" + optype, { observe: 'response' }
     );
   }
+  getBulkRefreshList(role: any, username: any, remarks: any, optype: any):Observable<any[]> {
+    return this.http.get<any[]>(
+      BASE_URL + "/bulk/getBulkOperationRefreshList?role=" + role + "&username=" + username + "&remarks=" + remarks + "&optype=" + optype, {  }
+    );
+  }
 
   getSubscriptionDataExtendList(role: any, username: any, date: any, remarks: any, optype: any): Observable<HttpResponse<any[]>> {
     return this.http.get<any[]>(
@@ -1107,6 +1112,12 @@ export class BaseService {
       { observe: 'response' }
     );
   }
+  getBulkrefreshListByDate(role: any, username: any, remarks: any, date: any, optype: any): Observable<any[]> {
+    return this.http.get<any[]>(
+      BASE_URL + "/bulk/getBulkOperationListByDate?role=" + role + "&username=" + username + "&remarks=" + remarks + "&date=" + date + "&optype=" + optype,
+      {  }
+    );
+  }
   // getDeactivationRefresh(role: any, username: any, remarks: any, optype: any): Observable<HttpResponse<any[]>> {
   //   return this.http.get<any[]>(
   //     BASE_URL + "/bulk/getDeactivationRefresh?role=" + role + "&username=" + username + "&remarks=" + remarks + "&optype=" + optype, { observe: 'response' }
@@ -1117,10 +1128,14 @@ export class BaseService {
   //     BASE_URL + "/bulk/getDeactivationRefresh?role=" + role + "&username=" + username + "&remarks=" + remarks + "&date=" + date + "&optype=" + optype, { observe: 'response' }
   //   );
   // }
-  getRecurringListByOperatorIdSearchnameAndIsrecurring(role: any, username: any, operatorid: any, searchname: any, type: any): Observable<HttpResponse<any[]>> {
+  // getRecurringListByOperatorIdSearchnameAndIsrecurring(role: any, username: any, operatorid: any, searchname: any, type: any): Observable<HttpResponse<any[]>> {
+  //   return this.http.get<any[]>(
+  //     BASE_URL + "/bulk/getRecurringListByOperatorIdSearchnameAndIsrecurring?role=" + role + "&username=" + username + "&operatorid=" + operatorid + "&searchname=" + searchname + "&type=" + type, { observe: 'response' }
+  //   );
+  // }
+  getRecurringListByOperatorIdSearchnameAndIsrecurring(role: any, username: any, operatorid: any, searchname: any, type: any): Observable<any[]>  {
     return this.http.get<any[]>(
-      BASE_URL + "/bulk/getRecurringListByOperatorIdSearchnameAndIsrecurring?role=" + role + "&username=" + username + "&operatorid=" + operatorid + "&searchname=" + searchname + "&type=" + type, { observe: 'response' }
-    );
+      BASE_URL + "/bulk/getRecurringListByOperatorIdSearchnameAndIsrecurring?role=" + role + "&username=" + username + "&operatorid=" + operatorid + "&searchname=" + searchname + "&type=" + type, {})
   }
   getExpirySubscriberDetailsByDatePackAndOperatorId(role: any, username: any, fromdate: any, todate: any, packageid: any, operatorid: any): Observable<HttpResponse<any[]>> {
     return this.http.get<any[]>(
@@ -1862,6 +1877,16 @@ export class BaseService {
 
   getsubLcoOfflineDownload(role: any, username: any, fromdate: any, todate: any, operatorid: any, retailerid: any, reporttype: number): Observable<Blob> {
     return this.http.get(BASE_URL + "/report/offlinepaymentsublco?role=" + role + "&username=" + username + "&fromdate=" + fromdate + "&todate=" + todate + "&operatorid=" + operatorid + "&retailerid=" + retailerid + "&reporttype=" + reporttype, { responseType: 'blob' });
+  }
+  // ------------------------------------------bulk activation----------------------
+
+  getBulkFirstTimeActivationReport(role: any, username: any, date: any, remark: any, type: any,reporttype: number): Observable<HttpResponse<any[]>> {
+    return this.http.get<any[]>(BASE_URL + "/report/getBulkFirstTimeActivationReport?role=" + role + "&username=" + username + "&date=" + date + "&remark=" + remark + "&type=" + type +  "&reporttype=" + reporttype, { observe: 'response' });
+  }
+
+
+  getBulkFirstTimeActivationDownload(role: any, username: any, date: any, remark: any, type: any,reporttype: number): Observable<Blob> {
+    return this.http.get(BASE_URL + "/report/getBulkFirstTimeActivationReport?role=" + role + "&username=" + username + "&date=" + date + "&remark=" + remark + "&type=" + type + "&reporttype=" + reporttype, { responseType: 'blob' });
   }
   // --------------------------------------------smartcard list----------------------------
 

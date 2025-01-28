@@ -90,7 +90,7 @@ export class LcoCommissionComponent {
 
       console.log(this.selectedOperator.value);
       this.onOperatorChange(this.selectedOperator)
-      this.onmembershipchange(this.selectedOperator)
+      // this.onmembershipchange(this.selectedOperator)
       this.filteredOperators = this.lcomembershipList;
     })
     this.LcoGroupDetails();
@@ -119,8 +119,8 @@ export class LcoCommissionComponent {
         this.onOperatorChange(this.selectedOperator);
         newRowData = this.getCommissionData('commission');
         // this.selectedOperator = '';
-      } else if (this.selectedTab === 'dmembership') {
-        console.log('dmembership',this.selectedOperator);
+      } else if (this.selectedTab === 'membership') {
+        console.log('membership',this.selectedOperator);
         this.onmembershipchange(this.selectedOperator);
         newRowData = this.getMembershipData('membership');
         // this.selectedOperator = '';

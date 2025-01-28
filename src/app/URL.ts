@@ -1,7 +1,7 @@
 export default class URLs {
 
     static CURRENT_VERSION(): String {
-        return "v7.0";
+        return "v7.2.2";
     }
 
     static AUTH_URL(): String {

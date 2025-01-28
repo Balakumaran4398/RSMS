@@ -30,6 +30,10 @@ export class DeactivationComponent implements OnInit{
   columnDefs: ColDef[] = [
     { headerName: "S.No", lockPosition: true, valueGetter: 'node.rowIndex+1', cellClass: 'locked-col', width: 80, suppressNavigable: true, sortable: false, filter: false },
     { headerName: "SMARTCARD", field: 'smartcard', width: 250 },
+    { headerName: "LCO NAME", field: 'operatorname', width: 250 , cellStyle: { textAlign: 'left', },},
+    { headerName: "REMARKS", field: 'remarks', width: 220 },
+    { headerName: "PACKAGE NAME", field: 'packagename', width: 220 },
+    { headerName: "NO OF DAYS", field: 'days', width: 220 },
     {
       headerName: "STATUS",
       field: 'status',
@@ -46,8 +50,8 @@ export class DeactivationComponent implements OnInit{
       }
     },
 
-    { headerName: "REMARKS", field: 'remarks', width: 220 },
     { headerName: "CREATED DATE	", field: 'createddate', width: 250 },
+    { headerName: "END DATE	", field: 'expirydate', width: 250 },
   ];
   rowData: any;
   public rowSelection: any = "multiple";

@@ -125,6 +125,7 @@ span {
     display: flex;
     align-items: center;
 }
+
 .input_box {
     display: flex;
     align-items: center;
@@ -137,13 +138,15 @@ span {
     // min-width: 20vh;
     height: 6vh;
 }
+
 .input_box select,
 .input_box2 input {
-   
+
     margin-left: 8px;
     // min-width: 20vh;
     height: 6vh;
 }
+
 .input_box1 input {
     margin-left: 8px;
     height: 6vh;
@@ -182,7 +185,7 @@ span {
 .mat-mdc-form-field {
     height: 6vh;
     margin-top: -4px;
-    
+
 }
 
 .btn-submit:hover {
@@ -191,11 +194,14 @@ span {
 
 
 .dropdown-menu.show {
-    display: contents;
-    top: 36px;
-    height: 10%;
+    // display: contents;
+    top: 10;
+    // height: 10%;
+    width: 300px;
+    max-height: 150px;
     overflow: scroll;
 }
+
 @media (max-width: 768px) {
     .input_box {
         flex-direction: column;
@@ -239,16 +245,22 @@ span {
 
 
 .input_sb {
-    width: 98%;
-    max-width: 98%;
-    height: 45px;
-    padding: 12px;
-    border-radius: 12px;
-    border: 1.5px solid lightgrey;
-    outline: none;
-    transition: all 0.3s cubic-bezier(0.19, 1, 0.22, 1);
-    box-shadow: 0px 0px 20px -18px;
+    // transition: all 0.3s cubic-bezier(0.19, 1, 0.22, 1);
     margin-left: 1%;
+    width: 100%;
+    height: 6vh;
+    border: none;
+    outline: none;
+    border-radius: 5px;
+    padding: 0px 12px;
+    border-top: 2px solid #b0afaf;
+    border-bottom: 0.9px solid lightgray;
+    border-left: 0.9px solid lightgray;
+    border-right: 0.9px solid lightgray;
+    box-shadow: 0px 0px 0px 1px rgba(0, 0, 0, 0.1);
+    background-color: #f6f8fa;
+    font-family: 'Poppins', sans-serif;
+    transition: all 120ms ease-out 0s;
 }
 
 .input_sb:hover {
@@ -393,15 +405,14 @@ tr:hover {
 
 .enabled-field {
     // color: gray; 
-    background-color: #f5f5f5; 
-    border: 1px solid #130101; 
-  }
-  
-  /* Define styles for the disabled state */
-  .disabled-field {
+    background-color: #f5f5f5;
+    border: 1px solid #130101;
+}
+
+/* Define styles for the disabled state */
+.disabled-field {
     // color: gray; 
-    background-color: #f5f5f5; 
-    border: 1px solid #ddd; 
-    cursor: not-allowed; 
-  }
-  
+    background-color: #f5f5f5;
+    border: 1px solid #ddd;
+    cursor: not-allowed;
+}

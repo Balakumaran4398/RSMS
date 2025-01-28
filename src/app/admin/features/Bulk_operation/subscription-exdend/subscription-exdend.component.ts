@@ -21,9 +21,21 @@ export class SubscriptionExdendComponent implements OnInit {
   isCheckboxChecked: boolean = false;
   columnDefs: ColDef[] = [
     { headerName: "S.No", lockPosition: true, valueGetter: 'node.rowIndex+1', cellClass: 'locked-col', width: 80, suppressNavigable: true, sortable: false, filter: false },
+    { headerName: "SMARTCARD", field: 'smartcard' },
     { headerName: "EXTENDED DATE", field: 'extenddate' },
-    { headerName: "STATUS", field: 'status' },
+    {
+      headerName: "STATUS", field: 'status', cellRenderer: (params: any) => {
+        if (params.value === "Success") {
+          return `<span style="color: green;">Success</span>`;
+        } else if (params.value === "Please Recharge") {
+          return `<span style="color: #811762;">Please Recharge</span>`;
+        } else {
+          return `<span style="color: red;">${params.value}</span>`;
+        }
+      },
+    },
     { headerName: "REMARKS", field: 'remarks' },
+    { headerName: "DAYS", field: 'days' },
     { headerName: "CREATED DATE	", field: 'createddate' },
     { headerName: "UPDATED DATE	", field: 'updateddate' },
   ];
@@ -44,7 +56,7 @@ export class SubscriptionExdendComponent implements OnInit {
         return 0;
       },
     },
-    paginationPageSize: 15,
+    paginationPageSize: 10,
     pagination: true,
   }
   role: any;
@@ -78,25 +90,25 @@ export class SubscriptionExdendComponent implements OnInit {
   // }
   validateLength(event: any): void {
     let value = event.target.value;
-  
+
     // Ensure the value is positive
     if (value < 0) {
       value = Math.abs(value); // Convert to positive value
     }
-  
+
     // Limit to 3 digits
     if (value.toString().length > 3) {
       value = value.toString().slice(0, 3); // Trim to 3 digits
     }
-  
+
     // Update the input and the model
     event.target.value = value;
     this.days = value;
-  
+
     // Validate length
     this.daysInvalid = value.toString().length !== 3;
   }
-  
+
   getData() {
     this.rowData = [];
     const dateToPass = this.selectedDate || this.date;
@@ -145,6 +157,7 @@ export class SubscriptionExdendComponent implements OnInit {
           }
         }
       );
+    this.selectedDate = 0;
   }
   onGridReady = () => {
     // this.userservice.GetAllUser('all',this.token.getUsername(),'0000-00-00','0000-00-00').subscribe((data) => {
@@ -227,6 +240,57 @@ export class SubscriptionExdendComponent implements OnInit {
         confirmButtonText: 'OK'
       });
     }
+
+  }
+  getExtendReport(type: number) {
+    this.processingSwal();
+    const dateToPass = this.selectedDate || 0;
+    this.userservice.getBulkFirstTimeActivationDownload(this.role, this.username, dateToPass, this.remarks, 8, type)
+      .subscribe((x: Blob) => {
+        if (type == 1) {
+          this.reportMaking(x, "Bulk Update Subscription History -" + [dateToPass] + " .pdf", 'application/pdf');
+        } else if (type == 2) {
+          this.reportMaking(x, "Bulk Update Subscription History -" + dateToPass + " .xlsx", 'application/xlsx');
+        }
+      },
+        (error: any) => {
+          this.pdfswalError(error?.error.message);
+        });
+  }
+  // -----------------------------------------------------common method for pdf and excel------------------------------------------------------------------------
+
+
+  reportMaking(x: Blob, reportname: any, reporttype: any) {
+    const blob = new Blob([x], { type: reporttype });
+    const data = window.URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.href = data;
+    link.download = reportname.toUpperCase();
+    link.dispatchEvent(new MouseEvent('click', { bubbles: true, cancelable: true, view: window }));
+    setTimeout(() => {
+      window.URL.revokeObjectURL(data);
+      link.remove();
+    }, 100);
+    Swal.close();
+  }
+  pdfswalError(error: any) {
+    Swal.close();
+    Swal.fire({
+      title: 'Error!',
+      text: error || 'There was an issue generating the PDF CAS form report.',
+      icon: 'error',
+      confirmButtonText: 'Ok'
+    });
+  }
+  processingSwal() {
+    Swal.fire({
+      title: "Processing",
+      text: "Please wait while the report is being generated...",
+      showConfirmButton: false,
+      didOpen: () => {
+        Swal.showLoading(null);
+      }
+    });
 
   }
   generateExcel(type: string) {

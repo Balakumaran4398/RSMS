@@ -28,8 +28,8 @@ export class PackagewiseOperatorComponent {
   // todo = ['Get to work', 'Pick up groceries', 'Go home', 'Fall asleep'];
 
   // done = ['Get up', 'Brush teeth', 'Take a shower', 'Check e-mail'];
-  allocated: any[] = [];
-  todo: any[] = []; // This will contain items to be dragged
+  allocated: any = [];
+  todo: any = []; // This will contain items to be dragged
   done: any[] = [];
   containerData: any;
   productId: string = '';
@@ -63,16 +63,23 @@ export class PackagewiseOperatorComponent {
     }
     this.checkValidation();
     console.log('11111111');
+  
 
+    this.filteredAvailableList = [];
+    this.filteredAddedList = [];
   }
   onProductlist(event: any): void {
-    console.log('fddsfdsfds',event);
-    
+    console.log('fddsfdsfds', event);
+
     // this.fetchProductList(this.selectedProductTypeId);
     const selectedProductId = (event.target as HTMLSelectElement).value;
+    // this.filteredProductTypes = []; 
+    // this.productId = null;
     this.productId = selectedProductId;
     console.log(selectedProductId);
-    
+   
+    this.filteredAvailableList = [];
+    this.filteredAddedList = [];
     this.userservice.ProductListForOperator(this.role, this.username, this.selectedProductTypeId, selectedProductId).subscribe((data: any) => {
       console.log(data);
       this.allocated = data.operatorlist.notallocated || [];
@@ -86,7 +93,7 @@ export class PackagewiseOperatorComponent {
   fetchProductList(productTypeId: number): void {
     this.userservice.ProductList(this.username, this.role, productTypeId).subscribe((data: any) => {
       console.log(data);
-      
+
       if (data.referenceid) {
         this.producttypelistKeys = Object.keys(data.referenceid).map(key => ({
           name: key,
@@ -94,7 +101,7 @@ export class PackagewiseOperatorComponent {
         }));
         this.filteredProductTypes = this.producttypelistKeys;
         console.log(this.filteredProductTypes);
-        
+
       }
     });
   }
@@ -234,17 +241,20 @@ export class PackagewiseOperatorComponent {
       moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
       if (val == 1) {
         data = event.previousContainer.data;
+        this.todo = event.previousContainer.data;
+
       } else if (val == 2) {
         data = event.container.data;
-
+        this.allocated = event.container.data;
       }
     } else {
       transferArrayItem(event.previousContainer.data, event.container.data, event.previousIndex, event.currentIndex);
       if (val == 1) {
         data = event.previousContainer.data;
+        this.todo = event.previousContainer.data;
       } else if (val == 2) {
         data = event.container.data;
-
+        this.allocated = event.container.data;
       }
     }
     this.containeroperatorid = data?.map((item: any) => item.operatorid);

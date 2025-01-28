@@ -136,6 +136,7 @@ export class MessageComponent {
   isIntendto: boolean = true;
   isIntendForLco: boolean = false;
   isSmartcardEnabled: boolean = false;
+  isMsoEnabled: boolean = false;
   isAreaCodeEnabled: boolean = false;
   isservicedisabled: boolean = false;
   isFontSizeDisabled: boolean = false;
@@ -175,7 +176,7 @@ export class MessageComponent {
       castype: [this.castype, Validators.required],
       forcemsg: [false, Validators.required],
       deletemsg: [false, Validators.required],
-      intendto: [this.intendto, Validators.required],
+      intendto: [0, Validators.required],
       intendid: [0, Validators.required],
       serviceid: [0, Validators.required],
       fontsize: [0, [Validators.required, Validators.pattern(/^\d+$/)]],
@@ -323,22 +324,32 @@ export class MessageComponent {
   onChangeIntendTo1(selectedValue: any) {
     this.intendid_1 = '';
     this.isSmartcardEnabled = false;
+    this.isMsoEnabled = false;
     this.isAreaCodeEnabled = false;
     console.log('enabled             =' + selectedValue);
     if (selectedValue == 1) {
+      this.intendid_1 = 1;
       this.isSmartcardEnabled = false;
       this.isAreaCodeEnabled = false
+      this.isMsoEnabled = true;
+
       console.log('Smartcard enabled');
     }
     if (selectedValue == 2) {
+      this.intendid_1 = '';
       this.isSmartcardEnabled = true;
       this.isAreaCodeEnabled = false
+      this.isMsoEnabled = false;
+
       console.log('Smartcard enabled');
     }
 
     if (selectedValue == 3) {
+      this.intendid_1 = '';
       this.isAreaCodeEnabled = true;
       this.isSmartcardEnabled = false
+      this.isMsoEnabled = false;
+
       console.log('Area code enabled');
     }
     if (selectedValue !== 2 && selectedValue !== 3) {

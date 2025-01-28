@@ -1,243 +1,254 @@
 <h4>Trai Reports</h4>
 <!-- ------------------------------PACKAGE BASED REPORT---------------------------------------------- -->
-<section>
-    <mat-accordion class="example-headers-align">
-        <mat-expansion-panel [expanded]="step() === 0" (opened)="setStep(0)" hideToggle class="pannel">
-            <mat-expansion-panel-header>
-                <mat-panel-title class="reporthead">PACKAGE BASED REPORTS</mat-panel-title>
-            </mat-expansion-panel-header>
-                      <div class="cardContainer">
-                <div class="card royal-card tooltip-container" (click)="openPackageBaseDialogue('package')">
-                    <i class="fas fa-layer-group royal-icon"></i>
-                    <div class="royal-content">
-                        <strong>Logs of Creation and Modification of <br> Packages or any particular
-                            period</strong>
+<div style="max-height: 740px; overflow: scroll;">
+    <!-- <section> -->
+        <mat-accordion class="example-headers-align">
+            <mat-expansion-panel [expanded]="step() === 0" (opened)="setStep(0)" hideToggle class="pannel">
+                <mat-expansion-panel-header>
+                    <mat-panel-title class="reporthead">PACKAGE BASED REPORTS</mat-panel-title>
+                </mat-expansion-panel-header>
+                <div class="cardContainer">
+                    <div class="card royal-card tooltip-container" (click)="openPackageBaseDialogue('package')">
+                        <i class="fas fa-layer-group royal-icon"></i>
+                        <div class="royal-content">
+                            <strong>Logs of Creation and Modification of <br> Packages or any particular
+                                period</strong>
+                        </div>
+                        <div class="tooltip">PACKAGE MODIFICATION</div>
                     </div>
-                    <div class="tooltip">PACKAGE MODIFICATION</div>
-                </div>
 
-                <div class="card royal-card tooltip-container" (click)="openPackageBaseDialogue('addon_package')">
-                    <i class="fas fa-cube royal-icon"></i>
-                    <div><strong>Logs of Creation and modification of addon <br> packages for any particular
-                            period</strong></div>
-                    <div class="tooltip">ADDON PACKAGE MODIFICATION</div>
-                </div>
-
-                <div class="card royal-card tooltip-container" (click)="openPackageBaseDialogue('channel_history')">
-                    <i class="fas fa-calendar-alt royal-icon"></i>
-                    <div><strong>Logs of Creation and modification of <br> Channels for any particular period</strong>
+                    <div class="card royal-card tooltip-container" (click)="openPackageBaseDialogue('addon_package')">
+                        <i class="fas fa-cube royal-icon"></i>
+                        <div><strong>Logs of Creation and modification of addon <br> packages for any particular
+                                period</strong></div>
+                        <div class="tooltip">ADDON PACKAGE MODIFICATION</div>
                     </div>
-                    <div class="tooltip">CHANNEL UPDATE HISTORY LOG</div>
-                </div>
 
-                <div class="card royal-card tooltip-container" (click)="openPackageBaseDialogue('combo')">
-                    <i class="fas fa-file-invoice royal-icon"></i>
-                    <div><strong>Combo Package Report</strong></div>
-                    <div class="tooltip">COMBO PACKAGE</div>
-                </div>
-            </div>
-
-        </mat-expansion-panel>
-    </mat-accordion>
-</section>
-<!-- ------------------------------Subscription based reports--------------------------------- -->
-<section>
-    <mat-accordion class="example-headers-align">
-        <mat-expansion-panel [expanded]="step() === 0" (opened)="setStep(0)" hideToggle class="pannel">
-            <mat-expansion-panel-header>
-                <mat-panel-title class="reporthead">SUBSCRIPTION BASED REPORTS</mat-panel-title>
-            </mat-expansion-panel-header>
-            <div class="cardContainer">
-                <div class="card royal-card tooltip-container" (click)="openPackageBaseDialogue('bouquetAlacarte')">
-                    <i class="fas fa-rocket"></i>
-                    <div class="display">
-                        <strong>Historical Package/Addon/Alacarte report <br> (Product Type Wise)</strong>
+                    <div class="card royal-card tooltip-container" (click)="openPackageBaseDialogue('channel_history')">
+                        <i class="fas fa-calendar-alt royal-icon"></i>
+                        <div><strong>Logs of Creation and modification of <br> Channels for any particular
+                                period</strong>
+                        </div>
+                        <div class="tooltip">CHANNEL UPDATE HISTORY LOG</div>
                     </div>
-                    <div class="tooltip">BOUQUET ALACARTE PACKAGE REPORT</div>
-                </div>
-                <div class="card royal-card tooltip-container" (click)="openSubscriptionDialogue('weekly_based')"><i
-                        class="fas fa-ban"></i>
-                    <div><strong>Weekly Active/Deactive Subscription Report</strong> </div>
-                    <div class="tooltip">WEEKLY ACTIVE/DEACTIVE</div>
-                </div>
-                <div class="card royal-card tooltip-container" (click)="openSubscriptionDialogue('base_package')"> <i
-                        class="fas fa-cloud-upload-alt"></i>
-                    <div><strong>As on Date Active/Deactive Subscription <br> Report (Base Package)</strong> </div>
-                    <div class="tooltip">BASE PACKAGE </div>
-                </div>
-                <div class="card royal-card tooltip-container" (click)="openSubscriptionDialogue('addon_package')"><i
-                        class="fas fa-th-list"></i>
-                    <div><strong>As on Date Active/Deactive Subscription <br> Report (Addon Package)</strong> </div>
-                    <div class="tooltip">ADDON PACKAGE</div>
-                </div>
-                <div class="card royal-card tooltip-container" (click)="openSubscriptionDialogue('alacarte')"><i
-                        class="fas fa-file-alt"></i>
-                    <div><strong>As on Date Active/Deactive Subscription Report (Alacarte)</strong> </div>
-                    <div class="tooltip"> A-LA-CARTE ACTIVE/DEACTIVE </div>
-                </div>
-                <div class="card royal-card tooltip-container" (click)="openSubscriptionDialogue('date_subscription')">
-                    <i class="fas fa-file-alt"></i>
-                    <div><strong>As on Date Active/Deactive Subscription <br> Report (All Type of Products)</strong>
+
+                    <div class="card royal-card tooltip-container" (click)="openPackageBaseDialogue('combo')">
+                        <i class="fas fa-file-invoice royal-icon"></i>
+                        <div><strong>Combo Package Report</strong></div>
+                        <div class="tooltip">COMBO PACKAGE</div>
                     </div>
-                    <div class="tooltip">AS ON DATE ACTIVE/DEACTIVE (ALL TYPES OF PRODUCTS) </div>
-                </div>
-                <div class="card royal-card tooltip-container" (click)="openPackageBaseDialogue('Synchronization')"><i
-                        class="fas fa-file-alt"></i>
-                    <div><strong>Synchronization Report</strong> </div>
-                    <div class="tooltip">SYNCHRONIZATION</div>
-                </div>
-            </div>
-        </mat-expansion-panel>
-    </mat-accordion>
-</section>
-<!-- -------------------------------Broadcaster Reports----------------------------------- -->
-<section>
-    <mat-accordion class="example-headers-align">
-        <mat-expansion-panel [expanded]="step() === 0" (opened)="setStep(0)" hideToggle class="pannel">
-            <mat-expansion-panel-header>
-                <mat-panel-title class="reporthead">BROADCASTER REPORTS</mat-panel-title>
-            </mat-expansion-panel-header>
-            <div class="cardContainer">
-                <div class="card royal-card tooltip-container" (click)="openBroadcasterDialog(1)"><i
-                        class="fas fa-check-circle"></i>
-                    <div><strong>Monthly Broadcaster Report</strong> </div>
-                    <div class="tooltip">MONTHLY REPORD</div>
-                </div>
-                <div class="card royal-card tooltip-container" (click)="openBroadcasterDialog(2)"><i class="fas fa-tv"></i>
-                    <div><strong>Over All Product Report</strong> </div>
-                    <div class="tooltip">OVER ALL PRODUCT </div>
-                </div>
-                <div class="card royal-card tooltip-container" (click)="openBroadcasterDialog(3)"><i class="fas fa-file-upload"></i>
-                    <div><strong>Over All Base Product Report / Universal Count Report</strong> </div>
-                    <div class="tooltip">UNIVERSAL COUNT PRODUCT </div>
-
-                </div>
-                <div class="card royal-card tooltip-container" (click)="openBroadcasterDialog(4)"><i class="fas fa-store"></i>
-                    <div><strong>Over All Base Product Report</strong> </div>
-                    <div class="tooltip">OVER ALL BASE PRODUCT REPORD</div>
-
-                </div>
-                <div class="card royal-card tooltip-container" (click)="openBroadcasterDialog(5)"><i class="fas fa-boxes"></i>
-                    <div><strong>Monthly Broadcaster Caswise Report</strong> </div>
-                    <div class="tooltip">MONTHLY BRAODCASTER CASWISE</div>
                 </div>
 
-            </div>
-        </mat-expansion-panel>
-    </mat-accordion>
-</section>
-<!-- --------------------------------History Reports-------------------------------------------------------- -->
-<section>
-    <mat-accordion class="example-headers-align">
-        <mat-expansion-panel [expanded]="step() === 0" (opened)="setStep(0)" hideToggle class="pannel">
-            <mat-expansion-panel-header>
-                <mat-panel-title class="reporthead">HISTORY REPORTS</mat-panel-title>
-            </mat-expansion-panel-header>
-            <div class="cardContainer">
-                <div class="card royal-card tooltip-container" (click)="openHistoryDialog(1)"><i
-                        class="fas fa-database"></i>
-                    <div><strong>All Service Report</strong> </div>
-                    <div class="tooltip">ALL SERVICE REPORT</div>
+            </mat-expansion-panel>
+        </mat-accordion>
+    <!-- </section> -->
+    <!-- ------------------------------Subscription based reports--------------------------------- -->
+    <!-- <section> -->
+        <mat-accordion class="example-headers-align">
+            <mat-expansion-panel [expanded]="step() === 0" (opened)="setStep(0)" hideToggle class="pannel">
+                <mat-expansion-panel-header>
+                    <mat-panel-title class="reporthead">SUBSCRIPTION BASED REPORTS</mat-panel-title>
+                </mat-expansion-panel-header>
+                <div class="cardContainer">
+                    <div class="card royal-card tooltip-container" (click)="openPackageBaseDialogue('bouquetAlacarte')">
+                        <i class="fas fa-rocket"></i>
+                        <div class="display">
+                            <strong>Historical Package/Addon/Alacarte report <br> (Product Type Wise)</strong>
+                        </div>
+                        <div class="tooltip">BOUQUET ALACARTE PACKAGE REPORT</div>
+                    </div>
+                    <div class="card royal-card tooltip-container" (click)="openSubscriptionDialogue('weekly_based')"><i
+                            class="fas fa-ban"></i>
+                        <div><strong>Weekly Active/Deactive Subscription Report</strong> </div>
+                        <div class="tooltip">WEEKLY ACTIVE/DEACTIVE</div>
+                    </div>
+                    <div class="card royal-card tooltip-container" (click)="openSubscriptionDialogue('base_package')">
+                        <i class="fas fa-cloud-upload-alt"></i>
+                        <div><strong>As on Date Active/Deactive Subscription <br> Report (Base Package)</strong> </div>
+                        <div class="tooltip">BASE PACKAGE </div>
+                    </div>
+                    <div class="card royal-card tooltip-container" (click)="openSubscriptionDialogue('addon_package')">
+                        <i class="fas fa-th-list"></i>
+                        <div><strong>As on Date Active/Deactive Subscription <br> Report (Addon Package)</strong> </div>
+                        <div class="tooltip">ADDON PACKAGE</div>
+                    </div>
+                    <div class="card royal-card tooltip-container" (click)="openSubscriptionDialogue('alacarte')"><i
+                            class="fas fa-file-alt"></i>
+                        <div><strong>As on Date Active/Deactive Subscription Report (Alacarte)</strong> </div>
+                        <div class="tooltip"> A-LA-CARTE ACTIVE/DEACTIVE </div>
+                    </div>
+                    <div class="card royal-card tooltip-container"
+                        (click)="openSubscriptionDialogue('date_subscription')">
+                        <i class="fas fa-file-alt"></i>
+                        <div><strong>As on Date Active/Deactive Subscription <br> Report (All Type of Products)</strong>
+                        </div>
+                        <div class="tooltip">AS ON DATE ACTIVE/DEACTIVE (ALL TYPES OF PRODUCTS) </div>
+                    </div>
+                    <div class="card royal-card tooltip-container" (click)="openPackageBaseDialogue('Synchronization')">
+                        <i class="fas fa-file-alt"></i>
+                        <div><strong>Synchronization Report</strong> </div>
+                        <div class="tooltip">SYNCHRONIZATION</div>
+                    </div>
                 </div>
-                <div class="card royal-card tooltip-container" (click)="openHistoryDialog(2)"><i class="fa-solid fa-people-group"></i>
-                    <div><strong>Total Smartcard List Report</strong> </div>
-                    <div class="tooltip">TOTAL SMARTCARD REPORT</div>
-                </div>
-                <div class="card royal-card tooltip-container" (click)="openHistoryDialog(3)"><i
-                        class="fas fa-thumbs-o-up"></i>
-                    <div><strong>Paired Smartcard/Boxid Report</strong> </div>
-                    <div class="tooltip">PAIRED SMARTCARD/BOXID</div>
-                </div>
-                <div class="card royal-card tooltip-container" (click)="openHistoryDialog(4)"><i
-                        class="fas fa-window-close"></i>
-                    <div><strong>Block List Report</strong> </div>
-                    <div class="tooltip">BLOCK LISY REPORT</div>
-                </div>
-            </div>
-        </mat-expansion-panel>
-    </mat-accordion>
-</section>
-<!-- --------------------------------Suspend reports----------------------------------------------------------- -->
-<section>
-    <mat-accordion class="example-headers-align">
-        <mat-expansion-panel [expanded]="step() === 0" (opened)="setStep(0)" hideToggle class="pannel">
-            <mat-expansion-panel-header>
-                <mat-panel-title class="reporthead">SUSPEND REPORTS</mat-panel-title>
-            </mat-expansion-panel-header>
-            <div class="cardContainer">
-                <div class="card royal-card tooltip-container" (click)="openHistoryDialog(11)"><i
-                        class="fas fa-calendar"></i>
-                    <div><strong>As On Date Suspend Report</strong> </div>
-                    <div class="tooltip">SUSPEND REPORT</div>
-                </div>
-                <div class="card royal-card tooltip-container" (click)="openHistoryDialog(12)"><i class="fas fa-calendar-check-o"></i>
-                    <div><strong>Suspend Report for Particular Duration</strong> </div>
-                    <div class="tooltip">SUSPEND REPORT PARTICULAR DURATION</div>
-                </div>
-                <div class="card royal-card tooltip-container" (click)="openHistoryDialog(13)"><i
-                        class="fas fa-building"></i>
-                    <div><strong>Suspend History Report</strong> </div>
-                    <div class="tooltip">SUSPEND HISTORY REPORT</div>
-                </div>
-            </div>
-        </mat-expansion-panel>
-    </mat-accordion>
-</section>
-<!-- -------------------------------CAS operation reports (Historical Reports)----------------------------------------------------- -->
-<section>
-    <mat-accordion class="example-headers-align">
-        <mat-expansion-panel [expanded]="step() === 0" (opened)="setStep(0)" hideToggle class="pannel">
-            <mat-expansion-panel-header>
-                <mat-panel-title class="reporthead">CAS OPERATION REPORTS(Historical Reports)</mat-panel-title>
-            </mat-expansion-panel-header>
-            <div class="cardContainer">
-                <div class="card royal-card tooltip-container" (click)="openHistoryDialog(5)"><i
-                        class="fa-solid fa-scroll"></i>
-                    <div><strong>Scroll History Report</strong> </div>
-                    <div class="tooltip">SCROLL REPORT</div>
-                </div>
-                <div class="card royal-card tooltip-container" (click)="openHistoryDialog(6)"><i class="fas fa-envelope"></i>
-                    <div><strong>Mail History Report</strong> </div>
-                    <div class="tooltip">MAIL REPORT</div>
-                </div>
-                <div class="card royal-card tooltip-container" (click)="openHistoryDialog(7)"><i
-                        class="fa-solid fa-fingerprint"></i>
-                    <div><strong>Finger History Report</strong> </div>
-                    <div class="tooltip">FINGER PRINT REPORT</div>
-                </div>
-                <div class="card royal-card tooltip-container" (click)="openHistoryDialog(8)"><i
-                        class="fa-solid fa-message"></i>
-                    <div><strong>Message History Report</strong> </div>
-                    <div class="tooltip">MESSAGE REPORT</div>
-                </div>
-            </div>
-        </mat-expansion-panel>
-    </mat-accordion>
-</section>
+            </mat-expansion-panel>
+        </mat-accordion>
+    <!-- </section> -->
+    <!-- -------------------------------Broadcaster Reports----------------------------------- -->
+    <!-- <section> -->
+        <mat-accordion class="example-headers-align">
+            <mat-expansion-panel [expanded]="step() === 0" (opened)="setStep(0)" hideToggle class="pannel">
+                <mat-expansion-panel-header>
+                    <mat-panel-title class="reporthead">BROADCASTER REPORTS</mat-panel-title>
+                </mat-expansion-panel-header>
+                <div class="cardContainer">
+                    <div class="card royal-card tooltip-container" (click)="openBroadcasterDialog(1)"><i
+                            class="fas fa-check-circle"></i>
+                        <div><strong>Monthly Broadcaster Report</strong> </div>
+                        <div class="tooltip">MONTHLY REPORD</div>
+                    </div>
+                    <div class="card royal-card tooltip-container" (click)="openBroadcasterDialog(2)"><i
+                            class="fas fa-tv"></i>
+                        <div><strong>Over All Product Report</strong> </div>
+                        <div class="tooltip">OVER ALL PRODUCT </div>
+                    </div>
+                    <div class="card royal-card tooltip-container" (click)="openBroadcasterDialog(3)"><i
+                            class="fas fa-file-upload"></i>
+                        <div><strong>Over All Base Product Report / Universal Count Report</strong> </div>
+                        <div class="tooltip">UNIVERSAL COUNT PRODUCT </div>
 
-<!-- --------------------------------count reports---------------------------------------------------------- -->
-<section>
-    <mat-accordion class="example-headers-align">
-        <mat-expansion-panel [expanded]="step() === 0" (opened)="setStep(0)" hideToggle class="pannel">
-            <mat-expansion-panel-header>
-                <mat-panel-title class="reporthead">COUNT REPORTS</mat-panel-title>
-            </mat-expansion-panel-header>
-            <div class="cardContainer">
-                <div class="card royal-card tooltip-container" (click)="openHistoryDialog(9)"><i
-                        class="fa-solid fa-network-wired"></i>
-                    <div><strong>Network Smartcard Status Count Report</strong> </div>
-                    <div class="tooltip">NETWORK SMARTCARD STATUS</div>
+                    </div>
+                    <div class="card royal-card tooltip-container" (click)="openBroadcasterDialog(4)"><i
+                            class="fas fa-store"></i>
+                        <div><strong>Over All Base Product Report</strong> </div>
+                        <div class="tooltip">OVER ALL BASE PRODUCT REPORD</div>
+
+                    </div>
+                    <div class="card royal-card tooltip-container" (click)="openBroadcasterDialog(5)"><i
+                            class="fas fa-boxes"></i>
+                        <div><strong>Monthly Broadcaster Caswise Report</strong> </div>
+                        <div class="tooltip">MONTHLY BRAODCASTER CASWISE</div>
+                    </div>
+
                 </div>
-                <div class="card royal-card tooltip-container" (click)="openHistoryDialog(10)"><i class="fas fa-tv"></i>
-                    <div><strong>Network Smartcard Active/Deactive Status <br> Count Report</strong> </div>
-                    <div class="tooltip">NETWORK SMARTCARD ACTIVE/DEACTIVE STATUS</div>
+            </mat-expansion-panel>
+        </mat-accordion>
+    <!-- </section> -->
+    <!-- --------------------------------History Reports-------------------------------------------------------- -->
+    <!-- <section> -->
+        <mat-accordion class="example-headers-align">
+            <mat-expansion-panel [expanded]="step() === 0" (opened)="setStep(0)" hideToggle class="pannel">
+                <mat-expansion-panel-header>
+                    <mat-panel-title class="reporthead">HISTORY REPORTS</mat-panel-title>
+                </mat-expansion-panel-header>
+                <div class="cardContainer">
+                    <div class="card royal-card tooltip-container" (click)="openHistoryDialog(1)"><i
+                            class="fas fa-database"></i>
+                        <div><strong>All Service Report</strong> </div>
+                        <div class="tooltip">ALL SERVICE REPORT</div>
+                    </div>
+                    <div class="card royal-card tooltip-container" (click)="openHistoryDialog(2)"><i
+                            class="fa-solid fa-people-group"></i>
+                        <div><strong>Total Smartcard List Report</strong> </div>
+                        <div class="tooltip">TOTAL SMARTCARD REPORT</div>
+                    </div>
+                    <div class="card royal-card tooltip-container" (click)="openHistoryDialog(3)"><i
+                            class="fas fa-thumbs-o-up"></i>
+                        <div><strong>Paired Smartcard/Boxid Report</strong> </div>
+                        <div class="tooltip">PAIRED SMARTCARD/BOXID</div>
+                    </div>
+                    <div class="card royal-card tooltip-container" (click)="openHistoryDialog(4)"><i
+                            class="fas fa-window-close"></i>
+                        <div><strong>Block List Report</strong> </div>
+                        <div class="tooltip">BLOCK LISY REPORT</div>
+                    </div>
                 </div>
-            </div>
-        </mat-expansion-panel>
-    </mat-accordion>
-</section>
-<!-- --------------------------------count reports---------------------------------------------------------- -->
-<!-- <div style="background-color: rgba(109, 107, 107, 0.8);padding: 1rem;">
+            </mat-expansion-panel>
+        </mat-accordion>
+    <!-- </section> -->
+    <!-- --------------------------------Suspend reports----------------------------------------------------------- -->
+    <!-- <section> -->
+        <mat-accordion class="example-headers-align">
+            <mat-expansion-panel [expanded]="step() === 0" (opened)="setStep(0)" hideToggle class="pannel">
+                <mat-expansion-panel-header>
+                    <mat-panel-title class="reporthead">SUSPEND REPORTS</mat-panel-title>
+                </mat-expansion-panel-header>
+                <div class="cardContainer">
+                    <div class="card royal-card tooltip-container" (click)="openHistoryDialog(11)"><i
+                            class="fas fa-calendar"></i>
+                        <div><strong>As On Date Suspend Report</strong> </div>
+                        <div class="tooltip">SUSPEND REPORT</div>
+                    </div>
+                    <div class="card royal-card tooltip-container" (click)="openHistoryDialog(12)"><i
+                            class="fas fa-calendar-check-o"></i>
+                        <div><strong>Suspend Report for Particular Duration</strong> </div>
+                        <div class="tooltip">SUSPEND REPORT PARTICULAR DURATION</div>
+                    </div>
+                    <div class="card royal-card tooltip-container" (click)="openHistoryDialog(13)"><i
+                            class="fas fa-building"></i>
+                        <div><strong>Suspend History Report</strong> </div>
+                        <div class="tooltip">SUSPEND HISTORY REPORT</div>
+                    </div>
+                </div>
+            </mat-expansion-panel>
+        </mat-accordion>
+    <!-- </section> -->
+    <!-- -------------------------------CAS operation reports (Historical Reports)----------------------------------------------------- -->
+    <!-- <section> -->
+        <mat-accordion class="example-headers-align">
+            <mat-expansion-panel [expanded]="step() === 0" (opened)="setStep(0)" hideToggle class="pannel">
+                <mat-expansion-panel-header>
+                    <mat-panel-title class="reporthead">CAS OPERATION REPORTS(Historical Reports)</mat-panel-title>
+                </mat-expansion-panel-header>
+                <div class="cardContainer">
+                    <div class="card royal-card tooltip-container" (click)="openHistoryDialog(5)"><i
+                            class="fa-solid fa-scroll"></i>
+                        <div><strong>Scroll History Report</strong> </div>
+                        <div class="tooltip">SCROLL REPORT</div>
+                    </div>
+                    <div class="card royal-card tooltip-container" (click)="openHistoryDialog(6)"><i
+                            class="fas fa-envelope"></i>
+                        <div><strong>Mail History Report</strong> </div>
+                        <div class="tooltip">MAIL REPORT</div>
+                    </div>
+                    <div class="card royal-card tooltip-container" (click)="openHistoryDialog(7)"><i
+                            class="fa-solid fa-fingerprint"></i>
+                        <div><strong>Finger History Report</strong> </div>
+                        <div class="tooltip">FINGER PRINT REPORT</div>
+                    </div>
+                    <div class="card royal-card tooltip-container" (click)="openHistoryDialog(8)"><i
+                            class="fa-solid fa-message"></i>
+                        <div><strong>Message History Report</strong> </div>
+                        <div class="tooltip">MESSAGE REPORT</div>
+                    </div>
+                </div>
+            </mat-expansion-panel>
+        </mat-accordion>
+    <!-- </section> -->
+
+    <!-- --------------------------------count reports---------------------------------------------------------- -->
+    <!-- <section> -->
+        <mat-accordion class="example-headers-align">
+            <mat-expansion-panel [expanded]="step() === 0" (opened)="setStep(0)" hideToggle class="pannel">
+                <mat-expansion-panel-header>
+                    <mat-panel-title class="reporthead">COUNT REPORTS</mat-panel-title>
+                </mat-expansion-panel-header>
+                <div class="cardContainer">
+                    <div class="card royal-card tooltip-container" (click)="openHistoryDialog(9)"><i
+                            class="fa-solid fa-network-wired"></i>
+                        <div><strong>Network Smartcard Status Count Report</strong> </div>
+                        <div class="tooltip">NETWORK SMARTCARD STATUS</div>
+                    </div>
+                    <div class="card royal-card tooltip-container" (click)="openHistoryDialog(10)"><i
+                            class="fas fa-tv"></i>
+                        <div><strong>Network Smartcard Active/Deactive Status <br> Count Report</strong> </div>
+                        <div class="tooltip">NETWORK SMARTCARD ACTIVE/DEACTIVE STATUS</div>
+                    </div>
+                </div>
+            </mat-expansion-panel>
+        </mat-accordion>
+    <!-- </section> -->
+    <!-- --------------------------------count reports---------------------------------------------------------- -->
+    <!-- <div style="background-color: rgba(109, 107, 107, 0.8);padding: 1rem;">
     <h3 style="color: rgb(255, 255, 255);">COUNT REPORTS</h3>
 </div>
 <section>
@@ -260,3 +271,4 @@
         </mat-expansion-panel>
     </mat-accordion>
 </section> -->
+</div>

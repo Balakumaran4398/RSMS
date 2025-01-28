@@ -48,10 +48,10 @@ export class AddonActivationComponent {
     { headerName: "S.No", lockPosition: true, valueGetter: 'node.rowIndex+1', cellClass: 'locked-col', width: 80, suppressNavigable: true, sortable: false, filter: false },
     { headerName: "SMARTCARD", field: 'smartcard' },
     { headerName: "PACKAGE NAME", field: 'packagename' },
-    { headerName: "ADDING PACKAGE", field: 'packageid' },
-    { headerName: "ADDED PACKAGE ID	", field: 'addingpackageid' },
+    { headerName: "ADDING PACKAGE", field: 'packageid', cellStyle: { textAlign: 'left' } },
+    { headerName: "ADDED PACKAGE ID	", field: 'addingpackageid', cellStyle: { textAlign: 'left' } },
     {
-      headerName: "STATUS	", field: 'status',
+      headerName: "STATUS	", field: 'status', cellStyle: { textAlign: 'left' },
       cellRenderer: (params: any) => {
         const status = params.value;
         if (status === 'Success') {
@@ -69,10 +69,10 @@ export class AddonActivationComponent {
   ];
   columnDefs1: ColDef[] = [
     { headerName: "S.No", lockPosition: true, valueGetter: 'node.rowIndex+1', cellClass: 'locked-col', width: 80, suppressNavigable: true, sortable: false, filter: false },
-    { headerName: "SMARTCARD", field: 'smartcard',width: 250, },
-    { headerName: "PACKAGE NAME", field: 'packagename',width: 300, },
+    { headerName: "SMARTCARD", field: 'smartcard', width: 250, },
+    { headerName: "PACKAGE NAME", field: 'packagename', width: 300, },
     {
-      headerName: "STATUS	", field: 'status',width: 250,
+      headerName: "STATUS	", field: 'status', width: 250,
       cellRenderer: (params: any) => {
         const status = params.value;
         if (status === 'Success') {
@@ -85,7 +85,7 @@ export class AddonActivationComponent {
       }
     },
     { headerName: "REMARKS", field: 'remarks' },
-    { headerName: "CREATED DATE	", field: 'createddate' ,width: 200,},
+    { headerName: "CREATED DATE	", field: 'createddate', width: 200, },
   ];
   rowData: any;
   public rowSelection: any = "multiple";
@@ -134,12 +134,13 @@ export class AddonActivationComponent {
     //   this.cas = Object.entries(data[0].caslist).map(([key, value]) => ({ name: key, id: value }));
     //   console.log(this.cas);
     // });
-    this.refresh()
-    this.userservice.Finger_print_List(this.role, this.username).subscribe((data) => {
-      this.casList = Object.entries(data[0].caslist).map(([key, value]) => ({ name: key, id: value }));
-      this.cas = [...this.casList];
-      console.log(this.cas);
-    });
+    this.refresh();
+
+    // this.userservice.Finger_print_List(this.role, this.username).subscribe((data) => {
+    //   this.casList = Object.entries(data[0].caslist).map(([key, value]) => ({ name: key, id: value }));
+    //   this.cas = [...this.casList];
+    //   console.log(this.cas);
+    // });
     this.onCaschange('');
   }
 
@@ -270,6 +271,13 @@ export class AddonActivationComponent {
     this.castype = ''
     this.alacarteList = ''
     this.rowData = [];
+    if (tab === 'activation') {
+      console.log(tab);
+      this.refresh();
+    } else if (tab === 'remove') {
+      console.log(tab);
+      this.removerefresh();
+    }
   }
   get billingAddressCheckbox() {
     return this.form.get('billingAddressCheckbox');
@@ -409,7 +417,7 @@ export class AddonActivationComponent {
     const filterValue = event.target.value.toLowerCase();
     this.cas = this.casList.filter((cas: any) => cas.name.toLowerCase().includes(filterValue));
   }
-  
+
   filterToppings(event: any) {
     console.log(event);
     const filterValue = event.target.value.toLowerCase();

@@ -165,3 +165,43 @@ input {
   .custom{
     background-color: lightslategrey;
   }
+  .input-container {
+    position: relative;
+    display: inline-block;
+    width: 100%;
+}
+
+.example-input {
+    width: 100%;
+    padding-right: 2rem;
+    box-sizing: border-box;
+}
+
+.icon-right {
+    position: absolute;
+    top: 50%;
+    right: 0px;
+    transform: translateY(-50%);
+    pointer-events: none;
+    color: #050505;
+    font-size: 19px;
+    font-weight: 600;
+
+}
+
+
+.select2-container {
+    width: 250px !important;
+  }
+  ::ng-deep .select2-container .select2-selection--single {
+    height: 45px !important;
+    margin-top: 1%;
+  }
+  
+  ::ng-deep .select2-container .select2-selection--single .select2-selection__rendered {
+    margin-top: 7px;
+  }
+  
+  ::ng-deep .select2-container--default .select2-selection--single .select2-selection__arrow {
+    top: 10px;
+  }

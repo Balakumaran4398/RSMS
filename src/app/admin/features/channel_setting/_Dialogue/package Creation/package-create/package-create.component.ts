@@ -24,7 +24,7 @@ export class PackageCreateComponent implements OnInit {
   // tax_amount: any;
   package_rate: any;
   tax_Value: any;
-  commission_Value: any;
+  commission_Value: any = 0;
   percentage_Value: any;
 
   commission: any;
@@ -50,7 +50,7 @@ export class PackageCreateComponent implements OnInit {
       package_desc: ['', Validators.required],
       package_rate: ['', [Validators.required,]],
       tax_amount: ['', Validators.required],
-      commission: ['', Validators.required],
+      commission: [0, Validators.required],
       customer_amount: ['', Validators.required],
       mso_amount: ['', Validators.required],
       order_id: ['', Validators.required],
@@ -85,17 +85,24 @@ export class PackageCreateComponent implements OnInit {
 
   calculateAmounts() {
     const rate = parseFloat(this.createpackageForm.get('package_rate')?.value || '0');
+    console.log(this.createpackageForm.value);
+
     if (rate > 0) {
       this.tax_amount = Math.round(rate * 0.18 * 100) / 100;
       this.customer_amount = rate + this.tax_amount;
       this.createpackageForm.get('tax_amount')?.setValue(this.tax_amount, { emitEvent: false });
       this.createpackageForm.get('customer_amount')?.setValue(this.customer_amount, { emitEvent: false });
+      this.createpackageForm.get('mso_amount')?.setValue(this.mso_amount.toFixed(2), { emitEvent: false });
+
     } else {
       this.tax_amount = 0.0;
       this.customer_amount = 0.0;
       this.createpackageForm.get('tax_amount')?.setValue(this.tax_amount, { emitEvent: false });
       this.createpackageForm.get('customer_amount')?.setValue(this.customer_amount, { emitEvent: false });
+      this.createpackageForm.get('mso_amount')?.setValue(this.mso_amount.toFixed(2), { emitEvent: false });
     }
+    var value = this.createpackageForm.get('ispercentage')?.value == 'true' ? true : false;
+    this.percentageValue(value);
   }
 
 
@@ -106,9 +113,10 @@ export class PackageCreateComponent implements OnInit {
     }
     const commission = parseFloat(this.createpackageForm.get('commission')?.value || '0');
     if (this.customer_amount <= 0) {
-      console.error("Customer amount must be greater than 0");
+      // console.error("Customer amount must be greater than 0");
       this.mso_amount = 0;
-      this.createpackageForm.get('mso_amount')?.setValue(this.mso_amount, { emitEvent: false });
+      // this.createpackageForm.get('mso_amount')?.setValue(this.mso_amount, { emitEvent: false });
+      this.createpackageForm.get('mso_amount')?.setValue(this.mso_amount.toFixed(2), { emitEvent: false });
       return;
     }
     console.log(this.isPercentage);
@@ -121,7 +129,7 @@ export class PackageCreateComponent implements OnInit {
 
       } else {
         this.issave = true;
-        console.error("Commission percentage must be between 0 and 100");
+        // console.error("Commission percentage must be between 0 and 100");
         this.mso_amount = 0;
       }
     } else {
@@ -130,7 +138,8 @@ export class PackageCreateComponent implements OnInit {
       if (commission >= 0 && commission <= this.customer_amount) {
         this.issave = false;
         this.mso_amount = this.customer_amount - commission;
-        console.log(this.mso_amount);
+
+        // console.log(this.mso_amount);
 
 
       } else {
@@ -139,8 +148,10 @@ export class PackageCreateComponent implements OnInit {
         this.mso_amount = 0;
       }
     }
+    this.mso_amount = parseFloat(this.mso_amount.toFixed(2));
+    this.createpackageForm.get('mso_amount')?.setValue(this.mso_amount.toFixed(2), { emitEvent: false });
 
-    this.createpackageForm.get('mso_amount')?.setValue(this.mso_amount, { emitEvent: false });
+    // this.createpackageForm.get('mso_amount')?.setValue(this.mso_amount, { emitEvent: false });
     this.cdr.detectChanges();
   }
   Createpackage() {
@@ -208,19 +219,12 @@ export class PackageCreateComponent implements OnInit {
     console.log(this.commission_Value);
     this.userservice.getCommissionvalue(this.role, this.username, this.commission_Value, this.customer_amount,).subscribe((data) => {
       console.log(data);
-      //   this.commissionData = data;
-      //   this.commission = this.commissionData.commission;
-      //   this.mso_amount = this.commissionData.mso_amount;
-      //   console.log(this.commission);
-      // }, (err) => {
-      //   this.swal.info(err?.error?.message);
-      // });
       if (!this.isFirstCall) {
         console.log(data);
         this.commissionData = data;
         this.commission = this.commissionData.commission;
         this.mso_amount = this.commissionData.mso_amount;
-        console.log(this.commission);
+        // console.log(this.commission);
       }
       this.isFirstCall = false;
     },
@@ -231,22 +235,18 @@ export class PackageCreateComponent implements OnInit {
   }
   percentageValue(value: boolean) {
     this.isPercentage = value;
-
+    // console.log('-------------------------------------' + value);
     this.createpackageForm.get('ispercentage')?.setValue(value);
-    // this.userservice.getpercentageValue(this.role, this.username, this.commission_Value, this.isPercentage, this.customer_amount).subscribe((data) => {
-    //   this.percentage_Value = data;
-    //   console.log(this.cas);
-    //   this.mso_amount = this.percentage_Value.mso_amount;
-    // });
     if (this.isPercentage) {
-      var amount = this.createpackageForm.get('customer_amount')?.value * (this.createpackageForm.get('commission')?.value / 100);
+      var amount = this.createpackageForm.get('customer_amount')?.value - (this.createpackageForm.get('customer_amount')?.value * (this.createpackageForm.get('commission')?.value / 100));
+      console.log(amount);
       this.mso_amount = Math.round(Number(amount));
     } else {
       this.mso_amount = Math.round(Number((this.createpackageForm.get('customer_amount')?.value - this.createpackageForm.get('commission')?.value)));
     }
 
     this.checkMaxValue();
-    console.log(this.mso_amount);
+    // console.log(this.mso_amount);
 
 
   }
