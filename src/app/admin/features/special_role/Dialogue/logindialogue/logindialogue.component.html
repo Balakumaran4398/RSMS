@@ -76,9 +76,21 @@
                 <div class="col-12 col-md-7">
                     <input type="email" id="mail" [(ngModel)]="mail" name="mail" placeholder="Enter Email"
                         #emailInput="ngModel" required email>
-                    <div *ngIf="emailInput.invalid && emailInput.touched" class="text-danger">
+                    <!-- <div *ngIf="emailInput.invalid && emailInput.touched" class="text-danger">
                         <div *ngIf="emailInput.errors?.['required']">Email is required.</div>
                         <div *ngIf="emailInput.errors?.['email']">Please enter a valid email address.</div>
+                    </div> -->
+                    <div *ngIf="emailInput?.invalid && emailInput?.touched" class="error-message">
+                        <div *ngIf="emailInput.hasError('required')">
+                            Email is required.
+                        </div>
+                        <div *ngIf="emailInput.hasError('email')">
+                            Please enter a valid email format.
+                        </div>
+                        <div
+                            *ngIf="emailInput.invalid && !emailInput.hasError('required') && !emailInput.hasError('email')">
+                            Email must include ".in" or ".com" after letters.
+                        </div>
                     </div>
                 </div>
             </div>

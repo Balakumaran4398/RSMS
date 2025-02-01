@@ -20,9 +20,10 @@
                             Deactive
                         </button>
                     </div>
-                    <ag-grid-angular #agGrid id="myGrid" domLayout='autoHeight' class="ag-theme-alpine table-class" style="max-height: 775px;overflow: scroll;" 
-                        rowAnimation [rowSelection]="rowSelection" [gridOptions]="gridOptions" [columnDefs]="columnDefs"
-                        [rowData]="rowData" (selectionChanged)="onSelectionChanged()" (gridReady)="onGridReady($event)"
+                    <ag-grid-angular #agGrid id="myGrid" domLayout='normal' class="ag-theme-alpine table-class"
+                    style="max-height: 590px;overflow: scroll;overflow-x: hidden;" rowAnimation [rowSelection]="rowSelection"
+                        [gridOptions]="gridOptions" [columnDefs]="columnDefs" [rowData]="rowData"
+                        (selectionChanged)="onSelectionChanged()" (gridReady)="onGridReady($event)"
                         [enableCellTextSelection]="true">
                     </ag-grid-angular>
                 </div>

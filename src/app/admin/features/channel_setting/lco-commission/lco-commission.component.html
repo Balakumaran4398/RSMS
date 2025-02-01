@@ -1,4 +1,4 @@
-<section class="Tab col-12" style="max-height: 850px;overflow: scroll;">
+<section class="Tab col-12" >
 
     <div class="display tablist justify-content-center align-items-center mb-3 ">
         <div class="tab mb-2  bttn" [class.active]="selectedTab === 'dis_commission'" style="text-align: center;"
@@ -51,8 +51,8 @@
         </div>
         <br><br>
         <div class="d-flex justify-content-center align-items-center">
-            <div class="col-12 col-sm-11">
-                <ag-grid-angular #agGrid id="myGrid" style="text-align: center;" domLayout='autoHeight'
+            <div class="col-12 col-sm-12">
+                <ag-grid-angular #agGrid id="myGrid" style="text-align: center;" domLayout='normal'
                     [rowSelection]="rowSelection" class="ag-theme-alpine table-class" rowAnimation
                     [gridOptions]="gridOptions" [columnDefs]="discolumnnDefs" [rowData]="rowData"
                     (gridReady)="onGridReady($event)" [enableCellTextSelection]="true">
@@ -70,7 +70,7 @@
                         <div style="padding: 1rem;text-align: center;">
                             <h6 style="color:var(--primary-color);">CREATE DISTRIBUTOR MEMBERSHIP</h6>
                         </div>
-                        <ag-grid-angular #agGrid id="myGrid" class="gridtable" domLayout='autoHeight'
+                        <ag-grid-angular #agGrid id="myGrid" class="gridtable" domLayout='normal'
                             [gridOptions]="gridOptions" rowAnimation [columnDefs]="discolumnnDefs" [rowData]="rowData1"
                             [rowSelection]="rowSelection" class="ag-theme-alpine table-class"
                             (gridReady)="onGridReady($event)" [enableCellTextSelection]="true">
@@ -105,7 +105,7 @@
                                 </mat-autocomplete>
                             </div>
                             <ag-grid-angular #agGrid id="myGrid" style="text-align: center;"
-                                style="text-align: center; max-height: 500px;overflow: auto;" domLayout='autoHeight'
+                                style="text-align: center; max-height: 500px;overflow: auto;" domLayout='normal'
                                 class="ag-theme-alpine table-class" rowAnimation [rowSelection]="rowSelection"
                                 [columnDefs]="columnDefs2" [rowData]="rowData2"
                                 (selectionChanged)="onSelectionChanged()" (gridReady)="onGridReady($event)"
@@ -160,8 +160,8 @@
         </div>
         <br><br>
         <div class="d-flex justify-content-center align-items-center">
-            <div class="col-12 col-md-11 ">
-                <ag-grid-angular #agGrid id="myGrid" style="text-align: center;" domLayout='autoHeight'
+            <div class="col-12 col-md-12 ">
+                <ag-grid-angular #agGrid id="myGrid" style="text-align: center;" domLayout='normal'
                     [rowSelection]="rowSelection" class="ag-theme-alpine table-class" rowAnimation
                     [gridOptions]="gridOptions" [columnDefs]="discolumnnDefs" [rowData]="rowData"
                     [enableCellTextSelection]="true">
@@ -180,7 +180,7 @@
                             <h6 style="color:var(--primary-color);">CREATE LCO MEMBERSHIP</h6>
                         </div>
                         <ag-grid-angular #agGrid id="myGrid" class="gridtable"
-                            style="text-align: center; max-height: 200px;overflow: auto;" domLayout='autoHeight'
+                            style=" max-height: 250px;overflow: scroll;" domLayout='normal'
                             rowAnimation [columnDefs]="columnDefs1" [rowData]="rowData1" [rowSelection]="rowSelection"
                             (gridReady)="onGridReady($event)" class="ag-theme-alpine table-class"
                             [enableCellTextSelection]="true">
@@ -194,13 +194,13 @@
                         </div>
                         <div class="col-12 col-md-12">
                             <div class="card">
-                                <div class="card-body">
+                                <!-- <div class="card-body"> -->
                                     <div class="row">
                                         <div class="col">
                                             <app-lco-commission-chart></app-lco-commission-chart>
                                         </div>
                                     </div>
-                                </div>
+                                <!-- </div> -->
                             </div>
                         </div>
                     </div>
@@ -234,7 +234,7 @@
                                 </mat-autocomplete>
                             </div>
                             <ag-grid-angular #agGrid id="myGrid" style="text-align: center;"
-                                style="text-align: center; max-height: 500px;overflow: auto;" domLayout='autoHeight'
+                                style="text-align: center; max-height: 500px;overflow: auto;" domLayout='normal'
                                 class="ag-theme-alpine table-class" rowAnimation [rowSelection]="rowSelection"
                                 [columnDefs]="columnDefs2" [rowData]="rowData2"
                                 (selectionChanged)="onSelectionChanged()" (gridReady)="onGridReady($event)"
@@ -255,7 +255,7 @@
                 <div style="padding: 1rem;text-align: center;">
                     <h6 style="color:var(--primary-color)"> LCO MEMBERSHIP FUP</h6>
                 </div>
-                <ag-grid-angular #agGrid id="myGrid" style="text-align: center;" domLayout='autoHeight'
+                <ag-grid-angular #agGrid  style="text-align: center;" domLayout='autoHeight'
                     class="ag-theme-alpine table-class" rowAnimation [gridOptions]="gridOptions"
                     [columnDefs]="columnDefs3" [rowData]="rowData3" [enableCellTextSelection]="true">
                 </ag-grid-angular>

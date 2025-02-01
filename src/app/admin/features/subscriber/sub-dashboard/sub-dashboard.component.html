@@ -1,4 +1,4 @@
-<div id="Customer-page" style="max-height: 775px;overflow: scroll;">
+<div id="Customer-page">
     <section class="mb-3">
         <div style="margin: 0px;position: sticky">
             <h5 style="text-align: start;padding: 10px;">
@@ -98,8 +98,8 @@
                                 : </div>
                             <div class="col-6 col-md-6 d-flex justify-content-start align-items-center"
                                 style="color: rgb(66, 0, 128);">
-                                {{subdetailsList?.operatorname}} {{subdetails?.operatorname}} -
-                                {{subdetailsList?.operatorid}}{{subdetails?.operatorid}}
+                                {{subdetailsList?.operatorname}} {{subdetails?.operatorname}} -[
+                                {{subdetailsList?.operatorid}}{{subdetails?.operatorid}} ]
                             </div>
 
                         </div>
@@ -153,9 +153,9 @@
                     </div>
                     <div class="line"></div>
                     <div class="col-12 col-md-12 ">
-                        <ag-grid-angular #agGrid id="myGrid" domLayout='autoHeight' class="ag-theme-alpine table-class"
-                            rowAnimation [gridOptions]="gridOptions2" [columnDefs]="columnDefs" [rowData]="rowData"
-                            [enableCellTextSelection]="true">
+                        <ag-grid-angular #agGrid id="myGrid" domLayout='normal' class="ag-theme-alpine table-class"
+                            style="max-height: 300px;overflow: scroll;" rowAnimation [gridOptions]="gridOptions2"
+                            [columnDefs]="columnDefs" [rowData]="rowData" [enableCellTextSelection]="true">
                         </ag-grid-angular>
                     </div>
                 </div>
@@ -405,20 +405,22 @@
                             </div>
 
                             <div class="col-12 col-md-12 display_btn1">
-                                <div class="col-12 col-md-6 d-flex justify-content-center align-items-center  text3">
-                                    <button class="btn  d-flex justify-content-between" [disabled]="isSendDeleteMessage"
+                                <div *ngIf="isSendDeleteMessage === false" class="col-12 col-md-6 d-flex justify-content-center align-items-center  text3">
+                                    <!-- <button class="btn  d-flex justify-content-between" [disabled]="isSendDeleteMessage"
+                                        (click)="openDialog('sendmessage','')">
+                                        <i class="fa-solid fa-message"></i><span>Send Message</span></button> -->
+                                    <button class="btn  d-flex justify-content-between" [disabled]="sendmessage"
                                         (click)="openDialog('sendmessage','')">
                                         <i class="fa-solid fa-message"></i><span>Send Message</span></button>
                                 </div>
-                                <div class="col-12 col-md-6 d-flex justify-content-center align-items-center  text3">
+                                <div *ngIf="isSendDeleteMessage === true" class="col-12 col-md-6 d-flex justify-content-center align-items-center  text3">
                                     <button class="btn  d-flex justify-content-between"
-                                        [disabled]="!isSendDeleteMessage" (click)="openDialog('deletemessage','')">
+                                        [disabled]="deletemessage" (click)="openDialog('deletemessage','')">
                                         <i class="fas fa-trash"></i><span>Delete Message</span></button>
+                                    <!-- <button class="btn  d-flex justify-content-between"
+                                        [disabled]="!isSendDeleteMessage" (click)="openDialog('deletemessage','')">
+                                        <i class="fas fa-trash"></i><span>Delete Message</span></button> -->
                                 </div>
-
-                            </div>
-                            <div class="col-12 col-md-12 display_btn1">
-
                                 <div class="col-12 col-md-6 d-flex justify-content-center align-items-center  text3">
                                     <!-- (click)="openDialog('smartcardchange')"> -->
                                     <button class="btn d-flex justify-content-between" [disabled]="smartcardchange"
@@ -426,56 +428,68 @@
                                         <i class="fa-solid fa-share"></i><span>Smartcard Transfer</span>
                                     </button>
                                 </div>
+                            </div>
+                            <div class="col-12 col-md-12 display_btn1">
+
+                               
                                 <div class="col-12 col-md-6 d-flex justify-content-center align-items-center  text3">
                                     <button class="btn  d-flex justify-content-between" [disabled]="boxchange"
                                         (click)="openLoginPage('boxchange')"><i class="fa-solid fa-share"></i><span>Box
                                             Transfer</span></button>
                                 </div>
-                            </div>
-                            <div class="col-12 col-md-12 display_btn1">
-
-                                <!-- *ngIf="suspend" -->
                                 <div class="col-12 col-md-6 d-flex justify-content-center align-items-center  text3">
                                     <button class="btn  d-flex justify-content-between" [disabled]="suspend"
                                         (click)="openDialog('suspend','')">
                                         <i class="fa fa-file"></i><span>Suspend</span></button>
 
                                 </div>
+                            </div>
+                            <div class="col-12 col-md-12 display_btn1">
+
+                                <!-- *ngIf="suspend" -->
+                               
                                 <!-- *ngIf="suspend" -->
                                 <div class="col-12 col-md-6 d-flex justify-content-center align-items-center  text3">
                                     <button class="btn  d-flex justify-content-between" [disabled]="resumechange"
                                         (click)="openDialog('resumechange','')"> <i
                                             class="fa fa-file"></i><span>Resume</span></button>
                                 </div>
-
-
-                            </div>
-                            <div class="col-12 col-md-12 display_btn1">
                                 <div class="col-12 col-md-6 d-flex justify-content-center align-items-center  text3">
                                     <button class="btn  d-flex justify-content-between" [disabled]="reactivation"
                                         (click)="openDialog('reactivation','')">
                                         <i class="fa-solid fa-repeat"></i><span>Re-Activation</span></button>
                                 </div>
+
+                            </div>
+                            <div class="col-12 col-md-12 display_btn1">
+                           
                                 <div class="col-12 col-md-6 d-flex justify-content-center align-items-center  text3">
                                     <button class="btn  d-flex justify-content-between" [disabled]="forcetuning"
                                         (click)="openDialog('forcetuning','')"> <i
                                             class="fa-solid fa-right-left"></i><span>Force
                                             Tuning</span></button>
                                 </div>
-                            </div>
-
-                            <div class="col-12 col-md-12 display_btn1">
-                                <!-- <div -->
                                 <div class="col-12 col-md-6 d-flex justify-content-center align-items-center  text3">
                                     <button class="btn  d-flex justify-content-between" [disabled]="unpair"
                                         (click)="managePackage('unpair')">
                                         <i class="fa-solid fa-ban" style="font-size:15px;color: #090f13;"></i><span
                                             style="font-size:15px;">Unpair</span></button>
                                 </div>
+                            </div>
+
+                            <div class="col-12 col-md-12 display_btn1">
+                                <!-- <div -->
+                            
                                 <div class="col-12 col-md-6 d-flex justify-content-center align-items-center  text3">
                                     <button class="btn  d-flex justify-content-between" [disabled]="pair"
                                         (click)="pairDialogue('pair')">
                                         <i class="fa fa-refresh"></i><span>Pair</span></button>
+                                </div>
+                    
+                                <div class="col-12 col-md-6 d-flex justify-content-center align-items-center text3">
+                                    <button class="btn  d-flex justify-content-between" [disabled]="cancelsubscription"
+                                        (click)="managePackage('cancelsubscription')">
+                                        <i class="fa fa-refresh"></i><span>Cancel Subscription</span></button>
                                 </div>
 
                             </div>
@@ -486,11 +500,7 @@
                                         <i class="fa-solid fa-ban" style="font-size:15px;color: #090f13;"></i><span
                                             style="font-size:15px;color: #090f13;">Block</span></button>
                                 </div>
-                                <div class="col-12 col-md-6 d-flex justify-content-center align-items-center text3">
-                                    <button class="btn  d-flex justify-content-between" [disabled]="cancelsubscription"
-                                        (click)="managePackage('cancelsubscription')">
-                                        <i class="fa fa-refresh"></i><span>Cancel Subscription</span></button>
-                                </div>
+                             
                             </div>
                         </div>
                     </div>
@@ -529,14 +539,15 @@
                                 </div>
                             </div>
                             <div *ngIf="managePackagetable" class="col-12 col-md-12 mb-3">
-                                <ag-grid-angular #agGrid id="myGrid" domLayout='autoHeight'
-                                    class="ag-theme-alpine table-class" rowAnimation [gridOptions]="gridOptions"
-                                    [columnDefs]="columnDefs2" [rowData]="rowData1" (gridReady)="onGridReady($event)"
+                                <ag-grid-angular #agGrid id="myGrid" domLayout='normal'
+                                    style="max-height: 500px;overflow: scroll;" class="ag-theme-alpine table-class"
+                                    rowAnimation [gridOptions]="gridOptions" [columnDefs]="columnDefs2"
+                                    [rowData]="rowData1" (gridReady)="onGridReady($event)"
                                     [enableCellTextSelection]="true">
                                 </ag-grid-angular>
                             </div>
                             <div *ngIf="managePackagetable1" class="col-12 col-md-12 mb-3">
-                                <ag-grid-angular #agGrid id="myGrid" domLayout='autoHeight'
+                                <ag-grid-angular #agGrid id="myGrid" domLayout='normal'
                                     class="ag-theme-alpine table-class" rowAnimation [gridOptions]="gridOptions"
                                     [columnDefs]="columnDefs1" [rowData]="rowData1" (gridReady)="onGridReady1($event)"
                                     [rowSelection]="'multiple'" (selectionChanged)="onSelectionChanged()"
@@ -585,7 +596,7 @@
 
                                         <input type="date" [(ngModel)]="f_date"
                                             [min]="getNextDay(subdetailsList?.expirydate)"
-                                            (ngModelChange)="onSelectiondatetype($event)" >
+                                            (ngModelChange)="onSelectiondatetype($event)">
 
                                     </div>
                                 </div>

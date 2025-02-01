@@ -11,7 +11,7 @@ import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { LogarithmicScale } from 'chart.js';
-
+declare var $: any;
 export interface SubscriberData {
   smartcard: string;
   date: string;
@@ -61,11 +61,13 @@ export class MsorDialogueportsComponent implements OnInit {
   filteredSubLcoList: any[] = [];
   lco_list: any[] = [];
   sublco_list: any[] = [];
-  selectedOperator: any
+  selectedOperator: any;
+  selectedLco: any
   selectedOperator1: any
 
   selectedUser: any
 
+  public rowSelection: any = "multiple";
 
   userlist: any[] = [];
   filtereduserlist: any[] = [];
@@ -194,8 +196,13 @@ export class MsorDialogueportsComponent implements OnInit {
     this.selectedOperator1 = { name: 'All Operator', value: 0 };
     this.selectedLcoName = this.selectedOperator.name;
     this.currentMonth = new Date().toLocaleString('default', { month: 'long' });
-    console.log('selectedDate',this.selectedDate);
-    
+    console.log('selectedDate', this.selectedDate);
+
+    if (this.type == 'total_lco') {
+      this.getTotalOperatorReport();
+    } else {
+
+    }
   }
 
   // -----------------------------------------------------------------subscriber bill varaibales-------------------------------
@@ -221,12 +228,32 @@ export class MsorDialogueportsComponent implements OnInit {
 
 
     this.onModelList();
-    this.getTotalOperatorReport();
+
+    // this.onGridReady1();
+
     this.fromdate = this.fromdate ? this.formatDate(this.fromdate) : this.formatDate(new Date());
     this.todate = this.todate ? this.formatDate(this.todate) : this.formatDate(new Date());
     console.log(this.selectedDate);
   }
+  ngAfterViewInit() {
+    $('#operator').select2({
+      placeholder: 'Select a Operator',
+      allowClear: true
+    });
+    $('#operator').on('change', (event: any) => {
+      this.selectedLcoName = event.target.value;
+      this.onSubscriberStatusChange(this.selectedLcoName);
+    });
+    $('#subLco').select2({
+      placeholder: 'Select Sub Lco',
+      allowClear: true
+    });
+    $('#subLco').on('change', (event: any) => {
+      this.selectedSubLcoName = event.target.value;
+      this.onSublcochange(this.selectedSubLcoName);
+    });
 
+  }
   onDateChange() {
     if (this.type == 'online_payment') {
       this.getToDate(null);
@@ -255,16 +282,16 @@ export class MsorDialogueportsComponent implements OnInit {
   }
   getMonthNameFromDate(dateString: string): string {
     if (!dateString) return '';
-    const [year, month] = dateString.split('-'); 
-    const monthObject = this.months.find(m => m.value === month); 
-    return monthObject ? monthObject.name : ''; 
+    const [year, month] = dateString.split('-');
+    const monthObject = this.months.find(m => m.value === month);
+    return monthObject ? monthObject.name : '';
   }
-  
+
   logValues(event: any): void {
     this.selectedDate = event.target.value;
-    this.selectedDateMonthName = this.getMonthNameFromDate(this.selectedDate); 
+    this.selectedDateMonthName = this.getMonthNameFromDate(this.selectedDate);
     console.log('Selected Date:', this.selectedDate);
-    console.log('Selected Month:', this.selectedDateMonthName); 
+    console.log('Selected Month:', this.selectedDateMonthName);
     this.onColumnDefs();
   }
   onMonthChange(event: any) {
@@ -341,6 +368,7 @@ export class MsorDialogueportsComponent implements OnInit {
       this.isDateEnabled = false;
       this.isLcoOperator = true;
       this.isLcoSmartcard = false;
+      this.smartcard1 = 0;
       this.fromdate = 0;
       this.todate = 0;
     } else if (selectedValue == 2) {
@@ -349,12 +377,15 @@ export class MsorDialogueportsComponent implements OnInit {
       this.isLcoSmartcard = true;
       this.fromdate = 0;
       this.todate = 0;
+      this.selectedOperator.value = 0;
     } else if (selectedValue == 3) {
       this.isDateEnabled = true;
       this.isLcoOperator = false;
       this.isLcoSmartcard = false;
+      this.smartcard1 = 0;
       this.fromdate = 0;
       this.todate = 0;
+      this.selectedOperator.value = 0;
     }
   }
   rechargeOperatorValue: any;
@@ -533,7 +564,11 @@ export class MsorDialogueportsComponent implements OnInit {
       this.fromdate = 0;
       this.todate = 0;
       this.selectedLcoName = 0;
+      console.log(this.selectedLcoName)
       this.selectedSubLcoName = 0;
+      // setTimeout(() => {
+        $('#operator').val(this.selectedLcoName).trigger('change');
+      // }, 100);
       // this.smartcard = '';
     } else if (selectedValue == 2) {
       this.isSmartcard = false;
@@ -543,7 +578,10 @@ export class MsorDialogueportsComponent implements OnInit {
       this.todate = 0;
       this.selectedLcoName = 0;
       this.selectedSubLcoName = 0;
-      // this.smartcard = '';
+      // setTimeout(() => {
+        $('#operator').val(this.selectedLcoName).trigger('change'); 
+        $('#subLco').val(this.selectedSubLcoName).trigger('change');
+      // }, 100);
     } else if (selectedValue == 3) {
       this.isSmartcard = true;
       this.isOperator = false;
@@ -552,7 +590,9 @@ export class MsorDialogueportsComponent implements OnInit {
       this.todate = 0;
       this.selectedLcoName = 0;
       this.selectedSubLcoName = 0;
-      // this.smartcard = '';
+      // setTimeout(() => {
+        $('#operator').val(this.selectedLcoName).trigger('change'); 
+      // }, 100);
     }
   }
   // ------------------------------------------------------------------------------------------
@@ -610,8 +650,11 @@ export class MsorDialogueportsComponent implements OnInit {
 
   // ========================================================================
   subLcoList(event: any) {
+    console.log(event);
+
     this.filteredSubLcoList = [];
-    this.userService.getAllSublcoList(this.role, this.username, this.selectedOperator.value)
+
+    this.userService.getAllSublcoList(this.role, this.username, event)
       .subscribe(
         (response: HttpResponse<any[]>) => { // Expect HttpResponse<any[]>
           if (response.status === 200 && response.body) { // Ensure the body exists
@@ -643,19 +686,37 @@ export class MsorDialogueportsComponent implements OnInit {
     console.log(selectedOperator);
     this.selectedOperator = selectedOperator;
     this.selectedLcoName = selectedOperator.value;
-    console.log(this.selectedOnlineType);
-    console.log(this.type);
 
-    if (this.type == 'online_payment' && this.selectedOnlineType == 1) {
-      console.log('if codition working');
-    } else if (this.type == 'recharge_deduction_excluding') {
+    this.selectedSubLcoName = 0;
+    // if (this.type == 'online_payment') {
+    //   this.subLcoList(this.selectedOperator)
+    // } else 
+    if (this.type == 'recharge_deduction_excluding') {
 
-    } else {
+    } else if (this.type == 'lcoinvoice') {
+
+    }
+    else {
       this.subLcoList(this.selectedOperator.value)
     }
   }
+  onSubscriberLcoChange(selectedOperator: any) {
+    console.log(selectedOperator);
+    this.selectedLco = selectedOperator;
+    this.selectedLco = selectedOperator.name;
+    this.selectedLcoName = selectedOperator.value;
+    console.log(this.selectedLcoName);
+    console.log(this.selectedLco);
+    console.log(this.type);
+    console.log(this.selectedOperator);
+
+    this.selectedSubLcoName = '';
+
+  }
   onSublcochange(selectedOperator: any) {
     console.log(selectedOperator);
+    // this.filteredSubLcoList = [];
+
     this.selectedSubOperator = selectedOperator;
     this.selectedSubLcoName = selectedOperator.operatorId;
     console.log(this.selectedSubLcoName);
@@ -697,7 +758,7 @@ export class MsorDialogueportsComponent implements OnInit {
   // -------------------------------------------------------------
   private onColumnDefs() {
     console.log('1111111111111111111');
-    
+
     if (this.type == 'walletShare') {
       this.columnDefs = [
         { headerName: "S.No", lockPosition: true, valueGetter: 'node.rowIndex+1', headerCheckboxSelection: false, checkboxSelection: false, width: 90 },
@@ -848,9 +909,9 @@ export class MsorDialogueportsComponent implements OnInit {
         { headerName: 'TOTAL', field: 'total', flex: 1, cellStyle: { textAlign: 'center' } },
       ]
     }
-     else if (this.type == 'lcowiseExpiryCountDiff') {
-      console.log('selected month',this.selectedMonthName);
-      console.log('selected month',this.selectedDateMonthName);
+    else if (this.type == 'lcowiseExpiryCountDiff') {
+      console.log('selected month', this.selectedMonthName);
+      console.log('selected month', this.selectedDateMonthName);
       this.columnDefs = [
         { headerName: "S.No", lockPosition: true, valueGetter: 'node.rowIndex+1', filter: false, headerCheckboxSelection: false, checkboxSelection: false, width: 90 },
         { headerName: 'OPERATOR ID', field: 'operator_id', flex: 1, cellStyle: { textAlign: 'center' } },
@@ -864,16 +925,16 @@ export class MsorDialogueportsComponent implements OnInit {
         { headerName: 'DIFFERENCE', field: 'difference', flex: 1, cellStyle: { textAlign: 'center' } },
       ]
     }
-     else if (this.type == 'total_lco') {
+    else if (this.type == 'total_lco') {
       this.columnDefs = [
         { headerName: "S.No", lockPosition: true, valueGetter: 'node.rowIndex+1', filter: false, headerCheckboxSelection: false, checkboxSelection: false, width: 90 },
-        { headerName: 'LCO NAME', field: 'Operator_Name', flex: 1, filter: false },
+        { headerName: 'LCO NAME', field: 'Operator_Name', flex: 1, filter: false, cellStyle: { textAlign: 'left', }, },
         { headerName: 'LCO ID', field: 'Operator_ID', flex: 1, filter: false, cellStyle: { textAlign: 'center', }, },
-        { headerName: 'AREA', field: 'Area', flex: 1, filter: false },
-        { headerName: 'ADDRESS', field: 'address', flex: 1, },
+        { headerName: 'AREA', field: 'Area', flex: 1, filter: false, cellStyle: { textAlign: 'left', }, },
+        { headerName: 'ADDRESS', field: 'address', flex: 1, cellStyle: { textAlign: 'left', }, },
         { headerName: 'PINCODE', field: 'pincode', flex: 1, filter: false, cellStyle: { textAlign: 'center' } },
         { headerName: 'MOBILE NUMBER', field: 'Contact_Number1', flex: 1, cellStyle: { textAlign: 'center' }, filter: false, },
-        { headerName: 'USER ID', field: 'user_id', flex: 1, filter: false },
+        { headerName: 'USER ID', field: 'user_id', flex: 1, filter: false, cellStyle: { textAlign: 'left', }, },
       ]
     } else if (this.type == 'lco_transfer_details') {
       this.columnDefs = [
@@ -916,6 +977,16 @@ export class MsorDialogueportsComponent implements OnInit {
         { headerName: 'ACTION', field: 'customeramount', flex: 1, cellStyle: { textAlign: 'center' }, },
         { headerName: 'TRANSACTION TYPE', field: 'customeramount', flex: 1, cellStyle: { textAlign: 'center' }, },
         { headerName: 'DAYS', field: 'customeramount', flex: 1, cellStyle: { textAlign: 'center' }, filter: false, },
+      ]
+    } else if (this.type == 'lcoinvoice') {
+      this.columnDefs = [
+        { headerName: "S.No", lockPosition: true, valueGetter: 'node.rowIndex+1', width: 100, headerCheckboxSelection: true, checkboxSelection: true, },
+        { headerName: "GST	", field: 'extra1', width: 300 },  // Jeya Akka Change panna sonnanga Operator name nu ulla dha GST nu
+        { headerName: "INVOICE NO	", field: 'invoiceNo', width: 200 },
+        { headerName: "INVOICE DATE	", field: 'invoiceDate', width: 300 },
+        { headerName: "BASE", field: 'baseAmount', width: 250 },
+        { headerName: "ADDON", field: 'addonBase', width: 200 },
+        { headerName: "ALACARTE", field: 'alacarteBase', width: 250 },
       ]
     }
 
@@ -1126,7 +1197,7 @@ export class MsorDialogueportsComponent implements OnInit {
         Swal.close();
       },
       (error) => {
-        this.handleApiError(error.error, error.status);
+        this.handleApiError(error.error.message, error.status);
       }
     );
   }
@@ -1218,6 +1289,8 @@ export class MsorDialogueportsComponent implements OnInit {
 
   getOnline() {
     this.smartcard = this.smartcardChange(this.smartcard);
+    console.log(this.selectedSubLcoName);
+    console.log(this.selectedOperator);
 
 
     Swal.fire({
@@ -1243,7 +1316,7 @@ export class MsorDialogueportsComponent implements OnInit {
           Swal.close();
         },
         (error) => {
-          this.handleApiError(error.error, error.status);
+          this.handleApiError(error.error.message, error.status);
         }
       );
   }
@@ -1352,7 +1425,7 @@ export class MsorDialogueportsComponent implements OnInit {
         Swal.close();
       },
       (error) => {
-        this.handleApiError(error.error, error.status);
+        this.handleApiError(error.error.message, error.status);
       }
     );
   }
@@ -1441,7 +1514,7 @@ export class MsorDialogueportsComponent implements OnInit {
         }
       },
       (error) => {
-        this.handleApiError(error.error, error.status);
+        this.handleApiError(error.error.message, error.status);
       }
     );
   }
@@ -1666,7 +1739,7 @@ export class MsorDialogueportsComponent implements OnInit {
     Swal.close();
     Swal.fire({
       title: 'Error!',
-      text: error || 'There was an issue generating the PDF CAS form report.',
+      text: error.message || 'There was an issue generating the PDF CAS form report.',
       icon: 'error',
       confirmButtonText: 'Ok'
     });
@@ -1850,7 +1923,7 @@ export class MsorDialogueportsComponent implements OnInit {
           Swal.close();
         },
         (error) => {
-          this.handleApiError(error.error, error.status);
+          this.handleApiError(error.error.message, error.status);
         }
       );
   }
@@ -1895,7 +1968,7 @@ export class MsorDialogueportsComponent implements OnInit {
           Swal.close();
         },
         (error) => {
-          this.handleApiError(error.error, error.status);
+          this.handleApiError(error.error.message, error.status);
         }
       );
   }
@@ -1931,7 +2004,7 @@ export class MsorDialogueportsComponent implements OnInit {
           Swal.close();
         },
         (error) => {
-          this.handleApiError(error.error, error.status);
+          this.handleApiError(error.error.message, error.status);
         }
       );
   }
@@ -1950,4 +2023,83 @@ export class MsorDialogueportsComponent implements OnInit {
           this.pdfswalError(error?.error.message);
         });
   }
+
+  // =========================================================lcoInvoice===========================
+
+  onGridReady1() {
+    this.userService.getAllOperatorInvoiceBillByMonthYear(this.role, this.username, this.selectedMonth || null, this.selectedYear || null)
+      .subscribe(
+        (response: HttpResponse<any>) => {
+          if (response.status === 200) {
+            console.log(response);
+            this.rowData = response.body;
+            this.swal.Success_200();
+          } else if (response.status === 204) {
+            this.rowData = [];
+            this.swal.Success_204();
+          }
+          Swal.close();
+        },
+        (error) => {
+          this.handleApiError(error.error.message, error.status);
+        }
+      );
+  }
+
+  submit() {
+    // this.swal.Loading();
+    this.rowData = [];
+    this.userService.generateOperatorInvoiceBill(this.role, this.username, this.selectedMonth || null, this.selectedYear || null)
+      // .subscribe(
+      //   (data: any) => {
+      //     this.rowData = data;
+      //   });
+      .subscribe((res: any) => {
+        // this.swal.success(res?.message);
+        this.rowData = res;
+      }, (err) => {
+        this.swal.Error(err?.error?.message);
+      });
+  }
+
+  // getLcoInvoiceReport(type: number) {
+  //   this.swal.Loading();
+  //   this.submitted = true;
+  //   this.userService.getLcoInvoiceDetails(this.role, this.username, this.selectedOperator.value, this.selectedMonth || null, this.selectedYear || null, type
+  //   )
+  //     .subscribe((x: Blob) => {
+  //       if (type == 1) {
+  //         this.reportMaking(x, this.type + '  ' + this.smartcard + ".xlsx", 'application/xlsx');
+  //       }
+  //     },
+  //       (error: any) => {
+  //         this.pdfswalError(error?.error.message);
+  //       });
+  // }
+  getLcoInvoiceReport(type: number) {
+    this.swal.Loading();
+    this.submitted = true;
+    console.log(this.selectedLcoName);
+    console.log(this.selectedOperator);
+
+    this.userService.getLcoInvoiceDetails(this.role, this.username, this.selectedOperator, this.selectedMonth || null, this.selectedYear || null, type).
+      subscribe({
+        next: (x: Blob) => {
+          this.swal.Close();
+
+          if (type == 1) {
+            this.reportMaking(x, 'OPERATOR WISE GST FILE' + this.selectedMonthName + '-' + this.selectedYear + ".pdf", 'application/pdf');
+          } else if (type == 2) {
+            this.reportMaking(x, 'OPERATOR WISE GST FILE' + this.selectedMonthName + '-' + this.selectedYear + ".xlsx", 'application/xlsx');
+          }
+        },
+        error: (error: any) => {
+          this.swal.Close();
+          this.pdfswalError(error?.error.message);
+        }
+      });
+
+
+  }
 }
+

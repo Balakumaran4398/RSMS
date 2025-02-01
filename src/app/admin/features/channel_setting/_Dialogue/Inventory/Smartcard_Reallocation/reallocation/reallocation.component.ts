@@ -20,6 +20,11 @@ export class ReallocationComponent {
   smartcardlist: any[] = [];
   filteredOperators: any[] = [];
   selectedOperator: any;
+  dueAmount: any;
+  sub_ismei: any;
+  isemi: any;
+  logData: any;
+  sub_emi: boolean = false;
   submitted: boolean = false;
   constructor(
     public dialogRef: MatDialogRef<ReallocationComponent>,
@@ -35,7 +40,18 @@ export class ReallocationComponent {
     this.smartcardlist = data.smartcard;
     console.log(this.smartcardlist);
     this.filteredOperators = this.lco_list;
-
+    this.logData = data.rowData;
+    console.log(this.logData);
+    this.dueAmount = data.dueAmount[0];
+    this.isemi = data.emi[0];
+    this.sub_emi = data.sub_emi;
+    console.log(this.sub_emi);
+  }
+  onKeydown(event: KeyboardEvent) {
+    const key = event.key;
+    if (!/^\d$/.test(key) && key !== 'Backspace') {
+      event.preventDefault();
+    }
   }
   onNoClick(): void {
     this.dialogRef.close();
@@ -78,7 +94,7 @@ export class ReallocationComponent {
       return
     }
     this.swal.Loading();
-    this.userService.ReAllocate_Smartcard(this.role, this.username, this.smartcardlist, this.selectedLcoName)
+    this.userService.ReAllocate_Smartcard(this.role, this.username, this.smartcardlist, this.selectedLcoName, this.dueAmount, this.isemi)
       .subscribe((res: any) => {
         console.log(res);
         Swal.fire({
@@ -96,21 +112,15 @@ export class ReallocationComponent {
           Swal.fire({
             icon: 'error',
             title: 'Reallocated Failed',
-            text: error?.error?.message || 'An unexpected error occurred. Please try again later.',
-            timer: 2000,
-              showConfirmButton: true,
-              timerProgressBar: true,
-            }).then(() => {
-              window.location.reload();
-            });
+            text: error?.error?.message || error?.error || 'An unexpected error occurred. Please try again later.',
+            timer: 3000,
+            showConfirmButton: true,
+            timerProgressBar: true,
+          }).then(() => {
+            // window.location.reload();
+          });
           console.error('Error:', error);
         }
       );
-      // .subscribe((res: any) => {
-      //   this.swal.success(res?.message);
-      // }, (err) => {
-      //   this.swal.Error(err?.error?.message);
-      // });
   }
-
 }

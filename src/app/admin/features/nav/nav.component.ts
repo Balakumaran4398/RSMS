@@ -33,12 +33,15 @@ export class NavComponent implements OnInit, AfterViewInit {
   isUser: boolean = false;
   isReception: boolean = false;
   isSpecial: boolean = false;
+  isInventory: boolean = false;
   isDropdownOpen: boolean = false;
-
+  isPopupVisible = false;
   constructor(private router: Router, private breakpointObserver: BreakpointObserver, private cdr: ChangeDetectorRef, private userservice: BaseService, private storageservice: StorageService) {
     // this.breakpointChanged();
     this.role = storageservice.getUserRole();
     this.username = storageservice.getUsername();
+    console.log(this.role);
+    
     if (this.role.includes('ROLE_ADMIN')) {
       this.isUser = true;
       this.isReception = false;
@@ -54,6 +57,11 @@ export class NavComponent implements OnInit, AfterViewInit {
       this.isUser = false;
       this.isSpecial = true;
       this.role = 'SPECIAL';
+    } else if (this.role.includes('ROLE_INVENTORY')) {
+      this.isInventory = true;
+      this.isUser = false;
+      this.isSpecial = false;
+      this.role = 'INVENTORY';
     }
   }
 
@@ -93,6 +101,15 @@ export class NavComponent implements OnInit, AfterViewInit {
     const clickedElement = event.currentTarget as HTMLElement;
     clickedElement.classList.add('active');
   }
+
+  setActiveLinkListTab(event: Event) {
+    const links = document.querySelectorAll('.nav-link');
+    links.forEach(link => link.classList.remove('active'));
+  
+    const clickedElement = event.currentTarget as HTMLElement;
+    clickedElement.classList.add('active');
+  }
+  
   onsubscriberlist(value: any) {
     this.showDropdown = true;
     this.userservice.getSearchDetailsSubscriber(this.role, this.username, value).subscribe(
@@ -318,6 +335,26 @@ export class NavComponent implements OnInit, AfterViewInit {
     document.addEventListener("click", function () {
       closeAllDropdowns();
     });
+
+
+    // ===============logout=============
+
+
+    const logoutButton = document.querySelector(".logout") as HTMLElement;
+    const popup = document.getElementById("popup1") as HTMLElement;
+    const closeButton = document.querySelector(".close") as HTMLElement;
+
+    if (logoutButton && popup) {
+      logoutButton.addEventListener("click", function () {
+        popup.style.display = "flex";
+      });
+    }
+
+    if (closeButton && popup) {
+      closeButton.addEventListener("click", function () {
+        popup.style.display = "none";
+      });
+    }
   }
   isMobile = false;
   currentBreakpoint: any;
@@ -358,6 +395,9 @@ export class NavComponent implements OnInit, AfterViewInit {
   OPENCLSO() {
     const sidebar = document.getElementById('sidebar');
     sidebar?.classList?.contains('hide') ? sidebar?.classList?.remove('hide') : sidebar?.classList?.add('hide')
+  }
+  togglePopup() {
+    this.isPopupVisible = !this.isPopupVisible;
   }
 }
 

@@ -560,7 +560,7 @@ export class AddonManageComponent {
           this.filteredAddedList = [...this.added_alacarte_list];
           this.modified = false;
         }, (err) => {
-          this.swal.Error(err?.error?.message);
+          this.swal.Error3(err?.error?.message);
         });
       }
     });
@@ -600,7 +600,7 @@ export class AddonManageComponent {
           this.swal.success(res?.message);
           this.modified = false;
         }, (err) => {
-          this.swal.Error(err?.error?.message);
+          this.swal.Error3(err?.error?.message);
         });
       }
     });

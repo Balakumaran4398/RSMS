@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { ColDef } from 'ag-grid-community';
 import { SmartcardInventoryComponent } from '../../channel_setting/_Dialogue/Inventory/smartcard-inventory/smartcard-inventory.component';
 import { MatDialog } from '@angular/material/dialog';
@@ -7,13 +7,13 @@ import { BaseService } from 'src/app/_core/service/base.service';
 import { StorageService } from 'src/app/_core/service/storage.service';
 import Swal from 'sweetalert2';
 import { SwalService } from 'src/app/_core/service/swal.service';
-
+declare var $: any;
 @Component({
   selector: 'app-allocated',
   templateUrl: './allocated.component.html',
   styleUrls: ['./allocated.component.scss']
 })
-export class  AllocatedComponent {
+export class AllocatedComponent implements OnInit {
   // rowData: any[] | null | undefined;
   gridApi: any;
   public rowSelection: any = "multiple";
@@ -24,7 +24,7 @@ export class  AllocatedComponent {
   smartcard: any;
   caslist: any[] = [];
   cas: any
-  selectedLcoName: any = 0;
+  selectedLcoName: any = '';
   submitted: boolean = false;
   // lco_list: { [key: string]: number } = {};
   lco_list: any[] = [];
@@ -52,7 +52,7 @@ export class  AllocatedComponent {
     pagination: true,
   }
   filteredOperators: any[] = [];
-  selectedOperator: any;
+  selectedOperator: any = 0;
   constructor(public dialog: MatDialog, public userService: BaseService, private storageService: StorageService, private swal: SwalService) {
     this.username = storageService.getUsername();
     this.role = storageService.getUserRole();
@@ -75,6 +75,19 @@ export class  AllocatedComponent {
     this.operatorList();
     this.casList();
   }
+  ngOnInit(): void {
+
+  }
+  ngAfterViewInit() {
+    $('#operator').select2({
+      placeholder: 'Select a Operator',
+      allowClear: true
+    });
+    $('#operator').on('change', (event: any) => {
+      this.selectedLcoName = event.target.value;
+      this.onSubscriberStatusChange(this.selectedLcoName);
+    });
+  }
   operatorList() {
     this.userService.getOeratorList(this.role, this.username, 1).subscribe((data: any) => {
       console.log(data);
@@ -96,7 +109,6 @@ export class  AllocatedComponent {
       }));
       this.caslist = this.cas;
       console.log(this.cas);
-
     });
   }
   onSelectionChanged() {
@@ -145,9 +157,9 @@ export class  AllocatedComponent {
     console.log(this.selectedLcoName);
   }
   columnDefs: ColDef[] = [
-    // {
-    //   lockPosition: true, headerCheckboxSelection: true, checkboxSelection: true, width: 80
-    // },
+    {
+      lockPosition: true, headerCheckboxSelection: true, checkboxSelection: true, width: 80
+    },
     {
       headerName: 'SMARTCARD', width: 250,
       field: 'smartcard',
@@ -159,7 +171,7 @@ export class  AllocatedComponent {
 
     },
     {
-      headerName: 'CARTON BOX', width: 230,
+      headerName: 'CARTON BOX', width: 210,
       field: 'cottonbox',
 
     },
@@ -195,15 +207,14 @@ export class  AllocatedComponent {
       headerName: 'IS_EMI', width: 150, cellStyle: { textAlign: 'center' },
       field: 'emidisplay',
       cellRenderer: (params: any) => {
-        if (params.value) {
-          return `<span style="color: #06991a;">YES</span>`;
-        } else {
-          return `<span style="color: red;">NO</span>`;
-        }
+        return params.value == "Yes"
+          ? `<span style="color: #06991a;">YES</span>`
+          : `<span style="color: red;">NO</span>`;
       },
     },
+
     {
-      headerName: 'LCO_NAME', width: 200,
+      headerName: 'LCO_NAME', width: 200, cellStyle: { textAlign: 'left' },
       field: 'operatorname',
 
     },
@@ -213,16 +224,16 @@ export class  AllocatedComponent {
     this.gridApi = params.api;
   }
   Search() {
-    // if (!this.smartcard && !this.selectedLcoName) {
-    //   Swal.fire({
-    //     icon: 'warning',
-    //     title: 'Invalid Search',
-    //     text: 'Please enter a Smartcard number or select an LCO name to search.',
-    //     confirmButtonText: 'OK'
-    //   });
-    //   return;
-    // }
-    this.submitted = true;
+    // this.submitted = true;
+    if (!this.smartcard && !this.selectedOperator) {
+      Swal.fire({
+        icon: 'warning',
+        title: 'Invalid Search',
+        text: 'Please enter a Smartcard number or select an LCO name to search.',
+        confirmButtonText: 'OK'
+      });
+      return;
+    }
     // if (!this.smartcard || !this.selectedLcoName) {
     //   // Swal.fire({
     //   //   icon: 'warning',
@@ -231,16 +242,18 @@ export class  AllocatedComponent {
     //   // });
     //   return;
     // }
-
     console.log(this.selectedLcoName);
-    console.log(this.smartcard);
+    console.log(this.selectedOperator);
+    console.log(this.selectedOperator.value);
 
-    // this.swal.Loading();
     // if ((this.smartcard != null && this.smartcard != undefined && this.smartcard > 0) || (this.selectedLcoName != null && this.selectedLcoName != undefined && this.selectedLcoName > 0)) {
-      this.userService.getsearchforallocated_smartcard_List(this.role, this.username, this.selectedLcoName || 0, this.smartcard || 0)
-        .subscribe((data: any) => {
-          this.rowData = data;
-          this.allocatedhistory = data;
+    this.swal.Loading();
+    this.userService.getsearchforallocated_smartcard_List(this.role, this.username, this.selectedOperator || 0, this.smartcard || 0)
+      .subscribe((data: any) => {
+        this.rowData = data;
+        this.allocatedhistory = data;
+        this.swal.Close();
+        if (data && data.length > 0) {
           Swal.fire({
             icon: 'success',
             title: 'Search Completed',
@@ -249,15 +262,32 @@ export class  AllocatedComponent {
             timer: 3000,
             timerProgressBar: true,
           });
-          console.log(data);
-        }, error => {
+        } else {
+          Swal.fire({
+            icon: 'info',
+            title: 'No Data Found',
+            text: 'No records were found for the given search criteria.',
+            confirmButtonText: 'OK',
+            timer: 2000,
+            timerProgressBar: true,
+          });
+        }
+
+        console.log(data);
+      },
+        (error) => {
+          this.swal.Close();
           Swal.fire({
             icon: 'error',
             title: 'Error',
-            text: error?.error.message || 'There was an error performing the search. Please try again.',
+            text: error?.error.message || error?.error,
+            timer: 2000,
+            timerProgressBar: true,
             confirmButtonText: 'OK'
           });
-        });
+        }
+      );
+    this.rowData = [];
     // } else {
     //   return;
     // }

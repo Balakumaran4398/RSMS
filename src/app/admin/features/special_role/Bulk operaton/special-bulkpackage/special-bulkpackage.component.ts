@@ -186,17 +186,16 @@ export class SpecialBulkpackageComponent implements OnInit {
 
     this.fetchPackageList();
     this.fetchOperatorList();
-
+    this.selectbulk('bulk_package');
   }
   fetchPackageList() {
     this.userservice.getPackageList(this.role, this.username, 1).subscribe((data: any) => {
       console.log(data);
       // this.packageList = Object.keys(data.packageid); // Assuming packageid contains the necessary values
-      this.packageList = Object.keys(data.packageid).map(key => {
-        const value = data.packageid[key]; // Access the value for the corresponding key
-        // const name = key.split('(')[0].trim(); // Extract the name from the key, trimming any whitespace
-        const name = key
-        return { name: name, value: value }; // Return an object with separated name and value
+      this.packageList = Object.keys(data).map(key => {
+        const value = data[key];
+        const name = key;
+        return { name: name, value: value };
       });
       console.log(this.packageList);
     });

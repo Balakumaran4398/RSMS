@@ -86,6 +86,7 @@ export class ChannelComponent {
 
     this.selectedType = selectedType;
     this.getChannelList(this.selectedType);
+    this.rowData = [];
   }
 
   onGridReady(params: { api: any; }) {
@@ -307,7 +308,7 @@ export class ChannelComponent {
               datas.push(row);
             });
             Swal.close();
-            this.excelService.generateChannelExcel(areatitle, header, datas, title, );
+            this.excelService.generateChannelExcel(areatitle, header, datas, title,);
 
           } else if (response.status === 204) {
             // this.swal.Success_204();

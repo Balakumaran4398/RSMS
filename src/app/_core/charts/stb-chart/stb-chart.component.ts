@@ -28,11 +28,11 @@ export class StbChartComponent implements OnInit {
 
 	renderChart(data: any): void {
 		const chart = new CanvasJS.Chart("stbchartContainer", {
-			title: {
-				text: "STB DETAILS",
-				fontSize: 18,
-				fontWeight: 600
-			},
+			// title: {
+			// 	text: "STB DETAILS",
+			// 	fontSize: 18,
+			// 	fontWeight: 600
+			// },
 			animationEnabled: true,
 			axisY: {
 				title: "Count",

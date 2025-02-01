@@ -1,5 +1,5 @@
 .bg {
-	background-image: url('/assets/images/login/BG2.jpg');
+	background-image: url('/assets/images/login/BG 3.jpg');
 	background-size: inherit;
 	background-repeat: round;
 	height: 100vh;
@@ -25,40 +25,18 @@ a {
 
 .login-wrap {
 	width: 100%;
-	margin: auto;
-	max-width: 525px;
-	min-height: 600px;
-	padding: 5% 0% 0% 33%;
-	position: relative;
+	min-height: 700px;
+	position: absolute;
 }
 
 
-
-@media (max-width: 767px) {
-	.login-wrap[_ngcontent-ng-c1281248131] {
-		display: flex;
-		justify-content: center;
-		align-items: center;
-		width: 100%;
-		max-width: 525px;
-		min-height: 670px;
-		margin: auto;
-		position: relative;
-	}
-
-}
 
 .login-html {
-	// width: 80%;
-	// height: 75%;
-	// max-width: 450px;
 	position: absolute;
 	border-radius: 20px;
-	bottom: 10px;
-	// padding: 90px 70px 50px 40px;
-	// padding: 78px 23px 23px 23px;
-	padding: 23px;
-
+	bottom: 0px;
+	// padding: 35px;
+	padding: 40px 20px 0px 20px;
 	background-color: white;
 }
 
@@ -78,53 +56,19 @@ a {
 .login-form .group .button {
 	color: #fff;
 	display: block;
-	// top: 1%;
 }
 
 .login-form .group .button {
 	border: none;
-	// width: 23vw;
-	width: 65%;
+	width: 100%;
 	margin: auto;
 	justify-content: center;
 	align-items: center;
 	padding: 10px;
-	border-radius: 10px;
 	background: rgba(47, 6, 196, 0.1);
 
 }
 
-.login-form .input-group .label,
-.login-form .input-group .input {
-	color: var(--primary-color);
-	// display: block;
-}
-
-.login-form .input-group .input,
-.login-form .input-group .button {
-	border: none;
-	padding: 15px 20px;
-	border-radius: 25px;
-	// background: rgba(47, 6, 196, 0.1);
-	background: rgb(199 229 242 / 64%);
-	border-color: var(--primary-color);
-}
-
-.input-group input {
-	border-radius: 10px !important;
-
-}
-
-.login-form .input-group .form-control {
-	border: none;
-	width: 20vw;
-	height: 45px;
-	padding: 15px 20px;
-	border-radius: 0px;
-	// background: rgba(47, 6, 196, 0.1);
-	background: rgb(199 229 242 / 64%);
-	border-color: var(--primary-color) !important;
-}
 
 .login-form .group input[data-type="password"] {
 	-webkit-text-security: circle;
@@ -137,7 +81,8 @@ a {
 }
 
 .login-form .group .button {
-	background: var(--primary-color);
+	// background: var(--primary-color);
+	background: #256462;
 }
 
 .login-form .sign-in-htm .group .label {
@@ -166,14 +111,10 @@ a {
 
 }
 
-.input-group {
-	position: relative;
-	display: inline-block;
-	width: 95%;
-}
+
 
 .input-group-addon {
-	display: flex;
+	// display: flex;
 	align-items: center;
 	position: absolute;
 	top: 13px;
@@ -194,132 +135,32 @@ a {
 	padding-left: 40px;
 }
 
-// h6 {
-// 	// margin-top: 16%;
-// 	color: var(--primary-color);
-// }
-
-.login-form .input-group .label {
-	font-size: 15px;
+h1 {
+	color: white;
+	padding: 5%;
 }
 
-.input-group .eye {
-	position: absolute;
-	display: flex;
-	align-items: center;
-	justify-content: end;
-	right: 0px;
-	top: 50%;
-	padding: 0 10px;
-	transform: translateY(-50%);
-	z-index: 10;
+.mdc-text-field__input {
+	width: 92%;
+
 }
 
-// .eye {
-// 	position: absolute;
-// 	top: 30px;
-// 	right: 10px;
-// 	z-index: 3;
-// 	font-size: larger;
+::ng-deep .mat-mdc-text-field-wrapper {
+	height: -1%;
+}
+
+// .inputbox input:focus,
+// .inputbox select:valid,
+// .inputbox input:valid {
+//     box-shadow: 0px 0px 0px 2px #1f6764;
 // }
 
-@media screen and (max-width:560px) {
-	.bg {
-		background-image: url('/assets/images/login/BG_mobile.jpg');
-		background-size: inherit;
-		background-repeat: round;
-		height: 100vh;
-	}
 
-	// .login-wrap {
-	// 	width: 100%;
-	// 	margin: auto;
-	// 	max-width: 525px;
-	// 	min-height: 670px;
-	// 	padding: 0% !important;
-	// 	position: relative;
 
-	// }
 
-	.login-html {
-		top: 11%;
-		max-width: 400px;
-		max-height: 380px;
-		left: 6%;
-		position: absolute;
-		border-radius: 20px;
-		padding: 0px;
-		background-color: white;
-	}
 
-	.input-group input {
-		left: 16%;
-	}
+::ng-deep .mat-mdc-text-field-wrapper.mdc-text-field--outlined .mat-mdc-form-field-infix {
+	padding-top: 13px;
+	padding-bottom: 13px;
 
-	.img1 {
-		width: 13vw;
-		margin-top: 3%;
-	}
-
-	h2 {
-		margin-top: 0%;
-		color: #3f51b5;
-		font-size: larger;
-	}
-
-	.login-form .input-group .form-control {
-		border: none;
-		width: 60vw;
-		padding: 15px 20px;
-		border-radius: 25px;
-		background: rgba(47, 6, 196, 0.1);
-		border-color: #1919d3;
-	}
-
-	.login-form .input-group .label {
-		font-size: medium;
-		margin: 0 50px;
-	}
-
-	.group {
-		margin: 15px 16%;
-	}
-
-	.login-form .group .button {
-		width: 60vw;
-	}
-
-	.input-group-addon {
-		display: flex;
-		align-items: center;
-		position: absolute;
-		top: 10px;
-		right: 50px;
-		height: 100%;
-		justify-content: end;
-		width: 72vw !important;
-		padding: 0 10px;
-		pointer-events: none;
-	}
-
-	.login-form .group {
-		margin: 10px 50px;
-	}
-
-	.foot-lnk[_ngcontent-ng-c43734092] {
-		text-align: center;
-		margin: 10px 0;
-	}
-
-	.eye {
-		position: absolute;
-		display: flex;
-		align-items: center;
-		justify-content: end;
-		right: 0px;
-		top: 50%;
-		padding: 0 45px !important;
-		transform: translateY(-50%);
-		z-index: 10;
-	}
 }

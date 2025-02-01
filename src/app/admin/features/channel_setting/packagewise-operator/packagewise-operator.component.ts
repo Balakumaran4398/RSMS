@@ -7,7 +7,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { BaseService } from 'src/app/_core/service/base.service';
 import { StorageService } from 'src/app/_core/service/storage.service';
 import Swal from 'sweetalert2';
-
+declare var $: any;
 @Component({
   selector: 'app-packagewise-operator',
   templateUrl: './packagewise-operator.component.html',
@@ -50,8 +50,27 @@ export class PackagewiseOperatorComponent {
   constructor(private userservice: BaseService, private storageservice: StorageService, private cdr: ChangeDetectorRef,) {
     this.role = storageservice.getUserRole();
     this.username = storageservice.getUsername();
+  }
 
-
+  ngOnInit() {
+    this.userservice.ProductTypeList(this.username, this.role).subscribe((data: any) => {
+      console.log(data);
+      this.producttypeList = Object.keys(data.producttype).map(key => ({
+        key: key,
+        value: data.producttype[key]
+      }));
+      console.log(this.producttypeList);
+    });
+  }
+  ngAfterViewInit() {
+    $('#productlist').select2({
+      placeholder: 'Select a Package',
+      allowClear: true
+    });
+    $('#productlist').on('change', (event: any) => {
+      // this.smartcard = event.target.value;
+      this.onProductlist(event);
+    });
   }
   onProductType(event: Event): void {
     const selectElement = event.target as HTMLSelectElement;
@@ -63,7 +82,7 @@ export class PackagewiseOperatorComponent {
     }
     this.checkValidation();
     console.log('11111111');
-  
+
 
     this.filteredAvailableList = [];
     this.filteredAddedList = [];
@@ -77,7 +96,7 @@ export class PackagewiseOperatorComponent {
     // this.productId = null;
     this.productId = selectedProductId;
     console.log(selectedProductId);
-   
+
     this.filteredAvailableList = [];
     this.filteredAddedList = [];
     this.userservice.ProductListForOperator(this.role, this.username, this.selectedProductTypeId, selectedProductId).subscribe((data: any) => {
@@ -399,13 +418,12 @@ export class PackagewiseOperatorComponent {
     console.log('selectedProductTypeId:', this.selectedProductTypeId);
 
     // Determine the value to pass based on the priority
-    const operatorIdToPass =
-      this.draggedOperatorId ||
-      this.containeroperatorid
+    const operatorIdToPass = this.draggedOperatorId || this.containeroperatorid || 0
 
     console.log('Operator ID to Pass:', operatorIdToPass);
     console.log('Operator ID to Pass:', operatorIdToPass?.length);
-
+    const finalOperatorId = (Array.isArray(operatorIdToPass) || typeof operatorIdToPass === 'string') && operatorIdToPass.length === 0 ? 0 : operatorIdToPass;
+    console.log('finalOperatorId:', finalOperatorId);
     Swal.fire({
       title: 'Saving...',
       text: 'Please wait while we allocate the operator to the product.',
@@ -414,7 +432,7 @@ export class PackagewiseOperatorComponent {
         Swal.showLoading(null);
       }
     });
-    this.userservice.ProductListForOperator_allocate_to_notallocate(this.role, this.username, this.selectedProductTypeId, selectedProductId, operatorIdToPass || operatorIdToPass?.length).subscribe(
+    this.userservice.ProductListForOperator_allocate_to_notallocate(this.role, this.username, this.selectedProductTypeId, selectedProductId,finalOperatorId).subscribe(
       (res: any) => {
         Swal.fire({
           icon: 'success',
@@ -439,14 +457,5 @@ export class PackagewiseOperatorComponent {
       }
     );
   }
-  ngOnInit() {
-    this.userservice.ProductTypeList(this.username, this.role).subscribe((data: any) => {
-      console.log(data);
-      this.producttypeList = Object.keys(data.producttype).map(key => ({
-        key: key,
-        value: data.producttype[key]
-      }));
-      console.log(this.producttypeList);
-    });
-  }
+
 }

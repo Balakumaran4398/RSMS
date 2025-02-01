@@ -158,7 +158,7 @@
             </div>
         </div>
     </div>
-    <ag-grid-angular #agGrid id="myGrid" domLayout='autoHeight' class="ag-theme-alpine table-class" rowAnimation
+    <ag-grid-angular #agGrid id="myGrid" domLayout='normal' class="ag-theme-alpine table-class" rowAnimation
         [gridOptions]="gridOptions" [columnDefs]="columnDefs" [rowData]="rowData" (gridReady)="onGridReady($event)"
         [enableCellTextSelection]="true">
     </ag-grid-angular>
@@ -262,7 +262,7 @@
         </div>
     </div>
 
-    <ag-grid-angular #agGrid id="myGrid" domLayout='autoHeight' class="ag-theme-alpine table-class" rowAnimation
+    <ag-grid-angular #agGrid id="myGrid" domLayout='normal' class="ag-theme-alpine table-class" rowAnimation
         [gridOptions]="gridOptions" [columnDefs]="columnDefs" [rowData]="rowData" (gridReady)="onGridReady($event)"
         [enableCellTextSelection]="true">
     </ag-grid-angular>
@@ -308,11 +308,14 @@
                 </div>
 
                 <div class="input_box me-3">
-                    <input type="text" matInput [matAutocomplete]="auto" [(ngModel)]="selectedLcoName"
-                        [disabled]="!isRechargeOperator" (input)="filterOperators($event)" placeholder="Select Operator"
-                        [matAutocompleteDisabled]="false" [value]="selectedOperator?.name"
-                        [ngClass]="{ 'enabled-field': isRechargeOperator, 'disabled-field': !isRechargeOperator }">
-
+                    <div class="input-container">
+                        <input type="text" matInput [matAutocomplete]="auto" [(ngModel)]="selectedLcoName"
+                            [disabled]="!isRechargeOperator" (input)="filterOperators($event)"
+                            placeholder="Select Operator" [matAutocompleteDisabled]="false"
+                            [value]="selectedOperator?.name"
+                            [ngClass]="{ 'enabled-field': isRechargeOperator, 'disabled-field': !isRechargeOperator }">
+                        <i class="bx bx-chevron-down icon-right"></i>
+                    </div>
                     <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayOperator">
                         <mat-option [value]="0" selected
                             (click)="onOperatorStatusChange({ value: 0, name: 'All Operator' })">All
@@ -322,7 +325,15 @@
                             {{ operator.name }}
                         </mat-option>
                     </mat-autocomplete>
+                    <!-- <select id="operator" [(ngModel)]="selectedLcoName" [disabled]="!isRechargeOperator">
+                        <option value="0" selected>All Operator</option>
+                        <option *ngFor="let operator of filteredOperators" [value]="operator.value"
+                            (ngModelChange)="onSubscriberStatusChange($event)">
+                            {{ operator.name }}
+                        </option>
+                    </select> -->
                 </div>
+
 
                 <div class="input_box me-3">
                     <select name="user" id="user" [(ngModel)]="useragent" (ngModelChange)="onUserAgentType($event)"
@@ -333,12 +344,13 @@
                     </select>
                 </div>
                 <div class="input_box me-3">
-                    <input type="text" matInput [matAutocomplete]="auto1" [(ngModel)]="selectedSubLcoName"
-                        [disabled]="!isSubLCO" maxlength="20" (input)="filterSubLco($event)"
-                        placeholder="Select Sub Lco" [matAutocompleteDisabled]="false"
-                        [value]="selectedSubOperator?.retailerName"
-                        [ngClass]="{ 'enabled-field': isSubLCO, 'disabled-field': !isSubLCO }">
-
+                    <div class="input-container">
+                        <input type="text" matInput [matAutocomplete]="auto1" [(ngModel)]="selectedSubLcoName"
+                            [disabled]="!isSubLCO" (input)="filterSubLco($event)" placeholder="Select Sub Lco"
+                            [matAutocompleteDisabled]="false" [value]="selectedSubOperator?.retailerName"
+                            [ngClass]="{ 'enabled-field': isSubLCO, 'disabled-field': !isSubLCO }">
+                        <i class="bx bx-chevron-down icon-right"></i>
+                    </div>
                     <mat-autocomplete #auto1="matAutocomplete" [displayWith]="displaysublco">
                         <mat-option *ngFor="let operator of filteredSubLcoList" [value]="operator.operatorId"
                             (click)="onSublcochange(operator)">
@@ -360,7 +372,7 @@
             </div>
         </div>
     </div>
-    <ag-grid-angular #agGrid id="myGrid" domLayout='autoHeight' class="ag-theme-alpine table-class" rowAnimation
+    <ag-grid-angular #agGrid id="myGrid" domLayout='normal' class="ag-theme-alpine table-class" rowAnimation
         [gridOptions]="gridOptions" [columnDefs]="columnDefs2" [rowData]="rowData" (gridReady)="onGridReady($event)"
         [enableCellTextSelection]="true">
     </ag-grid-angular>
@@ -396,7 +408,18 @@
                             {{ operator.name }}
                         </mat-option>
                     </mat-autocomplete>
+                    <!-- <select id="operator" [(ngModel)]="selectedLcoName">
+                        <option [value]="0" selected>All Operator</option>
+                        <option *ngFor="let operator of filteredOperators" [value]="operator.value"
+                            (ngModelChange)="onSubscriberStatusChange(operator)">
+                            {{ operator.name }}
+                        </option>
+                    </select> -->
+                    <div *ngIf="submitted && !selectedLcoName" class="text-danger" style="font-size: small;">
+                        LCO Requred
+                    </div>
                 </div>
+          
 
                 <!-- Select Sub LCO -->
                 <div *ngIf="isSubLCO" class="input_box me-3">
@@ -409,6 +432,15 @@
                             {{ operator.retailerName }}
                         </mat-option>
                     </mat-autocomplete>
+
+
+                    <!-- <select [(ngModel)]="selectedSubLcoName">
+                        <option [value]="0" selected>Select SubLco</option>
+                        <option *ngFor="let operator of filteredSubLcoList" [value]="operator.operatorId"
+                            (ngModelChange)="onSublcochange(operator)">
+                            {{ operator.retailerName }}
+                        </option>
+                    </select> -->
                 </div>
 
                 <!-- Smartcard -->
@@ -441,7 +473,7 @@
             </div>
         </div>
     </div>
-    <ag-grid-angular #agGrid id="myGrid" domLayout='autoHeight' class="ag-theme-alpine table-class" rowAnimation
+    <ag-grid-angular #agGrid id="myGrid" domLayout='normal' class="ag-theme-alpine table-class" rowAnimation
         [gridOptions]="gridOptions" [columnDefs]="columnDefs" [rowData]="rowData" (gridReady)="onGridReady($event)"
         [enableCellTextSelection]="true">
     </ag-grid-angular>
@@ -454,8 +486,9 @@
     </div>
     <div class="row">
         <div class="col-md-12 d-flex justify-content-center align-items-start mb-3">
+
             <div class="col-12 d-flex justify-content-start align-items-center flex-wrap">
-                <div class=" input_box2 me-3">
+                <div class="input_box2 me-3">
                     <input type="text" matInput [matAutocomplete]="auto" [(ngModel)]="selectedLcoName"
                         (input)="filterOperators($event)" placeholder="Select  Operator"
                         [matAutocompleteDisabled]="false" [value]="selectedOperator?.name">
@@ -465,6 +498,14 @@
                             {{ operator.name }}
                         </mat-option>
                     </mat-autocomplete>
+
+
+                    <!-- <select id="operator" [(ngModel)]="selectedLcoName">
+                        <option *ngFor="let operator of filteredOperators" [value]="operator.value"
+                            (ngMOdelChange)="onSubscriberStatusChange($event)">
+                            {{ operator.name }}
+                        </option>
+                    </select> -->
                 </div>
 
                 <div class="input_box2 me-3">
@@ -507,7 +548,7 @@
             </div>
         </div>
     </div>
-    <ag-grid-angular #agGrid id="myGrid" domLayout='autoHeight' class="ag-theme-alpine table-class" rowAnimation
+    <ag-grid-angular #agGrid id="myGrid" domLayout='normal' class="ag-theme-alpine table-class" rowAnimation
         [gridOptions]="gridOptions" [columnDefs]="columnDefs" [rowData]="rowData" (gridReady)="onGridReady($event)"
         [enableCellTextSelection]="true">
     </ag-grid-angular>
@@ -555,7 +596,7 @@
             </div>
         </div>
     </div>
-    <ag-grid-angular #agGrid id="myGrid" domLayout='autoHeight' class="ag-theme-alpine table-class" rowAnimation
+    <ag-grid-angular #agGrid id="myGrid" domLayout='normal' class="ag-theme-alpine table-class" rowAnimation
         [gridOptions]="gridOptions" [columnDefs]="columnDefs" [rowData]="rowData" (gridReady)="onGridReady($event)"
         [enableCellTextSelection]="true">
     </ag-grid-angular>
@@ -616,7 +657,7 @@
 
 
 
-            <ag-grid-angular #agGrid id="myGrid" domLayout='autoHeight' class="ag-theme-alpine table-class" rowAnimation
+            <ag-grid-angular #agGrid id="myGrid" domLayout='normal' class="ag-theme-alpine table-class" rowAnimation
                 [gridOptions]="gridOptions" [columnDefs]="columnDefs" [rowData]="rowData" [rowHeight]="150"
                 (gridReady)="onGridReady($event)" [enableCellTextSelection]="true">
             </ag-grid-angular>
@@ -629,7 +670,7 @@
         <button type="button" class="btn btn-primary bttn" (click)="goBack()"><i
                 class="fa-solid fa-reply mx-2"></i>Back</button>
     </div>
-    <div class="row " style="padding: 1rem;max-height: 775px;overflow: scroll;">
+    <div class="row ">
         <h4>SUBSCRIBER BILL</h4>
         <br /><br />
         <!-- <input placeholder="Enter the smartcard..." type="text" name="text" class="input_sb"
@@ -648,12 +689,12 @@
         </div> -->
 
         <!-- </div> -->
-        <div class="row">
+        <div class="row" style="padding: 1rem;max-height: 775px;overflow: scroll;">
             <div class="col-md-12 d-flex justify-content-start align-items-start mb-3">
-                <div class="  mb-3" >
+                <div class="  mb-3">
                     <!-- <div class="col-12 d-flex justify-content-start align-items-center flex-wrap"> -->
 
-                    <input placeholder="Enter the smartcard..." #searchitem style="font-size: 14px;"  class="input_sb"
+                    <input placeholder="Enter the smartcard..." #searchitem style="font-size: 14px;" class="input_sb"
                         (keyup)="onSmartcardlist( searchitem?.value)" [(ngModel)]="smartcard">
                     <div class="dropdown-menu input"
                         [ngClass]="(subscriberList.length != 0 && searchitem?.value?.length != 0 && showDropdown) ? 'show' : 'hide'"
@@ -665,13 +706,13 @@
                         Smartcard is must..
                     </div>
                 </div>
-                <div class="input_box display mb-3" >
+                <div class="input_box display mb-3">
                     <select name="year" id="year" [(ngModel)]="selectedYear" (change)="checkDataForBill()">
                         <option value="0" selected>Select Year</option>
                         <option *ngFor="let year of years" [value]="year">{{ year }}</option>
                     </select>
                 </div>
-                <div class="input_box display mb-3" >
+                <div class="input_box display mb-3">
                     <select name="month" id="month" [(ngModel)]="selectedMonth" (change)="onMonthChange($event)">
                         <option value="0" selected>Select Month</option>
                         <option *ngFor="let month of months" [value]="month.value">{{ month.name }}
@@ -791,7 +832,7 @@
                     </table>
 
                     <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator> -->
-                    <ag-grid-angular #agGrid id="myGrid" domLayout='autoHeight' class="ag-theme-alpine table-class mb-3"
+                    <ag-grid-angular #agGrid id="myGrid" domLayout='normal' class="ag-theme-alpine table-class mb-3"
                         rowAnimation [columnDefs]="columnDefs" [rowData]="rowData" (gridReady)="onGridReady($event)"
                         [enableCellTextSelection]="true">
                     </ag-grid-angular>
@@ -871,7 +912,7 @@
         </div>
     </div>
 
-    <ag-grid-angular #agGrid id="myGrid" domLayout='autoHeight' class="ag-theme-alpine table-class" rowAnimation
+    <ag-grid-angular #agGrid id="myGrid" domLayout='normal' class="ag-theme-alpine table-class" rowAnimation
         [gridOptions]="gridOptions" [columnDefs]="columnDefs" [rowData]="rowData" (gridReady)="onGridReady($event)"
         [enableCellTextSelection]="true">
     </ag-grid-angular>
@@ -942,7 +983,7 @@
 
         </div>
     </div>
-    <ag-grid-angular #agGrid id="myGrid" domLayout='autoHeight' class="ag-theme-alpine table-class" rowAnimation
+    <ag-grid-angular #agGrid id="myGrid" domLayout='normal' class="ag-theme-alpine table-class" rowAnimation
         [gridOptions]="gridOptions" [columnDefs]="columnDefs" [rowData]="rowData" (gridReady)="onGridReady($event)"
         [enableCellTextSelection]="true">
     </ag-grid-angular>
@@ -977,8 +1018,8 @@
 
             <span>To</span>
             <div class="input_box col-12 col-md-6 ">
-                <input type="date" placeholder="Select Date " required [max]="today" [(ngModel)]="selectedDate"  (change)="logValues($event)"
-                    [ngClass]="{ 'is-invalid': submitted }" />
+                <input type="date" placeholder="Select Date " required [max]="today" [(ngModel)]="selectedDate"
+                    (change)="logValues($event)" [ngClass]="{ 'is-invalid': submitted }" />
             </div>
             <button class="btn mx-2 bttn" style="background-color: rgb(26, 129, 133); border-radius: 5px;"
                 (click)="getLcowiseExpiryCount()">
@@ -995,14 +1036,14 @@
         </div>
 
     </div>
-    <ag-grid-angular #agGrid id="myGrid" domLayout='autoHeight' class="ag-theme-alpine table-class" rowAnimation
+    <ag-grid-angular #agGrid id="myGrid" domLayout='normal' class="ag-theme-alpine table-class" rowAnimation
         [gridOptions]="gridOptions" [columnDefs]="columnDefs" [rowData]="rowData" (gridReady)="onGridReady($event)"
         [enableCellTextSelection]="true">
     </ag-grid-angular>
 </div>
 <div *ngIf="type== 'total_lco'">
     <h4>Total lco Report</h4>
-    <div style="max-height: 775px;overflow: scroll;">
+    <div style="max-height: 775px;overflow: scroll;overflow-x: hidden;overflow-y: hidden;">
         <div class="col-12 col-md-2 d-flex  justify-content-start align-items-start">
             <button type="button" class="btn btn-primary bttn" (click)="goBack()"><i
                     class="fa-solid fa-reply mx-2"></i>Back</button>
@@ -1023,9 +1064,13 @@
                 </div>
             </div>
         </div>
-        <ag-grid-angular #agGrid id="myGrid" domLayout='autoHeight' class="ag-theme-alpine table-class" rowAnimation
+        <!-- <ag-grid-angular #agGrid id="myGrid" domLayout='normal' class="ag-theme-alpine table-class" rowAnimation
             [columnDefs]="columnDefs" [rowData]="rowData1" (gridReady)="onGridReady($event)"
             [enableCellTextSelection]="true">
+        </ag-grid-angular> -->
+        <ag-grid-angular #agGrid id="myGrid" domLayout='normal' class="ag-theme-alpine table-class" rowAnimation
+            style="max-height: 775px;overflow: scroll;overflow-x: hidden;overflow-y: hidden;" [columnDefs]="columnDefs"
+            [rowData]="rowData1" (gridReady)="onGridReady($event)">
         </ag-grid-angular>
     </div>
 </div>
@@ -1045,7 +1090,7 @@
                 <a (click)="goToSubscriberDashboard(lcomember)" *ngFor="let lcomember of subscriberList"
                     class="dropdown-item"> {{ lcomember.name }}</a>
             </div>
-            <div *ngIf="submitted && !selectedYear" class="text-danger" style="font-size: small;">
+            <div *ngIf="submitted && !smartcard" class="text-danger" style="font-size: small;">
                 Smartcard is must..
             </div>
         </div>
@@ -1061,9 +1106,7 @@
     <div class="mb-3">
         <h4>LCO TRANSFER DETAILS</h4>
     </div>
-    <div style="max-height: 800px;overflow: scroll;">
-
-
+    <div style="max-height: 800px;overflow: scroll;overflow-x: hidden;overflow-y: hidden;">
         <div class="col-12 col-md-2 d-flex  justify-content-start align-items-start">
             <button type="button" class="btn btn-primary bttn" (click)="goBack()"><i
                     class="fa-solid fa-reply mx-2"></i>Back</button>
@@ -1079,7 +1122,6 @@
                         <option *ngFor="let Type of LcoTransfer" [value]="Type.value">{{ Type.label }}</option>
                     </select>
                 </div>
-
                 <div *ngIf="isDateEnabled" class="mx-2 mb-2">
                     <div class=" d-flex justify-content-center align-item-center">
                         <mat-form-field appearance="outline">
@@ -1137,9 +1179,67 @@
                 </div>
             </div>
         </div>
-        <ag-grid-angular #agGrid id="myGrid" domLayout='autoHeight' class="ag-theme-alpine table-class" rowAnimation
-            style="max-height:740px;overflow: scroll;" [columnDefs]="columnDefs" [rowData]="rowData"
-            (gridReady)="onGridReady($event)" [gridOptions]="gridOptions" [enableCellTextSelection]="true">
+        <ag-grid-angular #agGrid id="myGrid" domLayout='normal' class="ag-theme-alpine table-class" rowAnimation
+            style="max-height:560px;overflow: scroll;overflow-x: hidden;overflow-y: hidden;" [columnDefs]="columnDefs"
+            [rowData]="rowData" (gridReady)="onGridReady($event)" [gridOptions]="gridOptions"
+            [enableCellTextSelection]="true">
         </ag-grid-angular>
     </div>
+</div>
+<div *ngIf="type=='lcoinvoice'">
+    <h4 style="text-align: center;text-transform: uppercase;">LCO INVOICE BILL </h4>
+    <div class="input_box display justify-content-start align-item-center">
+        <div class="mx-3">
+            <select name="month" id="month" [(ngModel)]="selectedMonth" (change)="onMonthChange($event)">
+                <option value="0" selected>Select Month</option>
+                <option *ngFor="let month of months" [value]="month.value">{{ month.name }}</option>
+            </select>
+            <div *ngIf="submitted && !selectedMonth" class="text-danger" style="font-size: small;">
+                Monrh Requred
+            </div>
+        </div>
+        <div class="mx-3">
+            <select name="year" id="year" [(ngModel)]="selectedYear">
+                <option value="0" selected>Select Year</option>
+                <option *ngFor="let year of years" [value]="year">{{ year }}</option>
+            </select>
+            <div *ngIf="submitted && !selectedYear" class="text-danger" style="font-size: small;">
+                year Requred
+            </div>
+        </div>
+        <div class="  mx-2 mb-2">
+            <!-- <input type="text" matInput [matAutocomplete]="auto" [(ngModel)]="selectedLcoName"
+                (input)="filterOperators($event)" placeholder="Select  Operator" [matAutocompleteDisabled]="false"
+                [value]="selectedOperator?.name">
+            <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayOperator">
+                <mat-option [value]="0" selected
+                    (click)="onOperatorStatusChange({ value: 0, name: 'All Operator' })">All
+                    Operator</mat-option>
+                <mat-option *ngFor="let operator of filteredOperators" [value]="operator.value"
+                    (click)="onSubscriberLcoChange(operator)">
+                    {{ operator.name }}
+                </mat-option>
+            </mat-autocomplete> -->
+            <select id="operator" [(ngModel)]="selectedLcoName">
+                <option [value]="0" selected>All Operator</option>
+                <option *ngFor="let operator of filteredOperators" [value]="operator.value"
+                    (ngModelChange)="onSubscriberStatusChange($event)">
+                    {{ operator.name }}
+                </option>
+            </select>
+            <div *ngIf="submitted && !selectedOperator" class="text-danger" style="font-size: small;">
+                LCO Requred
+            </div>
+        </div>
+
+        <div *ngIf="selectedOperator.value || selectedOperator == '0'" class="export-icon  mx-2 mb-2">
+            <img src="/assets/images/icons/Excel.png" alt="Excel Icon" width="40px" (click)="getLcoInvoiceReport(2)">
+            <div class="tooltip">Excel</div>
+        </div>
+        <div *ngIf="selectedOperator != '0'" class="export-icon  mx-2 mb-2">
+            <img src="/assets/images/icons/pdf.png" alt="Pdf Icon" width="40px" (click)="getLcoInvoiceReport(1)">
+            <div class="tooltip">PDF</div>
+        </div>
+    </div>
+
 </div>

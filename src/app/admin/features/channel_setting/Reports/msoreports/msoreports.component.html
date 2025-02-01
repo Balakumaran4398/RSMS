@@ -2,9 +2,7 @@
 <!-- <div style="background-color: rgba(109, 107, 107, 0.8);padding: 1rem;">
   <h6 style="color: rgb(255, 255, 255);">LCO BILL REPORTS</h6>
 </div> -->
-<div style="max-height: 740px; overflow: scroll;">
-
-
+<div style="max-height: 740px; overflow: scroll;overflow-x: hidden;">
   <section>
     <mat-accordion class="example-headers-align ">
       <mat-expansion-panel [expanded]="step() === 0" (opened)="setStep(0)" hideToggle class="pannel"
@@ -15,6 +13,11 @@
         </mat-expansion-panel-header>
         <!-- <h5>PRODUCT HISTORY</h5> -->
         <div class="cardContainer">
+          <div class="card royal-card tooltip-container" 
+            (click)="openMsoDialog('lcoinvoice')"><i class="fas fa-layer-group"></i>
+            <div><strong>LCO INVOICE BILL</strong> </div>
+            <div class="tooltip">Invoice Bill</div>
+          </div>
           <div class="card royal-card tooltip-container" *ngIf="isshow"
             (click)="openMsoDialog('recharge_deduction_including')"><i class="fas fa-layer-group"></i>
             <div><strong>Recharge/Deduction <br> Report - Including GST</strong> </div>

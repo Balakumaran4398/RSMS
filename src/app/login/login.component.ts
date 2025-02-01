@@ -25,14 +25,19 @@ export class LoginComponent implements OnInit {
   isShow: boolean = false;
   errorMessage = "";
   idstorage: any;
+  alerMessage: any;
+  alerMessageDate: any;
 
+  warningMessage: any;
+  warningMessageDate: any;
+  notificationMessage: boolean= false;
   constructor(
     private fb: FormBuilder,
     private authService: AuthService,
     private storageService: StorageService,
     private router: Router,
     private alertService: AlertService,
-    private cdr:ChangeDetectorRef,
+    private cdr: ChangeDetectorRef,
   ) {
     this.signInform = this.fb.group({
       username: new FormControl('', [Validators.required]),
@@ -42,6 +47,16 @@ export class LoginComponent implements OnInit {
 
   ngOnInit() {
     this.submitted = false;
+    this.authService.notification().subscribe((data: any) => {
+      if (data) {
+        this.notificationMessage = data.notification;
+        this.warningMessageDate = data.sub_notification_msg;
+        this.warningMessage = data.notificationmsg;
+      }
+    });
+
+    console.log(this.alerMessage);
+
   }
 
   submit(form: FormGroup): void {
@@ -72,7 +87,7 @@ export class LoginComponent implements OnInit {
         (res: any) => {
           console.log(res);
           console.log(res.roles);
-          if (res.roles.includes('ROLE_ADMIN') || res.roles.includes('ROLE_RECEPTION') || res.roles.includes('ROLE_SPECIAL')) {
+          if (res.roles.includes('ROLE_ADMIN') || res.roles.includes('ROLE_RECEPTION') || res.roles.includes('ROLE_SPECIAL') || res.roles.includes('ROLE_INVENTORY')) {
             this.storageService.saveToken(res.accessToken);
             this.storageService.saveUser(res);
             this.idstorage = res.id;
@@ -86,6 +101,7 @@ export class LoginComponent implements OnInit {
             let isUser = this.roles.includes('ROLE_ADMIN');
             let isReception = this.roles.includes('ROLE_RECEPTION');
             let isSpecial = this.roles.includes('ROLE_SPECIAL');
+            let isInventory = this.roles.includes('ROLE_INVENTORY');
 
             Swal.fire({
               position: "center",
@@ -103,6 +119,9 @@ export class LoginComponent implements OnInit {
               });
             } else if (isSpecial) {
               this.router.navigate(['admin/msodetails']).then(() => {
+              });
+            } else if (isInventory) {
+              this.router.navigate(['admin/inventor_inventory']).then(() => {
               });
             }
           } else {

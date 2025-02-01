@@ -61,11 +61,9 @@
                                             <label for="">Intend ID</label>
                                         </div>
                                         <div class="col-12 col-md-8" *ngIf="isMsoEnabled">
-                                            <input  class="input_sb" readOnly
-                                                style="font-size: 14px;" 
-                                                 formControlName="intendid"
-                                                [(ngModel)]="intendid_1">
-                                           
+                                            <input class="input_sb" readOnly style="font-size: 14px;"
+                                                formControlName="intendid" [(ngModel)]="intendid_1">
+
                                             <div *ngIf="form.get('intendid')?.invalid && form.get('intendid')?.touched">
                                                 <small *ngIf="form.get('intendid')?.errors?.['required']"
                                                     class="text-danger">Intend ID is required.</small>
@@ -360,8 +358,9 @@
 
                 <div class="col-12 col-sm-12 col-md-12 mb-3">
                     <ag-grid-angular #agGrid id="myGrid" domLayout='autoHeight' class="ag-theme-alpine table-class"
-                        rowAnimation [rowSelection]="rowSelection" [gridOptions]="gridOptions" [columnDefs]="columnDefs"
-                        [rowData]="rowData" (gridReady)="onGridReady($event)" [enableCellTextSelection]="true">
+                        style="max-height: 775px;overflow: scroll;" rowAnimation [rowSelection]="rowSelection"
+                        [gridOptions]="gridOptions" [columnDefs]="columnDefs" [rowData]="rowData"
+                        (gridReady)="onGridReady($event)" [enableCellTextSelection]="true">
                     </ag-grid-angular>
                 </div>
             </div>

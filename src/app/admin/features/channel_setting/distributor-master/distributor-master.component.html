@@ -3,7 +3,7 @@
     <h3>Distributor Details</h3>
 
     <div class="row">
-      
+
         <div class="row d-flex align-items-center justify-content-center">
             <div class="col-12 col-sm-11  m-3">
                 <div class="col d-flex justify-content-end align-items-end mb-3">
@@ -20,8 +20,9 @@
                         Deactive
                     </button>
                 </div>
-                <ag-grid-angular #agGrid id="myGrid" domLayout='autoHeight' class="ag-theme-alpine table-class" style="max-height: 775px;overflow: scroll;" 
-                    rowAnimation [rowSelection]="rowSelection" [gridOptions]="gridOptions" [columnDefs]="columnDefs"
+                <ag-grid-angular #agGrid id="myGrid" domLayout='normal' class="ag-theme-alpine table-class"
+                    style="max-height: 590px;overflow: scroll;overflow-x: hidden;" rowAnimation
+                    [rowSelection]="rowSelection" [gridOptions]="gridOptions" [columnDefs]="columnDefs"
                     [rowData]="rowData" (selectionChanged)="onSelectionChanged()" (gridReady)="onGridReady($event)"
                     [enableCellTextSelection]="true">
                 </ag-grid-angular>

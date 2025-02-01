@@ -20,7 +20,7 @@ export class SubInventoryComponent {
   // lco_list: { [key: string]: number } = {};
   lco_list: any[] = [];
   searchTerm: string = '';
-  ismei: any;
+  isemi: boolean = false;;
   sub_ismei: any;
   totalamount: any;
   smartcard: any;
@@ -41,7 +41,7 @@ export class SubInventoryComponent {
     console.log(this.lco_list);
     this.smartcard = data.smartcard;
     console.log(this.smartcard);
-    this.ismei = data.isemi;
+    this.isemi = data.isemi;
     this.sub_ismei = data.subIsemi[0];
     this.filteredOperators = this.lco_list;
   }
@@ -102,7 +102,7 @@ export class SubInventoryComponent {
           smartcardlist: this.smartcard,
           role: this.role,
           username: this.username,
-          isemi: this.ismei,
+          isemi: this.isemi,
           totalamount: this.dueAmount,
           operatorid: this.selectedLcoName
         }

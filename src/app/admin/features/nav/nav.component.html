@@ -37,6 +37,25 @@
                             class='bx bx-table bx-sm icon'></i> &nbsp;Top Subscription Details</a></li>
             </ul>
         </li>
+
+
+
+        <li *ngIf="isInventory">
+            <a (click)="setActiveLinkListTab($event); navgetToUrl('/inventor_inventory')" class="nav-link active">
+                <mat-icon class="icon">games</mat-icon> &nbsp; Inventory
+            </a>
+        </li>
+        <li *ngIf="isInventory">
+            <a (click)="setActiveLinkListTab($event); navgetToUrl('/inventory_license')" class="nav-link">
+                <mat-icon class="icon">event_busy</mat-icon> &nbsp;License Expired
+            </a>
+        </li>
+        <li *ngIf="isInventory">
+            <a (click)="setActiveLinkListTab($event); navgetToUrl('/inventory_cortonbox')" class="nav-link">
+                <mat-icon class="icon">inventory</mat-icon> &nbsp;Carton Box Upload
+            </a>
+        </li>
+
         <li *ngIf="isUser || isReception ">
             <a> <i class="bx bx-user bx-sm icon "></i> Operator <i class='bx bx-chevron-right icon-right'></i></a>
             <ul class="side-dropdown">
@@ -416,17 +435,30 @@
                             </a>
                             <div class="tooltip">LOGOUT</div>
                         </div>
+
+
+                        <!-- <div class="d-block">
+                            <div class="d-flex justify-content-between align-items-center mx-2 tooltip-container">
+                                <a class="logout" (click)="togglePopup()">
+                                    <i class="fa-solid fa-power-off"></i>
+                                </a>
+                                <div class="tooltip">LOGOUT</div>
+                            </div>
+                            <div *ngIf="this.isPopupVisible" class="overlay">
+                                <div class="popup">
+                                    <h2>{{role}}</h2>
+                                    <div class="content" (click)="logout()" style="cursor: pointer;">
+                                        Sign out
+                                    </div>
+                                </div>
+                            </div>
+                        </div> -->
                     </div>
                 </div>
             </div>
         </div>
     </div>
-
-    <main>
+    <main style="overflow: scroll;height:94vh;overflow-x: hidden;">
         <router-outlet></router-outlet>
     </main>
-
 </section>
-
-
-

@@ -89,15 +89,15 @@ export class SpecialeditbulkpackageComponent implements OnInit {
 
   onSubscriberStatusChange() {
     console.log(this.lco);
-    this.areaList = [];
-    this.streetList = [];
+    // this.areaList = [];
+    // this.streetList = [];
     if (this.lco) {
       this.userservice.getAreaListByOperatorid(this.role, this.username, this.lco)
         .subscribe((data: any) => {
-          console.log(data?.areaid);
-          this.areaList = Object.keys(data?.areaid || {}).map(key => {
+          console.log(data);
+          this.areaList = Object.keys(data || {}).map(key => {
             const name = key.replace(/\(\d+\)$/, '').trim();
-            const value = data.areaid[key];
+            const value = data[key];
             return { name, value };
           });
           console.log(this.areaList);
@@ -109,14 +109,14 @@ export class SpecialeditbulkpackageComponent implements OnInit {
   onAreaStatusChange() {
     console.log(this.area);
 
-    this.streetList = [];
+    // this.streetList = [];
     if (this.area) {
       this.userservice.getStreetListByAreaid(this.role, this.username, this.area)
         .subscribe((data: any) => {
-          console.log(data?.streetid);
-          this.streetList = Object.keys(data?.streetid || {}).map(key => {
+          console.log(data);
+          this.streetList = Object.keys(data || {}).map(key => {
             const name = key.replace(/\(\d+\)$/, '').trim();
-            const value = data.streetid[key];
+            const value = data[key];
             return { name, value };
           });
           console.log(this.streetList);

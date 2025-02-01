@@ -4,6 +4,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { BaseService } from 'src/app/_core/service/base.service';
 import { StorageService } from 'src/app/_core/service/storage.service';
 import { SwalService } from 'src/app/_core/service/swal.service';
+import { LcoinvoiceComponent } from '../../../special_role/lcoinvoice/lcoinvoice.component';
 
 @Component({
   selector: 'app-msoreports',
@@ -46,7 +47,14 @@ export class MsoreportsComponent implements OnInit {
     console.log(event);
     this.router.navigate(['admin/msodialogueReports/' + event]);
   }
-
-  // 
+  openLco() {
+    const dialogRef = this.dialog.open(LcoinvoiceComponent, {
+      // data: dialogData,
+      // width: '500px',
+    });
+    dialogRef.afterClosed().subscribe(result => {
+      console.log('The dialog was closed', result);
+    });
+  }
 }
 

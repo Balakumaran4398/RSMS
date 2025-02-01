@@ -163,6 +163,10 @@ import { HistoryAllReportsComponent } from "./features/channel_setting/Reports_p
 import { MsoreportsComponent } from "./features/channel_setting/Reports/msoreports/msoreports.component";
 import { TopSubLoginComponent } from "./features/top_sub_login/top-sub-login/top-sub-login.component";
 import { MsorDialogueportsComponent } from "./features/channel_setting/Reports_page/MSO/msor-dialogueports/msor-dialogueports.component";
+import { CortonboxComponent } from "./features/inventory_role/cortonbox/cortonbox.component";
+import { InventoryroleComponent } from "./features/inventory_role/inventoryrole/inventoryrole.component";
+import { LicenseComponent } from "./features/inventory_role/license/license.component";
+import { InventoryloginComponent } from "./features/inventory_role/Dialogue/inventorylogin/inventorylogin.component";
 @NgModule({
     declarations: [
         AdminBaseComponent, NavComponent, HomeComponent, NavbarComponent, MsodetailsComponent, CasmasterComponent,
@@ -224,7 +228,8 @@ import { MsorDialogueportsComponent } from "./features/channel_setting/Reports_p
         TaxComponent, ProofComponent, ProofdetailsComponent, TaxdetailsComponent, LogindialogueComponent, EditDismembershipComponent, SpecialBulkpackageComponent,
         SpecialcancelsubscriptionComponent, SpecialareachangeComponent, SpeciallcochangeComponent, SpecialeditbulkpackageComponent, SpeciallcotransferComponent,
         // =====================================================Reports=========================================
-        TraiReportComponent, SubscriptionBasedComponent, HistoryReportsComponent, PackageBasedComponent, BroadcasterReportsComponent, HistoryAllReportsComponent,MsoreportsComponent,MsorDialogueportsComponent
+        TraiReportComponent, SubscriptionBasedComponent, HistoryReportsComponent, PackageBasedComponent, BroadcasterReportsComponent, HistoryAllReportsComponent,MsoreportsComponent,MsorDialogueportsComponent,
+        InventoryroleComponent,LicenseComponent,CortonboxComponent,InventoryloginComponent
           ],
     imports: [
         CommonModule,

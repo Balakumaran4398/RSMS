@@ -51,15 +51,26 @@ export class StorageService {
     const user = this.getUser();
     return user.username || '';
   }
+  // public getUserRole(): string {
+  //   const user = this.getUser();
+   
+  //   // return user.roles.includes('ROLE_RECEPTION') ? 'ROLE_RECEPTION' : 'DEFAULT_ROLE';
+  //   return user.roles.includes('ROLE_ADMIN') ? 'ROLE_ADMIN' : (user.roles.includes('ROLE_RECEPTION') ? 'ROLE_RECEPTION' : (user.roles.includes('ROLE_SPECIAL') ? 'ROLE_SPECIAL' :  'DEFAULT_ROLE'));
+  // }
   public getUserRole(): string {
     const user = this.getUser();
-    // console.log(user);
-    // return user.roles.includes('ROLE_RECEPTION') ? 'ROLE_RECEPTION' : 'DEFAULT_ROLE';
-    return user.roles.includes('ROLE_ADMIN') ? 'ROLE_ADMIN' : (user.roles.includes('ROLE_RECEPTION') ? 'ROLE_RECEPTION' : (user.roles.includes('ROLE_SPECIAL') ? 'ROLE_SPECIAL' : 'DEFAULT_ROLE'));
+    if (!user || !user.roles) return 'DEFAULT_ROLE'; 
+  
+    if (user.roles.includes('ROLE_ADMIN')) return 'ROLE_ADMIN';
+    if (user.roles.includes('ROLE_RECEPTION')) return 'ROLE_RECEPTION';
+    if (user.roles.includes('ROLE_SPECIAL')) return 'ROLE_SPECIAL';
+    if (user.roles.includes('ROLE_INVENTORY')) return 'ROLE_INVENTORY';
+  
+    return 'DEFAULT_ROLE';
   }
-
+  
   public getUserid(): number | null {
     const user = this.getUser();
-    return user ? user.id : null; // Assuming 'id' is a number in your user data
+    return user ? user.id : null; 
   }
 }

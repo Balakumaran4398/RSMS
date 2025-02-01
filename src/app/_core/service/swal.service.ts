@@ -97,6 +97,18 @@ export class SwalService {
       location.reload();
     });
   }
+  Error3(message: any) {
+    Swal.fire({
+      title: 'Error!',
+      text: message,
+      icon: 'error',
+      // timer: 2000,
+      // timerProgressBar: true,
+      showConfirmButton: true
+    }).then(() => {
+      location.reload();
+    });
+  }
   warning_1() {
     Swal.fire({
       title: 'Warning!',
@@ -117,7 +129,9 @@ export class SwalService {
     });
 
   }
-
+  Close() {
+    Swal.close();
+  }
 
   Invalid() {
     Swal.fire({

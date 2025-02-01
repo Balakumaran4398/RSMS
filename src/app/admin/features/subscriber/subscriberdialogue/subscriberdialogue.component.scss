@@ -6,6 +6,17 @@
   font-weight: bold;
 }
 
+.overlay {
+  // display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.6);
+  justify-content: center;
+  align-items: center;
+}
 #smartcard,
 #package {
   width: auto !important;
@@ -207,17 +218,7 @@ body {
   color: #243359;
 }
 
-// ::ng-deep {
-// .select2-container .select2-selection--single {
-//   box-sizing: border-box;
-//   cursor: pointer;
-//   display: block;
-//   height: 33px !important;
-//   user-select: none;
-//   -webkit-user-select: none;
-// }
 
-// }
 @media screen and (max-width:560px) {
   .display {
     display: block;
@@ -253,16 +254,16 @@ body {
 .select2-container {
   width: 250px !important;
 }
-::ng-deep .select2-container .select2-selection--single {
+.select2-container .select2-selection--single {
   height: 45px !important;
   margin-top: 1%;
 }
 
-::ng-deep .select2-container .select2-selection--single .select2-selection__rendered {
+ .select2-container .select2-selection--single .select2-selection__rendered {
   margin-top: 7px;
 }
 
-::ng-deep .select2-container--default .select2-selection--single .select2-selection__arrow {
+.select2-container--default .select2-selection--single .select2-selection__arrow {
   top: 10px;
 }
 // ::ng-deep .ag-header-viewport {
@@ -737,3 +738,26 @@ body {
   }
 }
 
+#myGrid {
+  width: 100%;
+  height: 400px;
+  text-align: center;
+}
+.responsive-grid {
+  width: 100%;
+  max-width: 1200px; 
+  margin: auto;
+}
+
+
+@media (max-width: 768px) {
+  .responsive-grid {
+      width: 100%;
+  }
+}
+::ng-deep .ag-header{
+  background-color: #557c9b !important;
+}
+.custom{
+  background-color: lightslategrey;
+}

@@ -97,7 +97,14 @@ body {
     width: auto !important;
 }
 
+mat-form-field {
+    --mdc-outlined-text-field-focus-outline-color: #035208
+}
 
+.mdc-text-field--outlined:not(.mdc-text-field--disabled).mdc-text-field--focused .mdc-floating-label,
+.mdc-text-field--outlined:not(.mdc-text-field--disabled).mdc-text-field--focused .mdc-floating-label--float-above {
+    color: #035208 !important;
+}
 
 .chart {
     margin: 10px 0px;
@@ -798,4 +805,32 @@ input:checked+.slider:before {
 
 .export-icon img:hover {
     transform: scale(1.1);
+}
+
+// ==========================================grid-table===============================
+#myGrid {
+    width: 100%;
+    height: 600px;
+    text-align: center;
+}
+
+.responsive-grid {
+    width: 100%;
+    max-width: 1200px;
+    margin: auto;
+}
+
+
+@media (max-width: 768px) {
+    .responsive-grid {
+        width: 100%;
+    }
+}
+
+::ng-deep .ag-header {
+    background-color: #557c9b !important;
+}
+
+.custom {
+    background-color: lightslategrey;
 }

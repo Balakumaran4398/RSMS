@@ -22,7 +22,10 @@ export class ChannellistComponent implements OnInit {
   rowData: any[] = [];
   gridOptions = {
     defaultColDef: {
-      // width: 205
+      sortable: true,
+      resizable: true,
+      filter: true,
+      floatingFilter: true,
     },
     paginationPageSize: 10,
     pagination: true,

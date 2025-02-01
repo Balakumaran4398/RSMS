@@ -91,7 +91,7 @@ export class LcoRechargeReportComponent implements OnInit {
       floatingFilter: true,
       comparator: (valueA: any, valueB: any) => {
         if (!isNaN(valueA) && !isNaN(valueB)) {
-          return Number(valueA) - Number(valueB); 
+          return Number(valueA) - Number(valueB);
         }
         if (!valueA) valueA = '';
         if (!valueB) valueB = '';
@@ -236,8 +236,8 @@ export class LcoRechargeReportComponent implements OnInit {
     console.log('dsfsdfdsf', tab);
     this.operatorid = '';
     this.operatorname = '';
-    console.log('this.operatorname',this.operatorname);
-    
+    console.log('this.operatorname', this.operatorname);
+
     this.isCheckboxChecked = false;
     this.selectedTab = tab;
     this.rowData = [];
@@ -290,7 +290,7 @@ export class LcoRechargeReportComponent implements OnInit {
     //   console.log('Selected Operator:', operator);
     // }
     // console.log(operator);
-    this.operatorname='';
+    this.operatorname = '';
     this.selectedOperator = operator;
     this.operatorid = operator.value;
   }
@@ -887,21 +887,13 @@ export class LcoRechargeReportComponent implements OnInit {
     if (tab === '1') {
       this.columnDefs = [
         { headerName: "S.No", valueGetter: 'node.rowIndex+1', width: 100, },
-        { headerName: "OPERATOR NAME", field: 'operatorname', width: 350, },
-        { headerName: "TRANSACTION GROUP TYPE", field: 'transactiongroupname', width: 350, },
-        { headerName: "AMOUNT", field: 'lcoamount', width: 200, cellStyle: { textAlign: 'center' }, },
-        { headerName: "REMARKS", field: 'transactionremarks', width: 200, },
+        { headerName: "OPERATOR NAME", field: 'operatorname', width: 300, },
+        { headerName: "TRANSACTION GROUP TYPE", field: 'transactiongroupname', width: 300, },
+        { headerName: "AMOUNT", field: 'lcoamount', width: 240, cellStyle: { textAlign: 'center' }, },
+        { headerName: "REMARKS", field: 'transactionremarks', width: 240, },
         { headerName: "TRANSACTION DATE", field: 'transactiondate', width: 200, },
         {
           headerName: "BILL", filter: false, width: 200, cellStyle: { textAlign: 'center' },
-          // cellRenderer: (params: any) => {
-          //   const button = document.createElement("button");
-          //   button.className = "btn btn-success mx-1";
-          //   button.innerText = "PDF";
-          //   button.type = "button";
-          //   button.addEventListener("click", () => this.getPrintBillPDFReport(params.data));
-          //   return button;
-          // },
           cellRenderer: (params: any) => {
             const editButton = document.createElement('button');
             editButton.innerHTML = '<img src="/assets/images/icons/pdf.png" alt="PDF Icon" style="width: 35px; height: 35px;">';
@@ -927,59 +919,28 @@ export class LcoRechargeReportComponent implements OnInit {
 
       this.columnDefs = [
         { headerName: "S.No", valueGetter: 'node.rowIndex+1', width: 100, },
-        { headerName: "OPERATOR NAME", field: 'operatorname', width: 250, },
-        { headerName: "OPERATOR ID", field: 'operatorid', width: 250,cellStyle: { textAlign: 'center' }, },
-        { headerName: "AMOUNT", field: 'amount', width: 200,cellStyle: { textAlign: 'center' }, },
+        { headerName: "OPERATOR NAME", field: 'operatorname', width: 280, },
+        { headerName: "OPERATOR ID", field: 'operatorid', width: 200, cellStyle: { textAlign: 'center' }, },
+        { headerName: "AMOUNT", field: 'amount', width: 200, cellStyle: { textAlign: 'center' }, },
         { headerName: "REMARKS", field: 'transactionremarks', width: 200, },
         { headerName: "TRANSACTION DATE", field: 'transactiondate', width: 200, },
         { headerName: "OPERATOR ADDRESS	", field: 'address', width: 200, },
         { headerName: " CONTACT NUMBER", field: 'contactnumber', width: 200, },
       ]
-    } else if (tab === '3') {
-      this.columnDefs = [
-        {
-          headerName: "S.No", valueGetter: 'node.rowIndex+1', width: 100,
-        },
-        { headerName: "OPERATOR NAME", field: 'operatorname', width: 250, },
-        { headerName: "PACKAGE NAME", field: 'packagename', width: 250, },
-        { headerName: "REFUND AMOUNT	", field: 'amount', width: 200,cellStyle: { textAlign: 'center' }, },
-        { headerName: "CURRENT BALANCE	", field: 'balance', width: 200, cellStyle: { textAlign: 'center' },},
-        { headerName: "REFERENCE ID	", field: 'referenceid', width: 200, cellStyle: { textAlign: 'center' },},
-        { headerName: "TRANSACTION DATE", field: 'transactiondate', width: 200,},
-        {
-          headerName: "REFUND", editable: true, width: 200,cellStyle: { textAlign: 'center' },
-          cellRenderer: (params: any) => {
-            const editButton = document.createElement('button');
-            editButton.innerHTML = '<i class="fa fa-pencil-square" aria-hidden="true"></i>';
-            editButton.style.backgroundColor = 'transparent';
-            editButton.style.color = 'rgb(2 85 13)';
-            editButton.style.border = 'none';
-            editButton.title = 'Edit the Customer';
-            editButton.style.cursor = 'pointer';
-            editButton.style.marginRight = '6px';
-            editButton.style.fontSize = "28px";
-            editButton.addEventListener('click', () => {
-              this.openEditDialog(params.data);
-            });
-            const div = document.createElement('div');
-            div.appendChild(editButton);
-            return div;
-          }
-        },
-      ]
-    }
+    } 
+   
   }
   columnDefs1 = [
     {
       headerName: "S.No", valueGetter: 'node.rowIndex+1', width: 100,
     },
-    { headerName: "OPERATOR NAME", field: 'operatorname', width: 350, },
-    { headerName: "REFUND AMOUNT	", field: 'amount', width: 200, cellStyle: { textAlign: 'center' },},
-    { headerName: "CURRENT BALANCE	", field: 'balance', width: 250,cellStyle: { textAlign: 'center' }, },
-    { headerName: "REFERENCE ID	", field: 'referenceid', width: 200,cellStyle: { textAlign: 'center' }, },
+    { headerName: "OPERATOR NAME", field: 'operatorname', width: 300, },
+    { headerName: "REFUND AMOUNT	", field: 'amount', width: 200, cellStyle: { textAlign: 'center' }, },
+    { headerName: "CURRENT BALANCE	", field: 'balance', width: 300, cellStyle: { textAlign: 'center' }, },
+    { headerName: "REFERENCE ID	", field: 'referenceid', width: 230, cellStyle: { textAlign: 'center' }, },
     { headerName: "TRANSACTION DATE", field: 'transactiondate', width: 250, },
     {
-      headerName: "REFUND", editable: true, width: 200,cellStyle: { textAlign: 'center' },
+      headerName: "REFUND", editable: true, width: 200, cellStyle: { textAlign: 'center' },
       cellRenderer: (params: any) => {
         const editButton = document.createElement('button');
         editButton.innerHTML = '<i class="fa fa-pencil-square" aria-hidden="true"></i>';
@@ -1037,7 +998,7 @@ export class LcoRechargeReportComponent implements OnInit {
     });
     dialogRef.afterClosed().subscribe((result) => {
       if (result) {
-        console.log('Dialog result:', result); 
+        console.log('Dialog result:', result);
       } else {
         console.log('Dialog was closed without action or success.');
       }

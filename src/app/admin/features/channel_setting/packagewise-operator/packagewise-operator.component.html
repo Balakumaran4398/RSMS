@@ -4,7 +4,7 @@
         <div class="col-lg-5 col-12 mb-3 mb-lg-0">
             <div class="card">
                 <div class="input_box mb-3">
-                    <select id="producttypelist"  (change)="onProductType($event)">
+                    <select id="producttypelist" (change)="onProductType($event)">
                         <option value="0" selected>Select a Product Type</option>
                         <option *ngFor="let item of producttypeList" [value]="item.value">{{ item.key }}</option>
                     </select>
@@ -41,13 +41,13 @@
         </div>
         <div class="col-lg-5 col-12">
             <div class="card">
-                <div class="input_box mb-3">
-                    <select id="productlist"  (change)="onProductlist($event)">
+                <div class=" mb-3">
+                    <select id="productlist" (change)="onProductlist($event)">
                         <option value="0" selected>Select a Package</option>
                         <option *ngFor="let product of filteredProductTypes" [value]="product.id">{{ product.name }}
                         </option>
                     </select>
-                </div>  
+                </div>
                 <div class="input_box">
                     <input type="text" placeholder="Search Added" [(ngModel)]="searchTermAdded"
                         (input)="filterAddedList()">
@@ -71,7 +71,7 @@
         </div>
     </div>
     <div class="col-12 d-flex justify-content-center align-items-center">
-        <button type="button" class="btn  bttn" style="background:#058372;color: white;height: 2pc; width: 5pc" [disabled]="isshow"
-            (click)="save()">Save</button>
+        <button type="button" class="btn  bttn" style="background:#058372;color: white;height: 2pc; width: 5pc"
+            [disabled]="isshow" (click)="save()">Save</button>
     </div>
 </section>

@@ -110,17 +110,17 @@ export class LcoCommissionComponent {
         newRowData = this.getDisCommissionData('dis_commission');
         // this.selectedOperator = '';
       } else if (this.selectedTab === 'dis_membership') {
-        console.log('dis_membership',this.selectedOperator);
+        console.log('dis_membership', this.selectedOperator);
         this.onMembershipchange(this.selectedOperator);
         newRowData = this.getDisMembershipData('dis_membership');
         // this.selectedOperator = '';
       } else if (this.selectedTab === 'commission') {
-        console.log('commission',this.selectedOperator);
+        console.log('commission', this.selectedOperator);
         this.onOperatorChange(this.selectedOperator);
         newRowData = this.getCommissionData('commission');
         // this.selectedOperator = '';
       } else if (this.selectedTab === 'membership') {
-        console.log('membership',this.selectedOperator);
+        console.log('membership', this.selectedOperator);
         this.onmembershipchange(this.selectedOperator);
         newRowData = this.getMembershipData('membership');
         // this.selectedOperator = '';
@@ -159,7 +159,7 @@ export class LcoCommissionComponent {
 
 
   public rowSelection: any = "multiple";
- 
+
   discolumnnDefs: any[] = [];
   domLayout: 'normal' | 'autoHeight' | 'print' = 'autoHeight';
 
@@ -212,6 +212,7 @@ export class LcoCommissionComponent {
         { headerName: "PRODUCT NAME", field: 'productname', width: 200, cellStyle: { textAlign: 'left' }, },
         { headerName: "PRODUCT ID", field: 'productid', width: 130 },
         { headerName: "PRODUCT TYPE", field: 'producttype', width: 140 },
+        { headerName: "PRODUCT RATE", field: 'rate', width: 140 },
         {
           headerName: "CUSTOMER AMOUNT", field: 'customeramount', width: 150, cellRenderer: (params: any) => `<span style="color: #035203;
           font-weight: bold;;">₹</span> ${params.value}`
@@ -287,7 +288,8 @@ export class LcoCommissionComponent {
         },
         { headerName: "PRODUCT NAME", field: 'productname', width: 250, cellStyle: { textAlign: 'left' }, },
         { headerName: "PRODUCT ID", field: 'productid', width: 150 },
-        { headerName: "PRODUCT TYPE", field: 'productTypeDisplay', width: 150 },
+        { headerName: "PRODUCT TYPE", field: 'productTypeDisplay', width: 190, cellStyle: { textAlign: 'left' } },
+        { headerName: "PRODUCT RATE", field: 'rate', width: 140 },
         // {
         //   headerName: "PRODUCT RATE", field: 'rate', width: 150, cellRenderer: (params: any) => `<span style="color: #035203;
         //   font-weight: bold;;">₹</span> ${params.value}`
@@ -429,7 +431,7 @@ export class LcoCommissionComponent {
       headerName: "S.No", lockPosition: true, valueGetter: 'node.rowIndex+1', width: 100, headerCheckboxSelection: true,
       checkboxSelection: true,
     },
-    { headerName: "OPERATOR NAME", field: 'operatorname', width: 270, cellStyle: { textAlign: 'left' },},
+    { headerName: "OPERATOR NAME", field: 'operatorname', width: 270, cellStyle: { textAlign: 'left' }, },
     { headerName: "OPERATOR ID", field: 'operatorid', width: 220, },
     { headerName: "JOINING DATE", field: 'lcogroupupdateddate', width: 250, filter: true, },
   ];
@@ -437,7 +439,7 @@ export class LcoCommissionComponent {
     {
       headerName: "S.No", lockPosition: true, valueGetter: 'node.rowIndex+1', width: 100,
     },
-    { headerName: "OPERATOR NAME", field: 'operatorname', width: 200,cellStyle: { textAlign: 'left' }, },
+    { headerName: "OPERATOR NAME", field: 'operatorname', width: 200, cellStyle: { textAlign: 'left' }, },
     {
       headerName: 'Actions', minWidth: 140,
       cellRenderer: (params: any) => {

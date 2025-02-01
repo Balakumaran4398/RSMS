@@ -69,7 +69,7 @@ export class SpecialareachangeComponent implements OnInit {
   }
   ngOnInit(): void {
     this.operatorlist();
-
+    this.selectTab('lcochange');
   }
   selectTab(tab: string) {
     // this.rowData = [];
@@ -121,7 +121,7 @@ export class SpecialareachangeComponent implements OnInit {
     }
   }
   operatorlist() {
-    this.userservice.getOeratorList(this.role, this.username,1).subscribe((data: any) => {
+    this.userservice.getOeratorList(this.role, this.username, 1).subscribe((data: any) => {
       console.log(data);
       this.lcoList = Object.keys(data).map(key => {
         const value = data[key];
@@ -142,10 +142,10 @@ export class SpecialareachangeComponent implements OnInit {
       this.userservice.getAreaListByOperatorid(this.role, this.username, this.lco)
         .subscribe((data: any) => {
           console.log(data);
-          
+
           console.log(data?.areaid);
           this.areaList = Object.keys(data).map(key => {
-            const name = key.replace(/\(\d+\)$/, '').trim(); 
+            const name = key.replace(/\(\d+\)$/, '').trim();
             const value = data[key];
             return { name, value };
           });
@@ -183,8 +183,8 @@ export class SpecialareachangeComponent implements OnInit {
           console.log(this.rowData);
           console.log(data?.areaid);
           this.areaList = Object.keys(data).map(key => {
-            const name = key.replace(/\(\d+\)$/, '').trim(); 
-            const value = data[key]; 
+            const name = key.replace(/\(\d+\)$/, '').trim();
+            const value = data[key];
             return { name, value };
           });
           console.log(this.areaList);
@@ -223,8 +223,8 @@ export class SpecialareachangeComponent implements OnInit {
           console.log(data);
           console.log(data?.streetid);
           this.streetList = Object.keys(data).map(key => {
-            const name = key.replace(/\(\d+\)$/, '').trim(); 
-            const value = data[key]; 
+            const name = key.replace(/\(\d+\)$/, '').trim();
+            const value = data[key];
             return { name, value };
           });
           console.log(this.streetList);
@@ -259,8 +259,8 @@ export class SpecialareachangeComponent implements OnInit {
         .subscribe((data: any) => {
           console.log(data?.streetid);
           this.streetList = Object.keys(data).map(key => {
-            const name = key.replace(/\(\d+\)$/, '').trim(); 
-            const value = data[key]; 
+            const name = key.replace(/\(\d+\)$/, '').trim();
+            const value = data[key];
             return { name, value };
           });
           console.log(this.streetList);

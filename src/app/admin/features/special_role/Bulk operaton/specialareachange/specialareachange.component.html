@@ -11,7 +11,7 @@
             <!-- Select LCO -->
             <mat-form-field appearance="outline" class="w-25 mx-2">
                 <mat-label>Select LCO</mat-label>
-                <mat-select [(ngModel)]="lco" (selectionChange)="onTableData()" (ngModelChange)="onSubscriberStatusChange()"  name="lco" required>
+                <mat-select [(ngModel)]="lco" (selectionChange)="onTableData()"   name="lco" required>
                     <mat-option value="">Select LCO</mat-option>
                     <mat-option *ngFor="let lco of lcoList" [value]="lco.value">{{ lco.name }}</mat-option>
                 </mat-select>
@@ -30,7 +30,7 @@
             </mat-form-field>
 
             <!-- Select Street -->
-            <mat-form-field appearance="outline" class="mx-2" [disabled]="!isAnyRowSelected">
+            <mat-form-field appearance="outline" class="mx-2" (ngModelChange)="onSubscriberStreetLCOChange()" [disabled]="!isAnyRowSelected">
                 <mat-label>Select Street</mat-label>
                 <mat-select [(ngModel)]="street"  name="street" required>
                     <mat-option value="">Select Street</mat-option>

@@ -65,21 +65,16 @@ export class DistributorMasterComponent {
   enterPressed: boolean = false;
   columnDefs: any[] = [
     { headerName: "S.No", lockPosition: true, valueGetter: 'node.rowIndex+1', width: 100, headerCheckboxSelection: true, checkboxSelection: true },
-    { headerName: "DISTRIBUTOR NAME", field: 'name', cellEditor: 'agTextCellEditor', width: 300, cellStyle: { textAlign: 'left'}, },
+    { headerName: "DISTRIBUTOR NAME", field: 'name', cellEditor: 'agTextCellEditor', width: 300, cellStyle: { textAlign: 'left' }, },
     {
       headerName: "STATUS",
       field: 'isactive',
-
-
-
       cellRenderer: (params: any) => {
         const isActive = params.data.isactive;
-
         const toggleContainer = document.createElement('div');
         toggleContainer.style.display = 'flex';
         toggleContainer.style.alignItems = 'center';
         toggleContainer.style.justifyContent = 'center';
-
         const toggleSwitch = document.createElement('div');
         toggleSwitch.style.width = '45px';
         toggleSwitch.style.height = '25px';
@@ -101,21 +96,6 @@ export class DistributorMasterComponent {
         toggleCircle.style.transition = 'left 0.3s ease';
 
         toggleSwitch.appendChild(toggleCircle);
-
-        // const updateToggleStyle = (active: boolean) => {
-        //   toggleSwitch.style.backgroundColor = active ? '#4CAF50' : '#616060';
-        //   toggleCircle.style.left = active ? 'calc(100% - 22px)' : '3px';
-        //   toggleSwitch.title = active ? 'Deactivate the Customer' : 'Activate the Customer';
-        // };
-
-        // toggleSwitch.addEventListener('click', () => {
-        //   const currentStatus = params.data.isactive;
-        //   const newStatus = !currentStatus;
-        //   params.data.isactive = newStatus; 
-        //   updateToggleStyle(newStatus);
-
-        //   console.log(`Status changed to: ${newStatus ? 'Active' : 'Inactive'}`);
-        // });
         toggleContainer.appendChild(toggleSwitch);
         return toggleContainer;
       }
@@ -139,9 +119,9 @@ export class DistributorMasterComponent {
         return div;
       }
     },
-    { headerName: "DISTRIBUTOR ADDRESS", field: 'address', editable: true, cellEditor: 'agTextCellEditor', width: 200, },
+    { headerName: "DISTRIBUTOR ADDRESS", field: 'address', editable: true, cellEditor: 'agTextCellEditor', width: 200,cellStyle: { textAlign: 'left' },},
     { headerName: "DISTRIBUTOR CONTACT", field: 'contact', cellEditor: 'agTextCellEditor', width: 200 },
-    { headerName: "DISTRIBUTOR EMAIL", field: 'email', cellEditor: 'agTextCellEditor', width: 290, },
+    { headerName: "DISTRIBUTOR EMAIL", field: 'email', cellEditor: 'agTextCellEditor', width: 290, cellStyle: { textAlign: 'left' },},
   ]
 
 

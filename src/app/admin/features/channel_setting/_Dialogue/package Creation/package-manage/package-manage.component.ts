@@ -624,7 +624,7 @@ export class PackageManageComponent {
             this.swal.success(res?.message);
             this.modified = false;
           }, (err) => {
-            this.swal.Error(err?.error?.message || "channel list is must");
+            this.swal.Error3(err?.error?.message );
           });
         }
       });
@@ -681,7 +681,7 @@ export class PackageManageComponent {
             this.swal.success(res?.message);
             this.modified = false;
           }, (err) => {
-            this.swal.Error(err?.error?.message);
+            this.swal.Error3(err?.error?.message);
           });
         }
       });

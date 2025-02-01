@@ -88,12 +88,12 @@
         </div>
     </div>
 </div>
-<div *ngIf="sType=='editDetails'">
+<div *ngIf="sType=='editDetails'" class="overlay">
+    <div class="Head d-flex justify-content-between align-items-center">
+        <span class="span">Edit Subscriber Details</span>
+        <i class="fa fa-close close-icon" (click)="onNoClick()"></i>
+    </div>
     <div class="card">
-        <div class="Head d-flex justify-content-between align-items-center">
-            <span class="span">Edit Subscriber Details</span>
-            <i class="fa fa-close close-icon" (click)="onNoClick()"></i>
-        </div>
         <form [formGroup]="Editform" class="mobile">
             <div class="display justify-content-center align-items-center mobile">
                 <div class="col-12 col-md-6  edit">
@@ -371,11 +371,11 @@
     </div>
 </div>
 <div *ngIf="sType=='addSmartcard'">
+    <div class="Head d-flex justify-content-between align-items-center ">
+        <span class="span">ADD SMARTCARD</span>
+        <i class="fa fa-close close-icon" (click)="onNoClick()"></i>
+    </div>
     <div class="card">
-        <div class="Head d-flex justify-content-between align-items-center ">
-            <span class="span">ADD SMARTCARD</span>
-            <i class="fa fa-close close-icon" (click)="onNoClick()"></i>
-        </div>
         <div class=" d-flex justify-content-center align-item-center">
             <div class="">
                 <div class="col display justify-content-center align-items-center">
@@ -401,14 +401,15 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="input_box display mb-3">
-                                <div class="col-12 col-md-4">
+                            <div class=" display mb-3">
+                                <div class="input_box col-12 col-md-4">
                                     <label for="">Smartcard</label>
                                 </div>
                                 <div class="col-12 col-md-8">
-                                    <select id="smartcard" [(ngModel)]="smartcard" >
+                                    <select id="smartcard" [(ngModel)]="smartcard">
                                         <option value="0" selected>Select a Smartcard</option>
-                                        <option *ngFor="let area of filteredIntendArea()" [value]="area.name" (ngMOdelChange)="onSmartcardList($event)">
+                                        <option *ngFor="let area of filteredIntendArea()" [value]="area.name"
+                                            (ngMOdelChange)="onSmartcardList($event)">
                                             {{ area.name }}
                                         </option>
                                     </select>
@@ -461,11 +462,11 @@
     </div>
 </div>
 <div *ngIf="sType=='change_lco'">
+    <div class="Head d-flex justify-content-between align-items-center ">
+        <span class="span">CHANGE OPERATOR</span>
+        <i class="fa fa-close close-icon" (click)="onNoClick()"></i>
+    </div>
     <div class="card">
-        <div class="Head d-flex justify-content-between align-items-center ">
-            <span class="span">CHANGE OPERATOR</span>
-            <i class="fa fa-close close-icon" (click)="onNoClick()"></i>
-        </div>
         <div class=" d-flex justify-content-center align-item-center" style="padding:6px 9px">
             <div class="">
                 <div class="col display justify-content-center align-items-center">
@@ -2056,7 +2057,7 @@
 
         <div class="input_box  mb-3">
             <div class="d-flex align-items-center justify-content-center  mb-3">
-                <div class="  col-6 col-md-6">
+                <div class=" col-6 col-md-6">
                     <label for="">Package Name </label>
                 </div>
                 <div class=" col-6 col-md-6 ">
@@ -2349,13 +2350,13 @@
 </div>
 
 
-<div *ngIf="sType=='addon'">
+<div *ngIf="sType=='addon'" >
     <div class="Head d-flex justify-content-between align-items-center mb-3">
         <span class="span">ADDON ADD</span>
         <i class="fa fa-close close-icon" (click)="onNoClick()"></i>
     </div>
-    <div class="mobile">
-        <div style="padding: 1rem;">
+    <div class="mobile" style="max-height: 800px;overflow:scroll">
+        <div style="padding: 1rem;" >
             <div class="cancel_sub mb-2 display_mobile align-items-center justify-content-center">
                 <div class="col-12 col-md-6 display_moile justify-content-start lign-items-center">
                     <div class="input_box  mb-3">
@@ -2404,9 +2405,9 @@
             </div>
         </div>
         <div class="col-12 col-md-12  mb-3" style="padding: 1rem;">
-            <ag-grid-angular #agGrid id="myGrid" domLayout='autoHeight' class="ag-theme-alpine table-class" rowAnimation
-                style="max-height: 775px;overflow: scroll;" [gridOptions]="gridOptions1" [columnDefs]="columnDefs"
-                [rowData]="rowData" (gridReady)="onGridReady($event)" [enableCellTextSelection]="true"
+            <ag-grid-angular #agGrid id="myGrid" domLayout='normal' class="ag-theme-alpine table-class" rowAnimation
+                style="overflow: scroll;" [gridOptions]="gridOptions1" [columnDefs]="columnDefs" [rowData]="rowData"
+                (gridReady)="onGridReady($event)" [enableCellTextSelection]="true"
                 (selectionChanged)="onSelectionChanged()" [rowSelection]="rowSelection">
             </ag-grid-angular>
         </div>
@@ -2494,8 +2495,8 @@
             </div>
             <div class="col-12 col-md-6  mb-3" style="padding: 1rem;">
                 <ag-grid-angular #agGrid id="myGrid" domLayout='autoHeight' class="ag-theme-alpine table-class"
-                    rowAnimation [gridOptions]="gridOptions1" [columnDefs]="columnDefs2" [rowData]="rows"
-                    [enableCellTextSelection]="true">
+                    rowAnimation [gridOptions]="gridOptions" [columnDefs]="columnDefs2" [rowData]="finalrow"
+                    style="max-height:300px;overflow:scroll" [enableCellTextSelection]="true">
                 </ag-grid-angular>
             </div>
         </div>
@@ -2506,66 +2507,66 @@
         <span class="span">ALACARTE ADD</span>
         <i class="fa fa-close close-icon" (click)="onNoClick()"></i>
     </div>
-    <div class="mobile">
-        <div>
-            <div style="padding: 1rem;">
-                <div class="cancel_sub mb-2 display_mobile align-items-center justify-content-center">
-                    <div class="col-12 col-md-6 display_moile justify-content-start lign-items-center">
-                        <div class="input_box  mb-3">
-                            <div class="d-flex align-items-center justify-content-center">
-                                <div class="col-5 col-md-6">
-                                    <span for="password" class="me-2">Customer Name </span>
-                                </div>
-                                <div class="col-7 col-md-6 value">
-                                    {{subscribername}}
-                                </div>
+    <div class="mobile" style="max-height: 800px;overflow:scroll">
+
+        <div style="padding: 1rem;">
+            <div class="cancel_sub mb-2 display_mobile align-items-center justify-content-center">
+                <div class="col-12 col-md-6 display_moile justify-content-start lign-items-center">
+                    <div class="input_box  mb-3">
+                        <div class="d-flex align-items-center justify-content-center">
+                            <div class="col-5 col-md-6">
+                                <span for="password" class="me-2">Customer Name </span>
                             </div>
-                        </div>
-                        <div class="input_box Isactive mb-3">
-                            <div class="d-flex align-items-center justify-content-center">
-                                <div class="col-5 col-md-6">
-                                    <span class="me-2"> Smartcard</span>
-                                </div>
-                                <div class="col-7 col-md-6 value">
-                                    {{smartcardno}}
-                                </div>
+                            <div class="col-7 col-md-6 value">
+                                {{subscribername}}
                             </div>
                         </div>
                     </div>
-                    <div class="col-12 col-md-6 display_moile justify-content-end lign-items-center">
-                        <div class="input_box  mb-3">
-                            <div class="d-flex align-items-center justify-content-center">
-                                <div class="col-5 col-md-6">
-                                    <span class="me-2">Box Id</span>
-                                </div>
-                                <div class="col-7 col-md-6 value">
-                                    {{boxno}}
-                                </div>
+                    <div class="input_box Isactive mb-3">
+                        <div class="d-flex align-items-center justify-content-center">
+                            <div class="col-5 col-md-6">
+                                <span class="me-2"> Smartcard</span>
+                            </div>
+                            <div class="col-7 col-md-6 value">
+                                {{smartcardno}}
                             </div>
                         </div>
-                        <div class="input_box  mb-3">
-                            <div class="d-flex align-items-center justify-content-center">
-                                <div class="col-5 col-md-6">
-                                    <span class="me-2">Lco Name</span>
-                                </div>
-                                <div class="col-7 col-md-6 value">
-                                    {{lconame}}
-                                </div>
-                            </div>
-                        </div>
-
                     </div>
                 </div>
-            </div>
-            <div class="col-12 col-md-12  mb-3" style="padding: 1rem;">
+                <div class="col-12 col-md-6 display_moile justify-content-end lign-items-center">
+                    <div class="input_box  mb-3">
+                        <div class="d-flex align-items-center justify-content-center">
+                            <div class="col-5 col-md-6">
+                                <span class="me-2">Box Id</span>
+                            </div>
+                            <div class="col-7 col-md-6 value">
+                                {{boxno}}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="input_box  mb-3">
+                        <div class="d-flex align-items-center justify-content-center">
+                            <div class="col-5 col-md-6">
+                                <span class="me-2">Lco Name</span>
+                            </div>
+                            <div class="col-7 col-md-6 value">
+                                {{lconame}}
+                            </div>
+                        </div>
+                    </div>
 
-                <ag-grid-angular #agGrid id="myGrid" domLayout='autoHeight' class="ag-theme-alpine table-class"
-                    rowAnimation [gridOptions]="gridOptions1" [columnDefs]="columnDefs" [rowData]="rowData"
-                    (gridReady)="onGridReady($event)" [enableCellTextSelection]="true"
-                    (selectionChanged)="onSelectionChanged()" [rowSelection]="rowSelection">
-                </ag-grid-angular>
+                </div>
             </div>
         </div>
+        <div class="col-12 col-md-12  mb-3" style="padding: 1rem;">
+
+            <ag-grid-angular #agGrid id="myGrid" domLayout='normal' class="ag-theme-alpine table-class" rowAnimation
+                [gridOptions]="gridOptions1" [columnDefs]="columnDefs" [rowData]="rowData"
+                (gridReady)="onGridReady($event)" [enableCellTextSelection]="true"
+                (selectionChanged)="onSelectionChanged()" [rowSelection]="rowSelection">
+            </ag-grid-angular>
+        </div>
+
         <div class="display_mobile ">
             <div class="col-12 col-md-6 d-block justify-content-center align-item-center  mb-3">
                 <div *ngIf="alacarteconfirmation" class="card1 mx-2  mb-2" style="padding: 1rem;">
@@ -2651,8 +2652,8 @@
             </div>
             <div class="col-12 col-md-6  mb-1" style="padding: 1rem;">
                 <ag-grid-angular #agGrid id="myGrid" domLayout='autoHeight' class="ag-theme-alpine table-class"
-                    rowAnimation [columnDefs]="columnDefs1" [gridOptions]="gridOptions1" [rowData]="finalrow"
-                    [enableCellTextSelection]="true">
+                    rowAnimation [columnDefs]="columnDefs1" style="max-height:300px;overflow:scroll"
+                    [gridOptions]="gridOptions" [rowData]="finalrow" [enableCellTextSelection]="true">
                 </ag-grid-angular>
             </div>
         </div>

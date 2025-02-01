@@ -12,11 +12,18 @@ const httpOptions = {
   providedIn: 'root'
 })
 export class AuthService {
+  warningMessage: any;
+  warningMessageDate: any;
+  notificationMessage: boolean = false;
   constructor(private http: HttpClient, private router: Router, private storageService: StorageService) { }
   login(credentials: { username: any; password: any; }): Observable<any> {
     console.log('Username' + credentials.username);
     console.log('Password' + credentials.password);
     return this.http.post(AUTH_API + '/signin', { username: credentials.username, password: credentials.password }, httpOptions);
+  }
+ 
+  notification(): Observable<any> {
+    return this.http.get(AUTH_API + '/checkNotification');
   }
   signOut(): void {
     // window.location.reload();

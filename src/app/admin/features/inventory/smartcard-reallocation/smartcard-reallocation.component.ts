@@ -16,6 +16,8 @@ export class SmartcardReallocationComponent {
   isAnyRowSelected: any = false;
   selectedIds: number[] = [];
   selectedsmartcard: number[] = [];
+  selectedEmi: number[] = [];
+  dueamount: number[] = [];
   selectedtypes: number[] = [];
   hasSelectedRows: boolean = true;
   username: any;
@@ -24,6 +26,8 @@ export class SmartcardReallocationComponent {
   castype: any;
   count: any;
   lco_list: any;
+
+  sub_emi: any;
   public rowSelection: any = "multiple";
   gridOptions = {
     defaultColDef: {
@@ -52,6 +56,9 @@ export class SmartcardReallocationComponent {
       this.lco_list = data[0].operatorid;
       this.count = data[0].count;
       this.castype = data[0].operatorid;
+      this.sub_emi = data[0].isemi;
+
+      console.log('wwwwwwwwwwwwww', this.sub_emi);
       console.log(this.rowData);
       console.log(this.lco_list);
       console.log(this.count);
@@ -68,7 +75,7 @@ export class SmartcardReallocationComponent {
 
     },
     {
-      headerName: 'BOX_ID', width: 250,
+      headerName: 'BOX_ID', width: 250, cellStyle: { textAlign: 'left' },
       field: 'boxid',
     },
     {
@@ -119,17 +126,11 @@ export class SmartcardReallocationComponent {
     if (this.gridApi) {
       const selectedRows = this.gridApi.getSelectedRows();
       this.isAnyRowSelected = selectedRows.length > 0;
-      console.log("Selected Rows:", selectedRows);
-
-      // Extracting IDs from selected rows
       this.selectedIds = selectedRows.map((e: any) => e.id);
       this.selectedsmartcard = selectedRows.map((e: any) => e.smartcard);
-      // Extracting 'isactive' from selected rows
+      this.selectedEmi = selectedRows.map((e: any) => e.isemi);
+      this.dueamount = selectedRows.map((e: any) => e.dueamount);
       this.selectedtypes = selectedRows.map((e: any) => e.isactive);
-
-      console.log("Selected IDs:", this.selectedIds);
-      console.log("Selected smartcards:", this.selectedsmartcard);
-      console.log("Selected Types:", this.selectedtypes);
     }
   }
   onGridReady(params: { api: any; }) {
@@ -152,6 +153,9 @@ export class SmartcardReallocationComponent {
         lco_list: this.lco_list,
         id: this.selectedIds,
         smartcard: this.selectedsmartcard,
+        emi: this.selectedEmi,
+        dueAmount: this.dueamount,
+        sub_emi: this.sub_emi
       };
       const dialogRef = this.dialog.open(ReallocationComponent, {
         width: '450px',

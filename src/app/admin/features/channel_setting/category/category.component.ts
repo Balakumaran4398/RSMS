@@ -63,13 +63,13 @@ export class CategoryComponent {
 
   columnDefs: ColDef[] = [
     {
-      headerName: "S.No", lockPosition: true, valueGetter: 'node.rowIndex+1', width: 140, headerCheckboxSelection: true,
+      headerName: "S.No", lockPosition: true, valueGetter: 'node.rowIndex+1', width: 80, headerCheckboxSelection: true,
       checkboxSelection: true,
     },
 
     {
       headerName: 'CATEGORY NAME',
-      field: 'name',
+      field: 'name', 
       flex: 1,
       editable: true,
       cellEditor: 'agTextCellEditor',

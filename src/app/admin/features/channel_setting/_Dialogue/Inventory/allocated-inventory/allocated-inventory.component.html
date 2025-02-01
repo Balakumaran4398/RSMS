@@ -16,7 +16,7 @@
                         {{ key }}
                     </option>
                 </select> -->
-                <input type="text" matInput [matAutocomplete]="auto" [(ngModel)]="selectedLcoName" maxlength="20"
+                <input type="text" matInput [matAutocomplete]="auto" [(ngModel)]="selectedLcoName" 
                     (input)="filterOperators($event)" placeholder="Select a Operator" [matAutocompleteDisabled]="false"
                     [value]="selectedOperator?.name">
 

@@ -1,10 +1,11 @@
-<section class="Tab col-12" style="max-height: 775px;overflow: scroll;">
+<section class="Tab col-12">
     <div>
         <div class="d-flex tablist justify-content-center align-items-center my-3 new_d">
             <div class="tab bttn" [class.active]="selectedTab === 'activation'" (click)="selectTab('activation')">BULK
                 ALACARTE ACTIVATION
             </div>
-            <div class="tab  bttn" [class.active]="selectedTab === 'remove'" (click)="selectTab('remove')"> BULK ALACARTE
+            <div class="tab  bttn" [class.active]="selectedTab === 'remove'" (click)="selectTab('remove')"> BULK
+                ALACARTE
                 REMOVE
             </div>
         </div>
@@ -75,11 +76,12 @@
                                         <input placeholder="Search..." [(ngModel)]="searchText"
                                             (ngModelChange)="filterToppings()" />
                                     </div>
-                                    <mat-option *ngFor="let topping of toppingList" [value]="topping.id">{{topping.name }}</mat-option>
+                                    <mat-option *ngFor="let topping of toppingList" [value]="topping.id">{{topping.name
+                                        }}</mat-option>
                                 </mat-select>
                             </mat-form-field>
                             <div *ngIf="submitted && !alacarteList" class="text-danger" style="font-size: small;">
-                                Alacarte  is required
+                                Alacarte is required
                             </div>
                         </div>
                         <div class=" d-flex justify-content-end align-items-center mt-3">
@@ -90,25 +92,28 @@
                 <!-- Right Column (Bulk Alacarte History) -->
                 <div class="col-12 col-lg-8 d-flex justify-content-center">
                     <div class="card col-12">
-                      
+
                         <div class="row d-flex align-items-center justify-content-center" style="padding: 0.5rem;">
                             <div class="col-12 mb-3">
                                 <div class="row align-items-center justify-content-center mb-3" style="gap:10px;">
                                     <div class="col-12 col-md-3 mb-2 mb-md-0">
-                                        <input class="date form-control bttn" type="date" [(ngModel)]="date" >
+                                        <input class="date form-control bttn" type="date" [(ngModel)]="date">
                                     </div>
                                     <div class="col-12 col-md-3 mb-2 mb-md-0">
-                                        <button class="btn btn-secondary w-100 bttn" (click)="getAlacarteData()">Get Data</button>
+                                        <button class="btn btn-secondary w-100 bttn" (click)="getAlacarteData()">Get
+                                            Data</button>
                                     </div>
                                     <div class="col-12 col-md-3 mb-2 mb-md-0">
-                                        <button class="btn btn-secondary w-100 bttn" (click)="getRefreshData()">Refresh</button>
+                                        <button class="btn btn-secondary w-100 bttn"
+                                            (click)="getRefreshData()">Refresh</button>
                                     </div>
                                 </div>
 
                                 <ag-grid-angular #agGrid id="myGrid" domLayout='autoHeight'
-                                    class="ag-theme-alpine table-class" rowAnimation [rowSelection]="rowSelection" style="max-height: 775px;overflow: scroll;"
-                                    [gridOptions]="gridOptions" [columnDefs]="columnDefs" [rowData]="rowData"
-                                    (gridReady)="onGridReady()" [enableCellTextSelection]="true">
+                                    class="ag-theme-alpine table-class" rowAnimation [rowSelection]="rowSelection"
+                                    style="max-height: 775px;overflow: scroll;" [gridOptions]="gridOptions"
+                                    [columnDefs]="columnDefs" [rowData]="rowData" (gridReady)="onGridReady()"
+                                    [enableCellTextSelection]="true">
                                 </ag-grid-angular>
                             </div>
                         </div>
@@ -126,12 +131,13 @@
                 <div class="col-12 col-md-2 mb-3 d-flex justify-content-center align-items-center mt-3">
                     <label class="btn btn-outline-primary">
                         <i class="fa fa-plus"></i> Choose
-                        <input type="file" style="display: none;" (change)="handleFileInput($event)">
+                        <input type="file" style="display: none;" accept=".xls,.xlsx,.csv"
+                            (change)="handleFileInput($event)">
                     </label>
                     <span class="mx-3" style="color:#0a21d0">{{filePath }} </span>
                 </div>
 
-                                <div class="col-12 col-md-5 mt-2 ">
+                <div class="col-12 col-md-5 mt-2 ">
                     <mat-form-field class="w-100" appearance="outline">
                         <mat-label>Select Alacarte </mat-label>
                         <mat-select [formControl]="toppings" multiple [(ngModel)]="alacarteList">
@@ -144,13 +150,13 @@
                         </mat-select>
                     </mat-form-field>
                     <div *ngIf="submittedRemove && !alacarteList" class="text-danger" style="font-size: small;">
-                        Alacarte  is required
+                        Alacarte is required
                     </div>
                 </div>
 
                 <div
                     class="col-12 col-md-2 mt-2 d-flex justify-content-center justify-content-md-end align-items-center">
-                    <button type="submit" class="btn btn-success w-100 w-md-auto" (click)="remove()" >Remove</button>
+                    <button type="submit" class="btn btn-success w-100 w-md-auto" (click)="remove()">Remove</button>
                 </div>
             </div>
         </div>
@@ -158,7 +164,7 @@
         <div class="col-12 col-lg-10 d-flex justify-content-center align-item-center"
             style="margin:auto;padding-top: 5%;">
             <div class="card col-12">
-                        <div class="row d-flex align-items-center justify-content-center" style="padding: 0.5rem;">
+                <div class="row d-flex align-items-center justify-content-center" style="padding: 0.5rem;">
                     <div class="col-12 mb-3">
                         <div class="row align-items-center justify-content-center mb-3" style="gap:10px;">
                             <div class="col-12 col-md-3 mb-2 mb-md-0">
@@ -172,16 +178,15 @@
                             </div>
                         </div>
 
-                        <ag-grid-angular #agGrid id="myGrid" domLayout='autoHeight' class="ag-theme-alpine table-class" style="max-height: 775px;overflow: scroll;"
-                            rowAnimation [rowSelection]="rowSelection" [gridOptions]="gridOptions"
-                            [columnDefs]="columnDefs1" [rowData]="rowData" (gridReady)="onGridReady()"
-                            [enableCellTextSelection]="true">
+                        <ag-grid-angular #agGrid id="myGrid" domLayout='autoHeight' class="ag-theme-alpine table-class"
+                            style="max-height: 775px;overflow: scroll;" rowAnimation [rowSelection]="rowSelection"
+                            [gridOptions]="gridOptions" [columnDefs]="columnDefs1" [rowData]="rowData"
+                            (gridReady)="onGridReady()" [enableCellTextSelection]="true">
                         </ag-grid-angular>
                     </div>
                 </div>
             </div>
         </div>
-
     </div>
 
 </section>

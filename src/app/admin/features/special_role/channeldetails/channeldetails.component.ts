@@ -12,7 +12,7 @@ import { ChanneldialogueComponent } from '../Dialogue/channeldialogue/channeldia
   styleUrls: ['./channeldetails.component.scss']
 })
 export class ChanneldetailsComponent implements OnInit {
-  rowData: any;
+  rowData: any[]=[];
   public rowSelection: any = "multiple";
 
   gridOptions = {

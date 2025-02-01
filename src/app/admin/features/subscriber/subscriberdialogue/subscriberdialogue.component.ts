@@ -289,7 +289,7 @@ export class SubscriberdialogueComponent implements OnInit {
         return 0;
       },
     },
-    paginationPageSize: 4,
+    paginationPageSize: 5,
     pagination: true,
   }
   gridOptions2 = {
@@ -809,7 +809,7 @@ export class SubscriberdialogueComponent implements OnInit {
     if (stype === 'remove') {
       this.columnDefs = [
         { headerName: "S.No", valueGetter: 'node.rowIndex+1', width: 100, filter: false, headerCheckboxSelection: true, checkboxSelection: true },
-        { headerName: 'PACKAGE NAME', field: 'productname', width: 200 },
+        { headerName: 'PACKAGE NAME', field: 'productname', width: 200 , cellStyle: { textAlign: 'left' }, },
         { headerName: 'PACKAGE TYPE', field: 'producttypename', width: 200 },
         { headerName: 'REFUND AMOUNT', field: 'refundproductrate', width: 200 },
         { headerName: 'DAYS', field: 'days', width: 250 },
@@ -817,7 +817,7 @@ export class SubscriberdialogueComponent implements OnInit {
     } else if (stype === 'cancelsubscription') {
       this.columnDefs = [
         { headerName: "S.No", valueGetter: 'node.rowIndex+1', width: 100, filter: false },
-        { headerName: 'PACKAGE NAME', field: 'productname', width: 200 },
+        { headerName: 'PACKAGE NAME', field: 'productname', width: 200 , cellStyle: { textAlign: 'left' }, },
         { headerName: 'PACKAGE TYPE', field: 'producttypename', width: 250 },
         // {
         //   headerName: 'REFUND AMOUNT', field: 'refundproductrate', width: 200, valueFormatter: (params: any) => {
@@ -825,7 +825,7 @@ export class SubscriberdialogueComponent implements OnInit {
         //   }
         // },
         {
-          headerName: 'REFUND AMOUNT', field: 'refundproductrate', width: 200, 
+          headerName: 'REFUND AMOUNT', field: 'refundproductrate', width: 200,
           valueFormatter: (params: any) => {
             const value = params.value;
             return value !== undefined && value !== null ? value.toFixed(2) : '0.00';
@@ -836,15 +836,15 @@ export class SubscriberdialogueComponent implements OnInit {
     } else if (stype === 'addon') {
       this.columnDefs = [
         { headerName: "S.No", valueGetter: 'node.rowIndex+1', width: 100, filter: false, headerCheckboxSelection: true, checkboxSelection: true },
-        { headerName: 'PACKAGE NAME', field: 'productname', width: 200 },
+        { headerName: 'PACKAGE NAME', field: 'productname', width: 200, cellStyle: { textAlign: 'left' }, },
         { headerName: 'BROADCASTER NAME', field: 'broadcastername', width: 200 },
         { headerName: 'CAS PRODUCT ID', field: 'casproductid', width: 200 },
-        { headerName: 'CUSTOMER AMOUNT', field: 'customeramount', width: 250, filter: false }
+        { headerName: 'CUSTOMER AMOUNT', field: 'customeramount', width: 240, filter: false }
       ];
     } else if (stype === 'alacarte') {
       this.columnDefs = [
         { headerName: "S.No", valueGetter: 'node.rowIndex+1', width: 80, filter: false, headerCheckboxSelection: true, checkboxSelection: true },
-        { headerName: 'PACKAGE NAME', field: 'channel_name', width: 200 },
+        { headerName: 'PACKAGE NAME', field: 'channel_name', width: 200, cellStyle: { textAlign: 'left' },  },
         { headerName: 'CAS PRODUCT ID', field: 'casproductid', width: 200 },
         { headerName: 'BROADCASTER NAME', field: 'broadcastername', width: 210 },
         { headerName: 'CUSTOMER AMOUNT', field: 'customeramount', width: 250, filter: false },
@@ -867,7 +867,7 @@ export class SubscriberdialogueComponent implements OnInit {
     },
     {
       headerName: 'SELECTED PACKAGES',
-      field: 'productname', width: 350,
+      field: 'productname', width: 330,
     },
   ]
 

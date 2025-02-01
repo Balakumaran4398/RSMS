@@ -11,7 +11,7 @@ import { SwalService } from 'src/app/_core/service/swal.service';
   styleUrls: ['./adsdetails.component.scss']
 })
 export class AdsdetailsComponent {
-  rowData: any;
+  rowData: any[]=[];
   public rowSelection: any = "multiple";
 
   gridOptions = {

@@ -70,9 +70,9 @@ export class AddonActivationComponent {
   columnDefs1: ColDef[] = [
     { headerName: "S.No", lockPosition: true, valueGetter: 'node.rowIndex+1', cellClass: 'locked-col', width: 80, suppressNavigable: true, sortable: false, filter: false },
     { headerName: "SMARTCARD", field: 'smartcard', width: 250, },
-    { headerName: "PACKAGE NAME", field: 'packagename', width: 300, },
+    { headerName: "PACKAGE NAME", field: 'packagename', width: 300, cellStyle: { textAlign: 'left', } },
     {
-      headerName: "STATUS	", field: 'status', width: 250,
+      headerName: "STATUS	", field: 'status', width: 270,cellStyle: { textAlign: 'left', },
       cellRenderer: (params: any) => {
         const status = params.value;
         if (status === 'Success') {
@@ -84,7 +84,7 @@ export class AddonActivationComponent {
         }
       }
     },
-    { headerName: "REMARKS", field: 'remarks' },
+    { headerName: "REMARKS", field: 'remarks', width: 200, },
     { headerName: "CREATED DATE	", field: 'createddate', width: 200, },
   ];
   rowData: any;
@@ -94,7 +94,7 @@ export class AddonActivationComponent {
       sortable: true,
       resizable: true,
       filter: true,
-      width: 180,
+      // width: 180,
       floatingFilter: true,
       comparator: (valueA: any, valueB: any) => {
         const normalizedA = valueA ? valueA.toString().trim().toLowerCase() : '';

@@ -1,0 +1,24 @@
+<div class="card">
+    <h5>NOT ALLOCATED SMARTCARD DETAILS  </h5>
+    <div class="row d-flex justify-content-center align-items-center  ">
+        <div class="col-12 col-sm-12 col-md-12  mb-3">
+            <!-- <div class="d-flex justify-content-end align-items-center mb-3">
+                     <div class="icon-container d-flex align-items-center " (click)="getExcel()">
+                    <img src="/assets/images/icons/Excel.png" width="40px" style="cursor: pointer;">
+                    <div class="tooltip">Excel</div>
+                </div>
+                &nbsp;&nbsp;
+                <div class="icon-container d-flex align-items-center " (click)="getPDF()">
+                    <img src="/assets/images/icons/pdf.png" width="40px" style="cursor: pointer;">
+                    <div class="tooltip">Pdf</div>
+                </div>
+            </div> -->
+            <ag-grid-angular #agGrid id="myGrid" domLayout='normal' class="ag-theme-alpine table-class" rowAnimation
+                style="max-height: 775px;overflow: scroll;"  [gridOptions]="gridOptions"
+                [columnDefs]="columnDefs" [rowData]="rowData" 
+                (gridReady)="onGridReady($event)" [enableCellTextSelection]="true">
+            </ag-grid-angular>
+     
+        </div>
+    </div>
+</div>

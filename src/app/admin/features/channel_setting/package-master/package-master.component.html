@@ -58,9 +58,10 @@
         </div>
         <div *ngIf="selectedTab">
             <div class="col-12 col-xl-12 col-sm-12 align-items-center justify-content-center" style="margin: auto;">
-                <ag-grid-angular #agGrid id="myGrid" domLayout='normal' class="ag-theme-alpine table-class" rowAnimation style="max-height: 775px;overflow: scroll;" 
-                    [rowSelection]="rowSelection" [gridOptions]="gridOptions" [columnDefs]="columnDefs"
-                    [rowData]="rowData" (selectionChanged)="onSelectionChanged()" (gridReady)="onGridReady($event)">
+                <ag-grid-angular #agGrid id="myGrid" domLayout='normal' class="ag-theme-alpine table-class" rowAnimation
+                    style="max-height: 590px;overflow: scroll;overflow-x: hidden;" [rowSelection]="rowSelection"
+                    [gridOptions]="gridOptions" [columnDefs]="columnDefs" [rowData]="rowData"
+                    (selectionChanged)="onSelectionChanged()" (gridReady)="onGridReady($event)">
                 </ag-grid-angular>
             </div>
         </div>

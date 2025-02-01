@@ -38,7 +38,7 @@
                         [style.color]="isCheckboxChecked ? 'white' : 'black'"
                         [style.cursor]="isCheckboxChecked ? 'pointer' : 'not-allowed'">
                         <i class="fa fa-plus"></i> Choose
-                        <input type="file" style="display: none;" [disabled]="!isCheckboxChecked"
+                        <input type="file" style="display: none;" accept=".xls,.xlsx,.csv" [disabled]="!isCheckboxChecked"
                             (change)="handleFileInput($event)">
                     </label>
                     <span class="mx-3" style="color:#0a21d0">{{filePath }}   </span>

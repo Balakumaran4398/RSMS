@@ -1,9 +1,11 @@
-<div class="card" style="max-height: 775px;overflow: scroll;">
+<div class="">
+
+    <!-- <h4>Allocated  </h4> -->
     <!-- <div class="input_box col-12 col-md-6 col-sm-6 d-flex justify-content-center align-items-center mb-3"> -->
     <div class=" col-12 col-md-12 col-lg-8 display justify-content-center align-items-center mb-3 "
         style="margin-left: 3rem;">
         <!-- <div class="col-12 col-sm-6 col-lg-4"> -->
-        <span style="font-size: medium;font-weight: 700;">Search:</span> &nbsp;
+        <span class="mb-3" style="font-size: medium;font-weight: 700;">Search:</span> &nbsp;
         <div class="mb-3 col-10 col-md-5 input_box">
             <input type="text" placeholder="Search for Smartcard or Boxid" [(ngModel)]="smartcard">
             <!-- <div *ngIf="submitted && !smartcard" class="text-danger" style="font-size: small;">
@@ -11,8 +13,8 @@
             </div> -->
         </div>
         &nbsp;
-        <div class="col-10 col-md-5 mb-3 input_box">
-            <input type="text" matInput [matAutocomplete]="auto" [(ngModel)]="selectedLcoName" maxlength="20"
+        <div class="col-10 col-md-5 mb-3  mx-3">
+            <!-- <input type="text" matInput [matAutocomplete]="auto" [(ngModel)]="selectedLcoName" 
                 (input)="filterOperators($event)" placeholder="Select a Operator" [matAutocompleteDisabled]="false"
                 [value]="selectedOperator?.name">
 
@@ -21,14 +23,21 @@
                     (click)="onSubscriberStatusChange(operator)">
                     {{ operator.name }}
                 </mat-option>
-            </mat-autocomplete>
+            </mat-autocomplete> -->
+
+            <select id="operator" [(ngModel)]="selectedLcoName" (ngModelChange)="onSubscriberStatusChange($event)">
+                <option value="">Select Operator</option>
+                <option *ngFor="let operator of filteredOperators" [value]="operator.value">
+                    {{ operator.name }}
+                </option>
+            </select>
             <!-- <div *ngIf="submitted && !selectedLcoName" class="text-danger" style="font-size: small;">
                 LCO Name is required
             </div> -->
         </div>
         &nbsp;
-        <button class="btn  bttn" (click)="Search()" style="background-color: rgb(144, 188, 245);    margin-top: -1vh;
-    line-height: 3vh;">
+        <button class="btn  bttn" (click)="Search()"
+            style="background-color: rgb(144, 188, 245);    margin-top: -1vh;line-height: 3vh;">
             <i class="fa " aria-hidden="true">Search</i>
         </button>
     </div>
@@ -53,7 +62,7 @@
                     <!-- <div class="tooltip">Pdf</div> -->
                 </div>
             </div>
-            <ag-grid-angular #agGrid id="myGrid" domLayout='autoHeight' class="ag-theme-alpine table-class" 
+            <ag-grid-angular #agGrid id="myGrid" domLayout='autoHeight' class="ag-theme-alpine table-class"
                 style="max-height: 775px;overflow: scroll;" [rowSelection]="rowSelection" [gridOptions]="gridOptions"
                 [columnDefs]="columnDefs" [rowData]="rowData" (selectionChanged)="onSelectionChanged()"
                 (gridReady)="onGridReady($event)" [enableCellTextSelection]="true">

@@ -82,6 +82,9 @@ import { BroadcasterReportsComponent } from './features/channel_setting/Reports_
 import { TopSubLoginComponent } from './features/top_sub_login/top-sub-login/top-sub-login.component';
 import { LoginrefundComponent } from './features/channel_setting/_Dialogue/LCO_Recharge/loginrefund/loginrefund.component';
 import { MsorDialogueportsComponent } from './features/channel_setting/Reports_page/MSO/msor-dialogueports/msor-dialogueports.component';
+import { CortonboxComponent } from './features/inventory_role/cortonbox/cortonbox.component';
+import { InventoryroleComponent } from './features/inventory_role/inventoryrole/inventoryrole.component';
+import { LicenseComponent } from './features/inventory_role/license/license.component';
 
 
 const routes: Routes = [
@@ -182,6 +185,11 @@ const routes: Routes = [
       { path: 'special_lco_package', component: SpeciallcochangeComponent },
       { path: 'special_cancel_subscription', component: SpecialcancelsubscriptionComponent },
       { path: 'special_lcotransfer', component: SpeciallcotransferComponent },
+
+      // -------------------------------------Inventory Role------------------------------------
+      { path: 'inventor_inventory', component: InventoryroleComponent },
+      { path: 'inventory_license', component: LicenseComponent },
+      { path: 'inventory_cortonbox', component: CortonboxComponent },
     ]
   }
 ];
