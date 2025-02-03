@@ -52,7 +52,6 @@ export class EditInventoryComponent {
   }
 
   onInventoryTypeChange(value: boolean): void {
-    // If "Upload Only" is selected, disable the operator selection
     this.isOperatorDisabled = value;
   }
 

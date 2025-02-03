@@ -93,13 +93,14 @@ export class InventoryroleComponent {
       field: 'casname',
     }
   ]
-  openLoginPage(){
-     const dialogRef = this.dialog.open(InventoryloginComponent, {
-          // data: dialogData,
-         
-        });
-        dialogRef.afterClosed().subscribe(result => {
-          console.log('The dialog was closed', result);
-        });
+  openLoginPage() {
+    const dialogRef = this.dialog.open(InventoryloginComponent, {
+      // data: dialogData,
+      // width: '500px'
+    });
+    dialogRef.afterClosed().subscribe(result => {
+      console.log('The dialog was closed', result);
+    });
+
   }
 }

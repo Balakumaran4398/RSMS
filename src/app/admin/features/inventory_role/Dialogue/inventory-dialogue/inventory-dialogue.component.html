@@ -1,1 +1,39 @@
-<p>inventory-dialogue works!</p>
+
+<!-- Header -->
+<div class="Head d-flex justify-content-between align-items-center" style="padding: 1rem;">
+    <h6>INVENTORY</h6>
+    <i class="fa fa-close close-icon" (click)="onNoClick()"></i>
+</div>
+<div class="dialog-container">
+
+    <!-- Body -->
+    <div class="dialog-body">
+        <div class="row align-items-center">
+            <div class="col-12 col-md-4">
+                <label class="form-label">CAS Type</label>
+            </div>
+            <div class="col-12 col-md-8 mb-3 input_box">
+                <select id="casType" [(ngModel)]="selectedCasType" >
+                    <option value="0" selected>Select a CAS Name</option>
+                    <option *ngFor="let key of filteredCasList" [value]="key.value">
+                        {{ key.name }}
+                    </option>
+                </select>
+            </div>
+        </div>
+
+        <div class="row align-items-center">
+            <div class="col-12 col-md-4">
+                <label class="form-label">Select File</label>
+            </div>
+            <div class="col-12 col-md-8 mb-3 file-upload-container">
+                <input type="file" (change)="onFileSelected($event)" class="file-input"  accept=".xls,.xlsx,.csv"/>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <div class="dialog-footer">
+        <button type="button" class="btn" style="background-color:#1f6764;color: white;font-size: 14;font-weight: 600;" (click)="submit()">Submit</button>
+    </div>
+</div>

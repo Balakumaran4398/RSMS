@@ -85,6 +85,7 @@ import { MsorDialogueportsComponent } from './features/channel_setting/Reports_p
 import { CortonboxComponent } from './features/inventory_role/cortonbox/cortonbox.component';
 import { InventoryroleComponent } from './features/inventory_role/inventoryrole/inventoryrole.component';
 import { LicenseComponent } from './features/inventory_role/license/license.component';
+import { LicenseexpireComponent } from './features/inventory_role/Dialogue/licenseexpire/licenseexpire.component';
 
 
 const routes: Routes = [
@@ -188,8 +189,9 @@ const routes: Routes = [
 
       // -------------------------------------Inventory Role------------------------------------
       { path: 'inventor_inventory', component: InventoryroleComponent },
-      { path: 'inventory_license', component: LicenseComponent },
+      { path: 'inventory_license', component: LicenseexpireComponent },
       { path: 'inventory_cortonbox', component: CortonboxComponent },
+      { path: 'inventory_cortonbox_data', component: LicenseComponent },
     ]
   }
 ];

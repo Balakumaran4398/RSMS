@@ -1,5 +1,39 @@
+<div class="row justify-content-start align-items-center mb-3">
+    <!-- Left-aligned elements -->
+    <div class="col-12 col-md-1 text-center mb-2">
+        <button type="submit" (click)="openDialoguePage('corton_box')" class="btn bttn" style="background: #2795abf7">
+            <i class="fa-solid fa-upload"></i> &nbsp;Upload
+        </button>
+    </div>
+    <div class="col-12 col-md-3  mb-2">
+        <select id="model" [(ngModel)]="model" (change)="onModelList($event)" class="form-select">
+            <option value="0" selected>Select Model</option>
+            <option *ngFor="let model of filteredModel" [value]="model.name">{{ model.name }}</option>
+        </select>
+    </div>
+    <div class="col-12 col-md-3  mb-2">
+        <select id="modelList" [(ngModel)]="model" (change)="onModelList($event)" class="form-select">
+            <option value="0" selected>Select Model</option>
+            <option *ngFor="let model of filteredModel" [value]="model.name">{{ model.name }}</option>
+        </select>
+    </div>
+    <div class="col-12 col-md-1 text-center mb-2">
+        <button type="submit" (click)="submit()" class="btn bttn ">
+            Submit
+        </button>
+    </div>
+
+    <!-- ALLOCATED button pushed to the far right -->
+    <div class="col-12 col-md-4 d-flex justify-content-end align-items-center mb-2 ml-auto">
+        <button type="submit" (click)="openDialoguePage('allocatted')" class="btn bttn" style="background-color:#577266">
+            ALLOCATED
+        </button>
+    </div>
+</div>
+
+
 <div class="card">
-    <h5>NOT ALLOCATED SMARTCARD DETAILS  </h5>
+    <h5>NOT ALLOCATED SMARTCARD DETAILS </h5>
     <div class="row d-flex justify-content-center align-items-center  ">
         <div class="col-12 col-sm-12 col-md-12  mb-3">
             <!-- <div class="d-flex justify-content-end align-items-center mb-3">
@@ -14,11 +48,16 @@
                 </div>
             </div> -->
             <ag-grid-angular #agGrid id="myGrid" domLayout='normal' class="ag-theme-alpine table-class" rowAnimation
-                style="max-height: 775px;overflow: scroll;"  [gridOptions]="gridOptions"
-                [columnDefs]="columnDefs" [rowData]="rowData" 
-                (gridReady)="onGridReady($event)" [enableCellTextSelection]="true">
+                style="max-height: 775px;overflow: scroll;" [gridOptions]="gridOptions" [columnDefs]="columnDefs"
+                [rowData]="rowData" (gridReady)="onGridReady($event)" [enableCellTextSelection]="true">
             </ag-grid-angular>
-     
+
         </div>
     </div>
+    <!-- <div class="col-12 col-md-12 mb-2 d-flex justify-content-center align-items-center">
+        <button type="submit" (click)="submit()" class="btn bttn" style="width: 150px;">
+            ALLOCATED
+        </button>
+    </div> -->
+
 </div>

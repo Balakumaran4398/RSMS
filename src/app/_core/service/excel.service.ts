@@ -268,8 +268,10 @@ export class ExcelService {
   }
   async generatealacarteactivationExcel(type: any) {
     console.log(type);
+    const header = type === 'corton_box'
+    ? ['BOX ID (Mandatory)', 'CORTON BOX (Mandatory)']
+    : ['SMARTCARD (Mandatory)', 'BOX ID (Non-Mandatory)'];
 
-    const header = ['Smartcard (Mandatory)', 'Box ID (Non-Mandatory)'];
     const workbook = new Excel.Workbook();
     const worksheet = workbook.addWorksheet('Sharing Data');
     const headerRow = worksheet.addRow(header);

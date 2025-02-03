@@ -1,10 +1,10 @@
 <div class="col-4 d-flex justify-content-start align-items-center mb-3">
-    <button type="submit" (click)="openLoginPage()" class="btn bttn" style="background:#2795abf7;color: white;" ><i
+    <button type="submit" (click)="openLoginPage()" class="btn bttn" style="background: #2795abf7;color: white;font-size: 15px;"><i
             class="fa-solid fa-upload"></i>
         &nbsp;Inventory</button>
 </div>
 <div class="card">
-    <h5>Not Allocated Box Details </h5>
+    <h5>Not Allocated Smartcard Details </h5>
     <div class="row d-flex justify-content-center align-items-center  ">
         <div class="col-12 col-sm-12 col-md-12  mb-3">
             <!-- <div class="d-flex justify-content-end align-items-center mb-3">
@@ -23,7 +23,6 @@
                 [columnDefs]="columnDefs" [rowData]="rowData" (selectionChanged)="onSelectionChanged()"
                 (gridReady)="onGridReady($event)" [enableCellTextSelection]="true">
             </ag-grid-angular>
-
         </div>
     </div>
 </div>

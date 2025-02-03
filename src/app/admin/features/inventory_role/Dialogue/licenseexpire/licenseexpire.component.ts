@@ -1,25 +1,26 @@
 import { Component, Inject } from '@angular/core';
-import Swal from 'sweetalert2';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA, MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 import { BaseService } from 'src/app/_core/service/base.service';
 import { StorageService } from 'src/app/_core/service/storage.service';
+import Swal from 'sweetalert2';
 import { InventoryDialogueComponent } from '../inventory-dialogue/inventory-dialogue.component';
+import { LicenseComponent } from '../../license/license.component';
 
 @Component({
-  selector: 'app-inventorylogin',
-  templateUrl: './inventorylogin.component.html',
-  styleUrls: ['./inventorylogin.component.scss']
+  selector: 'app-licenseexpire',
+  templateUrl: './licenseexpire.component.html',
+  styleUrls: ['./licenseexpire.component.scss']
 })
-export class InventoryloginComponent {
- form!: FormGroup;
+export class LicenseexpireComponent {
+  form!: FormGroup;
   isLoggedIn = false;
   username: any;
   role: any;
   type: any;
 
-  constructor(public dialogRef: MatDialogRef<InventoryloginComponent>, @Inject(MAT_DIALOG_DATA) public data: any, private userservice: BaseService, private storageservice: StorageService, private fb: FormBuilder, private router: Router, public dialog: MatDialog,) {
+  constructor(private userservice: BaseService, private storageservice: StorageService, private fb: FormBuilder, private router: Router, public dialog: MatDialog,) {
     this.role = storageservice.getUserRole();
     this.username = storageservice.getUsername();
     this.form = fb.group({
@@ -28,8 +29,6 @@ export class InventoryloginComponent {
       role: this.role,
       username: this.username
     })
-
-
   }
 
   ngOnInit() {
@@ -52,22 +51,21 @@ export class InventoryloginComponent {
       }
       this.userservice.checkLoginCredenticals(requestBody).subscribe(
         (res: any) => {
+          const role = this.storageservice.getUserRole();
           Swal.fire({
             title: 'Login Successful',
             text: res?.message || 'You will be redirected shortly.',
             icon: 'success',
             timer: 1000,
             showConfirmButton: false
-          }).then(() => {
-           
-            const dialogRef = this.dialog.open(InventoryDialogueComponent, {
-          
+          })
+            .then(() => {
+              // if (role === 'ROLE_INVENTORY') {
+              this.router.navigate(['admin/inventory_cortonbox_data']).then(() => {
+                console.log('Navigated to lcorecharge page');
+              });
+              // }
             });
-            dialogRef.afterClosed().subscribe(result => {
-              console.log('The dialog was closed', result);
-            });
-            this.onNoClick();
-          });
         },
         (error: any) => {
           // Handle login failure
@@ -90,8 +88,29 @@ export class InventoryloginComponent {
     }
   }
 
-  onNoClick(): void {
-    this.dialogRef.close();
-  }
+  // onNoClick(): void {
+  //   this.dialogRef.close();
+  // }
+  exit() {
+    const role = this.storageservice.getUserRole();
+    this.form.reset();
+    this.isLoggedIn = false;
 
+    Swal.fire({
+      title: 'Exited',
+      text: 'You have exited the login form.',
+      icon: 'info',
+      showCancelButton: true,
+      confirmButtonText: 'OK',
+      cancelButtonText: 'Cancel'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        this.router.navigate(['admin/inventor_inventory']).then(() => {
+        });
+      } else if (result.dismiss === Swal.DismissReason.cancel) {
+        this.router.navigate(['admin/inventory_license']).then(() => {
+        });
+      }
+    });
+  }
 }
