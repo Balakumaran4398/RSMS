@@ -1,0 +1,122 @@
+<div class="container-fluid">
+    <div class="d-flex flex-column flex-md-row gap-3">
+        <!-- Subscriber Details -->
+        <div class="card col-12 col-md-5 ">
+            <div class="d-flex justify-content-center align-items-center p-2 bg-dark text-white mb-3">
+                <h6>SUBSCRIBER DETAILS</h6>
+            </div>
+
+            <div class="input_box mb-3">
+                <input type="text" placeholder="Search by Smartcard or Boxid">
+            </div>
+
+            <div class="input_box d-flex justify-content-center align-items-center"
+                *ngFor="let item of subscriberDetails">
+                <div class="col-5 col-md-4 d-flex justify-content-start">
+                    <span>{{ item.label }}</span>
+                </div>
+                <div class="col-1 col-md-1 d-flex justify-content-center align-items-center">
+                    <span>:</span>
+                </div>
+                <div class="col-6 col-md-6">
+                    {{ item.value }}
+                </div>
+            </div>
+        </div>
+
+        <!-- Subscriber Status -->
+        <div class="card col-12 col-md-7">
+            <div class="d-flex justify-content-center align-items-center p-2 bg-dark text-white">
+                <h6>SUBSCRIBER STATUS</h6>
+            </div>
+            <div class="input_box d-flex justify-content-start align-items-center"
+                style="margin-top: 3%;margin-left: 20px;">
+                <div class="col-5 col-md-3 d-flex justify-content-start">
+                    <span>SMARTCARD</span>
+                </div>
+                <div class="col-1 col-md-1 d-flex justify-content-center align-items-center">
+                    <span>:</span>
+                </div>
+                <div class="col-6 col-md-4">
+                    eretre
+                </div>
+            </div>
+            <div class="input_box d-flex justify-content-start align-items-center" style="margin-left: 20px;">
+                <div class="col-5 col-md-3 d-flex justify-content-start">
+                    <span>BOX ID</span>
+                </div>
+                <div class="col-1 col-md-1 d-flex justify-content-center align-items-center">
+                    <span>:</span>
+                </div>
+                <div class="col-6 col-md-4">
+                    eretre
+                </div>
+            </div>
+            <div class="input_box d-flex justify-content-start align-items-center" style="margin-left: 20px;">
+                <div class="col-5 col-md-3 d-flex justify-content-start">
+                    <span>TOKEN NO</span>
+                </div>
+                <div class="col-1 col-md-1 d-flex justify-content-center align-items-center">
+                    <span>:</span>
+                </div>
+                <div class="col-6 col-md-4 input_box">
+                    <input type="text" placeholder="Enter Token">
+                </div>
+            </div>
+            <div class="input_box d-flex justify-content-start align-items-center" style="margin-left: 20px;">
+                <div class="col-5 col-md-3 d-flex justify-content-start">
+                    <span>ENTRY</span>
+                </div>
+                <div class="col-1 col-md-1 d-flex justify-content-center align-items-center">
+                    <span>:</span>
+                </div>
+                <div class="col-6 col-md-4">
+                    <select id="entry" [(ngModel)]="selectedEntry">
+                        <option value="0" selected>Select Issue</option>
+                        <option *ngFor="let entry of filteredPackageList" [value]="entry.value">
+                            {{ entry.name }}
+                        </option>
+                    </select>
+                </div>
+            </div>
+            <div class="input_box d-flex justify-content-start align-items-center" style="margin-left: 20px;">
+                <div class="col-5 col-md-3 d-flex justify-content-start">
+                    <span>DESCRIPTION</span>
+                </div>
+                <div class="col-1 col-md-1 d-flex justify-content-center align-items-center">
+                    <span>:</span>
+                </div>
+                <div class="col-6 col-md-4 input_box">
+                    <input type="text" placeholder="Enter Entry Comment">
+                </div>
+            </div>
+            <div class="input_box d-flex justify-content-start align-items-center" style="margin-left: 20px;">
+                <div class="col-5 col-md-3 d-flex justify-content-start">
+                    <span>REPLACE</span>
+                </div>
+                <div class="col-1 col-md-1 d-flex justify-content-center align-items-center">
+                    <span>:</span>
+                </div>
+                <div class="col-6 col-md-4">
+                    eretre
+                </div>
+            </div>
+            <div class="input_box d-flex justify-content-start align-items-center" style="margin-left: 20px;">
+                <div class="col-5 col-md-3 d-flex justify-content-start">
+                    <span>SMARTCARD</span>
+                </div>
+                <div class="col-1 col-md-1 d-flex justify-content-center align-items-center">
+                    <span>:</span>
+                </div>
+                <div class="col-6 col-md-4">
+                    <select id="smartcard" [(ngModel)]="selectSmartcard">
+                        <option value="0" selected>Select Smartcard</option>
+                        <option *ngFor="let smartcard of filteredSmartcardList" [value]="smartcard.value">
+                            {{ smartcard.name }}
+                        </option>
+                    </select>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

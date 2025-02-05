@@ -69,31 +69,31 @@ export class RefreshComponent {
       .subscribe(
         (response: any) => { // Expect HttpResponse<any[]>
           this.rowData = response;
-        //   if (response.status === 200) {
-        //     this.rowData = response;
-        //     // this.swal.Success_200();
-        //   } else if (response.status === 204) {
-        //     // this.swal.Success_204();
-        //   }
-        // },
-        // (error) => {
-        //   if (error.status === 400) {
-        //     this.swal.Error_400();
-        //   } else if (error.status === 500) {
-        //     this.swal.Error_500();
-        //   } else {
-        //     Swal.fire('Error', 'Something went wrong. Please try again.', 'error');
-        //   }
+          //   if (response.status === 200) {
+          //     this.rowData = response;
+          //     // this.swal.Success_200();
+          //   } else if (response.status === 204) {
+          //     // this.swal.Success_204();
+          //   }
+          // },
+          // (error) => {
+          //   if (error.status === 400) {
+          //     this.swal.Error_400();
+          //   } else if (error.status === 500) {
+          //     this.swal.Error_500();
+          //   } else {
+          //     Swal.fire('Error', 'Something went wrong. Please try again.', 'error');
+          //   }
         }
       );
   }
   columnDefs: ColDef[] = [
-    { headerName: "S.No", lockPosition: true, valueGetter: 'node.rowIndex+1', cellClass: 'locked-col', width:120, suppressNavigable: true, sortable: false, filter: false },
+    { headerName: "S.No", lockPosition: true, valueGetter: 'node.rowIndex+1', cellClass: 'locked-col', width: 120, suppressNavigable: true, sortable: false, filter: false },
     { headerName: "SMARTCARD", field: 'smartcard', width: 350 },
-    { headerName: "OPERATOR ID", field: 'lcoid', width: 300 },
-    // { headerName: "LCO ID", field: '', width: 120 },
+    { headerName: "OPERATOR ID", field: 'lcoid', width: 150 },
+    { headerName: "PACKAGE ID", field: 'packageid', width: 150 },
     {
-      headerName: "STATUS", width: 300,
+      headerName: "STATUS", width: 150,
       field: 'status',
       cellRenderer: (params: any) => {
         // Check the value of status and apply conditional styling
@@ -105,26 +105,24 @@ export class RefreshComponent {
       }
     },
 
-    { headerName: "REMARKS", field: 'remarks', width: 350 },
+    { headerName: "REMARKS", field: 'remarks', width: 240 },
     { headerName: "CREATED DATE", field: 'createddate', width: 350 },
   ];
 
   ngOnInit() {
     this.date = new Date().toISOString().split('T')[0];
-    this.selectedDate = this.date; 
+    this.selectedDate = this.date;
     this.refresh();
     this.operatorlist();
-
   }
   ngAfterViewInit() {
-   
     $('#ltb').select2({
       placeholder: 'Select Operator Name',
       allowClear: true
     });
     $('#ltb').on('change', (event: any) => {
       this.operatorid = event.target.value;
-      this.onSubscriberStatusChange( this.operatorid);
+      this.onSubscriberStatusChange(this.operatorid);
     });
   }
   onGridReady() {
@@ -162,7 +160,7 @@ export class RefreshComponent {
     );
   }
   operatorlist() {
-    this.userservice.getOeratorList(this.role, this.username,1).subscribe((data: any) => {
+    this.userservice.getOeratorList(this.role, this.username, 1).subscribe((data: any) => {
       console.log(data);
       this.operatorList = Object.keys(data).map(key => {
         const value = data[key];
@@ -174,7 +172,7 @@ export class RefreshComponent {
     })
   }
   Submit() {
-    this.submitted= true;
+    this.submitted = true;
     this.swal.Loading();
     this.userservice.BulkReactivationByOperatorId(this.role, this.username, this.operatorid, 0, 3, this.status)
       .subscribe((res: any) => {
@@ -221,28 +219,28 @@ export class RefreshComponent {
 
 
   getData() {
-    this.rowData=[];
+    this.rowData = [];
     // this.swal.Loading();
     const dateToPass = this.selectedDate || this.date;
     this.userservice.getBulkrefreshListByDate(this.role, this.username, 'Bulk Reactivate', dateToPass, 3)
       .subscribe(
-        (response:any) => { // Expect HttpResponse<any[]>
+        (response: any) => { // Expect HttpResponse<any[]>
           this.rowData = response;
-        //   if (response.status === 200) {
-        //     // this.swal.Success_200();
-        //   } else if (response.status === 204) {
-        //     this.rowData = '';
-        //     this.swal.Success_204();
-        //   }
-        // },
-        // (error) => {
-        //   if (error.status === 400) {
-        //     this.swal.Error_400();
-        //   } else if (error.status === 500) {
-        //     this.swal.Error_500();
-        //   } else {
-        //     Swal.fire('Error', 'Something went wrong. Please try again.', 'error');
-        //   }
+          //   if (response.status === 200) {
+          //     // this.swal.Success_200();
+          //   } else if (response.status === 204) {
+          //     this.rowData = '';
+          //     this.swal.Success_204();
+          //   }
+          // },
+          // (error) => {
+          //   if (error.status === 400) {
+          //     this.swal.Error_400();
+          //   } else if (error.status === 500) {
+          //     this.swal.Error_500();
+          //   } else {
+          //     Swal.fire('Error', 'Something went wrong. Please try again.', 'error');
+          //   }
         }
       );
   }

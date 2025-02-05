@@ -30,7 +30,7 @@ export class LoginComponent implements OnInit {
 
   warningMessage: any;
   warningMessageDate: any;
-  notificationMessage: boolean= false;
+  notificationMessage: boolean = true;
   constructor(
     private fb: FormBuilder,
     private authService: AuthService,
@@ -50,13 +50,12 @@ export class LoginComponent implements OnInit {
     this.authService.notification().subscribe((data: any) => {
       if (data) {
         this.notificationMessage = data.notification;
+        console.log(this.notificationMessage);
         this.warningMessageDate = data.sub_notification_msg;
         this.warningMessage = data.notificationmsg;
       }
     });
-
-    console.log(this.alerMessage);
-
+    console.log(this.notificationMessage);
   }
 
   submit(form: FormGroup): void {
@@ -87,7 +86,8 @@ export class LoginComponent implements OnInit {
         (res: any) => {
           console.log(res);
           console.log(res.roles);
-          if (res.roles.includes('ROLE_ADMIN') || res.roles.includes('ROLE_RECEPTION') || res.roles.includes('ROLE_SPECIAL') || res.roles.includes('ROLE_INVENTORY')) {
+          if (res.roles.includes('ROLE_ADMIN') || res.roles.includes('ROLE_RECEPTION') || res.roles.includes('ROLE_SPECIAL') 
+            || res.roles.includes('ROLE_INVENTORY') || res.roles.includes('ROLE_CUSTOMER_SERVICE') || res.roles.includes('ROLE_SERVICE_CENTER') ) {
             this.storageService.saveToken(res.accessToken);
             this.storageService.saveUser(res);
             this.idstorage = res.id;
@@ -102,6 +102,8 @@ export class LoginComponent implements OnInit {
             let isReception = this.roles.includes('ROLE_RECEPTION');
             let isSpecial = this.roles.includes('ROLE_SPECIAL');
             let isInventory = this.roles.includes('ROLE_INVENTORY');
+            let isCusService = this.roles.includes('ROLE_CUSTOMER_SERVICE');
+            let isServiceCenter = this.roles.includes('ROLE_SERVICE_CENTER');
 
             Swal.fire({
               position: "center",
@@ -121,6 +123,12 @@ export class LoginComponent implements OnInit {
               this.router.navigate(['admin/msodetails']).then(() => {
               });
             } else if (isInventory) {
+              this.router.navigate(['admin/inventor_inventory']).then(() => {
+              });
+            }else if (isCusService) {
+              this.router.navigate(['admin/inventor_inventory']).then(() => {
+              });
+            }else if (isServiceCenter) {
               this.router.navigate(['admin/inventor_inventory']).then(() => {
               });
             }

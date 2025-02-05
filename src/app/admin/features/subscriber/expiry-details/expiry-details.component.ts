@@ -5,7 +5,7 @@ import { ExcelService } from 'src/app/_core/service/excel.service';
 import { StorageService } from 'src/app/_core/service/storage.service';
 import { SwalService } from 'src/app/_core/service/swal.service';
 import Swal from 'sweetalert2';
-
+declare var $:any;
 @Component({
   selector: 'app-expiry-details',
   templateUrl: './expiry-details.component.html',
@@ -51,6 +51,16 @@ export class ExpiryDetailsComponent implements OnInit {
     this.fromdate = this.fromdate ? this.formatDate(this.fromdate) : this.formatDate(new Date());
     this.todate = this.todate ? this.formatDate(this.todate) : this.formatDate(new Date());
   }
+  ngAfterViewInit() {
+    $('#operator').select2({
+      placeholder: 'Select Operator Name',
+      allowClear: true
+    });
+    $('#operator').on('change', (event: any) => {
+      this.operatorname = event.target.value;
+      this.selectOperator1(this.operatorname);
+    });
+  }
   formatDate(date: Date): string {
     const year = date.getFullYear();
     const month = String(date.getMonth() + 1).padStart(2, '0'); // Months are zero-based
@@ -67,34 +77,11 @@ export class ExpiryDetailsComponent implements OnInit {
       });
       this.filteredOperators = this.operatorList;
     })
-    // this.userservice.getsmartcardallocationSubscriberList(this.role, this.username).subscribe((data: any) => {
-    //   this.operatorList = Object.keys(data[0].operatorid).map(key => {
-    //     this.lconame = key.match(/\d+/)?.[0];
-    //     return { name: key, id: this.lconame };
-    //   });
-    //   this.filteredOperators = this.operatorList;
-    // })
+
   }
 
 
-  // filterOperators(event: any): void {
-  //   const filterValue = event.target.value.toLowerCase();
-  //   this.filteredOperators = this.operatorList.filter((operator: any) =>
-  //     operator.name.toLowerCase().includes(filterValue)
-  //   );
-  // }
-  // displayOperator(operator: any): string {
-  //   return operator ? operator.name : '';
-  // }
-  // onSubscriberStatusChange(selectedOperator: any) {
-  //   console.log(selectedOperator);
-  //   this.selectedOperator = selectedOperator;
-  //   this.selectedLcoName = selectedOperator.name;
-  //   this.operatorid = selectedOperator.id;
-  //    this.filteredOperators = [];
-  //    this.cdr.detectChanges();
 
-  // }
   filterOperators() {
     if (this.operatorname) {
       this.filteredOperators = this.operatorList.filter(operator =>
@@ -110,6 +97,16 @@ export class ExpiryDetailsComponent implements OnInit {
     this.showDropdown = false;
     this.operatorid = id;
     this.operatorname = name;
+  }
+  selectOperator1(event:any) {
+    console.log(event);
+    
+    this.showDropdown = false;
+    this.operatorid = event;
+    this.operatorname = event;
+    console.log(this.operatorid);
+    console.log(this.operatorname);
+    
   }
   filteredLcoKeys(): string[] {
     const keys = Object.keys(this.lco_list);
@@ -156,7 +153,7 @@ export class ExpiryDetailsComponent implements OnInit {
     console.log(this.operatorid);
 
     this.cdr.detectChanges();
-    this.userservice.getExpirySubscriberByOperator(this.role, this.username, this.operatorid, this.fromdate , this.todate, this.format)
+    this.userservice.getExpirySubscriberByOperator(this.role, this.username, this.operatorid, this.fromdate, this.todate, this.format)
       .subscribe(
         (response: HttpResponse<any[]>) => { // Expect HttpResponse<any[]>
           if (response.status === 200) {
@@ -199,7 +196,7 @@ export class ExpiryDetailsComponent implements OnInit {
   }
   exportAsXLSX1(): void {
     this.cdr.detectChanges();
-    this.userservice.getExpirySubscriberByOperator(this.role, this.username, this.operatorid, this.fromdate , this.todate , this.format_1).subscribe(
+    this.userservice.getExpirySubscriberByOperator(this.role, this.username, this.operatorid, this.fromdate, this.todate, this.format_1).subscribe(
       (response: HttpResponse<any[]>) => { // Expect HttpResponse<any[]>
         if (response.status === 200) {
           this.rowData = response.body;

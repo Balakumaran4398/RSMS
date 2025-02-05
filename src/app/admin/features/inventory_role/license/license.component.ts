@@ -1,23 +1,22 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { ColDef } from 'ag-grid-community';
 import { BaseService } from 'src/app/_core/service/base.service';
 import { StorageService } from 'src/app/_core/service/storage.service';
+import { InventorycortonboxComponent } from '../Dialogue/inventorycortonbox/inventorycortonbox.component';
 
 @Component({
   selector: 'app-license',
   templateUrl: './license.component.html',
   styleUrls: ['./license.component.scss']
 })
-export class LicenseComponent {
+export class LicenseComponent implements OnInit {
   username: any;
   role: any;
   cas: any;
 
   rowData: any[] = [];
   gridApi: any;
-
-
 
   gridOptions = {
     defaultColDef: {
@@ -40,12 +39,12 @@ export class LicenseComponent {
   constructor(public dialog: MatDialog, public userService: BaseService, storageService: StorageService) {
     this.username = storageService.getUsername();
     this.role = storageService.getUserRole();
-    this.userService.Not_Allocated(this.role, this.username).subscribe((data: any) => {
+
+  }
+  ngOnInit(): void {
+    this.userService.getInvent_License_Extend(this.role, this.username).subscribe((data: any) => {
       console.log(data);
-      this.rowData = data[0].notallocatedsmartcard;
-      // this.lco_list = data[0].operatorid;
-      // this.caslist = data[0].castype;
-      // this.isemi = data[0].isemi;
+      this.rowData = data;
     })
   }
 
@@ -53,9 +52,31 @@ export class LicenseComponent {
     this.gridApi = params.api;
   }
   columnDefs: ColDef[] = [
-    { headerName: 'S.No', lockPosition: true,valueGetter: 'node.rowIndex+1', width: 100, },
-    { headerName: 'ROLE', width: 500, field: 'smartcard', },
-    { headerName: 'STATUS', width: 470, cellStyle: { textAlign: 'center' }, field: 'boxid', },
-    { headerName: 'LICENSE EXPIRY DATE', width: 500, field: 'cottonbox', },
+    { headerName: 'S.No', lockPosition: true, valueGetter: 'node.rowIndex+1', width: 100, },
+    { headerName: 'ROLE', width: 500, field: 'role', cellStyle: { textAlign: 'left' }, },
+    {
+      headerName: 'STATUS',
+      width: 470,
+      field: 'valid',
+      cellStyle: params => {
+        return {
+          textAlign: 'center',
+          color: params.value ? 'green' : 'red',
+        };
+      },
+      valueGetter: params => (params.data.valid ? 'Active' : 'Deactive')
+    },
+    { headerName: 'LICENSE EXPIRY DATE', width: 500, field: 'expiryDate', },
   ]
+  openDialoguePage(type: any) {
+    let dialogData = type;
+    console.log(dialogData);
+    const dialogRef = this.dialog.open(InventorycortonboxComponent, {
+      data: dialogData,
+
+    });
+    dialogRef.afterClosed().subscribe(result => {
+      console.log('The dialog was closed', result);
+    });
+  }
 }

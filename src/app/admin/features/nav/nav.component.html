@@ -59,7 +59,7 @@
         <li *ngIf="isUser || isReception ">
             <a> <i class="bx bx-user bx-sm icon "></i> Operator <i class='bx bx-chevron-right icon-right'></i></a>
             <ul class="side-dropdown">
-                <li><a (click)="navgetToUrl('/operator_details');setActiveLinkTab($event)"> <i
+                <li ><a (click)="navgetToUrl('/operator_details');setActiveLinkTab($event)"> <i
                             class='fa fa-fw fa-users  icon'></i> &nbsp;
                         Operator Details</a></li>
                 <li><a (click)="navgetToUrl('/lco_recharge');setActiveLinkTab($event)"><i
@@ -147,10 +147,12 @@
         <li *ngIf="isUser || isReception ">
             <a> <mat-icon class="icon">games</mat-icon> Inventory <i class='bx bx-chevron-right icon-right'></i></a>
             <ul class="side-dropdown">
-                <li><a (click)="navgetToUrl('/not_allacate_smartcard');setActiveLinkTab($event)"><i
+                <li ><a
+                        (click)="navgetToUrl('/not_allacate_smartcard');setActiveLinkTab($event)"><i
                             class="fa fa-fw fa-upload icon ">&nbsp;</i>Not Allocated Smartcard </a> </li>
 
-                <li><a (click)="navgetToUrl('/allocate_smartcard');setActiveLinkTab($event)"><i
+                <li><a
+                        (click)="navgetToUrl('/allocate_smartcard');setActiveLinkTab($event)"><i
                             class="fa fa-fw fa-gear icon ">&nbsp;</i>Allocated smartcard </a> </li>
 
                 <li><a (click)="navgetToUrl('/smartcard_declaration');setActiveLinkTab($event)"><i

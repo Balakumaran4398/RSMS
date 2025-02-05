@@ -1,6 +1,7 @@
 ::ng-deep .mat-mdc-text-field-wrapper {
     height: 50px !important;
 }
+
 // ::ng-deep .mat-date-range-input-wrapper {
 //     flex-grow: 1;
 // }
@@ -64,10 +65,29 @@
     .btn {
         padding: 0.5rem 1rem;
     }
+
     .operator_width {
         width: 100%;
     }
+
     .display_1 {
         display: block;
     }
+}
+
+::ng-deep .select2-container {
+    width: 100% !important;
+}
+
+::ng-deep .select2-container .select2-selection--single {
+    height: 45px !important;
+    margin-top: 1%;
+}
+
+::ng-deep .select2-container .select2-selection--single .select2-selection__rendered {
+    margin-top: 7px;
+}
+
+::ng-deep .select2-container--default .select2-selection--single .select2-selection__arrow {
+    top: 10px;
 }

@@ -23,7 +23,7 @@ export class BulkpackageupdationComponent implements OnInit {
   status: any;
   Type: any;
   rowData: any;
-  rowData1: any;
+  rowData1: any[]=[];
   packageid: any = '';
   newpackagename: any = 0;
   packagenameList: any[] = [];
@@ -103,7 +103,7 @@ export class BulkpackageupdationComponent implements OnInit {
     { headerName: 'SMARTCARD', field: 'smartcard', width: 210, },
     { headerName: 'BOX ID', field: 'boxid', width: 150, },
     { headerName: 'PACKAGE NAME', field: 'productname', width: 220, },
-    { headerName: 'EXPIRY DATE', field: 'expirydate', width: 200, },
+    { headerName: 'EXPIRY DATE', field: 'expirydate', width: 160, },
   ]
   columnDefs1: any[] = [
     { headerName: "S.No", valueGetter: 'node.rowIndex+1', width: 70 },
@@ -112,7 +112,7 @@ export class BulkpackageupdationComponent implements OnInit {
     { headerName: 'LCO PRICE', field: 'lcoprice', width: 120, },
     { headerName: 'CUSTOMER PRICE', field: 'customeramount', width: 120, },
     { headerName: 'TOTAL LCO AMOUNT', field: 'totallcoamount', width: 100, },
-    { headerName: 'TOTAL CUSTOMER AMOUNT  ', field: 'totalcustamount', width: 200, },
+    { headerName: 'TOTAL CUSTOMER AMOUNT  ', field: 'totalcustamount', width: 165, },
   ]
   onNoClick(): void {
     this.dialogRef.close();

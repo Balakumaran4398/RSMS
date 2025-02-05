@@ -834,3 +834,7 @@ input:checked+.slider:before {
 .custom {
     background-color: lightslategrey;
 }
+
+.select2-container--default .select2-results__option--highlighted[aria-selected] {
+    background-color: #2d584e;
+}

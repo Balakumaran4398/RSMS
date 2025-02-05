@@ -37,7 +37,7 @@
                     <span for="">Operator</span>
                 </div>
                 <div class=" custom-select  operator_width  mb-2 mx-2">
-                    <input type="text" placeholder="Search Operator" [(ngModel)]="operatorname"
+                    <!-- <input type="text" placeholder="Search Operator" [(ngModel)]="operatorname"
                         (input)="filterOperators()" (focus)="showDropdown = false" (click)="showDropdown = true">
 
                     <ul class="dropdown" *ngIf="showDropdown">
@@ -45,17 +45,14 @@
                             (click)="selectOperator(operator.id, operator.name)">
                             {{ operator.name }}
                         </li>
-                    </ul>
-                    <!-- <input type="text" matInput [matAutocomplete]="auto" [(ngModel)]="operatorid" maxlength="20"
-                        (input)="filterOperators($event)" placeholder="Select an Operator"
-                        [matAutocompleteDisabled]="false" [value]="selectedLcoName">
-
-                    <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayOperator">
-                        <mat-option *ngFor="let operator of filteredOperators" [value]="operator.value"
-                            (click)="onSubscriberStatusChange(operator)">
+                    </ul> -->
+                    <select id="operator" [(ngModel)]="operatorname">
+                        <option value="0" selected>Selected Operator Name</option>
+                        <option *ngFor="let operator of filteredOperators" [value]="operator.id"
+                            (ngModelChange)="selectOperator1($event)">
                             {{ operator.name }}
-                        </mat-option>
-                    </mat-autocomplete> -->
+                        </option>
+                    </select>
                 </div>
             </div>
             <div class="   display_1 justify-content-between align-item-center">

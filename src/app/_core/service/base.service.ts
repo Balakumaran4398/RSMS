@@ -1903,4 +1903,14 @@ export class BaseService {
       BASE_URL + "/subscriber/getSearchSmartcard?role=" + role + "&username=" + username + "&searchname=" + searchname,);
   }
 
+  // ==============================================================================================================================================
+  // ----------------------------------------------------------INVENTORY-----------------------------------------------------------------------------
+
+  getInventoryUpdateDate(role: any, username: any, date: any): Observable<any[]> {
+    return this.http.get<any[]>(BASE_URL + "/master/updateLicense?role=" + role + "&username=" + username + "&date=" + date)
+  }
+  getInvent_License_Extend(role: any, username: any): Observable<any[]> {
+    return this.http.get<any[]>(
+      BASE_URL + "/master/getLoginList?role=" + role + "&username=" + username,);
+  }
 }

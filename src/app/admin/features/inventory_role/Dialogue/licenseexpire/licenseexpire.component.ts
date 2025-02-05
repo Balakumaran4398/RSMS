@@ -60,15 +60,12 @@ export class LicenseexpireComponent {
             showConfirmButton: false
           })
             .then(() => {
-              // if (role === 'ROLE_INVENTORY') {
               this.router.navigate(['admin/inventory_cortonbox_data']).then(() => {
                 console.log('Navigated to lcorecharge page');
               });
-              // }
             });
         },
         (error: any) => {
-          // Handle login failure
           Swal.fire({
             title: 'Login Failed',
             text: error?.error?.message || 'Username or password is incorrect. Please try again.',
@@ -87,10 +84,6 @@ export class LicenseexpireComponent {
       });
     }
   }
-
-  // onNoClick(): void {
-  //   this.dialogRef.close();
-  // }
   exit() {
     const role = this.storageservice.getUserRole();
     this.form.reset();

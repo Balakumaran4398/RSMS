@@ -1,6 +1,8 @@
-
 <div class="card">
-    <h5>RSMS LICENSE EXTEND </h5>
+    <div class="d-flex justify-content-center align-items-center ">
+        <h5>RSMS LICENSE EXTEND </h5>
+        <i class="fa fa-pencil-square icon" aria-hidden="true" (click)="openDialoguePage('License_extend_date')"></i>
+    </div>
     <div class="row d-flex justify-content-center align-items-center  ">
         <div class="col-12 col-sm-12 col-md-12  mb-3">
             <!-- <div class="d-flex justify-content-end align-items-center mb-3">
@@ -15,11 +17,10 @@
                 </div>
             </div> -->
             <ag-grid-angular #agGrid id="myGrid" domLayout='normal' class="ag-theme-alpine table-class" rowAnimation
-                style="max-height: 775px;overflow: scroll;"  [gridOptions]="gridOptions"
-                [columnDefs]="columnDefs" [rowData]="rowData" 
-                (gridReady)="onGridReady($event)" [enableCellTextSelection]="true">
+                style="max-height: 775px;overflow: scroll;" [gridOptions]="gridOptions" [columnDefs]="columnDefs"
+                [rowData]="rowData" (gridReady)="onGridReady($event)" [enableCellTextSelection]="true">
             </ag-grid-angular>
-     
+
         </div>
     </div>
 </div>

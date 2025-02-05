@@ -34,6 +34,8 @@ export class NavComponent implements OnInit, AfterViewInit {
   isReception: boolean = false;
   isSpecial: boolean = false;
   isInventory: boolean = false;
+  isCustomerService: boolean = false;
+  isServiceCenter: boolean = false;
   isDropdownOpen: boolean = false;
   isPopupVisible = false;
   constructor(private router: Router, private breakpointObserver: BreakpointObserver, private cdr: ChangeDetectorRef, private userservice: BaseService, private storageservice: StorageService) {
@@ -62,6 +64,16 @@ export class NavComponent implements OnInit, AfterViewInit {
       this.isUser = false;
       this.isSpecial = false;
       this.role = 'INVENTORY';
+    }else if (this.role.includes('ROLE_CUSTOMER_SERVICE')) {
+      this.isInventory = true;
+      this.isUser = false;
+      this.isSpecial = false;
+      this.role = 'CUS_SERVICE';
+    }else if (this.role.includes('ROLE_SERVICE_CENTER')) {
+      this.isInventory = true;
+      this.isUser = false;
+      this.isSpecial = false;
+      this.role = 'SERVICE_CENTER';
     }
   }
 

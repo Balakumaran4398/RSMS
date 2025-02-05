@@ -86,6 +86,7 @@ import { CortonboxComponent } from './features/inventory_role/cortonbox/cortonbo
 import { InventoryroleComponent } from './features/inventory_role/inventoryrole/inventoryrole.component';
 import { LicenseComponent } from './features/inventory_role/license/license.component';
 import { LicenseexpireComponent } from './features/inventory_role/Dialogue/licenseexpire/licenseexpire.component';
+import { ServiceComponent } from './features/Service_center_role/service/service.component';
 
 
 const routes: Routes = [
@@ -188,7 +189,8 @@ const routes: Routes = [
       { path: 'special_lcotransfer', component: SpeciallcotransferComponent },
 
       // -------------------------------------Inventory Role------------------------------------
-      { path: 'inventor_inventory', component: InventoryroleComponent },
+      // { path: 'inventor_inventory', component: InventoryroleComponent },
+      { path: 'inventor_inventory', component: ServiceComponent },
       { path: 'inventory_license', component: LicenseexpireComponent },
       { path: 'inventory_cortonbox', component: CortonboxComponent },
       { path: 'inventory_cortonbox_data', component: LicenseComponent },

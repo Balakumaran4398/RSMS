@@ -20,6 +20,12 @@ export class InventorycortonboxComponent implements OnInit {
   selectedPackage: any;
   selectStreet: any;
   isemi: boolean = false;
+  date: Date = new Date();
+  cur_date: string = this.formatDate(new Date());
+
+  role: any;
+  username: any;
+
   filteredOperatorList: any[] = [
     { name: "aaa", value: 0 },
     { name: "bbb", value: 1 },
@@ -61,9 +67,11 @@ export class InventorycortonboxComponent implements OnInit {
     @Inject(MAT_DIALOG_DATA) public data: any, public dialog: MatDialog, private userService: BaseService, private excelService: ExcelService, private storageService: StorageService, private swal: SwalService) {
     console.log(data);
     this.type = data;
+    this.username = storageService.getUsername();
+    this.role = storageService.getUserRole();
   }
   ngOnInit(): void {
-    throw new Error('Method not implemented.');
+
   }
   ngAfterViewInit() {
     $('#operator').select2({
@@ -119,5 +127,27 @@ export class InventorycortonboxComponent implements OnInit {
   }
   submit() {
 
+  }
+  formatDate(date: Date): string {
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, '0'); 
+    const day = String(date.getDate()).padStart(2, '0');
+    return `${year}-${month}-${day}`;
+  }
+  logValues(): void {
+    const formattedDate = this.date ? this.formatDate(this.date) : 'No date selected';
+    console.log('Selected Date:', formattedDate);
+
+    this.cur_date = formattedDate;
+    console.log(this.cur_date);
+
+  }
+  upload() {
+    console.log(this.date);
+    
+    this.userService.getInventoryUpdateDate(this.role, this.username,this.cur_date).subscribe((res: any) => {
+      console.log(res);
+
+    })
   }
 }

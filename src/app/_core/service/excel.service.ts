@@ -489,7 +489,7 @@ export class ExcelService {
 
     worksheet.columns = [
       { key: 'a', width: 10 }, // S.NO
-      { key: 'b', width: 20 }, // LCO Name
+      { key: 'b', width: 30 }, // LCO Name
       { key: 'c', width: 20 }, // Customer Name
       { key: 'd', width: 25 }, // Smartcard
       { key: 'e', width: 18 }, // Box ID

@@ -1,18 +1,8 @@
 <div class="bg">
-    <!-- <div class="d-flex justify-content-md-start">
-        <img height="38px" style="margin: 0px -6px 0px 3px;" src="/assets/images/icons/Logo1.png">
-        &nbsp; &nbsp;
-        <h1>RSMS</h1>
-    </div> -->
     <div class="login-wrap d-flex justify-content-center align-item-center">
-        <!-- <h1 style="color: white;padding: 2%;">RSMS</h1> -->
-        <!-- <h1 >RSMS</h1> -->
         <div class="login-html">
             <div class="d-block justify-content-center align-item-center mb-3">
-                <!-- <img class="img1" src="/assets/images/login/contact1.png" alt=""> -->
                 <h2 style="text-transform:capitalize;color:#256462">RSMS</h2>
-                <!-- <br> -->
-                <!-- <h6 style="color:#404242;text-align: center;font-weight: 200;">Hello ! Have a Nice Day </h6> -->
             </div>
             <br>
             <form class="login-form" [formGroup]="signInform" (ngSubmit)="submit(signInform)">
@@ -29,28 +19,18 @@
                         <mat-label>Password</mat-label>
                         <input matInput id="password" [type]="isShow?'text':'password'" formControlName="password"
                             placeholder="Password">
-                        <!-- <span class="eye"> -->
                         <mat-icon (click)="toggleShowPassword()"
                             style="color:#1f6764;cursor: pointer;margin-bottom: -2%;">
                             {{ isShow ? 'visibility' : 'visibility_off' }}
                         </mat-icon>
-                        <!-- </span> -->
                     </mat-form-field>
-
-
-
-
                     <div class="group">
                         <input type="submit" class="button" value="Sign In">
                     </div>
-                    <!-- <div class="foot-lnk">
-                        <a href="home" style="text-decoration: underline;">Forgot Password?</a>
-                    </div> -->
-
                     <div class="foot-lnk">
                         <h6 style="color:#1f6764">Version 7.2.2</h6>
                     </div>
-                    <div class="mb-2" *ngIf="notificationMessage" style="position: relative;">
+                    <div class="mb-2" *ngIf="!notificationMessage" style="position: relative;">
                         <div class="d-flex justify-content-center">
                             <label style="color:#021616;font-weight: 600;">{{warningMessage}} </label>
                         </div>
@@ -58,9 +38,6 @@
                             <label style="color:#c10528;">{{warningMessageDate}} </label>
                         </div>
                     </div>
-                    <!-- <div class="foot-lnk"> -->
-                    <!-- </div> -->
-
                 </div>
             </form>
             <h6 style="color:#525252;text-align: center;margin-bottom: -4%;font-size: 15px;">Powered by</h6>

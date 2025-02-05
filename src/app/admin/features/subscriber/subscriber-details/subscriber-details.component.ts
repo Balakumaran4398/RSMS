@@ -57,7 +57,7 @@ export class SubscriberDetailsComponent implements OnInit {
   }
   columnDefs: ColDef[] = [
     { headerName: "S.No", lockPosition: true, valueGetter: 'node.rowIndex+1', width: 100 },
-    { headerName: 'SUBSCRIBER NAME', field: 'customername', },
+    { headerName: 'SUBSCRIBER NAME', field: 'customername', cellStyle: { textAlign: 'left' }, },
     { headerName: 'LCO NAME', field: 'operatorname', },
     { headerName: 'AREA NAME', field: 'areaname', },
     { headerName: 'ADDRESS', field: 'address', },
@@ -71,9 +71,7 @@ export class SubscriberDetailsComponent implements OnInit {
   private updateColumnDefs(selectedStatusId: string): void {
     if (selectedStatusId === '0') {
       this.columnDefs = [
-        {
-          headerName: "S.No", lockPosition: true, valueGetter: 'node.rowIndex+1', width: 100,
-        },
+        { headerName: "S.No", lockPosition: true, valueGetter: 'node.rowIndex+1', width: 100, },
         {
           headerName: 'SUBSCRIBER NAME',
           field: 'customername',
@@ -89,7 +87,6 @@ export class SubscriberDetailsComponent implements OnInit {
                       ${params.value}
                     </a>`;
           },
-
           onCellClicked: (params) => {
             const subid = params.data.id;
             const smartcard = params.data.smartcard;
@@ -112,11 +109,9 @@ export class SubscriberDetailsComponent implements OnInit {
       ]
     } else if (selectedStatusId === '1') {
       this.columnDefs = [
+        { headerName: "S.No", lockPosition: true, valueGetter: 'node.rowIndex+1', width: 100, },
         {
-          headerName: "S.No", lockPosition: true, valueGetter: 'node.rowIndex+1', width: 100,
-        },
-        {
-          headerName: 'SMARTCARD', field: 'smartcard',width: 220,
+          headerName: 'SMARTCARD', field: 'smartcard', width: 220,
           cellStyle: params => {
             if (params.data.someCondition) {
               return { backgroundColor: '#f4cccc' };
@@ -159,7 +154,7 @@ export class SubscriberDetailsComponent implements OnInit {
           headerName: "S.No", lockPosition: true, valueGetter: 'node.rowIndex+1', width: 100,
         },
         {
-          headerName: 'SMARTCARD', field: 'smartcard',width: 220,
+          headerName: 'SMARTCARD', field: 'smartcard', width: 220,
           cellStyle: params => {
             if (params.data.someCondition) {
               return { backgroundColor: '#f4cccc' };
@@ -201,7 +196,7 @@ export class SubscriberDetailsComponent implements OnInit {
           headerName: "S.No", lockPosition: true, valueGetter: 'node.rowIndex+1', width: 100,
         },
         {
-          headerName: 'SMARTCARD', field: 'smartcard',width: 220,
+          headerName: 'SMARTCARD', field: 'smartcard', width: 220,
           cellStyle: params => {
             if (params.data.someCondition) {
               return { backgroundColor: '#f4cccc' };
@@ -243,7 +238,7 @@ export class SubscriberDetailsComponent implements OnInit {
           headerName: "S.No", lockPosition: true, valueGetter: 'node.rowIndex+1', width: 100,
         },
         {
-          headerName: 'SMARTCARD', field: 'smartcard',width: 220,
+          headerName: 'SMARTCARD', field: 'smartcard', width: 220,
           cellStyle: params => {
             if (params.data.someCondition) {
               return { backgroundColor: '#f4cccc' };
@@ -286,7 +281,7 @@ export class SubscriberDetailsComponent implements OnInit {
           headerName: "S.No", lockPosition: true, valueGetter: 'node.rowIndex+1', width: 100,
         },
         {
-          headerName: 'SMARTCARD', field: 'smartcard',width: 220,
+          headerName: 'SMARTCARD', field: 'smartcard', width: 220,
           cellStyle: params => {
             if (params.data.someCondition) {
               return { backgroundColor: '#f4cccc' };
@@ -311,7 +306,7 @@ export class SubscriberDetailsComponent implements OnInit {
               this.router.navigate([`/admin/subscriber-full-info/${subid}/new`]);
             }
           },
-   
+
         },
         { headerName: 'LCO NAME', field: 'operatorname', },
         { headerName: 'AREA NAME', field: 'areaname', },
@@ -328,9 +323,9 @@ export class SubscriberDetailsComponent implements OnInit {
         {
           headerName: "S.No", lockPosition: true, valueGetter: 'node.rowIndex+1', width: 100,
         },
-    
+
         {
-          headerName: 'SMARTCARD', field: 'smartcard',width: 220,
+          headerName: 'SMARTCARD', field: 'smartcard', width: 220,
           cellStyle: params => {
             if (params.data.someCondition) {
               return { backgroundColor: '#f4cccc' };
@@ -355,7 +350,7 @@ export class SubscriberDetailsComponent implements OnInit {
               this.router.navigate([`/admin/subscriber-full-info/${subid}/new`]);
             }
           },
-          
+
         },
         {
           headerName: 'SUBSCRIBER NAME',

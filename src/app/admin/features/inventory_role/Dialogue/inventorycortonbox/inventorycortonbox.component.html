@@ -37,13 +37,11 @@
     </div>
 </div>
 <div *ngIf="type== 'allocatted'">
-    <!-- Header -->
     <div class="Head d-flex justify-content-between align-items-center" style="padding: 1rem;">
         <h6>OPERATOR ALLOCATION UPDATE</h6>
         <i class="fa fa-close close-icon" (click)="onNoClick()"></i>
     </div>
     <div class="dialog-container ">
-        <!-- Body -->
         <div class="dialog-body">
             <div class="row align-items-center input_box">
                 <div class="col-12 col-md-3">
@@ -83,83 +81,6 @@
                     </select> -->
                 </div>
             </div>
-            <!-- <div class=" row align-items-center  ">
-                <div class="col-12 col-md-3 input_box">
-                    <span>Type</span>
-                </div>
-                <div class="col-12 col-md-9 mb-10">
-                    <mat-radio-group class="radio-group d-block justify-content-center align-items-center"
-                        aria-labelledby="status">
-                        <mat-radio-button class="radio-button" [value]="false"><span style="font-size: 14px;">Operator Allocated Only</span>
-                        </mat-radio-button>&nbsp;
-                        <mat-radio-button class="radio-button" [value]="true"><span style="font-size: 14px;">Subscriber Import Only</span>
-                        </mat-radio-button>
-                        <mat-radio-button class="radio-button" [value]="true"><span style="font-size: 14px;">Subscriber Import With Activate
-                            </span>
-                        </mat-radio-button>
-                    </mat-radio-group>
-                </div>
-            </div>
-            <div class="row align-items-center input_box">
-                <div class="col-12 col-md-3 ">
-                    <label class="form-label">Subscriber Name</label>
-                </div>
-                <div class="col-12 col-md-9 mb-3 file-upload-container">
-                    <select id="subscriber" [(ngModel)]="selectSubscriber">
-                        <option value="0" selected>Select Subscriber</option>
-                        <option *ngFor="let subscriber of filteredSubscriberList" [value]="subscriber.value">
-                            {{ subscriber.name }}
-                        </option>
-                    </select>
-                </div>
-            </div>
-            <div class="row align-items-center input_box">
-                <div class="col-12 col-md-3">
-                    <label class="form-label">Area Name</label>
-                </div>
-                <div class="col-12 col-md-9 mb-3 file-upload-container">
-                    <select id="area" [(ngModel)]="selectArea">
-                        <option value="0" selected>Select Area</option>
-                        <option *ngFor="let area of filteredAreaList" [value]="area.value">
-                            {{ area.name }}
-                        </option>
-                    </select>
-                </div>
-            </div>
-            <div class="row align-items-center input_box">
-                <div class="col-12 col-md-3">
-                    <label class="form-label">Street Name</label>
-                </div>
-                <div class="col-12 col-md-9 mb-3 file-upload-container">
-                    <select id="street" [(ngModel)]="selectStreet">
-                        <option value="0" selected>Select Street</option>
-                        <option *ngFor="let Street of filteredStreetList" [value]="Street.value">
-                            {{ Street.name }}
-                        </option>
-                    </select>
-                </div>
-            </div>
-            <div class="row align-items-center input_box">
-                <div class="col-12 col-md-3">
-                    <label class="form-label">Package Name</label>
-                </div>
-                <div class="col-12 col-md-9 mb-3 file-upload-container">
-                    <select id="package" [(ngModel)]="selectedPackage">
-                        <option value="0" selected>Select Package</option>
-                        <option *ngFor="let package of filteredPackageList" [value]="package.value">
-                            {{ package.name }}
-                        </option>
-                    </select>
-                </div>
-            </div>
-            <div class="row align-items-center">
-                <div class="col-12 col-md-3">
-                    <label class="form-label">Subscription Days</label>
-                </div>
-                <div class="col-12 col-md-9 mb-3 file-upload-container">
-                    <input type="text" class="file-input" />
-                </div>
-            </div> -->
             <div class="row align-items-center">
                 <div class="col-12 col-md-3 input_box">
                     <span>Type</span>
@@ -179,8 +100,7 @@
                     </mat-radio-group>
                 </div>
             </div>
-            
-            <!-- Subscriber Name -->
+
             <div class="row align-items-center input_box">
                 <div class="col-12 col-md-3">
                     <label class="form-label">Subscriber Name</label>
@@ -194,8 +114,7 @@
                     </select>
                 </div>
             </div>
-            
-            <!-- Area Name -->
+
             <div class="row align-items-center input_box">
                 <div class="col-12 col-md-3">
                     <label class="form-label">Area Name</label>
@@ -209,8 +128,7 @@
                     </select>
                 </div>
             </div>
-            
-            <!-- Street Name -->
+
             <div class="row align-items-center input_box">
                 <div class="col-12 col-md-3">
                     <label class="form-label">Street Name</label>
@@ -224,8 +142,7 @@
                     </select>
                 </div>
             </div>
-            
-            <!-- Package Name -->
+
             <div class="row align-items-center input_box">
                 <div class="col-12 col-md-3">
                     <label class="form-label">Package Name</label>
@@ -240,24 +157,56 @@
                     </select>
                 </div>
             </div>
-            
-            <!-- Subscription Days -->
+
             <div class="row align-items-center">
                 <div class="col-12 col-md-3">
                     <label class="form-label">Subscription Days</label>
                 </div>
                 <div class="col-12 col-md-9 mb-3 file-upload-container">
-                    <input type="text" class="file-input" [disabled]="selectedType === 'operator' || selectedType === 'subscriberImport'" />
+                    <input type="text" class="file-input"
+                        [disabled]="selectedType === 'operator' || selectedType === 'subscriberImport'" />
                 </div>
             </div>
-            
+
         </div>
 
-        <!-- Footer -->
         <div class="dialog-footer">
             <button type="button" class="btn"
                 style="background-color:#1f6764;color: white;font-size: 14;font-weight: 600;"
                 (click)="submit()">Submit</button>
+        </div>
+    </div>
+</div>
+
+<div *ngIf="type == 'License_extend_date'">
+    <div class="Head d-flex justify-content-between align-items-center" style="padding: 1rem;">
+        <h6>R-SMS LICENSE EXTEND</h6>
+        <i class="fa fa-close close-icon" (click)="onNoClick()"></i>
+    </div>
+    <div class="dialog-container">
+
+        <div class="dialog-body">
+            <div class="row align-items-center ">
+                <div class="col-12 col-md-4 input_box">
+                    <span class="form-label">Select Date</span>
+                </div>
+                <!-- <div class="col-12 col-md-8 mb-3 file-upload-container">
+                    <input type="date" (change)="onFileSelected($event)"  />
+                </div> -->
+                <mat-form-field class="input-field" appearance="outline">
+                    <mat-label>Choose a date</mat-label>
+                    <input matInput [matDatepicker]="picker"  (dateChange)="logValues()" [(ngModel)]="date"  placeholder="Select a Date"
+                        readonly>
+                    <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+                    <mat-datepicker #picker></mat-datepicker>
+                </mat-form-field>
+            </div>
+        </div>
+
+        <div class="dialog-footer">
+            <button type="button" class="btn"
+                style="background-color:#1f6764;color: white;font-size: 14;font-weight: 600;"
+                (click)="upload()">Upload</button>
         </div>
     </div>
 </div>
