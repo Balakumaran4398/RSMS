@@ -88,13 +88,13 @@
                 <div class="col-12 col-md-9 mb-10">
                     <mat-radio-group class="radio-group d-block justify-content-center align-items-center"
                         aria-labelledby="status" [(ngModel)]="selectedType">
-                        <mat-radio-button class="radio-button" [value]="'operator'">
+                        <mat-radio-button class="radio-button" [value]="'1'">
                             <span style="font-size: 14px;">Operator Allocated Only</span>
                         </mat-radio-button>&nbsp;
-                        <mat-radio-button class="radio-button" [value]="'subscriberImport'">
+                        <mat-radio-button class="radio-button" [value]="'2'">
                             <span style="font-size: 14px;">Subscriber Import Only</span>
                         </mat-radio-button>&nbsp;
-                        <mat-radio-button class="radio-button" [value]="'subscriberActivate'">
+                        <mat-radio-button class="radio-button" [value]="'3'">
                             <span style="font-size: 14px;">Subscriber Import With Activate</span>
                         </mat-radio-button>
                     </mat-radio-group>
@@ -173,7 +173,7 @@
         <div class="dialog-footer">
             <button type="button" class="btn"
                 style="background-color:#1f6764;color: white;font-size: 14;font-weight: 600;"
-                (click)="submit()">Submit</button>
+                (click)="setallocation()">Submit</button>
         </div>
     </div>
 </div>

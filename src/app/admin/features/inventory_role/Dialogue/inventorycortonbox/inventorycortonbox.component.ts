@@ -4,6 +4,7 @@ import { BaseService } from 'src/app/_core/service/base.service';
 import { ExcelService } from 'src/app/_core/service/excel.service';
 import { StorageService } from 'src/app/_core/service/storage.service';
 import { SwalService } from 'src/app/_core/service/swal.service';
+import Swal from 'sweetalert2';
 declare var $: any;
 @Component({
   selector: 'app-inventorycortonbox',
@@ -18,14 +19,18 @@ export class InventorycortonboxComponent implements OnInit {
   selectSubscriber: any;
   selectArea: any;
   selectedPackage: any;
+  days: any;
   selectStreet: any;
   isemi: boolean = false;
   date: Date = new Date();
   cur_date: string = this.formatDate(new Date());
+  dueamount:any;
 
   role: any;
   username: any;
 
+  model: any;
+  modelName: any;
   filteredOperatorList: any[] = [
     { name: "aaa", value: 0 },
     { name: "bbb", value: 1 },
@@ -126,11 +131,47 @@ export class InventorycortonboxComponent implements OnInit {
     this.excelService.generatealacarteactivationExcel(type);
   }
   submit() {
+    console.log(this.selectedFile);
+    if (this.selectedFile) {
+      console.log(this.selectedFile);
+      Swal.fire({
+        title: 'Uploading...',
+        text: 'Please wait while your file is being uploaded.',
+        icon: 'info',
+        allowOutsideClick: false,
+        showConfirmButton: false,
+      });
+      const formData = new FormData();
+      formData.append('role', this.role);
+      formData.append('username', this.username);
+      formData.append('file', this.selectedFile);
 
+      this.userService.cortonBoxUplod(formData)
+        .subscribe((res: any) => {
+          this.swal.success(res?.message);
+        }, (err) => {
+          this.swal.Error3(err?.error?.message || err?.error);
+        });
+    } else {
+      Swal.fire({
+        title: 'Error!',
+        text: 'No file selected. Please choose a file to upload.',
+        icon: 'error',
+        confirmButtonText: 'OK'
+      });
+    }
+  }
+  setallocation() {
+    // this.userService.cortonBoxDetails(this.role,this.username,this.selectOperator,this.isemi,this.dueamount,this.selectedType,this.selectArea,this.selectStreet,
+    //   this.selectedPackage,this.days,this.selectSubscriber,
+    // ).subscribe((res: any) => {
+    //   console.log(res);
+
+    // })
   }
   formatDate(date: Date): string {
     const year = date.getFullYear();
-    const month = String(date.getMonth() + 1).padStart(2, '0'); 
+    const month = String(date.getMonth() + 1).padStart(2, '0');
     const day = String(date.getDate()).padStart(2, '0');
     return `${year}-${month}-${day}`;
   }
@@ -144,8 +185,8 @@ export class InventorycortonboxComponent implements OnInit {
   }
   upload() {
     console.log(this.date);
-    
-    this.userService.getInventoryUpdateDate(this.role, this.username,this.cur_date).subscribe((res: any) => {
+
+    this.userService.getInventoryUpdateDate(this.role, this.username, this.cur_date).subscribe((res: any) => {
       console.log(res);
 
     })

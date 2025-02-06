@@ -39,7 +39,7 @@ export class SpecialcancelsubscriptionComponent implements OnInit {
     { headerName: "REMARKS", field: 'remarks', width: 220 },
     { headerName: "CREATED DATE	", field: 'createddate', width: 250 },
   ];
-  rowData: any;
+  rowData: any[] = [];
   public rowSelection: any = "multiple";
   gridOptions = {
     defaultColDef: {
@@ -53,6 +53,7 @@ export class SpecialcancelsubscriptionComponent implements OnInit {
     pagination: true,
   }
   date: any;
+  selectedDate: any;
   packageid: any;
   type: any;
   plantype: any;
@@ -76,7 +77,10 @@ export class SpecialcancelsubscriptionComponent implements OnInit {
 
   }
   ngOnInit(): void {
+    this.date = new Date().toISOString().split('T')[0];
+    this.selectedDate = this.date;
     this.onproducttypechange("");
+    this.refresh();
   }
   onGridReady = () => {
 
@@ -157,19 +161,16 @@ export class SpecialcancelsubscriptionComponent implements OnInit {
     }
   }
   getData() {
-    this.rowData=[];
-    this.userservice.getBulkOperationListByDate(this.role, this.username, 'cancel_supscription', this.date,11 )
+    this.rowData = [];
+    this.userservice.getBulkrefreshListByDate(this.role, this.username, 'cancel_supscription', this.date, 11)
       .subscribe(
-        (response: HttpResponse<any[]>) => { // Expect HttpResponse<any[]>
-          if (response.status === 200) {
-
-            this.rowData = response.body;
-            this.swal.Success_200();
-          } else if (response.status === 204) {
-            this.swal.Success_204();
-          }
+        (response: any) => {
+          console.log(response);
+          this.rowData = response;
+          this.swal.Close();
         },
         (error) => {
+          this.swal.Close();
           if (error.status === 400) {
             this.swal.Error_400();
           } else if (error.status === 500) {
@@ -180,30 +181,29 @@ export class SpecialcancelsubscriptionComponent implements OnInit {
         }
       );
   }
-  refresh() {
-    this.userservice.getBulkOperationRefreshList(this.role, this.username, 'cancel_supscription', 11)
-    .subscribe(
-      (response: HttpResponse<any[]>) => { // Expect HttpResponse<any[]>
-        if (response.status === 200) {
 
-          this.rowData = response.body;
-          this.swal.Success_200();
-        } else if (response.status === 204) {
-          this.swal.Success_204();
+  refresh() {
+    console.log('refresh');
+    this.swal.Loading();
+    this.userservice.getBulkRefreshList(this.role, this.username, 'cancel_supscription', 11)
+      .subscribe(
+        (response: any) => {
+          console.log(response);
+          this.rowData = response;
+          this.swal.Close();
+        },
+        (error) => {
+          this.swal.Close();
+          if (error.status === 400) {
+            this.swal.Error_400();
+          } else if (error.status === 500) {
+            this.swal.Error_500();
+          } else {
+            Swal.fire('Error', 'Something went wrong. Please try again.', 'error');
+          }
         }
-      },
-      (error) => {
-        if (error.status === 400) {
-          this.swal.Error_400();
-        } else if (error.status === 500) {
-          this.swal.Error_500();
-        } else {
-          Swal.fire('Error', 'Something went wrong. Please try again.', 'error');
-        }
-      }
-    );
+      );
   }
-  
   generateExcel(type: string) {
     this.excelService.generateBaseChangeExcel(type);
   }

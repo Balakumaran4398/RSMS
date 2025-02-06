@@ -61,29 +61,14 @@
                         <label>Broadcaster</label>
                     </div>
                     <div class="col-12 col-md-12">
-                        <!-- <mat-form-field appearance="outline" style="outline: #02422d; margin-top: 5px; width: 100%;">
-                        <mat-select placeholder="Choose Broadcaster" formControlName="broadcaster"
-                            [ngClass]="{ 'is-invalid': submitted && f['broadcaster'].errors }">
-                            <mat-option *ngFor="let Type of type" [value]="Type.label">{{
-                                Type.label}}</mat-option>
-
-                        </mat-select>
-                        <div style="position: absolute; bottom: -20px; left: 0;font-size: small;">
-                            <div *ngIf="submitted && f['broadcaster'].errors?.['required']" class="text-danger">
-                                Intend
-                                To is
-                                required</div>
-                        </div>
-                       </mat-form-field> -->
-                        <select formControlName="broadcaster_id" [(ngModel)]="TypeFormControl"
+                        <select id="broadcaster" formControlName="broadcaster_id" [(ngModel)]="broadcaster_id"
                             [ngClass]="{ 'is-invalid': submitted && f['broadcaster_id'].errors }">
                             <option value="0"> Select a Broadcastername</option>
                             <option *ngFor="let Type of type" [value]="Type.id">{{Type.broadcastername}}</option>
                         </select>
                         <div style="position: absolute; bottom: -20px; left: 0;font-size: small;">
                             <div *ngIf="submitted && f['broadcaster_id'].errors?.['required']" class="text-danger">
-                                Broadcaster is
-                                required</div>
+                                Broadcaster is required</div>
                         </div>
                         <br>
                     </div>

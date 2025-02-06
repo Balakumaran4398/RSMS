@@ -23,7 +23,7 @@ export class BulkpackageupdationComponent implements OnInit {
   status: any;
   Type: any;
   rowData: any;
-  rowData1: any[]=[];
+  rowData1: any[] = [];
   packageid: any = '';
   newpackagename: any = 0;
   packagenameList: any[] = [];
@@ -98,12 +98,20 @@ export class BulkpackageupdationComponent implements OnInit {
     });
   }
   columnDefs: any[] = [
-    { headerName: "S.No", valueGetter: 'node.rowIndex+1', width: 80, },
-    { headerName: 'CUSTOMER NAME', field: 'customername', width: 100, },
-    { headerName: 'SMARTCARD', field: 'smartcard', width: 210, },
-    { headerName: 'BOX ID', field: 'boxid', width: 150, },
-    { headerName: 'PACKAGE NAME', field: 'productname', width: 220, },
-    { headerName: 'EXPIRY DATE', field: 'expirydate', width: 160, },
+    // { headerName: "S.No", valueGetter: 'node.rowIndex+1', width: 80, },
+    // { headerName: 'CUSTOMER NAME', field: 'customername', width: 100, },
+    // { headerName: 'SMARTCARD', field: 'smartcard', width: 210, },
+    // { headerName: 'BOX ID', field: 'boxid', width: 150, },
+    // { headerName: 'PACKAGE NAME', field: 'productname', width: 220, },
+    // { headerName: 'EXPIRY DATE', field: 'expirydate', width: 160, },
+
+
+    { headerName: "S.No", valueGetter: 'node.rowIndex+1', width: 100, },
+    { headerName: 'CUSTOMER NAME', field: 'customername', width: 300, cellStyle: { textAlign: 'left' } },
+    { headerName: 'SMARTCARD', field: 'smartcard', width: 300, },
+    { headerName: 'BOX ID', field: 'boxid', width: 400, },
+    { headerName: 'PACKAGE NAME', field: 'productname', width: 400, cellStyle: { textAlign: 'left' }},
+    { headerName: 'EXPIRY DATE', field: 'expirydate', width: 350, },
   ]
   columnDefs1: any[] = [
     { headerName: "S.No", valueGetter: 'node.rowIndex+1', width: 70 },
@@ -139,14 +147,14 @@ export class BulkpackageupdationComponent implements OnInit {
     console.log(this.castype);
     this.autocompleteTrigger.closePanel();
     autocompleteInput.blur();
-   
+
   }
   fetchPackageList() {
     console.log(this.castype);
     console.log('checking 1');
     this.userservice.getBulkPackageList(this.role, this.username, this.castype).subscribe(
       (response: HttpResponse<any>) => {
-        console.log('checking 2',response);
+        console.log('checking 2', response);
         if (response.status === 200 && response.body) {
           console.log(response.body);
           if (typeof response.body === 'object' && response.body !== null) {

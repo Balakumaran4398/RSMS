@@ -70,9 +70,9 @@
                 </div>
             </div>
 
-            <ag-grid-angular #agGrid id="myGrid" domLayout="autoHeight" class="ag-theme-alpine table-class" rowAnimation
+            <ag-grid-angular #agGrid id="myGrid" domLayout="normal" class="ag-theme-alpine table-class" rowAnimation
                 style="max-height: 775px;overflow: scroll;" [rowSelection]="rowSelection" [gridOptions]="gridOptions"
-                [columnDefs]="columnDefs" [rowData]="rowData" (gridReady)="onGridReady()"
+                [columnDefs]="columnDefs" [rowData]="rowData" 
                 [enableCellTextSelection]="true">
             </ag-grid-angular>
         </div>

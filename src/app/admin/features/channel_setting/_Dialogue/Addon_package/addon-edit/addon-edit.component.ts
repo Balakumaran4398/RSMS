@@ -4,7 +4,7 @@ import { BaseService } from 'src/app/_core/service/base.service';
 import { StorageService } from 'src/app/_core/service/storage.service';
 import { SwalService } from 'src/app/_core/service/swal.service';
 import Swal from 'sweetalert2';
-
+declare var $: any;
 @Component({
   selector: 'app-addon-edit',
   templateUrl: './addon-edit.component.html',
@@ -53,6 +53,20 @@ export class AddonEditComponent implements OnInit {
     this.loadBroadcasterList();
     this.checkMaxValue();
   }
+  ngAfterViewInit(): void {
+    $('#broadcaster').select2({
+      placeholder: 'Select Broadcaster',
+      allowClear: true
+    });
+    $('#broadcaster').on('change', (event: any) => {
+      console.log(event);
+
+      this.broadcaster_id = event.target.value;
+      console.log(this.broadcaster_id);
+
+      this.onBroadcasterChange(this.broadcaster_id);
+    });
+  }
   loadBroadcasterList(): void {
     this.userService.BroadcasterList(this.role, this.username, 1).subscribe(
       (data: any) => {
@@ -60,6 +74,8 @@ export class AddonEditComponent implements OnInit {
           name: key,
           value: data[key],
         }));
+        console.log(this.broadcaster_list);
+
         this.cdr.detectChanges();
       },
       (error) => {
@@ -67,9 +83,12 @@ export class AddonEditComponent implements OnInit {
       }
     );
   }
-  onBroadcasterChange(event: Event): void {
-    const selectedValue = (event.target as HTMLSelectElement).value;
-    this.broadcaster_id = selectedValue;
+  onBroadcasterChange(event: any): void {
+    console.log(event);
+    
+    // const selectedValue = (event.target as HTMLSelectElement).value;
+    // this.broadcaster_id = selectedValue;
+    this.broadcaster_id = event;
   }
   onNoClick(): void {
     this.dialogRef.close();
@@ -131,6 +150,8 @@ export class AddonEditComponent implements OnInit {
   }
 
   Update_Addon_package() {
+    console.log(this.broadcaster_id);
+
     const request = {
       id: this.id,
       addon_package_name: this.addon_package_name,

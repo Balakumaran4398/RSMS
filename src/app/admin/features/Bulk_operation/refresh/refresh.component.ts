@@ -91,7 +91,7 @@ export class RefreshComponent {
     { headerName: "S.No", lockPosition: true, valueGetter: 'node.rowIndex+1', cellClass: 'locked-col', width: 120, suppressNavigable: true, sortable: false, filter: false },
     { headerName: "SMARTCARD", field: 'smartcard', width: 350 },
     { headerName: "OPERATOR ID", field: 'lcoid', width: 150 },
-    { headerName: "PACKAGE ID", field: 'packageid', width: 150 },
+    { headerName: "PACKAGE ID", field: 'addingpackageid', width: 150 },
     {
       headerName: "STATUS", width: 150,
       field: 'status',
@@ -125,9 +125,7 @@ export class RefreshComponent {
       this.onSubscriberStatusChange(this.operatorid);
     });
   }
-  onGridReady() {
 
-  }
   filterOperators(event: any): void {
     const filterValue = event.target.value.toLowerCase();
     this.filteredOperators = this.operatorList.filter((operator: any) =>
@@ -193,16 +191,20 @@ export class RefreshComponent {
   };
 
   refresh() {
+    console.log('refresh');
+    
     // this.swal.Loading();
     this.userservice.getBulkRefreshList(this.role, this.username, 'Bulk Reactivate', 3)
       .subscribe(
-        (response: any) => { // Expect HttpResponse<any[]>
-          if (response.status === 200) {
-            this.rowData = response;
-            // this.swal.Success_200();
-          } else if (response.status === 204) {
-            this.swal.Success_204();
-          }
+        (response: any) => {
+          console.log(response);
+          this.rowData = response;
+          // if (response.status === 200) {
+            
+          //   // this.swal.Success_200();
+          // } else if (response.status === 204) {
+          //   this.swal.Success_204();
+          // }
         },
         (error) => {
           if (error.status === 400) {

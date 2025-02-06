@@ -18,7 +18,7 @@
     </div>
     <h3>SUBSCRIBER DETAILS</h3>
     <div class="col-12 align-items-center justify-content-center responsive-container" style="margin: auto; ">
-        <ag-grid-angular #agGrid id="myGrid" domLayout='autoHeight' class="ag-theme-alpine table-class" rowAnimation
+        <ag-grid-angular #agGrid id="myGrid" domLayout='normal' class="ag-theme-alpine table-class" rowAnimation
             [gridOptions]="gridOptions" [columnDefs]="columnDefs" (gridReady)="onGridReady($event)" [rowData]="rowData"
             [enableCellTextSelection]="true">
         </ag-grid-angular>

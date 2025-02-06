@@ -60,14 +60,24 @@ textarea {
     display: block;
 }
 
-// .mobile {
-//     max-height: 520px !important;
-//     overflow: scroll;
-//     padding: 1rem;
+::ng-deep .select2-container {
+    width: 100% !important;
+}
 
-// }
+::ng-deep .select2-container .select2-selection--single {
+    height: 45px !important;
+    width: 100% !important;
+}
 
-// /* Responsive Styles */
+::ng-deep .select2-container .select2-selection--single .select2-selection__rendered {
+    margin-top: 10px;
+}
+
+::ng-deep .select2-container--default .select2-selection--single .select2-selection__arrow {
+    top: 10px;
+
+}
+
 @media (min-width: 560px) {
     .display {
         display: flex;
@@ -291,6 +301,5 @@ body {
 
 
 .input_box label::after {
-    color:transparent !important ;
-  }
-  
+    color: transparent !important;
+}

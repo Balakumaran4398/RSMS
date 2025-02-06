@@ -4,6 +4,7 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { BaseService } from 'src/app/_core/service/base.service';
 import { StorageService } from 'src/app/_core/service/storage.service';
 import { SwalService } from 'src/app/_core/service/swal.service';
+declare var $:any;
 
 @Component({
   selector: 'app-update-ltb',
@@ -14,7 +15,7 @@ export class UpdateLtbComponent implements OnInit {
   isActive = false;
   opName: any;
   istax: boolean = true;
-  isactive: any;
+  isactive: boolean = false;
   opNameList: any[] = [];
   localPaymentChannelList: any;
   role: any;
@@ -43,7 +44,7 @@ export class UpdateLtbComponent implements OnInit {
     this.updateTax = data.tax;
     console.log(this.opName);
 
-    this.isactive = data.statusdisplay === '"Active"' ? true : false;
+    this.isactive = data.statusdisplay == 'Active' ? true : false;
     this.userService.getLocalChannelOperatorList(this.role, this.username).subscribe((data: any) => {
       this.opNameList = Object.keys(data).map(key => ({
         packagename: key,
@@ -54,14 +55,16 @@ export class UpdateLtbComponent implements OnInit {
     })
   }
   ngOnInit(): void {
-    // this.userService.getLocalChannelOperatorList(this.role, this.username).subscribe((data: any) => {
-    //   this.opNameList = Object.keys(data).map(key => ({
-    //     packagename: key,
-    //     packageid: data[key]
-    //   }));
-    //   this.filteredOperators = this.opNameList;
-    // })
+    $('#ltb').select2({
+      placeholder: 'Select Operator Name',
+      allowClear: true
+    });
+    $('#ltb').on('change', (event: any) => {
+      this.opName = event.target.value;
+      this.onSubscriberStatusChange( this.opName);
+    });
   }
+
   onNoClick(): void {
     this.dialogRef.close();
   }

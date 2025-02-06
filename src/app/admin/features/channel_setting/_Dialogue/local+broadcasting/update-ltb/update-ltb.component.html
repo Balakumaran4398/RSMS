@@ -25,10 +25,11 @@
                     </div>
                     <div class="col-6">
                         <div class="gender-category">
-                            <select [(ngModel)]="opName">
+                            <select id="ltb" [(ngModel)]="opName">
                                 <option value="0" selected>Selected Operator Name</option>
-                                <option *ngFor="let op of opNameList" [value]="op.packageid">
-                                    {{ op.packagename }}
+                                <option *ngFor="let operator of filteredOperators" [value]="operator.packageid"
+                                    (ngModelChange)="onSubscriberStatusChange($event)">
+                                    {{ operator.packagename }}
                                 </option>
                             </select>
                             <!-- <input type="text" matInput [matAutocomplete]="auto" [(ngModel)]="opName"
@@ -58,9 +59,6 @@
                     <div class="col-6 d-flex align-items-center">
                         <input type="text" class="ms-2" [(ngModel)]="localPaymentChannelList.channelrate"
                             (ngModelChange)="onChange()">
-                        <!-- 
-                        <input type="text" class="ms-2" value="{{localPaymentChannelList?.channelrate}}"
-                            (change)="onChange()"> -->
                     </div>
                 </div>
             </div>
@@ -70,11 +68,8 @@
                         <span>With Tax</span> &nbsp;
                     </div>
                     <div class="col-6">
-                        <!-- <div id="app-cover"> -->
                         <div class="toggle-button-cover">
                             <div class="button b2" id="button-10">
-                                <!-- <input type="text" class="ms-2" [(ngModel)]="istax" (change)="onChange()"> -->
-
                                 <input type="checkbox" class="checkbox" [(ngModel)]="istax" (change)="onChange()" />
                                 <div class="knobs">
                                     <span>YES</span>
@@ -82,7 +77,6 @@
                                 <div class="layer"></div>
                             </div>
                         </div>
-                        <!-- </div> -->
                     </div>
                 </div>
             </div>
@@ -113,21 +107,7 @@
                     <div class="col-6 d-flex justify-content-start align-items-center">
                         <span>Status</span> &nbsp;
                     </div>
-                    <!-- <div class="col-6">
-                        <div class="toggle-button-cover">
-                            <div class="button-cover">
-                                <div class="button b2" id="button-14">
-                                    <input type="checkbox" class="checkbox" [(ngModel)]="isactive" />
-                                    <div class="knobs">
-                                        <span></span>
-                                    </div>
-                                    <div class="layer"></div>
-                                </div>
-                            </div>
-                        </div>
-                    </div> -->
-
-                    <div class="col-12 col-md-6 d-flex  justify-content-start align-item-center  ">
+                    <div class="col-6 col-md-6 d-flex  justify-content-start align-item-center  ">
                         <div class="toggle">
                             <label class="switch">
                                 <input type="checkbox" id="lcoLabel" name="lcoLabel" [(ngModel)]="isactive">

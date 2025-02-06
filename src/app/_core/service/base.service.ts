@@ -1840,7 +1840,7 @@ export class BaseService {
     return this.http.get(BASE_URL + "/report/UserRechargeHistory?role=" + role + "&username=" + username + "&fromdate=" + fromdate + "&todate=" + todate + "&userid=" + userid + "&reporttype=" + reporttype, { responseType: 'blob' });
   }
   // ----------------------------------------Package Reports (lco wise active subscription count - model list)------------------------------------------------------
-  getLcowiseActiveModelList(role: any, username: any): Observable<any[]> {
+  getModelList(role: any, username: any): Observable<any[]> {
     return this.http.get<any[]>(BASE_URL + "/report/getModelDetails?role=" + role + "&username=" + username);
   }
   // --------------------------------------getCasFormActivationReport-------------------------
@@ -1904,13 +1904,28 @@ export class BaseService {
   }
 
   // ==============================================================================================================================================
-  // ----------------------------------------------------------INVENTORY-----------------------------------------------------------------------------
-
+  // ----------------------------------------------------------INVENTORY-[LOGIN]-----------------------------------------------------------------------------
+  // ----------------------------------------------------------------inventory----------------------------
   getInventoryUpdateDate(role: any, username: any, date: any): Observable<any[]> {
     return this.http.get<any[]>(BASE_URL + "/master/updateLicense?role=" + role + "&username=" + username + "&date=" + date)
   }
   getInvent_License_Extend(role: any, username: any): Observable<any[]> {
     return this.http.get<any[]>(
       BASE_URL + "/master/getLoginList?role=" + role + "&username=" + username,);
+  }
+  // ----------------------------------------------------------------cortonbox-------------------------------------
+  cortonBoxUplod(requestBody: any): Observable<any[]> {
+    return this.http.post<any[]>(BASE_URL + "/allocation/cartonBoxUpload", requestBody, {});
+  }
+  getCortonBoxList(role: any, username: any, model: any): Observable<any[]> {
+    return this.http.get<any[]>(BASE_URL + "/allocation/getCartonBoxList?role=" + role + "&username=" + username + "&model=" + model)
+  }
+  getCortonBoxDetails(role: any, username: any, model: any, cortonBox: any): Observable<any[]> {
+    return this.http.get<any[]>(BASE_URL + "/allocation/getCartonBoxDetails?role=" + role + "&username=" + username + "&model=" + model + "&cartonbox=" + cortonBox)
+  }
+
+  cortonBoxDetails(role: any, username: any, operatorid: any, isemi: boolean, dueamount: any, type: any, areaid: any, streetid: any, packageid: any, days: any, subscribername: any,
+    smartcardlist: any): Observable<any[]> {
+    return this.http.post<any[]>(BASE_URL + "/allocation/uploadCartonBox?role=" + role + "&username=" + username + "&operatorid=" + operatorid + "&isemi=" + isemi + "&dueamount=" + dueamount + "&type=" + type + "&areaid=" + areaid + "&streetid=" + streetid + "&packageid=" + packageid + "&days=" + days + "&subscribername=" + subscribername + "&smartcardlist=" + smartcardlist, {});
   }
 }

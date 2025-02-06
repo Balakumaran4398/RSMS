@@ -21,7 +21,7 @@
             <!-- Select Area -->
             <mat-form-field appearance="outline" class="mx-2" [disabled]="!isAnyRowSelected">
                 <mat-label>Select Area</mat-label>
-                <mat-select [(ngModel)]="area" (ngModelChange)="onAreaStatusChange()" name="area" required>
+                <mat-select [(ngModel)]="area" (ngModelChange)="onAreaStatusLCOChange()" name="area" required>
                     <mat-option value="">Select Area</mat-option>
                     <mat-option value="0">ALL Area</mat-option>
                     <mat-option *ngFor="let area of areaList" [value]="area.value">{{ area.name }}</mat-option>
@@ -30,15 +30,16 @@
             </mat-form-field>
 
             <!-- Select Street -->
-            <mat-form-field appearance="outline" class="mx-2" (ngModelChange)="onSubscriberStreetLCOChange()" [disabled]="!isAnyRowSelected">
+            <mat-form-field appearance="outline" class="mx-2" [disabled]="!isAnyRowSelected">
                 <mat-label>Select Street</mat-label>
-                <mat-select [(ngModel)]="street"  name="street" required>
+                <mat-select [(ngModel)]="street"  name="street" required  (ngModelChange)="onSubscriberStreetLCOChange()">
                     <mat-option value="">Select Street</mat-option>
                     <mat-option value="0">ALL Street</mat-option>
                     <mat-option *ngFor="let street of streetList" [value]="street.value">{{ street.name }}</mat-option>
                 </mat-select>
                 <mat-error *ngIf="!street">Street is required</mat-error>
             </mat-form-field>
+            
             <div class="mobile mb-3 d-flex justify-content-center align-items-center ">
                 <button class="btn btn-outline-info mx-1" mat-raised-button color="primary" type="button"
                     [disabled]="!isAnyRowSelected" (click)="updateArea()">
@@ -55,7 +56,7 @@
                 </div>
                 <ag-grid-angular #agGrid id="myGrid" domLayout='autoHeight' class="ag-theme-alpine table-class"
                     rowAnimation [rowSelection]="rowSelection" [gridOptions]="gridOptions" [columnDefs]="columnDefs"
-                    [rowData]="rowData" [rowSelection]="rowSelection" (selectionChanged)="onSelectionChanged()"
+                    [rowData]="rowData"(selectionChanged)="onSelectionChanged()"
                     (gridReady)="onGridReady($event)" [enableCellTextSelection]="true">
                 </ag-grid-angular>
             </div>

@@ -315,7 +315,7 @@ export class MsorDialogueportsComponent implements OnInit {
   }
 
   onModelList() {
-    this.userService.getLcowiseActiveModelList(this.username, this.role).subscribe((data: any) => {
+    this.userService.getModelList(this.username, this.role).subscribe((data: any) => {
       this.model = data;
       this.modelname = data.modelname;
     })

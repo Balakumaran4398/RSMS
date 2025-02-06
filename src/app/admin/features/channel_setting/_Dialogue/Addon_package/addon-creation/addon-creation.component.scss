@@ -94,9 +94,30 @@
 .display_1 {
   display: flex;
 }
-.display3{
+
+.display3 {
   display: flex;
 }
+
+::ng-deep .select2-container {
+  width: 100% !important;
+}
+
+::ng-deep .select2-container .select2-selection--single {
+  height: 45px !important;
+  // margin-top: 1%;
+  width: 100% !important;
+}
+
+::ng-deep .select2-container .select2-selection--single .select2-selection__rendered {
+  margin-top: 10px;
+}
+
+::ng-deep .select2-container--default .select2-selection--single .select2-selection__arrow {
+  top: 10px;
+
+}
+
 @media screen and (max-width:560px) {
   .display_1 {
     display: block;
@@ -106,7 +127,8 @@
     max-height: 400px;
     overflow: scroll;
   }
-  .display3{
+
+  .display3 {
     display: block;
   }
 }

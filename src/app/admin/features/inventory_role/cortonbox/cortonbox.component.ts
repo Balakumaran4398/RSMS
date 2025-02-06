@@ -4,6 +4,7 @@ import { ColDef } from 'ag-grid-community';
 import { BaseService } from 'src/app/_core/service/base.service';
 import { StorageService } from 'src/app/_core/service/storage.service';
 import { InventorycortonboxComponent } from '../Dialogue/inventorycortonbox/inventorycortonbox.component';
+import { SwalService } from 'src/app/_core/service/swal.service';
 declare var $: any;
 @Component({
   selector: 'app-cortonbox',
@@ -17,16 +18,14 @@ export class CortonboxComponent implements OnInit {
 
   rowData: any[] = [];
   gridApi: any;
-
-  filteredModel: any[] = [
-    { name: "aaa", value: 0 },
-    { name: "bbb", value: 1 },
-    { name: "cccc", value: 2 },
-    { name: "ddd", value: 3 },
-    { name: "eee", value: 4 },
-  ];
+  toppings: any;
+  filteredModel: any[] = [];
+  cortonBoxList: any[] = [];
+  toppingList: any[] = [];
+  cortonBox: any = '';
   model: any;
 
+  modelName: any;
   gridOptions = {
     defaultColDef: {
       sortable: true,
@@ -45,19 +44,19 @@ export class CortonboxComponent implements OnInit {
     paginationPageSize: 10,
     pagination: true,
   }
-  constructor(public dialog: MatDialog, public userService: BaseService, storageService: StorageService) {
+  constructor(public dialog: MatDialog, public userService: BaseService, storageService: StorageService, private swal: SwalService) {
     this.username = storageService.getUsername();
     this.role = storageService.getUserRole();
-    this.userService.Not_Allocated(this.role, this.username).subscribe((data: any) => {
-      console.log(data);
-      this.rowData = data[0].notallocatedsmartcard;
-      // this.lco_list = data[0].operatorid;
-      // this.caslist = data[0].castype;
-      // this.isemi = data[0].isemi;
-    })
+
   }
   ngOnInit(): void {
-    throw new Error('Method not implemented.');
+    this.userService.getModelList(this.username, this.role).subscribe((data: any) => {
+      // this.model = data;
+      console.log(this.model);
+      this.filteredModel = data;
+      console.log(this.filteredModel);
+
+    })
   }
   ngAfterViewInit() {
     $('#model').select2({
@@ -68,20 +67,21 @@ export class CortonboxComponent implements OnInit {
       this.model = event.target.value;
       this.onModelList(this.model);
     });
-    $('#modelList').select2({
-      placeholder: 'Select ModelList',
-      allowClear: true
-    });
-    $('#modelList').on('change', (event: any) => {
-      this.model = event.target.value;
-      this.onModelList(this.model);
-    });
   }
   onModelList(event: any) {
     console.log(event);
-
+    this.userService.getCortonBoxList(this.role, this.username, this.model).subscribe((data: any) => {
+      console.log(data);
+      this.cortonBoxList = data.map((item: any) => item.cartonbox);
+      // this.cortonBoxList=[...this.toppingList]
+    })
   }
+  // onCortonBoxChange(box: string[]) {
+  //   console.log(box);
 
+  //   console.log('111111111111');
+
+  // }
   onGridReady(params: { api: any; }) {
     this.gridApi = params.api;
   }
@@ -90,22 +90,52 @@ export class CortonboxComponent implements OnInit {
     { headerName: 'SMARTCARD', width: 300, field: 'smartcard', },
     { headerName: 'BOX_ID', width: 470, cellStyle: { textAlign: 'center' }, field: 'boxid', },
     { headerName: 'CARTONBOX NO', width: 200, field: 'cottonbox', },
-    { headerName: 'MODEL', width: 300, field: 'cottonbox', },
-    { headerName: 'CHIP ID', width: 200, field: 'cottonbox', },
+    { headerName: 'MODEL', width: 300, field: 'model', },
+    { headerName: 'CHIP ID', width: 200, field: 'chipid', },
   ]
   openDialoguePage(type: any) {
     let dialogData = type;
     console.log(dialogData);
     const dialogRef = this.dialog.open(InventorycortonboxComponent, {
       data: dialogData,
-      width: type === 'allocatted' ? '990px' : 'auto',
-      maxWidth:type === ' allocatted' ? '100vw': 'auto'
+      width: type === 'allocatted' ? '1010px' : 'auto',
+      maxWidth: type === ' allocatted' ? '100vw' : 'auto'
     });
     dialogRef.afterClosed().subscribe(result => {
       console.log('The dialog was closed', result);
     });
   }
-  submit() {
 
+
+  submit() {
+    console.log('22222222222');
+    console.log(this.cortonBox);
+
+    this.userService.getCortonBoxDetails(this.role, this.username, this.model, this.cortonBox)
+      .subscribe((data: any) => {
+        this.rowData = data;
+        console.log(data);
+        // this.swal.success(data?.message);
+      }, (err) => {
+        this.swal.Error3(err?.error?.message || err?.error);
+      });
+  }
+
+  onCortonBoxChange(selectedValues: any[]) {
+    console.log("Selected Values: ", selectedValues);
+    this.cortonBox = selectedValues;
+    console.log(this.cortonBox);
+
+    // if (this.cortonBox.length > 0) {
+    //     this.userService.getCortonBoxDetails(this.role, this.username, this.model, this.cortonBox)
+    //         .subscribe((data: any) => {
+    //             this.rowData = data;
+    //             console.log("Response Data: ", data);
+    //         }, (err) => {
+    //             this.swal.Error3(err?.error?.message || err?.error);
+    //         });
+    // } else {
+    //     console.log("No selection made!");
+    // }
   }
 }

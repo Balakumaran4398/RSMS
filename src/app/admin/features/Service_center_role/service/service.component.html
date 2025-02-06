@@ -10,7 +10,7 @@
                 <input type="text" placeholder="Search by Smartcard or Boxid">
             </div>
 
-            <div class="input_box d-flex justify-content-center align-items-center"
+            <div class="input_box d-flex justify-content-center align-items-center mb-2"
                 *ngFor="let item of subscriberDetails">
                 <div class="col-5 col-md-4 d-flex justify-content-start">
                     <span>{{ item.label }}</span>
@@ -29,7 +29,7 @@
             <div class="d-flex justify-content-center align-items-center p-2 bg-dark text-white">
                 <h6>SUBSCRIBER STATUS</h6>
             </div>
-            <div class="input_box d-flex justify-content-start align-items-center"
+            <div class="input_box d-flex justify-content-start align-items-center mb-2"
                 style="margin-top: 3%;margin-left: 20px;">
                 <div class="col-5 col-md-3 d-flex justify-content-start">
                     <span>SMARTCARD</span>
@@ -41,7 +41,7 @@
                     eretre
                 </div>
             </div>
-            <div class="input_box d-flex justify-content-start align-items-center" style="margin-left: 20px;">
+            <div class="input_box d-flex justify-content-start align-items-center mb-2" style="margin-left: 20px;">
                 <div class="col-5 col-md-3 d-flex justify-content-start">
                     <span>BOX ID</span>
                 </div>
@@ -52,7 +52,7 @@
                     eretre
                 </div>
             </div>
-            <div class="input_box d-flex justify-content-start align-items-center" style="margin-left: 20px;">
+            <div class="input_box d-flex justify-content-start align-items-center mb-2" style="margin-left: 20px;">
                 <div class="col-5 col-md-3 d-flex justify-content-start">
                     <span>TOKEN NO</span>
                 </div>
@@ -63,7 +63,7 @@
                     <input type="text" placeholder="Enter Token">
                 </div>
             </div>
-            <div class="input_box d-flex justify-content-start align-items-center" style="margin-left: 20px;">
+            <div class="input_box d-flex justify-content-start align-items-center mb-2" style="margin-left: 20px;">
                 <div class="col-5 col-md-3 d-flex justify-content-start">
                     <span>ENTRY</span>
                 </div>
@@ -79,7 +79,7 @@
                     </select>
                 </div>
             </div>
-            <div class="input_box d-flex justify-content-start align-items-center" style="margin-left: 20px;">
+            <div class="input_box d-flex justify-content-start align-items-center mb-2" style="margin-left: 20px;">
                 <div class="col-5 col-md-3 d-flex justify-content-start">
                     <span>DESCRIPTION</span>
                 </div>
@@ -90,7 +90,7 @@
                     <input type="text" placeholder="Enter Entry Comment">
                 </div>
             </div>
-            <div class="input_box d-flex justify-content-start align-items-center" style="margin-left: 20px;">
+            <div class="input_box d-flex justify-content-start align-items-center mb-2" style="margin-left: 20px;">
                 <div class="col-5 col-md-3 d-flex justify-content-start">
                     <span>REPLACE</span>
                 </div>
@@ -98,10 +98,18 @@
                     <span>:</span>
                 </div>
                 <div class="col-6 col-md-4">
-                    eretre
+                    <div class="toggle-button-cover">
+                        <div class="button b2" id="button-10">
+                            <input type="checkbox" class="checkbox" />
+                            <div class="knobs">
+                                <span>YES</span>
+                            </div>
+                            <div class="layer"></div>
+                        </div>
+                    </div>
                 </div>
             </div>
-            <div class="input_box d-flex justify-content-start align-items-center" style="margin-left: 20px;">
+            <div class="input_box d-flex justify-content-start align-items-center mb-2" style="margin-left: 20px;">
                 <div class="col-5 col-md-3 d-flex justify-content-start">
                     <span>SMARTCARD</span>
                 </div>
@@ -117,6 +125,60 @@
                     </select>
                 </div>
             </div>
+            <div class="col-12 col-md-8 d-flex justify-content-center align-items-center" style="padding: 10px;">
+                <button type="button" class="btn btn-success">Update </button>
+            </div>
         </div>
+    </div>
+    <div class="card">
+        <div class="d-flex justify-content-center align-items-center p-2 bg-dark text-white mb-3">
+            <h6>SERVICE HISTORY</h6>
+        </div>
+        <div class="displayustify-content-start align-items-center ">
+            <div class="">
+                <select id="operator" [(ngModel)]="selectedOperator">
+                    <option value="0" selected>ALL Operator</option>
+                    <option *ngFor="let operator of filteredOperatorList" [value]="operator.value">
+                        {{ operator.name }}
+                    </option>
+                </select>
+            </div>
+            <div class=" ">
+                <input type="checkbox" [(ngModel)]="isActive" style="width: 35px;height: 20px;">
+            </div>
+            <div class=" input_box">
+                <input type="text" placeholder="Enter Smartcard Last 5 digit">
+            </div>
+            <div class="">
+                <mat-form-field appearance="outline">
+                    <mat-date-range-input [rangePicker]="picker" [max]="today">
+                        <input matStartDate matInput placeholder="Start date"
+                            (dateChange)="getFromDate($event)">
+                        <input matEndDate matInput placeholder="End date" (dateChange)="getToDate($event)">
+                    </mat-date-range-input>
+                    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                    <mat-date-range-picker #picker></mat-date-range-picker>
+                </mat-form-field>
+            </div>
+            <div class=" d-flex justify-content-center align-items-center">
+                <button type="button" class="btn btn-success">Update </button>
+            </div>
+            <div class=" display1">
+                <div class="export-icon  mx-2">
+                    <img src="/assets/images/icons/Excel.png" alt="Excel Icon" width="40px"
+                        (click)="getServiceReportDownload(2)">
+                    <div class="tooltip">Excel</div>
+                </div>
+                <div class="export-icon ">
+                    <img src="/assets/images/icons/pdf.png" alt="PDF Icon" width="40px"
+                        (click)="getServiceReportDownload(1)">
+                    <div class="tooltip">Pdf</div>
+                </div>
+            </div>
+        </div>
+        <ag-grid-angular #agGrid id="myGrid" domLayout="normal" class="ag-theme-alpine table-class" rowAnimation
+            [gridOptions]="gridOptions"
+            [columnDefs]="columnDefs" [rowData]="rowData"  [enableCellTextSelection]="true">
+        </ag-grid-angular>
     </div>
 </div>

@@ -15,7 +15,7 @@
             <div class="col-12 col-md-8 mb-3 input_box">
                 <select id="casType" [(ngModel)]="selectedCasType" >
                     <option value="0" selected>Select a CAS Name</option>
-                    <option *ngFor="let key of filteredCasList" [value]="key.value">
+                    <option *ngFor="let key of filteredCasList" [value]="key.id" (ngModelChange)="onCastypeList(key.value)">
                         {{ key.name }}
                     </option>
                 </select>

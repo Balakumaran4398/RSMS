@@ -26,10 +26,16 @@
                 <span>Broadcaster </span>
             </div>
             <div class="col-12 col-md-6">
-                <select [(ngModel)]="broadcaster_id" class="form-select" (change)="onBroadcasterChange($event)">
+                <!-- <select [(ngModel)]="broadcaster_id" class="form-select" (change)="onBroadcasterChange($event)">
                     <option *ngFor="let broadcaster of broadcaster_list" [value]="broadcaster.value.id">
                         {{ broadcaster.value.broadcastername }}
                     </option>
+                </select> -->
+                <select id="broadcaster" [(ngModel)]="broadcaster_id" class="form-select">
+                    <option value="0"> Select a Broadcastername</option>
+                    <option *ngFor="let broadcaster of broadcaster_list" [value]="broadcaster.value.id"
+                        (ngModelChange)="onBroadcasterChange(broadcaster.value.id)">
+                        {{broadcaster.value.broadcastername}}</option>
                 </select>
             </div>
         </div>

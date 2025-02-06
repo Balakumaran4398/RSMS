@@ -189,8 +189,8 @@ const routes: Routes = [
       { path: 'special_lcotransfer', component: SpeciallcotransferComponent },
 
       // -------------------------------------Inventory Role------------------------------------
-      // { path: 'inventor_inventory', component: InventoryroleComponent },
-      { path: 'inventor_inventory', component: ServiceComponent },
+      { path: 'inventor_inventory', component: InventoryroleComponent },
+      // { path: 'inventor_inventory', component: ServiceComponent },
       { path: 'inventory_license', component: LicenseexpireComponent },
       { path: 'inventory_cortonbox', component: CortonboxComponent },
       { path: 'inventory_cortonbox_data', component: LicenseComponent },

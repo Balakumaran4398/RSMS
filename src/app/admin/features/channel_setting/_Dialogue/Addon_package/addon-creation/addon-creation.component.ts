@@ -1,16 +1,16 @@
-import { ChangeDetectorRef, Component } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { AbstractControl, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialogRef } from '@angular/material/dialog';
 import { BaseService } from 'src/app/_core/service/base.service';
 import { StorageService } from 'src/app/_core/service/storage.service';
 import Swal from 'sweetalert2';
-
+declare var $:any;
 @Component({
   selector: 'app-addon-creation',
   templateUrl: './addon-creation.component.html',
   styleUrls: ['./addon-creation.component.scss']
 })
-export class AddonCreationComponent {
+export class AddonCreationComponent implements OnInit{
   addon_package_name: any;
   addon_package_rate: any;
   addon_package_description: any;
@@ -35,6 +35,7 @@ export class AddonCreationComponent {
   //   { lable: "AREA CODE", value: 3 },
   // ];
   type: any[] = [];
+  broadcaster_id:any;
   TypeFormControl: any = 0;
   constructor(
     public dialogRef: MatDialogRef<AddonCreationComponent>, private cdr: ChangeDetectorRef, private userservice: BaseService, private storageService: StorageService, private fb: FormBuilder
@@ -45,8 +46,8 @@ export class AddonCreationComponent {
       console.log(data);
       // this.rowData = data;
       this.type = data;
-      // let Type = data.map((item: any) => item.id);
-      // console.log(Type);
+      // this.type = data.map((item: any) => item.id);
+      // console.log(this.type);
     })
 
     this.createpackageForm = this.fb.group({
@@ -70,6 +71,23 @@ export class AddonCreationComponent {
     //   // this.calculateAmounts();  // Recalculate amounts whenever checkbox changes
     // });
 
+  }
+  ngOnInit(): void {
+    $('#broadcaster').select2({
+      placeholder: 'Select Broadcaster',
+      allowClear: true
+    });
+    $('#broadcaster').on('change', (event: any) => {
+      this.broadcaster_id = event.target.value;
+      this.onBroadcasterChange(this.broadcaster_id);
+    });
+  }
+  onBroadcasterChange(event: any): void {
+    console.log(event);
+    
+    // const selectedValue = (event.target as HTMLSelectElement).value;
+    // this.broadcaster_id = selectedValue;
+    this.broadcaster_id = event;
   }
   onKeydown1(event: KeyboardEvent) {
     const input = event.target as HTMLInputElement;

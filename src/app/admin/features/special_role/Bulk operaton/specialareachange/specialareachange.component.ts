@@ -289,6 +289,8 @@ export class SpecialareachangeComponent implements OnInit {
   }
   onSubscriberStreetLCOChange() {
     // this.rowData = [];
+    console.log('1111111');
+    
     console.log(this.street);
     this.userservice.getLcochangeSubscriberList(this.role, this.username, this.lco, this.area, this.street).subscribe(
       (response: HttpResponse<any[]>) => {
@@ -334,6 +336,20 @@ export class SpecialareachangeComponent implements OnInit {
   // }
 
   onTableData() {
+    if (this.lco) {
+      this.userservice.getAreaListByOperatorid(this.role, this.username, this.lco)
+        .subscribe((data: any) => {
+          this.rowData = data;
+          console.log(this.rowData);
+          console.log(data?.areaid);
+          this.areaList = Object.keys(data).map(key => {
+            const name = key.replace(/\(\d+\)$/, '').trim();
+            const value = data[key];
+            return { name, value };
+          });
+          console.log(this.areaList);
+        });
+    }
     this.userservice.getAreaChangeSubscriberList(this.role, this.username, this.lco,).subscribe(
       (response: HttpResponse<any[]>) => {
         if (response.status === 200) {
@@ -381,7 +397,7 @@ export class SpecialareachangeComponent implements OnInit {
       operatorid: this.lco,
       areaid: this.area,
       streetid: this.street,
-      subscriberlist: this.rowData
+      subscriberlist: this.rows
     }
     this.swal.Loading();
     this.userservice.updateLcoChangeSubscriber(requestBody)
