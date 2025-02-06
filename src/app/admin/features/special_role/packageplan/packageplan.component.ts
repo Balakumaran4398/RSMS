@@ -50,7 +50,7 @@ export class PackageplanComponent implements OnInit {
     { headerName: 'COUNTRYNAME', field: 'planname', width: 250, },
     { headerName: 'DAYS', field: 'days', width: 250, },
     {
-      headerName: 'IS ACTIVE', field: 'isactive', width: 250,
+      headerName: 'IS ACTIVE', field: 'isactive', width: 270,
       cellRenderer: (params: { value: any; data: any }) => {
         const color = params.value ? 'green' : 'red';
         // const text = params.value ? 'True' : 'False' ;
@@ -59,7 +59,7 @@ export class PackageplanComponent implements OnInit {
       }
     },
     {
-      headerName: 'Edit', minWidth: 160,
+      headerName: 'Edit', minWidth: 200,
       cellRenderer: (params: any) => {
         const editButton = document.createElement('button');
         editButton.innerHTML = '<i class="fa fa-pencil-square" aria-hidden="true"></i>';
@@ -101,7 +101,7 @@ export class PackageplanComponent implements OnInit {
   Active() {
     this.swal.Loading();
     this.userservice.activeORDeactivePackagePlan(this.role, this.username, this.selectedIds, 'true').subscribe((res: any) => {
-      // this.swal.success(res?.message);
+      this.swal.success(res?.message);
     }, (err) => {
       this.swal.Error(err?.error?.message);
     });
@@ -109,7 +109,7 @@ export class PackageplanComponent implements OnInit {
   Deactive() {
     this.swal.Loading();
     this.userservice.activeORDeactivePackagePlan(this.role, this.username, this.selectedIds, 'false').subscribe((res: any) => {
-      // this.swal.success(res?.message);
+      this.swal.success(res?.message);
     }, (err) => {
       this.swal.Error(err?.error?.message);
     });

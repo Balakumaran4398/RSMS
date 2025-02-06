@@ -12,7 +12,7 @@ import { ChanneldialogueComponent } from '../Dialogue/channeldialogue/channeldia
   styleUrls: ['./channeldetails.component.scss']
 })
 export class ChanneldetailsComponent implements OnInit {
-  rowData: any[]=[];
+  rowData: any[] = [];
   public rowSelection: any = "multiple";
 
   gridOptions = {
@@ -41,29 +41,30 @@ export class ChanneldetailsComponent implements OnInit {
   }
   columnDefs: any[] = [
     {
-      headerName: "S.NO", lockPosition: true, valueGetter: 'node.rowIndex+1', 
+      headerName: "S.NO", lockPosition: true, valueGetter: 'node.rowIndex+1',
     },
-    { headerName: 'CHANNEL NAME', field: 'channelName', width: 250, },
-    { headerName: 'URL', field: 'url', width: 350, },
-    { headerName: 'CHANNEL LOGO	', field: 'logo', width: 150, filter: false,
+    { headerName: 'CHANNEL NAME', field: 'channelName', width: 250, cellStyle: { textAlign: 'left' } },
+    { headerName: 'URL', field: 'url', width: 350,cellStyle: { textAlign: 'left' }  },
+    {
+      headerName: 'CHANNEL LOGO	', field: 'logo', width: 150, filter: false,
       cellRenderer: (params: any) => {
         if (params.value) {
-          return `<img src="${params.value}"  style="width: 100%; height: auto;" />`;
+          return `<img src="${params.value}"  style="width: 30%; height: auto;" />`;
         }
-        return ''; 
+        return '';
       }
-     },
-    { headerName: 'CATEGORY	', field: 'categoryname', width: 150, },
+    },
+    { headerName: 'CATEGORY	', field: 'categoryname', width: 150,cellStyle: { textAlign: 'left' }  },
     {
       headerName: 'IS ACTIVE', field: 'statusdisplay', width: 250,
       cellRenderer: (params: { value: any; data: any }) => {
-        const color = params.value ? 'green':'red'  ;
-        const text = params.value ?  'Active': 'Deactive' ;
+        const color = params.value === 'Active' ? 'green' : 'red';
+        const text = params.value === 'Active' ? 'Active' : 'Deactivate'; 
         return `<span style="color: ${color};">${text}</span>`;
       }
     },
     {
-      headerName: 'ACTION', minWidth: 140,filter: false,
+      headerName: 'ACTION', minWidth: 140, filter: false,
       cellRenderer: (params: any) => {
         const editButton = document.createElement('button');
         editButton.innerHTML = '<i class="fa fa-pencil-square" aria-hidden="true"></i>';

@@ -48,7 +48,7 @@ export class InventoryloginComponent {
         username: this.username,
         userid: userid,
         password: password,
-        type: 1,
+        type: 5,
       }
       this.userservice.checkLoginCredenticals(requestBody).subscribe(
         (res: any) => {

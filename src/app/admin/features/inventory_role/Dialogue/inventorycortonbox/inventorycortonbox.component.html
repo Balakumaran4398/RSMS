@@ -1,19 +1,16 @@
-<div *ngIf="type== 'corton_box'">
-    <!-- Header -->
+<div *ngIf="type== 'carton_box'">
     <div class="Head d-flex justify-content-between align-items-center" style="padding: 1rem;">
         <h6>CORTON BOX UPLOAD</h6>
         <i class="fa fa-close close-icon" (click)="onNoClick()"></i>
     </div>
     <div class="dialog-container">
-
-        <!-- Body -->
         <div class="dialog-body">
             <div class="row align-items-center input_box">
                 <div class="col-12 col-md-4">
                     <span class="form-label">Inventory Type</span>
                 </div>
                 <div class="col-12 col-md-8 mb-3">
-                    <a class="mb-3" (click)="generateExcel('corton_box')" style="cursor: pointer;color: #230ed5;">*
+                    <a class="mb-3" (click)="generateExcel('carton_box')" style="cursor: pointer;color: #230ed5;">*
                         Download File Format</a>
                 </div>
             </div>
@@ -27,8 +24,6 @@
                 </div>
             </div>
         </div>
-
-        <!-- Footer -->
         <div class="dialog-footer">
             <button type="button" class="btn"
                 style="background-color:#1f6764;color: white;font-size: 14;font-weight: 600;"
@@ -57,7 +52,7 @@
                     <span class="form-label">Due Amount</span>
                 </div>
                 <div class="col-12 col-md-9 mb-3 ">
-                    <input type="text" class="file-input" [disabled]="!isemi" />
+                    <input type="text" class="file-input" [(ngModel)]="dueamount" [disabled]="!isemi" (keypress)="onKeydown($event)"  />
                 </div>
             </div>
             <div class="row align-items-center input_box ">
@@ -66,19 +61,12 @@
                 </div>
                 <div class="col-12 col-md-9 mb-3 file-upload-container">
                     <select id="operator" [(ngModel)]="selectOperator">
-                        <option value="0" selected>Select Operator</option>
-                        <option *ngFor="let operator of filteredOperatorList" [value]="operator.value">
+                        <option [value]="0" selected>All Operator</option>
+                        <option *ngFor="let operator of filteredOperatorList" [value]="operator.value"
+                            (ngModelChange)="onAreaList($event)">
                             {{ operator.name }}
                         </option>
                     </select>
-
-                    <!-- <select id="operator" [(ngModel)]="selectOperator">
-                        <option [value]="0" selected>All Operator</option>
-                        <option *ngFor="let operator of filteredOperatorList" [value]="operator.value"
-                            (ngModelChange)="onSubscriberStatusChange($event)">
-                            {{ operator.name }}
-                        </option>
-                    </select> -->
                 </div>
             </div>
             <div class="row align-items-center">
@@ -106,12 +94,9 @@
                     <label class="form-label">Subscriber Name</label>
                 </div>
                 <div class="col-12 col-md-9 mb-3 file-upload-container">
-                    <select id="subscriber" [(ngModel)]="selectSubscriber" [disabled]="selectedType === 'operator'">
-                        <option value="0" selected>Select Subscriber</option>
-                        <option *ngFor="let subscriber of filteredSubscriberList" [value]="subscriber.value">
-                            {{ subscriber.name }}
-                        </option>
-                    </select>
+                    <input type="text" class="file-input" [(ngModel)]="selectSubscriber"
+                        [disabled]="selectedType !== '2' && selectedType !== '3'" />
+
                 </div>
             </div>
 
@@ -120,9 +105,11 @@
                     <label class="form-label">Area Name</label>
                 </div>
                 <div class="col-12 col-md-9 mb-3 file-upload-container">
-                    <select id="area" [(ngModel)]="selectArea" [disabled]="selectedType === 'operator'">
+                    <select id="area" class="file-input" [(ngModel)]="selectArea"
+                        [disabled]="selectedType !== '2' && selectedType !== '3'">
                         <option value="0" selected>Select Area</option>
-                        <option *ngFor="let area of filteredAreaList" [value]="area.value">
+                        <option *ngFor="let area of filteredAreaList" [value]="area.value"
+                            (ngModelChange)="onStreetList($event)">
                             {{ area.name }}
                         </option>
                     </select>
@@ -134,7 +121,8 @@
                     <label class="form-label">Street Name</label>
                 </div>
                 <div class="col-12 col-md-9 mb-3 file-upload-container">
-                    <select id="street" [(ngModel)]="selectStreet" [disabled]="selectedType === 'operator'">
+                    <select id="street" class="file-input" [(ngModel)]="selectStreet"
+                        [disabled]="selectedType !== '2' && selectedType !== '3'">
                         <option value="0" selected>Select Street</option>
                         <option *ngFor="let Street of filteredStreetList" [value]="Street.value">
                             {{ Street.name }}
@@ -148,8 +136,8 @@
                     <label class="form-label">Package Name</label>
                 </div>
                 <div class="col-12 col-md-9 mb-3 file-upload-container">
-                    <select id="package" [(ngModel)]="selectedPackage"
-                        [disabled]="selectedType === 'operator' || selectedType === 'subscriberImport'">
+                    <select id="package" class="file-input" [(ngModel)]="selectedPackage"
+                        [disabled]="selectedType !== '3'">
                         <option value="0" selected>Select Package</option>
                         <option *ngFor="let package of filteredPackageList" [value]="package.value">
                             {{ package.name }}
@@ -157,19 +145,16 @@
                     </select>
                 </div>
             </div>
-
             <div class="row align-items-center">
                 <div class="col-12 col-md-3">
                     <label class="form-label">Subscription Days</label>
                 </div>
                 <div class="col-12 col-md-9 mb-3 file-upload-container">
-                    <input type="text" class="file-input"
-                        [disabled]="selectedType === 'operator' || selectedType === 'subscriberImport'" />
+                    <input type="number" class="file-input" [(ngModel)]="days" [min]="1"
+                        [disabled]="selectedType !== '3'" />
                 </div>
             </div>
-
         </div>
-
         <div class="dialog-footer">
             <button type="button" class="btn"
                 style="background-color:#1f6764;color: white;font-size: 14;font-weight: 600;"
@@ -195,8 +180,8 @@
                 </div> -->
                 <mat-form-field class="input-field" appearance="outline">
                     <mat-label>Choose a date</mat-label>
-                    <input matInput [matDatepicker]="picker"  (dateChange)="logValues()" [(ngModel)]="date"  placeholder="Select a Date"
-                        readonly>
+                    <input matInput [matDatepicker]="picker" (dateChange)="logValues()" [(ngModel)]="date"
+                        placeholder="Select a Date" readonly>
                     <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
                     <mat-datepicker #picker></mat-datepicker>
                 </mat-form-field>

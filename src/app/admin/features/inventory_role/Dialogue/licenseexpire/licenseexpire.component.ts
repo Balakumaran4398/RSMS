@@ -47,7 +47,7 @@ export class LicenseexpireComponent {
         username: this.username,
         userid: userid,
         password: password,
-        type: 1,
+        type: 6,
       }
       this.userservice.checkLoginCredenticals(requestBody).subscribe(
         (res: any) => {

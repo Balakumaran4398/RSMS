@@ -25,6 +25,13 @@ export class CortonboxComponent implements OnInit {
   cortonBox: any = '';
   model: any;
 
+  isAnyRowSelected: any = false;
+  selectedIds: number[] = [];
+  rows: any[] = [];
+  selectedSmartcard: number[] = [];
+  hasSelectedRows: boolean = true;
+  isRowSelected: boolean = false;
+
   modelName: any;
   gridOptions = {
     defaultColDef: {
@@ -44,6 +51,8 @@ export class CortonboxComponent implements OnInit {
     paginationPageSize: 10,
     pagination: true,
   }
+
+  public rowSelection: any = "multiple";
   constructor(public dialog: MatDialog, public userService: BaseService, storageService: StorageService, private swal: SwalService) {
     this.username = storageService.getUsername();
     this.role = storageService.getUserRole();
@@ -55,7 +64,6 @@ export class CortonboxComponent implements OnInit {
       console.log(this.model);
       this.filteredModel = data;
       console.log(this.filteredModel);
-
     })
   }
   ngAfterViewInit() {
@@ -76,17 +84,24 @@ export class CortonboxComponent implements OnInit {
       // this.cortonBoxList=[...this.toppingList]
     })
   }
-  // onCortonBoxChange(box: string[]) {
-  //   console.log(box);
 
-  //   console.log('111111111111');
+  onSelectionChanged() {
+    if (this.gridApi) {
+      const selectedRows = this.gridApi.getSelectedRows();
+      this.isAnyRowSelected = selectedRows.length > 0;
+      console.log("Selected Rows:", selectedRows);
+      this.rows = selectedRows;
+      this.selectedIds = selectedRows.map((e: any) => e.id);
+      this.selectedSmartcard = selectedRows.map((e: any) => e.smartcard);
+      console.log("Selected Smartcard:", this.selectedSmartcard);
+    }
+  }
 
-  // }
   onGridReady(params: { api: any; }) {
     this.gridApi = params.api;
   }
   columnDefs: ColDef[] = [
-    { headerName: 'S.No', lockPosition: true, valueGetter: 'node.rowIndex+1', width: 100, },
+    { headerName: 'S.No', lockPosition: true, valueGetter: 'node.rowIndex+1', width: 100, headerCheckboxSelection: true, checkboxSelection: true, },
     { headerName: 'SMARTCARD', width: 300, field: 'smartcard', },
     { headerName: 'BOX_ID', width: 470, cellStyle: { textAlign: 'center' }, field: 'boxid', },
     { headerName: 'CARTONBOX NO', width: 200, field: 'cottonbox', },
@@ -94,7 +109,10 @@ export class CortonboxComponent implements OnInit {
     { headerName: 'CHIP ID', width: 200, field: 'chipid', },
   ]
   openDialoguePage(type: any) {
-    let dialogData = type;
+    let dialogData = {
+      type: type,
+      smartcard: this.selectedSmartcard
+    };
     console.log(dialogData);
     const dialogRef = this.dialog.open(InventorycortonboxComponent, {
       data: dialogData,

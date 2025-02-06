@@ -1,7 +1,7 @@
 <div class="row justify-content-start align-items-center mb-3">
     <!-- Left-aligned elements -->
     <div class="col-12 col-md-1 text-center mb-2" style="margin-top: -1.5%;">
-        <button type="submit" (click)="openDialoguePage('corton_box')" class="btn bttn" style="background: #2795abf7">
+        <button type="submit" (click)="openDialoguePage('carton_box')" class="btn bttn" style="background: #2795abf7">
             <i class="fa-solid fa-upload"></i> &nbsp;Upload
         </button>
     </div>
@@ -43,7 +43,7 @@
     <!-- ALLOCATED button pushed to the far right -->
     <div class="col-12 col-md-4 d-flex justify-content-end align-items-center mb-2 ml-auto" style="margin-top: -1%;"> 
         <button type="submit" (click)="openDialoguePage('allocatted')" class="btn bttn"
-            style="background-color:#577266">
+        [disabled]="!isAnyRowSelected"   style="background-color:#577266">
             ALLOCATED
         </button>
     </div>
@@ -65,8 +65,8 @@
                     <div class="tooltip">Pdf</div>
                 </div>
             </div> -->
-            <ag-grid-angular #agGrid id="myGrid" domLayout='normal' class="ag-theme-alpine table-class" rowAnimation
-                style="max-height: 775px;overflow: scroll;" [gridOptions]="gridOptions" [columnDefs]="columnDefs"
+            <ag-grid-angular #agGrid id="myGrid" domLayout='normal' class="ag-theme-alpine table-class" rowAnimation [rowSelection]="rowSelection" 
+                style="max-height: 775px;overflow: scroll;" [gridOptions]="gridOptions" [columnDefs]="columnDefs" (selectionChanged)="onSelectionChanged()"
                 [rowData]="rowData" (gridReady)="onGridReady($event)" [enableCellTextSelection]="true">
             </ag-grid-angular>
 

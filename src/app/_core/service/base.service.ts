@@ -1207,6 +1207,9 @@ export class BaseService {
   updateLcoChangeSubscriber(requestBody: any): Observable<any[]> {
     return this.http.post<any[]>(BASE_URL + "/bulk/updateLcoChangeSubscriber", requestBody, {});
   }
+  updateAreaChangeSubscriber(requestBody: any): Observable<any[]> {
+    return this.http.post<any[]>(BASE_URL + "/bulk/updateAreaChangeSubscriber", requestBody, {});
+  }
   uploadFileForBulkLcoTransfer(requestBody: any): Observable<any[]> {
     return this.http.post<any[]>(BASE_URL + "/bulk/uploadFileForBulkLcoTransfer", requestBody, {});
   }
@@ -1279,6 +1282,10 @@ export class BaseService {
   getAllOperatorInvoiceBillByMonthYear(role: any, username: any, month: any, Year: any): Observable<HttpResponse<any[]>> {
     return this.http.get<any[]>(
       BASE_URL + "/operator/getAllOperatorInvoiceBillByMonthYear?role=" + role + "&username=" + username + "&month=" + month + "&year=" + Year, { observe: 'response' });
+  }
+  getAllOperatorInvoiceBillMonthYear(role: any, username: any, month: any, Year: any): Observable<any[]> {
+    return this.http.get<any[]>(
+      BASE_URL + "/operator/getAllOperatorInvoiceBillByMonthYear?role=" + role + "&username=" + username + "&month=" + month + "&year=" + Year, {  });
   }
   // ------------------------------------------------------------bill generation-----------------------------------------
   generateOperatorInvoiceBill(role: any, username: any, month: any, Year: any): Observable<any[]> {
@@ -1907,7 +1914,7 @@ export class BaseService {
   // ----------------------------------------------------------INVENTORY-[LOGIN]-----------------------------------------------------------------------------
   // ----------------------------------------------------------------inventory----------------------------
   getInventoryUpdateDate(role: any, username: any, date: any): Observable<any[]> {
-    return this.http.get<any[]>(BASE_URL + "/master/updateLicense?role=" + role + "&username=" + username + "&date=" + date)
+    return this.http.post<any[]>(BASE_URL + "/master/updateLicense?role=" + role + "&username=" + username + "&date=" + date,{})
   }
   getInvent_License_Extend(role: any, username: any): Observable<any[]> {
     return this.http.get<any[]>(

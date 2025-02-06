@@ -4,6 +4,7 @@ import { ExcelService } from 'src/app/_core/service/excel.service';
 import { StorageService } from 'src/app/_core/service/storage.service';
 import { SwalService } from 'src/app/_core/service/swal.service';
 import Swal from 'sweetalert2';
+declare var $:any;
 
 @Component({
   selector: 'app-speciallcotransfer',
@@ -44,6 +45,33 @@ export class SpeciallcotransferComponent implements OnInit {
   ngOnInit(): void {
     this.operatorlist();
   }
+
+  ngAfterViewInit() {
+    $('#lco').select2({
+      placeholder: 'Select LCO',
+      allowClear: true
+    });
+    $('#lco').on('change', (event: any) => {
+      this.lco = event.target.value;
+      this.onSubscriberStatusChange(this.lco);
+    });
+    $('#area').select2({
+      placeholder: 'Select Area',
+      allowClear: true
+    });
+    $('#area').on('change', (event: any) => {
+      this.area = event.target.value;
+      this.onAreaStatusChange(this.area);
+    });
+    $('#street').select2({
+      placeholder: 'Select Street',
+      allowClear: true
+    });
+    $('#street').on('change', (event: any) => {
+      this.street = event.target.value;
+      this.onStreetList(this.street);
+    });
+  }
   generateExcel(type: string) {
     this.excelService.generateBaseChangeExcel(type);
   }
@@ -68,7 +96,7 @@ export class SpeciallcotransferComponent implements OnInit {
       this.filePath = '';
     }
   }
-  opendialogue(): void {
+  submit(): void {
     if (this.file) {
       console.log(this.file);
       Swal.fire({
@@ -86,14 +114,14 @@ export class SpeciallcotransferComponent implements OnInit {
       formData.append('operatorid', this.lco);
       formData.append('areaid', this.area);
       formData.append('streetid', this.street);
-      formData.append('type', '3');
+      formData.append('type', '2');
       formData.append('optype', '10');
       formData.append('retailerid', '0');
       this.userservice.uploadFileForBulkLcoTransfer(formData)
         .subscribe((res: any) => {
           this.swal.success(res?.message);
         }, (err) => {
-          this.swal.Error(err?.error?.message);
+          this.swal.Error(err?.error?.message || err?.error);
         });
     }
   }
@@ -110,7 +138,7 @@ export class SpeciallcotransferComponent implements OnInit {
   }
 
 
-  onSubscriberStatusChange() {
+  onSubscriberStatusChange(type:any) {
     console.log(this.lco);
     this.areaList = [];
     this.streetList = [];
@@ -129,9 +157,8 @@ export class SpeciallcotransferComponent implements OnInit {
   }
 
 
-  onAreaStatusChange() {
+  onAreaStatusChange(type:any) {
     console.log(this.area);
-
     this.streetList = [];
     if (this.area) {
       this.userservice.getStreetListByAreaid(this.role, this.username, this.area)
@@ -146,4 +173,10 @@ export class SpeciallcotransferComponent implements OnInit {
         });
     }
   }
+
+  onStreetList(type:any){
+
+  }
+
+  
 }

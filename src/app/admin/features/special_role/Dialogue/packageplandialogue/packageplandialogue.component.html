@@ -35,7 +35,7 @@
                     <span for="categoryName" class="me-2">Days</span>
                 </div>
                 <div class="col-12 col-md-6">
-                    <input type="number" [min]="1" 
+                    <input type="number" [min]="1" [max]="365"
                         [(ngModel)]="days" name="streetname" required #streetnameInput="ngModel">
                     <div *ngIf="streetnameInput.invalid && streetnameInput.touched" class="text-danger">
                         Days is required.

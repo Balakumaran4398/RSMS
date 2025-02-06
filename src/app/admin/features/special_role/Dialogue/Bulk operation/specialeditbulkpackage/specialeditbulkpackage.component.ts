@@ -68,10 +68,10 @@ export class SpecialeditbulkpackageComponent implements OnInit {
   columnDefs: ColDef[] = [
     { headerName: "S.No", lockPosition: true, valueGetter: 'node.rowIndex+1', width: 100 },
     { headerName: "SMARTCARD", field: 'smartcard', width: 250 },
-    { headerName: "BOXID", field: 'boxid', width: 150 },
+    { headerName: "BOXID", field: 'boxid', width: 200 },
     { headerName: "SUBSCRIBER NAME	", field: 'customername', width: 200 },
-    { headerName: "MOBILE NO", field: 'mobileno', width: 150 },
-    { headerName: "AREA NAME", field: 'areaname', width: 120 },
+    { headerName: "MOBILE NO", field: 'mobileno', width: 200 },
+    { headerName: "AREA NAME", field: 'areaname', width: 200 },
   ]
 
   operatorlist() {
@@ -153,10 +153,11 @@ export class SpecialeditbulkpackageComponent implements OnInit {
       operatorid: this.lco,
       areaid: this.area,
       streetid: this.street,
-      subscriberlist: this.rowData
+      subscriberlist: this.rowData,
+  
     }
     this.swal.Loading();
-    this.userservice.updateLcoChangeSubscriber(requestBody)
+    this.userservice.updateAreaChangeSubscriber(requestBody)
       .subscribe((res: any) => {
         this.swal.success(res?.message);
       }, (err) => {
@@ -168,7 +169,7 @@ export class SpecialeditbulkpackageComponent implements OnInit {
       role: this.role,
       username: this.username,
       retailerid: 0,
-      type: 3,
+      type: 2,  
       operatorid: this.lco,
       areaid: this.area,
       streetid: this.street,

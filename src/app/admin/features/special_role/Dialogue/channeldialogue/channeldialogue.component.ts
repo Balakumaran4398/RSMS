@@ -36,6 +36,8 @@ export class ChanneldialogueComponent implements OnInit {
     this.channelname = data.data?.channelName;
     this.url = data.data?.url;
     this.channellogo = data.data?.logo;
+    console.log('43555555555555555555555',this.channellogo);
+    
     this.categoryid = data.data?.categoryId;
     this.isactive = data.data?.isactive;
     this.id = data.data?.channelId;
@@ -43,7 +45,11 @@ export class ChanneldialogueComponent implements OnInit {
 
     this.createForm = this.fb.group({
       channelname: ['', Validators.required],
-      url: ['', [Validators.required, Validators.pattern('(https?://)?([\\da-z.-]+)\\.([a-z.]{2,6})([/\\w .-]*)*/?')]],
+      // url: ['', [Validators.required, Validators.pattern('(http?://)?([\\da-z.-]+)\\.([a-z.]{2,6})([/\\w .-]*)*/?')]],
+      url: ['', [
+        Validators.required,
+        Validators.pattern(/^(https?:\/\/www\.[a-zA-Z0-9-]+\.(com|in|net|org|edu|gov|info|co))$/)
+      ]],
       logo: ['', Validators.required],
       categoryid: ['', Validators.required],
     });
@@ -58,7 +64,7 @@ export class ChanneldialogueComponent implements OnInit {
   }
   ngOnInit(): void {
     this.Category_list();
-  }
+  } 
   onClick(): void {
     this.dialogRef.close();
   }

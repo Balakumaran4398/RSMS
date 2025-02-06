@@ -72,20 +72,42 @@
     width: 100%;
     max-width: 200px;
 }
-select:disabled,
-input:disabled {
-    background-color: #e9ecef; /* Light gray */
-    color: #6c757d; /* Gray text */
-    cursor: not-allowed;
-    opacity: 0.6;
+
+.file-input {
+    background-color: white;
+    color: black;
+    border: 1px solid #013a0a;
 }
 
-select,
-input {
-    background-color: #ffffff; /* White background for enabled */
-    color: #000; /* Black text */
-    border: #000;
+.file-input:disabled {
+    background-color: #e9ecef;
+    color: #6c757d;
+    border: 1px solid #ced4da;
 }
+
+::ng-deep .select2-container {
+    width: 100% !important;
+}
+
+::ng-deep .select2-container .select2-selection--single {
+    height: 50px !important;
+    border: 1px solid #013a0a;
+    width: 100% !important;
+}
+
+::ng-deep .select2-container.select2-container--disabled .select2-selection--single {
+    border: 1px solid #ced4da !important;
+}
+
+::ng-deep .select2-container .select2-selection--single .select2-selection__rendered {
+    margin-top: 13px;
+}
+
+::ng-deep .select2-container--default .select2-selection--single .select2-selection__arrow {
+    top: 13px;
+
+}
+
 @media screen and (max-width:560px) {
     .dialog-container {
         max-height: 650px;

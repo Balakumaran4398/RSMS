@@ -58,18 +58,19 @@ export class LicenseComponent implements OnInit {
       headerName: 'STATUS',
       width: 470,
       field: 'valid',
-      cellStyle: params => {
-        return {
-          textAlign: 'center',
-          color: params.value ? 'green' : 'red',
-        };
-      },
-      valueGetter: params => (params.data.valid ? 'Active' : 'Deactive')
+      cellRenderer: (params: { value: any; data: any }) => {
+        const color = params.value ? 'green' : 'red';
+        const text = params.value ?  'Active': 'Deactive' ;
+        return `<span style="color: ${color}; ">${text}</span>`;
+      }
     },
     { headerName: 'LICENSE EXPIRY DATE', width: 500, field: 'expiryDate', },
   ]
   openDialoguePage(type: any) {
-    let dialogData = type;
+    let dialogData = {
+      type:type,
+      smartcard: ''
+    };
     console.log(dialogData);
     const dialogRef = this.dialog.open(InventorycortonboxComponent, {
       data: dialogData,

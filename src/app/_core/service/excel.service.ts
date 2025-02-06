@@ -268,8 +268,8 @@ export class ExcelService {
   }
   async generatealacarteactivationExcel(type: any) {
     console.log(type);
-    const header = type === 'corton_box'
-    ? ['BOX ID (Mandatory)', 'CORTON BOX (Mandatory)']
+    const header = type === 'carton_box'
+    ? ['BOX ID (Mandatory)', 'CARTON BOX (Mandatory)']
     : ['SMARTCARD (Mandatory)', 'BOX ID (Non-Mandatory)'];
 
     const workbook = new Excel.Workbook();

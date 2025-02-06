@@ -4,19 +4,6 @@
         <i class="fa fa-close close-icon" style="cursor: pointer;" (click)="onNoClick()"></i>
     </div>
     <div class="container">
-        <div class="row mb-3">
-            <div class="col-12 col-md-12 mb-3 mb-md-0">
-                <div class="title">
-                    <h5>SUBSCRIBER LIST <span style="color: rgb(11, 67, 170);font-size: 20px;font-weight: 600;">-
-                            {{rowData?.length}}</span></h5>
-                </div>
-                <ag-grid-angular #agGrid id="myGrid" style="text-align: center;" class="gridtable"
-                    domLayout='autoHeight' class="ag-theme-alpine table-class" rowAnimation [gridOptions]="gridOptions"
-                    [columnDefs]="columnDefs" [rowData]="rowData" [enableCellTextSelection]="true">
-                </ag-grid-angular>
-            </div>
-        </div>
-
         <div class="col-12 col-md-12 box d-block justify-content-center align-items-center">
             <!-- Select LCO -->
             <mat-form-field appearance="outline" class="w-25 mx-2">
@@ -48,6 +35,21 @@
                 <mat-error *ngIf="!street">Street is required</mat-error>
             </mat-form-field>
         </div>
+
+        <div class="row mb-3">
+            <div class="col-12 col-md-12 mb-3 mb-md-0">
+                <div class="title">
+                    <h5>SUBSCRIBER LIST <span style="color: rgb(11, 67, 170);font-size: 20px;font-weight: 600;">-
+                            {{rowData?.length}}</span></h5>
+                </div>
+                <ag-grid-angular #agGrid id="myGrid" style="max-height: 500px;overflow: scroll;" class="gridtable"
+                    domLayout='normal' class="ag-theme-alpine table-class" rowAnimation [gridOptions]="gridOptions"
+                    [columnDefs]="columnDefs" [rowData]="rowData" [enableCellTextSelection]="true">
+                </ag-grid-angular>
+            </div>
+        </div>
+
+      
         <div class="mobile mb-3 d-flex justify-content-center align-items-center ">
             <button class="btn btn-outline-info mx-1" mat-raised-button color="primary" type="button"
                 (click)="updateLCO()">

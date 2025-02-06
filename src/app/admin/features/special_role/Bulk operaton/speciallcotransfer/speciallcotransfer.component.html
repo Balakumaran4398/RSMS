@@ -48,8 +48,8 @@
                     <div class="col-6 col-md-4 ">
                         <label for="lco" style="color: #261b72;font-size: 15px;">Choose LCO :</label>
                     </div>
-                    <div class="col-12  col-md-6">
-                        <mat-form-field appearance="outline" class="w-100">
+                    <div class="col-12  col-md-6 mb-3">
+                        <!-- <mat-form-field appearance="outline" class="w-100">
                             <mat-label>Select LCO</mat-label>
                             <mat-select [(ngModel)]="lco" (ngModelChange)="onSubscriberStatusChange()" name="lco"
                                 required>
@@ -58,17 +58,26 @@
                                     }}</mat-option>
                             </mat-select>
                             <mat-error *ngIf="!lco">LCO is required</mat-error>
-                        </mat-form-field>
+                        </mat-form-field> -->
+
+
+                        <select id="lco" [(ngModel)]="lco">
+                            <option value="0" selected>Select Operator</option>
+                            <option *ngFor="let lco of lcoList" [value]="lco.value"
+                                (ngModelChange)="onSubscriberStatusChange($event)">
+                                {{ lco.name }}
+                            </option>
+                        </select>
                     </div>
                 </div>
 
                 <!-- Row for Area -->
-                <div class="row  display align-items-center">
+                <div class="row  display align-items-center mb-3">
                     <div class="col-6  col-md-4 ">
                         <label for="area" style="color: #261b72;font-size: 15px;">Choose Area :</label>
                     </div>
                     <div class="col-12  col-md-6">
-                        <mat-form-field appearance="outline" class="w-100">
+                        <!-- <mat-form-field appearance="outline" class="w-100">
                             <mat-label>Select Area</mat-label>
                             <mat-select [(ngModel)]="area" (ngModelChange)="onAreaStatusChange()" name="area" required>
                                 <mat-option value="">Select Area</mat-option>
@@ -77,7 +86,16 @@
                                     }}</mat-option>
                             </mat-select>
                             <mat-error *ngIf="!area">Area is required</mat-error>
-                        </mat-form-field>
+                        </mat-form-field> -->
+
+
+                        <select id="area" [(ngModel)]="area">
+                            <option value="0" selected>Select Area</option>
+                            <option *ngFor="let area of areaList" [value]="area.value"
+                                (ngModelChange)="onAreaStatusChange($event)">
+                                {{ area.name }}
+                            </option>
+                        </select>
                     </div>
                 </div>
 
@@ -86,8 +104,8 @@
                     <div class="col-6   col-md-4">
                         <label for="street" style="color: #261b72;font-size: 15px;">Choose Street :</label>
                     </div>
-                    <div class="col-12  col-md-6">
-                        <mat-form-field appearance="outline" class="w-100">
+                    <div class="col-12  col-md-6 mb-3">
+                        <!-- <mat-form-field appearance="outline" class="w-100">
                             <mat-label>Select Street</mat-label>
                             <mat-select [(ngModel)]="street" name="street" required>
                                 <mat-option value="">Select Street</mat-option>
@@ -96,7 +114,15 @@
                                     }}</mat-option>
                             </mat-select>
                             <mat-error *ngIf="!street">Street is required</mat-error>
-                        </mat-form-field>
+                        </mat-form-field> -->
+
+                        <select id="street" [(ngModel)]="street">
+                            <option value="0" selected>Select Street</option>
+                            <option *ngFor="let Street of streetList" [value]="Street.value"
+                                (ngModelChange)="onStreetList($event)">
+                                {{ Street.name }}
+                            </option>
+                        </select>
                     </div>
                 </div>
             </div>
@@ -105,7 +131,7 @@
 
             <div class="d-flex justify-content-end align-items-center mt-3">
                 <button type="submit" class="btn btn-success" [disabled]="!isCheckboxChecked || !isFileSelected"
-                    (click)="opendialogue()">
+                    (click)="submit()">
                     Submit
                 </button>
             </div>

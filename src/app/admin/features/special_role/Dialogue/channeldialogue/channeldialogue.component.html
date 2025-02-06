@@ -1,4 +1,3 @@
-
 <div *ngIf="type =='createlocalchannel'">
     <div class="Head d-flex justify-content-between align-items-center mb-3" style="padding: 1rem;">
         <h6>CREATE NEW LOCAL CHANNEL</h6>
@@ -10,10 +9,10 @@
             <!-- Channel Name -->
             <div class="input_box display align-items-center mb-3">
                 <div class="col-12 col-md-4">
-                    <label for="categoryName" class="me-2">Channel Name</label>
+                    <label for="channelname" class="me-2">Channel Name</label>
                 </div>
-                <div class="col-12 col-md-1 mobile" >
-                    <span for="categoryName" class="me-2">:</span>
+                <div class="col-12 col-md-1 mobile">
+                    <span for="channelname" class="me-2">:</span>
                 </div>
                 <div class="col-12 col-md-7">
                     <input type="text" formControlName="channelname" placeholder="Enter Channel Name">
@@ -28,30 +27,30 @@
                 <div class="col-12 col-md-4">
                     <label class="me-2">URL</label>
                 </div>
-                <div class="col-12 col-md-1 mobile" >
-                    <span for="categoryName" class="me-2">:</span>
+                <div class="col-12 col-md-1 mobile">
+                    <span for="url" class="me-2">:</span>
                 </div>
                 <div class="col-12 col-md-7">
                     <input type="url" formControlName="url" placeholder="Enter URL">
                     <div *ngIf="createForm.get('url')?.invalid && createForm.get('url')?.touched" class="text-danger">
                         <div *ngIf="createForm.get('url')?.errors?.['required']">URL is required.</div>
                         <div *ngIf="createForm.get('url')?.errors?.['pattern']">
-                            Please enter a valid URL (e.g., https://www.example.com).
+                            Please enter a valid URL (e.g., http://www.example.com or https://www.example.in).
                         </div>
                     </div>
                 </div>
             </div>
-
             <!-- Channel Logo -->
             <div class="input_box display align-items-center mb-3">
                 <div class="col-12 col-md-4">
                     <label class="me-2">Channel Logo</label>
                 </div>
-                <div class="col-12 col-md-1 mobile" >
-                    <span for="categoryName" class="me-2">:</span>
+                <div class="col-12 col-md-1 mobile">
+                    <span for="channellogo" class="me-2">:</span>
                 </div>
                 <div class="col-12 col-md-7">
-                    <input type="file" (change)="onFileSelected($event)">
+                    <input type="file" (change)="onFileSelected($event)"
+                        accept="image/png, image/jpeg, image/jpg, image/svg+xml">
                     <div *ngIf="fileError" class="text-danger">
                         Channel Logo is required.
                     </div>
@@ -61,8 +60,8 @@
                 <div class="col-12 col-md-4">
                     <label class="me-2">CATEGORY</label>
                 </div>
-                <div class="col-12 col-md-1 mobile" >
-                    <span for="categoryName" class="me-2">:</span>
+                <div class="col-12 col-md-1 mobile">
+                    <span for="categoryid" class="me-2">:</span>
                 </div>
                 <div class="col-12 col-md-7">
                     <mat-form-field appearance="outline" style="outline: #02422d; margin-top:-0px; width: 100%;">
@@ -102,7 +101,7 @@
                 <div class="col-12 col-md-4">
                     <span for="categoryName" class="me-2">Channel Name</span>
                 </div>
-                <div class="col-12 col-md-1 mobile" >
+                <div class="col-12 col-md-1 mobile">
                     <span for="categoryName" class="me-2">:</span>
                 </div>
                 <div class="col-12 col-md-7">
@@ -119,7 +118,7 @@
                 <div class="col-12 col-md-4">
                     <span class="me-2">URL</span>
                 </div>
-                <div class="col-12 col-md-1 mobile" >
+                <div class="col-12 col-md-1 mobile">
                     <span for="categoryName" class="me-2">:</span>
                 </div>
                 <div class="col-12 col-md-7">
@@ -132,17 +131,17 @@
                     </div>
                 </div>
             </div>
-
             <!-- Channel Logo -->
             <div class="input_box display align-items-center mb-3">
                 <div class="col-12 col-md-4">
                     <span class="me-2">Channel Logo</span>
                 </div>
-                <div class="col-12 col-md-1 mobile" >
+                <div class="col-12 col-md-1 mobile">
                     <span for="categoryName" class="me-2">:</span>
                 </div>
                 <div class="col-12 col-md-7">
-                    <input type="file" (change)="onFileSelected($event)" [(ngModel)]="channellogo">
+                    <input type="file" [(ngModel)]="channellogo" (change)="onFileSelected($event)"
+                        accept="image/png, image/jpeg, image/jpg, image/svg+xml">
                     <div *ngIf="fileError" class="text-danger">
                         Channel Logo is required.
                     </div>
@@ -152,12 +151,12 @@
                 <div class="col-12 col-md-4">
                     <span class="me-2">CATEGORY</span>
                 </div>
-                <div class="col-12 col-md-1 mobile" >
+                <div class="col-12 col-md-1 mobile">
                     <span for="categoryName" class="me-2">:</span>
                 </div>
                 <div class="col-12 col-md-7">
                     <mat-form-field appearance="outline" style="outline: #02422d; margin-top:-0px; width: 100%;">
-                        <mat-select placeholder="Select Category" formControlName="categoryid"  [(ngModel)]="categoryid"
+                        <mat-select placeholder="Select Category" formControlName="categoryid" [(ngModel)]="categoryid"
                             [ngClass]="{'has-error': editform.get('categoryid')?.invalid && editform.get('categoryid')?.touched}">
                             <mat-option *ngFor="let d of categorylist" [value]="d.id">
                                 {{ d.category }}
@@ -193,4 +192,3 @@
     </div>
 
 </div>
-

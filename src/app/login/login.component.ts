@@ -30,7 +30,7 @@ export class LoginComponent implements OnInit {
 
   warningMessage: any;
   warningMessageDate: any;
-  notificationMessage: boolean = true;
+  notificationMessage: boolean = false;
   constructor(
     private fb: FormBuilder,
     private authService: AuthService,
@@ -54,6 +54,7 @@ export class LoginComponent implements OnInit {
         this.warningMessageDate = data.sub_notification_msg;
         this.warningMessage = data.notificationmsg;
       }
+      console.log(this.notificationMessage);
     });
     console.log(this.notificationMessage);
   }

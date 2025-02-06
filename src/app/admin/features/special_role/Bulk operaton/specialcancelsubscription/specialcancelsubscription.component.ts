@@ -162,7 +162,7 @@ export class SpecialcancelsubscriptionComponent implements OnInit {
   }
   getData() {
     this.rowData = [];
-    this.userservice.getBulkrefreshListByDate(this.role, this.username, 'cancel_supscription', this.date, 11)
+    this.userservice.getBulkrefreshListByDate(this.role, this.username, 'cancel_subscription', this.date, 11)
       .subscribe(
         (response: any) => {
           console.log(response);
@@ -185,7 +185,7 @@ export class SpecialcancelsubscriptionComponent implements OnInit {
   refresh() {
     console.log('refresh');
     this.swal.Loading();
-    this.userservice.getBulkRefreshList(this.role, this.username, 'cancel_supscription', 11)
+    this.userservice.getBulkRefreshList(this.role, this.username, 'cancel_subscription', 11)
       .subscribe(
         (response: any) => {
           console.log(response);
