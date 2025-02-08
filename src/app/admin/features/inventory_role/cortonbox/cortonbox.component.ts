@@ -22,7 +22,7 @@ export class CortonboxComponent implements OnInit {
   filteredModel: any[] = [];
   cortonBoxList: any[] = [];
   toppingList: any[] = [];
-  cortonBox: any = '';
+  cortonBox: any[] = [];
   model: any;
 
   isAnyRowSelected: any = false;

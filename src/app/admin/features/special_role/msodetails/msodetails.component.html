@@ -1,4 +1,4 @@
-<div class="row display justify-content-center align-items-center " >
+<div class="row display justify-content-center align-items-center ">
     <div class="card col-12 col-md-4 display justify-content-center align-items-center profile1 mx-3 mb-3">
         <div class="d-block justify-content-center align-items-center">
             <div class="col-6 col-md-6">
@@ -8,7 +8,8 @@
             <div class="col-6 col-md-6 w-100 d-flex justify-content-center align-items-center">
                 <label class="btn btn-success mx-1" style="width: 100px;">
                     <i class="fa fa-plus"></i> Choose
-                    <input type="file" style="display: none;" (change)="handleFileInput($event)">
+                    <input type="file" style="display: none;" accept="image/png, image/jpeg, image/jpg, image/svg+xml"
+                        (change)="handleFileInput($event)">
                 </label>
             </div>
         </div>
@@ -107,7 +108,7 @@
                 </div>
             </div>
             <div class="row input-box mb-3" style="cursor: pointer;">
-                <div class="col-5 col-md-5" >
+                <div class="col-5 col-md-5">
                     <label for="">EDIT</label>
                 </div>
                 <div class="col-1 col-md-1">

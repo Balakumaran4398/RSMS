@@ -41,18 +41,18 @@ export class CasmasterComponent {
     this.username = storageservice.getUsername();
   }
   columnDefs: any[] = [
-    { headerName: "S.No", lockPosition: true, valueGetter: 'node.rowIndex+1', headerCheckboxSelection: true, checkboxSelection: true, },
+    { headerName: "S.No", lockPosition: true, valueGetter: 'node.rowIndex+1', headerCheckboxSelection: true, checkboxSelection: true,width:100 },
     { headerName: "CAS ID", field: 'id' },
-    { headerName: "CAS NAME", field: 'casname' },
-    { headerName: "VENDOR", field: 'vendor' },
-    { headerName: "ADDRESS", field: 'address' },
-    { headerName: "SERVER IP", field: 'serverip' },
-    { headerName: "SERVER PORT", field: 'serverport' },
-    { headerName: "SMARTCARD LENGTH", field: 'smartcardlength' },
-    { headerName: "BOX ID LENGTH", field: 'boxlength' },
-    { headerName: "REFERENCE URL", field: 'referenceurl' },
-    { headerName: "WEBSITE", field: 'website' },
-    { headerName: "EMAIL", field: 'email' },
+    { headerName: "CAS NAME", field: 'casname',cellStyle: { textAlign: 'left' } },
+    { headerName: "VENDOR", field: 'vendor',cellStyle: { textAlign: 'left' } },
+    { headerName: "ADDRESS", field: 'address', cellStyle: { textAlign: 'left' } },
+    { headerName: "SERVER IP", field: 'serverip',cellStyle: { textAlign: 'left' } },
+    { headerName: "SERVER PORT", field: 'serverport',cellStyle: { textAlign: 'left' } },
+    { headerName: "SMARTCARD LENGTH", field: 'smartcardlength',cellStyle: { textAlign: 'left' } },
+    { headerName: "BOX ID LENGTH", field: 'boxlength',cellStyle: { textAlign: 'left' } },
+    { headerName: "REFERENCE URL", field: 'referenceurl',cellStyle: { textAlign: 'left' } },
+    { headerName: "WEBSITE", field: 'website',cellStyle: { textAlign: 'left' } },
+    { headerName: "EMAIL", field: 'email',cellStyle: { textAlign: 'left' } },
     { headerName: "CONTACT NO", field: 'contactno' },
     {
       headerName: "IS ACTIVE", field: 'isactive',
@@ -68,7 +68,7 @@ export class CasmasterComponent {
       }
     },
     {
-      headerName: "", field: '', filter: false,
+      headerName: "EDIT", field: '', filter: false,
       cellRenderer: (params: any) => {
         const editButton = document.createElement('button');
         editButton.innerHTML = '<i class="fa fa-pencil-square" aria-hidden="true"></i>';

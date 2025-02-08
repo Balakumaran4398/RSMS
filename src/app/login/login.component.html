@@ -1,7 +1,7 @@
 <div class="bg">
-    <div class="login-wrap d-flex justify-content-center align-item-center">
+    <div class="login-wrap d-flex justify-content-center align-items-center">
         <div class="login-html">
-            <div class="d-block justify-content-center align-item-center mb-3">
+            <div class="d-block justify-content-center align-items-center mb-3">
                 <h2 style="text-transform:capitalize;color:#256462">RSMS</h2>
             </div>
             <br>
@@ -24,27 +24,31 @@
                             {{ isShow ? 'visibility' : 'visibility_off' }}
                         </mat-icon>
                     </mat-form-field>
+                    <br>
                     <div class="group">
                         <input type="submit" class="button" value="Sign In">
                     </div>
-
-                    <div class="mb-2" *ngIf="!notificationMessage" style="position: relative;">
-                        <br/>
+                    <div class="mb-3" *ngIf="notificationMessage" style="position: relative;">
+                        <br />
                         <div class="d-flex justify-content-center">
                             <label style="color:#021616;font-weight: 600;font-size: small;">{{warningMessage}} </label>
                         </div>
                         <div class="d-flex justify-content-center">
-                            <label style="color:#c10528;font-weight: 600;font-size: small">{{warningMessageDate}} </label>
+                            <label style="color:#c10528;font-weight: 600;font-size: small">{{warningMessageDate}}
+                            </label>
                         </div>
                     </div>
                 </div>
             </form>
-            <div class="d-flex justify-content-between align-item-center">
+            <div class="d-block justify-content-center align-item-center">
                 <div class="foot-lnk">
                     <p style="color:#1f6764;font-size: small;font-weight: bold;">Version 7.2.2</p>
                 </div>
-                <div>
-                    <p style="color:#525252;text-align: center;margin-bottom: -4%;font-size: x-small;">Powered by</p>
+                <div class="d-flex justify-content-center align-item-center">
+                    <div style="padding: 20px 0px;">
+                        <p style="color:#525252;text-align: center;margin-bottom: -4%;font-size: x-small;">Powered by
+                        </p>
+                    </div>
                     <div class="d-flex justify-content-center">
                         <img style="height: 60px;" src="/assets/images/login/Rid_logo.png">
                     </div>

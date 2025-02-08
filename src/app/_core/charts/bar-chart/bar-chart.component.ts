@@ -3,6 +3,8 @@ import { BaseService } from '../../service/base.service';
 import { StorageService } from '../../service/storage.service';
 import { SwalService } from '../../service/swal.service';
 import { CanvasJS } from '@canvasjs/angular-charts';
+import * as jQuery from 'jquery';
+declare var AmCharts: any;
 
 @Component({
   selector: 'app-bar-chart',
@@ -15,6 +17,19 @@ export class BarChartComponent implements OnInit {
   username: string;
   date: any;
   chart: any;
+  value: any;
+
+  BAChartDataValue = [5, 17, 9, 12, 2];
+  BAChartDataLabel = ['TATA', 'Mahendra', 'Toyota', 'Tesla', 'BMW'];
+  BAChartJobErrColors = [
+    'rgba(26, 176, 169, 1)',
+    'rgba(119, 209, 190, 1)',
+    'rgba(127, 188, 212, 1)',
+    'rgba(28, 120, 212, 1)',
+    'rgba(3, 3, 158, 1)',
+  ];
+
+  BAChartCountTotal = this.BAChartDataValue.reduce((acc, val) => acc + val, 0);
 
   constructor(private userservice: BaseService, private storageservice: StorageService, private swal: SwalService) {
     this.role = storageservice.getUserRole();
@@ -24,6 +39,59 @@ export class BarChartComponent implements OnInit {
   ngOnInit(): void {
     this.date = new Date().toISOString().split('T')[0];
     this.loadChartData(this.date);
+
+
+    jQuery('.chart-input').off().on('input change', function () {
+      jQuery('.chart-input')
+        .off('input change') 
+        .on('input change', function (this: HTMLInputElement) {
+          var property = jQuery(this).data('property');
+          var target = (window as any).chart; 
+
+          if (!target) {
+            console.error('Chart object not found');
+            return;
+          }
+
+          target.startDuration = 0;
+
+          if (property === 'topRadius') {
+            target = target.graphs[0];
+          }
+
+          target[property] = this.value;
+          target.validateNow();
+        });
+    });
+
+    AmCharts.makeChart("chartdiv", {
+      "type": "serial",
+      "startDuration": 2,
+      "dataProvider": [
+        { "country": "Customer Amount", "visits": 4025, "color": "#027523" },
+        { "country": "LCO Profit", "visits": 1882, "color": "#048077" },
+        { "country": "LCO Amount", "visits": 1192, "color": "#022738" },
+        { "country": "LCO Tax", "visits": 2010, "color": "#423f69" },
+        { "country": "Refund", "visits": 2882, "color": "#69101d" },
+        { "country": "Recharge", "visits": 3882, "color": "#750b1a" },
+      ],
+      "valueAxes": [{ "position": "left", "axisAlpha": 0, "gridAlpha": 0 }],
+      "graphs": [{
+        "balloonText": "[[category]]: <b>[[value]]</b>",
+        "colorField": "color",
+        "fillAlphas": 0.85,
+        "lineAlpha": 0.1,
+        "type": "column",
+        "topRadius": 1,
+        "valueField": "visits"
+      }],
+      "depth3D": 40,
+      "angle": 30,
+      "chartCursor": { "categoryBalloonEnabled": false, "cursorAlpha": 0, "zoomable": false },
+      "categoryField": "country",
+      "categoryAxis": { "gridPosition": "start", "axisAlpha": 0, "gridAlpha": 0 }
+    });
+    
   }
 
   onDateChange(event: Event): void {
@@ -45,7 +113,7 @@ export class BarChartComponent implements OnInit {
     this.userservice.getDashboardSubscribtionBarChartDetails(this.role, this.username, date).subscribe((data: any) => {
       this.updateChartData(data);
       console.log(data);
-      
+
     });
   }
 
@@ -116,4 +184,7 @@ export class BarChartComponent implements OnInit {
 
     chart.render();
   }
+
+
+
 }

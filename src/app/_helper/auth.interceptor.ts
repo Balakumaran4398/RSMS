@@ -31,18 +31,18 @@ export class AuthInterceptor implements HttpInterceptor {
           if (error.error instanceof ErrorEvent) {
           } else {
             switch (error.status) {
-                case 401:
-                    this.storageServise.signOut();
-                    // this.alertToaster.showError("Invalid Credentials,Please Enter valid Employeeid and Password");
-                    console.log(`redirect to login`);
-                    this.matDialog.closeAll();
-                    handled = true;
-                    break;
-                  case 403:
-                    // this.token.signOut();
-                    console.log(`redirect to login`);
-                    handled = true;
-                    break;
+                // case 401:
+                //     this.storageServise.signOut();
+                //     // this.alertToaster.showError("Invalid Credentials,Please Enter valid Employeeid and Password");
+                //     console.log(`redirect to login`);
+                //     this.matDialog.closeAll();
+                //     handled = true;
+                //     break;
+                //   case 403:
+                //     // this.token.signOut();
+                //     console.log(`redirect to login`);
+                //     handled = true;
+                //     break;
             }
           }
         } else {

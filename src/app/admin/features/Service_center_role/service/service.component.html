@@ -134,8 +134,8 @@
         <div class="d-flex justify-content-center align-items-center p-2 bg-dark text-white mb-3">
             <h6>SERVICE HISTORY</h6>
         </div>
-        <div class="displayustify-content-start align-items-center ">
-            <div class="">
+        <div class="display justify-content-start align-items-center ">
+            <div class="mx-2" style="margin-top: -1.2%;">
                 <select id="operator" [(ngModel)]="selectedOperator">
                     <option value="0" selected>ALL Operator</option>
                     <option *ngFor="let operator of filteredOperatorList" [value]="operator.value">
@@ -143,27 +143,26 @@
                     </option>
                 </select>
             </div>
-            <div class=" ">
+            <div class=" mx-2" style="margin-top: -1.2%;">
                 <input type="checkbox" [(ngModel)]="isActive" style="width: 35px;height: 20px;">
             </div>
-            <div class=" input_box">
-                <input type="text" placeholder="Enter Smartcard Last 5 digit">
+            <div class=" input_box mx-2" style="margin-top: -1.2%;">
+                <input type="text" placeholder="Enter Smartcard Last 5 digit" [disabled]="!isActive">
             </div>
-            <div class="">
+            <div class="mx-2" style="margin-top: 0.8%;">
                 <mat-form-field appearance="outline">
                     <mat-date-range-input [rangePicker]="picker" [max]="today">
-                        <input matStartDate matInput placeholder="Start date"
-                            (dateChange)="getFromDate($event)">
+                        <input matStartDate matInput placeholder="Start date" (dateChange)="getFromDate($event)">
                         <input matEndDate matInput placeholder="End date" (dateChange)="getToDate($event)">
                     </mat-date-range-input>
                     <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
                     <mat-date-range-picker #picker></mat-date-range-picker>
                 </mat-form-field>
             </div>
-            <div class=" d-flex justify-content-center align-items-center">
+            <div class="mx-2 d-flex justify-content-center align-items-center" style="margin-top: -1.2%;">
                 <button type="button" class="btn btn-success">Update </button>
             </div>
-            <div class=" display1">
+            <div class=" display1" style="margin-top: -1.2%;">
                 <div class="export-icon  mx-2">
                     <img src="/assets/images/icons/Excel.png" alt="Excel Icon" width="40px"
                         (click)="getServiceReportDownload(2)">
@@ -177,8 +176,7 @@
             </div>
         </div>
         <ag-grid-angular #agGrid id="myGrid" domLayout="normal" class="ag-theme-alpine table-class" rowAnimation
-            [gridOptions]="gridOptions"
-            [columnDefs]="columnDefs" [rowData]="rowData"  [enableCellTextSelection]="true">
+            [gridOptions]="gridOptions" [columnDefs]="columnDefs" [rowData]="rowData" [enableCellTextSelection]="true">
         </ag-grid-angular>
     </div>
 </div>

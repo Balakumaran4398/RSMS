@@ -26,8 +26,8 @@
 
         <mat-form-field class="w-100" appearance="outline">
             <mat-label>Select Addon</mat-label>
-            <mat-select [formControl]="toppings" multiple [(ngModel)]="cortonBox" >
-                <mat-option *ngFor="let box of cortonBoxList" [value]="box" (onSelectionChange)="onCortonBoxChange(cortonBoxList)">
+            <mat-select [formControl]="toppings" multiple [(ngModel)]="cortonBox" (selectionChange)="onCortonBoxChange($event.value)" >
+                <mat-option *ngFor="let box of cortonBoxList" [value]="box" >
                     {{ box }}
                 </mat-option>
             </mat-select>

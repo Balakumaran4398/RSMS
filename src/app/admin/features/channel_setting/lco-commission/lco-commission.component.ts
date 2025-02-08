@@ -212,21 +212,28 @@ export class LcoCommissionComponent {
         { headerName: "PRODUCT NAME", field: 'productname', width: 200, cellStyle: { textAlign: 'left' }, },
         { headerName: "PRODUCT ID", field: 'productid', width: 130 },
         { headerName: "PRODUCT TYPE", field: 'producttype', width: 140 },
-        { headerName: "PRODUCT RATE", field: 'rate', width: 140 },
         {
-          headerName: "CUSTOMER AMOUNT", field: 'customeramount', width: 150, cellRenderer: (params: any) => `<span style="color: #035203;
-          font-weight: bold;;">₹</span> ${params.value}`
-        },
-        { headerName: "LCO COMMISSION", field: 'commissionvalue', width: 150 },
-        {
-          headerName: "MSO AMOUNT", field: 'msoamount', width: 140, cellRenderer: (params: any) => `<span style="color: #035203;
-          font-weight: bold;;">₹</span> ${params.value}`
+          headerName: "PRODUCT RATE", field: 'rate', width: 140,
+          cellRenderer: (params: any) => `<span >${params.value ? params.value.toFixed(2) : '0.00'}</span> `
         },
         {
-          headerName: "SUB MSO AMOUNT", field: 'submsoamount', width: 180, cellRenderer: (params: any) => `<span style="color: #035203;
-          font-weight: bold;;">₹</span> ${params.value}`
+          headerName: "CUSTOMER AMOUNT", field: 'customeramount', width: 150,
+          cellRenderer: (params: any) => `<span >${params.value ? params.value.toFixed(2) : '0.00'}</span> `
         },
-        { headerName: "COMMISSION", field: 'commissionvalue', width: 170 },
+        { headerName: "LCO COMMISSION", field: 'commission',
+           width: 150, cellRenderer: (params: any) => `<span >${params.value ? params.value.toFixed(2) : '0.00'}</span> ` },
+        {
+          headerName: "MSO AMOUNT", field: 'msoamount', width: 140,
+          cellRenderer: (params: any) => `<span >${params.value ? params.value.toFixed(2) : '0.00'}</span> `
+        },
+        {
+          headerName: "SUB MSO AMOUNT", field: 'submsoamount', width: 180,
+          cellRenderer: (params: any) => `<span >${params.value ? params.value.toFixed(2) : '0.00'}</span> `
+        },
+        {
+          headerName: "SUBMSO COMMISSION", field: 'commissionvalue', width: 170,
+          cellRenderer: (params: any) => `<span>${params.value ? params.value.toFixed(2) : '0.00'}</span>`
+        },
         {
           headerName: "EDIT", field: '', width: 100,
           cellRenderer: (params: any) => {
@@ -255,9 +262,11 @@ export class LcoCommissionComponent {
           headerName: "S.No", lockPosition: true, valueGetter: 'node.rowIndex+1', width: 100,
         },
         { headerName: "DISTRIBUTOR NAME	", field: 'operatorname', width: 250, cellStyle: { textAlign: 'left' }, },
-        { headerName: "USERNAME", field: 'userid', width: 150 },
+        { headerName: "USERNAME", field: 'userid', width: 150 ,cellStyle: { textAlign: 'left' },},
         { headerName: "PASSWORD", field: 'password', width: 150 },
-        { headerName: "BALANCE", field: 'balance', width: 150 },
+        { headerName: "BALANCE", field: 'balance', width: 150,
+           cellRenderer: (params: any) => `<span >${params.value ? params.value.toFixed(2) : '0.00'}</span> `
+         },
         {
           headerName: "EDIT", field: '', width: 100,
           cellRenderer: (params: any) => {
@@ -289,7 +298,9 @@ export class LcoCommissionComponent {
         { headerName: "PRODUCT NAME", field: 'productname', width: 250, cellStyle: { textAlign: 'left' }, },
         { headerName: "PRODUCT ID", field: 'productid', width: 150 },
         { headerName: "PRODUCT TYPE", field: 'productTypeDisplay', width: 190, cellStyle: { textAlign: 'left' } },
-        { headerName: "PRODUCT RATE", field: 'rate', width: 140 },
+        { headerName: "PRODUCT RATE", field: 'rate', width: 140,
+           cellRenderer: (params: any) => `<span >${params.value ? params.value.toFixed(2) : '0.00'}</span> `
+         },
         // {
         //   headerName: "PRODUCT RATE", field: 'rate', width: 150, cellRenderer: (params: any) => `<span style="color: #035203;
         //   font-weight: bold;;">₹</span> ${params.value}`
@@ -317,14 +328,15 @@ export class LcoCommissionComponent {
         },
         {
           headerName: "CUSTOMER AMOUNT", field: 'customeramount', width: 180,
-          cellRenderer: (params: any) => `<span style="color: #035203;
-          font-weight: bold;;">₹</span> ${params.value}`
+         cellRenderer: (params: any) => `<span >${params.value ? params.value.toFixed(2) : '0.00'}</span> `
         },
         {
           headerName: "MSO AMOUNT", field: 'msoamount', width: 150,
-          cellRenderer: (params: any) => `<span style="color: #035203;font-weight: bold;;">₹</span> ${params.value}`
+        cellRenderer: (params: any) => `<span >${params.value ? params.value.toFixed(2) : '0.00'}</span> `
         },
-        { headerName: "COMMISSION", field: 'commissionvalue', width: 160 },
+        { headerName: "COMMISSION", field: 'commissionvalue', width: 160,
+           cellRenderer: (params: any) => `<span >${params.value ? params.value.toFixed(2) : '0.00'}</span> `
+         },
         {
           headerName: "	IS PERCENTAGE", field: 'ispercentage', width: 150,
           cellRenderer: (params: any) => {
@@ -397,7 +409,7 @@ export class LcoCommissionComponent {
       headerName: "S.No", lockPosition: true, valueGetter: 'node.rowIndex+1', width: 100,
     },
     {
-      headerName: "GROUP NAME",
+      headerName: "GROUP NAME",cellStyle: { textAlign: 'left' },
       field: 'groupName',
       width: 200,
       filter: true,

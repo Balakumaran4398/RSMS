@@ -42,23 +42,23 @@ export class TaxComponent {
     {
       headerName: "S.NO", lockPosition: true, valueGetter: 'node.rowIndex+1', headerCheckboxSelection: true, checkboxSelection: true,
     },
-    { headerName: 'TAX NAME	', field: 'taxname', width: 250, },
+    { headerName: 'TAX NAME	', field: 'taxname', width: 220,cellStyle: { textAlign: 'left' } },
     {
-      headerName: 'PERCENTAGE	', field: 'percentage', width: 350, cellRenderer: (params: { value: any }) => {
+      headerName: 'PERCENTAGE	', field: 'percentage', width: 300, cellRenderer: (params: { value: any }) => {
         return `<span>${params.value}%</span>`;
       }
     },
     {
-      headerName: 'TAX APPLICABLE	', field: 'taxapplicable', width: 150,
+      headerName: 'TAX APPLICABLE	', field: 'taxapplicable', width: 200,
       cellRenderer: (params: { value: any; data: any }) => {
         const color = params.value ? 'green' : 'red';
         const text = params.value ? 'True' : 'False';
         return `<span style="color: ${color};">${text}</span>`;
       }
     },
-    { headerName: 'TAX TYPE	', field: 'taxtype', width: 150, filter: false },
+    { headerName: 'TAX TYPE	', field: 'taxtype', width: 250, cellStyle: { textAlign: 'left' }},
     {
-      headerName: 'STATUS', field: 'statusdisplay', width: 150,
+      headerName: 'STATUS', field: 'statusdisplay', width: 200,
       // cellRenderer: (params: { value: any; data: any }) => {
       //   const color = params.value ? 'green' : 'red';
       //   const text = params.value ? 'Active' : 'Deactive';
@@ -72,7 +72,7 @@ export class TaxComponent {
       }
     },
     {
-      headerName: 'ACTION', minWidth: 140, filter: false,
+      headerName: 'EDIT', minWidth: 200, filter: false,
       cellRenderer: (params: any) => {
         const editButton = document.createElement('button');
         editButton.innerHTML = '<i class="fa fa-pencil-square" aria-hidden="true"></i>';

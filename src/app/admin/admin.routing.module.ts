@@ -182,6 +182,7 @@ const routes: Routes = [
       { path: 'tax', component: TaxComponent },
       { path: 'proof', component: ProofComponent },
       { path: 'loginsettings', component: LoginsettingsComponent },
+      // { path: 'loginsettings', component: ServiceComponent },
       { path: 'special_bulk_package', component: SpecialBulkpackageComponent },
       { path: 'special_area_package', component: SpecialareachangeComponent },
       { path: 'special_lco_package', component: SpeciallcochangeComponent },

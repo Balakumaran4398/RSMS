@@ -166,7 +166,7 @@
                                 <label for="">Server IP</label>
                             </div>
                             <div class="input_box col-12 col-md-12">
-                                <input type="text" formControlName="serverip" placeholder="0.0.0.0" maxlength="8">
+                                <input type="text" formControlName="serverip" placeholder="Enter Server Ip " maxlength="13">
                                 <div *ngIf="form.get('serverip')?.invalid && form.get('serverip')?.touched">
                                     <small class="text-danger">Server IP is required.</small>
                                 </div>
@@ -191,7 +191,7 @@
                                 <label for="">Smartcard Length</label>
                             </div>
                             <div class="input_box col-12 col-md-12">
-                                <input type="text" formControlName="smartcardlength" [(ngModel)]="smartcart_length"
+                                <input type="text" formControlName="smartcardlength" [(ngModel)]="smartcart_length" placeholder="Enter Smarcard length"
                                     (keypress)="onKeydown($event)">
                                 <div
                                     *ngIf="form.get('smartcardlength')?.invalid && form.get('smartcardlength')?.touched">
@@ -204,7 +204,7 @@
                                 <label for="">Box ID Length</label>
                             </div>
                             <div class="input_box col-12 col-md-12">
-                                <input type="text" formControlName="boxidlength" [(ngModel)]="boxid_length"
+                                <input type="text" formControlName="boxidlength" [(ngModel)]="boxid_length" placeholder="Enter Boxid length"
                                     (keypress)="onKeydown($event)">
                                 <div *ngIf="form.get('boxidlength')?.invalid && form.get('boxidlength')?.touched">
                                     <small class="text-danger">Boxidlength is required.</small>

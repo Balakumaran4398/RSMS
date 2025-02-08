@@ -42,9 +42,9 @@ export class LoginsettingsComponent {
     {
       headerName: "S.NO", lockPosition: true, valueGetter: 'node.rowIndex+1', width: 100,
     },
-    { headerName: 'USER NAME	', field: 'username', width: 200, },
-    { headerName: 'PASSWORD	', field: 'password', width: 420, },
-    { headerName: 'ROLE	', field: 'rolename', width: 150, filter: false },
+    { headerName: 'USER NAME	', field: 'username', width: 200,cellStyle: { textAlign: 'left' } },
+    { headerName: 'PASSWORD	', field: 'password', width: 420, cellStyle: { textAlign: 'left' }},
+    { headerName: 'ROLE	', field: 'rolename', width: 150, filter: false,cellStyle: { textAlign: 'left' } },
     { headerName: 'EXPIRY DATE', field: 'expirydate', width: 200, },
     {
       headerName: 'STATUS', field: 'statusdisplay', width: 150,cellStyle:{textAlign:'center'},

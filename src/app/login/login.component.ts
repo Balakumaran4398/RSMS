@@ -50,13 +50,12 @@ export class LoginComponent implements OnInit {
     this.authService.notification().subscribe((data: any) => {
       if (data) {
         this.notificationMessage = data.notification;
-        console.log(this.notificationMessage);
         this.warningMessageDate = data.sub_notification_msg;
         this.warningMessage = data.notificationmsg;
+        this.notificationMessage = data.notification === 'true' || data.notification === true;
       }
-      console.log(this.notificationMessage);
+      console.log('notification', this.notificationMessage)
     });
-    console.log(this.notificationMessage);
   }
 
   submit(form: FormGroup): void {
@@ -65,12 +64,15 @@ export class LoginComponent implements OnInit {
     const password = form.value.password;
 
     if (!username || username.trim() === '') {
+      console.log('111');
+
       Swal.fire({
         position: 'center',
         icon: 'warning',
         title: 'Invalid User Name',
-        showConfirmButton: false,
-        timer: 1000
+        text: 'Please enter a valid username.',
+        timerProgressBar: true,
+        timer: 2000
       });
       return;
     } else if (!password || password.trim() === '') {
@@ -78,8 +80,10 @@ export class LoginComponent implements OnInit {
         position: 'center',
         icon: 'warning',
         title: 'Invalid Password',
+        text: 'Please enter a valid password.',
         showConfirmButton: false,
-        timer: 1000
+        timerProgressBar: true,
+        timer: 2000
       });
       return;
     } else if (form.valid) {
@@ -87,8 +91,8 @@ export class LoginComponent implements OnInit {
         (res: any) => {
           console.log(res);
           console.log(res.roles);
-          if (res.roles.includes('ROLE_ADMIN') || res.roles.includes('ROLE_RECEPTION') || res.roles.includes('ROLE_SPECIAL') 
-            || res.roles.includes('ROLE_INVENTORY') || res.roles.includes('ROLE_CUSTOMER_SERVICE') || res.roles.includes('ROLE_SERVICE_CENTER') ) {
+          if (res.roles.includes('ROLE_ADMIN') || res.roles.includes('ROLE_RECEPTION') || res.roles.includes('ROLE_SPECIAL')
+            || res.roles.includes('ROLE_INVENTORY') || res.roles.includes('ROLE_CUSTOMER_SERVICE') || res.roles.includes('ROLE_SERVICE_CENTER')) {
             this.storageService.saveToken(res.accessToken);
             this.storageService.saveUser(res);
             this.idstorage = res.id;
@@ -109,9 +113,11 @@ export class LoginComponent implements OnInit {
             Swal.fire({
               position: "center",
               icon: "success",
-              title: res.message || "Your Login is Successful",
+              title: 'SUCCESS',
+              text: res.message || "Your Login is Successful",
               showConfirmButton: false,
-              timer: 1000
+              timerProgressBar: true,
+              timer: 2000
             });
             if (isUser) {
               this.router.navigate(['admin/home']).then(() => {
@@ -126,10 +132,10 @@ export class LoginComponent implements OnInit {
             } else if (isInventory) {
               this.router.navigate(['admin/inventor_inventory']).then(() => {
               });
-            }else if (isCusService) {
+            } else if (isCusService) {
               this.router.navigate(['admin/inventor_inventory']).then(() => {
               });
-            }else if (isServiceCenter) {
+            } else if (isServiceCenter) {
               this.router.navigate(['admin/inventor_inventory']).then(() => {
               });
             }
@@ -146,19 +152,23 @@ export class LoginComponent implements OnInit {
         },
         err => {
           console.error('Login error', err);
-          let errorMessage = err?.error?.message || 'An error occurred during login.';
+          let errorMessage = 'An error occurred during login.';
+
           if (err.status === 0) {
-            errorMessage = err?.error?.message || 'Unable to reach the server. Please try again later.';
+            errorMessage = 'Unable to reach the server. Please try again later.';
           } else if (err.status === 401) {
-            errorMessage = err?.error?.message || 'Invalid username or password.';
+            errorMessage = 'Invalid username or password. Please try again.';
+          } else if (err?.error?.message) {
+            errorMessage = err.error.message;
           }
           Swal.fire({
             position: 'center',
             icon: 'error',
-            title: 'Error',
+            title: 'Login Failed',
             text: errorMessage,
             showConfirmButton: false,
-            timer: 1500
+            timerProgressBar: true,
+            timer: 2000
           });
         }
       );

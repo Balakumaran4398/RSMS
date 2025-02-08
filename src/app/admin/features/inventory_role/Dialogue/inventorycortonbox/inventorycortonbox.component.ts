@@ -223,10 +223,9 @@ export class InventorycortonboxComponent implements OnInit {
       this.selectedPackage || 0, this.days || 0, this.selectSubscriber || 0, this.smartcardList)
       .subscribe((res: any) => {
         this.swal.success(res?.message);
-      
       }, (err) => {
-        this.swal.Error(err?.error?.message);
-        this.swal.Close();
+        console.log(err);
+        this.swal.Error(err?.error?.message || err?.error);
       });
   }
   formatDate(date: Date): string {

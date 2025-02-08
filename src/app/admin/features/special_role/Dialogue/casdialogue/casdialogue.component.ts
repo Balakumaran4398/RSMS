@@ -17,8 +17,8 @@ export class CasdialogueComponent implements OnInit {
   form!: FormGroup;
   // casForm!: FormGroup;
   submitted = false;
-  smartcart_length = '0.00'
-  boxid_length = '0.00'
+  smartcart_length: any;
+  boxid_length :any;
   type: any;
   casid: any;
 
@@ -144,9 +144,9 @@ export class CasdialogueComponent implements OnInit {
       .subscribe((res: any) => {
         this.swal.success(res?.message);
       }, (err) => {
-        this.swal.Error(err?.error?.message);
+        this.swal.Error(err?.error?.message || err?.error?.username);
         const errorMessage = errorFields
-          .map(field => err?.error?.[field])
+          .map(field => err?.error?.[field] || err?.error?.username)
           .find(message => message) || 'An error occurred while creating the subscriber.'
       });
   }

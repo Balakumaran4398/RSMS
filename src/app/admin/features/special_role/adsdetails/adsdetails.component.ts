@@ -42,8 +42,8 @@ export class AdsdetailsComponent {
     {
       headerName: "S.NO", lockPosition: true, valueGetter: 'node.rowIndex+1', filter: false
     },
-    { headerName: 'AD NAME', field: 'adName', width: 250, },
-    { headerName: 'AD URL', field: 'adUrl', width: 350, },
+    { headerName: 'AD NAME', field: 'adName', width: 200, },
+    { headerName: 'AD URL', field: 'adUrl', width: 400, },
     { headerName: 'SITE URL	', field: 'siteUrl', width: 300, filter: false },
     {
       headerName: 'IS ACTIVE', field: 'statusdisplay', width: 250,

@@ -22,7 +22,7 @@ export class LcoinvoiceComponent implements OnInit {
     paginationPageSize: 10,
     pagination: true,
   }
-  rowData: any[]=[];
+  rowData: any[] = [];
 
   role: any;
   username: any;
@@ -43,7 +43,13 @@ export class LcoinvoiceComponent implements OnInit {
     this.generateMonths();
     this.generateYears();
 
-
+    this.userservice.getAllOperatorInvoiceBillMonthYear(this.role, this.username, this.selectedMonth || null, this.selectedYear || null)
+      .subscribe((data: any) => {
+        // this.swal.success(data?.message);
+        this.rowData = data
+      }, (err) => {
+        this.swal.Error(err?.error?.message);
+      });
   }
 
   generateMonths() {
@@ -80,27 +86,8 @@ export class LcoinvoiceComponent implements OnInit {
     { headerName: "ALACARTE", field: 'alacarteBase', width: 260 },
   ]
   onGridReady(event: any) {
-    this.userservice.getAllOperatorInvoiceBillMonthYear(this.role, this.username, this.selectedMonth || null, this.selectedYear || null)
-    // .subscribe(
-    //   (response: HttpResponse<any[]>) => { // Expect HttpResponse<any[]>
-    //     if (response.status === 200) {
-    //       this.rowData = response.body;
-    //       // this.swal.Success_200();
-    //     } else if (response.status === 204) {
-    //       this.swal.Success_204();
-    //     }
-    //   },
-    //   (error) => {
-    //     this.handleApiError(error);
-    //   }
-    // );
-
-    .subscribe((data: any) => {
-      // this.swal.success(data?.message);
-      this.rowData = data
-    }, (err) => {
-      this.swal.Error(err?.error?.message);
-    });
+   console.log(event);
+   
   }
   submit() {
     // this.swal.Loading();
@@ -111,7 +98,7 @@ export class LcoinvoiceComponent implements OnInit {
       //     this.rowData = data;
       //   });
       .subscribe((res: any) => {
-        // this.swal.success(res?.message);
+        this.swal.success(res?.message);
         this.rowData = res;
       }, (err) => {
         this.swal.Error(err?.error?.message);

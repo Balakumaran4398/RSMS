@@ -151,14 +151,15 @@
                             <div class="input_box d-flex justify-content-between align-items-center mb-3">
                                 <span>IsEMI</span>
                                 <label class="switch">
-                                    <input type="checkbox" [(ngModel)]="isemi"  [ngModelOptions]="{standalone: true}">
+                                    <input type="checkbox" [(ngModel)]="isemi" [ngModelOptions]="{standalone: true}">
                                     <span class="slider"></span>
                                 </label>
                             </div>
                             <div class="input_box d-flex justify-content-between align-items-center mb-3">
                                 <span class="form-label">Report Status</span>
                                 <label class="switch">
-                                    <input type="checkbox" [(ngModel)]="reportstatus"  [ngModelOptions]="{standalone: true}">
+                                    <input type="checkbox" [(ngModel)]="reportstatus"
+                                        [ngModelOptions]="{standalone: true}">
                                     <span class="slider"></span>
                                 </label>
                             </div>
@@ -167,14 +168,16 @@
                             <div class="input_box d-flex justify-content-between align-items-center mb-3">
                                 <span>ChipId Force</span>
                                 <label class="switch">
-                                    <input type="checkbox" [(ngModel)]="chipidforce"  [ngModelOptions]="{standalone: true}">
+                                    <input type="checkbox" [(ngModel)]="chipidforce"
+                                        [ngModelOptions]="{standalone: true}">
                                     <span class="slider"></span>
                                 </label>
                             </div>
                             <div class="input_box d-flex justify-content-between align-items-center mb-3">
                                 <span class="form-label">Manage Pack</span>
                                 <label class="switch">
-                                    <input type="checkbox" [(ngModel)]="managepack"  [ngModelOptions]="{standalone: true}">
+                                    <input type="checkbox" [(ngModel)]="managepack"
+                                        [ngModelOptions]="{standalone: true}">
                                     <span class="slider"></span>
                                 </label>
                             </div>
@@ -183,7 +186,8 @@
                             <div class="input_box d-flex justify-content-between align-items-center mb-3">
                                 <span>Calendar Recharge</span>
                                 <label class="switch">
-                                    <input type="checkbox" [(ngModel)]="calendarrecharge"  [ngModelOptions]="{standalone: true}">
+                                    <input type="checkbox" [(ngModel)]="calendarrecharge"
+                                        [ngModelOptions]="{standalone: true}">
                                     <span class="slider"></span>
                                 </label>
                             </div>
@@ -191,12 +195,11 @@
                     </div>
                 </div>
             </div>
-            
             <!-- Add other fields with validation here -->
             <div class="d-flex justify-content-center align-item-center mx-3 mb-2">
-                <button type="button" class="btn btn-danger me-2" (click)="onNoClick()">Cancel</button>
+                <button type="button" class="btn btn-success me-2" (click)="onSubmit()">Update</button>
+                <button type="button" class="btn btn-danger " (click)="onNoClick()">Cancel</button>
                 <!-- <button type="submit" class="btn btn-success" [disabled]="msoForm.invalid">Update</button> -->
-                <button type="button" class="btn btn-success" (click)="onSubmit()">Update</button>
             </div>
         </div>
     </div>
