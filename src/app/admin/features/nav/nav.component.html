@@ -37,9 +37,6 @@
                             class='bx bx-table bx-sm icon'></i> &nbsp;Top Subscription Details</a></li>
             </ul>
         </li>
-
-
-
         <li *ngIf="isInventory">
             <a (click)="setActiveLinkListTab($event); navgetToUrl('/inventor_inventory')" class="nav-link active">
                 <mat-icon class="icon">games</mat-icon> &nbsp; Inventory
@@ -59,7 +56,7 @@
         <li *ngIf="isUser || isReception ">
             <a> <i class="bx bx-user bx-sm icon "></i> Operator <i class='bx bx-chevron-right icon-right'></i></a>
             <ul class="side-dropdown">
-                <li ><a (click)="navgetToUrl('/operator_details');setActiveLinkTab($event)"> <i
+                <li><a (click)="navgetToUrl('/operator_details');setActiveLinkTab($event)"> <i
                             class='fa fa-fw fa-users  icon'></i> &nbsp;
                         Operator Details</a></li>
                 <li><a (click)="navgetToUrl('/lco_recharge');setActiveLinkTab($event)"><i
@@ -147,12 +144,10 @@
         <li *ngIf="isUser || isReception ">
             <a> <mat-icon class="icon">games</mat-icon> Inventory <i class='bx bx-chevron-right icon-right'></i></a>
             <ul class="side-dropdown">
-                <li ><a
-                        (click)="navgetToUrl('/not_allacate_smartcard');setActiveLinkTab($event)"><i
+                <li><a (click)="navgetToUrl('/not_allacate_smartcard');setActiveLinkTab($event)"><i
                             class="fa fa-fw fa-upload icon ">&nbsp;</i>Not Allocated Smartcard </a> </li>
 
-                <li><a
-                        (click)="navgetToUrl('/allocate_smartcard');setActiveLinkTab($event)"><i
+                <li><a (click)="navgetToUrl('/allocate_smartcard');setActiveLinkTab($event)"><i
                             class="fa fa-fw fa-gear icon ">&nbsp;</i>Allocated smartcard </a> </li>
 
                 <li><a (click)="navgetToUrl('/smartcard_declaration');setActiveLinkTab($event)"><i
@@ -276,37 +271,7 @@
             </ul>
         </li>
 
-        <!-- 
-        <li *ngIf="isSpecial "><a (click)="navgetToUrl('/msodetails');setActiveTab($event)" class="active">
-                <i class='bx bx-sm bxs-dashboard icon'></i>
-                <i class='bx bx-sm bxs-user-pin icon'></i>
-                MSO Details</a></li>
-        <li *ngIf="isSpecial "><a (click)="navgetToUrl('/casmaster');setActiveTab($event)"><i
-                    class='bx bx-sm bx-user-circle icon'></i>
-                CAS Master</a></li>
-        <li *ngIf="isSpecial "><a (click)="navgetToUrl('/tax');setActiveTab($event)"><i
-                    class='bx bx-sm bxs-wrench icon'></i>
-                TAX Master</a></li>
-        <li *ngIf="isSpecial "><a (click)="navgetToUrl('/invoice');setActiveTab($event)"><i
-                    class='bx bx-sm bxs-calculator icon'></i>
-                Billing</a></li>
-        <li *ngIf="isSpecial "><a (click)="navgetToUrl('/special_operator');setActiveTab($event)"><i
-                    class='bx bx-sm bx-user icon'></i>
-                Operator</a></li>
-        <li *ngIf="isSpecial ">
-            <a (click)="navgetToUrl('/proof');setActiveTab($event)"> <i class="fa-solid fa-comment-sms icon "
-                    style="font-size: 20px;"></i>
-                Proof Settings</a>
-            <ul class="side-dropdown">
-                <li><a (click)="navgetToUrl('/operator_details')" (click)="setActiveTab($event)"> <i
-                            class='bx bx-id-card  icon' style="font-size: 20px;"></i> &nbsp;
-                        ID Proof</a></li>
-                <li><a (click)="navgetToUrl('/lco_recharge')" (click)="setActiveTab($event)"><i
-                            class='fa-solid fa-contact-card icon'></i>
-                        &nbsp;Address
-                        Proof</a></li>
-            </ul>
-        </li> -->
+
         <li *ngIf="isSpecial ">
             <a> <i class="bx bx-shape-polygon bx-sm icon "></i> LCO Settings <i
                     class='bx bx-chevron-right icon-right'></i></a>
@@ -335,8 +300,6 @@
                 <li><a (click)="navgetToUrl('/Bulk_Package_Updation');setActiveLinkTab($event)"> <i
                             class='fa fa-fw fa-users  icon'></i> &nbsp; Bulk
                         Package Updation</a></li>
-
-
                 <!-- <li><a (click)="navgetToUrl('/special_lco_package')" (click)="setActiveTab($event)"><i
                             class='fa fa-fw fa-inr icon'></i> &nbsp;LCO & AREA change</a>
                 </li> -->
@@ -360,47 +323,88 @@
                         Settings</a></li>
             </ul>
         </li>
-        <!-- <li class="mb-3" *ngIf="isSpecial">
-            <a> <i class="fa fa-fw fa-history icon "></i> Reports <i class='bx bx-chevron-right icon-right'></i></a>
+
+        <!-- -------------------------------------------Operator Login------------------------ -->
+        <!-- <li *ngIf="isOperator "> -->
+        <li *ngIf="isOperator " (click)="setActiveList($event, 'dashboard')" [class.active]="activeTab === 'dashboard'">
+            <a (click)="navgetToUrl('/home');"> <i class='bx bx-sm bxs-dashboard icon'></i> &nbsp;
+                Dashboard</a>
+        </li>
+        <li *ngIf="isOperator">
+        <!-- <li *ngIf="isSpecial "> -->
+            <a (click)="setActiveLinkList($event, 'subscriber')" [class.active]="activeTab === 'subscriber'"><mat-icon
+                    class="icon">local_library</mat-icon> Subscriber <i class='bx bx-chevron-right icon-right'></i></a>
             <ul class="side-dropdown">
-                <li><a (click)="navgetToUrl('/')" (click)="setActiveTab($event)"><i
-                            class="fa fa-fw fa-paper-plane icon">&nbsp;</i>Recharge log </a>
-                </li>
-                <li><a (click)="navgetToUrl('/')" (click)="setActiveTab($event)"><i
-                            class="fa fa-fw fa-qq icon">&nbsp;</i>Operator wise Activation
-                        Count </a> </li>
-                <li><a (click)="navgetToUrl('/')" (click)="setActiveTab($event)"><i
-                            class="fa fa-fw fa-star icon">&nbsp;</i> Active/Deactive Count</a>
-                </li>
-                <li><a (click)="navgetToUrl('/')" (click)="setActiveTab($event)"><i
-                            class="fa fa-fw fa-star icon">&nbsp;</i> Datewise Payment
-                        Collection</a></li>
-                <li><a (click)="navgetToUrl('/')" (click)="setActiveTab($event)"><i
-                            class="fa fa-fw fa-star icon">&nbsp;</i>Easebuzz-Exclude GST</a>
-                </li>
-                <li><a (click)="navgetToUrl('/')" (click)="setActiveTab($event)"><i
-                            class="fa fa-fw fa-star icon">&nbsp;</i> Easebuzz-Include GST</a>
-                </li>
-                <li><a (click)="navgetToUrl('/')" (click)="setActiveTab($event)"><i
-                            class="fa fa-fw fa-star icon">&nbsp;</i> All Recharge Deduct
-                        Exclude</a></li>
-                <li><a (click)="navgetToUrl('/')" (click)="setActiveTab($event)"><i
-                            class="fa fa-fw fa-star icon">&nbsp;</i> All Recharge Deduct
-                        Include</a></li>
-                <li><a (click)="navgetToUrl('/')" (click)="setActiveTab($event)"><i
-                            class="fa fa-fw fa-star icon">&nbsp;</i> Easebuzz Datewise Payment
-                        Collection</a></li>
-                <li><a (click)="navgetToUrl('/')" (click)="setActiveTab($event)"><i
-                            class="fa fa-fw fa-star icon">&nbsp;</i> Operator Online
-                        Payment</a></li>
-                <li><a (click)="navgetToUrl('/')" (click)="setActiveTab($event)"><i
-                            class="fa fa-fw fa-star icon">&nbsp;</i> Sublco Online Payment</a>
-                </li>
-                <li><a (click)="navgetToUrl('/')" (click)="setActiveTab($event)"><i
-                            class="fa fa-fw fa-star icon">&nbsp;</i>Easebuzz Online Payment</a>
+                <li><a (click)="navgetToUrl('/Create_sub'); setActiveLinkList($event, 'create_subscriber')"
+                        [class.active]="activeTab === 'create_subscriber'"><i
+                            class="fa fa-fw fa-plus icon">&nbsp;</i>Create Subscriber
+                    </a> </li>
+                <li><a (click)="navgetToUrl('/subscriber'); setActiveLinkList($event, 'subscriber_details')"
+                        [class.active]="activeTab === 'subscriber_details'"><i
+                            class="fa fa-fw fa-user on icon">&nbsp;</i>
+                        Subscriber Details</a></li>
+                <li><a (click)="navgetToUrl('/expiry'); setActiveLinkList($event, 'expiry_details')"
+                        [class.active]="activeTab === 'expiry_details'"><i
+                            class="fa fas fa-user-alt-slash icon">&nbsp;</i> Expiry
+                        Details </a>
                 </li>
             </ul>
-        </li> -->
+        </li>
+        <li *ngIf="isOperator ">
+            <a> <mat-icon class="icon">settings</mat-icon> Master Settings
+                <i class='bx bx-chevron-right icon-right'></i>
+            </a>
+            <ul class="side-dropdown">
+                <li><a (click)="navgetToUrl('/home');setActiveLinkTab($event)" class="active"> <i
+                            class='fas fa-location-dot icon'></i> &nbsp;
+                        Area & Street</a></li>
+                <li><a (click)="navgetToUrl('/top_subscription');setActiveLinkTab($event)"><i
+                            class='fas fa-tags icon'></i> &nbsp;Discount</a></li>
+            </ul>
+        </li>
+        <li *ngIf="isOperator">
+            <a> <mat-icon class="icon">featured_play_list</mat-icon> Bulk operation <i
+                    class='bx bx-chevron-right icon-right'></i></a>
+            <ul class="side-dropdown">
+                <li><a (click)="navgetToUrl('/activation');setActiveLinkTab($event)"><i
+                            class="fa fa-fw fa-plus-square icon ">&nbsp;</i>Activation </a> </li>
+
+                <li><a (click)="navgetToUrl('/Bulk_Package_Updation');setActiveLinkTab($event)"><i
+                            class="fa fa-fw fa-circle-o icon">&nbsp;</i>Bulk Package Updation</a>
+                </li>
+                <li><a (click)="navgetToUrl('/Recurring');setActiveLinkTab($event)"><i
+                            class="fa-regular fa-registered icon">&nbsp;</i>Recurring</a>
+                </li>
+            </ul>
+        </li>
+        <li *ngIf="isOperator">
+            <a> <mat-icon class="icon">inventory</mat-icon> Pachage Details<i
+                    class='bx bx-chevron-right icon-right'></i></a>
+            <ul class="side-dropdown">
+                <li><a (click)="navgetToUrl('/activation');setActiveLinkTab($event)"><i
+                            class="fa fa-box-open icon">&nbsp;</i>Package </a> </li>
+
+                <li><a (click)="navgetToUrl('/Bulk_Package_Updation');setActiveLinkTab($event)">
+                        <i class="fa fa-satellite-dish icon">&nbsp;</i>
+                        Channel </a>
+                </li>
+                <li><a (click)="navgetToUrl('/Recurring');setActiveLinkTab($event)">
+                        <i class="fas fa-box icon">&nbsp;</i>
+                        Addon Package</a>
+                </li>
+            </ul>
+        </li>
+        <li *ngIf="isOperator">
+            <a> <mat-icon class="icon">assessment</mat-icon> Reports<i class='bx bx-chevron-right icon-right'></i></a>
+            <ul class="side-dropdown">
+                <li><a (click)="navgetToUrl('/activation');setActiveLinkTab($event)">
+                        <i class="fa fa-fw fa-paper-plane icon">&nbsp;</i>Reports </a> </li>
+            </ul>
+        </li>
+        <li *ngIf="isOperator" (click)="setActiveLink($event)"><a (click)="navgetToUrl('/Recurring');">
+                <i class="fas fa-users-cog icon ">&nbsp;</i>
+                <!-- <mat-icon class="icon">settings_input_antenna</mat-icon> -->
+                Sub LCO </a> </li>
     </ul>
 
 </section>
@@ -411,7 +415,7 @@
     <div class="" style="position: sticky; top: 0;z-index: 10;">
         <div class="nav-sub">
             <div class="nav-container">
-                <div id="nav" style="color: #f0f0f0">
+                <div id="nav" style="color: #2d584e">
                     <i class='bx bx-menu toggle-sidebar' style="font-size: 2rem;"></i>
                 </div>
                 &nbsp;
@@ -419,7 +423,8 @@
                 &nbsp;
                 <div class="nav-content w-100 d-flex justify-content-between align-items-center">
                     <div class="version col-4 col-md-4">
-                        <span class="ver" style="  font-size: 1.2em;font-weight: 600;"> {{role}} &nbsp;</span>
+                        <span class="ver" style="  font-size: 1.2em;font-weight: 600;color: #2d584e"> {{role}}
+                            &nbsp;</span>
                     </div>
                     <div class="search-and-image col-7 col-md-7 d-flex justify-content-end align-items-center">
                         <div class="search">
@@ -438,7 +443,7 @@
                     <div class="d-block">
                         <div class=" d-flex justify-content-between align-items-center mx-2 tooltip-container ">
                             <a (click)="logout()" class="logout ">
-                                <i class="fa-solid fa-power-off"></i>
+                                <i class="fa-solid fa-power-off" style="color: #2d584e"></i>
                             </a>
                             <div class="tooltip">LOGOUT</div>
                         </div>

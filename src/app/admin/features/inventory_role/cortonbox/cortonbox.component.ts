@@ -29,6 +29,7 @@ export class CortonboxComponent implements OnInit {
   selectedIds: number[] = [];
   rows: any[] = [];
   selectedSmartcard: number[] = [];
+  isemi: any;
   hasSelectedRows: boolean = true;
   isRowSelected: boolean = false;
 
@@ -60,11 +61,9 @@ export class CortonboxComponent implements OnInit {
   }
   ngOnInit(): void {
     this.userService.getModelList(this.username, this.role).subscribe((data: any) => {
-      // this.model = data;
-      console.log(this.model);
       this.filteredModel = data;
-      console.log(this.filteredModel);
     })
+    this.getNotAllocattedDetails();
   }
   ngAfterViewInit() {
     $('#model').select2({
@@ -84,7 +83,13 @@ export class CortonboxComponent implements OnInit {
       // this.cortonBoxList=[...this.toppingList]
     })
   }
+  getNotAllocattedDetails() {
+    this.userService.getAllCartonBoxList(this.username, this.role).subscribe((data: any) => {
+      this.rowData = data;
+      console.log(data);
 
+    })
+  }
   onSelectionChanged() {
     if (this.gridApi) {
       const selectedRows = this.gridApi.getSelectedRows();
@@ -93,6 +98,7 @@ export class CortonboxComponent implements OnInit {
       this.rows = selectedRows;
       this.selectedIds = selectedRows.map((e: any) => e.id);
       this.selectedSmartcard = selectedRows.map((e: any) => e.smartcard);
+      this.isemi = selectedRows.map((e: any) => e.isemi);
       console.log("Selected Smartcard:", this.selectedSmartcard);
     }
   }
@@ -111,7 +117,7 @@ export class CortonboxComponent implements OnInit {
   openDialoguePage(type: any) {
     let dialogData = {
       type: type,
-      smartcard: this.selectedSmartcard
+      smartcard: this.selectedSmartcard, isemi: this.isemi,
     };
     console.log(dialogData);
     const dialogRef = this.dialog.open(InventorycortonboxComponent, {

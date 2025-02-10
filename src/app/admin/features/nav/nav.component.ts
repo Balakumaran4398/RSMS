@@ -36,14 +36,18 @@ export class NavComponent implements OnInit, AfterViewInit {
   isInventory: boolean = false;
   isCustomerService: boolean = false;
   isServiceCenter: boolean = false;
+  isOperator: boolean = false;
   isDropdownOpen: boolean = false;
   isPopupVisible = false;
+
+  activeTab: string = '';
+
   constructor(private router: Router, private breakpointObserver: BreakpointObserver, private cdr: ChangeDetectorRef, private userservice: BaseService, private storageservice: StorageService) {
     // this.breakpointChanged();
     this.role = storageservice.getUserRole();
     this.username = storageservice.getUsername();
     console.log(this.role);
-    
+
     if (this.role.includes('ROLE_ADMIN')) {
       this.isUser = true;
       this.isReception = false;
@@ -64,12 +68,12 @@ export class NavComponent implements OnInit, AfterViewInit {
       this.isUser = false;
       this.isSpecial = false;
       this.role = 'INVENTORY';
-    }else if (this.role.includes('ROLE_CUSTOMER_SERVICE')) {
+    } else if (this.role.includes('ROLE_CUSTOMER_SERVICE')) {
       this.isInventory = true;
       this.isUser = false;
       this.isSpecial = false;
       this.role = 'CUS_SERVICE';
-    }else if (this.role.includes('ROLE_SERVICE_CENTER')) {
+    } else if (this.role.includes('ROLE_SERVICE_CENTER')) {
       this.isInventory = true;
       this.isUser = false;
       this.isSpecial = false;
@@ -90,6 +94,13 @@ export class NavComponent implements OnInit, AfterViewInit {
       });
     });
 
+  }
+  setActiveList(event: Event, tabName: string) {
+    this.activeTab = tabName; 
+  }
+
+  setActiveLinkList(event: Event, tabName: string) {
+    this.activeTab = tabName; 
   }
   setActive(event: any): void {
     const dropdownLinks = document.querySelectorAll('.side-dropdown li a');
@@ -117,11 +128,20 @@ export class NavComponent implements OnInit, AfterViewInit {
   setActiveLinkListTab(event: Event) {
     const links = document.querySelectorAll('.nav-link');
     links.forEach(link => link.classList.remove('active'));
-  
+
     const clickedElement = event.currentTarget as HTMLElement;
     clickedElement.classList.add('active');
   }
-  
+
+  setActiveLink(event: Event) {
+    const activeTabs = document.querySelectorAll('li.active');
+    activeTabs.forEach((tab) => {
+      tab.classList.remove('active');
+    });
+    const clickedElement = event.currentTarget as HTMLElement;
+    clickedElement.classList.add('active');
+  }
+
   onsubscriberlist(value: any) {
     this.showDropdown = true;
     this.userservice.getSearchDetailsSubscriber(this.role, this.username, value).subscribe(

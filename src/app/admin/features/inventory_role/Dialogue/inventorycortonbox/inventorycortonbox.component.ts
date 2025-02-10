@@ -1,5 +1,6 @@
-import { Component, Inject, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, Inject, OnInit } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA, MatDialog } from '@angular/material/dialog';
+import { localeData } from 'moment';
 import { BaseService } from 'src/app/_core/service/base.service';
 import { ExcelService } from 'src/app/_core/service/excel.service';
 import { StorageService } from 'src/app/_core/service/storage.service';
@@ -32,53 +33,38 @@ export class InventorycortonboxComponent implements OnInit {
 
   model: any;
   modelName: any;
-  filteredOperatorList: any[] = [
-    // { name: "aaa", value: 0 },
-    // { name: "bbb", value: 1 },
-    // { name: "cccc", value: 2 },
-    // { name: "ddd", value: 3 },
-    // { name: "eee", value: 4 },
-  ];
 
-  filteredAreaList: any[] = [
-    // { name: "aaa", value: 0 },
-    // { name: "bbb", value: 1 },
-    // { name: "cccc", value: 2 },
-    // { name: "ddd", value: 3 },
-    // { name: "eee", value: 4 },
-  ];
-  filteredStreetList: any[] = [
-    // { name: "aaa", value: 0 },
-    // { name: "bbb", value: 1 },
-    // { name: "cccc", value: 2 },
-    // { name: "ddd", value: 3 },
-    // { name: "eee", value: 4 },
-  ];
-  filteredPackageList: any[] = [
-    // { name: "aaa", value: 0 },
-    // { name: "bbb", value: 1 },
-    // { name: "cccc", value: 2 },
-    // { name: "ddd", value: 3 },
-    // { name: "eee", value: 4 },
-  ];
+  isEmiValue: boolean = false;
+  filteredOperatorList: any[] = [];
 
-  constructor(
-    public dialogRef: MatDialogRef<InventorycortonboxComponent>,
+  filteredAreaList: any[] = [];
+  filteredStreetList: any[] = [];
+  filteredPackageList: any[] = [];
+
+  constructor(public dialogRef: MatDialogRef<InventorycortonboxComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any, public dialog: MatDialog, private userservice: BaseService, private excelService: ExcelService, private storageService: StorageService, private swal: SwalService) {
-    console.log(data);
     this.type = data.type;
     this.smartcardList = data.smartcard;
-    console.log(this.type);
-    console.log(this.smartcardList);
-
+    this.isemi = data.isemi[0];
     this.username = storageService.getUsername();
     this.role = storageService.getUserRole();
   }
   ngOnInit(): void {
     this.operatorlist();
     this.onPackageList('');
+    this.getEmi();
+
+  }
+  getEmi() {
+    this.userservice.getEmiDetails(this.role, this.username).subscribe((res: any) => {
+      this.isEmiValue = res.isemi;
+    })
   }
 
+  toggleEmi(event: Event) {
+    const target = event.target as HTMLInputElement;
+    this.isemi = target.checked;
+  }
   operatorlist() {
     this.userservice.getOeratorList(this.role, this.username, 1).subscribe((data: any) => {
       console.log(data);
@@ -87,13 +73,10 @@ export class InventorycortonboxComponent implements OnInit {
         const name = key;
         return { name: name, value: value };
       });
-      console.log(this.filteredOperatorList);
-
     })
   }
   onAreaList(type: any) {
     console.log(type);
-
     if (this.selectOperator) {
       this.userservice.getAreaListByOperatorid(this.role, this.username, this.selectOperator)
         .subscribe((data: any) => {
@@ -106,7 +89,6 @@ export class InventorycortonboxComponent implements OnInit {
           });
           console.log(this.filteredAreaList);
         });
-
     }
   }
   onStreetList(type: any) {
@@ -129,6 +111,7 @@ export class InventorycortonboxComponent implements OnInit {
     this.selectStreet = typename
   }
   onPackageList(type: any) {
+    console.log(type);
     this.userservice.getBulkPackageUpdationList(this.role, this.username).subscribe((data: any) => {
       console.log(data);
       this.filteredPackageList = Object.keys(data).map(key => {
@@ -141,7 +124,7 @@ export class InventorycortonboxComponent implements OnInit {
   }
   ngAfterViewInit() {
     $('#operator').select2({
-      placeholder: 'Select a Operator',
+      placeholder: 'Select LCO',
       allowClear: true
     });
     $('#operator').on('change', (event: any) => {
@@ -149,7 +132,7 @@ export class InventorycortonboxComponent implements OnInit {
       this.onAreaList(this.selectOperator);
     });
     $('#area').select2({
-      placeholder: 'Select a Area',
+      placeholder: 'Select Area',
       allowClear: true
     });
     $('#area').on('change', (event: any) => {
@@ -157,21 +140,24 @@ export class InventorycortonboxComponent implements OnInit {
       this.onStreetList(this.selectArea);
     });
     $('#street').select2({
-      placeholder: 'Select a Street',
+      placeholder: 'Select Street',
       allowClear: true
     });
     $('#street').on('change', (event: any) => {
+
       this.selectStreet = event.target.value;
+      console.log(this.selectStreet);
       this.onStreetName(this.selectStreet);
     });
 
     $('#package').select2({
-      placeholder: 'Select a Package',
+      placeholder: 'Select Package',
       allowClear: true
     });
     $('#package').on('change', (event: any) => {
       this.selectedPackage = event.target.value;
-      this.onPackageList(this.selectedPackage);
+      console.log(this.selectedPackage);
+      // this.onPackageList(this.selectedPackage);
     });
   }
   onFileSelected(event: any) {
@@ -219,13 +205,13 @@ export class InventorycortonboxComponent implements OnInit {
   }
   setallocation() {
     this.swal.Loading();
-    this.userservice.cortonBoxDetails(this.role, this.username, this.selectOperator, this.isemi, this.dueamount || 0, this.selectedType, this.selectArea || 0, this.selectStreet || 0,
+    this.userservice.cortonBoxDetails(this.role, this.username, this.selectOperator || 0, this.isemi, this.dueamount || 0, this.selectedType, this.selectArea || 0, this.selectStreet || 0,
       this.selectedPackage || 0, this.days || 0, this.selectSubscriber || 0, this.smartcardList)
       .subscribe((res: any) => {
         this.swal.success(res?.message);
       }, (err) => {
         console.log(err);
-        this.swal.Error(err?.error?.message || err?.error);
+        this.swal.Error(err?.error?.message || err?.error || '');
       });
   }
   formatDate(date: Date): string {

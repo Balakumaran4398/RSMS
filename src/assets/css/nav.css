@@ -67,7 +67,7 @@ li {
     transition: all .3s ease;
     z-index: 200;
     /* box-shadow: 2px 0 8px -7px black; */
-    box-shadow: 0 10px 16px 0 rgb(0 0 0 / 20%), 0 6px 20px 0 rgb(0 0 0 / 19%)
+    /* box-shadow: 0 10px 16px 0 rgb(0 0 0 / 20%), 0 6px 20px 0 rgb(0 0 0 / 19%) */
 }
 
 #sidebar a {

@@ -38,12 +38,13 @@
     </div>
     <div class="dialog-container ">
         <div class="dialog-body">
-            <div class="row align-items-center input_box">
-                <div class="col-12 col-md-3">
+            <div class="row align-items-center ">
+                <div class="col-12 col-md-3 input_box">
                     <span class="form-label">IsEMI</span>
                 </div>
                 <div class="col-12 col-md-9 mb-3">
-                    <input type="checkbox" [(ngModel)]="isemi" style="width: 35px;height: 20px;">
+                    <input type="checkbox" [disabled]="!isEmiValue" [(ngModel)]="isemi" (change)="toggleEmi($event)"
+                        style="width: 35px;height: 20px;">
                 </div>
             </div>
 
@@ -52,7 +53,8 @@
                     <span class="form-label">Due Amount</span>
                 </div>
                 <div class="col-12 col-md-9 mb-3 ">
-                    <input type="text" class="file-input" [(ngModel)]="dueamount" [disabled]="!isemi" (keypress)="onKeydown($event)"  />
+                    <input type="text" class="file-input" [(ngModel)]="dueamount" placeholder="Enter Amount"
+                        [disabled]="!isemi" (keypress)="onKeydown($event)" />
                 </div>
             </div>
             <div class="row align-items-center input_box ">
@@ -61,7 +63,7 @@
                 </div>
                 <div class="col-12 col-md-9 mb-3 file-upload-container">
                     <select id="operator" [(ngModel)]="selectOperator">
-                        <option [value]="0" selected>All Operator</option>
+                        <!-- <option [value]="0" selected>All Operator</option> -->
                         <option *ngFor="let operator of filteredOperatorList" [value]="operator.value"
                             (ngModelChange)="onAreaList($event)">
                             {{ operator.name }}
@@ -150,7 +152,7 @@
                     <label class="form-label">Subscription Days</label>
                 </div>
                 <div class="col-12 col-md-9 mb-3 file-upload-container">
-                    <input type="number" class="file-input" [(ngModel)]="days" [min]="1"
+                    <input type="number" class="file-input" [(ngModel)]="days" [min]="1" placeholder="Enter Days"
                         [disabled]="selectedType !== '3'" />
                 </div>
             </div>

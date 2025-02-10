@@ -191,10 +191,12 @@ export class SubscriptionBasedComponent implements OnInit {
     if (!this.selectedYear && !this.selectedMonth && !this.selectedweek) {
       this.submitted = true;
     } else {
+      this.swal.Loading();
       this.userService.getWeeklyActiveOrDeactiveSubscriptionExcelReport(this.role, this.username, this.selectedMonth, this.selectedYear, this.selectedweek, this.isActive, 2)
-        .subscribe(
+      .subscribe(
           (response: HttpResponse<any[]>) => { // Expect HttpResponse<any[]>
             console.log(this.type);
+            this.swal.Close();
             if (response.status === 200) {
               this.rowData = response.body;
               console.log(this.type);
@@ -237,6 +239,7 @@ export class SubscriptionBasedComponent implements OnInit {
             }
           },
           (error) => {
+            this.swal.Close();
             this.handleApiError(error);
           }
         );
@@ -246,8 +249,10 @@ export class SubscriptionBasedComponent implements OnInit {
     if (!this.selectedYear && !this.selectedMonth && !this.selectedweek) {
       this.submitted = true;
     } else {
+      this.swal.Loading();
       this.userService.getWeeklyActiveOrDeactiveSubscriptionPDFReport(this.role, this.username, this.selectedMonth, this.selectedYear, this.selectedweek, this.isActive, 1)
         .subscribe((x: Blob) => {
+          this.swal.Close();
           const blob = new Blob([x], { type: 'application/pdf' });
           const data = window.URL.createObjectURL(blob);
           const link = document.createElement('a');
@@ -262,6 +267,7 @@ export class SubscriptionBasedComponent implements OnInit {
           }, 100);
         },
           (error: any) => {
+            this.swal.Close();
             Swal.fire({
               title: 'Error!',
               text: error?.error?.message || 'There was an issue generating the PDF CAS form report.',
@@ -274,15 +280,17 @@ export class SubscriptionBasedComponent implements OnInit {
   // ============================================================weekly Subscription above=========================
 
   getBaseSubscriptionExcel() {
+   
     if (!this.operatorid && !this.cur_date) {
       this.submitted = true;
     } else {
       console.log('LCO', this.selectedOperator)
-      // this.swal.Loading();
+      this.swal.Loading();
       this.userService.getasOnDateBaseActiveOrDeactiveExcelReport(this.role, this.username, this.operatorid, this.cur_date, this.isActive, 2)
         .subscribe(
           (response: HttpResponse<any[]>) => { // Expect HttpResponse<any[]>
             console.log(this.type);
+            this.swal.Close();
             if (response.status === 200) {
               this.rowData = response.body;
               console.log(this.type);
@@ -329,6 +337,7 @@ export class SubscriptionBasedComponent implements OnInit {
             }
           },
           (error) => {
+            this.swal.Close();
             this.handleApiError(error);
           }
         );
@@ -338,8 +347,10 @@ export class SubscriptionBasedComponent implements OnInit {
     if (!this.operatorid && !this.cur_date) {
       this.submitted = true;
     } else {
+      this.swal.Loading();
       this.userService.getasOnDateBaseActiveOrDeactivePDFReport(this.role, this.username, this.operatorid, this.cur_date, this.isActive, 1)
         .subscribe((x: Blob) => {
+          this.swal.Close();
           const blob = new Blob([x], { type: 'application/pdf' });
           const data = window.URL.createObjectURL(blob);
           const link = document.createElement('a');
@@ -355,6 +366,7 @@ export class SubscriptionBasedComponent implements OnInit {
           }, 100);
         },
           (error: any) => {
+            this.swal.Close();
             Swal.fire({
               title: 'Error!',
               text: error?.error?.message || 'There was an issue generating the PDF CAS form report.',
@@ -369,10 +381,12 @@ export class SubscriptionBasedComponent implements OnInit {
     if (!this.operatorid && !this.cur_date) {
       this.submitted = true;
     } else {
+      this.swal.Loading();
       this.userService.getasOnDateAddonActiveOrDeactiveExcelReport(this.role, this.username, this.operatorid, this.cur_date, this.isActive, 2)
         .subscribe(
           (response: HttpResponse<any[]>) => { // Expect HttpResponse<any[]>
             console.log(this.type);
+            this.swal.Close();
             if (response.status === 200) {
               this.rowData = response.body;
               console.log(this.type);
@@ -417,6 +431,7 @@ export class SubscriptionBasedComponent implements OnInit {
             }
           },
           (error) => {
+            this.swal.Close();
             this.handleApiError(error);
           }
         );
@@ -426,8 +441,10 @@ export class SubscriptionBasedComponent implements OnInit {
     if (!this.operatorid || !this.cur_date) {
       this.submitted = true;
     } else {
+      this.swal.Loading();
       this.userService.getasOnDateAddonActiveOrDeactivePDFReport(this.role, this.username, this.operatorid, this.cur_date, this.isActive, 1)
         .subscribe((x: Blob) => {
+          this.swal.Close();
           const blob = new Blob([x], { type: 'application/pdf' });
           const data = window.URL.createObjectURL(blob);
           const link = document.createElement('a');
@@ -442,6 +459,7 @@ export class SubscriptionBasedComponent implements OnInit {
           }, 100);
         },
           (error: any) => {
+            this.swal.Close();
             Swal.fire({
               title: 'Error!',
               text: error?.error?.message || 'There was an issue generating the PDF CAS form report.',
@@ -457,10 +475,12 @@ export class SubscriptionBasedComponent implements OnInit {
     if (!this.cur_date) {
       this.submitted = true;
     } else {
+      this.swal.Loading();
       this.userService.getasOnDateAlacarteActiveOrDeactiveSubscriptionExcelReport(this.role, this.username, this.cur_date, this.isActive, 2)
         .subscribe(
           (response: HttpResponse<any[]>) => { // Expect HttpResponse<any[]>
             console.log(this.type);
+            this.swal.Close();
             if (response.status === 200) {
               this.rowData = response.body;
               console.log(this.type);
@@ -508,6 +528,7 @@ export class SubscriptionBasedComponent implements OnInit {
             }
           },
           (error) => {
+            this.swal.Close();
             this.handleApiError(error);
           }
         );
@@ -517,8 +538,10 @@ export class SubscriptionBasedComponent implements OnInit {
     if (!this.cur_date) {
       this.submitted = true;
     } else {
+      this.swal.Loading();
       this.userService.getasOnDateAlacarteActiveOrDeactiveSubscriptionPDFReport(this.role, this.username, this.cur_date, this.isActive, 1)
         .subscribe((x: Blob) => {
+          this.swal.Close();
           const blob = new Blob([x], { type: 'application/pdf' });
           const data = window.URL.createObjectURL(blob);
           const link = document.createElement('a');
@@ -533,6 +556,7 @@ export class SubscriptionBasedComponent implements OnInit {
           }, 100);
         },
           (error: any) => {
+            this.swal.Close();
             Swal.fire({
               title: 'Error!',
               text: error?.error?.message || 'There was an issue generating the PDF CAS form report.',
@@ -547,6 +571,7 @@ export class SubscriptionBasedComponent implements OnInit {
     if (!this.cur_date) {
       this.submitted = true;
     } else {
+      this.swal.Loading();
       this.userService.getasOnDateAlacarteActiveOrDeactiveSubscriptionExcelReport(this.role, this.username, this.cur_date, this.isActive, 2)
         .subscribe(
           (response: HttpResponse<any[]>) => { // Expect HttpResponse<any[]>
@@ -591,6 +616,7 @@ export class SubscriptionBasedComponent implements OnInit {
             }
           },
           (error) => {
+            this.swal.Close();
             this.handleApiError(error);
           }
         );
@@ -600,8 +626,10 @@ export class SubscriptionBasedComponent implements OnInit {
     if (!this.cur_date) {
       this.submitted = true;
     } else {
+      this.swal.Loading();
       this.userService.getasOnDateAlacarteActiveOrDeactiveSubscriptionPDFReport(this.role, this.username, this.cur_date, this.isActive, 1)
         .subscribe((x: Blob) => {
+          this.swal.Close();
           const blob = new Blob([x], { type: 'application/pdf' });
           const data = window.URL.createObjectURL(blob);
           const link = document.createElement('a');
@@ -616,6 +644,7 @@ export class SubscriptionBasedComponent implements OnInit {
           }, 100);
         },
           (error: any) => {
+            this.swal.Close();
             Swal.fire({
               title: 'Error!',
               text: error?.error?.message || 'There was an issue generating the PDF CAS form report.',

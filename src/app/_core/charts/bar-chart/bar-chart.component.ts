@@ -157,7 +157,7 @@ export class BarChartComponent implements OnInit {
         gridThickness: 0
       },
       axisX: {
-        title: "Dates",
+        title: "Date",
         labelFontSize: 14,
         labelFontColor: "#001716",
         labelAlign: "center",

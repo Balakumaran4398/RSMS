@@ -85,12 +85,12 @@ export class InventoryroleComponent {
     },
     {
       headerName: 'MODEL', width: 340,
-      field: 'cottonbox',
+      field: 'model',
 
     },
     {
       headerName: 'CHIP ID', width: 330, cellStyle: { textAlign: 'center' },
-      field: 'casname',
+      field: 'chipid',
     }
   ]
   openLoginPage() {

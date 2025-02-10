@@ -33,7 +33,7 @@ export class PackageBasedComponent implements OnInit {
   filePath: string = '';
   isFileSelected: boolean = false;
   submitted: boolean = false;
-$event: any;
+  $event: any;
 
   constructor(public dialogRef: MatDialogRef<PackageBasedComponent>, private swal: SwalService, @Inject(MAT_DIALOG_DATA) public data: any, private excelService: ExcelService, public userService: BaseService, private cdr: ChangeDetectorRef, public storageservice: StorageService,) {
     this.username = storageservice.getUsername();
@@ -125,7 +125,7 @@ $event: any;
             header = ['S.NO', 'PACKAGE NAME PREVIOUS', 'PACKAGE NAME CURRENT', 'PACKAGE ID', 'RCAS PRODUCT ID', 'ENSCURITY PRODUCT', 'OLD CHANNEL LIST', 'NEW CHANNEL LIST', 'ADDED', 'REMOVED', 'UPDATED DATE', 'COUNT'];
 
             this.rowData.forEach((d: any, index: number) => {
-              const row = [index + 1, d.packagenamepre, d.packagenamecur, d.packageid, d.rcasproductid, d.rcasproductid, d.channelnamepre, d.chanenlnamecur,d.addedchannels,d.removedchannels,d.updateddate,d.count];
+              const row = [index + 1, d.packagenamepre, d.packagenamecur, d.packageid, d.rcasproductid, d.rcasproductid, d.channelnamepre, d.chanenlnamecur, d.addedchannels, d.removedchannels, d.updateddate, d.count];
               console.log('type 1 and 4', row);
               datas.push(row);
             });
@@ -153,27 +153,39 @@ $event: any;
         }
       );
   }
-  getPackage_AddonPDF() {
-    this.userService.getPackageModificationPdfReport(this.role, this.username, this.fromdate, this.todate, 1, this.packageType, 1)
+  getPackage_AddonPDF(type: any) {
+    // this.userService.getPackageModificationPdfReport(this.role, this.username, this.fromdate, this.todate, 1, this.packageType, type)
+    //   .subscribe((x: Blob) => {
+    //     const blob = new Blob([x], { type: 'application/pdf' });
+    //     const data = window.URL.createObjectURL(blob);
+    //     const link = document.createElement('a');
+    //     link.href = data;
+    //     link.download = `${this.type} REPORT - [FROM DATE: ${this.fromdate} - TO DATE: ${this.todate}].pdf`.toUpperCase();
+    //     link.dispatchEvent(new MouseEvent('click', { bubbles: true, cancelable: true, view: window }));
+    //     setTimeout(() => {
+    //       window.URL.revokeObjectURL(data);
+    //       link.remove();
+    //     }, 100);
+    //   },
+    //     (error: any) => {
+    //       Swal.fire({
+    //         title: 'Error!',
+    //         text: error?.error?.message || 'There was an issue generating the PDF CAS form report.',
+    //         icon: 'error',
+    //         confirmButtonText: 'Ok'
+    //       });
+    //     });
+    this.swal.Loading();
+    this.userService.getPackageModificationPdfReport(this.role, this.username, this.fromdate, this.todate, 1, this.packageType, type)
       .subscribe((x: Blob) => {
-        const blob = new Blob([x], { type: 'application/pdf' });
-        const data = window.URL.createObjectURL(blob);
-        const link = document.createElement('a');
-        link.href = data;
-        link.download = `${this.type} REPORT - [FROM DATE: ${this.fromdate} - TO DATE: ${this.todate}].pdf`.toUpperCase();
-        link.dispatchEvent(new MouseEvent('click', { bubbles: true, cancelable: true, view: window }));
-        setTimeout(() => {
-          window.URL.revokeObjectURL(data);
-          link.remove();
-        }, 100);
+        if (type == 1) {
+          this.reportMaking(x, `${this.type} REPORT - [FROM DATE: ${this.fromdate} - TO DATE: ${this.todate}].pdf`, 'application/pdf');
+        } else if (type == 2) {
+          this.reportMaking(x, `${this.type} REPORT - [FROM DATE: ${this.fromdate} - TO DATE: ${this.todate}].xlsx`, 'application/xlsx');
+        }
       },
         (error: any) => {
-          Swal.fire({
-            title: 'Error!',
-            text: error?.error?.message || 'There was an issue generating the PDF CAS form report.',
-            icon: 'error',
-            confirmButtonText: 'Ok'
-          });
+          this.pdfswalError(error?.error.message);
         });
   }
   // ============================SYNCHRONIZATION==========================
@@ -281,10 +293,12 @@ $event: any;
     }
   }
   getChannelExcel() {
+    this.swal.Loading();
     this.userService.getChannelModificationExcelReport(this.role, this.username, this.fromdate, this.todate, 2)
       .subscribe(
-        (response: HttpResponse<any[]>) => { // Expect HttpResponse<any[]>
+        (response: HttpResponse<any[]>) => {
           console.log(this.type);
+          this.swal.Close();
           if (response.status === 200) {
             this.rowData = response.body;
             console.log(this.type);
@@ -294,50 +308,42 @@ $event: any;
             let areasub = '';
             let header: string[] = [];
             const datas: Array<any> = [];
-            // if (this.type == 1) {
             areatitle = 'A1:I2';
             areasub = 'A3:I3';
             header = ['S.NO', 'CHANNEL NAME PREVIOUS', 'CHANNEL NAME NEW', 'BROADCASTER NAME PREVIOUS', 'BROADCASTER NAME NEW', 'SERVICE ID PREVIOUS', 'SERVICE ID NEW', 'CREATED DATE'];
-
             this.rowData.forEach((d: any, index: number) => {
               const row = [index + 1, d.channelnamepre, d.channelnamecur, d.broadcasternamepre, d.broadcasternamecur, d.serviceidpre, d.serviceidcur, d.createddate];
               console.log('type 1 and 4', row);
               datas.push(row);
             });
-
             this.excelService.generateTraiPackageBaseExcel(areatitle, header, datas, title, areasub, sub);
-
           } else if (response.status === 204) {
             // this.swal.Success_204();
+            this.swal.Close();
             const title = (this.type + ' REPORT [FROM DATE: ' + this.fromdate + ' - TO DATE: ' + this.todate + ']').toUpperCase();
             const sub = 'MSO ADDRESS:' + this.msodetails;
             let areatitle = '';
             let areasub = '';
             let header: string[] = [];
             const datas: Array<any> = [];
-            // if (this.type == 1) {
             areatitle = 'A1:I2';
             areasub = 'A3:I3';
             header = ['S.NO', 'CHANNEL NAME PREVIOUS', 'CHANNEL NAME CURRENT', 'BROADCASTER NAME PREVIOUS', 'BROADCASTER NAME CURRENT', 'SERVICE ID PREVIOUS', 'SERVICE ID CURRENT', 'CREATED DATE'];
-
-            // this.rowData.forEach((d: any) => {
-            //   const row = [d.channelnamepre, d.channelnamecur, d.broadcasternamepre, d.broadcasternamecur, d.serviceidpre, d.serviceidcur, d.createddate];
-            //   console.log('type 1 and 4', row);
-            //   datas.push(row);
-            // });
-
             this.excelService.generateTraiPackageBaseExcel(areatitle, header, datas, title, areasub, sub);
             this.rowData = [];
           }
         },
         (error) => {
+          this.swal.Close();
           this.handleApiError(error);
         }
       );
   }
   getChannelPDF() {
+    this.swal.Loading();
     this.userService.getChannelModificationPdfReport(this.role, this.username, this.fromdate, this.todate, 1)
       .subscribe((x: Blob) => {
+        this.swal.Close();
         const blob = new Blob([x], { type: 'application/pdf' });
         const data = window.URL.createObjectURL(blob);
         const link = document.createElement('a');
@@ -350,6 +356,7 @@ $event: any;
         }, 100);
       },
         (error: any) => {
+          this.swal.Close();
           Swal.fire({
             title: 'Error!',
             text: error?.error?.message || 'There was an issue generating the PDF CAS form report.',
@@ -360,10 +367,12 @@ $event: any;
   }
 
   getComboExcel() {
+    this.swal.Loading();
     this.userService.getComboModificationExcelReport(this.role, this.username, 2)
       .subscribe(
         (response: HttpResponse<any[]>) => {
           console.log(this.type);
+          this.swal.Close();
           this.rowData = response.body;
           console.log(this.rowData);
 
@@ -425,14 +434,17 @@ $event: any;
           this.excelService.generateComboExcel(areaTitle, columns[0], datas, title, areaSub, sub,);
         },
         (error) => {
+          this.swal.Close();
           this.handleApiError(error);
         }
       );
   }
 
   getComboPDF() {
+    this.swal.Loading();
     this.userService.getComboModificationPdfReport(this.role, this.username, 1)
       .subscribe((x: Blob) => {
+        this.swal.Close();
         const blob = new Blob([x], { type: 'application/pdf' });
         const data = window.URL.createObjectURL(blob);
         const link = document.createElement('a');
@@ -445,6 +457,7 @@ $event: any;
         }, 100);
       },
         (error: any) => {
+          this.swal.Close();
           Swal.fire({
             title: 'Error!',
             text: error?.error?.message || 'There was an issue generating the PDF CAS form report.',
@@ -455,85 +468,92 @@ $event: any;
   }
 
   getBouquetAlacarteExcel() {
+    this.swal.Loading();
     if (!this.productType) {
       this.submitted = true;
     } else {
-    this.userService.getBouquetSubscriptionExcelReport(this.role, this.username, this.fromdate, this.todate, this.productType, 2)
-      .subscribe(
-        (response: HttpResponse<any[]>) => { // Expect HttpResponse<any[]>
-          console.log(this.type);
-          if (response.status === 200) {
-            this.rowData = response.body;
-            console.log(this.rowData);
+      this.userService.getBouquetSubscriptionExcelReport(this.role, this.username, this.fromdate, this.todate, this.productType, 2)
+        .subscribe(
+          (response: HttpResponse<any[]>) => { // Expect HttpResponse<any[]>
             console.log(this.type);
-            const title = (this.type + ' REPORT [FROM DATE: ' + this.fromdate + ' - TO DATE: ' + this.todate + ']').toUpperCase();
-            const sub = 'MSO ADDRESS:' + this.msodetails;
-            let areatitle = '';
-            let areasub = '';
-            let header: string[] = [];
-            const datas: Array<any> = [];
-            // if (this.type == 1) {
-            areatitle = 'A1:J2';
-            areasub = 'A3:J3';
-            // header = ['CHANNEL ID', 'CHANNEL NAME', 'RATE'];
-            header = ['S.NO', 'SMARTCARD', 'BOXID', 'PRODUCT ID', 'PRODUCT NAME', 'LOG DATE', 'ACTIVATION DATE', 'EXPIRY DATE', 'ACTIVITY', 'STATUS'];
+            this.swal.Close();
+            if (response.status === 200) {
+              this.rowData = response.body;
+              console.log(this.rowData);
+              console.log(this.type);
+              const title = (this.type + ' REPORT [FROM DATE: ' + this.fromdate + ' - TO DATE: ' + this.todate + ']').toUpperCase();
+              const sub = 'MSO ADDRESS:' + this.msodetails;
+              let areatitle = '';
+              let areasub = '';
+              let header: string[] = [];
+              const datas: Array<any> = [];
+              // if (this.type == 1) {
+              areatitle = 'A1:J2';
+              areasub = 'A3:J3';
+              // header = ['CHANNEL ID', 'CHANNEL NAME', 'RATE'];
+              header = ['S.NO', 'SMARTCARD', 'BOXID', 'PRODUCT ID', 'PRODUCT NAME', 'LOG DATE', 'ACTIVATION DATE', 'EXPIRY DATE', 'ACTIVITY', 'STATUS'];
 
-            this.rowData.forEach((d: any, index: number) => {
-              const row = [index + 1, d.smartcard, d.boxid, d.orderid, d.packagename, d.logdate, d.logdate, d.expirydate, d.activity, d.status];
-              console.log('type 1 and 4', row);
-              datas.push(row);
-            });
-            this.excelService.generateSuspendBasedExcel(areatitle, header, datas, title, areasub, sub);
+              this.rowData.forEach((d: any, index: number) => {
+                const row = [index + 1, d.smartcard, d.boxid, d.orderid, d.packagename, d.logdate, d.logdate, d.expirydate, d.activity, d.status];
+                console.log('type 1 and 4', row);
+                datas.push(row);
+              });
+              this.excelService.generateSuspendBasedExcel(areatitle, header, datas, title, areasub, sub);
 
-            // this.excelService.generateBouquetExcel(areatitle, header, datas, title, areasub, sub);
+              // this.excelService.generateBouquetExcel(areatitle, header, datas, title, areasub, sub);
 
-          } else if (response.status === 204) {
-            // this.swal.Success_204();
+            } else if (response.status === 204) {
+              // this.swal.Success_204();
 
-            const title = (this.type + '  REPORT').toUpperCase();
-            const sub = 'MSO ADDRESS:' + this.msodetails;
-            let areatitle = '';
-            let areasub = '';
-            let header: string[] = [];
-            const datas: Array<any> = [];
-            areatitle = 'A1:J2';
-            areasub = 'A3:J3';
-            header = ['S.NO', 'SMARTCARD', 'BOXID', 'PRODUCT ID', 'PRODUCT NAME', 'LOG DATE', 'ACTIVATION DATE', 'EXPIRY DATE', 'ACTIVITY', 'STATUS'];
-            this.excelService.generateBouquetExcel(areatitle, header, datas, title, areasub, sub);
-            this.rowData = [];
+              const title = (this.type + '  REPORT').toUpperCase();
+              const sub = 'MSO ADDRESS:' + this.msodetails;
+              let areatitle = '';
+              let areasub = '';
+              let header: string[] = [];
+              const datas: Array<any> = [];
+              areatitle = 'A1:J2';
+              areasub = 'A3:J3';
+              header = ['S.NO', 'SMARTCARD', 'BOXID', 'PRODUCT ID', 'PRODUCT NAME', 'LOG DATE', 'ACTIVATION DATE', 'EXPIRY DATE', 'ACTIVITY', 'STATUS'];
+              this.excelService.generateBouquetExcel(areatitle, header, datas, title, areasub, sub);
+              this.rowData = [];
+            }
+          },
+          (error) => {
+            this.swal.Close();
+            this.handleApiError(error);
           }
-        },
-        (error) => {
-          this.handleApiError(error);
-        }
-      );
+        );
     }
   }
   getBouquetAlacartePDF() {
+    this.swal.Loading();
     if (!this.productType) {
       this.submitted = true;
-    } else {    this.userService.getBouquetSubscriptionPdfReport(this.role, this.username, this.fromdate, this.todate, this.productType, 1)
-      .subscribe((x: Blob) => {
-        const blob = new Blob([x], { type: 'application/pdf' });
-        const data = window.URL.createObjectURL(blob);
-        const link = document.createElement('a');
-        link.href = data;
-        link.download = `${this.type} REPORT - [FROM DATE: ${this.fromdate} - TO DATE: ${this.todate}].pdf`.toUpperCase();
-        link.dispatchEvent(new MouseEvent('click', { bubbles: true, cancelable: true, view: window }));
-        setTimeout(() => {
-          window.URL.revokeObjectURL(data);
-          link.remove();
-        }, 100);
-      },
-        (error: any) => {
-          Swal.fire({
-            title: 'Error!',
-            text: error?.error?.message || 'There was an issue generating the PDF CAS form report.',
-            icon: 'error',
-            confirmButtonText: 'Ok'
+    } else {
+      this.userService.getBouquetSubscriptionPdfReport(this.role, this.username, this.fromdate, this.todate, this.productType, 1)
+        .subscribe((x: Blob) => {
+          this.swal.Close();
+          const blob = new Blob([x], { type: 'application/pdf' });
+          const data = window.URL.createObjectURL(blob);
+          const link = document.createElement('a');
+          link.href = data;
+          link.download = `${this.type} REPORT - [FROM DATE: ${this.fromdate} - TO DATE: ${this.todate}].pdf`.toUpperCase();
+          link.dispatchEvent(new MouseEvent('click', { bubbles: true, cancelable: true, view: window }));
+          setTimeout(() => {
+            window.URL.revokeObjectURL(data);
+            link.remove();
+          }, 100);
+        },
+          (error: any) => {
+            this.swal.Close();
+            Swal.fire({
+              title: 'Error!',
+              text: error?.error?.message || 'There was an issue generating the PDF CAS form report.',
+              icon: 'error',
+              confirmButtonText: 'Ok'
+            });
           });
-        });
-      }
+    }
   }
   // ------------------------------------------------------------------------------------------------
   handleApiError(error: any) {
@@ -544,5 +564,42 @@ $event: any;
     } else {
       Swal.fire('Error', 'Something went wrong. Please try again.', 'error');
     }
+  }
+
+  // -----------------------------------------------------common method for pdf and excel------------------------------------------------------------------------
+
+
+  reportMaking(x: Blob, reportname: any, reporttype: any) {
+    const blob = new Blob([x], { type: reporttype });
+    const data = window.URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.href = data;
+    link.download = reportname.toUpperCase();
+    link.dispatchEvent(new MouseEvent('click', { bubbles: true, cancelable: true, view: window }));
+    setTimeout(() => {
+      window.URL.revokeObjectURL(data);
+      link.remove();
+    }, 100);
+    Swal.close();
+  }
+  pdfswalError(error: any) {
+    Swal.close();
+    Swal.fire({
+      title: 'Error!',
+      text: error.message || 'There was an issue generating the PDF CAS form report.',
+      icon: 'error',
+      confirmButtonText: 'Ok'
+    });
+  }
+  processingSwal() {
+    Swal.fire({
+      title: "Processing",
+      text: "Please wait while the report is being generated...",
+      showConfirmButton: false,
+      didOpen: () => {
+        Swal.showLoading(null);
+      }
+    });
+
   }
 }

@@ -1285,7 +1285,7 @@ export class BaseService {
   }
   getAllOperatorInvoiceBillMonthYear(role: any, username: any, month: any, Year: any): Observable<any[]> {
     return this.http.get<any[]>(
-      BASE_URL + "/operator/getAllOperatorInvoiceBillByMonthYear?role=" + role + "&username=" + username + "&month=" + month + "&year=" + Year, {  });
+      BASE_URL + "/operator/getAllOperatorInvoiceBillByMonthYear?role=" + role + "&username=" + username + "&month=" + month + "&year=" + Year, {});
   }
   // ------------------------------------------------------------bill generation-----------------------------------------
   generateOperatorInvoiceBill(role: any, username: any, month: any, Year: any): Observable<any[]> {
@@ -1914,7 +1914,7 @@ export class BaseService {
   // ----------------------------------------------------------INVENTORY-[LOGIN]-----------------------------------------------------------------------------
   // ----------------------------------------------------------------inventory----------------------------
   getInventoryUpdateDate(role: any, username: any, date: any): Observable<any[]> {
-    return this.http.post<any[]>(BASE_URL + "/master/updateLicense?role=" + role + "&username=" + username + "&date=" + date,{})
+    return this.http.post<any[]>(BASE_URL + "/master/updateLicense?role=" + role + "&username=" + username + "&date=" + date, {})
   }
   getInvent_License_Extend(role: any, username: any): Observable<any[]> {
     return this.http.get<any[]>(
@@ -1934,5 +1934,12 @@ export class BaseService {
   cortonBoxDetails(role: any, username: any, operatorid: any, isemi: boolean, dueamount: any, type: any, areaid: any, streetid: any, packageid: any, days: any, subscribername: any,
     smartcardlist: any): Observable<any[]> {
     return this.http.post<any[]>(BASE_URL + "/allocation/uploadCartonBox?role=" + role + "&username=" + username + "&operatorid=" + operatorid + "&isemi=" + isemi + "&dueamount=" + dueamount + "&type=" + type + "&areaid=" + areaid + "&streetid=" + streetid + "&packageid=" + packageid + "&days=" + days + "&subscribername=" + subscribername + "&smartcardlist=" + smartcardlist, {});
+  }
+
+  getAllCartonBoxList(role: any, username: any): Observable<any[]> {
+    return this.http.get<any[]>(BASE_URL + "/allocation/getAllCartonBoxList?role=" + role + "&username=" + username)
+  }
+  getEmiDetails(role: any, username: any): Observable<any[]> {
+    return this.http.get<any[]>(BASE_URL + "/allocation/getEmiDetails?role=" + role + "&username=" + username)
   }
 }
