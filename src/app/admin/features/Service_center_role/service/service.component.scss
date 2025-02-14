@@ -42,7 +42,9 @@ span {
     padding: 0 0 0 4px;
     height: -1px;
 }
-
+.table_operator{
+    width: 30%;
+}
 @media screen and (max-width:560px) {
 
     .container-fluid {
@@ -52,6 +54,9 @@ span {
 
     .display {
         display: block;
+    }
+    .table_operator{
+        width: 100%;
     }
 }
 

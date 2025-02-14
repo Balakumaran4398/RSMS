@@ -14,7 +14,8 @@
             <div class="tab d-flex justify-content-center align-items-center mb-3">
                 <label class="btn btn-outline-info mx-1">
                     <span>+</span> Choose
-                    <input type="file" style="display: none;" accept=".xls,.xlsx,.csv" (change)="handleFileInput($event)">
+                    <input type="file" style="display: none;" accept=".xls,.xlsx,.csv"
+                        (change)="handleFileInput($event)">
                 </label>
                 <a class="btn btn-outline-success mx-1" [class.disabled]="!file"
                     (click)="file ? uploadData($event) : null">
@@ -30,8 +31,10 @@
                 <i class="fa fa-close close-icon mx-1" (click)="clearFilePath()"></i>
             </div>
         </div>
-        <div class="row" style="max-height: 400px;overflow: auto;">
-            <ag-grid-angular #agGrid id="myGrid" domLayout='autoHeight' class="ag-theme-alpine table-class" rowAnimation
+        <div class="row">
+            <ag-grid-angular #agGrid id="myGrid" domLayout='normal' class="ag-theme-alpine table-class" rowAnimation
+            [style.height]="rowData && rowData.length > 0 ? '400px' : '250px'"
+            style="overflow: scroll; overflow-y: hidden; overflow-x: hidden;"
                 [gridOptions]="gridOptions" [columnDefs]="columnDefs" [rowData]="rowData"
                 [enableCellTextSelection]="true">
             </ag-grid-angular>

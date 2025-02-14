@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, Inject, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, HostListener, Inject, OnInit,OnDestroy } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { BaseService } from 'src/app/_core/service/base.service';
 import { StorageService } from 'src/app/_core/service/storage.service';
@@ -9,7 +9,7 @@ declare var $: any;
   templateUrl: './createltb.component.html',
   styleUrls: ['./createltb.component.scss']
 })
-export class CreateltbComponent implements OnInit {
+export class CreateltbComponent implements OnInit,OnDestroy {
   role: any;
   username: any;
   opNameList: any[] = [];
@@ -40,10 +40,18 @@ export class CreateltbComponent implements OnInit {
     this.role = storageService.getUserRole();
     console.log(data);
   }
+  @HostListener('window:popstate', ['$event'])
+  onPopState(event: Event) {
+    location.reload(); 
+  }
   ngOnInit(): void {
 
     this.channelList();
     this.ltbList();
+  }
+  ngOnDestroy(): void {
+    ($('#channel') as any).select2('destroy');
+    ($('#ltb') as any).select2('destroy');
   }
   ngAfterViewInit() {
     $('#channel').select2({

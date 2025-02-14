@@ -92,7 +92,7 @@ export class LoginComponent implements OnInit {
           console.log(res);
           console.log(res.roles);
           if (res.roles.includes('ROLE_ADMIN') || res.roles.includes('ROLE_RECEPTION') || res.roles.includes('ROLE_SPECIAL')
-            || res.roles.includes('ROLE_INVENTORY') || res.roles.includes('ROLE_CUSTOMER_SERVICE') || res.roles.includes('ROLE_SERVICE_CENTER')) {
+            || res.roles.includes('ROLE_INVENTORY') || res.roles.includes('ROLE_CUSSERVICE') || res.roles.includes('ROLE_SERVICECENTER')) {
             this.storageService.saveToken(res.accessToken);
             this.storageService.saveUser(res);
             this.idstorage = res.id;
@@ -107,8 +107,8 @@ export class LoginComponent implements OnInit {
             let isReception = this.roles.includes('ROLE_RECEPTION');
             let isSpecial = this.roles.includes('ROLE_SPECIAL');
             let isInventory = this.roles.includes('ROLE_INVENTORY');
-            let isCusService = this.roles.includes('ROLE_CUSTOMER_SERVICE');
-            let isServiceCenter = this.roles.includes('ROLE_SERVICE_CENTER');
+            let isCusService = this.roles.includes('ROLE_CUSSERVICE');
+            let isServiceCenter = this.roles.includes('ROLE_SERVICECENTER');
 
             Swal.fire({
               position: "center",
@@ -133,10 +133,10 @@ export class LoginComponent implements OnInit {
               this.router.navigate(['admin/inventor_inventory']).then(() => {
               });
             } else if (isCusService) {
-              this.router.navigate(['admin/inventor_inventory']).then(() => {
+              this.router.navigate(['admin/subscriber']).then(() => {
               });
             } else if (isServiceCenter) {
-              this.router.navigate(['admin/inventor_inventory']).then(() => {
+              this.router.navigate(['admin/service_center']).then(() => {
               });
             }
           } else {

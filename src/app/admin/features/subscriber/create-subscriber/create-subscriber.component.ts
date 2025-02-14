@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, ViewChild } from '@angular/core';
+import { ChangeDetectorRef, Component, ViewChild ,OnDestroy, AfterViewInit} from '@angular/core';
 import { AbstractControl, FormBuilder, FormControl, FormGroup, ValidationErrors, Validators } from '@angular/forms';
 import { BaseService } from 'src/app/_core/service/base.service';
 import { StorageService } from 'src/app/_core/service/storage.service';
@@ -15,7 +15,7 @@ declare var $: any;
   styleUrls: ['./create-subscriber.component.scss'],
   providers: [DatePipe]
 })
-export class CreateSubscriberComponent {
+export class CreateSubscriberComponent implements AfterViewInit, OnDestroy {
   submitted = false;
   maskPattern: string = '';
   maxLength: number | undefined;
@@ -109,6 +109,12 @@ export class CreateSubscriberComponent {
     this.loadIdProofList();
     this.loadAddProofList();
   }
+  ngOnDestroy(): void {
+    ($('#Lco') as any).select2('destroy');
+    ($('#Area') as any).select2('destroy');
+    ($('#Street') as any).select2('destroy');
+  }
+  
   ngAfterViewInit() {
     $('#Lco').select2({
       placeholder: 'Select an Operator',
@@ -117,9 +123,9 @@ export class CreateSubscriberComponent {
     $('#Lco').on('change', (event: any) => {
       this.operatorid = event.target.value;
       console.log('operator   dsfdsfsdfdsfds');
-
       this.onOperatorChange(this.operatorid);
     });
+
     $('#Area').select2({
       placeholder: 'Select Area',
       allowClear: true

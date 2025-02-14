@@ -337,7 +337,7 @@ export class HistoryAllReportsComponent implements OnInit {
           if (response.status === 200) {
             this.rowData = response.body;
             console.log(this.reportTitle);
-            const title = (this.reportTitle + '  [FROM DATE : ' + this.fromdate + 'TO DATE : ' + this.todate + ']').toUpperCase();
+            const title = (this.reportTitle + '  [FROM DATE : ' + this.fromdate + '- TO DATE : ' + this.todate + ']').toUpperCase();
             const sub = 'MSO ADDRESS:' + this.msodetails;
             let areatitle = '';
             let areasub = '';
@@ -357,7 +357,7 @@ export class HistoryAllReportsComponent implements OnInit {
             // this.swal.Success_204();
             this.rowData = response.body;
             console.log(this.reportTitle);
-            const title = (this.reportTitle + '  [ FROM DATE : ' + this.fromdate + 'TO DATE : ' + this.todate + ']').toUpperCase();
+            const title = (this.reportTitle + '  [ FROM DATE : ' + this.fromdate + '- TO DATE : ' + this.todate + ']').toUpperCase();
             const sub = 'MSO ADDRESS:' + this.msodetails;
             let areatitle = '';
             let areasub = '';
@@ -422,9 +422,9 @@ export class HistoryAllReportsComponent implements OnInit {
             const datas: Array<any> = [];
             areatitle = 'A1:J2';
             areasub = 'A3:J3';
-            header = ['S.NO', 'SUBSCRIBER ID', 'SUBSCRIBER NAME', 'CAS FORM ID', 'MOBILE NO', 'ADDRESS', 'INSTALL ADDRESS', 'EMAIL', 'LANDLINE NO', 'SMARTCARD', 'BOX ID', 'STATUS', 'CREATED DATE', 'USER NAME', 'PASSWORD', 'APP LOCK STATUS', 'PACKAGE NAME'];
+            header = ['S.NO', 'SUBSCRIBER NAME', 'SUBSCRIBER ID', 'CAS FORM ID', 'MOBILE NO', 'ADDRESS', 'INSTALL ADDRESS', 'EMAIL', 'LANDLINE NO', 'SMARTCARD', 'BOX ID', 'STATUS', 'CREATED DATE', 'USER NAME', 'PASSWORD', 'APP LOCK STATUS', 'PACKAGE NAME'];
             this.rowData.forEach((d: any, index: number) => {
-              const row = [index + 1, d.subid, d.customername, d.casformid, d.mobileno, d.address, d.installaddress, d.email, d.landline, d.smartcard, d.boxid, d.status, d.createddate, d.username, d.password, d.lockstatus, d.productname];
+              const row = [index + 1, d.customername, d.subid, d.casformid, d.mobileno, d.address, d.installaddress, d.email, d.landline, d.smartcard, d.boxid, d.status, d.createddate, d.username, d.password, d.lockstatus, d.productname];
               datas.push(row);
             });
             this.excelService.generateTotalSmartcardExcel(areatitle, header, datas, title, areasub, sub);
@@ -702,7 +702,7 @@ export class HistoryAllReportsComponent implements OnInit {
             areatitle = 'A1:J2';
             areasub = 'A3:J3';
             header = ['S.NO', 'INTEND ID', 'INTEND TO', 'MESSAGE', 'FONT COLOR', 'BACKGROUND COLOR', 'FONT SIZE', 'POSITION', 'REPEAT FOR', 'CREATED DATE'];
-        
+
             this.excelService.generateScrollExcel(areatitle, header, datas, title, areasub, sub);
             this.rowData = [];
           }
@@ -792,7 +792,7 @@ export class HistoryAllReportsComponent implements OnInit {
             areatitle = 'A1:H2';
             areasub = 'A3:H3';
             header = ['S.NO', 'INTEND ID', 'INTEND TO', 'TITLE', 'SENDER', 'MESSAGE', 'SEND DATE', 'EXPIRY DATE'];
-       
+
             this.excelService.generateMailExcel(areatitle, header, datas, title, areasub, sub);
             this.rowData = [];
           }
@@ -861,11 +861,11 @@ export class HistoryAllReportsComponent implements OnInit {
             let areasub = '';
             let header: string[] = [];
             const datas: Array<any> = [];
-            areatitle = 'A1:G2';
-            areasub = 'A3:G3';
-            header = ['S.NO', 'ID', 'POSITION', 'FONT COLOR', 'BACKGROUND COLOR', 'FONT SIZE', 'DATE'];
+            areatitle = 'A1:H2';
+            areasub = 'A3:H3';
+            header = ['S.NO', 'ID', 'MESSAGE', 'POSITION', 'FONT COLOR', 'BACKGROUND COLOR', 'FONT SIZE', 'DATE'];
             this.rowData.forEach((d: any, index: number) => {
-              const row = [index + 1, d.intendid, d.position, d.fontcolordisplay, d.bgcolordisplay, d.fontsize, d.date];
+              const row = [index + 1, d.intendid, d.message, d.position, d.fontcolordisplay, d.bgcolordisplay, d.fontsize, d.date];
               datas.push(row);
             });
             this.excelService.generatFingerprintExcel(areatitle, header, datas, title, areasub, sub);
@@ -879,10 +879,10 @@ export class HistoryAllReportsComponent implements OnInit {
             let areasub = '';
             let header: string[] = [];
             const datas: Array<any> = [];
-            areatitle = 'A1:G2';
-            areasub = 'A3:G3';
-            header = ['S.NO', 'ID', 'POSITION', 'FONT COLOR', 'BACKGROUND COLOR', 'FONT SIZE', 'DATE'];
-          
+            areatitle = 'A1:H2';
+            areasub = 'A3:H3';
+            header = ['S.NO', 'ID', 'MESSAGE', 'POSITION', 'FONT COLOR', 'BACKGROUND COLOR', 'FONT SIZE', 'DATE'];
+
             this.rowData = [];
           }
         },
@@ -1386,7 +1386,7 @@ export class HistoryAllReportsComponent implements OnInit {
           if (response.status === 200) {
             this.rowData = response.body;
             console.log(this.reportTitle);
-            const title = ('AS ON DATE SMARTCARD SUSPEND REPORT [ FROM DATE :' + this.fromdate + 'TO DATE :' + this.todate + ' ]').toUpperCase();
+            const title = ('AS ON DATE SMARTCARD SUSPEND REPORT [ FROM DATE :' + this.fromdate + '- TO DATE :' + this.todate + ' ]').toUpperCase();
             const sub = 'MSO ADDRESS:' + this.msodetails;
             let areatitle = '';
             let areasub = '';
@@ -1406,7 +1406,7 @@ export class HistoryAllReportsComponent implements OnInit {
             // this.swal.Success_204();
             this.rowData = response.body;
             console.log(this.reportTitle);
-            const title = ('AS ON DATE SMARTCARD SUSPEND REPORT [ FROM DATE :' + this.fromdate + 'TO DATE :' + this.todate + ' ]').toUpperCase();
+            const title = ('AS ON DATE SMARTCARD SUSPEND REPORT [ FROM DATE :' + this.fromdate + '- TO DATE :' + this.todate + ' ]').toUpperCase();
 
             const sub = 'MSO ADDRESS:' + this.msodetails;
             let areatitle = '';
@@ -1416,10 +1416,7 @@ export class HistoryAllReportsComponent implements OnInit {
             areatitle = 'A1:H2';
             areasub = 'A3:H3';
             const headers = ['S.NO', 'SUBSCRIBER NAME', 'MOBILE NO', 'SMARTCARD', 'BOX ID', 'CAS', 'PACKAGE', 'SUBSCRIPTION END DATE'];
-            this.rowData.forEach((d: any, index: number) => {
-              const row = [index + 1, d.customername, d.mobileno, d.smartcard, d.boxid, d.casname, d.productname, d.createddate];
-              datas.push(row);
-            });
+      
             // this.excelService.generatSmartcardSuspendDurationExcel(areatitle, headers, datas, title, areasub, sub);
             this.excelService.generateSuspendBasedExcel(areatitle, headers, datas, title, areasub, sub);
 
@@ -1492,7 +1489,7 @@ export class HistoryAllReportsComponent implements OnInit {
             this.rowData = response.body;
             console.log(this.reportTitle);
             // const title = (this.reportTitle).toUpperCase();
-            const title = (this.reportTitle + '  [  FROM DATE :' + this.fromdate + 'TO DATE :' + this.todate + ' ]').toUpperCase();
+            const title = (this.reportTitle + '  [  FROM DATE :' + this.fromdate + '- TO DATE :' + this.todate + ' ]').toUpperCase();
             const sub = 'MSO ADDRESS:' + this.msodetails;
             let areatitle = '';
             let areasub = '';
@@ -1513,7 +1510,7 @@ export class HistoryAllReportsComponent implements OnInit {
             this.rowData = response.body;
             console.log(this.reportTitle);
             // const title = (this.reportTitle).toUpperCase();
-            const title = (this.reportTitle + '  [ FROM DATE :' + this.fromdate + 'TO DATE :' + this.todate + ' ]').toUpperCase();
+            const title = (this.reportTitle + '  [ FROM DATE :' + this.fromdate + '- TO DATE :' + this.todate + ' ]').toUpperCase();
             const sub = 'MSO ADDRESS:' + this.msodetails;
             let areatitle = '';
             let areasub = '';

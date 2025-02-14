@@ -1,5 +1,5 @@
 import { HttpResponse } from '@angular/common/http';
-import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
 import { BaseService } from 'src/app/_core/service/base.service';
 import { ExcelService } from 'src/app/_core/service/excel.service';
 import { StorageService } from 'src/app/_core/service/storage.service';
@@ -11,7 +11,7 @@ declare var $:any;
   templateUrl: './expiry-details.component.html',
   styleUrls: ['./expiry-details.component.scss']
 })
-export class ExpiryDetailsComponent implements OnInit {
+export class ExpiryDetailsComponent implements OnInit,OnDestroy {
   maxDate = new Date();
   fromdate: any;
   todate: any;
@@ -42,6 +42,10 @@ export class ExpiryDetailsComponent implements OnInit {
     })
     this.operatorlist();
   }
+  ngOnDestroy(): void {
+    ($('#operator') as any).select2('destroy');
+  }
+
   ngOnInit(): void {
     this.userservice.getMsoDetails(this.role, this.username).subscribe((data: any) => {
       console.log(data);

@@ -15,7 +15,10 @@
     margin-top: 0.5em;
 }
 
-
+.mobile{
+    max-height: 830px;
+    overflow: scroll;
+}
 
 
 .user_details {
@@ -23,9 +26,9 @@
     justify-content: space-between;
     flex-wrap: wrap;
     gap: 6px;
-    padding: 20px;
-    max-height: 550px;
-    overflow: auto;
+    padding: 10px;
+    // max-height: 70vh;
+    // overflow: auto;
     // box-shadow: 0px 0px 2px 1px rgb(223 41 105) !important;
 }
 
@@ -116,6 +119,25 @@ form .gender {
 .reg_btn input:hover {
     background: linear-gradient(to right, #385cfc, #ceaef8);
 }
+
+.select2-container {
+    width: 250px !important;
+}
+
+::ng-deep .select2-container .select2-selection--single {
+    height: 45px !important;
+    margin-top: 1%;
+}
+
+::ng-deep .select2-container .select2-selection--single .select2-selection__rendered {
+    margin-top: 7px;
+}
+
+::ng-deep .select2-container--default .select2-selection--single .select2-selection__arrow {
+    top: 10px;
+}
+
+
 
 @media screen and (max-width:560px) {
 

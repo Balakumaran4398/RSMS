@@ -184,7 +184,7 @@ export class ChannelComponent {
   openDialog(): void {
     const dialogRef = this.dialog.open(ChannelCreateComponent, {
       width: '700px',
-      maxHeight: 700,
+      // maxHeight: 700,
       // height: '900px',
       panelClass: 'custom-dialog-container'
     });

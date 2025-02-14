@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ColDef } from 'ag-grid-community';
+import { data } from 'jquery';
 import { BaseService } from 'src/app/_core/service/base.service';
 import { StorageService } from 'src/app/_core/service/storage.service';
 declare var $: any;
@@ -11,15 +12,21 @@ declare var $: any;
 export class ServiceComponent implements OnInit {
   role: any;
   username: any;
-  selectedEntry: any;
+  selectedEntry: any = '';
   selectSmartcard: any;
-  selectedOperator: any;
-
+  selectedOperator: any = '';
+  searchSmartcard: any = '';
   isActive: boolean = false;
   today = new Date();
+  smartcardList: any[] = [];
+  showDropdown: boolean = true;
+  selectedType = false;
+  nosmartcard = false;
+  fromdate: any;
+  todate: any;
 
-  fromdate:any;
-  todate:any;
+  smartcardDetails: any;
+  noSmartcardDetails: any;
 
   gridOptions = {
     defaultColDef: {
@@ -42,25 +49,20 @@ export class ServiceComponent implements OnInit {
   rowData: any[] = [];
 
   subscriberDetails = [
-    { label: 'OPERATOR', value: 'raman' },
-    { label: 'MOBILE NO', value: 'raman' },
-    { label: 'SUBSCRIBER', value: 'raman' },
-    { label: 'AREA NAME', value: 'raman' },
-    { label: 'STREET NAME', value: 'raman' }
+    { label: 'OPERATOR', value: '' },
+    { label: 'MOBILE NO', value: '' },
+    { label: 'SUBSCRIBER', value: '' },
+    { label: 'AREA NAME', value: '' },
+    { label: 'STREET NAME', value: '' }
   ];
-  filteredPackageList: any[] = [
-    { name: "aaa", value: 0 },
-    { name: "bbb", value: 1 },
-    { name: "cccc", value: 2 },
-    { name: "ddd", value: 3 },
-    { name: "eee", value: 4 },
-  ];
+  filteredProblemList: any[] = [];
+  filteredAttenderList: any[] = [];
   filteredOperatorList: any[] = [
-    { name: "aaa", value: 0 },
-    { name: "bbb", value: 1 },
-    { name: "cccc", value: 2 },
-    { name: "ddd", value: 3 },
-    { name: "eee", value: 4 },
+    // { name: "aaa", value: 0 },
+    // { name: "bbb", value: 1 },
+    // { name: "cccc", value: 2 },
+    // { name: "ddd", value: 3 },
+    // { name: "eee", value: 4 },
   ];
   filteredSmartcardList: any[] = [
     { name: "aaa", value: 0 },
@@ -72,6 +74,12 @@ export class ServiceComponent implements OnInit {
   constructor(private userservice: BaseService, private storageservice: StorageService) {
     this.role = storageservice.getUserRole();
     this.username = storageservice.getUsername();
+  }
+  ngOnDestroy(): void {
+    ($('#entry') as any).select2('destroy');
+    ($('#smartcard') as any).select2('destroy');
+    ($('#operator') as any).select2('destroy');
+    ($('#attender') as any).select2('destroy');
   }
   ngOnInit(): void {
     $('#entry').select2({
@@ -99,8 +107,75 @@ export class ServiceComponent implements OnInit {
       // this.selectedLcoName = event.target.value;
       // this.onSubscriberStatusChange(this.selectedLcoName);
     });
+    $('#attender').select2({
+      placeholder: 'Select attender',
+      allowClear: true
+    });
+    $('#attender').on('change', (event: any) => {
+      // this.selectedLcoName = event.target.value;
+      // this.onSubscriberStatusChange(this.selectedLcoName);
+    });
+    this.onProblemList();
+    this.onAttenderList();
+    this.onOperatorList();
+    this.onNosmartcardList();
+  }
+  onProblemList() {
+    this.userservice.getStbProblemList(this.username, this.role).subscribe((data: any) => {
+      console.log(data);
+      this.filteredProblemList = data;
+    })
+  }
+  onAttenderList() {
+    this.userservice.getHardwardEmployeeList(this.role, this.username).subscribe((data: any) => {
+      console.log(data);
+      this.filteredAttenderList = data;
+    })
+  }
+  onSmartcardSerachName(searchName: any) {
+    console.log('value', searchName);
+    this.userservice.getSmartcardSearch(this.username, this.role, searchName).subscribe((data: any) => {
+      console.log(data);
+      this.smartcardList = data;
+      this.showDropdown = true;
+    })
+    this.showDropdown = false;
+  }
+  onOperatorList() {
+    this.userservice.getOeratorList(this.role, this.username, 1).subscribe((data: any) => {
+      console.log(data);
+      this.filteredOperatorList = Object.keys(data).map(key => {
+        const value = data[key];
+        const name = key;
+        return { name: name, id: value };
+      });
+    })
   }
 
+  onNosmartcardList() {
+    this.userservice.getNoSmartcardDetails(this.role, this.username, !this.nosmartcard).subscribe((data: any) => {
+      this.noSmartcardDetails = data;
+    })
+  }
+
+  goToSmartcard(event: any) {
+    console.log(event);
+    this.searchSmartcard = event.smartcard;
+    console.log(this.searchSmartcard);
+    this.userservice.getSmartcardDetails(this.username, this.role, this.searchSmartcard).subscribe((data: any) => {
+      console.log(data);
+      this.smartcardDetails = data;
+      this.showDropdown = false;
+
+      this.subscriberDetails = [
+        { label: 'OPERATOR', value: this.smartcardDetails?.operatorname || 'N/A' },
+        { label: 'MOBILE NO', value: this.smartcardDetails?.mobileno || 'N/A' },
+        { label: 'SUBSCRIBER', value: this.smartcardDetails?.customername || 'N/A' },
+        { label: 'AREA NAME', value: this.smartcardDetails?.area || 'N/A' },
+        { label: 'STREET NAME', value: this.smartcardDetails?.street || 'N/A' }
+      ];
+    })
+  }
   columnDefs: ColDef[] = [
     { headerName: "S.No", lockPosition: true, valueGetter: 'node.rowIndex+1', cellClass: 'locked-col', width: 100, },
     { headerName: "MODEL", field: 'smartcard', width: 150 },
@@ -135,7 +210,7 @@ export class ServiceComponent implements OnInit {
     this.todate = year + "-" + month + "-" + date
     console.log(this.todate);
   }
-  getServiceReportDownload(type:any){
-    
+  getServiceReportDownload(type: any) {
+
   }
 }

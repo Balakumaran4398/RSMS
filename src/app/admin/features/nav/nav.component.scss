@@ -214,11 +214,11 @@
     font-size: 23px;
 }
 
-li.active > a {
-    background-color: #007bff; 
-    color: white; 
-    border-radius: 5px;
-}
+// li.active > a {
+//     background-color: #007bff; 
+//     color: white; 
+//     border-radius: 5px;
+// }
 
 // .side-dropdown li a.active {
 //     background-color: #0056b3; 
@@ -279,7 +279,7 @@ li.active > a {
 .dropdown-menu.show {
     display: block;
     top: 36px;
-    height: 30pc;
+    height: auto;
     overflow: scroll;
 }
 
@@ -288,7 +288,7 @@ li.active > a {
         display: block;
         top: 48px;
         right: -2pc;
-        height: 30pc;
+        height: auto;
         overflow: scroll;
         width: 22pc;
     }

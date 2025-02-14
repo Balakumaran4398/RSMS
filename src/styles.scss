@@ -53,7 +53,7 @@ h6 {
 
 :root {
     /* ===== Colors ===== */
-    --primary-color: #1f6764;
+    --primary-color: #2d584e;
     // --primary-color: #088dfb;
     --edit-button: rgb(148 19 106);
     --sidebar-color: white;
@@ -62,6 +62,8 @@ h6 {
     --primary-color-light: #f6f5ff;
     --toggle-color: #ddd;
     --text-color: #4d4d63;
+    --animative-color: linear-gradient(90deg, rgba(31, 76, 221, 1) 0%, rgba(49, 221, 202, 1) 0%, rgba(47, 215, 191, 1) 7%, rgba(45, 211, 183, 1) 12%, rgba(18, 148, 64, 1) 86%, rgba(18, 147, 62, 1) 86%, rgba(13, 136, 42, 1) 100%, rgba(200, 29, 221, 1) 100%, rgba(69, 144, 65, 1) 100%, rgba(107, 184, 233, 0.9668242296918768) 100%);
+    ;
     /* ====== Transition ====== */
     --tran-03: all 0.2s ease;
     --tran-03: all 0.3s ease;

@@ -395,20 +395,19 @@ export class LcodashboardComponent implements OnInit {
   onPackageSelect(event: any): void {
     const selectedPackageId = event;
     console.log('Selected Package ID:', selectedPackageId);
-
     this.userservice
       .getPackagewiseRechargeDetailsforPiechart(this.role, this.username, selectedPackageId, this.operatorid)
       .subscribe((data: any) => {
         console.log(data);
 
         if (!data || !data['rechargelist'] || data['rechargelist'].length === 0) {
-          Swal.fire({
-            icon: 'warning',
-            title: 'No Data Available',
-            text: data?.message,
-            confirmButtonText: 'Reload',
-            allowOutsideClick: true
-          });
+          // Swal.fire({
+          //   icon: 'warning',
+          //   title: 'No Data Available',
+          //   text: data?.message,
+          //   confirmButtonText: 'Reload',
+          //   allowOutsideClick: true
+          // });
         } else {
           this.Totalamount = data.totalamount;
           const monthColors: { [key: string]: string } = {
@@ -469,21 +468,49 @@ export class LcodashboardComponent implements OnInit {
 
   columnDefs: any[] = [
     {
-      headerName: "S.No", valueGetter: 'node.rowIndex+1', width: 80, filter: false,
+      headerName: "S.No", valueGetter: 'node.rowIndex+1', width: 70, filter: false,
       
     },
-    { headerName: 'AREA NAME', width: 170, field: 'name', filter: true, },
-    { headerName: 'SUBSCRIBER COUNT	', width: 170, field: 'subscribercount', filter: false,  },
-    { headerName: 'PINCODE ', field: 'pincode', width: 150, filter: false, },
+    { headerName: 'AREA NAME', width: 130, field: 'name', filter: true, },
+    
     {
-      headerName: 'STATUS', field: 'statusdisplay', width: 130, filter: false,
-      // editable: true,
-      // cellRenderer: (params: { value: any; data: any }) => {
-      //   const status = params.data?.statusdisplay;
-      //   const color = status === 'Active' ? 'green' : 'red';
-      //   const text = status === 'Active' ? 'Active' : 'Deactive';
-      //   return `<span style="color: ${color}; ">${text}</span>`;
-      // }
+      headerName: 'STREET DETAILS', width: 100, filter: false,
+      cellRenderer: (params: any) => {
+        const editButton = document.createElement('button');
+        editButton.innerHTML = '<img src="/assets/images/icons/streetlist2.webp" style="width:30px;background-color:none">';
+        editButton.style.backgroundColor = 'transparent';
+        editButton.style.border = 'none';
+        editButton.title = 'Street List';
+        editButton.style.cursor = 'pointer';
+        editButton.addEventListener('click', () => {
+          this.street(params.data);
+        });
+        const div = document.createElement('div');
+        div.appendChild(editButton);
+        return div;
+      }
+    },
+    
+    {
+      headerName: 'EDIT', width: 80, filter: false,
+
+      cellRenderer: (params: any) => {
+        const editButton = document.createElement('button');
+        editButton.innerHTML = '<img src="/assets/images/icons/editstreet2.png" style="width:30px;background-color:none">';
+        editButton.style.backgroundColor = 'transparent';
+        editButton.style.border = 'none';
+        editButton.title = 'Street List';
+        editButton.style.cursor = 'pointer';
+        editButton.addEventListener('click', () => {
+          this.editarea(params.data);
+        });
+        const div = document.createElement('div');
+        div.appendChild(editButton);
+        return div;
+      },
+    },
+    {
+      headerName: 'STATUS', field: 'statusdisplay', width: 100, filter: false,
       cellRenderer: (params: { value: any; data: any }) => {
         const status = params.data?.statusdisplay === 'Active';
 
@@ -513,58 +540,13 @@ export class LcodashboardComponent implements OnInit {
         toggleCircle.style.transition = 'left 0.3s ease';
 
         toggleSwitch.appendChild(toggleCircle);
-
-        // toggleSwitch.addEventListener('click', () => {
-        //     const newStatus = !status;
-        //     params.data.statusdisplay = newStatus ? 'Active' : 'Deactive';
-
-        //     // Update styles
-        //     toggleSwitch.style.backgroundColor = newStatus ? '#4CAF50' : '#616060';
-        //     toggleCircle.style.left = newStatus ? 'calc(100% - 22px)' : '3px';
-        // });
-
         toggleContainer.appendChild(toggleSwitch);
         return toggleContainer;
       }
-
-
-
     },
-    {
-      headerName: 'STREET DETAILS', width: 100, filter: false,
-      cellRenderer: (params: any) => {
-        const editButton = document.createElement('button');
-        editButton.innerHTML = '<img src="/assets/images/icons/streetlist2.webp" style="width:30px;background-color:none">';
-        editButton.style.backgroundColor = 'transparent';
-        editButton.style.border = 'none';
-        editButton.title = 'Street List';
-        editButton.style.cursor = 'pointer';
-        editButton.addEventListener('click', () => {
-          this.street(params.data);
-        });
-        const div = document.createElement('div');
-        div.appendChild(editButton);
-        return div;
-      }
-    },
-    {
-      headerName: 'EDIT', width: 80, filter: false,
-
-      cellRenderer: (params: any) => {
-        const editButton = document.createElement('button');
-        editButton.innerHTML = '<img src="/assets/images/icons/editstreet2.png" style="width:30px;background-color:none">';
-        editButton.style.backgroundColor = 'transparent';
-        editButton.style.border = 'none';
-        editButton.title = 'Street List';
-        editButton.style.cursor = 'pointer';
-        editButton.addEventListener('click', () => {
-          this.editarea(params.data);
-        });
-        const div = document.createElement('div');
-        div.appendChild(editButton);
-        return div;
-      }
-    }
+    { headerName: 'SUBSCRIBER COUNT	', width: 170, field: 'subscribercount', filter: false,  },
+    { headerName: 'PINCODE ', field: 'pincode', width: 150, filter: false, },
+   
   ];
   validatePincode(pincode: string): boolean {
     const pincodePattern = /^\d{6}$/;

@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit,OnDestroy } from '@angular/core';
 import { AbstractControl, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialogRef } from '@angular/material/dialog';
 import { BaseService } from 'src/app/_core/service/base.service';
@@ -10,7 +10,7 @@ declare var $:any;
   templateUrl: './addon-creation.component.html',
   styleUrls: ['./addon-creation.component.scss']
 })
-export class AddonCreationComponent implements OnInit{
+export class AddonCreationComponent implements OnInit,OnDestroy{
   addon_package_name: any;
   addon_package_rate: any;
   addon_package_description: any;
@@ -71,6 +71,9 @@ export class AddonCreationComponent implements OnInit{
     //   // this.calculateAmounts();  // Recalculate amounts whenever checkbox changes
     // });
 
+  }
+  ngOnDestroy(): void {
+    ($('#broadcaster') as any).select2('destroy');
   }
   ngOnInit(): void {
     $('#broadcaster').select2({

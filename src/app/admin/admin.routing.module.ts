@@ -87,6 +87,7 @@ import { InventoryroleComponent } from './features/inventory_role/inventoryrole/
 import { LicenseComponent } from './features/inventory_role/license/license.component';
 import { LicenseexpireComponent } from './features/inventory_role/Dialogue/licenseexpire/licenseexpire.component';
 import { ServiceComponent } from './features/Service_center_role/service/service.component';
+import { OperatordashboardComponent } from './features/operator_Login/operatordashboard/operatordashboard.component';
 
 
 const routes: Routes = [
@@ -191,10 +192,13 @@ const routes: Routes = [
 
       // -------------------------------------Inventory Role------------------------------------
       { path: 'inventor_inventory', component: InventoryroleComponent },
+      { path: 'service_center', component: ServiceComponent },
       // { path: 'inventor_inventory', component: ServiceComponent },
       { path: 'inventory_license', component: LicenseexpireComponent },
       { path: 'inventory_cortonbox', component: CortonboxComponent },
       { path: 'inventory_cortonbox_data', component: LicenseComponent },
+      // ---------------------------------------------Operator login------------------------------
+      { path: 'operator_dashboard', component: OperatordashboardComponent },
     ]
   }
 ];

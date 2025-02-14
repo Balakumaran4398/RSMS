@@ -238,9 +238,6 @@
 
             </ul>
         </li>
-
-
-
         <!-- <li>
             <a style="color: var(--primary-color);font-weight: 600;font-size: 17px;">V-7.0 </a>
        
@@ -248,28 +245,28 @@
 
         <!-- <h6 style="color: var(--primary-color);font-weight: 600;font-size: 17px;text-align: center;">V-7.1</h6> -->
         <!-- -------------------------------------------------------------Special role----------------------------------------------- -->
-        <li *ngIf="isSpecial ">
+        <!-- <li>
             <a class="active"> <i class="bx bxs-home bx-sm icon "></i> Home <i
                     class='bx bx-chevron-right icon-right'></i></a>
-            <ul class="side-dropdown">
-                <li><a (click)="navgetToUrl('/msodetails');setActiveLinkTab($event)" class="active"><i
-                            class='bx bx-sm bxs-user-pin icon'></i> &nbsp; MSO Details</a></li>
-                <li><a (click)="navgetToUrl('/casmaster');setActiveLinkTab($event)"><i
-                            class='bx bx-sm bx-user-circle icon'></i> &nbsp;CAS Master</a></li>
-                <li><a (click)="navgetToUrl('/tax');setActiveLinkTab($event)"><i class='bx bx-sm bxs-wrench icon'></i>
-                        &nbsp;TAX Master</a>
-                </li>
-                <li><a (click)="navgetToUrl('/invoice');setActiveLinkTab($event)"><i
-                            class='bx bx-sm bxs-calculator icon'></i> &nbsp;Billing</a>
-                </li>
-                <li><a (click)="navgetToUrl('/special_operator');setActiveLinkTab($event)"><i
-                            class='bx bx-sm bx-user icon'></i> &nbsp;Operator</a>
-                </li>
-                <li><a (click)="navgetToUrl('/proof');setActiveLinkTab($event)"><i
-                            class='fa-solid fa-comment-sms icon'></i> &nbsp; Proof Settings</a>
-                </li>
-            </ul>
-        </li>
+            <ul class="side-dropdown"> -->
+
+        <li *ngIf="isSpecial"><a (click)="setActiveLinkTabList($event);navgetToUrl('/msodetails');"
+                class="active nav-link">
+                <i class='bx bx-sm bxs-user-pin icon'></i> &nbsp; MSO Details</a></li>
+        <li *ngIf="isSpecial"><a (click)="navgetToUrl('/casmaster');setActiveLinkTabList($event)" class="nav-link">
+                <i class='bx bx-sm bx-user-circle icon'></i> &nbsp;CAS Master</a></li>
+        <li *ngIf="isSpecial"><a (click)="navgetToUrl('/tax');setActiveLinkTabList($event)" class="nav-link">
+                <i class='bx bx-sm bxs-wrench icon'></i>
+                &nbsp;TAX Master</a> </li>
+        <li *ngIf="isSpecial"><a (click)="navgetToUrl('/invoice');setActiveLinkTabList($event)" class="nav-link">
+                <i class='bx bx-sm bxs-calculator icon'></i> &nbsp;Billing</a> </li>
+        <li *ngIf="isSpecial"><a (click)="navgetToUrl('/special_operator');setActiveLinkTabList($event)"
+                class="nav-link">
+                <i class='bx bx-sm bx-user icon'></i> &nbsp;Operator</a> </li>
+        <li *ngIf="isSpecial"><a (click)="navgetToUrl('/proof');setActiveLinkTabList($event)" class="nav-link">
+                <i class='fa-solid fa-comment-sms icon'></i> &nbsp; Proof Settings</a> </li>
+        <!-- </ul>
+        </li> -->
 
 
         <li *ngIf="isSpecial ">
@@ -279,14 +276,13 @@
                 <!-- <li><a (click)="navgetToUrl('/operator_details')" (click)="setActiveTab($event)"> <i
                             class='fa fa-fw fa-users  icon'></i> &nbsp;
                         Deactive LCO</a></li> -->
-                <li><a (click)="navgetToUrl('/Packageplan');setActiveLinkTab($event)"><i
-                            class='fa fa-fw fa-inr icon'></i> &nbsp;Package
-                        Plan</a></li>
-                <li><a (click)="navgetToUrl('/channeldetails');setActiveLinkTab($event)"><i
-                            class='fa fa-fw fa-inr icon'></i> &nbsp;Local
-                        Channel</a></li>
-                <li><a (click)="navgetToUrl('/adsdetails');setActiveLinkTab($event)"><i
-                            class='fa fa-fw fa-inr icon'></i> &nbsp;Ads Upload</a>
+                <li><a (click)="navgetToUrl('/Packageplan');setActiveLinkTab($event)"><i class='fas fa-tags icon'></i>
+                        &nbsp;Package Plan</a></li>
+                <li><a (click)="navgetToUrl('/channeldetails');setActiveLinkTab($event)">
+                        <i class='fas fa-broadcast-tower icon'></i> &nbsp;
+                        Local Channel</a></li>
+                <li><a (click)="navgetToUrl('/adsdetails');setActiveLinkTab($event)">
+                        <i class='fas fa-image icon'></i> &nbsp;Ads Upload</a>
                 </li>
             </ul>
         </li>
@@ -303,14 +299,14 @@
                 <!-- <li><a (click)="navgetToUrl('/special_lco_package')" (click)="setActiveTab($event)"><i
                             class='fa fa-fw fa-inr icon'></i> &nbsp;LCO & AREA change</a>
                 </li> -->
-                <li><a (click)="navgetToUrl('/special_area_package');setActiveLinkTab($event)"><i
-                            class='fa fa-fw fa-inr icon'></i> &nbsp;LCO & AREA Change</a>
+                <li><a (click)="navgetToUrl('/special_area_package');setActiveLinkTab($event)">
+                        <i class='fas fa-map-marker-alt icon'></i> &nbsp;LCO & AREA Change</a>
                 </li>
-                <li><a (click)="navgetToUrl('/special_cancel_subscription');setActiveLinkTab($event)"><i
-                            class='fa fa-fw fa-inr icon'></i> &nbsp;Cancel
+                <li><a (click)="navgetToUrl('/special_cancel_subscription');setActiveLinkTab($event)">
+                        <i class='fas fa-ban icon'></i> &nbsp;Cancel
                         Subscription</a>
-                <li><a (click)="navgetToUrl('/special_lcotransfer');setActiveLinkTab($event)"><i
-                            class='fa fa-fw fa-inr icon'></i> &nbsp;LCO
+                <li><a (click)="navgetToUrl('/special_lcotransfer');setActiveLinkTab($event)">
+                        <i class='fas fa-exchange-alt icon'></i> &nbsp;LCO
                         Transfer</a>
                 </li>
             </ul>
@@ -325,31 +321,13 @@
         </li>
 
         <!-- -------------------------------------------Operator Login------------------------ -->
-        <!-- <li *ngIf="isOperator "> -->
-        <li *ngIf="isOperator " (click)="setActiveList($event, 'dashboard')" [class.active]="activeTab === 'dashboard'">
-            <a (click)="navgetToUrl('/home');"> <i class='bx bx-sm bxs-dashboard icon'></i> &nbsp;
+        <!-- <li *ngIf="isSpecial "> -->
+        <li *ngIf="isOperator" (click)="setActiveList($event, 'operator_dashboard')"
+            [class.active]="activeTab === 'operator_dashboard'">
+            <a (click)="navgetToUrl('/operator_dashboard');"> <i class='bx bx-sm bxs-dashboard icon'></i> &nbsp;
                 Dashboard</a>
         </li>
-        <li *ngIf="isOperator">
-        <!-- <li *ngIf="isSpecial "> -->
-            <a (click)="setActiveLinkList($event, 'subscriber')" [class.active]="activeTab === 'subscriber'"><mat-icon
-                    class="icon">local_library</mat-icon> Subscriber <i class='bx bx-chevron-right icon-right'></i></a>
-            <ul class="side-dropdown">
-                <li><a (click)="navgetToUrl('/Create_sub'); setActiveLinkList($event, 'create_subscriber')"
-                        [class.active]="activeTab === 'create_subscriber'"><i
-                            class="fa fa-fw fa-plus icon">&nbsp;</i>Create Subscriber
-                    </a> </li>
-                <li><a (click)="navgetToUrl('/subscriber'); setActiveLinkList($event, 'subscriber_details')"
-                        [class.active]="activeTab === 'subscriber_details'"><i
-                            class="fa fa-fw fa-user on icon">&nbsp;</i>
-                        Subscriber Details</a></li>
-                <li><a (click)="navgetToUrl('/expiry'); setActiveLinkList($event, 'expiry_details')"
-                        [class.active]="activeTab === 'expiry_details'"><i
-                            class="fa fas fa-user-alt-slash icon">&nbsp;</i> Expiry
-                        Details </a>
-                </li>
-            </ul>
-        </li>
+
         <li *ngIf="isOperator ">
             <a> <mat-icon class="icon">settings</mat-icon> Master Settings
                 <i class='bx bx-chevron-right icon-right'></i>
@@ -405,6 +383,64 @@
                 <i class="fas fa-users-cog icon ">&nbsp;</i>
                 <!-- <mat-icon class="icon">settings_input_antenna</mat-icon> -->
                 Sub LCO </a> </li>
+
+
+        <!-- ---------------------------------------------------customer service------------------- -->
+        <li *ngIf="isCustomerService">
+            <!-- <li *ngIf="isSpecial "> -->
+            <a (click)="setActiveLinkList($event, 'subscriber')" [class.active]="activeTab === 'subscriber'"><mat-icon
+                    class="icon">local_library</mat-icon> Subscriber <i class='bx bx-chevron-right icon-right'></i></a>
+            <ul class="side-dropdown">
+                <li><a (click)="navgetToUrl('/Create_sub'); setActiveLinkList($event, 'create_subscriber')"
+                        [class.active]="activeTab === 'create_subscriber'"><i
+                            class="fa fa-fw fa-plus icon">&nbsp;</i>Create Subscriber
+                    </a> </li>
+                <li><a (click)="navgetToUrl('/subscriber'); setActiveLinkList($event, 'subscriber_details')"
+                        [class.active]="activeTab === 'subscriber_details'"><i
+                            class="fa fa-fw fa-user on icon">&nbsp;</i>
+                        Subscriber Details</a></li>
+                <li><a (click)="navgetToUrl('/expiry'); setActiveLinkList($event, 'expiry_details')"
+                        [class.active]="activeTab === 'expiry_details'"><i
+                            class="fa fas fa-user-alt-slash icon">&nbsp;</i> Expiry
+                        Details </a>
+                </li>
+            </ul>
+        </li>
+        <li *ngIf="isCustomerService">
+            <a> <i class="bx bx-user bx-sm icon "></i> Operator <i class='bx bx-chevron-right icon-right'></i></a>
+            <ul class="side-dropdown">
+                <li><a (click)="navgetToUrl('/operator_details');setActiveLinkTab($event)"> <i
+                            class='fa fa-fw fa-users  icon'></i> &nbsp;
+                        Operator Details</a></li>
+
+            </ul>
+        </li>
+
+        <li *ngIf="isCustomerService">
+            <a> <mat-icon class="icon">games</mat-icon> Inventory <i class='bx bx-chevron-right icon-right'></i></a>
+            <ul class="side-dropdown">
+                <li><a (click)="navgetToUrl('/not_allacate_smartcard');setActiveLinkTab($event)"><i
+                            class="fa fa-fw fa-upload icon ">&nbsp;</i>Not Allocated Smartcard </a> </li>
+
+                <li><a (click)="navgetToUrl('/allocate_smartcard');setActiveLinkTab($event)"><i
+                            class="fa fa-fw fa-gear icon ">&nbsp;</i>Allocated smartcard </a> </li>
+
+            </ul>
+        </li>
+        <li *ngIf="isCustomerService">
+            <a> <mat-icon class="icon">assessment</mat-icon> Reports<i class='bx bx-chevron-right icon-right'></i></a>
+            <ul class="side-dropdown">
+                <li><a (click)="navgetToUrl('/msodialogueReports/recharge_history');setActiveLinkTab($event)">
+                        <i class="fa fa-fw fa-paper-plane icon">&nbsp;</i>Recharge log </a> </li>
+            </ul>
+        </li>
+
+        <!-- ==================================================Service Center Role=========================== -->
+
+
+        <li *ngIf="isServiceCenter"><a (click)="navgetToUrl('/service_center');setActiveLinkTab($event)" class="active">
+                <i class="fa fa-fw fa-paper-plane icon">&nbsp;</i>Service Center </a> </li>
+
     </ul>
 
 </section>
@@ -426,7 +462,8 @@
                         <span class="ver" style="  font-size: 1.2em;font-weight: 600;color: #2d584e"> {{role}}
                             &nbsp;</span>
                     </div>
-                    <div class="search-and-image col-7 col-md-7 d-flex justify-content-end align-items-center">
+                    <div *ngIf="!isSearch"
+                        class="search-and-image col-7 col-md-7 d-flex justify-content-end align-items-center">
                         <div class="search">
                             <span class="fa fa-search"></span>
                             <input id="searchitem" #searchitem style="font-size: 14px;" [value]="lcomember"

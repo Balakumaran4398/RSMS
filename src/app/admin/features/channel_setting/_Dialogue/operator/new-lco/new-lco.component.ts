@@ -22,12 +22,15 @@ export class NewLcoComponent {
   constructor(public dialogRef: MatDialogRef<NewLcoComponent>, @Inject(MAT_DIALOG_DATA) public data: any, private fb: FormBuilder, private swal: SwalService, public dialog: MatDialog, public userService: BaseService, storageService: StorageService) {
     this.username = storageService.getUsername();
     this.role = storageService.getUserRole();
+    console.log(data);
     this.businessList = Object.keys(data).map(key => {
       const value = data[key];
       // const name = key.replace(/\(\d+\)$/, '').trim();
       const name = key
       return { name: name, value: value };
     });
+    console.log(this.businessList);
+
   }
   toggleedit() {
     this.dialogRef.close();
@@ -40,11 +43,11 @@ export class NewLcoComponent {
       contactnumber2: ['', [Validators.required, Validators.pattern('^[0-9]{10}$')]],
       address: ['', Validators.required],
       state: ['', Validators.required],
-      userid: ['', [Validators.required,Validators.minLength(5),Validators.maxLength(10)]],
+      userid: ['', [Validators.required, Validators.minLength(5), Validators.maxLength(10)]],
       mail: ['', [Validators.required, Validators.email]],
       area: ['', Validators.required],
       pincode: ['', [Validators.required, Validators.pattern('^[0-9]{6}$')]],
-      password: ['', [Validators.required,Validators.minLength(6),Validators.maxLength(12)]],
+      password: ['', [Validators.required, Validators.minLength(6), Validators.maxLength(12)]],
       lcobusinessid: ['', Validators.required],
       role: this.role,
       username: this.username
@@ -78,8 +81,8 @@ export class NewLcoComponent {
         console.error(error);
         Swal.fire({
           title: 'Error!',
-          text: error?.error.operatorname ||error?.error.contactnumber2 || error?.error.address || error?.error.area || error?.error.state ||
-            error?.error.mail || error?.error.lcobusinessid ||error?.error.message || 'There was an issue adding the operator.',
+          text: error?.error.operatorname || error?.error.contactnumber2 || error?.error.address || error?.error.area || error?.error.state ||
+            error?.error.mail || error?.error.lcobusinessid || error?.error.message || 'There was an issue adding the operator.',
           icon: 'error'
         });
       }

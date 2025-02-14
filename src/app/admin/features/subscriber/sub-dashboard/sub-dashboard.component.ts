@@ -116,6 +116,7 @@ export class SubDashboardComponent implements OnInit, AfterViewInit {
   rechargeType: boolean = false;
   managePackagetable = false;
   managePackagetable1 = false;
+  cancel_btn: boolean = false;
 
   subdashoard: any;
   newdashoard: any;
@@ -981,7 +982,7 @@ export class SubDashboardComponent implements OnInit, AfterViewInit {
             //   this.deletemessage = true;
             // }
 
-            
+
             // if (!item.boxstatus) {
             //   if (item.suspendstatus != 1 || item.showPairUnpair) {
             //     console.log('smartcardchange   ', this.smartcardchange);
@@ -1513,19 +1514,19 @@ export class SubDashboardComponent implements OnInit, AfterViewInit {
       headerName: "S.No", valueGetter: 'node.rowIndex+1', width: 80,
     },
     {
-      headerName: 'SMARTCARD', flex: 1,
+      headerName: 'SMARTCARD', width: 250,
       field: 'smartcard',
     },
     {
-      headerName: 'CAS ', flex: 1,
+      headerName: 'CAS ', width: 250,
       field: 'casname',
     },
     {
-      headerName: 'EXPIRY DATE	', flex: 1,
+      headerName: 'EXPIRY DATE	', width: 200,
       field: 'expirydate',
     },
     {
-      headerName: 'ACTION', flex: 1,
+      headerName: 'ACTION', width: 240,
       field: 'action',
       cellRenderer: (params: any) => {
         const container = document.createElement('div');
@@ -1751,15 +1752,6 @@ export class SubDashboardComponent implements OnInit, AfterViewInit {
   rowData1: any[] = [];
   rowData: any[] = [];
   manageData: any;
-  // onSelectionChanged() {
-  //   if (this.gridApi) {
-  //     const selectedRows = this.gridApi.getSelectedRows();
-  //     this.isAnyRowSelected = selectedRows.length > 0;
-  //     this.rows = selectedRows;
-  //     console.log(this.rows);
-
-  //   }
-  // }
   onGridReady(params: { api: any; }) {
     this.gridApi = params.api;
     this.gridApi.forEachNode((node: any) => {
@@ -1774,22 +1766,9 @@ export class SubDashboardComponent implements OnInit, AfterViewInit {
     this.gridApi = params.api;
     params.api.selectAll()
     console.log(params.api.getSelectedRows());
-
-    // params.api.forEachNode((node: any) => {
-    //   if (node.data.type === 1) {
-    //     console.log(params.api);
-    //    params.api.setNodesSelected(node)
-    //     node.selectable = false;
-    //   }
-    //   console.log(node);
-    // });
     params.api.forEachNode((node: any) => {
       params.api.setNodesSelected({ node, newValue: true });
     });
-
-
-
-
   }
   selectRow(id: number) {
     const node = this.gridApi.getRowNode(id.toString());
@@ -1941,20 +1920,6 @@ export class SubDashboardComponent implements OnInit, AfterViewInit {
 
   managePackage(type: string): void {
     let dialogData = { type: type, detailsList: this.subdetailsList, pairBoxlist: this.subPairedboxid, pairSmartcardlist: this.subPairedsmartcard, subSmartcarList: this.subdetailsList?.smartcard, subBoxList: this.subdetailsList?.boxid };
-    // switch (type) {
-    //   case 'addon':
-    //     dialogData = { type:type, detailsList: this.subdetailsList, };
-    //     break;
-    //   case 'alacarte':
-    //     dialogData = { isAlacarte: true, detailsList: this.subdetailsList, };
-    //     break;
-    //   case 'remove':
-    //     dialogData = { isRemove: true, detailsList: this.subdetailsList, };
-    //     break;
-    //   case 'cancelsubscription':
-    //     dialogData = { isCancelsubscription: true, detailsList: this.subdetailsList, };
-    //     break;
-    // }
     const isDataInvalid = Object.values(dialogData).some(value => value === undefined || value === null);
     console.log(isDataInvalid);
     console.log(dialogData);
@@ -2055,51 +2020,10 @@ export class SubDashboardComponent implements OnInit, AfterViewInit {
 
   }
   onSelectionplantype(selectedValue: number) {
-    // this.cdr.detectChanges();
-    // const rechargetype = Number(selectedValue);
     console.log('selectrdvalue', selectedValue);
-
     if (selectedValue) {
       this.isplantype = true;
-      // this.datetype = false;
     }
-    // if (selectedValue == 2) {
-    //   this.isplantype = false;
-    //   this.datetype = true;
-    // }
-    // if (selectedValue == 3) {
-    //   this.datetype = false;
-    //   this.isplantype = false;
-    // }
-
-    // if (rechargetype === 1) {
-    //   this.isplantype = true;
-    //   this.datetype = false;
-    //   // this.updatePlanOptions(1); // Update plan options dynamically
-    // } else if (rechargetype === 2) {
-    //   this.isplantype = true;
-    //   this.datetype = false;
-    //   // this.updatePlanOptions(2); // Update plan options dynamically
-    // } else if (rechargetype === 3) {
-    //   this.isplantype = false;
-    //   this.datetype = true;
-    // } else {
-    //   this.isplantype = false;
-    //   this.datetype = false;
-    // }
-
-    console.log(this.plantype);
-
-    console.log(this.selectedRechargetype);
-    console.log(this.f_date);
-
-    // if (this.selectedRechargetype == '2') {
-    //   this.plantype = 0
-    // }
-    // if (this.selectedRechargetype == '1') {
-    //   this.f_date = null
-    // }
-
     if ((this.selectedRechargetype == '3') || (this.selectedRechargetype != '3' && this.plantype != 0) || (this.f_date)) {
       this.isDisabled = false
     } else {
@@ -2109,19 +2033,7 @@ export class SubDashboardComponent implements OnInit, AfterViewInit {
     console.log(selectedValue);
   }
 
-  // updatePlanOptions(rechargetype: number) {
-  //   if (rechargetype === 1) {
-  //     this.plantype = [
-  //       { key: '1 Month Plan', value: 1 },
-  //       { key: '2 Months Plan', value: 2 },
-  //     ];
-  //   } else if (rechargetype === 2) {
-  //     this.plantype = [
-  //       { key: '2 Months Plan', value: 2 },
-  //       { key: '3 Months Plan', value: 3 },
-  //     ];
-  //   }
-  // }
+
   rechargetoggleConfirmation() {
     this.ManagePackageCalculation();
   }
@@ -2130,14 +2042,16 @@ export class SubDashboardComponent implements OnInit, AfterViewInit {
   }
   rechargetoggle() {
     this.ManagePackageCalculation();
-    this.toggleConfirmation();
+    // this.toggleConfirmation();
   }
   rechargetoggle1() {
     this.ManagePackageCalculation1();
-    this.toggleConfirmation();
+    // this.toggleConfirmation();
   }
   toggleConfirmation() {
-    this.confirmation = !this.confirmation;
+    this.confirmation = false;
+    this.cancel_btn = false;
+    this.isRecharge = true;
   }
 
 
@@ -2189,24 +2103,6 @@ export class SubDashboardComponent implements OnInit, AfterViewInit {
       this.swal.Error1(err?.error?.message || err?.error?.selectedpacklist || err?.error?.iscollected);
     });
   }
-  // generateBillpdf() {
-  //   this.userservice.getPdfBillReport(this.role, this.username, this.subdetailsList.subid, this.subdetailsList.smartcard)
-  //   .subscribe((x: any) => {
-  //     console.log(x);
-  //     let requestBodylogs: requestBodylogs = { access_ip: "", action: " PDF Bill Report", data: "From Date", remarks: "PDF Bill Report  ", };
-  //     console.log(requestBodylogs);
-  //     const blob = new Blob([x], { type: 'application/pdf' });
-  //     const data = window.URL.createObjectURL(blob);
-  //     const link = document.createElement('a');
-  //     link.href = data;
-  //     link.download = "PDF Bill Report.pdf";
-  //     link.dispatchEvent(new MouseEvent('click', { bubbles: true, cancelable: true, view: window }));
-  //     setTimeout(function () {
-  //       window.URL.revokeObjectURL(data);
-  //       link.remove();
-  //     }, 100);
-  //   })
-  // }
 
   generateBillpdf() {
     this.userservice.getPdfBillReport(this.role, this.username, this.subdetailsList.subid, this.subdetailsList.smartcard)
@@ -2235,17 +2131,7 @@ export class SubDashboardComponent implements OnInit, AfterViewInit {
   }
 
   getPdfSmartcardRechargeReport(event: any) {
-    // this.swal.Loading();
     this.userservice.getPdfSmartcardRechargeReport(this.role, this.username, event.smartcard).subscribe((x: Blob) => {
-      // Swal.fire({
-      //   title: 'Loading...',
-      //   text: 'Please wait while we process your request.',
-      //   allowOutsideClick: false,
-      //   didOpen: () => {
-      //     Swal.showLoading(null);
-      //   }
-      // });
-      // 
       console.log(x);
       let requestBodylogs: requestBodylogs = { access_ip: "", action: " PDF Bill Report", data: "From Date", remarks: "PDF Bill Report  ", };
       console.log(requestBodylogs);
@@ -2262,72 +2148,10 @@ export class SubDashboardComponent implements OnInit, AfterViewInit {
     })
   }
 
-  // getPdfCasformReport() {
-  //   Swal.fire({
-  //     title: 'Loading...',
-  //     text: 'Please wait while we process your request.',
-  //     allowOutsideClick: false, // Disable clicking outside the popup to close it
-  //     didOpen: () => {
-  //       Swal.showLoading(null);
-  //     }
-  //   });
-  //   this.userservice.getPdfCasformReport(this.role, this.username, this.subdetailsList.subid).subscribe((x: any) => {
-  //     console.log(x);
-  //     let requestBodylogs: requestBodylogs = { access_ip: "", action: " PDF CAS Form Report", data: "From Date", remarks: "PDF CAS Form Report  ", };
-  //     console.log(requestBodylogs);
-  //     const blob = new Blob([x], { type: 'application/pdf' });
-  //     const data = window.URL.createObjectURL(blob);
-  //     const link = document.createElement('a');
-  //     link.href = data;
-  //     link.download = "PDF CAS Form Report.pdf";
-  //     link.dispatchEvent(new MouseEvent('click', { bubbles: true, cancelable: true, view: window }));
-  //     setTimeout(function () {
-  //       window.URL.revokeObjectURL(data);
-  //       link.remove();
-  //     }, 100);
-  //   })
-  // }
+
   getPdfCasformReport() {
-    // this.userservice.getPdfCasformReport(this.role, this.username, this.subdetailsList.subid)
-    //   .subscribe((x: Blob) => {
-    //     // Log request body
-    //     let requestBodylogs: requestBodylogs = {
-    //       access_ip: "",
-    //       action: "PDF CAS Form Report",
-    //       data: "From Date",
-    //       remarks: "PDF CAS Form Report"
-    //     };
-    //     console.log(requestBodylogs);
-
-    //     // Create a blob and download the PDF
-    //     const blob = new Blob([x], { type: 'application/pdf' });
-    //     const data = window.URL.createObjectURL(blob);
-    //     const link = document.createElement('a');
-    //     link.href = data;
-    //     link.download = "PDF CAS Form Report.pdf";
-    //     link.dispatchEvent(new MouseEvent('click', { bubbles: true, cancelable: true, view: window }));
-
-    //     // Clean up the URL object after a short delay
-    //     setTimeout(() => {
-    //       window.URL.revokeObjectURL(data);
-    //       link.remove();
-    //     }, 100);
-    //   },
-    //     (error: any) => {
-    //       // Handle any errors in report generation
-    //       Swal.fire({
-    //         title: 'Error!',
-    //         text: error?.error?.message || 'There was an issue generating the PDF CAS form report.',
-    //         icon: 'error',
-    //         confirmButtonText: 'Ok'
-    //       });
-    //     });
-
     console.log(this.subdetailsList.subid || this.subscriberid);
-
     this.userservice.getPdfCasformReport(this.role, this.username, this.subdetailsList.subid || this.subscriberid).subscribe((x: Blob) => {
-      // let requestBodylogs: requestBodylogs = { access_ip: "", action: " PDF Bill Report", data: "From Date", remarks: "PDF Bill Report  ", };
-
       const blob = new Blob([x], { type: 'application/pdf' });
       const data = window.URL.createObjectURL(blob);
       const link = document.createElement('a');
@@ -2342,7 +2166,6 @@ export class SubDashboardComponent implements OnInit, AfterViewInit {
   }
   managepackageSelection(): boolean {
     if (this.selectedRechargetype === '3') return true;
-
     return !!this.selectedRechargetype && this.selectedRechargetype !== '0' &&
       ((this.isplantype && !!this.plantype && this.plantype !== '0') ||
         (this.datetype && !!this.f_date));
@@ -2351,7 +2174,6 @@ export class SubDashboardComponent implements OnInit, AfterViewInit {
   isPlanTypeSelected(): boolean {
     if (this.selectedRechargetype === '3') return true;
     if ((this.datetype && this.f_date)) return true;
-    // if (!!this.newpackagename && this.newpackagename !== '0') return true;
     return !!this.selectedRechargetype && this.selectedRechargetype !== '0' &&
       ((this.isplantype && !!this.plantype && this.plantype !== '0') ||
         (this.datetype && this.f_date));
@@ -2385,26 +2207,31 @@ export class SubDashboardComponent implements OnInit, AfterViewInit {
     console.log("_______________________________________________________");
 
     this.userservice.ManagePackageCalculation(requestBody).subscribe((res: any) => {
-      // this.swal.success(res?.message);
-      console.log('res came');
-
       console.log(res.oldExpiryDate);
       this.manageData = res;
       this.isRecharge = false;
+      this.confirmation = true;
+      this.cancel_btn = true;
+      setTimeout(() => {
+        const dialogElement = document.querySelector('.confirmation-dialog');
+        if (dialogElement) {
+          dialogElement.scrollIntoView({ behavior: 'smooth', block: 'end' });
+        }
+      }, 100);
+      this.confirmation = true;
       this.cdr.detectChanges();
     }, (err) => {
       this.swal.Error(err?.error?.message || err?.error?.selectedpacklist);
+      if (err.status === 400) {
+        this.confirmation = false;
+        this.cancel_btn = false;
+
+      }
     });
   }
   ManagePackageCalculation() {
-    // this.selectedRechargetype= '';
     this.plandata = '';
-    // this.isRecharge = true;
-    console.log('plandata', this.plandata);
-
     this.plandata = this.plantype || this.f_date || 4
-    console.log('plandata', this.plandata);
-
     let requestBody = {
       role: this.role,
       username: this.username,
@@ -2416,20 +2243,62 @@ export class SubDashboardComponent implements OnInit, AfterViewInit {
       selectedpacklist: this.rows,
       retailerid: 0
     }
-    console.log(requestBody);
+    console.log("11111111111111111111");
 
     this.userservice.ManagePackageCalculation(requestBody).subscribe((res: any) => {
-      // this.swal.success(res?.message);
       console.log(res.oldExpiryDate);
       this.manageData = res;
       this.isRecharge = false;
+      this.cancel_btn = true;
+      this.confirmation = true;
+      setTimeout(() => {
+        const dialogElement = document.querySelector('.confirmation-dialog');
+        if (dialogElement) {
+          dialogElement.scrollIntoView({ behavior: 'smooth', block: 'end' });
+        }
+      }, 100);
+      this.confirmation = true;
       this.cdr.detectChanges();
-      console.log(this.manageData);
 
     }, (err) => {
       this.swal.Error(err?.error?.message || err?.error?.selectedpacklist);
+      if (err.status === 400) {
+        this.confirmation = false;
+        this.cancel_btn = false;
+      }
     });
+
+
+
+
+
+
+    this.userservice.ManagePackageCalculation(requestBody).subscribe((res: any) => {
+      console.log(res.oldExpiryDate);
+      this.manageData = res;
+      this.isRecharge = false;
+      this.confirmation = true;
+      this.cancel_btn = true;
+      setTimeout(() => {
+        const dialogElement = document.querySelector('.confirmation-dialog');
+        if (dialogElement) {
+          dialogElement.scrollIntoView({ behavior: 'smooth', block: 'end' });
+        }
+      }, 100);
+      this.confirmation = true;
+      this.cdr.detectChanges();
+    }, (err) => {
+      this.swal.Error(err?.error?.message || err?.error?.selectedpacklist);
+      if (err.status === 400) {
+        this.confirmation = false;
+        this.cancel_btn = false;
+
+      }
+    });
+
   }
+
+
 }
 
 

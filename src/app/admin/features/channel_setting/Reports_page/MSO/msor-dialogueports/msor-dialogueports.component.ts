@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, OnInit, ViewChild } from '@angular/core';
+import { ChangeDetectorRef, Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { BaseService } from 'src/app/_core/service/base.service';
 import { ExcelService } from 'src/app/_core/service/excel.service';
@@ -28,7 +28,7 @@ export interface SubscriberData {
 })
 
 
-export class MsorDialogueportsComponent implements OnInit {
+export class MsorDialogueportsComponent implements OnInit, OnDestroy {
   type: any;
   username: any;
   role: any;
@@ -234,6 +234,10 @@ export class MsorDialogueportsComponent implements OnInit {
     this.fromdate = this.fromdate ? this.formatDate(this.fromdate) : this.formatDate(new Date());
     this.todate = this.todate ? this.formatDate(this.todate) : this.formatDate(new Date());
     console.log(this.selectedDate);
+  }
+  ngOnDestroy(): void {
+    ($('#operator') as any).select2('destroy');
+    ($('#subLco') as any).select2('destroy');
   }
   ngAfterViewInit() {
     $('#operator').select2({
@@ -567,7 +571,7 @@ export class MsorDialogueportsComponent implements OnInit {
       console.log(this.selectedLcoName)
       this.selectedSubLcoName = 0;
       // setTimeout(() => {
-        $('#operator').val(this.selectedLcoName).trigger('change');
+      $('#operator').val(this.selectedLcoName).trigger('change');
       // }, 100);
       // this.smartcard = '';
     } else if (selectedValue == 2) {
@@ -579,8 +583,8 @@ export class MsorDialogueportsComponent implements OnInit {
       this.selectedLcoName = 0;
       this.selectedSubLcoName = 0;
       // setTimeout(() => {
-        $('#operator').val(this.selectedLcoName).trigger('change'); 
-        $('#subLco').val(this.selectedSubLcoName).trigger('change');
+      $('#operator').val(this.selectedLcoName).trigger('change');
+      $('#subLco').val(this.selectedSubLcoName).trigger('change');
       // }, 100);
     } else if (selectedValue == 3) {
       this.isSmartcard = true;
@@ -591,7 +595,7 @@ export class MsorDialogueportsComponent implements OnInit {
       this.selectedLcoName = 0;
       this.selectedSubLcoName = 0;
       // setTimeout(() => {
-        $('#operator').val(this.selectedLcoName).trigger('change'); 
+      $('#operator').val(this.selectedLcoName).trigger('change');
       // }, 100);
     }
   }
@@ -790,27 +794,25 @@ export class MsorDialogueportsComponent implements OnInit {
     } else if (this.type == 'recharge_deduction_excluding') {
       if (this.selectedOperator.value == 0) {
         this.columnDefs = [
-          { headerName: "S.No", lockPosition: true, valueGetter: 'node.rowIndex+1', headerCheckboxSelection: false, checkboxSelection: false, width: 100 },
+          { headerName: "S.No", lockPosition: true, valueGetter: 'node.rowIndex+1', headerCheckboxSelection: false, checkboxSelection: false, width: 80 },
           { headerName: 'LCO ID', field: 'operatorid', width: 150 },
-          { headerName: 'LCO NAME', field: 'operatorname', width: 300 },
+          { headerName: 'LCO NAME', field: 'operatorname', width: 200 },
           { headerName: 'TOTAL	', field: 'total', width: 200 },
           { headerName: 'TYPE	', field: 'transactiongroupname', width: 250 },
-          // { headerName: 'LOG DATE	', field: 'transaction_date', width: 250 },
-          { headerName: 'ADDRESS	', field: 'address', width: 350 },
-          { headerName: 'MOBILE', field: 'contactnumber', width: 270 },
-
+          { headerName: 'LOG DATE	', field: 'transaction_date', width: 250 },
+          { headerName: 'ADDRESS	', field: 'address', width: 300 },
+          { headerName: 'MOBILE', field: 'contactnumber', width: 200 },
         ]
       } else {
         this.columnDefs = [
           { headerName: "S.No", lockPosition: true, valueGetter: 'node.rowIndex+1', headerCheckboxSelection: false, checkboxSelection: false, width: 80 },
           { headerName: 'LCO ID', field: 'operatorid', width: 150 },
-          { headerName: 'LCO NAME', field: 'operatorname', width: 300 },
+          { headerName: 'LCO NAME', field: 'operatorname', width: 200 },
           { headerName: 'TOTAL	', field: 'total', width: 200 },
           { headerName: 'TYPE	', field: 'transactiongroupname', width: 200 },
           { headerName: 'LOG DATE	', field: 'transactiondate', width: 250 },
-          { headerName: 'ADDRESS	', field: 'address', width: 350 },
-          { headerName: 'MOBILE', field: 'contactnumber', width: 250 },
-
+          { headerName: 'ADDRESS	', field: 'address', width: 300 },
+          { headerName: 'MOBILE', field: 'contactnumber', width: 200 },
         ]
       }
 
@@ -1223,7 +1225,7 @@ export class MsorDialogueportsComponent implements OnInit {
         const link = document.createElement('a');
         link.href = data;
 
-        link.download = ("SUB ONLINE REPORT.xlsx").toUpperCase();
+        link.download = ("RECHARGE HISTORY REPORT.xlsx").toUpperCase();
         link.dispatchEvent(new MouseEvent('click', { bubbles: true, cancelable: true, view: window }));
         setTimeout(() => {
           window.URL.revokeObjectURL(data);
@@ -1265,7 +1267,8 @@ export class MsorDialogueportsComponent implements OnInit {
         const link = document.createElement('a');
         link.href = data;
 
-        link.download = ("SUB ONLINE REPORT.pdf").toUpperCase();
+        // link.download = ("SUB ONLINE REPORT.pdf").toUpperCase();
+        link.download = ("RECHARGE HISTORY REPORT.pdf").toUpperCase();
         link.dispatchEvent(new MouseEvent('click', { bubbles: true, cancelable: true, view: window }));
         setTimeout(() => {
           window.URL.revokeObjectURL(data);

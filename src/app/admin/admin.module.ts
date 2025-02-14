@@ -171,6 +171,7 @@ import { InventorycortonboxComponent } from "./features/inventory_role/Dialogue/
 import { InventoryDialogueComponent } from "./features/inventory_role/Dialogue/inventory-dialogue/inventory-dialogue.component";
 import { LicenseexpireComponent } from "./features/inventory_role/Dialogue/licenseexpire/licenseexpire.component";
 import { ServiceComponent } from "./features/Service_center_role/service/service.component";
+import { OperatordashboardComponent } from "./features/operator_Login/operatordashboard/operatordashboard.component";
 @NgModule({
     declarations: [
         AdminBaseComponent, NavComponent, HomeComponent, NavbarComponent, MsodetailsComponent, CasmasterComponent,
@@ -233,7 +234,7 @@ import { ServiceComponent } from "./features/Service_center_role/service/service
         SpecialcancelsubscriptionComponent, SpecialareachangeComponent, SpeciallcochangeComponent, SpecialeditbulkpackageComponent, SpeciallcotransferComponent,
         // =====================================================Reports=========================================
         TraiReportComponent, SubscriptionBasedComponent, HistoryReportsComponent, PackageBasedComponent, BroadcasterReportsComponent, HistoryAllReportsComponent,MsoreportsComponent,MsorDialogueportsComponent,
-        InventoryroleComponent,LicenseComponent,CortonboxComponent,InventoryloginComponent,InventorycortonboxComponent,InventoryDialogueComponent,LicenseexpireComponent,ServiceComponent
+        InventoryroleComponent,LicenseComponent,CortonboxComponent,InventoryloginComponent,InventorycortonboxComponent,InventoryDialogueComponent,LicenseexpireComponent,ServiceComponent,OperatordashboardComponent
           ],
     imports: [
         CommonModule,

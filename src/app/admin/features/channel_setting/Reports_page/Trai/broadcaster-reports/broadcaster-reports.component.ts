@@ -18,10 +18,10 @@ export class BroadcasterReportsComponent implements OnInit {
   returndata: any;
   username: any;
   role: any;
-  rowData: any[]=[];
-  addonlist: any[]=[];
-  alacartelist: any[]=[];
-  baselist: any[]=[];
+  rowData: any[] = [];
+  addonlist: any[] = [];
+  alacartelist: any[] = [];
+  baselist: any[] = [];
   msodetails: any;
   selectedMonthName: any;
 
@@ -38,6 +38,7 @@ export class BroadcasterReportsComponent implements OnInit {
   years: any[] = [];
   Date: any[] = [];
 
+  gridHeight: number = 180; 
 
   broadcasterList: any[] = [];
   filteredBraoadcasterList: any[] = [];
@@ -179,7 +180,7 @@ export class BroadcasterReportsComponent implements OnInit {
 
   columnDefs = [
     { headerName: "S.No", lockPosition: true, valueGetter: 'node.rowIndex+1', width: 90 },
-    { headerName: 'PRODUCT NAME', field: 'productname', width: 350 },
+    { headerName: 'PRODUCT NAME', field: 'productname', width: 350, cellStyle: { textAlign: 'left' }, },
     { headerName: 'PRODUCTID', field: 'casproductid', width: 340, cellStyle: { textAlign: 'center' }, },
     { headerName: 'CAS', field: 'casname', width: 340, },
     { headerName: 'SUBS COUNT AS 7TH	', field: 'w1', width: 350, cellStyle: { textAlign: 'center' }, },
@@ -201,7 +202,7 @@ export class BroadcasterReportsComponent implements OnInit {
     } else if (this.allType == '2') {
       this.columnDefs = [
         { headerName: "S.No", lockPosition: true, valueGetter: 'node.rowIndex+1', width: 90 },
-        { headerName: 'PRODUCT NAME', field: 'productname', width: 200 },
+        { headerName: 'PRODUCT NAME', field: 'productname', width: 200, cellStyle: { textAlign: 'left' }, },
         { headerName: 'PRODUCTID', field: 'casproductid', width: 150, cellStyle: { textAlign: 'center' }, },
         { headerName: 'CAS', field: 'casname', width: 140 },
         { headerName: 'SUBS COUNT AS 7TH	', field: 'w1', width: 200, cellStyle: { textAlign: 'center' }, },
@@ -601,19 +602,25 @@ export class BroadcasterReportsComponent implements OnInit {
               this.addonlist = response.body.addonPackageList;
               this.alacartelist = response.body.alacartePackageList;
               this.baselist = response.body.basePackageList;
-              
+              if (this.baselist.length > 0) {
+                this.gridHeight = 600; 
+              } else {
+                this.gridHeight = 150; 
+              }
             } else if (response.status === 204) {
               this.swal.Success_204();
               this.rowData = [];
+              this.gridHeight = 350; 
             }
           },
           (error) => {
             this.handleApiError(error);
+            this.gridHeight = 350; 
           }
         );
     }
   }
- 
+
 
   getOverAllExcel() {
     if (!this.selectedYear && !this.selectedMonth && !this.selectedDate) {
@@ -791,7 +798,7 @@ export class BroadcasterReportsComponent implements OnInit {
     } else if (event === 1) {
       this.monthlyReportCastitle = 'ADDON WISE CHANNEL';
     } else {
-      return; // Exit if event is not matched
+      return;
     }
     this.submitted = true;
     if (!this.selectedYear && !this.selectedMonth && !this.selectedDate && !this.broadcasterid && !this.castype) {
@@ -806,15 +813,12 @@ export class BroadcasterReportsComponent implements OnInit {
       }
     });
     this.userService.getMonthlyBroadcasterCaswiseExcelReport(this.role, this.username, this.selectedMonth, this.selectedYear, this.selectedDate, this.broadcasterid, event, this.castype, 2)
-      // .subscribe((data: any) => {
-      //   console.log(data);
-      // })
       .subscribe((x: Blob) => {
         const blob = new Blob([x], { type: 'application/xlsx' });
         const data = window.URL.createObjectURL(blob);
         const link = document.createElement('a');
         link.href = data;
-        link.download = (this.broadcastername + '' + this.reportTitle + '' + this.monthlyReportCastitle + ' ' + this.selectedMonthName + '-' + this.selectedYear + ".xlsx").toUpperCase();
+        link.download = (this.broadcastername + '  ' + this.reportTitle + ' ' + this.monthlyReportCastitle + ' ' + this.selectedMonthName + '-' + this.selectedYear + ".xlsx").toUpperCase();
         link.dispatchEvent(new MouseEvent('click', { bubbles: true, cancelable: true, view: window }));
         setTimeout(() => {
           window.URL.revokeObjectURL(data);
@@ -831,7 +835,6 @@ export class BroadcasterReportsComponent implements OnInit {
             confirmButtonText: 'Ok'
           });
         });
-
   }
   getCASMonrhlyCaswisePDF(event: number) {
     console.log(event);
@@ -840,7 +843,7 @@ export class BroadcasterReportsComponent implements OnInit {
     } else if (event === 1) {
       this.monthlyReportCastitle = 'ADDON WISE CHANNEL';
     } else {
-      return; // Exit if event is not matched
+      return;
     }
     this.submitted = true;
     if (!this.selectedYear && !this.selectedMonth && !this.selectedDate && !this.broadcasterid && !this.castype) {

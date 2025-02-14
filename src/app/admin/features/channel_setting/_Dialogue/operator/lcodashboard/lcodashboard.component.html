@@ -1,5 +1,5 @@
 <div id="Customer-page">
-    <section class="mb-3" >
+    <section class="mb-3">
         <div style="margin: 0px;position: sticky">
             <h3 style="text-align: center;padding: 10px;">
                 LCO Dashboard
@@ -107,7 +107,7 @@
                         <div class="card">
                             <!-- <p style="text-align: center;color: rgb(250, 81, 95);">This chart shows package-wise total
                                 recharged amount of the current year</p> -->
-               
+
                             <div class=" input_box d-flex justify-content-end align-item-center mb-2">
                                 <div class="col-12 col-md-4 d-flex  justify-content-center align-items-center">
                                     <span for="">SELECT PACKAGE </span>
@@ -157,7 +157,8 @@
                                 </span>
                             </div>
                             <div class="col-12 col-md-12 mb-3">
-                                <ag-grid-angular #agGrid id="myGrid" domLayout='autoHeight'
+                                <ag-grid-angular #agGrid id="myGrid" domLayout='normal'
+                                    style="max-height: 400px;overflow: scroll;overflow-x: hidden;overflow-y: hidden;"
                                     class="ag-theme-alpine table-class" rowAnimation [gridOptions]="gridOptions"
                                     [columnDefs]="columnDefs" [rowSelection]="rowSelection"
                                     (selectionChanged)="onSelectionChanged()" (gridReady)="onGridReady($event)"
@@ -177,7 +178,7 @@
                     <h5 style="color: white;font-weight: 600;">CURRENT YEAR PACKAGE WISE RECHARGE COUNT </h5>
                 </div>
                 <div class="card1 ">
-                    
+
                     <!-- <p style="text-align: center;color: rgb(250, 81, 95);">This chart shows package wise recharged
                         count of current year
                     </p> -->

@@ -38,6 +38,9 @@ export class NavComponent implements OnInit, AfterViewInit {
   isServiceCenter: boolean = false;
   isOperator: boolean = false;
   isDropdownOpen: boolean = false;
+  isSearch: boolean = false;
+
+
   isPopupVisible = false;
 
   activeTab: string = '';
@@ -52,31 +55,47 @@ export class NavComponent implements OnInit, AfterViewInit {
       this.isUser = true;
       this.isReception = false;
       this.isSpecial = false;
+      this.isCustomerService = false;
+      this.isServiceCenter = false;
       this.role = 'ADMIN';
     } else if (this.role.includes('ROLE_RECEPTION')) {
       this.isReception = true;
       this.isUser = false;
       this.isSpecial = false;
+      this.isCustomerService = false;
+      this.isServiceCenter = false;
       this.role = 'RECEPTION';
     } else if (this.role.includes('ROLE_SPECIAL')) {
       this.isReception = false;
       this.isUser = false;
       this.isSpecial = true;
+      this.isCustomerService = false;
+      this.isServiceCenter = false;
       this.role = 'SPECIAL';
     } else if (this.role.includes('ROLE_INVENTORY')) {
       this.isInventory = true;
+      this.isReception = false;
       this.isUser = false;
       this.isSpecial = false;
+      this.isCustomerService = false;
+      this.isServiceCenter = false;
       this.role = 'INVENTORY';
-    } else if (this.role.includes('ROLE_CUSTOMER_SERVICE')) {
-      this.isInventory = true;
+    } else if (this.role.includes('ROLE_CUSSERVICE')) {
+      this.isInventory = false;
+      this.isReception = false;
       this.isUser = false;
       this.isSpecial = false;
+      this.isCustomerService = true;
+      this.isServiceCenter = false;
       this.role = 'CUS_SERVICE';
-    } else if (this.role.includes('ROLE_SERVICE_CENTER')) {
-      this.isInventory = true;
+    } else if (this.role.includes('ROLE_SERVICECENTER')) {
+      this.isInventory = false;
+      this.isReception = false;
       this.isUser = false;
       this.isSpecial = false;
+      this.isCustomerService = false;
+      this.isServiceCenter = true;
+      this.isSearch = true;
       this.role = 'SERVICE_CENTER';
     }
   }
@@ -96,11 +115,11 @@ export class NavComponent implements OnInit, AfterViewInit {
 
   }
   setActiveList(event: Event, tabName: string) {
-    this.activeTab = tabName; 
+    this.activeTab = tabName;
   }
 
   setActiveLinkList(event: Event, tabName: string) {
-    this.activeTab = tabName; 
+    this.activeTab = tabName;
   }
   setActive(event: any): void {
     const dropdownLinks = document.querySelectorAll('.side-dropdown li a');
@@ -121,6 +140,23 @@ export class NavComponent implements OnInit, AfterViewInit {
     activeTabs.forEach((tab) => {
       tab.classList.remove('active');
     });
+    const activeNavLinks = document.querySelectorAll('.nav-link');
+    activeNavLinks.forEach((link) => link.classList.remove('active'));
+
+    const clickedElement = event.currentTarget as HTMLElement;
+    clickedElement.classList.add('active');
+  }
+
+  setActiveLinkTabList(event: Event) {
+    // Remove active class from previously selected side-dropdown links
+    const activeTabs = document.querySelectorAll('.side-dropdown li a.active');
+    activeTabs.forEach((tab) => tab.classList.remove('active'));
+
+    // Remove active class from main nav links when a side-dropdown link is clicked
+    const activeNavLinks = document.querySelectorAll('.nav-link.active');
+    activeNavLinks.forEach((link) => link.classList.remove('active'));
+
+    // Add active class to the clicked side-dropdown link
     const clickedElement = event.currentTarget as HTMLElement;
     clickedElement.classList.add('active');
   }

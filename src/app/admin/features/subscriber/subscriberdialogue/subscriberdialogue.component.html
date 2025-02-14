@@ -196,8 +196,8 @@
                             </div>
                         </div>
                         <div class="mb-3">
-                            <label class="form-label">landlineno
-                            </label>
+                            <span class="form-label">landlineno
+                            </span>
                             <input class="date" type="text" pattern="^0\d{2,4}\d{6,8}$" [(ngModel)]="landlineno"
                                 formControlName="landlineno" (keypress)="onKeydown_landline($event)" maxlength="11">
                             <div *ngIf="Editform.get('landlineno')?.touched && Editform.get('landlineno')?.invalid"
@@ -2490,7 +2490,7 @@
                     <button type="button" class="btn btn-success me-2 bttn" style="height: 40px;"
                         [disabled]="!isaddaddon" (click)="addAddonForSmartcard()">ADD</button>
                     <button type="button" class="btn btn-danger bttn" style="height: 40px;"
-                        (click)="onNoClick()">Cancel</button>
+                        (click)="getDialogConfirmation()">Cancel</button>
                 </div>
             </div>
             <div class="col-12 col-md-6  mb-3" style="padding: 1rem;">
@@ -2647,7 +2647,7 @@
                     <button type="button" class="btn btn-success me-2 bttn" style="height: 40px;"
                         [disabled]="!isaddalacarte" (click)="addAlacarteSmartcard()">ADD</button>
                     <button type="button" class="btn btn-danger bttn" style="height: 40px;"
-                        (click)="onNoClick()">Cancel</button>
+                        (click)="getDialogConfirmation()">Cancel</button>
                 </div>
             </div>
             <div class="col-12 col-md-6  mb-1" style="padding: 1rem;">
@@ -2707,7 +2707,7 @@
                 <button type="button" class="btn btn-success me-2 bttn" style="height: 40px;" [disabled]="!isRemove"
                     (click)="removeProductForSmartcard()">Remove</button>
                 <button type="button" class="btn btn-danger bttn" style="height: 40px;"
-                    (click)="onNoClick()">Cancel</button>
+                    (click)="getDialogConfirmation()">Cancel</button>
             </div>
         </div>
         <!-- </div> -->

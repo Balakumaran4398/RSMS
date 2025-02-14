@@ -173,11 +173,7 @@
                 class="fa-solid fa-reply mx-2"></i>Back</button>
     </div><br /><br />
     <div class="col-12 col-md-12 display justify-content-start align-items-center mb-3">
-        <!-- First Section -->
         <div class="display justify-content-start align-items-center">
-            <!-- <p class="mx-2 mb-0" style="text-align: center; color: rgb(0, 12, 22); font-size: 16px; font-weight: 600;">
-                Report types:
-            </p> -->
             <div class="input_box mx-2 mb-2">
                 <select (ngModelChange)="onChangeDateType1($event)" [(ngModel)]="selectedDateType">
                     <option value="" disabled>Select Type</option>
@@ -226,7 +222,7 @@
                 </select>
             </div>
 
-            <div class="input_box col-10 col-md-3 mx-2 mb-2">
+            <div class="input_box d-flex justify-content-center align-item-center mx-2 mb-2">
                 <input type="text" matInput [matAutocomplete]="auto" [(ngModel)]="selectedLcoName"
                     (input)="filterOperators($event)" placeholder="Select  Operator" [matAutocompleteDisabled]="false"
                     [value]="selectedOperator?.name">
@@ -419,7 +415,7 @@
                         LCO Requred
                     </div>
                 </div>
-          
+
 
                 <!-- Select Sub LCO -->
                 <div *ngIf="isSubLCO" class="input_box me-3">
@@ -1187,6 +1183,10 @@
     </div>
 </div>
 <div *ngIf="type=='lcoinvoice'">
+    <div class="col-12 col-md-2 d-flex  justify-content-start align-items-start">
+        <button type="button" class="btn btn-primary bttn" (click)="goBack()"><i
+                class="fa-solid fa-reply mx-2"></i>Back</button>
+    </div>
     <h4 style="text-align: center;text-transform: uppercase;">LCO INVOICE BILL </h4>
     <div class="input_box display justify-content-start align-item-center">
         <div class="mx-3">

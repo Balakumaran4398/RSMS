@@ -61,7 +61,7 @@
                     Service Id is required.
                 </div>
             </div>
-            <div class="input_box">
+            <!-- <div class="input_box">
                 <label for="broadcaster_rate" class="form-label">Broadcaster Rate</label>
                 <input type="text" class="" id="broadcaster_rate" formControlName="broadcaster_rate"
                     (keydown)="onKeydown($event)" placeholder="Enter Broadcaster rate">
@@ -69,7 +69,7 @@
                     class="error-message">
                     Broadcaster Rate is required.
                 </div>
-            </div>
+            </div> -->
             <div class="input_box">
                 <label for="product_id" class="form-label">Product Id</label>
                 <input type="text" class="" id="product_id" formControlName="product_id" (keydown)="onKeydown($event)"
@@ -85,8 +85,8 @@
                         <mat-option [value]="false">FREE CHANNEL</mat-option>
                         <mat-option [value]="true">PAY CHANNEL</mat-option>
                     </mat-select>
-                    <div *ngIf="form.get('ispaid')?.invalid && form.get('ispaid')?.touched"
-                        class="error-message" style="position: absolute; bottom: -20px; left: 0; font-size: small;">
+                    <div *ngIf="form.get('ispaid')?.invalid && form.get('ispaid')?.touched" class="error-message"
+                        style="position: absolute; bottom: -20px; left: 0; font-size: small;">
                         Is Paid is required
                     </div>
                 </mat-form-field>
@@ -101,7 +101,7 @@
             </div>
             <div class="input_box">
                 <label for="ChannelType">Channel Type</label>
-                <mat-form-field appearance="outline" style="outline: #02422d; margin-top:-0px; width: 100%;">
+                <!-- <mat-form-field appearance="outline" style="outline: #02422d; margin-top:-0px; width: 100%;">
                     <mat-select placeholder="Choose Channel Type" formControlName="channel_type_id">
                         <mat-option *ngFor="let d of channel_type_id" [value]="d.id">
                             {{ d.channel_type }}-({{d.id }})
@@ -111,53 +111,89 @@
                         class="error-message" style="position: absolute; bottom: -20px; left: 0; font-size: small;">
                         Type is required
                     </div>
-                </mat-form-field>
+                </mat-form-field> -->
+
+                <select id="chan_id" class="js-states" formControlName="channel_type_id" [(ngModel)]="chanData">
+                    <option value="0" selected disabled>Select Channel Type</option>
+                    <option *ngFor="let chan of channel_type_id" [value]="chan.id">
+                        {{ chan.channel_type }}-({{chan.id }})
+                    </option>
+                    <div *ngIf="form.get('channel_type_id')?.invalid && form.get('channel_type_id')?.touched"
+                        class="error-message" style="position: absolute; bottom: -20px; left: 0; font-size: small;">
+                        Type is required
+                    </div>
+                </select>
             </div>
             <div class="input_box">
                 <label for="Category">Category</label>
-                <mat-form-field appearance="outline" style="outline: #02422d; margin-top:-0px; width: 100%;">
+                <!-- <mat-form-field appearance="outline" style="outline: #02422d; margin-top:-0px; width: 100%;">
                     <mat-select placeholder="Select Category" formControlName="category_id">
                         <mat-option *ngFor="let d of category_id" [value]="d.id">
                             {{ d.category }}-({{d.id }})
                         </mat-option>
-                    </mat-select>
+                    </mat-select>                   
+                </mat-form-field> -->
+
+                <select id="category_id" class="js-states" formControlName="category_id" [(ngModel)]="categoryData">
+                    <option value="0" selected disabled>Select Category</option>
+                    <option *ngFor="let categery of category_id" [value]="categery.id">
+                        {{ categery.category }}-({{categery.id }})
+                    </option>
                     <div style="position: absolute; bottom: -20px; left: 0;font-size: small;">
                         <div *ngIf="form.get('category_id')?.invalid && form.get('category_id')?.touched"
                             class="text-danger">
                             Category is required</div>
                     </div>
-                </mat-form-field>
+                </select>
             </div>
             <div class="input_box">
                 <label for="Broadcaster">Broadcaster</label>
-                <mat-form-field appearance="outline" style="outline: #02422d; margin-top:-0px; width: 100%;">
+                <!-- <mat-form-field appearance="outline" style="outline: #02422d; margin-top:-0px; width: 100%;">
                     <mat-select placeholder="Select Broadcaster" formControlName="broadcaster_id">
                         <mat-option *ngFor="let b of broadcaster_id" [value]="b.id">
                             {{ b.broadcastername }} -({{b.id }})
                         </mat-option>
                     </mat-select>
+               
+                </mat-form-field> -->
+
+                <select id="broadcaster_id" class="js-states" formControlName="broadcaster_id"
+                    [(ngModel)]="broadcasterData">
+                    <option value="0" selected disabled>Select Broadcaster</option>
+                    <option *ngFor="let b of broadcaster_id" [value]="b.id">
+                        {{ b.broadcastername }}-({{b.id }})
+                    </option>
                     <div style="position: absolute; bottom: -20px; left: 0;font-size: small;">
                         <div *ngIf="form.get('broadcaster_id')?.invalid && form.get('broadcaster_id')?.touched"
                             class="text-danger">
                             Broadcaster is required</div>
                     </div>
-                </mat-form-field>
+                </select>
             </div>
 
             <div class="input_box">
                 <label for="Distributor">Distributor</label>
-                <mat-form-field appearance="outline" style="outline: #02422d; margin-top:-0px; width: 100%;">
+                <!-- <mat-form-field appearance="outline" style="outline: #02422d; margin-top:-0px; width: 100%;">
                     <mat-select placeholder="Select Distributor" formControlName="distributor_id" [(ngModel)]="remo">
                         <mat-option *ngFor="let d of distributor_id" [value]="d.id">
                             {{ d.distributor }} -({{d.id }})
                         </mat-option>
                     </mat-select>
+ 
+                </mat-form-field> -->
+
+                <select id="distributor_id" class="js-states" formControlName="distributor_id"
+                    [(ngModel)]="distributorData">
+                    <option value="0" selected disabled>Select Distributor</option>
+                    <option *ngFor="let d of distributor_id" [value]="d.id">
+                        {{ d.distributor }}-({{d.id }})
+                    </option>
                     <div style="position: absolute; bottom: -20px; left: 0;font-size: small;">
                         <div *ngIf="form.get('distributor_id')?.invalid && form.get('distributor_id')?.touched"
                             class="text-danger">
                             Distributor is required</div>
                     </div>
-                </mat-form-field>
+                </select>
             </div>
             <div class="input_box">
                 <label for="customer_amount" class="form-label">Commission</label>
@@ -196,12 +232,14 @@
             </div>
             <br>
         </div>
-        <p class="errorcase" *ngIf="!ispercentage && issave && iserror">*Note: Fixed commission must be less than or equal to
+        <p class="errorcase" *ngIf="!ispercentage && issave && iserror">*Note: Fixed commission must be less than or
+            equal to
             the customer amount!!</p>
-        <p class="errorcase" *ngIf="ispercentage && issave && iserror">*Note: Commission percentage must be between 0 and
+        <p class="errorcase" *ngIf="ispercentage && issave && iserror">*Note: Commission percentage must be between 0 
+            and
             100!!</p>
 
-        <div class="form-group d-flex justify-content-center align-items-center mb-3 mx-2" style="gap: 1vw;">
+        <div class="form-group d-flex justify-content-center align-items-center  mx-2" style="gap: 1vw;">
             <button type="button" class="btn btn-primary bttn" [disabled]="issave" (click)="onSubmit()">Save</button>
             <button type="button" class="btn btn-secondary bttn" (click)="onNoClick()">Cancel</button>
         </div>

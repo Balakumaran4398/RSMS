@@ -5,7 +5,7 @@
 
 <section>
     <div class="col-12 col-12 mb-3 d-flex justify-content-center align-items-center ">
-        <div style="padding: 1rem;background-color: #058372;">
+        <div style="padding: 0.5rem;background-color: #e68d16;">
             <h6 style="text-align: center;font-weight: bold;"> <span style="color: #09080a;font-size: 17px;
     font-weight: bold;">SUBMSO :</span>
                 {{distributor}}-{{distributorid}}</h6>
@@ -17,7 +17,7 @@
             <div class="card">
                 <div class="input_box">
                     <input type="text" placeholder="Search" [(ngModel)]="searchTermAvailable"
-                        (input)="filterAvailableList()">
+                        (ngModelChange)="filterAvailableList()">
                 </div>
                 <div class="table1 mb-3">
                     <p style="color: white;">AVAILABLE LCO - {{availableList.length}}</p>
@@ -47,7 +47,7 @@
             <div class="card">
 
                 <div class="input_box">
-                    <input type="text" placeholder="Search" [(ngModel)]="searchTermAdded" (input)="filterAddedList()">
+                    <input type="text" placeholder="Search" [(ngModel)]="searchTermAdded" (ngModelChange)="filterAddedList()">
                 </div>
                 <div class="table2 mb-3">
                     <p style="color: white;">ADDED LCO - {{addedList.length}}</p>

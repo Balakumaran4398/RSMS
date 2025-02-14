@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, Inject, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, Inject, OnDestroy, OnInit } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 // import { Any } from 'node_modules1/@sigstore/protobuf-specs/dist/__generated__/google/protobuf/any';
 import { BaseService } from 'src/app/_core/service/base.service';
@@ -11,7 +11,7 @@ declare var $:any;
   templateUrl: './update-ltb.component.html',
   styleUrls: ['./update-ltb.component.scss']
 })
-export class UpdateLtbComponent implements OnInit {
+export class UpdateLtbComponent implements OnInit,OnDestroy {
   isActive = false;
   opName: any;
   istax: boolean = true;
@@ -53,6 +53,9 @@ export class UpdateLtbComponent implements OnInit {
       this.filteredOperators = this.opNameList;
       cdr.detectChanges();
     })
+  }
+  ngOnDestroy(): void {
+    ($('#ltb') as any).select2('destroy');
   }
   ngOnInit(): void {
     $('#ltb').select2({

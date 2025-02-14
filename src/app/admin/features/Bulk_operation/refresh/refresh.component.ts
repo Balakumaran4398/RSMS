@@ -1,5 +1,5 @@
 import { HttpResponse } from '@angular/common/http';
-import { Component } from '@angular/core';
+import { Component, OnDestroy } from '@angular/core';
 import { FormBuilder } from '@angular/forms';
 import { MatCalendarCellClassFunction } from '@angular/material/datepicker';
 import { MatDialog } from '@angular/material/dialog';
@@ -15,7 +15,7 @@ declare var $: any;
   templateUrl: './refresh.component.html',
   styleUrls: ['./refresh.component.scss']
 })
-export class RefreshComponent {
+export class RefreshComponent implements OnDestroy{
   username: any;
   role: any;
   cas: any;
@@ -87,6 +87,7 @@ export class RefreshComponent {
         }
       );
   }
+
   columnDefs: ColDef[] = [
     { headerName: "S.No", lockPosition: true, valueGetter: 'node.rowIndex+1', cellClass: 'locked-col', width: 120, suppressNavigable: true, sortable: false, filter: false },
     { headerName: "SMARTCARD", field: 'smartcard', width: 350 },
@@ -114,6 +115,9 @@ export class RefreshComponent {
     this.selectedDate = this.date;
     this.refresh();
     this.operatorlist();
+  }
+  ngOnDestroy(): void {
+    ($('#ltb') as any).select2('destroy');
   }
   ngAfterViewInit() {
     $('#ltb').select2({

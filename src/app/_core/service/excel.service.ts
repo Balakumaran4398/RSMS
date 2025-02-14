@@ -269,8 +269,8 @@ export class ExcelService {
   async generatealacarteactivationExcel(type: any) {
     console.log(type);
     const header = type === 'carton_box'
-    ? ['BOX ID (Mandatory)', 'CARTON BOX (Mandatory)']
-    : ['SMARTCARD (Mandatory)', 'BOX ID (Non-Mandatory)'];
+      ? ['BOX ID (Mandatory)', 'CARTON BOX (Mandatory)']
+      : ['SMARTCARD (Mandatory)', 'BOX ID (Non-Mandatory)'];
 
     const workbook = new Excel.Workbook();
     const worksheet = workbook.addWorksheet('Sharing Data');
@@ -2276,11 +2276,12 @@ export class ExcelService {
     const columns = [
       { key: 'a', width: 10 }, // S.NO
       { key: 'b', width: 25 }, //  ID
-      { key: 'c', width: 20 }, // POSITION
-      { key: 'd', width: 25 }, // FONT COLOR
-      { key: 'e', width: 35 }, // BACKGROUNT COLOR
-      { key: 'f', width: 20 }, // FONT SIZE
-      { key: 'g', width: 30 }, //  DATE
+      { key: 'c', width: 25 }, //  Message
+      { key: 'd', width: 20 }, // POSITION
+      { key: 'e', width: 25 }, // FONT COLOR
+      { key: 'f', width: 35 }, // BACKGROUNT COLOR
+      { key: 'g', width: 20 }, // FONT SIZE
+      { key: 'h', width: 30 }, //  DATE
     ];
     await this.generateExcelFile(
       areatitle,

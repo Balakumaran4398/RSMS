@@ -76,6 +76,7 @@ export class OperatorDetailsComponent implements OnInit {
         this.totalLength = data.length;
         this.updatePageData();
       });
+    this.onBusinessList();
   }
   setOperator(data: { isactive: string }) {
     this.operator.isactive = data.isactive === 'true';
@@ -93,17 +94,16 @@ export class OperatorDetailsComponent implements OnInit {
         }
       });
     this.checkDeviceType();
+
+    this.loadOperators();
+    this.updatePageData();
+  }
+  onBusinessList() {
     this.userservice.getLcoBusinesslist(this.role, this.username).subscribe((data: any) => {
       this.businessList = data;
       console.log(data);
 
     })
-
-
-    // this.operatorlist();
-    this.loadOperators();
-    // this.fetchData(); 
-    this.updatePageData();
   }
   // fetchData() {
   //   this.operator_details = [

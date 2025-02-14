@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ColDef } from 'ag-grid-community';
 import { SmartcardInventoryComponent } from '../../channel_setting/_Dialogue/Inventory/smartcard-inventory/smartcard-inventory.component';
 import { MatDialog } from '@angular/material/dialog';
@@ -13,7 +13,7 @@ declare var $: any;
   templateUrl: './allocated.component.html',
   styleUrls: ['./allocated.component.scss']
 })
-export class AllocatedComponent implements OnInit {
+export class AllocatedComponent implements OnInit,OnDestroy {
   // rowData: any[] | null | undefined;
   gridApi: any;
   public rowSelection: any = "multiple";
@@ -77,6 +77,9 @@ export class AllocatedComponent implements OnInit {
   }
   ngOnInit(): void {
 
+  }
+  ngOnDestroy(): void {
+    ($('#operator') as any).select2('destroy');
   }
   ngAfterViewInit() {
     $('#operator').select2({

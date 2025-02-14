@@ -25,6 +25,8 @@ export class AddLcoComponent {
   selectedOperator: any;
   selectedLcoName: any;
 
+  isDisCommission: boolean = false;
+
   gridApi: any;
   isAnyRowSelected: any = false;
   selectedIds: number[] = [];
@@ -52,13 +54,19 @@ export class AddLcoComponent {
     this.dialogRef.close();
   }
   public rowSelection: any = "multiple";
-  gridOptions: any = {
-    defaultany: {
+  gridOptions = {
+    defaultColDef: {
       sortable: true,
       resizable: true,
       filter: true,
-
-      floatingFilter: true
+      floatingFilter: true,
+      comparator: (valueA: any, valueB: any) => {
+        const normalizedA = valueA ? valueA.toString().trim().toLowerCase() : '';
+        const normalizedB = valueB ? valueB.toString().trim().toLowerCase() : '';
+        if (normalizedA < normalizedB) return -1;
+        if (normalizedA > normalizedB) return 1;
+        return 0;
+      },
     },
     paginationPageSize: 10,
     pagination: true,
@@ -110,14 +118,26 @@ export class AddLcoComponent {
         editButton.style.cursor = 'pointer';
         editButton.style.color = 'blue';
         editButton.addEventListener('click', (event) => {
-          console.log('Edit button clicked for MSO Amount:', params.value);
+          console.log('Edit button clicked for Commission:', params.value);
         });
 
         return editButton;
-      }
+      },
+      onCellValueChanged: (params: any) => {
+        if (params.oldValue !== params.newValue) {
+          console.log(`Commission Updated: ${params.newValue}`);
+          params.data.msoamount = params.newValue;
+          this.isDisCommission = true;
+          Swal.fire({
+            icon: 'info',
+            title: 'Please Enter the Updated Value',
+            text: 'You have updated the Commission. Ensure the new value is correct.',
+            confirmButtonText: 'OK'
+          });
+        }
+      },
 
     },
-
   ]
   columnDefs1: ColDef[] = [
     {
@@ -162,6 +182,19 @@ export class AddLcoComponent {
         });
 
         return editButton;
+      },
+      onCellValueChanged: (params: any) => {
+        if (params.oldValue !== params.newValue) {
+          console.log(`MSO Amount Updated: ${params.newValue}`);
+          params.data.msoamount = params.newValue;
+          this.isDisCommission = true;
+          Swal.fire({
+            icon: 'info',
+            title: 'Please Enter the Updated Value',
+            text: 'You have updated the MSO Amount. Ensure the new value is correct.',
+            confirmButtonText: 'OK'
+          });
+        }
       }
     },
 

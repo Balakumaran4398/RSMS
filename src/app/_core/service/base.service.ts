@@ -1939,7 +1939,26 @@ export class BaseService {
   getAllCartonBoxList(role: any, username: any): Observable<any[]> {
     return this.http.get<any[]>(BASE_URL + "/allocation/getAllCartonBoxList?role=" + role + "&username=" + username)
   }
+
   getEmiDetails(role: any, username: any): Observable<any[]> {
     return this.http.get<any[]>(BASE_URL + "/allocation/getEmiDetails?role=" + role + "&username=" + username)
   }
+  // =============================================Service center Role====================================
+
+  getStbProblemList(role: any, username: any): Observable<any[]> {
+    return this.http.get<any[]>(BASE_URL + "/allocation/getStbProblemList?role=" + role + "&username=" + username)
+  }
+  getHardwardEmployeeList(role: any, username: any): Observable<any[]> {
+    return this.http.get<any[]>(BASE_URL + "/allocation/getHardwardEmployeeList?role=" + role + "&username=" + username)
+  }
+  getSmartcardSearch(role: any, username: any, searchname: any): Observable<any[]> {
+    return this.http.get<any[]>(BASE_URL + "/allocation/getSmartcardSearch?role=" + role + "&username=" + username + "&searchname=" + searchname)
+  }
+  getSmartcardDetails(role: any, username: any, searchname: any): Observable<any[]> {
+    return this.http.get<any[]>(BASE_URL + "/allocation/getSmartcardDetails?role=" + role + "&username=" + username + "&searchname=" + searchname)
+  }
+  getNoSmartcardDetails(role: any, username: any, nosmartcard: boolean): Observable<any[]> {
+    return this.http.get<any[]>(BASE_URL + "/allocation/getNoSmartcardDetails?role=" + role + "&username=" + username + "&nosmartcard=" + nosmartcard)
+  }
+
 }

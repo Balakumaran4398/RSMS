@@ -52,6 +52,7 @@ export class EditDismembershipComponent implements OnInit {
         this.addedList = data?.added?.map((operator: any) => ({ name: operator.operatorname, id: operator.operatorid })) || [];
         this.filteredAvailableList = [...this.availableList];
         this.filteredAddedList = [...this.addedList];
+
       });
     });
   }
@@ -59,86 +60,155 @@ export class EditDismembershipComponent implements OnInit {
     return this.selectedItems.has(item);
   }
 
+  // toggleSelection(item: any) {
+  //   console.log('item', item);
+
+  //   if (this.selectedItems.has(item)) {
+  //     this.selectedItems.delete(item);
+  //   } else {
+  //     this.selectedItems.add(item);
+  //   }
+
+  //   const index = this.selectedIds.indexOf(item.id);
+  //   if (index > -1) {
+  //     this.selectedIds.splice(index, 1);
+  //   } else {
+  //     this.selectedIds.push(item.id);
+  //   }
+  //   console.log(this.selectedIds);  
+  // }
+
   toggleSelection(item: any) {
     console.log('item', item);
-
-    if (this.selectedItems.has(item)) {
-      this.selectedItems.delete(item);
-    } else {
-      this.selectedItems.add(item);
-    }
-
-    const index = this.selectedIds.indexOf(item.id);
-    if (index > -1) {
-      this.selectedIds.splice(index, 1);
-    } else {
-      this.selectedIds.push(item.id);
-    }
-
+    // Clear the previous selection and select only the new one
+    this.selectedItems.clear();
+    this.selectedItems.add(item);
+    // Reset selectedIds and add only the current item's ID
+    this.selectedIds = [item.id];
     console.log(this.selectedIds);
-
   }
+
   onNoClick(): void {
     this.dialogRef.close();
   }
 
   filterAvailableList() {
-    this.cdr.detectChanges();
     this.filteredAvailableList = this.availableList.filter(item =>
       item.name.toLowerCase().includes(this.searchTermAvailable.toLowerCase())
     );
+    this.cdr.detectChanges();
   }
 
   // Filter function for added list
   filterAddedList() {
-    this.cdr.detectChanges();
     this.filteredAddedList = this.addedList.filter(item =>
       item.name.toLowerCase().includes(this.searchTermAdded.toLowerCase())
     );
+    this.cdr.detectChanges();
   }
+
+  // moveSelectedItems(direction: 'right' | 'left') {
+  //   console.log(this.selectedIds);
+  //   if (direction === 'right') {
+  //     this.selectedIds.forEach(id => {
+  //       const index = this.availableList.findIndex(item => item.id === id);
+  //       if (index > -1) {
+  //         // Remove the item from availableList
+  //         const [movedItem] = this.availableList.splice(index, 1);
+  //         // Add the item to addedList
+  //         this.addedList.push(movedItem);
+  //       }
+  //     });
+  //   } else if (direction === 'left') {
+  //     this.selectedIds.forEach(id => {
+  //       const index = this.addedList.findIndex(item => item.id === id);
+  //       if (index > -1) {
+  //         // Remove the item from addedList
+  //         const [movedItem] = this.addedList.splice(index, 1);
+  //         // Add the item to availableList
+  //         this.availableList.push(movedItem);
+  //       }
+  //     });
+  //   }
+
+  //   // Update containerData and containerID
+  //   this.containerData = this.addedList.map((item: { name: string; id: number }) => ({
+  //     name: item.name,
+  //     id: item.id,
+  //   }));
+  //   this.containerID = this.containerData.map((item: any) => item.id);
+  //   console.log(this.containerID);
+
+  //   // Update filtered lists
+  //   this.filteredAvailableList = [...this.availableList];
+  //   this.filteredAddedList = [...this.addedList];
+
+  //   // Clear selected items
+  //   this.selectedItems.clear();
+  // }
+
+
 
   moveSelectedItems(direction: 'right' | 'left') {
     console.log(this.selectedIds);
+
     if (direction === 'right') {
       this.selectedIds.forEach(id => {
         const index = this.availableList.findIndex(item => item.id === id);
         if (index > -1) {
-          this.availableList.splice(index, 1);
-          this.addedList.push(this.availableList[index]);
-          console.log('    console.log(this.selectedIds);', this.selectedIds);
+          // Remove the item from availableList
+          const [movedItem] = this.availableList.splice(index, 1);
+          // Add the item to addedList
+          this.addedList.push(movedItem);
         }
       });
-      this.containerData = this.addedList.map((item: { name: string, id: number }) => ({
-        name: item.name,
-        id: item.id
-      }));
-      this.containerID = this.containerData.map((item: any) => item.id);
-      console.log(this.containerID);
+
+      // Remove moved items from selectedIds
+      this.selectedIds = this.selectedIds.filter(id =>
+        !this.addedList.some(item => item.id === id)
+      );
 
     } else if (direction === 'left') {
       this.selectedIds.forEach(id => {
         const index = this.addedList.findIndex(item => item.id === id);
         if (index > -1) {
-          this.addedList.splice(index, 1);
-          this.availableList.push(this.addedList[index]);
-          // console.log(this.availableList.push(this.addedList[index]));
-          console.log('    console.log(this.selectedIds);', this.selectedIds);
+          // Remove the item from addedList
+          const [movedItem] = this.addedList.splice(index, 1);
+          // Add the item back to availableList
+          this.availableList.push(movedItem);
         }
       });
-      console.log(this.addedList);
-      this.containerData = this.addedList.map((item: { name: string, id: number }) => ({
-        name: item.name,
-        id: item.id
-      }));
-      this.containerID = this.containerData.map((item: any) => item.id);
-      console.log(this.containerID);
+
+      // Remove moved items from selectedIds
+      this.selectedIds = this.selectedIds.filter(id =>
+        !this.availableList.some(item => item.id === id)
+      );
     }
 
+    // Update containerData and containerID
+    this.containerData = this.addedList.map((item: { name: string; id: number }) => ({
+      name: item.name,
+      id: item.id,
+    }));
+    this.containerID = this.containerData.map((item: any) => item.id);
+    console.log(this.containerID);
 
+    // Update filtered lists
     this.filteredAvailableList = [...this.availableList];
     this.filteredAddedList = [...this.addedList];
+
+    // Clear selected items
     this.selectedItems.clear();
   }
+
+
+
+
+
+
+
+
+
 
   moveAllItems(direction: 'right' | 'left') {
     if (direction === 'right') {
@@ -179,6 +249,8 @@ export class EditDismembershipComponent implements OnInit {
     if (event.previousContainer === event.container) {
       moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
       if (val == 1) {
+        this.availableList = event.container.data;
+        this.addedList = event.previousContainer.data;
         data = event.previousContainer.data;
       } else if (val == 2) {
         data = event.container.data;
@@ -191,12 +263,12 @@ export class EditDismembershipComponent implements OnInit {
         event.previousIndex,
         event.currentIndex,
       );
-
       if (val == 1) {
         data = event.previousContainer.data;
       } else if (val == 2) {
         data = event.container.data;
-
+        this.addedList = event.container.data;
+        this.availableList = event.previousContainer.data;
       }
     }
     this.containerData = data?.map((item: { name: string, id: number }) => ({
@@ -206,6 +278,8 @@ export class EditDismembershipComponent implements OnInit {
     this.containerID = this.containerData.map((item: any) => item.id);
     console.log('Container Data:', this.containerData);
     console.log('Container IDs:', this.containerID);
+    // this.filteredAvailableList = [...this.availableList];
+    // this.filteredAddedList = [...this.addedList];
   }
 
 

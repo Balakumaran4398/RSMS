@@ -256,8 +256,9 @@
                         <div class="tab">
                             <span>BASE Package </span>
                         </div>
-                        <ag-grid-angular #agGrid id="myGrid" domLayout='autoHeight' class="ag-theme-alpine table-class"
-                            rowAnimation [gridOptions]="gridOptions" [columnDefs]="columnDefs" [rowData]="baselist"
+                        <ag-grid-angular #agGrid id="myGrid" domLayout='normal' class="ag-theme-alpine table-class"
+                            [style.height.px]="gridHeight" style="overflow: auto;" rowAnimation
+                            [gridOptions]="gridOptions" [columnDefs]="columnDefs" [rowData]="baselist"
                             (gridReady)="onGridReady($event)" [enableCellTextSelection]="true">
                         </ag-grid-angular>
                     </div>
@@ -265,8 +266,9 @@
                         <div class="tab">
                             <span>ADD ON Package </span>
                         </div>
-                        <ag-grid-angular #agGrid id="myGrid" domLayout='autoHeight' class="ag-theme-alpine table-class"
-                            rowAnimation [gridOptions]="gridOptions" [columnDefs]="columnDefs" [rowData]="addonlist"
+                        <ag-grid-angular #agGrid id="myGrid" domLayout='normal' class="ag-theme-alpine table-class"
+                            [style.height.px]="gridHeight" style="overflow: auto;" rowAnimation
+                            [gridOptions]="gridOptions" [columnDefs]="columnDefs" [rowData]="addonlist"
                             (gridReady)="onGridReady($event)" [enableCellTextSelection]="true">
                         </ag-grid-angular>
                     </div>
@@ -274,8 +276,9 @@
                         <div class="tab">
                             <span>ALACARTE </span>
                         </div>
-                        <ag-grid-angular #agGrid id="myGrid" domLayout='autoHeight' class="ag-theme-alpine table-class"
-                            rowAnimation [gridOptions]="gridOptions" [columnDefs]="columnDefs" [rowData]="alacartelist"
+                        <ag-grid-angular #agGrid id="myGrid" domLayout='normal' class="ag-theme-alpine table-class"
+                            [style.height.px]="gridHeight" style="overflow: auto;" rowAnimation
+                            [gridOptions]="gridOptions" [columnDefs]="columnDefs" [rowData]="alacartelist"
                             (gridReady)="onGridReady($event)" [enableCellTextSelection]="true">
                         </ag-grid-angular>
                     </div>
@@ -431,7 +434,7 @@
                     <div class="tab">
                         <span>BASE Package </span>
                     </div>
-                    <ag-grid-angular #agGrid id="myGrid" domLayout='autoHeight' class="ag-theme-alpine table-class"
+                    <ag-grid-angular #agGrid id="myGrid" domLayout='normal' class="ag-theme-alpine table-class"
                         rowAnimation [gridOptions]="gridOptions" [columnDefs]="columnDefs" [rowData]="rowData"
                         (gridReady)="onGridReady($event)" [enableCellTextSelection]="true">
                     </ag-grid-angular>

@@ -1,13 +1,26 @@
 <div class="container-fluid">
     <div class="d-flex flex-column flex-md-row gap-3">
         <!-- Subscriber Details -->
-        <div class="card col-12 col-md-5 ">
+        <div class="card col-12 col-md-5">
             <div class="d-flex justify-content-center align-items-center p-2 bg-dark text-white mb-3">
                 <h6>SUBSCRIBER DETAILS</h6>
             </div>
 
             <div class="input_box mb-3">
-                <input type="text" placeholder="Search by Smartcard or Boxid">
+                <input type="text" #searchitem placeholder="Search by Smartcard or Boxid" [value]="searchSmartcard"
+                    (keyup)="onSmartcardSerachName(searchitem.value)">
+                <div style="width: 100%;" class="dropdown-menu input"
+                    [ngClass]="(smartcardList.length != 0 && searchitem?.value?.length != 0 && showDropdown) ? 'show' : 'hide'"
+                    aria-labelledby="dropdownMenuButton">
+                    <a (click)="goToSmartcard(smcard)" *ngFor="let smcard of smartcardList" class="dropdown-item"> {{
+                        smcard.smartcard }}</a>
+                </div>
+            </div>
+
+            <div class="d-flex justify-content-center align-items-center gap-2 mb-3">
+                <span>No Smartcard</span>
+                <input type="checkbox" [(ngModel)]="nosmartcard" style="width: 20px; height: 20px;"
+                    (click)="onNosmartcardList()">
             </div>
 
             <div class="input_box d-flex justify-content-center align-items-center mb-2"
@@ -37,8 +50,8 @@
                 <div class="col-1 col-md-1 d-flex justify-content-center align-items-center">
                     <span>:</span>
                 </div>
-                <div class="col-6 col-md-4">
-                    eretre
+                <div class="col-6 col-md-6">
+                    {{noSmartcardDetails.smartcard}}
                 </div>
             </div>
             <div class="input_box d-flex justify-content-start align-items-center mb-2" style="margin-left: 20px;">
@@ -48,8 +61,8 @@
                 <div class="col-1 col-md-1 d-flex justify-content-center align-items-center">
                     <span>:</span>
                 </div>
-                <div class="col-6 col-md-4">
-                    eretre
+                <div class="col-6 col-md-6">
+                    {{noSmartcardDetails.boxid}}
                 </div>
             </div>
             <div class="input_box d-flex justify-content-start align-items-center mb-2" style="margin-left: 20px;">
@@ -59,7 +72,7 @@
                 <div class="col-1 col-md-1 d-flex justify-content-center align-items-center">
                     <span>:</span>
                 </div>
-                <div class="col-6 col-md-4 input_box">
+                <div class="col-6 col-md-6 input_box">
                     <input type="text" placeholder="Enter Token">
                 </div>
             </div>
@@ -70,10 +83,10 @@
                 <div class="col-1 col-md-1 d-flex justify-content-center align-items-center">
                     <span>:</span>
                 </div>
-                <div class="col-6 col-md-4">
+                <div class="col-6 col-md-6">
                     <select id="entry" [(ngModel)]="selectedEntry">
                         <option value="0" selected>Select Issue</option>
-                        <option *ngFor="let entry of filteredPackageList" [value]="entry.value">
+                        <option *ngFor="let entry of filteredProblemList" [value]="entry.value">
                             {{ entry.name }}
                         </option>
                     </select>
@@ -86,7 +99,7 @@
                 <div class="col-1 col-md-1 d-flex justify-content-center align-items-center">
                     <span>:</span>
                 </div>
-                <div class="col-6 col-md-4 input_box">
+                <div class="col-6 col-md-6 input_box">
                     <input type="text" placeholder="Enter Entry Comment">
                 </div>
             </div>
@@ -97,7 +110,7 @@
                 <div class="col-1 col-md-1 d-flex justify-content-center align-items-center">
                     <span>:</span>
                 </div>
-                <div class="col-6 col-md-4">
+                <div class="col-6 col-md-6">
                     <div class="toggle-button-cover">
                         <div class="button b2" id="button-10">
                             <input type="checkbox" class="checkbox" />
@@ -116,7 +129,7 @@
                 <div class="col-1 col-md-1 d-flex justify-content-center align-items-center">
                     <span>:</span>
                 </div>
-                <div class="col-6 col-md-4">
+                <div class="col-6 col-md-6">
                     <select id="smartcard" [(ngModel)]="selectSmartcard">
                         <option value="0" selected>Select Smartcard</option>
                         <option *ngFor="let smartcard of filteredSmartcardList" [value]="smartcard.value">
@@ -125,8 +138,112 @@
                     </select>
                 </div>
             </div>
+
+            <div class="input_box d-flex justify-content-start align-items-center mb-2" style="margin-left: 20px;">
+                <div class="col-5 col-md-3 d-flex justify-content-start">
+                    <span>Entry</span>
+                </div>
+                <div class="col-1 col-md-1 d-flex justify-content-center align-items-center">
+                    <span>:</span>
+                </div>
+                <div class="col-6 col-md-6 input_box">
+                    <input type="text" placeholder="Enter Entry ">
+                </div>
+            </div>
+
+            <div class="input_box d-flex justify-content-start align-items-center mb-2" style="margin-left: 20px;">
+                <div class="col-5 col-md-3 d-flex justify-content-start">
+                    <span>Entry Date</span>
+                </div>
+                <div class="col-1 col-md-1 d-flex justify-content-center align-items-center">
+                    <span>:</span>
+                </div>
+                <div class="col-6 col-md-6 input_box">
+                    <input type="text" placeholder="Enter Entry Date">
+                </div>
+            </div>
+
+            <div class="input_box d-flex justify-content-start align-items-center mb-2" style="margin-left: 20px;">
+                <div class="col-5 col-md-3 d-flex justify-content-start">
+                    <span>Closing</span>
+                </div>
+                <div class="col-1 col-md-1 d-flex justify-content-center align-items-center">
+                    <span>:</span>
+                </div>
+                <div class="col-6 col-md-6 input_box">
+                    <input type="text" placeholder="Enter Closing">
+                </div>
+            </div>
+            <div class="input_box d-flex justify-content-start align-items-center mb-2" style="margin-left: 20px;">
+                <div class="col-5 col-md-3 d-flex justify-content-start">
+                    <span>Closing Date</span>
+                </div>
+                <div class="col-1 col-md-1 d-flex justify-content-center align-items-center">
+                    <span>:</span>
+                </div>
+                <div class="col-6 col-md-6 input_box">
+                    <input type="text" placeholder="Enter Closing Date">
+                </div>
+            </div>
+            <div class="input_box d-flex justify-content-start align-items-center mb-2" style="margin-left: 20px;">
+                <div class="col-5 col-md-3 d-flex justify-content-start">
+                    <span>Amount</span>
+                </div>
+                <div class="col-1 col-md-1 d-flex justify-content-center align-items-center">
+                    <span>:</span>
+                </div>
+                <div class="col-6 col-md-6 input_box">
+                    <input type="text" placeholder="Enter Amount">
+                </div>
+            </div>
+            <div class="input_box d-flex justify-content-start align-items-center mb-2" style="margin-left: 20px;">
+                <div class="col-5 col-md-3 d-flex justify-content-start">
+                    <span>Attender</span>
+                </div>
+                <div class="col-1 col-md-1 d-flex justify-content-center align-items-center">
+                    <span>:</span>
+                </div>
+                <div class="col-6 col-md-6">
+                    <select id="attender" [(ngModel)]="selectedEntry">
+                        <option value="0" selected>Select Attender</option>
+                        <option *ngFor="let atn of filteredAttenderList" [value]="atn.id">
+                            {{ atn.username }}
+                        </option>
+                    </select>
+                </div>
+            </div>
+
+            <div class=" d-flex justify-content-start align-items-center mb-2" style="margin-left: 20px;">
+                <div class="col-5 col-md-3 d-flex justify-content-start input_box">
+                    <span>Type</span>
+                </div>
+                <div class="col-1 col-md-1 d-flex justify-content-center align-items-center">
+                    <span>:</span>
+                </div>
+                <div class="col-6 col-md-6">
+                    <mat-radio-group [(ngModel)]="selectedType">
+                        <mat-radio-button value="1">REUSE</mat-radio-button>
+                        <mat-radio-button value="2" class="ml-3">FAILURE</mat-radio-button>
+                    </mat-radio-group>
+                </div>
+            </div>
+
+            <div class="input_box d-flex justify-content-start align-items-center mb-2" style="margin-left: 20px;">
+                <div class="col-5 col-md-3 d-flex justify-content-start">
+                    <span>Delivery</span>
+                </div>
+                <div class="col-1 col-md-1 d-flex justify-content-center align-items-center">
+                    <span>:</span>
+                </div>
+                <div class="col-6 col-md-6 input_box">
+                    <input type="text" placeholder="Enter Amount">
+                </div>
+            </div>
             <div class="col-12 col-md-8 d-flex justify-content-center align-items-center" style="padding: 10px;">
                 <button type="button" class="btn btn-success">Update </button>
+
+                <!-- <button type="button" class="btn btn-success">Close </button>
+                <button type="button" class="btn btn-success">Dispatch </button> -->
             </div>
         </div>
     </div>
@@ -135,7 +252,7 @@
             <h6>SERVICE HISTORY</h6>
         </div>
         <div class="display justify-content-start align-items-center ">
-            <div class="mx-2" style="margin-top: -1.2%;">
+            <div class="mx-2 table_operator" style="margin-top: -1.2%;">
                 <select id="operator" [(ngModel)]="selectedOperator">
                     <option value="0" selected>ALL Operator</option>
                     <option *ngFor="let operator of filteredOperatorList" [value]="operator.value">
@@ -144,7 +261,7 @@
                 </select>
             </div>
             <div class=" mx-2" style="margin-top: -1.2%;">
-                <input type="checkbox" [(ngModel)]="isActive" style="width: 35px;height: 20px;">
+                <input type="checkbox" [(ngModel)]="isActive" tyle="width: 20px; height: 20px;">
             </div>
             <div class=" input_box mx-2" style="margin-top: -1.2%;">
                 <input type="text" placeholder="Enter Smartcard Last 5 digit" [disabled]="!isActive">

@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, Inject, OnInit, ViewEncapsulation } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Inject, OnInit, ViewEncapsulation, OnDestroy } from '@angular/core';
 import { AbstractControl, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatDatepicker } from '@angular/material/datepicker';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
@@ -47,7 +47,7 @@ export const MY_FORMATS = {
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.Default,
 })
-export class SubscriberdialogueComponent implements OnInit {
+export class SubscriberdialogueComponent implements OnInit, OnDestroy {
   myControl = new FormControl('');
   options: string[] = ['One', 'Two', 'Three'];
   readonly date = new FormControl<string>(moment().format('YYYY-MM'));
@@ -492,6 +492,11 @@ export class SubscriberdialogueComponent implements OnInit {
       option.packagename.toLowerCase().includes(filterValue)
     );
   }
+  ngOnDestroy(): void {
+    ($('#smartcard') as any).select2('destroy');
+    ($('#package') as any).select2('destroy');
+  }
+
   ngOnInit(): void {
     const currentDate = new Date();
     this.today = currentDate.toISOString().split('T')[0];
@@ -809,7 +814,7 @@ export class SubscriberdialogueComponent implements OnInit {
     if (stype === 'remove') {
       this.columnDefs = [
         { headerName: "S.No", valueGetter: 'node.rowIndex+1', width: 100, filter: false, headerCheckboxSelection: true, checkboxSelection: true },
-        { headerName: 'PACKAGE NAME', field: 'productname', width: 200 , cellStyle: { textAlign: 'left' }, },
+        { headerName: 'PACKAGE NAME', field: 'productname', width: 200, cellStyle: { textAlign: 'left' }, },
         { headerName: 'PACKAGE TYPE', field: 'producttypename', width: 200 },
         { headerName: 'REFUND AMOUNT', field: 'refundproductrate', width: 200 },
         { headerName: 'DAYS', field: 'days', width: 250 },
@@ -817,7 +822,7 @@ export class SubscriberdialogueComponent implements OnInit {
     } else if (stype === 'cancelsubscription') {
       this.columnDefs = [
         { headerName: "S.No", valueGetter: 'node.rowIndex+1', width: 100, filter: false },
-        { headerName: 'PACKAGE NAME', field: 'productname', width: 200 , cellStyle: { textAlign: 'left' }, },
+        { headerName: 'PACKAGE NAME', field: 'productname', width: 200, cellStyle: { textAlign: 'left' }, },
         { headerName: 'PACKAGE TYPE', field: 'producttypename', width: 250 },
         // {
         //   headerName: 'REFUND AMOUNT', field: 'refundproductrate', width: 200, valueFormatter: (params: any) => {
@@ -844,7 +849,7 @@ export class SubscriberdialogueComponent implements OnInit {
     } else if (stype === 'alacarte') {
       this.columnDefs = [
         { headerName: "S.No", valueGetter: 'node.rowIndex+1', width: 80, filter: false, headerCheckboxSelection: true, checkboxSelection: true },
-        { headerName: 'PACKAGE NAME', field: 'channel_name', width: 200, cellStyle: { textAlign: 'left' },  },
+        { headerName: 'PACKAGE NAME', field: 'channel_name', width: 200, cellStyle: { textAlign: 'left' }, },
         { headerName: 'CAS PRODUCT ID', field: 'casproductid', width: 200 },
         { headerName: 'BROADCASTER NAME', field: 'broadcastername', width: 210 },
         { headerName: 'CUSTOMER AMOUNT', field: 'customeramount', width: 250, filter: false },
@@ -1003,6 +1008,14 @@ export class SubscriberdialogueComponent implements OnInit {
   onNoClick(): void {
     this.dialogRef.close(this.returndata);
   }
+  getDialogConfirmation() {
+    this.addonconfirmation = false;
+    this.alacarteconfirmation = false;
+    this.removeproduct = false;
+    this.isaddaddon = false;
+    this.isaddalacarte = false;
+    this.isRemove = false;
+  }
   onSelectionplantype(selectedValue: string) {
     console.log('selectrdvalue', selectedValue);
 
@@ -1129,7 +1142,7 @@ export class SubscriberdialogueComponent implements OnInit {
     const target = event.target as HTMLSelectElement;
     const castype = target.value;
     this.cdr.detectChanges;
-    this.userservice.getNotallocatedSmartcardListByCastypeAndOperatorid(this.role, this.username, this.operatorid, castype)
+    this.userservice.getNotallocatedSmartcardListByCastypeAndOperatorid(this.role, this.username, this.operatorid || 0, castype)
       .subscribe((data: any) => {
         if (data && Object.keys(data).length > 0) {
           this.area = Object.entries(data).map(([key, value]) => ({ name: key, id: value }));

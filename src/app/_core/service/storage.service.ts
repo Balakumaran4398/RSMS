@@ -65,8 +65,8 @@ export class StorageService {
     if (user.roles.includes('ROLE_RECEPTION')) return 'ROLE_RECEPTION';
     if (user.roles.includes('ROLE_SPECIAL')) return 'ROLE_SPECIAL';
     if (user.roles.includes('ROLE_INVENTORY')) return 'ROLE_INVENTORY';
-    if (user.roles.includes('ROLE_CUSTOMER_SERVICE')) return 'ROLE_CUSTOMER_SERVICE';
-    if (user.roles.includes('ROLE_SERVICE_CENTER')) return 'ROLE_SERVICE_CENTER';
+    if (user.roles.includes('ROLE_CUSSERVICE')) return 'ROLE_CUSSERVICE';
+    if (user.roles.includes('ROLE_SERVICECENTER')) return 'ROLE_SERVICECENTER';
     return 'DEFAULT_ROLE';
   }
   

@@ -1,6 +1,6 @@
 import { CdkDrag, CdkDragDrop, CdkDropList, moveItemInArray, transferArrayItem } from '@angular/cdk/drag-drop';
 import { CommonModule } from '@angular/common';
-import { ChangeDetectorRef, Component } from '@angular/core';
+import { ChangeDetectorRef, Component, OnDestroy } from '@angular/core';
 import { FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectModule } from '@angular/material/select';
@@ -15,7 +15,7 @@ declare var $: any;
   standalone: true,
   imports: [CdkDropList, CdkDrag, CommonModule, MatFormFieldModule, MatSelectModule, FormsModule, ReactiveFormsModule]
 })
-export class PackagewiseOperatorComponent {
+export class PackagewiseOperatorComponent implements OnDestroy {
   selectedItems: Set<any> = new Set();
   product: any = '0';
   role: any;
@@ -61,6 +61,9 @@ export class PackagewiseOperatorComponent {
       }));
       console.log(this.producttypeList);
     });
+  }
+  ngOnDestroy(): void {
+    ($('#productlist') as any).select2('destroy');
   }
   ngAfterViewInit() {
     $('#productlist').select2({

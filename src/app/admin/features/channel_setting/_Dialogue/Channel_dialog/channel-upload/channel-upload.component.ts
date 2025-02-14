@@ -3,6 +3,7 @@ import { MatDialogRef } from '@angular/material/dialog';
 import { ColDef } from 'ag-grid-community';
 import { BaseService } from 'src/app/_core/service/base.service';
 import { StorageService } from 'src/app/_core/service/storage.service';
+import { SwalService } from 'src/app/_core/service/swal.service';
 import Swal from 'sweetalert2';
 import * as XLSX from 'xlsx';
 @Component({
@@ -25,7 +26,7 @@ export class ChannelUploadComponent {
     paginationPageSize: 5,
     pagination: true,
   };
-  constructor(public dialogRef: MatDialogRef<ChannelUploadComponent>, private userservice: BaseService, private storageService: StorageService) {
+  constructor(public dialogRef: MatDialogRef<ChannelUploadComponent>, private userservice: BaseService, private swal: SwalService, private storageService: StorageService) {
     this.username = storageService.getUsername();
     this.role = storageService.getUserRole();
   }
@@ -43,20 +44,61 @@ export class ChannelUploadComponent {
     this.dialogRef.close();
   }
 
+  // handleFileInput(event: Event): void {
+  //   const input = event.target as HTMLInputElement;
+
+  //   if (input.files && input.files.length > 0) {
+  //     this.file = true;
+  //     this.selectedFile = input.files[0];
+  //     this.filePath = this.selectedFile.name;  
+  //     console.log('Selected file name:', this.selectedFile);
+  //   } else {
+  //     this.file = false;
+  //     this.filePath = '';
+  //   }
+
+  // }
+
+
+
   handleFileInput(event: Event): void {
     const input = event.target as HTMLInputElement;
+
     if (input.files && input.files.length > 0) {
       this.file = true;
       this.selectedFile = input.files[0];
-      this.filePath = this.selectedFile.name;  // Store the file name
+      this.filePath = this.selectedFile.name;
       console.log('Selected file name:', this.selectedFile);
+
+      const reader = new FileReader();
+      reader.onload = (e: any) => {
+        const data = new Uint8Array(e.target.result);
+        const workbook = XLSX.read(data, { type: 'array' });
+        const sheetName = workbook.SheetNames[0];
+        const worksheet = workbook.Sheets[sheetName];
+
+        // Convert sheet data to JSON
+        let jsonData = XLSX.utils.sheet_to_json(worksheet, { defval: '' });
+
+        // **Filter out empty rows**
+        jsonData = jsonData.filter((row: any) => {
+          return Object.values(row).some(value => value !== '' && value !== null);
+        });
+
+        console.log('Filtered Data:', jsonData);
+
+        if (jsonData.length > 0) {
+          // this.uploadExcelData(jsonData); 
+        } else {
+          console.log('No valid data to upload');
+        }
+      };
+      reader.readAsArrayBuffer(this.selectedFile);
     } else {
       this.file = false;
       this.filePath = '';
     }
-   
   }
-
   processExcelData(data: any[]): void {
     this.rowData = data.slice(1).map((row, index) => ({
       channel: row[0],
@@ -116,9 +158,9 @@ export class ChannelUploadComponent {
       html: 'Please wait while your file is being uploaded.',
       allowOutsideClick: false,
       didOpen: () => {
-       
-          Swal.showLoading(null);
-        
+
+        Swal.showLoading(null);
+
         this.userservice.Upload_channel_list(this.role, this.username, fileName).subscribe(
           (res: any) => {
             Swal.close();
@@ -183,50 +225,80 @@ export class ChannelUploadComponent {
   // }
 
   uploadData(event: any): void {
-   
 
+    this.swal.Loading();
     console.log('Starting file upload');
     const formData = new FormData();
     formData.append('file', this.selectedFile);
     formData.append('role', this.role);
     formData.append('username', this.username);
 
-    // Upload the file first
     this.userservice.uploadChannellist(formData).subscribe(
       (res: any) => {
         console.log('Upload successful:', res);
 
-        // After a successful upload, extract data from the file
         this.extractExcelData();
+        this.swal.Close();
       },
       (error) => {
         console.error('Upload failed:', error);
+        this.swal.Close();
       }
     );
   }
 
+  // extractExcelData(): void {
+  //   if (this.filePath && this.selectedFile) {
+  //     console.log('Extracting data from file:', this.filePath);
+  //     const reader = new FileReader();
+  //     reader.onload = (e: any) => {
+  //       const binaryData = e.target.result;
+  //       const workbook = XLSX.read(binaryData, { type: 'binary' });
+  //       const sheetName = workbook.SheetNames[0];
+  //       const worksheet = workbook.Sheets[sheetName];
+  //       const excelData: any[][] = XLSX.utils.sheet_to_json(worksheet, { header: 1 }) as any[][];
+  //       this.rowData = excelData.slice(1).filter((row, index) => index > 0).map((row, index) => ({
+  //         channel: row[2],
+  //         serviceId: row[3],
+  //         productId: row[4],
+  //         inr_amt: row[5]
+  //       }));
+  //       console.log('Extracted rowData:', this.rowData);
+  //     };
+  //     reader.readAsBinaryString(this.selectedFile);
+  //   }
+  // }
+
   extractExcelData(): void {
     if (this.filePath && this.selectedFile) {
       console.log('Extracting data from file:', this.filePath);
+
       const reader = new FileReader();
       reader.onload = (e: any) => {
         const binaryData = e.target.result;
         const workbook = XLSX.read(binaryData, { type: 'binary' });
         const sheetName = workbook.SheetNames[0];
         const worksheet = workbook.Sheets[sheetName];
-        const excelData: any[][] = XLSX.utils.sheet_to_json(worksheet, { header: 1 }) as any[][];
-        this.rowData = excelData.slice(1).filter((row, index) => index > 0).map((row, index) => ({
-          channel: row[2],
-          serviceId: row[3],
-          productId: row[4],
-          inr_amt: row[5]
+
+        let excelData: any[][] = XLSX.utils.sheet_to_json(worksheet, { header: 1 }) as any[][];
+
+        excelData = excelData.filter((row, index) => 
+          index > 1 && row.some(cell => cell !== null && cell !== '')
+        );
+
+        this.rowData = excelData.map(row => ({
+          channel: row[2] || '',  
+          serviceId: row[3] || '',
+          productId: row[4] || '',
+          inr_amt: row[5] || ''
         }));
+
         console.log('Extracted rowData:', this.rowData);
       };
+
       reader.readAsBinaryString(this.selectedFile);
     }
   }
-
 
 
 
