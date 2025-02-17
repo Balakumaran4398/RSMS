@@ -56,46 +56,33 @@ export class InventoryroleComponent {
     })
   }
 
-  onSelectionChanged() {
-    if (this.gridApi) {
-      const selectedRows = this.gridApi.getSelectedRows();
-      this.isAnyRowSelected = selectedRows.length > 0;
-      this.selectedIds = selectedRows.map((e: any) => e.id);
-      this.selectsmartcard = selectedRows.map((e: any) => e.smartcard);
-      this.selectedtypes = selectedRows.map((e: any) => e.isactive);
-      this.selectedisEmi = selectedRows.map((e: any) => e.isemi);
-    }
-  }
+  // onSelectionChanged() {
+  //   if (this.gridApi) {
+  //     const selectedRows = this.gridApi.getSelectedRows();
+  //     this.isAnyRowSelected = selectedRows.length > 0;
+  //     this.selectedIds = selectedRows.map((e: any) => e.id);
+  //     this.selectsmartcard = selectedRows.map((e: any) => e.smartcard);
+  //     this.selectedtypes = selectedRows.map((e: any) => e.isactive);
+  //     this.selectedisEmi = selectedRows.map((e: any) => e.isemi);
+  //   }
+  // }
   onGridReady(params: { api: any; }) {
     this.gridApi = params.api;
   }
 
   columnDefs: ColDef[] = [
-    {
-      headerName: 'S.No',
-      lockPosition: true, headerCheckboxSelection: true, checkboxSelection: true, width: 100,
-    },
-    {
-      headerName: 'SMARTCARD', width: 400,
-      field: 'smartcard',
-    },
-    {
-      headerName: 'BOX_ID', width: 400, cellStyle: { textAlign: 'center' },
-      field: 'boxid',
-    },
-    {
-      headerName: 'MODEL', width: 340,
-      field: 'model',
-
-    },
-    {
-      headerName: 'CHIP ID', width: 330, cellStyle: { textAlign: 'center' },
-      field: 'chipid',
-    }
+    {   headerName: 'S.No', valueGetter: 'node.rowIndex+1',  lockPosition: true,  width: 100,  },
+    {  headerName: 'SMARTCARD', width: 400,      field: 'smartcard',   },
+    { headerName: 'BOX_ID', width: 400, cellStyle: { textAlign: 'center' },   field: 'boxid',    },
+    { headerName: 'MODEL', width: 340,  field: 'model',   },
+    {   headerName: 'CHIP ID', width: 330, cellStyle: { textAlign: 'center' },   field: 'chipid',  }
   ]
   openLoginPage() {
+    let dialogData = {
+      type: 'inventory_inventory'
+    }
     const dialogRef = this.dialog.open(InventoryloginComponent, {
-      // data: dialogData,
+      data: dialogData,
       // width: '500px'
     });
     dialogRef.afterClosed().subscribe(result => {

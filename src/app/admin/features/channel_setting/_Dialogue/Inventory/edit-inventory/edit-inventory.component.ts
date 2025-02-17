@@ -1,4 +1,4 @@
-import { Component, Inject } from '@angular/core';
+import { Component, Inject, OnInit } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { BaseService } from 'src/app/_core/service/base.service';
@@ -11,7 +11,7 @@ import Swal from 'sweetalert2';
   templateUrl: './edit-inventory.component.html',
   styleUrls: ['./edit-inventory.component.scss']
 })
-export class EditInventoryComponent {
+export class EditInventoryComponent implements OnInit {
   role: any;
   username: any;
   rowData: any;
@@ -31,9 +31,12 @@ export class EditInventoryComponent {
   LCOFormControl = new FormControl('');
   FileFormControl = new FormControl('');
   filteredOperators: any[] = [];
+  caslist: any[] = [];
   selectedOperator: any;
   submitted: boolean = false;
   isOperatorDisabled: boolean = false;
+
+  type: any;
   constructor(
     public dialogRef: MatDialogRef<EditInventoryComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any, public dialog: MatDialog, private userService: BaseService, private storageService: StorageService, private swal: SwalService) {
@@ -41,18 +44,52 @@ export class EditInventoryComponent {
     this.role = storageService.getUserRole();
     this.castype = data.castype;
     console.log(this.castype);
+    console.log(data);
 
     // this.lco_list = data.lco_list;
     this.lco_list = Object.entries(data.lco_list).map(([key, value]) => {
       return { name: key, value: value };
     });
+    this.type = data.type;
+    console.log(this.type);
 
     this.smartcard = data.smartcard;
     this.filteredOperators = this.lco_list;
+    this.onCaslist();
   }
+  ngOnInit(): void {
+    throw new Error('Method not implemented.');
+  }
+  ngOnDestroy(): void {
+    ($('#casType') as any).select2('destroy');
+  }
+  ngAfterViewInit() {
+    $('#casType').select2({
+      placeholder: 'Select a CAS Name',
+      allowClear: true
+    });
+    $('#casType').on('change', (event: any) => {
+      console.log(event);
 
+      this.selectedCasType = event.target.value;
+      console.log(this.selectedCasType);
+    });
+  }
+  onCaslist() {
+    this.userService.Cas_type(this.role, this.username).subscribe((data) => {
+      // this.cas = data;
+      // console.log('dfdsfdsfsd', this.cas);
+      this.caslist = data.map((item: any) => ({
+        id: item.id,
+        name: item.casname
+      }));
+      // this.filteredCasList = this.cas;
+      console.log(this.caslist);
+    });
+  }
   onInventoryTypeChange(value: boolean): void {
     this.isOperatorDisabled = value;
+    this.selectedLcoName = 0;
   }
 
   onNoClick(): void {
@@ -117,12 +154,13 @@ export class EditInventoryComponent {
           Swal.showLoading(null);
         }
       });
+      console.log(this.selectedLcoName);
 
       const formData = new FormData();
       formData.append('file', this.selectedFile);
       formData.append('role', this.role);
       formData.append('username', this.username);
-      formData.append('operatorid', this.LCOFormControl.value || '0');
+      formData.append('operatorid', this.selectedLcoName);
       formData.append('castype', this.CASFormControl.value || '');
       formData.append('isupload', this.BTNFormControl.value?.toString() || '');
       this.swal.Loading();

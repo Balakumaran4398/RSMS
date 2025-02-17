@@ -20,7 +20,7 @@
             </div> -->
             <ag-grid-angular #agGrid id="myGrid" domLayout='normal' class="ag-theme-alpine table-class" rowAnimation
                 style="max-height: 775px;overflow: scroll;" [rowSelection]="rowSelection" [gridOptions]="gridOptions"
-                [columnDefs]="columnDefs" [rowData]="rowData" (selectionChanged)="onSelectionChanged()"
+                [columnDefs]="columnDefs" [rowData]="rowData"
                 (gridReady)="onGridReady($event)" [enableCellTextSelection]="true">
             </ag-grid-angular>
         </div>

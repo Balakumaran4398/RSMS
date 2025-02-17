@@ -1,4 +1,4 @@
-import { Component, Inject } from '@angular/core';
+import { Component, Inject, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { BaseService } from 'src/app/_core/service/base.service';
@@ -11,7 +11,7 @@ import Swal from 'sweetalert2';
   templateUrl: './new-recharge.component.html',
   styleUrls: ['./new-recharge.component.scss']
 })
-export class NewRechargeComponent {
+export class NewRechargeComponent implements OnInit {
   form!: FormGroup;
   edit_dialog: boolean = false;
   username: any;
@@ -19,7 +19,10 @@ export class NewRechargeComponent {
   role: any;
   type: number = 2;
   operatorList: any[] = [];
-  Date: any[] = [
+
+  isshow: boolean = false;
+
+  payment: any[] = [
     { lable: "Cheque", value: 1 },
     { lable: "Cash", value: 2 },
     { lable: "Account Transfer", value: 3 },
@@ -27,10 +30,12 @@ export class NewRechargeComponent {
   filteredOperators: any[] = [];
   selectedOperator: any;
   operatorid: any;
+
+
   constructor(public dialogRef: MatDialogRef<NewRechargeComponent>, @Inject(MAT_DIALOG_DATA) public data: any, private fb: FormBuilder, private swal: SwalService, public dialog: MatDialog, public userService: BaseService, storageService: StorageService) {
     this.username = storageService.getUsername();
     this.role = storageService.getUserRole();
-    this.userService.getOeratorList(this.role, this.username,1).subscribe((data: any) => {
+    this.userService.getOeratorList(this.role, this.username, 1).subscribe((data: any) => {
       console.log(data);
       this.operatorList = Object.keys(data).map(key => {
         const value = data[key];
@@ -60,7 +65,7 @@ export class NewRechargeComponent {
     this.userService.OperatorDetails(this.role, this.username, this.operatorid).subscribe(
       (data: any) => {
         console.log(data);
-        },
+      },
       (error) => {
         console.error('Error fetching operator details', error);
       }
@@ -74,6 +79,21 @@ export class NewRechargeComponent {
       remarks: ['', Validators.required],
       role: this.role,
       username: this.username
+    });
+
+    this.onMsolist();
+
+  }
+
+  onMsolist() {
+    this.userService.getMsoDetails(this.role, this.username).subscribe((res: any) => {
+      console.log(res);
+      this.isshow = res.msoName.includes("AJK");
+      console.log(this.isshow);
+
+      if (this.isshow) {
+        this.payment = this.payment.filter(item => item.value !== 2);
+      }
     });
   }
   filterOperators(event: any): void {

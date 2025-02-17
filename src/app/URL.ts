@@ -12,8 +12,6 @@ export default class URLs {
         // return 'http://103.183.47.212:8585/rsms/api/auth';  
 
 
-
-
         // return 'http://4kdigital.ridsys.in:8585/rsms/api/auth';   //Live/
     }
 
@@ -23,8 +21,6 @@ export default class URLs {
         // return "http://192.168.1.111:8081/api";    //SUBHA
         // return "http://192.168.70.201:8585/rsms/api";    //QC 
         // return "http://103.183.47.212:8585/rsms/api";    
-
-
 
 
         // return "http://4kdigital.ridsys.in:8585/rsms/api";    // Live

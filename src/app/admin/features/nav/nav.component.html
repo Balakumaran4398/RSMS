@@ -436,8 +436,6 @@
         </li>
 
         <!-- ==================================================Service Center Role=========================== -->
-
-
         <li *ngIf="isServiceCenter"><a (click)="navgetToUrl('/service_center');setActiveLinkTab($event)" class="active">
                 <i class="fa fa-fw fa-paper-plane icon">&nbsp;</i>Service Center </a> </li>
 
@@ -463,7 +461,7 @@
                             &nbsp;</span>
                     </div>
                     <div *ngIf="!isSearch"
-                        class="search-and-image col-7 col-md-7 d-flex justify-content-end align-items-center">
+                        class="search-and-image col-7 col-md-7 d-flex justify-content-end align-items-center" (clickOutside)="closeDropdown()">
                         <div class="search">
                             <span class="fa fa-search"></span>
                             <input id="searchitem" #searchitem style="font-size: 14px;" [value]="lcomember"

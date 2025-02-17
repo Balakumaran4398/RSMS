@@ -1,4 +1,4 @@
-<div>
+<div *ngIf="type=='ROLE_ADMIN'">
     <div class="Head d-flex justify-content-between align-items-center mb-3" style="padding: 1rem;">
         <h6>INVENTORY</h6>
         <i class="fa fa-close close-icon" style="cursor: pointer;" (click)="onNoClick()"></i>
@@ -34,6 +34,82 @@
                         <option value="0" selected>Select a CAS Name</option>
                         <option *ngFor="let key of filteredCasKeys()" [value]="castype[key]">
                             {{ key }}
+                        </option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="input_box col-12  col-md-12 display justify-content-center align-items-center"
+                *ngIf=" isOperatorDisabled">
+                <div class="col-12 col-md-4">
+                    <label>Select Operator</label>
+                </div>
+                <div class="col-12 col-md-8 mb-3">
+                    <input type="text" matInput [matAutocomplete]="auto" [(ngModel)]="selectedLcoName"
+                        (input)="filterOperators($event)" placeholder="Select a Operator"
+                        [matAutocompleteDisabled]="false" [value]="selectedOperator?.name">
+
+                    <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayOperator">
+                        <mat-option *ngFor="let operator of filteredOperators" [value]="operator.value"
+                            (click)="onSubscriberStatusChange(operator)">
+                            {{ operator.name }}
+                        </mat-option>
+                    </mat-autocomplete>
+                </div>
+            </div>
+            <div class="input_box col-12 col-md-12 display justify-content-center align-items-center">
+                <div class="col-12 col-md-4">
+                    <label>Choose File</label>
+                </div>
+                <div class="col-12 col-md-8 mb-3 file-upload-container">
+                    <input type="file" (change)="onFileSelected($event)" accept=".xls,.xlsx,.csv" />
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="d-flex justify-content-center align-items-cente mx-4" style="padding: 10px;">
+        <button type="button" class="btn btn-success" (click)="submit()">
+            Submit
+        </button>
+    </div>
+</div>
+
+<div *ngIf="type=='ROLE_RECEPTION'">
+    <div class="Head d-flex justify-content-between align-items-center mb-3" style="padding: 1rem;">
+        <h6>INVENTORY</h6>
+        <i class="fa fa-close close-icon" style="cursor: pointer;" (click)="onNoClick()"></i>
+    </div>
+    <div class="" style="padding: 1rem;">
+        <div class="mobile">
+            <div class="  col-12  col-md-12 display justify-content-center align-items-center">
+                <div class="col-12 col-md-4">
+                    <label
+                        style=" font-weight: 500; margin-bottom: 5px;display: block;color: #243359;font-size: 16px;">Inventory
+                        type</label>
+                </div>
+                <div class="col-12 col-md-8 mb-3">
+                    <mat-radio-group class="radio-group d-flex justify-content-center align-items-center"
+                        [formControl]="BTNFormControl" aria-labelledby="status">
+                        <mat-radio-button class="radio-button" [value]="false"
+                            (change)="onInventoryTypeChange(false)"><span style="font-size: 14px;">Upload
+                                Only</span>
+                        </mat-radio-button>&nbsp;
+                        <mat-radio-button class="radio-button" [value]="true"
+                            (change)="onInventoryTypeChange(true)"><span style="font-size: 14px;">With Allocation</span>
+                        </mat-radio-button>
+                    </mat-radio-group>
+                </div>
+            </div>
+
+            <div class="input_box col-12  col-md-12 display justify-content-center align-items-center">
+                <div class="col-12 col-md-4">
+                    <label>Select CAS type</label>
+                </div>
+                <div class="col-12 col-md-8 mb-3">
+                    <select id="casType" [(ngModel)]="selectedCasType" [formControl]="CASFormControl">
+                        <option value="0" selected>Select a CAS Name</option>
+                        <option *ngFor="let key of caslist" [value]="key.id">
+                            {{ key.name }}
                         </option>
                     </select>
                 </div>

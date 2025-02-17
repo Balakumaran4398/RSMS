@@ -1,4 +1,4 @@
-import { Component, Inject } from '@angular/core';
+import { Component, Inject, OnInit } from '@angular/core';
 import Swal from 'sweetalert2';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA, MatDialog } from '@angular/material/dialog';
@@ -12,14 +12,15 @@ import { InventoryDialogueComponent } from '../inventory-dialogue/inventory-dial
   templateUrl: './inventorylogin.component.html',
   styleUrls: ['./inventorylogin.component.scss']
 })
-export class InventoryloginComponent {
- form!: FormGroup;
+export class InventoryloginComponent implements OnInit {
+  form!: FormGroup;
   isLoggedIn = false;
   username: any;
   role: any;
   type: any;
-
-  constructor(public dialogRef: MatDialogRef<InventoryloginComponent>, @Inject(MAT_DIALOG_DATA) public data: any, private userservice: BaseService, private storageservice: StorageService, private fb: FormBuilder, private router: Router, public dialog: MatDialog,) {
+  inventory_dialog: any;
+  constructor(public dialogRef: MatDialogRef<InventoryloginComponent>,
+    @Inject(MAT_DIALOG_DATA) public data: any, private userservice: BaseService, private storageservice: StorageService, private fb: FormBuilder, private router: Router, public dialog: MatDialog,) {
     this.role = storageservice.getUserRole();
     this.username = storageservice.getUsername();
     this.form = fb.group({
@@ -28,11 +29,17 @@ export class InventoryloginComponent {
       role: this.role,
       username: this.username
     })
+    console.log(data);
+    this.inventory_dialog = data.type;
+    console.log(this.inventory_dialog);
+    console.log('11111111111111111111111111111', dialogRef);
 
 
   }
 
   ngOnInit() {
+    console.log(this.dialogRef);
+
     this.form = this.fb.group({
       userid: ['', Validators.required],  // username is required
       password: ['', Validators.required], // password is required
@@ -59,14 +66,16 @@ export class InventoryloginComponent {
             timer: 1000,
             showConfirmButton: false
           }).then(() => {
-           
-            const dialogRef = this.dialog.open(InventoryDialogueComponent, {
-          
-            });
-            dialogRef.afterClosed().subscribe(result => {
-              console.log('The dialog was closed', result);
-            });
+            console.log(this.inventory_dialog);
+            if (this.inventory_dialog === 'inventory_inventory') {
+              let dialogRef;
+              dialogRef = this.dialog.open(InventoryDialogueComponent, {});
+            }
             this.onNoClick();
+            if (this.inventory_dialog === 'reception') {
+              this.dialogRef.close({ status: 'success', message: 'Login successful' });
+            }
+
           });
         },
         (error: any) => {
@@ -89,9 +98,9 @@ export class InventoryloginComponent {
       });
     }
   }
-
   onNoClick(): void {
     this.dialogRef.close();
   }
+
 
 }

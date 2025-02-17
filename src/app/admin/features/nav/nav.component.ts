@@ -1,4 +1,4 @@
-import { AfterViewInit, ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { AfterViewInit, ChangeDetectorRef, Component, HostListener, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 import { FormControl } from '@angular/forms';
@@ -426,36 +426,13 @@ export class NavComponent implements OnInit, AfterViewInit {
   }
   isMobile = false;
   currentBreakpoint: any;
-  // private breakpointChanged() {
-  //   if (this.breakpointObserver.isMatched(Breakpoints.Large)) {
-  //     this.currentBreakpoint = Breakpoints.Large;
-  //     // console.log(this.currentBreakpoint);
-  //     this.isMobile = false;
-  //   } else if (this.breakpointObserver.isMatched(Breakpoints.Medium)) {
-  //     this.currentBreakpoint = Breakpoints.Medium;
-  //     // console.log(this.currentBreakpoint);
-  //     this.isMobile = false;
-  //   } else if (this.breakpointObserver.isMatched(Breakpoints.Small)) {
-  //     this.currentBreakpoint = Breakpoints.Small;
-  //     // console.log(this.currentBreakpoint);
-  //     this.isMobile = false;
-  //   } else if (this.breakpointObserver.isMatched('(min-width: 500px)')) {
-  //     this.currentBreakpoint = '(min-width: 500px)';
-  //     // console.log(this.currentBreakpoint);
-  //     this.isMobile = true;
-  //   } else {
-  //     this.isMobile = true;
-  //   }
-  //   console.log(this.isMobile);
-  // }
+
   isAdmin = false;
   navgetToUrl(id: any,) {
-    // console.log(id);
     this.activeItem = id;
     this.router.navigateByUrl("admin" + id);
     if (this.isMobile) {
-      // this.closeSidebar();
-      // this.OPENCLSO();
+
     }
 
   }
@@ -466,6 +443,17 @@ export class NavComponent implements OnInit, AfterViewInit {
   }
   togglePopup() {
     this.isPopupVisible = !this.isPopupVisible;
+  }
+
+  @HostListener('document:click', ['$event'])
+
+  closeDropdown(event?: Event) {
+    this.showDropdown = false;
+  }
+  handleBlur(event: FocusEvent) {
+    if (!event.relatedTarget || !(event.relatedTarget as HTMLElement).classList.contains('dropdown-item')) {
+      this.showDropdown = false;
+    }
   }
 }
 

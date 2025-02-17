@@ -1,4 +1,4 @@
-import { Component, Inject, OnInit } from '@angular/core';
+import { Component, Inject, OnDestroy, OnInit } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA, MatDialog } from '@angular/material/dialog';
 import { BaseService } from 'src/app/_core/service/base.service';
 import { ExcelService } from 'src/app/_core/service/excel.service';
@@ -12,7 +12,7 @@ declare var $: any;
   templateUrl: './inventory-dialogue.component.html',
   styleUrls: ['./inventory-dialogue.component.scss']
 })
-export class InventoryDialogueComponent implements OnInit {
+export class InventoryDialogueComponent implements OnInit,OnDestroy {
   selectedFile: File | null = null;
   selectedCasType: any ;
 
@@ -36,7 +36,7 @@ export class InventoryDialogueComponent implements OnInit {
   ngOnInit(): void {
     this.userservice.Cas_type(this.role, this.username).subscribe((data) => {
       this.cas = data;
-      console.log('dfdsfdsfsd', this.cas);
+      console.log('inventory', this.cas);
       this.cas = data.map((item: any) => ({
         id: item.id,
         name: item.casname
@@ -45,6 +45,9 @@ export class InventoryDialogueComponent implements OnInit {
       console.log(this.cas);
     });
 
+  }
+  ngOnDestroy(): void {
+    ($('#casType') as any).select2('destroy');
   }
   ngAfterViewInit() {
     $('#casType').select2({

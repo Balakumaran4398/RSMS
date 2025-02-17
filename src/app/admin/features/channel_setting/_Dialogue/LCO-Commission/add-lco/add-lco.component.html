@@ -1,4 +1,3 @@
-
 <div *ngIf="type==='commission'">
     <section class="col-12">
         <div class="Head d-flex justify-content-between align-items-center mb-3" style="padding: 1rem;">
@@ -20,23 +19,17 @@
                 </div>
                 <div class="d-block col-12 col-md-4 mb-2">
                     <span class="d-block mb-2" style="color: rgb(2, 8, 102);font-size: 15px;">MEMBERSHIP</span>
-                    <!-- <select style="color: rgb(17, 0, 0);" [(ngModel)]="lcogroupid"
-                        (change)="getproductMembershipList($event)">
-                        <option value="0" selected style="color: rgb(19, 17, 17);">Select Membership </option>
-                        <option *ngFor="let lcomember of lcomembershipList" [value]="lcomember.value">{{
-                            lcomember.name}}</option>
-                    </select> -->
-
+                
                     <input type="text" matInput [matAutocomplete]="auto" [(ngModel)]="lcogroupid" maxlength="20"
-                    (input)="filterOperators($event)" placeholder="Select An Membership" [matAutocompleteDisabled]="false"
-                    [value]="selectedOperator?.name">
+                        (input)="filterOperators($event)" placeholder="Select An Membership"
+                        [matAutocompleteDisabled]="false" [value]="selectedOperator?.name">
 
-                <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayOperator">
-                    <mat-option *ngFor="let operator of filteredOperators" [value]="operator.value"
-                        (click)="getproductMembershipList(operator)">
-                        {{ operator.name }}
-                    </mat-option>
-                </mat-autocomplete>
+                    <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayOperator">
+                        <mat-option *ngFor="let operator of filteredOperators" [value]="operator.value"
+                            (click)="getproductMembershipList(operator)">
+                            {{ operator.name }}
+                        </mat-option>
+                    </mat-autocomplete>
                 </div>
             </div>
             <div class="card " style="border: 1px solid lightgray;" style="height: 600px;">
@@ -45,15 +38,16 @@
                 </div>
                 <ag-grid-angular #agGrid id="myGrid" style="text-align: center;" domLayout='normal'
                     [rowSelection]="rowSelection" class="ag-theme-alpine table-class" rowAnimation
-                    [gridOptions]="gridOptions" [columnDefs]="columnDefs" (selectionChanged)="onSelectionChanged()"
-                    (gridReady)="onGridReady($event)" [rowData]="rowData" [enableCellTextSelection]="true">
+                    [gridOptions]="gridOptions" [columnDefs]="columnDefs"
+                    (selectionChanged)="onSelectionChanged($event)" (gridReady)="onGridReady($event)"
+                    [rowData]="rowData" [enableCellTextSelection]="true">
                 </ag-grid-angular>
             </div>
         </div>
         <div class="col d-flex justify-content-center align-items-center mb-3">
             <hr>
             <div class="form-group d-flex justify-content-center align-items-center mb-3 ">
-                <button type="button" class="btn btn-success me-2" [disabled]="!isDisCommission" (click)="createCommission()">Create</button>
+                <button type="button" class="btn btn-success me-2" (click)="createCommission()">Create</button>
                 <button type="button" class="btn btn-danger" (click)="onNoClick()">Cancel</button>
             </div>
         </div>
@@ -66,6 +60,7 @@
             <h6>ADD PRODUCT /DISTRIBUTOR COMMISSION MEMBERSHIP</h6>
             <i class="fa fa-close close-icon" style="cursor: pointer;" (click)="onNoClick()"></i>
         </div>
+
         <div class="add mb-3">
             <div class="input_box col-12 col-md-6 display justify-content-center align-items-start mb-3 gap-3">
                 <div class="add col-12 col-md-3 mb-2">
@@ -81,24 +76,16 @@
                 </div>
                 <div class="d-block col-12 col-md-4 mb-2">
                     <span class="d-block mb-2" style="color: rgb(2, 8, 102);font-size: 15px;">MEMBERSHIP</span>
-                    <!-- <select style="color: rgb(17, 0, 0);" [(ngModel)]="lcogroupid"
-                        (change)="getproductMembershipList($event)">
-                        <option value="0" selected style="color: rgb(19, 17, 17);">Select Membership </option>
-                        <option *ngFor="let lcomember of lcomembershipList" [value]="lcomember.value">{{
-                            lcomember.name}}</option>
-                    </select> -->
-
-
                     <input type="text" matInput [matAutocomplete]="auto" [(ngModel)]="lcogroupid" maxlength="20"
-                    (input)="filterOperators($event)" placeholder="Select An Membership" [matAutocompleteDisabled]="false"
-                    [value]="selectedOperator?.name">
+                        (input)="filterOperators($event)" placeholder="Select An Membership"
+                        [matAutocompleteDisabled]="false" [value]="selectedOperator?.name">
 
-                <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayOperator">
-                    <mat-option *ngFor="let operator of filteredOperators" [value]="operator.value"
-                        (click)="getproductMembershipList(operator)">
-                        {{ operator.name }}
-                    </mat-option>
-                </mat-autocomplete>
+                    <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayOperator">
+                        <mat-option *ngFor="let operator of filteredOperators" [value]="operator.value"
+                            (click)="getproductMembershipList(operator)">
+                            {{ operator.name }}
+                        </mat-option>
+                    </mat-autocomplete>
                 </div>
             </div>
             <div class="card " style="border: 1px solid lightgray;" style="height: 600px;">
@@ -107,15 +94,16 @@
                 </div>
                 <ag-grid-angular #agGrid id="myGrid" style="text-align: center;" domLayout='normal'
                     [rowSelection]="rowSelection" class="ag-theme-alpine table-class" rowAnimation
-                    [gridOptions]="gridOptions" [columnDefs]="columnDefs1" (selectionChanged)="onSelectionChanged()"
-                    (gridReady)="onGridReady($event)" [rowData]="rowData" [enableCellTextSelection]="true">
+                    [gridOptions]="gridOptions" [columnDefs]="columnDefs1"
+                    (selectionChanged)="onSelectionChanged($event)" (gridReady)="onGridReady($event)"
+                    [rowData]="rowData" [enableCellTextSelection]="true">
                 </ag-grid-angular>
             </div>
         </div>
         <div class="col d-flex justify-content-center align-items-center mb-3">
             <hr>
             <div class="form-group d-flex justify-content-center align-items-center mb-3 ">
-                <button type="button" class="btn btn-success me-2" [disabled]="!isDisCommission" (click)="createDisCommission()">Create</button>
+                <button type="button" class="btn btn-success me-2" (click)="createDisCommission()">Create</button>
                 <button type="button" class="btn btn-danger" (click)="onNoClick()">Cancel</button>
             </div>
         </div>

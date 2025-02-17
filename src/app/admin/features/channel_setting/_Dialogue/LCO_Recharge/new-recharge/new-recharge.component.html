@@ -14,7 +14,7 @@
                         <div class="col-12 col-md-6">
                             <select [(ngModel)]="type" formControlName="paymenttypeid">
                                 <option value="0" selected>Select Payment</option>
-                                <option *ngFor="let Type of Date" [value]="Type.value">{{ Type.lable }}</option>
+                                <option *ngFor="let Type of payment" [value]="Type.value">{{ Type.lable }}</option>
                             </select>
                             <div *ngIf="form.get('paymenttypeid')?.invalid && form.get('paymenttypeid')?.touched">
                                 <small class="text-danger">Payment Mode is required.</small>

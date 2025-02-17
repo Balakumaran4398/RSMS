@@ -1,5 +1,5 @@
-import { Component } from '@angular/core';
-import { MatDialog } from '@angular/material/dialog';
+import { Component, OnInit } from '@angular/core';
+import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { ColDef } from 'ag-grid-community';
 import { BaseService } from 'src/app/_core/service/base.service';
 import { StorageService } from 'src/app/_core/service/storage.service';
@@ -7,14 +7,14 @@ import { EditInventoryComponent } from '../../channel_setting/_Dialogue/Inventor
 import { UpdateInventoryComponent } from '../../channel_setting/_Dialogue/Inventory/update-inventory/update-inventory.component';
 import { SubInventoryComponent } from '../../channel_setting/_Dialogue/Inventory/sub-inventory/sub-inventory.component';
 import Swal from 'sweetalert2';
+import { InventoryloginComponent } from '../../inventory_role/Dialogue/inventorylogin/inventorylogin.component';
 
 @Component({
   selector: 'app-not-allocated',
   templateUrl: './not-allocated.component.html',
   styleUrls: ['./not-allocated.component.scss']
 })
-export class NotAllocatedComponent {
-  // rowData: any[] | null | undefined;
+export class NotAllocatedComponent implements OnInit {
   gridApi: any;
   isAnyRowSelected: any = false;
   selectedIds: number[] = [];
@@ -58,8 +58,14 @@ export class NotAllocatedComponent {
       this.lco_list = data[0].operatorid;
       this.caslist = data[0].castype;
       this.isemi = data[0].isemi;
+
     })
   }
+  ngOnInit(): void {
+
+  }
+
+
   columnDefs: ColDef[] = [
     {
       headerName: 'S.No',
@@ -132,6 +138,20 @@ export class NotAllocatedComponent {
   onGridReady(params: { api: any; }) {
     this.gridApi = params.api;
   }
+
+  openLoginPage() {
+
+    const dialogRef = this.dialog.open(InventoryloginComponent, {
+      data: { type: 'reception' }
+      // width: '500px'
+    });
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result?.status === 'success') {
+        this.addnew('');
+      } else {
+      }
+    });
+  }
   addnew(data: any): void {
     console.log(data);
     const dataToSend = {
@@ -139,6 +159,7 @@ export class NotAllocatedComponent {
       lco_list: this.lco_list,
       castype: this.caslist,
       smartcard: this.selectsmartcard,
+      type: this.role
     };
     const dialogRef = this.dialog.open(EditInventoryComponent, {
       width: '500px',

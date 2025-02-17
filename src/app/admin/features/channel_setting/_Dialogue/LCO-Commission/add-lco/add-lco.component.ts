@@ -94,49 +94,55 @@ export class AddLcoComponent {
     {
       headerName: "COMMISSION", width: 240,
       field: 'commission',
-      editable: true,
-
-      cellStyle: (params) => {
-        if (params.value) {
-          return {
-            color: 'blue',
-            fontWeight: 'bold'
-          };
-        } else {
-          return {
-            color: 'blue',
-            fontWeight: 'bold'
-          };
-        }
-      },
-      tooltipField: 'Edit',
       cellRenderer: (params: any) => {
-        const editButton = document.createElement('button');
-        editButton.style.border = 'none';
-        editButton.title = 'Edit the Commision Value';
-        editButton.innerText = params.value;
-        editButton.style.cursor = 'pointer';
-        editButton.style.color = 'blue';
-        editButton.addEventListener('click', (event) => {
-          console.log('Edit button clicked for Commission:', params.value);
-        });
+        const div = document.createElement('div');
+        div.style.width = '100%';
+        div.style.height = '100%';
+        div.style.display = 'flex';
+        div.style.alignItems = 'center';
+        div.style.justifyContent = 'center';
+        div.style.cursor = 'pointer';
+        div.style.backgroundColor = '#dfacac';
+        div.title = 'EDIT COMISSION VALUE';
 
-        return editButton;
-      },
-      onCellValueChanged: (params: any) => {
-        if (params.oldValue !== params.newValue) {
-          console.log(`Commission Updated: ${params.newValue}`);
-          params.data.msoamount = params.newValue;
-          this.isDisCommission = true;
-          Swal.fire({
-            icon: 'info',
-            title: 'Please Enter the Updated Value',
-            text: 'You have updated the Commission. Ensure the new value is correct.',
-            confirmButtonText: 'OK'
+        const span = document.createElement('span');
+        span.innerText = params.value;
+        span.style.color = 'blue';
+
+        div.appendChild(span);
+        div.addEventListener('click', () => {
+          const input = document.createElement('input');
+          input.type = 'text';
+          input.value = params.value;
+          input.style.width = '100%';
+          input.style.height = '100%';
+          input.style.padding = '4px';
+          input.style.textAlign = 'center';
+          input.style.fontSize = '14px';
+          input.style.color = 'black';
+          input.style.border = 'none';
+          input.style.outline = 'none';
+          input.style.backgroundColor = '#ffffcc';
+
+          div.replaceChildren(input);
+          input.focus();
+
+          input.addEventListener('blur', () => {
+            const newValue = input.value;
+            params.data.commission = newValue;
+            span.innerText = newValue;
+            span.style.color = 'green';
+            div.style.backgroundColor = 'transparent';
+            div.replaceChildren(span);
           });
-        }
-      },
-
+          input.addEventListener('keydown', (event) => {
+            if (event.key === 'Enter') {
+              input.blur();
+            }
+          });
+        });
+        return div;
+      }
     },
   ]
   columnDefs1: ColDef[] = [
@@ -155,46 +161,56 @@ export class AddLcoComponent {
       headerName: "MSO AMOUNT",
       field: 'msoamount',
       width: 200,
-      editable: true,
-
-      cellStyle: (params) => {
-        if (params.value) {
-          return {
-            color: 'blue',
-            fontWeight: 'bold'
-          };
-        } else {
-          return {
-            color: 'blue',
-            fontWeight: 'bold'
-          };
-        }
-      },
       cellRenderer: (params: any) => {
-        const editButton = document.createElement('button');
-        editButton.style.border = 'none';
-        editButton.title = 'Edit MSO Amount';
-        editButton.innerText = params.value;
-        editButton.style.cursor = 'pointer';
-        editButton.style.color = 'blue';
-        editButton.addEventListener('click', (event) => {
-          console.log('Edit button clicked for MSO Amount:', params.value);
+        const div = document.createElement('div');
+        div.style.width = '100%';
+        div.style.height = '100%';
+        div.style.display = 'flex';
+        div.style.alignItems = 'center';
+        div.style.justifyContent = 'center';
+        div.style.cursor = 'pointer';
+        div.style.backgroundColor = '#dfacac';
+        div.title = 'EDIT MSO AMOUNT';
+
+        const span = document.createElement('span');
+        span.innerText = params.value;
+        span.style.color = 'blue';
+
+        div.appendChild(span);
+        div.addEventListener('click', () => {
+          const input = document.createElement('input');
+          input.type = 'text';
+          input.value = params.value;
+          input.style.width = '100%';
+          input.style.height = '100%';
+          input.style.padding = '4px';
+          input.style.textAlign = 'center';
+          input.style.fontSize = '14px';
+          input.style.color = 'black';
+          input.style.border = 'none';
+          input.style.outline = 'none';
+          input.style.backgroundColor = '#ffffcc';
+
+          div.replaceChildren(input);
+          input.focus();
+
+          input.addEventListener('blur', () => {
+            const newValue = input.value;
+            params.data.msoamount = newValue;
+            span.innerText = newValue;
+            span.style.color = 'green';
+            div.style.backgroundColor = 'transparent';
+            div.replaceChildren(span);
+          });
+
+          input.addEventListener('keydown', (event) => {
+            if (event.key === 'Enter') {
+              input.blur();
+            }
+          });
         });
 
-        return editButton;
-      },
-      onCellValueChanged: (params: any) => {
-        if (params.oldValue !== params.newValue) {
-          console.log(`MSO Amount Updated: ${params.newValue}`);
-          params.data.msoamount = params.newValue;
-          this.isDisCommission = true;
-          Swal.fire({
-            icon: 'info',
-            title: 'Please Enter the Updated Value',
-            text: 'You have updated the MSO Amount. Ensure the new value is correct.',
-            confirmButtonText: 'OK'
-          });
-        }
+        return div;
       }
     },
 
@@ -237,6 +253,9 @@ export class AddLcoComponent {
   ]
   onGridReady(params: { api: any; }) {
     this.gridApi = params.api;
+    console.log('on grid ready calling');
+    // this.gridColumnApi = params.columnApi;
+    this.gridApi.forEachNode((node: any) => node.setSelected(true));
   }
   filterOperators(event: any): void {
     const filterValue = event.target.value.toLowerCase();
@@ -257,13 +276,30 @@ export class AddLcoComponent {
   }
 
 
-  onSelectionChanged() {
+  // onSelectionChanged() {
+  //   if (this.gridApi) {
+  //     const selectedRows = this.gridApi.getSelectedRows();
+  //     this.isAnyRowSelected = selectedRows.length > 0;
+  //     this.rows = selectedRows;
+  //     this.selectedIds = selectedRows.map((row: any) => row.packageid);
+  //     this.selectedname = selectedRows.map((row: any) => row.productname);
+  //   }
+  // }
+  onSelectionChanged(event: any) {
+    console.log(event);
     if (this.gridApi) {
       const selectedRows = this.gridApi.getSelectedRows();
-      this.isAnyRowSelected = selectedRows.length > 0;
-      this.rows = selectedRows;
-      this.selectedIds = selectedRows.map((row: any) => row.packageid);
-      this.selectedname = selectedRows.map((row: any) => row.productname);
+      console.log(this.isAnyRowSelected);
+      const selectedNodes = event.api.getSelectedNodes();
+      const isHeaderSelected = selectedNodes.length === event.api.getDisplayedRowCount();
+      if (isHeaderSelected) {
+        console.log('Header checkbox selected');
+      }
+      if (this.isAnyRowSelected) {
+        this.gridApi.selectAll();
+      }
+      console.log("Selected Rows:", selectedRows.length);
+      this.rows = selectedRows.length > 0 ? selectedRows : this.gridApi.getDisplayedRowAtIndex(0);
     }
   }
   onproducttypechange(event: any) {
@@ -285,50 +321,7 @@ export class AddLcoComponent {
     })
   }
 
-  // getproductMembershipList(event: any) {
-  //   if (this.type === 'commission') {
-  //     this.userservice.getproductMembershipList(this.role, this.username, this.producttype, this.lcogroupid).subscribe(
-  //       (response: HttpResponse<any[]>) => {
-  //         if (response.status === 200) {
-  //           this.rowData = response.body;
-  //           this.swal.Success_200();
-  //         } else if (response.status === 204) {
-  //           this.swal.Success_204();
-  //         }
-  //       },
-  //       (error) => {
-  //         if (error.status === 400) {
-  //           this.swal.Error_400();
-  //         } else if (error.status === 500) {
-  //           this.swal.Error_500();
-  //         } else {
-  //           Swal.fire('Error', 'Something went wrong. Please try again.', 'error');
-  //         }
-  //       }
-  //     );
-  //   } else if (this.type === 'dis_commission') {
-  //     this.userservice.getDistributroProductMembershipList(this.role, this.username, this.producttype, this.lcogroupid).subscribe(
-  //       (response: HttpResponse<any[]>) => {
-  //         if (response.status === 200) {
-  //           this.rowData = response.body;
-  //           this.swal.Success_200();
-  //         } else if (response.status === 204) {
-  //           this.swal.Success_204();
-  //         }
-  //       },
-  //       (error) => {
-  //         if (error.status === 400) {
-  //           this.swal.Error_400();
-  //         } else if (error.status === 500) {
-  //           this.swal.Error_500();
-  //         } else {
-  //           Swal.fire('Error', 'Something went wrong. Please try again.', 'error');
-  //         }
-  //       }
-  //     );
-  //   }
 
-  // }
   getproductMembershipList(selectedOperator: any) {
     console.log(this.type);
     console.log(selectedOperator);
@@ -366,10 +359,11 @@ export class AddLcoComponent {
       username: this.username,
       producttype: this.producttype,
       lcogroupid: this.lcogroupid,
-      lcocommissionlist: this.rows
+      // lcocommissionlist: this.rows
 
     } as any;
-
+    this.rows = this.gridApi.getSelectedRows();
+    requestBody['lcocommissionlist'] = this.rows;
     Swal.fire({
       title: 'Processing...',
       text: 'Please wait while we update the product information.',

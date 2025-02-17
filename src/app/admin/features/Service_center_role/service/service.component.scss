@@ -1,5 +1,24 @@
 span {
     font-weight: 600;
+    font-size: 14px;
+}
+
+.input_box input {
+    height: 30px !important;
+    border-top: 0px solid #b0afaf;
+}
+
+.input_box .input {
+    border-top: 2px solid #b0afaf;
+}
+
+.input_box .input2 {
+    height: 45px !important;
+    border-top: 2px solid #b0afaf;
+}
+
+.dropdown-menu {
+    height: auto;
 }
 
 ::ng-deep .select2-container {
@@ -7,16 +26,23 @@ span {
 }
 
 ::ng-deep .select2-container .select2-selection--single {
-    height: 45px !important;
+    height: 35px !important;
     margin-top: 1%;
+
 }
 
 ::ng-deep .select2-container .select2-selection--single .select2-selection__rendered {
-    margin-top: 7px;
+    margin-top: 3px;
+    font-size: 13px;
 }
 
 ::ng-deep .select2-container--default .select2-selection--single .select2-selection__arrow {
-    top: 10px;
+    top: 5px;
+}
+
+
+.isReplace ::ng-deep .select2-container--default .select2-selection--single {
+    border-color: #e9e3e3 !important;
 }
 
 .display1 {
@@ -42,9 +68,17 @@ span {
     padding: 0 0 0 4px;
     height: -1px;
 }
-.table_operator{
+
+.table_operator {
     width: 30%;
 }
+
+.dropdown-menu.input {
+    max-height: 600px;
+    overflow-y: auto;
+    transition: max-height 0.3s ease-in-out;
+}
+
 @media screen and (max-width:560px) {
 
     .container-fluid {
@@ -55,7 +89,8 @@ span {
     .display {
         display: block;
     }
-    .table_operator{
+
+    .table_operator {
         width: 100%;
     }
 }

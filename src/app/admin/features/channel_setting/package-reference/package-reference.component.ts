@@ -143,21 +143,21 @@ export class PackageReferenceComponent {
   //   if (this.gridApi) {
   //     const selectedRows = this.gridApi.getSelectedRows();
   //     const displayedRows = this.gridApi.getDisplayedRowCount();
-  
+
   //     const selectedNodes = event.api.getSelectedNodes();
   //     const isHeaderSelected = selectedNodes.length === displayedRows;
-  
-  
+
+
   //     if (isHeaderSelected || selectedRows.length === 0) {
   //       // Select all rows programmatically if header is selected or no rows are selected
   //       this.gridApi.selectAll();
   //     }
-  
+
   //     console.log("Selected Rows:", selectedRows);
   //     this.rows = this.gridApi.getSelectedRows(); // Ensure all rows are captured
   //   }
   // }
-  
+
 
   // onHeaderCheckboxClick() {
   //   const allRowsSelected = this.gridApi.getSelectedNodes().length === this.rowData.length;
@@ -171,7 +171,7 @@ export class PackageReferenceComponent {
   columnDefs: any[] = [
     {
       headerName: "S.No", lockPosition: true, valueGetter: 'node.rowIndex+1', headerCheckboxSelection: true,
-      checkboxSelection: true,width: 100
+      checkboxSelection: true, width: 100
     },
 
     { headerName: "CHANNEL NAME", field: '', width: 300 },
@@ -191,34 +191,92 @@ export class PackageReferenceComponent {
         { headerName: "CHANNEL NAME", field: 'productname', width: 300, cellStyle: { textAlign: 'left' }, },
         { headerName: "PACKAGE RATE", field: 'packagerate', width: 290, cellStyle: { textAlign: 'center' }, },
         { headerName: "REFERENCE ID", field: 'orderid', width: 250, cellStyle: { textAlign: 'center' }, },
+        // {
+        //   headerName: "CAS PRODUCT ID", field: 'casproductid', width: 250, cellStyle: { textAlign: 'center' },
+        //   cellRenderer: (params: any) => {
+        //     const span = document.createElement('span');
+        //     span.innerText = params.value;
+        //     span.style.color = 'blue';
+        //     span.style.cursor = 'pointer';
+        //     span.title = 'Edit Cas product id';
+        //     span.addEventListener('click', () => {
+        //       const input = document.createElement('input');
+        //       input.type = 'text';
+        //       input.value = params.value;
+        //       input.style.width = '100%';
+        //       input.style.padding = '4px';
+        //       input.style.textAlign = 'center';
+        //       input.style.fontSize = '14px';
+        //       input.style.color = 'red';
+        //       span.replaceWith(input);
+        //       input.focus();
+        //       input.addEventListener('input', () => {
+        //         input.value = input.value.replace(/[^0-9]/g, '');
+        //       });
+        //       input.addEventListener('blur', () => {
+        //         const newValue = input.value;
+        //         params.data.casproductid = newValue;
+        //         span.innerText = newValue;
+        //         span.style.color = 'green';
+        //         input.replaceWith(span);
+        //       });
+
+        //       input.addEventListener('keydown', (event) => {
+        //         if (event.key === 'Enter') {
+        //           input.blur();
+        //         }
+        //       });
+        //     });
+
+        //     return span;
+        //   }
+        // },
+
         {
-          headerName: "PRODUCT ID", field: 'casproductid', width: 250, cellStyle: { textAlign: 'center' },
+          headerName: "CAS PRODUCT ID",
+          field: 'casproductid',
+          width: 250,
+          cellStyle: { textAlign: 'center' },
           cellRenderer: (params: any) => {
+            const div = document.createElement('div');
+            div.style.width = '100%';
+            div.style.height = '100%';
+            div.style.display = 'flex';
+            div.style.alignItems = 'center';
+            div.style.justifyContent = 'center';
+            div.style.cursor = 'pointer';
+            div.style.backgroundColor = '#dfacac';
+            div.title = 'Edit Cas product id';
+
             const span = document.createElement('span');
             span.innerText = params.value;
             span.style.color = 'blue';
-            span.style.cursor = 'pointer';
-            span.title = 'Edit product id';
-            span.addEventListener('click', () => {
+
+            div.appendChild(span);
+            div.addEventListener('click', () => {
               const input = document.createElement('input');
               input.type = 'text';
               input.value = params.value;
               input.style.width = '100%';
+              input.style.height = '100%';
               input.style.padding = '4px';
               input.style.textAlign = 'center';
               input.style.fontSize = '14px';
-              input.style.color = 'red';
-              span.replaceWith(input);
+              input.style.color = 'black';
+              input.style.border = 'none';
+              input.style.outline = 'none';
+              input.style.backgroundColor = '#ffffcc';
+
+              div.replaceChildren(input);
               input.focus();
-              input.addEventListener('input', () => {
-                input.value = input.value.replace(/[^0-9]/g, '');
-              });
+
               input.addEventListener('blur', () => {
                 const newValue = input.value;
                 params.data.casproductid = newValue;
                 span.innerText = newValue;
                 span.style.color = 'green';
-                input.replaceWith(span);
+                div.style.backgroundColor = 'transparent';
+                div.replaceChildren(span);
               });
 
               input.addEventListener('keydown', (event) => {
@@ -228,9 +286,10 @@ export class PackageReferenceComponent {
               });
             });
 
-            return span;
+            return div;
           }
-        },
+        }
+
       ]
     } else if (tab === '2') {
       this.columnDefs = [
@@ -242,34 +301,93 @@ export class PackageReferenceComponent {
         { headerName: "CHANNEL NAME", field: 'productname', width: 300, cellStyle: { textAlign: 'left' }, },
         { headerName: "PACKAGE RATE", field: 'packagerate', width: 290, },
         { headerName: "REFERENCE ID", field: 'orderid', width: 250, },
-        {
-          headerName: "PRODUCT ID", field: 'casproductid', width: 250,
+        // {
+        //   headerName: "PRODUCT ID", field: 'casproductid', width: 250,
 
+        //   cellRenderer: (params: any) => {
+        //     const span = document.createElement('span');
+        //     span.innerText = params.value;
+        //     span.style.color = 'blue';
+        //     span.style.cursor = 'pointer';
+        //     span.addEventListener('click', () => {
+        //       const input = document.createElement('input');
+        //       input.type = 'text';
+        //       input.value = params.value;
+        //       input.style.width = '100%';
+        //       input.style.padding = '4px';
+        //       input.style.textAlign = 'center';
+        //       input.style.fontSize = '14px';
+        //       input.style.color = 'red';
+        //       span.replaceWith(input);
+        //       input.focus();
+        //       input.addEventListener('input', () => {
+        //         input.value = input.value.replace(/[^0-9]/g, '');
+        //       });
+        //       input.addEventListener('blur', () => {
+        //         const newValue = input.value;
+        //         params.data.casproductid = newValue;
+        //         span.innerText = newValue;
+        //         span.style.color = 'green';
+        //         input.replaceWith(span);
+        //       });
+
+        //       input.addEventListener('keydown', (event) => {
+        //         if (event.key === 'Enter') {
+        //           input.blur();
+        //         }
+        //       });
+        //     });
+
+        //     return span;
+        //   }
+
+        // },
+        {
+          headerName: "CAS PRODUCT ID",
+          field: 'casproductid',
+          width: 250,
+          cellStyle: { textAlign: 'center' },
           cellRenderer: (params: any) => {
+            const div = document.createElement('div');
+            div.style.width = '100%';
+            div.style.height = '100%';
+            div.style.display = 'flex';
+            div.style.alignItems = 'center';
+            div.style.justifyContent = 'center';
+            div.style.cursor = 'pointer';
+            div.style.backgroundColor = '#dfacac';
+            div.title = 'Edit product id';
+
             const span = document.createElement('span');
             span.innerText = params.value;
             span.style.color = 'blue';
-            span.style.cursor = 'pointer';
-            span.addEventListener('click', () => {
+
+            div.appendChild(span);
+
+            div.addEventListener('click', () => {
               const input = document.createElement('input');
               input.type = 'text';
               input.value = params.value;
               input.style.width = '100%';
+              input.style.height = '100%';
               input.style.padding = '4px';
               input.style.textAlign = 'center';
               input.style.fontSize = '14px';
-              input.style.color = 'red';
-              span.replaceWith(input);
+              input.style.color = 'black';
+              input.style.border = 'none';
+              input.style.outline = 'none';
+              input.style.backgroundColor = '#ffffcc'; // Highlight background color when editing
+
+              div.replaceChildren(input);
               input.focus();
-              input.addEventListener('input', () => {
-                input.value = input.value.replace(/[^0-9]/g, '');
-              });
+
               input.addEventListener('blur', () => {
                 const newValue = input.value;
                 params.data.casproductid = newValue;
                 span.innerText = newValue;
                 span.style.color = 'green';
-                input.replaceWith(span);
+                div.style.backgroundColor = 'transparent'; // Reset background after editing
+                div.replaceChildren(span);
               });
 
               input.addEventListener('keydown', (event) => {
@@ -279,10 +397,9 @@ export class PackageReferenceComponent {
               });
             });
 
-            return span;
+            return div;
           }
-
-        },
+        }
       ]
     } else if (tab === '3') {
       this.columnDefs = [
@@ -293,33 +410,92 @@ export class PackageReferenceComponent {
         { headerName: "CHANNEL NAME", field: 'productname', minwidth: 300, cellStyle: { textAlign: 'left' }, },
         { headerName: "PACKAGE RATE", field: 'packagerate', minwidth: 290 },
         { headerName: "REFERENCE ID", field: 'orderid', minwidth: 250 },
+        // {
+        //   headerName: "PRODUCT ID", field: 'casproductid', minwidth: 250,
+        //   cellRenderer: (params: any) => {
+        //     const span = document.createElement('span');
+        //     span.innerText = params.value;
+        //     span.style.color = 'blue';
+        //     span.style.cursor = 'pointer';
+        //     span.addEventListener('click', () => {
+        //       const input = document.createElement('input');
+        //       input.type = 'text';
+        //       input.value = params.value;
+        //       input.style.width = '100%';
+        //       input.style.padding = '4px';
+        //       input.style.textAlign = 'center';
+        //       input.style.fontSize = '14px';
+        //       input.style.color = 'red';
+        //       span.replaceWith(input);
+        //       input.focus();
+        //       input.addEventListener('input', () => {
+        //         input.value = input.value.replace(/[^0-9]/g, '');
+        //       });
+        //       input.addEventListener('blur', () => {
+        //         const newValue = input.value;
+        //         params.data.casproductid = newValue;
+        //         span.innerText = newValue;
+        //         span.style.color = 'green';
+        //         input.replaceWith(span);
+        //       });
+
+        //       input.addEventListener('keydown', (event) => {
+        //         if (event.key === 'Enter') {
+        //           input.blur();
+        //         }
+        //       });
+        //     });
+
+        //     return span;
+        //   }
+        // },
+
         {
-          headerName: "PRODUCT ID", field: 'casproductid', minwidth: 250,
+          headerName: "CAS PRODUCT ID",
+          field: 'casproductid',
+          width: 250,
+          cellStyle: { textAlign: 'center' },
           cellRenderer: (params: any) => {
+            const div = document.createElement('div');
+            div.style.width = '100%';
+            div.style.height = '100%';
+            div.style.display = 'flex';
+            div.style.alignItems = 'center';
+            div.style.justifyContent = 'center';
+            div.style.cursor = 'pointer';
+            div.style.backgroundColor = '#dfacac';
+            div.title = 'Edit product id';
+
             const span = document.createElement('span');
             span.innerText = params.value;
             span.style.color = 'blue';
-            span.style.cursor = 'pointer';
-            span.addEventListener('click', () => {
+
+            div.appendChild(span);
+
+            div.addEventListener('click', () => {
               const input = document.createElement('input');
               input.type = 'text';
               input.value = params.value;
               input.style.width = '100%';
+              input.style.height = '100%';
               input.style.padding = '4px';
               input.style.textAlign = 'center';
               input.style.fontSize = '14px';
-              input.style.color = 'red';
-              span.replaceWith(input);
+              input.style.color = 'black';
+              input.style.border = 'none';
+              input.style.outline = 'none';
+              input.style.backgroundColor = '#ffffcc'; // Highlight background color when editing
+
+              div.replaceChildren(input);
               input.focus();
-              input.addEventListener('input', () => {
-                input.value = input.value.replace(/[^0-9]/g, '');
-              });
+
               input.addEventListener('blur', () => {
                 const newValue = input.value;
                 params.data.casproductid = newValue;
                 span.innerText = newValue;
                 span.style.color = 'green';
-                input.replaceWith(span);
+                div.style.backgroundColor = 'transparent'; // Reset background after editing
+                div.replaceChildren(span);
               });
 
               input.addEventListener('keydown', (event) => {
@@ -329,9 +505,9 @@ export class PackageReferenceComponent {
               });
             });
 
-            return span;
+            return div;
           }
-        },
+        }
       ]
     }
   }

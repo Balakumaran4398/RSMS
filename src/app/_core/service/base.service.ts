@@ -1960,5 +1960,10 @@ export class BaseService {
   getNoSmartcardDetails(role: any, username: any, nosmartcard: boolean): Observable<any[]> {
     return this.http.get<any[]>(BASE_URL + "/allocation/getNoSmartcardDetails?role=" + role + "&username=" + username + "&nosmartcard=" + nosmartcard)
   }
-
+  getReplaceSmartcardList(role: any, username: any, smartcard: any): Observable<any[]> {
+    return this.http.get<any[]>(BASE_URL + "/allocation/getReplaceSmartcardList?role=" + role + "&username=" + username + "&smartcard=" + smartcard)
+  }
+  getServiceHistoryDetails(role: any, username: any, operatorid: any, smartcard: any, fromdate: any, todate: any): Observable<any[]> {
+    return this.http.get<any[]>(BASE_URL + "/allocation/getServiceHistoryDetails?role=" + role + "&username=" + username + "&operatorid=" + operatorid + "&smartcard=" + smartcard + "&fromdate=" + fromdate + "&todate=" + todate)
+  }
 }
