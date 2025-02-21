@@ -5,6 +5,7 @@ import { Observable } from 'rxjs';
 import URLs from 'src/app/URL';
 import { StorageService } from './storage.service';
 const AUTH_API = URLs.AUTH_URL();
+const BASE_API = URLs.BASE_URL();
 const httpOptions = {
   headers: new HttpHeaders({ 'Content-Type': 'application/json' }),
 };
@@ -21,10 +22,14 @@ export class AuthService {
     console.log('Password' + credentials.password);
     return this.http.post(AUTH_API + '/signin', { username: credentials.username, password: credentials.password }, httpOptions);
   }
- 
+
   notification(): Observable<any> {
     return this.http.get(AUTH_API + '/checkNotification');
   }
+  msoDeatils(): Observable<any> {
+    return this.http.get(AUTH_API + '/getMso');
+  }
+
   signOut(): void {
     // window.location.reload();
     let user = this.storageService.getUser();

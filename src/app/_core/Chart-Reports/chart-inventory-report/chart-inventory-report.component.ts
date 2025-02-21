@@ -64,7 +64,7 @@ export class ChartInventoryReportComponent {
         this.id = '';
 
     }
-    this.userService.getDashboardReport(this.username, this.role, this.type, 2)
+    this.userService.getDashboardReport(this.role, this.username, this.type, 2)
       .subscribe(
         (response: HttpResponse<any[]>) => {
           console.log('sdfdsfdsfdsfdsfds');
@@ -182,7 +182,7 @@ export class ChartInventoryReportComponent {
 
   getExcel() {
     console.log(this.type);
-    this.userService.getDashboardReport(this.username, this.role, this.type, 2)
+    this.userService.getDashboardReport(this.role, this.username, this.type, 2)
       .subscribe(
         (response: HttpResponse<any[]>) => { // Expect HttpResponse<any[]>
           console.log(this.type);

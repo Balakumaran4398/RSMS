@@ -11,6 +11,7 @@ import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { LogarithmicScale } from 'chart.js';
+import { AgGridAngular } from 'ag-grid-angular';
 declare var $: any;
 export interface SubscriberData {
   smartcard: string;
@@ -168,6 +169,7 @@ export class MsorDialogueportsComponent implements OnInit, OnDestroy {
   rowData1: any[] = []
   columnDefs: any[] = []
   columnDefs2: any[] = []
+  columnDefs3: any[] = []
   columnDefslcoExpiry: any[] = []
 
   gridApi: any;
@@ -213,6 +215,9 @@ export class MsorDialogueportsComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     // this.setReportTitle();
+    this.fromdate = this.fromdate ? this.formatDate(this.fromdate) : this.formatDate(new Date());
+    this.todate = this.todate ? this.formatDate(this.todate) : this.formatDate(new Date());
+
     this.onColumnDefs();
     this.generateMonths();
     this.generateYears();
@@ -231,9 +236,9 @@ export class MsorDialogueportsComponent implements OnInit, OnDestroy {
 
     // this.onGridReady1();
 
-    this.fromdate = this.fromdate ? this.formatDate(this.fromdate) : this.formatDate(new Date());
-    this.todate = this.todate ? this.formatDate(this.todate) : this.formatDate(new Date());
-    console.log(this.selectedDate);
+
+
+
   }
   ngOnDestroy(): void {
     ($('#operator') as any).select2('destroy');
@@ -553,14 +558,14 @@ export class MsorDialogueportsComponent implements OnInit, OnDestroy {
     } else if (selectedValue == 5) {
       this.isSubLCO = false;
     }
-
   }
 
 
   onOnlineType(selectedValue: any) {
+    this.selectedOnlineType = selectedValue;
     console.log(selectedValue);
     console.log('ONLINE PAYMENT');
-
+    this.onlinePayment();
     if (selectedValue == 1) {
       this.isSmartcard = false;
       this.isOperator = true;
@@ -832,70 +837,71 @@ export class MsorDialogueportsComponent implements OnInit, OnDestroy {
       ]
     }
 
-    else if (this.type == 'online_payment') {
-      this.columnDefs = [
-        { headerName: "S.No", lockPosition: true, valueGetter: 'node.rowIndex+1', headerCheckboxSelection: false, checkboxSelection: false, width: 90 },
-        { headerName: 'OPERATOR NAME', field: 'operatorname', width: 250 },
-        { headerName: 'ORDER ID', field: 'orderid', width: 250, cellStyle: { textAlign: 'center' }, },
-        { headerName: 'AMOUNT', field: 'amount', width: 220, cellStyle: { textAlign: 'center', color: 'green' }, },
-        { headerName: 'STATUS	', field: 'status', width: 200, cellStyle: { textAlign: 'center' } },
-        { headerName: 'RESPONSE', field: 'response', width: 200 },
-        { headerName: 'TRANSACTION DATE', field: 'logdate', width: 200 },
-        {
-          headerName: "RE STATUS",
-          editable: true,
-          cellRenderer: (params: any) => {
-            const replaceButton = document.createElement('button');
-            replaceButton.style.marginRight = '5px';
-            replaceButton.style.cursor = 'pointer';
-            replaceButton.style.fontSize = '12px';
-            replaceButton.style.padding = '0px 15px';
-            replaceButton.style.fontWeight = 'bold';
-            replaceButton.style.height = '38px';
-            replaceButton.style.background = 'linear-gradient(rgb(255, 217, 70), rgb(225, 167, 92))';
-            replaceButton.style.color = 'rgb(104, 102, 102)';
-            replaceButton.style.border = '1px solid rgb(255, 220, 138)';
-            // replaceButton.style.marginTop = '3%';
-            replaceButton.innerText = 'Refresh';
+    // else if (this.type == 'online_payment') {
+    //   this.columnDefs = [
+    //     { headerName: "S.No", lockPosition: true, valueGetter: 'node.rowIndex+1', headerCheckboxSelection: false, checkboxSelection: false, width: 90 },
+    //     { headerName: 'OPERATOR NAME', field: 'operatorname', width: 250 },
+    //     { headerName: 'ORDER ID', field: 'orderid', width: 250, cellStyle: { textAlign: 'center' }, },
+    //     { headerName: 'AMOUNT', field: 'amount', width: 220, cellStyle: { textAlign: 'center', color: 'green' }, },
+    //     { headerName: 'STATUS	', field: 'status', width: 200, cellStyle: { textAlign: 'center' } },
+    //     { headerName: 'RESPONSE', field: 'response', width: 200 },
+    //     { headerName: 'TRANSACTION DATE', field: 'logdate', width: 200 },
+    //     {
+    //       headerName: "RE STATUS",
+    //       editable: true,
+    //       cellRenderer: (params: any) => {
+    //         const replaceButton = document.createElement('button');
+    //         replaceButton.style.marginRight = '5px';
+    //         replaceButton.style.cursor = 'pointer';
+    //         replaceButton.style.fontSize = '12px';
+    //         replaceButton.style.padding = '0px 15px';
+    //         replaceButton.style.fontWeight = 'bold';
+    //         replaceButton.style.height = '38px';
+    //         replaceButton.style.background = 'linear-gradient(rgb(255, 217, 70), rgb(225, 167, 92))';
+    //         replaceButton.style.color = 'rgb(104, 102, 102)';
+    //         replaceButton.style.border = '1px solid rgb(255, 220, 138)';
+    //         // replaceButton.style.marginTop = '3%';
+    //         replaceButton.innerText = 'Refresh';
 
-            replaceButton.addEventListener('mouseenter', () => {
-              replaceButton.style.color = 'white';
-            });
-            replaceButton.addEventListener('mouseleave', () => {
-              replaceButton.style.color = 'rgb(104, 102, 102)';
-            });
-            replaceButton.addEventListener('click', () => {
-              // this.openEditDialog(params.data);
-              this.refreshData(params.data);
-            });
-            if (params.data.status === "success") {
-              replaceButton.disabled = true;
-              replaceButton.style.cursor = 'not-allowed';
-              replaceButton.style.background = 'linear-gradient(rgb(251 234 170), rgb(229 200 164))';
-            }
-            const div = document.createElement('div');
-            div.appendChild(replaceButton);
-            return div;
-            // } else {
-            //   return '';
-            // }
-          }
-        }
-      ]
-    } else if (this.type == 'user_rechargehistory') {
+    //         replaceButton.addEventListener('mouseenter', () => {
+    //           replaceButton.style.color = 'white';
+    //         });
+    //         replaceButton.addEventListener('mouseleave', () => {
+    //           replaceButton.style.color = 'rgb(104, 102, 102)';
+    //         });
+    //         replaceButton.addEventListener('click', () => {
+    //           // this.openEditDialog(params.data);
+    //           this.refreshData(params.data);
+    //         });
+    //         if (params.data.status === "success") {
+    //           replaceButton.disabled = true;
+    //           replaceButton.style.cursor = 'not-allowed';
+    //           replaceButton.style.background = 'linear-gradient(rgb(251 234 170), rgb(229 200 164))';
+    //         }
+    //         const div = document.createElement('div');
+    //         div.appendChild(replaceButton);
+    //         return div;
+    //         // } else {
+    //         //   return '';
+    //         // }
+    //       }
+    //     }
+    //   ]
+    // }
+    else if (this.type == 'user_rechargehistory') {
       this.columnDefs = [
         { headerName: "S.No", lockPosition: true, valueGetter: 'node.rowIndex+1', headerCheckboxSelection: false, checkboxSelection: false, width: 90 },
         { headerName: 'OPERATOR NAME', field: 'operatorname', flex: 1 },
         { headerName: 'CUSTOMER NAME', field: 'operatorname', flex: 1 },
-        { headerName: 'MOBILE NUMBER', field: 'orderid', flex: 1, cellStyle: { textAlign: 'center' }, },
-        { headerName: 'SMARTCARD', field: 'amount', flex: 1, cellStyle: { textAlign: 'center', color: 'green' }, },
-        { headerName: 'PRODUCT NAME	', field: 'status', flex: 1, cellStyle: { textAlign: 'center' } },
-        { headerName: 'ACTION', field: 'response', flex: 1 },
-        { headerName: 'CUSTOMER AMOUNT', field: 'logdate', flex: 1 },
-        { headerName: 'LCO AMOUNT', field: 'logdate', flex: 1 },
-        { headerName: 'MSO AMOUNT', field: 'logdate', flex: 1 },
+        { headerName: 'MOBILE NUMBER', field: 'mobileno', flex: 1, cellStyle: { textAlign: 'center' }, },
+        { headerName: 'SMARTCARD', field: 'smartcard', flex: 1, cellStyle: { textAlign: 'center', color: 'green' }, },
+        { headerName: 'PRODUCT NAME	', field: 'packagename', flex: 1, cellStyle: { textAlign: 'center' } },
+        { headerName: 'ACTION', field: 'action', flex: 1 },
+        { headerName: 'CUSTOMER AMOUNT', field: 'customeramount', flex: 1 },
+        { headerName: 'LCO AMOUNT', field: 'lcocommission', flex: 1 },
+        { headerName: 'MSO AMOUNT', field: 'msoamount', flex: 1 },
         { headerName: 'LOG DATE', field: 'logdate', flex: 1 },
-        { headerName: 'EXPIRY DATE', field: 'logdate', flex: 1 },
+        { headerName: 'EXPIRY DATE', field: 'expirydate', flex: 1 },
       ]
     } else if (this.type == 'lco_active_subscription') {
       this.columnDefs = [
@@ -1295,7 +1301,6 @@ export class MsorDialogueportsComponent implements OnInit, OnDestroy {
     console.log(this.selectedSubLcoName);
     console.log(this.selectedOperator);
 
-
     Swal.fire({
       title: "Processing",
       text: "Please wait while the report is being generated...",
@@ -1542,12 +1547,18 @@ export class MsorDialogueportsComponent implements OnInit, OnDestroy {
         });
   }
   // ================================================RefreshData===============================
+  @ViewChild('agGrid') agGrid!: AgGridAngular;
   refreshData(event: any) {
     console.log(event);
     let transactionid = event.orderid;
     this.userService.getrefreshData(this.role, this.username, event.operatorid, event.userid, transactionid, this.selectedOnlineType)
       .subscribe((res: any) => {
-        this.swal.success_1(res?.message);
+        this.swal.success_1(res?.message || res?.responce);
+        if (this.agGrid && this.agGrid.api) {
+          this.updateRowData(transactionid, res?.updatedData);
+        } else {
+          console.error("AgGrid API is not initialized yet.");
+        }
       }, (err) => {
         this.swal.Error(err?.error?.message);
       });
@@ -1556,6 +1567,12 @@ export class MsorDialogueportsComponent implements OnInit, OnDestroy {
       this.getOnline()
     }, 2000);
 
+  }
+  updateRowData(transactionid: string, updatedData: any) {
+    const rowNode = this.agGrid.api.getRowNode(transactionid);
+    if (rowNode) {
+      rowNode.setData(updatedData);
+    }
   }
   // ================================================walletshare===============================
 
@@ -1688,6 +1705,7 @@ export class MsorDialogueportsComponent implements OnInit, OnDestroy {
     this.userService.getUserRecharegeHistory(this.role, this.username, this.fromdate, this.todate, this.selectedUser.value, 3)
       .subscribe((res: any) => {
         console.log(res);
+        this.rowData = res;
       }, (err) => {
         this.swal.Error(err?.error?.message);
       });
@@ -2053,10 +2071,7 @@ export class MsorDialogueportsComponent implements OnInit, OnDestroy {
     // this.swal.Loading();
     this.rowData = [];
     this.userService.generateOperatorInvoiceBill(this.role, this.username, this.selectedMonth || null, this.selectedYear || null)
-      // .subscribe(
-      //   (data: any) => {
-      //     this.rowData = data;
-      //   });
+
       .subscribe((res: any) => {
         // this.swal.success(res?.message);
         this.rowData = res;
@@ -2065,20 +2080,8 @@ export class MsorDialogueportsComponent implements OnInit, OnDestroy {
       });
   }
 
-  // getLcoInvoiceReport(type: number) {
-  //   this.swal.Loading();
-  //   this.submitted = true;
-  //   this.userService.getLcoInvoiceDetails(this.role, this.username, this.selectedOperator.value, this.selectedMonth || null, this.selectedYear || null, type
-  //   )
-  //     .subscribe((x: Blob) => {
-  //       if (type == 1) {
-  //         this.reportMaking(x, this.type + '  ' + this.smartcard + ".xlsx", 'application/xlsx');
-  //       }
-  //     },
-  //       (error: any) => {
-  //         this.pdfswalError(error?.error.message);
-  //       });
-  // }
+
+
   getLcoInvoiceReport(type: number) {
     this.swal.Loading();
     this.submitted = true;
@@ -2103,6 +2106,89 @@ export class MsorDialogueportsComponent implements OnInit, OnDestroy {
       });
 
 
+  }
+
+  onlinePayment() {
+    console.log('Selected Online Type:', this.selectedOnlineType);
+
+    if (this.selectedOnlineType == 1) {
+      console.log('fgdsfjhdsjfkhdsjkf');
+
+      this.columnDefs3 = [
+        { headerName: "S.No", lockPosition: true, valueGetter: 'node.rowIndex+1', width: 90 },
+        { headerName: 'OPERATOR NAME', field: 'operatorname', width: 250 },
+        { headerName: 'ORDER ID', field: 'orderid', width: 250, cellStyle: { textAlign: 'center' } },
+        { headerName: 'AMOUNT', field: 'amount', width: 220, cellStyle: { textAlign: 'center', color: 'green' } },
+        { headerName: 'STATUS', field: 'status', width: 200, cellStyle: { textAlign: 'center' } },
+        { headerName: 'RESPONSE', field: 'response', width: 200 },
+        { headerName: 'TRANSACTION DATE', field: 'logdate', width: 200 },
+        { headerName: "RE STATUS", editable: true, cellRenderer: this.createRefreshButton.bind(this) }
+      ];
+    }
+    if (this.selectedOnlineType == 2) {
+      console.log('435345435');
+
+      this.columnDefs3 = [
+        { headerName: "S.No", lockPosition: true, valueGetter: 'node.rowIndex+1', width: 90 },
+        { headerName: 'OPERATOR NAME', field: 'operatorname', width: 250 },
+        { headerName: 'RETAILER NAME', field: 'retailername', width: 250 },
+        { headerName: 'ORDER ID', field: 'orderid', width: 250, cellStyle: { textAlign: 'center' } },
+        { headerName: 'AMOUNT', field: 'amount', width: 220, cellStyle: { textAlign: 'center', color: 'green' } },
+        { headerName: 'STATUS', field: 'status', width: 200, cellStyle: { textAlign: 'center' } },
+        { headerName: 'RESPONSE', field: 'response', width: 200 },
+        { headerName: 'TRANSACTION DATE', field: 'logdate', width: 200 },
+        { headerName: "RE STATUS", editable: true, cellRenderer: this.createRefreshButton.bind(this) }
+      ];
+    }
+
+    if (this.selectedOnlineType == 3) {
+      console.log('43jhjk');
+
+      this.columnDefs3 = [
+        { headerName: "S.No", lockPosition: true, valueGetter: 'node.rowIndex+1', width: 90 },
+        { headerName: 'OPERATOR NAME', field: 'operatorname', width: 250 },
+        { headerName: 'SUBSCRIBER NAME', field: 'customername', width: 250 },
+        { headerName: 'SMARTCARD', field: 'smartcard', width: 250 },
+        { headerName: 'ORDER ID', field: 'orderid', width: 250, cellStyle: { textAlign: 'center' } },
+        { headerName: 'AMOUNT', field: 'amount', width: 220, cellStyle: { textAlign: 'center', color: 'green' } },
+        { headerName: 'STATUS', field: 'status', width: 200, cellStyle: { textAlign: 'center' } },
+        { headerName: 'RESPONSE', field: 'response', width: 200 },
+        { headerName: 'TRANSACTION DATE', field: 'logdate', width: 200 },
+        { headerName: "RE STATUS", editable: true, cellRenderer: this.createRefreshButton.bind(this) }
+      ];
+
+    }
+  }
+
+
+  createRefreshButton(params: any) {
+    const button = document.createElement('button');
+    button.innerText = 'Refresh';
+    button.style.cssText = `
+      margin-right: 5px;
+      cursor: pointer;
+      font-size: 12px;
+      padding: 0px 15px;
+      font-weight: bold;
+      height: 38px;
+      background: linear-gradient(rgb(255, 217, 70), rgb(225, 167, 92));
+      color: rgb(104, 102, 102);
+      border: 1px solid rgb(255, 220, 138);
+    `;
+
+    button.addEventListener('mouseenter', () => button.style.color = 'white');
+    button.addEventListener('mouseleave', () => button.style.color = 'rgb(104, 102, 102)');
+    button.addEventListener('click', () => this.refreshData(params.data));
+
+    if (params.data.status === "success") {
+      button.disabled = true;
+      button.style.cursor = 'not-allowed';
+      button.style.background = 'linear-gradient(rgb(251 234 170), rgb(229 200 164))';
+    }
+
+    const div = document.createElement('div');
+    div.appendChild(button);
+    return div;
   }
 }
 

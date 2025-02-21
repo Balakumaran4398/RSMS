@@ -15,11 +15,14 @@
     margin-top: 0.5em;
 }
 
-.mobile{
+.mobile {
     max-height: 830px;
     overflow: scroll;
 }
 
+.display {
+    display: flex;
+}
 
 .user_details {
     display: flex;
@@ -144,6 +147,9 @@ form .gender {
     .mobile {
         max-height: 500px;
         overflow: scroll;
+    }
+    .display{
+        display: block;
     }
 }
 

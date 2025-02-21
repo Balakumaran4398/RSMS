@@ -19,6 +19,7 @@ export class MsodetailsComponent implements OnInit {
   file: File | null = null;
   isFileSelected: boolean = false;
   selectedFile: any;
+  msoLogo: any;
   constructor(private userservice: BaseService, private storageservice: StorageService, public dialog: MatDialog, private swal: SwalService) {
     this.role = storageservice.getUserRole();
     this.username = storageservice.getUsername();
@@ -27,6 +28,7 @@ export class MsodetailsComponent implements OnInit {
     this.userservice.getMsoDetails(this.role, this.username).subscribe((data: any) => {
       console.log(data);
       this.msodetails = data;
+      this.msoLogo = this.msodetails.msoLogo;
     })
   }
 

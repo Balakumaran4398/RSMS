@@ -22,7 +22,7 @@ interface requestBodylogs {
   styleUrls: ['./sub-dashboard.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class SubDashboardComponent implements OnInit, AfterViewInit {
+export class SubDashboardComponent implements OnInit {
   @ViewChild('dateInput') dateInput!: ElementRef<HTMLInputElement>;
 
   role: any;
@@ -61,7 +61,7 @@ export class SubDashboardComponent implements OnInit, AfterViewInit {
   selectedtypes: number[] = [];
   rows: any[] = [];
   isAnyRowSelected: boolean = false;
-
+  noofdays: any;
   gridOptions = {
     defaultColDef: {
       // width: 205
@@ -182,52 +182,42 @@ export class SubDashboardComponent implements OnInit, AfterViewInit {
   }
   constructor(private route: ActivatedRoute, private userservice: BaseService, private swal: SwalService, private router: Router, private storageservice: StorageService, public dialog: MatDialog, private cdr: ChangeDetectorRef) {
     this.role = storageservice.getUserRole();
-    this.username = storageservice.getUsername();
+    this.username = storageservice.getUsernamenew();
     this.subscriberid = this.route.snapshot.paramMap.get('smartcard');
     this.subscribersubid = this.route.snapshot.paramMap.get('subid');
     this.status = this.route.snapshot.paramMap.get('status');
     this.loaddata()
-    console.log(this.subscriberid);
-    console.log(this.subscribersubid);
-    console.log(this.status);
+
 
     let splitValues = this.subscriberid.split("**");
 
     this.boxid = splitValues[1];
     this.smartcardValue = splitValues[0];
-    console.log('SUBID', this.subscribersubid);
-    console.log("Box ID:", this.boxid);
-    console.log("Smartcard Value:", this.smartcardValue);
+
     this.userservice.getPlanTypeList(this.role, this.username).subscribe((data: any) => {
       this.rechargetype = Object.entries(data).map(([key, value]) => ({ name: key, id: value }));
-      console.log(this.rechargetype);
       this.cdr.detectChanges();
     })
-  }
-  ngAfterViewInit(): void {
-    // this.setNextDay();
 
   }
-
-
-  onBillTypeChange() {
+   onBillTypeChange() {
     this.billtype = this.billtype ? 1 : 0;
   }
 
   onSelectionChanged() {
     if (this.gridApi) {
       const selectedRows = this.gridApi.getSelectedRows();
+      console.log('SELECTEDROWS', selectedRows);
       this.isAnyRowSelected = selectedRows.length > 0;
       this.rows = selectedRows;
+      console.log('anyselectedrows', this.isAnyRowSelected);
+      console.log('Rows', this.rows);
     }
   }
 
   ngOnInit(): void {
     this.userservice.getActivePackagePlanList(this.role, this.username).subscribe((data: any) => {
-      // this.plantypeSubject.next(data);
       this.packagePlan = data;
-      console.log('packageplan', this.packagePlan);
-
       const sortedData = Object.entries(data)
         .map(([key, value]) => ({
           key: key.replace(/\(\d+\)/, '').trim(),
@@ -242,13 +232,7 @@ export class SubDashboardComponent implements OnInit, AfterViewInit {
         }
       }
     });
-    // this.userservice.getPlanTypeList(this.role, this.username).subscribe((data: any) => {
-    //   this.rechargetype = Object.entries(data).map(([key, value]) => ({ name: key, id: value }));
-    //   console.log(this.rechargetype);
-    //   this.cdr.detectChanges;
-    // })
-    // this.calculateProgress();
-    // this.setNextDay();
+
   }
   setNextDay(): void {
     const expiryDate = new Date(this.subdetailsList?.expirydate);
@@ -261,43 +245,32 @@ export class SubDashboardComponent implements OnInit, AfterViewInit {
       .subscribe((data: any) => {
         console.log(data);
         this.packageMessage = data['message'];
-        console.log('packagemanage', this.packageMessage);
         this.isSendDeleteMessage = this.packageMessage?.forcemsg || false;
-        console.log('dsffdsfdsfdf v     isSendDeleteMessage'), this.isSendDeleteMessage;
 
         this.newSmartcard = data.smartcardlist?.[data.smartcardlist.length - 1]?.smartcard || null;;
         this.statusNewSmartcard = data.smartcardlist?.[data.smartcardlist.length - 1]?.statusdisplay || null;;
-        console.log(this.newSmartcard);
-        console.log(this.statusNewSmartcard);
+
         if (this.statusNewSmartcard === 'Active') {
-          console.log(this.statusNewSmartcard);
           this.newsubscrierdashoard = true;
           this.subscriersmartcarddashoard = true;
           this.expandale = true;
           this.loadNewSmartcardDashboard();
         }
         if (this.statusNewSmartcard === 'New') {
-          console.log(this.statusNewSmartcard);
           this.newsubscrierdashoard = true;
           this.subscriersmartcarddashoard = true;
           this.expandale = true;
           this.loadNewSmartcardDashboard();
         }
         this.newOperatorContact = data.opcontact;
-        console.log(this.newOperatorContact);
         this.newsubscrierdashoard = !this.newsubscrierdashoard;
         this.rowData = data['smartcardlist'];
         this.rowData1 = data['managepacklist_notexp'];
         this.subdetailsList = data['subscriberdetails'];
         this.subdetails = data['subdetails'];
-        console.log('subdetails', this.subdetails);
-        console.log('subscriberdetails', this.subdetailsList.statusdislay);
+
         this.subid = this.subdetailsList.subid;
         this.smartcard = this.subdetailsList.smartcard;
-        console.log(this.subid);
-        console.log(this.smartcard);
-
-        // this.loadNewSmartcardDashboard();
 
         this.cdr.detectChanges();
       }, (error) => {
@@ -333,56 +306,38 @@ export class SubDashboardComponent implements OnInit, AfterViewInit {
 
 
   loadSubscriberDashboard() {
-
-    // for (let index = 0; index < 2; index++) {
     this.userservice.getQuickOperationDetailsBySearchname(this.role, this.username, (this.smartcard || this.subscriberid || this.smartcardValue || this.boxid)).subscribe(
       (data: any) => {
         console.log(data);
         this.packageobject = data['packageobject'];
         this.packageMessage = data['message'];
-        console.log(this.packageMessage);
         this.isSendDeleteMessage = this.packageMessage?.forcemsg || false;
-        console.log('dsffdsfdsfdf v     isSendDeleteMessage'), this.isSendDeleteMessage;
         this.packdateobj = data['packdateobj'];
         this.rowData1 = data['managepacklist_notexp'];
 
         this.rowData = data['smartcardlist'];
         this.subdetailsList = data['subscriberdetails']
         this.statusdisplay = this.subdetailsList.statusdisplay
-        console.log('subscriberdetails', this.subdetailsList.statusdislay);
 
         this.smartdetailList = data['smartcardlist']
         this.subscriberaccounts = data['subscriberaccounts'];
         this.smartcardinfo = data['smartcardinfo'];
         this.subPairedboxid = data['pairedboxid'];
-        console.log(this.subPairedboxid);
         this.subdetails = data['subdetails'];
-        console.log('subdetails', this.subdetails);
         this.subPairedsmartcard = data['pairedsmartcard'];
-        console.log(this.subPairedsmartcard);
         this.message = data['message'];
+        this.noofdays = this.subdetailsList.noofdays;
 
-        console.log(this.subdetailsList);
         if (this.subdetailsList) {
           let item = this.subdetailsList
-          // if (!item.boxstatus && (item.showPairUnpair || item.status != 0)) {
-          //   this.packagectivation = true;
-          // } else {
-          //   this.packagectivation = false;
-          // }
           if (!item.boxstatus) {
-            console.log('first condition ok');
             if (!item.showPairUnpair || item.status == 0) {
-              console.log('second condition ok');
               this.packagectivation = false;
             } else {
-              console.log('third condition ok');
-
               this.packagectivation = true;
             }
           } else {
             console.log('last condition ok');
-
             this.packagectivation = false;
           }
           if (!item.boxstatus && !item.suspendstatus && item.status === 2) {
@@ -397,8 +352,6 @@ export class SubDashboardComponent implements OnInit, AfterViewInit {
           }
           if (!item.boxstatus) {
             if ((item.status != 1 || item.suspendstatus == 1)) {
-              console.log('dd');
-              console.log(this.pinchange);
               this.pinchange = true;
               this.pvrchange = true;
               this.sendmessage = true;
@@ -419,7 +372,6 @@ export class SubDashboardComponent implements OnInit, AfterViewInit {
             this.sendmessage = true;
             this.deletemessage = true;
             this.forcetuning = true;
-            console.log("this.pinchange", this.pinchange);
           }
           if (!item.boxstatus) {
             if (item.suspendstatus == 1 || item.showPairUnpair == 'false') {
@@ -435,16 +387,12 @@ export class SubDashboardComponent implements OnInit, AfterViewInit {
           }
 
           if (!item.boxstatus) {
-            console.log('Status:', item.status);
-            console.log('Suspend Status:', item.suspendstatus);
-            console.log('Suspend State:', item.statussuspend);
-            console.log('Number of Days:', item.noofdays);
             if (item.noofdays != 0 && (item.status == 1 || item.suspendstatus != 1) && !item.statussuspend) {
               this.suspend = false;
-              console.log('correct');
+
             } else {
               this.suspend = true;
-              console.log('wrong');
+
             }
           }
           else {
@@ -452,9 +400,9 @@ export class SubDashboardComponent implements OnInit, AfterViewInit {
           }
 
           if (!item.boxstatus) {
-            console.log('item.status', item.status + '         tem.suspendstatus', item.suspendstatus)
+
             if (item.status != 1 || item.suspendstatus == 1) {
-              console.log('ffd', this.reactivation);
+
               this.reactivation = true;
             } else {
               this.reactivation = false;
@@ -464,13 +412,13 @@ export class SubDashboardComponent implements OnInit, AfterViewInit {
           }
 
           if (item.status != 1 || item.suspendstatus == 1) {
-            console.log('Block', this.block);
+
             this.block = true;
           } else {
             this.block = false;
           }
           if ((!item.boxstatus && item.package_status === "Not Expired") && (item.status === 1 || item.suspendstatus != 1)) {
-            console.log("cancel --" + this.cancelsubscription);
+
             this.cancelsubscription = false;
           } else {
             this.cancelsubscription = true;
@@ -496,7 +444,6 @@ export class SubDashboardComponent implements OnInit, AfterViewInit {
           }
           if (item.castypedisplay && !item.showPairUnpair) {
             if (item.suspendstatus == 1) {
-              console.log('pair', this.pair);
               this.pair = true;
             } else {
               this.pair = false;
@@ -506,7 +453,6 @@ export class SubDashboardComponent implements OnInit, AfterViewInit {
           }
           if (item.castypedisplay && item.showPairUnpair) {
             if (item.suspendstatus == 1) {
-              console.log('unpair', this.unpair);
               this.unpair = true;
             } else {
               this.unpair = false;
@@ -514,16 +460,10 @@ export class SubDashboardComponent implements OnInit, AfterViewInit {
           } else {
             this.unpair = true;
           }
-          // if (!item.boxstatus && item.status === 1 && !item.statussuspend) {
-          //   this.deactive = false;
-          // } else {
-          //   this.deactive = true;
-          // }
+
           if (!item.boxstatus && (item.status == 2 || item.status == 0 || item.suspendstatus == 1)) {
-            console.log('deactivate - true');
             this.deactive = true;
           } else {
-            console.log('deactivate - false');
             this.deactive = false;
           }
 
@@ -539,43 +479,30 @@ export class SubDashboardComponent implements OnInit, AfterViewInit {
           }
 
           if (!item.boxstatus || item.status == 0) {
-            // if (item.noofdays < 1 && item.statusdisplay === 'Deactive') {
             if (item.noofdays < 1) {
-              console.log('aaaaa');
               this.addon = true;
               this.alacarte = true;
               this.remove = true;
             } else {
-              console.log('bbbb');
               this.addon = false;
               this.alacarte = false;
               this.remove = false;
             }
           } else {
-            console.log('cccc');
             this.addon = true;
             this.alacarte = true;
             this.remove = true;
           }
-          // if (this.statusdisplay == 'Deactive') {
-          //   this.base = true;
-          //   this.rechargeType = true;
-          // } else {
-          //   this.base = false;
-          //   this.rechargeType = false;
-          // }
+
           if (item.status == 2 || item.suspendstatus == 1) {
-            console.log('base-false');
             this.base = true;
             this.rechargeType = true;
           } else {
-            console.log('base-true');
             this.base = false;
             this.rechargeType = false;
           }
 
           if (item.boxstatus) {
-            console.log('Blocked', item.boxstatus);
             this.packagectivation = true;
             this.activation = true;
             this.refresh = true;
@@ -595,7 +522,7 @@ export class SubDashboardComponent implements OnInit, AfterViewInit {
           }
 
           if (item.baseplan) {
-            // console.log('fgfdgfdgfdg', item.baseplan);
+            console.log('BASE PLAN ', item.baseplan);
             this.managePackagetable = false;
             this.managePackagetable1 = true;
           } else {
@@ -611,6 +538,8 @@ export class SubDashboardComponent implements OnInit, AfterViewInit {
       }
     );
   }
+
+
   loadNewSmartcardDashboard() {
     for (let index = 0; index < 2; index++) {
       this.userservice.getQuickOperationDetailsBySmartcard(this.role, this.username, this.newSmartcard).subscribe(
@@ -620,9 +549,7 @@ export class SubDashboardComponent implements OnInit, AfterViewInit {
           this.packageobject = data['packageobject'];
           this.packdateobj = data['packdateobj'];
           this.packageMessage = data['message'];
-          console.log(this.packageMessage);
           this.isSendDeleteMessage = this.packageMessage?.forcemsg || false;
-          console.log('dsffdsfdsfdf v     isSendDeleteMessage'), this.isSendDeleteMessage;
           // this.rowData1 = data['selectedmanpacknotexp'];
           this.rowData1 = data['managepacklist_notexp'];
           this.rowData = data['smartcardlist'];
@@ -631,31 +558,22 @@ export class SubDashboardComponent implements OnInit, AfterViewInit {
           this.subscriberaccounts = data['subscriberaccounts'];
           this.smartcardinfo = data['smartcardinfo'];
           this.subPairedboxid = data['pairedboxid'];
-          console.log(this.subPairedboxid);
           this.subdetails = data['subdetails'];
           this.statusdisplay = this.subdetailsList.statusdisplay
-          console.log('subscriberdetails', this.subdetailsList);
-          console.log('statusdisplay', this.statusdisplay);
-          // console.log('subdetails', this.subdetails);
-          // this.subPairedsmartcard = data['pairedsmartcard'];
           this.subPairedsmartcard = data['pairedsmartcard'];
-          console.log(this.subPairedsmartcard);
+
           this.message = data['message'];
+          this.noofdays = this.subdetailsList.noofdays;
           if (this.subdetailsList) {
             let item = this.subdetailsList
             if (!item.boxstatus) {
-              console.log('first condition ok');
               if (!item.showPairUnpair || item.status == 0) {
-                console.log('second condition ok');
                 this.packagectivation = false;
               } else {
-                console.log('third condition ok');
 
                 this.packagectivation = true;
               }
             } else {
-              console.log('last condition ok');
-
               this.packagectivation = false;
             }
             if (!item.boxstatus && !item.suspendstatus && item.status === 2) {
@@ -670,8 +588,6 @@ export class SubDashboardComponent implements OnInit, AfterViewInit {
             }
             if (!item.boxstatus) {
               if ((item.status != 1 || item.suspendstatus == 1)) {
-                console.log('dd');
-                console.log(this.pinchange);
                 this.pinchange = true;
                 this.pvrchange = true;
                 this.sendmessage = true;
@@ -692,22 +608,8 @@ export class SubDashboardComponent implements OnInit, AfterViewInit {
               this.sendmessage = true;
               this.deletemessage = true;
               this.forcetuning = true;
-              console.log("this.pinchange", this.pinchange);
             }
-            // if (!item.boxstatus) {
-            //   if (item.suspendstatus != 1 || item.showPairUnpair) {
-            //     console.log('smartcardchange   ', this.smartcardchange);
-            //     console.log('boxchange   ', this.boxchange);
-            //     this.smartcardchange = false;
-            //     this.boxchange = false;
-            //   } else {
-            //     this.smartcardchange = true;
-            //     this.boxchange = true;
-            //   }
-            // } else {
-            //   this.smartcardchange = false;
-            //   this.boxchange = false;
-            // }
+
             if (!item.boxstatus) {
               if (item.suspendstatus == 1 || item.showPairUnpair == 'false') {
                 this.smartcardchange = true;
@@ -722,16 +624,10 @@ export class SubDashboardComponent implements OnInit, AfterViewInit {
             }
 
             if (!item.boxstatus) {
-              console.log('Status:', item.status);
-              console.log('Suspend Status:', item.suspendstatus);
-              console.log('Suspend State:', item.statussuspend);
-              console.log('Number of Days:', item.noofdays);
               if (item.noofdays != 0 && (item.status == 1 || item.suspendstatus != 1) && !item.statussuspend) {
                 this.suspend = false;
-                console.log('correct');
               } else {
                 this.suspend = true;
-                console.log('wrong');
               }
             }
             else {
@@ -739,9 +635,7 @@ export class SubDashboardComponent implements OnInit, AfterViewInit {
             }
 
             if (!item.boxstatus) {
-              console.log('item.status', item.status + '         tem.suspendstatus', item.suspendstatus)
               if (item.status != 1 || item.suspendstatus == 1) {
-                console.log('ffd', this.reactivation);
                 this.reactivation = true;
               } else {
                 this.reactivation = false;
@@ -751,15 +645,11 @@ export class SubDashboardComponent implements OnInit, AfterViewInit {
             }
 
             if (item.status == 1 || item.suspendstatus == 1) {
-              console.log('Block', this.block);
-
               this.block = true;
             } else {
               this.block = false;
             }
             if ((!item.boxstatus && item.package_status === "Not Expired") && (item.status === 1 || item.suspendstatus != 1)) {
-              console.log("cancel --" + this.cancelsubscription);
-
               this.cancelsubscription = false;
             } else {
               this.cancelsubscription = true;
@@ -776,7 +666,6 @@ export class SubDashboardComponent implements OnInit, AfterViewInit {
             }
             if (item.castypedisplay && !item.showPairUnpair) {
               if (item.suspendstatus == 1) {
-                console.log('pair', this.pair);
                 this.pair = true;
               } else {
                 this.pair = false;
@@ -786,7 +675,6 @@ export class SubDashboardComponent implements OnInit, AfterViewInit {
             }
             if (item.castypedisplay && item.showPairUnpair) {
               if (item.suspendstatus == 1) {
-                console.log('unpair', this.unpair);
                 this.unpair = true;
               } else {
                 this.unpair = false;
@@ -794,16 +682,10 @@ export class SubDashboardComponent implements OnInit, AfterViewInit {
             } else {
               this.unpair = true;
             }
-            // if (!item.boxstatus && item.status === 1 && !item.statussuspend) {
-            //   this.deactive = false;
-            // } else {
-            //   this.deactive = true;
-            // }
+
             if (!item.boxstatus && (item.status == 2 || item.status == 0 || item.suspendstatus == 1)) {
-              console.log('deactivate - true');
               this.deactive = true;
             } else {
-              console.log('deactivate - false');
               this.deactive = false;
             }
             if (!item.boxstatus || item.status === 0) {
@@ -817,7 +699,6 @@ export class SubDashboardComponent implements OnInit, AfterViewInit {
             }
 
             if (!item.boxstatus || item.status == 0) {
-              // if (item.noofdays < 1 && item.statusdisplay === 'Deactive') {
               if (item.noofdays < 1) {
                 this.addon = true;
                 this.alacarte = true;
@@ -832,24 +713,15 @@ export class SubDashboardComponent implements OnInit, AfterViewInit {
               this.alacarte = true;
               this.remove = true;
             }
-            // if (this.statusdisplay == 'Deactive') {
-            //   this.base = true;
-            //   this.rechargeType = true;
-            // } else {
-            //   this.base = false;
-            //   this.rechargeType = false;
-            // }
+
             if (item.status == 2 || item.suspendstatus == 1) {
-              console.log('base-false');
               this.base = true;
               this.rechargeType = true;
             } else {
-              console.log('base-true');
               this.base = false;
               this.rechargeType = false;
             }
             if (item.boxstatus) {
-              console.log('Blocked', item.boxstatus);
               this.packagectivation = true;
               this.activation = true;
               this.refresh = true;
@@ -868,7 +740,7 @@ export class SubDashboardComponent implements OnInit, AfterViewInit {
               this.deactive = true;
             }
             if (item.baseplan) {
-              // console.log('fgfdgfdgfdg', item.baseplan);
+              console.log('BASE PLAN ', item.baseplan);
               this.managePackagetable = false;
               this.managePackagetable1 = true;
             } else {
@@ -894,41 +766,28 @@ export class SubDashboardComponent implements OnInit, AfterViewInit {
           this.packageobject = data['packageobject'];
           this.packdateobj = data['packdateobj'];
           this.packageMessage = data['message'];
-          console.log('packagemanage', this.packageMessage);
           this.isSendDeleteMessage = this.packageMessage?.forcemsg;
-          console.log('dsffdsfdsfdf v     isSendDeleteMessage', this.isSendDeleteMessage),
-            // this.rowData1 = data['selectedmanpacknotexp'];
-            this.rowData1 = data['managepacklist_notexp'];
+          this.rowData1 = data['managepacklist_notexp'];
           this.rowData = data['smartcardlist'];
           this.subdetailsList = data['subscriberdetails']
           this.smartdetailList = data['smartcardlist']
           this.subscriberaccounts = data['subscriberaccounts'];
           this.smartcardinfo = data['smartcardinfo'];
           this.subPairedboxid = data['pairedboxid'];
-          console.log(this.subPairedboxid);
           this.subdetails = data['subdetails'];
           this.statusdisplay = this.subdetailsList.statusdisplay
-          console.log('subscriberdetails', this.subdetailsList);
-          console.log('statusdisplay', this.statusdisplay);
           this.subPairedsmartcard = data['pairedsmartcard'];
-          console.log(this.subPairedsmartcard);
           this.message = data['message'];
-
+          this.noofdays = this.subdetailsList.noofdays;
           if (this.subdetailsList) {
             let item = this.subdetailsList
             if (!item.boxstatus) {
-              console.log('first condition ok');
               if (!item.showPairUnpair || item.status == 0) {
-                console.log('second condition ok');
                 this.packagectivation = false;
               } else {
-                console.log('third condition ok');
-
                 this.packagectivation = true;
               }
             } else {
-              console.log('last condition ok');
-
               this.packagectivation = false;
             }
             if (!item.boxstatus && !item.suspendstatus && item.status === 2) {
@@ -943,8 +802,6 @@ export class SubDashboardComponent implements OnInit, AfterViewInit {
             }
             if (!item.boxstatus) {
               if ((item.status != 1 || item.suspendstatus == 1)) {
-                console.log('dd');
-                console.log(this.pinchange);
                 this.pinchange = true;
                 this.pvrchange = true;
                 this.sendmessage = true;
@@ -968,35 +825,7 @@ export class SubDashboardComponent implements OnInit, AfterViewInit {
             }
 
 
-            // if (!item.boxstatus) {
-            //   console.log('111111', this.isSendDeleteMessage);
-            //   console.log('111111', this.isSendDeleteMessage);
-            //   if ((item.status != 1 || item.suspendstatus == 1 && !this.isSendDeleteMessage )) {
-            //     console.log('true');
-            //     this.deletemessage = true;
-            //   } else {
-            //     this.deletemessage = false;
-            //     console.log('false');
-            //   }
-            // } else {
-            //   this.deletemessage = true;
-            // }
 
-
-            // if (!item.boxstatus) {
-            //   if (item.suspendstatus != 1 || item.showPairUnpair) {
-            //     console.log('smartcardchange   ', this.smartcardchange);
-            //     console.log('boxchange   ', this.boxchange);
-            //     this.smartcardchange = false;
-            //     this.boxchange = false;
-            //   } else {
-            //     this.smartcardchange = true;
-            //     this.boxchange = true;
-            //   }
-            // } else {
-            //   this.smartcardchange = false;
-            //   this.boxchange = false;
-            // }
             if (!item.boxstatus) {
               if (item.suspendstatus == 1 || item.showPairUnpair == 'false') {
                 this.smartcardchange = true;
@@ -1012,10 +841,8 @@ export class SubDashboardComponent implements OnInit, AfterViewInit {
             if (!item.boxstatus) {
               if (item.noofdays != 0 && (item.status == 1 || item.suspendstatus != 1) && !item.statussuspend) {
                 this.suspend = false;
-                console.log('correct');
               } else {
                 this.suspend = true;
-                console.log('wrong');
               }
             }
             else {
@@ -1024,9 +851,7 @@ export class SubDashboardComponent implements OnInit, AfterViewInit {
 
 
             if (!item.boxstatus) {
-              console.log('item.status', item.status + '         tem.suspendstatus', item.suspendstatus)
               if (item.status != 1 || item.suspendstatus == 1) {
-                console.log('ffd', this.reactivation);
                 this.reactivation = true;
               } else {
                 this.reactivation = false;
@@ -1036,16 +861,11 @@ export class SubDashboardComponent implements OnInit, AfterViewInit {
             }
 
             if (item.status != 1 || item.suspendstatus == 1) {
-              console.log('Block-trueeee', this.block);
-
               this.block = true;
             } else {
-              console.log('Block - falseeeeee', this.block);
               this.block = false;
             }
             if ((!item.boxstatus && item.package_status === "Not Expired") && (item.status === 1 || item.suspendstatus != 1)) {
-              console.log("cancel --" + this.cancelsubscription);
-
               this.cancelsubscription = false;
             } else {
               this.cancelsubscription = true;
@@ -1062,7 +882,6 @@ export class SubDashboardComponent implements OnInit, AfterViewInit {
             }
             if (item.castypedisplay && !item.showPairUnpair) {
               if (item.suspendstatus == 1) {
-                console.log('pair', this.pair);
                 this.pair = true;
               } else {
                 this.pair = false;
@@ -1072,7 +891,6 @@ export class SubDashboardComponent implements OnInit, AfterViewInit {
             }
             if (item.castypedisplay && item.showPairUnpair) {
               if (item.suspendstatus == 1) {
-                console.log('unpair', this.unpair);
                 this.unpair = true;
               } else {
                 this.unpair = false;
@@ -1080,16 +898,10 @@ export class SubDashboardComponent implements OnInit, AfterViewInit {
             } else {
               this.unpair = true;
             }
-            // if (!item.boxstatus && item.status === 1 && !item.statussuspend) {
-            //   this.deactive = false;
-            // } else {
-            //   this.deactive = true;
-            // }
+
             if (!item.boxstatus && (item.status == 2 || item.status == 0 || item.suspendstatus == 1)) {
-              console.log('deactivate - true');
               this.deactive = true;
             } else {
-              console.log('deactivate - false');
               this.deactive = false;
             }
             if (!item.boxstatus || item.status == 0) {
@@ -1103,7 +915,6 @@ export class SubDashboardComponent implements OnInit, AfterViewInit {
             }
 
             if (!item.boxstatus || item.status == 0) {
-              // if (item.noofdays < 1 && item.statusdisplay === 'Deactive') {
               if (item.noofdays < 1) {
                 this.addon = true;
                 this.alacarte = true;
@@ -1118,25 +929,16 @@ export class SubDashboardComponent implements OnInit, AfterViewInit {
               this.alacarte = true;
               this.remove = true;
             }
-            // if (this.statusdisplay == 'Deactive') {
-            //   this.base = true;
-            //   this.rechargeType = true;
-            // } else {
-            //   this.base = false;
-            //   this.rechargeType = false;
-            // }
+
 
             if (item.status == 2 || item.suspendstatus == 1) {
-              console.log('base-false');
               this.base = true;
               this.rechargeType = true;
             } else {
-              console.log('base-true');
               this.base = false;
               this.rechargeType = false;
             }
             if (item.boxstatus) {
-              console.log('Blocked', item.boxstatus);
               this.packagectivation = true;
               this.activation = true;
               this.refresh = true;
@@ -1155,7 +957,7 @@ export class SubDashboardComponent implements OnInit, AfterViewInit {
               this.deactive = true;
             }
             if (item.baseplan) {
-              // console.log('fgfdgfdgfdg', item.baseplan);
+              console.log('BASE PLAN ', item.baseplan);
               this.managePackagetable = false;
               this.managePackagetable1 = true;
             } else {
@@ -1172,7 +974,6 @@ export class SubDashboardComponent implements OnInit, AfterViewInit {
     }
   }
   refreshpage(event: any) {
-    // this.swal.Loading();
     for (let index = 0; index < 2; index++) {
       console.log(event.boxid)
       this.userservice.getQuickOperationDetailsBySmartcard(this.role, this.username, event.smartcard || event.boxid).subscribe(
@@ -1183,47 +984,33 @@ export class SubDashboardComponent implements OnInit, AfterViewInit {
           this.packageobject = data['packageobject'];
           this.packdateobj = data['packdateobj'];
           this.packageMessage = data['message'];
-          console.log('packagemanage', this.packageMessage);
           this.isSendDeleteMessage = this.packageMessage?.forcemsg;
-          console.log('dsffdsfdsfdf v     isSendDeleteMessage'), this.isSendDeleteMessage;
           this.rowData1 = data['managepacklist_notexp'];
+          console.log(this.rowData1);
           this.rowData = data['smartcardlist'];
           this.subdetailsList = data['subscriberdetails']
           this.smartdetailList = data['smartcardlist']
           this.subscriberaccounts = data['subscriberaccounts'];
           this.smartcardinfo = data['smartcardinfo'];
-          console.log('subdetailsList', this.subdetailsList);
 
           this.statusdisplay = this.subdetailsList.statusdisplay
-          console.log('subscriberdetails', this.statusdisplay);
           this.subPairedboxid = data['pairedboxid'];
-          console.log(this.subPairedboxid);
           this.subdetails = data['subdetails'];
-          console.log('subdetails', this.subdetails);
           this.subPairedsmartcard = data['pairedsmartcard'];
-          console.log(this.subPairedsmartcard);
           this.message = data['message'];
 
-          console.log(this.statusdisplay);
           const isBlocked = this.statusdisplay === "Blocked";
-          console.log(this.statusdisplay);
 
-
+          this.noofdays = this.subdetailsList.noofdays;
           if (this.subdetailsList) {
             let item = this.subdetailsList
             if (!item.boxstatus) {
-              console.log('first condition ok');
               if (!item.showPairUnpair || item.status == 0) {
-                console.log('second condition ok');
                 this.packagectivation = false;
               } else {
-                console.log('third condition ok');
-
                 this.packagectivation = true;
               }
             } else {
-              console.log('last condition ok');
-
               this.packagectivation = false;
             }
             if (!item.boxstatus && !item.suspendstatus && item.status === 2) {
@@ -1239,8 +1026,6 @@ export class SubDashboardComponent implements OnInit, AfterViewInit {
 
             if (!item.boxstatus) {
               if ((item.status != 1 || item.suspendstatus == 1)) {
-                console.log('true');
-                console.log(this.pinchange);
                 this.pinchange = true;
                 this.pvrchange = true;
                 this.sendmessage = true;
@@ -1248,7 +1033,6 @@ export class SubDashboardComponent implements OnInit, AfterViewInit {
                 this.forcetuning = true;
 
               } else {
-                console.log('false');
                 this.pinchange = false;
                 this.pvrchange = false;
                 this.sendmessage = false;
@@ -1262,38 +1046,10 @@ export class SubDashboardComponent implements OnInit, AfterViewInit {
               this.sendmessage = true;
               this.deletemessage = true;
               this.forcetuning = true;
-              console.log("this.pinchange", this.pinchange);
             }
 
 
-            // if (!item.boxstatus) {
-            //   if ((item.status != 1 || item.suspendstatus == 1 && this.isSendDeleteMessage)) {
-            //     console.log('111111', this.isSendDeleteMessage);
-            //     this.deletemessage = true;
-            //     console.log('true');
-            //   } else {
-            //     this.deletemessage = false;
-            //     console.log('false');
-            //   }
-            // } else {
-            //   this.deletemessage = true;
-            // }
 
-
-            // if (!item.boxstatus) {
-            //   if (item.suspendstatus != 1 || item.showPairUnpair) {
-            //     console.log('smartcardchange   ', this.smartcardchange);
-            //     console.log('boxchange   ', this.boxchange);
-            //     this.smartcardchange = false;
-            //     this.boxchange = false;
-            //   } else {
-            //     this.smartcardchange = true;
-            //     this.boxchange = true;
-            //   }
-            // } else {
-            //   this.smartcardchange = false;
-            //   this.boxchange = false;
-            // }
             if (!item.boxstatus) {
               if (item.suspendstatus == 1 || item.showPairUnpair == 'false') {
                 this.smartcardchange = true;
@@ -1307,28 +1063,18 @@ export class SubDashboardComponent implements OnInit, AfterViewInit {
               this.boxchange = false;
             }
             if (!item.boxstatus) {
-              console.log('Status:', item.status);
-              console.log('Suspend Status:', item.suspendstatus);
-              console.log('Suspend State:', item.statussuspend);
-              console.log('Number of Days:', item.noofdays);
               if (item.noofdays != 0 && (item.status == 1 || item.suspendstatus != 1) && !item.statussuspend) {
                 this.suspend = false;
-                console.log('correct');
               } else {
                 this.suspend = true;
-                console.log('wrong');
               }
             }
             else {
               this.suspend = true;
             }
 
-
-            console.log('suspend-final', this.suspend);
             if (!item.boxstatus) {
-              console.log('item.status', item.status + '         tem.suspendstatus', item.suspendstatus)
               if (item.status != 1 || item.suspendstatus == 1) {
-                console.log('ffd', this.reactivation);
                 this.reactivation = true;
               } else {
                 this.reactivation = false;
@@ -1338,15 +1084,12 @@ export class SubDashboardComponent implements OnInit, AfterViewInit {
             }
 
             if (item.status != 1 || item.suspendstatus == 1) {
-              console.log('Block', this.block);
               this.block = true;
             } else {
               this.block = false;
             }
 
             if ((!item.boxstatus && item.package_status === "Not Expired") && (item.status === 1 || item.suspendstatus != 1)) {
-              console.log("cancel --" + this.cancelsubscription);
-
               this.cancelsubscription = false;
             } else {
               this.cancelsubscription = true;
@@ -1363,7 +1106,6 @@ export class SubDashboardComponent implements OnInit, AfterViewInit {
             }
             if (item.castypedisplay && !item.showPairUnpair) {
               if (item.suspendstatus == 1) {
-                console.log('pair', this.pair);
                 this.pair = true;
               } else {
                 this.pair = false;
@@ -1373,7 +1115,6 @@ export class SubDashboardComponent implements OnInit, AfterViewInit {
             }
             if (item.castypedisplay && item.showPairUnpair) {
               if (item.suspendstatus == 1) {
-                console.log('unpair', this.unpair);
                 this.unpair = true;
               } else {
                 this.unpair = false;
@@ -1381,16 +1122,10 @@ export class SubDashboardComponent implements OnInit, AfterViewInit {
             } else {
               this.unpair = true;
             }
-            // if (!item.boxstatus && item.status === 1 && !item.statussuspend) {
-            //   this.deactive = false;
-            // } else {
-            //   this.deactive = true;
-            // }
+
             if (!item.boxstatus && (item.status == 2 || item.status == 0 || item.suspendstatus == 1)) {
-              console.log('deactivate - true');
               this.deactive = true;
             } else {
-              console.log('deactivate - false');
               this.deactive = false;
             }
             if (!item.boxstatus || item.status === 0) {
@@ -1404,7 +1139,6 @@ export class SubDashboardComponent implements OnInit, AfterViewInit {
             }
 
             if (!item.boxstatus || item.status == 0) {
-              // if (item.noofdays < 1 && item.statusdisplay === 'Deactive') {
               if (item.noofdays < 1) {
                 this.addon = true;
                 this.alacarte = true;
@@ -1419,25 +1153,16 @@ export class SubDashboardComponent implements OnInit, AfterViewInit {
               this.alacarte = true;
               this.remove = true;
             }
-            // if (this.statusdisplay == 'Deactive') {
-            //   this.base = true;
-            //   this.rechargeType = true;
-            // } else {
-            //   this.base = false;
-            //   this.rechargeType = false;
-            // }
+
 
             if (item.status == 2 || item.suspendstatus == 1) {
-              console.log('base-false');
               this.base = true;
               this.rechargeType = true;
             } else {
-              console.log('base-true');
               this.base = false;
               this.rechargeType = false;
             }
             if (item.boxstatus) {
-              console.log('Blocked', item.boxstatus);
               this.packagectivation = true;
               this.activation = true;
               this.refresh = true;
@@ -1456,7 +1181,7 @@ export class SubDashboardComponent implements OnInit, AfterViewInit {
               this.deactive = true;
             }
             if (item.baseplan) {
-              // console.log('fgfdgfdgfdg', item.baseplan);
+              console.log('BASE PLAN ', item.baseplan);
               this.managePackagetable = false;
               this.managePackagetable1 = true;
             } else {
@@ -1465,7 +1190,6 @@ export class SubDashboardComponent implements OnInit, AfterViewInit {
             }
           }
 
-          // this.swal.success(data?.message);
         }, (err) => {
           this.swal.Error(err?.error?.message);
         });
@@ -1603,17 +1327,13 @@ export class SubDashboardComponent implements OnInit, AfterViewInit {
 
         // Add click event listeners if needed
         infoButton.addEventListener('click', () => {
-          console.log('Info button clicked', params.data);
         });
 
         refreshButton.addEventListener('click', () => {
-          console.log('Refresh button clicked', params.data);
           this.refreshButton = params.data;
-          console.log(this.refreshButton);
         });
 
         downloadButton.addEventListener('click', () => {
-          console.log('Download button clicked', params.data);
         });
 
         return container;
@@ -1672,7 +1392,6 @@ export class SubDashboardComponent implements OnInit, AfterViewInit {
           container.appendChild(infoButton);
 
           infoButton.addEventListener('click', () => {
-            console.log('Info button clicked', params.data);
             this.openChannellistDialogue(params.data);
           });
 
@@ -1736,7 +1455,6 @@ export class SubDashboardComponent implements OnInit, AfterViewInit {
           container.appendChild(infoButton);
 
           infoButton.addEventListener('click', () => {
-            console.log('Info button clicked', params.data);
             this.openChannellistDialogue(params.data);
           });
 
@@ -1761,8 +1479,8 @@ export class SubDashboardComponent implements OnInit, AfterViewInit {
     });
   }
 
-
   onGridReady1(params: any) {
+    console.log('checkbox');
     this.gridApi = params.api;
     params.api.selectAll()
     console.log(params.api.getSelectedRows());
@@ -1837,9 +1555,7 @@ export class SubDashboardComponent implements OnInit, AfterViewInit {
     });
     dialogRef.afterClosed().subscribe(result => {
       if (result && result.success) {
-        console.log('The dialog was closed', result);
         this.smartcard = result.smartcard;
-        console.log(this.smartcard);
         location.reload();
       } else {
         console.log('Dialog closed without success');
@@ -1857,7 +1573,6 @@ export class SubDashboardComponent implements OnInit, AfterViewInit {
       subId: this.subdetailsList?.subid || null,
       plantype: this.packagePlan || null
     };
-    console.log(dialogData);
     const dialogRef = this.dialog.open(LcologinpageComponent, {
       data: dialogData,
       // width: '500px',
@@ -1888,9 +1603,7 @@ export class SubDashboardComponent implements OnInit, AfterViewInit {
       subId: this.subdetailsList?.subid || null,
       plantype: this.packagePlan || null
     };
-    console.log('refresh', data);
 
-    console.log(dialogData);
     const dialogRef = this.dialog.open(SubscriberdialogueComponent, {
       data: dialogData,
       width: width
@@ -1898,9 +1611,7 @@ export class SubDashboardComponent implements OnInit, AfterViewInit {
 
     dialogRef.afterClosed().subscribe(result => {
       if (result && result.success) {
-        console.log('The dialog was closed', result);
         this.smartcard = result.smartcard;
-        console.log(this.smartcard);
         location.reload();
       } else {
         console.log('Dialog closed without success');
@@ -1913,16 +1624,20 @@ export class SubDashboardComponent implements OnInit, AfterViewInit {
       return null;
     }
     const date = new Date(dateString);
-    date.setDate(date.getDate() + 1); // Add one day
-    return date.toISOString().split('T')[0]; // Format as 'yyyy-MM-dd'
+    date.setDate(date.getDate() + 1);
+    return date.toISOString().split('T')[0];
   }
 
+  getNextDay1(): string | null {
+
+    const date = new Date();
+    date.setDate(date.getDate() + 1);
+    return date.toISOString().split('T')[0];
+  }
 
   managePackage(type: string): void {
     let dialogData = { type: type, detailsList: this.subdetailsList, pairBoxlist: this.subPairedboxid, pairSmartcardlist: this.subPairedsmartcard, subSmartcarList: this.subdetailsList?.smartcard, subBoxList: this.subdetailsList?.boxid };
     const isDataInvalid = Object.values(dialogData).some(value => value === undefined || value === null);
-    console.log(isDataInvalid);
-    console.log(dialogData);
     if (isDataInvalid) {
       Swal.fire({
         icon: 'error',
@@ -1940,9 +1655,7 @@ export class SubDashboardComponent implements OnInit, AfterViewInit {
     });
     dialogRef.afterClosed().subscribe(result => {
       if (result && result.success) {
-        console.log('The dialog was closed', result);
         this.smartcard = result.smartcard;
-        console.log(this.smartcard);
         location.reload();
       } else {
         console.log('Dialog closed without success');

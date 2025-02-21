@@ -116,7 +116,9 @@ export class SublcooperatordialogueComponent implements OnInit {
       contactno: ['', [Validators.required, Validators.pattern('^[0-9]{10}$')]],
       contactno2: ['', [Validators.required, Validators.pattern('^[0-9]{10}$')]],
       address: ['', Validators.required],
-      password: ['', [Validators.required,  Validators.pattern('^(?=.*[A-Za-z])(?=.*\\d)[A-Za-z\\d@$!%*?&]{6,12}$')]],
+      password: ['', [Validators.required, Validators.pattern('^[A-Za-z\\d@$!%*?&]{6,12}$')]],
+
+      // password: ['', [Validators.required,  Validators.pattern('^(?=.*[A-Za-z])(?=.*\\d)[A-Za-z\\d@$!%*?&]{6,12}$')]],
       // password: ['', [Validators.required, Validators.pattern('^(?=.*[A-Za-z])(?=.*\\d)[A-Za-z\\d@$!%*?&]{8,}$')]],
       role: this.role,
       username: this.username,
@@ -195,7 +197,7 @@ export class SublcooperatordialogueComponent implements OnInit {
   generateYears() {
     const startYear = 2012;
     const currentYear = new Date().getFullYear();
-    this.years = []; 
+    this.years = [];
     for (let year = currentYear; year >= startYear; year--) {
       this.years.push(year);
     }
@@ -246,15 +248,30 @@ export class SublcooperatordialogueComponent implements OnInit {
       return;
     }
     const errorFields = ['retailername', 'contactno', 'contactno2', 'address', 'password', 'role', 'website', 'username', 'operatorid',];
-    this.swal.Loading()
-    this.userservice.sublcoCreate(this.form.value)
-      .subscribe((res: any) => {
-        this.swal.success(res?.message);
-      }, (err) => {
+    this.swal.Loading();
+    // this.userservice.sublcoCreate(this.form.value)
+    //   .subscribe((res: any) => {
+    //     this.swal.success(res?.message);
+    //   }, (err) => {
+    //     const errorMessage = errorFields
+    //       .map(field => err?.error?.[field])
+    //       .find(message => message) || 'An error occurred while creating the subscriber.'
+    //   });
+    this.userservice.sublcoCreate(this.form.value).subscribe(
+      (res: any) => {
+        if (res?.message) {
+          this.swal.success(res.message);
+        } else {
+          this.swal.Close();
+        }
+      },
+      (err) => {
         const errorMessage = errorFields
           .map(field => err?.error?.[field])
-          .find(message => message) || 'An error occurred while creating the subscriber.'
-      });
+          .find(message => message);
+        this.swal.Error(errorMessage);
+      }
+    );
   }
 
 
@@ -431,8 +448,8 @@ export class SublcooperatordialogueComponent implements OnInit {
 
 
   // --------------------------------------------------------------Area updation----------------------------------------------------
-  moveSelected_added_Items(event:any){  }
-  moveAllSelected_added_Items(event:any){  }
+  moveSelected_added_Items(event: any) { }
+  moveAllSelected_added_Items(event: any) { }
 
-  save(){}
+  save() { }
 }

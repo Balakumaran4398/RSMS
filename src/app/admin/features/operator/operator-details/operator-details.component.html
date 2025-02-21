@@ -1,5 +1,5 @@
 <!-- <div class="opt" style="max-height: 800px;overflow: scroll;"> -->
-<div class="opt" >
+<div class="opt">
     <div class=" col-12 col-md-12 mb-4 display justify-content-start align-items-baseline   ">
         <div class="col-12 col-md-3">
             <mat-form-field class="example-full-width" style="min-width: 100%;" appearance="outline">
@@ -30,8 +30,9 @@
             </button>
         </div>
     </div>
-    <div class="grid-container" >
+    <div class="grid-container">
         <div *ngFor="let operator of pagedOperators">
+            <!-- <div *ngFor="let operator of filteredOperators"> -->
             <mat-card class="card">
                 <mat-card-header>
                     <div class="d-block justify-content-start align-item-center">
@@ -46,26 +47,14 @@
                                 operator?.contactnumber2}}</span>
 
                         </div>
-                        <!-- <div  style="text-align: left;font-size: 15px; color: rgb(26, 23, 23); text-transform: capitalize;font-weight: 600;"
-                            class="col-md-10"> &nbsp; Phone:
-                            {{operator?.contactnumber1 || operator?.contactnumber2}}</div> -->
+
                     </div>
                 </mat-card-header>
 
                 <mat-card-content>
                     <div class="col-12 head " style="text-align: left;">
                         <div class="col-6 col-md-6">
-                            <!-- <p style="text-align: left;" class="sub-tittle">
-                                {{operator?.operatorname || 'empty'}}
-                            </p> -->
-                            <!-- <div style="display: flex; justify-content: center;">
-                                <img class="toggle1" src="/assets/images/login/contact1.png" alt="Toggle">
-                            </div> -->
-                            <!-- <p class="text" [ngClass]="operator?.isactive ? 'active-text' : 'deactive-text'">
-                                <span class="label">Status</span>
-                                <span class="separator1">:</span>
-                                <span class="last1">{{ operator?.isactive ? 'Active' : 'Deactive' }}</span>
-                            </p> -->
+
                             <p class="text" [ngClass]="operator?.isactive === 'true' ? 'active-text' : 'deactive-text'">
                                 <span class="label">Status</span>
                                 <span class="separator1">:</span>
@@ -144,9 +133,6 @@
                         <div class="file-container">
                             <div class="files mx-2">
                                 <a (click)="navgetToUrl(operator.operatorid)" class="tooltip-container">
-                                    <!-- <img src="../assets/images/icons/dashboard_icon.png" alt="Dashboard"> -->
-                                    <!-- <i class="fa fa-dashboard"
-                                        style="font-size:20px;margin-bottom:10x;color:var(--primary-color)"></i> -->
                                     <i class='bx bx-sm bxs-grid-alt'
                                         style="font-size:25px;color:var(--primary-color)"></i>
                                     <span class="tooltip">Dashboard</span>
@@ -205,7 +191,7 @@
                             (click)="openDialog('total_smartcard_connection',operator.operatorid)">
                             <div class="col-2 vertical tooltip-container">
                                 <p class="sub-text">Connection</p>
-                                <span style="color: #0e610b;">
+                                <span style="color: #0e610b;display: flex; justify-content: center;">
                                     <div class="circle" style="background-color: rgb(240, 120, 9);"><span
                                             class="circle-text">{{operator?.connectioncount}}</span></div>
                                 </span>
@@ -270,4 +256,4 @@
             (page)="onPageChange($event)">
         </mat-paginator>
     </div>
-</div>  
+</div>

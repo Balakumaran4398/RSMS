@@ -12,7 +12,8 @@ export default class URLs {
         // return 'http://103.183.47.212:8585/rsms/api/auth';  
 
 
-        // return 'http://4kdigital.ridsys.in:8585/rsms/api/auth';   //Live/
+        // return 'http://4kdigital.ridsys.in:8585/rsms/api/auth';   //4k
+        // return 'http://cas.ridsys.in:8585/rsms/api/auth';   //AJK
     }
 
     static BASE_URL(): String {
@@ -23,6 +24,7 @@ export default class URLs {
         // return "http://103.183.47.212:8585/rsms/api";    
 
 
-        // return "http://4kdigital.ridsys.in:8585/rsms/api";    // Live
+        // return "http://4kdigital.ridsys.in:8585/rsms/api";    // 4k
+        // return "http://cas.ridsys.in:8585/rsms/api";    // AJK
     }
 }

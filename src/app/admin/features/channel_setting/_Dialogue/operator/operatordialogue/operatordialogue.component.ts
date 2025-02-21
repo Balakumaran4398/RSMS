@@ -216,14 +216,13 @@ export class OperatordialogueComponent implements OnInit {
 
 
 
-  getExcel() {
-    console.log('dfdfdsf', this.type)
+  getExcel() {   
     const generateExcelReport = (areatitle: string, areasub: string, header: string[], datas: any[]) => {
       const title = (this.operatorname + ' - ' + this.OType + ' REPORT').toUpperCase();
       const sub = 'MSO ADDRESS:' + this.msodetails;
       this.excelService.generateOperatorDashboardExcel(areatitle, header, datas, title, areasub, sub);
     };
-    console.log('type dfdfsf', this.type)
+    this.swal.Loading();
     this.userService.getOperatorDashboardExcelReport(this.role, this.username, this.type, 2, this.operatorid, 0, 0, 0)
       .subscribe((response: HttpResponse<any[]>) => {
         if (response.status === 200) {
@@ -240,13 +239,14 @@ export class OperatordialogueComponent implements OnInit {
             });
           };
           console.log('type dfdfsf', this.type)
-
+          this.swal.Close();
           if (this.type === 1) {
             console.log('type', this.type);
             areatitle = 'A1:K2';
             areasub = 'A3:K3';
             header = ['S.NO', 'SUBSCRIBER ID', 'SUBSCRIBER NAME', 'ADDRESS', 'AREA NAME', 'MOBILE NO', 'SMARTCARD', 'BOXID', 'ACTIVATION DATE', 'EXPIRY DATE', 'PACKAGE STATUS'];
             generateDataRows(['subid', 'customername', 'address', 'areaname', 'mobileno', 'smartcard', 'boxid', 'activationdate', 'expirydate', 'statusdisplay'], this.rowData);
+         
           } else if (this.type === 2) {
             console.log('type', this.type);
             areatitle = 'A1:K2';
@@ -334,7 +334,7 @@ export class OperatordialogueComponent implements OnInit {
             areasub = 'A3:F3';
             header = ['S.NO', 'SUBSCRIBER NAME', 'MOBILE NUMBER', 'SMARTCARD', 'BOX ID', 'EXPIRY DATE'];
           }
-
+          this.swal.Close();
           generateExcelReport(areatitle, areasub, header, datas);
           this.rowData = [];
         }
@@ -343,11 +343,9 @@ export class OperatordialogueComponent implements OnInit {
       });
   }
 
-  getRetailerExcel() {
-
-  }
+  
   getPDF() {
-
+    this.swal.Loading();
     this.userService.getOperatorDashboardPDFReport(this.role, this.username, this.type, 1, this.operatorid, 0, 0, 0)
       .subscribe((x: Blob) => {
         const blob = new Blob([x], { type: 'application/pdf' });
@@ -360,6 +358,7 @@ export class OperatordialogueComponent implements OnInit {
           window.URL.revokeObjectURL(data);
           link.remove();
         }, 100);
+        this.swal.Close();
       },
         (error: any) => {
           Swal.fire({
@@ -372,6 +371,7 @@ export class OperatordialogueComponent implements OnInit {
   }
 
   getRechargePDF() {
+    this.swal.Loading();
     this.userService.getOperatorDashboardPDFReport(this.role, this.username, 8, 1, this.operatorid, this.monthYear, 0, 0)
       .subscribe((x: Blob) => {
         const blob = new Blob([x], { type: 'application/pdf' });
@@ -384,6 +384,7 @@ export class OperatordialogueComponent implements OnInit {
           window.URL.revokeObjectURL(data);
           link.remove();
         }, 100);
+        this.swal.Close();
       },
         (error: any) => {
           Swal.fire({
@@ -407,12 +408,15 @@ export class OperatordialogueComponent implements OnInit {
   getAreawiseReportDownload(reporttype: number) {
 
     this.processingSwal();
+    this.swal.Loading();
     this.userService.getOperatorDashboardPDFReport(this.role, this.username, 12, reporttype, this.operatorid, 0, 0, 0)
       .subscribe((x: Blob) => {
         if (reporttype == 1) {
           this.reportMaking(x, "LCO_ID_" + this.operatorid + "_AREAWISE_CONECTION_COUNT_REPORT.pdf", 'application/pdf');
+          this.swal.Close();
         } else if (reporttype == 2) {
           this.reportMaking(x, "LCO_ID_" + this.operatorid + "_AREAWISE_CONECTION_COUNT_REPORT.xlsx", 'application/xlsx');
+          this.swal.Close();
         }
       },
         (error: any) => {

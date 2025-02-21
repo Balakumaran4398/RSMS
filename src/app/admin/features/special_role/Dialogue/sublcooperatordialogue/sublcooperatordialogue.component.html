@@ -19,8 +19,6 @@
                                 </div>
                             </div>
                         </div>
-
-
                         <div class="col-12 col-md-6">
                             <div class="input_box col-12 col-md-12">
                                 <label for="">Mobile Number</label>
@@ -52,8 +50,7 @@
                                         number is required.</small>
                                     <small class="text-danger"
                                         *ngIf="form.get('contactno2')?.errors?.['pattern']">Invalid
-                                        mobile
-                                        number (must be 10 digits).</small>
+                                        mobilenumber number (must be 10 digits).</small>
                                 </div>
                             </div>
                         </div>
@@ -73,14 +70,14 @@
                                 <label for="">Password</label>
                             </div>
                             <div class="input_box col-12 col-md-12">
-                                <input type="password" formControlName="password" placeholder="Enter Password">
+                                <input type="password" formControlName="password" placeholder="Enter Password" maxlength="12">
                                 <div *ngIf="form.get('password')?.invalid && form.get('password')?.touched">
                                     <small class="text-danger"
                                         *ngIf="form.get('password')?.errors?.['required']">Password
                                         is required.</small>
                                         <small class="text-danger" *ngIf="form.get('password')?.errors?.['pattern']">
-                                            Password must be **6-12 characters long**, including at least **one letter** and **one number**.
-                                          </small>
+                                            Enter a valid password (6-12 characters),
+                                        </small>
                                 </div>
                             </div>
                         </div>

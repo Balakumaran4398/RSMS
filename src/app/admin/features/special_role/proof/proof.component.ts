@@ -193,14 +193,14 @@ export class ProofComponent {
 
 
   ActiveId() {
-    this.userservice.activeORDeactiveIdProof(this.role, this.username, this.selectedIds, 'true').subscribe((res: any) => {
+    this.userservice.activeORDeactiveIdProof(this.role, this.username, this.selectedIds, 'false').subscribe((res: any) => {
       this.swal.success(res?.message);
     }, (err) => {
       this.swal.Error(err?.error?.message);
     });
   }
   DeactiveId() {
-    this.userservice.activeORDeactiveIdProof(this.role, this.username, this.selectedIds, 'false').subscribe((res: any) => {
+    this.userservice.activeORDeactiveIdProof(this.role, this.username, this.selectedIds, 'true').subscribe((res: any) => {
       this.swal.success(res?.message);
     }, (err) => {
       this.swal.Error(err?.error?.message);

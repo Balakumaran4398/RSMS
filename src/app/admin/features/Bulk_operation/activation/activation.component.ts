@@ -248,31 +248,13 @@ export class ActivationComponent implements OnInit {
           } else {
             Swal.fire('Error', 'Something went wrong. Please try again.', 'error');
           }
-          // this.callAnotherApi();
         }
       );
       this.selectedDate = 0;
 
   }
 
-  // getActivationReport(type: number,) {
-  //   this.processingSwal();
-  //   const dateToPass = this.selectedDate || this.date;
-  //   console.log('selected Date', this.selectedDate);
-  //   console.log(' Date', this.date);
-
-  //   this.userservice.getBulkFirstTimeActivationDownload(this.role, this.username, this.selectedDate, this.remark, 1, type)
-  //     .subscribe((x: Blob) => {
-  //       if (type == 1) {
-  //         this.reportMaking(x, "Bulk First Time Activation -" + dateToPass + ".pdf", 'application/pdf');
-  //       } else if (type == 2) {
-  //         this.reportMaking(x, "Bulk First Time Activation -" + dateToPass + ".xlsx", 'application/xlsx');
-  //       }
-  //     },
-  //       (error: any) => {
-  //         this.pdfswalError(error?.error.message);
-  //       });
-  // }
+ 
 
   getActivationReport(type: number) {
     this.processingSwal();

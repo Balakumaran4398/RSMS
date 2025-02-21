@@ -1266,7 +1266,10 @@ export class SubscriberdialogueComponent implements OnInit, OnDestroy {
 
 
   filterOperators(event: any): void {
-    const filterValue = event.target.value.toLowerCase();
+    console.log('event',event);
+
+    // const filterValue = event.target.value.toLowerCase();
+    const filterValue = event;
     this.cdr.detectChanges;
     this.filteredOperators = this.lco_list.filter(operator =>
       operator.name.toLowerCase().includes(filterValue)

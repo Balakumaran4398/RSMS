@@ -127,8 +127,16 @@ export class SwalService {
         Swal.showLoading(null);
       }
     });
-
   }
+  Loading1() {
+    Swal.fire({
+      title: 'Loading...',
+      didOpen: () => {
+        Swal.showLoading(null);
+      }
+    });
+  }
+
   Close() {
     Swal.close();
   }

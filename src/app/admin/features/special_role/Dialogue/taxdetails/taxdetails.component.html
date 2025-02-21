@@ -9,10 +9,10 @@
             <!-- TAX Name Field -->
             <div class="input_box display align-items-center mb-3">
                 <div class="col-12 col-md-6">
-                    <label for="taxname" class="me-2">TAX Name</label>
+                    <span for="taxname" class="me-2" >TAX Name</span>
                 </div>
                 <div class="col-12 col-md-6">
-                    <input type="text" [(ngModel)]="taxname" name="taxname" required #taxnameInput="ngModel">
+                    <input type="text" [(ngModel)]="taxname" name="taxname" required #taxnameInput="ngModel" placeholder="Enter Tax Name">
                     <div *ngIf="taxnameInput.invalid && taxnameInput.touched" class="text-danger">
                         TAX Name is required.
                     </div>
@@ -20,12 +20,12 @@
             </div>
             <div class="input_box col-12 col-md-12 display mb-1">
                 <div class="col-12 col-md-6 ">
-                    <label>TAX Applicable</label>
+                    <span>TAX Applicable</span>
                 </div>
                 <div class="col-12 col-md-6">
                     <div class="toggle-button-cover">
                         <div class="button b2" id="button-10">
-                            <input type="checkbox" class="checkbox" checked [(ngModel)]="taxapplicable"
+                            <input type="checkbox" class="checkbox" checked [(ngModel)]="taxapplicable" 
                                 (change)="edit($event)" />
                             <!-- <mat-slide-toggle (change)="edit($event)"></mat-slide-toggle> -->
 
@@ -41,7 +41,7 @@
             <!-- Percentage Field -->
             <div class="input_box display align-items-center mb-3">
                 <div class="col-12 col-md-6">
-                    <label for="percentage" class="me-2">Percentage</label>
+                    <span for="percentage" class="me-2">Percentage</span>
                 </div>
                 <div class="col-12 col-md-6 position-relative">
                     <input type="number" [(ngModel)]="percentage" name="percentage" placeholder="0" required min="0"
@@ -59,10 +59,10 @@
             <!-- Tax Type Field -->
             <div class="input_box display align-items-center mb-3">
                 <div class="col-12 col-md-6">
-                    <label for="taxtype" class="me-2">Tax Type</label>
+                    <span for="taxtype" class="me-2">Tax Type</span>
                 </div>
                 <div class="col-12 col-md-6">
-                    <input type="text" [(ngModel)]="taxtype" name="taxtype" required #taxtypeInput="ngModel">
+                    <input type="text" [(ngModel)]="taxtype" name="taxtype" required #taxtypeInput="ngModel" placeholder="Enter Tax Type">
                     <div *ngIf="taxtypeInput.invalid && taxtypeInput.touched" class="text-danger">
                         TAX Type is required.
                     </div>

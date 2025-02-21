@@ -55,7 +55,7 @@ li {
 /* SIDEBAR */
 #sidebar {
     position: fixed;
-    max-width: 260px;
+    max-width: 270px;
     width: 100%;
     background: var(--light);
     /* background: #2d584e; */
@@ -79,7 +79,7 @@ li {
 }
 
 #sidebar.hide:hover {
-    max-width: 260px;
+    max-width: 270px;
 }
 
 #sidebar::-webkit-scrollbar {
@@ -136,7 +136,8 @@ li {
     font-size: 15px;
 }
 #sidebar .side-menu {
-    margin: 36px 0;
+    margin: 0px 0;
+    /* margin: 36px 0; */
     padding: 0 20px;
     transition: all .3s ease;
 }
@@ -287,8 +288,8 @@ li {
 /* CONTENT */
 #content {
     position: relative;
-    width: calc(100% - 260px);
-    left: 260px;
+    width: calc(100% - 270px);
+    left: 270px;
     transition: all .3s ease;
 }
 

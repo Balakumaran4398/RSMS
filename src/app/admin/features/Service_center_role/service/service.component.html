@@ -8,12 +8,12 @@
 
             <div class="input_box mb-3" (clickOutside)="closeDropdown()">
                 <input class="input2" type="text" #searchitem placeholder="Search by Smartcard or Boxid"
-                    [value]="searchSmartcard" (keyup)="onSmartcardSerachName(searchitem.value)">
+                    [value]="searchSmartcard " (keyup)="onSmartcardSerachName(searchitem.value)">
                 <div style="width: 100%;" class="dropdown-menu input"
                     [ngClass]="(smartcardList.length != 0 && searchitem?.value?.length != 0 && showDropdown) ? 'show' : 'hide'"
                     aria-labelledby="dropdownMenuButton">
-                    <a (click)="goToSmartcard(smcard)" *ngFor="let smcard of smartcardList" class="dropdown-item"> {{
-                        smcard.smartcard }}</a>
+                    <a (click)="goToSmartcard(smcard)" *ngFor="let smcard of smartcardList" class="dropdown-item">
+                        {{smcard.smartcard }} </a>
                 </div>
             </div>
 
@@ -43,7 +43,7 @@
                 <h6>SUBSCRIBER STATUS</h6>
             </div>
             <!-- -----------------------------------update-------------------------------- -->
-            <div *ngIf="update">
+            <div *ngIf=" isNormalOpen || isNoSmartcardOpen">
                 <div *ngIf="!nosmartcard" class="input_box d-flex justify-content-start align-items-center mb-2"
                     style="margin-top: 3%;margin-left: 20px;">
                     <div class="col-5 col-md-3 d-flex justify-content-start">
@@ -77,12 +77,11 @@
                         <span>:</span>
                     </div>
                     <div class="col-6 col-md-6 input_box">
-                        {{tokenNo}}
+                        <input type="text" [(ngModel)]="tokenNo" placeholder="Enter Token Number"
+                            [disabled]="noSmartcardDetails?.referencenumber || smartcardDetails?.referencenumber?.length > 0">
                     </div>
                 </div>
 
-
-                <!-- --------------------------------------no smartcard---------------------------------- -->
                 <div *ngIf="nosmartcard" class="input_box d-flex justify-content-start align-items-center mb-2"
                     style="margin-top: 3%;margin-left: 20px;">
                     <div class="col-5 col-md-3 d-flex justify-content-start">
@@ -92,7 +91,7 @@
                         <span>:</span>
                     </div>
                     <div class="col-6 col-md-6">
-                        <input type="text" [(ngModel)]="smartcard" placeholder="Enter Token Smartcard">
+                        {{smartcard}}
                     </div>
                 </div>
                 <div *ngIf="nosmartcard" class="input_box d-flex justify-content-start align-items-center mb-2"
@@ -104,7 +103,7 @@
                         <span>:</span>
                     </div>
                     <div class="col-6 col-md-6">
-                        <input type="text" [(ngModel)]="boxid" placeholder="Enter Box Id">
+                        {{boxid}}
                     </div>
                 </div>
                 <div *ngIf="nosmartcard" class="input_box d-flex justify-content-start align-items-center mb-2"
@@ -116,7 +115,8 @@
                         <span>:</span>
                     </div>
                     <div class="col-6 col-md-6 input_box">
-                        <input type="text" [(ngModel)]="tokenNo" placeholder="Enter Token Number">
+                        <input type="text" [(ngModel)]="tokenNo" placeholder="Enter Token Number"
+                            [disabled]="noSmartcardDetails?.referencenumber || smartcardDetails?.referencenumber?.length > 0">
                     </div>
                 </div>
                 <div class="input_box d-flex justify-content-start align-items-center mb-2" style="margin-left: 20px;">
@@ -126,10 +126,19 @@
                     <div class="col-1 col-md-1 d-flex justify-content-center align-items-center">
                         <span>:</span>
                     </div>
-                    <div class="col-6 col-md-6">
+                    <div class="col-6 col-md-6" *ngIf="this.smartcard !== 'no smartcard'">
                         <select id="entry" [(ngModel)]="selectedEntry">
-                            <option value="0" selected>Select Issue</option>
-                            <option *ngFor="let entry of filteredProblemList" [value]="entry.value">
+                            <option value="" selected>Select Issue</option>
+                            <option *ngFor="let entry of filteredProblemList" [value]="entry.id">
+                                {{ entry.name }}
+                            </option>
+                        </select>
+                    </div>
+
+                    <div class="col-6 col-md-6" *ngIf="this.smartcard === 'no smartcard'">
+                        <select id="entry" [value]="selectedEntry">
+                            <option value="" selected>Select Issue</option>
+                            <option *ngFor="let entry of filteredProblemList" [value]="entry.id">
                                 {{ entry.name }}
                             </option>
                         </select>
@@ -143,7 +152,9 @@
                         <span>:</span>
                     </div>
                     <div class="col-6 col-md-6 input_box">
-                        <input type="text" placeholder="Enter Entry Comment">
+                        <input type="text" placeholder="Enter Entry Comment" [disabled]="!isOthersSelected()"
+                            [(ngModel)]="closing"
+                            [ngStyle]="{ 'border-color': isOthersSelected() ? 'gray' : '#e9e3e3' }">
                     </div>
                 </div>
                 <div class="input_box d-flex justify-content-start align-items-center mb-2" style="margin-left: 20px;">
@@ -157,7 +168,7 @@
                         <div class="toggle-button-cover">
                             <div class="button b2" id="button-10">
                                 <input type="checkbox" class="checkbox" [(ngModel)]="isReplace"
-                                    (change)="onReplaceData(!isReplace)" />
+                                    [disabled]="smartcard === 'no smartcard'" (change)="onReplaceData(!isReplace)" />
                                 <div class="knobs">
                                     <span>YES</span>
                                 </div>
@@ -165,6 +176,7 @@
                             </div>
                         </div>
                     </div>
+
                 </div>
                 <div class="input_box d-flex justify-content-start align-items-center mb-2" style="margin-left: 20px;">
                     <div class="col-5 col-md-3 d-flex justify-content-start">
@@ -174,7 +186,7 @@
                         <span>:</span>
                     </div>
                     <div class="col-6 col-md-6" [class.isReplace]="isReplace">
-                        <select id="smartcard" [(ngModel)]="selectSmartcard" [disabled]="isReplace"        >
+                        <select id="smartcard" [(ngModel)]="selectSmartcard" [disabled]="isReplace">
                             <option value="0" selected>Select Smartcard</option>
                             <option *ngFor="let smartcard of filteredSmartcardList" [value]="smartcard.smartcard">
                                 {{ smartcard.smartcard }}
@@ -182,12 +194,28 @@
                         </select>
                     </div>
                 </div>
+                <div *ngIf="action && action !== 'NA' || 0" class=" d-flex justify-content-start align-items-center mb-2"
+                    style="margin-left: 20px;">
+                    <div class="col-5 col-md-3 d-flex justify-content-start input_box">
+                        <span>Type</span>
+                    </div>
+                    <div class="col-1 col-md-1 d-flex justify-content-center align-items-center">
+                        <span>:</span>
+                    </div>
+                    <div class="col-6 col-md-6">
+                        <mat-radio-group [(ngModel)]="selectedType">
+                            <mat-radio-button value="1">REUSE</mat-radio-button>
+                            <mat-radio-button value="2" class="ml-3">FAILURE</mat-radio-button>
+                        </mat-radio-group>
+                    </div>
+                </div>
                 <div class="col-12 col-md-8 d-flex justify-content-center align-items-center" style="padding: 10px;">
                     <button type="button" class="btn btn-success " (click)="update_submit()">Update </button>
                 </div>
             </div>
 
-            <div *ngIf="dispatch">
+            <!-- <div *ngIf="isOpen"> -->
+            <div *ngIf="isClose && !isNoSmartcardOpen">
                 <div *ngIf="!nosmartcard" class="input_box d-flex justify-content-start align-items-center mb-2"
                     style="margin-top: 3%;margin-left: 20px;">
                     <div class="col-5 col-md-3 d-flex justify-content-start">
@@ -199,6 +227,13 @@
                     <div class="col-6 col-md-6">
                         {{smartcard}}
                     </div>
+                    <!-- <div *ngIf="this.smartcard?.toLowerCase().startsWith('no')" class="col-6 col-md-6">
+                        <select id="smartcard_no" [(ngModel)]="smartcard">
+                            <option *ngFor="let smcard of filteredSmartcardDetailsList">
+                                {{ smcard.smartcard }}
+                            </option>
+                        </select>
+                    </div> -->
                 </div>
                 <div *ngIf="!nosmartcard" class="input_box d-flex justify-content-start align-items-center mb-2"
                     style="margin-left: 20px;">
@@ -224,6 +259,7 @@
                         {{tokenNo}}
                     </div>
                 </div>
+                <!-- ------------------------------------------------------------------------------------------------------------------------------------ -->
                 <div *ngIf="nosmartcard" class="input_box d-flex justify-content-start align-items-center mb-2"
                     style="margin-top: 3%;margin-left: 20px;">
                     <div class="col-5 col-md-3 d-flex justify-content-start">
@@ -233,7 +269,7 @@
                         <span>:</span>
                     </div>
                     <div class="col-6 col-md-6">
-                        <input type="text" [(ngModel)]="smartcard" placeholder="Enter Token Smartcard">
+                        {{smartcard}}
                     </div>
                 </div>
                 <div *ngIf="nosmartcard" class="input_box d-flex justify-content-start align-items-center mb-2"
@@ -245,7 +281,7 @@
                         <span>:</span>
                     </div>
                     <div class="col-6 col-md-6">
-                        <input type="text" [(ngModel)]="boxid" placeholder="Enter Box Id">
+                        {{boxid}}
                     </div>
                 </div>
                 <div *ngIf="nosmartcard" class="input_box d-flex justify-content-start align-items-center mb-2"
@@ -257,7 +293,7 @@
                         <span>:</span>
                     </div>
                     <div class="col-6 col-md-6 input_box">
-                        <input type="text" [(ngModel)]="tokenNo" placeholder="Enter Token Number">
+                        {{tokenNo}}
                     </div>
                 </div>
 
@@ -269,7 +305,7 @@
                         <span>:</span>
                     </div>
                     <div class="col-6 col-md-6 input_box">
-                        {{entry}}
+                        {{entryname}}
                     </div>
                 </div>
 
@@ -315,7 +351,8 @@
                         <span>:</span>
                     </div>
                     <div class="col-6 col-md-6 input_box">
-                        {{Amount}} </div>
+                        {{Amount}}
+                    </div>
                 </div>
                 <div class="input_box d-flex justify-content-start align-items-center mb-2" style="margin-left: 20px;">
                     <div class="col-5 col-md-3 d-flex justify-content-start">
@@ -325,7 +362,7 @@
                         <span>:</span>
                     </div>
                     <div class="col-6 col-md-6">
-                        {{attender}}
+                        {{selectedAttender}}
                     </div>
                 </div>
 
@@ -338,7 +375,185 @@
                         <span>:</span>
                     </div>
                     <div class="col-6 col-md-6 input_box">
-                        <input type="text" placeholder="Enter Delivery command" [(ngModel)]="delivery">
+                        <input type="text" name="" id="" placeholder="Enter Comment" [(ngModel)]="delivery">
+                    </div>
+                </div>
+
+
+                <!-- <div class="input_box d-flex justify-content-start align-items-center mb-2" style="margin-left: 20px;">
+                    <div class="col-5 col-md-3 d-flex justify-content-start">
+                        <span>Dispatcher</span>
+                    </div>
+                    <div class="col-1 col-md-1 d-flex justify-content-center align-items-center">
+                        <span>:</span>
+                    </div>
+                    <div class="col-6 col-md-6">
+                        <select id="dispatcher" [(ngModel)]="selectedDispatcher">
+                            <option value="0" selected>Select Dispatcher</option>
+                            <option *ngFor="let atn of filteredAttenderList" [value]="atn.id">
+                                {{ atn.username }}
+                            </option>
+                        </select>
+                    </div>
+                </div> -->
+                <div class="col-12 col-md-8 d-flex justify-content-center align-items-center" style="padding: 10px;">
+                    <button type="button" class="btn btn-success " (click)="close_Submit()">Dispatch </button>
+                </div>
+            </div>
+
+            <div *ngIf="isDispatch && !isNoSmartcardOpen">
+                <div *ngIf="!nosmartcard" class="input_box d-flex justify-content-start align-items-center mb-2"
+                    style="margin-top: 3%;margin-left: 20px;">
+                    <div class="col-5 col-md-3 d-flex justify-content-start">
+                        <span>SMARTCARD</span>
+                    </div>
+                    <div class="col-1 col-md-1 d-flex justify-content-center align-items-center">
+                        <span>:</span>
+                    </div>
+                    <div class="col-6 col-md-6">
+                        {{smartcard}}
+                    </div>
+                </div>
+                <div *ngIf="!nosmartcard" class="input_box d-flex justify-content-start align-items-center mb-2"
+                    style="margin-left: 20px;">
+                    <div class="col-5 col-md-3 d-flex justify-content-start">
+                        <span>BOX ID</span>
+                    </div>
+                    <div class="col-1 col-md-1 d-flex justify-content-center align-items-center">
+                        <span>:</span>
+                    </div>
+                    <div class="col-6 col-md-6">
+                        {{boxid}}
+                    </div>
+                </div>
+                <div *ngIf="!nosmartcard" class="input_box d-flex justify-content-start align-items-center mb-2"
+                    style="margin-left: 20px;">
+                    <div class="col-5 col-md-3 d-flex justify-content-start">
+                        <span>TOKEN NO</span>
+                    </div>
+                    <div class="col-1 col-md-1 d-flex justify-content-center align-items-center">
+                        <span>:</span>
+                    </div>
+                    <div class="col-6 col-md-6 input_box">
+                        {{tokenNo}}
+                    </div>
+                </div>
+                <!-- ------------------------------------------------------------------------------------------------------------------------------------ -->
+                <div *ngIf="nosmartcard" class="input_box d-flex justify-content-start align-items-center mb-2"
+                    style="margin-top: 3%;margin-left: 20px;">
+                    <div class="col-5 col-md-3 d-flex justify-content-start">
+                        <span>SMARTCARD</span>
+                    </div>
+                    <div class="col-1 col-md-1 d-flex justify-content-center align-items-center">
+                        <span>:</span>
+                    </div>
+                    <div class="col-6 col-md-6">
+                        {{smartcard}}
+                    </div>
+                </div>
+                <div *ngIf="nosmartcard" class="input_box d-flex justify-content-start align-items-center mb-2"
+                    style="margin-left: 20px;">
+                    <div class="col-5 col-md-3 d-flex justify-content-start">
+                        <span>BOX ID</span>
+                    </div>
+                    <div class="col-1 col-md-1 d-flex justify-content-center align-items-center">
+                        <span>:</span>
+                    </div>
+                    <div class="col-6 col-md-6">
+                        {{boxid}}
+                    </div>
+                </div>
+                <div *ngIf="nosmartcard" class="input_box d-flex justify-content-start align-items-center mb-2"
+                    style="margin-left: 20px;">
+                    <div class="col-5 col-md-3 d-flex justify-content-start">
+                        <span>TOKEN NO</span>
+                    </div>
+                    <div class="col-1 col-md-1 d-flex justify-content-center align-items-center">
+                        <span>:</span>
+                    </div>
+                    <div class="col-6 col-md-6 input_box">
+                        {{tokenNo}}
+                    </div>
+                </div>
+
+                <div class="input_box d-flex justify-content-start align-items-center mb-2" style="margin-left: 20px;">
+                    <div class="col-5 col-md-3 d-flex justify-content-start">
+                        <span>Entry</span>
+                    </div>
+                    <div class="col-1 col-md-1 d-flex justify-content-center align-items-center">
+                        <span>:</span>
+                    </div>
+                    <div class="col-6 col-md-6 input_box">
+                        {{entryname}}
+                    </div>
+                </div>
+
+                <div class="input_box d-flex justify-content-start align-items-center mb-2" style="margin-left: 20px;">
+                    <div class="col-5 col-md-3 d-flex justify-content-start">
+                        <span>Entry Date</span>
+                    </div>
+                    <div class="col-1 col-md-1 d-flex justify-content-center align-items-center">
+                        <span>:</span>
+                    </div>
+                    <div class="col-6 col-md-6 input_box">
+                        {{entryDate}}
+                    </div>
+                </div>
+
+                <div class="input_box d-flex justify-content-start align-items-center mb-2" style="margin-left: 20px;">
+                    <div class="col-5 col-md-3 d-flex justify-content-start">
+                        <span>Closing</span>
+                    </div>
+                    <div class="col-1 col-md-1 d-flex justify-content-center align-items-center">
+                        <span>:</span>
+                    </div>
+                    <div class="col-6 col-md-6 input_box">
+                        {{closing}}
+                    </div>
+                </div>
+                <div class="input_box d-flex justify-content-start align-items-center mb-2" style="margin-left: 20px;">
+                    <div class="col-5 col-md-3 d-flex justify-content-start">
+                        <span>Closing Date</span>
+                    </div>
+                    <div class="col-1 col-md-1 d-flex justify-content-center align-items-center">
+                        <span>:</span>
+                    </div>
+                    <div class="col-6 col-md-6 input_box">
+                        {{closingDate}}
+                    </div>
+                </div>
+                <div class="input_box d-flex justify-content-start align-items-center mb-2" style="margin-left: 20px;">
+                    <div class="col-5 col-md-3 d-flex justify-content-start">
+                        <span>Amount</span>
+                    </div>
+                    <div class="col-1 col-md-1 d-flex justify-content-center align-items-center">
+                        <span>:</span>
+                    </div>
+                    <div class="col-6 col-md-6 input_box">
+                        {{Amount}}
+                    </div>
+                </div>
+                <div class="input_box d-flex justify-content-start align-items-center mb-2" style="margin-left: 20px;">
+                    <div class="col-5 col-md-3 d-flex justify-content-start">
+                        <span>Attender</span>
+                    </div>
+                    <div class="col-1 col-md-1 d-flex justify-content-center align-items-center">
+                        <span>:</span>
+                    </div>
+                    <div class="col-6 col-md-6">
+                        {{selectedAttender}}
+                    </div>
+                </div>
+
+                <div class="input_box d-flex justify-content-start align-items-center mb-2" style="margin-left: 20px;">
+                    <div class="col-5 col-md-3 d-flex justify-content-start">
+                        <span>Delivery</span>
+                    </div>
+                    <div class="col-1 col-md-1 d-flex justify-content-center align-items-center">
+                        <span>:</span>
+                    </div>
+                    <div class="col-6 col-md-6 input_box">
+                        {{delivery}}
                     </div>
                 </div>
 
@@ -350,21 +565,34 @@
                         <span>:</span>
                     </div>
                     <div class="col-6 col-md-6">
-                        <select id="dispatcher" [(ngModel)]="selectedEntry">
-                            <option value="0" selected>Select Dispatcher</option>
-                            <option *ngFor="let atn of filteredAttenderList" [value]="atn.id">
-                                {{ atn.username }}
-                            </option>
-                        </select>
+                        {{selectedDispatcher}}
                     </div>
                 </div>
-                <div class="col-12 col-md-8 d-flex justify-content-center align-items-center" style="padding: 10px;">
-                    <button type="button" class="btn btn-success " (click)="dispactchSubmit()">Dispatch </button>
+
+                <div class="input_box d-flex justify-content-start align-items-center mb-2" style="margin-left: 20px;">
+                    <div class="col-5 col-md-3 d-flex justify-content-start">
+                        <span>Delivery Date</span>
+                    </div>
+                    <div class="col-1 col-md-1 d-flex justify-content-center align-items-center">
+                        <span>:</span>
+                    </div>
+                    <div class="col-6 col-md-6 input_box">
+                        {{deliveryDate}}
+                    </div>
                 </div>
+                <!-- <div *ngIf="this.tabletoSmartcardNumber !== 'no smartcard'"
+                    class="col-12 col-md-8 d-flex justify-content-center align-items-center" style="padding: 10px;">
+                    <button type="button" class="btn btn-success " (click)="dispactchSubmit()">Update </button>
+                </div>
+                <div *ngIf="this.tabletoSmartcardNumber == 'no smartcard'"
+                    class="col-12 col-md-8 d-flex justify-content-center align-items-center" style="padding: 10px;">
+                    <button type="button" class="btn btn-success " (click)="update_submit_Open()">Update </button>
+                </div> -->
             </div>
 
 
-            <div *ngIf="close">
+            <!-- <div *ngIf="isClose"> -->
+            <div *ngIf="isOpen && !isNoSmartcardOpen">
                 <div *ngIf="!nosmartcard" class="input_box d-flex justify-content-start align-items-center mb-2"
                     style="margin-top: 3%;margin-left: 20px;">
                     <div class="col-5 col-md-3 d-flex justify-content-start">
@@ -373,8 +601,17 @@
                     <div class="col-1 col-md-1 d-flex justify-content-center align-items-center">
                         <span>:</span>
                     </div>
-                    <div class="col-6 col-md-6">
+
+                    <div *ngIf="!this.tabletoSmartcardNumber?.toLowerCase().startsWith('no')" class="col-6 col-md-6">
                         {{smartcard}}
+                    </div>
+
+                    <div *ngIf="this.tabletoSmartcardNumber?.toLowerCase().startsWith('no')" class="col-6 col-md-6">
+                        <select id="smartcard_no" [(ngModel)]="smartcard">
+                            <option *ngFor="let smcard of filteredSmartcardDetailsList">
+                                {{ smcard.smartcard }}
+                            </option>
+                        </select>
                     </div>
                 </div>
                 <div *ngIf="!nosmartcard" class="input_box d-flex justify-content-start align-items-center mb-2"
@@ -446,7 +683,8 @@
                         <span>:</span>
                     </div>
                     <div class="col-6 col-md-6 input_box">
-                        <input type="text" placeholder="Enter Entry" [(ngModel)]="entry">
+                        <!-- <input type="text" placeholder="Enter Entry" [(ngModel)]="selectedEntry"> -->
+                        {{entryname}}
                     </div>
                 </div>
 
@@ -482,10 +720,11 @@
                         <span>:</span>
                     </div>
                     <div class="col-6 col-md-6 input_box">
-                        <input type="text" placeholder="Enter Amount" [(ngModel)]="Amount">
+                        <input type="text" placeholder="Enter Amount" [(ngModel)]="Amount"
+                            (keypress)="onKeydown($event)">
                     </div>
                 </div>
-                <div class="input_box d-flex justify-content-start align-items-center mb-2" style="margin-left: 20px;">
+                <!-- <div class="input_box d-flex justify-content-start align-items-center mb-2" style="margin-left: 20px;">
                     <div class="col-5 col-md-3 d-flex justify-content-start">
                         <span>Attender</span>
                     </div>
@@ -493,16 +732,17 @@
                         <span>:</span>
                     </div>
                     <div class="col-6 col-md-6">
-                        <select id="attender" [(ngModel)]="selectedEntry">
+                        <select id="attender" [(ngModel)]="selectedAttender">
                             <option value="0" selected>Select Attender</option>
                             <option *ngFor="let atn of filteredAttenderList" [value]="atn.id">
                                 {{ atn.username }}
                             </option>
                         </select>
                     </div>
-                </div>
+                </div> -->
 
-                <div class=" d-flex justify-content-start align-items-center mb-2" style="margin-left: 20px;">
+                <div *ngIf="action && action !== 'NA' || 0" class=" d-flex justify-content-start align-items-center mb-2"
+                    style="margin-left: 20px;">
                     <div class="col-5 col-md-3 d-flex justify-content-start input_box">
                         <span>Type</span>
                     </div>
@@ -518,8 +758,15 @@
                 </div>
 
 
-                <div class="col-12 col-md-8 d-flex justify-content-center align-items-center" style="padding: 10px;">
-                    <button type="button" class="btn btn-success" (click)="close_Submit()">Close </button>
+                <div *ngIf="this.tabletoSmartcardNumber !== 'no smartcard'"
+                    class="col-12 col-md-8 d-flex justify-content-center align-items-center" style="padding: 10px;">
+                    <button type="button" class="btn btn-success" (click)="update_submit()">Close </button>
+                    <!-- <button type="button" class="btn btn-success" (click)="update_submit_Open()">Open </button> -->
+                </div>
+                <div *ngIf="this.tabletoSmartcardNumber == 'no smartcard'"
+                    class="col-12 col-md-8 d-flex justify-content-center align-items-center" style="padding: 10px;">
+                    <!-- <button type="button" class="btn btn-success" (click)="update_submit()">Close </button> -->
+                    <button type="button" class="btn btn-success" (click)="update_submit_Open()">Close </button>
                 </div>
             </div>
         </div>
@@ -530,7 +777,7 @@
         </div>
         <div class="display justify-content-start align-items-center ">
             <div class="mx-2 table_operator" style="margin-top: -1.2%;">
-                <select id="operator" [(ngModel)]="selectedOperator" (change)="onOperatorChange($event)">
+                <select id="operator" [(ngModel)]="selectedOperator">
                     <option value="0" selected>ALL Operator</option>
                     <option *ngFor="let operator of filteredOperatorList" [value]="operator.value">
                         {{ operator.name }}
@@ -557,7 +804,7 @@
                 </mat-form-field>
             </div>
             <div class="mx-2 d-flex justify-content-center align-items-center" style="margin-top: -1.2%;">
-                <button type="button" class="btn btn-success" (click)="onServiceHistory()">Update </button>
+                <button type="button" class="btn btn-success" (click)="onServiceHistory()">Submit </button>
             </div>
             <div class=" display1" style="margin-top: -1.2%;">
                 <div class="export-icon  mx-2">
@@ -573,7 +820,8 @@
             </div>
         </div>
         <ag-grid-angular #agGrid id="myGrid" domLayout="normal" class="ag-theme-alpine table-class" rowAnimation
-            [gridOptions]="gridOptions" [columnDefs]="columnDefs" [rowData]="rowData" [enableCellTextSelection]="true">
+            [gridOptions]="gridOptions" [columnDefs]="columnDefs" [rowData]="rowData" [enableCellTextSelection]="true"
+            [style.height.px]="getTableHeight()">
         </ag-grid-angular>
     </div>
 </div>

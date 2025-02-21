@@ -23,6 +23,7 @@ export class NavComponent implements OnInit, AfterViewInit {
   isSidebarOpen = false;
   subscriberList: any[] = [];
   showDropdown: boolean = true;
+  showLogoutDropdown: boolean = true;
   role: any;
   username: any;
   subscriber: any;
@@ -40,7 +41,8 @@ export class NavComponent implements OnInit, AfterViewInit {
   isDropdownOpen: boolean = false;
   isSearch: boolean = false;
 
-
+  msoLogo: any;
+  msoName: any;
   isPopupVisible = false;
 
   activeTab: string = '';
@@ -50,6 +52,7 @@ export class NavComponent implements OnInit, AfterViewInit {
     this.role = storageservice.getUserRole();
     this.username = storageservice.getUsername();
     console.log(this.role);
+    console.log(this.username);
 
     if (this.role.includes('ROLE_ADMIN')) {
       this.isUser = true;
@@ -112,7 +115,16 @@ export class NavComponent implements OnInit, AfterViewInit {
         link.classList.add('active');
       });
     });
+    this.msoDetails();
+  }
 
+  msoDetails() {
+    this.userservice.getMsoDetails(this.role, this.username).subscribe((data: any) => {
+      console.log('MSOLOGO    1111111111111', data);
+      this.msoLogo = `${data.msoLogo}`;
+      this.msoName = `${data.msoName}`;
+      console.log(this.msoLogo);
+    })
   }
   setActiveList(event: Event, tabName: string) {
     this.activeTab = tabName;
@@ -232,7 +244,6 @@ export class NavComponent implements OnInit, AfterViewInit {
 
   }
   toggleDrop() {
-    console.log('toggle droped');
     this.isDropdownOpen = !this.isDropdownOpen;
   }
 
@@ -455,5 +466,25 @@ export class NavComponent implements OnInit, AfterViewInit {
       this.showDropdown = false;
     }
   }
-}
 
+  toggleDropdown(event: Event) {
+    console.log('12321321321321321');
+
+    event.stopPropagation();
+    this.showLogoutDropdown = !this.showLogoutDropdown;
+    setTimeout(() => {
+      document.addEventListener('click', this.closeDropdown1.bind(this));
+    });
+    console.log("Dropdown visibility:", this.showLogoutDropdown);
+    this.cdr.detectChanges();
+  }
+
+  closeDropdown1(event: Event) {
+    if (!document.querySelector('.dropdown')?.contains(event.target as Node)) {
+      this.showLogoutDropdown = !this.showLogoutDropdown;
+      document.removeEventListener('click', this.closeDropdown.bind(this));
+      this.cdr.detectChanges();
+    }
+  }
+
+}

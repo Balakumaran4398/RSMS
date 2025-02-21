@@ -34,7 +34,7 @@ export class SublcooperatorComponent {
   selectedIds: number[] = [];
   selectednames: any[] = [];
   hasSelectedRows: boolean = true;
-  rowData: any;
+  rowData: any[] = [];
   public rowSelection: any = "multiple";
   constructor(private route: ActivatedRoute, public dialog: MatDialog, private userservice: BaseService, private storageservice: StorageService, private swal: SwalService) {
     this.role = storageservice.getUserRole();
@@ -57,7 +57,7 @@ export class SublcooperatorComponent {
     { headerName: 'PASSWORD', field: 'password', filter: true },
     { headerName: 'ACIVE SUBSCRIPTION', field: 'activecount', filter: true },
     {
-      headerName: 'ACTIONS', field: '', filter: true,  width: 500,
+      headerName: 'ACTIONS', field: '', filter: true, width: 500,
       cellRenderer: (params: any) => {
         // const deleteButton = document.createElement('button');
         const updateButton = document.createElement('button');
@@ -119,7 +119,7 @@ export class SublcooperatorComponent {
 
         // permmissionButton
         // permmissionButton.innerHTML = '<i class="fa-solid fa-lock" style="font-size: x-large;color: #06561f;">‌</i>';
-        permmissionButton.innerHTML =  '<button style="width: 6em;background-color: #63846f;border-radius: 5px;height: 2em;color: white;"><p style="margin-top:-6px">Permission</p></button>';
+        permmissionButton.innerHTML = '<button style="width: 6em;background-color: #63846f;border-radius: 5px;height: 2em;color: white;"><p style="margin-top:-6px">Permission</p></button>';
         permmissionButton.style.backgroundColor = 'transparent';
         permmissionButton.style.border = 'none';
         permmissionButton.title = 'Permission';
@@ -185,9 +185,9 @@ export class SublcooperatorComponent {
       width = '350px';
     } else if (type === 'updatesublco') {
       width = '800px';
-    }  else if (type === 'reportdation') {
+    } else if (type === 'reportdation') {
       width = '1000px';
-    }  else if (type === 'paymentgateway') {
+    } else if (type === 'paymentgateway') {
       width = '500px';
     } else if (type === 'deletesublco') {
       width = '500px';
@@ -213,10 +213,10 @@ export class SublcooperatorComponent {
     let height = '1000px';
     if (type === 'areaupdation') {
       width = '1000px',
-      height="1000px"
+        height = "1000px"
     } else if (type === 'permission') {
       width = '1000px';
-      height="1000px"
+      height = "1000px"
     }
     let dialogData = { type: type, data: data, id: this.operatorid, selectedid: this.selectedIds };
     const dialogRef = this.dialog.open(AddednotaddedComponent, {

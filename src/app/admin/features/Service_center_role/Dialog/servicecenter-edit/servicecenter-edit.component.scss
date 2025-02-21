@@ -1,0 +1,56 @@
+.display {
+    display: flex;
+}
+::ng-deep .select2-container {
+    width: 100% !important;
+}
+
+::ng-deep .select2-container .select2-selection--single {
+    height: 45px !important;
+    margin-top: 1%;
+    border-top: 2px solid #b0afaf;
+    border-bottom: 0.9px solid lightgray;
+    border-left: 0.9px solid lightgray;
+    border-right: 0.9px solid lightgray;
+}
+
+::ng-deep .select2-container .select2-selection--single .select2-selection__rendered {
+    margin-top: 8px;
+    font-size: 13px;
+}
+
+::ng-deep .select2-container--default .select2-selection--single .select2-selection__arrow {
+    top: 8px;
+}
+
+@media screen and (max-width:560px) {
+    .display {
+        display: block;
+    }
+}
+
+
+
+.input-container {
+    position: relative;
+    display: inline-block;
+    width: 100%;
+}
+
+.example-input {
+    width: 100%;
+    padding-right: 2rem;
+    box-sizing: border-box;
+}
+
+.icon-right {
+    position: absolute;
+    top: 50%;
+    right: 0px;
+    transform: translateY(-50%);
+    pointer-events: none;
+    color: #050505;
+    font-size: 19px;
+    font-weight: 600;
+
+}

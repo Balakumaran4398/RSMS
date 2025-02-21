@@ -155,7 +155,7 @@
                     <div class="col-12 col-md-12 ">
                         <ag-grid-angular #agGrid id="myGrid" domLayout='normal' class="ag-theme-alpine table-class"
                             style="max-height: 300px;overflow: scroll;" rowAnimation [gridOptions]="gridOptions2"
-                            [columnDefs]="columnDefs" [rowData]="rowData" >
+                            [columnDefs]="columnDefs" [rowData]="rowData">
                         </ag-grid-angular>
                     </div>
                 </div>
@@ -596,8 +596,13 @@
                                             [min]="subdetailsList?.expirydate | date:'yyyy-MM-dd'"
                                             (ngModelChange)="onSelectiondatetype($event)"> -->
 
-                                        <input type="date" [(ngModel)]="f_date"
+                                        <!-- <input *ngIf="noofdays == 0" type="date" [(ngModel)]="f_date"
+                                            [min]="getNextDay1()" (ngModelChange)="onSelectiondatetype($event)">
+                                        <input *ngIf="noofdays != 0" type="date" [(ngModel)]="f_date"
                                             [min]="getNextDay(subdetailsList?.expirydate)"
+                                            (ngModelChange)="onSelectiondatetype($event)"> -->
+                                        <input type="date" [(ngModel)]="f_date"
+                                            [min]="noofdays == 0 ? getNextDay1() : getNextDay(subdetailsList?.expirydate)"
                                             (ngModelChange)="onSelectiondatetype($event)">
 
                                     </div>
@@ -664,7 +669,8 @@
                                                 <div class="input_box col-6 col-md-6">
                                                     <span class="me-2">Customer pay </span>
                                                 </div>
-                                                <div class="col-6 col-md-6 display justify-content-start align-items-center toggle">
+                                                <div
+                                                    class="col-6 col-md-6 display justify-content-start align-items-center toggle">
                                                     <div class="can-toggle">
                                                         <input id="a" type="checkbox" [(ngModel)]="iscollected"
                                                             (change)="onBillTypeChange()">
@@ -696,7 +702,7 @@
                                         style="background-color: red;" (click)="toggleConfirmation()">Cancel</button>
                                 </div>
                             </div>
-                            <div *ngIf="managePackagetable1" class="confirmation-dialog"> 
+                            <div *ngIf="managePackagetable1" class="confirmation-dialog">
                                 <div class=" d-flex justify-content-start align-item-center  mb-2">
                                     <button *ngIf="!confirmation" type="button" class="btn2 confirm me-2 bttn"
                                         [ngStyle]="{'background': isDisabled ? 'rgb(226 176 110)' : 'rgb(243, 146, 19)'}"

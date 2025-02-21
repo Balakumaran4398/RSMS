@@ -50,11 +50,15 @@ export class OperatorDetailsComponent implements OnInit {
 
   showDropdown: boolean = false;
   operatorList: any[] = [];
+  originalPagedOperators: any[] = [];
   businessList: any[] = [];
   dashboardDetails: any;
   operatorNameList: any;
   filteredOperators: any[] = [];
   selectedOperator: any;
+
+
+  id: any;
 
   operator_details: any = [];
   pagedOperators: any = [];
@@ -69,14 +73,8 @@ export class OperatorDetailsComponent implements OnInit {
     this.role = storageservice.getUserRole();
     this.username = storageservice.getUsername();
     this.loadOperators();
-    this.userservice.OperatorDetails(this.role, this.username, this.operatorid).subscribe(
-      (data: any) => {
-        this.operator_details = data;
-        this.dashboardDetails = data.map((item: any) => item.list);
-        this.totalLength = data.length;
-        this.updatePageData();
-      });
     this.onBusinessList();
+    this.operatorDeatils('');
   }
   setOperator(data: { isactive: string }) {
     this.operator.isactive = data.isactive === 'true';
@@ -97,6 +95,23 @@ export class OperatorDetailsComponent implements OnInit {
 
     this.loadOperators();
     this.updatePageData();
+
+  }
+  operatorDeatils(event: any) {
+    console.log(event);
+    this.userservice.OperatorDetails(this.role, this.username, this.operatorid).subscribe(
+      (data: any) => {
+        this.operator_details = data;
+        this.dashboardDetails = data.map((item: any) => item.list);
+        this.totalLength = data.length;
+        // this.pagedOperators = data;
+        if (!this.originalPagedOperators || this.originalPagedOperators.length === 0) {
+          this.originalPagedOperators = [...data];
+        }
+        // this.originalPagedOperators = [...data]; 
+        this.pagedOperators = [...data];
+        this.updatePageData();
+      });
   }
   onBusinessList() {
     this.userservice.getLcoBusinesslist(this.role, this.username).subscribe((data: any) => {
@@ -125,24 +140,15 @@ export class OperatorDetailsComponent implements OnInit {
   updatePageData() {
     this.cdr.detectChanges();
     const startIndex = this.pageIndex * this.pageSize;
-    this.pagedOperators = this.operator_details.slice(
-      startIndex,
-      startIndex + this.pageSize
-    );
+    this.pagedOperators = this.operator_details.slice(startIndex, startIndex + this.pageSize);
   }
   filterOperators(event: any): void {
     const filterValue = event.target.value.toLowerCase();
-    this.filteredOperators = this.operatorList.filter(operator =>
-      operator.name.toLowerCase().includes(filterValue)
-    );
-    console.log(this.filteredOperators);
-
+    this.filteredOperators = this.operatorList.filter(operator => operator.name.toLowerCase().includes(filterValue));
   }
   displayOperator(operator: any): string {
     return operator ? operator.name : '';
   }
-
-
   loadOperators() {
     this.userservice.getOeratorList(this.role, this.username, 2).subscribe((data: any) => {
       console.log(data);
@@ -154,24 +160,11 @@ export class OperatorDetailsComponent implements OnInit {
     });
   }
 
-  // operatorlist() {
-  //   this.userservice.getOeratorList(this.role, this.username, 2).subscribe((data: any) => {
-  //     console.log(data);
-  //     this.operatorList = Object.keys(data).map(key => {
-  //       const value = data[key];
-  //       const name = key;
-  //       return { name: name, value: value };
-  //     });
 
-  //     this.operatorNameList = this.operatorList;
-  //     this.filteredOperators = this.operatorList;
-  //   });
-  // }
   onFilterChange(filteredData: any): void {
     this.filteredOperators = filteredData;
   }
   selectOperator(value: string, name: any) {
-    console.log(this.filteredOperators);
     this.showDropdown = false;
     this.operatorid = value;
     this.operatorname = name;
@@ -179,25 +172,35 @@ export class OperatorDetailsComponent implements OnInit {
   }
 
   onoperatorchange(operator: any): void {
-    console.log(operator);
     this.selectedOperator = operator;
     this.operatorid = operator.value;
+    // if (operator.value === 0) {
+    //   this.operatorid = 0;
+    //   this.selectedOperator = { name: 'ALL Operator', value: 0 };
+    //   this.pagedOperators = [...this.originalPagedOperators];
+    // } else {
+    //   this.operatorid = operator.value;
+    //   this.pagedOperators = this.operatorList.filter(op => op.operatorid === this.operatorid);
+    //   console.log('operatorid', this.pagedOperators);
+    // }
     if (operator.value === 0) {
-      this.operatorid = 0;
-      this.selectedOperator = { name: 'ALL Operator', value: 0 };
+      this.pagedOperators = [...this.originalPagedOperators];
     } else {
-      this.operatorid = operator.value;
+      this.pagedOperators = this.originalPagedOperators.filter(op => op.operatorid === this.operatorid);
     }
-    this.userservice.OperatorDetails(this.role, this.username, this.operatorid).subscribe(
-      (data: any) => {
-        console.log(data);
-        // this.operator_details = data;
-        this.pagedOperators = data;
-      },
-      (error) => {
-        console.error('Error fetching operator details', error);
-      }
-    );
+
+    console.log('Filtered Operators:', this.pagedOperators);
+    // this.operatorDeatils(this.operatorid);
+    // this.userservice.OperatorDetails(this.role, this.username, this.operatorid).subscribe(
+    //   (data: any) => {
+    //     console.log(data);
+    //     // this.operator_details = data;
+    //     this.pagedOperators = data;
+    //   },
+    //   (error) => {
+    //     console.error('Error fetching operator details', error);
+    //   }
+    // );
   }
 
   checkDeviceType(): void {

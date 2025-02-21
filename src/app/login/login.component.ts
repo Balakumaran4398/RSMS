@@ -5,6 +5,7 @@ import { AlertService } from '../_core/service/alert.service';
 import { StorageService } from '../_core/service/storage.service';
 import { AuthService } from '../_core/service/auth.service';
 import Swal from 'sweetalert2';
+import { SwalService } from '../_core/service/swal.service';
 // import { ChangeDetectable } from 'ag-charts-community/dist/types/src/scene/changeDetectable';
 interface requestBody {
   access_ip: any;
@@ -30,8 +31,12 @@ export class LoginComponent implements OnInit {
 
   warningMessage: any;
   warningMessageDate: any;
+  msoName: any;
+  msoLogo: any;
+
   notificationMessage: boolean = false;
   constructor(
+    private swal: SwalService,
     private fb: FormBuilder,
     private authService: AuthService,
     private storageService: StorageService,
@@ -56,6 +61,13 @@ export class LoginComponent implements OnInit {
       }
       console.log('notification', this.notificationMessage)
     });
+    this.authService.msoDeatils().subscribe((data: any) => {
+      console.log(data);
+      this.msoName = data.msoName;
+      this.msoLogo = data.msoLogo;
+      console.log(this.msoLogo);
+      console.log(this.msoName);
+    });
   }
 
   submit(form: FormGroup): void {
@@ -65,7 +77,6 @@ export class LoginComponent implements OnInit {
 
     if (!username || username.trim() === '') {
       console.log('111');
-
       Swal.fire({
         position: 'center',
         icon: 'warning',
@@ -87,6 +98,7 @@ export class LoginComponent implements OnInit {
       });
       return;
     } else if (form.valid) {
+      this.swal.Loading1()
       this.authService.login(this.signInform.value).subscribe(
         (res: any) => {
           console.log(res);
@@ -95,6 +107,8 @@ export class LoginComponent implements OnInit {
             || res.roles.includes('ROLE_INVENTORY') || res.roles.includes('ROLE_CUSSERVICE') || res.roles.includes('ROLE_SERVICECENTER')) {
             this.storageService.saveToken(res.accessToken);
             this.storageService.saveUser(res);
+            this.storageService.saveUsernamenew(res.username)
+
             this.idstorage = res.id;
             console.log('Stored ID:', res.id);
             const user = this.storageService.getUser();

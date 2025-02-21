@@ -6,27 +6,47 @@
         <span style="margin: auto;">RSMS</span></a> -->
 
 
-    <a (click)="navgetToUrl('/home')" class="brand" [ngClass]="{'sidebar-open': isSidebarOpen}">
-        <img height="38px" style="margin: 0px -6px 0px 3px;" [ngStyle]="{'visibility': !isHide ? 'hidden' : 'visible'}"
-            src="/assets/images/icons/Logo1.png" alt="" srcset="">
-        <h4 class="brand-text" style="margin: 0px 30px;color: #2d584e;"
-            [ngStyle]="{'visibility': !isSidebarOpen ? 'visible' : 'hidden'}">RSMS V-7.2.2 </h4>
-    </a>
+    <a (click)="navgetToUrl('/home')" class="brand" [ngClass]="{'sidebar-open': isSidebarOpen}"
+        style="margin-left: 0px;height: 12%;">
+        <img height="38px" style="margin: 0px -6px 0px 3px;width: 45px;" [ngStyle]="{'visibility': !isHide ? 'hidden' : 'visible'}"
+           [src]="msoLogo" alt="" srcset="">
+           <!-- src="/assets/images/icons/Logo1.png" -->
 
+        <!-- <h4 class="brand-text" style="margin: 0px 30px;color: #2d584e;"  [ngStyle]="{'visibility': !isSidebarOpen ? 'visible' : 'hidden'}">RSMS V-7.2.2 </h4> -->
+
+
+
+        <div class="d-block justify-content-center align-items-center" style="width: 65%;top:5%">
+            <img *ngIf="msoLogo" [src]="msoLogo" alt="MSO Logo"
+                style="width: 100px; height: auto;display:flex;margin: auto 40px;">
+
+            <h5 class="brand-text mb-1" style="margin: 5px 30px;color: #2d584e;"
+                [ngStyle]="{'visibility': !isSidebarOpen ? 'visible' : 'hidden'}"> {{msoName}} </h5>
+
+
+            <p class="brand-text" style="margin: 0px 30px;color: #2d584e;text-align: center;font-size: 13px;"
+                [ngStyle]="{'visibility': !isSidebarOpen ? 'visible' : 'hidden'}"> V-7.2.2 </p>
+        </div>
+
+    </a>
+    <hr style="margin: 0.2rem ">
     <ul class="side-menu">
 
         <!-- ----------------------------------------------------------Admin & Reception role----------------------------------------- -->
-        <!-- <li *ngIf="isUser || isReception "><a (click)="navgetToUrl('/home');setActiveTab($event)" class="active"><i
-                    class='bx bx-sm bxs-dashboard icon'></i>
+        <li *ngIf="isUser || isReception "><a (click)="navgetToUrl('/home');setActiveLinkTabList($event)"
+                class="active nav-link">
+                <!-- <i class='bx bx-sm bxs-dashboard icon'></i> -->
+                <i class="bx bx-home bx-sm icon "></i>
                 Dashboard</a></li>
-        <li *ngIf="isUser  "><a (click)="navgetToUrl('/top_sub_detail');setActiveTab($event)"><i
-                    class='bx bx-table bx-sm icon'></i>
-                Top Subscription Details</a></li> -->
+        <li *ngIf="isUser || isReception "><a (click)="navgetToUrl('/top_subscription');setActiveLinkTabList($event)"
+                class="nav-link"><i class='bx bx-table bx-sm icon'></i>
+                Top Subscription Details</a></li>
+
         <!-- <li><a (click)="navgetToUrl('/operatorlist')" class=""><i class='bx bx-table bx-sm icon'></i>
             Operator</a></li> -->
 
 
-        <li *ngIf="isUser || isReception ">
+        <!-- <li *ngIf="isUser || isReception ">
             <a class="active"> <i class="bx bxs-home bx-sm icon "></i> Home <i
                     class='bx bx-chevron-right icon-right'></i></a>
             <ul class="side-dropdown">
@@ -36,7 +56,7 @@
                 <li><a (click)="navgetToUrl('/top_subscription');setActiveLinkTab($event)"><i
                             class='bx bx-table bx-sm icon'></i> &nbsp;Top Subscription Details</a></li>
             </ul>
-        </li>
+        </li> -->
         <li *ngIf="isInventory">
             <a (click)="setActiveLinkListTab($event); navgetToUrl('/inventor_inventory')" class="nav-link active">
                 <mat-icon class="icon">games</mat-icon> &nbsp; Inventory
@@ -66,8 +86,11 @@
         </li>
 
         <li *ngIf="isUser || isReception ">
-            <a><mat-icon class="icon">local_library</mat-icon> Subscriber <i
-                    class='bx bx-chevron-right icon-right'></i></a>
+            <a>
+                <!-- <mat-icon class="icon">local_library</mat-icon> -->
+                <i class="bx bx-user-pin bx-sm icon "></i>
+
+                Subscriber <i class='bx bx-chevron-right icon-right'></i></a>
             <ul class="side-dropdown">
                 <li><a (click)="navgetToUrl('/Create_sub');setActiveLinkTab($event)"><i
                             class="fa fa-fw fa-plus icon">&nbsp;</i>Create Subscriber
@@ -176,8 +199,10 @@
         </ul>
     </li> -->
         <li *ngIf="isUser">
-            <a> <mat-icon class="icon">featured_play_list</mat-icon> Bulk operation <i
-                    class='bx bx-chevron-right icon-right'></i></a>
+            <a>
+                <!-- <mat-icon class="icon">featured_play_list</mat-icon>  -->
+                <i class="bx bx-briefcase bx-sm icon "></i>
+                Bulk operation <i class='bx bx-chevron-right icon-right'></i></a>
             <ul class="side-dropdown">
                 <li><a (click)="navgetToUrl('/subscriber_import');setActiveLinkTab($event)"><i
                             class="fa fa-fw fa-user icon">&nbsp;</i>Subscriber
@@ -225,7 +250,10 @@
             </ul>
         </li>
         <li class="mb-3" *ngIf="isUser || isReception ">
-            <a> <mat-icon class="icon">assessment</mat-icon> Reports <i class='bx bx-chevron-right icon-right'></i></a>
+            <a>
+                <!-- <mat-icon class="icon">assessment</mat-icon> -->
+                <i class="bx bx-joystick-button bx-sm icon "></i>
+                Reports <i class='bx bx-chevron-right icon-right'></i></a>
             <ul class="side-dropdown">
                 <li><a (click)="navgetToUrl('/traiReports');setActiveLinkTab($event)"><i
                             class="fa fa-fw fa-paper-plane icon">&nbsp;</i>TRAI Reports </a>
@@ -252,19 +280,22 @@
 
         <li *ngIf="isSpecial"><a (click)="setActiveLinkTabList($event);navgetToUrl('/msodetails');"
                 class="active nav-link">
-                <i class='bx bx-sm bxs-user-pin icon'></i> &nbsp; MSO Details</a></li>
+
+                <i class='bx bx-sm bx-user-pin icon'></i> &nbsp; MSO Details</a></li>
         <li *ngIf="isSpecial"><a (click)="navgetToUrl('/casmaster');setActiveLinkTabList($event)" class="nav-link">
                 <i class='bx bx-sm bx-user-circle icon'></i> &nbsp;CAS Master</a></li>
         <li *ngIf="isSpecial"><a (click)="navgetToUrl('/tax');setActiveLinkTabList($event)" class="nav-link">
-                <i class='bx bx-sm bxs-wrench icon'></i>
+                <i class='bx bx-sm bx-wrench icon'></i>
                 &nbsp;TAX Master</a> </li>
         <li *ngIf="isSpecial"><a (click)="navgetToUrl('/invoice');setActiveLinkTabList($event)" class="nav-link">
-                <i class='bx bx-sm bxs-calculator icon'></i> &nbsp;Billing</a> </li>
+                <i class='bx bx-sm bx-calculator icon'></i> &nbsp;Billing</a> </li>
         <li *ngIf="isSpecial"><a (click)="navgetToUrl('/special_operator');setActiveLinkTabList($event)"
                 class="nav-link">
                 <i class='bx bx-sm bx-user icon'></i> &nbsp;Operator</a> </li>
         <li *ngIf="isSpecial"><a (click)="navgetToUrl('/proof');setActiveLinkTabList($event)" class="nav-link">
-                <i class='fa-solid fa-comment-sms icon'></i> &nbsp; Proof Settings</a> </li>
+                <!-- <i class='fa-solid fa-comment-sms icon'></i>  -->
+                <i class='bx bx-sm bx-share-alt  icon'></i> 
+                &nbsp; Proof Settings</a> </li>
         <!-- </ul>
         </li> -->
 
@@ -373,7 +404,10 @@
             </ul>
         </li>
         <li *ngIf="isOperator">
-            <a> <mat-icon class="icon">assessment</mat-icon> Reports<i class='bx bx-chevron-right icon-right'></i></a>
+            <a>
+                <!-- <mat-icon class="icon">assessment</mat-icon> -->
+                <i class="bx bx-joystick-button bx-sm icon "></i>
+                Reports<i class='bx bx-chevron-right icon-right'></i></a>
             <ul class="side-dropdown">
                 <li><a (click)="navgetToUrl('/activation');setActiveLinkTab($event)">
                         <i class="fa fa-fw fa-paper-plane icon">&nbsp;</i>Reports </a> </li>
@@ -427,8 +461,10 @@
 
             </ul>
         </li>
-        <li *ngIf="isCustomerService">
-            <a> <mat-icon class="icon">assessment</mat-icon> Reports<i class='bx bx-chevron-right icon-right'></i></a>
+        <li *ngIf="isCustomerService"> <a>
+                <!-- <mat-icon class="icon">assessment</mat-icon> -->
+                <i class="bx bx-joystick-button bx-sm icon "></i>
+                Reports<i class='bx bx-chevron-right icon-right'></i></a>
             <ul class="side-dropdown">
                 <li><a (click)="navgetToUrl('/msodialogueReports/recharge_history');setActiveLinkTab($event)">
                         <i class="fa fa-fw fa-paper-plane icon">&nbsp;</i>Recharge log </a> </li>
@@ -461,13 +497,14 @@
                             &nbsp;</span>
                     </div>
                     <div *ngIf="!isSearch"
-                        class="search-and-image col-7 col-md-7 d-flex justify-content-end align-items-center" (clickOutside)="closeDropdown()">
+                        class="search-and-image col-7 col-md-7 d-flex justify-content-end align-items-center"
+                        (clickOutside)="closeDropdown()">
                         <div class="search">
                             <span class="fa fa-search"></span>
                             <input id="searchitem" #searchitem style="font-size: 14px;" [value]="lcomember"
                                 (keyup)="onsubscriberlist( searchitem?.value)"
                                 placeholder="Search by smartcard, boxid, mobilenumber or customername or CAF No">
-                            <div style="width: 100%;" class="dropdown-menu input"
+                            <div style="width: 100%;overflow-x: hidden;" class="dropdown-menu input"
                                 [ngClass]="(subscriberList.length != 0 && searchitem?.value?.length != 0 && showDropdown) ? 'show' : 'hide'"
                                 aria-labelledby="dropdownMenuButton">
                                 <a (click)="goToSubscriberDashboard(lcomember)" *ngFor="let lcomember of subscriberList"
@@ -477,13 +514,15 @@
                     </div>
                     <div class="d-block">
                         <div class=" d-flex justify-content-between align-items-center mx-2 tooltip-container ">
-                            <a (click)="logout()" class="logout ">
+                            <a class="logout " (click)="logout()">
                                 <i class="fa-solid fa-power-off" style="color: #2d584e"></i>
+                                <span><i [ngClass]="showLogoutDropdown ? 'ri-arrow-up-s-line' : 'ri-arrow-down-s-line'"
+                                        style="margin: auto;"></i></span>
                             </a>
                             <div class="tooltip">LOGOUT</div>
                         </div>
 
-
+                        <!-- (click)="logout()"  -->
                         <!-- <div class="d-block">
                             <div class="d-flex justify-content-between align-items-center mx-2 tooltip-container">
                                 <a class="logout" (click)="togglePopup()">
@@ -500,6 +539,33 @@
                                 </div>
                             </div>
                         </div> -->
+
+
+                        <div *ngIf="showLogoutDropdown" class="dropdown">
+                            <ul class="dropdown-menu fx-dropdown-menu1">
+                                <li>
+                                    <a class="dropdown-item">
+                                        <i class="ri-paypal-line ri-18px"></i>&nbsp; Regular Payment
+                                    </a>
+
+                                </li>
+                                <li>
+                                    <a class="dropdown-item">
+                                        <i class="ri-firebase-line ri-18px"></i>&nbsp; Principal Only
+                                    </a>
+                                </li>
+                                <li>
+                                    <a class="dropdown-item">
+                                        <i class="ri-firefox-line ri-18px"></i>&nbsp; Charges Only
+                                    </a>
+                                </li>
+                                <li>
+                                    <a class="dropdown-item">
+                                        <i class="ri-calendar-schedule-line ri-18px"></i>&nbsp; Next Schedule
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
                     </div>
                 </div>
             </div>

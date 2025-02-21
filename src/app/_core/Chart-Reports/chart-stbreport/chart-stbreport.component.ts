@@ -22,7 +22,7 @@ export class ChartSTBReportComponent implements OnInit {
       floatingFilter: true,
       comparator: (valueA: any, valueB: any) => {
         if (!isNaN(valueA) && !isNaN(valueB)) {
-          return Number(valueA) - Number(valueB); 
+          return Number(valueA) - Number(valueB);
         }
         if (!valueA) valueA = '';
         if (!valueB) valueB = '';
@@ -71,7 +71,8 @@ export class ChartSTBReportComponent implements OnInit {
       default:
         this.id = '';
     }
-    this.userService.getDashboardReport(this.username, this.role, this.type, 2)
+    // this.userService.getDashboardReport(this.username, this.role, this.type, 2)
+    this.userService.getDashboardReport(this.role, this.username, this.type, 2)
       .subscribe(
         (response: HttpResponse<any[]>) => { // Expect HttpResponse<any[]>
           if (response.status === 200) {
@@ -198,7 +199,7 @@ export class ChartSTBReportComponent implements OnInit {
   }
   getExcel() {
     console.log(this.type);
-    this.userService.getDashboardReport(this.username, this.role, this.type, 2)
+    this.userService.getDashboardReport(this.role, this.username, this.type, 2)
       .subscribe(
         (response: HttpResponse<any[]>) => { // Expect HttpResponse<any[]>
           console.log(this.type);
@@ -211,11 +212,11 @@ export class ChartSTBReportComponent implements OnInit {
               const areasub = 'A3:K3';
               const title = this.id + ' REPORT';
               const sub = 'MSO ADDRESS:' + this.msodetails;
-              const header = ['S.NO','SUB ID', 'OPERATOR NAME', 'SUBSCRIBER NAME', 'SMARTCARD', 'BOX ID', 'CAS NAME', 'PRODUCT NAME', 'PRODUCT ID', 'ACTIVATION DATE', 'EXPIRY DATE'];
+              const header = ['S.NO', 'SUB ID', 'OPERATOR NAME', 'SUBSCRIBER NAME', 'SMARTCARD', 'BOX ID', 'CAS NAME', 'PRODUCT NAME', 'PRODUCT ID', 'ACTIVATION DATE', 'EXPIRY DATE'];
               const data = this.rowData;
               const datas: Array<any> = [];
-              data.forEach((d: any,index:number) => {
-                const row = [index+1,d.subid, d.operatorname, d.customername, d.smartcard, d.boxid, d.casname, d.productname, d.packageid, d.activationdate, d.expirydate];
+              data.forEach((d: any, index: number) => {
+                const row = [index + 1, d.subid, d.operatorname, d.customername, d.smartcard, d.boxid, d.casname, d.productname, d.packageid, d.activationdate, d.expirydate];
                 console.log('type 1 and 2', row);
                 datas.push(row);
               });
@@ -227,11 +228,11 @@ export class ChartSTBReportComponent implements OnInit {
               const areasub = 'A3:H3';
               const title = this.id + ' REPORT';
               const sub = 'MSO ADDRESS:' + this.msodetails;
-              const header = ['S.NO','SUB ID', 'OPERATOR NAME', 'SUBSCRIBER NAME', 'SMARTCARD', 'BOX ID', 'CAS NAME', 'CREATION DATE'];
+              const header = ['S.NO', 'SUB ID', 'OPERATOR NAME', 'SUBSCRIBER NAME', 'SMARTCARD', 'BOX ID', 'CAS NAME', 'CREATION DATE'];
               const data = this.rowData;
               const datas: Array<any> = [];
-              data.forEach((d: any,index:number) => {
-                const row = [index+1,d.subid, d.operatorname, d.customername, d.smartcard, d.boxid, d.casname, d.createddate];
+              data.forEach((d: any, index: number) => {
+                const row = [index + 1, d.subid, d.operatorname, d.customername, d.smartcard, d.boxid, d.casname, d.createddate];
                 console.log('type 3', row);
                 datas.push(row);
               });
@@ -241,11 +242,11 @@ export class ChartSTBReportComponent implements OnInit {
               const areasub = 'A3:K3';
               const title = this.id + ' REPORT';
               const sub = 'MSO ADDRESS:' + this.msodetails;
-              const header = ['S.NO','SUB ID', 'OPERATOR NAME', 'SUBSCRIBER NAME', 'SMARTCARD', 'BOX ID', 'CAS NAME', 'PRODUCT NAME', 'PRODUCT ID', 'CREATION DATE', 'EXPIRY DATE'];
+              const header = ['S.NO', 'SUB ID', 'OPERATOR NAME', 'SUBSCRIBER NAME', 'SMARTCARD', 'BOX ID', 'CAS NAME', 'PRODUCT NAME', 'PRODUCT ID', 'CREATION DATE', 'EXPIRY DATE'];
               const data = this.rowData;
               const datas: Array<any> = [];
-              data.forEach((d: any,index:number) => {
-                const row = [index+1,d.subid, d.operatorname, d.customername, d.smartcard, d.boxid, d.casname, d.productname, d.casproductid, d.updateddate, d.expirydate];
+              data.forEach((d: any, index: number) => {
+                const row = [index + 1, d.subid, d.operatorname, d.customername, d.smartcard, d.boxid, d.casname, d.productname, d.casproductid, d.updateddate, d.expirydate];
                 console.log('type 4 and 5', row);
                 datas.push(row);
               });
@@ -255,11 +256,11 @@ export class ChartSTBReportComponent implements OnInit {
               const areasub = 'A3:J3';
               const title = this.id + ' REPORT';
               const sub = 'MSO ADDRESS:' + this.msodetails;
-              const header = ['S.N0','SUB ID', 'OPERATOR NAME', 'SUBSCRIBER NAME', 'MOBILE NUMBER', 'SMARTCARD', 'BOX ID', 'CAS NAME', 'PACKAGE', 'BLOCKED DATE', 'EXPIRY DATE'];
+              const header = ['S.N0', 'SUB ID', 'OPERATOR NAME', 'SUBSCRIBER NAME', 'MOBILE NUMBER', 'SMARTCARD', 'BOX ID', 'CAS NAME', 'PACKAGE', 'BLOCKED DATE', 'EXPIRY DATE'];
               const data = this.rowData;
               const datas: Array<any> = [];
-              data.forEach((d: any,index:number) => {
-                const row = [index+1,d.subid, d.operatorname, d.customername, d.mobileno, d.smartcard, d.boxid, d.casname, d.productname, d.blockeddate, d.expirydate];
+              data.forEach((d: any, index: number) => {
+                const row = [index + 1, d.subid, d.operatorname, d.customername, d.mobileno, d.smartcard, d.boxid, d.casname, d.productname, d.blockeddate, d.expirydate];
                 console.log('type 6', row);
                 datas.push(row);
               });
@@ -273,7 +274,7 @@ export class ChartSTBReportComponent implements OnInit {
         (error) => {
           this.handleApiError(error);
         }
-      );  
+      );
   }
   getPDF() {
     this.userService.getDashboardPDFReport(this.username, this.role, this.type, 1)
