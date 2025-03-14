@@ -1,5 +1,5 @@
-<div id="Customer-page" #formContent >
-        <h3> SUBSCRIBER CREATION   </h3>
+<div id="Customer-page" #formContent>
+    <h3> SUBSCRIBER CREATION </h3>
 
     <form [formGroup]="form" (ngSubmit)="onSubmit()">
         <div style="display: flex; justify-content: center; align-items: center;  ">
@@ -8,16 +8,8 @@
                     <p>Personal Details</p>
                 </div>
                 <div class="user_details">
-                    <div class="input_box">
+                    <div *ngIf="!IsOperator" class="input_box">
                         <label>LCO Name</label>
-
-                        <!-- <select id="Lco" class="js-states" formControlName="operatorid" [(ngModel)]="operatorid"
-                            >
-                            <option value="0" selected disabled>Select Operator</option>
-                            <option *ngFor="let operator of filteredOperators" [value]="operator.name"  >
-                                {{ operator.name }}
-                            </option>
-                        </select> -->
 
                         <select id="Lco" class="js-states" formControlName="operatorid" [(ngModel)]="operatorid">
                             <option value="0" selected disabled>Select Operator</option>
@@ -27,24 +19,12 @@
                             </option>
                         </select>
 
-                        <!-- <div class="input-container">
-                            <input type="text" matInput [matAutocomplete]="auto" formControlName="operatorid"
-                                (input)="filterOperators($event)" placeholder="Select Operator"
-                                [matAutocompleteDisabled]="false" [value]="selectedOperator?.name">
-                            <i class="bx bx-chevron-down icon-right"></i>
-                        </div>
-                        <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayOperator">
-                            <mat-option *ngFor="let operator of filteredOperators" [value]="operator.name"
-                                (click)="onoperatorchange(operator)">
-                                {{ operator.name }}
-                            </mat-option>
-                        </mat-autocomplete> -->
-
                         <div style="position:relative;font-size: small;">
                             <div *ngIf="submitted && f['operatorid'].errors?.['required']" class="text-danger">
                                 LCO Name is required</div>
                         </div>
                     </div>
+
                     <div class="input_box">
                         <label>Area Name</label>
 
@@ -56,19 +36,6 @@
                             </option>
                         </select>
 
-
-                        <!-- <div class="input-container">
-                            <input type="text" matInput [matAutocomplete]="autoArea" formControlName="areaid"
-                                (input)="filterAreas($event)" placeholder="Select Area"
-                                [matAutocompleteDisabled]="false" [value]="selectedArea?.name">
-                            <i class="bx bx-chevron-down icon-right"></i>
-                        </div>
-                        <mat-autocomplete #autoArea="matAutocomplete" [displayWith]="displayArea">
-                            <mat-option *ngFor="let area of filteredAreas" [value]="area.name"
-                                (click)="onAreaStatusChange(area)">
-                                {{ area.name }}
-                            </mat-option>
-                        </mat-autocomplete> -->
                         <div style="position: relative; font-size: small;">
                             <div *ngIf="submitted && f['areaid'].errors?.['required']" class="text-danger">
                                 Area Name is required</div>
@@ -84,19 +51,6 @@
                             </option>
                         </select>
 
-
-                        <!-- <div class="input-container">
-                            <input type="text" placeholder="Select Street" formControlName="streetid"
-                                [(ngModel)]="streetid" [matAutocomplete]="autoStreet" class="example-input"
-                                [value]="selectedStreet?.name" (input)="filterStreet($event)">
-                            <i class="bx bx-chevron-down icon-right"></i>
-                        </div>
-                        <mat-autocomplete #autoStreet="matAutocomplete" [displayWith]="displayStreet">
-                            <mat-option *ngFor="let key of filteredStreet" [value]="key.value"
-                                (click)="onStreetStatusChange(key)">
-                                {{ key.name }}
-                            </mat-option>
-                        </mat-autocomplete> -->
                         <div style="position: relative;font-size: small;">
                             <div *ngIf="submitted && f['streetid'].errors?.['required']" class="text-danger">
                                 STREET Name is required</div>

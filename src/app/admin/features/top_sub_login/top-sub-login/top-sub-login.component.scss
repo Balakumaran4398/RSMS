@@ -13,6 +13,7 @@
     width: 400px;
     height: auto;
     background-image: linear-gradient(to bottom, #23503e, #172c4b);
+    // background-image: var(--background-color);
     display: flex;
     align-items: center;
     flex-direction: column;
@@ -38,7 +39,7 @@
 }
 
 .input:hover {
-    background-color:#003b34;
+    // background-color: var(--input-color);
     border: none;
     border-radius: 0.5rem;
 }

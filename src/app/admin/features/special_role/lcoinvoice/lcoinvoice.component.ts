@@ -77,7 +77,7 @@ export class LcoinvoiceComponent implements OnInit {
     }
   }
   columnDefs: any[] = [
-    { headerName: "S.No", lockPosition: true, valueGetter: 'node.rowIndex+1', width: 100, headerCheckboxSelection: true, checkboxSelection: true, },
+    { headerName: "S.No", lockPosition: true, valueGetter: 'node.rowIndex+1', width: 100, headerCheckboxSelection: true, checkboxSelection: true, filter: false },
     { headerName: "GST	", field: 'extra1', width: 300 },  // Jeya Akka Change panna sonnanga Operator name nu ulla dha GST nu
     { headerName: "INVOICE NO	", field: 'invoiceNo', width: 200 },
     { headerName: "INVOICE DATE	", field: 'invoiceDate', width: 300 },

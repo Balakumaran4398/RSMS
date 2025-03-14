@@ -99,7 +99,7 @@ h1 {
 }
 
 .displaybtn {
-    display: grid ;
+    display: grid;
 }
 
 .profile {
@@ -108,31 +108,32 @@ h1 {
     background-color: rgb(222, 241, 241);
 }
 
-.mobile {
-    max-height: 500px;
-    overflow: auto;
-}
-
-// @media (max-width: 767.98px) {
-//     .d-flex {
-//         // flex-direction: column;
-//     }
-
-//     .mobile {
-//         max-height: 600px;
-//         overflow: auto;
-//     }
-//     .displaybtn {
-//         display: flex !important;
-//     }
-
-//     .card {
-//         height: 50vh;
-//         padding: 1rem;
-//         border: 1px solid #ddd;
-//         border-radius: 0.25rem;
-//     }
+// .mobile {
+//     max-height: 500px;
+//     overflow: auto;
 // }
+
+@media (max-width: 767.98px) {
+    //     .d-flex {
+    //         // flex-direction: column;
+    //     }
+
+    .mobile {
+        max-height: 600px;
+        overflow: auto;
+    }
+
+    //     .displaybtn {
+    //         display: flex !important;
+    //     }
+
+    //     .card {
+    //         height: 50vh;
+    //         padding: 1rem;
+    //         border: 1px solid #ddd;
+    //         border-radius: 0.25rem;
+    //     }
+}
 
 
 @media (max-width: 560px) {
@@ -157,6 +158,11 @@ h1 {
         padding: 1rem;
         border: 1px solid #ddd;
         border-radius: 0.25rem;
+    }
+
+    .mobile {
+        max-height: 600px;
+        overflow: auto;
     }
 }
 

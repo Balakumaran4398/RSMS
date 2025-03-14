@@ -1,129 +1,128 @@
 <div class="">
     <div class="row">
         <div class="col-6 col-lg-1-7">
-            <div class="card d-flex flex-column justify-content-between p-3">
+            <div class="card box d-flex flex-column justify-content-between p-3" (click)="openLCO_Dialog(7)">
                 <div class="d-flex justify-content-between w-100">
                     <i class='bx bxs-group'></i>
-                    <span class="fw-bold">{{7}}</span>
+                    <span class="fw-bold">{{lcoDeatails?.totalbox}}</span>
                 </div>
                 <div class="mt-2 mb-2 text-center text">Total Subscriber</div>
             </div>
         </div>
         <div class="col-6 col-lg-1-7 ">
-            <div class="card d-flex flex-column justify-content-between p-3">
+            <div class="card box d-flex flex-column justify-content-between p-3">
                 <div class="d-flex justify-content-between w-100">
                     <i class='bx bxs-user-check'></i>
-                    <span class="fw-bold">{{7}}</span>
+                    <span class="fw-bold">{{operatorDetailsCount?.activecount}}</span>
                 </div>
                 <div class="mt-2 mb-2 text-center text"> Active Subscriber</div>
             </div>
         </div>
         <div class="col-6 col-lg-1-7 ">
-            <div class="card d-flex flex-column justify-content-between p-3">
+            <div class="card box d-flex flex-column justify-content-between p-3">
                 <div class="d-flex justify-content-between w-100">
                     <i class='bx bxs-user-minus'></i>
-                    <span class="fw-bold">{{7}}</span>
+                    <span class="fw-bold">{{operatorDetailsCount?.deactivecount}}</span>
                 </div>
                 <div class="mt-2 mb-2 text-center text"> Deactive Subscriber</div>
             </div>
         </div>
         <div class="col-6 col-lg-1-7 ">
-            <div class="card d-flex flex-column justify-content-between p-3">
+            <div class="card box d-flex flex-column justify-content-between p-3">
                 <div class="d-flex justify-content-between w-100">
                     <i class='bx bxs-user-plus'></i>
-                    <span class="fw-bold">{{7}}</span>
+                    <span class="fw-bold">{{operatorDetailsCount?.newsubscribercount}}</span>
                 </div>
                 <div class="mt-2 mb-2 text-center text"> New Subscriber</div>
             </div>
         </div>
         <div class="col-6 col-lg-1-7 ">
-            <div class="card d-flex flex-column justify-content-between p-3">
+            <div class="card box d-flex flex-column justify-content-between p-3" (click)="openLCO_Dialog(5)">
                 <div class="d-flex justify-content-between w-100">
                     <i class='bx bxs-user-x'></i>
-                    <!-- <i class="fa-solid fa-user-slash font-awesome"></i> -->
-                    <span class="fw-bold">{{7}}</span>
+                    <span class="fw-bold">{{lcoDeatails?.blockcount}}</span>
                 </div>
                 <div class="mt-2 mb-2 text-center text"> Block Subscriber</div>
             </div>
         </div>
         <div class="col-6 col-lg-1-7 ">
-            <div class="card d-flex flex-column justify-content-between p-3">
+            <div class="card box d-flex flex-column justify-content-between p-3" (click)="openLCO_Dialog(3)">
                 <div class="d-flex justify-content-between w-100">
                     <i class='bx bx-x-circle'></i>
-                    <span class="fw-bold">{{7}}</span>
+                    <span class="fw-bold">{{lcoDeatails?.expiredcount}}</span>
                 </div>
                 <div class="mt-2 mb-2 text-center text">Expired Smartcard</div>
             </div>
         </div>
         <div class="col-6 col-lg-1-7 ">
-            <div class="card d-flex flex-column justify-content-between p-3">
+            <div class="card box d-flex flex-column justify-content-between p-3" (click)="openLCO_Dialog(2)">
                 <div class="d-flex justify-content-between w-100">
                     <i class='bx bxs-id-card'></i>
-                    <span class="fw-bold">{{7}}</span>
+                    <span class="fw-bold">{{lcoDeatails?.activecount}}</span>
                 </div>
                 <div class="mt-2 mb-2 text-center text">Not Expired Smartcard</div>
             </div>
         </div>
 
         <div class="col-6 col-lg-1-7 ">
-            <div class="card d-flex flex-column justify-content-between p-3">
+            <div class="card box d-flex flex-column justify-content-between p-3">
                 <div class="d-flex justify-content-between w-100">
                     <i class='bx bxs-lock'></i>
-                    <span class="fw-bold">{{5}}</span>
+                    <span class="fw-bold">{{operatorDetailsCount?.suspendcount}}</span>
                 </div>
-                <div class="mt-2 mb-2 text-center">Total Suspended</div>
+                <div class="mt-2 mb-2 text-center text">Total Suspended</div>
             </div>
         </div>
         <div class="col-6 col-lg-1-7 ">
-            <div class="card d-flex flex-column justify-content-between p-3">
+            <div class="card box d-flex flex-column justify-content-between p-3" (click)="openLCO_Dialog(4)">
                 <div class="d-flex justify-content-between w-100">
                     <i class='bx bxs-user-plus'></i>
-                    <span class="fw-bold">{{7}}</span>
+                    <span class="fw-bold">{{lcoDeatails?.newcount}}</span>
                 </div>
                 <div class="mt-2 mb-2 text-center text">First Time Activation</div>
             </div>
         </div>
         <div class="col-6 col-lg-1-7 ">
-            <div class="card d-flex flex-column justify-content-between p-3">
+            <div class="card box d-flex flex-column justify-content-between p-3">
                 <div class="d-flex justify-content-between w-100">
                     <i class='bx bx-time-five'></i>
-                    <span class="fw-bold">{{7}}</span>
+                    <span class="fw-bold">{{operatorDetailsCount?.tomorrowexpirycount}}</span>
                 </div>
                 <div class="mt-2 mb-2 text-center text">Tomorrow Expiry</div>
             </div>
         </div>
         <div class="col-6 col-lg-1-7 ">
-            <div class="card d-flex flex-column justify-content-between p-3">
+            <div class="card box d-flex flex-column justify-content-between p-3">
                 <div class="d-flex justify-content-between w-100">
                     <i class='bx bx-dollar-circle'></i>
-                    <span class="fw-bold">{{7}}</span>
+                    <span class="fw-bold">{{operatorDetailsCount?.yesterdayrechargecount}}</span>
                 </div>
                 <div class="mt-2 mb-2 text-center text">Yesterday Recharge</div>
             </div>
         </div>
         <div class="col-6 col-lg-1-7 ">
-            <div class="card d-flex flex-column justify-content-between p-3">
+            <div class="card box d-flex flex-column justify-content-between p-3">
                 <div class="d-flex justify-content-between w-100">
                     <i class='bx bx-credit-card'></i>
-                    <span class="fw-bold">{{7}}</span>
+                    <span class="fw-bold">{{operatorDetailsCount?.todayrechargecount}}</span>
                 </div>
                 <div class="mt-2 mb-2 text-center text">Today Recharge</div>
             </div>
         </div>
         <div class="col-6 col-lg-1-7 ">
-            <div class="card d-flex flex-column justify-content-between p-3">
+            <div class="card box d-flex flex-column justify-content-between p-3" (click)="openLCO_Dialog(6)">
                 <div class="d-flex justify-content-between w-100">
                     <i class='bx bx-clipboard'></i>
-                    <span class="fw-bold">{{7}}</span>
+                    <span class="fw-bold">{{lcoDeatails?.boxinhand}}</span>
                 </div>
                 <div class="mt-2 mb-2 text-center text">Inventory</div>
             </div>
         </div>
         <div class="col-6 col-lg-1-7 ">
-            <div class="card d-flex flex-column justify-content-between p-3">
+            <div class="card box d-flex flex-column justify-content-between p-3">
                 <div class="d-flex justify-content-between w-100">
                     <i class='bx bx-map'></i>
-                    <span class="fw-bold">{{7}}</span>
+                    <span class="fw-bold">{{operatorDetailsCount?.areachange}}</span>
                 </div>
                 <div class="mt-2 mb-2 text-center text">Area Change</div>
             </div>
@@ -133,50 +132,78 @@
 <div class="row" style="padding: 10px;">
     <div class="col-12 col-md-7 display justify-content-center align-item-center balance gap-3">
         <div class="col-12 col-lg-4 mb-3 ">
-            <div class="card d-flex flex-column justify-content-between p-3">
-                <div class="mt-2 mb-3 text-center text1">Current Balance</div>
-                <h5>1000</h5>
+            <div class="card box d-flex flex-column justify-content-between p-3" (click)="addnew()">
+                <div class="d-flex justify-content-around">
+                    <div class="mt-2 mb-3 text-center text1">Current Balance</div>
+                    <i class="fa-solid fa-share forward mt-2 mb-3"></i>
+                </div>
+                <!-- <div class="mt-2 mb-3 text-center text1">Current Balance</div> -->
+                <div class="d-flex justify-content-center align-item-center ">
+                    <i class="fa-solid fa-indian-rupee-sign rupee mx-2"></i>
+                    <h5>{{operatorBalance}} </h5>
+                </div>
             </div>
         </div>
         <div class="col-12 col-lg-4 mb-3 ">
             <div class="card d-flex flex-column justify-content-between p-3">
                 <div class="mt-2 mb-3 text-center text1">MSO Recharge</div>
-                <h5>1000</h5>
+                <div class="d-flex justify-content-center align-item-center ">
+                    <i class="fa-solid fa-indian-rupee-sign rupee mx-2"></i>
+                    <h5>{{operatorDetailsCount?.todaymsorechargeamount}}</h5>
+                </div>
             </div>
         </div>
         <div class="col-12 col-lg-4 mb-3 ">
             <div class="card d-flex flex-column justify-content-between p-3">
                 <div class="mt-2 mb-3 text-center text1">Today Recharge</div>
-                <h5>1000</h5>
+                <div class="d-flex justify-content-center align-item-center ">
+                    <i class="fa-solid fa-indian-rupee-sign rupee mx-2"></i>
+                    <h5> {{operatorDetailsCount?.todayrechargecount}} </h5>
+                </div>
             </div>
         </div>
     </div>
     <div class="col-12 col-md-5 d-flex justify-content-end align-item-center online_recharge">
         <div class="col-12 col-lg-12  mb-3">
-            <div class="card d-flex flex-column justify-content-between align-items-center "
-                style="background: linear-gradient(180deg, #c44205, #9c4a01);">
+            <div class="card box d-flex flex-column justify-content-between align-items-center "
+                style="background: linear-gradient(180deg, #c44205, #9c4a01);" (click)="onOnlineRecharge()">
                 <div class="d-flex  w-100" style="justify-content: space-around;align-items: center;height: 100%;">
                     <span>
                         <i class="bx bx-bolt-circle" style="font-size: 40px; color: rgb(248, 244, 244);"></i>
                     </span>
                     <span class="online">Online Recharge </span>
-                    <span ><i class="bx bx-chevron-right-circle" style="color: white;"></i> </span>
+                    <span><i class="bx bx-chevron-right-circle" style="color: white;"></i> </span>
                 </div>
             </div>
         </div>
     </div>
 </div>
+<div class="display justify-content-start align-items-center ">
+    <div class="col-12 col-md-2 input_box mx-3 mb-3">
+        <!-- <input type="date" [(ngModel)]="date" (ngModelChange)="getbar(date)"> -->
+        <select name="month" id="month" [(ngModel)]="selectedMonth" (ngModelChange)="getbar(selectedMonth)">
+            <option value="0" selected>Select Month</option>
+            <option *ngFor="let month of months" [value]="month.value">{{ month.name }}
+            </option>
+        </select>
+    </div>
+    <div class="col-12 col-md-2 input_box mx-3 mb-3">
+        <!-- <input type="date" [(ngModel)]="date" (ngModelChange)="getbar(date)"> -->
+        <select name="year" id="year" [(ngModel)]="selectedYear" (ngModelChange)="getbar(selectedYear)">
+            <option value="0" selected>Select Year</option>
+            <option *ngFor="let year of years" [value]="year">{{ year }}</option>
+        </select>
+    </div>
+</div>
 
-<div class="row">
+<div class="row ">
     <div class=" col-12 col-md-7">
         <div class="card">
             <div class="display justify-content-between align-item-center" style="padding: 10px;">
                 <h5 class="text1">Monthwise Recharge Details</h5>
-                <div class="input_box">
-                    <input type="date">
-                </div>
+
             </div>
-            <div id="chartdiv" ></div>
+            <div id="chartdiv"></div>
         </div>
     </div>
     <div class="col-12 col-md-5">
@@ -184,7 +211,7 @@
             <div class="d-flex justify-content-between align-item-center" style="padding: 10px;">
                 <h5 class="text1">Monthwise Package Recharges Count</h5>
             </div>
-            <div id="chartpie" ></div>
+            <div id="chartpie"></div>
         </div>
     </div>
 

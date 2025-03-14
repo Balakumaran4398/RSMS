@@ -44,7 +44,7 @@ export class PaymentChannelComponent {
 
   columnDefs: ColDef[] = [
     {
-      headerName: "S.No", lockPosition: true, valueGetter: 'node.rowIndex+1', width: 100,
+      headerName: "S.No", lockPosition: true, valueGetter: 'node.rowIndex+1', width: 100,filter:false
     },
     {
       headerName: 'CHANNEL NAME',      cellStyle: { textAlign: 'left', }, 

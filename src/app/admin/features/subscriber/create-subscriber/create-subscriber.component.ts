@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, ViewChild ,OnDestroy, AfterViewInit} from '@angular/core';
+import { ChangeDetectorRef, Component, ViewChild, OnDestroy, AfterViewInit } from '@angular/core';
 import { AbstractControl, FormBuilder, FormControl, FormGroup, ValidationErrors, Validators } from '@angular/forms';
 import { BaseService } from 'src/app/_core/service/base.service';
 import { StorageService } from 'src/app/_core/service/storage.service';
@@ -66,6 +66,14 @@ export class CreateSubscriberComponent implements AfterViewInit, OnDestroy {
   selectedStreet: any;
   addressProoftypeid: any = '';
   idProoftypeid: any = '';
+
+
+  IsOperator: boolean = false;
+  Isuser: boolean = false;
+
+  lcoDeatails: any;
+  lcoId: any;
+
   constructor(private formBuilder: FormBuilder, private userservice: BaseService, private swal: SwalService, private cdr: ChangeDetectorRef, private storageservice: StorageService, private datePipe: DatePipe) {
     this.username = storageservice.getUsername();
     this.role = storageservice.getUserRole();
@@ -77,12 +85,27 @@ export class CreateSubscriberComponent implements AfterViewInit, OnDestroy {
       });
       this.filteredOperators = this.lco_list;
     })
+    if (this.role === 'ROLE_ADMIN') {
+      this.Isuser = true;
+      this.IsOperator = false;
+      console.log('ROLE_ADMIN');
+    } else if (this.role === 'ROLE_OPERATOR') {
+      this.Isuser = false;
+      this.IsOperator = true;
+      this.operatorIdoperatorId();
+      console.log('ROLE_OPERATOR');
+    }
+
   }
 
   ngOnInit(): void {
+
+    let operatoridValue = this.role === 'ROLE_OPERATOR' ? this.lcoId : this.operatorid;
+    console.log(operatoridValue);
+
     this.form = this.formBuilder.group(
       {
-        operatorid: ['', Validators.required || this.operatorid],
+        operatorid: [operatoridValue, [Validators.required]],
         areaid: ['', Validators.required || this.areaid],
         streetid: ['', Validators.required || this.streetid],
         casformid: ['',],
@@ -108,13 +131,26 @@ export class CreateSubscriberComponent implements AfterViewInit, OnDestroy {
     );
     this.loadIdProofList();
     this.loadAddProofList();
+   
+
   }
+  operatorIdoperatorId() {
+    this.userservice.getOpDetails(this.role, this.username).subscribe((data: any) => {
+      console.log(data);
+      this.lcoDeatails = data;
+      console.log(this.lcoDeatails);
+      this.lcoId = this.lcoDeatails?.operatorid;
+      console.log(this.lcoId);
+      this.lcoChange();
+    })
+  }
+
   ngOnDestroy(): void {
     ($('#Lco') as any).select2('destroy');
     ($('#Area') as any).select2('destroy');
     ($('#Street') as any).select2('destroy');
   }
-  
+
   ngAfterViewInit() {
     $('#Lco').select2({
       placeholder: 'Select an Operator',
@@ -582,12 +618,7 @@ export class CreateSubscriberComponent implements AfterViewInit, OnDestroy {
 
       return;
     }
-
-
   }
-
-
-
   onKeydown(event: KeyboardEvent) {
     const key = event.key;
     if (!/^\d$/.test(key) && key !== 'Backspace') {
@@ -604,6 +635,16 @@ export class CreateSubscriberComponent implements AfterViewInit, OnDestroy {
   get f(): { [key: string]: AbstractControl } {
     return this.form.controls;
   }
+  lcoChange() {
+    this.userservice.getAreaListByOperatorid(this.role, this.username, this.lcoId).subscribe((data: any) => {
+      this.area_list = Object.keys(data).map(key => {
+        const value = data[key];
+        const name = key;
+        return { name: name, value: value };
+      });
+      this.filteredAreas = this.area_list;
+    })
+  }
 
   onOperatorChange(operator: any): void {
     const match = operator.match(/^(.+)\((\d+)\)$/);
@@ -619,7 +660,7 @@ export class CreateSubscriberComponent implements AfterViewInit, OnDestroy {
       this.form.patchValue({
         operatorid: this.operatorid,
       });
-      this.userservice.getAreaListByOperatorid(this.role, this.username, this.operatorid).subscribe((data: any) => {
+      this.userservice.getAreaListByOperatorid(this.role, this.username, this.operatorid || this.lcoId).subscribe((data: any) => {
         this.area_list = Object.keys(data).map(key => {
           const value = data[key];
           const name = key;

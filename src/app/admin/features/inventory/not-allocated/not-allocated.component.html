@@ -35,9 +35,9 @@
                     <div class="tooltip">Pdf</div>
                 </div>
             </div>
-            <ag-grid-angular #agGrid id="myGrid" domLayout='autoHeight' class="ag-theme-alpine table-class" rowAnimation
-                style="max-height: 775px;overflow: scroll;" [rowSelection]="rowSelection" [gridOptions]="gridOptions"
-                [columnDefs]="columnDefs" [rowData]="rowData" (selectionChanged)="onSelectionChanged()"
+            <ag-grid-angular #agGrid id="myGrid" domLayout='normal' class="ag-theme-alpine table-class" rowAnimation
+                [rowSelection]="rowSelection" [gridOptions]="gridOptions"
+                [columnDefs]="columnDefs" [rowData]="rowData" (selectionChanged)="onSelectionChanged($event)"
                 (gridReady)="onGridReady($event)" [enableCellTextSelection]="true">
             </ag-grid-angular>
             <!-- <div class="d-flex justify-content-center align-items-center position-relative " style="padding: 10px;"

@@ -972,6 +972,7 @@ export class ExcelService {
       { key: 'i', width: 25 }, // Expiry Date
       { key: 'j', width: 25 }, // Area id
       { key: 'k', width: 20 }, // Customer No
+      { key: 'l', width: 20 }, // Activation Date
     ];
 
     // Save the Excel file

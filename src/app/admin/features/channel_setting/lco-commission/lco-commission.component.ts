@@ -207,7 +207,7 @@ export class LcoCommissionComponent {
     if (this.selectedTab === 'dis_commission') {
       this.discolumnnDefs = [
         {
-          headerName: "S.No", lockPosition: true, valueGetter: 'node.rowIndex+1', width: 100,
+          headerName: "S.No", lockPosition: true, valueGetter: 'node.rowIndex+1', width: 100, filter: false
         },
         { headerName: "PRODUCT NAME", field: 'productname', width: 200, cellStyle: { textAlign: 'left' }, },
         { headerName: "PRODUCT ID", field: 'productid', width: 130 },
@@ -220,8 +220,10 @@ export class LcoCommissionComponent {
           headerName: "CUSTOMER AMOUNT", field: 'customeramount', width: 150,
           cellRenderer: (params: any) => `<span >${params.value ? params.value.toFixed(2) : '0.00'}</span> `
         },
-        { headerName: "LCO COMMISSION", field: 'commission',
-           width: 150, cellRenderer: (params: any) => `<span >${params.value ? params.value.toFixed(2) : '0.00'}</span> ` },
+        {
+          headerName: "LCO COMMISSION", field: 'commission',
+          width: 150, cellRenderer: (params: any) => `<span >${params.value ? params.value.toFixed(2) : '0.00'}</span> `
+        },
         {
           headerName: "MSO AMOUNT", field: 'msoamount', width: 140,
           cellRenderer: (params: any) => `<span >${params.value ? params.value.toFixed(2) : '0.00'}</span> `
@@ -259,14 +261,15 @@ export class LcoCommissionComponent {
     } else if (this.selectedTab === 'dis_membership') {
       this.discolumnnDefs = [
         {
-          headerName: "S.No", lockPosition: true, valueGetter: 'node.rowIndex+1', width: 100,
+          headerName: "S.No", lockPosition: true, valueGetter: 'node.rowIndex+1', width: 100, filter: false
         },
         { headerName: "DISTRIBUTOR NAME	", field: 'operatorname', width: 250, cellStyle: { textAlign: 'left' }, },
-        { headerName: "USERNAME", field: 'userid', width: 150 ,cellStyle: { textAlign: 'left' },},
+        { headerName: "USERNAME", field: 'userid', width: 150, cellStyle: { textAlign: 'left' }, },
         { headerName: "PASSWORD", field: 'password', width: 150 },
-        { headerName: "BALANCE", field: 'balance', width: 150,
-           cellRenderer: (params: any) => `<span >${params.value ? params.value.toFixed(2) : '0.00'}</span> `
-         },
+        {
+          headerName: "BALANCE", field: 'balance', width: 150,
+          cellRenderer: (params: any) => `<span >${params.value ? params.value.toFixed(2) : '0.00'}</span> `
+        },
         {
           headerName: "EDIT", field: '', width: 100,
           cellRenderer: (params: any) => {
@@ -293,14 +296,15 @@ export class LcoCommissionComponent {
     } else if (this.selectedTab === 'commission') {
       this.discolumnnDefs = [
         {
-          headerName: "S.No", lockPosition: true, valueGetter: 'node.rowIndex+1', width: 100,
+          headerName: "S.No", lockPosition: true, valueGetter: 'node.rowIndex+1', width: 100, filter: false
         },
         { headerName: "PRODUCT NAME", field: 'productname', width: 250, cellStyle: { textAlign: 'left' }, },
         { headerName: "PRODUCT ID", field: 'productid', width: 150 },
         { headerName: "PRODUCT TYPE", field: 'productTypeDisplay', width: 190, cellStyle: { textAlign: 'left' } },
-        { headerName: "PRODUCT RATE", field: 'rate', width: 140,
-           cellRenderer: (params: any) => `<span >${params.value ? params.value.toFixed(2) : '0.00'}</span> `
-         },
+        {
+          headerName: "PRODUCT RATE", field: 'rate', width: 140,
+          cellRenderer: (params: any) => `<span >${params.value ? params.value.toFixed(2) : '0.00'}</span> `
+        },
         // {
         //   headerName: "PRODUCT RATE", field: 'rate', width: 150, cellRenderer: (params: any) => `<span style="color: #035203;
         //   font-weight: bold;;">₹</span> ${params.value}`
@@ -328,15 +332,16 @@ export class LcoCommissionComponent {
         },
         {
           headerName: "CUSTOMER AMOUNT", field: 'customeramount', width: 180,
-         cellRenderer: (params: any) => `<span >${params.value ? params.value.toFixed(2) : '0.00'}</span> `
+          cellRenderer: (params: any) => `<span >${params.value ? params.value.toFixed(2) : '0.00'}</span> `
         },
         {
           headerName: "MSO AMOUNT", field: 'msoamount', width: 150,
-        cellRenderer: (params: any) => `<span >${params.value ? params.value.toFixed(2) : '0.00'}</span> `
+          cellRenderer: (params: any) => `<span >${params.value ? params.value.toFixed(2) : '0.00'}</span> `
         },
-        { headerName: "COMMISSION", field: 'commissionvalue', width: 160,
-           cellRenderer: (params: any) => `<span >${params.value ? params.value.toFixed(2) : '0.00'}</span> `
-         },
+        {
+          headerName: "COMMISSION", field: 'commissionvalue', width: 160,
+          cellRenderer: (params: any) => `<span >${params.value ? params.value.toFixed(2) : '0.00'}</span> `
+        },
         {
           headerName: "	IS PERCENTAGE", field: 'ispercentage', width: 150,
           cellRenderer: (params: any) => {
@@ -352,7 +357,7 @@ export class LcoCommissionComponent {
   }
   columnDefs: any[] = [
     {
-      headerName: "S.No", lockPosition: true, valueGetter: 'node.rowIndex+1', width: 100,
+      headerName: "S.No", lockPosition: true, valueGetter: 'node.rowIndex+1', width: 100, filter: false
     },
     { headerName: "PRODUCT NAME", field: 'productname', width: 200 },
     { headerName: "PRODUCT ID", field: 'productid', width: 150 },
@@ -406,10 +411,10 @@ export class LcoCommissionComponent {
 
   columnDefs1: any[] = [
     {
-      headerName: "S.No", lockPosition: true, valueGetter: 'node.rowIndex+1', width: 100,
+      headerName: "S.No", lockPosition: true, valueGetter: 'node.rowIndex+1', width: 100, filter: false
     },
     {
-      headerName: "GROUP NAME",cellStyle: { textAlign: 'left' },
+      headerName: "GROUP NAME", cellStyle: { textAlign: 'left' },
       field: 'groupName',
       width: 200,
       filter: true,
@@ -441,7 +446,7 @@ export class LcoCommissionComponent {
   columnDefs2: any[] = [
     {
       headerName: "S.No", lockPosition: true, valueGetter: 'node.rowIndex+1', width: 100, headerCheckboxSelection: true,
-      checkboxSelection: true,
+      checkboxSelection: true, filter: false
     },
     { headerName: "OPERATOR NAME", field: 'operatorname', width: 270, cellStyle: { textAlign: 'left' }, },
     { headerName: "OPERATOR ID", field: 'operatorid', width: 220, },
@@ -449,7 +454,7 @@ export class LcoCommissionComponent {
   ];
   columnDefs3: any[] = [
     {
-      headerName: "S.No", lockPosition: true, valueGetter: 'node.rowIndex+1', width: 100,
+      headerName: "S.No", lockPosition: true, valueGetter: 'node.rowIndex+1', width: 100, filter: false
     },
     { headerName: "OPERATOR NAME", field: 'operatorname', width: 200, cellStyle: { textAlign: 'left' }, },
     {
@@ -481,26 +486,8 @@ export class LcoCommissionComponent {
 
   ]
   onOperatorChange(selectedOperator: any) {
-    // console.log('this.selectedTab', selectedOperator);
-    // this.selectedOperator = selectedOperator;
-    // // this.lcomembershipid = selectedOperator.value;
-    // this.selectedOperator = selectedOperator.name;
-    // console.log(this.selectedOperator);
-    // console.log(this.lcomembershipid);
-
-
-    // if (this.lcomembershipid === 1) {
-    //   this.lcomembershipid = 1;
-    // }
-
-    console.log(selectedOperator);
-    console.log(this.lcomembershipid);
-
     this.selectedOperator = selectedOperator;
     this.lcomembershipid = selectedOperator.value;
-    console.log(this.lcomembershipid);
-    // this.selectedLcoName = selectedOperator.name;
-    // this.lcomembershipname= selectedOperator.name;
     if (this.selectedTab === 'dis_commission') {
 
       this.rowData = [];

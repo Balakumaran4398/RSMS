@@ -33,9 +33,6 @@ export const MY_FORMATS = {
   templateUrl: './operatordialogue.component.html',
   styleUrls: ['./operatordialogue.component.scss'],
   providers: [
-    // `MomentDateAdapter` can be automatically provided by importing `MomentDateModule` in your
-    // application's root module. We provide it at the component level here, due to limitations of
-    // our example generation script.
     {
       provide: DateAdapter,
       useClass: MomentDateAdapter,
@@ -48,15 +45,7 @@ export const MY_FORMATS = {
 })
 export class OperatordialogueComponent implements OnInit {
   readonly date = new FormControl(moment());
-  // setMonthAndYear(normalizedMonthAndYear: Moment, datepicker: MatDatepicker<Moment>) {
-  //   const ctrlValue = this.date.value ?? moment();
-  //   ctrlValue.month(normalizedMonthAndYear.month());
-  //   ctrlValue.year(normalizedMonthAndYear.year());
-  //   this.date.setValue(ctrlValue);
-  //   datepicker.close();
-  // }
   chosenYearHandler(normalizedYear: Moment) {
-    // const ctrlValue = this.date.value;
     const ctrlValue = this.date.value ?? moment();
     ctrlValue.year(normalizedYear.year());
     this.date.setValue(ctrlValue);
@@ -64,14 +53,12 @@ export class OperatordialogueComponent implements OnInit {
   }
 
   chosenMonthHandler(normalizedMonth: Moment, datepicker: MatDatepicker<Moment>) {
-    // const ctrlValue = this.date.value;
     const ctrlValue = this.date.value ?? moment();
     ctrlValue.month(normalizedMonth.month());
     this.date.setValue(ctrlValue);
     datepicker.close();
     this.passSelectedDate(ctrlValue);
     console.log(ctrlValue);
-
   }
   getMonthandyear() {
     console.log(this.date);
@@ -216,7 +203,7 @@ export class OperatordialogueComponent implements OnInit {
 
 
 
-  getExcel() {   
+  getExcel() {
     const generateExcelReport = (areatitle: string, areasub: string, header: string[], datas: any[]) => {
       const title = (this.operatorname + ' - ' + this.OType + ' REPORT').toUpperCase();
       const sub = 'MSO ADDRESS:' + this.msodetails;
@@ -246,7 +233,7 @@ export class OperatordialogueComponent implements OnInit {
             areasub = 'A3:K3';
             header = ['S.NO', 'SUBSCRIBER ID', 'SUBSCRIBER NAME', 'ADDRESS', 'AREA NAME', 'MOBILE NO', 'SMARTCARD', 'BOXID', 'ACTIVATION DATE', 'EXPIRY DATE', 'PACKAGE STATUS'];
             generateDataRows(['subid', 'customername', 'address', 'areaname', 'mobileno', 'smartcard', 'boxid', 'activationdate', 'expirydate', 'statusdisplay'], this.rowData);
-         
+
           } else if (this.type === 2) {
             console.log('type', this.type);
             areatitle = 'A1:K2';
@@ -343,7 +330,7 @@ export class OperatordialogueComponent implements OnInit {
       });
   }
 
-  
+
   getPDF() {
     this.swal.Loading();
     this.userService.getOperatorDashboardPDFReport(this.role, this.username, this.type, 1, this.operatorid, 0, 0, 0)

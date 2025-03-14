@@ -42,6 +42,9 @@ export class AddonPackageComponent {
   gridApi: any;
   rowData: any;
   type: number = 2;
+  rowData1: any;
+  lcoDeatails: any;
+  operatorid: any;
 
   addon: boolean = true;
   constructor(public dialog: MatDialog, private router: Router, public userService: BaseService, storageService: StorageService) {
@@ -53,14 +56,37 @@ export class AddonPackageComponent {
       console.log(data);
       this.rowData = data;
     })
+    if (this.role == 'ROLE_OPERATOR') {
+      this.operatorIdoperatorId();
+    }
+  }
+
+  operatorIdoperatorId() {
+    console.log('ROLE_OPERATOR');
+    this.userService.getOpDetails(this.role, this.username).subscribe((data: any) => {
+      console.log(data);
+      this.lcoDeatails = data;
+      console.log(this.lcoDeatails);
+      this.operatorid = this.lcoDeatails?.operatorid;
+      console.log(this.operatorid);
+      this.onlcoPackageList();
+    })
+  }
+  onlcoPackageList() {
+    this.userService.getLcoPackageList(this.role, this.username, this.operatorid, 2).subscribe((data: any) => {
+      console.log(data);
+      this.rowData1 = data;
+      console.log(this.rowData1);
+
+    })
   }
   onGridReady(params: { api: any; }) {
     this.gridApi = params.api;
   }
   columnDefs: ColDef[] = [
-    { headerName: "S.No", lockPosition: true, valueGetter: 'node.rowIndex+1', cellClass: 'locked-col', width: 120 },
-    { headerName: "PACKAGE NAME", field: 'addon_package_name',width: 250 , cellStyle: { textAlign: 'left' }, },
-    { headerName: "BROADCASTER NAME", field: 'broadcaster_name',width: 250, cellStyle: { textAlign: 'left' }, },
+    { headerName: "S.No", lockPosition: true, valueGetter: 'node.rowIndex+1', cellClass: 'locked-col', width: 120, filter: false },
+    { headerName: "PACKAGE NAME", field: 'addon_package_name', width: 250, cellStyle: { textAlign: 'left' }, },
+    { headerName: "BROADCASTER NAME", field: 'broadcaster_name', width: 250, cellStyle: { textAlign: 'left' }, },
     {
       headerName: 'Actions', width: 250,
       cellRenderer: (params: any) => {
@@ -137,7 +163,35 @@ export class AddonPackageComponent {
       }
     },
   ]
+  columnDefs1: any[] = [
+    {
+      headerName: "S.No", lockPosition: true, valueGetter: 'node.rowIndex+1', width: 120, filter: false
+    },
+    { headerName: "PACKAGE NAME", field: 'addonpackagename', width: 300, cellStyle: { textAlign: 'left' }, },
+    { headerName: "REFERENCE ID", field: 'orderid', width: 250, cellStyle: { textAlign: 'center' }, },
+    { headerName: "PACKAGE RATE", field: 'rate', width: 250, cellStyle: { textAlign: 'center' }, },
+    {
+      headerName: 'ACTION', width: 380, filter: false,
+      cellRenderer: (params: any) => {
+        const viewButton = document.createElement('button');
+        // View button
+        viewButton.innerHTML = '<button style="width: 5em;background-color:rgb(145 6 51);border-radius: 5px;height: 2em;color:white"><p style="margin-top:-6px">View</p></button>';
+        viewButton.style.backgroundColor = 'transparent';
+        viewButton.style.border = 'none';
+        viewButton.title = 'View';
+        viewButton.style.cursor = 'pointer';
+        viewButton.style.marginLeft = '20px';
+        viewButton.addEventListener('click', () => {
+          this.openViewDialog(params.data);
+        });
+        const div = document.createElement('div');
 
+        div.appendChild(viewButton);
+        return div;
+      },
+    },
+
+  ]
 
   generatePdf(id: number, name: any) {
     this.processingSwal();

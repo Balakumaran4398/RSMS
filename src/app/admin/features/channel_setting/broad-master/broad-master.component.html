@@ -1,33 +1,35 @@
 <div class="chart">
     <h3>Broadcaster Details</h3>
     <div class="row ">
-        <div class="">
-            <div class="row d-flex align-items-center justify-content-center">
-                <div class=" col-md-2 col-lg-2"></div>
-                <div class="col-12 co-sm-12 col-md-8 col-lg-8">
-                    <div class="col d-flex justify-content-end align-items-end mb-3">
-                        <a class="btn btn-outline-success mx-1  bttn" (click)="addnew()">
+        <div class="row d-flex align-items-center justify-content-center">
+            <div class=" col-md-2 col-lg-2"></div>
+            <div class="col-12 col-sm-12 col-md-12 col-lg-12">
+                <div class="col display justify-content-end align-items-center mb-3">
+                    <!-- <div class="d-flex justify-content-start aign-items-center mt-3"
+                            style="font-size: 16px;color: rgb(3, 16, 138);">Select count - <span
+                                style="font-size: 16px;color: rgb(138, 30, 3);">{{selectCount}}</span></div> -->
+                    <div>
+                        <a class="btn btn-outline-success mx-1 bttn " (click)="addnew()">
                             <i class="fa fa-plus"></i> New
                         </a>
-                        <button class="btn btn-outline-info mx-1 bttn" mat-raised-button color="primary" type="button"
+                        <button class="btn btn-outline-info mx-1 " mat-raised-button color="primary" type="button"
                             [disabled]="!isAnyRowSelected" (click)="Active(this.selectedIds)">
                             Active
                         </button>
-                        <button class="btn btn-outline-info mx-1 bttn" mat-raised-button color="accent" type="button"
+                        <button class="btn btn-outline-info mx-1 " mat-raised-button color="accent" type="button"
                             [disabled]="!isAnyRowSelected" (click)="Deactive(this.selectedIds)">
                             Deactive
                         </button>
                     </div>
-                    <ag-grid-angular #agGrid id="myGrid" domLayout='normal' class="ag-theme-alpine table-class"
-                        style="max-height: 590px;overflow: scroll;overflow-x: hidden;overflow-y: hidden;" rowAnimation [rowSelection]="rowSelection"
-                        [gridOptions]="gridOptions" [columnDefs]="columnDefs" [rowData]="rowData"
-                        (selectionChanged)="onSelectionChanged()" (gridReady)="onGridReady($event)"
-                        [enableCellTextSelection]="true">
-                    </ag-grid-angular>
                 </div>
-                <div class=" col-md-2 col-lg-2"></div>
-
+                <ag-grid-angular #agGrid id="myGrid" domLayout='normal' class="ag-theme-alpine table-class"
+                     rowAnimation
+                    [rowSelection]="rowSelection" [gridOptions]="gridOptions" [columnDefs]="columnDefs"
+                    [rowData]="rowData" (selectionChanged)="onSelectionChanged()" (gridReady)="onGridReady($event)"
+                    [enableCellTextSelection]="true">
+                </ag-grid-angular>
             </div>
+            <div class=" col-md-2 col-lg-2"></div>
 
         </div>
     </div>

@@ -25,8 +25,6 @@
             </mat-autocomplete>
         </mat-form-field>
 
-
-
         <div class="d-flex justify-content-center mb-2" style="align-items: baseline;">
             <button class="btn btn-outline-info mx-1" mat-raised-button color="custom-select"
                 style="background-color: #0c5e85;color: white;" type="button" (click)="New_lco()"> <i
@@ -49,8 +47,8 @@
     </div>
     <div class="grid-container">
         <!-- <span class="k col-12 col-md-4" *ngFor="let operator of operator_details"> -->
-            <div *ngFor="let operator of pagedOperators">
-        <!-- <div *ngFor="let operator of operator_details"> -->
+        <div *ngFor="let operator of pagedOperators">
+            <!-- <div *ngFor="let operator of operator_details"> -->
             <mat-card class="card" style="height: 100%;">
                 <mat-card-header>
                     <mat-card-subtitle class="sub-tittle mb-3">
@@ -218,9 +216,6 @@
                                     <span class="tooltip">TO CLICK SUBLCO DETAILS</span>
                                 </a>
                             </div>
-
-
-
 
                             <!-- <div class="files tooltip-container mx-2">
                                 <a (click)="navgetToUrl(operator.operatorid)" class="tooltip-container">

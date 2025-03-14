@@ -58,8 +58,10 @@ export class SpecialBulkpackageComponent implements OnInit {
   typeFormControl: any;
   LcoFormControl: any;
   columnDefs1: ColDef[] = [
-    { headerName: "S.No", lockPosition: true, valueGetter: 'node.rowIndex+1', cellClass: 'locked-col', width: 80,
-       suppressNavigable: true, sortable: false, filter: false },
+    {
+      headerName: "S.No", lockPosition: true, valueGetter: 'node.rowIndex+1', cellClass: 'locked-col', width: 80,
+      suppressNavigable: true, sortable: false, filter: false
+    },
     { headerName: "CUSTOMER NAME", field: 'intend_to' },
     { headerName: "SMARTCARD", field: '' },
     { headerName: "BOX ID", field: '' },
@@ -82,18 +84,18 @@ export class SpecialBulkpackageComponent implements OnInit {
     pagination: true,
   }
   columnDefs: any;
-  constructor(public dialog: MatDialog, private fb: FormBuilder, private userservice: BaseService, private storageService: StorageService, 
+  constructor(public dialog: MatDialog, private fb: FormBuilder, private userservice: BaseService, private storageService: StorageService,
     private swal: SwalService) {
 
     this.username = storageService.getUsername();
     this.role = storageService.getUserRole();
     this.columnDefs = [
       { headerName: "S.No", lockPosition: true, valueGetter: 'node.rowIndex+1', cellClass: 'locked-col', width: 100, suppressNavigable: true, sortable: false, filter: false },
-      { headerName: "CUSTOMER NAME", field: 'customername',width: 350  },
-      { headerName: "SMARTCARD", field: 'smartcard',width: 300},
-      { headerName: "BOX ID", field: 'boxid' ,width: 350},
-      { headerName: "PACKAGE NAME", field: 'productname',width: 330 },
-      { headerName: "EXPIRY DATE", field: 'expirydate' ,width: 350},
+      { headerName: "CUSTOMER NAME", field: 'customername', width: 350 },
+      { headerName: "SMARTCARD", field: 'smartcard', width: 300 },
+      { headerName: "BOX ID", field: 'boxid', width: 350 },
+      { headerName: "PACKAGE NAME", field: 'productname', width: 330 },
+      { headerName: "EXPIRY DATE", field: 'expirydate', width: 350 },
     ];
   }
 
@@ -101,70 +103,40 @@ export class SpecialBulkpackageComponent implements OnInit {
     console.log(tab);
 
     if (tab === 'bulk_package') {
-      console.log(this.rowData=[]);
+      console.log(this.rowData = []);
       this.columnDefs = [
         { headerName: "S.No", lockPosition: true, valueGetter: 'node.rowIndex+1', cellClass: 'locked-col', width: 100, suppressNavigable: true, sortable: false, filter: false },
-        { headerName: "CUSTOMER NAME", field: 'customername',width: 350  },
-        { headerName: "SMARTCARD", field: 'smartcard',width: 300},
-        { headerName: "BOX ID", field: 'boxid' ,width: 350},
-        { headerName: "PACKAGE NAME", field: 'productname',width: 330 },
-        { headerName: "EXPIRY DATE", field: 'expirydate' ,width: 350},
+        { headerName: "CUSTOMER NAME", field: 'customername', width: 350 },
+        { headerName: "SMARTCARD", field: 'smartcard', width: 300 },
+        { headerName: "BOX ID", field: 'boxid', width: 350 },
+        { headerName: "PACKAGE NAME", field: 'productname', width: 330 },
+        { headerName: "EXPIRY DATE", field: 'expirydate', width: 350 },
       ];
     } else if (tab === 'pending') {
-      console.log(this.rowData=[]);
+      console.log(this.rowData = []);
       this.columnDefs = [
         { headerName: "S.No", lockPosition: true, valueGetter: 'node.rowIndex+1', cellClass: 'locked-col', width: 80, suppressNavigable: true, sortable: false, filter: false },
-        { headerName: "CUSTOMER NAME	", field: 'customername',width: 200  },
-        { headerName: "SMARTCARD", field: 'smartcard',width: 250 },
-        { headerName: "BOX ID", field: 'boxid' ,width: 250},
-        { headerName: "CREATED DATE", field: 'createddate',width: 250 },
-        { headerName: "PACKAGE NAME", field: 'expirydate',width: 250 },
-        { headerName: "EXPIRY DATE", field: 'packagename',width: 250  },
-        {
-          headerName: "STATUS",width: 230,
-          field: 'casresponse',
-          // field: 'status',
-          // cellRenderer: (params: any) => {
-          //   return params.value === 1 ? 'Active' : 'Deactive';
-          // },
-          // cellStyle: (params: any) => {
-          //   if (params.value === 1) {
-          //     return { color: 'green', fontWeight: 'bold' };
-          //   } else if (params.value === 0) {
-          //     return { color: 'red', fontWeight: 'bold' };
-          //   }
-          //   return null;
-          // }
-        }
+        { headerName: "CUSTOMER NAME	", field: 'customername', width: 200 },
+        { headerName: "SMARTCARD", field: 'smartcard', width: 250 },
+        { headerName: "BOX ID", field: 'boxid', width: 250 },
+        { headerName: "CREATED DATE", field: 'createddate', width: 250 },
+        { headerName: "PACKAGE NAME", field: 'expirydate', width: 250 },
+        { headerName: "EXPIRY DATE", field: 'packagename', width: 250 },
+        { headerName: "STATUS", width: 230, field: 'casresponse', }
 
       ];
     } else if (tab === 'archive') {
-      console.log(this.rowData=[]);
+      console.log(this.rowData = []);
       this.columnDefs = [
         { headerName: "S.No", lockPosition: true, valueGetter: 'node.rowIndex+1', cellClass: 'locked-col', width: 80, suppressNavigable: true, sortable: false, filter: false },
-        { headerName: "OPERATOR NAME	", field: 'operatorname',width: 200 },
-        { headerName: "CUSTOMER NAME	", field: 'customername',width: 200 },
-        { headerName: "SMARTCARD", field: 'smartcard',width: 250 },
-        { headerName: "BOX ID", field: 'boxid',width: 200 },
-        { headerName: "CREATED DATE", field: 'createddate',width: 200 },
-        { headerName: "PACKAGE NAME", field: 'expirydate',width: 250 },
-        { headerName: "EXPIRY DATE", field: 'packagename',width: 200 },
-        {
-          headerName: "STATUS",
-          field: 'casresponse',width: 180
-          // field: 'status',
-          // cellRenderer: (params: any) => {
-          //   return params.value === 1 ? 'Active' : 'Deactive';
-          // },
-          // cellStyle: (params: any) => {
-          //   if (params.value === 1) {
-          //     return { color: 'green', fontWeight: 'bold' };
-          //   } else if (params.value === 0) {
-          //     return { color: 'red', fontWeight: 'bold' };
-          //   }
-          //   return null;
-          // }
-        }
+        { headerName: "OPERATOR NAME	", field: 'operatorname', width: 200 },
+        { headerName: "CUSTOMER NAME	", field: 'customername', width: 200 },
+        { headerName: "SMARTCARD", field: 'smartcard', width: 250 },
+        { headerName: "BOX ID", field: 'boxid', width: 200 },
+        { headerName: "CREATED DATE", field: 'createddate', width: 200 },
+        { headerName: "PACKAGE NAME", field: 'expirydate', width: 250 },
+        { headerName: "EXPIRY DATE", field: 'packagename', width: 200 },
+        { headerName: "STATUS", field: 'casresponse', width: 180 }
 
       ];
     }
@@ -202,7 +174,7 @@ export class SpecialBulkpackageComponent implements OnInit {
   }
 
   fetchOperatorList() {
-    this.userservice.getOeratorList(this.role, this.username,2).subscribe((data: any) => {
+    this.userservice.getOeratorList(this.role, this.username, 2).subscribe((data: any) => {
       console.log(data);
       this.operatorList = Object.keys(data).map(key => {
         const value = data[key];
@@ -217,29 +189,29 @@ export class SpecialBulkpackageComponent implements OnInit {
   // }
   selectbulk(tab: string) {
     this.selectedTab = tab;
-    this.package='';
-    this.typelist='';
-    this.fromdate='';
-    this.todate='';
-    this.operatorid='';
+    this.package = '';
+    this.typelist = '';
+    this.fromdate = '';
+    this.todate = '';
+    this.operatorid = '';
     this.updateColumnDefs(tab);
 
   }
   selectPending(tab: string) {
     this.selectedTab = tab;
-    this.typelist='';
-    this.fromdate='';
-    this.todate='';
-    this.operatorid='';
+    this.typelist = '';
+    this.fromdate = '';
+    this.todate = '';
+    this.operatorid = '';
     this.updateColumnDefs(tab);
     this.service();
   }
   selectArchive(tab: string) {
     this.selectedTab = tab;
-    this.typelist='';
-    this.fromdate='';
-    this.todate='';
-    this.operatorid='';
+    this.typelist = '';
+    this.fromdate = '';
+    this.todate = '';
+    this.operatorid = '';
     this.updateColumnDefs(tab);
   }
 
@@ -345,7 +317,7 @@ export class SpecialBulkpackageComponent implements OnInit {
         }
       );
     } else if (this.typelist === 3) {
-      this.userservice.getAllBulkPackageListByFromdateTodateAndStatus(this.role, this.username, this.fromdate || null, this.todate, 0,1).subscribe(
+      this.userservice.getAllBulkPackageListByFromdateTodateAndStatus(this.role, this.username, this.fromdate || null, this.todate, 0, 1).subscribe(
         (response: HttpResponse<any[]>) => {
           if (response.status === 200) {
             this.updateColumnDefs(this.selectedTab);
@@ -413,7 +385,7 @@ export class SpecialBulkpackageComponent implements OnInit {
         }
       );
     } else if (this.typelist === 3) {
-      this.userservice.getAllBulkPackageListByFromdateTodateAndStatus(this.role, this.username, this.fromdate || null, this.todate || null, this.alltypelist,2).subscribe(
+      this.userservice.getAllBulkPackageListByFromdateTodateAndStatus(this.role, this.username, this.fromdate || null, this.todate || null, this.alltypelist, 2).subscribe(
         (response: HttpResponse<any[]>) => {
           if (response.status === 200) {
             this.updateColumnDefs(this.selectedTab);

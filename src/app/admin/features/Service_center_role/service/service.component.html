@@ -68,6 +68,7 @@
                         {{boxid}}
                     </div>
                 </div>
+                <!-- cvcxvcxv- {{noSmartcardDetails?.referencenumber}} -->
                 <div *ngIf="!nosmartcard" class="input_box d-flex justify-content-start align-items-center mb-2"
                     style="margin-left: 20px;">
                     <div class="col-5 col-md-3 d-flex justify-content-start">
@@ -76,9 +77,10 @@
                     <div class="col-1 col-md-1 d-flex justify-content-center align-items-center">
                         <span>:</span>
                     </div>
+
                     <div class="col-6 col-md-6 input_box">
                         <input type="text" [(ngModel)]="tokenNo" placeholder="Enter Token Number"
-                            [disabled]="noSmartcardDetails?.referencenumber || smartcardDetails?.referencenumber?.length > 0">
+                            [disabled]="!(noSmartcardDetails?.referencenumber == 0 || (smartcardDetails?.referencenumber?.length > 0))">
                     </div>
                 </div>
 
@@ -115,8 +117,10 @@
                         <span>:</span>
                     </div>
                     <div class="col-6 col-md-6 input_box">
+                        <!-- <input type="text" [(ngModel)]="tokenNo" placeholder="Enter Token Number"
+                            [disabled]="noSmartcardDetails?.referencenumber || smartcardDetails?.referencenumber?.length > 0"> -->
                         <input type="text" [(ngModel)]="tokenNo" placeholder="Enter Token Number"
-                            [disabled]="noSmartcardDetails?.referencenumber || smartcardDetails?.referencenumber?.length > 0">
+                            [disabled]="!(noSmartcardDetails?.referencenumber == 0 || smartcardDetails?.referencenumber?.length > 0)">
                     </div>
                 </div>
                 <div class="input_box d-flex justify-content-start align-items-center mb-2" style="margin-left: 20px;">
@@ -194,8 +198,8 @@
                         </select>
                     </div>
                 </div>
-                <div *ngIf="action && action !== 'NA' || 0" class=" d-flex justify-content-start align-items-center mb-2"
-                    style="margin-left: 20px;">
+                <div *ngIf="action && action !== 'NA' || 0"
+                    class=" d-flex justify-content-start align-items-center mb-2" style="margin-left: 20px;">
                     <div class="col-5 col-md-3 d-flex justify-content-start input_box">
                         <span>Type</span>
                     </div>
@@ -741,8 +745,8 @@
                     </div>
                 </div> -->
 
-                <div *ngIf="action && action !== 'NA' || 0" class=" d-flex justify-content-start align-items-center mb-2"
-                    style="margin-left: 20px;">
+                <div *ngIf="action && action !== 'NA' || 0"
+                    class=" d-flex justify-content-start align-items-center mb-2" style="margin-left: 20px;">
                     <div class="col-5 col-md-3 d-flex justify-content-start input_box">
                         <span>Type</span>
                     </div>

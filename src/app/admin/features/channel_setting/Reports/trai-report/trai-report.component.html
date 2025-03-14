@@ -1,6 +1,7 @@
 <h4>Trai Reports</h4>
 <!-- ------------------------------PACKAGE BASED REPORT---------------------------------------------- -->
-<div style="max-height: 740px; overflow: scroll;overflow-x: hidden;">
+<!-- <div style="max-height: 740px; overflow: scroll;overflow-x: hidden;"> -->
+<div >
     <section>
         <mat-accordion class="example-headers-align">
             <mat-expansion-panel [expanded]="step() === 0" (opened)="setStep(0)" hideToggle class="pannel">
@@ -11,8 +12,7 @@
                     <div class="card royal-card tooltip-container" (click)="openPackageBaseDialogue('package')">
                         <i class="fas fa-layer-group royal-icon"></i>
                         <div class="royal-content">
-                            <strong>Logs of Creation and Modification of <br> Packages or any particular
-                                period</strong>
+                            <strong>Logs of Creation and Modification of <br> Packages or any particular period</strong>
                         </div>
                         <div class="tooltip">PACKAGE MODIFICATION</div>
                     </div>
@@ -50,12 +50,13 @@
                     <mat-panel-title class="reporthead">SUBSCRIPTION BASED REPORTS</mat-panel-title>
                 </mat-expansion-panel-header>
                 <div class="cardContainer">
-                    <div class="card royal-card tooltip-container" (click)="openPackageBaseDialogue('bouquetAlacarte')">
+                    <div class="card royal-card tooltip-container" (click)="openPackageBaseDialogue('HistoricalBase')">
                         <i class="fas fa-rocket"></i>
                         <div class="display">
                             <strong>Historical Package/Addon/Alacarte report <br> (Product Type Wise)</strong>
                         </div>
-                        <div class="tooltip">BOUQUET ALACARTE PACKAGE REPORT</div>
+                        <!-- <div class="tooltip">BOUQUET ALACARTE PACKAGE REPORT</div> -->
+                        <div class="tooltip">HISTORICAL PACKAGE REPORT</div>
                     </div>
                     <div class="card royal-card tooltip-container" (click)="openSubscriptionDialogue('weekly_based')"><i
                             class="fas fa-ban"></i>

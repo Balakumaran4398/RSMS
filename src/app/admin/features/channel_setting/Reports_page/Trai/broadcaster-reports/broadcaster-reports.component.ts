@@ -29,7 +29,7 @@ export class BroadcasterReportsComponent implements OnInit {
   selectedMonth: any;
   selectedYear: any;
   submitted: boolean = false;
-  broadcasterid: any = 0;;
+  broadcasterid: any;
   broadcastername: any;
   selectedValue: any;
   monthlyReportCastitle: any;
@@ -38,7 +38,7 @@ export class BroadcasterReportsComponent implements OnInit {
   years: any[] = [];
   Date: any[] = [];
 
-  gridHeight: number = 180; 
+  gridHeight: number = 180;
 
   broadcasterList: any[] = [];
   filteredBraoadcasterList: any[] = [];
@@ -110,8 +110,8 @@ export class BroadcasterReportsComponent implements OnInit {
 
     const currentMonth = (currentDate.getMonth() + 1).toString().padStart(2, '0'); // Current month as 2-digit string
     const currentYear = currentDate.getFullYear();
-    const currentWeek = this.calculateCurrentWeek(currentDate, this.selectedMonth);
-    this.selectedDate = currentWeek;
+    // const currentWeek = this.calculateCurrentWeek(currentDate, this.selectedMonth);
+    // this.selectedDate = currentWeek;
     console.log('current week', this.selectedDate);
 
     this.selectedMonth = currentMonth;
@@ -122,9 +122,10 @@ export class BroadcasterReportsComponent implements OnInit {
     this.onColumnDefs();
     this.selectedMonthName = this.months.find(month => month.value === this.selectedMonth)?.name || '';
 
+    // this.calculateCurrentWeek(currentDate, currentMonth);
     this.generateDates(this.selectedMonthName)
-    this.calculateCurrentWeek(currentDate, currentMonth);
     this.onVisible();
+    this.onMonthChange();
   }
 
   setReportTitle() {
@@ -301,115 +302,152 @@ export class BroadcasterReportsComponent implements OnInit {
       this.selectedMonthName = this.months.find(month => month.value === this.selectedMonth)?.name || '';
     }
     this.generateDates(this.selectedMonthName);
-
-  }
-  onMonthChange() {
-    if (this.selectedMonth !== '0') {
-      this.selectedMonthName = this.months.find(month => month.value === this.selectedMonth)?.name || '';
-      this.isDateDisabled = false;
-      this.generateDates(this.selectedMonthName);
-      const currentDate = new Date();
-      const currentWeek = this.calculateCurrentWeek(currentDate, this.selectedMonth);
-      this.selectedDate = currentWeek;
-
-    } else {
-      this.isDateDisabled = true;
-      this.Date = [];
-    }
-  }
-  // generateDates(selectedMonthName: string) {
-  //   this.Date = [
-  //     { value: '01', name: '07 ' + selectedMonthName },
-  //     { value: '02', name: '14 ' + selectedMonthName },
-  //     { value: '03', name: '21 ' + selectedMonthName },
-  //     { value: '04', name: 'All' }
-  //   ];
-  // }
-  // calculateCurrentWeek(date: Date, selectedMonth: string): string {
-  //   const currentMonth = (date.getMonth() + 1).toString().padStart(2, '0');
-  //   const currentDay = date.getDate();
-  //   if (currentMonth === selectedMonth) {
-  //     if (currentDay <= 7) {
-  //       return '01';
-  //     } else if (currentDay <= 14) {
-  //       return '02';
-  //     } else if (currentDay <= 21) {
-  //       return '03';
-  //     }
-  //   }
-  //   return '04';
-  // }
-
-
-  generateDates(selectedMonthName: string) {
-    console.log(selectedMonthName);
-    this.Date = [
-      { value: '01', name: '07 ' + this.selectedMonthName, isEnabled: this.checkIfDateIsFuture(this.selectedYear, this.selectedMonth, 7) },
-      { value: '02', name: '14 ' + this.selectedMonthName, isEnabled: this.checkIfDateIsFuture(this.selectedYear, this.selectedMonth, 14) },
-      { value: '03', name: '21 ' + this.selectedMonthName, isEnabled: this.checkIfDateIsFuture(this.selectedYear, this.selectedMonth, 21) },
-      { value: '04', name: 'All', isEnabled: this.checkIfDateIsFuture(this.selectedYear, this.selectedMonth, 28) }
-    ];
-
-
-    const currentDate = new Date();
-    const currentMonth = (currentDate.getMonth() + 1).toString().padStart(2, '0');
-    const currentWeek = this.calculateCurrentWeek(currentDate, currentMonth);
-
-    const currentYear = currentDate.getFullYear();
-    const selectedYear = parseInt(this.selectedMonthName.split(' ')[1], 10); // Assuming selectedMonthName contains the full month name with year
-
-    // if (this.selectedMonth === currentMonth && selectedYear === currentYear) {
-    //   this.Date.forEach(date => (date.isEnabled = date.value === currentWeek));
-    // }
-    // // else if (this.selectedMonth < currentMonth || selectedYear < currentYear) {
-    // //   this.Date.forEach(date => (date.isEnabled = false));
-    // // }
-    // else if (this.selectedMonth > currentMonth || selectedYear > currentYear) {
-    //   this.Date.forEach(date => (date.isEnabled = true));
-    // }
-    // else {
-    //   this.Date.forEach(date => (date.isEnabled = true));
-    // }
   }
 
-  checkIfDateIsFuture(year: number, month: number, day: number): boolean {
-    // Construct the date from the provided year, month, and day
-    const inputDate = new Date(year, month - 1, day); // Month is 0-based in JavaScript Date
-    const currentDate = new Date(); // Get the current date and time
-
-    // Set time to the beginning of the day for accurate comparison
-    inputDate.setHours(0, 0, 0, 0);
-    currentDate.setHours(0, 0, 0, 0);
-
-    // Return true if the input date is in the future
-    return inputDate <= currentDate;
-  }
 
 
   calculateCurrentWeek(date: Date, selectedMonth: string) {
     console.log(date);
     console.log(selectedMonth);
-
-
     console.log('1111111111111111currentWeek', date);
-
     const currentMonth = (date.getMonth() + 1).toString().padStart(2, '0');
     const currentDay = date.getDate();
+    // if (currentMonth === selectedMonth) {
+    //   if (currentDay <= 7) {
+    //     return '01';
+    //   } else if (currentDay <= 14) {
+    //     return '02';
+    //   } else if (currentDay <= 21) {
+    //     return '03';
+    //   } else {
+    //     return '04';
+    //   }
+    // }
+
     if (currentMonth === selectedMonth) {
-      if (currentDay <= 7) {
+      if (currentDay >= 7 && currentDay <= 14) {
         return '01';
-      } else if (currentDay <= 14) {
+      } else if (currentDay >= 15 && currentDay <= 21) {
         return '02';
-      } else if (currentDay <= 21) {
+      } else if (currentDay >= 22 && currentDay <= 29) {
         return '03';
       } else {
         return '04';
       }
     }
-    return currentMonth;
+    return '04';
+  }
+  // onMonthChange() {
+  //   if (this.selectedMonth !== '0') {
+  //     this.selectedMonthName = this.months.find(month => month.value === this.selectedMonth)?.name || '';
+  //     this.isDateDisabled = false;
+  //     this.generateDates(this.selectedMonthName);
+  //     const currentDate = new Date();
+  //     const currentWeek = this.calculateCurrentWeek(currentDate, this.selectedMonth);
+  //     this.selectedDate = currentWeek;
+
+  //   } else {
+  //     this.isDateDisabled = true;
+  //     this.Date = [];
+  //   }
+  // }
+
+  onMonthChange() {
+    if (this.selectedMonth !== '0') {
+      this.selectedMonthName = this.months.find(month => month.value === this.selectedMonth)?.name || '';
+      this.isDateDisabled = false;
+
+      const currentDate = new Date();
+      const currentYear = currentDate.getFullYear();
+      const isBeforeCurrentYear = this.selectedYear < currentYear;
+
+      if (isBeforeCurrentYear) {
+        // Show all weeks for previous years
+        this.Date = [
+          { value: '04', name: 'All', isEnabled: true },
+          { value: '01', name: '07 ' + this.selectedMonthName, isEnabled: true },
+          { value: '02', name: '14 ' + this.selectedMonthName, isEnabled: true },
+          { value: '03', name: '21 ' + this.selectedMonthName, isEnabled: true },
+        ];
+        this.selectedDate = '04'; // Auto-select "All"
+      } else {
+        this.generateDates(this.selectedMonthName);
+        const currentWeek = this.calculateCurrentWeek(currentDate, this.selectedMonth);
+        this.selectedDate = currentWeek;
+      }
+    } else {
+      this.isDateDisabled = true;
+      this.Date = [];
+    }
   }
 
+
+
+
+  currentDate = new Date();
+  // currentYear = this.currentDate.getFullYear();
+  currentMonth = (this.currentDate.getMonth() + 1).toString().padStart(2, '0');
+  // currentWeek = this.calculateCurrentWeek(this.currentDate, this.currentMonth);
+
+
+  generateDates(selectedMonthName: string) {
+    console.log(selectedMonthName);
+    const currentWeek = this.calculateCurrentWeek(this.currentDate, this.currentMonth);
+    const isCurrentMonth = this.selectedMonth === this.currentDate.getMonth() + 1;
+    const isBeforeCurrentMonth = this.selectedMonth < this.currentDate.getMonth() + 1;
+    const isAfterCurrentMonth = this.selectedMonth > this.currentDate.getMonth() + 1;
+
+    if (isAfterCurrentMonth) {
+      console.log('11111111');
+      this.Date = [];
+      return;
+    }
+
+    this.Date = [
+      {
+        value: '04',
+        name: 'All',
+        isEnabled: isBeforeCurrentMonth
+      },
+      {
+        value: '01',
+        name: '07 ' + this.selectedMonthName,
+        isEnabled: isBeforeCurrentMonth || currentWeek == '01'
+      },
+      {
+        value: '02',
+        name: '14 ' + this.selectedMonthName,
+        isEnabled: isBeforeCurrentMonth || currentWeek == '02'
+      },
+      {
+        value: '03',
+        name: '21 ' + this.selectedMonthName,
+        isEnabled: isBeforeCurrentMonth || currentWeek == '03'
+      },
+    ];
+    if (isBeforeCurrentMonth) {
+      console.log('222222222');
+      this.selectedDate = '04';
+      console.log(this.selectedDate);
+    }
+
+
+  }
+
+  checkIfDateIsFuture(year: number, month: number, day: number): boolean {
+    const inputDate = new Date(year, month - 1, day);
+    const currentDate = new Date();
+
+    inputDate.setHours(0, 0, 0, 0);
+    currentDate.setHours(0, 0, 0, 0);
+
+    return inputDate <= currentDate;
+  }
+
+
+
   onVisible() {
+    console.log('sdfdsfsdfds');
     this.userService.getBroadcasterVisible(this.role, this.username, this.selectedMonth, this.selectedYear).subscribe((data: any) => {
       console.log(data);
       this.isVisible = data.isVisible;
@@ -418,9 +456,7 @@ export class BroadcasterReportsComponent implements OnInit {
     })
   }
 
-  toggleVisibility() {
-    this.isVisible = !this.isVisible;
-  }
+
   generateYears() {
     const startYear = 2012;
     const currentYear = new Date().getFullYear();
@@ -453,45 +489,35 @@ export class BroadcasterReportsComponent implements OnInit {
       this.submitted = true;
     }
 
-    // this.swal.Loading();
-    if (this.broadcasterid > 0) {
-      Swal.fire({
-        title: "Processing",
-        text: "Please wait while the report is being generated...",
-        showConfirmButton: false,
-        didOpen: () => {
-          Swal.showLoading(null);
-        }
-      });
-      this.userService.getBroadcasterReport(this.role, this.username, this.selectedMonth, this.selectedYear, this.selectedDate, this.broadcasterid, event, 2)
-        .subscribe((x: Blob) => {
-          const blob = new Blob([x], { type: 'application/xlsx' });
-          const data = window.URL.createObjectURL(blob);
-          const link = document.createElement('a');
-          link.href = data;
-          link.download = (this.broadcastername + '' + this.reportTitle + '  ' + this.monthlyReportCastitle + ' ' + this.selectedMonthName + '-' + this.selectedYear + ".xlsx").toUpperCase();
-          link.dispatchEvent(new MouseEvent('click', { bubbles: true, cancelable: true, view: window }));
-          setTimeout(() => {
-            window.URL.revokeObjectURL(data);
-            link.remove();
-          }, 100);
+    this.swal.Loading();
+    this.userService.getBroadcasterReport(this.role, this.username, this.selectedMonth, this.selectedYear, this.selectedDate, this.broadcasterid, event, 2)
+      .subscribe((x: Blob) => {
+        const blob = new Blob([x], { type: 'application/xlsx' });
+        const data = window.URL.createObjectURL(blob);
+        const link = document.createElement('a');
+        link.href = data;
+        link.download = (this.broadcastername + '' + this.reportTitle + '  ' + this.monthlyReportCastitle + ' ' + this.selectedMonthName + '-' + this.selectedYear + ".xlsx").toUpperCase();
+        link.dispatchEvent(new MouseEvent('click', { bubbles: true, cancelable: true, view: window }));
+        setTimeout(() => {
+          window.URL.revokeObjectURL(data);
+          link.remove();
+        }, 100);
+        Swal.close();
+      },
+        (error: any) => {
+          console.log(error);
+
           Swal.close();
-        },
-          (error: any) => {
-            Swal.close();
-            Swal.fire({
-              title: 'Error!',
-              text: error?.error?.message || 'There was an issue generating the PDF CAS form report.',
-              icon: 'error',
-              confirmButtonText: 'Ok'
-            });
+          Swal.fire({
+            title: 'Error!',
+            text: error?.error?.message,
+            icon: 'error',
+            confirmButtonText: 'Ok'
           });
-    } else {
-      this.swal.Custom_Error_400("Kinldy select the broadcaster!!");
-    }
+        });
+
   }
   getPDF(event: number) {
-
     console.log(event);
     if (event === 0) {
       this.monthlyReportCastitle = 'CAS GROUPED';
@@ -504,51 +530,40 @@ export class BroadcasterReportsComponent implements OnInit {
     } else if (event === 4) {
       this.monthlyReportCastitle = 'ADDON WISE CHANNEL';
     } else {
-      return; // Exit if event is not matched
+      return;
     }
     console.log(this.monthlyReportCastitle);
     this.submitted = true;
     if (!this.selectedYear && !this.selectedMonth && !this.selectedDate && !this.broadcasterid) {
       this.submitted = true;
     }
-    if (this.broadcasterid > 0) {
-      Swal.fire({
-        title: "Processing",
-        text: "Please wait while the report is being generated...",
-        showConfirmButton: false,
-        didOpen: () => {
-          Swal.showLoading(null);
-        }
-      });
-      // this.swal.Loading();
-      this.userService.getBroadcasterPDFReport(this.role, this.username, this.selectedMonth, this.selectedYear, this.selectedDate, this.broadcasterid, event, 1)
-        .subscribe((x: Blob) => {
-          const blob = new Blob([x], { type: 'application/pdf' });
-          const data = window.URL.createObjectURL(blob);
-          const link = document.createElement('a');
-          link.href = data;
 
-          link.download = (this.broadcastername + '' + this.reportTitle + '  ' + this.monthlyReportCastitle + ' ' + this.selectedMonthName + '-' + this.selectedYear + ".pdf").toUpperCase();
-          link.dispatchEvent(new MouseEvent('click', { bubbles: true, cancelable: true, view: window }));
-          setTimeout(() => {
-            window.URL.revokeObjectURL(data);
-            link.remove();
-          }, 100);
+    this.swal.Loading();
+    this.userService.getBroadcasterPDFReport(this.role, this.username, this.selectedMonth, this.selectedYear, this.selectedDate, this.broadcasterid, event, 1)
+      .subscribe((x: Blob) => {
+        const blob = new Blob([x], { type: 'application/pdf' });
+        const data = window.URL.createObjectURL(blob);
+        const link = document.createElement('a');
+        link.href = data;
+
+        link.download = (this.broadcastername + '' + this.reportTitle + '  ' + this.monthlyReportCastitle + ' ' + this.selectedMonthName + '-' + this.selectedYear + ".pdf").toUpperCase();
+        link.dispatchEvent(new MouseEvent('click', { bubbles: true, cancelable: true, view: window }));
+        setTimeout(() => {
+          window.URL.revokeObjectURL(data);
+          link.remove();
+        }, 100);
+        Swal.close();
+      },
+        (error: any) => {
           Swal.close();
-        },
-          (error: any) => {
-            Swal.close();
-            Swal.fire({
-              title: 'Error!',
-              text: error?.error?.message || 'There was an issue generating the PDF CAS form report.',
-              icon: 'error',
-              confirmButtonText: 'Ok'
-            });
+          Swal.fire({
+            title: 'Error!',
+            text: error?.error?.message || 'There was an issue generating the PDF CAS form report.',
+            icon: 'error',
+            confirmButtonText: 'Ok'
           });
-    } else {
-      this.swal.Custom_Error_400("Kinldy select the broadcaster!!");
+        });
 
-    }
 
   }
   // ---------------------------------------Universal report-------------------------
@@ -558,6 +573,7 @@ export class BroadcasterReportsComponent implements OnInit {
     if (!this.selectedYear && !this.selectedMonth && !this.selectedDate) {
       this.submitted = true;
     } else {
+      this.swal.Loading();
       this.userService.getUniversalPDFReport(this.role, this.username, this.selectedMonth, this.selectedYear, this.selectedDate, 1)
         .subscribe((x: Blob) => {
           const blob = new Blob([x], { type: 'application/pdf' });
@@ -572,6 +588,7 @@ export class BroadcasterReportsComponent implements OnInit {
             window.URL.revokeObjectURL(data);
             link.remove();
           }, 100);
+          this.swal.Close();
         },
           (error: any) => {
             Swal.fire({
@@ -581,6 +598,7 @@ export class BroadcasterReportsComponent implements OnInit {
               confirmButtonText: 'Ok'
             });
           });
+      this.swal.Close();
     }
   }
   // ------------------------------------------------OverAll Report-------------------------------------------
@@ -589,6 +607,7 @@ export class BroadcasterReportsComponent implements OnInit {
     if (!this.selectedYear && !this.selectedMonth && !this.selectedDate) {
       this.submitted = true;
     } else {
+      this.swal.Loading();
       this.userService.getOverAllReport(this.role, this.username, this.selectedMonth, this.selectedYear, this.selectedDate, 3)
         .subscribe(
           (response: HttpResponse<any>) => {
@@ -602,20 +621,23 @@ export class BroadcasterReportsComponent implements OnInit {
               this.addonlist = response.body.addonPackageList;
               this.alacartelist = response.body.alacartePackageList;
               this.baselist = response.body.basePackageList;
+              this.swal.Close();
               if (this.baselist.length > 0) {
-                this.gridHeight = 600; 
+                this.gridHeight = 600;
               } else {
-                this.gridHeight = 150; 
+                this.gridHeight = 150;
               }
             } else if (response.status === 204) {
               this.swal.Success_204();
               this.rowData = [];
-              this.gridHeight = 350; 
+              this.swal.Close();
+              this.gridHeight = 350;
             }
+            this.swal.Close();
           },
           (error) => {
             this.handleApiError(error);
-            this.gridHeight = 350; 
+            this.gridHeight = 350;
           }
         );
     }
@@ -626,7 +648,7 @@ export class BroadcasterReportsComponent implements OnInit {
     if (!this.selectedYear && !this.selectedMonth && !this.selectedDate) {
       this.submitted = true;
     } else {
-
+      this.swal.Loading();
       this.userService.getOverAllPDFReport(this.role, this.username, this.selectedMonth, this.selectedYear, this.selectedDate, 2)
 
         .subscribe((x: Blob) => {
@@ -642,6 +664,7 @@ export class BroadcasterReportsComponent implements OnInit {
             window.URL.revokeObjectURL(data);
             link.remove();
           }, 100);
+          this.swal.Close();
         },
           (error: any) => {
             Swal.fire({
@@ -651,6 +674,7 @@ export class BroadcasterReportsComponent implements OnInit {
               confirmButtonText: 'Ok'
             });
           });
+      this.swal.Close();
     }
   }
 
@@ -658,6 +682,7 @@ export class BroadcasterReportsComponent implements OnInit {
     if (!this.selectedYear && !this.selectedMonth && !this.selectedDate) {
       this.submitted = true;
     } else {
+      this.swal.Loading();
       this.userService.getOverAllPDFReport(this.role, this.username, this.selectedMonth, this.selectedYear, this.selectedDate, 1)
         .subscribe((x: Blob) => {
           const blob = new Blob([x], { type: 'application/pdf' });
@@ -672,6 +697,7 @@ export class BroadcasterReportsComponent implements OnInit {
             window.URL.revokeObjectURL(data);
             link.remove();
           }, 100);
+          this.swal.Close();
         },
           (error: any) => {
             Swal.fire({
@@ -681,6 +707,7 @@ export class BroadcasterReportsComponent implements OnInit {
               confirmButtonText: 'Ok'
             });
           });
+      this.swal.Close();
     }
   }
   // ----------------------------------------------over all base report-----------------------------------------------------------------------------------------
@@ -690,6 +717,7 @@ export class BroadcasterReportsComponent implements OnInit {
     if (!this.selectedYear && !this.selectedMonth && !this.selectedDate) {
       this.submitted = true;
     } else {
+      this.swal.Loading();
       this.userService.getOverBaseExcelReport(this.role, this.username, this.selectedMonth, this.selectedYear, this.selectedDate, 3)
         .subscribe(
           (response: HttpResponse<any>) => {
@@ -699,10 +727,11 @@ export class BroadcasterReportsComponent implements OnInit {
               // this.alacartelist = response.body.alacartePackageList;
               this.rowData = response.body.basePackageList;
               console.log(this.rowData);
-
+              this.swal.Close();
             } else if (response.status === 204) {
               this.swal.Success_204();
               this.rowData = [];
+              this.swal.Close();
             }
           },
           (error) => {
@@ -715,6 +744,7 @@ export class BroadcasterReportsComponent implements OnInit {
     if (!this.selectedYear && !this.selectedMonth && !this.selectedDate) {
       this.submitted = true;
     } else {
+      this.swal.Loading();
       this.userService.getOverAllExcelReport(this.role, this.username, this.selectedMonth, this.selectedYear, this.selectedDate, 2)
         .subscribe((x: Blob) => {
           const blob = new Blob([x], { type: 'application/xlsx' });
@@ -729,6 +759,7 @@ export class BroadcasterReportsComponent implements OnInit {
             window.URL.revokeObjectURL(data);
             link.remove();
           }, 100);
+          this.swal.Close();
         },
           (error: any) => {
             Swal.fire({
@@ -738,6 +769,7 @@ export class BroadcasterReportsComponent implements OnInit {
               confirmButtonText: 'Ok'
             });
           });
+      this.swal.Close();
     }
   }
 
@@ -745,6 +777,7 @@ export class BroadcasterReportsComponent implements OnInit {
     if (!this.selectedYear && !this.selectedMonth && !this.selectedDate) {
       this.submitted = true;
     } else {
+      this.swal.Loading();
       this.userService.getOverAllBroadcasterPDFReport(this.role, this.username, this.selectedMonth, this.selectedYear, this.selectedDate, 1)
         .subscribe((x: Blob) => {
           const blob = new Blob([x], { type: 'application/pdf' });
@@ -759,6 +792,7 @@ export class BroadcasterReportsComponent implements OnInit {
             window.URL.revokeObjectURL(data);
             link.remove();
           }, 100);
+          this.swal.Close();
         },
           (error: any) => {
             Swal.fire({
@@ -768,6 +802,7 @@ export class BroadcasterReportsComponent implements OnInit {
               confirmButtonText: 'Ok'
             });
           });
+      this.swal.Close();
     }
   }
 

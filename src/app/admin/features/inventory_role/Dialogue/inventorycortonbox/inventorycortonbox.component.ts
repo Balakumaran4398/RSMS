@@ -44,8 +44,14 @@ export class InventorycortonboxComponent implements OnInit {
   constructor(public dialogRef: MatDialogRef<InventorycortonboxComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any, public dialog: MatDialog, private userservice: BaseService, private excelService: ExcelService, private storageService: StorageService, private swal: SwalService) {
     this.type = data.type;
+    console.log(this.type);
+    console.log(data);
+
     this.smartcardList = data.smartcard;
-    this.isemi = data.isemi[0];
+    // this.isemi = data.isemi[0];
+    this.isemi = data.isemi;
+    console.log(this.isemi);
+    
     this.username = storageService.getUsername();
     this.role = storageService.getUserRole();
   }

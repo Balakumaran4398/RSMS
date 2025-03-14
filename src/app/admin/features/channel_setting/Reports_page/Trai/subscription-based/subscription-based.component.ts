@@ -167,405 +167,93 @@ export class SubscriptionBasedComponent implements OnInit {
     this.operatorid = operator.value;
     console.log(this.operatorid);
 
-    // if (operator.value === 0) {
-    //   this.operatorid = 0;
-    //   this.selectedOperator = { name: 'ALL Operator', value: 0 };
-    // } else {
-    //   this.operatorid = operator.value;
-    // }
-    // this.userService.OperatorDetails(this.role, this.username, this.operatorid).subscribe(
-    //   (data: any) => {
-    //     console.log(data);
-    //     // this.operator_details = data;
-    //     this.pagedOperators = data;
-    //   },
-    //   (error) => {
-    //     console.error('Error fetching operator details', error);
-    //   }
-    // );
+ 
   }
   displayOperator(operator: any): string {
     return operator ? operator.name : '';
   }
-  getWeeklySubscriptionExcel() {
-    if (!this.selectedYear && !this.selectedMonth && !this.selectedweek) {
-      this.submitted = true;
-    } else {
-      this.swal.Loading();
-      this.userService.getWeeklyActiveOrDeactiveSubscriptionExcelReport(this.role, this.username, this.selectedMonth, this.selectedYear, this.selectedweek, this.isActive, 2)
-      .subscribe(
-          (response: HttpResponse<any[]>) => { // Expect HttpResponse<any[]>
-            console.log(this.type);
-            this.swal.Close();
-            if (response.status === 200) {
-              this.rowData = response.body;
-              console.log(this.type);
-              // const title = (this.type + ' REPORT').toUpperCase();
-              const title = (`WEEKLY   ${this.isActive ? 'Active' : 'Deactive'} SUBSCRIPTION REPORT - [ YEAR : ${this.selectedYear}  - MONTH : ${this.selectedMonthName}  ]`).toUpperCase();
-              const sub = 'MSO ADDRESS:' + this.msodetails;
-              let areatitle = '';
-              let areasub = '';
-              let header: string[] = [];
-              const datas: Array<any> = [];
-              areatitle = 'A1:K2';
-              areasub = 'A3:K3';
-              header = ['S.NO', 'SUB ID','CUSTOMER NAME', 'SMARTCARD', 'BOXID', 'CAS','TYPE', 'PACKAGE', 'PRODUCT ID',  'SUBSCRIPTION START DATE', 'SUBSCRIPTION END DATE'];
-              this.rowData.forEach((d: any,index:number) => {
-                const row = [index +1,d.customername, d.subid,d.smartcard, d.boxid, d.casname,  d.type,d.productname, d.casproductid, d.logdate, d.expirydate];
-                datas.push(row);
-              });
+ 
 
-              // this.excelService.generateWeeklySubscriptionExcel(areatitle, header, datas, title, areasub, sub);
-              this.excelService.generateSuspendBasedExcel(areatitle, header, datas, title, areasub, sub);
-
-            } else if (response.status === 204) {
-              // this.swal.Success_204();
-              this.rowData = response.body;
-              console.log(this.type);
-              // const title = (this.type + ' REPORT').toUpperCase();
-              const title = (`WEEKLY   ${this.isActive ? 'Active' : 'Deactive'} SUBSCRIPTION REPORT - [ YEAR : ${this.selectedYear}  - MONTH : ${this.selectedMonthName}  ]`).toUpperCase();
-              const sub = 'MSO ADDRESS:' + this.msodetails;
-              let areatitle = '';
-              let areasub = '';
-              let header: string[] = [];
-              const datas: Array<any> = [];
-              areatitle = 'A1:J2';
-              areasub = 'A3:J3';
-              header = ['S.NO', 'SUB ID','CUSTOMER NAME', 'SMARTCARD', 'BOXID', 'CAS','TYPE', 'PACKAGE', 'PRODUCT ID',  'SUBSCRIPTION START DATE', 'SUBSCRIPTION END DATE'];
-              // this.excelService.generateWeeklySubscriptionExcel(areatitle, header, datas, title, areasub, sub);
-              this.excelService.generateSuspendBasedExcel(areatitle, header, datas, title, areasub, sub);
-
-              this.rowData = [];
-            }
-          },
-          (error) => {
-            this.swal.Close();
-            this.handleApiError(error);
-          }
-        );
-    }
+  getWeeklyActiveDeactiveReport(type: number) {
+    this.processingSwal();
+    this.userService.getWeeklyActiveOrDeactiveSubscriptionPDFReport(this.role, this.username, this.selectedMonth, this.selectedYear, this.selectedweek, this.isActive, type)
+      .subscribe((x: Blob) => {
+        if (type == 1) {
+          this.reportMaking(x, `WEEKLY  ${this.isActive ? 'Active' : 'Deactive'} SUBCRIPTION REPORT - [YEAR : ${this.selectedMonth} - MONTH : ${this.selectedMonthName}].pdf`.toUpperCase(), "application/pdf");
+        } else if (type == 2) {
+          this.reportMaking(x, `WEEKLY  ${this.isActive ? 'Active' : 'Deactive'} SUBCRIPTION REPORT - [YEAR : ${this.selectedMonth} - MONTH : ${this.selectedMonthName}].xlsx`.toUpperCase(), "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
+        }
+      },
+        (error: any) => {
+          this.pdfswalError(error?.error.message);
+        });
   }
-  getWeeklySubscriptionPDF() {
-    if (!this.selectedYear && !this.selectedMonth && !this.selectedweek) {
-      this.submitted = true;
-    } else {
-      this.swal.Loading();
-      this.userService.getWeeklyActiveOrDeactiveSubscriptionPDFReport(this.role, this.username, this.selectedMonth, this.selectedYear, this.selectedweek, this.isActive, 1)
-        .subscribe((x: Blob) => {
-          this.swal.Close();
-          const blob = new Blob([x], { type: 'application/pdf' });
-          const data = window.URL.createObjectURL(blob);
-          const link = document.createElement('a');
-          link.href = data;
-          // link.download = (this.type + ".pdf").toUpperCase();
-          link.download = `WEEKLY  ${this.isActive ? 'Active' : 'Deactive'} SUBCRIPTION REPORT - [YEAR : ${this.selectedMonth} - MONTH : ${this.selectedMonthName}].pdf`.toUpperCase();
 
-          link.dispatchEvent(new MouseEvent('click', { bubbles: true, cancelable: true, view: window }));
-          setTimeout(() => {
-            window.URL.revokeObjectURL(data);
-            link.remove();
-          }, 100);
-        },
-          (error: any) => {
-            this.swal.Close();
-            Swal.fire({
-              title: 'Error!',
-              text: error?.error?.message || 'There was an issue generating the PDF CAS form report.',
-              icon: 'error',
-              confirmButtonText: 'Ok'
-            });
-          });
-    }
-  }
   // ============================================================weekly Subscription above=========================
 
-  getBaseSubscriptionExcel() {
-   
-    if (!this.operatorid && !this.cur_date) {
-      this.submitted = true;
-    } else {
-      console.log('LCO', this.selectedOperator)
-      this.swal.Loading();
-      this.userService.getasOnDateBaseActiveOrDeactiveExcelReport(this.role, this.username, this.operatorid, this.cur_date, this.isActive, 2)
-        .subscribe(
-          (response: HttpResponse<any[]>) => { // Expect HttpResponse<any[]>
-            console.log(this.type);
-            this.swal.Close();
-            if (response.status === 200) {
-              this.rowData = response.body;
-              console.log(this.type);
-              // const title = (this.type + ' REPORT').toUpperCase();
-              // const title = (this.type + ' REPORT - [ LCO : ' + this.selectedOperator.name + ' - DATE : ' + this.cur_date + ']').toUpperCase();
-              const title = (`As On Date  ${this.isActive ? 'Active    ' : 'Deactive    '} ${this.type} Subscription History REPORT - [ LCO : ${this.selectedOperator.name} - DATE :  ${this.cur_date} ]`).toUpperCase();
+  
 
-              const sub = 'MSO ADDRESS:' + this.msodetails;
-              let areatitle = '';
-              let areasub = '';
-              let header: string[] = [];
-              const datas: Array<any> = [];
-              // if (this.type == 1) {
-              areatitle = 'A1:J2';
-              areasub = 'A3:J3';
-              header = ['S.NO', 'SUB ID', 'OPERATOR ID', 'CUSTOMER NAME', 'SMARTCARD', 'BOXID', 'PACKAGE', 'PRODUCT ID', 'SUBSCRIPTION START DATE', 'SUBSCRIPTION END DATE'];
-              this.rowData.forEach((d: any, index: number) => {
-                const row = [index + 1, d.subid, d.operatorid, d.customername, d.smartcard, d.boxid, d.productname, d.orderid, d.logdate, d.expirydate];
-                datas.push(row);
-              });
 
-              this.excelService.generateSuspendBasedExcel(areatitle, header, datas, title, areasub, sub);
+  getBasePackageReport(type: number) {
+    this.processingSwal();
+    console.log(this.operatorid)
 
-            } else if (response.status === 204) {
-              // this.swal.Success_204();
-              this.rowData = response.body;
-              console.log(this.type);
-              // const title = (this.type + ' REPORT').toUpperCase();
-              // const title = (this.type + ' REPORT - [ LCO : ' + this.selectedOperator.name + ' - DATE : ' + this.cur_date + ']').toUpperCase();
-              const title = (`As On Date  ${this.isActive ? 'Active    ' : 'Deactive    '} ${this.type} Subscription History REPORT - [ LCO : ${this.selectedOperator.name} - DATE :  ${this.cur_date} ]`).toUpperCase();
-
-              const sub = 'MSO ADDRESS:' + this.msodetails;
-              let areatitle = '';
-              let areasub = '';
-              let header: string[] = [];
-              const datas: Array<any> = [];
-              // if (this.type == 1) {
-              areatitle = 'A1:J2';
-              areasub = 'A3:J3';
-              header = ['S.NO', 'SUB ID', 'OPERATOR ID', 'CUSTOMER NAME', 'SMARTCARD', 'BOXID', 'PACKAGE', 'PRODUCT ID', 'SUBSCRIPTION START DATE', 'SUBSCRIPTION END DATE'];
-
-              this.excelService.generateSuspendBasedExcel(areatitle, header, datas, title, areasub, sub);
-              this.rowData = [];
-            }
-          },
-          (error) => {
-            this.swal.Close();
-            this.handleApiError(error);
-          }
-        );
-    }
+    this.userService.getasOnDateBaseActiveOrDeactivePDFReport(this.role, this.username, this.operatorid, this.cur_date, this.isActive, type)
+      .subscribe((x: Blob) => {
+        const operatorName = this.selectedOperator?.name || 'ALL OPERATOR';
+        if (type == 1) {
+          this.reportMaking(x, `As On Date   ${this.isActive ? 'Active' : 'Deactive '}  ${this.type} Subscription History REPORT - [LCO : ${operatorName} - DATE : ${this.cur_date}].pdf`.toUpperCase(), "application/pdf");
+        } else if (type == 2) {
+          this.reportMaking(x, `As On Date   ${this.isActive ? 'Active' : 'Deactive '} ${this.type}  Subscription History REPORT - [LCO : ${operatorName} - DATE : ${this.cur_date}].xlsx`.toUpperCase(), "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
+        }
+      },
+        (error: any) => {
+          this.pdfswalError(error?.error.message);
+        });
   }
-  getBaseSubscriptionPDF() {
-    if (!this.operatorid && !this.cur_date) {
-      this.submitted = true;
-    } else {
-      this.swal.Loading();
-      this.userService.getasOnDateBaseActiveOrDeactivePDFReport(this.role, this.username, this.operatorid, this.cur_date, this.isActive, 1)
-        .subscribe((x: Blob) => {
-          this.swal.Close();
-          const blob = new Blob([x], { type: 'application/pdf' });
-          const data = window.URL.createObjectURL(blob);
-          const link = document.createElement('a');
-          link.href = data;
-          // link.download = `${this.type} REPORT - [LCO : ${this.selectedOperator.name} - DATE : ${this.cur_date}].pdf`.toUpperCase();
-          link.download = `As On Date  ${this.isActive ? 'Active' : 'Deactive'}  Subscription History REPORT - [LCO : ${this.selectedOperator.nsame} - DATE : ${this.cur_date}].pdf`.toUpperCase();
 
-          // link.download = (this.type + ".pdf").toUpperCase();
-          link.dispatchEvent(new MouseEvent('click', { bubbles: true, cancelable: true, view: window }));
-          setTimeout(() => {
-            window.URL.revokeObjectURL(data);
-            link.remove();
-          }, 100);
-        },
-          (error: any) => {
-            this.swal.Close();
-            Swal.fire({
-              title: 'Error!',
-              text: error?.error?.message || 'There was an issue generating the PDF CAS form report.',
-              icon: 'error',
-              confirmButtonText: 'Ok'
-            });
-          });
-    }
-  }
+
   // ====================================================================Base Subscription Above========================
-  getAddonSubscriptionExcel() {
-    if (!this.operatorid && !this.cur_date) {
-      this.submitted = true;
-    } else {
-      this.swal.Loading();
-      this.userService.getasOnDateAddonActiveOrDeactiveExcelReport(this.role, this.username, this.operatorid, this.cur_date, this.isActive, 2)
-        .subscribe(
-          (response: HttpResponse<any[]>) => { // Expect HttpResponse<any[]>
-            console.log(this.type);
-            this.swal.Close();
-            if (response.status === 200) {
-              this.rowData = response.body;
-              console.log(this.type);
-              // const title = (this.type + ' REPORT').toUpperCase();
-              const title = (`As On Date  ${this.isActive ? 'Active  ' : 'Deactive  '}  ${this.type} Subscription History REPORT - [ LCO : ${this.selectedOperator.name}' - DATE : ${this.cur_date} ]`).toUpperCase();
-              const sub = 'MSO ADDRESS:' + this.msodetails;
-              let areatitle = '';
-              let areasub = '';
-              let header: string[] = [];
-              const datas: Array<any> = [];
-              // if (this.type == 1) {
-              areatitle = 'A1:I2';
-              areasub = 'A3:I3';
-              header = ['S.NO', 'OPERATOR NAME', 'CUSTOMER NAME', 'SMARTCARD', 'BOX ID', 'PACKAGE', 'PRODUCT ID', 'SUBSCRIPTION START DATE', 'SUBSCRIPTION END DATE'];
+  
 
-              this.rowData.forEach((d: any,index:number) => {
-                const row = [index + 1,d.operatorname, d.customername, d.smartcard, d.boxid, d.productname, d.orderid, d.logdate, d.expirydate];
-                // console.log('type 1 and 4', row);
-                datas.push(row);
-              });
+  getAddonPackageReport(type: number) {
+    this.processingSwal();
+    this.userService.getasOnDateAddonActiveOrDeactivePDFReport(this.role, this.username, this.operatorid, this.cur_date, this.isActive, type)
+      .subscribe((x: Blob) => {
 
-              this.excelService.generateSuspendBasedExcel(areatitle, header, datas, title, areasub, sub);
-
-            } else if (response.status === 204) {
-              // this.swal.Success_204();
-              this.rowData = response.body;
-              console.log(this.type);
-              // const title = (this.type + ' REPORT').toUpperCase();
-              const title = (`As On Date  ${this.isActive ? 'Active  ' : 'Deactive  '}  ${this.type} Subscription History REPORT - [ LCO : ${this.selectedOperator.name}' - DATE : ${this.cur_date} ]`).toUpperCase();
-              const sub = 'MSO ADDRESS:' + this.msodetails;
-              let areatitle = '';
-              let areasub = '';
-              let header: string[] = [];
-              const datas: Array<any> = [];
-              // if (this.type == 1) {
-              areatitle = 'A1:I2';
-              areasub = 'A3:I3';
-              header = ['S.NO', 'OPERATOR NAME', 'CUSTOMER NAME', 'SMARTCARD', 'BOX ID', 'PACKAGE', 'PRODUCT ID', 'SUBSCRIPTION START DATE', 'SUBSCRIPTION END DATE'];
-
-              this.excelService.generateSuspendBasedExcel(areatitle, header, datas, title, areasub, sub);
-              this.rowData = [];
-            }
-          },
-          (error) => {
-            this.swal.Close();
-            this.handleApiError(error);
-          }
-        );
-    }
-  }
-  getAddonSubscriptionPDF() {
-    if (!this.operatorid || !this.cur_date) {
-      this.submitted = true;
-    } else {
-      this.swal.Loading();
-      this.userService.getasOnDateAddonActiveOrDeactivePDFReport(this.role, this.username, this.operatorid, this.cur_date, this.isActive, 1)
-        .subscribe((x: Blob) => {
-          this.swal.Close();
-          const blob = new Blob([x], { type: 'application/pdf' });
-          const data = window.URL.createObjectURL(blob);
-          const link = document.createElement('a');
-          link.href = data;
-          // link.download = (this.type + ".pdf").toUpperCase();
-          link.download = `As On Date  ${this.isActive ? 'Active ' : 'Deactive '}  ${this.type} Subscription History REPORT - [LCO : ${this.selectedOperator.nsame} - DATE : ${this.cur_date}].pdf`.toUpperCase();
-
-          link.dispatchEvent(new MouseEvent('click', { bubbles: true, cancelable: true, view: window }));
-          setTimeout(() => {
-            window.URL.revokeObjectURL(data);
-            link.remove();
-          }, 100);
-        },
-          (error: any) => {
-            this.swal.Close();
-            Swal.fire({
-              title: 'Error!',
-              text: error?.error?.message || 'There was an issue generating the PDF CAS form report.',
-              icon: 'error',
-              confirmButtonText: 'Ok'
-            });
-          });
-    }
+        const operatorName = this.selectedOperator?.name || 'ALL OPERATOR';
+        if (type == 1) {
+          this.reportMaking(x, `As On Date   ${this.isActive ? 'Active' : 'Deactive '}  ${this.type} Subscription History REPORT - [LCO : ${operatorName} - DATE : ${this.cur_date}].pdf`.toUpperCase(), "application/pdf");
+        } else if (type == 2) {
+          this.reportMaking(x, `As On Date   ${this.isActive ? 'Active' : 'Deactive '} ${this.type}  Subscription History REPORT - [LCO : ${operatorName} - DATE : ${this.cur_date}].xlsx`.toUpperCase(), "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
+        }
+      },
+        (error: any) => {
+          this.pdfswalError(error?.error.message);
+        });
   }
 
   // -------------------------------------------------------Alacarte Subscription -----------------------------------
-  getAlacarteSubscriptionExcel() {
-    if (!this.cur_date) {
-      this.submitted = true;
-    } else {
-      this.swal.Loading();
-      this.userService.getasOnDateAlacarteActiveOrDeactiveSubscriptionExcelReport(this.role, this.username, this.cur_date, this.isActive, 2)
-        .subscribe(
-          (response: HttpResponse<any[]>) => { // Expect HttpResponse<any[]>
-            console.log(this.type);
-            this.swal.Close();
-            if (response.status === 200) {
-              this.rowData = response.body;
-              console.log(this.type);
-              // const title = (this.type + ' REPORT').toUpperCase();
-              // const title = ('As On Date A-la-carte  Subscription History REPORT - [  DATE : ' + this.cur_date + ']').toUpperCase();
-              const title = `As On Date A-la-carte ${this.isActive ? 'Active  ' : 'Deactive  '} ${this.type} Subscription History REPORT - [ DATE : ${this.cur_date}]`.toUpperCase();
+  
 
-              const sub = 'MSO ADDRESS:' + this.msodetails;
-              let areatitle = '';
-              let areasub = '';
-              let header: string[] = [];
-              const datas: Array<any> = [];
-              // if (this.type == 1) {
-              areatitle = 'A1:G2';
-              areasub = 'A3:G3';
-              header = ['S.NO', 'SMARTCARD', 'BOX ID', 'PRODUCT ID ', 'PRODUCT NAME', 'ACTIVATION DATE', 'EXPIRY DATE'];
-              this.rowData.forEach((d: any,index:number) => {
-                const row = [index+1,d.smartcard, d.boxid, d.productid, d.productname, d.logdate, d.expirydate];
-                // console.log('type 1 and 4', row);
-                datas.push(row);
-              });
 
-              this.excelService.generateSuspendBasedExcel(areatitle, header, datas, title, areasub, sub);
-
-            } else if (response.status === 204) {
-              // this.swal.Success_204();
-              this.rowData = response.body;
-              console.log(this.type);
-              // const title = (this.type + ' REPORT').toUpperCase();
-              // const title = ('As On Date A-la-carte Deactive Subscription History REPORT - [  DATE : ' + this.cur_date + ']').toUpperCase();
-              const title = `As On Date A-la-carte ${this.isActive ? 'Active  ' : 'Deactive  '} ${this.type} Subscription History REPORT - [ DATE : ${this.cur_date}]`.toUpperCase();
-
-              const sub = 'MSO ADDRESS:' + this.msodetails;
-              let areatitle = '';
-              let areasub = '';
-              let header: string[] = [];
-              const datas: Array<any> = [];
-              // if (this.type == 1) {
-              areatitle = 'A1:G2';
-              areasub = 'A3:G3';
-              header = ['S.NO', 'SMARTCARD', 'BOX ID', 'PRODUCT ID ', 'PRODUCT NAME', 'ACTIVATION DATE', 'EXPIRY DATE'];
-              this.excelService.generateSuspendBasedExcel(areatitle, header, datas, title, areasub, sub);
-
-              this.rowData = [];
-            }
-          },
-          (error) => {
-            this.swal.Close();
-            this.handleApiError(error);
-          }
-        );
-    }
+  getAlacartePackageReport(type: number) {
+    this.processingSwal();
+    this.userService.getasOnDateAlacarteActiveOrDeactiveSubscriptionPDFReport(this.role, this.username, this.cur_date, this.isActive, type)
+      .subscribe((x: Blob) => {
+       
+        const operatorName = this.selectedOperator?.name || 'ALL OPERATOR';
+        if (type == 1) {
+          this.reportMaking(x, `As On Date   ${this.isActive ? 'Active' : 'Deactive '}  ${this.type} Subscription History REPORT - [LCO : ${operatorName} - DATE : ${this.cur_date}].pdf`.toUpperCase(), "application/pdf");
+        } else if (type == 2) {
+          this.reportMaking(x, `As On Date   ${this.isActive ? 'Active' : 'Deactive '} ${this.type}  Subscription History REPORT - [LCO : ${operatorName} - DATE : ${this.cur_date}].xlsx`.toUpperCase(), "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
+        }
+      },
+        (error: any) => {
+          this.pdfswalError(error?.error.message);
+        });
   }
-  getAlacarteSubscriptionPDF() {
-    if (!this.cur_date) {
-      this.submitted = true;
-    } else {
-      this.swal.Loading();
-      this.userService.getasOnDateAlacarteActiveOrDeactiveSubscriptionPDFReport(this.role, this.username, this.cur_date, this.isActive, 1)
-        .subscribe((x: Blob) => {
-          this.swal.Close();
-          const blob = new Blob([x], { type: 'application/pdf' });
-          const data = window.URL.createObjectURL(blob);
-          const link = document.createElement('a');
-          link.href = data;
-          // link.download = (this.type + ".pdf").toUpperCase();
-          link.download = `As On Date A-la-carte ${this.isActive ? 'Active ' : 'Deactive '} ${this.type } Subscription History REPORT - [ DATE : ${this.cur_date}]`.toUpperCase();
 
-          link.dispatchEvent(new MouseEvent('click', { bubbles: true, cancelable: true, view: window }));
-          setTimeout(() => {
-            window.URL.revokeObjectURL(data);
-            link.remove();
-          }, 100);
-        },
-          (error: any) => {
-            this.swal.Close();
-            Swal.fire({
-              title: 'Error!',
-              text: error?.error?.message || 'There was an issue generating the PDF CAS form report.',
-              icon: 'error',
-              confirmButtonText: 'Ok'
-            });
-          });
-    }
-  }
   // -------------------------------------------------ALL TYPES-------------------------------------
   getAllTypesExcel() {
     if (!this.cur_date) {
@@ -590,8 +278,8 @@ export class SubscriptionBasedComponent implements OnInit {
               areatitle = 'A1:L2';
               areasub = 'A3:L3';
               header = ['S.NO', 'SUB ID', 'OPERATOR NAME', 'CUSTOMER NAME', 'SMARTCARD', 'BOX ID', 'CAS', 'PACKAGE', 'PRODUCT ID ', 'PRODUCT TYPE', 'SUBSCRIPTION START DATE', 'SUBSCRIPTION END DATE'];
-              this.rowData.forEach((d: any,index:number) => {
-                const row = [index+1,d.smartcard, d.boxid, d.productid, d.productname, d.logdate, d.expirydate];
+              this.rowData.forEach((d: any, index: number) => {
+                const row = [index + 1, d.smartcard, d.boxid, d.productid, d.productname, d.logdate, d.expirydate];
                 datas.push(row);
               });
 
@@ -654,6 +342,28 @@ export class SubscriptionBasedComponent implements OnInit {
           });
     }
   }
+
+
+  // ------------------------------------------------------------------product all--------------------------------
+  getAllProductReport(type: number) {
+    this.processingSwal();
+    this.userService.getasOnDateAllProductActiveOrDeactiveSubscriptionReport(this.role, this.username, this.operatorid, this.cur_date, this.isActive, type)
+      .subscribe((x: Blob) => {
+ 
+        const operatorName = this.selectedOperator?.name || 'ALL OPERATOR';
+        if (type == 1) {
+          this.reportMaking(x, `As On Date   ${this.isActive ? 'Active' : 'Deactive '}  ${this.type} Subscription History REPORT - [LCO : ${operatorName} - DATE : ${this.cur_date}].pdf`.toUpperCase(), "application/pdf");
+        } else if (type == 2) {
+          this.reportMaking(x, `As On Date   ${this.isActive ? 'Active' : 'Deactive '} ${this.type}  Subscription History REPORT - [LCO : ${operatorName} - DATE : ${this.cur_date}].xlsx`.toUpperCase(), "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
+        }
+      },
+        (error: any) => {
+          this.pdfswalError(error?.error.message);
+        });
+  }
+
+
+
   // ---------------------------------------------------------------------------------------------------------------------------------------
   handleApiError(error: any) {
     if (error.status === 400) {
@@ -663,5 +373,42 @@ export class SubscriptionBasedComponent implements OnInit {
     } else {
       Swal.fire('Error', 'Something went wrong. Please try again.', 'error');
     }
+  }
+
+  // -----------------------------------------------------common method for pdf and excel------------------------------------------------------------------------
+
+
+  reportMaking(x: Blob, reportname: any, reporttype: any) {
+    const blob = new Blob([x], { type: reporttype });
+    const data = window.URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.href = data;
+    link.download = reportname.toUpperCase();
+    link.dispatchEvent(new MouseEvent('click', { bubbles: true, cancelable: true, view: window }));
+    setTimeout(() => {
+      window.URL.revokeObjectURL(data);
+      link.remove();
+    }, 100);
+    Swal.close();
+  }
+  pdfswalError(error: any) {
+    Swal.close();
+    Swal.fire({
+      title: 'Error!',
+      text: error.message || 'There was an issue generating the PDF CAS form report.',
+      icon: 'error',
+      confirmButtonText: 'Ok'
+    });
+  }
+  processingSwal() {
+    Swal.fire({
+      title: "Processing",
+      text: "Please wait while the report is being generated...",
+      showConfirmButton: false,
+      didOpen: () => {
+        Swal.showLoading(null);
+      }
+    });
+
   }
 }

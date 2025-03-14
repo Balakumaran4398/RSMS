@@ -20,11 +20,12 @@ export class NotAllocatedComponent implements OnInit {
   selectedIds: number[] = [];
   selectsmartcard: number[] = [];
   selectedtypes: number[] = [];
-  selectedisEmi: boolean = false;
+  // selectedisEmi: boolean = false;
+  selectedisEmi: any;
   hasSelectedRows: boolean = true;
   username: any;
   role: any;
-
+  rows: any[] = [];
   cas: any;
   public rowSelection: any = "multiple";
   gridOptions = {
@@ -69,7 +70,7 @@ export class NotAllocatedComponent implements OnInit {
   columnDefs: ColDef[] = [
     {
       headerName: 'S.No',
-      lockPosition: true, headerCheckboxSelection: true, checkboxSelection: true, width: 100,
+      lockPosition: true, headerCheckboxSelection: true, valueGetter: 'node.rowIndex+1',checkboxSelection: true, width: 100,filter:false
     },
     {
       headerName: 'SMARTCARD', width: 300,
@@ -125,15 +126,44 @@ export class NotAllocatedComponent implements OnInit {
 
   ]
 
-  onSelectionChanged() {
+  // onSelectionChanged() {
+  //   if (this.gridApi) {
+  //     // const selectedRows = this.gridApi.getSelectedRows();
+  //     const selectedRows =this.gridApi.getRenderedNodes().map((node:any) => node.data);
+  //     console.log('SELECTED ROWS',selectedRows);
+
+  //     this.isAnyRowSelected = selectedRows.length > 0;
+  //     this.selectedIds = selectedRows.map((e: any) => e.id);
+  //     this.selectsmartcard = selectedRows.map((e: any) => e.smartcard);
+  //     this.selectedtypes = selectedRows.map((e: any) => e.isactive);
+  //     this.selectedisEmi = selectedRows.map((e: any) => e.isemi);
+  //   }
+  // }
+
+  onSelectionChanged(event: any) {
     if (this.gridApi) {
-      const selectedRows = this.gridApi.getSelectedRows();
-      this.isAnyRowSelected = selectedRows.length > 0;
-      this.selectedIds = selectedRows.map((e: any) => e.id);
-      this.selectsmartcard = selectedRows.map((e: any) => e.smartcard);
-      this.selectedtypes = selectedRows.map((e: any) => e.isactive);
-      this.selectedisEmi = selectedRows.map((e: any) => e.isemi);
+      let selectedRows: any[] = [];
+      this.gridApi.forEachNodeAfterFilter((rowNode: any) => {
+        if (rowNode.isSelected()) {
+          selectedRows.push(rowNode.data);
+        }
+      });
+      // console.log("Filtered & Selected Rows:", selectedRows);
+      if (selectedRows.length === 0) {
+        this.gridApi.deselectAll();
+      }
+      // console.log("Final Selected Rows:", selectedRows);
+      this.updateSelectedRows(selectedRows);
     }
+  }
+  updateSelectedRows(selectedRows: any[]) {
+    this.isAnyRowSelected = selectedRows.length > 0;
+    this.selectedIds = selectedRows.map((e: any) => e.id);
+    this.selectsmartcard = selectedRows.map((e: any) => e.smartcard);
+    this.selectedtypes = selectedRows.map((e: any) => e.isactive);
+    this.selectedisEmi = selectedRows.map((e: any) => e.isemi);
+
+    // console.log("Updated Selected Rows:", selectedRows);
   }
   onGridReady(params: { api: any; }) {
     this.gridApi = params.api;
@@ -183,7 +213,8 @@ export class NotAllocatedComponent implements OnInit {
     } else {
 
       const dataToSend = {
-        rowData: this.rowData,
+        // rowData: this.rowData,
+        // rowData: this.rows,
         lco_list: this.lco_list,
         castype: this.caslist,
         smartcard: this.selectsmartcard,
@@ -191,7 +222,6 @@ export class NotAllocatedComponent implements OnInit {
         subIsemi: this.selectedisEmi,
       };
       console.log(dataToSend);
-
       const dialogRef = this.dialog.open(SubInventoryComponent, {
         width: '500px',
         panelClass: 'custom-dialog-container',

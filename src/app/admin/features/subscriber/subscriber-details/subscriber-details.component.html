@@ -1,4 +1,4 @@
-<section style="max-height: 775px;overflow: scroll;">
+<section >
     <div class="input_box col-12 col-md-6 d-flex align-items-center mb-2">
         <div class="col-6 col-md-3 justify-content-end align-items-center ">
             <span class="mb-2 mr-2">STATUS </span>
@@ -17,7 +17,7 @@
         </div>
     </div>
     <h3>SUBSCRIBER DETAILS</h3>
-    <div class="col-12 align-items-center justify-content-center responsive-container" style="margin: auto; ">
+    <div class="col-12 align-items-center justify-content-center responsive-container" >
         <ag-grid-angular #agGrid id="myGrid" domLayout='normal' class="ag-theme-alpine table-class" rowAnimation
             [gridOptions]="gridOptions" [columnDefs]="columnDefs" (gridReady)="onGridReady($event)" [rowData]="rowData"
             [enableCellTextSelection]="true">

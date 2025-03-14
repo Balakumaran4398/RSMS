@@ -453,6 +453,10 @@ tr:hover {
     height: 50px !important;
     // margin-top: 1%;
     width: 250px !important;
+    border-top: 2px solid #b0afaf;
+    border-bottom: 0.9px solid lightgray;
+    border-left: 0.9px solid lightgray;
+    border-right: 0.9px solid lightgray;
 }
 
 ::ng-deep .select2-container .select2-selection--single .select2-selection__rendered {

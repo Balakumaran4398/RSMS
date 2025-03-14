@@ -10,6 +10,8 @@ import { Observable, catchError, of, throwError } from 'rxjs';
 import { StorageService } from '../_core/service/storage.service';
 import { AlertService } from '../_core/service/alert.service';
 import { MatDialog } from '@angular/material/dialog';
+import Swal from 'sweetalert2';
+import { Router } from '@angular/router';
 
 // import { AlertsComponentComponent } from '../alerts-component/alerts-component.component';
 
@@ -17,7 +19,7 @@ const TOKEN_HEADER_KEY = 'Authorization';
 
 @Injectable()
 export class AuthInterceptor implements HttpInterceptor {
-  constructor(private storageServise: StorageService, private alertToaster: AlertService,private matDialog:MatDialog) { }
+  constructor(private storageServise: StorageService, private alertToaster: AlertService,private matDialog:MatDialog,private router:Router) { }
   intercept(request: HttpRequest<unknown>, next: HttpHandler): Observable<HttpEvent<unknown>> {
     let authReq = request;
     const accessToken = this.storageServise.getToken();
@@ -31,25 +33,25 @@ export class AuthInterceptor implements HttpInterceptor {
           if (error.error instanceof ErrorEvent) {
           } else {
             switch (error.status) {
-                // case 401:
-                //     this.storageServise.signOut();
-                //     // this.alertToaster.showError("Invalid Credentials,Please Enter valid Employeeid and Password");
-                //     console.log(`redirect to login`);
-                //     this.matDialog.closeAll();
-                //     handled = true;
-                //     break;
-                //   case 403:
-                //     // this.token.signOut();
-                //     console.log(`redirect to login`);
-                //     handled = true;
-                //     break;
+                case 401:
+                    this.storageServise.signOut();
+                    // this.alertToaster.showError("Invalid Credentials,Please Enter valid Employeeid and Password");
+                    console.log(`redirect to login`);
+                    this.matDialog.closeAll();
+                    handled = true;
+                    break;
+                  case 403:
+                    // this.token.signOut();
+                    console.log(`redirect to login`);
+                    handled = true;
+                    break;
             }
           }
         } else {
           console.error("Other Errors");
         }
         if (handled) {
-          console.log('return back ');
+          this.swall('Incorrect username or password!!');
           return of(error);
         } else {
           console.log('throw error back to to the subscriber');
@@ -57,5 +59,23 @@ export class AuthInterceptor implements HttpInterceptor {
         }
       })
     )
+  }
+
+  swall(msg: any) {
+    Swal.fire({
+      position: 'center',
+      icon: 'error',
+      title: 'Login Failed',
+      text: msg,
+      showConfirmButton: false,
+      timerProgressBar: true,
+      timer: 2000
+    });
+  }
+
+  signOut(): void {
+    window.sessionStorage.clear();
+    this.router.navigate(['/login']);
+    window.location.reload();
   }
 }

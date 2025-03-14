@@ -8,14 +8,7 @@ import { StorageService } from 'src/app/_core/service/storage.service';
 import { SwalService } from 'src/app/_core/service/swal.service';
 import Swal from 'sweetalert2';
 import { CasDialogueComponent } from '../../channel_setting/_Dialogue/cas-dialogue/cas-dialogue.component';
-// import { TRUE } from 'node_modules1/sass/types';
-// import tree from 'node_modules1/@angular/material/schematics/ng-generate/tree';
-// export class MyErrorStateMatcher implements ErrorStateMatcher {
-//   isErrorState(control: FormControl | null, form: FormGroupDirective | NgForm | null): boolean {
-//     const isSubmitted = form && form.submitted;
-//     return !!(control && control.invalid && (control.dirty || control.touched || isSubmitted));
-//   }
-// }
+
 @Component({
   selector: 'app-message',
   templateUrl: './message.component.html',
@@ -27,8 +20,8 @@ export class MessageComponent {
 
   // matcher = new MyErrorStateMatcher();
   hide = true;
-  castype: any;
-  casname: any;
+  castype: any = '';
+  casname: any = '';
   gridApi: any;
   rowData = [];
   searchTerm: any;
@@ -370,7 +363,7 @@ export class MessageComponent {
   }
   columnDefs: ColDef[] = [
     { headerName: "S.No", lockPosition: true, valueGetter: 'node.rowIndex+1', cellClass: 'locked-col', width: 80, suppressNavigable: true, sortable: false, filter: false },
-    { headerName: "INTEND ID", field: 'intendid' },
+    { headerName: "INTEND ID", field: 'intendid',width: 250, },
     {
       headerName: "FORCE TYPE", field: 'forcedis',
       cellRenderer: (params: { value: any; }) => {

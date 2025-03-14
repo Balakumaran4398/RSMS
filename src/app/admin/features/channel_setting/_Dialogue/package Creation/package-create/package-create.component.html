@@ -98,16 +98,9 @@
             <div class="input_box col-12 col-md-6">
                 <div class=" mb-3">
                     <span for="commission" class="me-2">Commission</span>
-                    <!-- <input type="email" class="" id="commission" formControlName="commission" [(ngModel)]="commission_Value" (input)="commissionValue()"
-                        (input)="calculateMsoCommission('commission')"
-                        placeholder="Enter Mso Commission"> -->
-                    <!-- <input type="number" class="" id="commission" formControlName="commission"
-                        [(ngModel)]="commission_Value" (input)="calculateMsoCommission('commission')"
-                        placeholder="Enter Mso Commission"> -->
-
-                    <input type="number"  id="commission" formControlName="commission"
-                        [(ngModel)]="commission_Value" (input)="calculateMsoCommission('commission')"
-                        placeholder="Enter LCO Commission" min="0" (keydown)="preventnegativeInput($event)">
+                    <input type="number" id="commission" formControlName="commission" [(ngModel)]="commission_Value"
+                        (input)="calculateMsoCommission('commission')" placeholder="Enter LCO Commission" min="0"
+                        (keydown)="preventnegativeInput($event)">
 
                     <div *ngIf="createpackageForm.get('commission')?.invalid && createpackageForm.get('commission')?.touched"
                         class="error-message">
@@ -138,7 +131,7 @@
                                 (change)="percentageValue(true)" />
                             <label for="html" class="label"><span
                                     style="z-index: 1000;color:white;margin-top:4px">Yes</span></label>
-                            <input checked=""   value="false" name="fav_language" id="css" type="radio" class="input1"
+                            <input checked="" value="false" name="fav_language" id="css" type="radio" class="input1"
                                 (change)="percentageValue(false)" />
                             <label for="css" class="label"><span
                                     style="z-index: 1000;color:white;margin-top:4px">No</span></label>
@@ -146,21 +139,8 @@
                     </div>
                 </div>
             </div>
-            <!-- <div class=" input_box col-12 col-md-10  display justify-content-center align-items-center ">
-                <div class="col-12 col-md-6 display justify-content-center align-items-center">
-                    <label class="me-2" style="text-align:center">Cas Type</label>
-                    <br>
-                </div>
-                <div class="col-12 col-md-6 ">
-                    <select placeholder="Select the CAS" formControlName="castype">
-                        <option value="">Select CAS</option>
-                        <option *ngFor="let casItem of cas" [value]="casItem.id">
-                            {{ casItem.casname }}
-                        </option>
-                    </select>
-                </div>
-            </div> -->
-            
+
+
             <p class="errorcase" *ngIf="!isPercentage && issave">*Note: Fixed commission must be less than or equal to
                 the customer amount!!</p>
             <p class="errorcase" *ngIf="isPercentage && issave">*Note: Commission percentage must be between 0 and

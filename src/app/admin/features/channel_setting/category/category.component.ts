@@ -63,14 +63,14 @@ export class CategoryComponent {
 
   columnDefs: ColDef[] = [
     {
-      headerName: "S.No", lockPosition: true, valueGetter: 'node.rowIndex+1', width: 80, headerCheckboxSelection: true,
-      checkboxSelection: true,
+      headerName: "S.No", lockPosition: true, valueGetter: 'node.rowIndex+1', width: 90, headerCheckboxSelection: true,
+      checkboxSelection: true,filter: false
     },
 
     {
       headerName: 'CATEGORY NAME',
       field: 'name', 
-      flex: 1,
+      width: 600,
       editable: true,
       cellEditor: 'agTextCellEditor',
       cellStyle: { textAlign: 'left'}, 
@@ -98,7 +98,7 @@ export class CategoryComponent {
     {
       headerName: "ACTIVE STATUS",
       field: 'isactive',
-      flex: 1,
+      width: 600,
       cellRenderer: (params: any) => {
         var isActive = params.data.isactive;
 
@@ -111,7 +111,7 @@ export class CategoryComponent {
         toggleSwitch.style.width = '45px';
         toggleSwitch.style.height = '25px';
         toggleSwitch.style.borderRadius = '15px';
-        toggleSwitch.style.backgroundColor = isActive ? '#93b6eb' : 'rgb(115 115 115)';
+        toggleSwitch.style.backgroundColor = isActive ? 'var(--active-icon)' : 'rgb(115 115 115)';
         toggleSwitch.style.position = 'relative';
         toggleSwitch.style.cursor = 'pointer';
         toggleSwitch.style.transition = 'background-color 0.3s ease';

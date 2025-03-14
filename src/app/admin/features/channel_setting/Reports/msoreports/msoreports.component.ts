@@ -20,14 +20,33 @@ export class MsoreportsComponent implements OnInit {
   username: any;
 
   isshow: boolean = false;
+
+  isUser: boolean = false;
+  isSpecial: boolean = false;
+  isReception: boolean = false;
+
   ngOnInit(): void {
     this.role = this.storageservice.getUserRole();
     this.username = this.storageservice.getUsername();
 
     this.userservice.getMsoDetails(this.role, this.username).subscribe((res: any) => {
       console.log(res);
-      this.isshow = res.msoName == 'AJK' ? true : false;
+      this.isshow = res.msoName.includes('AJK') ? true : false;
     });
+
+    if (this.role.includes('ROLE_ADMIN')) {
+      this.isUser = true;
+      this.isSpecial = false;
+      this.isReception = false;
+    } else if (this.role.includes('ROLE_SPECIAL')) {
+      this.isUser = false;
+      this.isSpecial = true;
+      this.isReception = false;
+    } else if (this.role.includes('ROLE_RECEPTION')) {
+      this.isUser = false;
+      this.isSpecial = false;
+      this.isReception = true;
+    }
   }
   step = signal(0);
   setStep(index: number) {
@@ -43,8 +62,6 @@ export class MsoreportsComponent implements OnInit {
   }
 
   openMsoDialog(event: any) {
-    console.log(event);
-    console.log(event);
     this.router.navigate(['admin/msodialogueReports/' + event]);
   }
   openLco() {

@@ -36,8 +36,8 @@ export class ChannelComponent {
         return 0;
       },
     },
-    paginationPageSize: 10,
-    pagination: true,
+    // paginationPageSize: 10,
+    // pagination: true,
   };
 
   gridApi: any;
@@ -45,6 +45,7 @@ export class ChannelComponent {
   selectedIds: number[] = [];
   selectedtypes: number[] = [];
   hasSelectedRows: boolean = true;
+  selectCount: any;
   public rowSelection: any = "multiple";
   username: string;
   role: string;
@@ -54,6 +55,9 @@ export class ChannelComponent {
   selectType: any = 'All';
   selectedType: string = 'All';
 
+  IsOperator: boolean = false;
+  Isuser: boolean = false;
+
   constructor(public dialog: MatDialog, public userService: BaseService, storageService: StorageService, private swal: SwalService, private excelService: ExcelService,) {
     this.username = storageService.getUsername();
     this.role = storageService.getUserRole();
@@ -62,12 +66,21 @@ export class ChannelComponent {
 
   }
   ngOnInit(): void {
-    this.getChannelList(this.selectedType);
+
     this.userService.getMsoDetails(this.role, this.username).subscribe((data: any) => {
       console.log(data);
       this.msodetails = `${data.msoName} ${data.msoStreet}, ${data.msoArea}, ${data.msoState}, ${data.msoPincode}, ${data.msoEmail}`;
       console.log(this.msodetails);
     })
+    if (this.role === 'ROLE_ADMIN' || this.role === 'ROLE_SPECIAL') {
+      this.Isuser = true;
+      this.IsOperator = false;
+      this.getChannelList(this.selectedType);
+    } else if (this.role === 'ROLE_OPERATOR') {
+      this.Isuser = false;
+      this.IsOperator = true;
+      this.getLCOChannelList();
+    }
   }
   getChannelList(selectedType: string): void {
     this.userService.ChannelList(this.role, this.username, selectedType).subscribe((data) => {
@@ -75,11 +88,14 @@ export class ChannelComponent {
       this.rowData = data;
     });
   }
+  getLCOChannelList(): void {
+    this.userService.ChannelList(this.role, this.username, 'All').subscribe((data) => {
+      console.log(data);
+      this.rowData = data;
+    });
+  }
 
-  // onTypeChange(newType: string): void {
-  //   this.selectedType = newType;
-  //   this.getChannelList(this.selectedType);
-  // }
+
   onTypeChange(event: Event): void {
     const selectElement = event.target as HTMLSelectElement;
     const selectedType = selectElement.value;
@@ -94,18 +110,34 @@ export class ChannelComponent {
   }
   columnDefs: any[] = [
     {
-      headerName: "S.No", lockPosition: true, valueGetter: 'node.rowIndex+1', width: 100, headerCheckboxSelection: true,
-      checkboxSelection: true,
+      headerName: "S.NO", lockPosition: true, valueGetter: 'node.rowIndex+1', width: 100, headerCheckboxSelection: true,
+      checkboxSelection: true, filter: false
     },
-    { headerName: "CHANNEL NAME", field: 'channel_name', cellStyle: { textAlign: 'left' }, },
-    { headerName: "BROADCASTER", field: 'broadcastername', cellStyle: { textAlign: 'left' }, },
     {
-      headerName: 'Actions', minWidth: 80, cellStyle: { textAlign: 'center' },
+      headerName: "CHANNEL NAME",
+      field: 'channel_name',
+      width: 250,
+      cellStyle: { textAlign: 'left' },
+      // cellStyle: (params: any) => {
+      //   if (params.data.paidstatus === "Not Paid") {
+      //     return { color: 'block', textAlign: 'left' };
+      //   } else if (params.data.paidstatus === "Paid") {
+      //     return { color: 'green', textAlign: 'left' };
+      //   }
+      //   return { textAlign: 'left' }; 
+      // }
+    },
+    { headerName: "SERVICE ID", field: 'service_id', cellStyle: { textAlign: 'center' }, width: 185 },
+    { headerName: "PRODUCT ID", field: 'product_id', cellStyle: { textAlign: 'center' }, width: 200, },
+    { headerName: "BROADCASTER", field: 'broadcastername', cellStyle: { textAlign: 'left' }, width: 250, },
+    { headerName: "INR AMOUNT", field: 'inr_amt', cellStyle: { textAlign: 'center' }, width: 200, },
+    {
+      headerName: 'ACTION', cellStyle: { textAlign: 'center' }, width: 140,
       cellRenderer: (params: any) => {
         const editButton = document.createElement('button');
         editButton.innerHTML = '<i class="fa fa-pencil-square" aria-hidden="true"></i>';
         editButton.style.backgroundColor = 'transparent';
-        editButton.style.color = 'rgb(64 113 114)';
+        editButton.style.color = 'var(--active-edit-icon)';
         editButton.style.border = 'none';
         editButton.title = 'Edit the Customer';
         editButton.style.cursor = 'pointer';
@@ -119,22 +151,51 @@ export class ChannelComponent {
         return div;
       }
     },
-    { headerName: "SERVICE ID", field: 'service_id', width: 100, cellStyle: { textAlign: 'center' }, },
-    { headerName: "PRODUCT ID", field: 'product_id', cellStyle: { textAlign: 'center' }, },
+
     {
-      headerName: "STATUS", field: 'statusdisplay',
+      headerName: "STATUS", field: 'statusdisplay', width: 250,
       cellRenderer: (params: { value: any; }) => {
-        const isActive = params.value === 'Active'; // Check if the value is 'Active'
-        const color = isActive ? 'green' : 'red';  // 'Active' is green, 'Deactive' is red
+        const isActive = params.value === 'Active';
+        const color = isActive ? 'green' : 'red';
         return `<span style="color: ${color}">${params.value}</span>`;
       }
-
-
     },
-    { headerName: "INR AMOUNT", field: 'inr_amt', cellStyle: { textAlign: 'center' }, },
-    { headerName: "STATUS", field: 'paidstatus', },
+
+    // { headerName: "STATUS", field: 'paidstatus', width: 200,},
     // { headerName: "LOGO", field: 'channel_logo', editable: true },
 
+
+  ];
+  columnDefs1: any[] = [
+    {
+      headerName: "S.No", lockPosition: true, valueGetter: 'node.rowIndex+1', width: 100, headerCheckboxSelection: true,
+      checkboxSelection: true, filter: false
+    },
+    {
+      headerName: "CHANNEL NAME", field: 'channel_name', width: 250,
+      cellStyle: (params: any) => {
+        if (params.data.paidstatus === "Not Paid") {
+          return { color: 'block', textAlign: 'left' };
+        } else if (params.data.paidstatus === "Paid") {
+          return { color: 'green', textAlign: 'left' };
+        }
+        return { textAlign: 'left' };
+      }
+    },
+    { headerName: "FREQUENCY", field: 'channel_freq', cellStyle: { textAlign: 'center' }, width: 185 },
+    { headerName: "DESCRIPTION", field: 'channel_desc', cellStyle: { textAlign: 'center' }, width: 200, },
+    { headerName: "PRODUCT ID", field: 'product_id', cellStyle: { textAlign: 'left' }, width: 250, },
+    { headerName: "TRANSPORT ID", field: 't_id', cellStyle: { textAlign: 'center' }, width: 200, },
+    { headerName: "SERVICE ID", field: 'service_id', cellStyle: { textAlign: 'center' }, width: 200, },
+    { headerName: "INR AMOUNT", field: 'inr_amt', cellStyle: { textAlign: 'center' }, width: 200, },
+    {
+      headerName: "STATUS", field: 'statusdisplay', width: 250,
+      cellRenderer: (params: { value: any; }) => {
+        const isActive = params.value === 'Active';
+        const color = isActive ? 'green' : 'red';
+        return `<span style="color: ${color}">${params.value}</span>`;
+      }
+    }, { headerName: "LOGO", field: 'channel_logo', cellStyle: { textAlign: 'center' }, width: 200, },
 
   ];
   onSelectionChange(event: MatSelectChange): void {
@@ -144,8 +205,10 @@ export class ChannelComponent {
   onSelectionChanged() {
     if (this.gridApi) {
       const selectedRows = this.gridApi.getSelectedRows();
+      this.selectCount = selectedRows.length
       this.isAnyRowSelected = selectedRows.length > 0;
       console.log("Selected Rows:", selectedRows);
+      console.log("selectCount:", this.selectCount);
 
       this.selectedIds = selectedRows.map((e: any) => e.channel_id);
       this.selectedtypes = selectedRows.map((e: any) => e.statusdisplay);

@@ -182,6 +182,7 @@ export class ChartInventoryReportComponent {
 
   getExcel() {
     console.log(this.type);
+    this.swal.Loading();
     this.userService.getDashboardReport(this.role, this.username, this.type, 2)
       .subscribe(
         (response: HttpResponse<any[]>) => { // Expect HttpResponse<any[]>
@@ -203,6 +204,7 @@ export class ChartInventoryReportComponent {
                 datas.push(row);
               });
               this.excelService.generateDashboardInventoryExcel(areatitle, header, datas, title, areasub, sub);
+              this.swal.Close();
             } else if (this.type == 12) {
               const areatitle = 'A1:H2';
               const areasub = 'A3:H3';
@@ -216,6 +218,7 @@ export class ChartInventoryReportComponent {
                 datas.push(row);
               });
               this.excelService.generateboxinlcoExcel(areatitle, header, datas, title, areasub, sub);
+              this.swal.Close();
             }
             else if (this.type == 13) {
               const areatitle = 'A1:I2';
@@ -230,6 +233,7 @@ export class ChartInventoryReportComponent {
                 datas.push(row);
               });
               this.excelService.generateboxinCustomerExcel(areatitle, header, datas, title, areasub, sub);
+              this.swal.Close();
             }
           }
           else if (response.status === 204) {
@@ -243,6 +247,7 @@ export class ChartInventoryReportComponent {
       );
   }
   getPDF() {
+    this.swal.Loading();
     this.userService.getDashboardPDFReport(this.username, this.role, this.type, 1)
       .subscribe((x: Blob) => {
         const blob = new Blob([x], { type: 'application/pdf' });
@@ -255,6 +260,7 @@ export class ChartInventoryReportComponent {
           window.URL.revokeObjectURL(data);
           link.remove();
         }, 100);
+        this.swal.Close();
       },
         (error: any) => {
           Swal.fire({

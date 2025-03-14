@@ -231,8 +231,8 @@
             </div>
             <div class="row d-flex align-items-center justify-content-center" style="padding: 0.5rem;">
                 <div class="col-12 col-sm-12 col-md-12 mb-3">
-                    <ag-grid-angular #agGrid id="myGrid" domLayout='autoHeight' class="ag-theme-alpine table-class"
-                        style="max-height: 775px;overflow: scroll;" rowAnimation [rowSelection]="rowSelection"
+                    <ag-grid-angular #agGrid id="myGrid" domLayout='normal' class="ag-theme-alpine table-class"
+                        rowAnimation [rowSelection]="rowSelection"
                         [gridOptions]="gridOptions" [columnDefs]="columnDefs" [rowData]="rowData"
                         [enableCellTextSelection]="true">
                     </ag-grid-angular>

@@ -29,6 +29,7 @@ export class SpecialPermissionComponent {
   iscancel = false;
   fullrefund = false;
   isridpay = false;
+  iscollection = false;
   remote = false;
   isSuspend = false;
   dateAdjust = false;
@@ -63,6 +64,7 @@ export class SpecialPermissionComponent {
     this.iscancel = data.iscancel
     this.fullrefund = data.fullrefund
     this.isridpay = data.isridpay
+    this.iscollection = data.iscollection
     this.plan = data.plan
     this.date = data.date
     this.datetodate = data.datetodate
@@ -92,6 +94,7 @@ export class SpecialPermissionComponent {
       recurring: this.recurring,
       iscancel: this.iscancel,
       fullrefund: this.fullrefund,
+      iscollection: this.iscollection,
       isridpay: this.isridpay,
       plan: this.plan,
       date: this.date,

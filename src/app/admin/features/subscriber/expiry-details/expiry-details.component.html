@@ -7,28 +7,22 @@
     <div class="col-12 col-md-6">
         <div class="card">
             <div class=" display_1  ">
-                <div class="input_box col-12 col-md-4" >
+                <div class="input_box col-12 col-md-4">
                     <span style="margin-top: 5%;" for="">Date</span>
                 </div>
                 <div class="col-12 col-md-8">
-                    <!-- <mat-form-field appearance="outline" style="width: 100%;">
-                        <mat-date-range-input [rangePicker]="picker" >
-                            <input matStartDate matInput placeholder="Start date" [(ngModel)]="fromdate" (dateChange)="getFromDate($event)">
-                            <input matEndDate matInput placeholder="End date" [(ngModel)]="todate" (dateChange)="getToDate($event)">
-                        </mat-date-range-input>
-                        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-                        <mat-date-range-picker #picker></mat-date-range-picker>
-                    </mat-form-field> -->
 
-                    <mat-form-field appearance="outline"  style="width: 100%;">
-                        <mat-date-range-input [rangePicker]="picker" >
-                            <input matStartDate matInput placeholder="Start date"
+                    <mat-form-field appearance="outline" style="width: 100%;">
+                        <mat-date-range-input [rangePicker]="picker" [formGroup]="dateRangeForm">
+                            <input matStartDate matInput placeholder="Start date" formControlName="fromdate"
                                 (dateChange)="getFromDate($event)">
-                            <input matEndDate matInput placeholder="End date" (dateChange)="getToDate($event)"  >
+                            <input matEndDate matInput placeholder="End date" formControlName="todate"
+                                (dateChange)="getToDate($event)">
                         </mat-date-range-input>
                         <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
                         <mat-date-range-picker #picker></mat-date-range-picker>
                     </mat-form-field>
+
                 </div>
             </div>
 
@@ -47,7 +41,7 @@
                         </li>
                     </ul> -->
                     <select id="operator" [(ngModel)]="operatorname">
-                        <option value="0" selected>Selected Operator Name</option>
+                        <option value="0" selected>ALL Operator</option>
                         <option *ngFor="let operator of filteredOperators" [value]="operator.id"
                             (ngModelChange)="selectOperator1($event)">
                             {{ operator.name }}
@@ -60,9 +54,9 @@
                     <span for="">Format</span>
                 </div>
                 <div class="col-12 col-md-8 d-flex justify-content-start align-items-center">
-                    <button class="btn mx-3 bttn" (click)="exportAsXLSX()"><i class="fa fa-file-excel-o mx-1"
+                    <button class="btn btn-success mx-3 bttn" (click)="exportAsXLSX()"><i class="fa fa-file-excel-o mx-1"
                             aria-hidden="true"></i>FORMAT 1</button>
-                    <button class="btn  bttn" (click)="exportAsXLSX1()"><i class="fa fa-file-excel-o mx-1"
+                    <button class="btn btn-success  bttn" (click)="exportAsXLSX1()"><i class="fa fa-file-excel-o mx-1"
                             aria-hidden="true"></i>FORMAT 2</button>
                 </div>
             </div>

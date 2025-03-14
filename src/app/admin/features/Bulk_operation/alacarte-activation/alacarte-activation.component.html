@@ -92,7 +92,6 @@
                 <!-- Right Column (Bulk Alacarte History) -->
                 <div class="col-12 col-lg-8 d-flex justify-content-center">
                     <div class="card col-12">
-
                         <div class="row d-flex align-items-center justify-content-center" style="padding: 0.5rem;">
                             <div class="col-12 mb-3">
                                 <div class="row align-items-center justify-content-center mb-3" style="gap:10px;">
@@ -109,11 +108,10 @@
                                     </div>
                                 </div>
 
-                                <ag-grid-angular #agGrid id="myGrid" domLayout='autoHeight'
+                                <ag-grid-angular #agGrid id="myGrid" domLayout='normal'
                                     class="ag-theme-alpine table-class" rowAnimation [rowSelection]="rowSelection"
-                                    style="max-height: 775px;overflow: scroll;" [gridOptions]="gridOptions"
-                                    [columnDefs]="columnDefs" [rowData]="rowData" (gridReady)="onGridReady()"
-                                    [enableCellTextSelection]="true">
+                                    [gridOptions]="gridOptions" [columnDefs]="columnDefs" [rowData]="rowData"
+                                    (gridReady)="onGridReady()" [enableCellTextSelection]="true">
                                 </ag-grid-angular>
                             </div>
                         </div>
@@ -178,8 +176,8 @@
                             </div>
                         </div>
 
-                        <ag-grid-angular #agGrid id="myGrid" domLayout='autoHeight' class="ag-theme-alpine table-class"
-                            style="max-height: 775px;overflow: scroll;" rowAnimation [rowSelection]="rowSelection"
+                        <ag-grid-angular #agGrid id="myGrid" domLayout='normal' class="ag-theme-alpine table-class"
+                             rowAnimation [rowSelection]="rowSelection"
                             [gridOptions]="gridOptions" [columnDefs]="columnDefs1" [rowData]="rowData"
                             (gridReady)="onGridReady()" [enableCellTextSelection]="true">
                         </ag-grid-angular>

@@ -44,7 +44,7 @@ export class PackageplanComponent implements OnInit {
 
   columnDefs: any[] = [
     {
-      headerName: "S.No", lockPosition: true, valueGetter: 'node.rowIndex+1', headerCheckboxSelection: true,
+      headerName: "S.No", lockPosition: true, valueGetter: 'node.rowIndex+1', headerCheckboxSelection: true,filter: false,
       checkboxSelection: true,
     },
     { headerName: 'COUNTRYNAME', field: 'planname', width: 250, },

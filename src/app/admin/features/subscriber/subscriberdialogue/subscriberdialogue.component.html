@@ -479,6 +479,16 @@
                                     </label>
                                 </div>
                                 <div class="col-12 col-md-8">
+
+                                    <!-- <select id="lco" [(ngModel)]="lcoid">
+                                        <option value="0" selected>Select a Operator</option>
+                                        <option *ngFor="let operator of filteredOperators" [value]="operator.name"
+                                        (ngModelChange)="filterOperators($event)">
+                                            {{ operator.name }}
+                                        </option>
+                                       
+                                    </select> -->
+
                                     <input type="text" matInput [matAutocomplete]="auto" [(ngModel)]="lcoid"
                                         name="lcoName" (ngModelChange)="filterOperators($event)"
                                         placeholder="Select a Operator" [matAutocompleteDisabled]="false"
@@ -1454,18 +1464,16 @@
                 <div class="  col-6 col-md-6">
                     <label class="me-2">New LCO Name</label>
                 </div>
-                <!-- {{operatname}} -->
                 <div class="col-6 col-md-6 value">
-                    <!-- <select id="lcoName" [(ngModel)]="lcoid" (change)="onSubscriberlcoChange($event)"
-                        (input)="onBoxIdInputChange()">
-                        <option value="0" selected>Select a LCO</option>
-                        <option *ngFor="let key of lco_list" [value]="key.id">
+                    <select id="lco" [(ngModel)]="operatorid" (change)="onSubscriberStatusChange($event)">
+                        <option value="0" selected>Select a Operator</option>
+                        <option *ngFor="let key of filteredOperators" [value]="key.value">
                             {{ key.name }}
                         </option>
-                    </select> -->
+                    </select>
 
-                    <input type="text" matInput [matAutocomplete]="auto" [value]="operatname"
-                        (input)="filterOperators($event)" placeholder="Select a Operator"
+                    <!-- <input type="text" matInput [matAutocomplete]="auto" [value]="operatname"
+                         (ngModelChange)="filterOperators($event)" placeholder="Select a Operator"
                         [matAutocompleteDisabled]="false">
 
                     <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayOperator">
@@ -1473,8 +1481,7 @@
                             (click)="onSubscriberStatusChange(operator)">
                             {{ operator.name }}
                         </mat-option>
-                    </mat-autocomplete>
-
+                    </mat-autocomplete> -->
                     <div *ngIf="errorMessage" class="text-danger mt-2">{{ errorMessage }}</div>
                 </div>
             </div>
@@ -1485,15 +1492,30 @@
                     <label class="me-2">Subscriber</label>
                 </div>
                 <div class="col-6 col-md-6 value">
-                    <!-- <select [(ngModel)]="f_subid" (input)="onBoxIdInputChange()">
+                  
+                    <select id="subscriber" [(ngModel)]="subid" (change)="onsublist($event)">
                         <option value="0" selected>Select a Subscriber</option>
-                        <option *ngFor="let key of sub_list" [value]="key.id">
-                            {{ key.name }}
+                        <option *ngFor="let sub of filteredSub" [value]="sub.value">
+                            {{ sub.name }}
                         </option>
-                    </select> -->
+                    </select>
+                    <!-- <input type="text" matInput [matAutocomplete]="auto" [(ngModel)]="lcoid" name="lcoName"
+                        (ngModelChange)="filterOperators($event)" placeholder="Select a Operator"
+                        [matAutocompleteDisabled]="false" [value]="selectedOperator?.name" (focus)="onInputFocus()"
+                        (blur)="onInputBlur()">
+                    <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayOperator">
+                        <mat-option *ngFor="let operator of filteredOperators" [value]="operator.value"
+                            (click)="onoperatorchange(operator)">
+                            {{ operator.name }}
+                        </mat-option>
+                    </mat-autocomplete>
+                    <div *ngIf="lcoid.invalid && lcoid.touched" class="text-danger">
+                        Operator Name is required
+                    </div> -->
 
 
-                    <input type="text" matInput [matAutocomplete]="autosub" [value]="servicename"
+
+                    <!-- <input type="text" matInput [matAutocomplete]="autosub" [value]="servicename"
                         (input)="filterSub($event)" placeholder="Select a Subscriber" [matAutocompleteDisabled]="false">
 
                     <mat-autocomplete #autosub="matAutocomplete" [displayWith]="displaySub">
@@ -1501,7 +1523,7 @@
                             {{ sub.name }}
                         </mat-option>
                     </mat-autocomplete>
-                    <div *ngIf="errorMessage1" class="text-danger mt-2">{{ errorMessage1 }}</div>
+                    <div *ngIf="errorMessage1" class="text-danger mt-2">{{ errorMessage1 }}</div> -->
                 </div>
 
             </div>
@@ -1699,7 +1721,7 @@
                     </div>
                     <div class="col-6 col-md-6">
                         <input type="date" [(ngModel)]="f_date" (ngModelChange)="onSelectionrechargetype($event)"
-                            [min]="today">
+                            [min]="tomorrow">
                     </div>
                 </div>
             </div>
@@ -1883,7 +1905,7 @@
                     </div>
                     <div class="col-6 col-md-7">
                         <input type="date" [(ngModel)]="f_date" (ngModelChange)="onSelectionrechargetype($event)"
-                            [min]="today">
+                            [min]="tomorrow">
                     </div>
                 </div>
             </div>

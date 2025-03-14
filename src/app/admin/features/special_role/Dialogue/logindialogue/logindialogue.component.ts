@@ -1,4 +1,4 @@
-import { Component, Inject, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, Inject, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDateFormats } from '@angular/material/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
@@ -41,6 +41,7 @@ export class LogindialogueComponent implements OnInit {
   role: any;
   roleid: any;
   mail: any;
+  expiryDate: any;
   date: any;
   username: any;
   type: any;
@@ -53,18 +54,18 @@ export class LogindialogueComponent implements OnInit {
   editPassword: any;
   editDate: any;
   editRole: any;
-  isactive: boolean;
+  isactive: boolean = false;
   editmail: any;
   id: any;
-  constructor(public dialogRef: MatDialogRef<LogindialogueComponent>, @Inject(MAT_DIALOG_DATA) public data: any, private fb: FormBuilder, private swal: SwalService, private userservice: BaseService, private storageservice: StorageService) {
+  constructor(public dialogRef: MatDialogRef<LogindialogueComponent>, @Inject(MAT_DIALOG_DATA) public data: any, private cdr: ChangeDetectorRef, private fb: FormBuilder, private swal: SwalService, private userservice: BaseService, private storageservice: StorageService) {
     this.username = storageservice.getUsername();
     this.role = storageservice.getUserRole();
     console.log(data);
     this.type = data.type;
     this.edituserid = data?.data?.username;
     this.editPassword = data?.data?.password;
-    this.editRole = data?.data?.rolename;
-    this.isactive = data?.data?.isactive;
+    this.editRole = data?.data?.role;
+    this.isactive = data?.data?.valid;
     this.editmail = data?.data?.email;
     this.id = data?.data?.id;
     console.log('isactive', this.isactive);
@@ -110,6 +111,7 @@ export class LogindialogueComponent implements OnInit {
       password: this.password,
       roleid: this.roleid,
       email: this.mail,
+      expirydate: this.expiryDate,
     };
     console.log(requestBody);
 
@@ -126,11 +128,13 @@ export class LogindialogueComponent implements OnInit {
       form.form.markAllAsTouched();
       return;
     }
+    console.log(this.isactive);
+
     const requestBody = {
       role: this.role,
       username: this.username,
       uname: this.edituserid,
-      // password: this.editPassword,
+      password: this.editPassword,
       roleid: this.editRole,
       status: this.isactive,
       // email:this.editmail,
@@ -147,5 +151,8 @@ export class LogindialogueComponent implements OnInit {
       });
   }
 
-
+  onToggleChange() {
+    console.log('isactive changed to:', !this.isactive);
+    this.cdr.detectChanges();
+  }
 }

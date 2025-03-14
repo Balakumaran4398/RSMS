@@ -4,6 +4,7 @@ import { StorageService } from '../../service/storage.service';
 import { SwalService } from '../../service/swal.service';
 import { CanvasJS } from '@canvasjs/angular-charts';
 import * as jQuery from 'jquery';
+import { Route, Router } from '@angular/router';
 declare var AmCharts: any;
 
 @Component({
@@ -31,7 +32,7 @@ export class BarChartComponent implements OnInit {
 
   BAChartCountTotal = this.BAChartDataValue.reduce((acc, val) => acc + val, 0);
 
-  constructor(private userservice: BaseService, private storageservice: StorageService, private swal: SwalService) {
+  constructor(private userservice: BaseService, private storageservice: StorageService, private swal: SwalService,private router:Router) {
     this.role = storageservice.getUserRole();
     this.username = storageservice.getUsername();
   }
@@ -94,6 +95,10 @@ export class BarChartComponent implements OnInit {
     
   }
 
+  openMsoDialog() {
+    console.log(event);
+    this.router.navigate(['admin/expiry']);
+  }
   onDateChange(event: Event): void {
     const input = event.target as HTMLInputElement;
     if (input.value) {
@@ -128,7 +133,7 @@ export class BarChartComponent implements OnInit {
         } else {
           color = "#d1ae2e";
         }
-
+        // color = count > 0 ? "#f4a261" : "#505081";
         dataPoints.push({
           // x: new Date(date),
           y: count,
@@ -185,6 +190,59 @@ export class BarChartComponent implements OnInit {
     chart.render();
   }
 
-
+  // updateChartData(data: any): void {
+  //   const dataPoints = [];
+  //   const colors = ["#93B1B5", "#FFDBBB", "#BADDFF", "#CBBD93", "#DBD1ED", "#77B1D4", "#E3F0A3","#7D99AA"]; 
+  
+  //   let index = 0;
+  //   for (const date in data) {
+  //     if (data.hasOwnProperty(date)) {
+  //       const count = data[date];
+  //       const color = colors[index % colors.length]; 
+  //       dataPoints.push({
+  //         y: count,
+  //         label: date,
+  //         color: color,
+  //         indexLabel: count.toString(),
+  //         indexLabelFontColor: "#5A5757",
+  //         indexLabelFontSize: 14,
+  //         indexLabelPlacement: "outside",
+  //         indexLabelAlign: "left"
+  //       });
+  //         index++; 
+  //     }
+  //   }
+  
+  //   const chart = new CanvasJS.Chart("barchartContainer", {
+  //     animationEnabled: true,
+  //     responsive: true,
+  //     axisY: {
+  //       title: "Count",
+  //       titleFontSize: 16,
+  //       titleFontColor: "#5A5757",
+  //       labelFontColor: "#5A5757",
+  //       gridThickness: 0
+  //     },
+  //     axisX: {
+  //       title: "Date",
+  //       labelFontSize: 14,
+  //       labelFontColor: "#001716",
+  //       labelAlign: "center",
+  //       interval: 1
+  //     },
+  //     data: [{
+  //       type: "column",
+  //       dataPoints: dataPoints,
+  //       dataPointWidth: 10, 
+  //       indexLabelFontColor: "#5A5757",
+  //       indexLabelPlacement: "inside",
+  //       indexLabelAlign: "center",
+  //       color: (e: any) => e.dataPoint.color
+  //     }]
+  //   });
+  
+  //   chart.render();
+  // }
+  
 
 }

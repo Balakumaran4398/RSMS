@@ -217,18 +217,22 @@ export class LcoRechargeReportComponent implements OnInit {
       this.isDateEnabled = false;
       this.isMonthYearEnabled = false;
       this.isYearEnabled = false;
+      this.Totalamount = '';
     } else if (selectedValue == 1) {
       this.isDateEnabled = true;
       this.isMonthYearEnabled = false;
       this.isYearEnabled = false;
+      this.Totalamount = '';
     } else if (selectedValue == 2) {
       this.isMonthYearEnabled = true;
       this.isDateEnabled = false;
       this.isYearEnabled = false;
+      this.Totalamount = '';
     } else if (selectedValue == 3) {
       this.isDateEnabled = false;
       this.isMonthYearEnabled = false;
       this.isYearEnabled = true;
+      this.Totalamount = '';
     }
   }
 
@@ -300,12 +304,14 @@ export class LcoRechargeReportComponent implements OnInit {
     this.operatorid = operator.value;
     console.log(this.operatorid);
     // this.userservice.OperatorDetails(this.role, this.username, this.operatorid).subscribe(
+    this.swal.Loading();
     this.userservice.getRefundListByOperatorId(this.role, this.username, this.operatorid, false).
       subscribe(
         (response: HttpResponse<any[]>) => {
           if (response.status === 200) {
             this.rowData = response.body;
             // this.swal.Success_200();
+            this.swal.Close();
           } else if (response.status === 204) {
             this.swal.Success_204();
             this.rowData = [];
@@ -336,7 +342,7 @@ export class LcoRechargeReportComponent implements OnInit {
     return [this.rowData];
   }
   getRechargeLog(event: any) {
-
+    this.swal.Loading();
     this.userservice.getRechargeDetailsByFdTdOpid(this.role, this.username, this.fromdate || this.currentDate, this.todate || this.currentDate, 0)
       .subscribe(
         (response: HttpResponse<any[]>) => {
@@ -344,6 +350,7 @@ export class LcoRechargeReportComponent implements OnInit {
             this.rowData = response.body;
             this.updateColumnDefs(this.selectedTab);
             // this.swal.Success_200();
+            this.swal.Close();
           } else if (response.status === 204) {
             this.swal.Success_204();
             this.rowData = [];
@@ -364,6 +371,7 @@ export class LcoRechargeReportComponent implements OnInit {
     return `${year}-${month}-${day}`;
   }
   getRechargeExcel() {
+    this.swal.Loading();
     this.userservice.getRechargeDetailsByFdTdOpid(this.role, this.username, this.fromdate, this.todate, this.operatorid)
       .subscribe(
         (response: HttpResponse<any[]>) => {
@@ -383,6 +391,7 @@ export class LcoRechargeReportComponent implements OnInit {
               datas.push(row);
             });
             this.excelService.generatelcorechargeExcel(areatitle, header, datas, title, areasub, sub);
+            this.swal.Close();
           } else if (response.status === 204) {
             this.rowData = response.body;
             const title = ('From Date:' + this.fromdate + '_' + 'To Date:' + this.todate + 'LCO RECHARGE REPORT').toUpperCase();
@@ -396,6 +405,7 @@ export class LcoRechargeReportComponent implements OnInit {
             header = ['S.NO', 'OPERATOR NAME', 'TRANSACTION GROUP TIME', 'LCO AMOUNT', 'OLD BALANCE', 'CURRENT BALANCE', 'TRANSACTION DATE'];
             this.excelService.generatelcorechargeExcel(areatitle, header, datas, title, areasub, sub);
             this.rowData = [];
+            this.swal.Close();
           }
         },
         (error) => {
@@ -404,6 +414,7 @@ export class LcoRechargeReportComponent implements OnInit {
       );
   }
   getRechargePDF() {
+    this.swal.Loading();
     this.userservice.getRechargeLogPDFReport(this.role, this.username, this.fromdate, this.todate, this.operatorid)
       .subscribe((x: Blob) => {
         const blob = new Blob([x], { type: 'application/pdf' });
@@ -417,6 +428,7 @@ export class LcoRechargeReportComponent implements OnInit {
           window.URL.revokeObjectURL(data);
           link.remove();
         }, 100);
+        this.swal.Close();
       },
         (error: any) => {
           Swal.fire({
@@ -426,6 +438,7 @@ export class LcoRechargeReportComponent implements OnInit {
             confirmButtonText: 'Ok'
           });
         });
+    this.swal.Close();
   }
   getPrintBillPDFReport(event: any) {
     const row = event;
@@ -435,7 +448,7 @@ export class LcoRechargeReportComponent implements OnInit {
     const operatorName = row.operatorname;
     console.log('id', id);
     console.log('operatorName', operatorName);
-
+    this.swal.Loading();
     this.userservice.getPrintBillReport(this.role, this.username, id)
       .subscribe((x: Blob) => {
         console.log('id', this.id);
@@ -450,6 +463,7 @@ export class LcoRechargeReportComponent implements OnInit {
           window.URL.revokeObjectURL(data);
           link.remove();
         }, 100);
+        this.swal.Close();
       },
         (error: any) => {
           Swal.fire({
@@ -459,11 +473,13 @@ export class LcoRechargeReportComponent implements OnInit {
             confirmButtonText: 'Ok'
           });
         });
+    this.swal.Close();
   }
   getLCORechargeExcel() {
     console.log('date dflgdgfd', this.date);
     if (this.isDateEnabled) {
       console.log('date dflgdgfd', this.date);
+      this.swal.Loading();
       this.userservice.getRechargeDetailsByDate(this.role, this.username, this.date || this.currentDate)
         .subscribe(
           (response: HttpResponse<any>) => {
@@ -482,28 +498,21 @@ export class LcoRechargeReportComponent implements OnInit {
                 });
                 const totalRow = ['', '', '', '', '', '', 'Total:', this.Totalamount,];
                 this.excelService.generateLCO_dateRechargeExcel(header, datas, title, sub, totalRow);
+                this.swal.Close();
               } else {
                 Swal.fire('Error', 'Response body is empty', 'error');
               }
             }
             else if (response.status === 204) {
-              // const responseBody = response.body;
-              // if (responseBody) {
-              //   this.rowData = responseBody.rechargelist;
-              //   this.Totalamount = responseBody.totalamount;
+
               const title = ('DATEWISE LOG RECHARGE REPORT').toUpperCase();
               const sub = 'MSO ADDRESS:' + this.msodetails;
               const header: string[] = ['S.NO', 'OPERATOR NAME', 'OPERATOR ID', 'AMOUNT', 'REMARKS', 'TRANSACTION DATE', 'OPERATION ADDRESS', 'CONTACT NUMBER'];
               const datas: Array<any> = [];
-              // this.rowData.forEach((d: any, index: number) => {
-              //   const row = [index + 1, d.operatorname, d.operatorid, d.amount, d.transactionremarks, d.transactiondate, d.address, d.contactnumber];
-              //   datas.push(row);
-              // });
+
               const totalRow = ['', '', '', '', '', '', 'Total:', this.Totalamount,];
               this.excelService.generateLCO_dateRechargeExcel(header, datas, title, sub, totalRow);
-              // } else {
-              //   Swal.fire('Error', 'Response body is empty', 'error');
-              // }
+              this.swal.Close();
             }
           },
           (error) => {
@@ -514,9 +523,10 @@ export class LcoRechargeReportComponent implements OnInit {
               icon: 'error'
             });
             this.handleApiError(error);
-          }
-        );
+          });
+      this.swal.Close();
     } else if (this.isMonthYearEnabled) {
+      this.swal.Loading();
       this.userservice.getRecharegDetailsByYearAndMonth(this.role, this.username, this.selectedYear, this.selectedMonth)
         .subscribe(
           (response: HttpResponse<any>) => {
@@ -539,28 +549,20 @@ export class LcoRechargeReportComponent implements OnInit {
                 const totalRow = ['', '', '', '', '', '', 'Total:', this.Totalamount,];
 
                 this.excelService.generateLCO_dateRechargeExcel(header, datas, title, sub, totalRow);
+                this.swal.Close();
               } else {
                 Swal.fire('Error', 'Response body is empty', 'error');
+                this.swal.Close();
               }
             }
             else if (response.status === 204) {
-              // this.swal.Success_204();
-
               const title = ('MONTHWISE LOG RECHARGE REPORT').toUpperCase();
               const sub = 'MSO ADDRESS:' + this.msodetails;
-
               const header: string[] = ['S.NO', 'OPERATOR NAME', 'ADDRESS', 'CONTACT NUMBER', 'AMOUNT', 'TRANSACTION DATE', 'OPERATION ADDRESS', 'CONTACT NUMBER'];
               const datas: Array<any> = [];
-
-              // this.rowData.forEach((d: any, index: number) => {
-              //   const row = [index + 1, d.operatorname, d.operatorid, d.amount, d.transactionremarks, d.transactiondate, d.address, d.contactnumber];
-              //   datas.push(row);
-              // });
-
               const totalRow = ['', '', '', '', '', '', 'Total:', this.Totalamount,];
-
               this.excelService.generateLCO_dateRechargeExcel(header, datas, title, sub, totalRow);
-
+              this.swal.Close();
             }
           },
           (error) => {
@@ -569,6 +571,7 @@ export class LcoRechargeReportComponent implements OnInit {
         );
     }
     else if (this.isYearEnabled) {
+      this.swal.Loading();
       this.userservice.getRechargeDetailsByYear(this.role, this.username, this.selectedYear)
         .subscribe(
           (response: HttpResponse<any>) => {
@@ -579,10 +582,8 @@ export class LcoRechargeReportComponent implements OnInit {
                 this.Totalamount = responseBody.totalamount;
                 const title = ('YEARWISE LOG RECHARGE REPORT').toUpperCase();
                 const sub = 'MSO ADDRESS:' + this.msodetails;
-
                 const header: string[] = ['S.NO', 'OPERATOR NAME', 'OPERATOR ID', 'AMOUNT', 'REMARKS', 'TRANSACTION DATE', 'OPERATION ADDRESS', 'CONTACT NUMBER'];
                 const datas: Array<any> = [];
-
                 this.rowData.forEach((d: any, index: number) => {
                   const row = [index + 1, d.operatorname, d.operatorid, d.amount, d.transactionremarks, d.transactiondate, d.address, d.contactnumber];
                   datas.push(row);
@@ -616,6 +617,7 @@ export class LcoRechargeReportComponent implements OnInit {
                 const totalRow = ['', '', '', '', '', '', 'Total:', this.Totalamount,];
 
                 this.excelService.generateLCO_dateRechargeExcel(header, datas, title, sub, totalRow);
+                this.swal.Close();
               } else {
                 Swal.fire('Error', 'Response body is empty', 'error');
               }
@@ -635,6 +637,7 @@ export class LcoRechargeReportComponent implements OnInit {
     }
   }
   getLCORechargeFReport() {
+    this.swal.Loading();
     this.userservice.getRechargeLogFilterWiseReport(this.role, this.username, this.date, this.selectedMonth, this.selectedYear, this.selectedDateType)
       .subscribe((x: Blob) => {
         console.log('id', this.id);
@@ -660,6 +663,7 @@ export class LcoRechargeReportComponent implements OnInit {
           window.URL.revokeObjectURL(data);
           link.remove();
         }, 100);
+        this.swal.Close();
       },
         (error: any) => {
           Swal.fire({
@@ -669,11 +673,15 @@ export class LcoRechargeReportComponent implements OnInit {
             confirmButtonText: 'Ok'
           });
         });
+    this.swal.Close();
   }
   RefundAmount() {
     this.submitted = true;
     this.rowData = [];
-    // this.swal.Loading();
+    this.swal.Loading();
+    // if (this.operatorid && !this.smartcard) {
+
+    // }
     this.userservice.getRefundListByOperatorIdAndSmartcard(this.role, this.username, this.operatorid, this.smartcard || '')
       .subscribe(
         (response: HttpResponse<any[]>) => {
@@ -683,8 +691,10 @@ export class LcoRechargeReportComponent implements OnInit {
             this.updateColumnDefs(this.selectedTab);
             this.rowData = response.body;
             // this.swal.Success_200();
+            this.swal.Close();
           } else if (response.status === 204) {
             this.swal.Success_204();
+            this.swal.Close();
           }
         },
         (error) => {
@@ -723,8 +733,10 @@ export class LcoRechargeReportComponent implements OnInit {
             this.updateColumnDefs(this.selectedTab);
             this.rowData = response.body;
             // this.swal.Success_200();
+            this.swal.Close();
           } else if (response.status === 204) {
             this.swal.Success_204();
+            this.swal.Close();
           }
         },
         (error) => {
@@ -735,6 +747,8 @@ export class LcoRechargeReportComponent implements OnInit {
           } else {
             Swal.fire('Error', 'Something went wrong. Please try again.', 'error');
           }
+          this.swal.Close();
+
         }
       );
 
@@ -747,6 +761,7 @@ export class LcoRechargeReportComponent implements OnInit {
     this.rowData = [];
     if (this.isDateEnabled) {
       console.log('date dflgdgfd', this.date);
+      this.swal.Loading();
       this.userservice.getRechargeDetailsByDate(this.role, this.username, this.date)
         .subscribe(
           (response: HttpResponse<any>) => {
@@ -757,6 +772,8 @@ export class LcoRechargeReportComponent implements OnInit {
                 this.Totalamount = responseBody.totalamount;
                 console.log(this.rowData);
                 // this.swal.Success_200();
+                this.swal.Close();
+
                 this.updateColumnDefs(this.selectedTab);
               } else {
                 Swal.fire('Error', 'Response body is empty', 'error');
@@ -764,6 +781,7 @@ export class LcoRechargeReportComponent implements OnInit {
             }
             else if (response.status === 204) {
               this.swal.Success_204();
+              this.swal.Close();
             }
           },
           (error) => {
@@ -774,9 +792,11 @@ export class LcoRechargeReportComponent implements OnInit {
               icon: 'error'
             });
             this.handleApiError(error);
-          }
-        );
+          });
+
+
     } else if (this.isMonthYearEnabled) {
+      this.swal.Loading();
       this.userservice.getRecharegDetailsByYearAndMonth(this.role, this.username, this.selectedYear, this.selectedMonth)
         .subscribe(
           (response: HttpResponse<any>) => {
@@ -787,9 +807,11 @@ export class LcoRechargeReportComponent implements OnInit {
                 this.Totalamount = responseBody.totalamount;
                 console.log(this.rowData);
                 // this.swal.Success_200();
+                this.swal.Close();
                 this.updateColumnDefs(this.selectedTab);
               } else {
                 Swal.fire('Error', 'Response body is empty', 'error');
+                this.swal.Close();
               }
             }
             else if (response.status === 204) {
@@ -802,6 +824,7 @@ export class LcoRechargeReportComponent implements OnInit {
         );
     }
     else if (this.isYearEnabled) {
+      this.swal.Loading();
       this.userservice.getRechargeDetailsByYear(this.role, this.username, this.selectedYear)
         .subscribe(
           (response: HttpResponse<any>) => {
@@ -812,6 +835,7 @@ export class LcoRechargeReportComponent implements OnInit {
                 this.Totalamount = responseBody.totalamount;
                 console.log(this.rowData);
                 // this.swal.Success_200();
+                this.swal.Close();
               } else {
                 Swal.fire('Error', 'Response body is empty', 'error');
               }
@@ -844,9 +868,11 @@ export class LcoRechargeReportComponent implements OnInit {
             this.rowData = response.body;
             this.updateColumnDefs(this.selectedTab);
             this.swal.Success_200();
+            this.swal.Close();
           } else if (response.status === 204) {
             this.swal.Success_204();
             this.rowData = [];
+            this.swal.Close();
           }
         },
         (error) => {
@@ -887,7 +913,7 @@ export class LcoRechargeReportComponent implements OnInit {
     if (tab === '1') {
       this.columnDefs = [
         { headerName: "S.No", valueGetter: 'node.rowIndex+1', width: 100, },
-        { headerName: "OPERATOR NAME", field: 'operatorname', width: 300, },
+        { headerName: "OPERATOR NAME", field: 'operatorname', width: 300, cellStyle: { textAlign: 'left' }, },
         { headerName: "TRANSACTION GROUP TYPE", field: 'transactiongroupname', width: 300, },
         { headerName: "AMOUNT", field: 'lcoamount', width: 240, cellStyle: { textAlign: 'center' }, },
         { headerName: "REMARKS", field: 'transactionremarks', width: 240, },
@@ -927,8 +953,8 @@ export class LcoRechargeReportComponent implements OnInit {
         { headerName: "OPERATOR ADDRESS	", field: 'address', width: 200, },
         { headerName: " CONTACT NUMBER", field: 'contactnumber', width: 200, },
       ]
-    } 
-   
+    }
+
   }
   columnDefs1 = [
     {
@@ -945,7 +971,7 @@ export class LcoRechargeReportComponent implements OnInit {
         const editButton = document.createElement('button');
         editButton.innerHTML = '<i class="fa fa-pencil-square" aria-hidden="true"></i>';
         editButton.style.backgroundColor = 'transparent';
-        editButton.style.color = 'rgb(2 85 13)';
+        editButton.style.color = 'var(--active-edit-icon)';
         editButton.style.border = 'none';
         editButton.title = 'Edit the Customer';
         editButton.style.cursor = 'pointer';

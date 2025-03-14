@@ -277,6 +277,11 @@ form .gender {
 ::ng-deep .select2-container .select2-selection--single {
     height: 45px !important;
     margin-top: 1%;
+    border-top: 2px solid #b0afaf;
+    border-bottom: 0.9px solid lightgray;
+    border-left: 0.9px solid lightgray;
+    border-right: 0.9px solid lightgray;
+    box-shadow: 0px 0px 0px 1px rgba(0, 0, 0, 0.1);
 }
 
 ::ng-deep .select2-container .select2-selection--single .select2-selection__rendered {
@@ -286,3 +291,4 @@ form .gender {
 ::ng-deep .select2-container--default .select2-selection--single .select2-selection__arrow {
     top: 10px;
 }
+

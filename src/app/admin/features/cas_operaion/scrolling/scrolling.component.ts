@@ -32,7 +32,7 @@ export class ScrollingComponent {
   filteredCasList: { name: string; id: number }[] = [];
   filteredServiceList: { name: string; id: number }[] = [];
   filteredLcoList: { name: string; id: number }[] = [];
-  castype: any;
+  castype: any = '';
   casname: any;
   casId: any;
   serviceid_1: any;
@@ -290,7 +290,7 @@ export class ScrollingComponent {
 
   columnDefs: ColDef[] = [
     { headerName: "S.No", lockPosition: true, valueGetter: 'node.rowIndex+1', cellClass: 'locked-col', width: 80, suppressNavigable: true, sortable: false, filter: false },
-    { headerName: "INTEND ID", field: 'intendid' },
+    { headerName: "INTEND ID", field: 'intendid', width: 230, },
     {
       headerName: "FORCE TYPE",
       field: 'forcemsg',
@@ -616,20 +616,20 @@ export class ScrollingComponent {
   onChangeIntendTo1(selectedValue: any) {
     this.intendid_1 = '';
     this.isSmartcardEnabled = false;
-    this. isMsoEnabled = false;
+    this.isMsoEnabled = false;
     this.isAreaCodeEnabled = false;
     console.log('enabled             =' + selectedValue);
     if (selectedValue == 1) {
       this.intendid_1 = 1;
       this.isSmartcardEnabled = false;
       this.isAreaCodeEnabled = false
-      this. isMsoEnabled = true;
+      this.isMsoEnabled = true;
 
       console.log('Smartcard enabled');
     }
     if (selectedValue == 2) {
       this.intendid_1 = '';
-      this. isMsoEnabled = false;
+      this.isMsoEnabled = false;
       this.isSmartcardEnabled = true;
       this.isAreaCodeEnabled = false
       console.log('Smartcard enabled');
@@ -637,7 +637,7 @@ export class ScrollingComponent {
 
     if (selectedValue == 3) {
       this.intendid_1 = '';
-      this. isMsoEnabled = false;
+      this.isMsoEnabled = false;
       this.isAreaCodeEnabled = true;
       this.isSmartcardEnabled = false
       console.log('Area code enabled');

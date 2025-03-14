@@ -38,6 +38,9 @@ export class PackageCreationComponent {
   role: any;
   type: number = 1;
   rowData: any;
+  rowData1: any;
+  lcoDeatails: any;
+  operatorid: any;
   constructor(public dialog: MatDialog, public router: Router, public userService: BaseService, storageService: StorageService,) {
     this.username = storageService.getUsername();
     this.role = storageService.getUserRole();
@@ -47,13 +50,36 @@ export class PackageCreationComponent {
     this.userService.PackageList(this.role, this.username, this.type).subscribe((data) => {
       this.rowData = data;
     })
+    if (this.role == 'ROLE_OPERATOR') {
+      this.operatorIdoperatorId();
+    }
+  }
+  operatorIdoperatorId() {
+    console.log('ROLE_OPERATOR');
+    this.userService.getOpDetails(this.role, this.username).subscribe((data: any) => {
+      console.log(data);
+      this.lcoDeatails = data;
+      console.log(this.lcoDeatails);
+      this.operatorid = this.lcoDeatails?.operatorid;
+      console.log(this.operatorid);
+      this.onlcoPackageList();
+    })
+  }
+  onlcoPackageList() {
+    this.userService.getLcoPackageList(this.role, this.username, this.operatorid, 1).subscribe((data: any) => {
+      console.log(data);
+      this.rowData1 = data;
+      console.log(this.rowData1);
+
+    })
   }
   domLayout: 'normal' | 'autoHeight' | 'print' = 'autoHeight';
+
   columnDefs: any[] = [
     {
-      headerName: "S.No", lockPosition: true, valueGetter: 'node.rowIndex+1', width: 120,
+      headerName: "S.No", lockPosition: true, valueGetter: 'node.rowIndex+1', width: 120, filter: false
     },
-    { headerName: "PACKAGE NAME", field: 'packagename', width: 300,cellStyle: { textAlign: 'left'},  },
+    { headerName: "PACKAGE NAME", field: 'packagename', width: 300, cellStyle: { textAlign: 'left' }, },
     {
       headerName: 'Actions', width: 380, filter: false,
       cellRenderer: (params: any) => {
@@ -61,8 +87,6 @@ export class PackageCreationComponent {
         const manageButton = document.createElement('button');
         const cloneButton = document.createElement('button');
         const viewButton = document.createElement('button');
-
-
         // Edit button
         editButton.innerHTML = '<i class="fa fa-pencil-square" aria-hidden="true"></i>';
         editButton.style.backgroundColor = 'transparent';
@@ -148,7 +172,35 @@ export class PackageCreationComponent {
 
 
   ]
+  columnDefs1: any[] = [
+    {
+      headerName: "S.No", lockPosition: true, valueGetter: 'node.rowIndex+1', width: 120, filter: false
+    },
+    { headerName: "PACKAGE NAME", field: 'packagename', width: 300, cellStyle: { textAlign: 'left' }, },
+    { headerName: "REFERENCE ID", field: 'orderid', width: 250, cellStyle: { textAlign: 'center' }, },
+    { headerName: "PACKAGE RATE", field: 'packagerate', width: 250, cellStyle: { textAlign: 'center' }, },
+    {
+      headerName: 'Actions', width: 380, filter: false,
+      cellRenderer: (params: any) => {
+        const viewButton = document.createElement('button');
+        // View button
+        viewButton.innerHTML = '<button style="width: 5em;background-color:rgb(188 65 43);;border-radius: 5px;height: 2em;color:white"><p style="margin-top:-6px">View</p></button>';
+        viewButton.style.backgroundColor = 'transparent';
+        viewButton.style.border = 'none';
+        viewButton.title = 'View';
+        viewButton.style.cursor = 'pointer';
+        viewButton.style.marginLeft = '20px';
+        viewButton.addEventListener('click', () => {
+          this.openViewDialog({ package_view: true }, params.data);
+        });
+        const div = document.createElement('div');
 
+        div.appendChild(viewButton);
+        return div;
+      },
+    },
+
+  ]
   getPdfSmartcardRechargeReport(event: any) {
     console.log(event);
 

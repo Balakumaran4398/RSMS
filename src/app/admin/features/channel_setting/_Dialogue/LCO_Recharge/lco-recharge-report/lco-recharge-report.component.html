@@ -1,6 +1,6 @@
-<div class="" >
-    <section class="Tab col-xl-12 col-sm-6 col-12 mb-3 " >
-        <div class="display tablist justify-content-center align-items-center  mb-3">
+<div class="">
+    <section class="Tab col-xl-12 col-sm-6 col-12">
+        <div class="display tablist justify-content-center align-items-center">
             <div class="tab mb-3" [class.active]="selectedTab === '1'" (click)="selectTab('1')">RECHARGE LOG
             </div>
             <div class="tab mb-3" [class.active]="selectedTab === '2'" (click)="selectTab('2')">LOG RECHARGE REPORT
@@ -77,8 +77,7 @@
         </div>
         <div class="col-12 col-md-12 align-items-center justify-content-center responsive-container mb-3"
             style="margin: auto;">
-            <ag-grid-angular #agGrid id="myGrid" domLayout='autoHeight' class="ag-theme-alpine table-class" rowAnimation
-             style="max-height: 775px;overflow: scroll;"
+            <ag-grid-angular #agGrid id="myGrid" domLayout='normal' class="ag-theme-alpine table-class" rowAnimation
                 [gridOptions]="gridOptions" (gridReady)="onGridReady($event)" [columnDefs]="columnDefs"
                 [rowData]="rowData" [enableCellTextSelection]="true">
             </ag-grid-angular>
@@ -164,7 +163,8 @@
                     <div class="tooltip">Excel</div>
                 </div> -->
                 <div *ngIf="isDateEnabled || isMonthYearEnabled || isYearEnabled"
-                    class="icon-container d-flex align-items-center mx-2" (click)="getLCORechargeFReport()" style="cursor: pointer;">
+                    class="icon-container d-flex align-items-center mx-2" (click)="getLCORechargeFReport()"
+                    style="cursor: pointer;">
                     <img src="/assets/images/icons/pdf.png" width="40px">
                     <div class="tooltip">Pdf</div>
                 </div>
@@ -173,8 +173,8 @@
 
         <div class="col-12 col-md-12 align-items-center justify-content-center responsive-container mb-3"
             style="margin: auto;">
-            <ag-grid-angular #agGrid id="myGrid" domLayout='autoHeight' class="ag-theme-alpine table-class" rowAnimation
-                [gridOptions]="gridOptions" [columnDefs]="columnDefs" [rowData]="rowData" style="max-height: 775px;overflow: scroll;"
+            <ag-grid-angular #agGrid id="myGrid" domLayout='normal' class="ag-theme-alpine table-class" rowAnimation
+                [gridOptions]="gridOptions" [columnDefs]="columnDefs" [rowData]="rowData"
                 [enableCellTextSelection]="true">
             </ag-grid-angular>
         </div>
@@ -209,42 +209,43 @@
                 <input type="text" matInput [matAutocomplete]="auto1" (input)="filterOperators($event)"
                     placeholder="Select a Operator" [matAutocompleteDisabled]="false" [value]="selectedOperator?.name">
 
+
                 <mat-autocomplete #auto1="matAutocomplete" [displayWith]="displayOperator">
                     <mat-option *ngFor="let operator of filteredOperators1" [value]="operator.name"
                         (click)="onoperatorchange(operator)">
                         {{ operator.name }}
                     </mat-option>
                 </mat-autocomplete>
-                <div *ngIf="submitted && !operatorid" class="text-danger" style="font-size: small;">
+                <!-- <div *ngIf="submitted && !operatorid" class="text-danger" style="font-size: small;">
                     Operator is required
-                </div>
+                </div> -->
             </div>
             <input class="mx-2" type="checkbox" [(ngModel)]="isCheckboxChecked" style="width: 30px;height: 25px;">
             <div class="input_box ">
                 <input type="text" placeholder="Enter Smartcard" [(ngModel)]="smartcard"
                     [disabled]="!isCheckboxChecked">
-                    <div *ngIf="submitted && !smartcard" class="text-danger" style="font-size: small;">
-                        Smartcard is required
-                    </div>
+                <!-- <div *ngIf="submitted && !smartcard" class="text-danger" style="font-size: small;">
+                    Smartcard is required
+                </div> -->
             </div>
 
             <button class="btn mx-2" style="background-color: rgb(26, 129, 133);border-radius: 5px;"
                 (click)="RefundAmount()"><span style="color: white;">submit</span></button>
         </div>
 
-        <div *ngIf="!smartcard" class="col-12 col-md-12 align-items-center justify-content-center responsive-container mb-3"
+        <div class="col-12 col-md-12 align-items-center justify-content-center responsive-container mb-3"
             style="margin: auto;">
-            <ag-grid-angular #agGrid id="myGrid" domLayout='autoHeight' class="ag-theme-alpine table-class" rowAnimation
-                [gridOptions]="gridOptions" [columnDefs]="columnDefs1" [rowData]="rowData" style="max-height: 775px;overflow: scroll;"
+            <ag-grid-angular #agGrid id="myGrid" domLayout='normal' class="ag-theme-alpine table-class" rowAnimation
+                [gridOptions]="gridOptions" [columnDefs]="columnDefs1" [rowData]="rowData"
                 [enableCellTextSelection]="true">
             </ag-grid-angular>
         </div>
-        <div *ngIf="operatorid && smartcard"  class="col-12 col-md-12 align-items-center justify-content-center responsive-container mb-3"
+        <!-- <div *ngIf="operatorid && smartcard"  class="col-12 col-md-12 align-items-center justify-content-center responsive-container mb-3"
             style="margin: auto;">
             <ag-grid-angular #agGrid id="myGrid" domLayout='autoHeight' class="ag-theme-alpine table-class" rowAnimation
                 [gridOptions]="gridOptions" [columnDefs]="columnDefs" [rowData]="rowData" style="max-height: 775px;overflow: scroll;"
                 [enableCellTextSelection]="true">
             </ag-grid-angular>
-        </div>
+        </div> -->
     </div>
 </div>

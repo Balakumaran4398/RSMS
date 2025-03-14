@@ -1,0 +1,235 @@
+.pagestyle {
+    font-size: 1rem;
+    .pagetitle {
+        font-size: 1.6rem;
+    }
+}
+
+.card-radius {
+    margin-top: 10px;
+    padding-bottom: 1.8vmax;
+    border-radius: 1vmax;
+    border: none;
+}
+
+.content {
+    padding-top: 0.5vh;
+}
+
+.card-title {
+    letter-spacing: 0.8px;
+    font-weight: bold;
+}
+
+.card-content {
+    width: 100%;
+    text-align: center;
+}
+
+.balance {
+    font-size: 1.8rem;
+    font-weight: 600;
+    letter-spacing: 1.2px;
+}
+.green {
+    color: #05aa4f;
+}
+.orange {
+    color: #f17500;
+}
+.red {
+    color: #fa4932;
+}
+.subcontent {
+    font-size: 0.8rem;
+    font-weight: normal;
+    // text-align: center;
+}
+
+.card-footer {
+    font-size: 0.8rem;
+    display: flex;
+    justify-content: center;
+    background-color: rgba(255, 255, 255, 0.2);
+    border: none;
+    margin-bottom: 1px;
+    // padding: 0px;
+}
+
+.pay-btn {
+    background-color: #2476fa;
+    border-radius: 25px;
+    color: white;
+    border: none;
+    box-shadow: 0 10px 16px 0 rgb(0 0 0 / 20%), 0 6px 20px 0 rgb(0 0 0 / 19%) !important;
+}
+
+.card-title {
+    font-size: 18px !important;
+    color: #0f4380;
+    mat-icon {
+        // font-size: 18px !important;
+        color: #0f4380;
+    }
+}
+
+.pay-his-div {
+    margin-top: 15px;
+}
+
+.footer-content {
+    // display: inline-flex;
+    width: 100%;
+    position: sticky;
+    bottom: 0;
+    left: 0;
+    text-align: center;
+    margin-bottom: 2vh;
+}
+
+table {
+    width: 100%;
+    border: 1px solid #eeeeee !important;
+    padding: 0px !important;
+    margin-top: 1.5vh;
+    th,
+    td {
+        padding: 0px 0.5vmax 0px 0.5vmax !important;        
+        border-top: none !important;
+        border-bottom: none !important;        
+    }
+}
+
+.recent-his {
+    font-weight: bold;
+    color: rgb(98, 98, 99);
+    letter-spacing: 0.8px;
+    font-size: 14px;
+}
+
+.btn-margin {
+    margin: 10px 0px 10vmax 0px;
+}
+
+.recharch-btn-div {
+    position: sticky;
+    bottom: 0;
+    left: 0;
+    text-align: center;
+}
+
+.table-class {
+    width: 100%;
+    height: 55vh;
+}
+.table-class-online {
+    width: 100%;
+    height: 345px;
+}
+
+.seach-field{
+    border: 2px solid #797a7a !important;
+    border-radius: 10px !important;
+    background-color: rgb(238, 238, 238) !important;
+    color: rgb(32, 32, 32) !important;    
+    width: 200px !important;
+    padding-left: 5px;
+}
+.exl-btn {
+    background-color: #198754;
+    border-radius: 25px;
+    color: white;
+    border: none;
+    box-shadow: 0 10px 16px 0 rgb(0 0 0 / 20%), 0 6px 20px 0 rgb(0 0 0 / 19%) !important;
+}
+// .amount-form {
+//     text-align: center;
+//     background-color: #fcf9f3;
+//     width: 170px;
+//     margin: auto;
+//     display: flex;
+//     border-radius: 10px;
+// }
+.form-control:focus {
+    color: #212529;
+    background-color: #fff;
+    border-color: #86b7fe !important;
+    outline: 0;
+    box-shadow: 0 0 0 0 rgb(13 110 253 / 25%) !important;
+    border: none;
+    font-size: 28px;
+    font-size: 28px;
+    border-radius: 22px;
+}
+.form-control {
+    border: none;
+    font-size: 28px;
+    background: transparent;
+}
+.icons{
+    margin-top: 14px;
+    // color: #6c757d;
+}
+.amount-div {
+    margin-top: 5px;
+    text-align: center;
+}
+.amount-form input[type="number"]:focus:not([readonly]) {
+    box-shadow: none;
+    padding: 0px;
+    background: none;
+}
+.amount-form {
+    text-align: center;
+    background-color: #ffffff;
+    width: 150px;
+    margin: auto;
+    display: flex;
+    border-radius: 10px;
+}
+.spinner{
+    margin-left: -68px;
+    margin-top: 5px;
+    background: #bdbfc9;
+    border-radius: 20px;
+}
+//==================== Date range CSS
+.hw{
+    width: 50px;
+    height:50px; 
+    margin: -8px -20px -4px 0px !important;
+}
+.button-sumbit{
+    padding: 4px 4px 1px 4px;
+    color: #464646 !important;
+}
+.size13{
+    font-size: 13px;
+}
+.size14{
+    font-size: 14px;
+}
+.bold{
+    font-weight: bold;
+}
+.mb10{
+    margin-bottom: 10px;
+}
+.mt40{
+    margin-top: 40px;
+}
+.mb20{
+    margin-bottom: 20px;
+}
+.mt5{
+    margin-top: 5px;
+}
+.displayflex{
+    display: flex;
+}
+.tar{
+    text-align: right;
+}
+.bold{
+    font-weight: bold;
+}

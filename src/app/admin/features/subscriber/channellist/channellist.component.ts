@@ -69,7 +69,7 @@ export class ChannellistComponent implements OnInit {
     },
     {
       headerName: 'CHANNEL NAME',
-      field: 'channel_name', width: 400,
+      field: 'channel_name', width: 300,
     },
     {
       headerName: 'SERVICE ID', width: 210,

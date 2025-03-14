@@ -20,7 +20,7 @@ export class SpeciallcochangeComponent implements OnInit {
   role: any;
 
   columnDefs: ColDef[] = [
-    { headerName: "S.No", lockPosition: true, headerCheckboxSelection: true, checkboxSelection: true, },
+    { headerName: "S.No", lockPosition: true, headerCheckboxSelection: true, checkboxSelection: true, filter: false},
     { headerName: "SMARTCARD", field: 'smartcard' },
     { headerName: "BOXID", field: 'boxid' },
     { headerName: "SUBSCRIBER NAME	", field: 'areaname' },

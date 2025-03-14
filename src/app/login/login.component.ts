@@ -41,7 +41,7 @@ export class LoginComponent implements OnInit {
     private authService: AuthService,
     private storageService: StorageService,
     private router: Router,
-    private alertService: AlertService,
+    // private alertService: AlertService,
     private cdr: ChangeDetectorRef,
   ) {
     this.signInform = this.fb.group({
@@ -69,6 +69,7 @@ export class LoginComponent implements OnInit {
       console.log(this.msoName);
     });
   }
+
 
   submit(form: FormGroup): void {
     this.submitted = true;
@@ -104,7 +105,7 @@ export class LoginComponent implements OnInit {
           console.log(res);
           console.log(res.roles);
           if (res.roles.includes('ROLE_ADMIN') || res.roles.includes('ROLE_RECEPTION') || res.roles.includes('ROLE_SPECIAL')
-            || res.roles.includes('ROLE_INVENTORY') || res.roles.includes('ROLE_CUSSERVICE') || res.roles.includes('ROLE_SERVICECENTER')) {
+            || res.roles.includes('ROLE_INVENTORY') || res.roles.includes('ROLE_CUSSERVICE') || res.roles.includes('ROLE_SERVICECENTER') || res.roles.includes('ROLE_OPERATOR')) {
             this.storageService.saveToken(res.accessToken);
             this.storageService.saveUser(res);
             this.storageService.saveUsernamenew(res.username)
@@ -123,6 +124,7 @@ export class LoginComponent implements OnInit {
             let isInventory = this.roles.includes('ROLE_INVENTORY');
             let isCusService = this.roles.includes('ROLE_CUSSERVICE');
             let isServiceCenter = this.roles.includes('ROLE_SERVICECENTER');
+            let isOperator = this.roles.includes('ROLE_OPERATOR');
 
             Swal.fire({
               position: "center",
@@ -152,7 +154,11 @@ export class LoginComponent implements OnInit {
             } else if (isServiceCenter) {
               this.router.navigate(['admin/service_center']).then(() => {
               });
+            } else if (isOperator) {
+              this.router.navigate(['admin/operator_dashboard']).then(() => {
+              });
             }
+            this.swal.Close();
           } else {
             Swal.fire({
               position: 'center',
@@ -162,7 +168,9 @@ export class LoginComponent implements OnInit {
               showConfirmButton: false,
               timer: 1500
             });
+            this.swal.Close();
           }
+
         },
         err => {
           console.error('Login error', err);

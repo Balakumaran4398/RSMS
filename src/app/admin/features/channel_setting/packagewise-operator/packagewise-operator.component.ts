@@ -53,7 +53,7 @@ export class PackagewiseOperatorComponent implements OnDestroy {
   }
 
   ngOnInit() {
-    this.userservice.ProductTypeList(this.username, this.role).subscribe((data: any) => {
+    this.userservice.ProductTypeList(this.role, this.username).subscribe((data: any) => {
       console.log(data);
       this.producttypeList = Object.keys(data.producttype).map(key => ({
         key: key,
@@ -113,7 +113,7 @@ export class PackagewiseOperatorComponent implements OnDestroy {
 
   }
   fetchProductList(productTypeId: number): void {
-    this.userservice.ProductList(this.username, this.role, productTypeId).subscribe((data: any) => {
+    this.userservice.ProductList(this.role, this.username, productTypeId).subscribe((data: any) => {
       console.log(data);
 
       if (data.referenceid) {

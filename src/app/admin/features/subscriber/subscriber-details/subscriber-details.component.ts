@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { ColDef } from 'ag-grid-community';
 import { BaseService } from 'src/app/_core/service/base.service';
 import { StorageService } from 'src/app/_core/service/storage.service';
+import { SwalService } from 'src/app/_core/service/swal.service';
 import Swal from 'sweetalert2';
 
 
@@ -24,7 +25,6 @@ export class SubscriberDetailsComponent implements OnInit {
       sortable: true,
       resizable: true,
       filter: true,
-      // width: 250,
       floatingFilter: true,
       comparator: (valueA: any, valueB: any) => {
         const normalizedA = valueA ? valueA.toString().trim().toLowerCase() : '';
@@ -33,20 +33,11 @@ export class SubscriberDetailsComponent implements OnInit {
         if (normalizedA > normalizedB) return 1;
         return 0;
       },
-
     },
-    paginationPageSize: 10,
+    paginationPageSize: 15,
     pagination: true,
   }
-
-  // status = {
-  //   0: 'new subscriber list',
-  //   1: 'active subscriber list',
-  //   2: 'deactive subscriber list',
-  //   3: 'suspend subscriber list',
-  //   4: 'block subscriber list'
-  // };
-  constructor(private userservice: BaseService, private storageservice: StorageService, private router: Router) {
+  constructor(private userservice: BaseService, private storageservice: StorageService, private router: Router, private swal: SwalService) {
     this.username = storageservice.getUsername();
     this.role = storageservice.getUserRole();
 
@@ -56,7 +47,7 @@ export class SubscriberDetailsComponent implements OnInit {
     this.onSubscriberStatusChange();
   }
   columnDefs: ColDef[] = [
-    { headerName: "S.No", lockPosition: true, valueGetter: 'node.rowIndex+1', width: 100 },
+    { headerName: "S.No", lockPosition: true, valueGetter: 'node.rowIndex+1', width: 100, filter: false },
     { headerName: 'SUBSCRIBER NAME', field: 'customername', cellStyle: { textAlign: 'left' }, },
     { headerName: 'LCO NAME', field: 'operatorname', },
     { headerName: 'AREA NAME', field: 'areaname', },
@@ -71,7 +62,7 @@ export class SubscriberDetailsComponent implements OnInit {
   private updateColumnDefs(selectedStatusId: string): void {
     if (selectedStatusId === '0') {
       this.columnDefs = [
-        { headerName: "S.No", lockPosition: true, valueGetter: 'node.rowIndex+1', width: 100, },
+        { headerName: "S.No", lockPosition: true, valueGetter: 'node.rowIndex+1', width: 100, filter: false},
         {
           headerName: 'SUBSCRIBER NAME',
           field: 'customername',
@@ -109,7 +100,7 @@ export class SubscriberDetailsComponent implements OnInit {
       ]
     } else if (selectedStatusId === '1') {
       this.columnDefs = [
-        { headerName: "S.No", lockPosition: true, valueGetter: 'node.rowIndex+1', width: 100, },
+        { headerName: "S.No", lockPosition: true, valueGetter: 'node.rowIndex+1', width: 100, filter: false },
         {
           headerName: 'SMARTCARD', field: 'smartcard', width: 220,
           cellStyle: params => {
@@ -131,9 +122,19 @@ export class SubscriberDetailsComponent implements OnInit {
             console.log('Sub ID:', subid);
             console.log('Smartcard:', smartcard);
             if (smartcard) {
-              this.router.navigate([`/admin/subscriber-full-info/${smartcard}/subsmartcard`]);
+              this.router.navigate([`/admin/subscriber-full-info/${smartcard}/subsmartcard`])
+              .then(() => {
+                setTimeout(() => {
+                  window.location.reload();
+                }, 100);
+              });
             } else if (subid) {
-              this.router.navigate([`/admin/subscriber-full-info/${subid}/new`]);
+              this.router.navigate([`/admin/subscriber-full-info/${subid}/new`])
+              .then(() => {
+                setTimeout(() => {
+                  window.location.reload();
+                }, 100);
+              });
             }
           }
         },
@@ -151,7 +152,7 @@ export class SubscriberDetailsComponent implements OnInit {
     } else if (selectedStatusId === '2') {
       this.columnDefs = [
         {
-          headerName: "S.No", lockPosition: true, valueGetter: 'node.rowIndex+1', width: 100,
+          headerName: "S.No", lockPosition: true, valueGetter: 'node.rowIndex+1', width: 100, filter: false
         },
         {
           headerName: 'SMARTCARD', field: 'smartcard', width: 220,
@@ -174,9 +175,17 @@ export class SubscriberDetailsComponent implements OnInit {
             console.log('Sub ID:', subid);
             console.log('Smartcard:', smartcard);
             if (smartcard) {
-              this.router.navigate([`/admin/subscriber-full-info/${smartcard}/subsmartcard`]);
+              this.router.navigate([`/admin/subscriber-full-info/${smartcard}/subsmartcard`]).then(() => {
+                setTimeout(() => {
+                  window.location.reload();
+                }, 100);
+              });
             } else if (subid) {
-              this.router.navigate([`/admin/subscriber-full-info/${subid}/new`]);
+              this.router.navigate([`/admin/subscriber-full-info/${subid}/new`]).then(() => {
+                setTimeout(() => {
+                  window.location.reload();
+                }, 100);
+              });
             }
           }
         },
@@ -193,7 +202,7 @@ export class SubscriberDetailsComponent implements OnInit {
     } else if (selectedStatusId === '3') {
       this.columnDefs = [
         {
-          headerName: "S.No", lockPosition: true, valueGetter: 'node.rowIndex+1', width: 100,
+          headerName: "S.No", lockPosition: true, valueGetter: 'node.rowIndex+1', width: 100, filter: false
         },
         {
           headerName: 'SMARTCARD', field: 'smartcard', width: 220,
@@ -216,9 +225,17 @@ export class SubscriberDetailsComponent implements OnInit {
             console.log('Sub ID:', subid);
             console.log('Smartcard:', smartcard);
             if (smartcard) {
-              this.router.navigate([`/admin/subscriber-full-info/${smartcard}/subsmartcard`]);
+              this.router.navigate([`/admin/subscriber-full-info/${smartcard}/subsmartcard`]).then(() => {
+                setTimeout(() => {
+                  window.location.reload();
+                }, 100);
+              });
             } else if (subid) {
-              this.router.navigate([`/admin/subscriber-full-info/${subid}/new`]);
+              this.router.navigate([`/admin/subscriber-full-info/${subid}/new`]).then(() => {
+                setTimeout(() => {
+                  window.location.reload();
+                }, 100);
+              });
             }
           }
         },
@@ -235,7 +252,7 @@ export class SubscriberDetailsComponent implements OnInit {
     } else if (selectedStatusId === '4') {
       this.columnDefs = [
         {
-          headerName: "S.No", lockPosition: true, valueGetter: 'node.rowIndex+1', width: 100,
+          headerName: "S.No", lockPosition: true, valueGetter: 'node.rowIndex+1', width: 100, filter: false
         },
         {
           headerName: 'SMARTCARD', field: 'smartcard', width: 220,
@@ -259,9 +276,17 @@ export class SubscriberDetailsComponent implements OnInit {
             console.log('Smartcard:', smartcard);
 
             if (smartcard) {
-              this.router.navigate([`/admin/subscriber-full-info/${smartcard}/subsmartcard`]);
+              this.router.navigate([`/admin/subscriber-full-info/${smartcard}/subsmartcard`]).then(() => {
+                setTimeout(() => {
+                  window.location.reload();
+                }, 100);
+              });
             } else if (subid) {
-              this.router.navigate([`/admin/subscriber-full-info/${subid}/new`]);
+              this.router.navigate([`/admin/subscriber-full-info/${subid}/new`]).then(() => {
+                setTimeout(() => {
+                  window.location.reload();
+                }, 100);
+              });
             }
           }
         },
@@ -278,7 +303,7 @@ export class SubscriberDetailsComponent implements OnInit {
     } else if (selectedStatusId === '5') {
       this.columnDefs = [
         {
-          headerName: "S.No", lockPosition: true, valueGetter: 'node.rowIndex+1', width: 100,
+          headerName: "S.No", lockPosition: true, valueGetter: 'node.rowIndex+1', width: 100, filter: false
         },
         {
           headerName: 'SMARTCARD', field: 'smartcard', width: 220,
@@ -301,9 +326,17 @@ export class SubscriberDetailsComponent implements OnInit {
             console.log('Sub ID:', subid);
             console.log('Smartcard:', smartcard);
             if (smartcard) {
-              this.router.navigate([`/admin/subscriber-full-info/${smartcard}/subsmartcard`]);
+              this.router.navigate([`/admin/subscriber-full-info/${smartcard}/subsmartcard`]).then(() => {
+                setTimeout(() => {
+                  window.location.reload();
+                }, 100);
+              });
             } else if (subid) {
-              this.router.navigate([`/admin/subscriber-full-info/${subid}/new`]);
+              this.router.navigate([`/admin/subscriber-full-info/${subid}/new`]).then(() => {
+                setTimeout(() => {
+                  window.location.reload();
+                }, 100);
+              });
             }
           },
 
@@ -321,7 +354,7 @@ export class SubscriberDetailsComponent implements OnInit {
     } else if (selectedStatusId === '6') {
       this.columnDefs = [
         {
-          headerName: "S.No", lockPosition: true, valueGetter: 'node.rowIndex+1', width: 100,
+          headerName: "S.No", lockPosition: true, valueGetter: 'node.rowIndex+1', width: 100, filter: false
         },
 
         {
@@ -345,9 +378,17 @@ export class SubscriberDetailsComponent implements OnInit {
             console.log('Sub ID:', subid);
             console.log('Smartcard:', smartcard);
             if (smartcard) {
-              this.router.navigate([`/admin/subscriber-full-info/${smartcard}/subsmartcard`]);
+              this.router.navigate([`/admin/subscriber-full-info/${smartcard}/subsmartcard`]).then(() => {
+                setTimeout(() => {
+                  window.location.reload();
+                }, 100);
+              });
             } else if (subid) {
-              this.router.navigate([`/admin/subscriber-full-info/${subid}/new`]);
+              this.router.navigate([`/admin/subscriber-full-info/${subid}/new`]).then(() => {
+                setTimeout(() => {
+                  window.location.reload();
+                }, 100);
+              });
             }
           },
 
@@ -389,11 +430,12 @@ export class SubscriberDetailsComponent implements OnInit {
       return;
     }
     this.rowData = [];
+    this.swal.Loading();
     this.userservice.getsubscriberlist_subscriber(this.role, this.username, this.selectedStatusId)
       .subscribe((data: any) => {
         console.log(data);
         this.rowData = data;
-        // Handle the response (e.g., display the report data)
+        this.swal.Close();
       }, (error) => {
         Swal.fire({
           icon: 'error',

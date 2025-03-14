@@ -141,7 +141,7 @@ export class MailComponent {
 
   columnDefs: ColDef[] = [
     { headerName: "S.No", lockPosition: true, valueGetter: 'node.rowIndex+1', cellClass: 'locked-col', width: 80, suppressNavigable: true, sortable: false, filter: false },
-    { headerName: "INTEND ID", field: 'intendid' },
+    { headerName: "INTEND ID", field: 'intendid', width: 250, },
     { headerName: "INTEND TO", field: 'intendto' },
     { headerName: "TITLE", field: 'mailtitle' },
     { headerName: "SENDER	", field: 'sender' },

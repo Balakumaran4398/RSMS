@@ -49,8 +49,8 @@ export class LcologinpageComponent {
 
   ngOnInit() {
     this.form = this.fb.group({
-      userid: ['', Validators.required],  // username is required
-      password: ['', Validators.required], // password is required
+      userid: ['', Validators.required],  
+      password: ['', Validators.required], 
     });
   }
 

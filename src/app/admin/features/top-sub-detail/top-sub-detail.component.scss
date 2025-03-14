@@ -6,8 +6,8 @@
 }
 .row {
     display: flex;
-    flex-wrap: wrap; /* Ensures rows break when width is constrained */
-    margin: 0; /* Avoid extra spacing */
+    flex-wrap: wrap; 
+    margin: 0; 
 }
 
 .col-12 {

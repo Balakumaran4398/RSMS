@@ -1,0 +1,23 @@
+h3 {
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    color: var(--primary-color);
+}
+
+.d-flex {
+    display: flex;
+}
+
+.input_box span {
+    font-weight: 500;
+    margin-bottom: 5px;
+    display: block;
+    font-size: 16px;
+    color: #243359;
+}
+
+.mr-2 {
+    margin-right: 8px;
+    /* Adjust this value as needed */
+}

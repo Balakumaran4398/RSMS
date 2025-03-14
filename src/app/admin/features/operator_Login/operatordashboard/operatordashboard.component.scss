@@ -1,5 +1,4 @@
 .card {
-    // padding: 15px;
     border-radius: 8px;
     text-align: center;
     background-color: #f8f9fa;
@@ -28,7 +27,7 @@
 }
 
 .text {
-    font-size: 15px;
+    font-size: 16px;
     color: var(--text-color);
 }
 
@@ -59,6 +58,20 @@ h5 {
 
 .display {
     display: flex;
+}
+
+.box {
+    cursor: pointer;
+}
+
+.card .rupee {
+    font-size: 20px;
+    color: #1fd42f;
+}
+
+.card .forward {
+    font-size: 25px;
+    color: #0469db;
 }
 
 @media screen and (max-width:990px) {
@@ -104,6 +117,7 @@ h5 {
 ::ng-deep .amcharts-chart-div a {
     display: none !important;
 }
+
 // -------------------------------------pie chart------------------
 
 

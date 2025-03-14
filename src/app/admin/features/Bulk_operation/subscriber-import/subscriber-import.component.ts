@@ -56,7 +56,6 @@ export class SubscriberImportComponent implements OnInit {
   ngOnInit(): void {
     this.operatorlist();
 
-    // this.filteredPackage = this.operatorList;
   }
   operatorlist() {
     // this.userservice.getPackageList(this.role, this.username,1  ).subscribe((data: any) => {
@@ -65,7 +64,8 @@ export class SubscriberImportComponent implements OnInit {
       this.cdr.detectChanges();
       this.operatorList = Object.keys(data).map(key => {
         const value = data[key];
-        const name = key.replace(/\(\d+\)$/, '').trim();
+        // const name = key.replace(/\(\d+\)$/, '').trim();
+        const name = key.trim();
 
         return { name: name, value: value };
       });
@@ -99,17 +99,7 @@ export class SubscriberImportComponent implements OnInit {
     this.isCheckboxChecked_operator = event.target.checked;
   }
 
-  // handleFileInput(event: Event): void {
-  //   const input = event.target as HTMLInputElement;
 
-  //   if (input.files && input.files.length > 0) {
-  //     this.isFileSelected = true;
-  //     this.filePath = input.files[0].name;
-  //   } else {
-  //     this.isFileSelected = false;
-  //     this.filePath = '';
-  //   }
-  // }
   handleFileInput(event: Event): void {
     const input = event.target as HTMLInputElement;
 

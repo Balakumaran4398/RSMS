@@ -23,7 +23,7 @@ export class RecurringComponent implements OnInit {
   submitted: boolean = false;
   searchname: any;
   operatorList: any[] = [];
-  reccuringData: any[]=[];
+  reccuringData: any[] = [];
   isrecurring = false;
   gridApi: any;
   isAnyRowSelected: any = false;
@@ -36,13 +36,19 @@ export class RecurringComponent implements OnInit {
   lco_list: any;
   selectedLcoName: any[] = [];
 
+  Isuser: boolean = false;
+  IsOperator: boolean = false;
+
+  lcoDeatails:any;
+  lcoid:any;
+
   columnDefs: ColDef[] = [
     {
       headerName: "S.No", lockPosition: true, valueGetter: 'node.rowIndex+1', cellClass: 'locked-col', headerCheckboxSelection: true,
-      checkboxSelection: true, width: 100
+      checkboxSelection: true, width: 100, filter: false
     },
-    { headerName: "SUBSCRIBER NAME", field: 'customername', width: 250,cellStyle: { textAlign: 'left' } },
-    { headerName: "ADDRESS", field: 'address', width: 250,cellStyle: { textAlign: 'left' } },
+    { headerName: "SUBSCRIBER NAME", field: 'customername', width: 250, cellStyle: { textAlign: 'left' } },
+    { headerName: "ADDRESS", field: 'address', width: 250, cellStyle: { textAlign: 'left' } },
     { headerName: "SMARTCARD", field: 'smartcard', width: 300 },
     {
       headerName: "RECURRING", field: 'isrecurring', width: 200,
@@ -54,8 +60,8 @@ export class RecurringComponent implements OnInit {
         }
       }
     },
-    { headerName: "BOXID	", field: 'boxid', width: 200,cellStyle: { textAlign: 'left' } },
-    { headerName: "EXPIRY DATE	", field: 'expirydate', width: 300,cellStyle: { textAlign: 'left' } },
+    { headerName: "BOXID	", field: 'boxid', width: 200, cellStyle: { textAlign: 'left' } },
+    { headerName: "EXPIRY DATE	", field: 'expirydate', width: 290, cellStyle: { textAlign: 'left' } },
   ];
   rowData: any;
   public rowSelection: any = "multiple";
@@ -100,6 +106,29 @@ export class RecurringComponent implements OnInit {
       });
       this.filteredOperators = this.operatorList;
     })
+
+    if (this.role === 'ROLE_ADMIN' || this.role === 'ROLE_SPECIAL') {
+      this.Isuser = true;
+      this.IsOperator = false;
+      console.log('ROLE_ADMIN');
+
+    }
+    if (this.role === 'ROLE_OPERATOR') {
+      this.Isuser = false;
+      this.IsOperator = true;
+      this.operatorIdoperatorId();
+      console.log('ROLE_OPERATOR');
+    }
+  }
+
+  operatorIdoperatorId() {
+    this.userservice.getOpDetails(this.role, this.username).subscribe((data: any) => {
+      console.log(data);
+      this.lcoDeatails = data;
+      console.log(this.lcoDeatails);
+      this.lcoid = this.lcoDeatails?.operatorid;
+      console.log(this.operatorid);
+    })
   }
   filterOperators(event: any): void {
     const filterValue = event.target.value.toLowerCase();
@@ -123,15 +152,10 @@ export class RecurringComponent implements OnInit {
   submit(type: any) {
     this.reccuringData = [];
     this.submitted = true;
-    this.userservice.getRecurringListByOperatorIdSearchnameAndIsrecurring(this.role, this.username, this.operatorid, this.searchname || 0, type)
+    this.userservice.getRecurringListByOperatorIdSearchnameAndIsrecurring(this.role, this.username, this.operatorid || this.lcoid, this.searchname || 0, type)
       .subscribe(
-        (response:any) => { // Expect HttpResponse<any[]>
-          // if (response.status === 200) {
-            this.reccuringData = response;
-            // this.swal.Success_200();
-          // } else if (response.status === 204) {
-            // this.swal.Success_204();
-          // }
+        (response: any) => {
+          this.reccuringData = response;
         },
         (error) => {
           if (error.status === 400) {
@@ -141,28 +165,9 @@ export class RecurringComponent implements OnInit {
           } else {
             Swal.fire('Error', 'Something went wrong. Please try again.', 'error');
           }
-          // this.callAnotherApi();
         }
       );
   }
-  // callAnotherApi() {
-  //   this.userservice.someOtherApiCall(this.role, this.username).subscribe(
-  //     (response: HttpResponse<any[]>) => {
-  //       if (response.status === 200) {
-  //         console.log('Second API call successful');
-  //       }
-  //       setTimeout(() => {
-  //         window.location.reload();
-  //       }, 3000);
-  //     },
-  //     (error: any) => {
-  //       console.log('Second API call failed', error);
-  //       setTimeout(() => {
-  //         window.location.reload();
-  //       }, 3000);
-  //     }
-  //   );
-  // }
 
   Active() {
     Swal.fire({
@@ -191,25 +196,25 @@ export class RecurringComponent implements OnInit {
           isrecurring: 'true',
         }
         this.userservice.bulkIsRecurring(requestBody)
-        // .subscribe((res: any) => {
-        //   Swal.fire({
-        //     title: 'Activated!',
-        //     text: res.message,
-        //     icon: 'success'
-        //   });
-        //   this.ngOnInit();
-        // }, (err) => {
-        //   Swal.fire({
-        //     title: 'Error!',
-        //     text: err?.error?.message,
-        //     icon: 'error'
-        //   });
-        // });
-        .subscribe((res: any) => {
-          this.swal.success(res?.message);
-        }, (err) => {
-          this.swal.Error(err?.error?.message);
-        });
+          // .subscribe((res: any) => {
+          //   Swal.fire({
+          //     title: 'Activated!',
+          //     text: res.message,
+          //     icon: 'success'
+          //   });
+          //   this.ngOnInit();
+          // }, (err) => {
+          //   Swal.fire({
+          //     title: 'Error!',
+          //     text: err?.error?.message,
+          //     icon: 'error'
+          //   });
+          // });
+          .subscribe((res: any) => {
+            this.swal.success(res?.message);
+          }, (err) => {
+            this.swal.Error(err?.error?.message);
+          });
       }
     });
   }
@@ -240,12 +245,12 @@ export class RecurringComponent implements OnInit {
           isrecurring: 'false',
         }
         this.userservice.bulkIsRecurring(requestBody)
-        // .subscribe((res: any) => {
-        //   Swal.fire({
-        //     title: 'Activated!',
-        //     text: res.message,
-        //     icon: 'success'
-        //   });
+          // .subscribe((res: any) => {
+          //   Swal.fire({
+          //     title: 'Activated!',
+          //     text: res.message,
+          //     icon: 'success'
+          //   });
           .subscribe((res: any) => {
             this.swal.success(res?.message);
           }, (err) => {
@@ -266,7 +271,7 @@ export class RecurringComponent implements OnInit {
   //  getActivationReport(type: number) {
   //     this.processingSwal();
 
-  
+
   //     this.userservice.getBulkFirstTimeActivationDownload(this.role, this.username, 0, 1, 1, type)
   //       .subscribe((x: Blob) => {
   //         if (type == 1) {
@@ -280,8 +285,8 @@ export class RecurringComponent implements OnInit {
   //         });
   //   }
   //   // -----------------------------------------------------common method for pdf and excel------------------------------------------------------------------------
-  
-  
+
+
   //   reportMaking(x: Blob, reportname: any, reporttype: any) {
   //     const blob = new Blob([x], { type: reporttype });
   //     const data = window.URL.createObjectURL(blob);
@@ -313,6 +318,6 @@ export class RecurringComponent implements OnInit {
   //         Swal.showLoading(null);
   //       }
   //     });
-  
+
   //   }
 }

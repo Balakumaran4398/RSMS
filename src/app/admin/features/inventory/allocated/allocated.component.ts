@@ -161,7 +161,7 @@ export class AllocatedComponent implements OnInit,OnDestroy {
   }
   columnDefs: ColDef[] = [
     {
-      lockPosition: true, headerCheckboxSelection: true, checkboxSelection: true, width: 80
+      lockPosition: true, headerCheckboxSelection: true, checkboxSelection: true, width: 80,filter:false
     },
     {
       headerName: 'SMARTCARD', width: 250,
@@ -207,7 +207,7 @@ export class AllocatedComponent implements OnInit,OnDestroy {
       },
     },
     {
-      headerName: 'IS_EMI', width: 150, cellStyle: { textAlign: 'center' },
+      headerName: 'IS_EMI', width: 130, cellStyle: { textAlign: 'center' },
       field: 'emidisplay',
       cellRenderer: (params: any) => {
         return params.value == "Yes"

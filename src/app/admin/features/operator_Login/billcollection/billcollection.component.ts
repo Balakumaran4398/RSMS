@@ -1,0 +1,273 @@
+import { HttpResponse } from '@angular/common/http';
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
+import { Router } from '@angular/router';
+import { AnyCatcher } from 'rxjs/internal/AnyCatcher';
+import { BaseService } from 'src/app/_core/service/base.service';
+import { StorageService } from 'src/app/_core/service/storage.service';
+import { SwalService } from 'src/app/_core/service/swal.service';
+import Swal from 'sweetalert2';
+import { LcoSmartcardDialogComponent } from '../Dialog/lco-smartcard-dialog/lco-smartcard-dialog.component';
+
+@Component({
+  selector: 'app-billcollection',
+  templateUrl: './billcollection.component.html',
+  styleUrls: ['./billcollection.component.scss']
+})
+export class BillcollectionComponent implements OnInit {
+  columnnDefs: any[] = [];
+  rowData: any[] = [];
+  @ViewChild('agGrid') agGrid: any;
+  gridApi: any;
+  role: any;
+  username: any;
+  selectedTab: string = 'lco';
+  selectedLCO: any;
+  selectedSubLCO: any;
+  selectedSubscriber: any;
+
+  fromdate: any;
+  todate: any;
+
+  recharge: any = '0';
+  paid: any = '0';
+  unpaid: any = '0';
+  excess: any = '0';
+  constructor(private dialog: MatDialog,private userService: BaseService, private storageService: StorageService, private swal: SwalService, private router: Router,) {
+    this.role = storageService.getUserRole();
+    this.username = storageService.getUsername();
+  }
+
+  ngOnInit(): void {
+    throw new Error('Method not implemented.');
+  }
+  getFromDate(event: any) {
+    console.log(event.value);
+    const date = new Date(event.value).getDate().toString().padStart(2, '0');
+    const month = (new Date(event.value).getMonth() + 1).toString().padStart(2, '0');
+    const year = new Date(event.value).getFullYear();
+    this.fromdate = year + "-" + month + "-" + date
+    console.log(this.fromdate);
+  }
+  getToDate(event: any) {
+    const date = new Date(event.value).getDate().toString().padStart(2, '0');
+    const month = (new Date(event.value).getMonth() + 1).toString().padStart(2, '0');
+    const year = new Date(event.value).getFullYear();
+    this.todate = year + "-" + month + "-" + date
+    console.log(this.todate);
+  }
+
+  selectTab(tab: string) {
+    this.selectedTab = tab;
+    if (this.agGrid) {
+      let newRowData;
+      if (this.selectedTab === 'lco') {
+        console.log('lco');
+        this.onOperatorChange(this.selectedLCO);
+        newRowData = this.getLCO('lco');
+      } else if (this.selectedTab === 'sub_lco') {
+        console.log('sub_lco');
+        this.onOperatorChange(this.selectedSubscriber);
+        newRowData = this.getSubLCO('sub_lco');
+        // this.selectedOperator = '';
+      } else if (this.selectedTab === 'subscriber') {
+        console.log('subscriber');
+        newRowData = this.getSubscriber('subscriber');
+        this.onOperatorChange(this.selectedSubscriber);
+      }
+      // this.agGrid.api.setRowData(newRowData);
+    }
+  }
+
+  onGridReady(params: { api: any; }) {
+    this.gridApi = params.api;
+    this.loadTableData("");
+  }
+  getLCO(operator: any) {
+    console.log(operator);
+  }
+  getSubLCO(operator: any) {
+    console.log(operator);
+  }
+  getSubscriber(operator: any) {
+    console.log(operator);
+  }
+
+  onOperatorChange(selectedOperator: any) {
+    // this.selectedOperator = selectedOperator;
+    // this.lcomembershipid = selectedOperator.value;
+    // if (this.selectedTab === 'lco') {
+
+    //   this.rowData = [];
+    //   this.userService.getDistributorCommissionListByLcoGroupId(this.role, this.username, this.lcomembershipid).subscribe(
+    //     (response: HttpResponse<any[]>) => {
+    //       if (response.status === 200) {
+    //         this.rowData = response.body;
+
+    //       } else if (response.status === 204) {
+    //       }
+    //     },
+    //     (error) => this.handleError(error)
+    //   );
+    //   console.log(this.selectedOperator);
+
+    // } else if (this.selectedTab === 'sub_lco') {
+    //   if (this.lcomembershipid === '0') {
+    //     this.lcomembershipid = 0;
+    //   }
+    //   this.rowData = [];
+    //   this.userService.getLcoCommissionListByLcoGroupId(this.role, this.username, this.lcomembershipid)
+    //     .subscribe(
+    //       (response: HttpResponse<any[]>) => {
+    //         if (response.status === 200) {
+    //           this.rowData = response.body;
+    //         } else if (response.status === 204) {
+    //         }
+    //       },
+    //       (error) => this.handleError(error)
+    //     );
+    // }else if (this.selectedTab === 'subscriber') {
+    //   if (this.lcomembershipid === '0') {
+    //     this.lcomembershipid = 0;
+    //   }
+    //   this.rowData = [];
+    //   this.userService.getLcoCommissionListByLcoGroupId(this.role, this.username, this.lcomembershipid)
+    //     .subscribe(
+    //       (response: HttpResponse<any[]>) => {
+    //         if (response.status === 200) {
+    //           this.rowData = response.body;
+    //         } else if (response.status === 204) {
+    //         }
+    //       },
+    //       (error) => this.handleError(error)
+    //     );
+    // }
+
+  }
+
+  loadTableData(selectedTab: any) {
+    console.log(`Selected Tab: ${selectedTab}`);
+
+    this.columnnDefs = [
+      {
+        headerName: "S.No", lockPosition: true, valueGetter: 'node.rowIndex+1', width: 100, filter: false
+      },
+      {
+        headerName: "PAY OPTION", field: 'productname', width: 200, cellStyle: { textAlign: 'left' },
+        cellRenderer: (params: any) => {
+          const isActive = params.data.statusdisplay === 'Active';
+          const payButton = document.createElement('button');
+          payButton.innerHTML = '<img src="/assets/images/icons/Pay2.png" style="width:70px">';
+          payButton.style.backgroundColor = 'transparent';
+          payButton.style.color = 'rgb(2 85 13)';
+          payButton.style.border = 'none';
+          payButton.style.cursor = 'pointer';
+          payButton.style.marginRight = '6px';
+          payButton.addEventListener('click', () => {
+            this.openEditDialog(params.data);
+          });
+          if (!isActive) {
+            payButton.disabled = true;
+            payButton.style.opacity = '0.5';
+            payButton.title = 'Cannot pay, status is Deactive';
+
+          } else {
+            payButton.addEventListener('click', () => {
+              this.openEditDialog(params.data);
+            });
+            payButton.title = 'Pay Now, status is Active';
+
+          }
+          const div = document.createElement('div');
+          div.appendChild(payButton);
+          return div;
+        }
+
+      },
+      {
+        headerName: "SMARTCARD", field: 'productid', width: 130,
+        cellStyle: (params: any) => {
+          if (params.data.someCondition) {
+            return { backgroundColor: '#f4cccc' };
+          } else {
+            return null;
+          }
+        },
+        cellRenderer: (params: any) => {
+          return `<a href="javascript:void(0)" style="color: blue; text-decoration: none;color:#0d6efd">
+                    ${params.value}
+                  </a>`;
+        },
+
+        onCellClicked: (params: any) => {
+          const subid = params.data.id;
+          const smartcard = params.data.smartcard;
+          console.log('Sub ID:', subid);
+          console.log('Smartcard:', smartcard);
+          if (smartcard) {
+            this.router.navigate([`/admin/lco_dashboard/${smartcard}/subsmartcard`])
+              .then(() => {
+                setTimeout(() => {
+                  window.location.reload();
+                }, 100);
+              });
+          }
+        }
+      },
+      { headerName: "SUBSCRIBER NAME", field: 'producttype', width: 140 },
+      {
+        headerName: "PAID", field: 'rate', width: 140,
+        cellRenderer: (params: any) => `<span >${params.value ? params.value.toFixed(2) : '0.00'}</span> `
+      },
+      {
+        headerName: "UN PAID", field: 'customeramount', width: 150,
+        cellRenderer: (params: any) => `<span >${params.value ? params.value.toFixed(2) : '0.00'}</span> `
+      },
+      {
+        headerName: "EXCESS PAID", field: 'commission',
+        width: 150, cellRenderer: (params: any) => `<span >${params.value ? params.value.toFixed(2) : '0.00'}</span> `
+      },
+      {
+        headerName: "LAST COLLECTION DATE", field: 'msoamount', width: 140,
+        cellRenderer: (params: any) => `<span >${params.value ? params.value.toFixed(2) : '0.00'}</span> `
+      },
+      {
+        headerName: "EXPIRY DATE", field: 'submsoamount', width: 180,
+        cellRenderer: (params: any) => `<span >${params.value ? params.value.toFixed(2) : '0.00'}</span> `
+      },
+      {
+        headerName: "PACKAGE NAME", field: 'commissionvalue', width: 170,
+        cellRenderer: (params: any) => `<span>${params.value ? params.value.toFixed(2) : '0.00'}</span>`
+      },
+      {
+        headerName: "STATUS", field: 'commissionvalue', width: 170,
+        cellRenderer: (params: any) => `<span>${params.value ? params.value.toFixed(2) : '0.00'}</span>`
+      },
+
+    ]
+  }
+
+    openEditDialog(data: any): void {
+      console.log(data);
+      const dialogRef = this.dialog.open(LcoSmartcardDialogComponent, {
+        width: '400px',
+        // height: '500px',
+        data: data
+  
+      });
+  
+      dialogRef.afterClosed().subscribe(result => {
+        console.log('The dialog was closed');
+      });
+    }
+
+  handleError(error: any) {
+    if (error.status === 400) {
+      this.swal.Error_400();
+    } else if (error.status === 500) {
+      this.swal.Error_500();
+    } else {
+      Swal.fire('Error', 'Something went wrong. Please try again.', 'error');
+    }
+  }
+}

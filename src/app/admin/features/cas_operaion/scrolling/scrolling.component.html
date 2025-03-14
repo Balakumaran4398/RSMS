@@ -7,7 +7,7 @@
             <div class="d-flex justify-content-center align-item-center">
                 <form [formGroup]="form" (ngSubmit)="submit()">
                     <div class="col d-flex justify-content-center align-items-center">
-                        <div class="col-12 col-md-12 sol-sm-6" style="padding: 1rem;max-height: 65vh;overflow: scroll;">
+                        <div class="col-12 col-md-12 sol-sm-6" style="padding: 1rem;max-height: 65vh;overflow: scroll;overflow-x: hidden;">
                             <div class="row">
                                 <div class="input-box mb-3">
                                     <div class="col-12 col-md-4">
@@ -396,7 +396,7 @@
             <div class="row d-flex  justify-content-center" style="padding: 0.5rem;">
                 <div class="col-12 col-sm-12 col-md-12 mb-3">
                     <ag-grid-angular #agGrid id="myGrid" domLayout='autoHeight' class="ag-theme-alpine table-class"
-                        style="max-height: 775px;overflow: scroll;" rowAnimation [rowSelection]="rowSelection"
+                        style="max-height: 775px;overflow: scroll;overflow-x: hidden" rowAnimation [rowSelection]="rowSelection"
                         [gridOptions]="gridOptions" [columnDefs]="columnDefs" [rowData]="rowData"
                         (gridReady)="onGridReady()" [enableCellTextSelection]="true">
                     </ag-grid-angular>

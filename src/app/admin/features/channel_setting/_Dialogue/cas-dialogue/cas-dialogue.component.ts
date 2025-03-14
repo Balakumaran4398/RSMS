@@ -15,37 +15,30 @@ export class CasDialogueComponent {
   username: any;
   id: any;
   type: any;
-  intend:any;
-  message:any;
-  resendMessage:any;
+  intend: any;
+  message: any;
+  resendMessage: any;
   constructor(private userservice: BaseService, private storageservice: StorageService, public dialogRef: MatDialogRef<CasDialogueComponent>, @Inject(MAT_DIALOG_DATA) public data: any, private swal: SwalService) {
     console.log(data);
     this.type = data.type;
     this.id = data?.data.id;
-    console.log(this.type );
-    console.log(this.id );
-    this.intend= data?.data?.intendid;
-    this.message= data?.data?.scrollmsg;
-    this.resendMessage= data?.data?.msgcontent;
+    console.log(this.type);
+    console.log(this.id);
+    this.intend = data?.data?.intendid;
+    this.message = data?.data?.scrollmsg;
+    this.resendMessage = data?.data?.msgcontent;
     console.log(this.intend);
     console.log(this.message);
     this.username = storageservice.getUsername();
     this.role = storageservice.getUserRole();
-    
+
   }
   onNoClick(): void {
     this.dialogRef.close();
   }
 
   onStopDialog() {
-    Swal.fire({
-      title: 'Updateing...',
-      text: 'Please wait while the Recurring is being updated',
-      allowOutsideClick: false,
-      didOpen: () => {
-        Swal.showLoading(null);
-      }
-    });
+    this.swal.Loading();
 
     this.userservice.stopMessage(this.role, this.username, this.id,).subscribe((res: any) => {
       this.swal.success(res?.message);
@@ -55,14 +48,7 @@ export class CasDialogueComponent {
   }
 
   onResendDialog() {
-    Swal.fire({
-      title: 'Updateing...',
-      text: 'Please wait while the Recurring is being updated',
-      allowOutsideClick: false,
-      didOpen: () => {
-        Swal.showLoading(null);
-      }
-    });
+    this.swal.Loading();
     this.userservice.resendMessage(this.role, this.username, this.id).subscribe((res: any) => {
       this.swal.success(res?.message);
     }, (err) => {
@@ -70,14 +56,7 @@ export class CasDialogueComponent {
     });
   }
   openScrollingDialog() {
-    Swal.fire({
-      title: 'Updateing...',
-      text: 'Please wait while the Recurring is being updated',
-      allowOutsideClick: false,
-      didOpen: () => {
-        Swal.showLoading(null);
-      }
-    });
+    this.swal.Loading();
 
     this.userservice.stopScroll(this.id, this.role, this.username).subscribe((res: any) => {
       this.swal.success(res?.message);
@@ -87,16 +66,9 @@ export class CasDialogueComponent {
   }
 
   resendDialog() {
-    Swal.fire({
-      title: 'Updateing...',
-      text: 'Please wait while the Recurring is being updated',
-      allowOutsideClick: false,
-      didOpen: () => {
-        Swal.showLoading(null);
-      }
-    });
+    this.swal.Loading();
 
-    this.userservice.resendMail( this.role, this.username,this.id).subscribe((res: any) => {
+    this.userservice.resendMail(this.role, this.username, this.id).subscribe((res: any) => {
       this.swal.success(res?.message);
     }, (err) => {
       this.swal.Error(err?.error?.message);

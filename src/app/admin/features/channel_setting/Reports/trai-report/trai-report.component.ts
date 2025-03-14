@@ -40,7 +40,7 @@ export class TraiReportComponent implements OnInit {
   openPackageBaseDialogue(event: any) {
     console.log(event);
     let width = '500px';
-    if (event == 'bouquetAlacarte') {
+    if (event == 'HistoricalBase') {
       width = '600px';
     } else if (event == 'Synchronization') {
       width = '600px';

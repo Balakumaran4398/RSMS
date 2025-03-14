@@ -14,8 +14,6 @@ body {
 
 .img1 {
 	width: 80px;
-	// margin-left: 42%;
-	// margin-top: -12%;
 }
 
 a {
@@ -25,7 +23,7 @@ a {
 
 .login-wrap {
 	width: 100%;
-	min-height: 75vh;
+	min-height: 78vh;
 	position: absolute;
 }
 
@@ -35,8 +33,7 @@ a {
 	position: absolute;
 	border-radius: 5px;
 	bottom: 0px;
-	// padding: 35px;
-	padding: 40px 30px 0px 30px;
+	padding: 15px 30px 0px 30px;
 	background-color: white;
 }
 
@@ -49,9 +46,7 @@ a {
 }
 
 .login-form .group {
-	// margin: 16px 2px;
 	margin: auto;
-	// width: 300px;
 }
 
 .login-form .group .label,
@@ -84,7 +79,6 @@ a {
 }
 
 .login-form .group .button {
-	// background: var(--primary-color);
 	background: #256462;
 }
 
@@ -110,7 +104,7 @@ a {
 
 .foot-lnk {
 	text-align: center;
-	margin: -10px 0px;
+	margin: 5px 0px;
 
 }
 
@@ -152,12 +146,44 @@ h1 {
 	height: -1%;
 }
 
-// .inputbox input:focus,
-// .inputbox select:valid,
-// .inputbox input:valid {
-//     box-shadow: 0px 0px 0px 2px #1f6764;
+
+
+
+// .password-field {
+//     .password-container {
+//         display: flex;
+//         align-items: center;
+//         width: 100%;
+//     }
+
+//     input {
+//         flex: 1; 
+//         border: none;
+//         outline: none;
+//         padding-right: 40px;
+//     }
+
+    .eye-icon {
+        color: #1f6764;
+        cursor: pointer;
+    }
 // }
 
+@media screen and (max-width: 768px) {
+
+	.password-field {
+		display: flex;
+		flex-direction: column;
+		width: 200%;
+
+	}
+
+	.eye-icon {
+		color: #1f6764;
+		cursor: pointer;
+		margin-left: -10px;
+	}
+}
 
 
 

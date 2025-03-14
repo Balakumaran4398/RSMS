@@ -64,7 +64,7 @@ export class DistributorMasterComponent {
   }
   enterPressed: boolean = false;
   columnDefs: any[] = [
-    { headerName: "S.No", lockPosition: true, valueGetter: 'node.rowIndex+1', width: 100, headerCheckboxSelection: true, checkboxSelection: true },
+    { headerName: "S.No", lockPosition: true, valueGetter: 'node.rowIndex+1', width: 100, headerCheckboxSelection: true, checkboxSelection: true, filter: false },
     { headerName: "DISTRIBUTOR NAME", field: 'name', cellEditor: 'agTextCellEditor', width: 300, cellStyle: { textAlign: 'left' }, },
     {
       headerName: "STATUS",
@@ -79,7 +79,7 @@ export class DistributorMasterComponent {
         toggleSwitch.style.width = '45px';
         toggleSwitch.style.height = '25px';
         toggleSwitch.style.borderRadius = '15px';
-        toggleSwitch.style.backgroundColor = isActive ? '#93b6eb' : 'rgb(115 115 115)';
+        toggleSwitch.style.backgroundColor = isActive ? 'var(--active-icon)' : 'rgb(115 115 115)';
         toggleSwitch.style.position = 'relative';
         toggleSwitch.style.cursor = 'pointer';
         toggleSwitch.style.transition = 'background-color 0.3s ease';
@@ -101,11 +101,12 @@ export class DistributorMasterComponent {
       }
     },
     {
-      headerName: "Edit", cellStyle: { textAlign: 'left' }, width: 190, cellRenderer: (params: any) => {
+      headerName: "Edit", cellStyle: { textAlign: 'center' }, width: 190, cellRenderer: (params: any) => {
         const editButton = document.createElement('button');
         editButton.innerHTML = '<i class="fa fa-pencil-square" aria-hidden="true"></i>';
         editButton.style.backgroundColor = 'transparent';
-        editButton.style.color = 'rgb(64 113 114)';
+        // editButton.style.color = 'rgb(64 113 114)';
+        editButton.style.color = 'var(--active-edit-icon)';
         editButton.style.border = 'none';
         editButton.title = 'Edit the Customer';
         editButton.style.cursor = 'pointer';
@@ -119,9 +120,9 @@ export class DistributorMasterComponent {
         return div;
       }
     },
-    { headerName: "DISTRIBUTOR ADDRESS", field: 'address', editable: true, cellEditor: 'agTextCellEditor', width: 200,cellStyle: { textAlign: 'left' },},
+    { headerName: "DISTRIBUTOR ADDRESS", field: 'address', editable: true, cellEditor: 'agTextCellEditor', width: 200, cellStyle: { textAlign: 'left' }, },
     { headerName: "DISTRIBUTOR CONTACT", field: 'contact', cellEditor: 'agTextCellEditor', width: 200 },
-    { headerName: "DISTRIBUTOR EMAIL", field: 'email', cellEditor: 'agTextCellEditor', width: 290, cellStyle: { textAlign: 'left' },},
+    { headerName: "DISTRIBUTOR EMAIL", field: 'email', cellEditor: 'agTextCellEditor', width: 260, cellStyle: { textAlign: 'left' }, },
   ]
 
 

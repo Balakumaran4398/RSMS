@@ -173,6 +173,21 @@ import { LicenseexpireComponent } from "./features/inventory_role/Dialogue/licen
 import { ServiceComponent } from "./features/Service_center_role/service/service.component";
 import { OperatordashboardComponent } from "./features/operator_Login/operatordashboard/operatordashboard.component";
 import { ServicecenterEditComponent } from "./features/Service_center_role/Dialog/servicecenter-edit/servicecenter-edit.component";
+import { OnlinerechargeComponent } from "./features/operator_Login/onlinerecharge/onlinerecharge.component";
+import { OnlinecustomerdetailsComponent } from "./features/operator_Login/onlinecustomerdetails/onlinecustomerdetails.component";
+import { RechagelogComponent } from "./features/operator_Login/rechagelog/rechagelog.component";
+import { AreaStreetComponent } from "./features/operator_Login/area-street/area-street.component";
+import { OperatorWalletComponent } from "./features/operator_Login/Dialog/operator-wallet/operator-wallet.component";
+import { LcoDashboardComponent } from "./features/operator_Login/Dialog/lco-dashboard/lco-dashboard.component";
+import { ForcemessageComponent } from "./features/operator_Login/forcemessage/forcemessage.component";
+import { LcoChangePasswordComponent } from "./features/operator_Login/lco-change-password/lco-change-password.component";
+import { LcodiscountComponent } from "./features/operator_Login/lcodiscount/lcodiscount.component";
+import { LcoReportComponent } from "./features/operator_Login/lco-report/lco-report.component";
+import { LcologinReportComponent } from "./features/operator_Login/Dialog/lcologin-report/lcologin-report.component";
+import { DistributorsettingComponent } from "./features/operator_Login/distributorsetting/distributorsetting.component";
+import { BillcollectionComponent } from "./features/operator_Login/billcollection/billcollection.component";
+import { LcoSmartcardDialogComponent } from "./features/operator_Login/Dialog/lco-smartcard-dialog/lco-smartcard-dialog.component";
+import { LcoSmartcardpayDialogComponent } from "./features/operator_Login/Dialog/lco-smartcardpay-dialog/lco-smartcardpay-dialog.component";
 @NgModule({
     declarations: [
         AdminBaseComponent, NavComponent, HomeComponent, NavbarComponent, MsodetailsComponent, CasmasterComponent,
@@ -184,7 +199,7 @@ import { ServicecenterEditComponent } from "./features/Service_center_role/Dialo
         // -------------------------------------Top_subscriber_Details------------------------------------
         TopSubDetailComponent,
         // -----------------------------------------operator----------------------------------
-        OperatorlistComponent, OperatorDetailsComponent, LcoRechargeComponent, TopSubLoginComponent,EditLcoComponent, SpecialPermissionComponent, NewLcoComponent, NewstreetComponent,
+        OperatorlistComponent, OperatorDetailsComponent, LcoRechargeComponent, TopSubLoginComponent, EditLcoComponent, SpecialPermissionComponent, NewLcoComponent, NewstreetComponent,
         AddLcoBusinessComponent, LcodashboardComponent, LcochartComponent, LcopiechartComponent, OperatordialogueComponent, StreetComponent, EditareaComponent,
         OperatorcancelsubreportComponent, LoginrefundComponent,
         // --------------LCO RECHARGE-----------------
@@ -229,15 +244,18 @@ import { ServicecenterEditComponent } from "./features/Service_center_role/Dialo
         PaymentUpdateComponent, CreateltbComponent, UpdateLtbComponent,
         // ----------------------------------------------Special role-----------------------------------------
         LcoinvoiceComponent, CasdialogueComponent, EditmsoComponent, SpecialoperatorComponent, SpecialoperatordialogueComponent, SublcooperatorComponent, SublcooperatordialogueComponent,
-
         AddednotaddedComponent, PackageplanComponent, PackageplandialogueComponent, ChanneldetailsComponent, ChanneldialogueComponent, AdsdetailsComponent, AdsdialogueComponent, LoginsettingsComponent,
         TaxComponent, ProofComponent, ProofdetailsComponent, TaxdetailsComponent, LogindialogueComponent, EditDismembershipComponent, SpecialBulkpackageComponent,
         SpecialcancelsubscriptionComponent, SpecialareachangeComponent, SpeciallcochangeComponent, SpecialeditbulkpackageComponent, SpeciallcotransferComponent,
         // =====================================================Reports=========================================
-        TraiReportComponent, SubscriptionBasedComponent, HistoryReportsComponent, PackageBasedComponent, BroadcasterReportsComponent, HistoryAllReportsComponent,MsoreportsComponent,MsorDialogueportsComponent,
-        InventoryroleComponent,LicenseComponent,CortonboxComponent,InventoryloginComponent,InventorycortonboxComponent,InventoryDialogueComponent,LicenseexpireComponent,ServiceComponent,OperatordashboardComponent,
-        ServicecenterEditComponent
-          ],
+        TraiReportComponent, SubscriptionBasedComponent, HistoryReportsComponent, PackageBasedComponent, BroadcasterReportsComponent, HistoryAllReportsComponent, MsoreportsComponent, MsorDialogueportsComponent,
+        InventoryroleComponent, LicenseComponent, CortonboxComponent, InventoryloginComponent, InventorycortonboxComponent, InventoryDialogueComponent, LicenseexpireComponent, ServiceComponent,
+        // =========================================================ONLINE ROLE============================================
+        OperatordashboardComponent, LcoDashboardComponent,
+        ServicecenterEditComponent, OnlinerechargeComponent, OnlinecustomerdetailsComponent, RechagelogComponent, AreaStreetComponent, OperatorWalletComponent,ForcemessageComponent,
+        LcoChangePasswordComponent,LcodiscountComponent,LcoReportComponent,LcologinReportComponent,DistributorsettingComponent,BillcollectionComponent,
+        LcoSmartcardDialogComponent,LcoSmartcardpayDialogComponent
+    ],
     imports: [
         CommonModule,
         CoreModule,

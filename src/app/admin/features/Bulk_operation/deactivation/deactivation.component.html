@@ -25,7 +25,8 @@
                         </span>
                     </div>
                 </div>
-                <a class="mb-3" (click)="generateExcel('Deactivation')" style="cursor: pointer;">* Download Format File</a>
+                <a class="mb-3" (click)="generateExcel('Deactivation')" style="cursor: pointer;">* Download Format
+                    File</a>
                 <div class="checkbox-text mb-3">
                     <div class="checkbox-content">
                         <input type="checkbox" id="terms" formControlName="billingAddressCheckbox"
@@ -38,10 +39,10 @@
                         [style.color]="isCheckboxChecked ? 'white' : 'black'"
                         [style.cursor]="isCheckboxChecked ? 'pointer' : 'not-allowed'">
                         <i class="fa fa-plus"></i> Choose
-                        <input type="file" style="display: none;" accept=".xls,.xlsx,.csv" [disabled]="!isCheckboxChecked"
-                            (change)="handleFileInput($event)">
+                        <input type="file" style="display: none;" accept=".xls,.xlsx,.csv"
+                            [disabled]="!isCheckboxChecked" (change)="handleFileInput($event)">
                     </label>
-                    <span class="mx-3" style="color:#0a21d0">{{filePath }}   </span>
+                    <span class="mx-3" style="color:#0a21d0">{{filePath }} </span>
                 </div>
                 <div class="d-flex justify-content-end align-items-center mt-3">
                     <button type="submit" class="btn btn-success" [disabled]="!isCheckboxChecked || !isFileSelected"
@@ -60,7 +61,8 @@
                     </span>
                     <img src="/assets/images/icons/dashboard.png" class="img" alt="File Icon">
                 </div>
-                <span class="mb-2" style="color:orangered;font-size: 16px;" >Chosen File: <span style="color:#0a21d0">{{filePath }}
+                <span class="mb-2" style="color:orangered;font-size: 16px;">Chosen File: <span
+                        style="color:#0a21d0">{{filePath }}
                     </span>
                 </span>
                 <div class="input_box col-12 col-md-12 d-flex justify-content-center align-items-center mb-3">
@@ -70,7 +72,8 @@
                 <div class="d-flex justify-content-end align-items-center mt-3 ">
                     <button type="button" class="btn btn-success mx-2" (click)="goBack()">Back &nbsp;<i
                             class="fa fa-arrow-left" aria-hidden="true"></i></button>
-                    <button type="submit" class="btn btn-success" [disabled]="!remark" (click)="bulkDeactivation()">Submit</button>
+                    <button type="submit" class="btn btn-success" [disabled]="!remark"
+                        (click)="bulkDeactivation()">Submit</button>
                 </div>
 
             </div>
@@ -85,7 +88,8 @@
                     <div class="col-12 mb-3">
                         <div class="row align-items-center justify-content-center mb-3" style="gap:10px;">
                             <div class="col-12 col-md-3 mb-2 mb-md-0">
-                                <input class="date form-control  bttn" type="date" name="" id="" [(ngModel)]="selectedDate">
+                                <input class="date form-control  bttn" type="date" name="" id=""
+                                    [(ngModel)]="selectedDate">
                             </div>
                             <div class="col-12 col-md-3 mb-2 mb-md-0">
                                 <button class="btn btn-secondary w-100  bttn" (click)="getData()">Get Data</button>
@@ -95,8 +99,7 @@
                             </div>
                         </div>
 
-                        <ag-grid-angular #agGrid id="myGrid" domLayout='autoHeight' class="ag-theme-alpine table-class"
-                         style="max-height: 775px;overflow: scroll;"
+                        <ag-grid-angular #agGrid id="myGrid" domLayout='normal' class="ag-theme-alpine table-class"
                             rowAnimation [rowSelection]="rowSelection" [gridOptions]="gridOptions"
                             [columnDefs]="columnDefs" [rowData]="rowData" (gridReady)="onGridReady()"
                             [enableCellTextSelection]="true">

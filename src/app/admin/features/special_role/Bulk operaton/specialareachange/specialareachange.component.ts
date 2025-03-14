@@ -57,7 +57,7 @@ export class SpecialareachangeComponent implements OnInit {
     this.username = storageService.getUsername();
     this.role = storageService.getUserRole();
     this.columnDefs = [
-      { headerName: "S.No", valueGetter: 'node.rowIndex+1',lockPosition: true, headerCheckboxSelection: true, checkboxSelection: true, width: 100, },
+      { headerName: "S.No", valueGetter: 'node.rowIndex+1', lockPosition: true, headerCheckboxSelection: true, checkboxSelection: true, width: 100, },
       { headerName: "CUSTOMER NAME", field: 'customername', width: 250 },
       { headerName: "FATHER NAME	", field: 'fathername', width: 200 },
       { headerName: "SMARTCARD", field: 'smartcard', width: 250 },
@@ -82,13 +82,28 @@ export class SpecialareachangeComponent implements OnInit {
   onGridReady(params: { api: any; }) {
     this.gridApi = params.api;
   }
+  // filteredLcoList = [...this.lcoList];
+  // lcoInput: string = '';
 
+  // filterLcoList() {
+  //   console.log(this.lcoList);
+    
+  //   this.filteredLcoList = this.lcoList.filter(lco =>
+  //     lco.name.toLowerCase().includes(this.lco.toLowerCase())
+  //   );
+  //   console.log(this.filteredLcoList);
+    
+  // }
+  // onLcoSelected(selectedValue: string) {
+  //   this.lco = this.lcoList.find(lco => lco.value === selectedValue)?.name || '';
+  //   this.onTableData();
+  // }
 
   private updateColumnDefs(tab: string): void {
     console.log(this.rowData = []);
     if (tab === 'areachange') {
       this.columnDefs = [
-        { headerName: "S.No",valueGetter: 'node.rowIndex+1', lockPosition: true, headerCheckboxSelection: true, checkboxSelection: true, width: 100, },
+        { headerName: "S.No", valueGetter: 'node.rowIndex+1', lockPosition: true, headerCheckboxSelection: true, checkboxSelection: true, width: 100, filter: false },
         { headerName: "CUSTOMER NAME", field: 'customername', width: 250 },
         { headerName: "FATHER NAME	", field: 'fathername', width: 200 },
         { headerName: "SMARTCARD", field: 'smartcard', width: 250 },
@@ -99,7 +114,7 @@ export class SpecialareachangeComponent implements OnInit {
       ];
     } else if (tab === 'lcochange') {
       this.columnDefs = [
-        { headerName: "S.No", valueGetter: 'node.rowIndex+1',lockPosition: true, headerCheckboxSelection: true, checkboxSelection: true, width: 100 },
+        { headerName: "S.No", valueGetter: 'node.rowIndex+1', lockPosition: true, headerCheckboxSelection: true, checkboxSelection: true, width: 100, filter: false },
         { headerName: "SMARTCARD", field: 'smartcard', width: 250 },
         { headerName: "BOXID", field: 'boxid', width: 200 },
         { headerName: "SUBSCRIBER NAME	", field: 'customername', width: 250 },
@@ -230,27 +245,9 @@ export class SpecialareachangeComponent implements OnInit {
           });
           console.log(this.streetList);
         });
-      
+
     }
-    // this.userservice.getLcochangeSubscriberList(this.role, this.username, this.lco, this.area, 0).subscribe(
-    //   (response: HttpResponse<any[]>) => {
-    //     if (response.status === 200) {
-    //       this.rowData = response.body;
-    //       // this.swal.Success_200();
-    //     } else if (response.status === 204) {
-    //       this.swal.Success_204();
-    //     }
-    //   },
-    //   (error) => {
-    //     if (error.status === 400) {
-    //       this.swal.Error_400();
-    //     } else if (error.status === 500) {
-    //       this.swal.Error_500();
-    //     } else {
-    //       Swal.fire('Error', 'Something went wrong. Please try again.', 'error');
-    //     }
-    //   }
-    // );
+
   }
   onAreaStatusLCOChange() {
     console.log(this.area);
@@ -314,28 +311,7 @@ export class SpecialareachangeComponent implements OnInit {
       }
     );
   }
-  // onTableData() {
-  //   this.userservice.getLcochangeSubscriberList(this.role, this.username, this.lco, this.area, this.street).subscribe(
-  //     (response: HttpResponse<any[]>) => {
-  //       if (response.status === 200) {
-  //         // this.updateColumnDefs(this.selectedTab);
-  //         this.rowData = response.body;
-  //         this.swal.Success_200();
-  //       } else if (response.status === 204) {
-  //         this.swal.Success_204();
-  //       }
-  //     },
-  //     (error) => {
-  //       if (error.status === 400) {
-  //         this.swal.Error_400();
-  //       } else if (error.status === 500) {
-  //         this.swal.Error_500();
-  //       } else {
-  //         Swal.fire('Error', 'Something went wrong. Please try again.', 'error');
-  //       }
-  //     }
-  //   );
-  // }
+
 
   onTableData() {
     this.rowData = [];
@@ -363,7 +339,7 @@ export class SpecialareachangeComponent implements OnInit {
         } else if (response.status === 204) {
           this.swal.Success_204();
         }
-        
+
       },
       (error) => {
         if (error.status === 400) {
@@ -402,7 +378,7 @@ export class SpecialareachangeComponent implements OnInit {
       areaid: this.area,
       streetid: this.street,
       subscriberlist: this.rows,
-     
+
     }
     this.swal.Loading();
     this.userservice.updateAreaChangeSubscriber(requestBody)

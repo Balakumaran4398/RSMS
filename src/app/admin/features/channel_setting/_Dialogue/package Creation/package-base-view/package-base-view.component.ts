@@ -16,7 +16,7 @@ export class PackageBaseViewComponent {
   rowData: any[] = [];
   count: any;
   username: string;
-  role: string;
+  role: any;
   package_id: number;
   package_name: any;
   package_rate: any;
@@ -44,6 +44,8 @@ export class PackageBaseViewComponent {
     paginationPageSize: 5,
     autoHeight: true,
 
+
+
     // onGridReady: (event: any) => event.api.sizeColumnsToFit()
   };
   columnDefs: any[] = [
@@ -70,6 +72,8 @@ export class PackageBaseViewComponent {
     userService.Package_CloneList(this.role, this.username, this.package_id).subscribe((data: any) => {
       console.log(data);
       this.package_viewing_count = data.count;
+      console.log(this.package_viewing_count);
+
     })
 
   }
@@ -155,4 +159,12 @@ export class PackageBaseViewComponent {
     //   this.gridApi.setColumnDefs(this.columnDefs);
     // }
   }
+  columnDefs1: any[] = [
+    { headerName: 'S.No', valueGetter: 'node.rowIndex + 1', width: 100, cellStyle: { textAlign: 'center' }, },
+    { headerName: 'CHANNEL NAME', field: 'channel_name', width: 250, },
+    { headerName: 'TRANSPORT ID', field: 't_id', width: 300, cellStyle: { textAlign: 'center' }, },
+    { headerName: 'PRODUCT ID', field: 'product_id', width: 300, cellStyle: { textAlign: 'center' }, },
+    { headerName: 'FREQUENCY', field: 'channel_freq', width: 200, cellStyle: { textAlign: 'center' },
+    cellRenderer: (params: any) => `<span >${params.value ? params.value.toFixed(2) : '0.00'}</span> ` },
+  ]
 }

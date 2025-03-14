@@ -3,6 +3,7 @@ import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { BaseService } from 'src/app/_core/service/base.service';
 import { StorageService } from 'src/app/_core/service/storage.service';
+import { SwalService } from 'src/app/_core/service/swal.service';
 import Swal from 'sweetalert2';
 
 @Component({
@@ -16,7 +17,7 @@ export class TopSubLoginComponent {
 
   username: any;
   role: any;
-  constructor(private userservice: BaseService, private storageservice: StorageService, private fb: FormBuilder, private router: Router) {
+  constructor(private userservice: BaseService, private storageservice: StorageService, private fb: FormBuilder, private router: Router,private swal:SwalService) {
     this.role = storageservice.getUserRole();
     this.username = storageservice.getUsername();
     this.form = fb.group({
@@ -34,6 +35,7 @@ export class TopSubLoginComponent {
     });
   }
   submit() {
+    
     console.log('submit ');
     if (this.form.valid) {
       const { userid, password } = this.form.value;
@@ -44,6 +46,7 @@ export class TopSubLoginComponent {
         password: password,
         type: 4,
       }
+      this.swal.Loading();
       // this.userservice.checkLoginCredenticals(this.role, this.username, userid, password, 4).subscribe(
         this.userservice.checkLoginCredenticals(requestBody).subscribe(
         (res: any) => {

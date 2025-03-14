@@ -41,7 +41,7 @@ export class CasmasterComponent {
     this.username = storageservice.getUsername();
   }
   columnDefs: any[] = [
-    { headerName: "S.No", lockPosition: true, valueGetter: 'node.rowIndex+1', headerCheckboxSelection: true, checkboxSelection: true,width:100 },
+    { headerName: "S.No", lockPosition: true, valueGetter: 'node.rowIndex+1', headerCheckboxSelection: true, checkboxSelection: true,width:100 , filter: false},
     { headerName: "CAS ID", field: 'id' },
     { headerName: "CAS NAME", field: 'casname',cellStyle: { textAlign: 'left' } },
     { headerName: "VENDOR", field: 'vendor',cellStyle: { textAlign: 'left' } },

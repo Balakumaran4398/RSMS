@@ -366,107 +366,129 @@ export class PackageBasedComponent implements OnInit {
         });
   }
 
-  getComboExcel() {
+  // getComboExcel() {
+  //   this.swal.Loading();
+  //   this.userService.getComboModificationExcelReport(this.role, this.username, 2)
+  //     .subscribe(
+  //       (response: HttpResponse<any[]>) => {
+  //         console.log(this.type);
+  //         this.swal.Close();
+  //         console.log(response);
+
+  //         this.rowData = response.body;
+  //         console.log(this.rowData);
+
+  //         const title = (this.type + ' REPORT').toUpperCase();
+  //         const sub = 'MSO ADDRESS:' + this.msodetails;
+
+  //         const datas: Array<any> = [];
+  //         const columns: any[] = [];
+
+  //         let areaTitle = 'A1:D2';
+  //         let areaSub = 'A3:D3';
+  //         console.log('addonlist');
+  //         // Handle Addon List
+  //         if (this.rowData.addonlist && this.rowData.addonlist.length > 0) {
+  //           columns.push(['S.NO', 'CHANNEL ID', 'CHANNEL NAME', 'RATE']);
+  //           this.rowData.addonlist.forEach((d: any, index: number) => {
+  //             const row = [index + 1, d.channelid, d.channelname, d.inramt];
+  //             console.log('addonlist', row);
+  //             datas.push(row);
+  //           });
+  //         } else {
+  //           columns.push(['S.NO', 'CHANNEL ID', 'CHANNEL NAME', 'RATE']);
+  //           datas.push(['No data available']); // Placeholders if no data exists
+  //         }
+  //         datas.push(['', '', '']); // Add a blank row to separate sections
+
+  //         // Handle Channel List
+  //         if (this.rowData.channellist && this.rowData.channellist.length > 0) {
+  //           columns.push(['S.NO', 'CHANNEL ID', 'CHANNEL NAME', 'RATE']);
+  //           this.rowData.channellist.forEach((d: any, index: number) => {
+  //             const row = [index + 1, d.channelid, d.channelname, d.inramt];
+  //             console.log('channellist', row);
+  //             datas.push(row);
+  //           });
+  //         } else {
+  //           columns.push(['S.NO', 'CHANNEL ID', 'CHANNEL NAME', 'RATE']);
+  //           datas.push(['No data available']);
+  //         }
+  //         datas.push(['', '', '']);
+
+  //         console.log('combomodificationlist', this.rowData.combomodificationlist);
+
+  //         // Handle Combo Modification List
+  //         if (this.rowData.combomodificationlist && this.rowData.combomodificationlist.length > 0) {
+  //           console.log('COMBO');
+
+  //           columns.push(['S.NO', 'PACKAGE ID', 'PACKAGE NAME', 'PRODUCT TYPE', 'PRODUCT TYPE NAME']);
+  //           this.rowData.combomodificationlist.forEach((d: any, index: number) => {
+  //             const row = [index + 1, d.packageid, d.packagename, d.producttype, d.producttypename];
+  //             console.log('combomodificationlist', row);
+  //             datas.push(row);
+  //           });
+  //         } else {
+  //           columns.push(['S.NO', 'PACKAGE ID', 'PACKAGE NAME', 'PRODUCT TYPE', 'PRODUCT TYPE NAME']);
+  //           datas.push(['No data available']);
+  //         }
+
+  //         this.excelService.generateComboExcel(areaTitle, columns[0], datas, title, areaSub, sub,);
+  //       },
+  //       (error) => {
+  //         this.swal.Close();
+  //         this.handleApiError(error);
+  //       }
+  //     );
+  // }
+
+  // getComboPDF() {
+  //   this.swal.Loading();
+  //   this.userService.getComboModificationPdfReport(this.role, this.username, 1).subscribe((x: Blob) => {
+  //     this.swal.Close();
+  //     const blob = new Blob([x], { type: 'application/pdf' });
+  //     const data = window.URL.createObjectURL(blob);
+  //     const link = document.createElement('a');
+  //     link.href = data;
+  //     link.download = (this.type + ".pdf").toUpperCase();
+  //     link.dispatchEvent(new MouseEvent('click', { bubbles: true, cancelable: true, view: window }));
+  //     setTimeout(() => {
+  //       window.URL.revokeObjectURL(data);
+  //       link.remove();
+  //     }, 100);
+  //   },
+  //     (error: any) => {
+  //       this.swal.Close();
+  //       Swal.fire({
+  //         title: 'Error!',
+  //         text: error?.error?.message || 'There was an issue generating the PDF CAS form report.',
+  //         icon: 'error',
+  //         confirmButtonText: 'Ok'
+  //       });
+  //     });
+  // }
+  getComboReport(type: number) {
     this.swal.Loading();
-    this.userService.getComboModificationExcelReport(this.role, this.username, 2)
-      .subscribe(
-        (response: HttpResponse<any[]>) => {
-          console.log(this.type);
-          this.swal.Close();
-          this.rowData = response.body;
-          console.log(this.rowData);
+    this.submitted = true;
+    console.log('11111        Type = ', type);
 
-          const title = (this.type + ' REPORT').toUpperCase();
-          const sub = 'MSO ADDRESS:' + this.msodetails;
-
-          const datas: Array<any> = [];
-          const columns: any[] = [];
-
-          let areaTitle = 'A1:D2';
-          let areaSub = 'A3:D3';
-          console.log('addonlist');
-          // Handle Addon List
-          if (this.rowData.addonlist && this.rowData.addonlist.length > 0) {
-            columns.push(['S.NO', 'CHANNEL ID', 'CHANNEL NAME', 'RATE']);
-            this.rowData.addonlist.forEach((d: any, index: number) => {
-              const row = [index + 1, d.channelid, d.channelname, d.inramt];
-              console.log('addonlist', row);
-              datas.push(row);
-            });
-          } else {
-            columns.push(['S.NO', 'CHANNEL ID', 'CHANNEL NAME', 'RATE']);
-            datas.push(['No data available']); // Placeholders if no data exists
-          }
-          datas.push(['', '', '']); // Add a blank row to separate sections
-
-          console.log('channellist');
-
-          // Handle Channel List
-          if (this.rowData.channellist && this.rowData.channellist.length > 0) {
-            columns.push(['S.NO', 'CHANNEL ID', 'CHANNEL NAME', 'RATE']);
-            this.rowData.channellist.forEach((d: any, index: number) => {
-              const row = [index + 1, d.channelid, d.channelname, d.inramt];
-              console.log('channellist', row);
-              datas.push(row);
-            });
-          } else {
-            columns.push(['S.NO', 'CHANNEL ID', 'CHANNEL NAME', 'RATE']);
-            datas.push(['No data available']);
-          }
-          datas.push(['', '', '']);
-
-          console.log('combomodificationlist');
-
-          // Handle Combo Modification List
-          if (this.rowData.combomodificationlist && this.rowData.combomodificationlist.length > 0) {
-
-            columns.push(['S.NO', 'PACKAGE ID', 'PACKAGE NAME', 'PRODUCT TYPE', 'PRODUCT TYPE NAME']);
-            this.rowData.combomodificationlist.forEach((d: any, index: number) => {
-              const row = [index + 1, d.packageid, d.packagename, d.producttype, d.producttypename];
-              console.log('combomodificationlist', row);
-              datas.push(row);
-            });
-          } else {
-            columns.push(['S.NO', 'PACKAGE ID', 'PACKAGE NAME', 'PRODUCT TYPE', 'PRODUCT TYPE NAME']);
-            datas.push(['No data available']);
-          }
-
-          this.excelService.generateComboExcel(areaTitle, columns[0], datas, title, areaSub, sub,);
-        },
-        (error) => {
-          this.swal.Close();
-          this.handleApiError(error);
-        }
-      );
-  }
-
-  getComboPDF() {
-    this.swal.Loading();
-    this.userService.getComboModificationPdfReport(this.role, this.username, 1)
-      .subscribe((x: Blob) => {
+    this.userService.getComboModificationPdfReport(this.role, this.username, type).subscribe({
+      next: (x: Blob) => {
         this.swal.Close();
-        const blob = new Blob([x], { type: 'application/pdf' });
-        const data = window.URL.createObjectURL(blob);
-        const link = document.createElement('a');
-        link.href = data;
-        link.download = (this.type + ".pdf").toUpperCase();
-        link.dispatchEvent(new MouseEvent('click', { bubbles: true, cancelable: true, view: window }));
-        setTimeout(() => {
-          window.URL.revokeObjectURL(data);
-          link.remove();
-        }, 100);
-      },
-        (error: any) => {
-          this.swal.Close();
-          Swal.fire({
-            title: 'Error!',
-            text: error?.error?.message || 'There was an issue generating the PDF CAS form report.',
-            icon: 'error',
-            confirmButtonText: 'Ok'
-          });
-        });
-  }
 
+        if (type == 1) {
+          this.reportMaking(x, 'Combo' + ".pdf", 'application/pdf');
+        } else if (type == 2) {
+          this.reportMaking(x, 'Combo' + ".xlsx", 'application/xlsx');
+        }
+      },
+      error: (error: any) => {
+        this.swal.Close();
+        this.pdfswalError(error?.error.message);
+      }
+    });
+
+
+  }
   getBouquetAlacarteExcel() {
     this.swal.Loading();
     if (!this.productType) {
@@ -554,6 +576,21 @@ export class PackageBasedComponent implements OnInit {
             });
           });
     }
+  }
+
+  getTotalOperatorReportDownload(type: number) {
+    this.processingSwal();
+    this.userService.getBouquetSubscriptionPdfReport(this.role, this.username, this.fromdate, this.todate, this.productType, type)
+      .subscribe((x: Blob) => {
+        if (type == 1) {
+          this.reportMaking(x, `${this.type} REPORT - [FROM DATE: ${this.fromdate} - TO DATE: ${this.todate}].pdf`.toUpperCase(), "application/pdf");
+        } else if (type == 2) {
+          this.reportMaking(x,`${this.type} REPORT - [FROM DATE: ${this.fromdate} - TO DATE: ${this.todate}].xlsx`.toUpperCase(), "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
+        }
+      },
+        (error: any) => {
+          this.pdfswalError(error?.error.message);
+        });
   }
   // ------------------------------------------------------------------------------------------------
   handleApiError(error: any) {

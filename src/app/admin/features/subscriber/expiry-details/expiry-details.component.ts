@@ -1,17 +1,18 @@
 import { HttpResponse } from '@angular/common/http';
 import { ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup } from '@angular/forms';
 import { BaseService } from 'src/app/_core/service/base.service';
 import { ExcelService } from 'src/app/_core/service/excel.service';
 import { StorageService } from 'src/app/_core/service/storage.service';
 import { SwalService } from 'src/app/_core/service/swal.service';
 import Swal from 'sweetalert2';
-declare var $:any;
+declare var $: any;
 @Component({
   selector: 'app-expiry-details',
   templateUrl: './expiry-details.component.html',
   styleUrls: ['./expiry-details.component.scss']
 })
-export class ExpiryDetailsComponent implements OnInit,OnDestroy {
+export class ExpiryDetailsComponent implements OnInit, OnDestroy {
   maxDate = new Date();
   fromdate: any;
   todate: any;
@@ -32,7 +33,8 @@ export class ExpiryDetailsComponent implements OnInit,OnDestroy {
   lconame: any;
   rowData: any;
   msodetails: any;
-  constructor(private userservice: BaseService, private storageservice: StorageService, private swal: SwalService, private cdr: ChangeDetectorRef, private excelService: ExcelService) {
+  dateRangeForm: FormGroup;
+  constructor(private userservice: BaseService, private fb: FormBuilder, private storageservice: StorageService, private swal: SwalService, private cdr: ChangeDetectorRef, private excelService: ExcelService) {
     this.username = storageservice.getUsername();
     this.role = storageservice.getUserRole();
     userservice.getsmartcardallocationSubscriberList(this.role, this.username).subscribe((data: any) => {
@@ -41,6 +43,10 @@ export class ExpiryDetailsComponent implements OnInit,OnDestroy {
       console.log(this.lco_list);
     })
     this.operatorlist();
+    this.dateRangeForm = this.fb.group({
+      fromdate: [new Date('2024-03-01')], // Set default start date
+      todate: [new Date('2024-03-15')] // Set default end date
+    });
   }
   ngOnDestroy(): void {
     ($('#operator') as any).select2('destroy');
@@ -54,6 +60,19 @@ export class ExpiryDetailsComponent implements OnInit,OnDestroy {
     })
     this.fromdate = this.fromdate ? this.formatDate(this.fromdate) : this.formatDate(new Date());
     this.todate = this.todate ? this.formatDate(this.todate) : this.formatDate(new Date());
+
+    console.log(this.fromdate);
+    console.log(this.todate);
+    // this.dateRangeForm.patchValue({
+    //   fromdate: new Date(),
+    //   todate: new Date()
+    // })
+    this.dateRangeForm.patchValue({
+      fromdate: this.fromdate,
+      todate: this.todate
+    })
+    //     this.dateRangeForm.get('fromdate').set(this.fromdate);
+    // this.dateRangeForm.get('todate').set(this.todate);
   }
   ngAfterViewInit() {
     $('#operator').select2({
@@ -102,15 +121,15 @@ export class ExpiryDetailsComponent implements OnInit,OnDestroy {
     this.operatorid = id;
     this.operatorname = name;
   }
-  selectOperator1(event:any) {
+  selectOperator1(event: any) {
     console.log(event);
-    
+
     this.showDropdown = false;
     this.operatorid = event;
     this.operatorname = event;
     console.log(this.operatorid);
     console.log(this.operatorname);
-    
+
   }
   filteredLcoKeys(): string[] {
     const keys = Object.keys(this.lco_list);
@@ -157,6 +176,7 @@ export class ExpiryDetailsComponent implements OnInit,OnDestroy {
     console.log(this.operatorid);
 
     this.cdr.detectChanges();
+    this.swal.Loading();
     this.userservice.getExpirySubscriberByOperator(this.role, this.username, this.operatorid, this.fromdate, this.todate, this.format)
       .subscribe(
         (response: HttpResponse<any[]>) => { // Expect HttpResponse<any[]>
@@ -171,13 +191,15 @@ export class ExpiryDetailsComponent implements OnInit,OnDestroy {
             const data = this.rowData;
             const datas: Array<any> = [];
             data.forEach((d: any, index: number) => {
-              const row = [index + 1, d.operatorname, d.customername, d.smartcard, d.boxid, d.address, d.mobileno, d.productname, d.expirydate];
+              const row = [index + 1, d.operatorname, d.customername, d.smartcard, d.boxid, d.address, d.mobileno, d.productname, d.expirydate, d.activationdate];
               datas.push(row);
             });
             const cellsize = { a: 20, b: 20, c: 20, d: 28, e: 20 };
             this.excelService.generateIMAGEExcel(areatitle, header, datas, title, cellsize, areasub, sub);
+            this.swal.Close();
           } else if (response.status === 204) {
             // this.swal.Success_204();
+            this.swal.Loading();
             this.rowData = response.body;
             console.log(this.rowData);
             const areatitle = 'A1:J2'
@@ -191,6 +213,7 @@ export class ExpiryDetailsComponent implements OnInit,OnDestroy {
             const cellsize = { a: 20, b: 20, c: 20, d: 28, e: 20 };
             this.excelService.generateIMAGEExcel(areatitle, header, datas, title, cellsize, areasub, sub);
             this.rowData = [];
+            this.swal.Close();
           }
         },
         (error) => {
@@ -200,36 +223,40 @@ export class ExpiryDetailsComponent implements OnInit,OnDestroy {
   }
   exportAsXLSX1(): void {
     this.cdr.detectChanges();
+    this.swal.Loading();
     this.userservice.getExpirySubscriberByOperator(this.role, this.username, this.operatorid, this.fromdate, this.todate, this.format_1).subscribe(
       (response: HttpResponse<any[]>) => { // Expect HttpResponse<any[]>
         if (response.status === 200) {
           this.rowData = response.body;
-          const areatitle = 'A1:K2'
-          const areasub = 'A3:K3';
+          const areatitle = 'A1:L2'
+          const areasub = 'A3:L3';
           const title = `From Date: ${this.fromdate} To Date: ${this.todate}EXPIRY HISTORY REPORT - FORMAT `;
           const sub = 'MSO ADDRESS:' + this.msodetails;
-          const header = ['S.NO', 'LCO NAME', 'CUSTOMER NAME', 'SMARTCARD', 'BOX ID', 'ADDRESS', 'MOBILE NO', 'PACKAGE NAME', 'EXPIRY DATE', 'AREA ID', 'CUSTOMER NO'];
+          const header = ['S.NO', 'LCO NAME', 'CUSTOMER NAME', 'SMARTCARD', 'BOX ID', 'ADDRESS', 'MOBILE NO', 'PACKAGE NAME', 'EXPIRY DATE', 'AREA ID', 'CUSTOMER NO', 'ACTIVATION DATE'];
           const data = this.rowData;
           const datas: Array<any> = [];
           data.forEach((d: any, index: number) => {
-            const row = [index + 1, d.operatorname, d.customername, d.smartcard, d.boxid, d.address, d.mobileno, d.productname, d.expirydate, d.areaid, d.customerno];
+            const row = [index + 1, d.operatorname, d.customername, d.smartcard, d.boxid, d.address, d.mobileno, d.productname, d.expirydate, d.areaid, d.customerno, d.activationdate];
             datas.push(row);
           });
-          const cellsize = { a: 20, b: 20, c: 20, d: 28, e: 20 };
+          const cellsize = { a: 20, b: 20, c: 20, d: 28, e: 20, f: 20 };
           this.excelService.generateIMAGEExcel1(areatitle, header, datas, title, cellsize, areasub, sub);
+          this.swal.Close();
         } else if (response.status === 204) {
+          this.swal.Loading();
           this.rowData = response.body;
-          const areatitle = 'A1:K2'
-          const areasub = 'A3:K3';
+          const areatitle = 'A1:L2'
+          const areasub = 'A3:L3';
           const title = `From Date: ${this.fromdate} To Date: ${this.todate}EXPIRY HISTORY REPORT - FORMAT `;
           const sub = 'MSO ADDRESS:' + this.msodetails;
-          const header = ['S.NO', 'LCO NAME', 'CUSTOMER NAME', 'SMARTCARD', 'BOX ID', 'ADDRESS', 'MOBILE NO', 'PACKAGE NAME', 'EXPIRY DATE', 'AREA ID', 'CUSTOMER NO'];
+          const header = ['S.NO', 'LCO NAME', 'CUSTOMER NAME', 'SMARTCARD', 'BOX ID', 'ADDRESS', 'MOBILE NO', 'PACKAGE NAME', 'EXPIRY DATE', 'AREA ID', 'CUSTOMER NO', 'ACTIVATION DATE'];
           const data = this.rowData;
           const datas: Array<any> = [];
 
           const cellsize = { a: 20, b: 20, c: 20, d: 28, e: 20 };
           this.excelService.generateIMAGEExcel1(areatitle, header, datas, title, cellsize, areasub, sub);
           this.rowData = [];
+          this.swal.Close();
         }
       },
       (error) => {

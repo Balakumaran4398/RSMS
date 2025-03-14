@@ -55,7 +55,7 @@ export class SublcooperatorComponent {
     { headerName: 'BALANCE', field: 'balance', filter: true, width: 200, },
     { headerName: 'ADDRESS', field: 'address', filter: true },
     { headerName: 'PASSWORD', field: 'password', filter: true },
-    { headerName: 'ACIVE SUBSCRIPTION', field: 'activecount', filter: true },
+    { headerName: 'ACIVE SUBSCRIPTION', field: 'activecount', filter: true, cellStyle: { textAlign: 'center', }, },
     {
       headerName: 'ACTIONS', field: '', filter: true, width: 500,
       cellRenderer: (params: any) => {
@@ -212,11 +212,11 @@ export class SublcooperatorComponent {
     let width = '800px';
     let height = '1000px';
     if (type === 'areaupdation') {
-      width = '1000px',
-        height = "1000px"
+      width = '1000px'
+        // height = "1000px"
     } else if (type === 'permission') {
       width = '1000px';
-      height = "1000px"
+      // height = "1000px"
     }
     let dialogData = { type: type, data: data, id: this.operatorid, selectedid: this.selectedIds };
     const dialogRef = this.dialog.open(AddednotaddedComponent, {

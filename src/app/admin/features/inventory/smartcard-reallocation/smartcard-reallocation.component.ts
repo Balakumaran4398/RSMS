@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { ColDef } from 'ag-grid-community';
 import { BaseService } from 'src/app/_core/service/base.service';
@@ -11,7 +11,7 @@ import Swal from 'sweetalert2';
   templateUrl: './smartcard-reallocation.component.html',
   styleUrls: ['./smartcard-reallocation.component.scss']
 })
-export class SmartcardReallocationComponent {
+export class SmartcardReallocationComponent implements OnInit {
   gridApi: any;
   isAnyRowSelected: any = false;
   selectedIds: number[] = [];
@@ -47,28 +47,45 @@ export class SmartcardReallocationComponent {
     pagination: true,
   }
 
-  constructor(public dialog: MatDialog, public userService: BaseService, storageService: StorageService,) {
+  constructor(public dialog: MatDialog, public userService: BaseService, storageService: StorageService, private cdr: ChangeDetectorRef,) {
     this.username = storageService.getUsername();
     this.role = storageService.getUserRole();
     userService.getsmartcardReallocationlist(this.role, this.username).subscribe((data: any) => {
       console.log(data);
       this.rowData = data[0].reallocatedsmartcard;
-      this.lco_list = data[0].operatorid;
+      // this.lco_list = data[0].operatorid;
       this.count = data[0].count;
       this.castype = data[0].operatorid;
       this.sub_emi = data[0].isemi;
 
       console.log('wwwwwwwwwwwwww', this.sub_emi);
       console.log(this.rowData);
-      console.log(this.lco_list);
+
       console.log(this.count);
       console.log(this.castype);
     })
   }
+  ngOnInit(): void {
+    this.fetchOperatorList();
+  }
+
+  fetchOperatorList() {
+    this.userService.getOeratorList(this.role, this.username, 1).subscribe((data: any) => {
+      console.log(data);
+
+      // this.lco_list = Object.keys(data).map(key => {
+      //   console.log(this.lco_list);
+      //   const value = data[key];
+      //   const name = key;
+      //   return { name: name, value: value };
+      // });
+      this.lco_list = data;
+      this.cdr.detectChanges();
+      console.log(this.lco_list);
+    });
+  }
   columnDefs: ColDef[] = [
-    {
-      lockPosition: true, headerCheckboxSelection: true, checkboxSelection: true, width: 80
-    },
+    { headerCheckboxSelection: true, headerName: 'S.NO', valueGetter: 'node.rowIndex+1', checkboxSelection: true, width: 100, filter: false },
     {
       headerName: 'SMARTCARD', width: 250,
       field: 'smartcard',
@@ -79,7 +96,7 @@ export class SmartcardReallocationComponent {
       field: 'boxid',
     },
     {
-      headerName: 'CARTON BOX', width: 250, cellStyle: { textAlign: 'center' },
+      headerName: 'CARTON BOX', width: 220, cellStyle: { textAlign: 'center' },
       field: 'cottonbox',
     },
 
@@ -124,7 +141,16 @@ export class SmartcardReallocationComponent {
 
   onSelectionChanged() {
     if (this.gridApi) {
-      const selectedRows = this.gridApi.getSelectedRows();
+      let selectedRows: any[] = [];
+      this.gridApi.forEachNodeAfterFilter((rowNode: any) => {
+        if (rowNode.isSelected()) {
+          selectedRows.push(rowNode.data);
+        }
+      });
+      // console.log("Filtered & Selected Rows:", selectedRows);
+      if (selectedRows.length === 0) {
+        this.gridApi.deselectAll();
+      }
       this.isAnyRowSelected = selectedRows.length > 0;
       this.selectedIds = selectedRows.map((e: any) => e.id);
       this.selectedsmartcard = selectedRows.map((e: any) => e.smartcard);
@@ -148,8 +174,10 @@ export class SmartcardReallocationComponent {
         showConfirmButton: false
       });
     } else {
+      console.log(this.lco_list);
+
       const dataToSend = {
-        rowData: this.rowData,
+        // rowData: this.rowData,
         lco_list: this.lco_list,
         id: this.selectedIds,
         smartcard: this.selectedsmartcard,
@@ -157,6 +185,7 @@ export class SmartcardReallocationComponent {
         dueAmount: this.dueamount,
         sub_emi: this.sub_emi
       };
+      console.log(dataToSend);
       const dialogRef = this.dialog.open(ReallocationComponent, {
         width: '450px',
         data: dataToSend

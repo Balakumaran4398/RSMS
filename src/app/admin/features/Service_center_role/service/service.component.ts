@@ -260,7 +260,7 @@ export class ServiceComponent implements OnInit, OnDestroy {
   }
   onServiceHistory() {
     console.log(this.selectedOperator);
-    this.userservice.getServiceHistoryDetails(this.username, this.role, this.selectedOperator, this.tableSmartcard || null, this.fromdate || null, this.todate || null).subscribe((data: any) => {
+    this.userservice.getServiceHistoryDetails(this.role, this.username, this.selectedOperator, this.tableSmartcard || null, this.fromdate || null, this.todate || null).subscribe((data: any) => {
       console.log(data);
       this.rowData = data;
     })
@@ -284,7 +284,7 @@ export class ServiceComponent implements OnInit, OnDestroy {
     this.selectSmartcard = '';
   }
   onProblemList() {
-    this.userservice.getStbProblemList(this.username, this.role).subscribe((data: any) => {
+    this.userservice.getStbProblemList(this.role, this.username).subscribe((data: any) => {
       console.log(data);
       this.filteredProblemList = data;
 
@@ -302,7 +302,7 @@ export class ServiceComponent implements OnInit, OnDestroy {
   }
   onSmartcardSerachName(searchName: any) {
     console.log('value', searchName);
-    this.userservice.getSmartcardSearch(this.username, this.role, searchName).subscribe((data: any) => {
+    this.userservice.getSmartcardSearch(this.role, this.username, searchName).subscribe((data: any) => {
       console.log(data);
       this.smartcardList = data;
       this.showDropdown = true;
@@ -413,7 +413,7 @@ export class ServiceComponent implements OnInit, OnDestroy {
     this.searchSmartcard = event.smartcard;
     console.log(this.searchSmartcard);
     this.cdr.detectChanges();
-    this.userservice.getSmartcardDetails(this.username, this.role, this.searchSmartcard).subscribe((data: any) => {
+    this.userservice.getSmartcardDetails(this.role, this.username, this.searchSmartcard).subscribe((data: any) => {
       console.log(data);
       this.smartcardDetails = data;
       this.showDropdown = false;

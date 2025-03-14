@@ -13,6 +13,7 @@ import { DataService } from 'src/app/_core/service/Data.service';
 import { OperatordialogueComponent } from '../../channel_setting/_Dialogue/operator/operatordialogue/operatordialogue.component';
 import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { OperatorcancelsubreportComponent } from '../../channel_setting/_Dialogue/operator/operatorcancelsubreport/operatorcancelsubreport.component';
+import { SwalService } from 'src/app/_core/service/swal.service';
 @Component({
   selector: 'app-operator-details',
   templateUrl: './operator-details.component.html',
@@ -69,7 +70,7 @@ export class OperatorDetailsComponent implements OnInit {
 
   operator: any;
 
-  constructor(public responsive: BreakpointObserver, private dataService: DataService, private cdr: ChangeDetectorRef, private router: Router, public dialog: MatDialog, private userservice: BaseService, private storageservice: StorageService) {
+  constructor(public responsive: BreakpointObserver, private dataService: DataService, private cdr: ChangeDetectorRef, private router: Router, public dialog: MatDialog, private swal: SwalService, private userservice: BaseService, private storageservice: StorageService) {
     this.role = storageservice.getUserRole();
     this.username = storageservice.getUsername();
     this.loadOperators();
@@ -99,6 +100,7 @@ export class OperatorDetailsComponent implements OnInit {
   }
   operatorDeatils(event: any) {
     console.log(event);
+    this.swal.Loading();
     this.userservice.OperatorDetails(this.role, this.username, this.operatorid).subscribe(
       (data: any) => {
         this.operator_details = data;
@@ -111,6 +113,7 @@ export class OperatorDetailsComponent implements OnInit {
         // this.originalPagedOperators = [...data]; 
         this.pagedOperators = [...data];
         this.updatePageData();
+        this.swal.Close();
       });
   }
   onBusinessList() {
@@ -253,15 +256,20 @@ export class OperatorDetailsComponent implements OnInit {
         }
       });
     }
-
   }
 
+  // New_lco(event: any) {
   New_lco() {
-    console.log(this.businessList);
+    console.log(event);
+    let dialogData = {
+      data: this.businessList,
+      type: event
+    }
     const dialogRef = this.dialog.open(NewLcoComponent, {
       width: '600px',
       panelClass: 'custom-dialog-container',
-      data: this.businessList
+      data: this.businessList,
+      // data: dialogData,
     });
 
     dialogRef.afterClosed().subscribe(result => {

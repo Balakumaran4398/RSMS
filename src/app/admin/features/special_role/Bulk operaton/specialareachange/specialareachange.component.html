@@ -19,13 +19,29 @@
                 <mat-error *ngIf="!lco">LCO is required</mat-error>
             </mat-form-field>
 
+
+
             <!-- <mat-form-field class="example-full-width" appearance="outline">
                 <mat-label>Select LCO</mat-label>
-                <input type="text" placeholder="Select LCO" matInput [(ngModel)]="lco" [matAutocomplete]="auto"  (selectionChange)="onTableData()">
-                <mat-autocomplete #auto="matAutocomplete">
-                    <mat-option *ngFor="let lco of lcoList" [value]="lco.value">{{lco.name}}</mat-option>
+                <input
+                  type="text"
+                  placeholder="Select LCO"
+                  matInput
+                  [(ngModel)]="lco"
+                  [matAutocomplete]="auto"
+                  (input)="filterLcoList()"
+                />
+                <mat-autocomplete #auto="matAutocomplete" (optionSelected)="onLcoSelected($event.option.value)">
+                  <mat-option *ngFor="let lco of filteredLcoList" [value]="lco.name">
+                    {{ lco.name }}
+                  </mat-option>
                 </mat-autocomplete>
-            </mat-form-field> -->
+              </mat-form-field> -->
+              
+
+
+              
+
 
             <!-- Select Area -->
             <mat-form-field appearance="outline" class="mx-2" [disabled]="!isAnyRowSelected">

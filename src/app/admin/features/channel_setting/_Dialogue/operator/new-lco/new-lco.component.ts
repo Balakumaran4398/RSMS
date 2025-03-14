@@ -17,12 +17,15 @@ export class NewLcoComponent {
   username: any;
   id: any;
   role: any;
-  type: number = 0;
+  type: any;
   businessList: any[];
   constructor(public dialogRef: MatDialogRef<NewLcoComponent>, @Inject(MAT_DIALOG_DATA) public data: any, private fb: FormBuilder, private swal: SwalService, public dialog: MatDialog, public userService: BaseService, storageService: StorageService) {
     this.username = storageService.getUsername();
     this.role = storageService.getUserRole();
     console.log(data);
+    this.type = data.type;
+    console.log(this.type);
+
     this.businessList = Object.keys(data).map(key => {
       const value = data[key];
       // const name = key.replace(/\(\d+\)$/, '').trim();

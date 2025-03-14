@@ -34,7 +34,8 @@
     left: 0;
     width: 100px;
     height: 3px;
-    background: linear-gradient(to right, #058372, #acf3cc);
+    // background: linear-gradient(to right, #058372, #acf3cc);
+    background: var(--line-shadow-color-rdigital);
 }
 
 .card {

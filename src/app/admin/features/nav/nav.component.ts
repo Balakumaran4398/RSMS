@@ -1,10 +1,11 @@
 import { AfterViewInit, ChangeDetectorRef, Component, HostListener, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { NavigationEnd, Router } from '@angular/router';
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 import { FormControl } from '@angular/forms';
 import { BaseService } from 'src/app/_core/service/base.service';
 import { StorageService } from 'src/app/_core/service/storage.service';
 import Swal from 'sweetalert2';
+import { DataService } from 'src/app/_core/service/Data.service';
 
 @Component({
   selector: 'app-nav',
@@ -21,6 +22,8 @@ export class NavComponent implements OnInit, AfterViewInit {
   isSystem: boolean = true;
   ismobile: boolean = false;
   isSidebarOpen = false;
+  isSidebarlogo = false;
+  isLoginPage: boolean = false;
   subscriberList: any[] = [];
   showDropdown: boolean = true;
   showLogoutDropdown: boolean = true;
@@ -47,7 +50,7 @@ export class NavComponent implements OnInit, AfterViewInit {
 
   activeTab: string = '';
 
-  constructor(private router: Router, private breakpointObserver: BreakpointObserver, private cdr: ChangeDetectorRef, private userservice: BaseService, private storageservice: StorageService) {
+  constructor(private router: Router, private breakpointObserver: BreakpointObserver, private cd: ChangeDetectorRef, private dataService: DataService, private cdr: ChangeDetectorRef, private userservice: BaseService, private storageservice: StorageService) {
     // this.breakpointChanged();
     this.role = storageservice.getUserRole();
     this.username = storageservice.getUsername();
@@ -60,21 +63,24 @@ export class NavComponent implements OnInit, AfterViewInit {
       this.isSpecial = false;
       this.isCustomerService = false;
       this.isServiceCenter = false;
-      this.role = 'ADMIN';
+      this.isOperator = false;
+      this.role = 'ROLE ADMIN';
     } else if (this.role.includes('ROLE_RECEPTION')) {
       this.isReception = true;
       this.isUser = false;
       this.isSpecial = false;
       this.isCustomerService = false;
       this.isServiceCenter = false;
-      this.role = 'RECEPTION';
+      this.isOperator = false;
+      this.role = 'ROLE RECEPTION';
     } else if (this.role.includes('ROLE_SPECIAL')) {
       this.isReception = false;
       this.isUser = false;
       this.isSpecial = true;
       this.isCustomerService = false;
       this.isServiceCenter = false;
-      this.role = 'SPECIAL';
+      this.isOperator = false;
+      this.role = 'ROLE SPECIAL';
     } else if (this.role.includes('ROLE_INVENTORY')) {
       this.isInventory = true;
       this.isReception = false;
@@ -82,7 +88,8 @@ export class NavComponent implements OnInit, AfterViewInit {
       this.isSpecial = false;
       this.isCustomerService = false;
       this.isServiceCenter = false;
-      this.role = 'INVENTORY';
+      this.isOperator = false;
+      this.role = 'ROLE INVENTORY';
     } else if (this.role.includes('ROLE_CUSSERVICE')) {
       this.isInventory = false;
       this.isReception = false;
@@ -90,7 +97,8 @@ export class NavComponent implements OnInit, AfterViewInit {
       this.isSpecial = false;
       this.isCustomerService = true;
       this.isServiceCenter = false;
-      this.role = 'CUS_SERVICE';
+      this.isOperator = false;
+      this.role = 'ROLE CUSSERVICE';
     } else if (this.role.includes('ROLE_SERVICECENTER')) {
       this.isInventory = false;
       this.isReception = false;
@@ -99,31 +107,61 @@ export class NavComponent implements OnInit, AfterViewInit {
       this.isCustomerService = false;
       this.isServiceCenter = true;
       this.isSearch = true;
-      this.role = 'SERVICE_CENTER';
+      this.isOperator = false;
+      this.role = 'ROLE SERVICECENTER';
+    } else if (this.role.includes('ROLE_OPERATOR')) {
+      this.isInventory = false;
+      this.isReception = false;
+      this.isUser = false;
+      this.isSpecial = false;
+      this.isCustomerService = false;
+      this.isServiceCenter = false;
+      this.isSearch = false;
+      this.isOperator = true;
+      this.role = 'ROLE OPERATOR';
+      this.operatorIdoperatorId();
     }
   }
 
   ngOnInit() {
     this.checkDeviceType();
     const sidemenuLinks = document.querySelectorAll('.side-menu li a');
-    console.log("click");
     sidemenuLinks.forEach(link => {
       link?.classList?.remove('active');
       link.addEventListener("click", () => {
-        console.log("click");
         sidemenuLinks.forEach(link => link.classList.remove('active'));
         link.classList.add('active');
       });
     });
     this.msoDetails();
+    this.checkScreenSize();
+
+    // this.breakpointObserver.observe(['(max-width: 414px)']).subscribe(result => {
+    //   console.log('sidebar closed 111');
+
+    //   if (result.matches) {
+    //     this.isSidebarOpen = false;
+    //   }
+    // });
   }
+  lcoDeatails: any;
+  operatorId: any;
+  operatorname: any;
+  operatorBalance: any;
+  operatorIdoperatorId() {
+    this.userservice.getOpDetails(this.role, this.username).subscribe((data: any) => {
+      this.lcoDeatails = data;
+      this.operatorId = this.lcoDeatails?.operatorid;
+      this.operatorname = this.lcoDeatails?.operatorname;
+      this.operatorBalance = this.lcoDeatails?.balance;
+    })
+  }
+
 
   msoDetails() {
     this.userservice.getMsoDetails(this.role, this.username).subscribe((data: any) => {
-      console.log('MSOLOGO    1111111111111', data);
       this.msoLogo = `${data.msoLogo}`;
       this.msoName = `${data.msoName}`;
-      console.log(this.msoLogo);
     })
   }
   setActiveList(event: Event, tabName: string) {
@@ -192,40 +230,37 @@ export class NavComponent implements OnInit, AfterViewInit {
 
   onsubscriberlist(value: any) {
     this.showDropdown = true;
-    this.userservice.getSearchDetailsSubscriber(this.role, this.username, value).subscribe(
-      (data: any) => {
-        if (!data || Object.keys(data).length === 0) {
-          this.subscriberList = [];
-          return;
-        }
-        this.subscriber = data;
-        this.subscriberList = Object.keys(data).map(key => {
-          const value = data[key];
-          const name = key;
-          return { name: name, value: value };
+    this.userservice.getSearchDetailsSubscriber(this.role, this.username, value).subscribe((data: any) => {
+      if (!data || Object.keys(data).length === 0) {
+        this.subscriberList = [];
+        return;
+      }
+      this.subscriber = data;
+      this.subscriberList = Object.keys(data).map(key => {
+        const value = data[key];
+        const name = key;
+        return { name: name, value: value };
+      });
+      this.subscriberList.sort((a: any, b: any) => {
+        if (a.value > b.value) return 1;
+        if (a.value < b.value) return -1;
+        return 0;
+      });
+      if (this.subscriberList.length === 0) {
+        console.log('No matching data after sorting');
+        Swal.fire({
+          title: 'No Matching Results',
+          text: 'No subscribers match your search criteria.',
+          icon: 'info',
+          confirmButtonText: 'OK'
         });
-        this.subscriberList.sort((a: any, b: any) => {
-          if (a.value > b.value) return 1;
-          if (a.value < b.value) return -1;
-          return 0;
-        });
-        if (this.subscriberList.length === 0) {
-          console.log('No matching data after sorting');
-          Swal.fire({
-            title: 'No Matching Results',
-            text: 'No subscribers match your search criteria.',
-            icon: 'info',
-            confirmButtonText: 'OK'
-          });
-        }
-
-        console.log(this.subscriberList);
-      },
+      }
+      console.log(this.subscriberList);
+    },
       (error) => {
         Swal.fire({
           title: 'Error!',
-          text: error?.error?.getsmartcardlistbysubid.searchname
-            || 'An error occurred while fetching subscriber details.',
+          text: error?.error?.getsmartcardlistbysubid.searchname || 'An error occurred while fetching subscriber details.',
           icon: 'error',
           confirmButtonText: 'OK'
         });
@@ -245,6 +280,13 @@ export class NavComponent implements OnInit, AfterViewInit {
   }
   toggleDrop() {
     this.isDropdownOpen = !this.isDropdownOpen;
+  }
+  highlightMatch(text: any, search: any): string {
+    if (!search) {
+      return text;
+    }
+    const regex = new RegExp(`(${search})`, 'gi');
+    return text.replace(regex, `<strong>$1</strong>`);
   }
 
 
@@ -274,6 +316,17 @@ export class NavComponent implements OnInit, AfterViewInit {
       this.ismobile = false;
       this.isSystem = true;
 
+    }
+  }
+  @HostListener('window:resize', ['$event'])
+  onResize(event: any) {
+    this.checkScreenSize();
+  }
+  checkScreenSize() {
+    if (window.innerWidth <= 768) {
+      this.isSidebarOpen = false;
+    } else {
+      this.isSidebarOpen = true;
     }
   }
   toggleSidebar() {
@@ -342,31 +395,31 @@ export class NavComponent implements OnInit, AfterViewInit {
     })
 
 
-    sidebar?.addEventListener('mouseleave', function () {
-      if (this.classList.contains('hide')) {
-        allDropdown.forEach((item: any) => {
-          const a = item.parentElement.querySelector('a:first-child');
-          a.classList.remove('active');
-          item.classList.remove('show');
-        })
-        allSideDivider?.forEach(item => {
-          item.textContent = '-'
-        })
-      }
-    })
+    // sidebar?.addEventListener('mouseleave', function () {
+    //   if (this.classList.contains('hide')) {
+    //     allDropdown.forEach((item: any) => {
+    //       const a = item.parentElement.querySelector('a:first-child');
+    //       a.classList.remove('active');
+    //       item.classList.remove('show');
+    //     })
+    //     allSideDivider?.forEach(item => {
+    //       item.textContent = '-'
+    //     })
+    //   }
+    // })
 
-    sidebar?.addEventListener('mouseenter', function () {
-      if (this.classList.contains('hide')) {
-        allDropdown.forEach((item: any) => {
-          const a = item.parentElement.querySelector('a:first-child');
-          a.classList.remove('active');
-          item.classList.remove('show');
-        })
-        allSideDivider.forEach((item: any) => {
-          item.textContent = item.dataset.text;
-        })
-      }
-    })
+    // sidebar?.addEventListener('mouseenter', function () {
+    //   if (this.classList.contains('hide')) {
+    //     allDropdown.forEach((item: any) => {
+    //       const a = item.parentElement.querySelector('a:first-child');
+    //       a.classList.remove('active');
+    //       item.classList.remove('show');
+    //     })
+    //     allSideDivider.forEach((item: any) => {
+    //       item.textContent = item.dataset.text;
+    //     })
+    //   }
+    // })
 
 
     // Function to toggle dropdown menu
@@ -439,18 +492,43 @@ export class NavComponent implements OnInit, AfterViewInit {
   currentBreakpoint: any;
 
   isAdmin = false;
+
   navgetToUrl(id: any,) {
     this.activeItem = id;
     this.router.navigateByUrl("admin" + id);
-    if (this.isMobile) {
+    console.log("Current width:", window.innerWidth);
 
+    if (window.innerWidth <= 760) {
+      this.isSidebarOpen = false;
+      this.cd.detectChanges();
+      const sidebar = document.getElementById('sidebar');
+      sidebar?.classList.add('hide');
+      console.log("p");
     }
 
   }
 
+
+  navigateAndSelect(url: string, event: Event): void {
+    document.querySelectorAll('.side-dropdown li a.active').forEach(tab => {
+      tab.classList.remove('active');
+    });
+    document.querySelectorAll('.nav-link.active').forEach(link => {
+      link.classList.remove('active');
+    });
+    (event.currentTarget as HTMLElement).classList.add('active');
+    this.activeItem = url;
+    this.router.navigateByUrl("admin" + url).then(() => {
+      if (window.innerWidth <= 768) {
+        this.isSidebarOpen = false;
+      }
+    });
+  }
+
+
   OPENCLSO() {
-    const sidebar = document.getElementById('sidebar');
-    sidebar?.classList?.contains('hide') ? sidebar?.classList?.remove('hide') : sidebar?.classList?.add('hide')
+    // const sidebar = document.getElementById('sidebar');
+    // sidebar?.classList?.contains('hide') ? sidebar?.classList?.remove('hide') : sidebar?.classList?.add('hide')
   }
   togglePopup() {
     this.isPopupVisible = !this.isPopupVisible;
@@ -486,5 +564,12 @@ export class NavComponent implements OnInit, AfterViewInit {
       this.cdr.detectChanges();
     }
   }
+  navgetTosublcoUrl(operatorid: number) {
+    console.log(operatorid);
 
+    // const detailsList = this.operator_details.find((op: any) => op.operatorid === operatorid);
+    // this.dataService.setDialogData({ detailsList });
+    this.router.navigateByUrl(`/admin/sublcodashboard/${operatorid}`);
+    // console.log(detailsList);
+  }
 }

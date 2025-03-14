@@ -40,7 +40,7 @@ export class TaxComponent {
   }
   columnDefs: any[] = [
     {
-      headerName: "S.NO", lockPosition: true, valueGetter: 'node.rowIndex+1', headerCheckboxSelection: true, checkboxSelection: true,
+      headerName: "S.NO", lockPosition: true, valueGetter: 'node.rowIndex+1', headerCheckboxSelection: true, checkboxSelection: true,filter: false
     },
     { headerName: 'TAX NAME	', field: 'taxname', width: 220,cellStyle: { textAlign: 'left' } },
     {
@@ -59,16 +59,12 @@ export class TaxComponent {
     { headerName: 'TAX TYPE	', field: 'taxtype', width: 250, cellStyle: { textAlign: 'left' }},
     {
       headerName: 'STATUS', field: 'statusdisplay', width: 200,
-      // cellRenderer: (params: { value: any; data: any }) => {
-      //   const color = params.value ? 'green' : 'red';
-      //   const text = params.value ? 'Active' : 'Deactive';
-      //   return `<span style="color: ${color};">${text}</span>`;
-      // }
+
       cellRenderer: (params: { value: any; data: any }) => {
-        const status = params.data?.statusdisplay; // Fetch status from params.data
-        const color = status === 'Active' ? 'green' : 'red'; // Determine color based on status
-        const text = status === 'Active' ? 'Active' : 'Deactive'; // Set text accordingly
-        return `<span style="color: ${color}; ">${text}</span>`; // Return formatted span
+        const status = params.data?.statusdisplay; 
+        const color = status === 'Active' ? 'green' : 'red';
+        const text = status === 'Active' ? 'Active' : 'Deactive';
+        return `<span style="color: ${color}; ">${text}</span>`; 
       }
     },
     {

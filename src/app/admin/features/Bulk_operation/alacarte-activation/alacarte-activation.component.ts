@@ -65,9 +65,9 @@ export class AlacarteActivationComponent {
   columnDefs1: ColDef[] = [
     { headerName: "S.No", lockPosition: true, valueGetter: 'node.rowIndex+1', cellClass: 'locked-col', width: 80, suppressNavigable: true, sortable: false, filter: false },
     { headerName: "SMARTCARD", field: 'smartcard', width: 270, },
-    { headerName: "CHANNEL NAME", field: 'packagename', width: 250 ,cellStyle: { textAlign: 'left', } },
+    { headerName: "CHANNEL NAME", field: 'packagename', width: 250, cellStyle: { textAlign: 'left', } },
     {
-      headerName: "STATUS	", field: 'status', width: 250,cellStyle: { textAlign: 'left', },
+      headerName: "STATUS	", field: 'status', width: 250, cellStyle: { textAlign: 'left', },
       cellRenderer: (params: any) => {
         const status = params.value;
         if (status === 'Success') {
@@ -155,6 +155,7 @@ export class AlacarteActivationComponent {
       console.log(tab);
       this.getRemoveRefresh();
     }
+    this.filePath = '';
   }
   get billingAddressCheckbox() {
     return this.form.get('billingAddressCheckbox');
@@ -327,7 +328,7 @@ export class AlacarteActivationComponent {
   getRefreshData() {
     this.rowData = [];
     const dateToPass = this.selectedDate || this.date;
-    this.userservice.getBulkOperationRefreshList(this.role, this.username, 'alacarte_add',  5)
+    this.userservice.getBulkOperationRefreshList(this.role, this.username, 'alacarte_add', 5)
       .subscribe(
         (response: HttpResponse<any[]>) => { // Expect HttpResponse<any[]>
           if (response.status === 200) {

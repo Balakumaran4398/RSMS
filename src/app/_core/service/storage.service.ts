@@ -75,6 +75,7 @@ export class StorageService {
     if (user.roles.includes('ROLE_INVENTORY')) return 'ROLE_INVENTORY';
     if (user.roles.includes('ROLE_CUSSERVICE')) return 'ROLE_CUSSERVICE';
     if (user.roles.includes('ROLE_SERVICECENTER')) return 'ROLE_SERVICECENTER';
+    if (user.roles.includes('ROLE_OPERATOR')) return 'ROLE_OPERATOR';
     return 'DEFAULT_ROLE';
   }
 

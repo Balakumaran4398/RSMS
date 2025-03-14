@@ -9,6 +9,7 @@ import { BehaviorSubject } from 'rxjs';
 import { ChannellistComponent } from '../channellist/channellist.component';
 import { SwalService } from 'src/app/_core/service/swal.service';
 import { LcologinpageComponent } from '../lcologinpage/lcologinpage.component';
+import { PageEvent } from '@angular/material/paginator';
 interface requestBodylogs {
   access_ip: any;
   action: any;
@@ -61,6 +62,8 @@ export class SubDashboardComponent implements OnInit {
   selectedtypes: number[] = [];
   rows: any[] = [];
   isAnyRowSelected: boolean = false;
+
+  gridHeight: any;
   noofdays: any;
   gridOptions = {
     defaultColDef: {
@@ -78,9 +81,12 @@ export class SubDashboardComponent implements OnInit {
         event.node.setSelected(true);
       }
     },
+    paginationPageSize: 5,
+    pagination: true,
   }
 
-
+  currentPageSize: number = 0;
+  totalRowsCount: number = 0;
   gridOptions2 = {
     defaultColDef: {
       sortable: true,
@@ -91,6 +97,8 @@ export class SubDashboardComponent implements OnInit {
     paginationPageSize: 3,
     pagination: true,
   }
+
+
   selectRowsBasedOnUsername(params: { api: { forEachNode: (arg0: (node: any) => void) => void; }; }) {
     params.api.forEachNode((node) => {
       if (node.data.ptype === 'BASE') {
@@ -98,6 +106,7 @@ export class SubDashboardComponent implements OnInit {
       }
     });
   }
+
   refreshButton: any[] = [];
   logindetails: boolean = true;
   casform: boolean = true;
@@ -195,23 +204,30 @@ export class SubDashboardComponent implements OnInit {
     this.smartcardValue = splitValues[0];
 
     this.userservice.getPlanTypeList(this.role, this.username).subscribe((data: any) => {
-      this.rechargetype = Object.entries(data).map(([key, value]) => ({ name: key, id: value }));
+      console.log(data);
+
+      // this.rechargetype = Object.entries(data).map(([key, value]) => ({ name: key, id: value }));
+      this.rechargetype = Object.keys(data).map(key => {
+        const id = data[key];
+        const name = key.replace(/\(\d+\)$/, '').trim();
+        return { name: name, id: id };
+      });
+      console.log(this.rechargeType);
+
       this.cdr.detectChanges();
     })
 
   }
-   onBillTypeChange() {
+  onBillTypeChange() {
     this.billtype = this.billtype ? 1 : 0;
   }
 
   onSelectionChanged() {
+    this.updatePaginationCount();
     if (this.gridApi) {
       const selectedRows = this.gridApi.getSelectedRows();
-      console.log('SELECTEDROWS', selectedRows);
       this.isAnyRowSelected = selectedRows.length > 0;
       this.rows = selectedRows;
-      console.log('anyselectedrows', this.isAnyRowSelected);
-      console.log('Rows', this.rows);
     }
   }
 
@@ -229,6 +245,8 @@ export class SubDashboardComponent implements OnInit {
         const defaultPlan = sortedData.find(plan => plan.key === '1month');
         if (defaultPlan) {
           this.plantype = defaultPlan.value;
+          console.log(this.plantype);
+
         }
       }
     });
@@ -306,9 +324,12 @@ export class SubDashboardComponent implements OnInit {
 
 
   loadSubscriberDashboard() {
+    console.log('SEARCH To DASHBOARD');
+
     this.userservice.getQuickOperationDetailsBySearchname(this.role, this.username, (this.smartcard || this.subscriberid || this.smartcardValue || this.boxid)).subscribe(
       (data: any) => {
         console.log(data);
+
         this.packageobject = data['packageobject'];
         this.packageMessage = data['message'];
         this.isSendDeleteMessage = this.packageMessage?.forcemsg || false;
@@ -327,7 +348,18 @@ export class SubDashboardComponent implements OnInit {
         this.subPairedsmartcard = data['pairedsmartcard'];
         this.message = data['message'];
         this.noofdays = this.subdetailsList.noofdays;
+        console.log('Row Data', this.rowData);
+        console.log('Row Data1', this.rowData1);
+        const totalRows = this.rowData1 ? this.rowData1.length : 0;
 
+        if (totalRows > 10) {
+          this.gridHeight = 600;
+        } else if (totalRows > 3) {
+          this.gridHeight = 400;
+        }
+        else {
+          this.gridHeight = 'auto';
+        }
         if (this.subdetailsList) {
           let item = this.subdetailsList
           if (!item.boxstatus) {
@@ -530,8 +562,9 @@ export class SubDashboardComponent implements OnInit {
             this.managePackagetable1 = false;
           }
         }
-
         this.cdr.detectChanges();
+        // this.onGridReady('');
+        // this.onGridReady1('');
       },
       (error: any) => {
         console.error('Error fetching data:', error);
@@ -541,16 +574,17 @@ export class SubDashboardComponent implements OnInit {
 
 
   loadNewSmartcardDashboard() {
+    console.log('NEW');
     for (let index = 0; index < 2; index++) {
       this.userservice.getQuickOperationDetailsBySmartcard(this.role, this.username, this.newSmartcard).subscribe(
         (data: any) => {
           this.cdr.detectChanges();
+
           console.log(data);
           this.packageobject = data['packageobject'];
           this.packdateobj = data['packdateobj'];
           this.packageMessage = data['message'];
           this.isSendDeleteMessage = this.packageMessage?.forcemsg || false;
-          // this.rowData1 = data['selectedmanpacknotexp'];
           this.rowData1 = data['managepacklist_notexp'];
           this.rowData = data['smartcardlist'];
           this.subdetailsList = data['subscriberdetails']
@@ -561,9 +595,17 @@ export class SubDashboardComponent implements OnInit {
           this.subdetails = data['subdetails'];
           this.statusdisplay = this.subdetailsList.statusdisplay
           this.subPairedsmartcard = data['pairedsmartcard'];
-
           this.message = data['message'];
           this.noofdays = this.subdetailsList.noofdays;
+          const totalRows = this.rowData1 ? this.rowData1.length : 0;
+          if (totalRows > 10) {
+            this.gridHeight = 600;
+          } else if (totalRows > 3) {
+            this.gridHeight = 400;
+          }
+          else {
+            this.gridHeight = 'auto';
+          }
           if (this.subdetailsList) {
             let item = this.subdetailsList
             if (!item.boxstatus) {
@@ -748,7 +790,8 @@ export class SubDashboardComponent implements OnInit {
               this.managePackagetable1 = false;
             }
           }
-
+          // this.onGridReady('');
+          // this.onGridReady1('');
         },
         (error: any) => {
           console.error('Error fetching data:', error);
@@ -758,10 +801,12 @@ export class SubDashboardComponent implements OnInit {
   }
 
   loadSmartcardDashboard() {
+    console.log('SMARTCARD To DASHBOARD');
     for (let index = 0; index < 2; index++) {
       this.userservice.getQuickOperationDetailsBySmartcard(this.role, this.username, (this.smartcard || this.subscriberid || this.boxid)).subscribe(
         (data: any) => {
           this.cdr.detectChanges();
+          this.reloadGridData();
           console.log(data);
           this.packageobject = data['packageobject'];
           this.packdateobj = data['packdateobj'];
@@ -779,6 +824,18 @@ export class SubDashboardComponent implements OnInit {
           this.subPairedsmartcard = data['pairedsmartcard'];
           this.message = data['message'];
           this.noofdays = this.subdetailsList.noofdays;
+          // this.onGridReady('');
+          // this.onGridReady1('');
+          const totalRows = this.rowData1 ? this.rowData1.length : 0;
+          if (totalRows > 10) {
+            this.gridHeight = 600;
+          } else if (totalRows > 3) {
+            this.gridHeight = 400;
+          }
+          else {
+            this.gridHeight = 'auto';
+          }
+
           if (this.subdetailsList) {
             let item = this.subdetailsList
             if (!item.boxstatus) {
@@ -974,13 +1031,17 @@ export class SubDashboardComponent implements OnInit {
     }
   }
   refreshpage(event: any) {
+    console.log('REFRESH');
     for (let index = 0; index < 2; index++) {
       console.log(event.boxid)
       this.userservice.getQuickOperationDetailsBySmartcard(this.role, this.username, event.smartcard || event.boxid).subscribe(
         (data: any) => {
+
           this.subscriersmartcarddashoard = true;
           this.cdr.detectChanges();
+
           console.log(data);
+
           this.packageobject = data['packageobject'];
           this.packdateobj = data['packdateobj'];
           this.packageMessage = data['message'];
@@ -992,7 +1053,6 @@ export class SubDashboardComponent implements OnInit {
           this.smartdetailList = data['smartcardlist']
           this.subscriberaccounts = data['subscriberaccounts'];
           this.smartcardinfo = data['smartcardinfo'];
-
           this.statusdisplay = this.subdetailsList.statusdisplay
           this.subPairedboxid = data['pairedboxid'];
           this.subdetails = data['subdetails'];
@@ -1001,6 +1061,15 @@ export class SubDashboardComponent implements OnInit {
 
           const isBlocked = this.statusdisplay === "Blocked";
 
+          const totalRows = this.rowData1 ? this.rowData1.length : 0;
+          if (totalRows > 10) {
+            this.gridHeight = 600;
+          } else if (totalRows > 3) {
+            this.gridHeight = 400;
+          }
+          else {
+            this.gridHeight = 'auto';
+          }
           this.noofdays = this.subdetailsList.noofdays;
           if (this.subdetailsList) {
             let item = this.subdetailsList
@@ -1047,9 +1116,6 @@ export class SubDashboardComponent implements OnInit {
               this.deletemessage = true;
               this.forcetuning = true;
             }
-
-
-
             if (!item.boxstatus) {
               if (item.suspendstatus == 1 || item.showPairUnpair == 'false') {
                 this.smartcardchange = true;
@@ -1189,53 +1255,26 @@ export class SubDashboardComponent implements OnInit {
               this.managePackagetable1 = false;
             }
           }
-
+          // this.onGridReady('');
+          this.reloadGridData();
+          // window.location.reload();
         }, (err) => {
           this.swal.Error(err?.error?.message);
         });
     }
   }
-  // calculateProgress() {
-  //   console.log('Progress:', this.progress);
-  //   console.log('expiryDate:', this.subdetailsList.expiryDate);
-  //   console.log('activationDate:', this.subdetailsList.activationDate);
 
-  //   const totalDuration = (this.subdetailsList.expiryDate.getTime() - this.subdetailsList.activationDate.getTime()) / (1000 * 60 * 60 * 24);
-  //   const daysElapsed = (new Date().getTime() - this.subdetailsList.activationDate.getTime()) / (1000 * 60 * 60 * 24);
-  //   const percentElapsed = (daysElapsed / totalDuration) * 100;
-  //   console.log('totalDurations', totalDuration);
-  //   console.log('daysElapsed', daysElapsed);
-  //   console.log('percentElapsed', percentElapsed);
-
-  //   // Set progress sections based on the elapsed percentage
-  //   if (percentElapsed >= 75) {
-  //     this.progress.success = 100;
-  //     this.progress.info = 25;
-  //     this.progress.warning = 20;
-  //     this.progress.danger = 5;
-  //   } else if (percentElapsed >= 50) {
-  //     this.progress.success = 50;
-  //     this.progress.info = 25;
-  //     this.progress.warning = 20;
-  //   } else if (percentElapsed >= 25) {
-  //     this.progress.success = 25;
-  //     this.progress.info = 20;
-  //   } else {
-  //     this.progress.success = 10;
-  //   }
-
-  //   // Update days text
-  //   const daysLeft = Math.floor(totalDuration - daysElapsed);
-  //   this.daysText = `${daysLeft} DAYS LEFT`;
-
-  //   console.log('Progress:', this.progress);
-  // }
 
 
 
   columnDefs: any[] = [
     {
-      headerName: "S.No", valueGetter: 'node.rowIndex+1', width: 80,
+      headerName: "S.No", valueGetter: 'node.rowIndex+1', width: 80, filter: false
+    },
+    {
+      headerName: 'PACKAGE NAME	',
+      // field: 'productname', width: 300,  // jeya akka told change the name
+      field: 'packagename', width: 300,  
     },
     {
       headerName: 'SMARTCARD', width: 250,
@@ -1344,26 +1383,23 @@ export class SubDashboardComponent implements OnInit {
   columnDefs1: any[] = [
     {
       headerName: "S.No", valueGetter: 'node.rowIndex+1', width: 100, headerCheckboxSelection: true,
-      checkboxSelection: true, isSelected: true
+      checkboxSelection: true, isSelected: true, filter: false
     },
     {
-      headerName: 'PACKAGE NAME	', width: 300,
-      field: 'productname', flex: 1,
+      headerName: 'PACKAGE NAME	', width: 300, cellStyle: { textAlign: 'left' },
+      field: 'productname', 
     },
+
     {
-      headerName: 'PRODUCT TYPE	 ', flex: 1, width: 270, cellStyle: { textAlign: 'center' },
-      field: 'ptype',
-    },
-    {
-      headerName: 'PRODUCT ID	', flex: 1, width: 270,
+      headerName: 'PRODUCT ID	',  width: 360,
       field: 'casproductid',
     },
     {
-      headerName: 'DAYS REMAINING	', flex: 1, width: 270, cellStyle: { textAlign: 'center' },
+      headerName: 'DAYS REMAINING	',  width: 350, cellStyle: { textAlign: 'center' },
       field: 'noofdays',
     },
     {
-      headerName: 'PROGRAMS', flex: 1, width: 300,
+      headerName: 'PROGRAMS', width: 400,
       cellRenderer: (params: any) => {
         // Check if the producttype is "BASE" or "ADDON"
         if (params.data.ptype === 'BASE' || params.data.ptype === 'ADDON') {
@@ -1406,7 +1442,7 @@ export class SubDashboardComponent implements OnInit {
   ]
   columnDefs2: any[] = [
     {
-      headerName: "S.No", valueGetter: 'node.rowIndex+1', width: 100, headerCheckboxSelection: true,
+      headerName: "S.No", valueGetter: 'node.rowIndex+1', width: 100, headerCheckboxSelection: true, filter: false
 
     },
     {
@@ -1414,19 +1450,19 @@ export class SubDashboardComponent implements OnInit {
       field: 'productname', width: 300,
     },
     {
-      headerName: 'PRODUCT TYPE	 ', width: 270, cellStyle: { textAlign: 'center' },
+      headerName: 'PRODUCT TYPE	 ', width: 350, cellStyle: { textAlign: 'center' },
       field: 'ptype',
     },
     {
-      headerName: 'PRODUCT ID	', width: 270, cellStyle: { textAlign: 'center' },
+      headerName: 'PRODUCT ID	', width: 360, cellStyle: { textAlign: 'center' },
       field: 'casproductid',
     },
     {
-      headerName: 'DAYS REMAINING	', width: 270, cellStyle: { textAlign: 'center' },
+      headerName: 'DAYS REMAINING	', width: 350, cellStyle: { textAlign: 'center' },
       field: 'noofdays',
     },
     {
-      headerName: 'PROGRAMS', width: 300,
+      headerName: 'PROGRAMS', width: 400,
       cellRenderer: (params: any) => {
         // Check if the producttype is "BASE" or "ADDON"
         if (params.data.ptype === 'BASE' || params.data.ptype === 'ADDON') {
@@ -1464,29 +1500,47 @@ export class SubDashboardComponent implements OnInit {
         }
       },
     },
-
-
   ]
   rowData1: any[] = [];
   rowData: any[] = [];
   manageData: any;
-  onGridReady(params: { api: any; }) {
+  onGridReady(params: any) {
+    console.log('1111111 ongridready');
     this.gridApi = params.api;
     this.gridApi.forEachNode((node: any) => {
       if (node.data.ptype === 'BASE') {
+        console.log(node.data);
         node.setSelected(true);
       }
     });
+    // this.refreshTable();
+    this.updatePaginationCount();
+  }
+  reloadGridData() {
+    console.log('dfdsfdsfdf');
+    if (this.gridApi) {
+      this.gridApi.setRowData(this.rowData1);
+    }
   }
 
+  updatePaginationCount() {
+    if (this.gridApi) {
+      this.currentPageSize = this.gridApi.paginationGetPageSize();
+      this.totalRowsCount = this.gridApi.paginationGetRowCount();
+      console.log("Rows shown per page:", this.currentPageSize);
+      console.log("Total filtered rows:", this.totalRowsCount);
+    }
+  }
   onGridReady1(params: any) {
-    console.log('checkbox');
+    console.log('222 ongridready1');
     this.gridApi = params.api;
     params.api.selectAll()
     console.log(params.api.getSelectedRows());
     params.api.forEachNode((node: any) => {
       params.api.setNodesSelected({ node, newValue: true });
     });
+    // this.refreshTable();
+    this.updatePaginationCount();
   }
   selectRow(id: number) {
     const node = this.gridApi.getRowNode(id.toString());
@@ -1956,8 +2010,6 @@ export class SubDashboardComponent implements OnInit {
       selectedpacklist: this.rows,
       retailerid: 0
     }
-    console.log("11111111111111111111");
-
     this.userservice.ManagePackageCalculation(requestBody).subscribe((res: any) => {
       console.log(res.oldExpiryDate);
       this.manageData = res;
@@ -1980,10 +2032,6 @@ export class SubDashboardComponent implements OnInit {
         this.cancel_btn = false;
       }
     });
-
-
-
-
 
 
     this.userservice.ManagePackageCalculation(requestBody).subscribe((res: any) => {

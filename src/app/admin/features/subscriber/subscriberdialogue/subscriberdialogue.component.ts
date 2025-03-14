@@ -192,7 +192,7 @@ export class SubscriberdialogueComponent implements OnInit, OnDestroy {
   f_plantype: any;
   f_date: any;
   today: any;
-
+  tomorrow: any;
   f_subid: any;
   boxno: any;
   message: any;
@@ -217,7 +217,7 @@ export class SubscriberdialogueComponent implements OnInit, OnDestroy {
   oldpin: any;
   PVRstatus: boolean = false;
   forcemsg: any;
-  plantype: any = 0;
+  plantype: any;
   rechargetype: any[] = [];
   packagenameList: any[] = [];
   subid_1: any;
@@ -351,6 +351,9 @@ export class SubscriberdialogueComponent implements OnInit, OnDestroy {
     if (this.selectedRechargetype === '3') return true;
     if ((this.datetype && this.f_date)) return true;
     if (!!this.newpackagename && this.newpackagename !== '0') return true;
+    // return !!this.newpackagename && this.newpackagename !== '0' && !!this.selectedRechargetype && this.selectedRechargetype !== '0' &&
+    //   ((this.isplantype ) ||
+    //     (this.datetype && this.f_date));
     return !!this.newpackagename && this.newpackagename !== '0' && !!this.selectedRechargetype && this.selectedRechargetype !== '0' &&
       ((this.isplantype && !!this.plantype && this.plantype !== '0') ||
         (this.datetype && this.f_date));
@@ -416,6 +419,8 @@ export class SubscriberdialogueComponent implements OnInit, OnDestroy {
     this.boxno = data['detailsList'].boxid;
     this.castype = data['detailsList'].castype;
     this.operatname = data['detailsList'].operatorname;
+    // console.log(this.operatname);
+
     this.servicename = data['detailsList'].customername;
     this.basePackageId = data['detailsList'].packageid;
     if (this.boxno && this.smartcardno == 'No Smartcard') {
@@ -495,11 +500,22 @@ export class SubscriberdialogueComponent implements OnInit, OnDestroy {
   ngOnDestroy(): void {
     ($('#smartcard') as any).select2('destroy');
     ($('#package') as any).select2('destroy');
+    ($('#LCO') as any).select2('destroy');
+    ($('#subscriber') as any).select2('destroy');
   }
 
   ngOnInit(): void {
     const currentDate = new Date();
     this.today = currentDate.toISOString().split('T')[0];
+
+    const tomorrowDate = new Date();
+    tomorrowDate.setDate(currentDate.getDate() + 1); // Add 1 day
+
+    this.tomorrow = tomorrowDate.toISOString().split('T')[0];
+
+    console.log('11111111 222222222', this.today);
+    console.log('11111111 222222222', this.tomorrow);
+
     $("#single").select2({
       placeholder: "Select a programming language",
       allowClear: true
@@ -511,7 +527,66 @@ export class SubscriberdialogueComponent implements OnInit, OnDestroy {
     const params = {
       api: this.gridApi
     };
+
+    if (this.sType == 'smartcardchange') {
+      this.onOperatorList();
+      this.onSubscriberList();
+    }
+    else if (this.sType == 'cancelsubscription') {
+      this.onCancelSubscription();
+    } else if (this.sType == 'activation') {
+      this.onAllBaselistByExceptDatasActivation();
+      this.onPlanType();
+      this.onPackageplanList()
+    } else if (this.sType == 'BASE') {
+      this.onAllBaselistByExceptDatas();
+      this.onPlanType();
+      this.onPackageplanList()
+    } else if (this.sType == 'packagactivation') {
+      this.onAllBaselistByExceptDatasActivation();
+      this.onPlanType();
+      this.onPackageplanList()
+    } else if (this.sType == 'addSmartcard') {
+      this.onCasList();
+    } else if (this.sType == 'change_lco') {
+      this.onOperatorList();
+    } else if (this.sType == 'editDetails') {
+      this.loadIdProofList();
+      this.loadAddProofList();
+    }
+
     this.onGridReady(params);
+    // this.onAllBaselistByExcept();
+    // this.onCasList();packagenameList
+    // this.onOperatorList();
+    // this.onPlanType();
+    // this.onPackageplanList();
+    // this.onCancelSubscription();
+    // this.loadIdProofList();
+    // this.loadAddProofList();
+    // this.onSubscriberList();
+  }
+  onAllBaselistByExceptDatasActivation() {
+    // this.userservice.getAllBaselistByExceptPackId(this.role, this.username, this.operatorid, this.castype, this.type, 0)
+    //   .subscribe((data) => {
+    //     this.packagenameList = Object.entries(data).map(([name, id]) => ({
+    //       packagename: name,
+    //       packageid: id as number
+    //     }));
+    //     this.cdr.detectChanges();
+    //     this.filteredPackagenameList = this.packagenameList;
+    //   });
+    this.userservice.getAllBaselistbyOperatorIdCastypeType(this.role, this.username, this.operatorid, this.castype, this.type)
+      .subscribe((data) => {
+        this.packagenameList = Object.entries(data).map(([name, id]) => ({
+          packagename: name,
+          packageid: id as number
+        }));
+        this.cdr.detectChanges();
+        this.filteredPackagenameList = this.packagenameList;
+      });
+  }
+  onAllBaselistByExceptDatas() {
     this.userservice.getAllBaselistByExceptPackId(this.role, this.username, this.operatorid, this.castype, this.type, this.basePackageId)
       .subscribe((data) => {
         this.packagenameList = Object.entries(data).map(([name, id]) => ({
@@ -521,15 +596,16 @@ export class SubscriberdialogueComponent implements OnInit, OnDestroy {
         this.cdr.detectChanges();
         this.filteredPackagenameList = this.packagenameList;
       });
+  }
+  onCasList() {
     this.userservice.getActiveCasList(this.role, this.username).subscribe((data: any) => {
       let v = Object.entries(data).map(([key, value]) => ({ name: key, id: value }));
       this.cas = v
       this.cdr.detectChanges();
     });
-    // this.userservice.getNotinOperatorList(this.role, this.username, this.operatorid).subscribe((data: any) => {
+  }
+  onOperatorList() {
     this.userservice.getOeratorList(this.role, this.username, 1).subscribe((data: any) => {
-      // this.lco_list = Object.entries(data).map(([key, value]) => ({ name: key, id: value }));
-
       this.lco_list = Object.keys(data).map(key => {
         const value = data[key];
         const name = key;
@@ -538,11 +614,19 @@ export class SubscriberdialogueComponent implements OnInit, OnDestroy {
       this.filteredOperators = this.lco_list;
       this.cdr.detectChanges;
     })
+  }
+  onPlanType() {
     this.userservice.getPlanTypeList(this.role, this.username).subscribe((data: any) => {
-      this.rechargetype = Object.entries(data).map(([key, value]) => ({ name: key, id: value }));
+      // this.rechargetype = Object.entries(data).map(([key, value]) => ({ name: key, id: value }));
+      this.rechargetype = Object.keys(data).map(key => {
+        const id = data[key];
+        const name = key.replace(/\(\d+\)$/, '').trim();
+        return { name: name, id: id };
+      });
       this.cdr.detectChanges();
     })
-
+  }
+  onPackageplanList() {
     this.userservice.getActivePackagePlanList(this.role, this.username).subscribe((data: any) => {
       const sortedData = Object.entries(data)
         .map(([key, value]) => ({
@@ -551,16 +635,8 @@ export class SubscriberdialogueComponent implements OnInit, OnDestroy {
         }))
       this.plantype$.next(sortedData);
     });
-    this.userservice.cancelSubscriptionOfSmartcardDetails(this.role, this.username, this.smartcardno).subscribe((data: any) => {
-      this.TotalLcoAmount = data.totallcoamount;
-      this.rowData1 = data.cancelproduct;
-      this.cdr.detectChanges();
-    })
-    this.loadIdProofList();
-    this.loadAddProofList();
-    console.log('operatorid', this.operatorid);
-
-    // this.onSubscriberStatusChange(this.operatorid);
+  }
+  onSubscriberList() {
     this.userservice.getSubscriberIdListByOperatorid(this.role, this.username, this.operatorid).subscribe((data: any) => {
       this.sub_list = Object.keys(data).map(key => {
         const value = data[key];
@@ -568,7 +644,13 @@ export class SubscriberdialogueComponent implements OnInit, OnDestroy {
         return { name: name, value: value };
       });
       this.filteredSub = this.sub_list;
-
+    })
+  }
+  onCancelSubscription() {
+    this.userservice.cancelSubscriptionOfSmartcardDetails(this.role, this.username, this.smartcardno).subscribe((data: any) => {
+      this.TotalLcoAmount = data.totallcoamount;
+      this.rowData1 = data.cancelproduct;
+      this.cdr.detectChanges();
     })
   }
 
@@ -589,11 +671,33 @@ export class SubscriberdialogueComponent implements OnInit, OnDestroy {
       this.newpackagename = event.target.value;
       this.onSelectionrechargetype(event);
     });
+    $('#lco').select2({
+      placeholder: 'Select a Operator',
+      allowClear: true
+    });
+    $('#lco').on('change', (event: any) => {
+      this.lcoid = event.target.value;
+      console.log(this.lcoid);
+
+      this.onSubscriberStatusChange(event);
+    });
+    $('#subscriber').select2({
+      placeholder: 'Select a Subscriber',
+      allowClear: true
+    });
+    $('#subscriber').on('change', (event: any) => {
+      this.subid = event.target.value;
+      console.log(this.subid);
+
+      this.onsublist(this.subid);
+    });
   }
   loadIdProofList(): void {
     this.userservice.getIdProofList(this.role, this.username).subscribe(
       (data: any) => {
         this.id_proof_list = data.idprooftypeid;
+        console.log('idproof list', this.id_proof_list);
+
         this.id_proof_array = Object.entries(this.add_proof_list).map(([key, value]) => ({
           key,
           value
@@ -1043,8 +1147,6 @@ export class SubscriberdialogueComponent implements OnInit, OnDestroy {
       this.datetype = false;
       this.isplantype = false;
     }
-
-
     if (this.selectedRechargetype == '2') {
       this.plantype = 0
     }
@@ -1113,7 +1215,10 @@ export class SubscriberdialogueComponent implements OnInit, OnDestroy {
       .subscribe((res: any) => {
         this.swal.success(res?.message);
       }, (err) => {
-        this.swal.Error(err?.error?.message || err?.error?.customerlastname || err?.error?.fathername);
+        this.swal.Error(err?.error?.message || err?.error?.customername || err?.error?.customerlastname || err?.error?.fathername || err?.error?.idproof || err?.error?.idprooftypeid
+          || err?.error?.addressproof || err?.error?.addressprooftypeid || err?.error?.customername || err?.error?.dateofbirth || err?.error?.email
+          || err?.error?.installaddress || err?.error?.mobileno
+        );
       });
     console.log('222');
 
@@ -1200,14 +1305,15 @@ export class SubscriberdialogueComponent implements OnInit, OnDestroy {
     this.operatname = operator.name;
     this.selectedOperator = operator;
     this.operatorid = operator.value;
-    console.log('lcoid', this.operatorid);
+    console.log('lcoid', this.lcoid);
 
-    this.f_subid = '';
+    // this.f_subid = '';
     this.selectedSub = null;
     this.filteredSub = [];
     this.servicename = '';
     this.cdr.detectChanges();
-    this.userservice.getSubscriberIdListByOperatorid(this.role, this.username, this.operatorid).subscribe((data: any) => {
+    // this.userservice.getSubscriberIdListByOperatorid(this.role, this.username, this.operatorid).subscribe((data: any) => {
+    this.userservice.getSubscriberIdListByOperatorid(this.role, this.username, this.lcoid).subscribe((data: any) => {
       this.sub_list = Object.keys(data).map(key => {
         const value = data[key];
         const name = key;
@@ -1219,15 +1325,7 @@ export class SubscriberdialogueComponent implements OnInit, OnDestroy {
     })
 
   }
-  onsublist(sub: any): void {
-    // this.f_subid = '';
-    this.servicename = sub.name;
-    // this.f_subid = sub.value;
-    this.subid = sub.value;
-    console.log('subid', this.subid);
 
-    this.cdr.detectChanges();
-  }
 
 
   onoperatorchange(operator: any): void {
@@ -1264,9 +1362,17 @@ export class SubscriberdialogueComponent implements OnInit, OnDestroy {
     this.cdr.detectChanges();
   }
 
+  onsublist(sub: any): void {
+    // this.f_subid = '';
+    this.servicename = sub.name;
+    console.log(sub);
+    this.subid = sub;
+    console.log('subid', this.subid);
 
+    this.cdr.detectChanges();
+  }
   filterOperators(event: any): void {
-    console.log('event',event);
+    console.log('event', event);
 
     // const filterValue = event.target.value.toLowerCase();
     const filterValue = event;
@@ -1274,6 +1380,8 @@ export class SubscriberdialogueComponent implements OnInit, OnDestroy {
     this.filteredOperators = this.lco_list.filter(operator =>
       operator.name.toLowerCase().includes(filterValue)
     );
+    console.log(this.filteredOperators);
+
   }
 
 
@@ -1299,6 +1407,8 @@ export class SubscriberdialogueComponent implements OnInit, OnDestroy {
     );
   }
   filterSub(event: any): void {
+    console.log(event);
+
     const filterValue = event.target.value.toLowerCase();
     this.filteredSub = this.sub_list.filter(sub =>
       sub.name.toLowerCase().includes(filterValue)
@@ -1375,7 +1485,7 @@ export class SubscriberdialogueComponent implements OnInit, OnDestroy {
       this.swal.Error('All fields are required');
       return;
     }
-    this.userservice.transferLcoToSmartcard(this.role, this.username, this.lcoid, this.lcoareaid, this.lcostreetid, this.subid_1 || this.newSubid, this.withsubscription, 0, 2)
+    this.userservice.transferLcoToSmartcard(this.role, this.username, this.lcoid, this.lcoareaid, this.lcostreetid, this.subid_1 || this.newSubid, this.withsubscription, 0, 3)
       .subscribe((res: any) => {
         this.swal.success(res?.message);
       }, (err) => {
@@ -1397,7 +1507,11 @@ export class SubscriberdialogueComponent implements OnInit, OnDestroy {
           showConfirmButton: false
         }).then(() => {
           // location.reload();
-          this.router.navigate([`/admin/subscriber-full-info/${this.smartcardno}/subsmartcard`]);
+          this.router.navigate([`/admin/subscriber-full-info/${this.smartcardno}/subsmartcard`]).then(() => {
+            setTimeout(() => {
+              window.location.reload();
+            }, 100);
+          });
           this.dialogRef.close({ success: true, smartcard: this.smartcardno });
 
         });
@@ -1603,6 +1717,10 @@ export class SubscriberdialogueComponent implements OnInit, OnDestroy {
     this.removeProductConfirmation();
   }
   firsttimeActivationOfCard() {
+    console.log('213213213');
+
+    console.log(this.plantype);
+    // this.plantype || this.f_date || 4,
     this.confirmation = true;
     this.finalrow = this.rows
     this.isConfirmationComplete = true;
@@ -1698,6 +1816,8 @@ export class SubscriberdialogueComponent implements OnInit, OnDestroy {
       });
   }
   baseChangeofSmartcardPackageActivate() {
+    let plandata = this.plantype || this.f_date || 4
+    console.log(plandata);
     this.isActive = true;
     this.confirmation = true;
     this.isConfirmationComplete = true;
@@ -1706,7 +1826,7 @@ export class SubscriberdialogueComponent implements OnInit, OnDestroy {
       username: this.username,
       packageid: this.newpackagename,
       plantype: this.selectedRechargetype,
-      plan: this.plantype,
+      plan: plandata,
       billtype: 1,
       dueamt: 0.0,
       paidamt: this.changebase?.customerPayAmount,
@@ -1781,11 +1901,16 @@ export class SubscriberdialogueComponent implements OnInit, OnDestroy {
     }
     console.log(subscriptionId);
     console.log(subscriptionOperatorid);
+    console.log(this.lcoid);
+    console.log(this.subid);
+    console.log('OPERATOR ID', this.operatorid);
+
     this.errorMessage = '';
     this.swal.Loading();
-    this.userservice.lcotransferSinglesmartcard(this.role, this.username, subscriptionOperatorid, this.subid, this.withsubscription, this.smartcardno, 0, 2
+    // this.userservice.lcotransferSinglesmartcard(this.role, this.username, subscriptionOperatorid, this.subid, this.withsubscription, this.smartcardno, 0, 2
+    this.userservice.lcotransferSinglesmartcard(this.role, this.username, subscriptionOperatorid || this.lcoid, this.subid, this.withsubscription, this.smartcardno, 0, 3
     ).subscribe((res: any) => {
-      // this.swal.success(res?.message);
+      this.swal.success(res?.message);
       Swal.fire({
         title: 'Success!',
         text: res.message,

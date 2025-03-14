@@ -1,4 +1,4 @@
-<div >
+<div>
 
 
     <div class="Head d-flex justify-content-between align-items-center mb-3" style="padding: 1rem;">
@@ -12,10 +12,12 @@
                 <label>LCO Name</label>
             </div>
             <div class=" col-8">
-                <input type="text" matInput [matAutocomplete]="auto" [(ngModel)]="selectedLcoName" maxlength="20"
-                    (input)="filterOperators($event)" placeholder="Select a Operator" [matAutocompleteDisabled]="false"
-                    [value]="selectedOperator?.name">
-
+                <div class="input-container">
+                    <input type="text" matInput [matAutocomplete]="auto" [(ngModel)]="selectedLcoName" maxlength="20"
+                        (input)="filterOperators($event)" placeholder="Select a Operator"
+                        [matAutocompleteDisabled]="false" [value]="selectedOperator?.name">
+                    <i class="bx bx-chevron-down icon-right"></i>
+                </div>
                 <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayOperator">
                     <mat-option *ngFor="let operator of filteredOperators" [value]="operator.value"
                         (click)="onSubscriberStatusChange(operator)">
@@ -34,7 +36,7 @@
             </div>
             <div class=" col-8">
                 <div class="">
-                    <input type="checkbox" [(ngModel)]="isemi"  style="width: 35px;height: 20px;">
+                    <input type="checkbox" [(ngModel)]="isemi" style="width: 35px;height: 20px;">
                     <!-- <input type="checkbox" [(ngModel)]="isemi" style="width: 35px;height: 20px;"> -->
                 </div>
             </div>
@@ -44,14 +46,13 @@
                 <label>Due Amount</label>
             </div>
             <div class=" col-8">
-                <div class="">
-                    <input type="text" [disabled]="!isemi" [(ngModel)]="dueAmount" (input)="filterOperators($event)"
-                        (keypress)="onKeydown($event)" placeholder="Enter Due Amount">
 
-                    <!-- <input type="text" [(ngModel)]="dueAmount" (input)="filterOperators($event)"
+                <input type="text" [disabled]="!isemi" [(ngModel)]="dueAmount" (input)="filterOperators($event)"
+                    (keypress)="onKeydown($event)" placeholder="Enter Due Amount">
+
+                <!-- <input type="text" [(ngModel)]="dueAmount" (input)="filterOperators($event)"
                         (keypress)="onKeydown($event)" placeholder="Enter Due Amount"> -->
 
-                </div>
             </div>
         </div>
 

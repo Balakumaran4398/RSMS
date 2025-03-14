@@ -48,7 +48,7 @@ mat-card p {
 mat-card {
     text-align: center;
     margin: 10px;
-    background-color: lightblue;
+    background-color: var(--oper-grid-bg);
     // box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1), 0 6px 20px rgba(0, 0, 0, 0.1);
     // border: 1.5px solid #1c1818;
     // border: 1px ridge;
@@ -136,6 +136,7 @@ p {
     width: auto;
     padding: 10px 3px;
     background-color: rgb(67, 80, 61);
+    
 }
 
 .inventory p,
@@ -289,8 +290,9 @@ span {
     .display {
         display: block;
     }
+
     .grid-container {
-        grid-template-columns: 1fr; 
+        grid-template-columns: 1fr;
     }
 }
 

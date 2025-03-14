@@ -88,6 +88,20 @@ import { LicenseComponent } from './features/inventory_role/license/license.comp
 import { LicenseexpireComponent } from './features/inventory_role/Dialogue/licenseexpire/licenseexpire.component';
 import { ServiceComponent } from './features/Service_center_role/service/service.component';
 import { OperatordashboardComponent } from './features/operator_Login/operatordashboard/operatordashboard.component';
+import { OnlinerechargeComponent } from './features/operator_Login/onlinerecharge/onlinerecharge.component';
+import { OnlinecustomerdetailsComponent } from './features/operator_Login/onlinecustomerdetails/onlinecustomerdetails.component';
+import { RechagelogComponent } from './features/operator_Login/rechagelog/rechagelog.component';
+import { AreaStreetComponent } from './features/operator_Login/area-street/area-street.component';
+import { LcoDashboardComponent } from './features/operator_Login/Dialog/lco-dashboard/lco-dashboard.component';
+import { ForcemessageComponent } from './features/operator_Login/forcemessage/forcemessage.component';
+import { LcoChangePasswordComponent } from './features/operator_Login/lco-change-password/lco-change-password.component';
+import { LcodiscountComponent } from './features/operator_Login/lcodiscount/lcodiscount.component';
+import { LcoReportComponent } from './features/operator_Login/lco-report/lco-report.component';
+import { LcologinReportComponent } from './features/operator_Login/Dialog/lcologin-report/lcologin-report.component';
+import { DistributorsettingComponent } from './features/operator_Login/distributorsetting/distributorsetting.component';
+import { BillcollectionComponent } from './features/operator_Login/billcollection/billcollection.component';
+import { LcoSmartcardDialogComponent } from './features/operator_Login/Dialog/lco-smartcard-dialog/lco-smartcard-dialog.component';
+import { LcowalletshareComponent } from './features/operator_Login/lcowalletshare/lcowalletshare.component';
 
 
 const routes: Routes = [
@@ -101,7 +115,7 @@ const routes: Routes = [
       { path: 'packageBase', component: PackageBasedComponent, },
       // ---------------------------------------------Operator-----------------------------------
       { path: 'operator_details', component: OperatorDetailsComponent, },
-      { path: 'lco_recharge', component: LcoRechargeComponent, },
+      { path: 'lco_recharge/:id', component: LcoRechargeComponent, },
       { path: 'top_subscription', component: TopSubLoginComponent, },
       { path: 'operatorlist', component: OperatorlistComponent, },
       { path: 'nav', component: NavbarComponent, },
@@ -170,7 +184,7 @@ const routes: Routes = [
       { path: 'historyAllReports/:id', component: HistoryAllReportsComponent },
       { path: 'broadcasterReports/:id', component: BroadcasterReportsComponent },
       { path: 'msodialogueReports/:id', component: MsorDialogueportsComponent },
-      
+
       // ------------------------------------Special role-------------------------------------------
       { path: 'msodetails', component: MsodetailsComponent },
       { path: 'casmaster', component: CasmasterComponent },
@@ -199,6 +213,20 @@ const routes: Routes = [
       { path: 'inventory_cortonbox_data', component: LicenseComponent },
       // ---------------------------------------------Operator login------------------------------
       { path: 'operator_dashboard', component: OperatordashboardComponent },
+      { path: 'online_recharge', component: OnlinerechargeComponent },
+      { path: 'online_customer_details', component: OnlinecustomerdetailsComponent },
+      { path: 'rechargelog', component: RechagelogComponent },
+      { path: 'area_street', component: AreaStreetComponent },
+      { path: 'lco_dashboard/:id', component: LcoDashboardComponent },
+      { path: 'forcemessage', component: ForcemessageComponent },
+      { path: 'lcoChangePassword', component: LcoChangePasswordComponent },
+      { path: 'lcoDashboard', component: LcodiscountComponent },
+      { path: 'lcoReports', component: LcoReportComponent },
+      { path: 'lcologinReports/:id', component: LcologinReportComponent },
+      { path: 'distributor_setting', component: DistributorsettingComponent },
+      { path: 'bill_collection', component: BillcollectionComponent },
+      { path: 'lco_dashboard/:smartcard/:status', component: LcoSmartcardDialogComponent },
+      { path: 'lcowallet_share', component: LcowalletshareComponent },
     ]
   }
 ];

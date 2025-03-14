@@ -41,7 +41,7 @@ export class ChanneldetailsComponent implements OnInit {
   }
   columnDefs: any[] = [
     {
-      headerName: "S.NO", lockPosition: true, valueGetter: 'node.rowIndex+1',
+      headerName: "S.NO", lockPosition: true, valueGetter: 'node.rowIndex+1', filter: false
     },
     { headerName: 'CHANNEL NAME', field: 'channelName', width: 250, cellStyle: { textAlign: 'left' } },
     { headerName: 'URL', field: 'url', width: 350,cellStyle: { textAlign: 'left' }  },

@@ -1,46 +1,49 @@
 <div class="">
 
-    <!-- <h4>Allocated  </h4> -->
-    <!-- <div class="input_box col-12 col-md-6 col-sm-6 d-flex justify-content-center align-items-center mb-3"> -->
+    <!-- 
     <div class=" col-12 col-md-12 col-lg-8 display justify-content-center align-items-center mb-3 "
         style="margin-left: 3rem;">
-        <!-- <div class="col-12 col-sm-6 col-lg-4"> -->
-        <span class="mb-3" style="font-size: medium;font-weight: 700;">Search:</span> &nbsp;
+        <span class="mb-3" style="font-size: medium;font-weight: 700;">Search:</span>
         <div class="mb-3 col-10 col-md-5 input_box">
             <input type="text" placeholder="Search for Smartcard or Boxid" [(ngModel)]="smartcard">
-            <!-- <div *ngIf="submitted && !smartcard" class="text-danger" style="font-size: small;">
-                Smartcard is required
-            </div> -->
+
         </div>
-        &nbsp;
         <div class="col-10 col-md-5 mb-3  mx-3">
-            <!-- <input type="text" matInput [matAutocomplete]="auto" [(ngModel)]="selectedLcoName" 
-                (input)="filterOperators($event)" placeholder="Select a Operator" [matAutocompleteDisabled]="false"
-                [value]="selectedOperator?.name">
-
-            <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayOperator">
-                <mat-option *ngFor="let operator of filteredOperators" [value]="operator.value"
-                    (click)="onSubscriberStatusChange(operator)">
-                    {{ operator.name }}
-                </mat-option>
-            </mat-autocomplete> -->
-
             <select id="operator" [(ngModel)]="selectedLcoName" (ngModelChange)="onSubscriberStatusChange($event)">
                 <option value="">Select Operator</option>
                 <option *ngFor="let operator of filteredOperators" [value]="operator.value">
                     {{ operator.name }}
                 </option>
             </select>
-            <!-- <div *ngIf="submitted && !selectedLcoName" class="text-danger" style="font-size: small;">
-                LCO Name is required
-            </div> -->
         </div>
-        &nbsp;
-        <button class="btn  bttn" (click)="Search()"
-            style="background-color: rgb(144, 188, 245);    margin-top: -1vh;line-height: 3vh;">
+        <button class="btn  bttn" (click)="Search()" style="margin-top: -1vh;line-height: 3vh;">
             <i class="fa " aria-hidden="true">Search</i>
         </button>
+    </div> -->
+
+    <div
+        class="custom-search-container col-12 col-md-12 col-lg-12 d-flex flex-wrap justify-content-around align-items-center mb-3 ms-lg-3">
+        <span class="mb-3 me-2" style="font-size: medium; font-weight: 700;">Search:</span>
+        <div class="mb-3 col-12 col-md-5 input_box">
+            <input type="text" class="form-control" placeholder="Search for Smartcard or Boxid" [(ngModel)]="smartcard">
+        </div>
+        <div class="col-12 col-md-5 mb-3 mx-3">
+            <select id="operator" class="form-select" [(ngModel)]="selectedLcoName"
+                (ngModelChange)="onSubscriberStatusChange($event)">
+                <option value="">Select Operator</option>
+                <option *ngFor="let operator of filteredOperators" [value]="operator.value">
+                    {{ operator.name }}
+                </option>
+            </select>
+        </div>
+        <div class="col-12 col-md-2">
+            <button class="btn btn-primary bttn  mb-3" (click)="Search()">
+                <i class="fa" aria-hidden="true"></i> Search
+            </button>
+        </div>
     </div>
+
+
     <h5>Filtered Result</h5>
     <div class="row d-flex align-items-center justify-content-center">
         <div class="col-12 col-sm-12 col-md-12  m-3">

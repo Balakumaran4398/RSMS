@@ -9,17 +9,19 @@
             style="border: 1px solid #055478;padding: 1rem;">
             <div class="col-12 display align-items-center">
                 <div class="col-12 col-md-12  justify-content-center align-items-center  ">
-                    <div  *ngIf="type != 'alacarte'" class=" display mb-3">
+                    <div *ngIf="type != 'alacarte'" class=" display mb-3">
                         <div class="col-12 col-md-6 sidename">
                             <span style="color: #243359;"> Select a Operator</span>
                         </div>
                         <div class="col-12 col-md-6">
                             <mat-form-field class="input-field" appearance="outline">
-                                <!-- <mat-label>Select Operator</mat-label> -->
                                 <input type="text" matInput [matAutocomplete]="auto" (input)="filterOperators($event)"
                                     [value]="selectedOperator?.name">
                                 <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayOperator">
-                                    <!-- <mat-option value="0" >All Operator</mat-option> -->
+                                    <mat-option [value]="0"
+                                        (click)="onoperatorchange({ name: 'All Operator', value: 0 })">
+                                        All Operator
+                                    </mat-option>
                                     <mat-option *ngFor="let operator of filteredOperators" [value]="operator.name"
                                         (click)="onoperatorchange(operator)">
                                         {{ operator.name }}
@@ -28,24 +30,24 @@
                             </mat-form-field>
                             <div *ngIf="submitted && !operatorid" class="text-danger" style="font-size: small;">
                                 Operator is required
-                           </div>
+                            </div>
                         </div>
                     </div>
                     <div class=" display mb-3">
                         <div class="col-12 col-md-6 sidename">
                             <span style="color: #243359;">Select a Date</span>
                         </div>
-                        
+
                         <div class="col-12 col-md-6">
                             <mat-form-field class="input-field" appearance="outline">
                                 <mat-label>Choose a date</mat-label>
-                                <input matInput [matDatepicker]="picker"  (dateChange)="logValues()" [(ngModel)]="date"  placeholder="Select a Date"
-                                    readonly>
+                                <input matInput [matDatepicker]="picker" (dateChange)="logValues()" [(ngModel)]="date"
+                                    placeholder="Select a Date" readonly>
                                 <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
                                 <mat-datepicker #picker></mat-datepicker>
                             </mat-form-field>
                             <div *ngIf="submitted && !date" class="text-danger" style="font-size: small;">
-                                 Date is required
+                                Date is required
                             </div>
                         </div>
                     </div>
@@ -67,11 +69,11 @@
                             </div>
                             <div class="col-6 col-md-6">
                                 <div class="export-buttons d-flex">
-                                    <div class="export-icon col-6 col-md-3 mx-2" (click)="getBaseSubscriptionExcel()">
+                                    <div class="export-icon col-6 col-md-3 mx-2" (click)="getBasePackageReport(2)">
                                         <img src="/assets/images/icons/Excel.png" alt="Excel Icon" width="40px">
                                         <div class="tooltip">Excel</div>
                                     </div>
-                                    <div class="export-icon col-6 col-md-3 mx-2" (click)="getBaseSubscriptionPDF()">
+                                    <div class="export-icon col-6 col-md-3 mx-2" (click)="getBasePackageReport(1)">
                                         <img src="/assets/images/icons/pdf.png" alt="PDF Icon" width="40px">
                                         <div class="tooltip">Pdf</div>
                                     </div>
@@ -86,11 +88,11 @@
                             </div>
                             <div class="col-6 col-md-6">
                                 <div class="export-buttons d-flex">
-                                    <div class="export-icon col-6 col-md-3 mx-2" (click)="getAddonSubscriptionExcel()">
+                                    <div class="export-icon col-6 col-md-3 mx-2" (click)="getAddonPackageReport(2)">
                                         <img src="/assets/images/icons/Excel.png" alt="Excel Icon" width="40px">
                                         <div class="tooltip">Excel</div>
                                     </div>
-                                    <div class="export-icon col-6 col-md-3 mx-2" (click)="getAddonSubscriptionPDF()">
+                                    <div class="export-icon col-6 col-md-3 mx-2" (click)="getAddonPackageReport(1)">
                                         <img src="/assets/images/icons/pdf.png" alt="PDF Icon" width="40px">
                                         <div class="tooltip">Pdf</div>
                                     </div>
@@ -98,7 +100,7 @@
                             </div>
                         </div>
                     </div>
-                   
+
                     <div *ngIf="type == 'alacarte'">
                         <div class="input_box display1 mb-3">
                             <div class="col-6 col-md-6 sidename">
@@ -106,11 +108,11 @@
                             </div>
                             <div class="col-6 col-md-6">
                                 <div class="export-buttons d-flex">
-                                    <div class="export-icon col-6 col-md-3 mx-2" (click)="getAlacarteSubscriptionExcel()">
+                                    <div class="export-icon col-6 col-md-3 mx-2" (click)="getAlacartePackageReport(2)">
                                         <img src="/assets/images/icons/Excel.png" alt="Excel Icon" width="40px">
                                         <div class="tooltip">Excel</div>
                                     </div>
-                                    <div class="export-icon col-6 col-md-3 mx-2" (click)="getAlacarteSubscriptionPDF()">
+                                    <div class="export-icon col-6 col-md-3 mx-2" (click)="getAlacartePackageReport(1)">
                                         <img src="/assets/images/icons/pdf.png" alt="PDF Icon" width="40px">
                                         <div class="tooltip">Pdf</div>
                                     </div>
@@ -125,11 +127,11 @@
                             </div>
                             <div class="col-6 col-md-6">
                                 <div class="export-buttons d-flex">
-                                    <div class="export-icon col-6 col-md-3 mx-2" (click)="getAddonSubscriptionExcel()">
+                                    <div class="export-icon col-6 col-md-3 mx-2" (click)="getAllProductReport(2)">
                                         <img src="/assets/images/icons/Excel.png" alt="Excel Icon" width="40px">
                                         <div class="tooltip">Excel</div>
                                     </div>
-                                    <div class="export-icon col-6 col-md-3 mx-2" (click)="getAddonSubscriptionPDF()">
+                                    <div class="export-icon col-6 col-md-3 mx-2" (click)="getAllProductReport(1)">
                                         <img src="/assets/images/icons/pdf.png" alt="PDF Icon" width="40px">
                                         <div class="tooltip">Pdf</div>
                                     </div>
@@ -153,6 +155,21 @@
             style="border: 1px solid #055478;padding: 1rem;">
             <div class="col-12 display align-items-center">
                 <div class="col-12 col-md-12  justify-content-center align-items-center  ">
+                    
+                    <div class="input_box display mb-3">
+                        <div class="col-12 col-md-6">
+                            <span for="">Select year</span>
+                        </div>
+                        <div class="col-12 col-md-6">
+                            <select name="year" id="year" [(ngModel)]="selectedYear">
+                                <option value="0" selected>Select Year</option>
+                                <option *ngFor="let year of years" [value]="year">{{ year }}</option>
+                            </select>
+                            <div *ngIf="submitted && !selectedYear" class="text-danger" style="font-size: small;">
+                                Year is required
+                            </div>
+                        </div>
+                    </div>
                     <div class="input_box display mb-3">
                         <div class="col-12 col-md-6">
                             <span for="">Select Month</span>
@@ -165,20 +182,6 @@
                             </select>
                             <div *ngIf="submitted && !selectedMonth" class="text-danger" style="font-size: small;">
                                 Month is required
-                            </div>
-                        </div>
-                    </div>
-                    <div class="input_box display mb-3">
-                        <div class="col-12 col-md-6">
-                            <span for="">Select year</span>
-                        </div>
-                        <div class="col-12 col-md-6">
-                            <select name="year" id="year" [(ngModel)]="selectedYear">
-                                <option value="0" selected>Select Year</option>
-                                <option *ngFor="let year of years" [value]="year">{{ year }}</option>
-                            </select>
-                            <div *ngIf="submitted && !selectedYear" class="text-danger" style="font-size: small;">
-                                Year is required
                             </div>
                         </div>
                     </div>
@@ -214,11 +217,11 @@
                             <span for="">Reports</span>
                         </div>
                         <div class="col-6 col-md-6 display1">
-                            <div class="export-icon col-6 col-md-3 mx-2" (click)="getWeeklySubscriptionExcel()">
+                            <div class="export-icon col-6 col-md-3 mx-2" (click)="getWeeklyActiveDeactiveReport(2)">
                                 <img src="/assets/images/icons/Excel.png" alt="Excel Icon" width="40px">
                                 <div class="tooltip">Excel</div>
                             </div>
-                            <div class="export-icon col-6 col-md-3" (click)="getWeeklySubscriptionPDF()">
+                            <div class="export-icon col-6 col-md-3" (click)="getWeeklyActiveDeactiveReport(1)">
                                 <img src="/assets/images/icons/pdf.png" alt="PDF Icon" width="40px">
                                 <div class="tooltip">Pdf</div>
                             </div>

@@ -199,6 +199,7 @@ export class ChartSTBReportComponent implements OnInit {
   }
   getExcel() {
     console.log(this.type);
+    this.swal.Loading();
     this.userService.getDashboardReport(this.role, this.username, this.type, 2)
       .subscribe(
         (response: HttpResponse<any[]>) => { // Expect HttpResponse<any[]>
@@ -221,6 +222,7 @@ export class ChartSTBReportComponent implements OnInit {
                 datas.push(row);
               });
               this.excelService.generateDashboardSTBExcel(areatitle, header, datas, title, areasub, sub);
+              this.swal.Close();
             } else if (this.type == 3) {
               console.log(this.type);
 
@@ -237,6 +239,7 @@ export class ChartSTBReportComponent implements OnInit {
                 datas.push(row);
               });
               this.excelService.generateDashboardSTBExcel(areatitle, header, datas, title, areasub, sub);
+              this.swal.Close();
             } else if (this.type == 4 || this.type == 5) {
               const areatitle = 'A1:K2';
               const areasub = 'A3:K3';
@@ -251,6 +254,7 @@ export class ChartSTBReportComponent implements OnInit {
                 datas.push(row);
               });
               this.excelService.generateDashboardSTBExcel(areatitle, header, datas, title, areasub, sub);
+              this.swal.Close();
             } else if (this.type == 6) {
               const areatitle = 'A1:J2';
               const areasub = 'A3:J3';
@@ -265,6 +269,7 @@ export class ChartSTBReportComponent implements OnInit {
                 datas.push(row);
               });
               this.excelService.generateDashboardSTBExcel(areatitle, header, datas, title, areasub, sub);
+              this.swal.Close();
             }
           } else if (response.status === 204) {
             this.swal.Success_204();
@@ -277,6 +282,7 @@ export class ChartSTBReportComponent implements OnInit {
       );
   }
   getPDF() {
+    this.swal.Loading();
     this.userService.getDashboardPDFReport(this.username, this.role, this.type, 1)
       .subscribe((x: Blob) => {
         const blob = new Blob([x], { type: 'application/pdf' });
@@ -289,6 +295,7 @@ export class ChartSTBReportComponent implements OnInit {
           window.URL.revokeObjectURL(data);
           link.remove();
         }, 100);
+        this.swal.Close();
       },
         (error: any) => {
           Swal.fire({

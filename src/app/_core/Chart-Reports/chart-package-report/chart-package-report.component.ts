@@ -144,6 +144,7 @@ export class ChartPackageReportComponent {
   }
   getExcel() {
     console.log(this.type);
+    this.swal.Loading();
     this.userService.getDashboardReport(this.role, this.username, this.type, 2)
       .subscribe(
         (response: HttpResponse<any[]>) => { // Expect HttpResponse<any[]>
@@ -166,6 +167,7 @@ export class ChartPackageReportComponent {
                 datas.push(row);
               });
               this.excelService.generateBasePackageExcel(areatitle, header, datas, title, areasub, sub);
+              this.swal.Close();
             } else if (this.type == 8) {
               console.log(this.type);
               const areatitle = 'A1:F2';
@@ -181,6 +183,7 @@ export class ChartPackageReportComponent {
                 datas.push(row);
               });
               this.excelService.generateAddonExcel(areatitle, header, datas, title, areasub, sub);
+              this.swal.Close();
             } else if (this.type == 9) {
               console.log(this.type);
               const areatitle = 'A1:F2';
@@ -196,6 +199,7 @@ export class ChartPackageReportComponent {
                 datas.push(row);
               });
               this.excelService.generatePaychannelExcel(areatitle, header, datas, title, areasub, sub);
+              this.swal.Close();
             } else if (this.type == 10) {
               console.log(this.type);
               const areatitle = 'A1:F2';
@@ -211,6 +215,7 @@ export class ChartPackageReportComponent {
                 datas.push(row);
               });
               this.excelService.generateFTAExcel(areatitle, header, datas, title, areasub, sub);
+              this.swal.Close();
             }
           } else if (response.status === 204) {
             this.swal.Success_204();
@@ -223,6 +228,7 @@ export class ChartPackageReportComponent {
       );
   }
   getPDF() {
+    this.swal.Loading();
     this.userService.getDashboardPDFReport(this.username, this.role, this.type, 1)
       .subscribe((x: Blob) => {
         const blob = new Blob([x], { type: 'application/pdf' });
@@ -235,6 +241,7 @@ export class ChartPackageReportComponent {
           window.URL.revokeObjectURL(data);
           link.remove();
         }, 100);
+        this.swal.Close();
       },
         (error: any) => {
           Swal.fire({

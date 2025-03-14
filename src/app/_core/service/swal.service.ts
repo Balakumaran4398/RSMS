@@ -24,7 +24,7 @@ export class SwalService {
       title: 'Success!',
       text: message,
       icon: 'success',
-      timer: 2000,
+      timer: 3000,
       timerProgressBar: true,
       showConfirmButton: false
     });
@@ -121,7 +121,7 @@ export class SwalService {
   Loading() {
     Swal.fire({
       title: 'Processing...',
-      text: 'Please wait Loading Onprogrss.',
+      text: 'Please wait Loading Onprogress.',
       allowOutsideClick: false,
       didOpen: () => {
         Swal.showLoading(null);

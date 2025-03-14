@@ -8,7 +8,7 @@
             <!-- User ID -->
             <div class="input_box display align-items-center mb-3">
                 <div class="col-12 col-md-4">
-                    <label for="userId" class="me-2">User ID</label>
+                    <label for="userId" class="me-2">User Name</label>
                 </div>
                 <div class="col-12 col-md-1 mobile">
                     <span for="userId" class="me-2">:</span>
@@ -32,13 +32,14 @@
                 </div>
                 <div class="col-12 col-md-7">
                     <input type="password" [(ngModel)]="password" name="password" placeholder="Enter Password"
-                        #passwordInput="ngModel" required minlength="8" pattern="^(?=.*[A-Za-z])(?=.*\d).+$">
+                        #passwordInput="ngModel" required>
+                    <!-- pattern="^(?=.*[A-Za-z])(?=.*\d).+$" -->
                     <div *ngIf="passwordInput.invalid && passwordInput.touched" class="text-danger">
                         <div *ngIf="passwordInput.errors?.['required']">Password is required.</div>
-                        <div *ngIf="passwordInput.errors?.['minlength']">Password must be at least 8 characters long.
-                        </div>
-                        <div *ngIf="passwordInput.errors?.['pattern']">Password must include at least one letter and one
-                            number.</div>
+                        <!-- <div *ngIf="passwordInput.errors?.['minlength']">Password must be at least 8 characters long.
+                        </div> -->
+                        <!-- <div *ngIf="passwordInput.errors?.['pattern']">Password must include at least one letter and one
+                            number.</div> -->
                     </div>
                 </div>
             </div>
@@ -80,7 +81,7 @@
                         <div *ngIf="emailInput.errors?.['required']">Email is required.</div>
                         <div *ngIf="emailInput.errors?.['email']">Please enter a valid email address.</div>
                     </div> -->
-                    <div *ngIf="emailInput?.invalid && emailInput?.touched" class="error-message">
+                    <div *ngIf="emailInput?.invalid && emailInput?.touched" class="text-danger">
                         <div *ngIf="emailInput.hasError('required')">
                             Email is required.
                         </div>
@@ -94,7 +95,24 @@
                     </div>
                 </div>
             </div>
+            <div class="input_box display align-items-center mb-3">
+                <div class="col-12 col-md-4">
+                    <label for="expiryDate" class="me-2">Expiry Date</label>
+                </div>
+                <div class="col-12 col-md-1 mobile">
+                    <span for="expiryDate" class="me-2">:</span>
+                </div>
+                <div class="col-12 col-md-7">
+                    <input type="date" id="expiryDate" [(ngModel)]="expiryDate" name="expiryDate"
+                        placeholder="Enter Expiry Date" #DateInput="ngModel" required expiryDate>
+                    <div *ngIf="DateInput?.invalid && DateInput?.touched" class="text-danger">
+                        <div *ngIf="DateInput.hasError('required')">
+                            Expiry Date is required.
+                        </div>
 
+                    </div>
+                </div>
+            </div>
             <div class="form-group d-flex justify-content-center align-items-center mb-3">
                 <button type="submit" class="btn btn-success me-2" [disabled]="editForm.invalid">Create</button>
                 <button type="button" class="btn btn-danger" (click)="onClick()">Cancel</button>
@@ -117,21 +135,22 @@
 
             <div class="input_box display align-items-center mb-3">
                 <div class="col-12 col-md-4">
-                    <label for="categoryName" class="me-2">User ID</label>
+                    <label for="categoryName" class="me-2">User Name</label>
                 </div>
                 <div class="col-12 col-md-1 mobile">
                     <span for="categoryName" class="me-2">:</span>
                 </div>
+
                 <div class="col-12 col-md-7">
                     <input type="text" [(ngModel)]="edituserid" [value]="data?.data?.username"
                         placeholder="Enter User Name" #idInput="ngModel">
                     <div *ngIf="idInput.invalid && idInput.touched" class="text-danger">
-                        User ID is required.
+                        User Name is required.
                     </div>
                 </div>
             </div>
             <!-- PASSWORD -->
-            <!-- <div class="input_box display align-items-center mb-3">
+            <div class="input_box display align-items-center mb-3">
                 <div class="col-12 col-md-4">
                     <label class="me-2">Password</label>
                 </div>
@@ -139,20 +158,20 @@
                     <span class="me-2">:</span>
                 </div>
                 <div class="col-12 col-md-7">
-                    <textarea type="password" [(ngModel)]="editPassword" name="password" placeholder="Enter Password"
-                        #passwordInput="ngModel" required minlength="8" pattern="^(?=.*[A-Za-z])(?=.*\d).+$"></textarea>
+                    <input type="password" [(ngModel)]="editPassword" name="password" placeholder="Enter Password"
+                        #passwordInput="ngModel" required >
+                    <!-- minlength="8" pattern="^(?=.*[A-Za-z])(?=.*\d).+$" -->
                     <div *ngIf="passwordInput.invalid && passwordInput.touched" class="text-danger">
                         <div *ngIf="passwordInput.errors?.['required']">Password is required.</div>
-                        <div *ngIf="passwordInput.errors?.['minlength']">Password must be at least 8 characters long.
-                        </div>
-                        <div *ngIf="passwordInput.errors?.['pattern']">Password must include at least one letter and one
-                            number.</div>
+                        <!-- <div *ngIf="passwordInput.errors?.['minlength']">Password must be at least 8 characters long.
+                        </div> -->
+
                     </div>
                 </div>
-            </div> -->
+            </div>
 
             <!-- ROLE -->
-            <div class="input_box display align-items-center mb-3">
+            <!-- <div class="input_box display align-items-center mb-3">
                 <div class="col-12 col-md-4">
                     <label class="me-2">Select Role</label>
                 </div>
@@ -161,7 +180,6 @@
                 </div>
 
                 <div class="col-12 col-md-7">
-                    <!-- {{editRole}} -->
                     <mat-form-field appearance="outline" style="width: 100%;">
                         <mat-select [(ngModel)]="editRole" name="roleid" #roleInput="ngModel" required>
                             <mat-option value="">Select a Role</mat-option>
@@ -173,7 +191,7 @@
                     </div>
                 </div>
 
-            </div>
+            </div> -->
 
             <!-- ------Expity date------------- -->
             <!-- <div class="input_box display align-items-center mb-3">
@@ -222,16 +240,23 @@
                 <div class="col-12 col-md-6">
                     <span>Status</span>
                 </div>
-                <div class="col-12 col-md-6 d-flex justify-content-start align-items-center">
+                <!-- <div class="col-12 col-md-6 d-flex justify-content-start align-items-center">
                     <label class="switch">
-                        <input type="checkbox" [(ngModel)]="isactive">
+                        <input type="checkbox"  [(ngModel)]="isactive"  (change)="onToggleChange()"  >
+                        <span class="slider"></span>
+                    </label>
+                </div> -->
+                <div class="toggle">
+                    <label class="switch">
+                        <input type="checkbox" id="lcoLabel" name="lcoLabel" [(ngModel)]="isactive" (change)="onToggleChange()">
                         <span class="slider"></span>
                     </label>
                 </div>
             </div>
             <!-- Submit and Cancel Buttons -->
             <div class="form-group d-flex justify-content-center align-items-center mb-3">
-                <button type="submit" class="btn btn-success me-2" [disabled]="editForm.invalid">Save</button>
+                <!-- <button type="submit" class="btn btn-success me-2" [disabled]="editForm.invalid">Save</button> -->
+                <button type="submit" class="btn btn-success me-2">Save</button>
                 <button type="button" class="btn btn-danger" (click)="onClick()">Cancel</button>
             </div>
         </form>

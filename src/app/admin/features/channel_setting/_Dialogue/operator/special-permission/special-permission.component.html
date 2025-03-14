@@ -1,4 +1,3 @@
-
 <div class="Head d-flex justify-content-between align-items-center mb-3" style="padding: 1rem;">
     <h6>Special Permission</h6>
     <i class="fa fa-close close-icon" style="cursor: pointer;" (click)="onNoClick()"></i>
@@ -70,7 +69,13 @@
                         <span class="slider"></span>
                     </label>
                 </div>
-
+                <div class="input_box d-flex justify-content-between align-items-center mb-3">
+                    <span for="ridpay" class="form-label">Collection</span>
+                    <label class="switch">
+                        <input type="checkbox" id="ridpay" name="ridpay" [(ngModel)]="iscollection">
+                        <span class="slider"></span>
+                    </label>
+                </div>
             </div>
 
             <div class="col-12 col-md-6">
@@ -132,6 +137,7 @@
                     </label>
 
                 </div>
+           
             </div>
         </div>
         <div class="recharge_type">

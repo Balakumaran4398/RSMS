@@ -40,23 +40,24 @@ export class LoginsettingsComponent {
   }
   columnDefs: any[] = [
     {
-      headerName: "S.NO", lockPosition: true, valueGetter: 'node.rowIndex+1', width: 100,
+      headerName: "S.NO", lockPosition: true, valueGetter: 'node.rowIndex+1', width: 100, filter: false
     },
-    { headerName: 'USER NAME	', field: 'username', width: 200,cellStyle: { textAlign: 'left' } },
-    { headerName: 'PASSWORD	', field: 'password', width: 420, cellStyle: { textAlign: 'left' }},
-    { headerName: 'ROLE	', field: 'rolename', width: 150, filter: false,cellStyle: { textAlign: 'left' } },
-    { headerName: 'EXPIRY DATE', field: 'expirydate', width: 200, },
+    { headerName: 'USER NAME	', field: 'username', width: 200, cellStyle: { textAlign: 'left' } },
+    { headerName: 'PASSWORD	', field: 'password', width: 420, cellStyle: { textAlign: 'left' } },
+    // { headerName: 'ROLE	', field: 'rolename', width: 150, filter: false, cellStyle: { textAlign: 'left' } },
+    { headerName: 'ROLE	', field: 'role', width: 150, filter: false, cellStyle: { textAlign: 'left' } },
+    { headerName: 'EXPIRY DATE', field: 'expiryDate', width: 200, },
     {
-      headerName: 'STATUS', field: 'statusdisplay', width: 150,cellStyle:{textAlign:'center'},
+      headerName: 'STATUS', field: 'valid', width: 150, cellStyle: { textAlign: 'center' },
       cellRenderer: (params: { value: any; data: any }) => {
         const color = params.value ? 'green' : 'red';
         const text = params.value ? 'Active' : 'Deactive';
         return `<span style="color: ${color};">${text}</span>`;
       }
     },
-    { headerName: 'CREATED DATE	', field: 'createddate', width: 200, },
+    { headerName: 'CREATED DATE	', field: 'createdDate', width: 200, },
     {
-      headerName: 'ACTION', width: 150, filter: false,cellStyle:{textAlign:'center'},
+      headerName: 'ACTION', width: 150, filter: false, cellStyle: { textAlign: 'center' },
       cellRenderer: (params: any) => {
         const editButton = document.createElement('button');
         editButton.innerHTML = '<i class="fa fa-pencil-square" aria-hidden="true"></i>';
@@ -77,12 +78,16 @@ export class LoginsettingsComponent {
     },
   ];
   ngOnInit(): void {
+    this.userservice.getInvent_License_Extend(this.role, this.username).subscribe((data: any) => {
+      console.log(data);
+      this.rowData = data;
+    })
   }
   onGridReady(params: { api: any; }) {
     this.gridApi = params.api;
-    this.userservice.getAllLoginList(this.role, this.username).subscribe((data: any) => {
-      this.rowData = data;
-    })
+    // this.userservice.getAllLoginList(this.role, this.username).subscribe((data: any) => {
+    //   this.rowData = data;
+    // })
   }
 
   onSelectionChanged() {

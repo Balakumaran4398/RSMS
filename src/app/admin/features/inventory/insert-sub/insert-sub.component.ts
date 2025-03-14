@@ -73,36 +73,35 @@ export class InsertSubComponent {
     this.operatorList();
   }
 
-  operatorList(){
-    this.userService.getOeratorList(this.role, this.username,1).subscribe((data: any) => {
+  operatorList() {
+    this.userService.getOeratorList(this.role, this.username, 1).subscribe((data: any) => {
       console.log(data);
       this.lco_list = Object.keys(data).map(key => {
         const value = data[key];
         const name = key;
         return { name: name, value: value };
       });
-      this.filteredOperators=this.lco_list;
+      this.filteredOperators = this.lco_list;
     })
   }
   columnDefs: ColDef[] = [
-    {
-      lockPosition: true, headerCheckboxSelection: true, checkboxSelection: true, width: 80
-    },
+    { headerName: 'S.NO', lockPosition: true, headerCheckboxSelection: true, valueGetter: 'node.rowIndex+1', checkboxSelection: true, width: 100,filter:false },
+ 
     {
       headerName: 'SMARTCARD',
       field: 'smartcard', width: 200
     },
     {
       headerName: 'BOX_ID',
-      field: 'boxid',width: 300
+      field: 'boxid', width: 300
     },
 
     {
       headerName: 'CAS', cellStyle: { textAlign: 'center' },
-      field: 'casname',width: 200
+      field: 'casname', width: 200
     },
     {
-      headerName: 'IS_ALLOCATED',width: 230,
+      headerName: 'IS_ALLOCATED', width: 200,
       field: 'isallocated', cellStyle: { textAlign: 'center' },
       cellRenderer: (params: any) => {
         if (params.value === true) {
@@ -113,7 +112,7 @@ export class InsertSubComponent {
       },
     },
     {
-      headerName: 'IS_DEFECTIVE',width: 300,
+      headerName: 'IS_DEFECTIVE', width: 300,
       field: 'isdefective', cellStyle: { textAlign: 'center' },
       cellRenderer: (params: any) => {
         if (params.value === true) {

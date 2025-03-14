@@ -25,7 +25,8 @@ h2,
 h3,
 h4,
 h5 {
-    color: var(--primary-color);
+    // color: var(--primary-color);
+    color: var(--header-color);
     font-weight: 700;
     text-align: center;
     text-transform: uppercase;
@@ -34,6 +35,7 @@ h5 {
 
 h6 {
     color: #fff;
+    // color: #2971cf;
     font-size: 17px;
     font-weight: 700;
     margin-bottom: 0rem;
@@ -53,22 +55,80 @@ h6 {
 
 :root {
     /* ===== Colors ===== */
-    --primary-color: #2d584e;
-    // --primary-color: #088dfb;
-    --edit-button: rgb(148 19 106);
+
+    // --primary-color: #243359; //Rdigital
+    // --select2-dropdown-color: #850264; //Rdigital
+    // --ag-grid-header-background: #243359; // Rdigital
+    // --ag-grid-header-text: white; // Rdigital
+    // --ad-grid-checkbox: #e311dd; // Rdigital
+    // --line-shadow-color-rdigital: linear-gradient(to right, #051c83, #dedede); //Rdigital
+    // --background-color: linear-gradient(to bottom, #032d58, #172c4b); //Rdigital
+    // --input-color: rgb(197, 195, 192); //Rdigital
+    // --reports0bgcolor: #0F0E47 //Rdigital
+    //     --subDetailsbtn: #118bb8 //Rdigital
+    //     // --subBtnbgcolor: #4862a2 //Rdigital
+
+
+
+    // --primary-color: #007eff; //Rdigital
+    // --dialog-header: white;
+    // --dialog-header-icon: #007eff;
+    // --active-icon: var(--primary-color);
+    // --active-edit-icon: #fa7e18;
+    // --sub-dashboard-icon: #fa7e18;
+    // --role-color: #f4a261; //Rdigital
+    // --header-color: #333333;
+    // --bg-outline-sucs: #2971cf;
+    // --select2-dropdown-color: #850264; //Rdigital
+    // --ag-grid-header-background: #F9F9F9; // Rdigital
+    // --ag-grid-header-text: #2d89ef; // Rdigital
+    // --ad-grid-checkbox: #e311dd; // Rdigital
+    // --oper-grid-bg: white; // Rdigital
+    // --oper-grid-amount: green; // Rdigital
+    // --line-shadow-color-rdigital: linear-gradient(to right, #051c83, #dedede); //Rdigital
+    // // --background-color: linear-gradient(to bottom, #032d58, #172c4b); //Rdigital
+    // --background-color: linear-gradient(to bottom, #032d58, #172c4b); //Rdigital
+    --input-color: rgb(197, 195, 192); //Rdigital
+    --reports0bgcolor: #0F0E47 //Rdigital
+        --subDetailsbtn: #118bb8 //Rdigital
+        // --subBtnbgcolor: #4862a2 //Rdigital
+
+        --edit-button: rgb(148 19 106);
     --sidebar-color: white;
     --shadow-color: #dddddd url(/RSMS/faces/javax.faces.resource/images/ui-bg_highlight-soft_50_dddddd_1x100.png?ln=primefaces-flick) 50% 50% repeat-x;
-    --secondary-color: #98d4df;
+    // --secondary-color: #98d4df;
     --primary-color-light: #f6f5ff;
     --toggle-color: #ddd;
     --text-color: #4d4d63;
+
     --animative-color: linear-gradient(90deg, rgba(31, 76, 221, 1) 0%, rgba(49, 221, 202, 1) 0%, rgba(47, 215, 191, 1) 7%, rgba(45, 211, 183, 1) 12%, rgba(18, 148, 64, 1) 86%, rgba(18, 147, 62, 1) 86%, rgba(13, 136, 42, 1) 100%, rgba(200, 29, 221, 1) 100%, rgba(69, 144, 65, 1) 100%, rgba(107, 184, 233, 0.9668242296918768) 100%);
-    ;
+
+    // --------------------------------------------------normal----------------------------------------------------
+    --primary-color: #2d584e; //Normal
+    --role-color: #333333; //Normal
+    --line-shadow-color-rdigital: linear-gradient(to right, #058372, #acf3cc); //normal
+    --background-color: linear-gradient(to bottom, #23503e, #172c4b); //normal
+    --ag-grid-header-background: #a2d3c8; // Normal
+    --ag-grid-header-text: #243359; // Normal
+    --ad-grid-checkbox: #46b5e0; // Normal
+    --reports0bgcolor: rgb(212, 241, 239) //Normal
+    --dialog-header: var(--primary-color);
+    --dialog-header-icon: white;
+    --active-icon:#93b6eb;
+    //  :rgb(64 113 114);
+    --sub-dashboard-icon: var(--primary-color);
+    --bg-outline-sucs: #2d584e;
+    --oper-grid-bg:lightblue;
+    --oper-grid-amount: green; 
+
+
+
     /* ====== Transition ====== */
     --tran-03: all 0.2s ease;
     --tran-03: all 0.3s ease;
     --tran-04: all 0.3s ease;
     --tran-05: all 0.3s ease;
+
 }
 
 .bttn {
@@ -118,9 +178,11 @@ mat-form-field {
 // }
 
 .Head {
-    background-color: var(--primary-color);
-    box-shadow: 0px 10px 8px rgba(0, 0, 0, 0.1);
+    // background-color: var(--dialog-header);
+    background-color:  #2d584e;;
+    box-shadow: 0px 5px 8px rgba(0, 0, 0, 0.1);
     color: white;
+    // color: var(--dialog-header-icon);
     padding: 0.5rem;
     position: sticky;
 }
@@ -334,14 +396,15 @@ div:where(.swal2-container) h2:where(.swal2-title) {
 
 .ag-header-viewport {
     text-align: center !important;
-    background: #a2d3c8 !important;
+    // background: #a2d3c8 !important;
+    // background: #a0a2a1 !important;
 
-    // background: #3d5857 !important;
+    background: var(--ag-grid-header-background) !important;
 }
 
 .ag-header-cell-text {
-    color: #243359;
-    // color: white;
+    // color: #243359;
+    color: var(--ag-grid-header-text);
 }
 
 .line {
@@ -645,7 +708,8 @@ input:checked+.slider:before {
     left: 0;
     width: 100px;
     height: 3px;
-    background: linear-gradient(to right, #058372, #acf3cc);
+    // background: linear-gradient(to right, #058372, #acf3cc);
+    background: var(--line-shadow-color-rdigital);
 }
 
 .card {
@@ -681,7 +745,8 @@ input:checked+.slider:before {
 }
 
 .reporthead:after {
-    background: #0AF;
+    background: #0101a7;
+    // background: #0AF;
 }
 
 //   ----------------------------------------------------------------------------------------------------------------------
@@ -839,4 +904,44 @@ input:checked+.slider:before {
 
 .select2-container--default .select2-results__option--highlighted[aria-selected] {
     background-color: #2d584e;
+    // background-color: var(--select2-dropdown-color);
 }
+
+::ng-deep .ag-checkbox-input-wrapper.ag-checked::after {
+    color: var(--ad-grid-checkbox) !important;
+}
+
+::ng-deep .ag-checkbox-input-wrapper::after {
+    color: var(--ad-grid-checkbox) !important;
+}
+
+::ng-deep .select2-container .select2-selection--single {
+    height: 45px !important;
+    margin-top: 1%;
+    border-top: 2px solid #b0afaf;
+    border-bottom: 0.9px solid lightgray;
+    border-left: 0.9px solid lightgray;
+    border-right: 0.9px solid lightgray;
+    box-shadow: 0px 0px 0px 1px rgba(0, 0, 0, 0.1);
+}
+
+::ng-deep .select2 .select2-container .select2-container--default {
+    width: auto !important;
+}
+
+.btn-outline-success {
+    color: var(--bg-outline-sucs);
+    border-color: var(--bg-outline-sucs);
+}
+
+.btn-outline-success:hover {
+    background-color: var(--bg-outline-sucs);
+    color: white;
+}
+
+
+// .btn-primary {
+//     background-color: #48c150 !important;
+//     border-color: #48c150 !important;
+//     color: white !important;
+//   }

@@ -1,0 +1,142 @@
+<div class="">
+
+    <div class="col-12 col-md-6 col-sm-6 p-3" style="margin: auto;">
+        <div class="card">
+            <div class="title1">
+                <p>LCO FORCE MESSAGE</p>
+            </div>
+            <div class=" d-flex justify-content-center align-item-center">
+                <div class="">
+                    <form [formGroup]="form" >
+                        <div class="col d-flex justify-content-center align-items-center">
+                            <div class="col-12 col-md-12 sol-sm-6" style="padding: 1rem;">
+                                <div class="row">
+                                    <div class="input-box mb-3">
+                                        <div class="col-12 col-md-4">
+                                            <span for="">CAS</span>
+                                        </div>
+                                        <div class="col-12 col-md-8">
+                                            <div class="input-container">
+                                                <input type="text" placeholder="Search a CAS" formControlName="castype" [value]="casname"
+                                                    (input)="onSearchChange($event)" [matAutocomplete]="auto"
+                                                    class="example-input" />
+                                                <i class="bx bx-chevron-down icon-right"></i>
+                                            </div>
+                                            <mat-autocomplete #auto="matAutocomplete">
+                                                <mat-option *ngFor="let casItem of filteredcas()"
+                                                (click)="onSelection(casItem)"   [value]="casItem.name">
+                                                    {{ casItem.name }}
+                                                </mat-option>
+                                            </mat-autocomplete>
+                                            <div *ngIf="form.get('castype')?.invalid && form.get('castype')?.touched">
+                                                <small class="text-danger">CAS is required.</small>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div *ngIf="isFource" class="input-box mb-3">
+                                        <div class="col-12 col-md-4">
+                                            <span for="">Force Message</span>
+                                        </div>
+                                        <div class="col-12 col-md-8">
+                                            <mat-radio-group class="radio-group" aria-labelledby="status"
+                                                [(ngModel)]="force_1" formControlName="forcemsg"
+                                                (change)="onForceChange($event)">
+                                                <mat-radio-button class="radio-button" [value]="true">Yes
+                                                </mat-radio-button>&nbsp;
+                                                <mat-radio-button class="radio-button" [value]="false">No
+                                                </mat-radio-button>
+                                            </mat-radio-group>
+                                            <div *ngIf="form.get('forcemsg')?.invalid && form.get('forcemsg')?.touched">
+                                                <small class="text-danger">Force Message is required.</small>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div *ngIf="isRepeatfor" class="input-box mb-3">
+                                        <div class="col-12 col-md-4">
+                                            <span for="">No of Time</span>
+                                        </div>
+                                        <div [ngClass]="{'col-12 col-md-8': true, 'disabled': isRepeatforDisabled}">
+                                            <input type="text" placeholder="Enter No of Time"
+                                                formControlName="repeatfor">
+                                            <div
+                                                *ngIf="form.get('repeatfor')?.invalid && form.get('repeatfor')?.touched">
+                                                <small class="text-danger">No of Time is required.</small>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div *ngIf="isDurationDisabled" class="input-box mb-3">
+                                        <div class="col-12 col-md-4">
+                                            <span for="">Duration</span>
+                                        </div>
+                                        <div class="col-12 col-md-8">
+                                            <input type="text" placeholder="Enter in Seconds" formControlName="duration"
+                                                (keypress)="onKeydown($event)">
+                                            <div *ngIf="form.get('duration')?.invalid && form.get('duration')?.touched">
+                                                <small class="text-danger">Duration is required.</small>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div *ngIf="isTimeGap" class="input-box mb-3">
+                                        <div class="col-12 col-md-4">
+                                            <span for="">Time Interval </span>
+                                        </div>
+                                        <div class="col-12 col-md-8">
+                                            <input type="text" placeholder="" formControlName="timegap"
+                                                [ngModel]="timegap" placeholder="Enter Time Interval">
+                                            <div *ngIf="form.get('timegap')?.invalid && form.get('timegap')?.touched">
+                                                <small class="text-danger">Time Interval is required.</small>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div *ngIf="isMessagnormal" class="input-box mb-3">
+                                        <div class="col-12 col-md-4">
+                                            <span for="">Message</span>
+                                        </div>
+                                        <div class="col-12 col-md-8">
+                                            <textarea type="number" placeholder="Text a Message" [ngModel]="msgcontent"
+                                                formControlName="msgcontent" type="text" value="0"
+                                                [maxlength]="castype == 1 ? 120 : 124"
+                                                (input)="updateRemainingChars($event)">
+                                            </textarea>
+                                            <div *ngIf="isMessagnormal">
+                                                <small>{{ remainingChars }} characters remaining</small>
+                                            </div>
+                                            <div
+                                                *ngIf="form.get('msgcontent')?.invalid && form.get('msgcontent')?.touched">
+                                                <small class="text-danger">Message is required.</small>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="d-flex justify-content-center align-items-center">
+                            <div class="d-flex justify-content-center align-items-center" style="padding: 10px;">
+                                <button type="submit" class="btn btn-success bttn mx-3" (click)="onSubmit()">Send </button>
+                                <button type="" class="btn btn-danger bttn" (click)="onDelete()">Delete </button>
+                            </div>
+                        </div>
+                        <div class=" d-flex justify-content-end align-items-center mb-3" style="color: red;">
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-12 col-md-6 col-sm-6 p-3 " style="margin: auto;">
+        <div class="card">
+            <div class="title1">
+                <p>LCO FORCE TUNING</p>
+            </div>
+            <div class="d-flex justify-content-center align-items-center">
+                <div class="d-flex justify-content-center align-items-center" style="padding: 10px;">
+                    <button type="submit" class="btn bttn mx-3" (click)="onTuningSubmit()"
+                        style="background-color: rgb(0, 119, 139);color: white;">Force
+                        Tuning</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

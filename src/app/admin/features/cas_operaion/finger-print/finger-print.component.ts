@@ -20,7 +20,7 @@ export class FingerPrintComponent {
   username: any;
   role: any;
   castype_1: any;
-  castypeid: any;
+  castypeid: any = '';
   finger: any;
   service: any;
   service_1: any;
@@ -263,6 +263,8 @@ export class FingerPrintComponent {
   ];
 
   constructor(private userservice: BaseService, private router: Router, private storageService: StorageService, private fb: FormBuilder) {
+
+
     this.form = this.fb.group({
       castype: [this.castypeid, Validators.required],
       castypedisplay: [this.castype_1, Validators.required],
@@ -299,7 +301,8 @@ export class FingerPrintComponent {
     this.username = storageService.getUsername();
     this.role = storageService.getUserRole();
     console.log(this.form.value);
-
+    console.log(this.castypeid);
+    console.log(this.castype_1);
   }
 
   updateBackgroundColor(colorLabel: string) {
@@ -372,8 +375,8 @@ export class FingerPrintComponent {
           text: error?.error.castype || error?.error?.intendid || error?.error.serviceid || error?.error.fontsize || error?.error.duration || error?.error.repeatfor || error?.error.timegap ||
             error?.error.message || error?.error.x || error?.error.y || error?.error.positiontype || 'There was a problem creating the message.',
           icon: 'error',
-          // confirmButtonText: 'OK',
-          // timer: 2000,
+          confirmButtonText: 'OK',
+          timer: 3000,
           timerProgressBar: true
         }).then(() => {
           this.form.markAllAsTouched();
@@ -573,7 +576,7 @@ export class FingerPrintComponent {
       console.log(this.castype_1);
       let selectvalue = {
         id: this.castypeid,
-        name: this.castype_1
+        name: this.castype_1.replace(/\(\d+\)$/, '').trim()
       }
       this.onSelectionFingerPrint(selectvalue);
       console.log(selectvalue);
@@ -593,8 +596,8 @@ export class FingerPrintComponent {
   onChangeForce1() {
     this.isStopButtonEnabled = this.isforce;
     if (this.isforce) {
-      this.isDuration = false;
-      this.isTimeSpan = false;
+      this.isDuration = true;
+      this.isTimeSpan = true;
     } else {
       this.isDuration = true;
       this.isTimeSpan = true;
@@ -701,6 +704,12 @@ export class FingerPrintComponent {
     console.log(this.castype_1);
     this.castype = selectedValue.id;
     this.casname = selectedValue.name;
+    if (this.form.value.castype !== selectedValue.id) {
+      this.form.controls['castype'].setValue(selectedValue.id);
+    }
+    console.log(this.castype);
+    console.log("Displayed Name:", this.casname);
+    console.log("Stored ID in FormControl:", this.form.value.castype);
     this.form.patchValue({ castype: this.castype });
     this.form.patchValue({ castypedisplay: selectedValue.name });
     if (this.finger == 'ecm') {

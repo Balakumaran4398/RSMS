@@ -6,6 +6,7 @@ import Swal from 'sweetalert2';
 import { BroadCreateDialogComponent } from '../_Dialogue/broad-create-dialog/broad-create-dialog.component';
 import { Tooltip } from 'chart.js';
 import { TooltipPosition } from 'ag-charts-community/dist/types/src/module-support';
+import { filter } from 'rxjs';
 interface updateRequestbody {
   broadcastername: any,
   username: any,
@@ -49,6 +50,7 @@ export class BroadMasterComponent implements OnInit {
   selectedtypes: number[] = [];
   hasSelectedRows: boolean = true;
   username: any;
+  selectCount: any;
   id: any;
   role: any;
   type: number = 0;
@@ -68,37 +70,19 @@ export class BroadMasterComponent implements OnInit {
 
   columnDefs: any[] = [
     {
-      headerName: "S.No", lockPosition: true, valueGetter: 'node.rowIndex+1', headerCheckboxSelection: true, flex: 1,
+      headerName: "S.NO", lockPosition: true, valueGetter: 'node.rowIndex+1', headerCheckboxSelection: true, filter: false, width: 90,
       checkboxSelection: true,
     },
-    // {
-    //   headerName: 'BroadCaster Name',
-    //   field: 'broadcastername',
-    //   flex: 1,
-    //   cellStyle: { textAlign: 'left' },
-    //   editable: true,
-    //   cellEditor: 'agTextCellEditor',
-    //   tooltipValueGetter: () => 'Double click to change broadcaster name',
-    //   onCellValueChanged: (event: any) => {
-    //     console.log('Cell value changed:', event.data.name);
-    //     this.updateDeviceModelname(event.data.broadcastername, event.data.isactive, event.data.id);
-    //   },
-    //   onCellMouseOver: (event: any) => {
-    //     console.log('calling');
 
-    //     event.eGridCell.style.cursor = 'pointer'; 
-    //   }
-
-    // },
     {
-      headerName: 'BroadCaster Name',
-      field: 'broadcastername',
-      flex: 1,
-      cellStyle: { textAlign: 'left', }, 
+      headerName: 'BROADCASTER NAME',
+      field: 'broadcastername', width: 600,
+
+      cellStyle: { textAlign: 'left', },
       editable: true,
       cellEditor: 'agTextCellEditor',
       tooltipValueGetter: (params: any) => {
-        return `Edit The Broadcaster: ${params.value || ''}`; 
+        return `Edit The Broadcaster: ${params.value || ''}`;
       },
       onCellValueChanged: (event: any) => {
         console.log('Cell value changed:', event.data.name);
@@ -106,16 +90,17 @@ export class BroadMasterComponent implements OnInit {
       },
       cellRenderer: (params: any) => {
         const toggleSwitch = document.createElement('div');
-        toggleSwitch.textContent = params.value; 
-        toggleSwitch.style.cursor = 'pointer'; 
-        toggleSwitch.title = `Edit The Broadcaster: ${params.value || ''}`; 
+        toggleSwitch.textContent = params.value;
+        toggleSwitch.style.cursor = 'pointer';
+        toggleSwitch.title = `Edit The Broadcaster: ${params.value || ''}`;
         return toggleSwitch;
       }
     },
     {
-      headerName: "Status",
-      field: 'isactive',
-      flex: 1, cellStyle: { textAlign: 'center' },
+      headerName: "STATUS",
+      field: 'isactive', width: 500,
+      cellStyle: { textAlign: 'center' },
+      filter: false,
       cellRenderer: (params: any) => {
         var isActive = params.data.isactive;
 
@@ -128,7 +113,7 @@ export class BroadMasterComponent implements OnInit {
         toggleSwitch.style.width = '45px';
         toggleSwitch.style.height = '25px';
         toggleSwitch.style.borderRadius = '15px';
-        toggleSwitch.style.backgroundColor = isActive ? '#93b6eb' : 'rgb(115 115 115)';
+        toggleSwitch.style.backgroundColor = isActive ? 'var(--active-icon)' : 'rgb(115 115 115)';
         toggleSwitch.style.position = 'relative';
         toggleSwitch.style.cursor = 'pointer';
         toggleSwitch.style.transition = 'background-color 0.3s ease';
@@ -180,7 +165,7 @@ export class BroadMasterComponent implements OnInit {
       const selectedRows = this.gridApi.getSelectedRows();
       this.isAnyRowSelected = selectedRows.length > 0;
       console.log("Selected Rows:", selectedRows);
-
+      this.selectCount = selectedRows.length
       // Extracting IDs from selected rows
       this.selectedIds = selectedRows.map((e: any) => e.id);
 

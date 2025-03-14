@@ -3,7 +3,9 @@
         <div class="login-html">
             <div class="d-flex justify-content-center align-item-center">
                 <img *ngIf="msoLogo" [src]="msoLogo" alt="MSO Logo"
-                    style="width: 170px; height: auto;display:flex;margin: auto;">
+                    style="width: 150px; height: auto;display:flex;margin: auto;">
+                <!-- <img *ngIf="msoLogo" [src]="msoLogo" alt="MSO Logo"
+                    style="width: 100px; height: auto;display:flex;margin: auto;"> -->
             </div>
             <div class="d-block justify-content-center align-items-center mb-3">
                 <h2 style="text-transform:capitalize;color:#256462">RSMS</h2>
@@ -19,15 +21,19 @@
                             <i class="fa-solid fa-user" style="color: #1f6764;"></i>
                         </span>
                     </mat-form-field>
-                    <mat-form-field class="example-full-width w-100 mb-3" appearance="outline">
+              
+
+                    <mat-form-field class="example-full-width w-100 mb-3 password-field" appearance="outline">
                         <mat-label>Password</mat-label>
-                        <input matInput id="password" [type]="isShow?'text':'password'" formControlName="password"
-                            placeholder="Password">
-                        <mat-icon (click)="toggleShowPassword()"
-                            style="color:#1f6764;cursor: pointer;margin-bottom: -2%;">
-                            {{ isShow ? 'visibility' : 'visibility_off' }}
-                        </mat-icon>
+                        <div class="password-container">
+                            <input matInput id="password" [type]="isShow ? 'text' : 'password'" formControlName="password"
+                                placeholder="Password">
+                            <mat-icon (click)="toggleShowPassword()" class="eye-icon"> 
+                                {{ isShow ? 'visibility' : 'visibility_off' }}
+                            </mat-icon>
+                        </div>
                     </mat-form-field>
+                    
                     <br>
                     <div class="group">
                         <input type="submit" class="button" value="Sign In">

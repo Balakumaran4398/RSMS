@@ -5,6 +5,7 @@ import { StorageService } from 'src/app/_core/service/storage.service';
 import { ColDef } from 'ag-grid-community';
 import { SmartcardInventoryComponent } from '../../channel_setting/_Dialogue/Inventory/smartcard-inventory/smartcard-inventory.component';
 import Swal from 'sweetalert2';
+import { SwalService } from 'src/app/_core/service/swal.service';
 
 @Component({
   selector: 'app-smartcard-allocation',
@@ -19,6 +20,8 @@ export class SmartcardAllocationComponent {
   hasSelectedRows: boolean = true;
   username: any;
   role: any;
+
+
   public rowSelection: any = "multiple";
   rowData: any[] = [];
   gridOptions = {
@@ -39,7 +42,7 @@ export class SmartcardAllocationComponent {
     pagination: true,
   }
 
-  constructor(public dialog: MatDialog, private userService: BaseService, storageService: StorageService, private renderer: Renderer2) {
+  constructor(public dialog: MatDialog, private userService: BaseService, storageService: StorageService, private renderer: Renderer2, private swal: SwalService) {
     this.username = storageService.getUsername();
     this.role = storageService.getUserRole();
     userService.getDeallocate_smartcard_List(this.role, this.username).subscribe((data: any) => {
@@ -49,7 +52,7 @@ export class SmartcardAllocationComponent {
   }
   columnDefs: ColDef[] = [
     {
-      lockPosition: true, headerCheckboxSelection: true, checkboxSelection: true, width: 80
+      lockPosition: true, headerCheckboxSelection: true, valueGetter: 'node.rowIndex+1', checkboxSelection: true, width: 80, filter: false
     },
     {
       headerName: 'SMARTCARD', width: 250,
@@ -62,7 +65,7 @@ export class SmartcardAllocationComponent {
 
     },
     {
-      headerName: 'CARTON BOX', width: 200,
+      headerName: 'CARTON BOX', width: 210,
       field: 'cottonbox',
 
     },
@@ -105,7 +108,7 @@ export class SmartcardAllocationComponent {
       },
     },
     {
-      headerName: 'LCO_NAME', width: 150,
+      headerName: 'LCO_NAME', width: 250,
       field: 'operatorname',
 
     },
@@ -136,18 +139,23 @@ export class SmartcardAllocationComponent {
 
   onSelectionChanged() {
     if (this.gridApi) {
-      const selectedRows = this.gridApi.getSelectedRows();
+      let selectedRows: any[] = [];
+      this.gridApi.forEachNodeAfterFilter((rowNode: any) => {
+        if (rowNode.isSelected()) {
+          selectedRows.push(rowNode.data);
+        }
+      });
+      // console.log("Filtered & Selected Rows:", selectedRows);
+      if (selectedRows.length === 0) {
+        this.gridApi.deselectAll();
+      }
+      // console.log("Final Selected Rows:", selectedRows);
+      // const selectedRows = this.gridApi.getSelectedRows();
       this.isAnyRowSelected = selectedRows.length > 0;
-      console.log("Selected Rows:", selectedRows);
-
-      // Extracting IDs from selected rows
       this.selectedIds = selectedRows.map((e: any) => e.id);
+      // console.log(this.selectedIds);
 
-      // Extracting 'isactive' from selected rows
       this.selectedtypes = selectedRows.map((e: any) => e.isactive);
-
-      console.log("Selected IDs:", this.selectedIds);
-      console.log("Selected Types:", this.selectedtypes);
     }
   }
   onGridReady(params: { api: any; }) {
@@ -178,6 +186,7 @@ export class SmartcardAllocationComponent {
       });
     } else {
       // If a row is selected, proceed with the deallocation
+      this.swal.Loading();
       this.userService.DeAllocate_Smartcard(this.role, this.username, this.selectedIds)
         .subscribe((res: any) => {
           console.log(res);
@@ -195,10 +204,14 @@ export class SmartcardAllocationComponent {
 
         }, (error) => {
           // Handle HTTP errors or server issues
+          console.log(error);
+
           Swal.fire({
+
+
             icon: 'error',
             title: 'Deallocation Error',
-            text: error?.error?.message || 'A server error occurred. Please try again later.',
+            text: error?.error?.message || error || 'A server error occurred. Please try again later.',
             timer: 3000, timerProgressBar: true,
             showConfirmButton: true
           });

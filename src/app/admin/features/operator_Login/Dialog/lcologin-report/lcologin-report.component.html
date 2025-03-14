@@ -1,0 +1,88 @@
+<!-- <div [ngSwitch]="type">
+    <div *ngSwitchCase="'current_active_smartcard'">
+        <ng-container *ngTemplateOutlet="contentTemplate; context: { title: 'CURRENT ACTIVE SMARTCARD', 
+        downloadFn: getCurrentActReportDownload }"></ng-container>
+    </div>
+
+    <div *ngSwitchCase="'current_Deactive_smartcard'">
+        <ng-container *ngTemplateOutlet="contentTemplate; context: { title: 'CURRENT DEACTIVE SMARTCARD', 
+        downloadFn: getCurrentDeactReportDownload }"></ng-container>
+    </div>
+
+    <div *ngSwitchCase="'box_in_hand'">
+        <ng-container *ngTemplateOutlet="contentTemplate; context: { title: 'BOX IN HAND', 
+        downloadFn: getBoxinHandReportDownload }"></ng-container>
+    </div>
+</div>
+
+<ng-template #contentTemplate let-title="title" let-downloadFn="downloadFn">
+    <div class="col-12 col-md-2 d-flex justify-content-start align-items-start mb-2">
+        <button type="button" class="btn btn-primary bttn" (click)="goBack()">
+            <i class="fa-solid fa-reply mx-2"></i>Back
+        </button>
+    </div>
+    <div class="container">
+        <div class="mb-3">
+            <h4>{{ title }}</h4>
+        </div>
+    </div>
+    <div class="display1 justify-content-end align-items-center mb-3">
+        <div class="export-icon mx-2">
+            <img src="/assets/images/icons/Excel.png" alt="Excel Icon" width="40px" (click)="downloadFn(2)">
+            <div class="tooltip">Excel</div>
+        </div>
+        <div class="export-icon">
+            <img src="/assets/images/icons/pdf.png" alt="PDF Icon" width="40px" (click)="downloadFn(1)">
+            <div class="tooltip">Pdf</div>
+        </div>
+    </div>
+    <ag-grid-angular #agGrid id="myGrid" domLayout='normal' class="ag-theme-alpine table-class" rowAnimation
+        [gridOptions]="gridOptions" [columnDefs]="columnDefs" [rowData]="rowData" [enableCellTextSelection]="true">
+    </ag-grid-angular>
+</ng-template> -->
+
+
+<div *ngIf="type">
+    <div class="col-12 col-md-2 d-flex justify-content-start align-items-start mb-2">
+        <button type="button" class="btn btn-primary bttn" (click)="goBack()">
+            <i class="fa-solid fa-reply mx-2"></i>Back
+        </button>
+    </div>
+    <div class="container">
+        <div class="mb-3">
+            <h4>{{ getTitle(type) }}</h4>
+        </div>
+    </div>
+    <div class="display justify-content-between align-items-center">
+        <div *ngIf="requiresDatePicker(type)" class="d-flex justify-content-between align-items-center">
+            <mat-form-field appearance="outline">
+                <mat-date-range-input [rangePicker]="picker">
+                    <input matStartDate matInput placeholder="Start date" (dateChange)="getFromDate($event)" />
+                    <input matEndDate matInput placeholder="End date" (dateChange)="getToDate($event)" />
+                </mat-date-range-input>
+                <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                <mat-date-range-picker #picker></mat-date-range-picker>
+            </mat-form-field>
+
+            <button class="btn d-flex align-item-center justify-content-between  bttn mx-2 mb-3"
+                style="background-color: var(--primary-color);">
+                <span style="color: white;">Get</span>
+            </button>
+        </div>
+        <div class="display1 justify-content-end align-items-center mb-3">
+            <div class="export-icon mx-2">
+                <img src="/assets/images/icons/Excel.png" alt="Excel Icon" width="40px"
+                    (click)="downloadReport(type, 2)">
+                <div class="tooltip">Excel</div>
+            </div>
+            <div class="export-icon">
+                <img src="/assets/images/icons/pdf.png" alt="PDF Icon" width="40px" (click)="downloadReport(type, 1)">
+                <div class="tooltip">Pdf</div>
+            </div>
+        </div>
+    </div>
+
+    <ag-grid-angular #agGrid id="myGrid" domLayout='normal' class="ag-theme-alpine table-class" rowAnimation
+        [gridOptions]="gridOptions" [columnDefs]="columnDefs" [rowData]="rowData" [enableCellTextSelection]="true">
+    </ag-grid-angular>
+</div>

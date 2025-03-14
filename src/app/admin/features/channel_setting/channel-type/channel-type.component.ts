@@ -36,7 +36,6 @@ export class ChannelTypeComponent {
         if (normalizedA > normalizedB) return 1;
         return 0;
       },
-
     },
     paginationPageSize: 10,
     pagination: true,
@@ -60,29 +59,16 @@ export class ChannelTypeComponent {
   columnDefs: ColDef[] = [
     {
       headerName: "S.No", lockPosition: true, valueGetter: 'node.rowIndex+1', headerCheckboxSelection: true,
-      checkboxSelection: true, width: 140,
+      checkboxSelection: true, width: 90, filter: false
     },
     {
-      headerName: 'CHANNEL TYPE NAME',
+      headerName: 'CHANNEL TYPE NAME', width: 600,
       field: 'name',
-      flex: 1, cellStyle: { textAlign: 'left' },
+      cellStyle: { textAlign: 'left' },
       editable: true,
       cellEditor: 'agTextCellEditor',
-      // onCellValueChanged: (event) => {
-      //   this.updateDeviceModelname(event.data.name, event.data.isactive, event.data.id);
-      // },
-      // tooltipValueGetter: (params) => {
-      //   return `Channel: ${params.value}`; // Customize tooltip text
-      // },
-      // cellRenderer: (params: any) => {
-      //   const editButton = document.createElement('button');
-      //   editButton.title = 'Edit the Channel';
-      //   return params.value;
-      // },
-
-
       tooltipValueGetter: (params: any) => {
-        return `Edit The Channel: ${params.value || ''}`; 
+        return `Edit The Channel: ${params.value || ''}`;
       },
       onCellValueChanged: (event: any) => {
         console.log('Cell value changed:', event.data.name);
@@ -90,9 +76,9 @@ export class ChannelTypeComponent {
       },
       cellRenderer: (params: any) => {
         const toggleSwitch = document.createElement('div');
-        toggleSwitch.textContent = params.value; 
-        toggleSwitch.style.cursor = 'pointer'; 
-        toggleSwitch.title = `Edit The Channel: ${params.value || ''}`; 
+        toggleSwitch.textContent = params.value;
+        toggleSwitch.style.cursor = 'pointer';
+        toggleSwitch.title = `Edit The Channel: ${params.value || ''}`;
         return toggleSwitch;
       }
     },
@@ -100,7 +86,7 @@ export class ChannelTypeComponent {
     {
       headerName: "STATUS",
       field: 'isactive',
-      flex: 1,
+      width: 870,
       cellRenderer: (params: any) => {
         var isActive = params.data.isactive;
 
@@ -113,7 +99,7 @@ export class ChannelTypeComponent {
         toggleSwitch.style.width = '45px';
         toggleSwitch.style.height = '25px';
         toggleSwitch.style.borderRadius = '15px';
-        toggleSwitch.style.backgroundColor = isActive ? '#93b6eb' : 'rgb(115 115 115)';
+        toggleSwitch.style.backgroundColor = isActive ? 'var(--active-icon)' : 'rgb(115 115 115)';
         toggleSwitch.style.position = 'relative';
         toggleSwitch.style.cursor = 'pointer';
         toggleSwitch.style.transition = 'background-color 0.3s ease';
@@ -133,12 +119,8 @@ export class ChannelTypeComponent {
 
 
         toggleSwitch.addEventListener('click', () => {
-          // Toggle the isActive value
           isActive = !isActive;
-          // Change the background color of the toggle switch
           toggleSwitch.style.backgroundColor = isActive ? '#93b6eb' : 'rgb(115 115 115)';
-
-          // Move the toggle circle
           toggleCircle.style.left = isActive ? 'calc(100% - 22px)' : '3px';
 
           if (isActive) {
@@ -147,21 +129,6 @@ export class ChannelTypeComponent {
             this.Deactive(params.data.id);
           }
         });
-
-        // const updateToggleStyle = (active: boolean) => {
-        //   toggleSwitch.style.backgroundColor = active ? '#4CAF50' : '#616060';
-        //   toggleCircle.style.left = active ? 'calc(100% - 22px)' : '3px';
-        //   toggleSwitch.title = active ? 'Deactivate the Customer' : 'Activate the Customer';
-        // };
-
-        // toggleSwitch.addEventListener('click', () => {
-        //   const currentStatus = params.data.isactive;
-        //   const newStatus = !currentStatus;
-        //   params.data.isactive = newStatus; 
-        //   updateToggleStyle(newStatus);
-
-        //   console.log(`Status changed to: ${newStatus ? 'Active' : 'Inactive'}`);
-        // });
         toggleContainer.appendChild(toggleSwitch);
         return toggleContainer;
       }

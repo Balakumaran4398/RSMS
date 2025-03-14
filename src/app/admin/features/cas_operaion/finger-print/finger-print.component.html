@@ -16,7 +16,7 @@
                                     (input)="onSearchChange($event)" [(ngModel)]="castype_1" [value]="casname"
                                     [matAutocomplete]="auto" class="example-input"> -->
                                 <div class="input-container">
-                                    <input type="text" placeholder="Search a CAS" formControlName="castype"
+                                    <input type="text" placeholder="Search a CAS" 
                                         [value]="casname" (input)="onSearchChange($event)" [matAutocomplete]="auto"
                                         class="example-input" />
                                     <i class="bx bx-chevron-down icon-right"></i>
@@ -172,7 +172,7 @@
                                 <label for="">Position Type</label>
                             </div>
                             <div class="col-12 col-md-3 mb-3 mx-2">
-                                <select placeholder="Select the Position" formControlName="positiontype"
+                                <select placeholder="Select the Position" formControlName="position"
                                     [(ngModel)]="positiontype_1" (ngModelChange)="onChangePositionType($event)">
                                     <select-filter [placeholder]="'Find Position'" [displayMember]="'lable'"
                                         [array]="positiontype" (filteredReturn)="positiontype = $event"></select-filter>
@@ -184,7 +184,7 @@
                                     <!-- [disabled]="castype === 1 && castype === 6 &&  pt.value === 3" -->
                                 </select>
 
-                                <div *ngIf="form.get('positiontype')?.invalid && form.get('positiontype')?.touched">
+                                <div *ngIf="form.get('position')?.invalid && form.get('position')?.touched">
                                     <small class="text-danger">Position Type is required.</small>
                                 </div>
                             </div>
@@ -223,12 +223,12 @@
                                 <label for="">Position</label>
                             </div>
                             <div class="col-12 col-md-8">
-                                <select placeholder="Select the position" formControlName="position"
+                                <select placeholder="Select the position" formControlName="positiontype"
                                     [(ngModel)]="position_1">
                                     <option value="0" disabled>Select a Position</option>
                                     <option *ngFor="let po of position" [value]="po.value">{{po.lable}}</option>
                                 </select>
-                                <div *ngIf="form.get('position')?.invalid && form.get('position')?.touched">
+                                <div *ngIf="form.get('positiontype')?.invalid && form.get('positiontype')?.touched">
                                     <small class="text-danger">Position is required.</small>
                                 </div>
                             </div>

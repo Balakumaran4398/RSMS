@@ -307,174 +307,213 @@ export class HistoryAllReportsComponent implements OnInit {
   // ---------------------------------------ALL SERVICE----------------------
 
   getAllServicereport() {
-    console.log('sadsasadsadsadsadsad');
-
-    // this.smartcard = this.smartcardid
-    // this.swal.Loading();
-    this.userService.getAllServiceHistoryExcelReport(this.role, this.username, this.fromdate, this.todate, this.smartcard, 2)
+    this.swal.Loading();
+    this.userService.getAllServiceHistoryExcelReport(this.role, this.username, this.fromdate, this.todate, this.smartcard, 3)
       .subscribe(
         (response: HttpResponse<any[]>) => {
           console.log(response);
           if (response.status === 200) {
             this.rowData = response.body;
+            this.swal.Close();
           } else if (response.status === 204) {
             this.swal.Success_204();
             this.rowData = [];
+            this.swal.Close();
           }
         },
         (error) => {
-          this.handleApiError(error);
+          this.handleApiError(error || error?.error);
         }
       );
 
   }
-  getAllServiceExcel() {
-    // this.swal.Loading();
-    this.userService.getAllServiceHistoryExcelReport(this.role, this.username, this.fromdate, this.todate, this.smartcard, 2)
-      .subscribe(
-        (response: HttpResponse<any[]>) => {
-          console.log(response);
-          if (response.status === 200) {
-            this.rowData = response.body;
-            console.log(this.reportTitle);
-            const title = (this.reportTitle + '  [FROM DATE : ' + this.fromdate + '- TO DATE : ' + this.todate + ']').toUpperCase();
-            const sub = 'MSO ADDRESS:' + this.msodetails;
-            let areatitle = '';
-            let areasub = '';
-            let header: string[] = [];
-            const datas: Array<any> = [];
-            areatitle = 'A1:E2';
-            areasub = 'A3:E3';
-            header = ['S.NO', 'SMARTCARD', 'LOG DATE', 'ACTION', 'REMARKS',];
-            this.rowData.forEach((d: any, index: number) => {
-              const row = [index + 1, d.smartcard, d.logdate, d.activity, d.remarks];
-              datas.push(row);
-            });
-            // this.excelService.generateAllServiceExcel(areatitle, header, datas, title, areasub, sub);
-            this.excelService.generatedAllServiceExcel(areatitle, header, datas, title, areasub, sub);
+  // getAllServiceExcel() {
+  //   this.swal.Loading();
+  //   this.userService.getAllServiceHistoryExcelReport(this.role, this.username, this.fromdate, this.todate, this.smartcard, 2)
+  //     .subscribe(
+  //       (response: HttpResponse<any[]>) => {
+  //         console.log(response);
+  //         if (response.status === 200) {
+  //           this.rowData = response.body;
+  //           console.log(this.reportTitle);
+  //           const title = (this.reportTitle + '  [FROM DATE : ' + this.fromdate + '- TO DATE : ' + this.todate + ']').toUpperCase();
+  //           const sub = 'MSO ADDRESS:' + this.msodetails;
+  //           let areatitle = '';
+  //           let areasub = '';
+  //           let header: string[] = [];
+  //           const datas: Array<any> = [];
+  //           areatitle = 'A1:E2';
+  //           areasub = 'A3:E3';
+  //           header = ['S.NO', 'SMARTCARD', 'LOG DATE', 'ACTION', 'REMARKS',];
+  //           this.rowData.forEach((d: any, index: number) => {
+  //             const row = [index + 1, d.smartcard, d.logdate, d.activity, d.remarks];
+  //             datas.push(row);
+  //           });
+  //           // this.excelService.generateAllServiceExcel(areatitle, header, datas, title, areasub, sub);
+  //           this.excelService.generatedAllServiceExcel(areatitle, header, datas, title, areasub, sub);
+  //           this.swal.Close();
+  //         } else if (response.status === 204) {
+  //           // this.swal.Success_204();
+  //           this.rowData = response.body;
+  //           console.log(this.reportTitle);
+  //           const title = (this.reportTitle + '  [ FROM DATE : ' + this.fromdate + '- TO DATE : ' + this.todate + ']').toUpperCase();
+  //           const sub = 'MSO ADDRESS:' + this.msodetails;
+  //           let areatitle = '';
+  //           let areasub = '';
+  //           let header: string[] = [];
+  //           const datas: Array<any> = [];
+  //           areatitle = 'A1:E2';
+  //           areasub = 'A3:E3';
+  //           header = ['S.NO', 'SMARTCARD', 'LOG DATE', 'ACTION', 'REMARKS',];
 
-          } else if (response.status === 204) {
-            // this.swal.Success_204();
-            this.rowData = response.body;
-            console.log(this.reportTitle);
-            const title = (this.reportTitle + '  [ FROM DATE : ' + this.fromdate + '- TO DATE : ' + this.todate + ']').toUpperCase();
-            const sub = 'MSO ADDRESS:' + this.msodetails;
-            let areatitle = '';
-            let areasub = '';
-            let header: string[] = [];
-            const datas: Array<any> = [];
-            areatitle = 'A1:E2';
-            areasub = 'A3:E3';
-            header = ['S.NO', 'SMARTCARD', 'LOG DATE', 'ACTION', 'REMARKS',];
+  //           // this.excelService.generateAllServiceExcel(areatitle, header, datas, title, areasub, sub);
+  //           this.excelService.generatedAllServiceExcel(areatitle, header, datas, title, areasub, sub);
 
-            // this.excelService.generateAllServiceExcel(areatitle, header, datas, title, areasub, sub);
-            this.excelService.generatedAllServiceExcel(areatitle, header, datas, title, areasub, sub);
+  //           this.rowData = [];
+  //           this.swal.Close();
+  //         }
+  //       },
+  //       (error) => {
+  //         this.handleApiError(error);
+  //       }
+  //     );
+  // }
+  // getAllServicePDF() {
+  //   this.swal.Loading();
+  //   this.userService.getAllServiceHistoryPDFReport(this.role, this.username, this.fromdate, this.todate, this.smartcard, 1)
+  //     .subscribe((x: Blob) => {
+  //       const blob = new Blob([x], { type: 'application/pdf' });
+  //       const data = window.URL.createObjectURL(blob);
+  //       const link = document.createElement('a');
+  //       link.href = data;
+  //       // link.download = (this.reportTitle +  ".pdf").toUpperCase();
+  //       link.download = `${this.reportTitle}   FROM DATE : ${this.fromdate} TO DATE : ${this.todate}.pdf`.toUpperCase();
 
-            this.rowData = [];
-          }
-        },
-        (error) => {
-          this.handleApiError(error);
-        }
-      );
-  }
-  getAllServicePDF() {
-    // this.swal.Loading();
-    this.userService.getAllServiceHistoryPDFReport(this.role, this.username, this.fromdate, this.todate, this.smartcard, 1)
+  //       link.dispatchEvent(new MouseEvent('click', { bubbles: true, cancelable: true, view: window }));
+  //       setTimeout(() => {
+  //         window.URL.revokeObjectURL(data);
+  //         link.remove();
+  //       }, 100);
+  //       this.swal.Close();
+  //     },
+  //       (error: any) => {
+  //         Swal.fire({
+  //           title: 'Error!',
+  //           text: error?.error?.message || 'There was an issue generating the PDF CAS form report.',
+  //           icon: 'error',
+  //           confirmButtonText: 'Ok'
+  //         });
+  //       });
+  //   this.swal.Close();
+  // }
+
+  getAllServiceReport(type: number) {
+    this.processingSwal();
+    this.userService.getAllServiceHistoryPDFReport(this.role, this.username, this.fromdate, this.todate, this.smartcard, type)
       .subscribe((x: Blob) => {
-        const blob = new Blob([x], { type: 'application/pdf' });
-        const data = window.URL.createObjectURL(blob);
-        const link = document.createElement('a');
-        link.href = data;
-        // link.download = (this.reportTitle +  ".pdf").toUpperCase();
-        link.download = `${this.reportTitle}   FROM DATE : ${this.fromdate} TO DATE : ${this.todate}.pdf`.toUpperCase();
-
-        link.dispatchEvent(new MouseEvent('click', { bubbles: true, cancelable: true, view: window }));
-        setTimeout(() => {
-          window.URL.revokeObjectURL(data);
-          link.remove();
-        }, 100);
+        if (type == 1) {
+          this.reportMaking(x, `${this.reportTitle}   FROM DATE : ${this.fromdate} TO DATE : ${this.todate}].pdf`.toUpperCase(), "application/pdf");
+        } else if (type == 2) {
+          this.reportMaking(x, `${this.reportTitle}   FROM DATE : ${this.fromdate} TO DATE : ${this.todate}].xlsx`.toUpperCase(), "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
+        }
       },
         (error: any) => {
-          Swal.fire({
-            title: 'Error!',
-            text: error?.error?.message || 'There was an issue generating the PDF CAS form report.',
-            icon: 'error',
-            confirmButtonText: 'Ok'
-          });
+          this.pdfswalError(error?.error.message || error?.error);
         });
   }
+
   // --------------------------------------------Total Smartcard-----------------
-  getTotalExcel() {
-    // this.swal.Loading();
-    this.userService.getTotalSmartcardExcelReport(this.role, this.username, 2)
-      .subscribe(
-        (response: HttpResponse<any[]>) => { // Expect HttpResponse<any[]>
-          console.log(this.reportTitle);
-          if (response.status === 200) {
-            this.rowData = response.body;
-            console.log(this.reportTitle);
-            const title = (this.reportTitle).toUpperCase();
-            const sub = 'MSO ADDRESS:' + this.msodetails;
-            let areatitle = '';
-            let areasub = '';
-            let header: string[] = [];
-            const datas: Array<any> = [];
-            areatitle = 'A1:J2';
-            areasub = 'A3:J3';
-            header = ['S.NO', 'SUBSCRIBER NAME', 'SUBSCRIBER ID', 'CAS FORM ID', 'MOBILE NO', 'ADDRESS', 'INSTALL ADDRESS', 'EMAIL', 'LANDLINE NO', 'SMARTCARD', 'BOX ID', 'STATUS', 'CREATED DATE', 'USER NAME', 'PASSWORD', 'APP LOCK STATUS', 'PACKAGE NAME'];
-            this.rowData.forEach((d: any, index: number) => {
-              const row = [index + 1, d.customername, d.subid, d.casformid, d.mobileno, d.address, d.installaddress, d.email, d.landline, d.smartcard, d.boxid, d.status, d.createddate, d.username, d.password, d.lockstatus, d.productname];
-              datas.push(row);
-            });
-            this.excelService.generateTotalSmartcardExcel(areatitle, header, datas, title, areasub, sub);
-          } else if (response.status === 204) {
-            this.swal.Success_204();
-            this.rowData = [];
-          }
-        },
-        (error) => {
-          this.handleApiError(error);
-        }
-      );
-  }
-  getTotalPDF() {
-    // this.swal.Loading();
-    this.userService.getTotalSmartcardPDFReport(this.role, this.username, 1)
+  // getTotalExcel() {
+  //   this.swal.Loading();
+  //   this.userService.getTotalSmartcardExcelReport(this.role, this.username, 2)
+  //     .subscribe(
+  //       (response: HttpResponse<any[]>) => { // Expect HttpResponse<any[]>
+  //         console.log(this.reportTitle);
+  //         if (response.status === 200) {
+  //           this.rowData = response.body;
+  //           console.log(this.reportTitle);
+  //           const title = (this.reportTitle).toUpperCase();
+  //           const sub = 'MSO ADDRESS:' + this.msodetails;
+  //           let areatitle = '';
+  //           let areasub = '';
+  //           let header: string[] = [];
+  //           const datas: Array<any> = [];
+  //           areatitle = 'A1:J2';
+  //           areasub = 'A3:J3';
+  //           header = ['S.NO', 'SUBSCRIBER NAME', 'SUBSCRIBER ID', 'CAS FORM ID', 'MOBILE NO', 'ADDRESS', 'INSTALL ADDRESS', 'EMAIL', 'LANDLINE NO', 'SMARTCARD', 'BOX ID', 'STATUS', 'CREATED DATE', 'USER NAME', 'PASSWORD', 'APP LOCK STATUS', 'PACKAGE NAME'];
+  //           this.rowData.forEach((d: any, index: number) => {
+  //             const row = [index + 1, d.customername, d.subid, d.casformid, d.mobileno, d.address, d.installaddress, d.email, d.landline, d.smartcard, d.boxid, d.status, d.createddate, d.username, d.password, d.lockstatus, d.productname];
+  //             datas.push(row);
+  //           });
+  //           this.excelService.generateTotalSmartcardExcel(areatitle, header, datas, title, areasub, sub);
+  //           this.swal.Close();
+  //         } else if (response.status === 204) {
+  //           this.swal.Success_204();
+  //           this.rowData = [];
+  //           this.swal.Close();
+  //         }
+  //       },
+  //       (error) => {
+  //         this.handleApiError(error);
+  //       }
+  //     );
+  // }
+  // getTotalPDF() {
+  //   this.swal.Loading();
+  //   this.userService.getTotalSmartcardPDFReport(this.role, this.username, 1)
+  //     .subscribe((x: Blob) => {
+  //       const blob = new Blob([x], { type: 'application/pdf' });
+  //       const data = window.URL.createObjectURL(blob);
+  //       const link = document.createElement('a');
+  //       link.href = data;
+  //       link.download = (this.reportTitle + ".pdf").toUpperCase();
+  //       link.dispatchEvent(new MouseEvent('click', { bubbles: true, cancelable: true, view: window }));
+  //       setTimeout(() => {
+  //         window.URL.revokeObjectURL(data);
+  //         link.remove();
+  //       }, 100);
+  //       this.swal.Close();
+  //     },
+  //       (error: any) => {
+  //         Swal.fire({
+  //           title: 'Error!',
+  //           text: error?.error?.message || 'There was an issue generating the PDF CAS form report.',
+  //           icon: 'error',
+  //           confirmButtonText: 'Ok'
+  //         });
+  //       });
+  //   this.swal.Close();
+  // }
+
+
+  getTotalReport(type: number) {
+    this.userService.getTotalSmartcardPDFReport(this.role, this.username, type)
       .subscribe((x: Blob) => {
-        const blob = new Blob([x], { type: 'application/pdf' });
-        const data = window.URL.createObjectURL(blob);
-        const link = document.createElement('a');
-        link.href = data;
-        link.download = (this.reportTitle + ".pdf").toUpperCase();
-        link.dispatchEvent(new MouseEvent('click', { bubbles: true, cancelable: true, view: window }));
-        setTimeout(() => {
-          window.URL.revokeObjectURL(data);
-          link.remove();
-        }, 100);
+        if (type == 1) {
+          this.reportMaking(x, `${this.reportTitle} ].pdf`.toUpperCase(), "application/pdf");
+        } else if (type == 2) {
+          this.reportMaking(x, `${this.reportTitle} ].xlsx`.toUpperCase(), "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
+        }
       },
         (error: any) => {
-          Swal.fire({
-            title: 'Error!',
-            text: error?.error?.message || 'There was an issue generating the PDF CAS form report.',
-            icon: 'error',
-            confirmButtonText: 'Ok'
-          });
+          this.pdfswalError(error?.error.message || error?.error);
         });
   }
   // --------------------------------------Paired-------------------------
 
   getPairedReport() {
-    // this.swal.Loading();
-    this.userService.getPairedSmartcardExcelReport(this.role, this.username, 2)
+    this.swal.Loading();
+    this.userService.getPairedSmartcardExcelReport(this.role, this.username, 3)
       .subscribe(
         (response: HttpResponse<any[]>) => {
           console.log(response);
           if (response.status === 200) {
             this.rowData = response.body;
+            this.swal.Close();
           } else if (response.status === 204) {
             this.swal.Success_204();
             this.rowData = [];
+            this.swal.Close();
           }
         },
         (error) => {
@@ -482,93 +521,112 @@ export class HistoryAllReportsComponent implements OnInit {
         }
       );
   }
-  getPairedExcel() {
-    // this.swal.Loading();
-    this.userService.getPairedSmartcardExcelReport(this.role, this.username, 2)
-      .subscribe(
-        (response: HttpResponse<any[]>) => { // Expect HttpResponse<any[]>
-          console.log(this.reportTitle);
-          if (response.status === 200) {
-            this.rowData = response.body;
-            console.log(this.reportTitle);
-            const title = (this.reportTitle).toUpperCase();
-            const sub = 'MSO ADDRESS:' + this.msodetails;
-            let areatitle = '';
-            let areasub = '';
-            let header: string[] = [];
-            const datas: Array<any> = [];
-            areatitle = 'A1:G2';
-            areasub = 'A3:G3';
-            header = ['S.NO', 'SUBSCRIBER ID', 'SUBSCRIBER NAME', 'SMARTCARD', 'BOX ID', 'ADDRESS', 'INSTALL DATE'];
-            this.rowData.forEach((d: any, index: number) => {
-              const row = [index + 1, d.subid, d.customername, d.smartcard, d.boxid, d.address, d.createddate];
-              datas.push(row);
-            });
-            this.excelService.generatePairedExcel(areatitle, header, datas, title, areasub, sub);
-          } else if (response.status === 204) {
-            // this.swal.Success_204();
-            this.rowData = response.body;
-            console.log(this.reportTitle);
-            const title = (this.reportTitle).toUpperCase();
-            const sub = 'MSO ADDRESS:' + this.msodetails;
-            let areatitle = '';
-            let areasub = '';
-            let header: string[] = [];
-            const datas: Array<any> = [];
-            areatitle = 'A1:G2';
-            areasub = 'A3:G3';
-            header = ['S.NO', 'SUBSCRIBER ID', 'SUBSCRIBER NAME', 'SMARTCARD', 'BOX ID', 'ADDRESS', 'INSTALL DATE'];
-            this.rowData.forEach((d: any, index: number) => {
-              const row = [index + 1, d.subid, d.customername, d.smartcard, d.boxid, d.address, d.createddate];
-              datas.push(row);
-            });
-            this.excelService.generatePairedExcel(areatitle, header, datas, title, areasub, sub);
-            this.rowData = [];
-          }
-        },
-        (error) => {
-          this.handleApiError(error);
-        }
-      );
+  // getPairedExcel() {
+  //   this.swal.Loading();
+  //   this.userService.getPairedSmartcardExcelReport(this.role, this.username, 2)
+  //     .subscribe(
+  //       (response: HttpResponse<any[]>) => { // Expect HttpResponse<any[]>
+  //         console.log(this.reportTitle);
+  //         if (response.status === 200) {
+  //           this.rowData = response.body;
+  //           console.log(this.reportTitle);
+  //           const title = (this.reportTitle).toUpperCase();
+  //           const sub = 'MSO ADDRESS:' + this.msodetails;
+  //           let areatitle = '';
+  //           let areasub = '';
+  //           let header: string[] = [];
+  //           const datas: Array<any> = [];
+  //           areatitle = 'A1:G2';
+  //           areasub = 'A3:G3';
+  //           header = ['S.NO', 'SUBSCRIBER ID', 'SUBSCRIBER NAME', 'SMARTCARD', 'BOX ID', 'ADDRESS', 'INSTALL DATE'];
+  //           this.rowData.forEach((d: any, index: number) => {
+  //             const row = [index + 1, d.subid, d.customername, d.smartcard, d.boxid, d.address, d.createddate];
+  //             datas.push(row);
+  //           });
+  //           this.excelService.generatePairedExcel(areatitle, header, datas, title, areasub, sub);
+  //           this.swal.Close();
+  //         } else if (response.status === 204) {
+  //           // this.swal.Success_204();
+  //           this.rowData = response.body;
+  //           console.log(this.reportTitle);
+  //           const title = (this.reportTitle).toUpperCase();
+  //           const sub = 'MSO ADDRESS:' + this.msodetails;
+  //           let areatitle = '';
+  //           let areasub = '';
+  //           let header: string[] = [];
+  //           const datas: Array<any> = [];
+  //           areatitle = 'A1:G2';
+  //           areasub = 'A3:G3';
+  //           header = ['S.NO', 'SUBSCRIBER ID', 'SUBSCRIBER NAME', 'SMARTCARD', 'BOX ID', 'ADDRESS', 'INSTALL DATE'];
+  //           this.rowData.forEach((d: any, index: number) => {
+  //             const row = [index + 1, d.subid, d.customername, d.smartcard, d.boxid, d.address, d.createddate];
+  //             datas.push(row);
+  //           });
+  //           this.excelService.generatePairedExcel(areatitle, header, datas, title, areasub, sub);
+  //           this.rowData = [];
+  //           this.swal.Close();
+  //         }
+  //       },
+  //       (error) => {
+  //         this.handleApiError(error);
+  //       }
+  //     );
 
-  }
-  getPairedPDF() {
-    // this.swal.Loading();
-    this.userService.getPairedSmartcardPDFReport(this.role, this.username, 1)
+  // }
+  // getPairedPDF() {
+  //   this.swal.Loading();
+  //   this.userService.getPairedSmartcardPDFReport(this.role, this.username, 1)
+  //     .subscribe((x: Blob) => {
+  //       const blob = new Blob([x], { type: 'application/pdf' });
+  //       const data = window.URL.createObjectURL(blob);
+  //       const link = document.createElement('a');
+  //       link.href = data;
+  //       link.download = (this.reportTitle + ".pdf").toUpperCase();
+  //       link.dispatchEvent(new MouseEvent('click', { bubbles: true, cancelable: true, view: window }));
+  //       setTimeout(() => {
+  //         window.URL.revokeObjectURL(data);
+  //         link.remove();
+  //       }, 100);
+  //       this.swal.Close();
+  //     },
+  //       (error: any) => {
+  //         Swal.fire({
+  //           title: 'Error!',
+  //           text: error?.error?.message || 'There was an issue generating the PDF CAS form report.',
+  //           icon: 'error',
+  //           confirmButtonText: 'Ok'
+  //         });
+  //       });
+  //   this.swal.Close();
+  // }
+
+  getPairReport(type: number) {
+    this.userService.getPairedSmartcardPDFReport(this.role, this.username, type)
       .subscribe((x: Blob) => {
-        const blob = new Blob([x], { type: 'application/pdf' });
-        const data = window.URL.createObjectURL(blob);
-        const link = document.createElement('a');
-        link.href = data;
-        link.download = (this.reportTitle + ".pdf").toUpperCase();
-        link.dispatchEvent(new MouseEvent('click', { bubbles: true, cancelable: true, view: window }));
-        setTimeout(() => {
-          window.URL.revokeObjectURL(data);
-          link.remove();
-        }, 100);
+        if (type == 1) {
+          this.reportMaking(x, `${this.reportTitle} ].pdf`.toUpperCase(), "application/pdf");
+        } else if (type == 2) {
+          this.reportMaking(x, `${this.reportTitle} ].xlsx`.toUpperCase(), "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
+        }
       },
         (error: any) => {
-          Swal.fire({
-            title: 'Error!',
-            text: error?.error?.message || 'There was an issue generating the PDF CAS form report.',
-            icon: 'error',
-            confirmButtonText: 'Ok'
-          });
+          this.pdfswalError(error?.error.message);
         });
   }
   // -------------------------------Blocked--------------------
   getBlockedReport() {
-    // this.swal.Loading();
-    this.userService.getBlockSmartcardExcelReport(this.role, this.username, 2)
+    this.swal.Loading();
+    this.userService.getBlockSmartcardExcelReport(this.role, this.username, 3)
       .subscribe(
         (response: HttpResponse<any[]>) => { // Expect HttpResponse<any[]>
           console.log(this.reportTitle);
           if (response.status === 200) {
             this.rowData = response.body;
-
+            this.swal.Close();
           } else if (response.status === 204) {
             this.swal.Success_204();
             this.rowData = [];
+            this.swal.Close();
           }
         },
         (error) => {
@@ -576,89 +634,109 @@ export class HistoryAllReportsComponent implements OnInit {
         }
       );
   }
-  getBlockedExcel() {
-    // this.swal.Loading();
-    this.userService.getBlockSmartcardExcelReport(this.role, this.username, 2)
-      .subscribe(
-        (response: HttpResponse<any[]>) => { // Expect HttpResponse<any[]>
-          console.log(this.reportTitle);
-          if (response.status === 200) {
-            this.rowData = response.body;
-            console.log(this.reportTitle);
-            const title = ('BLOCK LIST HISTORY REPORT').toUpperCase();
-            const sub = 'MSO ADDRESS:' + this.msodetails;
-            let areatitle = '';
-            let areasub = '';
-            let header: string[] = [];
-            const datas: Array<any> = [];
-            areatitle = 'A1:K2';
-            areasub = 'A3:K3';
-            header = ['S.NO', 'OPERATOR NAME', 'SUBSCRIBER ID', 'SUBSCRIBER NAME', 'MOBILE NO', 'SMARTCARD', 'BOX ID', 'CAS', 'PACKAGE ID', 'PRODUCT NAME', 'EXPIRY DATE'];
-            this.rowData.forEach((d: any, index: number) => {
-              const row = [index + 1, d.operatorname, d.subid, d.customername, d.mobileno, d.smartcard, d.boxid, d.address, d.casname, d.packageid, d.productname, d.expirydate];
-              datas.push(row);
-            });
-            this.excelService.generateBlockExcel(areatitle, header, datas, title, areasub, sub);
-          } else if (response.status === 204) {
-            // this.swal.Success_204();
-            this.rowData = response.body;
-            console.log(this.reportTitle);
-            const title = ('BLOCK LIST HISTORY REPORT').toUpperCase();
-            const sub = 'MSO ADDRESS:' + this.msodetails;
-            let areatitle = '';
-            let areasub = '';
-            let header: string[] = [];
-            const datas: Array<any> = [];
-            areatitle = 'A1:K2';
-            areasub = 'A3:K3';
-            header = ['S.NO', 'OPERATOR NAME', 'SUBSCRIBER ID', 'SUBSCRIBER NAME', 'MOBILE NO', 'SMARTCARD', 'BOX ID', 'CAS', 'PACKAGE ID', 'PRODUCT NAME', 'EXPIRY DATE'];
+  // getBlockedExcel() {
+  //   this.swal.Loading();
+  //   this.userService.getBlockSmartcardExcelReport(this.role, this.username, 2)
+  //     .subscribe(
+  //       (response: HttpResponse<any[]>) => { // Expect HttpResponse<any[]>
+  //         console.log(this.reportTitle);
+  //         if (response.status === 200) {
+  //           this.rowData = response.body;
+  //           console.log(this.reportTitle);
+  //           const title = ('BLOCK LIST HISTORY REPORT').toUpperCase();
+  //           const sub = 'MSO ADDRESS:' + this.msodetails;
+  //           let areatitle = '';
+  //           let areasub = '';
+  //           let header: string[] = [];
+  //           const datas: Array<any> = [];
+  //           areatitle = 'A1:K2';
+  //           areasub = 'A3:K3';
+  //           header = ['S.NO', 'OPERATOR NAME', 'SUBSCRIBER ID', 'SUBSCRIBER NAME', 'MOBILE NO', 'SMARTCARD', 'BOX ID', 'CAS', 'PACKAGE ID', 'PRODUCT NAME', 'EXPIRY DATE'];
+  //           this.rowData.forEach((d: any, index: number) => {
+  //             const row = [index + 1, d.operatorname, d.subid, d.customername, d.mobileno, d.smartcard, d.boxid, d.address, d.casname, d.packageid, d.productname, d.expirydate];
+  //             datas.push(row);
+  //           });
+  //           this.excelService.generateBlockExcel(areatitle, header, datas, title, areasub, sub);
+  //           this.swal.Close();
+  //         } else if (response.status === 204) {
+  //           // this.swal.Success_204();
+  //           this.rowData = response.body;
+  //           console.log(this.reportTitle);
+  //           const title = ('BLOCK LIST HISTORY REPORT').toUpperCase();
+  //           const sub = 'MSO ADDRESS:' + this.msodetails;
+  //           let areatitle = '';
+  //           let areasub = '';
+  //           let header: string[] = [];
+  //           const datas: Array<any> = [];
+  //           areatitle = 'A1:K2';
+  //           areasub = 'A3:K3';
+  //           header = ['S.NO', 'OPERATOR NAME', 'SUBSCRIBER ID', 'SUBSCRIBER NAME', 'MOBILE NO', 'SMARTCARD', 'BOX ID', 'CAS', 'PACKAGE ID', 'PRODUCT NAME', 'EXPIRY DATE'];
 
-            this.excelService.generateBlockExcel(areatitle, header, datas, title, areasub, sub);
-            this.rowData = [];
-          }
-        },
-        (error) => {
-          this.handleApiError(error);
-        }
-      );
-  }
-  getBlockedPDF() {
-    // this.swal.Loading();
-    this.userService.getBlockSmartcardPDFReport(this.role, this.username, 1)
+  //           this.excelService.generateBlockExcel(areatitle, header, datas, title, areasub, sub);
+  //           this.rowData = [];
+  //           this.swal.Close();
+  //         }
+  //       },
+  //       (error) => {
+  //         this.handleApiError(error);
+  //       }
+  //     );
+  // }
+  // getBlockedPDF() {
+  //   this.swal.Loading();
+  //   this.userService.getBlockSmartcardPDFReport(this.role, this.username, 1)
+  //     .subscribe((x: Blob) => {
+  //       const blob = new Blob([x], { type: 'application/pdf' });
+  //       const data = window.URL.createObjectURL(blob);
+  //       const link = document.createElement('a');
+  //       link.href = data;
+  //       link.download = ('BLOCK LIST HISTORY REPORT.pdf').toUpperCase();
+  //       link.dispatchEvent(new MouseEvent('click', { bubbles: true, cancelable: true, view: window }));
+  //       setTimeout(() => {
+  //         window.URL.revokeObjectURL(data);
+  //         link.remove();
+  //       }, 100);
+  //       this.swal.Close();
+  //     },
+  //       (error: any) => {
+  //         Swal.fire({
+  //           title: 'Error!',
+  //           text: error?.error?.message || 'There was an issue generating the PDF CAS form report.',
+  //           icon: 'error',
+  //           confirmButtonText: 'Ok'
+  //         });
+  //       });
+  //   this.swal.Close();
+  // }
+
+  getBlockReport(type: number) {
+    this.userService.getBlockSmartcardPDFReport(this.role, this.username, type)
       .subscribe((x: Blob) => {
-        const blob = new Blob([x], { type: 'application/pdf' });
-        const data = window.URL.createObjectURL(blob);
-        const link = document.createElement('a');
-        link.href = data;
-        link.download = ('BLOCK LIST HISTORY REPORT.pdf').toUpperCase();
-        link.dispatchEvent(new MouseEvent('click', { bubbles: true, cancelable: true, view: window }));
-        setTimeout(() => {
-          window.URL.revokeObjectURL(data);
-          link.remove();
-        }, 100);
+        if (type == 1) {
+          this.reportMaking(x, `${this.reportTitle} ].pdf`.toUpperCase(), "application/pdf");
+        } else if (type == 2) {
+          this.reportMaking(x, `${this.reportTitle} ].xlsx`.toUpperCase(), "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
+        }
       },
         (error: any) => {
-          Swal.fire({
-            title: 'Error!',
-            text: error?.error?.message || 'There was an issue generating the PDF CAS form report.',
-            icon: 'error',
-            confirmButtonText: 'Ok'
-          });
+          this.pdfswalError(error?.error.message);
         });
   }
   // --------------------------------------------------------scroll------------------------------------
   getScrollReport() {
-    // this.swal.Loading();
+    this.swal.Loading();
     this.userService.getScrollHistoryExcelReport(this.role, this.username, this.fromdate, this.todate, 2)
       .subscribe(
         (response: HttpResponse<any[]>) => {
           console.log(this.reportTitle);
           if (response.status === 200) {
             this.rowData = response.body;
+            this.swal.Close();
 
           } else if (response.status === 204) {
             this.swal.Success_204();
             this.rowData = [];
+            this.swal.Close();
           }
         },
         (error) => {
@@ -667,7 +745,7 @@ export class HistoryAllReportsComponent implements OnInit {
       );
   }
   getScrollExcel() {
-    // this.swal.Loading();
+    this.swal.Loading();
     this.userService.getScrollHistoryExcelReport(this.role, this.username, this.fromdate, this.todate, 2)
       .subscribe(
         (response: HttpResponse<any[]>) => {
@@ -689,6 +767,7 @@ export class HistoryAllReportsComponent implements OnInit {
               datas.push(row);
             });
             this.excelService.generateScrollExcel(areatitle, header, datas, title, areasub, sub);
+            this.swal.Close();
           } else if (response.status === 204) {
             // this.swal.Success_204();
             this.rowData = response.body;
@@ -705,6 +784,7 @@ export class HistoryAllReportsComponent implements OnInit {
 
             this.excelService.generateScrollExcel(areatitle, header, datas, title, areasub, sub);
             this.rowData = [];
+            this.swal.Close();
           }
         },
         (error) => {
@@ -713,7 +793,7 @@ export class HistoryAllReportsComponent implements OnInit {
       );
   }
   getScrollPDF() {
-    // this.swal.Loading();
+    this.swal.Loading();
     this.userService.getScrollHistoryPDFReport(this.role, this.username, this.fromdate, this.todate, 1)
       .subscribe((x: Blob) => {
         const blob = new Blob([x], { type: 'application/pdf' });
@@ -726,6 +806,7 @@ export class HistoryAllReportsComponent implements OnInit {
           window.URL.revokeObjectURL(data);
           link.remove();
         }, 100);
+        this.swal.Close();
       },
         (error: any) => {
           Swal.fire({
@@ -735,20 +816,22 @@ export class HistoryAllReportsComponent implements OnInit {
             confirmButtonText: 'Ok'
           });
         });
+    this.swal.Close();
   }
   // ------------------------------------------------------Mail History------------------------------------------
   getMailReport() {
-    // this.swal.Loading();
+    this.swal.Loading();
     this.userService.getMailHistoryExcelReport(this.role, this.username, this.fromdate, this.todate, 2)
       .subscribe(
         (response: HttpResponse<any[]>) => {
           console.log(this.reportTitle);
           if (response.status === 200) {
             this.rowData = response.body;
-
+            this.swal.Close();
           } else if (response.status === 204) {
             this.swal.Success_204();
             this.rowData = [];
+            this.swal.Close();
           }
         },
         (error) => {
@@ -757,7 +840,7 @@ export class HistoryAllReportsComponent implements OnInit {
       );
   }
   getMailExcel() {
-    // this.swal.Loading();
+    this.swal.Loading();
     this.userService.getMailHistoryExcelReport(this.role, this.username, this.fromdate, this.todate, 2)
       .subscribe(
         (response: HttpResponse<any[]>) => {
@@ -779,6 +862,7 @@ export class HistoryAllReportsComponent implements OnInit {
               datas.push(row);
             });
             this.excelService.generateMailExcel(areatitle, header, datas, title, areasub, sub);
+            this.swal.Close();
           } else if (response.status === 204) {
             // this.swal.Success_204();
             this.rowData = response.body;
@@ -795,6 +879,7 @@ export class HistoryAllReportsComponent implements OnInit {
 
             this.excelService.generateMailExcel(areatitle, header, datas, title, areasub, sub);
             this.rowData = [];
+            this.swal.Close();
           }
         },
         (error) => {
@@ -803,7 +888,7 @@ export class HistoryAllReportsComponent implements OnInit {
       );
   }
   getMailPDF() {
-    // this.swal.Loading();
+    this.swal.Loading();
     this.userService.getMaillHistoryPDFReport(this.role, this.username, this.fromdate, this.todate, 1)
       .subscribe((x: Blob) => {
         const blob = new Blob([x], { type: 'application/pdf' });
@@ -816,6 +901,7 @@ export class HistoryAllReportsComponent implements OnInit {
           window.URL.revokeObjectURL(data);
           link.remove();
         }, 100);
+        this.swal.Close();
       },
         (error: any) => {
           Swal.fire({
@@ -825,20 +911,22 @@ export class HistoryAllReportsComponent implements OnInit {
             confirmButtonText: 'Ok'
           });
         });
+    this.swal.Close();
   }
   // --------------------------------------------------------Finger print------------------------------------------------
   getFingerprintReport() {
-    // this.swal.Loading();
+    this.swal.Loading();
     this.userService.getScrollHistoryExcelReport(this.role, this.username, this.fromdate, this.todate, 2)
       .subscribe(
         (response: HttpResponse<any[]>) => {
           console.log(this.reportTitle);
           if (response.status === 200) {
             this.rowData = response.body;
-
+            this.swal.Close();
           } else if (response.status === 204) {
             this.swal.Success_204();
             this.rowData = [];
+            this.swal.Close();
           }
         },
         (error) => {
@@ -847,7 +935,7 @@ export class HistoryAllReportsComponent implements OnInit {
       );
   }
   getFingerprintExcel() {
-    // this.swal.Loading();
+    this.swal.Loading();
     this.userService.getFingerprintHistoryExcelReport(this.role, this.username, this.fromdate, this.todate, 2)
       .subscribe(
         (response: HttpResponse<any[]>) => {
@@ -869,6 +957,7 @@ export class HistoryAllReportsComponent implements OnInit {
               datas.push(row);
             });
             this.excelService.generatFingerprintExcel(areatitle, header, datas, title, areasub, sub);
+            this.swal.Close();
           } else if (response.status === 204) {
             // this.swal.Success_204();
             this.rowData = response.body;
@@ -882,7 +971,7 @@ export class HistoryAllReportsComponent implements OnInit {
             areatitle = 'A1:H2';
             areasub = 'A3:H3';
             header = ['S.NO', 'ID', 'MESSAGE', 'POSITION', 'FONT COLOR', 'BACKGROUND COLOR', 'FONT SIZE', 'DATE'];
-
+            this.swal.Close();
             this.rowData = [];
           }
         },
@@ -892,7 +981,7 @@ export class HistoryAllReportsComponent implements OnInit {
       );
   }
   getFingerprintPDF() {
-    // this.swal.Loading();
+    this.swal.Loading();
     this.userService.getFingerprintPDFReport(this.role, this.username, this.fromdate, this.todate, 1)
       .subscribe((x: Blob) => {
         const blob = new Blob([x], { type: 'application/pdf' });
@@ -905,6 +994,7 @@ export class HistoryAllReportsComponent implements OnInit {
           window.URL.revokeObjectURL(data);
           link.remove();
         }, 100);
+        this.swal.Close();
       },
         (error: any) => {
           Swal.fire({
@@ -914,20 +1004,22 @@ export class HistoryAllReportsComponent implements OnInit {
             confirmButtonText: 'Ok'
           });
         });
+    this.swal.Close();
   }
   // -------------------------------------------------------------Message ------------------------------------------------
   getMessageReport() {
-    // this.swal.Loading();
+    this.swal.Loading();
     this.userService.getMessageExcelReport(this.role, this.username, this.fromdate, this.todate, 2)
       .subscribe(
         (response: HttpResponse<any[]>) => {
           console.log(this.reportTitle);
           if (response.status === 200) {
             this.rowData = response.body;
-
+            this.swal.Close();
           } else if (response.status === 204) {
             this.swal.Success_204();
             this.rowData = [];
+            this.swal.Close();
           }
         },
         (error) => {
@@ -936,7 +1028,7 @@ export class HistoryAllReportsComponent implements OnInit {
       );
   }
   getMessageExcel() {
-    // this.swal.Loading();
+    this.swal.Loading();
     this.userService.getMessageExcelReport(this.role, this.username, this.fromdate, this.todate, 2)
       .subscribe(
         (response: HttpResponse<any[]>) => {
@@ -958,6 +1050,7 @@ export class HistoryAllReportsComponent implements OnInit {
               datas.push(row);
             });
             this.excelService.generatMessageExcel(areatitle, header, datas, title, areasub, sub);
+            this.swal.Close();
           } else if (response.status === 204) {
             // this.swal.Success_204();
             this.rowData = response.body;
@@ -974,6 +1067,7 @@ export class HistoryAllReportsComponent implements OnInit {
 
             this.excelService.generatMessageExcel(areatitle, header, datas, title, areasub, sub);
             this.rowData = [];
+            this.swal.Close();
           }
         },
         (error) => {
@@ -982,7 +1076,7 @@ export class HistoryAllReportsComponent implements OnInit {
       );
   }
   getMessagePDF() {
-    // this.swal.Loading();
+    this.swal.Loading();
     this.userService.getMessageHistoryPDFReport(this.role, this.username, this.fromdate, this.todate, 1)
       .subscribe((x: Blob) => {
         const blob = new Blob([x], { type: 'application/pdf' });
@@ -995,6 +1089,7 @@ export class HistoryAllReportsComponent implements OnInit {
           window.URL.revokeObjectURL(data);
           link.remove();
         }, 100);
+        this.swal.Close();
       },
         (error: any) => {
           Swal.fire({
@@ -1004,67 +1099,71 @@ export class HistoryAllReportsComponent implements OnInit {
             confirmButtonText: 'Ok'
           });
         });
+    this.swal.Close();
   }
   // ---------------------------------------------------Network smartcard active/deactive status count report--------------------------------------------
   getNetworkSmartcardActiveDeactiveStatusExcel() {
     console.log(this.cur_date);
+    this.swal.Loading();
     this.userService.getNetworkSmartcardStatusCountReport(this.role, this.username, this.cur_date, 2)
-      .subscribe(
-        (response: HttpResponse<any>) => {
-          if (response.status === 200) {
-            const activeData = response.body.activecount || [];
-            const deactiveData = response.body.deactivecount || [];
-            const title = (this.reportTitle).toUpperCase();
-            const sub = 'MSO ADDRESS:' + this.msodetails;
-            const headers = ['S.NO', 'TYPE', 'CAS', 'TOTAL COUNT'];
-            const dataRows: Array<any[]> = [];
-            activeData.forEach((item: any, index: number) => {
-              dataRows.push([
-                index + 1,
-                'Active',
-                item.casname,
-                item.totalcount,
-              ]);
-            });
-            deactiveData.forEach((item: any, index: number) => {
-              dataRows.push([
-                activeData.length + index + 1,
-                'Deactive',
-                item.casname,
-                item.totalcount,
-              ]);
-            });
+      .subscribe((response: HttpResponse<any>) => {
+        if (response.status === 200) {
+          const activeData = response.body.activecount || [];
+          const deactiveData = response.body.deactivecount || [];
+          const title = (this.reportTitle).toUpperCase();
+          const sub = 'MSO ADDRESS:' + this.msodetails;
+          const headers = ['S.NO', 'TYPE', 'CAS', 'TOTAL COUNT'];
+          const dataRows: Array<any[]> = [];
+          activeData.forEach((item: any, index: number) => {
+            dataRows.push([
+              index + 1,
+              'Active',
+              item.casname,
+              item.totalcount,
+            ]);
+          });
+          deactiveData.forEach((item: any, index: number) => {
+            dataRows.push([
+              activeData.length + index + 1,
+              'Deactive',
+              item.casname,
+              item.totalcount,
+            ]);
+          });
 
-            const columns = [
-              { width: 25 }, // S.NO
-              { width: 35 }, // TYPE
-              { width: 35 }, // CAS
-              { width: 35 }, // TOTAL COUNT
-            ];
-            this.excelService.generateExcelFile(
-              'A1:D2',
-              headers,
-              dataRows,
-              title,
-              'A3:D3',
-              sub,
-              columns,
-              'NETWORK SMARTCARD ACTIVE /DEACTIVE STATUS COUNT '
-            );
-          } else if (response.status === 204) {
-            this.swal.Success_204();
-            this.rowData = [];
-          }
-        },
+          const columns = [
+            { width: 25 }, // S.NO
+            { width: 35 }, // TYPE
+            { width: 35 }, // CAS
+            { width: 35 }, // TOTAL COUNT
+          ];
+          this.excelService.generateExcelFile(
+            'A1:D2',
+            headers,
+            dataRows,
+            title,
+            'A3:D3',
+            sub,
+            columns,
+            'NETWORK SMARTCARD ACTIVE /DEACTIVE STATUS COUNT '
+          );
+        } else if (response.status === 204) {
+          this.swal.Success_204();
+          this.rowData = [];
+        }
+      },
         (error) => {
           this.handleApiError(error);
         }
+
       );
+    this.swal.Close();
   }
 
 
   getNetworkSmartcardActiveDeactiveStatusPDF() {
     console.log(this.cur_date);
+    this.swal.Loading();
     this.userService.getNetworkSmartcardCountStatusPDFReport(this.role, this.username, this.cur_date, 1)
       .subscribe((x: Blob) => {
         const blob = new Blob([x], { type: 'application/pdf' });
@@ -1077,6 +1176,7 @@ export class HistoryAllReportsComponent implements OnInit {
           window.URL.revokeObjectURL(data);
           link.remove();
         }, 100);
+        this.swal.Close();
       },
         (error: any) => {
           Swal.fire({
@@ -1086,10 +1186,11 @@ export class HistoryAllReportsComponent implements OnInit {
             confirmButtonText: 'Ok'
           });
         });
+    this.swal.Close();
   }
   // ---------------------------------------------------Network smartcard  status count report--------------------------------------------
   getNetworkSmartcardStatusReport() {
-    // this.swal.Loading();
+    this.swal.Loading();
     this.userService.getNetworkSmartcardCountReport(this.role, this.username, this.cur_date, 2)
       .subscribe(
         (response: HttpResponse<any[]>) => {
@@ -1099,6 +1200,7 @@ export class HistoryAllReportsComponent implements OnInit {
           } else if (response.status === 204) {
             this.swal.Success_204();
             this.rowData = [];
+            this.swal.Close();
           }
         },
         (error) => {
@@ -1109,7 +1211,7 @@ export class HistoryAllReportsComponent implements OnInit {
 
   getNetworkSmartcardStatusExcel() {
     console.log(this.cur_date);
-
+    this.swal.Loading();
     this.userService.getNetworkSmartcardCountReport(this.role, this.username, this.cur_date, 2)
       .subscribe(
         (response: HttpResponse<any[]>) => {
@@ -1134,9 +1236,11 @@ export class HistoryAllReportsComponent implements OnInit {
               this.rowData.expiry,
             ]);
             this.excelService.generatNetworkSmartcardStatusExcel(areatitle, headers, datas, title, areasub, sub);
+            this.swal.Close();
           } else if (response.status === 204) {
             this.swal.Success_204();
             this.rowData = [];
+            this.swal.Close();
           }
         },
         (error) => {
@@ -1146,7 +1250,7 @@ export class HistoryAllReportsComponent implements OnInit {
   }
 
   getNetworkSmartcardStatusPDF() {
-    // this.swal.Loading();
+    this.swal.Loading();
     console.log(this.cur_date);
     this.userService.getNetworkSmartcardCountPDFReport(this.role, this.username, this.cur_date, 1)
       .subscribe((x: Blob) => {
@@ -1160,6 +1264,7 @@ export class HistoryAllReportsComponent implements OnInit {
           window.URL.revokeObjectURL(data);
           link.remove();
         }, 100);
+        this.swal.Close();
       },
         (error: any) => {
           Swal.fire({
@@ -1169,20 +1274,23 @@ export class HistoryAllReportsComponent implements OnInit {
             confirmButtonText: 'Ok'
           });
         });
+    this.swal.Close();
   }
 
   // ---------------------------------------------------Network smartcard  status (Operator wise) count report--------------------------------------------
   getNetworkOperatorwiseSmartcardStatusReport() {
-    // this.swal.Loading();
+    this.swal.Loading();
     this.userService.getNetworkSmartcardOperatorwiseReport(this.role, this.username, this.cur_date, 2)
       .subscribe(
         (response: HttpResponse<any[]>) => {
           console.log(this.reportTitle);
           if (response.status === 200) {
             this.rowData = response.body;
+            this.swal.Close();
           } else if (response.status === 204) {
             this.swal.Success_204();
             this.rowData = [];
+            this.swal.Close();
           }
         },
         (error) => {
@@ -1193,7 +1301,7 @@ export class HistoryAllReportsComponent implements OnInit {
 
   getNetworkOperatorwiseSmartcardStatusExcel() {
     console.log(this.cur_date);
-
+    this.swal.Loading();
     this.userService.getNetworkSmartcardOperatorwiseReport(this.role, this.username, this.cur_date, 2)
       .subscribe(
         (response: HttpResponse<any[]>) => {
@@ -1221,9 +1329,11 @@ export class HistoryAllReportsComponent implements OnInit {
               ]);
             });
             this.excelService.generatNetworkOperatorwiseSmartcardStatusExcel(areatitle, headers, datas, title, areasub, sub);
+            this.swal.Close();
           } else if (response.status === 204) {
             this.swal.Success_204();
             this.rowData = [];
+            this.swal.Close();
           }
         },
         (error) => {
@@ -1233,7 +1343,7 @@ export class HistoryAllReportsComponent implements OnInit {
   }
 
   getNetworkOperatorwiseSmartcardStatusPDF() {
-    // this.swal.Loading();
+    this.swal.Loading();
     console.log(this.cur_date);
     this.userService.getNetworkSmartcardOperatorwisePDFReport(this.role, this.username, this.cur_date, 1)
       .subscribe((x: Blob) => {
@@ -1247,6 +1357,7 @@ export class HistoryAllReportsComponent implements OnInit {
           window.URL.revokeObjectURL(data);
           link.remove();
         }, 100);
+        this.swal.Close();
       },
         (error: any) => {
           Swal.fire({
@@ -1256,19 +1367,22 @@ export class HistoryAllReportsComponent implements OnInit {
             confirmButtonText: 'Ok'
           });
         });
+    this.swal.Close();
   }
   // ------------------------------------------------Smartcard suspend------------------------------------
   getSmartcardSuspendReport() {
-    // this.swal.Loading();
+    this.swal.Loading();
     this.userService.getAsonDateSuspendReport(this.role, this.username, this.cur_date, 2)
       .subscribe(
         (response: HttpResponse<any[]>) => {
           console.log(this.reportTitle);
           if (response.status === 200) {
             this.rowData = response.body;
+            this.swal.Close();
           } else if (response.status === 204) {
             this.swal.Success_204();
             this.rowData = [];
+            this.swal.Close();
           }
         },
         (error) => {
@@ -1279,7 +1393,7 @@ export class HistoryAllReportsComponent implements OnInit {
 
   getSmartcardSuspendExcel() {
     console.log(this.cur_date);
-
+    this.swal.Loading();
     this.userService.getAsonDateSuspendReport(this.role, this.username, this.cur_date, 2)
       .subscribe(
         (response: HttpResponse<any[]>) => {
@@ -1303,7 +1417,7 @@ export class HistoryAllReportsComponent implements OnInit {
             });
             // this.excelService.generatSmartcardSuspendExcel(areatitle, headers, datas, title, areasub, sub);
             this.excelService.generateSuspendBasedExcel(areatitle, headers, datas, title, areasub, sub);
-
+            this.swal.Close();
           } else if (response.status === 204) {
             this.rowData = response.body;
             console.log(this.reportTitle);
@@ -1323,6 +1437,7 @@ export class HistoryAllReportsComponent implements OnInit {
 
             // this.swal.Success_204();
             this.rowData = [];
+            this.swal.Close();
           }
         },
         (error) => {
@@ -1332,7 +1447,7 @@ export class HistoryAllReportsComponent implements OnInit {
   }
 
   getSmartcardSuspendPDF() {
-    // this.swal.Loading();
+    this.swal.Loading();
     console.log(this.cur_date);
     this.userService.getAsonDateSuspendPDFReport(this.role, this.username, this.cur_date, 1)
       .subscribe((x: Blob) => {
@@ -1346,6 +1461,7 @@ export class HistoryAllReportsComponent implements OnInit {
           window.URL.revokeObjectURL(data);
           link.remove();
         }, 100);
+        this.swal.Close();
       },
         (error: any) => {
           Swal.fire({
@@ -1355,20 +1471,24 @@ export class HistoryAllReportsComponent implements OnInit {
             confirmButtonText: 'Ok'
           });
         });
+    this.swal.Close();
   }
   // ------------------------------------------------ SUSPEND REPORT FOR PARTICULAR DURATION------------------------------------
   getDatewiseSuspendReport() {
-    // this.swal.Loading();
+    this.swal.Loading();
     this.userService.getSuspendReportByDurationExcelReport(this.role, this.username, this.fromdate, this.todate, 2)
       .subscribe(
         (response: HttpResponse<any[]>) => {
           console.log(this.reportTitle);
           if (response.status === 200) {
             this.rowData = response.body;
+            this.swal.Close();
           } else if (response.status === 204) {
             this.swal.Success_204();
             this.rowData = [];
+            this.swal.Close();
           }
+
         },
         (error) => {
           this.handleApiError(error);
@@ -1378,7 +1498,7 @@ export class HistoryAllReportsComponent implements OnInit {
 
   getDatewiseSuspendExcel() {
     console.log(this.cur_date);
-
+    this.swal.Loading();
     this.userService.getSuspendReportByDurationExcelReport(this.role, this.username, this.fromdate, this.todate, 2)
       .subscribe(
         (response: HttpResponse<any[]>) => {
@@ -1401,7 +1521,7 @@ export class HistoryAllReportsComponent implements OnInit {
             });
             // this.excelService.generatSmartcardSuspendDurationExcel(areatitle, headers, datas, title, areasub, sub);
             this.excelService.generateSuspendBasedExcel(areatitle, headers, datas, title, areasub, sub);
-
+            this.swal.Close();
           } else if (response.status === 204) {
             // this.swal.Success_204();
             this.rowData = response.body;
@@ -1416,11 +1536,12 @@ export class HistoryAllReportsComponent implements OnInit {
             areatitle = 'A1:H2';
             areasub = 'A3:H3';
             const headers = ['S.NO', 'SUBSCRIBER NAME', 'MOBILE NO', 'SMARTCARD', 'BOX ID', 'CAS', 'PACKAGE', 'SUBSCRIPTION END DATE'];
-      
+
             // this.excelService.generatSmartcardSuspendDurationExcel(areatitle, headers, datas, title, areasub, sub);
             this.excelService.generateSuspendBasedExcel(areatitle, headers, datas, title, areasub, sub);
 
             this.rowData = [];
+            this.swal.Close();
           }
         },
         (error) => {
@@ -1430,7 +1551,7 @@ export class HistoryAllReportsComponent implements OnInit {
   }
 
   getDatewiseSuspendPDF() {
-    // this.swal.Loading();
+    this.swal.Loading();
     console.log(this.cur_date);
     this.userService.getSuspendReportByDurationPDFReport(this.role, this.username, this.fromdate, this.todate, 1)
       .subscribe((x: Blob) => {
@@ -1446,6 +1567,7 @@ export class HistoryAllReportsComponent implements OnInit {
           window.URL.revokeObjectURL(data);
           link.remove();
         }, 100);
+        this.swal.Close();
       },
         (error: any) => {
           Swal.fire({
@@ -1455,21 +1577,24 @@ export class HistoryAllReportsComponent implements OnInit {
             confirmButtonText: 'Ok'
           });
         });
+    this.swal.Close();
   }
 
 
   // ------------------------------------------------DATE WISE SMARTCARD SUSPEND------------------------------------
   getSuspendReport() {
-    // this.swal.Loading();
+    this.swal.Loading();
     this.userService.getSuspendHistoryExcelReport(this.role, this.username, this.fromdate, this.todate, this.smartcard, 2)
       .subscribe(
         (response: HttpResponse<any[]>) => {
           console.log(this.reportTitle);
           if (response.status === 200) {
             this.rowData = response.body;
+            this.swal.Close();
           } else if (response.status === 204) {
             this.swal.Success_204();
             this.rowData = [];
+            this.swal.Close();
           }
         },
         (error) => {
@@ -1480,7 +1605,7 @@ export class HistoryAllReportsComponent implements OnInit {
 
   getSuspendExcel() {
     console.log(this.cur_date);
-
+    this.swal.Loading();
     this.userService.getSuspendHistoryExcelReport(this.role, this.username, this.fromdate, this.todate, this.smartcard, 2)
       .subscribe(
         (response: HttpResponse<any[]>) => {
@@ -1504,6 +1629,7 @@ export class HistoryAllReportsComponent implements OnInit {
             });
             // this.excelService.generatSuspendExcel(areatitle, headers, datas, title, areasub, sub);
             this.excelService.generateSuspendBasedExcel(areatitle, headers, datas, title, areasub, sub);
+            this.swal.Close();
 
           } else if (response.status === 204) {
             // this.swal.Success_204();
@@ -1522,6 +1648,7 @@ export class HistoryAllReportsComponent implements OnInit {
             // this.excelService.generatSuspendExcel(areatitle, headers, datas, title, areasub, sub);
             this.excelService.generateSuspendBasedExcel(areatitle, headers, datas, title, areasub, sub);
             this.rowData = [];
+            this.swal.Close();
           }
         },
         (error) => {
@@ -1531,7 +1658,7 @@ export class HistoryAllReportsComponent implements OnInit {
   }
 
   getSuspendPDF() {
-    // this.swal.Loading();
+    this.swal.Loading();
     console.log(this.cur_date);
     this.userService.getSuspendHistoryPDFReport(this.role, this.username, this.fromdate, this.todate, this.smartcard, 1)
       .subscribe((x: Blob) => {
@@ -1547,6 +1674,7 @@ export class HistoryAllReportsComponent implements OnInit {
           window.URL.revokeObjectURL(data);
           link.remove();
         }, 100);
+        this.swal.Close();
       },
         (error: any) => {
           Swal.fire({
@@ -1556,6 +1684,7 @@ export class HistoryAllReportsComponent implements OnInit {
             confirmButtonText: 'Ok'
           });
         });
+    this.swal.Close();
   }
   // ------------------------------------------------------------------------------------------------------------------------------------
   goBack(): void {
@@ -1571,5 +1700,42 @@ export class HistoryAllReportsComponent implements OnInit {
     } else {
       Swal.fire('Error', 'Something went wrong. Please try again.', 'error');
     }
+  }
+
+
+  // -----------------------------------------------------common method for pdf and excel------------------------------------------------------------------------
+
+  reportMaking(x: Blob, reportname: any, reporttype: any) {
+    const blob = new Blob([x], { type: reporttype });
+    const data = window.URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.href = data;
+    link.download = reportname.toUpperCase();
+    link.dispatchEvent(new MouseEvent('click', { bubbles: true, cancelable: true, view: window }));
+    setTimeout(() => {
+      window.URL.revokeObjectURL(data);
+      link.remove();
+    }, 100);
+    Swal.close();
+  }
+  pdfswalError(error: any) {
+    Swal.close();
+    Swal.fire({
+      title: 'Error!',
+      text: error.message || 'There was an issue generating the PDF CAS form report.',
+      icon: 'error',
+      confirmButtonText: 'Ok'
+    });
+  }
+  processingSwal() {
+    Swal.fire({
+      title: "Processing",
+      text: "Please wait while the report is being generated...",
+      showConfirmButton: false,
+      didOpen: () => {
+        Swal.showLoading(null);
+      }
+    });
+
   }
 }

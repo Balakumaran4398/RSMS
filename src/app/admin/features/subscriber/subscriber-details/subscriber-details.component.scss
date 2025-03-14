@@ -1,9 +1,4 @@
-h3 {
-    justify-content: center;
-    align-items: center;
-    text-align: center;
-    color: var(--primary-color);
-}
+
 
 .d-flex {
     display: flex;
@@ -29,3 +24,8 @@ h3 {
 //     max-height: 750px !important;
 //     overflow: scroll;
 // }
+#myGrid {
+    width: 100%;
+    height: 800px !important;
+    text-align: center;
+}

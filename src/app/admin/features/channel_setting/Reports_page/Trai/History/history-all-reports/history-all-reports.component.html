@@ -33,11 +33,11 @@
                     </div>
                     <div class="mobileView">
                         <button class="btn btn-outline-info mx-1 bttn" mat-raised-button color="primary" type="button"
-                            (click)="getAllServiceExcel()">
+                            (click)="getAllServiceReport(2)">
                             Excel
                         </button>
                         <button class="btn btn-outline-info mx-1 bttn" mat-raised-button color="accent" type="button"
-                            (click)="getAllServicePDF()">
+                            (click)="getAllServiceReport(1)">
                             PDF
                         </button>
                     </div>
@@ -83,11 +83,11 @@
                     </span>
 
                     <button class="btn btn-outline-info mx-1 bttn" mat-raised-button color="primary" type="button"
-                        (click)="getTotalExcel()">
+                        (click)="getTotalReport(2)">
                         Excel
                     </button>
                     <button class="btn btn-outline-info mx-1 bttn" mat-raised-button color="accent" type="button"
-                        (click)="getTotalPDF()">
+                        (click)="getTotalReport(1)">
                         PDF
                     </button>
                 </div>
@@ -110,11 +110,11 @@
                             Get Report
                         </a>
                         <button class="btn btn-outline-info mx-1 bttn" mat-raised-button color="primary" type="button"
-                            (click)="getPairedExcel()">
+                            (click)="getPairReport(2)">
                             Excel
                         </button>
                         <button class="btn btn-outline-info mx-1 bttn" mat-raised-button color="accent" type="button"
-                            (click)="getPairedPDF()">
+                            (click)="getPairReport(1)">
                             PDF
                         </button>
                     </div>
@@ -125,8 +125,8 @@
                     <h5 *ngIf="rowData===null || rowData==undefined">Paired Box And Smartcard List
                     </h5>
                 </div>
-                <ag-grid-angular #agGrid id="myGrid" domLayout='normal' class="ag-theme-alpine table-class" 
-                    rowAnimation [gridOptions]="gridOptions" [columnDefs]="columnDefs" [rowData]="rowData"
+                <ag-grid-angular #agGrid id="myGrid" domLayout='normal' class="ag-theme-alpine table-class" rowAnimation
+                    [gridOptions]="gridOptions" [columnDefs]="columnDefs" [rowData]="rowData"
                     (gridReady)="onGridReady($event)" [enableCellTextSelection]="true">
                 </ag-grid-angular>
             </div>
@@ -148,11 +148,11 @@
                             Get Report
                         </a>
                         <button class="btn btn-outline-info mx-1 bttn" mat-raised-button color="primary" type="button"
-                            (click)="getBlockedExcel()">
+                            (click)="getBlockReport(2)">
                             Excel
                         </button>
                         <button class="btn btn-outline-info mx-1 bttn" mat-raised-button color="accent" type="button"
-                            (click)="getBlockedPDF()">
+                            (click)="getBlockReport(1)">
                             PDF
                         </button>
                     </div>
@@ -401,8 +401,7 @@
         <div class=" Head d-flex justify-content-center align-items-center mb-1">
             <span class="span">Network Smartcard Status Count Report</span>
         </div>
-        <div class="card  d-block justify-content-center align-items-center mb-3 onlinebox"
-            style="padding: 1rem;">
+        <div class="card  d-block justify-content-center align-items-center mb-3 onlinebox" style="padding: 1rem;">
             <div class="col-12  display justify-content-center align-items-center">
                 <div class="col-12 col-md-12  justify-content-center align-items-center  ">
                     <div class=" display mb-3">
@@ -468,8 +467,7 @@
         <div class=" Head d-flex justify-content-center align-items-center mb-1">
             <span class="span">Network Smartcard Active /Deactive Status Count Report</span>
         </div>
-        <div class="card  d-block justify-content-center align-items-center mb-3 onlinebox"
-            style="padding: 1rem;">
+        <div class="card  d-block justify-content-center align-items-center mb-3 onlinebox" style="padding: 1rem;">
             <div class="col-12  display justify-content-center align-items-center">
                 <div class="col-12 col-md-12  justify-content-center align-items-center  ">
                     <div class=" display mb-3">

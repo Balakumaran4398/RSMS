@@ -32,39 +32,41 @@
                                                 [ngModel]="intendid" readonly>
                                         </div>
                                         <div class="col-12 col-sm-6 " *ngIf="isSmartcardEnabled">
-                                            <!-- <input placeholder="Enter Smartcard" formControlName="intendid" type="text"
-                                                (keypress)="onKeydown($event)" [ngModel]="intendid_1" maxlength="20"> -->
-
-                                            <input placeholder="Enter the smartcard..." class="input_sb" #searchitem
-                                                style="font-size: 14px;" formControlName="intendid"
-                                                (keyup)="onSmartcardlist( searchitem?.value)" [(ngModel)]="intendid_1">
-                                            <div style="width: 60%; max-height: 150px;overflow: scroll;;"
+                                            <div class="input-container">
+                                                <input placeholder="Enter the smartcard..." class="input_sb" #searchitem
+                                                    style="font-size: 14px;" formControlName="intendid"
+                                                    (keyup)="onSmartcardlist( searchitem?.value)"
+                                                    [(ngModel)]="intendid_1">
+                                                <i class="bx bx-chevron-down icon-right"></i>
+                                            </div>
+                                            <div style="width: 20pc; max-height: 150px;overflow: scroll;overflow-x: hidden;"
                                                 class="dropdown-menu input"
                                                 [ngClass]="(subscriberList.length != 0 && searchitem?.value?.length != 0 && showDropdown) ? 'show' : 'hide'"
                                                 aria-labelledby="dropdownMenuButton">
                                                 <a (click)="goToSubscriberDashboard(lcomember)"
-                                                    *ngFor="let lcomember of subscriberList" class="dropdown-item"> {{
+                                                    *ngFor="let lcomember of subscriberList" class="dropdown-item">
+                                                    {{
                                                     lcomember.value }}</a>
                                             </div>
                                         </div>
                                         <div class="col-12 col-sm-6" *ngIf="isLCOEnabled">
-                                            <input type="text" placeholder="Search an LCO" [value]="LCO_name"
-                                                [ngModel]="intendid_1" formControlName="intendid"
-                                                (input)="onSearchLCOChange($event)" [matAutocomplete]="auto"
-                                                class="example-input">
-
+                                            <div class="input-container">
+                                                <input type="text" placeholder="Search an LCO" [value]="LCO_name"
+                                                    [ngModel]="intendid_1" formControlName="intendid"
+                                                    (input)="onSearchLCOChange($event)" [matAutocomplete]="auto"
+                                                    class="example-input">
+                                                <i class="bx bx-chevron-down icon-right"></i>
+                                            </div>
                                             <mat-autocomplete #auto="matAutocomplete">
                                                 <mat-option *ngFor="let area of filteredIntendArea()"
                                                     [value]="area.name" (click)="onLCOSelect(area)">
                                                     {{ area.name }}
                                                 </mat-option>
                                             </mat-autocomplete>
-
                                         </div>
                                     </div>
                                 </div>
                             </div>
-
                         </div>
                         <div class="d-flex justify-content-center align-items-center">
                             <div class="d-flex justify-content-center align-items-center" style="padding: 10px;">

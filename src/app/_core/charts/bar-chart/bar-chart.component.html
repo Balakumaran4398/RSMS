@@ -1,21 +1,54 @@
 <!-- <div>
   <canvasjs-chart [options]="chartOptions" [styles]="{width: '100%', height:'360px',}"></canvasjs-chart>
 </div> -->
-<h6 style="text-align: center;color:rgb(27 26 26); font-family: 'poppins';">NEXT 7 DAYS SUBSCRIPTION EXPIRED
-  COUNT</h6>
-<div>
-  <div class="input_box col-6 col-md-4 d-flex justify-content-between align-items-center mt-1 mb-2">
-    <div class="col-12 col-md-6">
-      <span>Choose Date</span>
+<!-- <h6 style="text-align: center;color:rgb(27 26 26); font-family: 'poppins';">NEXT 7 DAYS SUBSCRIPTION EXPIRED COUNT</h6> -->
+<!-- <div class="input_box display col-12 col-md-6  justify-content-end align-items-center mt-1 mb-2">
+  <div class="col-12 col-md-3">
+    <span>Choose Date</span>
+  </div>
+  <div class="col-12 col-md-4 mx-2">
+    <input type="date" [(ngModel)]="date" (change)="onDateChange($event)" />
+  </div>
+  <div class="col-12 col-md-3">
+    <button class=" bttn" style="background-color: var(--primary-color);padding: 5px;" (click)="openMsoDialog()">
+      <span class="mobile_text mb-1" style="color: white;font-size: small;">Get Report</span>
+    </button>
+  </div>
+</div> -->
+
+<div class="input_box display col-12 col-md-12  justify-content-between align-items-center mt-1 mb-2">
+  <!-- <div class="col-12 col-md-12  display justify-content-end align-items-center"> -->
+  <div class="col-12 col-md-6 d-flex justify-content-start mx-2">
+    <h6 style="text-align: center;color:rgb(27 26 26); font-family: 'poppins';">NEXT 7 DAYS SUBSCRIPTION EXPIRED COUNT
+    </h6>
+  </div>
+  <div class="col-12 col-md-3 mx-2">
+    <input type="date" [(ngModel)]="date" (change)="onDateChange($event)" />
+  </div>
+  <div class="col-12 col-md-1">
+    <button class=" bttn" style="background-color: var(--primary-color);padding: 5px;" (click)="openMsoDialog()">
+      <span class="mobile_text mb-1" style="color: white;font-size: small;">Get Report</span>
+    </button>
+  </div>
+  <!-- </div> -->
+</div>
+<div class="line"></div>
+<div id="barchartContainer" style="height: 370px; width: 100%;"></div>
+
+
+
+<!-- <div class="input_box display col-12 col-md-12  justify-content-between align-items-center mt-1 mb-2">
+  <div class="col-12 col-md-12  display justify-content-end align-items-center">
+    <div class="col-12 col-md-6 d-flex justify-content-start mx-2">
+      <h6 style="text-align: center;color:rgb(27 26 26); font-family: 'poppins';">NEXT 7 DAYS SUBSCRIPTION EXPIRED COUNT</h6>
     </div>
-    <div class="col-12 col-md-6">
+    <div class="col-12 col-md-4 mx-2">
       <input type="date" [(ngModel)]="date" (change)="onDateChange($event)" />
     </div>
+    <div class="col-12 col-md-1">
+      <button class=" bttn" style="background-color: var(--primary-color);padding: 5px;" (click)="openMsoDialog()">
+        <span class="mobile_text mb-1" style="color: white;font-size: small;">Get Report</span>
+      </button>
+    </div>
   </div>
-  <div class="line"></div>
-  <div id="barchartContainer" style="height: 370px; width: 100%;"></div>
-
-  <!-- <canvasjs-chart [options]="chartOptions" [styles]="{width: '100%', height:'360px'}"></canvasjs-chart> -->
-</div>
-
-<!-- <div id="chartdiv"></div> -->
+</div> -->

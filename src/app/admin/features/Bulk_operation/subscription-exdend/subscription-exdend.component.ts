@@ -78,34 +78,17 @@ export class SubscriptionExdendComponent implements OnInit {
     this.selectedDate = this.date;
     this.refresh();
   }
-  // validateLength(event: any): void {
-  //   let value = event.target.value;
 
-  //   if (value.length > 3) {
-  //     event.target.value = value.slice(0, 3);
-  //     this.days = event.target.value;
-  //   }
-  //   this.daysInvalid = value.length !== 3;
-
-  // }
   validateLength(event: any): void {
     let value = event.target.value;
-
-    // Ensure the value is positive
     if (value < 0) {
-      value = Math.abs(value); // Convert to positive value
+      value = Math.abs(value); 
     }
-
-    // Limit to 3 digits
     if (value.toString().length > 3) {
-      value = value.toString().slice(0, 3); // Trim to 3 digits
+      value = value.toString().slice(0, 3);
     }
-
-    // Update the input and the model
     event.target.value = value;
     this.days = value;
-
-    // Validate length
     this.daysInvalid = value.toString().length !== 3;
   }
 
@@ -117,7 +100,7 @@ export class SubscriptionExdendComponent implements OnInit {
 
     this.userservice.getSubscriptionDataExtendList(this.role, this.username, dateToPass, this.remarks, 8)
       .subscribe(
-        (response: HttpResponse<any[]>) => { // Expect HttpResponse<any[]>
+        (response: HttpResponse<any[]>) => { 
           if (response.status === 200) {
             this.rowData = response.body;
             this.swal.Success_200();
@@ -139,7 +122,7 @@ export class SubscriptionExdendComponent implements OnInit {
   refresh() {
     this.userservice.getBulkOperationRefreshList(this.role, this.username, this.remarks, 8)
       .subscribe(
-        (response: HttpResponse<any[]>) => { // Expect HttpResponse<any[]>
+        (response: HttpResponse<any[]>) => { 
           if (response.status === 200) {
             this.rowData = response.body;
             this.swal.Success_200();
@@ -160,24 +143,12 @@ export class SubscriptionExdendComponent implements OnInit {
     this.selectedDate = 0;
   }
   onGridReady = () => {
-    // this.userservice.GetAllUser('all',this.token.getUsername(),'0000-00-00','0000-00-00').subscribe((data) => {
-    //   this.gridApi.setRowData(data);
-    //   this.listUser = data;      
-    // });
+
   }
   onCheckboxChange(event: Event): void {
     this.isCheckboxChecked = (event.target as HTMLInputElement).checked;
   }
-  // handleFileInput(event: Event): void {
-  //   const input = event.target as HTMLInputElement;
-  //   if (input.files && input.files.length > 0) {
-  //     this.file = true;
-  //     this.filePath = input.files[0].name;
-  //   } else {
-  //     this.file = false;
-  //     this.filePath = '';
-  //   }
-  // }
+
   handleFileInput(event: Event): void {
     const input = event.target as HTMLInputElement;
 

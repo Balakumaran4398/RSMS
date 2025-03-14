@@ -86,7 +86,7 @@ export class ProofComponent {
 
     if (this.selectedTab === '1') {
       this.columnDefs = [
-        { headerName: "S.NO", lockPosition: true, valueGetter: 'node.rowIndex+1', headerCheckboxSelection: true, checkboxSelection: true, },
+        { headerName: "S.NO", lockPosition: true, valueGetter: 'node.rowIndex+1', headerCheckboxSelection: true, checkboxSelection: true, filter: false },
         { headerName: 'ID PROOF NAME', field: 'proofname', width: 450 },
         {
           headerName: 'STATUS', field: 'statusdisplay', width: 450,

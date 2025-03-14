@@ -15,11 +15,11 @@ import { Router } from '@angular/router';
 export class InventoryChartComponent implements OnInit {
   role: string;
   username: string;
-  chart: any; 
+  chart: any;
   chartOptions: any;
-  dataPoints: { name: string; y: number; color: string ,click?: () => void;}[] = [];
+  dataPoints: { name: string; y: number; color: string, click?: () => void; }[] = [];
 
-  constructor(private userservice: BaseService, private storageservice: StorageService,private router: Router) {
+  constructor(private userservice: BaseService, private storageservice: StorageService, private router: Router) {
     this.role = this.storageservice.getUserRole();
     this.username = this.storageservice.getUsername();
   }
@@ -62,6 +62,15 @@ export class InventoryChartComponent implements OnInit {
 
   updateChartData(apiData: any): void {
     this.dataPoints = [
+      // { name: "New box in MSO Hand", y: apiData["New box in MSO Hand"], color: "#2971cf", click: () => this.navigateToPage('BOX IN MSO HAND') },
+      // { name: "New box in LCO End", y: apiData["New box in LCO End"], color: "#f4a261", click: () => this.navigateToPage('BOX IN LCO HAND') },
+      // { name: "New in Customer End", y: apiData["New in Customer End"], color: "#3ebfd6", click: () => this.navigateToPage('BOX IN CUSTOMER HAND') },
+
+      // { name: "New box in MSO Hand", y: apiData["New box in MSO Hand"], color: "#8686AC",click: () => this.navigateToPage('BOX IN MSO HAND') },
+      // { name: "New box in LCO End", y: apiData["New box in LCO End"], color: "#505081",click: () => this.navigateToPage('BOX IN LCO HAND') },
+      // { name: "New in Customer End", y: apiData["New in Customer End"], color: "#0F0E47",click: () => this.navigateToPage('BOX IN CUSTOMER HAND') },
+
+
       { name: "New box in MSO Hand", y: apiData["New box in MSO Hand"], color: "#77edd0",click: () => this.navigateToPage('BOX IN MSO HAND') },
       { name: "New box in LCO End", y: apiData["New box in LCO End"], color: "#33a5d6",click: () => this.navigateToPage('BOX IN LCO HAND') },
       { name: "New in Customer End", y: apiData["New in Customer End"], color: "#3bada6",click: () => this.navigateToPage('BOX IN CUSTOMER HAND') }
@@ -100,21 +109,21 @@ export class InventoryChartComponent implements OnInit {
 
 
   navigateToPage(status: string): void {
-		let packageId: string;
-		switch (status) {
-			case 'BOX IN MSO HAND':
-				packageId = '11';
-				break;
-			case 'BOX IN LCO HAND':
-				packageId = '12';
-				break;
-			case 'BOX IN CUSTOMER HAND':
-				packageId = '13';
-				break;
-			
-			default:
-				packageId = '';
-		}
-		this.router.navigate(['admin/inventoryReport/' + packageId]);
-	}
+    let packageId: string;
+    switch (status) {
+      case 'BOX IN MSO HAND':
+        packageId = '11';
+        break;
+      case 'BOX IN LCO HAND':
+        packageId = '12';
+        break;
+      case 'BOX IN CUSTOMER HAND':
+        packageId = '13';
+        break;
+
+      default:
+        packageId = '';
+    }
+    this.router.navigate(['admin/inventoryReport/' + packageId]);
+  }
 }

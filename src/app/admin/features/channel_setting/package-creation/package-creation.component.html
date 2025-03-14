@@ -1,9 +1,9 @@
-<div class="chart">
+<div *ngIf="role == 'ROLE_ADMIN'" class="chart">
     <h4>BASE PACK MANAGE</h4>
     <div class="row">
         <div class="">
             <div class="col d-flex justify-content-center align-items-center mb-3">
-                <a class="btn btn-success mx-1  bttn" (click)="addnew()">
+                <a class="btn btn-outline-success mx-1  " (click)="addnew()">
                     <span>+</span> New
                 </a>
             </div>
@@ -11,9 +11,26 @@
             <div class="col-12 col-sm-10  align-items-center justify-content-center responsive-container"
                 style="margin: auto;">
 
-                <ag-grid-angular #agGrid id="myGrid" domLayout='normal' class="ag-theme-alpine table-class"
+                <ag-grid-angular #agGrid id="myGrid" domLayout='autoHeight' class="ag-theme-alpine table-class"
                     style="max-height: 590px;overflow: scroll;overflow-x: hidden;" rowAnimation
                     [gridOptions]="gridOptions" [columnDefs]="columnDefs" [rowData]="rowData"
+                    [enableCellTextSelection]="true">
+                </ag-grid-angular>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div *ngIf="role == 'ROLE_OPERATOR'" class="chart">
+    <h4>PACKAGES</h4>
+    <div class="row">
+        <div class="">
+                 <div class="col-12 col-sm-10  align-items-center justify-content-center responsive-container"
+                style="margin: auto;">
+
+                <ag-grid-angular #agGrid id="myGrid" domLayout='autoHeight' class="ag-theme-alpine table-class"
+                    style="max-height: 590px;overflow: scroll;overflow-x: hidden;" rowAnimation
+                    [gridOptions]="gridOptions" [columnDefs]="columnDefs1" [rowData]="rowData1"
                     [enableCellTextSelection]="true">
                 </ag-grid-angular>
             </div>

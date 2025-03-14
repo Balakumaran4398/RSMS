@@ -14,6 +14,7 @@ import { DataService } from 'src/app/_core/service/Data.service';
 import { OperatordialogueComponent } from '../../channel_setting/_Dialogue/operator/operatordialogue/operatordialogue.component';
 import { SpecialoperatordialogueComponent } from '../Dialogue/specialoperatordialogue/specialoperatordialogue.component';
 import { PageEvent } from '@angular/material/paginator';
+import { SwalService } from 'src/app/_core/service/swal.service';
 @Component({
   selector: 'app-specialoperator',
   templateUrl: './specialoperator.component.html',
@@ -62,21 +63,16 @@ export class SpecialoperatorComponent {
   isSpecial: boolean = false;
   // ---------------------------------
   pagedOperators: any = [];
-  pageSize = 10; 
+  pageSize = 10;
   pageIndex = 0;
   totalLength = 0;
   paginatedData: any;
 
-  constructor(public responsive: BreakpointObserver, private dataService: DataService,private cdr: ChangeDetectorRef, private router: Router, public dialog: MatDialog, private userservice: BaseService, private storageservice: StorageService) {
+  constructor(public responsive: BreakpointObserver, private dataService: DataService, private cdr: ChangeDetectorRef, private swal: SwalService,
+    private router: Router, public dialog: MatDialog, private userservice: BaseService, private storageservice: StorageService) {
     this.role = storageservice.getUserRole();
     this.username = storageservice.getUsername();
-    this.userservice.OperatorDetails(this.role, this.username, this.operatorid).subscribe(
-      (data: any) => {
-        this.operator_details = data;
-        this.dashboardDetails = data.map((item: any) => item.list);
-        this.totalLength = data.length;
-        this.updatePageData();
-      });
+
   }
   ngOnInit(): void {
     this.responsive
@@ -89,12 +85,24 @@ export class SpecialoperatorComponent {
         }
       });
     this.checkDeviceType();
-    this.userservice.getLcoBusinesslist(this.role, this.username).subscribe((data: any) => {
-      this.businessList = data;
-    })
+
+    this.getOplist();
     this.operatorlist();
-    // this.filteredOperators = this.operatorList;
+    this.getLcoList();
   }
+
+  getOplist() {
+    this.swal.Loading();
+    this.userservice.OperatorDetails(this.role, this.username, this.operatorid).subscribe(
+      (data: any) => {
+        this.operator_details = data;
+        this.dashboardDetails = data.map((item: any) => item.list);
+        this.totalLength = data.length;
+        this.swal.Close();
+        this.updatePageData();
+      });
+  }
+
   onPageChange(event: PageEvent): void {
     this.pageSize = event.pageSize;
     this.pageIndex = event.pageIndex;
@@ -109,45 +117,38 @@ export class SpecialoperatorComponent {
       startIndex + this.pageSize
     );
   }
- 
+
   displayOperator(operator: any): string {
     return operator ? operator.name : '';
   }
-  // filterOperators() {
-  //   if (this.operatorid) {
-  //     this.filteredOperators = this.operatorList.filter(operator =>
-  //       operator.name.toLowerCase().includes(this.searchText.toLowerCase())
-  //     );
-  //     console.log(this.filteredOperators);
-  //   }
-  // }
-  // filterOperators() {
-  //   console.log(this.operatorname);
 
-  //   if (this.operatorname) {
-  //     console.log(this.filteredOperators);
-  //     this.filteredOperators = this.operatorList.filter(operator =>
-  //       operator.name.toLowerCase().includes(this.operatorname.toLowerCase())
-  //     );
-  //     console.log(this.filteredOperators);
-  //   }
-
-  // }
   filterOperators(event: any): void {
     const filterValue = event.target.value.toLowerCase();
     this.filteredOperators = this.operatorList.filter(operator =>
       operator.name.toLowerCase().includes(filterValue)
     );
   }
+  getLcoList() {
+    this.swal.Loading();
+    this.userservice.getLcoBusinesslist(this.role, this.username).subscribe((data: any) => {
+      this.businessList = data;
+      this.swal.Close();
+    })
+  }
   operatorlist() {
-    this.userservice.getOeratorList(this.role, this.username,2).subscribe((data: any) => {
+    this.swal.Loading();
+    this.userservice.getOeratorList(this.role, this.username, 2).subscribe((data: any) => {
       console.log(data);
       this.operatorList = Object.keys(data).map(key => {
         const value = data[key];
         // const name = key.replace(/\(\d+\)$/, '').trim();
         const name = key;
+
+
         return { name: name, value: value };
       });
+      this.swal.Close();
+      this.cdr.detectChanges();
       this.filteredOperators = this.operatorList
     })
   }
@@ -159,22 +160,6 @@ export class SpecialoperatorComponent {
     this.operatorname = name;
     this.onoperatorchange({ value });
   }
-  // onoperatorchange(event: any) {
-
-  //   if (this.operatorid === 'ALL Operator') {
-  //     this.operatorid = 0;
-  //   }
-  //   this.userservice.OperatorDetails(this.role, this.username, this.operatorid).subscribe(
-  //     (data: any) => {
-  //       console.log(data);
-  //       this.operator_details = data;
-  //       console.log(this.operator_details);
-  //     },
-  //     (error) => {
-  //       console.error('Error fetching operator details', error);
-  //     }
-  //   );
-  // }
 
   onoperatorchange(operator: any): void {
     console.log(operator);
@@ -182,18 +167,26 @@ export class SpecialoperatorComponent {
     this.operatorid = operator.value;
     if (operator.value === 0) {
       this.operatorid = 0;
-      this.selectedOperator = { name: 'ALL Operator', value: 0 }; 
+      this.selectedOperator = { name: 'ALL Operator', value: 0 };
     } else {
-      this.operatorid = operator.value; 
+      this.operatorid = operator.value;
     }
+
+    
+    this.swal.Loading();
     this.userservice.OperatorDetails(this.role, this.username, this.operatorid).subscribe(
       (data: any) => {
         console.log(data);
         // this.operator_details = data;
         this.pagedOperators = data;
+        this.swal.Close();
+        this.cdr.detectChanges();
       },
+
       (error) => {
+
         console.error('Error fetching operator details', error);
+        this.swal.Close();
       }
     );
   }
@@ -291,18 +284,7 @@ export class SpecialoperatorComponent {
     this.router.navigateByUrl(`/admin/sublcodashboard/${operatorid}`);
     console.log(detailsList);
   }
-  // navgetToUrl(operatorid: number) {
-  //   console.log(operatorid);
 
-  //   this.router.navigateByUrl(`/admin/lcodashboard/${operatorid}`);
-  //   let dialogData = { detailsList: this.operator_details.find((op:any) => op.operatorid === operatorid) };
-  //   console.log(dialogData);
-  // }
-  // navgetToUrl() {
-  //   this.router.navigate(['/lcodashboard'], {
-  //     queryParams: { data: JSON.stringify(this.operator_details) }
-  //   });
-  // }
   lcodashoard(type: string): void {
     let dialogData = { type: type, detailsList: this.operator_details, };
 

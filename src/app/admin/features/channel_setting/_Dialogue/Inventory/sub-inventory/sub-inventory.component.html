@@ -11,22 +11,25 @@
                 <label>Lco Name</label>
             </div>
             <div class=" col-8">
-                <div class="">
+
+                <div class="input-container">
                     <input type="text" matInput [matAutocomplete]="auto" [(ngModel)]="selectedLcoName"
                         (input)="filterOperators($event)" placeholder="Select a Operator"
                         [matAutocompleteDisabled]="false" [value]="selectedOperator?.name">
+                    <i class="bx bx-chevron-down icon-right"></i>
+                </div>
 
-                    <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayOperator">
-                        <mat-option *ngFor="let operator of filteredOperators" [value]="operator.value"
-                            (click)="onSubscriberStatusChange(operator)">
-                            {{ operator.name }}
-                        </mat-option>
-                    </mat-autocomplete>
-                    <div *ngIf="submitted && !selectedLcoName" class="text-danger" style="font-size: small;">
-                        LCO Name is required
-                    </div>
+                <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayOperator">
+                    <mat-option *ngFor="let operator of filteredOperators" [value]="operator.value"
+                        (click)="onSubscriberStatusChange(operator)">
+                        {{ operator.name }}
+                    </mat-option>
+                </mat-autocomplete>
+                <div *ngIf="submitted && !selectedLcoName" class="text-danger" style="font-size: small;">
+                    LCO Name is required
                 </div>
             </div>
+
         </div>
         <div *ngIf="isemi" class=" col-12 d-flex justify-content-center align-items-center mb-3">
             <div class="input_box col-4">
@@ -34,7 +37,7 @@
             </div>
             <div class=" col-8">
                 <div class="">
-                    <input type="checkbox"  [(ngModel)]="sub_ismei" style="width: 35px;height: 20px;">
+                    <input type="checkbox" [(ngModel)]="sub_ismei" style="width: 35px;height: 20px;">
                 </div>
             </div>
         </div>
@@ -44,9 +47,9 @@
             </div>
             <div class=" col-8">
                 <div class="">
-                    <input type="text" [disabled]="!sub_ismei" [(ngModel)]="dueAmount" (input)="filterOperators($event)" (keypress)="onKeydown($event)"
-                        placeholder="Enter Due Amount">
-             
+                    <input type="text" [disabled]="!sub_ismei" [(ngModel)]="dueAmount" (input)="filterOperators($event)"
+                        (keypress)="onKeydown($event)" placeholder="Enter Due Amount">
+
                 </div>
             </div>
         </div>

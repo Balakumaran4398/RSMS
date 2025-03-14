@@ -89,8 +89,8 @@
                             <!-- </div> -->
                         </div>
 
-                        <ag-grid-angular #agGrid id="myGrid" domLayout='autoHeight' 
-                            class="ag-theme-alpine table-class" style="max-height: 775px;overflow: scroll;" rowAnimation
+                        <ag-grid-angular #agGrid id="myGrid" domLayout='normal' 
+                            class="ag-theme-alpine table-class" rowAnimation
                             [rowSelection]="rowSelection" [gridOptions]="gridOptions" [columnDefs]="columnDefs"
                             [rowData]="rowData" (gridReady)="onGridReady()" [enableCellTextSelection]="true">
                         </ag-grid-angular>

@@ -1,0 +1,25 @@
+<div class="col-12 col-md-12 d-flex justify-content-center align-item-center mb-3">
+    <div class="mt-2 mx-3">
+        <h6 style="color: rgb(58 69 81);">Discount Option :</h6>
+    </div>
+    <div>
+        <mat-radio-group aria-label="Select an option" class="radio-group" [(ngModel)]="selectedOption"
+            (change)="onRadioChange($event)">
+            <mat-radio-button value="1">ON</mat-radio-button>
+            <mat-radio-button value="2">OFF</mat-radio-button>
+        </mat-radio-group>
+    </div>
+</div>
+
+
+<mat-tab-group animationDuration="500ms" (selectedTabChange)="onTabChange($event)"  *ngIf="!isTabDisabled">
+    <mat-tab *ngFor="let tab of ['ALL AREA WISE', 'SELECTED AREA WISE', 'SMARTCARD WISE', 'PACKAGE WISE']"
+        [label]="tab">
+        <div class="tab-content mt-3">
+            <ag-grid-angular #agGrid id="myGrid" domLayout="normal" class="ag-theme-alpine table-class" rowAnimation
+                [gridOptions]="gridOptions" [columnDefs]="columnDefs" (gridReady)="onGridReady($event)"
+                [rowData]="rowData" [enableCellTextSelection]="true">
+            </ag-grid-angular>
+        </div>
+    </mat-tab>
+</mat-tab-group>

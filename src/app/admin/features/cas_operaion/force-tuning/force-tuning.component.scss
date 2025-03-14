@@ -9,9 +9,11 @@
     overflow: hidden;
     // margin: 10px;
 }
-.display{
+
+.display {
     display: flex;
 }
+
 .card .title {
     padding: 5px;
     background: #f6f8fa;
@@ -30,7 +32,8 @@
     left: 0;
     width: 100px;
     height: 3px;
-    background: linear-gradient(to right, #058372, #acf3cc);
+    // background: linear-gradient(to right, #058372, #acf3cc);
+    background: var(--line-shadow-color)
 }
 
 .card {
@@ -70,19 +73,47 @@ input {
     border-left: 0.9px solid lightgray;
     border-right: 0.9px solid lightgray;
 }
-button{
+
+button {
     font-size: 14px;
 }
+
 button:hover {
     color: bold;
 }
+
 @media screen and (max-width:560px) {
-    .display{
+    .display {
         display: block;
     }
 }
+
 @media screen and (max-width:720px) {
-    .display{
+    .display {
         display: block;
     }
+}
+
+.input-container {
+    position: relative;
+    display: inline-block;
+    width: 100%;
+}
+
+.example-input {
+    width: 100%;
+    padding-right: 2rem;
+    box-sizing: border-box;
+}
+
+.icon-right {
+    position: absolute;
+    top: 50%;
+    right: 0px;
+    transform: translateY(-50%);
+    pointer-events: none;
+    color: #050505;
+    font-size: 19px;
+    font-weight: 600;
+
 }

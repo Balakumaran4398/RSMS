@@ -60,7 +60,7 @@ export class CortonboxComponent implements OnInit {
 
   }
   ngOnInit(): void {
-    this.userService.getModelList(this.username, this.role).subscribe((data: any) => {
+    this.userService.getModelList(this.role, this.username).subscribe((data: any) => {
       this.filteredModel = data;
     })
     this.getNotAllocattedDetails();
@@ -107,7 +107,7 @@ export class CortonboxComponent implements OnInit {
     this.gridApi = params.api;
   }
   columnDefs: ColDef[] = [
-    { headerName: 'S.No', lockPosition: true, valueGetter: 'node.rowIndex+1', width: 100, headerCheckboxSelection: true, checkboxSelection: true, },
+    { headerName: 'S.No', lockPosition: true, valueGetter: 'node.rowIndex+1', width: 100, headerCheckboxSelection: true, checkboxSelection: true,filter:false },
     { headerName: 'SMARTCARD', width: 300, field: 'smartcard', },
     { headerName: 'BOX_ID', width: 470, cellStyle: { textAlign: 'center' }, field: 'boxid', },
     { headerName: 'CARTONBOX NO', width: 200, field: 'cottonbox', },

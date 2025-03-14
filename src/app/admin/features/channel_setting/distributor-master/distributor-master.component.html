@@ -7,7 +7,7 @@
         <div class="row d-flex align-items-center justify-content-center">
             <div class="col-12 col-sm-11  m-3">
                 <div class="col d-flex justify-content-end align-items-end mb-3">
-                    <a class="btn btn-outline-success mx-1  bttn" (click)="addnew('distributor')">
+                    <a class="btn btn-outline-success mx-1  " (click)="addnew('distributor')">
                         <span>+</span> New
                     </a>
                     &nbsp;
@@ -21,7 +21,7 @@
                     </button>
                 </div>
                 <ag-grid-angular #agGrid id="myGrid" domLayout='normal' class="ag-theme-alpine table-class"
-                    style="max-height: 590px;overflow: scroll;" rowAnimation
+                   rowAnimation
                     [rowSelection]="rowSelection" [gridOptions]="gridOptions" [columnDefs]="columnDefs"
                     [rowData]="rowData" (selectionChanged)="onSelectionChanged()" (gridReady)="onGridReady($event)"
                     [enableCellTextSelection]="true">

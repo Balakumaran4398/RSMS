@@ -278,6 +278,7 @@ export class AddonActivationComponent {
       console.log(tab);
       this.removerefresh();
     }
+    this.filePath=''
   }
   get billingAddressCheckbox() {
     return this.form.get('billingAddressCheckbox');

@@ -50,7 +50,7 @@ export class DefectiveSmartcardComponent {
     })
   }
   columnDefs: ColDef[] = [
-    { lockPosition: true, headerCheckboxSelection: true, checkboxSelection: true, width: 80 },
+    {headerName: 'S.NO', lockPosition: true, headerCheckboxSelection: true,valueGetter: 'node.rowIndex+1', checkboxSelection: true, width: 100,filter:false },
     { headerName: 'SMARTCARD', field: 'smartcard', width: 250 },
     { headerName: 'BOX_ID', field: 'boxid', width: 200 },
     { headerName: 'CAS', field: 'casname', width: 200, cellStyle: { textAlign: 'center' }, },
@@ -58,15 +58,15 @@ export class DefectiveSmartcardComponent {
     { headerName: 'LCO NAME', field: 'operatorname', width: 200 },
 
     {
-      headerName: 'IS_DEFECTIVE', field: 'defectivedisplay', cellStyle: { textAlign: 'center' },
+      headerName: 'IS_DEFECTIVE', field: 'defectivedisplay', cellStyle: { textAlign: 'center' },width: 250,
       cellRenderer: (params: any) => {
-        const value = params.value?.toString().toUpperCase(); 
-        const color = value === 'YES' ? '#06991a' : value === 'NO' ? 'red' : 'black'; 
+        const value = params.value?.toString().toUpperCase();
+        const color = value === 'YES' ? '#06991a' : value === 'NO' ? 'red' : 'black';
         return `<span style="color: ${color};">${value}</span>`;
       },
     },
     {
-      headerName: "Action",
+      headerName: "Action",width: 220,
       editable: true,
       cellRenderer: (params: any) => {
         if (params.data.defectivedisplay === "Yes") {
@@ -112,13 +112,22 @@ export class DefectiveSmartcardComponent {
   }
   onSelectionChanged() {
     if (this.gridApi) {
-      const selectedRows = this.gridApi.getSelectedRows();
+      // const selectedRows = this.gridApi.getSelectedRows();
+      let selectedRows: any[] = [];
+      this.gridApi.forEachNodeAfterFilter((rowNode: any) => {
+        if (rowNode.isSelected()) {
+          selectedRows.push(rowNode.data);
+        }
+      });
+      // console.log("Filtered & Selected Rows:", selectedRows);
+      if (selectedRows.length === 0) {
+        this.gridApi.deselectAll();
+      }
+      // console.log("Final Selected Rows:", selectedRows);
       this.isAnyRowSelected = selectedRows.length > 0;
-      console.log("Selected Rows:", selectedRows);
       this.selectedIds = selectedRows.map((e: any) => e.id);
       this.selectedtypes = selectedRows.map((e: any) => e.isactive);
-      console.log("Selected IDs:", this.selectedIds);
-      console.log("Selected Types:", this.selectedtypes);
+
     }
   }
   onGridReady(params: { api: any; }) {

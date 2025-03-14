@@ -12,3 +12,17 @@
 ::ng-deep .amcharts-chart-div a {
   display: none !important;
 }
+
+.display {
+  display: flex;
+}
+
+@media screen and (max-width:760px) {
+  .mobile_text {
+    font-size: smaller;
+  }
+
+  .display {
+    display: block;
+  }
+}

@@ -4,7 +4,7 @@ import { ExcelService } from 'src/app/_core/service/excel.service';
 import { StorageService } from 'src/app/_core/service/storage.service';
 import { SwalService } from 'src/app/_core/service/swal.service';
 import Swal from 'sweetalert2';
-declare var $:any;
+declare var $: any;
 
 @Component({
   selector: 'app-speciallcotransfer',
@@ -114,7 +114,7 @@ export class SpeciallcotransferComponent implements OnInit {
       formData.append('operatorid', this.lco);
       formData.append('areaid', this.area);
       formData.append('streetid', this.street);
-      formData.append('type', '2');
+      formData.append('type', '3');
       formData.append('optype', '10');
       formData.append('retailerid', '0');
       this.userservice.uploadFileForBulkLcoTransfer(formData)
@@ -126,19 +126,21 @@ export class SpeciallcotransferComponent implements OnInit {
     }
   }
   operatorlist() {
-    this.userservice.getOeratorList(this.role, this.username,2).subscribe((data: any) => {
+    this.userservice.getOeratorList(this.role, this.username, 2).subscribe((data: any) => {
       console.log(data);
       this.lcoList = Object.keys(data).map(key => {
         const value = data[key];
-        const name = key.replace(/\(\d+\)$/, '').trim();
+        const name = key.trim();
         return { name: name, value: value };
       });
+      console.log(this.lcoList);
+      
       this.filteredOperators = this.lcoList
     })
   }
 
 
-  onSubscriberStatusChange(type:any) {
+  onSubscriberStatusChange(type: any) {
     console.log(this.lco);
     this.areaList = [];
     this.streetList = [];
@@ -157,7 +159,7 @@ export class SpeciallcotransferComponent implements OnInit {
   }
 
 
-  onAreaStatusChange(type:any) {
+  onAreaStatusChange(type: any) {
     console.log(this.area);
     this.streetList = [];
     if (this.area) {
@@ -174,9 +176,9 @@ export class SpeciallcotransferComponent implements OnInit {
     }
   }
 
-  onStreetList(type:any){
+  onStreetList(type: any) {
 
   }
 
-  
+
 }

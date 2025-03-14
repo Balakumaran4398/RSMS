@@ -1,19 +1,15 @@
-<div class="chart">
-    <h3>Channel Details</h3>
+<div *ngIf="Isuser">
+    <h3>Channel Details - <span style="color: black;font-size: 23px;">[{{rowData?.length}}]</span></h3>
     <div class="row mb-3">
         <div class=" col d-flex justify-content-start align-items-center">
             <span style="font-size: large;align-items: center;justify-content: center;">Status:</span>
-            <!-- <mat-form-field appearance="outline">
-                <mat-select [(value)]="selectedType" (selectionChange)="onSelectionChange($event)">
-                    <mat-option *ngFor="let option of type" [value]="option">{{ option }}</mat-option>
-                </mat-select>
-            </mat-form-field> -->
             <div class="input_box col-6 col-md-4 mx-2">
                 <select (change)="onTypeChange($event)" [(ngModel)]="selectType">
                     <option value="">Select a Type</option>
                     <option *ngFor="let option of type" [value]="option">{{ option }}</option>
                 </select>
             </div>
+
             <div class="d-flex justify-content-end align-items-center ">
                 <div class="icon-container d-flex align-items-center" (click)="getExcel()">
                     <img src="/assets/images/icons/Excel.png" width="40px" style="cursor: pointer;">
@@ -28,13 +24,15 @@
         </div>
 
         <div class="col d-flex justify-content-end align-items-center">
-            <a class="btn btn-success mx-1  bttn" (click)="generateExcel()" style="cursor: pointer;">Samaple Format </a>
+            <a class="btn btn-success mx-1  bttn" (click)="generateExcel()" style="cursor: pointer;">Sample Format </a>
             <a class="btn btn-outline-success mx-1  bttn" (click)="upload('data')">
                 <i class="fa fa-upload" aria-hidden="true"></i> Upload
             </a>
             <a class="btn btn-outline-warning mx-1  bttn" (click)="openDialog()">
                 <span>+</span> New
             </a>
+
+
             <button class="btn btn-outline-info mx-1  bttn" mat-raised-button color="primary" type="button"
                 [disabled]="!isAnyRowSelected" (click)="Active()">
                 Active
@@ -46,15 +44,32 @@
 
         </div>
     </div>
+    <!-- <div class="d-flex justify-content-center align-items-center" style="font-size: 16px;color: rgb(3, 16, 138);">Select
+        count - <span style="font-size: 16px;color: rgb(138, 30, 3);">{{selectCount}}</span></div> -->
     <div class="row">
         <div class="col-12 col-sm-12  m-3">
             <ag-grid-angular #agGrid id="myGrid" domLayout='normal' class="ag-theme-alpine table-class"
-                [style.height]="rowData && rowData.length > 0 ? '500px' : '250px'"
-                style="overflow: scroll; overflow-y: hidden; overflow-x: hidden;" rowAnimation
+                [style.height]="rowData && rowData.length > 0 ? '710px' : '250px'" rowAnimation
                 [rowSelection]="rowSelection" [gridOptions]="gridOptions" [columnDefs]="columnDefs" [rowData]="rowData"
                 (selectionChanged)="onSelectionChanged()" (gridReady)="onGridReady($event)"
                 [enableCellTextSelection]="true">
             </ag-grid-angular>
         </div>
     </div>
+</div>
+<div *ngIf="IsOperator">
+    <div class="row">
+        <div class="col-12 col-sm-12  m-3">
+            <ag-grid-angular #agGrid id="myGrid" domLayout='normal' class="ag-theme-alpine table-class"
+                [style.height]="rowData && rowData.length > 0 ? '710px' : '250px'" rowAnimation
+                [rowSelection]="rowSelection" [gridOptions]="gridOptions" [columnDefs]="columnDefs1" [rowData]="rowData"
+                (selectionChanged)="onSelectionChanged()" (gridReady)="onGridReady($event)"
+                [enableCellTextSelection]="true">
+            </ag-grid-angular>
+        </div>
+        <p class="mx-2" style="font-size: smaller;"> <span style="color: blue;font-weight: bold;">Note :</span>Green color shows
+            channels are paid
+            channels</p>
+    </div>
+
 </div>

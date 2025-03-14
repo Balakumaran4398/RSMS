@@ -1,0 +1,32 @@
+.display {
+    display: flex;
+}
+
+.display1 {
+    display: flex;
+}
+@media screen and (max-width:300px) {
+    .display {
+        display: block;
+    }
+
+    .count {
+        overflow-x: scroll;
+        margin-bottom: 5px;
+    }
+}
+
+@media screen and (max-width:560px) {
+    .display {
+        display: block;
+    }
+
+    .count {
+        overflow-x: scroll;
+        margin-bottom: 5px;
+    }
+
+    .count span {
+        font-size: smaller;
+    }
+}
