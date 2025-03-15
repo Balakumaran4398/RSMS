@@ -15,28 +15,48 @@ import Swal from 'sweetalert2';
   styleUrls: ['./addon-package.component.scss']
 })
 export class AddonPackageComponent {
+  // gridOptions = {
+  //   defaultColDef: {
+  //     sortable: true,
+  //     resizable: true,
+  //     filter: true,
+  //     // width: 210,
+  //     floatingFilter: true,
+  //     comparator: (valueA: string, valueB: string) => {
+  //       if (!valueA) valueA = '';
+  //       if (!valueB) valueB = '';
+
+  //       // Case-insensitive comparison
+  //       const lowerA = valueA.toLowerCase();
+  //       const lowerB = valueB.toLowerCase();
+
+  //       // Sort alphabetically, considering letters before numbers
+  //       return lowerA.localeCompare(lowerB);
+  //     },
+  //   },
+  //   paginationPageSize: 10,
+  //   pagination: true,
+  // }
+
+
   gridOptions = {
     defaultColDef: {
       sortable: true,
       resizable: true,
       filter: true,
-      // width: 210,
       floatingFilter: true,
-      comparator: (valueA: string, valueB: string) => {
-        if (!valueA) valueA = '';
-        if (!valueB) valueB = '';
-
-        // Case-insensitive comparison
-        const lowerA = valueA.toLowerCase();
-        const lowerB = valueB.toLowerCase();
-
-        // Sort alphabetically, considering letters before numbers
-        return lowerA.localeCompare(lowerB);
+      comparator: (valueA: any, valueB: any) => {
+        const normalizedA = valueA ? valueA.toString().trim().toLowerCase() : '';
+        const normalizedB = valueB ? valueB.toString().trim().toLowerCase() : '';
+        if (normalizedA < normalizedB) return -1;
+        if (normalizedA > normalizedB) return 1;
+        return 0;
       },
     },
     paginationPageSize: 10,
     pagination: true,
   }
+
   username: any;
   role: any;
   gridApi: any;
@@ -263,6 +283,8 @@ export class AddonPackageComponent {
   }
   openViewDialog(data: any): void {
     const dialogData = { ...data };
+    console.log(dialogData);
+    
     const dialogRef = this.dialog.open(AddonViewComponent, {
       width: '1000px',
       panelClass: 'custom-dialog-container',

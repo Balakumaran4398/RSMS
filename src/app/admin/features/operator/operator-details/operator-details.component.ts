@@ -137,9 +137,6 @@ export class OperatorDetailsComponent implements OnInit {
     this.updatePageData();
   }
 
-
-
-
   updatePageData() {
     this.cdr.detectChanges();
     const startIndex = this.pageIndex * this.pageSize;

@@ -84,6 +84,7 @@ export class LcoDashboardComponent implements OnInit {
   }
   getHeader(): string {
     switch (this.type) {
+      case '1': return 'TOTAL SUSPEND';
       case '2': return 'NOT EXPIRED SMARTCARD';
       case '3': return 'EXPIRED SMARTCARD';
       case '4': return 'FIRST TIME ACTIVATION';
@@ -168,7 +169,7 @@ export class LcoDashboardComponent implements OnInit {
         { headerName: "S.No", lockPosition: true, valueGetter: 'node.rowIndex+1', width: 90, filter: false },
         { headerName: 'SUBSCRIBER ID', field: 'subid', Flex: 1, width: 150, },
         { headerName: 'SUBSCRIBER NAME', field: 'customername', Flex: 1, cellStyle: { textAlign: 'center', color: 'green' }, width: 200, },
-        { headerName: 'ADDRESS ', field: 'address', Flex: 1, cellStyle: { textAlign: 'center', color: 'green' }, width:150, },
+        { headerName: 'ADDRESS ', field: 'address', Flex: 1, cellStyle: { textAlign: 'center', color: 'green' }, width: 150, },
         { headerName: 'MOBILE NO', field: 'mobileno', width: 150, },
         { headerName: 'SMARTCARD', field: 'smartcard', width: 220, },
         { headerName: 'BOX ID', field: 'boxid', width: 180, },
@@ -395,18 +396,18 @@ export class LcoDashboardComponent implements OnInit {
   }
   getLcoInvoiceReport(reportType: number) {
     this.swal.Loading();
-    // this.submitted = true;
-    // console.log(this.selectedLcoName);
-    // console.log(this.selectedOperator);
-    this.userService.getOpLoginReportByReport(this.role, this.username,this.lcoId,this.type, reportType).
+    this.userService.getOpLoginReportByReport(this.role, this.username, this.lcoId, this.type, reportType).
       subscribe({
         next: (x: Blob) => {
           this.swal.Close();
+          if (this.type = 1){
+            if (reportType == 1) {
+              this.reportMaking(x, 'OPERATOR WISE GST FILE' + this.lcoId + '-' + this.type + ".pdf", 'application/pdf');
+            } else if (reportType == 2) {
+              this.reportMaking(x, 'OPERATOR WISE GST FILE' + this.lcoId + '-' + this.type + ".xlsx", 'application/xlsx');
+            }
+          }else if(this.type = 2){
 
-          if (reportType == 1) {
-            this.reportMaking(x, 'OPERATOR WISE GST FILE' + this.lcoId+ '-' + this.type + ".pdf", 'application/pdf');
-          } else if (reportType == 2) {
-            this.reportMaking(x, 'OPERATOR WISE GST FILE' +  this.lcoId+ '-' + this.type + ".xlsx", 'application/xlsx');
           }
         },
         error: (error: any) => {
@@ -417,43 +418,43 @@ export class LcoDashboardComponent implements OnInit {
   }
 
   // -----------------------------------------------------common method for pdf and excel------------------------------------------------------------------------
-  
-  
-    reportMaking(x: Blob, reportname: any, reporttype: any) {
-      const blob = new Blob([x], { type: reporttype });
-      const data = window.URL.createObjectURL(blob);
-      const link = document.createElement('a');
-      link.href = data;
-      link.download = reportname.toUpperCase();
-      link.dispatchEvent(new MouseEvent('click', { bubbles: true, cancelable: true, view: window }));
-      setTimeout(() => {
-        window.URL.revokeObjectURL(data);
-        link.remove();
-      }, 100);
-      Swal.close();
-    }
-    pdfswalError(error: any) {
-      console.log(error);
-  
-      Swal.close();
-      Swal.fire({
-        title: 'Error!',
-        text: error?.message || 'There was an issue generating the PDF CAS form report.',
-        icon: 'error',
-        confirmButtonText: 'Ok',
-        timer: 2000,
-        timerProgressBar: true,
-      });
-    }
-    processingSwal() {
-      Swal.fire({
-        title: "Processing",
-        text: "Please wait while the report is being generated...",
-        showConfirmButton: false,
-        didOpen: () => {
-          Swal.showLoading(null);
-        }
-      });
-  
-    }
+
+
+  reportMaking(x: Blob, reportname: any, reporttype: any) {
+    const blob = new Blob([x], { type: reporttype });
+    const data = window.URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.href = data;
+    link.download = reportname.toUpperCase();
+    link.dispatchEvent(new MouseEvent('click', { bubbles: true, cancelable: true, view: window }));
+    setTimeout(() => {
+      window.URL.revokeObjectURL(data);
+      link.remove();
+    }, 100);
+    Swal.close();
+  }
+  pdfswalError(error: any) {
+    console.log(error);
+
+    Swal.close();
+    Swal.fire({
+      title: 'Error!',
+      text: error?.message || 'There was an issue generating the PDF CAS form report.',
+      icon: 'error',
+      confirmButtonText: 'Ok',
+      timer: 2000,
+      timerProgressBar: true,
+    });
+  }
+  processingSwal() {
+    Swal.fire({
+      title: "Processing",
+      text: "Please wait while the report is being generated...",
+      showConfirmButton: false,
+      didOpen: () => {
+        Swal.showLoading(null);
+      }
+    });
+
+  }
 }

@@ -698,27 +698,25 @@ export class LcoRechargeReportComponent implements OnInit {
           }
         },
         (error) => {
-          console.log(error?.error?.message);
+          console.log(error?.error);
+          console.log(error?.error?.getrefundlistbyoperatoridandsmartcard);
           console.log(error?.error?.getrefundlistbyoperatoridandsmartcard?.smartcard);
 
-          // Check if 'smartcard' is missing in the response body
-          if (error?.error?.getrefundlistbyoperatoridandsmartcard?.smartcard || "Smartcard is required") {
-            const errorMessage = "Smartcard is required";
-            Swal.fire({
-              title: 'Error!',
-              text: errorMessage,
-              icon: 'error',
-            });
-          } else {
-            const errorMessage = error?.error?.message || "An unexpected error occurred";
-            Swal.fire({
-              title: 'Error!',
-              text: errorMessage,
-              icon: 'error',
-            });
+         
+          let errorMessage = "smartcard is must";
+          if (typeof error?.error === "string") {
+            errorMessage = error.error;
+          } else if (error?.error?.getrefundlistbyoperatoridandsmartcard?.smartcard) {
+            errorMessage = error.error.getrefundlistbyoperatoridandsmartcard.smartcard;
           }
-          this.handleApiError(error);
+
+          Swal.fire({
+            title: 'Error!',
+            text: errorMessage,
+            icon: 'error',
+          });
         }
+
 
       );
 

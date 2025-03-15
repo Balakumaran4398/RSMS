@@ -105,21 +105,21 @@ h6 {
 
     // --------------------------------------------------normal----------------------------------------------------
     --primary-color: #2d584e; //Normal
-    --role-color: #333333; //Normal
+    --role-color: #2d584e; //Normal
     --line-shadow-color-rdigital: linear-gradient(to right, #058372, #acf3cc); //normal
     --background-color: linear-gradient(to bottom, #23503e, #172c4b); //normal
     --ag-grid-header-background: #a2d3c8; // Normal
     --ag-grid-header-text: #243359; // Normal
     --ad-grid-checkbox: #46b5e0; // Normal
     --reports0bgcolor: rgb(212, 241, 239) //Normal
-    --dialog-header: var(--primary-color);
+        --dialog-header: var(--primary-color);
     --dialog-header-icon: white;
-    --active-icon:#93b6eb;
-    //  :rgb(64 113 114);
+    --active-icon: #93b6eb;
+    --header-color: #2d584e;
     --sub-dashboard-icon: var(--primary-color);
     --bg-outline-sucs: #2d584e;
-    --oper-grid-bg:lightblue;
-    --oper-grid-amount: green; 
+    --oper-grid-bg: lightblue;
+    --oper-grid-amount: green;
 
 
 
@@ -179,7 +179,8 @@ mat-form-field {
 
 .Head {
     // background-color: var(--dialog-header);
-    background-color:  #2d584e;;
+    background-color: #2d584e;
+    ;
     box-shadow: 0px 5px 8px rgba(0, 0, 0, 0.1);
     color: white;
     // color: var(--dialog-header-icon);

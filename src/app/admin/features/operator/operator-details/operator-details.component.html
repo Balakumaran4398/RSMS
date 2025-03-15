@@ -39,11 +39,10 @@
                     <div class="d-block justify-content-start align-item-center">
                         <div class="sub-tittle mb-3 col-md-10" style="text-align: left;font-weight: bold;">
                             {{operator?.operatorname || 'empty'}} <span
-                                style="color: rgb(1, 1, 14);font-weight: bold;">[{{operator?.operatorid}}]</span> - <span
-                                style="color: var(--oper-grid-amount);">[{{operator?.balance}}]</span>
+                                style="color: rgb(1, 1, 14);font-weight: bold;">[{{operator?.operatorid}}]</span> -
+                            <span style="color: var(--oper-grid-amount);">[{{operator?.balance}}]</span>
                         </div>
-                        <div class="sub-tittle mb-3 col-md-10"
-                            style="text-align: left;color: rgb(26, 23, 23);">
+                        <div class="sub-tittle mb-3 col-md-10" style="text-align: left;color: rgb(26, 23, 23);">
                             Phone: <span style="color: rgb(19, 4, 104);">{{operator?.contactnumber1 ||
                                 operator?.contactnumber2}}</span>
 
@@ -61,7 +60,6 @@
                                 <span class="separator1">:</span>
                                 <span class="last1">{{ operator?.isactive === 'true' ? 'Active' : 'Deactive' }}</span>
                             </p>
-
                             <p class="text">
                                 <span class="label label1">user id</span>
                                 <span class="separator">:</span>
@@ -103,7 +101,8 @@
                                         <span style="font-size: 13px;"> In hand</span>
                                         <mat-card class="card-inside"
                                             (click)="openDialog('box_in_hand',operator.operatorid)">
-                                            <span style="color: var(--active-edit-icon);font-weight: bold;">{{operator?.boxinhand}}</span>
+                                            <span
+                                                style="color: var(--active-edit-icon);font-weight: bold;">{{operator?.boxinhand}}</span>
                                         </mat-card>
                                         <span class="tooltip">Box In Hand</span>
                                     </div>
@@ -111,7 +110,8 @@
                                         <span style="font-size: 13px;">Total</span>
                                         <mat-card class="card-inside"
                                             (click)="openDialog('total_smartcard',operator.operatorid)">
-                                            <span style="color: var(--active-edit-icon);font-weight: bold">{{operator?.totalbox}}</span>
+                                            <span
+                                                style="color: var(--active-edit-icon);font-weight: bold">{{operator?.totalbox}}</span>
                                         </mat-card>
                                         <span class="tooltip">Total Box</span>
                                     </div>

@@ -13,8 +13,8 @@ var AUTH_API = URLs.AUTH_URL();
 // var AUTH_API= 'http://192.168.1.115:8081/api/auth';         //BALA
 // var AUTH_API ='http://192.168.1.111:8081/api/auth';         //SUBHA
 // var AUTH_API = 'http://192.168.70.201:8585/rsms/api/auth';   //QC
-// var AUTH_API ='http://103.183.47.212:8585/rsms/api/auth';
-
+// var AUTH_API ='http://103.183.47.212:8585/rsms/api/auth';       // 103
+  
 
 // var AUTH_API ='http://4kdigital.ridsys.in:8585/rsms/api/auth';   //4k
 // var AUTH_API ='http://cas.ridsys.in:8585/rsms/api/auth';   //AJK

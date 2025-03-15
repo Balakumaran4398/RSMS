@@ -29,27 +29,32 @@ export class PackageReferenceComponent {
     defaultColDef: {
       sortable: true,
       resizable: true,
-      filter: true,
-
+      filter: true, 
       floatingFilter: true,
       comparator: (valueA: any, valueB: any) => {
-        const normalizedA = valueA ? valueA.toString().trim().toLowerCase() : '';
-        const normalizedB = valueB ? valueB.toString().trim().toLowerCase() : '';
-        if (normalizedA < normalizedB) return -1;
-        if (normalizedA > normalizedB) return 1;
-        return 0;
+        const isNumberA = !isNaN(valueA) && valueA !== null;
+        const isNumberB = !isNaN(valueB) && valueB !== null;
+  
+        if (isNumberA && isNumberB) {
+          return valueA - valueB; 
+        } else {
+          const normalizedA = valueA ? valueA.toString().trim().toLowerCase() : '';
+          const normalizedB = valueB ? valueB.toString().trim().toLowerCase() : '';
+          return normalizedA.localeCompare(normalizedB); 
+        }
+      },
+      filterParams: {
+        textFormatter: (value: string) => {
+          return value ? value.toString().toLowerCase() : '';
+        },
+        debounceMs: 200, 
       },
     },
-    // rowClassRules: {
-    //   'always-selected': (params: any) => params.data,
-    // },
-
     paginationPageSize: 10,
     pagination: true,
-  }
-  rows: any[] = [];
+  };
 
-  // public rowSelection: any = "multiple";
+  rows: any[] = [];
   agGrid: any;
 
   constructor(public dialog: MatDialog, public userservice: BaseService, storageService: StorageService) {

@@ -55,8 +55,8 @@
     <section class="col-12 d-flex justify-content-center">
         <div class="col-xl-12 col-sm-6 col-12" style="padding: 1rem;">
             <div selectedTab="addonview" >
-                <ag-grid-angular #agGrid domLayout='autoHeight' class="ag-theme-alpine table-class"
-                    style="text-align: center;" rowAnimation [gridOptions]="gridOptions" [columnDefs]="columnDefs"
+                <ag-grid-angular #agGrid id="myGrid" domLayout='normal' class="ag-theme-alpine table-class"
+                    style="text-align: center;max-height: 450px;overflow: scroll;overflow-y: hidden;overflow-x: hidden;" rowAnimation [gridOptions]="gridOptions" [columnDefs]="columnDefs"
                     [rowData]="rowData" [enableCellTextSelection]="true">
                 </ag-grid-angular>
             </div>

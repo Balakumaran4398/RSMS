@@ -8,21 +8,25 @@
 
         <!-- <h4 class="brand-text" style="margin: 0px 30px;color: #2d584e;"  [ngStyle]="{'visibility': !isSidebarOpen ? 'visible' : 'hidden'}">RSMS V-7.2.2 </h4> -->
         <div class="d-block justify-content-center align-items-center" style="width: 81%;top:5%">
-            <img *ngIf="msoLogo" [src]="msoLogo" alt="MSO Logo"
-                style="width: 100px; height: auto;display:flex;margin: auto 40px;">
+
+            <!-- --------------------NORMAL---------------- -->
             <!-- <img *ngIf="msoLogo" [src]="msoLogo" alt="MSO Logo"
-                style="width: 54px; height: auto;display:flex;margin: auto 60px;"> -->
+                style="width: 100px; height: auto;display:flex;margin: auto 40px;"> -->
+
+                <!-- ----------------4K--------- -->
+            <img *ngIf="msoLogo" [src]="msoLogo" alt="MSO Logo"
+                style="width: 54px; height: auto;display:flex;margin: auto 60px;">
 
             <!-- ----------------------Normal--------------- -->
-            <!-- <h5 class="brand-text mb-1" style="margin: 5px 30px;color: var(--primary-color);"
+            <h5 class="brand-text mb-1" style="margin: 5px 30px;color: var(--primary-color);"
                 [ngStyle]="{'visibility': !isSidebarlogo ? 'visible' : 'hidden'}"> {{msoName}} </h5>
             <p class="brand-text" style="margin: 0px 30px;color: var(--primary-color);;text-align: center;font-size: 13px;"
-                [ngStyle]="{'visibility': !isSidebarlogo ? 'visible' : 'hidden'}"> V-7.2.2 </p> -->
+                [ngStyle]="{'visibility': !isSidebarlogo ? 'visible' : 'hidden'}"> V-7.2.2 </p>
             <!-- -----------------------------r-digital----------- -->
-            <h5 class="brand-text mb-1" style="margin: 5px 30px;color: #525151"
+            <!-- <h5 class="brand-text mb-1" style="margin: 5px 30px;color: #525151"
                 [ngStyle]="{'visibility': !isSidebarlogo ? 'visible' : 'hidden'}"> {{msoName}} </h5>
             <p class="brand-text" style="margin: 0px 30px;color: #525151;text-align: center;font-size: 13px;"
-                [ngStyle]="{'visibility': !isSidebarlogo ? 'visible' : 'hidden'}"> V-7.2.2 </p>
+                [ngStyle]="{'visibility': !isSidebarlogo ? 'visible' : 'hidden'}"> V-7.2.2 </p> -->
         </div>
     </a>
     <!-- </div> -->

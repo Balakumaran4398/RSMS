@@ -26,8 +26,6 @@ export class BaseService {
   domain: any;
   private defaultLogoUrl = 'https://via.placeholder.com/150';
   constructor(private http: HttpClient) {
-
-
     // const currentUrl = window.location.href;
     // const { ip, domain } = this.extractIpOrDomain(currentUrl);
     // this.ip = ip;
@@ -37,16 +35,18 @@ export class BaseService {
     // } else {
     //   localStorage.setItem('globalDomain', this.domain);
     // }
-
     // console.log("Stored IP:", localStorage.getItem('globalIp'));
     // console.log("Stored Domain:", localStorage.getItem('globalDomain'));
 
-    // AUTH_URL = ip
+    // // AUTH_URL = ip
+    // //   ? `http://${this.ip}:8585/rsms/api`
+    // //   : `http://${this.domain}:8585/rsms/api`;
+
+    // BASE_URL = ip
     //   ? `http://${this.ip}:8585/rsms/api`
     //   : `http://${this.domain}:8585/rsms/api`;
 
-    // console.log("Final AUTH_API:", AUTH_URL);
-
+    // console.log("Final AUTH_API:", BASE_URL);
   }
 
   extractIpOrDomain(url: string): { ip: string | null; domain: string | null } {
@@ -2080,10 +2080,10 @@ export class BaseService {
     return this.http.get<any[]>(BASE_URL + "/operator/getAllLcoList?role=" + role + "&username=" + encodeURIComponent(username) + "&operatorid=" + operatorid)
   }
   // ------------------------------------------Operator Dashboard----------------------------
-  getOpLoginReportByOpid(role: any, username: any, operatorid: any, type: any, reporttype: any):  Observable<any[]>{
+  getOpLoginReportByOpid(role: any, username: any, operatorid: any, type: any, reporttype: any): Observable<any[]> {
     return this.http.get<any[]>(BASE_URL + "/report/getOpLoginReportByOpid?role=" + role + "&username=" + encodeURIComponent(username) + "&operatorid=" + operatorid + "&type=" + type + "&reporttype=" + reporttype)
   }
-  getOpLoginReportByReport(role: any, username: any, operatorid: any, type: any, reporttype: any):  Observable<Blob>{
+  getOpLoginReportByReport(role: any, username: any, operatorid: any, type: any, reporttype: any): Observable<Blob> {
     return this.http.get(BASE_URL + "/report/getOpLoginReportByOpid?role=" + role + "&username=" + encodeURIComponent(username) + "&operatorid=" + operatorid + "&type=" + type + "&reporttype=" + reporttype, { responseType: 'blob' })
   }
 

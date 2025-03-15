@@ -2,6 +2,7 @@ import { ChangeDetectorRef, Component, Inject } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { BaseService } from 'src/app/_core/service/base.service';
 import { StorageService } from 'src/app/_core/service/storage.service';
+import { SwalService } from 'src/app/_core/service/swal.service';
 
 
 @Component({
@@ -41,7 +42,7 @@ export class PackageBaseViewComponent {
       },
     },
     pagination: true,
-    paginationPageSize: 5,
+    paginationPageSize: 10,
     autoHeight: true,
 
 
@@ -49,15 +50,15 @@ export class PackageBaseViewComponent {
     // onGridReady: (event: any) => event.api.sizeColumnsToFit()
   };
   columnDefs: any[] = [
-    { headerName: 'S.No', valueGetter: 'node.rowIndex + 1', width: 80 },
-    { headerName: 'CHANNEL NAME', field: 'channel', width: 150 },
-    { headerName: 'PRODUCT ID', field: 'serviceId', width: 120 },
-    { headerName: 'SERVICE ID', field: 'productId', width: 120 },
-    { headerName: 'TS ID', field: 't_id', width: 120 },
-    { headerName: 'STATUS', field: 'status', width: 120 }
+    // { headerName: 'S.No', valueGetter: 'node.rowIndex + 1', width: 100, cellStyle: { textAlign: 'center' }, },
+    // { headerName: 'CHANNEL NAME', field: 'channel_name', width: 250, },
+    // { headerName: 'PRODUCT ID', field: 'product_id', width: 200, cellStyle: { textAlign: 'center' }, },
+    // { headerName: 'SERVICE ID', field: 'service_id', width: 200, cellStyle: { textAlign: 'center' }, },
+    // { headerName: 'TS ID', field: 't_id', width: 200, cellStyle: { textAlign: 'center' }, },
+    // { headerName: 'STATUS', field: 'statusdisplay', width: 200 }
   ];
   constructor(
-    public dialogRef: MatDialogRef<PackageBaseViewComponent>,
+    public dialogRef: MatDialogRef<PackageBaseViewComponent>, private swal: SwalService,
     @Inject(MAT_DIALOG_DATA) public data: any, private userService: BaseService, private storageService: StorageService, private cdr: ChangeDetectorRef) {
     console.log(data);
     this.package_name = data.packagename;
@@ -82,7 +83,14 @@ export class PackageBaseViewComponent {
   }
   ngOnInit(): void {
     // this.loadData(this.selectedTab);
-
+    this.columnDefs = [
+      { headerName: 'S.No', valueGetter: 'node.rowIndex + 1', width: 100, cellStyle: { textAlign: 'center' }, },
+      { headerName: 'CHANNEL NAME', field: 'channel_name', width: 250, },
+      { headerName: 'PRODUCT ID', field: 'product_id', width: 200, cellStyle: { textAlign: 'center' }, },
+      { headerName: 'SERVICE ID', field: 'service_id', width: 200, cellStyle: { textAlign: 'center' }, },
+      { headerName: 'TS ID', field: 't_id', width: 200, cellStyle: { textAlign: 'center' }, },
+      { headerName: 'STATUS', field: 'statusdisplay', width: 180 }
+    ];
   }
   selectTab(tab: any): void {
     this.selectedTab = tab;
@@ -102,6 +110,7 @@ export class PackageBaseViewComponent {
   private loadData(tab: any): void {
     console.log(tab);
     this.userService.Base_PackageChannelList(this.role, this.username, tab, this.package_id).subscribe((data: any) => {
+
       this.packagename = data.packagename;
       this.packagerate = data.packagerate;
       this.subcount = data.subcount;
@@ -122,7 +131,7 @@ export class PackageBaseViewComponent {
         { headerName: 'PRODUCT ID', field: 'product_id', width: 200, cellStyle: { textAlign: 'center' }, },
         { headerName: 'SERVICE ID', field: 'service_id', width: 200, cellStyle: { textAlign: 'center' }, },
         { headerName: 'TS ID', field: 't_id', width: 200, cellStyle: { textAlign: 'center' }, },
-        { headerName: 'STATUS', field: 'statusdisplay', width: 200 }
+        { headerName: 'STATUS', field: 'statusdisplay', width: 180 }
       ];
     } else if (tab === '2') {
       this.columnDefs = [
@@ -132,7 +141,7 @@ export class PackageBaseViewComponent {
         { headerName: 'SERVICE ID', field: 'service_id', width: 150 },
         { headerName: 'TS ID', field: 't_id', cellStyle: { textAlign: 'center' }, width: 200 },
         { headerName: 'RATE', field: 'broadcaster_rate', cellStyle: { textAlign: 'center' }, width: 200 },
-        { headerName: 'STATUS', field: 'statusdisplay', width: 160 }
+        { headerName: 'STATUS', field: 'statusdisplay', width: 120 }
       ];
     } else if (tab === '3') {
       this.columnDefs = [
@@ -142,7 +151,7 @@ export class PackageBaseViewComponent {
         { headerName: 'RATE', field: 'broadcaster_rate', cellStyle: { textAlign: 'center' }, width: 150 },
         { headerName: 'SERVICE ID', field: 'service_id', cellStyle: { textAlign: 'center' }, width: 200 },
         { headerName: 'TS ID', field: 't_id', cellStyle: { textAlign: 'center' }, width: 200 },
-        { headerName: 'STATUS', field: 'statusdisplay', width: 160 }
+        { headerName: 'STATUS', field: 'statusdisplay', width: 120 }
       ];
     }
     // else if (tab === 'addon_view') {
@@ -164,7 +173,9 @@ export class PackageBaseViewComponent {
     { headerName: 'CHANNEL NAME', field: 'channel_name', width: 250, },
     { headerName: 'TRANSPORT ID', field: 't_id', width: 300, cellStyle: { textAlign: 'center' }, },
     { headerName: 'PRODUCT ID', field: 'product_id', width: 300, cellStyle: { textAlign: 'center' }, },
-    { headerName: 'FREQUENCY', field: 'channel_freq', width: 200, cellStyle: { textAlign: 'center' },
-    cellRenderer: (params: any) => `<span >${params.value ? params.value.toFixed(2) : '0.00'}</span> ` },
+    {
+      headerName: 'FREQUENCY', field: 'channel_freq', width: 200, cellStyle: { textAlign: 'center' },
+      cellRenderer: (params: any) => `<span >${params.value ? params.value.toFixed(2) : '0.00'}</span> `
+    },
   ]
 }

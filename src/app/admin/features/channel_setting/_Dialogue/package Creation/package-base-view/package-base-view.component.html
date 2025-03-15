@@ -3,7 +3,7 @@
     <h6>CHANNEL DETAILS</h6>
     <i class="fa fa-close close-icon" style="cursor: pointer;" (click)="onNoClick()"></i>
 </div>
-<div class="mobile">
+<div>
     <section class="col-12 d-flex justify-content-center ">
         <div class="col-10 col-md-6 display justify-content-center align-items-center view">
             <div class="input_box  col-12 col-md-12 display_1 justify-content-between align-items-center">
@@ -48,7 +48,8 @@
             <p style="text-align: center; color: rgb(19, 2, 14); font-size: 18px; font-weight: 600;">
                 CHANNELS:- <span style="color: rgb(220, 43, 226); font-size: 20px; font-weight: 600;">{{ count }}</span>
             </p>
-            <ag-grid-angular #agGrid id="myGrid" domLayout="autoHeight" class="ag-theme-alpine table-class" rowAnimation
+            <ag-grid-angular #agGrid id="myGrid" domLayout="normal" class="ag-theme-alpine table-class" rowAnimation
+                style="text-align: center;max-height: 450px;overflow: scroll;overflow-x: hidden;overflow-y: hidden;"
                 [gridOptions]="gridOptions" [columnDefs]="role === 'ROLE_OPERATOR' ? columnDefs1 : columnDefs"
                 [rowData]="rowData" (gridReady)="onGridReady($event)" [enableCellTextSelection]="true">
             </ag-grid-angular>
