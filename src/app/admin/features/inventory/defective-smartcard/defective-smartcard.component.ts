@@ -27,19 +27,26 @@ export class DefectiveSmartcardComponent {
       sortable: true,
       resizable: true,
       filter: true,
-      width: 250,
       floatingFilter: true,
       comparator: (valueA: any, valueB: any) => {
-        const normalizedA = valueA ? valueA.toString().trim().toLowerCase() : '';
-        const normalizedB = valueB ? valueB.toString().trim().toLowerCase() : '';
-        if (normalizedA < normalizedB) return -1;
-        if (normalizedA > normalizedB) return 1;
-        return 0;
+        const isNumberA = !isNaN(valueA) && valueA !== null;
+        const isNumberB = !isNaN(valueB) && valueB !== null;
+  
+        if (isNumberA && isNumberB) {
+          return valueA - valueB;
+        } else {
+          const normalizedA = valueA ? valueA.toString().trim().toLowerCase() : '';
+          const normalizedB = valueB ? valueB.toString().trim().toLowerCase() : '';
+          if (normalizedA < normalizedB) return -1;
+          if (normalizedA > normalizedB) return 1;
+          return 0;
+        }
       },
     },
     paginationPageSize: 10,
     pagination: true,
-  }
+  };
+  
   rowData: any[] = [];
   constructor(public dialog: MatDialog, public userService: BaseService, storageService: StorageService, private renderer: Renderer2) {
     this.username = storageService.getUsername();
@@ -67,7 +74,7 @@ export class DefectiveSmartcardComponent {
     },
     {
       headerName: "Action",width: 220,
-      editable: true,
+      editable: true,filter:false,
       cellRenderer: (params: any) => {
         if (params.data.defectivedisplay === "Yes") {
           const replaceButton = document.createElement('button');

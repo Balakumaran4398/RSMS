@@ -1,13 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-
 import { BaseService } from 'src/app/_core/service/base.service';
 import { StorageService } from 'src/app/_core/service/storage.service';
 import { SwalService } from 'src/app/_core/service/swal.service';
 import Swal from 'sweetalert2';
-
-
 @Component({
   selector: 'app-lco-recharge',
   templateUrl: './lco-recharge.component.html',
@@ -17,7 +14,7 @@ import Swal from 'sweetalert2';
 export class LcoRechargeComponent implements OnInit {
 
   form!: FormGroup;
-  isLoggedIn = false; // Track login status
+  isLoggedIn = false;
 
   username: any;
   role: any;
@@ -25,9 +22,6 @@ export class LcoRechargeComponent implements OnInit {
   constructor(private userservice: BaseService, private storageservice: StorageService, private fb: FormBuilder, private route: ActivatedRoute, private router: Router, private swal: SwalService) {
     this.role = storageservice.getUserRole();
     this.username = storageservice.getUsername();
-    console.log('00000000');
-
-
     this.form = fb.group({
       userid: ['', Validators.required],
       password: ['', Validators.required],
@@ -41,7 +35,6 @@ export class LcoRechargeComponent implements OnInit {
       userid: ['', Validators.required],
       password: ['', Validators.required],
     });
-    console.log('11111111111');
     this.route.url.subscribe((segments) => {
       console.log('Full URL Segments:', segments);
 

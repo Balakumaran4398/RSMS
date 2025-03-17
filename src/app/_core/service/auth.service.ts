@@ -9,7 +9,7 @@ var AUTH_API = URLs.AUTH_URL();
 
 // var AUTH_API = 'http://192.168.70.201:8585/rsms/api/auth';
 
-// var AUTH_API = 'http://192.168.1.102:8081/api/auth';         //JAYA AKKA    
+// var AUTH_API = 'http://192.168.1.117:8081/api/auth';         //JAYA AKKA    
 // var AUTH_API= 'http://192.168.1.115:8081/api/auth';         //BALA
 // var AUTH_API ='http://192.168.1.111:8081/api/auth';         //SUBHA
 // var AUTH_API = 'http://192.168.70.201:8585/rsms/api/auth';   //QC

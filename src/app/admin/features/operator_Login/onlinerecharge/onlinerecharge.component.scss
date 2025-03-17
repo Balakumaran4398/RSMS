@@ -1,5 +1,7 @@
+
 .pagestyle {
     font-size: 1rem;
+
     .pagetitle {
         font-size: 1.6rem;
     }
@@ -31,15 +33,19 @@
     font-weight: 600;
     letter-spacing: 1.2px;
 }
+
 .green {
     color: #05aa4f;
 }
+
 .orange {
     color: #f17500;
 }
+
 .red {
     color: #fa4932;
 }
+
 .subcontent {
     font-size: 0.8rem;
     font-weight: normal;
@@ -67,6 +73,7 @@
 .card-title {
     font-size: 18px !important;
     color: #0f4380;
+
     mat-icon {
         // font-size: 18px !important;
         color: #0f4380;
@@ -92,11 +99,12 @@ table {
     border: 1px solid #eeeeee !important;
     padding: 0px !important;
     margin-top: 1.5vh;
+
     th,
     td {
-        padding: 0px 0.5vmax 0px 0.5vmax !important;        
+        padding: 0px 0.5vmax 0px 0.5vmax !important;
         border-top: none !important;
-        border-bottom: none !important;        
+        border-bottom: none !important;
     }
 }
 
@@ -122,19 +130,21 @@ table {
     width: 100%;
     height: 55vh;
 }
+
 .table-class-online {
     width: 100%;
     height: 345px;
 }
 
-.seach-field{
+.seach-field {
     border: 2px solid #797a7a !important;
     border-radius: 10px !important;
     background-color: rgb(238, 238, 238) !important;
-    color: rgb(32, 32, 32) !important;    
+    color: rgb(32, 32, 32) !important;
     width: 200px !important;
     padding-left: 5px;
 }
+
 .exl-btn {
     background-color: #198754;
     border-radius: 25px;
@@ -142,6 +152,7 @@ table {
     border: none;
     box-shadow: 0 10px 16px 0 rgb(0 0 0 / 20%), 0 6px 20px 0 rgb(0 0 0 / 19%) !important;
 }
+
 // .amount-form {
 //     text-align: center;
 //     background-color: #fcf9f3;
@@ -161,24 +172,29 @@ table {
     font-size: 28px;
     border-radius: 22px;
 }
+
 .form-control {
     border: none;
     font-size: 28px;
     background: transparent;
 }
-.icons{
+
+.icons {
     margin-top: 14px;
     // color: #6c757d;
 }
+
 .amount-div {
     margin-top: 5px;
     text-align: center;
 }
+
 .amount-form input[type="number"]:focus:not([readonly]) {
     box-shadow: none;
     padding: 0px;
     background: none;
 }
+
 .amount-form {
     text-align: center;
     background-color: #ffffff;
@@ -187,49 +203,63 @@ table {
     display: flex;
     border-radius: 10px;
 }
-.spinner{
+
+.spinner {
     margin-left: -68px;
     margin-top: 5px;
     background: #bdbfc9;
     border-radius: 20px;
 }
+
 //==================== Date range CSS
-.hw{
+.hw {
     width: 50px;
-    height:50px; 
+    height: 50px;
     margin: -8px -20px -4px 0px !important;
 }
-.button-sumbit{
+
+.button-sumbit {
     padding: 4px 4px 1px 4px;
     color: #464646 !important;
 }
-.size13{
+
+.size13 {
     font-size: 13px;
 }
-.size14{
+
+.size14 {
     font-size: 14px;
 }
-.bold{
+
+.bold {
     font-weight: bold;
 }
-.mb10{
+
+.mb10 {
     margin-bottom: 10px;
 }
-.mt40{
+
+.mt40 {
     margin-top: 40px;
 }
-.mb20{
+
+.mb20 {
     margin-bottom: 20px;
 }
-.mt5{
+
+.mt5 {
     margin-top: 5px;
 }
-.displayflex{
+
+.displayflex {
     display: flex;
 }
-.tar{
+
+.tar {
     text-align: right;
 }
-.bold{
+
+.bold {
     font-weight: bold;
 }
+

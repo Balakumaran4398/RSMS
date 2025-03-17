@@ -82,25 +82,51 @@ export class LcoRechargeReportComponent implements OnInit {
   date: any;
   operatorid: any = 0;
   operatorList: any[] = [];
+  // gridOptions = {
+  //   defaultColDef: {
+  //     sortable: true,
+  //     resizable: false,
+  //     filter: true,
+  //     width: 300,
+  //     floatingFilter: true,
+  //     comparator: (valueA: any, valueB: any) => {
+  //       if (!isNaN(valueA) && !isNaN(valueB)) {
+  //         return Number(valueA) - Number(valueB);
+  //       }
+  //       if (!valueA) valueA = '';
+  //       if (!valueB) valueB = '';
+  //       return valueA.toLowerCase().localeCompare(valueB.toLowerCase());
+  //     },
+  //   },
+  //   paginationPageSize: 10,
+  //   pagination: true,
+  // }
+
   gridOptions = {
     defaultColDef: {
       sortable: true,
-      resizable: false,
+      resizable: true,
       filter: true,
-      width: 300,
       floatingFilter: true,
       comparator: (valueA: any, valueB: any) => {
-        if (!isNaN(valueA) && !isNaN(valueB)) {
-          return Number(valueA) - Number(valueB);
+        const isNumberA = !isNaN(valueA) && valueA !== null;
+        const isNumberB = !isNaN(valueB) && valueB !== null;
+  
+        if (isNumberA && isNumberB) {
+          return valueA - valueB;
+        } else {
+          const normalizedA = valueA ? valueA.toString().trim().toLowerCase() : '';
+          const normalizedB = valueB ? valueB.toString().trim().toLowerCase() : '';
+          if (normalizedA < normalizedB) return -1;
+          if (normalizedA > normalizedB) return 1;
+          return 0;
         }
-        if (!valueA) valueA = '';
-        if (!valueB) valueB = '';
-        return valueA.toLowerCase().localeCompare(valueB.toLowerCase());
       },
     },
     paginationPageSize: 10,
     pagination: true,
-  }
+  };
+
   role: any;
   username: any;
   id: any;

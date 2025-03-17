@@ -2087,4 +2087,18 @@ export class BaseService {
     return this.http.get(BASE_URL + "/report/getOpLoginReportByOpid?role=" + role + "&username=" + encodeURIComponent(username) + "&operatorid=" + operatorid + "&type=" + type + "&reporttype=" + reporttype, { responseType: 'blob' })
   }
 
+
+  // -----------------------------------------wallet recharge (requsr)-----------------------
+  lcoOnlineInitialRequest(role: any, username: any, amount: any, operatorid: any): Observable<any[]> {
+    return this.http.post<any[]>(BASE_URL + "/operator/lcoOnlineInitialRequest?role=" + role + "&username=" + encodeURIComponent(username) + "&amount=" + amount + "&operatorid=" + operatorid, {});
+  }
+
+
+  getLcoPaymentGatewayDetails(role: any, username: any, operatorid: any): Observable<any[]> {
+    return this.http.post<any[]>(BASE_URL + "/operator/getLcoPaymentGatewayDetails?role=" + role + "&username=" + encodeURIComponent(username) + "&operatorid=" + operatorid, {});
+  }
+  lcoOnlineFailurelRecharge(role: any, username: any, amount: any, operatorid: any, transactionid: any, paymentstatus: any, hash: any,): Observable<any[]> {
+    return this.http.post<any[]>(BASE_URL + "/operator/lcoOnlineFailurelRecharge?role=" + role +
+      "&username=" + encodeURIComponent(username) + "&operatorid=" + operatorid + "&amount=" + amount + "&transactionid=" + transactionid + "&paymentstatus=" + paymentstatus + "&hash=" + hash, {});
+  }
 }

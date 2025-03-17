@@ -20,6 +20,24 @@ export class SubscriberDetailsComponent implements OnInit {
   sub_list: any;
   searchTerm: string = '';
   gridApi: any;
+  // gridOptions = {
+  //   defaultColDef: {
+  //     sortable: true,
+  //     resizable: true,
+  //     filter: true,
+  //     floatingFilter: true,
+  //     comparator: (valueA: any, valueB: any) => {
+  //       const normalizedA = valueA ? valueA.toString().trim().toLowerCase() : '';
+  //       const normalizedB = valueB ? valueB.toString().trim().toLowerCase() : '';
+  //       if (normalizedA < normalizedB) return -1;
+  //       if (normalizedA > normalizedB) return 1;
+  //       return 0;
+  //     },
+  //   },
+  //   paginationPageSize: 15,
+  //   pagination: true,
+  // }
+
   gridOptions = {
     defaultColDef: {
       sortable: true,
@@ -27,16 +45,24 @@ export class SubscriberDetailsComponent implements OnInit {
       filter: true,
       floatingFilter: true,
       comparator: (valueA: any, valueB: any) => {
-        const normalizedA = valueA ? valueA.toString().trim().toLowerCase() : '';
-        const normalizedB = valueB ? valueB.toString().trim().toLowerCase() : '';
-        if (normalizedA < normalizedB) return -1;
-        if (normalizedA > normalizedB) return 1;
-        return 0;
+        const isNumberA = !isNaN(valueA) && valueA !== null;
+        const isNumberB = !isNaN(valueB) && valueB !== null;
+  
+        if (isNumberA && isNumberB) {
+          return valueA - valueB;
+        } else {
+          const normalizedA = valueA ? valueA.toString().trim().toLowerCase() : '';
+          const normalizedB = valueB ? valueB.toString().trim().toLowerCase() : '';
+          if (normalizedA < normalizedB) return -1;
+          if (normalizedA > normalizedB) return 1;
+          return 0;
+        }
       },
     },
     paginationPageSize: 15,
     pagination: true,
-  }
+  };
+
   constructor(private userservice: BaseService, private storageservice: StorageService, private router: Router, private swal: SwalService) {
     this.username = storageservice.getUsername();
     this.role = storageservice.getUserRole();

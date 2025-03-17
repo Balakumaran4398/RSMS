@@ -41,7 +41,7 @@ export class AlacarteActivationComponent {
   filteredToppingList: any;
   columnDefs: ColDef[] = [
     { headerName: "S.No", lockPosition: true, valueGetter: 'node.rowIndex+1', cellClass: 'locked-col', width: 80, suppressNavigable: true, sortable: false, filter: false },
-    { headerName: "SMARTCARD", field: 'smartcard' },
+    { headerName: "SMARTCARD", field: 'smartcard' , width: 250,},
     { headerName: "ADD PRODUCTS", field: 'packageid' },
     { headerName: "CHANNEL NAME", field: 'packagename' },
     { headerName: "ADDED PRODUCTS	", field: 'addingpackageid' },
@@ -64,7 +64,7 @@ export class AlacarteActivationComponent {
   ];
   columnDefs1: ColDef[] = [
     { headerName: "S.No", lockPosition: true, valueGetter: 'node.rowIndex+1', cellClass: 'locked-col', width: 80, suppressNavigable: true, sortable: false, filter: false },
-    { headerName: "SMARTCARD", field: 'smartcard', width: 270, },
+    { headerName: "SMARTCARD", field: 'smartcard', width: 250, },
     { headerName: "CHANNEL NAME", field: 'packagename', width: 250, cellStyle: { textAlign: 'left', } },
     {
       headerName: "STATUS	", field: 'status', width: 250, cellStyle: { textAlign: 'left', },
@@ -89,19 +89,25 @@ export class AlacarteActivationComponent {
       sortable: true,
       resizable: true,
       filter: true,
-      width: 180,
       floatingFilter: true,
       comparator: (valueA: any, valueB: any) => {
-        const normalizedA = valueA ? valueA.toString().trim().toLowerCase() : '';
-        const normalizedB = valueB ? valueB.toString().trim().toLowerCase() : '';
-        if (normalizedA < normalizedB) return -1;
-        if (normalizedA > normalizedB) return 1;
-        return 0;
+        const isNumberA = !isNaN(valueA) && valueA !== null;
+        const isNumberB = !isNaN(valueB) && valueB !== null;
+  
+        if (isNumberA && isNumberB) {
+          return valueA - valueB;
+        } else {
+          const normalizedA = valueA ? valueA.toString().trim().toLowerCase() : '';
+          const normalizedB = valueB ? valueB.toString().trim().toLowerCase() : '';
+          if (normalizedA < normalizedB) return -1;
+          if (normalizedA > normalizedB) return 1;
+          return 0;
+        }
       },
     },
     paginationPageSize: 10,
     pagination: true,
-  }
+  };
   onGridReady = () => {
     // this.userservice.GetAllUser('all',this.token.getUsername(),'0000-00-00','0000-00-00').subscribe((data) => {
     //   this.gridApi.setRowData(data);

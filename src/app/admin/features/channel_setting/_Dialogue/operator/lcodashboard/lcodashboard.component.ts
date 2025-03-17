@@ -32,6 +32,28 @@ export class LcodashboardComponent implements OnInit {
   area: any;
   state: any;
   Totalamount: any;
+  // gridOptions = {
+  //   defaultColDef: {
+  //     sortable: true,
+  //     resizable: true,
+  //     filter: true,
+  //     floatingFilter: true,
+  //     comparator: (valueA: any, valueB: any) => {
+  //       if (!isNaN(valueA) && !isNaN(valueB)) {
+  //         return Number(valueA) - Number(valueB); 
+  //       }
+  //       if (!valueA) valueA = '';
+  //       if (!valueB) valueB = '';
+  //       return valueA.toLowerCase().localeCompare(valueB.toLowerCase());
+  //     },
+  //   },
+  //   paginationPageSize: 5,
+  //   pagination: true,
+  //   paginationPageSizeOptions: [5, 10, 15, 20, 25],
+  // }
+
+
+
   gridOptions = {
     defaultColDef: {
       sortable: true,
@@ -39,17 +61,22 @@ export class LcodashboardComponent implements OnInit {
       filter: true,
       floatingFilter: true,
       comparator: (valueA: any, valueB: any) => {
-        if (!isNaN(valueA) && !isNaN(valueB)) {
-          return Number(valueA) - Number(valueB); 
+        const isNumberA = !isNaN(valueA) && valueA !== null;
+        const isNumberB = !isNaN(valueB) && valueB !== null;
+  
+        if (isNumberA && isNumberB) {
+          return valueA - valueB;
+        } else {
+          const normalizedA = valueA ? valueA.toString().trim().toLowerCase() : '';
+          const normalizedB = valueB ? valueB.toString().trim().toLowerCase() : '';
+          if (normalizedA < normalizedB) return -1;
+          if (normalizedA > normalizedB) return 1;
+          return 0;
         }
-        if (!valueA) valueA = '';
-        if (!valueB) valueB = '';
-        return valueA.toLowerCase().localeCompare(valueB.toLowerCase());
       },
     },
     paginationPageSize: 5,
     pagination: true,
-    paginationPageSizeOptions: [5, 10, 15, 20, 25],
   }
 
   editingRow: any;

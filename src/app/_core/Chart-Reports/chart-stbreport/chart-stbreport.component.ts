@@ -21,17 +21,23 @@ export class ChartSTBReportComponent implements OnInit {
       filter: true,
       floatingFilter: true,
       comparator: (valueA: any, valueB: any) => {
-        if (!isNaN(valueA) && !isNaN(valueB)) {
-          return Number(valueA) - Number(valueB);
+        const isNumberA = !isNaN(valueA) && valueA !== null;
+        const isNumberB = !isNaN(valueB) && valueB !== null;
+  
+        if (isNumberA && isNumberB) {
+          return valueA - valueB;
+        } else {
+          const normalizedA = valueA ? valueA.toString().trim().toLowerCase() : '';
+          const normalizedB = valueB ? valueB.toString().trim().toLowerCase() : '';
+          if (normalizedA < normalizedB) return -1;
+          if (normalizedA > normalizedB) return 1;
+          return 0;
         }
-        if (!valueA) valueA = '';
-        if (!valueB) valueB = '';
-        return valueA.toLowerCase().localeCompare(valueB.toLowerCase());
       },
     },
     paginationPageSize: 10,
     pagination: true,
-  }
+  };
   columnDefs: any[] = [];
   rowData: any;
   gridApi: any;
@@ -106,7 +112,7 @@ export class ChartSTBReportComponent implements OnInit {
           { headerName: "PRODUCT NAME", field: 'productname', width: 220, },
           { headerName: "PRODUCT ID", field: 'packageid', width: 100, },
           { headerName: "ACTIVATION DATE", field: 'activationdate', width: 190, },
-          { headerName: "EXPIRY DATE", field: 'expirydate', width: 190, },
+          { headerName: "EXPIRY DATE", field: 'expirydate', width: 180, },
 
         ];
         break;
@@ -123,7 +129,7 @@ export class ChartSTBReportComponent implements OnInit {
           { headerName: "PRODUCT NAME", field: 'productname', width: 220, },
           { headerName: "PRODUCT ID", field: 'packageid', width: 100, },
           { headerName: "ACTIVATION DATE", field: 'activationdate', width: 190, },
-          { headerName: "EXPIRY DATE", field: 'expirydate', width: 190, },
+          { headerName: "EXPIRY DATE", field: 'expirydate', width: 180, },
         ];
         break;
 
@@ -136,7 +142,7 @@ export class ChartSTBReportComponent implements OnInit {
           { headerName: "SMARTCARD", field: 'smartcard', width: 300, },
           { headerName: "BOX ID", field: 'boxid', width: 220, },
           { headerName: "CAS NAME", field: 'casname', width: 220, },
-          { headerName: "CREATION DATE", field: 'createddate', width: 250, },
+          { headerName: "CREATION DATE", field: 'createddate', width: 240, },
         ];
         break;
       case '4': // Not expiry
@@ -151,7 +157,7 @@ export class ChartSTBReportComponent implements OnInit {
           { headerName: "PRODUCT NAME", field: 'productname', width: 220, },
           { headerName: "PRODUCT ID", field: 'casproductid', width: 100, },
           { headerName: "CREATION DATE", field: 'updateddate', width: 190, },
-          { headerName: "EXPIRY DATE", field: 'expirydate', width: 190, },
+          { headerName: "EXPIRY DATE", field: 'expirydate', width: 180, },
         ];
         break;
 
@@ -167,7 +173,7 @@ export class ChartSTBReportComponent implements OnInit {
           { headerName: "PRODUCT NAME", field: 'productname', width: 220, },
           { headerName: "PRODUCT ID", field: 'casproductid', width: 100, },
           { headerName: "CREATION DATE", field: 'updateddate', width: 190, },
-          { headerName: "EXPIRY DATE", field: 'expirydate', width: 190, },
+          { headerName: "EXPIRY DATE", field: 'expirydate', width: 180, },
         ];
         break;
       case '6': // Block
@@ -182,7 +188,7 @@ export class ChartSTBReportComponent implements OnInit {
           { headerName: "CAS NAME", field: 'casname', width: 150, },
           { headerName: "PACKAGE", field: 'productname', width: 220, },
           { headerName: "BLOCKED DATE", field: 'updateddate', width: 190, },
-          { headerName: "EXPIRY DATE", field: 'expirydate', width: 190, },
+          { headerName: "EXPIRY DATE", field: 'expirydate', width: 180, },
         ];
         break;
 

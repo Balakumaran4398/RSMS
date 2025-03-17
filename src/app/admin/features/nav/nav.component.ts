@@ -64,7 +64,7 @@ export class NavComponent implements OnInit, AfterViewInit {
       this.isCustomerService = false;
       this.isServiceCenter = false;
       this.isOperator = false;
-      this.role = 'ROLE ADMIN';
+      this.role = 'ROLE_ADMIN';
     } else if (this.role.includes('ROLE_RECEPTION')) {
       this.isReception = true;
       this.isUser = false;
@@ -72,7 +72,7 @@ export class NavComponent implements OnInit, AfterViewInit {
       this.isCustomerService = false;
       this.isServiceCenter = false;
       this.isOperator = false;
-      this.role = 'ROLE RECEPTION';
+      this.role = 'ROLE_RECEPTION';
     } else if (this.role.includes('ROLE_SPECIAL')) {
       this.isReception = false;
       this.isUser = false;
@@ -80,7 +80,7 @@ export class NavComponent implements OnInit, AfterViewInit {
       this.isCustomerService = false;
       this.isServiceCenter = false;
       this.isOperator = false;
-      this.role = 'ROLE SPECIAL';
+      this.role = 'ROLE_SPECIAL';
     } else if (this.role.includes('ROLE_INVENTORY')) {
       this.isInventory = true;
       this.isReception = false;
@@ -89,7 +89,7 @@ export class NavComponent implements OnInit, AfterViewInit {
       this.isCustomerService = false;
       this.isServiceCenter = false;
       this.isOperator = false;
-      this.role = 'ROLE INVENTORY';
+      this.role = 'ROLE_INVENTORY';
     } else if (this.role.includes('ROLE_CUSSERVICE')) {
       this.isInventory = false;
       this.isReception = false;
@@ -98,7 +98,7 @@ export class NavComponent implements OnInit, AfterViewInit {
       this.isCustomerService = true;
       this.isServiceCenter = false;
       this.isOperator = false;
-      this.role = 'ROLE CUSSERVICE';
+      this.role = 'ROLE_CUSSERVICE';
     } else if (this.role.includes('ROLE_SERVICECENTER')) {
       this.isInventory = false;
       this.isReception = false;
@@ -108,7 +108,7 @@ export class NavComponent implements OnInit, AfterViewInit {
       this.isServiceCenter = true;
       this.isSearch = true;
       this.isOperator = false;
-      this.role = 'ROLE SERVICECENTER';
+      this.role = 'ROLE_SERVICECENTER';
     } else if (this.role.includes('ROLE_OPERATOR')) {
       this.isInventory = false;
       this.isReception = false;
@@ -118,7 +118,7 @@ export class NavComponent implements OnInit, AfterViewInit {
       this.isServiceCenter = false;
       this.isSearch = false;
       this.isOperator = true;
-      this.role = 'ROLE OPERATOR';
+      this.role = 'ROLE_OPERATOR';
       this.operatorIdoperatorId();
     }
   }

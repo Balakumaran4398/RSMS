@@ -71,7 +71,7 @@ export class ExpiryDetailsComponent implements OnInit, OnDestroy {
       fromdate: this.fromdate,
       todate: this.todate
     })
-    //     this.dateRangeForm.get('fromdate').set(this.fromdate);
+    // this.dateRangeForm.get('fromdate').set(this.fromdate);
     // this.dateRangeForm.get('todate').set(this.todate);
   }
   ngAfterViewInit() {

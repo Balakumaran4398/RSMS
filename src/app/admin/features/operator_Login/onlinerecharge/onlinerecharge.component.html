@@ -1,15 +1,16 @@
 <div class="pagestyle">
     <app-back-share></app-back-share>
     <div class="row">
-        <p class="pagetitle">Wallet Info</p>
+        <p class="pagetitle">LCO SELF RECHARGE </p>
     </div>
     <div class="row">
         <div class="col-12 col-sm-12 col-md-12 col-lg-3">
             <mat-card class="card mat-elevation-z3 card-radius">
                 <mat-card-content class="content">
                     <div class="card-content">
-                        <h3>Wallet Balance</h3>
-                        <span class={{balanceclass}}>{{walletbalance | currency: curcode }}</span>
+                        <h5>Wallet Balance</h5>
+                        <span class={{operatorDetails?.balance}}>{{operatorDetails?.balance | currency: curcode
+                            }}</span>
                     </div>
                     <div class="pay-his-div">
                         <span class="recent-his">Recent history <span>&#8645;</span></span>
@@ -36,17 +37,18 @@
                                 <span class="material-icons icons">
                                     currency_rupee
                                 </span>
-                                <input class="form-control form-control-sm mr-3 w-150" type="text"
-                                    [formControl]="amountControl" placeholder="0" aria-label="Search">
+                                <input class="form-control form-control-sm mr-3 w-150" type="text" [(ngModel)]="amount"
+                                    placeholder="0" aria-label="Search">
                             </div>
-                            <mat-error *ngIf="amountControl.hasError('pattern') && !amountControl.hasError('required')">
+                            <!-- <mat-error *ngIf="amountControl.hasError('pattern') && !amountControl.hasError('required')">
                                 *Is this an invalid amount?
-                            </mat-error>
+                            </mat-error> -->
                         </div>
                     </mat-card-content>
                     <mat-card-footer class="card-footer">
-                        <button mat-button class="pay-btn" [disabled]="loading || !payGroup.valid"
-                            (click)="onLoadPage()">
+                        <!-- <button mat-button class="pay-btn" [disabled]="loading || !payGroup.valid"
+                            (click)="onLoadPage()"> -->
+                        <button mat-button class="pay-btn" (click)="onLoadPage()">
                             <mat-icon>add</mat-icon>Recharge
                         </button>
                         <div *ngIf="loading">
@@ -58,99 +60,27 @@
         </div>
         <div class="col-12 col-sm-12 col-md-12 col-lg-9">
             <mat-card class="card mat-elevation-z3 card-radius">
-                <!-- <div class="row">
-                    <div class="col-12 col-sm-12 col-md-8 col-lg-8 displayflex">
-                        <mat-form-field class="me-3 size13 bold" appearance="outline">
-                            <mat-label>Choose the date range</mat-label>
-                            <mat-date-range-input [formGroup]="dateRange" [max]="today" [rangePicker]="picker">
-                                <input matStartDate formControlName="fromdate" placeholder="Start date">
-                                <input matEndDate formControlName="todate" placeholder="End date">
-                            </mat-date-range-input>
-                            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-                            <mat-date-range-picker #picker></mat-date-range-picker>
-                        </mat-form-field>
-                        <div class="mt5">
-                            <button mat-raised-button class="bold button-sumbit" color="accent"
-                                (click)="onDateSelected($event)">Submit</button>
-                        </div>
-                    </div>
-                </div> -->
-                <div class="row">
-                    <!-- <div class="col-6 col-sm-6 col-md-6 col-lg-6">
-                        <div class="mb20">
-                            <img class="hw" mat-card-image alt="Photo not exist"
-                                src='./assets/image-report/excelicon.png' (click)="exportExcel()">
-                            &nbsp;&nbsp;&nbsp;&nbsp;
-                            <img class="hw" mat-card-image alt="Photo not exist"
-                                src='./assets/image-report/pdficon.png'>
-                        </div>
-                    </div> -->
-                    <div class="col-12 col-sm-12 col-md-12 col-lg-12" fxLayout="row" fxFlex fxLayoutAlign="end center">
-                        <div class="mb10 size14">
-                            <input type="text" class="seach-field" matInput id="quickFilter"
-                                (input)="onQuickFilterChanged()" placeholder="Search.." />
-                        </div>
-                    </div>
+
+                <div class="d-flex justify-content-start align-items-center">
+                    <mat-form-field appearance="outline">
+                        <mat-date-range-input [rangePicker]="picker" [formGroup]="dateRangeForm">
+                            <input matStartDate matInput placeholder="Start date" formControlName="fromdate"
+                                (dateChange)="getFromDate($event)">
+                            <input matEndDate matInput placeholder="End date" formControlName="todate"
+                                (dateChange)="getToDate($event)">
+                        </mat-date-range-input>
+                        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                        <mat-date-range-picker #picker></mat-date-range-picker>
+                    </mat-form-field>
+                    <button class="btn btn-success mb-3 mx-3 bttn" (click)="getOnline()">submit</button>
                 </div>
-                <ag-grid-angular #agGrid id="myGrid" class="ag-theme-balham table-class-online" rowAnimation
+                <ag-grid-angular #agGrid id="myGrid" class="ag-theme-alpine table-class" rowAnimation
                     [gridOptions]="gridOptions" [columnDefs]="columnDefsOnline" [rowData]="rowDataOnline"
                     (gridReady)="onGridReady($event)" [enableCellTextSelection]="true">
                 </ag-grid-angular>
             </mat-card>
         </div>
     </div>
-    <div class="row" *ngIf="clienttype!='OTT'">
-        <div class="col-12 col-sm-12 col-md-12 col-lg-12">
-            <mat-card class="card mat-elevation-z3 card-radius">
-                <div class="row">
-                    <div class="col-12 col-sm-12 col-md-8 col-lg-8 displayflex">
-                        <mat-form-field class="me-3 size13 bold" appearance="outline">
-                            <mat-label>Choose the date range</mat-label>
-                            <mat-date-range-input [formGroup]="dateRange" [max]="today" [rangePicker]="picker">
-                                <input matStartDate formControlName="fromdate" placeholder="Start date">
-                                <input matEndDate formControlName="todate" placeholder="End date">
-                            </mat-date-range-input>
-                            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-                            <mat-date-range-picker #picker></mat-date-range-picker>
-                        </mat-form-field>
-                        <div class="mt5">
-                            <button mat-raised-button class="bold button-sumbit" color="accent"
-                                (click)="onDateSelected($event)">Submit</button>
-                        </div>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-6 col-sm-6 col-md-6 col-lg-6">
-                        <div class="mb20">
-                            <img class="hw" mat-card-image alt="Photo not exist"
-                                src='./assets/image-report/excelicon.png' (click)="exportExcel()">
-                            <!-- <button mat-button class="exl-btn mb10" (click)="exportExcel()">
-                                    <mat-icon>get_app</mat-icon>
-                                    Excel
-                                </button> -->
-                            &nbsp;&nbsp;&nbsp;&nbsp;
-                            <img class="hw" mat-card-image alt="Photo not exist" (click)="exportPdf()"
-                                src='./assets/image-report/pdficon.png'>
-                        </div>
-                    </div>
-                    <!-- <div class="col-6 col-sm-6 col-md-6 col-lg-6" fxLayout="row" fxFlex fxLayoutAlign="end center">
-                        <div class="mb10 size14">
-                            <input type="text" class="seach-field" matInput id="quickFilter"
-                                (input)="onQuickFilterChanged1()" placeholder="Search.." />
-                        </div>
-                    </div> -->
-                </div>
-                <ag-grid-angular #agGrid id="myGrid" class="ag-theme-balham table-class" rowAnimation
-                    [gridOptions]="gridOptions" [columnDefs]="columnDefs" [rowData]="rowData"
-                    [enableCellTextSelection]="true" (gridReady)="onGridReady($event)">
-                </ag-grid-angular>
-            </mat-card>
-        </div>
-    </div>
-    <!-- <div class="recharch-btn-div" *ngIf="!rechargeBotton">
-        <button mat-button class="pay-btn btn-margin" (click)="goPayment()">
-            <mat-icon>add</mat-icon>
-            Recharge
-        </button>
-    </div> -->
+
+
 </div>

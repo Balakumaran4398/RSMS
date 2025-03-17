@@ -21,17 +21,23 @@ export class ChartPackageReportComponent {
       filter: true,
       floatingFilter: true,
       comparator: (valueA: any, valueB: any) => {
-        if (!isNaN(valueA) && !isNaN(valueB)) {
-          return Number(valueA) - Number(valueB); 
+        const isNumberA = !isNaN(valueA) && valueA !== null;
+        const isNumberB = !isNaN(valueB) && valueB !== null;
+  
+        if (isNumberA && isNumberB) {
+          return valueA - valueB;
+        } else {
+          const normalizedA = valueA ? valueA.toString().trim().toLowerCase() : '';
+          const normalizedB = valueB ? valueB.toString().trim().toLowerCase() : '';
+          if (normalizedA < normalizedB) return -1;
+          if (normalizedA > normalizedB) return 1;
+          return 0;
         }
-        if (!valueA) valueA = '';
-        if (!valueB) valueB = '';
-        return valueA.toLowerCase().localeCompare(valueB.toLowerCase());
       },
     },
     paginationPageSize: 10,
     pagination: true,
-  }
+  };
   // columnDefs: any[] = [];
   rowData: any;
   gridApi: any;
@@ -101,7 +107,7 @@ export class ChartPackageReportComponent {
           { headerName: "PACKAGE NAME", field: 'productname', width: 300, },
           { headerName: "PACKAGE RATE", field: 'rate', width: 300, },
           { headerName: "PRODUCT ID", field: 'casproductid', width: 300, },
-          { headerName: "CAS TYPE", field: 'casname', width: 310, },
+          { headerName: "CAS TYPE", field: 'casname', width: 300, },
         ];
         break;
 
@@ -112,7 +118,7 @@ export class ChartPackageReportComponent {
           { headerName: "PACKAGE NAME", field: 'productname', width: 300, },
           { headerName: "PACKAGE RATE", field: 'rate', width: 300, },
           { headerName: "PRODUCT ID", field: 'casproductid', width: 300, },
-          { headerName: "CAS TYPE", field: 'casname', width: 310, },
+          { headerName: "CAS TYPE", field: 'casname', width: 300, },
         ];
         break;
 
@@ -123,7 +129,7 @@ export class ChartPackageReportComponent {
           { headerName: "PRODUCT ID", field: 'productid', width: 300, },
           { headerName: "RATE", field: 'rate', width: 300, },
           { headerName: "SERVICE ID", field: 'serviceid', width: 300, },
-          { headerName: "CREATED DATE", field: 'createddate', width: 310, },
+          { headerName: "CREATED DATE", field: 'createddate', width: 300, },
         ];
         break;
       case '10': // FTA CHANNEL
@@ -133,7 +139,7 @@ export class ChartPackageReportComponent {
           { headerName: "PRODUCT ID", field: 'productid', width: 300, },
           { headerName: "RATE", field: 'rate', width: 300, },
           { headerName: "SERVICE ID", field: 'serviceid', width: 300, },
-          { headerName: "CREATED DATE", field: 'createddate', width: 310, },
+          { headerName: "CREATED DATE", field: 'createddate', width: 300, },
         ];
         break;
 

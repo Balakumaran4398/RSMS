@@ -22,17 +22,44 @@ export class SpecialareachangeComponent implements OnInit {
 
   rowData: any;
   public rowSelection: any = "multiple";
+  // gridOptions = {
+  //   defaultColDef: {
+  //     sortable: true,
+  //     resizable: true,
+  //     filter: true,
+  //     width: 200,
+  //     floatingFilter: true
+  //   },
+  //   paginationPageSize: 10,
+  //   pagination: true,
+  // }
+
   gridOptions = {
     defaultColDef: {
       sortable: true,
       resizable: true,
       filter: true,
-      width: 200,
-      floatingFilter: true
+      floatingFilter: true,
+      comparator: (valueA: any, valueB: any) => {
+        const isNumberA = !isNaN(valueA) && valueA !== null;
+        const isNumberB = !isNaN(valueB) && valueB !== null;
+  
+        if (isNumberA && isNumberB) {
+          return valueA - valueB;
+        } else {
+          const normalizedA = valueA ? valueA.toString().trim().toLowerCase() : '';
+          const normalizedB = valueB ? valueB.toString().trim().toLowerCase() : '';
+          if (normalizedA < normalizedB) return -1;
+          if (normalizedA > normalizedB) return 1;
+          return 0;
+        }
+      },
     },
     paginationPageSize: 10,
     pagination: true,
-  }
+  };
+
+
   operatorid: any;
 
   lco: string = '';

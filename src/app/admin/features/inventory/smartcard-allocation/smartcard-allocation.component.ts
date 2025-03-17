@@ -24,6 +24,24 @@ export class SmartcardAllocationComponent {
 
   public rowSelection: any = "multiple";
   rowData: any[] = [];
+  // gridOptions = {
+  //   defaultColDef: {
+  //     sortable: true,
+  //     resizable: true,
+  //     filter: true,
+  //     floatingFilter: true,
+  //     comparator: (valueA: any, valueB: any) => {
+  //       const normalizedA = valueA ? valueA.toString().trim().toLowerCase() : '';
+  //       const normalizedB = valueB ? valueB.toString().trim().toLowerCase() : '';
+  //       if (normalizedA < normalizedB) return -1;
+  //       if (normalizedA > normalizedB) return 1;
+  //       return 0;
+  //     },
+  //   },
+  //   paginationPageSize: 10,
+  //   pagination: true,
+  // }
+
   gridOptions = {
     defaultColDef: {
       sortable: true,
@@ -31,16 +49,23 @@ export class SmartcardAllocationComponent {
       filter: true,
       floatingFilter: true,
       comparator: (valueA: any, valueB: any) => {
-        const normalizedA = valueA ? valueA.toString().trim().toLowerCase() : '';
-        const normalizedB = valueB ? valueB.toString().trim().toLowerCase() : '';
-        if (normalizedA < normalizedB) return -1;
-        if (normalizedA > normalizedB) return 1;
-        return 0;
+        const isNumberA = !isNaN(valueA) && valueA !== null;
+        const isNumberB = !isNaN(valueB) && valueB !== null;
+  
+        if (isNumberA && isNumberB) {
+          return valueA - valueB;
+        } else {
+          const normalizedA = valueA ? valueA.toString().trim().toLowerCase() : '';
+          const normalizedB = valueB ? valueB.toString().trim().toLowerCase() : '';
+          if (normalizedA < normalizedB) return -1;
+          if (normalizedA > normalizedB) return 1;
+          return 0;
+        }
       },
     },
     paginationPageSize: 10,
     pagination: true,
-  }
+  };
 
   constructor(public dialog: MatDialog, private userService: BaseService, storageService: StorageService, private renderer: Renderer2, private swal: SwalService) {
     this.username = storageService.getUsername();

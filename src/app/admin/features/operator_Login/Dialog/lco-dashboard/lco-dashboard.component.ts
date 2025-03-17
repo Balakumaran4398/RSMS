@@ -20,16 +20,40 @@ export class LcoDashboardComponent implements OnInit {
   type: any;
   columnDefs: any[] = [];
   rowData: any;
+  // gridOptions = {
+  //   defaultColDef: {
+  //     sortable: true,
+  //     resizable: true,
+  //     filter: true,
+  //     floatingFilter: true
+  //   },
+  //   paginationPageSize: 10,
+  //   pagination: true,
+  // }
   gridOptions = {
     defaultColDef: {
       sortable: true,
       resizable: true,
       filter: true,
-      floatingFilter: true
+      floatingFilter: true,
+      comparator: (valueA: any, valueB: any) => {
+        const isNumberA = !isNaN(valueA) && valueA !== null;
+        const isNumberB = !isNaN(valueB) && valueB !== null;
+
+        if (isNumberA && isNumberB) {
+          return valueA - valueB;
+        } else {
+          const normalizedA = valueA ? valueA.toString().trim().toLowerCase() : '';
+          const normalizedB = valueB ? valueB.toString().trim().toLowerCase() : '';
+          if (normalizedA < normalizedB) return -1;
+          if (normalizedA > normalizedB) return 1;
+          return 0;
+        }
+      },
     },
     paginationPageSize: 10,
     pagination: true,
-  }
+  };
   msodetails: any;
   operatorname: any;
   gridApi: any;
@@ -45,7 +69,6 @@ export class LcoDashboardComponent implements OnInit {
     this.type = this.route.snapshot.paramMap.get('id');
     this.role = storageServive.getUserRole();
     this.username = storageServive.getUsername();
-
   }
   ngOnInit(): void {
     this.onColumnDefs();
@@ -400,13 +423,13 @@ export class LcoDashboardComponent implements OnInit {
       subscribe({
         next: (x: Blob) => {
           this.swal.Close();
-          if (this.type = 1){
+          if (this.type = 1) {
             if (reportType == 1) {
               this.reportMaking(x, 'OPERATOR WISE GST FILE' + this.lcoId + '-' + this.type + ".pdf", 'application/pdf');
             } else if (reportType == 2) {
               this.reportMaking(x, 'OPERATOR WISE GST FILE' + this.lcoId + '-' + this.type + ".xlsx", 'application/xlsx');
             }
-          }else if(this.type = 2){
+          } else if (this.type = 2) {
 
           }
         },

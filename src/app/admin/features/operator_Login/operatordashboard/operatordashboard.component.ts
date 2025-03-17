@@ -47,6 +47,8 @@ export class OperatordashboardComponent implements OnInit {
   selectedMonth: any = 0;
   selectedYear: any = 0;
 
+  walletshare: boolean = false;
+
 
   constructor(private router: Router, private userService: BaseService, private storageService: StorageService, public dialog: MatDialog,) {
     this.role = storageService.getUserRole();
@@ -150,6 +152,9 @@ export class OperatordashboardComponent implements OnInit {
     this.userService.OperatorDetails(this.role, this.username, operator).subscribe(
       (data: any) => {
         this.lcoDeatails = data[0];
+        this.walletshare = this.lcoDeatails.walletshare;
+        console.log('rtrijhtrdlthjdrkthjk', this.walletshare);
+
         console.log(this.lcoDeatails);
       },
     );
@@ -327,7 +332,9 @@ export class OperatordashboardComponent implements OnInit {
   openLCO_Dialog(event: any) {
     console.log(event);
     this.router.navigate(['admin/lco_dashboard/' + event]);
-    // this.router.navigate(['admin/msodialogueReports/' + event]);
-
   }
+  // openLCO_Dialog(event: any) {
+  //   console.log(event);
+  //   this.router.navigate(['admin/lco_dashboard/' + event]);
+  // }
 }
