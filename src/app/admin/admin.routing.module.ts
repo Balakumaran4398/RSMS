@@ -102,6 +102,8 @@ import { DistributorsettingComponent } from './features/operator_Login/distribut
 import { BillcollectionComponent } from './features/operator_Login/billcollection/billcollection.component';
 import { LcoSmartcardDialogComponent } from './features/operator_Login/Dialog/lco-smartcard-dialog/lco-smartcard-dialog.component';
 import { LcowalletshareComponent } from './features/operator_Login/lcowalletshare/lcowalletshare.component';
+import { SmrtBoxidChangeComponent } from './features/operator_Login/smrt-boxid-change/smrt-boxid-change.component';
+import { LcodashboardreportComponent } from './features/operator_Login/lcodashboardreport/lcodashboardreport.component';
 
 
 const routes: Routes = [
@@ -227,6 +229,8 @@ const routes: Routes = [
       { path: 'bill_collection', component: BillcollectionComponent },
       { path: 'lco_dashboard/:smartcard/:status', component: LcoSmartcardDialogComponent },
       { path: 'lcowallet_share', component: LcowalletshareComponent },
+      { path: 'smrt_boxid_change', component: SmrtBoxidChangeComponent },
+      { path: 'lco_dashboard_report/:id', component: LcodashboardreportComponent },
     ]
   }
 ];

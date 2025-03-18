@@ -43,7 +43,9 @@
         <li *ngIf="isUser || isReception "><a (click)="navgetToUrl('/top_subscription');setActiveLinkTabList($event)"
                 [class.hide]="!isSidebarOpen" class="nav-link"><i class='bx bx-table bx-sm icon'></i>
                 Top Subscription Details</a></li>
-
+        <!-- <li *ngIf="isReception"><a (click)="navgetToUrl('/smrt_boxid_change');setActiveLinkTab($event)"
+                class="nav-link"><mat-icon class="icon">control_camera</mat-icon>&nbsp;VC/STB Master</a>
+        </li> -->
 
         <li *ngIf="isInventory">
             <a (click)="setActiveLinkListTab($event); navgetToUrl('/inventor_inventory')" class="nav-link active">
@@ -229,7 +231,7 @@
 
 
 
-        
+
 
 
 
@@ -348,13 +350,13 @@
                 <li><a (click)="navgetToUrl('/Create_sub');setActiveLinkTab($event)"><i
                             class="fa fa-fw fa-plus icon">&nbsp;</i>Create Subscriber
                     </a> </li>
-                <li><a (click)="navgetToUrl('/online_customer_details');setActiveLinkTab($event)"><i
+                <!-- <li><a (click)="navgetToUrl('/online_customer_details');setActiveLinkTab($event)"><i
                             class="fa fa-fw fa-user on icon">&nbsp;</i>
-                        Subscriber Details</a></li>
+                        Subscriber Details</a></li> -->
 
             </ul>
         </li>
-        <li *ngIf="isOperator ">
+        <!-- <li *ngIf="isOperator ">
             <a> <mat-icon class="icon">settings</mat-icon> Master Settings
                 <i class='bx bx-chevron-right icon-right'></i>
             </a>
@@ -379,8 +381,10 @@
                 <li *ngIf="isOperator"><a (click)="navgetToUrl('/Addon');setActiveLinkTab($event)" class="nav-link"><i
                             class="fa fa-fw fa-comments  icon ">&nbsp;</i> Addon</a></li>
             </ul>
-        </li>
-        <li *ngIf="isOperator ">
+        </li> -->
+
+        <!-- ---------------------------------------vc----------------- -->
+        <!-- <li *ngIf="isOperator ">
             <a> <mat-icon class="icon">control_camera</mat-icon>VC/STB Master <i
                     class='bx bx-chevron-right icon-right'></i></a>
             <ul class="side-dropdown">
@@ -391,8 +395,9 @@
                 <li><a (click)="navgetToUrl('/stb_bill');setActiveLinkTab($event)"><i class="fa fa-fw fa-recycle icon "
                             style="margin-right: 0px;"></i>Smartcard Change</a> </li>
             </ul>
-        </li>
-        <li *ngIf="isOperator"><a (click)="navgetToUrl('/Recurring');setActiveLinkTab($event)" class="nav-link"><i
+        </li> -->
+<!-- ------------------------------------------------------------- -->
+        <!-- <li *ngIf="isOperator"><a (click)="navgetToUrl('/Recurring');setActiveLinkTab($event)" class="nav-link"><i
                     class="fa-regular fa-registered  bx-sm icon">&nbsp;</i>Recurring</a>
         </li>
         <li *ngIf="isOperator"><a (click)="navgetToUrl('/forcemessage');setActiveLinkTab($event)" class="nav-link"><i
@@ -410,9 +415,10 @@
         <li *ngIf="isOperator"><a (click)="navgetToUrl('/lcoChangePassword');setActiveLinkTab($event)" class="nav-link">
                 <i class="fa-solid fa-user-lock bx-sm icon ">&nbsp;</i>Change Password</a>
         </li>
+
         <li *ngIf="isOperator" (click)="navgetTosublcoUrl(operatorId)"><a (click)="setActiveLink($event)"
                 class="nav-link"> <i class="fas fa-users-cog bx-sm icon ">&nbsp;</i>Sub LCO </a>
-        </li>
+        </li> -->
 
 
 

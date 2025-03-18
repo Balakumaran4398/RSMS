@@ -1,7 +1,7 @@
 import { HttpResponse } from '@angular/common/http';
 import { Component, Inject, OnInit } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { BaseService } from 'src/app/_core/service/base.service';
 import { ExcelService } from 'src/app/_core/service/excel.service';
 import { StorageService } from 'src/app/_core/service/storage.service';
@@ -65,7 +65,7 @@ export class LcoDashboardComponent implements OnInit {
   lcoDeatails: any;
   lcoId: any;
 
-  constructor(private route: ActivatedRoute, private location: Location, private userService: BaseService, private storageServive: StorageService, private excelService: ExcelService, private swal: SwalService,) {
+  constructor(private route: ActivatedRoute, private location: Location, private userService: BaseService, private router: Router, private storageServive: StorageService, private excelService: ExcelService, private swal: SwalService,) {
     this.type = this.route.snapshot.paramMap.get('id');
     this.role = storageServive.getUserRole();
     this.username = storageServive.getUsername();
@@ -107,7 +107,6 @@ export class LcoDashboardComponent implements OnInit {
   }
   getHeader(): string {
     switch (this.type) {
-      case '1': return 'TOTAL SUSPEND';
       case '2': return 'NOT EXPIRED SMARTCARD';
       case '3': return 'EXPIRED SMARTCARD';
       case '4': return 'FIRST TIME ACTIVATION';
@@ -179,7 +178,51 @@ export class LcoDashboardComponent implements OnInit {
   }
 
   private onColumnDefs() {
-    if (this.type == 7 || this.type == 6) {
+    if (this.type == 6) {
+      this.columnDefs = [
+        { headerName: "S.No", lockPosition: true, valueGetter: 'node.rowIndex+1', width: 90, filter: false },
+        {
+          headerName: 'SMARTCARD', field: 'smartcard', width: 220,
+          cellStyle: (params: any) => {
+            if (params.data.someCondition) {
+              return { backgroundColor: '#f4cccc' };
+            } else {
+              return null;
+            }
+          },
+          cellRenderer: (params: any) => {
+            return `<a href="javascript:void(0)" style="color: blue; text-decoration: none;color:#0d6efd">
+                      ${params.value}
+                    </a>`;
+          },
+
+          onCellClicked: (params: any) => {
+            const subid = params.data.id;
+            const smartcard = params.data.smartcard;
+            console.log('Sub ID:', subid);
+            console.log('Smartcard:', smartcard);
+            if (smartcard) {
+              this.router.navigate([`/admin/subscriber-full-info/${smartcard}/subsmartcard`])
+                .then(() => {
+                  setTimeout(() => {
+                    window.location.reload();
+                  }, 100);
+                });
+            } else if (subid) {
+              this.router.navigate([`/admin/subscriber-full-info/${subid}/new`])
+                .then(() => {
+                  setTimeout(() => {
+                    window.location.reload();
+                  }, 100);
+                });
+            }
+          }
+        },
+        { headerName: 'BOX ID	', field: 'boxid', Flex: 1, cellStyle: { textAlign: 'center', color: 'green' }, width: 400, },
+        { headerName: 'CAS NAME', field: 'casname', width: 300, },
+        { headerName: 'ALLOCATION DATE	', field: 'connectiondate', width: 400, },
+      ]
+    } else if (this.type == 7 ) {
       this.columnDefs = [
         { headerName: "S.No", lockPosition: true, valueGetter: 'node.rowIndex+1', width: 90, filter: false },
         { headerName: 'SMARTCARD', field: 'smartcard', Flex: 1, width: 400, },
@@ -187,14 +230,52 @@ export class LcoDashboardComponent implements OnInit {
         { headerName: 'CAS NAME', field: 'casname', width: 300, },
         { headerName: 'ALLOCATION DATE	', field: 'connectiondate', width: 400, },
       ]
-    } else if (this.type == 2) {
+    }
+    else if (this.type == 2) {
       this.columnDefs = [
         { headerName: "S.No", lockPosition: true, valueGetter: 'node.rowIndex+1', width: 90, filter: false },
+        // { headerName: 'SMARTCARD', field: 'smartcard', width: 220, },
+        {
+          headerName: 'SMARTCARD', field: 'smartcard', width: 220,
+          cellStyle: (params: any) => {
+            if (params.data.someCondition) {
+              return { backgroundColor: '#f4cccc' };
+            } else {
+              return null;
+            }
+          },
+          cellRenderer: (params: any) => {
+            return `<a href="javascript:void(0)" style="color: blue; text-decoration: none;color:#0d6efd">
+                      ${params.value}
+                    </a>`;
+          },
+
+          onCellClicked: (params: any) => {
+            const subid = params.data.id;
+            const smartcard = params.data.smartcard;
+            console.log('Sub ID:', subid);
+            console.log('Smartcard:', smartcard);
+            if (smartcard) {
+              this.router.navigate([`/admin/subscriber-full-info/${smartcard}/subsmartcard`])
+                .then(() => {
+                  setTimeout(() => {
+                    window.location.reload();
+                  }, 100);
+                });
+            } else if (subid) {
+              this.router.navigate([`/admin/subscriber-full-info/${subid}/new`])
+                .then(() => {
+                  setTimeout(() => {
+                    window.location.reload();
+                  }, 100);
+                });
+            }
+          }
+        },
         { headerName: 'SUBSCRIBER ID', field: 'subid', Flex: 1, width: 150, },
         { headerName: 'SUBSCRIBER NAME', field: 'customername', Flex: 1, cellStyle: { textAlign: 'center', color: 'green' }, width: 200, },
         { headerName: 'ADDRESS ', field: 'address', Flex: 1, cellStyle: { textAlign: 'center', color: 'green' }, width: 150, },
         { headerName: 'MOBILE NO', field: 'mobileno', width: 150, },
-        { headerName: 'SMARTCARD', field: 'smartcard', width: 220, },
         { headerName: 'BOX ID', field: 'boxid', width: 180, },
         { headerName: 'PACKAGE NAME', field: 'productname', width: 200, },
         { headerName: 'ACTIVATION DATE', field: 'activationdate', width: 200, },
@@ -205,11 +286,48 @@ export class LcoDashboardComponent implements OnInit {
     else if (this.type == 3) {
       this.columnDefs = [
         { headerName: "S.No", lockPosition: true, valueGetter: 'node.rowIndex+1', width: 90, filter: false },
+        // { headerName: 'SMARTCARD', field: 'smartcard', width: 230, },
+        {
+          headerName: 'SMARTCARD', field: 'smartcard', width: 220,
+          cellStyle: (params: any) => {
+            if (params.data.someCondition) {
+              return { backgroundColor: '#f4cccc' };
+            } else {
+              return null;
+            }
+          },
+          cellRenderer: (params: any) => {
+            return `<a href="javascript:void(0)" style="color: blue; text-decoration: none;color:#0d6efd">
+                      ${params.value}
+                    </a>`;
+          },
+
+          onCellClicked: (params: any) => {
+            const subid = params.data.id;
+            const smartcard = params.data.smartcard;
+            console.log('Sub ID:', subid);
+            console.log('Smartcard:', smartcard);
+            if (smartcard) {
+              this.router.navigate([`/admin/subscriber-full-info/${smartcard}/subsmartcard`])
+                .then(() => {
+                  setTimeout(() => {
+                    window.location.reload();
+                  }, 100);
+                });
+            } else if (subid) {
+              this.router.navigate([`/admin/subscriber-full-info/${subid}/new`])
+                .then(() => {
+                  setTimeout(() => {
+                    window.location.reload();
+                  }, 100);
+                });
+            }
+          }
+        },
         { headerName: 'SUBSCRIBER ID', field: 'subid', Flex: 1, width: 150, },
         { headerName: 'SUBSCRIBER NAME', field: 'customername', Flex: 1, cellStyle: { textAlign: 'center', color: 'green' }, width: 200, },
         { headerName: 'ADDRESS', field: 'address', width: 150, },
         { headerName: 'MOBILE NO', field: 'mobileno', width: 150, },
-        { headerName: 'SMARTCARD', field: 'smartcard', width: 230, },
         { headerName: 'BOX ID', field: 'boxid', width: 180, },
         { headerName: 'PACKAGE NAME', field: 'productname', width: 230, },
         { headerName: 'ACTIVATION DATE', field: 'activationdate', width: 200, },
@@ -220,22 +338,96 @@ export class LcoDashboardComponent implements OnInit {
     } else if (this.type == 4) {
       this.columnDefs = [
         { headerName: "S.No", lockPosition: true, valueGetter: 'node.rowIndex+1', width: 90, filter: false },
+        // { headerName: 'SMARTCARD', field: 'smartcard', width: 220, },
+        {
+          headerName: 'SMARTCARD', field: 'smartcard', width: 220,
+          cellStyle: (params: any) => {
+            if (params.data.someCondition) {
+              return { backgroundColor: '#f4cccc' };
+            } else {
+              return null;
+            }
+          },
+          cellRenderer: (params: any) => {
+            return `<a href="javascript:void(0)" style="color: blue; text-decoration: none;color:#0d6efd">
+                      ${params.value}
+                    </a>`;
+          },
+
+          onCellClicked: (params: any) => {
+            const subid = params.data.id;
+            const smartcard = params.data.smartcard;
+            console.log('Sub ID:', subid);
+            console.log('Smartcard:', smartcard);
+            if (smartcard) {
+              this.router.navigate([`/admin/subscriber-full-info/${smartcard}/subsmartcard`])
+                .then(() => {
+                  setTimeout(() => {
+                    window.location.reload();
+                  }, 100);
+                });
+            } else if (subid) {
+              this.router.navigate([`/admin/subscriber-full-info/${subid}/new`])
+                .then(() => {
+                  setTimeout(() => {
+                    window.location.reload();
+                  }, 100);
+                });
+            }
+          }
+        },
         { headerName: 'SUBSCRIBER ID', field: 'subid', Flex: 1, width: 150, },
         { headerName: 'SUBSCRIBER NAME', field: 'customername', Flex: 1, cellStyle: { textAlign: 'center', color: 'green' }, width: 200, },
         { headerName: 'ADDRESS	', field: 'address', width: 150, },
         { headerName: 'AREA NAME', field: 'areaname', width: 200, },
         { headerName: 'MOBILE NO', field: 'mobileno', width: 200, },
-        { headerName: 'SMARTCARD', field: 'smartcard', width: 200, },
-        { headerName: 'BOX ID', field: 'boxid', width: 200, },
+        { headerName: 'BOX ID', field: 'boxid', width: 180, },
         { headerName: 'STATUS', field: 'statusdisplay', width: 200, },
       ]
     } else if (this.type == 5) {
       this.columnDefs = [
         { headerName: "S.No", lockPosition: true, valueGetter: 'node.rowIndex+1', width: 90, filter: false },
+        // { headerName: 'SMARTCARD', field: 'smartcard', width: 200, },
+        {
+          headerName: 'SMARTCARD', field: 'smartcard', width: 220,
+          cellStyle: (params: any) => {
+            if (params.data.someCondition) {
+              return { backgroundColor: '#f4cccc' };
+            } else {
+              return null;
+            }
+          },
+          cellRenderer: (params: any) => {
+            return `<a href="javascript:void(0)" style="color: blue; text-decoration: none;color:#0d6efd">
+                      ${params.value}
+                    </a>`;
+          },
+
+          onCellClicked: (params: any) => {
+            const subid = params.data.id;
+            const smartcard = params.data.smartcard;
+            console.log('Sub ID:', subid);
+            console.log('Smartcard:', smartcard);
+            if (smartcard) {
+              this.router.navigate([`/admin/subscriber-full-info/${smartcard}/subsmartcard`])
+                .then(() => {
+                  setTimeout(() => {
+                    window.location.reload();
+                  }, 100);
+                });
+            } else if (subid) {
+              this.router.navigate([`/admin/subscriber-full-info/${subid}/new`])
+                .then(() => {
+                  setTimeout(() => {
+                    window.location.reload();
+                  }, 100);
+                });
+            }
+          }
+        },
         { headerName: 'SUBSCRIBER ID', field: 'subid', Flex: 1, width: 150, },
         { headerName: 'OPERATOR NAME', field: 'operatorname', Flex: 1, cellStyle: { textAlign: 'center', color: 'green' }, width: 200, },
         { headerName: 'CUSTOMER NAME ', field: 'customername', Flex: 1, cellStyle: { textAlign: 'center', color: 'green' }, width: 200, },
-        { headerName: 'SMARTCARD', field: 'smartcard', width: 200, },
         { headerName: 'BOX ID	', field: 'boxid', width: 150, },
         { headerName: 'CAS NAME', field: 'casname', width: 200, },
         { headerName: 'PRODUCT NAME', field: 'productname', width: 200, },

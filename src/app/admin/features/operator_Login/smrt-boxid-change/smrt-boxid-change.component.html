@@ -1,0 +1,114 @@
+<mat-tab-group animationDuration="500ms" (selectedTabChange)="onTabChange($event)" *ngIf="!isTabDisabled">
+    <mat-tab *ngFor="let tab of ['SMARTCARD CHANGE', 'BOX ID CHANGE', ]" [label]="tab" style="overflow-x: hidden;">
+        <div class="mt-5">
+            <h5 class="">{{header}}</h5>
+            <div class="row justify-content-start">
+                <!-- <div class="col-md-8">
+                    <div *ngIf="type == 'smartcard'" class="card p-3">
+                        <div class="input_box row align-items-center">
+                            <div class="col-12 col-sm-4 mb-3">
+                                <span>Enter old Smartcard</span>
+                            </div>
+                            <div class="col-12 col-sm-5 mb-3">
+                                <input type="text" placeholder="Enter OLD Smartcard" [(ngModel)]="oldsmartcard">
+                            </div>
+                            <div class="col-12 col-md-auto mb-3">
+                                <button class="btn btn-success bttn w-100" (click)="smrtSubmit('1')">
+                                    Submit
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div> -->
+                <div class="col-md-12">
+                    <div *ngIf="type == 'boxid'" class="card p-3">
+                        <div class="row justify-content-start input_box">
+                            <div class="col-md-12">
+
+                                <div class="row align-items-center">
+                                    <div class="col-12  col-md-auto mb-3">
+                                        <span>Enter Old Box ID :</span>
+                                    </div>
+                                    <div class="col-12 col-md-auto input_box mb-3">
+                                        <input type="text" placeholder="Enter Old Box ID" [(ngModel)]="oldboxid">
+                                    </div>
+                                    <div class="col-12 col-md-auto mb-3">
+                                        <span>Smartcard :</span>
+                                    </div>
+                                    <div class="col-12 col-md-auto mb-3" style="color: green;">
+                                        {{smartcardvalue}}
+                                    </div>
+                                    <div class="col-12 col-md-auto mb-3">
+                                        <button class="btn btn-primary w-100 bttn" (click)="smrtSubmit('2')">
+                                            Submit
+                                        </button>
+                                    </div>
+                                    <div class="col-12 col-md-auto mb-3">
+                                        <span>Enter New Smartcard :</span>
+                                    </div>
+                                    <div class="col-12 col-md-auto input_box mb-3">
+                                        <input type="text" placeholder="Enter New Smartcard">
+                                    </div>
+                                    <div class="col-12 col-md-auto mb-3">
+                                        <button class="btn w-100 btn-success bttn" (click)="submit()">
+                                            Replace
+                                        </button>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+            <div *ngIf="type == 'smartcard'" class="row justify-content-start input_box card p-3">
+                <div class="col-md-12">
+                    <div class="row align-items-center">
+                        <div class="col-12 col-md-auto mb-3">
+                            <span>Enter Old Smartcard :</span>
+                        </div>
+                        <div class="col-12 col-md-auto input_box mb-3 ">
+                            <input type="text" placeholder="Enter Old Smartcard" [(ngModel)]="oldsmartcard">
+                        </div>
+                        <div class="col-12 col-md-auto mb-3">
+                            <span>Box ID :</span>
+                        </div>
+                        <div class="col-12 col-md-auto  mb-3" style="color: green;">
+                            {{boxidvalue }}
+                        </div>
+                        <div class="col-12 col-md-auto mb-3">
+                            <button class="btn w-100 btn-primary bttn" (click)="smrtSubmit('1')">
+                                Submit
+                            </button>
+                        </div>
+                        <div class="col-12 col-md-auto mb-3">
+                            <span>Enter New Smartcard :</span>
+                        </div>
+                        <div class="col-12 col-md-auto input_box mb-3">
+                            <input type="text" class="form-control" placeholder="Enter New Smartcard">
+                        </div>
+
+                        <div class="col-12 col-md-auto mb-3">
+                            <button class="btn w-100 btn-success bttn" (click)="submit()">
+                                Replace
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+
+            </div>
+
+            <div class="tab-content mt-3">
+                <ag-grid-angular #agGrid id="myGrid" domLayout="normal" class="ag-theme-alpine table-class" rowAnimation
+                    [gridOptions]="gridOptions" [columnDefs]="columnDefs" (gridReady)="onGridReady($event)"
+                    [rowData]="rowData" [enableCellTextSelection]="true">
+                </ag-grid-angular>
+            </div>
+
+
+        </div>
+    </mat-tab>
+</mat-tab-group>

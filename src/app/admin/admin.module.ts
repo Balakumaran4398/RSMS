@@ -188,6 +188,8 @@ import { DistributorsettingComponent } from "./features/operator_Login/distribut
 import { BillcollectionComponent } from "./features/operator_Login/billcollection/billcollection.component";
 import { LcoSmartcardDialogComponent } from "./features/operator_Login/Dialog/lco-smartcard-dialog/lco-smartcard-dialog.component";
 import { LcoSmartcardpayDialogComponent } from "./features/operator_Login/Dialog/lco-smartcardpay-dialog/lco-smartcardpay-dialog.component";
+import { SmrtBoxidChangeComponent } from "./features/operator_Login/smrt-boxid-change/smrt-boxid-change.component";
+import { LcodashboardreportComponent } from "./features/operator_Login/lcodashboardreport/lcodashboardreport.component";
 @NgModule({
     declarations: [
         AdminBaseComponent, NavComponent, HomeComponent, NavbarComponent, MsodetailsComponent, CasmasterComponent,
@@ -254,7 +256,7 @@ import { LcoSmartcardpayDialogComponent } from "./features/operator_Login/Dialog
         OperatordashboardComponent, LcoDashboardComponent,
         ServicecenterEditComponent, OnlinerechargeComponent, OnlinecustomerdetailsComponent, RechagelogComponent, AreaStreetComponent, OperatorWalletComponent,ForcemessageComponent,
         LcoChangePasswordComponent,LcodiscountComponent,LcoReportComponent,LcologinReportComponent,DistributorsettingComponent,BillcollectionComponent,
-        LcoSmartcardDialogComponent,LcoSmartcardpayDialogComponent
+        LcoSmartcardDialogComponent,LcoSmartcardpayDialogComponent,SmrtBoxidChangeComponent,LcodashboardreportComponent
     ],
     imports: [
         CommonModule,

@@ -330,8 +330,12 @@ export class OperatordashboardComponent implements OnInit {
   }
 
   openLCO_Dialog(event: any) {
-    console.log(event);
+    console.log(event); 
     this.router.navigate(['admin/lco_dashboard/' + event]);
+  }
+  openLCO_dashboard(event: any) {
+    console.log(event);
+    this.router.navigate(['admin/lco_dashboard_report/' + event]);
   }
   // openLCO_Dialog(event: any) {
   //   console.log(event);

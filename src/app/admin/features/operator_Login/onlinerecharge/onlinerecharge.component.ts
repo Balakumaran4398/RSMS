@@ -18,8 +18,7 @@ export class OnlinerechargeComponent implements OnInit {
 
   role: any;
   username: any;
-
-  amount: any;
+  amount: any ;
   operatorid: any;
   transResponse: any;
   easebuzzData: any;
@@ -184,34 +183,11 @@ export class OnlinerechargeComponent implements OnInit {
 
   makeEaseBuzzPayment() {
 
-    console.log(this.role);
-    console.log(this.username);
-
-
-
-
-
-    // let request = {
-    //   amount: this.amountControl.value,
-    //   username: this.username,
-    //   role: this.role,
-    //   successurl: this.gateWayMode.successurl,
-    //   faliureurl: this.gateWayMode.faliureurl,
-    //   planid: '0',
-    //   remark: 'payment for wallet',
-    //   title: 'wallet',
-    // };
-    console.log(this.amount);
-    console.log(this.operatorid);
-    this.userservice.lcoOnlineInitialRequest(this.role, this.username, this.amount, this.operatorid).subscribe((res: any) => {
+    this.userservice.lcoOnlineInitialRequest(this.role, this.username, this.amount || 0, this.operatorid).subscribe((res: any) => {
       this.transResponse = res;
       console.log(res);
       this.easebuzzData = this.transResponse.data;
-
-
-      console.log(this.transResponse);
-      // let response = JSON.parse(res.response);
-      // console.log(res.data);
+      // this.swal.success(res?.message);
       if (res.status == '1') {
         // const dialogData = new LoadingDialogModel('100');
         // const dialogRef = this.dialog.open(LoadingComponent, {
@@ -227,11 +203,11 @@ export class OnlinerechargeComponent implements OnInit {
         // baseurl
         // this.openChildWindow(url);
 
-        // if (this.gatewaymode == 'LIVE') {
-        this.mode = 'prod';
-        // } else {
-        //   this.mode = 'test';
-        // }
+        if (this.gatewaymode == 'LIVE') {
+          this.mode = 'prod';
+        } else {
+          this.mode = 'test';
+        }
 
 
         var easebuzzCheckout = new EasebuzzCheckout(
@@ -291,6 +267,10 @@ export class OnlinerechargeComponent implements OnInit {
       } else {
         alert(res.data);
       }
+      // });
+    }, (err) => {
+      console.log(err)
+      this.swal.Error(err?.error?.message);
     });
   }
 

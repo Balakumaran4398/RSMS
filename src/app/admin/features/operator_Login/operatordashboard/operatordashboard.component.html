@@ -10,7 +10,7 @@
             </div>
         </div>
         <div class="col-6 col-lg-1-7 ">
-            <div class="card box d-flex flex-column justify-content-between p-3">
+            <div class="card box d-flex flex-column justify-content-between p-3" (click)="openLCO_dashboard(2)">
                 <div class="d-flex justify-content-between w-100">
                     <i class='bx bxs-user-check'></i>
                     <span class="fw-bold">{{operatorDetailsCount?.activecount}}</span>
@@ -19,7 +19,7 @@
             </div>
         </div>
         <div class="col-6 col-lg-1-7 ">
-            <div class="card box d-flex flex-column justify-content-between p-3">
+            <div class="card box d-flex flex-column justify-content-between p-3" (click)="openLCO_dashboard(3)">
                 <div class="d-flex justify-content-between w-100">
                     <i class='bx bxs-user-minus'></i>
                     <span class="fw-bold">{{operatorDetailsCount?.deactivecount}}</span>
@@ -28,7 +28,7 @@
             </div>
         </div>
         <div class="col-6 col-lg-1-7 ">
-            <div class="card box d-flex flex-column justify-content-between p-3">
+            <div class="card box d-flex flex-column justify-content-between p-3" (click)="openLCO_dashboard(10)">
                 <div class="d-flex justify-content-between w-100">
                     <i class='bx bxs-user-plus'></i>
                     <span class="fw-bold">{{operatorDetailsCount?.newsubscribercount}}</span>
@@ -65,7 +65,7 @@
         </div>
 
         <div class="col-6 col-lg-1-7 ">
-            <div class="card box d-flex flex-column justify-content-between p-3" (click)="openLCO_Dialog(1)">
+            <div class="card box d-flex flex-column justify-content-between p-3" (click)="openLCO_dashboard(1)">
                 <div class="d-flex justify-content-between w-100">
                     <i class='bx bxs-lock'></i>
                     <span class="fw-bold">{{operatorDetailsCount?.suspendcount}}</span>
@@ -83,7 +83,7 @@
             </div>
         </div>
         <div class="col-6 col-lg-1-7 ">
-            <div class="card box d-flex flex-column justify-content-between p-3">
+            <div class="card box d-flex flex-column justify-content-between p-3" (click)="openLCO_dashboard(7)">
                 <div class="d-flex justify-content-between w-100">
                     <i class='bx bx-time-five'></i>
                     <span class="fw-bold">{{operatorDetailsCount?.tomorrowexpirycount}}</span>
@@ -92,7 +92,7 @@
             </div>
         </div>
         <div class="col-6 col-lg-1-7 ">
-            <div class="card box d-flex flex-column justify-content-between p-3">
+            <div class="card box d-flex flex-column justify-content-between p-3" (click)="openLCO_dashboard(5)">
                 <div class="d-flex justify-content-between w-100">
                     <i class='bx bx-dollar-circle'></i>
                     <span class="fw-bold">{{operatorDetailsCount?.yesterdayrechargecount}}</span>
@@ -101,7 +101,7 @@
             </div>
         </div>
         <div class="col-6 col-lg-1-7 ">
-            <div class="card box d-flex flex-column justify-content-between p-3">
+            <div class="card box d-flex flex-column justify-content-between p-3" (click)="openLCO_dashboard(6)">
                 <div class="d-flex justify-content-between w-100">
                     <i class='bx bx-credit-card'></i>
                     <span class="fw-bold">{{operatorDetailsCount?.todayrechargecount}}</span>
@@ -119,7 +119,7 @@
             </div>
         </div>
         <div class="col-6 col-lg-1-7 ">
-            <div class="card box d-flex flex-column justify-content-between p-3">
+            <div class="card box d-flex flex-column justify-content-between p-3" (click)="openLCO_dashboard(9)">
                 <div class="d-flex justify-content-between w-100">
                     <i class='bx bx-map'></i>
                     <span class="fw-bold">{{operatorDetailsCount?.areachange}}</span>
@@ -133,8 +133,7 @@
 <div class="row" style="padding: 10px;">
     <div class="col-12 col-md-7 display justify-content-center align-item-center balance gap-3">
         <div class="col-12 col-lg-4 mb-3 ">
-            <div *ngIf="walletshare" class="card box d-flex flex-column justify-content-between p-3"
-                (click)="addnew()">
+            <div *ngIf="walletshare" class="card box d-flex flex-column justify-content-between p-3" (click)="addnew()">
                 <div class="d-flex justify-content-around">
                     <div class="mt-2 mb-3 text-center text1">Current Balance</div>
                     <i class="fa-solid fa-share forward mt-2 mb-3"></i>

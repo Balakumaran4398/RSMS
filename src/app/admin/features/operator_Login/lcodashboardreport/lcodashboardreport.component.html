@@ -1,0 +1,28 @@
+<div *ngIf="type">
+    <div class="mb-3">
+        <h4>{{ getHeader() }}</h4>
+    </div>
+
+    <div class="col-12 col-md-12 display justify-content-between align-items-center mb-3">
+        <div class=" d-flex mx-2 mb-2">
+            <button type="button" class="btn btn-primary bttn" (click)="goBack()"><i
+                    class="fa-solid fa-reply mx-2"></i>Back</button>
+        </div>
+        <div class="input_box  mx-2 mb-2">
+            <div class="display justify-content-start align-items-center" style="display: flex;">
+                <div class="export-icon mx-2">
+                    <img src="/assets/images/icons/Excel.png" alt="Excel Icon" width="40px" (click)="getLcoInvoiceReport(2)" />
+                    <div class="tooltip">Excel</div>
+                </div>
+                <div class="export-icon mx-2">
+                    <img src="/assets/images/icons/pdf.png" alt="PDF Icon" width="40px" (click)="getLcoInvoiceReport(1)" />
+                    <div class="tooltip">Pdf</div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <ag-grid-angular #agGrid id="myGrid" domLayout='normal' class="ag-theme-alpine table-class" rowAnimation
+        [gridOptions]="gridOptions" [columnDefs]="columnDefs" [rowData]="rowData" (gridReady)="onGridReady($event)"
+        [enableCellTextSelection]="true">
+    </ag-grid-angular>
+</div>

@@ -5,10 +5,10 @@ export default class URLs {
     }
 
     static AUTH_URL(): String {
-        return 'http://192.168.1.102:8081/api/auth';         //JAYA AKKA    
+        // return 'http://192.168.1.102:8081/api/auth';         //JAYA AKKA    
         // return 'http://192.168.1.115:8081/api/auth';         //BALA
-        // return 'http://192.168.1.111:8081/api/auth';         //SUBHA
-        // return 'http://192.168.70.201:8585/rsms/api/auth';   //QC
+        // return 'http://192.168.1.111:8586/api/auth';         //SUBHA
+        return 'http://192.168.70.201:8585/rsms/api/auth';   //QC
         // return 'http://103.183.47.212:8585/rsms/api/auth';      //103
 
 
@@ -18,10 +18,10 @@ export default class URLs {
     }
 
     static BASE_URL(): String {
-        return "http://192.168.1.102:8081/api";          //JAYA AKKA 
+        // return "http://192.168.1.102:8081/api";          //JAYA AKKA 
         // return "http://192.168.1.115:8081/api";          //BALA
-        // return "http://192.168.1.111:8081/api";          //SUBHA
-        // return "http://192.168.70.201:8585/rsms/api";    //QC 
+        // return "http://192.168.1.111:8586/api";          //SUBHA
+        return "http://192.168.70.201:8585/rsms/api";    //QC 
         // return "http://103.183.47.212:8585/rsms/api";      //103
 
 

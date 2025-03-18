@@ -1,7 +1,7 @@
 <div class="pagestyle">
     <app-back-share></app-back-share>
     <div class="row">
-        <p class="pagetitle">LCO SELF RECHARGE </p>
+        <h5 class="pagetitle">LCO SELF RECHARGE </h5>
     </div>
     <div class="row">
         <div class="col-12 col-sm-12 col-md-12 col-lg-3">
@@ -9,10 +9,10 @@
                 <mat-card-content class="content">
                     <div class="card-content">
                         <h5>Wallet Balance</h5>
-                        <span class={{operatorDetails?.balance}}>{{operatorDetails?.balance | currency: curcode
-                            }}</span>
+                        <span style="color: green;">{{ operatorDetails?.balance | currency: 'INR' }}</span>
+
                     </div>
-                    <div class="pay-his-div">
+                    <!-- <div class="pay-his-div">
                         <span class="recent-his">Recent history <span>&#8645;</span></span>
                         <table mat-table [dataSource]="recenthistory" class="mat-elevation">
                             <ng-container style="height: 15px;" matColumnDef="creationdate">
@@ -27,7 +27,7 @@
                             <tr mat-header-row style="height: 15px;" *matHeaderRowDef="displayedColumns"></tr>
                             <tr mat-row style="height: 15px;" *matRowDef="let row; columns: displayedColumns;"></tr>
                         </table>
-                    </div>
+                    </div> -->
                 </mat-card-content>
                 <span class="recent-his">Wallet Pay <span>{{currency}}</span></span>
                 <table style="background: #101a4059;">

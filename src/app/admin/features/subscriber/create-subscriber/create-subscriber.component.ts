@@ -70,7 +70,7 @@ export class CreateSubscriberComponent implements AfterViewInit, OnDestroy {
 
   IsOperator: boolean = false;
   Isuser: boolean = false;
-
+  operatoridValue: any;
   lcoDeatails: any;
   lcoId: any;
 
@@ -93,19 +93,37 @@ export class CreateSubscriberComponent implements AfterViewInit, OnDestroy {
       this.Isuser = false;
       this.IsOperator = true;
       this.operatorIdoperatorId();
-      console.log('ROLE_OPERATOR');
+
+
     }
 
   }
+  operatorIdoperatorId() {
+    this.userservice.getOpDetails(this.role, this.username).subscribe((data: any) => {
+      console.log(data);
+      this.lcoDeatails = data;
+      console.log(this.lcoDeatails);
+      this.lcoId = this.lcoDeatails?.operatorid;
+      console.log(this.lcoId);
+      this.lcoChange();
+      // this.operatoridValue = this.role === 'ROLE_OPERATOR' ? this.lcoId : this.operatorid;
+      // console.log(this.operatoridValue);
+
+      this.operatoridValue = this.role === 'ROLE_OPERATOR' ? this.lcoId : this.operatorid;
+      console.log("Updated operatoridValue:", this.operatoridValue);
+
+      // Updating the form value after we have the correct operatoridValue
+      this.form.patchValue({ operatorid: this.operatoridValue });
+    })
+  }
 
   ngOnInit(): void {
-
-    let operatoridValue = this.role === 'ROLE_OPERATOR' ? this.lcoId : this.operatorid;
-    console.log(operatoridValue);
+    console.log(this.lcoId);
+    this.operatorIdoperatorId();
 
     this.form = this.formBuilder.group(
       {
-        operatorid: [operatoridValue, [Validators.required]],
+        operatorid: [this.operatoridValue, [Validators.required]],
         areaid: ['', Validators.required || this.areaid],
         streetid: ['', Validators.required || this.streetid],
         casformid: ['',],
@@ -131,19 +149,10 @@ export class CreateSubscriberComponent implements AfterViewInit, OnDestroy {
     );
     this.loadIdProofList();
     this.loadAddProofList();
-   
+
 
   }
-  operatorIdoperatorId() {
-    this.userservice.getOpDetails(this.role, this.username).subscribe((data: any) => {
-      console.log(data);
-      this.lcoDeatails = data;
-      console.log(this.lcoDeatails);
-      this.lcoId = this.lcoDeatails?.operatorid;
-      console.log(this.lcoId);
-      this.lcoChange();
-    })
-  }
+ 
 
   ngOnDestroy(): void {
     ($('#Lco') as any).select2('destroy');

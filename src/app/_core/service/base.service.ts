@@ -2086,6 +2086,12 @@ export class BaseService {
   getOpLoginReportByReport(role: any, username: any, operatorid: any, type: any, reporttype: any): Observable<Blob> {
     return this.http.get(BASE_URL + "/report/getOpLoginReportByOpid?role=" + role + "&username=" + encodeURIComponent(username) + "&operatorid=" + operatorid + "&type=" + type + "&reporttype=" + reporttype, { responseType: 'blob' })
   }
+  getLcoDiscountListByOpidAreaid(role: any, username: any, operatorid: any, type: any, reporttype: any): Observable<Blob> {
+    return this.http.get(BASE_URL + "/report/getLcoDiscountListByOpidAreaid?role=" + role + "&username=" + encodeURIComponent(username) + "&operatorid=" + operatorid + "&type=" + type + "&reporttype=" + reporttype, { responseType: 'blob' })
+  }
+  // getLcoDiscountListByOpidAreaidReport(role: any, username: any, operatorid: any, type: any, reporttype: any): Observable<any[]> {
+  //   return this.http.get<any[]>(BASE_URL + "/report/getLcoDiscountListByOpidAreaid?role=" + role + "&username=" + encodeURIComponent(username) + "&operatorid=" + operatorid + "&type=" + type + "&reporttype=" + reporttype)
+  // }
 
 
   // -----------------------------------------wallet recharge (requsr)-----------------------
@@ -2100,5 +2106,11 @@ export class BaseService {
   lcoOnlineFailurelRecharge(role: any, username: any, amount: any, operatorid: any, transactionid: any, paymentstatus: any, hash: any,): Observable<any[]> {
     return this.http.post<any[]>(BASE_URL + "/operator/lcoOnlineFailurelRecharge?role=" + role +
       "&username=" + encodeURIComponent(username) + "&operatorid=" + operatorid + "&amount=" + amount + "&transactionid=" + transactionid + "&paymentstatus=" + paymentstatus + "&hash=" + hash, {});
+  }
+
+  // -------------------------------------------vc smartcard change and boxid change ------------------------
+
+  getDataBysmartcardOrBoxid(role: any, username: any, type: any, smartcard: any): Observable<any[]> {
+    return this.http.get<any[]>(BASE_URL + "/report/getDataBysmartcardOrBoxid?role=" + role + "&username=" + encodeURIComponent(username) + "&type=" + type + "&smartcard=" + smartcard)
   }
 }
