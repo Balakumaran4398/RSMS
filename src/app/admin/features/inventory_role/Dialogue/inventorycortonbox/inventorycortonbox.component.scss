@@ -23,7 +23,7 @@
 .close-icon {
     cursor: pointer;
     font-size: 18px;
-    color: #243359;
+    color: white;
 }
 
 .close-icon:hover {
@@ -107,10 +107,19 @@
     top: 13px;
 
 }
-
+.display_tab {
+    display: flex;
+  }
 @media screen and (max-width:560px) {
     .dialog-container {
         max-height: 650px;
         overflow: scroll;
     }
+    .display_tab {
+        display: block;
+    
+        .tab {
+          text-align: center;
+        }
+      }
 }

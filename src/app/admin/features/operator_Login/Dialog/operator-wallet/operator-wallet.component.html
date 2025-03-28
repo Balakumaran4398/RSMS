@@ -2,63 +2,112 @@
     <h6>WALLET SHARE</h6>
     <i class="fa fa-close close-icon" style="cursor: pointer;" (click)="onNoClick()"></i>
 </div>
-
-<div class="col d-flex justify-content-center align-items-center  transparent-background dialog-content">
-    <div class="card-content " style="padding: 1rem;">
-        <div class="card-body">
+<div class="card-content" style="padding: 1rem;">
+    <div class="card-body">
+        <!-- <form #lcoForm="ngForm" (ngSubmit)="submit(lcoForm)">
             <div class="input_box display align-items-center mb-3">
                 <div class="col-12 col-md-6">
-                    <span for="categoryName" class="me-2">OperatorName</span>
+                    <span for="operatorName" class="me-2">Operator Name</span>
                 </div>
                 <div class="col-12 col-md-6">
-
-                    <select id="lco" [(ngModel)]="operatorname" (change)="onSubscriberStatusChange($event)">
-                        <option value="0" selected>Select a Operator</option>
-                        <option *ngFor="let key of lco_list" [value]="key.value">
-                            {{ key.name }}
+                    <select id="lco" [(ngModel)]="operatorname" name="operatorname">
+                        <option value="" selected>Select an Operator</option>
+                        <option *ngFor="let key of lco_list" [value]="key.operatorid">
+                            {{ key.operatorname }}
                         </option>
                     </select>
+                    <div *ngIf="(lcoForm.submitted ) && !operatorname" class="text-danger">
+                        Please select an Operator.
+                    </div>
+                </div>
+            </div>
 
-                    <!-- <input type="text" id="categoryName" [(ngModel)]="operatorname"> -->
-                    <!-- (input)="clearError()" -->
-                    <!-- <div *ngIf="errorMessage" class=" alert alert-danger d-flex justify-content-between align-items-center mt-3"  style="position: relative;font-size: 11px;">
-                        {{ errorMessage }}
-                        <i class="fa fa-close close-icon" style="cursor: pointer;font-size: 11px" (click)="errorToggle()"></i>
-                    </div> -->
-                </div>
-            </div>
             <div class="input_box display align-items-center mb-3">
                 <div class="col-12 col-md-6">
-                    <span for="categoryName" class="me-2">Amount</span>
+                    <span for="amount" class="me-2">Amount</span>
                 </div>
                 <div class="col-12 col-md-6">
-                    <input type="text" id="categoryName" [(ngModel)]="amount" placeholder="Enter Amount">
-                    <!-- (input)="clearError()" -->
-                    <!-- <div *ngIf="errorMessage" class=" alert alert-danger d-flex justify-content-between align-items-center mt-3"  style="position: relative;font-size: 11px;">
-                        {{ errorMessage }}
-                        <i class="fa fa-close close-icon" style="cursor: pointer;font-size: 11px" (click)="errorToggle()"></i>
-                    </div> -->
+                    <input type="text" [(ngModel)]="amount" placeholder="Enter Amount" (keypress)="onKeydown1($event)">
+                    <div *ngIf="(lcoForm.submitted) && !amount " class="text-danger">
+                        Please enter a valid amount greater than 0.
+                    </div>
                 </div>
             </div>
+
             <div class="input_box display align-items-center mb-3">
                 <div class="col-12 col-md-6">
-                    <span for="categoryName" class="me-2">Remarks</span>
+                    <span for="remarks" class="me-2">Remarks</span>
                 </div>
                 <div class="col-12 col-md-6">
-                    <input type="text" id="categoryName" [(ngModel)]="remarks" placeholder="Enter Remarks">
-                    <!-- (input)="clearError()" -->
-                    <!-- <div *ngIf="errorMessage" class=" alert alert-danger d-flex justify-content-between align-items-center mt-3"  style="position: relative;font-size: 11px;">
-                        {{ errorMessage }}
-                        <i class="fa fa-close close-icon" style="cursor: pointer;font-size: 11px" (click)="errorToggle()"></i>
-                    </div> -->
+                    <input type="text" [(ngModel)]="remarks" placeholder="Enter Remarks">
+                    <div *ngIf="(lcoForm.submitted) && !remarks " class="text-danger">
+                        Remarks field cannot be empty.
+                    </div>
                 </div>
             </div>
+
             <div class="form-group d-flex justify-content-center align-items-center mb-3">
-                <button type="button" class="btn btn-primary me-2" (click)="submit()">Create</button>
+      
+                <button type="submit" class="btn btn-primary me-2" [disabled]="lcoForm.invalid">
+                    Create
+                </button>
                 <button type="button" class="btn btn-secondary" (click)="onNoClick()">Cancel</button>
             </div>
+        </form> -->
 
 
-        </div>
+        <form #lcoForm="ngForm" (ngSubmit)="submit(lcoForm)">
+            <div class="input_box display align-items-center mb-3">
+                <div class="col-12 col-md-6">
+                    <span for="operatorName" class="me-2">Operator Name</span>
+                </div>
+                <div class="col-12 col-md-6">
+                    <select id="lco" [(ngModel)]="operatorname" name="operatorname">
+                        <option value="" selected>Select an Operator</option>
+                        <option *ngFor="let key of lco_list" [value]="key.operatorid">
+                            {{ key.operatorname }}
+                        </option>
+                    </select>
+                    <div *ngIf="(lcoForm.submitted ) && !operatorname" class="text-danger">
+                        Please select an Operator.
+                    </div>
+                </div>
+            </div>
+
+            <div class="input_box display align-items-center mb-3">
+                <div class="col-12 col-md-6">
+                    <span for="amount" class="me-2">Amount</span>
+                </div>
+                <div class="col-12 col-md-6">
+                    <input type="text" [(ngModel)]="amount" name="amount" placeholder="Enter Amount"
+                        (keypress)="onKeydown1($event)">
+                    <div *ngIf="(lcoForm.submitted) && !amount " class="text-danger">
+                        Please Enter Amount.
+                    </div>
+                </div>
+            </div>
+
+            <div class="input_box display align-items-center mb-3">
+                <div class="col-12 col-md-6">
+                    <span for="remarks" class="me-2">Remarks</span>
+                </div>
+                <div class="col-12 col-md-6">
+                    <input type="text" [(ngModel)]="remarks" name="remarks" placeholder="Enter Remarks">
+                    <div *ngIf="(lcoForm.submitted) && !remarks " class="text-danger">
+                        Remarks field cannot be empty.
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group d-flex justify-content-center align-items-center mb-3">
+
+                <button type="submit" class="btn btn-primary me-2" [disabled]="lcoForm.invalid">
+                    Create
+                </button>
+                <button type="button" class="btn btn-secondary" (click)="onNoClick()">Cancel</button>
+            </div>
+        </form>
+
+
     </div>
 </div>

@@ -1,0 +1,179 @@
+
+
+.gender-category label {
+    padding: 0 20px 0 5px;
+    font-size: 14px;
+}
+
+span {
+    font-weight: 600;
+    font-size: 0.9pc;
+    color: darkslategrey;
+}
+
+.line {
+    padding: 0.4rem;
+}
+
+.gender-category {
+    color: black;
+}
+
+.gender-category label,
+.gender-category input {
+    cursor: pointer;
+}
+
+@media screen and (max-width: 560px) {
+    .head {
+        font-size: medium;
+        padding: 8px;
+    }
+
+    .row {
+        flex-direction: column;
+        padding: 0.5rem;
+    }
+
+    .col-4 {
+        width: 100%;
+        margin-bottom: 10px;
+    }
+
+    .gender-category {
+        display: flex;
+        justify-content: space-between;
+        width: 100%;
+    }
+
+    .col-12.d-flex {
+        // flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .gender-category label {
+        padding: 0 10px 0 5px;
+    }
+
+    .close-icon {
+        font-size: 18px;
+    }
+
+    button.btn {
+        width: 100%;
+    }
+}
+
+.btn {
+    width: 100px;
+}
+
+select,
+input {
+    width: 100%;
+    height: 40px;
+    border-radius: 4px;
+    padding: 0px 12px;
+    border-top: 2px solid #b0afaf;
+    border-bottom: 0.9px solid lightgray;
+    border-left: 0.9px solid lightgray;
+    border-right: 0.9px solid lightgray;
+}
+
+.modal-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+  }
+  
+  .modal-content {
+    background: #fff;
+    width: 90%;
+    max-width: 500px;
+    padding: 20px;
+    border-radius: 10px;
+    text-align: center;
+  }
+  
+  .modal-title {
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 15px;
+  }
+  
+  .package-header {
+    display: flex;
+    justify-content: space-between;
+    font-weight: bold;
+    padding: 10px;
+  }
+  
+  .base-package {
+    color: black;
+  }
+  
+  .prime-package {
+    color: orange;
+  }
+  
+  .table {
+    width: 100%;
+    margin-top: 10px;
+  }
+  
+  .table thead th {
+    font-size: 14px;
+    font-weight: bold;
+    text-transform: uppercase;
+  }
+  
+  .plan-name {
+    font-weight: bold;
+    color: red;
+  }
+  
+  .customer-amt,
+  .current-amt,
+  .lco-commission {
+    font-weight: bold;
+    color: green;
+  }
+  
+  .discount-input {
+    width: 60px;
+    text-align: center;
+    border: none;
+    border-bottom: 1px solid black;
+    outline: none;
+  }
+  
+  .modal-footer {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px;
+  }
+  
+  .btn {
+    // flex: 1;
+    padding: 10px;
+    border: none;
+    font-weight: bold;
+    color: white;
+    cursor: pointer;
+  }
+  
+  .cancel-btn {
+    background: #004c6d;
+    margin-right: 10px;
+  }
+  
+  .update-btn {
+    background: #007bff;
+  }
+  

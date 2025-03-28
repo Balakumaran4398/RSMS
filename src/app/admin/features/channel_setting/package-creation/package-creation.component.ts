@@ -57,7 +57,10 @@ export class PackageCreationComponent {
   }
   ngOnInit(): void {
 
-    this.userService.PackageList(this.role, this.username, this.type).subscribe((data) => {
+    // this.userService.PackageList(this.role, this.username, this.type).subscribe((data) => {
+    //   this.rowData = data;
+    // })
+    this.userService.PackageList(this.role, this.username).subscribe((data) => {
       this.rowData = data;
     })
     if (this.role == 'ROLE_OPERATOR') {
@@ -72,17 +75,17 @@ export class PackageCreationComponent {
       console.log(this.lcoDeatails);
       this.operatorid = this.lcoDeatails?.operatorid;
       console.log(this.operatorid);
-      this.onlcoPackageList();
+      // this.onlcoPackageList();
     })
   }
-  onlcoPackageList() {
-    this.userService.getLcoPackageList(this.role, this.username, this.operatorid, 1).subscribe((data: any) => {
-      console.log(data);
-      this.rowData1 = data;
-      console.log(this.rowData1);
+  // onlcoPackageList() {
+  //   this.userService.getLcoPackageList(this.role, this.username, this.operatorid, 1).subscribe((data: any) => {
+  //     console.log(data);
+  //     this.rowData1 = data;
+  //     console.log(this.rowData1);
 
-    })
-  }
+  //   })
+  // }
   domLayout: 'normal' | 'autoHeight' | 'print' = 'autoHeight';
 
   columnDefs: any[] = [
@@ -186,9 +189,9 @@ export class PackageCreationComponent {
     {
       headerName: "S.No", lockPosition: true, valueGetter: 'node.rowIndex+1', width: 120, filter: false
     },
-    { headerName: "PACKAGE NAME", field: 'packagename', width: 300, cellStyle: { textAlign: 'left' }, },
-    { headerName: "REFERENCE ID", field: 'orderid', width: 250, cellStyle: { textAlign: 'center' }, },
-    { headerName: "PACKAGE RATE", field: 'packagerate', width: 250, cellStyle: { textAlign: 'center' }, },
+    { headerName: "PACKAGE NAME", field: 'productname', width: 300, cellStyle: { textAlign: 'left' }, },
+    { headerName: "REFERENCE ID", field: 'referenceid', width: 250, cellStyle: { textAlign: 'center' }, },
+    { headerName: "PACKAGE RATE", field: 'rate', width: 250, cellStyle: { textAlign: 'center' }, },
     {
       headerName: 'Actions', width: 380, filter: false,
       cellRenderer: (params: any) => {
@@ -281,10 +284,11 @@ export class PackageCreationComponent {
 
   openViewDialog(dialogType: any, data: any): void {
     const dialogData = { ...dialogType, ...data };
+    console.log(dialogData);
+    
     const dialogRef = this.dialog.open(PackageBaseViewComponent, {
       width: '1200px',
       maxWidth: '100vw',
-      // height: '600px',
       panelClass: 'custom-dialog-container',
       data: dialogData
     });

@@ -113,8 +113,8 @@
                         </div>
                         <div class="d-flex justify-content-center align-items-center">
                             <div class="d-flex justify-content-center align-items-center" style="padding: 10px;">
-                                <button type="submit" class="btn btn-success bttn mx-3" (click)="onSubmit()">Send </button>
-                                <button type="" class="btn btn-danger bttn" (click)="onDelete()">Delete </button>
+                                <button type="submit" class="btn btn-success bttn mx-3" [disabled]="this.forcemsge" (click)="onSubmit()">Send </button>
+                                <button type="" class="btn btn-danger bttn" [disabled]="!this.forcemsge" (click)="onDelete()">Delete </button>
                             </div>
                         </div>
                         <div class=" d-flex justify-content-end align-items-center mb-3" style="color: red;">

@@ -1,14 +1,14 @@
 <section class="Tab col-12">
     <div class="display tablist justify-content-center align-items-center mb-3 ">
-        <div class="tab mb-2  bttn" [class.active]="selectedTab === 'dis_commission'" style="text-align: center;"
+        <div class="tab mb-2  bttn" [class.active]="selectedTab === 'lco'" style="text-align: center;"
             (click)="selectTab('lco')">
             LCO
         </div>
-        <div class="tab mb-2  bttn" [class.active]="selectedTab === 'dis_membership'" style="text-align: center;"
+        <div class="tab mb-2  bttn" [class.active]="selectedTab === 'sub_lco'" style="text-align: center;"
             (click)="selectTab('sub_lco')">
             SUB LCO
         </div>
-        <div class="tab mb-2  bttn" [class.active]="selectedTab === 'commission'" style="text-align: center;"
+        <div class="tab mb-2  bttn" [class.active]="selectedTab === 'subscriber'" style="text-align: center;"
             (click)="selectTab('subscriber')">
             SUBSCRIBER
         </div>
@@ -23,19 +23,37 @@
                 <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
                 <mat-date-range-picker #picker></mat-date-range-picker>
             </mat-form-field>
+            <div class="input_box d-flex mb-3">
+                <span class=" mt-2 mx-2">
+                    PaymentType
+                </span>
+                <select id="subscriber_list" [(ngModel)]="bill_type">
+                    <option value="-1" disabled>Select the Type </option>
+                    <option value="0">All </option>
+                    <option value="1">PAID </option>
+                    <option value="2">UNPAID </option>
+                    <option value="3">EXCESS PAID </option>
+                </select>
+            </div>
 
-            <button class="btn d-flex align-item-center justify-content-between  bttn mx-2 mb-3"
+            <button class="btn d-flex align-item-center justify-content-between  bttn mx-2 mb-3" (click)="getreport()"
                 style="background-color: var(--primary-color);">
                 <span style="color: white;">Get</span>
             </button>
+
         </div>
+
+
+
+
         <div class="display1 justify-content-end align-items-center mb-3">
+
             <div class="export-icon mx-2">
-                <img src="/assets/images/icons/Excel.png" alt="Excel Icon" width="40px">
+                <img src="/assets/images/icons/Excel.png" alt="Excel Icon" width="40px" (click)="getLcoInvoiceReport(2)">
                 <div class="tooltip">Excel</div>
             </div>
             <div class="export-icon">
-                <img src="/assets/images/icons/pdf.png" alt="PDF Icon" width="40px">
+                <img src="/assets/images/icons/pdf.png" alt="PDF Icon" width="40px" (click)="getLcoInvoiceReport(1)">
                 <div class="tooltip">Pdf</div>
             </div>
         </div>
@@ -43,16 +61,16 @@
     <div class="display justify-content-between align-items-center ">
         <div class="d-flex  justify-content-between align-items-center count gap-5 ">
             <span>COUNT :</span>
-            <span>RECHARGE : ₹ {{recharge}} </span>
-            <span>PAID : ₹ {{paid}} </span>
-            <span>UNPAID : ₹ {{unpaid}} </span>
-            <span>EXCESS : ₹ {{excess}} </span>
+            <span>RECHARGE : ₹ {{total_recharge}} </span>
+            <span>PAID : ₹ {{total_paid}} </span>
+            <span>UNPAID : ₹ {{total_unpaid}} </span>
+            <span>EXCESS : ₹ {{total_excess}} </span>
         </div>
         <div class="display1 justify-content-end align-items-center mb-3">
             <div class="export-icon mx-2 input_box">
-                <input type="text" placeholder="Search by name/Smartcard ">
+                <input type="text" placeholder="Search by name/Smartcard " [(ngModel)]="searchname">
             </div>
-            <button class="btn d-flex align-item-center justify-content-between  bttn mx-2 "
+            <button class="btn d-flex align-item-center justify-content-between  bttn mx-2 " (click)="getreport()"
                 style="background-color: var(--primary-color);">
                 <span style="color: white;">Search</span>
             </button>

@@ -26,6 +26,7 @@ export class BaseService {
   domain: any;
   private defaultLogoUrl = 'https://via.placeholder.com/150';
   constructor(private http: HttpClient) {
+
     // const currentUrl = window.location.href;
     // const { ip, domain } = this.extractIpOrDomain(currentUrl);
     // this.ip = ip;
@@ -356,8 +357,11 @@ export class BaseService {
     return this.http.post<any[]>(BASE_URL + "/package/AddingOperatorForProduct?role=" + role + "&username=" + encodeURIComponent(username) + "&producttype=" + producttype + "&referenceid=" + referenceid + "&selectedoplist=" + selectedoplist, {});
   }
   // =================================================================Package=========================================================
-  PackageList(role: any, username: string, type: number): Observable<any[]> {
-    return this.http.get<any[]>(BASE_URL + "/package/getpackageList?role=" + role + "&username=" + encodeURIComponent(username) + "&type=" + type);
+  // PackageList(role: any, username: string, type: number): Observable<any[]> {
+  //   return this.http.get<any[]>(BASE_URL + "/package/getpackageList?role=" + role + "&username=" + encodeURIComponent(username) + "&type=" + type);
+  // }
+  PackageList(role: any, username: string,): Observable<any[]> {
+    return this.http.get<any[]>(BASE_URL + "/package/getpackageList?role=" + role + "&username=" + encodeURIComponent(username));
   }
   // ----------------------------report-------------------
   getPackageReport(role: any, username: any, packageid: any): Observable<Blob> {
@@ -1986,6 +1990,10 @@ export class BaseService {
     smartcardlist: any): Observable<any[]> {
     return this.http.post<any[]>(BASE_URL + "/allocation/uploadCartonBox?role=" + role + "&username=" + encodeURIComponent(username) + "&operatorid=" + operatorid + "&isemi=" + isemi + "&dueamount=" + dueamount + "&type=" + type + "&areaid=" + areaid + "&streetid=" + streetid + "&packageid=" + packageid + "&days=" + days + "&subscribername=" + subscribername + "&smartcardlist=" + smartcardlist, {});
   }
+  getLCOportalcortonBoxDetails(role: any, username: any, operatorid: any, isemi: boolean, dueamount: any, type: any, areaid: any, streetid: any, packageid: any, days: any, subscribername: any,
+    smartcardlist: any, plantype: any, plan: any): Observable<any[]> {
+    return this.http.post<any[]>(BASE_URL + "/allocation/uploadCartonBox?role=" + role + "&username=" + encodeURIComponent(username) + "&operatorid=" + operatorid + "&isemi=" + isemi + "&dueamount=" + dueamount + "&type=" + type + "&areaid=" + areaid + "&streetid=" + streetid + "&packageid=" + packageid + "&days=" + days + "&subscribername=" + subscribername + "&smartcardlist=" + smartcardlist + "&plantype=" + plantype + "&plan=" + plan, {});
+  }
 
   getAllCartonBoxList(role: any, username: any): Observable<any[]> {
     return this.http.get<any[]>(BASE_URL + "/allocation/getAllCartonBoxList?role=" + role + "&username=" + encodeURIComponent(username))
@@ -2068,12 +2076,6 @@ export class BaseService {
     return this.http.get<any[]>(BASE_URL + "/operator/checkLcoForceMessage?role=" + role + "&username=" + encodeURIComponent(username) + "&operatorid=" + operatorid)
   }
 
-  // ------------------------------------------all discount list ------------------------------
-
-  getAllLcoDiscountList(role: any, username: any, operatorid: any, distributorid: any): Observable<any[]> {
-    return this.http.get<any[]>(BASE_URL + "/operator/getAllLcoDiscountList?role=" + role + "&username=" + encodeURIComponent(username) + "&operatorid=" + operatorid + "&distributorid=" + distributorid)
-  }
-
   // ---------------------------------------------getAllLcoList---------------------------
 
   getAllLcoList(role: any, username: any, operatorid: any): Observable<any[]> {
@@ -2092,14 +2094,10 @@ export class BaseService {
   // getLcoDiscountListByOpidAreaidReport(role: any, username: any, operatorid: any, type: any, reporttype: any): Observable<any[]> {
   //   return this.http.get<any[]>(BASE_URL + "/report/getLcoDiscountListByOpidAreaid?role=" + role + "&username=" + encodeURIComponent(username) + "&operatorid=" + operatorid + "&type=" + type + "&reporttype=" + reporttype)
   // }
-
-
   // -----------------------------------------wallet recharge (requsr)-----------------------
   lcoOnlineInitialRequest(role: any, username: any, amount: any, operatorid: any): Observable<any[]> {
     return this.http.post<any[]>(BASE_URL + "/operator/lcoOnlineInitialRequest?role=" + role + "&username=" + encodeURIComponent(username) + "&amount=" + amount + "&operatorid=" + operatorid, {});
   }
-
-
   getLcoPaymentGatewayDetails(role: any, username: any, operatorid: any): Observable<any[]> {
     return this.http.post<any[]>(BASE_URL + "/operator/getLcoPaymentGatewayDetails?role=" + role + "&username=" + encodeURIComponent(username) + "&operatorid=" + operatorid, {});
   }
@@ -2111,6 +2109,95 @@ export class BaseService {
   // -------------------------------------------vc smartcard change and boxid change ------------------------
 
   getDataBysmartcardOrBoxid(role: any, username: any, type: any, smartcard: any): Observable<any[]> {
-    return this.http.get<any[]>(BASE_URL + "/report/getDataBysmartcardOrBoxid?role=" + role + "&username=" + encodeURIComponent(username) + "&type=" + type + "&smartcard=" + smartcard)
+    return this.http.get<any[]>(BASE_URL + "/subscriber/getDataBysmartcardOrBoxid?role=" + role + "&username=" + encodeURIComponent(username) + "&type=" + type + "&smartcard=" + smartcard)
+  }
+  getSmartcardBoxidList(role: any, username: any, type: any): Observable<any[]> {
+    return this.http.get<any[]>(BASE_URL + "/subscriber/getSmartcardBoxidList?role=" + role + "&username=" + encodeURIComponent(username) + "&type=" + type)
+  }
+
+  getSmartcardChange(role: any, username: any, type: any, oldsmartcard: any, newsmartcard: any, boxid: any): Observable<any[]> {
+    return this.http.post<any[]>(BASE_URL + "/subscriber/SmartcardChange?role=" + role + "&username=" + encodeURIComponent(username) + "&type=" + type + "&oldsmartcard=" + oldsmartcard + "&newsmartcard=" + newsmartcard + "&boxid=" + boxid, {});
+  }
+
+  getBoxChange(role: any, username: any, oldboxid: any, newboxid: any, smartcard: any): Observable<any[]> {
+    return this.http.post<any[]>(BASE_URL + "/subscriber/BoxChange?role=" + role + "&username=" + encodeURIComponent(username) + "&oldboxid=" + oldboxid + "&newboxid=" + newboxid + "&smartcard=" + smartcard, {});
+  }
+  // ------------------------------------------ discount list ------------------------------
+
+  // getAllLcoDiscountList(role: any, username: any, operatorid: any, distributorid: any): Observable<any[]> {
+  //   return this.http.get<any[]>(BASE_URL + "/operator/getAllLcoDiscountList?role=" + role + "&username=" + encodeURIComponent(username) + "&operatorid=" + operatorid + "&distributorid=" + distributorid)
+  // }
+  getDistributorPackageList(role: any, username: any, operatorid: any, distributorid: any): Observable<any[]> {
+    return this.http.get<any[]>(BASE_URL + "/operator/getDistributorPackageList?role=" + role + "&username=" + encodeURIComponent(username) + "&operatorid=" + operatorid + "&distributorid=" + distributorid)
+  }
+  getOpDiscountListByOpidAreaid(role: any, username: any, operatorid: any, areaid: any, type: any): Observable<any[]> {
+    return this.http.get<any[]>(BASE_URL + "/operator/getLcoDiscountListByOpidAreaid?role=" + role + "&username=" + encodeURIComponent(username) + "&operatorid=" + operatorid + "&areaid=" + areaid + "&type=" + type)
+  }
+  updatePlanwiseDiscount(role: any, username: any, operatorid: any, orderid: any, plan_discount: any): Observable<any[]> {
+    return this.http.post<any[]>(BASE_URL + "/operator/updatePlanwiseDiscount?role=" + role + "&username=" + encodeURIComponent(username) + "&operatorid=" + operatorid + "&orderid=" + orderid + "&plan_discount=" + plan_discount, {})
+  }
+  getPlanDiscountDetailsByOpidPackageid(role: any, username: any, operatorid: any, orderid: any, customer_amount: any, lco_commission: any): Observable<any[]> {
+    return this.http.get<any[]>(BASE_URL + "/operator/getPlanDiscountDetailsByOpidPackageid?role=" + role + "&username=" + encodeURIComponent(username) + "&operatorid=" + operatorid + "&orderid=" + orderid + "&customer_amount=" + customer_amount + "&lco_commission=" + lco_commission)
+  }
+  getupdateLcoDiscountBytype(role: any, username: any, operatorid: any, discount_type: any, isdiscount: any): Observable<any[]> {
+    return this.http.post<any[]>(BASE_URL + "/operator/updateLcoDiscountBytype?role=" + role + "&username=" + encodeURIComponent(username) + "&operatorid=" + operatorid + "&discount_type=" + discount_type + "&isdiscount=" + isdiscount, {})
+  }
+  getLcoDiscountListByOpidAreaidsmartcard(role: any, username: any, operatorid: any, areaid: any, smartcard: any): Observable<any[]> {
+    return this.http.get<any[]>(BASE_URL + "/operator/getLcoDiscountListByOpidAreaid?role=" + role + "&username=" + encodeURIComponent(username) + "&operatorid=" + operatorid + "&areaid=" + areaid + "&smartcard=" + smartcard)
+  }
+  getupdateDiscountByArea(role: any, username: any, operatorid: any, areaid: any, packageid: any, ispercentage: any, commission: any, old_customeramount: any, new_customeramount: any, smartcard: any, discount_value: any): Observable<any[]> {
+    return this.http.post<any[]>(BASE_URL + "/operator/updateDiscountByArea?role=" + role + "&username=" + encodeURIComponent(username) + "&operatorid=" + operatorid + "&areaid=" + areaid + "&packageid=" + packageid + "&ispercentage=" + ispercentage + "&commission=" + commission + "&old_customeramount=" + old_customeramount + "&new_customeramount=" + new_customeramount + "&smartcard=" + smartcard + "&discount_value=" + discount_value, {})
+  }
+
+  getSmartcardWiseDiscountList(role: any, username: any, operatorid: any, areaid: any, smartcard: any): Observable<any[]> {
+    return this.http.get<any[]>(BASE_URL + "/operator/getSmartcardWiseDiscountList?role=" + role + "&username=" + encodeURIComponent(username) + "&operatorid=" + operatorid + "&areaid=" + areaid + "&smartcard=" + smartcard)
+  }
+  // ===========================================Bill Collection=====================
+  getbillCollectionReport(role: any, username: any, operatorid: any, bill_type: any, useragent: any, fromdate: any, todate: any, searchname: any): Observable<any[]> {
+    return this.http.get<any[]>(BASE_URL + "/operator/billCollectionReport?role=" + role + "&username=" + encodeURIComponent(username) + "&operatorid=" + operatorid + "&bill_type=" + bill_type + "&useragent=" + useragent + "&fromdate=" + fromdate + "&todate=" + todate + "&searchname=" + searchname)
+  }
+
+  getupdatePaybill(role: any, username: any, operatorid: any, smartcard: any, paid_amount: any, status: any, useragent: any): Observable<any[]> {
+    return this.http.post<any[]>(BASE_URL + "/operator/updatePaybill?role=" + role + "&username=" + encodeURIComponent(username) + "&operatorid=" + operatorid + "&smartcard=" + smartcard + "&paid_amount=" + paid_amount + "&status=" + status + "&useragent=" + useragent, {})
+  }
+
+  getBillCollectionReport(role: any, username: any, operatorid: any, bill_type: any, useragent: any, fromdate: any, todate: any, searchname: any, reporttype: any): Observable<Blob> {
+    return this.http.get(BASE_URL + "/report/getBillCollectionReport?role=" + role + "&username=" + encodeURIComponent(username) + "&operatorid=" + operatorid + "&bill_type=" + bill_type + "&useragent=" + useragent + "&fromdate=" + fromdate + "&todate=" + todate + "&searchname=" + searchname + "&reporttype=" + reporttype, { responseType: 'blob' })
+  }
+
+
+  // ===========================================distributot discount=============================================
+  getupdatedistributorDiscount(role: any, username: any, operatorid: any, distributorid: any, packageid: any, msoamount: any, oldmsoamount: any, newmsoamount: any): Observable<any[]> {
+    return this.http.post<any[]>(BASE_URL + "/operator/updatedistributorDiscount?role=" + role + "&username=" + encodeURIComponent(username) + "&operatorid=" + operatorid + "&distributorid=" + distributorid + "&packageid=" + packageid + "&msoamount=" + msoamount + "&oldmsoamount=" + oldmsoamount + "&newmsoamount=" + newmsoamount, {})
+  }
+
+
+  getupdateSublcoDiscount(role: any, username: any, operatorid: any, distributorid: any, packageid: any, isgst: any, msoamount: any, old_msoamount: any, new_msoamount: any): Observable<any[]> {
+    return this.http.post<any[]>(BASE_URL + "/operator/updatedistributorDiscount?role=" + role + "&username=" + encodeURIComponent(username) + "&operatorid=" + operatorid + "&distributorid=" + distributorid + "&packageid=" + packageid + "&isgst=" + isgst + "&msoamount=" + msoamount + "&oldmsoamount=" + old_msoamount + "&newmsoamount=" + new_msoamount, {})
+  }
+
+  // ---------------------------Distributor Recharge----------------------  
+
+  getRetailerListByOpid(role: any, username: any, operatorid: any): Observable<any> {
+    return this.http.get<any>(BASE_URL + "/operator/getRetailerListByOpid?role=" + role + "&username=" + encodeURIComponent(username) + "&operatorid=" + operatorid)
+  }
+  getretailerOfflineRecharge(role: any, username: any, operatorid: any, retailerid: any, amount: any): Observable<any[]> {
+    return this.http.post<any[]>(BASE_URL + "/operator/retailerOfflineRecharge?role=" + role + "&username=" + encodeURIComponent(username) + "&operatorid=" + operatorid + "&retailerid=" + retailerid + "&amount=" + amount, {})
+  }
+  getSublcoDiscountList(role: any, username: any, operatorid: any, retailerid: any): Observable<any> {
+    return this.http.get<any>(BASE_URL + "/operator/getSublcoDiscountList?role=" + role + "&username=" + encodeURIComponent(username) + "&operatorid=" + operatorid + "&retailerid=" + retailerid)
+  }
+
+  // =============================================current balance=======================
+  getlcoOfflineWalletShare(role: any, username: any, operatorid: any, selectedopid: any, amount: any, remarks: any): Observable<any> {
+    return this.http.post<any>(BASE_URL + "/operator/lcoOfflineWalletShare?role=" + role + "&username=" + encodeURIComponent(username) + "&operatorid=" + operatorid + "&selectedopid=" + selectedopid + "&amount=" + amount + "&remarks=" + remarks, {})
+  }
+
+  // ----------------------------------------------lco reports (monthwise)-----------------------------------------------------
+  getlcoMonthwiseActivationReport(role: any, username: any, operatorid: any, fromdate: any, todate: any, reporttype: any): Observable<Blob> {
+    return this.http.get(BASE_URL + "/report/getlcoMonthwiseActivationReport?role=" + role + "&username=" + encodeURIComponent(username) + "&operatorid=" + operatorid + "&fromdate=" + fromdate + "&todate=" + todate + "&reporttype=" + reporttype, { responseType: 'blob' })
+  }
+  getlcoMonthwiseActivationData(role: any, username: any, operatorid: any, fromdate: any, todate: any, reporttype: any): Observable<any[]> {
+    return this.http.get<any>(BASE_URL + "/report/getlcoMonthwiseActivationReport?role=" + role + "&username=" + encodeURIComponent(username) + "&operatorid=" + operatorid + "&fromdate=" + fromdate + "&todate=" + todate + "&reporttype=" + reporttype,)
   }
 }

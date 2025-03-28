@@ -1,4 +1,4 @@
-<div class="col-12 col-md-12 d-flex justify-content-center align-item-center mb-3">
+<!-- <div class="col-12 col-md-12 d-flex justify-content-center align-item-center mb-3">
     <div class="mt-2 mx-3">
         <h6 style="color: rgb(58 69 81);">Discount Option :</h6>
     </div>
@@ -9,12 +9,35 @@
             <mat-radio-button value="2">OFF</mat-radio-button>
         </mat-radio-group>
     </div>
-</div>
+</div> -->
 
 
-<mat-tab-group animationDuration="500ms" (selectedTabChange)="onTabChange($event)"  *ngIf="!isTabDisabled">
+<mat-tab-group animationDuration="500ms" (selectedTabChange)="onTabChange($event)" *ngIf="!isTabDisabled">
     <mat-tab *ngFor="let tab of ['ALL AREA WISE', 'SELECTED AREA WISE', 'SMARTCARD WISE', 'PACKAGE WISE']"
         [label]="tab">
+        <div *ngIf="this.type == '2'" class="mt-3">
+            <div class="input_box d-flex mb-3 ">
+                <span class="mt-3 mx-3">Area Name</span>
+                        <mat-form-field appearance="outline">
+                    <mat-label>Select Area</mat-label>
+                    <input type="text" class="no-outline" matInput [(ngModel)]="selectedArea" [matAutocomplete]="auto"
+                        style="border: none;" (ngModelChange)="onAreaStatusChange($event)">
+                    <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete" [displayWith]="displayAreaName"
+                        (optionSelected)="onAreaSelected($event.option.value)">
+                        <mat-option *ngFor="let area of filteredAreas " [value]="area">
+                            {{ area.name }}
+                        </mat-option>
+                    </mat-autocomplete>
+                </mat-form-field>
+            </div>
+        </div>
+        <!-- <div *ngIf="this.type == '3'">
+            <div class="input_box d-flex">
+                <label>Smartcard</label>
+                <input type="text" placeholder="Enter Smartcard" [(ngModel)]="smartcard" (ngModelChange)="onSmartcardChange()">
+            </div>
+        </div> -->
+
         <div class="tab-content mt-3">
             <ag-grid-angular #agGrid id="myGrid" domLayout="normal" class="ag-theme-alpine table-class" rowAnimation
                 [gridOptions]="gridOptions" [columnDefs]="columnDefs" (gridReady)="onGridReady($event)"

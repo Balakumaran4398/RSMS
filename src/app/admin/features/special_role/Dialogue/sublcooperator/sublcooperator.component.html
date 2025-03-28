@@ -4,10 +4,14 @@
         <a class="btn btn-outline-success mx-1" (click)="opendialogue('createsublco','')">
             <i class="fa fa-plus"></i> New
         </a>
-        
+
         <button class="btn btn-outline-info mx-1" mat-raised-button color="primary" type="button"
             [disabled]="!isAnyRowSelected" (click)="opendialogue('deletesublco','')">
             Delete
+        </button>
+        <button  [disabled]="!sublcorecharge" class="btn btn-outline-info mx-1" mat-raised-button  color="accent" type="button"
+             (click)="openLcoRechargelogue('sub_lco_recharge','')">
+            Recharge
         </button>
     </div>
     <div>

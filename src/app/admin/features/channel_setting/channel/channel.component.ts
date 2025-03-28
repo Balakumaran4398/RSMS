@@ -34,7 +34,7 @@ export class ChannelComponent {
   //     comparator: (valueA: any, valueB: any) => {
   //       const isNumberA = !isNaN(valueA) && valueA !== null;
   //       const isNumberB = !isNaN(valueB) && valueB !== null;
-  
+
   //       if (isNumberA && isNumberB) {
   //         return valueA - valueB;
   //       } else {
@@ -52,30 +52,30 @@ export class ChannelComponent {
     defaultColDef: {
       sortable: true,
       resizable: true,
-      filter: true, 
+      filter: true,
       floatingFilter: true,
       comparator: (valueA: any, valueB: any) => {
         const isNumberA = !isNaN(valueA) && valueA !== null;
         const isNumberB = !isNaN(valueB) && valueB !== null;
-  
+
         if (isNumberA && isNumberB) {
-          return valueA - valueB; 
+          return valueA - valueB;
         } else {
           const normalizedA = valueA ? valueA.toString().trim().toLowerCase() : '';
           const normalizedB = valueB ? valueB.toString().trim().toLowerCase() : '';
-          return normalizedA.localeCompare(normalizedB); 
+          return normalizedA.localeCompare(normalizedB);
         }
       },
       filterParams: {
         textFormatter: (value: string) => {
           return value ? value.toString().toLowerCase() : '';
         },
-        debounceMs: 200, 
+        debounceMs: 200,
       },
     },
 
   };
-  
+
   gridApi: any;
   isAnyRowSelected: any = false;
   selectedIds: number[] = [];
@@ -208,22 +208,22 @@ export class ChannelComponent {
       checkboxSelection: true, filter: false
     },
     {
-      headerName: "CHANNEL NAME", field: 'channel_name', width: 250,
+      headerName: "CHANNEL NAME", field: 'channelname', width: 250,
       cellStyle: (params: any) => {
-        if (params.data.paidstatus === "Not Paid") {
+        if (params.data.ispaid === false) {
           return { color: 'block', textAlign: 'left' };
-        } else if (params.data.paidstatus === "Paid") {
+        } else if (params.data.ispaid === true) {
           return { color: 'green', textAlign: 'left' };
         }
         return { textAlign: 'left' };
       }
     },
-    { headerName: "FREQUENCY", field: 'channel_freq', cellStyle: { textAlign: 'center' }, width: 185 },
-    { headerName: "DESCRIPTION", field: 'channel_desc', cellStyle: { textAlign: 'center' }, width: 200, },
+    { headerName: "FREQUENCY", field: 'channelfrequency', cellStyle: { textAlign: 'center' }, width: 185 },
+    { headerName: "DESCRIPTION", field: 'channeldescription', cellStyle: { textAlign: 'center' }, width: 200, },
     { headerName: "PRODUCT ID", field: 'product_id', cellStyle: { textAlign: 'left' }, width: 250, },
-    { headerName: "TRANSPORT ID", field: 't_id', cellStyle: { textAlign: 'center' }, width: 200, },
-    { headerName: "SERVICE ID", field: 'service_id', cellStyle: { textAlign: 'center' }, width: 200, },
-    { headerName: "INR AMOUNT", field: 'inr_amt', cellStyle: { textAlign: 'center' }, width: 200, },
+    { headerName: "TRANSPORT ID", field: 'tsid', cellStyle: { textAlign: 'center' }, width: 200, },
+    { headerName: "SERVICE ID", field: 'serviceid', cellStyle: { textAlign: 'center' }, width: 200, },
+    { headerName: "INR AMOUNT", field: 'inramount', cellStyle: { textAlign: 'center' }, width: 200, },
     {
       headerName: "STATUS", field: 'statusdisplay', width: 250,
       cellRenderer: (params: { value: any; }) => {
@@ -231,7 +231,7 @@ export class ChannelComponent {
         const color = isActive ? 'green' : 'red';
         return `<span style="color: ${color}">${params.value}</span>`;
       }
-    }, { headerName: "LOGO", field: 'channel_logo', cellStyle: { textAlign: 'center' }, width: 200, },
+    },
 
   ];
   onSelectionChange(event: MatSelectChange): void {

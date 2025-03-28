@@ -48,7 +48,8 @@
                     <div class="col-12 col-md-12 mx-3 mb-3">
                         <div class="d-flex align-items-center justify-content-center icon-container">
                             <div *ngIf="logindetails" class="icon-item d-flex align-item-center tooltip-container bttn"
-                                style="background-color: var(--sub-dashboard-icon);" (click)="openDialog('logindetails','')">
+                                style="background-color: var(--sub-dashboard-icon);"
+                                (click)="openDialog('logindetails','')">
                                 <i class="fa fa-eye" style="font-size:15px;color: white;"></i>
                                 <div class="tooltip-content">Login Details</div>
                             </div>
@@ -58,7 +59,8 @@
                                 <div class="tooltip-content">CAS Form</div>
                             </div>
                             <div *ngIf="editDetails" class="icon-item d-flex align-item-center tooltip-container bttn"
-                                style="background-color: var(--sub-dashboard-icon);" (click)="openDialog('editDetails','')">
+                                style="background-color: var(--sub-dashboard-icon);"
+                                (click)="openDialog('editDetails','')">
                                 <i class="fas fa-edit" style="font-size:14px;color: white;"></i>
                                 <div class="tooltip-content">Edit </div>
                             </div>
@@ -138,12 +140,14 @@
                         </div>
                         <div class="d-flex  icon-container" style="padding: 10px;">
                             <div class="icon-item d-flex align-item-center tooltip-container  bttn"
-                                style="background-color:var(--sub-dashboard-icon);" (click)="openLoginPage('change_lco')">
+                                style="background-color:var(--sub-dashboard-icon);"
+                                (click)="openLoginPage('change_lco')">
                                 <i class="fa fa-refresh	" style="font-size:15px;color: white;"></i>
                                 <div class="tooltip-content">Change LCO</div>
                             </div>
                             <div class="icon-item d-flex align-item-center tooltip-container  bttn"
-                                style="background-color: var(--sub-dashboard-icon);" (click)="openDialog('addSmartcard','')">
+                                style="background-color: var(--sub-dashboard-icon);"
+                                (click)="openDialog('addSmartcard','')">
                                 <i class="fa fa-plus" style="font-size:15px;color: white;"></i>
                                 <div class="tooltip-content">Add Smartcard</div>
                             </div>
@@ -591,19 +595,9 @@
                                 <div *ngIf="datetype"
                                     class="col-12 col-md-4 display justify-content-center align-items-center mb-3">
                                     <div class="col-12 col-md-6">
-                                        <!-- <input type="date" [(ngModel)]="f_date"
-                                            [min]="subdetailsList?.expirydate | date:'yyyy-MM-dd'"
-                                            (ngModelChange)="onSelectiondatetype($event)"> -->
-
-                                        <!-- <input *ngIf="noofdays == 0" type="date" [(ngModel)]="f_date"
-                                            [min]="getNextDay1()" (ngModelChange)="onSelectiondatetype($event)">
-                                        <input *ngIf="noofdays != 0" type="date" [(ngModel)]="f_date"
-                                            [min]="getNextDay(subdetailsList?.expirydate)"
-                                            (ngModelChange)="onSelectiondatetype($event)"> -->
                                         <input type="date" [(ngModel)]="f_date"
                                             [min]="noofdays == 0 ? getNextDay1() : getNextDay(subdetailsList?.expirydate)"
                                             (ngModelChange)="onSelectiondatetype($event)">
-
                                     </div>
                                 </div>
                             </div>

@@ -26,20 +26,11 @@
                 </div>
             </div>
 
-            <div class=" display_1  mb-3">
+            <div *ngIf="role !== 'ROLE_OPERATOR'" class=" display_1  mb-3">
                 <div class="input_box col-12 col-md-4">
                     <span for="">Operator</span>
                 </div>
                 <div class=" custom-select  operator_width  mb-2 mx-2">
-                    <!-- <input type="text" placeholder="Search Operator" [(ngModel)]="operatorname"
-                        (input)="filterOperators()" (focus)="showDropdown = false" (click)="showDropdown = true">
-
-                    <ul class="dropdown" *ngIf="showDropdown">
-                        <li *ngFor="let operator of filteredOperators"
-                            (click)="selectOperator(operator.id, operator.name)">
-                            {{ operator.name }}
-                        </li>
-                    </ul> -->
                     <select id="operator" [(ngModel)]="operatorname">
                         <option value="0" selected>ALL Operator</option>
                         <option *ngFor="let operator of filteredOperators" [value]="operator.id"
@@ -49,13 +40,13 @@
                     </select>
                 </div>
             </div>
-            <div class="   display_1 justify-content-between align-item-center">
+            <div class="display_1 justify-content-between align-item-center">
                 <div class="input_box col-12 col-md-4">
                     <span for="">Format</span>
                 </div>
                 <div class="col-12 col-md-8 d-flex justify-content-start align-items-center">
-                    <button class="btn btn-success mx-3 bttn" (click)="exportAsXLSX()"><i class="fa fa-file-excel-o mx-1"
-                            aria-hidden="true"></i>FORMAT 1</button>
+                    <button class="btn btn-success mx-3 bttn" (click)="exportAsXLSX()"><i
+                            class="fa fa-file-excel-o mx-1" aria-hidden="true"></i>FORMAT 1</button>
                     <button class="btn btn-success  bttn" (click)="exportAsXLSX1()"><i class="fa fa-file-excel-o mx-1"
                             aria-hidden="true"></i>FORMAT 2</button>
                 </div>

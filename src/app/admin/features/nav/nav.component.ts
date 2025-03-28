@@ -148,12 +148,14 @@ export class NavComponent implements OnInit, AfterViewInit {
   operatorId: any;
   operatorname: any;
   operatorBalance: any;
+  distributor: boolean = false;
   operatorIdoperatorId() {
     this.userservice.getOpDetails(this.role, this.username).subscribe((data: any) => {
       this.lcoDeatails = data;
       this.operatorId = this.lcoDeatails?.operatorid;
       this.operatorname = this.lcoDeatails?.operatorname;
       this.operatorBalance = this.lcoDeatails?.balance;
+      this.distributor = this.lcoDeatails?.isdistributor;
     })
   }
 

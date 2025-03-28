@@ -537,7 +537,7 @@ export class PackageManageComponent {
   }
   drop2(event: CdkDragDrop<string[]>, val: number) {
     this.modified = true;
-    const draggedItem = event.item; 
+    const draggedItem = event.item;
     const draggedElement = draggedItem.element.nativeElement;
     const draggedData = draggedItem.data;
     console.log('Dragged data:', draggedData);
@@ -556,18 +556,7 @@ export class PackageManageComponent {
       if (val == 1) {
         this.available_alacarte_list = event.container.data;
         this.added_alacarte_list = event.previousContainer.data;
-        // console.log('else condition')
-        // const textContent = draggedElement.textContent || draggedElement.innerText;
-        // console.log(textContent);
-        // const match = textContent.match(/\((\d+)\)/);
-        // console.log(match);
-        // if (match) {
-        //   const id = match[1];
-        //   console.log(id);
-        //   this.bouquet_removelist_id.push(id);
-        // } else {
-        //   console.log('No ID found');
-        // }
+
       } else {
         this.added_alacarte_list = event.container.data;
         this.available_alacarte_list = event.previousContainer.data;
@@ -591,14 +580,7 @@ export class PackageManageComponent {
     this.containerID = this.alacarteId || 0
     console.log(this.containerID);
     this.containerData = this.containerData.length == 0 ? 0 : this.containerData;
-    // if (!this.modified || !this.alacarte_list_id || !this.role || !this.username || !this.package_id) {
-    //   Swal.fire({
-    //     icon: 'error',
-    //     title: 'Error',
-    //     text: 'All fields are required!',
-    //   });
-    //   return;
-    // }
+
     if (this.alacarte_list_id) {
       console.log('save');
       Swal.fire({
@@ -624,12 +606,11 @@ export class PackageManageComponent {
             this.swal.success(res?.message);
             this.modified = false;
           }, (err) => {
-            this.swal.Error3(err?.error?.message );
+            this.swal.Error3(err?.error?.message);
           });
         }
       });
     } else {
-      // this.swal.Invalid();
       Swal.fire({
         title: 'Warning!',
         icon: 'warning',
@@ -641,60 +622,45 @@ export class PackageManageComponent {
     this.selectedItems.clear();
   }
   save1() {
-    // console.log('container data', this.containerData);
-    // console.log('bouquet list', this.bouquet_list_id);
-    // var bouquetId = this.bouquet_removelist_id || 0;
-    // console.log('bouquet_removelist_id', this.bouquet_removelist_id);
-    // console.log('this.bouquet_removelist_id.length', this.bouquet_removelist_id);
-    // this.containerData = this.containerData.length == 0 ? 0 : this.containerData;
     this.containerData = this.containerData.length == 0 ? 0 : this.containerData;
     console.log(this.containerData);
     console.log('bouquet_list_id', this.bouquet_list_id);
     var bouquetId = this.bouquet_removelist_id || 0;
     console.log('bouquet_removelist_id', bouquetId);
     // if (this.bouquet_list_id) {
-      Swal.fire({
-        title: "Are you sure?",
-        // text: "You won't be able to revert this!",
-        icon: "warning",
-        showCancelButton: true,
-        confirmButtonColor: "#3085d6",
-        cancelButtonColor: "#d33",
-        confirmButtonText: "Yes, Change it!"
-      }).then((result) => {
-        if (result.isConfirmed) {
-          Swal.fire({
-            title: 'Updating...',
-            text: 'Please wait for Addon channel list to update....',
-            allowOutsideClick: false,
-            didOpen: () => {
-              Swal.showLoading(null);
-            }
-          });
-          if (bouquetId == null || bouquetId == undefined || bouquetId == '') {
-            bouquetId = 0;
+    Swal.fire({
+      title: "Are you sure?",
+      // text: "You won't be able to revert this!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, Change it!"
+    }).then((result) => {
+      if (result.isConfirmed) {
+        Swal.fire({
+          title: 'Updating...',
+          text: 'Please wait for Addon channel list to update....',
+          allowOutsideClick: false,
+          didOpen: () => {
+            Swal.showLoading(null);
           }
-          console.log('bouquetId',bouquetId);
-          
-          this.userService.AddingdbouquetTo_Base_Package(this.modified, this.containerData, this.role, this.username, this.package_id, bouquetId ,).subscribe((res: any) => {
-            console.log(res);
-            this.swal.success(res?.message);
-            this.modified = false;
-          }, (err) => {
-            this.swal.Error3(err?.error?.message);
-          });
+        });
+        if (bouquetId == null || bouquetId == undefined || bouquetId == '') {
+          bouquetId = 0;
         }
-      });
-    // } else {
-    //   // this.swal.Invalid();
-    //   Swal.fire({
-    //     title: 'Warning!',
-    //     icon: 'warning',
-    //     text: 'Invalid Input',
-    //     timer: 1000,
-    //     showConfirmButton: false
-    //   })
-    // }
+        console.log('bouquetId', bouquetId);
+
+        this.userService.AddingdbouquetTo_Base_Package(this.modified, this.containerData, this.role, this.username, this.package_id, bouquetId,).subscribe((res: any) => {
+          console.log(res);
+          this.swal.success(res?.message);
+          this.modified = false;
+        }, (err) => {
+          this.swal.Error3(err?.error?.message);
+        });
+      }
+    });
+
   }
 
 

@@ -89,7 +89,6 @@ export class AddonPackageComponent {
   }
 
   operatorIdoperatorId() {
-    console.log('ROLE_OPERATOR');
     this.userService.getOpDetails(this.role, this.username).subscribe((data: any) => {
       console.log(data);
       this.lcoDeatails = data;
@@ -194,8 +193,8 @@ export class AddonPackageComponent {
     {
       headerName: "S.No", lockPosition: true, valueGetter: 'node.rowIndex+1', width: 120, filter: false
     },
-    { headerName: "PACKAGE NAME", field: 'addonpackagename', width: 300, cellStyle: { textAlign: 'left' }, },
-    { headerName: "REFERENCE ID", field: 'orderid', width: 250, cellStyle: { textAlign: 'center' }, },
+    { headerName: "PACKAGE NAME", field: 'productname', width: 300, cellStyle: { textAlign: 'left' }, },
+    { headerName: "REFERENCE ID", field: 'referenceid', width: 250, cellStyle: { textAlign: 'center' }, },
     { headerName: "PACKAGE RATE", field: 'rate', width: 250, cellStyle: { textAlign: 'center' }, },
     {
       headerName: 'ACTION', width: 380, filter: false,

@@ -55,28 +55,39 @@
     </div>
     <div class="display justify-content-between align-items-center">
         <div *ngIf="requiresDatePicker(type)" class="d-flex justify-content-between align-items-center">
-            <mat-form-field appearance="outline">
+            <!-- <mat-form-field appearance="outline">
                 <mat-date-range-input [rangePicker]="picker">
                     <input matStartDate matInput placeholder="Start date" (dateChange)="getFromDate($event)" />
                     <input matEndDate matInput placeholder="End date" (dateChange)="getToDate($event)" />
                 </mat-date-range-input>
                 <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
                 <mat-date-range-picker #picker></mat-date-range-picker>
-            </mat-form-field>
+            </mat-form-field> -->
 
+
+            <mat-form-field appearance="outline" style="width: 100%;">
+                <mat-date-range-input [rangePicker]="picker" [formGroup]="dateRangeForm">
+                    <input matStartDate matInput placeholder="Start date" formControlName="fromdate"
+                        (dateChange)="getFromDate($event)">
+                    <input matEndDate matInput placeholder="End date" formControlName="todate"
+                        (dateChange)="getToDate($event)">
+                </mat-date-range-input>
+                <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                <mat-date-range-picker #picker></mat-date-range-picker>
+            </mat-form-field>
             <button class="btn d-flex align-item-center justify-content-between  bttn mx-2 mb-3"
                 style="background-color: var(--primary-color);">
-                <span style="color: white;">Get</span>
+                <span style="color: white;" (click)="getMonthwiseReport()">Get</span>
             </button>
         </div>
         <div class="display1 justify-content-end align-items-center mb-3">
             <div class="export-icon mx-2">
                 <img src="/assets/images/icons/Excel.png" alt="Excel Icon" width="40px"
-                    (click)="downloadReport(type, 2)">
+                    (click)="getSubscriberBillDownload( 2)">
                 <div class="tooltip">Excel</div>
             </div>
             <div class="export-icon">
-                <img src="/assets/images/icons/pdf.png" alt="PDF Icon" width="40px" (click)="downloadReport(type, 1)">
+                <img src="/assets/images/icons/pdf.png" alt="PDF Icon" width="40px" (click)="getSubscriberBillDownload( 1)">
                 <div class="tooltip">Pdf</div>
             </div>
         </div>

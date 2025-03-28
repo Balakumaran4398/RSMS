@@ -4,4 +4,15 @@
             class="fa fa-plus mx-2" style="padding-right: 1px;font-size: 14px"></i>
         NEW LCO
     </button>
+    <button class="btn btn-outline-info mx-1 bttn" mat-raised-button color="custom-select"
+        style="background-color: var(--primary-color);color: white;" type="button"
+        (click)="openaddedlogue('distributor_discount','')">
+        DISCOUNT
+    </button>
+</div>
+<div>
+    <ag-grid-angular #agGrid id="myGrid" style="text-align: center;" domLayout='autoHeight'
+        class="ag-theme-alpine table-class" rowAnimation [gridOptions]="gridOptions" (gridReady)="onGridReady($event)"
+        [columnDefs]="columnDefs" [rowData]="rowData" [enableCellTextSelection]="true">
+    </ag-grid-angular>
 </div>

@@ -1,6 +1,6 @@
-<mat-tab-group animationDuration="500ms" (selectedTabChange)="onTabChange($event)" *ngIf="!isTabDisabled">
-    <mat-tab *ngFor="let tab of ['SMARTCARD CHANGE', 'BOX ID CHANGE', ]" [label]="tab" style="overflow-x: hidden;">
-        <div class="mt-5">
+<mat-tab-group animationDuration="500ms" (selectedTabChange)="onTabChange($event)" *ngIf="!isTabDisabled" >
+    <mat-tab *ngFor="let tab of ['SMARTCARD CHANGE', 'BOX ID CHANGE', ]" [label]="tab" >
+        <div class="mt-5"  style="overflow-x: hidden;" >
             <h5 class="">{{header}}</h5>
             <div class="row justify-content-start">
                 <!-- <div class="col-md-8">
@@ -30,7 +30,8 @@
                                         <span>Enter Old Box ID :</span>
                                     </div>
                                     <div class="col-12 col-md-auto input_box mb-3">
-                                        <input type="text" placeholder="Enter Old Box ID" [(ngModel)]="oldboxid">
+                                        <input type="text" placeholder="Enter Old Box ID" [(ngModel)]="oldboxid"
+                                            maxlength="12">
                                     </div>
                                     <div class="col-12 col-md-auto mb-3">
                                         <span>Smartcard :</span>
@@ -44,13 +45,14 @@
                                         </button>
                                     </div>
                                     <div class="col-12 col-md-auto mb-3">
-                                        <span>Enter New Smartcard :</span>
+                                        <span>Enter New Boxid :</span>
                                     </div>
                                     <div class="col-12 col-md-auto input_box mb-3">
-                                        <input type="text" placeholder="Enter New Smartcard">
+                                        <input type="text" placeholder="Enter New BoxID" [(ngModel)]="newboxid"
+                                            maxlength="12">
                                     </div>
                                     <div class="col-12 col-md-auto mb-3">
-                                        <button class="btn w-100 btn-success bttn" (click)="submit()">
+                                        <button class="btn w-100 btn-success bttn" (click)="getboxidSubmit()">
                                             Replace
                                         </button>
                                     </div>
@@ -70,7 +72,8 @@
                             <span>Enter Old Smartcard :</span>
                         </div>
                         <div class="col-12 col-md-auto input_box mb-3 ">
-                            <input type="text" placeholder="Enter Old Smartcard" [(ngModel)]="oldsmartcard">
+                            <input type="text" placeholder="Enter Old Smartcard" [(ngModel)]="oldsmartcard"
+                                maxlength="20">
                         </div>
                         <div class="col-12 col-md-auto mb-3">
                             <span>Box ID :</span>
@@ -87,11 +90,12 @@
                             <span>Enter New Smartcard :</span>
                         </div>
                         <div class="col-12 col-md-auto input_box mb-3">
-                            <input type="text" class="form-control" placeholder="Enter New Smartcard">
+                            <input type="text" class="form-control" placeholder="Enter New Smartcard" maxlength="20"
+                                [(ngModel)]="newsmartcard">
                         </div>
 
                         <div class="col-12 col-md-auto mb-3">
-                            <button class="btn w-100 btn-success bttn" (click)="submit()">
+                            <button class="btn w-100 btn-success bttn" (click)="getSmartcardSubmit()">
                                 Replace
                             </button>
                         </div>
@@ -100,13 +104,13 @@
 
 
             </div>
-
             <div class="tab-content mt-3">
                 <ag-grid-angular #agGrid id="myGrid" domLayout="normal" class="ag-theme-alpine table-class" rowAnimation
-                    [gridOptions]="gridOptions" [columnDefs]="columnDefs" (gridReady)="onGridReady($event)"
-                    [rowData]="rowData" [enableCellTextSelection]="true">
+                   [gridOptions]="gridOptions" [columnDefs]="columnDefs"
+                    (gridReady)="onGridReady($event)" [rowData]="rowData" [enableCellTextSelection]="true">
                 </ag-grid-angular>
             </div>
+
 
 
         </div>

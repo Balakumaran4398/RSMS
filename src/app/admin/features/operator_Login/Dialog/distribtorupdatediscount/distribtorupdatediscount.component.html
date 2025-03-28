@@ -1,0 +1,250 @@
+<div *ngIf="type === 'edit_Package'">
+
+    <div class="Head d-flex justify-content-between align-items-center mb-3" style="padding: 1rem;">
+        <h6>DISCOUNT</h6>
+        <i class="fa fa-close close-icon" style="cursor: pointer;" (click)="onNoClick()"></i>
+    </div>
+    <div class="container">
+        <div class="card d-block justify-content-center align-items-center">
+            <div class="line mb-2">
+                <div class=" col-12 d-flex justify-content-center align-items-center">
+                    <div class="col-6 d-flex justify-content-start align-items-center">
+                        <span>BASE PACKAGE</span>
+                    </div>
+                    <div class="col-6">
+                        {{data_details?.productname}}
+                    </div>
+                </div>
+            </div>
+
+            <div class="line mb-2">
+                <div class=" col-12 d-flex justify-content-center align-items-center">
+                    <div class="col-6 d-flex justify-content-start align-items-center">
+                        <span>CUSTOMER AMOUNT</span>
+                    </div>
+                    <div class="col-6">
+                        {{data_details?.customeramount}}
+                    </div>
+                </div>
+            </div>
+
+            <div class="line mb-2">
+                <div class="col-12 d-flex justify-content-center align-items-center">
+                    <div class="col-6 d-flex justify-content-start align-items-center">
+                        <span>ACTUAL RATE</span>
+                    </div>
+                    <div class="col-6">
+                        {{data_details?.packagerate}}
+                    </div>
+                </div>
+            </div>
+            <div class="line mb-2">
+                <div class="col-12 d-flex justify-content-center align-items-center">
+                    <div class="col-6 d-flex justify-content-start align-items-center">
+                        <span>MSO AMOUNT</span>
+                    </div>
+                    <div class="col-6">
+                        {{data_details?.msoamount}}
+                    </div>
+                </div>
+            </div>
+            <div class="line mb-2">
+                <div class="col-12 d-flex justify-content-center align-items-center">
+                    <div class="col-6 d-flex justify-content-start align-items-center">
+                        <span>LCO RATE</span>
+                    </div>
+                    <div class="col-6">
+                        {{data_details?.discommission}}
+                    </div>
+                </div>
+
+            </div>
+            <div class="line mb-2">
+                <div class="col-12 d-flex justify-content-center align-items-center">
+                    <div class="col-6 d-flex justify-content-start align-items-center">
+                        <span>LCO AMOUNT</span>
+                    </div>
+                    <div class="col-6">
+                        <input type="text" placeholder="Enter Amount" [(ngModel)]="newmsoamount" (input)="clearErrorMessage()"  (keypress)="onKeydown($event)">
+                        <div *ngIf="errorMessage" class="text-danger">{{ errorMessage }}</div>
+                    </div>
+                </div>
+
+            </div>
+            <div class="d-flex justify-content-center align-items-center mx-1" style="padding: 10px;">
+
+                <button type="button" class="btn btn-success" (click)="getPackageDistributorDiscount()">Submit </button>
+                &nbsp;
+                <button type="button" class="btn btn-danger" (click)="onNoClick()">Cancel</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div *ngIf="type === 'editlco'">
+    <div class="Head d-flex justify-content-between align-items-center mb-3" style="padding: 1rem;">
+        <h6>LCO EDIT DETAILS</h6>
+        <i class="fa fa-close close-icon" style="cursor: pointer;" (click)="onNoClick()"></i>
+    </div>
+    <div class="container">
+        <div class="card d-block justify-content-center align-items-center">
+            <div class="line mb-2">
+                <div class=" col-12 d-flex justify-content-center align-items-center">
+                    <div class="col-6 d-flex justify-content-start align-items-center">
+                        <span>OPERATOR NAME</span>
+                    </div>
+                    <div class="col-6">
+                        <input type="text" placeholder="Enter Operator Name" [(ngModel)]="editLcoName">
+                    </div>
+                </div>
+            </div>
+
+            <div class="line mb-2">
+                <div class=" col-12 d-flex justify-content-center align-items-center">
+                    <div class="col-6 d-flex justify-content-start align-items-center">
+                        <span>MOBILE NUMBER</span>
+                    </div>
+                    <div class="col-6">
+                        <input type="text" placeholder="Enter Mobile Number" [(ngModel)]="editLcomobilenumber">
+                    </div>
+                </div>
+            </div>
+
+            <div class="line mb-2">
+                <div class="col-12 d-flex justify-content-center align-items-center">
+                    <div class="col-6 d-flex justify-content-start align-items-center">
+                        <span>USER NAME</span>
+                    </div>
+                    <div class="col-6">
+                        <input type="text" placeholder="Enter User Name" [(ngModel)]="editLcousername">
+                    </div>
+                </div>
+            </div>
+
+            <div class="line mb-2">
+                <div class="col-12 d-flex justify-content-center align-items-center">
+                    <div class="col-6 d-flex justify-content-start align-items-center">
+                        <span>PASSWORD</span>
+                    </div>
+                    <div class="col-6">
+                        <input type="text" placeholder="Enter password" [(ngModel)]="editLcopassword">
+                    </div>
+                </div>
+            </div>
+
+            <div class="d-flex justify-content-center align-items-center mx-1" style="padding: 10px;">
+                <button type="button" class="btn btn-success" (click)="onSubmit()">Update </button>
+                &nbsp;
+                <button type="button" class="btn btn-danger" (click)="onNoClick()">Cancel</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div *ngIf="type === 'lco_dashboard'">
+    <div class="Head d-flex justify-content-between align-items-center mb-3" style="padding: 1rem;">
+        <h6>LCO DASHBOARD</h6>
+        <i class="fa fa-close close-icon" style="cursor: pointer;" (click)="onNoClick()"></i>
+    </div>
+    <div class="container">
+        <div class="row">
+            <div class="col-12 col-md-6  mb-3">
+                <div class="card box p-3">
+                    <div class="d-flex justify-content-between">
+                        <i class='bx bxs-user-check'></i>
+                        <span class="fw-bold">
+                            {{operatorDetailsCount?.activesubscription}}
+                        </span>
+                    </div>
+                    <div class="mt-2 mb-2 text-center">ACTIVE SUBSCRIPTION</div>
+                </div>
+            </div>
+
+            <div class="col-12 col-md-6 mb-3">
+                <div class="card box p-3">
+                    <div class="d-flex justify-content-between">
+                        <i class='bx bx-x-circle'></i>
+                        <span class="fw-bold">
+                            {{operatorDetailsCount?.suspendcount}}
+                        </span>
+                    </div>
+                    <div class="mt-2 mb-2 text-center">EXPIRED SUBSCRIPTION</div>
+                </div>
+            </div>
+
+            <div class="col-12 col-md-6  mb-3">
+                <div class="card box p-3">
+                    <div class="d-flex justify-content-between">
+                        <i class='bx bxs-user-x'></i>
+                        <span class="fw-bold">
+                            {{lcoDeatails?.newcount}}
+                        </span>
+                    </div>
+                    <div class="mt-2 mb-2 text-center">YESTERDAY EXPIRY</div>
+                </div>
+            </div>
+
+            <div class="col-12 col-md-6  mb-3">
+                <div class="card box p-3">
+                    <div class="d-flex justify-content-between">
+                        <i class='bx bx-time-five'></i>
+                        <span class="fw-bold">
+                            {{operatorDetailsCount?.tomorrowexpirycount}}
+                        </span>
+                    </div>
+                    <div class="mt-2 mb-2 text-center">TOMORROW EXPIRY</div>
+                </div>
+            </div>
+
+            <div class="col-12 col-md-6 mb-3">
+                <div class="card box p-3">
+                    <div class="d-flex justify-content-between">
+                        <i class='bx bx-dollar-circle'></i>
+                        <span class="fw-bold">
+                            {{operatorDetailsCount?.yesterdayexpirycount}}
+                        </span>
+                    </div>
+                    <div class="mt-2 mb-2 text-center">YESTERDAY RECHARGE</div>
+                </div>
+            </div>
+
+            <div class="col-12 col-md-6 mb-3">
+                <div class="card box p-3">
+                    <div class="d-flex justify-content-between">
+                        <i class='bx bx-credit-card'></i>
+                        <span class="fw-bold">
+                            {{operatorDetailsCount?.todayrechargecount}}
+                        </span>
+                    </div>
+                    <div class="mt-2 mb-2 text-center">TODAY RECHARGE</div>
+                </div>
+            </div>
+
+            <div class="col-12 col-md-6  mb-3">
+                <div class="card box p-3">
+                    <div class="d-flex justify-content-between">
+                        <i class='bx bx-clipboard'></i>
+                        <span class="fw-bold">
+                            {{lcoDeatails?.connectioncount}}
+                        </span>
+                    </div>
+                    <div class="mt-2 mb-2 text-center">CONNECTION COUNT</div>
+                </div>
+            </div>
+
+            <div class="col-12 col-md-6  mb-3">
+                <div class="card box p-3">
+                    <div class="d-flex justify-content-between">
+                        <i class='bx bxs-user-plus'></i>
+                        <span class="fw-bold">
+                            {{operatorDetailsCount?.newsubscribercount}}
+                        </span>
+                    </div>
+                    <div class="mt-2 mb-2 text-center">NEW SUBSCRIBER</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>

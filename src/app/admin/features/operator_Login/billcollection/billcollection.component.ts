@@ -33,13 +33,21 @@ export class BillcollectionComponent implements OnInit {
   paid: any = '0';
   unpaid: any = '0';
   excess: any = '0';
-  constructor(private dialog: MatDialog,private userService: BaseService, private storageService: StorageService, private swal: SwalService, private router: Router,) {
+
+
+  lcoDeatails: any;
+  lcoId: any;
+  bill_type: any = -1;
+  useragent: any = 2;
+  searchname: any;
+
+  constructor(private dialog: MatDialog, private userService: BaseService, private storageService: StorageService, private swal: SwalService, private router: Router,) {
     this.role = storageService.getUserRole();
     this.username = storageService.getUsername();
   }
 
   ngOnInit(): void {
-    throw new Error('Method not implemented.');
+    this.operatorIdoperatorId();
   }
   getFromDate(event: any) {
     console.log(event.value);
@@ -62,20 +70,21 @@ export class BillcollectionComponent implements OnInit {
     if (this.agGrid) {
       let newRowData;
       if (this.selectedTab === 'lco') {
-        console.log('lco');
+        this.useragent = 2;
+        this.rowData = [];
         this.onOperatorChange(this.selectedLCO);
         newRowData = this.getLCO('lco');
       } else if (this.selectedTab === 'sub_lco') {
-        console.log('sub_lco');
+        this.useragent = 4;
+        this.rowData = [];
         this.onOperatorChange(this.selectedSubscriber);
         newRowData = this.getSubLCO('sub_lco');
-        // this.selectedOperator = '';
       } else if (this.selectedTab === 'subscriber') {
-        console.log('subscriber');
+        this.useragent = 5;
+        this.rowData = [];
         newRowData = this.getSubscriber('subscriber');
         this.onOperatorChange(this.selectedSubscriber);
       }
-      // this.agGrid.api.setRowData(newRowData);
     }
   }
 
@@ -145,6 +154,35 @@ export class BillcollectionComponent implements OnInit {
 
   }
 
+  operatorIdoperatorId() {
+    this.userService.getOpDetails(this.role, this.username).subscribe((data: any) => {
+      this.lcoDeatails = data;
+      this.lcoId = this.lcoDeatails?.operatorid;
+      console.log(this.lcoId);
+    })
+  }
+  total_paid: any;
+  total_unpaid: any;
+  total_recharge: any;
+  total_excess: any;
+  getreport() {
+    console.log(this.lcoId);
+    console.log(this.bill_type);
+    this.userService.getbillCollectionReport(this.role, this.username, this.lcoId, this.bill_type || 0, this.useragent, this.fromdate, this.todate, this.searchname || null).subscribe((data: any) => {
+      // this.rowData = data[0].list[0];
+      this.rowData = data[0].list;
+      this.total_paid = data[0].total_paid;
+      this.total_unpaid = data[0].total_unpaid;
+      this.total_recharge = data[0].total_recharge;
+      this.total_excess = data[0].total_excess;
+    }, (err) => {
+      this.swal.Error(err?.error?.message || err?.error);
+    });
+    this.rowData = [];
+    // this.useragent = [], this.fromdate = [], this.todate = [], this.searchname = []
+  }
+
+
   loadTableData(selectedTab: any) {
     console.log(`Selected Tab: ${selectedTab}`);
 
@@ -153,9 +191,10 @@ export class BillcollectionComponent implements OnInit {
         headerName: "S.No", lockPosition: true, valueGetter: 'node.rowIndex+1', width: 100, filter: false
       },
       {
-        headerName: "PAY OPTION", field: 'productname', width: 200, cellStyle: { textAlign: 'left' },
+        headerName: "PAY OPTION", field: 'productname', width: 100, cellStyle: { textAlign: 'left' },
         cellRenderer: (params: any) => {
-          const isActive = params.data.statusdisplay === 'Active';
+          const isActive = params.data.extra_amount === '0' || params.data.new_balance >= params.data.paid_amount;
+
           const payButton = document.createElement('button');
           payButton.innerHTML = '<img src="/assets/images/icons/Pay2.png" style="width:70px">';
           payButton.style.backgroundColor = 'transparent';
@@ -185,7 +224,7 @@ export class BillcollectionComponent implements OnInit {
 
       },
       {
-        headerName: "SMARTCARD", field: 'productid', width: 130,
+        headerName: "SMARTCARD", field: 'smartcard', width: 220,
         cellStyle: (params: any) => {
           if (params.data.someCondition) {
             return { backgroundColor: '#f4cccc' };
@@ -193,73 +232,48 @@ export class BillcollectionComponent implements OnInit {
             return null;
           }
         },
-        cellRenderer: (params: any) => {
-          return `<a href="javascript:void(0)" style="color: blue; text-decoration: none;color:#0d6efd">
-                    ${params.value}
-                  </a>`;
-        },
 
-        onCellClicked: (params: any) => {
-          const subid = params.data.id;
-          const smartcard = params.data.smartcard;
-          console.log('Sub ID:', subid);
-          console.log('Smartcard:', smartcard);
-          if (smartcard) {
-            this.router.navigate([`/admin/lco_dashboard/${smartcard}/subsmartcard`])
-              .then(() => {
-                setTimeout(() => {
-                  window.location.reload();
-                }, 100);
-              });
-          }
-        }
       },
-      { headerName: "SUBSCRIBER NAME", field: 'producttype', width: 140 },
+      { headerName: "SUBSCRIBER NAME", field: 'customer_name', width: 180 },
       {
-        headerName: "PAID", field: 'rate', width: 140,
-        cellRenderer: (params: any) => `<span >${params.value ? params.value.toFixed(2) : '0.00'}</span> `
+        headerName: "PAID", field: 'paid_amount', width: 120,
       },
       {
-        headerName: "UN PAID", field: 'customeramount', width: 150,
-        cellRenderer: (params: any) => `<span >${params.value ? params.value.toFixed(2) : '0.00'}</span> `
+        headerName: "UN PAID", field: 'new_balance', width: 120,
       },
       {
-        headerName: "EXCESS PAID", field: 'commission',
-        width: 150, cellRenderer: (params: any) => `<span >${params.value ? params.value.toFixed(2) : '0.00'}</span> `
+        headerName: "EXCESS PAID", field: 'extra_amount',
+        width: 150,
       },
       {
-        headerName: "LAST COLLECTION DATE", field: 'msoamount', width: 140,
-        cellRenderer: (params: any) => `<span >${params.value ? params.value.toFixed(2) : '0.00'}</span> `
+        headerName: "LAST COLLECTION DATE", field: 'collection_date', width: 200,
       },
       {
-        headerName: "EXPIRY DATE", field: 'submsoamount', width: 180,
-        cellRenderer: (params: any) => `<span >${params.value ? params.value.toFixed(2) : '0.00'}</span> `
+        headerName: "EXPIRY DATE", field: 'expiry_date', width: 180,
       },
       {
-        headerName: "PACKAGE NAME", field: 'commissionvalue', width: 170,
-        cellRenderer: (params: any) => `<span>${params.value ? params.value.toFixed(2) : '0.00'}</span>`
+        headerName: "PACKAGE NAME", field: 'packages', width: 170,
       },
       {
-        headerName: "STATUS", field: 'commissionvalue', width: 170,
-        cellRenderer: (params: any) => `<span>${params.value ? params.value.toFixed(2) : '0.00'}</span>`
+        headerName: "STATUS", field: 'expiry_status', width: 170,
       },
 
     ]
   }
 
-    openEditDialog(data: any): void {
-      console.log(data);
-      const dialogRef = this.dialog.open(LcoSmartcardDialogComponent, {
-        width: '400px',
-        // height: '500px',
-        data: data
-  
-      });
-  
-      dialogRef.afterClosed().subscribe(result => {
-        console.log('The dialog was closed');
-      });
-    }
+  openEditDialog(data: any): void {
+    console.log(data);
+    let dialalogData = { data: data, lcoid: this.lcoId, userarant: this.useragent }
+    const dialogRef = this.dialog.open(LcoSmartcardDialogComponent, {
+      width: '500px',
+      data: dialalogData
+
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      console.log('The dialog was closed');
+    });
+  }
 
   handleError(error: any) {
     if (error.status === 400) {
@@ -269,5 +283,64 @@ export class BillcollectionComponent implements OnInit {
     } else {
       Swal.fire('Error', 'Something went wrong. Please try again.', 'error');
     }
+  }
+
+
+  getLcoInvoiceReport(reportType: number) {
+    this.swal.Loading();
+    this.userService.getBillCollectionReport(this.role, this.username, this.lcoId, this.bill_type, this.useragent, this.fromdate, this.todate, this.searchname || null, reportType).
+      subscribe({
+        next: (x: Blob) => {
+          this.swal.Close();
+          if (reportType === 1) {
+            this.reportMaking(x, `Bill Collection_${this.lcoId}.pdf`, 'application/pdf');
+          } else if (reportType === 2) {
+            this.reportMaking(x, `Bill Collection_${this.lcoId}.xlsx`, 'application/xlsx');
+          }
+        },
+        error: (error: any) => {
+          this.swal.Close();
+          this.pdfswalError(error?.error.message);
+        }
+      });
+  }
+
+  // -----------------------------------------------------common method for pdf and excel------------------------------------------------------------------------
+
+  reportMaking(x: Blob, reportname: any, reporttype: any) {
+    const blob = new Blob([x], { type: reporttype });
+    const data = window.URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.href = data;
+    link.download = reportname.toUpperCase();
+    link.dispatchEvent(new MouseEvent('click', { bubbles: true, cancelable: true, view: window }));
+    setTimeout(() => {
+      window.URL.revokeObjectURL(data);
+      link.remove();
+    }, 100);
+    Swal.close();
+  }
+  pdfswalError(error: any) {
+    console.log(error);
+
+    Swal.close();
+    Swal.fire({
+      title: 'Error!',
+      text: error?.message || 'There was an issue generating the PDF CAS form report.',
+      icon: 'error',
+      confirmButtonText: 'Ok',
+      timer: 2000,
+      timerProgressBar: true,
+    });
+  }
+  processingSwal() {
+    Swal.fire({
+      title: "Processing",
+      text: "Please wait while the report is being generated...",
+      showConfirmButton: false,
+      didOpen: () => {
+        Swal.showLoading(null);
+      }
+    });
   }
 }

@@ -256,16 +256,16 @@ export class OperatorDetailsComponent implements OnInit {
   }
 
   // New_lco(event: any) {
-  New_lco() {
+  New_lco(type:any) {
     console.log(event);
     let dialogData = {
       data: this.businessList,
-      type: event
+      type: type
     }
     const dialogRef = this.dialog.open(NewLcoComponent, {
       width: '600px',
       panelClass: 'custom-dialog-container',
-      data: this.businessList,
+      data: dialogData
       // data: dialogData,
     });
 

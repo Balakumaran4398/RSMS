@@ -6,6 +6,7 @@ import { StorageService } from 'src/app/_core/service/storage.service';
 import { SwalService } from 'src/app/_core/service/swal.service';
 import { Location } from '@angular/common';
 import Swal from 'sweetalert2';
+import { HttpResponse } from '@angular/common/http';
 
 @Component({
   selector: 'app-lcodashboardreport',
@@ -18,8 +19,24 @@ export class LcodashboardreportComponent implements OnInit {
   username: any;
   type: any;
   columnDefs: any[] = [];
-  rowData: any[] = [];
+  columnDefs1: any[] = [];
+  // rowData: any[] = [];
+  rowData: any;
+  rowData1: any;
+  rows: any[] = [];
+  selectedtypes: any[] = [];
 
+
+  area_list: any[] = [];
+  street_list: any[] = [];
+
+  filteredStreet: any[] = [];
+  filteredAreas: any[] = [];
+
+  areaid: any;
+  streetid: any;
+
+  public rowSelection: any = "multiple";
   gridOptions = {
     defaultColDef: {
       sortable: true,
@@ -54,7 +71,12 @@ export class LcodashboardreportComponent implements OnInit {
 
   lcoDeatails: any;
   lcoId: any;
-  constructor(private route: ActivatedRoute, private location: Location, private userService: BaseService,private router: Router, private storageservice: StorageService, private excelService: ExcelService, private swal: SwalService,) {
+
+  isAnyRowSelected: any = false;
+  selectedIds: number[] = [];
+  selectsmartcard: number[] = [];
+
+  constructor(private route: ActivatedRoute, private location: Location, private userService: BaseService, private router: Router, private storageservice: StorageService, private excelService: ExcelService, private swal: SwalService,) {
     this.role = storageservice.getUserRole();
     this.username = storageservice.getUsername();
     this.type = this.route.snapshot.paramMap.get('id');
@@ -68,19 +90,42 @@ export class LcodashboardreportComponent implements OnInit {
       case '3': return 'DEACTIVE REPORT';
       case '4': return 'TODAY RECHARGE REPORT';
       case '5': return 'YESTERDAY RECHARGE REPORT';
-      case '6': return 'TODAY EXPIRY REPORT';
+      case '6': return 'TODAY RECHARGE REPORT';
       case '7': return 'TOMORROW EXPIRY REPORT';
       case '8': return 'YESTERDAY EXPIRY REPORT';
-      case '9': return 'AREA CHANGE REPORT';
+      case '9': return 'AREA DETAILS';
       case '10': return 'NEW SUBSCRIBER REPORT';
+      case '11': return 'ACTIVE SUBSCRIBER ';
+      case '12': return 'DEACTIVE SUBSCRIBER ';
       default: return 'UNKNOWN TYPE';
     }
+  }
+
+
+  onSelectionChanged() {
+    if (this.gridApi) {
+      const selectedRows = this.gridApi.getSelectedRows();
+      this.isAnyRowSelected = selectedRows.length > 0;
+      console.log("Selected Rows:", selectedRows);
+      this.rows = selectedRows;
+      this.selectedIds = selectedRows.map((e: any) => e.id);
+      this.selectedtypes = selectedRows.map((e: any) => e.isactive);
+    }
+  }
+  updateSelectedRows(selectedRows: any[]) {
+    this.isAnyRowSelected = selectedRows.length > 0;
+    this.selectedIds = selectedRows.map((e: any) => e.id);
+    this.selectsmartcard = selectedRows.map((e: any) => e.smartcard);
+
+    // console.log("Updated Selected Rows:", selectedRows);
   }
   ngOnInit(): void {
     this.onColumnDefs();
     this.operatorIdoperatorId();
     this.onMSODetails();
     // this.setType(this.type);
+    // this.getColumnDefs();
+    // this.columnDefs = this.getColumnDefs(); 
 
   }
   goBack(): void {
@@ -102,7 +147,39 @@ export class LcodashboardreportComponent implements OnInit {
       console.log(this.lcoDeatails);
       this.lcoId = this.lcoDeatails?.operatorid;
       this.operatorname = this.lcoDeatails?.operatorname;
-      this.onTableData(this.lcoId);
+
+      // if (this.type == 9) {
+      //   console.log('type=9');
+
+      //   // this.onAreaStatusChange();
+      //   this.userService.getLcochangeSubscriberList(this.role, this.username, this.lcoId, 0, 0).subscribe(
+      //     (response: HttpResponse<any[]>) => {
+      //       if (response.status === 200) {
+      //         // this.updateColumnDefs(this.selectedTab);
+      //         this.rowData1 = response.body;
+      //         console.log(this.rowData1);
+      //         // this.swal.Success_200();
+      //       } else if (response.status === 204) {
+      //         this.swal.Success_204();
+      //       }
+      //     },
+      //     (error) => {
+      //       if (error.status === 400) {
+      //         this.swal.Error_400();
+      //       } else if (error.status === 500) {
+      //         this.swal.Error_500();
+      //       } else {
+      //         Swal.fire('Error', 'Something went wrong. Please try again.', 'error');
+      //       }
+      //     }
+      //   );
+      // } else {
+      //   console.log('type!=9');
+        this.onTableData(this.lcoId);
+      // }
+      // this.getArealist(this.lcoId);
+      // this.onAreaStatusLCOChange(this.lcoId);
+      this.getLcobyAreaid(this.lcoId);
     })
   }
 
@@ -129,17 +206,22 @@ export class LcodashboardreportComponent implements OnInit {
       subscribe({
         next: (x: Blob) => {
           this.swal.Close();
-          const reportName = this.getHeader().replace(/\s+/g, '_');
-          // if (this.type === '1') {  // Correct comparison
-            if (reportType === 1) {
-              this.reportMaking(x, `${reportName}_${this.lcoId}.pdf`, 'application/pdf');
-            } else if (reportType === 2) {
-              this.reportMaking(x, `${reportName}_${this.lcoId}.xlsx`, 'application/xlsx');
-            }
-          // } else if (this.type === '2') {
-          //   // Handle other types if needed
+          const reportName = this.getHeader();
+          if (reportType === 1) {
+            this.reportMaking(x, `${reportName}_${this.lcoId}.pdf`, 'application/pdf');
+          } else if (reportType === 2) {
+            this.reportMaking(x, `${reportName}_${this.lcoId}.xlsx`, 'application/xlsx');
+          }
+
+          // if (reportType === 1) {
+          //   this.reportMaking(x, `Bill Collection_${this.lcoId}.pdf`, 'application/pdf');
+          // } else if (reportType === 2) {
+          //   this.reportMaking(x, `Bill Collection_${this.lcoId}.xlsx`, 'application/xlsx');
           // }
         },
+
+
+
         error: (error: any) => {
           this.swal.Close();
           this.pdfswalError(error?.error.message);
@@ -186,6 +268,7 @@ export class LcodashboardreportComponent implements OnInit {
     });
   }
 
+  // private getColumnDefs() {
   private onColumnDefs() {
     console.log(this.type)
 
@@ -195,7 +278,7 @@ export class LcodashboardreportComponent implements OnInit {
         // { headerName: 'SMARTCARD', field: 'smartcard', width: 220, },
         {
           headerName: 'SMARTCARD', field: 'smartcard', width: 220,
-          cellStyle: (params:any) => {
+          cellStyle: (params: any) => {
             if (params.data.someCondition) {
               return { backgroundColor: '#f4cccc' };
             } else {
@@ -208,25 +291,25 @@ export class LcodashboardreportComponent implements OnInit {
                     </a>`;
           },
 
-          onCellClicked: (params:any) => {
+          onCellClicked: (params: any) => {
             const subid = params.data.id;
             const smartcard = params.data.smartcard;
             console.log('Sub ID:', subid);
             console.log('Smartcard:', smartcard);
             if (smartcard) {
               this.router.navigate([`/admin/subscriber-full-info/${smartcard}/subsmartcard`])
-              .then(() => {
-                setTimeout(() => {
-                  window.location.reload();
-                }, 100);
-              });
+                .then(() => {
+                  setTimeout(() => {
+                    window.location.reload();
+                  }, 100);
+                });
             } else if (subid) {
               this.router.navigate([`/admin/subscriber-full-info/${subid}/new`])
-              .then(() => {
-                setTimeout(() => {
-                  window.location.reload();
-                }, 100);
-              });
+                .then(() => {
+                  setTimeout(() => {
+                    window.location.reload();
+                  }, 100);
+                });
             }
           }
         },
@@ -254,13 +337,13 @@ export class LcodashboardreportComponent implements OnInit {
           }
         }
       ]
-    } else if (this.type == 5 || this.type == 6) {
+    } else if (this.type == 5 || this.type == 4) {
       this.columnDefs = [
         { headerName: "S.No", lockPosition: true, valueGetter: 'node.rowIndex+1', width: 90, filter: false },
         // { headerName: 'SMARTCARD', field: 'smartcard', width: 180, },
         {
           headerName: 'SMARTCARD', field: 'smartcard', width: 220,
-          cellStyle: (params:any) => {
+          cellStyle: (params: any) => {
             if (params.data.someCondition) {
               return { backgroundColor: '#f4cccc' };
             } else {
@@ -273,25 +356,25 @@ export class LcodashboardreportComponent implements OnInit {
                     </a>`;
           },
 
-          onCellClicked: (params:any) => {
+          onCellClicked: (params: any) => {
             const subid = params.data.id;
             const smartcard = params.data.smartcard;
             console.log('Sub ID:', subid);
             console.log('Smartcard:', smartcard);
             if (smartcard) {
               this.router.navigate([`/admin/subscriber-full-info/${smartcard}/subsmartcard`])
-              .then(() => {
-                setTimeout(() => {
-                  window.location.reload();
-                }, 100);
-              });
+                .then(() => {
+                  setTimeout(() => {
+                    window.location.reload();
+                  }, 100);
+                });
             } else if (subid) {
               this.router.navigate([`/admin/subscriber-full-info/${subid}/new`])
-              .then(() => {
-                setTimeout(() => {
-                  window.location.reload();
-                }, 100);
-              });
+                .then(() => {
+                  setTimeout(() => {
+                    window.location.reload();
+                  }, 100);
+                });
             }
           }
         },
@@ -313,7 +396,7 @@ export class LcodashboardreportComponent implements OnInit {
         // { headerName: 'SMARTCARD', field: 'smartcard', width: 220, },
         {
           headerName: 'SMARTCARD', field: 'smartcard', width: 220,
-          cellStyle: (params:any) => {
+          cellStyle: (params: any) => {
             if (params.data.someCondition) {
               return { backgroundColor: '#f4cccc' };
             } else {
@@ -326,25 +409,25 @@ export class LcodashboardreportComponent implements OnInit {
                     </a>`;
           },
 
-          onCellClicked: (params:any) => {
+          onCellClicked: (params: any) => {
             const subid = params.data.id;
             const smartcard = params.data.smartcard;
             console.log('Sub ID:', subid);
             console.log('Smartcard:', smartcard);
             if (smartcard) {
               this.router.navigate([`/admin/subscriber-full-info/${smartcard}/subsmartcard`])
-              .then(() => {
-                setTimeout(() => {
-                  window.location.reload();
-                }, 100);
-              });
+                .then(() => {
+                  setTimeout(() => {
+                    window.location.reload();
+                  }, 100);
+                });
             } else if (subid) {
               this.router.navigate([`/admin/subscriber-full-info/${subid}/new`])
-              .then(() => {
-                setTimeout(() => {
-                  window.location.reload();
-                }, 100);
-              });
+                .then(() => {
+                  setTimeout(() => {
+                    window.location.reload();
+                  }, 100);
+                });
             }
           }
         },
@@ -372,12 +455,11 @@ export class LcodashboardreportComponent implements OnInit {
       ]
     }
     else if (this.type == 9) {
-      this.columnDefs = [
-        { headerName: "S.No", lockPosition: true, valueGetter: 'node.rowIndex+1', width: 90, filter: false },
-        // { headerName: 'SMARTCARD ', field: 'smartcard', Flex: 1, cellStyle: { textAlign: 'center', }, width: 150, },
+      this.columnDefs1 = [
+        { headerName: "S.No", valueGetter: 'node.rowIndex+1', lockPosition: true, headerCheckboxSelection: true, checkboxSelection: true, width: 100, filter: false },
         {
           headerName: 'SMARTCARD', field: 'smartcard', width: 220,
-          cellStyle: (params:any) => {
+          cellStyle: (params: any) => {
             if (params.data.someCondition) {
               return { backgroundColor: '#f4cccc' };
             } else {
@@ -390,51 +472,38 @@ export class LcodashboardreportComponent implements OnInit {
                     </a>`;
           },
 
-          onCellClicked: (params:any) => {
+          onCellClicked: (params: any) => {
             const subid = params.data.id;
             const smartcard = params.data.smartcard;
             console.log('Sub ID:', subid);
             console.log('Smartcard:', smartcard);
             if (smartcard) {
               this.router.navigate([`/admin/subscriber-full-info/${smartcard}/subsmartcard`])
-              .then(() => {
-                setTimeout(() => {
-                  window.location.reload();
-                }, 100);
-              });
+                .then(() => {
+                  setTimeout(() => {
+                    window.location.reload();
+                  }, 100);
+                });
             } else if (subid) {
               this.router.navigate([`/admin/subscriber-full-info/${subid}/new`])
-              .then(() => {
-                setTimeout(() => {
-                  window.location.reload();
-                }, 100);
-              });
+                .then(() => {
+                  setTimeout(() => {
+                    window.location.reload();
+                  }, 100);
+                });
             }
           }
         },
-        { headerName: 'SUBSCRIBER ID', field: 'id', Flex: 1, width: 150, },
-        { headerName: 'SUBSCRIBER NAME', field: 'customername', Flex: 1, cellStyle: { textAlign: 'center', color: 'green' }, width: 200, },
-        { headerName: 'EMAIL', field: 'email', width: 150, },
-        { headerName: 'ADDRESS', field: 'address', width: 150, },
-        { headerName: 'AREA NAME ', field: 'areaname', Flex: 1, cellStyle: { textAlign: 'center', }, width: 150, },
-        { headerName: 'MOBILE NO', field: 'mobileno', width: 150, },
-        { headerName: 'BOX ID', field: 'boxid', width: 230, },
-        { headerName: 'ACTIVATION DATE', field: 'activationdate', width: 180, },
-        { headerName: 'EXPIRY DATE', field: 'expirydate', width: 230, },
-        {
-          headerName: 'STATUS',
-          field: 'statusdisplay',
-          width: 150,
-          cellStyle: (params: any) => {
-            if (params.value === 'Active') {
-              return { color: 'green', fontWeight: 'bold' };
-            } else if (params.value === 'Deactive') {
-              return { color: 'red', fontWeight: 'bold' };
-            }
-            return {};
-          }
-        }
 
+
+        //  { headerName: "S.No", valueGetter: 'node.rowIndex+1', lockPosition: true, headerCheckboxSelection: true, checkboxSelection: true, width: 100, filter: false },
+        // { headerName: "SMARTCARD", field: 'smartcard', width: 250 },
+        { headerName: "BOXID", field: 'boxid', width: 200 },
+        { headerName: "SUBSCRIBER NAME	", field: 'customername', width: 250 },
+        { headerName: "MOBILE NO", field: 'mobileno', width: 250 },
+        { headerName: "AREA NAME", field: 'areaname', width: 250 },
+        { headerName: "STREET NAME", field: 'streetname', width: 250 },
+        { headerName: "EXPIRY DATE", field: 'expirydate', width: 200 },
       ]
     }
     else if (this.type == 10) {
@@ -444,7 +513,7 @@ export class LcodashboardreportComponent implements OnInit {
         {
           headerName: 'SUBSCRIBER NAME',
           field: 'customername',
-          cellStyle: (params:any) => {
+          cellStyle: (params: any) => {
             if (params.data.someCondition) {
               return { backgroundColor: '#f4cccc' };
             } else {
@@ -456,7 +525,7 @@ export class LcodashboardreportComponent implements OnInit {
                       ${params.value}
                     </a>`;
           },
-          onCellClicked: (params:any) => {
+          onCellClicked: (params: any) => {
             const subid = params.data.id;
             const smartcard = params.data.smartcard;
             console.log('Sub ID:', subid);
@@ -490,6 +559,333 @@ export class LcodashboardreportComponent implements OnInit {
         }
 
       ]
+    } else if (this.type == 11) {
+      this.columnDefs = [
+        { headerName: "S.No", lockPosition: true, valueGetter: 'node.rowIndex+1', width: 90, filter: false },
+        {
+          headerName: 'SMARTCARD', field: 'smartcard', width: 220,
+          cellStyle: (params: any) => {
+            if (params.data.someCondition) {
+              return { backgroundColor: '#f4cccc' };
+            } else {
+              return null;
+            }
+          },
+          cellRenderer: (params: any) => {
+            return `<a href="javascript:void(0)" style="color: blue; text-decoration: none;color:#0d6efd">
+                      ${params.value}
+                    </a>`;
+          },
+
+          onCellClicked: (params: any) => {
+            const subid = params.data.id;
+            const smartcard = params.data.smartcard;
+            console.log('Sub ID:', subid);
+            console.log('Smartcard:', smartcard);
+            if (smartcard) {
+              this.router.navigate([`/admin/subscriber-full-info/${smartcard}/subsmartcard`])
+                .then(() => {
+                  setTimeout(() => {
+                    window.location.reload();
+                  }, 100);
+                });
+            } else if (subid) {
+              this.router.navigate([`/admin/subscriber-full-info/${subid}/new`])
+                .then(() => {
+                  setTimeout(() => {
+                    window.location.reload();
+                  }, 100);
+                });
+            }
+          }
+        },
+        { headerName: 'SUBSCRIBER ID', field: 'sub_id', Flex: 1, width: 150, },
+        { headerName: 'SUBSCRIBER NAME', field: 'customer_name', Flex: 1, cellStyle: { textAlign: 'center', color: 'green' }, width: 200, },
+        { headerName: 'ADDRESS	', field: 'address', width: 150, },
+        { headerName: 'AREA NAME', field: 'areaname', width: 200, },
+        { headerName: 'MOBILE NO', field: 'mobile_no', width: 200, },
+        { headerName: 'BOX ID', field: 'boxid', width: 180, },
+        { headerName: 'STATUS', field: 'statusdisplay', width: 200, },
+        { headerName: 'CREATION DATE', field: 'activationdate', width: 200, },
+        { headerName: 'EXPIRY DATE', field: 'expirydate', width: 200, },
+      ]
+    } else if (this.type == 12) {
+      this.columnDefs = [
+        { headerName: "S.No", lockPosition: true, valueGetter: 'node.rowIndex+1', width: 90, filter: false },
+        {
+          headerName: 'SMARTCARD', field: 'smartcard', width: 220,
+          cellStyle: (params: any) => {
+            if (params.data.someCondition) {
+              return { backgroundColor: '#f4cccc' };
+            } else {
+              return null;
+            }
+          },
+          cellRenderer: (params: any) => {
+            return `<a href="javascript:void(0)" style="color: blue; text-decoration: none;color:#0d6efd">
+                      ${params.value}
+                    </a>`;
+          },
+
+          onCellClicked: (params: any) => {
+            const subid = params.data.id;
+            const smartcard = params.data.smartcard;
+            console.log('Sub ID:', subid);
+            console.log('Smartcard:', smartcard);
+            if (smartcard) {
+              this.router.navigate([`/admin/subscriber-full-info/${smartcard}/subsmartcard`])
+                .then(() => {
+                  setTimeout(() => {
+                    window.location.reload();
+                  }, 100);
+                });
+            } else if (subid) {
+              this.router.navigate([`/admin/subscriber-full-info/${subid}/new`])
+                .then(() => {
+                  setTimeout(() => {
+                    window.location.reload();
+                  }, 100);
+                });
+            }
+          }
+        },
+        { headerName: 'SUBSCRIBER ID', field: 'sub_id', Flex: 1, width: 150, },
+        { headerName: 'SUBSCRIBER NAME', field: 'customer_name', Flex: 1, cellStyle: { textAlign: 'center', color: 'green' }, width: 200, },
+        { headerName: 'ADDRESS	', field: 'address', width: 150, },
+        { headerName: 'AREA NAME', field: 'areaname', width: 200, },
+        { headerName: 'MOBILE NO', field: 'mobile_no', width: 200, },
+        { headerName: 'BOX ID', field: 'boxid', width: 180, },
+        { headerName: 'STATUS', field: 'statusdisplay', width: 200, },
+        { headerName: 'CREATION DATE', field: 'activationdate', width: 200, },
+        { headerName: 'EXPIRY DATE', field: 'expirydate', width: 200, },
+      ]
     }
+
   }
+
+  getArealist(operator: any) {
+    console.log(operator);
+    this.userService.getAreaListByOperatorId(this.role, this.username, operator).subscribe((data: any) => {
+      console.log(data);
+      this.area_list = data;
+      console.log(this.area_list);
+      this.filteredAreas = this.area_list;
+    })
+  }
+  filterAreas(event: any): void {
+    console.log(this.area_list);
+    console.log(event);
+
+    const filterValue = event.target.value.toLowerCase();
+    this.filteredAreas = this.area_list.filter((area: any) =>
+      area.name.toLowerCase().includes(filterValue)
+    );
+    this.areaid = Object.keys(event).map(key => {
+      const value = event[key];
+      const name = key;
+      return { name: name, value: value };
+    });
+
+  }
+  getstreetList(event: any) {
+    console.log(this.areaid);
+
+    this.swal.Loading();
+    this.userService.getStreetListByAreaId(this.role, this.username, this.areaid).subscribe((data: any) => {
+      if (data?.length > 0) {
+        // this.rowData = data;
+        console.log(data);
+        this.street_list = data;
+        this.filteredStreet = this.street_list
+      } else {
+        this.swal.Error('Street list is empty.');
+      }
+      this.swal.Close();
+    },
+      (error) => {
+        console.error('API Error:', error);
+        this.swal.Close();
+        if (error.status === 204 || error.status === 404) {
+          this.swal.Error('Street list not found.');
+        } else {
+          this.swal.Error(error?.error?.message || 'Something went wrong.');
+        }
+      })
+  }
+
+  filterStreet(event: any): void {
+    const filterValue = event.target.value.toLowerCase();
+    this.filteredStreet = this.street_list.filter((street: any) =>
+      street.name.toLowerCase().includes(filterValue)
+    );
+    this.streetid = Object.keys(event).map(key => {
+      const value = event[key];
+      const name = key;
+      return { name: name, value: value };
+    });
+  }
+
+  onAreaStatusChange() {
+    this.street_list = [];
+    this.rowData1 = [];
+    if (this.areaid) {
+      this.userService.getStreetListByAreaid(this.role, this.username, this.areaid)
+        .subscribe((data: any) => {
+          console.log(data);
+          console.log(data?.streetid);
+          this.street_list = Object.keys(data).map(key => {
+            const name = key.replace(/\(\d+\)$/, '').trim();
+            const value = data[key];
+            return { name, value };
+          });
+          console.log(this.street_list);
+        });
+    }
+    this.userService.getLcochangeSubscriberList(this.role, this.username, this.lcoId, this.areaid, 0).subscribe(
+      (response: HttpResponse<any[]>) => {
+        if (response.status === 200) {
+          // this.updateColumnDefs(this.selectedTab);
+          this.rowData1 = response.body;
+          console.log(this.rowData1);
+          // this.swal.Success_200();
+        } else if (response.status === 204) {
+          this.swal.Success_204();
+        }
+      },
+      (error) => {
+        if (error.status === 400) {
+          this.swal.Error_400();
+        } else if (error.status === 500) {
+          this.swal.Error_500();
+        } else {
+          Swal.fire('Error', 'Something went wrong. Please try again.', 'error');
+        }
+      }
+    );
+
+    // this.userService.getAreaListByOperatorId(this.role, this.username, this.lcoId).subscribe((data: any) => {
+    //   console.log(data);
+    //   this.area_list = data;
+    //   console.log(this.area_list);
+    //   this.filteredAreas = this.area_list;
+    // })
+  }
+
+  onSubscriberStreetLCOChange() {
+    // this.rowData = [];
+    console.log('1111111');
+
+    console.log(this.streetid);
+    this.userService.getLcochangeSubscriberList(this.role, this.username, this.lcoId, this.areaid, this.streetid).subscribe(
+      // this.userservice.getLcochangeSubscriberList(this.role, this.username, this.lco, this.area, this.street).subscribe(
+      (response: HttpResponse<any[]>) => {
+        if (response.status === 200) {
+          this.rowData1 = response.body;
+          console.log(this.rowData1);
+          // this.swal.Success_200();
+        } else if (response.status === 204) {
+          this.swal.Success_204();
+        }
+      },
+      (error) => {
+        if (error.status === 400) {
+          this.swal.Error_400();
+        } else if (error.status === 500) {
+          this.swal.Error_500();
+        } else {
+          Swal.fire('Error', 'Something went wrong. Please try again.', 'error');
+        }
+      }
+    );
+  }
+  getLcobyAreaid(lco: any) {
+    this.rowData1 = [];
+    // this.rowData = [];
+    if (lco) {
+      this.userService.getAreaListByOperatorid(this.role, this.username, lco)
+        .subscribe((data: any) => {
+          // this.rowData1 = data;
+          console.log(this.rowData1);
+          console.log(data?.areaid);
+          this.area_list = Object.keys(data).map(key => {
+            const name = key.replace(/\(\d+\)$/, '').trim();
+            const value = data[key];
+            return { name, value };
+          });
+          console.log(this.area_list);
+        });
+    }
+    this.userService.getAreaChangeSubscriberList(this.role, this.username, lco,).subscribe(
+      // this.userService.getLcochangeSubscriberList(this.role, this.username, lco, 0, 0).subscribe(
+      (response: HttpResponse<any[]>) => {
+
+        if (response.status === 200) {
+          // this.updateColumnDefs(this.selectedTab);
+          this.rowData1 = response.body;
+          console.log(this.rowData1);
+          // this.swal.Success_200();
+        } else if (response.status === 204) {
+          this.swal.Success_204();
+        }
+
+      },
+      (error) => {
+        if (error.status === 400) {
+          this.swal.Error_400();
+        } else if (error.status === 500) {
+          this.swal.Error_500();
+        } else {
+          Swal.fire('Error', 'Something went wrong. Please try again.', 'error');
+        }
+      }
+    );
+  }
+
+
+  updateArea() {
+    let requestBody = {
+      role: this.role,
+      username: this.username,
+      operatorid: this.lcoId,
+      areaid: this.areaid,
+      streetid: this.streetid,
+      subscriberlist: this.rows,
+
+    }
+    this.swal.Loading();
+    this.userService.updateAreaChangeSubscriber(requestBody)
+      .subscribe((res: any) => {
+        this.swal.success(res?.message);
+      }, (err) => {
+        this.swal.Error(err?.error?.message || err?.error?.areaid || err?.error?.streetid);
+      });
+  }
+
+
+  ngOnDestroy(): void {
+    ($('#Area') as any).select2('destroy');
+    ($('#Street') as any).select2('destroy');
+  }
+
+  ngAfterViewInit() {
+    $('#Area').select2({
+      placeholder: 'Select Area',
+      allowClear: true
+    });
+    $('#Area').on('change', (event: any) => {
+      this.areaid = event.target.value;
+      this.getArealist(this.areaid);
+    });
+    $('#Street').select2({
+      placeholder: 'Select Street',
+      allowClear: true
+    });
+    $('#Street').on('change', (event: any) => {
+      this.streetid = event.target.value;
+      this.getstreetList(this.streetid);
+    });
+  }
+
+
+
 }

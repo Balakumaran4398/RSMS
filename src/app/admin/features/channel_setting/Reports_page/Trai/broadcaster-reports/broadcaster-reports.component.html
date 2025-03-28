@@ -49,7 +49,9 @@
                             <select name="date" id="date" [(ngModel)]="selectedDate" [disabled]="isDateDisabled"
                                 (ngModelChange)="onVisible()">
                                 <!-- <option value="0" selected>Select Date</option> -->
-                                <option *ngFor="let date of Date" [value]="date.value" [disabled]="!date.isEnabled">{{
+                                <option *ngFor="let date of Date" [value]="date.value"
+                                    [disabled]="!date.isEnabled && selectedMonth ==date.cmonth && date.cdate/7 <= date.cvalue/7">
+                                    {{
                                     date.name }}
                                 </option>
                             </select>
@@ -185,7 +187,7 @@
     </div>
 </div>
 <div *ngIf="allType== '2'">
-    <div >
+    <div>
         <h3>OVER ALL PRODUCT REPORT</h3>
         <div class="col-12 col-md-2 d-flex  justify-content-start align-items-start mb-3">
             <button type="button" class="btn btn-primary bttn" (click)="goBack()"><i
@@ -221,10 +223,13 @@
                             <div class="input_box mx-2 mb-2">
                                 <select name="date" id="date" [(ngModel)]="selectedDate">
                                     <!-- <option value="0" selected>Select Week</option> -->
-                                    <option *ngFor="let date of Date" [value]="date.value" [disabled]="!date.isEnabled">
-                                        {{
-                                        date.name }}
+                                    <option *ngFor="let date of Date" [value]="date.value"
+                                        [disabled]="!date.isEnabled && selectedMonth ==date.cmonth && date.cdate/7 <= date.cvalue/7">
+                                        {{ date.name }}
                                     </option>
+                                    <!-- <option *ngFor="let date of Date" [value]="date.value" [disabled]="!date.isEnabled">
+                                        {{ date.name }}
+                                    </option> -->
                                 </select>
                                 <div *ngIf="submitted && !selectedDate" class="text-danger" style="font-size: small;">
                                     Week is required
@@ -336,8 +341,12 @@
                         <div class="col-12 col-md-6">
                             <select name="date" id="date" [(ngModel)]="selectedDate" [disabled]="isDateDisabled">
                                 <!-- <option value="0" selected>Select Week</option> -->
-                                <option *ngFor="let date of Date" [value]="date.value" [disabled]="!date.isEnabled">{{
+                                <!-- <option *ngFor="let date of Date" [value]="date.value" [disabled]="!date.isEnabled">{{
                                     date.name }}
+                                </option> -->
+                                <option *ngFor="let date of Date" [value]="date.value"
+                                    [disabled]="!date.isEnabled && selectedMonth ==date.cmonth && date.cdate/7 <= date.cvalue/7">
+                                    {{ date.name }}
                                 </option>
                             </select>
                             <div *ngIf="submitted && !selectedDate" class="text-danger" style="font-size: small;">
@@ -403,9 +412,13 @@
                         <div class="input_box mx-2 mb-2">
                             <select name="date" id="date" [(ngModel)]="selectedDate" [disabled]="isDateDisabled">
                                 <!-- <option value="0" selected>Select Week</option> -->
-                                <option *ngFor="let date of Date" [value]="date.value" [disabled]="!date.isEnabled">{{
-                                    date.name }}
+                                <option *ngFor="let date of Date" [value]="date.value"
+                                    [disabled]="!date.isEnabled && selectedMonth ==date.cmonth && date.cdate/7 <= date.cvalue/7">
+                                    {{ date.name }}
                                 </option>
+                                <!-- <option *ngFor="let date of Date" [value]="date.value" [disabled]="!date.isEnabled">{{
+                                    date.name }}
+                                </option> -->
                             </select>
                             <div *ngIf="submitted && !selectedDate" class="text-danger" style="font-size: small;">
                                 Week is required
@@ -511,9 +524,14 @@
                         <div class="col-12 col-md-6">
                             <select name="date" id="date" [(ngModel)]="selectedDate" [disabled]="isDateDisabled">
                                 <!-- <option value="0" selected>Select Week</option> -->
-                                <option *ngFor="let date of Date" [value]="date.value" [disabled]="!date.isEnabled">{{
-                                    date.name }}
+
+                                <option *ngFor="let date of Date" [value]="date.value"
+                                    [disabled]="!date.isEnabled && selectedMonth ==date.cmonth && date.cdate/7 <= date.cvalue/7">
+                                    {{ date.name }}
                                 </option>
+                                <!-- <option *ngFor="let date of Date" [value]="date.value" [disabled]="!date.isEnabled">{{
+                                    date.name }}
+                                </option> -->
                             </select>
                             <div *ngIf="submitted && !selectedDate" class="text-danger" style="font-size: small;">
                                 Week is required

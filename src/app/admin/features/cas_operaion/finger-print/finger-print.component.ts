@@ -633,8 +633,6 @@ export class FingerPrintComponent {
     return this.cas.filter(casItem =>
       casItem.name.toLowerCase().includes(this.searchTerm.toLowerCase())
     );
-
-
   }
   filteredService(): { name: string; id: number }[] {
     if (!this.searchServiceTerm) {

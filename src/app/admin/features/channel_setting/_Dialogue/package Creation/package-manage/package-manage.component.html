@@ -60,7 +60,7 @@
             <p>ALACARTE</p>
             <div class="row ">
                 <div class="col-12 col-md-5 example-container input_box">
-                    <input type="text" placeholder="search" [(ngModel)]="searchTermAlacarte"
+                    <input type="text" placeholder="search" [(ngModel)]="searchTermAlacarte"    
                         (ngModelChange)="filterAvailableList()">
                     <h6 class="av">Available - {{available_alacarte_list.length}} </h6>
                     <div cdkDropList #todoList="cdkDropList" [cdkDropListData]="filteredAvailableAlacarteList"

@@ -4,7 +4,7 @@
             <div class="card box d-flex flex-column justify-content-between p-3" (click)="openLCO_Dialog(7)">
                 <div class="d-flex justify-content-between w-100">
                     <i class='bx bxs-group'></i>
-                    <span class="fw-bold">{{lcoDeatails?.totalbox}}</span>
+                    <span class="fw-bold">{{lcoDeatails?.connectioncount}}</span>
                 </div>
                 <div class="mt-2 mb-2 text-center text">Total Subscriber</div>
             </div>
@@ -46,19 +46,21 @@
             </div>
         </div>
         <div class="col-6 col-lg-1-7 ">
-            <div class="card box d-flex flex-column justify-content-between p-3" (click)="openLCO_Dialog(3)">
+            <div class="card box d-flex flex-column justify-content-between p-3" (click)="openLCO_dashboard(12)">
                 <div class="d-flex justify-content-between w-100">
                     <i class='bx bx-x-circle'></i>
-                    <span class="fw-bold">{{lcoDeatails?.expiredcount}}</span>
+                    <!-- <span class="fw-bold">{{lcoDeatails?.expiredcount}}</span> -->
+                    <span class="fw-bold">{{operatorDetailsCount?.deactivesubscription}}</span>
                 </div>
                 <div class="mt-2 mb-2 text-center text">Expired Smartcard</div>
             </div>
         </div>
         <div class="col-6 col-lg-1-7 ">
-            <div class="card box d-flex flex-column justify-content-between p-3" (click)="openLCO_Dialog(2)">
+            <div class="card box d-flex flex-column justify-content-between p-3" (click)="openLCO_dashboard(11)">
                 <div class="d-flex justify-content-between w-100">
                     <i class='bx bxs-id-card'></i>
-                    <span class="fw-bold">{{lcoDeatails?.activecount}}</span>
+                    <!-- <span class="fw-bold">{{lcoDeatails?.activecount}}</span> -->
+                    <span class="fw-bold">{{operatorDetailsCount?.activesubscription}}</span>
                 </div>
                 <div class="mt-2 mb-2 text-center text">Not Expired Smartcard</div>
             </div>
@@ -101,7 +103,7 @@
             </div>
         </div>
         <div class="col-6 col-lg-1-7 ">
-            <div class="card box d-flex flex-column justify-content-between p-3" (click)="openLCO_dashboard(6)">
+            <div class="card box d-flex flex-column justify-content-between p-3" (click)="openLCO_dashboard(4)">
                 <div class="d-flex justify-content-between w-100">
                     <i class='bx bx-credit-card'></i>
                     <span class="fw-bold">{{operatorDetailsCount?.todayrechargecount}}</span>
@@ -134,6 +136,7 @@
     <div class="col-12 col-md-7 display justify-content-center align-item-center balance gap-3">
         <div class="col-12 col-lg-4 mb-3 ">
             <div *ngIf="walletshare" class="card box d-flex flex-column justify-content-between p-3" (click)="addnew()">
+            <!-- <div *ngIf="walletshare" class="card box d-flex flex-column justify-content-between p-3" > -->
                 <div class="d-flex justify-content-around">
                     <div class="mt-2 mb-3 text-center text1">Current Balance</div>
                     <i class="fa-solid fa-share forward mt-2 mb-3"></i>

@@ -40,11 +40,11 @@
     </div>
 </div>
 <div *ngIf="Type=='bulk'">
-    <div class="Head d-flex justify-content-between align-items-center mb-3" style="padding: 1rem;">
+    <div class="Head d-flex justify-content-between align-items-center mb-3">
         <h6>Confirmation</h6>
         <i class="fa fa-close close-icon" style="cursor: pointer;" (click)="onNoClick()"></i>
     </div>
-    <div class="mobile1">
+    <div class="mobile1" style="padding: 1rem;max-height: 700px;overflow: scroll;">
         <div style="padding: 1rem;">
             <div class="cancel_sub display_mobile mb-2  align-items-center justify-content-center row">
                 <div class="col-12 col-md-4 display_moile justify-content-start lign-items-center">
@@ -141,78 +141,48 @@
                 </ag-grid-angular>
             </div> -->
         </div>
-        <div class=" col-12 col-sm-6  mb-3 mobile2" style="padding: 1rem;">
+        <div class=" col-12 col-sm-6  mb-3 mobile2">
             <div class="card d-flex justify-content-center align-item-center mb-3 ">
-                <!-- <div class="checkbox-text mb-3" style="margin-top: 2%;">
-                    <div class="checkbox-content">
-                        <input type="checkbox" id="terms" (change)="onCheckboxPackageChange($event)">
-                        <label for="confirmPass" style="color: orangered;">Click to Subscription Update With New
-                            Base</label>
-                    </div>
+                <div class="col-12 col-md-12 input_box ">
+                    <select [(ngModel)]="selectedRechargetype" (ngModelChange)="onSelectionrechargetype($event)">
+                        <option value="0" selected>Selected Recharge Type</option>
+                        <option *ngFor="let rt of rechargetype" [value]="rt.id">
+                            {{rt.name}}
+                        </option>
+                    </select>
                 </div>
-                <div class="input_box mb-3" *ngIf="isCheckboxPackageChecked">
-                    <div class="col-12 col-md-10 display align-items-center justify-content-center">
-                        <div class="col-12 col-md-4">
-                            <span for="">CAS Type </span>
-                        </div>
-                        <div class=" col-12 col-md-5">
-                            <input type="text" placeholder="Search an CAS" formControlName="castypedisplay"
-                                (input)="onSearchChange($event)" [(ngModel)]="castype" [value]="casname"
-                                [matAutocomplete]="auto" class="example-input" #autocompleteInput>
-                            <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayCas">
-                                <mat-option *ngFor="let casItem of filteredcas()" [value]="casItem.name"
-                                    (click)="onSelectionFingerPrint(casItem,autocompleteInput)">
-                                    {{ casItem.name }}
-                                </mat-option>
-                            </mat-autocomplete>
-                        </div>
-                    </div>
-                </div>
-                <div *ngIf="isCheckboxPackageChecked" class="input_box  mb-3">
-                    <div class="col-12 col-md-10 display align-items-center justify-content-center">
-                        <div class="col-12 col-md-4">
-                            <span for="">Package Name </span>
-                        </div>
-              
-                        <div class=" col-12 col-md-5">
-                            <input type="text" matInput [matAutocomplete]="auto" [(ngModel)]="packageid"
-                                (input)="filterPackage($event)" placeholder="Select a package"
-                                [matAutocompleteDisabled]="false" [value]="selectedPackageName">
-
-                            <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayOperator">
-                                <mat-option value=""> Select a operator</mat-option>
-                                <mat-option *ngFor="let operator of filteredPackageList" [value]="operator.value"
-                                    (click)="onproducttypechange(operator)">
-                                    {{ operator.name }}
-                                </mat-option>
-                            </mat-autocomplete>
-                        </div>
-                    </div>
-                </div> -->
-                <!-- <div class="checkbox-text mb-3 ">
-                    <div class="checkbox-content">
-                        <input type="checkbox" id="terms" [(ngModel)]="isallpack">
-                        <label for="confirmPass" style="color: rgb(1, 72, 131);">Click to Subscription Update With
-                            Active
-                            Addon/Alacarte</label>
-                    </div>
-                </div> -->
                 <div class="input_box  mb-3" style="margin-top: 2%;">
-                    <div class="col-12 col-md-10 display align-items-center justify-content-center ">
+                    <div *ngIf="isplantype" class="col-12 col-md-10 display align-items-center justify-content-center ">
                         <div class="col-12 col-md-4">
                             <span for="">Plan </span>
                         </div>
-                        <!-- <div class=" dis">
-                            <span for="">: </span>
-                        </div> -->
-                        <div class=" col-12 col-md-5">
-                            <select [(ngModel)]="plantype" (ngModelChange)="changePlan()">
+                        <div class="col-12 col-md-6">
+                            <!-- <select [(ngModel)]="plantype" (ngModelChange)="changePlan()">
+                                <option value="0" selected disabled>Selected Plan</option>
+                                <option *ngFor="let plan of plantype$ | async" [value]="plan.value">
+                                    {{ plan.key }}
+                                </option>
+                            </select> -->
+                            <select [(ngModel)]="plantype">
                                 <option value="0" selected disabled>Selected Plan</option>
                                 <option *ngFor="let plan of plantype$ | async" [value]="plan.value">
                                     {{ plan.key }}
                                 </option>
                             </select>
                         </div>
+                    </div>
+                    <div *ngIf="datetype">
+                        <div class="col-12 col-md-10 display align-items-center justify-content-center ">
+                            <div class="col-12 col-md-4">
+                                <span for="">Date </span>
+                            </div>
+                            <div class="col-12 col-md-6">
+                                <input type="date" [(ngModel)]="f_date"
+                                    [min]="noofdays == 0 ? getNextDay1() : getNextDay(lcodatetype)"
+                                    (ngModelChange)="onSelectiondatetype($event)">
+                            </div>
+                        </div>
+
                     </div>
                 </div>
                 <div class="form-group d-flex justify-content-center align-items-center  mb-1">

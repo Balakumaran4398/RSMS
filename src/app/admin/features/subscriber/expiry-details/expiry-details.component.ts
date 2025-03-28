@@ -34,6 +34,10 @@ export class ExpiryDetailsComponent implements OnInit, OnDestroy {
   rowData: any;
   msodetails: any;
   dateRangeForm: FormGroup;
+
+  lcoDeatails: any;
+  lcoId: any;
+
   constructor(private userservice: BaseService, private fb: FormBuilder, private storageservice: StorageService, private swal: SwalService, private cdr: ChangeDetectorRef, private excelService: ExcelService) {
     this.username = storageservice.getUsername();
     this.role = storageservice.getUserRole();
@@ -73,6 +77,8 @@ export class ExpiryDetailsComponent implements OnInit, OnDestroy {
     })
     // this.dateRangeForm.get('fromdate').set(this.fromdate);
     // this.dateRangeForm.get('todate').set(this.todate);
+
+    this.operatorIdoperatorId();
   }
   ngAfterViewInit() {
     $('#operator').select2({
@@ -100,7 +106,6 @@ export class ExpiryDetailsComponent implements OnInit, OnDestroy {
       });
       this.filteredOperators = this.operatorList;
     })
-
   }
 
 
@@ -177,7 +182,7 @@ export class ExpiryDetailsComponent implements OnInit, OnDestroy {
 
     this.cdr.detectChanges();
     this.swal.Loading();
-    this.userservice.getExpirySubscriberByOperator(this.role, this.username, this.operatorid, this.fromdate, this.todate, this.format)
+    this.userservice.getExpirySubscriberByOperator(this.role, this.username, this.operatorid || this.lcoId, this.fromdate, this.todate, this.format)
       .subscribe(
         (response: HttpResponse<any[]>) => { // Expect HttpResponse<any[]>
           if (response.status === 200) {
@@ -224,7 +229,7 @@ export class ExpiryDetailsComponent implements OnInit, OnDestroy {
   exportAsXLSX1(): void {
     this.cdr.detectChanges();
     this.swal.Loading();
-    this.userservice.getExpirySubscriberByOperator(this.role, this.username, this.operatorid, this.fromdate, this.todate, this.format_1).subscribe(
+    this.userservice.getExpirySubscriberByOperator(this.role, this.username, this.operatorid || this.lcoId, this.fromdate, this.todate, this.format_1).subscribe(
       (response: HttpResponse<any[]>) => { // Expect HttpResponse<any[]>
         if (response.status === 200) {
           this.rowData = response.body;
@@ -266,6 +271,16 @@ export class ExpiryDetailsComponent implements OnInit, OnDestroy {
   }
 
 
+  operatorIdoperatorId() {
+    this.userservice.getOpDetails(this.role, this.username).subscribe((data: any) => {
+      this.lcoDeatails = data;
+      this.lcoId = this.lcoDeatails?.operatorid;
+      console.log(this.lcoId);
+      this.operatorname = this.lcoDeatails?.operatorname;
+    })
+  }
+
+
   handleApiError(error: any) {
     if (error.status === 400) {
       this.swal.Error_400();
@@ -275,4 +290,8 @@ export class ExpiryDetailsComponent implements OnInit, OnDestroy {
       Swal.fire('Error', 'Something went wrong. Please try again.', 'error');
     }
   }
+
+
+
+
 }

@@ -66,7 +66,7 @@
                             <label class="form-label">Amount</label>
                         </div>
                         <div class="col-12 col-md-6">
-                            <input class="" type="text" formControlName="amount" (keypress)="onKeydown($event)">
+                            <input class="" type="text" formControlName="amount" (keypress)="onKeydown1($event)" placeholder="Enter Amount">
                             <div *ngIf="form.get('amount')?.invalid && form.get('amount')?.touched">
                                 <small class="text-danger">Amount is required.</small>
                             </div>

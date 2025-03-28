@@ -37,4 +37,7 @@ export class LcoReportComponent implements OnInit {
     this.router.navigate(['admin/lcologinReports/' + event]);
   }
 
+  openMsoDialog(event: any) {
+    this.router.navigate(['admin/msodialogueReports/' + event]);
+  }
 }

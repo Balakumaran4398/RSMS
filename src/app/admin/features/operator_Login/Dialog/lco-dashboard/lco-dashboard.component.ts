@@ -1,6 +1,6 @@
 import { HttpResponse } from '@angular/common/http';
 import { Component, Inject, OnInit } from '@angular/core';
-import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MatDialogRef, MAT_DIALOG_DATA, MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
 import { BaseService } from 'src/app/_core/service/base.service';
 import { ExcelService } from 'src/app/_core/service/excel.service';
@@ -8,6 +8,7 @@ import { StorageService } from 'src/app/_core/service/storage.service';
 import { SwalService } from 'src/app/_core/service/swal.service';
 import Swal from 'sweetalert2';
 import { Location } from '@angular/common';
+import { InventorycortonboxComponent } from '../../../inventory_role/Dialogue/inventorycortonbox/inventorycortonbox.component';
 
 @Component({
   selector: 'app-lco-dashboard',
@@ -20,16 +21,8 @@ export class LcoDashboardComponent implements OnInit {
   type: any;
   columnDefs: any[] = [];
   rowData: any;
-  // gridOptions = {
-  //   defaultColDef: {
-  //     sortable: true,
-  //     resizable: true,
-  //     filter: true,
-  //     floatingFilter: true
-  //   },
-  //   paginationPageSize: 10,
-  //   pagination: true,
-  // }
+  public rowSelection: any = "multiple";
+  rowData1: any;
   gridOptions = {
     defaultColDef: {
       sortable: true,
@@ -65,7 +58,23 @@ export class LcoDashboardComponent implements OnInit {
   lcoDeatails: any;
   lcoId: any;
 
-  constructor(private route: ActivatedRoute, private location: Location, private userService: BaseService, private router: Router, private storageServive: StorageService, private excelService: ExcelService, private swal: SwalService,) {
+
+  toppings: any;
+  filteredModel: any[] = [];
+  cortonBoxList: any[] = [];
+  toppingList: any[] = [];
+  cortonBox: any[] = [];
+  model: any;
+
+  isAnyRowSelected: any = false;
+  selectedIds: number[] = [];
+  rows: any[] = [];
+  selectedSmartcard: number[] = [];
+  isemi: any;
+  hasSelectedRows: boolean = true;
+  isRowSelected: boolean = false;
+
+  constructor(private route: ActivatedRoute, private location: Location, public dialog: MatDialog, private userService: BaseService, private router: Router, private storageServive: StorageService, private excelService: ExcelService, private swal: SwalService,) {
     this.type = this.route.snapshot.paramMap.get('id');
     this.role = storageServive.getUserRole();
     this.username = storageServive.getUsername();
@@ -79,7 +88,71 @@ export class LcoDashboardComponent implements OnInit {
       console.log(segments);
     });
 
+    if (this.type == '6') {
+      this.getModelList();
+      this.getNotAllocattedDetails();
+    }
+
   }
+
+  ngAfterViewInit() {
+    $('#model').select2({
+      placeholder: 'Select Model',
+      allowClear: true
+    });
+    $('#model').on('change', (event: any) => {
+      this.model = event.target.value;
+      this.onModelList(this.model);
+    });
+  }
+  onModelList(event: any) {
+    console.log(event);
+    this.userService.getCortonBoxList(this.role, this.username, this.model).subscribe((data: any) => {
+      console.log(data);
+      this.cortonBoxList = data.map((item: any) => item.cartonbox);
+      // this.cortonBoxList=[...this.toppingList]
+    })
+  }
+  onCortonBoxChange(selectedValues: any[]) {
+    console.log("Selected Values: ", selectedValues);
+    this.cortonBox = selectedValues;
+    console.log(this.cortonBox);
+
+
+  }
+  getNotAllocattedDetails() {
+    this.userService.getAllCartonBoxList(this.username, this.role).subscribe((data: any) => {
+      // this.cortonBoxList = data;
+      this.rowData = data;
+      console.log(this.filteredModel);
+
+    })
+  }
+  submit() {
+    this.rowData = [];
+    this.userService.getCortonBoxDetails(this.role, this.username, this.model, this.cortonBox)
+      .subscribe((data: any) => {
+        this.rowData = data;
+        console.log(data);
+        // this.swal.success(data?.message);
+      }, (err) => {
+        this.swal.Error3(err?.error?.message || err?.error);
+      });
+  }
+  onSelectionChanged() {
+    if (this.gridApi) {
+      const selectedRows = this.gridApi.getSelectedRows();
+      this.isAnyRowSelected = selectedRows.length > 0;
+      console.log("Selected Rows:", selectedRows);
+      this.rows = selectedRows;
+      this.selectedIds = selectedRows.map((e: any) => e.id);
+      this.selectedSmartcard = selectedRows.map((e: any) => e.smartcard);
+      this.isemi = selectedRows.map((e: any) => e.isemi);
+      console.log("Selected Smartcard:", this.selectedSmartcard);
+    }
+  }
+
+
   onMSODetails() {
     this.userService.getMsoDetails(this.role, this.username).subscribe((data: any) => {
       console.log(data);
@@ -96,10 +169,17 @@ export class LcoDashboardComponent implements OnInit {
       this.operatorname = this.lcoDeatails?.operatorname;
       console.log(this.lcoId);
       // if (this.type = 7) {
-      this.onTableData();
+      // this.onTableData();
+      this.getreport(this.lcoId);
       // } else if (this.type = 4) {
       //   this.onTableData();
       // }
+    })
+  }
+  getModelList() {
+    this.userService.getModelList(this.role, this.username).subscribe((data: any) => {
+      console.log(data);
+      this.filteredModel = data;
     })
   }
   onGridReady(params: { api: any; }) {
@@ -113,6 +193,8 @@ export class LcoDashboardComponent implements OnInit {
       case '5': return 'BLOCK SUBSCRIBER';
       case '6': return 'INVENTORY';
       case '7': return 'TOTAL SUBSCRIBER';
+      case '11': return 'ACTIVE SUBSCRIBER';
+      case '12': return 'DEACTIVE SUBSCRIBER';
       default: return 'UNKNOWN TYPE';
     }
   }
@@ -120,7 +202,6 @@ export class LcoDashboardComponent implements OnInit {
 
     switch (OType) {
       case '1':
-        // this.type = 1;
         this.OType = 'total smartcard connection';
         break;
       case '2':
@@ -177,56 +258,38 @@ export class LcoDashboardComponent implements OnInit {
       });
   }
 
+  getreport(lco: any) {
+    console.log(lco)
+    console.log(this.lcoId)
+    // this.userService.getOpLoginReportByOpid(this.role, this.username, this.lcoId, this.type, 3).subscribe((data: any) => {
+    //   console.log(data);
+    //   this.rowData = data;
+    // })
+
+    this.userService.getOperatorDashboardExcelReport(this.role, this.username, this.type, 2, this.lcoId, 0, 0, 0)
+      .subscribe((response: HttpResponse<any[]>) => {
+        if (response.status === 200) {
+          this.rowData = response.body;
+        } else if (response.status === 204) { }
+      }
+      )
+  };
+
   private onColumnDefs() {
     if (this.type == 6) {
       this.columnDefs = [
-        { headerName: "S.No", lockPosition: true, valueGetter: 'node.rowIndex+1', width: 90, filter: false },
-        {
-          headerName: 'SMARTCARD', field: 'smartcard', width: 220,
-          cellStyle: (params: any) => {
-            if (params.data.someCondition) {
-              return { backgroundColor: '#f4cccc' };
-            } else {
-              return null;
-            }
-          },
-          cellRenderer: (params: any) => {
-            return `<a href="javascript:void(0)" style="color: blue; text-decoration: none;color:#0d6efd">
-                      ${params.value}
-                    </a>`;
-          },
-
-          onCellClicked: (params: any) => {
-            const subid = params.data.id;
-            const smartcard = params.data.smartcard;
-            console.log('Sub ID:', subid);
-            console.log('Smartcard:', smartcard);
-            if (smartcard) {
-              this.router.navigate([`/admin/subscriber-full-info/${smartcard}/subsmartcard`])
-                .then(() => {
-                  setTimeout(() => {
-                    window.location.reload();
-                  }, 100);
-                });
-            } else if (subid) {
-              this.router.navigate([`/admin/subscriber-full-info/${subid}/new`])
-                .then(() => {
-                  setTimeout(() => {
-                    window.location.reload();
-                  }, 100);
-                });
-            }
-          }
-        },
-        { headerName: 'BOX ID	', field: 'boxid', Flex: 1, cellStyle: { textAlign: 'center', color: 'green' }, width: 400, },
-        { headerName: 'CAS NAME', field: 'casname', width: 300, },
-        { headerName: 'ALLOCATION DATE	', field: 'connectiondate', width: 400, },
+        { headerName: "S.No", lockPosition: true, valueGetter: 'node.rowIndex+1', width: 90, filter: false, headerCheckboxSelection: true, checkboxSelection: true, },
+        { headerName: 'SMARTCARD', field: 'smartcard', width: 400, },
+        { headerName: 'BOX ID	', field: 'boxid',  cellStyle: { textAlign: 'center', color: 'green' }, width: 300, },
+        { headerName: 'CORTON BOX', field: 'cottonbox', width: 300, },
+        { headerName: 'MODEL', field: 'model', width: 200, },
+        { headerName: 'CHIP ID', field: 'chipid', width: 300, },
       ]
-    } else if (this.type == 7 ) {
+    } else if (this.type == 7) {
       this.columnDefs = [
         { headerName: "S.No", lockPosition: true, valueGetter: 'node.rowIndex+1', width: 90, filter: false },
-        { headerName: 'SMARTCARD', field: 'smartcard', Flex: 1, width: 400, },
-        { headerName: 'BOX ID	', field: 'boxid', Flex: 1, cellStyle: { textAlign: 'center', color: 'green' }, width: 400, },
+        { headerName: 'SMARTCARD', field: 'smartcard',  width: 400, },
+        { headerName: 'BOX ID	', field: 'boxid',  cellStyle: { textAlign: 'center', color: 'green' }, width: 400, },
         { headerName: 'CAS NAME', field: 'casname', width: 300, },
         { headerName: 'ALLOCATION DATE	', field: 'connectiondate', width: 400, },
       ]
@@ -272,9 +335,9 @@ export class LcoDashboardComponent implements OnInit {
             }
           }
         },
-        { headerName: 'SUBSCRIBER ID', field: 'subid', Flex: 1, width: 150, },
-        { headerName: 'SUBSCRIBER NAME', field: 'customername', Flex: 1, cellStyle: { textAlign: 'center', color: 'green' }, width: 200, },
-        { headerName: 'ADDRESS ', field: 'address', Flex: 1, cellStyle: { textAlign: 'center', color: 'green' }, width: 150, },
+        { headerName: 'SUBSCRIBER ID', field: 'subid',  width: 150, },
+        { headerName: 'SUBSCRIBER NAME', field: 'customername',  cellStyle: { textAlign: 'center', color: 'green' }, width: 200, },
+        { headerName: 'ADDRESS ', field: 'address',  cellStyle: { textAlign: 'center', color: 'green' }, width: 150, },
         { headerName: 'MOBILE NO', field: 'mobileno', width: 150, },
         { headerName: 'BOX ID', field: 'boxid', width: 180, },
         { headerName: 'PACKAGE NAME', field: 'productname', width: 200, },
@@ -324,8 +387,8 @@ export class LcoDashboardComponent implements OnInit {
             }
           }
         },
-        { headerName: 'SUBSCRIBER ID', field: 'subid', Flex: 1, width: 150, },
-        { headerName: 'SUBSCRIBER NAME', field: 'customername', Flex: 1, cellStyle: { textAlign: 'center', color: 'green' }, width: 200, },
+        { headerName: 'SUBSCRIBER ID', field: 'subid',  width: 150, },
+        { headerName: 'SUBSCRIBER NAME', field: 'customername',  cellStyle: { textAlign: 'center', color: 'green' }, width: 200, },
         { headerName: 'ADDRESS', field: 'address', width: 150, },
         { headerName: 'MOBILE NO', field: 'mobileno', width: 150, },
         { headerName: 'BOX ID', field: 'boxid', width: 180, },
@@ -376,8 +439,8 @@ export class LcoDashboardComponent implements OnInit {
             }
           }
         },
-        { headerName: 'SUBSCRIBER ID', field: 'subid', Flex: 1, width: 150, },
-        { headerName: 'SUBSCRIBER NAME', field: 'customername', Flex: 1, cellStyle: { textAlign: 'center', color: 'green' }, width: 200, },
+        { headerName: 'SUBSCRIBER ID', field: 'subid',  width: 150, },
+        { headerName: 'SUBSCRIBER NAME', field: 'customername',  cellStyle: { textAlign: 'center', color: 'green' }, width: 200, },
         { headerName: 'ADDRESS	', field: 'address', width: 150, },
         { headerName: 'AREA NAME', field: 'areaname', width: 200, },
         { headerName: 'MOBILE NO', field: 'mobileno', width: 200, },
@@ -425,9 +488,9 @@ export class LcoDashboardComponent implements OnInit {
             }
           }
         },
-        { headerName: 'SUBSCRIBER ID', field: 'subid', Flex: 1, width: 150, },
-        { headerName: 'OPERATOR NAME', field: 'operatorname', Flex: 1, cellStyle: { textAlign: 'center', color: 'green' }, width: 200, },
-        { headerName: 'CUSTOMER NAME ', field: 'customername', Flex: 1, cellStyle: { textAlign: 'center', color: 'green' }, width: 200, },
+        { headerName: 'SUBSCRIBER ID', field: 'subid',  width: 150, },
+        { headerName: 'OPERATOR NAME', field: 'operatorname',  cellStyle: { textAlign: 'center', color: 'green' }, width: 200, },
+        { headerName: 'CUSTOMER NAME ', field: 'customername',  cellStyle: { textAlign: 'center', color: 'green' }, width: 200, },
         { headerName: 'BOX ID	', field: 'boxid', width: 150, },
         { headerName: 'CAS NAME', field: 'casname', width: 200, },
         { headerName: 'PRODUCT NAME', field: 'productname', width: 200, },
@@ -437,8 +500,6 @@ export class LcoDashboardComponent implements OnInit {
       ]
     }
   }
-
-
   getExcel() {
     const generateExcelReport = (areatitle: string, areasub: string, header: string[], datas: any[]) => {
       const title = (this.operatorname + ' - ' + this.OType + ' REPORT').toUpperCase();
@@ -494,11 +555,16 @@ export class LcoDashboardComponent implements OnInit {
             areasub = 'A3:K3';
             header = ['S.NO', 'SUB ID', 'OPERATOR NAME', 'CUSTOMER NAME', 'SMARTCARD', 'BOX ID', 'CAS NAME', 'PRODUCT NAME', 'PRODUCT ID', 'CREATION DATE', 'EXPIRY DATE'];
             generateDataRows(['subid', 'operatorname', 'customername', 'smartcard', 'boxid', 'casname', 'productname', 'productid', 'creationdate', 'expirydate'], this.rowData);
-          } else if (this.type == 6 || this.type == 7) {
+          } else if (this.type == 7) {
             areatitle = 'A1:E2';
             areasub = 'A3:E3';
-            header = ['S.NO', 'SMARTCARD', 'BOX ID', 'CAS', 'ALLOCATION DATE'];
+            header = ['S.NO', 'SMARTCARD', 'BOX ID', 'CAS NAME', 'ALLOCATION DATE'];
             generateDataRows(['smartcard', 'boxid', 'casname', 'connectiondate'], this.rowData);
+          } else if (this.type == 6) {
+            areatitle = 'A1:F2';
+            areasub = 'A3:F3';
+            header = ['S.NO', 'SMARTCARD', 'BOX ID', 'CORTON BOX', 'MODEL', 'CHIP ID'];
+            generateDataRows(['smartcard', 'boxid', 'cottonbox', 'model', 'chipid'], this.rowData);
           }
           else if (this.type == 9) {
             areatitle = 'A1:G2';
@@ -545,7 +611,12 @@ export class LcoDashboardComponent implements OnInit {
             areatitle = 'A1:K2';
             areasub = 'A3:K3';
             header = ['S.NO', 'SUBSCRIBER ID', 'OPERATOR NAME', 'CUSTOMER NAME', 'SMARTCARD', 'BOX ID', 'CAS NAME', 'PRODUCT NAME', 'PRODUCT ID', 'CREATION DATE', 'EXPIRY DATE'];
-          } else if (this.type == 6 || this.type == 7) {
+          } else if (this.type == 6) {
+            areatitle = 'A1:FC2';
+            areasub = 'A3:F3';
+            header = ['S.NO', 'SMARTCARD', 'BOX ID', 'CORTON BOX', 'MODEL', 'CHIP ID'];
+          }
+          else if (this.type == 7) {
             areatitle = 'A1:E2';
             areasub = 'A3:E3';
             header = ['S.NO', 'SMARTCARD', 'BOX ID', 'CAS', 'ALLOCATION DATE'];
@@ -604,25 +675,21 @@ export class LcoDashboardComponent implements OnInit {
       Swal.fire('Error', 'Something went wrong. Please try again.', 'error');
     }
   }
-  getreport(reportType: any) {
-    this.userService.getOpLoginReportByOpid(this.role, this.username, this.lcoId, this.type, reportType).subscribe((data: any) => {
-      console.log(data);
-    })
-  }
+
   getLcoInvoiceReport(reportType: number) {
+    console.log(this.type);
     this.swal.Loading();
-    this.userService.getOpLoginReportByReport(this.role, this.username, this.lcoId, this.type, reportType).
+    // this.userService.getOpLoginReportByReport(this.role, this.username, this.lcoId, this.type, reportType).
+    // this.userService.getOperatorDashboardPDFReport(this.role, this.username, this.lcoId, this.type, 0, 0, 0, reportType).
+    this.userService.getOperatorDashboardPDFReport(this.role, this.username, this.type, reportType, this.lcoId, 0, 0, 0,).
       subscribe({
         next: (x: Blob) => {
           this.swal.Close();
-          if (this.type = 1) {
-            if (reportType == 1) {
-              this.reportMaking(x, 'OPERATOR WISE GST FILE' + this.lcoId + '-' + this.type + ".pdf", 'application/pdf');
-            } else if (reportType == 2) {
-              this.reportMaking(x, 'OPERATOR WISE GST FILE' + this.lcoId + '-' + this.type + ".xlsx", 'application/xlsx');
-            }
-          } else if (this.type = 2) {
-
+          const reportName = this.getHeader();
+          if (reportType === 1) {
+            this.reportMaking(x, `${this.operatorname}_${reportName}_${this.lcoId}.pdf`, 'application/pdf');
+          } else if (reportType === 2) {
+            this.reportMaking(x, `${this.operatorname}_${reportName}_${this.lcoId}.xlsx`, 'application/xlsx');
           }
         },
         error: (error: any) => {
@@ -671,5 +738,21 @@ export class LcoDashboardComponent implements OnInit {
       }
     });
 
+  }
+
+  openDialoguePage(type: any) {
+    let dialogData = {
+      type: type,
+      smartcard: this.selectedSmartcard, isemi: this.isemi,
+    };
+    console.log(dialogData);
+    const dialogRef = this.dialog.open(InventorycortonboxComponent, {
+      data: dialogData,
+      width: type === 'lco_inventory' ? '720px' : 'auto',
+      maxWidth: type === ' lco_inventory' ? '100vw' : 'auto'
+    });
+    dialogRef.afterClosed().subscribe(result => {
+      console.log('The dialog was closed', result);
+    });
   }
 }

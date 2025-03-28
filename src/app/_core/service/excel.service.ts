@@ -1417,8 +1417,8 @@ export class ExcelService {
     });
     worksheet.columns = [
       { key: 'a', width: 15 }, // S.NO
-      { key: 'b', width: 30 }, // CUSTOMER ID
-      { key: 'c', width: 30 }, // SUBSCRIBER NAME
+      { key: 'b', width: 50 }, // CUSTOMER ID
+      { key: 'c', width: 40 }, // SUBSCRIBER NAME
       { key: 'd', width: 25 }, // ADDRESS
       { key: 'e', width: 25 }, // MOBILE NO
       { key: 'f', width: 25 }, // SMARTCARD

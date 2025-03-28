@@ -82,6 +82,8 @@ export class ForcemessageComponent {
   lco_list: any[] = [];
   username: any;
   role: any;
+  forcemsge: boolean = false;
+  forceid: any;
 
   lcoDeatails: any;
   operatorid: any;
@@ -105,6 +107,9 @@ export class ForcemessageComponent {
     this.form.patchValue({ castype: this.castype });
     this.form.patchValue({ intendid: this.operatorid });
   }
+
+
+
   ngOnInit() {
     this.onOperatorList();
     this.onCaslist();
@@ -128,7 +133,7 @@ export class ForcemessageComponent {
       role: this.role,
       username: this.username,
     })
-
+    this.onForceChange('')
 
   }
   operatorIdoperatorId() {
@@ -138,6 +143,16 @@ export class ForcemessageComponent {
       console.log(this.lcoDeatails);
       this.operatorid = this.lcoDeatails?.operatorid;
       console.log(this.operatorid);
+      this.getForcemsg(this.operatorid)
+    })
+  }
+  getForcemsg(operator: any) {
+    console.log('force message');
+    this.userservice.getcheckLcoForceMessage(this.role, this.username, operator).subscribe((res: any) => {
+      console.log(res);
+      this.forcemsge = res.forcemsg;
+      this.forceid = res.id;
+      console.log(this.forcemsge);
 
     })
   }
@@ -301,10 +316,10 @@ export class ForcemessageComponent {
     }
   }
   onForceChange(event: any) {
-    console.log(this.castype);
+    console.log(event);
     console.log(this.force_1);
 
-    if (this.force_1 === true) {
+    if (this.force_1 === false) {
       this.cdr.detectChanges();
       // this.isRepeatfor = [1, 3, 7].includes(this.castype);
       this.isDurationDisabled = true;
@@ -399,7 +414,7 @@ export class ForcemessageComponent {
     }).then((result) => {
       if (result.isConfirmed) {
         this.swal.Loading();
-        this.userservice.stopMessage(this.role, this.username, this.operatorid).subscribe(
+        this.userservice.stopMessage(this.role, this.username, this.forceid).subscribe(
           (res: any) => {
             this.swal.success(res?.message);
           },

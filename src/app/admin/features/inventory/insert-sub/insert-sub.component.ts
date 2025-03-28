@@ -40,7 +40,7 @@ export class InsertSubComponent {
       comparator: (valueA: any, valueB: any) => {
         const isNumberA = !isNaN(valueA) && valueA !== null;
         const isNumberB = !isNaN(valueB) && valueB !== null;
-  
+
         if (isNumberA && isNumberB) {
           return valueA - valueB;
         } else {
@@ -91,11 +91,11 @@ export class InsertSubComponent {
     })
   }
   columnDefs: ColDef[] = [
-    { headerName: 'S.NO', lockPosition: true, headerCheckboxSelection: true, valueGetter: 'node.rowIndex+1', checkboxSelection: true, width: 100,filter:false },
- 
+    { headerName: 'S.NO', lockPosition: true, headerCheckboxSelection: true, valueGetter: 'node.rowIndex+1', checkboxSelection: true, width: 100, filter: false },
+
     {
       headerName: 'SMARTCARD',
-      field: 'smartcard', width: 200
+      field: 'smartcard', width: 220
     },
     {
       headerName: 'BOX_ID',
@@ -156,14 +156,48 @@ export class InsertSubComponent {
       this.rowData = data;
     })
   }
-  onSelectionChanged() {
+  // onSelectionChanged() {
+  //   if (this.gridApi) {
+  //     const selectedRows = this.gridApi.getSelectedRows();
+  //     this.isAnyRowSelected = selectedRows.length > 0;
+  //     this.selectedIds = selectedRows.map((e: any) => e.id);
+  //     this.selectedtypes = selectedRows.map((e: any) => e.isactive);
+  //   }
+  // }
+
+  selectedIdsSet = new Set<number>();
+  onSelectionChanged(event: any) {
     if (this.gridApi) {
-      const selectedRows = this.gridApi.getSelectedRows();
-      this.isAnyRowSelected = selectedRows.length > 0;
-      this.selectedIds = selectedRows.map((e: any) => e.id);
-      this.selectedtypes = selectedRows.map((e: any) => e.isactive);
+      let selectedRows: any[] = [];
+      this.gridApi.forEachNodeAfterFilter((rowNode: any) => {
+        if (rowNode.isSelected()) {
+          selectedRows.push(rowNode.data);
+          this.selectedIdsSet.add(rowNode.data.id);
+        }
+      });
+      console.log("Filtered & Selected Rows:", selectedRows);
+      if (selectedRows.length === 0) {
+        this.gridApi.deselectAll();
+        this.selectedIdsSet.clear();
+      }
+      console.log("Final Selected Rows:", selectedRows);
+      this.updateSelectedRows(selectedRows);
     }
   }
+
+
+  updateSelectedRows(selectedRows: any[]) {
+    this.isAnyRowSelected = selectedRows.length > 0;
+    // this.selectedIds = selectedRows.map((e: any) => e.id);
+    this.selectedIds = Array.from(this.selectedIdsSet)
+    this.selectedtypes = selectedRows.map((e: any) => e.isactive);
+    console.log("Updated Selected Rows:", selectedRows);
+    console.log("Selected Rows:", this.selectedIds);
+  }
+
+
+
+
   // updateOperatorIds() {
   //   this.operatorid = [];
   //   this.selectedLcoKeys.forEach(key => {

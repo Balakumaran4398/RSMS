@@ -369,7 +369,7 @@ export class BroadcasterReportsComponent implements OnInit {
           { value: '02', name: '14 ' + this.selectedMonthName, isEnabled: true },
           { value: '03', name: '21 ' + this.selectedMonthName, isEnabled: true },
         ];
-        this.selectedDate = '04'; // Auto-select "All"
+        this.selectedDate = '04';
       } else {
         this.generateDates(this.selectedMonthName);
         const currentWeek = this.calculateCurrentWeek(currentDate, this.selectedMonth);
@@ -382,12 +382,15 @@ export class BroadcasterReportsComponent implements OnInit {
   }
 
 
+  dayOfMonth = new Date().getDate();
+
 
 
   currentDate = new Date();
   // currentYear = this.currentDate.getFullYear();
   currentMonth = (this.currentDate.getMonth() + 1).toString().padStart(2, '0');
   // currentWeek = this.calculateCurrentWeek(this.currentDate, this.currentMonth);
+
 
 
   generateDates(selectedMonthName: string) {
@@ -407,22 +410,41 @@ export class BroadcasterReportsComponent implements OnInit {
       {
         value: '04',
         name: 'All',
-        isEnabled: isBeforeCurrentMonth
+        isEnabled: isBeforeCurrentMonth,
+        cmonth: this.currentMonth
+        ,
+        cdate: this.dayOfMonth,
+        cvalue: 28
       },
       {
         value: '01',
         name: '07 ' + this.selectedMonthName,
         isEnabled: isBeforeCurrentMonth || currentWeek == '01'
+        ,
+        cmonth: this.currentMonth
+        ,
+        cdate: this.dayOfMonth,
+        cvalue: 7
       },
       {
         value: '02',
         name: '14 ' + this.selectedMonthName,
         isEnabled: isBeforeCurrentMonth || currentWeek == '02'
+        ,
+        cmonth: this.currentMonth
+        ,
+        cdate: this.dayOfMonth,
+        cvalue: 14
       },
       {
         value: '03',
         name: '21 ' + this.selectedMonthName,
         isEnabled: isBeforeCurrentMonth || currentWeek == '03'
+        ,
+        cmonth: this.currentMonth,
+        cdate: this.dayOfMonth
+        ,
+        cvalue: 21
       },
     ];
     if (isBeforeCurrentMonth) {

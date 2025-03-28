@@ -12,27 +12,16 @@
         </select>
     </div>
     <div class="col-12 col-md-3  mb-2">
-        <!-- <select id="cortonBoxList" [(ngModel)]="cortonBox" multiple class="form-select">
-            <option *ngFor="let model of cortonBoxList" [value]="model.modelname">{{ model.modelname }}</option>
-        </select> -->
-
-        <!-- <mat-form-field class="w-100" appearance="outline">
-            <mat-label>Select Addon</mat-label>
-            <mat-select [formControl]="toppings" multiple [(ngModel)]="cortonBox" (selectionChange)="onCortonBoxChange(cortonBox)">
-                <mat-option *ngFor="let cortonbox of cortonBoxList" [value]="cortonbox">
-                    {{cortonbox }}</mat-option>
-            </mat-select>
-        </mat-form-field> -->
-
         <mat-form-field class="w-100" appearance="outline">
             <mat-label>Select CartonBox</mat-label>
-            <mat-select [formControl]="toppings" multiple [(ngModel)]="cortonBox" (selectionChange)="onCortonBoxChange($event.value)" >
-                <mat-option *ngFor="let box of cortonBoxList" [value]="box" >
+            <mat-select [formControl]="toppings" multiple [(ngModel)]="cortonBox"
+                (selectionChange)="onCortonBoxChange($event.value)">
+                <mat-option *ngFor="let box of cortonBoxList" [value]="box">
                     {{ box }}
                 </mat-option>
             </mat-select>
         </mat-form-field>
-        
+
     </div>
     <div class="col-12 col-md-1 text-center mb-2" style="margin-top: -1%;">
         <button type="submit" (click)="submit()" class="btn bttn ">
@@ -41,9 +30,9 @@
     </div>
 
     <!-- ALLOCATED button pushed to the far right -->
-    <div class="col-12 col-md-4 d-flex justify-content-end align-items-center mb-2 ml-auto" style="margin-top: -1%;"> 
-        <button type="submit" (click)="openDialoguePage('allocatted')" class="btn bttn"
-        [disabled]="!isAnyRowSelected"   style="background-color:#577266">
+    <div class="col-12 col-md-4 d-flex justify-content-end align-items-center mb-2 ml-auto" style="margin-top: -1%;">
+        <button type="submit" (click)="openDialoguePage('allocatted')" class="btn bttn" [disabled]="!isAnyRowSelected"
+            style="background-color:#577266">
             ALLOCATED
         </button>
     </div>
@@ -65,9 +54,10 @@
                     <div class="tooltip">Pdf</div>
                 </div>
             </div> -->
-            <ag-grid-angular #agGrid id="myGrid" domLayout='normal' class="ag-theme-alpine table-class" rowAnimation [rowSelection]="rowSelection" 
-                style="max-height: 775px;overflow: scroll;" [gridOptions]="gridOptions" [columnDefs]="columnDefs" (selectionChanged)="onSelectionChanged()"
-                [rowData]="rowData" (gridReady)="onGridReady($event)" [enableCellTextSelection]="true">
+            <ag-grid-angular #agGrid id="myGrid" domLayout='normal' class="ag-theme-alpine table-class" rowAnimation
+                [rowSelection]="rowSelection" style="max-height: 775px;overflow: scroll;" [gridOptions]="gridOptions"
+                [columnDefs]="columnDefs" (selectionChanged)="onSelectionChanged()" [rowData]="rowData"
+                (gridReady)="onGridReady($event)" [enableCellTextSelection]="true">
             </ag-grid-angular>
 
         </div>

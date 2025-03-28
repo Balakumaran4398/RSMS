@@ -11,18 +11,49 @@
         <div class="input_box  mx-2 mb-2">
             <div class="display justify-content-start align-items-center" style="display: flex;">
                 <div class="export-icon mx-2">
-                    <img src="/assets/images/icons/Excel.png" alt="Excel Icon" width="40px" (click)="getLcoInvoiceReport(2)" />
+                    <img src="/assets/images/icons/Excel.png" alt="Excel Icon" width="40px"
+                        (click)="getLcoInvoiceReport(2)" />
                     <div class="tooltip">Excel</div>
                 </div>
                 <div class="export-icon mx-2">
-                    <img src="/assets/images/icons/pdf.png" alt="PDF Icon" width="40px" (click)="getLcoInvoiceReport(1)" />
+                    <img src="/assets/images/icons/pdf.png" alt="PDF Icon" width="40px"
+                        (click)="getLcoInvoiceReport(1)" />
                     <div class="tooltip">Pdf</div>
                 </div>
             </div>
         </div>
     </div>
-    <ag-grid-angular #agGrid id="myGrid" domLayout='normal' class="ag-theme-alpine table-class" rowAnimation
-        [gridOptions]="gridOptions" [columnDefs]="columnDefs" [rowData]="rowData" (gridReady)="onGridReady($event)"
-        [enableCellTextSelection]="true">
-    </ag-grid-angular>
+    <div *ngIf="type != '9'">
+        <ag-grid-angular #agGrid id="myGrid" domLayout='normal' class="ag-theme-alpine table-class" rowAnimation
+            [gridOptions]="gridOptions" [columnDefs]="columnDefs" [rowData]="rowData" (gridReady)="onGridReady($event)"
+            [enableCellTextSelection]="true">
+        </ag-grid-angular>
+    </div>
+
+    <div *ngIf="type == '9'">
+        <mat-form-field appearance="outline" class="mx-2" [disabled]="!isAnyRowSelected">
+            <mat-label>Select Area</mat-label>
+            <mat-select [(ngModel)]="areaid" (ngModelChange)="onAreaStatusChange()" name="area" required>
+                <mat-option value="">Select Area</mat-option>
+                <mat-option *ngFor="let area of area_list" [value]="area.value">{{ area.name }}</mat-option>
+            </mat-select>
+            <mat-error *ngIf="!areaid">Area is required</mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="mx-2" [disabled]="!isAnyRowSelected">
+            <mat-label>Select Street</mat-label>
+            <mat-select [(ngModel)]="streetid" name="street" required (ngModelChange)="onSubscriberStreetLCOChange()">
+                <mat-option value="">Select Street</mat-option>
+                <mat-option *ngFor="let street of street_list" [value]="street.value">{{ street.name }}</mat-option>
+            </mat-select>
+            <mat-error *ngIf="!streetid">Street is required</mat-error>
+        </mat-form-field>
+        <ag-grid-angular #agGrid id="myGrid" domLayout='normal' class="ag-theme-alpine table-class" rowAnimation
+            [rowSelection]="rowSelection" [gridOptions]="gridOptions" [columnDefs]="columnDefs1" [rowData]="rowData"
+            (selectionChanged)="onSelectionChanged()" (gridReady)="onGridReady($event)"
+            [enableCellTextSelection]="true">
+        </ag-grid-angular>
+    </div>
+
+
 </div>

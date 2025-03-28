@@ -305,7 +305,7 @@
                     </div>
                 </div>
 
-                <div class="input_box me-3">
+                <div class="input_box me-3" *ngIf="role !== 'ROLE_OPERATOR'">
                     <div class="input-container">
                         <input type="text" matInput [matAutocomplete]="auto" [(ngModel)]="selectedLcoName"
                             [disabled]="!isRechargeOperator" (input)="filterOperators($event)"
@@ -314,6 +314,7 @@
                             [ngClass]="{ 'enabled-field': isRechargeOperator, 'disabled-field': !isRechargeOperator }">
                         <i class="bx bx-chevron-down icon-right"></i>
                     </div>
+
                     <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayOperator">
                         <mat-option [value]="0" selected
                             (click)="onOperatorStatusChange({ value: 0, name: 'All Operator' })">All
@@ -323,22 +324,22 @@
                             {{ operator.name }}
                         </mat-option>
                     </mat-autocomplete>
-                    <!-- <select id="operator" [(ngModel)]="selectedLcoName" [disabled]="!isRechargeOperator">
-                        <option value="0" selected>All Operator</option>
-                        <option *ngFor="let operator of filteredOperators" [value]="operator.value"
-                            (ngModelChange)="onSubscriberStatusChange($event)">
-                            {{ operator.name }}
-                        </option>
-                    </select> -->
                 </div>
 
-
-                <div class="input_box me-3">
+                <!-- <div class="input_box me-3">
                     <select name="user" id="user" [(ngModel)]="useragent" (ngModelChange)="onUserAgentType($event)"
                         [disabled]="!isUseragent"
                         [ngClass]="{ 'enabled-field': isUseragent, 'disabled-field': !isUseragent }">
                         <option value="0" selected>Filter By All User Agent</option>
                         <option *ngFor="let user of UserAgent" [value]="user.value">{{ user.label }}</option>
+                    </select>
+                </div> -->
+                <div class="input_box me-3">
+                    <select name="user" id="user" [(ngModel)]="useragent" (ngModelChange)="onUserAgentType($event)"
+                        [disabled]="!isUseragent"
+                        [ngClass]="{ 'enabled-field': isUseragent, 'disabled-field': !isUseragent }">
+                        <option value="0" selected>Filter By All User Agent</option>
+                        <option *ngFor="let user of filteredUserAgent" [value]="user.value">{{ user.label }}</option>
                     </select>
                 </div>
                 <div class="input_box me-3">
@@ -375,7 +376,7 @@
         [enableCellTextSelection]="true">
     </ag-grid-angular>
 </div>
-<div *ngIf="type== 'online_payment'">
+<div *ngIf="type== 'online_payment' ||  type == 'sub_online_recharge_count'">
     <div class="mb-3">
         <h4>Online Payment History</h4>
     </div>
@@ -390,31 +391,26 @@
                 <div class="input_box me-3">
                     <select (ngModelChange)="onOnlineType($event)" [(ngModel)]="selectedOnlineType">
                         <option value="" disabled>Select Type</option>
-                        <option *ngFor="let online of getFilteredOnlineType()" [value]="online.value">{{ online.label }}</option>
+                        <option *ngFor="let online of onlineType" [value]="online.value">{{ online.label }}
+                        </option>
                     </select>
                 </div>
 
-                <!-- Select Operator -->
-                <div *ngIf="isOperator" class="input_box me-3">
-                    <input type="text" matInput [matAutocomplete]="auto" [(ngModel)]="selectedLcoName"
-                        (input)="filterOperators($event)" placeholder="Select  Operator"
-                        [matAutocompleteDisabled]="false" [value]="selectedOperator?.name">
+                <div *ngIf="role !== 'ROLE_OPERATOR'">
+                    <div *ngIf="isOperator" class="input_box me-3">
+                        <input type="text" matInput [matAutocomplete]="auto" [(ngModel)]="selectedLcoName"
+                            (input)="filterOperators($event)" placeholder="Select  Operator"
+                            [matAutocompleteDisabled]="false" [value]="selectedOperator?.name">
 
-                    <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayOperator">
-                        <mat-option *ngFor="let operator of filteredOperators" [value]="operator.value"
-                            (click)="onSubscriberStatusChange(operator)">
-                            {{ operator.name }}
-                        </mat-option>
-                    </mat-autocomplete>
-                    <!-- <select id="operator" [(ngModel)]="selectedLcoName">
-                        <option [value]="0" selected>All Operator</option>
-                        <option *ngFor="let operator of filteredOperators" [value]="operator.value"
-                            (ngModelChange)="onSubscriberStatusChange(operator)">
-                            {{ operator.name }}
-                        </option>
-                    </select> -->
-                    <div *ngIf="submitted && !selectedLcoName" class="text-danger" style="font-size: small;">
-                        LCO Requred
+                        <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayOperator">
+                            <mat-option *ngFor="let operator of filteredOperators" [value]="operator.value"
+                                (click)="onSubscriberStatusChange(operator)">
+                                {{ operator.name }}
+                            </mat-option>
+                        </mat-autocomplete>
+                        <div *ngIf="submitted && !selectedLcoName" class="text-danger" style="font-size: small;">
+                            LCO Requred
+                        </div>
                     </div>
                 </div>
 
@@ -430,20 +426,12 @@
                             {{ operator.retailerName }}
                         </mat-option>
                     </mat-autocomplete>
-
-
-                    <!-- <select [(ngModel)]="selectedSubLcoName">
-                        <option [value]="0" selected>Select SubLco</option>
-                        <option *ngFor="let operator of filteredSubLcoList" [value]="operator.operatorId"
-                            (ngModelChange)="onSublcochange(operator)">
-                            {{ operator.retailerName }}
-                        </option>
-                    </select> -->
                 </div>
 
                 <!-- Smartcard -->
                 <div *ngIf="isSmartcard" class="input_box me-3">
-                    <input type="text" placeholder="Enter Smartcard" [(ngModel)]="smartcard" class="form-control">
+                    <input type="text" placeholder="Enter Smartcard" [(ngModel)]="smartcard" class="form-control"
+                        maxlength="20">
                 </div>
                 <!-- Date Range -->
                 <div class=" me-3">
@@ -609,7 +597,6 @@
         <div class="row">
             <div class="col-md-12 d-flex justify-content-center align-items-start mb-3">
                 <div class="col-12 d-flex justify-content-start align-items-center flex-wrap">
-
                     <div class=" me-3">
                         <mat-form-field appearance="outline">
                             <mat-date-range-input [rangePicker]="picker" [max]="today">
@@ -623,7 +610,7 @@
                         </mat-form-field>
                     </div>
 
-                    <div class="input_box me-3">
+                    <div *ngIf="role !== 'ROLE_OPERATOR'" class="input_box me-3">
                         <input type="text" matInput [matAutocomplete]="auto" maxlength="20"
                             (input)="filterOperators($event)" placeholder="Select Operator"
                             [matAutocompleteDisabled]="false" [value]="selectedOperator?.name">
@@ -638,6 +625,7 @@
                             </mat-option>
                         </mat-autocomplete>
                     </div>
+
 
                     <!-- Submit -->
                     <div class="d-flex align-items-center submit">
@@ -1133,23 +1121,23 @@
                         </mat-form-field>
                     </div>
                 </div>
+                <div *ngIf="role !== 'ROLE_OPERATOR'">
+                    <div *ngIf=" isLcoOperator" class=" input_box mx-2 mb-2">
+                        <input type="text" matInput [matAutocomplete]="auto" [(ngModel)]="selectedLcoName"
+                            (input)="filterOperators($event)" placeholder="Select Operator"
+                            [matAutocompleteDisabled]="false" [value]="selectedOperator?.name">
 
-                <div *ngIf="isLcoOperator" class=" input_box mx-2 mb-2">
-                    <input type="text" matInput [matAutocomplete]="auto" [(ngModel)]="selectedLcoName"
-                        (input)="filterOperators($event)" placeholder="Select  Operator"
-                        [matAutocompleteDisabled]="false" [value]="selectedOperator?.name">
-
-                    <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayOperator">
-                        <mat-option *ngFor="let operator of filteredOperators" [value]="operator.value"
-                            (click)="onSubscriberStatusChange(operator)">
-                            {{ operator.name }}
-                        </mat-option>
-                    </mat-autocomplete>
-                    <div *ngIf="submitted && !selectedLcoName" class="text-danger" style="font-size: small;">
-                        Lco is Requred
+                        <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayOperator">
+                            <mat-option *ngFor="let operator of filteredOperators" [value]="operator.value"
+                                (click)="onSubscriberStatusChange(operator)">
+                                {{ operator.name }}
+                            </mat-option>
+                        </mat-autocomplete>
+                        <div *ngIf="submitted && !selectedLcoName" class="text-danger" style="font-size: small;">
+                            Lco is Requred
+                        </div>
                     </div>
                 </div>
-
 
                 <div *ngIf="isLcoSmartcard" class="row col-12 col-md-5" style="padding: 1rem;">
                     <input placeholder="Enter the smartcard..." type="text" name="text" class="input_sb"

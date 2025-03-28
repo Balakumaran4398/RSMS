@@ -1,8 +1,9 @@
 import { BreakpointObserver } from '@angular/cdk/layout';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
+import { AgGridAngular } from 'ag-grid-angular';
 import { BaseService } from 'src/app/_core/service/base.service';
 import { ExcelService } from 'src/app/_core/service/excel.service';
 import { StorageService } from 'src/app/_core/service/storage.service';
@@ -18,7 +19,7 @@ export class OnlinerechargeComponent implements OnInit {
 
   role: any;
   username: any;
-  amount: any ;
+  amount: any;
   operatorid: any;
   transResponse: any;
   easebuzzData: any;
@@ -166,6 +167,7 @@ export class OnlinerechargeComponent implements OnInit {
       this.operatorid = data.operatorid;
       console.log(this.operatorid);
       this.getGatewayDetails(this.operatorid);
+      this.getOnline();
     })
   }
   getGatewayDetails(op_id: any) {
@@ -222,48 +224,22 @@ export class OnlinerechargeComponent implements OnInit {
           // access_key: res.data,
           access_key: this.easebuzzData,
           onResponse: (response: any) => {
-            // dialogRef.close();
             console.log('wsedasdsad', response);
             if (response.status) {
               this.swal.Loading();
               this.userservice
-                // .lcoOnlineFailurelRecharge(response, false, "0", "wallet")
                 .lcoOnlineFailurelRecharge(this.role, this.username, response.amount, this.operatorid, response.txnid, response.status, response.hash)
-                // .subscribe((res: any) => {
-                //   console.log(res);
-                //   // const dialogRef = this.dialog.open(PaymentStatusComponent, {
-                //   //   data: res,
-                //   //   minWidth: '360px',
-                //   //   panelClass: 'paymentstatus'
-                //   // });
-                //   this.swal.Close();
-                // }, err => {
-                //   console.log(err);
-                //   // this.iconRedirect(this.transResponse.txnid, 'wallet', false);
-                // });
                 .subscribe((res: any) => {
                   this.swal.success(res?.message);
                 }, (err) => {
                   this.swal.Error(err?.error?.message);
                 });
             } else {
-              // this.iconRedirect(this.transResponse.txnid, 'wallet', false);
             }
           },
           theme: '#123456',
         };
-        console.log("0000000000000000000");
-        console.log();
-
         easebuzzCheckout.initiatePayment(options);
-        console.log("hhh21h", this.easebuzzData);
-
-        // dialogRef.afterClosed().subscribe((dialogResult) => {
-        //   if (dialogResult === 1) {
-        //     this.getWalletInfo();
-        //     this.getData(this.fromdate, this.todate);
-        //   }
-        // });
       } else {
         alert(res.data);
       }
@@ -320,6 +296,7 @@ export class OnlinerechargeComponent implements OnInit {
     }
   }
   getOnline() {
+    console.log('rtgreutrhkgthk', this.operatorid)
     Swal.fire({
       title: "Processing",
       text: "Please wait while the report is being generated...",
@@ -339,10 +316,6 @@ export class OnlinerechargeComponent implements OnInit {
         this.rowDataOnline = [];
         this.swal.Close();
       });
-
-
-
-
   }
 
   // -------------------------------------------column-------------------------
@@ -358,20 +331,10 @@ export class OnlinerechargeComponent implements OnInit {
       sortable: false,
       filter: false,
     },
-
-    // { headerName: 'OPERATOR NAME', field: 'operatorname', width: 250 },
-    // { headerName: 'ORDER ID', field: 'orderid', width: 250, cellStyle: { textAlign: 'center' }, },
-    // { headerName: 'AMOUNT', field: 'amount', width: 220, cellStyle: { textAlign: 'center', color: 'green' }, },
-    // { headerName: 'STATUS	', field: 'status', width: 200, cellStyle: { textAlign: 'center' } },
-    // { headerName: 'RESPONSE', field: 'response', width: 200 },
-    // { headerName: 'TRANSACTION DATE', field: 'logdate', width: 200 },
-
     {
-      // headerName: 'Refresh',
       headerName: 'OPERATOR NAME',
       field: 'operatorname',
       width: 180,
-      // cellRendererFramework: RefreshComponent,
     },
     { headerName: "TORDER ID", field: 'orderid', width: 150 },
     { headerName: "AMOUNT", field: 'amount', width: 100 },
@@ -396,49 +359,7 @@ export class OnlinerechargeComponent implements OnInit {
       width: 150,
       cellStyle: this.statusStyleResponse,
     },
-
-
-    // {
-    //   // headerName: 'Refresh',
-    //   headerName: 'TRANSACTION ID',
-    //   field: 'wallet',
-    //   width: 150,
-    //   // cellRendererFramework: RefreshComponent,
-    // },
-    // { headerName: "TRANSACTION START TIME", field: 'starttime', width: 200 },
-    // { headerName: "TRANSACTION END TIME", field: 'endtime', width: 200 },
-
-    // {
-    //   headerName: 'AMOUNT',
-    //   field: 'amount',
-    //   width: 150,
-
-    // },
-    // { headerName: "TRANSACTION STATUS", field: 'status', width: 150 },
-    // // { headerName: "Paymenttype Id", field: 'paymenttypeid', width: 150 },
-    // {
-    //   headerName: 'WALLET',
-    //   field: 'status',
-    //   width: 100,
-    //   cellStyle: (params: { value: string }) => {
-    //     if (params.value === 'Initiated') {
-    //       //mark police cells as red
-    //       return { color: '#e39a1b' };
-    //     } else if (params.value === 'pending' || params.value === 'pending') {
-    //       return { color: '#8A2BE2' };
-    //     }
-    //     return { color: '#e31ba7' };
-    //   },
-    // },
-    // {
-    //   headerName: 'REMARKS',
-    //   field: 'remarks',
-    //   width: 120,
-    //   cellStyle: this.statusStyleResponse,
-    // },
-
-
-
+    { headerName: "RE STATUS", editable: true, cellRenderer: this.createRefreshButton.bind(this) }
   ];
 
 
@@ -487,76 +408,7 @@ export class OnlinerechargeComponent implements OnInit {
 
 
   //...................................Excel Dowmload.....................................
-  exportExcel() {
-    // this.load();
-    // const areasub = 'A1:H1';
-    // const areatitle = 'A2:H3';
-    // const title = this.token.getUserRole() + ' WALLET HISTORY';
-    // this.fdate = this.fromdate;
-    // this.tdate = this.todate;
-    // if (this.fdate === undefined && this.tdate === undefined) {
-    //   this.fdate = 'NA';
-    //   this.tdate = 'NA';
-    // }
-    // const header = [
-    //   'Wallect Updated Date',
-    //   'Old Balance',
-    //   'Amount',
-    //   'New Balance',
-    //   'Recharge Type',
-    //   'Wallet Update Type',
-    //   'Reference Id',
-    //   'Payment Type',
-    // ];
-    // // const data = this.history;
-    // const datas: Array<any> = [];
-    // data.forEach((d: any) => {
-    //   const row = [
-    //     d.creationdate,
-    //     d.oldbalance,
-    //     d.amount,
-    //     d.newbalance,
-    //     d.rechargetypename,
-    //     d.walletupdatetypename,
-    //     d.referenceid,
-    //     d.paymenttypename,
-    //   ];
-    //   datas.push(row);
-    // });
-    // const cellsize = {
-    //   a: 30,
-    //   b: 20,
-    //   c: 15,
-    //   d: 15,
-    //   e: 15,
-    //   f: 30,
-    //   g: 35,
-    //   h: 20,
-    //   i: 20,
-    //   j: 20,
-    //   k: 20,
-    //   l: 20,
-    //   m: 20,
-    //   n: 15,
-    //   o: 30,
-    //   p: 15,
-    //   q: 25,
-    //   r: 15,
-    //   s: 20,
-    //   t: 15,
-    //   u: 15,
-    // };
-    // this.excelService.generateExcel(
-    //   areasub,
-    //   areatitle,
-    //   header,
-    //   datas,
-    //   title,
-    //   this.fdate,
-    //   this.tdate,
-    //   cellsize
-    // );
-  }
+
 
   exportPdf() {
     // console.log(this.listUser);
@@ -592,15 +444,7 @@ export class OnlinerechargeComponent implements OnInit {
       this.fdate = 'NA';
       this.tdate = 'NA';
     }
-    // this.pdfService.generatePDFSP(
-    //   'download',
-    //   this.history,
-    //   title,
-    //   Fields,
-    //   dataFields, column_width,
-    //   this.fdate,
-    //   this.tdate
-    // );
+
   }
 
   load() {
@@ -629,16 +473,11 @@ export class OnlinerechargeComponent implements OnInit {
       headerName: 'Old Balance',
       field: 'oldbalance',
       width: 130,
-      // valueFormatter: (params: { data: { oldbalance: any } }) =>
-      //   amountFormatter(params.data.oldbalance, this.currency),
     },
     {
       headerName: 'Amount',
       field: 'amount',
       width: 130,
-      // valueFormatter: (params: { data: { amount: any } }) =>
-      //   amountFormatter1(params, '+' + this.currency, '-' + this.currency),
-      // cellStyle: this.amountstatusStyle,
     },
     {
       headerName: 'New Balance',
@@ -658,14 +497,72 @@ export class OnlinerechargeComponent implements OnInit {
       headerName: 'Status Type',
       field: 'status',
       width: 130,
-      // cellStyle: this.statusStyle,
     },
-    // { headerName: "Payment Type", field: 'paymenttypename', width: 130 }
+
   ];
 
+  createRefreshButton(params: any) {
+    const button = document.createElement('button');
+    button.innerText = 'Refresh';
+    button.style.cssText = `
+      margin-right: 5px;
+      cursor: pointer;
+      font-size: 12px;
+      padding: 0px 15px;
+      font-weight: bold;
+      height: 38px;
+      background: linear-gradient(rgb(255, 217, 70), rgb(225, 167, 92));
+      color: rgb(104, 102, 102);
+      border: 1px solid rgb(255, 220, 138);
+    `;
 
+    button.addEventListener('mouseenter', () => button.style.color = 'white');
+    button.addEventListener('mouseleave', () => button.style.color = 'rgb(104, 102, 102)');
+    button.addEventListener('click', () => this.refreshData(params.data));
+
+    if (params.data.status === "success") {
+      button.disabled = true;
+      button.style.cursor = 'not-allowed';
+      button.style.background = 'linear-gradient(rgb(251 234 170), rgb(229 200 164))';
+    }
+
+    const div = document.createElement('div');
+    div.appendChild(button);
+    return div;
+  }
+
+  // ================================================RefreshData===============================
+  @ViewChild('agGrid') agGrid!: AgGridAngular;
+  refreshData(event: any) {
+    console.log(event);
+    let transactionid = event.orderid;
+    this.userservice.getrefreshData(this.role, this.username, event.operatorid, event.userid, transactionid, 1)
+      .subscribe((res: any) => {
+        this.swal.success_1(res?.message || res?.responce);
+        if (this.agGrid && this.agGrid.api) {
+          this.updateRowData(transactionid, res?.updatedData);
+        } else {
+          console.error("AgGrid API is not initialized yet.");
+        }
+      }, (err) => {
+        this.swal.Error(err?.error?.message);
+      });
+
+    setTimeout(() => {
+      this.getOnline()
+    }, 2000);
+
+  }
+  updateRowData(transactionid: string, updatedData: any) {
+    const rowNode = this.agGrid.api.getRowNode(transactionid);
+    if (rowNode) {
+      rowNode.setData(updatedData);
+    }
+  }
 
 }
+
+
 
 class requestBody {
   amount: String = '0';

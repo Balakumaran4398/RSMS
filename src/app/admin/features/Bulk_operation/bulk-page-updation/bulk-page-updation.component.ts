@@ -10,7 +10,7 @@ import { SwalService } from 'src/app/_core/service/swal.service';
 import Swal from 'sweetalert2';
 import { EditInventoryComponent } from '../../channel_setting/_Dialogue/Inventory/edit-inventory/edit-inventory.component';
 import { BulkpackageupdationComponent } from '../../channel_setting/_Dialogue/BULK OPERATION/bulkpackageupdation/bulkpackageupdation.component';
-import { Observable } from 'rxjs';
+import { from, Observable } from 'rxjs';
 
 @Component({
   selector: 'app-bulk-page-updation',
@@ -143,10 +143,10 @@ export class BulkPageUpdationComponent implements OnInit {
     this.role = storageService.getUserRole();
     this.columnDefs = [
       { headerName: "S.No", lockPosition: true, valueGetter: 'node.rowIndex+1', cellClass: 'locked-col', width: 80, suppressNavigable: true, sortable: false, filter: false },
-      { headerName: "CUSTOMER NAME", field: 'customername', width: 250,cellStyle: { textAlign: 'center' }, },
+      { headerName: "CUSTOMER NAME", field: 'customername', width: 250, cellStyle: { textAlign: 'center' }, },
       { headerName: "SMARTCARD", field: 'smartcard', width: 300 },
       { headerName: "BOX ID", field: 'boxid', width: 250 },
-      { headerName: "PACKAGE NAME", field: 'productname', width: 250,cellStyle: { textAlign: 'center' }, },
+      { headerName: "PACKAGE NAME", field: 'productname', width: 250, cellStyle: { textAlign: 'center' }, },
       { headerName: "EXPIRY DATE", field: 'expirydate', width: 350 },
     ];
   }
@@ -163,21 +163,21 @@ export class BulkPageUpdationComponent implements OnInit {
           headerName: "S.No", lockPosition: true, valueGetter: 'node.rowIndex+1', cellClass: 'locked-col', width: 100,
           headerCheckboxSelection: true, checkboxSelection: true
         },
-        { headerName: "CUSTOMER NAME", field: 'customername',width: 250,cellStyle: { textAlign: 'left' }},
+        { headerName: "CUSTOMER NAME", field: 'customername', width: 250, cellStyle: { textAlign: 'left' } },
         { headerName: "SMARTCARD", field: 'smartcard', width: 300 },
         { headerName: "BOX ID", field: 'boxid', width: 330 },
-        { headerName: "PACKAGE NAME", field: 'productname',width: 250,cellStyle: { textAlign: 'left' }},
+        { headerName: "PACKAGE NAME", field: 'productname', width: 250, cellStyle: { textAlign: 'left' } },
         { headerName: "EXPIRY DATE", field: 'expirydate', width: 300 },
       ];
     } else if (tab === 'pending') {
       console.log(this.rowData = []);
       this.columnDefs = [
         { headerName: "S.No", lockPosition: true, valueGetter: 'node.rowIndex+1', cellClass: 'locked-col', width: 80 },
-        { headerName: "CUSTOMER NAME	", field: 'customername',width: 250,cellStyle: { textAlign: 'left' } },
+        { headerName: "CUSTOMER NAME	", field: 'customername', width: 250, cellStyle: { textAlign: 'left' } },
         { headerName: "SMARTCARD", field: 'smartcard', width: 250 },
         { headerName: "BOX ID", field: 'boxid', width: 250 },
         { headerName: "CREATED DATE", field: 'createddate', width: 250 },
-        { headerName: "PACKAGE NAME", field: 'expirydate',width: 250,cellStyle: { textAlign: 'left' }  },
+        { headerName: "PACKAGE NAME", field: 'expirydate', width: 250, cellStyle: { textAlign: 'left' } },
         { headerName: "EXPIRY DATE", field: 'packagename', width: 250 },
         {
           headerName: "STATUS", width: 230,
@@ -201,13 +201,13 @@ export class BulkPageUpdationComponent implements OnInit {
       console.log(this.rowData = []);
       this.columnDefs = [
         { headerName: "S.No", lockPosition: true, valueGetter: 'node.rowIndex+1', cellClass: 'locked-col', width: 80 },
-        { headerName: "OPERATOR NAME	", field: 'operatorname', width: 250,cellStyle: { textAlign: 'left' } },
-        { headerName: "CUSTOMER NAME	", field: 'customername',width: 250,cellStyle: { textAlign: 'left' }  },
+        { headerName: "OPERATOR NAME	", field: 'operatorname', width: 250, cellStyle: { textAlign: 'left' } },
+        { headerName: "CUSTOMER NAME	", field: 'customername', width: 250, cellStyle: { textAlign: 'left' } },
         { headerName: "SMARTCARD", field: 'smartcard', width: 250 },
         { headerName: "BOX ID", field: 'boxid', width: 200 },
         { headerName: "CREATED DATE", field: 'createddate', width: 200 },
-        { headerName: "PACKAGE NAME", field: 'packagename', width: 200,cellStyle: { textAlign: 'left' }  },
-        { headerName: "EXPIRY DATE", field: 'expirydate', width: 200,cellStyle: { textAlign: 'left' } },
+        { headerName: "PACKAGE NAME", field: 'packagename', width: 200, cellStyle: { textAlign: 'left' } },
+        { headerName: "EXPIRY DATE", field: 'expirydate', width: 200, cellStyle: { textAlign: 'left' } },
         {
           headerName: "STATUS",
           field: 'casresponse', width: 180
@@ -310,8 +310,27 @@ export class BulkPageUpdationComponent implements OnInit {
     this.updateColumnDefs('archive');
     this.fromdate = this.fromdate ? this.formatDate(this.fromdate) : this.formatDate(new Date());
     this.todate = this.todate ? this.formatDate(this.todate) : this.formatDate(new Date());
+
+    this.operatorIdoperatorId();
   }
 
+  lcoDeatails: any;
+  lcoId: any;
+  operatorname: any;
+  isplan: any;
+  isdate: any;
+  isDatetoDate: any;
+  operatorIdoperatorId() {
+    this.userservice.getOpDetails(this.role, this.username).subscribe((data: any) => {
+      this.lcoDeatails = data;
+      this.lcoId = this.lcoDeatails?.operatorid;
+      console.log(this.lcoId);
+      this.operatorname = this.lcoDeatails?.operatorname;
+      this.isplan = this.lcoDeatails?.isplan;
+      this.isdate = this.lcoDeatails?.isdate;
+      this.isDatetoDate = this.lcoDeatails?.isdatetodate;
+    })
+  }
   setCheckboxState(checked: boolean): void {
     this.isCheckboxChecked = checked;
     console.log('fdgdfgdf');
@@ -493,12 +512,12 @@ export class BulkPageUpdationComponent implements OnInit {
       fromdate: this.fromdate,
       todate: this.todate,
       package: this.package,
-      operatorid: this.operatorid
+      operatorid: this.operatorid || this.lcoId
     });
 
     this.rowData = [];
     const apiCall = this.userservice.getExpirySubscriberDetailsByDatePackAndOperatorId(
-      this.role, this.username, this.fromdate || null, this.todate || null, this.package || 0, this.operatorid || 0
+      this.role, this.username, this.fromdate || null, this.todate || null, this.package || 0, this.operatorid || this.lcoId || 0
     );
 
     this.filterData(apiCall, 'Submission data fetched successfully.');
@@ -507,7 +526,7 @@ export class BulkPageUpdationComponent implements OnInit {
 
   pendingFilter() {
     const apiCalls = [
-      { condition: this.typelist === 1, method: this.userservice.getAllBulkPackageListByOperatoridAndStatus(this.role, this.username, this.operatorid || null, 0, 1) },
+      { condition: this.typelist === 1, method: this.userservice.getAllBulkPackageListByOperatoridAndStatus(this.role, this.username, this.operatorid || this.lcoId || null, 0, 1) },
       { condition: this.typelist === 2, method: this.userservice.getAllBulkPackageListBySearchnameAndStatus(this.role, this.username, this.smartcard, 0, 1) },
       { condition: this.typelist === 3, method: this.userservice.getAllBulkPackageListByFromdateTodateAndStatus(this.role, this.username, this.fromdate, this.todate, 0, 1) }
     ];
@@ -517,6 +536,7 @@ export class BulkPageUpdationComponent implements OnInit {
         this.filterData(method, 'Pending data fetched successfully.');
       }
     });
+    this.rowData = [];
   }
 
   archiveFilter() {
@@ -524,7 +544,7 @@ export class BulkPageUpdationComponent implements OnInit {
     let apiCall;
     if (this.typelist === 1) {
       apiCall = this.userservice.getAllBulkPackageListByOperatoridAndStatus(
-        this.role, this.username, this.operatorid, this.alltypelist, 2
+        this.role, this.username, this.operatorid || this.lcoId, this.alltypelist, 2
       );
     } else if (this.typelist === 2) {
       apiCall = this.userservice.getAllBulkPackageListBySearchnameAndStatus(
@@ -541,6 +561,7 @@ export class BulkPageUpdationComponent implements OnInit {
     if (apiCall) {
       this.filterData(apiCall);
     }
+    this.rowData = [];
   }
 
   // private handleApiResponse(apiCall: Observable<HttpResponse<any[]>>) {
@@ -595,6 +616,11 @@ export class BulkPageUpdationComponent implements OnInit {
       rowData: this.rows,
       packageid: this.package,
       castype: this.castype,
+      fromdate: this.fromdate,
+      todate: this.todate,
+      plan: this.isplan,
+      date: this.isdate,
+      dateTodate: this.isDatetoDate,
     };
     let width = '600px';
     console.log(dataToSend);

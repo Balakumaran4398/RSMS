@@ -117,25 +117,55 @@ export class DefectiveSmartcardComponent {
       this.selectedIds.splice(index, 1);
     }
   }
-  onSelectionChanged() {
+  // onSelectionChanged() {
+  //   if (this.gridApi) {
+  //     // const selectedRows = this.gridApi.getSelectedRows();
+  //     let selectedRows: any[] = [];
+  //     this.gridApi.forEachNodeAfterFilter((rowNode: any) => {
+  //       if (rowNode.isSelected()) {
+  //         selectedRows.push(rowNode.data);
+  //       }
+  //     });
+  //     // console.log("Filtered & Selected Rows:", selectedRows);
+  //     if (selectedRows.length === 0) {
+  //       this.gridApi.deselectAll();
+  //     }
+  //     // console.log("Final Selected Rows:", selectedRows);
+  //     this.isAnyRowSelected = selectedRows.length > 0;
+  //     this.selectedIds = selectedRows.map((e: any) => e.id);
+  //     this.selectedtypes = selectedRows.map((e: any) => e.isactive);
+
+  //   }
+  // }
+
+  selectedIdsSet = new Set<number>();
+  onSelectionChanged(event: any) {
     if (this.gridApi) {
-      // const selectedRows = this.gridApi.getSelectedRows();
       let selectedRows: any[] = [];
       this.gridApi.forEachNodeAfterFilter((rowNode: any) => {
         if (rowNode.isSelected()) {
           selectedRows.push(rowNode.data);
+          this.selectedIdsSet.add(rowNode.data.id);
         }
       });
-      // console.log("Filtered & Selected Rows:", selectedRows);
+      console.log("Filtered & Selected Rows:", selectedRows);
       if (selectedRows.length === 0) {
         this.gridApi.deselectAll();
+        this.selectedIdsSet.clear();
       }
-      // console.log("Final Selected Rows:", selectedRows);
-      this.isAnyRowSelected = selectedRows.length > 0;
-      this.selectedIds = selectedRows.map((e: any) => e.id);
-      this.selectedtypes = selectedRows.map((e: any) => e.isactive);
-
+      console.log("Final Selected Rows:", selectedRows);
+      this.updateSelectedRows(selectedRows);
     }
+  }
+
+
+  updateSelectedRows(selectedRows: any[]) {
+    this.isAnyRowSelected = selectedRows.length > 0;
+    // this.selectedIds = selectedRows.map((e: any) => e.id);
+    this.selectedIds = Array.from(this.selectedIdsSet)
+    this.selectedtypes = selectedRows.map((e: any) => e.isactive);
+    console.log("Updated Selected Rows:", selectedRows);
+    console.log("Selected Rows:", this.selectedIds);
   }
   onGridReady(params: { api: any; }) {
     this.gridApi = params.api;

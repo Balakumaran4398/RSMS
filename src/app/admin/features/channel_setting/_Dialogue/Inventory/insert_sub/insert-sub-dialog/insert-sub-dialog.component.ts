@@ -18,14 +18,14 @@ export class InsertSubDialogComponent {
   id: any;
   selectedLcoName: any = 0;
   // sub_list: { [key: string]: number } = {};
-  sub_list: any[]=[];
+  sub_list: any[] = [];
   searchTerm: string = '';
   filteredOperators: any[] = [];
   selectedOperator: any;
   submitted: boolean = false;
   constructor(
     public dialogRef: MatDialogRef<InsertSubDialogComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: any, private userService: BaseService, private storageService: StorageService,private swal:SwalService) {
+    @Inject(MAT_DIALOG_DATA) public data: any, private userService: BaseService, private storageService: StorageService, private swal: SwalService) {
     console.log(data);
     this.username = storageService.getUsername();
     this.role = storageService.getUserRole();
@@ -33,7 +33,7 @@ export class InsertSubDialogComponent {
     this.operatorid = data.operatorid
     console.log(this.id);
     console.log(this.operatorid);
-    
+
     userService.getsubscriberlist_allocation(this.role, this.username, this.operatorid).subscribe((data: any) => {
       console.log(data);
       this.sub_list = data[0];
@@ -41,7 +41,7 @@ export class InsertSubDialogComponent {
       this.sub_list = Object.entries(data[0]).map(([key, value]) => {
         return { name: key, value: value };
       });
-      this.filteredOperators= this.sub_list;
+      this.filteredOperators = this.sub_list;
     })
   }
   onNoClick(): void {
@@ -74,7 +74,7 @@ export class InsertSubDialogComponent {
   }
 
   Submit() {
-    this.submitted= true;
+    this.submitted = true;
     if (!this.selectedLcoName || !this.id || !this.operatorid) {
       Swal.fire({
         icon: 'error',
@@ -85,6 +85,7 @@ export class InsertSubDialogComponent {
       });
       return;
     }
+    this.swal.Loading();
     this.userService.Defective_Insert_Allocated(this.role, this.username, this.selectedLcoName, this.id, this.operatorid)
       .subscribe(
         (res: any) => {
@@ -94,30 +95,33 @@ export class InsertSubDialogComponent {
             title: 'Submission Successful',
             text: res.message || 'Your data has been successfully submitted.',
             timer: 3000,
-            showConfirmButton: false
+            showConfirmButton: false,
+            timerProgressBar: true,
           }).then(() => {
             window.location.reload();
           });
+          // this.swal.Close();
         },
         (error) => {
           Swal.fire({
             icon: 'error',
             title: 'Submission Failed',
             text: error?.error?.message || 'An unexpected error occurred. Please try again later.',
-            timer: 2000,
+            timer: 3000,
             showConfirmButton: true,
             timerProgressBar: true,
           }).then(() => {
-            window.location.reload();
+            // window.location.reload();
           });
+          // this.swal.Close();
           console.error('Error:', error);
         }
       );
-      // .subscribe((res: any) => {
-      //   this.swal.success(res?.message);
-      // }, (err) => {
-      //   this.swal.Error(err?.error?.message);
-      // });
+    // .subscribe((res: any) => {
+    //   this.swal.success(res?.message);
+    // }, (err) => {
+    //   this.swal.Error(err?.error?.message);
+    // });
   }
 
 

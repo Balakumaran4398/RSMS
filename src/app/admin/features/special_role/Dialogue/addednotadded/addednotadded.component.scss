@@ -113,6 +113,35 @@ h1 {
 //     overflow: auto;
 // }
 
+.example-list {
+    border: 1px solid #ccc;
+    min-height: 200px;
+    max-height: 300px;
+    // padding: 10px;
+    overflow-y: auto;
+    background-color: #f9f9f9;
+}
+
+.example-box {
+    padding: 10px;
+    border: 1px solid #ccc;
+    margin-bottom: 5px;
+    background-color: #fff;
+    cursor: move;
+    user-select: none;
+}
+
+.example-box.selected {
+    background-color: #e861ec;
+}
+.example-box:last-child {
+    border: none;
+}
+
+.example-list.cdk-drop-list-dragging .example-box:not(.cdk-drag-placeholder) {
+    transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
+}
+
 @media (max-width: 767.98px) {
     //     .d-flex {
     //         // flex-direction: column;

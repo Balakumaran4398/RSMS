@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, Inject, OnInit, ViewEncapsulation, OnDestroy } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Inject, OnInit, ViewEncapsulation, OnDestroy, ViewChild } from '@angular/core';
 import { AbstractControl, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatDatepicker } from '@angular/material/datepicker';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
@@ -16,6 +16,7 @@ import { dateToNumber } from 'ag-charts-community/dist/types/src/module-support'
 import { HttpResponse } from '@angular/common/http';
 import { ChangeDetectorRef } from '@angular/core';
 import { Router } from '@angular/router';
+import { NavComponent } from '../../nav/nav.component';
 declare var $: any;
 const moment = _rollupMoment || _moment;
 interface requestBodylogs {
@@ -363,9 +364,15 @@ export class SubscriberdialogueComponent implements OnInit, OnDestroy {
     return !!this.f_date || this.datetype;
   }
 
+  @ViewChild(NavComponent) navComponent!: NavComponent;
+  operatorIdValue: any = '';
+
   constructor(private router: Router, public dialogRef: MatDialogRef<SubscriberdialogueComponent>, private swal: SwalService,
     @Inject(MAT_DIALOG_DATA) public data: any, public userservice: BaseService, private cdr: ChangeDetectorRef, public storageService: StorageService, private fb: FormBuilder, private zone: NgZone) {
     console.log(data);
+
+
+
     this.subscriberdata = data;
     this.role = storageService.getUserRole();
     this.username = storageService.getUsername();
@@ -491,6 +498,8 @@ export class SubscriberdialogueComponent implements OnInit, OnDestroy {
     })
     this.updateColumnDefs(this.sType);
   }
+
+
   private _filter(value: string): any[] {
     const filterValue = value.toLowerCase();
     return this.packagenameList.filter((option: any) =>
@@ -505,6 +514,8 @@ export class SubscriberdialogueComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
+
+
     const currentDate = new Date();
     this.today = currentDate.toISOString().split('T')[0];
 
@@ -565,6 +576,55 @@ export class SubscriberdialogueComponent implements OnInit, OnDestroy {
     // this.loadIdProofList();
     // this.loadAddProofList();
     // this.onSubscriberList();
+    if (this.role == 'ROLE_OPERATOR') {
+      this.operatorIdoperatorId();
+
+    }
+  }
+  lcoDeatails: any;
+  operatorId: any;
+  operatorIdoperatorId() {
+    console.log('111111111111111111111');
+
+    this.userservice.getOpDetails(this.role, this.username).subscribe((data: any) => {
+      this.lcoDeatails = data;
+      this.operatorId = this.lcoDeatails?.operatorid;
+      this.operatorname = this.lcoDeatails?.operatorname;
+      console.log(this.operatorId);
+      this.onoperatorchange_LCO(this.operatorId);
+      // this.getAreaStatusChange_LCO(this.operatorId);
+    })
+
+  }
+  onoperatorchange_LCO(operator: any): void {
+    // this.selectedOperator = operator;
+    // this.lcoid = operator.value;
+    this.userservice.getAreaListByOperatorid(this.role, this.username, operator).subscribe((data: any) => {
+      this.area_list = Object.keys(data).map(key => {
+        const value = data[key];
+        const name = key;
+        return { name: name, value: value };
+      });
+      this.filteredAreas = this.area_list;
+      this.cdr.detectChanges();
+    })
+  }
+
+  getAreaStatusChange_LCO(area: any): void {
+    console.log(area);
+    this.selectedArea = area;
+    this.lcoareaid = area.value;
+    this.userservice.getStreetListByAreaid(this.role, this.username, area).subscribe((data: any) => {
+      this.street_list = Object.keys(data).map(key => {
+        const value = data[key];
+        const name = key;
+        return { name: name, value: value };
+      });
+      this.filteredStreet = this.street_list;
+      console.log(this.filteredStreet);
+
+      this.cdr.detectChanges();
+    })
   }
   onAllBaselistByExceptDatasActivation() {
     // this.userservice.getAllBaselistByExceptPackId(this.role, this.username, this.operatorid, this.castype, this.type, 0)
@@ -691,6 +751,8 @@ export class SubscriberdialogueComponent implements OnInit, OnDestroy {
 
       this.onsublist(this.subid);
     });
+
+
   }
   loadIdProofList(): void {
     this.userservice.getIdProofList(this.role, this.username).subscribe(
@@ -1331,7 +1393,7 @@ export class SubscriberdialogueComponent implements OnInit, OnDestroy {
   onoperatorchange(operator: any): void {
     this.selectedOperator = operator;
     this.lcoid = operator.value;
-    this.userservice.getAreaListByOperatorid(this.role, this.username, this.lcoid).subscribe((data: any) => {
+    this.userservice.getAreaListByOperatorid(this.role, this.username, this.lcoid || this.operatorId).subscribe((data: any) => {
       this.area_list = Object.keys(data).map(key => {
         const value = data[key];
         const name = key;
@@ -1481,11 +1543,11 @@ export class SubscriberdialogueComponent implements OnInit, OnDestroy {
 
   changeOperator() {
     this.swal.Loading();
-    if (!this.lcoid || !this.lcoareaid || !this.lcostreetid) {
-      this.swal.Error('All fields are required');
-      return;
-    }
-    this.userservice.transferLcoToSmartcard(this.role, this.username, this.lcoid, this.lcoareaid, this.lcostreetid, this.subid_1 || this.newSubid, this.withsubscription, 0, 3)
+    // if ((!this.lcoid || this.operatorId) || !this.lcoareaid || !this.lcostreetid) {
+    //   this.swal.Error('All fields are required');
+    //   return;
+    // }
+    this.userservice.transferLcoToSmartcard(this.role, this.username, (this.lcoid || this.operatorId), this.lcoareaid, this.lcostreetid, this.subid_1 || this.newSubid, this.withsubscription, 0, 3)
       .subscribe((res: any) => {
         this.swal.success(res?.message);
       }, (err) => {

@@ -41,7 +41,7 @@ export class PackageCloneComponent {
     })
   }
   ngOnInit(): void {
-    this.userService.PackageList(this.role, this.username, this.type).subscribe((data) => {
+    this.userService.PackageList(this.role, this.username, ).subscribe((data) => {
       this.packagenameList = data;
       this.cdr.detectChanges();
     })

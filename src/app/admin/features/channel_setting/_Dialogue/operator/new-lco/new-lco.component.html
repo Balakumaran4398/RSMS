@@ -1,4 +1,4 @@
-<!-- <div *ngIf="type == 'new_lco'"> -->
+<div *ngIf="type == 'new_lco'">
     <div class="Head d-flex justify-content-between align-items-center mb-3" style="padding: 1rem;">
         <h6>ADD LCO</h6>
         <i class="fa fa-close close-icon" style="cursor: pointer;" (click)="onNoClick()"></i>
@@ -188,7 +188,7 @@
         <button type="submit" class="btn btn-success me-2" (click)="onSubmit()">Create</button>
         <button type="button" class="btn btn-danger me-2" (click)="toggleedit()">Cancel</button>
     </div>
-<!-- </div> -->
+</div>
 <div *ngIf="type == 'sub_lco'">
     <div class="Head d-flex justify-content-between align-items-center mb-3" style="padding: 1rem;">
         <h6>LCO CREATION</h6>
@@ -199,6 +199,24 @@
         <form action="" [formGroup]="form">
             <div class="col-12 col-md-12 " style="padding:1rem;max-height: 700px;overflow: auto;">
                 <div class="input_box">
+
+                    <div class="mb-3 edit">
+                        <div class="col-12 col-md-4">
+                            <span class="form-label">Name Head</span>
+                        </div>
+                        <div class="col-12 col-md-8">
+                            <div class="custom-radio">
+                                <mat-radio-group aria-label="Select an option" formControlName="nameheader">
+                                    <mat-radio-button value="Mr">Mr</mat-radio-button>
+                                    <mat-radio-button value="Mrs">Mrs</mat-radio-button>
+                                    <mat-radio-button value="Miss">Miss</mat-radio-button>
+                                </mat-radio-group>
+                                <div *ngIf="form.get('nameheader')?.invalid && form.get('nameheader')?.touched">
+                                    <small class="text-danger">Name Head is required.</small>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                     <div class="mb-3 edit">
                         <div class="col-12 col-md-4">
                             <span class="form-label">Operator Name</span>
@@ -223,6 +241,21 @@
                                     *ngIf="form.get('contactnumber1')?.errors?.['required']">Mobile
                                     Number is
                                     required.</small>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mb-3 edit">
+                        <div class="col-12 col-md-4">
+                            <span class="form-label">Mobile Number 2</span>
+                        </div>
+                        <div class="col-12 col-md-8">
+                            <input class="" type="text" pattern="0-9" maxlength="10" (keypress)="onKeydown($event)"
+                                formControlName="contactnumber2">
+                            <div *ngIf="form.get('contactnumber2')?.invalid && form.get('contactnumber2')?.touched">
+
+                                <!-- <small class="text-danger" *ngIf="form.get('contactnumber2')?.errors?.['required']">Mobile
+                                    Number is
+                                    required.</small> -->
                             </div>
                         </div>
                     </div>
@@ -343,6 +376,22 @@
                                     Password is required.
                                 </small>
 
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="mb-3 edit">
+                        <div class="col-12 col-md-4">
+                            <span class="form-label">Business Name</span>
+                        </div>
+                        <div class="col-12 col-md-8">
+                            <select class="form-select" formControlName="lcobusinessid">
+                                <option value="0" selected>Select a Business Name</option>
+                                <option *ngFor="let business of businessList" [value]="business.value">{{
+                                    business.name}}</option>
+                            </select>
+                            <div *ngIf="form.get('lcobusinessid')?.invalid && form.get('lcobusinessid')?.touched">
+                                <small class="text-danger">Business Name is required.</small>
                             </div>
                         </div>
                     </div>

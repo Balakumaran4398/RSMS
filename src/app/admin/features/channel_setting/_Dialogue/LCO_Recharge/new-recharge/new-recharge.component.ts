@@ -147,6 +147,12 @@ export class NewRechargeComponent implements OnInit {
       event.preventDefault();
     }
   }
+  onKeydown1(event: KeyboardEvent) {
+    const key = event.key;
+    if (!/^\d$/.test(key) && key !== 'Backspace' && key !== '-') {
+      event.preventDefault();
+    }
+  }
   onNoClick(): void {
     this.dialogRef.close();
   }

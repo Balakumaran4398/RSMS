@@ -478,17 +478,7 @@
                                         <!-- <span style="display:none;">{{lco_list[0].id}}</span> -->
                                     </label>
                                 </div>
-                                <div class="col-12 col-md-8">
-
-                                    <!-- <select id="lco" [(ngModel)]="lcoid">
-                                        <option value="0" selected>Select a Operator</option>
-                                        <option *ngFor="let operator of filteredOperators" [value]="operator.name"
-                                        (ngModelChange)="filterOperators($event)">
-                                            {{ operator.name }}
-                                        </option>
-                                       
-                                    </select> -->
-
+                                <div class="col-12 col-md-8" *ngIf="role !== 'ROLE_OPERATOR'">
                                     <input type="text" matInput [matAutocomplete]="auto" [(ngModel)]="lcoid"
                                         name="lcoName" (ngModelChange)="filterOperators($event)"
                                         placeholder="Select a Operator" [matAutocompleteDisabled]="false"
@@ -501,8 +491,12 @@
                                         </mat-option>
                                     </mat-autocomplete>
                                     <div *ngIf="lcoid.invalid && lcoid.touched" class="text-danger">
-                                        Operator Name is required
+                                        LCO Name is required
                                     </div>
+                                  
+                                </div>
+                                <div *ngIf="role == 'ROLE_OPERATOR'" class="col-12 col-md-8" >
+                                    {{operatorname}}
                                 </div>
                             </div>
                             <div class="input_box display mb-3">
@@ -1464,25 +1458,17 @@
                 <div class="  col-6 col-md-6">
                     <label class="me-2">New LCO Name</label>
                 </div>
-                <div class="col-6 col-md-6 value">
+                <div *ngIf="role !== 'ROLE_OPERATOR'" class="col-6 col-md-6 value">
                     <select id="lco" [(ngModel)]="operatorid" (change)="onSubscriberStatusChange($event)">
                         <option value="0" selected>Select a Operator</option>
                         <option *ngFor="let key of filteredOperators" [value]="key.value">
                             {{ key.name }}
                         </option>
                     </select>
-
-                    <!-- <input type="text" matInput [matAutocomplete]="auto" [value]="operatname"
-                         (ngModelChange)="filterOperators($event)" placeholder="Select a Operator"
-                        [matAutocompleteDisabled]="false">
-
-                    <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayOperator">
-                        <mat-option *ngFor="let operator of filteredOperators" [value]="operator.value"
-                            (click)="onSubscriberStatusChange(operator)">
-                            {{ operator.name }}
-                        </mat-option>
-                    </mat-autocomplete> -->
                     <div *ngIf="errorMessage" class="text-danger mt-2">{{ errorMessage }}</div>
+                </div>
+                <div *ngIf="role == 'ROLE_OPERATOR'">
+                    {{operatorname}}
                 </div>
             </div>
         </div>
@@ -1492,7 +1478,7 @@
                     <label class="me-2">Subscriber</label>
                 </div>
                 <div class="col-6 col-md-6 value">
-                  
+
                     <select id="subscriber" [(ngModel)]="subid" (change)="onsublist($event)">
                         <option value="0" selected>Select a Subscriber</option>
                         <option *ngFor="let sub of filteredSub" [value]="sub.value">

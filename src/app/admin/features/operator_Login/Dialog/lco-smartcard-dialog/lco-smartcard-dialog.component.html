@@ -9,10 +9,10 @@
             <div class="line">
                 <div class=" col-12 d-flex justify-content-center align-items-center">
                     <div class="col-6 d-flex justify-content-start align-items-center">
-                        <span>LCO Name</span>
+                        <span>Customer Name</span>
                     </div>
                     <div class="col-6">
-                        {{lcoPaymentList?.operatorname}}
+                        {{lcoPaymentList?.customer_name}}
                     </div>
                 </div>
             </div>
@@ -22,7 +22,7 @@
                         <span>Smartcard</span>
                     </div>
                     <div class="col-6">
-                        {{lcoPaymentList?.channelname}}
+                        {{lcoPaymentList?.smartcard}}
                     </div>
                 </div>
             </div>
@@ -33,7 +33,7 @@
                     </div>
                     <div class="col-6">
                         <div class="gender-category">
-                            {{lcoPaymentList?.balance}}
+                            {{lcoPaymentList?.new_balance}}
                         </div>
                     </div>
                 </div>
@@ -44,7 +44,7 @@
                         <span>Collected Amount</span>
                     </div>
                     <div class="col-6">
-                        <input type="text" [(ngModel)]="pay" placeholder="Enter payment ₹">
+                        <input type="text" [(ngModel)]="pay" (keypress)="onKeydown($event)"  placeholder="Enter payment ₹">
                     </div>
                 </div>
             </div>

@@ -20,9 +20,6 @@ var AUTH_API = URLs.AUTH_URL();
 // var AUTH_API ='http://cas.ridsys.in:8585/rsms/api/auth';   //AJK
 // var AUTH_API ='http://rdigital.ridsys.in:8585/rsms/api/auth';   //rdigital
 
-
-
-
 // var AUTH_API = 'http://rdigital.ridsys.in:8585/rsms/api/auth';
 // const AUTH_API = URLs.AUTH_URL();
 const BASE_API = URLs.BASE_URL();
@@ -41,9 +38,7 @@ export class AuthService {
   constructor(private http: HttpClient, private router: Router, private storageService: StorageService) {
 
     // const currentUrl = window.location.href;
-
     // const { ip, domain } = this.extractIpOrDomain(currentUrl);
-
     // this.ip = ip;
     // this.domain = domain;
     // if (this.ip) {

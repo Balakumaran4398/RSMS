@@ -167,7 +167,7 @@ export class LcoRechargeComponent implements OnInit {
           });
         }
       } else if (result.dismiss === Swal.DismissReason.cancel) {
-        this.router.navigate(['admin/lco_recharge']).then(() => {
+        this.router.navigate(['admin/lco_recharge/1']).then(() => {
         });
       }
     });

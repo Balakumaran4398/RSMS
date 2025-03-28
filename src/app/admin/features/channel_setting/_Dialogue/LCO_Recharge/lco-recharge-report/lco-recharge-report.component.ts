@@ -111,7 +111,7 @@ export class LcoRechargeReportComponent implements OnInit {
       comparator: (valueA: any, valueB: any) => {
         const isNumberA = !isNaN(valueA) && valueA !== null;
         const isNumberB = !isNaN(valueB) && valueB !== null;
-  
+
         if (isNumberA && isNumberB) {
           return valueA - valueB;
         } else {
@@ -716,7 +716,6 @@ export class LcoRechargeReportComponent implements OnInit {
           if (response.status === 200) {
             this.updateColumnDefs(this.selectedTab);
             this.rowData = response.body;
-            // this.swal.Success_200();
             this.swal.Close();
           } else if (response.status === 204) {
             this.swal.Success_204();
@@ -724,11 +723,7 @@ export class LcoRechargeReportComponent implements OnInit {
           }
         },
         (error) => {
-          console.log(error?.error);
-          console.log(error?.error?.getrefundlistbyoperatoridandsmartcard);
-          console.log(error?.error?.getrefundlistbyoperatoridandsmartcard?.smartcard);
 
-         
           let errorMessage = "smartcard is must";
           if (typeof error?.error === "string") {
             errorMessage = error.error;

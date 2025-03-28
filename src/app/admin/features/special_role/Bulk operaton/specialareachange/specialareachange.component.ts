@@ -43,7 +43,7 @@ export class SpecialareachangeComponent implements OnInit {
       comparator: (valueA: any, valueB: any) => {
         const isNumberA = !isNaN(valueA) && valueA !== null;
         const isNumberB = !isNaN(valueB) && valueB !== null;
-  
+
         if (isNumberA && isNumberB) {
           return valueA - valueB;
         } else {
@@ -114,12 +114,12 @@ export class SpecialareachangeComponent implements OnInit {
 
   // filterLcoList() {
   //   console.log(this.lcoList);
-    
+
   //   this.filteredLcoList = this.lcoList.filter(lco =>
   //     lco.name.toLowerCase().includes(this.lco.toLowerCase())
   //   );
   //   console.log(this.filteredLcoList);
-    
+
   // }
   // onLcoSelected(selectedValue: string) {
   //   this.lco = this.lcoList.find(lco => lco.value === selectedValue)?.name || '';
@@ -272,9 +272,7 @@ export class SpecialareachangeComponent implements OnInit {
           });
           console.log(this.streetList);
         });
-
     }
-
   }
   onAreaStatusLCOChange() {
     console.log(this.area);

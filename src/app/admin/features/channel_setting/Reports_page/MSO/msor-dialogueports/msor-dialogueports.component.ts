@@ -69,7 +69,7 @@ export class MsorDialogueportsComponent implements OnInit, OnDestroy {
   userlist: any[] = [];
   filtereduserlist: any[] = [];
 
-  selectedSubOperator: any;
+  selectedSubOperator: any = 0;
   selectedLcoName: any = 0;
   selectedSubLcoName: any = 0;
   submitted: boolean = false;
@@ -218,22 +218,13 @@ export class MsorDialogueportsComponent implements OnInit, OnDestroy {
   }
   // -----------------------------------------------------------------subscriber bill varaibales-------------------------------
 
-
-
-
-
   ngOnInit(): void {
     // this.setReportTitle();
     this.fromdate = this.fromdate ? this.formatDate(this.fromdate) : this.formatDate(new Date());
     this.todate = this.todate ? this.formatDate(this.todate) : this.formatDate(new Date());
-
-
     this.route.url.subscribe((segments) => {
-      console.log('Full URL Segments:', segments);
-
       const parts = segments.map(seg => seg.path);
       const index = parts.indexOf('msodialogueReports');
-
       if (index !== -1 && index + 1 < parts.length) {
         this.path = parts[index + 1];
         console.log('Extracted Value:', this.path);
@@ -245,25 +236,39 @@ export class MsorDialogueportsComponent implements OnInit, OnDestroy {
     this.generateMonths();
     this.generateYears();
     this.operatorList();
-    // this.subLcoList('')
     this.onRechargeType(this.selectedRechargeType);
-
     this.onOnlineType(this.selectedOnlineType)
-    console.log(this.selectedRechargeType);
-    console.log(this.selectedOnlineType);
-
     this.onDateChange();
-
-
     this.onModelList();
-
-    // this.onGridReady1();
-
     if (this.path == 'user_rechargehistory') {
       this.getUserRechargeHistory();
     }
 
+    if (this.role == 'ROLE_OPERATOR') {
+      this.operatorIdoperatorId();
+    }
+    this.filterUserAgent();
   }
+  filteredUserAgent: any[] = [];
+  filterUserAgent() {
+    this.filteredUserAgent = this.role === 'ROLE_OPERATOR' 
+      ? this.UserAgent.filter(agent => agent.label !== 'MSO') 
+      : this.UserAgent;
+  }
+  lcoDeatails: any;
+  operatorId: any;
+  operatorname: any;
+  operatorIdoperatorId() {
+    this.userService.getOpDetails(this.role, this.username).subscribe((data: any) => {
+      this.lcoDeatails = data;
+      this.operatorId = this.lcoDeatails?.operatorid;
+      this.operatorname = this.lcoDeatails?.operatorname;
+      console.log(this.operatorId);
+      this.onSubscriberStatusChange(this.operatorId)
+    })
+  }
+
+
   ngOnDestroy(): void {
     ($('#operator') as any).select2('destroy');
     ($('#subLco') as any).select2('destroy');
@@ -283,7 +288,11 @@ export class MsorDialogueportsComponent implements OnInit, OnDestroy {
     });
     $('#subLco').on('change', (event: any) => {
       this.selectedSubLcoName = event.target.value;
-      this.onSublcochange(this.selectedSubLcoName);
+      if (this.role == 'ROLE_OPERATOR') {
+        this.onSublcochange(this.operatorId);
+      } else {
+        this.onSublcochange(this.selectedSubLcoName);
+      }
     });
 
   }
@@ -402,12 +411,14 @@ export class MsorDialogueportsComponent implements OnInit, OnDestroy {
       this.isLcoOperator = true;
       this.isLcoSmartcard = false;
       this.smartcard1 = 0;
+      this.rowData = [];
       // this.fromdate = 0;
       // this.todate = 0;
     } else if (selectedValue == 2) {
       this.isDateEnabled = false;
       this.isLcoOperator = false;
       this.isLcoSmartcard = true;
+      this.rowData = [];
       // this.fromdate = 0;
       // this.todate = 0;
       this.selectedOperator.value = 0;
@@ -415,6 +426,7 @@ export class MsorDialogueportsComponent implements OnInit, OnDestroy {
       this.isDateEnabled = true;
       this.isLcoOperator = false;
       this.isLcoSmartcard = false;
+      this.rowData = [];
       this.smartcard1 = 0;
       // this.fromdate = 0;
       // this.todate = 0;
@@ -469,7 +481,7 @@ export class MsorDialogueportsComponent implements OnInit, OnDestroy {
     console.log(this.rechargeOperatorValue);
     this.columnDefs2 = this.rechargeOperatorValue == 3
       ? [
-        { headerName: "S.No", lockPosition: true, valueGetter: 'node.rowIndex+1', headerCheckboxSelection: false, checkboxSelection: false, width: 90 ,filter:false},
+        { headerName: "S.No", lockPosition: true, valueGetter: 'node.rowIndex+1', headerCheckboxSelection: false, checkboxSelection: false, width: 90, filter: false },
         { headerName: 'CUSTOMER NAME', field: 'customername', width: 150 },
         { headerName: 'AREA ID', field: 'dummyarea', width: 150, cellStyle: { textAlign: 'center' } },
         { headerName: 'CUSTOMER NO', field: 'customerno', width: 150, cellStyle: { textAlign: 'center' } },
@@ -586,36 +598,42 @@ export class MsorDialogueportsComponent implements OnInit, OnDestroy {
 
 
   onOnlineType(selectedValue: any) {
+
     this.selectedOnlineType = selectedValue;
     console.log(selectedValue);
     console.log('ONLINE PAYMENT');
     this.onlinePayment();
+
     if (selectedValue == 1) {
+      this.rowData = [];
       this.isSmartcard = false;
       this.isOperator = true;
       this.isSubLCO = false;
       // this.fromdate = 0;
       // this.todate = 0;
+      this.selectedOperator.value;
       this.selectedLcoName = 0;
       console.log(this.selectedLcoName)
       this.selectedSubLcoName = 0;
-      // setTimeout(() => {
-      $('#operator').val(this.selectedLcoName).trigger('change');
-      // }, 100);
-      // this.smartcard = '';
+      setTimeout(() => {
+        $('#operator').val(this.selectedLcoName).trigger('change');
+      }, 100);
+      this.smartcard = '';
+
     } else if (selectedValue == 2) {
+      this.rowData = [];
       this.isSmartcard = false;
       this.isOperator = true;
       this.isSubLCO = true;
-      // this.fromdate = 0;
-      // this.todate = 0;
-      this.selectedLcoName = 0;
-      this.selectedSubLcoName = 0;
+      this.selectedOperator.value;
+      this.selectedLcoName;
+      this.selectedSubLcoName;
       // setTimeout(() => {
       $('#operator').val(this.selectedLcoName).trigger('change');
       $('#subLco').val(this.selectedSubLcoName).trigger('change');
       // }, 100);
     } else if (selectedValue == 3) {
+      this.rowData = [];
       this.isSmartcard = true;
       this.isOperator = false;
       this.isSubLCO = false;
@@ -718,7 +736,8 @@ export class MsorDialogueportsComponent implements OnInit, OnDestroy {
   onSubscriberStatusChange(selectedOperator: any) {
     console.log(selectedOperator);
     this.selectedOperator = selectedOperator;
-    this.selectedLcoName = selectedOperator.value;
+    this.selectedLcoName = selectedOperator.value || this.operatorId;
+    console.log(this.selectedLcoName);
 
     this.selectedSubLcoName = 0;
     // if (this.type == 'online_payment') {
@@ -730,14 +749,14 @@ export class MsorDialogueportsComponent implements OnInit, OnDestroy {
 
     }
     else {
-      this.subLcoList(this.selectedOperator.value)
+      this.subLcoList(this.selectedOperator.value || this.operatorId)
     }
   }
   onSubscriberLcoChange(selectedOperator: any) {
     console.log(selectedOperator);
     this.selectedLco = selectedOperator;
     this.selectedLco = selectedOperator.name;
-    this.selectedLcoName = selectedOperator.value;
+    this.selectedLcoName = selectedOperator.value || this.operatorId;
     console.log(this.selectedLcoName);
     console.log(this.selectedLco);
     console.log(this.type);
@@ -794,7 +813,7 @@ export class MsorDialogueportsComponent implements OnInit, OnDestroy {
 
     if (this.type == 'walletShare') {
       this.columnDefs = [
-        { headerName: "S.No", lockPosition: true, valueGetter: 'node.rowIndex+1', headerCheckboxSelection: false, checkboxSelection: false, width: 90 ,filter:false},
+        { headerName: "S.No", lockPosition: true, valueGetter: 'node.rowIndex+1', headerCheckboxSelection: false, checkboxSelection: false, width: 90, filter: false },
         { headerName: 'DATE', field: 'logdate', Flex: 1 },
         { headerName: 'SHARED AMOUNT	', field: 'amount', Flex: 1, cellStyle: { textAlign: 'center', color: 'green' } },
         {
@@ -823,7 +842,7 @@ export class MsorDialogueportsComponent implements OnInit, OnDestroy {
     } else if (this.type == 'recharge_deduction_excluding') {
       if (this.selectedOperator.value == 0) {
         this.columnDefs = [
-          { headerName: "S.No", lockPosition: true, valueGetter: 'node.rowIndex+1', headerCheckboxSelection: false, checkboxSelection: false, width: 80,filter:false },
+          { headerName: "S.No", lockPosition: true, valueGetter: 'node.rowIndex+1', headerCheckboxSelection: false, checkboxSelection: false, width: 80, filter: false },
           { headerName: 'LCO ID', field: 'operatorid', width: 150 },
           { headerName: 'LCO NAME', field: 'operatorname', width: 200 },
           { headerName: 'TOTAL	', field: 'total', width: 200 },
@@ -834,7 +853,7 @@ export class MsorDialogueportsComponent implements OnInit, OnDestroy {
         ]
       } else {
         this.columnDefs = [
-          { headerName: "S.No", lockPosition: true, valueGetter: 'node.rowIndex+1', headerCheckboxSelection: false, checkboxSelection: false, width: 80,filter:false },
+          { headerName: "S.No", lockPosition: true, valueGetter: 'node.rowIndex+1', headerCheckboxSelection: false, checkboxSelection: false, width: 80, filter: false },
           { headerName: 'LCO ID', field: 'operatorid', width: 150 },
           { headerName: 'LCO NAME', field: 'operatorname', width: 200 },
           { headerName: 'TOTAL	', field: 'total', width: 200 },
@@ -847,7 +866,7 @@ export class MsorDialogueportsComponent implements OnInit, OnDestroy {
 
     } else if (this.type == 'recharge_deduction_including') {
       this.columnDefs = [
-        { headerName: "S.No", lockPosition: true, valueGetter: 'node.rowIndex+1', headerCheckboxSelection: false, checkboxSelection: false, width: 70,filter:false },
+        { headerName: "S.No", lockPosition: true, valueGetter: 'node.rowIndex+1', headerCheckboxSelection: false, checkboxSelection: false, width: 70, filter: false },
         { headerName: 'LCO ID', field: 'operatorid', width: 80 },
         { headerName: 'LCO NAME', field: 'operatorname', width: 250 },
         { headerName: 'PAYMENT MODE', field: 'packagename', width: 230 },
@@ -914,31 +933,31 @@ export class MsorDialogueportsComponent implements OnInit, OnDestroy {
     // }
     else if (this.type == 'user_rechargehistory') {
       this.columnDefs = [
-        { headerName: "S.No", lockPosition: true, valueGetter: 'node.rowIndex+1', headerCheckboxSelection: false, checkboxSelection: false, width: 90,filter:false },
-        { headerName: 'OPERATOR NAME', field: 'operatorname', flex: 1, cellStyle: { textAlign: 'left' },width: 300,},
-        { headerName: 'CUSTOMER NAME', field: 'customername', flex: 1, cellStyle: { textAlign: 'left' },width: 200 },
-        { headerName: 'MOBILE NUMBER', field: 'mobileno', flex: 1, cellStyle: { textAlign: 'center' },width: 200 },
-        { headerName: 'SMARTCARD', field: 'smartcard', flex: 1, cellStyle: { textAlign: 'center', color: 'green' }, width: 250},
-        { headerName: 'PRODUCT NAME	', field: 'packagename', flex: 1, cellStyle: { textAlign: 'center' } ,width: 250},
-        { headerName: 'ACTION', field: 'action', flex: 1 ,width: 100},
-        { headerName: 'CUSTOMER AMOUNT', field: 'customeramount', flex: 1 ,width: 250},
-        { headerName: 'LCO AMOUNT', field: 'lcocommission', flex: 1,width: 200 },
-        { headerName: 'MSO AMOUNT', field: 'msoamount', flex: 1,width: 200 },
-        { headerName: 'LOG DATE', field: 'logdate', flex: 1 ,width: 200},
-        { headerName: 'EXPIRY DATE', field: 'expirydate', flex: 1 ,width: 200},
+        { headerName: "S.No", lockPosition: true, valueGetter: 'node.rowIndex+1', headerCheckboxSelection: false, checkboxSelection: false, width: 90, filter: false },
+        { headerName: 'OPERATOR NAME', field: 'operatorname', cellStyle: { textAlign: 'left' }, width: 300, },
+        { headerName: 'CUSTOMER NAME', field: 'customername', cellStyle: { textAlign: 'left' }, width: 200 },
+        { headerName: 'MOBILE NUMBER', field: 'mobileno', cellStyle: { textAlign: 'center' }, width: 200 },
+        { headerName: 'SMARTCARD', field: 'smartcard', cellStyle: { textAlign: 'center', color: 'green' }, width: 250 },
+        { headerName: 'PRODUCT NAME	', field: 'packagename', cellStyle: { textAlign: 'center' }, width: 250 },
+        { headerName: 'ACTION', field: 'action', width: 100 },
+        { headerName: 'CUSTOMER AMOUNT', field: 'customeramount', width: 250 },
+        { headerName: 'LCO AMOUNT', field: 'lcocommission', width: 200 },
+        { headerName: 'MSO AMOUNT', field: 'msoamount', width: 200 },
+        { headerName: 'LOG DATE', field: 'logdate', width: 200 },
+        { headerName: 'EXPIRY DATE', field: 'expirydate', width: 200 },
       ]
     } else if (this.type == 'lco_active_subscription') {
       this.columnDefs = [
-        { headerName: "S.No", lockPosition: true, valueGetter: 'node.rowIndex+1', headerCheckboxSelection: false, checkboxSelection: false, width: 90 ,filter:false},
+        { headerName: "S.No", lockPosition: true, valueGetter: 'node.rowIndex+1', headerCheckboxSelection: false, checkboxSelection: false, width: 90, filter: false },
         { headerName: 'OPERATOR ID', field: 'operatorname', flex: 1 },
         { headerName: 'OPERATOR NAME', field: 'operatorname', flex: 1 },
-        { headerName: 'MOBILE NUMBER', field: 'mobileno', flex: 1, cellStyle: { textAlign: 'center' }, },
-        { headerName: 'AREA NAME', field: 'areaname', flex: 1, cellStyle: { textAlign: 'left', color: 'green' }, },
-        { headerName: 'LCO INVENTORY', field: 'lcoend', flex: 1, cellStyle: { textAlign: 'center' } },
-        { headerName: 'SUBSCRIBER INVENTORY', field: 'subscriberend', flex: 1, cellStyle: { textAlign: 'center' } },
-        { headerName: 'ACTIVE', field: 'active', flex: 1, cellStyle: { textAlign: 'center' } },
-        { headerName: 'EXPIRY', field: 'expiry', flex: 1, cellStyle: { textAlign: 'center' } },
-        { headerName: 'TOTAL', field: 'total', flex: 1, cellStyle: { textAlign: 'center' } },
+        { headerName: 'MOBILE NUMBER', field: 'mobileno', cellStyle: { textAlign: 'center' }, },
+        { headerName: 'AREA NAME', field: 'areaname', cellStyle: { textAlign: 'left', color: 'green' }, },
+        { headerName: 'LCO INVENTORY', field: 'lcoend', cellStyle: { textAlign: 'center' } },
+        { headerName: 'SUBSCRIBER INVENTORY', field: 'subscriberend', cellStyle: { textAlign: 'center' } },
+        { headerName: 'ACTIVE', field: 'active', cellStyle: { textAlign: 'center' } },
+        { headerName: 'EXPIRY', field: 'expiry', cellStyle: { textAlign: 'center' } },
+        { headerName: 'TOTAL', field: 'total', cellStyle: { textAlign: 'center' } },
       ]
     }
     else if (this.type == 'lcowiseExpiryCountDiff') {
@@ -946,70 +965,72 @@ export class MsorDialogueportsComponent implements OnInit, OnDestroy {
       console.log('selected month', this.selectedDateMonthName);
       this.columnDefs = [
         { headerName: "S.No", lockPosition: true, valueGetter: 'node.rowIndex+1', filter: false, headerCheckboxSelection: false, checkboxSelection: false, width: 90 },
-        { headerName: 'OPERATOR ID', field: 'operator_id', flex: 1, cellStyle: { textAlign: 'center' } },
+        { headerName: 'OPERATOR ID', field: 'operator_id', cellStyle: { textAlign: 'center' } },
         { headerName: 'OPERATOR NAME', field: 'name', flex: 1 },
         { headerName: 'MOBILE NUMBER', field: 'mobileno', flex: 1 },
         { headerName: 'AREA NAME', field: 'area', flex: 1 },
-        { headerName: 'ACTIVE COUNT', field: 'active', flex: 1, cellStyle: { textAlign: 'center' } },
-        { headerName: 'EXPIRY COUNT', field: 'deactive', flex: 1, cellStyle: { textAlign: 'center' } },
-        { headerName: `EXPIRY COUNT ${this.selectedMonthName}`, field: 'expiryfrom', flex: 1, cellStyle: { textAlign: 'center' } },
-        { headerName: `EXPIRY COUNT ${this.selectedDateMonthName}`, field: 'expiryto', flex: 1, cellStyle: { textAlign: 'center' } },
-        { headerName: 'DIFFERENCE', field: 'difference', flex: 1, cellStyle: { textAlign: 'center' } },
+        { headerName: 'ACTIVE COUNT', field: 'active', cellStyle: { textAlign: 'center' } },
+        { headerName: 'EXPIRY COUNT', field: 'deactive', cellStyle: { textAlign: 'center' } },
+        { headerName: `EXPIRY COUNT ${this.selectedMonthName}`, field: 'expiryfrom', cellStyle: { textAlign: 'center' } },
+        { headerName: `EXPIRY COUNT ${this.selectedDateMonthName}`, field: 'expiryto', cellStyle: { textAlign: 'center' } },
+        { headerName: 'DIFFERENCE', field: 'difference', cellStyle: { textAlign: 'center' } },
       ]
     }
     else if (this.type == 'total_lco') {
       this.columnDefs = [
-        { headerName: "S.No", lockPosition: true, valueGetter: 'node.rowIndex+1', filter: false, headerCheckboxSelection: false,
-           checkboxSelection: false, width: 90 },
-        { headerName: 'LCO NAME', field: 'Operator_Name', flex: 1, filter: false, cellStyle: { textAlign: 'left', }, },
-        { headerName: 'LCO ID', field: 'Operator_ID', flex: 1, filter: false, cellStyle: { textAlign: 'center', }, },
-        { headerName: 'AREA', field: 'Area', flex: 1, filter: false, cellStyle: { textAlign: 'left', }, },
-        { headerName: 'ADDRESS', field: 'address', flex: 1, cellStyle: { textAlign: 'left', }, },
-        { headerName: 'PINCODE', field: 'pincode', flex: 1, filter: false, cellStyle: { textAlign: 'center' } },
-        { headerName: 'MOBILE NUMBER', field: 'Contact_Number1', flex: 1, cellStyle: { textAlign: 'center' }, filter: false, },
-        { headerName: 'USER ID', field: 'user_id', flex: 1, filter: false, cellStyle: { textAlign: 'left', }, },
+        {
+          headerName: "S.No", lockPosition: true, valueGetter: 'node.rowIndex+1', filter: false, headerCheckboxSelection: false,
+          checkboxSelection: false, width: 90
+        },
+        { headerName: 'LCO NAME', field: 'Operator_Name', filter: false, cellStyle: { textAlign: 'left', }, },
+        { headerName: 'LCO ID', field: 'Operator_ID', filter: false, cellStyle: { textAlign: 'center', }, },
+        { headerName: 'AREA', field: 'Area', filter: false, cellStyle: { textAlign: 'left', }, },
+        { headerName: 'ADDRESS', field: 'address', cellStyle: { textAlign: 'left', }, },
+        { headerName: 'PINCODE', field: 'pincode', filter: false, cellStyle: { textAlign: 'center' } },
+        { headerName: 'MOBILE NUMBER', field: 'Contact_Number1', cellStyle: { textAlign: 'center' }, filter: false, },
+        { headerName: 'USER ID', field: 'user_id', filter: false, cellStyle: { textAlign: 'left', }, },
       ]
     } else if (this.type == 'lco_transfer_details') {
       this.columnDefs = [
-        { headerName: "S.No", lockPosition: true, valueGetter: 'node.rowIndex+1', headerCheckboxSelection: false, checkboxSelection: false, width: 90 ,filter:false},
-        { headerName: 'SMARTCARD', field: 'smartcard', flex: 1, },
-        { headerName: 'OLD CUSTOMER NAME', field: 'oldcustomername', flex: 1, },
-        { headerName: 'NEW CUSTOMER NAME', field: 'newcustomername', flex: 1, cellStyle: { textAlign: 'left', color: 'green', }, },
-        { headerName: 'OLD OPERATOR	', field: 'oldoperatorname', flex: 1, cellStyle: { textAlign: 'left' }, },
-        { headerName: 'NEW OPERATOR	', field: 'newoperatorname', flex: 1, cellStyle: { textAlign: 'left', color: 'green', }, },
-        { headerName: 'LOG DATE', field: 'logdate', flex: 1, cellStyle: { textAlign: 'center' }, },
+        { headerName: "S.No", lockPosition: true, valueGetter: 'node.rowIndex+1', headerCheckboxSelection: false, checkboxSelection: false, width: 90, filter: false },
+        { headerName: 'SMARTCARD', field: 'smartcard', },
+        { headerName: 'OLD CUSTOMER NAME', field: 'oldcustomername', },
+        { headerName: 'NEW CUSTOMER NAME', field: 'newcustomername', cellStyle: { textAlign: 'left', color: 'green', }, },
+        { headerName: 'OLD OPERATOR	', field: 'oldoperatorname', cellStyle: { textAlign: 'left' }, },
+        { headerName: 'NEW OPERATOR	', field: 'newoperatorname', cellStyle: { textAlign: 'left', color: 'green', }, },
+        { headerName: 'LOG DATE', field: 'logdate', cellStyle: { textAlign: 'center' }, },
       ]
     } else if (this.type == 'subscriber_bill') {
       this.columnDefs = [
-        { headerName: 'SMARTCARD', field: 'referenceid', flex: 1, filter: false },
-        { headerName: 'DATE', field: 'transactiondate', flex: 1, filter: false },
-        { headerName: 'EXPIRY DATE', field: 'expirydate', flex: 1, cellStyle: { textAlign: 'center', }, filter: false },
-        { headerName: 'PACKAGE', field: 'packagename', flex: 1, filter: false },
-        { headerName: 'PLAN', field: 'days', flex: 1, filter: false, cellStyle: { textAlign: 'center' }, },
-        { headerName: 'AMOUNT', field: 'customeramount', flex: 1, cellStyle: { textAlign: 'center' }, filter: false, },
+        { headerName: 'SMARTCARD', field: 'referenceid', filter: false },
+        { headerName: 'DATE', field: 'transactiondate', filter: false },
+        { headerName: 'EXPIRY DATE', field: 'expirydate', cellStyle: { textAlign: 'center', }, filter: false },
+        { headerName: 'PACKAGE', field: 'packagename', filter: false },
+        { headerName: 'PLAN', field: 'days', filter: false, cellStyle: { textAlign: 'center' }, },
+        { headerName: 'AMOUNT', field: 'customeramount', cellStyle: { textAlign: 'center' }, filter: false, },
       ]
     } else if (this.type == 'sublco_offline') {
       this.columnDefs = [
         { headerName: "S.No", lockPosition: true, valueGetter: 'node.rowIndex+1', filter: false, headerCheckboxSelection: false, checkboxSelection: false, width: 90 },
-        { headerName: 'RETAILER ID', field: 'retailerid', flex: 1, cellStyle: { textAlign: 'center', }, },
-        { headerName: 'RETAILER NAME', field: 'retailername', flex: 1, },
-        { headerName: 'AMOUNT	', field: 'lcoamount', flex: 1, cellStyle: { textAlign: 'center', }, filter: false },
-        { headerName: 'OPERATOR NAME', field: 'operatorname', flex: 1, },
-        { headerName: 'LOG DATE', field: 'transactiondate', flex: 1, filter: false, cellStyle: { textAlign: 'center' }, },
-        { headerName: 'MOBILE', field: 'contact', flex: 1, cellStyle: { textAlign: 'center' }, },
-        { headerName: 'REMARKS', field: 'transactionremarks', flex: 1, cellStyle: { textAlign: 'center' }, },
+        { headerName: 'RETAILER ID', field: 'retailerid', cellStyle: { textAlign: 'center', }, },
+        { headerName: 'RETAILER NAME', field: 'retailername', },
+        { headerName: 'AMOUNT	', field: 'lcoamount', cellStyle: { textAlign: 'center', }, filter: false },
+        { headerName: 'OPERATOR NAME', field: 'operatorname', },
+        { headerName: 'LOG DATE', field: 'transactiondate', filter: false, cellStyle: { textAlign: 'center' }, },
+        { headerName: 'MOBILE', field: 'contact', cellStyle: { textAlign: 'center' }, },
+        { headerName: 'REMARKS', field: 'transactionremarks', cellStyle: { textAlign: 'center' }, },
       ]
     } else if (this.type == 'unpair_smartcard') {
       this.columnDefs = [
-        { headerName: 'CUSTOMER NAME', field: 'referenceid', flex: 1, },
-        { headerName: 'AREA ID', field: 'transactiondate', flex: 1, },
-        { headerName: 'CUSTOMER NO', field: 'expirydate', flex: 1, cellStyle: { textAlign: 'center', }, },
-        { headerName: 'OPERATOR NAME', field: 'packagename', flex: 1, },
-        { headerName: 'SMARTCARD', field: 'days', flex: 1, cellStyle: { textAlign: 'center' }, },
-        { headerName: 'PACKAGE NAME', field: 'customeramount', flex: 1, cellStyle: { textAlign: 'center' }, },
-        { headerName: 'ACTION', field: 'customeramount', flex: 1, cellStyle: { textAlign: 'center' }, },
-        { headerName: 'TRANSACTION TYPE', field: 'customeramount', flex: 1, cellStyle: { textAlign: 'center' }, },
-        { headerName: 'DAYS', field: 'customeramount', flex: 1, cellStyle: { textAlign: 'center' }, filter: false, },
+        { headerName: 'CUSTOMER NAME', field: 'referenceid', },
+        { headerName: 'AREA ID', field: 'transactiondate', },
+        { headerName: 'CUSTOMER NO', field: 'expirydate', cellStyle: { textAlign: 'center', }, },
+        { headerName: 'OPERATOR NAME', field: 'packagename', },
+        { headerName: 'SMARTCARD', field: 'days', cellStyle: { textAlign: 'center' }, },
+        { headerName: 'PACKAGE NAME', field: 'customeramount', cellStyle: { textAlign: 'center' }, },
+        { headerName: 'ACTION', field: 'customeramount', cellStyle: { textAlign: 'center' }, },
+        { headerName: 'TRANSACTION TYPE', field: 'customeramount', cellStyle: { textAlign: 'center' }, },
+        { headerName: 'DAYS', field: 'customeramount', cellStyle: { textAlign: 'center' }, filter: false, },
       ]
     } else if (this.type == 'lcoinvoice') {
       this.columnDefs = [
@@ -1038,7 +1059,7 @@ export class MsorDialogueportsComponent implements OnInit, OnDestroy {
     return `${year}-${month}-${day}`;
   }
 
-  
+
   formatDate1(date: Date): string {
     const year = date.getFullYear();
     const month = String(date.getMonth() + 1).padStart(2, '0'); // Months are 0-indexed
@@ -1046,7 +1067,7 @@ export class MsorDialogueportsComponent implements OnInit, OnDestroy {
     return `${year}-${month}-${day}`;
   }
   cur_date: any;
-  
+
   getFromDate(event: any) {
     console.log(event.value);
     const date = new Date(event.value).getDate().toString().padStart(2, '0');
@@ -1167,7 +1188,7 @@ export class MsorDialogueportsComponent implements OnInit, OnDestroy {
 
     });
     // this.swal.Loading();
-    this.userService.getRechargeHistory(this.role, this.username, this.selectedRechargeType, this.selectedOperator.value, this.fromdate, this.todate, this.smartcard, this.useragent,
+    this.userService.getRechargeHistory(this.role, this.username, this.selectedRechargeType, this.selectedOperator.value || this.operatorId || 0, this.fromdate, this.todate, this.smartcard, this.useragent,
       this.selectedSubLcoName, 3
     ).subscribe(
       (response: HttpResponse<any>) => {
@@ -1190,6 +1211,8 @@ export class MsorDialogueportsComponent implements OnInit, OnDestroy {
   }
 
   getRechargeExcel() {
+    console.log(this.selectedOperator.value);
+
     this.smartcard = this.smartcardChange(this.smartcard);
     Swal.fire({
       title: "Processing",
@@ -1201,7 +1224,7 @@ export class MsorDialogueportsComponent implements OnInit, OnDestroy {
 
     });
     console.log('dfdsfdsfdsfdsf', event);
-    this.userService.getRechargeHistoryReport(this.role, this.username, this.selectedRechargeType, this.selectedOperator.value, this.fromdate, this.todate, this.smartcard, this.useragent,
+    this.userService.getRechargeHistoryReport(this.role, this.username, this.selectedRechargeType, this.selectedOperator.value || this.operatorId || 0, this.fromdate, this.todate, this.smartcard, this.useragent,
       this.selectedSubLcoName, 2
     )
       .subscribe((x: Blob) => {
@@ -1233,6 +1256,7 @@ export class MsorDialogueportsComponent implements OnInit, OnDestroy {
   getRerchargePdf() {
 
     this.smartcard = this.smartcardChange(this.smartcard);
+    console.log(this.selectedOperator.value);
 
     Swal.fire({
       title: "Processing",
@@ -1243,7 +1267,7 @@ export class MsorDialogueportsComponent implements OnInit, OnDestroy {
       }
     });
     console.log('dfdsfdsfdsfdsf', event);
-    this.userService.getRechargeHistoryReport(this.role, this.username, this.selectedRechargeType, this.selectedOperator.value, this.fromdate, this.todate, this.smartcard, this.useragent,
+    this.userService.getRechargeHistoryReport(this.role, this.username, this.selectedRechargeType, this.selectedOperator.value || this.operatorId || 0, this.fromdate, this.todate, this.smartcard, this.useragent,
       this.selectedSubLcoName, 1
     )
       .subscribe((x: Blob) => {
@@ -1275,10 +1299,201 @@ export class MsorDialogueportsComponent implements OnInit, OnDestroy {
   }
   // -----------------------------------------------------------Online history report----------------------
 
+  // getOnline() {
+
+  //   this.smartcard = this.smartcardChange(this.smartcard);
+  //   console.log(this.selectedSubLcoName);
+  //   console.log(this.selectedOperator);
+
+  //   Swal.fire({
+  //     title: "Processing",
+  //     text: "Please wait while the report is being generated...",
+  //     showConfirmButton: false,
+  //     didOpen: () => {
+  //       Swal.showLoading(null);
+  //     }
+  //   });
+  //   this.userService.getOnlinePaymentHistory(this.role, this.username, this.fromdate, this.todate, this.selectedOperator.value, this.selectedSubLcoName, this.smartcard, this.selectedOnlineType, 3)
+  //     .subscribe((res: any) => {
+  //       this.swal.success_1(res?.message);
+  //       this.rowData = res;
+  //       this.swal.Close();
+  //     }, (err) => {
+  //       this.swal.Error(err?.error?.message || err?.error);
+  //       // this.handleApiError(err.error.message, err);
+  //       this.rowData = [];
+  //     });
+  // }
+
+
+  //   getOnline() {
+  //     // Validation: Operator must be selected if Sub LCO or Subscriber is selected
+  //     if (!this.selectedLcoName) {
+  //         Swal.fire({
+  //             icon: "error",
+  //             title: "Validation Error",
+  //             text: "Please select an Operator.",
+  //         });
+  //         return;
+  //     }
+
+  //     // If Sub LCO is selected, ensure Operator is also selected
+  //     if (this.isSubLCO && !this.selectedSubLcoName) {
+  //         Swal.fire({
+  //             icon: "error",
+  //             title: "Validation Error",
+  //             text: "Please select a Sub LCO .",
+  //         });
+  //         return;
+  //     }
+
+  //     // If Subscriber is selected, ensure Operator is passed
+  //     // if (this.isSmartcard && !this.smartcard) {
+  //     //     Swal.fire({
+  //     //         icon: "error",
+  //     //         title: "Validation Error",
+  //     //         text: "Please enter a Smartcard number.",
+  //     //     });
+  //     //     return;
+  //     // }
+
+  //     // Proceed with API Call
+  //     this.smartcard = this.smartcardChange(this.smartcard);
+  //     console.log(this.selectedSubLcoName);
+  //     console.log(this.selectedOperator);
+
+  //     Swal.fire({
+  //         title: "Processing",
+  //         text: "Please wait while the report is being generated...",
+  //         showConfirmButton: false,
+  //         didOpen: () => {
+  //             Swal.showLoading(null);
+  //         }
+  //     });
+
+  //     this.userService.getOnlinePaymentHistory(
+  //         this.role,
+  //         this.username,
+  //         this.fromdate,
+  //         this.todate,
+  //         this.selectedOperator.value, 
+  //         this.selectedSubLcoName, 
+  //         this.smartcard, 
+  //         this.selectedOnlineType, 
+  //         3
+  //     ).subscribe(
+  //         (res: any) => {
+  //             this.swal.success_1(res?.message);
+  //             this.rowData = res;
+  //             this.swal.Close();
+  //         },
+  //         (err) => {
+  //             this.swal.Error(err?.error?.message || err?.error);
+  //             this.rowData = [];
+  //         }
+  //     );
+  // }
+  // getOnline() {
+  //   if (!this.selectedOperator.value) {
+  //     Swal.fire({
+  //       icon: "error",
+  //       title: "Validation Error",
+  //       text: "Please select an Operator .",
+  //     });
+  //     return;
+  //   }
+
+  //   if (this.selectedOperator.value && !this.selectedSubLcoName) {
+  //     Swal.fire({
+  //       icon: "error",
+  //       title: "Validation Error",
+  //       text: "Please select a Sub LCO .",
+  //     });
+  //     return;
+  //   }
+
+  //   if (this.isSmartcard) {
+  //     this.selectedSubLcoName = "0";
+  //   }
+
+  //   // Proceed with API Call
+  //   this.smartcard = this.smartcardChange(this.smartcard);
+  //   console.log(this.selectedSubLcoName);
+  //   console.log(this.selectedOperator);
+
+  //   Swal.fire({
+  //     title: "Processing",
+  //     text: "Please wait while the report is being generated...",
+  //     showConfirmButton: false,
+  //     didOpen: () => {
+  //       Swal.showLoading(null);
+  //     }
+  //   });
+
+  //   this.userService.getOnlinePaymentHistory(
+  //     this.role,
+  //     this.username,
+  //     this.fromdate,
+  //     this.todate,
+  //     this.selectedOperator.value,
+  //     this.selectedSubLcoName,
+  //     this.smartcard,
+  //     this.selectedOnlineType,
+  //     3
+  //   ).subscribe(
+  //     (res: any) => {
+  //       this.swal.success_1(res?.message);
+  //       this.rowData = res;
+  //       this.swal.Close();
+  //     },
+  //     (err) => {
+  //       this.swal.Error(err?.error?.message || err?.error);
+  //       this.rowData = [];
+  //     }
+  //   );
+  // }
+
+
   getOnline() {
+    console.log(this.operatorId);
+
+    console.log(this.selectedOnlineType);
+    if (Number(this.selectedOnlineType) === 1) {
+      console.log('Operator', this.selectedOnlineType);
+      if (!this.selectedOperator?.value && !this.operatorId) {
+        Swal.fire({
+          icon: "error",
+          title: "Validation Error",
+          text: "Please select an Online Type.",
+        });
+        return;
+      }
+      // this.handleOperatorSelection();
+    } else if (Number(this.selectedOnlineType) === 2) {
+      console.log('sublco', this.selectedOnlineType);
+      // this.handleSublcoSelection();
+
+      if (!this.selectedOperator?.value && !this.operatorId) {
+        Swal.fire({
+          icon: "error",
+          title: "Validation Error",
+          text: "Please select an Operator.",
+        });
+        return;
+      }
+      this.selectedSubLcoName;
+
+    } else if (Number(this.selectedOnlineType) === 3) {
+      console.log('subscriber', this.selectedOnlineType);
+      // this.selectedOperator.value = '0';
+      this.selectedOperator = { value: '0' };
+      this.selectedSubLcoName = '0';
+    }
+
     this.smartcard = this.smartcardChange(this.smartcard);
-    console.log(this.selectedSubLcoName);
-    console.log(this.selectedOperator);
+    console.log("Selected Operator:", this.selectedOperator?.value);
+    console.log("Selected SubLCO Name:", this.selectedSubLcoName);
+    console.log("Smartcard:", this.smartcard);
 
     Swal.fire({
       title: "Processing",
@@ -1288,37 +1503,83 @@ export class MsorDialogueportsComponent implements OnInit, OnDestroy {
         Swal.showLoading(null);
       }
     });
-    this.userService.getOnlinePaymentHistory(this.role, this.username, this.fromdate, this.todate, this.selectedOperator.value, this.selectedSubLcoName, this.smartcard, this.selectedOnlineType, 3)
-      .subscribe((res: any) => {
+
+    this.userService.getOnlinePaymentHistory(
+      this.role,
+      this.username,
+      this.fromdate,
+      this.todate,
+      this.selectedOperator?.value || this.operatorId,
+      this.selectedSubLcoName || 0,
+      this.smartcard,
+      this.selectedOnlineType,
+      3
+    ).subscribe(
+      (res: any) => {
         this.swal.success_1(res?.message);
         this.rowData = res;
         this.swal.Close();
-      }, (err) => {
-        this.swal.Error(err?.error?.message);
-        // this.handleApiError(err.error.message, err);
+      },
+      (err) => {
+        this.swal.Error(err?.error?.message || err?.error);
         this.rowData = [];
-        this.swal.Close();
-      });
+      }
+    );
+    // this.selectedOperator.value = '';
 
-
-
-    // .subscribe(
-    //     (response: HttpResponse<any>) => {
-    //       if (response.status === 200) {
-    //         console.log(response);
-    //         this.rowData = response.body;
-    //         this.swal.Success_200();
-    //       } else if (response.status === 204) {
-    //         this.swal.Success_204();
-    //         this.rowData = [];
-    //       }
-    //       Swal.close();
-    //     },
-    //     (error) => {
-    //       this.handleApiError(error.error.message, error.status);
-    //     }
-    //   );
   }
+
+
+
+
+  handleOperatorSelection() {
+    console.log('11111111111');
+    if (!this.selectedOperator?.value) {
+      Swal.fire({
+        icon: "error",
+        title: "Validation Error",
+        text: "Please select an Online Type.",
+      });
+      return;
+    }
+
+    console.log(this.selectedOperator?.value);
+
+    this.selectedSubLcoName = "0";
+    this.smartcard = "0";
+  }
+
+  handleSublcoSelection() {
+    console.log('22222222');
+    console.log(this.selectedOperator?.value == '');
+    console.log(this.selectedOperator?.value == null);
+
+
+    if (!this.selectedOperator?.value) {
+      Swal.fire({
+        icon: "error",
+        title: "Validation Error",
+        text: "Please select an Operator.",
+      });
+      return;
+    }
+    console.log('55555');
+    if (!this.selectedSubLcoName) {
+      Swal.fire({
+        icon: "error",
+        title: "Validation Error",
+        text: "Please select a Sub LCO.",
+      });
+      return;
+    }
+  }
+
+  handleSubscriberSelection() {
+    console.log('33333333333333');
+    this.selectedOperator.value = { value: "0" };
+    this.selectedSubLcoName = "0";
+  }
+
 
   getOnlineExcel() {
 
@@ -1333,7 +1594,7 @@ export class MsorDialogueportsComponent implements OnInit, OnDestroy {
       }
 
     });
-    this.userService.getOnlinePaymentHistoryReport(this.role, this.username, this.fromdate, this.todate, this.selectedOperator.value, this.selectedSubLcoName, this.smartcard, this.selectedOnlineType, 2)
+    this.userService.getOnlinePaymentHistoryReport(this.role, this.username, this.fromdate, this.todate, this.selectedOperator.value || this.operatorId, this.selectedSubLcoName, this.smartcard, this.selectedOnlineType, 2)
       .subscribe((x: Blob) => {
         const blob = new Blob([x], { type: 'application/xlsx' });
         const data = window.URL.createObjectURL(blob);
@@ -1372,7 +1633,7 @@ export class MsorDialogueportsComponent implements OnInit, OnDestroy {
       }
     });
     console.log('dfdsfdsfdsfdsf', event);
-    this.userService.getOnlinePaymentHistoryReport(this.role, this.username, this.fromdate, this.todate, this.selectedOperator.value, this.selectedSubLcoName, this.smartcard, this.selectedOnlineType, 1)
+    this.userService.getOnlinePaymentHistoryReport(this.role, this.username, this.fromdate, this.todate, this.selectedOperator.value || this.operatorId, this.selectedSubLcoName, this.smartcard, this.selectedOnlineType, 1)
       .subscribe((x: Blob) => {
         const blob = new Blob([x], { type: 'application/pdf' });
         const data = window.URL.createObjectURL(blob);
@@ -1571,7 +1832,7 @@ export class MsorDialogueportsComponent implements OnInit, OnDestroy {
 
   getWalletreport() {
     this.swal.Loading();
-    this.userService.getWalletShareReport(this.role, this.username, this.fromdate, this.todate, this.selectedOperator.value, 3)
+    this.userService.getWalletShareReport(this.role, this.username, this.fromdate, this.todate, this.selectedOperator.value || this.operatorId, 3)
       .subscribe((res: any) => {
         this.rowData = res;
         this.swal.Close();
@@ -1582,7 +1843,7 @@ export class MsorDialogueportsComponent implements OnInit, OnDestroy {
   getWalletReportDownload(type: number) {
     this.processingSwal();
     this.swal.Loading();
-    this.userService.getWalletShareReportDownload(this.role, this.username, this.fromdate, this.todate, this.selectedOperator.value, type)
+    this.userService.getWalletShareReportDownload(this.role, this.username, this.fromdate, this.todate, this.selectedOperator.value || this.operatorId, type)
       .subscribe((x: Blob) => {
         if (type == 1) {
           this.reportMaking(x, "Wallet_Share_Report(" + this.fromdate + "-" + this.todate + ").pdf", 'application/pdf');
@@ -1984,13 +2245,7 @@ export class MsorDialogueportsComponent implements OnInit, OnDestroy {
 
   getLcoTransferReport() {
     this.submitted = true;
-    this.userService.getLcoTransferReport(this.role, this.username, this.smartcard1 || 0, this.selectedOperator.value, this.fromdate, this.todate, 3)
-      // .subscribe((res: any) => {
-      //   // console.log(res);
-      //   this.rowData = res;
-      // }, (err) => {
-      //   this.swal.Error(err?.error?.message);
-      // });
+    this.userService.getLcoTransferReport(this.role, this.username, this.smartcard1 || 0, this.selectedOperator.value || this.operatorId, this.fromdate, this.todate, 3)
       .subscribe(
         (response: HttpResponse<any>) => {
           if (response.status === 200) {
@@ -2009,11 +2264,12 @@ export class MsorDialogueportsComponent implements OnInit, OnDestroy {
           this.handleApiError(error?.error?.message, error?.status);
         }
       );
+
   }
 
   getLcoTransferReportDownload(type: number) {
     this.processingSwal();
-    this.userService.getLcoTransferReportDownload(this.role, this.username, this.smartcard1, this.selectedOperator.value, this.fromdate, this.todate, type)
+    this.userService.getLcoTransferReportDownload(this.role, this.username, this.smartcard1, this.selectedOperator.value || this.operatorId, this.fromdate, this.todate, type)
       .subscribe((x: Blob) => {
         if (type == 1) {
           this.reportMaking(x, "Lco Transfer Details report.pdf", 'application/pdf');
@@ -2130,7 +2386,7 @@ export class MsorDialogueportsComponent implements OnInit, OnDestroy {
     if (this.selectedOnlineType == 1) {
 
       this.columnDefs3 = [
-        { headerName: "S.No", lockPosition: true, valueGetter: 'node.rowIndex+1', width: 90 ,filter:false},
+        { headerName: "S.No", lockPosition: true, valueGetter: 'node.rowIndex+1', width: 90, filter: false },
         { headerName: 'OPERATOR NAME', field: 'operatorname', width: 250 },
         { headerName: 'ORDER ID', field: 'orderid', width: 250, cellStyle: { textAlign: 'center' } },
         { headerName: 'AMOUNT', field: 'amount', width: 220, cellStyle: { textAlign: 'center', color: 'green' } },
@@ -2143,7 +2399,7 @@ export class MsorDialogueportsComponent implements OnInit, OnDestroy {
     if (this.selectedOnlineType == 2) {
 
       this.columnDefs3 = [
-        { headerName: "S.No", lockPosition: true, valueGetter: 'node.rowIndex+1', width: 90 ,filter:false},
+        { headerName: "S.No", lockPosition: true, valueGetter: 'node.rowIndex+1', width: 90, filter: false },
         { headerName: 'OPERATOR NAME', field: 'operatorname', width: 250 },
         { headerName: 'RETAILER NAME', field: 'retailername', width: 250 },
         { headerName: 'ORDER ID', field: 'orderid', width: 250, cellStyle: { textAlign: 'center' } },
@@ -2158,7 +2414,7 @@ export class MsorDialogueportsComponent implements OnInit, OnDestroy {
     if (this.selectedOnlineType == 3) {
 
       this.columnDefs3 = [
-        { headerName: "S.No", lockPosition: true, valueGetter: 'node.rowIndex+1', width: 90,filter:false },
+        { headerName: "S.No", lockPosition: true, valueGetter: 'node.rowIndex+1', width: 90, filter: false },
         { headerName: 'OPERATOR NAME', field: 'operatorname', width: 250 },
         { headerName: 'SUBSCRIBER NAME', field: 'customername', width: 250 },
         { headerName: 'SMARTCARD', field: 'smartcard', width: 250 },

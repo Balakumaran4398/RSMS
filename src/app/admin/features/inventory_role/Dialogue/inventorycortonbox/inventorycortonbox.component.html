@@ -197,3 +197,115 @@
         </div>
     </div>
 </div>
+
+
+<div *ngIf="type== 'lco_inventory'">
+    <div class="Head d-flex justify-content-between align-items-center" style="padding: 1rem;">
+        <h6>OPERATOR ALLOCATION UPDATE</h6>
+        <i class="fa fa-close close-icon" (click)="onNoClick()"></i>
+    </div>
+    <div class="dialog-container ">
+        <div class="dialog-body">
+            <div class="row align-items-center input_box">
+                <div class="col-12 col-md-3">
+                    <label class="form-label">Subscriber Name</label>
+                </div>
+                <div class="col-12 col-md-9 mb-3 file-upload-container">
+                    <input type="text" class="file-input" [(ngModel)]="selectSubscriber"
+                        placeholder="Subscriber Name" />
+                </div>
+            </div>
+
+            <div class="row align-items-center input_box">
+                <div class="col-12 col-md-3">
+                    <label class="form-label">Area Name</label>
+                </div>
+                <div class="col-12 col-md-9 mb-3 file-upload-container">
+                    <select id="area" class="file-input" [(ngModel)]="selectArea">
+                        <option value="0" selected>Select Area</option>
+                        <option *ngFor="let area of filteredAreaList" [value]="area.value"
+                            (ngModelChange)="onStreetList($event)">
+                            {{ area.name }}
+                        </option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="row align-items-center input_box">
+                <div class="col-12 col-md-3">
+                    <label class="form-label">Street Name</label>
+                </div>
+                <div class="col-12 col-md-9 mb-3 file-upload-container">
+                    <select id="street" class="file-input" [(ngModel)]="selectStreet">
+                        <option value="0" selected>Select Street</option>
+                        <option *ngFor="let Street of filteredStreetList" [value]="Street.value">
+                            {{ Street.name }}
+                        </option>
+                    </select>
+                </div>
+            </div>
+            <div class="row align-items-center input_box">
+                <div class="col-12 col-md-3">
+                    <label class="form-label">Activation</label>
+                </div>
+                <div class="col-12 col-md-9 mb-3 file-upload-container">
+                    <input type="checkbox" style="width: 20px;height: 20px;" [(ngModel)]="isActivated">
+                </div>
+            </div>
+            <div *ngIf="isActivated">
+                <div class="row align-items-center input_box">
+                    <div class="col-12 col-md-3">
+                        <label class="form-label">Package Name</label>
+                    </div>
+                    <div class="col-12 col-md-9 mb-3 file-upload-container">
+                        <select id="package" class="file-input" [(ngModel)]="selectedPackage">
+                            <option value="0" selected>Select Package</option>
+                            <option *ngFor="let package of filteredPackageList" [value]="package.value">
+                                {{ package.name }}
+                            </option>
+                        </select>
+                    </div>
+                </div>
+
+
+                <div class=" display_tab justify-content-start align-items-center input_box">
+                    <div class="row align-items-center mb-3">
+                        <div class="col-12 col-md-6 input_box ">
+                            <span for="">Recharge TYPE
+                            </span>
+                        </div>
+                        <div class="col-12 col-md-12">
+                            <select [(ngModel)]="selectedRechargetype"
+                                (ngModelChange)="onSelectionrechargetype($event)">
+                                <option value="0" selected>Selected Recharge Type</option>
+                                <option *ngFor="let rt of rechargetype" [value]="rt.id">
+                                    {{rt.name}}
+                                </option>
+                            </select>
+                        </div>
+                    </div>
+                    <div *ngIf="isplantype"
+                        class=" col-12 col-md-4 display justify-content-center align-items-center mx-2 mt-2">
+                        <select [(ngModel)]="plantype" (ngModelChange)="onSelectionplantype($event)">
+                            <option value="0" selected>Selected Plan</option>
+                            <option *ngFor="let plan of plantype$ | async " [value]="plan.value">
+                                {{ plan.key }}
+                            </option>
+                        </select>
+                    </div>
+                    <div *ngIf="datetype"
+                        class="col-12 col-md-5 display justify-content-center align-items-center mx-2 mt-2">
+                        <input type="date" [(ngModel)]="f_date"
+                            [min]="noofdays == 0 ? getNextDay1() : getNextDay(subdetailsList?.expirydate)"
+                            (ngModelChange)="onSelectiondatetype($event)">
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="dialog-footer">
+            <button type="button" class="btn"
+                style="background-color:#1f6764;color: white;font-size: 14;font-weight: 600;"
+                (click)="setallocation()">Submit</button>
+        </div>
+    </div>
+</div>

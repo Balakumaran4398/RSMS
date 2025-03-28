@@ -57,11 +57,35 @@ export class BulkpackageupdationComponent implements OnInit {
     pagination: true,
 
   }
+
+
+  datetype = false;
+  lcodatetype: any;
+  noofdays: any;
+  f_date: any;
+  dateTodateType: any;
+  subdetailsList: any;
+  plan = false;
+  date = false;
+  dateTodate = false;
+  selectedRechargetype: any = 0;
+
+  isDisabled: boolean = true;
+  isplantype = false;
+  isRecharge = false;
+  rechargetype: any;
+  rechargeType: any;
+
   constructor(public dialogRef: MatDialogRef<BulkpackageupdationComponent>, private swal: SwalService,
     @Inject(MAT_DIALOG_DATA) public data: any, public userservice: BaseService, private cdr: ChangeDetectorRef, public storageService: StorageService) {
     this.username = storageService.getUsername();
     this.role = storageService.getUserRole();
     console.log(data);
+    this.plan = data?.plan;
+    this.date = data?.date;
+    this.dateTodate = data?.dateTodate;
+    console.log('plan=', this.plan + '     ' + 'date=', this.date + '     ' + 'dateTodate=', this.dateTodate);
+
     this.Type = data?.status;
     this.castype = data?.castype;
     this.bulkDatas = data?.rowData[0];
@@ -69,15 +93,24 @@ export class BulkpackageupdationComponent implements OnInit {
     console.log(this.bulkDatas);
     this.rowData = data?.rowData
     console.log(this.bulkDatas?.mobileno);
-  }
-  ngOnInit(): void {
 
+    this.datetype = data?.fromdate && data?.todate && data.fromdate === data.todate
+    this.lcodatetype = (data?.fromdate && data?.todate && data.fromdate === data.todate)
+      ? this.getNextDay(data.fromdate)
+      : null;
+    this.f_date = this.lcodatetype;
+
+    console.log(this.datetype);
+    console.log(this.lcodatetype);
+
+  }
+  packagePlan: any;
+  ngOnInit(): void {
+    this.getPlanList();
     this.userservice.Finger_print_List(this.role, this.username).subscribe((data) => {
       this.cas = Object.entries(data[0].caslist).map(([key, value]) => ({ name: key, id: value }));
       this.filteredCasList = this.cas;
     })
-
-
     this.userservice.getBulkPackageList(this.role, this.username, this.castype).subscribe((data: any) => {
       console.log(data);
       this.lcomembershipList = Object.keys(data).map(key => {
@@ -89,28 +122,90 @@ export class BulkpackageupdationComponent implements OnInit {
       this.filteredPackage = this.lcomembershipList
     });
     this.userservice.getActivePackagePlanList(this.role, this.username).subscribe((data: any) => {
+      this.packagePlan = data;
       const sortedData = Object.entries(data)
         .map(([key, value]) => ({
           key: key.replace(/\(\d+\)/, '').trim(),
           value: value as number
         }))
-      this.plantype$.next(sortedData);
-    });
-  }
-  columnDefs: any[] = [
-    // { headerName: "S.No", valueGetter: 'node.rowIndex+1', width: 80, },
-    // { headerName: 'CUSTOMER NAME', field: 'customername', width: 100, },
-    // { headerName: 'SMARTCARD', field: 'smartcard', width: 210, },
-    // { headerName: 'BOX ID', field: 'boxid', width: 150, },
-    // { headerName: 'PACKAGE NAME', field: 'productname', width: 220, },
-    // { headerName: 'EXPIRY DATE', field: 'expirydate', width: 160, },
 
+      this.plantype$.next(sortedData);
+      if (this.selectedRechargetype === 1) {
+        const defaultPlan = sortedData.find(plan => plan.key === '1month');
+        if (defaultPlan) {
+          this.plantype = defaultPlan.value;
+          console.log(this.plantype);
+
+        }
+      }
+    });
+
+  }
+
+
+
+  getPlanList() {
+    this.userservice.getPlanTypeList(this.role, this.username).subscribe((data: any) => {
+      console.log(data);
+
+      // this.rechargetype = Object.entries(data).map(([key, value]) => ({ name: key, id: value }));
+      this.rechargetype = Object.keys(data).map(key => {
+        const id = data[key];
+        const name = key.replace(/\(\d+\)$/, '').trim();
+        return { name: name, id: id };
+      });
+
+      if (!this.lcodatetype) {
+        this.rechargetype = this.rechargetype.filter((item: any) => item.name === "Plan");
+      }
+      console.log(this.selectedPackage);
+
+      console.log(this.rechargeType);
+
+      this.cdr.detectChanges();
+    })
+  }
+  onSelectionrechargetype(selectedValue: string) {
+    const rechargetype = Number(selectedValue);
+    if (rechargetype == 1) {
+      this.isplantype = true;
+      this.datetype = false;
+      const defaultPlan = this.plantype$.getValue().find(plan => plan.key === '1month');
+      if (defaultPlan) {
+        this.plantype = defaultPlan.value;
+      }
+      this.isDisabled = false;
+
+    }
+    if (rechargetype == 2) {
+      this.isplantype = false;
+      this.datetype = true;
+      this.plantype = 0;
+      this.isDisabled = true;
+      // this.f_date = this.subdetailsList.expiryDate;
+
+    }
+    if (rechargetype == 3) {
+      this.dateTodate;
+      this.isplantype = false;
+      this.datetype = false;
+      this.plantype = 0;
+      this.f_date = null;
+      this.isDisabled = false;
+
+    }
+    this.isRecharge = true;
+
+  }
+
+
+  columnDefs: any[] = [
 
     { headerName: "S.No", valueGetter: 'node.rowIndex+1', width: 100, },
     { headerName: 'CUSTOMER NAME', field: 'customername', width: 300, cellStyle: { textAlign: 'left' } },
     { headerName: 'SMARTCARD', field: 'smartcard', width: 300, },
     { headerName: 'BOX ID', field: 'boxid', width: 400, },
-    { headerName: 'PACKAGE NAME', field: 'productname', width: 400, cellStyle: { textAlign: 'left' }},
+    { headerName: 'PACKAGE NAME', field: 'productname', width: 400, cellStyle: { textAlign: 'left' } },
     { headerName: 'EXPIRY DATE', field: 'expirydate', width: 350, },
   ]
   columnDefs1: any[] = [
@@ -149,31 +244,38 @@ export class BulkpackageupdationComponent implements OnInit {
     autocompleteInput.blur();
 
   }
+
+
+  getNextDay(dateString: any): string | null {
+    console.log(dateString);
+    if (!dateString) {
+      return null;
+    }
+    const date = new Date(dateString);
+    date.setDate(date.getDate() + 1);
+    return date.toISOString().split('T')[0];
+  }
+
+  getNextDay1(): string | null {
+    const date = new Date();
+    date.setDate(date.getDate() + 1);
+    return date.toISOString().split('T')[0];
+  }
   fetchPackageList() {
     console.log(this.castype);
-    console.log('checking 1');
     this.userservice.getBulkPackageList(this.role, this.username, this.castype).subscribe(
       (response: HttpResponse<any>) => {
-        console.log('checking 2', response);
         if (response.status === 200 && response.body) {
-          console.log(response.body);
           if (typeof response.body === 'object' && response.body !== null) {
-            console.log('checking 3');
             this.lcomembershipList = Object.entries(response.body).map(([key, value]) => ({
               name: key,
               value: value
             }));
             this.cdr.detectChanges();
             this.filteredPackageList = [...this.lcomembershipList];
-            console.log('checking 4');
-
-            console.log('Transformed Package List:', this.lcomembershipList);
             this.cdr.detectChanges();
-            console.log('checking 5');
-
             // this.swal.Success_200();
           } else {
-            console.error('Response body is not a valid object:', response.body);
             this.swal.Error_400();
           }
         } else if (response.status === 204) {
@@ -282,13 +384,41 @@ export class BulkpackageupdationComponent implements OnInit {
         this.swal.Error(err?.error?.message);
       });
   }
+  onSelectiondatetype(selectedValue: string) {
+    // this.cdr.detectChanges();
+    const rechargetype = Number(selectedValue);
+    console.log('selectrdvalue', selectedValue);
+
+    if (rechargetype == 1) {
+      this.isplantype = true;
+      this.datetype = false;
+    }
+    if (rechargetype == 2) {
+      this.isplantype = false;
+      this.datetype = true;
+    }
+    if (rechargetype == 3) {
+      this.datetype = false;
+      this.isplantype = false;
+    }
+
+    if ((this.selectedRechargetype == '3') || (this.selectedRechargetype != '3' && this.plantype != 0) || (this.f_date)) {
+      this.isDisabled = false
+    } else {
+      this.isDisabled = true
+    }
+
+
+  }
+
   Submit() {
     let requestBody = {
       role: this.role,
       username: this.username,
       operatorid: 1,
       packageid: this.packageid || this.data?.packageid || 0,
-      plantype: this.plantype,
+      plan: this.plantype || this.f_date || 4,
+      plantype: this.selectedRechargetype,
       isallpack: this.isallpack,
       expiredsubscriberlist: this.rowData,
     }
@@ -297,7 +427,6 @@ export class BulkpackageupdationComponent implements OnInit {
       .subscribe((res: any) => {
         // this.rowData1=res;
         // console.log(this.rowData1);
-
         this.swal.success(res?.message);
       }, (err) => {
         this.swal.Error(err?.error?.message);

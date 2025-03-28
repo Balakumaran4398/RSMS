@@ -1,0 +1,158 @@
+<div *ngIf="type == 'distributor_discount'">
+    <div class="Head d-flex justify-content-between align-items-center mb-3" style="padding: 1rem;">
+        <h6>DISCOUNT</h6>
+        <i class="fa fa-close close-icon" style="cursor: pointer;" (click)="onNoClick()"></i>
+    </div>
+    <div class="container">
+        <div class="card d-block justify-content-center align-items-center">
+            <div class="line mb-2">
+                <div class=" col-12 d-flex justify-content-center align-items-center">
+                    <div class="col-6 d-flex justify-content-start align-items-center">
+                        <span> PACKAGE NAME</span>
+                    </div>
+                    <div class="col-6">
+                        <!-- {{data_details?.product_name}} -->
+                        <select id="package" [(ngModel)]="selectpackage" (ngModelChange)="onPackageChangeList($event)">
+                            <option value="0" disabled>Select Package Name</option>
+                            <option *ngFor="let key of packageList" [value]="key.packid">
+                                {{ key.productname }}
+                            </option>
+                        </select>
+                 
+
+                    </div>
+                </div>
+            </div>
+            <div class="line mb-2">
+                <div class=" col-12 d-flex justify-content-center align-items-center">
+                    <div class="col-6 d-flex justify-content-start align-items-center">
+                        <span>LCO NAME</span>
+                    </div>
+                    <div class="col-6">
+                        <!-- {{data_details?.mso_amount}} -->
+                        <select id="operator" [(ngModel)]="selectOperator">
+                            <option value="0" selected>All LCO</option>
+                            <option *ngFor="let key of operatorList" [value]="key.operatorid">
+                                {{ key.operatorname }}
+                            </option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <div class="line mb-2">
+                <div class="col-12 d-flex justify-content-center align-items-center">
+                    <div class="col-6 d-flex justify-content-start align-items-center">
+                        <span>CUSTOMER AMOUNT</span>
+                    </div>
+                    <div class="col-6">
+                        {{customeramount}}
+                    </div>
+                </div>
+            </div>
+            <div class="line mb-2">
+                <div class="col-12 d-flex justify-content-center align-items-center">
+                    <div class="col-6 d-flex justify-content-start align-items-center">
+                        <span>MSO AMOUNT</span>
+                    </div>
+                    <div class="col-6">
+                        {{oldmsoamount}}
+                    </div>
+                </div>
+            </div>
+
+            <div class="line mb-2">
+                <div class="col-12 d-flex justify-content-center align-items-center">
+                    <div class="col-6 d-flex justify-content-start align-items-center">
+                        <span>LCO AMOUNT</span>
+                    </div>
+                    <div class="col-6">
+                        <input type="text" placeholder="Enter Amount" [(ngModel)]="newmsoamount"
+                            (input)="validateAmount()" (keypress)="onKeydown($event)">
+                        <div *ngIf="errorMessage" class="text-danger">{{ errorMessage }}</div>
+
+                    </div>
+                </div>
+            </div>
+            <div class="d-flex justify-content-center align-items-center mx-1" style="padding: 10px;">
+
+                <button type="button" class="btn btn-success" (click)="getDistributorDiscount()">Submit </button>
+                &nbsp;
+                <button type="button" class="btn btn-danger" (click)="onNoClick()">Cancel</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div *ngIf="type == 'packageDetails'">
+    <div class="Head d-flex justify-content-between align-items-center mb-3" style="padding: 1rem;">
+        <h6>LCO DISCOUNT</h6>
+        <i class="fa fa-close close-icon" style="cursor: pointer;" (click)="onNoClick()"></i>
+    </div>
+    <div class="tab-content mt-3">
+        <ag-grid-angular #agGrid id="myGrid" domLayout="normal" class="ag-theme-alpine table-class" rowAnimation
+            [gridOptions]="gridOptions" [columnDefs]="columnDefs" (gridReady)="onGridReady($event)" [rowData]="rowData"
+            [enableCellTextSelection]="true">
+        </ag-grid-angular>
+    </div>
+</div>
+
+
+<div *ngIf="type == 'sub_lco_recharge'">
+    <div class="Head d-flex justify-content-between align-items-center mb-3" style="padding: 1rem;">
+        <h6>SUBLCO RECHARGE</h6>
+        <i class="fa fa-close close-icon" style="cursor: pointer;" (click)="onNoClick()"></i>
+    </div>
+    <div class="container">
+        <div class="card d-block justify-content-center align-items-center">
+            <div class="line mb-2">
+                <div class=" col-12 d-flex justify-content-center align-items-center">
+                    <div class="col-6 d-flex justify-content-start align-items-center">
+                        <span> PAYMENT MODE</span>
+                    </div>
+                    <div class="col-6">
+                        {{paymentMode}}
+
+                    </div>
+                </div>
+            </div>
+            <div class="line mb-2">
+                <div class=" col-12 d-flex justify-content-center align-items-center">
+                    <div class="col-6 d-flex justify-content-start align-items-center">
+                        <span>RETAILER NAME</span>
+                    </div>
+                    <div class="col-6">
+                        <select id="operator" [(ngModel)]="retailerid" (change)="clearRetailerError()">
+                            <option value="0" selected>Select LCO Name</option>
+                            <option *ngFor="let key of retailerList" [value]="key.retailer_id">
+                                {{ key.retailer_name }}
+                            </option>
+                        </select>
+                        <div *ngIf="retailerError" class="text-danger">
+                            Please select a retailer.
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="line mb-2">
+                <div class="col-12 d-flex justify-content-center align-items-center">
+                    <div class="col-6 d-flex justify-content-start align-items-center">
+                        <span> AMOUNT</span>
+                    </div>
+                    <div class="col-6">
+                        <input type="text" placeholder="Enter Amount" [(ngModel)]="rechargeAmount"
+                            (keypress)="onKeydown($event)" (ngModelChange)="clearAmountError()">
+                        <div *ngIf="amountError" class="text-danger">
+                            {{ amountErrorMessage }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="d-flex justify-content-center align-items-center mx-1" style="padding: 10px;">
+                <button type="button" class="btn btn-success" (click)="validateAndRecharge()">Submit </button>
+                &nbsp;
+                <button type="button" class="btn btn-danger" (click)="onNoClick()">Cancel</button>
+            </div>
+        </div>
+    </div>
+</div>

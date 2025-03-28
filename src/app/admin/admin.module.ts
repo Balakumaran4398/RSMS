@@ -190,6 +190,12 @@ import { LcoSmartcardDialogComponent } from "./features/operator_Login/Dialog/lc
 import { LcoSmartcardpayDialogComponent } from "./features/operator_Login/Dialog/lco-smartcardpay-dialog/lco-smartcardpay-dialog.component";
 import { SmrtBoxidChangeComponent } from "./features/operator_Login/smrt-boxid-change/smrt-boxid-change.component";
 import { LcodashboardreportComponent } from "./features/operator_Login/lcodashboardreport/lcodashboardreport.component";
+import { OperatorareachangeComponent } from "./features/operator_Login/operatorareachange/operatorareachange.component";
+import { DiscountdialogComponent } from "./features/operator_Login/Dialog/discountdialog/discountdialog.component";
+import { DiscountsmartcardComponent } from "./features/operator_Login/Dialog/discountsmartcard/discountsmartcard.component";
+import { DistributordiscountComponent } from "./features/operator_Login/Dialog/distributordiscount/distributordiscount.component";
+import { DistribtorupdatediscountComponent } from "./features/operator_Login/Dialog/distribtorupdatediscount/distribtorupdatediscount.component";
+import { LcoDummycmpComponent } from "./features/operator_Login/lco-dummycmp/lco-dummycmp.component";
 @NgModule({
     declarations: [
         AdminBaseComponent, NavComponent, HomeComponent, NavbarComponent, MsodetailsComponent, CasmasterComponent,
@@ -256,7 +262,8 @@ import { LcodashboardreportComponent } from "./features/operator_Login/lcodashbo
         OperatordashboardComponent, LcoDashboardComponent,
         ServicecenterEditComponent, OnlinerechargeComponent, OnlinecustomerdetailsComponent, RechagelogComponent, AreaStreetComponent, OperatorWalletComponent,ForcemessageComponent,
         LcoChangePasswordComponent,LcodiscountComponent,LcoReportComponent,LcologinReportComponent,DistributorsettingComponent,BillcollectionComponent,
-        LcoSmartcardDialogComponent,LcoSmartcardpayDialogComponent,SmrtBoxidChangeComponent,LcodashboardreportComponent
+        LcoSmartcardDialogComponent,LcoSmartcardpayDialogComponent,SmrtBoxidChangeComponent,LcodashboardreportComponent,OperatorareachangeComponent,DiscountdialogComponent,DiscountsmartcardComponent,
+        DistributordiscountComponent,DistribtorupdatediscountComponent,LcoDummycmpComponent
     ],
     imports: [
         CommonModule,

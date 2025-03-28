@@ -107,7 +107,7 @@ export class TopSubLoginComponent {
           });
         }
       } else if (result.dismiss === Swal.DismissReason.cancel) {
-        this.router.navigate(['admin/lco_recharge']).then(() => {
+        this.router.navigate(['admin/top_subscription']).then(() => {
         });
       }
     });

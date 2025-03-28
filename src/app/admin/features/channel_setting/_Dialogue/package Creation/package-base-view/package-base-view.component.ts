@@ -61,13 +61,15 @@ export class PackageBaseViewComponent {
     public dialogRef: MatDialogRef<PackageBaseViewComponent>, private swal: SwalService,
     @Inject(MAT_DIALOG_DATA) public data: any, private userService: BaseService, private storageService: StorageService, private cdr: ChangeDetectorRef) {
     console.log(data);
-    this.package_name = data.packagename;
-    this.package_rate = data.packagerate;
+    this.package_name = data.packagename || data.productname;
+    this.package_rate = data.packagerate || data.rate;
     this.basePackageObj = data;
     if (data.package_view) {
       this.package_view = true;
     }
-    this.package_id = data.packageid;
+    this.package_id = data.packageid || data.id;
+    console.log('packageid',this.package_id);
+    
     this.username = storageService.getUsername();
     this.role = storageService.getUserRole();
     userService.Package_CloneList(this.role, this.username, this.package_id).subscribe((data: any) => {

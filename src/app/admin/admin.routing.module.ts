@@ -104,6 +104,9 @@ import { LcoSmartcardDialogComponent } from './features/operator_Login/Dialog/lc
 import { LcowalletshareComponent } from './features/operator_Login/lcowalletshare/lcowalletshare.component';
 import { SmrtBoxidChangeComponent } from './features/operator_Login/smrt-boxid-change/smrt-boxid-change.component';
 import { LcodashboardreportComponent } from './features/operator_Login/lcodashboardreport/lcodashboardreport.component';
+import { OperatorareachangeComponent } from './features/operator_Login/operatorareachange/operatorareachange.component';
+import { DiscountsmartcardComponent } from './features/operator_Login/Dialog/discountsmartcard/discountsmartcard.component';
+import { LcoDummycmpComponent } from './features/operator_Login/lco-dummycmp/lco-dummycmp.component';
 
 
 const routes: Routes = [
@@ -223,6 +226,7 @@ const routes: Routes = [
       { path: 'forcemessage', component: ForcemessageComponent },
       { path: 'lcoChangePassword', component: LcoChangePasswordComponent },
       { path: 'lcoDashboard', component: LcodiscountComponent },
+      { path: 'dummy', component: LcoDummycmpComponent },
       { path: 'lcoReports', component: LcoReportComponent },
       { path: 'lcologinReports/:id', component: LcologinReportComponent },
       { path: 'distributor_setting', component: DistributorsettingComponent },
@@ -231,6 +235,8 @@ const routes: Routes = [
       { path: 'lcowallet_share', component: LcowalletshareComponent },
       { path: 'smrt_boxid_change', component: SmrtBoxidChangeComponent },
       { path: 'lco_dashboard_report/:id', component: LcodashboardreportComponent },
+      { path: 'operator_areachange', component: OperatorareachangeComponent },
+      { path: 'discount_smartcard_details/:smartcard', component: DiscountsmartcardComponent },
     ]
   }
 ];

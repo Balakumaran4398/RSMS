@@ -36,16 +36,21 @@ export class AddonViewComponent {
     console.log(this.package_id);
     this.username = storageService.getUsername();
     this.role = storageService.getUserRole();
+    this.Addon_Package_Rate = data.addon_package_rate || data.rate;
+    this.Addon_Packagename = data.addon_package_name || data.productname;
+    this.Broadcaster_Name = data.broadcaster_name || data.broadcastername;
+    // this.Number_of_channels = data.Number_of_channels ;
+    this.Order_Id = data.order_id || data.id;
   }
   ngOnInit(): void {
     this.userService.Addon_PackageChannelList(this.package_id, this.role, this.username,).subscribe((data: any) => {
       console.log(data);
-      this.Addon_Package_Rate = data[0].Addon_Package_Rate;
-      this.Addon_Packagename = data[0].Addon_Packagename;
-      this.Broadcaster_Name = data[0].Broadcaster_Name;
-      this.Number_of_channels = data[0].Number_of_channels;
-      this.Order_Id = data[0].Order_Id;
-      this.rowData = data[0].availablechanlist;
+      // this.Addon_Package_Rate = data[0].Addon_Package_Rate || data.rate;
+      // this.Addon_Packagename = data[0].Addon_Packagename || data.productname;
+      // this.Broadcaster_Name = data[0].Broadcaster_Name || data.broadcastername;
+      this.Number_of_channels = data[0].Number_of_channels ;
+      // this.Order_Id = data[0].Order_Id || data.id;
+      this.rowData = data[0].availablechanlist ;
       console.log(this.rowData);
     });
   }

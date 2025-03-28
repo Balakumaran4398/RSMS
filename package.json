@@ -36,6 +36,7 @@
     "exceljs": "^4.4.0",
     "file-saver": "^2.0.5",
     "jspdf": "^2.5.2",
+    "mat-select-filter": "^2.4.1",
     "moment": "^2.30.1",
     "ngx-mask": "^18.0.0",
     "rxjs": "~7.8.0",

@@ -2,18 +2,17 @@
     <h5>To Set Defective Smartcard</h5>
     <div class="row d-flex justify-content-center align-items-center  ">
         <div class="col-12 col-sm-12 col-md-11  mb-3">
-            <div class="" style="padding: 10px;"
-            (click)="showDisabledMessage()">
-            <button type="button" class="btn  bttn" [disabled]="!isAnyRowSelected">
-                <i class="fas fa-sync-alt" aria-hidden="true"></i> Defective Smartcard
-            </button>
-        </div>
-            <ag-grid-angular #agGrid id="myGrid" domLayout='normal' class="ag-theme-alpine table-class" 
+            <div class="d-flex justify-content-end" style="padding: 10px;" (click)="showDisabledMessage()">
+                <button type="button" class="btn  bttn" [disabled]="!isAnyRowSelected">
+                    <i class="fas fa-sync-alt" aria-hidden="true"></i> Defective Smartcard
+                </button>
+            </div>
+            <ag-grid-angular #agGrid id="myGrid" domLayout='normal' class="ag-theme-alpine table-class"
                 [rowSelection]="rowSelection" [gridOptions]="gridOptions" [columnDefs]="columnDefs" [rowData]="rowData"
-                (selectionChanged)="onSelectionChanged()" (gridReady)="onGridReady($event)"
+                (selectionChanged)="onSelectionChanged($event)" (gridReady)="onGridReady($event)"
                 [enableCellTextSelection]="true">
             </ag-grid-angular>
-         
+
             <!-- <div class="d-flex justify-content-center align-items-center position-relative" style="padding: 10px;"
                 (click)="showDisabledMessage()">
                 <button type="button" class="btn" [disabled]="!isAnyRowSelected">

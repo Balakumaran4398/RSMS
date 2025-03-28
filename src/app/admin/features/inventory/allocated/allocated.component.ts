@@ -123,6 +123,10 @@ export class AllocatedComponent implements OnInit,OnDestroy {
       console.log(this.cas);
     });
   }
+
+
+  
+
   onSelectionChanged() {
     if (this.gridApi) {
       const selectedRows = this.gridApi.getSelectedRows();

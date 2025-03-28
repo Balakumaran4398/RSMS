@@ -7,6 +7,7 @@ import { BaseService } from 'src/app/_core/service/base.service';
 import { StorageService } from 'src/app/_core/service/storage.service';
 import { SwalService } from 'src/app/_core/service/swal.service';
 import Swal from 'sweetalert2';
+import { DiscountdialogComponent } from '../../../operator_Login/Dialog/discountdialog/discountdialog.component';
 
 export const MY_FORMATS: MatDateFormats = {
   parse: {
@@ -46,6 +47,8 @@ export class SublcooperatordialogueComponent implements OnInit {
   editform!: FormGroup;
   operatorid: any;
   submitted = false;
+  rowData1: any;
+  isCustomerMode: boolean = false;
 
   retailername: any;
   contactno: any;
@@ -93,24 +96,25 @@ export class SublcooperatordialogueComponent implements OnInit {
   rowData: any;
 
 
-
+  selectedRow: any
   constructor(public dialogRef: MatDialogRef<SublcooperatordialogueComponent>, @Inject(MAT_DIALOG_DATA) public data: any, private fb: FormBuilder, private userservice: BaseService, private storageservice: StorageService, private swal: SwalService, public dialog: MatDialog,) {
     this.role = storageservice.getUserRole();
     this.username = storageservice.getUsername();
     console.log(data);
     this.type = data.type;
     this.operatorid = data.id;
-
+    this.selectedRow = data;
     this.retailername = data?.data.retailerName;
     this.contactno = data?.data.contactNo;
     this.contactno2 = data?.data.contactNo2;
     this.address = data?.data.address;
     this.password = data?.data.password;
     this.retailerid = data?.data.retailerId;
+    console.log(this.retailerid);
 
     this.selectedid = data?.selectedid;
     console.log(this.selectedid);
-
+    this.updateColumnDefs(this.type);
     this.form = this.fb.group({
       retailername: ['', Validators.required],
       contactno: ['', [Validators.required, Validators.pattern('^[0-9]{10}$')]],
@@ -142,6 +146,7 @@ export class SublcooperatordialogueComponent implements OnInit {
     this.paymentgatewaylist();
     this.generateMonths();
     this.generateYears();
+    this.getSublcoDiscountList();
   }
   onNoClick(): void {
     this.dialogRef.close();
@@ -150,7 +155,13 @@ export class SublcooperatordialogueComponent implements OnInit {
   //   this.selectedTab = tab;
   //   this.updateColumnDefs(tab);
   // }
+  getSublcoDiscountList() {
+    this.userservice.getSublcoDiscountList(this.role, this.username, this.operatorid, this.retailerid).subscribe((data: any) => {
+      this.rowData1 = data;
+      console.log(this.rowData1);
 
+    })
+  }
   selectTab(tab: string) {
     this.selectedTab = tab;
     this.rowData = [];
@@ -221,6 +232,7 @@ export class SublcooperatordialogueComponent implements OnInit {
   }
 
   private updateColumnDefs(tab: string): void {
+    console.log('1323445', this.type)
     if (tab === 'datewise') {
       this.columnDefs = [
         { headerName: "S.No", lockPosition: true, valueGetter: 'node.rowIndex+1', cellClass: 'locked-col', width: 80, suppressNavigable: true, sortable: false, filter: false },
@@ -239,7 +251,61 @@ export class SublcooperatordialogueComponent implements OnInit {
         { headerName: "PACKAGE NAME", field: 'productname' },
         { headerName: "MRP", field: 'mrp' },
       ];
+    } else if (tab === 'sub_lco_discount') {
+      this.columnDefs = [
+        { headerName: "S.No", lockPosition: true, valueGetter: 'node.rowIndex+1', cellClass: 'locked-col', width: 80, suppressNavigable: true, sortable: false, filter: false },
+        { headerName: "PACKAGE NAME", field: 'product_name' },
+        { headerName: "SUB LCO RATE	", field: 'sublco_rate' },
+        { headerName: "AMOUNT", field: 'customer_amount' },
+        { headerName: "MSO AMOUNT", field: 'mso_amount' },
+        { headerName: "LCO COMMISION", field: 'lco_commission' },
+        {
+          headerName: 'ACTION', field: '', width: 150, filter: false,
+          cellRenderer: (params: any) => {
+            const editButton = document.createElement('button');
+            editButton.innerHTML = '<img src="/assets/images/icons/editstreet2.png" style="width:30px;background-color:none">';
+            editButton.style.backgroundColor = 'transparent';
+            editButton.style.border = 'none';
+            editButton.title = 'Edit';
+            editButton.style.cursor = 'pointer';
+            editButton.addEventListener('click', () => {
+              this.openDiscountdialogue('sub_lco_discount', params.data);
+
+            });
+            const div = document.createElement('div');
+            div.appendChild(editButton);
+            return div;
+          },
+        },
+      ];
     }
+  }
+
+  openaddedlogue(type: any, data: any,) {
+    let dialogData = { type: type, data: data, };
+
+    console.log(dialogData);
+    const dialogRef = this.dialog.open(DiscountdialogComponent, {
+      panelClass: 'custom-dialog-container',
+      data: dialogData,
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      console.log('The dialog was closed');
+    });
+  }
+  openDiscountdialogue(type: any, data: any,) {
+    let dialogData = { type: type, data: data, retailerid: this.retailerid };
+
+    console.log(dialogData);
+    const dialogRef = this.dialog.open(DiscountdialogComponent, {
+      panelClass: 'custom-dialog-container',
+      data: dialogData,
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      console.log('The dialog was closed');
+    });
   }
   onSubmit() {
     this.submitted = true;
@@ -249,14 +315,7 @@ export class SublcooperatordialogueComponent implements OnInit {
     }
     const errorFields = ['retailername', 'contactno', 'contactno2', 'address', 'password', 'role', 'website', 'username', 'operatorid',];
     this.swal.Loading();
-    // this.userservice.sublcoCreate(this.form.value)
-    //   .subscribe((res: any) => {
-    //     this.swal.success(res?.message);
-    //   }, (err) => {
-    //     const errorMessage = errorFields
-    //       .map(field => err?.error?.[field])
-    //       .find(message => message) || 'An error occurred while creating the subscriber.'
-    //   });
+
     this.userservice.sublcoCreate(this.form.value).subscribe(
       (res: any) => {
         if (res?.message) {
@@ -266,9 +325,19 @@ export class SublcooperatordialogueComponent implements OnInit {
         }
       },
       (err) => {
-        const errorMessage = errorFields
-          .map(field => err?.error?.[field])
-          .find(message => message);
+        let errorMessage = 'An unexpected error occurred';
+
+        if (err?.error) {
+          errorMessage = errorFields
+            .map(field => err.error[field])
+            .filter(message => message)
+            .join(', ');
+
+          if (!errorMessage) {
+            errorMessage = err.error.message || 'An unexpected error occurred';
+          }
+        }
+
         this.swal.Error(errorMessage);
       }
     );
@@ -296,8 +365,8 @@ export class SublcooperatordialogueComponent implements OnInit {
   paymentgatewaylist() {
     this.userservice.getPaymentGateWayList(this.role, this.username).subscribe((data: any) => {
       this.paygatelist = Object.entries(data).map(([key, value]) => {
-        const name = key.split('(')[0].trim(); // Get the name part before '('
-        const id = value; // Use the value as ID
+        const name = key.split('(')[0].trim();
+        const id = value;
         return { name, id };
       });
       console.log(this.paygatelist);
@@ -334,6 +403,18 @@ export class SublcooperatordialogueComponent implements OnInit {
     }, (err) => {
       this.swal.Error(err?.error?.message);
     });
+  }
+
+  getcustomermode() {
+    this.isCustomerMode = true;
+    this.selectedRow!.data!.isCustomerMode = true;
+    this.dialogRef.close(this.selectedRow)
+  }
+  getMsomode() {
+    this.isCustomerMode = false;
+    console.log(this.isCustomerMode);
+    this.selectedRow!.data!.isCustomerMode = false;
+    this.dialogRef.close(this.selectedRow)
   }
   onDeactive() {
     Swal.fire({
@@ -444,7 +525,13 @@ export class SublcooperatordialogueComponent implements OnInit {
       event.preventDefault();
     }
   }
-
+ 
+  // getDistributorPackageList() {
+  //   this.userservice.getDistributorPackageList(this.role, this.username, this.operatorid, this.operatorid).subscribe((data: any) => {
+  //     console.log(data);
+  //     this.rowData1 = data;
+  //   })
+  // }
 
 
   // --------------------------------------------------------------Area updation----------------------------------------------------

@@ -104,6 +104,7 @@ export class AddednotaddedComponent implements OnInit {
   isSelected(item: string): boolean {
     return this.selectedItems.has(item);
   }
+
   toggleSelection(id: string) {
     const index = this.selectedIds.indexOf(id);
     if (index > -1) {

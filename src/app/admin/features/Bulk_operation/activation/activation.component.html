@@ -32,7 +32,7 @@
                         </span>
                     </div>
                 </div>
-                <a class="mb-3" (click)="generateExcel('Activation')"  style="cursor: pointer;">* Download Format
+                <a class="mb-3" (click)="generateExcel('Activation')" style="cursor: pointer;">* Download Format
                     File</a>
                 <div class="checkbox-text mb-3">
                     <div class="checkbox-content">
@@ -46,8 +46,8 @@
                             [style.color]="isCheckboxChecked ? 'white' : 'black'"
                             [style.cursor]="isCheckboxChecked ? 'pointer' : 'not-allowed'">
                             <i class="fa fa-plus"></i> Choose
-                            <input type="file" style="display: none;" accept=".xls,.xlsx,.csv" [disabled]="!isCheckboxChecked"
-                                (change)="handleFileInput($event)">
+                            <input type="file" style="display: none;" accept=".xls,.xlsx,.csv"
+                                [disabled]="!isCheckboxChecked" (change)="handleFileInput($event)">
                         </label>
                     </div>
                     <div class="col-8 col-md-8 col-sm-6 mb-3">
@@ -80,14 +80,8 @@
                         style="color:#0a21d0">{{filePath }}
                     </span>
                 </span>
-                <div class="input_box col-12 col-md-12 d-flex justify-content-center align-items-center mb-3">
-                    <!-- <select style="color: rgb(17, 0, 0);" [(ngModel)]="lcogroupid"
-                        (change)="onproducttypechange($event)">
-                        <option value="0" selected style="color: rgb(19, 17, 17);">Select Package </option>
-                        <option *ngFor="let lcomember of lcomembershipList" [value]="lcomember.value">{{lcomember.name}}
-                        </option>
-                    </select> -->
-
+                <div 
+                    class="input_box col-12 col-md-12 d-flex justify-content-center align-items-center mb-3">
                     <input type="text" matInput [matAutocomplete]="auto" [(ngModel)]="lcogroupid"
                         (input)="filterPackage($event)" placeholder="Select  package" [matAutocompleteDisabled]="false"
                         [value]="selectedPackageName">
@@ -99,6 +93,15 @@
                         </mat-option>
                     </mat-autocomplete>
                 </div>
+                <!-- <div *ngIf="role == 'ROLE_OPERATOR'"
+                    class="input_box col-12 col-md-12 d-flex justify-content-center align-items-center mb-3">
+                    <select id="package" [(ngModel)]="lcogroupid">
+                        <option value="0" disabled  >Select Package Name</option>
+                        <option *ngFor="let key of packageList" [value]="key.packid">
+                            {{ key.productname }}
+                        </option>
+                    </select>
+                </div> -->
                 <div *ngIf="submitted && !lcogroupid" class="text-danger" style="font-size: small;">
                     Package Name is required
                 </div>
@@ -153,8 +156,8 @@
 
                         <ag-grid-angular #agGrid id="myGrid" domLayout='normal' class="ag-theme-alpine table-class"
                             rowAnimation [rowSelection]="rowSelection" [gridOptions]="gridOptions"
-                             [columnDefs]="columnDefs" [rowData]="rowData"
-                            (gridReady)="onGridReady()" [enableCellTextSelection]="true">
+                            [columnDefs]="columnDefs" [rowData]="rowData" (gridReady)="onGridReady()"
+                            [enableCellTextSelection]="true">
                         </ag-grid-angular>
                     </div>
                 </div>

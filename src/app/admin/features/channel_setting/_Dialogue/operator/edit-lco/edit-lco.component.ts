@@ -54,6 +54,8 @@ export class EditLcoComponent {
       this.lcobusinessid = data.lcobusinessid || 0;
     this.password = data.password,
       this.userid = data.userid
+    this.type = data.type;
+    console.log(this.type);
 
 
   }

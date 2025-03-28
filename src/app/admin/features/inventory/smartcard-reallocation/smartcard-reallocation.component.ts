@@ -38,7 +38,7 @@ export class SmartcardReallocationComponent implements OnInit {
       comparator: (valueA: any, valueB: any) => {
         const isNumberA = !isNaN(valueA) && valueA !== null;
         const isNumberB = !isNaN(valueB) && valueB !== null;
-  
+
         if (isNumberA && isNumberB) {
           return valueA - valueB;
         } else {
@@ -146,26 +146,64 @@ export class SmartcardReallocationComponent implements OnInit {
 
   ]
 
-  onSelectionChanged() {
+  // onSelectionChanged() {
+  //   if (this.gridApi) {
+  //     let selectedRows: any[] = [];
+  //     this.gridApi.forEachNodeAfterFilter((rowNode: any) => {
+  //       if (rowNode.isSelected()) {
+  //         selectedRows.push(rowNode.data);
+  //       }
+  //     });
+  //     console.log("Filtered & Selected Rows:", selectedRows);
+  //     if (selectedRows.length === 0) {
+  //       this.gridApi.deselectAll();
+  //     }
+  //     this.isAnyRowSelected = selectedRows.length > 0;
+  //     this.selectedIds = selectedRows.map((e: any) => e.id);
+  //     this.selectedsmartcard = selectedRows.map((e: any) => e.smartcard);
+  //     this.selectedEmi = selectedRows.map((e: any) => e.isemi);
+  //     this.dueamount = selectedRows.map((e: any) => e.dueamount);
+  //     this.selectedtypes = selectedRows.map((e: any) => e.isactive);
+  //   }
+  // }
+
+
+  selectedIdsSet = new Set<number>();
+  onSelectionChanged(event: any) {
     if (this.gridApi) {
       let selectedRows: any[] = [];
       this.gridApi.forEachNodeAfterFilter((rowNode: any) => {
         if (rowNode.isSelected()) {
           selectedRows.push(rowNode.data);
+          this.selectedIdsSet.add(rowNode.data.smartcard);
         }
       });
-      // console.log("Filtered & Selected Rows:", selectedRows);
+      console.log("Filtered & Selected Rows:", selectedRows);
       if (selectedRows.length === 0) {
         this.gridApi.deselectAll();
+        this.selectedIdsSet.clear();
       }
-      this.isAnyRowSelected = selectedRows.length > 0;
-      this.selectedIds = selectedRows.map((e: any) => e.id);
-      this.selectedsmartcard = selectedRows.map((e: any) => e.smartcard);
-      this.selectedEmi = selectedRows.map((e: any) => e.isemi);
-      this.dueamount = selectedRows.map((e: any) => e.dueamount);
-      this.selectedtypes = selectedRows.map((e: any) => e.isactive);
+      console.log("Final Selected Rows:", selectedRows);
+      this.updateSelectedRows(selectedRows);
     }
   }
+
+
+  updateSelectedRows(selectedRows: any[]) {
+    this.isAnyRowSelected = selectedRows.length > 0;
+    this.isAnyRowSelected = selectedRows.length > 0;
+    this.selectedIds = selectedRows.map((e: any) => e.id);
+    // this.selectedsmartcard = selectedRows.map((e: any) => e.smartcard);
+    this.selectedsmartcard = Array.from(this.selectedIdsSet);
+    console.log(this.selectedsmartcard);
+    this.selectedEmi = selectedRows.map((e: any) => e.isemi);
+    this.dueamount = selectedRows.map((e: any) => e.dueamount);
+    this.selectedtypes = selectedRows.map((e: any) => e.isactive);
+  }
+
+
+
+
   onGridReady(params: { api: any; }) {
 
     this.gridApi = params.api;

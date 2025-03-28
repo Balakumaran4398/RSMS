@@ -25,13 +25,18 @@ export class NewLcoComponent {
     console.log(data);
     this.type = data.type;
     console.log(this.type);
+    // this.businessList = data.data;
+    // this.businessList = Object.keys(data.data).map(key => {
+    //   const value = data[key];
+    //   const name = key
+    //   return { name: name, value: value };
+    // });
 
-    this.businessList = Object.keys(data).map(key => {
-      const value = data[key];
-      // const name = key.replace(/\(\d+\)$/, '').trim();
-      const name = key
-      return { name: name, value: value };
-    });
+    this.businessList = Object.keys(data.data).map(key => ({
+      name: key, 
+      value: data.data[key]
+    }));
+    
     console.log(this.businessList);
 
   }

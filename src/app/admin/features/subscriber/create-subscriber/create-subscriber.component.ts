@@ -93,18 +93,18 @@ export class CreateSubscriberComponent implements AfterViewInit, OnDestroy {
       this.Isuser = false;
       this.IsOperator = true;
       this.operatorIdoperatorId();
-
-
     }
-
   }
+  lconame: any;
   operatorIdoperatorId() {
     this.userservice.getOpDetails(this.role, this.username).subscribe((data: any) => {
       console.log(data);
       this.lcoDeatails = data;
       console.log(this.lcoDeatails);
       this.lcoId = this.lcoDeatails?.operatorid;
+      this.lconame = this.lcoDeatails?.operatorname;
       console.log(this.lcoId);
+      console.log(this.lconame);
       this.lcoChange();
       // this.operatoridValue = this.role === 'ROLE_OPERATOR' ? this.lcoId : this.operatorid;
       // console.log(this.operatoridValue);
@@ -152,7 +152,7 @@ export class CreateSubscriberComponent implements AfterViewInit, OnDestroy {
 
 
   }
- 
+
 
   ngOnDestroy(): void {
     ($('#Lco') as any).select2('destroy');

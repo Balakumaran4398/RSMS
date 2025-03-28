@@ -3,6 +3,9 @@ import { BaseService } from 'src/app/_core/service/base.service';
 import { StorageService } from 'src/app/_core/service/storage.service';
 import { Location } from '@angular/common';
 import { ActivatedRoute } from '@angular/router';
+import Swal from 'sweetalert2';
+import { SwalService } from 'src/app/_core/service/swal.service';
+import { FormBuilder, FormGroup } from '@angular/forms';
 
 @Component({
   selector: 'app-lcologin-report',
@@ -28,15 +31,31 @@ export class LcologinReportComponent implements OnInit {
   fromdate: any;
   todate: any;
   today = new Date();
-  constructor(private route: ActivatedRoute, private userService: BaseService, private storageService: StorageService, private location: Location,) {
+
+  lcoDeatails: any;
+  operatorId: any;
+  operatorname: any;
+   dateRangeForm: FormGroup;
+  constructor(private route: ActivatedRoute, private fb: FormBuilder,private userService: BaseService, private storageService: StorageService, private location: Location, private swal: SwalService) {
     this.role = storageService.getUserRole();
     this.username = storageService.getUsername();
     this.type = this.route.snapshot.paramMap.get('id');
-    console.log(this.type);
+    this.dateRangeForm = this.fb.group({
+      fromdate: [new Date()],
+      todate: [new Date()]
+    });
   }
-
+  formatDate(date: Date): string {
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, '0'); // Months are zero-based
+    const day = String(date.getDate()).padStart(2, '0');
+    return `${year}-${month}-${day}`;
+  }
   ngOnInit(): void {
     this.onColumnDefs();
+    this.operatorIdoperatorId();
+    this.fromdate = this.fromdate ? this.formatDate(this.fromdate) : this.formatDate(new Date());
+    this.todate = this.todate ? this.formatDate(this.todate) : this.formatDate(new Date());
   }
 
 
@@ -66,11 +85,11 @@ export class LcologinReportComponent implements OnInit {
     } else if (this.type == 'monthwise_lco_activation_count') {
       this.columnDefs = [
         { headerName: "S.No", lockPosition: true, valueGetter: 'node.rowIndex+1', headerCheckboxSelection: false, checkboxSelection: false, width: 80, filter: false },
-        { headerName: 'OPERATOR NAME', field: 'operatorname', width: 300 },
-        { headerName: 'OPERATOR ID	', field: 'total', width: 300 },
-        { headerName: 'CONTACT NUMBER', field: 'transaction_date', width: 300 },
-        { headerName: 'OPENING COUNT', field: 'transaction_date', width: 300 },
-        { headerName: 'CLOSING COUNT', field: 'transaction_date', width: 300 },
+        { headerName: 'OPERATOR NAME', field: 'Operator_Name', width: 300 },
+        { headerName: 'OPERATOR ID	', field: 'Operator_ID', width: 300 },
+        { headerName: 'CONTACT NUMBER', field: 'contact_number1', width: 300 },
+        { headerName: 'OPENING COUNT', field: 'opcount', width: 300 },
+        { headerName: 'CLOSING COUNT', field: 'ccount', width: 300 },
       ]
     } else if (this.type == 'smartcard_suspend') {
       this.columnDefs = [
@@ -263,16 +282,50 @@ export class LcologinReportComponent implements OnInit {
     return type !== 'box_in_hand' && type !== 'current_active_smartcard' && type !== 'current_Deactive_smartcard' && type !== 'expired_smartcard'
       && type !== 'areawise_sub';
   }
-  downloadReport(type: string, format: number) {
-    const reportFunctions: { [key: string]: (event: number) => void } = {
-      current_active_smartcard: this.getCurrentActReportDownload,
-      current_Deactive_smartcard: this.getCurrentDeactReportDownload,
-      box_in_hand: this.getBoxinHandReportDownload
-    };
+  // getdownloadReport(type: string, format: number) {
+  //   const reportFunctions: { [key: string]: (event: number) => void } = {
+  //     current_active_smartcard: this.getCurrentActReportDownload,
+  //     current_Deactive_smartcard: this.getCurrentDeactReportDownload,
+  //     box_in_hand: this.getBoxinHandReportDownload
+  //   };
 
-    if (reportFunctions[type]) {
-      reportFunctions[type](format);
-    }
+  //   if (reportFunctions[type]) {
+  //     reportFunctions[type](format);
+  //   }
+  // }
+
+
+  operatorIdoperatorId() {
+    this.userService.getOpDetails(this.role, this.username).subscribe((data: any) => {
+      this.lcoDeatails = data;
+      this.operatorId = this.lcoDeatails?.operatorid;
+      this.operatorname = this.lcoDeatails?.operatorname;
+      this.getMonthwiseReport();
+    })
+  }
+  getSubscriberBillDownload(type: number) {
+    this.swal.Loading()
+    this.processingSwal();
+    this.userService.getlcoMonthwiseActivationReport(this.role, this.username, this.operatorId, this.fromdate, this.todate, type)
+      .subscribe((x: Blob) => {
+        if (type == 1) {
+          this.reportMaking(x, "MONTHWISE LCO ACTIVATION COUNT REPORT(" + this.operatorname + ").pdf", 'application/pdf');
+        } else if (type == 2) {
+          this.reportMaking(x, "MONTHWISE LCO ACTIVATION COUNT REPORT(" + this.operatorname + ").xlsx", 'application/xlsx');
+
+        }
+        this.swal.Close()
+      },
+        (error: any) => {
+          this.pdfswalError(error?.error.message);
+        });
+  }
+
+  getMonthwiseReport() {
+    this.userService.getlcoMonthwiseActivationData(this.role, this.username, this.operatorId, this.fromdate, this.todate, 3).subscribe((data: any) => {
+      console.log(data);
+      this.rowData = data;
+    })
   }
   getFromDate(event: any) {
     console.log(event.value);
@@ -288,5 +341,46 @@ export class LcologinReportComponent implements OnInit {
     const year = new Date(event.value).getFullYear();
     this.todate = year + "-" + month + "-" + date
     console.log(this.todate);
+  }
+
+  // -----------------------------------------------------common method for pdf and excel------------------------------------------------------------------------
+
+
+  reportMaking(x: Blob, reportname: any, reporttype: any) {
+    const blob = new Blob([x], { type: reporttype });
+    const data = window.URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.href = data;
+    link.download = reportname.toUpperCase();
+    link.dispatchEvent(new MouseEvent('click', { bubbles: true, cancelable: true, view: window }));
+    setTimeout(() => {
+      window.URL.revokeObjectURL(data);
+      link.remove();
+    }, 100);
+    Swal.close();
+  }
+  pdfswalError(error: any) {
+    console.log(error);
+
+    Swal.close();
+    Swal.fire({
+      title: 'Error!',
+      text: error?.message || 'There was an issue generating the PDF CAS form report.',
+      icon: 'error',
+      confirmButtonText: 'Ok',
+      timer: 2000,
+      timerProgressBar: true,
+    });
+  }
+  processingSwal() {
+    Swal.fire({
+      title: "Processing",
+      text: "Please wait while the report is being generated...",
+      showConfirmButton: false,
+      didOpen: () => {
+        Swal.showLoading(null);
+      }
+    });
+
   }
 }

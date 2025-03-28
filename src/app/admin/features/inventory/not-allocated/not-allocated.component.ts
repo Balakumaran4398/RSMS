@@ -56,7 +56,7 @@ export class NotAllocatedComponent implements OnInit {
       comparator: (valueA: any, valueB: any) => {
         const isNumberA = !isNaN(valueA) && valueA !== null;
         const isNumberB = !isNaN(valueB) && valueB !== null;
-  
+
         if (isNumberA && isNumberB) {
           return valueA - valueB;
         } else {
@@ -98,7 +98,7 @@ export class NotAllocatedComponent implements OnInit {
   columnDefs: ColDef[] = [
     {
       headerName: 'S.No',
-      lockPosition: true, headerCheckboxSelection: true, valueGetter: 'node.rowIndex+1',checkboxSelection: true, width: 100,filter:false
+      lockPosition: true, headerCheckboxSelection: true, valueGetter: 'node.rowIndex+1', checkboxSelection: true, width: 100, filter: false
     },
     {
       headerName: 'SMARTCARD', width: 300,
@@ -168,30 +168,56 @@ export class NotAllocatedComponent implements OnInit {
   //   }
   // }
 
+  // onSelectionChanged(event: any) {
+  //   if (this.gridApi) {
+  //     let selectedRows: any[] = [];
+  //     this.gridApi.forEachNodeAfterFilter((rowNode: any) => {
+  //       if (rowNode.isSelected()) {
+  //         selectedRows.push(rowNode.data);
+  //       }
+  //     });
+  //     // console.log("Filtered & Selected Rows:", selectedRows);
+  //     if (selectedRows.length === 0) {
+  //       this.gridApi.deselectAll();
+  //     }
+  //     // console.log("Final Selected Rows:", selectedRows);
+  //     this.updateSelectedRows(selectedRows);
+  //   }
+  // }
+
+  selectedIdsSet = new Set<number>();
   onSelectionChanged(event: any) {
     if (this.gridApi) {
       let selectedRows: any[] = [];
       this.gridApi.forEachNodeAfterFilter((rowNode: any) => {
         if (rowNode.isSelected()) {
           selectedRows.push(rowNode.data);
+          this.selectedIdsSet.add(rowNode.data.smartcard);
         }
       });
-      // console.log("Filtered & Selected Rows:", selectedRows);
+      console.log("Filtered & Selected Rows:", selectedRows);
       if (selectedRows.length === 0) {
         this.gridApi.deselectAll();
+        this.selectedIdsSet.clear();
       }
-      // console.log("Final Selected Rows:", selectedRows);
+      console.log("Final Selected Rows:", selectedRows);
       this.updateSelectedRows(selectedRows);
     }
   }
+
+
   updateSelectedRows(selectedRows: any[]) {
     this.isAnyRowSelected = selectedRows.length > 0;
     this.selectedIds = selectedRows.map((e: any) => e.id);
-    this.selectsmartcard = selectedRows.map((e: any) => e.smartcard);
+    // this.selectedIds = Array.from(this.selectedIdsSet); // Convert Set to array
+    // this.selectsmartcard = selectedRows.map((e: any) => e.smartcard);
+    this.selectsmartcard = Array.from(this.selectedIdsSet);
     this.selectedtypes = selectedRows.map((e: any) => e.isactive);
     this.selectedisEmi = selectedRows.map((e: any) => e.isemi);
 
     // console.log("Updated Selected Rows:", selectedRows);
+    console.log("Updated Selected Rows:", selectedRows);
+    console.log("Persistently Selected IDs:", this.selectsmartcard);
   }
   onGridReady(params: { api: any; }) {
     this.gridApi = params.api;

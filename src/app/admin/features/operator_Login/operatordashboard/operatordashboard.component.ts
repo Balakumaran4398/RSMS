@@ -79,12 +79,7 @@ export class OperatordashboardComponent implements OnInit {
     this.selectedYear = currentDate.getFullYear();
   }
 
-  getForcemsg() {
-    console.log('force message');
-    this.userService.getcheckLcoForceMessage(this.role, this.username, this.operatorId).subscribe((res: any) => {
-      console.log(res);
-    })
-  }
+
 
 
   onOnlineRecharge() {
@@ -139,7 +134,7 @@ export class OperatordashboardComponent implements OnInit {
       console.log(this.operatorId);
       this.operataDetailsCount(this.operatorId)
       this.getbar(this.operatorId)
-      this.getForcemsg();
+
     })
   }
   operatorDetails() {
@@ -153,7 +148,6 @@ export class OperatordashboardComponent implements OnInit {
       (data: any) => {
         this.lcoDeatails = data[0];
         this.walletshare = this.lcoDeatails.walletshare;
-        console.log('rtrijhtrdlthjdrkthjk', this.walletshare);
 
         console.log(this.lcoDeatails);
       },

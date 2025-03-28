@@ -76,12 +76,16 @@ export class ActivationComponent implements OnInit {
   isCheckboxChecked_operator: boolean = false;
   submitted: boolean = false;
   isPlanValid: boolean = false;
-  lcogroupid: any = '';
+  lcogroupid: any = 0;
   producttype: any = 1;
   lcomembershipList: any[] = [];
   filteredPackage: any[] = [];
   selectedPackage: any;
   selectedPackageName: any;
+
+  lcoDeatails: any;
+  operatorid: any;
+
   constructor(private userservice: BaseService, private swal: SwalService, private storageservice: StorageService, private excelService: ExcelService) {
     this.role = storageservice.getUserRole();
     this.username = storageservice.getUsername();
@@ -92,7 +96,50 @@ export class ActivationComponent implements OnInit {
     this.selectedDate = this.date;
     this.refresh();
     this.onproducttypechange("");
+    if (this.role == 'ROLE_OPERATOR') {
+      this.operatorIdoperatorId();
+    }
 
+  }
+  isplan: any;
+  isdate: any;
+  isdatetodate: any;
+  operatorIdoperatorId() {
+    this.userservice.getOpDetails(this.role, this.username).subscribe((data: any) => {
+      console.log(data);
+      this.lcoDeatails = data;
+      console.log(this.lcoDeatails);
+      this.operatorid = this.lcoDeatails?.operatorid;
+      this.isplan = this.lcoDeatails?.isplan;
+      this.isdate = this.lcoDeatails?.isdate;
+      this.isdatetodate = this.lcoDeatails?.isdatetodate;
+      console.log(this.operatorid);
+      this.getDistributorPackageList();
+    })
+  }
+  onlcoPackageList() {
+    this.userservice.getLcoPackageList(this.role, this.username, this.operatorid, 2).subscribe((data: any) => {
+      console.log(data);
+      // this.lcomembershipList = Object.keys(data).map(key => {
+      //   const value = data[key];
+      //   const name = key;
+      //   return { name: name, value: value };
+      // });
+      // console.log(this.lcomembershipList);
+      // this.filteredPackage = this.lcomembershipList
+      this.lcomembershipList = data;
+    })
+  }
+  packageList: any;
+  filteredPackageList: any;
+  getDistributorPackageList() {
+    this.userservice.getDistributorPackageList(this.role, this.username, this.operatorid, this.operatorid).subscribe((data: any) => {
+      // this.userService.getDistributorPackageList(this.role, this.username, this.lco_operatorId , this.operatorid).subscribe((data: any) => {
+      this.packageList = data;
+      this.filteredPackageList = data;
+
+      console.log(data);
+    })
   }
   onGridReady = () => {
 
@@ -161,6 +208,17 @@ export class ActivationComponent implements OnInit {
       });
       // console.log(this.lcomembershipList);
       this.filteredPackage = this.lcomembershipList
+    });
+  }
+
+  ngAfterViewInit() {
+    $('#package').select2({
+      placeholder: 'Select Package',
+      allowClear: true
+    });
+    $('#package').on('change', (event: any) => {
+      this.lcogroupid = event.target.value;
+      // this.onSmartcardList(this.smartcard);
     });
   }
   getData() {
@@ -250,17 +308,17 @@ export class ActivationComponent implements OnInit {
           }
         }
       );
-      this.selectedDate = 0;
+    this.selectedDate = 0;
 
   }
 
- 
+
 
   getActivationReport(type: number) {
     this.processingSwal();
-    const dateToPass = this.selectedDate || 0; 
+    const dateToPass = this.selectedDate || 0;
     console.log('Date passed to report:', dateToPass);
-  
+
     this.userservice
       .getBulkFirstTimeActivationDownload(this.role, this.username, dateToPass, this.remark, 1, type)
       .subscribe(
