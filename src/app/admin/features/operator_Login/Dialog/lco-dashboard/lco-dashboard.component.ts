@@ -192,7 +192,8 @@ export class LcoDashboardComponent implements OnInit {
       case '4': return 'FIRST TIME ACTIVATION';
       case '5': return 'BLOCK SUBSCRIBER';
       case '6': return 'INVENTORY';
-      case '7': return 'TOTAL SUBSCRIBER';
+      case '1': return 'TOTAL CONNECTION';
+      // case '7': return 'TOTAL SUBSCRIBER';
       case '11': return 'ACTIVE SUBSCRIBER';
       case '12': return 'DEACTIVE SUBSCRIBER';
       default: return 'UNKNOWN TYPE';
@@ -285,13 +286,14 @@ export class LcoDashboardComponent implements OnInit {
         { headerName: 'MODEL', field: 'model', width: 200, },
         { headerName: 'CHIP ID', field: 'chipid', width: 300, },
       ]
-    } else if (this.type == 7) {
+    } else if (this.type == 1) {
+    // } else if (this.type == 7) {
       this.columnDefs = [
         { headerName: "S.No", lockPosition: true, valueGetter: 'node.rowIndex+1', width: 90, filter: false },
         { headerName: 'SMARTCARD', field: 'smartcard',  width: 400, },
         { headerName: 'BOX ID	', field: 'boxid',  cellStyle: { textAlign: 'center', color: 'green' }, width: 400, },
         { headerName: 'CAS NAME', field: 'casname', width: 300, },
-        { headerName: 'ALLOCATION DATE	', field: 'connectiondate', width: 400, },
+        { headerName: 'ALLOCATION DATE	', field: 'activationdate', width: 400, },
       ]
     }
     else if (this.type == 2) {
@@ -545,10 +547,10 @@ export class LcoDashboardComponent implements OnInit {
             generateDataRows(['subid', 'customername', 'address', 'mobileno', 'smartcard', 'boxid', 'productname', 'activationdate', 'expirydate', 'statusdisplay'], this.rowData);
           } else if (this.type == 4) {
             console.log('type', this.type);
-            areatitle = 'A1:I2';
-            areasub = 'A3:I3';
-            header = ['S.NO', 'SUBSCRIBER ID', 'SUBSCRIBER NAME', 'ADDRESS', 'AREA NAME', 'MOBILE NO', 'SMARTCARD', 'BOXID', 'STATUS'];
-            generateDataRows(['subid', 'customername', 'address', 'areaname', 'mobileno', 'smartcard', 'boxid', 'statusdisplay'], this.rowData);
+            areatitle = 'A1:J2';
+            areasub = 'A3:J3';
+            header = ['S.NO', 'SUBSCRIBER ID', 'SUBSCRIBER NAME', 'ADDRESS', 'AREA NAME', 'MOBILE NO', 'SMARTCARD', 'BOXID', 'CORTONBOX','STATUS'];
+            generateDataRows(['subid', 'customername', 'address', 'areaname', 'mobileno', 'smartcard', 'boxid','cottonbox', 'statusdisplay'], this.rowData);
           } else if (this.type == 5) {
             console.log('block', this.type);
             areatitle = 'A1:K2';

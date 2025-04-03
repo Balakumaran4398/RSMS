@@ -10,7 +10,7 @@
                     <label for="categoryName" class="me-2 mb-2">CAS PRODUCT ID </label>
                 </div>
                 <div class="col-6">
-                    <input matInput placeholder="" [(ngModel)]="product_id">
+                    <input matInput placeholder="" [(ngModel)]="product_id" (keypress)="onKeydown($event)">
                     <!-- <div *ngIf="packageMasterForm.get('product_id')?.invalid && packageMasterForm.get('product_id')?.touched" class="text-danger">
                         <small *ngIf="packageMasterForm.get('product_id')?.errors?.['required']">CAS Product ID is required</small>
                         <small *ngIf="packageMasterForm.get('product_id')?.errors?.['minlength']">CAS Product ID must be at least 5 characters</small>
@@ -18,7 +18,6 @@
                     <div *ngIf="submitted && !product_id" class="text-danger" style="font-size: small;">
                         CAS PRODUCT ID is required
                     </div>
-
                 </div>
             </div>
             <div class="d-flex">
@@ -28,8 +27,7 @@
                 <div class="col-6">
                     <div class="toggle-button-cover">
                         <div class="button b2" id="button-10">
-                            <input type="checkbox" class="checkbox" 
-                                [(ngModel)]="ispercentage" />
+                            <input type="checkbox" class="checkbox" [(ngModel)]="ispercentage" />
                             <div class="knobs">
                                 <span>YES</span>
                             </div>

@@ -376,7 +376,7 @@
         [enableCellTextSelection]="true">
     </ag-grid-angular>
 </div>
-<div *ngIf="type== 'online_payment' ||  type == 'sub_online_recharge_count'">
+<div *ngIf="type== 'online_payment' ||  type == 'sub_online_recharge_count' || type == 'online_payment_special'">
     <div class="mb-3">
         <h4>Online Payment History</h4>
     </div>
@@ -403,6 +403,10 @@
                             [matAutocompleteDisabled]="false" [value]="selectedOperator?.name">
 
                         <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayOperator">
+                            <mat-option [value]="0"
+                                (click)="onSubscriberStatusChange({name: 'All operator', value: 0})">
+                                All operator
+                            </mat-option>
                             <mat-option *ngFor="let operator of filteredOperators" [value]="operator.value"
                                 (click)="onSubscriberStatusChange(operator)">
                                 {{ operator.name }}

@@ -181,7 +181,7 @@ export class DistribtorupdatediscountComponent implements OnInit {
       return;
     }
     this.swal.Loading();
-    this.userService.getupdatedistributorDiscount(this.role, this.username, this.operatorid, this.operatorid, this.productid, this.msoamount || 0, this.oldmsoamount || 0,
+    this.userService.getupdatedistributorDiscount(this.role, this.username, this.lcoParentOperatorId, this.operatorid, this.productid, this.msoamount || 0, this.oldmsoamount || 0,
       this.newmsoamount).subscribe((res: any) => {
         this.swal.success(res?.message);
       }, (err) => {

@@ -5,6 +5,7 @@ import { StorageService } from 'src/app/_core/service/storage.service';
 import Swal from 'sweetalert2';
 import { DatePipe } from '@angular/common';
 import { SwalService } from 'src/app/_core/service/swal.service';
+import { Router } from '@angular/router';
 declare var $: any;
 // import { Any } from 'node_modules1/@sigstore/protobuf-specs/dist/__generated__/google/protobuf/any';
 
@@ -74,7 +75,7 @@ export class CreateSubscriberComponent implements AfterViewInit, OnDestroy {
   lcoDeatails: any;
   lcoId: any;
 
-  constructor(private formBuilder: FormBuilder, private userservice: BaseService, private swal: SwalService, private cdr: ChangeDetectorRef, private storageservice: StorageService, private datePipe: DatePipe) {
+  constructor(private formBuilder: FormBuilder, private userservice: BaseService, private swal: SwalService, private router: Router, private cdr: ChangeDetectorRef, private storageservice: StorageService, private datePipe: DatePipe) {
     this.username = storageservice.getUsername();
     this.role = storageservice.getUserRole();
     this.userservice.getOperatorListforSubInsert(this.role, this.username).subscribe((data: any) => {
@@ -594,8 +595,15 @@ export class CreateSubscriberComponent implements AfterViewInit, OnDestroy {
             timerProgressBar: true,
             showConfirmButton: false
           }).then(() => {
-            window.location.reload()
+            // window.location.reload()
           });
+          // let subid = data.message;
+          // let subid = data.message.match(/\d+/)?.[0];
+          let subid = data.message.split(" ").pop(); 
+          console.log(subid);
+
+          this.router.navigate([`/admin/subscriber-full-info/${subid}/new`]);
+
         },
         (error) => {
           console.log(error);

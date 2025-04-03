@@ -95,8 +95,8 @@ export class LcodashboardreportComponent implements OnInit {
       case '8': return 'YESTERDAY EXPIRY REPORT';
       case '9': return 'AREA DETAILS';
       case '10': return 'NEW SUBSCRIBER REPORT';
-      case '11': return 'ACTIVE SUBSCRIBER ';
-      case '12': return 'DEACTIVE SUBSCRIBER ';
+      case '11': return 'NOT EXPIRED SUBSCRIBER ';
+      case '12': return 'EXPIRED SUBSCRIBER ';
       default: return 'UNKNOWN TYPE';
     }
   }
@@ -175,7 +175,7 @@ export class LcodashboardreportComponent implements OnInit {
       //   );
       // } else {
       //   console.log('type!=9');
-        this.onTableData(this.lcoId);
+      this.onTableData(this.lcoId);
       // }
       // this.getArealist(this.lcoId);
       // this.onAreaStatusLCOChange(this.lcoId);
@@ -189,7 +189,23 @@ export class LcodashboardreportComponent implements OnInit {
 
     this.userService.getOpLoginReportByOpid(this.role, this.username, lcoid, this.type, 3)
       .subscribe((res: any) => {
-        this.rowData = res;
+        // if (this.type == 5 || this.type == 4) {
+        //   console.log('type ', this.type, res);
+     
+
+        //   // Extract only the required fields
+        //   this.rowData = res.map((customer: any) => ({
+        //     customeranme: customer.customeranme,
+        //     address: customer.address,
+        //     mobileno: customer.mobileno,
+        //     smartcard: customer.smartcard,
+        //     boxid: customer.boxid
+        //   }));
+
+        //   console.log("Extracted Customer Data:", this.rowData);
+        // } else {
+          this.rowData = res;
+        // }
         console.log(this.rowData);
 
         // this.swal.success(res?.message);
@@ -277,7 +293,7 @@ export class LcodashboardreportComponent implements OnInit {
         { headerName: "S.No", lockPosition: true, valueGetter: 'node.rowIndex+1', width: 90, filter: false },
         // { headerName: 'SMARTCARD', field: 'smartcard', width: 220, },
         {
-          headerName: 'SMARTCARD', field: 'smartcard', width: 220,
+          headerName: 'SMARTCARD', field: 'smartcard', width: 250,
           cellStyle: (params: any) => {
             if (params.data.someCondition) {
               return { backgroundColor: '#f4cccc' };

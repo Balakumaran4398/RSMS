@@ -28,6 +28,7 @@ export interface SubscriberData {
 export class MsorDialogueportsComponent implements OnInit, OnDestroy {
   type: any;
   username: any;
+  isspecial = false;
   role: any;
   reportTitle: any;
   gridOptions = {
@@ -251,8 +252,8 @@ export class MsorDialogueportsComponent implements OnInit, OnDestroy {
   }
   filteredUserAgent: any[] = [];
   filterUserAgent() {
-    this.filteredUserAgent = this.role === 'ROLE_OPERATOR' 
-      ? this.UserAgent.filter(agent => agent.label !== 'MSO') 
+    this.filteredUserAgent = this.role === 'ROLE_OPERATOR'
+      ? this.UserAgent.filter(agent => agent.label !== 'MSO')
       : this.UserAgent;
   }
   lcoDeatails: any;
@@ -297,7 +298,7 @@ export class MsorDialogueportsComponent implements OnInit, OnDestroy {
 
   }
   onDateChange() {
-    if (this.type == 'online_payment') {
+    if (this.type == 'online_payment' || this.type == 'online_payment_special') {
       this.getToDate(null);
       this.getFromDate(null);
       this.getOnline();
@@ -733,23 +734,40 @@ export class MsorDialogueportsComponent implements OnInit, OnDestroy {
 
 
   }
+
   onSubscriberStatusChange(selectedOperator: any) {
     console.log(selectedOperator);
     this.selectedOperator = selectedOperator;
-    this.selectedLcoName = selectedOperator.value || this.operatorId;
+    // this.selectedLcoName = selectedOperator.value || this.operatorId;
+    this.selectedLcoName = selectedOperator.value || this.operatorId || 0;
     console.log(this.selectedLcoName);
+    console.log(this.selectedOperator);
+    // this.selectedOperator = selectedOperator;
 
     this.selectedSubLcoName = 0;
-    // if (this.type == 'online_payment') {
-    //   this.subLcoList(this.selectedOperator)
-    // } else 
+    console.log(this.selectedLcoName);
+
+
+
     if (this.type == 'recharge_deduction_excluding') {
 
     } else if (this.type == 'lcoinvoice') {
 
     }
     else {
-      this.subLcoList(this.selectedOperator.value || this.operatorId)
+      this.subLcoList(this.selectedOperator.value || this.operatorId || 0)
+    }
+
+
+
+
+    if (selectedOperator.value === 0) {
+      console.log("Selected: All Operator (Value: 0)");
+      this.selectedLcoName = selectedOperator.value;
+      console.log(this.selectedLcoName);
+
+    } else {
+      console.log("Selected:", selectedOperator.name, "(Value:", selectedOperator.value, ")");
     }
   }
   onSubscriberLcoChange(selectedOperator: any) {
@@ -1460,7 +1478,16 @@ export class MsorDialogueportsComponent implements OnInit, OnDestroy {
     console.log(this.selectedOnlineType);
     if (Number(this.selectedOnlineType) === 1) {
       console.log('Operator', this.selectedOnlineType);
-      if (!this.selectedOperator?.value && !this.operatorId) {
+      // if (!this.selectedOperator?.value && !this.operatorId) {
+      //   Swal.fire({
+      //     icon: "error",
+      //     title: "Validation Error",
+      //     text: "Please select an Online Type.",
+      //   });
+      //   return;
+      // }
+      if ((this.selectedOperator?.value === undefined || this.selectedOperator?.value === null) &&
+        (this.operatorId === undefined || this.operatorId === null)) {
         Swal.fire({
           icon: "error",
           title: "Validation Error",
@@ -1468,12 +1495,21 @@ export class MsorDialogueportsComponent implements OnInit, OnDestroy {
         });
         return;
       }
-      // this.handleOperatorSelection();
     } else if (Number(this.selectedOnlineType) === 2) {
       console.log('sublco', this.selectedOnlineType);
       // this.handleSublcoSelection();
 
-      if (!this.selectedOperator?.value && !this.operatorId) {
+      // if (!this.selectedOperator?.value && !this.operatorId ) {
+      //   Swal.fire({
+      //     icon: "error",
+      //     title: "Validation Error",
+      //     text: "Please select an Operator.",
+      //   });
+      //   return;
+      // }
+
+      if ((this.selectedOperator?.value === undefined || this.selectedOperator?.value === null) &&
+        (this.operatorId === undefined || this.operatorId === null)) {
         Swal.fire({
           icon: "error",
           title: "Validation Error",
@@ -1491,9 +1527,7 @@ export class MsorDialogueportsComponent implements OnInit, OnDestroy {
     }
 
     this.smartcard = this.smartcardChange(this.smartcard);
-    console.log("Selected Operator:", this.selectedOperator?.value);
-    console.log("Selected SubLCO Name:", this.selectedSubLcoName);
-    console.log("Smartcard:", this.smartcard);
+
 
     Swal.fire({
       title: "Processing",
@@ -1504,16 +1538,25 @@ export class MsorDialogueportsComponent implements OnInit, OnDestroy {
       }
     });
 
+    if (this.role == 'ROLE_SPECIAL') {
+      if (this.type == 'online_payment_special') {
+        this.isspecial = true
+      }
+    } else {
+      this.isspecial = false
+    }
+
     this.userService.getOnlinePaymentHistory(
       this.role,
       this.username,
       this.fromdate,
       this.todate,
-      this.selectedOperator?.value || this.operatorId,
+      this.selectedOperator?.value || this.operatorId || 0,
       this.selectedSubLcoName || 0,
       this.smartcard,
       this.selectedOnlineType,
-      3
+      3,
+      this.isspecial
     ).subscribe(
       (res: any) => {
         this.swal.success_1(res?.message);
@@ -1594,7 +1637,14 @@ export class MsorDialogueportsComponent implements OnInit, OnDestroy {
       }
 
     });
-    this.userService.getOnlinePaymentHistoryReport(this.role, this.username, this.fromdate, this.todate, this.selectedOperator.value || this.operatorId, this.selectedSubLcoName, this.smartcard, this.selectedOnlineType, 2)
+    if (this.role == 'ROLE_SPECIAL') {
+      if (this.type == 'online_payment_special') {
+        this.isspecial = true
+      }
+    } else {
+      this.isspecial = false
+    }
+    this.userService.getOnlinePaymentHistoryReport(this.role, this.username, this.fromdate, this.todate, this.selectedOperator.value || this.operatorId || 0, this.selectedSubLcoName, this.smartcard, this.selectedOnlineType, 2, this.isspecial)
       .subscribe((x: Blob) => {
         const blob = new Blob([x], { type: 'application/xlsx' });
         const data = window.URL.createObjectURL(blob);
@@ -1632,8 +1682,15 @@ export class MsorDialogueportsComponent implements OnInit, OnDestroy {
         Swal.showLoading(null);
       }
     });
+    if (this.role == 'ROLE_SPECIAL') {
+      if (this.type == 'online_payment_special') {
+        this.isspecial = true
+      }
+    } else {
+      this.isspecial = false
+    }
     console.log('dfdsfdsfdsfdsf', event);
-    this.userService.getOnlinePaymentHistoryReport(this.role, this.username, this.fromdate, this.todate, this.selectedOperator.value || this.operatorId, this.selectedSubLcoName, this.smartcard, this.selectedOnlineType, 1)
+    this.userService.getOnlinePaymentHistoryReport(this.role, this.username, this.fromdate, this.todate, this.selectedOperator.value || this.operatorId || 0, this.selectedSubLcoName, this.smartcard, this.selectedOnlineType, 1, this.isspecial)
       .subscribe((x: Blob) => {
         const blob = new Blob([x], { type: 'application/pdf' });
         const data = window.URL.createObjectURL(blob);

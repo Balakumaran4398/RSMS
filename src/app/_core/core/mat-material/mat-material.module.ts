@@ -47,6 +47,8 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NgxMatDatetimePickerModule, NgxMatNativeDateModule, NgxMatTimepickerModule, } from '@angular-material-components/datetime-picker';
 import { NgxMatMomentModule } from '@angular-material-components/moment-adapter';
 import {MatFormFieldModule} from '@angular/material/form-field';
+import { MatOptionModule } from '@angular/material/core';
+
 
 @NgModule({
     declarations: [],
@@ -95,6 +97,7 @@ import {MatFormFieldModule} from '@angular/material/form-field';
         MatTreeModule,
         OverlayModule,
         PortalModule,
+        MatOptionModule,
         ScrollingModule,
         ReactiveFormsModule,
         NgxMatDatetimePickerModule,
@@ -154,6 +157,7 @@ import {MatFormFieldModule} from '@angular/material/form-field';
         NgxMatNativeDateModule,
         NgxMatTimepickerModule,
         NgxMatMomentModule,
+        MatOptionModule,
         MatFormFieldModule,FormsModule
     ]
 })

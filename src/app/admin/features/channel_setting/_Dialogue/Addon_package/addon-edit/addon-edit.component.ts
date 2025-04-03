@@ -27,7 +27,6 @@ export class AddonEditComponent implements OnInit {
   ispercentage: boolean = true;
   role: any;
   invalid: boolean = false;
-
   broadcaster_list: any[] = [];
   constructor(
     public dialogRef: MatDialogRef<AddonEditComponent>,
@@ -36,6 +35,8 @@ export class AddonEditComponent implements OnInit {
     this.username = storageService.getUsername();
     this.role = storageService.getUserRole();
     this.id = data.id;
+
+    
     this.order_id = data.order_id;
     this.broadcaster_id = data.broadcaster_id;
     this.commission = data.customeramount;
@@ -85,7 +86,7 @@ export class AddonEditComponent implements OnInit {
   }
   onBroadcasterChange(event: any): void {
     console.log(event);
-    
+
     // const selectedValue = (event.target as HTMLSelectElement).value;
     // this.broadcaster_id = selectedValue;
     this.broadcaster_id = event;

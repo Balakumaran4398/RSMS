@@ -38,17 +38,16 @@
                         <input type="text" placeholder="Search Not Added" [(ngModel)]="searchTermNotAdded"
                             (input)="filterNotAddedList()">
                     </div>
-
                     <div class="table1 mb-3">
                         <p style="color: white;">NOT ADDED - {{NotaddedList.length}}</p>
                         <div class="row inp">
                             <div class="col-12 example-container">
                                 <div cdkDropList #todoList="cdkDropList" [cdkDropListData]="filteredNotaddedList"
                                     [cdkDropListConnectedTo]="[doneList]" class="example-list"
-                                    (cdkDropListDropped)="drop($event)">
+                                    (cdkDropListDropped)="drop2($event,1)">
                                     <div *ngFor="let item of filteredNotaddedList" class="example-box"
-                                        (click)="toggleSelection(item.id)" cdkDrag
-                                        [cdkDragData]="item" [class.selected]="isSelected(item)">
+                                        (click)="toggleSelection(item.id)" cdkDrag [cdkDragData]="item"
+                                        [class.selected]="isSelected(item)">
                                         {{ item.name }}
                                     </div>
                                 </div>
@@ -76,10 +75,10 @@
                             <div class="col-12 example-container">
                                 <div cdkDropList #doneList="cdkDropList" [cdkDropListData]="filteredAddedList"
                                     [cdkDropListConnectedTo]="[todoList]" class="example-list"
-                                    (cdkDropListDropped)="drop($event)">
+                                    (cdkDropListDropped)="drop2($event,2)">
                                     <div *ngFor="let item of filteredAddedList" class="example-box"
-                                        (click)="toggleSelection(item.id)" cdkDrag
-                                        [cdkDragData]="item" [class.selected]="isSelected(item)">
+                                        (click)="toggleSelection(item.id)" cdkDrag [cdkDragData]="item"
+                                        [class.selected]="isSelected(item)">
                                         {{ item.name }}
                                     </div>
                                 </div>
@@ -129,7 +128,7 @@
             </div>
         </div>
     </div>
-    <section class="mobile" >
+    <section class="mobile">
         <div class="d-flex flex-column flex-lg-row justify-content-center align-items-center ">
             <div class="col-lg-5 col-12 mb-3 mb-lg-0">
                 <div class="card">
@@ -143,10 +142,10 @@
                             <div class="col-12 example-container">
                                 <div cdkDropList #todoList="cdkDropList" [cdkDropListData]="filteredNotPermissionList"
                                     [cdkDropListConnectedTo]="[doneList]" class="example-list"
-                                    (cdkDropListDropped)="drop($event)">
+                                    (cdkDropListDropped)="drop1($event,1)">
                                     <div *ngFor="let item of filteredNotPermissionList" class="example-box"
-                                        (click)="toggleSelection(item.id)" cdkDrag
-                                        [cdkDragData]="item" [class.selected]="isSelected(item)">
+                                        (click)="toggleSelection(item.id)" cdkDrag [cdkDragData]="item"
+                                        [class.selected]="isSelected(item)">
                                         {{ item.name }}
                                     </div>
                                 </div>
@@ -164,7 +163,6 @@
             </div>
             <div class="col-lg-5 col-12">
                 <div class="card">
-
                     <div class="input_box">
                         <input type="text" placeholder="Search Added" [(ngModel)]="searchTermAdded"
                             (input)="filterPermissionList()">
@@ -175,10 +173,10 @@
                             <div class="col-12 example-container">
                                 <div cdkDropList #doneList="cdkDropList" [cdkDropListData]="filteredPermissionList"
                                     [cdkDropListConnectedTo]="[todoList]" class="example-list"
-                                    (cdkDropListDropped)="drop($event)">
+                                    (cdkDropListDropped)="drop1($event,2)">
                                     <div *ngFor="let item of filteredPermissionList" class="example-box"
-                                        (click)="toggleSelection(item.id)" cdkDrag
-                                        [cdkDragData]="item" [class.selected]="isSelected(item)">
+                                        (click)="toggleSelection(item.id)" cdkDrag [cdkDragData]="item"
+                                        [class.selected]="isSelected(item)">
                                         {{ item.name }}
                                     </div>
                                 </div>

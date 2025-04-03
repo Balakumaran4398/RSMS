@@ -94,7 +94,7 @@ export class SublcooperatordialogueComponent implements OnInit {
     pagination: true,
   }
   rowData: any;
-
+  retailerUsername: any;
 
   selectedRow: any
   constructor(public dialogRef: MatDialogRef<SublcooperatordialogueComponent>, @Inject(MAT_DIALOG_DATA) public data: any, private fb: FormBuilder, private userservice: BaseService, private storageservice: StorageService, private swal: SwalService, public dialog: MatDialog,) {
@@ -105,6 +105,8 @@ export class SublcooperatordialogueComponent implements OnInit {
     this.operatorid = data.id;
     this.selectedRow = data;
     this.retailername = data?.data.retailerName;
+    this.retailerUsername = data?.data.username;
+    console.log('username', this.retailerUsername);
     this.contactno = data?.data.contactNo;
     this.contactno2 = data?.data.contactNo2;
     this.address = data?.data.address;
@@ -409,12 +411,24 @@ export class SublcooperatordialogueComponent implements OnInit {
     this.isCustomerMode = true;
     this.selectedRow!.data!.isCustomerMode = true;
     this.dialogRef.close(this.selectedRow)
+    this.userservice.getUpdateSublcoRate(this.role, this.retailerUsername, this.operatorid, this.retailerid, 0)
+      .subscribe((res: any) => {
+        this.swal.success(res?.message);
+      }, (err) => {
+        this.swal.Error(err?.error?.message);
+      });
   }
   getMsomode() {
     this.isCustomerMode = false;
     console.log(this.isCustomerMode);
     this.selectedRow!.data!.isCustomerMode = false;
     this.dialogRef.close(this.selectedRow)
+    this.userservice.getUpdateSublcoRate(this.role, this.retailerUsername, this.operatorid, this.retailerid, 1)
+      .subscribe((res: any) => {
+        this.swal.success(res?.message);
+      }, (err) => {
+        this.swal.Error(err?.error?.message);
+      });
   }
   onDeactive() {
     Swal.fire({
@@ -525,7 +539,7 @@ export class SublcooperatordialogueComponent implements OnInit {
       event.preventDefault();
     }
   }
- 
+
   // getDistributorPackageList() {
   //   this.userservice.getDistributorPackageList(this.role, this.username, this.operatorid, this.operatorid).subscribe((data: any) => {
   //     console.log(data);

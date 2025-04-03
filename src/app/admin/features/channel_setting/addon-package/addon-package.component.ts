@@ -20,50 +20,56 @@ export class AddonPackageComponent {
   //     sortable: true,
   //     resizable: true,
   //     filter: true,
-  //     // width: 210,
   //     floatingFilter: true,
-  //     comparator: (valueA: string, valueB: string) => {
-  //       if (!valueA) valueA = '';
-  //       if (!valueB) valueB = '';
+  //     comparator: (valueA: any, valueB: any) => {
+  //       const isNumberA = !isNaN(valueA) && valueA !== null;
+  //       const isNumberB = !isNaN(valueB) && valueB !== null;
 
-  //       // Case-insensitive comparison
-  //       const lowerA = valueA.toLowerCase();
-  //       const lowerB = valueB.toLowerCase();
-
-  //       // Sort alphabetically, considering letters before numbers
-  //       return lowerA.localeCompare(lowerB);
+  //       if (isNumberA && isNumberB) {
+  //         return valueA - valueB;
+  //       } else {
+  //         const normalizedA = valueA ? valueA.toString().trim().toLowerCase() : '';
+  //         const normalizedB = valueB ? valueB.toString().trim().toLowerCase() : '';
+  //         if (normalizedA < normalizedB) return -1;
+  //         if (normalizedA > normalizedB) return 1;
+  //         return 0;
+  //       }
   //     },
   //   },
   //   paginationPageSize: 10,
   //   pagination: true,
-  // }
+  // };
 
 
   gridOptions = {
     defaultColDef: {
       sortable: true,
       resizable: true,
-      filter: true,
+      filter: "agTextColumnFilter", 
       floatingFilter: true,
       comparator: (valueA: any, valueB: any) => {
         const isNumberA = !isNaN(valueA) && valueA !== null;
         const isNumberB = !isNaN(valueB) && valueB !== null;
   
         if (isNumberA && isNumberB) {
-          return valueA - valueB;
+          return valueA - valueB; 
         } else {
-          const normalizedA = valueA ? valueA.toString().trim().toLowerCase() : '';
-          const normalizedB = valueB ? valueB.toString().trim().toLowerCase() : '';
-          if (normalizedA < normalizedB) return -1;
-          if (normalizedA > normalizedB) return 1;
-          return 0;
+          const normalizedA = valueA ? valueA.toString().trim().toLowerCase() : "";
+          const normalizedB = valueB ? valueB.toString().trim().toLowerCase() : "";
+          return normalizedA.localeCompare(normalizedB); 
         }
       },
+      filterParams: {
+        textFormatter: (value: string) => {
+          return value ? value.toString().toLowerCase() : "";
+        },
+        filterOptions: ["contains", "startsWith", "equals"], 
+        debounceMs: 200,
+      },
     },
-    paginationPageSize: 10,
+    paginationPageSize: 15,
     pagination: true,
   };
-
   username: any;
   role: any;
   gridApi: any;
@@ -170,7 +176,7 @@ export class AddonPackageComponent {
 
 
     {
-      headerName: "EXPORT", field: 'report', width: 150,
+      headerName: "REPORT",  width: 150,filter:false,
       cellRenderer: (params: any) => {
         const editButton = document.createElement('button');
         editButton.innerHTML = '<i class="far fa-file-pdf" style="font-size:20px;color:red"></i>';
@@ -193,9 +199,9 @@ export class AddonPackageComponent {
     {
       headerName: "S.No", lockPosition: true, valueGetter: 'node.rowIndex+1', width: 120, filter: false
     },
-    { headerName: "PACKAGE NAME", field: 'productname', width: 300, cellStyle: { textAlign: 'left' }, },
-    { headerName: "REFERENCE ID", field: 'referenceid', width: 250, cellStyle: { textAlign: 'center' }, },
-    { headerName: "PACKAGE RATE", field: 'rate', width: 250, cellStyle: { textAlign: 'center' }, },
+    { headerName: "PACKAGE NAME", field: 'addon_package_name', width: 300, cellStyle: { textAlign: 'left' }, },
+    { headerName: "REFERENCE ID", field: 'order_id', width: 250, cellStyle: { textAlign: 'center' }, },
+    { headerName: "PACKAGE RATE", field: 'addon_package_rate', width: 250, cellStyle: { textAlign: 'center' }, },
     {
       headerName: 'ACTION', width: 380, filter: false,
       cellRenderer: (params: any) => {
@@ -216,10 +222,32 @@ export class AddonPackageComponent {
         return div;
       },
     },
-
+    {
+      headerName: "REPORT", field: 'report', width: 150,filter:false,
+      cellRenderer: (params: any) => {
+        const editButton = document.createElement('button');
+        editButton.innerHTML = '<i class="far fa-file-pdf" style="font-size:20px;color:red"></i>';
+        editButton.style.backgroundColor = 'transparent';
+        editButton.style.color = '#E545D1';
+        editButton.style.border = 'none';
+        editButton.title = 'Edit';
+        editButton.style.cursor = 'pointer';
+        editButton.style.fontSize = "18px";
+        editButton.addEventListener('click', () => {
+          console.log(params.data);
+          
+          this.generatePdf(params.data.id, params.data.addon_package_name);
+        });
+        const div = document.createElement('div');
+        div.appendChild(editButton);
+        return div;
+      }
+    },
   ]
 
   generatePdf(id: number, name: any) {
+    console.log(name);
+    
     this.processingSwal();
     if (id == 0) {
       this.userService.getAllAddonExportReportDownload(this.role, this.username)
@@ -290,7 +318,7 @@ export class AddonPackageComponent {
   openViewDialog(data: any): void {
     const dialogData = { ...data };
     console.log(dialogData);
-    
+
     const dialogRef = this.dialog.open(AddonViewComponent, {
       width: '1000px',
       panelClass: 'custom-dialog-container',

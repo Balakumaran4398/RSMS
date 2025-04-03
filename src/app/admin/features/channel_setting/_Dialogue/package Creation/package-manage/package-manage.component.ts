@@ -175,7 +175,6 @@ export class PackageManageComponent {
       item.toLowerCase().includes(searchTerm)
     );
     this.cdr.detectChanges();
-
   }
   filterAddedList(): void {
     const searchTerm = this.searchTermAdded.toLowerCase();
@@ -210,7 +209,6 @@ export class PackageManageComponent {
     } else {
       this.selectedItems.add(item);
     }
-
   }
 
   isSelected(item: string): boolean {

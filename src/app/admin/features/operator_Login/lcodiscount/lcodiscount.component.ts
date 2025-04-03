@@ -199,9 +199,10 @@ export class LcodiscountComponent implements OnInit, AfterViewInit {
         { headerName: "S.No", valueGetter: 'node.rowIndex+1', width: 90, },
         { headerName: 'PACKAGE NAME', width: 200, field: 'product_name', },
         { headerName: 'CUSTOMER AMOUNT', width: 250, field: 'customer_amount' },
-        { headerName: 'LCO-COMMISION', width: 200, field: 'lco_commission' },
-        { headerName: 'MSO RATE', field: 'mso_amount', width: 200, },
-        { headerName: 'DISCOUNT', width: 250, field: 'discount_value', },
+        { headerName: 'LCO-COMMISION', width: 200, field: 'new_commission_value' },
+        { headerName: 'MSO RATE', field: 'mso_amount', width: 150, },
+        { headerName: 'DISCOUNT', width: 150, field: 'discount_value', },
+        { headerName: 'PERCENTAGE', width: 150, field: 'ispercentage', },
         { headerName: 'CUSTOMER SELLING PRICE', field: 'cusdiscprice', width: 230, },
         {
           headerName: 'ACTION', field: '', width: 150, filter: false,
@@ -230,6 +231,7 @@ export class LcodiscountComponent implements OnInit, AfterViewInit {
         { headerName: 'LCO-COMMISION', width: 200, field: 'lco_commission', },
         { headerName: 'MSO RATE', field: 'mso_amount', width: 200, },
         { headerName: 'DISCOUNT', width: 250, field: 'discount_value', },
+        { headerName: 'PERCENTAGE', width: 250, field: 'ispercentage', },
         { headerName: 'CUSTOMER SELLING PRICE', field: 'cusdiscprice', width: 230, },
         {
           headerName: 'ACTION', field: '', width: 150, filter: false,

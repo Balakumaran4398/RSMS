@@ -33,6 +33,7 @@ export class OnlinerechargeComponent implements OnInit {
   amountControl!: FormControl;
 
   loading = false;
+  isspecial = false;
   gridApi: any;
   gateWayMode: any;
   rowData: any;
@@ -305,7 +306,12 @@ export class OnlinerechargeComponent implements OnInit {
         Swal.showLoading(null);
       }
     });
-    this.userservice.getOnlinePaymentHistory(this.role, this.username, this.fromdate, this.todate, this.operatorid, 0, 0, 1, 3)
+    if (this.role == 'ROLE_SPECIAL') {
+      this.isspecial = true
+    } else {
+      this.isspecial = false
+    }
+    this.userservice.getOnlinePaymentHistory(this.role, this.username, this.fromdate, this.todate, this.operatorid, 0, 0, 1, 3,this.isspecial)
       .subscribe((res: any) => {
         this.swal.success_1(res?.message);
         this.rowDataOnline = res;

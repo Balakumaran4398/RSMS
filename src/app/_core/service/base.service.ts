@@ -1839,14 +1839,20 @@ export class BaseService {
   // ---------------------------------------------------------OnlinePaymentHistory--------------------------------------------
 
 
-  getOnlinePaymentHistoryReport(role: any, username: any, fromdate: any, todate: any, operatorid: any, sublcoid: any, smartcard: any, type: any, reporttype: any,): Observable<Blob> {
-    return this.http.get(BASE_URL + "/report/GetOnlinePaymentHistory?role=" + role + "&username=" + encodeURIComponent(username) + "&fromdate=" + fromdate + "&todate=" + todate + "&operatorid=" + operatorid + "&sublcoid=" + sublcoid + "&smartcard=" + smartcard + "&type=" + type + "&reporttype=" + reporttype, { responseType: 'blob' });
+  // getOnlinePaymentHistoryReport(role: any, username: any, fromdate: any, todate: any, operatorid: any, sublcoid: any, smartcard: any, type: any, reporttype: any,): Observable<Blob> {
+  //   return this.http.get(BASE_URL + "/report/GetOnlinePaymentHistory?role=" + role + "&username=" + encodeURIComponent(username) + "&fromdate=" + fromdate + "&todate=" + todate + "&operatorid=" + operatorid + "&sublcoid=" + sublcoid + "&smartcard=" + smartcard + "&type=" + type + "&reporttype=" + reporttype, { responseType: 'blob' });
+  // }
+  getOnlinePaymentHistoryReport(role: any, username: any, fromdate: any, todate: any, operatorid: any, sublcoid: any, smartcard: any, type: any, reporttype: any,isSpecial: any): Observable<Blob> {
+    return this.http.get(BASE_URL + "/report/GetOnlinePaymentHistory?role=" + role + "&username=" + encodeURIComponent(username) + "&fromdate=" + fromdate + "&todate=" + todate + "&operatorid=" + operatorid + "&sublcoid=" + sublcoid + "&smartcard=" + smartcard + "&type=" + type + "&reporttype=" + reporttype+ "&isspecial=" + isSpecial, { responseType: 'blob' });
   }
   // getOnlinePaymentHistory(role: any, username: any, fromdate: any, todate: any, operatorid: any, sublcoid: any, smartcard: any, type: any, reporttype: any,): Observable<HttpResponse<any[]>> {
   //   return this.http.get<any[]>(BASE_URL + "/report/GetOnlinePaymentHistory?role=" + role + "&username=" + encodeURIComponent(username) + "&fromdate=" + fromdate + "&todate=" + todate + "&operatorid=" + operatorid + "&sublcoid=" + sublcoid + "&smartcard=" + smartcard + "&type=" + type + "&reporttype=" + reporttype, { observe: 'response' });
   // }
-  getOnlinePaymentHistory(role: any, username: any, fromdate: any, todate: any, operatorid: any, sublcoid: any, smartcard: any, type: any, reporttype: any,): Observable<any[]> {
-    return this.http.get<any[]>(BASE_URL + "/report/GetOnlinePaymentHistory?role=" + role + "&username=" + encodeURIComponent(username) + "&fromdate=" + fromdate + "&todate=" + todate + "&operatorid=" + operatorid + "&sublcoid=" + sublcoid + "&smartcard=" + smartcard + "&type=" + type + "&reporttype=" + reporttype,);
+  // getOnlinePaymentHistory(role: any, username: any, fromdate: any, todate: any, operatorid: any, sublcoid: any, smartcard: any, type: any, reporttype: any,): Observable<any[]> {
+  //   return this.http.get<any[]>(BASE_URL + "/report/GetOnlinePaymentHistory?role=" + role + "&username=" + encodeURIComponent(username) + "&fromdate=" + fromdate + "&todate=" + todate + "&operatorid=" + operatorid + "&sublcoid=" + sublcoid + "&smartcard=" + smartcard + "&type=" + type + "&reporttype=" + reporttype,);
+  // }
+  getOnlinePaymentHistory(role: any, username: any, fromdate: any, todate: any, operatorid: any, sublcoid: any, smartcard: any, type: any, reporttype: any, isSpecial: any): Observable<any[]> {
+    return this.http.get<any[]>(BASE_URL + "/report/GetOnlinePaymentHistory?role=" + role + "&username=" + encodeURIComponent(username) + "&fromdate=" + fromdate + "&todate=" + todate + "&operatorid=" + operatorid + "&sublcoid=" + sublcoid + "&smartcard=" + smartcard + "&type=" + type + "&reporttype=" + reporttype + "&isspecial=" + isSpecial,);
   }
   // ----------------------------------------------------------refresh-----------------------
   getrefreshData(role: any, username: any, operatorid: any, subid: any, transactionid: any, type: any): Observable<any[]> {
@@ -2199,5 +2205,16 @@ export class BaseService {
   }
   getlcoMonthwiseActivationData(role: any, username: any, operatorid: any, fromdate: any, todate: any, reporttype: any): Observable<any[]> {
     return this.http.get<any>(BASE_URL + "/report/getlcoMonthwiseActivationReport?role=" + role + "&username=" + encodeURIComponent(username) + "&operatorid=" + operatorid + "&fromdate=" + fromdate + "&todate=" + todate + "&reporttype=" + reporttype,)
+  }
+
+  // =========================================subLCO wallet updation ========================================
+  getUpdateSublcoRate(role: any, username: any, operatorid: any, retailerid: any, discounttype: any): Observable<any[]> {
+    return this.http.post<any>(BASE_URL + "/operator/updateSublcoRate?role=" + role + "&username=" + encodeURIComponent(username) + "&operatorid=" + operatorid + "&retailerid=" + retailerid + "&discounttype=" + discounttype, {})
+  }
+
+
+  // ======================================================SUBLCO DETAILS====================================================
+  getSublcoDetails(role: any, username: any): Observable<any[]> {
+    return this.http.get<any>(BASE_URL + "/sublco/getSublcoDetails?role=" + role + "&username=" + encodeURIComponent(username),)
   }
 }

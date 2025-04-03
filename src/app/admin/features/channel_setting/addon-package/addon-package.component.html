@@ -13,7 +13,7 @@
             </div>
             <div class="col-12 col-md-10 d-flex align-items-center justify-content-center " style="margin: auto;">
                 <ag-grid-angular #agGrid id="myGrid" domLayout='normal' class="ag-theme-alpine table-class"
-                    style="max-height: 590px;overflow: scroll;overflow-x: hidden;overflow-y: hidden;" rowAnimation
+                     rowAnimation
                     [gridOptions]="gridOptions" [columnDefs]="columnDefs" [rowData]="rowData"
                     [enableCellTextSelection]="true">
                 </ag-grid-angular>
@@ -26,11 +26,17 @@
     <h4>ADDON PACK MANAGE</h4>
     <div class="row">
         <div class="">
+            <!-- <div class="col d-flex justify-content-center align-items-center mb-3">
+                
+                <div class="export-icon" (click)="generatePdf(0,'all')">
+                    <img style="height: 5vh;" src="/assets/images/icons/pdf.png" alt="PDF Icon">
+                </div>
+            </div> -->
                  <div class="col-12 col-sm-10  align-items-center justify-content-center responsive-container"
                 style="margin: auto;">
 
-                <ag-grid-angular #agGrid id="myGrid" domLayout='autoHeight' class="ag-theme-alpine table-class"
-                    style="max-height: 590px;overflow: scroll;overflow-x: hidden;" rowAnimation
+                <ag-grid-angular #agGrid id="myGrid" domLayout='normal' class="ag-theme-alpine table-class"
+                    rowAnimation
                     [gridOptions]="gridOptions" [columnDefs]="columnDefs1" [rowData]="rowData"
                     [enableCellTextSelection]="true">
                 </ag-grid-angular>

@@ -229,39 +229,39 @@ export class OperatordialogueComponent implements OnInit {
           this.swal.Close();
           if (this.type === 1) {
             console.log('type', this.type);
-            areatitle = 'A1:K2';
-            areasub = 'A3:K3';
-            header = ['S.NO', 'SUBSCRIBER ID', 'SUBSCRIBER NAME', 'ADDRESS', 'AREA NAME', 'MOBILE NO', 'SMARTCARD', 'BOXID', 'ACTIVATION DATE', 'EXPIRY DATE', 'PACKAGE STATUS'];
-            generateDataRows(['subid', 'customername', 'address', 'areaname', 'mobileno', 'smartcard', 'boxid', 'activationdate', 'expirydate', 'statusdisplay'], this.rowData);
+            areatitle = 'A1:L2';
+            areasub = 'A3:L3';
+            header = ['S.NO', 'SUBSCRIBER ID', 'SUBSCRIBER NAME', 'ADDRESS', 'AREA NAME', 'MOBILE NO', 'SMARTCARD', 'BOXID', 'CORTON BOX', 'ACTIVATION DATE', 'EXPIRY DATE', 'PACKAGE STATUS'];
+            generateDataRows(['subid', 'customername', 'address', 'areaname', 'mobileno', 'smartcard', 'boxid', 'cottonbox', 'activationdate', 'expirydate', 'statusdisplay'], this.rowData);
 
           } else if (this.type === 2) {
             console.log('type', this.type);
-            areatitle = 'A1:K2';
-            areasub = 'A3:K3';
-            header = ['S.NO', 'SUBSCRIBER ID', 'SUBSCRIBER NAME', 'ADDRESS', 'MOBILE NO', 'SMARTCARD', 'BOXID', 'PACKAGE NAME', 'ACTIVATION DATE', 'EXPIRY DATE', 'STATUS'];
-            generateDataRows(['subid', 'customername', 'address', 'mobileno', 'smartcard', 'boxid', 'productname', 'activationdate', 'expirydate', 'statusdisplay'], this.rowData);
+            areatitle = 'A1:L2';
+            areasub = 'A3:L3';
+            header = ['S.NO', 'SUBSCRIBER ID', 'SUBSCRIBER NAME', 'ADDRESS', 'MOBILE NO', 'SMARTCARD', 'BOXID', 'CORTON BOX', 'PACKAGE NAME', 'ACTIVATION DATE', 'EXPIRY DATE', 'STATUS'];
+            generateDataRows(['subid', 'customername', 'address', 'mobileno', 'smartcard', 'boxid', 'cottonbox', 'productname', 'activationdate', 'expirydate', 'statusdisplay'], this.rowData);
           } else if (this.type === 3) {
             console.log('type', this.type);
-            areatitle = 'A1:I2';
-            areasub = 'A3:I3';
-            header = ['S.NO', 'SUBSCRIBER ID', 'SUBSCRIBER NAME', 'ADDRESS', 'MOBILE NO', 'SMARTCARD', 'BOXID', 'PACKAGE NAME', 'EXPIRY DATE',];
-            generateDataRows(['subid', 'customername', 'address', 'mobileno', 'smartcard', 'boxid', 'productname', 'expirydate'], this.rowData);
+            areatitle = 'A1:J2';
+            areasub = 'A3:J3';
+            header = ['S.NO', 'SUBSCRIBER ID', 'SUBSCRIBER NAME', 'ADDRESS', 'MOBILE NO', 'SMARTCARD', 'BOXID', 'CORTON BOX', 'PACKAGE NAME', 'EXPIRY DATE',];
+            generateDataRows(['subid', 'customername', 'address', 'mobileno', 'smartcard', 'boxid', 'cottonbox', 'productname', 'expirydate'], this.rowData);
           } else if (this.type === 4) {
             console.log('type', this.type);
-            areatitle = 'A1:I2';
-            areasub = 'A3:I3';
-            header = ['S.NO', 'SUBSCRIBER ID', 'SUBSCRIBER NAME', 'ADDRESS', 'AREA NAME', 'MOBILE NO', 'SMARTCARD', 'BOXID', 'STATUS'];
-            generateDataRows(['subid', 'customername', 'address', 'areaname', 'mobileno', 'smartcard', 'boxid', 'statusdisplay'], this.rowData);
+            areatitle = 'A1:J2';
+            areasub = 'A3:J3';
+            header = ['S.NO', 'SUBSCRIBER ID', 'SUBSCRIBER NAME', 'ADDRESS', 'AREA NAME', 'MOBILE NO', 'SMARTCARD', 'BOXID', 'CORTON BOX', 'STATUS'];
+            generateDataRows(['subid', 'customername', 'address', 'areaname', 'mobileno', 'smartcard', 'boxid', 'cottonbox', 'statusdisplay'], this.rowData);
           } else if (this.type === 5) {
-            areatitle = 'A1:K2';
-            areasub = 'A3:K3';
-            header = ['S.NO', 'SUB ID', 'OPERATOR NAME', 'CUSTOMER NAME', 'SMARTCARD', 'BOX ID', 'CAS NAME', 'PRODUCT NAME', 'PRODUCT ID', 'CREATION DATE', 'EXPIRY DATE'];
-            generateDataRows(['subid', 'operatorname', 'customername', 'smartcard', 'boxid', 'casname', 'productname', 'productid', 'creationdate', 'expirydate'], this.rowData);
+            areatitle = 'A1:L2';
+            areasub = 'A3:L3';
+            header = ['S.NO', 'SUB ID', 'OPERATOR NAME', 'CUSTOMER NAME', 'SMARTCARD', 'BOX ID', 'CORTON BOX', 'CAS NAME', 'PRODUCT NAME', 'PRODUCT ID', 'CREATION DATE', 'EXPIRY DATE'];
+            generateDataRows(['subid', 'operatorname', 'customername', 'smartcard', 'boxid', 'cottonbox', 'casname', 'productname', 'productid', 'creationdate', 'expirydate'], this.rowData);
           } else if (this.type === 6 || this.type === 7) {
             areatitle = 'A1:E2';
             areasub = 'A3:E3';
-            header = ['S.NO', 'SMARTCARD', 'BOX ID', 'CAS', 'ALLOCATION DATE'];
-            generateDataRows(['smartcard', 'boxid', 'casname', 'connectiondate'], this.rowData);
+            header = ['S.NO', 'SMARTCARD', 'BOX ID', 'CORTON BOX', 'CAS', 'ALLOCATION DATE',];
+            generateDataRows(['smartcard', 'boxid', 'cottonbox', 'casname', 'connectiondate'], this.rowData);
           }
           else if (this.type === 9) {
             areatitle = 'A1:G2';
@@ -286,32 +286,32 @@ export class OperatordialogueComponent implements OnInit {
 
           // Handle empty data for no records
           if (this.type === 1) {
-            areatitle = 'A1:K2';
-            areasub = 'A3:K3';
-            header = ['S.NO', 'SUBSCRIBER ID', 'SUBSCRIBER NAME', 'ADDRESS', 'AREA NAME', 'MOBILE NO', 'SMARTCARD', 'BOXID', 'ACTIVATION DATE', 'EXPIRY DATE', 'PACKAGE STATUS'];
+            areatitle = 'A1:L2';
+            areasub = 'A3:L3';
+            header = ['S.NO', 'SUBSCRIBER ID', 'SUBSCRIBER NAME', 'ADDRESS', 'AREA NAME', 'MOBILE NO', 'SMARTCARD', 'BOXID', 'CORTON BOX', 'ACTIVATION DATE', 'EXPIRY DATE', 'PACKAGE STATUS'];
           } else if (this.type === 2) {
             console.log('type', this.type);
-            areatitle = 'A1:K2';
-            areasub = 'A3:K3';
-            header = ['S.NO', 'SUBSCRIBER ID', 'SUBSCRIBER NAME', 'ADDRESS', 'MOBILE NO', 'SMARTCARD', 'BOXID', 'PACKAGE NAME', 'ACTIVATION DATE', 'EXPIRY DATE', 'STATUS'];
+            areatitle = 'A1:L2';
+            areasub = 'A3:L3';
+            header = ['S.NO', 'SUBSCRIBER ID', 'SUBSCRIBER NAME', 'ADDRESS', 'MOBILE NO', 'SMARTCARD', 'BOXID', 'CORTON BOX', 'PACKAGE NAME', 'ACTIVATION DATE', 'EXPIRY DATE', 'STATUS'];
           } else if (this.type === 3) {
             console.log('type', this.type);
-            areatitle = 'A1:I2';
-            areasub = 'A3:I3';
-            header = ['S.NO', 'SUBSCRIBER ID', 'SUBSCRIBER NAME', 'ADDRESS', 'MOBILE NO', 'SMARTCARD', 'BOXID', 'PACKAGE NAME', 'EXPIRY DATE',];
+            areatitle = 'A1:J2';
+            areasub = 'A3:J3';
+            header = ['S.NO', 'SUBSCRIBER ID', 'SUBSCRIBER NAME', 'ADDRESS', 'MOBILE NO', 'SMARTCARD', 'BOXID', 'CORTON BOX', 'PACKAGE NAME', 'EXPIRY DATE',];
           } else if (this.type === 4) {
             console.log('type', this.type);
-            areatitle = 'A1:I2';
-            areasub = 'A3:I3';
-            header = ['S.NO', 'SUBSCRIBER ID', 'SUBSCRIBER NAME', 'ADDRESS', 'AREA NAME', 'MOBILE NO', 'SMARTCARD', 'BOXID', 'STATUS'];
+            areatitle = 'A1:J2';
+            areasub = 'A3:J3';
+            header = ['S.NO', 'SUBSCRIBER ID', 'SUBSCRIBER NAME', 'ADDRESS', 'AREA NAME', 'MOBILE NO', 'SMARTCARD', 'BOXID', 'CORTON BOX', 'STATUS'];
           } else if (this.type === 5) {
-            areatitle = 'A1:K2';
-            areasub = 'A3:K3';
-            header = ['S.NO', 'SUB ID', 'OPERATOR NAME', 'CUSTOMER NAME', 'SMARTCARD', 'BOX ID', 'CAS NAME', 'PRODUCT NAME', 'PRODUCT ID', 'CREATION DATE', 'EXPIRY DATE'];
+            areatitle = 'A1:L2';
+            areasub = 'A3:L3';
+            header = ['S.NO', 'SUB ID', 'OPERATOR NAME', 'CUSTOMER NAME', 'SMARTCARD', 'BOX ID', 'CORTON BOX', 'CAS NAME', 'PRODUCT NAME', 'PRODUCT ID', 'CREATION DATE', 'EXPIRY DATE'];
           } else if (this.type === 6 || this.type === 7) {
             areatitle = 'A1:E2';
             areasub = 'A3:E3';
-            header = ['S.NO', 'SMARTCARD', 'BOX ID', 'CAS', 'ALLOCATION DATE'];
+            header = ['S.NO', 'SMARTCARD', 'BOX ID', 'CORTON BOX', 'CAS', 'ALLOCATION DATE'];
           } else if (this.type === 9) {
             areatitle = 'A1:F2';
             areasub = 'A3:F3';

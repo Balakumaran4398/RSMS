@@ -79,6 +79,9 @@ export class SublcooperatorComponent implements OnInit {
 
 
         const iswallet = params.data.iswallet === true || params.data.iswallet === 'true';
+        const issublcoDiscount = params.data.sublcoDiscount === 1 || params.data.sublcoDiscount === '1';
+        console.log('issublcoDiscount', issublcoDiscount);
+
 
         if (iswallet) {
 
@@ -94,7 +97,7 @@ export class SublcooperatorComponent implements OnInit {
 
           // div.appendChild(deleteButton);
         }
-        if (!params.data.isCustomerMode) {
+        if (!params.data.isCustomerMode || issublcoDiscount) {
           discountButton.innerHTML = '<i class="fa fa-dollar-sign" style="font-size: 1.5em; color: rgba(236, 7, 217, 0.94); cursor: pointer;margin-left: 20px ;"></i>';
           discountButton.style.backgroundColor = 'transparent';
           discountButton.style.border = 'none';
@@ -169,7 +172,7 @@ export class SublcooperatorComponent implements OnInit {
     {
       headerName: 'STATUS',
       field: 'isactive',
-      width: 200, cellStyle: { textAlign: 'center'},
+      width: 200, cellStyle: { textAlign: 'center' },
       cellRenderer: (params: any) => {
         if (params.value) {
           return `<span style="color: green; font-weight: bold;">Active</span>`;

@@ -39,40 +39,92 @@ export class AreaStreetComponent implements OnInit {
     defaultColDef: {
       sortable: true,
       resizable: true,
-      filter: true,
+      // filter: true,
+      //   floatingFilter: true,
+      //   comparator: (valueA: any, valueB: any) => {
+      //     if (!isNaN(valueA) && !isNaN(valueB)) {
+      //       return Number(valueA) - Number(valueB);
+      //     }
+      //     if (!valueA) valueA = '';
+      //     if (!valueB) valueB = '';
+      //     return valueA.toLowerCase().localeCompare(valueB.toLowerCase());
+      //   },
+      // },
+      filter: "agTextColumnFilter",
       floatingFilter: true,
       comparator: (valueA: any, valueB: any) => {
-        if (!isNaN(valueA) && !isNaN(valueB)) {
-          return Number(valueA) - Number(valueB);
+        const isNumberA = !isNaN(valueA) && valueA !== null;
+        const isNumberB = !isNaN(valueB) && valueB !== null;
+
+        if (isNumberA && isNumberB) {
+          return valueA - valueB;
+        } else {
+          const normalizedA = valueA ? valueA.toString().trim().toLowerCase() : "";
+          const normalizedB = valueB ? valueB.toString().trim().toLowerCase() : "";
+          return normalizedA.localeCompare(normalizedB);
         }
-        if (!valueA) valueA = '';
-        if (!valueB) valueB = '';
-        return valueA.toLowerCase().localeCompare(valueB.toLowerCase());
+      },
+      filterParams: {
+        textFormatter: (value: string) => {
+          return value ? value.toString().toLowerCase() : "";
+        },
+        filterOptions: ["contains", "startsWith", "equals"],
+        debounceMs: 200,
       },
     },
     paginationPageSize: 5,
     pagination: true,
     paginationPageSizeOptions: [5, 10, 15, 20, 25],
   }
+  // gridOptions1 = {
+  //   defaultColDef: {
+  //     sortable: true,
+  //     resizable: true,
+  //     filter: true,
+  //     floatingFilter: true,
+  //     comparator: (valueA: any, valueB: any) => {
+  //       if (!isNaN(valueA) && !isNaN(valueB)) {
+  //         return Number(valueA) - Number(valueB);
+  //       }
+  //       if (!valueA) valueA = '';
+  //       if (!valueB) valueB = '';
+  //       return valueA.toLowerCase().localeCompare(valueB.toLowerCase());
+  //     },
+  //   },
+  //   paginationPageSize: 10,
+  //   pagination: true,
+  //   paginationPageSizeOptions: [5, 10, 15, 20, 25],
+  // }
+
   gridOptions1 = {
     defaultColDef: {
       sortable: true,
       resizable: true,
-      filter: true,
+      filter: "agTextColumnFilter",
       floatingFilter: true,
       comparator: (valueA: any, valueB: any) => {
-        if (!isNaN(valueA) && !isNaN(valueB)) {
-          return Number(valueA) - Number(valueB);
+        const isNumberA = !isNaN(valueA) && valueA !== null;
+        const isNumberB = !isNaN(valueB) && valueB !== null;
+
+        if (isNumberA && isNumberB) {
+          return valueA - valueB;
+        } else {
+          const normalizedA = valueA ? valueA.toString().trim().toLowerCase() : "";
+          const normalizedB = valueB ? valueB.toString().trim().toLowerCase() : "";
+          return normalizedA.localeCompare(normalizedB);
         }
-        if (!valueA) valueA = '';
-        if (!valueB) valueB = '';
-        return valueA.toLowerCase().localeCompare(valueB.toLowerCase());
+      },
+      filterParams: {
+        textFormatter: (value: string) => {
+          return value ? value.toString().toLowerCase() : "";
+        },
+        filterOptions: ["contains", "startsWith", "equals"],
+        debounceMs: 200,
       },
     },
     paginationPageSize: 10,
     pagination: true,
-    paginationPageSizeOptions: [5, 10, 15, 20, 25],
-  }
+  };
   rowData: any[] = [];
   gridApi: any;
   isAnyRowSelected: any = false;
@@ -233,8 +285,8 @@ export class AreaStreetComponent implements OnInit {
         return toggleContainer;
       }
     },
-    { headerName: 'SUBSCRIBER COUNT	', width: 250, field: 'subscribercount', filter: true, },
-    { headerName: 'PINCODE ', field: 'pincode', width: 250, filter: true, },
+    { headerName: 'SUBSCRIBER COUNT	', width: 250, field: 'subscribercount',  },
+    { headerName: 'PINCODE ', field: 'pincode', width: 250, },
 
   ];
   validatePincode(pincode: string): boolean {

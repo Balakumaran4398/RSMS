@@ -22,13 +22,16 @@ export class UpdatePackageMasterComponent implements OnInit {
   role: any;
   packageMasterForm!: FormGroup;
   submitted: boolean = false;
+
   constructor(public dialogRef: MatDialogRef<UpdatePackageMasterComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any, private userService: BaseService, private swal: SwalService, private storageService: StorageService, private fb: FormBuilder) {
     console.log(data);
     this.product_id = data.cas_product_id;
     this.ispercentage = data.isactive;
     console.log(this.ispercentage);
-    
+    this.product_id = data.casproductid;
+    console.log('casproductid', this.product_id);
+
     this.username = storageService.getUsername();
     this.role = storageService.getUserRole();
 
@@ -51,8 +54,9 @@ export class UpdatePackageMasterComponent implements OnInit {
     // };
     // console.log(requestBody);
     this.swal.Loading();
+    console.log(this.product_id);
 
-    this.userService.UpdatePackagemasterList(this.role, this.username, this.product_id,!this.ispercentage).subscribe(
+    this.userService.UpdatePackagemasterList(this.role, this.username, this.product_id, !this.ispercentage).subscribe(
       (res) => {
         console.log(res);
         Swal.fire({
@@ -62,7 +66,7 @@ export class UpdatePackageMasterComponent implements OnInit {
           showConfirmButton: false,
           timer: 1000
         }).then(() => {
-          // window.location.reload();
+          window.location.reload();
         });
       },
       (err) => {
@@ -76,6 +80,12 @@ export class UpdatePackageMasterComponent implements OnInit {
         });
       }
     );
+  }
+  onKeydown(event: KeyboardEvent) {
+    const key = event.key;
+    if (!/^\d$/.test(key) && key !== 'Backspace') {
+      event.preventDefault();
+    }
   }
 
 }

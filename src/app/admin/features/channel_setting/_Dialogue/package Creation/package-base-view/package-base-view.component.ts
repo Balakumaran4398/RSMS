@@ -68,8 +68,8 @@ export class PackageBaseViewComponent {
       this.package_view = true;
     }
     this.package_id = data.packageid || data.id;
-    console.log('packageid',this.package_id);
-    
+    console.log('packageid', this.package_id);
+
     this.username = storageService.getUsername();
     this.role = storageService.getUserRole();
     userService.Package_CloneList(this.role, this.username, this.package_id).subscribe((data: any) => {
@@ -111,17 +111,27 @@ export class PackageBaseViewComponent {
   }
   private loadData(tab: any): void {
     console.log(tab);
-    this.userService.Base_PackageChannelList(this.role, this.username, tab, this.package_id).subscribe((data: any) => {
-
-      this.packagename = data.packagename;
-      this.packagerate = data.packagerate;
-      this.subcount = data.subcount;
-      this.rowData = data;
-      this.count = data.length;
-      this.updateColumnDefs(tab);
-      this.cdr.detectChanges();
-
-    });
+    if (this.role == 'ROLE_OPERATOR') {
+      this.userService.Base_PackageChannelList(this.role, this.username, 3, this.package_id).subscribe((data: any) => {
+        this.packagename = data.packagename
+        this.packagerate = data.packagerate;
+        this.subcount = data.subcount;
+        this.rowData = data;
+        this.count = data.length;
+        this.updateColumnDefs(tab);
+        this.cdr.detectChanges();
+      });
+    } else {
+      this.userService.Base_PackageChannelList(this.role, this.username, tab, this.package_id).subscribe((data: any) => {
+        this.packagename = data.packagename
+        this.packagerate = data.packagerate;
+        this.subcount = data.subcount;
+        this.rowData = data;
+        this.count = data.length;
+        this.updateColumnDefs(tab);
+        this.cdr.detectChanges();
+      });
+    }
   }
   private updateColumnDefs(tab: string): void {
     console.log('Tab', tab);

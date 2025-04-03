@@ -94,7 +94,7 @@ export class BulkpackageupdationComponent implements OnInit {
     this.rowData = data?.rowData
     console.log(this.bulkDatas?.mobileno);
 
-    this.datetype = data?.fromdate && data?.todate && data.fromdate === data.todate
+    // this.datetype = data?.fromdate && data?.todate && data.fromdate === data.todate
     this.lcodatetype = (data?.fromdate && data?.todate && data.fromdate === data.todate)
       ? this.getNextDay(data.fromdate)
       : null;
@@ -425,8 +425,6 @@ export class BulkpackageupdationComponent implements OnInit {
     this.swal.Loading();
     this.userservice.bulkPackageUpdation(requestBody)
       .subscribe((res: any) => {
-        // this.rowData1=res;
-        // console.log(this.rowData1);
         this.swal.success(res?.message);
       }, (err) => {
         this.swal.Error(err?.error?.message);

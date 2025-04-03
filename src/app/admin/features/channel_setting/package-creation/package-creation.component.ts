@@ -15,34 +15,65 @@ import Swal from 'sweetalert2';
   styleUrls: ['./package-creation.component.scss']
 })
 export class PackageCreationComponent {
+  // gridOptions = {
+  //   defaultColDef: {
+  //     sortable: true,
+  //     resizable: true,
+  //     filter: true, 
+  //     floatingFilter: true,
+  //     comparator: (valueA: any, valueB: any) => {
+  //       const isNumberA = !isNaN(valueA) && valueA !== null;
+  //       const isNumberB = !isNaN(valueB) && valueB !== null;
+
+  //       if (isNumberA && isNumberB) {
+  //         return valueA - valueB; 
+  //       } else {
+  //         const normalizedA = valueA ? valueA.toString().trim().toLowerCase() : '';
+  //         const normalizedB = valueB ? valueB.toString().trim().toLowerCase() : '';
+  //         return normalizedA.localeCompare(normalizedB); 
+  //       }
+  //     },
+  //     filterParams: {
+  //       textFormatter: (value: string) => {
+  //         return value ? value.toString().toLowerCase() : '';
+  //       },
+  //       debounceMs: 200, 
+  //     },
+  //   },
+  //   paginationPageSize: 10,
+  //   pagination: true,
+  // };
+
   gridOptions = {
     defaultColDef: {
       sortable: true,
       resizable: true,
-      filter: true, 
+      filter: "agTextColumnFilter",
       floatingFilter: true,
       comparator: (valueA: any, valueB: any) => {
         const isNumberA = !isNaN(valueA) && valueA !== null;
         const isNumberB = !isNaN(valueB) && valueB !== null;
-  
+
         if (isNumberA && isNumberB) {
-          return valueA - valueB; 
+          return valueA - valueB;
         } else {
-          const normalizedA = valueA ? valueA.toString().trim().toLowerCase() : '';
-          const normalizedB = valueB ? valueB.toString().trim().toLowerCase() : '';
-          return normalizedA.localeCompare(normalizedB); 
+          const normalizedA = valueA ? valueA.toString().trim().toLowerCase() : "";
+          const normalizedB = valueB ? valueB.toString().trim().toLowerCase() : "";
+          return normalizedA.localeCompare(normalizedB);
         }
       },
       filterParams: {
         textFormatter: (value: string) => {
-          return value ? value.toString().toLowerCase() : '';
+          return value ? value.toString().toLowerCase() : "";
         },
-        debounceMs: 200, 
+        filterOptions: ["contains", "startsWith", "equals"],
+        debounceMs: 200,
       },
     },
-    paginationPageSize: 10,
+    paginationPageSize: 15,
     pagination: true,
   };
+
   package_id: any;
   username: any;
   role: any;
@@ -161,7 +192,7 @@ export class PackageCreationComponent {
     { headerName: "REFERENCE ID", field: 'orderid', width: 150, cellStyle: { textAlign: 'center' }, },
     { headerName: "PACKAGE RATE", field: 'packagerate', width: 200, cellStyle: { textAlign: 'center' }, },
     {
-      headerName: "REPORT", field: 'report', width: 170, cellStyle: { textAlign: 'center' },
+      headerName: "REPORT", field: 'report', width: 170, cellStyle: { textAlign: 'center' },filter:false,
       cellRenderer: (params: any) => {
         const editButton = document.createElement('button');
         editButton.innerHTML = '<i class="far fa-file-pdf" style="font-size:20px;color:red"></i>';
@@ -189,9 +220,9 @@ export class PackageCreationComponent {
     {
       headerName: "S.No", lockPosition: true, valueGetter: 'node.rowIndex+1', width: 120, filter: false
     },
-    { headerName: "PACKAGE NAME", field: 'productname', width: 300, cellStyle: { textAlign: 'left' }, },
-    { headerName: "REFERENCE ID", field: 'referenceid', width: 250, cellStyle: { textAlign: 'center' }, },
-    { headerName: "PACKAGE RATE", field: 'rate', width: 250, cellStyle: { textAlign: 'center' }, },
+    { headerName: "PACKAGE NAME", field: 'packagename', width: 300, cellStyle: { textAlign: 'left' }, },
+    { headerName: "REFERENCE ID", field: 'orderid', width: 250, cellStyle: { textAlign: 'center' }, },
+    { headerName: "PACKAGE RATE", field: 'packagerate', width: 250, cellStyle: { textAlign: 'center' }, },
     {
       headerName: 'Actions', width: 380, filter: false,
       cellRenderer: (params: any) => {
@@ -211,6 +242,28 @@ export class PackageCreationComponent {
         div.appendChild(viewButton);
         return div;
       },
+    },
+    {
+      headerName: "REPORT",  width: 170, cellStyle: { textAlign: 'center' },filter:false,
+      cellRenderer: (params: any) => {
+        const editButton = document.createElement('button');
+        editButton.innerHTML = '<i class="far fa-file-pdf" style="font-size:20px;color:red"></i>';
+        editButton.style.backgroundColor = 'transparent';
+        editButton.style.color = '#E545D1';
+        editButton.style.border = 'none';
+        editButton.title = 'Edit';
+        editButton.style.cursor = 'pointer';
+        editButton.style.fontSize = "18px";
+        editButton.addEventListener('click', () => {
+          // this.addnew('channeltype');  
+          this.getPdfSmartcardRechargeReport(params.data);
+
+        });
+
+        const div = document.createElement('div');
+        div.appendChild(editButton);
+        return div;
+      }
     },
 
   ]
@@ -234,7 +287,7 @@ export class PackageCreationComponent {
         const data = window.URL.createObjectURL(blob);
         const link = document.createElement('a');
         link.href = data;
-        link.download = (event.packagename + ".pdf").toUpperCase();
+        link.download = (event.packagename || event.productname + ".pdf").toUpperCase();
         link.dispatchEvent(new MouseEvent('click', { bubbles: true, cancelable: true, view: window }));
         setTimeout(() => {
           window.URL.revokeObjectURL(data);
@@ -285,7 +338,7 @@ export class PackageCreationComponent {
   openViewDialog(dialogType: any, data: any): void {
     const dialogData = { ...dialogType, ...data };
     console.log(dialogData);
-    
+
     const dialogRef = this.dialog.open(PackageBaseViewComponent, {
       width: '1200px',
       maxWidth: '100vw',

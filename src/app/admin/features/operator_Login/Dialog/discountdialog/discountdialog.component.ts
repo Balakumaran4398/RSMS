@@ -92,7 +92,7 @@ export class DiscountdialogComponent implements OnInit {
       return;
     }
     this.swal.Loading();
-    this.userService.getupdateDiscountByArea(this.role, this.username, this.operatorid, this.areaid || 0, this.Lcopackage_id, this.ispercentage, this.commission ,
+    this.userService.getupdateDiscountByArea(this.role, this.username, this.operatorid, this.areaid || 0, this.Lcopackage_id, this.ispercentage, this.commission,
       this.old_customeramount, this.new_customeramount, this.smartcard1 || null, this.discount_value).subscribe((res: any) => {
         this.swal.success(res?.message);
       }, (err) => {
@@ -130,6 +130,12 @@ export class DiscountdialogComponent implements OnInit {
 
   clearErrorMessage() {
     if (this.new_customeramount && this.new_customeramount.toString().trim() !== '') {
+      this.errorMessage = '';
+    }
+  }
+
+  clearErrorMessage1(plan: any) {
+    if (plan?.customerAmount && plan?.lcoCommission?.toString().trim() !== '') {
       this.errorMessage = '';
     }
   }
@@ -177,6 +183,15 @@ export class DiscountdialogComponent implements OnInit {
   }
   updatePlanDiscount(plan: any, index: number) {
     this.discountPlans = [...this.discountPlans];
+    console.log(plan.customerAmount);
+    console.log(plan.lcoCommission);
+    if (plan.customerAmount < plan.lcoCommission) {
+      this.errorMessage = `Amount must be at least Rs.${plan.lcoCommission}.`;
+    } else if (plan.customerAmount > plan.currentAmount) {
+      this.errorMessage = `Amount must not exceed Rs.${plan.currentAmount}.`;
+    } else {
+      this.errorMessage = '';
+    }
   }
   getupdatePlanwiseDiscount() {
     this.plandiscount = this.discountPlans.map((plan: any) =>

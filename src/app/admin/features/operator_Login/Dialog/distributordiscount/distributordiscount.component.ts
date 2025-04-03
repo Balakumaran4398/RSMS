@@ -4,6 +4,7 @@ import { BaseService } from 'src/app/_core/service/base.service';
 import { StorageService } from 'src/app/_core/service/storage.service';
 import { SwalService } from 'src/app/_core/service/swal.service';
 import { DistribtorupdatediscountComponent } from '../distribtorupdatediscount/distribtorupdatediscount.component';
+import { FormControl } from '@angular/forms';
 
 @Component({
   selector: 'app-distributordiscount',
@@ -60,6 +61,13 @@ export class DistributordiscountComponent implements OnInit {
     pagination: true,
   };
   lco_operatorId: any;
+
+  toppings = new FormControl([]);
+  toppingList: any[] = [];
+
+  lcoOperatorId: any;
+  lcoParentOperatorId: any;
+
   constructor(public dialogRef: MatDialogRef<DistributordiscountComponent>, @Inject(MAT_DIALOG_DATA) public data: any, private swal: SwalService, public dialog: MatDialog, private userService: BaseService, private storageservice: StorageService) {
     this.role = storageservice.getUserRole();
     this.username = storageservice.getUsername();
@@ -70,10 +78,26 @@ export class DistributordiscountComponent implements OnInit {
     this.lco_operatorId = data?.data.operatorid;
     console.log(this.lco_operatorId);
 
+
+    this.lcoOperatorId = this.data_details.operatorid;
+    this.lcoParentOperatorId = data?.opId;
+    console.log(this.lcoOperatorId);
+    console.log('lcoParentOperatorId', this.lcoParentOperatorId);
   }
 
   ngOnInit(): void {
     this.operatorIdoperatorId();
+  }
+
+  filterToppings(event: any) {
+    console.log(event);
+    const filterValue = event.target.value.toLowerCase();
+
+    this.operatorList = this.toppingList.filter(topping =>
+      topping.name.toLowerCase().includes(filterValue)
+    );
+    console.log(this.operatorList);
+
   }
   operatorIdoperatorId() {
     this.userService.getOpDetails(this.role, this.username).subscribe((data: any) => {
@@ -89,7 +113,14 @@ export class DistributordiscountComponent implements OnInit {
       // }
     })
   }
+  onOperatorChange() {
+    console.log('all', this.selectOperator);
 
+    if (this.selectOperator == "0") {
+      // Set all operator IDs when "All LCO" is selected
+      this.selectOperator = this.operatorList.map(op => op.operatorid);
+    }
+  }
   filteredPackage: any[] = [];
   onPackageChangeList(selectedPackageId: number) {
     this.selectpackage = selectedPackageId;
@@ -117,7 +148,7 @@ export class DistributordiscountComponent implements OnInit {
   lcolistid: any;
   retailerList: any[] = [];
   getDistributorPackageList() {
-    this.userService.getDistributorPackageList(this.role, this.username, this.lco_operatorId, this.operatorid).subscribe((data: any) => {
+    this.userService.getDistributorPackageList(this.role, this.username, this.lco_operatorId || this.operatorid, this.operatorid).subscribe((data: any) => {
       // this.userService.getDistributorPackageList(this.role, this.username, this.lco_operatorId , this.operatorid).subscribe((data: any) => {
       this.packageList = data;
       this.filteredPackageList = data;
@@ -160,7 +191,7 @@ export class DistributordiscountComponent implements OnInit {
       return;
     }
     this.swal.Loading();
-    this.userService.getupdatedistributorDiscount(this.role, this.username, this.operatorid, this.selectOperator, this.selectpackage, this.customeramount || 0, this.oldmsoamount || 0,
+    this.userService.getupdatedistributorDiscount(this.role, this.username, this.selectOperator, this.operatorid, this.selectpackage, this.customeramount || 0, this.oldmsoamount || 0,
       this.newmsoamount).subscribe((res: any) => {
         this.swal.success(res?.message);
       }, (err) => {
@@ -176,8 +207,6 @@ export class DistributordiscountComponent implements OnInit {
         this.swal.Error(err?.error?.message || err?.error);
       });
   }
-
-
 
   retailerError: boolean = false;
   amountError: boolean = false;
@@ -223,12 +252,16 @@ export class DistributordiscountComponent implements OnInit {
       allowClear: true
     });
     $('#operator').on('change', (event: any) => {
-      this.retailerid = event.target.value;
-      console.log(this.retailerid)
+      this.selectOperator = event.target.value;
+      console.log(this.selectOperator)
+      if (this.selectOperator == 0 || this.selectOperator == '') {
+        this.selectOperator = this.operatorList.map(op => op.operatorid);
+        console.log(this.selectOperator);
+      }
       // this.onSmartcardList(this.smartcard);
     });
     $('#package').select2({
-      placeholder: 'Select Retailer',
+      placeholder: 'Select Package',
       allowClear: true
     });
     $('#package').on('change', (event: any) => {
@@ -294,7 +327,7 @@ export class DistributordiscountComponent implements OnInit {
   }
 
   openaddedlogue(type: any, data: any,) {
-    let dialogData = { type: type, data: data, opId:this.lco_operatorId};
+    let dialogData = { type: type, data: data, opId: this.lco_operatorId };
     console.log(dialogData);
     const dialogRef = this.dialog.open(DistribtorupdatediscountComponent, {
       panelClass: 'custom-dialog-container',
