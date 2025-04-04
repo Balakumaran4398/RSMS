@@ -105,7 +105,7 @@ export class LoginComponent implements OnInit {
           console.log(res);
           console.log(res.roles);
           if (res.roles.includes('ROLE_ADMIN') || res.roles.includes('ROLE_RECEPTION') || res.roles.includes('ROLE_SPECIAL')
-            || res.roles.includes('ROLE_INVENTORY') || res.roles.includes('ROLE_CUSSERVICE') || res.roles.includes('ROLE_SERVICECENTER') || res.roles.includes('ROLE_OPERATOR')) {
+            || res.roles.includes('ROLE_INVENTORY') || res.roles.includes('ROLE_CUSSERVICE') || res.roles.includes('ROLE_SERVICECENTER') || res.roles.includes('ROLE_OPERATOR') || res.roles.includes('ROLE_SUBLCO')) {
             this.storageService.saveToken(res.accessToken);
             this.storageService.saveUser(res);
             this.storageService.saveUsernamenew(res.username)
@@ -125,6 +125,7 @@ export class LoginComponent implements OnInit {
             let isCusService = this.roles.includes('ROLE_CUSSERVICE');
             let isServiceCenter = this.roles.includes('ROLE_SERVICECENTER');
             let isOperator = this.roles.includes('ROLE_OPERATOR');
+            let isSubLco = this.roles.includes('ROLE_SUBLCO');
 
             Swal.fire({
               position: "center",
@@ -155,6 +156,11 @@ export class LoginComponent implements OnInit {
               this.router.navigate(['admin/service_center']).then(() => {
               });
             } else if (isOperator) {
+              this.router.navigate(['admin/operator_dashboard']).then(() => {
+              });
+            } else if (isSubLco) {
+              console.log('111111111111111111111111111111');
+              
               this.router.navigate(['admin/operator_dashboard']).then(() => {
               });
             }

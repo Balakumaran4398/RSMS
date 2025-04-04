@@ -189,23 +189,25 @@ export class LcodashboardreportComponent implements OnInit {
 
     this.userService.getOpLoginReportByOpid(this.role, this.username, lcoid, this.type, 3)
       .subscribe((res: any) => {
-        // if (this.type == 5 || this.type == 4) {
-        //   console.log('type ', this.type, res);
+        if (this.type == 5 || this.type == 4) {
+          console.log('type ', this.type, res);
      
 
-        //   // Extract only the required fields
-        //   this.rowData = res.map((customer: any) => ({
-        //     customeranme: customer.customeranme,
-        //     address: customer.address,
-        //     mobileno: customer.mobileno,
-        //     smartcard: customer.smartcard,
-        //     boxid: customer.boxid
-        //   }));
+          // Extract only the required fields
+          this.rowData = res.flatMap((customer: any) => 
+            customer.content.map((data: any) => ({
+              customeranme: data.customeranme,
+              address: data.address,
+              mobileno: data.mobileno,
+              smartcard: data.smartcard,
+              boxid: data.boxid
+            }))
+          );
 
-        //   console.log("Extracted Customer Data:", this.rowData);
-        // } else {
+          console.log("Extracted Customer Data:", this.rowData);
+        } else {
           this.rowData = res;
-        // }
+        }
         console.log(this.rowData);
 
         // this.swal.success(res?.message);
@@ -358,7 +360,7 @@ export class LcodashboardreportComponent implements OnInit {
         { headerName: "S.No", lockPosition: true, valueGetter: 'node.rowIndex+1', width: 90, filter: false },
         // { headerName: 'SMARTCARD', field: 'smartcard', width: 180, },
         {
-          headerName: 'SMARTCARD', field: 'smartcard', width: 220,
+          headerName: 'SMARTCARD', field: 'smartcard', width: 300,
           cellStyle: (params: any) => {
             if (params.data.someCondition) {
               return { backgroundColor: '#f4cccc' };
@@ -394,15 +396,15 @@ export class LcodashboardreportComponent implements OnInit {
             }
           }
         },
-        { headerName: 'SUBSCRIBER ID', field: 'subid', Flex: 1, width: 150, },
-        { headerName: 'SUBSCRIBER NAME', field: 'customername', Flex: 1, cellStyle: { textAlign: 'center', color: 'green' }, width: 200, },
-        { headerName: 'ADDRESS ', field: 'address', Flex: 1, cellStyle: { textAlign: 'center', }, width: 200, },
-        { headerName: 'AREA NAME', field: 'areaname', width: 220, },
-        { headerName: 'MOBILE NUMBER	', field: 'mobileno', width: 150, },
-        { headerName: 'BOX ID', field: 'boxid', width: 200, },
-        { headerName: 'ACTIVATION DATE', field: 'activationdate', width: 200, },
-        { headerName: 'EXPIRY DATE', field: 'expirydate', width: 200, },
-        { headerName: 'STATUS', field: 'statusdisplay', width: 200, },
+        // { headerName: 'SUBSCRIBER ID', field: 'subid', Flex: 1, width: 150, },
+        { headerName: 'SUBSCRIBER NAME', field: 'customeranme',  cellStyle: { textAlign: 'center', color: 'green' }, width: 300, },
+        { headerName: 'ADDRESS ', field: 'address', cellStyle: { textAlign: 'center', }, width: 300, },
+        // { headerName: 'AREA NAME', field: 'areaname', width: 220, },
+        { headerName: 'MOBILE NUMBER	', field: 'mobileno', width: 300, },
+        { headerName: 'BOX ID', field: 'boxid', width: 300, },
+        // { headerName: 'ACTIVATION DATE', field: 'activationdate', width: 200, },
+        // { headerName: 'EXPIRY DATE', field: 'expirydate', width: 200, },
+        // { headerName: 'STATUS', field: 'statusdisplay', width: 200, },
       ]
     }
 

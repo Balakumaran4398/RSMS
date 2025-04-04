@@ -10,12 +10,12 @@
         <div class="d-block justify-content-center align-items-center" style="width: 81%;top:5%">
 
             <!-- --------------------NORMAL---------------- -->
-            <img *ngIf="msoLogo" [src]="msoLogo" alt="MSO Logo"
-                style="width: 100px; height: auto;display:flex;margin: auto 40px;">
+            <!-- <img *ngIf="msoLogo" [src]="msoLogo" alt="MSO Logo"
+                style="width: 100px; height: auto;display:flex;margin: auto 40px;"> -->
 
             <!-- ----------------4K--------- -->
-            <!-- <img *ngIf="msoLogo" [src]="msoLogo" alt="MSO Logo"
-                style="width: 54px; height: auto;display:flex;margin: auto 60px;"> -->
+            <img *ngIf="msoLogo" [src]="msoLogo" alt="MSO Logo"
+                style="width: 54px; height: auto;display:flex;margin: auto 60px;">
 
             <!-- ----------------------Normal--------------- -->
             <h5 class="brand-text mb-1" style="margin: 5px 30px;color: var(--primary-color);"
@@ -337,12 +337,12 @@
             <a (click)="navgetToUrl('/operator_dashboard');"> <i class='bx bx-sm bxs-dashboard icon'></i> &nbsp;
                 Dashboard</a>
         </li> -->
-        <li *ngIf="isOperator"><a (click)="setActiveLinkTabList($event);navgetToUrl('/operator_dashboard');"
+        <li *ngIf="isOperator || isSubLco"><a (click)="setActiveLinkTabList($event);navgetToUrl('/operator_dashboard');"
                 class="active nav-link">
                 <i class='bx bx-sm bxs-dashboard icon'></i> &nbsp;
                 Dashboard</a></li>
 
-        <li *ngIf="isOperator ">
+        <li *ngIf="isOperator || isSubLco">
             <a>
                 <i class="bx bx-user-pin bx-sm icon "></i> &nbsp;
                 Subscriber <i class='bx bx-chevron-right icon-right'></i></a>
@@ -359,7 +359,7 @@
                 </li>
             </ul>
         </li>
-        <li *ngIf="isOperator ">
+        <li *ngIf="isOperator || isSubLco">
             <a>
                 <!-- <mat-icon class="icon">settings</mat-icon> -->
                 <i class="bx bx-cog bx-sm icon "></i>
@@ -370,12 +370,13 @@
                 <li><a (click)="navgetToUrl('/area_street');setActiveLinkTab($event)" class="active"> <i
                             class='fas fa-location-dot icon'></i> &nbsp;
                         Area & Street</a></li>
-                <li><a (click)="navgetToUrl('/lcoDashboard');setActiveLinkTab($event)"><i class='fas fa-tags icon'></i>
-                        &nbsp;Discount</a></li>
+                <!-- <li *ngIf="!isSubLco"><a (click)="navgetToUrl('/lcoDashboard');setActiveLinkTab($event)"><i
+                            class='fas fa-tags icon'></i>
+                        &nbsp;Discount</a></li> -->
             </ul>
         </li>
 
-        <li *ngIf="isOperator">
+        <li *ngIf="isOperator || isSubLco">
             <a>
                 <i class="bx bx-joystick-button bx-sm icon "></i>
                 Package Details<i class='bx bx-chevron-right icon-right'></i></a>
@@ -388,7 +389,7 @@
                             class="fa fa-fw fa-comments  icon ">&nbsp;</i> Channel</a></li>
             </ul>
         </li>
-        <li *ngIf="isOperator">
+        <li *ngIf="isOperator || isSubLco">
             <a>
                 <i class="bx bx-briefcase bx-sm icon "></i>
                 Bulk operation <i class='bx bx-chevron-right icon-right'></i></a>
@@ -402,7 +403,7 @@
                 <li><a (click)="navgetToUrl('/Bulk_Package_Updation');setActiveLinkTab($event)"><i
                             class="fa fa-fw fa-circle-o icon">&nbsp;</i>Bulk Package Updation</a>
                 </li>
-                <li><a (click)="navgetToUrl('/Recurring');setActiveLinkTab($event)"><i
+                <li *ngIf="!isSubLco"><a (click)="navgetToUrl('/Recurring');setActiveLinkTab($event)"><i
                             class="fa-regular fa-registered icon">&nbsp;</i>Recurring</a>
                 </li>
             </ul>
@@ -426,10 +427,12 @@
         <li *ngIf="isOperator"><a (click)="navgetToUrl('/forcemessage');setActiveLinkTab($event)" class="nav-link">
                 <!-- <i class="fa-solid fa-message icon ">&nbsp;</i> Message</a></li> -->
                 <i class="bx bx-label bx-sm icon "></i> &nbsp;Message</a></li>
-        <li *ngIf="isOperator"><a (click)="navgetToUrl('/lcoReports');setActiveLinkTab($event)" class="nav-link">
+        <li *ngIf="isOperator || isSubLco"><a (click)="navgetToUrl('/lcoReports');setActiveLinkTab($event)"
+                class="nav-link">
                 <i class="bx bx-bullseye bx-sm icon "></i>&nbsp;Reports</a>
         </li>
-        <li *ngIf="isOperator"><a (click)="navgetToUrl('/bill_collection');setActiveLinkTab($event)" class="nav-link">
+        <li *ngIf="isOperator || isSubLco"><a (click)="navgetToUrl('/bill_collection');setActiveLinkTab($event)"
+                class="nav-link">
                 <i class="bx bx-analyse bx-sm icon "></i>&nbsp;Bill Collection</a>
         </li>
         <!-- <li *ngIf="isOperator && distributor"><a (click)="navgetToUrl('/distributor_setting');setActiveLinkTab($event)" -->
@@ -440,19 +443,20 @@
                     <i class="bx bx-error-alt bx-sm icon"></i>&nbsp;Distributor Setting</a>
             </li>
         </div> -->
-        <li *ngIf="distributor && isOperator">
+        <!-- <li *ngIf="distributor && isOperator">
             <a (click)="navgetToUrl('/distributor_setting'); setActiveLinkTab($event)" class="nav-link">
-              <i class="bx bx-error-alt bx-sm icon"></i>&nbsp;Distributor Setting
+                <i class="bx bx-error-alt bx-sm icon"></i>&nbsp;Distributor Setting
             </a>
-          </li>
-          
-        <li *ngIf="isOperator"><a (click)="navgetToUrl('/lcoChangePassword');setActiveLinkTab($event)" class="nav-link">
+        </li> -->
+
+        <li *ngIf="isOperator || isSubLco"><a (click)="navgetToUrl('/lcoChangePassword');setActiveLinkTab($event)"
+                class="nav-link">
                 <i class="bx bx-shield-plus bx-sm icon "></i>&nbsp;Change Password</a>
         </li>
 
-        <li *ngIf="isOperator" (click)="navgetTosublcoUrl(operatorId)"><a (click)="setActiveLink($event)"
+        <!-- <li *ngIf="isOperator" (click)="navgetTosublcoUrl(operatorId)"><a (click)="setActiveLink($event)"
                 class="nav-link"> <i class="bx bx-hive bx-sm icon"></i>&nbsp;Sub LCO </a>
-        </li>
+        </li> -->
 
 
 

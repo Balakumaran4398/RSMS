@@ -379,6 +379,7 @@ export class BroadcasterReportsComponent implements OnInit {
       this.isDateDisabled = true;
       this.Date = [];
     }
+    this.onVisible()
   }
 
 
@@ -407,43 +408,37 @@ export class BroadcasterReportsComponent implements OnInit {
     }
 
     this.Date = [
+      
       {
         value: '04',
         name: 'All',
         isEnabled: isBeforeCurrentMonth,
-        cmonth: this.currentMonth
-        ,
+        cmonth: this.currentMonth,
         cdate: this.dayOfMonth,
         cvalue: 28
       },
       {
         value: '01',
         name: '07 ' + this.selectedMonthName,
-        isEnabled: isBeforeCurrentMonth || currentWeek == '01'
-        ,
-        cmonth: this.currentMonth
-        ,
+        isEnabled: isBeforeCurrentMonth || currentWeek == '01',
+        cmonth: this.currentMonth,
         cdate: this.dayOfMonth,
         cvalue: 7
       },
       {
         value: '02',
         name: '14 ' + this.selectedMonthName,
-        isEnabled: isBeforeCurrentMonth || currentWeek == '02'
-        ,
-        cmonth: this.currentMonth
-        ,
+        isEnabled: isBeforeCurrentMonth || currentWeek == '02',
+        cmonth: this.currentMonth,
         cdate: this.dayOfMonth,
         cvalue: 14
       },
       {
         value: '03',
         name: '21 ' + this.selectedMonthName,
-        isEnabled: isBeforeCurrentMonth || currentWeek == '03'
-        ,
+        isEnabled: isBeforeCurrentMonth || currentWeek == '03',
         cmonth: this.currentMonth,
-        cdate: this.dayOfMonth
-        ,
+        cdate: this.dayOfMonth,
         cvalue: 21
       },
     ];

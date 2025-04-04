@@ -1842,8 +1842,8 @@ export class BaseService {
   // getOnlinePaymentHistoryReport(role: any, username: any, fromdate: any, todate: any, operatorid: any, sublcoid: any, smartcard: any, type: any, reporttype: any,): Observable<Blob> {
   //   return this.http.get(BASE_URL + "/report/GetOnlinePaymentHistory?role=" + role + "&username=" + encodeURIComponent(username) + "&fromdate=" + fromdate + "&todate=" + todate + "&operatorid=" + operatorid + "&sublcoid=" + sublcoid + "&smartcard=" + smartcard + "&type=" + type + "&reporttype=" + reporttype, { responseType: 'blob' });
   // }
-  getOnlinePaymentHistoryReport(role: any, username: any, fromdate: any, todate: any, operatorid: any, sublcoid: any, smartcard: any, type: any, reporttype: any,isSpecial: any): Observable<Blob> {
-    return this.http.get(BASE_URL + "/report/GetOnlinePaymentHistory?role=" + role + "&username=" + encodeURIComponent(username) + "&fromdate=" + fromdate + "&todate=" + todate + "&operatorid=" + operatorid + "&sublcoid=" + sublcoid + "&smartcard=" + smartcard + "&type=" + type + "&reporttype=" + reporttype+ "&isspecial=" + isSpecial, { responseType: 'blob' });
+  getOnlinePaymentHistoryReport(role: any, username: any, fromdate: any, todate: any, operatorid: any, sublcoid: any, smartcard: any, type: any, reporttype: any, isSpecial: any): Observable<Blob> {
+    return this.http.get(BASE_URL + "/report/GetOnlinePaymentHistory?role=" + role + "&username=" + encodeURIComponent(username) + "&fromdate=" + fromdate + "&todate=" + todate + "&operatorid=" + operatorid + "&sublcoid=" + sublcoid + "&smartcard=" + smartcard + "&type=" + type + "&reporttype=" + reporttype + "&isspecial=" + isSpecial, { responseType: 'blob' });
   }
   // getOnlinePaymentHistory(role: any, username: any, fromdate: any, todate: any, operatorid: any, sublcoid: any, smartcard: any, type: any, reporttype: any,): Observable<HttpResponse<any[]>> {
   //   return this.http.get<any[]>(BASE_URL + "/report/GetOnlinePaymentHistory?role=" + role + "&username=" + encodeURIComponent(username) + "&fromdate=" + fromdate + "&todate=" + todate + "&operatorid=" + operatorid + "&sublcoid=" + sublcoid + "&smartcard=" + smartcard + "&type=" + type + "&reporttype=" + reporttype, { observe: 'response' });
@@ -2054,6 +2054,7 @@ export class BaseService {
   }
   getOpDetails(role: any, username: any): Observable<any[]> {
     return this.http.get<any[]>(BASE_URL + "/operator/getOpDetails?role=" + role + "&username=" + encodeURIComponent(username))
+    // return this.http.get<any[]>(BASE_URL + "/operator/getOpDetails?role=" + role + "&username=" + username)
   }
   // -------------------------------------------------------bar-------------------------------------------------
   getMonthWiseRechargeBarchart(role: any, username: any, month: any, year: any, operator: any): Observable<any[]> {
@@ -2216,5 +2217,18 @@ export class BaseService {
   // ======================================================SUBLCO DETAILS====================================================
   getSublcoDetails(role: any, username: any): Observable<any[]> {
     return this.http.get<any>(BASE_URL + "/sublco/getSublcoDetails?role=" + role + "&username=" + encodeURIComponent(username),)
+  }
+  getSublcoOnlineFailurelRecharge(role: any, username: any, amount: any, retailerid: any, transactionid: any, paymentstatus: any, hash: any,): Observable<any[]> {
+    return this.http.post<any[]>(BASE_URL + "/sublco/sublcoOnlineFailurelRecharge?role=" + role +
+      "&username=" + encodeURIComponent(username) + "&amount=" + amount + "&retailerid=" + retailerid + "&transactionid=" + transactionid + "&paymentstatus=" + paymentstatus + "&hash=" + hash, {});
+  }
+  getSublcoOnlineInitialRequest(role: any, username: any, amount: any, retailerid: any): Observable<any[]> {
+    return this.http.post<any[]>(BASE_URL + "/sublco/sublcoOnlineInitialRequest?role=" + role + "&username=" + encodeURIComponent(username) + "&amount=" + amount + "&retailerid=" + retailerid, {});
+  }
+  getChangeSubLcoPassword(role: any, username: any, oldpassword: any, newpassword: any, confirmpassword: any, retailerid: any): Observable<any[]> {
+    return this.http.post<any[]>(BASE_URL + "/sublco/changeSublcoPassword?role=" + role + "&username=" + encodeURIComponent(username) + "&oldpassword=" + oldpassword + "&newpassword=" + newpassword + "&confirmpassword=" + confirmpassword + "&retailerid=" + retailerid, {});
+  }
+  getSublcoLoginDashboardCount(role: any, username: any, retailerid: any): Observable<any[]> {
+    return this.http.get<any[]>(BASE_URL + "/sublco/getSublcoLoginDashboardCount?role=" + role + "&username=" + encodeURIComponent(username) + "&retailerid=" + retailerid,)
   }
 }

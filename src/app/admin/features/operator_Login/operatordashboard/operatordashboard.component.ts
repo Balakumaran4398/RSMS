@@ -39,6 +39,8 @@ export class OperatordashboardComponent implements OnInit {
   operatorId: any;
   operatorname: any;
   operatorBalance: any;
+  subLcorechargeCount: any;
+  LcorechargeCount: any;
   type: any;
 
   months: any[] = [];
@@ -49,38 +51,54 @@ export class OperatordashboardComponent implements OnInit {
 
   walletshare: boolean = false;
 
-
+  retailerid: any;
   constructor(private router: Router, private userService: BaseService, private storageService: StorageService, public dialog: MatDialog,) {
     this.role = storageService.getUserRole();
     this.username = storageService.getUsername();
     const style = document.createElement("style");
-    style.innerHTML = `
+    if (this.role == 'ROLE_SUBLCO') {
+      console.log('sublco');
+      style.innerHTML = `
+      @media (min-width: 992px) {
+        .col-lg-1-4 {
+          max-width: 14.28%;
+        }
+      }
+    `;
+    } else {
+      console.log('lco');
+
+      style.innerHTML = `
       @media (min-width: 992px) {
         .col-lg-1-7 {
           max-width: 14.28%;
         }
       }
     `;
+    }
+
+
     document.head.appendChild(style);
   }
 
   ngOnInit(): void {
-    this.getOperator()
-    // this.onAmCharts();
-    this.operatorDetails();
-    // this.operataDetailsCount();
+    if (this.role == 'ROLE_OPERATOR') {
+      console.log('LCO');
+      this.getOperator()
+      this.operatorDetails();
+    } else if (this.role == 'ROLE_SUBLCO') {
+      console.log('SUBLCO');
+      this.getSubLcoDetails();
+      // this.getSubLcoDetailsCount();
+    }
     this.date = new Date().toISOString().split('T')[0];
     console.log(this.date);
-    // this.getbar('');
     this.generateMonths();
     this.generateYears();
     const currentDate = new Date();
     this.selectedMonth = (currentDate.getMonth() + 1).toString().padStart(2, '0');
     this.selectedYear = currentDate.getFullYear();
   }
-
-
-
 
   onOnlineRecharge() {
     this.router.navigate(['admin/online_recharge']);
@@ -131,14 +149,37 @@ export class OperatordashboardComponent implements OnInit {
       this.operatorId = this.lcoDeatails?.operatorid;
       this.operatorname = this.lcoDeatails?.operatorname;
       this.operatorBalance = this.lcoDeatails?.balance;
+      this.LcorechargeCount = this.lcoDeatails?.todayrechargecount;
       console.log(this.operatorId);
       this.operataDetailsCount(this.operatorId)
       this.getbar(this.operatorId)
 
     })
   }
+  getSubLcoDetails() {
+    this.userService.getSublcoDetails(this.role, this.username).subscribe((data: any) => {
+      console.log(data);
+      this.lcoDeatails = data;
+      this.retailerid = this.lcoDeatails?.retailerid;
+      this.operatorname = this.lcoDeatails?.retailername;
+      this.operatorBalance = this.lcoDeatails?.balance;
+      this.subLcorechargeCount = this.lcoDeatails?.todayrechargeamount;
+      console.log(this.subLcorechargeCount);
+      this.getSubLcoDetailsCount(this.retailerid)
+      this.getbar(this.retailerid)
+
+    })
+  }
   operatorDetails() {
     this.userService.getOperatorLoginDashboardCount(this.role, this.username).subscribe((data: any) => {
+      console.log(data);
+      this.operatorDetailsCount = data;
+    })
+  }
+  getSubLcoDetailsCount(retailer: any) {
+    console.log(retailer);
+
+    this.userService.getSublcoLoginDashboardCount(this.role, this.username, retailer).subscribe((data: any) => {
       console.log(data);
       this.operatorDetailsCount = data;
     })
@@ -154,10 +195,12 @@ export class OperatordashboardComponent implements OnInit {
     );
   }
   getbar(operator: any) {
+    console.log(operator);
+
     console.log('bar');
     console.log('months', this.months);
     console.log('years', this.years);
-    this.userService.getMonthWiseRechargeBarchart(this.role, this.username, this.selectedMonth, this.selectedYear, this.operatorId).subscribe(
+    this.userService.getMonthWiseRechargeBarchart(this.role, this.username, this.selectedMonth, this.selectedYear, this.operatorId || this.retailerid).subscribe(
       (data: any) => {
         this.barchartDetails = data;
         this.getPie(this.date);
@@ -229,7 +272,7 @@ export class OperatordashboardComponent implements OnInit {
       "alacartecount": { name: "Alacarte", color: "#022738" }
     };
 
-    this.userService.getMonthWisePackageRechargePiechart(this.role, this.username, this.selectedMonth, this.selectedYear, this.operatorId).subscribe(
+    this.userService.getMonthWisePackageRechargePiechart(this.role, this.username, this.selectedMonth, this.selectedYear, this.operatorId || this.retailerid).subscribe(
       (data: any) => {
         this.pieDetails = data;
         console.log(this.pieDetails);
@@ -324,7 +367,7 @@ export class OperatordashboardComponent implements OnInit {
   }
 
   openLCO_Dialog(event: any) {
-    console.log(event); 
+    console.log(event);
     this.router.navigate(['admin/lco_dashboard/' + event]);
   }
   openLCO_dashboard(event: any) {
