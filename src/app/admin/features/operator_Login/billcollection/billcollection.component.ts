@@ -8,6 +8,7 @@ import { StorageService } from 'src/app/_core/service/storage.service';
 import { SwalService } from 'src/app/_core/service/swal.service';
 import Swal from 'sweetalert2';
 import { LcoSmartcardDialogComponent } from '../Dialog/lco-smartcard-dialog/lco-smartcard-dialog.component';
+import { OperatorService } from 'src/app/_core/service/operator.service';
 
 @Component({
   selector: 'app-billcollection',
@@ -37,17 +38,33 @@ export class BillcollectionComponent implements OnInit {
 
   lcoDeatails: any;
   lcoId: any;
+  lcoName: any;
   bill_type: any = -1;
   useragent: any = 2;
   searchname: any;
-
-  constructor(private dialog: MatDialog, private userService: BaseService, private storageService: StorageService, private swal: SwalService, private router: Router,) {
+  subLcoDetails: any;
+  retailerId: any;
+  retailerName: any;
+  mobilenumber: any;
+  address: any;
+  balance: any;
+  constructor(private dialog: MatDialog, private userService: BaseService, private storageService: StorageService, private swal: SwalService, private router: Router, private operator: OperatorService) {
     this.role = storageService.getUserRole();
     this.username = storageService.getUsername();
+    console.log(operator);
+
+    this.subLcoDetails = operator?.lcoDeatails;
+    this.retailerId = this.subLcoDetails?.retailerid;
+    this.retailerName = this.subLcoDetails?.retailername;
+    this.mobilenumber = this.subLcoDetails?.contactnumber;
+    this.address = this.subLcoDetails?.address;
+    this.balance = this.subLcoDetails?.balance;
   }
 
   ngOnInit(): void {
-    this.operatorIdoperatorId();
+    if (this.role == 'ROLE_OPERATOR') {
+      this.operatorIdoperatorId();
+    }
   }
   getFromDate(event: any) {
     console.log(event.value);
@@ -158,6 +175,7 @@ export class BillcollectionComponent implements OnInit {
     this.userService.getOpDetails(this.role, this.username).subscribe((data: any) => {
       this.lcoDeatails = data;
       this.lcoId = this.lcoDeatails?.operatorid;
+      this.lcoName = this.lcoDeatails?.operatorname;
       console.log(this.lcoId);
     })
   }
@@ -168,7 +186,7 @@ export class BillcollectionComponent implements OnInit {
   getreport() {
     console.log(this.lcoId);
     console.log(this.bill_type);
-    this.userService.getbillCollectionReport(this.role, this.username, this.lcoId, this.bill_type || 0, this.useragent, this.fromdate, this.todate, this.searchname || null).subscribe((data: any) => {
+    this.userService.getbillCollectionReport(this.role, this.username, this.lcoId || this.retailerId, this.bill_type || 0, this.useragent, this.fromdate, this.todate, this.searchname || null).subscribe((data: any) => {
       // this.rowData = data[0].list[0];
       this.rowData = data[0].list;
       this.total_paid = data[0].total_paid;
@@ -288,14 +306,14 @@ export class BillcollectionComponent implements OnInit {
 
   getLcoInvoiceReport(reportType: number) {
     this.swal.Loading();
-    this.userService.getBillCollectionReport(this.role, this.username, this.lcoId, this.bill_type, this.useragent, this.fromdate, this.todate, this.searchname || null, reportType).
+    this.userService.getBillCollectionReport(this.role, this.username, this.lcoId || this.retailerId, this.bill_type, this.useragent, this.fromdate, this.todate, this.searchname || null, reportType).
       subscribe({
         next: (x: Blob) => {
           this.swal.Close();
           if (reportType === 1) {
-            this.reportMaking(x, `Bill Collection_${this.lcoId}.pdf`, 'application/pdf');
+            this.reportMaking(x, `Bill Collection_${this.lcoName || this.retailerName}.pdf`, 'application/pdf');
           } else if (reportType === 2) {
-            this.reportMaking(x, `Bill Collection_${this.lcoId}.xlsx`, 'application/xlsx');
+            this.reportMaking(x, `Bill Collection_${this.lcoName || this.retailerName}.xlsx`, 'application/xlsx');
           }
         },
         error: (error: any) => {

@@ -57,7 +57,7 @@
         </div>
     </div>
 </div>
-<div *ngIf="IsOperator">
+<div *ngIf="IsOperator || role == 'ROLE_SUBLCO'">
     <div class="row">
         <div class="col-12 col-sm-12  m-3">
             <ag-grid-angular #agGrid id="myGrid" domLayout='normal' class="ag-theme-alpine table-class"

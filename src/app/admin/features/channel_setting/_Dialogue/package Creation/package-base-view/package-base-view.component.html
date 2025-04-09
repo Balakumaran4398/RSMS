@@ -33,14 +33,10 @@
             </div>
         </div>
     </section>
-
-
-
-
-
     <section class="col-12 display justify-content-center" style="padding: 1rem;">
         <div class="col-xl-12 col-sm-6 col-12">
-            <div *ngIf="role !== 'ROLE_OPERATOR'" class="d-flex justify-content-center align-items-center my-3">
+            <div *ngIf="role !== 'ROLE_OPERATOR' && role !== 'ROLE_SUBLCO'"
+                class="d-flex justify-content-center align-items-center my-3">
                 <div class="tab" [class.active]="selectedTab === '1'" (click)="selectTab('1')">FTA CHANNELS</div>
                 <div class="tab" [class.active]="selectedTab === '2'" (click)="selectTab('2')">PAY CHANNELS</div>
                 <div class="tab" [class.active]="selectedTab === '3'" (click)="selectTab('3')">ALL CHANNELS</div>

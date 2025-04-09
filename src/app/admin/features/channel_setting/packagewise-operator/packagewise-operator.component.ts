@@ -25,11 +25,9 @@ export class PackagewiseOperatorComponent implements OnDestroy {
   producttypelistKeys: { name: string, id: number }[] = [];
   filteredProductTypes: { name: string, id: number }[] = [];
   filterTerm: string = '';
-  // todo = ['Get to work', 'Pick up groceries', 'Go home', 'Fall asleep'];
 
-  // done = ['Get up', 'Brush teeth', 'Take a shower', 'Check e-mail'];
   allocated: any = [];
-  todo: any = []; // This will contain items to be dragged
+  todo: any = []; 
   done: any[] = [];
   containerData: any;
   productId: string = '';
@@ -42,8 +40,7 @@ export class PackagewiseOperatorComponent implements OnDestroy {
 
 
   isshow: boolean = true;
-  // producttypelist: any = 0;
-  // productlist: any = 0;
+
 
   filteredAvailableList: any = [];
   filteredAddedList: any = [];
@@ -251,13 +248,7 @@ export class PackagewiseOperatorComponent implements OnDestroy {
     const draggedItem = event.item;
     const draggedElement = draggedItem.element.nativeElement;
     const draggedData = draggedItem.data;
-
-    // console.log(event.container.data);
-    // console.log(event.previousContainer.data);
-
-
     var data;
-
     console.log(this.containeroperatorid);
     if (event.previousContainer === event.container) {
       moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);

@@ -218,7 +218,20 @@ export class PackageMasterComponent {
         { headerName: "CAS TYPE", field: 'casname', },
         { headerName: "REFERENCE ID", field: 'referenceid', },
         { headerName: "CAS PRODUCT_ID", field: 'casproductid', },
-        { headerName: "TYPE", field: 'type', },
+        {
+          headerName: "TYPE", field: 'type',
+          cellRenderer: (params: { value: any }) => {
+            const typeMap: Record<number, { name: string; color: string }> = {
+              1: { name: "BASE", color: "blue" },
+              2: { name: "ADDON", color: "green" },
+              3: { name: "ALACARTE", color: "purple" }
+            };
+
+            const typeData = typeMap[params.value] || { name: "UNKNOWN", color: "red" };
+
+            return `<span style="color: ${typeData.color}; font-weight: bold;">${typeData.name}</span>`;
+          }
+        },
         { headerName: "RATE", field: 'rate', },
         { headerName: "CUSTOMER AMOUNT", field: 'customeramount', },
         { headerName: "MSO AMOUNT", field: 'msoamount', },
@@ -278,7 +291,21 @@ export class PackageMasterComponent {
         { headerName: "CAS TYPE", field: 'casname', },
         { headerName: "REFERENCE ID", field: 'referenceid', },
         { headerName: "CAS PRODUCT_ID", field: 'casproductid', },
-        { headerName: "TYPE", field: 'type', },
+        // { headerName: "TYPE", field: 'type', },
+        {
+          headerName: "TYPE", field: 'type',
+          cellRenderer: (params: { value: any }) => {
+            const typeMap: Record<number, { name: string; color: string }> = {
+              1: { name: "BASE", color: "blue" },
+              2: { name: "ADDON", color: "green" },
+              3: { name: "ALACARTE", color: "purple" }
+            };
+
+            const typeData = typeMap[params.value] || { name: "UNKNOWN", color: "red" };
+
+            return `<span style="color: ${typeData.color}; font-weight: bold;">${typeData.name}</span>`;
+          }
+        },
         { headerName: "RATE", field: 'rate', },
         { headerName: "CUSTOMER AMOUNT", field: 'customeramount', },
         { headerName: "MSO AMOUNT", field: 'msoamount', },
@@ -337,7 +364,21 @@ export class PackageMasterComponent {
         { headerName: "CAS TYPE", field: 'casname', },
         { headerName: "REFERENCE ID", field: 'referenceid', },
         { headerName: "CAS PRODUCT_ID", field: 'casproductid', },
-        { headerName: "TYPE", field: 'type', },
+        // { headerName: "TYPE", field: 'type', },
+        {
+          headerName: "TYPE", field: 'type',
+          cellRenderer: (params: { value: any }) => {
+            const typeMap: Record<number, { name: string; color: string }> = {
+              1: { name: "BASE", color: "blue" },
+              2: { name: "ADDON", color: "green" },
+              3: { name: "ALACARTE", color: "purple" }
+            };
+
+            const typeData = typeMap[params.value] || { name: "UNKNOWN", color: "red" };
+
+            return `<span style="color: ${typeData.color}; font-weight: bold;">${typeData.name}</span>`;
+          }
+        },
         { headerName: "RATE", field: 'rate', },
         { headerName: "CUSTOMER AMOUNT", field: 'customeramount', },
         { headerName: "MSO AMOUNT", field: 'msoamount', },
@@ -396,7 +437,20 @@ export class PackageMasterComponent {
         { headerName: "CAS TYPE", field: 'casname', },
         { headerName: "REFERENCE ID", field: 'referenceid', },
         { headerName: "CAS PRODUCT_ID", field: 'casproductid', },
-        { headerName: "TYPE", field: 'type', },
+        {
+          headerName: "TYPE", field: 'type',
+          cellRenderer: (params: { value: any }) => {
+            const typeMap: Record<number, { name: string; color: string }> = {
+              1: { name: "BASE", color: "blue" },
+              2: { name: "ADDON", color: "green" },
+              3: { name: "ALACARTE", color: "purple" }
+            };
+
+            const typeData = typeMap[params.value] || { name: "UNKNOWN", color: "red" };
+
+            return `<span style="color: ${typeData.color}; font-weight: bold;">${typeData.name}</span>`;
+          }
+        },
         { headerName: "RATE", field: 'rate', },
         { headerName: "CUSTOMER AMOUNT", field: 'customeramount', },
         { headerName: "MSO AMOUNT", field: 'msoamount', },

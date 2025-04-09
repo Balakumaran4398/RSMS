@@ -4,6 +4,7 @@ import { FormBuilder, FormGroup } from '@angular/forms';
 import { ColDef } from 'ag-grid-community';
 import { BaseService } from 'src/app/_core/service/base.service';
 import { ExcelService } from 'src/app/_core/service/excel.service';
+import { OperatorService } from 'src/app/_core/service/operator.service';
 import { StorageService } from 'src/app/_core/service/storage.service';
 import { SwalService } from 'src/app/_core/service/swal.service';
 import Swal from 'sweetalert2';
@@ -69,8 +70,9 @@ export class ExpiryDetailsComponent implements OnInit, OnDestroy {
     paginationPageSize: 15,
     pagination: true,
   };
-
-  constructor(private userservice: BaseService, private fb: FormBuilder, private storageservice: StorageService, private swal: SwalService, private cdr: ChangeDetectorRef, private excelService: ExcelService) {
+  subLcoDetails: any;
+  retailerId: any;
+  constructor(private userservice: BaseService, private fb: FormBuilder, private storageservice: StorageService, private swal: SwalService, private cdr: ChangeDetectorRef, private excelService: ExcelService, public sublco: OperatorService) {
     this.username = storageservice.getUsername();
     this.role = storageservice.getUserRole();
     userservice.getsmartcardallocationSubscriberList(this.role, this.username).subscribe((data: any) => {
@@ -83,6 +85,8 @@ export class ExpiryDetailsComponent implements OnInit, OnDestroy {
       fromdate: [new Date('2024-03-01')], // Set default start date
       todate: [new Date('2024-03-15')] // Set default end date
     });
+    this.subLcoDetails = sublco?.lcoDeatails;
+    this.retailerId = this.subLcoDetails?.retailerid;
   }
   ngOnDestroy(): void {
     ($('#operator') as any).select2('destroy');
@@ -109,8 +113,9 @@ export class ExpiryDetailsComponent implements OnInit, OnDestroy {
     })
     // this.dateRangeForm.get('fromdate').set(this.fromdate);
     // this.dateRangeForm.get('todate').set(this.todate);
-
-    this.operatorIdoperatorId();
+    if (this.role == 'ROLE_OPERATOR') {
+      this.operatorIdoperatorId();
+    }
   }
   ngAfterViewInit() {
     $('#operator').select2({
@@ -201,7 +206,7 @@ export class ExpiryDetailsComponent implements OnInit, OnDestroy {
 
   Submit() {
 
-    this.userservice.getExpirySubscriberByOperator(this.role, this.username, this.operatorid || this.lcoId, this.fromdate, this.todate, this.format)
+    this.userservice.getExpirySubscriberByOperator(this.role, this.username, this.operatorid || this.lcoId || this.retailerId, this.fromdate, this.todate, this.format)
       .subscribe(
         (response: HttpResponse<any[]>) => { // Expect HttpResponse<any[]>
           if (response.status === 200) {
@@ -226,7 +231,7 @@ export class ExpiryDetailsComponent implements OnInit, OnDestroy {
 
     this.cdr.detectChanges();
     this.swal.Loading();
-    this.userservice.getExpirySubscriberByOperator(this.role, this.username, this.operatorid || this.lcoId, this.fromdate, this.todate, this.format)
+    this.userservice.getExpirySubscriberByOperator(this.role, this.username, this.operatorid || this.lcoId || this.retailerId, this.fromdate, this.todate, this.format)
       .subscribe(
         (response: HttpResponse<any[]>) => { // Expect HttpResponse<any[]>
           if (response.status === 200) {
@@ -236,7 +241,7 @@ export class ExpiryDetailsComponent implements OnInit, OnDestroy {
             const areasub = 'A3:J3';
             const title = `From Date: ${this.fromdate} To Date: ${this.todate}  EXPIRY HISTORY REPORT - FORMAT 1`;
             const sub = 'MSO ADDRESS: ' + this.msodetails;
-            const header = ['S.NO', 'LCO NAME', 'CUSTOMER NAME', 'SMARTCARD', 'BOX ID', 'ADDRESS', 'MOBILE NO', 'PACKAGE NAME', 'ACTIVATION DATE','EXPIRY DATE',];
+            const header = ['S.NO', 'LCO NAME', 'CUSTOMER NAME', 'SMARTCARD', 'BOX ID', 'ADDRESS', 'MOBILE NO', 'PACKAGE NAME', 'ACTIVATION DATE', 'EXPIRY DATE',];
             const data = this.rowData;
             const datas: Array<any> = [];
             data.forEach((d: any, index: number) => {
@@ -255,7 +260,7 @@ export class ExpiryDetailsComponent implements OnInit, OnDestroy {
             const areasub = 'A3:J3';
             const title = `From Date: ${this.fromdate} To Date: ${this.todate}  EXPIRY HISTORY REPORT - FORMAT 1`;
             const sub = 'MSO ADDRESS: ' + this.msodetails;
-            const header = ['S.NO', 'LCO NAME', 'CUSTOMER NAME', 'SMARTCARD', 'BOX ID', 'ADDRESS', 'MOBILE NO', 'PACKAGE NAME',  'ACTIVATION DATE','EXPIRY DATE',];
+            const header = ['S.NO', 'LCO NAME', 'CUSTOMER NAME', 'SMARTCARD', 'BOX ID', 'ADDRESS', 'MOBILE NO', 'PACKAGE NAME', 'ACTIVATION DATE', 'EXPIRY DATE',];
             const data = this.rowData;
             const datas: Array<any> = [];
 
@@ -273,7 +278,7 @@ export class ExpiryDetailsComponent implements OnInit, OnDestroy {
   exportAsXLSX1(): void {
     this.cdr.detectChanges();
     this.swal.Loading();
-    this.userservice.getExpirySubscriberByOperator(this.role, this.username, this.operatorid || this.lcoId, this.fromdate, this.todate, this.format_1).subscribe(
+    this.userservice.getExpirySubscriberByOperator(this.role, this.username, this.operatorid || this.lcoId || this.retailerId, this.fromdate, this.todate, this.format_1).subscribe(
       (response: HttpResponse<any[]>) => { // Expect HttpResponse<any[]>
         if (response.status === 200) {
           this.rowData = response.body;
@@ -281,11 +286,11 @@ export class ExpiryDetailsComponent implements OnInit, OnDestroy {
           const areasub = 'A3:L3';
           const title = `From Date: ${this.fromdate} To Date: ${this.todate}  EXPIRY HISTORY REPORT - FORMAT 2 `;
           const sub = 'MSO ADDRESS:' + this.msodetails;
-          const header = ['S.NO', 'LCO NAME', 'CUSTOMER NAME', 'SMARTCARD', 'BOX ID', 'ADDRESS', 'MOBILE NO', 'PACKAGE NAME', 'EXPIRY DATE', 'AREA ID', 'CUSTOMER NO', 'ACTIVATION DATE'];
+          const header = ['S.NO', 'LCO NAME', 'CUSTOMER NAME', 'SMARTCARD', 'BOX ID', 'ADDRESS', 'MOBILE NO', 'PACKAGE NAME', 'AREA ID', 'CUSTOMER NO', 'ACTIVATION DATE', 'EXPIRY DATE',];
           const data = this.rowData;
           const datas: Array<any> = [];
           data.forEach((d: any, index: number) => {
-            const row = [index + 1, d.operatorname, d.customername, d.smartcard, d.boxid, d.address, d.mobileno, d.productname, d.expirydate, d.areaid, d.customerno, d.activationdate];
+            const row = [index + 1, d.operatorname, d.customername, d.smartcard, d.boxid, d.address, d.mobileno, d.productname, d.areaid, d.customerno, d.activationdate, d.expirydate];
             datas.push(row);
           });
           const cellsize = { a: 20, b: 20, c: 20, d: 28, e: 20, f: 20 };
@@ -298,7 +303,7 @@ export class ExpiryDetailsComponent implements OnInit, OnDestroy {
           const areasub = 'A3:L3';
           const title = `From Date: ${this.fromdate} To Date: ${this.todate}  EXPIRY HISTORY REPORT - FORMAT 2 `;
           const sub = 'MSO ADDRESS:' + this.msodetails;
-          const header = ['S.NO', 'LCO NAME', 'CUSTOMER NAME', 'SMARTCARD', 'BOX ID', 'ADDRESS', 'MOBILE NO', 'PACKAGE NAME', 'EXPIRY DATE', 'AREA ID', 'CUSTOMER NO', 'ACTIVATION DATE'];
+          const header = ['S.NO', 'LCO NAME', 'CUSTOMER NAME', 'SMARTCARD', 'BOX ID', 'ADDRESS', 'MOBILE NO', 'PACKAGE NAME', 'AREA ID', 'CUSTOMER NO', 'ACTIVATION DATE', 'EXPIRY DATE'];
           const data = this.rowData;
           const datas: Array<any> = [];
 
@@ -315,17 +320,16 @@ export class ExpiryDetailsComponent implements OnInit, OnDestroy {
   }
   columnDefs: ColDef[] = [
     { headerName: "S.No", lockPosition: true, valueGetter: 'node.rowIndex+1', width: 100, filter: false },
-    { headerName: 'LCO NAME', field: 'operatorname',width: 200, },
-    { headerName: 'CUSTOMER NAME', field: 'customername', cellStyle: { textAlign: 'left' },width: 230, },
-    { headerName: 'SMARTCARD', field: 'smartcard',width: 230, },
-    { headerName: 'BOX ID', field: 'boxid',width: 230, },
-    { headerName: 'ADDRESS', field: 'address',width: 230, },
-    { headerName: 'MOBILE NUMBER', field: 'mobileno',width: 230,},
-    { headerName: 'PACKAGE NAME', field: 'productname', cellStyle: { textAlign: 'left' },width: 230, },
-    { headerName: 'EXPIRY DATE', field: 'expirydate', width: 230,},
-    { headerName: 'AREA ID', field: 'areaid',width: 230, },
-    { headerName: 'CUSTOMER NO', field: 'customerno',width: 230, },
-    { headerName: 'ACTIVATION DATE', field: 'activationdate', width: 200,}
+    { headerName: 'LCO NAME', field: 'operatorname', width: 200, },
+    { headerName: 'CUSTOMER NAME', field: 'customername', cellStyle: { textAlign: 'left' }, width: 230, },
+    { headerName: 'SMARTCARD', field: 'smartcard', width: 230, },
+    { headerName: 'BOX ID', field: 'boxid', width: 230, },
+    { headerName: 'ADDRESS', field: 'address', width: 230, },
+    { headerName: 'MOBILE NUMBER', field: 'mobileno', width: 230, },
+    { headerName: 'PACKAGE NAME', field: 'productname', cellStyle: { textAlign: 'left' }, width: 230, },
+    { headerName: 'EXPIRY DATE', field: 'expirydate', width: 230, },
+    { headerName: 'AREA ID', field: 'areaid', width: 230, },
+    { headerName: 'ACTIVATION DATE', field: 'activationdate', width: 200, }
   ]
 
   operatorIdoperatorId() {

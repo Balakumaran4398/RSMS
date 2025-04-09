@@ -1,0 +1,70 @@
+
+    <section>
+        <div class="d-flex flex-column flex-lg-row justify-content-center align-items-center mb-3">
+            <div class="col-lg-5 col-12 mb-3 mb-lg-0">
+                <div class="card">
+                    <div class="input_box">
+                        <input type="text" placeholder="Search Available"
+                            [(ngModel)]="searchTermAvailable" (input)="filterAvailableList()">
+                    </div>
+                    <div class="table1 mb-3">
+                        <p style="color: black;">AVAILABLE - {{todo.length}}</p>
+                        <div class="row inp">
+                            <div class="col-12 example-container">
+                                <div cdkDropList #todoList="cdkDropList"
+                                    [cdkDropListData]="filteredAvailableList"
+                                    [cdkDropListConnectedTo]="[doneList]" class="example-list"
+                                    (cdkDropListDropped)="drop_modified($event,1)">
+                                    <div *ngFor="let item of filteredAvailableList" class="example-box"
+                                        cdkDrag (click)="toggleSelection(item)"
+                                        [class.selected]="isSelected(item)">{{
+                                        item.operatorname }}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="display1 my-3 my-lg-0 mx-lg-3">
+                <button class="btn bttn" (click)="moveSelectedRight_BouquetItems('right')"><i
+                        class="bx bx-right-arrow-alt"></i></button>
+                <button class="btn bttn" (click)="moveAllSelected('right')"><i
+                        class="bx bx-arrow-to-right"></i></button>
+                <button class="btn bttn" (click)="moveSelectedLeft_BouquetItems('left')"><i
+                        class="bx bx-left-arrow-alt"></i></button>
+                <button class="btn bttn" (click)="moveAllSelected('left')"><i
+                        class="bx bx-arrow-to-left"></i></button>
+            </div>
+            <div class="col-lg-5 col-12">
+                <div class="card">
+                    <div class="input_box">
+                        <input type="text" placeholder="Search Al" [(ngModel)]="searchTermAdded"
+                            (input)="filterAddedList()">
+                    </div>
+                    <div class="table2 mb-3">
+                        <p style="color: black;">ALLOCATED - {{allocated.length}}</p>
+                        <div class="row inp">
+                            <div class="col-12 example-container">
+                                <div cdkDropList #doneList="cdkDropList"
+                                    [cdkDropListData]="filteredAddedList"
+                                    [cdkDropListConnectedTo]="[todoList]" class="example-list"
+                                    (cdkDropListDropped)="drop_modified($event,2)">
+                                    <div *ngFor="let item of filteredAddedList" class="example-box"
+                                        cdkDrag (click)="toggleSelection(item)"
+                                        [class.selected]="isSelected(item)">{{
+                                        item.operatorname }}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-12 d-flex justify-content-center align-items-center">
+            <button type="button" class="btn  bttn"
+                style="background:#058372;color: white;height: 2pc; width: 5pc" [disabled]="isshow"
+                (click)="save()">Save</button>
+        </div>
+    </section>

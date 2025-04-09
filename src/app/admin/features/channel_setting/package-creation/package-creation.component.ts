@@ -15,35 +15,6 @@ import Swal from 'sweetalert2';
   styleUrls: ['./package-creation.component.scss']
 })
 export class PackageCreationComponent {
-  // gridOptions = {
-  //   defaultColDef: {
-  //     sortable: true,
-  //     resizable: true,
-  //     filter: true, 
-  //     floatingFilter: true,
-  //     comparator: (valueA: any, valueB: any) => {
-  //       const isNumberA = !isNaN(valueA) && valueA !== null;
-  //       const isNumberB = !isNaN(valueB) && valueB !== null;
-
-  //       if (isNumberA && isNumberB) {
-  //         return valueA - valueB; 
-  //       } else {
-  //         const normalizedA = valueA ? valueA.toString().trim().toLowerCase() : '';
-  //         const normalizedB = valueB ? valueB.toString().trim().toLowerCase() : '';
-  //         return normalizedA.localeCompare(normalizedB); 
-  //       }
-  //     },
-  //     filterParams: {
-  //       textFormatter: (value: string) => {
-  //         return value ? value.toString().toLowerCase() : '';
-  //       },
-  //       debounceMs: 200, 
-  //     },
-  //   },
-  //   paginationPageSize: 10,
-  //   pagination: true,
-  // };
-
   gridOptions = {
     defaultColDef: {
       sortable: true,
@@ -192,7 +163,7 @@ export class PackageCreationComponent {
     { headerName: "REFERENCE ID", field: 'orderid', width: 150, cellStyle: { textAlign: 'center' }, },
     { headerName: "PACKAGE RATE", field: 'packagerate', width: 200, cellStyle: { textAlign: 'center' }, },
     {
-      headerName: "REPORT", field: 'report', width: 170, cellStyle: { textAlign: 'center' },filter:false,
+      headerName: "REPORT", field: 'report', width: 170, cellStyle: { textAlign: 'center' }, filter: false,
       cellRenderer: (params: any) => {
         const editButton = document.createElement('button');
         editButton.innerHTML = '<i class="far fa-file-pdf" style="font-size:20px;color:red"></i>';
@@ -238,13 +209,12 @@ export class PackageCreationComponent {
           this.openViewDialog({ package_view: true }, params.data);
         });
         const div = document.createElement('div');
-
         div.appendChild(viewButton);
         return div;
       },
     },
     {
-      headerName: "REPORT",  width: 170, cellStyle: { textAlign: 'center' },filter:false,
+      headerName: "REPORT", width: 170, cellStyle: { textAlign: 'center' }, filter: false,
       cellRenderer: (params: any) => {
         const editButton = document.createElement('button');
         editButton.innerHTML = '<i class="far fa-file-pdf" style="font-size:20px;color:red"></i>';

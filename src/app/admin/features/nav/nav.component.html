@@ -367,12 +367,16 @@
                 <i class='bx bx-chevron-right icon-right'></i>
             </a>
             <ul class="side-dropdown">
-                <li><a (click)="navgetToUrl('/area_street');setActiveLinkTab($event)" class="active"> <i
-                            class='fas fa-location-dot icon'></i> &nbsp;
+                <li *ngIf="isOperator "><a (click)="navgetToUrl('/area_street');setActiveLinkTab($event)"
+                        class="active"> <i class='fas fa-location-dot icon'></i> &nbsp;
                         Area & Street</a></li>
-                <!-- <li *ngIf="!isSubLco"><a (click)="navgetToUrl('/lcoDashboard');setActiveLinkTab($event)"><i
+                <li *ngIf="!isSubLco"><a (click)="navgetToUrl('/lcoDashboard');setActiveLinkTab($event)"><i
                             class='fas fa-tags icon'></i>
-                        &nbsp;Discount</a></li> -->
+                        &nbsp;Discount</a></li>
+                <li *ngIf=" isSubLco"><a (click)="navgetToUrl('/lcoChangePassword');setActiveLinkTab($event)"
+                        class="active"> <i class="bx bx-shield-plus bx-sm icon "></i> &nbsp;
+                        Change Password</a></li>
+
             </ul>
         </li>
 
@@ -381,11 +385,11 @@
                 <i class="bx bx-joystick-button bx-sm icon "></i>
                 Package Details<i class='bx bx-chevron-right icon-right'></i></a>
             <ul class="side-dropdown">
-                <li *ngIf="isOperator"><a (click)="navgetToUrl('/PackageCreation');setActiveLinkTab($event)"
-                        class="nav-link"><i class="fa-solid fa-layer-group  icon">&nbsp;</i>Packages</a> </li>
-                <li *ngIf="isOperator"><a (click)="navgetToUrl('/Addon');setActiveLinkTab($event)" class="nav-link"><i
+                <li><a (click)="navgetToUrl('/PackageCreation');setActiveLinkTab($event)" class="nav-link"><i
+                            class="fa-solid fa-layer-group  icon">&nbsp;</i>Packages</a> </li>
+                <li><a (click)="navgetToUrl('/Addon');setActiveLinkTab($event)" class="nav-link"><i
                             class="fa fa-fw fa-comments  icon ">&nbsp;</i> Addon</a></li>
-                <li *ngIf="isOperator"><a (click)="navgetToUrl('/Channel');setActiveLinkTab($event)" class="nav-link"><i
+                <li><a (click)="navgetToUrl('/Channel');setActiveLinkTab($event)" class="nav-link"><i
                             class="fa fa-fw fa-comments  icon ">&nbsp;</i> Channel</a></li>
             </ul>
         </li>
@@ -397,7 +401,7 @@
                 <li><a (click)="navgetToUrl('/activation');setActiveLinkTab($event)"><i
                             class="fa fa-fw fa-plus-square icon ">&nbsp;</i>First Time Activation </a> </li>
 
-                <li><a (click)="navgetToUrl('/operator_areachange');setActiveLinkTab($event)">
+                <li *ngIf="!isSubLco"><a (click)="navgetToUrl('/operator_areachange');setActiveLinkTab($event)">
                         <i class='fas fa-map-marker-alt icon'></i> &nbsp;AREA Change</a>
                 </li>
                 <li><a (click)="navgetToUrl('/Bulk_Package_Updation');setActiveLinkTab($event)"><i
@@ -410,7 +414,7 @@
         </li>
 
         <!-- ---------------------------------------vc----------------- -->
-        <!-- <li *ngIf="isOperator ">
+        <li *ngIf="isOperator">
             <a> <mat-icon class="icon">control_camera</mat-icon>VC/STB Master <i
                     class='bx bx-chevron-right icon-right'></i></a>
             <ul class="side-dropdown">
@@ -418,14 +422,13 @@
                             style="margin-right: 0px;"></i>Chip ID and Model
                     </a>
                 </li>
-                <li><a (click)="navgetToUrl('/stb_bill');setActiveLinkTab($event)"><i class="fa fa-fw fa-recycle icon "
-                            style="margin-right: 0px;"></i>Smartcard Change</a> </li>
+                <!-- <li><a (click)="navgetToUrl('/stb_bill');setActiveLinkTab($event)"><i class="fa fa-fw fa-recycle icon "
+                            style="margin-right: 0px;"></i>Smartcard Change</a> </li> -->
             </ul>
-        </li> -->
+        </li>
         <!-- ------------------------------------------------------------- -->
 
         <li *ngIf="isOperator"><a (click)="navgetToUrl('/forcemessage');setActiveLinkTab($event)" class="nav-link">
-                <!-- <i class="fa-solid fa-message icon ">&nbsp;</i> Message</a></li> -->
                 <i class="bx bx-label bx-sm icon "></i> &nbsp;Message</a></li>
         <li *ngIf="isOperator || isSubLco"><a (click)="navgetToUrl('/lcoReports');setActiveLinkTab($event)"
                 class="nav-link">
@@ -435,7 +438,6 @@
                 class="nav-link">
                 <i class="bx bx-analyse bx-sm icon "></i>&nbsp;Bill Collection</a>
         </li>
-        <!-- <li *ngIf="isOperator && distributor"><a (click)="navgetToUrl('/distributor_setting');setActiveLinkTab($event)" -->
 
         <!-- <div *ngIf="distributor">
             <li *ngIf="isOperator "><a (click)="navgetToUrl('/distributor_setting');setActiveLinkTab($event)"
@@ -443,20 +445,20 @@
                     <i class="bx bx-error-alt bx-sm icon"></i>&nbsp;Distributor Setting</a>
             </li>
         </div> -->
-        <!-- <li *ngIf="distributor && isOperator">
+        <li *ngIf="distributor && isOperator">
             <a (click)="navgetToUrl('/distributor_setting'); setActiveLinkTab($event)" class="nav-link">
                 <i class="bx bx-error-alt bx-sm icon"></i>&nbsp;Distributor Setting
             </a>
-        </li> -->
+        </li>
 
-        <li *ngIf="isOperator || isSubLco"><a (click)="navgetToUrl('/lcoChangePassword');setActiveLinkTab($event)"
+        <li *ngIf="isOperator "><a (click)="navgetToUrl('/lcoChangePassword');setActiveLinkTab($event)"
                 class="nav-link">
                 <i class="bx bx-shield-plus bx-sm icon "></i>&nbsp;Change Password</a>
         </li>
 
-        <!-- <li *ngIf="isOperator" (click)="navgetTosublcoUrl(operatorId)"><a (click)="setActiveLink($event)"
+        <li *ngIf="isOperator" (click)="navgetTosublcoUrl(operatorId)"><a (click)="setActiveLink($event)"
                 class="nav-link"> <i class="bx bx-hive bx-sm icon"></i>&nbsp;Sub LCO </a>
-        </li> -->
+        </li>
 
 
 

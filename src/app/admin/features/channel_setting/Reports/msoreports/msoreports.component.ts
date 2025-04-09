@@ -62,6 +62,8 @@ export class MsoreportsComponent implements OnInit {
   }
 
   openMsoDialog(event: any) {
+    console.log('111111');
+    
     this.router.navigate(['admin/msodialogueReports/' + event]);
   }
   openLco() {

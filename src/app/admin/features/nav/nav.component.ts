@@ -139,7 +139,6 @@ export class NavComponent implements OnInit, AfterViewInit {
       this.isOperator = false;
       this.isSubLco = true;
       this.role = 'ROLE_SUBLCO';
-      this.operatorIdoperatorId();
     }
   }
 

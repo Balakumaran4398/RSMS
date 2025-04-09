@@ -279,7 +279,7 @@
     <div class="row">
         <div class="col-md-12 d-flex justify-content-center align-items-start mb-3">
             <div class="col-12 d-flex justify-content-start align-items-center flex-wrap">
-                <div class="input_box me-3">
+                <div *ngIf="role !== 'ROLE_SUBLCO'" class="input_box me-3">
                     <select (ngModelChange)="onRechargeType($event)" [(ngModel)]="selectedRechargeType">
                         <option value='' disabled>Select Type</option>
                         <option *ngFor="let Type of RechargeType" [value]="Type.value">{{ Type.label }}</option>
@@ -297,7 +297,7 @@
                     </mat-form-field>
                 </div>
 
-                <div class="input_box me-3">
+                <div *ngIf="role !== 'ROLE_SUBLCO'" class="input_box me-3">
                     <div class="">
                         <input type="text" placeholder="Enter Smartcard" [(ngModel)]="smartcard"
                             [disabled]="!isSmartcard"
@@ -305,7 +305,7 @@
                     </div>
                 </div>
 
-                <div class="input_box me-3" *ngIf="role !== 'ROLE_OPERATOR'">
+                <div class="input_box me-3" *ngIf="role !== 'ROLE_OPERATOR' && role !== 'ROLE_SUBLCO'">
                     <div class="input-container">
                         <input type="text" matInput [matAutocomplete]="auto" [(ngModel)]="selectedLcoName"
                             [disabled]="!isRechargeOperator" (input)="filterOperators($event)"
@@ -334,7 +334,7 @@
                         <option *ngFor="let user of UserAgent" [value]="user.value">{{ user.label }}</option>
                     </select>
                 </div> -->
-                <div class="input_box me-3">
+                <div *ngIf="role !== 'ROLE_SUBLCO'" class="input_box me-3">
                     <select name="user" id="user" [(ngModel)]="useragent" (ngModelChange)="onUserAgentType($event)"
                         [disabled]="!isUseragent"
                         [ngClass]="{ 'enabled-field': isUseragent, 'disabled-field': !isUseragent }">
@@ -342,7 +342,7 @@
                         <option *ngFor="let user of filteredUserAgent" [value]="user.value">{{ user.label }}</option>
                     </select>
                 </div>
-                <div class="input_box me-3">
+                <div *ngIf="role !== 'ROLE_SUBLCO'" class="input_box me-3">
                     <div class="input-container">
                         <input type="text" matInput [matAutocomplete]="auto1" [(ngModel)]="selectedSubLcoName"
                             [disabled]="!isSubLCO" (input)="filterSubLco($event)" placeholder="Select Sub Lco"
@@ -388,7 +388,7 @@
         <div class="col-md-12 d-flex justify-content-center align-items-start mb-3">
             <div class="col-12 d-flex justify-content-start align-items-center flex-wrap">
                 <!-- Online Type -->
-                <div class="input_box me-3">
+                <div *ngIf="role == 'ROLE_OPERATOR'" class="input_box me-3">
                     <select (ngModelChange)="onOnlineType($event)" [(ngModel)]="selectedOnlineType">
                         <option value="" disabled>Select Type</option>
                         <option *ngFor="let online of onlineType" [value]="online.value">{{ online.label }}

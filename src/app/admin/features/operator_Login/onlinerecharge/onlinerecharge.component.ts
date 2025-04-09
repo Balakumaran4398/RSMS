@@ -6,6 +6,7 @@ import { Router } from '@angular/router';
 import { AgGridAngular } from 'ag-grid-angular';
 import { BaseService } from 'src/app/_core/service/base.service';
 import { ExcelService } from 'src/app/_core/service/excel.service';
+import { OperatorService } from 'src/app/_core/service/operator.service';
 import { StorageService } from 'src/app/_core/service/storage.service';
 import { SwalService } from 'src/app/_core/service/swal.service';
 import Swal from 'sweetalert2';
@@ -71,13 +72,13 @@ export class OnlinerechargeComponent implements OnInit {
 
   operatorDetails: any;
 
+  subLcoDetails: any;
+  retailerId: any;
+  retailerName: any;
   constructor(
-    // private pdfService: PdfService,
-    // private notify: NotificationService,
     private userservice: BaseService,
     private storageService: StorageService,
-    // private dateFormatService: DateConvertService,
-    private excelService: ExcelService,
+    private sublco: OperatorService,
     private observer: BreakpointObserver,
     public dialog: MatDialog,
     private router: Router,
@@ -97,21 +98,24 @@ export class OnlinerechargeComponent implements OnInit {
     this.username = storageService.getUsername();
 
     this.dateRangeForm = this.fb.group({
-      fromdate: [new Date('2024-03-01')], // Set default start date
-      todate: [new Date('2024-03-15')] // Set default end date
+      fromdate: [new Date('2024-03-01')],
+      todate: [new Date('2024-03-15')]
     })
-
+    this.subLcoDetails = sublco?.lcoDeatails;
+    this.retailerId = this.subLcoDetails?.retailerid;
+    this.retailerName = this.subLcoDetails?.retailername;
   }
 
   formatDate(date: Date): string {
     const year = date.getFullYear();
-    const month = String(date.getMonth() + 1).padStart(2, '0'); // Months are zero-based
+    const month = String(date.getMonth() + 1).padStart(2, '0');
     const day = String(date.getDate()).padStart(2, '0');
     return `${year}-${month}-${day}`;
   }
   ngOnInit(): void {
-    this.getOperatorDetails();
-
+    if (this.role == 'ROLE_OPERATOR') {
+      this.getOperatorDetails();
+    }
     this.fromdate = this.fromdate ? this.formatDate(this.fromdate) : this.formatDate(new Date());
     this.todate = this.todate ? this.formatDate(this.todate) : this.formatDate(new Date());
     this.dateRangeForm.patchValue({
@@ -185,70 +189,121 @@ export class OnlinerechargeComponent implements OnInit {
   }
 
   makeEaseBuzzPayment() {
+    if (this.role == 'ROLE_SUBLCO') {
+      this.userservice.getSublcoOnlineInitialRequest(this.role, this.username, this.amount || 0, this.retailerId).subscribe((res: any) => {
+        this.transResponse = res;
+        console.log(res);
+        this.easebuzzData = this.transResponse.data;
+        // this.swal.success(res?.message);
+        if (res.status == '1') {
+          // const dialogData = new LoadingDialogModel('100');
+          // const dialogRef = this.dialog.open(LoadingComponent, {
+          //   maxWidth: '800px',
+          //   disableClose: true,
+          //   data: dialogData,
+          //   panelClass: 'loading-style',
+          // });
+          // console.log(res);
 
-    this.userservice.lcoOnlineInitialRequest(this.role, this.username, this.amount || 0, this.operatorid).subscribe((res: any) => {
-      this.transResponse = res;
-      console.log(res);
-      this.easebuzzData = this.transResponse.data;
-      // this.swal.success(res?.message);
-      if (res.status == '1') {
-        // const dialogData = new LoadingDialogModel('100');
-        // const dialogRef = this.dialog.open(LoadingComponent, {
-        //   maxWidth: '800px',
-        //   disableClose: true,
-        //   data: dialogData,
-        //   panelClass: 'loading-style',
-        // });
-        // console.log(res);
+          // let url = "https://pay.easebuzz.in/pay/" + res.data;
+          // let url = this.gateWayMode.baseurl + res.data;
+          // baseurl
+          // this.openChildWindow(url);
 
-        // let url = "https://pay.easebuzz.in/pay/" + res.data;
-        // let url = this.gateWayMode.baseurl + res.data;
-        // baseurl
-        // this.openChildWindow(url);
+          if (this.gatewaymode == 'LIVE') {
+            this.mode = 'prod';
+          } else {
+            this.mode = 'test';
+          }
 
-        if (this.gatewaymode == 'LIVE') {
-          this.mode = 'prod';
+          var easebuzzCheckout = new EasebuzzCheckout(
+            this.apikey,
+            this.mode,);
+          var options = {
+            access_key: this.easebuzzData,
+            onResponse: (response: any) => {
+              console.log('wsedasdsad', response);
+              if (response.status) {
+                this.swal.Loading();
+                this.userservice
+                  .getSublcoOnlineFailurelRecharge(this.role, this.username, response.amount, this.retailerId, response.txnid, response.status, response.hash)
+                  .subscribe((res: any) => {
+                    this.swal.success(res?.message);
+                  }, (err) => {
+                    this.swal.Error(err?.error?.message);
+                  });
+              } else {
+              }
+            },
+            theme: '#123456',
+          };
+          easebuzzCheckout.initiatePayment(options);
         } else {
-          this.mode = 'test';
+          alert(res.data);
         }
+        // });
+      }, (err) => {
+        console.log(err)
+        this.swal.Error(err?.error?.message);
+      });
+    } else {
+      this.userservice.lcoOnlineInitialRequest(this.role, this.username, this.amount || 0, this.operatorid).subscribe((res: any) => {
+        this.transResponse = res;
+        console.log(res);
+        this.easebuzzData = this.transResponse.data;
+        // this.swal.success(res?.message);
+        if (res.status == '1') {
+          // const dialogData = new LoadingDialogModel('100');
+          // const dialogRef = this.dialog.open(LoadingComponent, {
+          //   maxWidth: '800px',
+          //   disableClose: true,
+          //   data: dialogData,
+          //   panelClass: 'loading-style',
+          // });
+          // console.log(res);
 
+          // let url = "https://pay.easebuzz.in/pay/" + res.data;
+          // let url = this.gateWayMode.baseurl + res.data;
+          // baseurl
+          // this.openChildWindow(url);
 
-        var easebuzzCheckout = new EasebuzzCheckout(
-          // this.gateWayMode.apikey,
-          // this.mode
-          this.apikey,
-          this.mode,);
-        console.log("hhhh", this.apikey);
-        console.log(this.easebuzzData);
+          if (this.gatewaymode == 'LIVE') {
+            this.mode = 'prod';
+          } else {
+            this.mode = 'test';
+          }
 
-        var options = {
-          // access_key: res.data,
-          access_key: this.easebuzzData,
-          onResponse: (response: any) => {
-            console.log('wsedasdsad', response);
-            if (response.status) {
-              this.swal.Loading();
-              this.userservice
-                .lcoOnlineFailurelRecharge(this.role, this.username, response.amount, this.operatorid, response.txnid, response.status, response.hash)
-                .subscribe((res: any) => {
-                  this.swal.success(res?.message);
-                }, (err) => {
-                  this.swal.Error(err?.error?.message);
-                });
-            } else {
-            }
-          },
-          theme: '#123456',
-        };
-        easebuzzCheckout.initiatePayment(options);
-      } else {
-        alert(res.data);
-      }
-      // });
-    }, (err) => {
-      console.log(err)
-      this.swal.Error(err?.error?.message);
-    });
+          var easebuzzCheckout = new EasebuzzCheckout(
+            this.apikey,
+            this.mode,);
+          var options = {
+            access_key: this.easebuzzData,
+            onResponse: (response: any) => {
+              console.log('wsedasdsad', response);
+              if (response.status) {
+                this.swal.Loading();
+                this.userservice
+                  .lcoOnlineFailurelRecharge(this.role, this.username, response.amount, this.operatorid, response.txnid, response.status, response.hash)
+                  .subscribe((res: any) => {
+                    this.swal.success(res?.message);
+                  }, (err) => {
+                    this.swal.Error(err?.error?.message);
+                  });
+              } else {
+              }
+            },
+            theme: '#123456',
+          };
+          easebuzzCheckout.initiatePayment(options);
+        } else {
+          alert(res.data);
+        }
+        // });
+      }, (err) => {
+        console.log(err)
+        this.swal.Error(err?.error?.message);
+      });
+    }
   }
 
   //...................................Search Filter Table.....................................
@@ -311,7 +366,7 @@ export class OnlinerechargeComponent implements OnInit {
     } else {
       this.isspecial = false
     }
-    this.userservice.getOnlinePaymentHistory(this.role, this.username, this.fromdate, this.todate, this.operatorid, 0, 0, 1, 3,this.isspecial)
+    this.userservice.getOnlinePaymentHistory(this.role, this.username, this.fromdate, this.todate, this.operatorid, 0, 0, 1, 3, this.isspecial)
       .subscribe((res: any) => {
         this.swal.success_1(res?.message);
         this.rowDataOnline = res;

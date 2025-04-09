@@ -1,14 +1,14 @@
 <section class="Tab col-12">
     <div class="display tablist justify-content-center align-items-center mb-3 ">
-        <div class="tab mb-2  bttn" [class.active]="selectedTab === 'lco'" style="text-align: center;"
-            (click)="selectTab('lco')">
+        <div *nfIf="role !== 'ROLE_SUBLCO'" class="tab mb-2  bttn" [class.active]="selectedTab === 'lco'"
+            style="text-align: center;" (click)="selectTab('lco')">
             LCO
         </div>
         <div class="tab mb-2  bttn" [class.active]="selectedTab === 'sub_lco'" style="text-align: center;"
             (click)="selectTab('sub_lco')">
             SUB LCO
         </div>
-        <div class="tab mb-2  bttn" [class.active]="selectedTab === 'subscriber'" style="text-align: center;"
+        <div *nfIf="role !== 'ROLE_SUBLCO'" class="tab mb-2  bttn" [class.active]="selectedTab === 'subscriber'" style="text-align: center;"
             (click)="selectTab('subscriber')">
             SUBSCRIBER
         </div>
@@ -47,9 +47,9 @@
 
 
         <div class="display1 justify-content-end align-items-center mb-3">
-
             <div class="export-icon mx-2">
-                <img src="/assets/images/icons/Excel.png" alt="Excel Icon" width="40px" (click)="getLcoInvoiceReport(2)">
+                <img src="/assets/images/icons/Excel.png" alt="Excel Icon" width="40px"
+                    (click)="getLcoInvoiceReport(2)">
                 <div class="tooltip">Excel</div>
             </div>
             <div class="export-icon">

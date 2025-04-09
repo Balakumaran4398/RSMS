@@ -23,7 +23,7 @@
                     </mat-form-field>
                 </div>
             </div>
-            <div *ngIf="role !== 'ROLE_OPERATOR'" class=" display_1  mb-3">
+            <div *ngIf="role !== 'ROLE_OPERATOR' && role !== 'ROLE_SUBLCO'" class=" display_1  mb-3">
                 <div class="input_box col-12 col-md-4">
                     <span for="">Operator</span>
                 </div>
@@ -53,7 +53,7 @@
                 </div>
                 <div class="col-12 col-md-8 d-flex justify-content-start align-items-center">
 
-                    <div class="export-icon"  (click)="exportAsXLSX()">
+                    <div class="export-icon" (click)="exportAsXLSX()">
                         <img src="/assets/images/icons/Excel.png" alt="Excel Icon">
                     </div>
                     <div class="export-icon" (click)="exportAsXLSX1()">

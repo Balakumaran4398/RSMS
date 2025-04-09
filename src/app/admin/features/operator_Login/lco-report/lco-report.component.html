@@ -2,49 +2,11 @@
     <mat-accordion class="example-headers-align">
         <mat-expansion-panel [expanded]="step() === 0" (opened)="setStep(0)" hideToggle class="pannel">
             <mat-expansion-panel-header>
-                <mat-panel-title class="reporthead">PACKAGE BASED REPORTS</mat-panel-title>
+                <mat-panel-title class="reporthead"> REPORTS</mat-panel-title>
             </mat-expansion-panel-header>
             <div class="cardContainer">
-                <!-- <div class="card royal-card tooltip-container" (click)="openLCODialog('current_active_smartcard')">
-                    <div class="royal-content">
-                        <strong>CURRENT ACTIVE SMARTCARD</strong>
-                    </div>
-                    <div class="tooltip">Current active smartcard</div>
-                </div> -->
-
-                <!-- <div class="card royal-card tooltip-container" (click)="openLCODialog('current_Deactive_smartcard')">
-                    <div><strong>DEACTIVED SMARTCARD</strong></div>
-                    <div class="tooltip">Deactivated smartcard</div>
-                </div> -->
-
-                <!-- <div class="card royal-card tooltip-container" (click)="openLCODialog('box_in_hand')">
-                    <div><strong>BOX IN HAND</strong>
-                    </div>
-                    <div class="tooltip">Box in hand</div>
-                </div> -->
-
-    
-                <!-- <div class="card royal-card tooltip-container" (click)="openLCODialog('smartcard_suspend')">
-                    <div><strong>SMARTCARD SUSPEND REPORT</strong></div>
-                    <div class="tooltip">Smartcard suspend report</div>
-                </div> -->
-                <!-- <div class="card royal-card tooltip-container" (click)="openLCODialog('expired_smartcard')">
-                    <div><strong>EXPIRED SMARTCARD REPORT</strong></div>
-                    <div class="tooltip">Expired smartcard report</div>
-                </div> -->
-                <!-- <div class="card royal-card tooltip-container" (click)="openLCODialog('allocated_smartcard')">
-                    <div><strong>ALLOCATED SMARTCARD REPORT</strong></div>
-                    <div class="tooltip">Allocated smartcard report</div>
-                </div> -->
-                <!-- <div class="card royal-card tooltip-container" (click)="openLCODialog('areawise_sub')">
-                    <div><strong>AREAWISE SUBSCRIBER</strong></div>
-                    <div class="tooltip">Areawise subscriber</div>
-                </div> -->
-                <!-- <div class="card royal-card tooltip-container" (click)="openLCODialog('wallet_share')">
-                    <div><strong>WALLET SHARE REPORT</strong></div>
-                    <div class="tooltip">Wallet smartcard report</div>
-                </div> -->
-                <div class="card royal-card tooltip-container" (click)="openMsoDialog('walletShare')">
+                <div *ngIf="role== 'ROLE_OPERATOR'" class="card royal-card tooltip-container"
+                    (click)="openMsoDialog('walletShare')">
                     <div><strong>WALLET SHARE REPORT</strong></div>
                     <div class="tooltip">Wallet smartcard report</div>
                 </div>
@@ -56,23 +18,22 @@
                     <div><strong>SUBSCRIBER PACKAGE RECHARGE REPORT</strong></div>
                     <div class="tooltip">Subscriber package recharge report</div>
                 </div>
-                <div class="card royal-card tooltip-container" (click)="openMsoDialog('lco_transfer_details')">
+                <div *ngIf="role== 'ROLE_OPERATOR'" class="card royal-card tooltip-container"
+                    (click)="openMsoDialog('lco_transfer_details')">
                     <div><strong>TRANSFER SMARTCARD REPORT</strong></div>
                     <div class="tooltip">Transfer smarcatd report</div>
                 </div>
-                <!-- <div class="card royal-card tooltip-container" (click)="openLCODialog('collection_bill')">
-                    <div><strong>COLLECTION BILL REPORT</strong></div>
-                    <div class="tooltip">Collection bill report</div>
-                </div> -->
-                <div class="card royal-card tooltip-container" (click)="openMsoDialog('user_rechargehistory')">
+
+                <div *ngIf="role== 'ROLE_OPERATOR'" class="card royal-card tooltip-container"
+                    (click)="openMsoDialog('user_rechargehistory')">
                     <div><strong>USER RECHARGE HISTORY</strong></div>
                     <div class="tooltip">User recharge history</div>
                 </div>
-                <div class="card royal-card tooltip-container"
-                (click)="openLCODialog('monthwise_lco_activation_count')">
-                <div><strong>MONTHWISE LCO ACTIVATION COUNT</strong></div>
-                <div class="tooltip">Monthwise activation count</div>
-            </div>
+                <div *ngIf="role== 'ROLE_OPERATOR'" class="card royal-card tooltip-container"
+                    (click)="openLCODialog('monthwise_lco_activation_count')">
+                    <div><strong>MONTHWISE LCO ACTIVATION COUNT</strong></div>
+                    <div class="tooltip">Monthwise activation count</div>
+                </div>
             </div>
 
         </mat-expansion-panel>

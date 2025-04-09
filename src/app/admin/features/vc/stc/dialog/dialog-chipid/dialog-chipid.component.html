@@ -1,0 +1,110 @@
+<div *ngIf="type=='newChipid'">
+    <div class="Head d-flex justify-content-between align-items-center mb-3" style="padding: 1rem;">
+        <h6>CREATE NEW MODEL</h6>
+        <i class="fa fa-close close-icon" style="cursor: pointer;" (click)="onNoClick()"></i>
+    </div>
+    <div class="col d-flex justify-content-center align-items-center  transparent-background dialog-content"
+        style="padding: 1rem;">
+
+        <div class="card-body">
+            <div class="input_box display align-items-center mb-3">
+                <div class="col-12 col-md-6">
+                    <span for="modelName" class="me-2">Model Name</span>
+                </div>
+                <div class="col-12 col-md-6">
+                    <input type="text" [(ngModel)]="modelName" required placeholder="Enter Model Name">
+                    <div *ngIf="modelName.invalid && modelName.touched" class="text-danger">
+                        <small *ngIf="modelName.errors?.['required']">Model Name is required.</small>
+                    </div>
+                </div>
+            </div>
+            <div class="input_box display align-items-center mb-3">
+                <div class="col-12 col-md-6">
+                    <span for="modelNo" class="me-2">Model Number</span>
+                </div>
+                <div class="col-12 col-md-6">
+                    <input type="text" [(ngModel)]="modelNo" required maxlength="6" placeholder="Enter Model Number"
+                        (keypress)="onKeydown($event)">
+                    <div *ngIf="modelNo.invalid && modelNo.touched" class="text-danger">
+                        <small *ngIf="modelNo.errors?.['required']">Model Number is required.</small>
+                        <small *ngIf="modelNo.errors?.['pattern']">Model Number should be 6 digits long.</small>
+                    </div>
+                </div>
+            </div>
+            <div class="input_box display align-items-center mb-3">
+                <div class="col-12 col-md-6">
+                    <span class="me-2">MRP</span>
+                </div>
+                <div class="col-12 col-md-6 d-flex  justify-content-start align-item-center">
+                    <input type="text" [(ngModel)]="mrp" required pattern="^[0-9]{6}$" maxlength="6"
+                        placeholder="Enter MRP" (keypress)="onKeydown($event)">
+                    <div *ngIf="mrp.invalid && mrp.touched" class="text-danger">
+                        <small *ngIf="mrp.errors?.['required']">MRP is required.</small>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group d-flex justify-content-center align-items-center mb-3">
+                <button type="button" class="btn btn-primary me-2"
+                    [disabled]="modelName.invalid || modelNo.invalid || mrp.invalid" (click)="Submit()">Save</button>
+                <button type="button" class="btn btn-secondary" (click)="onNoClick()">Cancel</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div *ngIf="type=='editChipid'">
+    <div class="Head d-flex justify-content-between align-items-center mb-3" style="padding: 1rem;">
+        <h6>EDIT MODEL</h6>
+        <i class="fa fa-close close-icon" style="cursor: pointer;" (click)="onNoClick()"></i>
+    </div>
+    <div class="col d-flex justify-content-center align-items-center  transparent-background dialog-content"
+        style="padding: 1rem;">
+
+        <div class="card-body">
+            <div class="input_box display align-items-center mb-3">
+                <div class="col-12 col-md-6">
+                    <span for="md_modelName" class="me-2">Model Name</span>
+                </div>
+                <div class="col-12 col-md-6">
+                    <input type="text" [(ngModel)]="md_modelName" required placeholder="Enter Model Name">
+                    <div *ngIf="md_modelName.invalid && md_modelName.touched" class="text-danger">
+                        <small *ngIf="md_modelName.errors?.['required']">Model Name is required.</small>
+                    </div>
+                </div>
+            </div>
+            <div class="input_box display align-items-center mb-3">
+                <div class="col-12 col-md-6">
+                    <span for="md_modelno" class="me-2">Model Number</span>
+                </div>
+                <div class="col-12 col-md-6">
+                    <input type="text" [(ngModel)]="md_modelno" required maxlength="6" placeholder="Enter Model Number"
+                        (keypress)="onKeydown($event)">
+                    <div *ngIf="md_modelno.invalid && md_modelno.touched" class="text-danger">
+                        <small *ngIf="md_modelno.errors?.['required']">Model Number is required.</small>
+                        <small *ngIf="md_modelno.errors?.['pattern']">Model Number should be 6 digits long.</small>
+                    </div>
+                </div>
+            </div>
+            <div class="input_box display align-items-center mb-3">
+                <div class="col-12 col-md-6">
+                    <span class="me-2">STATUS</span>
+                </div>
+                <div class="col-12 col-md-6 d-flex  justify-content-start align-item-center  ">
+                    <div class="toggle">
+                        <label class="switch">
+                            <input type="checkbox" id="lcoLabel" name="lcoLabel" [(ngModel)]="md_status">
+                            <span class="slider"></span>
+                        </label>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group d-flex justify-content-center align-items-center mb-3">
+                <button type="button" class="btn btn-primary me-2"
+                    [disabled]="modelName.invalid || modelNo.invalid || mrp.invalid"
+                    (click)="getUpdateModel()">Update</button>
+                <button type="button" class="btn btn-secondary" (click)="onNoClick()">Cancel</button>
+            </div>
+        </div>
+    </div>
+</div>

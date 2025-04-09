@@ -6,6 +6,8 @@ import Swal from 'sweetalert2';
 import { DatePipe } from '@angular/common';
 import { SwalService } from 'src/app/_core/service/swal.service';
 import { Router } from '@angular/router';
+import { OperatorService } from 'src/app/_core/service/operator.service';
+import { LogarithmicScale } from 'chart.js';
 declare var $: any;
 // import { Any } from 'node_modules1/@sigstore/protobuf-specs/dist/__generated__/google/protobuf/any';
 
@@ -70,12 +72,19 @@ export class CreateSubscriberComponent implements AfterViewInit, OnDestroy {
 
 
   IsOperator: boolean = false;
+  IsSubLCO: boolean = false;
   Isuser: boolean = false;
   operatoridValue: any;
   lcoDeatails: any;
   lcoId: any;
 
-  constructor(private formBuilder: FormBuilder, private userservice: BaseService, private swal: SwalService, private router: Router, private cdr: ChangeDetectorRef, private storageservice: StorageService, private datePipe: DatePipe) {
+
+  subLcoDetails: any;
+  retailerId: any;
+
+  constructor(private formBuilder: FormBuilder, private userservice: BaseService, private swal: SwalService, private router: Router, private cdr: ChangeDetectorRef, private storageservice: StorageService, private datePipe: DatePipe,
+    private operator: OperatorService
+  ) {
     this.username = storageservice.getUsername();
     this.role = storageservice.getUserRole();
     this.userservice.getOperatorListforSubInsert(this.role, this.username).subscribe((data: any) => {
@@ -86,14 +95,26 @@ export class CreateSubscriberComponent implements AfterViewInit, OnDestroy {
       });
       this.filteredOperators = this.lco_list;
     })
+
+    this.subLcoDetails = operator?.lcoDeatails;
+    this.retailerId = this.subLcoDetails?.retailerid;
     if (this.role === 'ROLE_ADMIN') {
+      console.log('1111 ----->', this.role);
       this.Isuser = true;
       this.IsOperator = false;
-      console.log('ROLE_ADMIN');
+      this.IsSubLCO = false;
     } else if (this.role === 'ROLE_OPERATOR') {
+      console.log('2222 ----->', this.role);
       this.Isuser = false;
       this.IsOperator = true;
+      this.IsSubLCO = false;
       this.operatorIdoperatorId();
+    } else if (this.role === 'ROLE_SUBLCO') {
+      console.log('3333 ----->', this.role);
+
+      this.Isuser = false;
+      this.IsOperator = false;
+      this.IsSubLCO = true;
     }
   }
   lconame: any;
@@ -120,11 +141,14 @@ export class CreateSubscriberComponent implements AfterViewInit, OnDestroy {
 
   ngOnInit(): void {
     console.log(this.lcoId);
-    this.operatorIdoperatorId();
+    if (this.role == 'ROLE_OPERTAOR') {
+      this.operatorIdoperatorId();
+    }
+    console.log(this.retailerId);
 
     this.form = this.formBuilder.group(
       {
-        operatorid: [this.operatoridValue, [Validators.required]],
+        operatorid: [this.operatoridValue || this.retailerId, [Validators.required]],
         areaid: ['', Validators.required || this.areaid],
         streetid: ['', Validators.required || this.streetid],
         casformid: ['',],
@@ -599,7 +623,7 @@ export class CreateSubscriberComponent implements AfterViewInit, OnDestroy {
           });
           // let subid = data.message;
           // let subid = data.message.match(/\d+/)?.[0];
-          let subid = data.message.split(" ").pop(); 
+          let subid = data.message.split(" ").pop();
           console.log(subid);
 
           this.router.navigate([`/admin/subscriber-full-info/${subid}/new`]);

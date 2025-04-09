@@ -8,6 +8,7 @@ import { HttpResponse } from '@angular/common/http';
 import Swal from 'sweetalert2';
 
 import { AgGridAngular } from 'ag-grid-angular';
+import { OperatorService } from 'src/app/_core/service/operator.service';
 declare var $: any;
 export interface SubscriberData {
   smartcard: string;
@@ -185,9 +186,13 @@ export class MsorDialogueportsComponent implements OnInit, OnDestroy {
   selectedMonthName: any;
   selectedDateMonthName: any;
 
+  subLcoDetails: any;
+  retailerId: any;
+  subOperatorId: any;
+
   path: any;
   constructor(private route: ActivatedRoute, private location: Location,
-    public userService: BaseService, private cdr: ChangeDetectorRef, public storageservice: StorageService, private swal: SwalService,) {
+    public userService: BaseService, private cdr: ChangeDetectorRef, public storageservice: StorageService, private swal: SwalService, public sublco: OperatorService) {
     this.type = this.route.snapshot.paramMap.get('id');
     this.username = storageservice.getUsername();
     this.role = storageservice.getUserRole();
@@ -210,6 +215,9 @@ export class MsorDialogueportsComponent implements OnInit, OnDestroy {
     else if (this.type == 'lco_active_subscription') {
       this.lcowiseActiveSubCount();
     }
+    this.subLcoDetails = sublco?.lcoDeatails;
+    this.retailerId = this.subLcoDetails?.retailerid;
+    this.subOperatorId = this.subLcoDetails?.operatorid;
 
   }
   getFilteredOnlineType() {
@@ -264,7 +272,6 @@ export class MsorDialogueportsComponent implements OnInit, OnDestroy {
       this.lcoDeatails = data;
       this.operatorId = this.lcoDeatails?.operatorid;
       this.operatorname = this.lcoDeatails?.operatorname;
-      console.log(this.operatorId);
       this.onSubscriberStatusChange(this.operatorId)
     })
   }
@@ -333,15 +340,12 @@ export class MsorDialogueportsComponent implements OnInit, OnDestroy {
   logValues(event: any): void {
     this.selectedDate = event.target.value;
     this.selectedDateMonthName = this.getMonthNameFromDate(this.selectedDate);
-    console.log('Selected Date:', this.selectedDate);
-    console.log('Selected Month:', this.selectedDateMonthName);
     this.onColumnDefs();
   }
   onMonthChange(event: any) {
     if (this.selectedMonth !== '0') {
       this.selectedMonthName = this.months.find(month => month.value === this.selectedMonth)?.name || '';
     }
-    console.log(this.selectedMonthName);
     this.checkDataForBill();
     this.onColumnDefs();
   }
@@ -436,13 +440,8 @@ export class MsorDialogueportsComponent implements OnInit, OnDestroy {
   }
   rechargeOperatorValue: any;
   onRechargeType(selectedValue: any) {
-    console.log(selectedValue);
     this.rechargeOperatorValue = selectedValue;
-    console.log(this.rechargeOperatorValue);
-
-
     if (selectedValue == 1) {
-      console.log('dfsfdsfdsf', this.isOperator);
       this.isSmartcard = false;
       this.isRechargeOperator = true;
       this.isUseragent = true;
@@ -479,7 +478,6 @@ export class MsorDialogueportsComponent implements OnInit, OnDestroy {
     } else {
       return
     }
-    console.log(this.rechargeOperatorValue);
     this.columnDefs2 = this.rechargeOperatorValue == 3
       ? [
         { headerName: "S.No", lockPosition: true, valueGetter: 'node.rowIndex+1', headerCheckboxSelection: false, checkboxSelection: false, width: 90, filter: false },
@@ -582,8 +580,6 @@ export class MsorDialogueportsComponent implements OnInit, OnDestroy {
   }
 
   onUserAgentType(selectedValue: any) {
-    console.log(selectedValue);
-
     if (selectedValue == 1) {
       this.isSubLCO = false;
     } else if (selectedValue == 2) {
@@ -601,8 +597,6 @@ export class MsorDialogueportsComponent implements OnInit, OnDestroy {
   onOnlineType(selectedValue: any) {
 
     this.selectedOnlineType = selectedValue;
-    console.log(selectedValue);
-    console.log('ONLINE PAYMENT');
     this.onlinePayment();
 
     if (selectedValue == 1) {
@@ -614,7 +608,6 @@ export class MsorDialogueportsComponent implements OnInit, OnDestroy {
       // this.todate = 0;
       this.selectedOperator.value;
       this.selectedLcoName = 0;
-      console.log(this.selectedLcoName)
       this.selectedSubLcoName = 0;
       setTimeout(() => {
         $('#operator').val(this.selectedLcoName).trigger('change');
@@ -650,7 +643,6 @@ export class MsorDialogueportsComponent implements OnInit, OnDestroy {
   // ------------------------------------------------------------------------------------------
   operatorList() {
     this.userService.getOeratorList(this.role, this.username, 1).subscribe((data: any) => {
-      console.log(data);
       this.lco_list = Object.keys(data).map(key => {
         const value = data[key];
         const name = key;
@@ -664,8 +656,6 @@ export class MsorDialogueportsComponent implements OnInit, OnDestroy {
     this.filteredOperators = this.lco_list.filter(operator =>
       operator.name.toLowerCase().includes(filterValue)
     );
-    console.log(this.filteredOperators);
-
   }
 
   filterUsers(event: any): void {
@@ -673,8 +663,6 @@ export class MsorDialogueportsComponent implements OnInit, OnDestroy {
     this.filtereduserlist = this.userlist.filter(sub =>
       sub.name.toLowerCase().includes(filterValue)
     );
-    console.log(this.filteredOperators);
-
   }
 
   filterSubLco(event: any): void {
@@ -682,7 +670,6 @@ export class MsorDialogueportsComponent implements OnInit, OnDestroy {
     this.filteredSubLcoList = this.sublco_list.filter(operator =>
       operator.name.toLowerCase().includes(filterValue)
     );
-    console.log(this.filteredSubLcoList);
   }
   displayOperator(operator: any): string {
     return operator ? operator.name : '';
@@ -702,10 +689,7 @@ export class MsorDialogueportsComponent implements OnInit, OnDestroy {
 
   // ========================================================================
   subLcoList(event: any) {
-    console.log(event);
-
     this.filteredSubLcoList = [];
-
     this.userService.getAllSublcoList(this.role, this.username, event)
       .subscribe(
         (response: HttpResponse<any[]>) => { // Expect HttpResponse<any[]>
@@ -714,8 +698,6 @@ export class MsorDialogueportsComponent implements OnInit, OnDestroy {
               operatorId: item.retailerId,
               retailerName: item.retailerName,
             }));
-            console.log(this.sublco_list);
-
             this.filteredSubLcoList = this.sublco_list;
           } else if (response.status === 204) {
             // this.swal.Success_204();
@@ -736,19 +718,10 @@ export class MsorDialogueportsComponent implements OnInit, OnDestroy {
   }
 
   onSubscriberStatusChange(selectedOperator: any) {
-    console.log(selectedOperator);
     this.selectedOperator = selectedOperator;
     // this.selectedLcoName = selectedOperator.value || this.operatorId;
     this.selectedLcoName = selectedOperator.value || this.operatorId || 0;
-    console.log(this.selectedLcoName);
-    console.log(this.selectedOperator);
-    // this.selectedOperator = selectedOperator;
-
     this.selectedSubLcoName = 0;
-    console.log(this.selectedLcoName);
-
-
-
     if (this.type == 'recharge_deduction_excluding') {
 
     } else if (this.type == 'lcoinvoice') {
@@ -764,39 +737,25 @@ export class MsorDialogueportsComponent implements OnInit, OnDestroy {
     if (selectedOperator.value === 0) {
       console.log("Selected: All Operator (Value: 0)");
       this.selectedLcoName = selectedOperator.value;
-      console.log(this.selectedLcoName);
-
     } else {
       console.log("Selected:", selectedOperator.name, "(Value:", selectedOperator.value, ")");
     }
   }
   onSubscriberLcoChange(selectedOperator: any) {
-    console.log(selectedOperator);
     this.selectedLco = selectedOperator;
     this.selectedLco = selectedOperator.name;
     this.selectedLcoName = selectedOperator.value || this.operatorId;
-    console.log(this.selectedLcoName);
-    console.log(this.selectedLco);
-    console.log(this.type);
-    console.log(this.selectedOperator);
-
     this.selectedSubLcoName = '';
 
   }
   onSublcochange(selectedOperator: any) {
-    console.log(selectedOperator);
-    // this.filteredSubLcoList = [];
-
     this.selectedSubOperator = selectedOperator;
     this.selectedSubLcoName = selectedOperator.operatorId;
-    console.log(this.selectedSubLcoName);
   }
   onOperatorStatusChange(selectedOperator: any) {
     if (selectedOperator.value === 0) {
       this.selectedLcoName = 0;
       this.selectedOperator = selectedOperator;
-      console.log(this.selectedOperator);
-
     } else {
       this.selectedLcoName = 0;
     }
@@ -805,8 +764,6 @@ export class MsorDialogueportsComponent implements OnInit, OnDestroy {
     if (selectedOperator.value === -1) {
       this.selectedLcoName = -1;
       this.selectedOperator = selectedOperator;
-      console.log(this.selectedOperator);
-
     } else {
       this.selectedLcoName = 0;
     }
@@ -819,16 +776,12 @@ export class MsorDialogueportsComponent implements OnInit, OnDestroy {
     if (selectedOperator.value === 0) {
       this.selectedSubLcoName = 0;
       this.selectedSubOperator = selectedOperator;
-      console.log(this.selectedOperator);
-
     } else {
       this.selectedSubLcoName = 0;
     }
   }
   // -------------------------------------------------------------
   private onColumnDefs() {
-    console.log('1111111111111111111');
-
     if (this.type == 'walletShare') {
       this.columnDefs = [
         { headerName: "S.No", lockPosition: true, valueGetter: 'node.rowIndex+1', headerCheckboxSelection: false, checkboxSelection: false, width: 90, filter: false },
@@ -979,8 +932,6 @@ export class MsorDialogueportsComponent implements OnInit, OnDestroy {
       ]
     }
     else if (this.type == 'lcowiseExpiryCountDiff') {
-      console.log('selected month', this.selectedMonthName);
-      console.log('selected month', this.selectedDateMonthName);
       this.columnDefs = [
         { headerName: "S.No", lockPosition: true, valueGetter: 'node.rowIndex+1', filter: false, headerCheckboxSelection: false, checkboxSelection: false, width: 90 },
         { headerName: 'OPERATOR ID', field: 'operator_id', cellStyle: { textAlign: 'center' } },
@@ -1087,19 +1038,16 @@ export class MsorDialogueportsComponent implements OnInit, OnDestroy {
   cur_date: any;
 
   getFromDate(event: any) {
-    console.log(event.value);
     const date = new Date(event.value).getDate().toString().padStart(2, '0');
     const month = (new Date(event.value).getMonth() + 1).toString().padStart(2, '0');
     const year = new Date(event.value).getFullYear();
     this.fromdate = year + "-" + month + "-" + date
-    console.log(this.fromdate);
   }
   getToDate(event: any) {
     const date = new Date(event.value).getDate().toString().padStart(2, '0');
     const month = (new Date(event.value).getMonth() + 1).toString().padStart(2, '0');
     const year = new Date(event.value).getFullYear();
     this.todate = year + "-" + month + "-" + date
-    console.log(this.todate);
   }
   goBack(): void {
     this.location.back();
@@ -1120,7 +1068,6 @@ export class MsorDialogueportsComponent implements OnInit, OnDestroy {
       }
     });
     // this.swal.Loading();
-    console.log('dfdsfdsfdsfdsf', event);
     this.userService.getMonthwisePaymentCollection(this.role, this.username, this.selectedMonth, this.selectedYear, 2)
       .subscribe((x: Blob) => {
         const blob = new Blob([x], { type: 'application/xlsx' });
@@ -1159,7 +1106,6 @@ export class MsorDialogueportsComponent implements OnInit, OnDestroy {
       }
     });
     // this.swal.Loading();
-    console.log('dfdsfdsfdsfdsf', event);
     this.userService.getMonthwisePaymentCollection(this.role, this.username, this.selectedMonth, this.selectedYear, 1)
       .subscribe((x: Blob) => {
         const blob = new Blob([x], { type: 'application/pdf' });
@@ -1195,388 +1141,333 @@ export class MsorDialogueportsComponent implements OnInit, OnDestroy {
     }
   }
   getRecharge() {
-    this.smartcard = this.smartcardChange(this.smartcard);
-    Swal.fire({
-      title: "Processing",
-      text: "Please wait while the report is being generated...",
-      showConfirmButton: false,
-      didOpen: () => {
-        Swal.showLoading(null);
-      }
-
-    });
-    // this.swal.Loading();
-    this.userService.getRechargeHistory(this.role, this.username, this.selectedRechargeType, this.selectedOperator.value || this.operatorId || 0, this.fromdate, this.todate, this.smartcard, this.useragent,
-      this.selectedSubLcoName, 3
-    ).subscribe(
-      (response: HttpResponse<any>) => {
-        if (response.status === 200) {
-          console.log(response);
-          this.rowData = response.body;
-          // this.fromdate = '';
-          // this.todate = '';
-          this.swal.Success_200();
-        } else if (response.status === 204) {
-          this.swal.Success_204();
-          this.rowData = [];
+    if (this.role == 'ROLE_SUBLCO') {
+      this.userService.getRechargeHistory(this.role, this.username, 1, this.subOperatorId, this.fromdate, this.todate, 0, 4,
+        this.retailerId, 3).subscribe(
+          (response: HttpResponse<any>) => {
+            if (response.status === 200) {
+              console.log(response);
+              this.rowData = response.body;
+              this.swal.Success_200();
+            } else if (response.status === 204) {
+              this.swal.Success_204();
+              this.rowData = [];
+            }
+            Swal.close();
+          },
+          (error) => {
+            this.handleApiError(error.error.message, error.status);
+          }
+        );
+    } else {
+      this.smartcard = this.smartcardChange(this.smartcard);
+      Swal.fire({
+        title: "Processing",
+        text: "Please wait while the report is being generated...",
+        showConfirmButton: false,
+        didOpen: () => {
+          Swal.showLoading(null);
         }
-        Swal.close();
-      },
-      (error) => {
-        this.handleApiError(error.error.message, error.status);
-      }
-    );
+
+      });
+      this.userService.getRechargeHistory(this.role, this.username, this.selectedRechargeType, this.selectedOperator.value || this.operatorId || 0, this.fromdate, this.todate, this.smartcard, this.useragent,
+        this.selectedSubLcoName, 3
+      ).subscribe(
+        (response: HttpResponse<any>) => {
+          if (response.status === 200) {
+            this.rowData = response.body;
+            // this.fromdate = '';
+            // this.todate = '';
+            this.swal.Success_200();
+          } else if (response.status === 204) {
+            this.swal.Success_204();
+            this.rowData = [];
+          }
+          Swal.close();
+        },
+        (error) => {
+          this.handleApiError(error.error.message, error.status);
+        }
+      );
+    }
   }
 
   getRechargeExcel() {
-    console.log(this.selectedOperator.value);
+    if (this.role == 'ROLE_SUBLCO') {
+      Swal.fire({
+        title: "Processing",
+        text: "Please wait while the report is being generated...",
+        showConfirmButton: false,
+        didOpen: () => {
+          Swal.showLoading(null);
+        }
+      });
+      this.userService.getRechargeHistoryReport(this.role, this.username, 1, this.subOperatorId, this.fromdate, this.todate, 0, 4, this.retailerId, 2
+      )
+        .subscribe((x: Blob) => {
+          const blob = new Blob([x], { type: 'application/xlsx' });
+          const data = window.URL.createObjectURL(blob);
+          const link = document.createElement('a');
+          link.href = data;
 
-    this.smartcard = this.smartcardChange(this.smartcard);
-    Swal.fire({
-      title: "Processing",
-      text: "Please wait while the report is being generated...",
-      showConfirmButton: false,
-      didOpen: () => {
-        Swal.showLoading(null);
-      }
-
-    });
-    console.log('dfdsfdsfdsfdsf', event);
-    this.userService.getRechargeHistoryReport(this.role, this.username, this.selectedRechargeType, this.selectedOperator.value || this.operatorId || 0, this.fromdate, this.todate, this.smartcard, this.useragent,
-      this.selectedSubLcoName, 2
-    )
-      .subscribe((x: Blob) => {
-        const blob = new Blob([x], { type: 'application/xlsx' });
-        const data = window.URL.createObjectURL(blob);
-        const link = document.createElement('a');
-        link.href = data;
-
-        link.download = ("RECHARGE HISTORY REPORT.xlsx").toUpperCase();
-        link.dispatchEvent(new MouseEvent('click', { bubbles: true, cancelable: true, view: window }));
-        setTimeout(() => {
-          window.URL.revokeObjectURL(data);
-          link.remove();
-        }, 100);
-        Swal.close();
-      },
-        (error: any) => {
+          link.download = ("RECHARGE HISTORY REPORT.xlsx").toUpperCase();
+          link.dispatchEvent(new MouseEvent('click', { bubbles: true, cancelable: true, view: window }));
+          setTimeout(() => {
+            window.URL.revokeObjectURL(data);
+            link.remove();
+          }, 100);
           Swal.close();
-          Swal.fire({
-            title: 'Error!',
-            text: error?.error?.message || 'There was an issue generating the PDF CAS form report.',
-            icon: 'error',
-            confirmButtonText: 'Ok'
+        },
+          (error: any) => {
+            Swal.close();
+            Swal.fire({
+              title: 'Error!',
+              text: error?.error?.message || 'There was an issue generating the PDF CAS form report.',
+              icon: 'error',
+              confirmButtonText: 'Ok'
+            });
           });
-        });
-    // this.fromdate = '';
-    // this.todate = '';
+    } else {
+
+      this.smartcard = this.smartcardChange(this.smartcard);
+      Swal.fire({
+        title: "Processing",
+        text: "Please wait while the report is being generated...",
+        showConfirmButton: false,
+        didOpen: () => {
+          Swal.showLoading(null);
+        }
+      });
+      this.userService.getRechargeHistoryReport(this.role, this.username, this.selectedRechargeType, this.selectedOperator.value || this.operatorId || 0, this.fromdate, this.todate, this.smartcard, this.useragent,
+        this.selectedSubLcoName, 2
+      )
+        .subscribe((x: Blob) => {
+          const blob = new Blob([x], { type: 'application/xlsx' });
+          const data = window.URL.createObjectURL(blob);
+          const link = document.createElement('a');
+          link.href = data;
+
+          link.download = ("RECHARGE HISTORY REPORT.xlsx").toUpperCase();
+          link.dispatchEvent(new MouseEvent('click', { bubbles: true, cancelable: true, view: window }));
+          setTimeout(() => {
+            window.URL.revokeObjectURL(data);
+            link.remove();
+          }, 100);
+          Swal.close();
+        },
+          (error: any) => {
+            Swal.close();
+            Swal.fire({
+              title: 'Error!',
+              text: error?.error?.message || 'There was an issue generating the PDF CAS form report.',
+              icon: 'error',
+              confirmButtonText: 'Ok'
+            });
+          });
+    }
   }
   getRerchargePdf() {
+    if (this.role == 'ROLE_SUBLCO') {
+      Swal.fire({
+        title: "Processing",
+        text: "Please wait while the report is being generated...",
+        showConfirmButton: false,
+        didOpen: () => {
+          Swal.showLoading(null);
+        }
+      });
+      this.userService.getRechargeHistoryReport(this.role, this.username,1, this.subOperatorId, this.fromdate, this.todate, 0, 4,this.retailerId, 1
+      )
+        .subscribe((x: Blob) => {
+          const blob = new Blob([x], { type: 'application/pdf' });
+          const data = window.URL.createObjectURL(blob);
+          const link = document.createElement('a');
+          link.href = data;
 
-    this.smartcard = this.smartcardChange(this.smartcard);
-    console.log(this.selectedOperator.value);
-
-    Swal.fire({
-      title: "Processing",
-      text: "Please wait while the report is being generated...",
-      showConfirmButton: false,
-      didOpen: () => {
-        Swal.showLoading(null);
-      }
-    });
-    console.log('dfdsfdsfdsfdsf', event);
-    this.userService.getRechargeHistoryReport(this.role, this.username, this.selectedRechargeType, this.selectedOperator.value || this.operatorId || 0, this.fromdate, this.todate, this.smartcard, this.useragent,
-      this.selectedSubLcoName, 1
-    )
-      .subscribe((x: Blob) => {
-        const blob = new Blob([x], { type: 'application/pdf' });
-        const data = window.URL.createObjectURL(blob);
-        const link = document.createElement('a');
-        link.href = data;
-
-        // link.download = ("SUB ONLINE REPORT.pdf").toUpperCase();
-        link.download = ("RECHARGE HISTORY REPORT.pdf").toUpperCase();
-        link.dispatchEvent(new MouseEvent('click', { bubbles: true, cancelable: true, view: window }));
-        setTimeout(() => {
-          window.URL.revokeObjectURL(data);
-          link.remove();
-        }, 100);
-        Swal.close();
-      },
-        (error: any) => {
+          // link.download = ("SUB ONLINE REPORT.pdf").toUpperCase();
+          link.download = ("RECHARGE HISTORY REPORT.pdf").toUpperCase();
+          link.dispatchEvent(new MouseEvent('click', { bubbles: true, cancelable: true, view: window }));
+          setTimeout(() => {
+            window.URL.revokeObjectURL(data);
+            link.remove();
+          }, 100);
           Swal.close();
-          Swal.fire({
-            title: 'Error!',
-            text: error?.error?.message || 'There was an issue generating the PDF CAS form report.',
-            icon: 'error',
-            confirmButtonText: 'Ok'
+        },
+          (error: any) => {
+            Swal.close();
+            Swal.fire({
+              title: 'Error!',
+              text: error?.error?.message || 'There was an issue generating the PDF CAS form report.',
+              icon: 'error',
+              confirmButtonText: 'Ok'
+            });
           });
-        });
-    // this.fromdate = '';
-    // this.todate = '';
+    } else {
+
+      this.smartcard = this.smartcardChange(this.smartcard);
+      Swal.fire({
+        title: "Processing",
+        text: "Please wait while the report is being generated...",
+        showConfirmButton: false,
+        didOpen: () => {
+          Swal.showLoading(null);
+        }
+      });
+      this.userService.getRechargeHistoryReport(this.role, this.username, this.selectedRechargeType, this.selectedOperator.value || this.operatorId || 0, this.fromdate, this.todate, this.smartcard, this.useragent,
+        this.selectedSubLcoName, 1
+      )
+        .subscribe((x: Blob) => {
+          const blob = new Blob([x], { type: 'application/pdf' });
+          const data = window.URL.createObjectURL(blob);
+          const link = document.createElement('a');
+          link.href = data;
+
+          // link.download = ("SUB ONLINE REPORT.pdf").toUpperCase();
+          link.download = ("RECHARGE HISTORY REPORT.pdf").toUpperCase();
+          link.dispatchEvent(new MouseEvent('click', { bubbles: true, cancelable: true, view: window }));
+          setTimeout(() => {
+            window.URL.revokeObjectURL(data);
+            link.remove();
+          }, 100);
+          Swal.close();
+        },
+          (error: any) => {
+            Swal.close();
+            Swal.fire({
+              title: 'Error!',
+              text: error?.error?.message || 'There was an issue generating the PDF CAS form report.',
+              icon: 'error',
+              confirmButtonText: 'Ok'
+            });
+          });
+    }
   }
   // -----------------------------------------------------------Online history report----------------------
 
-  // getOnline() {
 
-  //   this.smartcard = this.smartcardChange(this.smartcard);
-  //   console.log(this.selectedSubLcoName);
-  //   console.log(this.selectedOperator);
-
-  //   Swal.fire({
-  //     title: "Processing",
-  //     text: "Please wait while the report is being generated...",
-  //     showConfirmButton: false,
-  //     didOpen: () => {
-  //       Swal.showLoading(null);
-  //     }
-  //   });
-  //   this.userService.getOnlinePaymentHistory(this.role, this.username, this.fromdate, this.todate, this.selectedOperator.value, this.selectedSubLcoName, this.smartcard, this.selectedOnlineType, 3)
-  //     .subscribe((res: any) => {
-  //       this.swal.success_1(res?.message);
-  //       this.rowData = res;
-  //       this.swal.Close();
-  //     }, (err) => {
-  //       this.swal.Error(err?.error?.message || err?.error);
-  //       // this.handleApiError(err.error.message, err);
-  //       this.rowData = [];
-  //     });
-  // }
-
-
-  //   getOnline() {
-  //     // Validation: Operator must be selected if Sub LCO or Subscriber is selected
-  //     if (!this.selectedLcoName) {
-  //         Swal.fire({
-  //             icon: "error",
-  //             title: "Validation Error",
-  //             text: "Please select an Operator.",
-  //         });
-  //         return;
-  //     }
-
-  //     // If Sub LCO is selected, ensure Operator is also selected
-  //     if (this.isSubLCO && !this.selectedSubLcoName) {
-  //         Swal.fire({
-  //             icon: "error",
-  //             title: "Validation Error",
-  //             text: "Please select a Sub LCO .",
-  //         });
-  //         return;
-  //     }
-
-  //     // If Subscriber is selected, ensure Operator is passed
-  //     // if (this.isSmartcard && !this.smartcard) {
-  //     //     Swal.fire({
-  //     //         icon: "error",
-  //     //         title: "Validation Error",
-  //     //         text: "Please enter a Smartcard number.",
-  //     //     });
-  //     //     return;
-  //     // }
-
-  //     // Proceed with API Call
-  //     this.smartcard = this.smartcardChange(this.smartcard);
-  //     console.log(this.selectedSubLcoName);
-  //     console.log(this.selectedOperator);
-
-  //     Swal.fire({
-  //         title: "Processing",
-  //         text: "Please wait while the report is being generated...",
-  //         showConfirmButton: false,
-  //         didOpen: () => {
-  //             Swal.showLoading(null);
-  //         }
-  //     });
-
-  //     this.userService.getOnlinePaymentHistory(
-  //         this.role,
-  //         this.username,
-  //         this.fromdate,
-  //         this.todate,
-  //         this.selectedOperator.value, 
-  //         this.selectedSubLcoName, 
-  //         this.smartcard, 
-  //         this.selectedOnlineType, 
-  //         3
-  //     ).subscribe(
-  //         (res: any) => {
-  //             this.swal.success_1(res?.message);
-  //             this.rowData = res;
-  //             this.swal.Close();
-  //         },
-  //         (err) => {
-  //             this.swal.Error(err?.error?.message || err?.error);
-  //             this.rowData = [];
-  //         }
-  //     );
-  // }
-  // getOnline() {
-  //   if (!this.selectedOperator.value) {
-  //     Swal.fire({
-  //       icon: "error",
-  //       title: "Validation Error",
-  //       text: "Please select an Operator .",
-  //     });
-  //     return;
-  //   }
-
-  //   if (this.selectedOperator.value && !this.selectedSubLcoName) {
-  //     Swal.fire({
-  //       icon: "error",
-  //       title: "Validation Error",
-  //       text: "Please select a Sub LCO .",
-  //     });
-  //     return;
-  //   }
-
-  //   if (this.isSmartcard) {
-  //     this.selectedSubLcoName = "0";
-  //   }
-
-  //   // Proceed with API Call
-  //   this.smartcard = this.smartcardChange(this.smartcard);
-  //   console.log(this.selectedSubLcoName);
-  //   console.log(this.selectedOperator);
-
-  //   Swal.fire({
-  //     title: "Processing",
-  //     text: "Please wait while the report is being generated...",
-  //     showConfirmButton: false,
-  //     didOpen: () => {
-  //       Swal.showLoading(null);
-  //     }
-  //   });
-
-  //   this.userService.getOnlinePaymentHistory(
-  //     this.role,
-  //     this.username,
-  //     this.fromdate,
-  //     this.todate,
-  //     this.selectedOperator.value,
-  //     this.selectedSubLcoName,
-  //     this.smartcard,
-  //     this.selectedOnlineType,
-  //     3
-  //   ).subscribe(
-  //     (res: any) => {
-  //       this.swal.success_1(res?.message);
-  //       this.rowData = res;
-  //       this.swal.Close();
-  //     },
-  //     (err) => {
-  //       this.swal.Error(err?.error?.message || err?.error);
-  //       this.rowData = [];
-  //     }
-  //   );
-  // }
 
 
   getOnline() {
-    console.log(this.operatorId);
-
-    console.log(this.selectedOnlineType);
-    if (Number(this.selectedOnlineType) === 1) {
-      console.log('Operator', this.selectedOnlineType);
-      // if (!this.selectedOperator?.value && !this.operatorId) {
-      //   Swal.fire({
-      //     icon: "error",
-      //     title: "Validation Error",
-      //     text: "Please select an Online Type.",
-      //   });
-      //   return;
-      // }
-      if ((this.selectedOperator?.value === undefined || this.selectedOperator?.value === null) &&
-        (this.operatorId === undefined || this.operatorId === null)) {
-        Swal.fire({
-          icon: "error",
-          title: "Validation Error",
-          text: "Please select an Online Type.",
-        });
-        return;
-      }
-    } else if (Number(this.selectedOnlineType) === 2) {
-      console.log('sublco', this.selectedOnlineType);
-      // this.handleSublcoSelection();
-
-      // if (!this.selectedOperator?.value && !this.operatorId ) {
-      //   Swal.fire({
-      //     icon: "error",
-      //     title: "Validation Error",
-      //     text: "Please select an Operator.",
-      //   });
-      //   return;
-      // }
-
-      if ((this.selectedOperator?.value === undefined || this.selectedOperator?.value === null) &&
-        (this.operatorId === undefined || this.operatorId === null)) {
-        Swal.fire({
-          icon: "error",
-          title: "Validation Error",
-          text: "Please select an Operator.",
-        });
-        return;
-      }
-      this.selectedSubLcoName;
-
-    } else if (Number(this.selectedOnlineType) === 3) {
-      console.log('subscriber', this.selectedOnlineType);
-      // this.selectedOperator.value = '0';
-      this.selectedOperator = { value: '0' };
-      this.selectedSubLcoName = '0';
-    }
-
-    this.smartcard = this.smartcardChange(this.smartcard);
-
-
-    Swal.fire({
-      title: "Processing",
-      text: "Please wait while the report is being generated...",
-      showConfirmButton: false,
-      didOpen: () => {
-        Swal.showLoading(null);
-      }
-    });
-
-    if (this.role == 'ROLE_SPECIAL') {
-      if (this.type == 'online_payment_special') {
-        this.isspecial = true
-      }
+   if (this.role == 'ROLE_SUBLCO') {
+      this.userService.getOnlinePaymentHistory(
+        this.role,
+        this.username,
+        this.fromdate,
+        this.todate,
+        this.subOperatorId,
+        this.retailerId,
+        this.smartcard || 0,
+        2,
+        3,
+        this.isspecial
+      ).subscribe(
+        (res: any) => {
+          this.swal.success_1(res?.message);
+          this.rowData = res;
+          this.swal.Close();
+        },
+        (err) => {
+          this.swal.Error(err?.error?.message || err?.error);
+          this.rowData = [];
+        }
+      );
     } else {
-      this.isspecial = false
-    }
+      if (Number(this.selectedOnlineType) === 1) {
+        // if (!this.selectedOperator?.value && !this.operatorId) {
+        //   Swal.fire({
+        //     icon: "error",
+        //     title: "Validation Error",
+        //     text: "Please select an Online Type.",
+        //   });
+        //   return;
+        // }
+        if ((this.selectedOperator?.value === undefined || this.selectedOperator?.value === null) &&
+          (this.operatorId === undefined || this.operatorId === null)) {
+          Swal.fire({
+            icon: "error",
+            title: "Validation Error",
+            text: "Please select an Online Type.",
+          });
+          return;
+        }
+      } else if (Number(this.selectedOnlineType) === 2) {
+        // this.handleSublcoSelection();
 
-    this.userService.getOnlinePaymentHistory(
-      this.role,
-      this.username,
-      this.fromdate,
-      this.todate,
-      this.selectedOperator?.value || this.operatorId || 0,
-      this.selectedSubLcoName || 0,
-      this.smartcard,
-      this.selectedOnlineType,
-      3,
-      this.isspecial
-    ).subscribe(
-      (res: any) => {
-        this.swal.success_1(res?.message);
-        this.rowData = res;
-        this.swal.Close();
-      },
-      (err) => {
-        this.swal.Error(err?.error?.message || err?.error);
-        this.rowData = [];
+        // if (!this.selectedOperator?.value && !this.operatorId ) {
+        //   Swal.fire({
+        //     icon: "error",
+        //     title: "Validation Error",
+        //     text: "Please select an Operator.",
+        //   });
+        //   return;
+        // }
+
+        if ((this.selectedOperator?.value === undefined || this.selectedOperator?.value === null) &&
+          (this.operatorId === undefined || this.operatorId === null)) {
+          Swal.fire({
+            icon: "error",
+            title: "Validation Error",
+            text: "Please select an Operator.",
+          });
+          return;
+        }
+        this.selectedSubLcoName;
+
+      } else if (Number(this.selectedOnlineType) === 3) {
+        // this.selectedOperator.value = '0';
+        this.selectedOperator = { value: '0' };
+        this.selectedSubLcoName = '0';
       }
-    );
-    // this.selectedOperator.value = '';
 
+      this.smartcard = this.smartcardChange(this.smartcard);
+
+
+      Swal.fire({
+        title: "Processing",
+        text: "Please wait while the report is being generated...",
+        showConfirmButton: false,
+        didOpen: () => {
+          Swal.showLoading(null);
+        }
+      });
+
+      if (this.role == 'ROLE_SPECIAL') {
+        if (this.type == 'online_payment_special') {
+          this.isspecial = true
+        }
+      } else {
+        this.isspecial = false
+      }
+
+      this.userService.getOnlinePaymentHistory(
+        this.role,
+        this.username,
+        this.fromdate,
+        this.todate,
+        this.selectedOperator?.value || this.operatorId || 0,
+        this.selectedSubLcoName || 0,
+        this.smartcard,
+        this.selectedOnlineType,
+        3,
+        this.isspecial
+      ).subscribe(
+        (res: any) => {
+          this.swal.success_1(res?.message);
+          this.rowData = res;
+          this.swal.Close();
+        },
+        (err) => {
+          this.swal.Error(err?.error?.message || err?.error);
+          this.rowData = [];
+        }
+      );
+    }
   }
 
 
 
 
   handleOperatorSelection() {
-    console.log('11111111111');
     if (!this.selectedOperator?.value) {
       Swal.fire({
         icon: "error",
@@ -1585,19 +1476,11 @@ export class MsorDialogueportsComponent implements OnInit, OnDestroy {
       });
       return;
     }
-
-    console.log(this.selectedOperator?.value);
-
     this.selectedSubLcoName = "0";
     this.smartcard = "0";
   }
 
   handleSublcoSelection() {
-    console.log('22222222');
-    console.log(this.selectedOperator?.value == '');
-    console.log(this.selectedOperator?.value == null);
-
-
     if (!this.selectedOperator?.value) {
       Swal.fire({
         icon: "error",
@@ -1606,7 +1489,6 @@ export class MsorDialogueportsComponent implements OnInit, OnDestroy {
       });
       return;
     }
-    console.log('55555');
     if (!this.selectedSubLcoName) {
       Swal.fire({
         icon: "error",
@@ -1618,16 +1500,13 @@ export class MsorDialogueportsComponent implements OnInit, OnDestroy {
   }
 
   handleSubscriberSelection() {
-    console.log('33333333333333');
     this.selectedOperator.value = { value: "0" };
     this.selectedSubLcoName = "0";
   }
 
 
   getOnlineExcel() {
-
     this.smartcard = this.smartcardChange(this.smartcard);
-
     Swal.fire({
       title: "Processing",
       text: "Please wait while the report is being generated...",
@@ -1644,34 +1523,60 @@ export class MsorDialogueportsComponent implements OnInit, OnDestroy {
     } else {
       this.isspecial = false
     }
-    this.userService.getOnlinePaymentHistoryReport(this.role, this.username, this.fromdate, this.todate, this.selectedOperator.value || this.operatorId || 0, this.selectedSubLcoName, this.smartcard, this.selectedOnlineType, 2, this.isspecial)
-      .subscribe((x: Blob) => {
-        const blob = new Blob([x], { type: 'application/xlsx' });
-        const data = window.URL.createObjectURL(blob);
-        const link = document.createElement('a');
-        link.href = data;
+    if (this.role == 'ROLE_SUBLCO') {
+      this.userService.getOnlinePaymentHistoryReport(this.role, this.username, this.fromdate, this.todate, this.subOperatorId, this.retailerId, this.smartcard || 0, this.selectedOnlineType, 2, this.isspecial)
+        .subscribe((x: Blob) => {
+          const blob = new Blob([x], { type: 'application/xlsx' });
+          const data = window.URL.createObjectURL(blob);
+          const link = document.createElement('a');
+          link.href = data;
 
-        link.download = ("SUB ONLINE REPORT.xlsx").toUpperCase();
-        link.dispatchEvent(new MouseEvent('click', { bubbles: true, cancelable: true, view: window }));
-        setTimeout(() => {
-          window.URL.revokeObjectURL(data);
-          link.remove();
-        }, 100);
-        Swal.close();
-      },
-        (error: any) => {
+          link.download = ("SUB ONLINE REPORT.xlsx").toUpperCase();
+          link.dispatchEvent(new MouseEvent('click', { bubbles: true, cancelable: true, view: window }));
+          setTimeout(() => {
+            window.URL.revokeObjectURL(data);
+            link.remove();
+          }, 100);
           Swal.close();
-          Swal.fire({
-            title: 'Error!',
-            text: error?.error?.message || 'There was an issue generating the PDF CAS form report.',
-            icon: 'error',
-            confirmButtonText: 'Ok'
+        },
+          (error: any) => {
+            Swal.close();
+            Swal.fire({
+              title: 'Error!',
+              text: error?.error?.message || 'There was an issue generating the PDF CAS form report.',
+              icon: 'error',
+              confirmButtonText: 'Ok'
+            });
           });
-        });
-    // this.fromdate = '';
-    // this.todate = '';
+    } else {
+      this.userService.getOnlinePaymentHistoryReport(this.role, this.username, this.fromdate, this.todate, this.selectedOperator.value || this.operatorId || 0, this.selectedSubLcoName, this.smartcard, this.selectedOnlineType, 2, this.isspecial)
+        .subscribe((x: Blob) => {
+          const blob = new Blob([x], { type: 'application/xlsx' });
+          const data = window.URL.createObjectURL(blob);
+          const link = document.createElement('a');
+          link.href = data;
+
+          link.download = ("SUB ONLINE REPORT.xlsx").toUpperCase();
+          link.dispatchEvent(new MouseEvent('click', { bubbles: true, cancelable: true, view: window }));
+          setTimeout(() => {
+            window.URL.revokeObjectURL(data);
+            link.remove();
+          }, 100);
+          Swal.close();
+        },
+          (error: any) => {
+            Swal.close();
+            Swal.fire({
+              title: 'Error!',
+              text: error?.error?.message || 'There was an issue generating the PDF CAS form report.',
+              icon: 'error',
+              confirmButtonText: 'Ok'
+            });
+          });
+    }
   }
   getOnlinePdf() {
+
     this.smartcard = this.smartcardChange(this.smartcard);
 
     Swal.fire({
@@ -1689,31 +1594,58 @@ export class MsorDialogueportsComponent implements OnInit, OnDestroy {
     } else {
       this.isspecial = false
     }
-    console.log('dfdsfdsfdsfdsf', event);
-    this.userService.getOnlinePaymentHistoryReport(this.role, this.username, this.fromdate, this.todate, this.selectedOperator.value || this.operatorId || 0, this.selectedSubLcoName, this.smartcard, this.selectedOnlineType, 1, this.isspecial)
-      .subscribe((x: Blob) => {
-        const blob = new Blob([x], { type: 'application/pdf' });
-        const data = window.URL.createObjectURL(blob);
-        const link = document.createElement('a');
-        link.href = data;
+    if (this.role == 'ROLE_SUBLCO') {
+      this.userService.getOnlinePaymentHistoryReport(this.role, this.username, this.fromdate, this.todate,
+        this.subOperatorId, this.retailerId, this.smartcard || 0, this.selectedOnlineType, 1, this.isspecial)
+        .subscribe((x: Blob) => {
+          const blob = new Blob([x], { type: 'application/pdf' });
+          const data = window.URL.createObjectURL(blob);
+          const link = document.createElement('a');
+          link.href = data;
 
-        link.download = ("SUB ONLINE REPORT.pdf").toUpperCase();
-        link.dispatchEvent(new MouseEvent('click', { bubbles: true, cancelable: true, view: window }));
-        setTimeout(() => {
-          window.URL.revokeObjectURL(data);
-          link.remove();
-        }, 100);
-        Swal.close();
-      },
-        (error: any) => {
+          link.download = ("SUB ONLINE REPORT.pdf").toUpperCase();
+          link.dispatchEvent(new MouseEvent('click', { bubbles: true, cancelable: true, view: window }));
+          setTimeout(() => {
+            window.URL.revokeObjectURL(data);
+            link.remove();
+          }, 100);
           Swal.close();
-          Swal.fire({
-            title: 'Error!',
-            text: error?.error?.message || 'There was an issue generating the PDF CAS form report.',
-            icon: 'error',
-            confirmButtonText: 'Ok'
+        },
+          (error: any) => {
+            Swal.close();
+            Swal.fire({
+              title: 'Error!',
+              text: error?.error?.message || 'There was an issue generating the PDF CAS form report.',
+              icon: 'error',
+              confirmButtonText: 'Ok'
+            });
           });
-        });
+    } else {
+      this.userService.getOnlinePaymentHistoryReport(this.role, this.username, this.fromdate, this.todate, this.selectedOperator.value || this.operatorId || 0, this.selectedSubLcoName, this.smartcard, this.selectedOnlineType, 1, this.isspecial)
+        .subscribe((x: Blob) => {
+          const blob = new Blob([x], { type: 'application/pdf' });
+          const data = window.URL.createObjectURL(blob);
+          const link = document.createElement('a');
+          link.href = data;
+
+          link.download = ("SUB ONLINE REPORT.pdf").toUpperCase();
+          link.dispatchEvent(new MouseEvent('click', { bubbles: true, cancelable: true, view: window }));
+          setTimeout(() => {
+            window.URL.revokeObjectURL(data);
+            link.remove();
+          }, 100);
+          Swal.close();
+        },
+          (error: any) => {
+            Swal.close();
+            Swal.fire({
+              title: 'Error!',
+              text: error?.error?.message || 'There was an issue generating the PDF CAS form report.',
+              icon: 'error',
+              confirmButtonText: 'Ok'
+            });
+          });
+    }
     // this.fromdate = '';
     // this.todate = '';
   }

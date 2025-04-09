@@ -8,7 +8,6 @@
                         <option value="0" selected>Select a Product Type</option>
                         <option *ngFor="let item of producttypeList" [value]="item.value">{{ item.key }}</option>
                     </select>
-
                 </div>
                 <div class="input_box">
                     <input type="text" placeholder="Search Available" [(ngModel)]="searchTermAvailable"

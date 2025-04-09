@@ -10,20 +10,37 @@ export class OperatorService implements OnInit {
   username: any;
   lcoDeatails: any;
   operatorId: any;
+  retailerId: any;
   operatorname: any;
   operatorBalance: any;
+  sublcoName: any;
+  subLcoBalance: any;
   constructor(private userService: BaseService, private storageService: StorageService) {
     this.role = storageService.getUserRole();
+    console.log(this.role);
+    
     this.username = storageService.getUsername();
-    this.operatorIdoperatorId();
+    // this.operatorIdoperatorId();
+    if (this.role == 'ROLE_OPERATOR') {
+      console.log(this.role);
+      this.operatorIdoperatorId();
+    } else if (this.role == 'ROLE_SUBLCO') {
+      console.log(this.role);
+      this.SubLCOIdoperatorId();
+    }
   }
   ngOnInit(): void {
-    this.operatorIdoperatorId();
-    // console.log(this.operatorId);
+    if (this.role == 'ROLE_OPERATOR') {
+      console.log(this.role);
+      this.operatorIdoperatorId();
+    } else if (this.role == 'ROLE_SUBLCO') {
+      console.log(this.role);
+      this.SubLCOIdoperatorId();
+    }
 
   }
   operatorIdoperatorId() {
-    console.log('111');
+    console.log('111-------ROLE_OPERATOR');
     console.log(this.role);
     console.log(this.username);
 
@@ -34,6 +51,20 @@ export class OperatorService implements OnInit {
       this.operatorId = this.lcoDeatails?.operatorid;
       this.operatorname = this.lcoDeatails?.operatorname;
       this.operatorBalance = this.lcoDeatails?.balance;
+    })
+  }
+  SubLCOIdoperatorId() {
+    console.log('222222222-------ROLE_SUBLCO');
+    console.log(this.role);
+    console.log(this.username);
+
+    this.userService.getSublcoDetails(this.role, this.username).subscribe((data) => {
+      console.log(data);
+      this.lcoDeatails = data;
+      this.retailerId = this.lcoDeatails?.operatorid;
+      console.log(this.retailerId);
+      this.sublcoName = this.lcoDeatails?.operatorname;
+      this.subLcoBalance = this.lcoDeatails?.balance;
     })
   }
 }

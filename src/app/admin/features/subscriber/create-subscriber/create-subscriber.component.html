@@ -8,7 +8,7 @@
                     <p>Personal Details</p>
                 </div>
                 <div class="user_details">
-                    <div *ngIf="!IsOperator" class="input_box">
+                    <div *ngIf="!IsOperator && !IsSubLCO" class="input_box">
                         <label>LCO Name</label>
 
                         <select id="Lco" class="js-states" formControlName="operatorid" [(ngModel)]="operatorid">
@@ -28,7 +28,7 @@
                     <div class="input_box">
                         <label>Area Name</label>
 
-                        <select id="Area" class="js-states" >
+                        <select id="Area" class="js-states">
                             <option value="0" selected disabled>Select Area</option>
                             <option *ngFor="let area of filteredAreas" [value]="area.name"
                                 (ngModelChange)="onAreaStatusChange($event)">

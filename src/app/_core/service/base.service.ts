@@ -2213,6 +2213,41 @@ export class BaseService {
     return this.http.post<any>(BASE_URL + "/operator/updateSublcoRate?role=" + role + "&username=" + encodeURIComponent(username) + "&operatorid=" + operatorid + "&retailerid=" + retailerid + "&discounttype=" + discounttype, {})
   }
 
+  // ================================================VC - CHIPID============================
+
+  getmodelSearch(role: any, username: any, searchname: any): Observable<any> {
+    return this.http.get<any>(BASE_URL + "/allocation/modelSearch?role=" + role + "&username=" + encodeURIComponent(username) + "&searchname=" + searchname)
+  }
+  getModelSearchDetails(role: any, username: any, searchname: any): Observable<any> {
+    return this.http.get<any>(BASE_URL + "/allocation/getModelSearchDetails?role=" + role + "&username=" + encodeURIComponent(username) + "&searchname=" + searchname)
+  }
+  getOperatorWiseModelList(role: any, username: any, operatorid: any): Observable<any> {
+    return this.http.get<any>(BASE_URL + "/allocation/getOperatorWiseModelList?role=" + role + "&username=" + encodeURIComponent(username) + "&operatorid=" + operatorid)
+  }
+  getStbModlelList(role: any, username: any): Observable<any> {
+    return this.http.get<any>(BASE_URL + "/allocation/getStbModlelList?role=" + role + "&username=" + encodeURIComponent(username))
+  }
+  getOperatorWiseChipidForceList(role: any, username: any, operatorid: any): Observable<any> {
+    return this.http.get<any>(BASE_URL + "/allocation/getOperatorWiseChipidForceList?role=" + role + "&username=" + encodeURIComponent(username) + "&operatorid=" + operatorid)
+  }
+  getchipidUpdate(role: any, username: any, smartcard: any, chipid: any, model: any): Observable<any[]> {
+    return this.http.post<any>(BASE_URL + "/allocation/chipidUpdate?role=" + role + "&username=" + encodeURIComponent(username) + "&smartcard=" + smartcard + "&chipid=" + chipid + "&model=" + model, {})
+  }
+  getCreateModel(role: any, username: any, modelname: any, model: any, mrp: any): Observable<any[]> {
+    return this.http.post<any>(BASE_URL + "/allocation/createModel?role=" + role + "&username=" + encodeURIComponent(username) + "&modelname=" + modelname + "&model=" + model + "&mrp=" + mrp, {})
+  }
+  getUpdateModel(role: any, username: any, modelname: any, model: any, status: any, id: any): Observable<any[]> {
+    return this.http.post<any>(BASE_URL + "/allocation/updateModel?role=" + role + "&username=" + encodeURIComponent(username) + "&modelname=" + modelname + "&model=" + model + "&status=" + status + "&id=" + id, {})
+  }
+  getUpdateModelForOperator(role: any, username: any, operatorid: any, selectedlist: any): Observable<any[]> {
+    return this.http.post<any>(BASE_URL + "/allocation/updateModelForOperator?role=" + role + "&username=" + encodeURIComponent(username) + "&operatorid=" + operatorid + "&selectedlist=" + selectedlist, {})
+  }
+  getUpdateChipidForce(role: any, username: any, operatorid: any, force: any): Observable<any[]> {
+    return this.http.post<any>(BASE_URL + "/allocation/updateChipidForce?role=" + role + "&username=" + encodeURIComponent(username) + "&operatorid=" + operatorid + "&force=" + force, {})
+  }
+  getUpdateChipidForceDate(role: any, username: any, operatorid: any, date: any): Observable<any[]> {
+    return this.http.post<any>(BASE_URL + "/allocation/updateChipidForceDate?role=" + role + "&username=" + encodeURIComponent(username) + "&operatorid=" + operatorid + "&date=" + date, {})
+  }
 
   // ======================================================SUBLCO DETAILS====================================================
   getSublcoDetails(role: any, username: any): Observable<any[]> {
@@ -2225,10 +2260,12 @@ export class BaseService {
   getSublcoOnlineInitialRequest(role: any, username: any, amount: any, retailerid: any): Observable<any[]> {
     return this.http.post<any[]>(BASE_URL + "/sublco/sublcoOnlineInitialRequest?role=" + role + "&username=" + encodeURIComponent(username) + "&amount=" + amount + "&retailerid=" + retailerid, {});
   }
-  getChangeSubLcoPassword(role: any, username: any, oldpassword: any, newpassword: any, confirmpassword: any, retailerid: any): Observable<any[]> {
-    return this.http.post<any[]>(BASE_URL + "/sublco/changeSublcoPassword?role=" + role + "&username=" + encodeURIComponent(username) + "&oldpassword=" + oldpassword + "&newpassword=" + newpassword + "&confirmpassword=" + confirmpassword + "&retailerid=" + retailerid, {});
-  }
+
   getSublcoLoginDashboardCount(role: any, username: any, retailerid: any): Observable<any[]> {
     return this.http.get<any[]>(BASE_URL + "/sublco/getSublcoLoginDashboardCount?role=" + role + "&username=" + encodeURIComponent(username) + "&retailerid=" + retailerid,)
+  }
+  // --------------------------------------------------SUBLCO change password-------------------------------
+  getChangeSubLcoPassword(role: any, username: any, oldpassword: any, newpassword: any, confirmpassword: any, retailerid: any): Observable<any[]> {
+    return this.http.post<any[]>(BASE_URL + "/sublco/changeSublcoPassword?role=" + role + "&username=" + encodeURIComponent(username) + "&oldpassword=" + oldpassword + "&newpassword=" + newpassword + "&confirmpassword=" + confirmpassword + "&retailerid=" + retailerid, {});
   }
 }

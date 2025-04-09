@@ -2,8 +2,6 @@ h1 {
     text-align: center;
 }
 
-
-
 .table1 p,
 .table2 p {
     justify-content: center;
@@ -117,21 +115,13 @@ h1 {
     .d-flex {
         flex-direction: column;
     }
-
-    // .d-grid {
-    //     margin: 1rem 0;
-    // }
 }
 
-/* Tablet and Desktop View */
 @media (min-width: 560px) {
     .d-flex {
         flex-direction: row;
     }
 
-    // .d-grid {
-    //     margin: 0;
-    // }
     .display {
         display: grid;
     }

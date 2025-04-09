@@ -1,4 +1,4 @@
-<section class="container-fluid">
+<section class="">
     <div class="col-12 col-md-12 col-sm-12 display justify-content-center align-item-center">
         <div class="col-12 col-md-4">
             <div class="" style="border: 0.5px solid lightgrey;">
@@ -6,8 +6,65 @@
                     <i class="fa fa-fw fa-microchip icon "></i>
                     <span class="span">Chipid and Model Update</span>
                 </div>
+                <div class="col-12 input_box " style="padding: 1rem;">
+                    <input placeholder="Enter Smartcard or Box ID" class="input_sb" #searchitem style="font-size: 14px;"
+                        [(ngModel)]="searchName" (keyup)="getsmartcardList( searchitem?.value)">
+                    <div style=" max-height: 150px;overflow: scroll;;" class="dropdown-menu input"
+                        [ngClass]="(subscriberList.length != 0 && searchitem?.value?.length != 0 && showDropdown) ? 'show' : 'hide'"
+                        aria-labelledby="dropdownMenuButton">
+                        <a (click)="goToSubscriberDashboard(lcomember)" *ngFor="let lcomember of subscriberList"
+                            class="dropdown-item"> {{
+                            lcomember.value }}</a>
+                    </div>
+                </div>
                 <div class="col-12" style="padding: 1rem;">
-                    <input type="text" class="custom-input" placeholder="Search by Smartcard or Box ID">
+                    <form class="form w-100 p-3 ">
+                        <div class="input-box mb-3 row">
+                            <div class="col-12 col-md-4">
+                                <span>OPERATOR</span>
+                            </div>
+                            <div class="col-12 col-md-8">
+                                <label>{{subLcoName}}</label>
+                            </div>
+                        </div>
+                        <div class="input-box mb-3 row">
+                            <div class="col-12 col-md-4">
+                                <span>SMARTCARD</span>
+                            </div>
+                            <div class="col-12 col-md-8">
+                                <label>{{subLcoSmartcard}}</label>
+                            </div>
+                        </div>
+                        <div class="input-box mb-3 row">
+                            <div class="col-12 col-md-4">
+                                <span>BOX ID</span>
+                            </div>
+                            <div class="col-12 col-md-8">
+                                <label>{{subLcoBoxid}}</label>
+                            </div>
+                        </div>
+
+                        <div class="input-box mb-3 row">
+                            <div class="col-12 col-md-4">
+                                <span>MODEL</span>
+                            </div>
+                            <div class="col-12 col-md-8 input_box">
+                                <input type="text" [value]="subLcoModel" [(ngModel)]="subLcoModel">
+                            </div>
+                        </div>
+                        <div class="input-box mb-3 row">
+                            <div class="col-12 col-md-4">
+                                <span>CHIP ID</span>
+                            </div>
+                            <div class="col-12 col-md-8 input_box">
+                                <input type="text" [value]="subLcoChipID" [(ngModel)]="subLcoChipID">
+                            </div>
+                        </div>
+
+                    </form>
+                    <div class="d-flex justify-content-center align-item-center ">
+                        <button class="btn btn-success" (click)="submit()">Submit</button>
+                    </div>
                 </div>
             </div>
         </div>
@@ -15,38 +72,139 @@
         <div class="col-12 col-md-8">
             <div class="">
                 <div class="head d-flex justify-content-start align-items-center m-1">
-                    <i class="fa fa-fw fa-microchip icon "></i>
+                    <i class="fa fa-fw fa-book icon"></i>
                     <span class="span">STB Models</span>
                 </div>
-                <div class="col-3" style="padding: 1rem;">
-                    <input type="text" class="custom-input" placeholder="Search by Smartcard or Box ID">
+                <div class="col-12 col-md-12" style="padding: 1rem;">
+                    <div class="d-flex justify-content-start align-item-center mb-2 ">
+                        <button class="btn btn-success" (click)="createChipModel('','newChipid')">New</button>
+                    </div>
+                    <ag-grid-angular #agGrid id="myGrid" domLayout="normal" class="ag-theme-alpine table-class"
+                        style="max-height: 350px;overflow: scroll;overflow-y: hidden;overflow-x: hidden;" rowAnimation
+                        [gridOptions]="gridOptions" [columnDefs]="columnDefs" [rowData]="rowData"
+                        [enableCellTextSelection]="true">
+                    </ag-grid-angular>
+
                 </div>
             </div>
         </div>
     </div>
 </section>
-<section class="container-fluid">
-    <div class="col-12 col-md-12 col-sm-12 d-flex justify-content-center align-item-center">
-        <div class="col-6">
+<section class=" ">
+    <div class="col-12 col-md-12 col-sm-12 display justify-content-center align-item-center">
+        <div class="col-12 col-md-6">
             <div class="" style="border: 0.5px solid lightgrey;">
                 <div class="head d-flex justify-content-start align-items-center m-1">
                     <i class="fa fa-fw fa-microchip icon "></i>
-                    <span class="span">Chipid and Model Update</span>
+                    <span class="span">Box model allocate to operator</span>
                 </div>
-                <div class="col-3" style="padding: 1rem;">
-                    <input type="text" class="custom-input" placeholder="Search by Smartcard or Box ID">
+                <div class="col-12 col-md-12" style="padding: 1rem;">
+                    <!-- <input type="text" class="custom-input" placeholder="Select Operator"> -->
+                    <select id="lco" [(ngModel)]="opName" style="width: 300px;">
+                        <option *ngFor="let operator of filteredOperators" [value]="operator.packageid"
+                            (ngModelChange)="onLCOModelList($event)">
+                            {{ operator.packagename }}
+                        </option>
+                    </select>
+
+                    <section>
+                        <div class="d-flex flex-column flex-lg-row justify-content-center align-items-center mobile">
+
+                            <div class="col-lg-5 col-12 mb-3 mb-lg-0">
+                                <div class="card">
+                                    <div class="input_box">
+                                        <input type="text" placeholder="Search" [(ngModel)]="searchTermAvailable"
+                                            (ngModelChange)="filterAvailableList()">
+                                    </div>
+                                    <div class="table1 mb-3">
+                                        <p style="color: white;">AVAILABLE - {{filteredAvailableList.length}}</p>
+                                        <div class="row inp" >
+                                            <div class="col-12 example-container" style="overflow-x: hidden;overflow-y: hidden;">
+                                                <div cdkDropList #todoList="cdkDropList"
+                                                    [cdkDropListData]="filteredAvailableList"
+                                                    [cdkDropListConnectedTo]="[doneList]" class="example-list"
+                                                    (cdkDropListDropped)="drop_modified($event,1)">
+                                                    <div *ngFor="let item of filteredAvailableList" class="example-box"
+                                                        (click)="toggleSelection(item)" cdkDrag [cdkDragData]="item"
+                                                        [class.selected]="isSelected(item)">
+                                                        {{ item.name }}-({{item.id}})
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="display1 my-3 my-lg-0 mx-lg-3">
+                                <button class="btn1" (click)="moveSelectedRight_BouquetItems('right')"><i
+                                        class="bx bx-right-arrow-alt"></i></button>
+                                <button class="btn1" (click)="moveAllSelected('right')"><i
+                                        class="bx bx-arrow-to-right"></i></button>
+                                <button class="btn1" (click)="moveSelectedRight_BouquetItems('left')"><i
+                                        class="bx bx-left-arrow-alt"></i></button>
+                                <button class="btn1" (click)="moveAllSelected('left')"><i
+                                        class="bx bx-arrow-to-left"></i></button>
+                            </div>
+                            <div class="col-lg-5 col-12">
+                                <div class="card">
+
+                                    <div class="input_box">
+                                        <input type="text" placeholder="Search" [(ngModel)]="searchTermAdded"
+                                            (ngModelChange)="filterAddedList()">
+                                    </div>
+                                    <div class="table2 mb-3">
+                                        <p style="color: white;">ALLOCATED- {{filteredAddedList.length}}</p>
+                                        <div class="row inp" >
+                                            <div class="col-12 example-container" style="overflow-x: hidden;overflow-y: hidden;">
+                                                <div cdkDropList #doneList="cdkDropList"
+                                                    [cdkDropListData]="filteredAddedList"
+                                                    [cdkDropListConnectedTo]="[todoList]" class="example-list"
+                                                    (cdkDropListDropped)="drop_modified($event,2)">
+                                                    <div *ngFor="let item of filteredAddedList" class="example-box"
+                                                        (click)="toggleSelection(item)" cdkDrag [cdkDragData]="item"
+                                                        [class.selected]="isSelected(item)">
+                                                        {{ item.name }}-({{item.id}})
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="col-12 d-flex justify-content-center align-item-center">
+                            <button type="button" class="btn"
+                                style="background:#058372;color: white;height: 2pc; width: 5pc"
+                                (click)="save()">Save</button>
+                        </div>
+                    </section>
                 </div>
             </div>
         </div>
         &nbsp; &nbsp;
-        <div class="col-6">
+        <div class="col-12 col-md-6">
             <div class="">
                 <div class="head d-flex justify-content-start align-items-center m-1">
                     <i class="fa fa-fw fa-microchip icon "></i>
-                    <span class="span">STB Models</span>
+                    <span class="span">FORCE</span>
                 </div>
-                <div class="col-3" style="padding: 1rem;">
-                    <input type="text" class="custom-input" placeholder="Search by Smartcard or Box ID">
+                <div class="col-12 col-md-12" style="padding: 1rem;">
+                    <!-- <input type="text" class="custom-input" placeholder="Select Operator"> -->
+                    <select id="ltb" [(ngModel)]="opName" style="width: 300px;">
+                        <option value="0" selected>All Operator</option>
+                        <option *ngFor="let operator of filteredOperators" [value]="operator.packageid"
+                            (ngModelChange)="onSubscriberStatusChange($event)">
+                            {{ operator.packagename }}
+                        </option>
+                    </select>
+                </div>
+                <div class="col-12 col-md-12" style="padding: 1rem;">
+                    <ag-grid-angular #agGrid id="myGrid" domLayout="normal" class="ag-theme-alpine table-class"
+                        style="max-height: 400px;overflow: scroll;overflow-y: hidden;overflow-x: hidden;" rowAnimation
+                        [gridOptions]="gridOptions" [columnDefs]="columnDefs1" [rowData]="rowData1"
+                        [enableCellTextSelection]="true">
+                    </ag-grid-angular>
                 </div>
             </div>
         </div>

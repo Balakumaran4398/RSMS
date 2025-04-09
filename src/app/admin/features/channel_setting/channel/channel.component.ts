@@ -120,6 +120,7 @@ export class ChannelComponent {
   selectedType: string = 'All';
 
   IsOperator: boolean = false;
+  IsSubLCO: boolean = false;
   Isuser: boolean = false;
 
   constructor(public dialog: MatDialog, public userService: BaseService, storageService: StorageService, private swal: SwalService, private excelService: ExcelService,) {
@@ -139,10 +140,17 @@ export class ChannelComponent {
     if (this.role === 'ROLE_ADMIN' || this.role === 'ROLE_SPECIAL') {
       this.Isuser = true;
       this.IsOperator = false;
+      this.IsSubLCO = false;
       this.getChannelList(this.selectedType);
     } else if (this.role === 'ROLE_OPERATOR') {
       this.Isuser = false;
+      this.IsSubLCO = false;
       this.IsOperator = true;
+      this.getLCOChannelList();
+    }else if (this.role === 'ROLE_SUBLCO') {
+      this.Isuser = false;
+      this.IsOperator = false;
+      this.IsSubLCO = true;
       this.getLCOChannelList();
     }
   }
