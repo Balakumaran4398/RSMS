@@ -1,0 +1,282 @@
+.grid-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(450px, 1fr));
+    gap: 10px;
+}
+
+.display {
+    display: flex;
+}
+.mobile {
+    display: grid;
+}
+
+.card {
+    height: 100%;
+    width: 100%;
+    max-width: 600px;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+}
+
+
+
+.head {
+    display: flex;
+}
+
+
+
+mat-card p {
+    text-align: center;
+}
+
+mat-card {
+    text-align: center;
+    margin: 10px;
+    background-color: var(--oper-grid-bg);
+    margin: 0px 30px;
+    border-radius: 10px;
+    margin: 5px 0px;
+}
+
+mat-card-header {
+    display: initial;
+}
+
+.sub-tittle {
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: var(--primary-color);
+    position: relative;
+    height: 15%;
+}
+
+p .text {
+    text-align: left;
+}
+
+.tittle1 {
+    text-align: end;
+}
+
+p {
+    font-size: 16px;
+}
+
+.toggle1 {
+    width: 30%;
+}
+
+.text {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    margin: 5px 0;
+}
+
+.label {
+    margin-right: 0px;
+    text-align: center;
+    text-transform: uppercase;
+    font-size: 13px;
+    color: rgb(90 88 88);
+}
+
+.separator {
+    margin: 0 5px;
+    text-align: center;
+    color: rgb(90 88 88);
+}
+
+.separator1 {
+    margin: 0 1px;
+    text-align: center;
+    color: rgb(90 88 88);
+}
+
+.last {
+    margin-left: 5px;
+    text-align: center;
+    font-size: 14px;
+    color: rgb(90 88 88);
+}
+
+.last1 {
+    margin-left: 1px;
+    text-align: center;
+    font-size: 14px;
+    color: rgb(90 88 88);
+}
+
+.inventory {
+    width: auto;
+    padding: 10px 3px;
+    background-color: rgb(67, 80, 61);
+    
+}
+
+.inventory p,
+span {
+    color: white;
+}
+
+.permission {
+    width: auto;
+    background-color: #4a4a60;
+    display: -webkit-inline-box;
+}
+
+.permission i {
+    font-size: 23px;
+    margin: 15px 10px;
+}
+
+.permission img {
+    margin: 10px 0 0 -79%;
+    width: 10%
+}
+
+.permission p {
+    margin: 10px -80%;
+}
+
+.card-inside {
+    width: inherit;
+    background-color: white;
+    margin: auto;
+}
+
+
+.child-card {
+    gap: 45px;
+    background: #8f9b8f;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1), 0 6px 20px rgba(0, 0, 0, 0.1);
+    padding: 10px;
+    width: auto;
+    justify-content: center;
+    display: flex;
+    align-items: center;
+
+    .col-2 {
+        width: auto;
+        justify-content: center;
+        display: block;
+        align-items: center;
+    }
+}
+
+
+
+
+.sub-text {
+    margin: 0;
+    font-size: 13px;
+}
+
+
+.circle {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 40px;
+    height: 40px;
+    color: white;
+    padding: 10px;
+    border-radius: 50%;
+    cursor: pointer;
+}
+
+.circle-text {
+    font-size: 12px;
+}
+
+.files {
+    display: grid !important;
+    cursor: pointer;
+}
+
+.file-container .files1 img {
+    width: 15% !important;
+    margin: 0 70px !important;
+}
+
+.file-container {
+    display: flex;
+    gap: 25px
+}
+
+.files img {
+    width: 35%;
+    margin: auto;
+}
+
+.card-inside span {
+    font-size: 14px;
+}
+
+.files span {
+    color: var(--primary-color);
+    font-size: 13px;
+    color: white;
+}
+
+.sub-text {
+    color: #012423;
+}
+
+@media screen and (max-width:760px) {
+    .head {
+        display: block;
+    }
+
+    .k {
+        max-width: 500px;
+        overflow: auto;
+    }
+
+    .display {
+        display: block;
+    }
+
+    .grid-container {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media screen and (max-width:540px) {
+    .head {
+        display: block;
+    }
+
+    .k {
+        max-width: 400px;
+        overflow: auto;
+    }
+
+    .display {
+        display: block;
+    }
+
+    .child-card {
+        gap: 10px
+    }
+
+}
+
+.active-text .last1 {
+    color: #015013;
+    font-weight: 600;
+}
+
+.deactive-text .last1 {
+    color: red;
+    font-weight: 600;
+}
+
+
+// =========================================mat select=================================
+::ng-deep .mat-mdc-text-field-wrapper {
+    height: 50px;
+}

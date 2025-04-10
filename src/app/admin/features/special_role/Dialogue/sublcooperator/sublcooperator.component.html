@@ -9,8 +9,8 @@
             [disabled]="!isAnyRowSelected" (click)="opendialogue('deletesublco','')">
             Delete
         </button>
-        <button  [disabled]="!sublcorecharge" class="btn btn-outline-info mx-1" mat-raised-button  color="accent" type="button"
-             (click)="openLcoRechargelogue('sub_lco_recharge','')">
+        <button [disabled]="!sublcorecharge" class="btn btn-outline-info mx-1" mat-raised-button color="accent"
+            type="button" (click)="openLcoRechargelogue('sub_lco_recharge','')">
             Recharge
         </button>
     </div>
@@ -19,5 +19,127 @@
             [rowSelection]="rowSelection" [columnDefs]="columnDefs" [gridOptions]="gridOptions" [rowData]="rowData"
             (selectionChanged)="onSelectionChanged()" class="ag-theme-alpine table-class"
             (gridReady)="onGridReady($event)"></ag-grid-angular>
+    </div>
+
+    <div class="grid-container">
+        <div *ngFor="let operator of pagedOperators">
+            <!-- <div *ngFor="let operator of filteredOperators"> -->
+            <mat-card class="card">
+                <mat-card-header>
+                    <div class="d-block justify-content-start align-item-center">
+                        <div class="sub-tittle mb-3 col-md-10" style="text-align: left;font-weight: bold;">
+                            {{operator?.operatorname || 'empty'}} <span
+                                style="color: rgb(1, 1, 14);font-weight: bold;">[{{operator?.operatorid}}]</span> -
+                            <span style="color: var(--oper-grid-amount);">[{{operator?.balance}}]</span>
+                        </div>
+                        <div class="sub-tittle mb-3 col-md-10" style="text-align: left;color: rgb(26, 23, 23);">
+                            Phone: <span style="color: rgb(19, 4, 104);">{{operator?.contactnumber1 ||
+                                operator?.contactnumber2}}</span>
+
+                        </div>
+
+                    </div>
+                </mat-card-header>
+
+                <mat-card-content>
+                    <div class="col-12 head " style="text-align: left;">
+                        <div class="col-6 col-md-6">
+
+                            <p class="text" [ngClass]="operator?.isactive === 'true' ? 'active-text' : 'deactive-text'">
+                                <span class="label">Status</span>
+                                <span class="separator1">:</span>
+                                <span class="last1">{{ operator?.isactive === 'true' ? 'Active' : 'Deactive' }}</span>
+                            </p>
+                            <p class="text">
+                                <span class="label label1">user id</span>
+                                <span class="separator">:</span>
+                                <span class="last">{{operator?.userid}}</span>
+                            </p>
+
+                            <p class="text">
+                                <span class="label label2">password</span>
+                                <span class="separator">:</span>
+                                <span class="last">{{operator?.password}}</span>
+                            </p>
+                           <p class="text" [ngClass]="operator?.isonlinepayment ? 'active-text' : 'deactive-text'">
+                                <span class="label">online payment</span>
+                                <span class="separator1">:</span>
+                                <span class="last1">{{ operator?.isonlinepayment ? 'Active' : 'Deactive' }}</span>
+                            </p>
+                        </div>
+                        <div class="col-6 col-md-6">
+                            <mat-card class="inventory">
+                                <p>Box Inventory </p>
+                                <div class="row" style="display: flex;">
+                                    <div class="col-6 tooltip-container" style="cursor: pointer;">
+                                        <span style="font-size: 13px;"> In hand</span>
+                                        <mat-card class="card-inside"
+                                            (click)="openDialog('box_in_hand',operator.operatorid)">
+                                            <span
+                                                style="color: var(--active-edit-icon);font-weight: bold;">{{operator?.boxinhand}}</span>
+                                        </mat-card>
+                                        <span class="tooltip">Box In Hand</span>
+                                    </div>
+                                    <div class="col-6 tooltip-container" style="cursor: pointer;">
+                                        <span style="font-size: 13px;">Total</span>
+                                        <mat-card class="card-inside"
+                                            (click)="openDialog('total_smartcard',operator.operatorid)">
+                                            <span
+                                                style="color: var(--active-edit-icon);font-weight: bold">{{operator?.totalbox}}</span>
+                                        </mat-card>
+                                        <span class="tooltip">Total Box</span>
+                                    </div>
+                                </div>
+                            </mat-card>
+
+                        </div>
+                    </div>
+                    <br>
+                    <div class="child-card col-12">
+                        <div class="col-2 vertical tooltip-container"
+                            (click)="openDialog('active_smartcard_connection',operator.operatorid)">
+                            <div class="col-2 vertical tooltip-container">
+                                <p class="sub-text">Active</p>
+                                <span style="color: #0e610b;">
+                                    <div class="circle" style="background-color: rgb(122, 64, 129);"><span
+                                            class="circle-text">{{operator?.activecount}}</span></div>
+                                </span>
+                                <span class="tooltip">Active</span>
+                            </div>
+                        </div>
+                        <div class="col-2 vertical tooltip-container"
+                            (click)="openDialog('expired_smartcard_connection',operator.operatorid)">
+                            <div class="col-2 vertical tooltip-container">
+                                <p class="sub-text">Expired</p>
+                                <span style="color: #0e610b;">
+                                    <div class="circle" style="background-color: rgb(202, 9, 9);"><span
+                                            class="circle-text">{{operator?.expiredcount}}</span></div>
+                                </span>
+                                <span class="tooltip">Expired</span>
+                            </div>
+                        </div>
+                        <div class="col-2 vertical tooltip-container"
+                            (click)="openDialog('new_smartcard_connection',operator.operatorid)">
+                            <div class="col-2 vertical tooltip-container">
+                                <p class="sub-text">New</p>
+                                <span style="color: #0e610b;">
+                                    <div class="circle" style="background-color: rgb(13 131 33);"><span
+                                            class="circle-text">{{operator?.newcount}}</span></div>
+                                </span> <span class="tooltip">New</span>
+                            </div>
+                        </div>
+
+                    </div>
+                </mat-card-content>
+
+            </mat-card>
+        </div>
+
+
+    </div>
+    <div class="d-flex justify-content-center align-items-center" style="padding: 0.5rem;">
+        <mat-paginator [length]="totalLength" [pageSize]="pageSize" [pageSizeOptions]="[10,50,100,500,1000,2500]"
+            (page)="onPageChange($event)">
+        </mat-paginator>
     </div>
 </div>

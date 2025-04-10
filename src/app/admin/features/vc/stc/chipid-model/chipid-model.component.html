@@ -8,7 +8,7 @@
                 </div>
                 <div class="col-12 input_box " style="padding: 1rem;">
                     <input placeholder="Enter Smartcard or Box ID" class="input_sb" #searchitem style="font-size: 14px;"
-                        [(ngModel)]="searchName" (keyup)="getsmartcardList( searchitem?.value)">
+                        [(ngModel)]="searchName" (input)="getsmartcardList( searchitem?.value)">
                     <div style=" max-height: 150px;overflow: scroll;;" class="dropdown-menu input"
                         [ngClass]="(subscriberList.length != 0 && searchitem?.value?.length != 0 && showDropdown) ? 'show' : 'hide'"
                         aria-labelledby="dropdownMenuButton">
@@ -109,17 +109,17 @@
 
                     <section>
                         <div class="d-flex flex-column flex-lg-row justify-content-center align-items-center mobile">
-
                             <div class="col-lg-5 col-12 mb-3 mb-lg-0">
                                 <div class="card">
                                     <div class="input_box">
                                         <input type="text" placeholder="Search" [(ngModel)]="searchTermAvailable"
-                                            (ngModelChange)="filterAvailableList()">
+                                            (input)="filterAvailableList()">
                                     </div>
                                     <div class="table1 mb-3">
                                         <p style="color: white;">AVAILABLE - {{filteredAvailableList.length}}</p>
-                                        <div class="row inp" >
-                                            <div class="col-12 example-container" style="overflow-x: hidden;overflow-y: hidden;">
+                                        <div class="row inp">
+                                            <div class="col-12 example-container"
+                                                style="overflow-x: hidden;overflow-y: hidden;">
                                                 <div cdkDropList #todoList="cdkDropList"
                                                     [cdkDropListData]="filteredAvailableList"
                                                     [cdkDropListConnectedTo]="[doneList]" class="example-list"
@@ -127,7 +127,7 @@
                                                     <div *ngFor="let item of filteredAvailableList" class="example-box"
                                                         (click)="toggleSelection(item)" cdkDrag [cdkDragData]="item"
                                                         [class.selected]="isSelected(item)">
-                                                        {{ item.name }}-({{item.id}})
+                                                        {{ item.modelno}}
                                                     </div>
                                                 </div>
                                             </div>
@@ -147,15 +147,15 @@
                             </div>
                             <div class="col-lg-5 col-12">
                                 <div class="card">
-
                                     <div class="input_box">
                                         <input type="text" placeholder="Search" [(ngModel)]="searchTermAdded"
-                                            (ngModelChange)="filterAddedList()">
+                                            (input)="filterAddedList()">
                                     </div>
                                     <div class="table2 mb-3">
                                         <p style="color: white;">ALLOCATED- {{filteredAddedList.length}}</p>
-                                        <div class="row inp" >
-                                            <div class="col-12 example-container" style="overflow-x: hidden;overflow-y: hidden;">
+                                        <div class="row inp">
+                                            <div class="col-12 example-container"
+                                                style="overflow-x: hidden;overflow-y: hidden;">
                                                 <div cdkDropList #doneList="cdkDropList"
                                                     [cdkDropListData]="filteredAddedList"
                                                     [cdkDropListConnectedTo]="[todoList]" class="example-list"
@@ -163,7 +163,7 @@
                                                     <div *ngFor="let item of filteredAddedList" class="example-box"
                                                         (click)="toggleSelection(item)" cdkDrag [cdkDragData]="item"
                                                         [class.selected]="isSelected(item)">
-                                                        {{ item.name }}-({{item.id}})
+                                                        {{ item.model_no }}
                                                     </div>
                                                 </div>
                                             </div>
@@ -171,7 +171,6 @@
                                     </div>
                                 </div>
                             </div>
-
                         </div>
                         <div class="col-12 d-flex justify-content-center align-item-center">
                             <button type="button" class="btn"

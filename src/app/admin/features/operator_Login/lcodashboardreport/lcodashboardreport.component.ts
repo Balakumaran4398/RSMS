@@ -191,10 +191,10 @@ export class LcodashboardreportComponent implements OnInit {
       .subscribe((res: any) => {
         if (this.type == 5 || this.type == 4) {
           console.log('type ', this.type, res);
-     
+
 
           // Extract only the required fields
-          this.rowData = res.flatMap((customer: any) => 
+          this.rowData = res.flatMap((customer: any) =>
             customer.content.map((data: any) => ({
               customeranme: data.customeranme,
               address: data.address,
@@ -397,7 +397,7 @@ export class LcodashboardreportComponent implements OnInit {
           }
         },
         // { headerName: 'SUBSCRIBER ID', field: 'subid', Flex: 1, width: 150, },
-        { headerName: 'SUBSCRIBER NAME', field: 'customeranme',  cellStyle: { textAlign: 'center', color: 'green' }, width: 300, },
+        { headerName: 'SUBSCRIBER NAME', field: 'customeranme', cellStyle: { textAlign: 'center', color: 'green' }, width: 300, },
         { headerName: 'ADDRESS ', field: 'address', cellStyle: { textAlign: 'center', }, width: 300, },
         // { headerName: 'AREA NAME', field: 'areaname', width: 220, },
         { headerName: 'MOBILE NUMBER	', field: 'mobileno', width: 300, },
@@ -790,7 +790,8 @@ export class LcodashboardreportComponent implements OnInit {
   }
 
   onSubscriberStreetLCOChange() {
-    // this.rowData = [];
+    this.rowData1 = [];
+    this.rowData = [];
     console.log('1111111');
 
     console.log(this.streetid);
@@ -798,7 +799,7 @@ export class LcodashboardreportComponent implements OnInit {
       // this.userservice.getLcochangeSubscriberList(this.role, this.username, this.lco, this.area, this.street).subscribe(
       (response: HttpResponse<any[]>) => {
         if (response.status === 200) {
-          this.rowData1 = response.body;
+          this.rowData = response.body;
           console.log(this.rowData1);
           // this.swal.Success_200();
         } else if (response.status === 204) {
@@ -818,7 +819,7 @@ export class LcodashboardreportComponent implements OnInit {
   }
   getLcobyAreaid(lco: any) {
     this.rowData1 = [];
-    // this.rowData = [];
+    this.rowData = [];
     if (lco) {
       this.userService.getAreaListByOperatorid(this.role, this.username, lco)
         .subscribe((data: any) => {
@@ -836,7 +837,6 @@ export class LcodashboardreportComponent implements OnInit {
     this.userService.getAreaChangeSubscriberList(this.role, this.username, lco,).subscribe(
       // this.userService.getLcochangeSubscriberList(this.role, this.username, lco, 0, 0).subscribe(
       (response: HttpResponse<any[]>) => {
-
         if (response.status === 200) {
           // this.updateColumnDefs(this.selectedTab);
           this.rowData1 = response.body;

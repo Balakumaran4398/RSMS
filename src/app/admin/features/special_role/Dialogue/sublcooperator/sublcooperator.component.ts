@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute } from '@angular/router';
 import { BaseService } from 'src/app/_core/service/base.service';
@@ -7,6 +7,8 @@ import { SwalService } from 'src/app/_core/service/swal.service';
 import { SublcooperatordialogueComponent } from '../sublcooperatordialogue/sublcooperatordialogue.component';
 import { AddednotaddedComponent } from '../addednotadded/addednotadded.component';
 import { DistributordiscountComponent } from '../../../operator_Login/Dialog/distributordiscount/distributordiscount.component';
+import { PageEvent } from '@angular/material/paginator';
+import { OperatordialogueComponent } from '../../../channel_setting/_Dialogue/operator/operatordialogue/operatordialogue.component';
 
 @Component({
   selector: 'app-sublcooperator',
@@ -37,7 +39,19 @@ export class SublcooperatorComponent implements OnInit {
   hasSelectedRows: boolean = true;
   rowData: any[] = [];
   public rowSelection: any = "multiple";
-  constructor(private route: ActivatedRoute, public dialog: MatDialog, private userservice: BaseService, private storageservice: StorageService, private swal: SwalService) {
+
+// ------------------------------sublco grid----------------------
+operator_details: any = [];
+pagedOperators: any = [];
+pageSize = 10;
+pageIndex = 0;
+totalLength = 0;
+paginatedData: any;
+dashboardDetails: any;
+selectedOperator: any;
+originalPagedOperators: any[] = [];
+
+  constructor(private route: ActivatedRoute, public dialog: MatDialog, private userservice: BaseService, private storageservice: StorageService,private cdr: ChangeDetectorRef, private swal: SwalService) {
     this.role = storageservice.getUserRole();
     this.username = storageservice.getUsername();
     // console.log(route);
@@ -199,7 +213,6 @@ export class SublcooperatorComponent implements OnInit {
     if (this.gridApi) {
       const selectedRows = this.gridApi.getSelectedRows();
       console.log('selectedRows', selectedRows);
-
       this.isAnyRowSelected = selectedRows.length > 0;
       this.selectedIds = selectedRows.map((e: any) => e.retailerId);
       console.log(this.selectedIds);
@@ -217,6 +230,67 @@ export class SublcooperatorComponent implements OnInit {
     })
   }
 
+// ----------------------------------------sublco grid ------------------------------
+ onPageChange(event: PageEvent): void {
+    this.cdr.detectChanges();
+    this.pageSize = event.pageSize;
+    this.pageIndex = event.pageIndex;
+    this.updatePageData();
+  }
+
+  updatePageData() {
+    this.cdr.detectChanges();
+    const startIndex = this.pageIndex * this.pageSize;
+    this.pagedOperators = this.operator_details.slice(startIndex, startIndex + this.pageSize);
+  }
+   onoperatorchange(operator: any): void {
+    this.selectedOperator = operator;
+    this.operatorid = operator.value;
+
+    if (operator.value === 0) {
+      this.pagedOperators = [...this.originalPagedOperators];
+    } else {
+      this.pagedOperators = this.originalPagedOperators.filter(op => op.operatorid === this.operatorid);
+    }
+
+    console.log('Filtered Operators:', this.pagedOperators);
+
+  }
+  operatorDeatils(event: any) {
+    console.log(event);
+    this.swal.Loading();
+    this.userservice.OperatorDetails(this.role, this.username, this.operatorid).subscribe(
+      (data: any) => {
+        this.operator_details = data;
+        this.dashboardDetails = data.map((item: any) => item.list);
+        this.totalLength = data.length;
+        // this.pagedOperators = data;
+        if (!this.originalPagedOperators || this.originalPagedOperators.length === 0) {
+          this.originalPagedOperators = [...data];
+        }
+        // this.originalPagedOperators = [...data]; 
+        this.pagedOperators = [...data];
+        this.updatePageData();
+        this.swal.Close();
+      });
+  }
+    openDialog(type: string, operatorid: any): void {
+      const detailsList = this.operator_details.find((op: any) => op.operatorid === operatorid);
+      console.log(detailsList);
+      console.log(detailsList.operatorname);
+  
+      let dialogData = { type: type, detailsList: this.operator_details, operatorid: detailsList.operatorid, operatorname: detailsList.operatorname, };
+      console.log(dialogData);
+      const dialogRef = this.dialog.open(OperatordialogueComponent, {
+        width: '500px',
+        panelClass: 'custom-dialog-container',
+        data: dialogData,
+  
+      });
+    }
+
+    
+// ---------------------------------------------------------------------------------------------------------------
   opendialogue(type: any, data: any) {
     let width = '800px';
     if (type === 'createsublco') {

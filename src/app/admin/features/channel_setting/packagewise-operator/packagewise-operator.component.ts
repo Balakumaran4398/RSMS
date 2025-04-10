@@ -27,7 +27,7 @@ export class PackagewiseOperatorComponent implements OnDestroy {
   filterTerm: string = '';
 
   allocated: any = [];
-  todo: any = []; 
+  todo: any = [];
   done: any[] = [];
   containerData: any;
   productId: string = '';
@@ -255,7 +255,6 @@ export class PackagewiseOperatorComponent implements OnDestroy {
       if (val == 1) {
         data = event.previousContainer.data;
         this.todo = event.previousContainer.data;
-
       } else if (val == 2) {
         data = event.container.data;
         this.allocated = event.container.data;
@@ -426,7 +425,7 @@ export class PackagewiseOperatorComponent implements OnDestroy {
         Swal.showLoading(null);
       }
     });
-    this.userservice.ProductListForOperator_allocate_to_notallocate(this.role, this.username, this.selectedProductTypeId, selectedProductId,finalOperatorId).subscribe(
+    this.userservice.ProductListForOperator_allocate_to_notallocate(this.role, this.username, this.selectedProductTypeId, selectedProductId, finalOperatorId).subscribe(
       (res: any) => {
         Swal.fire({
           icon: 'success',

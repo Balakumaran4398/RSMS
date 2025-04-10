@@ -233,12 +233,10 @@ export class ChipidModelComponent implements OnInit {
   getLCOModelList(value: any) {
     this.userService.getOperatorWiseModelList(this.role, this.username, value).subscribe((data: any) => {
       console.log(data);
-      this.allocated = data.available || [];
-      this.todo = data.allocatedmodel || [];
+      this.allocated = data.allocatedmodel || [];
+      this.todo = data.available || [];
       this.filteredAvailableList = [...this.todo];
       this.filteredAddedList = [...this.allocated];
-      console.log(this.todo);
-      console.log(this.allocated);
     })
   }
   submit() {
@@ -292,22 +290,26 @@ export class ChipidModelComponent implements OnInit {
       if (val == 1) {
         data = event.previousContainer.data;
         this.todo = event.previousContainer.data;
-
+        console.log('1111111111', this.todo);
       } else if (val == 2) {
         data = event.container.data;
         this.allocated = event.container.data;
+        console.log('22222222', this.allocated);
       }
     } else {
+      console.log(event);
       transferArrayItem(event.previousContainer.data, event.container.data, event.previousIndex, event.currentIndex);
       if (val == 1) {
         data = event.previousContainer.data;
         this.todo = event.previousContainer.data;
+        console.log('3333333333', this.todo);
       } else if (val == 2) {
         data = event.container.data;
         this.allocated = event.container.data;
+        console.log('444444', this.allocated);
       }
     }
-    this.containeroperatorid = data?.map((item: any) => item.operatorid);
+    this.containeroperatorid = data?.map((item: any) => item.modelno || item.model_no);
     console.log(this.containeroperatorid);
   }
 
@@ -324,26 +326,27 @@ export class ChipidModelComponent implements OnInit {
   }
   filterAddedList(): void {
     const searchTerm = this.searchTermAdded.toLowerCase();
+    console.log('1111111111', searchTerm);
+    console.log(this.filteredAddedList);
+
     this.filteredAddedList = this.allocated.filter((item: any) =>
-      item.operatorname.toLowerCase().includes(searchTerm)
+      item.modelno.toString().toLowerCase().includes(searchTerm)
     );
     this.cdr.detectChanges();
     console.log(this.filteredAddedList);
-
   }
 
   filterAvailableList(): void {
     this.cdr.detectChanges();
     const searchTerm = this.searchTermAvailable.toLowerCase();
+    console.log('222222222', searchTerm);
+    console.log(this.filteredAvailableList);
     this.filteredAvailableList = this.todo.filter((item: any) =>
-      item.operatorname.toLowerCase().includes(searchTerm)
+      item.modelno.toString().toLowerCase().includes(searchTerm)
     );
     console.log(this.filteredAvailableList);
-
   }
-  save() {
 
-  }
 
   moveSelectedRight_BouquetItems(direction: 'left' | 'right') {
     const itemsToMove: any[] = [];
@@ -357,12 +360,12 @@ export class ChipidModelComponent implements OnInit {
         }
       });
       this.containerData = this.allocated.map((item: any) => ({
-        operatorname: item.operatorname,
-        operatorid: item.operatorid
+        operatorname: item.modelno,
+        operatorid: item.id
       }));
       console.log(this.containerData);
 
-      this.containeroperatorid = this.containerData.map((item: any) => item.operatorid);
+      this.containeroperatorid = this.containerData.map((item: any) => item.operatorname);
       console.log(this.containeroperatorid);
 
     } else if (direction === 'left') {
@@ -374,12 +377,12 @@ export class ChipidModelComponent implements OnInit {
           itemsToMove.push(item);
         }
         this.containerData = this.todo.map((item: any) => ({
-          operatorname: item.operatorname,
-          operatorid: item.operatorid
+          operatorname: item.modelno,
+          operatorid: item.id
         }));
         console.log(this.containerData);
 
-        this.containeroperatorid = this.containerData.map((item: any) => item.operatorid);
+        this.containeroperatorid = this.containerData.map((item: any) => item.operatorname);
         console.log(this.containeroperatorid);
 
       });
@@ -412,18 +415,18 @@ export class ChipidModelComponent implements OnInit {
 
         }
         this.containerData = this.allocated.map((item: any) => ({
-          operatorname: item.operatorname,
-          operatorid: item.operatorid
+          operatorname: item.model_no,
+          operatorid: item.id
         }));
         console.log(this.containerData);
 
-        this.containeroperatorid = this.containerData.map((item: any) => item.operatorid);
+        this.containeroperatorid = this.containerData.map((item: any) => item.operatorname);
         console.log(this.containeroperatorid);
       });
     }
     this.containerData = this.todo.map((item: any) => ({
-      operatorname: item.operatorname,
-      operatorid: item.operatorid
+      operatorname: item.model_no || item.mobileno,
+      operatorid: item.id
     }));
     // this.containeroperatorid = this.containerData.map((item: any) => item.operatorid);
     console.log(this.containeroperatorid);
@@ -437,18 +440,20 @@ export class ChipidModelComponent implements OnInit {
       this.allocated.push(...this.todo);
       this.todo = [];
       this.containerData = this.allocated.map((item: any) => ({
-        operatorname: item.operatorname,
-        operatorid: item.operatorid
+        operatorname: item.modelno,
+        operatorid: item.id
       }));
-      this.containeroperatorid = this.containerData.map((item: any) => item.operatorid);
+      this.containeroperatorid = this.containerData.map((item: any) => item.operatorname);
+      console.log(this.containeroperatorid);
+
     } else if (direction === 'left') {
       this.todo.push(...this.allocated);
       this.allocated = [];
       this.containerData = this.allocated.map((item: any) => ({
-        operatorname: item.operatorname,
-        operatorid: item.operatorid
+        operatorname: item.model_no,
+        operatorid: item.id
       }));
-      this.containeroperatorid = this.containerData.map((item: any) => item.operatorid);
+      this.containeroperatorid = this.containerData.map((item: any) => item.operatorname);
       console.log(this.containeroperatorid);
 
     }
@@ -458,7 +463,15 @@ export class ChipidModelComponent implements OnInit {
     console.log('Todo List:', this.todo);
     console.log('Allocated List:', this.allocated);
   }
-
+  save() {
+    console.log('ewrrrrrr322', this.containeroperatorid);
+    this.userService.getUpdateModelForOperator(this.role, this.username, this.opName, this.containeroperatorid)
+      .subscribe((res: any) => {
+        // this.swal.success(res?.message);
+      }, (err) => {
+        this.swal.Error(err?.error?.message);
+      });
+  }
   columnDefs: ColDef[] = [
     { headerName: "S.No", lockPosition: true, valueGetter: 'node.rowIndex+1', width: 100, filter: false },
     { headerName: 'MODEL NAME', field: 'model', width: 250, },

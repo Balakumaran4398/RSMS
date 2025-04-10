@@ -96,7 +96,27 @@ h1 {
     padding: 10px;
     border-radius: 5px;
 }
+.example-list {
+    width: 100%;
+    min-height: 100px;
+    border: 1px solid #ccc;
+    background: #f9f9f9;
+    display: flex;
+    flex-direction: column;
+    padding: 10px;
+}
 
+.example-box {
+    padding: 10px;
+    margin: 5px;
+    border: 1px solid #ccc;
+    background: #fff;
+    cursor: move;
+}
+
+.example-box.selected {
+    background-color: #e861ec;
+}
 
 
 .btn1 {
