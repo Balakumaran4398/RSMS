@@ -10,12 +10,12 @@
         <div class="d-block justify-content-center align-items-center" style="width: 81%;top:5%">
 
             <!-- --------------------NORMAL---------------- -->
-            <!-- <img *ngIf="msoLogo" [src]="msoLogo" alt="MSO Logo"
-                style="width: 100px; height: auto;display:flex;margin: auto 40px;"> -->
+            <img *ngIf="msoLogo" [src]="msoLogo" alt="MSO Logo"
+                style="width: 100px; height: auto;display:flex;margin: auto 40px;">
 
             <!-- ----------------4K--------- -->
-            <img *ngIf="msoLogo" [src]="msoLogo" alt="MSO Logo"
-                style="width: 54px; height: auto;display:flex;margin: auto 60px;">
+            <!-- <img *ngIf="msoLogo" [src]="msoLogo" alt="MSO Logo"
+                style="width: 54px; height: auto;display:flex;margin: auto 60px;"> -->
 
             <!-- ----------------------Normal--------------- -->
             <h5 class="brand-text mb-1" style="margin: 5px 30px;color: var(--primary-color);"
@@ -414,7 +414,7 @@
         </li>
 
         <!-- ---------------------------------------vc----------------- -->
-        <li *ngIf="isUser">
+        <!-- <li *ngIf="isUser">
             <a> <mat-icon class="icon">control_camera</mat-icon>VC/STB Master <i
                     class='bx bx-chevron-right icon-right'></i></a>
             <ul class="side-dropdown">
@@ -422,10 +422,10 @@
                             style="margin-right: 0px;"></i>Chip ID and Model
                     </a>
                 </li>
-                <!-- <li><a (click)="navgetToUrl('/stb_bill');setActiveLinkTab($event)"><i class="fa fa-fw fa-recycle icon "
-                            style="margin-right: 0px;"></i>Smartcard Change</a> </li> -->
+                <li><a (click)="navgetToUrl('/stb_bill');setActiveLinkTab($event)"><i class="fa fa-fw fa-recycle icon "
+                            style="margin-right: 0px;"></i>Smartcard Change</a> </li>
             </ul>
-        </li>
+        </li> -->
         <!-- ------------------------------------------------------------- -->
 
         <li *ngIf="isOperator"><a (click)="navgetToUrl('/forcemessage');setActiveLinkTab($event)" class="nav-link">

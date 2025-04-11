@@ -209,8 +209,6 @@ export class LcodashboardreportComponent implements OnInit {
           this.rowData = res;
         }
         console.log(this.rowData);
-
-        // this.swal.success(res?.message);
         this.swal.Close();
       }, (err) => {
         this.swal.Error(err?.error?.message);
@@ -517,6 +515,7 @@ export class LcodashboardreportComponent implements OnInit {
         //  { headerName: "S.No", valueGetter: 'node.rowIndex+1', lockPosition: true, headerCheckboxSelection: true, checkboxSelection: true, width: 100, filter: false },
         // { headerName: "SMARTCARD", field: 'smartcard', width: 250 },
         { headerName: "BOXID", field: 'boxid', width: 200 },
+        { headerName: "CORTON BOX", field: 'cartonbox', width: 200 },
         { headerName: "SUBSCRIBER NAME	", field: 'customername', width: 250 },
         { headerName: "MOBILE NO", field: 'mobileno', width: 250 },
         { headerName: "AREA NAME", field: 'areaname', width: 250 },

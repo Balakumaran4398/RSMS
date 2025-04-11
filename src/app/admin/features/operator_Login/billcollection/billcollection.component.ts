@@ -53,17 +53,20 @@ export class BillcollectionComponent implements OnInit {
     this.username = storageService.getUsername();
     console.log(operator);
 
-    this.subLcoDetails = operator?.lcoDeatails;
-    this.retailerId = this.subLcoDetails?.retailerid;
-    this.retailerName = this.subLcoDetails?.retailername;
-    this.mobilenumber = this.subLcoDetails?.contactnumber;
-    this.address = this.subLcoDetails?.address;
-    this.balance = this.subLcoDetails?.balance;
+    // this.subLcoDetails = operator?.lcoDeatails;
+    // this.retailerId = operator?.retailerId;
+    // console.log(this.retailerId);
+    // this.retailerName = this.subLcoDetails?.retailername;
+    // this.mobilenumber = this.subLcoDetails?.contactnumber;
+    // this.address = this.subLcoDetails?.address;
+    // this.balance = this.subLcoDetails?.balance;
   }
 
   ngOnInit(): void {
     if (this.role == 'ROLE_OPERATOR') {
       this.operatorIdoperatorId();
+    } else if (this.role == 'ROLE_SUBLCO') {
+      this.SubLCOIdoperatorId()
     }
   }
   getFromDate(event: any) {
@@ -168,7 +171,6 @@ export class BillcollectionComponent implements OnInit {
     //       (error) => this.handleError(error)
     //     );
     // }
-
   }
 
   operatorIdoperatorId() {
@@ -179,25 +181,44 @@ export class BillcollectionComponent implements OnInit {
       console.log(this.lcoId);
     })
   }
+
+  SubLCOIdoperatorId() {
+    this.userService.getSublcoDetails(this.role, this.username).subscribe((data) => {
+      console.log(data);
+      this.lcoDeatails = data;
+      this.retailerId = this.lcoDeatails?.operatorid;
+      console.log(this.retailerId);
+    })
+  }
+
   total_paid: any;
   total_unpaid: any;
   total_recharge: any;
   total_excess: any;
   getreport() {
-    console.log(this.lcoId);
-    console.log(this.bill_type);
-    this.userService.getbillCollectionReport(this.role, this.username, this.lcoId || this.retailerId, this.bill_type || 0, this.useragent, this.fromdate, this.todate, this.searchname || null).subscribe((data: any) => {
-      // this.rowData = data[0].list[0];
-      this.rowData = data[0].list;
-      this.total_paid = data[0].total_paid;
-      this.total_unpaid = data[0].total_unpaid;
-      this.total_recharge = data[0].total_recharge;
-      this.total_excess = data[0].total_excess;
-    }, (err) => {
-      this.swal.Error(err?.error?.message || err?.error);
-    });
-    this.rowData = [];
-    // this.useragent = [], this.fromdate = [], this.todate = [], this.searchname = []
+    if (this.role == 'ROLE_OPERATOR') {
+      this.userService.getbillCollectionReport(this.role, this.username, this.lcoId, this.bill_type || 0, this.useragent, this.fromdate, this.todate, this.searchname || null).subscribe((data: any) => {
+        this.rowData = data[0].list;
+        this.total_paid = data[0].total_paid;
+        this.total_unpaid = data[0].total_unpaid;
+        this.total_recharge = data[0].total_recharge;
+        this.total_excess = data[0].total_excess;
+      }, (err) => {
+        this.swal.Error(err?.error?.message || err?.error);
+      });
+      this.rowData = [];
+    } else if (this.role == 'ROLE_SUBLCO') {
+      this.userService.getbillCollectionReport(this.role, this.username, this.retailerId, this.bill_type || 0, 4, this.fromdate, this.todate, this.searchname || null).subscribe((data: any) => {
+        this.rowData = data[0].list;
+        this.total_paid = data[0].total_paid;
+        this.total_unpaid = data[0].total_unpaid;
+        this.total_recharge = data[0].total_recharge;
+        this.total_excess = data[0].total_excess;
+      }, (err) => {
+        this.swal.Error(err?.error?.message || err?.error);
+      });
+      this.rowData = [];
+    }
   }
 
 
@@ -211,8 +232,8 @@ export class BillcollectionComponent implements OnInit {
       {
         headerName: "PAY OPTION", field: 'productname', width: 100, cellStyle: { textAlign: 'left' },
         cellRenderer: (params: any) => {
-          const isActive = params.data.extra_amount === '0' || params.data.new_balance >= params.data.paid_amount;
-
+          // const isActive = params.data.extra_amount === '0' || params.data.new_balance >= params.data.paid_amount;
+          const isActive = params.data.paid_amount === '0' || params.data.extra_amount <= '0';
           const payButton = document.createElement('button');
           payButton.innerHTML = '<img src="/assets/images/icons/Pay2.png" style="width:70px">';
           payButton.style.backgroundColor = 'transparent';
@@ -220,20 +241,17 @@ export class BillcollectionComponent implements OnInit {
           payButton.style.border = 'none';
           payButton.style.cursor = 'pointer';
           payButton.style.marginRight = '6px';
-          payButton.addEventListener('click', () => {
-            this.openEditDialog(params.data);
-          });
+          // payButton.addEventListener('click', () => {
+          //   this.openEditDialog(params.data, 'pay_option');
+          // });
           if (!isActive) {
-            payButton.disabled = true;
             payButton.style.opacity = '0.5';
             payButton.title = 'Cannot pay, status is Deactive';
-
           } else {
             payButton.addEventListener('click', () => {
-              this.openEditDialog(params.data);
+              this.openEditDialog(params.data, 'pay_option');
             });
             payButton.title = 'Pay Now, status is Active';
-
           }
           const div = document.createElement('div');
           div.appendChild(payButton);
@@ -251,6 +269,39 @@ export class BillcollectionComponent implements OnInit {
           }
         },
 
+        cellRenderer: (params: any) => {
+          return `<a href="javascript:void(0)" style="color: blue; text-decoration: none;color:#0d6efd">
+                    ${params.value}
+                  </a>`;
+        },
+        onCellClicked: (params: any) => {
+          const subid = params.data.id;
+          const smartcard = params.data.smartcard;
+          console.log('Sub ID:', subid);
+          console.log('Smartcard:', smartcard);
+          this.openEditDialog(params.data, 'smartcardDetails')
+
+        }
+      },
+      {
+        headerName: "Edit", width: 100, cellStyle: { textAlign: 'left' },
+        cellRenderer: (params: any) => {
+          const payButton = document.createElement('button');
+          payButton.innerHTML = ' <img src="/assets/images/icons/EditLTP.png" style="width:70px">';
+          payButton.style.backgroundColor = 'transparent';
+          payButton.style.color = 'rgb(2 85 13)';
+          payButton.style.border = 'none';
+          payButton.title = 'Edit the Customer';
+          payButton.style.cursor = 'pointer';
+          payButton.style.marginRight = '6px';
+          payButton.addEventListener('click', () => {
+            this.openEditDialog(params.data, 'pay_edit');
+          });
+
+          const div = document.createElement('div');
+          div.appendChild(payButton);
+          return div;
+        },
       },
       { headerName: "SUBSCRIBER NAME", field: 'customer_name', width: 180 },
       {
@@ -260,8 +311,7 @@ export class BillcollectionComponent implements OnInit {
         headerName: "UN PAID", field: 'new_balance', width: 120,
       },
       {
-        headerName: "EXCESS PAID", field: 'extra_amount',
-        width: 150,
+        headerName: "EXCESS PAID", field: 'extra_amount', width: 150,
       },
       {
         headerName: "LAST COLLECTION DATE", field: 'collection_date', width: 200,
@@ -274,20 +324,32 @@ export class BillcollectionComponent implements OnInit {
       },
       {
         headerName: "STATUS", field: 'expiry_status', width: 170,
+        cellRenderer: (params: any) => {
+          if (params.value === 'Expired') {
+            return `<span style="color: red;">${params.value}</span>`;
+          } else if (params.value === 'Active') {
+            return `<span style="color: green;">${params.value}</span>`;
+          } else {
+            return `<span>${params.value}</span>`;
+          }
+        }
       },
 
     ]
   }
 
-  openEditDialog(data: any): void {
+  openEditDialog(data: any, type: any): void {
     console.log(data);
-    let dialalogData = { data: data, lcoid: this.lcoId, userarant: this.useragent }
+    let dialogWidth = '500px'; // default
+
+    if (type === 'smartcardDetails') {
+      dialogWidth = '1000px';
+    }
+    let dialalogData = { data: data, lcoid: this.lcoId, userarant: this.useragent, type: type }
     const dialogRef = this.dialog.open(LcoSmartcardDialogComponent, {
-      width: '500px',
+      width: dialogWidth,
       data: dialalogData
-
     });
-
     dialogRef.afterClosed().subscribe(result => {
       console.log('The dialog was closed');
     });

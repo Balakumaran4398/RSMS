@@ -20,25 +20,7 @@ export class SubscriberDetailsComponent implements OnInit {
   sub_list: any;
   searchTerm: string = '';
   gridApi: any;
-  // gridOptions = {
-  //   defaultColDef: {
-  //     sortable: true,
-  //     resizable: true,
-  //     filter: true,
-  //     floatingFilter: true,
-  //     comparator: (valueA: any, valueB: any) => {
-  //       const normalizedA = valueA ? valueA.toString().trim().toLowerCase() : '';
-  //       const normalizedB = valueB ? valueB.toString().trim().toLowerCase() : '';
-  //       if (normalizedA < normalizedB) return -1;
-  //       if (normalizedA > normalizedB) return 1;
-  //       return 0;
-  //     },
-  //   },
-  //   paginationPageSize: 15,
-  //   pagination: true,
-  // }
-
-  gridOptions = {
+   gridOptions = {
     defaultColDef: {
       sortable: true,
       resizable: true,

@@ -134,10 +134,10 @@ export class ChipidModelComponent implements OnInit {
     this.selectedOperator = selectedOperator;
     this.selectedLcoName = selectedOperator.value;
     this.getLCOModelList(this.selectedOperator);
-
   }
   getsmartcardList(value: any) {
     console.log(value);
+    this.showDropdown = true;
     this.userService.getmodelSearch(this.role, this.username, value).subscribe(
       (data: any) => {
         if (!data || Object.keys(data).length === 0) {
@@ -155,7 +155,6 @@ export class ChipidModelComponent implements OnInit {
           return 0;
         });
         console.log(this.searchName);
-
         if (this.subscriberList.length === 0) {
           console.log('No matching data after sorting');
           Swal.fire({
@@ -165,7 +164,6 @@ export class ChipidModelComponent implements OnInit {
             confirmButtonText: 'OK'
           });
         }
-
         console.log(this.subscriberList);
       },
       (error) => {
@@ -189,7 +187,6 @@ export class ChipidModelComponent implements OnInit {
       });
       return;
     }
-
     this.userService.getModelSearchDetails(this.role, this.username, searchName).subscribe(
       (data: any) => {
         console.log('Model search details:', data);
@@ -215,8 +212,8 @@ export class ChipidModelComponent implements OnInit {
     console.log(lcomember);
     this.searchName = lcomember.value;
     console.log(this.searchName);
-    this.showDropdown = false;
     this.getModelSearchDetails(this.searchName);
+    this.showDropdown = false;
   }
   getModelList() {
     this.userService.getStbModlelList(this.role, this.username).subscribe((data: any) => {
@@ -309,7 +306,7 @@ export class ChipidModelComponent implements OnInit {
         console.log('444444', this.allocated);
       }
     }
-    this.containeroperatorid = data?.map((item: any) => item.modelno || item.model_no);
+    this.containeroperatorid = data?.map((item: any) => item.modelno);
     console.log(this.containeroperatorid);
   }
 
@@ -415,7 +412,7 @@ export class ChipidModelComponent implements OnInit {
 
         }
         this.containerData = this.allocated.map((item: any) => ({
-          operatorname: item.model_no,
+          operatorname: item.modelno,
           operatorid: item.id
         }));
         console.log(this.containerData);
@@ -425,7 +422,7 @@ export class ChipidModelComponent implements OnInit {
       });
     }
     this.containerData = this.todo.map((item: any) => ({
-      operatorname: item.model_no || item.mobileno,
+      operatorname: item.modelno,
       operatorid: item.id
     }));
     // this.containeroperatorid = this.containerData.map((item: any) => item.operatorid);
@@ -450,7 +447,7 @@ export class ChipidModelComponent implements OnInit {
       this.todo.push(...this.allocated);
       this.allocated = [];
       this.containerData = this.allocated.map((item: any) => ({
-        operatorname: item.model_no,
+        operatorname: item.modelno,
         operatorid: item.id
       }));
       this.containeroperatorid = this.containerData.map((item: any) => item.operatorname);

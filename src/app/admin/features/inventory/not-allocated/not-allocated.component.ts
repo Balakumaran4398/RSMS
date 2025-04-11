@@ -28,25 +28,6 @@ export class NotAllocatedComponent implements OnInit {
   rows: any[] = [];
   cas: any;
   public rowSelection: any = "multiple";
-  // gridOptions = {
-  //   defaultColDef: {
-  //     sortable: true,
-  //     resizable: true,
-  //     filter: true,
-  //     floatingFilter: true,
-  //     width: 250,
-  //     comparator: (valueA: any, valueB: any) => {
-  //       const normalizedA = valueA ? valueA.toString().trim().toLowerCase() : '';
-  //       const normalizedB = valueB ? valueB.toString().trim().toLowerCase() : '';
-  //       if (normalizedA < normalizedB) return -1;
-  //       if (normalizedA > normalizedB) return 1;
-  //       return 0;
-  //     },
-  //   },
-  //   paginationPageSize: 10,
-  //   pagination: true,
-  // }
-
   gridOptions = {
     defaultColDef: {
       sortable: true,
@@ -154,37 +135,6 @@ export class NotAllocatedComponent implements OnInit {
 
   ]
 
-  // onSelectionChanged() {
-  //   if (this.gridApi) {
-  //     // const selectedRows = this.gridApi.getSelectedRows();
-  //     const selectedRows =this.gridApi.getRenderedNodes().map((node:any) => node.data);
-  //     console.log('SELECTED ROWS',selectedRows);
-
-  //     this.isAnyRowSelected = selectedRows.length > 0;
-  //     this.selectedIds = selectedRows.map((e: any) => e.id);
-  //     this.selectsmartcard = selectedRows.map((e: any) => e.smartcard);
-  //     this.selectedtypes = selectedRows.map((e: any) => e.isactive);
-  //     this.selectedisEmi = selectedRows.map((e: any) => e.isemi);
-  //   }
-  // }
-
-  // onSelectionChanged(event: any) {
-  //   if (this.gridApi) {
-  //     let selectedRows: any[] = [];
-  //     this.gridApi.forEachNodeAfterFilter((rowNode: any) => {
-  //       if (rowNode.isSelected()) {
-  //         selectedRows.push(rowNode.data);
-  //       }
-  //     });
-  //     // console.log("Filtered & Selected Rows:", selectedRows);
-  //     if (selectedRows.length === 0) {
-  //       this.gridApi.deselectAll();
-  //     }
-  //     // console.log("Final Selected Rows:", selectedRows);
-  //     this.updateSelectedRows(selectedRows);
-  //   }
-  // }
-
   selectedIdsSet = new Set<number>();
   onSelectionChanged(event: any) {
     if (this.gridApi) {
@@ -209,13 +159,9 @@ export class NotAllocatedComponent implements OnInit {
   updateSelectedRows(selectedRows: any[]) {
     this.isAnyRowSelected = selectedRows.length > 0;
     this.selectedIds = selectedRows.map((e: any) => e.id);
-    // this.selectedIds = Array.from(this.selectedIdsSet); // Convert Set to array
-    // this.selectsmartcard = selectedRows.map((e: any) => e.smartcard);
-    this.selectsmartcard = Array.from(this.selectedIdsSet);
     this.selectedtypes = selectedRows.map((e: any) => e.isactive);
     this.selectedisEmi = selectedRows.map((e: any) => e.isemi);
-
-    // console.log("Updated Selected Rows:", selectedRows);
+    this.selectsmartcard = selectedRows.map((e: any) => e.smartcard);
     console.log("Updated Selected Rows:", selectedRows);
     console.log("Persistently Selected IDs:", this.selectsmartcard);
   }

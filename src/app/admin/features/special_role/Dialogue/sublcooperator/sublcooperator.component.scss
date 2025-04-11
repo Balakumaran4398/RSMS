@@ -7,6 +7,7 @@
 .display {
     display: flex;
 }
+
 .mobile {
     display: grid;
 }
@@ -113,7 +114,7 @@ p {
     width: auto;
     padding: 10px 3px;
     background-color: rgb(67, 80, 61);
-    
+
 }
 
 .inventory p,
@@ -149,8 +150,27 @@ span {
 
 
 .child-card {
-    gap: 45px;
+    gap: 55px;
     background: #8f9b8f;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1), 0 6px 20px rgba(0, 0, 0, 0.1);
+    padding: 10px;
+    width: auto;
+    justify-content: center;
+    display: flex;
+    align-items: center;
+
+    .col-2 {
+        width: auto;
+        justify-content: center;
+        display: block;
+        align-items: center;
+    }
+}
+
+.child-card1 {
+    gap: 50px;
+    background: #f5f5f5;
     border-radius: 10px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1), 0 6px 20px rgba(0, 0, 0, 0.1);
     padding: 10px;
@@ -226,6 +246,10 @@ span {
     color: #012423;
 }
 
+.vertical i {
+    font-size: 30px;
+}
+
 @media screen and (max-width:760px) {
     .head {
         display: block;
@@ -242,6 +266,26 @@ span {
 
     .grid-container {
         grid-template-columns: 1fr;
+    }
+
+    .child-card1 {
+        gap: 20px;
+    }
+
+    .vertical i {
+        font-size: 20px;
+    }
+
+    .circle {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 20px;
+        height: 20px;
+        color: white;
+        padding: 10px;
+        border-radius: 50%;
+        cursor: pointer;
     }
 }
 
@@ -263,16 +307,35 @@ span {
         gap: 10px
     }
 
+    .child-card1 {
+        gap: 20px;
+    }
+
+    .vertical i {
+        font-size: 20px;
+    }
+
+    .circle {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 30px;
+        height: 30px;
+        color: white;
+        padding: 10px;
+        border-radius: 50%;
+        cursor: pointer;
+    }
 }
 
 .active-text .last1 {
     color: #015013;
-    font-weight: 600;
+    margin-left: 5px;
 }
 
 .deactive-text .last1 {
     color: red;
-    font-weight: 600;
+    margin-left: 5px;
 }
 
 

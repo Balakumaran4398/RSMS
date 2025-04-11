@@ -1,6 +1,6 @@
 <section class="Tab col-12">
     <div class="display tablist justify-content-center align-items-center mb-3 ">
-        <div *nfIf="role !== 'ROLE_SUBLCO'" class="tab mb-2  bttn" [class.active]="selectedTab === 'lco'"
+        <div *ngIf="role !== 'ROLE_SUBLCO'" class="tab mb-2  bttn" [class.active]="selectedTab === 'lco'"
             style="text-align: center;" (click)="selectTab('lco')">
             LCO
         </div>
@@ -8,7 +8,7 @@
             (click)="selectTab('sub_lco')">
             SUB LCO
         </div>
-        <div *nfIf="role !== 'ROLE_SUBLCO'" class="tab mb-2  bttn" [class.active]="selectedTab === 'subscriber'" style="text-align: center;"
+        <div *ngIf="role !== 'ROLE_SUBLCO'" class="tab mb-2  bttn" [class.active]="selectedTab === 'subscriber'" style="text-align: center;"
             (click)="selectTab('subscriber')">
             SUBSCRIBER
         </div>

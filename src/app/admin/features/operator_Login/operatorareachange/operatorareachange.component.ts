@@ -70,7 +70,7 @@ export class OperatorareachangeComponent implements OnInit {
     this.columnDefs = [
       { headerName: "S.No", valueGetter: 'node.rowIndex+1', lockPosition: true, headerCheckboxSelection: true, checkboxSelection: true, width: 100, },
       { headerName: "CUSTOMER NAME", field: 'customername', width: 250 },
-      // { headerName: "FATHER NAME	", field: 'fathername', width: 200 },
+      { headerName: "CORTON BOX", field: 'cartonbox', width: 200 },
       { headerName: "SMARTCARD", field: 'smartcard', width: 250 },
       { headerName: "AREA NAME", field: 'areaname', width: 250 },
       { headerName: "STREET NAME", field: 'streetname', width: 250 },

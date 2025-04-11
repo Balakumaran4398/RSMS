@@ -18,7 +18,7 @@ export class OperatorService implements OnInit {
   constructor(private userService: BaseService, private storageService: StorageService) {
     this.role = storageService.getUserRole();
     console.log(this.role);
-    
+
     this.username = storageService.getUsername();
     // this.operatorIdoperatorId();
     if (this.role == 'ROLE_OPERATOR') {
@@ -41,8 +41,6 @@ export class OperatorService implements OnInit {
   }
   operatorIdoperatorId() {
     console.log('111-------ROLE_OPERATOR');
-    console.log(this.role);
-    console.log(this.username);
 
     this.userService.getOpDetails(this.role, this.username).subscribe((data) => {
       console.log(data);
@@ -55,8 +53,6 @@ export class OperatorService implements OnInit {
   }
   SubLCOIdoperatorId() {
     console.log('222222222-------ROLE_SUBLCO');
-    console.log(this.role);
-    console.log(this.username);
 
     this.userService.getSublcoDetails(this.role, this.username).subscribe((data) => {
       console.log(data);

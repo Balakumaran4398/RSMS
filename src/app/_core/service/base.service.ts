@@ -853,6 +853,10 @@ export class BaseService {
     return this.http.get<any[]>(BASE_URL + "/lcocommission/getDistributorMembershipDetailsByLcogroupid?role=" + role + "&username=" + encodeURIComponent(username) + "&lcogroupid=" + lcogroupid, { observe: 'response' })
   }
 
+  getremoveDistributor(role: any, username: any, distributorid: any, isdistributor: any): Observable<any> {
+    return this.http.get<any[]>(BASE_URL + "/lcocommission/removeDistributor?role=" + role + "&username=" + encodeURIComponent(username) + "&distributorid=" + distributorid + "&isdistributor=" + isdistributor, {})
+  }
+
   // -------------------------------------------LCO MEMBERSHIP FUP----------------------------------
   getOperatorMembershipFUP(role: any, username: any): Observable<HttpResponse<any[]>> {
     return this.http.get<any[]>(BASE_URL + "/lcocommission/getOperatorMembershipFUP?role=" + role + "&username=" + encodeURIComponent(username), { observe: 'response' })
@@ -1788,6 +1792,12 @@ export class BaseService {
   getPrintBillReport(role: any, username: any, id: any): Observable<Blob> {
     return this.http.get(BASE_URL + "/report/getPrintBillReport?role=" + role + "&username=" + encodeURIComponent(username) + "&id=" + id, { responseType: 'blob' });
   }
+  getBillCollectionSmartcardReport(role: any, username: any, operatorid: any, smartcard: any, fromdate: any, todate: any, reporttype: any): Observable<Blob> {
+    return this.http.get(BASE_URL + "/report/getBillCollectionSmartcardReport?role=" + role + "&username=" + encodeURIComponent(username) + "&operatorid=" + operatorid + "&smartcard=" + smartcard + "&fromdate=" + fromdate + "&todate=" + todate + "&reporttype=" + reporttype, { responseType: 'blob' });
+  }
+  getBillCollectionSmartcardReportList(role: any, username: any, operatorid: any, smartcard: any, fromdate: any, todate: any, reporttype: any): Observable<any[]> {
+    return this.http.get<any[]>(BASE_URL + "/report/getBillCollectionSmartcardReport?role=" + role + "&username=" + encodeURIComponent(username) + "&operatorid=" + operatorid + "&smartcard=" + smartcard + "&fromdate=" + fromdate + "&todate=" + todate + "&reporttype=" + reporttype,);
+  }
 
   // =============================================================MSO REPORTS+=================================
 
@@ -2167,6 +2177,9 @@ export class BaseService {
   getupdatePaybill(role: any, username: any, operatorid: any, smartcard: any, paid_amount: any, status: any, useragent: any): Observable<any[]> {
     return this.http.post<any[]>(BASE_URL + "/operator/updatePaybill?role=" + role + "&username=" + encodeURIComponent(username) + "&operatorid=" + operatorid + "&smartcard=" + smartcard + "&paid_amount=" + paid_amount + "&status=" + status + "&useragent=" + useragent, {})
   }
+  getupdatePaybillUpdate(role: any, username: any, operatorid: any, smartcard: any, paid_amount: any, status: any, useragent: any, retailerid: any, type: any): Observable<any[]> {
+    return this.http.post<any[]>(BASE_URL + "/operator/updatePaybill?role=" + role + "&username=" + encodeURIComponent(username) + "&operatorid=" + operatorid + "&smartcard=" + smartcard + "&paid_amount=" + paid_amount + "&status=" + status + "&useragent=" + useragent + "&retailerid=" + retailerid + "&type=" + type, {})
+  }
 
   getBillCollectionReport(role: any, username: any, operatorid: any, bill_type: any, useragent: any, fromdate: any, todate: any, searchname: any, reporttype: any): Observable<Blob> {
     return this.http.get(BASE_URL + "/report/getBillCollectionReport?role=" + role + "&username=" + encodeURIComponent(username) + "&operatorid=" + operatorid + "&bill_type=" + bill_type + "&useragent=" + useragent + "&fromdate=" + fromdate + "&todate=" + todate + "&searchname=" + searchname + "&reporttype=" + reporttype, { responseType: 'blob' })
@@ -2250,8 +2263,11 @@ export class BaseService {
   }
 
   // ======================================================SUBLCO DETAILS====================================================
+  // getSublcoDetails(role: any, username: any): Observable<any[]> {
+  //   return this.http.get<any>(BASE_URL + "/sublco/getSublcoDetails?role=" + role + "&username=" + encodeURIComponent(username),)
+  // }
   getSublcoDetails(role: any, username: any): Observable<any[]> {
-    return this.http.get<any>(BASE_URL + "/sublco/getSublcoDetails?role=" + role + "&username=" + encodeURIComponent(username),)
+    return this.http.get<any>(BASE_URL + "/sublco/getSublcoDetails?role=" + role + "&username=" + username,)
   }
   getSublcoOnlineFailurelRecharge(role: any, username: any, amount: any, retailerid: any, transactionid: any, paymentstatus: any, hash: any,): Observable<any[]> {
     return this.http.post<any[]>(BASE_URL + "/sublco/sublcoOnlineFailurelRecharge?role=" + role +

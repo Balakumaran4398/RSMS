@@ -1276,7 +1276,7 @@ export class MsorDialogueportsComponent implements OnInit, OnDestroy {
           Swal.showLoading(null);
         }
       });
-      this.userService.getRechargeHistoryReport(this.role, this.username,1, this.subOperatorId, this.fromdate, this.todate, 0, 4,this.retailerId, 1
+      this.userService.getRechargeHistoryReport(this.role, this.username, 1, this.subOperatorId, this.fromdate, this.todate, 0, 4, this.retailerId, 1
       )
         .subscribe((x: Blob) => {
           const blob = new Blob([x], { type: 'application/pdf' });
@@ -1348,7 +1348,7 @@ export class MsorDialogueportsComponent implements OnInit, OnDestroy {
 
 
   getOnline() {
-   if (this.role == 'ROLE_SUBLCO') {
+    if (this.role == 'ROLE_SUBLCO') {
       this.userService.getOnlinePaymentHistory(
         this.role,
         this.username,
@@ -2036,7 +2036,6 @@ export class MsorDialogueportsComponent implements OnInit, OnDestroy {
         Swal.showLoading(null);
       }
     });
-
   }
 
   // -----------------------------------------CUSTOMER ACTIVATION FORM------------------------------------------------------------------------------------
