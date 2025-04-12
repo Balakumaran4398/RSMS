@@ -81,7 +81,12 @@ export class LcoDashboardComponent implements OnInit {
   }
   ngOnInit(): void {
     this.onColumnDefs();
-    this.operatorIdoperatorId();
+    if (this.role == 'ROLE_OPERATOR') {
+      this.operatorIdoperatorId();
+
+    } else if (this.role == 'ROLE_SUBLCO') {
+      this.getSubLCODetails();
+    }
     this.onMSODetails();
     this.setType(this.type);
     this.route.url.subscribe((segments) => {
@@ -174,6 +179,17 @@ export class LcoDashboardComponent implements OnInit {
       // } else if (this.type = 4) {
       //   this.onTableData();
       // }
+    })
+  }
+
+  getSubLCODetails() {
+    this.userService.getSublcoDetails(this.role, this.username).subscribe((data: any) => {
+      console.log(data);
+      this.lcoDeatails = data;
+      console.log(this.lcoDeatails);
+      this.lcoId = this.lcoDeatails?.operatorid;
+      this.operatorname = this.lcoDeatails?.operatorname;
+      this.getreport(this.lcoId);
     })
   }
   getModelList() {
@@ -281,17 +297,17 @@ export class LcoDashboardComponent implements OnInit {
       this.columnDefs = [
         { headerName: "S.No", lockPosition: true, valueGetter: 'node.rowIndex+1', width: 90, filter: false, headerCheckboxSelection: true, checkboxSelection: true, },
         { headerName: 'SMARTCARD', field: 'smartcard', width: 400, },
-        { headerName: 'BOX ID	', field: 'boxid',  cellStyle: { textAlign: 'center', color: 'green' }, width: 300, },
+        { headerName: 'BOX ID	', field: 'boxid', cellStyle: { textAlign: 'center', color: 'green' }, width: 300, },
         { headerName: 'CORTON BOX', field: 'cottonbox', width: 300, },
         { headerName: 'MODEL', field: 'model', width: 200, },
         { headerName: 'CHIP ID', field: 'chipid', width: 300, },
       ]
     } else if (this.type == 1) {
-    // } else if (this.type == 7) {
+      // } else if (this.type == 7) {
       this.columnDefs = [
         { headerName: "S.No", lockPosition: true, valueGetter: 'node.rowIndex+1', width: 90, filter: false },
-        { headerName: 'SMARTCARD', field: 'smartcard',  width: 400, },
-        { headerName: 'BOX ID	', field: 'boxid',  cellStyle: { textAlign: 'center', color: 'green' }, width: 400, },
+        { headerName: 'SMARTCARD', field: 'smartcard', width: 400, },
+        { headerName: 'BOX ID	', field: 'boxid', cellStyle: { textAlign: 'center', color: 'green' }, width: 400, },
         { headerName: 'CAS NAME', field: 'casname', width: 300, },
         { headerName: 'ALLOCATION DATE	', field: 'activationdate', width: 400, },
       ]
@@ -337,9 +353,9 @@ export class LcoDashboardComponent implements OnInit {
             }
           }
         },
-        { headerName: 'SUBSCRIBER ID', field: 'subid',  width: 150, },
-        { headerName: 'SUBSCRIBER NAME', field: 'customername',  cellStyle: { textAlign: 'center', color: 'green' }, width: 200, },
-        { headerName: 'ADDRESS ', field: 'address',  cellStyle: { textAlign: 'center', color: 'green' }, width: 150, },
+        { headerName: 'SUBSCRIBER ID', field: 'subid', width: 150, },
+        { headerName: 'SUBSCRIBER NAME', field: 'customername', cellStyle: { textAlign: 'center', color: 'green' }, width: 200, },
+        { headerName: 'ADDRESS ', field: 'address', cellStyle: { textAlign: 'center', color: 'green' }, width: 150, },
         { headerName: 'MOBILE NO', field: 'mobileno', width: 150, },
         { headerName: 'BOX ID', field: 'boxid', width: 180, },
         { headerName: 'PACKAGE NAME', field: 'productname', width: 200, },
@@ -389,8 +405,8 @@ export class LcoDashboardComponent implements OnInit {
             }
           }
         },
-        { headerName: 'SUBSCRIBER ID', field: 'subid',  width: 150, },
-        { headerName: 'SUBSCRIBER NAME', field: 'customername',  cellStyle: { textAlign: 'center', color: 'green' }, width: 200, },
+        { headerName: 'SUBSCRIBER ID', field: 'subid', width: 150, },
+        { headerName: 'SUBSCRIBER NAME', field: 'customername', cellStyle: { textAlign: 'center', color: 'green' }, width: 200, },
         { headerName: 'ADDRESS', field: 'address', width: 150, },
         { headerName: 'MOBILE NO', field: 'mobileno', width: 150, },
         { headerName: 'BOX ID', field: 'boxid', width: 180, },
@@ -441,8 +457,8 @@ export class LcoDashboardComponent implements OnInit {
             }
           }
         },
-        { headerName: 'SUBSCRIBER ID', field: 'subid',  width: 150, },
-        { headerName: 'SUBSCRIBER NAME', field: 'customername',  cellStyle: { textAlign: 'center', color: 'green' }, width: 200, },
+        { headerName: 'SUBSCRIBER ID', field: 'subid', width: 150, },
+        { headerName: 'SUBSCRIBER NAME', field: 'customername', cellStyle: { textAlign: 'center', color: 'green' }, width: 200, },
         { headerName: 'ADDRESS	', field: 'address', width: 150, },
         { headerName: 'AREA NAME', field: 'areaname', width: 200, },
         { headerName: 'MOBILE NO', field: 'mobileno', width: 200, },
@@ -490,9 +506,9 @@ export class LcoDashboardComponent implements OnInit {
             }
           }
         },
-        { headerName: 'SUBSCRIBER ID', field: 'subid',  width: 150, },
-        { headerName: 'OPERATOR NAME', field: 'operatorname',  cellStyle: { textAlign: 'center', color: 'green' }, width: 200, },
-        { headerName: 'CUSTOMER NAME ', field: 'customername',  cellStyle: { textAlign: 'center', color: 'green' }, width: 200, },
+        { headerName: 'SUBSCRIBER ID', field: 'subid', width: 150, },
+        { headerName: 'OPERATOR NAME', field: 'operatorname', cellStyle: { textAlign: 'center', color: 'green' }, width: 200, },
+        { headerName: 'CUSTOMER NAME ', field: 'customername', cellStyle: { textAlign: 'center', color: 'green' }, width: 200, },
         { headerName: 'BOX ID	', field: 'boxid', width: 150, },
         { headerName: 'CAS NAME', field: 'casname', width: 200, },
         { headerName: 'PRODUCT NAME', field: 'productname', width: 200, },
@@ -549,8 +565,8 @@ export class LcoDashboardComponent implements OnInit {
             console.log('type', this.type);
             areatitle = 'A1:J2';
             areasub = 'A3:J3';
-            header = ['S.NO', 'SUBSCRIBER ID', 'SUBSCRIBER NAME', 'ADDRESS', 'AREA NAME', 'MOBILE NO', 'SMARTCARD', 'BOXID', 'CORTONBOX','STATUS'];
-            generateDataRows(['subid', 'customername', 'address', 'areaname', 'mobileno', 'smartcard', 'boxid','cottonbox', 'statusdisplay'], this.rowData);
+            header = ['S.NO', 'SUBSCRIBER ID', 'SUBSCRIBER NAME', 'ADDRESS', 'AREA NAME', 'MOBILE NO', 'SMARTCARD', 'BOXID', 'CORTONBOX', 'STATUS'];
+            generateDataRows(['subid', 'customername', 'address', 'areaname', 'mobileno', 'smartcard', 'boxid', 'cottonbox', 'statusdisplay'], this.rowData);
           } else if (this.type == 5) {
             console.log('block', this.type);
             areatitle = 'A1:K2';

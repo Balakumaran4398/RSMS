@@ -83,6 +83,8 @@ export class OperatordialogueComponent implements OnInit {
   monthYear: any;
   msodetails: any;
   submitted: boolean = false;
+  SubLcoDetailsCount: any;
+
   constructor(public dialogRef: MatDialogRef<OperatordialogueComponent>, private swal: SwalService, private userService: BaseService, private excelService: ExcelService, private storageservice: StorageService, @Inject(MAT_DIALOG_DATA) public data: any,) {
     this.username = storageservice.getUsername();
     this.role = storageservice.getUserRole();
@@ -112,6 +114,15 @@ export class OperatordialogueComponent implements OnInit {
     })
     const selectedDate = moment();
     this.passSelectedDate(selectedDate);
+    if (this.type == 'new_smartcard_connection' || this.type == 'expired_smartcard_connection' || this.type == 'active_smartcard_connection' || this.type == 'box_in_hand') {
+      this.getSubLCOgridOption();
+    }
+  }
+  getSubLCOgridOption() {
+    this.userService.getSublcoLoginDashboardCount(this.role, this.username, this.operatorid).subscribe((data: any) => {
+      this.SubLcoDetailsCount = data;
+      console.log(this.SubLcoDetailsCount);
+    })
   }
   setType(OType: string) {
     switch (OType) {

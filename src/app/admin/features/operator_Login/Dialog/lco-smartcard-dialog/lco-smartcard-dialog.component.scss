@@ -1,5 +1,3 @@
-
-
 .gender-category label {
     padding: 0 20px 0 5px;
     font-size: 14px;
@@ -22,6 +20,14 @@ span {
 .gender-category label,
 .gender-category input {
     cursor: pointer;
+}
+
+.display {
+    display: flex;
+}
+
+.display2 {
+    display: flex;
 }
 
 @media screen and (max-width: 560px) {
@@ -62,10 +68,21 @@ span {
     button.btn {
         width: 100%;
     }
+
+    .display {
+        display: block;
+    }
+
+    .display2 {
+        display: flex;
+    }
 }
 
 .btn {
     width: 100px;
+}
+.btn1 {
+    width: auto;
 }
 
 select,
@@ -115,6 +132,7 @@ input {
 .button.b2 {
     border-radius: 2px;
 }
+
 .checkbox {
     position: relative;
     width: 100%;
@@ -126,10 +144,11 @@ input {
     z-index: 3;
 
 }
+
 .knobs {
     z-index: 2;
     display: flex;
-    justify-content: space-between; 
+    justify-content: space-between;
     align-items: center;
     position: absolute;
     top: 0;
@@ -152,9 +171,9 @@ input {
 #button-10 .knobs:after,
 #button-10 .knobs span {
     position: absolute;
-    top: 50%; 
-    transform: translateY(-50%); 
-    font-size: 12px; 
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 12px;
     font-weight: bold;
     text-align: center;
     line-height: 1;
@@ -162,6 +181,7 @@ input {
     border-radius: 2px;
     transition: 0.3s ease all;
 }
+
 #button-10 .knobs:before {
     content: "";
     width: 36px;
@@ -180,10 +200,11 @@ input {
     display: inline-block;
     color: #fff;
     z-index: 1;
-    left: 8px; 
+    left: 8px;
     top: 50%;
-    transform: translateY(-50%); 
+    transform: translateY(-50%);
 }
+
 #button-10 .checkbox:checked+.knobs span {
     color: #4e4e4e;
 }

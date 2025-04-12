@@ -48,11 +48,16 @@ export class BillcollectionComponent implements OnInit {
   mobilenumber: any;
   address: any;
   balance: any;
+
+  total_paid: any;
+  total_unpaid: any;
+  total_recharge: any;
+  total_excess: any;
+
   constructor(private dialog: MatDialog, private userService: BaseService, private storageService: StorageService, private swal: SwalService, private router: Router, private operator: OperatorService) {
     this.role = storageService.getUserRole();
     this.username = storageService.getUsername();
     console.log(operator);
-
     // this.subLcoDetails = operator?.lcoDeatails;
     // this.retailerId = operator?.retailerId;
     // console.log(this.retailerId);
@@ -191,10 +196,7 @@ export class BillcollectionComponent implements OnInit {
     })
   }
 
-  total_paid: any;
-  total_unpaid: any;
-  total_recharge: any;
-  total_excess: any;
+
   getreport() {
     if (this.role == 'ROLE_OPERATOR') {
       this.userService.getbillCollectionReport(this.role, this.username, this.lcoId, this.bill_type || 0, this.useragent, this.fromdate, this.todate, this.searchname || null).subscribe((data: any) => {
@@ -341,9 +343,8 @@ export class BillcollectionComponent implements OnInit {
   openEditDialog(data: any, type: any): void {
     console.log(data);
     let dialogWidth = '500px'; // default
-
     if (type === 'smartcardDetails') {
-      dialogWidth = '1000px';
+      dialogWidth = '1350px';
     }
     let dialalogData = { data: data, lcoid: this.lcoId, userarant: this.useragent, type: type }
     const dialogRef = this.dialog.open(LcoSmartcardDialogComponent, {

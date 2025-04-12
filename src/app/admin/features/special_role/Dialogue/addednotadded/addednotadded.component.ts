@@ -51,6 +51,7 @@ export class AddednotaddedComponent implements OnInit {
     this.username = storageservice.getUsername();
     console.log(data);
     this.type = data.type;
+    console.log(this.type);
     this.operatorid = data?.data?.operatorId;
     this.retailerid = data?.data?.retailerId;
     console.log(this.retailerid);
@@ -76,8 +77,8 @@ export class AddednotaddedComponent implements OnInit {
       console.log(this.permissionList);
       this.filteredNotPermissionList = [...this.NotpermissionList];
       this.filteredPermissionList = [...this.permissionList];
-      console.log('filteredNotPermissionList',this.filteredNotPermissionList);
-      console.log('filteredPermissionList',this.filteredPermissionList);
+      console.log('filteredNotPermissionList', this.filteredNotPermissionList);
+      console.log('filteredPermissionList', this.filteredPermissionList);
     })
   }
 
@@ -351,7 +352,7 @@ export class AddednotaddedComponent implements OnInit {
     console.log(this.containerID);
 
     this.userservice.sublcoUpdateArea(this.role, this.username, this.retailerid, this.containerID).subscribe((res: any) => {
-      // this.swal.success(res?.message);
+      this.swal.success(res?.message);
     }, (err) => {
       this.swal.Error(err?.error?.message);
     });
@@ -360,7 +361,7 @@ export class AddednotaddedComponent implements OnInit {
   save1() {
     this.swal.Loading();
     this.userservice.sublcoUpdatePermission(this.role, this.username, this.retailerid, this.containerID).subscribe((res: any) => {
-      // this.swal.success(res?.message);
+      this.swal.success(res?.message);
     }, (err) => {
       this.swal.Error(err?.error?.message);
     });

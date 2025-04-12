@@ -197,7 +197,7 @@ export class DiscountdialogComponent implements OnInit {
     this.plandiscount = this.discountPlans.map((plan: any) =>
       `${plan.id}-${plan.discount}`
     );
-    this.userService.updatePlanwiseDiscount(this.role, this.username, this.operatorid, this.orderid, this.plandiscount)
+    this.userService.updatePlanwiseDiscount(this.role, this.username, this.operatorid, this.orderid, this.plandiscount,1)
       .subscribe((res: any) => {
         this.swal.success(res?.message);
       }, (err) => {

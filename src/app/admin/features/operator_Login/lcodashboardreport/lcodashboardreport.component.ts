@@ -120,13 +120,16 @@ export class LcodashboardreportComponent implements OnInit {
     // console.log("Updated Selected Rows:", selectedRows);
   }
   ngOnInit(): void {
-    this.onColumnDefs();
-    this.operatorIdoperatorId();
-    this.onMSODetails();
-    // this.setType(this.type);
-    // this.getColumnDefs();
-    // this.columnDefs = this.getColumnDefs(); 
 
+    if (this.role == 'ROLE_OPERATOR') {
+      this.operatorIdoperatorId();
+
+    } else if (this.role == 'ROLE_SUBLCO') {
+      this.getSubLCODetails();
+    }
+    this.onColumnDefs();
+
+    this.onMSODetails();
   }
   goBack(): void {
     this.location.back();
@@ -147,53 +150,33 @@ export class LcodashboardreportComponent implements OnInit {
       console.log(this.lcoDeatails);
       this.lcoId = this.lcoDeatails?.operatorid;
       this.operatorname = this.lcoDeatails?.operatorname;
-
-      // if (this.type == 9) {
-      //   console.log('type=9');
-
-      //   // this.onAreaStatusChange();
-      //   this.userService.getLcochangeSubscriberList(this.role, this.username, this.lcoId, 0, 0).subscribe(
-      //     (response: HttpResponse<any[]>) => {
-      //       if (response.status === 200) {
-      //         // this.updateColumnDefs(this.selectedTab);
-      //         this.rowData1 = response.body;
-      //         console.log(this.rowData1);
-      //         // this.swal.Success_200();
-      //       } else if (response.status === 204) {
-      //         this.swal.Success_204();
-      //       }
-      //     },
-      //     (error) => {
-      //       if (error.status === 400) {
-      //         this.swal.Error_400();
-      //       } else if (error.status === 500) {
-      //         this.swal.Error_500();
-      //       } else {
-      //         Swal.fire('Error', 'Something went wrong. Please try again.', 'error');
-      //       }
-      //     }
-      //   );
-      // } else {
-      //   console.log('type!=9');
       this.onTableData(this.lcoId);
-      // }
-      // this.getArealist(this.lcoId);
-      // this.onAreaStatusLCOChange(this.lcoId);
-      this.getLcobyAreaid(this.lcoId);
+      if (this.type == '9') {
+        this.getLcobyAreaid(this.lcoId);
+      }
     })
   }
-
+  getSubLCODetails() {
+    this.userService.getSublcoDetails(this.role, this.username).subscribe((data: any) => {
+      console.log(data);
+      this.lcoDeatails = data;
+      console.log(this.lcoDeatails);
+      this.lcoId = this.lcoDeatails?.operatorid;
+      this.operatorname = this.lcoDeatails?.operatorname;
+      this.onTableData(this.lcoId);
+      if (this.type == '9') {
+        this.getLcobyAreaid(this.lcoId);
+      }
+    })
+  }
   onTableData(lcoid: any) {
-    this.swal.Loading();
-    console.log(this.lcoId);
+    console.log('111111111111111', lcoid);
 
+    this.swal.Loading();
     this.userService.getOpLoginReportByOpid(this.role, this.username, lcoid, this.type, 3)
       .subscribe((res: any) => {
         if (this.type == 5 || this.type == 4) {
           console.log('type ', this.type, res);
-
-
-          // Extract only the required fields
           this.rowData = res.flatMap((customer: any) =>
             customer.content.map((data: any) => ({
               customeranme: data.customeranme,
@@ -203,7 +186,6 @@ export class LcodashboardreportComponent implements OnInit {
               boxid: data.boxid
             }))
           );
-
           console.log("Extracted Customer Data:", this.rowData);
         } else {
           this.rowData = res;
@@ -235,9 +217,6 @@ export class LcodashboardreportComponent implements OnInit {
           //   this.reportMaking(x, `Bill Collection_${this.lcoId}.xlsx`, 'application/xlsx');
           // }
         },
-
-
-
         error: (error: any) => {
           this.swal.Close();
           this.pdfswalError(error?.error.message);
@@ -744,7 +723,7 @@ export class LcodashboardreportComponent implements OnInit {
 
   onAreaStatusChange() {
     this.street_list = [];
-    this.rowData1 = [];
+    this.rowData = [];
     if (this.areaid) {
       this.userService.getStreetListByAreaid(this.role, this.username, this.areaid)
         .subscribe((data: any) => {
@@ -762,8 +741,8 @@ export class LcodashboardreportComponent implements OnInit {
       (response: HttpResponse<any[]>) => {
         if (response.status === 200) {
           // this.updateColumnDefs(this.selectedTab);
-          this.rowData1 = response.body;
-          console.log(this.rowData1);
+          this.rowData = response.body;
+          console.log(this.rowData);
           // this.swal.Success_200();
         } else if (response.status === 204) {
           this.swal.Success_204();
@@ -839,12 +818,10 @@ export class LcodashboardreportComponent implements OnInit {
         if (response.status === 200) {
           // this.updateColumnDefs(this.selectedTab);
           this.rowData1 = response.body;
-          console.log(this.rowData1);
           // this.swal.Success_200();
         } else if (response.status === 204) {
           this.swal.Success_204();
         }
-
       },
       (error) => {
         if (error.status === 400) {
@@ -867,7 +844,6 @@ export class LcodashboardreportComponent implements OnInit {
       areaid: this.areaid,
       streetid: this.streetid,
       subscriberlist: this.rows,
-
     }
     this.swal.Loading();
     this.userService.updateAreaChangeSubscriber(requestBody)

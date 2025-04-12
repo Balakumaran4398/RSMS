@@ -2150,8 +2150,11 @@ export class BaseService {
   getOpDiscountListByOpidAreaid(role: any, username: any, operatorid: any, areaid: any, type: any): Observable<any[]> {
     return this.http.get<any[]>(BASE_URL + "/operator/getLcoDiscountListByOpidAreaid?role=" + role + "&username=" + encodeURIComponent(username) + "&operatorid=" + operatorid + "&areaid=" + areaid + "&type=" + type)
   }
-  updatePlanwiseDiscount(role: any, username: any, operatorid: any, orderid: any, plan_discount: any): Observable<any[]> {
-    return this.http.post<any[]>(BASE_URL + "/operator/updatePlanwiseDiscount?role=" + role + "&username=" + encodeURIComponent(username) + "&operatorid=" + operatorid + "&orderid=" + orderid + "&plan_discount=" + plan_discount, {})
+  // updatePlanwiseDiscount(role: any, username: any, operatorid: any, orderid: any, plan_discount: any): Observable<any[]> {
+  //   return this.http.post<any[]>(BASE_URL + "/operator/updatePlanwiseDiscount?role=" + role + "&username=" + encodeURIComponent(username) + "&operatorid=" + operatorid + "&orderid=" + orderid + "&plan_discount=" + plan_discount, {})
+  // }
+  updatePlanwiseDiscount(role: any, username: any, operatorid: any, orderid: any, plan_discount: any, type: any): Observable<any[]> {
+    return this.http.post<any[]>(BASE_URL + "/operator/updatePlanwiseDiscount?role=" + role + "&username=" + encodeURIComponent(username) + "&operatorid=" + operatorid + "&orderid=" + orderid + "&plan_discount=" + plan_discount + "&type=" + type, {})
   }
   getPlanDiscountDetailsByOpidPackageid(role: any, username: any, operatorid: any, orderid: any, customer_amount: any, lco_commission: any): Observable<any[]> {
     return this.http.get<any[]>(BASE_URL + "/operator/getPlanDiscountDetailsByOpidPackageid?role=" + role + "&username=" + encodeURIComponent(username) + "&operatorid=" + operatorid + "&orderid=" + orderid + "&customer_amount=" + customer_amount + "&lco_commission=" + lco_commission)

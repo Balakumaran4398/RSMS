@@ -8,13 +8,13 @@
             (click)="selectTab('sub_lco')">
             SUB LCO
         </div>
-        <div *ngIf="role !== 'ROLE_SUBLCO'" class="tab mb-2  bttn" [class.active]="selectedTab === 'subscriber'" style="text-align: center;"
-            (click)="selectTab('subscriber')">
+        <div *ngIf="role !== 'ROLE_SUBLCO'" class="tab mb-2  bttn" [class.active]="selectedTab === 'subscriber'"
+            style="text-align: center;" (click)="selectTab('subscriber')">
             SUBSCRIBER
         </div>
     </div>
     <div class="display justify-content-between align-items-center">
-        <div class="d-flex justify-content-between align-items-center">
+        <div class="display justify-content-between align-items-center">
             <mat-form-field appearance="outline">
                 <mat-date-range-input [rangePicker]="picker">
                     <input matStartDate matInput placeholder="Start date" (dateChange)="getFromDate($event)" />
@@ -76,8 +76,6 @@
             </button>
         </div>
     </div>
-
-
     <ag-grid-angular #agGrid id="myGrid" style="text-align: center;" domLayout='normal'
         class="ag-theme-alpine table-class" rowAnimation [columnDefs]="columnnDefs" [rowData]="rowData"
         (gridReady)="onGridReady($event)" [enableCellTextSelection]="true">

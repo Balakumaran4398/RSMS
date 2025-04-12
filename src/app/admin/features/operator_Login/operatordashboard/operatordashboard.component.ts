@@ -92,6 +92,8 @@ export class OperatordashboardComponent implements OnInit {
     const currentDate = new Date();
     this.selectedMonth = (currentDate.getMonth() + 1).toString().padStart(2, '0');
     this.selectedYear = currentDate.getFullYear();
+
+
   }
 
   onOnlineRecharge() {

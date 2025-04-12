@@ -96,7 +96,8 @@ export class SublcooperatordialogueComponent implements OnInit {
   rowData: any;
   retailerUsername: any;
 
-  selectedRow: any
+  selectedRow: any;
+
   constructor(public dialogRef: MatDialogRef<SublcooperatordialogueComponent>, @Inject(MAT_DIALOG_DATA) public data: any, private fb: FormBuilder, private userservice: BaseService, private storageservice: StorageService, private swal: SwalService, public dialog: MatDialog,) {
     this.role = storageservice.getUserRole();
     this.username = storageservice.getUsername();
@@ -149,7 +150,10 @@ export class SublcooperatordialogueComponent implements OnInit {
     this.generateMonths();
     this.generateYears();
     this.getSublcoDiscountList();
+    console.log(this.type);
   }
+
+
   onNoClick(): void {
     this.dialogRef.close();
   }
@@ -257,10 +261,10 @@ export class SublcooperatordialogueComponent implements OnInit {
       this.columnDefs = [
         { headerName: "S.No", lockPosition: true, valueGetter: 'node.rowIndex+1', cellClass: 'locked-col', width: 80, suppressNavigable: true, sortable: false, filter: false },
         { headerName: "PACKAGE NAME", field: 'product_name', width: 300 },
-        { headerName: "SUB LCO RATE	", field: 'sublco_rate' , width: 250},
+        { headerName: "SUB LCO RATE	", field: 'sublco_rate', width: 250 },
         { headerName: "AMOUNT", field: 'customer_amount', width: 250 },
         { headerName: "MSO AMOUNT", field: 'mso_amount', width: 250 },
-        { headerName: "LCO COMMISION", field: 'lco_commission' , width: 250},
+        { headerName: "LCO COMMISION", field: 'lco_commission', width: 250 },
         {
           headerName: 'ACTION', field: '', width: 150, filter: false,
           cellRenderer: (params: any) => {
@@ -359,8 +363,8 @@ export class SublcooperatordialogueComponent implements OnInit {
         const errorMessage = errorFields
           .map(field => err?.error?.[field])
           .find(message => message) || 'An error occurred while creating the subscriber.'
+        this.swal.Error(errorMessage);
       });
-
   }
 
 

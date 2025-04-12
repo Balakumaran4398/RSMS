@@ -1,6 +1,6 @@
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { BaseService } from 'src/app/_core/service/base.service';
 import { StorageService } from 'src/app/_core/service/storage.service';
 import { SwalService } from 'src/app/_core/service/swal.service';
@@ -9,6 +9,7 @@ import { AddednotaddedComponent } from '../addednotadded/addednotadded.component
 import { DistributordiscountComponent } from '../../../operator_Login/Dialog/distributordiscount/distributordiscount.component';
 import { PageEvent } from '@angular/material/paginator';
 import { OperatordialogueComponent } from '../../../channel_setting/_Dialogue/operator/operatordialogue/operatordialogue.component';
+import { LcodashboardreportComponent } from '../../../operator_Login/lcodashboardreport/lcodashboardreport.component';
 
 @Component({
   selector: 'app-sublcooperator',
@@ -51,7 +52,7 @@ export class SublcooperatorComponent implements OnInit {
   selectedOperator: any;
   originalPagedOperators: any[] = [];
 
-  constructor(private route: ActivatedRoute, public dialog: MatDialog, private userservice: BaseService, private storageservice: StorageService, private cdr: ChangeDetectorRef, private swal: SwalService) {
+  constructor(private route: ActivatedRoute, public dialog: MatDialog, private userservice: BaseService, private router: Router, private storageservice: StorageService, private cdr: ChangeDetectorRef, private swal: SwalService) {
     this.role = storageservice.getUserRole();
     this.username = storageservice.getUsername();
     // console.log(route);
@@ -90,15 +91,10 @@ export class SublcooperatorComponent implements OnInit {
         const permmissionButton = document.createElement('button');
         const deleteButton = document.createElement('button');
         const discountButton = document.createElement('button');
-
-
         const iswallet = params.data.iswallet === true || params.data.iswallet === 'true';
         const issublcoDiscount = params.data.sublcoDiscount === 1 || params.data.sublcoDiscount === '1';
         console.log('issublcoDiscount', issublcoDiscount);
-
-
         if (iswallet) {
-
           deleteButton.innerHTML = '<i class="fa fa-cog" style="font-size: 1.5em; color: rgb(3, 138, 127);margin-left: 20px ; cursor: pointer;"></i>';
           deleteButton.style.backgroundColor = 'transparent';
           deleteButton.style.border = 'none';
@@ -108,7 +104,6 @@ export class SublcooperatorComponent implements OnInit {
             const packageId = params.data.packageid;
             this.opendialogue('wallet_recharge', params.data);
           });
-
           // div.appendChild(deleteButton);
         }
         if (!params.data.isCustomerMode || issublcoDiscount) {
@@ -117,19 +112,14 @@ export class SublcooperatorComponent implements OnInit {
           discountButton.style.border = 'none';
           discountButton.title = 'Sub lco discount';
           discountButton.style.cursor = 'pointer';
-
           discountButton.addEventListener('click', () => {
             const packageId = params.data.packageid;
             this.opendialogue('sub_lco_discount', params.data);
           });
-
           // div.appendChild(discountButton);
         } else {
           discountButton.setAttribute('disabled', 'true');
         }
-
-
-
         updateButton.innerHTML = '<button style="width: 7em;background-color:rgb(113, 121, 76);border-radius: 5px;height: 2em;color: white;"><p style="margin-top:-6px">Edit Sub LCO</p></button>';
         updateButton.style.backgroundColor = 'transparent';
         updateButton.style.border = 'none';
@@ -197,7 +187,10 @@ export class SublcooperatorComponent implements OnInit {
     },
   ];
   ngOnInit(): void {
+
     this.operatorIdoperatorId();
+
+
   }
   lcoDeatails: any;
   sublcorecharge: boolean = false;
@@ -206,6 +199,19 @@ export class SublcooperatorComponent implements OnInit {
       this.lcoDeatails = data;
       this.operatorid = this.lcoDeatails?.operatorid;
       this.sublcorecharge = this.lcoDeatails?.sublcorecharge;
+      this.getSubLcoDetails(this.operatorid);
+    })
+  }
+  activeCount: any;
+  expiryCount: any;
+  newCount: any;
+  getSubLcoDetails(lco: any) {
+    this.userservice.getSublcoLoginDashboardCount(this.role, this.username, lco).subscribe((data: any) => {
+      console.log(data);
+      this.lcoDeatails = data;
+      this.activeCount = this.lcoDeatails?.activecount;
+      this.newCount = this.lcoDeatails?.deactivecount;
+      this.expiryCount = this.lcoDeatails?.deactivesubscription;
     })
   }
 
@@ -231,7 +237,7 @@ export class SublcooperatorComponent implements OnInit {
       this.pagedOperators = this.rowData.slice(startIndex, startIndex + this.pageSize);
     })
     console.log(this.rowData);
-    
+
     if (this.operatorid.value === 0) {
       this.pagedOperators = [...this.rowData];
     } else {
@@ -280,21 +286,21 @@ export class SublcooperatorComponent implements OnInit {
         this.swal.Close();
       });
   }
-  openDialog(type: string, operatorid: any): void {
-    const detailsList = this.operator_details.find((op: any) => op.operatorid === operatorid);
-    console.log(detailsList);
-    console.log(detailsList.operatorname);
-
-    let dialogData = { type: type, detailsList: this.operator_details, operatorid: detailsList.operatorid, operatorname: detailsList.operatorname, };
+  openDialog(type: string, data: any) {
+    let dialogData = { type: type, detailsList: data, operatorid: data?.operatorId, operatorname: data?.retailerName, };
     console.log(dialogData);
-    const dialogRef = this.dialog.open(OperatordialogueComponent, {
+    // const dialogRef = this.dialog.open(OperatordialogueComponent, {
+    const dialogRef = this.dialog.open(LcodashboardreportComponent, {
       width: '500px',
       panelClass: 'custom-dialog-container',
       data: dialogData,
-
+    });
+    dialogRef.afterClosed().subscribe(result => {
     });
   }
-
+  openLCO_dashboard(event: any) {
+    this.router.navigate(['admin/lco_dashboard_report/' + event]);
+  }
 
   // ---------------------------------------------------------------------------------------------------------------
   opendialogue(type: any, data: any) {
@@ -340,7 +346,6 @@ export class SublcooperatorComponent implements OnInit {
       this.rowData = this.rowData.map(row =>
         row.id === result.id ? { ...row, ...result } : row
       );
-
     });
   }
   openLcoRechargelogue(type: any, data: any) {
