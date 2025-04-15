@@ -93,7 +93,6 @@ export class OperatorDetailsComponent implements OnInit {
         }
       });
     this.checkDeviceType();
-
     this.loadOperators();
     this.updatePageData();
 
@@ -256,7 +255,7 @@ export class OperatorDetailsComponent implements OnInit {
   }
 
   // New_lco(event: any) {
-  New_lco(type:any) {
+  New_lco(type: any) {
     console.log(event);
     let dialogData = {
       data: this.businessList,

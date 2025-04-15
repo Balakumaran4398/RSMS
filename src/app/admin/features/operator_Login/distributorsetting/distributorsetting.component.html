@@ -10,9 +10,241 @@
         DISCOUNT
     </button>
 </div>
-<div>
+<!-- <div>
     <ag-grid-angular #agGrid id="myGrid" style="text-align: center;" domLayout='autoHeight'
         class="ag-theme-alpine table-class" rowAnimation [gridOptions]="gridOptions" (gridReady)="onGridReady($event)"
         [columnDefs]="columnDefs" [rowData]="rowData" [enableCellTextSelection]="true">
     </ag-grid-angular>
+</div> -->
+
+<div class="opt">
+    <div class="col-12 col-md-12 mb-4 display justify-content-start align-items-baseline   ">
+        <div class="grid-container">
+            <div *ngFor="let operator of pagedOperators">
+                <mat-card class="card">
+                    <mat-card-header class="col-6 col-md-6">
+                        <div class="d-block justify-content-start align-item-center">
+                            <div class="sub-tittle mb-3 col-md-10" style="text-align: left;font-weight: bold;">
+                                {{operator?.operatorname || 'empty'}} <span
+                                    style="color: rgb(1, 1, 14);font-weight: bold;">[{{operator?.operatorid}}]</span> -
+                                <span style="color: var(--oper-grid-amount);">[{{operator?.balance}}]</span>
+                            </div>
+                            <div class="sub-tittle mb-3 col-md-10" style="text-align: left;color: rgb(26, 23, 23);">
+                                Phone: <span style="color: rgb(19, 4, 104);">{{operator?.contactnumber1 ||
+                                    operator?.contactnumber2}}</span>
+                            </div>
+                        </div>
+                    </mat-card-header>
+                    <mat-card-content>
+                        <div class="col-12 head " style="text-align: left;">
+                            <div class="col-6 col-md-6">
+                                <p class="text"
+                                    [ngClass]="operator?.isactive === 'true' ? 'active-text' : 'deactive-text'">
+                                    <span class="label">Status</span>
+                                    <span class="separator1">:</span>
+                                    <span class="last1">{{ operator?.isactive === 'true' ? 'Active' : 'Deactive'
+                                        }}</span>
+                                </p>
+                                <p class="text">
+                                    <span class="label label1">user id</span>
+                                    <span class="separator">:</span>
+                                    <span class="last">{{operator?.userid}}</span>
+                                </p>
+
+                                <p class="text">
+                                    <span class="label label2">password</span>
+                                    <span class="separator">:</span>
+                                    <span class="last">{{operator?.password}}</span>
+                                </p>
+
+
+                                <p class="text" [ngClass]="operator?.isonlinepayment ? 'active-text' : 'deactive-text'">
+                                    <span class="label">online payment</span>
+                                    <span class="separator1">:</span>
+                                    <span class="last1">{{ operator?.isonlinepayment ? 'Active' : 'Deactive' }}</span>
+                                </p>
+                            </div>
+
+                            <div class="col-6 col-md-6">
+                                <!-- <span
+                                    style="color: var(--primary-color); display: flex; align-items: center;justify-content: space-between; position: absolute; top: 5px; right: 10px;"
+                                    class="sub-tittle tittle1 ">
+                                         <p><i class="fas fa-pen"
+                                            style="color: var(--edit-button); font-size: 20px;cursor: pointer"
+                                            aria-hidden="true" (click)="toggleedit1(operator.operatorid)"></i></p>
+                                    <span class="tooltip">Edit</span>
+                                </span> -->
+
+                                <mat-card class="inventory">
+                                    <p>Box Inventory </p>
+                                    <div class="row" style="display: flex;">
+                                        <div class="col-6 tooltip-container" style="cursor: pointer;">
+                                            <span style="font-size: 13px;"> In hand</span>
+                                            <mat-card class="card-inside" (click)="openDialog('box_in_hand',operator)">
+                                                <span
+                                                    style="color: var(--active-edit-icon);font-weight: bold;">{{operator?.boxinhand}}</span>
+                                            </mat-card>
+                                            <span class="tooltip">Box In Hand</span>
+                                        </div>
+                                        <div class="col-6 tooltip-container" style="cursor: pointer;">
+                                            <span style="font-size: 13px;">Total</span>
+                                            <mat-card class="card-inside"
+                                                (click)="openDialog('total_smartcard',operator)">
+                                                <span
+                                                    style="color: var(--active-edit-icon);font-weight: bold">{{operator?.totalbox}}</span>
+                                            </mat-card>
+                                            <span class="tooltip">Total Box</span>
+                                        </div>
+                                    </div>
+                                </mat-card>
+                                <mat-card class="permission" (click)="togglepermission(operator.operatorid)"
+                                    style="cursor: pointer;">
+                                    <img src="../assets/images/icons/Accesss1.png" alt="Accesss1">
+                                    <p (click)="togglepermission($event)" style="color: white;font-size: 14px;">Special
+                                        Permission</p>
+                                </mat-card>
+                            </div>
+                        </div>
+                        <br>
+                        <div class="report d-flex justify-content-center">
+                            <div class="file-container">
+                                <div class="files tooltip-container mx-2"
+                                    (click)="openaddedlogue('packageDetails', operator)">
+                                    <div class="files tooltip-container ">
+                                        <i class="fa fa-percent" aria-hidden="true" style="font-size: 23px;color: darkcyan;cursor: pointer;"></i>
+                                        <span class="tooltip">LCO Discount
+                                        </span>
+                                    </div>
+                                </div>
+                                <div class="files tooltip-container mx-2" (click)="toggleedit('editlco',operator)">
+                                    <div class="files tooltip-container ">
+                                        <i class="far fa-edit"
+                                            style="font-size: 23px;color: #ff4081;cursor: pointer;"></i>
+                                        <span class="tooltip">Edit Distributor </span>
+                                    </div>
+                                </div>
+                          
+
+                                <div class="files tooltip-container mx-2"
+                                    (click)="toggleedit('lco_dashboard',operator)">
+                                    <div class="files tooltip-container ">
+                                        <i class="fas fa-tachometer-alt"
+                                            style="font-size: 23px;color:rgb(2, 86, 107);cursor: pointer;"></i>
+                                        <span class="tooltip">LCO Dashboard </span>
+                                    </div>
+                                </div>
+                                <div class="files tooltip-container mx-2" (click)="openDialog('recharge',operator)">
+                                    <div class="files tooltip-container ">
+                                        <i class="fa-solid fa-book"
+                                            style="font-size:20px;color:var(--primary-color)"></i>
+                                        <span class="tooltip">LCO RECHARGE REPORT
+                                        </span>
+                                    </div>
+                                </div>
+                                <div class="files tooltip-container mx-2"
+                                    (click)="openDialog('lcowise_retailer',operator)">
+                                    <div class="files tooltip-container ">
+                                        <i class="fa-solid fa-person-chalkboard"
+                                            style="font-size:20px;color:var(--primary-color)"></i>
+                                        <span class="tooltip">LCO WISE RETAILER REPORT </span>
+                                    </div>
+                                </div>
+                                <div class="files tooltip-container mx-2" (click)="openDialog('areawise',operator)">
+                                    <div class="files tooltip-container ">
+                                        <i class="fa fa-calculator" style="font-size:20px;color:var(--primary-color)"
+                                            aria-hidden="true"></i>
+                                        <span class="tooltip">AREAWISE CONECTION COUNT REPORT
+                                        </span>
+                                    </div>
+                                </div>
+
+                                <div class="files tooltip-container mx-2"
+                                    (click)="opencancelsubDialog('cancel_Subscription',operator)">
+                                    <div class="files tooltip-container ">
+                                        <i class="fa-solid fa-file-lines"
+                                            style="font-size:20px;color:var(--primary-color)"></i>
+                                        <span class="tooltip">CANCEL SUBSCRIPTION REPORT
+                                        </span>
+                                    </div>
+                                </div>
+                                <div class="files tooltip-container mx-2"
+                                    (click)="openDialog('productwise_current',operator)">
+                                    <div class="files tooltip-container">
+                                        <i class="fa-solid fa-address-book"
+                                            style="font-size:20px;color:var(--primary-color)"></i>
+                                        <span class="tooltip">PRODUCTWISE CURRENT COUNT
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="child-card col-12">
+                            <div class="col-2 vertical tooltip-container"
+                                (click)="openDialog('total_smartcard_connection',operator)">
+                                <div class="col-2 vertical tooltip-container">
+                                    <p class="sub-text">Connection</p>
+                                    <span style="color: #0e610b;display: flex; justify-content: center;">
+                                        <div class="circle" style="background-color: rgb(240, 120, 9);"><span
+                                                class="circle-text">{{operator?.connectioncount}}</span></div>
+                                    </span>
+                                    <span class="tooltip">Connection</span>
+                                </div>
+                            </div>
+                            <div class="col-2 vertical tooltip-container"
+                                (click)="openDialog('active_smartcard_connection',operator)">
+                                <div class="col-2 vertical tooltip-container">
+                                    <p class="sub-text">Active</p>
+                                    <span style="color: #0e610b;">
+                                        <div class="circle" style="background-color: rgb(122, 64, 129);"><span
+                                                class="circle-text">{{operator?.activecount}}</span></div>
+                                    </span>
+                                    <span class="tooltip">Active</span>
+                                </div>
+                            </div>
+                            <div class="col-2 vertical tooltip-container"
+                                (click)="openDialog('expired_smartcard_connection',operator)">
+                                <div class="col-2 vertical tooltip-container">
+                                    <p class="sub-text">Expired</p>
+                                    <span style="color: #0e610b;">
+                                        <div class="circle" style="background-color: rgb(202, 9, 9);"><span
+                                                class="circle-text">{{operator?.expiredcount}}</span></div>
+                                    </span>
+                                    <span class="tooltip">Expired</span>
+                                </div>
+                            </div>
+                            <div class="col-2 vertical tooltip-container"
+                                (click)="openDialog('new_smartcard_connection',operator)">
+                                <div class="col-2 vertical tooltip-container">
+                                    <p class="sub-text">New</p>
+                                    <span style="color: #0e610b;">
+                                        <div class="circle" style="background-color: rgb(13 131 33);"><span
+                                                class="circle-text">{{operator?.newcount}}</span></div>
+                                    </span> <span class="tooltip">New</span>
+                                </div>
+                            </div>
+                            <div class="col-2 vertical tooltip-container"
+                                (click)="openDialog('block_smartcard_connection',operator)">
+                                <div class="col-2 vertical tooltip-container">
+                                    <p class="sub-text">Block</p>
+                                    <span style="color: #0e610b;">
+                                        <div class="circle" style="background-color: rgb(148, 122, 8);"><span
+                                                class="circle-text">{{operator?.blockcount}}</span></div>
+                                    </span>
+                                    <span class="tooltip">Block</span>
+                                </div>
+                            </div>
+                        </div>
+                    </mat-card-content>
+
+                </mat-card>
+            </div>
+
+
+        </div>
+        <!-- <div class="d-flex justify-content-center align-items-center" style="padding: 0.5rem;">
+            <mat-paginator [length]="totalLength" [pageSize]="pageSize" [pageSizeOptions]="[10,50,100,500,1000,2500]"
+                (page)="onPageChange($event)">
+            </mat-paginator>
+        </div> -->
+    </div>
 </div>

@@ -197,6 +197,7 @@ import { DistributordiscountComponent } from "./features/operator_Login/Dialog/d
 import { DistribtorupdatediscountComponent } from "./features/operator_Login/Dialog/distribtorupdatediscount/distribtorupdatediscount.component";
 import { LcoDummycmpComponent } from "./features/operator_Login/lco-dummycmp/lco-dummycmp.component";
 import { DialogChipidComponent } from "./features/vc/stc/dialog/dialog-chipid/dialog-chipid.component";
+import { LcodashboardsublcoreportComponent } from "./features/operator_Login/lcodashboardsublcoreport/lcodashboardsublcoreport.component";
 @NgModule({
     declarations: [
         AdminBaseComponent, NavComponent, HomeComponent, NavbarComponent, MsodetailsComponent, CasmasterComponent,
@@ -264,7 +265,7 @@ import { DialogChipidComponent } from "./features/vc/stc/dialog/dialog-chipid/di
         ServicecenterEditComponent, OnlinerechargeComponent, OnlinecustomerdetailsComponent, RechagelogComponent, AreaStreetComponent, OperatorWalletComponent,ForcemessageComponent,
         LcoChangePasswordComponent,LcodiscountComponent,LcoReportComponent,LcologinReportComponent,DistributorsettingComponent,BillcollectionComponent,
         LcoSmartcardDialogComponent,LcoSmartcardpayDialogComponent,SmrtBoxidChangeComponent,LcodashboardreportComponent,OperatorareachangeComponent,DiscountdialogComponent,DiscountsmartcardComponent,
-        DistributordiscountComponent,DistribtorupdatediscountComponent,LcoDummycmpComponent,DialogChipidComponent
+        DistributordiscountComponent,DistribtorupdatediscountComponent,LcoDummycmpComponent,DialogChipidComponent,LcodashboardsublcoreportComponent
     ],
     imports: [
         CommonModule,

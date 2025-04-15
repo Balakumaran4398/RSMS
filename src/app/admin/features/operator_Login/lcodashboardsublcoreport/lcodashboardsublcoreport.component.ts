@@ -1,21 +1,22 @@
+import { HttpResponse } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { BaseService } from 'src/app/_core/service/base.service';
 import { ExcelService } from 'src/app/_core/service/excel.service';
 import { StorageService } from 'src/app/_core/service/storage.service';
 import { SwalService } from 'src/app/_core/service/swal.service';
-import { Location } from '@angular/common';
 import Swal from 'sweetalert2';
-import { HttpResponse } from '@angular/common/http';
+import { Location } from '@angular/common';
 
 @Component({
-  selector: 'app-lcodashboardreport',
-  templateUrl: './lcodashboardreport.component.html',
-  styleUrls: ['./lcodashboardreport.component.scss']
+  selector: 'app-lcodashboardsublcoreport',
+  templateUrl: './lcodashboardsublcoreport.component.html',
+  styleUrls: ['./lcodashboardsublcoreport.component.scss']
 })
-export class LcodashboardreportComponent implements OnInit {
+export class LcodashboardsublcoreportComponent implements OnInit {
   role: any;
   username: any;
+  userId: any;
   type: any;
   columnDefs: any[] = [];
   columnDefs1: any[] = [];
@@ -40,7 +41,6 @@ export class LcodashboardreportComponent implements OnInit {
       comparator: (valueA: any, valueB: any) => {
         const isNumberA = !isNaN(valueA) && valueA !== null;
         const isNumberB = !isNaN(valueB) && valueB !== null;
-
         if (isNumberA && isNumberB) {
           return valueA - valueB;
         } else {
@@ -60,21 +60,22 @@ export class LcodashboardreportComponent implements OnInit {
   gridApi: any;
   OType: any;
   operatorid: any;
-
   path: any;
-
   lcoDeatails: any;
   lcoId: any;
-
   isAnyRowSelected: any = false;
   selectedIds: number[] = [];
   selectsmartcard: number[] = [];
-
+  retailerId:any;
   constructor(private route: ActivatedRoute, private location: Location, private userService: BaseService, private router: Router, private storageservice: StorageService, private excelService: ExcelService, private swal: SwalService,) {
     this.role = storageservice.getUserRole();
     this.username = storageservice.getUsername();
     this.type = this.route.snapshot.paramMap.get('id');
+    this.userId = this.route.snapshot.paramMap.get('userid');
+    this.retailerId = this.route.snapshot.paramMap.get('retailerid');
     console.log(this.type);
+    console.log(this.userId);
+    console.log(this.retailerId);
   }
   getHeader(): string {
     switch (this.type) {
@@ -133,13 +134,10 @@ export class LcodashboardreportComponent implements OnInit {
     this.userService.getOpDetails(this.role, this.username).subscribe((data: any) => {
       console.log(data);
       this.lcoDeatails = data;
-      console.log(this.lcoDeatails);
       this.lcoId = this.lcoDeatails?.operatorid;
       this.operatorname = this.lcoDeatails?.operatorname;
-      this.onTableData(this.lcoId);
-      if (this.type == '9') {
-        this.getLcobyAreaid(this.lcoId);
-      }
+      this.onTableData();
+
     })
   }
   getSubLCODetails() {
@@ -149,16 +147,16 @@ export class LcodashboardreportComponent implements OnInit {
       console.log(this.lcoDeatails);
       this.lcoId = this.lcoDeatails?.operatorid;
       this.operatorname = this.lcoDeatails?.operatorname;
-      this.onTableData(this.lcoId);
+      this.onTableData();
       if (this.type == '9') {
         this.getLcobyAreaid(this.lcoId);
       }
     })
   }
-  onTableData(lcoid: any) {
-    console.log('111111111111111', lcoid);
+  onTableData() {
+    // console.log('111111111111111', lcoid);
     this.swal.Loading();
-    this.userService.getOpLoginReportByOpid(this.role, this.username, lcoid, this.type, 3)
+    this.userService.getOpLoginReportByOpid('ROLE_SUBLCO', this.userId, this.retailerId, this.type, 3)
       .subscribe((res: any) => {
         if (this.type == 5 || this.type == 4) {
           console.log('type ', this.type, res);
@@ -185,15 +183,17 @@ export class LcodashboardreportComponent implements OnInit {
 
   getLcoInvoiceReport(reportType: number) {
     this.swal.Loading();
-    this.userService.getOpLoginReportByReport(this.role, this.username, this.lcoId, this.type, reportType).
+    console.log(this.userId);
+    
+    this.userService.getOpLoginReportByReport('ROLE_SUBLCO', this.userId, this.retailerId, this.type, reportType).
       subscribe({
         next: (x: Blob) => {
           this.swal.Close();
           const reportName = this.getHeader();
           if (reportType === 1) {
-            this.reportMaking(x, `${reportName}_${this.lcoId}.pdf`, 'application/pdf');
+            this.reportMaking(x, `${reportName}_${this.retailerId}.pdf`, 'application/pdf');
           } else if (reportType === 2) {
-            this.reportMaking(x, `${reportName}_${this.lcoId}.xlsx`, 'application/xlsx');
+            this.reportMaking(x, `${reportName}_${this.retailerId}.xlsx`, 'application/xlsx');
           }
 
           // if (reportType === 1) {
@@ -863,7 +863,4 @@ export class LcodashboardreportComponent implements OnInit {
       this.getstreetList(this.streetid);
     });
   }
-
-
-
 }

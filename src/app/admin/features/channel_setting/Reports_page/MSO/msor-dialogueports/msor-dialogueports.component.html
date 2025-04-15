@@ -139,6 +139,19 @@
                     <option *ngFor="let amount of Amount" [value]="amount.value">{{ amount.label }}</option>
                 </select>
             </div>
+            <div *ngIf="role !== 'ROLE_SPECIAL'"
+                class="input_box d-flex justify-content-center align-item-center mx-2 mb-2">
+                <input type="text" matInput [matAutocomplete]="auto" [(ngModel)]="selectedLcoName"
+                    (input)="filterOperators($event)" placeholder="Select  Operator" [matAutocompleteDisabled]="false"
+                    [value]="selectedOperator?.name">
+
+                <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayOperator">
+                    <mat-option *ngFor="let operator of filteredOperators" [value]="operator.value"
+                        (click)="onSubscriberStatusChange(operator)">
+                        {{ operator.name }}
+                    </mat-option>
+                </mat-autocomplete>
+            </div>
             <button class="btn mx-2 bttn" style="background-color: rgb(26, 129, 133); border-radius: 5px;"
                 (click)="getIncluding()">
                 <span style="color: white;">Submit</span>
@@ -388,7 +401,7 @@
         <div class="col-md-12 d-flex justify-content-center align-items-start mb-3">
             <div class="col-12 d-flex justify-content-start align-items-center flex-wrap">
                 <!-- Online Type -->
-                <div *ngIf="role == 'ROLE_OPERATOR'" class="input_box me-3">
+                <div *ngIf="role == 'ROLE_OPERATOR' || role == 'ROLE_SPECIAL' " class="input_box me-3">
                     <select (ngModelChange)="onOnlineType($event)" [(ngModel)]="selectedOnlineType">
                         <option value="" disabled>Select Type</option>
                         <option *ngFor="let online of onlineType" [value]="online.value">{{ online.label }}

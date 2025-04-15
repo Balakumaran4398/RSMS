@@ -107,6 +107,7 @@ import { LcodashboardreportComponent } from './features/operator_Login/lcodashbo
 import { OperatorareachangeComponent } from './features/operator_Login/operatorareachange/operatorareachange.component';
 import { DiscountsmartcardComponent } from './features/operator_Login/Dialog/discountsmartcard/discountsmartcard.component';
 import { LcoDummycmpComponent } from './features/operator_Login/lco-dummycmp/lco-dummycmp.component';
+import { LcodashboardsublcoreportComponent } from './features/operator_Login/lcodashboardsublcoreport/lcodashboardsublcoreport.component';
 
 
 const routes: Routes = [
@@ -232,9 +233,10 @@ const routes: Routes = [
       { path: 'distributor_setting', component: DistributorsettingComponent },
       { path: 'bill_collection', component: BillcollectionComponent },
       { path: 'lco_dashboard/:smartcard/:status', component: LcoSmartcardDialogComponent },
-      { path: 'lcowallet_share', component: LcowalletshareComponent },
+      { path: 'lcowallet_share', component: LcowalletshareComponent },  
       { path: 'smrt_boxid_change', component: SmrtBoxidChangeComponent },
       { path: 'lco_dashboard_report/:id', component: LcodashboardreportComponent },
+      { path: 'sublco_dashboard_report/:id/:userid/:retailerid', component: LcodashboardsublcoreportComponent },
       { path: 'operator_areachange', component: OperatorareachangeComponent },
       { path: 'discount_smartcard_details/:smartcard', component: DiscountsmartcardComponent },
     ]
@@ -244,6 +246,5 @@ const routes: Routes = [
   imports: [RouterModule.forChild(routes)],
   exports: [RouterModule],
   providers: [{ provide: LocationStrategy, useClass: HashLocationStrategy },]
-
 })
 export class AdminRoutingModule { }

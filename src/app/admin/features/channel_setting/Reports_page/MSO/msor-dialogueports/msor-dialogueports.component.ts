@@ -962,12 +962,12 @@ export class MsorDialogueportsComponent implements OnInit, OnDestroy {
     } else if (this.type == 'lco_transfer_details') {
       this.columnDefs = [
         { headerName: "S.No", lockPosition: true, valueGetter: 'node.rowIndex+1', headerCheckboxSelection: false, checkboxSelection: false, width: 90, filter: false },
-        { headerName: 'SMARTCARD', field: 'smartcard', },
-        { headerName: 'OLD CUSTOMER NAME', field: 'oldcustomername', },
-        { headerName: 'NEW CUSTOMER NAME', field: 'newcustomername', cellStyle: { textAlign: 'left', color: 'green', }, },
-        { headerName: 'OLD OPERATOR	', field: 'oldoperatorname', cellStyle: { textAlign: 'left' }, },
-        { headerName: 'NEW OPERATOR	', field: 'newoperatorname', cellStyle: { textAlign: 'left', color: 'green', }, },
-        { headerName: 'LOG DATE', field: 'logdate', cellStyle: { textAlign: 'center' }, },
+        { headerName: 'SMARTCARD', field: 'smartcard', width: 250, },
+        { headerName: 'OLD CUSTOMER NAME', field: 'oldcustomername', width: 230, },
+        { headerName: 'NEW CUSTOMER NAME', field: 'newcustomername', cellStyle: { textAlign: 'left', color: 'green', }, width: 250, },
+        { headerName: 'OLD OPERATOR	', field: 'oldoperatorname', cellStyle: { textAlign: 'left' }, width: 300, },
+        { headerName: 'NEW OPERATOR	', field: 'newoperatorname', cellStyle: { textAlign: 'left', color: 'green', width: 300, }, },
+        { headerName: 'LOG DATE', field: 'logdate', cellStyle: { textAlign: 'center' }, width: 250, },
       ]
     } else if (this.type == 'subscriber_bill') {
       this.columnDefs = [
@@ -1364,6 +1364,7 @@ export class MsorDialogueportsComponent implements OnInit, OnDestroy {
         (res: any) => {
           this.swal.success_1(res?.message);
           this.rowData = res;
+          console.log(this.rowData);
           this.swal.Close();
         },
         (err) => {
@@ -1954,7 +1955,6 @@ export class MsorDialogueportsComponent implements OnInit, OnDestroy {
   // ================================================userrechargehistory===============================
 
   getUserRechargeHistory() {
-
     this.swal.Loading();
     this.userService.getUserRecharegeHistory(this.role, this.username, this.fromdate, this.todate, this.selectedUser ? this.selectedUser.value : 0, 3)
       .subscribe((res: any) => {
@@ -2233,41 +2233,79 @@ export class MsorDialogueportsComponent implements OnInit, OnDestroy {
 
   getLcoTransferReport() {
     this.submitted = true;
-    this.userService.getLcoTransferReport(this.role, this.username, this.smartcard1 || 0, this.selectedOperator.value || this.operatorId, this.fromdate, this.todate, 3)
-      .subscribe(
-        (response: HttpResponse<any>) => {
-          if (response.status === 200) {
-            console.log(response);
-            this.rowData = response.body;
-            // this.fromdate = '';
-            // this.todate = '';
-            this.swal.Success_200();
-          } else if (response.status === 204) {
-            this.rowData = [];
-            this.swal.Success_204();
+    if (this.isLcoSmartcard) {
+      this.userService.getLcoTransferReport(this.role, this.username, this.smartcard1 || 0, this.selectedOperator.value || this.operatorId || 0, 0, 0, 3)
+        .subscribe(
+          (response: HttpResponse<any>) => {
+            if (response.status === 200) {
+              console.log(response);
+              this.rowData = response.body;
+              // this.fromdate = '';
+              // this.todate = '';
+              this.swal.Success_200();
+            } else if (response.status === 204) {
+              this.rowData = [];
+              this.swal.Success_204();
+            }
+            Swal.close();
+          },
+          (error) => {
+            this.handleApiError(error?.error?.message, error?.status);
           }
-          Swal.close();
-        },
-        (error) => {
-          this.handleApiError(error?.error?.message, error?.status);
-        }
-      );
+        );
+    } else {
+      this.userService.getLcoTransferReport(this.role, this.username, this.smartcard1 || 0, this.selectedOperator.value || this.operatorId || 0, this.fromdate, this.todate, 3)
+        .subscribe(
+          (response: HttpResponse<any>) => {
+            if (response.status === 200) {
+              console.log(response);
+              this.rowData = response.body;
+              // this.fromdate = '';
+              // this.todate = '';
+              this.swal.Success_200();
+            } else if (response.status === 204) {
+              this.rowData = [];
+              this.swal.Success_204();
+            }
+            Swal.close();
+          },
+          (error) => {
+            this.handleApiError(error?.error?.message, error?.status);
+          }
+        );
+    }
+
 
   }
 
   getLcoTransferReportDownload(type: number) {
     this.processingSwal();
-    this.userService.getLcoTransferReportDownload(this.role, this.username, this.smartcard1, this.selectedOperator.value || this.operatorId, this.fromdate, this.todate, type)
-      .subscribe((x: Blob) => {
-        if (type == 1) {
-          this.reportMaking(x, "Lco Transfer Details report.pdf", 'application/pdf');
-        } else if (type == 2) {
-          this.reportMaking(x, "Lco Transfer Details report .xlsx", 'application/xlsx');
-        }
-      },
-        (error: any) => {
-          this.pdfswalError(error?.error.message);
-        });
+
+    if (this.isLcoSmartcard) {
+      this.userService.getLcoTransferReportDownload(this.role, this.username, this.smartcard1, this.selectedOperator.value || this.operatorId || 0, 0, 0, type)
+        .subscribe((x: Blob) => {
+          if (type == 1) {
+            this.reportMaking(x, "Lco Transfer Details report.pdf", 'application/pdf');
+          } else if (type == 2) {
+            this.reportMaking(x, "Lco Transfer Details report .xlsx", 'application/xlsx');
+          }
+        },
+          (error: any) => {
+            this.pdfswalError(error?.error.message);
+          });
+    } else {
+      this.userService.getLcoTransferReportDownload(this.role, this.username, this.smartcard1, this.selectedOperator.value || this.operatorId || 0, this.fromdate, this.todate, type)
+        .subscribe((x: Blob) => {
+          if (type == 1) {
+            this.reportMaking(x, "Lco Transfer Details report.pdf", 'application/pdf');
+          } else if (type == 2) {
+            this.reportMaking(x, "Lco Transfer Details report .xlsx", 'application/xlsx');
+          }
+        },
+          (error: any) => {
+            this.pdfswalError(error?.error.message);
+          });
+    }
   }
   // ================================================ SUB LCO OFFLINE DETAILS REPORT===============================
 

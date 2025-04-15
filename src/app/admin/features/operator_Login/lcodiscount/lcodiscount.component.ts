@@ -16,19 +16,14 @@ import { DiscountsmartcardComponent } from '../Dialog/discountsmartcard/discount
 export class LcodiscountComponent implements OnInit, AfterViewInit {
   role: any;
   username: any;
-
   rowData: any[] = [];
   gridApi: any;
-
   columnDefs: any[] = [];
-
   operatorname: any;
   discountType: any;
   lcoDeatails: any;
   lcoId: any;
-
   type: any = '1';
-
   selectedOption = '1';
   isTabDisabled = false;
   gridOptions = {
@@ -438,7 +433,6 @@ export class LcodiscountComponent implements OnInit, AfterViewInit {
       panelClass: 'custom-dialog-container',
       data: dialogData
     });
-
     dialogRef.afterClosed().subscribe(result => {
       console.log('The dialog was closed');
     });

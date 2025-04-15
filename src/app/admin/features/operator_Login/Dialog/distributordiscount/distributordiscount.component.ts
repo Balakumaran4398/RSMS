@@ -19,7 +19,7 @@ export class DistributordiscountComponent implements OnInit {
   customeramount: any = '0.0';
   paymentMode: any = 'Cash';
   selectpackage: any = 0;
-  selectOperator: any = '0';
+  selectOperator: any ;
   lcoDeatails: any;
   operatorid: any;
   packageList: any[] = [];
@@ -115,9 +115,7 @@ export class DistributordiscountComponent implements OnInit {
   }
   onOperatorChange() {
     console.log('all', this.selectOperator);
-
     if (this.selectOperator == "0") {
-      // Set all operator IDs when "All LCO" is selected
       this.selectOperator = this.operatorList.map(op => op.operatorid);
     }
   }
@@ -193,7 +191,7 @@ export class DistributordiscountComponent implements OnInit {
     this.swal.Loading();
     this.userService.getupdatedistributorDiscount(this.role, this.username, this.selectOperator, this.operatorid, this.selectpackage, this.customeramount || 0, this.oldmsoamount || 0,
       this.newmsoamount).subscribe((res: any) => {
-        this.swal.success(res?.message);
+        // this.swal.success(res?.message);
       }, (err) => {
         this.swal.Error(err?.error?.message || err?.error);
       });
@@ -252,13 +250,13 @@ export class DistributordiscountComponent implements OnInit {
       allowClear: true
     });
     $('#operator').on('change', (event: any) => {
+      console.log(event);
       this.selectOperator = event.target.value;
       console.log(this.selectOperator)
       if (this.selectOperator == 0 || this.selectOperator == '') {
         this.selectOperator = this.operatorList.map(op => op.operatorid);
         console.log(this.selectOperator);
       }
-      // this.onSmartcardList(this.smartcard);
     });
     $('#package').select2({
       placeholder: 'Select Package',

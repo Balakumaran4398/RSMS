@@ -210,7 +210,7 @@ export class SublcooperatorComponent implements OnInit {
       console.log(data);
       this.lcoDeatails = data;
       this.activeCount = this.lcoDeatails?.activecount;
-      this.newCount = this.lcoDeatails?.deactivecount;
+      this.newCount = this.lcoDeatails?.newsubscribercount;
       this.expiryCount = this.lcoDeatails?.deactivesubscription;
     })
   }
@@ -298,8 +298,9 @@ export class SublcooperatorComponent implements OnInit {
     dialogRef.afterClosed().subscribe(result => {
     });
   }
-  openLCO_dashboard(event: any) {
-    this.router.navigate(['admin/lco_dashboard_report/' + event]);
+  openLCO_dashboard(event: any, data: any) {
+    console.log(data);
+    this.router.navigate(['admin/sublco_dashboard_report/' + event + '/' + data.username + '/' + data.retailerId]);
   }
 
   // ---------------------------------------------------------------------------------------------------------------

@@ -39,13 +39,18 @@
             <div><strong>Recharge History Report</strong> </div>
             <div class="tooltip">Recharge History</div>
           </div>
-          <div *ngIf="(isUser || isReception ) && !isshow " class="card royal-card tooltip-container"
+          <div *ngIf="(isReception ) && !isshow " class="card royal-card tooltip-container"
             (click)="openMsoDialog('online_payment')"><i class="fas fa-file-invoice"></i>
             <div><strong> Online Payment History</strong> </div>
             <div class="tooltip">Operator/Subscriber/Sublco Online Payment</div>
           </div>
-          <div *ngIf="isSpecial " class="card royal-card tooltip-container"
+          <!-- <div *ngIf="isSpecial " class="card royal-card tooltip-container"
             (click)="openMsoDialog('online_payment_special')"><i class="fas fa-file-invoice"></i>
+            <div><strong> Online Payment History</strong> </div>
+            <div class="tooltip">Operator/Subscriber/Sublco Online Payment</div>
+          </div> -->
+          <div *ngIf="isSpecial " class="card royal-card tooltip-container"
+            (click)="openMsoDialog('online_payment')"><i class="fas fa-file-invoice"></i>
             <div><strong> Online Payment History</strong> </div>
             <div class="tooltip">Operator/Subscriber/Sublco Online Payment</div>
           </div>

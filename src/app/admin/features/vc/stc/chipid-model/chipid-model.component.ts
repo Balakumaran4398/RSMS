@@ -237,7 +237,9 @@ export class ChipidModelComponent implements OnInit {
     })
   }
   submit() {
-    this.userService.getchipidUpdate(this.role, this.username, this.subLcoSmartcard, this.subLcoModel, this.subLcoChipID)
+    console.log(this.subLcoChipID);
+
+    this.userService.getchipidUpdate(this.role, this.username, this.subLcoSmartcard, this.subLcoChipID, this.subLcoModel)
       .subscribe((res: any) => {
         this.swal.success(res?.message);
       }, (err) => {
@@ -464,7 +466,7 @@ export class ChipidModelComponent implements OnInit {
     console.log('ewrrrrrr322', this.containeroperatorid);
     this.userService.getUpdateModelForOperator(this.role, this.username, this.opName, this.containeroperatorid)
       .subscribe((res: any) => {
-        // this.swal.success(res?.message);
+        this.swal.success(res?.message);
       }, (err) => {
         this.swal.Error(err?.error?.message);
       });
@@ -480,7 +482,6 @@ export class ChipidModelComponent implements OnInit {
         return `<span style="color: ${color}; font-weight: bold;">${status}</span>`;
       }
     },
-
     {
       headerName: 'EDIT', width: 230, filter: false,
       cellRenderer: (params: any) => {

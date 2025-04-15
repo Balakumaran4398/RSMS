@@ -154,6 +154,21 @@
                             class="fa fa-fw fa-th icon">&nbsp;</i>Packagewise Operator</a></li>
             </ul>
         </li>
+
+        <!-- ---------------------------------------vc----------------- -->
+        <li *ngIf="isUser">
+            <a> <mat-icon class="icon">control_camera</mat-icon>VC/STB Master <i
+                    class='bx bx-chevron-right icon-right'></i></a>
+            <ul class="side-dropdown">
+                <li><a (click)="navgetToUrl('/chipid');setActiveLinkTab($event)"><i class="fa-regular fa-newspaper icon"
+                            style="margin-right: 0px;"></i>Chip ID and Model
+                    </a>
+                </li>
+                <!-- <li><a (click)="navgetToUrl('/stb_bill');setActiveLinkTab($event)"><i class="fa fa-fw fa-recycle icon "
+                                    style="margin-right: 0px;"></i>Smartcard Change</a> </li> -->
+            </ul>
+        </li>
+        <!-- ------------------------------------------------------------- -->
         <li *ngIf="isUser || isReception ">
             <a> <mat-icon class="icon">games</mat-icon> Inventory <i class='bx bx-chevron-right icon-right'></i></a>
             <ul class="side-dropdown">
@@ -228,14 +243,6 @@
                         Creation</a> </li>
             </ul>
         </li>
-
-
-
-
-
-
-
-
         <li class="mb-3" *ngIf="isUser || isReception ">
             <a>
                 <!-- <mat-icon class="icon">assessment</mat-icon> -->
@@ -250,10 +257,12 @@
                         Reports </a> </li>
                 <!-- <li><a (click)="navgetToUrl('/historyReports');setActiveLinkTab($event)"><i
                             class="fa fa-fw fa-star icon">&nbsp;</i> HISTORY Reports</a></li> -->
-
             </ul>
         </li>
 
+        <li *ngIf="isUser "><a (click)="navgetToUrl('/lcoDashboard');setActiveLinkTab($event)" class="nav-link">
+                <i class='fas fa-tags icon'></i>&nbsp;Discount</a>
+        </li>
         <!-- -------------------------------------------------------------Special role----------------------------------------------- -->
 
 
@@ -413,20 +422,7 @@
             </ul>
         </li>
 
-        <!-- ---------------------------------------vc----------------- -->
-        <!-- <li *ngIf="isUser">
-            <a> <mat-icon class="icon">control_camera</mat-icon>VC/STB Master <i
-                    class='bx bx-chevron-right icon-right'></i></a>
-            <ul class="side-dropdown">
-                <li><a (click)="navgetToUrl('/chipid');setActiveLinkTab($event)"><i class="fa-regular fa-newspaper icon"
-                            style="margin-right: 0px;"></i>Chip ID and Model
-                    </a>
-                </li>
-                <li><a (click)="navgetToUrl('/stb_bill');setActiveLinkTab($event)"><i class="fa fa-fw fa-recycle icon "
-                            style="margin-right: 0px;"></i>Smartcard Change</a> </li>
-            </ul>
-        </li> -->
-        <!-- ------------------------------------------------------------- -->
+
 
         <li *ngIf="isOperator"><a (click)="navgetToUrl('/forcemessage');setActiveLinkTab($event)" class="nav-link">
                 <i class="bx bx-label bx-sm icon "></i> &nbsp;Message</a></li>
