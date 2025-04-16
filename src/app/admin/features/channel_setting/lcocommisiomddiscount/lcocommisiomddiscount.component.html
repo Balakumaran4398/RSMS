@@ -1,0 +1,8 @@
+<h5>PACKAGE WISE</h5>
+
+<div class="tab-content mt-3">
+    <ag-grid-angular #agGrid id="myGrid" domLayout="normal" class="ag-theme-alpine table-class" rowAnimation
+        [gridOptions]="gridOptions" [columnDefs]="columnDefs" (gridReady)="onGridReady($event)"
+        [rowData]="rowData" [enableCellTextSelection]="true">
+    </ag-grid-angular>
+</div>

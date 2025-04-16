@@ -139,7 +139,7 @@
                     <option *ngFor="let amount of Amount" [value]="amount.value">{{ amount.label }}</option>
                 </select>
             </div>
-            <div *ngIf="role !== 'ROLE_SPECIAL'"
+            <!-- <div *ngIf="role !== 'ROLE_SPECIAL'"
                 class="input_box d-flex justify-content-center align-item-center mx-2 mb-2">
                 <input type="text" matInput [matAutocomplete]="auto" [(ngModel)]="selectedLcoName"
                     (input)="filterOperators($event)" placeholder="Select  Operator" [matAutocompleteDisabled]="false"
@@ -151,7 +151,7 @@
                         {{ operator.name }}
                     </mat-option>
                 </mat-autocomplete>
-            </div>
+            </div> -->
             <button class="btn mx-2 bttn" style="background-color: rgb(26, 129, 133); border-radius: 5px;"
                 (click)="getIncluding()">
                 <span style="color: white;">Submit</span>
@@ -159,11 +159,11 @@
         </div>
 
         <div class=" display1">
-            <div class="export-icon  mx-2">
+            <!-- <div class="export-icon  mx-2">
                 <img src="/assets/images/icons/Excel.png" alt="Excel Icon" width="40px"
                     (click)="getIncludeReportDownload(2)">
                 <div class="tooltip">Excel</div>
-            </div>
+            </div> -->
             <div class="export-icon ">
                 <img src="/assets/images/icons/pdf.png" alt="PDF Icon" width="40px"
                     (click)="getIncludeReportDownload(1)">

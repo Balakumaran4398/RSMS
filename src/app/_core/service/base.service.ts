@@ -854,7 +854,7 @@ export class BaseService {
   }
 
   getremoveDistributor(role: any, username: any, distributorid: any, isdistributor: any): Observable<any> {
-    return this.http.get<any[]>(BASE_URL + "/lcocommission/removeDistributor?role=" + role + "&username=" + encodeURIComponent(username) + "&distributorid=" + distributorid + "&isdistributor=" + isdistributor, {})
+    return this.http.post<any[]>(BASE_URL + "/lcocommission/removeDistributor?role=" + role + "&username=" + encodeURIComponent(username) + "&distributorid=" + distributorid + "&isdistributor=" + isdistributor, {})
   }
 
   // -------------------------------------------LCO MEMBERSHIP FUP----------------------------------
@@ -2147,8 +2147,8 @@ export class BaseService {
   getDistributorPackageList(role: any, username: any, operatorid: any, distributorid: any): Observable<any[]> {
     return this.http.get<any[]>(BASE_URL + "/operator/getDistributorPackageList?role=" + role + "&username=" + encodeURIComponent(username) + "&operatorid=" + operatorid + "&distributorid=" + distributorid)
   }
-  getOpDiscountListByOpidAreaid(role: any, username: any, operatorid: any, areaid: any, type: any): Observable<any[]> {
-    return this.http.get<any[]>(BASE_URL + "/operator/getLcoDiscountListByOpidAreaid?role=" + role + "&username=" + encodeURIComponent(username) + "&operatorid=" + operatorid + "&areaid=" + areaid + "&type=" + type)
+  getOpDiscountListByOpidAreaid(role: any, username: any, operatorid: any, areaid: any, type: any, ismso: any): Observable<any[]> {
+    return this.http.get<any[]>(BASE_URL + "/operator/getLcoDiscountListByOpidAreaid?role=" + role + "&username=" + encodeURIComponent(username) + "&operatorid=" + operatorid + "&areaid=" + areaid + "&type=" + type + "&ismso=" + ismso)
   }
   // updatePlanwiseDiscount(role: any, username: any, operatorid: any, orderid: any, plan_discount: any): Observable<any[]> {
   //   return this.http.post<any[]>(BASE_URL + "/operator/updatePlanwiseDiscount?role=" + role + "&username=" + encodeURIComponent(username) + "&operatorid=" + operatorid + "&orderid=" + orderid + "&plan_discount=" + plan_discount, {})

@@ -145,7 +145,7 @@ export class LcodiscountComponent implements OnInit, AfterViewInit {
     console.log(this.type);
     if (this.type == '1') {
       console.log('all area', this.type);
-      this.userService.getOpDiscountListByOpidAreaid(this.role, this.username, this.lcoId, 0, 1).subscribe((res: any) => {
+      this.userService.getOpDiscountListByOpidAreaid(this.role, this.username, this.lcoId, 0, 1,false).subscribe((res: any) => {
         console.log(res);
         this.rowData = res;
       })
@@ -156,14 +156,14 @@ export class LcodiscountComponent implements OnInit, AfterViewInit {
     } else if (this.type == '3') {
       console.log('smartcard', this.type);
       this.onAreaStatusChange(this.lcoId);
-      this.userService.getOpDiscountListByOpidAreaid(this.role, this.username, this.lcoId, 0, 3).subscribe((res: any) => {
+      this.userService.getOpDiscountListByOpidAreaid(this.role, this.username, this.lcoId, 0, 3,false).subscribe((res: any) => {
         console.log(res);
         this.rowData = res;
       })
     } else if (this.type == '4') {
       console.log('package', this.type);
       this.onAreaStatusChange(this.lcoId);
-      this.userService.getOpDiscountListByOpidAreaid(this.role, this.username, this.lcoId, 0, 4).subscribe((res: any) => {
+      this.userService.getOpDiscountListByOpidAreaid(this.role, this.username, this.lcoId, 0, 4,false).subscribe((res: any) => {
         console.log(res);
         this.rowData = res;
       })
@@ -395,7 +395,6 @@ export class LcodiscountComponent implements OnInit, AfterViewInit {
 
 
   onAreaStatusChange(input: any): void {
-    // Ensure input is a string
     const searchTerm = (input && typeof input === 'string') ? input.toLowerCase() : '';
 
     this.filteredAreas = this.area_list.filter((area: any) =>
@@ -408,7 +407,7 @@ export class LcodiscountComponent implements OnInit, AfterViewInit {
     this.selectedArea = selectedArea;  // Store selected object
     this.areaid = selectedArea.value;  // Store selected area's value
 
-    this.userService.getOpDiscountListByOpidAreaid(this.role, this.username, this.lcoId, this.areaid, 1)
+    this.userService.getOpDiscountListByOpidAreaid(this.role, this.username, this.lcoId, this.areaid, 1,false)
       .subscribe((res: any) => {
         this.rowData = res;
       });

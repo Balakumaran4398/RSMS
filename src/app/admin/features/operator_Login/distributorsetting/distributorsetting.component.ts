@@ -78,7 +78,6 @@ export class DistributorsettingComponent implements OnInit {
         editButton.style.cursor = 'pointer';
         editButton.addEventListener('click', () => {
           this.openaddedlogue('packageDetails', params.data);
-
         });
         const div = document.createElement('div');
         div.appendChild(editButton);
@@ -96,7 +95,6 @@ export class DistributorsettingComponent implements OnInit {
         editButton.style.cursor = 'pointer';
         editButton.addEventListener('click', () => {
           this.toggleedit('editlco', params.data);
-
         });
         const div = document.createElement('div');
         div.appendChild(editButton);
@@ -115,7 +113,6 @@ export class DistributorsettingComponent implements OnInit {
         editButton.style.cursor = 'pointer';
         editButton.addEventListener('click', () => {
           this.toggleedit('lco_dashboard', params.data);
-
         });
         const div = document.createElement('div');
         div.appendChild(editButton);

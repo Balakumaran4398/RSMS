@@ -181,6 +181,7 @@ export class LcodashboardreportComponent implements OnInit {
         this.swal.Error(err?.error?.message);
         this.swal.Close();
       });
+      this.swal.Close();
   }
 
   getLcoInvoiceReport(reportType: number) {

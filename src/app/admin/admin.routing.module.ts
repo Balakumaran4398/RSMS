@@ -108,6 +108,7 @@ import { OperatorareachangeComponent } from './features/operator_Login/operatora
 import { DiscountsmartcardComponent } from './features/operator_Login/Dialog/discountsmartcard/discountsmartcard.component';
 import { LcoDummycmpComponent } from './features/operator_Login/lco-dummycmp/lco-dummycmp.component';
 import { LcodashboardsublcoreportComponent } from './features/operator_Login/lcodashboardsublcoreport/lcodashboardsublcoreport.component';
+import { LcocommisiomddiscountComponent } from './features/channel_setting/lcocommisiomddiscount/lcocommisiomddiscount.component';
 
 
 const routes: Routes = [
@@ -227,6 +228,7 @@ const routes: Routes = [
       { path: 'forcemessage', component: ForcemessageComponent },
       { path: 'lcoChangePassword', component: LcoChangePasswordComponent },
       { path: 'lcoDashboard', component: LcodiscountComponent },
+      { path: 'lcoCommissionDashboard', component: LcocommisiomddiscountComponent },
       { path: 'dummy', component: LcoDummycmpComponent },
       { path: 'lcoReports', component: LcoReportComponent },
       { path: 'lcologinReports/:id', component: LcologinReportComponent },

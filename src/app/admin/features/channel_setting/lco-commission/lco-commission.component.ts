@@ -53,25 +53,25 @@ export class LcoCommissionComponent {
     defaultColDef: {
       sortable: true,
       resizable: true,
-      filter: true, 
+      filter: true,
       floatingFilter: true,
       comparator: (valueA: any, valueB: any) => {
         const isNumberA = !isNaN(valueA) && valueA !== null;
         const isNumberB = !isNaN(valueB) && valueB !== null;
-  
+
         if (isNumberA && isNumberB) {
-          return valueA - valueB; 
+          return valueA - valueB;
         } else {
           const normalizedA = valueA ? valueA.toString().trim().toLowerCase() : '';
           const normalizedB = valueB ? valueB.toString().trim().toLowerCase() : '';
-          return normalizedA.localeCompare(normalizedB); 
+          return normalizedA.localeCompare(normalizedB);
         }
       },
       filterParams: {
         textFormatter: (value: string) => {
           return value ? value.toString().toLowerCase() : '';
         },
-        debounceMs: 200, 
+        debounceMs: 200,
       },
     },
     paginationPageSize: 10,
@@ -282,21 +282,40 @@ export class LcoCommissionComponent {
           cellRenderer: (params: any) => `<span >${params.value ? params.value.toFixed(2) : '0.00'}</span> `
         },
         {
-          headerName: "EDIT", field: '', width: 100,
+          headerName: "OPERATOR LIST", width: 100,
           cellRenderer: (params: any) => {
             const editButton = document.createElement('button');
-            editButton.innerHTML = '<i class="fas fa-pen-square" style="font-size:30px"></i>';
+            editButton.innerHTML = '<i class="fas fa-list" style="font-size:25px;color:#035678"></i>';
             editButton.style.backgroundColor = 'transparent';
             // editButton.style.color = 'rgb(2 85 13)';
             editButton.style.color = '(rgb(29 1 11)';
             editButton.style.border = 'none';
-            editButton.title = 'Edit Status';
+            editButton.title = 'Operator List';
             editButton.style.cursor = 'pointer';
             editButton.style.marginRight = '6px';
             editButton.addEventListener('click', () => {
               this.openEditDismembershipDialog(params.data);
             });
 
+            const div = document.createElement('div');
+            div.appendChild(editButton);
+            return div;
+          }
+        },
+        {
+          headerName: "EDIT", width: 100,
+          cellRenderer: (params: any) => {
+            const editButton = document.createElement('button');
+            editButton.innerHTML = '<i class="fas fa-pen-square" style="font-size:30px"></i>';
+            editButton.style.backgroundColor = 'transparent';
+            editButton.style.color = '(rgb(29 1 11)';
+            editButton.style.border = 'none';
+            editButton.title = 'Edit';
+            editButton.style.cursor = 'pointer';
+            editButton.style.marginRight = '6px';
+            editButton.addEventListener('click', () => {
+              this.getActive(params.data);
+            });
             const div = document.createElement('div');
             div.appendChild(editButton);
             return div;
@@ -753,6 +772,53 @@ export class LcoCommissionComponent {
 
     dialogRef.afterClosed().subscribe(result => {
       console.log('The dialog was closed');
+    });
+  }
+
+
+  getActive(data: any) {
+    console.log(data);
+    var opid = data.operatorid;
+    var isdistributor = data.isdistributor;
+    console.log(opid);
+    console.log(isdistributor);
+
+    Swal.fire({
+      title: "Are you sure?",
+      text: "You won't be able to Revert this!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, Revert it!"
+    }).then((result) => {
+      if (result.isConfirmed) {
+        Swal.fire({
+          title: 'Updateing...',
+          text: 'Please wait while the Distributor Membership is being updated',
+          allowOutsideClick: false,
+          didOpen: () => {
+            Swal.showLoading(null);
+          }
+        });
+        this.userservice.getremoveDistributor(this.role, this.username, opid, !isdistributor).subscribe((res: any) => {
+          Swal.fire({
+            title: 'Activated!',
+            text: res.message,
+            icon: 'success',
+            timer: 2000,
+            timerProgressBar: true,
+          });
+        }, (err) => {
+          Swal.fire({
+            title: 'Error!',
+            text: err?.error?.message,
+            icon: 'error',
+            timer: 2000,
+            timerProgressBar: true,
+          });
+        });
+      }
     });
   }
 }

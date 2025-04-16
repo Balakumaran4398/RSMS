@@ -52,6 +52,14 @@ export class SublcooperatorComponent implements OnInit {
   selectedOperator: any;
   originalPagedOperators: any[] = [];
 
+
+  lcoDetails: any;
+  retailerid: any;
+  sublcorecharge: boolean = false;
+  activeCount: any;
+  expiryCount: any;
+  newCount: any;
+
   constructor(private route: ActivatedRoute, public dialog: MatDialog, private userservice: BaseService, private router: Router, private storageservice: StorageService, private cdr: ChangeDetectorRef, private swal: SwalService) {
     this.role = storageservice.getUserRole();
     this.username = storageservice.getUsername();
@@ -192,26 +200,43 @@ export class SublcooperatorComponent implements OnInit {
 
 
   }
-  lcoDeatails: any;
-  sublcorecharge: boolean = false;
+
   operatorIdoperatorId() {
     this.userservice.getOpDetails(this.role, this.username).subscribe((data: any) => {
-      this.lcoDeatails = data;
-      this.operatorid = this.lcoDeatails?.operatorid;
-      this.sublcorecharge = this.lcoDeatails?.sublcorecharge;
-      this.getSubLcoDetails(this.operatorid);
+      this.lcoDetails = data;
+      console.log(this.lcoDetails);
+
+      // this.operatorid = this.lcoDetails?.operatorid;
+      // this.sublcorecharge = this.lcoDetails?.sublcorecharge;
+      // if (this.lcoDetails.length > 0) {
+        this.operatorid = this.lcoDetails?.operatorId;
+        this.sublcorecharge = this.lcoDetails?.sublcorecharge;
+      // }
+      console.log(this.operatorid);
+      console.log(this.sublcorecharge);
+      // this.getSubLcoDetails(retailerIds);
+      console.log('sdfsdfdsfds',this.lcoDetails);
+
+      this.lcoDetails.forEach((item: any) => {
+        console.log('11111323424');
+        const retailerId = item.operatorid;
+        console.log("Calling getSubLcoDetails for Retailer ID:", retailerId);
+
+        // Call method for each retailerId
+        this.getSubLcoDetails(retailerId);
+      });
+      console.log('dfdsf7889');
     })
   }
-  activeCount: any;
-  expiryCount: any;
-  newCount: any;
-  getSubLcoDetails(lco: any) {
-    this.userservice.getSublcoLoginDashboardCount(this.role, this.username, lco).subscribe((data: any) => {
+
+  getSubLcoDetails(retailerId: any) {
+    console.log(retailerId);
+    this.userservice.getSublcoLoginDashboardCount(this.role, this.username, retailerId).subscribe((data: any) => {
       console.log(data);
-      this.lcoDeatails = data;
-      this.activeCount = this.lcoDeatails?.activecount;
-      this.newCount = this.lcoDeatails?.newsubscribercount;
-      this.expiryCount = this.lcoDeatails?.deactivesubscription;
+      this.lcoDetails = data;
+      this.activeCount = this.lcoDetails?.activecount;
+      this.newCount = this.lcoDetails?.newsubscribercount;
+      this.expiryCount = this.lcoDetails?.deactivesubscription;
     })
   }
 

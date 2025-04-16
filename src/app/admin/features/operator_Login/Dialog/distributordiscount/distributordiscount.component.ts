@@ -191,7 +191,7 @@ export class DistributordiscountComponent implements OnInit {
     this.swal.Loading();
     this.userService.getupdatedistributorDiscount(this.role, this.username, this.selectOperator, this.operatorid, this.selectpackage, this.customeramount || 0, this.oldmsoamount || 0,
       this.newmsoamount).subscribe((res: any) => {
-        // this.swal.success(res?.message);
+        this.swal.success(res?.message);
       }, (err) => {
         this.swal.Error(err?.error?.message || err?.error);
       });
