@@ -66,14 +66,14 @@
                             </div>
 
                             <div class="col-6 col-md-6">
-                                <!-- <span
+                                <span
                                     style="color: var(--primary-color); display: flex; align-items: center;justify-content: space-between; position: absolute; top: 5px; right: 10px;"
                                     class="sub-tittle tittle1 ">
                                          <p><i class="fas fa-pen"
                                             style="color: var(--edit-button); font-size: 20px;cursor: pointer"
-                                            aria-hidden="true" (click)="toggleedit1(operator.operatorid)"></i></p>
+                                            aria-hidden="true" (click)="toggleedit1(operator)"></i></p>
                                     <span class="tooltip">Edit</span>
-                                </span> -->
+                                </span>
 
                                 <mat-card class="inventory">
                                     <p>Box Inventory </p>
@@ -109,7 +109,7 @@
                         <div class="report d-flex justify-content-center">
                             <div class="file-container">
                                 <div class="files tooltip-container mx-2"
-                                    (click)="openaddedlogue('packageDetails', operator)">
+                                    (click)="openaddedlogue('packageDetails', operator.operatorid)">
                                     <div class="files tooltip-container ">
                                         <i class="fa fa-percent" aria-hidden="true" style="font-size: 23px;color: darkcyan;cursor: pointer;"></i>
                                         <span class="tooltip">LCO Discount

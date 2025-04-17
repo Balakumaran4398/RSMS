@@ -75,11 +75,11 @@ export class DistributordiscountComponent implements OnInit {
     console.log(data);
     this.data_details = data;
     console.log(this.type);
-    this.lco_operatorId = data?.data.operatorid;
+    this.lco_operatorId = data?.data;
     console.log(this.lco_operatorId);
 
 
-    this.lcoOperatorId = this.data_details.operatorid;
+    // this.lcoOperatorId = this.data_details.operatorid;
     this.lcoParentOperatorId = data?.opId;
     console.log(this.lcoOperatorId);
     console.log('lcoParentOperatorId', this.lcoParentOperatorId);
@@ -146,7 +146,7 @@ export class DistributordiscountComponent implements OnInit {
   lcolistid: any;
   retailerList: any[] = [];
   getDistributorPackageList() {
-    this.userService.getDistributorPackageList(this.role, this.username, this.lco_operatorId || this.operatorid, this.operatorid).subscribe((data: any) => {
+    this.userService.getDistributorPackageList(this.role, this.username, this.lco_operatorId || this.operatorid , this.operatorid).subscribe((data: any) => {
       // this.userService.getDistributorPackageList(this.role, this.username, this.lco_operatorId , this.operatorid).subscribe((data: any) => {
       this.packageList = data;
       this.filteredPackageList = data;
@@ -223,10 +223,10 @@ export class DistributordiscountComponent implements OnInit {
     this.amountError = false;
     this.amountErrorMessage = '';
 
-    if (!this.retailerid || this.retailerid === 0) {
-      this.retailerError = true;
-      return;
-    }
+    // if (!this.retailerid || this.retailerid === 0) {
+    //   this.retailerError = true;
+    //   return;
+    // }
 
     const amount = Number(this.rechargeAmount);
     if (!this.rechargeAmount || isNaN(amount)) {
@@ -270,7 +270,7 @@ export class DistributordiscountComponent implements OnInit {
   }
   getRetailerRecharge() {
     this.swal.Loading();
-    this.userService.getretailerOfflineRecharge(this.role, this.username, this.operatorid, this.retailerid, this.rechargeAmount).subscribe((res: any) => {
+    this.userService.getretailerOfflineRecharge(this.role, this.username, this.operatorid, this.retailerid || this.selectOperator, this.rechargeAmount).subscribe((res: any) => {
       this.swal.success(res?.message);
     }, (err) => {
       this.swal.Error(err?.error?.message || err?.error);

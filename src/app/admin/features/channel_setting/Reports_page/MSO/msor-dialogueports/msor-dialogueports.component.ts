@@ -1822,7 +1822,7 @@ export class MsorDialogueportsComponent implements OnInit, OnDestroy {
 
   getWalletreport() {
     this.swal.Loading();
-    this.userService.getWalletShareReport(this.role, this.username, this.fromdate, this.todate, this.selectedOperator.value || this.operatorId, 3)
+    this.userService.getWalletShareReport(this.role, this.username, this.fromdate, this.todate, this.selectedOperator.value || this.operatorId || 0, 3)
       .subscribe((res: any) => {
         this.rowData = res;
         this.swal.Close();
@@ -1833,7 +1833,7 @@ export class MsorDialogueportsComponent implements OnInit, OnDestroy {
   getWalletReportDownload(type: number) {
     this.processingSwal();
     this.swal.Loading();
-    this.userService.getWalletShareReportDownload(this.role, this.username, this.fromdate, this.todate, this.selectedOperator.value || this.operatorId, type)
+    this.userService.getWalletShareReportDownload(this.role, this.username, this.fromdate, this.todate, this.selectedOperator.value || this.operatorId || 0, type)
       .subscribe((x: Blob) => {
         if (type == 1) {
           this.reportMaking(x, "Wallet_Share_Report(" + this.fromdate + "-" + this.todate + ").pdf", 'application/pdf');

@@ -46,6 +46,7 @@ export class SublcooperatordialogueComponent implements OnInit {
   form!: FormGroup;
   editform!: FormGroup;
   operatorid: any;
+  lcoid: any;
   submitted = false;
   rowData1: any;
   isCustomerMode: boolean = false;
@@ -104,6 +105,8 @@ export class SublcooperatordialogueComponent implements OnInit {
     console.log(data);
     this.type = data.type;
     this.operatorid = data.id;
+    console.log(this.operatorid);
+    
     this.selectedRow = data;
     this.retailername = data?.data.retailerName;
     this.retailerUsername = data?.data.username;
@@ -113,7 +116,9 @@ export class SublcooperatordialogueComponent implements OnInit {
     this.address = data?.data.address;
     this.password = data?.data.password;
     this.retailerid = data?.data.retailerId;
+    this.lcoid = data?.data.operatorId;
     console.log(this.retailerid);
+    console.log(this.lcoid);
 
     this.selectedid = data?.selectedid;
     console.log(this.selectedid);
@@ -129,7 +134,7 @@ export class SublcooperatordialogueComponent implements OnInit {
       // password: ['', [Validators.required, Validators.pattern('^(?=.*[A-Za-z])(?=.*\\d)[A-Za-z\\d@$!%*?&]{8,}$')]],
       role: this.role,
       username: this.username,
-      operatorid: this.operatorid,
+      operatorid: this.operatorid || 0,
     })
 
 
@@ -141,7 +146,7 @@ export class SublcooperatordialogueComponent implements OnInit {
       password: ['', [Validators.required, Validators.pattern('^(?=.*[A-Za-z])(?=.*\\d)[A-Za-z\\d@$!%*?&]{8,}$')]],
       role: this.role,
       username: this.username,
-      operatorid: this.operatorid,
+      operatorid: this.operatorid || this.lcoid,
       retailerid: this.retailerid
     })
   }
@@ -162,7 +167,7 @@ export class SublcooperatordialogueComponent implements OnInit {
   //   this.updateColumnDefs(tab);
   // }
   getSublcoDiscountList() {
-    this.userservice.getSublcoDiscountList(this.role, this.username, this.operatorid, this.retailerid).subscribe((data: any) => {
+    this.userservice.getSublcoDiscountList(this.role, this.username, this.operatorid || this.lcoid, this.retailerid).subscribe((data: any) => {
       this.rowData1 = data;
       console.log(this.rowData1);
 
@@ -415,7 +420,7 @@ export class SublcooperatordialogueComponent implements OnInit {
     this.isCustomerMode = true;
     this.selectedRow!.data!.isCustomerMode = true;
     this.dialogRef.close(this.selectedRow)
-    this.userservice.getUpdateSublcoRate(this.role, this.retailerUsername, this.operatorid, this.retailerid, 0)
+    this.userservice.getUpdateSublcoRate(this.role, this.retailerUsername, this.operatorid || this.lcoid, this.retailerid, 0)
       .subscribe((res: any) => {
         this.swal.success(res?.message);
       }, (err) => {
@@ -427,7 +432,7 @@ export class SublcooperatordialogueComponent implements OnInit {
     console.log(this.isCustomerMode);
     this.selectedRow!.data!.isCustomerMode = false;
     this.dialogRef.close(this.selectedRow)
-    this.userservice.getUpdateSublcoRate(this.role, this.retailerUsername, this.operatorid, this.retailerid, 1)
+    this.userservice.getUpdateSublcoRate(this.role, this.retailerUsername, this.operatorid || this.lcoid, this.retailerid, 1)
       .subscribe((res: any) => {
         this.swal.success(res?.message);
       }, (err) => {
@@ -452,7 +457,7 @@ export class SublcooperatordialogueComponent implements OnInit {
   }
 
   getDatewiseReport() {
-    this.userservice.getsublcoDatewiseReport(this.role, this.username, this.retailerid, this.operatorid, this.fromdate, this.todate)
+    this.userservice.getsublcoDatewiseReport(this.role, this.username, this.retailerid, this.operatorid || this.lcoid, this.fromdate || 0, this.todate || 0)
       .subscribe(
         (response: HttpResponse<any[]>) => { // Expect HttpResponse<any[]>
           if (response.status === 200) {
@@ -477,7 +482,8 @@ export class SublcooperatordialogueComponent implements OnInit {
 
   getmonthwisereport() {
     this.rowData = [];
-    this.userservice.getsublcoMonthwiseReport(this.role, this.username, this.retailerid, this.operatorid, this.selectedMonth, this.selectedYear)
+    this.swal.Loading();
+    this.userservice.getsublcoMonthwiseReport(this.role, this.username, this.retailerid, this.operatorid || this.lcoid, this.selectedMonth || 0, this.selectedYear || 0)
       .subscribe(
         (response: HttpResponse<any[]>) => {
           if (response.status === 200) {
@@ -514,7 +520,7 @@ export class SublcooperatordialogueComponent implements OnInit {
       }
     });
 
-    this.userservice.getsublcoMonthwisePdfReport(this.role, this.username, this.retailerid, this.operatorid, this.selectedMonth, this.selectedYear)
+    this.userservice.getsublcoMonthwisePdfReport(this.role, this.username, this.retailerid, this.operatorid || this.lcoid, this.selectedMonth || 0, this.selectedYear || 0)
       .subscribe((res: Blob) => {
         Swal.close();
         const blob = new Blob([res], { type: 'application/pdf' });

@@ -1,5 +1,5 @@
+<h4 style="text-align: center;color: rgb(68, 64, 64);text-transform: uppercase;">SUBLCO Creation </h4>
 <div style="padding: 1rem;">
-    <h4 style="text-align: center;color: rgb(68, 64, 64);text-transform: uppercase;">SUBLCO Creation </h4>
     <div class="col d-flex justify-content-start align-items-center mb-3">
         <a class="btn btn-outline-success mx-1" (click)="opendialogue('createsublco','')">
             <i class="fa fa-plus"></i> New
@@ -22,7 +22,7 @@
     </div>
 
     <div class="grid-container">
-        <div *ngFor="let operator of pagedOperators">
+        <div *ngFor="let operator of paginatedData">
             <mat-card class="card">
                 <mat-card-header>
                     <div class="d-flex justify-content-start align-item-center">
@@ -65,12 +65,9 @@
                                         <span class="last1">{{ operator?.isactive === 'true' ? 'Active' :
                                             'Deactive'}}</span>
                                     </p>
-
                                 </div>
                             </div>
-
                         </div>
-
                     </div>
                     <div class=" col-12 d-flex justify-content-center align-items-center">
                         <div class="col-2 vertical tooltip-container">
@@ -108,6 +105,13 @@
                                 <span class="tooltip">SUBLCO Rating</span>
                             </div>
                         </div>
+                        <!-- <div class="col-2 vertical tooltip-container">
+                            <div class="col-2 vertical tooltip-container">
+                                <i class="fa fa-dollar" style="color: blue;"
+                                    (click)="this.opendialogue('sub_lco_discount', operator);"></i>
+                                <span class="tooltip">SUBLCO Discount</span>
+                            </div>
+                        </div> -->
                         <div class="col-2 vertical tooltip-container">
                             <div class="col-2 vertical tooltip-container">
                                 <i class="fa fa-dollar" style="color: blue;"
@@ -123,7 +127,7 @@
                                 <p class="sub-text">Active</p>
                                 <span style="color: #0e610b;">
                                     <div class="circle" style="background-color: rgb(122, 64, 129);"><span
-                                            class="circle-text">{{activeCount}}</span></div>
+                                            class="circle-text">{{operator?.count?.activecount}}</span></div>
                                 </span>
                                 <span class="tooltip">Active</span>
                             </div>
@@ -133,7 +137,7 @@
                                 <p class="sub-text">Expired</p>
                                 <span style="color: #0e610b;">
                                     <div class="circle" style="background-color: rgb(72 67 82)"><span
-                                            class="circle-text">{{expiryCount}}</span></div>
+                                            class="circle-text">{{operator?.count?.deactivecount}}</span></div>
                                 </span>
                                 <span class="tooltip">Expired</span>
                             </div>
@@ -143,20 +147,23 @@
                                 <p class="sub-text">New</p>
                                 <span style="color: #0e610b;">
                                     <div class="circle" style="background-color: rgb(13 131 33);"><span
-                                            class="circle-text">{{newCount}}</span></div>
+                                            class="circle-text">{{operator?.count?.newsubscribercount}}</span></div>
                                 </span> <span class="tooltip">New</span>
                             </div>
                         </div>
-
                     </div>
                 </mat-card-content>
+
+
 
             </mat-card>
         </div>
     </div>
-    <!-- <div class="d-flex justify-content-center align-items-center" style="padding: 0.5rem;">
-        <mat-paginator [length]="totalLength" [pageSize]="pageSize" [pageSizeOptions]="[10,50,100,500,1000,2500]"
-            (page)="onPageChange($event)">
+    <div class="d-flex justify-content-center align-items-center" style="padding: 0.5rem;">
+        <mat-paginator #paginator class="demo-paginator" (page)="handlePageEvent($event)" [length]="length"
+            [pageSize]="pageSize" [disabled]="disabled" [showFirstLastButtons]="showFirstLastButtons"
+            [pageSizeOptions]="showPageSizeOptions ? pageSizeOptions : []" [hidePageSize]="hidePageSize"
+            [pageIndex]="pageIndex" aria-label="Select page">
         </mat-paginator>
-    </div> -->
+    </div>
 </div>

@@ -42,11 +42,13 @@ export class OperatorcancelsubreportComponent implements OnInit{
   id: any;
   type: any;
   operatorname: any;
+  lcoid: any;
   constructor(public dialogRef: MatDialogRef<OperatorcancelsubreportComponent>, private swal: SwalService, private userService: BaseService, private storageservice: StorageService, @Inject(MAT_DIALOG_DATA) public data: any,) {
     this.username = storageservice.getUsername();
     this.role = storageservice.getUserRole();
     this.OType = data.type;
     this.operatorid = data.operator;
+    this.lcoid = data.operator;
     this.operatorname = data.operatorname;
     console.log(data);
     console.log(this.operatorid);

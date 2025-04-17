@@ -299,15 +299,15 @@ export class DistributorsettingComponent implements OnInit {
   }
 
 
-  toggleedit1(operatorid: any) {
-    console.log('Editing operator with ID:', operatorid);
-    const selectedOperator = this.operator_details.find((operator: any) => operator.operatorid === operatorid);
+  toggleedit1(operator: any) {
+    console.log('Editing operator with ID:', operator);
+    const selectedOperator = operator.operatorid;
     console.log(selectedOperator);
     if (selectedOperator) {
       const dialogRef = this.dialog.open(EditLcoComponent, {
         width: '800px',
         panelClass: 'custom-dialog-container',
-        data: selectedOperator
+        data: operator
       });
       dialogRef.afterClosed().subscribe(result => {
         console.log('The dialog was closed');
@@ -355,8 +355,12 @@ export class DistributorsettingComponent implements OnInit {
     });
   }
   opencancelsubDialog(type: string, operatorid: any): void {
+    console.log(operatorid);
     const detailsList = this.operator_details.find((op: any) => op.operatorid === operatorid);
+    // const detailsList = operatorid;
     let dialogData = { type: type, detailsList: this.operator_details, operator: detailsList.operatorid, operatorname: detailsList.operatorname, };
+    console.log(dialogData);
+    
     const dialogRef = this.dialog.open(OperatorcancelsubreportComponent, {
       width: '500px',
       panelClass: 'custom-dialog-container',

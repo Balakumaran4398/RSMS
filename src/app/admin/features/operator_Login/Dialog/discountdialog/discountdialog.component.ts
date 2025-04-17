@@ -53,7 +53,6 @@ export class DiscountdialogComponent implements OnInit {
     // this.type = data.type;
     console.log(this.type);
 
-    console.log(this.data_details);
     this.retailerid = data?.retailerid;
     console.log(this.retailerid);
     this.data_details = data.data;
@@ -82,6 +81,9 @@ export class DiscountdialogComponent implements OnInit {
 
   ngOnInit(): void {
     this.operatorIdoperatorId();
+    if (this.role == 'ROLE_ADMIN') {
+      this.getplanwiseDetails();
+    }
   }
   onNoClick(): void {
     this.dialogRef.close();
@@ -166,7 +168,7 @@ export class DiscountdialogComponent implements OnInit {
   dataDetails: any;
   discountPlans: any[] = [];
   getplanwiseDetails() {
-    this.userService.getPlanDiscountDetailsByOpidPackageid(this.role, this.username, this.operatorid, this.orderid, this.customeramount, this.lcocommission).subscribe((data: any) => {
+    this.userService.getPlanDiscountDetailsByOpidPackageid(this.role, this.username, this.operatorid || 0, this.orderid, this.customeramount, this.lcocommission).subscribe((data: any) => {
       this.discountPlans = data.map((item: any) => {
         const content = item.content[0];
         return {
@@ -197,12 +199,21 @@ export class DiscountdialogComponent implements OnInit {
     this.plandiscount = this.discountPlans.map((plan: any) =>
       `${plan.id}-${plan.discount}`
     );
-    this.userService.updatePlanwiseDiscount(this.role, this.username, this.operatorid, this.orderid, this.plandiscount,1)
+    if(this.role == 'ROLE_OPERATOR'){
+    this.userService.updatePlanwiseDiscount(this.role, this.username, this.operatorid || 0, this.orderid, this.plandiscount, 1,false)
       .subscribe((res: any) => {
         this.swal.success(res?.message);
       }, (err) => {
         this.swal.Error(err?.error?.message || err?.error);
       });
+    } else if (this.role == 'ROLE_ADMIN') {
+      this.userService.updatePlanwiseDiscount(this.role, this.username, this.operatorid || 0, this.orderid, this.plandiscount, 2,true)
+      .subscribe((res: any) => {
+        this.swal.success(res?.message);
+      }, (err) => {
+        this.swal.Error(err?.error?.message || err?.error);
+      });
+    }
   }
   distributorid: any;
   getDistributorPackageList() {

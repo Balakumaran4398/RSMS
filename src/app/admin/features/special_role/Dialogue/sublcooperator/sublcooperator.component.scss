@@ -187,7 +187,9 @@ span {
     }
 }
 
-
+.disabled {
+    pointer-events: none;
+  }
 
 
 .sub-text {

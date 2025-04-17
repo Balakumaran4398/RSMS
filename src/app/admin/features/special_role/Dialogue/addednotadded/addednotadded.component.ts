@@ -351,7 +351,7 @@ export class AddednotaddedComponent implements OnInit {
     this.swal.Loading();
     console.log(this.containerID);
 
-    this.userservice.sublcoUpdateArea(this.role, this.username, this.retailerid, this.containerID).subscribe((res: any) => {
+    this.userservice.sublcoUpdateArea(this.role, this.username, this.retailerid, this.containerID || '').subscribe((res: any) => {
       this.swal.success(res?.message);
     }, (err) => {
       this.swal.Error(err?.error?.message);
@@ -360,7 +360,7 @@ export class AddednotaddedComponent implements OnInit {
   }
   save1() {
     this.swal.Loading();
-    this.userservice.sublcoUpdatePermission(this.role, this.username, this.retailerid, this.containerID).subscribe((res: any) => {
+    this.userservice.sublcoUpdatePermission(this.role, this.username, this.retailerid, this.containerID || '').subscribe((res: any) => {
       this.swal.success(res?.message);
     }, (err) => {
       this.swal.Error(err?.error?.message);

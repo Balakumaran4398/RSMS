@@ -260,12 +260,11 @@
             </ul>
         </li>
 
-        <li *ngIf="isUser "><a (click)="navgetToUrl('/lcoCommissionDashboard');setActiveLinkTab($event)" class="nav-link">
+        <li *ngIf="isUser "><a (click)="navgetToUrl('/lcoCommissionDashboard');setActiveLinkTab($event)"
+                class="nav-link">
                 <i class='fas fa-tags icon'></i>&nbsp;Discount</a>
         </li>
         <!-- -------------------------------------------------------------Special role----------------------------------------------- -->
-
-
         <li *ngIf="isSpecial"><a (click)="setActiveLinkTabList($event);navgetToUrl('/msodetails');"
                 class="active nav-link">
                 <i class='bx bx-sm bx-user-pin icon'></i> &nbsp; MSO Details</a></li>
@@ -282,9 +281,6 @@
         <li *ngIf="isSpecial"><a (click)="navgetToUrl('/proof');setActiveLinkTabList($event)" class="nav-link">
                 <i class='bx bx-sm bx-share-alt  icon'></i>
                 &nbsp; Proof Settings</a> </li>
-
-
-
         <li *ngIf="isSpecial ">
             <a> <i class="bx bx-shape-polygon bx-sm icon "></i> LCO Settings <i
                     class='bx bx-chevron-right icon-right'></i></a>

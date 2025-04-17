@@ -269,8 +269,8 @@ export class OperatordialogueComponent implements OnInit {
             header = ['S.NO', 'SUB ID', 'OPERATOR NAME', 'CUSTOMER NAME', 'SMARTCARD', 'BOX ID', 'CORTON BOX', 'CAS NAME', 'PRODUCT NAME', 'PRODUCT ID', 'CREATION DATE', 'EXPIRY DATE'];
             generateDataRows(['subid', 'operatorname', 'customername', 'smartcard', 'boxid', 'cottonbox', 'casname', 'productname', 'productid', 'creationdate', 'expirydate'], this.rowData);
           } else if (this.type === 6 || this.type === 7) {
-            areatitle = 'A1:E2';
-            areasub = 'A3:E3';
+            areatitle = 'A1:F2';
+            areasub = 'A3:F3';
             header = ['S.NO', 'SMARTCARD', 'BOX ID', 'CORTON BOX', 'CAS', 'ALLOCATION DATE',];
             generateDataRows(['smartcard', 'boxid', 'cottonbox', 'casname', 'connectiondate'], this.rowData);
           }
@@ -320,8 +320,8 @@ export class OperatordialogueComponent implements OnInit {
             areasub = 'A3:L3';
             header = ['S.NO', 'SUB ID', 'OPERATOR NAME', 'CUSTOMER NAME', 'SMARTCARD', 'BOX ID', 'CORTON BOX', 'CAS NAME', 'PRODUCT NAME', 'PRODUCT ID', 'CREATION DATE', 'EXPIRY DATE'];
           } else if (this.type === 6 || this.type === 7) {
-            areatitle = 'A1:E2';
-            areasub = 'A3:E3';
+            areatitle = 'A1:F2';
+            areasub = 'A3:F3';
             header = ['S.NO', 'SMARTCARD', 'BOX ID', 'CORTON BOX', 'CAS', 'ALLOCATION DATE'];
           } else if (this.type === 9) {
             areatitle = 'A1:F2';

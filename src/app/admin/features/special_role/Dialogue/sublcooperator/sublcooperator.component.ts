@@ -44,7 +44,7 @@ export class SublcooperatorComponent implements OnInit {
   // ------------------------------sublco grid----------------------
   operator_details: any = [];
   pagedOperators: any = [];
-  pageSize = 10;
+  pageSize = 5;
   pageIndex = 0;
   totalLength = 0;
   paginatedData: any;
@@ -195,41 +195,51 @@ export class SublcooperatorComponent implements OnInit {
     },
   ];
   ngOnInit(): void {
-
     this.operatorIdoperatorId();
+  }
+  length = 0;
 
+  pageSizeOptions = [5, 10, 25];
+
+  hidePageSize = false;
+  showPageSizeOptions = true;
+  showFirstLastButtons = true;
+  disabled = false;
+
+  pageEvent: PageEvent | any;
+
+  handlePageEvent(e: PageEvent) {
+    this.pageEvent = e;
+    this.length = e.length;
+    this.pageSize = e.pageSize;
+    this.pageIndex = e.pageIndex;
+
+    this.paginatedData = this.rowData.slice(
+      this.pageIndex * this.pageSize,
+      this.pageIndex * this.pageSize + this.pageSize
+    );
+    this.paginatedData.forEach((item: any) => {
+      this.userservice.getSublcoLoginDashboardCount(this.role, this.username, item.retailerId)
+        .subscribe((data: any) => {
+          item.count = data;
+        }, (error) => {
+          console.error(`Failed to fetch count for item ${item.id}`, error);
+          item.count = 0;
+        });
+
+    });
 
   }
 
   operatorIdoperatorId() {
     this.userservice.getOpDetails(this.role, this.username).subscribe((data: any) => {
       this.lcoDetails = data;
-      console.log(this.lcoDetails);
-
-      // this.operatorid = this.lcoDetails?.operatorid;
-      // this.sublcorecharge = this.lcoDetails?.sublcorecharge;
-      // if (this.lcoDetails.length > 0) {
-        this.operatorid = this.lcoDetails?.operatorId;
-        this.sublcorecharge = this.lcoDetails?.sublcorecharge;
-      // }
-      console.log(this.operatorid);
-      console.log(this.sublcorecharge);
-      // this.getSubLcoDetails(retailerIds);
-      console.log('sdfsdfdsfds',this.lcoDetails);
-
-      this.lcoDetails.forEach((item: any) => {
-        console.log('11111323424');
-        const retailerId = item.operatorid;
-        console.log("Calling getSubLcoDetails for Retailer ID:", retailerId);
-
-        // Call method for each retailerId
-        this.getSubLcoDetails(retailerId);
-      });
-      console.log('dfdsf7889');
+      this.operatorid = this.lcoDetails?.operatorid;
+      this.sublcorecharge = this.lcoDetails?.sublcorecharge;
     })
   }
 
-  getSubLcoDetails(retailerId: any) {
+  getSubLcoDetails(retailerId: any,) {
     console.log(retailerId);
     this.userservice.getSublcoLoginDashboardCount(this.role, this.username, retailerId).subscribe((data: any) => {
       console.log(data);
@@ -249,20 +259,40 @@ export class SublcooperatorComponent implements OnInit {
       console.log(this.selectedIds);
     }
   }
-  onGridReady(params: any) {
+  sublcocount: any;
+  onGridReady(params: any,) {
     this.gridApi = params.api;
     this.userservice.getAllSublcoListByOperatorId(this.role, this.username, this.operatorid).subscribe((data: any) => {
       console.log(data);
       this.rowData = data;
+      data.forEach((item: any) => {
+        console.log(item.sublcoDiscount);
+        this.sublcocount = item.sublcoDiscount;
+        console.log(this.sublcocount);
+      });
+      console.log(this.sublcocount);
       this.rowData = this.rowData.map(row => ({
         ...row,
         isCustomerMode: this.isCustomerMode
       }));
-      const startIndex = this.pageIndex * this.pageSize;
-      this.pagedOperators = this.rowData.slice(startIndex, startIndex + this.pageSize);
-    })
-    console.log(this.rowData);
+      this.length = this.rowData.length;
+      this.paginatedData = this.rowData.slice(
+        this.pageIndex * this.pageSize,
+        this.pageIndex * this.pageSize + this.pageSize
+      );
 
+      this.paginatedData.forEach((item: any) => {
+        this.userservice.getSublcoLoginDashboardCount(this.role, this.username, item.retailerId)
+          .subscribe((data: any) => {
+            item.count = data;
+          }, (error) => {
+            console.error(`Failed to fetch count for item ${item.id}`, error);
+            item.count = 0; // Optional fallback value
+          });
+
+
+      });
+    })
     if (this.operatorid.value === 0) {
       this.pagedOperators = [...this.rowData];
     } else {
@@ -271,46 +301,7 @@ export class SublcooperatorComponent implements OnInit {
   }
 
   // ----------------------------------------sublco grid ------------------------------
-  onPageChange(event: PageEvent): void {
-    this.cdr.detectChanges();
-    this.pageSize = event.pageSize;
-    this.pageIndex = event.pageIndex;
-    this.updatePageData();
-  }
 
-  updatePageData() {
-    this.cdr.detectChanges();
-    // const startIndex = this.pageIndex * this.pageSize;
-    // this.pagedOperators = this.operator_details.slice(startIndex, startIndex + this.pageSize);
-  }
-  onoperatorchange(operator: any): void {
-    this.selectedOperator = operator;
-    this.operatorid = operator.value;
-    if (operator.value === 0) {
-      this.pagedOperators = [...this.originalPagedOperators];
-    } else {
-      this.pagedOperators = this.originalPagedOperators.filter(op => op.operatorid === this.operatorid);
-    }
-    console.log('Filtered Operators:', this.pagedOperators);
-  }
-  operatorDeatils(event: any) {
-    console.log(event);
-    this.swal.Loading();
-    this.userservice.OperatorDetails(this.role, this.username, this.operatorid).subscribe(
-      (data: any) => {
-        this.operator_details = data;
-        this.dashboardDetails = data.map((item: any) => item.list);
-        this.totalLength = data.length;
-        // this.pagedOperators = data;
-        if (!this.originalPagedOperators || this.originalPagedOperators.length === 0) {
-          this.originalPagedOperators = [...data];
-        }
-        // this.originalPagedOperators = [...data]; 
-        this.pagedOperators = [...data];
-        this.updatePageData();
-        this.swal.Close();
-      });
-  }
   openDialog(type: string, data: any) {
     let dialogData = { type: type, detailsList: data, operatorid: data?.operatorId, operatorname: data?.retailerName, };
     console.log(dialogData);
@@ -356,7 +347,6 @@ export class SublcooperatorComponent implements OnInit {
       width = '500px';
     }
     console.log('selectedIds', this.selectedIds);
-    // data.isCustomerMode = this.isCustomerMode
     let dialogData = { type: type, data: data, id: this.operatorid, selectedid: this.selectedIds };
     console.log(dialogData);
     const dialogRef = this.dialog.open(SublcooperatordialogueComponent, {
@@ -375,7 +365,7 @@ export class SublcooperatorComponent implements OnInit {
     });
   }
   openLcoRechargelogue(type: any, data: any) {
-    let dialogData = { type: type, data: data };
+    let dialogData = { type: type, data: this.operatorid };
     console.log(dialogData);
     const dialogRef = this.dialog.open(DistributordiscountComponent, {
       panelClass: 'custom-dialog-container',
