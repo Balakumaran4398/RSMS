@@ -139,13 +139,15 @@
                             <h6 style="margin: auto;color: black;font-weight: 600;"> SMARTCARD LIST</h6>
                         </div>
                         <div class="d-flex  icon-container" style="padding: 10px;">
-                            <div class="icon-item d-flex align-item-center tooltip-container  bttn"
+                            <div *ngIf="role === 'ROLE_SUBLCO' || role !== 'ROLE_SUBLCO'"
+                                class="icon-item d-flex align-item-center tooltip-container  bttn"
                                 style="background-color:var(--sub-dashboard-icon);"
                                 (click)="openLoginPage('change_lco')">
                                 <i class="fa fa-refresh	" style="font-size:15px;color: white;"></i>
                                 <div class="tooltip-content">Change LCO</div>
                             </div>
-                            <div class="icon-item d-flex align-item-center tooltip-container  bttn"
+                            <div *ngIf="(role === 'ROLE_SUBLCO' && Sublcopermissionlist.add_smartcard === true) || role !== 'ROLE_SUBLCO'"
+                                class="icon-item d-flex align-item-center tooltip-container  bttn"
                                 style="background-color: var(--sub-dashboard-icon);"
                                 (click)="openDialog('addSmartcard','')">
                                 <i class="fa fa-plus" style="font-size:15px;color: white;"></i>
@@ -358,29 +360,30 @@
                         </div>
                         <div class="col-12 col-md-7  mobile2">
                             <div class="col-12 col-md-12 display_btn1">
-                                <div
+                                <div *ngIf="(role== 'ROLE_SUBLCO' && Sublcopermissionlist.refresh === true) || role !== 'ROLE_SUBLCO'"
                                     class="col-12 col-md-6 display_btn1 justify-content-center align-items-center text3">
                                     <button class="btn  d-flex justify-content-between"
                                         (click)="openDialog('refresh','')" [disabled]="refresh">
                                         <i class="fa fa-refresh"></i><span>Refresh</span></button>
                                 </div>
-                                <div
+                                <div *ngIf="(role === 'ROLE_SUBLCO' && Sublcopermissionlist.firsttimeactivat == true) || role !== 'ROLE_SUBLCO'"
                                     class="col-12 col-md-6 display_btn1 justify-content-center align-items-center  text3">
                                     <button class="btn  d-flex justify-content-between" [disabled]="packagectivation"
                                         (click)="openDialog('packagactivation','')">
                                         <i class="fa-solid fa-gears"></i><span>Package
                                             Activation</span></button>
                                 </div>
-
                             </div>
                             <div class="col-12 col-md-12 display_btn1">
-                                <div class="col-12 col-md-6 d-flex justify-content-center align-items-center  text3">
+                                <div *ngIf="(role === 'ROLE_SUBLCO' && Sublcopermissionlist.activate == true) || role !== 'ROLE_SUBLCO'"
+                                    class="col-12 col-md-6 d-flex justify-content-center align-items-center  text3">
                                     <!-- *ngIf="deactive"> -->
                                     <button class="btn  d-flex justify-content-between " [disabled]="activation"
                                         (click)="openDialog('activation','')">
                                         <i class="fa-brands fa-slack"></i><span>Activation</span></button>
                                 </div>
-                                <div class="col-12 col-md-6 d-flex justify-content-center align-items-center  text3">
+                                <div *ngIf="(role === 'ROLE_SUBLCO' && Sublcopermissionlist.deactivate == true) || role !== 'ROLE_SUBLCO'"
+                                    class="col-12 col-md-6 d-flex justify-content-center align-items-center  text3">
                                     <!-- *ngIf="deactive"> -->
                                     <button class="btn  d-flex justify-content-between" [disabled]="deactive"
                                         (click)="openDialog('deactive','')">
@@ -389,20 +392,21 @@
 
                             </div>
                             <div class="col-12 col-md-12 display_btn1">
-                                <div class="col-12 col-md-6 d-flex justify-content-center align-items-center  text3">
+                                <div *ngIf="(role === 'ROLE_SUBLCO' && Sublcopermissionlist.pin_change == true) || role !== 'ROLE_SUBLCO'"
+                                    class="col-12 col-md-6 d-flex justify-content-center align-items-center  text3">
                                     <button class="btn  d-flex justify-content-between" [disabled]="pinchange"
                                         (click)="openDialog('pinchange','')">
                                         <i class="fa-solid fa-key"></i><span>PIN Change</span></button>
                                 </div>
-                                <div class="col-12 col-md-6 d-flex justify-content-center align-items-center  text3">
+                                <div *ngIf="(role === 'ROLE_SUBLCO' && Sublcopermissionlist.pvr_update == true) || role !== 'ROLE_SUBLCO'"
+                                    class="col-12 col-md-6 d-flex justify-content-center align-items-center  text3">
                                     <button class="btn  d-flex justify-content-between" [disabled]="pvrchange"
                                         (click)="openDialog('pvrchange','')"> <i class="fa-solid fa-video"></i><span>PVR
                                             Option</span></button>
                                 </div>
                             </div>
-
                             <div class="col-12 col-md-12 display_btn1">
-                                <div *ngIf="isSendDeleteMessage === false"
+                                <div *ngIf="(isSendDeleteMessage === false)  "
                                     class="col-12 col-md-6 d-flex justify-content-center align-items-center  text3">
                                     <!-- <button class="btn  d-flex justify-content-between" [disabled]="isSendDeleteMessage"
                                         (click)="openDialog('sendmessage','')">
@@ -411,7 +415,7 @@
                                         (click)="openDialog('sendmessage','')">
                                         <i class="fa-solid fa-message"></i><span>Send Message</span></button>
                                 </div>
-                                <div *ngIf="isSendDeleteMessage === true"
+                                <div *ngIf="(isSendDeleteMessage === true) "
                                     class="col-12 col-md-6 d-flex justify-content-center align-items-center  text3">
                                     <button class="btn  d-flex justify-content-between" [disabled]="deletemessage"
                                         (click)="openDialog('deletemessage','')">
@@ -428,32 +432,16 @@
                                     </button>
                                 </div>
                             </div>
+
                             <div class="col-12 col-md-12 display_btn1">
-
-
-                                <div class="col-12 col-md-6 d-flex justify-content-center align-items-center  text3">
-                                    <button class="btn  d-flex justify-content-between" [disabled]="boxchange"
-                                        (click)="openLoginPage('boxchange')"><i class="fa-solid fa-share"></i><span>Box
-                                            Transfer</span></button>
-                                </div>
-                                <div class="col-12 col-md-6 d-flex justify-content-center align-items-center  text3">
-                                    <button class="btn  d-flex justify-content-between" [disabled]="suspend"
-                                        (click)="openDialog('suspend','')">
-                                        <i class="fa fa-file"></i><span>Suspend</span></button>
-
-                                </div>
-                            </div>
-                            <div class="col-12 col-md-12 display_btn1">
-
-                                <!-- *ngIf="suspend" -->
-
-                                <!-- *ngIf="suspend" -->
-                                <div class="col-12 col-md-6 d-flex justify-content-center align-items-center  text3">
+                                <div *ngIf="(role === 'ROLE_SUBLCO' && Sublcopermissionlist.resume == true) || role !== 'ROLE_SUBLCO'"
+                                    class="col-12 col-md-6 d-flex justify-content-center align-items-center  text3">
                                     <button class="btn  d-flex justify-content-between" [disabled]="resumechange"
                                         (click)="openDialog('resumechange','')"> <i
                                             class="fa fa-file"></i><span>Resume</span></button>
                                 </div>
-                                <div class="col-12 col-md-6 d-flex justify-content-center align-items-center  text3">
+                                <div *ngIf="(role === 'ROLE_SUBLCO' && Sublcopermissionlist.reactivate == true) || role !== 'ROLE_SUBLCO'"
+                                    class="col-12 col-md-6 d-flex justify-content-center align-items-center  text3">
                                     <button class="btn  d-flex justify-content-between" [disabled]="reactivation"
                                         (click)="openDialog('reactivation','')">
                                         <i class="fa-solid fa-repeat"></i><span>Re-Activation</span></button>
@@ -461,14 +449,29 @@
 
                             </div>
                             <div class="col-12 col-md-12 display_btn1">
-
-                                <div class="col-12 col-md-6 d-flex justify-content-center align-items-center  text3">
+                                <div *ngIf="role !== 'ROLE_SUBLCO'"
+                                    class="col-12 col-md-6 d-flex justify-content-center align-items-center  text3">
+                                    <button class="btn  d-flex justify-content-between" [disabled]="boxchange"
+                                        (click)="openLoginPage('boxchange')"><i class="fa-solid fa-share"></i><span>Box
+                                            Transfer</span></button>
+                                </div>
+                                <div *ngIf="(role === 'ROLE_SUBLCO' && Sublcopermissionlist.suspend == true) || role !== 'ROLE_SUBLCO'"
+                                    class="col-12 col-md-6 d-flex justify-content-center align-items-center  text3">
+                                    <button class="btn  d-flex justify-content-between" [disabled]="suspend"
+                                        (click)="openDialog('suspend','')">
+                                        <i class="fa fa-file"></i><span>Suspend</span></button>
+                                </div>
+                            </div>
+                            <div class="col-12 col-md-12 display_btn1">
+                                <div *ngIf="(role === 'ROLE_SUBLCO' && Sublcopermissionlist.forcetuning == true) || role !== 'ROLE_SUBLCO'"
+                                    class="col-12 col-md-6 d-flex justify-content-center align-items-center  text3">
                                     <button class="btn  d-flex justify-content-between" [disabled]="forcetuning"
                                         (click)="openDialog('forcetuning','')"> <i
                                             class="fa-solid fa-right-left"></i><span>Force
                                             Tuning</span></button>
                                 </div>
-                                <div class="col-12 col-md-6 d-flex justify-content-center align-items-center  text3">
+                                <div *ngIf="role !== 'ROLE_SUBLCO'"
+                                    class="col-12 col-md-6 d-flex justify-content-center align-items-center  text3">
                                     <button class="btn  d-flex justify-content-between" [disabled]="unpair"
                                         (click)="managePackage('unpair')">
                                         <i class="fa-solid fa-ban" style="font-size:15px;color: #090f13;"></i><span
@@ -477,29 +480,27 @@
                             </div>
 
                             <div class="col-12 col-md-12 display_btn1">
-                                <!-- <div -->
-
-                                <div class="col-12 col-md-6 d-flex justify-content-center align-items-center  text3">
+                                <div *ngIf="role !== 'ROLE_SUBLCO'"
+                                    class="col-12 col-md-6 d-flex justify-content-center align-items-center  text3">
                                     <button class="btn  d-flex justify-content-between" [disabled]="pair"
                                         (click)="pairDialogue('pair')">
                                         <i class="fa fa-refresh"></i><span>Pair</span></button>
                                 </div>
-
-                                <div class="col-12 col-md-6 d-flex justify-content-center align-items-center text3">
+                                <div *ngIf="(role === 'ROLE_SUBLCO' && Sublcopermissionlist.cancel_subscription == true) || role !== 'ROLE_SUBLCO'"
+                                    class="col-12 col-md-6 d-flex justify-content-center align-items-center text3">
                                     <button class="btn  d-flex justify-content-between" [disabled]="cancelsubscription"
                                         (click)="managePackage('cancelsubscription')">
                                         <i class="fa fa-refresh"></i><span>Cancel Subscription</span></button>
                                 </div>
-
                             </div>
                             <div class="col-12 col-md-12 display_btn1">
-                                <div class="col-12 col-md-6 d-flex justify-content-center align-items-center  text3">
+                                <div *ngIf="role !== 'ROLE_SUBLCO'"
+                                    class="col-12 col-md-6 d-flex justify-content-center align-items-center  text3">
                                     <button class="btn  d-flex justify-content-between" [disabled]="block"
                                         (click)="openDialog('block','')">
                                         <i class="fa-solid fa-ban" style="font-size:15px;color: #090f13;"></i><span
                                             style="font-size:15px;color: #090f13;">Block</span></button>
                                 </div>
-
                             </div>
                         </div>
                     </div>
@@ -507,7 +508,10 @@
             </div>
         </div>
     </section>
-    <section *ngIf="expandale" class="expandale">
+
+    <section
+        *ngIf="expandale && ((role === 'ROLE_SUBLCO' && Sublcopermissionlist.manage_package == true) || role !== 'ROLE_SUBLCO')"
+        class="expandale">
         <div class="card">
             <mat-accordion class="example-headers-align">
                 <mat-expansion-panel [expanded]="step() === 0" (opened)="setStep(0)" hideToggle>

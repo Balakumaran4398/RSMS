@@ -306,7 +306,44 @@ export class LcoDashboardComponent implements OnInit {
       // } else if (this.type == 7) {
       this.columnDefs = [
         { headerName: "S.No", lockPosition: true, valueGetter: 'node.rowIndex+1', width: 90, filter: false },
-        { headerName: 'SMARTCARD', field: 'smartcard', width: 400, },
+        // { headerName: 'SMARTCARD', field: 'smartcard', width: 400, },
+        {
+          headerName: 'SMARTCARD', field: 'smartcard', width: 220,
+          cellStyle: (params: any) => {
+            if (params.data.someCondition) {
+              return { backgroundColor: '#f4cccc' };
+            } else {
+              return null;
+            }
+          },
+          cellRenderer: (params: any) => {
+            return `<a href="javascript:void(0)" style="color: blue; text-decoration: none;color:#0d6efd">
+                      ${params.value}
+                    </a>`;
+          },
+
+          onCellClicked: (params: any) => {
+            const subid = params.data.id;
+            const smartcard = params.data.smartcard;
+            console.log('Sub ID:', subid);
+            console.log('Smartcard:', smartcard);
+            if (smartcard) {
+              this.router.navigate([`/admin/subscriber-full-info/${smartcard}/subsmartcard`])
+                .then(() => {
+                  setTimeout(() => {
+                    window.location.reload();
+                  }, 100);
+                });
+            } else if (subid) {
+              this.router.navigate([`/admin/subscriber-full-info/${subid}/new`])
+                .then(() => {
+                  setTimeout(() => {
+                    window.location.reload();
+                  }, 100);
+                });
+            }
+          }
+        },
         { headerName: 'BOX ID	', field: 'boxid', cellStyle: { textAlign: 'center', color: 'green' }, width: 400, },
         { headerName: 'CAS NAME', field: 'casname', width: 300, },
         { headerName: 'ALLOCATION DATE	', field: 'activationdate', width: 400, },

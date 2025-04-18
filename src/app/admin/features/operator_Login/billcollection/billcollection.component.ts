@@ -191,7 +191,8 @@ export class BillcollectionComponent implements OnInit {
     this.userService.getSublcoDetails(this.role, this.username).subscribe((data) => {
       console.log(data);
       this.lcoDeatails = data;
-      this.retailerId = this.lcoDeatails?.operatorid;
+      this.retailerId = this.lcoDeatails?.retailerid;
+      this.lcoId = this.lcoDeatails?.operatorid;
       console.log(this.retailerId);
     })
   }
@@ -347,6 +348,7 @@ export class BillcollectionComponent implements OnInit {
       dialogWidth = '1350px';
     }
     let dialalogData = { data: data, lcoid: this.lcoId, userarant: this.useragent, type: type }
+    console.log(dialalogData);
     const dialogRef = this.dialog.open(LcoSmartcardDialogComponent, {
       width: dialogWidth,
       data: dialalogData

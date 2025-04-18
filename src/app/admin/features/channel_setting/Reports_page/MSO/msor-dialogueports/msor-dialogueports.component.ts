@@ -187,10 +187,14 @@ export class MsorDialogueportsComponent implements OnInit, OnDestroy {
   selectedDateMonthName: any;
 
   subLcoDetails: any;
-  retailerId: any;
-  subOperatorId: any;
+  // retailerId: any;
+  // subOperatorId: any;
 
   path: any;
+
+  sublcoDeatails: any;
+  retailerId: any;
+  subOperatorId: any;
   constructor(private route: ActivatedRoute, private location: Location,
     public userService: BaseService, private cdr: ChangeDetectorRef, public storageservice: StorageService, private swal: SwalService, public sublco: OperatorService) {
     this.type = this.route.snapshot.paramMap.get('id');
@@ -215,10 +219,17 @@ export class MsorDialogueportsComponent implements OnInit, OnDestroy {
     else if (this.type == 'lco_active_subscription') {
       this.lcowiseActiveSubCount();
     }
-    this.subLcoDetails = sublco?.lcoDeatails;
-    this.retailerId = this.subLcoDetails?.retailerid;
-    this.subOperatorId = this.subLcoDetails?.operatorid;
+    // console.log(sublco);
+    // this.lcoDeatails = this.sublco?.lcoDeatails;
+    // console.log('lcoDeatails', this.lcoDeatails);
 
+    // // 3. retailerId can be directly accessed from lcoDeatails
+    // this.retailerId = this.lcoDeatails?.retailerId;
+    // console.log('retailerId', this.retailerId);
+
+    // // 4. subOperatorId is the operatorId inside lcoDeatails
+    // this.subOperatorId = this.lcoDeatails?.operatorId;
+    // console.log('subOperatorId', this.subOperatorId);;
   }
   getFilteredOnlineType() {
     return this.role === "ROLE_SPECIAL"
@@ -256,7 +267,21 @@ export class MsorDialogueportsComponent implements OnInit, OnDestroy {
     if (this.role == 'ROLE_OPERATOR') {
       this.operatorIdoperatorId();
     }
+    if (this.role == 'ROLE_SUBLCO') {
+      this.subLCOdetails();
+    }
     this.filterUserAgent();
+
+    console.log('sublco in ngOnInit', this.sublco);
+
+    this.subLcoDetails = this.sublco?.lcoDeatails;
+    console.log('subLcoDetails', this.subLcoDetails);
+
+    this.retailerId = this.subLcoDetails?.retailerId;
+    console.log('retailerId', this.retailerId);
+
+    this.subOperatorId = this.subLcoDetails?.operatorId;
+    console.log('subOperatorId', this.subOperatorId);
   }
   filteredUserAgent: any[] = [];
   filterUserAgent() {
@@ -273,6 +298,16 @@ export class MsorDialogueportsComponent implements OnInit, OnDestroy {
       this.operatorId = this.lcoDeatails?.operatorid;
       this.operatorname = this.lcoDeatails?.operatorname;
       this.onSubscriberStatusChange(this.operatorId)
+    })
+  }
+  subLCOdetails() {
+    this.userService.getSublcoDetails(this.role, this.username).subscribe((data: any) => {
+      console.log(data);
+      console.log('111111111111111');
+      this.lcoDeatails = data;
+      this.subOperatorId = this.lcoDeatails?.operatorid;
+      this.retailerId = this.lcoDeatails?.retailerid;
+      console.log(this.retailerId);
     })
   }
 
@@ -365,6 +400,8 @@ export class MsorDialogueportsComponent implements OnInit, OnDestroy {
     this.userService.getModelList(this.role, this.username).subscribe((data: any) => {
       this.model = data;
       this.modelname = data.modelname;
+      console.log(this.modelname);
+
     })
   }
   onChangeDateType(selectedValue: any) {
@@ -1142,6 +1179,7 @@ export class MsorDialogueportsComponent implements OnInit, OnDestroy {
   }
   getRecharge() {
     if (this.role == 'ROLE_SUBLCO') {
+      this.swal.Loading();
       this.userService.getRechargeHistory(this.role, this.username, 1, this.subOperatorId, this.fromdate, this.todate, 0, 4,
         this.retailerId, 3).subscribe(
           (response: HttpResponse<any>) => {

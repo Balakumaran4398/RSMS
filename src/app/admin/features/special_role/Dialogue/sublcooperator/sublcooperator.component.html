@@ -105,20 +105,14 @@
                                 <span class="tooltip">SUBLCO Rating</span>
                             </div>
                         </div>
-                        <!-- <div class="col-2 vertical tooltip-container">
-                            <div class="col-2 vertical tooltip-container">
-                                <i class="fa fa-dollar" style="color: blue;"
-                                    (click)="this.opendialogue('sub_lco_discount', operator);"></i>
-                                <span class="tooltip">SUBLCO Discount</span>
-                            </div>
-                        </div> -->
-                        <div class="col-2 vertical tooltip-container">
+                        <div *ngIf="operator.sublcoDiscount=== 1" class="col-2 vertical tooltip-container">
                             <div class="col-2 vertical tooltip-container">
                                 <i class="fa fa-dollar" style="color: blue;"
                                     (click)="this.opendialogue('sub_lco_discount', operator);"></i>
                                 <span class="tooltip">SUBLCO Discount</span>
                             </div>
                         </div>
+
                     </div>
                     <br>
                     <div class="child-card col-12">
@@ -153,9 +147,6 @@
                         </div>
                     </div>
                 </mat-card-content>
-
-
-
             </mat-card>
         </div>
     </div>

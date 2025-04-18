@@ -111,10 +111,12 @@ export class CreateSubscriberComponent implements AfterViewInit, OnDestroy {
       this.operatorIdoperatorId();
     } else if (this.role === 'ROLE_SUBLCO') {
       console.log('3333 ----->', this.role);
-
       this.Isuser = false;
       this.IsOperator = false;
       this.IsSubLCO = true;
+      this.subLCOdetails();
+      console.log('1235rwfsdfds');
+
     }
   }
   lconame: any;
@@ -128,23 +130,32 @@ export class CreateSubscriberComponent implements AfterViewInit, OnDestroy {
       console.log(this.lcoId);
       console.log(this.lconame);
       this.lcoChange();
-      // this.operatoridValue = this.role === 'ROLE_OPERATOR' ? this.lcoId : this.operatorid;
-      // console.log(this.operatoridValue);
-
       this.operatoridValue = this.role === 'ROLE_OPERATOR' ? this.lcoId : this.operatorid;
       console.log("Updated operatoridValue:", this.operatoridValue);
-
       // Updating the form value after we have the correct operatoridValue
       this.form.patchValue({ operatorid: this.operatoridValue });
     })
   }
-
+  subLCOdetails() {
+    this.userservice.getSublcoDetails(this.role, this.username).subscribe((data: any) => {
+      console.log(data);
+      console.log('111111111111111');
+      this.lcoDeatails = data;
+      this.retailerId = this.lcoDeatails?.retailerid;
+      console.log(this.retailerId);
+      this.lcoChange();
+      this.operatoridValue = this.role === 'ROLE_SUBLCO' ? this.retailerId : this.lcoId;
+      console.log("Updated operatoridValue:", this.operatoridValue);
+      // Updating the form value after we have the correct operatoridValue
+      this.form.patchValue({ operatorid: this.operatoridValue });
+    })
+  }
   ngOnInit(): void {
-    console.log(this.lcoId);
     if (this.role == 'ROLE_OPERTAOR') {
       this.operatorIdoperatorId();
+    } else if (this.role == 'ROLE_SUBLCO') {
+      this.subLCOdetails();
     }
-    console.log(this.retailerId);
 
     this.form = this.formBuilder.group(
       {
@@ -174,8 +185,6 @@ export class CreateSubscriberComponent implements AfterViewInit, OnDestroy {
     );
     this.loadIdProofList();
     this.loadAddProofList();
-
-
   }
 
 
@@ -203,6 +212,7 @@ export class CreateSubscriberComponent implements AfterViewInit, OnDestroy {
     $('#Area').on('change', (event: any) => {
       this.areaid = event.target.value;
       this.onAreaStatusChange(this.areaid);
+      console.log('AREA', this.areaid);
     });
     $('#Street').select2({
       placeholder: 'Select Street',
@@ -677,7 +687,7 @@ export class CreateSubscriberComponent implements AfterViewInit, OnDestroy {
     return this.form.controls;
   }
   lcoChange() {
-    this.userservice.getAreaListByOperatorid(this.role, this.username, this.lcoId).subscribe((data: any) => {
+    this.userservice.getAreaListByOperatorid(this.role, this.username, this.lcoId || this.retailerId).subscribe((data: any) => {
       this.area_list = Object.keys(data).map(key => {
         const value = data[key];
         const name = key;
@@ -701,7 +711,9 @@ export class CreateSubscriberComponent implements AfterViewInit, OnDestroy {
       this.form.patchValue({
         operatorid: this.operatorid,
       });
-      this.userservice.getAreaListByOperatorid(this.role, this.username, this.operatorid || this.lcoId).subscribe((data: any) => {
+      console.log('subLCO', this.retailerId);
+
+      this.userservice.getAreaListByOperatorid(this.role, this.username, this.operatorid || this.lcoId || this.retailerId).subscribe((data: any) => {
         this.area_list = Object.keys(data).map(key => {
           const value = data[key];
           const name = key;

@@ -106,7 +106,7 @@ export class SublcooperatordialogueComponent implements OnInit {
     this.type = data.type;
     this.operatorid = data.id;
     console.log(this.operatorid);
-    
+
     this.selectedRow = data;
     this.retailername = data?.data.retailerName;
     this.retailerUsername = data?.data.username;
@@ -357,11 +357,12 @@ export class SublcooperatordialogueComponent implements OnInit {
 
   oneditSubmit() {
     this.submitted = true;
+    this.swal.Loading();
     if (this.editform.invalid) {
       this.editform.markAllAsTouched();
     }
     const errorFields = ['retailername', 'contactno', 'contactno2', 'address', 'password', 'role', 'website', 'username', 'operatorid', 'retailerid'];
-    this.userservice.sublcoUpdate(this.editform.value)
+     this.userservice.sublcoUpdate(this.editform.value)
       .subscribe((res: any) => {
         this.swal.success(res?.message);
       }, (err) => {
@@ -420,6 +421,7 @@ export class SublcooperatordialogueComponent implements OnInit {
     this.isCustomerMode = true;
     this.selectedRow!.data!.isCustomerMode = true;
     this.dialogRef.close(this.selectedRow)
+    this.swal.Loading();
     this.userservice.getUpdateSublcoRate(this.role, this.retailerUsername, this.operatorid || this.lcoid, this.retailerid, 0)
       .subscribe((res: any) => {
         this.swal.success(res?.message);
@@ -431,7 +433,8 @@ export class SublcooperatordialogueComponent implements OnInit {
     this.isCustomerMode = false;
     console.log(this.isCustomerMode);
     this.selectedRow!.data!.isCustomerMode = false;
-    this.dialogRef.close(this.selectedRow)
+    this.dialogRef.close(this.selectedRow);
+    this.swal.Loading();
     this.userservice.getUpdateSublcoRate(this.role, this.retailerUsername, this.operatorid || this.lcoid, this.retailerid, 1)
       .subscribe((res: any) => {
         this.swal.success(res?.message);

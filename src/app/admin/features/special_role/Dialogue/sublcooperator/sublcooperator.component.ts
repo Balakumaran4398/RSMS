@@ -222,6 +222,7 @@ export class SublcooperatorComponent implements OnInit {
       this.userservice.getSublcoLoginDashboardCount(this.role, this.username, item.retailerId)
         .subscribe((data: any) => {
           item.count = data;
+          console.log('sublcoDiscount33333', this.sublcocount);
         }, (error) => {
           console.error(`Failed to fetch count for item ${item.id}`, error);
           item.count = 0;
@@ -260,17 +261,21 @@ export class SublcooperatorComponent implements OnInit {
     }
   }
   sublcocount: any;
+  hasSublcoDiscount: any;
+  data: any;
   onGridReady(params: any,) {
     this.gridApi = params.api;
     this.userservice.getAllSublcoListByOperatorId(this.role, this.username, this.operatorid).subscribe((data: any) => {
       console.log(data);
       this.rowData = data;
-      data.forEach((item: any) => {
-        console.log(item.sublcoDiscount);
-        this.sublcocount = item.sublcoDiscount;
-        console.log(this.sublcocount);
-      });
-      console.log(this.sublcocount);
+      // data.forEach((item: any) => {
+      //   this.sublcocount = item.sublcoDiscount;
+      //   console.log(this.sublcocount);
+      // });
+      // this.sublcocount = [];
+
+      this.data = this.sublcocount;
+      console.log('data', this.data);
       this.rowData = this.rowData.map(row => ({
         ...row,
         isCustomerMode: this.isCustomerMode
@@ -289,9 +294,9 @@ export class SublcooperatorComponent implements OnInit {
             console.error(`Failed to fetch count for item ${item.id}`, error);
             item.count = 0; // Optional fallback value
           });
-
-
       });
+      console.log(this.paginatedData);
+
     })
     if (this.operatorid.value === 0) {
       this.pagedOperators = [...this.rowData];
@@ -386,6 +391,7 @@ export class SublcooperatorComponent implements OnInit {
       // height = "1000px"
     }
     let dialogData = { type: type, data: data, id: this.operatorid, selectedid: this.selectedIds };
+    console.log(dialogData);
     const dialogRef = this.dialog.open(AddednotaddedComponent, {
       width: width,
       panelClass: 'custom-dialog-container',

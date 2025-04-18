@@ -126,6 +126,7 @@ export class LoginComponent implements OnInit {
             let isServiceCenter = this.roles.includes('ROLE_SERVICECENTER');
             let isOperator = this.roles.includes('ROLE_OPERATOR');
             let isSubLco = this.roles.includes('ROLE_SUBLCO');
+            let isSubcriber = this.roles.includes('ROLE_SUBSCRIBER');
 
             Swal.fire({
               position: "center",
@@ -159,8 +160,9 @@ export class LoginComponent implements OnInit {
               this.router.navigate(['admin/operator_dashboard']).then(() => {
               });
             } else if (isSubLco) {
-              console.log('111111111111111111111111111111');
-              
+              this.router.navigate(['admin/operator_dashboard']).then(() => {
+              });
+            } else if (isSubcriber) {
               this.router.navigate(['admin/operator_dashboard']).then(() => {
               });
             }
@@ -176,7 +178,6 @@ export class LoginComponent implements OnInit {
             });
             this.swal.Close();
           }
-
         },
         err => {
           console.error('Login error', err);

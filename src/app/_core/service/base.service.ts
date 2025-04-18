@@ -2287,4 +2287,17 @@ export class BaseService {
   getChangeSubLcoPassword(role: any, username: any, oldpassword: any, newpassword: any, confirmpassword: any, retailerid: any): Observable<any[]> {
     return this.http.post<any[]>(BASE_URL + "/sublco/changeSublcoPassword?role=" + role + "&username=" + encodeURIComponent(username) + "&oldpassword=" + oldpassword + "&newpassword=" + newpassword + "&confirmpassword=" + confirmpassword + "&retailerid=" + retailerid, {});
   }
+  // ========================================================== SUBSCRIBER ROLE ==============================
+  getSubscriberDetails(role: any, username: any): Observable<any[]> {
+    return this.http.get<any[]>(BASE_URL + "/subscriber/getSubscriberDetails?role=" + role + "&username=" + encodeURIComponent(username),)
+  }
+  getsubscriberOnlineInitialRequest(role: any, username: any, amount: any, subid: any): Observable<any[]> {
+    return this.http.post<any[]>(BASE_URL + "/subscriber/subscriberOnlineInitialRequest?role=" + role + "&username=" + encodeURIComponent(username) + "&amount=" + amount + "&subid=" + subid, {});
+  }
+  getsubscriberOnlineFailurelRecharge(role: any, username: any, amount: any, subid: any, transactionid: any, paymentstatus: any, hash: any): Observable<any[]> {
+    return this.http.post<any[]>(BASE_URL + "/subscriber/subscriberOnlineFailurelRecharge?role=" + role + "&username=" + encodeURIComponent(username) + "&amount=" + amount + "&subid=" + subid + "&transactionid=" + transactionid + "&paymentstatus=" + paymentstatus + "&hash=" + hash, {});
+  }
+  getchangeSubscriberPassword(role: any, username: any, oldpassword: any, newpassword: any, confirmpassword: any, subid: any): Observable<any[]> {
+    return this.http.post<any[]>(BASE_URL + "/sublco/changeSubscriberPassword?role=" + role + "&username=" + encodeURIComponent(username) + "&oldpassword=" + oldpassword + "&newpassword=" + newpassword + "&confirmpassword=" + confirmpassword + "&subid=" + subid, {});
+  }
 }

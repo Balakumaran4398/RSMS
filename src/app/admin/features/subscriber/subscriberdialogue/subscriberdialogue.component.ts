@@ -376,6 +376,8 @@ export class SubscriberdialogueComponent implements OnInit, OnDestroy {
     this.subscriberdata = data;
     this.role = storageService.getUserRole();
     this.username = storageService.getUsername();
+    console.log(this.role);
+
     this.newRefreshSmartcard = data.refresh;
     this.subid_1 = data.subId;
     this.newSubid = data.newsubid;
@@ -578,23 +580,33 @@ export class SubscriberdialogueComponent implements OnInit, OnDestroy {
     // this.onSubscriberList();
     if (this.role == 'ROLE_OPERATOR') {
       this.operatorIdoperatorId();
-
+    } else if (this.role == 'ROLE_SUBLCO') {
+      this.subLCOdetails();
     }
   }
   lcoDeatails: any;
   operatorId: any;
-  operatorIdoperatorId() {
-    console.log('111111111111111111111');
 
+  operatorIdoperatorId() {
     this.userservice.getOpDetails(this.role, this.username).subscribe((data: any) => {
       this.lcoDeatails = data;
       this.operatorId = this.lcoDeatails?.operatorid;
       this.operatorname = this.lcoDeatails?.operatorname;
       console.log(this.operatorId);
       this.onoperatorchange_LCO(this.operatorId);
-      // this.getAreaStatusChange_LCO(this.operatorId);
     })
+  }
+  subLCOdetails() {
+    this.userservice.getSublcoDetails(this.role, this.username).subscribe((data: any) => {
+      console.log(data);
+      console.log('subLCOdetails');
+      this.lcoDeatails = data;
+      this.operatorId = this.lcoDeatails?.retailerid;
+      this.operatorname = this.lcoDeatails?.retailername;
+      console.log('eresuofhdljkfhdsjkfhnsjdhfdjsfh', this.operatorId);
+      console.log('operatorname', this.operatorname);
 
+    })
   }
   onoperatorchange_LCO(operator: any): void {
     // this.selectedOperator = operator;
@@ -1949,10 +1961,8 @@ export class SubscriberdialogueComponent implements OnInit, OnDestroy {
     let isFirstCall = true;
     let subscriptionId: string;
     let subscriptionOperatorid: string;
-
     if (isFirstCall) {
       console.log('if');
-
       subscriptionId = this.subid;
       subscriptionOperatorid = this.operatorid;
       isFirstCall = false;

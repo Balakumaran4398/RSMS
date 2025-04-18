@@ -11,7 +11,6 @@ import Swal from 'sweetalert2';
   styleUrls: ['./special-permission.component.scss']
 })
 export class SpecialPermissionComponent {
-
   permission_dialog: boolean = false
   username: any;
   role: any;

@@ -69,7 +69,7 @@
                                 <span
                                     style="color: var(--primary-color); display: flex; align-items: center;justify-content: space-between; position: absolute; top: 5px; right: 10px;"
                                     class="sub-tittle tittle1 ">
-                                         <p><i class="fas fa-pen"
+                                    <p><i class="fas fa-pen"
                                             style="color: var(--edit-button); font-size: 20px;cursor: pointer"
                                             aria-hidden="true" (click)="toggleedit1(operator)"></i></p>
                                     <span class="tooltip">Edit</span>
@@ -97,39 +97,40 @@
                                         </div>
                                     </div>
                                 </mat-card>
-                                <mat-card class="permission" (click)="togglepermission(operator.operatorid)"
+                                <mat-card class="permission" (click)="togglepermission(operator)"
                                     style="cursor: pointer;">
                                     <img src="../assets/images/icons/Accesss1.png" alt="Accesss1">
-                                    <p (click)="togglepermission($event)" style="color: white;font-size: 14px;">Special
+                                    <p style="color: white;font-size: 14px;">Special
                                         Permission</p>
                                 </mat-card>
                             </div>
                         </div>
                         <br>
-                        <div class="report d-flex justify-content-center">
+                        <div class="report d-flex justify-content-center mb-3">
                             <div class="file-container">
                                 <div class="files tooltip-container mx-2"
                                     (click)="openaddedlogue('packageDetails', operator.operatorid)">
                                     <div class="files tooltip-container ">
-                                        <i class="fa fa-percent" aria-hidden="true" style="font-size: 23px;color: darkcyan;cursor: pointer;"></i>
+                                        <i class="fa fa-percent" aria-hidden="true"
+                                            style="font-size: 23px;color:var(--primary-color);cursor: pointer;"></i>
                                         <span class="tooltip">LCO Discount
                                         </span>
                                     </div>
                                 </div>
-                                <div class="files tooltip-container mx-2" (click)="toggleedit('editlco',operator)">
+                                <!-- <div class="files tooltip-container mx-2" (click)="toggleedit('editlco',operator)">
                                     <div class="files tooltip-container ">
                                         <i class="far fa-edit"
                                             style="font-size: 23px;color: #ff4081;cursor: pointer;"></i>
                                         <span class="tooltip">Edit Distributor </span>
                                     </div>
-                                </div>
-                          
+                                </div> -->
+
 
                                 <div class="files tooltip-container mx-2"
                                     (click)="toggleedit('lco_dashboard',operator)">
                                     <div class="files tooltip-container ">
                                         <i class="fas fa-tachometer-alt"
-                                            style="font-size: 23px;color:rgb(2, 86, 107);cursor: pointer;"></i>
+                                            style="font-size: 23px;color:var(--primary-color);cursor: pointer;"></i>
                                         <span class="tooltip">LCO Dashboard </span>
                                     </div>
                                 </div>

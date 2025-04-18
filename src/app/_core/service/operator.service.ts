@@ -42,7 +42,7 @@ export class OperatorService implements OnInit {
   operatorIdoperatorId() {
     console.log('111-------ROLE_OPERATOR');
 
-    this.userService.getOpDetails(this.role, this.username).subscribe((data) => {
+    this.userService.getOpDetails(this.role, this.username).subscribe((data: any) => {
       console.log(data);
       this.lcoDeatails = data;
       console.log(this.operatorId);
@@ -54,8 +54,9 @@ export class OperatorService implements OnInit {
   SubLCOIdoperatorId() {
     console.log('222222222-------ROLE_SUBLCO');
 
-    this.userService.getSublcoDetails(this.role, this.username).subscribe((data) => {
+    this.userService.getSublcoDetails(this.role, this.username).subscribe((data: any) => {
       console.log(data);
+      console.log('111111111111111');
       this.lcoDeatails = data;
       this.retailerId = this.lcoDeatails?.operatorid;
       console.log(this.retailerId);

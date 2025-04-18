@@ -15,7 +15,6 @@ interface requestBodylogs {
   action: any;
   remarks: any;
   data: any;
-
 }
 @Component({
   selector: 'app-sub-dashboard',
@@ -196,16 +195,11 @@ export class SubDashboardComponent implements OnInit {
     this.subscribersubid = this.route.snapshot.paramMap.get('subid');
     this.status = this.route.snapshot.paramMap.get('status');
     this.loaddata()
-
-
     let splitValues = this.subscriberid.split("**");
-
     this.boxid = splitValues[1];
     this.smartcardValue = splitValues[0];
-
     this.userservice.getPlanTypeList(this.role, this.username).subscribe((data: any) => {
       console.log(data);
-
       // this.rechargetype = Object.entries(data).map(([key, value]) => ({ name: key, id: value }));
       this.rechargetype = Object.keys(data).map(key => {
         const id = data[key];
@@ -250,7 +244,24 @@ export class SubDashboardComponent implements OnInit {
         }
       }
     });
+    if (this.role == 'ROLE_SUBLCO') {
+      this.subLCOdetails();
+    }
 
+  }
+  lcoDeatails: any;
+  retailerId: any;
+  Sublcopermissionlist: any;
+  subLCOdetails() {
+    this.userservice.getSublcoDetails(this.role, this.username).subscribe((data: any) => {
+      console.log(data);
+      console.log('111111111111111');
+      this.lcoDeatails = data;
+      this.retailerId = this.lcoDeatails?.retailerid;
+      this.Sublcopermissionlist = this.lcoDeatails?.permissionlist;
+      console.log('eresuofhdljkfhdsjkfhnsjdhfdjsfh', this.Sublcopermissionlist);
+
+    })
   }
   setNextDay(): void {
     const expiryDate = new Date(this.subdetailsList?.expirydate);
@@ -612,7 +623,6 @@ export class SubDashboardComponent implements OnInit {
               if (!item.showPairUnpair || item.status == 0) {
                 this.packagectivation = false;
               } else {
-
                 this.packagectivation = true;
               }
             } else {
@@ -1274,7 +1284,7 @@ export class SubDashboardComponent implements OnInit {
     {
       headerName: 'PACKAGE NAME	',
       // field: 'productname', width: 300,  // jeya akka told change the name
-      field: 'packagename', width: 300,  
+      field: 'packagename', width: 300,
     },
     {
       headerName: 'SMARTCARD', width: 250,
@@ -1387,15 +1397,15 @@ export class SubDashboardComponent implements OnInit {
     },
     {
       headerName: 'PACKAGE NAME	', width: 300, cellStyle: { textAlign: 'left' },
-      field: 'productname', 
+      field: 'productname',
     },
 
     {
-      headerName: 'PRODUCT ID	',  width: 360,
+      headerName: 'PRODUCT ID	', width: 360,
       field: 'casproductid',
     },
     {
-      headerName: 'DAYS REMAINING	',  width: 350, cellStyle: { textAlign: 'center' },
+      headerName: 'DAYS REMAINING	', width: 350, cellStyle: { textAlign: 'center' },
       field: 'noofdays',
     },
     {
