@@ -2156,8 +2156,11 @@ export class BaseService {
   updatePlanwiseDiscount(role: any, username: any, operatorid: any, orderid: any, plan_discount: any, type: any, ismso: any): Observable<any[]> {
     return this.http.post<any[]>(BASE_URL + "/operator/updatePlanwiseDiscount?role=" + role + "&username=" + encodeURIComponent(username) + "&operatorid=" + operatorid + "&orderid=" + orderid + "&plan_discount=" + plan_discount + "&type=" + type + "&ismso=" + ismso, {})
   }
-  getPlanDiscountDetailsByOpidPackageid(role: any, username: any, operatorid: any, orderid: any, customer_amount: any, lco_commission: any): Observable<any[]> {
-    return this.http.get<any[]>(BASE_URL + "/operator/getPlanDiscountDetailsByOpidPackageid?role=" + role + "&username=" + encodeURIComponent(username) + "&operatorid=" + operatorid + "&orderid=" + orderid + "&customer_amount=" + customer_amount + "&lco_commission=" + lco_commission)
+  // getPlanDiscountDetailsByOpidPackageid(role: any, username: any, operatorid: any, orderid: any, customer_amount: any, lco_commission: any): Observable<any[]> {
+  //   return this.http.get<any[]>(BASE_URL + "/operator/getPlanDiscountDetailsByOpidPackageid?role=" + role + "&username=" + encodeURIComponent(username) + "&operatorid=" + operatorid + "&orderid=" + orderid + "&customer_amount=" + customer_amount + "&lco_commission=" + lco_commission)
+  // }
+  getPlanDiscountDetailsByOpidPackageid(role: any, username: any, operatorid: any, orderid: any, customer_amount: any, lco_commission: any, ismso: any): Observable<any[]> {
+    return this.http.get<any[]>(BASE_URL + "/operator/getPlanDiscountDetailsByOpidPackageid?role=" + role + "&username=" + encodeURIComponent(username) + "&operatorid=" + operatorid + "&orderid=" + orderid + "&customer_amount=" + customer_amount + "&lco_commission=" + lco_commission + "&ismso=" + ismso)
   }
   getupdateLcoDiscountBytype(role: any, username: any, operatorid: any, discount_type: any, isdiscount: any): Observable<any[]> {
     return this.http.post<any[]>(BASE_URL + "/operator/updateLcoDiscountBytype?role=" + role + "&username=" + encodeURIComponent(username) + "&operatorid=" + operatorid + "&discount_type=" + discount_type + "&isdiscount=" + isdiscount, {})

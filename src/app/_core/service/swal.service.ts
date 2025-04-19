@@ -19,6 +19,16 @@ export class SwalService {
       location.reload();
     });
   }
+  error(message: any) {
+    Swal.fire({
+      title: 'Error!',
+      text: message,
+      icon: 'error',
+      timer: 2000,
+      timerProgressBar: true,
+      showConfirmButton: false
+    });
+  }
   success_1(message: any) {
     Swal.fire({
       title: 'Success!',

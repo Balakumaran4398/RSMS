@@ -105,7 +105,7 @@ export class LoginComponent implements OnInit {
           console.log(res);
           console.log(res.roles);
           if (res.roles.includes('ROLE_ADMIN') || res.roles.includes('ROLE_RECEPTION') || res.roles.includes('ROLE_SPECIAL')
-            || res.roles.includes('ROLE_INVENTORY') || res.roles.includes('ROLE_CUSSERVICE') || res.roles.includes('ROLE_SERVICECENTER') || res.roles.includes('ROLE_OPERATOR') || res.roles.includes('ROLE_SUBLCO')) {
+            || res.roles.includes('ROLE_INVENTORY') || res.roles.includes('ROLE_CUSSERVICE') || res.roles.includes('ROLE_SERVICECENTER') || res.roles.includes('ROLE_OPERATOR') || res.roles.includes('ROLE_SUBLCO')|| res.roles.includes('ROLE_SUBSCRIBER')) {
             this.storageService.saveToken(res.accessToken);
             this.storageService.saveUser(res);
             this.storageService.saveUsernamenew(res.username)

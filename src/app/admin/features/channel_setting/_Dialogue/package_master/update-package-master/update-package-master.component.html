@@ -10,7 +10,7 @@
                     <label for="categoryName" class="me-2 mb-2">CAS PRODUCT ID </label>
                 </div>
                 <div class="col-6">
-                    <input matInput placeholder="" [(ngModel)]="product_id" (keypress)="onKeydown($event)">
+                    <input matInput placeholder="" [(ngModel)]="product_id" (keypress)="onKeydown($event)" readonly>
                     <!-- <div *ngIf="packageMasterForm.get('product_id')?.invalid && packageMasterForm.get('product_id')?.touched" class="text-danger">
                         <small *ngIf="packageMasterForm.get('product_id')?.errors?.['required']">CAS Product ID is required</small>
                         <small *ngIf="packageMasterForm.get('product_id')?.errors?.['minlength']">CAS Product ID must be at least 5 characters</small>

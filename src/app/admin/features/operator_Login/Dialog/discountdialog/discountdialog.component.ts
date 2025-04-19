@@ -81,9 +81,7 @@ export class DiscountdialogComponent implements OnInit {
 
   ngOnInit(): void {
     this.operatorIdoperatorId();
-    if (this.role == 'ROLE_ADMIN') {
-      this.getplanwiseDetails();
-    }
+    this.getplanwiseDetails();
   }
   onNoClick(): void {
     this.dialogRef.close();
@@ -129,7 +127,9 @@ export class DiscountdialogComponent implements OnInit {
     this.errorMessage = '';
     return true;
   }
+  validatesublcoAmount() {
 
+  }
   clearErrorMessage() {
     if (this.new_customeramount && this.new_customeramount.toString().trim() !== '') {
       this.errorMessage = '';
@@ -168,51 +168,95 @@ export class DiscountdialogComponent implements OnInit {
   dataDetails: any;
   discountPlans: any[] = [];
   getplanwiseDetails() {
-    this.userService.getPlanDiscountDetailsByOpidPackageid(this.role, this.username, this.operatorid || 0, this.orderid, this.customeramount, this.lcocommission).subscribe((data: any) => {
-      this.discountPlans = data.map((item: any) => {
-        const content = item.content[0];
-        return {
-          id: item.plan,
-          name: content.plan,
-          customerAmount: content.customer_amount,
-          currentAmount: content.current_cus_amt,
-          discount: content.dicount_amount,
-          lcoCommission: content.lco_commission
-        };
+    if (this.role == 'ROLE_ADMIN') {
+      this.userService.getPlanDiscountDetailsByOpidPackageid(this.role, this.username, this.operatorid || 0, this.orderid, this.customeramount, this.lcocommission, true).subscribe((data: any) => {
+        this.discountPlans = data.map((item: any) => {
+          const content = item.content[0];
+          return {
+            id: item.plan,
+            name: content.plan,
+            customerAmount: content.customer_amount,
+            currentAmount: content.current_mso_amt,
+            discount: content.dicount_amount,
+            lcoCommission: content.mso_amount
+          };
+        });
       });
-    });
-
-  }
-  updatePlanDiscount(plan: any, index: number) {
-    this.discountPlans = [...this.discountPlans];
-    console.log(plan.customerAmount);
-    console.log(plan.lcoCommission);
-    if (plan.customerAmount < plan.lcoCommission) {
-      this.errorMessage = `Amount must be at least Rs.${plan.lcoCommission}.`;
-    } else if (plan.customerAmount > plan.currentAmount) {
-      this.errorMessage = `Amount must not exceed Rs.${plan.currentAmount}.`;
-    } else {
-      this.errorMessage = '';
+    } else if (this.role == 'ROLE_OPERATOR') {
+      this.userService.getPlanDiscountDetailsByOpidPackageid(this.role, this.username, this.operatorid || 0, this.orderid, this.customeramount, this.lcocommission, false).subscribe((data: any) => {
+        this.discountPlans = data.map((item: any) => {
+          const content = item.content[0];
+          return {
+            id: item.plan,
+            name: content.plan,
+            customerAmount: content.customer_amount,
+            currentAmount: content.current_cus_amt,
+            discount: content.dicount_amount,
+            lcoCommission: content.lco_commission
+          };
+        });
+      });
     }
   }
+  // updatePlanDiscount(plan: any, index: number) {
+  //   // this.discountPlans = [...this.discountPlans];
+  //   console.log(plan.customerAmount);
+  //   console.log(plan.lcoCommission);
+  //   if (plan.discount > plan.lcoCommission) {
+  //     console.log('11111111111');
+  //     this.errorMessage = `Amount must be at least Rs.${plan.lcoCommission}.`;
+  //   }
+
+  //    else {
+  //     console.log('33333333');
+  //     this.errorMessage = '';
+  //   }
+  //   console.log(plan.discount);
+
+  // }
+
+  updatePlanDiscount(plan: any): boolean {
+    if (plan.discount > plan.lcoCommission) {
+      console.log('LCO');
+      this.errorMessage = `Amount must be at least Rs.${plan.lcoCommission}.`;
+      return false;
+    } else if (plan.discount > plan.mso_amount) {
+      console.log('MSO');
+      this.errorMessage = `Amount must be at least Rs.${plan.mso_amount}.`;
+    }
+    this.errorMessage = '';
+    return true;
+  }
   getupdatePlanwiseDiscount() {
+    for (let i = 0; i < this.discountPlans.length; i++) {
+      const plan = this.discountPlans[i];
+
+      if (plan.discount > plan.lcoCommission) {
+        this.errorMessage = `Amount must be at least Rs.${plan.lcoCommission}.`;
+        this.swal.Error(this.errorMessage);
+        return;
+      }
+    }
     this.plandiscount = this.discountPlans.map((plan: any) =>
       `${plan.id}-${plan.discount}`
     );
-    if(this.role == 'ROLE_OPERATOR'){
-    this.userService.updatePlanwiseDiscount(this.role, this.username, this.operatorid || 0, this.orderid, this.plandiscount, 1,false)
-      .subscribe((res: any) => {
-        this.swal.success(res?.message);
-      }, (err) => {
-        this.swal.Error(err?.error?.message || err?.error);
-      });
+
+    if (this.role == 'ROLE_OPERATOR') {
+      this.swal.Loading();
+      this.userService.updatePlanwiseDiscount(this.role, this.username, this.operatorid || 0, this.orderid, this.plandiscount, 1, false)
+        .subscribe((res: any) => {
+          this.swal.success(res?.message);
+        }, (err) => {
+          this.swal.Error(err?.error?.message || err?.error);
+        });
     } else if (this.role == 'ROLE_ADMIN') {
-      this.userService.updatePlanwiseDiscount(this.role, this.username, this.operatorid || 0, this.orderid, this.plandiscount, 2,true)
-      .subscribe((res: any) => {
-        this.swal.success(res?.message);
-      }, (err) => {
-        this.swal.Error(err?.error?.message || err?.error);
-      });
+      this.swal.Loading();
+      this.userService.updatePlanwiseDiscount(this.role, this.username, this.operatorid || 0, this.orderid, this.plandiscount, 2, true)
+        .subscribe((res: any) => {
+          this.swal.success(res?.message);
+        }, (err) => {
+          this.swal.Error(err?.error?.message || err?.error);
+        });
     }
   }
   distributorid: any;

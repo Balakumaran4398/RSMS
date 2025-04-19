@@ -115,6 +115,8 @@ export class OnlinerechargeComponent implements OnInit {
   ngOnInit(): void {
     if (this.role == 'ROLE_OPERATOR') {
       this.getOperatorDetails();
+    } else if (this.role == 'ROLE_SUBLCO') {
+      this.subLCOdetails()
     }
     this.fromdate = this.fromdate ? this.formatDate(this.fromdate) : this.formatDate(new Date());
     this.todate = this.todate ? this.formatDate(this.todate) : this.formatDate(new Date());
@@ -124,8 +126,19 @@ export class OnlinerechargeComponent implements OnInit {
     });
     this.getOnline();
   }
+  lcoDeatails: any;
+  sublcoetailerId: any;
+  subLCOdetails() {
+    this.userservice.getSublcoDetails(this.role, this.username).subscribe((data: any) => {
+      console.log(data);
+      console.log('111111111111111');
+      this.lcoDeatails = data;
+      this.sublcoetailerId = this.lcoDeatails?.retailerid;
 
+      console.log('eresuofhdljkfhdsjkfhnsjdhfdjsfh', this.sublcoetailerId);
 
+    })
+  }
   onGridReady(params: { api: any }) {
     this.gridApi = params.api;
     this.getData('0000-00-00', '0000-00-00');
@@ -190,7 +203,7 @@ export class OnlinerechargeComponent implements OnInit {
 
   makeEaseBuzzPayment() {
     if (this.role == 'ROLE_SUBLCO') {
-      this.userservice.getSublcoOnlineInitialRequest(this.role, this.username, this.amount || 0, this.retailerId).subscribe((res: any) => {
+      this.userservice.getSublcoOnlineInitialRequest(this.role, this.username, this.amount || 0, this.retailerId || this.sublcoetailerId).subscribe((res: any) => {
         this.transResponse = res;
         console.log(res);
         this.easebuzzData = this.transResponse.data;
@@ -366,7 +379,7 @@ export class OnlinerechargeComponent implements OnInit {
     } else {
       this.isspecial = false
     }
-    this.userservice.getOnlinePaymentHistory(this.role, this.username, this.fromdate, this.todate, this.operatorid, 0, 0, 1, 3, this.isspecial)
+    this.userservice.getOnlinePaymentHistory(this.role, this.username, this.fromdate, this.todate, this.operatorid || this.sublcoetailerId, 0, 0, 1, 3, this.isspecial)
       .subscribe((res: any) => {
         this.swal.success_1(res?.message);
         this.rowDataOnline = res;

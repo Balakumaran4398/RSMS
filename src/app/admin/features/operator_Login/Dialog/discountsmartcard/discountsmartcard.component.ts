@@ -102,7 +102,7 @@ export class DiscountsmartcardComponent implements OnInit {
   }
 
   getplanwiseDetails() {
-    this.userService.getPlanDiscountDetailsByOpidPackageid(this.role, this.username, this.lcoId, this.orderid, this.customeramount, this.lcocommission).subscribe((data: any) => {
+    this.userService.getPlanDiscountDetailsByOpidPackageid(this.role, this.username, this.lcoId, this.orderid, this.customeramount, this.lcocommission,true).subscribe((data: any) => {
       console.log(data);
       this.rowData1 = data
     })

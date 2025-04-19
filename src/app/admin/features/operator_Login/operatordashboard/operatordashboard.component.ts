@@ -40,6 +40,8 @@ export class OperatordashboardComponent implements OnInit {
   operatorname: any;
   operatorBalance: any;
   subLcorechargeCount: any;
+  subLcoPermission: any;
+  onlineRecharge: any;
   LcorechargeCount: any;
   type: any;
 
@@ -157,6 +159,9 @@ export class OperatordashboardComponent implements OnInit {
       this.operatorname = this.lcoDeatails?.retailername;
       this.operatorBalance = this.lcoDeatails?.balance;
       this.subLcorechargeCount = this.lcoDeatails?.todayrechargeamount;
+      this.subLcoPermission = this.lcoDeatails?.permissionlist;
+      console.log(this.subLcoPermission);
+      this.onlineRecharge = this.subLcoPermission.online_recharge;
       this.getSubLcoDetailsCount(this.retailerid)
     })
   }

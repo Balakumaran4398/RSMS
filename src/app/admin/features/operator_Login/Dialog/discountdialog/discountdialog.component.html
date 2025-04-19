@@ -25,8 +25,6 @@
                     </div>
                 </div>
             </div>
-
-
             <div class="line mb-2">
                 <div class="col-12 d-flex justify-content-center align-items-center">
                     <div class="col-6 d-flex justify-content-start align-items-center">
@@ -145,7 +143,7 @@
         <!-- Discount Table -->
         <div class="table-responsive">
             <table class="table text-center">
-                <thead>
+                <thead *ngIf="role == 'ROLE_OPERATOR'">
                     <tr>
                         <th>PLAN</th>
                         <th>CUS_AMT</th>
@@ -154,25 +152,33 @@
                         <th>LCO_COM</th>
                     </tr>
                 </thead>
-                <tbody>
-                    <tr *ngFor="let plan of discountPlans">
+                <thead *ngIf="role !== 'ROLE_OPERATOR'">
+                    <tr>
+                        <th>PLAN</th>
+                        <th>CUS_AMT</th>
+                        <th>CUR_AMT</th>
+                        <th>DIS</th>
+                        <th>MSO_COM</th>
+                    </tr>
+                </thead>
+                <tbody *ngFor="let plan of discountPlans">
+                    <tr>
                         <td class="plan-name">{{ plan.name }}</td>
                         <td class="customer-amt">{{ plan.customerAmount }}</td>
                         <td class="current-amt">{{ plan.currentAmount }}</td>
                         <td>
                             <input type="text" class="discount-input" [(ngModel)]="plan.discount"
-                               (keydown)="updatePlanDiscount(plan, i)"
-                                (keypress)="onKeydown($event)">
+                                (click)="updatePlanDiscount(plan)" (keypress)="onKeydown($event)">
+                            <!-- (keypress)="onKeydown($event)" -->
+                            <div *ngIf="errorMessage" class="text-danger">{{plan.errorMessage }}</div>
                         </td>
                         <td class="lco-commission">{{ plan.lcoCommission }}</td>
                     </tr>
                 </tbody>
             </table>
         </div>
-
-        <!-- Buttons -->
         <div class="modal-footer">
-            <button class="btn update-btn" (click)="getupdatePlanwiseDiscount()">UPDATE</button>
+            <button class="btn update-btn mx-3" (click)="getupdatePlanwiseDiscount()">UPDATE</button>
             <button class="btn cancel-btn" (click)="onNoClick()">CANCEL</button>
         </div>
     </div>

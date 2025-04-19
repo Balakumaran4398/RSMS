@@ -1,6 +1,7 @@
 <!-- SIDEBAR -->
 <section id="sidebar" [class.hide]="!isSidebarOpen">
-    <a (click)="navgetToUrl('/home')" class="brand" [ngClass]="{'sidebar-open': isSidebarOpen}"
+    <!-- <a (click)="navgetToUrl('/home')" class="brand" [ngClass]="{'sidebar-open': isSidebarOpen}" -->
+    <a  class="brand" [ngClass]="{'sidebar-open': isSidebarOpen}"
         style="margin-left: 50px;height: 12%;">
         <!-- <img height="38px" style="margin: 0px -6px 0px 3px;width: 45px;"
             [ngStyle]="{'visibility': !isHide ? 'hidden' : 'visible'}" [src]="msoLogo" alt="" srcset=""> -->
@@ -150,6 +151,10 @@
                 <li><a (click)="navgetToUrl('/LcoCommission');setActiveLinkTab($event)"><i
                             class="fa fa-fw fa-th-large icon ">&nbsp;</i>Lco
                         Commission </a></li>
+                <li ><a (click)="navgetToUrl('/lcoCommissionDashboard');setActiveLinkTab($event)"
+                        class="nav-link">
+                        <i class='fas fa-tags icon'></i>&nbsp;Discount</a>
+                </li>
                 <li><a (click)="navgetToUrl('/PackagewiseOperator');setActiveLinkTab($event)"><i
                             class="fa fa-fw fa-th icon">&nbsp;</i>Packagewise Operator</a></li>
             </ul>
@@ -260,10 +265,7 @@
             </ul>
         </li>
 
-        <li *ngIf="isUser "><a (click)="navgetToUrl('/lcoCommissionDashboard');setActiveLinkTab($event)"
-                class="nav-link">
-                <i class='fas fa-tags icon'></i>&nbsp;Discount</a>
-        </li>
+
         <!-- -------------------------------------------------------------Special role----------------------------------------------- -->
         <li *ngIf="isSpecial"><a (click)="setActiveLinkTabList($event);navgetToUrl('/msodetails');"
                 class="active nav-link">
