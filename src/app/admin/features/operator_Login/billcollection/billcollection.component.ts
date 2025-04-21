@@ -289,6 +289,7 @@ export class BillcollectionComponent implements OnInit {
       {
         headerName: "Edit", width: 100, cellStyle: { textAlign: 'left' },
         cellRenderer: (params: any) => {
+          const isActive = params.data.paid_amount === '0' || params.data.extra_amount <= '0';
           const payButton = document.createElement('button');
           payButton.innerHTML = ' <img src="/assets/images/icons/EditLTP.png" style="width:70px">';
           payButton.style.backgroundColor = 'transparent';
@@ -297,10 +298,20 @@ export class BillcollectionComponent implements OnInit {
           payButton.title = 'Edit the Customer';
           payButton.style.cursor = 'pointer';
           payButton.style.marginRight = '6px';
-          payButton.addEventListener('click', () => {
-            this.openEditDialog(params.data, 'pay_edit');
-          });
+          // payButton.addEventListener('click', () => {
+          //   this.openEditDialog(params.data, 'pay_edit');
+          // });
 
+
+          if (!isActive) {
+            payButton.style.opacity = '0.5';
+            payButton.title = 'Cannot pay, status is Deactive';
+          } else {
+            payButton.addEventListener('click', () => {
+              this.openEditDialog(params.data, 'pay_edit');
+            });
+            payButton.title = 'Pay Now, status is Active';
+          }
           const div = document.createElement('div');
           div.appendChild(payButton);
           return div;
@@ -371,21 +382,39 @@ export class BillcollectionComponent implements OnInit {
 
   getLcoInvoiceReport(reportType: number) {
     this.swal.Loading();
-    this.userService.getBillCollectionReport(this.role, this.username, this.lcoId || this.retailerId, this.bill_type, this.useragent, this.fromdate, this.todate, this.searchname || null, reportType).
-      subscribe({
-        next: (x: Blob) => {
-          this.swal.Close();
-          if (reportType === 1) {
-            this.reportMaking(x, `Bill Collection_${this.lcoName || this.retailerName}.pdf`, 'application/pdf');
-          } else if (reportType === 2) {
-            this.reportMaking(x, `Bill Collection_${this.lcoName || this.retailerName}.xlsx`, 'application/xlsx');
+    if (this.role == 'ROLE_OPERATOR') {
+      this.userService.getBillCollectionReport(this.role, this.username, this.lcoId || this.retailerId, this.bill_type, this.useragent, this.fromdate, this.todate, this.searchname || null, reportType).
+        subscribe({
+          next: (x: Blob) => {
+            this.swal.Close();
+            if (reportType === 1) {
+              this.reportMaking(x, `Bill Collection_${this.lcoName || this.retailerName}.pdf`, 'application/pdf');
+            } else if (reportType === 2) {
+              this.reportMaking(x, `Bill Collection_${this.lcoName || this.retailerName}.xlsx`, 'application/xlsx');
+            }
+          },
+          error: (error: any) => {
+            this.swal.Close();
+            this.pdfswalError(error?.error.message);
           }
-        },
-        error: (error: any) => {
-          this.swal.Close();
-          this.pdfswalError(error?.error.message);
-        }
-      });
+        });
+    } else if (this.role == 'ROLE_SUBLCO') {
+      this.userService.getBillCollectionReport(this.role, this.username, this.lcoId || this.retailerId, this.bill_type, 4, this.fromdate, this.todate, this.searchname || null, reportType).
+        subscribe({
+          next: (x: Blob) => {
+            this.swal.Close();
+            if (reportType === 1) {
+              this.reportMaking(x, `Bill Collection_${this.lcoName || this.retailerName}.pdf`, 'application/pdf');
+            } else if (reportType === 2) {
+              this.reportMaking(x, `Bill Collection_${this.lcoName || this.retailerName}.xlsx`, 'application/xlsx');
+            }
+          },
+          error: (error: any) => {
+            this.swal.Close();
+            this.pdfswalError(error?.error.message);
+          }
+        });
+    }
   }
 
   // -----------------------------------------------------common method for pdf and excel------------------------------------------------------------------------

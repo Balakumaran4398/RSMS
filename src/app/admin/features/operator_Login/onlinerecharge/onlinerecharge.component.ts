@@ -117,6 +117,8 @@ export class OnlinerechargeComponent implements OnInit {
       this.getOperatorDetails();
     } else if (this.role == 'ROLE_SUBLCO') {
       this.subLCOdetails()
+    } else if (this.role == 'ROLE_SUBSCRIBER') {
+      this.getSubscriberDetails()
     }
     this.fromdate = this.fromdate ? this.formatDate(this.fromdate) : this.formatDate(new Date());
     this.todate = this.todate ? this.formatDate(this.todate) : this.formatDate(new Date());
@@ -124,7 +126,7 @@ export class OnlinerechargeComponent implements OnInit {
       fromdate: this.fromdate,
       todate: this.todate
     });
-    this.getOnline();
+    // this.getOnline();
   }
   lcoDeatails: any;
   sublcoetailerId: any;
@@ -134,9 +136,23 @@ export class OnlinerechargeComponent implements OnInit {
       console.log('111111111111111');
       this.lcoDeatails = data;
       this.sublcoetailerId = this.lcoDeatails?.retailerid;
-
       console.log('eresuofhdljkfhdsjkfhnsjdhfdjsfh', this.sublcoetailerId);
-
+      this.getGatewayDetails(this.sublcoetailerId);
+      this.getOnline(this.sublcoetailerId);
+    })
+  }
+  Sub_subid: any;
+  Sub_amount: any;
+  getSubscriberDetails() {
+    this.userservice.getSubscriberDetails(this.role, this.username).subscribe((data: any) => {
+      console.log(data);
+      console.log('111111111111111');
+      this.lcoDeatails = data;
+      this.Sub_subid = this.lcoDeatails?.subid;
+      this.Sub_amount = this.lcoDeatails?.balance;
+      console.log('eresuofhdljkfhdsjkfhnsjdhfdjsfh', this.Sub_subid);
+      this.getGatewayDetails(this.Sub_subid);
+      this.getOnline(this.Sub_subid);
     })
   }
   onGridReady(params: { api: any }) {
@@ -185,19 +201,17 @@ export class OnlinerechargeComponent implements OnInit {
       this.operatorid = data.operatorid;
       console.log(this.operatorid);
       this.getGatewayDetails(this.operatorid);
-      this.getOnline();
+      this.getOnline(this.operatorid);
     })
   }
   getGatewayDetails(op_id: any) {
     console.log(this.operatorid);
-
     this.userservice.getLcoPaymentGatewayDetails(this.role, this.username, op_id).subscribe((res: any) => {
       console.log(res);
       this.apikey = res.apikey;
       // this.access_key = res.apikey;
       this.gatewaymode = res.mode;
       console.log(this.gatewaymode);
-
     })
   }
 
@@ -239,7 +253,7 @@ export class OnlinerechargeComponent implements OnInit {
               if (response.status) {
                 this.swal.Loading();
                 this.userservice
-                  .getSublcoOnlineFailurelRecharge(this.role, this.username, response.amount, this.retailerId, response.txnid, response.status, response.hash)
+                  .getSublcoOnlineFailurelRecharge(this.role, this.username, response.amount, this.retailerId || this.sublcoetailerId, response.txnid, response.status, response.hash)
                   .subscribe((res: any) => {
                     this.swal.success(res?.message);
                   }, (err) => {
@@ -259,27 +273,13 @@ export class OnlinerechargeComponent implements OnInit {
         console.log(err)
         this.swal.Error(err?.error?.message);
       });
-    } else {
+    } else if (this.role == 'ROLE_OPERATOR') {
       this.userservice.lcoOnlineInitialRequest(this.role, this.username, this.amount || 0, this.operatorid).subscribe((res: any) => {
         this.transResponse = res;
         console.log(res);
         this.easebuzzData = this.transResponse.data;
         // this.swal.success(res?.message);
         if (res.status == '1') {
-          // const dialogData = new LoadingDialogModel('100');
-          // const dialogRef = this.dialog.open(LoadingComponent, {
-          //   maxWidth: '800px',
-          //   disableClose: true,
-          //   data: dialogData,
-          //   panelClass: 'loading-style',
-          // });
-          // console.log(res);
-
-          // let url = "https://pay.easebuzz.in/pay/" + res.data;
-          // let url = this.gateWayMode.baseurl + res.data;
-          // baseurl
-          // this.openChildWindow(url);
-
           if (this.gatewaymode == 'LIVE') {
             this.mode = 'prod';
           } else {
@@ -297,6 +297,52 @@ export class OnlinerechargeComponent implements OnInit {
                 this.swal.Loading();
                 this.userservice
                   .lcoOnlineFailurelRecharge(this.role, this.username, response.amount, this.operatorid, response.txnid, response.status, response.hash)
+                  .subscribe((res: any) => {
+                    this.swal.success(res?.message);
+                  }, (err) => {
+                    this.swal.Error(err?.error?.message);
+                  });
+              } else {
+              }
+            },
+            theme: '#123456',
+          };
+          easebuzzCheckout.initiatePayment(options);
+        } else {
+          alert(res.data);
+        }
+        // });
+      }, (err) => {
+        console.log(err)
+        this.swal.Error(err?.error?.message);
+      });
+    } else if (this.role == 'ROLE_SUBSCRIBER') {
+      console.log(this.role);
+      console.log('subid', this.Sub_subid);
+
+      this.userservice.getsubscriberOnlineInitialRequest(this.role, this.username, this.amount || this.Sub_amount || 0, this.operatorid || this.Sub_subid).subscribe((res: any) => {
+        this.transResponse = res;
+        console.log(res);
+        this.easebuzzData = this.transResponse.data;
+        // this.swal.success(res?.message);
+        if (res.status == '1') {
+          if (this.gatewaymode == 'LIVE') {
+            this.mode = 'prod';
+          } else {
+            this.mode = 'test';
+          }
+
+          var easebuzzCheckout = new EasebuzzCheckout(
+            this.apikey,
+            this.mode,);
+          var options = {
+            access_key: this.easebuzzData,
+            onResponse: (response: any) => {
+              console.log('wsedasdsad', response);
+              if (response.status) {
+                this.swal.Loading();
+                this.userservice
+                  .getsubscriberOnlineFailurelRecharge(this.role, this.username, response.amount, this.operatorid || this.Sub_subid, response.txnid, response.status, response.hash)
                   .subscribe((res: any) => {
                     this.swal.success(res?.message);
                   }, (err) => {
@@ -364,8 +410,9 @@ export class OnlinerechargeComponent implements OnInit {
       return { color: '#8A2BE2' };
     }
   }
-  getOnline() {
-    console.log('rtgreutrhkgthk', this.operatorid)
+  getOnline(opid: any) {
+    console.log('rtgreutrhkgthk', this.operatorid || this.sublcoetailerId || this.Sub_subid)
+    console.log('rtgreutrhkgthk', opid)
     Swal.fire({
       title: "Processing",
       text: "Please wait while the report is being generated...",
@@ -379,11 +426,14 @@ export class OnlinerechargeComponent implements OnInit {
     } else {
       this.isspecial = false
     }
-    this.userservice.getOnlinePaymentHistory(this.role, this.username, this.fromdate, this.todate, this.operatorid || this.sublcoetailerId, 0, 0, 1, 3, this.isspecial)
+    console.log(this.sublcoetailerId);
+
+    this.userservice.getOnlinePaymentHistory(this.role, this.username, this.fromdate, this.todate, opid || this.Sub_subid, 0, 0, 1, 3, this.isspecial)
+      // this.userservice.getOnlinePaymentHistory(this.role, this.username, this.fromdate, this.todate, this.operatorid || this.sublcoetailerId, 0, 0, 1, 3, this.isspecial)
       .subscribe((res: any) => {
         this.swal.success_1(res?.message);
         this.rowDataOnline = res;
-        this.swal.Close(); ``
+        this.swal.Close();
       }, (err) => {
         this.swal.Error(err?.error?.message);
         // this.handleApiError(err.error.message, err);
@@ -623,7 +673,7 @@ export class OnlinerechargeComponent implements OnInit {
       });
 
     setTimeout(() => {
-      this.getOnline()
+      // this.getOnline()
     }, 2000);
 
   }

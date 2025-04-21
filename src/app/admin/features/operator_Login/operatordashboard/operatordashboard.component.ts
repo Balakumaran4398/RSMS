@@ -89,6 +89,8 @@ export class OperatordashboardComponent implements OnInit {
     } else if (this.role == 'ROLE_SUBLCO') {
       this.getSubLcoDetails();
       // this.getSubLcoDetailsCount();
+    }else if (this.role == 'ROLE_SUBSCRIBER') {
+      this.getSubscriberDetails();
     }
 
     const currentDate = new Date();
@@ -163,6 +165,15 @@ export class OperatordashboardComponent implements OnInit {
       console.log(this.subLcoPermission);
       this.onlineRecharge = this.subLcoPermission.online_recharge;
       this.getSubLcoDetailsCount(this.retailerid)
+    })
+  }
+
+  getSubscriberDetails() {
+    this.userService.getSubscriberDetails(this.role, this.username).subscribe((data: any) => {
+      console.log(data);
+      console.log('22222222');
+      this.lcoDeatails = data;
+       console.log('SUBSCRIBER DETAILS', this.lcoDeatails);
     })
   }
   operatorDetails() {

@@ -246,6 +246,8 @@ export class SubDashboardComponent implements OnInit {
     });
     if (this.role == 'ROLE_SUBLCO') {
       this.subLCOdetails();
+    } else if (this.role == 'ROLE_SUBSCRIBER') {
+      this.getSubscriberDetails();
     }
 
   }
@@ -260,7 +262,18 @@ export class SubDashboardComponent implements OnInit {
       this.retailerId = this.lcoDeatails?.retailerid;
       this.Sublcopermissionlist = this.lcoDeatails?.permissionlist;
       console.log('eresuofhdljkfhdsjkfhnsjdhfdjsfh', this.Sublcopermissionlist);
-
+    })
+  }
+  sub_subscriberid:any;
+  getSubscriberDetails() {
+    this.userservice.getSubscriberDetails(this.role, this.username).subscribe((data: any) => {
+      console.log(data);
+      console.log('22222222');
+      this.lcoDeatails = data;
+      this.lcoDeatails = data;
+      console.log('SUBSCRIBER DETAILS', this.lcoDeatails);
+      this.sub_subscriberid = this.lcoDeatails.subid;
+      console.log('SUBSCRIBER SUBID', this.sub_subscriberid);
     })
   }
   setNextDay(): void {

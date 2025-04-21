@@ -42,6 +42,7 @@ export class NavComponent implements OnInit, AfterViewInit {
   isServiceCenter: boolean = false;
   isOperator: boolean = false;
   isSubLco: boolean = false;
+  isSubscriber: boolean = false;
   isDropdownOpen: boolean = false;
   isSearch: boolean = false;
 
@@ -50,7 +51,7 @@ export class NavComponent implements OnInit, AfterViewInit {
   isPopupVisible = false;
 
   activeTab: string = '';
-
+  subscriberid:any
   constructor(private router: Router, private breakpointObserver: BreakpointObserver, private cd: ChangeDetectorRef, private dataService: DataService, private cdr: ChangeDetectorRef, private userservice: BaseService, private storageservice: StorageService) {
     // this.breakpointChanged();
     this.role = storageservice.getUserRole();
@@ -66,6 +67,7 @@ export class NavComponent implements OnInit, AfterViewInit {
       this.isServiceCenter = false;
       this.isOperator = false;
       this.isSubLco = false;
+      this.isSubscriber = false;
       this.role = 'ROLE_ADMIN';
     } else if (this.role.includes('ROLE_RECEPTION')) {
       this.isReception = true;
@@ -75,6 +77,7 @@ export class NavComponent implements OnInit, AfterViewInit {
       this.isServiceCenter = false;
       this.isOperator = false;
       this.isSubLco = false;
+      this.isSubscriber = false;
       this.role = 'ROLE_RECEPTION';
     } else if (this.role.includes('ROLE_SPECIAL')) {
       this.isReception = false;
@@ -94,6 +97,7 @@ export class NavComponent implements OnInit, AfterViewInit {
       this.isServiceCenter = false;
       this.isOperator = false;
       this.isSubLco = false;
+      this.isSubscriber = false;
       this.role = 'ROLE_INVENTORY';
     } else if (this.role.includes('ROLE_CUSSERVICE')) {
       this.isInventory = false;
@@ -104,6 +108,7 @@ export class NavComponent implements OnInit, AfterViewInit {
       this.isServiceCenter = false;
       this.isOperator = false;
       this.isSubLco = false;
+      this.isSubscriber = false;
       this.role = 'ROLE_CUSSERVICE';
     } else if (this.role.includes('ROLE_SERVICECENTER')) {
       this.isInventory = false;
@@ -115,6 +120,7 @@ export class NavComponent implements OnInit, AfterViewInit {
       this.isSearch = true;
       this.isOperator = false;
       this.isSubLco = false;
+      this.isSubscriber = false;
       this.role = 'ROLE_SERVICECENTER';
     } else if (this.role.includes('ROLE_OPERATOR')) {
       this.isInventory = false;
@@ -126,6 +132,7 @@ export class NavComponent implements OnInit, AfterViewInit {
       this.isSearch = false;
       this.isOperator = true;
       this.isSubLco = false;
+      this.isSubscriber = false;
       this.role = 'ROLE_OPERATOR';
       this.operatorIdoperatorId();
     } else if (this.role.includes('ROLE_SUBLCO')) {
@@ -138,7 +145,29 @@ export class NavComponent implements OnInit, AfterViewInit {
       this.isSearch = false;
       this.isOperator = false;
       this.isSubLco = true;
+      this.isSubscriber = false;
       this.role = 'ROLE_SUBLCO';
+    } else if (this.role.includes('ROLE_SUBSCRIBER')) {
+      this.isInventory = false;
+      this.isReception = false;
+      this.isUser = false;
+      this.isSpecial = false;
+      this.isCustomerService = false;
+      this.isServiceCenter = false;
+      this.isSearch = false;
+      this.isOperator = false;
+      this.isSubLco = false;
+      this.isSubscriber = true;
+      this.role = 'ROLE_SUBSCRIBER';
+      this.userservice.getSubscriberDetails(this.role, this.username).subscribe((data: any) => {
+        console.log(data);
+        console.log('22222222');
+        this.lcoDeatails = data;
+        console.log('SUBSCRIBER DETAILS', this.lcoDeatails);
+        this.subscriberid = this.lcoDeatails.subid;
+        console.log('this.subscriberid', this.subscriberid);
+      
+      })
     }
   }
 
@@ -414,34 +443,6 @@ export class NavComponent implements OnInit, AfterViewInit {
         })
       }
     })
-
-
-    // sidebar?.addEventListener('mouseleave', function () {
-    //   if (this.classList.contains('hide')) {
-    //     allDropdown.forEach((item: any) => {
-    //       const a = item.parentElement.querySelector('a:first-child');
-    //       a.classList.remove('active');
-    //       item.classList.remove('show');
-    //     })
-    //     allSideDivider?.forEach(item => {
-    //       item.textContent = '-'
-    //     })
-    //   }
-    // })
-
-    // sidebar?.addEventListener('mouseenter', function () {
-    //   if (this.classList.contains('hide')) {
-    //     allDropdown.forEach((item: any) => {
-    //       const a = item.parentElement.querySelector('a:first-child');
-    //       a.classList.remove('active');
-    //       item.classList.remove('show');
-    //     })
-    //     allSideDivider.forEach((item: any) => {
-    //       item.textContent = item.dataset.text;
-    //     })
-    //   }
-    // })
-
 
     // Function to toggle dropdown menu
     function toggleDropdown(dropdownMenu: any, toggleArrow: any) {

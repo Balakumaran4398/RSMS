@@ -6,6 +6,7 @@ import { StorageService } from '../_core/service/storage.service';
 import { AuthService } from '../_core/service/auth.service';
 import Swal from 'sweetalert2';
 import { SwalService } from '../_core/service/swal.service';
+import { BaseService } from '../_core/service/base.service';
 // import { ChangeDetectable } from 'ag-charts-community/dist/types/src/scene/changeDetectable';
 interface requestBody {
   access_ip: any;
@@ -33,13 +34,17 @@ export class LoginComponent implements OnInit {
   warningMessageDate: any;
   msoName: any;
   msoLogo: any;
-
+  role: any;
+  username: any;
+  lcoDeatails: any;
+  subscriberid: any;
   notificationMessage: boolean = false;
   constructor(
     private swal: SwalService,
     private fb: FormBuilder,
     private authService: AuthService,
     private storageService: StorageService,
+    private userService: BaseService,
     private router: Router,
     // private alertService: AlertService,
     private cdr: ChangeDetectorRef,
@@ -48,6 +53,8 @@ export class LoginComponent implements OnInit {
       username: new FormControl('', [Validators.required]),
       password: new FormControl('', [Validators.required])
     });
+    this.role = storageService.getUserRole();
+    this.username = storageService.getUsername();
   }
 
   ngOnInit() {
@@ -68,6 +75,17 @@ export class LoginComponent implements OnInit {
       console.log(this.msoLogo);
       console.log(this.msoName);
     });
+    // if (this.role == 'ROLE_SUBSCRIBER') {
+    //   this.getSubscriberDetails();
+    // }
+  }
+  getSubscriberDetails() {
+    this.userService.getSubscriberDetails(this.role, this.username).subscribe((data: any) => {
+      console.log(data);
+      console.log('22222222');
+      this.lcoDeatails = data;
+      console.log('SUBSCRIBER DETAILS', this.lcoDeatails);
+    })
   }
 
 
@@ -105,7 +123,7 @@ export class LoginComponent implements OnInit {
           console.log(res);
           console.log(res.roles);
           if (res.roles.includes('ROLE_ADMIN') || res.roles.includes('ROLE_RECEPTION') || res.roles.includes('ROLE_SPECIAL')
-            || res.roles.includes('ROLE_INVENTORY') || res.roles.includes('ROLE_CUSSERVICE') || res.roles.includes('ROLE_SERVICECENTER') || res.roles.includes('ROLE_OPERATOR') || res.roles.includes('ROLE_SUBLCO')|| res.roles.includes('ROLE_SUBSCRIBER')) {
+            || res.roles.includes('ROLE_INVENTORY') || res.roles.includes('ROLE_CUSSERVICE') || res.roles.includes('ROLE_SERVICECENTER') || res.roles.includes('ROLE_OPERATOR') || res.roles.includes('ROLE_SUBLCO') || res.roles.includes('ROLE_SUBSCRIBER')) {
             this.storageService.saveToken(res.accessToken);
             this.storageService.saveUser(res);
             this.storageService.saveUsernamenew(res.username)
@@ -163,8 +181,14 @@ export class LoginComponent implements OnInit {
               this.router.navigate(['admin/operator_dashboard']).then(() => {
               });
             } else if (isSubcriber) {
-              this.router.navigate(['admin/operator_dashboard']).then(() => {
-              });
+              this.userService.getSubscriberDetails(this.role, this.username).subscribe((data: any) => {
+                console.log(data);
+                this.lcoDeatails = data;
+                this.subscriberid = this.lcoDeatails.subid;
+                this.router.navigate(['admin/subscriber-full-info/' + this.subscriberid + '/new']).then(() => {
+                });
+              })
+          
             }
             this.swal.Close();
           } else {
@@ -203,6 +227,7 @@ export class LoginComponent implements OnInit {
       );
     }
   }
+
   toggleShowPassword() {
     this.isShow = !this.isShow;
     this.cdr.detectChanges(); // Ensure UI updates immediately

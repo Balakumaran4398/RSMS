@@ -67,9 +67,10 @@ export class OperatorWalletComponent implements OnInit, AfterViewInit, OnDestroy
     if (form.invalid) {
       return;
     }
+    this.swal.Loading();
     this.userService.getlcoOfflineWalletShare(this.role, this.username, this.parantOperatorId, this.operatorname, this.amount, this.remarks)
       .subscribe((res: any) => {
-        // this.swal.success(res?.message);
+        this.swal.success(res?.message);
       }, (err) => {
         this.swal.Error(err?.error?.message || err?.error);
       });

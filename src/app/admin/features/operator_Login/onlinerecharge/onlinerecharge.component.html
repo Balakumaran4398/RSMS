@@ -72,7 +72,7 @@
                         <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
                         <mat-date-range-picker #picker></mat-date-range-picker>
                     </mat-form-field>
-                    <button class="btn btn-success mb-3 mx-3 bttn" (click)="getOnline()">submit</button>
+                    <button class="btn btn-success mb-3 mx-3 bttn" (click)="getOnline('')">submit</button>
                 </div>
                 <ag-grid-angular #agGrid id="myGrid" class="ag-theme-alpine table-class" rowAnimation
                     [gridOptions]="gridOptions" [columnDefs]="columnDefsOnline" [rowData]="rowDataOnline"

@@ -310,10 +310,24 @@ export class BulkPageUpdationComponent implements OnInit {
     this.updateColumnDefs('archive');
     this.fromdate = this.fromdate ? this.formatDate(this.fromdate) : this.formatDate(new Date());
     this.todate = this.todate ? this.formatDate(this.todate) : this.formatDate(new Date());
+    if (this.role == 'ROLE_OPERATOR') {
+      this.operatorIdoperatorId();
+    } else if (this.role == 'ROLE_SUBLCO') {
+      this.getSubLCOdetails();
+    }
 
-    this.operatorIdoperatorId();
   }
 
+  retailerid: any;
+  getSubLCOdetails() {
+    this.userservice.getSublcoDetails(this.role, this.username).subscribe((data: any) => {
+      console.log(data);
+      console.log('111111111111111');
+      this.lcoDeatails = data;
+      this.retailerid = this.lcoDeatails?.operatorid;
+      console.log(this.retailerid);
+    })
+  }
   lcoDeatails: any;
   lcoId: any;
   operatorname: any;
@@ -512,12 +526,12 @@ export class BulkPageUpdationComponent implements OnInit {
       fromdate: this.fromdate,
       todate: this.todate,
       package: this.package,
-      operatorid: this.operatorid || this.lcoId
+      operatorid: this.operatorid || this.lcoId || this.retailerid
     });
 
     this.rowData = [];
     const apiCall = this.userservice.getExpirySubscriberDetailsByDatePackAndOperatorId(
-      this.role, this.username, this.fromdate || null, this.todate || null, this.package || 0, this.operatorid || this.lcoId || 0
+      this.role, this.username, this.fromdate || null, this.todate || null, this.package || 0, this.operatorid || this.lcoId || this.retailerid || 0
     );
 
     this.filterData(apiCall, 'Submission data fetched successfully.');
@@ -526,7 +540,7 @@ export class BulkPageUpdationComponent implements OnInit {
 
   pendingFilter() {
     const apiCalls = [
-      { condition: this.typelist === 1, method: this.userservice.getAllBulkPackageListByOperatoridAndStatus(this.role, this.username, this.operatorid || this.lcoId || null, 0, 1) },
+      { condition: this.typelist === 1, method: this.userservice.getAllBulkPackageListByOperatoridAndStatus(this.role, this.username, this.operatorid || this.lcoId || this.retailerid || null, 0, 1) },
       { condition: this.typelist === 2, method: this.userservice.getAllBulkPackageListBySearchnameAndStatus(this.role, this.username, this.smartcard, 0, 1) },
       { condition: this.typelist === 3, method: this.userservice.getAllBulkPackageListByFromdateTodateAndStatus(this.role, this.username, this.fromdate, this.todate, 0, 1) }
     ];
@@ -544,7 +558,7 @@ export class BulkPageUpdationComponent implements OnInit {
     let apiCall;
     if (this.typelist === 1) {
       apiCall = this.userservice.getAllBulkPackageListByOperatoridAndStatus(
-        this.role, this.username, this.operatorid || this.lcoId, this.alltypelist, 2
+        this.role, this.username, this.operatorid || this.lcoId || this.retailerid, this.alltypelist, 2
       );
     } else if (this.typelist === 2) {
       apiCall = this.userservice.getAllBulkPackageListBySearchnameAndStatus(

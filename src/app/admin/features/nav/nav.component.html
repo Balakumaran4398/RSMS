@@ -1,8 +1,7 @@
 <!-- SIDEBAR -->
 <section id="sidebar" [class.hide]="!isSidebarOpen">
     <!-- <a (click)="navgetToUrl('/home')" class="brand" [ngClass]="{'sidebar-open': isSidebarOpen}" -->
-    <a  class="brand" [ngClass]="{'sidebar-open': isSidebarOpen}"
-        style="margin-left: 50px;height: 12%;">
+    <a class="brand" [ngClass]="{'sidebar-open': isSidebarOpen}" style="margin-left: 50px;height: 12%;">
         <!-- <img height="38px" style="margin: 0px -6px 0px 3px;width: 45px;"
             [ngStyle]="{'visibility': !isHide ? 'hidden' : 'visible'}" [src]="msoLogo" alt="" srcset=""> -->
         <!-- src="/assets/images/icons/Logo1.png" -->
@@ -151,8 +150,7 @@
                 <li><a (click)="navgetToUrl('/LcoCommission');setActiveLinkTab($event)"><i
                             class="fa fa-fw fa-th-large icon ">&nbsp;</i>Lco
                         Commission </a></li>
-                <li ><a (click)="navgetToUrl('/lcoCommissionDashboard');setActiveLinkTab($event)"
-                        class="nav-link">
+                <li><a (click)="navgetToUrl('/lcoCommissionDashboard');setActiveLinkTab($event)" class="nav-link">
                         <i class='fas fa-tags icon'></i>&nbsp;Discount</a>
                 </li>
                 <li><a (click)="navgetToUrl('/PackagewiseOperator');setActiveLinkTab($event)"><i
@@ -511,6 +509,23 @@
         <!-- ==================================================Service Center Role=========================== -->
         <li *ngIf="isServiceCenter"><a (click)="navgetToUrl('/service_center');setActiveLinkTab($event)" class="active">
                 <i class="fa fa-fw fa-paper-plane icon">&nbsp;</i>Service Center </a> </li>
+
+        <!-- ============================================  SUBSCRIBER ROLE======================= -->
+        <li *ngIf="isSubscriber">
+            <a (click)="navgetToUrl('/subscriber-full-info/' + subscriberid + '/new'); setActiveLinkTab($event)"
+                class="active nav-link">
+                <i class="bx bx-user-pin bx-sm icon">&nbsp;</i>Home </a>
+        </li>
+
+        <li *ngIf="isSubscriber"><a (click)="navgetToUrl('/online_recharge');setActiveLinkTab($event)"
+                class=" nav-link">
+                <i class="bx bx-bolt-circle bx-sm icon">&nbsp;</i>Recharge </a> </li>
+        <li *ngIf="isSubscriber"><a (click)="navgetToUrl('/lcoReports');setActiveLinkTab($event)" class=" nav-link">
+                <i class="bx bx-joystick-button bx-sm icon ">&nbsp;</i>History </a> </li>
+        <li *ngIf="isSubscriber "><a (click)="navgetToUrl('/lcoChangePassword');setActiveLinkTab($event)"
+                class="nav-link">
+                <i class="bx bx-shield-plus bx-sm icon "></i>&nbsp;Change Password</a>
+        </li>
 
     </ul>
 

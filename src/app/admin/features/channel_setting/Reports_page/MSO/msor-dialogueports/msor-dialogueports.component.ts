@@ -1386,6 +1386,7 @@ export class MsorDialogueportsComponent implements OnInit, OnDestroy {
 
 
   getOnline() {
+    
     if (this.role == 'ROLE_SUBLCO') {
       this.userService.getOnlinePaymentHistory(
         this.role,
@@ -1557,13 +1558,14 @@ export class MsorDialogueportsComponent implements OnInit, OnDestroy {
     });
     if (this.role == 'ROLE_SPECIAL') {
       if (this.type == 'online_payment_special') {
+        console.log('123sdfsdfdsfdsf');
         this.isspecial = true
       }
     } else {
       this.isspecial = false
     }
     if (this.role == 'ROLE_SUBLCO') {
-      this.userService.getOnlinePaymentHistoryReport(this.role, this.username, this.fromdate, this.todate, this.subOperatorId, this.retailerId, this.smartcard || 0, this.selectedOnlineType, 2, this.isspecial)
+      this.userService.getOnlinePaymentHistoryReport(this.role, this.username, this.fromdate, this.todate, this.subOperatorId, this.retailerId, this.smartcard || 0,2, 2, this.isspecial)
         .subscribe((x: Blob) => {
           const blob = new Blob([x], { type: 'application/xlsx' });
           const data = window.URL.createObjectURL(blob);
@@ -1635,7 +1637,7 @@ export class MsorDialogueportsComponent implements OnInit, OnDestroy {
     }
     if (this.role == 'ROLE_SUBLCO') {
       this.userService.getOnlinePaymentHistoryReport(this.role, this.username, this.fromdate, this.todate,
-        this.subOperatorId, this.retailerId, this.smartcard || 0, this.selectedOnlineType, 1, this.isspecial)
+        this.subOperatorId, this.retailerId, this.smartcard || 0, 2, 1, this.isspecial)
         .subscribe((x: Blob) => {
           const blob = new Blob([x], { type: 'application/pdf' });
           const data = window.URL.createObjectURL(blob);

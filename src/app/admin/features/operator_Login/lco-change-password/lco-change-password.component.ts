@@ -33,7 +33,7 @@ export class LcoChangePasswordComponent implements OnInit {
   showOldPassword: boolean = false;
   showNewPassword: boolean = false;
   showConfirmPassword: boolean = false;
-
+  sub_subid: any;
   constructor(private userService: BaseService, private storageService: StorageService, private swal: SwalService, private operator: OperatorService) {
     this.role = storageService.getUserRole();
     this.username = storageService.getUsername();
@@ -49,6 +49,8 @@ export class LcoChangePasswordComponent implements OnInit {
   ngOnInit(): void {
     if (this.role == 'ROLE_OPERATOR') {
       this.operatorIdoperatorId();
+    } else if (this.role == 'ROLE_SUBSCRIBER') {
+      this.getSubscriberSubId();
     }
   }
   operatorIdoperatorId() {
@@ -56,6 +58,13 @@ export class LcoChangePasswordComponent implements OnInit {
       this.lcoDeatails = data;
       this.operatorid = this.lcoDeatails?.operatorid;
 
+    })
+  }
+  getSubscriberSubId() {
+    this.userService.getSubscriberDetails(this.role, this.username).subscribe((data: any) => {
+      console.log(data);
+      this.lcoDeatails = data;
+      this.sub_subid = this.lcoDeatails.subid;
     })
   }
   togglePassword(field: string) {
@@ -76,8 +85,15 @@ export class LcoChangePasswordComponent implements OnInit {
         }, (err) => {
           this.swal.Error(err?.error?.message);
         });
-    } else {
+    } else if (this.role == 'ROLE_SUBLCO') {
       this.userService.getChangeSubLcoPassword(this.role, this.username, this.oldpassword, this.newpassword, this.confirmpassword, this.retailerId)
+        .subscribe((res: any) => {
+          this.swal.success(res?.message);
+        }, (err) => {
+          this.swal.Error(err?.error?.message);
+        });
+    } else if (this.role == 'ROLE_SUBSCRIBER') {
+      this.userService.getchangeSubscriberPassword(this.role, this.username, this.oldpassword, this.newpassword, this.confirmpassword, this.sub_subid)
         .subscribe((res: any) => {
           this.swal.success(res?.message);
         }, (err) => {

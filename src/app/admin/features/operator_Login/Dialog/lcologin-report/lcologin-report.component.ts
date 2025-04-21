@@ -35,8 +35,8 @@ export class LcologinReportComponent implements OnInit {
   lcoDeatails: any;
   operatorId: any;
   operatorname: any;
-   dateRangeForm: FormGroup;
-  constructor(private route: ActivatedRoute, private fb: FormBuilder,private userService: BaseService, private storageService: StorageService, private location: Location, private swal: SwalService) {
+  dateRangeForm: FormGroup;
+  constructor(private route: ActivatedRoute, private fb: FormBuilder, private userService: BaseService, private storageService: StorageService, private location: Location, private swal: SwalService) {
     this.role = storageService.getUserRole();
     this.username = storageService.getUsername();
     this.type = this.route.snapshot.paramMap.get('id');
@@ -312,7 +312,6 @@ export class LcologinReportComponent implements OnInit {
           this.reportMaking(x, "MONTHWISE LCO ACTIVATION COUNT REPORT(" + this.operatorname + ").pdf", 'application/pdf');
         } else if (type == 2) {
           this.reportMaking(x, "MONTHWISE LCO ACTIVATION COUNT REPORT(" + this.operatorname + ").xlsx", 'application/xlsx');
-
         }
         this.swal.Close()
       },
