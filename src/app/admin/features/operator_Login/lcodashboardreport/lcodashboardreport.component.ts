@@ -360,7 +360,7 @@ export class LcodashboardreportComponent implements OnInit {
           }
         },
         // { headerName: 'SUBSCRIBER ID', field: 'subid', Flex: 1, width: 150, },
-        { headerName: 'SUBSCRIBER NAME', field: 'customeranme', cellStyle: { textAlign: 'center', color: 'green' }, width: 300, },
+        { headerName: 'SUBSCRIBER NAME', field: 'customername', cellStyle: { textAlign: 'center', color: 'green' }, width: 300, },
         { headerName: 'ADDRESS ', field: 'address', cellStyle: { textAlign: 'center', }, width: 300, },
         // { headerName: 'AREA NAME', field: 'areaname', width: 220, },
         { headerName: 'MOBILE NUMBER	', field: 'mobileno', width: 300, },
@@ -582,7 +582,7 @@ export class LcodashboardreportComponent implements OnInit {
           }
         },
         { headerName: 'SUBSCRIBER ID', field: 'sub_id', Flex: 1, width: 150, },
-        { headerName: 'SUBSCRIBER NAME', field: 'customer_name', Flex: 1, cellStyle: { textAlign: 'center', color: 'green' }, width: 200, },
+        { headerName: 'SUBSCRIBER NAME', field: 'customername', Flex: 1, cellStyle: { textAlign: 'center', color: 'green' }, width: 200, },
         { headerName: 'ADDRESS	', field: 'address', width: 150, },
         { headerName: 'AREA NAME', field: 'areaname', width: 200, },
         { headerName: 'MOBILE NO', field: 'mobile_no', width: 200, },
@@ -632,7 +632,7 @@ export class LcodashboardreportComponent implements OnInit {
           }
         },
         { headerName: 'SUBSCRIBER ID', field: 'sub_id', Flex: 1, width: 150, },
-        { headerName: 'SUBSCRIBER NAME', field: 'customer_name', Flex: 1, cellStyle: { textAlign: 'center', color: 'green' }, width: 200, },
+        { headerName: 'SUBSCRIBER NAME', field: 'customername', Flex: 1, cellStyle: { textAlign: 'center', color: 'green' }, width: 200, },
         { headerName: 'ADDRESS	', field: 'address', width: 150, },
         { headerName: 'AREA NAME', field: 'areaname', width: 200, },
         { headerName: 'MOBILE NO', field: 'mobile_no', width: 200, },

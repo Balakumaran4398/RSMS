@@ -51,7 +51,13 @@ export class NavComponent implements OnInit, AfterViewInit {
   isPopupVisible = false;
 
   activeTab: string = '';
-  subscriberid:any
+  subscriberid: any;
+
+  lcoDeatails: any;
+  operatorId: any;
+  operatorname: any;
+  operatorBalance: any;
+  distributor: boolean = false;
   constructor(private router: Router, private breakpointObserver: BreakpointObserver, private cd: ChangeDetectorRef, private dataService: DataService, private cdr: ChangeDetectorRef, private userservice: BaseService, private storageservice: StorageService) {
     // this.breakpointChanged();
     this.role = storageservice.getUserRole();
@@ -159,18 +165,31 @@ export class NavComponent implements OnInit, AfterViewInit {
       this.isSubLco = false;
       this.isSubscriber = true;
       this.role = 'ROLE_SUBSCRIBER';
-      this.userservice.getSubscriberDetails(this.role, this.username).subscribe((data: any) => {
-        console.log(data);
-        console.log('22222222');
-        this.lcoDeatails = data;
-        console.log('SUBSCRIBER DETAILS', this.lcoDeatails);
-        this.subscriberid = this.lcoDeatails.subid;
-        console.log('this.subscriberid', this.subscriberid);
-      
-      })
+      this.getSubscriberDetails();
     }
   }
-
+  SublcopermissionObj: any;
+  SublcoReport: any;
+  subLCOdetails() {
+    this.userservice.getSublcoDetails(this.role, this.username).subscribe((data: any) => {
+      console.log(data);
+      this.lcoDeatails = data;
+      this.SublcopermissionObj = this.lcoDeatails?.permissionlist;
+      this.SublcoReport = this.SublcopermissionObj?.report;
+      console.log('eresuofhdljkfhdsjkfhnsjdhfdjsfh', this.SublcopermissionObj);
+      console.log('REFRESH', this.SublcoReport);
+    })
+  }
+  getSubscriberDetails() {
+    this.userservice.getSubscriberDetails(this.role, this.username).subscribe((data: any) => {
+      console.log(data);
+      console.log('22222222');
+      this.lcoDeatails = data;
+      console.log('SUBSCRIBER DETAILS', this.lcoDeatails);
+      this.subscriberid = this.lcoDeatails.subid;
+      console.log('this.subscriberid', this.subscriberid);
+    })
+  }
   ngOnInit() {
     this.checkDeviceType();
     const sidemenuLinks = document.querySelectorAll('.side-menu li a');
@@ -183,20 +202,12 @@ export class NavComponent implements OnInit, AfterViewInit {
     });
     this.msoDetails();
     this.checkScreenSize();
-
-    // this.breakpointObserver.observe(['(max-width: 414px)']).subscribe(result => {
-    //   console.log('sidebar closed 111');
-
-    //   if (result.matches) {
-    //     this.isSidebarOpen = false;
-    //   }
-    // });
+    if (this.role == 'ROLE_SUBLCO') {
+      console.log('ROLE', this.role);
+      this.subLCOdetails();
+    }
   }
-  lcoDeatails: any;
-  operatorId: any;
-  operatorname: any;
-  operatorBalance: any;
-  distributor: boolean = false;
+
   operatorIdoperatorId() {
     this.userservice.getOpDetails(this.role, this.username).subscribe((data: any) => {
       this.lcoDeatails = data;

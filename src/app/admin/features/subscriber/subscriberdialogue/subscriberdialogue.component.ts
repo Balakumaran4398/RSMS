@@ -257,6 +257,9 @@ export class SubscriberdialogueComponent implements OnInit, OnDestroy {
   public rowSelection: any = "multiple";
   isAnyRowSelected: any = false;
   rows: any;
+
+  SublcopermissionObj:any;
+  Subwallet = false;
   selectedtypes: number[] = [];
   gridOptions = {
     defaultColDef: {
@@ -596,6 +599,7 @@ export class SubscriberdialogueComponent implements OnInit, OnDestroy {
       this.onoperatorchange_LCO(this.operatorId);
     })
   }
+  
   subLCOdetails() {
     this.userservice.getSublcoDetails(this.role, this.username).subscribe((data: any) => {
       console.log(data);
@@ -603,9 +607,12 @@ export class SubscriberdialogueComponent implements OnInit, OnDestroy {
       this.lcoDeatails = data;
       this.operatorId = this.lcoDeatails?.retailerid;
       this.operatorname = this.lcoDeatails?.retailername;
-      console.log('eresuofhdljkfhdsjkfhnsjdhfdjsfh', this.operatorId);
+      console.log('operatorId', this.operatorId);
       console.log('operatorname', this.operatorname);
-
+      this.SublcopermissionObj = this.lcoDeatails?.permissionlist;
+      this.Subwallet = this.SublcopermissionObj?.wallet;
+      console.log('SublcopermissionObj', this.SublcopermissionObj);
+      console.log('Subwallet', this.Subwallet);
     })
   }
   onoperatorchange_LCO(operator: any): void {

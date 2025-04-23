@@ -64,7 +64,6 @@ export class BroadcasterReportsComponent implements OnInit {
     paginationPageSize: 10,
     pagination: true,
     overlayNoRowsTemplate: `<span class="custom-overlay">No data to display</span>`,
-
   }
   gridApi: any;
   gridColumnApi: any;

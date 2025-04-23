@@ -139,22 +139,15 @@
                             <h6 style="margin: auto;color: black;font-weight: 600;"> SMARTCARD LIST</h6>
                         </div>
                         <div class="d-flex  icon-container" style="padding: 10px;">
-                            <div *ngIf="role !== 'ROLE_SUBLCO'"
+                            <div *ngIf="role != 'ROLE_SUBLCO' && role != 'ROLE_SUBSCRIBER'"
                                 class="icon-item d-flex align-item-center tooltip-container  bttn"
                                 style="background-color:var(--sub-dashboard-icon);"
                                 (click)="openLoginPage('change_lco')">
                                 <i class="fa fa-refresh	" style="font-size:15px;color: white;"></i>
                                 <div class="tooltip-content">Change LCO</div>
                             </div>
-                            <!-- <div *ngIf="role === 'ROLE_SUBLCO'"
-                                class="icon-item d-flex align-item-center tooltip-container  bttn"
-                                style="background-color:var(--sub-dashboard-icon);"
-                                (click)="openLoginPage('change_lco')">
-                                <i class="fa fa-refresh	" style="font-size:15px;color: white;"></i>
-                                <div class="tooltip-content">Change LCO</div>
-                            </div> -->
-                            <div *ngIf="(role === 'ROLE_SUBLCO' && Sublcopermissionlist.add_smartcard === true) || role !== 'ROLE_SUBLCO'"
-                                class="icon-item d-flex align-item-center tooltip-container  bttn"
+
+                            <div class="icon-item d-flex align-item-center tooltip-container  bttn"
                                 style="background-color: var(--sub-dashboard-icon);"
                                 (click)="openDialog('addSmartcard','')">
                                 <i class="fa fa-plus" style="font-size:15px;color: white;"></i>
@@ -308,7 +301,7 @@
                         </div>
                     </div>
                     <div class="line"></div>
-                    {{role}}
+                    <!-- {{role}} -->
                     <div class="mobile">
                         <div class="col-12 col-md-5  mobile1">
                             <div class="col-12 col-md-12 display_btn">
@@ -369,13 +362,13 @@
 
                         <div class="col-12 col-md-7  mobile2">
                             <div class="col-12 col-md-12 display_btn1">
-                                <div *ngIf="(role== 'ROLE_SUBLCO'  && Sublcopermissionlist.refresh === true) || role !== 'ROLE_SUBLCO' "
+                                <div *ngIf="(role== 'ROLE_SUBLCO'  && Sublcopermissionlist.refresh) || role != 'ROLE_SUBLCO'    "
                                     class="col-12 col-md-6 display_btn1 justify-content-center align-items-center text3">
                                     <button class="btn  d-flex justify-content-between"
                                         (click)="openDialog('refresh','')" [disabled]="refresh">
                                         <i class="fa fa-refresh"></i><span>Refresh</span></button>
                                 </div>
-                                <div *ngIf="(role === 'ROLE_SUBLCO' && Sublcopermissionlist.firsttimeactivat == true) || role !== 'ROLE_SUBLCO'"
+                                <div *ngIf="(role === 'ROLE_SUBLCO' && Sublcopermissionlist.firsttimeactivat == true) || role != 'ROLE_SUBLCO' && role != 'ROLE_SUBSCRIBER' "
                                     class="col-12 col-md-6 display_btn1 justify-content-center align-items-center  text3">
                                     <button class="btn  d-flex justify-content-between" [disabled]="packagectivation"
                                         (click)="openDialog('packagactivation','')">
@@ -384,16 +377,14 @@
                                 </div>
                             </div>
                             <div class="col-12 col-md-12 display_btn1">
-                                <div *ngIf="(role === 'ROLE_SUBLCO' && Sublcopermissionlist.activate == true) || role !== 'ROLE_SUBLCO'"
+                                <div *ngIf="(role === 'ROLE_SUBLCO' && Sublcopermissionlist.activate == true) || role != 'ROLE_SUBLCO' && role != 'ROLE_SUBSCRIBER'"
                                     class="col-12 col-md-6 d-flex justify-content-center align-items-center  text3">
-                                    <!-- *ngIf="deactive"> -->
                                     <button class="btn  d-flex justify-content-between " [disabled]="activation"
                                         (click)="openDialog('activation','')">
                                         <i class="fa-brands fa-slack"></i><span>Activation</span></button>
                                 </div>
-                                <div *ngIf="(role === 'ROLE_SUBLCO' && Sublcopermissionlist.deactivate == true) || role !== 'ROLE_SUBLCO'"
+                                <div *ngIf="(role === 'ROLE_SUBLCO' && Sublcopermissionlist.deactivate == true) || role != 'ROLE_SUBLCO' && role != 'ROLE_SUBSCRIBER'"
                                     class="col-12 col-md-6 d-flex justify-content-center align-items-center  text3">
-                                    <!-- *ngIf="deactive"> -->
                                     <button class="btn  d-flex justify-content-between" [disabled]="deactive"
                                         (click)="openDialog('deactive','')">
                                         <i class="fa fa-times"></i><span>De-Activation</span></button>
@@ -401,13 +392,13 @@
 
                             </div>
                             <div class="col-12 col-md-12 display_btn1">
-                                <div *ngIf="(role === 'ROLE_SUBLCO' && Sublcopermissionlist.pin_change == true) || role !== 'ROLE_SUBLCO'"
+                                <div *ngIf="(role === 'ROLE_SUBLCO' && Sublcopermissionlist.pin_change == true) || role != 'ROLE_SUBLCO'"
                                     class="col-12 col-md-6 d-flex justify-content-center align-items-center  text3">
                                     <button class="btn  d-flex justify-content-between" [disabled]="pinchange"
                                         (click)="openDialog('pinchange','')">
                                         <i class="fa-solid fa-key"></i><span>PIN Change</span></button>
                                 </div>
-                                <div *ngIf="(role === 'ROLE_SUBLCO' && Sublcopermissionlist.pvr_update == true) || role !== 'ROLE_SUBLCO'"
+                                <div *ngIf="(role === 'ROLE_SUBLCO' && Sublcopermissionlist.pvr_update == true) || role != 'ROLE_SUBLCO' && role != 'ROLE_SUBSCRIBER'"
                                     class="col-12 col-md-6 d-flex justify-content-center align-items-center  text3">
                                     <button class="btn  d-flex justify-content-between" [disabled]="pvrchange"
                                         (click)="openDialog('pvrchange','')"> <i class="fa-solid fa-video"></i><span>PVR
@@ -415,26 +406,21 @@
                                 </div>
                             </div>
                             <div class="col-12 col-md-12 display_btn1">
-                                <div *ngIf="(isSendDeleteMessage === false) && role !== 'ROLE_SUBLCO' "
+                                <div *ngIf="(isSendDeleteMessage === false) && role != 'ROLE_SUBLCO' && role != 'ROLE_SUBSCRIBER' "
                                     class="col-12 col-md-6 d-flex justify-content-center align-items-center  text3">
-                                    <!-- <button class="btn  d-flex justify-content-between" [disabled]="isSendDeleteMessage"
-                                        (click)="openDialog('sendmessage','')">
-                                        <i class="fa-solid fa-message"></i><span>Send Message</span></button> -->
                                     <button class="btn  d-flex justify-content-between" [disabled]="sendmessage"
                                         (click)="openDialog('sendmessage','')">
                                         <i class="fa-solid fa-message"></i><span>Send Message</span></button>
                                 </div>
-                                <div *ngIf="(isSendDeleteMessage === true) && role == 'ROLE_SUBLCO'"
+                                <div *ngIf="(isSendDeleteMessage === true) && role != 'ROLE_SUBLCO' && role != 'ROLE_SUBSCRIBER'"
                                     class="col-12 col-md-6 d-flex justify-content-center align-items-center  text3">
                                     <button class="btn  d-flex justify-content-between" [disabled]="deletemessage"
                                         (click)="openDialog('deletemessage','')">
                                         <i class="fas fa-trash"></i><span>Delete Message</span></button>
-                                    <!-- <button class="btn  d-flex justify-content-between"
-                                        [disabled]="!isSendDeleteMessage" (click)="openDialog('deletemessage','')">
-                                        <i class="fas fa-trash"></i><span>Delete Message</span></button> -->
+
                                 </div>
-                                <div class="col-12 col-md-6 d-flex justify-content-center align-items-center  text3">
-                                    <!-- (click)="openDialog('smartcardchange')"> -->
+                                <div *ngIf="role != 'ROLE_SUBSCRIBER'"
+                                    class="col-12 col-md-6 d-flex justify-content-center align-items-center  text3">
                                     <button class="btn d-flex justify-content-between" [disabled]="smartcardchange"
                                         (click)="openLoginPage('smartcardchange')">
                                         <i class="fa-solid fa-share"></i><span>Smartcard Transfer</span>
@@ -443,13 +429,13 @@
                             </div>
 
                             <div class="col-12 col-md-12 display_btn1">
-                                <div *ngIf="(role === 'ROLE_SUBLCO' && Sublcopermissionlist.resume == true) || role !== 'ROLE_SUBLCO'"
+                                <div *ngIf="(role === 'ROLE_SUBLCO' && Sublcopermissionlist.resume == true) || role != 'ROLE_SUBLCO' && role != 'ROLE_SUBSCRIBER'"
                                     class="col-12 col-md-6 d-flex justify-content-center align-items-center  text3">
                                     <button class="btn  d-flex justify-content-between" [disabled]="resumechange"
                                         (click)="openDialog('resumechange','')"> <i
                                             class="fa fa-file"></i><span>Resume</span></button>
                                 </div>
-                                <div *ngIf="(role === 'ROLE_SUBLCO' && Sublcopermissionlist.reactivate == true) || role !== 'ROLE_SUBLCO'"
+                                <div *ngIf="(role === 'ROLE_SUBLCO' && Sublcopermissionlist.reactivate == true) || role != 'ROLE_SUBLCO' && role != 'ROLE_SUBSCRIBER'"
                                     class="col-12 col-md-6 d-flex justify-content-center align-items-center  text3">
                                     <button class="btn  d-flex justify-content-between" [disabled]="reactivation"
                                         (click)="openDialog('reactivation','')">
@@ -458,13 +444,13 @@
 
                             </div>
                             <div class="col-12 col-md-12 display_btn1">
-                                <div *ngIf="role !== 'ROLE_SUBLCO'"
+                                <div *ngIf="role != 'ROLE_SUBLCO' && role != 'ROLE_SUBSCRIBER'"
                                     class="col-12 col-md-6 d-flex justify-content-center align-items-center  text3">
                                     <button class="btn  d-flex justify-content-between" [disabled]="boxchange"
                                         (click)="openLoginPage('boxchange')"><i class="fa-solid fa-share"></i><span>Box
                                             Transfer</span></button>
                                 </div>
-                                <div *ngIf="(role === 'ROLE_SUBLCO' && Sublcopermissionlist.suspend == true) || role !== 'ROLE_SUBLCO'"
+                                <div *ngIf="(role === 'ROLE_SUBLCO' && Sublcopermissionlist.suspend == true) || role != 'ROLE_SUBLCO' && role != 'ROLE_SUBSCRIBER'"
                                     class="col-12 col-md-6 d-flex justify-content-center align-items-center  text3">
                                     <button class="btn  d-flex justify-content-between" [disabled]="suspend"
                                         (click)="openDialog('suspend','')">
@@ -479,7 +465,7 @@
                                             class="fa-solid fa-right-left"></i><span>Force
                                             Tuning</span></button>
                                 </div>
-                                <div *ngIf="role !== 'ROLE_SUBLCO'"
+                                <div *ngIf="role != 'ROLE_SUBLCO' && role != 'ROLE_SUBSCRIBER'"
                                     class="col-12 col-md-6 d-flex justify-content-center align-items-center  text3">
                                     <button class="btn  d-flex justify-content-between" [disabled]="unpair"
                                         (click)="managePackage('unpair')">
@@ -489,13 +475,13 @@
                             </div>
 
                             <div class="col-12 col-md-12 display_btn1">
-                                <div *ngIf="role !== 'ROLE_SUBLCO'"
+                                <div *ngIf="role != 'ROLE_SUBLCO' && role != 'ROLE_SUBSCRIBER'"
                                     class="col-12 col-md-6 d-flex justify-content-center align-items-center  text3">
                                     <button class="btn  d-flex justify-content-between" [disabled]="pair"
                                         (click)="pairDialogue('pair')">
                                         <i class="fa fa-refresh"></i><span>Pair</span></button>
                                 </div>
-                                <div *ngIf="(role === 'ROLE_SUBLCO' && Sublcopermissionlist.cancel_subscription == true) || role !== 'ROLE_SUBLCO'"
+                                <div *ngIf="(role === 'ROLE_SUBLCO' && Sublcopermissionlist.cancel_subscription == true) || role != 'ROLE_SUBLCO' && role != 'ROLE_SUBSCRIBER'"
                                     class="col-12 col-md-6 d-flex justify-content-center align-items-center text3">
                                     <button class="btn  d-flex justify-content-between" [disabled]="cancelsubscription"
                                         (click)="managePackage('cancelsubscription')">
@@ -503,7 +489,7 @@
                                 </div>
                             </div>
                             <div class="col-12 col-md-12 display_btn1">
-                                <div *ngIf="role !== 'ROLE_SUBLCO'"
+                                <div *ngIf="role != 'ROLE_SUBLCO' && role != 'ROLE_SUBSCRIBER'"
                                     class="col-12 col-md-6 d-flex justify-content-center align-items-center  text3">
                                     <button class="btn  d-flex justify-content-between" [disabled]="block"
                                         (click)="openDialog('block','')">
@@ -512,14 +498,15 @@
                                 </div>
                             </div>
                         </div>
+
                     </div>
                 </div>
             </div>
         </div>
     </section>
-
+    <!-- <section *ngIf="expandale " class="expandale"> -->
     <section
-        *ngIf="expandale && ((role === 'ROLE_SUBLCO' && Sublcopermissionlist.manage_package == true) || role !== 'ROLE_SUBLCO')"
+        *ngIf="expandale && ((role === 'ROLE_SUBLCO' && Sublcopermissionlist.manage_package == true) || role != 'ROLE_SUBLCO' )"
         class="expandale">
         <div class="card">
             <mat-accordion class="example-headers-align">
@@ -527,19 +514,22 @@
                     <mat-expansion-panel-header>
                         <mat-panel-title class="text3"> Manage Package</mat-panel-title>
                     </mat-expansion-panel-header>
-
                     <div class="col-12 col-md-12 col-md-8 mx-2">
                         <div class="">
                             <section class="Tab col-xl-12 col-sm-6 col-12 ">
                                 <div class="display_tab tablist justify-content-center align-items-center">
-                                    <div *ngIf="!addon" class="tab mb-3 bttn" (click)="managePackage('addon')">ADDON ADD
+                                    <div *ngIf="(role == 'ROLE_SUBLCO' && subAddonAdd ) || role != 'ROLE_SUBLCO' && !addon "
+                                        class="tab mb-3 bttn" (click)="managePackage('addon')">ADDON
+                                        ADD
                                     </div>
-                                    <div *ngIf="!alacarte" class="tab mb-3 bttn" (click)="managePackage('alacarte')">
+                                    <div *ngIf="(role == 'ROLE_SUBLCO' && subAlacarte ) || role != 'ROLE_SUBLCO' && !alacarte "
+                                        class="tab mb-3 bttn" (click)="managePackage('alacarte')">
                                         ALACARTE ADD </div>
-                                    <div *ngIf="!remove" class="tab mb-3 bttn" (click)="managePackage('remove')"> REMOVE
+                                    <div *ngIf="role != 'ROLE_SUBLCO' && !remove" class="tab mb-3 bttn"
+                                        (click)="managePackage('remove')"> REMOVE
                                         PRODUCT </div>
-                                    <!-- BASE CHANGE -->
-                                    <div *ngIf="!base" class="tab mb-3 bttn" [class.active]="selectedTab === 'BASE'"
+                                    <div *ngIf="(role == 'ROLE_SUBLCO' && subChangeBase ) || role != 'ROLE_SUBLCO' &&  !base"
+                                        class="tab mb-3 bttn" [class.active]="selectedTab === 'BASE'"
                                         (click)="openDialog('BASE','')">
                                         BASE CHANGE
                                     </div>
@@ -564,11 +554,8 @@
                                     [style.height.px]="gridHeight" [rowSelection]="'multiple'"
                                     (selectionChanged)="onSelectionChanged()" [enableCellTextSelection]="true">
                                 </ag-grid-angular>
-
                             </div>
-
                         </div>
-
                     </div>
                     <div *ngIf="!rechargeType"
                         class="col-12 col-md-12 display justify-content-center align-items-center">
@@ -632,8 +619,6 @@
                                                 </div>
                                             </div>
                                         </div>
-
-
                                         <div class="input_box  mb-3">
                                             <div class="d-flex align-items-center justify-content-center">
                                                 <div class="col-6 col-md-6">
@@ -664,7 +649,6 @@
                                                 </div>
                                             </div>
                                         </div>
-
                                         <div class="  mb-3">
                                             <div class="d-flex align-items-center justify-content-center">
                                                 <div class="input_box col-6 col-md-6">

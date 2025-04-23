@@ -55,6 +55,9 @@ export class LoginComponent implements OnInit {
     });
     this.role = storageService.getUserRole();
     this.username = storageService.getUsername();
+    console.log('ROLE', this.role);
+    console.log('USERNAME', this.username);
+
   }
 
   ngOnInit() {
@@ -181,6 +184,9 @@ export class LoginComponent implements OnInit {
               this.router.navigate(['admin/operator_dashboard']).then(() => {
               });
             } else if (isSubcriber) {
+              console.log('111111111111111111111111111111111111111111111111111111111');
+              console.log('role', this.role);
+              console.log('username', this.username);
               this.userService.getSubscriberDetails(this.role, this.username).subscribe((data: any) => {
                 console.log(data);
                 this.lcoDeatails = data;
@@ -188,7 +194,7 @@ export class LoginComponent implements OnInit {
                 this.router.navigate(['admin/subscriber-full-info/' + this.subscriberid + '/new']).then(() => {
                 });
               })
-          
+
             }
             this.swal.Close();
           } else {

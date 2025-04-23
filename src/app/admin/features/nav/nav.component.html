@@ -422,7 +422,7 @@
 
         <li *ngIf="isOperator"><a (click)="navgetToUrl('/forcemessage');setActiveLinkTab($event)" class="nav-link">
                 <i class="bx bx-label bx-sm icon "></i> &nbsp;Message</a></li>
-        <li *ngIf="isOperator || isSubLco"><a (click)="navgetToUrl('/lcoReports');setActiveLinkTab($event)"
+        <li *ngIf="isOperator || isSubLco && SublcoReport"><a (click)="navgetToUrl('/lcoReports');setActiveLinkTab($event)"
                 class="nav-link">
                 <i class="bx bx-bullseye bx-sm icon "></i>&nbsp;Reports</a>
         </li>
@@ -514,19 +514,18 @@
         <li *ngIf="isSubscriber">
             <a (click)="navgetToUrl('/subscriber-full-info/' + subscriberid + '/new'); setActiveLinkTab($event)"
                 class="active nav-link">
-                <i class="bx bx-user-pin bx-sm icon">&nbsp;</i>Home </a>
+                <i class="bx bx-user-pin bx-sm icon">&nbsp;</i>Dashboard</a>
         </li>
 
         <li *ngIf="isSubscriber"><a (click)="navgetToUrl('/online_recharge');setActiveLinkTab($event)"
                 class=" nav-link">
-                <i class="bx bx-bolt-circle bx-sm icon">&nbsp;</i>Recharge </a> </li>
+                <i class="bx bx-bolt-circle bx-sm icon">&nbsp;</i>Online Recharge</a> </li>
         <li *ngIf="isSubscriber"><a (click)="navgetToUrl('/lcoReports');setActiveLinkTab($event)" class=" nav-link">
-                <i class="bx bx-joystick-button bx-sm icon ">&nbsp;</i>History </a> </li>
-        <li *ngIf="isSubscriber "><a (click)="navgetToUrl('/lcoChangePassword');setActiveLinkTab($event)"
+                <i class="bx bx-joystick-button bx-sm icon ">&nbsp;</i>Reports</a> </li>
+        <li *ngIf="isSubscriber"><a (click)="navgetToUrl('/lcoChangePassword');setActiveLinkTab($event)"
                 class="nav-link">
-                <i class="bx bx-shield-plus bx-sm icon "></i>&nbsp;Change Password</a>
+                <i class="bx bx-shield-plus bx-sm icon ">&nbsp;</i>Change Password</a>
         </li>
-
     </ul>
 
 </section>

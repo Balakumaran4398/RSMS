@@ -50,6 +50,7 @@ export class SublcooperatordialogueComponent implements OnInit {
   submitted = false;
   rowData1: any;
   isCustomerMode: boolean = false;
+  sublcoDiscount: any;
 
   retailername: any;
   contactno: any;
@@ -106,7 +107,7 @@ export class SublcooperatordialogueComponent implements OnInit {
     this.type = data.type;
     this.operatorid = data.id;
     console.log(this.operatorid);
-
+    this.sublcoDiscount = data?.data?.sublcoDiscount;
     this.selectedRow = data;
     this.retailername = data?.data.retailerName;
     this.retailerUsername = data?.data.username;
@@ -362,7 +363,7 @@ export class SublcooperatordialogueComponent implements OnInit {
       this.editform.markAllAsTouched();
     }
     const errorFields = ['retailername', 'contactno', 'contactno2', 'address', 'password', 'role', 'website', 'username', 'operatorid', 'retailerid'];
-     this.userservice.sublcoUpdate(this.editform.value)
+    this.userservice.sublcoUpdate(this.editform.value)
       .subscribe((res: any) => {
         this.swal.success(res?.message);
       }, (err) => {

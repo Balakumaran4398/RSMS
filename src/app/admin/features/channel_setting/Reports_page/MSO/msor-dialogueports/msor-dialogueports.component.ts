@@ -89,6 +89,7 @@ export class MsorDialogueportsComponent implements OnInit, OnDestroy {
 
   today = new Date();
   selectedOnlineType: any = 1;
+  SUB_selectedOnlineType: any = 3;
 
   showDropdown: boolean = true;
   subscriberList: any[] = [];
@@ -110,11 +111,20 @@ export class MsorDialogueportsComponent implements OnInit, OnDestroy {
     { label: "Monthwise", value: 1 },
     // { label: "Yearwise", value: 3 },
   ];
+  filteredRechargeType: any[] = [];
   RechargeType: any[] = [
     { label: "Operator", value: 1 },
     { label: "Smartcard", value: 2 },
+    { label: "Subscriber", value: 4 },
     { label: "All", value: 3 },
   ]
+  // RechargeType1: any[] = [
+  //   { label: "Operator", value: 1 },
+  //   { label: "Smartcard", value: 2 },
+  //   { label: "Subscriber", value: 4 },
+  //   { label: "All", value: 3 },
+  // ]
+  // currentRechargeTypes: any[] = [];
 
   TypeIncluding: any[] = [
     { label: "ALL", value: 3 },
@@ -144,6 +154,8 @@ export class MsorDialogueportsComponent implements OnInit, OnDestroy {
     { label: "SUBLCO", value: 2 },
     { label: "SUBSCRIBER", value: 3 },
   ]
+  filteredOnlineType: any[] = [];
+
   Amount: any[] = [
     { label: "CHEQUE", value: 0 },
     { label: "CASH", value: 1 },
@@ -195,6 +207,13 @@ export class MsorDialogueportsComponent implements OnInit, OnDestroy {
   sublcoDeatails: any;
   retailerId: any;
   subOperatorId: any;
+
+
+  lcoDeatails: any;
+  operatorId: any;
+  operatorname: any;
+  subscriberid: any;
+  subOpid: any;
   constructor(private route: ActivatedRoute, private location: Location,
     public userService: BaseService, private cdr: ChangeDetectorRef, public storageservice: StorageService, private swal: SwalService, public sublco: OperatorService) {
     this.type = this.route.snapshot.paramMap.get('id');
@@ -269,7 +288,15 @@ export class MsorDialogueportsComponent implements OnInit, OnDestroy {
     }
     if (this.role == 'ROLE_SUBLCO') {
       this.subLCOdetails();
+      
     }
+    if (this.role == 'ROLE_SUBSCRIBER') {
+      this.getSubscriberDetails();
+      this.filterOnlineTypeByRole();
+
+    }
+    this.filterRechargeOptions();
+    // this.setRechargeTypesBasedOnRole();
     this.filterUserAgent();
 
     console.log('sublco in ngOnInit', this.sublco);
@@ -283,15 +310,58 @@ export class MsorDialogueportsComponent implements OnInit, OnDestroy {
     this.subOperatorId = this.subLcoDetails?.operatorId;
     console.log('subOperatorId', this.subOperatorId);
   }
+
+  // setRechargeTypesBasedOnRole() {
+  //   this.currentRechargeTypes = this.role === 'ROLE_SUBSCRIBER' ? this.RechargeType1 : this.RechargeType;
+  // }
+  getMonthwisePaymentCollectionData() {
+    this.swal.Loading();
+    this.userService.getMonthwisePaymentCollectionData(this.role, this.username, this.selectedMonth, this.selectedYear, 3).subscribe((data: any) => {
+      console.log(data);
+      this.rowData = data;
+      this.swal.Close();
+    })
+  }
+  getSubscriberDetails() {
+    this.userService.getSubscriberDetails(this.role, this.username).subscribe((data: any) => {
+      console.log(data);
+      console.log('22222222');
+      this.lcoDeatails = data;
+      console.log('SUBSCRIBER DETAILS', this.lcoDeatails);
+      this.subscriberid = this.lcoDeatails.subid;
+      this.subOpid = this.lcoDeatails.operatorid;
+      console.log('this.subscriberid', this.subscriberid);
+      console.log('this.subscriberid', this.subOpid);
+
+
+    })
+  }
+  filterOnlineTypeByRole() {
+    if (this.role === 'ROLE_SUBSCRIBER') {
+      this.filteredOnlineType = this.onlineType.filter(item => item.label === 'SUBSCRIBER');
+    } else {
+      this.filteredOnlineType = [...this.onlineType];
+    }
+  }
+
+  filterRechargeOptions() {
+    if (this.role == 'ROLE_SUBSCRIBER') {
+      this.filteredRechargeType = this.RechargeType.filter(type => type.value == 4);
+      this.selectedRechargeType = 4;
+    } else if (this.role != 'ROLE_SUBSCRIBER') {
+      this.filteredRechargeType = this.RechargeType.filter(type => type.value != 4);
+    } else {
+      this.filteredRechargeType = this.RechargeType.filter(type => type.value != 4);
+    }
+  }
+
   filteredUserAgent: any[] = [];
   filterUserAgent() {
     this.filteredUserAgent = this.role === 'ROLE_OPERATOR'
       ? this.UserAgent.filter(agent => agent.label !== 'MSO')
       : this.UserAgent;
   }
-  lcoDeatails: any;
-  operatorId: any;
-  operatorname: any;
+
   operatorIdoperatorId() {
     this.userService.getOpDetails(this.role, this.username).subscribe((data: any) => {
       this.lcoDeatails = data;
@@ -308,6 +378,7 @@ export class MsorDialogueportsComponent implements OnInit, OnDestroy {
       this.subOperatorId = this.lcoDeatails?.operatorid;
       this.retailerId = this.lcoDeatails?.retailerid;
       console.log(this.retailerId);
+      console.log(this.subOperatorId);
     })
   }
 
@@ -477,6 +548,8 @@ export class MsorDialogueportsComponent implements OnInit, OnDestroy {
   }
   rechargeOperatorValue: any;
   onRechargeType(selectedValue: any) {
+    console.log(selectedValue);
+
     this.rechargeOperatorValue = selectedValue;
     if (selectedValue == 1) {
       this.isSmartcard = false;
@@ -504,14 +577,23 @@ export class MsorDialogueportsComponent implements OnInit, OnDestroy {
       this.isRechargeOperator = true;
       this.isUseragent = false;
       this.isSubLCO = false;
-
       // this.fromdate = 0;
       // this.todate = 0;
       this.selectedLcoName = 0;
       this.selectedSubLcoName = 0;
       this.useragent = 0;
       this.smartcard = '';
-
+    } else if (selectedValue == 4) {
+      this.isSmartcard = false;
+      this.isRechargeOperator = true;
+      this.isUseragent = false;
+      this.isSubLCO = false;
+      // this.fromdate = 0;
+      // this.todate = 0;
+      this.selectedLcoName = 0;
+      this.selectedSubLcoName = 0;
+      this.useragent = 0;
+      this.smartcard = '';
     } else {
       return
     }
@@ -888,57 +970,18 @@ export class MsorDialogueportsComponent implements OnInit, OnDestroy {
       ]
     }
 
-    // else if (this.type == 'online_payment') {
-    //   this.columnDefs = [
-    //     { headerName: "S.No", lockPosition: true, valueGetter: 'node.rowIndex+1', headerCheckboxSelection: false, checkboxSelection: false, width: 90 },
-    //     { headerName: 'OPERATOR NAME', field: 'operatorname', width: 250 },
-    //     { headerName: 'ORDER ID', field: 'orderid', width: 250, cellStyle: { textAlign: 'center' }, },
-    //     { headerName: 'AMOUNT', field: 'amount', width: 220, cellStyle: { textAlign: 'center', color: 'green' }, },
-    //     { headerName: 'STATUS	', field: 'status', width: 200, cellStyle: { textAlign: 'center' } },
-    //     { headerName: 'RESPONSE', field: 'response', width: 200 },
-    //     { headerName: 'TRANSACTION DATE', field: 'logdate', width: 200 },
-    //     {
-    //       headerName: "RE STATUS",
-    //       editable: true,
-    //       cellRenderer: (params: any) => {
-    //         const replaceButton = document.createElement('button');
-    //         replaceButton.style.marginRight = '5px';
-    //         replaceButton.style.cursor = 'pointer';
-    //         replaceButton.style.fontSize = '12px';
-    //         replaceButton.style.padding = '0px 15px';
-    //         replaceButton.style.fontWeight = 'bold';
-    //         replaceButton.style.height = '38px';
-    //         replaceButton.style.background = 'linear-gradient(rgb(255, 217, 70), rgb(225, 167, 92))';
-    //         replaceButton.style.color = 'rgb(104, 102, 102)';
-    //         replaceButton.style.border = '1px solid rgb(255, 220, 138)';
-    //         // replaceButton.style.marginTop = '3%';
-    //         replaceButton.innerText = 'Refresh';
-
-    //         replaceButton.addEventListener('mouseenter', () => {
-    //           replaceButton.style.color = 'white';
-    //         });
-    //         replaceButton.addEventListener('mouseleave', () => {
-    //           replaceButton.style.color = 'rgb(104, 102, 102)';
-    //         });
-    //         replaceButton.addEventListener('click', () => {
-    //           // this.openEditDialog(params.data);
-    //           this.refreshData(params.data);
-    //         });
-    //         if (params.data.status === "success") {
-    //           replaceButton.disabled = true;
-    //           replaceButton.style.cursor = 'not-allowed';
-    //           replaceButton.style.background = 'linear-gradient(rgb(251 234 170), rgb(229 200 164))';
-    //         }
-    //         const div = document.createElement('div');
-    //         div.appendChild(replaceButton);
-    //         return div;
-    //         // } else {
-    //         //   return '';
-    //         // }
-    //       }
-    //     }
-    //   ]
-    // }
+    else if (this.type == 'monthly_datewise') {
+      this.columnDefs = [
+        { headerName: "S.No", lockPosition: true, valueGetter: 'node.rowIndex+1', width: 90 },
+        { headerName: 'DATE', field: 'transaction_date', width: 200 },
+        { headerName: 'CHEQUE', field: 'cheque', width: 250, cellStyle: { textAlign: 'center' }, },
+        { headerName: 'CASH', field: 'cash', width: 220, cellStyle: { textAlign: 'center', color: 'green' }, },
+        { headerName: 'ACCOUNT	', field: 'account', width: 200, cellStyle: { textAlign: 'center' } },
+        { headerName: 'ONLINE', field: 'online', width: 200 },
+        { headerName: 'DEDUCTION', field: 'detection', width: 200 },
+        { headerName: 'TOTAL', field: 'total', width: 200 },
+      ]
+    }
     else if (this.type == 'user_rechargehistory') {
       this.columnDefs = [
         { headerName: "S.No", lockPosition: true, valueGetter: 'node.rowIndex+1', headerCheckboxSelection: false, checkboxSelection: false, width: 90, filter: false },
@@ -1104,14 +1147,13 @@ export class MsorDialogueportsComponent implements OnInit, OnDestroy {
         Swal.showLoading(null);
       }
     });
-    // this.swal.Loading();
+    this.swal.Loading();
     this.userService.getMonthwisePaymentCollection(this.role, this.username, this.selectedMonth, this.selectedYear, 2)
       .subscribe((x: Blob) => {
         const blob = new Blob([x], { type: 'application/xlsx' });
         const data = window.URL.createObjectURL(blob);
         const link = document.createElement('a');
         link.href = data;
-
         link.download = (this.type + '  ' + this.selectedMonthName + '-' + this.selectedYear + ".xlsx").toUpperCase();
         link.dispatchEvent(new MouseEvent('click', { bubbles: true, cancelable: true, view: window }));
         setTimeout(() => {
@@ -1180,8 +1222,8 @@ export class MsorDialogueportsComponent implements OnInit, OnDestroy {
   getRecharge() {
     if (this.role == 'ROLE_SUBLCO') {
       this.swal.Loading();
-      this.userService.getRechargeHistory(this.role, this.username, 1, this.subOperatorId, this.fromdate, this.todate, 0, 4,
-        this.retailerId, 3).subscribe(
+      this.userService.getRechargeHistory(this.role, this.username, this.selectedRechargeType, this.subOperatorId, this.fromdate, this.todate, 0, 4,
+        this.retailerId, 3, 0).subscribe(
           (response: HttpResponse<any>) => {
             if (response.status === 200) {
               console.log(response);
@@ -1197,7 +1239,28 @@ export class MsorDialogueportsComponent implements OnInit, OnDestroy {
             this.handleApiError(error.error.message, error.status);
           }
         );
-    } else {
+    } else if (this.role == 'ROLE_SUBSCRIBER') {
+      console.log(this.subOpid);
+      this.swal.Loading();
+      this.userService.getRechargeHistory(this.role, this.username, this.selectedRechargeType, this.subOpid, this.fromdate, this.todate, 0, 4,
+        0, 3, this.subscriberid).subscribe(
+          (response: HttpResponse<any>) => {
+            if (response.status === 200) {
+              console.log(response);
+              this.rowData = response.body;
+              // this.swal.Success_200();
+            } else if (response.status === 204) {
+              this.swal.Success_204();
+              this.rowData = [];
+            }
+            Swal.close();
+          },
+          (error) => {
+            this.handleApiError(error.error.message, error.status);
+          }
+        );
+    }
+    else {
       this.smartcard = this.smartcardChange(this.smartcard);
       Swal.fire({
         title: "Processing",
@@ -1206,10 +1269,9 @@ export class MsorDialogueportsComponent implements OnInit, OnDestroy {
         didOpen: () => {
           Swal.showLoading(null);
         }
-
       });
       this.userService.getRechargeHistory(this.role, this.username, this.selectedRechargeType, this.selectedOperator.value || this.operatorId || 0, this.fromdate, this.todate, this.smartcard, this.useragent,
-        this.selectedSubLcoName, 3
+        this.selectedSubLcoName, 3, 0
       ).subscribe(
         (response: HttpResponse<any>) => {
           if (response.status === 200) {
@@ -1240,7 +1302,41 @@ export class MsorDialogueportsComponent implements OnInit, OnDestroy {
           Swal.showLoading(null);
         }
       });
-      this.userService.getRechargeHistoryReport(this.role, this.username, 1, this.subOperatorId, this.fromdate, this.todate, 0, 4, this.retailerId, 2
+      this.userService.getRechargeHistoryReport(this.role, this.username, this.selectedRechargeType, this.subOperatorId, this.fromdate, this.todate, 0, 4, this.retailerId, 2, 0
+      )
+        .subscribe((x: Blob) => {
+          const blob = new Blob([x], { type: 'application/xlsx' });
+          const data = window.URL.createObjectURL(blob);
+          const link = document.createElement('a');
+          link.href = data;
+
+          link.download = ("RECHARGE HISTORY REPORT.xlsx").toUpperCase();
+          link.dispatchEvent(new MouseEvent('click', { bubbles: true, cancelable: true, view: window }));
+          setTimeout(() => {
+            window.URL.revokeObjectURL(data);
+            link.remove();
+          }, 100);
+          Swal.close();
+        },
+          (error: any) => {
+            Swal.close();
+            Swal.fire({
+              title: 'Error!',
+              text: error?.error?.message || 'There was an issue generating the PDF CAS form report.',
+              icon: 'error',
+              confirmButtonText: 'Ok'
+            });
+          });
+    } else if (this.role == 'ROLE_SUBSCRIBER') {
+      Swal.fire({
+        title: "Processing",
+        text: "Please wait while the report is being generated...",
+        showConfirmButton: false,
+        didOpen: () => {
+          Swal.showLoading(null);
+        }
+      });
+      this.userService.getRechargeHistoryReport(this.role, this.username, this.selectedRechargeType, this.subOpid, this.fromdate, this.todate, 0, 4, 0, 2, this.subscriberid
       )
         .subscribe((x: Blob) => {
           const blob = new Blob([x], { type: 'application/xlsx' });
@@ -1277,7 +1373,7 @@ export class MsorDialogueportsComponent implements OnInit, OnDestroy {
         }
       });
       this.userService.getRechargeHistoryReport(this.role, this.username, this.selectedRechargeType, this.selectedOperator.value || this.operatorId || 0, this.fromdate, this.todate, this.smartcard, this.useragent,
-        this.selectedSubLcoName, 2
+        this.selectedSubLcoName, 2, 0
       )
         .subscribe((x: Blob) => {
           const blob = new Blob([x], { type: 'application/xlsx' });
@@ -1314,7 +1410,7 @@ export class MsorDialogueportsComponent implements OnInit, OnDestroy {
           Swal.showLoading(null);
         }
       });
-      this.userService.getRechargeHistoryReport(this.role, this.username, 1, this.subOperatorId, this.fromdate, this.todate, 0, 4, this.retailerId, 1
+      this.userService.getRechargeHistoryReport(this.role, this.username, this.selectedRechargeType, this.subOperatorId, this.fromdate, this.todate, 0, 4, this.retailerId, 1, 0
       )
         .subscribe((x: Blob) => {
           const blob = new Blob([x], { type: 'application/pdf' });
@@ -1340,7 +1436,43 @@ export class MsorDialogueportsComponent implements OnInit, OnDestroy {
               confirmButtonText: 'Ok'
             });
           });
-    } else {
+    } else if (this.role == 'ROLE_SUBSCRIBER') {
+      Swal.fire({
+        title: "Processing",
+        text: "Please wait while the report is being generated...",
+        showConfirmButton: false,
+        didOpen: () => {
+          Swal.showLoading(null);
+        }
+      });
+      this.userService.getRechargeHistoryReport(this.role, this.username, this.selectedRechargeType, this.subOpid, this.fromdate, this.todate, 0, 4, 0, 1, this.subscriberid
+      )
+        .subscribe((x: Blob) => {
+          const blob = new Blob([x], { type: 'application/pdf' });
+          const data = window.URL.createObjectURL(blob);
+          const link = document.createElement('a');
+          link.href = data;
+
+          // link.download = ("SUB ONLINE REPORT.pdf").toUpperCase();
+          link.download = ("RECHARGE HISTORY REPORT.pdf").toUpperCase();
+          link.dispatchEvent(new MouseEvent('click', { bubbles: true, cancelable: true, view: window }));
+          setTimeout(() => {
+            window.URL.revokeObjectURL(data);
+            link.remove();
+          }, 100);
+          Swal.close();
+        },
+          (error: any) => {
+            Swal.close();
+            Swal.fire({
+              title: 'Error!',
+              text: error?.error?.message || 'There was an issue generating the PDF CAS form report.',
+              icon: 'error',
+              confirmButtonText: 'Ok'
+            });
+          });
+    }
+    else {
 
       this.smartcard = this.smartcardChange(this.smartcard);
       Swal.fire({
@@ -1352,7 +1484,7 @@ export class MsorDialogueportsComponent implements OnInit, OnDestroy {
         }
       });
       this.userService.getRechargeHistoryReport(this.role, this.username, this.selectedRechargeType, this.selectedOperator.value || this.operatorId || 0, this.fromdate, this.todate, this.smartcard, this.useragent,
-        this.selectedSubLcoName, 1
+        this.selectedSubLcoName, 1, 0
       )
         .subscribe((x: Blob) => {
           const blob = new Blob([x], { type: 'application/pdf' });
@@ -1386,7 +1518,7 @@ export class MsorDialogueportsComponent implements OnInit, OnDestroy {
 
 
   getOnline() {
-    
+
     if (this.role == 'ROLE_SUBLCO') {
       this.userService.getOnlinePaymentHistory(
         this.role,
@@ -1398,7 +1530,32 @@ export class MsorDialogueportsComponent implements OnInit, OnDestroy {
         this.smartcard || 0,
         2,
         3,
-        this.isspecial
+        this.isspecial, 0
+      ).subscribe(
+        (res: any) => {
+          this.swal.success_1(res?.message);
+          this.rowData = res;
+          console.log(this.rowData);
+          this.swal.Close();
+        },
+        (err) => {
+          this.swal.Error(err?.error?.message || err?.error);
+          this.rowData = [];
+        }
+      );
+    } else if (this.role == 'ROLE_SUBSCRIBER') {
+      this.userService.getOnlinePaymentHistory(
+        this.role,
+        this.username,
+        this.fromdate,
+        this.todate,
+        this.subOperatorId || this.subOpid,
+        this.retailerId || 0,
+        this.smartcard || 0,
+        2,
+        3,
+        this.isspecial,
+        this.subscriberid
       ).subscribe(
         (res: any) => {
           this.swal.success_1(res?.message);
@@ -1478,7 +1635,6 @@ export class MsorDialogueportsComponent implements OnInit, OnDestroy {
       } else {
         this.isspecial = false
       }
-
       this.userService.getOnlinePaymentHistory(
         this.role,
         this.username,
@@ -1489,7 +1645,7 @@ export class MsorDialogueportsComponent implements OnInit, OnDestroy {
         this.smartcard,
         this.selectedOnlineType,
         3,
-        this.isspecial
+        this.isspecial, 0
       ).subscribe(
         (res: any) => {
           this.swal.success_1(res?.message);
@@ -1565,7 +1721,32 @@ export class MsorDialogueportsComponent implements OnInit, OnDestroy {
       this.isspecial = false
     }
     if (this.role == 'ROLE_SUBLCO') {
-      this.userService.getOnlinePaymentHistoryReport(this.role, this.username, this.fromdate, this.todate, this.subOperatorId, this.retailerId, this.smartcard || 0,2, 2, this.isspecial)
+      this.userService.getOnlinePaymentHistoryReport(this.role, this.username, this.fromdate, this.todate, this.subOperatorId, this.retailerId, this.smartcard || 0, 2, 2, this.isspecial, 0)
+        .subscribe((x: Blob) => {
+          const blob = new Blob([x], { type: 'application/xlsx' });
+          const data = window.URL.createObjectURL(blob);
+          const link = document.createElement('a');
+          link.href = data;
+
+          link.download = ("SUB ONLINE REPORT.xlsx").toUpperCase();
+          link.dispatchEvent(new MouseEvent('click', { bubbles: true, cancelable: true, view: window }));
+          setTimeout(() => {
+            window.URL.revokeObjectURL(data);
+            link.remove();
+          }, 100);
+          Swal.close();
+        },
+          (error: any) => {
+            Swal.close();
+            Swal.fire({
+              title: 'Error!',
+              text: error?.error?.message || 'There was an issue generating the PDF CAS form report.',
+              icon: 'error',
+              confirmButtonText: 'Ok'
+            });
+          });
+    } else if (this.role == 'ROLE_SUBLCO') {
+      this.userService.getOnlinePaymentHistoryReport(this.role, this.username, this.fromdate, this.todate, this.subOperatorId, this.retailerId, this.smartcard || 0, 2, 2, this.isspecial, this.subscriberid)
         .subscribe((x: Blob) => {
           const blob = new Blob([x], { type: 'application/xlsx' });
           const data = window.URL.createObjectURL(blob);
@@ -1590,7 +1771,7 @@ export class MsorDialogueportsComponent implements OnInit, OnDestroy {
             });
           });
     } else {
-      this.userService.getOnlinePaymentHistoryReport(this.role, this.username, this.fromdate, this.todate, this.selectedOperator.value || this.operatorId || 0, this.selectedSubLcoName, this.smartcard, this.selectedOnlineType, 2, this.isspecial)
+      this.userService.getOnlinePaymentHistoryReport(this.role, this.username, this.fromdate, this.todate, this.selectedOperator.value || this.operatorId || 0, this.selectedSubLcoName, this.smartcard, this.selectedOnlineType, 2, this.isspecial, 0)
         .subscribe((x: Blob) => {
           const blob = new Blob([x], { type: 'application/xlsx' });
           const data = window.URL.createObjectURL(blob);
@@ -1615,6 +1796,8 @@ export class MsorDialogueportsComponent implements OnInit, OnDestroy {
             });
           });
     }
+
+
   }
   getOnlinePdf() {
 
@@ -1637,7 +1820,33 @@ export class MsorDialogueportsComponent implements OnInit, OnDestroy {
     }
     if (this.role == 'ROLE_SUBLCO') {
       this.userService.getOnlinePaymentHistoryReport(this.role, this.username, this.fromdate, this.todate,
-        this.subOperatorId, this.retailerId, this.smartcard || 0, 2, 1, this.isspecial)
+        this.subOperatorId, this.retailerId, this.smartcard || 0, 2, 1, this.isspecial, 0)
+        .subscribe((x: Blob) => {
+          const blob = new Blob([x], { type: 'application/pdf' });
+          const data = window.URL.createObjectURL(blob);
+          const link = document.createElement('a');
+          link.href = data;
+
+          link.download = ("SUB ONLINE REPORT.pdf").toUpperCase();
+          link.dispatchEvent(new MouseEvent('click', { bubbles: true, cancelable: true, view: window }));
+          setTimeout(() => {
+            window.URL.revokeObjectURL(data);
+            link.remove();
+          }, 100);
+          Swal.close();
+        },
+          (error: any) => {
+            Swal.close();
+            Swal.fire({
+              title: 'Error!',
+              text: error?.error?.message || 'There was an issue generating the PDF CAS form report.',
+              icon: 'error',
+              confirmButtonText: 'Ok'
+            });
+          });
+    } else if (this.role == 'ROLE_SUBLCO') {
+      this.userService.getOnlinePaymentHistoryReport(this.role, this.username, this.fromdate, this.todate,
+        this.subOperatorId, this.retailerId, this.smartcard || 0, 2, 1, this.isspecial, this.subscriberid)
         .subscribe((x: Blob) => {
           const blob = new Blob([x], { type: 'application/pdf' });
           const data = window.URL.createObjectURL(blob);
@@ -1662,7 +1871,7 @@ export class MsorDialogueportsComponent implements OnInit, OnDestroy {
             });
           });
     } else {
-      this.userService.getOnlinePaymentHistoryReport(this.role, this.username, this.fromdate, this.todate, this.selectedOperator.value || this.operatorId || 0, this.selectedSubLcoName, this.smartcard, this.selectedOnlineType, 1, this.isspecial)
+      this.userService.getOnlinePaymentHistoryReport(this.role, this.username, this.fromdate, this.todate, this.selectedOperator.value || this.operatorId || 0, this.selectedSubLcoName, this.smartcard, this.selectedOnlineType, 1, this.isspecial, 0)
         .subscribe((x: Blob) => {
           const blob = new Blob([x], { type: 'application/pdf' });
           const data = window.URL.createObjectURL(blob);

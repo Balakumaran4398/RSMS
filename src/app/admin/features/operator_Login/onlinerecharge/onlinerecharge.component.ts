@@ -428,7 +428,7 @@ export class OnlinerechargeComponent implements OnInit {
     }
     console.log(this.sublcoetailerId);
 
-    this.userservice.getOnlinePaymentHistory(this.role, this.username, this.fromdate, this.todate, opid || this.Sub_subid, 0, 0, 1, 3, this.isspecial)
+    this.userservice.getOnlinePaymentHistory(this.role, this.username, this.fromdate, this.todate, opid || this.Sub_subid, 0, 0, 1, 3, this.isspecial,0)
       // this.userservice.getOnlinePaymentHistory(this.role, this.username, this.fromdate, this.todate, this.operatorid || this.sublcoetailerId, 0, 0, 1, 3, this.isspecial)
       .subscribe((res: any) => {
         this.swal.success_1(res?.message);

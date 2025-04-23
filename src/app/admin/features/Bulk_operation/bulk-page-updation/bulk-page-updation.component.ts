@@ -528,6 +528,9 @@ export class BulkPageUpdationComponent implements OnInit {
       package: this.package,
       operatorid: this.operatorid || this.lcoId || this.retailerid
     });
+    console.log(this.operatorid);
+    console.log(this.lcoId);
+    console.log(this.retailerid);
 
     this.rowData = [];
     const apiCall = this.userservice.getExpirySubscriberDetailsByDatePackAndOperatorId(
@@ -635,6 +638,7 @@ export class BulkPageUpdationComponent implements OnInit {
       plan: this.isplan,
       date: this.isdate,
       dateTodate: this.isDatetoDate,
+      retailerid: this.retailerid,
     };
     let width = '600px';
     console.log(dataToSend);

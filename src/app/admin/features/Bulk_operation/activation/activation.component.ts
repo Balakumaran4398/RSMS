@@ -85,7 +85,7 @@ export class ActivationComponent implements OnInit {
 
   lcoDeatails: any;
   operatorid: any;
-
+  retailerid: any;
   constructor(private userservice: BaseService, private swal: SwalService, private storageservice: StorageService, private excelService: ExcelService) {
     this.role = storageservice.getUserRole();
     this.username = storageservice.getUsername();
@@ -98,6 +98,8 @@ export class ActivationComponent implements OnInit {
     this.onproducttypechange("");
     if (this.role == 'ROLE_OPERATOR') {
       this.operatorIdoperatorId();
+    } else if (this.role == 'ROLE_SUBLCO') {
+      this.getSubLCOdetails();
     }
 
   }
@@ -115,6 +117,15 @@ export class ActivationComponent implements OnInit {
       this.isdatetodate = this.lcoDeatails?.isdatetodate;
       console.log(this.operatorid);
       this.getDistributorPackageList();
+    })
+  }
+  getSubLCOdetails() {
+    this.userservice.getSublcoDetails(this.role, this.username).subscribe((data: any) => {
+      console.log(data);
+      console.log('111111111111111');
+      this.lcoDeatails = data;
+      this.retailerid = this.lcoDeatails?.operatorid;
+      console.log(this.retailerid);
     })
   }
   onlcoPackageList() {
@@ -269,8 +280,7 @@ export class ActivationComponent implements OnInit {
       formData.append('type', '1');
       formData.append('plantype', '5');
       formData.append('plan', this.plan);
-      formData.append('retailerid', '0');
-
+      formData.append('retailerid', this.retailerid || '0');
       this.userservice.uploadFirsttimeActivation(formData)
         .subscribe((res: any) => {
           this.swal.success(res?.message);

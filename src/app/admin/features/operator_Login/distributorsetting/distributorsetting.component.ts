@@ -358,6 +358,8 @@ export class DistributorsettingComponent implements OnInit {
     console.log(operatorid);
     const detailsList = this.operator_details.find((op: any) => op.operatorid === operatorid);
     // const detailsList = operatorid;
+    console.log(detailsList);
+    
     let dialogData = { type: type, detailsList: this.operator_details, operator: detailsList.operatorid, operatorname: detailsList.operatorname, };
     console.log(dialogData);
     

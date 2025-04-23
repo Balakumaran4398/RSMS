@@ -75,7 +75,7 @@ export class BulkpackageupdationComponent implements OnInit {
   isRecharge = false;
   rechargetype: any;
   rechargeType: any;
-
+  lcoid: any;
   constructor(public dialogRef: MatDialogRef<BulkpackageupdationComponent>, private swal: SwalService,
     @Inject(MAT_DIALOG_DATA) public data: any, public userservice: BaseService, private cdr: ChangeDetectorRef, public storageService: StorageService) {
     this.username = storageService.getUsername();
@@ -85,6 +85,8 @@ export class BulkpackageupdationComponent implements OnInit {
     this.date = data?.date;
     this.dateTodate = data?.dateTodate;
     console.log('plan=', this.plan + '     ' + 'date=', this.date + '     ' + 'dateTodate=', this.dateTodate);
+    this.lcoid = data.retailerid;
+    console.log(this.lcoid);
 
     this.Type = data?.status;
     this.castype = data?.castype;
@@ -135,7 +137,6 @@ export class BulkpackageupdationComponent implements OnInit {
         if (defaultPlan) {
           this.plantype = defaultPlan.value;
           console.log(this.plantype);
-
         }
       }
     });
@@ -192,15 +193,12 @@ export class BulkpackageupdationComponent implements OnInit {
       this.plantype = 0;
       this.f_date = null;
       this.isDisabled = false;
-
     }
     this.isRecharge = true;
-
   }
 
 
   columnDefs: any[] = [
-
     { headerName: "S.No", valueGetter: 'node.rowIndex+1', width: 100, },
     { headerName: 'CUSTOMER NAME', field: 'customername', width: 300, cellStyle: { textAlign: 'left' } },
     { headerName: 'SMARTCARD', field: 'smartcard', width: 300, },
@@ -421,6 +419,7 @@ export class BulkpackageupdationComponent implements OnInit {
       plantype: this.selectedRechargetype,
       isallpack: this.isallpack,
       expiredsubscriberlist: this.rowData,
+      retailer: this.lcoid || 0,
     }
     this.swal.Loading();
     this.userservice.bulkPackageUpdation(requestBody)

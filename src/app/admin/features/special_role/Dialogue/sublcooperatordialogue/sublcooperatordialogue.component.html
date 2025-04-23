@@ -333,12 +333,14 @@
         <div class="d-flex justify-content-center align-items-center" style="padding: 10px;">
             <div class="form-check form-check-inline">
                 <input class="form-check-input" type="radio" name="status" id="active" (change)="getcustomermode()"
-                    [checked]="isCustomerMode">
+                    [checked]="sublcoDiscount === 0">
+                <!-- [checked]="isCustomerMode"    -->
                 <label class="form-check-label" for="active">Customer Rate</label>
             </div>
             <div class="form-check form-check-inline">
                 <input class="form-check-input" type="radio" name="status" id="deactive" (change)="getMsomode()"
-                    [checked]="isCustomerMode">
+                    [checked]="sublcoDiscount === 1">
+                <!-- [checked]="isCustomerMode" -->
                 <label class="form-check-label" for="deactive">MSO Rate</label>
             </div>
         </div>

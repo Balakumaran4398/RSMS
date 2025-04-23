@@ -55,6 +55,15 @@ export class SubDashboardComponent implements OnInit {
   datetype = false;
   isDisabled: boolean = true;
   isplantype = false;
+
+  isplan = false;
+  isdate = false;
+  isdateTodate = false;
+  subAddonAdd = false;
+  subAlacarte = false;
+  subChangeBase = false;
+
+
   dateTodate = 3;
   gridApi: any;
   selectedIds: number[] = [];
@@ -176,6 +185,22 @@ export class SubDashboardComponent implements OnInit {
   daysText = '';
 
   nextDay: string = '';
+
+
+  lcoDeatails: any;
+  retailerId: any;
+  Sublcopermissionlist: any;
+  subRefresh: any;
+  subFirstimeactivate: any;
+  subActivate: any;
+  subDeactivate: any;
+  subPinchange: any;
+  subPVRchange: any;
+  subResume: any;
+  subReactive: any;
+  subSusbend: any;
+  subForceTuning: any;
+  subCancelSubscription: any;
   public rowSelection: any = "multiple";
   setStep(index: number) {
     this.step.set(index);
@@ -198,18 +223,7 @@ export class SubDashboardComponent implements OnInit {
     let splitValues = this.subscriberid.split("**");
     this.boxid = splitValues[1];
     this.smartcardValue = splitValues[0];
-    this.userservice.getPlanTypeList(this.role, this.username).subscribe((data: any) => {
-      console.log(data);
-      // this.rechargetype = Object.entries(data).map(([key, value]) => ({ name: key, id: value }));
-      this.rechargetype = Object.keys(data).map(key => {
-        const id = data[key];
-        const name = key.replace(/\(\d+\)$/, '').trim();
-        return { name: name, id: id };
-      });
-      console.log(this.rechargeType);
 
-      this.cdr.detectChanges();
-    })
 
   }
   onBillTypeChange() {
@@ -240,20 +254,59 @@ export class SubDashboardComponent implements OnInit {
         if (defaultPlan) {
           this.plantype = defaultPlan.value;
           console.log(this.plantype);
-
         }
       }
     });
-    if (this.role == 'ROLE_SUBLCO') {
+    this.getPlanList();
+    if (this.role == 'ROLE_OPERATOR') {
+      this.operatorIdoperatorId();
+      this.getPlanList();
+    } else if (this.role == 'ROLE_SUBLCO') {
       this.subLCOdetails();
+      this.getPlanList();
     } else if (this.role == 'ROLE_SUBSCRIBER') {
       this.getSubscriberDetails();
+      this.getPlanList();
     }
+    this.cdr.detectChanges();
 
   }
-  lcoDeatails: any;
-  retailerId: any;
-  Sublcopermissionlist: any;
+  getPlanList() {
+    this.userservice.getPlanTypeList(this.role, this.username).subscribe((data: any) => {
+      console.log(data);
+      // this.rechargetype = Object.keys(data).map(key => {
+      //   const id = data[key];
+      //   const name = key.replace(/\(\d+\)$/, '').trim();
+      //   return { name: name, id: id };
+      // });
+      const rawList = Object.keys(data).map(key => {
+        const id = data[key];
+        const name = key.replace(/\(\d+\)$/, '').trim();
+        return { name, id };
+      });
+      console.log(this.rechargeType);
+      this.rechargetype = rawList.filter(item => {
+        if (item.name === 'Plan' && this.isplan) return true;
+        if (item.name === 'Date' && this.isdate) return true;
+        if (item.name === 'Date-to-Date' && this.isdateTodate) return true;
+        return false;
+      });
+    })
+  }
+  operatorIdoperatorId() {
+    this.userservice.getOpDetails(this.role, this.username).subscribe((data: any) => {
+      console.log(data);
+      this.lcoDeatails = data;
+      console.log(this.lcoDeatails);
+      this.isplan = this.lcoDeatails?.isplan;
+      this.isdate = this.lcoDeatails?.isdate;
+      this.isdateTodate = this.lcoDeatails?.isdatetodate;
+      console.log('PLAN', this.isplan);
+      console.log('DATE', this.isdate);
+      console.log('DATE TO DATE', this.isdateTodate);
+  
+    })
+  }
   subLCOdetails() {
     this.userservice.getSublcoDetails(this.role, this.username).subscribe((data: any) => {
       console.log(data);
@@ -261,19 +314,39 @@ export class SubDashboardComponent implements OnInit {
       this.lcoDeatails = data;
       this.retailerId = this.lcoDeatails?.retailerid;
       this.Sublcopermissionlist = this.lcoDeatails?.permissionlist;
-      console.log('eresuofhdljkfhdsjkfhnsjdhfdjsfh', this.Sublcopermissionlist);
+
+      this.isplan = this.Sublcopermissionlist.plan;
+      this.isdate = this.Sublcopermissionlist.date;
+      this.isdateTodate = this.Sublcopermissionlist.datetodate;
+      this.subAddonAdd = this.Sublcopermissionlist.addonpackage_update;
+      this.subAlacarte = this.Sublcopermissionlist.alacarte_update;
+      this.subChangeBase = this.Sublcopermissionlist.change_base;
+      console.log('PLAN', this.isplan);
+      console.log('DATE', this.isdate);
+      console.log('DATE TO DATE', this.isdateTodate);
+      console.log('ADDON ADD', this.subAddonAdd);
+      console.log('ALACARTE', this.subAlacarte);
+      console.log('CHANGE BASE', this.subChangeBase);
     })
   }
-  sub_subscriberid:any;
+  sub_subscriberid: any;
   getSubscriberDetails() {
     this.userservice.getSubscriberDetails(this.role, this.username).subscribe((data: any) => {
       console.log(data);
       console.log('22222222');
       this.lcoDeatails = data;
-      this.lcoDeatails = data;
+
       console.log('SUBSCRIBER DETAILS', this.lcoDeatails);
       this.sub_subscriberid = this.lcoDeatails.subid;
       console.log('SUBSCRIBER SUBID', this.sub_subscriberid);
+      this.isplan = true;
+      this.isdate = this.lcoDeatails.date;
+      this.isdateTodate = this.lcoDeatails.datetodate;
+      console.log('PLAN', this.isplan);
+      console.log('DATE', this.isdate);
+      console.log('DATE TO DATE', this.isdateTodate);
+      console.log('ADDON ADD', this.subAddonAdd);
+      console.log('ALACARTE', this.subAlacarte);
     })
   }
   setNextDay(): void {
@@ -603,7 +676,6 @@ export class SubDashboardComponent implements OnInit {
       this.userservice.getQuickOperationDetailsBySmartcard(this.role, this.username, this.newSmartcard).subscribe(
         (data: any) => {
           this.cdr.detectChanges();
-
           console.log(data);
           this.packageobject = data['packageobject'];
           this.packdateobj = data['packdateobj'];
