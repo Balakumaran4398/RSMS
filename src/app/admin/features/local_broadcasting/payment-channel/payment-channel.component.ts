@@ -33,6 +33,7 @@ export class PaymentChannelComponent {
       },
     },
     paginationPageSize: 10,
+    paginationPageSizeSelector:[10,20,50],
     pagination: true,
   }
   role: any;
@@ -194,6 +195,10 @@ export class PaymentChannelComponent {
     this.userservice.getAllLocalChannelList(this.role, this.username).subscribe((data: any) => {
       console.log(data);
       this.rowData = data;
+      const rowCount = this.rowData.length;
+      if (!this.gridOptions.paginationPageSizeSelector.includes(rowCount)) {
+        this.gridOptions.paginationPageSizeSelector.push(rowCount);
+      }
     })
   }
   openEditDialog(data: any): void {

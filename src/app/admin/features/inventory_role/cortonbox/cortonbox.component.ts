@@ -50,6 +50,7 @@ export class CortonboxComponent implements OnInit {
       },
     },
     paginationPageSize: 10,
+    paginationPageSizeSelector:[10,20,50],
     pagination: true,
   }
 
@@ -86,6 +87,10 @@ export class CortonboxComponent implements OnInit {
   getNotAllocattedDetails() {
     this.userService.getAllCartonBoxList(this.username, this.role).subscribe((data: any) => {
       this.rowData = data;
+      const rowCount = this.rowData.length;
+      if (!this.gridOptions.paginationPageSizeSelector.includes(rowCount)) {
+        this.gridOptions.paginationPageSizeSelector.push(rowCount);
+      }
       console.log(data);
 
     })
@@ -138,6 +143,10 @@ export class CortonboxComponent implements OnInit {
     this.userService.getCortonBoxDetails(this.role, this.username, this.model, this.cortonBox)
       .subscribe((data: any) => {
         this.rowData = data;
+        const rowCount = this.rowData.length;
+        if (!this.gridOptions.paginationPageSizeSelector.includes(rowCount)) {
+          this.gridOptions.paginationPageSizeSelector.push(rowCount);
+        }
         console.log(data);
         // this.swal.success(data?.message);
       }, (err) => {

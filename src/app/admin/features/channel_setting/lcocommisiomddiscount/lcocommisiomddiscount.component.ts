@@ -32,6 +32,7 @@ export class LcocommisiomddiscountComponent implements OnInit {
       },
     },
     paginationPageSize: 10,
+    paginationPageSizeSelector:[10,20,50],
     pagination: true,
   };
 
@@ -47,6 +48,10 @@ export class LcocommisiomddiscountComponent implements OnInit {
     this.userService.getOpDiscountListByOpidAreaid(this.role, this.username, 0, 0, 4,true).subscribe((res: any) => {
       console.log(res);
       this.rowData = res;
+      const rowCount = this.rowData.length;
+      if (!this.gridOptions.paginationPageSizeSelector.includes(rowCount)) {
+        this.gridOptions.paginationPageSizeSelector.push(rowCount);
+      }
     })
   }
 

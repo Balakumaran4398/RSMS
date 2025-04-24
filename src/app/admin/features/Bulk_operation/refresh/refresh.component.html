@@ -1,27 +1,8 @@
-<div >
+<div>
     <p>BULK REACTIVE</p>
 
     <div class=" display justify-content-start align-items-center mb-3">
         <div class="col-12 col-md-4 mx-3">
-            <!-- <select style="color: rgb(17, 0, 0);" [(ngModel)]="operatorid">
-                <option value="0" selected style="color: rgb(19, 17, 17);">ALL Operator </option>
-                <option *ngFor="let operator of operatorList" [value]="operator.value">{{ operator.name}}</option>
-            </select> -->
-            <!-- <div class="input-container">
-                <input type="text" matInput [matAutocomplete]="auto" [(ngModel)]="operatorid" maxlength="20"
-                    (input)="filterOperators($event)" placeholder="Select a Operator" [matAutocompleteDisabled]="false"
-                    [value]="selectedOperator?.name">
-                <i class="bx bx-chevron-down icon-right"></i>
-            </div>
-            <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayOperator">
-                <mat-option *ngFor="let operator of filteredOperators" [value]="operator.value"
-                    (click)="onSubscriberStatusChange(operator)">
-                    {{ operator.name }}
-                </mat-option>
-            </mat-autocomplete> -->
-
-
-
             <select id="ltb" [(ngModel)]="operatorid">
                 <option value="0" selected style="color: rgb(19, 17, 17);">ALL Operator </option>
                 <option *ngFor="let operator of operatorList" [value]="operator.value"
@@ -72,8 +53,7 @@
 
             <ag-grid-angular #agGrid id="myGrid" domLayout="normal" class="ag-theme-alpine table-class" rowAnimation
                 style="max-height: 775px;overflow: scroll;" [rowSelection]="rowSelection" [gridOptions]="gridOptions"
-                [columnDefs]="columnDefs" [rowData]="rowData" 
-                [enableCellTextSelection]="true">
+                [columnDefs]="columnDefs" [rowData]="rowData" [enableCellTextSelection]="true">
             </ag-grid-angular>
         </div>
     </div>

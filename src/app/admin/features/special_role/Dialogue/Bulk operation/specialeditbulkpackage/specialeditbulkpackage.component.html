@@ -71,7 +71,7 @@
                             {{rowData?.length}}</span></h5>
                 </div>
                 <ag-grid-angular #agGrid id="myGrid" style="text-align: center;" class="gridtable"
-                    domLayout='autoHeight' class="ag-theme-alpine table-class" rowAnimation [gridOptions]="gridOptions"
+                    domLayout='normal' class="ag-theme-alpine table-class" rowAnimation [gridOptions]="gridOptions"
                     [columnDefs]="columnDefs" [rowData]="rowData" [enableCellTextSelection]="true">
                 </ag-grid-angular>
             </div>

@@ -31,6 +31,7 @@ export class HistoryAllReportsComponent implements OnInit {
       },
     },
     paginationPageSize: 10,
+    paginationPageSizeSelector:[10,20,50],
     pagination: true,
   }
   gridApi: any;
@@ -314,6 +315,10 @@ export class HistoryAllReportsComponent implements OnInit {
           console.log(response);
           if (response.status === 200) {
             this.rowData = response.body;
+            const rowCount = this.rowData.length;
+            if (!this.gridOptions.paginationPageSizeSelector.includes(rowCount)) {
+              this.gridOptions.paginationPageSizeSelector.push(rowCount);
+            }
             this.swal.Close();
           } else if (response.status === 204) {
             this.swal.Success_204();
@@ -327,85 +332,6 @@ export class HistoryAllReportsComponent implements OnInit {
       );
 
   }
-  // getAllServiceExcel() {
-  //   this.swal.Loading();
-  //   this.userService.getAllServiceHistoryExcelReport(this.role, this.username, this.fromdate, this.todate, this.smartcard, 2)
-  //     .subscribe(
-  //       (response: HttpResponse<any[]>) => {
-  //         console.log(response);
-  //         if (response.status === 200) {
-  //           this.rowData = response.body;
-  //           console.log(this.reportTitle);
-  //           const title = (this.reportTitle + '  [FROM DATE : ' + this.fromdate + '- TO DATE : ' + this.todate + ']').toUpperCase();
-  //           const sub = 'MSO ADDRESS:' + this.msodetails;
-  //           let areatitle = '';
-  //           let areasub = '';
-  //           let header: string[] = [];
-  //           const datas: Array<any> = [];
-  //           areatitle = 'A1:E2';
-  //           areasub = 'A3:E3';
-  //           header = ['S.NO', 'SMARTCARD', 'LOG DATE', 'ACTION', 'REMARKS',];
-  //           this.rowData.forEach((d: any, index: number) => {
-  //             const row = [index + 1, d.smartcard, d.logdate, d.activity, d.remarks];
-  //             datas.push(row);
-  //           });
-  //           // this.excelService.generateAllServiceExcel(areatitle, header, datas, title, areasub, sub);
-  //           this.excelService.generatedAllServiceExcel(areatitle, header, datas, title, areasub, sub);
-  //           this.swal.Close();
-  //         } else if (response.status === 204) {
-  //           // this.swal.Success_204();
-  //           this.rowData = response.body;
-  //           console.log(this.reportTitle);
-  //           const title = (this.reportTitle + '  [ FROM DATE : ' + this.fromdate + '- TO DATE : ' + this.todate + ']').toUpperCase();
-  //           const sub = 'MSO ADDRESS:' + this.msodetails;
-  //           let areatitle = '';
-  //           let areasub = '';
-  //           let header: string[] = [];
-  //           const datas: Array<any> = [];
-  //           areatitle = 'A1:E2';
-  //           areasub = 'A3:E3';
-  //           header = ['S.NO', 'SMARTCARD', 'LOG DATE', 'ACTION', 'REMARKS',];
-
-  //           // this.excelService.generateAllServiceExcel(areatitle, header, datas, title, areasub, sub);
-  //           this.excelService.generatedAllServiceExcel(areatitle, header, datas, title, areasub, sub);
-
-  //           this.rowData = [];
-  //           this.swal.Close();
-  //         }
-  //       },
-  //       (error) => {
-  //         this.handleApiError(error);
-  //       }
-  //     );
-  // }
-  // getAllServicePDF() {
-  //   this.swal.Loading();
-  //   this.userService.getAllServiceHistoryPDFReport(this.role, this.username, this.fromdate, this.todate, this.smartcard, 1)
-  //     .subscribe((x: Blob) => {
-  //       const blob = new Blob([x], { type: 'application/pdf' });
-  //       const data = window.URL.createObjectURL(blob);
-  //       const link = document.createElement('a');
-  //       link.href = data;
-  //       // link.download = (this.reportTitle +  ".pdf").toUpperCase();
-  //       link.download = `${this.reportTitle}   FROM DATE : ${this.fromdate} TO DATE : ${this.todate}.pdf`.toUpperCase();
-
-  //       link.dispatchEvent(new MouseEvent('click', { bubbles: true, cancelable: true, view: window }));
-  //       setTimeout(() => {
-  //         window.URL.revokeObjectURL(data);
-  //         link.remove();
-  //       }, 100);
-  //       this.swal.Close();
-  //     },
-  //       (error: any) => {
-  //         Swal.fire({
-  //           title: 'Error!',
-  //           text: error?.error?.message || 'There was an issue generating the PDF CAS form report.',
-  //           icon: 'error',
-  //           confirmButtonText: 'Ok'
-  //         });
-  //       });
-  //   this.swal.Close();
-  // }
 
   getAllServiceReport(type: number) {
     this.processingSwal();
@@ -422,68 +348,7 @@ export class HistoryAllReportsComponent implements OnInit {
         });
   }
 
-  // --------------------------------------------Total Smartcard-----------------
-  // getTotalExcel() {
-  //   this.swal.Loading();
-  //   this.userService.getTotalSmartcardExcelReport(this.role, this.username, 2)
-  //     .subscribe(
-  //       (response: HttpResponse<any[]>) => { // Expect HttpResponse<any[]>
-  //         console.log(this.reportTitle);
-  //         if (response.status === 200) {
-  //           this.rowData = response.body;
-  //           console.log(this.reportTitle);
-  //           const title = (this.reportTitle).toUpperCase();
-  //           const sub = 'MSO ADDRESS:' + this.msodetails;
-  //           let areatitle = '';
-  //           let areasub = '';
-  //           let header: string[] = [];
-  //           const datas: Array<any> = [];
-  //           areatitle = 'A1:J2';
-  //           areasub = 'A3:J3';
-  //           header = ['S.NO', 'SUBSCRIBER NAME', 'SUBSCRIBER ID', 'CAS FORM ID', 'MOBILE NO', 'ADDRESS', 'INSTALL ADDRESS', 'EMAIL', 'LANDLINE NO', 'SMARTCARD', 'BOX ID', 'STATUS', 'CREATED DATE', 'USER NAME', 'PASSWORD', 'APP LOCK STATUS', 'PACKAGE NAME'];
-  //           this.rowData.forEach((d: any, index: number) => {
-  //             const row = [index + 1, d.customername, d.subid, d.casformid, d.mobileno, d.address, d.installaddress, d.email, d.landline, d.smartcard, d.boxid, d.status, d.createddate, d.username, d.password, d.lockstatus, d.productname];
-  //             datas.push(row);
-  //           });
-  //           this.excelService.generateTotalSmartcardExcel(areatitle, header, datas, title, areasub, sub);
-  //           this.swal.Close();
-  //         } else if (response.status === 204) {
-  //           this.swal.Success_204();
-  //           this.rowData = [];
-  //           this.swal.Close();
-  //         }
-  //       },
-  //       (error) => {
-  //         this.handleApiError(error);
-  //       }
-  //     );
-  // }
-  // getTotalPDF() {
-  //   this.swal.Loading();
-  //   this.userService.getTotalSmartcardPDFReport(this.role, this.username, 1)
-  //     .subscribe((x: Blob) => {
-  //       const blob = new Blob([x], { type: 'application/pdf' });
-  //       const data = window.URL.createObjectURL(blob);
-  //       const link = document.createElement('a');
-  //       link.href = data;
-  //       link.download = (this.reportTitle + ".pdf").toUpperCase();
-  //       link.dispatchEvent(new MouseEvent('click', { bubbles: true, cancelable: true, view: window }));
-  //       setTimeout(() => {
-  //         window.URL.revokeObjectURL(data);
-  //         link.remove();
-  //       }, 100);
-  //       this.swal.Close();
-  //     },
-  //       (error: any) => {
-  //         Swal.fire({
-  //           title: 'Error!',
-  //           text: error?.error?.message || 'There was an issue generating the PDF CAS form report.',
-  //           icon: 'error',
-  //           confirmButtonText: 'Ok'
-  //         });
-  //       });
-  //   this.swal.Close();
-  // }
+
 
 
   getTotalReport(type: number) {
@@ -509,6 +374,10 @@ export class HistoryAllReportsComponent implements OnInit {
           console.log(response);
           if (response.status === 200) {
             this.rowData = response.body;
+            const rowCount = this.rowData.length;
+            if (!this.gridOptions.paginationPageSizeSelector.includes(rowCount)) {
+              this.gridOptions.paginationPageSizeSelector.push(rowCount);
+            }
             this.swal.Close();
           } else if (response.status === 204) {
             this.swal.Success_204();
@@ -521,84 +390,7 @@ export class HistoryAllReportsComponent implements OnInit {
         }
       );
   }
-  // getPairedExcel() {
-  //   this.swal.Loading();
-  //   this.userService.getPairedSmartcardExcelReport(this.role, this.username, 2)
-  //     .subscribe(
-  //       (response: HttpResponse<any[]>) => { // Expect HttpResponse<any[]>
-  //         console.log(this.reportTitle);
-  //         if (response.status === 200) {
-  //           this.rowData = response.body;
-  //           console.log(this.reportTitle);
-  //           const title = (this.reportTitle).toUpperCase();
-  //           const sub = 'MSO ADDRESS:' + this.msodetails;
-  //           let areatitle = '';
-  //           let areasub = '';
-  //           let header: string[] = [];
-  //           const datas: Array<any> = [];
-  //           areatitle = 'A1:G2';
-  //           areasub = 'A3:G3';
-  //           header = ['S.NO', 'SUBSCRIBER ID', 'SUBSCRIBER NAME', 'SMARTCARD', 'BOX ID', 'ADDRESS', 'INSTALL DATE'];
-  //           this.rowData.forEach((d: any, index: number) => {
-  //             const row = [index + 1, d.subid, d.customername, d.smartcard, d.boxid, d.address, d.createddate];
-  //             datas.push(row);
-  //           });
-  //           this.excelService.generatePairedExcel(areatitle, header, datas, title, areasub, sub);
-  //           this.swal.Close();
-  //         } else if (response.status === 204) {
-  //           // this.swal.Success_204();
-  //           this.rowData = response.body;
-  //           console.log(this.reportTitle);
-  //           const title = (this.reportTitle).toUpperCase();
-  //           const sub = 'MSO ADDRESS:' + this.msodetails;
-  //           let areatitle = '';
-  //           let areasub = '';
-  //           let header: string[] = [];
-  //           const datas: Array<any> = [];
-  //           areatitle = 'A1:G2';
-  //           areasub = 'A3:G3';
-  //           header = ['S.NO', 'SUBSCRIBER ID', 'SUBSCRIBER NAME', 'SMARTCARD', 'BOX ID', 'ADDRESS', 'INSTALL DATE'];
-  //           this.rowData.forEach((d: any, index: number) => {
-  //             const row = [index + 1, d.subid, d.customername, d.smartcard, d.boxid, d.address, d.createddate];
-  //             datas.push(row);
-  //           });
-  //           this.excelService.generatePairedExcel(areatitle, header, datas, title, areasub, sub);
-  //           this.rowData = [];
-  //           this.swal.Close();
-  //         }
-  //       },
-  //       (error) => {
-  //         this.handleApiError(error);
-  //       }
-  //     );
-
-  // }
-  // getPairedPDF() {
-  //   this.swal.Loading();
-  //   this.userService.getPairedSmartcardPDFReport(this.role, this.username, 1)
-  //     .subscribe((x: Blob) => {
-  //       const blob = new Blob([x], { type: 'application/pdf' });
-  //       const data = window.URL.createObjectURL(blob);
-  //       const link = document.createElement('a');
-  //       link.href = data;
-  //       link.download = (this.reportTitle + ".pdf").toUpperCase();
-  //       link.dispatchEvent(new MouseEvent('click', { bubbles: true, cancelable: true, view: window }));
-  //       setTimeout(() => {
-  //         window.URL.revokeObjectURL(data);
-  //         link.remove();
-  //       }, 100);
-  //       this.swal.Close();
-  //     },
-  //       (error: any) => {
-  //         Swal.fire({
-  //           title: 'Error!',
-  //           text: error?.error?.message || 'There was an issue generating the PDF CAS form report.',
-  //           icon: 'error',
-  //           confirmButtonText: 'Ok'
-  //         });
-  //       });
-  //   this.swal.Close();
-  // }
+  
 
   getPairReport(type: number) {
     this.userService.getPairedSmartcardPDFReport(this.role, this.username, type)
@@ -622,6 +414,10 @@ export class HistoryAllReportsComponent implements OnInit {
           console.log(this.reportTitle);
           if (response.status === 200) {
             this.rowData = response.body;
+            const rowCount = this.rowData.length;
+            if (!this.gridOptions.paginationPageSizeSelector.includes(rowCount)) {
+              this.gridOptions.paginationPageSizeSelector.push(rowCount);
+            }
             this.swal.Close();
           } else if (response.status === 204) {
             this.swal.Success_204();
@@ -634,80 +430,7 @@ export class HistoryAllReportsComponent implements OnInit {
         }
       );
   }
-  // getBlockedExcel() {
-  //   this.swal.Loading();
-  //   this.userService.getBlockSmartcardExcelReport(this.role, this.username, 2)
-  //     .subscribe(
-  //       (response: HttpResponse<any[]>) => { // Expect HttpResponse<any[]>
-  //         console.log(this.reportTitle);
-  //         if (response.status === 200) {
-  //           this.rowData = response.body;
-  //           console.log(this.reportTitle);
-  //           const title = ('BLOCK LIST HISTORY REPORT').toUpperCase();
-  //           const sub = 'MSO ADDRESS:' + this.msodetails;
-  //           let areatitle = '';
-  //           let areasub = '';
-  //           let header: string[] = [];
-  //           const datas: Array<any> = [];
-  //           areatitle = 'A1:K2';
-  //           areasub = 'A3:K3';
-  //           header = ['S.NO', 'OPERATOR NAME', 'SUBSCRIBER ID', 'SUBSCRIBER NAME', 'MOBILE NO', 'SMARTCARD', 'BOX ID', 'CAS', 'PACKAGE ID', 'PRODUCT NAME', 'EXPIRY DATE'];
-  //           this.rowData.forEach((d: any, index: number) => {
-  //             const row = [index + 1, d.operatorname, d.subid, d.customername, d.mobileno, d.smartcard, d.boxid, d.address, d.casname, d.packageid, d.productname, d.expirydate];
-  //             datas.push(row);
-  //           });
-  //           this.excelService.generateBlockExcel(areatitle, header, datas, title, areasub, sub);
-  //           this.swal.Close();
-  //         } else if (response.status === 204) {
-  //           // this.swal.Success_204();
-  //           this.rowData = response.body;
-  //           console.log(this.reportTitle);
-  //           const title = ('BLOCK LIST HISTORY REPORT').toUpperCase();
-  //           const sub = 'MSO ADDRESS:' + this.msodetails;
-  //           let areatitle = '';
-  //           let areasub = '';
-  //           let header: string[] = [];
-  //           const datas: Array<any> = [];
-  //           areatitle = 'A1:K2';
-  //           areasub = 'A3:K3';
-  //           header = ['S.NO', 'OPERATOR NAME', 'SUBSCRIBER ID', 'SUBSCRIBER NAME', 'MOBILE NO', 'SMARTCARD', 'BOX ID', 'CAS', 'PACKAGE ID', 'PRODUCT NAME', 'EXPIRY DATE'];
-
-  //           this.excelService.generateBlockExcel(areatitle, header, datas, title, areasub, sub);
-  //           this.rowData = [];
-  //           this.swal.Close();
-  //         }
-  //       },
-  //       (error) => {
-  //         this.handleApiError(error);
-  //       }
-  //     );
-  // }
-  // getBlockedPDF() {
-  //   this.swal.Loading();
-  //   this.userService.getBlockSmartcardPDFReport(this.role, this.username, 1)
-  //     .subscribe((x: Blob) => {
-  //       const blob = new Blob([x], { type: 'application/pdf' });
-  //       const data = window.URL.createObjectURL(blob);
-  //       const link = document.createElement('a');
-  //       link.href = data;
-  //       link.download = ('BLOCK LIST HISTORY REPORT.pdf').toUpperCase();
-  //       link.dispatchEvent(new MouseEvent('click', { bubbles: true, cancelable: true, view: window }));
-  //       setTimeout(() => {
-  //         window.URL.revokeObjectURL(data);
-  //         link.remove();
-  //       }, 100);
-  //       this.swal.Close();
-  //     },
-  //       (error: any) => {
-  //         Swal.fire({
-  //           title: 'Error!',
-  //           text: error?.error?.message || 'There was an issue generating the PDF CAS form report.',
-  //           icon: 'error',
-  //           confirmButtonText: 'Ok'
-  //         });
-  //       });
-  //   this.swal.Close();
-  // }
+  
 
   getBlockReport(type: number) {
     this.userService.getBlockSmartcardPDFReport(this.role, this.username, type)
@@ -731,6 +454,10 @@ export class HistoryAllReportsComponent implements OnInit {
           console.log(this.reportTitle);
           if (response.status === 200) {
             this.rowData = response.body;
+            const rowCount = this.rowData.length;
+            if (!this.gridOptions.paginationPageSizeSelector.includes(rowCount)) {
+              this.gridOptions.paginationPageSizeSelector.push(rowCount);
+            }
             this.swal.Close();
 
           } else if (response.status === 204) {
@@ -752,6 +479,7 @@ export class HistoryAllReportsComponent implements OnInit {
           console.log(this.reportTitle);
           if (response.status === 200) {
             this.rowData = response.body;
+            
             console.log(this.reportTitle);
             const title = (this.reportTitle).toUpperCase();
             const sub = 'MSO ADDRESS:' + this.msodetails;
@@ -827,6 +555,10 @@ export class HistoryAllReportsComponent implements OnInit {
           console.log(this.reportTitle);
           if (response.status === 200) {
             this.rowData = response.body;
+            const rowCount = this.rowData.length;
+            if (!this.gridOptions.paginationPageSizeSelector.includes(rowCount)) {
+              this.gridOptions.paginationPageSizeSelector.push(rowCount);
+            }
             this.swal.Close();
           } else if (response.status === 204) {
             this.swal.Success_204();
@@ -922,6 +654,10 @@ export class HistoryAllReportsComponent implements OnInit {
           console.log(this.reportTitle);
           if (response.status === 200) {
             this.rowData = response.body;
+            const rowCount = this.rowData.length;
+            if (!this.gridOptions.paginationPageSizeSelector.includes(rowCount)) {
+              this.gridOptions.paginationPageSizeSelector.push(rowCount);
+            }
             this.swal.Close();
           } else if (response.status === 204) {
             this.swal.Success_204();
@@ -1015,6 +751,10 @@ export class HistoryAllReportsComponent implements OnInit {
           console.log(this.reportTitle);
           if (response.status === 200) {
             this.rowData = response.body;
+            const rowCount = this.rowData.length;
+            if (!this.gridOptions.paginationPageSizeSelector.includes(rowCount)) {
+              this.gridOptions.paginationPageSizeSelector.push(rowCount);
+            }
             this.swal.Close();
           } else if (response.status === 204) {
             this.swal.Success_204();
@@ -1197,6 +937,10 @@ export class HistoryAllReportsComponent implements OnInit {
           console.log(this.reportTitle);
           if (response.status === 200) {
             this.rowData = response.body;
+            const rowCount = this.rowData.length;
+            if (!this.gridOptions.paginationPageSizeSelector.includes(rowCount)) {
+              this.gridOptions.paginationPageSizeSelector.push(rowCount);
+            }
           } else if (response.status === 204) {
             this.swal.Success_204();
             this.rowData = [];
@@ -1286,6 +1030,10 @@ export class HistoryAllReportsComponent implements OnInit {
           console.log(this.reportTitle);
           if (response.status === 200) {
             this.rowData = response.body;
+            const rowCount = this.rowData.length;
+            if (!this.gridOptions.paginationPageSizeSelector.includes(rowCount)) {
+              this.gridOptions.paginationPageSizeSelector.push(rowCount);
+            }
             this.swal.Close();
           } else if (response.status === 204) {
             this.swal.Success_204();
@@ -1378,6 +1126,10 @@ export class HistoryAllReportsComponent implements OnInit {
           console.log(this.reportTitle);
           if (response.status === 200) {
             this.rowData = response.body;
+            const rowCount = this.rowData.length;
+            if (!this.gridOptions.paginationPageSizeSelector.includes(rowCount)) {
+              this.gridOptions.paginationPageSizeSelector.push(rowCount);
+            }
             this.swal.Close();
           } else if (response.status === 204) {
             this.swal.Success_204();
@@ -1482,6 +1234,10 @@ export class HistoryAllReportsComponent implements OnInit {
           console.log(this.reportTitle);
           if (response.status === 200) {
             this.rowData = response.body;
+            const rowCount = this.rowData.length;
+            if (!this.gridOptions.paginationPageSizeSelector.includes(rowCount)) {
+              this.gridOptions.paginationPageSizeSelector.push(rowCount);
+            }
             this.swal.Close();
           } else if (response.status === 204) {
             this.swal.Success_204();
@@ -1590,6 +1346,10 @@ export class HistoryAllReportsComponent implements OnInit {
           console.log(this.reportTitle);
           if (response.status === 200) {
             this.rowData = response.body;
+            const rowCount = this.rowData.length;
+            if (!this.gridOptions.paginationPageSizeSelector.includes(rowCount)) {
+              this.gridOptions.paginationPageSizeSelector.push(rowCount);
+            }
             this.swal.Close();
           } else if (response.status === 204) {
             this.swal.Success_204();

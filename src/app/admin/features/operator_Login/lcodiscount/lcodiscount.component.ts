@@ -99,7 +99,7 @@ export class LcodiscountComponent implements OnInit, AfterViewInit {
 
     this.onColumnDefs();
     this.getListOfDatas();
-    this.getDiscountOption(this.type);
+    // this.getDiscountOption(this.type);
 
     if ($('#Area').data('select2')) {
       $('#Area').select2('destroy');

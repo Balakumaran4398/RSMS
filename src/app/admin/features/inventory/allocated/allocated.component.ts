@@ -56,6 +56,7 @@ export class AllocatedComponent implements OnInit,OnDestroy {
       },
     },
     paginationPageSize: 10,
+    paginationPageSizeSelector:[10,20,50],
     pagination: true,
   };
 
@@ -267,6 +268,10 @@ export class AllocatedComponent implements OnInit,OnDestroy {
     this.userService.getsearchforallocated_smartcard_List(this.role, this.username, this.selectedOperator || 0, this.smartcard || 0)
       .subscribe((data: any) => {
         this.rowData = data;
+        const rowCount = this.rowData.length;
+          if (!this.gridOptions.paginationPageSizeSelector.includes(rowCount)) {
+            this.gridOptions.paginationPageSizeSelector.push(rowCount);
+          }
         this.allocatedhistory = data;
         this.swal.Close();
         if (data && data.length > 0) {

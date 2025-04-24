@@ -77,6 +77,7 @@ export class ChipidModelComponent implements OnInit {
       },
     },
     paginationPageSize: 15,
+    paginationPageSizeSelector:[10,20,50],
     pagination: true,
   };
   constructor(private userService: BaseService, private storageService: StorageService, private swal: SwalService, public dialog: MatDialog, private cdr: ChangeDetectorRef) {
@@ -219,12 +220,20 @@ export class ChipidModelComponent implements OnInit {
     this.userService.getStbModlelList(this.role, this.username).subscribe((data: any) => {
       console.log(data);
       this.rowData = data;
+      const rowCount = this.rowData.length;
+      if (!this.gridOptions.paginationPageSizeSelector.includes(rowCount)) {
+        this.gridOptions.paginationPageSizeSelector.push(rowCount);
+      }
     })
   }
   getModelForceList(value: any) {
     this.userService.getOperatorWiseChipidForceList(this.role, this.username, value).subscribe((data: any) => {
       console.log(data);
       this.rowData1 = data;
+      const rowCount = this.rowData1.length;
+      if (!this.gridOptions.paginationPageSizeSelector.includes(rowCount)) {
+        this.gridOptions.paginationPageSizeSelector.push(rowCount);
+      }
     })
   }
   getLCOModelList(value: any) {

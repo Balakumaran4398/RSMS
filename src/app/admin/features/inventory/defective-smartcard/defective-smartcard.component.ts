@@ -44,6 +44,7 @@ export class DefectiveSmartcardComponent {
       },
     },
     paginationPageSize: 10,
+    paginationPageSizeSelector:[10,20,50],
     pagination: true,
   };
   
@@ -54,6 +55,10 @@ export class DefectiveSmartcardComponent {
     userService.Defective_Smartcard_list(this.role, this.username).subscribe((data: any) => {
       console.log(data);
       this.rowData = data;
+      const rowCount = this.rowData.length;
+      if (!this.gridOptions.paginationPageSizeSelector.includes(rowCount)) {
+        this.gridOptions.paginationPageSizeSelector.push(rowCount);
+      }
     })
   }
   columnDefs: ColDef[] = [
@@ -195,8 +200,8 @@ export class DefectiveSmartcardComponent {
       });
     } else {
       const dataToSend = {
-        rowData: this.rowData, // Existing data
-        selectedIds: this.selectedIds, // Selected IDs
+        rowData: this.rowData, 
+        selectedIds: this.selectedIds, 
       };
       console.log(dataToSend);
       const dialogRef = this.dialog.open(DefectiveInventoryComponent, {

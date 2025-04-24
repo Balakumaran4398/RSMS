@@ -28,6 +28,7 @@ export class ChannellistComponent implements OnInit {
       floatingFilter: true,
     },
     paginationPageSize: 10,
+    paginationPageSizeSelector:[10,20,50],
     pagination: true,
   }
 
@@ -56,6 +57,10 @@ export class ChannellistComponent implements OnInit {
       this.packagename= data.packagename;
       console.log(this.packagename)
       this.rowData = data.channeldetails;
+      const rowCount = this.rowData.length;
+      if (!this.gridOptions.paginationPageSizeSelector.includes(rowCount)) {
+        this.gridOptions.paginationPageSizeSelector.push(rowCount);
+      }
     })
   }
 

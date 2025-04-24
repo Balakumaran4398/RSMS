@@ -149,8 +149,8 @@ export class DiscountdialogComponent implements OnInit {
     this.swal.Loading();
     // this.userService.getupdateSublcoDiscount(this.role, this.username, this.operatorid, this.retailerid, this.subLcoDetails?.pack_id, this.with_Gst, this.subLcoDetails?.mso_amount,
     this.userService.getupdateSublcoDiscount(this.role, this.username, this.operatorid, this.operatorid, this.subLcoDetails?.pack_id, this.with_Gst, this.subLcoDetails?.mso_amount,
-      this.subLcoDetails?.mso_amount, this.new_customeramount).subscribe((res: any) => {
-        this.swal.success(res?.message);
+      this.subLcoDetails?.customer_amount, this.new_customeramount).subscribe((res: any) => {
+        // this.swal.success(res?.message);
       }, (err) => {
         this.swal.Error(err?.error?.message || err?.error);
       });
@@ -168,7 +168,8 @@ export class DiscountdialogComponent implements OnInit {
   dataDetails: any;
   discountPlans: any[] = [];
   getplanwiseDetails() {
-    if (this.role == 'ROLE_ADMIN') {
+    console.log(this.role)
+    if (this.role != 'ROLE_OPERATOR') {
       this.userService.getPlanDiscountDetailsByOpidPackageid(this.role, this.username, this.operatorid || 0, this.orderid, this.customeramount, this.lcocommission, true).subscribe((data: any) => {
         this.discountPlans = data.map((item: any) => {
           const content = item.content[0];
@@ -249,9 +250,9 @@ export class DiscountdialogComponent implements OnInit {
         }, (err) => {
           this.swal.Error(err?.error?.message || err?.error);
         });
-    } else if (this.role == 'ROLE_ADMIN') {
+    } else if (this.role != 'ROLE_OPERATOR') {
       this.swal.Loading();
-      this.userService.updatePlanwiseDiscount(this.role, this.username, this.operatorid || 0, this.orderid, this.plandiscount, 2, true)
+      this.userService.updatePlanwiseDiscount(this.role, this.username,  0, this.orderid, this.plandiscount, 2, true)
         .subscribe((res: any) => {
           this.swal.success(res?.message);
         }, (err) => {

@@ -34,6 +34,7 @@ export class LcoinvoiceComponent implements OnInit {
       },
     },
     paginationPageSize: 10,
+    paginationPageSizeSelector:[10,20,50],
     pagination: true,
   };
   rowData: any[] = [];
@@ -61,6 +62,10 @@ export class LcoinvoiceComponent implements OnInit {
       .subscribe((data: any) => {
         // this.swal.success(data?.message);
         this.rowData = data
+        const rowCount = this.rowData.length;
+        if (!this.gridOptions.paginationPageSizeSelector.includes(rowCount)) {
+          this.gridOptions.paginationPageSizeSelector.push(rowCount);
+        }
       }, (err) => {
         this.swal.Error(err?.error?.message);
       });
@@ -114,6 +119,10 @@ export class LcoinvoiceComponent implements OnInit {
       .subscribe((res: any) => {
         this.swal.success(res?.message);
         this.rowData = res;
+        const rowCount = this.rowData.length;
+        if (!this.gridOptions.paginationPageSizeSelector.includes(rowCount)) {
+          this.gridOptions.paginationPageSizeSelector.push(rowCount);
+        }
       }, (err) => {
         this.swal.Error(err?.error?.message);
       });

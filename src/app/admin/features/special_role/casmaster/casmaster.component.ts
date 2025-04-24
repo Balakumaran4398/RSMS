@@ -38,6 +38,7 @@ export class CasmasterComponent {
       },
     },
     paginationPageSize: 10,
+    paginationPageSizeSelector:[10,20,50],
     pagination: true,
   };
   rowData: any;
@@ -122,6 +123,10 @@ export class CasmasterComponent {
     this.userservice.casmaster(this.role, this.username).subscribe((response: HttpResponse<any[]>) => {
       if (response.status === 200) {
         this.rowData = response.body;
+        const rowCount = this.rowData.length;
+        if (!this.gridOptions.paginationPageSizeSelector.includes(rowCount)) {
+          this.gridOptions.paginationPageSizeSelector.push(rowCount);
+        }
         // this.swal.Success_200();
       } else if (response.status === 204) {
         this.swal.Success_204();

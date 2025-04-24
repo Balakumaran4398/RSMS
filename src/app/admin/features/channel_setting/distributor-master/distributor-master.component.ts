@@ -52,6 +52,7 @@ export class DistributorMasterComponent {
       },
     },
     paginationPageSize: 10,
+    paginationPageSizeSelector:[10,20,50],
     pagination: true,
   };
 
@@ -70,6 +71,10 @@ export class DistributorMasterComponent {
   ngOnInit(): void {
     this.userService.DistributorList(this.role, this.username, this.type).subscribe((data) => {
       this.rowData = data;
+      const rowCount = this.rowData.length;
+      if (!this.gridOptions.paginationPageSizeSelector.includes(rowCount)) {
+        this.gridOptions.paginationPageSizeSelector.push(rowCount);
+      }
     })
   }
   enterPressed: boolean = false;

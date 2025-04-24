@@ -164,7 +164,7 @@ export class LcodashboardreportComponent implements OnInit {
           console.log('type ', this.type, res);
           this.rowData = res.flatMap((customer: any) =>
             customer.content.map((data: any) => ({
-              customeranme: data.customeranme,
+              customername: data.customername,
               address: data.address,
               mobileno: data.mobileno,
               smartcard: data.smartcard,

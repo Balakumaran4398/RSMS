@@ -49,6 +49,8 @@ export class LcoChangePasswordComponent implements OnInit {
   ngOnInit(): void {
     if (this.role == 'ROLE_OPERATOR') {
       this.operatorIdoperatorId();
+    } else if (this.role == 'ROLE_SUBLCO') {
+      this.subLCOdetails();
     } else if (this.role == 'ROLE_SUBSCRIBER') {
       this.getSubscriberSubId();
     }
@@ -58,6 +60,18 @@ export class LcoChangePasswordComponent implements OnInit {
       this.lcoDeatails = data;
       this.operatorid = this.lcoDeatails?.operatorid;
 
+    })
+  }
+  subLCOdetails() {
+    this.userService.getSublcoDetails(this.role, this.username).subscribe((data: any) => {
+      console.log(data);
+      console.log('111111111111111');
+      this.lcoDeatails = data;
+      this.retailerId = this.lcoDeatails?.retailerid;
+      this.retailerName = this.lcoDeatails?.retailername;
+      this.mobilenumber = this.lcoDeatails?.contactnumber;
+      this.address = this.lcoDeatails?.address;
+      this.balance = this.lcoDeatails?.balance;
     })
   }
   getSubscriberSubId() {

@@ -57,6 +57,7 @@ export class ForceTuningComponent {
       },
     },
     paginationPageSize: 10,
+    paginationPageSizeSelector: [10, 20],
     pagination: true,
   }
   rowData = [];
@@ -74,15 +75,15 @@ export class ForceTuningComponent {
   }
 
 
-   columnDefs: ColDef[] = [
-      { headerName: "S.No", lockPosition: true, valueGetter: 'node.rowIndex+1', cellClass: 'locked-col', width: 80, suppressNavigable: true, sortable: false, filter: false },
-      { headerName: "INTEND ID", field: 'intendiddisplay' ,width: 250,},
-      { headerName: "INTEND TO", field: 'intendto',width: 150, },
-      { headerName: "STATUS", field: 'status',width: 120, },
-      { headerName: "CAS NAME	", field: 'casname',width: 150, },
-      { headerName: "LOG DATE	", field: 'logdate',width: 200, },
+  columnDefs: ColDef[] = [
+    { headerName: "S.No", lockPosition: true, valueGetter: 'node.rowIndex+1', cellClass: 'locked-col', width: 80, suppressNavigable: true, sortable: false, filter: false },
+    { headerName: "INTEND ID", field: 'intendiddisplay', width: 250, },
+    { headerName: "INTEND TO", field: 'intendto', width: 150, },
+    { headerName: "STATUS", field: 'status', width: 120, },
+    { headerName: "CAS NAME	", field: 'casname', width: 150, },
+    { headerName: "LOG DATE	", field: 'logdate', width: 200, },
 
-   ]
+  ]
   ngOnInit() {
     // this.userservice.Finger_print_List(this.role, this.username).subscribe((data) => {
     //   console.log(data);
@@ -104,12 +105,17 @@ export class ForceTuningComponent {
     this.userservice.getForceTuningList(this.role, this.username).subscribe((data: any) => {
       this.rowData = data;
       console.log(this.rowData);
+      console.log(this.rowData);
+      const rowCount = this.rowData.length;
+      if (!this.gridOptions.paginationPageSizeSelector.includes(rowCount)) {
+        this.gridOptions.paginationPageSizeSelector.push(rowCount);
+      }
     })
   }
   onChangeIntendTo1(event: any) {
     console.log('111111111111');
     this.intendid_1 = '';
-    const selectedValue =  event.target.value;
+    const selectedValue = event.target.value;
     this.isMsoEnabled = true;
     console.log(selectedValue);
     if (selectedValue == 2) { // SMARTCARD
@@ -227,54 +233,54 @@ export class ForceTuningComponent {
   }
 
 
-   showDropdown: boolean = true;
-      subscriberList: any[] = [];
-      subscriber: any;
-      onSmartcardlist(value: any) {
-        this.showDropdown = true;
-        this.userservice.getSearchSmartcardData(this.role, this.username, value).subscribe(
-          (data: any) => {
-            if (!data || Object.keys(data).length === 0) {
-              this.subscriberList = [];
-              return;
-            }
-            this.subscriber = data;
-            this.subscriberList = Object.keys(data).map(key => {
-              const value = data[key];
-              const name = key;
-              return { name: name, value: value };
-            });
-            this.subscriberList.sort((a: any, b: any) => {
-              if (a.value > b.value) return 1;
-              if (a.value < b.value) return -1;
-              return 0;
-            });
-            if (this.subscriberList.length === 0) {
-              console.log('No matching data after sorting');
-              Swal.fire({
-                title: 'No Matching Results',
-                text: 'No subscribers match your search criteria.',
-                icon: 'info',
-                confirmButtonText: 'OK'
-              });
-            }
-    
-            console.log(this.subscriberList);
-          },
-          (error) => {
-            Swal.fire({
-              title: 'Error!',
-              text: error?.error?.getsmartcardlistbysubid.searchname
-                || 'An error occurred while fetching subscriber details.',
-              icon: 'error',
-              confirmButtonText: 'OK'
-            });
-          }
-        );
+  showDropdown: boolean = true;
+  subscriberList: any[] = [];
+  subscriber: any;
+  onSmartcardlist(value: any) {
+    this.showDropdown = true;
+    this.userservice.getSearchSmartcardData(this.role, this.username, value).subscribe(
+      (data: any) => {
+        if (!data || Object.keys(data).length === 0) {
+          this.subscriberList = [];
+          return;
+        }
+        this.subscriber = data;
+        this.subscriberList = Object.keys(data).map(key => {
+          const value = data[key];
+          const name = key;
+          return { name: name, value: value };
+        });
+        this.subscriberList.sort((a: any, b: any) => {
+          if (a.value > b.value) return 1;
+          if (a.value < b.value) return -1;
+          return 0;
+        });
+        if (this.subscriberList.length === 0) {
+          console.log('No matching data after sorting');
+          Swal.fire({
+            title: 'No Matching Results',
+            text: 'No subscribers match your search criteria.',
+            icon: 'info',
+            confirmButtonText: 'OK'
+          });
+        }
+
+        console.log(this.subscriberList);
+      },
+      (error) => {
+        Swal.fire({
+          title: 'Error!',
+          text: error?.error?.getsmartcardlistbysubid.searchname
+            || 'An error occurred while fetching subscriber details.',
+          icon: 'error',
+          confirmButtonText: 'OK'
+        });
       }
-    
-      goToSubscriberDashboard(lcomember: any) {
-        this.intendid_1 = lcomember.value;
-        this.showDropdown = false;
-      }
+    );
+  }
+
+  goToSubscriberDashboard(lcomember: any) {
+    this.intendid_1 = lcomember.value;
+    this.showDropdown = false;
+  }
 }

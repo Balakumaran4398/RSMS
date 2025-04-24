@@ -111,6 +111,7 @@ export class AddonActivationComponent {
       },
     },
     paginationPageSize: 10,
+    paginationPageSizeSelector:[10,20],
     pagination: true,
   };
 
@@ -165,6 +166,10 @@ export class AddonActivationComponent {
         (response: HttpResponse<any[]>) => { // Expect HttpResponse<any[]>
           if (response.status === 200) {
             this.rowData = response.body;
+            const rowCount = this.rowData.length;
+            if (!this.gridOptions.paginationPageSizeSelector.includes(rowCount)) {
+              this.gridOptions.paginationPageSizeSelector.push(rowCount);
+            }
             // this.swal.Success_200();
           } else if (response.status === 204) {
             this.swal.Success_204();
@@ -195,6 +200,10 @@ export class AddonActivationComponent {
         (response: HttpResponse<any[]>) => { // Expect HttpResponse<any[]>
           if (response.status === 200) {
             this.rowData = response.body;
+            const rowCount = this.rowData.length;
+            if (!this.gridOptions.paginationPageSizeSelector.includes(rowCount)) {
+              this.gridOptions.paginationPageSizeSelector.push(rowCount);
+            }
             // this.swal.Success_200();
           } else if (response.status === 204) {
             this.swal.Success_204();
@@ -224,6 +233,10 @@ export class AddonActivationComponent {
         (response: HttpResponse<any[]>) => { // Expect HttpResponse<any[]>
           if (response.status === 200) {
             this.rowData = response.body;
+            const rowCount = this.rowData.length;
+            if (!this.gridOptions.paginationPageSizeSelector.includes(rowCount)) {
+              this.gridOptions.paginationPageSizeSelector.push(rowCount);
+            }
             // this.swal.Success_200();
           } else if (response.status === 204) {
             this.swal.Success_204();
@@ -254,6 +267,10 @@ export class AddonActivationComponent {
         (response: HttpResponse<any[]>) => { // Expect HttpResponse<any[]>
           if (response.status === 200) {
             this.rowData = response.body;
+            const rowCount = this.rowData.length;
+            if (!this.gridOptions.paginationPageSizeSelector.includes(rowCount)) {
+              this.gridOptions.paginationPageSizeSelector.push(rowCount);
+            }
             // this.swal.Success_200();
           } else if (response.status === 204) {
             this.swal.Success_204();

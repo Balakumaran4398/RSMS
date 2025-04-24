@@ -34,6 +34,7 @@ export class LicenseComponent implements OnInit {
       },
     },
     paginationPageSize: 10,
+    paginationPageSizeSelector:[10,20,50],
     pagination: true,
   }
   constructor(public dialog: MatDialog, public userService: BaseService, storageService: StorageService) {
@@ -45,6 +46,10 @@ export class LicenseComponent implements OnInit {
     this.userService.getInvent_License_Extend(this.role, this.username).subscribe((data: any) => {
       console.log(data);
       this.rowData = data;
+      const rowCount = this.rowData.length;
+      if (!this.gridOptions.paginationPageSizeSelector.includes(rowCount)) {
+        this.gridOptions.paginationPageSizeSelector.push(rowCount);
+      }
     })
   }
 

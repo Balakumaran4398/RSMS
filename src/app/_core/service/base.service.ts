@@ -2201,8 +2201,11 @@ export class BaseService {
   }
 
 
-  getupdateSublcoDiscount(role: any, username: any, operatorid: any, distributorid: any, packageid: any, isgst: any, msoamount: any, old_msoamount: any, new_msoamount: any): Observable<any[]> {
-    return this.http.post<any[]>(BASE_URL + "/operator/updatedistributorDiscount?role=" + role + "&username=" + encodeURIComponent(username) + "&operatorid=" + operatorid + "&distributorid=" + distributorid + "&packageid=" + packageid + "&isgst=" + isgst + "&msoamount=" + msoamount + "&oldmsoamount=" + old_msoamount + "&newmsoamount=" + new_msoamount, {})
+  // getupdateSublcoDiscount(role: any, username: any, operatorid: any, distributorid: any, packageid: any, isgst: any, msoamount: any, old_msoamount: any, new_msoamount: any): Observable<any[]> {
+  //   return this.http.post<any[]>(BASE_URL + "/operator/updatedistributorDiscount?role=" + role + "&username=" + encodeURIComponent(username) + "&operatorid=" + operatorid + "&distributorid=" + distributorid + "&packageid=" + packageid + "&isgst=" + isgst + "&msoamount=" + msoamount + "&oldmsoamount=" + old_msoamount + "&newmsoamount=" + new_msoamount, {})
+  // }
+  getupdateSublcoDiscount(role: any, username: any, operatorid: any, retailerid: any, packageid: any, isgst: any, msoamount: any, old_msoamount: any, new_msoamount: any): Observable<any[]> {
+    return this.http.post<any[]>(BASE_URL + "/operator/updateSublcoDiscount?role=" + role + "&username=" + encodeURIComponent(username) + "&operatorid=" + operatorid + "&retailerid=" + retailerid + "&packageid=" + packageid + "&isgst=" + isgst + "&msoamount=" + msoamount + "&old_msoamount=" + old_msoamount + "&new_msoamount=" + new_msoamount, {})
   }
 
   // ---------------------------Distributor Recharge----------------------  

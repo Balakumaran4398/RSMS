@@ -40,6 +40,7 @@ export class MsorDialogueportsComponent implements OnInit, OnDestroy {
       floatingFilter: true
     },
     paginationPageSize: 10,
+    paginationPageSizeSelector:[10,20,50],
     pagination: true,
   }
 
@@ -111,20 +112,8 @@ export class MsorDialogueportsComponent implements OnInit, OnDestroy {
     { label: "Monthwise", value: 1 },
     // { label: "Yearwise", value: 3 },
   ];
-  filteredRechargeType: any[] = [];
-  RechargeType: any[] = [
-    { label: "Operator", value: 1 },
-    { label: "Smartcard", value: 2 },
-    { label: "Subscriber", value: 4 },
-    { label: "All", value: 3 },
-  ]
-  // RechargeType1: any[] = [
-  //   { label: "Operator", value: 1 },
-  //   { label: "Smartcard", value: 2 },
-  //   { label: "Subscriber", value: 4 },
-  //   { label: "All", value: 3 },
-  // ]
-  // currentRechargeTypes: any[] = [];
+
+
 
   TypeIncluding: any[] = [
     { label: "ALL", value: 3 },
@@ -156,6 +145,13 @@ export class MsorDialogueportsComponent implements OnInit, OnDestroy {
   ]
   filteredOnlineType: any[] = [];
 
+  filteredRechargeType: any[] = [];
+  RechargeType: any[] = [
+    { label: "Operator", value: 1 },
+    { label: "Smartcard", value: 2 },
+    { label: "Subscriber", value: 4 },
+    { label: "All", value: 3 },
+  ]
   Amount: any[] = [
     { label: "CHEQUE", value: 0 },
     { label: "CASH", value: 1 },
@@ -288,7 +284,7 @@ export class MsorDialogueportsComponent implements OnInit, OnDestroy {
     }
     if (this.role == 'ROLE_SUBLCO') {
       this.subLCOdetails();
-      
+
     }
     if (this.role == 'ROLE_SUBSCRIBER') {
       this.getSubscriberDetails();
@@ -319,6 +315,10 @@ export class MsorDialogueportsComponent implements OnInit, OnDestroy {
     this.userService.getMonthwisePaymentCollectionData(this.role, this.username, this.selectedMonth, this.selectedYear, 3).subscribe((data: any) => {
       console.log(data);
       this.rowData = data;
+      const rowCount = this.rowData.length;
+      if (!this.gridOptions.paginationPageSizeSelector.includes(rowCount)) {
+        this.gridOptions.paginationPageSizeSelector.push(rowCount);
+      }
       this.swal.Close();
     })
   }
@@ -337,8 +337,10 @@ export class MsorDialogueportsComponent implements OnInit, OnDestroy {
     })
   }
   filterOnlineTypeByRole() {
-    if (this.role === 'ROLE_SUBSCRIBER') {
-      this.filteredOnlineType = this.onlineType.filter(item => item.label === 'SUBSCRIBER');
+
+    if (this.role == 'ROLE_SUBSCRIBER') {
+      this.filteredOnlineType = this.onlineType.filter(item => item.value == 3);
+      this.selectedOnlineType = 3;
     } else {
       this.filteredOnlineType = [...this.onlineType];
     }
@@ -1000,8 +1002,8 @@ export class MsorDialogueportsComponent implements OnInit, OnDestroy {
     } else if (this.type == 'lco_active_subscription') {
       this.columnDefs = [
         { headerName: "S.No", lockPosition: true, valueGetter: 'node.rowIndex+1', headerCheckboxSelection: false, checkboxSelection: false, width: 90, filter: false },
-        { headerName: 'OPERATOR ID', field: 'operatorname', flex: 1 },
-        { headerName: 'OPERATOR NAME', field: 'operatorname', flex: 1 },
+        { headerName: 'OPERATOR ID', field: 'operatorname',  },
+        { headerName: 'OPERATOR NAME', field: 'operatorname',  },
         { headerName: 'MOBILE NUMBER', field: 'mobileno', cellStyle: { textAlign: 'center' }, },
         { headerName: 'AREA NAME', field: 'areaname', cellStyle: { textAlign: 'left', color: 'green' }, },
         { headerName: 'LCO INVENTORY', field: 'lcoend', cellStyle: { textAlign: 'center' } },
@@ -1015,9 +1017,9 @@ export class MsorDialogueportsComponent implements OnInit, OnDestroy {
       this.columnDefs = [
         { headerName: "S.No", lockPosition: true, valueGetter: 'node.rowIndex+1', filter: false, headerCheckboxSelection: false, checkboxSelection: false, width: 90 },
         { headerName: 'OPERATOR ID', field: 'operator_id', cellStyle: { textAlign: 'center' } },
-        { headerName: 'OPERATOR NAME', field: 'name', flex: 1 },
-        { headerName: 'MOBILE NUMBER', field: 'mobileno', flex: 1 },
-        { headerName: 'AREA NAME', field: 'area', flex: 1 },
+        { headerName: 'OPERATOR NAME', field: 'name',  },
+        { headerName: 'MOBILE NUMBER', field: 'mobileno', },
+        { headerName: 'AREA NAME', field: 'area',  },
         { headerName: 'ACTIVE COUNT', field: 'active', cellStyle: { textAlign: 'center' } },
         { headerName: 'EXPIRY COUNT', field: 'deactive', cellStyle: { textAlign: 'center' } },
         { headerName: `EXPIRY COUNT ${this.selectedMonthName}`, field: 'expiryfrom', cellStyle: { textAlign: 'center' } },
@@ -1228,6 +1230,10 @@ export class MsorDialogueportsComponent implements OnInit, OnDestroy {
             if (response.status === 200) {
               console.log(response);
               this.rowData = response.body;
+              const rowCount = this.rowData.length;
+              if (!this.gridOptions.paginationPageSizeSelector.includes(rowCount)) {
+                this.gridOptions.paginationPageSizeSelector.push(rowCount);
+              }
               this.swal.Success_200();
             } else if (response.status === 204) {
               this.swal.Success_204();
@@ -1242,12 +1248,16 @@ export class MsorDialogueportsComponent implements OnInit, OnDestroy {
     } else if (this.role == 'ROLE_SUBSCRIBER') {
       console.log(this.subOpid);
       this.swal.Loading();
-      this.userService.getRechargeHistory(this.role, this.username, this.selectedRechargeType, this.subOpid, this.fromdate, this.todate, 0, 4,
+      this.userService.getRechargeHistory(this.role, this.username, this.selectedRechargeType, this.subOpid, this.fromdate, this.todate, 0, 5,
         0, 3, this.subscriberid).subscribe(
           (response: HttpResponse<any>) => {
             if (response.status === 200) {
               console.log(response);
               this.rowData = response.body;
+              const rowCount = this.rowData.length;
+              if (!this.gridOptions.paginationPageSizeSelector.includes(rowCount)) {
+                this.gridOptions.paginationPageSizeSelector.push(rowCount);
+              }
               // this.swal.Success_200();
             } else if (response.status === 204) {
               this.swal.Success_204();
@@ -1276,6 +1286,10 @@ export class MsorDialogueportsComponent implements OnInit, OnDestroy {
         (response: HttpResponse<any>) => {
           if (response.status === 200) {
             this.rowData = response.body;
+            const rowCount = this.rowData.length;
+            if (!this.gridOptions.paginationPageSizeSelector.includes(rowCount)) {
+              this.gridOptions.paginationPageSizeSelector.push(rowCount);
+            }
             // this.fromdate = '';
             // this.todate = '';
             this.swal.Success_200();
@@ -1336,7 +1350,7 @@ export class MsorDialogueportsComponent implements OnInit, OnDestroy {
           Swal.showLoading(null);
         }
       });
-      this.userService.getRechargeHistoryReport(this.role, this.username, this.selectedRechargeType, this.subOpid, this.fromdate, this.todate, 0, 4, 0, 2, this.subscriberid
+      this.userService.getRechargeHistoryReport(this.role, this.username, this.selectedRechargeType, this.subOpid, this.fromdate, this.todate, 0, 5, 0, 2, this.subscriberid
       )
         .subscribe((x: Blob) => {
           const blob = new Blob([x], { type: 'application/xlsx' });
@@ -1417,8 +1431,6 @@ export class MsorDialogueportsComponent implements OnInit, OnDestroy {
           const data = window.URL.createObjectURL(blob);
           const link = document.createElement('a');
           link.href = data;
-
-          // link.download = ("SUB ONLINE REPORT.pdf").toUpperCase();
           link.download = ("RECHARGE HISTORY REPORT.pdf").toUpperCase();
           link.dispatchEvent(new MouseEvent('click', { bubbles: true, cancelable: true, view: window }));
           setTimeout(() => {
@@ -1445,15 +1457,13 @@ export class MsorDialogueportsComponent implements OnInit, OnDestroy {
           Swal.showLoading(null);
         }
       });
-      this.userService.getRechargeHistoryReport(this.role, this.username, this.selectedRechargeType, this.subOpid, this.fromdate, this.todate, 0, 4, 0, 1, this.subscriberid
+      this.userService.getRechargeHistoryReport(this.role, this.username, this.selectedRechargeType, this.subOpid, this.fromdate, this.todate, 0, 5, 0, 1, this.subscriberid
       )
         .subscribe((x: Blob) => {
           const blob = new Blob([x], { type: 'application/pdf' });
           const data = window.URL.createObjectURL(blob);
           const link = document.createElement('a');
           link.href = data;
-
-          // link.download = ("SUB ONLINE REPORT.pdf").toUpperCase();
           link.download = ("RECHARGE HISTORY REPORT.pdf").toUpperCase();
           link.dispatchEvent(new MouseEvent('click', { bubbles: true, cancelable: true, view: window }));
           setTimeout(() => {
@@ -1473,7 +1483,6 @@ export class MsorDialogueportsComponent implements OnInit, OnDestroy {
           });
     }
     else {
-
       this.smartcard = this.smartcardChange(this.smartcard);
       Swal.fire({
         title: "Processing",
@@ -1491,8 +1500,6 @@ export class MsorDialogueportsComponent implements OnInit, OnDestroy {
           const data = window.URL.createObjectURL(blob);
           const link = document.createElement('a');
           link.href = data;
-
-          // link.download = ("SUB ONLINE REPORT.pdf").toUpperCase();
           link.download = ("RECHARGE HISTORY REPORT.pdf").toUpperCase();
           link.dispatchEvent(new MouseEvent('click', { bubbles: true, cancelable: true, view: window }));
           setTimeout(() => {
@@ -1536,6 +1543,10 @@ export class MsorDialogueportsComponent implements OnInit, OnDestroy {
           this.swal.success_1(res?.message);
           this.rowData = res;
           console.log(this.rowData);
+          const rowCount = this.rowData.length;
+          if (!this.gridOptions.paginationPageSizeSelector.includes(rowCount)) {
+            this.gridOptions.paginationPageSizeSelector.push(rowCount);
+          }
           this.swal.Close();
         },
         (err) => {
@@ -1552,7 +1563,7 @@ export class MsorDialogueportsComponent implements OnInit, OnDestroy {
         this.subOperatorId || this.subOpid,
         this.retailerId || 0,
         this.smartcard || 0,
-        2,
+        3,
         3,
         this.isspecial,
         this.subscriberid
@@ -1561,6 +1572,10 @@ export class MsorDialogueportsComponent implements OnInit, OnDestroy {
           this.swal.success_1(res?.message);
           this.rowData = res;
           console.log(this.rowData);
+          const rowCount = this.rowData.length;
+          if (!this.gridOptions.paginationPageSizeSelector.includes(rowCount)) {
+            this.gridOptions.paginationPageSizeSelector.push(rowCount);
+          }
           this.swal.Close();
         },
         (err) => {
@@ -1650,6 +1665,10 @@ export class MsorDialogueportsComponent implements OnInit, OnDestroy {
         (res: any) => {
           this.swal.success_1(res?.message);
           this.rowData = res;
+          const rowCount = this.rowData.length;
+          if (!this.gridOptions.paginationPageSizeSelector.includes(rowCount)) {
+            this.gridOptions.paginationPageSizeSelector.push(rowCount);
+          }
           this.swal.Close();
         },
         (err) => {
@@ -1745,8 +1764,9 @@ export class MsorDialogueportsComponent implements OnInit, OnDestroy {
               confirmButtonText: 'Ok'
             });
           });
-    } else if (this.role == 'ROLE_SUBLCO') {
-      this.userService.getOnlinePaymentHistoryReport(this.role, this.username, this.fromdate, this.todate, this.subOperatorId, this.retailerId, this.smartcard || 0, 2, 2, this.isspecial, this.subscriberid)
+    } else if (this.role == 'ROLE_SUBSCRIBER') {
+      this.userService.getOnlinePaymentHistoryReport(this.role, this.username, this.fromdate, this.todate, this.subOperatorId || this.subOpid,
+        this.retailerId || 0, this.smartcard || 0, 3, 2, this.isspecial, this.subscriberid)
         .subscribe((x: Blob) => {
           const blob = new Blob([x], { type: 'application/xlsx' });
           const data = window.URL.createObjectURL(blob);
@@ -1844,9 +1864,9 @@ export class MsorDialogueportsComponent implements OnInit, OnDestroy {
               confirmButtonText: 'Ok'
             });
           });
-    } else if (this.role == 'ROLE_SUBLCO') {
+    } else if (this.role == 'ROLE_SUBSCRIBER') {
       this.userService.getOnlinePaymentHistoryReport(this.role, this.username, this.fromdate, this.todate,
-        this.subOperatorId, this.retailerId, this.smartcard || 0, 2, 1, this.isspecial, this.subscriberid)
+        this.subOperatorId || this.subOpid, this.retailerId || 0, this.smartcard || 0, 3, 1, this.isspecial, this.subscriberid)
         .subscribe((x: Blob) => {
           const blob = new Blob([x], { type: 'application/pdf' });
           const data = window.URL.createObjectURL(blob);
@@ -1914,6 +1934,10 @@ export class MsorDialogueportsComponent implements OnInit, OnDestroy {
         if (response.status === 200) {
           console.log(response);
           this.rowData = response.body;
+          const rowCount = this.rowData.length;
+          if (!this.gridOptions.paginationPageSizeSelector.includes(rowCount)) {
+            this.gridOptions.paginationPageSizeSelector.push(rowCount);
+          }
           // this.fromdate = '';
           // this.todate = '';
           this.swal.Success_200();
@@ -1960,6 +1984,10 @@ export class MsorDialogueportsComponent implements OnInit, OnDestroy {
         if (response.status === 200) {
           console.log(response);
           this.rowData = response.body;
+          const rowCount = this.rowData.length;
+          if (!this.gridOptions.paginationPageSizeSelector.includes(rowCount)) {
+            this.gridOptions.paginationPageSizeSelector.push(rowCount);
+          }
           // this.swal.Success_200();
           this.swal.Close();
         } else if (response.status === 204) {
@@ -2008,6 +2036,10 @@ export class MsorDialogueportsComponent implements OnInit, OnDestroy {
         if (response.status === 200) {
           console.log(response);
           this.rowData = response.body;
+          const rowCount = this.rowData.length;
+          if (!this.gridOptions.paginationPageSizeSelector.includes(rowCount)) {
+            this.gridOptions.paginationPageSizeSelector.push(rowCount);
+          }
           this.swal.Success_200();
         } else if (response.status === 204) {
           this.swal.Success_204();
@@ -2074,6 +2106,10 @@ export class MsorDialogueportsComponent implements OnInit, OnDestroy {
     this.userService.getWalletShareReport(this.role, this.username, this.fromdate, this.todate, this.selectedOperator.value || this.operatorId || 0, 3)
       .subscribe((res: any) => {
         this.rowData = res;
+        const rowCount = this.rowData.length;
+        if (!this.gridOptions.paginationPageSizeSelector.includes(rowCount)) {
+          this.gridOptions.paginationPageSizeSelector.push(rowCount);
+        }
         this.swal.Close();
       }, (err) => {
         this.swal.Error(err?.error?.message);
@@ -2121,7 +2157,10 @@ export class MsorDialogueportsComponent implements OnInit, OnDestroy {
         this.total = this.subscriberBill?.totalCustomerAmount;
         this.rowData = this.subscriberBill?.rechargeList;
         this.swal.Close()
-
+        const rowCount = this.rowData.length;
+        if (!this.gridOptions.paginationPageSizeSelector.includes(rowCount)) {
+          this.gridOptions.paginationPageSizeSelector.push(rowCount);
+        }
         console.log(this.rowData);
         console.log(this.subscriberBill);
       }, (err) => {
@@ -2169,6 +2208,10 @@ export class MsorDialogueportsComponent implements OnInit, OnDestroy {
         if (response.status === 200) {
           console.log(response);
           this.rowData = response.body;
+          const rowCount = this.rowData.length;
+          if (!this.gridOptions.paginationPageSizeSelector.includes(rowCount)) {
+            this.gridOptions.paginationPageSizeSelector.push(rowCount);
+          }
           this.swal.Success_200();
           this.swal.Close()
         } else if (response.status === 204) {
@@ -2210,6 +2253,10 @@ export class MsorDialogueportsComponent implements OnInit, OnDestroy {
         console.log('322');
         console.log(res);
         this.rowData = res;
+        const rowCount = this.rowData.length;
+        if (!this.gridOptions.paginationPageSizeSelector.includes(rowCount)) {
+          this.gridOptions.paginationPageSizeSelector.push(rowCount);
+        }
         this.swal.Close();
       }, (err) => {
         this.swal.Error(err?.error?.message);
@@ -2449,6 +2496,10 @@ export class MsorDialogueportsComponent implements OnInit, OnDestroy {
           if (response.status === 200) {
             console.log(response);
             this.rowData1 = response.body;
+            const rowCount = this.rowData1.length;
+            if (!this.gridOptions.paginationPageSizeSelector.includes(rowCount)) {
+              this.gridOptions.paginationPageSizeSelector.push(rowCount);
+            }
             // this.fromdate = '';
             // this.todate = '';
             this.swal.Success_200();
@@ -2489,6 +2540,10 @@ export class MsorDialogueportsComponent implements OnInit, OnDestroy {
             if (response.status === 200) {
               console.log(response);
               this.rowData = response.body;
+              const rowCount = this.rowData.length;
+              if (!this.gridOptions.paginationPageSizeSelector.includes(rowCount)) {
+                this.gridOptions.paginationPageSizeSelector.push(rowCount);
+              }
               // this.fromdate = '';
               // this.todate = '';
               this.swal.Success_200();
@@ -2509,6 +2564,10 @@ export class MsorDialogueportsComponent implements OnInit, OnDestroy {
             if (response.status === 200) {
               console.log(response);
               this.rowData = response.body;
+              const rowCount = this.rowData.length;
+              if (!this.gridOptions.paginationPageSizeSelector.includes(rowCount)) {
+                this.gridOptions.paginationPageSizeSelector.push(rowCount);
+              }
               // this.fromdate = '';
               // this.todate = '';
               this.swal.Success_200();
@@ -2566,6 +2625,10 @@ export class MsorDialogueportsComponent implements OnInit, OnDestroy {
           if (response.status === 200) {
             console.log(response);
             this.rowData = response.body;
+            const rowCount = this.rowData.length;
+            if (!this.gridOptions.paginationPageSizeSelector.includes(rowCount)) {
+              this.gridOptions.paginationPageSizeSelector.push(rowCount);
+            }
             this.swal.Success_200();
 
           } else if (response.status === 204) {
@@ -2604,6 +2667,10 @@ export class MsorDialogueportsComponent implements OnInit, OnDestroy {
           if (response.status === 200) {
             console.log(response);
             this.rowData = response.body;
+            const rowCount = this.rowData.length;
+            if (!this.gridOptions.paginationPageSizeSelector.includes(rowCount)) {
+              this.gridOptions.paginationPageSizeSelector.push(rowCount);
+            }
             this.swal.Success_200();
           } else if (response.status === 204) {
             this.rowData = [];
@@ -2625,6 +2692,10 @@ export class MsorDialogueportsComponent implements OnInit, OnDestroy {
       .subscribe((res: any) => {
         // this.swal.success(res?.message);
         this.rowData = res;
+        const rowCount = this.rowData.length;
+        if (!this.gridOptions.paginationPageSizeSelector.includes(rowCount)) {
+          this.gridOptions.paginationPageSizeSelector.push(rowCount);
+        }
       }, (err) => {
         this.swal.Error(err?.error?.message);
       });

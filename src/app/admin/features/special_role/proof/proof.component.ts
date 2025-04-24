@@ -36,6 +36,7 @@ export class ProofComponent {
       },
     },
     paginationPageSize: 10,
+    paginationPageSizeSelector:[10,20,50],
     pagination: true,
   };
 
@@ -143,6 +144,10 @@ export class ProofComponent {
 
       this.userservice.getAllIdProofList(this.role, this.username).subscribe((data: any) => {
         this.rowData = data;
+        const rowCount = this.rowData.length;
+        if (!this.gridOptions.paginationPageSizeSelector.includes(rowCount)) {
+          this.gridOptions.paginationPageSizeSelector.push(rowCount);
+        }
       });
 
     } else if (this.selectedTab === '2') {
@@ -192,6 +197,10 @@ export class ProofComponent {
       // Fetch data for Address Proof list
       this.userservice.getAllAddressProofList(this.role, this.username).subscribe((data: any) => {
         this.rowData = data;
+        const rowCount = this.rowData.length;
+        if (!this.gridOptions.paginationPageSizeSelector.includes(rowCount)) {
+          this.gridOptions.paginationPageSizeSelector.push(rowCount);
+        }
       });
     }
   }

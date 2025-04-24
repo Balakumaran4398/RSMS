@@ -258,7 +258,16 @@ export class SubscriberdialogueComponent implements OnInit, OnDestroy {
   isAnyRowSelected: any = false;
   rows: any;
 
-  SublcopermissionObj:any;
+  lcoDeatails: any;
+  operatorId: any;
+  isplan = false;
+  isdate = false;
+  isdateTodate = false;
+  subAddonAdd = false;
+  subAlacarte = false;
+  subChangeBase = false;
+
+  SublcopermissionObj: any;
   Subwallet = false;
   selectedtypes: number[] = [];
   gridOptions = {
@@ -319,10 +328,7 @@ export class SubscriberdialogueComponent implements OnInit, OnDestroy {
   TotalLcoAmount: any;
   BTNFormControl = new FormControl('');
   remainingChars: number = 117;
-  // plantypeSubject = new BehaviorSubject<{ [key: string]: number }>({});
   plantypeSubject = new BehaviorSubject<{ displayKey: string; id: number }[]>([]);
-
-  // plantype$ = this.plantypeSubject.asObservable();
   plantype$ = new BehaviorSubject<{ key: string, value: number }[]>([]);
 
   selectedaddproof_1: any;
@@ -373,14 +379,10 @@ export class SubscriberdialogueComponent implements OnInit, OnDestroy {
   constructor(private router: Router, public dialogRef: MatDialogRef<SubscriberdialogueComponent>, private swal: SwalService,
     @Inject(MAT_DIALOG_DATA) public data: any, public userservice: BaseService, private cdr: ChangeDetectorRef, public storageService: StorageService, private fb: FormBuilder, private zone: NgZone) {
     console.log(data);
-
-
-
     this.subscriberdata = data;
     this.role = storageService.getUserRole();
     this.username = storageService.getUsername();
     console.log(this.role);
-
     this.newRefreshSmartcard = data.refresh;
     this.subid_1 = data.subId;
     this.newSubid = data.newsubid;
@@ -389,7 +391,6 @@ export class SubscriberdialogueComponent implements OnInit, OnDestroy {
     this.pairSmartcardList = data['pairSmartcardlist'].map((item: any) => item);
     this.packageMessage = data['packageMessage'];
     console.log('packagemessage', this.packageMessage);
-    // this.isCancelCurrentVisible= this.packageMessage
     this.subSmartcard = data.subSmartcarList;
     this.subBoxid = data.subBoxList;
     this.pairedSmartcard = this.pairSmartcardList;
@@ -572,23 +573,22 @@ export class SubscriberdialogueComponent implements OnInit, OnDestroy {
     }
 
     this.onGridReady(params);
-    // this.onAllBaselistByExcept();
-    // this.onCasList();packagenameList
-    // this.onOperatorList();
-    // this.onPlanType();
-    // this.onPackageplanList();
-    // this.onCancelSubscription();
-    // this.loadIdProofList();
-    // this.loadAddProofList();
-    // this.onSubscriberList();
     if (this.role == 'ROLE_OPERATOR') {
       this.operatorIdoperatorId();
+      this.onPlanType();
     } else if (this.role == 'ROLE_SUBLCO') {
       this.subLCOdetails();
+      this.onPlanType();
+    } else if (this.role == 'ROLE_SUBSCRIBER') {
+      this.getSubscriberDetails();
+      this.onPlanType();
+    } else if (this.role != 'ROLE_OPERATOR' || this.role != 'ROLE_SUBLCO' || this.role != 'ROLE_SUBSCRIBER') {
+      this.isplan = true;
+      this.isdate = true;
+      this.isdateTodate = true;
     }
+    this.onPlanType();
   }
-  lcoDeatails: any;
-  operatorId: any;
 
   operatorIdoperatorId() {
     this.userservice.getOpDetails(this.role, this.username).subscribe((data: any) => {
@@ -599,7 +599,7 @@ export class SubscriberdialogueComponent implements OnInit, OnDestroy {
       this.onoperatorchange_LCO(this.operatorId);
     })
   }
-  
+
   subLCOdetails() {
     this.userservice.getSublcoDetails(this.role, this.username).subscribe((data: any) => {
       console.log(data);
@@ -613,6 +613,34 @@ export class SubscriberdialogueComponent implements OnInit, OnDestroy {
       this.Subwallet = this.SublcopermissionObj?.wallet;
       console.log('SublcopermissionObj', this.SublcopermissionObj);
       console.log('Subwallet', this.Subwallet);
+      this.isplan = this.SublcopermissionObj.plan;
+      this.isdate = this.SublcopermissionObj.date;
+      this.isdateTodate = this.SublcopermissionObj.datetodate;
+      console.log('PLAN', this.isplan);
+      console.log('DATE', this.isdate);
+      console.log('DATE TO DATE', this.isdateTodate);
+
+    })
+  }
+  sub_subscriberid: any;
+  getSubscriberDetails() {
+    this.userservice.getSubscriberDetails(this.role, this.username).subscribe((data: any) => {
+      console.log(data);
+      console.log('22222222');
+      this.lcoDeatails = data;
+
+      console.log('SUBSCRIBER DETAILS', this.lcoDeatails);
+      this.sub_subscriberid = this.lcoDeatails.subid;
+      console.log('SUBSCRIBER SUBID', this.sub_subscriberid);
+      this.isplan = true;
+      this.isdate = this.lcoDeatails.date;
+      this.isdateTodate = this.lcoDeatails.datetodate;
+      console.log('PLAN', this.isplan);
+      console.log('DATE', this.isdate);
+      console.log('DATE TO DATE', this.isdateTodate);
+      console.log('ADDON ADD', this.subAddonAdd);
+      console.log('ALACARTE', this.subAlacarte);
+
     })
   }
   onoperatorchange_LCO(operator: any): void {
@@ -691,17 +719,33 @@ export class SubscriberdialogueComponent implements OnInit, OnDestroy {
         return { name: name, value: value };
       });
       this.filteredOperators = this.lco_list;
+
+
       this.cdr.detectChanges;
     })
   }
   onPlanType() {
     this.userservice.getPlanTypeList(this.role, this.username).subscribe((data: any) => {
-      // this.rechargetype = Object.entries(data).map(([key, value]) => ({ name: key, id: value }));
-      this.rechargetype = Object.keys(data).map(key => {
+      // this.rechargetype = Object.keys(data).map(key => {
+      //   const id = data[key];
+      //   const name = key.replace(/\(\d+\)$/, '').trim();
+      //   return { name: name, id: id };
+      // });
+
+      const rawList = Object.keys(data).map(key => {
         const id = data[key];
         const name = key.replace(/\(\d+\)$/, '').trim();
-        return { name: name, id: id };
+        return { name, id };
       });
+      console.log(rawList);
+      this.rechargetype = rawList.filter(item => {
+        if (item.name == 'Plan' && this.isplan) return true;
+        if (item.name == 'Date' && this.isdate) return true;
+        if (item.name == 'Date-to-Date' && this.isdateTodate) return true;
+        return false;
+      });
+      console.log(this.rechargetype);
+
       this.cdr.detectChanges();
     })
   }
@@ -1884,7 +1928,7 @@ export class SubscriberdialogueComponent implements OnInit, OnDestroy {
     let plan = this.selectedRechargetype || ''
     let plandata = this.plantype || this.f_date || 4
     // this.swal.Loading();
-    this.userservice.getBaseChangeConfirmation(this.role, this.username, this.newpackagename, plan, plandata, this.smartcardno, 8, 0)
+    this.userservice.getBaseChangeConfirmation(this.role, this.username, this.newpackagename, plan, plandata, this.smartcardno, 8, this.operatorId || 0)
       .subscribe((data: any) => {
         this.changebase = data;
         this.changebase_msoAmount = data.msoAmount;
@@ -1913,7 +1957,7 @@ export class SubscriberdialogueComponent implements OnInit, OnDestroy {
       paidamt: this.changebase?.customerPayAmount,
       smartcard: this.smartcardno,
       type: 8,
-      retailerid: 0,
+      retailerid: this.operatorId || 0,
       iscollected: this.iscollected,
     }
     Swal.fire({
@@ -2161,7 +2205,7 @@ export class SubscriberdialogueComponent implements OnInit, OnDestroy {
       username: this.username,
       smartcard: this.smartcardno,
       type: 6,
-      retailerid: 0,
+      retailerid: this.operatorId || 0,
       addonlist: this.rows,
       managepackagelist: this.rowData,
       iscollected: this.iscollected
@@ -2192,7 +2236,7 @@ export class SubscriberdialogueComponent implements OnInit, OnDestroy {
       username: this.username,
       smartcard: this.smartcardno,
       type: 6,
-      retailerid: 0,
+      retailerid: this.operatorId || 0,
       iscollected: this.iscollected,
       addonlist: this.rows,
       managepackagelist: this.rowData
@@ -2232,7 +2276,7 @@ export class SubscriberdialogueComponent implements OnInit, OnDestroy {
       username: this.username,
       smartcard: this.smartcardno,
       type: 6,
-      retailerid: 0,
+      retailerid: this.operatorId || 0,
       iscollected: this.iscollected,
       alacartelist: this.rows,
     }
@@ -2252,7 +2296,7 @@ export class SubscriberdialogueComponent implements OnInit, OnDestroy {
       username: this.username,
       smartcard: this.smartcardno,
       type: 6,
-      retailerid: 0,
+      retailerid: this.operatorId || 0,
       iscollected: this.iscollected,
       alacartelist: this.rows,
     }
@@ -2292,7 +2336,7 @@ export class SubscriberdialogueComponent implements OnInit, OnDestroy {
       username: this.username,
       smartcard: this.smartcardno,
       type: 7,
-      retailerid: 0,
+      retailerid: this.operatorId || 0,
       iscollected: this.iscollected,
       removeproductlist: this.rows,
     }
@@ -2319,7 +2363,7 @@ export class SubscriberdialogueComponent implements OnInit, OnDestroy {
       username: this.username,
       smartcard: this.smartcardno,
       type: 7,
-      retailerid: 0,
+      retailerid: this.operatorId || 0,
       iscollected: this.iscollected,
       removeproductlist: this.rows,
     }

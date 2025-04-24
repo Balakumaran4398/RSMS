@@ -23,6 +23,7 @@ export class StbBillComponent {
       floatingFilter: true
     },
     paginationPageSize: 15,
+    
     pagination: true,
   }
   isLCONameDisabled = false;

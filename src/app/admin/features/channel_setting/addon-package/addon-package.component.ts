@@ -15,59 +15,34 @@ import Swal from 'sweetalert2';
   styleUrls: ['./addon-package.component.scss']
 })
 export class AddonPackageComponent {
-  // gridOptions = {
-  //   defaultColDef: {
-  //     sortable: true,
-  //     resizable: true,
-  //     filter: true,
-  //     floatingFilter: true,
-  //     comparator: (valueA: any, valueB: any) => {
-  //       const isNumberA = !isNaN(valueA) && valueA !== null;
-  //       const isNumberB = !isNaN(valueB) && valueB !== null;
-
-  //       if (isNumberA && isNumberB) {
-  //         return valueA - valueB;
-  //       } else {
-  //         const normalizedA = valueA ? valueA.toString().trim().toLowerCase() : '';
-  //         const normalizedB = valueB ? valueB.toString().trim().toLowerCase() : '';
-  //         if (normalizedA < normalizedB) return -1;
-  //         if (normalizedA > normalizedB) return 1;
-  //         return 0;
-  //       }
-  //     },
-  //   },
-  //   paginationPageSize: 10,
-  //   pagination: true,
-  // };
-
-
   gridOptions = {
     defaultColDef: {
       sortable: true,
       resizable: true,
-      filter: "agTextColumnFilter", 
+      filter: "agTextColumnFilter",
       floatingFilter: true,
       comparator: (valueA: any, valueB: any) => {
         const isNumberA = !isNaN(valueA) && valueA !== null;
         const isNumberB = !isNaN(valueB) && valueB !== null;
-  
+
         if (isNumberA && isNumberB) {
-          return valueA - valueB; 
+          return valueA - valueB;
         } else {
           const normalizedA = valueA ? valueA.toString().trim().toLowerCase() : "";
           const normalizedB = valueB ? valueB.toString().trim().toLowerCase() : "";
-          return normalizedA.localeCompare(normalizedB); 
+          return normalizedA.localeCompare(normalizedB);
         }
       },
       filterParams: {
         textFormatter: (value: string) => {
           return value ? value.toString().toLowerCase() : "";
         },
-        filterOptions: ["contains", "startsWith", "equals"], 
+        filterOptions: ["contains", "startsWith", "equals"],
         debounceMs: 200,
       },
     },
     paginationPageSize: 15,
+    paginationPageSizeSelector: [10, 20, 50],
     pagination: true,
   };
   username: any;
@@ -88,6 +63,10 @@ export class AddonPackageComponent {
     this.userService.AddonPackageList(this.role, this.username, this.type).subscribe((data) => {
       console.log(data);
       this.rowData = data;
+      const rowCount = this.rowData.length;
+      if (!this.gridOptions.paginationPageSizeSelector.includes(rowCount)) {
+        this.gridOptions.paginationPageSizeSelector.push(rowCount);
+      }
     })
     if (this.role == 'ROLE_OPERATOR') {
       this.operatorIdoperatorId();
@@ -108,6 +87,10 @@ export class AddonPackageComponent {
     this.userService.getLcoPackageList(this.role, this.username, this.operatorid, 2).subscribe((data: any) => {
       console.log(data);
       this.rowData1 = data;
+      const rowCount = this.rowData1.length;
+      if (!this.gridOptions.paginationPageSizeSelector.includes(rowCount)) {
+        this.gridOptions.paginationPageSizeSelector.push(rowCount);
+      }
       console.log(this.rowData1);
 
     })
@@ -176,7 +159,7 @@ export class AddonPackageComponent {
 
 
     {
-      headerName: "REPORT",  width: 150,filter:false,
+      headerName: "REPORT", width: 150, filter: false,
       cellRenderer: (params: any) => {
         const editButton = document.createElement('button');
         editButton.innerHTML = '<i class="far fa-file-pdf" style="font-size:20px;color:red"></i>';
@@ -223,7 +206,7 @@ export class AddonPackageComponent {
       },
     },
     {
-      headerName: "REPORT", field: 'report', width: 150,filter:false,
+      headerName: "REPORT", field: 'report', width: 150, filter: false,
       cellRenderer: (params: any) => {
         const editButton = document.createElement('button');
         editButton.innerHTML = '<i class="far fa-file-pdf" style="font-size:20px;color:red"></i>';
@@ -235,7 +218,7 @@ export class AddonPackageComponent {
         editButton.style.fontSize = "18px";
         editButton.addEventListener('click', () => {
           console.log(params.data);
-          
+
           this.generatePdf(params.data.id, params.data.addon_package_name);
         });
         const div = document.createElement('div');
@@ -247,7 +230,7 @@ export class AddonPackageComponent {
 
   generatePdf(id: number, name: any) {
     console.log(name);
-    
+
     this.processingSwal();
     if (id == 0) {
       this.userService.getAllAddonExportReportDownload(this.role, this.username)

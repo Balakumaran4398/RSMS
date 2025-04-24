@@ -42,6 +42,7 @@ export class SubscriberDetailsComponent implements OnInit {
       },
     },
     paginationPageSize: 15,
+    paginationPageSizeSelector:[10,20,50],
     pagination: true,
   };
 
@@ -443,6 +444,10 @@ export class SubscriberDetailsComponent implements OnInit {
       .subscribe((data: any) => {
         console.log(data);
         this.rowData = data;
+        const rowCount = this.rowData.length;
+        if (!this.gridOptions.paginationPageSizeSelector.includes(rowCount)) {
+          this.gridOptions.paginationPageSizeSelector.push(rowCount);
+        }
         this.swal.Close();
       }, (error) => {
         Swal.fire({

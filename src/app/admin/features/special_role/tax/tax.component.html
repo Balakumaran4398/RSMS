@@ -17,7 +17,7 @@
             </div>
             <div class="row d-flex align-items-center justify-content-center">
                 <div class="col-12  col-md-12 m-3">
-                    <ag-grid-angular #agGrid id="myGrid" domLayout='autoHeight' class="ag-theme-alpine table-class"
+                    <ag-grid-angular #agGrid id="myGrid" domLayout='normal' class="ag-theme-alpine table-class"
                         rowAnimation [gridOptions]="gridOptions" [columnDefs]="columnDefs" [rowData]="rowData"
                         [rowSelection]="rowSelection" (selectionChanged)="onSelectionChanged()"
                         (gridReady)="onGridReady($event)" [enableCellTextSelection]="true">

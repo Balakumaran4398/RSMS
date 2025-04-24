@@ -50,6 +50,7 @@ export class NotAllocatedComponent implements OnInit {
       },
     },
     paginationPageSize: 10,
+    paginationPageSizeSelector:[10,20,50],
     pagination: true,
   };
 
@@ -68,6 +69,11 @@ export class NotAllocatedComponent implements OnInit {
       this.lco_list = data[0].operatorid;
       this.caslist = data[0].castype;
       this.isemi = data[0].isemi;
+
+      const rowCount = this.rowData.length;
+      if (!this.gridOptions.paginationPageSizeSelector.includes(rowCount)) {
+        this.gridOptions.paginationPageSizeSelector.push(rowCount);
+      }
 
     })
   }

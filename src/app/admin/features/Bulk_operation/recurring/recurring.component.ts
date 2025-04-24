@@ -74,6 +74,7 @@ export class RecurringComponent implements OnInit {
       floatingFilter: true
     },
     paginationPageSize: 10,
+    paginationPageSizeSelector:[10,20],
     pagination: true,
   }
   constructor(public dialog: MatDialog, private fb: FormBuilder, private userservice: BaseService, private storageService: StorageService, private swal: SwalService) {
@@ -156,6 +157,10 @@ export class RecurringComponent implements OnInit {
       .subscribe(
         (response: any) => {
           this.reccuringData = response;
+          const rowCount = this.reccuringData.length;
+          if (!this.gridOptions.paginationPageSizeSelector.includes(rowCount)) {
+            this.gridOptions.paginationPageSizeSelector.push(rowCount);
+          }
         },
         (error) => {
           if (error.status === 400) {

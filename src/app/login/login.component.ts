@@ -53,11 +53,30 @@ export class LoginComponent implements OnInit {
       username: new FormControl('', [Validators.required]),
       password: new FormControl('', [Validators.required])
     });
+
     this.role = storageService.getUserRole();
     this.username = storageService.getUsername();
     console.log('ROLE', this.role);
     console.log('USERNAME', this.username);
 
+
+
+  }
+  public getUserRole(user:any): string {
+   
+    if (!user || !user.roles) return 'DEFAULT_ROLE';
+
+
+    if (user.roles.includes('ROLE_ADMIN')) return 'ROLE_ADMIN';
+    if (user.roles.includes('ROLE_RECEPTION')) return 'ROLE_RECEPTION';
+    if (user.roles.includes('ROLE_SPECIAL')) return 'ROLE_SPECIAL';
+    if (user.roles.includes('ROLE_INVENTORY')) return 'ROLE_INVENTORY';
+    if (user.roles.includes('ROLE_CUSSERVICE')) return 'ROLE_CUSSERVICE';
+    if (user.roles.includes('ROLE_SERVICECENTER')) return 'ROLE_SERVICECENTER';
+    if (user.roles.includes('ROLE_OPERATOR')) return 'ROLE_OPERATOR';
+    if (user.roles.includes('ROLE_SUBLCO')) return 'ROLE_SUBLCO';
+    if (user.roles.includes('ROLE_SUBSCRIBER')) return 'ROLE_SUBSCRIBER';
+    return 'DEFAULT_ROLE';
   }
 
   ngOnInit() {
@@ -78,9 +97,7 @@ export class LoginComponent implements OnInit {
       console.log(this.msoLogo);
       console.log(this.msoName);
     });
-    // if (this.role == 'ROLE_SUBSCRIBER') {
-    //   this.getSubscriberDetails();
-    // }
+  
   }
   getSubscriberDetails() {
     this.userService.getSubscriberDetails(this.role, this.username).subscribe((data: any) => {
@@ -135,8 +152,9 @@ export class LoginComponent implements OnInit {
             console.log('Stored ID:', res.id);
             const user = this.storageService.getUser();
             console.log(user.username);
-
             this.roles = user.roles;
+            console.log(this.roles);
+
             this.post();
             // const role = this.storageService.getUserRole();
             let isUser = this.roles.includes('ROLE_ADMIN');
@@ -184,9 +202,11 @@ export class LoginComponent implements OnInit {
               this.router.navigate(['admin/operator_dashboard']).then(() => {
               });
             } else if (isSubcriber) {
-              console.log('111111111111111111111111111111111111111111111111111111111');
               console.log('role', this.role);
               console.log('username', this.username);
+
+    this.role = this.getUserRole(res)
+    this.username = username;
               this.userService.getSubscriberDetails(this.role, this.username).subscribe((data: any) => {
                 console.log(data);
                 this.lcoDeatails = data;

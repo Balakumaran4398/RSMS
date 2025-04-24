@@ -23,6 +23,7 @@ export class ChanneldetailsComponent implements OnInit {
       floatingFilter: true
     },
     paginationPageSize: 10,
+    paginationPageSizeSelector:[10,20,50],
     pagination: true,
   }
 
@@ -90,6 +91,10 @@ export class ChanneldetailsComponent implements OnInit {
     this.gridApi = params.api;
     this.userservice.getspecialLocalChannelList(this.role, this.username).subscribe((data: any) => {
       this.rowData = data;
+      const rowCount = this.rowData.length;
+      if (!this.gridOptions.paginationPageSizeSelector.includes(rowCount)) {
+        this.gridOptions.paginationPageSizeSelector.push(rowCount);
+      }
     })
   }
 

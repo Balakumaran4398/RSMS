@@ -64,6 +64,7 @@ export class SmartcardAllocationComponent {
       },
     },
     paginationPageSize: 10,
+    paginationPageSizeSelector:[10,20,50],
     pagination: true,
   };
 
@@ -73,6 +74,10 @@ export class SmartcardAllocationComponent {
     userService.getDeallocate_smartcard_List(this.role, this.username).subscribe((data: any) => {
       console.log(data);
       this.rowData = data;
+      const rowCount = this.rowData.length;
+          if (!this.gridOptions.paginationPageSizeSelector.includes(rowCount)) {
+            this.gridOptions.paginationPageSizeSelector.push(rowCount);
+          }
     })
   }
   columnDefs: ColDef[] = [

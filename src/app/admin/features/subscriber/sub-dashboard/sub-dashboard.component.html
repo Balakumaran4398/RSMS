@@ -53,12 +53,12 @@
                                 <i class="fa fa-eye" style="font-size:15px;color: white;"></i>
                                 <div class="tooltip-content">Login Details</div>
                             </div>
-                            <div *ngIf="casform" class="icon-item d-flex align-item-center tooltip-container bttn"
+                            <div *ngIf="role != 'ROLE_SUBSCRIBER' && casform" class="icon-item d-flex align-item-center tooltip-container bttn"
                                 style="background-color: var(--sub-dashboard-icon);" (click)="getPdfCasformReport()">
                                 <i class="fa fa-download" aria-hidden="true" style="font-size:15px;color: white;"></i>
                                 <div class="tooltip-content">CAS Form</div>
                             </div>
-                            <div *ngIf="editDetails" class="icon-item d-flex align-item-center tooltip-container bttn"
+                            <div *ngIf="role != 'ROLE_SUBSCRIBER' &&  editDetails" class="icon-item d-flex align-item-center tooltip-container bttn"
                                 style="background-color: var(--sub-dashboard-icon);"
                                 (click)="openDialog('editDetails','')">
                                 <i class="fas fa-edit" style="font-size:14px;color: white;"></i>
@@ -106,7 +106,7 @@
                             </div>
 
                         </div>
-                        <div class="d-flex">
+                        <div *ngIf="role != 'ROLE_SUBSCRIBER'" class="d-flex">
                             <div class="col-6 col-md-4 d-flex justify-content-start align-items-center mb-1 text2">
                                 LCO Balance</div>
                             <div class="col-1 col-md-1 d-flex justify-content-center align-items-center mb-1 text2">
@@ -115,6 +115,17 @@
                                 style="color: green;">
                                 <i class="fa-solid fa-indian-rupee-sign mx-2" style="color: green;"></i>
                                 {{subdetailsList?.opbalance}} {{subdetails?.opbalance}}
+                            </div>
+                        </div>
+                        <div *ngIf="role == 'ROLE_SUBSCRIBER'" class="d-flex">
+                            <div class="col-6 col-md-4 d-flex justify-content-start align-items-center mb-1 text2">
+                                Subscriber Balance</div>
+                            <div class="col-1 col-md-1 d-flex justify-content-center align-items-center mb-1 text2">
+                                : </div>
+                            <div class="col-6 col-md-6 d-flex justify-content-start align-items-center"
+                                style="color: green;">
+                                <i class="fa-solid fa-indian-rupee-sign mx-2" style="color: green;"></i>
+                                {{subBalance}} 
                             </div>
                         </div>
                         <div class="d-flex">
@@ -147,7 +158,7 @@
                                 <div class="tooltip-content">Change LCO</div>
                             </div>
 
-                            <div class="icon-item d-flex align-item-center tooltip-container  bttn"
+                            <div *ngIf="role != 'ROLE_SUBSCRIBER'" class="icon-item d-flex align-item-center tooltip-container  bttn"
                                 style="background-color: var(--sub-dashboard-icon);"
                                 (click)="openDialog('addSmartcard','')">
                                 <i class="fa fa-plus" style="font-size:15px;color: white;"></i>

@@ -54,7 +54,7 @@ export class BroadMasterComponent implements OnInit {
       comparator: (valueA: any, valueB: any) => {
         const isNumberA = !isNaN(valueA) && valueA !== null;
         const isNumberB = !isNaN(valueB) && valueB !== null;
-  
+
         if (isNumberA && isNumberB) {
           return valueA - valueB;
         } else {
@@ -67,9 +67,10 @@ export class BroadMasterComponent implements OnInit {
       },
     },
     paginationPageSize: 10,
+    paginationPageSizeSelector: [10,20,50],
     pagination: true,
   };
-  
+
 
   gridApi: any;
   isAnyRowSelected: any = false;
@@ -90,20 +91,21 @@ export class BroadMasterComponent implements OnInit {
     this.userService.BroadcasterList(this.role, this.username, this.type).subscribe((data) => {
       console.log(data);
       this.rowData = data;
+      const rowCount = this.rowData.length;
+      if (!this.gridOptions.paginationPageSizeSelector.includes(rowCount)) {
+        this.gridOptions.paginationPageSizeSelector.push(rowCount);
+      }
     })
   }
-
-
-
   columnDefs: any[] = [
     {
-      headerName: "S.NO", lockPosition: true, valueGetter: 'node.rowIndex+1', headerCheckboxSelection: true, filter: false, width: 90,
+      headerName: "S.NO", lockPosition: true, valueGetter: 'node.rowIndex+1', headerCheckboxSelection: true, filter: false, width: 150,
       checkboxSelection: true,
     },
 
     {
       headerName: 'BROADCASTER NAME',
-      field: 'broadcastername', width: 600,
+      field: 'broadcastername', width: 550,
 
       cellStyle: { textAlign: 'left', },
       editable: true,

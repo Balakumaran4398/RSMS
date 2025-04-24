@@ -40,6 +40,7 @@ export class SpeciallcochangeComponent implements OnInit {
       floatingFilter: true
     },
     paginationPageSize: 10,
+    paginationPageSizeSelector:[10,20,50],
     pagination: true,
   }
   operatorid: any;
@@ -150,6 +151,10 @@ export class SpeciallcochangeComponent implements OnInit {
         if (response.status === 200) {
           // this.updateColumnDefs(this.selectedTab);
           this.rowData = response.body;
+          const rowCount = this.rowData.length;
+          if (!this.gridOptions.paginationPageSizeSelector.includes(rowCount)) {
+            this.gridOptions.paginationPageSizeSelector.push(rowCount);
+          }
           this.swal.Success_200();
         } else if (response.status === 204) {
           this.swal.Success_204();

@@ -49,6 +49,7 @@ export class ChannelTypeComponent {
       },
     },
     paginationPageSize: 10,
+    paginationPageSizeSelector:[10,20,50],
     pagination: true,
   };
   gridApi: any;
@@ -65,6 +66,10 @@ export class ChannelTypeComponent {
   ngOnInit(): void {
     this.userService.ChannelTypeList(this.role, this.username, this.type).subscribe((data) => {
       this.rowData = data;
+      const rowCount = this.rowData.length;
+      if (!this.gridOptions.paginationPageSizeSelector.includes(rowCount)) {
+        this.gridOptions.paginationPageSizeSelector.push(rowCount);
+      }
     })
   }
   columnDefs: ColDef[] = [

@@ -29,28 +29,29 @@ export class PackageReferenceComponent {
     defaultColDef: {
       sortable: true,
       resizable: true,
-      filter: true, 
+      filter: true,
       floatingFilter: true,
       comparator: (valueA: any, valueB: any) => {
         const isNumberA = !isNaN(valueA) && valueA !== null;
         const isNumberB = !isNaN(valueB) && valueB !== null;
-  
+
         if (isNumberA && isNumberB) {
-          return valueA - valueB; 
+          return valueA - valueB;
         } else {
           const normalizedA = valueA ? valueA.toString().trim().toLowerCase() : '';
           const normalizedB = valueB ? valueB.toString().trim().toLowerCase() : '';
-          return normalizedA.localeCompare(normalizedB); 
+          return normalizedA.localeCompare(normalizedB);
         }
       },
       filterParams: {
         textFormatter: (value: string) => {
           return value ? value.toString().toLowerCase() : '';
         },
-        debounceMs: 200, 
+        debounceMs: 200,
       },
     },
     paginationPageSize: 10,
+    paginationPageSizeSelector: [10, 20, 50],
     pagination: true,
   };
 
@@ -99,10 +100,22 @@ export class PackageReferenceComponent {
     this.userservice.ProductTeference(this.role, this.username, this.Castype, this.selectedTab).subscribe((data: any) => {
       if (this.selectedTab === '1') {
         this.rowData = data.baselist;
+        const rowCount = this.rowData.length;
+        if (!this.gridOptions.paginationPageSizeSelector.includes(rowCount)) {
+          this.gridOptions.paginationPageSizeSelector.push(rowCount);
+        }
       } else if (this.selectedTab === '2') {
         this.rowData = data.addonlist;
+        const rowCount = this.rowData.length;
+        if (!this.gridOptions.paginationPageSizeSelector.includes(rowCount)) {
+          this.gridOptions.paginationPageSizeSelector.push(rowCount);
+        }
       } else if (this.selectedTab === '3') {
         this.rowData = data.alacartelist;
+        const rowCount = this.rowData.length;
+        if (!this.gridOptions.paginationPageSizeSelector.includes(rowCount)) {
+          this.gridOptions.paginationPageSizeSelector.push(rowCount);
+        }
       } else {
         this.rowData = [];
       }
@@ -153,7 +166,7 @@ export class PackageReferenceComponent {
   columnDefs: any[] = [
     {
       headerName: "S.No", lockPosition: true, valueGetter: 'node.rowIndex+1', headerCheckboxSelection: true,
-      checkboxSelection: true, width: 100,filter:false
+      checkboxSelection: true, width: 100, filter: false
     },
 
     { headerName: "CHANNEL NAME", field: '', width: 300 },
@@ -167,13 +180,13 @@ export class PackageReferenceComponent {
       this.columnDefs = [
         {
           headerName: "S.No", lockPosition: true, valueGetter: 'node.rowIndex+1', headerCheckboxSelection: true,
-          checkboxSelection: true, width: 100,filter: false
+          checkboxSelection: true, width: 100, filter: false
         },
 
         { headerName: "CHANNEL NAME", field: 'productname', width: 300, cellStyle: { textAlign: 'left' }, },
         { headerName: "PACKAGE RATE", field: 'packagerate', width: 290, cellStyle: { textAlign: 'center' }, },
         { headerName: "REFERENCE ID", field: 'orderid', width: 250, cellStyle: { textAlign: 'center' }, },
-    
+
 
         {
           headerName: "CAS PRODUCT ID",
@@ -238,13 +251,13 @@ export class PackageReferenceComponent {
       this.columnDefs = [
         {
           headerName: "S.No", lockPosition: true, valueGetter: 'node.rowIndex+1', headerCheckboxSelection: true,
-          checkboxSelection: true, width: 100,filter:false
+          checkboxSelection: true, width: 100, filter: false
         },
 
         { headerName: "CHANNEL NAME", field: 'productname', width: 300, cellStyle: { textAlign: 'left' }, },
         { headerName: "PACKAGE RATE", field: 'packagerate', width: 290, },
         { headerName: "REFERENCE ID", field: 'orderid', width: 250, },
-       
+
         {
           headerName: "CAS PRODUCT ID",
           field: 'casproductid',
@@ -289,7 +302,7 @@ export class PackageReferenceComponent {
                 params.data.casproductid = newValue;
                 span.innerText = newValue;
                 span.style.color = 'green';
-                div.style.backgroundColor = 'transparent'; 
+                div.style.backgroundColor = 'transparent';
                 div.replaceChildren(span);
               });
 
@@ -308,12 +321,12 @@ export class PackageReferenceComponent {
       this.columnDefs = [
         {
           headerName: "S.No", lockPosition: true, valueGetter: 'node.rowIndex+1', headerCheckboxSelection: true,
-          checkboxSelection: true, width: 100,filter:false
+          checkboxSelection: true, width: 100, filter: false
         },
         { headerName: "CHANNEL NAME", field: 'productname', minwidth: 300, cellStyle: { textAlign: 'left' }, },
         { headerName: "PACKAGE RATE", field: 'packagerate', minwidth: 290 },
         { headerName: "REFERENCE ID", field: 'orderid', minwidth: 250 },
-       
+
 
         {
           headerName: "CAS PRODUCT ID",
@@ -349,7 +362,7 @@ export class PackageReferenceComponent {
               input.style.color = 'black';
               input.style.border = 'none';
               input.style.outline = 'none';
-              input.style.backgroundColor = '#ffffcc'; 
+              input.style.backgroundColor = '#ffffcc';
 
               div.replaceChildren(input);
               input.focus();
@@ -359,7 +372,7 @@ export class PackageReferenceComponent {
                 params.data.casproductid = newValue;
                 span.innerText = newValue;
                 span.style.color = 'green';
-                div.style.backgroundColor = 'transparent'; 
+                div.style.backgroundColor = 'transparent';
                 div.replaceChildren(span);
               });
 

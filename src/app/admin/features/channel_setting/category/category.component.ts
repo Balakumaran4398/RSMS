@@ -47,6 +47,7 @@ export class CategoryComponent {
       },
     },
     paginationPageSize: 10,
+    paginationPageSizeSelector: [10,20,50],
     pagination: true,
   };
   gridApi: any;
@@ -64,6 +65,10 @@ export class CategoryComponent {
     this.userService.CategoryList(this.role, this.username, this.type).subscribe((data) => {
       console.log(data);
       this.rowData = data;
+      const rowCount = this.rowData.length;
+      if (!this.gridOptions.paginationPageSizeSelector.includes(rowCount)) {
+        this.gridOptions.paginationPageSizeSelector.push(rowCount);
+      }
     })
   }
 

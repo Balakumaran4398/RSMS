@@ -51,6 +51,7 @@ export class SmartcardReallocationComponent implements OnInit {
       },
     },
     paginationPageSize: 10,
+    paginationPageSizeSelector:[10,20,50],
     pagination: true,
   };
 
@@ -64,7 +65,10 @@ export class SmartcardReallocationComponent implements OnInit {
       this.count = data[0].count;
       this.castype = data[0].operatorid;
       this.sub_emi = data[0].isemi;
-
+      const rowCount = this.rowData.length;
+      if (!this.gridOptions.paginationPageSizeSelector.includes(rowCount)) {
+        this.gridOptions.paginationPageSizeSelector.push(rowCount);
+      }
       console.log('wwwwwwwwwwwwww', this.sub_emi);
       console.log(this.rowData);
 

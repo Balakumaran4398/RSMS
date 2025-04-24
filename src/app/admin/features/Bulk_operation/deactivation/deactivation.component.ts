@@ -71,6 +71,7 @@ export class DeactivationComponent implements OnInit{
       },
     },
     paginationPageSize: 10,
+    paginationPageSizeSelector:[10,20,50],
     pagination: true,
   }
 
@@ -123,6 +124,10 @@ export class DeactivationComponent implements OnInit{
       (response: HttpResponse<any[]>) => { // Expect HttpResponse<any[]>
         if (response.status === 200) {
           this.rowData = response.body;
+          const rowCount = this.rowData.length;
+          if (!this.gridOptions.paginationPageSizeSelector.includes(rowCount)) {
+            this.gridOptions.paginationPageSizeSelector.push(rowCount);
+          }
           // this.swal.Success_200();
         } else if (response.status === 204) {
           this.rowData = '';
@@ -149,6 +154,10 @@ export class DeactivationComponent implements OnInit{
       (response: HttpResponse<any[]>) => { // Expect HttpResponse<any[]>
         if (response.status === 200) {
           this.rowData = response.body;
+          const rowCount = this.rowData.length;
+          if (!this.gridOptions.paginationPageSizeSelector.includes(rowCount)) {
+            this.gridOptions.paginationPageSizeSelector.push(rowCount);
+          }
           // this.swal.Success_200();
         } else if (response.status === 204) {
           this.rowData = '';

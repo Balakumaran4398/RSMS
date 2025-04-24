@@ -149,10 +149,11 @@ export class OnlinerechargeComponent implements OnInit {
       console.log('111111111111111');
       this.lcoDeatails = data;
       this.Sub_subid = this.lcoDeatails?.subid;
+      this.operatorid = this.lcoDeatails?.operatorid;
       this.Sub_amount = this.lcoDeatails?.balance;
       console.log('eresuofhdljkfhdsjkfhnsjdhfdjsfh', this.Sub_subid);
       this.getGatewayDetails(this.Sub_subid);
-      this.getOnline(this.Sub_subid);
+      this.getOnline(this.operatorid);
     })
   }
   onGridReady(params: { api: any }) {
@@ -320,7 +321,7 @@ export class OnlinerechargeComponent implements OnInit {
       console.log(this.role);
       console.log('subid', this.Sub_subid);
 
-      this.userservice.getsubscriberOnlineInitialRequest(this.role, this.username, this.amount || this.Sub_amount || 0, this.operatorid || this.Sub_subid).subscribe((res: any) => {
+      this.userservice.getsubscriberOnlineInitialRequest(this.role, this.username, this.amount || this.Sub_amount || 0,  this.Sub_subid).subscribe((res: any) => {
         this.transResponse = res;
         console.log(res);
         this.easebuzzData = this.transResponse.data;
@@ -428,8 +429,8 @@ export class OnlinerechargeComponent implements OnInit {
     }
     console.log(this.sublcoetailerId);
 
-    this.userservice.getOnlinePaymentHistory(this.role, this.username, this.fromdate, this.todate, opid || this.Sub_subid, 0, 0, 1, 3, this.isspecial,0)
-      // this.userservice.getOnlinePaymentHistory(this.role, this.username, this.fromdate, this.todate, this.operatorid || this.sublcoetailerId, 0, 0, 1, 3, this.isspecial)
+    // this.userservice.getOnlinePaymentHistory(this.role, this.username, this.fromdate, this.todate, opid || this.Sub_subid, 0, 0, 1, 3, this.isspecial,0)
+    this.userservice.getOnlinePaymentHistory(this.role, this.username, this.fromdate, this.todate, this.operatorid || this.sublcoetailerId, 0, 0, 1, 3, this.isspecial, this.Sub_subid || 0)
       .subscribe((res: any) => {
         this.swal.success_1(res?.message);
         this.rowDataOnline = res;

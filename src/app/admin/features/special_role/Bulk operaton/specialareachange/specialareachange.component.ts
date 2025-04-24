@@ -22,18 +22,6 @@ export class SpecialareachangeComponent implements OnInit {
 
   rowData: any;
   public rowSelection: any = "multiple";
-  // gridOptions = {
-  //   defaultColDef: {
-  //     sortable: true,
-  //     resizable: true,
-  //     filter: true,
-  //     width: 200,
-  //     floatingFilter: true
-  //   },
-  //   paginationPageSize: 10,
-  //   pagination: true,
-  // }
-
   gridOptions = {
     defaultColDef: {
       sortable: true,
@@ -56,6 +44,7 @@ export class SpecialareachangeComponent implements OnInit {
       },
     },
     paginationPageSize: 10,
+    paginationPageSizeSelector:[10,20,50],
     pagination: true,
   };
 
@@ -99,7 +88,6 @@ export class SpecialareachangeComponent implements OnInit {
     this.selectTab('lcochange');
   }
   selectTab(tab: string) {
-    // this.rowData = [];
     this.selectedTab = tab;
     this.lco = '';
     this.area = '';
@@ -198,6 +186,10 @@ export class SpecialareachangeComponent implements OnInit {
       (response: HttpResponse<any[]>) => {
         if (response.status === 200) {
           this.rowData = response.body;
+          const rowCount = this.rowData.length;
+          if (!this.gridOptions.paginationPageSizeSelector.includes(rowCount)) {
+            this.gridOptions.paginationPageSizeSelector.push(rowCount);
+          }
           // this.swal.Success_200();
         } else if (response.status === 204) {
           this.swal.Success_204();
@@ -223,6 +215,10 @@ export class SpecialareachangeComponent implements OnInit {
       this.userservice.getAreaListByOperatorid(this.role, this.username, this.lco)
         .subscribe((data: any) => {
           this.rowData = data;
+          const rowCount = this.rowData.length;
+          if (!this.gridOptions.paginationPageSizeSelector.includes(rowCount)) {
+            this.gridOptions.paginationPageSizeSelector.push(rowCount);
+          }
           console.log(this.rowData);
           console.log(data?.areaid);
           this.areaList = Object.keys(data).map(key => {
@@ -238,6 +234,10 @@ export class SpecialareachangeComponent implements OnInit {
         if (response.status === 200) {
           // this.updateColumnDefs(this.selectedTab);
           this.rowData = response.body;
+          const rowCount = this.rowData.length;
+          if (!this.gridOptions.paginationPageSizeSelector.includes(rowCount)) {
+            this.gridOptions.paginationPageSizeSelector.push(rowCount);
+          }
           this.swal.Success_200();
         } else if (response.status === 204) {
           this.swal.Success_204();
@@ -294,6 +294,10 @@ export class SpecialareachangeComponent implements OnInit {
       (response: HttpResponse<any[]>) => {
         if (response.status === 200) {
           this.rowData = response.body;
+          const rowCount = this.rowData.length;
+          if (!this.gridOptions.paginationPageSizeSelector.includes(rowCount)) {
+            this.gridOptions.paginationPageSizeSelector.push(rowCount);
+          }
           // this.swal.Success_200();
         } else if (response.status === 204) {
           this.swal.Success_204();
@@ -320,6 +324,10 @@ export class SpecialareachangeComponent implements OnInit {
       (response: HttpResponse<any[]>) => {
         if (response.status === 200) {
           this.rowData = response.body;
+          const rowCount = this.rowData.length;
+          if (!this.gridOptions.paginationPageSizeSelector.includes(rowCount)) {
+            this.gridOptions.paginationPageSizeSelector.push(rowCount);
+          }
           // this.swal.Success_200();
         } else if (response.status === 204) {
           this.swal.Success_204();
@@ -344,6 +352,10 @@ export class SpecialareachangeComponent implements OnInit {
       this.userservice.getAreaListByOperatorid(this.role, this.username, this.lco)
         .subscribe((data: any) => {
           this.rowData = data;
+          const rowCount = this.rowData.length;
+          if (!this.gridOptions.paginationPageSizeSelector.includes(rowCount)) {
+            this.gridOptions.paginationPageSizeSelector.push(rowCount);
+          }
           console.log(this.rowData);
           console.log(data?.areaid);
           this.areaList = Object.keys(data).map(key => {
@@ -359,6 +371,10 @@ export class SpecialareachangeComponent implements OnInit {
         if (response.status === 200) {
           // this.updateColumnDefs(this.selectedTab);
           this.rowData = response.body;
+          const rowCount = this.rowData.length;
+          if (!this.gridOptions.paginationPageSizeSelector.includes(rowCount)) {
+            this.gridOptions.paginationPageSizeSelector.push(rowCount);
+          }
           console.log(this.rowData);
           // this.swal.Success_200();
         } else if (response.status === 204) {
@@ -417,6 +433,10 @@ export class SpecialareachangeComponent implements OnInit {
     this.userservice.getAreaListByOperatorId(this.role, this.username, this.operatorid).subscribe((data: any) => {
       this.rowData = data;
       console.log(data);
+      const rowCount = this.rowData.length;
+      if (!this.gridOptions.paginationPageSizeSelector.includes(rowCount)) {
+        this.gridOptions.paginationPageSizeSelector.push(rowCount);
+      }
     })
   }
 

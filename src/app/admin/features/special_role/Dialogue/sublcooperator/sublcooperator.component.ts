@@ -199,7 +199,7 @@ export class SublcooperatorComponent implements OnInit {
   }
   length = 0;
 
-  pageSizeOptions = [5, 10, 25];
+  pageSizeOptions = [5, 10, 25, 50, 100];
 
   hidePageSize = false;
   showPageSizeOptions = true;
@@ -219,7 +219,10 @@ export class SublcooperatorComponent implements OnInit {
       this.pageIndex * this.pageSize + this.pageSize
     );
     this.paginatedData.forEach((item: any) => {
-      this.userservice.getSublcoLoginDashboardCount(this.role, this.username, item.retailerId)
+      console.log('ITEM -------------', item);
+
+      // this.userservice.getSublcoLoginDashboardCount(this.role, this.username, item.retailerId)
+      this.userservice.getSublcoLoginDashboardCount(this.role, item.username, item.retailerId)
         .subscribe((data: any) => {
           item.count = data;
           console.log('sublcoDiscount33333', this.sublcocount);
@@ -227,7 +230,6 @@ export class SublcooperatorComponent implements OnInit {
           console.error(`Failed to fetch count for item ${item.id}`, error);
           item.count = 0;
         });
-
     });
 
   }
@@ -268,6 +270,7 @@ export class SublcooperatorComponent implements OnInit {
     this.userservice.getAllSublcoListByOperatorId(this.role, this.username, this.operatorid).subscribe((data: any) => {
       console.log(data);
       this.rowData = data;
+      
       // data.forEach((item: any) => {
       //   this.sublcocount = item.sublcoDiscount;
       //   console.log(this.sublcocount);
@@ -287,7 +290,7 @@ export class SublcooperatorComponent implements OnInit {
       );
 
       this.paginatedData.forEach((item: any) => {
-        this.userservice.getSublcoLoginDashboardCount(this.role, this.username, item.retailerId)
+        this.userservice.getSublcoLoginDashboardCount(this.role, item.username, item.retailerId)
           .subscribe((data: any) => {
             item.count = data;
           }, (error) => {

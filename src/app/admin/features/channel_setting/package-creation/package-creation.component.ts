@@ -42,6 +42,7 @@ export class PackageCreationComponent {
       },
     },
     paginationPageSize: 15,
+    paginationPageSizeSelector:[10,20,50],
     pagination: true,
   };
 
@@ -64,6 +65,10 @@ export class PackageCreationComponent {
     // })
     this.userService.PackageList(this.role, this.username).subscribe((data) => {
       this.rowData = data;
+      const rowCount = this.rowData.length;
+      if (!this.gridOptions.paginationPageSizeSelector.includes(rowCount)) {
+        this.gridOptions.paginationPageSizeSelector.push(rowCount);
+      }
     })
     if (this.role == 'ROLE_OPERATOR') {
       this.operatorIdoperatorId();

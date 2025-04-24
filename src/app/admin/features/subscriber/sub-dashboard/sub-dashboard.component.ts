@@ -62,6 +62,7 @@ export class SubDashboardComponent implements OnInit {
   subAddonAdd = false;
   subAlacarte = false;
   subChangeBase = false;
+  subBalance : any;
 
 
   dateTodate = 3;
@@ -284,13 +285,14 @@ export class SubDashboardComponent implements OnInit {
         const name = key.replace(/\(\d+\)$/, '').trim();
         return { name, id };
       });
-      console.log(this.rechargeType);
+      console.log(rawList);
       this.rechargetype = rawList.filter(item => {
         if (item.name === 'Plan' && this.isplan) return true;
         if (item.name === 'Date' && this.isdate) return true;
         if (item.name === 'Date-to-Date' && this.isdateTodate) return true;
         return false;
       });
+      console.log(this.rechargetype);
     })
   }
   operatorIdoperatorId() {
@@ -304,29 +306,22 @@ export class SubDashboardComponent implements OnInit {
       console.log('PLAN', this.isplan);
       console.log('DATE', this.isdate);
       console.log('DATE TO DATE', this.isdateTodate);
-  
+
     })
   }
   subLCOdetails() {
     this.userservice.getSublcoDetails(this.role, this.username).subscribe((data: any) => {
       console.log(data);
-      console.log('111111111111111');
       this.lcoDeatails = data;
       this.retailerId = this.lcoDeatails?.retailerid;
       this.Sublcopermissionlist = this.lcoDeatails?.permissionlist;
-
       this.isplan = this.Sublcopermissionlist.plan;
       this.isdate = this.Sublcopermissionlist.date;
       this.isdateTodate = this.Sublcopermissionlist.datetodate;
       this.subAddonAdd = this.Sublcopermissionlist.addonpackage_update;
       this.subAlacarte = this.Sublcopermissionlist.alacarte_update;
       this.subChangeBase = this.Sublcopermissionlist.change_base;
-      console.log('PLAN', this.isplan);
-      console.log('DATE', this.isdate);
-      console.log('DATE TO DATE', this.isdateTodate);
-      console.log('ADDON ADD', this.subAddonAdd);
-      console.log('ALACARTE', this.subAlacarte);
-      console.log('CHANGE BASE', this.subChangeBase);
+     
     })
   }
   sub_subscriberid: any;
@@ -342,11 +337,13 @@ export class SubDashboardComponent implements OnInit {
       this.isplan = true;
       this.isdate = this.lcoDeatails.date;
       this.isdateTodate = this.lcoDeatails.datetodate;
+      this.subBalance = this.lcoDeatails.balance;
       console.log('PLAN', this.isplan);
       console.log('DATE', this.isdate);
       console.log('DATE TO DATE', this.isdateTodate);
       console.log('ADDON ADD', this.subAddonAdd);
       console.log('ALACARTE', this.subAlacarte);
+      console.log('BALANCE', this.subBalance);
     })
   }
   setNextDay(): void {

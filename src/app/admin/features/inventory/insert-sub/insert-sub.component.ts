@@ -53,6 +53,7 @@ export class InsertSubComponent {
       },
     },
     paginationPageSize: 10,
+    paginationPageSizeSelector:[10,20,50],
     pagination: true,
   };
 
@@ -65,17 +66,7 @@ export class InsertSubComponent {
   constructor(private userService: BaseService, private storageService: StorageService, public dialog: MatDialog) {
     this.username = storageService.getUsername();
     this.role = storageService.getUserRole();
-    // this.rowData=data;
-    // userService.getsmartcardallocationSubscriberList(this.role, this.username).subscribe((data: any) => {
-    //   console.log(data);
-    //   // this.lco_list = data[0].operatorid;
-    //   console.log(this.lco_list);
-    //   this.lco_list = Object.entries(data[0].operatorid).map(([key, value]) => {
-    //     return { name: key, value: value };
-    //   });
-    //   console.log(this.lco_list);
-    //   this.filteredOperators = this.lco_list;
-    // })
+    
     this.operatorList();
   }
 
@@ -154,6 +145,10 @@ export class InsertSubComponent {
     this.userService.getOperatorWiseSubscriberList(this.role, this.username, this.selectedLcoName).subscribe((data: any) => {
       console.log(data);
       this.rowData = data;
+      const rowCount = this.rowData.length;
+      if (!this.gridOptions.paginationPageSizeSelector.includes(rowCount)) {
+        this.gridOptions.paginationPageSizeSelector.push(rowCount);
+      }
     })
   }
   // onSelectionChanged() {

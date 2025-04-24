@@ -192,6 +192,7 @@ export class ScrollingComponent {
       },
     },
     paginationPageSize: 10,
+    paginationPageSizeSelector:[10,20],
     pagination: true,
   }
   constructor(private userservice: BaseService, private storageService: StorageService, private fb: FormBuilder, private swal: SwalService, public dialog: MatDialog) {
@@ -199,6 +200,10 @@ export class ScrollingComponent {
     this.role = storageService.getUserRole();
     this.userservice.Get_Scroll_version_List(this.role, this.username).subscribe((data: any) => {
       this.rowData = data;
+      const rowCount = this.rowData.length;
+      if (!this.gridOptions.paginationPageSizeSelector.includes(rowCount)) {
+        this.gridOptions.paginationPageSizeSelector.push(rowCount);
+      }
       console.log(this.rowData);
       const lastIndex = data.length - 1;
       const lastItem = data[lastIndex];

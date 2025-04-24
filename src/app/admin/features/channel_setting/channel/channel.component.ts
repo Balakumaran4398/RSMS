@@ -22,59 +22,6 @@ import { LoginrefundComponent } from '../_Dialogue/LCO_Recharge/loginrefund/logi
 export class ChannelComponent {
   isupload: boolean = false;
   isaddnew: boolean = false;
-
-
-
-  // gridOptions = {
-  //   defaultColDef: {
-  //     sortable: true,
-  //     resizable: true,
-  //     filter: true,
-  //     floatingFilter: true,
-  //     comparator: (valueA: any, valueB: any) => {
-  //       const isNumberA = !isNaN(valueA) && valueA !== null;
-  //       const isNumberB = !isNaN(valueB) && valueB !== null;
-
-  //       if (isNumberA && isNumberB) {
-  //         return valueA - valueB;
-  //       } else {
-  //         const normalizedA = valueA ? valueA.toString().trim().toLowerCase() : '';
-  //         const normalizedB = valueB ? valueB.toString().trim().toLowerCase() : '';
-  //         if (normalizedA < normalizedB) return -1;
-  //         if (normalizedA > normalizedB) return 1;
-  //         return 0;
-  //       }
-  //     },
-  //   },
-  // };
-
-  // gridOptions = {
-  //   defaultColDef: {
-  //     sortable: true,
-  //     resizable: true,
-  //     filter: true,
-  //     floatingFilter: true,
-  //     comparator: (valueA: any, valueB: any) => {
-  //       const isNumberA = !isNaN(valueA) && valueA !== null;
-  //       const isNumberB = !isNaN(valueB) && valueB !== null;
-
-  //       if (isNumberA && isNumberB) {
-  //         return valueA - valueB;
-  //       } else {
-  //         const normalizedA = valueA ? valueA.toString().trim().toLowerCase() : '';
-  //         const normalizedB = valueB ? valueB.toString().trim().toLowerCase() : '';
-  //         return normalizedA.localeCompare(normalizedB);
-  //       }
-  //     },
-  //     filterParams: {
-  //       textFormatter: (value: string) => {
-  //         return value ? value.toString().toLowerCase() : '';
-  //       },
-  //       debounceMs: 200,
-  //     },
-  //   },
-
-  // };
   gridOptions = {
     defaultColDef: {
       sortable: true,
@@ -102,6 +49,8 @@ export class ChannelComponent {
       },
     },
     paginationPageSize: 15,
+    paginationPageSizeSelector: [10,20,50],
+
     pagination: true,
   };
   gridApi: any;
@@ -158,12 +107,20 @@ export class ChannelComponent {
     this.userService.ChannelList(this.role, this.username, selectedType).subscribe((data) => {
       console.log(data);
       this.rowData = data;
+      const rowCount = this.rowData.length;
+      if (!this.gridOptions.paginationPageSizeSelector.includes(rowCount)) {
+        this.gridOptions.paginationPageSizeSelector.push(rowCount);
+      }
     });
   }
   getLCOChannelList(): void {
     this.userService.ChannelList(this.role, this.username, 'All').subscribe((data) => {
       console.log(data);
       this.rowData = data;
+      const rowCount = this.rowData.length;
+      if (!this.gridOptions.paginationPageSizeSelector.includes(rowCount)) {
+        this.gridOptions.paginationPageSizeSelector.push(rowCount);
+      }
     });
   }
 

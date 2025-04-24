@@ -75,6 +75,7 @@ export class LcoCommissionComponent {
       },
     },
     paginationPageSize: 10,
+    paginationPageSizeSelector:[10,20,50],
     pagination: true,
   };
   @ViewChild('agGrid') agGrid: any;
@@ -519,13 +520,16 @@ export class LcoCommissionComponent {
     this.selectedOperator = selectedOperator;
     this.lcomembershipid = selectedOperator.value;
     if (this.selectedTab === 'dis_commission') {
-
       this.rowData = [];
       // this.userservice.getDistributorMembershipDetailsByLcogroupid(this.role, this.username, this.lcomembershipid)
       this.userservice.getDistributorCommissionListByLcoGroupId(this.role, this.username, this.lcomembershipid).subscribe(
         (response: HttpResponse<any[]>) => {
           if (response.status === 200) {
             this.rowData = response.body;
+            const rowCount = this.rowData.length;
+            if (!this.gridOptions.paginationPageSizeSelector.includes(rowCount)) {
+              this.gridOptions.paginationPageSizeSelector.push(rowCount);
+            }
             // this.lcomembershipid = '';
             // this.selectedOperator = '';
           } else if (response.status === 204) {
@@ -547,6 +551,10 @@ export class LcoCommissionComponent {
           (response: HttpResponse<any[]>) => {
             if (response.status === 200) {
               this.rowData = response.body;
+              const rowCount = this.rowData.length;
+              if (!this.gridOptions.paginationPageSizeSelector.includes(rowCount)) {
+                this.gridOptions.paginationPageSizeSelector.push(rowCount);
+              }
             } else if (response.status === 204) {
               // this.swal.Success_204();
             }
@@ -554,7 +562,6 @@ export class LcoCommissionComponent {
           (error) => this.handleError(error)
         );
     }
-
   }
   handleError(error: any) {
     if (error.status === 400) {
@@ -574,6 +581,10 @@ export class LcoCommissionComponent {
       (response: HttpResponse<any[]>) => {
         if (response.status === 200) {
           this.rowData2 = response.body;
+          const rowCount = this.rowData2.length;
+          if (!this.gridOptions.paginationPageSizeSelector.includes(rowCount)) {
+            this.gridOptions.paginationPageSizeSelector.push(rowCount);
+          }
           // this.swal.Success_200();
           // this.lcomembershipid='';
         } else if (response.status === 204) {
@@ -592,15 +603,7 @@ export class LcoCommissionComponent {
       });
   }
   onMembershipchange(selectedOperator: any) {
-    // console.log(selectedOperator);
-
-    // this.selectedOperator = selectedOperator;
-    // this.selectedLcoName = selectedOperator.name;
-    // this.selectedOperator = selectedOperator;
-    // this.lcomembershipid = selectedOperator.value
-
     console.log(selectedOperator);
-
     this.selectedOperator = selectedOperator;
     this.lcomembershipid = selectedOperator.value
     // this.userservice.getDistributorMembershipDetailsByLcogroupid(this.role, this.username, selectedOperator.value).subscribe(
@@ -609,11 +612,13 @@ export class LcoCommissionComponent {
       (response: HttpResponse<any[]>) => {
         if (response.status === 200) {
           this.rowData2 = response.body;
+          
           console.log(response);
-          // this.swal.Success_200();
-          // this.lcomembershipid='';
-        } else if (response.status === 204) {
-          // this.swal.Success_204();
+          const rowCount = this.rowData2.length;
+          if (!this.gridOptions.paginationPageSizeSelector.includes(rowCount)) {
+            this.gridOptions.paginationPageSizeSelector.push(rowCount);
+          }
+            } else if (response.status === 204) {
           this.rowData2 = [];
         }
       },
@@ -631,33 +636,35 @@ export class LcoCommissionComponent {
     if (this.selectedTab == 'membership') {
       this.userservice.getLcoGroupDetails(this.role, this.username).subscribe((data: any) => {
         this.rowData1 = data;
+        const rowCount = this.rowData1.length;
+        if (!this.gridOptions.paginationPageSizeSelector.includes(rowCount)) {
+          this.gridOptions.paginationPageSizeSelector.push(rowCount);
+        }
       })
     } else if (this.selectedTab == 'dis_membership') {
       this.userservice.GetDistributorGroupDetails(this.role, this.username).subscribe((data: any) => {
         this.rowData1 = data;
+        const rowCount = this.rowData1.length;
+        if (!this.gridOptions.paginationPageSizeSelector.includes(rowCount)) {
+          this.gridOptions.paginationPageSizeSelector.push(rowCount);
+        }
       })
     }
 
   }
-  // lcomembershipidNotInLcogroupId() {
-  //   this.userservice.LcoGroupMasterListNotInLcogroupId(this.role, this.username).subscribe((data: any) => {
-  //     this.NotInLcogroupId = data;
 
-  //   })
-  // }
   getOperatorMembershipFUP() {
     this.userservice.getOperatorMembershipFUP(this.role, this.username)
-      // .subscribe((data: any) => {
-      //   this.rowData3 = data;
-      // })
       .subscribe(
         (response: HttpResponse<any[]>) => {
           if (response.status === 200) {
             this.rowData3 = response.body;
-            // this.swal.Success_200();
-            // this.lcomembershipid='';
+            const rowCount = this.rowData3.length;
+            if (!this.gridOptions.paginationPageSizeSelector.includes(rowCount)) {
+              this.gridOptions.paginationPageSizeSelector.push(rowCount);
+            }
+       
           } else if (response.status === 204) {
-            // this.swal.Success_204();
             this.rowData3 = [];
           }
         },

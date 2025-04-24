@@ -68,6 +68,7 @@ export class ExpiryDetailsComponent implements OnInit, OnDestroy {
       },
     },
     paginationPageSize: 15,
+    paginationPageSizeSelector:[10,20,50],
     pagination: true,
   };
   subLcoDetails: any;
@@ -211,6 +212,10 @@ export class ExpiryDetailsComponent implements OnInit, OnDestroy {
         (response: HttpResponse<any[]>) => { // Expect HttpResponse<any[]>
           if (response.status === 200) {
             this.rowData = response.body;
+            const rowCount = this.rowData.length;
+            if (!this.gridOptions.paginationPageSizeSelector.includes(rowCount)) {
+              this.gridOptions.paginationPageSizeSelector.push(rowCount);
+            }
           } else if (response.status === 204) {
             this.rowData = [];
             this.swal.Close();

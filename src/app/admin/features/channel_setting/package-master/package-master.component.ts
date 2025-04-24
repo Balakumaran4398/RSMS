@@ -48,6 +48,7 @@ export class PackageMasterComponent {
       },
     },
     paginationPageSize: 10,
+    paginationPageSizeSelector:[10,20,50],
     pagination: true,
   };
   username: any;
@@ -106,6 +107,10 @@ export class PackageMasterComponent {
     this.userService.getpackagemasterBaseList(this.user_role, this.username, this.selectedTab, this.Castype).subscribe((data) => {
       this.updateColumnDefs(this.selectedTab);
       this.rowData = data;
+      const rowCount = this.rowData.length;
+      if (!this.gridOptions.paginationPageSizeSelector.includes(rowCount)) {
+        this.gridOptions.paginationPageSizeSelector.push(rowCount);
+      }
     });
 
   }

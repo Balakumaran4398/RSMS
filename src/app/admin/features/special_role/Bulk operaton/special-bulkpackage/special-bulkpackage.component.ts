@@ -72,17 +72,6 @@ export class SpecialBulkpackageComponent implements OnInit {
   rowData1: any;
   rowData2: any;
   public rowSelection: any = "multiple";
-  // gridOptions = {
-  //   defaultColDef: {
-  //     sortable: true,
-  //     resizable: true,
-  //     filter: true,
-  //     width: 250,
-  //     floatingFilter: true
-  //   },
-  //   paginationPageSize: 10,
-  //   pagination: true,
-  // }
 
   gridOptions = {
     defaultColDef: {
@@ -106,6 +95,7 @@ export class SpecialBulkpackageComponent implements OnInit {
       },
     },
     paginationPageSize: 10,
+    paginationPageSizeSelector:[10,20,50],
     pagination: true,
   };
 
@@ -273,8 +263,6 @@ export class SpecialBulkpackageComponent implements OnInit {
       package: this.package,
       operatorid: this.operatorid
     });
-
-
     this.userservice.getExpirySubscriberDetailsByDatePackAndOperatorId(
       this.role, this.username, this.fromdate || null, this.todate || null, this.package || 0, this.operatorid || null
     ).subscribe(
@@ -282,6 +270,10 @@ export class SpecialBulkpackageComponent implements OnInit {
         if (response.status === 200) {
           this.updateColumnDefs(this.selectedTab);
           this.rowData = response.body;
+          const rowCount = this.rowData.length;
+          if (!this.gridOptions.paginationPageSizeSelector.includes(rowCount)) {
+            this.gridOptions.paginationPageSizeSelector.push(rowCount);
+          }
           this.swal.Success_200();
         } else if (response.status === 204) {
           this.swal.Success_204();
@@ -306,6 +298,10 @@ export class SpecialBulkpackageComponent implements OnInit {
           if (response.status === 200) {
             this.updateColumnDefs(this.selectedTab);
             this.rowData = response.body;
+            const rowCount = this.rowData.length;
+            if (!this.gridOptions.paginationPageSizeSelector.includes(rowCount)) {
+              this.gridOptions.paginationPageSizeSelector.push(rowCount);
+            }
             this.swal.Success_200();
           } else if (response.status === 204) {
             this.swal.Success_204();
@@ -327,6 +323,10 @@ export class SpecialBulkpackageComponent implements OnInit {
           if (response.status === 200) {
             this.updateColumnDefs(this.selectedTab);
             this.rowData = response.body;
+            const rowCount = this.rowData.length;
+            if (!this.gridOptions.paginationPageSizeSelector.includes(rowCount)) {
+              this.gridOptions.paginationPageSizeSelector.push(rowCount);
+            }
             this.swal.Success_200();
           } else if (response.status === 204) {
             this.swal.Success_204();
@@ -348,6 +348,10 @@ export class SpecialBulkpackageComponent implements OnInit {
           if (response.status === 200) {
             this.updateColumnDefs(this.selectedTab);
             this.rowData = response.body;
+            const rowCount = this.rowData.length;
+            if (!this.gridOptions.paginationPageSizeSelector.includes(rowCount)) {
+              this.gridOptions.paginationPageSizeSelector.push(rowCount);
+            }
             this.swal.Success_200();
           } else if (response.status === 204) {
             this.swal.Success_204();
@@ -373,6 +377,10 @@ export class SpecialBulkpackageComponent implements OnInit {
           if (response.status === 200) {
             this.updateColumnDefs(this.selectedTab);
             this.rowData = response.body;
+            const rowCount = this.rowData.length;
+            if (!this.gridOptions.paginationPageSizeSelector.includes(rowCount)) {
+              this.gridOptions.paginationPageSizeSelector.push(rowCount);
+            }
             this.swal.Success_200();
           } else if (response.status === 204) {
             this.swal.Success_204();
@@ -394,6 +402,10 @@ export class SpecialBulkpackageComponent implements OnInit {
           if (response.status === 200) {
             this.updateColumnDefs(this.selectedTab);
             this.rowData = response.body;
+            const rowCount = this.rowData.length;
+            if (!this.gridOptions.paginationPageSizeSelector.includes(rowCount)) {
+              this.gridOptions.paginationPageSizeSelector.push(rowCount);
+            }
             this.swal.Success_200();
           } else if (response.status === 204) {
             this.swal.Success_204();
@@ -416,6 +428,10 @@ export class SpecialBulkpackageComponent implements OnInit {
           if (response.status === 200) {
             this.updateColumnDefs(this.selectedTab);
             this.rowData = response.body;
+            const rowCount = this.rowData.length;
+            if (!this.gridOptions.paginationPageSizeSelector.includes(rowCount)) {
+              this.gridOptions.paginationPageSizeSelector.push(rowCount);
+            }
             this.swal.Success_200();
           } else if (response.status === 204) {
             this.swal.Success_204();

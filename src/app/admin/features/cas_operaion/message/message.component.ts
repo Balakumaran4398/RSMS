@@ -162,6 +162,10 @@ export class MessageComponent {
       console.log(data);
       this.rowData = data;
       console.log(this.rowData);
+      const rowCount = this.rowData.length;
+      if (!this.gridOptions.paginationPageSizeSelector.includes(rowCount)) {
+        this.gridOptions.paginationPageSizeSelector.push(rowCount);
+      }
     })
     console.log(this.castype);
 
@@ -446,6 +450,7 @@ export class MessageComponent {
       },
     },
     paginationPageSize: 15,
+    paginationPageSizeSelector:[10,20],
     pagination: true,
   }
   onGridReady(params: any) {

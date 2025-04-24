@@ -50,6 +50,7 @@ export class SpecialcancelsubscriptionComponent implements OnInit {
       floatingFilter: true
     },
     paginationPageSize: 10,
+    paginationPageSizeSelector:[10,20,50],
     pagination: true,
   }
   date: any;
@@ -167,6 +168,10 @@ export class SpecialcancelsubscriptionComponent implements OnInit {
         (response: any) => {
           console.log(response);
           this.rowData = response;
+          const rowCount = this.rowData.length;
+          if (!this.gridOptions.paginationPageSizeSelector.includes(rowCount)) {
+            this.gridOptions.paginationPageSizeSelector.push(rowCount);
+          }
           this.swal.Close();
         },
         (error) => {
@@ -190,6 +195,10 @@ export class SpecialcancelsubscriptionComponent implements OnInit {
         (response: any) => {
           console.log(response);
           this.rowData = response;
+          const rowCount = this.rowData.length;
+          if (!this.gridOptions.paginationPageSizeSelector.includes(rowCount)) {
+            this.gridOptions.paginationPageSizeSelector.push(rowCount);
+          }
           this.swal.Close();
         },
         (error) => {

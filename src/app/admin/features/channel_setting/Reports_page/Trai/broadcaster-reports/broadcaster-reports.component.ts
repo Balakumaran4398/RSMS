@@ -62,6 +62,7 @@ export class BroadcasterReportsComponent implements OnInit {
       },
     },
     paginationPageSize: 10,
+    paginationPageSizeSelector:[10,20,50],
     pagination: true,
     overlayNoRowsTemplate: `<span class="custom-overlay">No data to display</span>`,
   }
@@ -407,7 +408,7 @@ export class BroadcasterReportsComponent implements OnInit {
     }
 
     this.Date = [
-      
+
       {
         value: '04',
         name: 'All',
@@ -637,6 +638,10 @@ export class BroadcasterReportsComponent implements OnInit {
               this.addonlist = response.body.addonPackageList;
               this.alacartelist = response.body.alacartePackageList;
               this.baselist = response.body.basePackageList;
+              const rowCount = this.addonlist.length || this.alacartelist.length || this.baselist.length;
+              if (!this.gridOptions.paginationPageSizeSelector.includes(rowCount)) {
+                this.gridOptions.paginationPageSizeSelector.push(rowCount);
+              }
               this.swal.Close();
               if (this.baselist.length > 0) {
                 this.gridHeight = 600;
@@ -742,6 +747,10 @@ export class BroadcasterReportsComponent implements OnInit {
               // this.addonlist = response.body.addonList;
               // this.alacartelist = response.body.alacartePackageList;
               this.rowData = response.body.basePackageList;
+              const rowCount = this.rowData.length;
+              if (!this.gridOptions.paginationPageSizeSelector.includes(rowCount)) {
+                this.gridOptions.paginationPageSizeSelector.push(rowCount);
+              }
               console.log(this.rowData);
               this.swal.Close();
             } else if (response.status === 204) {

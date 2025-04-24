@@ -57,6 +57,7 @@ export class RefreshComponent implements OnDestroy{
       },
     },
     paginationPageSize: 10,
+    paginationPageSizeSelector:[10,20,50],    
     pagination: true,
   }
 
@@ -67,8 +68,12 @@ export class RefreshComponent implements OnDestroy{
     const formattedDate = formatDate(currentDate, 'yyyy-MM-dd', 'en-US');
     this.userservice.getBulkrefreshListByDate(this.role, this.username, 'Bulk Reactivate', formattedDate, 3)
       .subscribe(
-        (response: any) => { // Expect HttpResponse<any[]>
+        (response: any) => { 
           this.rowData = response;
+          const rowCount = this.rowData.length;
+          if (!this.gridOptions.paginationPageSizeSelector.includes(rowCount)) {
+            this.gridOptions.paginationPageSizeSelector.push(rowCount);
+          }
           //   if (response.status === 200) {
           //     this.rowData = response;
           //     // this.swal.Success_200();
@@ -203,13 +208,11 @@ export class RefreshComponent implements OnDestroy{
         (response: any) => {
           console.log(response);
           this.rowData = response;
-          // if (response.status === 200) {
-            
-          //   // this.swal.Success_200();
-          // } else if (response.status === 204) {
-          //   this.swal.Success_204();
-          // }
-        },
+          const rowCount = this.rowData.length;
+          if (!this.gridOptions.paginationPageSizeSelector.includes(rowCount)) {
+            this.gridOptions.paginationPageSizeSelector.push(rowCount);
+          }
+             },
         (error) => {
           if (error.status === 400) {
             this.swal.Error_400();
@@ -232,21 +235,11 @@ export class RefreshComponent implements OnDestroy{
       .subscribe(
         (response: any) => { // Expect HttpResponse<any[]>
           this.rowData = response;
-          //   if (response.status === 200) {
-          //     // this.swal.Success_200();
-          //   } else if (response.status === 204) {
-          //     this.rowData = '';
-          //     this.swal.Success_204();
-          //   }
-          // },
-          // (error) => {
-          //   if (error.status === 400) {
-          //     this.swal.Error_400();
-          //   } else if (error.status === 500) {
-          //     this.swal.Error_500();
-          //   } else {
-          //     Swal.fire('Error', 'Something went wrong. Please try again.', 'error');
-          //   }
+          const rowCount = this.rowData.length;
+          if (!this.gridOptions.paginationPageSizeSelector.includes(rowCount)) {
+            this.gridOptions.paginationPageSizeSelector.push(rowCount);
+          }
+          
         }
       );
   }

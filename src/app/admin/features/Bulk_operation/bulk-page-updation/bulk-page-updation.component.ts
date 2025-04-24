@@ -101,6 +101,7 @@ export class BulkPageUpdationComponent implements OnInit {
       },
     },
     paginationPageSize: 10,
+    paginationPageSizeSelector:[10,20],
     pagination: true,
     rowClassRules: {
       'always-selected': (params: any) => params.data,
@@ -239,6 +240,11 @@ export class BulkPageUpdationComponent implements OnInit {
         if (response.status === 200) {
           this.updateColumnDefs(this.selectedTab);
           this.rowData = response.body;
+          const rowCount = this.rowData.length;
+          if (!this.gridOptions.paginationPageSizeSelector.includes(rowCount)) {
+            this.gridOptions.paginationPageSizeSelector.push(rowCount);
+          }
+          
           this.swal.Success_200();
           successCallback();
         } else if (response.status === 204) {
@@ -503,6 +509,11 @@ export class BulkPageUpdationComponent implements OnInit {
         if (response.status === 200) {
           this.updateColumnDefs(this.selectedTab);
           this.rowData = response.body;
+          const rowCount = this.rowData.length;
+          if (!this.gridOptions.paginationPageSizeSelector.includes(rowCount)) {
+            this.gridOptions.paginationPageSizeSelector.push(rowCount);
+          }
+          
           this.swal.Success_200();
         } else if (response.status === 204) {
           this.swal.Success_204();

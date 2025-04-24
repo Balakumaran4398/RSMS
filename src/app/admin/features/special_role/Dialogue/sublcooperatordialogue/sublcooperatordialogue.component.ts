@@ -93,6 +93,7 @@ export class SublcooperatordialogueComponent implements OnInit {
       floatingFilter: true
     },
     paginationPageSize: 10,
+    paginationPageSizeSelector:[10,20,50],
     pagination: true,
   }
   rowData: any;
@@ -171,6 +172,10 @@ export class SublcooperatordialogueComponent implements OnInit {
     this.userservice.getSublcoDiscountList(this.role, this.username, this.operatorid || this.lcoid, this.retailerid).subscribe((data: any) => {
       this.rowData1 = data;
       console.log(this.rowData1);
+      const rowCount = this.rowData1.length;
+      if (!this.gridOptions.paginationPageSizeSelector.includes(rowCount)) {
+        this.gridOptions.paginationPageSizeSelector.push(rowCount);
+      }
 
     })
   }
@@ -467,6 +472,10 @@ export class SublcooperatordialogueComponent implements OnInit {
           if (response.status === 200) {
             this.updateColumnDefs(this.selectedTab);
             this.rowData = response.body;
+            const rowCount = this.rowData.length;
+            if (!this.gridOptions.paginationPageSizeSelector.includes(rowCount)) {
+              this.gridOptions.paginationPageSizeSelector.push(rowCount);
+            }
             this.swal.Success_200();
           } else if (response.status === 204) {
             this.swal.Success_204();
@@ -493,6 +502,10 @@ export class SublcooperatordialogueComponent implements OnInit {
           if (response.status === 200) {
             this.updateColumnDefs(this.selectedTab);
             this.rowData = response.body;
+            const rowCount = this.rowData.length;
+            if (!this.gridOptions.paginationPageSizeSelector.includes(rowCount)) {
+              this.gridOptions.paginationPageSizeSelector.push(rowCount);
+            }
             this.isReportReady = true;
             this.swal.Success_200();
           } else if (response.status === 204) {
