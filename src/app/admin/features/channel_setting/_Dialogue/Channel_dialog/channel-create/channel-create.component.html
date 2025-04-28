@@ -61,7 +61,7 @@
             </div>
             <div class="input_box">
                 <label for="ts_id" class="form-label">Transport Id</label>
-                <input type="text" class="" id="ts_id" formControlName="ts_id" (keydown)="onKeydown($event)"
+                <input type="text" class="" id="ts_id" formControlName="ts_id" (keydown)="onKeydown1($event)"
                     placeholder="Enter Transport Id">
                 <div *ngIf="form.get('ts_id')?.invalid && form.get('ts_id')?.touched" class="error-message">
                     Transport Id is required.
@@ -70,7 +70,7 @@
 
             <div class="input_box">
                 <label for="service_id" class="form-label">Service Id</label>
-                <input type="text" class="" id="service_id" formControlName="service_id" (keydown)="onKeydown($event)"
+                <input type="text" class="" id="service_id" formControlName="service_id" (keydown)="onKeydown1($event)"
                     placeholder="Enter Service Id">
                 <div *ngIf="form.get('service_id')?.invalid && form.get('service_id')?.touched" class="error-message">
                     Service Id is required.
@@ -87,7 +87,7 @@
             </div> -->
             <div class="input_box">
                 <label for="product_id" class="form-label">Product Id</label>
-                <input type="text" class="" id="product_id" formControlName="product_id" (keydown)="onKeydown($event)"
+                <input type="text" class="" id="product_id" formControlName="product_id" (keydown)="onKeydown1($event)"
                     placeholder="Enter Product Id">
                 <div *ngIf="form.get('product_id')?.invalid && form.get('product_id')?.touched" class="error-message">
                     Product Id is required.
@@ -108,7 +108,7 @@
             </div>
             <div class="input_box">
                 <label for="inr_amt" class="form-label">INR Amount</label>
-                <input type="text" class="" id="inr_amt" (keydown)="onKeydown($event)" formControlName="inr_amt"
+                <input type="text" class="" id="inr_amt" (keydown)="onKeydown1($event)" formControlName="inr_amt"
                     placeholder="Enter INR Amount">
                 <div *ngIf="form.get('inr_amt')?.invalid && form.get('inr_amt')?.touched" class="error-message">
                     INR Amount is required.

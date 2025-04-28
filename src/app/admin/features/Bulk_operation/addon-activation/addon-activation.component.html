@@ -52,7 +52,7 @@
                                 <input type="file" style="display: none;" accept=".xls,.xlsx,.csv"
                                     [disabled]="!isCheckboxChecked" (change)="handleFileInput($event)">
                             </label>
-                            <span class="mx-3" style="color:#0a21d0">{{filePath }} </span>
+                            <span class="mx-3" style="color:#0a21d0">{{filePath}} </span>
                         </div>
 
                         <div class="col-12 mb-3">
@@ -121,7 +121,7 @@
         </div>
         <div class="container ">
             <div class="row justify-content-center align-items-baseline mb-2">
-                <div class="col-12 col-md-2 mb-3 d-flex justify-content-center align-items-center mt-3">
+                <div class="col-12 col-md-3 mb-3 d-flex justify-content-center align-items-center mt-3">
                     <label class="btn btn-outline-primary">
                         <i class="fa fa-plus"></i> Choose
                         <input type="file" style="display: none;" accept=".xls,.xlsx,.csv"
@@ -173,9 +173,9 @@
                         </div>
 
                         <ag-grid-angular #agGrid id="myGrid" domLayout='normal' class="ag-theme-alpine table-class"
-                            rowAnimation [rowSelection]="rowSelection"
-                            [gridOptions]="gridOptions" [columnDefs]="columnDefs1" [rowData]="rowData"
-                            (gridReady)="onGridReady()" [enableCellTextSelection]="true">
+                            rowAnimation [rowSelection]="rowSelection" [gridOptions]="gridOptions"
+                            [columnDefs]="columnDefs1" [rowData]="rowData" (gridReady)="onGridReady()"
+                            [enableCellTextSelection]="true">
                         </ag-grid-angular>
                     </div>
                 </div>

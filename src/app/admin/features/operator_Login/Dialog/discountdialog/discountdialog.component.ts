@@ -44,7 +44,7 @@ export class DiscountdialogComponent implements OnInit {
 
   errorMessage: any;
   retailerid: any;
-
+  package_name: any;
   constructor(public dialogRef: MatDialogRef<DiscountdialogComponent>, @Inject(MAT_DIALOG_DATA) public data: any, private swal: SwalService, public dialog: MatDialog, private userService: BaseService, private storageservice: StorageService) {
     this.role = storageservice.getUserRole();
     this.username = storageservice.getUsername();
@@ -52,7 +52,9 @@ export class DiscountdialogComponent implements OnInit {
     console.log(data);
     // this.type = data.type;
     console.log(this.type);
-
+    this.package_name = data?.data.package_name;
+    console.log(this.package_name);
+    
     this.retailerid = data?.retailerid;
     console.log(this.retailerid);
     this.data_details = data.data;
@@ -252,7 +254,7 @@ export class DiscountdialogComponent implements OnInit {
         });
     } else if (this.role != 'ROLE_OPERATOR') {
       this.swal.Loading();
-      this.userService.updatePlanwiseDiscount(this.role, this.username,  0, this.orderid, this.plandiscount, 2, true)
+      this.userService.updatePlanwiseDiscount(this.role, this.username, 0, this.orderid, this.plandiscount, 2, true)
         .subscribe((res: any) => {
           this.swal.success(res?.message);
         }, (err) => {

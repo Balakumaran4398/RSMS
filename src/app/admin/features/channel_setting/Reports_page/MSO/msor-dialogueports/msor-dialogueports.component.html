@@ -21,9 +21,6 @@
                                 <option value="0" selected>Select Year</option>
                                 <option *ngFor="let year of years" [value]="year">{{ year }}</option>
                             </select>
-                            <!-- <div *ngIf="submitted && !selectedYear" class="text-danger" style="font-size: small;">
-                                Year is required
-                            </div> -->
                         </div>
                     </div>
 
@@ -38,33 +35,21 @@
                                 <option *ngFor="let month of months" [value]="month.value">{{ month.name }}
                                 </option>
                             </select>
-                            <!-- <div *ngIf="submitted && !selectedMonth" class="text-danger" style="font-size: small;">
-                                Month is required
-                            </div> -->
-
                         </div>
                     </div>
                     <div class="display1 mb-3">
-                        <!-- <div *ngIf="type == '1'" class="input_box_old display1 mb-3"> -->
                         <div class="col-6 col-md-6">
                             <span style="color: #243359;" for="">Reports</span>
                         </div>
                         <div class="col-6 col-md-6 display1">
                             <div class="export-icon col-6 col-md-3 mx-2">
-                                <!-- <img src="/assets/images/icons/Excel.png" alt="Excel Icon" width="40px">
-                                <div class="tooltip">Submit</div> -->
                                 <button class="btn btn-primary me-2 bttn"
                                     (click)="getMonthwisePaymentCollectionData()">Submit</button>
-
                             </div>
                             <div class="export-icon col-6 col-md-3 mx-2" (click)="monthwisePaymentCollectionExcel()">
                                 <img src="/assets/images/icons/Excel.png" alt="Excel Icon" width="40px">
                                 <div class="tooltip">Excel</div>
                             </div>
-                            <!-- <div class="export-icon col-6 col-md-3" (click)="monthwisePaymentCollectionPdf()">
-                                <img src="/assets/images/icons/pdf.png" alt="PDF Icon" width="40px">
-                                <div class="tooltip">Pdf</div>
-                            </div> -->
                         </div>
                     </div>
                 </div>

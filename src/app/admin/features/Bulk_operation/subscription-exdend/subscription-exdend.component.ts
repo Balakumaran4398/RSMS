@@ -192,6 +192,12 @@ export class SubscriptionExdendComponent implements OnInit {
       formData.append('optype', '7');
       formData.append('type', '10');
       formData.append('retailerid', '0');
+      formData.append('dueamount', '0.00');
+      formData.append('paidamount', '0.00');
+      formData.append('bill_type', '0');
+      formData.append('android_id', '0');
+      formData.append('device_id', '0');
+      formData.append('ui_type', '1');
       this.userservice.uploadFileForSubscriptionExtend(formData).subscribe(
         (res: any) => {
           console.log(res);

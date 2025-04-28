@@ -43,6 +43,8 @@ export class OperatordashboardComponent implements OnInit {
   subLcoPermission: any;
   onlineRecharge: any;
   LcorechargeCount: any;
+  isonlineRecharge: any;
+  rechargeHistory: boolean = false;
   type: any;
 
   months: any[] = [];
@@ -89,7 +91,7 @@ export class OperatordashboardComponent implements OnInit {
     } else if (this.role == 'ROLE_SUBLCO') {
       this.getSubLcoDetails();
       // this.getSubLcoDetailsCount();
-    }else if (this.role == 'ROLE_SUBSCRIBER') {
+    } else if (this.role == 'ROLE_SUBSCRIBER') {
       this.getSubscriberDetails();
     }
 
@@ -149,6 +151,9 @@ export class OperatordashboardComponent implements OnInit {
       this.operatorname = this.lcoDeatails?.operatorname;
       this.operatorBalance = this.lcoDeatails?.balance;
       this.LcorechargeCount = this.lcoDeatails?.todayrechargecount;
+      this.isonlineRecharge = this.lcoDeatails?.isonlinepayment;
+
+
       this.operataDetailsCount(this.operatorId)
       this.getbar(this.operatorId)
 
@@ -163,6 +168,9 @@ export class OperatordashboardComponent implements OnInit {
       this.subLcorechargeCount = this.lcoDeatails?.todayrechargeamount;
       this.subLcoPermission = this.lcoDeatails?.permissionlist;
       console.log(this.subLcoPermission);
+      console.log(data);
+      this.rechargeHistory = this.subLcoPermission?.rechargehistory;
+      console.log(this.rechargeHistory);
       this.onlineRecharge = this.subLcoPermission.online_recharge;
       this.getSubLcoDetailsCount(this.retailerid)
     })
@@ -173,9 +181,10 @@ export class OperatordashboardComponent implements OnInit {
       console.log(data);
       console.log('22222222');
       this.lcoDeatails = data;
-       console.log('SUBSCRIBER DETAILS', this.lcoDeatails);
+      console.log('SUBSCRIBER DETAILS', this.lcoDeatails);
     })
   }
+
   operatorDetails() {
     this.userService.getOperatorLoginDashboardCount(this.role, this.username).subscribe((data: any) => {
       this.operatorDetailsCount = data;

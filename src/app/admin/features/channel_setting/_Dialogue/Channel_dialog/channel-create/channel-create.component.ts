@@ -247,6 +247,17 @@ export class ChannelCreateComponent implements OnInit, AfterViewInit, OnDestroy 
     this.checkMaxValue();
 
   }
+  onKeydown1(event: KeyboardEvent) {
+    const allowedKeys = ['Backspace', 'ArrowLeft', 'ArrowRight', 'Tab', 'Delete'];
+
+    // Allow digits and dot, along with allowed keys
+    if (!/^[0-9.]$/.test(event.key) && !allowedKeys.includes(event.key)) {
+      event.preventDefault();
+    }
+
+    this.checkMaxValue();
+  }
+
   percentageValue(value: boolean) {
     this.ispercentage = value;
     this.checkMaxValue();

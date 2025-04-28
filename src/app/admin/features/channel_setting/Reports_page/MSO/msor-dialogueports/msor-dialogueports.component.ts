@@ -18,7 +18,15 @@ export interface SubscriberData {
   plan: number;
   amount: number;
 }
-
+interface TransactionTotals {
+  transaction_date: string;
+  cheque: number;
+  cash: number;
+  account: number;
+  online: number;
+  detection: number;
+  total: number;
+}
 @Component({
   selector: 'app-msor-dialogueports',
   templateUrl: './msor-dialogueports.component.html',
@@ -40,7 +48,7 @@ export class MsorDialogueportsComponent implements OnInit, OnDestroy {
       floatingFilter: true
     },
     paginationPageSize: 10,
-    paginationPageSizeSelector:[10,20,50],
+    paginationPageSizeSelector: [10, 20, 50],
     pagination: true,
   }
 
@@ -840,21 +848,15 @@ export class MsorDialogueportsComponent implements OnInit, OnDestroy {
 
   onSubscriberStatusChange(selectedOperator: any) {
     this.selectedOperator = selectedOperator;
-    // this.selectedLcoName = selectedOperator.value || this.operatorId;
     this.selectedLcoName = selectedOperator.value || this.operatorId || 0;
     this.selectedSubLcoName = 0;
     if (this.type == 'recharge_deduction_excluding') {
 
     } else if (this.type == 'lcoinvoice') {
-
     }
     else {
       this.subLcoList(this.selectedOperator.value || this.operatorId || 0)
     }
-
-
-
-
     if (selectedOperator.value === 0) {
       console.log("Selected: All Operator (Value: 0)");
       this.selectedLcoName = selectedOperator.value;
@@ -955,7 +957,6 @@ export class MsorDialogueportsComponent implements OnInit, OnDestroy {
           { headerName: 'MOBILE', field: 'contactnumber', width: 200 },
         ]
       }
-
     } else if (this.type == 'recharge_deduction_including') {
       this.columnDefs = [
         { headerName: "S.No", lockPosition: true, valueGetter: 'node.rowIndex+1', headerCheckboxSelection: false, checkboxSelection: false, width: 70, filter: false },
@@ -967,11 +968,9 @@ export class MsorDialogueportsComponent implements OnInit, OnDestroy {
         { headerName: 'TRANSACTION DATE', field: 'transactiondate', width: 250 },
         { headerName: 'REMARKS', field: 'transactionremarks', width: 200 },
         { headerName: 'TYPE', field: 'transactiongroupname', width: 200 },
-        // { headerName: 'TRANSACTION DATE	', field: 'transaction_date', width: 350 },
         { headerName: 'AMOUNT', field: 'total', width: 150, cellStyle: { textAlign: 'center', color: 'green' } },
       ]
     }
-
     else if (this.type == 'monthly_datewise') {
       this.columnDefs = [
         { headerName: "S.No", lockPosition: true, valueGetter: 'node.rowIndex+1', width: 90 },
@@ -1002,8 +1001,8 @@ export class MsorDialogueportsComponent implements OnInit, OnDestroy {
     } else if (this.type == 'lco_active_subscription') {
       this.columnDefs = [
         { headerName: "S.No", lockPosition: true, valueGetter: 'node.rowIndex+1', headerCheckboxSelection: false, checkboxSelection: false, width: 90, filter: false },
-        { headerName: 'OPERATOR ID', field: 'operatorname',  },
-        { headerName: 'OPERATOR NAME', field: 'operatorname',  },
+        { headerName: 'OPERATOR ID', field: 'operatorname', },
+        { headerName: 'OPERATOR NAME', field: 'operatorname', },
         { headerName: 'MOBILE NUMBER', field: 'mobileno', cellStyle: { textAlign: 'center' }, },
         { headerName: 'AREA NAME', field: 'areaname', cellStyle: { textAlign: 'left', color: 'green' }, },
         { headerName: 'LCO INVENTORY', field: 'lcoend', cellStyle: { textAlign: 'center' } },
@@ -1017,9 +1016,9 @@ export class MsorDialogueportsComponent implements OnInit, OnDestroy {
       this.columnDefs = [
         { headerName: "S.No", lockPosition: true, valueGetter: 'node.rowIndex+1', filter: false, headerCheckboxSelection: false, checkboxSelection: false, width: 90 },
         { headerName: 'OPERATOR ID', field: 'operator_id', cellStyle: { textAlign: 'center' } },
-        { headerName: 'OPERATOR NAME', field: 'name',  },
+        { headerName: 'OPERATOR NAME', field: 'name', },
         { headerName: 'MOBILE NUMBER', field: 'mobileno', },
-        { headerName: 'AREA NAME', field: 'area',  },
+        { headerName: 'AREA NAME', field: 'area', },
         { headerName: 'ACTIVE COUNT', field: 'active', cellStyle: { textAlign: 'center' } },
         { headerName: 'EXPIRY COUNT', field: 'deactive', cellStyle: { textAlign: 'center' } },
         { headerName: `EXPIRY COUNT ${this.selectedMonthName}`, field: 'expiryfrom', cellStyle: { textAlign: 'center' } },
@@ -1096,10 +1095,6 @@ export class MsorDialogueportsComponent implements OnInit, OnDestroy {
     }
 
   }
-
-
-
-
   onGridReady(params: { api: any; }) {
     this.gridApi = params.api;
   }
@@ -1109,16 +1104,13 @@ export class MsorDialogueportsComponent implements OnInit, OnDestroy {
     const day = String(date.getDate()).padStart(2, '0');
     return `${year}-${month}-${day}`;
   }
-
-
   formatDate1(date: Date): string {
     const year = date.getFullYear();
-    const month = String(date.getMonth() + 1).padStart(2, '0'); // Months are 0-indexed
+    const month = String(date.getMonth() + 1).padStart(2, '0'); 
     const day = String(date.getDate()).padStart(2, '0');
     return `${year}-${month}-${day}`;
   }
   cur_date: any;
-
   getFromDate(event: any) {
     const date = new Date(event.value).getDate().toString().padStart(2, '0');
     const month = (new Date(event.value).getMonth() + 1).toString().padStart(2, '0');

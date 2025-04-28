@@ -60,7 +60,7 @@ export class BulkBaseChangeComponent implements OnInit {
       },
     },
     paginationPageSize: 10,
-    paginationPageSizeSelector:[10,20],
+    paginationPageSizeSelector: [10, 20],
     pagination: true,
   }
   username: any;
@@ -70,6 +70,7 @@ export class BulkBaseChangeComponent implements OnInit {
   date: any;
   selectedDate: any;
   isFileSelected: boolean = false;
+  iscollected: boolean = false;
   packageList: any[] = [];
   package: any;
 
@@ -171,7 +172,11 @@ export class BulkBaseChangeComponent implements OnInit {
       formData.append('retailerid', '0');
       formData.append('paidamount', '0.00');
       formData.append('dueamount', '0.00');
-
+      formData.append('comments', 'No Comment');
+      formData.append('android_id', '0.00');
+      formData.append('device_id', '0');
+      formData.append('ui_type', '1');
+      formData.append('iscollected', 'true');
       this.userservice.uploadFileForBaseChange(formData)
         .subscribe((res: any) => {
           this.swal.success(res?.message);
@@ -243,5 +248,8 @@ export class BulkBaseChangeComponent implements OnInit {
           }
         }
       );
+  }
+  onBillTypeChange(type: any) {
+    console.log(type)
   }
 }

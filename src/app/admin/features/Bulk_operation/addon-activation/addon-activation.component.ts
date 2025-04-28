@@ -378,6 +378,14 @@ export class AddonActivationComponent {
       formData.append('retailerid', '0');
       formData.append('optype', '3');
       formData.append('selectedlist', this.alacarteList);
+      formData.append('dueamount', '0');
+      formData.append('paidamount', '0');
+      formData.append('android_id', '0');
+      formData.append('device_id', '0');
+      formData.append('ui_type', '1');
+      formData.append('comments', 'No Comment');
+      formData.append('billtype', '0');
+      formData.append('iscollected', 'false');
       this.swal.Loading();
       this.userservice.uploadFileForAddonAndAlacarteActivation(formData)
         .subscribe((res: any) => {
@@ -416,7 +424,14 @@ export class AddonActivationComponent {
       formData.append('retailerid', '0');
       formData.append('optype', '5');
       formData.append('selectedlist', this.alacarteList);
-
+      formData.append('dueamount', '0');
+      formData.append('paidamount', '0');
+      formData.append('android_id', '0');
+      formData.append('device_id', '0');
+      formData.append('ui_type', '1');
+      formData.append('comments', 'No Comment');
+      formData.append('billtype', '0');
+      formData.append('iscollected', 'false');
       this.userservice.uploadFileForAddonAndAlacarteActivation(formData)
         .subscribe((res: any) => {
           this.swal.success(res?.message);

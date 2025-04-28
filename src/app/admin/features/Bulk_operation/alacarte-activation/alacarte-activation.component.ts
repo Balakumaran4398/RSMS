@@ -249,6 +249,14 @@ export class AlacarteActivationComponent {
       formData.append('retailerid', '0');
       formData.append('optype', '6');
       formData.append('selectedlist', this.alacarteList);
+      formData.append('dueamount', '0');
+      formData.append('paidamount', '0');
+      formData.append('android_id', '0');
+      formData.append('device_id', '0');
+      formData.append('ui_type', '1');
+      formData.append('comments', 'No Comment');
+      formData.append('billtype', '0');
+      formData.append('iscollected', 'false');
       this.userservice.uploadFileForAddonAndAlacarteActivation(formData)
         .subscribe((res: any) => {
           this.swal.success(res?.message);
@@ -286,7 +294,14 @@ export class AlacarteActivationComponent {
       formData.append('retailerid', '0');
       formData.append('optype', '4');
       formData.append('selectedlist', this.alacarteList);
-
+      formData.append('dueamount', '0');
+      formData.append('paidamount', '0');
+      formData.append('android_id', '0');
+      formData.append('device_id', '0');
+      formData.append('ui_type', '1');
+      formData.append('comments', 'No Comment');
+      formData.append('billtype', '0');
+      formData.append('iscollected', 'false');
       this.userservice.uploadFileForAddonAndAlacarteActivation(formData)
         .subscribe((res: any) => {
           this.swal.success(res?.message);

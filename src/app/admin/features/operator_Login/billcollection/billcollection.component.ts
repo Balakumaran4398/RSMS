@@ -54,6 +54,12 @@ export class BillcollectionComponent implements OnInit {
   total_recharge: any;
   total_excess: any;
 
+  isAnyRowSelected: any = false;
+  selectedIds: number[] = [];
+  selectedtypes: number[] = [];
+  selectCount: number[] = [];
+
+  public rowSelection: any = "multiple";
   constructor(private dialog: MatDialog, private userService: BaseService, private storageService: StorageService, private swal: SwalService, private router: Router, private operator: OperatorService) {
     this.role = storageService.getUserRole();
     this.username = storageService.getUsername();
@@ -116,6 +122,23 @@ export class BillcollectionComponent implements OnInit {
   onGridReady(params: { api: any; }) {
     this.gridApi = params.api;
     this.loadTableData("");
+  }
+
+  onSelectionChanged() {
+    if (this.gridApi) {
+      const selectedRows = this.gridApi.getSelectedRows();
+      this.isAnyRowSelected = selectedRows.length > 0;
+      console.log("Selected Rows:", selectedRows);
+      this.selectCount = selectedRows.length
+      // Extracting IDs from selected rows
+      this.selectedIds = selectedRows.map((e: any) => e.id);
+
+      // Extracting 'isactive' from selected rows
+      this.selectedtypes = selectedRows.map((e: any) => e.isactive);
+
+      console.log("Selected IDs:", this.selectedIds);
+      console.log("Selected Types:", this.selectedtypes);
+    }
   }
   getLCO(operator: any) {
     console.log(operator);
@@ -230,7 +253,8 @@ export class BillcollectionComponent implements OnInit {
 
     this.columnnDefs = [
       {
-        headerName: "S.No", lockPosition: true, valueGetter: 'node.rowIndex+1', width: 100, filter: false
+        headerName: "S.No", lockPosition: true, valueGetter: 'node.rowIndex+1', headerCheckboxSelection: true, filter: false, width: 100,
+        checkboxSelection: true,
       },
       {
         headerName: "PAY OPTION", field: 'productname', width: 100, cellStyle: { textAlign: 'left' },
@@ -248,6 +272,8 @@ export class BillcollectionComponent implements OnInit {
           //   this.openEditDialog(params.data, 'pay_option');
           // });
           if (!isActive) {
+            console.log('isActive');
+
             payButton.style.opacity = '0.5';
             payButton.title = 'Cannot pay, status is Deactive';
           } else {
@@ -286,37 +312,52 @@ export class BillcollectionComponent implements OnInit {
 
         }
       },
+
+
       {
         headerName: "Edit", width: 100, cellStyle: { textAlign: 'left' },
         cellRenderer: (params: any) => {
-          const isActive = params.data.paid_amount === '0' || params.data.extra_amount <= '0';
+          const { paid_amount, new_balance, extra_amount } = params.data;
+          console.log('paid_amount', paid_amount);
+          console.log('new_balance', new_balance);
+          console.log('extra_amount', extra_amount);
+
+          const shouldHide = ((paid_amount == '0.00' || '0') && new_balance == '0' && (extra_amount == '0.00' || '0')) && (paid_amount == '0.00' || '0') && new_balance != '0' && (extra_amount == '0.00' || '0');
+          const shouldEnable = ((paid_amount == '0.00' || '0') && new_balance != '0' && (extra_amount != '0.00' || '0') && (paid_amount == '0.00' || '0') && new_balance == '0' && (extra_amount != '0.00' || '0'));
+
+          const div = document.createElement('div');
+
+          if (shouldHide) {
+            // Don't render the button at all
+            return div;
+          }
+
           const payButton = document.createElement('button');
-          payButton.innerHTML = ' <img src="/assets/images/icons/EditLTP.png" style="width:70px">';
+          payButton.innerHTML = '<img src="/assets/images/icons/EditLTP.png" style="width:70px">';
           payButton.style.backgroundColor = 'transparent';
           payButton.style.color = 'rgb(2 85 13)';
           payButton.style.border = 'none';
-          payButton.title = 'Edit the Customer';
           payButton.style.cursor = 'pointer';
           payButton.style.marginRight = '6px';
-          // payButton.addEventListener('click', () => {
-          //   this.openEditDialog(params.data, 'pay_edit');
-          // });
 
-
-          if (!isActive) {
-            payButton.style.opacity = '0.5';
-            payButton.title = 'Cannot pay, status is Deactive';
-          } else {
+          if (shouldEnable) {
+            payButton.title = 'Pay Now, status is Active';
             payButton.addEventListener('click', () => {
               this.openEditDialog(params.data, 'pay_edit');
             });
-            payButton.title = 'Pay Now, status is Active';
+          } else {
+            payButton.disabled = true;
+            payButton.style.opacity = '0.5';
+            payButton.title = 'Cannot pay, status is not valid';
           }
-          const div = document.createElement('div');
+
           div.appendChild(payButton);
           return div;
         },
       },
+
+
+
       { headerName: "SUBSCRIBER NAME", field: 'customer_name', width: 180 },
       {
         headerName: "PAID", field: 'paid_amount', width: 120,
@@ -452,6 +493,47 @@ export class BillcollectionComponent implements OnInit {
       showConfirmButton: false,
       didOpen: () => {
         Swal.showLoading(null);
+      }
+    });
+  }
+
+  Active(ids: any) {
+    Swal.fire({
+      title: "Are you sure?",
+      text: "You won't be able to Reset this!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, Reset it!"
+    }).then((result) => {
+      if (result.isConfirmed) {
+        Swal.fire({
+          title: 'Updateing...',
+          text: 'Please wait , updated',
+          allowOutsideClick: false,
+          didOpen: () => {
+            Swal.showLoading(null);
+          }
+        });
+        this.userService.getresetPayBill(this.role, this.username, ids).subscribe((res: any) => {
+          Swal.fire({
+            title: 'Activated!',
+            text: res.message,
+            icon: 'success',
+            timer: 2000,
+            timerProgressBar: true,
+          });
+          this.ngOnInit();
+        }, (err) => {
+          Swal.fire({
+            title: 'Error!',
+            text: err?.error?.message,
+            icon: 'error',
+            timer: 2000,
+            timerProgressBar: true,
+          });
+        });
       }
     });
   }

@@ -18,7 +18,7 @@ import { from, Observable } from 'rxjs';
   styleUrls: ['./bulk-page-updation.component.scss']
 })
 export class BulkPageUpdationComponent implements OnInit {
-  selectedTab: string = 'archive';
+  selectedTab: string = 'bulk_package';
   package: any = '';
   operatorid: any;
   selectoperator: any;
@@ -178,23 +178,12 @@ export class BulkPageUpdationComponent implements OnInit {
         { headerName: "SMARTCARD", field: 'smartcard', width: 250 },
         { headerName: "BOX ID", field: 'boxid', width: 250 },
         { headerName: "CREATED DATE", field: 'createddate', width: 250 },
-        { headerName: "PACKAGE NAME", field: 'expirydate', width: 250, cellStyle: { textAlign: 'left' } },
-        { headerName: "EXPIRY DATE", field: 'packagename', width: 250 },
+        { headerName: "PACKAGE NAME", field: 'packagename', width: 250, cellStyle: { textAlign: 'left' } },
+        { headerName: "EXPIRY DATE", field: 'expirydate', width: 250 },
         {
           headerName: "STATUS", width: 230,
           field: 'casresponse',
-          // field: 'status',
-          // cellRenderer: (params: any) => {
-          //   return params.value === 1 ? 'Active' : 'Deactive';
-          // },
-          // cellStyle: (params: any) => {
-          //   if (params.value === 1) {
-          //     return { color: 'green', fontWeight: 'bold' };
-          //   } else if (params.value === 0) {
-          //     return { color: 'red', fontWeight: 'bold' };
-          //   }
-          //   return null;
-          // }
+      
         }
 
       ];

@@ -528,10 +528,14 @@ export class BaseService {
     return this.http.post<any[]>(
       BASE_URL + "/subscriber/addSmartcardToSubscriber?role=" + role + "&username=" + encodeURIComponent(username) + "&operatorid=" + operatorid + "&castype=" + castype + "&smartcard=" + smartcard + "&boxid=" + boxid + "&subid=" + subid, {});
   }
-  transferLcoToSmartcard(role: any, username: any, operatorid: any, areaid: any, streetid: any, subid: any, withsubscription: boolean, retailerid: any, type: any): Observable<any[]> {
+  transferLcoToSmartcard(role: any, username: any, operatorid: any, areaid: any, streetid: any, subid: any, withsubscription: boolean, retailerid: any, type: any, andorid_id: any, device_id: any, ui_type: any, comments: any): Observable<any[]> {
     return this.http.post<any[]>(
-      BASE_URL + "/subscriber/transferLcoToSmartcard?role=" + role + "&username=" + encodeURIComponent(username) + "&operatorid=" + operatorid + "&areaid=" + areaid + "&streetid=" + streetid + "&subid=" + subid + "&withsubscription=" + withsubscription + "&retailerid=" + retailerid + "&type=" + type, {});
+      BASE_URL + "/subscriber/transferLcoToSmartcard?role=" + role + "&username=" + encodeURIComponent(username) + "&operatorid=" + operatorid + "&areaid=" + areaid + "&streetid=" + streetid + "&subid=" + subid + "&withsubscription=" + withsubscription + "&retailerid=" + retailerid + "&type=" + type + "&andorid_id=" + andorid_id + "&device_id=" + device_id + "&ui_type=" + ui_type + "&comments=" + comments, {});
   }
+  // transferLcoToSmartcard(role: any, username: any, operatorid: any, areaid: any, streetid: any, subid: any, withsubscription: boolean, retailerid: any, type: any): Observable<any[]> {
+  //   return this.http.post<any[]>(
+  //     BASE_URL + "/subscriber/transferLcoToSmartcard?role=" + role + "&username=" + encodeURIComponent(username) + "&operatorid=" + operatorid + "&areaid=" + areaid + "&streetid=" + streetid + "&subid=" + subid + "&withsubscription=" + withsubscription + "&retailerid=" + retailerid + "&type=" + type, {});
+  // }
   getSubDetailsBySubId(role: any, username: any, subid: any): Observable<any[]> {
     return this.http.get<any[]>(
       BASE_URL + "/subscriber/getSubDetailsBySubId?role=" + role + "&username=" + encodeURIComponent(username) + "&subid=" + subid);
@@ -578,9 +582,13 @@ export class BaseService {
     return this.http.post<any[]>(
       BASE_URL + "/subscriber/CancelSubscriptionOfSmartcardDetails?role=" + role + "&username=" + encodeURIComponent(username) + "&smartcard=" + smartcard, {});
   }
-  cancelSmartcard(role: any, username: any, smartcard: any, type: any, retailerid: any): Observable<any[]> {
+  // cancelSmartcard(role: any, username: any, smartcard: any, type: any, retailerid: any): Observable<any[]> {
+  //   return this.http.post<any[]>(
+  //     BASE_URL + "/subscriber/CancelSmartcard?role=" + role + "&username=" + encodeURIComponent(username) + "&smartcard=" + smartcard + "&type=" + type + "&retailerid=" + retailerid, {});
+  // }
+  cancelSmartcard(role: any, username: any, smartcard: any, type: any, retailerid: any, android_id: any, device_id: any, ui_type: any, comments: any): Observable<any[]> {
     return this.http.post<any[]>(
-      BASE_URL + "/subscriber/CancelSmartcard?role=" + role + "&username=" + encodeURIComponent(username) + "&smartcard=" + smartcard + "&type=" + type + "&retailerid=" + retailerid, {});
+      BASE_URL + "/subscriber/CancelSmartcard?role=" + role + "&username=" + encodeURIComponent(username) + "&smartcard=" + smartcard + "&type=" + type + "&retailerid=" + retailerid + "&android_id=" + android_id + "&device_id=" + device_id + "&ui_type=" + ui_type + "&comments=" + comments, {});
   }
   pinchange(role: any, username: any, smartcard: any, pinnumber: any, type: any, retailerid: any): Observable<any[]> {
     return this.http.post<any[]>(
@@ -594,7 +602,6 @@ export class BaseService {
     return this.http.post<any[]>(
       BASE_URL + "/subscriber/ReactivationofSmartcard?role=" + role + "&username=" + encodeURIComponent(username) + "&smartcard=" + smartcard + "&retailerid=" + retailerid + "&type=" + type, {});
   }
-
   deleteForceMessage(role: any, username: any, smartcard: any): Observable<any[]> {
     return this.http.post<any[]>(
       BASE_URL + "/subscriber/deleteForceMessage?role=" + role + "&username=" + encodeURIComponent(username) + "&smartcard=" + smartcard, {});
@@ -607,12 +614,9 @@ export class BaseService {
     return this.http.post<any[]>(
       BASE_URL + "/subscriber/ForceTuning?role=" + role + "&username=" + encodeURIComponent(username) + "&smartcard=" + smartcard, {});
   }
-
   sendMessage(requestBody: any): Observable<any[]> {
     return this.http.post<any[]>(BASE_URL + "/subscriber/sendMessage", requestBody, {});
   }
-
-
   firsttimeActivationOfCard(requestBody: any): Observable<any[]> {
     return this.http.post<any[]>(BASE_URL + "/subscriber/FirsttimeActivationOfCard", requestBody, {});
   }
@@ -668,9 +672,13 @@ export class BaseService {
       BASE_URL + "/subscriber/getPdfSubscriberRechargeDetails?role=" + role + "&username=" + encodeURIComponent(username) + "&subid=" + subid + "&input=" + input, { responseType: 'blob' });
   }
 
-  lcotransferSinglesmartcard(role: any, username: any, operatorid: any, newsubid: any, withsubscription: any, smartcard: any, retailerid: any, type: any): Observable<any[]> {
+  // lcotransferSinglesmartcard(role: any, username: any, operatorid: any, newsubid: any, withsubscription: any, smartcard: any, retailerid: any, type: any): Observable<any[]> {
+  //   return this.http.post<any[]>(
+  //     BASE_URL + "/subscriber/lcotransferSinglesmartcard?role=" + role + "&username=" + encodeURIComponent(username) + "&operatorid=" + operatorid + "&newsubid=" + newsubid + "&withsubscription=" + withsubscription + "&smartcard=" + smartcard + "&retailerid=" + retailerid + "&type=" + type, {});
+  // }
+  lcotransferSinglesmartcard(role: any, username: any, operatorid: any, newsubid: any, withsubscription: any, smartcard: any, retailerid: any, type: any, andorid_id: any, device_id: any, ui_type: any, comments: any): Observable<any[]> {
     return this.http.post<any[]>(
-      BASE_URL + "/subscriber/lcotransferSinglesmartcard?role=" + role + "&username=" + encodeURIComponent(username) + "&operatorid=" + operatorid + "&newsubid=" + newsubid + "&withsubscription=" + withsubscription + "&smartcard=" + smartcard + "&retailerid=" + retailerid + "&type=" + type, {});
+      BASE_URL + "/subscriber/lcotransferSinglesmartcard?role=" + role + "&username=" + encodeURIComponent(username) + "&operatorid=" + operatorid + "&newsubid=" + newsubid + "&withsubscription=" + withsubscription + "&smartcard=" + smartcard + "&retailerid=" + retailerid + "&type=" + type + "&andorid_id=" + andorid_id + "&device_id=" + device_id + "&ui_type=" + ui_type + "&comments=" + comments, {});
   }
   // checkLoginCredenticals(role: any, username: any, userid: any, password: boolean, type: any): Observable<any[]> {
   //   return this.http.post<any[]>(
@@ -684,9 +692,9 @@ export class BaseService {
     return this.http.post<any[]>(
       BASE_URL + "/subscriber/PairSmartcardOrBoxid?role=" + role + "&username=" + encodeURIComponent(username) + "&ischeck=" + ischeck + "&smartcard=" + smartcard + "&boxid=" + boxid + "&retailerid=" + retailerid + "&type=" + type, {});
   }
-  UnpairSmartcardOrBoxId(role: any, username: any, ischeck: any, smartcard: boolean, retailerid: any, type: any): Observable<any[]> {
+  UnpairSmartcardOrBoxId(role: any, username: any, ischeck: any, smartcard: boolean, retailerid: any, type: any, andorid_id: any, device_id: any, ui_type: any, comments: any): Observable<any[]> {
     return this.http.post<any[]>(
-      BASE_URL + "/subscriber/UnpairSmartcardOrBoxId?role=" + role + "&username=" + encodeURIComponent(username) + "&ischeck=" + ischeck + "&smartcard=" + smartcard + "&retailerid=" + retailerid + "&type=" + type, {});
+      BASE_URL + "/subscriber/UnpairSmartcardOrBoxId?role=" + role + "&username=" + encodeURIComponent(username) + "&ischeck=" + ischeck + "&smartcard=" + smartcard + "&retailerid=" + retailerid + "&type=" + type + "&andorid_id=" + andorid_id + "&device_id=" + device_id + "&ui_type=" + ui_type + "&comments=" + comments, {});
   }
   getChannellistByPackageIdAndProductType(role: any, username: any, packageid: any, producttype: any): Observable<any[]> {
     return this.http.get<any[]>(
@@ -1147,9 +1155,10 @@ export class BaseService {
       BASE_URL + "/bulk/getBulkOperationRefreshList?role=" + role + "&username=" + encodeURIComponent(username) + "&remarks=" + remarks + "&optype=" + optype, { observe: 'response' }
     );
   }
-  getBulkRefreshList(role: any, username: any, remarks: any, optype: any): Observable<any[]> {
+  // getBulkRefreshList(role: any, username: any, remarks: any, optype: any): Observable<any[]> {
+  getBulkRefreshList(role: any, username: any, remarks: any, optype: any): Observable<HttpResponse<any[]>> {
     return this.http.get<any[]>(
-      BASE_URL + "/bulk/getBulkOperationRefreshList?role=" + role + "&username=" + encodeURIComponent(username) + "&remarks=" + remarks + "&optype=" + optype, {}
+      BASE_URL + "/bulk/getBulkOperationRefreshList?role=" + role + "&username=" + encodeURIComponent(username) + "&remarks=" + remarks + "&optype=" + optype, { observe: 'response' }
     );
   }
 
@@ -1166,10 +1175,11 @@ export class BaseService {
       { observe: 'response' }
     );
   }
-  getBulkrefreshListByDate(role: any, username: any, remarks: any, date: any, optype: any): Observable<any[]> {
+  // getBulkrefreshListByDate(role: any, username: any, remarks: any, date: any, optype: any): Observable<any[]> {
+  getBulkrefreshListByDate(role: any, username: any, remarks: any, date: any, optype: any): Observable<HttpResponse<any[]>> {
     return this.http.get<any[]>(
       BASE_URL + "/bulk/getBulkOperationListByDate?role=" + role + "&username=" + encodeURIComponent(username) + "&remarks=" + remarks + "&date=" + date + "&optype=" + optype,
-      {}
+      { observe: 'response' }
     );
   }
   // getDeactivationRefresh(role: any, username: any, remarks: any, optype: any): Observable<HttpResponse<any[]>> {
@@ -2273,6 +2283,9 @@ export class BaseService {
   getUpdateChipidForceDate(role: any, username: any, operatorid: any, date: any): Observable<any[]> {
     return this.http.post<any>(BASE_URL + "/allocation/updateChipidForceDate?role=" + role + "&username=" + encodeURIComponent(username) + "&operatorid=" + operatorid + "&date=" + date, {})
   }
+  getresetPayBill(role: any, username: any, resetid: any,): Observable<any[]> {
+    return this.http.post<any>(BASE_URL + "/operator/resetPayBill?role=" + role + "&username=" + encodeURIComponent(username) + "&resetid=" + resetid, {})
+  }
 
   // ======================================================SUBLCO DETAILS====================================================
   // getSublcoDetails(role: any, username: any): Observable<any[]> {
@@ -2308,5 +2321,23 @@ export class BaseService {
   }
   getchangeSubscriberPassword(role: any, username: any, oldpassword: any, newpassword: any, confirmpassword: any, subid: any): Observable<any[]> {
     return this.http.post<any[]>(BASE_URL + "/subscriber/changeSubscriberPassword?role=" + role + "&username=" + encodeURIComponent(username) + "&oldpassword=" + oldpassword + "&newpassword=" + newpassword + "&confirmpassword=" + confirmpassword + "&subid=" + subid, {});
+  }
+
+  // =================================================Swap==================================
+  getSwapSubscriberSmartcard(role: any, username: any, oldsmartcard: any, newsmartcard: any, type: any, retailerid: any): Observable<any[]> {
+    return this.http.post<any[]>(BASE_URL + "/subscriber/swapSubscriberSmartcard?role=" + role + "&username=" + encodeURIComponent(username) + "&oldsmartcard=" + oldsmartcard + "&newsmartcard=" + newsmartcard + "&type=" + type + "&retailerid=" + retailerid, {});
+  }
+
+  // ==================================================QR=================================
+  getGenerateQrCode(role: any, username: any, smartcard: any,): Observable<any[]> {
+    return this.http.post<any[]>(BASE_URL + "/subscriber/generateQrCode?role=" + role + "&username=" + encodeURIComponent(username) + "&smartcard=" + smartcard, {});
+  }
+  // -------------------------------download QR-------------
+  getDownloadQR(role: any, username: any, smartcard: any): Observable<any[]> {
+    return this.http.get<any>(BASE_URL + "/subscriber/downloadQR?role=" + role + "&username=" + username + "&smartcard=" + smartcard,)
+  }
+  // ============================================================== comboPackageUpdateHistory =====================================
+  getcomboPackageUpdateHistoryReport(role: any, username: any, fromdate: any, todate: any, packageid: any, reporttype: any, packagetype: any): Observable<any[]> {
+    return this.http.get<any>(BASE_URL + "/report/getcomboPackageUpdateHistoryReport?role=" + role + "&username=" + username + "&fromdate=" + fromdate + "&todate=" + todate + "&packageid=" + packageid + "&reporttype=" + reporttype + "&packagetype=" + packagetype,)
   }
 }

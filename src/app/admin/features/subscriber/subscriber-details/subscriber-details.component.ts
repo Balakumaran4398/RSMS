@@ -20,7 +20,7 @@ export class SubscriberDetailsComponent implements OnInit {
   sub_list: any;
   searchTerm: string = '';
   gridApi: any;
-   gridOptions = {
+  gridOptions = {
     defaultColDef: {
       sortable: true,
       resizable: true,
@@ -29,7 +29,7 @@ export class SubscriberDetailsComponent implements OnInit {
       comparator: (valueA: any, valueB: any) => {
         const isNumberA = !isNaN(valueA) && valueA !== null;
         const isNumberB = !isNaN(valueB) && valueB !== null;
-  
+
         if (isNumberA && isNumberB) {
           return valueA - valueB;
         } else {
@@ -42,7 +42,7 @@ export class SubscriberDetailsComponent implements OnInit {
       },
     },
     paginationPageSize: 15,
-    paginationPageSizeSelector:[10,20,50],
+    paginationPageSizeSelector: [10, 20, 50],
     pagination: true,
   };
 
@@ -71,7 +71,7 @@ export class SubscriberDetailsComponent implements OnInit {
   private updateColumnDefs(selectedStatusId: string): void {
     if (selectedStatusId === '0') {
       this.columnDefs = [
-        { headerName: "S.No", lockPosition: true, valueGetter: 'node.rowIndex+1', width: 100, filter: false},
+        { headerName: "S.No", lockPosition: true, valueGetter: 'node.rowIndex+1', width: 100, filter: false },
         {
           headerName: 'SUBSCRIBER NAME',
           field: 'customername',
@@ -132,18 +132,18 @@ export class SubscriberDetailsComponent implements OnInit {
             console.log('Smartcard:', smartcard);
             if (smartcard) {
               this.router.navigate([`/admin/subscriber-full-info/${smartcard}/subsmartcard`])
-              .then(() => {
-                setTimeout(() => {
-                  window.location.reload();
-                }, 100);
-              });
+                .then(() => {
+                  setTimeout(() => {
+                    window.location.reload();
+                  }, 100);
+                });
             } else if (subid) {
               this.router.navigate([`/admin/subscriber-full-info/${subid}/new`])
-              .then(() => {
-                setTimeout(() => {
-                  window.location.reload();
-                }, 100);
-              });
+                .then(() => {
+                  setTimeout(() => {
+                    window.location.reload();
+                  }, 100);
+                });
             }
           }
         },
@@ -439,24 +439,57 @@ export class SubscriberDetailsComponent implements OnInit {
       return;
     }
     this.rowData = [];
+    // this.swal.Loading();
+    // this.userservice.getsubscriberlist_subscriber(this.role, this.username, this.selectedStatusId)
+    //   .subscribe((data: any) => {
+    //     console.log(data);
+    //     this.rowData = data;
+    //     const rowCount = this.rowData.length;
+    //     if (!this.gridOptions.paginationPageSizeSelector.includes(rowCount)) {
+    //       this.gridOptions.paginationPageSizeSelector.push(rowCount);
+    //     }
+    //     this.swal.Close();
+    //   }, (error) => {
+    //     Swal.fire({
+    //       icon: 'error',
+    //       title: 'Error',
+    //       text: 'Failed to retrieve subscriber list.',
+    //     });
+    //   });
+
     this.swal.Loading();
     this.userservice.getsubscriberlist_subscriber(this.role, this.username, this.selectedStatusId)
-      .subscribe((data: any) => {
-        console.log(data);
-        this.rowData = data;
-        const rowCount = this.rowData.length;
-        if (!this.gridOptions.paginationPageSizeSelector.includes(rowCount)) {
-          this.gridOptions.paginationPageSizeSelector.push(rowCount);
+      .subscribe({
+        next: (data: any) => {
+          if (!data || data.length === 0) {
+            this.rowData = [];
+            this.swal.Close(); 
+            return;
+          }
+
+          this.rowData = data;
+          const rowCount = this.rowData.length;
+          if (!this.gridOptions.paginationPageSizeSelector.includes(rowCount)) {
+            this.gridOptions.paginationPageSizeSelector.push(rowCount);
+          }
+          this.swal.Close();
+        },
+        error: (error) => {
+          // this.swal.Close(); 
+          if (error.status === 204) {
+            this.swal.Close(); 
+            this.rowData = [];
+          } else {
+            Swal.fire({
+              icon: 'error',
+              title: 'Error',
+              text: 'Failed to retrieve subscriber list.',
+            });
+          }
         }
-        this.swal.Close();
-      }, (error) => {
-        Swal.fire({
-          icon: 'error',
-          title: 'Error',
-          text: 'Failed to retrieve subscriber list.',
-        });
-        console.error(error);
       });
+
+
     this.updateColumnDefs(this.selectedStatusId);
   }
 

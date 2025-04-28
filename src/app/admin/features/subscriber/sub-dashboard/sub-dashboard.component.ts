@@ -62,7 +62,8 @@ export class SubDashboardComponent implements OnInit {
   subAddonAdd = false;
   subAlacarte = false;
   subChangeBase = false;
-  subBalance : any;
+  addsmartcard = false;
+  subBalance: any;
 
 
   dateTodate = 3;
@@ -134,6 +135,7 @@ export class SubDashboardComponent implements OnInit {
   rechargeType: boolean = false;
   managePackagetable = false;
   managePackagetable1 = false;
+  rechargeTypeDialog = false;
   cancel_btn: boolean = false;
 
   subdashoard: any;
@@ -229,6 +231,19 @@ export class SubDashboardComponent implements OnInit {
   }
   onBillTypeChange() {
     this.billtype = this.billtype ? 1 : 0;
+
+
+    // if (this.iscollected = true) {
+    //   this.paidamount = this.customerPayAmount;
+    //   console.log(this.paidamount);
+    // } else if (this.iscollected = false) {
+    //   this.paidamount == 0
+    //   console.log(this.paidamount);
+    // }
+
+    this.paidamount = this.iscollected ? this.customerPayAmount : 0;
+    console.log(this.paidamount);
+
   }
 
   onSelectionChanged() {
@@ -258,7 +273,6 @@ export class SubDashboardComponent implements OnInit {
         }
       }
     });
-    this.getPlanList();
     if (this.role == 'ROLE_OPERATOR') {
       this.operatorIdoperatorId();
       this.getPlanList();
@@ -269,37 +283,66 @@ export class SubDashboardComponent implements OnInit {
       this.getSubscriberDetails();
       this.getPlanList();
     }
+    this.getPlanList();
     this.cdr.detectChanges();
-
   }
   getPlanList() {
     this.userservice.getPlanTypeList(this.role, this.username).subscribe((data: any) => {
       console.log(data);
-      // this.rechargetype = Object.keys(data).map(key => {
-      //   const id = data[key];
-      //   const name = key.replace(/\(\d+\)$/, '').trim();
-      //   return { name: name, id: id };
-      // });
-      const rawList = Object.keys(data).map(key => {
-        const id = data[key];
-        const name = key.replace(/\(\d+\)$/, '').trim();
-        return { name, id };
-      });
-      console.log(rawList);
-      this.rechargetype = rawList.filter(item => {
-        if (item.name === 'Plan' && this.isplan) return true;
-        if (item.name === 'Date' && this.isdate) return true;
-        if (item.name === 'Date-to-Date' && this.isdateTodate) return true;
-        return false;
-      });
+      if (this.role != 'ROLE_OPERATOR' && this.role != 'ROLE_SUBLCO' && this.role != 'ROLE_SUBSCRIBER') {
+        this.rechargetype = Object.keys(data).map(key => {
+          const id = data[key];
+          const name = key.replace(/\(\d+\)$/, '').trim();
+          return { name: name, id: id };
+        });
+        this.cdr.detectChanges();
+      } else if (this.role == 'ROLE_OPERATOR' || this.role == 'ROLE_SUBLCO') {
+        console.log('123456789rfrd1234567', this.role);
+        const rawList = Object.keys(data).map(key => {
+          const id = data[key];
+          const name = key.replace(/\(\d+\)$/, '').trim();
+          return { name, id };
+        });
+
+        this.rechargetype = rawList.filter(item => {
+          const name = item.name.toLowerCase();
+          if (name === 'plan' && this.isplan) return true;
+          if (name === 'date' && this.isdate) return true;
+          if (name === 'date-to-date' && this.isdateTodate) return true;
+          return false;
+        });
+        this.cdr.detectChanges();
+      } else if (this.role == 'ROLE_SUBSCRIBER') {
+        console.log('1234567890', this.role);
+        const rawList = Object.keys(data).map(key => {
+          const id = data[key];
+          const name = key.replace(/\(\d+\)$/, '').trim();
+          return { name, id };
+        });
+        console.log(rawList);
+        this.rechargetype = rawList.filter(item => {
+          const name = item.name.toLowerCase();
+          if (name === 'plan' && this.isplan) return true;
+          if (name === 'date' && this.isdate) return true;
+          if (name === 'date-to-date' && this.isdateTodate) return true;
+          return false;
+        });
+        this.cdr.detectChanges();
+      }
+      this.cdr.detectChanges();
       console.log(this.rechargetype);
     })
+
+
   }
+  permissionList: any = []
+  operatorId: any;
   operatorIdoperatorId() {
     this.userservice.getOpDetails(this.role, this.username).subscribe((data: any) => {
       console.log(data);
       this.lcoDeatails = data;
       console.log(this.lcoDeatails);
+      this.operatorId = this.lcoDeatails?.operatorid;
       this.isplan = this.lcoDeatails?.isplan;
       this.isdate = this.lcoDeatails?.isdate;
       this.isdateTodate = this.lcoDeatails?.isdatetodate;
@@ -309,19 +352,29 @@ export class SubDashboardComponent implements OnInit {
 
     })
   }
+  sublcoBalance: any;
+  sublcoInfo: any;
   subLCOdetails() {
     this.userservice.getSublcoDetails(this.role, this.username).subscribe((data: any) => {
       console.log(data);
       this.lcoDeatails = data;
       this.retailerId = this.lcoDeatails?.retailerid;
+      this.sublcoBalance = this.lcoDeatails?.balance;
       this.Sublcopermissionlist = this.lcoDeatails?.permissionlist;
+      console.log("Sublcopermissionlist", this.Sublcopermissionlist);
       this.isplan = this.Sublcopermissionlist.plan;
       this.isdate = this.Sublcopermissionlist.date;
       this.isdateTodate = this.Sublcopermissionlist.datetodate;
       this.subAddonAdd = this.Sublcopermissionlist.addonpackage_update;
       this.subAlacarte = this.Sublcopermissionlist.alacarte_update;
       this.subChangeBase = this.Sublcopermissionlist.change_base;
-     
+      this.addsmartcard = this.Sublcopermissionlist.add_smartcard;
+      this.sublcoInfo = this.Sublcopermissionlist.info;
+
+      console.log('ADD SMARTCARD', this.addsmartcard);
+      console.log('PLAN', this.isplan);
+      console.log('DATE', this.isdate);
+      console.log('DATE TO DATE', this.isdateTodate);
     })
   }
   sub_subscriberid: any;
@@ -344,6 +397,7 @@ export class SubDashboardComponent implements OnInit {
       console.log('ADDON ADD', this.subAddonAdd);
       console.log('ALACARTE', this.subAlacarte);
       console.log('BALANCE', this.subBalance);
+
     })
   }
   setNextDay(): void {
@@ -1390,6 +1444,7 @@ export class SubDashboardComponent implements OnInit {
         container.style.alignItems = 'center';
 
         // Info Button
+
         const infoButton = document.createElement('button');
         infoButton.style.backgroundColor = '#1f6764';
         infoButton.style.border = 'none';
@@ -1409,6 +1464,17 @@ export class SubDashboardComponent implements OnInit {
         infoButton.addEventListener('click', () => {
           this.refreshpage(params.data);
         });
+        if (this.role == 'ROLE_SUBLCO' && this.sublcoInfo === true) {
+          infoButton.addEventListener('click', () => {
+            this.refreshpage(params.data);
+          });
+          container.appendChild(infoButton);
+        } else {
+          infoButton.addEventListener('click', () => {
+            this.refreshpage(params.data);
+          });
+          container.appendChild(infoButton);
+        }
         // Refresh Button
         const refreshButton = document.createElement('button');
         refreshButton.style.backgroundColor = '#1f6764';
@@ -1452,7 +1518,7 @@ export class SubDashboardComponent implements OnInit {
           this.getPdfSmartcardRechargeReport(params.data);
         });
         // Append buttons to the container
-        container.appendChild(infoButton);
+        // container.appendChild(infoButton);
         container.appendChild(refreshButton);
         container.appendChild(downloadButton);
 
@@ -1657,6 +1723,7 @@ export class SubDashboardComponent implements OnInit {
     };
     const dialogRef = this.dialog.open(SubscriberdialogueComponent, {
       width: '500px',
+
       panelClass: 'custom-dialog-container',
       data: dialogData
     });
@@ -1729,6 +1796,8 @@ export class SubDashboardComponent implements OnInit {
   }
   openDialog(type: string, data: any): void {
     let width = '500px';
+    let height = 'auto';
+
     if (type === 'addSmartcard') {
       // dialogConfig.height = '1000px'; 
       width = '450px';
@@ -1736,6 +1805,17 @@ export class SubDashboardComponent implements OnInit {
       width = '1000px';
     } else if (type === 'refresh') {
       width = '500px';
+    } else if (type === 'rechargeType') {
+      width = '500px';
+    } else if (type === 'BASE') {
+      width = '500px';
+      height = '90vh';
+    } else if (type === 'packagactivation') {
+      width = '500px';
+      height = '90vh';
+    } else if (type === 'activation') {
+      width = '500px';
+      height = '90vh';
     }
     // let dialogData = { type: type, detailsList: this.subdetailsList, newsubid: this.subscriberid, subId: this.subdetailsList.subid, pairBoxlist: this.subPairedboxid, pairSmartcardlist: this.subPairedsmartcard, plantype: this.packagePlan };
     let dialogData = {
@@ -1752,7 +1832,8 @@ export class SubDashboardComponent implements OnInit {
 
     const dialogRef = this.dialog.open(SubscriberdialogueComponent, {
       data: dialogData,
-      width: width
+      width: width,
+      height: height
     });
 
     dialogRef.afterClosed().subscribe(result => {
@@ -1913,10 +1994,61 @@ export class SubDashboardComponent implements OnInit {
     this.isRecharge = true;
   }
 
+  comment: any = 'No Comment';
+  dueamount: any;
+  paidamount: any;
+  android_id: any;
+  device_id: any;
+  ui_type: any;
+  billTypeValue: any;
+
+  setBillType(customerPayAmount: any, collectedPayAmount: any): void {
+    if (customerPayAmount === 0 && collectedPayAmount > 0) {
+      // Fully Paid
+      this.billTypeValue = {
+        bill_type: 1,
+        description: 'Fully Paid'
+      };
+    } else if (customerPayAmount > 0 && collectedPayAmount === 0) {
+      // Unpaid
+      this.billTypeValue = {
+        bill_type: 0,
+        description: 'Unpaid'
+      };
+    } else if (collectedPayAmount < customerPayAmount) {
+      // Partially Paid
+      this.billTypeValue = {
+        bill_type: 3,
+        description: 'Partially Paid'
+      };
+    } else if (collectedPayAmount > customerPayAmount) {
+      // Excess Paid
+      this.billTypeValue = {
+        bill_type: 4,
+        description: 'Excess Paid'
+      };
+    } else if (collectedPayAmount === customerPayAmount) {
+      // Fully Paid (Exact match)
+      this.billTypeValue = {
+        bill_type: 1,
+        description: 'Fully Paid'
+      };
+    } else {
+      // Default fallback
+      this.billTypeValue = {
+        bill_type: -1,
+        description: 'Unknown'
+      };
+    }
+
+    console.log('Bill Type:', this.billTypeValue?.bill_type);
+  }
 
   recharge() {
+    console.log('11111111111111111111111111111111111111')
     this.confirmation = true;
     this.isConfirmationComplete = true;
+    console.log(this.billTypeValue)
     let requestBody = {
       role: this.role,
       username: this.username,
@@ -1926,8 +2058,15 @@ export class SubDashboardComponent implements OnInit {
       type: 10,
       managepacklist: this.rowData1,
       selectedpacklist: this.rows,
-      retailerid: 0,
+      retailerid: this.operatorId || this.retailerId || 0,
       iscollected: this.iscollected,
+      comment: this.comment || '',
+      dueamount: this.customerPayAmount || 0,
+      paidamount: this.paidamount || this.collectedPayAmount || 0,
+      android_id: 0,
+      device_id: 0,
+      ui_type: 1,
+      billtype: this.billTypeValue?.bill_type || 0,
     }
     console.log(requestBody);
     this.swal.Loading();
@@ -1938,7 +2077,32 @@ export class SubDashboardComponent implements OnInit {
       this.swal.Error(err?.error?.message || err?.error?.selectedpacklist || err?.error?.iscollected);
     });
   }
+  // recharge() {
+  //   this.confirmation = true;
+  //   this.isConfirmationComplete = true;
+  //   let requestBody = {
+  //     role: this.role,
+  //     username: this.username,
+  //     plantype: this.selectedRechargetype,
+  //     plan: this.plandata,
+  //     smartcard: this.subdetailsList.smartcard,
+  //     type: 10,
+  //     managepacklist: this.rowData1,
+  //     selectedpacklist: this.rows,
+  //     retailerid: this.operatorId || this.retailerId || 0,
+  //     iscollected: this.iscollected,
+  //   }
+  //   console.log(requestBody);
+  //   this.swal.Loading();
+  //   this.userservice.ManagePackageRecharge(requestBody).subscribe((res: any) => {
+  //     this.swal.success(res?.message);
+  //     console.log(res);
+  //   }, (err) => {
+  //     this.swal.Error(err?.error?.message || err?.error?.selectedpacklist || err?.error?.iscollected);
+  //   });
+  // }
   recharge1() {
+    console.log('222222222222222222222')
     this.confirmation = true;
     this.isConfirmationComplete = true;
     let requestBody = {
@@ -1950,8 +2114,18 @@ export class SubDashboardComponent implements OnInit {
       type: 10,
       managepacklist: this.rowData1,
       selectedpacklist: this.rowData1,
-      retailerid: 0,
+      retailerid: this.operatorId || this.retailerId || 0,
       iscollected: this.iscollected,
+      comment: this.comment || '',
+      dueamount: this.customerPayAmount || 0,
+      // paidamount: this.paidamount,
+      paidamount: this.paidamount || this.collectedPayAmount || 0,
+      android_id: 0,
+      device_id: 0,
+      ui_type: 1,
+      billtype: this.billTypeValue?.bill_type || 0,
+      // dueamt: 0.0,
+      // paidamt: this.changebase?.customerPayAmount,
     }
     console.log(requestBody);
     this.swal.Loading();
@@ -1962,6 +2136,30 @@ export class SubDashboardComponent implements OnInit {
       this.swal.Error1(err?.error?.message || err?.error?.selectedpacklist || err?.error?.iscollected);
     });
   }
+  // recharge1() {
+  //   this.confirmation = true;
+  //   this.isConfirmationComplete = true;
+  //   let requestBody = {
+  //     role: this.role,
+  //     username: this.username,
+  //     plantype: this.selectedRechargetype,
+  //     plan: this.plandata,
+  //     smartcard: this.subdetailsList.smartcard,
+  //     type: 10,
+  //     managepacklist: this.rowData1,
+  //     selectedpacklist: this.rowData1,
+  //     retailerid: this.operatorId || this.retailerId || 0,
+  //     iscollected: this.iscollected,
+  //   }
+  //   console.log(requestBody);
+  //   this.swal.Loading();
+  //   this.userservice.ManagePackageRecharge(requestBody).subscribe((res: any) => {
+  //     this.swal.success(res?.message);
+  //     console.log(res);
+  //   }, (err) => {
+  //     this.swal.Error1(err?.error?.message || err?.error?.selectedpacklist || err?.error?.iscollected);
+  //   });
+  // }
 
   generateBillpdf() {
     this.userservice.getPdfBillReport(this.role, this.username, this.subdetailsList.subid, this.subdetailsList.smartcard)
@@ -2061,7 +2259,7 @@ export class SubDashboardComponent implements OnInit {
       type: 10,
       managepacklist: this.rowData1,
       selectedpacklist: this.rowData1,
-      retailerid: 0
+      retailerid: this.operatorId || this.retailerId || 0
     }
     console.log("_______________________________________________________");
 
@@ -2071,6 +2269,11 @@ export class SubDashboardComponent implements OnInit {
       this.isRecharge = false;
       this.confirmation = true;
       this.cancel_btn = true;
+      this.excessAmount = res?.balance;
+      this.customerPayAmount = res?.customerPayAmount;
+      this.setBillType(this.customerPayAmount, this.collectedPayAmount);
+      console.log('11111', this.excessAmount);
+      console.log('222222222', this.customerPayAmount);
       setTimeout(() => {
         const dialogElement = document.querySelector('.confirmation-dialog');
         if (dialogElement) {
@@ -2088,6 +2291,11 @@ export class SubDashboardComponent implements OnInit {
       }
     });
   }
+  customerPayAmount: any;
+  collectedPayAmount: any = 0;
+  balanceamount: any;
+  excessAmount: any;
+  newExcessAmount: any;
   ManagePackageCalculation() {
     this.plandata = '';
     this.plandata = this.plantype || this.f_date || 4
@@ -2100,14 +2308,24 @@ export class SubDashboardComponent implements OnInit {
       type: 10,
       managepacklist: this.rowData1,
       selectedpacklist: this.rows,
-      retailerid: 0
+      retailerid: this.operatorId || this.retailerId || 0
     }
     this.userservice.ManagePackageCalculation(requestBody).subscribe((res: any) => {
-      console.log(res.oldExpiryDate);
+
+      console.log(res);
+
       this.manageData = res;
+
       this.isRecharge = false;
       this.cancel_btn = true;
       this.confirmation = true;
+      this.excessAmount = res?.balance;
+      this.customerPayAmount = res?.customerPayAmount;
+      this.setBillType(this.customerPayAmount, this.collectedPayAmount);
+      console.log('11111', this.excessAmount);
+      console.log('222222222', this.customerPayAmount);
+
+
       setTimeout(() => {
         const dialogElement = document.querySelector('.confirmation-dialog');
         if (dialogElement) {
@@ -2124,14 +2342,18 @@ export class SubDashboardComponent implements OnInit {
         this.cancel_btn = false;
       }
     });
-
-
     this.userservice.ManagePackageCalculation(requestBody).subscribe((res: any) => {
       console.log(res.oldExpiryDate);
       this.manageData = res;
       this.isRecharge = false;
       this.confirmation = true;
       this.cancel_btn = true;
+      this.excessAmount = res?.balance;
+      this.customerPayAmount = res?.customerPayAmount;
+      this.setBillType(this.customerPayAmount, this.collectedPayAmount);
+      console.log('11111', this.excessAmount);
+      console.log('222222222', this.customerPayAmount);
+
       setTimeout(() => {
         const dialogElement = document.querySelector('.confirmation-dialog');
         if (dialogElement) {
@@ -2151,7 +2373,41 @@ export class SubDashboardComponent implements OnInit {
 
   }
 
+  onRechargeType() {
+    this.rechargeTypeDialog = true;
+    console.log('scroll--11');
 
+    setTimeout(() => {
+      const dialogElement = document.querySelector('.recharge-dialog');
+      if (dialogElement) {
+        dialogElement.scrollIntoView({ behavior: 'smooth', block: 'end' });
+      }
+    }, 100);
+    this.cdr.detectChanges();
+  }
+  onRechargeType1() {
+    this.rechargeTypeDialog = false;
+    console.log('scroll');
+
+    setTimeout(() => {
+      const dialogElement = document.querySelector('.recharge-dialog');
+      if (dialogElement) {
+        dialogElement.scrollIntoView({ behavior: 'smooth', block: 'end' });
+      }
+    }, 100);
+    this.cdr.detectChanges();
+  }
+  onBalaceAmount(type: any) {
+    console.log(type)
+    console.log(this.customerPayAmount)
+    console.log(this.collectedPayAmount)
+    this.balanceamount = this.customerPayAmount - this.collectedPayAmount;
+    this.newExcessAmount = this.excessAmount - this.balanceamount;
+    this.setBillType(this.customerPayAmount, this.collectedPayAmount);
+    console.log(this.excessAmount);
+    console.log(this.balanceamount);
+    console.log(this.newExcessAmount);
+  }
 }
 
 

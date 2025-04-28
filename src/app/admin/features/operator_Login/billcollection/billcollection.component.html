@@ -42,6 +42,12 @@
             </button>
         </div>
         <div class="display1 justify-content-end align-items-center mb-3">
+
+            <button class="btn btn-outline-info mx-1 " mat-raised-button color="primary" type="button"
+                [disabled]="!isAnyRowSelected" (click)="Active(this.selectedIds)">
+                Reset
+            </button>
+
             <div class="export-icon mx-2">
                 <img src="/assets/images/icons/Excel.png" alt="Excel Icon" width="40px"
                     (click)="getLcoInvoiceReport(2)">
@@ -71,9 +77,9 @@
             </button>
         </div>
     </div>
-    <ag-grid-angular #agGrid id="myGrid" style="text-align: center;" domLayout='normal'
+    <ag-grid-angular #agGrid id="myGrid" style="text-align: center;" domLayout='normal' [rowSelection]="rowSelection"
         class="ag-theme-alpine table-class" rowAnimation [columnDefs]="columnnDefs" [rowData]="rowData"
-        (gridReady)="onGridReady($event)" [enableCellTextSelection]="true">
+        (selectionChanged)="onSelectionChanged()" (gridReady)="onGridReady($event)" [enableCellTextSelection]="true">
     </ag-grid-angular>
 
 </section>

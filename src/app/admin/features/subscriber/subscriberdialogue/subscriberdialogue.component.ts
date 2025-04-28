@@ -270,6 +270,15 @@ export class SubscriberdialogueComponent implements OnInit, OnDestroy {
   SublcopermissionObj: any;
   Subwallet = false;
   selectedtypes: number[] = [];
+
+  billTypeValue: any;
+  collectedPayAmount: any;
+  customerPayAmount: any;
+  balanceamount: any;
+  excessAmount: any;
+  newExcessAmount: any;
+
+
   gridOptions = {
     defaultColDef: {
       sortable: true,
@@ -357,6 +366,14 @@ export class SubscriberdialogueComponent implements OnInit, OnDestroy {
   basePackageId: any;
   isCancelCurrentVisible: boolean = false;
   subscriberdata: any;
+  cancelSubRemark: any
+  commentList: string[] = [
+    'Package Wrongly Recharged To this card',
+    'STB Physically Damaged',
+    'Customer Shifted or Returned STB',
+    'Customer TV Repaired',
+    'Chane Base For Month'
+  ];
   isPlanTypeSelected(): boolean {
     if (this.selectedRechargetype === '3') return true;
     if ((this.datetype && this.f_date)) return true;
@@ -364,8 +381,8 @@ export class SubscriberdialogueComponent implements OnInit, OnDestroy {
     // return !!this.newpackagename && this.newpackagename !== '0' && !!this.selectedRechargetype && this.selectedRechargetype !== '0' &&
     //   ((this.isplantype ) ||
     //     (this.datetype && this.f_date));
-    return !!this.newpackagename && this.newpackagename !== '0' && !!this.selectedRechargetype && this.selectedRechargetype !== '0' &&
-      ((this.isplantype && !!this.plantype && this.plantype !== '0') ||
+    return !!this.newpackagename && this.newpackagename != '0' && !!this.selectedRechargetype && this.selectedRechargetype != '0' &&
+      ((this.isplantype && !!this.plantype && this.plantype != '0') ||
         (this.datetype && this.f_date));
   }
 
@@ -391,6 +408,9 @@ export class SubscriberdialogueComponent implements OnInit, OnDestroy {
     this.pairSmartcardList = data['pairSmartcardlist'].map((item: any) => item);
     this.packageMessage = data['packageMessage'];
     console.log('packagemessage', this.packageMessage);
+    this.iscollected = this.subscriberdata?.detailsList?.iscollected;
+    console.log('isCollected', this.iscollected);
+
     this.subSmartcard = data.subSmartcarList;
     this.subBoxid = data.subBoxList;
     this.pairedSmartcard = this.pairSmartcardList;
@@ -520,8 +540,6 @@ export class SubscriberdialogueComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-
-
     const currentDate = new Date();
     this.today = currentDate.toISOString().split('T')[0];
 
@@ -529,10 +547,6 @@ export class SubscriberdialogueComponent implements OnInit, OnDestroy {
     tomorrowDate.setDate(currentDate.getDate() + 1); // Add 1 day
 
     this.tomorrow = tomorrowDate.toISOString().split('T')[0];
-
-    console.log('11111111 222222222', this.today);
-    console.log('11111111 222222222', this.tomorrow);
-
     $("#single").select2({
       placeholder: "Select a programming language",
       allowClear: true
@@ -551,17 +565,18 @@ export class SubscriberdialogueComponent implements OnInit, OnDestroy {
     }
     else if (this.sType == 'cancelsubscription') {
       this.onCancelSubscription();
-    } else if (this.sType == 'activation') {
-      this.onAllBaselistByExceptDatasActivation();
+    }
+    else if (this.sType == 'activation') {
       this.onPlanType();
+      this.onAllBaselistByExceptDatasActivation();
       this.onPackageplanList()
     } else if (this.sType == 'BASE') {
-      this.onAllBaselistByExceptDatas();
       this.onPlanType();
+      this.onAllBaselistByExceptDatas();
       this.onPackageplanList()
     } else if (this.sType == 'packagactivation') {
-      this.onAllBaselistByExceptDatasActivation();
       this.onPlanType();
+      this.onAllBaselistByExceptDatasActivation();
       this.onPackageplanList()
     } else if (this.sType == 'addSmartcard') {
       this.onCasList();
@@ -574,20 +589,19 @@ export class SubscriberdialogueComponent implements OnInit, OnDestroy {
 
     this.onGridReady(params);
     if (this.role == 'ROLE_OPERATOR') {
+      console.log('ADFGHJKRTYUJKL ', this.role);
       this.operatorIdoperatorId();
       this.onPlanType();
     } else if (this.role == 'ROLE_SUBLCO') {
+      console.log('ADFGHJKRTYUJKL ', this.role);
       this.subLCOdetails();
       this.onPlanType();
     } else if (this.role == 'ROLE_SUBSCRIBER') {
+      console.log('ADFGHJKRTYUJKL ', this.role);
       this.getSubscriberDetails();
       this.onPlanType();
-    } else if (this.role != 'ROLE_OPERATOR' || this.role != 'ROLE_SUBLCO' || this.role != 'ROLE_SUBSCRIBER') {
-      this.isplan = true;
-      this.isdate = true;
-      this.isdateTodate = true;
     }
-    this.onPlanType();
+
   }
 
   operatorIdoperatorId() {
@@ -596,23 +610,24 @@ export class SubscriberdialogueComponent implements OnInit, OnDestroy {
       this.operatorId = this.lcoDeatails?.operatorid;
       this.operatorname = this.lcoDeatails?.operatorname;
       console.log(this.operatorId);
+      this.isplan = this.lcoDeatails?.isplan;
+      this.isdate = this.lcoDeatails?.isdate;
+      this.isdateTodate = this.lcoDeatails?.isdatetodate;
+      console.log('PLAN', this.isplan);
+      console.log('DATE', this.isdate);
+      console.log('DATE TO DATE', this.isdateTodate);
       this.onoperatorchange_LCO(this.operatorId);
     })
   }
-
+  retailerId: any;
   subLCOdetails() {
     this.userservice.getSublcoDetails(this.role, this.username).subscribe((data: any) => {
-      console.log(data);
-      console.log('subLCOdetails');
       this.lcoDeatails = data;
+      this.retailerId = this.lcoDeatails?.retailerid;
       this.operatorId = this.lcoDeatails?.retailerid;
       this.operatorname = this.lcoDeatails?.retailername;
-      console.log('operatorId', this.operatorId);
-      console.log('operatorname', this.operatorname);
       this.SublcopermissionObj = this.lcoDeatails?.permissionlist;
       this.Subwallet = this.SublcopermissionObj?.wallet;
-      console.log('SublcopermissionObj', this.SublcopermissionObj);
-      console.log('Subwallet', this.Subwallet);
       this.isplan = this.SublcopermissionObj.plan;
       this.isdate = this.SublcopermissionObj.date;
       this.isdateTodate = this.SublcopermissionObj.datetodate;
@@ -625,13 +640,8 @@ export class SubscriberdialogueComponent implements OnInit, OnDestroy {
   sub_subscriberid: any;
   getSubscriberDetails() {
     this.userservice.getSubscriberDetails(this.role, this.username).subscribe((data: any) => {
-      console.log(data);
-      console.log('22222222');
       this.lcoDeatails = data;
-
-      console.log('SUBSCRIBER DETAILS', this.lcoDeatails);
       this.sub_subscriberid = this.lcoDeatails.subid;
-      console.log('SUBSCRIBER SUBID', this.sub_subscriberid);
       this.isplan = true;
       this.isdate = this.lcoDeatails.date;
       this.isdateTodate = this.lcoDeatails.datetodate;
@@ -640,7 +650,6 @@ export class SubscriberdialogueComponent implements OnInit, OnDestroy {
       console.log('DATE TO DATE', this.isdateTodate);
       console.log('ADDON ADD', this.subAddonAdd);
       console.log('ALACARTE', this.subAlacarte);
-
     })
   }
   onoperatorchange_LCO(operator: any): void {
@@ -725,28 +734,60 @@ export class SubscriberdialogueComponent implements OnInit, OnDestroy {
     })
   }
   onPlanType() {
+    console.log(this.sType);
     this.userservice.getPlanTypeList(this.role, this.username).subscribe((data: any) => {
-      // this.rechargetype = Object.keys(data).map(key => {
-      //   const id = data[key];
-      //   const name = key.replace(/\(\d+\)$/, '').trim();
-      //   return { name: name, id: id };
-      // });
+      console.log(data);
+      if (this.role != 'ROLE_OPERATOR' && this.role != 'ROLE_SUBLCO' && this.role != 'ROLE_SUBSCRIBER') {
+        this.rechargetype = Object.keys(data).map(key => {
+          const id = data[key];
+          const name = key.replace(/\(\d+\)$/, '').trim();
+          return { name: name, id: id };
+        });
+      } else if (this.role == 'ROLE_OPERATOR' || this.role == 'ROLE_SUBLCO') {
+        console.log('123456789rfrd1234567', this.role);
+        const rawList = Object.keys(data).map(key => {
+          const id = data[key];
+          const name = key.replace(/\(\d+\)$/, '').trim();
+          return { name, id };
+        });
 
-      const rawList = Object.keys(data).map(key => {
+        this.rechargetype = rawList.filter(item => {
+          const name = item.name.toLowerCase();
+          if (name === 'plan' && this.isplan) return true;
+          if (name === 'date' && this.isdate) return true;
+          if (name === 'date-to-date' && this.isdateTodate) return true;
+          return false;
+        });
+      } else if (this.role == 'ROLE_SUBSCRIBER') {
+        console.log('1234567890', this.role);
+        const rawList = Object.keys(data).map(key => {
+          const id = data[key];
+          const name = key.replace(/\(\d+\)$/, '').trim();
+          return { name, id };
+        });
+        console.log(rawList);
+        this.rechargetype = rawList.filter(item => {
+          const name = item.name.toLowerCase();
+          if (name === 'plan' && this.isplan) return true;
+          if (name === 'date' && this.isdate) return true;
+          if (name === 'date-to-date' && this.isdateTodate) return true;
+          return false;
+        });
+      }
+
+      console.log(this.rechargetype);
+    })
+  }
+
+  onPlanType1() {
+    console.log(this.sType);
+
+    this.userservice.getPlanTypeList(this.role, this.username).subscribe((data: any) => {
+      this.rechargetype = Object.keys(data).map(key => {
         const id = data[key];
         const name = key.replace(/\(\d+\)$/, '').trim();
-        return { name, id };
+        return { name: name, id: id };
       });
-      console.log(rawList);
-      this.rechargetype = rawList.filter(item => {
-        if (item.name == 'Plan' && this.isplan) return true;
-        if (item.name == 'Date' && this.isdate) return true;
-        if (item.name == 'Date-to-Date' && this.isdateTodate) return true;
-        return false;
-      });
-      console.log(this.rechargetype);
-
-      this.cdr.detectChanges();
     })
   }
   onPackageplanList() {
@@ -1256,6 +1297,8 @@ export class SubscriberdialogueComponent implements OnInit, OnDestroy {
   onSelectionrechargetype(selectedValue: string) {
     console.log('selectedValue', selectedValue);
     const rechargetype = Number(selectedValue);
+    console.log(rechargetype);
+
     if (rechargetype == 1) {
       this.isplantype = true;
       this.datetype = false;
@@ -1278,12 +1321,16 @@ export class SubscriberdialogueComponent implements OnInit, OnDestroy {
     if (this.selectedRechargetype == '1') {
       this.f_date = null
     }
+    if (this.selectedRechargetype == '3') {
+      this.f_date = ''
+    }
     if (this.newpackagename != 0) {
       if ((this.selectedRechargetype == '3') || (this.selectedRechargetype == '2') || (this.selectedRechargetype != '3' && this.plantype != 0) || (this.f_date)) {
         this.isDisabled = false
       } else {
-        this.isDisabled = true
+        this.isDisabled = true;
       }
+
     }
     // } else {
     //   this.isDisabled = true
@@ -1610,7 +1657,7 @@ export class SubscriberdialogueComponent implements OnInit, OnDestroy {
     //   this.swal.Error('All fields are required');
     //   return;
     // }
-    this.userservice.transferLcoToSmartcard(this.role, this.username, (this.lcoid || this.operatorId), this.lcoareaid, this.lcostreetid, this.subid_1 || this.newSubid, this.withsubscription, 0, 3)
+    this.userservice.transferLcoToSmartcard(this.role, this.username, (this.lcoid || this.operatorId), this.lcoareaid, this.lcostreetid, this.subid_1 || this.newSubid, this.withsubscription, this.operatorId || this.retailerId || 0, 3, 0, 0, 1, this.comment || 'No Comment')
       .subscribe((res: any) => {
         this.swal.success(res?.message);
       }, (err) => {
@@ -1793,8 +1840,14 @@ export class SubscriberdialogueComponent implements OnInit, OnDestroy {
   toggleConfirmation() {
     this.confirmation = !this.confirmation;
   }
+  paidamount: any;
   onBillTypeChange() {
     this.billtype = this.billtype ? 1 : 0;
+    console.log(this.iscollected);
+    this.paidamount = this.iscollected ? this.customerPayAmount : 0;
+    console.log(this.paidamount);
+    console.log(this.iscollected);
+
   }
   onFirstTimeActivationButtonClick(): void {
     this.getFirstTimeActivationConfirmation();
@@ -1828,8 +1881,8 @@ export class SubscriberdialogueComponent implements OnInit, OnDestroy {
     this.addAddonConfirmation();
   }
   onAlacarteConfirmation(): void {
-    this.toggleAlacarteConfirmation();
     this.addAlacarteConfirmation();
+    this.toggleAlacarteConfirmation();
   }
   onAlacarte(): void {
     this.addAlacarteConfirmation();
@@ -1841,57 +1894,65 @@ export class SubscriberdialogueComponent implements OnInit, OnDestroy {
   onRemove(): void {
     this.removeProductConfirmation();
   }
-  firsttimeActivationOfCard() {
-    console.log('213213213');
 
-    console.log(this.plantype);
-    // this.plantype || this.f_date || 4,
-    this.confirmation = true;
-    this.finalrow = this.rows
-    this.isConfirmationComplete = true;
-    let requestBody = {
-      packageid: this.newpackagename,
-      plantype: this.selectedRechargetype,
-      plan: this.plantype || this.f_date || 4,
-      billtype: this.billtype,
-      dueamt: 0.0,
-      paidamt: this.First_list.customerPayAmount,
-      smartcard: this.smartcardno,
-      type: 1,
-      role: this.role,
-      username: this.username,
-    }
-    this.swal.Loading();
-    this.userservice.firsttimeActivationOfCard(requestBody)
-      .subscribe((res: any) => {
-        // this.swal.success(res?.message);
-        Swal.fire({
-          title: 'Success!',
-          text: res.message,
-          icon: 'success',
-          timer: 2000,
-          timerProgressBar: true,
-          showConfirmButton: false
-        }).then(() => {
-          this.router.navigate([`/admin/subscriber-full-info/${this.smartcardno}/subsmartcard`]);
-          this.dialogRef.close({ success: true, smartcard: this.smartcardno });
-          // location.reload();
-          this.dialogRef.close({ success: true, smartcard: this.smartcardno });
-        });
-      }, (err) => {
-        this.swal.Error(err?.error?.message);
-      });
-  }
+  // firsttimeActivationOfCard() {
+  //   console.log('213213213');
+
+  //   console.log(this.plantype);
+  //   // this.plantype || this.f_date || 4,
+  //   this.confirmation = true;
+  //   this.finalrow = this.rows
+  //   this.isConfirmationComplete = true;
+  //   let requestBody = {
+  //     packageid: this.newpackagename,
+  //     plantype: this.selectedRechargetype,
+  //     plan: this.plantype || this.f_date || 4,
+  //     billtype: this.billtype,
+  //     dueamt: 0.0,
+  //     paidamt: this.First_list.customerPayAmount,
+  //     smartcard: this.smartcardno,
+  //     type: 1,
+  //     role: this.role,
+  //     username: this.username,
+  //   }
+  //   this.swal.Loading();
+  //   this.userservice.firsttimeActivationOfCard(requestBody)
+  //     .subscribe((res: any) => {
+  //       // this.swal.success(res?.message);
+  //       Swal.fire({
+  //         title: 'Success!',
+  //         text: res.message,
+  //         icon: 'success',
+  //         timer: 2000,
+  //         timerProgressBar: true,
+  //         showConfirmButton: false
+  //       }).then(() => {
+  //         this.router.navigate([`/admin/subscriber-full-info/${this.smartcardno}/subsmartcard`]);
+  //         this.dialogRef.close({ success: true, smartcard: this.smartcardno });
+  //         // location.reload();
+  //         this.dialogRef.close({ success: true, smartcard: this.smartcardno });
+  //       });
+  //     }, (err) => {
+  //       this.swal.Error(err?.error?.message);
+  //     });
+  // }
   ActivationOfCard() {
     let requestBody = {
       packageid: this.newpackagename,
       plantype: this.selectedRechargetype,
       plan: this.plantype || this.f_date || 0,
-      billtype: this.billtype,
-      dueamt: 0.0,
-      paidamt: this.First_list.customerPayAmount,
+      billtype: this.billTypeValue?.bill_type || 0,
+      dueamt: this.First_list.customerPayAmount,
+      // paidamount: this.paidamount || this.collectedPayAmount || 0,
+      paidamt: this.paidamount || this.collectedPayAmount || 0,
+      retailerid: this.operatorId || this.retailerId || 0,
       smartcard: this.smartcardno,
       type: 1,
+      comments: this.comment,
+      android_id: 0,
+      device_id: 0,
+      ui_type: 1,
+      iscollected: this.iscollected,
       role: this.role,
       username: this.username,
     }
@@ -1923,6 +1984,47 @@ export class SubscriberdialogueComponent implements OnInit, OnDestroy {
         this.swal.Error(err?.error?.message);
       });
   }
+  // ActivationOfCard() {
+  //   let requestBody = {
+  //     packageid: this.newpackagename,
+  //     plantype: this.selectedRechargetype,
+  //     plan: this.plantype || this.f_date || 0,
+  //     billtype: this.billtype,
+  //     dueamt: 0.0,
+  //     paidamt: this.First_list.customerPayAmount,
+  //     smartcard: this.smartcardno,
+  //     type: 1,
+  //     role: this.role,
+  //     username: this.username,
+  //   }
+  //   Swal.fire({
+  //     title: 'Processing...',
+  //     text: 'Please wait while we activate the card.',
+  //     icon: 'info',
+  //     allowOutsideClick: false,
+  //     showConfirmButton: false,
+  //     didOpen: () => {
+  //       Swal.showLoading(null);
+  //     }
+  //   });
+  //   this.userservice.ActivationOfCard(requestBody).
+  //     subscribe((res: any) => {
+  //       // this.swal.success(res?.message);
+  //       Swal.fire({
+  //         title: 'Success!',
+  //         text: res.message,
+  //         icon: 'success',
+  //         timer: 2000,
+  //         timerProgressBar: true,
+  //         showConfirmButton: false
+  //       }).then(() => {
+  //         this.router.navigate([`/admin/subscriber-full-info/${this.smartcardno}/subsmartcard`]);
+  //         this.dialogRef.close({ success: true, smartcard: this.smartcardno });
+  //       });
+  //     }, (err) => {
+  //       this.swal.Error(err?.error?.message);
+  //     });
+  // }
   baseChangeofSmartcardPackage() {
     this.isActive = true;
     let plan = this.selectedRechargetype || ''
@@ -1934,15 +2036,77 @@ export class SubscriberdialogueComponent implements OnInit, OnDestroy {
         this.changebase_msoAmount = data.msoAmount;
         this.changebase_totalRefundToLco = data.totalRefundToLco;
         this.changebase_expiryDate = data.expiryDate;
+
+        this.customerPayAmount = this.changebase?.customerPayAmount;
+        this.excessAmount = this.changebase?.balance;
+        console.log(this.customerPayAmount);
+        console.log(this.subBalance);
+        console.log(this.collectedPayAmount);
+        this.balanceamount = this.customerPayAmount - this.collectedPayAmount;
+        this.newExcessAmount = this.excessAmount - this.balanceamount;
+        this.setBillType(this.customerPayAmount, this.collectedPayAmount);
+        console.log(this.excessAmount);
+        console.log(this.balanceamount);
+        console.log(this.newExcessAmount);
         this.cdr.detectChanges();
         // this.isActive = true;
       }, (err) => {
         this.swal.Error(err?.error?.message);
       });
   }
+  // baseChangeofSmartcardPackageActivate() {
+  //   let plandata = this.plantype || this.f_date || 4
+  //   console.log(plandata);
+  //   this.isActive = true;
+  //   this.confirmation = true;
+  //   this.isConfirmationComplete = true;
+  //   let requestBody = {
+  //     role: this.role,
+  //     username: this.username,
+  //     packageid: this.newpackagename,
+  //     plantype: this.selectedRechargetype,
+  //     plan: plandata,
+  //     billtype: 1,
+  //     dueamt: 0.0,
+  //     paidamt: this.changebase?.customerPayAmount,
+  //     smartcard: this.smartcardno,
+  //     type: 8,
+  //     retailerid: this.operatorId || 0,
+  //     iscollected: this.iscollected,
+
+  //   }
+  //   Swal.fire({
+  //     title: 'Loading...',
+  //     text: 'Please wait while we process your request.',
+  //     allowOutsideClick: false, // Disable clicking outside the popup to close it
+  //     didOpen: () => {
+  //       Swal.showLoading(null);
+  //     }
+  //   });
+  //   this.userservice.baseChangeofSmartcardPackage(requestBody).subscribe((res: any) => {
+  //     // this.swal.success(res?.message);
+  //     Swal.fire({
+  //       title: 'Success!',
+  //       text: res.message,
+  //       icon: 'success',
+  //       timer: 2000,
+  //       timerProgressBar: true,
+  //       showConfirmButton: false
+  //     }).then(() => {
+  //       this.router.navigate([`/admin/subscriber-full-info/${this.smartcardno}/subsmartcard`]);
+  //       this.dialogRef.close({ success: true, smartcard: this.smartcardno });
+  //     });
+  //   }, (err) => {
+  //     this.swal.Error(err?.error?.message);
+  //   });
+  // }
+  comment: any = 'No Comment';
   baseChangeofSmartcardPackageActivate() {
     let plandata = this.plantype || this.f_date || 4
     console.log(plandata);
+    console.log(this.billTypeValue?.bill_type);
+    console.log('customerPayAmount', this.changebase?.customerPayAmount);
+
     this.isActive = true;
     this.confirmation = true;
     this.isConfirmationComplete = true;
@@ -1952,13 +2116,18 @@ export class SubscriberdialogueComponent implements OnInit, OnDestroy {
       packageid: this.newpackagename,
       plantype: this.selectedRechargetype,
       plan: plandata,
-      billtype: 1,
-      dueamt: 0.0,
-      paidamt: this.changebase?.customerPayAmount,
+      // paidamt: this.changebase?.customerPayAmount,
+      billtype: this.billTypeValue?.bill_type || 0,
+      dueamt: this.changebase?.customerPayAmount || 0,
+      paidamt: this.paidamount || this.collectedPayAmount || 0,
       smartcard: this.smartcardno,
       type: 8,
       retailerid: this.operatorId || 0,
       iscollected: this.iscollected,
+      comments: this.comment,
+      android_id: 0,
+      device_id: 0,
+      ui_type: 1,
     }
     Swal.fire({
       title: 'Loading...',
@@ -1985,12 +2154,24 @@ export class SubscriberdialogueComponent implements OnInit, OnDestroy {
       this.swal.Error(err?.error?.message);
     });
   }
+  subBalance: any;
   getFirstTimeActivationConfirmation() {
     // this.swal.Loading();
+    console.log('2423423423432423432432432432');
+
     this.isActive = true;
+    console.log(this.f_date);
+    console.log(this.plantype);
+
     this.userservice.getFirstTimeActivationConfirmation(this.role, this.username, this.newpackagename, this.selectedRechargetype, this.f_date || this.plantype || 4, this.smartcardno, 1, 0)
       .subscribe((data: any) => {
         this.First_list = data;
+        this.customerPayAmount = this.First_list?.customerPayAmount;
+        console.log(this.customerPayAmount);
+        this.excessAmount = this.First_list?.balance;
+        this.balanceamount = this.customerPayAmount - this.collectedPayAmount;
+        this.newExcessAmount = this.excessAmount - this.balanceamount;
+        this.setBillType(this.customerPayAmount, this.collectedPayAmount);
         // this.swal.success_1(data?.message);
         this.cdr.detectChanges();
 
@@ -2000,7 +2181,56 @@ export class SubscriberdialogueComponent implements OnInit, OnDestroy {
     // this.cdr.detectChanges();
   }
 
+  firsttimeActivationOfCard() {
+    console.log('213213213');
+    console.log(this.billTypeValue?.bill_type);
+    console.log('collectedPayAmount', this.collectedPayAmount);
 
+    console.log(this.plantype);
+    // this.plantype || this.f_date || 4,
+    this.confirmation = true;
+    this.finalrow = this.rows
+    this.isConfirmationComplete = true;
+    let requestBody = {
+      packageid: this.newpackagename,
+      plantype: this.selectedRechargetype,
+      plan: this.plantype || this.f_date || 4,
+      billtype: this.billTypeValue?.bill_type || 0,
+      dueamt: this.First_list.customerPayAmount,
+      // paidamount: this.paidamount || this.collectedPayAmount || 0,
+      paidamt: this.paidamount || this.collectedPayAmount || 0,
+      retailerid: this.operatorId || this.retailerId || 0,
+      smartcard: this.smartcardno,
+      type: 1,
+      comments: this.comment,
+      android_id: 0,
+      device_id: 0,
+      ui_type: 1,
+      iscollected: this.iscollected,
+      role: this.role,
+      username: this.username,
+    }
+    this.swal.Loading();
+    this.userservice.firsttimeActivationOfCard(requestBody)
+      .subscribe((res: any) => {
+        this.swal.success(res?.message);
+        Swal.fire({
+          title: 'Success!',
+          text: res.message,
+          icon: 'success',
+          timer: 2000,
+          timerProgressBar: true,
+          showConfirmButton: false
+        }).then(() => {
+          this.router.navigate([`/admin/subscriber-full-info/${this.smartcardno}/subsmartcard`]);
+          this.dialogRef.close({ success: true, smartcard: this.smartcardno });
+          // location.reload();
+          this.dialogRef.close({ success: true, smartcard: this.smartcardno });
+        });
+      }, (err) => {
+        this.swal.Error(err?.error?.message);
+      });
+  }
 
   lcotransferSinglesmartcard() {
     // Validate that both fields are selected
@@ -2031,7 +2261,7 @@ export class SubscriberdialogueComponent implements OnInit, OnDestroy {
     this.errorMessage = '';
     this.swal.Loading();
     // this.userservice.lcotransferSinglesmartcard(this.role, this.username, subscriptionOperatorid, this.subid, this.withsubscription, this.smartcardno, 0, 2
-    this.userservice.lcotransferSinglesmartcard(this.role, this.username, subscriptionOperatorid || this.lcoid, this.subid, this.withsubscription, this.smartcardno, 0, 3
+    this.userservice.lcotransferSinglesmartcard(this.role, this.username, subscriptionOperatorid || this.lcoid, this.subid, this.withsubscription, this.smartcardno, this.operatorId || this.retailerId || 0, 3, 0, 0, 1, this.comment || 'No Comment'
     ).subscribe((res: any) => {
       this.swal.success(res?.message);
       Swal.fire({
@@ -2050,6 +2280,7 @@ export class SubscriberdialogueComponent implements OnInit, OnDestroy {
     });
     // }
   }
+
   boxIdChange() {
     if (!this.new_boxid) {
       this.errorMessage = 'please Entered the Boxid !!';
@@ -2166,7 +2397,7 @@ export class SubscriberdialogueComponent implements OnInit, OnDestroy {
   }
   cancelSmartcard() {
     this.swal.Loading();
-    this.userservice.cancelSmartcard(this.role, this.username, this.smartcardno, 2, 0,)
+    this.userservice.cancelSmartcard(this.role, this.username, this.smartcardno, 2, 0, 0, 0, 1, this.cancelSubRemark)
       .subscribe((res: any) => {
         // this.swal.success(res?.message);
         Swal.fire({
@@ -2193,7 +2424,6 @@ export class SubscriberdialogueComponent implements OnInit, OnDestroy {
   }
   toggleRemoveConfirmation() {
     this.removeproduct = !this.removeproduct;
-
   }
   // --------------------------------------------------addon--------------------------------------
   addAddonConfirmation() {
@@ -2208,7 +2438,14 @@ export class SubscriberdialogueComponent implements OnInit, OnDestroy {
       retailerid: this.operatorId || 0,
       addonlist: this.rows,
       managepackagelist: this.rowData,
-      iscollected: this.iscollected
+      iscollected: this.iscollected,
+      dueamount: this.changebase?.customerPayAmount || 0,
+      paidamount: this.paidamount || this.collectedPayAmount || 0,
+      android_id: 0,
+      device_id: 0,
+      ui_type: 1,
+      comments: this.comment,
+      billtype: this.billTypeValue?.bill_type || 0,
     }
 
     console.log(this.rows);
@@ -2216,10 +2453,15 @@ export class SubscriberdialogueComponent implements OnInit, OnDestroy {
     this.userservice.addAddonConfirmation(requestBody).subscribe(
       (res: any) => {
         this.addonConfirmationData = res;
-        console.log('response came');
+        console.log('response came', this.addonConfirmationData);
         this.cdr.detectChanges;
         console.log('dect changes completed');
-
+        this.excessAmount = this.addonConfirmationData?.balance;
+        console.log(this.addonConfirmationData);
+        this.customerPayAmount = this.addonConfirmationData?.balance;
+        this.balanceamount = this.customerPayAmount - this.collectedPayAmount;
+        this.newExcessAmount = this.excessAmount - this.balanceamount;
+        this.setBillType(this.customerPayAmount, this.collectedPayAmount);
 
       }, (err) => {
         this.swal.Error(err?.error?.message);
@@ -2230,7 +2472,8 @@ export class SubscriberdialogueComponent implements OnInit, OnDestroy {
   addAddonForSmartcard() {
     this.confirmation = true;
     this.isConfirmationComplete = true;
-    this.finalrow = this.rows
+    this.finalrow = this.rows;
+
     let requestBody = {
       role: this.role,
       username: this.username,
@@ -2239,7 +2482,14 @@ export class SubscriberdialogueComponent implements OnInit, OnDestroy {
       retailerid: this.operatorId || 0,
       iscollected: this.iscollected,
       addonlist: this.rows,
-      managepackagelist: this.rowData
+      managepackagelist: this.rowData,
+      dueamount: this.changebase?.customerPayAmount || 0,
+      paidamount: this.paidamount || this.collectedPayAmount || 0,
+      android_id: 0,
+      device_id: 0,
+      ui_type: 1,
+      comments: this.comment,
+      billtype: this.billTypeValue?.bill_type || 0,
     }
     Swal.fire({
       title: 'Adding...',
@@ -2279,10 +2529,21 @@ export class SubscriberdialogueComponent implements OnInit, OnDestroy {
       retailerid: this.operatorId || 0,
       iscollected: this.iscollected,
       alacartelist: this.rows,
+      android_id: 0,
+      device_id: 0,
+      ui_type: 1,
+      billtype: this.billTypeValue?.bill_type || 0,
+      comments: this.comment || 'No Comment',
     }
     this.userservice.addAlacarteConfirmation(requestBody).subscribe(
       (res: any) => {
         this.alacarteConfirmationData = res;
+        this.excessAmount = this.alacarteConfirmationData?.balance;
+        console.log(this.alacarteConfirmationData);
+        this.customerPayAmount = this.alacarteConfirmationData?.balance;
+        this.balanceamount = this.customerPayAmount - this.collectedPayAmount;
+        this.newExcessAmount = this.excessAmount - this.balanceamount;
+        this.setBillType(this.customerPayAmount, this.collectedPayAmount);
         this.cdr.detectChanges;
         this.showData = true;
         // this.swal.success(res?.message);
@@ -2291,6 +2552,8 @@ export class SubscriberdialogueComponent implements OnInit, OnDestroy {
       });
   }
   addAlacarteSmartcard() {
+    console.log(';213123213k;lkfsd;gjkfdskgjfdkjm');
+
     let requestBody = {
       role: this.role,
       username: this.username,
@@ -2299,6 +2562,13 @@ export class SubscriberdialogueComponent implements OnInit, OnDestroy {
       retailerid: this.operatorId || 0,
       iscollected: this.iscollected,
       alacartelist: this.rows,
+      dueamt: this.changebase?.customerPayAmount,
+      paidamount: this.paidamount || this.collectedPayAmount || 0,
+      android_id: 0,
+      device_id: 0,
+      ui_type: 1,
+      comments: this.comment,
+      billtype: this.billTypeValue?.bill_type || 0,
     }
     Swal.fire({
       title: 'Updateing...',
@@ -2328,8 +2598,6 @@ export class SubscriberdialogueComponent implements OnInit, OnDestroy {
   removeProductConfirmation() {
     this.removeproduct = true;
     this.isRemove = this.removeproduct && this.isAnyRowSelected ? true : false;
-
-
     this.finalrow = this.rows;
     let requestBody = {
       role: this.role,
@@ -2339,6 +2607,11 @@ export class SubscriberdialogueComponent implements OnInit, OnDestroy {
       retailerid: this.operatorId || 0,
       iscollected: this.iscollected,
       removeproductlist: this.rows,
+      android_id: 0,
+      device_id: 0,
+      ui_type: 1,
+      billtype: this.billTypeValue?.bill_type || 0,
+      comments: this.comment || 'No Comment',
     }
 
     this.userservice.removeProductConfirmation(requestBody).subscribe(
@@ -2366,6 +2639,13 @@ export class SubscriberdialogueComponent implements OnInit, OnDestroy {
       retailerid: this.operatorId || 0,
       iscollected: this.iscollected,
       removeproductlist: this.rows,
+      android_id: 0,
+      device_id: 0,
+      ui_type: 1,
+      // dueamt: this.changebase?.customerPayAmount,
+      // paidamount: this.paidamount || this.collectedPayAmount || 0,
+      comments: this.comment,
+      billtype: this.billTypeValue?.bill_type || 0,
     }
 
     this.swal.Loading();
@@ -2403,7 +2683,7 @@ export class SubscriberdialogueComponent implements OnInit, OnDestroy {
   }
   unPairSmartcard() {
     this.swal.Loading();
-    this.userservice.UnpairSmartcardOrBoxId(this.role, this.username, !this.ischeck, this.subSmartcard, 0, 1).subscribe((res: any) => {
+    this.userservice.UnpairSmartcardOrBoxId(this.role, this.username, !this.ischeck, this.subSmartcard, this.operatorId || this.retailerId || 0, 1, 0, 0, 1, this.comment || 'No Comment').subscribe((res: any) => {
       this.swal.success(res?.message);
       this.isUnpairDialogue = res?.message;
       this.unpairtoggle();
@@ -2413,7 +2693,7 @@ export class SubscriberdialogueComponent implements OnInit, OnDestroy {
   }
   unPairBox() {
     this.swal.Loading();
-    this.userservice.UnpairSmartcardOrBoxId(this.role, this.username, this.ischeck, this.subBoxid, 0, 2).subscribe((res: any) => {
+    this.userservice.UnpairSmartcardOrBoxId(this.role, this.username, this.ischeck, this.subBoxid, this.operatorId || this.retailerId || 0, 2, 0, 0, 1, this.comment || 'No Comment').subscribe((res: any) => {
       this.swal.success(res?.message);
       this.isUnpairDialogue = res?.message;
       this.unpairtoggle();
@@ -2511,6 +2791,83 @@ export class SubscriberdialogueComponent implements OnInit, OnDestroy {
         this.idproof = ''
       }
     }
+  }
+  onCancel() { }
+  onUpdate() { }
+  rechargeTypeDialog = false;
+  dialogType: any;
+  onRechargeType(type: any) {
+    console.log(type);
+    this.dialogType = type;
+    console.log(this.dialogType);
+    this.rechargeTypeDialog = true;
+    console.log('scroll--11');
+
+    setTimeout(() => {
+      const dialogElement = document.querySelector('.recharge-dialog1');
+      if (dialogElement) {
+        dialogElement.scrollIntoView({ behavior: 'smooth', block: 'end' });
+      }
+    }, 100);
+    this.cdr.detectChanges();
+  }
+  onRechargeType1() {
+    this.rechargeTypeDialog = false;
+    console.log('scroll');
+
+    setTimeout(() => {
+      const dialogElement = document.querySelector('.recharge-dialog');
+      if (dialogElement) {
+        dialogElement.scrollIntoView({ behavior: 'smooth', block: 'end' });
+      }
+    }, 100);
+    this.cdr.detectChanges();
+  }
+  onBalaceAmount(type: any) {
+    console.log(type)
+    console.log(this.customerPayAmount)
+    console.log(this.collectedPayAmount)
+    this.balanceamount = this.customerPayAmount - this.collectedPayAmount;
+    this.newExcessAmount = this.excessAmount - this.balanceamount;
+    this.setBillType(this.customerPayAmount, this.collectedPayAmount);
+    console.log(this.excessAmount);
+    console.log(this.balanceamount);
+    console.log(this.newExcessAmount);
+  }
+  setBillType(customerPayAmount: any, collectedPayAmount: any): void {
+    if (customerPayAmount === 0 && collectedPayAmount > 0) {
+      this.billTypeValue = {
+        bill_type: 1,
+        description: 'Fully Paid'
+      };
+    } else if (customerPayAmount > 0 && collectedPayAmount === 0) {
+      this.billTypeValue = {
+        bill_type: 0,
+        description: 'Unpaid'
+      };
+    } else if (collectedPayAmount < customerPayAmount) {
+      this.billTypeValue = {
+        bill_type: 3,
+        description: 'Partially Paid'
+      };
+    } else if (collectedPayAmount > customerPayAmount) {
+      this.billTypeValue = {
+        bill_type: 4,
+        description: 'Excess Paid'
+      };
+    } else if (collectedPayAmount === customerPayAmount) {
+      this.billTypeValue = {
+        bill_type: 1,
+        description: 'Fully Paid'
+      };
+    } else {
+      this.billTypeValue = {
+        bill_type: 0,
+        description: 'Unknown'
+      };
+    }
+
+    console.log('Bill Type:', this.billTypeValue?.bill_type);
   }
 }
 

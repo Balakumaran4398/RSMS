@@ -39,7 +39,7 @@ export class SpecialcancelsubscriptionComponent implements OnInit {
     { headerName: "REMARKS", field: 'remarks', width: 220 },
     { headerName: "CREATED DATE	", field: 'createddate', width: 250 },
   ];
-  rowData: any[] = [];
+  rowData: any;
   public rowSelection: any = "multiple";
   gridOptions = {
     defaultColDef: {
@@ -50,7 +50,7 @@ export class SpecialcancelsubscriptionComponent implements OnInit {
       floatingFilter: true
     },
     paginationPageSize: 10,
-    paginationPageSizeSelector:[10,20,50],
+    paginationPageSizeSelector: [10, 20, 50],
     pagination: true,
   }
   date: any;
@@ -152,6 +152,10 @@ export class SpecialcancelsubscriptionComponent implements OnInit {
       formData.append('type', '2');
       formData.append('optype', '9');
       formData.append('retailerid', '0');
+      formData.append('comments', 'No Comment');
+      formData.append('android_id', '0');
+      formData.append('device_id', '0');
+      formData.append('ui_type', '1');
 
       this.userservice.uploadFileForSubscriptionCancel(formData)
         .subscribe((res: any) => {
@@ -163,19 +167,60 @@ export class SpecialcancelsubscriptionComponent implements OnInit {
   }
   getData() {
     this.rowData = [];
+    this.swal.Loading();
     this.userservice.getBulkrefreshListByDate(this.role, this.username, 'cancel_subscription', this.date, 11)
+      // .subscribe(
+      //   (response: any) => {
+      //     console.log(response);
+      //     this.rowData = response;
+      //     const rowCount = this.rowData.length;
+      //     if (!this.gridOptions.paginationPageSizeSelector.includes(rowCount)) {
+      //       this.gridOptions.paginationPageSizeSelector.push(rowCount);
+      //     }
+      //     this.swal.Close();
+      //   },
+      //   (error) => {
+      //     this.swal.Close();
+      //     // if (error.status === 204) {
+      //     //   this.swal.Success_204();
+      //     // } else if (error.status === 400) {
+      //     //   this.swal.Error_400();
+      //     // } else if (error.status === 500) {
+      //     //   this.swal.Error_500();
+      //     // } else {
+      //     //   Swal.fire('Error', 'Something went wrong. Please try again.', 'error');
+      //     // }
+      //     switch (error.status) {
+      //       case 204:
+      //         this.swal.Success_204();
+      //         break;
+      //       case 400:
+      //         this.swal.Error_400();
+      //         break;
+      //       case 500:
+      //         this.swal.Error_500();
+      //         break;
+      //       default:
+      //         Swal.fire('Error', 'Something went wrong. Please try again.', 'error');
+      //         break;
+      //     }
+      //   }
+      // );
+
       .subscribe(
-        (response: any) => {
-          console.log(response);
-          this.rowData = response;
-          const rowCount = this.rowData.length;
-          if (!this.gridOptions.paginationPageSizeSelector.includes(rowCount)) {
-            this.gridOptions.paginationPageSizeSelector.push(rowCount);
+        (response: HttpResponse<any[]>) => {
+          if (response.status === 200) {
+            this.rowData = response.body;
+            const rowCount = this.rowData.length;
+            if (!this.gridOptions.paginationPageSizeSelector.includes(rowCount)) {
+              this.gridOptions.paginationPageSizeSelector.push(rowCount);
+            }
+            // this.swal.Success_200();
+          } else if (response.status === 204) {
+            this.swal.Success_204();
           }
-          this.swal.Close();
         },
         (error) => {
-          this.swal.Close();
           if (error.status === 400) {
             this.swal.Error_400();
           } else if (error.status === 500) {
@@ -191,18 +236,48 @@ export class SpecialcancelsubscriptionComponent implements OnInit {
     console.log('refresh');
     this.swal.Loading();
     this.userservice.getBulkRefreshList(this.role, this.username, 'cancel_subscription', 11)
+      // .subscribe(
+      // (response: any) => {
+      //   console.log(response);
+      //   this.rowData = response;
+      //   const rowCount = this.rowData.length;
+      //   if (!this.gridOptions.paginationPageSizeSelector.includes(rowCount)) {
+      //     this.gridOptions.paginationPageSizeSelector.push(rowCount);
+      //   }
+      //   this.swal.Close();
+      // },
+      // (error) => {
+      //   this.swal.Close();
+      //     switch (error.status) {
+      //     case 204:
+      //       this.swal.Success_204();
+      //       break;
+      //     case 400:
+      //       this.swal.Error_400();
+      //       break;
+      //     case 500:
+      //       this.swal.Error_500();
+      //       break;
+      //     default:
+      //       Swal.fire('Error', 'Something went wrong. Please try again.', 'error');
+      //       break;
+      //   }
+      // });
+
       .subscribe(
-        (response: any) => {
-          console.log(response);
-          this.rowData = response;
-          const rowCount = this.rowData.length;
-          if (!this.gridOptions.paginationPageSizeSelector.includes(rowCount)) {
-            this.gridOptions.paginationPageSizeSelector.push(rowCount);
+        (response: HttpResponse<any[]>) => {
+          if (response.status === 200) {
+            this.rowData = response.body;
+            const rowCount = this.rowData.length;
+            if (!this.gridOptions.paginationPageSizeSelector.includes(rowCount)) {
+              this.gridOptions.paginationPageSizeSelector.push(rowCount);
+            }
+            this.swal.Success_200();
+          } else if (response.status === 204) {
+            this.swal.Success_204();
           }
-          this.swal.Close();
         },
         (error) => {
-          this.swal.Close();
           if (error.status === 400) {
             this.swal.Error_400();
           } else if (error.status === 500) {
