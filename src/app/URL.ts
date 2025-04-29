@@ -1,5 +1,4 @@
 export default class URLs {
-
     static CURRENT_VERSION(): String {
         return "v7.2.2";
     }
@@ -14,9 +13,9 @@ export default class URLs {
         // return 'http://4kdigital.ridsys.in:8585/rsms/api/auth';   //4k
         // return 'http://cas.ridsys.in:8585/rsms/api/auth';   //AJK
         // return 'http://rdigital.ridsys.in:8585/rsms/api/auth';   //rdigital
-    }   
+    }
 
-    static BASE_URL(): String { 
+    static BASE_URL(): String {
         // return "http://192.168.1.102:8081/api";          //JAYA AKKA 
         // return "http://192.168.1.115:8081/api";          //BALA
         // return "http://192.168.1.111:8586/api";          //SUBHA
