@@ -253,6 +253,8 @@ export class SubDashboardComponent implements OnInit {
       this.isAnyRowSelected = selectedRows.length > 0;
       this.rows = selectedRows;
     }
+    console.log(this.rows);
+
   }
 
   ngOnInit(): void {
@@ -371,6 +373,7 @@ export class SubDashboardComponent implements OnInit {
       this.addsmartcard = this.Sublcopermissionlist.add_smartcard;
       this.sublcoInfo = this.Sublcopermissionlist.info;
 
+      console.log('subAddonAdd', this.subAddonAdd);
       console.log('ADD SMARTCARD', this.addsmartcard);
       console.log('PLAN', this.isplan);
       console.log('DATE', this.isdate);
@@ -391,6 +394,8 @@ export class SubDashboardComponent implements OnInit {
       this.isdate = this.lcoDeatails.date;
       this.isdateTodate = this.lcoDeatails.datetodate;
       this.subBalance = this.lcoDeatails.balance;
+      this.base =  this.lcoDeatails.is_base;
+      console.log('BASE', this.base);
       console.log('PLAN', this.isplan);
       console.log('DATE', this.isdate);
       console.log('DATE TO DATE', this.isdateTodate);
@@ -1496,6 +1501,27 @@ export class SubDashboardComponent implements OnInit {
         refreshButton.addEventListener('click', () => {
           this.openDialog('refresh', params.data);
         });
+
+
+        // const QRButton = document.createElement('button');
+        // QRButton.style.backgroundColor = '#1f6764';
+        // QRButton.style.border = 'none';
+        // QRButton.style.color = 'white';
+        // QRButton.style.width = '25px';
+        // QRButton.style.height = '25px';
+        // QRButton.style.borderRadius = '12px';
+        // QRButton.style.cursor = 'pointer';
+        // QRButton.style.fontSize = '15px';
+        // QRButton.style.display = 'flex';
+        // QRButton.style.alignItems = 'center';
+        // QRButton.style.justifyContent = 'center';
+        // const QRIcon = document.createElement('i');
+        // QRButton.className = 'fa fa-qrcode'; // example icon
+        // QRButton.appendChild(QRIcon); 
+        // QRButton.title = 'QR CODE';
+        // QRButton.addEventListener('click', () => {
+        //   this.onQRcodeGenerate();
+        // });
         // Download Button
         const downloadButton = document.createElement('button');
         downloadButton.style.backgroundColor = '#1f6764';
@@ -1517,12 +1543,11 @@ export class SubDashboardComponent implements OnInit {
         downloadButton.addEventListener('click', () => {
           this.getPdfSmartcardRechargeReport(params.data);
         });
-        // Append buttons to the container
-        // container.appendChild(infoButton);
+
         container.appendChild(refreshButton);
         container.appendChild(downloadButton);
+        // container.appendChild(QRButton);
 
-        // Add click event listeners if needed
         infoButton.addEventListener('click', () => {
         });
 
@@ -1532,6 +1557,9 @@ export class SubDashboardComponent implements OnInit {
 
         downloadButton.addEventListener('click', () => {
         });
+
+        // QRButton.addEventListener('click', () => {
+        // });
 
         return container;
       },
@@ -1901,6 +1929,7 @@ export class SubDashboardComponent implements OnInit {
   }
 
   onSelectionrechargetype(selectedValue: string) {
+    // this.cdr.detectChanges();
     const rechargetype = Number(selectedValue);
     if (rechargetype == 1) {
       this.isplantype = true;
@@ -1934,7 +1963,7 @@ export class SubDashboardComponent implements OnInit {
   }
 
   onSelectiondatetype(selectedValue: string) {
-    // this.cdr.detectChanges();
+    this.cdr.detectChanges();
     const rechargetype = Number(selectedValue);
     console.log('selectrdvalue', selectedValue);
 
@@ -2036,7 +2065,7 @@ export class SubDashboardComponent implements OnInit {
     } else {
       // Default fallback
       this.billTypeValue = {
-        bill_type: -1,
+        bill_type: 0,
         description: 'Unknown'
       };
     }
@@ -2045,7 +2074,8 @@ export class SubDashboardComponent implements OnInit {
   }
 
   recharge() {
-    console.log('11111111111111111111111111111111111111')
+    console.log('recharge     --------- 111111111111111111', this.rows)
+    console.log('recharge   ----------  222222222222222222222', this.rowData1)
     this.confirmation = true;
     this.isConfirmationComplete = true;
     console.log(this.billTypeValue)
@@ -2057,7 +2087,8 @@ export class SubDashboardComponent implements OnInit {
       smartcard: this.subdetailsList.smartcard,
       type: 10,
       managepacklist: this.rowData1,
-      selectedpacklist: this.rows,
+      // selectedpacklist: this.rows,
+      selectedpacklist: this.rowData1,
       retailerid: this.operatorId || this.retailerId || 0,
       iscollected: this.iscollected,
       comment: this.comment || '',
@@ -2102,7 +2133,9 @@ export class SubDashboardComponent implements OnInit {
   //   });
   // }
   recharge1() {
-    console.log('222222222222222222222')
+
+    console.log('recharge1     --------- 111111111111111111', this.rows)
+    console.log('recharge1   ----------  222222222222222222222', this.rowData1)
     this.confirmation = true;
     this.isConfirmationComplete = true;
     let requestBody = {
@@ -2113,7 +2146,8 @@ export class SubDashboardComponent implements OnInit {
       smartcard: this.subdetailsList.smartcard,
       type: 10,
       managepacklist: this.rowData1,
-      selectedpacklist: this.rowData1,
+      selectedpacklist: this.rows,
+      // selectedpacklist: this.rowData1,
       retailerid: this.operatorId || this.retailerId || 0,
       iscollected: this.iscollected,
       comment: this.comment || '',
@@ -2244,6 +2278,7 @@ export class SubDashboardComponent implements OnInit {
     // this.selectedRechargetype= '';
     this.plandata = '';
     // this.isRecharge = true;
+    console.log('row', this.rowData1,);
     console.log('plandata', this.plandata);
     console.log(this.f_date);
 
@@ -2270,10 +2305,17 @@ export class SubDashboardComponent implements OnInit {
       this.confirmation = true;
       this.cancel_btn = true;
       this.excessAmount = res?.balance;
+      this.oldexcessAmount = res?.billbalance;
+      console.log('OLD EXESS AMOUNT', this.oldexcessAmount)
       this.customerPayAmount = res?.customerPayAmount;
       this.setBillType(this.customerPayAmount, this.collectedPayAmount);
       console.log('11111', this.excessAmount);
       console.log('222222222', this.customerPayAmount);
+      console.log(this.collectedPayAmount);
+      this.balanceamount = this.customerPayAmount - this.collectedPayAmount;
+      // this.newExcessAmount = this.excessAmount - this.balanceamount;
+      console.log('333', this.newExcessAmount);
+      this.newExcessAmount = this.oldexcessAmount + this.balanceamount;
       setTimeout(() => {
         const dialogElement = document.querySelector('.confirmation-dialog');
         if (dialogElement) {
@@ -2295,10 +2337,14 @@ export class SubDashboardComponent implements OnInit {
   collectedPayAmount: any = 0;
   balanceamount: any;
   excessAmount: any;
+  oldexcessAmount: any;
   newExcessAmount: any;
   ManagePackageCalculation() {
     this.plandata = '';
     this.plandata = this.plantype || this.f_date || 4
+    console.log('recharge  111111111111   --------- ', this.rows);
+    console.log('recharge  222222222222  --------- ', this.rowData1);
+
     let requestBody = {
       role: this.role,
       username: this.username,
@@ -2311,21 +2357,21 @@ export class SubDashboardComponent implements OnInit {
       retailerid: this.operatorId || this.retailerId || 0
     }
     this.userservice.ManagePackageCalculation(requestBody).subscribe((res: any) => {
-
       console.log(res);
-
       this.manageData = res;
-
       this.isRecharge = false;
       this.cancel_btn = true;
       this.confirmation = true;
       this.excessAmount = res?.balance;
+      this.oldexcessAmount = res?.billbalance;
       this.customerPayAmount = res?.customerPayAmount;
       this.setBillType(this.customerPayAmount, this.collectedPayAmount);
       console.log('11111', this.excessAmount);
       console.log('222222222', this.customerPayAmount);
-
-
+      console.log(this.collectedPayAmount);
+      this.balanceamount = this.customerPayAmount - this.collectedPayAmount;
+      // this.newExcessAmount = this.excessAmount - this.balanceamount;
+      this.newExcessAmount = this.oldexcessAmount + this.balanceamount;
       setTimeout(() => {
         const dialogElement = document.querySelector('.confirmation-dialog');
         if (dialogElement) {
@@ -2333,6 +2379,7 @@ export class SubDashboardComponent implements OnInit {
         }
       }, 100);
       this.confirmation = true;
+      this.onBalaceAmount(0);
       this.cdr.detectChanges();
 
     }, (err) => {
@@ -2349,7 +2396,9 @@ export class SubDashboardComponent implements OnInit {
       this.confirmation = true;
       this.cancel_btn = true;
       this.excessAmount = res?.balance;
+      this.oldexcessAmount = res?.billbalance;
       this.customerPayAmount = res?.customerPayAmount;
+      
       this.setBillType(this.customerPayAmount, this.collectedPayAmount);
       console.log('11111', this.excessAmount);
       console.log('222222222', this.customerPayAmount);
@@ -2402,11 +2451,63 @@ export class SubDashboardComponent implements OnInit {
     console.log(this.customerPayAmount)
     console.log(this.collectedPayAmount)
     this.balanceamount = this.customerPayAmount - this.collectedPayAmount;
-    this.newExcessAmount = this.excessAmount - this.balanceamount;
+    console.log('oldexcess amount', this.oldexcessAmount);
+    // this.newExcessAmount = this.oldexcessAmount - this.balanceamount;
+    // if (this.oldexcessAmount < 0 && this.balanceamount < 0) {
+      this.newExcessAmount = this.oldexcessAmount + this.balanceamount;
+    // } 
+    // else {
+    //   this.newExcessAmount = this.oldexcessAmount - this.balanceamount;
+    // }
+    console.log('newExcessAmount', this.newExcessAmount);
     this.setBillType(this.customerPayAmount, this.collectedPayAmount);
     console.log(this.excessAmount);
     console.log(this.balanceamount);
     console.log(this.newExcessAmount);
+  }
+  onQRcodeDownload() {
+
+    this.swal.Loading();
+
+    let smartcard = this.subdetailsList?.smartcard || this.subdetails?.smartcard;
+    console.log(smartcard)
+    // this.userservice.getDownloadQR(this.role, this.username, smartcard)
+    // .subscribe((res: Blob) => {
+    //   const blob = new Blob([res], { type: res.type });
+    //   const url = window.URL.createObjectURL(blob);
+
+    //   const a = document.createElement('a');
+    //   a.href = url;
+    //   a.download = 'qrcode.png'; 
+    //   document.body.appendChild(a);
+    //   a.click();
+    //   document.body.removeChild(a);
+    //   window.URL.revokeObjectURL(url);
+    // }, (err) => {
+    //   this.swal.Error(err?.error?.message);
+    // });
+  }
+  onQRcodeGenerate() {
+
+    this.swal.Loading();
+
+    let smartcard = this.subdetailsList?.smartcard || this.subdetails?.smartcard;
+    console.log(smartcard)
+    //   this.userservice.getGenerateQrCode(this.role, this.username, smartcard)
+    //   .subscribe((res: Blob) => {
+    //     const blob = new Blob([res], { type: res.type });
+    //     const url = window.URL.createObjectURL(blob);
+
+    //     const a = document.createElement('a');
+    //     a.href = url;
+    //     a.download = 'qrcode.png'; 
+    //     document.body.appendChild(a);
+    //     a.click();
+    //     document.body.removeChild(a);
+    //     window.URL.revokeObjectURL(url);
+    //   }, (err) => {
+    //     this.swal.Error(err?.error?.message);
+    //   });
   }
 }
 

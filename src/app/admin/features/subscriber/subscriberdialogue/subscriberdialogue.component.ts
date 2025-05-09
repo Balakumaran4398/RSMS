@@ -269,13 +269,15 @@ export class SubscriberdialogueComponent implements OnInit, OnDestroy {
 
   SublcopermissionObj: any;
   Subwallet = false;
+  sublcoDiscount: any;
   selectedtypes: number[] = [];
 
   billTypeValue: any;
-  collectedPayAmount: any;
+  collectedPayAmount: any = 0;
   customerPayAmount: any;
   balanceamount: any;
   excessAmount: any;
+  oldexcessAmount: any;
   newExcessAmount: any;
 
 
@@ -628,6 +630,7 @@ export class SubscriberdialogueComponent implements OnInit, OnDestroy {
       this.operatorname = this.lcoDeatails?.retailername;
       this.SublcopermissionObj = this.lcoDeatails?.permissionlist;
       this.Subwallet = this.SublcopermissionObj?.wallet;
+      this.sublcoDiscount = this.SublcopermissionObj?.sublcoDiscount;
       this.isplan = this.SublcopermissionObj.plan;
       this.isdate = this.SublcopermissionObj.date;
       this.isdateTodate = this.SublcopermissionObj.datetodate;
@@ -1298,7 +1301,7 @@ export class SubscriberdialogueComponent implements OnInit, OnDestroy {
     console.log('selectedValue', selectedValue);
     const rechargetype = Number(selectedValue);
     console.log(rechargetype);
-
+    this.cdr.detectChanges();
     if (rechargetype == 1) {
       this.isplantype = true;
       this.datetype = false;
@@ -1657,7 +1660,7 @@ export class SubscriberdialogueComponent implements OnInit, OnDestroy {
     //   this.swal.Error('All fields are required');
     //   return;
     // }
-    this.userservice.transferLcoToSmartcard(this.role, this.username, (this.lcoid || this.operatorId), this.lcoareaid, this.lcostreetid, this.subid_1 || this.newSubid, this.withsubscription, this.operatorId || this.retailerId || 0, 3, 0, 0, 1, this.comment || 'No Comment')
+    this.userservice.transferLcoToSmartcard(this.role, this.username, (this.lcoid || this.operatorId), this.lcoareaid, this.lcostreetid, this.subid_1 || this.newSubid, this.withsubscription, this.operatorId || this.retailerId || 0, 2, 0, 0, 1, this.comment || 'No Comment')
       .subscribe((res: any) => {
         this.swal.success(res?.message);
       }, (err) => {
@@ -1895,47 +1898,7 @@ export class SubscriberdialogueComponent implements OnInit, OnDestroy {
     this.removeProductConfirmation();
   }
 
-  // firsttimeActivationOfCard() {
-  //   console.log('213213213');
-
-  //   console.log(this.plantype);
-  //   // this.plantype || this.f_date || 4,
-  //   this.confirmation = true;
-  //   this.finalrow = this.rows
-  //   this.isConfirmationComplete = true;
-  //   let requestBody = {
-  //     packageid: this.newpackagename,
-  //     plantype: this.selectedRechargetype,
-  //     plan: this.plantype || this.f_date || 4,
-  //     billtype: this.billtype,
-  //     dueamt: 0.0,
-  //     paidamt: this.First_list.customerPayAmount,
-  //     smartcard: this.smartcardno,
-  //     type: 1,
-  //     role: this.role,
-  //     username: this.username,
-  //   }
-  //   this.swal.Loading();
-  //   this.userservice.firsttimeActivationOfCard(requestBody)
-  //     .subscribe((res: any) => {
-  //       // this.swal.success(res?.message);
-  //       Swal.fire({
-  //         title: 'Success!',
-  //         text: res.message,
-  //         icon: 'success',
-  //         timer: 2000,
-  //         timerProgressBar: true,
-  //         showConfirmButton: false
-  //       }).then(() => {
-  //         this.router.navigate([`/admin/subscriber-full-info/${this.smartcardno}/subsmartcard`]);
-  //         this.dialogRef.close({ success: true, smartcard: this.smartcardno });
-  //         // location.reload();
-  //         this.dialogRef.close({ success: true, smartcard: this.smartcardno });
-  //       });
-  //     }, (err) => {
-  //       this.swal.Error(err?.error?.message);
-  //     });
-  // }
+  
   ActivationOfCard() {
     let requestBody = {
       packageid: this.newpackagename,
@@ -1984,47 +1947,8 @@ export class SubscriberdialogueComponent implements OnInit, OnDestroy {
         this.swal.Error(err?.error?.message);
       });
   }
-  // ActivationOfCard() {
-  //   let requestBody = {
-  //     packageid: this.newpackagename,
-  //     plantype: this.selectedRechargetype,
-  //     plan: this.plantype || this.f_date || 0,
-  //     billtype: this.billtype,
-  //     dueamt: 0.0,
-  //     paidamt: this.First_list.customerPayAmount,
-  //     smartcard: this.smartcardno,
-  //     type: 1,
-  //     role: this.role,
-  //     username: this.username,
-  //   }
-  //   Swal.fire({
-  //     title: 'Processing...',
-  //     text: 'Please wait while we activate the card.',
-  //     icon: 'info',
-  //     allowOutsideClick: false,
-  //     showConfirmButton: false,
-  //     didOpen: () => {
-  //       Swal.showLoading(null);
-  //     }
-  //   });
-  //   this.userservice.ActivationOfCard(requestBody).
-  //     subscribe((res: any) => {
-  //       // this.swal.success(res?.message);
-  //       Swal.fire({
-  //         title: 'Success!',
-  //         text: res.message,
-  //         icon: 'success',
-  //         timer: 2000,
-  //         timerProgressBar: true,
-  //         showConfirmButton: false
-  //       }).then(() => {
-  //         this.router.navigate([`/admin/subscriber-full-info/${this.smartcardno}/subsmartcard`]);
-  //         this.dialogRef.close({ success: true, smartcard: this.smartcardno });
-  //       });
-  //     }, (err) => {
-  //       this.swal.Error(err?.error?.message);
-  //     });
-  // }
+
+
   baseChangeofSmartcardPackage() {
     this.isActive = true;
     let plan = this.selectedRechargetype || ''
@@ -2039,11 +1963,13 @@ export class SubscriberdialogueComponent implements OnInit, OnDestroy {
 
         this.customerPayAmount = this.changebase?.customerPayAmount;
         this.excessAmount = this.changebase?.balance;
+        this.oldexcessAmount = this.changebase?.billbalance;
         console.log(this.customerPayAmount);
         console.log(this.subBalance);
         console.log(this.collectedPayAmount);
         this.balanceamount = this.customerPayAmount - this.collectedPayAmount;
-        this.newExcessAmount = this.excessAmount - this.balanceamount;
+        // this.newExcessAmount = this.oldexcessAmount - this.balanceamount;
+        this.newExcessAmount = this.oldexcessAmount + this.balanceamount;
         this.setBillType(this.customerPayAmount, this.collectedPayAmount);
         console.log(this.excessAmount);
         console.log(this.balanceamount);
@@ -2054,52 +1980,10 @@ export class SubscriberdialogueComponent implements OnInit, OnDestroy {
         this.swal.Error(err?.error?.message);
       });
   }
-  // baseChangeofSmartcardPackageActivate() {
-  //   let plandata = this.plantype || this.f_date || 4
-  //   console.log(plandata);
-  //   this.isActive = true;
-  //   this.confirmation = true;
-  //   this.isConfirmationComplete = true;
-  //   let requestBody = {
-  //     role: this.role,
-  //     username: this.username,
-  //     packageid: this.newpackagename,
-  //     plantype: this.selectedRechargetype,
-  //     plan: plandata,
-  //     billtype: 1,
-  //     dueamt: 0.0,
-  //     paidamt: this.changebase?.customerPayAmount,
-  //     smartcard: this.smartcardno,
-  //     type: 8,
-  //     retailerid: this.operatorId || 0,
-  //     iscollected: this.iscollected,
+  get formattedBalanceAmount(): string {
+    return this.balanceamount?.toFixed(2);
+  }
 
-  //   }
-  //   Swal.fire({
-  //     title: 'Loading...',
-  //     text: 'Please wait while we process your request.',
-  //     allowOutsideClick: false, // Disable clicking outside the popup to close it
-  //     didOpen: () => {
-  //       Swal.showLoading(null);
-  //     }
-  //   });
-  //   this.userservice.baseChangeofSmartcardPackage(requestBody).subscribe((res: any) => {
-  //     // this.swal.success(res?.message);
-  //     Swal.fire({
-  //       title: 'Success!',
-  //       text: res.message,
-  //       icon: 'success',
-  //       timer: 2000,
-  //       timerProgressBar: true,
-  //       showConfirmButton: false
-  //     }).then(() => {
-  //       this.router.navigate([`/admin/subscriber-full-info/${this.smartcardno}/subsmartcard`]);
-  //       this.dialogRef.close({ success: true, smartcard: this.smartcardno });
-  //     });
-  //   }, (err) => {
-  //     this.swal.Error(err?.error?.message);
-  //   });
-  // }
   comment: any = 'No Comment';
   baseChangeofSmartcardPackageActivate() {
     let plandata = this.plantype || this.f_date || 4
@@ -2169,8 +2053,10 @@ export class SubscriberdialogueComponent implements OnInit, OnDestroy {
         this.customerPayAmount = this.First_list?.customerPayAmount;
         console.log(this.customerPayAmount);
         this.excessAmount = this.First_list?.balance;
+        this.oldexcessAmount = this.First_list?.billbalance;
         this.balanceamount = this.customerPayAmount - this.collectedPayAmount;
-        this.newExcessAmount = this.excessAmount - this.balanceamount;
+        // this.newExcessAmount = this.oldexcessAmount - this.balanceamount;
+        this.newExcessAmount = this.oldexcessAmount + this.balanceamount;
         this.setBillType(this.customerPayAmount, this.collectedPayAmount);
         // this.swal.success_1(data?.message);
         this.cdr.detectChanges();
@@ -2261,7 +2147,7 @@ export class SubscriberdialogueComponent implements OnInit, OnDestroy {
     this.errorMessage = '';
     this.swal.Loading();
     // this.userservice.lcotransferSinglesmartcard(this.role, this.username, subscriptionOperatorid, this.subid, this.withsubscription, this.smartcardno, 0, 2
-    this.userservice.lcotransferSinglesmartcard(this.role, this.username, subscriptionOperatorid || this.lcoid, this.subid, this.withsubscription, this.smartcardno, this.operatorId || this.retailerId || 0, 3, 0, 0, 1, this.comment || 'No Comment'
+    this.userservice.lcotransferSinglesmartcard(this.role, this.username, subscriptionOperatorid || this.lcoid, this.subid, this.withsubscription, this.smartcardno, this.operatorId || this.retailerId || 0, 2, 0, 0, 1, this.comment || 'No Comment'
     ).subscribe((res: any) => {
       this.swal.success(res?.message);
       Swal.fire({
@@ -2397,7 +2283,7 @@ export class SubscriberdialogueComponent implements OnInit, OnDestroy {
   }
   cancelSmartcard() {
     this.swal.Loading();
-    this.userservice.cancelSmartcard(this.role, this.username, this.smartcardno, 2, 0, 0, 0, 1, this.cancelSubRemark)
+    this.userservice.cancelSmartcard(this.role, this.username, this.smartcardno, 2, 0, 0, 0, 1, this.cancelSubRemark || 'No Comment')
       .subscribe((res: any) => {
         // this.swal.success(res?.message);
         Swal.fire({
@@ -2457,10 +2343,12 @@ export class SubscriberdialogueComponent implements OnInit, OnDestroy {
         this.cdr.detectChanges;
         console.log('dect changes completed');
         this.excessAmount = this.addonConfirmationData?.balance;
+        this.oldexcessAmount = this.addonConfirmationData?.billbalance;
         console.log(this.addonConfirmationData);
-        this.customerPayAmount = this.addonConfirmationData?.balance;
+        this.customerPayAmount = this.addonConfirmationData?.customerPayAmount;
         this.balanceamount = this.customerPayAmount - this.collectedPayAmount;
-        this.newExcessAmount = this.excessAmount - this.balanceamount;
+        // this.newExcessAmount = this.oldexcessAmount - this.balanceamount;
+        this.newExcessAmount = this.oldexcessAmount + this.balanceamount;
         this.setBillType(this.customerPayAmount, this.collectedPayAmount);
 
       }, (err) => {
@@ -2538,11 +2426,13 @@ export class SubscriberdialogueComponent implements OnInit, OnDestroy {
     this.userservice.addAlacarteConfirmation(requestBody).subscribe(
       (res: any) => {
         this.alacarteConfirmationData = res;
-        this.excessAmount = this.alacarteConfirmationData?.balance;
+        // this.excessAmount = this.alacarteConfirmationData?.balance;
+        this.oldexcessAmount = this.alacarteConfirmationData?.billbalance;
         console.log(this.alacarteConfirmationData);
-        this.customerPayAmount = this.alacarteConfirmationData?.balance;
+        this.customerPayAmount = this.alacarteConfirmationData?.customerPayAmount;
         this.balanceamount = this.customerPayAmount - this.collectedPayAmount;
-        this.newExcessAmount = this.excessAmount - this.balanceamount;
+        // this.newExcessAmount = this.oldexcessAmount - this.balanceamount;
+        this.newExcessAmount = this.oldexcessAmount + this.balanceamount;
         this.setBillType(this.customerPayAmount, this.collectedPayAmount);
         this.cdr.detectChanges;
         this.showData = true;
@@ -2725,27 +2615,7 @@ export class SubscriberdialogueComponent implements OnInit, OnDestroy {
     })
 
 
-    // this.userService.getOverAllPDFReport(this.role, this.username, this.selectedMonth, this.selectedYear, this.selectedDate, 1)
-    // .subscribe((x: Blob) => {
-    //   const blob = new Blob([x], { type: 'application/pdf' });
-    //   const data = window.URL.createObjectURL(blob);
-    //   const link = document.createElement('a');
-    //   link.href = data;
-    //   link.download = (this.reportTitle + ".pdf").toUpperCase();
-    //   link.dispatchEvent(new MouseEvent('click', { bubbles: true, cancelable: true, view: window }));
-    //   setTimeout(() => {
-    //     window.URL.revokeObjectURL(data);
-    //     link.remove();
-    //   }, 100);
-    // },
-    //   (error: any) => {
-    //     Swal.fire({
-    //       title: 'Error!',
-    //       text: error?.error?.message || 'There was an issue generating the PDF CAS form report.',
-    //       icon: 'error',
-    //       confirmButtonText: 'Ok'
-    //     });
-    //   });
+    
 
   }
 
@@ -2828,39 +2698,82 @@ export class SubscriberdialogueComponent implements OnInit, OnDestroy {
     console.log(this.customerPayAmount)
     console.log(this.collectedPayAmount)
     this.balanceamount = this.customerPayAmount - this.collectedPayAmount;
-    this.newExcessAmount = this.excessAmount - this.balanceamount;
+    // this.newExcessAmount = this.oldexcessAmount - this.balanceamount;
+    this.newExcessAmount = this.oldexcessAmount + this.balanceamount;
     this.setBillType(this.customerPayAmount, this.collectedPayAmount);
     console.log(this.excessAmount);
     console.log(this.balanceamount);
     console.log(this.newExcessAmount);
   }
+  // setBillType(customerPayAmount: any, collectedPayAmount: any): void {
+  //   if (customerPayAmount === 0 && collectedPayAmount > 0) {
+  //     this.billTypeValue = {
+  //       bill_type: 1,
+  //       description: 'Fully Paid'
+  //     };
+  //   } else if (customerPayAmount > 0 && collectedPayAmount === 0) {
+  //     this.billTypeValue = {
+  //       bill_type: 0,
+  //       description: 'Unpaid'
+  //     };
+  //   } else if (collectedPayAmount < customerPayAmount) {
+  //     this.billTypeValue = {
+  //       bill_type: 3,
+  //       description: 'Partially Paid'
+  //     };
+  //   } else if (collectedPayAmount > customerPayAmount) {
+  //     this.billTypeValue = {
+  //       bill_type: 4,
+  //       description: 'Excess Paid'
+  //     };
+  //   } else if (collectedPayAmount === customerPayAmount) {
+  //     this.billTypeValue = {
+  //       bill_type: 1,
+  //       description: 'Fully Paid'
+  //     };
+  //   } else {
+  //     this.billTypeValue = {
+  //       bill_type: 0,
+  //       description: 'Unknown'
+  //     };
+  //   }
+
+  //   console.log('Bill Type:', this.billTypeValue?.bill_type);
+  // }
+
   setBillType(customerPayAmount: any, collectedPayAmount: any): void {
     if (customerPayAmount === 0 && collectedPayAmount > 0) {
+      // Fully Paid
       this.billTypeValue = {
         bill_type: 1,
         description: 'Fully Paid'
       };
     } else if (customerPayAmount > 0 && collectedPayAmount === 0) {
+      // Unpaid
       this.billTypeValue = {
         bill_type: 0,
         description: 'Unpaid'
       };
     } else if (collectedPayAmount < customerPayAmount) {
+      // Partially Paid
       this.billTypeValue = {
         bill_type: 3,
         description: 'Partially Paid'
       };
     } else if (collectedPayAmount > customerPayAmount) {
+      // Excess Paid
       this.billTypeValue = {
         bill_type: 4,
         description: 'Excess Paid'
       };
     } else if (collectedPayAmount === customerPayAmount) {
+      // Fully Paid (Exact match)
       this.billTypeValue = {
         bill_type: 1,
         description: 'Fully Paid'
       };
     } else {
+      // Default fallback
       this.billTypeValue = {
         bill_type: 0,
         description: 'Unknown'

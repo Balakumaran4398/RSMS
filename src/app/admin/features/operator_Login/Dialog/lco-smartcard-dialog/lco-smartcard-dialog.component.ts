@@ -140,14 +140,32 @@ export class LcoSmartcardDialogComponent implements OnInit {
   submit() {
     this.swal.Loading();
     if (this.role == 'ROLE_OPERATOR') {
-      this.userService.getupdatePaybillUpdate(this.role, this.username, this.op_id, this.smartcard, this.pay, this.status, this.useragent, this.retailerid, 1)
+      this.userService.getupdatePaybillUpdate(this.role, this.username, this.op_id, this.smartcard, this.pay, this.status, 2, this.retailerid, 0)
         .subscribe((res: any) => {
           this.swal.success(res?.message);
         }, (err) => {
           this.swal.Error(err?.error?.message);
         });
     } else if (this.role == 'ROLE_SUBLCO') {
-      this.userService.getupdatePaybillUpdate(this.role, this.username, this.op_id, this.smartcard, this.pay, this.status, this.useragent, this.retailerid, 2)
+      this.userService.getupdatePaybillUpdate(this.role, this.username, this.op_id, this.smartcard, this.pay, this.status, 4, this.retailerid, 0)
+        .subscribe((res: any) => {
+          this.swal.success(res?.message);
+        }, (err) => {
+          this.swal.Error(err?.error?.message);
+        });
+    }
+  }
+  update() {
+    this.swal.Loading();
+    if (this.role == 'ROLE_OPERATOR') {
+      this.userService.getupdatePaybillUpdate(this.role, this.username, this.op_id, this.smartcard, this.pay, this.status, 2, this.retailerid, 1)
+        .subscribe((res: any) => {
+          this.swal.success(res?.message);
+        }, (err) => {
+          this.swal.Error(err?.error?.message);
+        });
+    } else if (this.role == 'ROLE_SUBLCO') {
+      this.userService.getupdatePaybillUpdate(this.role, this.username, this.op_id, this.smartcard, this.pay, this.status, 4, this.retailerid, 2)
         .subscribe((res: any) => {
           this.swal.success(res?.message);
         }, (err) => {

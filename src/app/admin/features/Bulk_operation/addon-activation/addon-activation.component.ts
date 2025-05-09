@@ -384,12 +384,12 @@ export class AddonActivationComponent {
       formData.append('device_id', '0');
       formData.append('ui_type', '1');
       formData.append('comments', 'No Comment');
-      formData.append('billtype', '0');
+      formData.append('billtype', '2');
       formData.append('iscollected', 'false');
       this.swal.Loading();
       this.userservice.uploadFileForAddonAndAlacarteActivation(formData)
         .subscribe((res: any) => {
-          this.swal.success(res?.message);
+          // this.swal.success(res?.message);
         }, (err) => {
           this.swal.Error(err?.error?.message);
         });
@@ -430,7 +430,7 @@ export class AddonActivationComponent {
       formData.append('device_id', '0');
       formData.append('ui_type', '1');
       formData.append('comments', 'No Comment');
-      formData.append('billtype', '0');
+      formData.append('billtype', '2');
       formData.append('iscollected', 'false');
       this.userservice.uploadFileForAddonAndAlacarteActivation(formData)
         .subscribe((res: any) => {

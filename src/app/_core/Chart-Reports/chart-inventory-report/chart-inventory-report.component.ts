@@ -118,7 +118,7 @@ export class ChartInventoryReportComponent {
   private onColumnDefs() {
     if (this.type == 11) {
       this.columnDefs = [
-        { headerName: "S.No", lockPosition: true, valueGetter: 'node.rowIndex+1', width: 80, },
+        { headerName: "S.No", lockPosition: true, valueGetter: 'node.rowIndex+1', width: 90, },
         { headerName: "SMARTCARD", field: 'smartcard', width: 300, },
         { headerName: "BOX ID", field: 'boxid', width: 250, },
         { headerName: "CARTON BOX", field: 'cottonboxdisplay', width: 250, },

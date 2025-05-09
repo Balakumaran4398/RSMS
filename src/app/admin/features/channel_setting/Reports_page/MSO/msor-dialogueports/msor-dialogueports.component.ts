@@ -1757,7 +1757,7 @@ export class MsorDialogueportsComponent implements OnInit, OnDestroy {
             });
           });
     } else if (this.role == 'ROLE_SUBSCRIBER') {
-      this.userService.getOnlinePaymentHistoryReport(this.role, this.username, this.fromdate, this.todate, this.subOperatorId || this.subOpid,
+      this.userService.getOnlinePaymentHistoryReport(this.role, this.username, this.fromdate, this.todate, this.subOpid || this.subOpid,
         this.retailerId || 0, this.smartcard || 0, 3, 2, this.isspecial, this.subscriberid)
         .subscribe((x: Blob) => {
           const blob = new Blob([x], { type: 'application/xlsx' });

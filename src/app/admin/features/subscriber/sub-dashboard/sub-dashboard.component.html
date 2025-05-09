@@ -308,7 +308,12 @@
                 <div class="card">
                     <div class="d-flex justify-content-between align-item-center mb-1">
                         <div class="d-flex" style="padding: 10px;">
-                            <img src="assets/images/icons/smartcard.png" alt="" style="width: 35px;">&nbsp;&nbsp;
+                            <!-- <img src="assets/images/icons/smartcard.png" alt="" style="width: 35px;"> -->
+                            <!-- <i class="fa fa-qrcode" aria-hidden="true" style="font-size: 25px;cursor: pointer;"
+                                (click)="onQRcodeDownload()" matTooltip="QR Code Download"></i> -->
+                            <i class="fa fa-qrcode" aria-hidden="true" style="font-size: 25px;cursor: pointer;"
+                                matTooltip="QR Code Download"></i>
+                            &nbsp;&nbsp;
                             <h6 style="margin: auto;color: #b14662;font-weight: 600;"> {{subdetailsList?.smartcard}}
                                 {{subdetails?.smartcard}}
                             </h6>
@@ -391,13 +396,13 @@
                                 </div>
                             </div>
                             <div class="col-12 col-md-12 display_btn1">
-                                <div *ngIf="(role === 'ROLE_SUBLCO' && Sublcopermissionlist.activate == true) || role != 'ROLE_SUBLCO' && role != 'ROLE_SUBSCRIBER'"
+                                <div *ngIf="(role == 'ROLE_SUBLCO' && Sublcopermissionlist.activate == true) || role != 'ROLE_SUBLCO' && role != 'ROLE_SUBSCRIBER'"
                                     class="col-12 col-md-6 d-flex justify-content-center align-items-center  text3">
                                     <button class="btn  d-flex justify-content-between " [disabled]="activation"
                                         (click)="openDialog('activation','')">
                                         <i class="fa-brands fa-slack"></i><span>Activation</span></button>
                                 </div>
-                                <div *ngIf="(role === 'ROLE_SUBLCO' && Sublcopermissionlist.deactivate == true) || role != 'ROLE_SUBLCO' && role != 'ROLE_SUBSCRIBER'"
+                                <div *ngIf="(role == 'ROLE_SUBLCO' && Sublcopermissionlist.deactivate == true) || role != 'ROLE_SUBLCO' && role != 'ROLE_SUBSCRIBER'"
                                     class="col-12 col-md-6 d-flex justify-content-center align-items-center  text3">
                                     <button class="btn  d-flex justify-content-between" [disabled]="deactive"
                                         (click)="openDialog('deactive','')">
@@ -532,17 +537,17 @@
                         <div class="">
                             <section class="Tab col-xl-12 col-sm-6 col-12 ">
                                 <div class="display_tab tablist justify-content-center align-items-center">
-                                    <div *ngIf="(role == 'ROLE_SUBLCO' && subAddonAdd ) || role != 'ROLE_SUBLCO' && !addon "
+                                    <div *ngIf=" role != 'ROLE_SUBLCO' && !addon ||(role == 'ROLE_SUBLCO' && !addon &&  subAddonAdd )"
                                         class="tab mb-3 bttn" (click)="managePackage('addon')">ADDON
                                         ADD
                                     </div>
-                                    <div *ngIf="(role == 'ROLE_SUBLCO' && subAlacarte ) || role != 'ROLE_SUBLCO' && !alacarte "
+                                    <div *ngIf="(role != 'ROLE_SUBLCO' && !alacarte || role == 'ROLE_SUBLCO' && !alacarte && subAlacarte )"
                                         class="tab mb-3 bttn" (click)="managePackage('alacarte')">
                                         ALACARTE ADD </div>
                                     <div *ngIf="role != 'ROLE_SUBLCO' && !remove" class="tab mb-3 bttn"
                                         (click)="managePackage('remove')"> REMOVE
                                         PRODUCT </div>
-                                    <div *ngIf="(role == 'ROLE_SUBLCO' && subChangeBase ) || role != 'ROLE_SUBLCO' &&  !base"
+                                    <div *ngIf="role != 'ROLE_SUBLCO' && !base || (role == 'ROLE_SUBLCO' && !base && subChangeBase )"
                                         class="tab mb-3 bttn" [class.active]="selectedTab === 'BASE'"
                                         (click)="openDialog('BASE','')">
                                         BASE CHANGE
@@ -643,7 +648,8 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="input_box  mb-3">
+                                        <div *ngIf="role !='ROLE_SUBLCO' && role != 'ROLE_SUBSCRIBER' "
+                                            class="input_box  mb-3">
                                             <div class="d-flex align-items-center justify-content-center">
                                                 <div class="col-6 col-md-6">
                                                     <span class="me-2">MSO Amount</span>
@@ -653,33 +659,6 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        <div *ngIf="role =='ROLE_OPERATOR' ||  role =='ROLE_SUBLCO'"
-                                            class="input_box  mb-3">
-                                            <div class="d-flex align-items-center justify-content-center">
-                                                <div class="col-6 col-md-6">
-                                                    <span class="me-2">Enter Amount</span>
-                                                </div>
-                                                <div class="col-6 col-md-6 value">
-                                                    <input type="text" placeholder="Enter Amount"
-                                                        [(ngModel)]="collectedPayAmount"
-                                                        (input)="onBalaceAmount($event)">
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                        <div *ngIf="role === 'ROLE_OPERATOR' ||  role === 'ROLE_SUBLCO'"
-                                            class="input_box mb-3">
-                                            <div class="d-flex align-items-center justify-content-center">
-                                                <div class="col-6">
-                                                    <label for="commentInput" class="me-2">Comment</label>
-                                                </div>
-                                                <div class="col-6 value">
-                                                    <input id="commentInput" type="text" placeholder="Enter Comment"
-                                                        [(ngModel)]="comment">
-                                                </div>
-                                            </div>
-                                        </div>
-
                                         <div class="input_box  mb-3">
                                             <div class="d-flex align-items-center justify-content-center">
                                                 <div class="col-6 col-md-6">
@@ -705,6 +684,29 @@
                                                                 data-unchecked="Unpaid"></div>
                                                         </label>
                                                     </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div *ngIf="role ==='ROLE_OPERATOR' ||  role ==='ROLE_SUBLCO'" class="input_box  mb-3">
+                                            <div class="d-flex align-items-center justify-content-center">
+                                                <div class="col-6 col-md-6">
+                                                    <span class="me-2">Enter Amount</span>
+                                                </div>
+                                                <div class="col-6 col-md-6 value">
+                                                    <input type="text" placeholder="Enter Amount" [(ngModel)]="collectedPayAmount"
+                                                        (input)="onBalaceAmount($event)">
+                                                </div>
+                                            </div>
+                                        </div>
+                        
+                                        <div *ngIf="role === 'ROLE_OPERATOR' ||  role === 'ROLE_SUBLCO'" class="input_box mb-3">
+                                            <div class="d-flex align-items-center justify-content-center">
+                                                <div class="col-6 col-md-6">
+                                                    <span for="commentInput" class="me-2">Comment</span>
+                                                </div>
+                                                <div class="col-6 col-md-6 value">
+                                                    <input id="commentInput" type="text" placeholder="Enter Comment" [(ngModel)]="comment">
                                                 </div>
                                             </div>
                                         </div>
@@ -817,7 +819,7 @@
                             <span class="me-2">Balance Amount</span>
                         </div>
                         <div class="col-6 col-md-6 value">
-                            <input type="text" placeholder="Balance Amount" [(ngModel)]="balanceamount" [ngClass]="{
+                            <input type="text" placeholder="Balance Amount"  [value]="balanceamount | number: '1.2-2'"  [ngClass]="{
                                 'red-text': balanceamount < 0,
                                 'black-text': balanceamount == 0,
                                 'green-text': balanceamount > 0
@@ -828,20 +830,20 @@
                 <div class="input_box  mb-3">
                     <div class="d-flex align-items-center justify-content-center">
                         <div class="col-6 col-md-4">
-                            <span class="me-2">Old Excess Amount </span>
+                            <span class="me-2">Old Balance Amount </span>
                         </div>
                         <div class="col-6 col-md-6 value">
-                            <input type="text" placeholder="Old Balance" [(ngModel)]="excessAmount" readonly>
+                            <input type="text" placeholder="Old Balance" [value]="oldexcessAmount | number: '1.2-2'"   readonly>
                         </div>
                     </div>
                 </div>
                 <div class="input_box  mb-3">
                     <div class="d-flex align-items-center justify-content-center">
                         <div class="col-6 col-md-4">
-                            <span class="me-2">New Excess Amount </span>
+                            <span class="me-2">New Balance Amount </span>
                         </div>
                         <div class="col-6 col-md-6 value">
-                            <input type="text" placeholder="New Balance" [(ngModel)]="newExcessAmount">
+                            <input type="text" placeholder="New Balance" [value]="newExcessAmount | number: '1.2-2'"  readonly>
                         </div>
                     </div>
                 </div>

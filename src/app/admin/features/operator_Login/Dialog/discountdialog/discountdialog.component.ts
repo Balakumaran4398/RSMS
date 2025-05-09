@@ -54,7 +54,7 @@ export class DiscountdialogComponent implements OnInit {
     console.log(this.type);
     this.package_name = data?.data.package_name;
     console.log(this.package_name);
-    
+
     this.retailerid = data?.retailerid;
     console.log(this.retailerid);
     this.data_details = data.data;
@@ -64,6 +64,11 @@ export class DiscountdialogComponent implements OnInit {
     this.ispercentage = this.data_details.ispercentage;
     this.commission = this.data_details.lco_commission;
     console.log(this.commission);
+    // this.with_Gst = data?.data?.isgst;
+    this.with_Gst = data?.data?.isgst == 1;
+
+    // console.log('`11111111111111111111111`1',data?.data?.isgst);
+    // console.log('fgsdhjkfhsdjkfhsjkdfhjksdfhjksdhf',this.with_Gst);
 
     this.old_customeramount = this.data_details.customer_amount;
     this.discount_value = this.data_details.discount_value;
@@ -110,7 +115,14 @@ export class DiscountdialogComponent implements OnInit {
       this.errorMessage = 'Please enter the LCO Amount.';
       return false;
     }
-
+    if (this.new_customeramount < msoAmount) {
+      this.errorMessage = `Amount must be at least Rs.${msoAmount}.`;
+      return false;
+    }
+    if (this.new_customeramount > customerAmount) {
+      this.errorMessage = `Amount must not exceed Rs.${customerAmount}.`;
+      return false;
+    }
     if (this.with_Gst) {
       if (this.new_customeramount > customerAmount) {
         this.errorMessage = `With GST selected, the amount must not exceed Rs.${customerAmount}.`;
@@ -148,11 +160,13 @@ export class DiscountdialogComponent implements OnInit {
     if (!this.validateAmount()) {
       return;
     }
+    console.log(this.new_customeramount);
+    
     this.swal.Loading();
-    // this.userService.getupdateSublcoDiscount(this.role, this.username, this.operatorid, this.retailerid, this.subLcoDetails?.pack_id, this.with_Gst, this.subLcoDetails?.mso_amount,
-    this.userService.getupdateSublcoDiscount(this.role, this.username, this.operatorid, this.operatorid, this.subLcoDetails?.pack_id, this.with_Gst, this.subLcoDetails?.mso_amount,
+    this.userService.getupdateSublcoDiscount(this.role, this.username, this.operatorid, this.retailerid, this.subLcoDetails?.pack_id, this.with_Gst, this.subLcoDetails?.mso_amount,
+      // this.userService.getupdateSublcoDiscount(this.role, this.username, this.operatorid, this.operatorid, this.subLcoDetails?.pack_id, this.with_Gst, this.subLcoDetails?.mso_amount,
       this.subLcoDetails?.customer_amount, this.new_customeramount).subscribe((res: any) => {
-        // this.swal.success(res?.message);
+        this.swal.success(res?.message);
       }, (err) => {
         this.swal.Error(err?.error?.message || err?.error);
       });

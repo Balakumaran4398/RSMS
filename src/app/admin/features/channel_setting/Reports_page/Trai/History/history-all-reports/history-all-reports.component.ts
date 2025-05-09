@@ -87,6 +87,9 @@ export class HistoryAllReportsComponent implements OnInit {
       this.getDatewiseSuspendReport();
     } else if (this.allType == '13') {
       this.getSuspendReport();
+    } else if (this.allType == '14') {
+      this.getPackageList();
+      this.getAddonList();
     }
   }
   formatDate(date: Date): string {
@@ -941,6 +944,7 @@ export class HistoryAllReportsComponent implements OnInit {
             if (!this.gridOptions.paginationPageSizeSelector.includes(rowCount)) {
               this.gridOptions.paginationPageSizeSelector.push(rowCount);
             }
+            this.swal.Close();
           } else if (response.status === 204) {
             this.swal.Success_204();
             this.rowData = [];
@@ -1497,5 +1501,135 @@ export class HistoryAllReportsComponent implements OnInit {
       }
     });
 
+  }
+
+  // -----------------------------------Combo package Update report --------------------
+  package: boolean = false;
+  addon: boolean = false;
+  isdiscount: boolean = false;
+  addonName: any = 0;
+  packagename: any = 0;
+  addonList: any;
+  packagenameList: any;
+  ngOnDestroy(): void {
+    ($('#addon') as any).select2('destroy');
+    ($('#package') as any).select2('destroy');
+  }
+  ngAfterViewInit(): void {
+    $('#package').select2({
+      placeholder: 'Select a Package Name',
+      allowClear: true
+    });
+    $('#package').on('change', (event: any) => {
+      this.packagename = event.target.value;
+      console.log(this.packagename);
+
+      // this.onSelectionrechargetype(event);
+    });
+    $('#addon').select2({
+      placeholder: 'Select a Addon Name',
+      allowClear: true
+    });
+    $('#addon').on('change', (event: any) => {
+      this.packagename = event.target.value;
+      console.log(this.addonName);
+      // this.onSelectionrechargetype(event);
+    });
+  }
+  getPackageList() {
+    this.userService.getpackageListforReport(this.role, this.username).subscribe((res: any) => {
+      this.packagenameList = res;
+      console.log(this.packagenameList)
+
+    })
+  }
+  getAddonList() {
+    this.userService.getaddonpackageListforReport(this.role, this.username).subscribe((res: any) => {
+      this.addonList = res;
+      console.log(this.addonList)
+    })
+  }
+  onPackageType() {
+    this.package = true;
+    this.addon = false;
+    this.addonName = 0,
+    this.rowData =[];
+      console.log("Package Selected:", this.package);
+  }
+  onAddonType() {
+    this.addon = true;
+    this.package = false;
+    this.packagename = 0,
+    this.rowData =[];
+      console.log("Addon Selected:", this.addon);
+  }
+  onRadioChange(event: any) {
+    this.isdiscount = event.value === true;
+  }
+
+  onComboPackageUpdate() {
+    console.log(this.package)
+    console.log(this.addon)
+
+    if (this.package) {
+      this.swal.Loading();
+      this.userService.getcomboPackageUpdateHistoryReport(this.role, this.username, this.fromdate, this.todate, this.packagename || this.addonName, 3, 1)
+        .subscribe((res: any) => {
+          this.rowData = res;
+          // this.swal.success(res?.message);
+          this.swal.Close();
+        }, (err) => {
+          // console.log(err);
+          
+          this.swal.Error(err?.error?.message);
+          // this.rowData =[];
+          // this.swal.Close();
+        });
+    } else if (this.addon) {
+      this.swal.Loading();
+      this.userService.getcomboPackageUpdateHistoryReport(this.role, this.username, this.fromdate, this.todate, this.packagename || this.addonName, 3, 2)
+        .subscribe((res: any) => {
+          this.rowData = res;
+          // this.swal.success(res?.message);
+          this.swal.Close();
+        }, (err) => {
+          console.log(err);
+          this.swal.Error(err?.error?.message);
+          // this.rowData =[];
+          // this.swal.Close();
+        });
+    }
+  }
+
+  getComboReport(type: number) {
+    console.log(this.cur_date);
+    console.log(type);
+    this.swal.Loading();
+
+    if (this.package) {
+      this.userService.getcomboPackageUpdateHistoryReportExcel_Pdf(this.role, this.username, this.fromdate, this.todate, this.packagename || this.addonName, type, 1)
+        .subscribe((x: Blob) => {
+          if (type == 1) {
+            this.reportMaking(x, `Combo Package Update.pdf`.toUpperCase(), "application/pdf");
+          } else if (type == 2) {
+            this.reportMaking(x, `Combo Package Update.xlsx`.toUpperCase(), "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
+          }
+        },
+          (error: any) => {
+            this.pdfswalError(error?.error.message || error?.error);
+          });
+    } else if (this.addon) {
+      this.userService.getcomboPackageUpdateHistoryReportExcel_Pdf(this.role, this.username, this.fromdate, this.todate, this.packagename || this.addonName, type, 2)
+        .subscribe((x: Blob) => {
+          if (type == 1) {
+            this.reportMaking(x, `Combo Package Update.pdf`.toUpperCase(), "application/pdf");
+          } else if (type == 2) {
+            this.reportMaking(x, `Combo Package Update.xlsx`.toUpperCase(), "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
+          }
+        },
+          (error: any) => {
+            this.pdfswalError(error?.error.message || error?.error);
+          });
+    }
   }
 }

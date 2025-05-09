@@ -64,7 +64,7 @@ export class SmartcardAllocationComponent {
       },
     },
     paginationPageSize: 10,
-    paginationPageSizeSelector:[10,20,50],
+    paginationPageSizeSelector: [10, 20, 50],
     pagination: true,
   };
 
@@ -75,9 +75,9 @@ export class SmartcardAllocationComponent {
       console.log(data);
       this.rowData = data;
       const rowCount = this.rowData.length;
-          if (!this.gridOptions.paginationPageSizeSelector.includes(rowCount)) {
-            this.gridOptions.paginationPageSizeSelector.push(rowCount);
-          }
+      if (!this.gridOptions.paginationPageSizeSelector.includes(rowCount)) {
+        this.gridOptions.paginationPageSizeSelector.push(rowCount);
+      }
     })
   }
   columnDefs: ColDef[] = [
@@ -280,6 +280,7 @@ export class SmartcardAllocationComponent {
   }
 
   generateExcel() {
+    this.swal.Loading();
     this.userService.getDeallocatedSmartcardReport(this.role, this.username, 2)
       .subscribe((x: Blob) => {
         const blob = new Blob([x], { type: 'application/xlsx' });
@@ -294,6 +295,7 @@ export class SmartcardAllocationComponent {
           window.URL.revokeObjectURL(data);
           link.remove();
         }, 100);
+        this.swal.Close();
       },
         (error: any) => {
           Swal.fire({
@@ -307,6 +309,7 @@ export class SmartcardAllocationComponent {
   }
 
   generatePDF() {
+    this.swal.Loading();
     this.userService.getDeallocatedSmartcardReport(this.role, this.username, 1)
       .subscribe((x: Blob) => {
         const blob = new Blob([x], { type: 'application/pdf' });
@@ -321,6 +324,7 @@ export class SmartcardAllocationComponent {
           window.URL.revokeObjectURL(data);
           link.remove();
         }, 100);
+        this.swal.Close();
       },
         (error: any) => {
           Swal.fire({
@@ -330,9 +334,5 @@ export class SmartcardAllocationComponent {
             confirmButtonText: 'Ok'
           });
         });
-
-
-
   }
-
 }

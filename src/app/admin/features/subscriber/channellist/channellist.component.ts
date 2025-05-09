@@ -81,11 +81,11 @@ export class ChannellistComponent implements OnInit {
       field: 'service_id',
     },
     {
-      headerName: 'PRODUCT ID', width: 200,
+      headerName: 'PRODUCT ID', width: 250,
       field: 'product_id',
     },
     {
-      headerName: 'INR AMOUNT', width: 200,
+      headerName: 'INR AMOUNT', width: 300,
       field: 'inr_amt',
     },
 

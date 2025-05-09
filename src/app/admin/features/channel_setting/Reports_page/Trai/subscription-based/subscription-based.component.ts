@@ -179,9 +179,9 @@ export class SubscriptionBasedComponent implements OnInit {
     this.userService.getWeeklyActiveOrDeactiveSubscriptionPDFReport(this.role, this.username, this.selectedMonth, this.selectedYear, this.selectedweek, this.isActive, type)
       .subscribe((x: Blob) => {
         if (type == 1) {
-          this.reportMaking(x, `WEEKLY  ${this.isActive ? 'Active' : 'Deactive'} SUBCRIPTION REPORT - [YEAR : ${this.selectedMonth} - MONTH : ${this.selectedMonthName}].pdf`.toUpperCase(), "application/pdf");
+          this.reportMaking(x, `WEEKLY  ${this.isActive ? 'Active' : 'Deactive'} SUBCRIPTION REPORT - [ ${this.selectedMonth} -  ${this.selectedMonthName}].pdf`.toUpperCase(), "application/pdf");
         } else if (type == 2) {
-          this.reportMaking(x, `WEEKLY  ${this.isActive ? 'Active' : 'Deactive'} SUBCRIPTION REPORT - [YEAR : ${this.selectedMonth} - MONTH : ${this.selectedMonthName}].xlsx`.toUpperCase(), "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
+          this.reportMaking(x, `WEEKLY  ${this.isActive ? 'Active' : 'Deactive'} SUBCRIPTION REPORT - [ ${this.selectedMonth} -  ${this.selectedMonthName}].xlsx`.toUpperCase(), "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
         }
       },
         (error: any) => {
@@ -202,9 +202,9 @@ export class SubscriptionBasedComponent implements OnInit {
       .subscribe((x: Blob) => {
         const operatorName = this.selectedOperator?.name || 'ALL OPERATOR';
         if (type == 1) {
-          this.reportMaking(x, `As On Date   ${this.isActive ? 'Active' : 'Deactive '}  ${this.type} Subscription History REPORT - [LCO : ${operatorName} - DATE : ${this.cur_date}].pdf`.toUpperCase(), "application/pdf");
+          this.reportMaking(x, `As On Date   ${this.isActive ? 'Active' : 'Deactive '}  ${this.type} Subscription History REPORT - [ ${operatorName} -  ${this.cur_date}].pdf`.toUpperCase(), "application/pdf");
         } else if (type == 2) {
-          this.reportMaking(x, `As On Date   ${this.isActive ? 'Active' : 'Deactive '} ${this.type}  Subscription History REPORT - [LCO : ${operatorName} - DATE : ${this.cur_date}].xlsx`.toUpperCase(), "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
+          this.reportMaking(x, `As On Date   ${this.isActive ? 'Active' : 'Deactive '} ${this.type}  Subscription History REPORT - [ ${operatorName} -  ${this.cur_date}].xlsx`.toUpperCase(), "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
         }
       },
         (error: any) => {
@@ -223,9 +223,9 @@ export class SubscriptionBasedComponent implements OnInit {
 
         const operatorName = this.selectedOperator?.name || 'ALL OPERATOR';
         if (type == 1) {
-          this.reportMaking(x, `As On Date   ${this.isActive ? 'Active' : 'Deactive '}  ${this.type} Subscription History REPORT - [LCO : ${operatorName} - DATE : ${this.cur_date}].pdf`.toUpperCase(), "application/pdf");
+          this.reportMaking(x, `As On Date   ${this.isActive ? 'Active' : 'Deactive '}  ${this.type} Subscription History REPORT - [ ${operatorName} -  ${this.cur_date}].pdf`.toUpperCase(), "application/pdf");
         } else if (type == 2) {
-          this.reportMaking(x, `As On Date   ${this.isActive ? 'Active' : 'Deactive '} ${this.type}  Subscription History REPORT - [LCO : ${operatorName} - DATE : ${this.cur_date}].xlsx`.toUpperCase(), "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
+          this.reportMaking(x, `As On Date   ${this.isActive ? 'Active' : 'Deactive '} ${this.type}  Subscription History REPORT - [ ${operatorName} -  ${this.cur_date}].xlsx`.toUpperCase(), "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
         }
       },
         (error: any) => {
@@ -244,9 +244,9 @@ export class SubscriptionBasedComponent implements OnInit {
        
         const operatorName = this.selectedOperator?.name || 'ALL OPERATOR';
         if (type == 1) {
-          this.reportMaking(x, `As On Date   ${this.isActive ? 'Active' : 'Deactive '}  ${this.type} Subscription History REPORT - [LCO : ${operatorName} - DATE : ${this.cur_date}].pdf`.toUpperCase(), "application/pdf");
+          this.reportMaking(x, `As On Date   ${this.isActive ? 'Active' : 'Deactive '}  ${this.type} Subscription History REPORT - [ ${operatorName} -  ${this.cur_date}].pdf`.toUpperCase(), "application/pdf");
         } else if (type == 2) {
-          this.reportMaking(x, `As On Date   ${this.isActive ? 'Active' : 'Deactive '} ${this.type}  Subscription History REPORT - [LCO : ${operatorName} - DATE : ${this.cur_date}].xlsx`.toUpperCase(), "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
+          this.reportMaking(x, `As On Date   ${this.isActive ? 'Active' : 'Deactive '} ${this.type}  Subscription History REPORT - [ ${operatorName} -  ${this.cur_date}].xlsx`.toUpperCase(), "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
         }
       },
         (error: any) => {
@@ -268,7 +268,7 @@ export class SubscriptionBasedComponent implements OnInit {
               this.rowData = response.body;
               console.log(this.type);
               // const title = (this.type + ' REPORT').toUpperCase();
-              const title = (this.type + ' REPORT - [ DATE : ' + this.cur_date + ']').toUpperCase();
+              const title = (this.type + ' REPORT - [ ' + this.cur_date + ']').toUpperCase();
 
               const sub = 'MSO ADDRESS:' + this.msodetails;
               let areatitle = '';
@@ -289,7 +289,7 @@ export class SubscriptionBasedComponent implements OnInit {
               this.rowData = response.body;
               console.log(this.type);
               // const title = (this.type + ' REPORT').toUpperCase();
-              const title = (this.type + ' REPORT - [ DATE : ' + this.cur_date + ']').toUpperCase();
+              const title = (this.type + ' REPORT - [' + this.cur_date + ']').toUpperCase();
 
               const sub = 'MSO ADDRESS:' + this.msodetails;
               let areatitle = '';
@@ -323,7 +323,7 @@ export class SubscriptionBasedComponent implements OnInit {
           const link = document.createElement('a');
           link.href = data;
           // link.download = (this.type + ".pdf").toUpperCase();
-          link.download = `${this.type} REPORT - [ DATE : ${this.cur_date}].pdf`.toUpperCase();
+          link.download = `${this.type} REPORT - [  ${this.cur_date}].pdf`.toUpperCase();
 
           link.dispatchEvent(new MouseEvent('click', { bubbles: true, cancelable: true, view: window }));
           setTimeout(() => {
@@ -352,9 +352,9 @@ export class SubscriptionBasedComponent implements OnInit {
  
         const operatorName = this.selectedOperator?.name || 'ALL OPERATOR';
         if (type == 1) {
-          this.reportMaking(x, `As On Date   ${this.isActive ? 'Active' : 'Deactive '}  ${this.type} Subscription History REPORT - [LCO : ${operatorName} - DATE : ${this.cur_date}].pdf`.toUpperCase(), "application/pdf");
+          this.reportMaking(x, `As On Date   ${this.isActive ? 'Active' : 'Deactive '}  ${this.type} Subscription History REPORT - [ ${operatorName} -  ${this.cur_date}].pdf`.toUpperCase(), "application/pdf");
         } else if (type == 2) {
-          this.reportMaking(x, `As On Date   ${this.isActive ? 'Active' : 'Deactive '} ${this.type}  Subscription History REPORT - [LCO : ${operatorName} - DATE : ${this.cur_date}].xlsx`.toUpperCase(), "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
+          this.reportMaking(x, `As On Date   ${this.isActive ? 'Active' : 'Deactive '} ${this.type}  Subscription History REPORT - [ ${operatorName} -  ${this.cur_date}].xlsx`.toUpperCase(), "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
         }
       },
         (error: any) => {

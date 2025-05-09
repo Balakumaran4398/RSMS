@@ -20,7 +20,7 @@ export class LcodiscountComponent implements OnInit, AfterViewInit {
   gridApi: any;
   columnDefs: any[] = [];
   operatorname: any;
-  discountType: any;
+  discountType: any = {};
   isdiscount: boolean = true;
   lcoDeatails: any;
   lcoId: any;
@@ -69,7 +69,6 @@ export class LcodiscountComponent implements OnInit, AfterViewInit {
     this.onColumnDefs();
     this.operatorIdoperatorId();
 
-
   }
   onSmartcardChange() {
 
@@ -83,23 +82,48 @@ export class LcodiscountComponent implements OnInit, AfterViewInit {
     // this.isTabDisabled = event.value === 'false';
   }
   onTabChange(event: any) {
-    const tabMapping: { [key: string]: number } = {
-      "All_area": 1,
-      "area": 2,
-      "smartcard": 3,
-      "package": 4
-    };
-    this.rowData = [];
-    const tabLabels = ["All_area", "area", "smartcard", "package"];
-    this.type = tabMapping[tabLabels[event.index]];
-    this.discountType = this.type;
+    this.discountType.index = event.index;
+    this.type = event.index + 1
+    // const tabMapping: { [key: string]: number } = {
+    //   "All_area": 1,
+    //   "area": 2,
+    //   "smartcard": 3,
+    //   "package": 4
+    // };
+    // this.rowData = [];
+    // const tabLabels = ["All_area", "area", "smartcard", "package"];
+    // console.log('TAB LEVELS', tabLabels);
+    // if (this.discountType === 1) {
+    //   this.type = 1;
+    //   // this.type = tabMapping[1];
+    //   console.log('TYPE ----- ', this.type);
+    // } else if (this.discountType === 2) {
+    //   this.type = 2;
+    //   // this.type = tabMapping[2];
+    //   console.log('TYPE ----- ', this.type);
+    // // } else if (this.discountType === 3) {
+    //   this.type = 3;
+    //   // this.type = tabMapping[3];
+    //   console.log('TYPE ----- ', this.type);
+    // }else if (this.discountType === 4) {
+    //   this.type = 4;
+    //   this.type = tabMapping[4];
+    //   console.log('TYPE ----- ', this.type);
+    // }
 
-    console.log("Selected Tab:", tabLabels[event.index]);
-    console.log("Discount Type:", this.discountType);
+    // this.type = tabMapping[tabLabels[event.index]];
+    // console.log('TYPE ----- ', this.type);
+
+    // this.discountType = this.type;
+
+    // console.log("Selected Tab:", tabLabels[event.index]);
+    // console.log("Discount Type:", this.discountType);
+    // console.log(" Type:", this.type);
 
     this.onColumnDefs();
     this.getListOfDatas();
     // this.getDiscountOption(this.type);
+    this.getDiscountOption(this.discountType.index);
 
     if ($('#Area').data('select2')) {
       $('#Area').select2('destroy');
@@ -129,13 +153,15 @@ export class LcodiscountComponent implements OnInit, AfterViewInit {
       console.log(this.lcoDeatails);
       this.lcoId = this.lcoDeatails?.operatorid;
       this.operatorname = this.lcoDeatails?.operatorname;
-      this.discountType = this.lcoDeatails?.discounttype;
+      this.discountType.index = this.lcoDeatails?.discounttype;
+      this.onTabChange(this.discountType)
       this.isdiscount = this.lcoDeatails?.isdiscount;
       console.log(this.lcoId);
       console.log(this.isdiscount);
-      console.log(this.discountType);
-      this.getListOfDatas();
-      // this.getDiscountOption(this.discountType);
+      console.log('sedsdnsadgsadagdj', this.discountType);
+
+      this.getDiscountOption(this.discountType.index);
+
       this.userService.getAreaListByOperatorid(this.role, this.username, this.lcoId).subscribe((data: any) => {
         this.area_list = Object.keys(data).map(key => ({
           name: key,
@@ -146,7 +172,7 @@ export class LcodiscountComponent implements OnInit, AfterViewInit {
     })
   }
   getListOfDatas() {
-    console.log(this.type);
+    console.log("this.type :" + this.type);
     if (this.type == '1') {
       console.log('all area', this.type);
       this.userService.getOpDiscountListByOpidAreaid(this.role, this.username, this.lcoId, 0, 1, false).subscribe((res: any) => {
@@ -155,18 +181,19 @@ export class LcodiscountComponent implements OnInit, AfterViewInit {
       })
     } else if (this.type == '2') {
       console.log('area', this.type);
+      this.rowData = [];
       this.onAreaStatusChange(this.lcoId);
 
     } else if (this.type == '3') {
       console.log('smartcard', this.type);
-      this.onAreaStatusChange(this.lcoId);
+      // this.onAreaStatusChange(this.lcoId);
       this.userService.getOpDiscountListByOpidAreaid(this.role, this.username, this.lcoId, 0, 3, false).subscribe((res: any) => {
         console.log(res);
         this.rowData = res;
       })
     } else if (this.type == '4') {
       console.log('package', this.type);
-      this.onAreaStatusChange(this.lcoId);
+      // this.onAreaStatusChange(this.lcoId);
       this.userService.getOpDiscountListByOpidAreaid(this.role, this.username, this.lcoId, 0, 4, false).subscribe((res: any) => {
         console.log(res);
         this.rowData = res;
@@ -174,11 +201,13 @@ export class LcodiscountComponent implements OnInit, AfterViewInit {
     }
   }
   getDiscountOption(discountType: any) {
+    console.log(discountType);
+
     this.userService.getupdateLcoDiscountBytype(this.role, this.username, this.lcoId, discountType, true)
       .subscribe((res: any) => {
         // this.swal.success_1(res?.message);
       }, (err) => {
-        this.swal.Error(err?.error?.message);
+        // this.swal.Error(err?.error?.message);
       });
   }
   ngOnDestroy(): void {
@@ -276,7 +305,7 @@ export class LcodiscountComponent implements OnInit, AfterViewInit {
               console.log(smartcard);
               this.openSmartcardDetails(params.data, 'smartcard');
               // this.openSmartcardDetails(smartcard);
-              console.log(params.data.smartcard);
+              console.log(params.data);
             });
             const div = document.createElement('div');
             div.appendChild(updateButton);
@@ -315,6 +344,8 @@ export class LcodiscountComponent implements OnInit, AfterViewInit {
 
   openSmartcardDetails(data: any, type: any,) {
     let dialogData = { type: type, data: data, };
+    console.log(dialogData);
+
     const dialogRef = this.dialog.open(DiscountsmartcardComponent, {
       panelClass: 'custom-dialog-container',
       data: dialogData,

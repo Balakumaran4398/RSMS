@@ -11,8 +11,7 @@
     </div>
 </div>
 
-
-<mat-tab-group animationDuration="500ms" (selectedTabChange)="onTabChange($event)" *ngIf="isdiscount">
+<mat-tab-group animationDuration="500ms" (selectedTabChange)="onTabChange($event)" *ngIf="isdiscount" [selectedIndex]="discountType.index" >
     <mat-tab *ngFor="let tab of ['ALL AREA WISE', 'SELECTED AREA WISE', 'SMARTCARD WISE', 'PACKAGE WISE']"
         [label]="tab">
         <div *ngIf="this.type == '2'" class="mt-3">

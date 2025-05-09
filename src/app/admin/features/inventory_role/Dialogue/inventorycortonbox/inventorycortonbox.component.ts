@@ -66,7 +66,7 @@ export class InventorycortonboxComponent implements OnInit {
 
     this.smartcardList = data.smartcard;
     // this.isemi = data.isemi[0];
-    this.isemi = data.isemi;
+    // this.isemi = data.isemi;
     console.log(this.isemi);
 
     this.username = storageService.getUsername();

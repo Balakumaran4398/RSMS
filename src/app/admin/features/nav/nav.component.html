@@ -10,19 +10,19 @@
         <div class="d-block justify-content-center align-items-center" style="width: 81%;top:5%">
 
             <!-- --------------------NORMAL---------------- -->
-            <img *ngIf="msoLogo" [src]="msoLogo" alt="MSO Logo"
-                style="width: 100px; height: auto;display:flex;margin: auto 40px;">
+            <!-- <img *ngIf="msoLogo" [src]="msoLogo" alt="MSO Logo"
+                style="width: 100px; height: auto;display:flex;margin: auto 40px;"> -->
 
             <!-- ----------------4K--------- -->
-            <!-- <img *ngIf="msoLogo" [src]="msoLogo" alt="MSO Logo"
-                style="width: 54px; height: auto;display:flex;margin: auto 60px;"> -->
+            <img *ngIf="msoLogo" [src]="msoLogo" alt="MSO Logo"
+                style="width: 54px; height: auto;display:flex;margin: auto 60px;">
 
             <!-- ----------------------Normal--------------- -->
             <h5 class="brand-text mb-1" style="margin: 5px 30px;color: var(--primary-color);"
                 [ngStyle]="{'visibility': !isSidebarlogo ? 'visible' : 'hidden'}"> {{msoName}} </h5>
             <p class="brand-text"
                 style="margin: 0px 30px;color: var(--primary-color);;text-align: center;font-size: 13px;"
-                [ngStyle]="{'visibility': !isSidebarlogo ? 'visible' : 'hidden'}"> V-7.2.3 </p>
+                [ngStyle]="{'visibility': !isSidebarlogo ? 'visible' : 'hidden'}"> V-6.9.31 </p>
             <!-- -----------------------------r-digital----------- -->
             <!-- <h5 class="brand-text mb-1" style="margin: 5px 30px;color: #525151"
                 [ngStyle]="{'visibility': !isSidebarlogo ? 'visible' : 'hidden'}"> {{msoName}} </h5>
@@ -159,7 +159,7 @@
         </li>
 
         <!-- ---------------------------------------vc----------------- -->
-        <li *ngIf="isUser">
+        <!-- <li *ngIf="isUser">
             <a> <mat-icon class="icon">control_camera</mat-icon>VC/STB Master <i
                     class='bx bx-chevron-right icon-right'></i></a>
             <ul class="side-dropdown">
@@ -167,10 +167,8 @@
                             style="margin-right: 0px;"></i>Chip ID and Model
                     </a>
                 </li>
-                <!-- <li><a (click)="navgetToUrl('/stb_bill');setActiveLinkTab($event)"><i class="fa fa-fw fa-recycle icon "
-                                    style="margin-right: 0px;"></i>Smartcard Change</a> </li> -->
             </ul>
-        </li>
+        </li> -->
         <!-- ------------------------------------------------------------- -->
         <li *ngIf="isUser || isReception ">
             <a> <mat-icon class="icon">games</mat-icon> Inventory <i class='bx bx-chevron-right icon-right'></i></a>
@@ -422,8 +420,8 @@
 
         <li *ngIf="isOperator"><a (click)="navgetToUrl('/forcemessage');setActiveLinkTab($event)" class="nav-link">
                 <i class="bx bx-label bx-sm icon "></i> &nbsp;Message</a></li>
-        <li *ngIf="isOperator || isSubLco && SublcoReport"><a (click)="navgetToUrl('/lcoReports');setActiveLinkTab($event)"
-                class="nav-link">
+        <li *ngIf="isOperator || isSubLco && SublcoReport"><a
+                (click)="navgetToUrl('/lcoReports');setActiveLinkTab($event)" class="nav-link">
                 <i class="bx bx-bullseye bx-sm icon "></i>&nbsp;Reports</a>
         </li>
         <li *ngIf="isOperator || isSubLco"><a (click)="navgetToUrl('/bill_collection');setActiveLinkTab($event)"

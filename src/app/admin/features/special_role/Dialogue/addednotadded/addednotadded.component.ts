@@ -75,6 +75,10 @@ export class AddednotaddedComponent implements OnInit {
       this.permissionList = data?.added?.map((operator: any) => ({ name: operator.operationName, id: operator.id }));
       console.log(this.NotpermissionList);
       console.log(this.permissionList);
+      // this.allocated = data.operatorlist.notallocated || [];
+      // this.todo = data.operatorlist.allocated || [];
+      // this.filteredAvailableList = [...this.todo];
+      // this.filteredAddedList = [...this.allocated];
       this.filteredNotPermissionList = [...this.NotpermissionList];
       this.filteredPermissionList = [...this.permissionList];
       console.log('filteredNotPermissionList', this.filteredNotPermissionList);
@@ -84,27 +88,31 @@ export class AddednotaddedComponent implements OnInit {
 
   filterNotAddedList() {
     this.cdr.detectChanges();
-
     this.filteredNotaddedList = this.NotaddedList.filter(item => item.name.toLowerCase().includes(this.searchTermNotAdded.toLowerCase()));
-
-    // const searchTerm = this.searchTermNotAdded ? this.searchTermNotAdded.toLowerCase() : '';
-    // this.filteredNotaddedList = this.filteredNotaddedList.filter((item: any) => item.toLowerCase().includes(searchTerm));
   }
 
   filterAddedList() {
     this.cdr.detectChanges();
     this.filteredAddedList = this.addedList.filter(item => item.name.toLowerCase().includes(this.searchTermAdded.toLowerCase()));
   }
+  allocated: any = [];
+  todo: any = [];
+  searchTermAvailable: any;
   filterNotPermissionList() {
     this.cdr.detectChanges();
     this.filteredNotPermissionList = this.NotpermissionList.filter(item => item.name.toLowerCase().includes(this.searchTermPermission.toLowerCase()));
+    console.log('[filteredNotPermissionList]', this.filteredNotPermissionList);
   }
 
-  // Filter function for Added list
   filterPermissionList() {
     this.cdr.detectChanges();
     this.filteredPermissionList = this.permissionList.filter(item => item.name.toLowerCase().includes(this.searchTermAdded.toLowerCase()));
+    console.log('[filteredPermissionList]', this.filteredPermissionList);
   }
+
+
+
+
   isSelected(item: string): boolean {
     return this.selectedItems.has(item);
   }
@@ -115,14 +123,7 @@ export class AddednotaddedComponent implements OnInit {
       this.selectedItems.add(item);
     }
   }
-  // toggleSelection(id: string) {
-  //   const index = this.selectedIds.indexOf(id);
-  //   if (index > -1) {
-  //     this.selectedIds.splice(index, 1);
-  //   } else {
-  //     this.selectedIds.push(id);
-  //   }
-  // }
+
   onNoClick(): void {
     this.dialogRef.close();
   }
@@ -247,38 +248,66 @@ export class AddednotaddedComponent implements OnInit {
     console.log("-------------------------------------------------")
     console.log(this.NotaddedList)
     console.log(this.addedList)
-
   }
+
+
   drop1(event: CdkDragDrop<string[]>, val: number) {
-    var available_old_bouquet_list = this.NotpermissionList;
+    // var available_old_bouquet_list = this.NotpermissionList;
+    var available_old_bouquet_list = event.previousContainer.data[event.previousIndex];
     console.log(available_old_bouquet_list);
+    var data;
     if (event.previousContainer === event.container) {
       moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
     } else {
       transferArrayItem(event.previousContainer.data, event.container.data, event.previousIndex, event.currentIndex);
+      console.log(event.previousContainer.data);
+      console.log(event.container.data);
       if (val == 1) {
         this.NotpermissionList = event.container.data;
         this.permissionList = event.previousContainer.data;
+        this.containerData = this.permissionList;
+        console.log('container data ------------------------1111111111111', this.containerData);
+        console.log('NotpermissionList ------------------------1111111111111', this.NotpermissionList);
       } else {
         this.permissionList = event.container.data;
         this.NotpermissionList = event.previousContainer.data;
+        this.containerData = this.permissionList;
+        console.log('container data-------------------------------2222222222222', this.containerData);
       }
-      console.log('container data', this.containerData);
-      this.containerData = this.permissionList
-      // .map((item: any) => {
-      //   const match = item.match(/\((.*?)\)/);
-      //   return match ? match[1] : null;
-      // }).filter(Boolean);
+      this.containerData = this.permissionList;
       console.log('container data', this.containerData);
       this.containerID = this.containerData.map((item: any) => item.id);
-      console.log(this.containerID);
     }
-    console.log("-------------------------------------------------")
-    console.log(this.NotpermissionList)
-    console.log(this.permissionList)
-
   }
 
+  // drop1(event: CdkDragDrop<string[]>, val: number) {
+  //   const previousContainerDataBeforeMove = [...event.previousContainer.data];
+
+  //   var available_old_bouquet_item = event.previousContainer.data[event.previousIndex];
+  //   console.log("Item being moved:", available_old_bouquet_item);
+
+  //   if (event.previousContainer === event.container) {
+  //     moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
+  //   } else {
+  //     transferArrayItem(event.previousContainer.data, event.container.data, event.previousIndex, event.currentIndex);
+  //     console.log("Previous Container After Move:", event.previousContainer.data);
+  //     console.log("Current Container After Move:", event.container.data);
+  //     if (val == 1) {
+
+  //       this.NotpermissionList = event.container.data;
+  //       this.permissionList = event.previousContainer.data;
+  //       this.containerData = this.permissionList;
+  //       console.log('container data (val--------------1)', this.containerData);
+  //     } else {
+  //       this.permissionList = event.container.data;
+  //       this.NotpermissionList = event.previousContainer.data;
+  //       this.containerData = this.permissionList;
+  //       console.log('container data (val-------------2)', this.containerData);
+  //     }
+  //     this.containerID = this.containerData.map((item: any) => item.id);
+  //     console.log("containerID:", this.containerID);
+  //   }
+  // }
 
 
   moveSelectedItems1(direction: 'right' | 'left') {
@@ -298,7 +327,6 @@ export class AddednotaddedComponent implements OnInit {
       }));
       this.containerID = this.containerData.map((item: any) => item.id);
       console.log(this.containerID);
-
     } else if (direction === 'left') {
       console.log('permission     1111111', this.selectedItems);
       console.log(this.selectedItems);
@@ -335,7 +363,7 @@ export class AddednotaddedComponent implements OnInit {
     } else if (direction === 'left') {
       this.NotpermissionList.push(...this.permissionList);
       this.permissionList = [];
-      this.containerData = this.NotpermissionList.map((item: { name: string, id: number }) => ({
+      this.containerData = this.permissionList.map((item: { name: string, id: number }) => ({
         name: item.name,
         id: item.id
       }));
@@ -346,26 +374,26 @@ export class AddednotaddedComponent implements OnInit {
     this.filteredPermissionList = [...this.permissionList];
     this.selectedItems.clear();
   }
-
   save() {
     this.swal.Loading();
     console.log(this.containerID);
-
-    this.userservice.sublcoUpdateArea(this.role, this.username, this.retailerid, this.containerID || '').subscribe((res: any) => {
+    let permissionList = this.containerID.length == 0 ? 0 : this.containerID;
+    console.log(permissionList);
+    this.userservice.sublcoUpdateArea(this.role, this.username, this.retailerid, permissionList).subscribe((res: any) => {
       this.swal.success(res?.message);
     }, (err) => {
       this.swal.Error(err?.error?.message);
     });
-
   }
   save1() {
     this.swal.Loading();
-    this.userservice.sublcoUpdatePermission(this.role, this.username, this.retailerid, this.containerID || '').subscribe((res: any) => {
+    console.log(this.containerID);
+    let permissionList = this.containerID.length == 0 ? 0 : this.containerID;
+    console.log(permissionList);
+    this.userservice.sublcoUpdatePermission(this.role, this.username, this.retailerid, permissionList).subscribe((res: any) => {
       this.swal.success(res?.message);
     }, (err) => {
       this.swal.Error(err?.error?.message);
     });
-
   }
-
 }

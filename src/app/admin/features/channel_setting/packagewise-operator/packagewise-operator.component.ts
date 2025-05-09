@@ -271,8 +271,6 @@ export class PackagewiseOperatorComponent implements OnDestroy {
     }
     this.containeroperatorid = data?.map((item: any) => item.operatorid);
     console.log(this.containeroperatorid);
-
-
   }
 
   toggleSelection(item: string) {

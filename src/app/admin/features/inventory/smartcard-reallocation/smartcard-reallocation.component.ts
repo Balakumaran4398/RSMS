@@ -5,6 +5,7 @@ import { BaseService } from 'src/app/_core/service/base.service';
 import { StorageService } from 'src/app/_core/service/storage.service';
 import { ReallocationComponent } from '../../channel_setting/_Dialogue/Inventory/Smartcard_Reallocation/reallocation/reallocation.component';
 import Swal from 'sweetalert2';
+import { SwalService } from 'src/app/_core/service/swal.service';
 
 @Component({
   selector: 'app-smartcard-reallocation',
@@ -51,11 +52,11 @@ export class SmartcardReallocationComponent implements OnInit {
       },
     },
     paginationPageSize: 10,
-    paginationPageSizeSelector:[10,20,50],
+    paginationPageSizeSelector: [10, 20, 50],
     pagination: true,
   };
 
-  constructor(public dialog: MatDialog, public userService: BaseService, storageService: StorageService, private cdr: ChangeDetectorRef,) {
+  constructor(public dialog: MatDialog, public userService: BaseService, storageService: StorageService, private cdr: ChangeDetectorRef, private swal: SwalService) {
     this.username = storageService.getUsername();
     this.role = storageService.getUserRole();
     userService.getsmartcardReallocationlist(this.role, this.username).subscribe((data: any) => {
@@ -246,6 +247,7 @@ export class SmartcardReallocationComponent implements OnInit {
   }
 
   generateExcel() {
+    this.swal.Loading();
     this.userService.getReallocatedSmartcardReport(this.role, this.username, 2)
       .subscribe((x: Blob) => {
         console.log(x);
@@ -262,6 +264,7 @@ export class SmartcardReallocationComponent implements OnInit {
           window.URL.revokeObjectURL(data);
           link.remove();
         }, 100);
+        this.swal.Close();
       },
         (error: any) => {
           Swal.fire({
@@ -275,6 +278,7 @@ export class SmartcardReallocationComponent implements OnInit {
   }
 
   generatePDF() {
+    this.swal.Loading();
     this.userService.getReallocatedSmartcardReport(this.role, this.username, 1)
       .subscribe((x: Blob) => {
         const blob = new Blob([x], { type: 'application/pdf' });
@@ -289,6 +293,7 @@ export class SmartcardReallocationComponent implements OnInit {
           window.URL.revokeObjectURL(data);
           link.remove();
         }, 100);
+        this.swal.Close();
       },
         (error: any) => {
           Swal.fire({

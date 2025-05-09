@@ -118,6 +118,8 @@ export class OnlinerechargeComponent implements OnInit {
     } else if (this.role == 'ROLE_SUBLCO') {
       this.subLCOdetails()
     } else if (this.role == 'ROLE_SUBSCRIBER') {
+      console.log('AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA');
+
       this.getSubscriberDetails()
     }
     this.fromdate = this.fromdate ? this.formatDate(this.fromdate) : this.formatDate(new Date());
@@ -143,17 +145,18 @@ export class OnlinerechargeComponent implements OnInit {
   }
   Sub_subid: any;
   Sub_amount: any;
+  Sub_OPID: any;
   getSubscriberDetails() {
     this.userservice.getSubscriberDetails(this.role, this.username).subscribe((data: any) => {
       console.log(data);
       console.log('111111111111111');
       this.lcoDeatails = data;
       this.Sub_subid = this.lcoDeatails?.subid;
-      this.operatorid = this.lcoDeatails?.operatorid;
+      this.Sub_OPID = this.lcoDeatails?.operatorid;
       this.Sub_amount = this.lcoDeatails?.balance;
       console.log('eresuofhdljkfhdsjkfhnsjdhfdjsfh', this.Sub_subid);
       this.getGatewayDetails(this.Sub_subid);
-      this.getOnline(this.operatorid);
+      this.getOnline(this.Sub_OPID);
     })
   }
   onGridReady(params: { api: any }) {
@@ -223,25 +226,30 @@ export class OnlinerechargeComponent implements OnInit {
         console.log(res);
         this.easebuzzData = this.transResponse.data;
         // this.swal.success(res?.message);
+        // if (res.status == '1') {
+        // const dialogData = new LoadingDialogModel('100');
+        // const dialogRef = this.dialog.open(LoadingComponent, {
+        //   maxWidth: '800px',
+        //   disableClose: true,
+        //   data: dialogData,
+        //   panelClass: 'loading-style',
+        // });
+        // console.log(res);
+
+        // let url = "https://pay.easebuzz.in/pay/" + res.data;
+        // let url = this.gateWayMode.baseurl + res.data;
+        // baseurl
+        // this.openChildWindow(url);
+
+        console.log('STATUS', res.status);
         if (res.status == '1') {
-          // const dialogData = new LoadingDialogModel('100');
-          // const dialogRef = this.dialog.open(LoadingComponent, {
-          //   maxWidth: '800px',
-          //   disableClose: true,
-          //   data: dialogData,
-          //   panelClass: 'loading-style',
-          // });
-          // console.log(res);
-
-          // let url = "https://pay.easebuzz.in/pay/" + res.data;
-          // let url = this.gateWayMode.baseurl + res.data;
-          // baseurl
-          // this.openChildWindow(url);
-
           if (this.gatewaymode == 'LIVE') {
+            console.log('gatewaymode', this.gatewaymode);
             this.mode = 'prod';
+            console.log('prod', this.mode);
           } else {
             this.mode = 'test';
+            console.log('test', this.mode);
           }
 
           var easebuzzCheckout = new EasebuzzCheckout(
@@ -280,11 +288,15 @@ export class OnlinerechargeComponent implements OnInit {
         console.log(res);
         this.easebuzzData = this.transResponse.data;
         // this.swal.success(res?.message);
+        console.log('STATUS', res.status);
         if (res.status == '1') {
           if (this.gatewaymode == 'LIVE') {
+            console.log('gatewaymode', this.gatewaymode);
             this.mode = 'prod';
+            console.log('prod', this.mode);
           } else {
             this.mode = 'test';
+            console.log('test', this.mode);
           }
 
           var easebuzzCheckout = new EasebuzzCheckout(
@@ -320,17 +332,26 @@ export class OnlinerechargeComponent implements OnInit {
     } else if (this.role == 'ROLE_SUBSCRIBER') {
       console.log(this.role);
       console.log('subid', this.Sub_subid);
+      console.log('Sub_amount', this.Sub_amount);
+      // this.Sub_amount
+      if (!this.amount) {
 
-      this.userservice.getsubscriberOnlineInitialRequest(this.role, this.username, this.amount || this.Sub_amount || 0,  this.Sub_subid).subscribe((res: any) => {
+      }
+      this.userservice.getsubscriberOnlineInitialRequest(this.role, this.username, this.amount || 0, this.Sub_subid).subscribe((res: any) => {
         this.transResponse = res;
         console.log(res);
         this.easebuzzData = this.transResponse.data;
-        // this.swal.success(res?.message);
+        console.log('dfsdfdsfdsfdsfdsfsdfds ========= ', this.easebuzzData)
+        console.log('status ========= ', res.status)
+        console.log('STATUS', res.status);
         if (res.status == '1') {
           if (this.gatewaymode == 'LIVE') {
+            console.log('gatewaymode', this.gatewaymode);
             this.mode = 'prod';
+            console.log('prod', this.mode);
           } else {
             this.mode = 'test';
+            console.log('test', this.mode);
           }
 
           var easebuzzCheckout = new EasebuzzCheckout(
@@ -343,7 +364,7 @@ export class OnlinerechargeComponent implements OnInit {
               if (response.status) {
                 this.swal.Loading();
                 this.userservice
-                  .getsubscriberOnlineFailurelRecharge(this.role, this.username, response.amount, this.operatorid || this.Sub_subid, response.txnid, response.status, response.hash)
+                  .getsubscriberOnlineFailurelRecharge(this.role, this.username, response.amount, this.retailerId || this.Sub_subid, response.txnid, response.status, response.hash)
                   .subscribe((res: any) => {
                     this.swal.success(res?.message);
                   }, (err) => {
@@ -428,19 +449,40 @@ export class OnlinerechargeComponent implements OnInit {
       this.isspecial = false
     }
     console.log(this.sublcoetailerId);
-
-    // this.userservice.getOnlinePaymentHistory(this.role, this.username, this.fromdate, this.todate, opid || this.Sub_subid, 0, 0, 1, 3, this.isspecial,0)
-    this.userservice.getOnlinePaymentHistory(this.role, this.username, this.fromdate, this.todate, this.operatorid || this.sublcoetailerId, 0, 0, 1, 3, this.isspecial, this.Sub_subid || 0)
-      .subscribe((res: any) => {
-        this.swal.success_1(res?.message);
-        this.rowDataOnline = res;
-        this.swal.Close();
-      }, (err) => {
-        this.swal.Error(err?.error?.message);
-        // this.handleApiError(err.error.message, err);
-        this.rowDataOnline = [];
-        this.swal.Close();
-      });
+    if (this.role == 'ROLE_OPERATOR') {
+      this.userservice.getOnlinePaymentHistory(this.role, this.username, this.fromdate, this.todate, this.operatorid || this.sublcoetailerId || this.Sub_OPID, 0, 0, 1, 3, this.isspecial, this.Sub_subid || 0)
+        .subscribe((res: any) => {
+          this.swal.success_1(res?.message);
+          this.rowDataOnline = res;
+          this.swal.Close();
+        }, (err) => {
+          this.swal.Error(err?.error?.message);
+          this.rowDataOnline = [];
+          this.swal.Close();
+        });
+    } else if (this.role == 'ROLE_SUBLCO') {
+      this.userservice.getOnlinePaymentHistory(this.role, this.username, this.fromdate, this.todate, this.operatorid || this.sublcoetailerId || this.Sub_OPID, 0, 0, 2, 3, this.isspecial, this.Sub_subid || 0)
+        .subscribe((res: any) => {
+          this.swal.success_1(res?.message);
+          this.rowDataOnline = res;
+          this.swal.Close();
+        }, (err) => {
+          this.swal.Error(err?.error?.message);
+          this.rowDataOnline = [];
+          this.swal.Close();
+        });
+    } else if (this.role == 'ROLE_SUBSCRIBER') {
+      this.userservice.getOnlinePaymentHistory(this.role, this.username, this.fromdate, this.todate, this.operatorid || this.sublcoetailerId || this.Sub_OPID, 0, 0, 3, 3, this.isspecial, this.Sub_subid || 0)
+        .subscribe((res: any) => {
+          this.swal.success_1(res?.message);
+          this.rowDataOnline = res;
+          this.swal.Close();
+        }, (err) => {
+          this.swal.Error(err?.error?.message);
+          this.rowDataOnline = [];
+          this.swal.Close();
+        });
+    }
   }
 
   // -------------------------------------------column-------------------------

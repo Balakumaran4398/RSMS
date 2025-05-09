@@ -43,6 +43,7 @@ export class StbChartComponent implements OnInit {
 			},
 			data: [{
 				type: "column",
+				dataPointWidth: 10,
 				indexLabelFontColor: "#5A5757",
 				indexLabelFontSize: 14,
 				indexLabelPlacement: "outside",

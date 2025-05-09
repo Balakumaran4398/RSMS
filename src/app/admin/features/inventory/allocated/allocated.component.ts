@@ -13,7 +13,7 @@ declare var $: any;
   templateUrl: './allocated.component.html',
   styleUrls: ['./allocated.component.scss']
 })
-export class AllocatedComponent implements OnInit,OnDestroy {
+export class AllocatedComponent implements OnInit, OnDestroy {
   // rowData: any[] | null | undefined;
   gridApi: any;
   public rowSelection: any = "multiple";
@@ -33,7 +33,7 @@ export class AllocatedComponent implements OnInit,OnDestroy {
   selectedIds: number[] = [];
   selectedtypes: number[] = [];
   hasSelectedRows: boolean = true;
-  
+
   gridOptions = {
     defaultColDef: {
       sortable: true,
@@ -43,7 +43,7 @@ export class AllocatedComponent implements OnInit,OnDestroy {
       comparator: (valueA: any, valueB: any) => {
         const isNumberA = !isNaN(valueA) && valueA !== null;
         const isNumberB = !isNaN(valueB) && valueB !== null;
-  
+
         if (isNumberA && isNumberB) {
           return valueA - valueB;
         } else {
@@ -56,7 +56,7 @@ export class AllocatedComponent implements OnInit,OnDestroy {
       },
     },
     paginationPageSize: 10,
-    paginationPageSizeSelector:[10,20,50],
+    paginationPageSizeSelector: [10, 20, 50],
     pagination: true,
   };
 
@@ -126,7 +126,7 @@ export class AllocatedComponent implements OnInit,OnDestroy {
   }
 
 
-  
+
 
   onSelectionChanged() {
     if (this.gridApi) {
@@ -175,7 +175,7 @@ export class AllocatedComponent implements OnInit,OnDestroy {
   }
   columnDefs: ColDef[] = [
     {
-      lockPosition: true, headerCheckboxSelection: true, checkboxSelection: true, width: 80,filter:false
+      lockPosition: true, headerCheckboxSelection: true, checkboxSelection: true, width: 80, filter: false
     },
     {
       headerName: 'SMARTCARD', width: 250,
@@ -269,9 +269,9 @@ export class AllocatedComponent implements OnInit,OnDestroy {
       .subscribe((data: any) => {
         this.rowData = data;
         const rowCount = this.rowData.length;
-          if (!this.gridOptions.paginationPageSizeSelector.includes(rowCount)) {
-            this.gridOptions.paginationPageSizeSelector.push(rowCount);
-          }
+        if (!this.gridOptions.paginationPageSizeSelector.includes(rowCount)) {
+          this.gridOptions.paginationPageSizeSelector.push(rowCount);
+        }
         this.allocatedhistory = data;
         this.swal.Close();
         if (data && data.length > 0) {
@@ -283,6 +283,7 @@ export class AllocatedComponent implements OnInit,OnDestroy {
             timer: 3000,
             timerProgressBar: true,
           });
+          this.swal.Close();
         } else {
           Swal.fire({
             icon: 'info',
@@ -292,6 +293,7 @@ export class AllocatedComponent implements OnInit,OnDestroy {
             timer: 2000,
             timerProgressBar: true,
           });
+          this.swal.Close();
         }
 
         console.log(data);
@@ -306,6 +308,7 @@ export class AllocatedComponent implements OnInit,OnDestroy {
             timerProgressBar: true,
             confirmButtonText: 'OK'
           });
+          this.swal.Close();
         }
       );
     this.rowData = [];
@@ -332,60 +335,68 @@ export class AllocatedComponent implements OnInit,OnDestroy {
   }
 
   generateExcel() {
-    if ((this.smartcard != null && this.smartcard != undefined && this.smartcard > 0) || (this.selectedLcoName != null && this.selectedLcoName != undefined && this.selectedLcoName > 0)) {
-      this.userService.getAllocatedSmartcardReport(this.role, this.username, this.selectedLcoName, this.smartcard || 0, 2)
-        .subscribe((x: Blob) => {
-          const blob = new Blob([x], { type: 'application/xlsx' });
-          const data = window.URL.createObjectURL(blob);
-          const link = document.createElement('a');
-          link.href = data;
-          // link.download = (this.reportTitle + ".pdf").toUpperCase();
-          link.download = `Smartcard Allocation Report.xlsx`.toUpperCase();
+    console.log('dfsafdsfds');
 
-          link.dispatchEvent(new MouseEvent('click', { bubbles: true, cancelable: true, view: window }));
-          setTimeout(() => {
-            window.URL.revokeObjectURL(data);
-            link.remove();
-          }, 100);
-        },
-          (error: any) => {
-            Swal.fire({
-              title: 'Error!',
-              text: error?.error?.message || 'There was an issue generating the Excel for allocation report.',
-              icon: 'error',
-              confirmButtonText: 'Ok'
-            });
+    // if ((this.smartcard != null && this.smartcard != undefined && this.smartcard > 0) || (this.selectedLcoName != null && this.selectedLcoName != undefined && this.selectedLcoName > 0)) {
+    this.swal.Loading();
+    this.userService.getAllocatedSmartcardReport(this.role, this.username, this.selectedOperator || 0, this.smartcard || 0, 2)
+      .subscribe((x: Blob) => {
+        const blob = new Blob([x], { type: 'application/xlsx' });
+        const data = window.URL.createObjectURL(blob);
+        const link = document.createElement('a');
+        link.href = data;
+        // link.download = (this.reportTitle + ".pdf").toUpperCase();
+        link.download = `Smartcard Allocation Report.xlsx`.toUpperCase();
+
+        link.dispatchEvent(new MouseEvent('click', { bubbles: true, cancelable: true, view: window }));
+        setTimeout(() => {
+          window.URL.revokeObjectURL(data);
+          link.remove();
+        }, 100);
+        this.swal.Close();
+      },
+        (error: any) => {
+          Swal.fire({
+            title: 'Error!',
+            text: error?.error?.message || 'There was an issue generating the Excel for allocation report.',
+            icon: 'error',
+            confirmButtonText: 'Ok'
           });
-    }
+        });
+
+    // }
   }
 
   generatePDF() {
-    if ((this.smartcard != null && this.smartcard != undefined && this.smartcard > 0) || (this.selectedLcoName != null && this.selectedLcoName != undefined && this.selectedLcoName > 0)) {
-      this.userService.getAllocatedSmartcardReport(this.role, this.username, this.selectedLcoName, this.smartcard || 0, 1)
-        .subscribe((x: Blob) => {
-          const blob = new Blob([x], { type: 'application/pdf' });
-          const data = window.URL.createObjectURL(blob);
-          const link = document.createElement('a');
-          link.href = data;
-          // link.download = (this.reportTitle + ".pdf").toUpperCase();
-          link.download = `Smartcard Allocation Report.pdf`.toUpperCase();
 
-          link.dispatchEvent(new MouseEvent('click', { bubbles: true, cancelable: true, view: window }));
-          setTimeout(() => {
-            window.URL.revokeObjectURL(data);
-            link.remove();
-          }, 100);
-        },
-          (error: any) => {
-            Swal.fire({
-              title: 'Error!',
-              text: error?.error?.message || 'There was an issue generating the Pdf for allocation report.',
-              icon: 'error',
-              confirmButtonText: 'Ok'
-            });
+    // if ((this.smartcard != null && this.smartcard != undefined && this.smartcard > 0) || (this.selectedLcoName != null && this.selectedLcoName != undefined && this.selectedLcoName > 0)) {
+    this.swal.Loading();
+    this.userService.getAllocatedSmartcardReport(this.role, this.username, this.selectedOperator || 0, this.smartcard || 0, 1)
+      .subscribe((x: Blob) => {
+        const blob = new Blob([x], { type: 'application/pdf' });
+        const data = window.URL.createObjectURL(blob);
+        const link = document.createElement('a');
+        link.href = data;
+        // link.download = (this.reportTitle + ".pdf").toUpperCase();
+        link.download = `Smartcard Allocation Report.pdf`.toUpperCase();
+
+        link.dispatchEvent(new MouseEvent('click', { bubbles: true, cancelable: true, view: window }));
+        setTimeout(() => {
+          window.URL.revokeObjectURL(data);
+          link.remove();
+        }, 100);
+        this.swal.Close();
+      },
+        (error: any) => {
+          Swal.fire({
+            title: 'Error!',
+            text: error?.error?.message || 'There was an issue generating the Pdf for allocation report.',
+            icon: 'error',
+            confirmButtonText: 'Ok'
           });
+        });
 
-    }
+    // }
 
   }
 }

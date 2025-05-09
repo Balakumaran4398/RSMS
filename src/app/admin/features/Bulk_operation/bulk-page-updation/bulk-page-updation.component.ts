@@ -48,6 +48,15 @@ export class BulkPageUpdationComponent implements OnInit {
   isSelectRow: boolean = false;
   searchTerm: any;
   filteredCasList: { name: string; id: number }[] = [];
+
+  retailerid: any;
+  lcoDeatails: any;
+  lcoId: any;
+  operatorname: any;
+  isplan: any;
+  isdate: any;
+  isDatetoDate: any;
+
   type: any = [
     { label: "Select filter Type", value: 0 },
     { label: "LCO", value: 1 },
@@ -101,7 +110,7 @@ export class BulkPageUpdationComponent implements OnInit {
       },
     },
     paginationPageSize: 10,
-    paginationPageSizeSelector:[10,20],
+    paginationPageSizeSelector: [10, 20],
     pagination: true,
     rowClassRules: {
       'always-selected': (params: any) => params.data,
@@ -183,7 +192,7 @@ export class BulkPageUpdationComponent implements OnInit {
         {
           headerName: "STATUS", width: 230,
           field: 'casresponse',
-      
+
         }
 
       ];
@@ -233,7 +242,7 @@ export class BulkPageUpdationComponent implements OnInit {
           if (!this.gridOptions.paginationPageSizeSelector.includes(rowCount)) {
             this.gridOptions.paginationPageSizeSelector.push(rowCount);
           }
-          
+
           this.swal.Success_200();
           successCallback();
         } else if (response.status === 204) {
@@ -313,22 +322,23 @@ export class BulkPageUpdationComponent implements OnInit {
 
   }
 
-  retailerid: any;
+
   getSubLCOdetails() {
     this.userservice.getSublcoDetails(this.role, this.username).subscribe((data: any) => {
       console.log(data);
       console.log('111111111111111');
       this.lcoDeatails = data;
       this.retailerid = this.lcoDeatails?.operatorid;
+      this.isplan = this.lcoDeatails?.permissionlist?.plan;
+      this.isdate = this.lcoDeatails?.permissionlist?.date;
+      this.isDatetoDate = this.lcoDeatails?.permissionlist?.datetodate;
       console.log(this.retailerid);
+      console.log(this.isplan);
+      console.log(this.isdate);
+      console.log(this.isDatetoDate);
     })
   }
-  lcoDeatails: any;
-  lcoId: any;
-  operatorname: any;
-  isplan: any;
-  isdate: any;
-  isDatetoDate: any;
+
   operatorIdoperatorId() {
     this.userservice.getOpDetails(this.role, this.username).subscribe((data: any) => {
       this.lcoDeatails = data;
@@ -502,7 +512,7 @@ export class BulkPageUpdationComponent implements OnInit {
           if (!this.gridOptions.paginationPageSizeSelector.includes(rowCount)) {
             this.gridOptions.paginationPageSizeSelector.push(rowCount);
           }
-          
+
           this.swal.Success_200();
         } else if (response.status === 204) {
           this.swal.Success_204();

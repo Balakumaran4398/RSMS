@@ -8,7 +8,7 @@
             (click)="selectTab('sub_lco')">
             SUB LCO
         </div>
-        <div *ngIf="role !== 'ROLE_SUBLCO'" class="tab mb-2  bttn" [class.active]="selectedTab === 'subscriber'"
+        <div *ngIf="role != 'ROLE_OPERATOR' && role != 'ROLE_SUBLCO'" class="tab mb-2  bttn" [class.active]="selectedTab === 'subscriber'"
             style="text-align: center;" (click)="selectTab('subscriber')">
             SUBSCRIBER
         </div>

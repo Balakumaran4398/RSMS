@@ -259,8 +259,12 @@ export class BillcollectionComponent implements OnInit {
       {
         headerName: "PAY OPTION", field: 'productname', width: 100, cellStyle: { textAlign: 'left' },
         cellRenderer: (params: any) => {
-          // const isActive = params.data.extra_amount === '0' || params.data.new_balance >= params.data.paid_amount;
-          const isActive = params.data.paid_amount === '0' || params.data.extra_amount <= '0';
+          console.log('new_balance', params.data.new_balance)
+          console.log('Extra amount', params.data.extra_amount)
+          // const isActive = (params.data.paid_amount === "0.00");
+          // const isActive = !((params.data.paid_amount === "0.00") || (params.data.extra_amount <= 0));
+          const isActive = params.data.new_balance <= 0;
+          // const isActive = (params.data.paid_amount === "0.00") || ((params.data.extra_amount >= 0) || (params.data.extra_amount >= "0.00"));
           const payButton = document.createElement('button');
           payButton.innerHTML = '<img src="/assets/images/icons/Pay2.png" style="width:70px">';
           payButton.style.backgroundColor = 'transparent';
@@ -268,12 +272,9 @@ export class BillcollectionComponent implements OnInit {
           payButton.style.border = 'none';
           payButton.style.cursor = 'pointer';
           payButton.style.marginRight = '6px';
-          // payButton.addEventListener('click', () => {
-          //   this.openEditDialog(params.data, 'pay_option');
-          // });
-          if (!isActive) {
-            console.log('isActive');
 
+          if (isActive) {
+            console.log('isActive', isActive);
             payButton.style.opacity = '0.5';
             payButton.title = 'Cannot pay, status is Deactive';
           } else {
@@ -286,7 +287,6 @@ export class BillcollectionComponent implements OnInit {
           div.appendChild(payButton);
           return div;
         }
-
       },
       {
         headerName: "SMARTCARD", field: 'smartcard', width: 220,
@@ -314,22 +314,21 @@ export class BillcollectionComponent implements OnInit {
       },
 
 
+
       {
         headerName: "Edit", width: 100, cellStyle: { textAlign: 'left' },
         cellRenderer: (params: any) => {
           const { paid_amount, new_balance, extra_amount } = params.data;
-          console.log('paid_amount', paid_amount);
-          console.log('new_balance', new_balance);
-          console.log('extra_amount', extra_amount);
 
-          const shouldHide = ((paid_amount == '0.00' || '0') && new_balance == '0' && (extra_amount == '0.00' || '0')) && (paid_amount == '0.00' || '0') && new_balance != '0' && (extra_amount == '0.00' || '0');
-          const shouldEnable = ((paid_amount == '0.00' || '0') && new_balance != '0' && (extra_amount != '0.00' || '0') && (paid_amount == '0.00' || '0') && new_balance == '0' && (extra_amount != '0.00' || '0'));
+          const shouldHide =
+            (paid_amount == '0.00' || paid_amount == '0') &&
+            (new_balance == '0' || new_balance != '0') &&
+            (extra_amount == '0.00' || extra_amount == '0');
 
           const div = document.createElement('div');
 
           if (shouldHide) {
-            // Don't render the button at all
-            return div;
+            return div; // return empty if it should be hidden
           }
 
           const payButton = document.createElement('button');
@@ -340,22 +339,15 @@ export class BillcollectionComponent implements OnInit {
           payButton.style.cursor = 'pointer';
           payButton.style.marginRight = '6px';
 
-          if (shouldEnable) {
-            payButton.title = 'Pay Now, status is Active';
-            payButton.addEventListener('click', () => {
-              this.openEditDialog(params.data, 'pay_edit');
-            });
-          } else {
-            payButton.disabled = true;
-            payButton.style.opacity = '0.5';
-            payButton.title = 'Cannot pay, status is not valid';
-          }
+          // Optional: Add click event (remove condition if you always show the button)
+          payButton.addEventListener('click', () => {
+            this.openEditDialog(params.data, 'pay_edit');
+          });
 
           div.appendChild(payButton);
           return div;
-        },
+        }
       },
-
 
 
       { headerName: "SUBSCRIBER NAME", field: 'customer_name', width: 180 },
@@ -518,13 +510,15 @@ export class BillcollectionComponent implements OnInit {
         });
         this.userService.getresetPayBill(this.role, this.username, ids).subscribe((res: any) => {
           Swal.fire({
-            title: 'Activated!',
+            title: 'Reset!!',
             text: res.message,
             icon: 'success',
             timer: 2000,
             timerProgressBar: true,
+            showConfirmButton: false
+          }).then(() => {
+            location.reload();
           });
-          this.ngOnInit();
         }, (err) => {
           Swal.fire({
             title: 'Error!',
@@ -532,6 +526,9 @@ export class BillcollectionComponent implements OnInit {
             icon: 'error',
             timer: 2000,
             timerProgressBar: true,
+            showConfirmButton: false
+          }).then(() => {
+            location.reload();
           });
         });
       }

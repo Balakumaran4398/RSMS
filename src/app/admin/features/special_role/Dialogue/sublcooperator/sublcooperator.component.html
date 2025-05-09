@@ -51,7 +51,8 @@
                                     <p class="text">
                                         <span class="label label2">password</span>
                                         <span class="separator">:</span>
-                                        <span class="last">{{operator?.password}}</span>
+                                        <span class="last"
+                                            style="text-transform: lowercase;">{{operator?.password}}</span>
                                     </p>
                                 </div>
 
@@ -59,11 +60,11 @@
                             <div class="d-flex">
                                 <div class="sub-tittle mb-3 col-md-12">
                                     <p class="text "
-                                        [ngClass]="operator?.isactive === 'true' ? 'active-text' : 'deactive-text'">
+                                        [ngClass]="operator?.isactive == 'true' ?  'deactive-text' : 'active-text'">
                                         <span class="label">Status</span>
                                         <span class="separator1">:</span>
-                                        <span class="last1">{{ operator?.isactive === 'true' ? 'Active' :
-                                            'Deactive'}}</span>
+                                        <span class="last1">{{ operator?.isactive == 'true' ? 'Deactive' :
+                                            'Active'}}</span>
                                     </p>
                                 </div>
                             </div>
@@ -98,14 +99,15 @@
                                 <span class="tooltip">Permission</span>
                             </div>
                         </div>
-                        <div class="col-2 vertical tooltip-container">
+                        <div *ngIf="operator.iswallet == true" class="col-2 vertical tooltip-container">
                             <div class="col-2 vertical tooltip-container">
                                 <i class="fa fa-cog" aria-hidden="true" style="color: brown;"
                                     (click)="this.opendialogue('wallet_recharge', operator);"></i>
                                 <span class="tooltip">SUBLCO Rating</span>
                             </div>
                         </div>
-                        <div *ngIf="operator.sublcoDiscount=== 1" class="col-2 vertical tooltip-container">
+                        <div *ngIf=" operator.iswallet == true  && operator.sublcoDiscount=== 1"
+                            class="col-2 vertical tooltip-container">
                             <div class="col-2 vertical tooltip-container">
                                 <i class="fa fa-dollar" style="color: blue;"
                                     (click)="this.opendialogue('sub_lco_discount', operator);"></i>

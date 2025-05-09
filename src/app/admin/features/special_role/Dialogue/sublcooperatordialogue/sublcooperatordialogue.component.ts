@@ -93,7 +93,7 @@ export class SublcooperatordialogueComponent implements OnInit {
       floatingFilter: true
     },
     paginationPageSize: 10,
-    paginationPageSizeSelector:[10,20,50],
+    paginationPageSizeSelector: [10, 20, 50],
     pagination: true,
   }
   rowData: any;
@@ -272,10 +272,10 @@ export class SublcooperatordialogueComponent implements OnInit {
       this.columnDefs = [
         { headerName: "S.No", lockPosition: true, valueGetter: 'node.rowIndex+1', cellClass: 'locked-col', width: 80, suppressNavigable: true, sortable: false, filter: false },
         { headerName: "PACKAGE NAME", field: 'product_name', width: 300 },
-        { headerName: "SUB LCO RATE	", field: 'sublco_rate', width: 250 },
+        { headerName: "SUB LCO RATE	", field: 'discount_value', width: 250 },
         { headerName: "AMOUNT", field: 'customer_amount', width: 250 },
         { headerName: "MSO AMOUNT", field: 'mso_amount', width: 250 },
-        { headerName: "LCO COMMISION", field: 'lco_commission', width: 250 },
+        { headerName: "LCO COMMISION", field: 'lco_commission_amount', width: 250 },
         {
           headerName: 'ACTION', field: '', width: 150, filter: false,
           cellRenderer: (params: any) => {
@@ -313,7 +313,6 @@ export class SublcooperatordialogueComponent implements OnInit {
   }
   openDiscountdialogue(type: any, data: any,) {
     let dialogData = { type: type, data: data, retailerid: this.retailerid };
-
     console.log(dialogData);
     const dialogRef = this.dialog.open(DiscountdialogComponent, {
       panelClass: 'custom-dialog-container',

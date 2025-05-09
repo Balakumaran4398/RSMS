@@ -597,10 +597,10 @@ export class FingerPrintComponent {
     this.isStopButtonEnabled = this.isforce;
     if (this.isforce) {
       this.isDuration = true;
-      this.isTimeSpan = true;
+      // this.isTimeSpan = true;
     } else {
       this.isDuration = true;
-      this.isTimeSpan = true;
+      // this.isTimeSpan = true;
     }
   }
   @HostListener('window:resize', ['$event'])
@@ -755,7 +755,18 @@ export class FingerPrintComponent {
       this.isfontColor = true;
       this.isCasfontColor = false;
     }
-
+    if (this.castype == 2) {
+      this.isTimeSpan = false;
+    }else {
+      this.isTimeSpan = true;
+    }
+    if (this.castype == 4) {
+      this.isHH = true;
+      this.isMM = true;
+    }else {
+      this.isHH = false;
+      this.isMM = false;
+    }
 
     if (this.castype == 1) {
       this.isFontSizeDisabled = false;
@@ -869,13 +880,13 @@ export class FingerPrintComponent {
     //   this.isTimeSpan = false;
     // }
 
-    if (this.castype != 2) {
-      this.isHH = false;
-      this.isMM = false;
-    } else {
-      this.isHH = true;
-      this.isMM = true;
-    }
+    // if (this.castype != 2) {
+    //   this.isHH = false;
+    //   this.isMM = false;
+    // } else {
+    //   this.isHH = true;
+    //   this.isMM = true;
+    // }
 
 
     // if (this.castype != 6 && this.castype != 2 && this.castype != 1) {

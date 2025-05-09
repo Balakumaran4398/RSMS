@@ -657,3 +657,84 @@
         </div>
     </div>
 </div>
+<div *ngIf="allType== '14'">
+    <h3>COMBO PACKAGE UPDATE HISTORY</h3>
+    <div class="row " style="padding: 1rem;">
+        <div class="col-12 col-md-2 d-flex  justify-content-start align-items-start">
+            <button type="button" class="btn btn-primary bttn" (click)="goBack()"><i
+                    class="fa-solid fa-reply mx-2"></i>Back</button>
+        </div>
+        <div class="row d-flex align-items-center justify-content-center">
+            <div class="col-12 col-sm-12 m-3">
+                <div class="col display justify-content-between align-items-end mb-3">
+                    <!-- <div class="col  mb-3"> -->
+                    <div class="display">
+                        <div class="input_box mx-2 mb-2">
+                            <div>
+                                <mat-radio-group aria-label="Select an option" class="radio-group">
+                                    <mat-radio-button (click)="onPackageType()" [value]='1'>Package
+                                        wise</mat-radio-button>
+                                    <mat-radio-button (click)="onAddonType()" [value]='2'>Addon
+                                        wise</mat-radio-button>
+                                </mat-radio-group>
+                            </div>
+                        </div>
+                        <div class="mx-2 ">
+                            <mat-form-field appearance="outline">
+                                <mat-date-range-input [rangePicker]="picker">
+                                    <input matStartDate matInput placeholder="Start date"
+                                        (dateChange)="getFromDate($event)">
+                                    <input matEndDate matInput placeholder="End date" (dateChange)="getToDate($event)">
+                                </mat-date-range-input>
+                                <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                                <mat-date-range-picker #picker></mat-date-range-picker>
+                            </mat-form-field>
+                        </div>
+                        <div *ngIf="package" class="input_box  mb-3 mx-2">
+                            <div class="d-flex align-items-center justify-content-center  mb-3">
+                                <!-- <div class=" col-6 col-md-7 "> -->
+                                    <select id="package" [(ngModel)]="packagename" class="js-states">
+                                        <option value="0"  disabled>Select Package Name</option>
+                                        <option *ngFor="let package of packagenameList" [value]="package.packageid">
+                                            {{ package.packagename }}
+                                        </option>
+                                    </select>
+                                <!-- </div> -->
+                            </div>
+                        </div>
+                        <div *ngIf="addon" class="input_box  mb-3 mx-2">
+                            <div class="d-flex align-items-center justify-content-center  mb-3">
+                                    <select id="addon" [(ngModel)]="addonName" class="js-states">
+                                        <option value="0"  disabled>Select Addon Name</option>
+                                        <option *ngFor="let addon of addonList" [value]="addon.packageid">
+                                            {{ addon.packagename }}
+                                        </option>
+                                    </select>
+                            </div>
+                        </div>
+                        <div class="allreport mb-2">
+                            <a class="btn btn-success mx-1 bttn" (click)="onComboPackageUpdate()">
+                                Get Report
+                            </a>
+                        </div>
+                    </div>
+                    <div class="mobileView">
+                        <button class="btn btn-outline-info mx-1 bttn" mat-raised-button color="primary" type="button"
+                            (click)="getComboReport(2)">
+                            Excel
+                        </button>
+                        <button class="btn btn-outline-info mx-1 bttn" mat-raised-button color="accent" type="button"
+                            (click)="getComboReport(1)">
+                            PDF
+                        </button>
+                    </div>
+                    <!-- </div> -->
+                </div>
+                <ag-grid-angular #agGrid id="myGrid" domLayout='autoHeight' class="ag-theme-alpine table-class"
+                    rowAnimation [gridOptions]="gridOptions" [columnDefs]="columnDefs" [rowData]="rowData"
+                    (gridReady)="onGridReady($event)" [enableCellTextSelection]="true">
+                </ag-grid-angular>
+            </div>
+        </div>
+    </div>
+</div>

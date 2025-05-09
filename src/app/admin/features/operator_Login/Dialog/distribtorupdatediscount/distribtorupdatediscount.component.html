@@ -166,7 +166,8 @@
                     <div class="d-flex justify-content-between">
                         <i class='bx bx-x-circle'></i>
                         <span class="fw-bold">
-                            {{operatorDetailsCount?.suspendcount}}
+                            <!-- {{operatorDetailsCount?.suspendcount}} -->
+                            {{operatorDetailsCount?.deactivesubscription}}
                         </span>
                     </div>
                     <div class="mt-2 mb-2 text-center">EXPIRED SUBSCRIPTION</div>
@@ -178,7 +179,8 @@
                     <div class="d-flex justify-content-between">
                         <i class='bx bxs-user-x'></i>
                         <span class="fw-bold">
-                            {{lcoDeatails?.newcount}}
+                            <!-- {{lcoDeatails?.newcount}} -->
+                            {{operatorDetailsCount?.yesterdayexpirycount}}
                         </span>
                     </div>
                     <div class="mt-2 mb-2 text-center">YESTERDAY EXPIRY</div>
@@ -202,7 +204,7 @@
                     <div class="d-flex justify-content-between">
                         <i class='bx bx-dollar-circle'></i>
                         <span class="fw-bold">
-                            {{operatorDetailsCount?.yesterdayexpirycount}}
+                            {{operatorDetailsCount?.yesterdayrechargecount}}
                         </span>
                     </div>
                     <div class="mt-2 mb-2 text-center">YESTERDAY RECHARGE</div>

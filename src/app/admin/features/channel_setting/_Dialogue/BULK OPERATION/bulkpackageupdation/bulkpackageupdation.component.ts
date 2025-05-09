@@ -146,24 +146,70 @@ export class BulkpackageupdationComponent implements OnInit {
 
 
   getPlanList() {
+    // this.userservice.getPlanTypeList(this.role, this.username).subscribe((data: any) => {
+    //   console.log(data);
+
+    //   // this.rechargetype = Object.entries(data).map(([key, value]) => ({ name: key, id: value }));
+    //   this.rechargetype = Object.keys(data).map(key => {
+    //     const id = data[key];
+    //     const name = key.replace(/\(\d+\)$/, '').trim();
+    //     return { name: name, id: id };
+    //   });
+
+    //   if (!this.lcodatetype) {
+    //     this.rechargetype = this.rechargetype.filter((item: any) => item.name === "Plan");
+    //   }
+    //   console.log(this.selectedPackage);
+
+    //   console.log(this.rechargeType);
+
+    //   this.cdr.detectChanges();
+    // })
+
     this.userservice.getPlanTypeList(this.role, this.username).subscribe((data: any) => {
       console.log(data);
+      if (this.role != 'ROLE_OPERATOR' && this.role != 'ROLE_SUBLCO' && this.role != 'ROLE_SUBSCRIBER') {
+        this.rechargetype = Object.keys(data).map(key => {
+          const id = data[key];
+          const name = key.replace(/\(\d+\)$/, '').trim();
+          return { name: name, id: id };
+        });
+        this.cdr.detectChanges();
+      } else if (this.role == 'ROLE_OPERATOR' || this.role == 'ROLE_SUBLCO') {
+        console.log('123456789rfrd1234567', this.role);
+        const rawList = Object.keys(data).map(key => {
+          const id = data[key];
+          const name = key.replace(/\(\d+\)$/, '').trim();
+          return { name, id };
+        });
 
-      // this.rechargetype = Object.entries(data).map(([key, value]) => ({ name: key, id: value }));
-      this.rechargetype = Object.keys(data).map(key => {
-        const id = data[key];
-        const name = key.replace(/\(\d+\)$/, '').trim();
-        return { name: name, id: id };
-      });
-
-      if (!this.lcodatetype) {
-        this.rechargetype = this.rechargetype.filter((item: any) => item.name === "Plan");
+        this.rechargetype = rawList.filter(item => {
+          const name = item.name.toLowerCase();
+          if (name === 'plan' && this.plan) return true;
+          if (name === 'date' && this.date) return true;
+          if (name === 'date-to-date' && this.dateTodate) return true;
+          return false;
+        });
+        this.cdr.detectChanges();
+      } else if (this.role == 'ROLE_SUBSCRIBER') {
+        console.log('1234567890', this.role);
+        const rawList = Object.keys(data).map(key => {
+          const id = data[key];
+          const name = key.replace(/\(\d+\)$/, '').trim();
+          return { name, id };
+        });
+        console.log(rawList);
+        this.rechargetype = rawList.filter(item => {
+          const name = item.name.toLowerCase();
+          if (name === 'plan' && this.plan) return true;
+          if (name === 'date' && this.date) return true;
+          if (name === 'date-to-date' && this.dateTodate) return true;
+          return false;
+        });
+        this.cdr.detectChanges();
       }
-      console.log(this.selectedPackage);
-
-      console.log(this.rechargeType);
-
       this.cdr.detectChanges();
+      console.log(this.rechargetype);
     })
   }
   onSelectionrechargetype(selectedValue: string) {
@@ -419,7 +465,7 @@ export class BulkpackageupdationComponent implements OnInit {
       plantype: this.selectedRechargetype,
       isallpack: this.isallpack,
       expiredsubscriberlist: this.rowData,
-      retailer: this.lcoid || 0,
+      retailerid: this.lcoid || 0,
     }
     this.swal.Loading();
     this.userservice.bulkPackageUpdation(requestBody)

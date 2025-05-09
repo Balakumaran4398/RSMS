@@ -60,7 +60,7 @@ export class ActivationComponent implements OnInit {
       },
     },
     paginationPageSize: 10,
-    paginationPageSizeSelector:[10,20],
+    paginationPageSizeSelector: [10, 20],
     pagination: true,
   }
   date: any;
@@ -245,9 +245,9 @@ export class ActivationComponent implements OnInit {
           if (response.status === 200) {
             this.rowData = response.body;
             const rowCount = this.rowData.length;
-          if (!this.gridOptions.paginationPageSizeSelector.includes(rowCount)) {
-            this.gridOptions.paginationPageSizeSelector.push(rowCount);
-          }
+            if (!this.gridOptions.paginationPageSizeSelector.includes(rowCount)) {
+              this.gridOptions.paginationPageSizeSelector.push(rowCount);
+            }
             // this.swal.Success_200();
           } else if (response.status === 204) {
             this.swal.Success_204();
@@ -309,9 +309,9 @@ export class ActivationComponent implements OnInit {
           if (response.status === 200) {
             this.rowData = response.body;
             const rowCount = this.rowData.length;
-          if (!this.gridOptions.paginationPageSizeSelector.includes(rowCount)) {
-            this.gridOptions.paginationPageSizeSelector.push(rowCount);
-          }
+            if (!this.gridOptions.paginationPageSizeSelector.includes(rowCount)) {
+              this.gridOptions.paginationPageSizeSelector.push(rowCount);
+            }
             // this.swal.Success_200();
           } else if (response.status === 204) {
             this.swal.Success_204();

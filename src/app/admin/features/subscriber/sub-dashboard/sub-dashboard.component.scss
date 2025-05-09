@@ -162,6 +162,9 @@ label {
 .btn2 {
   width: 10pc;
   height: 2pc;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   color: white;
   border: 0.1px solid;
   border-radius: 5px;
@@ -805,7 +808,7 @@ label {
   font-weight: 600;
   margin: 1rem 0;
   color: darkred;
-  
+
 }
 
 .actions {
@@ -824,6 +827,7 @@ label {
 .black-text {
   color: black;
 }
+
 .green-text {
   color: green;
 }
