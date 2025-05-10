@@ -2258,9 +2258,10 @@
             </div>
         </div>
     </div>
-    <div style="padding: 1rem;">
+    <div *ngIf="role != 'ROLE_SUBLCO'" style="padding: 1rem;">
         <div style="background-color: aquamarine;padding: 0.5rem;">
-            <h5 style="margin-bottom: 0rem;">TOTAL: {{TotalLcoAmount}}
+            <h5 style="margin-bottom: 0rem;">TOTAL: <i class="fa-solid fa-indian-rupee-sign rupee mx-2"
+                    style="font-size: 20px;color:green"></i>{{TotalLcoAmount}}
                 <!-- <span style="color: red;">{{TotalLcoAmount}} </span> -->
             </h5>
         </div>
@@ -2968,7 +2969,8 @@
                             <span class="me-2">Old Balance Amount </span>
                         </div>
                         <div class="col-6 col-md-6 value">
-                            <input type="text" placeholder="Old Balance"  [value]="oldexcessAmount | number: '1.2-2'"   readonly>
+                            <input type="text" placeholder="Old Balance" [value]="oldexcessAmount | number: '1.2-2'"
+                                readonly>
                         </div>
                     </div>
                 </div>
@@ -2978,7 +2980,8 @@
                             <span class="me-2">New Balance Amount </span>
                         </div>
                         <div class="col-6 col-md-6 value">
-                            <input type="text" placeholder="New Balance"  [value]="newExcessAmount | number: '1.2-2'"  readonly>
+                            <input type="text" placeholder="New Balance" [value]="newExcessAmount | number: '1.2-2'"
+                                readonly>
                         </div>
                     </div>
                 </div>

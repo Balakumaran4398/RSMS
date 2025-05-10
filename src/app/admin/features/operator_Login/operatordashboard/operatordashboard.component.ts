@@ -159,6 +159,7 @@ export class OperatordashboardComponent implements OnInit {
 
     })
   }
+  wallet: boolean = false;
   getSubLcoDetails() {
     this.userService.getSublcoDetails(this.role, this.username).subscribe((data: any) => {
       this.lcoDeatails = data;
@@ -167,6 +168,8 @@ export class OperatordashboardComponent implements OnInit {
       this.operatorBalance = this.lcoDeatails?.balance;
       this.subLcorechargeCount = this.lcoDeatails?.todayrechargeamount;
       this.subLcoPermission = this.lcoDeatails?.permissionlist;
+      this.wallet = this.lcoDeatails?.permissionlist?.wallet;
+      console.log('walletshare', this.walletshare);
       console.log(this.subLcoPermission);
       console.log(data);
       this.rechargeHistory = this.subLcoPermission?.rechargehistory;
@@ -181,6 +184,8 @@ export class OperatordashboardComponent implements OnInit {
       console.log(data);
       console.log('22222222');
       this.lcoDeatails = data;
+      this.walletshare = this.lcoDeatails?.permissionlist?.wallet;
+      console.log('walletshare', this.walletshare);
       console.log('SUBSCRIBER DETAILS', this.lcoDeatails);
     })
   }

@@ -119,7 +119,7 @@
                                 {{subdetailsList?.opbalance}} {{subdetails?.opbalance}}
                             </div>
                         </div>
-                        <div *ngIf="role == 'ROLE_SUBSCRIBER' || role == 'ROLE_SUBLCO'" class="d-flex">
+                        <div *ngIf="role == 'ROLE_SUBSCRIBER' || role == 'ROLE_SUBLCO' && wallet" class="d-flex">
                             <div class="col-6 col-md-4 d-flex justify-content-start align-items-center mb-1 text2">
                                 Subscriber Balance</div>
                             <div class="col-1 col-md-1 d-flex justify-content-center align-items-center mb-1 text2">

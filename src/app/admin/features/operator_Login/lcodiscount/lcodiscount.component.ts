@@ -174,17 +174,19 @@ export class LcodiscountComponent implements OnInit, AfterViewInit {
   getListOfDatas() {
     console.log("this.type :" + this.type);
     if (this.type == '1') {
+      this.rowData= [];
       console.log('all area', this.type);
       this.userService.getOpDiscountListByOpidAreaid(this.role, this.username, this.lcoId, 0, 1, false).subscribe((res: any) => {
         console.log(res);
         this.rowData = res;
       })
     } else if (this.type == '2') {
+      this.rowData= [];
       console.log('area', this.type);
       this.rowData = [];
       this.onAreaStatusChange(this.lcoId);
-
     } else if (this.type == '3') {
+      this.rowData= [];
       console.log('smartcard', this.type);
       // this.onAreaStatusChange(this.lcoId);
       this.userService.getOpDiscountListByOpidAreaid(this.role, this.username, this.lcoId, 0, 3, false).subscribe((res: any) => {
@@ -194,6 +196,7 @@ export class LcodiscountComponent implements OnInit, AfterViewInit {
     } else if (this.type == '4') {
       console.log('package', this.type);
       // this.onAreaStatusChange(this.lcoId);
+      this.rowData= [];
       this.userService.getOpDiscountListByOpidAreaid(this.role, this.username, this.lcoId, 0, 4, false).subscribe((res: any) => {
         console.log(res);
         this.rowData = res;

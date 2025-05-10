@@ -103,11 +103,28 @@ export class AddednotaddedComponent implements OnInit {
     this.filteredNotPermissionList = this.NotpermissionList.filter(item => item.name.toLowerCase().includes(this.searchTermPermission.toLowerCase()));
     console.log('[filteredNotPermissionList]', this.filteredNotPermissionList);
   }
+  OriginalList: any = []
+  filterPermissionList(e: any) {
 
-  filterPermissionList() {
-    this.cdr.detectChanges();
-    this.filteredPermissionList = this.permissionList.filter(item => item.name.toLowerCase().includes(this.searchTermAdded.toLowerCase()));
+    // console.log(e.target.value);
+    // if(e.target.value){
+    this.filteredPermissionList = this.permissionList.filter(item => item.name.toLowerCase().includes(e.target.value.toLowerCase()));
+    // }else{
+    //   console.log("e.target.value");
+    //   this.filteredPermissionList=[]
+    //   this.permissionList.forEach(e => {
+    //     this.filteredNotPermissionList.forEach(b => {
+    //       if (e.id== !b.id) {
+    //         this.filteredPermissionList.push(e);
+    //       } 
+    //     });
+    //   });
+    // }
     console.log('[filteredPermissionList]', this.filteredPermissionList);
+    console.log(this.permissionList);
+
+    // this.cdr.detectChanges();
+
   }
 
 
@@ -251,9 +268,35 @@ export class AddednotaddedComponent implements OnInit {
   }
 
 
+  // drop1(event: CdkDragDrop<string[]>, val: number) {
+  //   var available_old_bouquet_list: any = event.previousContainer.data[event.previousIndex];
+  //   console.log(available_old_bouquet_list);
+  //   if (event.previousContainer === event.container) {
+  //     moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
+  //   } else {
+  //     transferArrayItem(event.previousContainer.data, event.container.data, event.previousIndex, event.currentIndex);
+  //     console.log(event.previousContainer.data);
+  //     console.log(event.container.data);
+  //     console.log(val);
+  //     if (val == 1) {
+  //       this.NotpermissionList = event.container.data;
+  //       this.permissionList = event.previousContainer.data;
+  //       this.containerData = this.permissionList;
+  //       console.log('container data ------------------------1111111111111', this.containerData);
+  //       console.log('NotpermissionList ------------------------1111111111111', this.NotpermissionList);
+  //     } else {
+  //       this.permissionList = event.container.data;
+  //       this.NotpermissionList = event.previousContainer.data;
+  //       this.containerData = this.permissionList;
+  //       console.log('container data-------------------------------2222222222222', this.containerData);
+  //     }
+  //     this.containerData = this.permissionList;
+  //     this.containerID = this.containerData.map((item: any) => item.id);
+  //   }
+  // }
+
   drop1(event: CdkDragDrop<string[]>, val: number) {
-    // var available_old_bouquet_list = this.NotpermissionList;
-    var available_old_bouquet_list = event.previousContainer.data[event.previousIndex];
+    var available_old_bouquet_list: any = event.previousContainer.data[event.previousIndex];
     console.log(available_old_bouquet_list);
     var data;
     if (event.previousContainer === event.container) {
@@ -262,23 +305,42 @@ export class AddednotaddedComponent implements OnInit {
       transferArrayItem(event.previousContainer.data, event.container.data, event.previousIndex, event.currentIndex);
       console.log(event.previousContainer.data);
       console.log(event.container.data);
+      console.log(val);
       if (val == 1) {
-        this.NotpermissionList = event.container.data;
-        this.permissionList = event.previousContainer.data;
-        this.containerData = this.permissionList;
+        // this.containerData = this.permissionList;
+        const index = this.NotpermissionList.findIndex(item => item.id);
+        if (index > -1) {
+          this.permissionList.splice(index, 1);
+          this.NotpermissionList.push(this.permissionList[index]);
+        }
+        this.containerData = this.permissionList.map((item: { name: string, id: number }) => ({
+          name: item.name,
+          id: item.id
+        }));
+        // this.containerID = this.containerData.map((item: any) => item.id);
         console.log('container data ------------------------1111111111111', this.containerData);
         console.log('NotpermissionList ------------------------1111111111111', this.NotpermissionList);
       } else {
-        this.permissionList = event.container.data;
-        this.NotpermissionList = event.previousContainer.data;
-        this.containerData = this.permissionList;
-        console.log('container data-------------------------------2222222222222', this.containerData);
+        // this.containerData = this.permissionList;
+        const index = this.permissionList.findIndex(item => item.id);
+        if (index > -1) {
+          this.NotpermissionList.splice(index, 1);
+          this.permissionList.push(this.NotpermissionList[index]);
+        }
+        this.containerData = this.permissionList.map((item: { name: string, id: number }) => ({
+          name: item.name,
+          id: item.id
+        }));
       }
-      this.containerData = this.permissionList;
-      console.log('container data', this.containerData);
       this.containerID = this.containerData.map((item: any) => item.id);
+      console.log('containerID-------------------------------2222222222222', this.containerID);
     }
   }
+
+
+
+
+
 
   // drop1(event: CdkDragDrop<string[]>, val: number) {
   //   const previousContainerDataBeforeMove = [...event.previousContainer.data];

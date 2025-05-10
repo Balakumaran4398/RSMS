@@ -2371,7 +2371,7 @@ export class SubscriberdialogueComponent implements OnInit, OnDestroy {
       iscollected: this.iscollected,
       addonlist: this.rows,
       managepackagelist: this.rowData,
-      dueamount: this.changebase?.customerPayAmount || 0,
+      dueamount: this.addonConfirmationData?.customerPayAmount || 0,
       paidamount: this.paidamount || this.collectedPayAmount || 0,
       android_id: 0,
       device_id: 0,
@@ -2452,7 +2452,7 @@ export class SubscriberdialogueComponent implements OnInit, OnDestroy {
       retailerid: this.operatorId || 0,
       iscollected: this.iscollected,
       alacartelist: this.rows,
-      dueamt: this.changebase?.customerPayAmount,
+      dueamt: this.alacarteConfirmationData?.customerPayAmount,
       paidamount: this.paidamount || this.collectedPayAmount || 0,
       android_id: 0,
       device_id: 0,
@@ -2742,7 +2742,7 @@ export class SubscriberdialogueComponent implements OnInit, OnDestroy {
   // }
 
   setBillType(customerPayAmount: any, collectedPayAmount: any): void {
-    if (customerPayAmount === 0 && collectedPayAmount > 0) {
+    if (customerPayAmount  == collectedPayAmount ) {
       // Fully Paid
       this.billTypeValue = {
         bill_type: 1,
@@ -2751,7 +2751,7 @@ export class SubscriberdialogueComponent implements OnInit, OnDestroy {
     } else if (customerPayAmount > 0 && collectedPayAmount === 0) {
       // Unpaid
       this.billTypeValue = {
-        bill_type: 0,
+        bill_type: 2,
         description: 'Unpaid'
       };
     } else if (collectedPayAmount < customerPayAmount) {
@@ -2772,13 +2772,14 @@ export class SubscriberdialogueComponent implements OnInit, OnDestroy {
         bill_type: 1,
         description: 'Fully Paid'
       };
-    } else {
-      // Default fallback
-      this.billTypeValue = {
-        bill_type: 0,
-        description: 'Unknown'
-      };
-    }
+    } 
+    // else {
+    //   // Default fallback
+    //   this.billTypeValue = {
+    //     bill_type: 0,
+    //     description: 'Unknown'
+    //   };
+    // }
 
     console.log('Bill Type:', this.billTypeValue?.bill_type);
   }

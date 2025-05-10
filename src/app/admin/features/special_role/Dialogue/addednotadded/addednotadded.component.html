@@ -87,7 +87,6 @@
                     </div>
                 </div>
             </div>
-
         </div>
         <div class="col-12 d-flex justify-content-center align-item-center">
             <button type="button" class="btn" style="background:#058372;color: white;height: 2pc; width: 5pc"
@@ -165,7 +164,7 @@
                 <div class="card">
                     <div class="input_box">
                         <input type="text" placeholder="Search Added" [(ngModel)]="searchTermAdded"
-                            (input)="filterPermissionList()">
+                            (input)="filterPermissionList($event)">
                     </div>
                     <div class="table2 mb-3">
                         <p style="color: white;">ADDED - {{permissionList.length}}</p>

@@ -372,7 +372,9 @@ export class SubDashboardComponent implements OnInit {
       this.subChangeBase = this.Sublcopermissionlist.change_base;
       this.addsmartcard = this.Sublcopermissionlist.add_smartcard;
       this.sublcoInfo = this.Sublcopermissionlist.info;
+      this.wallet = this.Sublcopermissionlist.wallet;
 
+      console.log('wallet', this.wallet);
       console.log('subAddonAdd', this.subAddonAdd);
       console.log('ADD SMARTCARD', this.addsmartcard);
       console.log('PLAN', this.isplan);
@@ -381,6 +383,7 @@ export class SubDashboardComponent implements OnInit {
     })
   }
   sub_subscriberid: any;
+  wallet = false;
   getSubscriberDetails() {
     this.userservice.getSubscriberDetails(this.role, this.username).subscribe((data: any) => {
       console.log(data);
@@ -394,7 +397,8 @@ export class SubDashboardComponent implements OnInit {
       this.isdate = this.lcoDeatails.date;
       this.isdateTodate = this.lcoDeatails.datetodate;
       this.subBalance = this.lcoDeatails.balance;
-      this.base =  this.lcoDeatails.is_base;
+      this.base = this.lcoDeatails.is_base;
+
       console.log('BASE', this.base);
       console.log('PLAN', this.isplan);
       console.log('DATE', this.isdate);
@@ -2032,7 +2036,10 @@ export class SubDashboardComponent implements OnInit {
   billTypeValue: any;
 
   setBillType(customerPayAmount: any, collectedPayAmount: any): void {
-    if (customerPayAmount === 0 && collectedPayAmount > 0) {
+    console.log('collectedPayAmount', collectedPayAmount);
+    console.log('customerPayAmount', customerPayAmount);
+    this.cdr.detectChanges();
+    if (customerPayAmount == collectedPayAmount) {
       // Fully Paid
       this.billTypeValue = {
         bill_type: 1,
@@ -2041,7 +2048,7 @@ export class SubDashboardComponent implements OnInit {
     } else if (customerPayAmount > 0 && collectedPayAmount === 0) {
       // Unpaid
       this.billTypeValue = {
-        bill_type: 0,
+        bill_type: 2,
         description: 'Unpaid'
       };
     } else if (collectedPayAmount < customerPayAmount) {
@@ -2062,20 +2069,21 @@ export class SubDashboardComponent implements OnInit {
         bill_type: 1,
         description: 'Fully Paid'
       };
-    } else {
-      // Default fallback
-      this.billTypeValue = {
-        bill_type: 0,
-        description: 'Unknown'
-      };
     }
+    // else {
+    //   // Default fallback
+    //   this.billTypeValue = {
+    //     bill_type: 0,
+    //     description: 'Unknown'
+    //   };
+    // }
 
     console.log('Bill Type:', this.billTypeValue?.bill_type);
   }
 
   recharge() {
-    console.log('recharge     --------- 111111111111111111', this.rows)
-    console.log('recharge   ----------  222222222222222222222', this.rowData1)
+    console.log('row    recharge     --------- 111111111111111111', this.rows)
+    console.log('row    recharge   ----------  222222222222222222222', this.rowData1)
     this.confirmation = true;
     this.isConfirmationComplete = true;
     console.log(this.billTypeValue)
@@ -2087,8 +2095,8 @@ export class SubDashboardComponent implements OnInit {
       smartcard: this.subdetailsList.smartcard,
       type: 10,
       managepacklist: this.rowData1,
-      // selectedpacklist: this.rows,
-      selectedpacklist: this.rowData1,
+      selectedpacklist: this.rows,
+      // selectedpacklist: this.rowData1,
       retailerid: this.operatorId || this.retailerId || 0,
       iscollected: this.iscollected,
       comment: this.comment || '',
@@ -2134,8 +2142,8 @@ export class SubDashboardComponent implements OnInit {
   // }
   recharge1() {
 
-    console.log('recharge1     --------- 111111111111111111', this.rows)
-    console.log('recharge1   ----------  222222222222222222222', this.rowData1)
+    console.log('row11    recharge1     --------- 111111111111111111', this.rows)
+    console.log('row12    recharge1   ----------  222222222222222222222', this.rowData1)
     this.confirmation = true;
     this.isConfirmationComplete = true;
     let requestBody = {
@@ -2275,17 +2283,18 @@ export class SubDashboardComponent implements OnInit {
   }
   plandata: any;
   ManagePackageCalculation1() {
+    console.log('1111111111111111111111111111111111111111111111111111111111111111');
+
     // this.selectedRechargetype= '';
     this.plandata = '';
     // this.isRecharge = true;
     console.log('row', this.rowData1,);
+    console.log('row', this.rows,);
     console.log('plandata', this.plandata);
     console.log(this.f_date);
-
-
     this.plandata = this.plantype || this.f_date || 4
     console.log('plandata', this.plandata);
-    let requestBody = {
+    let requestBody = { 
       role: this.role,
       username: this.username,
       plantype: this.selectedRechargetype,
@@ -2398,7 +2407,7 @@ export class SubDashboardComponent implements OnInit {
       this.excessAmount = res?.balance;
       this.oldexcessAmount = res?.billbalance;
       this.customerPayAmount = res?.customerPayAmount;
-      
+
       this.setBillType(this.customerPayAmount, this.collectedPayAmount);
       console.log('11111', this.excessAmount);
       console.log('222222222', this.customerPayAmount);
@@ -2432,6 +2441,7 @@ export class SubDashboardComponent implements OnInit {
         dialogElement.scrollIntoView({ behavior: 'smooth', block: 'end' });
       }
     }, 100);
+    this.setBillType(this.customerPayAmount, this.collectedPayAmount);
     this.cdr.detectChanges();
   }
   onRechargeType1() {
@@ -2454,7 +2464,7 @@ export class SubDashboardComponent implements OnInit {
     console.log('oldexcess amount', this.oldexcessAmount);
     // this.newExcessAmount = this.oldexcessAmount - this.balanceamount;
     // if (this.oldexcessAmount < 0 && this.balanceamount < 0) {
-      this.newExcessAmount = this.oldexcessAmount + this.balanceamount;
+    this.newExcessAmount = this.oldexcessAmount + this.balanceamount;
     // } 
     // else {
     //   this.newExcessAmount = this.oldexcessAmount - this.balanceamount;
