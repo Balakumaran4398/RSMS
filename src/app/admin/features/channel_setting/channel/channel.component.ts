@@ -48,10 +48,10 @@ export class ChannelComponent {
         debounceMs: 200,
       },
     },
-    paginationPageSize: 15,
-    paginationPageSizeSelector: [10,20,50],
+    // paginationPageSize: 15,
+    // paginationPageSizeSelector: [10,20,50],
 
-    pagination: true,
+    // pagination: true,
   };
   gridApi: any;
   isAnyRowSelected: any = false;
@@ -108,9 +108,9 @@ export class ChannelComponent {
       console.log(data);
       this.rowData = data;
       const rowCount = this.rowData.length;
-      if (!this.gridOptions.paginationPageSizeSelector.includes(rowCount)) {
-        this.gridOptions.paginationPageSizeSelector.push(rowCount);
-      }
+      // if (!this.gridOptions.paginationPageSizeSelector.includes(rowCount)) {
+      //   this.gridOptions.paginationPageSizeSelector.push(rowCount);
+      // }
     });
   }
   getLCOChannelList(): void {
@@ -118,9 +118,9 @@ export class ChannelComponent {
       console.log(data);
       this.rowData = data;
       const rowCount = this.rowData.length;
-      if (!this.gridOptions.paginationPageSizeSelector.includes(rowCount)) {
-        this.gridOptions.paginationPageSizeSelector.push(rowCount);
-      }
+      // if (!this.gridOptions.paginationPageSizeSelector.includes(rowCount)) {
+      //   this.gridOptions.paginationPageSizeSelector.push(rowCount);
+      // }
     });
   }
 

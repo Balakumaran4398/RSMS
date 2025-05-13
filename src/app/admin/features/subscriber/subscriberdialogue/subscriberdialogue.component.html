@@ -1676,7 +1676,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="input_box  mb-3">
+                <!-- <div class="input_box  mb-3">
                     <div class="d-flex align-items-center justify-content-center">
                         <div class="col-6 col-md-6">
                             <span class="me-2">Customer Amount</span>
@@ -1696,7 +1696,34 @@
                             {{First_list?.msoAmount}}
                         </div>
                     </div>
+                </div> -->
+
+
+
+                <div *ngIf="(role =='ROLE_SUBLCO' && sublcoDiscount != 1 && !Subwallet) ||  (role !='ROLE_SUBLCO')"
+                    class="input_box  mb-3">
+                    <div class="d-flex align-items-center justify-content-center">
+                        <div class="col-6 col-md-6">
+                            <span class="me-2">Customer Amount</span>
+                        </div>
+                        <div class="col-6 col-md-6 value">
+                            {{First_list?.customerPayAmount}}
+                        </div>
+                    </div>
                 </div>
+                <div *ngIf="(role =='ROLE_SUBLCO' && sublcoDiscount == 1 && Subwallet) ||  (role !='ROLE_SUBLCO')"
+                    class="input_box  mb-3">
+                    <div class="d-flex align-items-center justify-content-center">
+                        <div class="col-6 col-md-6">
+                            <span class="me-2">MSO Amount</span>
+                        </div>
+                        <div class="col-6 col-md-6 value">
+                            {{First_list?.msoAmount}}
+                        </div>
+                    </div>
+                </div>
+
+
                 <div class="mb-3">
                     <div class="d-flex align-items-center justify-content-center">
                         <div class="input_box col-6 col-md-6">
@@ -1715,7 +1742,7 @@
                 </div>
                 <div *ngIf="role ==='ROLE_OPERATOR' ||  role ==='ROLE_SUBLCO'" class="input_box  mb-3">
                     <div class="d-flex align-items-center justify-content-center">
-                        <div class="col-6 col-md-4">
+                        <div class="col-6 col-md-6">
                             <span class="me-2">Enter Amount</span>
                         </div>
                         <div class="col-6 col-md-6 value">
@@ -1727,7 +1754,7 @@
 
                 <div *ngIf="role === 'ROLE_OPERATOR' ||  role === 'ROLE_SUBLCO'" class="input_box mb-3">
                     <div class="d-flex align-items-center justify-content-center">
-                        <div class="col-6 col-md-4">
+                        <div class="col-6 col-md-6">
                             <span for="commentInput" class="me-2">Comment</span>
                         </div>
                         <div class="col-6 col-md-6 value">
@@ -1887,7 +1914,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="input_box  mb-3">
+                <!-- <div class="input_box  mb-3">
                     <div class="d-flex align-items-center justify-content-center">
                         <div class="col-6 col-md-6">
                             <span class="me-2">Customer Amount</span>
@@ -1902,6 +1929,29 @@
                         class="d-flex align-items-center justify-content-center">
                         <div class="col-6 col-md-6">
                             <span class="me-2"> MSO Amount </span>
+                        </div>
+                        <div class="col-6 col-md-6 value">
+                            {{First_list?.msoAmount}}
+                        </div>
+                    </div>
+                </div> -->
+
+                <div *ngIf="(role =='ROLE_SUBLCO' && sublcoDiscount != 1 && !Subwallet) ||  (role !='ROLE_SUBLCO')"
+                    class="input_box  mb-3">
+                    <div class="d-flex align-items-center justify-content-center">
+                        <div class="col-6 col-md-6">
+                            <span class="me-2">Customer Amount</span>
+                        </div>
+                        <div class="col-6 col-md-6 value">
+                            {{First_list?.customerPayAmount}}
+                        </div>
+                    </div>
+                </div>
+                <div *ngIf="(role =='ROLE_SUBLCO' && sublcoDiscount == 1 && Subwallet) ||  (role !='ROLE_SUBLCO')"
+                    class="input_box  mb-3">
+                    <div class="d-flex align-items-center justify-content-center">
+                        <div class="col-6 col-md-6">
+                            <span class="me-2">MSO Amount</span>
                         </div>
                         <div class="col-6 col-md-6 value">
                             {{First_list?.msoAmount}}
@@ -2108,13 +2158,25 @@
                         </div>
                     </div>
                 </div>
-                <div class="input_box  mb-3">
+                <div *ngIf="(role =='ROLE_SUBLCO' && sublcoDiscount == 1 && Subwallet) ||  (role !='ROLE_SUBLCO')"
+                    class="input_box  mb-3">
                     <div class="d-flex align-items-center justify-content-center">
                         <div class="col-6 col-md-6">
-                            <span class="me-2">Debit from LCO</span>
+                            <span class="me-2">MSO Amount</span>
                         </div>
                         <div class="col-6 col-md-6 value">
                             {{changebase_msoAmount}}
+                        </div>
+                    </div>
+                </div>
+                <div *ngIf="(role =='ROLE_SUBLCO' && sublcoDiscount != 1 && !Subwallet) ||  (role !='ROLE_SUBLCO')"
+                    class="input_box  mb-3">
+                    <div class="d-flex align-items-center justify-content-center">
+                        <div class="col-6 col-md-6">
+                            <span class="me-2">Customer Amount</span>
+                        </div>
+                        <div class="col-6 col-md-6 value">
+                            {{customerPayAmount}}
                         </div>
                     </div>
                 </div>
@@ -2341,7 +2403,6 @@
 
             <div class="col-12 col-md-6 d-block justify-content-center align-item-center  mb-3">
                 <div *ngIf="addonconfirmation" class="card1 mx-2  mb-2" style="padding: 1rem;">
-
                     <div class="input_box  mb-1">
                         <div class="d-flex align-items-center justify-content-center">
                             <div class="col-5 col-md-6">
@@ -2353,25 +2414,47 @@
                         </div>
                     </div>
 
-                    <div class="input_box Isactive mb-1">
+                    <!-- <div class="input_box Isactive mb-1">
                         <div class="d-flex align-items-center justify-content-center">
                             <div class="col-5 col-md-6">
                                 <span class="me-2"> Customer Pay Amount </span>
                             </div>
                             <div class="col-7 col-md-6 value">
                                 {{addonConfirmationData.customerPayAmount}}
-
                             </div>
                         </div>
                     </div>
 
-                    <div *ngIf="role !='ROLE_SUBLCO' && role != 'ROLE_SUBSCRIBER' " class="input_box  mb-1">
+                    <div *ngIf="(role == 'ROLE_SUBLCO'  && Subwallet) ||  role !='ROLE_SUBLCO' && role != 'ROLE_SUBSCRIBER' "
+                        class="input_box  mb-1">
                         <div class="d-flex align-items-center justify-content-center">
                             <div class="col-5 col-md-6">
                                 <span for="password" class="me-2">Mso Amount for LCO </span>
                             </div>
                             <div class="col-7 col-md-6 value">
                                 {{addonConfirmationData.msoAmount}}
+                            </div>
+                        </div>
+                    </div> -->
+                    <div *ngIf="(role =='ROLE_SUBLCO' && sublcoDiscount == 1 && Subwallet) ||  (role !='ROLE_SUBLCO')"
+                        class="input_box  mb-3">
+                        <div class="d-flex align-items-center justify-content-center">
+                            <div class="col-6 col-md-6">
+                                <span class="me-2">MSO Amount</span>
+                            </div>
+                            <div class="col-6 col-md-6 value">
+                                {{addonConfirmationData.msoAmount}}
+                            </div>
+                        </div>
+                    </div>
+                    <div *ngIf="(role =='ROLE_SUBLCO' && sublcoDiscount != 1 && !Subwallet) ||  (role !='ROLE_SUBLCO')"
+                        class="input_box  mb-3">
+                        <div class="d-flex align-items-center justify-content-center">
+                            <div class="col-6 col-md-6">
+                                <span class="me-2">Customer Amount</span>
+                            </div>
+                            <div class="col-6 col-md-6 value">
+                                {{addonConfirmationData.customerPayAmount}}
                             </div>
                         </div>
                     </div>
@@ -2541,7 +2624,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="input_box Isactive mb-1">
+                    <!-- <div class="input_box Isactive mb-1">
                         <div class="d-flex align-items-center justify-content-center">
                             <div class="col-5 col-md-6">
                                 <span class="me-2"> Customer Pay Amount </span>
@@ -2551,7 +2634,8 @@
                             </div>
                         </div>
                     </div>
-                    <div *ngIf="role !='ROLE_SUBLCO' && role != 'ROLE_SUBSCRIBER' " class="input_box  mb-1">
+                    <div *ngIf="(role == 'ROLE_SUBLCO'  && Subwallet) || role !='ROLE_SUBLCO' && role != 'ROLE_SUBSCRIBER' "
+                        class="input_box  mb-1">
                         <div class="d-flex align-items-center justify-content-center">
                             <div class="col-5 col-md-6">
                                 <span for="password" class="me-2">Mso Amount for LCO </span>
@@ -2560,7 +2644,33 @@
                                 {{alacarteConfirmationData.msoAmount}}
                             </div>
                         </div>
+                    </div> -->
+
+
+                    <div *ngIf="(role =='ROLE_SUBLCO' && sublcoDiscount == 1 && Subwallet) ||  (role !='ROLE_SUBLCO')"
+                        class="input_box  mb-3">
+                        <div class="d-flex align-items-center justify-content-center">
+                            <div class="col-6 col-md-6">
+                                <span class="me-2">MSO Amount</span>
+                            </div>
+                            <div class="col-6 col-md-6 value">
+                                {{alacarteConfirmationData.msoAmount}}
+                            </div>
+                        </div>
                     </div>
+                    <div *ngIf="(role =='ROLE_SUBLCO' && sublcoDiscount != 1 && !Subwallet) ||  (role !='ROLE_SUBLCO')"
+                        class="input_box  mb-3">
+                        <div class="d-flex align-items-center justify-content-center">
+                            <div class="col-6 col-md-6">
+                                <span class="me-2">Customer Amount</span>
+                            </div>
+                            <div class="col-6 col-md-6 value">
+                                {{alacarteConfirmationData.customerPayAmount}}
+                            </div>
+                        </div>
+                    </div>
+
+
                     <div class="input_box Isactive mb-1">
                         <div class="d-flex align-items-center justify-content-center">
                             <div class="col-5 col-md-6">

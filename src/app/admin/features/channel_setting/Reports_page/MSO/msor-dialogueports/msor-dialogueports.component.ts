@@ -48,7 +48,7 @@ export class MsorDialogueportsComponent implements OnInit, OnDestroy {
       floatingFilter: true
     },
     paginationPageSize: 10,
-    paginationPageSizeSelector: [10, 20, 50],
+    paginationPageSizeSelector: [10, 20],
     pagination: true,
   }
 
@@ -724,10 +724,8 @@ export class MsorDialogueportsComponent implements OnInit, OnDestroy {
 
 
   onOnlineType(selectedValue: any) {
-
     this.selectedOnlineType = selectedValue;
     this.onlinePayment();
-
     if (selectedValue == 1) {
       this.rowData = [];
       this.isSmartcard = false;
@@ -960,7 +958,7 @@ export class MsorDialogueportsComponent implements OnInit, OnDestroy {
     } else if (this.type == 'recharge_deduction_including') {
       this.columnDefs = [
         { headerName: "S.No", lockPosition: true, valueGetter: 'node.rowIndex+1', headerCheckboxSelection: false, checkboxSelection: false, width: 70, filter: false },
-        { headerName: 'LCO ID', field: 'operatorid', width: 80 },
+        { headerName: 'LCO ID', field: 'operatorid', width: 120 },
         { headerName: 'LCO NAME', field: 'operatorname', width: 250 },
         { headerName: 'PAYMENT MODE', field: 'packagename', width: 230 },
         // { headerName: 'ORDER ID	', field: 'boxid', width: 150 },
@@ -1001,8 +999,8 @@ export class MsorDialogueportsComponent implements OnInit, OnDestroy {
     } else if (this.type == 'lco_active_subscription') {
       this.columnDefs = [
         { headerName: "S.No", lockPosition: true, valueGetter: 'node.rowIndex+1', headerCheckboxSelection: false, checkboxSelection: false, width: 90, filter: false },
-        { headerName: 'OPERATOR ID', field: 'operatorname', },
-        { headerName: 'OPERATOR NAME', field: 'operatorname', },
+        { headerName: 'OPERATOR ID', field: 'operatorname', cellStyle: { textAlign: 'left' }},
+        { headerName: 'OPERATOR NAME', field: 'operatorname', cellStyle: { textAlign: 'left' } },
         { headerName: 'MOBILE NUMBER', field: 'mobileno', cellStyle: { textAlign: 'center' }, },
         { headerName: 'AREA NAME', field: 'areaname', cellStyle: { textAlign: 'left', color: 'green' }, },
         { headerName: 'LCO INVENTORY', field: 'lcoend', cellStyle: { textAlign: 'center' } },

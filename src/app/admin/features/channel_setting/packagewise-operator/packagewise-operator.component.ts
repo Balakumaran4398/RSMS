@@ -280,8 +280,8 @@ export class PackagewiseOperatorComponent implements OnDestroy {
       this.selectedItems.add(item);
     }
   }
-
   isSelected(item: string): boolean {
+
     return this.selectedItems.has(item);
   }
 

@@ -47,9 +47,9 @@ export class PackageMasterComponent {
         debounceMs: 200,
       },
     },
-    paginationPageSize: 10,
-    paginationPageSizeSelector:[10,20,50],
-    pagination: true,
+    // paginationPageSize: 10,
+    // paginationPageSizeSelector:[10,20,50],
+    // pagination: true,
   };
   username: any;
   user_role: any;
@@ -108,9 +108,9 @@ export class PackageMasterComponent {
       this.updateColumnDefs(this.selectedTab);
       this.rowData = data;
       const rowCount = this.rowData.length;
-      if (!this.gridOptions.paginationPageSizeSelector.includes(rowCount)) {
-        this.gridOptions.paginationPageSizeSelector.push(rowCount);
-      }
+      // if (!this.gridOptions.paginationPageSizeSelector.includes(rowCount)) {
+      //   this.gridOptions.paginationPageSizeSelector.push(rowCount);
+      // }
     });
 
   }

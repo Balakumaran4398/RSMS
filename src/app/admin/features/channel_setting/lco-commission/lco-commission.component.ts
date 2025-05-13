@@ -74,9 +74,9 @@ export class LcoCommissionComponent {
         debounceMs: 200,
       },
     },
-    paginationPageSize: 10,
-    paginationPageSizeSelector:[10,20,50],
-    pagination: true,
+    // paginationPageSize: 10,
+    // paginationPageSizeSelector:[10,20,50],
+    // pagination: true,
   };
   @ViewChild('agGrid') agGrid: any;
   constructor(public dialog: MatDialog, private userservice: BaseService, private storageservice: StorageService, private cdr: ChangeDetectorRef, private swal: SwalService) {
@@ -223,7 +223,7 @@ export class LcoCommissionComponent {
         },
         { headerName: "PRODUCT NAME", field: 'productname', width: 200, cellStyle: { textAlign: 'left' }, },
         { headerName: "PRODUCT ID", field: 'productid', width: 130 },
-        { headerName: "PRODUCT TYPE", field: 'producttype', width: 140 },
+        { headerName: "PRODUCT TYPE", field: 'productTypeDisplay', width: 140 },
         {
           headerName: "PRODUCT RATE", field: 'rate', width: 140,
           cellRenderer: (params: any) => `<span >${params.value ? params.value.toFixed(2) : '0.00'}</span> `
@@ -527,9 +527,9 @@ export class LcoCommissionComponent {
           if (response.status === 200) {
             this.rowData = response.body;
             const rowCount = this.rowData.length;
-            if (!this.gridOptions.paginationPageSizeSelector.includes(rowCount)) {
-              this.gridOptions.paginationPageSizeSelector.push(rowCount);
-            }
+            // if (!this.gridOptions.paginationPageSizeSelector.includes(rowCount)) {
+            //   this.gridOptions.paginationPageSizeSelector.push(rowCount);
+            // }
             // this.lcomembershipid = '';
             // this.selectedOperator = '';
           } else if (response.status === 204) {
@@ -552,9 +552,9 @@ export class LcoCommissionComponent {
             if (response.status === 200) {
               this.rowData = response.body;
               const rowCount = this.rowData.length;
-              if (!this.gridOptions.paginationPageSizeSelector.includes(rowCount)) {
-                this.gridOptions.paginationPageSizeSelector.push(rowCount);
-              }
+              // if (!this.gridOptions.paginationPageSizeSelector.includes(rowCount)) {
+              //   this.gridOptions.paginationPageSizeSelector.push(rowCount);
+              // }
             } else if (response.status === 204) {
               // this.swal.Success_204();
             }
@@ -582,9 +582,9 @@ export class LcoCommissionComponent {
         if (response.status === 200) {
           this.rowData2 = response.body;
           const rowCount = this.rowData2.length;
-          if (!this.gridOptions.paginationPageSizeSelector.includes(rowCount)) {
-            this.gridOptions.paginationPageSizeSelector.push(rowCount);
-          }
+          // if (!this.gridOptions.paginationPageSizeSelector.includes(rowCount)) {
+          //   this.gridOptions.paginationPageSizeSelector.push(rowCount);
+          // }
           // this.swal.Success_200();
           // this.lcomembershipid='';
         } else if (response.status === 204) {
@@ -615,9 +615,9 @@ export class LcoCommissionComponent {
           
           console.log(response);
           const rowCount = this.rowData2.length;
-          if (!this.gridOptions.paginationPageSizeSelector.includes(rowCount)) {
-            this.gridOptions.paginationPageSizeSelector.push(rowCount);
-          }
+          // if (!this.gridOptions.paginationPageSizeSelector.includes(rowCount)) {
+          //   this.gridOptions.paginationPageSizeSelector.push(rowCount);
+          // }
             } else if (response.status === 204) {
           this.rowData2 = [];
         }
@@ -637,17 +637,17 @@ export class LcoCommissionComponent {
       this.userservice.getLcoGroupDetails(this.role, this.username).subscribe((data: any) => {
         this.rowData1 = data;
         const rowCount = this.rowData1.length;
-        if (!this.gridOptions.paginationPageSizeSelector.includes(rowCount)) {
-          this.gridOptions.paginationPageSizeSelector.push(rowCount);
-        }
+        // if (!this.gridOptions.paginationPageSizeSelector.includes(rowCount)) {
+        //   this.gridOptions.paginationPageSizeSelector.push(rowCount);
+        // }
       })
     } else if (this.selectedTab == 'dis_membership') {
       this.userservice.GetDistributorGroupDetails(this.role, this.username).subscribe((data: any) => {
         this.rowData1 = data;
         const rowCount = this.rowData1.length;
-        if (!this.gridOptions.paginationPageSizeSelector.includes(rowCount)) {
-          this.gridOptions.paginationPageSizeSelector.push(rowCount);
-        }
+        // if (!this.gridOptions.paginationPageSizeSelector.includes(rowCount)) {
+        //   this.gridOptions.paginationPageSizeSelector.push(rowCount);
+        // }
       })
     }
 
@@ -660,9 +660,9 @@ export class LcoCommissionComponent {
           if (response.status === 200) {
             this.rowData3 = response.body;
             const rowCount = this.rowData3.length;
-            if (!this.gridOptions.paginationPageSizeSelector.includes(rowCount)) {
-              this.gridOptions.paginationPageSizeSelector.push(rowCount);
-            }
+            // if (!this.gridOptions.paginationPageSizeSelector.includes(rowCount)) {
+            //   this.gridOptions.paginationPageSizeSelector.push(rowCount);
+            // }
        
           } else if (response.status === 204) {
             this.rowData3 = [];

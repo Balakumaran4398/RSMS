@@ -41,9 +41,9 @@ export class AddonPackageComponent {
         debounceMs: 200,
       },
     },
-    paginationPageSize: 15,
-    paginationPageSizeSelector: [10, 20, 50],
-    pagination: true,
+    // paginationPageSize: 15,
+    // paginationPageSizeSelector: [10, 20, 50],
+    // pagination: true,
   };
   username: any;
   role: any;
@@ -64,9 +64,9 @@ export class AddonPackageComponent {
       console.log(data);
       this.rowData = data;
       const rowCount = this.rowData.length;
-      if (!this.gridOptions.paginationPageSizeSelector.includes(rowCount)) {
-        this.gridOptions.paginationPageSizeSelector.push(rowCount);
-      }
+      // if (!this.gridOptions.paginationPageSizeSelector.includes(rowCount)) {
+      //   this.gridOptions.paginationPageSizeSelector.push(rowCount);
+      // }
     })
     if (this.role == 'ROLE_OPERATOR') {
       this.operatorIdoperatorId();
@@ -88,9 +88,9 @@ export class AddonPackageComponent {
       console.log(data);
       this.rowData1 = data;
       const rowCount = this.rowData1.length;
-      if (!this.gridOptions.paginationPageSizeSelector.includes(rowCount)) {
-        this.gridOptions.paginationPageSizeSelector.push(rowCount);
-      }
+      // if (!this.gridOptions.paginationPageSizeSelector.includes(rowCount)) {
+      //   this.gridOptions.paginationPageSizeSelector.push(rowCount);
+      // }
       console.log(this.rowData1);
 
     })

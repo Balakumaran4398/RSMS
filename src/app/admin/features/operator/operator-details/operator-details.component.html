@@ -18,8 +18,8 @@
         <!-- style="background-color: #0c5e85;color: white;" -->
         <div class="d-flex justify-content-center mb-2" style="align-items: baseline;">
             <button class="btn btn-outline-info mx-1 bttn" mat-raised-button color="custom-select"
-                style="background-color: var(--primary-color);color: white;" type="button" (click)="New_lco('new_lco')"> <i
-                    class="fa fa-plus mx-2" style="padding-right: 1px;font-size: 14px"></i>
+                style="background-color: var(--primary-color);color: white;" type="button" (click)="New_lco('new_lco')">
+                <i class="fa fa-plus mx-2" style="padding-right: 1px;font-size: 14px"></i>
                 NEW LCO
             </button>
         </div>
@@ -40,7 +40,10 @@
                         <div class="sub-tittle mb-3 col-md-10" style="text-align: left;font-weight: bold;">
                             {{operator?.operatorname || 'empty'}} <span
                                 style="color: rgb(1, 1, 14);font-weight: bold;">[{{operator?.operatorid}}]</span> -
-                            <span style="color: var(--oper-grid-amount);">[{{operator?.balance}}]</span>
+
+                            <span style="color: var(--oper-grid-amount);font-weight: bold;">
+                                [<i class="fa-solid fa-indian-rupee-sign rupee "
+                                    style="font-size: 18px;color:#b00b7e"></i> {{operator?.balance}}]</span>
                         </div>
                         <div class="sub-tittle mb-3 col-md-10" style="text-align: left;color: rgb(26, 23, 23);">
                             Phone: <span style="color: rgb(19, 4, 104);">{{operator?.contactnumber1 ||

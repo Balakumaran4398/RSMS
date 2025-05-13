@@ -634,6 +634,10 @@ export class SubscriberdialogueComponent implements OnInit, OnDestroy {
       this.isplan = this.SublcopermissionObj.plan;
       this.isdate = this.SublcopermissionObj.date;
       this.isdateTodate = this.SublcopermissionObj.datetodate;
+
+
+
+      console.log('Subwallet', this.Subwallet);
       console.log('PLAN', this.isplan);
       console.log('DATE', this.isdate);
       console.log('DATE TO DATE', this.isdateTodate);
@@ -1898,7 +1902,7 @@ export class SubscriberdialogueComponent implements OnInit, OnDestroy {
     this.removeProductConfirmation();
   }
 
-  
+
   ActivationOfCard() {
     let requestBody = {
       packageid: this.newpackagename,
@@ -1948,7 +1952,7 @@ export class SubscriberdialogueComponent implements OnInit, OnDestroy {
       });
   }
 
-
+  customerAmount: any;
   baseChangeofSmartcardPackage() {
     this.isActive = true;
     let plan = this.selectedRechargetype || ''
@@ -1958,9 +1962,10 @@ export class SubscriberdialogueComponent implements OnInit, OnDestroy {
       .subscribe((data: any) => {
         this.changebase = data;
         this.changebase_msoAmount = data.msoAmount;
+        // this.customerPayAmount = data.msoAmount;
         this.changebase_totalRefundToLco = data.totalRefundToLco;
         this.changebase_expiryDate = data.expiryDate;
-
+        this.customerAmount =this.changebase?.customerPayAmount
         this.customerPayAmount = this.changebase?.customerPayAmount;
         this.excessAmount = this.changebase?.balance;
         this.oldexcessAmount = this.changebase?.billbalance;
@@ -2615,7 +2620,7 @@ export class SubscriberdialogueComponent implements OnInit, OnDestroy {
     })
 
 
-    
+
 
   }
 
@@ -2742,7 +2747,7 @@ export class SubscriberdialogueComponent implements OnInit, OnDestroy {
   // }
 
   setBillType(customerPayAmount: any, collectedPayAmount: any): void {
-    if (customerPayAmount  == collectedPayAmount ) {
+    if (customerPayAmount == collectedPayAmount) {
       // Fully Paid
       this.billTypeValue = {
         bill_type: 1,
@@ -2772,7 +2777,7 @@ export class SubscriberdialogueComponent implements OnInit, OnDestroy {
         bill_type: 1,
         description: 'Fully Paid'
       };
-    } 
+    }
     // else {
     //   // Default fallback
     //   this.billTypeValue = {

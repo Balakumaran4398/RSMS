@@ -2095,8 +2095,8 @@ export class SubDashboardComponent implements OnInit {
       smartcard: this.subdetailsList.smartcard,
       type: 10,
       managepacklist: this.rowData1,
-      selectedpacklist: this.rows,
-      // selectedpacklist: this.rowData1,
+      // selectedpacklist: this.rows,
+      selectedpacklist: this.rowData1,
       retailerid: this.operatorId || this.retailerId || 0,
       iscollected: this.iscollected,
       comment: this.comment || '',
@@ -2432,6 +2432,7 @@ export class SubDashboardComponent implements OnInit {
   }
 
   onRechargeType() {
+    
     this.rechargeTypeDialog = true;
     console.log('scroll--11');
 
