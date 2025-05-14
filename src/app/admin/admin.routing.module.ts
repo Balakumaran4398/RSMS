@@ -109,6 +109,8 @@ import { DiscountsmartcardComponent } from './features/operator_Login/Dialog/dis
 import { LcoDummycmpComponent } from './features/operator_Login/lco-dummycmp/lco-dummycmp.component';
 import { LcodashboardsublcoreportComponent } from './features/operator_Login/lcodashboardsublcoreport/lcodashboardsublcoreport.component';
 import { LcocommisiomddiscountComponent } from './features/channel_setting/lcocommisiomddiscount/lcocommisiomddiscount.component';
+import { LogincredentialComponent } from './features/special_role/logincredential/logincredential.component';
+import { LcocommissioncredentialComponent } from './features/channel_setting/lcocommissioncredential/lcocommissioncredential.component';
 
 
 const routes: Routes = [
@@ -137,6 +139,7 @@ const routes: Routes = [
       { path: 'Channeltype', component: ChannelTypeComponent, },
       { path: 'Distributer', component: DistributorMasterComponent, },
       { path: 'LcoCommission', component: LcoCommissionComponent, },
+      { path: 'LcoCommission_credential', component: LcocommissioncredentialComponent, },
       { path: 'PackageCreation', component: PackageCreationComponent, },
       { path: 'PackageMaster', component: PackageMasterComponent, },
       { path: 'packagemanage/:id', component: PackageManageComponent, },
@@ -204,6 +207,7 @@ const routes: Routes = [
       { path: 'tax', component: TaxComponent },
       { path: 'proof', component: ProofComponent },
       { path: 'loginsettings', component: LoginsettingsComponent },
+      { path: 'loginsettings_credential', component: LogincredentialComponent },
       // { path: 'loginsettings', component: ServiceComponent },
       { path: 'special_bulk_package', component: SpecialBulkpackageComponent },
       { path: 'special_area_package', component: SpecialareachangeComponent },
@@ -235,7 +239,7 @@ const routes: Routes = [
       { path: 'distributor_setting', component: DistributorsettingComponent },
       { path: 'bill_collection', component: BillcollectionComponent },
       { path: 'lco_dashboard/:smartcard/:status', component: LcoSmartcardDialogComponent },
-      { path: 'lcowallet_share', component: LcowalletshareComponent },  
+      { path: 'lcowallet_share', component: LcowalletshareComponent },
       { path: 'smrt_boxid_change', component: SmrtBoxidChangeComponent },
       { path: 'lco_dashboard_report/:id', component: LcodashboardreportComponent },
       { path: 'sublco_dashboard_report/:id/:userid/:retailerid', component: LcodashboardsublcoreportComponent },

@@ -738,3 +738,70 @@
         </div>
     </div>
 </div>
+<div *ngIf="allType== '15'">
+    <h3>Channel Ageing Report</h3>
+    <div class="row " style="padding: 1rem;">
+        <div class="row d-flex align-items-center justify-content-center">
+            <div class="col-12 col-sm-12 m-3">
+                <div class="col d-flex justify-content-between align-items-end mb-3">
+                    <div>
+                        <button type="button" class="btn btn-primary bttn" (click)="goBack()"><i
+                                class="fa-solid fa-reply mx-2"></i>Back</button>
+                    </div>
+                    <div>
+                        <!-- <a class="btn btn-success mx-1 bttn" (click)="getChannelAgeing()">
+                            Get Report
+                        </a> -->
+                        <button class="btn btn-outline-info mx-1 bttn" mat-raised-button color="primary" type="button"
+                            (click)="getChannelAgeingReport(2)">
+                            Excel
+                        </button>
+                        <button class="btn btn-outline-info mx-1 bttn" mat-raised-button color="accent" type="button"
+                            (click)="getChannelAgeingReport(1)">
+                            PDF
+                        </button>
+                    </div>
+                </div>
+          
+                <ag-grid-angular #agGrid id="myGrid" domLayout='normal' class="ag-theme-alpine table-class" rowAnimation
+                    [gridOptions]="gridOptions" [columnDefs]="columnDefs" [rowData]="rowData"
+                    (gridReady)="onGridReady($event)" [enableCellTextSelection]="true">
+                </ag-grid-angular>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div *ngIf="allType== '16'">
+    <h3>Package Ageing Report</h3>
+    <div class="row " style="padding: 1rem;">
+        <div class="row d-flex align-items-center justify-content-center">
+            <div class="col-12 col-sm-12 m-3">
+                <div class="col d-flex justify-content-between align-items-end mb-3">
+                    <div>
+                        <button type="button" class="btn btn-primary bttn" (click)="goBack()"><i
+                                class="fa-solid fa-reply mx-2"></i>Back</button>
+                    </div>
+                    <div>
+                        <!-- <a class="btn btn-success mx-1 bttn" (click)="getPackageAgeing()">
+                            Get Report
+                        </a> -->
+                        <button class="btn btn-outline-info mx-1 bttn" mat-raised-button color="primary" type="button"
+                            (click)="getPackageAgeingReport(2)">
+                            Excel
+                        </button>
+                        <button class="btn btn-outline-info mx-1 bttn" mat-raised-button color="accent" type="button"
+                            (click)="getPackageAgeingReport(1)">
+                            PDF
+                        </button>
+                    </div>
+                </div>
+       
+                <ag-grid-angular #agGrid id="myGrid" domLayout='normal' class="ag-theme-alpine table-class" rowAnimation
+                    [gridOptions]="gridOptions" [columnDefs]="columnDefs" [rowData]="rowData"
+                    (gridReady)="onGridReady($event)" [enableCellTextSelection]="true">
+                </ag-grid-angular>
+            </div>
+        </div>
+    </div>
+</div>

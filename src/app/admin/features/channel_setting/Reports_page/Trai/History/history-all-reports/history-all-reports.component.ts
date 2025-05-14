@@ -269,6 +269,42 @@ export class HistoryAllReportsComponent implements OnInit {
         { headerName: 'CAS', field: 'casname', width: 150 },
         { headerName: 'PACKAGE', field: 'productname', width: 300 },
       ]
+    } else if (this.allType == '15') {
+      this.columnDefs = [
+        { headerName: "S.No", lockPosition: true, valueGetter: 'node.rowIndex+1', headerCheckboxSelection: false, checkboxSelection: false, width: 90 },
+        { headerName: 'PRODUCT ID	', field: 'packageid', width: 150 },
+        { headerName: 'PRODUCT NAME	', field: 'packagename', width: 200 },
+        { headerName: 'CAS	', field: 'packagetypedisplay', width: 150 },
+        { headerName: '0-30', field: 'type', width: 200 },
+        { headerName: '31-60', field: 'producttype', width: 150 },
+        { headerName: '61-90', field: 'oldreferencename', width: 200 },
+        { headerName: '91-120', field: 'newreferencename', width: 200 },
+        { headerName: '121-150', field: 'logdate', width: 200 },
+        { headerName: '151-180', field: 'logdate', width: 200 },
+        { headerName: '181-210', field: 'logdate', width: 200 },
+        { headerName: '211-240', field: 'logdate', width: 200 },
+        { headerName: '241-270', field: 'logdate', width: 200 },
+        { headerName: '271-300', field: 'logdate', width: 200 },
+        { headerName: '301-365', field: 'logdate', width: 200 },
+      ]
+    } else if (this.allType == '16') {
+      this.columnDefs = [
+        { headerName: "S.No", lockPosition: true, valueGetter: 'node.rowIndex+1', headerCheckboxSelection: false, checkboxSelection: false, width: 90 },
+        { headerName: 'PRODUCT ID	', field: 'packageid', width: 150 },
+        { headerName: 'PRODUCT NAME	', field: 'packagename', width: 200 },
+        { headerName: 'CAS	', field: 'packagetypedisplay', width: 150 },
+        { headerName: '0-30', field: 'type', width: 200 },
+        { headerName: '31-60', field: 'producttype', width: 150 },
+        { headerName: '61-90', field: 'oldreferencename', width: 200 },
+        { headerName: '91-120', field: 'newreferencename', width: 200 },
+        { headerName: '121-150', field: 'logdate', width: 200 },
+        { headerName: '151-180', field: 'logdate', width: 200 },
+        { headerName: '181-210', field: 'logdate', width: 200 },
+        { headerName: '211-240', field: 'logdate', width: 200 },
+        { headerName: '241-270', field: 'logdate', width: 200 },
+        { headerName: '271-300', field: 'logdate', width: 200 },
+        { headerName: '301-365', field: 'logdate', width: 200 },
+      ]
     }
     else {
       console.warn('Unknown allType:', this.allType);
@@ -1631,5 +1667,81 @@ export class HistoryAllReportsComponent implements OnInit {
             this.pdfswalError(error?.error.message || error?.error);
           });
     }
+  }
+  // -------------------------------Channel Ageing--------------------
+  getChannelAgeing() {
+    this.swal.Loading();
+    this.userService.getChannelAgeing(this.role, this.username, 2, 3)
+      .subscribe(
+        (response: HttpResponse<any[]>) => {
+          console.log(this.reportTitle);
+          if (response.status === 200) {
+            this.rowData = response.body;
+            const rowCount = this.rowData.length;
+            if (!this.gridOptions.paginationPageSizeSelector.includes(rowCount)) {
+              this.gridOptions.paginationPageSizeSelector.push(rowCount);
+            }
+            this.swal.Close();
+          } else if (response.status === 204) {
+            this.swal.Success_204();
+            this.rowData = [];
+            this.swal.Close();
+          }
+        },
+        (error) => {
+          this.handleApiError(error);
+        }
+      );
+  }
+  getChannelAgeingReport(type: number) {
+    this.userService.getChannelAgeingReport(this.role, this.username, 2, type)
+      .subscribe((x: Blob) => {
+        if (type == 1) {
+          this.reportMaking(x, `${this.reportTitle} ].pdf`.toUpperCase(), "application/pdf");
+        } else if (type == 2) {
+          this.reportMaking(x, `${this.reportTitle} ].xlsx`.toUpperCase(), "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
+        }
+      },
+        (error: any) => {
+          this.pdfswalError(error?.error.message);
+        });
+  }
+  // -------------------------------Package Ageing--------------------
+  getPackageAgeing() {
+    this.swal.Loading();
+    this.userService.getPackageAgeing(this.role, this.username, 1, 3)
+      .subscribe(
+        (response: HttpResponse<any[]>) => {
+          console.log(this.reportTitle);
+          if (response.status === 200) {
+            this.rowData = response.body;
+            const rowCount = this.rowData.length;
+            if (!this.gridOptions.paginationPageSizeSelector.includes(rowCount)) {
+              this.gridOptions.paginationPageSizeSelector.push(rowCount);
+            }
+            this.swal.Close();
+          } else if (response.status === 204) {
+            this.swal.Success_204();
+            this.rowData = [];
+            this.swal.Close();
+          }
+        },
+        (error) => {
+          this.handleApiError(error);
+        }
+      );
+  }
+  getPackageAgeingReport(type: number) {
+    this.userService.getPackageAgeingReport(this.role, this.username, 1, type)
+      .subscribe((x: Blob) => {
+        if (type == 1) {
+          this.reportMaking(x, `${this.reportTitle} ].pdf`.toUpperCase(), "application/pdf");
+        } else if (type == 2) {
+          this.reportMaking(x, `${this.reportTitle} ].xlsx`.toUpperCase(), "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
+        }
+      },
+        (error: any) => {
+          this.pdfswalError(error?.error.message);
+        });
   }
 }

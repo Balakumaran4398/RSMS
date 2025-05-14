@@ -147,7 +147,10 @@
                 <li><a (click)="navgetToUrl('/PackageMaster')" (click)="setActiveLinkTab($event)"><i
                             class="fa fa-fw fa-cubes icon ">&nbsp;</i>Package
                         Master </a></li>
-                <li><a (click)="navgetToUrl('/LcoCommission');setActiveLinkTab($event)"><i
+                <!-- <li><a (click)="navgetToUrl('/LcoCommission');setActiveLinkTab($event)"><i
+                            class="fa fa-fw fa-th-large icon ">&nbsp;</i>Lco
+                        Commission </a></li> -->
+                       <li><a (click)="navgetToUrl('/LcoCommission_credential');setActiveLinkTab($event)"><i
                             class="fa fa-fw fa-th-large icon ">&nbsp;</i>Lco
                         Commission </a></li>
                 <li><a (click)="navgetToUrl('/lcoCommissionDashboard');setActiveLinkTab($event)" class="nav-link">
@@ -315,9 +318,11 @@
         <li *ngIf="isSpecial ">
             <a> <i class="bx bx-cog bx-sm icon "></i> Settings <i class='bx bx-chevron-right icon-right'></i></a>
             <ul class="side-dropdown">
-                <li><a (click)="navgetToUrl('/loginsettings')" (click)="setActiveLinkTab($event)"> <i
-                            class='fa fa-fw fa-users  icon'></i> &nbsp; Login
-                        Settings</a></li>
+                <!-- <li><a (click)="navgetToUrl('/loginsettings')" (click)="setActiveLinkTab($event)"> <i
+                            class='fa fa-fw fa-users  icon'></i> &nbsp; Login Settings</a></li> -->
+
+                <li><a (click)="navgetToUrl('/loginsettings_credential')" (click)="setActiveLinkTab($event)"> <i
+                            class='fa fa-fw fa-users  icon'></i> &nbsp; Login Settings</a></li>
             </ul>
         </li>
         <li class="mb-3" *ngIf="isSpecial ">

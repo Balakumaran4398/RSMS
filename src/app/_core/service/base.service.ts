@@ -1648,6 +1648,21 @@ export class BaseService {
   getBlockSmartcardPDFReport(role: any, username: any, reporttype: any): Observable<Blob> {
     return this.http.get(BASE_URL + "/report/GetBlockSmartcardReport?role=" + role + "&username=" + encodeURIComponent(username) + "&reporttype=" + reporttype, { responseType: 'blob' });
   }
+    // -----------------------------------------Channel Ageing-----------------------------------
+    getChannelAgeing(role: any, username: any, type: any, reporttype: any): Observable<HttpResponse<any[]>> {
+      return this.http.get<any[]>(BASE_URL + "/report/AgeingReport?role=" + role + "&username=" + encodeURIComponent(username) + "&type=" + type + "&reporttype=" + reporttype, { observe: 'response' });
+    }
+    getChannelAgeingReport(role: any, username: any, type: any, reporttype: any): Observable<Blob> {
+      return this.http.get(BASE_URL + "/report/AgeingReport?role=" + role + "&username=" + encodeURIComponent(username) + "&type=" + type + "&reporttype=" + reporttype, { responseType: 'blob' });
+    }
+    // ----------------------------------------Package Ageing------------------------------------
+    getPackageAgeing(role: any, username: any, type: any, reporttype: any): Observable<HttpResponse<any[]>> {
+      return this.http.get<any[]>(BASE_URL + "/report/AgeingReport?role=" + role + "&username=" + encodeURIComponent(username) + "&type=" + type + "&reporttype=" + reporttype, { observe: 'response' });
+    }
+    getPackageAgeingReport(role: any, username: any, type: any, reporttype: any): Observable<Blob> {
+      return this.http.get(BASE_URL + "/report/AgeingReport?role=" + role + "&username=" + encodeURIComponent(username) + "&type=" + type + "&reporttype=" + reporttype, { responseType: 'blob' });
+    }
+    // 
   // ======================================CAS OPERATION================
   // -----------------------------------------------scroll------------------------------------------
   getScrollHistoryExcelReport(role: any, username: any, fromdate: any, todate: any, reporttype: any): Observable<HttpResponse<any[]>> {
@@ -2341,7 +2356,7 @@ export class BaseService {
     return this.http.get<any>(BASE_URL + "/report/getcomboPackageUpdateHistoryReport?role=" + role + "&username=" + username + "&fromdate=" + fromdate + "&todate=" + todate + "&packageid=" + packageid + "&reporttype=" + reporttype + "&packagetype=" + packagetype,)
   }
     // ----------------------------------------------------Addon list --------------------------------
-    getpackageListforReport(role: any, username: any): Observable<any[]> {
+      getpackageListforReport(role: any, username: any): Observable<any[]> {
       return this.http.get<any[]>(BASE_URL + "/report/getpackageListforReport?role=" + role + "&username=" + encodeURIComponent(username),)
     }
     // ----------------------------------------------------package list --------------------------------

@@ -31,46 +31,10 @@ export class InventoryChartComponent implements OnInit {
     });
   }
 
-  // updateChartData(apiData: any): void {
-  //   const dataPoints = [
-  //     { name: "New box in LCO End", y: apiData["New box in LCO End"], color: " #33a5d6" },
-  //     { name: "New box in MSO Hand", y: apiData["New box in MSO Hand"], color: "#77edd0" },
-  //     { name: "New in Customer End", y: apiData["New in Customer End"], color: "#20c931" }
-  //   ];
-
-  //   this.chartOptions = {
-  //     animationEnabled: true,
-  //     theme: 'light2',
-  //     title: {
-  //       text: "INVENTORY DETAILS",
-  //       fontSize: 20,
-  //       fontWeight: 600
-  //     },
-  //     data: [{
-  //       type: "pie",
-  //       dataPoints: dataPoints,
-  //       showInLegend: true,
-  //     }]
-  //   };
-  //   this.renderChart();  
-  // }
-
-  // renderChart(): void {
-  //   this.chart = new CanvasJS.Chart("inventarychartContainer", this.chartOptions);
-  //   this.chart.render();
-  // }
+  
 
   updateChartData(apiData: any): void {
     this.dataPoints = [
-      // { name: "New box in MSO Hand", y: apiData["New box in MSO Hand"], color: "#2971cf", click: () => this.navigateToPage('BOX IN MSO HAND') },
-      // { name: "New box in LCO End", y: apiData["New box in LCO End"], color: "#f4a261", click: () => this.navigateToPage('BOX IN LCO HAND') },
-      // { name: "New in Customer End", y: apiData["New in Customer End"], color: "#3ebfd6", click: () => this.navigateToPage('BOX IN CUSTOMER HAND') },
-
-      // { name: "New box in MSO Hand", y: apiData["New box in MSO Hand"], color: "#8686AC",click: () => this.navigateToPage('BOX IN MSO HAND') },
-      // { name: "New box in LCO End", y: apiData["New box in LCO End"], color: "#505081",click: () => this.navigateToPage('BOX IN LCO HAND') },
-      // { name: "New in Customer End", y: apiData["New in Customer End"], color: "#0F0E47",click: () => this.navigateToPage('BOX IN CUSTOMER HAND') },
-
-
       { name: "New box in MSO Hand", y: apiData["New box in MSO Hand"], color: "#77edd0",click: () => this.navigateToPage('BOX IN MSO HAND') },
       { name: "New box in LCO End", y: apiData["New box in LCO End"], color: "#33a5d6",click: () => this.navigateToPage('BOX IN LCO HAND') },
       { name: "New in Customer End", y: apiData["New in Customer End"], color: "#3bada6",click: () => this.navigateToPage('BOX IN CUSTOMER HAND') }
@@ -102,6 +66,7 @@ export class InventoryChartComponent implements OnInit {
     this.renderChart();
   }
 
+  
   renderChart(): void {
     this.chart = new CanvasJS.Chart("inventarychartContainer", this.chartOptions);
     this.chart.render();

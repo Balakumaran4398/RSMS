@@ -36,32 +36,7 @@ export class PackageChartComponent implements OnInit {
 
   updateChartData(apiData: any): void {
     const dataPoints = [
-
-      // { name: "Base Package", y: apiData["Base Package"] || 0, color: "#2971cf", click: () => this.navigateToPage('BASE PACKAGE') },
-      // { name: "Addon Package", y: apiData["Addon Package"] || 0, color: "#48c150", click: () => this.navigateToPage('ADDON PACKAGE') },
-      // { name: "Pay Channels", y: apiData["Pay Channels"] || 0, color: "#f4a261", click: () => this.navigateToPage('PAYCHANNEL') },
-      // { name: "FTA Channels", y: apiData["FTA Channels"] || 0, color: "#C6C6C6", click: () => this.navigateToPage('FTA CHANNEL') },
-
-
-      // { name: "Base Package", y: apiData["Base Package"] || 0, color: "#bdbfbf", click: () => this.navigateToPage('BASE PACKAGE') },
-      // { name: "Addon Package", y: apiData["Addon Package"] || 0, color: "#de811d", click: () => this.navigateToPage('ADDON PACKAGE') },
-      // { name: "Pay Channels", y: apiData["Pay Channels"] || 0, color: "#2971cf", click: () => this.navigateToPage('PAYCHANNEL') },
-      // { name: "FTA Channels", y: apiData["FTA Channels"] || 0, color: "#3cb051", click: () => this.navigateToPage('FTA CHANNEL') },
-      
-
-      // { name: "Base Package", y: apiData["Base Package"] || 0, color: "#CBBD93", click: () => this.navigateToPage('BASE PACKAGE') },
-      // { name: "Addon Package", y: apiData["Addon Package"] || 0, color: "#FAE8B4", click: () => this.navigateToPage('ADDON PACKAGE') },
-      // { name: "Pay Channels", y: apiData["Pay Channels"] || 0, color: "#80775C", click: () => this.navigateToPage('PAYCHANNEL') },
-      // { name: "FTA Channels", y: apiData["FTA Channels"] || 0, color: "#574A24", click: () => this.navigateToPage('FTA CHANNEL') },
-
-
-      // { name: "Base Package", y: apiData["Base Package"] || 0, color: "#000000", click: () => this.navigateToPage('BASE PACKAGE') },
-      // { name: "Addon Package", y: apiData["Addon Package"] || 0, color: "#D1D0D0", click: () => this.navigateToPage('ADDON PACKAGE') },
-      // { name: "Pay Channels", y: apiData["Pay Channels"] || 0, color: "#988686", click: () => this.navigateToPage('PAYCHANNEL') },
-      // { name: "FTA Channels", y: apiData["FTA Channels"] || 0, color: "#5C4E4E", click: () => this.navigateToPage('FTA CHANNEL') },
-
 // -----------------------------------------------Normal------------------------------
-
       { name: "Base Package", y: apiData["Base Package"] || 0, color: "#396ba8", click: () => this.navigateToPage('BASE PACKAGE') },
       { name: "Addon Package", y: apiData["Addon Package"] || 0, color: "#bfa628", click: () => this.navigateToPage('ADDON PACKAGE') },
       { name: "Pay Channels", y: apiData["Pay Channels"] || 0, color: "#3bada6", click: () => this.navigateToPage('PAYCHANNEL') },
@@ -79,14 +54,6 @@ export class PackageChartComponent implements OnInit {
         fontSize: 14,
         itemWrap: true,
         itemTextFormatter: (e: any) => `${e.dataPoint.name}  :   ${e.dataPoint.y}`,
-        // itemTextFormatter: (e: any) => {
-        //   // Format the legend text with alignment and color
-        //   const name = `<span style="color: blue; margin-right:10px">${e.dataPoint.name}</span>`;
-        //   const colon = `<span style="margin-right:10px">    :     </span>`;
-        //   const value = `<span style="color: green;  float: right;">${e.dataPoint.y}</span>`;
-
-        //   return `${name} ${colon} ${value}`;
-        // },
       },
       title: {
         text: "PACKAGE DETAILS",
