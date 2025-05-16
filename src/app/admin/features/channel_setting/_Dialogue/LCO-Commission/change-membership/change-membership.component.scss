@@ -2,8 +2,8 @@
     padding: 13px;
     background-color: lightcyan;
     height: 50px;
-    display: flex; /* Ensure the container is a flex container */
-    justify-content: space-between; /* Pushes children to the ends of the container */
+    display: flex; 
+    justify-content: space-between; 
     align-items: center;
 }
 
@@ -47,10 +47,7 @@
     color: rgb(209, 10, 43);
 }
 
-// .lco .d-flex {
-//     margin-bottom: 20px;
-//     /* Adjust the value as needed */
-// }
+
 .title {
     flex: 1;
 }
@@ -76,7 +73,7 @@
 
 
 .head {
-    font-size: 1.2rem; /* Adjust font size as needed */
+    font-size: 1.2rem; 
 }
 
 .close-icon {
@@ -84,37 +81,37 @@
 }
 
 .ag-theme-quartz {
-    width: 100%; /* Make sure ag-grid takes full width */
-    max-height: 500px; /* Optionally set a max height */
+    width: 100%; 
+    max-height: 500px; 
 }
 
 .lco {
-    padding: 1rem; /* Add some padding */
+    padding: 1rem;
 }
 
 .value {
-    font-weight: bold; /* Make the value stand out */
+    font-weight: bold; 
 }
 
 .btn-infos {
-    white-space: nowrap; /* Prevent button text from wrapping */
+    white-space: nowrap;
 }
 
 .form-select {
-    width: 50%; /* Make the select element responsive */
+    width: 50%; 
 }
 
 @media (max-width: 576px) {
     .head {
-        font-size: 1rem; /* Adjust font size on smaller screens */
+        font-size: 1rem; 
     }
 
     .ag-theme-quartz {
-        max-height: 300px; /* Adjust max height for smaller screens */
+        max-height: 300px; 
     }
 
     .lco {
-        padding: 0.5rem; /* Reduce padding on smaller screens */
+        padding: 0.5rem; 
     }
 
 }
@@ -125,4 +122,23 @@
     ::ng-deep .ag-header {
         max-height: 200px;
     }
+}
+
+// ================================Select 2===============================
+
+
+::ng-deep .select2-container {
+  width: 300px !important;
+}
+::ng-deep .select2-container .select2-selection--single {
+  height: 45px !important;
+  margin-top: 1%;
+}
+
+::ng-deep .select2-container .select2-selection--single .select2-selection__rendered {
+  margin-top: 7px;
+}
+
+::ng-deep .select2-container--default .select2-selection--single .select2-selection__arrow {
+  top: 10px;
 }

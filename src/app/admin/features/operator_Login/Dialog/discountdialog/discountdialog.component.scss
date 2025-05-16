@@ -139,13 +139,15 @@ input {
   }
   
   .customer-amt,
+  .discount-amt,
+  .mso-amt,
   .current-amt,
   .lco-commission {
     font-weight: bold;
     color: green;
   }
   
-  .discount-input {
+  .current-input {
     width: 60px;
     text-align: center;
     border: none;

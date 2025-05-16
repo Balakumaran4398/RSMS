@@ -68,7 +68,7 @@ export class ExpiryDetailsComponent implements OnInit, OnDestroy {
       },
     },
     paginationPageSize: 15,
-    paginationPageSizeSelector:[10,20,50],
+    paginationPageSizeSelector: [10, 20, 50],
     pagination: true,
   };
   subLcoDetails: any;
@@ -200,13 +200,8 @@ export class ExpiryDetailsComponent implements OnInit, OnDestroy {
     this.todate = year + "-" + month + "-" + date
     console.log(this.todate);
   }
-
-
-
-
-
   Submit() {
-
+    this.swal.Loading();
     this.userservice.getExpirySubscriberByOperator(this.role, this.username, this.operatorid || this.lcoId || this.retailerId, this.fromdate, this.todate, this.format)
       .subscribe(
         (response: HttpResponse<any[]>) => { // Expect HttpResponse<any[]>
@@ -216,6 +211,7 @@ export class ExpiryDetailsComponent implements OnInit, OnDestroy {
             if (!this.gridOptions.paginationPageSizeSelector.includes(rowCount)) {
               this.gridOptions.paginationPageSizeSelector.push(rowCount);
             }
+            this.swal.Close();
           } else if (response.status === 204) {
             this.rowData = [];
             this.swal.Close();

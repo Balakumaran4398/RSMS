@@ -59,7 +59,7 @@ export class DistribtorupdatediscountComponent implements OnInit {
     console.log(this.data_details);
     this.msoamount = this.data_details.msoamount;
     this.oldmsoamount = this.data_details.msoamount;
-    this.productid = this.data_details.productid;
+    this.productid = this.data_details.packid;
     this.lcolistid = this.data_details.lcmid;
     this.lcoOperatorId = this.data_details.operatorid;
     this.lcoParentOperatorId = data?.opId;
@@ -187,6 +187,12 @@ export class DistribtorupdatediscountComponent implements OnInit {
       }, (err) => {
         this.swal.Error(err?.error?.message || err?.error?.updateLcoDiscount.newmsoamount || err?.error);
       });
+    // this.userService.getupdateDiscountByArea(this.role, this.username, this.lcoParentOperatorId, this.operatorid, this.productid, this.msoamount || 0, this.oldmsoamount || 0,
+    //   this.newmsoamount).subscribe((res: any) => {
+    //     this.swal.success(res?.message);
+    //   }, (err) => {
+    //     this.swal.Error(err?.error?.message || err?.error?.updateLcoDiscount.newmsoamount || err?.error);
+    //   });
   }
 
   onSubmit() {

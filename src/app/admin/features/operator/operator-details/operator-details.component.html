@@ -2,7 +2,7 @@
 <div class="opt">
     <div class=" col-12 col-md-12 mb-4 display justify-content-start align-items-baseline   ">
         <div class="col-12 col-md-3">
-            <mat-form-field class="example-full-width" style="min-width: 100%;" appearance="outline">
+            <!-- <mat-form-field class="example-full-width" style="min-width: 100%;" appearance="outline">
                 <mat-label>Select Operator</mat-label>
                 <input type="text" matInput [matAutocomplete]="auto" (input)="filterOperators($event)"
                     [matAutocompleteDisabled]="false" [value]="selectedOperator?.name">
@@ -13,7 +13,15 @@
                         {{ operator.name }}
                     </mat-option>
                 </mat-autocomplete>
-            </mat-form-field>
+            </mat-form-field> -->
+
+            <select id="ltb"  [value]="selectedOperator?.name">
+                <option (click)="onoperatorchange({ name: 'ALL Operator (0)' })" selected>ALL Operator(0)</option>
+                <option *ngFor="let operator of filteredOperators" [value]="operator.name"
+                    (click)="onoperatorchange(operator)">
+                    {{ operator.name }}
+                </option>
+            </select>
         </div>
         <!-- style="background-color: #0c5e85;color: white;" -->
         <div class="d-flex justify-content-center mb-2" style="align-items: baseline;">

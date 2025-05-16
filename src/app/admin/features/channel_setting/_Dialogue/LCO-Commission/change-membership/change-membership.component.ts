@@ -1,4 +1,4 @@
-import { Component, Inject } from '@angular/core';
+import { AfterViewInit, Component, DestroyRef, Inject, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { ColDef } from 'ag-grid-community';
@@ -12,7 +12,7 @@ import Swal from 'sweetalert2';
   templateUrl: './change-membership.component.html',
   styleUrls: ['./change-membership.component.scss']
 })
-export class ChangeMembershipComponent {
+export class ChangeMembershipComponent implements OnInit,AfterViewInit,OnDestroy {
   lcoForm !: FormGroup<any>;
   role: any;
   username: any;
@@ -42,6 +42,24 @@ export class ChangeMembershipComponent {
     console.log(this.operatorid);
     this.membershiplist();
   }
+  ngOnDestroy(): void {
+($('#membership') as any).select2('destroy');
+  }
+  ngOnInit(): void {
+     
+  }
+  ngAfterViewInit(): void {
+       $('#membership').select2({
+      placeholder: 'Select Membership',
+      allowClear: true
+    });
+    $('#membership').on('change', (event: any) => {
+      this.lcomembershipid = event.target.value;
+      console.log(this.lcomembershipid);
+
+      // this.onoperatorchange(this.lcomembershipid);
+    });  }
+
   onNoClick(): void {
     this.dialogRef.close();
   }

@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, OnInit, ViewChild } from '@angular/core';
+import { AfterViewInit, ChangeDetectorRef, Component, OnInit, ViewChild } from '@angular/core';
 import { BreakpointObserver, Breakpoints, BreakpointState } from '@angular/cdk/layout';
 import { MatDialog } from '@angular/material/dialog';
 import { EditLcoComponent } from '../../channel_setting/_Dialogue/operator/edit-lco/edit-lco.component';
@@ -19,7 +19,7 @@ import { SwalService } from 'src/app/_core/service/swal.service';
   templateUrl: './operator-details.component.html',
   styleUrls: ['./operator-details.component.scss']
 })
-export class OperatorDetailsComponent implements OnInit {
+export class OperatorDetailsComponent implements OnInit, AfterViewInit {
   isSystem: boolean = false;
   ismobile: boolean = true;
   edit_dialog: boolean = false;
@@ -77,10 +77,29 @@ export class OperatorDetailsComponent implements OnInit {
     this.onBusinessList();
     this.operatorDeatils('');
   }
+  ngAfterViewInit(): void {
+    $('#ltb').select2({
+      placeholder: 'Select Operator Name',
+      allowClear: true
+    });
+    $('#ltb').on('change', (event: any) => {
+      this.selectedOperator = event.target.value;
+      console.log(this.selectedOperator);
+
+      this.onoperatorchange(this.selectedOperator);
+    });
+  }
   setOperator(data: { isactive: string }) {
     this.operator.isactive = data.isactive === 'true';
   }
+  ngOnDestroy(): void {
+    ($('#ltb') as any).select2('destroy');
+  }
+
   ngOnInit(): void {
+
+
+
     const response = { isactive: 'true' };
     this.setOperator(response);
     this.responsive
@@ -167,39 +186,29 @@ export class OperatorDetailsComponent implements OnInit {
     this.showDropdown = false;
     this.operatorid = value;
     this.operatorname = name;
-    this.onoperatorchange({ value });
+    console.log(this.operatorid);
+
+    // this.onoperatorchange({ value });
   }
 
   onoperatorchange(operator: any): void {
+    console.log(operator);
+    this.swal.Loading();
+    const match = operator.match(/\((\d+)\)/);
     this.selectedOperator = operator;
-    this.operatorid = operator.value;
-    // if (operator.value === 0) {
-    //   this.operatorid = 0;
-    //   this.selectedOperator = { name: 'ALL Operator', value: 0 };
-    //   this.pagedOperators = [...this.originalPagedOperators];
-    // } else {
-    //   this.operatorid = operator.value;
-    //   this.pagedOperators = this.operatorList.filter(op => op.operatorid === this.operatorid);
-    //   console.log('operatorid', this.pagedOperators);
-    // }
-    if (operator.value === 0) {
+    console.log(this.selectedOperator);
+    if (match) {
+      this.operatorid = parseInt(match[1]);
+    }
+    // this.operatorid = operator.value;
+    if (this.operatorid == 0) {
       this.pagedOperators = [...this.originalPagedOperators];
+      this.swal.Close();
     } else {
       this.pagedOperators = this.originalPagedOperators.filter(op => op.operatorid === this.operatorid);
+      this.swal.Close();
     }
-
     console.log('Filtered Operators:', this.pagedOperators);
-    // this.operatorDeatils(this.operatorid);
-    // this.userservice.OperatorDetails(this.role, this.username, this.operatorid).subscribe(
-    //   (data: any) => {
-    //     console.log(data);
-    //     // this.operator_details = data;
-    //     this.pagedOperators = data;
-    //   },
-    //   (error) => {
-    //     console.error('Error fetching operator details', error);
-    //   }
-    // );
   }
 
   checkDeviceType(): void {

@@ -19,7 +19,7 @@ export class DistributordiscountComponent implements OnInit {
   customeramount: any = '0.0';
   paymentMode: any = 'Cash';
   selectpackage: any = 0;
-  selectOperator: any ;
+  selectOperator: any;
   lcoDeatails: any;
   operatorid: any;
   packageList: any[] = [];
@@ -103,6 +103,7 @@ export class DistributordiscountComponent implements OnInit {
     this.userService.getOpDetails(this.role, this.username).subscribe((data: any) => {
       this.lcoDeatails = data;
       this.operatorid = this.lcoDeatails?.operatorid;
+      this.distributorid = this.lcoDeatails?.distributorid;
 
       this.getDistributorPackageList();
       this.onOperatorList();
@@ -146,13 +147,14 @@ export class DistributordiscountComponent implements OnInit {
   lcolistid: any;
   retailerList: any[] = [];
   getDistributorPackageList() {
-    this.userService.getDistributorPackageList(this.role, this.username, this.lco_operatorId || this.operatorid , this.operatorid).subscribe((data: any) => {
+    this.userService.getDistributorPackageList(this.role, this.username, this.lco_operatorId || this.operatorid, this.distributorid).subscribe((data: any) => {
       // this.userService.getDistributorPackageList(this.role, this.username, this.lco_operatorId , this.operatorid).subscribe((data: any) => {
       this.packageList = data;
       this.filteredPackageList = data;
       this.rowData = data;
       this.packageDetails = data;
-      this.productid = data.productid;
+      // this.productid = data.productid;
+      this.productid = data.packid;
       this.productname = data.productname;
       console.log(data);
     })
@@ -290,10 +292,11 @@ export class DistributordiscountComponent implements OnInit {
   columnDefs = [
     { headerName: "S.No", lockPosition: true, valueGetter: 'node.rowIndex+1', cellClass: 'locked-col', width: 80, suppressNavigable: true, sortable: false, filter: false },
     { headerName: "PACKAGE NAME	", field: 'productname', width: 200, },
-    { headerName: "LCO AMOUNT	", field: 'subdisamt', width: 200, },
+
     { headerName: "AMOUNT", field: 'packagerate', width: 200, },
     { headerName: "MSO AMOUNT", field: 'msoamount', width: 200, },
     { headerName: "COMMISSION", field: 'subdiscommission', width: 200, },
+    { headerName: "LCO AMOUNT	", field: 'subdisamt', width: 200, },
     {
       headerName: "ACTION", width: 200, cellRenderer: (params: any) => {
         const editButton = document.createElement('button');

@@ -58,6 +58,7 @@ export class DiscountsmartcardComponent implements OnInit {
   orderid: any;
   customeramount: any;
   lcocommission: any;
+  msoAmount: any;
   constructor(public dialogRef: MatDialogRef<DiscountdialogComponent>, @Inject(MAT_DIALOG_DATA) public data: any, private route: ActivatedRoute, private userService: BaseService, private storageService: StorageService, private swal: SwalService, public dialog: MatDialog,) {
     this.role = storageService.getUserRole();
     this.username = storageService.getUsername();
@@ -71,16 +72,18 @@ export class DiscountsmartcardComponent implements OnInit {
     this.lcocommission = data?.data?.lco_commission;
     this.orderid = data?.data?.order_id;
     this.customeramount = data?.data?.customer_amount;
+    this.msoAmount = data?.data?.mso_amount;
 
-    if (this.type == 'smartcard') {
-      this.getSmartcardDetails();
-    } else if (this.type == 'plan') {
-      this.getplanwiseDetails()
-    }
+
 
   }
   ngOnInit(): void {
     this.operatorIdoperatorId();
+    //  if (this.type == 'smartcard') {
+    //   this.getSmartcardDetails();
+    // } else if (this.type == 'plan') {
+    //   this.getplanwiseDetails()
+    // }
   }
 
   operatorIdoperatorId() {
@@ -90,19 +93,26 @@ export class DiscountsmartcardComponent implements OnInit {
       console.log(this.lcoDeatails);
       this.lcoId = this.lcoDeatails?.operatorid;
       console.log(this.lcoId);
-      this.getSmartcardDetails();
-      this.getplanwiseDetails();
+      // this.getSmartcardDetails();
+      // this.getplanwiseDetails();
+      if (this.type == 'smartcard') {
+        this.getSmartcardDetails(this.lcoId);
+      } else if (this.type == 'plan') {
+        this.getplanwiseDetails()
+      }
     })
   }
-  getSmartcardDetails() {
-    this.userService.getSmartcardWiseDiscountList(this.role, this.username, this.lcoId, this.areaid, this.smartcard).subscribe((data: any) => {
+  getSmartcardDetails(lcoid:any) {
+    console.log(lcoid);
+
+    this.userService.getSmartcardWiseDiscountList(this.role, this.username, lcoid, this.areaid, this.smartcard).subscribe((data: any) => {
       console.log(data);
       this.rowData = data
     })
   }
 
   getplanwiseDetails() {
-    this.userService.getPlanDiscountDetailsByOpidPackageid(this.role, this.username, this.lcoId, this.orderid, this.customeramount, this.lcocommission,false).subscribe((data: any) => {
+    this.userService.getPlanDiscountDetailsByOpidPackageid(this.role, this.username, this.lcoId, this.orderid, this.customeramount, this.lcocommission, false,this.msoAmount).subscribe((data: any) => {
       console.log(data);
       this.rowData1 = data
     })
@@ -122,7 +132,8 @@ export class DiscountsmartcardComponent implements OnInit {
         { headerName: 'CUSTOMER AMOUNT', width: 200, field: 'customer_amount', },
         { headerName: 'RATE', width: 250, field: 'package_rate' },
         { headerName: 'MSO AMOUNT', width: 200, field: 'mso_amount', },
-        { headerName: 'LCO COMMISSION', field: 'lco_commission', width: 200, },
+        { headerName: 'LCO COMMISSION', field: 'new_commission_value', width: 200, },
+        { headerName: 'CUSTOMER SELLING PRICE', field: 'cusdiscprice', width: 200, },
         { headerName: 'DISCOUNT', width: 250, field: 'discount_value', },
         {
           headerName: 'ACTION', field: '', width: 200, filter: false,

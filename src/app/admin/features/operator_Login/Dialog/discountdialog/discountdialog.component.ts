@@ -45,6 +45,9 @@ export class DiscountdialogComponent implements OnInit {
   errorMessage: any;
   retailerid: any;
   package_name: any;
+  msoAmount: any;
+  lcoCommission: any;
+  discount: any;
   constructor(public dialogRef: MatDialogRef<DiscountdialogComponent>, @Inject(MAT_DIALOG_DATA) public data: any, private swal: SwalService, public dialog: MatDialog, private userService: BaseService, private storageservice: StorageService) {
     this.role = storageservice.getUserRole();
     this.username = storageservice.getUsername();
@@ -63,6 +66,7 @@ export class DiscountdialogComponent implements OnInit {
     this.Lcopackage_id = this.data_details.package_id;
     this.ispercentage = this.data_details.ispercentage;
     this.commission = this.data_details.lco_commission;
+    this.msoAmount = this.data_details.mso_amount;
     console.log(this.commission);
     // this.with_Gst = data?.data?.isgst;
     this.with_Gst = data?.data?.isgst == 1;
@@ -72,10 +76,13 @@ export class DiscountdialogComponent implements OnInit {
 
     this.old_customeramount = this.data_details.customer_amount;
     this.discount_value = this.data_details.discount_value;
+
     this.smartcard = this.data_details.smartcard;
     this.smartcard1 = this.data.smartcard;
     this.subLcoDetails = data?.data;
 
+    console.log('lcocommission', this.lcoCommission);
+    console.log('discount', this.discount);
     console.log(this.subLcoDetails);
     console.log(data);
     this.packageid = this.subLcoDetails.packid;
@@ -88,7 +95,7 @@ export class DiscountdialogComponent implements OnInit {
 
   ngOnInit(): void {
     this.operatorIdoperatorId();
-    this.getplanwiseDetails();
+    // this.getplanwiseDetails();
   }
   onNoClick(): void {
     this.dialogRef.close();
@@ -100,7 +107,7 @@ export class DiscountdialogComponent implements OnInit {
     }
     this.swal.Loading();
     this.userService.getupdateDiscountByArea(this.role, this.username, this.operatorid, this.areaid || 0, this.Lcopackage_id, this.ispercentage, this.commission,
-      this.old_customeramount, this.new_customeramount, this.smartcard1 || null, this.discount_value).subscribe((res: any) => {
+      this.old_customeramount, this.new_customeramount, this.smartcard1 || null, this.discount_value, this.msoAmount).subscribe((res: any) => {
         this.swal.success(res?.message);
       }, (err) => {
         this.swal.Error(err?.error?.message || err?.error);
@@ -119,10 +126,10 @@ export class DiscountdialogComponent implements OnInit {
       this.errorMessage = `Amount must be at least Rs.${msoAmount}.`;
       return false;
     }
-    if (this.new_customeramount > customerAmount) {
-      this.errorMessage = `Amount must not exceed Rs.${customerAmount}.`;
-      return false;
-    }
+    // if (this.new_customeramount > customerAmount) {
+    //   this.errorMessage = `Amount must not exceed Rs.${customerAmount}.`;
+    //   return false;
+    // }
     if (this.with_Gst) {
       if (this.new_customeramount > customerAmount) {
         this.errorMessage = `With GST selected, the amount must not exceed Rs.${customerAmount}.`;
@@ -133,10 +140,10 @@ export class DiscountdialogComponent implements OnInit {
         this.errorMessage = `Amount must be at least Rs.${msoAmount}.`;
         return false;
       }
-      if (this.new_customeramount > customerAmount) {
-        this.errorMessage = `Amount must not exceed Rs.${customerAmount}.`;
-        return false;
-      }
+      // if (this.new_customeramount > customerAmount) {
+      //   this.errorMessage = `Amount must not exceed Rs.${customerAmount}.`;
+      //   return false;
+      // }
     }
     this.errorMessage = '';
     return true;
@@ -161,7 +168,7 @@ export class DiscountdialogComponent implements OnInit {
       return;
     }
     console.log(this.new_customeramount);
-    
+
     this.swal.Loading();
     this.userService.getupdateSublcoDiscount(this.role, this.username, this.operatorid, this.retailerid, this.subLcoDetails?.pack_id, this.with_Gst, this.subLcoDetails?.mso_amount,
       // this.userService.getupdateSublcoDiscount(this.role, this.username, this.operatorid, this.operatorid, this.subLcoDetails?.pack_id, this.with_Gst, this.subLcoDetails?.mso_amount,
@@ -177,6 +184,7 @@ export class DiscountdialogComponent implements OnInit {
     this.userService.getOpDetails(this.role, this.username).subscribe((data: any) => {
       this.lcoDeatails = data;
       this.operatorid = this.lcoDeatails?.operatorid;
+      this.distributorid = this.lcoDeatails?.distributorid;
       this.getplanwiseDetails();
       this.getDistributorPackageList();
     })
@@ -186,21 +194,7 @@ export class DiscountdialogComponent implements OnInit {
   getplanwiseDetails() {
     console.log(this.role)
     if (this.role != 'ROLE_OPERATOR') {
-      this.userService.getPlanDiscountDetailsByOpidPackageid(this.role, this.username, this.operatorid || 0, this.orderid, this.customeramount, this.lcocommission, true).subscribe((data: any) => {
-        this.discountPlans = data.map((item: any) => {
-          const content = item.content[0];
-          return {
-            id: item.plan,
-            name: content.plan,
-            customerAmount: content.customer_amount,
-            currentAmount: content.current_mso_amt,
-            discount: content.dicount_amount,
-            lcoCommission: content.mso_amount
-          };
-        });
-      });
-    } else if (this.role == 'ROLE_OPERATOR') {
-      this.userService.getPlanDiscountDetailsByOpidPackageid(this.role, this.username, this.operatorid || 0, this.orderid, this.customeramount, this.lcocommission, false).subscribe((data: any) => {
+      this.userService.getPlanDiscountDetailsByOpidPackageid(this.role, this.username, this.operatorid || 0, this.orderid, this.customeramount, this.lcocommission, true, this.msoAmount).subscribe((data: any) => {
         this.discountPlans = data.map((item: any) => {
           const content = item.content[0];
           return {
@@ -209,33 +203,35 @@ export class DiscountdialogComponent implements OnInit {
             customerAmount: content.customer_amount,
             currentAmount: content.current_cus_amt,
             discount: content.dicount_amount,
-            lcoCommission: content.lco_commission
+            lcoCommission: content.lco_commission,
+            msoamount: content.mso_amount,
+          };
+        });
+      });
+    } else if (this.role == 'ROLE_OPERATOR') {
+      this.userService.getPlanDiscountDetailsByOpidPackageid(this.role, this.username, this.operatorid || 0, this.orderid, this.customeramount, this.lcocommission, false, this.msoAmount).subscribe((data: any) => {
+        this.discountPlans = data.map((item: any) => {
+          const content = item.content[0];
+          return {
+            id: item.plan,
+            name: content.plan,
+            customerAmount: content.customer_amount,
+            currentAmount: content.current_cus_amt,
+            discount: content.dicount_amount,
+            lcoCommission: content.lco_commission,
+            msoamount: content.mso_amount,
           };
         });
       });
     }
   }
-  // updatePlanDiscount(plan: any, index: number) {
-  //   // this.discountPlans = [...this.discountPlans];
-  //   console.log(plan.customerAmount);
-  //   console.log(plan.lcoCommission);
-  //   if (plan.discount > plan.lcoCommission) {
-  //     console.log('11111111111');
-  //     this.errorMessage = `Amount must be at least Rs.${plan.lcoCommission}.`;
-  //   }
-
-  //    else {
-  //     console.log('33333333');
-  //     this.errorMessage = '';
-  //   }
-  //   console.log(plan.discount);
-
-  // }
 
   updatePlanDiscount(plan: any): boolean {
-    if (plan.discount > plan.lcoCommission) {
+    console.log(plan);
+
+    if (plan.discount > plan.currentAmount) {
       console.log('LCO');
-      this.errorMessage = `Amount must be at least Rs.${plan.lcoCommission}.`;
+      this.errorMessage = `Amount must be at least Rs.${plan.currentAmount}.`;
       return false;
     } else if (plan.discount > plan.mso_amount) {
       console.log('MSO');
@@ -244,19 +240,44 @@ export class DiscountdialogComponent implements OnInit {
     this.errorMessage = '';
     return true;
   }
+  // updatePlanDiscount(plan: any): boolean {
+  //   if (plan.discount > plan.lcoCommission) {
+  //     console.log('LCO');
+  //     this.errorMessage = `Amount must be at least Rs.${plan.lcoCommission}.`;
+  //     return false;
+  //   } else if (plan.discount > plan.mso_amount) {
+  //     console.log('MSO');
+  //     this.errorMessage = `Amount must be at least Rs.${plan.mso_amount}.`;
+  //   }
+  //   this.errorMessage = '';
+  //   return true;
+  // }
   getupdatePlanwiseDiscount() {
     for (let i = 0; i < this.discountPlans.length; i++) {
       const plan = this.discountPlans[i];
 
-      if (plan.discount > plan.lcoCommission) {
-        this.errorMessage = `Amount must be at least Rs.${plan.lcoCommission}.`;
-        this.swal.Error(this.errorMessage);
+      console.log(plan);
+
+      // const msoAmount = plan?.mso_amount || 0;
+      // const currentAmount = plan?.currentAmount || 0;
+
+      if (plan.mso_amount > plan.currentAmount) {
+        this.errorMessage = `Amount must be at least Rs.${plan.mso_amount}.`;
         return;
       }
+
+      // if (plan.discount > plan.lcoCommission) {
+      //   this.errorMessage = `Amount must be at least Rs.${plan.lcoCommission}.`;
+      //   this.swal.Error(this.errorMessage);
+      //   return;
+      // }
     }
     this.plandiscount = this.discountPlans.map((plan: any) =>
-      `${plan.id}-${plan.discount}`
+      // `${plan.id}-${plan.discount}`
+      `${plan.id}:${plan.currentAmount}:${plan.msoamount}:${plan.customerAmount}`
     );
+
+    console.log(this.plandiscount);
 
     if (this.role == 'ROLE_OPERATOR') {
       this.swal.Loading();
@@ -278,9 +299,8 @@ export class DiscountdialogComponent implements OnInit {
   }
   distributorid: any;
   getDistributorPackageList() {
-    this.userService.getDistributorPackageList(this.role, this.username, this.operatorid, this.operatorid).subscribe((data: any) => {
+    this.userService.getDistributorPackageList(this.role, this.username, this.operatorid, this.distributorid).subscribe((data: any) => {
       console.log(data);
-
     })
   }
 

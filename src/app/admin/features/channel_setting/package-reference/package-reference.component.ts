@@ -50,7 +50,7 @@ export class PackageReferenceComponent {
         debounceMs: 200,
       },
     },
-    paginationPageSize: 10,
+    paginationPageSize: 100,
     paginationPageSizeSelector: [10, 20, 50],
     pagination: true,
   };
@@ -196,12 +196,13 @@ export class PackageReferenceComponent {
           cellRenderer: (params: any) => {
             const div = document.createElement('div');
             div.style.width = '100%';
-            div.style.height = '100%';
+            // div.style.height = '100%';
             div.style.display = 'flex';
             div.style.alignItems = 'center';
             div.style.justifyContent = 'center';
             div.style.cursor = 'pointer';
-            div.style.backgroundColor = '#dfacac';
+            // div.style.backgroundColor = '#dfacac';
+            div.style.border = '1px solid';
             div.title = 'Edit Cas product id';
 
             const span = document.createElement('span');
@@ -271,7 +272,8 @@ export class PackageReferenceComponent {
             div.style.alignItems = 'center';
             div.style.justifyContent = 'center';
             div.style.cursor = 'pointer';
-            div.style.backgroundColor = '#dfacac';
+            // div.style.backgroundColor = '#dfacac';
+            div.style.border = '1px solid';
             div.title = 'Edit product id';
 
             const span = document.createElement('span');
@@ -341,7 +343,8 @@ export class PackageReferenceComponent {
             div.style.alignItems = 'center';
             div.style.justifyContent = 'center';
             div.style.cursor = 'pointer';
-            div.style.backgroundColor = '#dfacac';
+            // div.style.backgroundColor = '#dfacac';
+            div.style.border = '1px solid';
             div.title = 'Edit product id';
 
             const span = document.createElement('span');
@@ -419,6 +422,10 @@ export class PackageReferenceComponent {
           text: response.message || 'Product ID updated successfully.',
           icon: 'success',
           timer: 2000,
+          timerProgressBar: true,
+          showConfirmButton: false
+        }).then(() => {
+          location.reload();
         });
       },
       (error) => {

@@ -26,23 +26,6 @@ export class BroadMasterComponent implements OnInit {
   isdelete: boolean = false;
   public rowSelection: any = "multiple";
 
-  // gridOptions = {
-  //   defaultColDef: {
-  //     sortable: true,
-  //     resizable: true,
-  //     filter: true,
-  //     floatingFilter: true,
-  //     comparator: (valueA: any, valueB: any) => {
-  //       const normalizedA = valueA ? valueA.toString().trim().toLowerCase() : '';
-  //       const normalizedB = valueB ? valueB.toString().trim().toLowerCase() : '';
-  //       if (normalizedA < normalizedB) return -1;
-  //       if (normalizedA > normalizedB) return 1;
-  //       return 0;
-  //     },
-  //   },
-  //   paginationPageSize: 10,
-  //   pagination: true,
-  // }
 
 
   gridOptions = {
@@ -66,7 +49,7 @@ export class BroadMasterComponent implements OnInit {
         }
       },
     },
-    paginationPageSize: 10,
+    paginationPageSize: 100,
     paginationPageSizeSelector: [10,20,50],
     pagination: true,
   };

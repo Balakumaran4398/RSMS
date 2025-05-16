@@ -36,6 +36,7 @@ export class ChartPackageReportComponent {
       },
     },
     paginationPageSize: 10,
+    paginationPageSizeSelector:[10,20],
     pagination: true,
   };
   // columnDefs: any[] = [];
@@ -80,6 +81,10 @@ export class ChartPackageReportComponent {
           if (response.status === 200) {
             this.updateColumnDefs(this.type);
             this.rowData = response.body;
+              const rowCount = this.rowData.length;
+            if (!this.gridOptions.paginationPageSizeSelector.includes(rowCount)) {
+              this.gridOptions.paginationPageSizeSelector.push(rowCount);
+            }
             console.log(this.rowData);
             // this.swal.Success_200();
           } else if (response.status === 204) {

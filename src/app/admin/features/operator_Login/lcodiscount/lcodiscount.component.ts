@@ -84,41 +84,7 @@ export class LcodiscountComponent implements OnInit, AfterViewInit {
   onTabChange(event: any) {
     this.discountType.index = event.index;
     this.type = event.index + 1
-    // const tabMapping: { [key: string]: number } = {
-    //   "All_area": 1,
-    //   "area": 2,
-    //   "smartcard": 3,
-    //   "package": 4
-    // };
-    // this.rowData = [];
-    // const tabLabels = ["All_area", "area", "smartcard", "package"];
-    // console.log('TAB LEVELS', tabLabels);
-    // if (this.discountType === 1) {
-    //   this.type = 1;
-    //   // this.type = tabMapping[1];
-    //   console.log('TYPE ----- ', this.type);
-    // } else if (this.discountType === 2) {
-    //   this.type = 2;
-    //   // this.type = tabMapping[2];
-    //   console.log('TYPE ----- ', this.type);
-    // // } else if (this.discountType === 3) {
-    //   this.type = 3;
-    //   // this.type = tabMapping[3];
-    //   console.log('TYPE ----- ', this.type);
-    // }else if (this.discountType === 4) {
-    //   this.type = 4;
-    //   this.type = tabMapping[4];
-    //   console.log('TYPE ----- ', this.type);
-    // }
 
-    // this.type = tabMapping[tabLabels[event.index]];
-    // console.log('TYPE ----- ', this.type);
-
-    // this.discountType = this.type;
-
-    // console.log("Selected Tab:", tabLabels[event.index]);
-    // console.log("Discount Type:", this.discountType);
-    // console.log(" Type:", this.type);
 
     this.onColumnDefs();
     this.getListOfDatas();
@@ -129,11 +95,7 @@ export class LcodiscountComponent implements OnInit, AfterViewInit {
       $('#Area').select2('destroy');
     }
 
-    // setTimeout(() => {
-    //   if (this.type === 2) {
-    //     this.initSelect2();
-    //   }
-    // }, 300);
+
   }
   initSelect2() {
     $('#Area').select2({
@@ -174,19 +136,19 @@ export class LcodiscountComponent implements OnInit, AfterViewInit {
   getListOfDatas() {
     console.log("this.type :" + this.type);
     if (this.type == '1') {
-      this.rowData= [];
+      this.rowData = [];
       console.log('all area', this.type);
       this.userService.getOpDiscountListByOpidAreaid(this.role, this.username, this.lcoId, 0, 1, false).subscribe((res: any) => {
         console.log(res);
         this.rowData = res;
       })
     } else if (this.type == '2') {
-      this.rowData= [];
+      this.rowData = [];
       console.log('area', this.type);
       this.rowData = [];
       this.onAreaStatusChange(this.lcoId);
     } else if (this.type == '3') {
-      this.rowData= [];
+      this.rowData = [];
       console.log('smartcard', this.type);
       // this.onAreaStatusChange(this.lcoId);
       this.userService.getOpDiscountListByOpidAreaid(this.role, this.username, this.lcoId, 0, 3, false).subscribe((res: any) => {
@@ -196,7 +158,7 @@ export class LcodiscountComponent implements OnInit, AfterViewInit {
     } else if (this.type == '4') {
       console.log('package', this.type);
       // this.onAreaStatusChange(this.lcoId);
-      this.rowData= [];
+      this.rowData = [];
       this.userService.getOpDiscountListByOpidAreaid(this.role, this.username, this.lcoId, 0, 4, false).subscribe((res: any) => {
         console.log(res);
         this.rowData = res;
@@ -234,7 +196,9 @@ export class LcodiscountComponent implements OnInit, AfterViewInit {
         { headerName: 'MSO RATE', field: 'mso_amount', width: 150, },
         { headerName: 'DISCOUNT', width: 150, field: 'discount_value', },
         { headerName: 'PERCENTAGE', width: 150, field: 'ispercentage', },
-        { headerName: 'CUSTOMER SELLING PRICE', field: 'cusdiscprice', width: 230, },
+        {
+          headerName: 'CUSTOMER SELLING PRICE', field: 'cusdiscprice', width: 230, valueFormatter: (params: any) => parseFloat(params.value).toFixed(2)
+        },
         {
           headerName: 'ACTION', field: '', width: 150, filter: false,
           cellRenderer: (params: any) => {
@@ -259,12 +223,13 @@ export class LcodiscountComponent implements OnInit, AfterViewInit {
         { headerName: "S.No", valueGetter: 'node.rowIndex+1', width: 90, },
         { headerName: 'PACKAGE NAME', width: 200, field: 'product_name', },
         { headerName: 'CUSTOMER AMOUNT', width: 250, field: 'customer_amount', },
-        { headerName: 'LCO-COMMISION', width: 200, field: 'lco_commission', },
+        { headerName: 'LCO-COMMISION', width: 200, field: 'new_commission_value', },
         { headerName: 'MSO RATE', field: 'mso_amount', width: 200, },
         { headerName: 'DISCOUNT', width: 250, field: 'discount_value', },
         { headerName: 'PERCENTAGE', width: 250, field: 'ispercentage', },
-        { headerName: 'CUSTOMER SELLING PRICE', field: 'cusdiscprice', width: 230, },
-        {
+  {
+          headerName: 'CUSTOMER SELLING PRICE', field: 'cusdiscprice', width: 230, valueFormatter: (params: any) => parseFloat(params.value).toFixed(2)
+        },        {
           headerName: 'ACTION', field: '', width: 150, filter: false,
           cellRenderer: (params: any) => {
             const editButton = document.createElement('button');
@@ -355,81 +320,6 @@ export class LcodiscountComponent implements OnInit, AfterViewInit {
       width: '1000px'
     });
   }
-  // onAreaStatusChange(area: any): void {
-  //   this.areaid = area;
-  //   console.log(area);
-
-  //   this.userService.getAreaListByOperatorid(this.role, this.username, this.lcoId).subscribe((data: any) => {
-  //     this.area_list = Object.keys(data).map(key => {
-  //       const value = data[key];
-  //       const name = key;
-  //       return { name: name, value: value };
-  //     });
-  //     this.filteredAreas = this.area_list;
-  //   })
-
-  //   this.userService.getOpDiscountListByOpidAreaid(this.role, this.username, this.lcoId, this.areaid, 1).subscribe((res: any) => {
-  //     this.rowData = res;
-  //   })
-
-  // }
-
-
-  // onAreaStatusChange(area: any): void {
-  //   console.log(area);
-  //   console.log(area?.value);
-  //   this.areaid = area?.value;
-  //   // this.areaid = area;
-  //   // if (typeof area === 'string') {
-  //   //   this.areaid = area;  // Keep user input
-  //   // } else {
-  //   //   this.areaid = area.value; // Set selected area's value
-  //   // }
-  //   // this.userService.getAreaListByOperatorid(this.role, this.username, this.lcoId).subscribe((data: any) => {
-  //   // this.area_list = Object.keys(data).map(key => {
-  //   //   const value = data[key];
-  //   //   return { name: key, value: value };
-  //   // });
-  //   // this.area_list = Object.keys(data).map(key => ({
-  //   //   name: key,
-  //   //   value: data[key]
-  //   // }));
-  //   // this.filteredAreas = this.area_list;
-
-  //   // this.filteredAreas = this.area_list.filter((areaItem: any) =>
-  //   //   areaItem.name.toLowerCase().includes(this.areaid?.toLowerCase() || '')
-  //   // );
-  //   // setTimeout(() => {
-  //   //   this.areaid = area;
-  //   //   $('#Area').val(area).trigger('change');
-  //   // }, 200);
-  //   // });
-  //   // console.log(input);
-
-
-  //   // if (typeof input === 'string') {
-  //   // this.searchTerm = input;
-  //   this.filteredAreas = this.area_list.filter((area: any) =>
-  //     area.name.toLowerCase().includes(this.searchTerm.toLowerCase())
-  //   );
-  //   // } else {
-  //   // this.areaid = input.value;
-  //   // this.searchTerm = input.name; // Show name in input field after selection
-  //   // }
-  //   console.log(area?.value);
-
-  //   // Fetch data only when an area is selected
-  //   if (this.areaid) {
-  //     this.userService.getOpDiscountListByOpidAreaid(this.role, this.username, this.lcoId, this.areaid, 1)
-  //       .subscribe((res: any) => {
-  //         this.rowData = res;
-  //       });
-  //   }
-  //   this.userService.getOpDiscountListByOpidAreaid(this.role, this.username, this.lcoId, this.areaid, 1)
-  //     .subscribe((res: any) => {
-  //       this.rowData = res;
-  //     });
-  // }
 
 
   onAreaStatusChange(input: any): void {
@@ -442,8 +332,8 @@ export class LcodiscountComponent implements OnInit, AfterViewInit {
 
 
   onAreaSelected(selectedArea: any): void {
-    this.selectedArea = selectedArea;  // Store selected object
-    this.areaid = selectedArea.value;  // Store selected area's value
+    this.selectedArea = selectedArea;
+    this.areaid = selectedArea.value;
 
     this.userService.getOpDiscountListByOpidAreaid(this.role, this.username, this.lcoId, this.areaid, 1, false)
       .subscribe((res: any) => {

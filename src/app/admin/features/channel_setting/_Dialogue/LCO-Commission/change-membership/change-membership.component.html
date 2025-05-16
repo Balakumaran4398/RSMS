@@ -60,7 +60,7 @@
                     </div>
                     <div class="d-flex flex-column flex-md-row justify-content-between align-items-start mb-3">
                         <label class="flex-grow-1 mb-2 mb-md-0">SELECT MEMBERSHIP GROUP:</label>
-                        <select style="color: rgb(17, 0, 0);" [(ngModel)]="lcomembershipid">
+                        <select id="membership" style="color: rgb(17, 0, 0);" [(ngModel)]="lcomembershipid">
                             <option value="0" selected style="color: rgb(19, 17, 17);">SELECT MEMBERSHIP</option>
                             <option *ngFor="let lcomember of lcomembershipList" [value]="lcomember.value">
                                 {{ lcomember.name }}

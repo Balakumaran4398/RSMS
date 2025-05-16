@@ -27,7 +27,11 @@
                             <div class="sub-tittle mb-3 col-md-10" style="text-align: left;font-weight: bold;">
                                 {{operator?.operatorname || 'empty'}} <span
                                     style="color: rgb(1, 1, 14);font-weight: bold;">[{{operator?.operatorid}}]</span> -
-                                <span style="color: var(--oper-grid-amount);">[{{operator?.balance}}]</span>
+
+                                <span style="color: var(--oper-grid-amount);font-weight: bold;">
+                                    [<i class="fa-solid fa-indian-rupee-sign rupee "
+                                        style="font-size: 18px;color:#b00b7e"></i> {{operator?.balance}}]</span>
+                                <!-- <span style="color: var(--oper-grid-amount);">[{{operator?.balance}}]</span> -->
                             </div>
                             <div class="sub-tittle mb-3 col-md-10" style="text-align: left;color: rgb(26, 23, 23);">
                                 Phone: <span style="color: rgb(19, 4, 104);">{{operator?.contactnumber1 ||

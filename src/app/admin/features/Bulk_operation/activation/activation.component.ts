@@ -113,6 +113,7 @@ export class ActivationComponent implements OnInit {
       this.lcoDeatails = data;
       console.log(this.lcoDeatails);
       this.operatorid = this.lcoDeatails?.operatorid;
+      this.distributorid = this.lcoDeatails?.distributorid
       this.isplan = this.lcoDeatails?.isplan;
       this.isdate = this.lcoDeatails?.isdate;
       this.isdatetodate = this.lcoDeatails?.isdatetodate;
@@ -144,8 +145,9 @@ export class ActivationComponent implements OnInit {
   }
   packageList: any;
   filteredPackageList: any;
+  distributorid: any;
   getDistributorPackageList() {
-    this.userservice.getDistributorPackageList(this.role, this.username, this.operatorid, this.operatorid).subscribe((data: any) => {
+    this.userservice.getDistributorPackageList(this.role, this.username, this.operatorid, this.distributorid).subscribe((data: any) => {
       // this.userService.getDistributorPackageList(this.role, this.username, this.lco_operatorId , this.operatorid).subscribe((data: any) => {
       this.packageList = data;
       this.filteredPackageList = data;

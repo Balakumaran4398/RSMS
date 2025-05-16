@@ -46,7 +46,7 @@ export class CategoryComponent {
         }
       },
     },
-    paginationPageSize: 10,
+    paginationPageSize: 100,
     paginationPageSizeSelector: [10,20,50],
     pagination: true,
   };

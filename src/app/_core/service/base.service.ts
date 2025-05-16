@@ -1648,21 +1648,21 @@ export class BaseService {
   getBlockSmartcardPDFReport(role: any, username: any, reporttype: any): Observable<Blob> {
     return this.http.get(BASE_URL + "/report/GetBlockSmartcardReport?role=" + role + "&username=" + encodeURIComponent(username) + "&reporttype=" + reporttype, { responseType: 'blob' });
   }
-    // -----------------------------------------Channel Ageing-----------------------------------
-    getChannelAgeing(role: any, username: any, type: any, reporttype: any): Observable<HttpResponse<any[]>> {
-      return this.http.get<any[]>(BASE_URL + "/report/AgeingReport?role=" + role + "&username=" + encodeURIComponent(username) + "&type=" + type + "&reporttype=" + reporttype, { observe: 'response' });
-    }
-    getChannelAgeingReport(role: any, username: any, type: any, reporttype: any): Observable<Blob> {
-      return this.http.get(BASE_URL + "/report/AgeingReport?role=" + role + "&username=" + encodeURIComponent(username) + "&type=" + type + "&reporttype=" + reporttype, { responseType: 'blob' });
-    }
-    // ----------------------------------------Package Ageing------------------------------------
-    getPackageAgeing(role: any, username: any, type: any, reporttype: any): Observable<HttpResponse<any[]>> {
-      return this.http.get<any[]>(BASE_URL + "/report/AgeingReport?role=" + role + "&username=" + encodeURIComponent(username) + "&type=" + type + "&reporttype=" + reporttype, { observe: 'response' });
-    }
-    getPackageAgeingReport(role: any, username: any, type: any, reporttype: any): Observable<Blob> {
-      return this.http.get(BASE_URL + "/report/AgeingReport?role=" + role + "&username=" + encodeURIComponent(username) + "&type=" + type + "&reporttype=" + reporttype, { responseType: 'blob' });
-    }
-    // 
+  // -----------------------------------------Channel Ageing-----------------------------------
+  getChannelAgeing(role: any, username: any, type: any, reporttype: any): Observable<HttpResponse<any[]>> {
+    return this.http.get<any[]>(BASE_URL + "/report/AgeingReport?role=" + role + "&username=" + encodeURIComponent(username) + "&type=" + type + "&reporttype=" + reporttype, { observe: 'response' });
+  }
+  getChannelAgeingReport(role: any, username: any, type: any, reporttype: any): Observable<Blob> {
+    return this.http.get(BASE_URL + "/report/AgeingReport?role=" + role + "&username=" + encodeURIComponent(username) + "&type=" + type + "&reporttype=" + reporttype, { responseType: 'blob' });
+  }
+  // ----------------------------------------Package Ageing------------------------------------
+  getPackageAgeing(role: any, username: any, type: any, reporttype: any): Observable<HttpResponse<any[]>> {
+    return this.http.get<any[]>(BASE_URL + "/report/AgeingReport?role=" + role + "&username=" + encodeURIComponent(username) + "&type=" + type + "&reporttype=" + reporttype, { observe: 'response' });
+  }
+  getPackageAgeingReport(role: any, username: any, type: any, reporttype: any): Observable<Blob> {
+    return this.http.get(BASE_URL + "/report/AgeingReport?role=" + role + "&username=" + encodeURIComponent(username) + "&type=" + type + "&reporttype=" + reporttype, { responseType: 'blob' });
+  }
+  // 
   // ======================================CAS OPERATION================
   // -----------------------------------------------scroll------------------------------------------
   getScrollHistoryExcelReport(role: any, username: any, fromdate: any, todate: any, reporttype: any): Observable<HttpResponse<any[]>> {
@@ -2182,13 +2182,13 @@ export class BaseService {
   //   return this.http.post<any[]>(BASE_URL + "/operator/updatePlanwiseDiscount?role=" + role + "&username=" + encodeURIComponent(username) + "&operatorid=" + operatorid + "&orderid=" + orderid + "&plan_discount=" + plan_discount, {})
   // }
   updatePlanwiseDiscount(role: any, username: any, operatorid: any, orderid: any, plan_discount: any, type: any, ismso: any): Observable<any[]> {
-    return this.http.post<any[]>(BASE_URL + "/operator/updatePlanwiseDiscount?role=" + role + "&username=" + encodeURIComponent(username) + "&operatorid=" + operatorid + "&orderid=" + orderid + "&plan_discount=" + plan_discount + "&type=" + type + "&ismso=" + ismso, {})
+    return this.http.post<any[]>(BASE_URL + "/operator/updatePlanwiseDiscount?role=" + role + "&username=" + encodeURIComponent(username) + "&operatorid=" + operatorid + "&orderid=" + orderid + "&plan_discount=" + plan_discount + "&type=" + type + "&ismso=" + ismso , {})
   }
   // getPlanDiscountDetailsByOpidPackageid(role: any, username: any, operatorid: any, orderid: any, customer_amount: any, lco_commission: any): Observable<any[]> {
   //   return this.http.get<any[]>(BASE_URL + "/operator/getPlanDiscountDetailsByOpidPackageid?role=" + role + "&username=" + encodeURIComponent(username) + "&operatorid=" + operatorid + "&orderid=" + orderid + "&customer_amount=" + customer_amount + "&lco_commission=" + lco_commission)
   // }
-  getPlanDiscountDetailsByOpidPackageid(role: any, username: any, operatorid: any, orderid: any, customer_amount: any, lco_commission: any, ismso: any): Observable<any[]> {
-    return this.http.get<any[]>(BASE_URL + "/operator/getPlanDiscountDetailsByOpidPackageid?role=" + role + "&username=" + encodeURIComponent(username) + "&operatorid=" + operatorid + "&orderid=" + orderid + "&customer_amount=" + customer_amount + "&lco_commission=" + lco_commission + "&ismso=" + ismso)
+  getPlanDiscountDetailsByOpidPackageid(role: any, username: any, operatorid: any, orderid: any, customer_amount: any, lco_commission: any, ismso: any, mso_amount: any): Observable<any[]> {
+    return this.http.get<any[]>(BASE_URL + "/operator/getPlanDiscountDetailsByOpidPackageid?role=" + role + "&username=" + encodeURIComponent(username) + "&operatorid=" + operatorid + "&orderid=" + orderid + "&customer_amount=" + customer_amount + "&lco_commission=" + lco_commission + "&ismso=" + ismso + "&mso_amount=" + mso_amount)
   }
   getupdateLcoDiscountBytype(role: any, username: any, operatorid: any, discount_type: any, isdiscount: any): Observable<any[]> {
     return this.http.post<any[]>(BASE_URL + "/operator/updateLcoDiscountBytype?role=" + role + "&username=" + encodeURIComponent(username) + "&operatorid=" + operatorid + "&discount_type=" + discount_type + "&isdiscount=" + isdiscount, {})
@@ -2196,8 +2196,8 @@ export class BaseService {
   getLcoDiscountListByOpidAreaidsmartcard(role: any, username: any, operatorid: any, areaid: any, smartcard: any): Observable<any[]> {
     return this.http.get<any[]>(BASE_URL + "/operator/getLcoDiscountListByOpidAreaid?role=" + role + "&username=" + encodeURIComponent(username) + "&operatorid=" + operatorid + "&areaid=" + areaid + "&smartcard=" + smartcard)
   }
-  getupdateDiscountByArea(role: any, username: any, operatorid: any, areaid: any, packageid: any, ispercentage: any, commission: any, old_customeramount: any, new_customeramount: any, smartcard: any, discount_value: any): Observable<any[]> {
-    return this.http.post<any[]>(BASE_URL + "/operator/updateDiscountByArea?role=" + role + "&username=" + encodeURIComponent(username) + "&operatorid=" + operatorid + "&areaid=" + areaid + "&packageid=" + packageid + "&ispercentage=" + ispercentage + "&commission=" + commission + "&old_customeramount=" + old_customeramount + "&new_customeramount=" + new_customeramount + "&smartcard=" + smartcard + "&discount_value=" + discount_value, {})
+  getupdateDiscountByArea(role: any, username: any, operatorid: any, areaid: any, packageid: any, ispercentage: any, commission: any, old_customeramount: any, new_customeramount: any, smartcard: any, discount_value: any, mso_amount: any): Observable<any[]> {
+    return this.http.post<any[]>(BASE_URL + "/operator/updateDiscountByArea?role=" + role + "&username=" + encodeURIComponent(username) + "&operatorid=" + operatorid + "&areaid=" + areaid + "&packageid=" + packageid + "&ispercentage=" + ispercentage + "&commission=" + commission + "&old_customeramount=" + old_customeramount + "&new_customeramount=" + new_customeramount + "&smartcard=" + smartcard + "&discount_value=" + discount_value + "&mso_amount=" + mso_amount, {})
   }
 
   getSmartcardWiseDiscountList(role: any, username: any, operatorid: any, areaid: any, smartcard: any): Observable<any[]> {
@@ -2355,15 +2355,15 @@ export class BaseService {
   getcomboPackageUpdateHistoryReport(role: any, username: any, fromdate: any, todate: any, packageid: any, reporttype: any, packagetype: any): Observable<any[]> {
     return this.http.get<any>(BASE_URL + "/report/getcomboPackageUpdateHistoryReport?role=" + role + "&username=" + username + "&fromdate=" + fromdate + "&todate=" + todate + "&packageid=" + packageid + "&reporttype=" + reporttype + "&packagetype=" + packagetype,)
   }
-    // ----------------------------------------------------Addon list --------------------------------
-      getpackageListforReport(role: any, username: any): Observable<any[]> {
-      return this.http.get<any[]>(BASE_URL + "/report/getpackageListforReport?role=" + role + "&username=" + encodeURIComponent(username),)
-    }
-    // ----------------------------------------------------package list --------------------------------
-    getaddonpackageListforReport(role: any, username: any): Observable<any[]> {
-      return this.http.get<any[]>(BASE_URL + "/report/getaddonpackageListforReport?role=" + role + "&username=" + encodeURIComponent(username),)
-    }
-    getcomboPackageUpdateHistoryReportExcel_Pdf(role: any, username: any, fromdate: any, todate: any, packageid: any, reporttype: any, packagetype: any): Observable<Blob> {
-      return this.http.get(BASE_URL + "/report/getcomboPackageUpdateHistoryReport?role=" + role + "&username=" + username + "&fromdate=" + fromdate + "&todate=" + todate + "&packageid=" + packageid + "&reporttype=" + reporttype + "&packagetype=" + packagetype, { responseType: 'blob' });
-    }
+  // ----------------------------------------------------Addon list --------------------------------
+  getpackageListforReport(role: any, username: any): Observable<any[]> {
+    return this.http.get<any[]>(BASE_URL + "/report/getpackageListforReport?role=" + role + "&username=" + encodeURIComponent(username),)
+  }
+  // ----------------------------------------------------package list --------------------------------
+  getaddonpackageListforReport(role: any, username: any): Observable<any[]> {
+    return this.http.get<any[]>(BASE_URL + "/report/getaddonpackageListforReport?role=" + role + "&username=" + encodeURIComponent(username),)
+  }
+  getcomboPackageUpdateHistoryReportExcel_Pdf(role: any, username: any, fromdate: any, todate: any, packageid: any, reporttype: any, packagetype: any): Observable<Blob> {
+    return this.http.get(BASE_URL + "/report/getcomboPackageUpdateHistoryReport?role=" + role + "&username=" + username + "&fromdate=" + fromdate + "&todate=" + todate + "&packageid=" + packageid + "&reporttype=" + reporttype + "&packagetype=" + packagetype, { responseType: 'blob' });
+  }
 }

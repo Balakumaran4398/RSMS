@@ -629,14 +629,17 @@ export class SubscriberdialogueComponent implements OnInit, OnDestroy {
       this.operatorId = this.lcoDeatails?.retailerid;
       this.operatorname = this.lcoDeatails?.retailername;
       this.SublcopermissionObj = this.lcoDeatails?.permissionlist;
+      console.log('dfdsfdsfjkhsdfkhdsjk',this.SublcopermissionObj);
+      
       this.Subwallet = this.SublcopermissionObj?.wallet;
-      this.sublcoDiscount = this.SublcopermissionObj?.sublcoDiscount;
+      this.sublcoDiscount = this.lcoDeatails?.sublcodiscount;
       this.isplan = this.SublcopermissionObj.plan;
       this.isdate = this.SublcopermissionObj.date;
       this.isdateTodate = this.SublcopermissionObj.datetodate;
 
 
 
+      console.log('sublcoDiscount',  this.sublcoDiscount);
       console.log('Subwallet', this.Subwallet);
       console.log('PLAN', this.isplan);
       console.log('DATE', this.isdate);

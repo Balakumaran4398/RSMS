@@ -23,7 +23,7 @@ export class ChartInventoryReportComponent {
       comparator: (valueA: any, valueB: any) => {
         const isNumberA = !isNaN(valueA) && valueA !== null;
         const isNumberB = !isNaN(valueB) && valueB !== null;
-  
+
         if (isNumberA && isNumberB) {
           return valueA - valueB;
         } else {
@@ -35,7 +35,8 @@ export class ChartInventoryReportComponent {
         }
       },
     },
-    paginationPageSize: 10,
+    paginationPageSize: 100,
+    paginationPageSizeSelector: [10, 20],
     pagination: true,
   };
   // columnDefs: any[] = [];
@@ -78,6 +79,10 @@ export class ChartInventoryReportComponent {
           if (response.status === 200) {
             // this.updateColumnDefs(this.type);
             this.rowData = response.body;
+            const rowCount = this.rowData.length ;
+            if (!this.gridOptions.paginationPageSizeSelector.includes(rowCount)) {
+              this.gridOptions.paginationPageSizeSelector.push(rowCount);
+            }
             console.log(this.rowData);
             // this.swal.Success_200();
           } else if (response.status === 204) {
@@ -231,11 +236,11 @@ export class ChartInventoryReportComponent {
               const areasub = 'A3:I3';
               const title = this.id + ' REPORT';
               const sub = 'MSO ADDRESS:' + this.msodetails;
-              const header = ['S.NO','SMARTCARD','BOX ID', 'CAS TYPE','ISALLOCATED', 'STATUS', 'OPERATOR NAME','SUBSCRIBER NAME',' MOBILE NUMBER'];
+              const header = ['S.NO', 'SMARTCARD', 'BOX ID', 'CAS TYPE', 'ISALLOCATED', 'STATUS', 'OPERATOR NAME', 'SUBSCRIBER NAME', ' MOBILE NUMBER'];
               const data = this.rowData;
               const datas: Array<any> = [];
-              data.forEach((d: any,index:number) => {
-                const row = [index+1, d.smartcard, d.boxid, d.casname, d.isallocated,d.statusdisplay, d.operatorname,d.customername,d.mobilno];
+              data.forEach((d: any, index: number) => {
+                const row = [index + 1, d.smartcard, d.boxid, d.casname, d.isallocated, d.statusdisplay, d.operatorname, d.customername, d.mobilno];
                 datas.push(row);
               });
               this.excelService.generateboxinCustomerExcel(areatitle, header, datas, title, areasub, sub);

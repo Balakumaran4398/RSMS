@@ -46,11 +46,20 @@ export class SubscriptionBasedComponent implements OnInit {
   selectedMonth: any = 0;
   selectedYear: any = 0;
   selectedweek: any = 0;
+  selectedDate: any = 0;
   selectedMonthName: any;
 
   isDateDisabled: boolean = true;
   submitted: boolean = false;
   cur_date: any;
+
+
+  dayOfMonth = new Date().getDate();
+
+
+
+  currentDate = new Date();
+  currentMonth = (this.currentDate.getMonth() + 1).toString().padStart(2, '0');
   constructor(public dialogRef: MatDialogRef<SubscriptionBasedComponent>, private swal: SwalService, @Inject(MAT_DIALOG_DATA) public data: any, private excelService: ExcelService, public userService: BaseService, private cdr: ChangeDetectorRef, public storageservice: StorageService,) {
     this.username = storageservice.getUsername();
     this.role = storageservice.getUserRole();
@@ -98,24 +107,56 @@ export class SubscriptionBasedComponent implements OnInit {
       { value: '12', name: 'December' }
     ];
   }
+  // onMonthChange() {
+  //   if (this.selectedMonth !== '0') {
+  //     this.selectedMonthName = this.months.find(month => month.value === this.selectedMonth)?.name || '';
+  //     this.isDateDisabled = false;
+  //     this.generateDates(this.selectedMonthName);
+  //   } else {
+  //     this.isDateDisabled = true;
+  //     this.Date = [];
+  //   }
+  // }
+
+
   onMonthChange() {
     if (this.selectedMonth !== '0') {
       this.selectedMonthName = this.months.find(month => month.value === this.selectedMonth)?.name || '';
       this.isDateDisabled = false;
-      this.generateDates(this.selectedMonthName);
+
+      const currentDate = new Date();
+      const currentYear = currentDate.getFullYear();
+      const isBeforeCurrentYear = this.selectedYear < currentYear;
+
+      if (isBeforeCurrentYear) {
+        // Show all weeks for previous years
+        this.Date = [
+          { value: '04', name: 'All', isEnabled: true },
+          { value: '01', name: '07 ' + this.selectedMonthName, isEnabled: true },
+          { value: '02', name: '14 ' + this.selectedMonthName, isEnabled: true },
+          { value: '03', name: '21 ' + this.selectedMonthName, isEnabled: true },
+        ];
+        this.selectedDate = '04';
+      } else {
+        this.generateDates(this.selectedMonthName);
+        const currentWeek = this.calculateCurrentWeek(currentDate, this.selectedMonth);
+        this.selectedDate = currentWeek;
+      }
     } else {
       this.isDateDisabled = true;
       this.Date = [];
     }
+    // this.onVisible()
   }
-  generateDates(selectedMonthName: string) {
-    this.Date = [
-      { value: '1', name: '07 ' + selectedMonthName },
-      { value: '2', name: '14 ' + selectedMonthName },
-      { value: '3', name: '21 ' + selectedMonthName },
-      { value: '4', name: 'All' }
-    ];
-  }
+
+  // generateDates(selectedMonthName: string) {
+  //   this.Date = [
+  //     { value: '1', name: '07 ' + selectedMonthName },
+  //     { value: '2', name: '14 ' + selectedMonthName },
+  //     { value: '3', name: '21 ' + selectedMonthName },
+  //     { value: '4', name: 'All' }
+  //   ];
+  // }
 
   generateYears() {
     const startYear = 2012;
@@ -139,7 +180,79 @@ export class SubscriptionBasedComponent implements OnInit {
         return 'Unknown Type'; // Optional: Handle unexpected types
     }
   }
+  generateDates(selectedMonthName: string) {
+    console.log(selectedMonthName);
+    const currentWeek = this.calculateCurrentWeek(this.currentDate, this.currentMonth);
+    const isCurrentMonth = this.selectedMonth === this.currentDate.getMonth() + 1;
+    const isBeforeCurrentMonth = this.selectedMonth < this.currentDate.getMonth() + 1;
+    const isAfterCurrentMonth = this.selectedMonth > this.currentDate.getMonth() + 1;
 
+    if (isAfterCurrentMonth) {
+      console.log('11111111');
+      this.Date = [];
+      return;
+    }
+
+    this.Date = [
+
+      {
+        value: '04',
+        name: 'All',
+        isEnabled: isBeforeCurrentMonth,
+        cmonth: this.currentMonth,
+        cdate: this.dayOfMonth,
+        cvalue: 28
+      },
+      {
+        value: '01',
+        name: '07 ' + this.selectedMonthName,
+        isEnabled: isBeforeCurrentMonth || currentWeek == '01',
+        cmonth: this.currentMonth,
+        cdate: this.dayOfMonth,
+        cvalue: 7
+      },
+      {
+        value: '02',
+        name: '14 ' + this.selectedMonthName,
+        isEnabled: isBeforeCurrentMonth || currentWeek == '02',
+        cmonth: this.currentMonth,
+        cdate: this.dayOfMonth,
+        cvalue: 14
+      },
+      {
+        value: '03',
+        name: '21 ' + this.selectedMonthName,
+        isEnabled: isBeforeCurrentMonth || currentWeek == '03',
+        cmonth: this.currentMonth,
+        cdate: this.dayOfMonth,
+        cvalue: 21
+      },
+    ];
+    if (isBeforeCurrentMonth) {
+      console.log('222222222');
+      this.selectedDate = '04';
+      console.log(this.selectedDate);
+    }
+  }
+  calculateCurrentWeek(date: Date, selectedMonth: string) {
+    console.log(date);
+    console.log(selectedMonth);
+    console.log('1111111111111111currentWeek', date);
+    const currentMonth = (date.getMonth() + 1).toString().padStart(2, '0');
+    const currentDay = date.getDate();
+    if (currentMonth === selectedMonth) {
+      if (currentDay >= 7 && currentDay <= 14) {
+        return '01';
+      } else if (currentDay >= 15 && currentDay <= 21) {
+        return '02';
+      } else if (currentDay >= 22 && currentDay <= 29) {
+        return '03';
+      } else {
+        return '04';
+      }
+    }
+    return '04';
+  }
   onNoClick(): void {
     this.dialogRef.close(this.returndata);
   }
@@ -167,16 +280,16 @@ export class SubscriptionBasedComponent implements OnInit {
     this.operatorid = operator.value;
     console.log(this.operatorid);
 
- 
+
   }
   displayOperator(operator: any): string {
     return operator ? operator.name : '';
   }
- 
+
 
   getWeeklyActiveDeactiveReport(type: number) {
     this.processingSwal();
-    this.userService.getWeeklyActiveOrDeactiveSubscriptionPDFReport(this.role, this.username, this.selectedMonth, this.selectedYear, this.selectedweek, this.isActive, type)
+    this.userService.getWeeklyActiveOrDeactiveSubscriptionPDFReport(this.role, this.username, this.selectedMonth, this.selectedYear, this.selectedDate, this.isActive, type)
       .subscribe((x: Blob) => {
         if (type == 1) {
           this.reportMaking(x, `WEEKLY  ${this.isActive ? 'Active' : 'Deactive'} SUBCRIPTION REPORT - [ ${this.selectedMonth} -  ${this.selectedMonthName}].pdf`.toUpperCase(), "application/pdf");
@@ -191,7 +304,7 @@ export class SubscriptionBasedComponent implements OnInit {
 
   // ============================================================weekly Subscription above=========================
 
-  
+
 
 
   getBasePackageReport(type: number) {
@@ -214,7 +327,7 @@ export class SubscriptionBasedComponent implements OnInit {
 
 
   // ====================================================================Base Subscription Above========================
-  
+
 
   getAddonPackageReport(type: number) {
     this.processingSwal();
@@ -234,14 +347,14 @@ export class SubscriptionBasedComponent implements OnInit {
   }
 
   // -------------------------------------------------------Alacarte Subscription -----------------------------------
-  
+
 
 
   getAlacartePackageReport(type: number) {
     this.processingSwal();
     this.userService.getasOnDateAlacarteActiveOrDeactiveSubscriptionPDFReport(this.role, this.username, this.cur_date, this.isActive, type)
       .subscribe((x: Blob) => {
-       
+
         const operatorName = this.selectedOperator?.name || 'ALL OPERATOR';
         if (type == 1) {
           this.reportMaking(x, `As On Date   ${this.isActive ? 'Active' : 'Deactive '}  ${this.type} Subscription History REPORT - [ ${operatorName} -  ${this.cur_date}].pdf`.toUpperCase(), "application/pdf");
@@ -349,7 +462,7 @@ export class SubscriptionBasedComponent implements OnInit {
     this.processingSwal();
     this.userService.getasOnDateAllProductActiveOrDeactiveSubscriptionReport(this.role, this.username, this.operatorid, this.cur_date, this.isActive, type)
       .subscribe((x: Blob) => {
- 
+
         const operatorName = this.selectedOperator?.name || 'ALL OPERATOR';
         if (type == 1) {
           this.reportMaking(x, `As On Date   ${this.isActive ? 'Active' : 'Deactive '}  ${this.type} Subscription History REPORT - [ ${operatorName} -  ${this.cur_date}].pdf`.toUpperCase(), "application/pdf");

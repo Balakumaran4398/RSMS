@@ -51,8 +51,9 @@ export class DistributorMasterComponent {
         debounceMs: 200, 
       },
     },
-    paginationPageSize: 10,
-    paginationPageSizeSelector:[10,20,50],
+    paginationPageSize: 100,
+    paginationPageSizeSelector: [10, 20, 50],
+
     pagination: true,
   };
 

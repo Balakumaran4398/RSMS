@@ -190,14 +190,22 @@
                             <span for="">Select Date</span>
                         </div>
                         <div class="col-12 col-md-6">
-                            <select name="date" id="date" [(ngModel)]="selectedweek" [disabled]="isDateDisabled">
+                            <!-- <select name="date" id="date" [(ngModel)]="selectedweek" [disabled]="isDateDisabled">
                                 <option value="0" selected>Select Week</option>
                                 <option *ngFor="let date of Date" [value]="date.value">{{ date.name }}
                                 </option>
                             </select>
                             <div *ngIf="submitted && !selectedweek" class="text-danger" style="font-size: small;">
                                 Week is required
-                            </div>
+                            </div> -->
+
+                            <select name="date" id="date" [(ngModel)]="selectedDate" [disabled]="isDateDisabled">
+                                <option value="0" disabled>Select Date</option>
+                                <option *ngFor="let date of Date" [value]="date.value"
+                                    [disabled]="!date.isEnabled && selectedMonth ==date.cmonth && date.cdate/7 <= date.cvalue/7">
+                                    {{date.name }}
+                                </option>
+                            </select>
                         </div>
                     </div>
                     <div class="input_box display1 mb-3">
