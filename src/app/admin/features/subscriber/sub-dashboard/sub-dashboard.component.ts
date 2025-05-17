@@ -356,11 +356,14 @@ export class SubDashboardComponent implements OnInit {
   }
   sublcoBalance: any;
   sublcoInfo: any;
+  sublcoDiscount: any;
+  retailername: any;
   subLCOdetails() {
     this.userservice.getSublcoDetails(this.role, this.username).subscribe((data: any) => {
       console.log(data);
       this.lcoDeatails = data;
       this.retailerId = this.lcoDeatails?.retailerid;
+      this.retailername = this.lcoDeatails?.retailername;
       this.sublcoBalance = this.lcoDeatails?.balance;
       this.Sublcopermissionlist = this.lcoDeatails?.permissionlist;
       console.log("Sublcopermissionlist", this.Sublcopermissionlist);
@@ -373,7 +376,7 @@ export class SubDashboardComponent implements OnInit {
       this.addsmartcard = this.Sublcopermissionlist.add_smartcard;
       this.sublcoInfo = this.Sublcopermissionlist.info;
       this.wallet = this.Sublcopermissionlist.wallet;
-
+      this.sublcoDiscount = this.lcoDeatails?.sublcodiscount;
       console.log('wallet', this.wallet);
       console.log('subAddonAdd', this.subAddonAdd);
       console.log('ADD SMARTCARD', this.addsmartcard);
@@ -2087,6 +2090,8 @@ export class SubDashboardComponent implements OnInit {
     this.confirmation = true;
     this.isConfirmationComplete = true;
     console.log(this.billTypeValue)
+    let selectedpacklistValue = this.role === 'ROLE_SUBLCO' ? this.rowData1 : this.rows;
+
     let requestBody = {
       role: this.role,
       username: this.username,
@@ -2095,8 +2100,8 @@ export class SubDashboardComponent implements OnInit {
       smartcard: this.subdetailsList.smartcard,
       type: 10,
       managepacklist: this.rowData1,
-      // selectedpacklist: this.rows,
-      selectedpacklist: this.rowData1,
+      selectedpacklist: selectedpacklistValue,
+      // selectedpacklist: this.rowData1,
       retailerid: this.operatorId || this.retailerId || 0,
       iscollected: this.iscollected,
       comment: this.comment || '',
@@ -2146,6 +2151,8 @@ export class SubDashboardComponent implements OnInit {
     console.log('row12    recharge1   ----------  222222222222222222222', this.rowData1)
     this.confirmation = true;
     this.isConfirmationComplete = true;
+    let selectedpacklistValue = this.role === 'ROLE_SUBLCO' ? this.rows : this.rowData1 ;
+
     let requestBody = {
       role: this.role,
       username: this.username,
@@ -2154,8 +2161,8 @@ export class SubDashboardComponent implements OnInit {
       smartcard: this.subdetailsList.smartcard,
       type: 10,
       managepacklist: this.rowData1,
-      selectedpacklist: this.rows,
-      // selectedpacklist: this.rowData1,
+      // selectedpacklist: this.rows,
+      selectedpacklist: selectedpacklistValue,
       retailerid: this.operatorId || this.retailerId || 0,
       iscollected: this.iscollected,
       comment: this.comment || '',
@@ -2294,7 +2301,7 @@ export class SubDashboardComponent implements OnInit {
     console.log(this.f_date);
     this.plandata = this.plantype || this.f_date || 4
     console.log('plandata', this.plandata);
-    let requestBody = { 
+    let requestBody = {
       role: this.role,
       username: this.username,
       plantype: this.selectedRechargetype,
@@ -2432,7 +2439,7 @@ export class SubDashboardComponent implements OnInit {
   }
 
   onRechargeType() {
-    
+
     this.rechargeTypeDialog = true;
     console.log('scroll--11');
 

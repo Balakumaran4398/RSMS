@@ -258,14 +258,18 @@ export class DiscountdialogComponent implements OnInit {
 
       console.log(plan);
 
-      // const msoAmount = plan?.mso_amount || 0;
-      // const currentAmount = plan?.currentAmount || 0;
-
-      if (plan.mso_amount > plan.currentAmount) {
-        this.errorMessage = `Amount must be at least Rs.${plan.mso_amount}.`;
-        return;
+      if (plan.msoamount > plan.currentAmount) {
+        console.log('1111111111111111111111111111111111111111')
+        this.errorMessage = `Amount must be at least Rs.${plan.msoamount}.`;
+        console.log('1111111111111111111111111111111111111111', this.errorMessage)
       }
 
+
+      if (plan.msoamount > plan.currentAmount) {
+        this.errorMessage = `Amount must be at least Rs.${plan.msoamount} for Plan ID: ${plan.id}.`;
+        this.swal.Error(this.errorMessage); // show SweetAlert error popup
+        return; 
+      }
       // if (plan.discount > plan.lcoCommission) {
       //   this.errorMessage = `Amount must be at least Rs.${plan.lcoCommission}.`;
       //   this.swal.Error(this.errorMessage);

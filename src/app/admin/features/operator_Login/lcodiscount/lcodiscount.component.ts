@@ -192,8 +192,8 @@ export class LcodiscountComponent implements OnInit, AfterViewInit {
         { headerName: "S.No", valueGetter: 'node.rowIndex+1', width: 90, },
         { headerName: 'PACKAGE NAME', width: 200, field: 'product_name', },
         { headerName: 'CUSTOMER AMOUNT', width: 250, field: 'customer_amount' },
-        { headerName: 'LCO-COMMISION', width: 200, field: 'new_commission_value' },
         { headerName: 'MSO RATE', field: 'mso_amount', width: 150, },
+        { headerName: 'LCO-COMMISION', width: 200, field: 'new_commission_value' },
         { headerName: 'DISCOUNT', width: 150, field: 'discount_value', },
         { headerName: 'PERCENTAGE', width: 150, field: 'ispercentage', },
         {
@@ -223,8 +223,8 @@ export class LcodiscountComponent implements OnInit, AfterViewInit {
         { headerName: "S.No", valueGetter: 'node.rowIndex+1', width: 90, },
         { headerName: 'PACKAGE NAME', width: 200, field: 'product_name', },
         { headerName: 'CUSTOMER AMOUNT', width: 250, field: 'customer_amount', },
-        { headerName: 'LCO-COMMISION', width: 200, field: 'new_commission_value', },
         { headerName: 'MSO RATE', field: 'mso_amount', width: 200, },
+        { headerName: 'LCO-COMMISION', width: 200, field: 'new_commission_value', },
         { headerName: 'DISCOUNT', width: 250, field: 'discount_value', },
         { headerName: 'PERCENTAGE', width: 250, field: 'ispercentage', },
   {
@@ -286,8 +286,8 @@ export class LcodiscountComponent implements OnInit, AfterViewInit {
         { headerName: "S.No", valueGetter: 'node.rowIndex+1', width: 100, },
         { headerName: 'PACKAGE NAME', width: 300, field: 'package_name', },
         { headerName: 'RATE', width: 300, field: 'customer_amount', },
-        { headerName: 'LCO-COMMISION', width: 300, field: 'lco_commission' },
         { headerName: 'MSO RATE', field: 'mso_amount', width: 300, },
+        { headerName: 'LCO-COMMISION', width: 300, field: 'lco_commission' },
         {
           headerName: 'ACTION', field: '', width: 290, filter: false,
           cellRenderer: (params: any) => {

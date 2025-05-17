@@ -295,8 +295,8 @@ export class DistributordiscountComponent implements OnInit {
 
     { headerName: "AMOUNT", field: 'packagerate', width: 200, },
     { headerName: "MSO AMOUNT", field: 'msoamount', width: 200, },
-    { headerName: "COMMISSION", field: 'subdiscommission', width: 200, },
     { headerName: "LCO AMOUNT	", field: 'subdisamt', width: 200, },
+    { headerName: "COMMISSION", field: 'subdiscommission', width: 200, },
     {
       headerName: "ACTION", width: 200, cellRenderer: (params: any) => {
         const editButton = document.createElement('button');

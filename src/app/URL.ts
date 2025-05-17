@@ -9,8 +9,8 @@ export default class URLs {
         // return 'http://192.168.1.102:8081/api/auth';             //JAYA AKKA    
         // return 'http://192.168.1.112:8585/api/auth';             //BALA
         // return 'http://192.168.1.111:8586/api/auth';             //SUBHA
-        return 'http://192.168.70.201:8585/rsms/api/auth';          //QC
-        // return 'http://103.183.47.212:8585/rsms/api/auth';       //103/
+        // return 'http://192.168.70.201:8585/rsms/api/auth';          //QC
+        return 'http://103.183.47.212:8585/rsms/api/auth';       //103
 
         // return `http://${host}:8585/rsms/api/auth`;              // HOST      
         // return 'http://4kdigital.ridsys.in:8585/rsms/api/auth';   //4k
@@ -25,8 +25,12 @@ export default class URLs {
         // return "http://192.168.1.102:8081/api";              //JAYA AKKA 
         // return "http://192.168.1.112:8585/api";              //BALA
         // return "http://192.168.1.111:8586/api";              //SUBHA
-        return "http://192.168.70.201:8585/rsms/api";           //QC
-        // return "http://103.183.47.212:8585/rsms/api";        //103
+        // return "http://192.168.70.201:8585/rsms/api";           //QC
+        return "http://103.183.47.212:8585/rsms/api";        //103
+
+
+
+        
 
         // return `http://${host}:8585/rsms/api`;             // HOST
         // return "http://4kdigital.ridsys.in:8585/rsms/api";   // 4k

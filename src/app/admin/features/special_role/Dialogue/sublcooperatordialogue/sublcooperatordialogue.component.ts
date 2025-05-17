@@ -272,9 +272,9 @@ export class SublcooperatordialogueComponent implements OnInit {
       this.columnDefs = [
         { headerName: "S.No", lockPosition: true, valueGetter: 'node.rowIndex+1', cellClass: 'locked-col', width: 80, suppressNavigable: true, sortable: false, filter: false },
         { headerName: "PACKAGE NAME", field: 'product_name', width: 300 },
-        { headerName: "SUB LCO RATE	", field: 'discount_value', width: 250 },
         { headerName: "AMOUNT", field: 'customer_amount', width: 250 },
         { headerName: "MSO AMOUNT", field: 'mso_amount', width: 250 },
+        { headerName: "SUB LCO RATE	", field: 'discount_value', width: 250 },
         { headerName: "LCO COMMISION", field: 'lco_commission_amount', width: 250 },
         {
           headerName: 'ACTION', field: '', width: 150, filter: false,
