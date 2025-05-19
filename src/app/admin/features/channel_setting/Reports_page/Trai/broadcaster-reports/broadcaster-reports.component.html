@@ -65,7 +65,7 @@
                             <label for="">Broadcaster</label>
                         </div>
                         <div class="col-12 col-md-6">
-                            <input type="text" placeholder="Select a Broadcaster" [(ngModel)]="broadcastername"
+                            <!-- <input type="text" placeholder="Select a Broadcaster" [(ngModel)]="broadcastername"
                                 (input)="onSearchBroadcaster($event)" [matAutocomplete]="auto" class="example-input">
 
                             <mat-autocomplete #auto="matAutocomplete">
@@ -74,7 +74,16 @@
                                     (click)="onSelectionBroadcaster(casItem)">
                                     {{ casItem.name }}
                                 </mat-option>
-                            </mat-autocomplete>
+                            </mat-autocomplete> -->
+
+                            <select id="broadcaster" style="color: rgb(17, 0, 0);" [(ngModel)]="broadcastername">
+                                <option value="0" selected style="color: rgb(19, 17, 17);">Select a Broadcaster</option>
+                                <option *ngFor="let casItem of broadcasterList" [value]="casItem.id"
+                                    (click)="onSelectionBroadcaster(casItem)">
+                                    {{ casItem.broadcastername }}
+                                </option>
+                            </select>
+
                             <div *ngIf="submitted && !broadcastername" class="text-danger" style="font-size: small;">
                                 Broadcaster is required
                             </div>
@@ -301,7 +310,7 @@
         <div class="col-md-12 Head d-flex justify-content-center align-items-center mb-3">
             <span class="span">Over All Base Product / Universal Count</span>
         </div>
-        <div class="card col-md-12 d-block justify-content-center align-items-center mb-3"
+        <div class="card col-md-12 d-block justify-content-center align-items-center mb-3 onlinebox"
             style="border: 1px solid #055478;padding: 1rem;">
             <div class="col-12  display justify-content-center align-items-center">
                 <div class="col-12 col-md-12  justify-content-center align-items-center  ">
@@ -483,7 +492,7 @@
         <div class="col-md-12 Head d-flex justify-content-center align-items-center mb-3">
             <span class="span">Monthly Broadcaster Caswise Report</span>
         </div>
-        <div class="card col-md-12 d-block justify-content-center align-items-center mb-3"
+        <div class="card col-md-12 d-block justify-content-center align-items-center mb-3 onlinebox"
             style="border: 1px solid #055478;padding: 1rem;">
             <div class="col-12  display justify-content-center align-items-center">
                 <div class="col-12 col-md-12  justify-content-center align-items-center  ">
@@ -543,7 +552,7 @@
                             <label for="">Broadcaster</label>
                         </div>
                         <div class="col-12 col-md-6">
-                            <input type="text" placeholder="Select a Broadcaster" [(ngModel)]="broadcastername"
+                            <!-- <input type="text" placeholder="Select a Broadcaster" [(ngModel)]="broadcastername"
                                 (input)="onSearchBroadcaster($event)" [matAutocomplete]="auto" class="example-input">
 
                             <mat-autocomplete #auto="matAutocomplete">
@@ -552,7 +561,15 @@
                                     (click)="onSelectionBroadcaster(casItem)">
                                     {{ casItem.name }}
                                 </mat-option>
-                            </mat-autocomplete>
+                            </mat-autocomplete> -->
+
+                            <select id="broadcaster" style="color: rgb(17, 0, 0);" [(ngModel)]="broadcastername">
+                                <option value="0" selected style="color: rgb(19, 17, 17);">Select a Broadcaster</option>
+                                <option *ngFor="let casItem of broadcasterList" [value]="casItem.id"
+                                    (click)="onSelectionBroadcaster(casItem)">
+                                    {{ casItem.broadcastername }}
+                                </option>
+                            </select>
                             <div *ngIf="submitted && !broadcastername" class="text-danger" style="font-size: small;">
                                 Broadcaster is required
                             </div>
@@ -563,7 +580,7 @@
                             <label for="">CAS</label>
                         </div>
                         <div class="col-12 col-md-6">
-                            <input type="text" placeholder="Search an CAS" (input)="onSearchCas($event)"
+                            <!-- <input type="text" placeholder="Search an CAS" (input)="onSearchCas($event)"
                                 [value]="casname" [matAutocomplete]="auto1" class="example-input">
 
                             <mat-autocomplete #auto1="matAutocomplete">
@@ -572,8 +589,17 @@
                                     (click)="onSelectioncas(casItem)">
                                     {{ casItem.name }}
                                 </mat-option>
-                            </mat-autocomplete>
-                            <div *ngIf="submitted && !castype" class="text-danger" style="font-size: small;">
+                            </mat-autocomplete> -->
+
+                            <select id="cas" style="color: rgb(17, 0, 0);" [(ngModel)]="casname">
+                                <option value="0" selected style="color: rgb(19, 17, 17);">Select a Cas type</option>
+                                <option *ngFor="let casItem of filteredCasList" [value]="casItem.id"
+                                    (click)="onSelectioncas(casItem)">
+                                    {{ casItem.name }}
+                                </option>
+                            </select>
+
+                            <div *ngIf="submitted && !casname" class="text-danger" style="font-size: small;">
                                 Cas is required
                             </div>
                         </div>

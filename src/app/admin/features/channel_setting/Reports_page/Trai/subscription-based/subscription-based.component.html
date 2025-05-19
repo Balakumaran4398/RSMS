@@ -27,6 +27,15 @@
                                         {{ operator.name }}
                                     </mat-option>
                                 </mat-autocomplete>
+
+                                <!-- <select id="ltb" style="color: rgb(17, 0, 0);" [value]="selectedOperator?.name">
+                                    <option value="0" selected style="color: rgb(19, 17, 17);">  All Operator
+                                    </option>
+                                    <option *ngFor="let operator of filteredOperators" [value]="operator.name"
+                                        (click)="onoperatorchange(operator)">
+                                        {{ operator.name }}
+                                    </option>
+                                </select> -->
                             </mat-form-field>
                             <div *ngIf="submitted && !operatorid" class="text-danger" style="font-size: small;">
                                 Operator is required
@@ -155,7 +164,7 @@
             style="border: 1px solid #055478;padding: 1rem;">
             <div class="col-12 display align-items-center">
                 <div class="col-12 col-md-12  justify-content-center align-items-center  ">
-                    
+
                     <div class="input_box display mb-3">
                         <div class="col-12 col-md-6">
                             <span for="">Select year</span>

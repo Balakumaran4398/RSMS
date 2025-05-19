@@ -62,7 +62,7 @@ export class BroadcasterReportsComponent implements OnInit {
       },
     },
     paginationPageSize: 10,
-    paginationPageSizeSelector:[10,20,50],
+    paginationPageSizeSelector: [10, 20, 50],
     pagination: true,
     overlayNoRowsTemplate: `<span class="custom-overlay">No data to display</span>`,
   }
@@ -86,7 +86,6 @@ export class BroadcasterReportsComponent implements OnInit {
     // this.dialogRef.close(this.returndata);
   }
   ngOnInit(): void {
-
     this.userService.Cas_type(this.role, this.username).subscribe((data) => {
       this.cas = data;
       console.log('dfdsfdsfsd', this.cas);
@@ -95,16 +94,17 @@ export class BroadcasterReportsComponent implements OnInit {
         name: item.casname
       }));
       this.filteredCasList = this.cas;
-      console.log(this.cas);
-
+      console.log(this.filteredCasList);
     });
-
     this.userService.BroadcasterList(this.role, this.username, 1).subscribe((data: any) => {
       console.log(data);
-      this.broadcasterList = data.map((item: any) => ({
-        name: item.broadcastername,
-        value: item.id,
-      }));
+      // this.broadcasterList = data.map((item: any) => ({
+      //   name: item.broadcastername,
+      //   value: item.id,
+      // }));
+      this.broadcasterList = data;
+      console.log(this.broadcasterList);
+
     })
     const currentDate = new Date();
 
@@ -113,7 +113,6 @@ export class BroadcasterReportsComponent implements OnInit {
     // const currentWeek = this.calculateCurrentWeek(currentDate, this.selectedMonth);
     // this.selectedDate = currentWeek;
     console.log('current week', this.selectedDate);
-
     this.selectedMonth = currentMonth;
     this.selectedYear = currentYear;
     this.generateMonths();
@@ -121,13 +120,33 @@ export class BroadcasterReportsComponent implements OnInit {
     this.setReportTitle();
     this.onColumnDefs();
     this.selectedMonthName = this.months.find(month => month.value === this.selectedMonth)?.name || '';
-
     // this.calculateCurrentWeek(currentDate, currentMonth);
     this.generateDates(this.selectedMonthName)
     this.onVisible();
     this.onMonthChange();
   }
 
+  ngOnDestroy(): void {
+    ($('#broadcaster') as any).select2('destroy');
+    ($('#cas') as any).select2('destroy');
+  }
+
+  ngAfterViewInit(): void {
+    $('#broadcaster').select2({
+      placeholder: 'Select Broadcaster',
+      allowClear: true
+    });
+    $('#broadcaster').on('change', (event: any) => {
+      this.broadcastername = event.target.value;
+    });
+    $('#cas').select2({
+      placeholder: 'Select CAS',
+      allowClear: true
+    });
+    $('#cas').on('change', (event: any) => {
+      this.casname = event.target.value;
+    });
+  }
   setReportTitle() {
     switch (this.allType) {
       case '1':
@@ -265,6 +284,7 @@ export class BroadcasterReportsComponent implements OnInit {
   }
   onSelectionBroadcaster(selectedValue: any) {
     console.log(selectedValue);
+    // this.broadcasterid = selectedValue;
     this.broadcasterid = selectedValue.value;
     this.broadcastername = selectedValue.name;
     console.log(this.broadcasterid);
@@ -487,6 +507,8 @@ export class BroadcasterReportsComponent implements OnInit {
   }
 
   getExcel(event: number) {
+    console.log('dfsfdsdsfidsjkfuji', this.broadcasterid);
+
     console.log(event);
     if (event === 0) {
       this.monthlyReportCastitle = 'CAS GROUPED';
@@ -502,12 +524,12 @@ export class BroadcasterReportsComponent implements OnInit {
       return; // Exit if event is not matched
     }
     this.submitted = true;
-    if (!this.selectedYear && !this.selectedMonth && !this.selectedDate && !this.broadcasterid) {
+    if (!this.selectedYear && !this.selectedMonth && !this.selectedDate && !this.broadcastername) {
       this.submitted = true;
     }
 
     this.swal.Loading();
-    this.userService.getBroadcasterReport(this.role, this.username, this.selectedMonth, this.selectedYear, this.selectedDate, this.broadcasterid, event, 2)
+    this.userService.getBroadcasterReport(this.role, this.username, this.selectedMonth, this.selectedYear, this.selectedDate, this.broadcastername, event, 2)
       .subscribe((x: Blob) => {
         const blob = new Blob([x], { type: 'application/xlsx' });
         const data = window.URL.createObjectURL(blob);
@@ -551,12 +573,12 @@ export class BroadcasterReportsComponent implements OnInit {
     }
     console.log(this.monthlyReportCastitle);
     this.submitted = true;
-    if (!this.selectedYear && !this.selectedMonth && !this.selectedDate && !this.broadcasterid) {
+    if (!this.selectedYear && !this.selectedMonth && !this.selectedDate && !this.broadcastername) {
       this.submitted = true;
     }
 
     this.swal.Loading();
-    this.userService.getBroadcasterPDFReport(this.role, this.username, this.selectedMonth, this.selectedYear, this.selectedDate, this.broadcasterid, event, 1)
+    this.userService.getBroadcasterPDFReport(this.role, this.username, this.selectedMonth, this.selectedYear, this.selectedDate, this.broadcastername, event, 1)
       .subscribe((x: Blob) => {
         const blob = new Blob([x], { type: 'application/pdf' });
         const data = window.URL.createObjectURL(blob);
@@ -861,7 +883,7 @@ export class BroadcasterReportsComponent implements OnInit {
       return;
     }
     this.submitted = true;
-    if (!this.selectedYear && !this.selectedMonth && !this.selectedDate && !this.broadcasterid && !this.castype) {
+    if (!this.selectedYear && !this.selectedMonth && !this.selectedDate && !this.broadcastername && !this.casname) {
       this.submitted = true;
     }
     Swal.fire({
@@ -872,7 +894,7 @@ export class BroadcasterReportsComponent implements OnInit {
         Swal.showLoading(null);
       }
     });
-    this.userService.getMonthlyBroadcasterCaswiseExcelReport(this.role, this.username, this.selectedMonth, this.selectedYear, this.selectedDate, this.broadcasterid, event, this.castype, 2)
+    this.userService.getMonthlyBroadcasterCaswiseExcelReport(this.role, this.username, this.selectedMonth, this.selectedYear, this.selectedDate, this.broadcastername, event, this.casname, 2)
       .subscribe((x: Blob) => {
         const blob = new Blob([x], { type: 'application/xlsx' });
         const data = window.URL.createObjectURL(blob);
@@ -906,7 +928,7 @@ export class BroadcasterReportsComponent implements OnInit {
       return;
     }
     this.submitted = true;
-    if (!this.selectedYear && !this.selectedMonth && !this.selectedDate && !this.broadcasterid && !this.castype) {
+    if (!this.selectedYear && !this.selectedMonth && !this.selectedDate && !this.broadcastername && !this.casname) {
       this.submitted = true;
     }
     Swal.fire({
@@ -917,7 +939,7 @@ export class BroadcasterReportsComponent implements OnInit {
         Swal.showLoading(null);
       }
     });
-    this.userService.getMonthlyBroadcasterCaswisePDFReport(this.role, this.username, this.selectedMonth, this.selectedYear, this.selectedDate, this.broadcasterid, event, this.castype, 1)
+    this.userService.getMonthlyBroadcasterCaswisePDFReport(this.role, this.username, this.selectedMonth, this.selectedYear, this.selectedDate, this.broadcastername, event, this.casname, 1)
       // .subscribe((data: any) => {
       //   console.log(data);
       // })

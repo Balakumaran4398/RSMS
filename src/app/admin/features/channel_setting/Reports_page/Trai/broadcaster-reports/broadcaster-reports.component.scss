@@ -102,4 +102,26 @@ span {
         display: flex;
         align-items: baseline;
     }
+
+
+}
+
+// ================================Select 2===============================
+
+
+::ng-deep .select2-container {
+    width: 300px !important;
+}
+
+::ng-deep .select2-container .select2-selection--single {
+    height: 45px !important;
+    margin-top: 1%;
+}
+
+::ng-deep .select2-container .select2-selection--single .select2-selection__rendered {
+    margin-top: 7px;
+}
+
+::ng-deep .select2-container--default .select2-selection--single .select2-selection__arrow {
+    top: 10px;
 }

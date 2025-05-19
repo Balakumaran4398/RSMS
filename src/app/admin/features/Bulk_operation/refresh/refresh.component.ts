@@ -15,7 +15,7 @@ declare var $: any;
   templateUrl: './refresh.component.html',
   styleUrls: ['./refresh.component.scss']
 })
-export class RefreshComponent implements OnDestroy{
+export class RefreshComponent implements OnDestroy {
   username: any;
   role: any;
   cas: any;
@@ -57,7 +57,7 @@ export class RefreshComponent implements OnDestroy{
       },
     },
     paginationPageSize: 10,
-    paginationPageSizeSelector:[10,20,50],    
+    paginationPageSizeSelector: [10, 20, 50],
     pagination: true,
   }
 
@@ -119,9 +119,12 @@ export class RefreshComponent implements OnDestroy{
     this.date = new Date().toISOString().split('T')[0];
     this.selectedDate = this.date;
     console.log('11111111111');
-    
+
     this.refresh();
-    this.operatorlist();
+    if (this.role == 'ROLE_SUBLCO') {
+      console.log('ADFGHJKRTYUJKL ', this.role);
+      this.subLCOdetails();
+    }
   }
   ngOnDestroy(): void {
     ($('#ltb') as any).select2('destroy');
@@ -135,6 +138,20 @@ export class RefreshComponent implements OnDestroy{
       this.operatorid = event.target.value;
       this.onSubscriberStatusChange(this.operatorid);
     });
+  }
+  lcoDeatails: any;
+  retailerId: any;
+  subLCOdetails() {
+    this.userservice.getSublcoDetails(this.role, this.username).subscribe((data: any) => {
+      this.lcoDeatails = data;
+      this.retailerId = this.lcoDeatails?.retailerid;
+
+
+
+
+      console.log('retailerId', this.retailerId);
+
+    })
   }
 
   filterOperators(event: any): void {
@@ -183,7 +200,7 @@ export class RefreshComponent implements OnDestroy{
   Submit() {
     this.submitted = true;
     this.swal.Loading();
-    this.userservice.BulkReactivationByOperatorId(this.role, this.username, this.operatorid, 0, 3, this.status)
+    this.userservice.BulkReactivationByOperatorId(this.role, this.username, this.operatorid, this.retailerId || 0, 3, this.status)
       .subscribe((res: any) => {
         this.swal.success(res?.message);
       }, (err) => {
@@ -203,7 +220,7 @@ export class RefreshComponent implements OnDestroy{
 
   refresh() {
     console.log('refresh');
-    
+
     // this.swal.Loading();
     this.userservice.getBulkRefreshList(this.role, this.username, 'Bulk Reactivate', 3)
       .subscribe(
@@ -215,7 +232,7 @@ export class RefreshComponent implements OnDestroy{
           if (!this.gridOptions.paginationPageSizeSelector.includes(rowCount)) {
             this.gridOptions.paginationPageSizeSelector.push(rowCount);
           }
-             },
+        },
         (error) => {
           if (error.status === 400) {
             this.swal.Error_400();
@@ -239,12 +256,12 @@ export class RefreshComponent implements OnDestroy{
         (response: any) => { // Expect HttpResponse<any[]>
           this.rowData = response.body;
           console.log(this.rowData);
-          
+
           const rowCount = this.rowData.length;
           if (!this.gridOptions.paginationPageSizeSelector.includes(rowCount)) {
             this.gridOptions.paginationPageSizeSelector.push(rowCount);
           }
-          
+
         }
       );
   }

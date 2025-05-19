@@ -39,6 +39,7 @@ export class SubDashboardComponent implements OnInit {
   subdetailsList: any;
   subdetails: any;
   statusdisplay: any;
+  packageStatus: any;
   subPairedboxid: any[] = [];
   subPairedsmartcard: any[] = [];
   subscriberaccounts: any[] = [];
@@ -104,6 +105,7 @@ export class SubDashboardComponent implements OnInit {
       filter: true,
       floatingFilter: true
     },
+
     paginationPageSize: 3,
     pagination: true,
   }
@@ -291,7 +293,9 @@ export class SubDashboardComponent implements OnInit {
   getPlanList() {
     this.userservice.getPlanTypeList(this.role, this.username).subscribe((data: any) => {
       console.log(data);
-      if (this.role != 'ROLE_OPERATOR' && this.role != 'ROLE_SUBLCO' && this.role != 'ROLE_SUBSCRIBER') {
+      // if (this.role != 'ROLE_OPERATOR' && this.role != 'ROLE_SUBLCO' && this.role != 'ROLE_SUBSCRIBER') {
+      if (this.role != 'ROLE_OPERATOR'  && this.role != 'ROLE_SUBSCRIBER') {
+        console.log('ROLE_OPERATOR     PLAN list');
         this.rechargetype = Object.keys(data).map(key => {
           const id = data[key];
           const name = key.replace(/\(\d+\)$/, '').trim();
@@ -299,7 +303,8 @@ export class SubDashboardComponent implements OnInit {
         });
         this.cdr.detectChanges();
       } else if (this.role == 'ROLE_OPERATOR' || this.role == 'ROLE_SUBLCO') {
-        console.log('123456789rfrd1234567', this.role);
+        console.log('ROLE_SUBLCO     PLAN list');
+
         const rawList = Object.keys(data).map(key => {
           const id = data[key];
           const name = key.replace(/\(\d+\)$/, '').trim();
@@ -315,7 +320,7 @@ export class SubDashboardComponent implements OnInit {
         });
         this.cdr.detectChanges();
       } else if (this.role == 'ROLE_SUBSCRIBER') {
-        console.log('1234567890', this.role);
+        console.log('ROLE_SUBSCRIBER     PLAN list');
         const rawList = Object.keys(data).map(key => {
           const id = data[key];
           const name = key.replace(/\(\d+\)$/, '').trim();
@@ -499,6 +504,7 @@ export class SubDashboardComponent implements OnInit {
         this.rowData = data['smartcardlist'];
         this.subdetailsList = data['subscriberdetails']
         this.statusdisplay = this.subdetailsList.statusdisplay
+        this.packageStatus = this.subdetailsList.package_status
 
         this.smartdetailList = data['smartcardlist']
         this.subscriberaccounts = data['subscriberaccounts'];
@@ -753,6 +759,7 @@ export class SubDashboardComponent implements OnInit {
           this.subPairedboxid = data['pairedboxid'];
           this.subdetails = data['subdetails'];
           this.statusdisplay = this.subdetailsList.statusdisplay
+          this.packageStatus = this.subdetailsList.package_status
           this.subPairedsmartcard = data['pairedsmartcard'];
           this.message = data['message'];
           this.noofdays = this.subdetailsList.noofdays;
@@ -979,6 +986,7 @@ export class SubDashboardComponent implements OnInit {
           this.subPairedboxid = data['pairedboxid'];
           this.subdetails = data['subdetails'];
           this.statusdisplay = this.subdetailsList.statusdisplay
+          this.packageStatus = this.subdetailsList.package_status
           this.subPairedsmartcard = data['pairedsmartcard'];
           this.message = data['message'];
           this.noofdays = this.subdetailsList.noofdays;
@@ -1194,10 +1202,9 @@ export class SubDashboardComponent implements OnInit {
       console.log(event.boxid)
       this.userservice.getQuickOperationDetailsBySmartcard(this.role, this.username, event.smartcard || event.boxid).subscribe(
         (data: any) => {
-
           this.subscriersmartcarddashoard = true;
-          this.cdr.detectChanges();
 
+          this.cdr.detectChanges();
           console.log(data);
 
           this.packageobject = data['packageobject'];
@@ -1212,6 +1219,7 @@ export class SubDashboardComponent implements OnInit {
           this.subscriberaccounts = data['subscriberaccounts'];
           this.smartcardinfo = data['smartcardinfo'];
           this.statusdisplay = this.subdetailsList.statusdisplay
+          this.packageStatus = this.subdetailsList.package_status
           this.subPairedboxid = data['pairedboxid'];
           this.subdetails = data['subdetails'];
           this.subPairedsmartcard = data['pairedsmartcard'];
@@ -1473,9 +1481,9 @@ export class SubDashboardComponent implements OnInit {
         infoIcon.className = 'fa fa-info';
         infoButton.appendChild(infoIcon);
         infoButton.title = 'Info';
-        infoButton.addEventListener('click', () => {
-          this.refreshpage(params.data);
-        });
+        // infoButton.addEventListener('click', () => {
+        //   this.refreshpage(params.data);
+        // });
         if (this.role == 'ROLE_SUBLCO' && this.sublcoInfo === true) {
           infoButton.addEventListener('click', () => {
             this.refreshpage(params.data);
@@ -1579,12 +1587,15 @@ export class SubDashboardComponent implements OnInit {
       checkboxSelection: true, isSelected: true, filter: false
     },
     {
-      headerName: 'PACKAGE NAME	', width: 300, cellStyle: { textAlign: 'left' },
+      headerName: 'PACKAGE NAME	', width: 200, cellStyle: { textAlign: 'left' },
       field: 'productname',
     },
-
     {
-      headerName: 'PRODUCT ID	', width: 360,
+      headerName: 'PRODUCT TYPE	 ', width: 250, cellStyle: { textAlign: 'center' },
+      field: 'ptype',
+    },
+    {
+      headerName: 'PRODUCT ID	', width: 200,
       field: 'casproductid',
     },
     {
@@ -1635,7 +1646,7 @@ export class SubDashboardComponent implements OnInit {
   ]
   columnDefs2: any[] = [
     {
-      headerName: "S.No", valueGetter: 'node.rowIndex+1', width: 100, headerCheckboxSelection: true, filter: false
+      headerName: "S.No", valueGetter: 'node.rowIndex+1', width: 100, filter: false
 
     },
     {
@@ -1643,15 +1654,15 @@ export class SubDashboardComponent implements OnInit {
       field: 'productname', width: 300,
     },
     {
-      headerName: 'PRODUCT TYPE	 ', width: 350, cellStyle: { textAlign: 'center' },
+      headerName: 'PRODUCT TYPE	 ', width: 250, cellStyle: { textAlign: 'center' },
       field: 'ptype',
     },
     {
-      headerName: 'PRODUCT ID	', width: 360, cellStyle: { textAlign: 'center' },
+      headerName: 'PRODUCT ID	', width: 260, cellStyle: { textAlign: 'center' },
       field: 'casproductid',
     },
     {
-      headerName: 'DAYS REMAINING	', width: 350, cellStyle: { textAlign: 'center' },
+      headerName: 'DAYS REMAINING	', width: 200, cellStyle: { textAlign: 'center' },
       field: 'noofdays',
     },
     {
@@ -1697,20 +1708,8 @@ export class SubDashboardComponent implements OnInit {
   rowData1: any[] = [];
   rowData: any[] = [];
   manageData: any;
-  onGridReady(params: any) {
-    console.log('1111111 ongridready');
-    this.gridApi = params.api;
-    this.gridApi.forEachNode((node: any) => {
-      if (node.data.ptype === 'BASE') {
-        console.log(node.data);
-        node.setSelected(true);
-      }
-    });
-    // this.refreshTable();
-    this.updatePaginationCount();
-  }
+
   reloadGridData() {
-    console.log('dfdsfdsfdf');
     if (this.gridApi) {
       this.gridApi.setRowData(this.rowData1);
     }
@@ -1723,6 +1722,18 @@ export class SubDashboardComponent implements OnInit {
       console.log("Rows shown per page:", this.currentPageSize);
       console.log("Total filtered rows:", this.totalRowsCount);
     }
+  }
+  onGridReady(params: any) {
+    console.log('1111111 ongridready');
+    this.gridApi = params.api;
+    this.gridApi.forEachNode((node: any) => {
+      if (node.data.ptype === 'BASE') {
+        console.log(node.data);
+        node.setSelected(true);
+      }
+    });
+    // this.refreshTable();
+    this.updatePaginationCount();
   }
   onGridReady1(params: any) {
     console.log('222 ongridready1');
@@ -1976,6 +1987,7 @@ export class SubDashboardComponent implements OnInit {
 
     if (rechargetype == 1) {
       this.isplantype = true;
+
       this.datetype = false;
     }
     if (rechargetype == 2) {
@@ -2151,7 +2163,7 @@ export class SubDashboardComponent implements OnInit {
     console.log('row12    recharge1   ----------  222222222222222222222', this.rowData1)
     this.confirmation = true;
     this.isConfirmationComplete = true;
-    let selectedpacklistValue = this.role === 'ROLE_SUBLCO' ? this.rows : this.rowData1 ;
+    let selectedpacklistValue = this.role === 'ROLE_SUBLCO' ? this.rows : this.rowData1;
 
     let requestBody = {
       role: this.role,

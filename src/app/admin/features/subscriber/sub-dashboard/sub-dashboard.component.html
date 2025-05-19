@@ -107,7 +107,7 @@
                         </div>
                         <div *ngIf="role == 'ROLE_SUBLCO'" class="d-flex">
                             <div class="col-6 col-md-4 d-flex justify-content-start align-items-center mb-1 text2">
-                               SUB LCO  </div>
+                                SUB LCO </div>
                             <div class="col-1 col-md-1 d-flex justify-content-center align-items-center mb-1 text2">
                                 : </div>
                             <div class="col-6 col-md-6 d-flex justify-content-start align-items-center"
@@ -192,7 +192,7 @@
                     <div class="line"></div>
                     <div class="col-12 col-md-12 ">
                         <ag-grid-angular #agGrid id="myGrid" domLayout='normal' class="ag-theme-alpine table-class"
-                            rowAnimation [gridOptions]="gridOptions2" [columnDefs]="columnDefs" [rowData]="rowData">
+                            rowAnimation [gridOptions]="gridOptions2" [columnDefs]="columnDefs" [rowData]="rowData"  >
                         </ag-grid-angular>
                     </div>
                 </div>
@@ -573,7 +573,7 @@
                                         (click)="openDialog('BASE','')">
                                         BASE CHANGE
                                     </div> -->
-                                    <div *ngIf="role != 'ROLE_SUBLCO' && !base   || (role == 'ROLE_SUBLCO' && !base && subChangeBase && !statusdisplay)"
+                                    <div *ngIf="role != 'ROLE_SUBLCO' && !base   || (role == 'ROLE_SUBLCO' && !base && subChangeBase && packageStatus== 'Expired')"
                                         class="tab mb-3 bttn" [class.active]="selectedTab === 'BASE'"
                                         (click)="openDialog('BASE','')">
                                         BASE CHANGE

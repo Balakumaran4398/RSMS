@@ -629,8 +629,8 @@ export class SubscriberdialogueComponent implements OnInit, OnDestroy {
       this.operatorId = this.lcoDeatails?.retailerid;
       this.operatorname = this.lcoDeatails?.retailername;
       this.SublcopermissionObj = this.lcoDeatails?.permissionlist;
-      console.log('dfdsfdsfjkhsdfkhdsjk',this.SublcopermissionObj);
-      
+      console.log('dfdsfdsfjkhsdfkhdsjk', this.SublcopermissionObj);
+
       this.Subwallet = this.SublcopermissionObj?.wallet;
       this.sublcoDiscount = this.lcoDeatails?.sublcodiscount;
       this.isplan = this.SublcopermissionObj.plan;
@@ -639,7 +639,7 @@ export class SubscriberdialogueComponent implements OnInit, OnDestroy {
 
 
 
-      console.log('sublcoDiscount',  this.sublcoDiscount);
+      console.log('sublcoDiscount', this.sublcoDiscount);
       console.log('Subwallet', this.Subwallet);
       console.log('PLAN', this.isplan);
       console.log('DATE', this.isdate);
@@ -1311,6 +1311,7 @@ export class SubscriberdialogueComponent implements OnInit, OnDestroy {
     this.cdr.detectChanges();
     if (rechargetype == 1) {
       this.isplantype = true;
+      this.cdr.detectChanges();
       this.datetype = false;
       const defaultPlan = this.plantype$.getValue().find(plan => plan.key === '1month');
       if (defaultPlan) {
@@ -1677,7 +1678,7 @@ export class SubscriberdialogueComponent implements OnInit, OnDestroy {
 
   refreshSmartcard() {
     this.swal.Loading();
-    this.userservice.refreshSmartcard(this.role, this.username, this.smartcardno || this.newRefreshSmartcard.smartcard, 0, 3)
+    this.userservice.refreshSmartcard(this.role, this.username, this.smartcardno || this.newRefreshSmartcard.smartcard, this.retailerId || 0, 3)
       .subscribe((res: any) => {
         // this.swal.success(res?.message);
         Swal.fire({
@@ -1728,7 +1729,7 @@ export class SubscriberdialogueComponent implements OnInit, OnDestroy {
       return;
     }
     this.swal.Loading();
-    this.userservice.pinchange(this.role, this.username, this.smartcardno, this.newpin, 3, 0)
+    this.userservice.pinchange(this.role, this.username, this.smartcardno, this.newpin, 3, this.retailerId || 0)
       .subscribe((res: any) => {
         // this.swal.success(res?.message);
         Swal.fire({
@@ -1748,7 +1749,7 @@ export class SubscriberdialogueComponent implements OnInit, OnDestroy {
   }
   pvrchange() {
     this.swal.Loading();
-    this.userservice.pvrChange(this.role, this.username, this.smartcardno, this.PVRstatus, 3, 0)
+    this.userservice.pvrChange(this.role, this.username, this.smartcardno, this.PVRstatus, 3, this.retailerId || 0)
       .subscribe((res: any) => {
         // this.swal.success(res?.message);
         Swal.fire({
@@ -1961,14 +1962,14 @@ export class SubscriberdialogueComponent implements OnInit, OnDestroy {
     let plan = this.selectedRechargetype || ''
     let plandata = this.plantype || this.f_date || 4
     // this.swal.Loading();
-    this.userservice.getBaseChangeConfirmation(this.role, this.username, this.newpackagename, plan, plandata, this.smartcardno, 8, this.operatorId || 0)
+    this.userservice.getBaseChangeConfirmation(this.role, this.username, this.newpackagename, plan, plandata, this.smartcardno, 8, this.retailerId || 0)
       .subscribe((data: any) => {
         this.changebase = data;
         this.changebase_msoAmount = data.msoAmount;
         // this.customerPayAmount = data.msoAmount;
         this.changebase_totalRefundToLco = data.totalRefundToLco;
         this.changebase_expiryDate = data.expiryDate;
-        this.customerAmount =this.changebase?.customerPayAmount
+        this.customerAmount = this.changebase?.customerPayAmount
         this.customerPayAmount = this.changebase?.customerPayAmount;
         this.excessAmount = this.changebase?.balance;
         this.oldexcessAmount = this.changebase?.billbalance;
@@ -2055,7 +2056,7 @@ export class SubscriberdialogueComponent implements OnInit, OnDestroy {
     console.log(this.f_date);
     console.log(this.plantype);
 
-    this.userservice.getFirstTimeActivationConfirmation(this.role, this.username, this.newpackagename, this.selectedRechargetype, this.f_date || this.plantype || 4, this.smartcardno, 1, 0)
+    this.userservice.getFirstTimeActivationConfirmation(this.role, this.username, this.newpackagename, this.selectedRechargetype, this.f_date || this.plantype || 4, this.smartcardno, 1, this.retailerId || 0)
       .subscribe((data: any) => {
         this.First_list = data;
         this.customerPayAmount = this.First_list?.customerPayAmount;
@@ -2182,7 +2183,7 @@ export class SubscriberdialogueComponent implements OnInit, OnDestroy {
     }
     this.errorMessage = '';
     this.swal.Loading();
-    this.userservice.boxIdChange(this.role, this.username, this.smartcardno, this.new_boxid, 0, 2)
+    this.userservice.boxIdChange(this.role, this.username, this.smartcardno, this.new_boxid, this.retailerId || 0, 2)
       .subscribe((res: any) => {
         // this.swal.success(res?.message);
         Swal.fire({
@@ -2206,7 +2207,7 @@ export class SubscriberdialogueComponent implements OnInit, OnDestroy {
       return;
     }
     this.swal.Loading();
-    this.userservice.smartcardSuspend(this.role, this.username, this.smartcardno, 0, 4, this.sus_reason)
+    this.userservice.smartcardSuspend(this.role, this.username, this.smartcardno, this.retailerId || 0, 4, this.sus_reason)
       .subscribe((res: any) => {
         // this.swal.success(res?.message);
         Swal.fire({
@@ -2226,7 +2227,7 @@ export class SubscriberdialogueComponent implements OnInit, OnDestroy {
   }
   reactivationofSmartcard() {
     this.swal.Loading();
-    this.userservice.reactivationofSmartcard(this.role, this.username, this.smartcardno, 0, 3)
+    this.userservice.reactivationofSmartcard(this.role, this.username, this.smartcardno, this.retailerId || 0, 3)
       .subscribe((res: any) => {
         // this.swal.success(res?.message);
         Swal.fire({
@@ -2246,7 +2247,7 @@ export class SubscriberdialogueComponent implements OnInit, OnDestroy {
   }
   resume() {
     this.swal.Loading();
-    this.userservice.smartcardResume(this.role, this.username, this.smartcardno, 0, 5,)
+    this.userservice.smartcardResume(this.role, this.username, this.smartcardno, this.retailerId || 0, 5,)
       .subscribe((res: any) => {
         // this.swal.success(res?.message);
         Swal.fire({
@@ -2291,7 +2292,7 @@ export class SubscriberdialogueComponent implements OnInit, OnDestroy {
   }
   cancelSmartcard() {
     this.swal.Loading();
-    this.userservice.cancelSmartcard(this.role, this.username, this.smartcardno, 2, 0, 0, 0, 1, this.cancelSubRemark || 'No Comment')
+    this.userservice.cancelSmartcard(this.role, this.username, this.smartcardno, 2, this.retailerId || 0, 0, 0, 1, this.cancelSubRemark || 'No Comment')
       .subscribe((res: any) => {
         // this.swal.success(res?.message);
         Swal.fire({
@@ -2558,7 +2559,7 @@ export class SubscriberdialogueComponent implements OnInit, OnDestroy {
   }
   pairSmartcard() {
     this.swal.Loading();
-    this.userservice.PairSmartcardOrBoxid(this.role, this.username, !this.ischeck, this.pairedSmartcard, this.subBoxid, 0, 1).subscribe((res: any) => {
+    this.userservice.PairSmartcardOrBoxid(this.role, this.username, !this.ischeck, this.pairedSmartcard, this.subBoxid, this.retailerId || 0, 1).subscribe((res: any) => {
       // this.swal.success(res?.message);
     }, (err) => {
       this.swal.Error(err?.error?.message);
@@ -2566,7 +2567,7 @@ export class SubscriberdialogueComponent implements OnInit, OnDestroy {
   }
   pairBox() {
     this.swal.Loading();
-    this.userservice.PairSmartcardOrBoxid(this.role, this.username, this.ischeck, this.subSmartcard, this.pairedBoxid, 0, 2).subscribe((res: any) => {
+    this.userservice.PairSmartcardOrBoxid(this.role, this.username, this.ischeck, this.subSmartcard, this.pairedBoxid, this.retailerId || 0, 2).subscribe((res: any) => {
       this.swal.success(res?.message);
     }, (err) => {
       this.swal.Error(err?.error?.message);
