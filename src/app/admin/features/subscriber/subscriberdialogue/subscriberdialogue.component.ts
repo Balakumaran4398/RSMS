@@ -625,6 +625,8 @@ export class SubscriberdialogueComponent implements OnInit, OnDestroy {
   subLCOdetails() {
     this.userservice.getSublcoDetails(this.role, this.username).subscribe((data: any) => {
       this.lcoDeatails = data;
+      console.log('32423432432423423432');
+      
       this.retailerId = this.lcoDeatails?.retailerid;
       this.operatorId = this.lcoDeatails?.retailerid;
       this.operatorname = this.lcoDeatails?.retailername;
@@ -1668,7 +1670,7 @@ export class SubscriberdialogueComponent implements OnInit, OnDestroy {
     //   this.swal.Error('All fields are required');
     //   return;
     // }
-    this.userservice.transferLcoToSmartcard(this.role, this.username, (this.lcoid || this.operatorId), this.lcoareaid, this.lcostreetid, this.subid_1 || this.newSubid, this.withsubscription, this.operatorId || this.retailerId || 0, 2, 0, 0, 1, this.comment || 'No Comment')
+    this.userservice.transferLcoToSmartcard(this.role, this.username, (this.lcoid || this.operatorId), this.lcoareaid, this.lcostreetid, this.subid_1 || this.newSubid, this.withsubscription, this.retailerId || 0, 2, 0, 0, 1, this.comment || 'No Comment')
       .subscribe((res: any) => {
         this.swal.success(res?.message);
       }, (err) => {
@@ -1916,7 +1918,7 @@ export class SubscriberdialogueComponent implements OnInit, OnDestroy {
       dueamt: this.First_list.customerPayAmount,
       // paidamount: this.paidamount || this.collectedPayAmount || 0,
       paidamt: this.paidamount || this.collectedPayAmount || 0,
-      retailerid: this.operatorId || this.retailerId || 0,
+      retailerid: this.retailerId || 0,
       smartcard: this.smartcardno,
       type: 1,
       comments: this.comment,
@@ -1962,7 +1964,7 @@ export class SubscriberdialogueComponent implements OnInit, OnDestroy {
     let plan = this.selectedRechargetype || ''
     let plandata = this.plantype || this.f_date || 4
     // this.swal.Loading();
-    this.userservice.getBaseChangeConfirmation(this.role, this.username, this.newpackagename, plan, plandata, this.smartcardno, 8, this.retailerId || 0)
+    this.userservice.getBaseChangeConfirmation(this.role, this.username, this.newpackagename, plan, plandata, this.smartcardno, 8,  this.retailerId || 0)
       .subscribe((data: any) => {
         this.changebase = data;
         this.changebase_msoAmount = data.msoAmount;
@@ -2015,7 +2017,7 @@ export class SubscriberdialogueComponent implements OnInit, OnDestroy {
       paidamt: this.paidamount || this.collectedPayAmount || 0,
       smartcard: this.smartcardno,
       type: 8,
-      retailerid: this.operatorId || 0,
+      retailerid:  this.retailerId || 0,
       iscollected: this.iscollected,
       comments: this.comment,
       android_id: 0,
@@ -2055,8 +2057,9 @@ export class SubscriberdialogueComponent implements OnInit, OnDestroy {
     this.isActive = true;
     console.log(this.f_date);
     console.log(this.plantype);
+    console.log(this.retailerId);
 
-    this.userservice.getFirstTimeActivationConfirmation(this.role, this.username, this.newpackagename, this.selectedRechargetype, this.f_date || this.plantype || 4, this.smartcardno, 1, this.retailerId || 0)
+    this.userservice.getFirstTimeActivationConfirmation(this.role, this.username, this.newpackagename, this.selectedRechargetype, this.f_date || this.plantype || 4, this.smartcardno, 1,  this.retailerId || 0)
       .subscribe((data: any) => {
         this.First_list = data;
         this.customerPayAmount = this.First_list?.customerPayAmount;
@@ -2094,7 +2097,7 @@ export class SubscriberdialogueComponent implements OnInit, OnDestroy {
       dueamt: this.First_list.customerPayAmount,
       // paidamount: this.paidamount || this.collectedPayAmount || 0,
       paidamt: this.paidamount || this.collectedPayAmount || 0,
-      retailerid: this.operatorId || this.retailerId || 0,
+      retailerid:  this.retailerId || 0,
       smartcard: this.smartcardno,
       type: 1,
       comments: this.comment,
@@ -2156,7 +2159,7 @@ export class SubscriberdialogueComponent implements OnInit, OnDestroy {
     this.errorMessage = '';
     this.swal.Loading();
     // this.userservice.lcotransferSinglesmartcard(this.role, this.username, subscriptionOperatorid, this.subid, this.withsubscription, this.smartcardno, 0, 2
-    this.userservice.lcotransferSinglesmartcard(this.role, this.username, subscriptionOperatorid || this.lcoid, this.subid, this.withsubscription, this.smartcardno, this.operatorId || this.retailerId || 0, 2, 0, 0, 1, this.comment || 'No Comment'
+    this.userservice.lcotransferSinglesmartcard(this.role, this.username, subscriptionOperatorid || this.lcoid, this.subid, this.withsubscription, this.smartcardno, this.retailerId || 0, 2, 0, 0, 1, this.comment || 'No Comment'
     ).subscribe((res: any) => {
       this.swal.success(res?.message);
       Swal.fire({
@@ -2183,7 +2186,7 @@ export class SubscriberdialogueComponent implements OnInit, OnDestroy {
     }
     this.errorMessage = '';
     this.swal.Loading();
-    this.userservice.boxIdChange(this.role, this.username, this.smartcardno, this.new_boxid, this.retailerId || 0, 2)
+    this.userservice.boxIdChange(this.role, this.username, this.smartcardno, this.new_boxid,  this.retailerId || 0, 2)
       .subscribe((res: any) => {
         // this.swal.success(res?.message);
         Swal.fire({
@@ -2207,7 +2210,7 @@ export class SubscriberdialogueComponent implements OnInit, OnDestroy {
       return;
     }
     this.swal.Loading();
-    this.userservice.smartcardSuspend(this.role, this.username, this.smartcardno, this.retailerId || 0, 4, this.sus_reason)
+    this.userservice.smartcardSuspend(this.role, this.username, this.smartcardno,  this.retailerId || 0, 4, this.sus_reason)
       .subscribe((res: any) => {
         // this.swal.success(res?.message);
         Swal.fire({
@@ -2292,7 +2295,7 @@ export class SubscriberdialogueComponent implements OnInit, OnDestroy {
   }
   cancelSmartcard() {
     this.swal.Loading();
-    this.userservice.cancelSmartcard(this.role, this.username, this.smartcardno, 2, this.retailerId || 0, 0, 0, 1, this.cancelSubRemark || 'No Comment')
+    this.userservice.cancelSmartcard(this.role, this.username, this.smartcardno, 2,  this.retailerId || 0, 0, 0, 1, this.cancelSubRemark || 'No Comment')
       .subscribe((res: any) => {
         // this.swal.success(res?.message);
         Swal.fire({
@@ -2330,7 +2333,7 @@ export class SubscriberdialogueComponent implements OnInit, OnDestroy {
       username: this.username,
       smartcard: this.smartcardno,
       type: 6,
-      retailerid: this.operatorId || 0,
+      retailerid:  this.retailerId || 0,
       addonlist: this.rows,
       managepackagelist: this.rowData,
       iscollected: this.iscollected,
@@ -2376,7 +2379,7 @@ export class SubscriberdialogueComponent implements OnInit, OnDestroy {
       username: this.username,
       smartcard: this.smartcardno,
       type: 6,
-      retailerid: this.operatorId || 0,
+      retailerid: this.retailerId || 0,
       iscollected: this.iscollected,
       addonlist: this.rows,
       managepackagelist: this.rowData,
@@ -2423,7 +2426,7 @@ export class SubscriberdialogueComponent implements OnInit, OnDestroy {
       username: this.username,
       smartcard: this.smartcardno,
       type: 6,
-      retailerid: this.operatorId || 0,
+      retailerid:  this.retailerId || 0,
       iscollected: this.iscollected,
       alacartelist: this.rows,
       android_id: 0,
@@ -2458,7 +2461,7 @@ export class SubscriberdialogueComponent implements OnInit, OnDestroy {
       username: this.username,
       smartcard: this.smartcardno,
       type: 6,
-      retailerid: this.operatorId || 0,
+      retailerid: this.retailerId || 0,
       iscollected: this.iscollected,
       alacartelist: this.rows,
       dueamt: this.alacarteConfirmationData?.customerPayAmount,
@@ -2503,7 +2506,7 @@ export class SubscriberdialogueComponent implements OnInit, OnDestroy {
       username: this.username,
       smartcard: this.smartcardno,
       type: 7,
-      retailerid: this.operatorId || 0,
+      retailerid:  this.retailerId || 0,
       iscollected: this.iscollected,
       removeproductlist: this.rows,
       android_id: 0,
@@ -2535,7 +2538,7 @@ export class SubscriberdialogueComponent implements OnInit, OnDestroy {
       username: this.username,
       smartcard: this.smartcardno,
       type: 7,
-      retailerid: this.operatorId || 0,
+      retailerid:  this.retailerId || 0,
       iscollected: this.iscollected,
       removeproductlist: this.rows,
       android_id: 0,
@@ -2559,7 +2562,7 @@ export class SubscriberdialogueComponent implements OnInit, OnDestroy {
   }
   pairSmartcard() {
     this.swal.Loading();
-    this.userservice.PairSmartcardOrBoxid(this.role, this.username, !this.ischeck, this.pairedSmartcard, this.subBoxid, this.retailerId || 0, 1).subscribe((res: any) => {
+    this.userservice.PairSmartcardOrBoxid(this.role, this.username, !this.ischeck, this.pairedSmartcard, this.subBoxid,  this.retailerId || 0, 1).subscribe((res: any) => {
       // this.swal.success(res?.message);
     }, (err) => {
       this.swal.Error(err?.error?.message);
@@ -2582,7 +2585,7 @@ export class SubscriberdialogueComponent implements OnInit, OnDestroy {
   }
   unPairSmartcard() {
     this.swal.Loading();
-    this.userservice.UnpairSmartcardOrBoxId(this.role, this.username, !this.ischeck, this.subSmartcard, this.operatorId || this.retailerId || 0, 1, 0, 0, 1, this.comment || 'No Comment').subscribe((res: any) => {
+    this.userservice.UnpairSmartcardOrBoxId(this.role, this.username, !this.ischeck, this.subSmartcard,  this.retailerId || 0, 1, 0, 0, 1, this.comment || 'No Comment').subscribe((res: any) => {
       this.swal.success(res?.message);
       this.isUnpairDialogue = res?.message;
       this.unpairtoggle();
@@ -2592,7 +2595,7 @@ export class SubscriberdialogueComponent implements OnInit, OnDestroy {
   }
   unPairBox() {
     this.swal.Loading();
-    this.userservice.UnpairSmartcardOrBoxId(this.role, this.username, this.ischeck, this.subBoxid, this.operatorId || this.retailerId || 0, 2, 0, 0, 1, this.comment || 'No Comment').subscribe((res: any) => {
+    this.userservice.UnpairSmartcardOrBoxId(this.role, this.username, this.ischeck, this.subBoxid,  this.retailerId || 0, 2, 0, 0, 1, this.comment || 'No Comment').subscribe((res: any) => {
       this.swal.success(res?.message);
       this.isUnpairDialogue = res?.message;
       this.unpairtoggle();

@@ -192,7 +192,7 @@
                     <div class="line"></div>
                     <div class="col-12 col-md-12 ">
                         <ag-grid-angular #agGrid id="myGrid" domLayout='normal' class="ag-theme-alpine table-class"
-                            rowAnimation [gridOptions]="gridOptions2" [columnDefs]="columnDefs" [rowData]="rowData"  >
+                            rowAnimation [gridOptions]="gridOptions2" [columnDefs]="columnDefs" [rowData]="rowData">
                         </ag-grid-angular>
                     </div>
                 </div>
@@ -329,10 +329,10 @@
                     <div class="d-flex justify-content-between align-item-center mb-1">
                         <div class="d-flex" style="padding: 10px;">
                             <!-- <img src="assets/images/icons/smartcard.png" alt="" style="width: 35px;"> -->
-                            <!-- <i class="fa fa-qrcode" aria-hidden="true" style="font-size: 25px;cursor: pointer;"
-                                (click)="onQRcodeDownload()" matTooltip="QR Code Download"></i> -->
                             <i class="fa fa-qrcode" aria-hidden="true" style="font-size: 25px;cursor: pointer;"
-                                matTooltip="QR Code Download"></i>
+                                (click)="onQRcodeDownload()" matTooltip="QR Code Download"></i>
+                            <!-- <i class="fa fa-qrcode" aria-hidden="true" style="font-size: 25px;cursor: pointer;"
+                                matTooltip="QR Code Download"></i> -->
                             &nbsp;&nbsp;
                             <h6 style="margin: auto;color: #b14662;font-weight: 600;"> {{subdetailsList?.smartcard}}
                                 {{subdetails?.smartcard}}
@@ -422,7 +422,7 @@
                                         (click)="openDialog('activation','')">
                                         <i class="fa-brands fa-slack"></i><span>Activation</span></button>
                                 </div>
-                                <div *ngIf="(role == 'ROLE_SUBLCO' && Sublcopermissionlist.deactivate == true) || role != 'ROLE_SUBLCO' && role != 'ROLE_SUBSCRIBER'"
+                                <div *ngIf=" (role == 'ROLE_SUBLCO' && Sublcopermissionlist.deactivate == true) || role != 'ROLE_SUBLCO' && role != 'ROLE_SUBSCRIBER' &&role != 'ROLE_OPERATOR'"
                                     class="col-12 col-md-6 d-flex justify-content-center align-items-center  text3">
                                     <button class="btn  d-flex justify-content-between" [disabled]="deactive"
                                         (click)="openDialog('deactive','')">
@@ -788,7 +788,7 @@
                                     <button *ngIf="role == 'ROLE_OPERATOR' ||  role == 'ROLE_SUBLCO'" type="button"
                                         class="btn2  recharge bttn me-2" [disabled]="isRecharge"
                                         [ngStyle]="{'background': isRecharge ? 'rgb(160 187 240)' : 'rgb(8, 79, 212)'}"
-                                        (click)="onRechargeType()">Recharge</button>
+                                        (click)="onRecharge1Type()">Recharge</button>
                                     <button *ngIf="role != 'ROLE_OPERATOR' &&  role != 'ROLE_SUBLCO' " type="button"
                                         class="btn2  recharge bttn me-2" [disabled]="isRecharge"
                                         [ngStyle]="{'background': isRecharge ? 'rgb(160 187 240)' : 'rgb(8, 79, 212)'}"
@@ -911,9 +911,11 @@
                 </div>
             </div>
             <p class="confirm1">DO YOU WANT TO UPDATE THIS PACKAGE</p>
-
             <div class="actions">
-                <button mat-raised-button color="accent" class="mx-3" (click)="recharge()">UPDATE</button>
+                <button *ngIf="!rechargeUpdateType" mat-raised-button color="accent" class="mx-3"
+                    (click)="recharge()">UPDATE</button>
+                <button *ngIf="rechargeUpdateType" mat-raised-button color="accent" class="mx-3"
+                    (click)="recharge1()">UPDATE </button>
                 <button mat-raised-button color="primary" (click)="onRechargeType1()">CANCEL</button>
             </div>
         </div>

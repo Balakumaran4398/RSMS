@@ -27,9 +27,10 @@ export class ChipidModelComponent implements OnInit {
   subLcoName: any;
   subLcoMobilenumber: any;
   subLcoBoxid: any;
-  subLcoChipID: any = '';
+  subLcoChipID: any;
   subLcoSmartcard: any;
-  subLcoModel: any = '';
+  subLcoModel: any;
+
 
   opName: any = 0;
   selectedOperator: any;
@@ -77,7 +78,7 @@ export class ChipidModelComponent implements OnInit {
       },
     },
     paginationPageSize: 15,
-    paginationPageSizeSelector:[10,20,50],
+    paginationPageSizeSelector: [10, 20, 50],
     pagination: true,
   };
   constructor(private userService: BaseService, private storageService: StorageService, private swal: SwalService, public dialog: MatDialog, private cdr: ChangeDetectorRef) {
@@ -112,6 +113,13 @@ export class ChipidModelComponent implements OnInit {
       this.getLCOModelList(this.opName);
     });
   }
+  onKeydown(event: KeyboardEvent) {
+    const key = event.key;
+    if (!/^\d$/.test(key) && key !== 'Backspace') {
+      event.preventDefault();
+    }
+  }
+
   ltbList() {
     this.userService.getLocalChannelOperatorList(this.role, this.username).subscribe((data: any) => {
       this.opNameList = Object.keys(data).map(key => ({
@@ -128,7 +136,6 @@ export class ChipidModelComponent implements OnInit {
     this.selectedOperator = selectedOperator;
     this.selectedLcoName = selectedOperator.value;
     this.getModelForceList(this.selectedOperator);
-
   }
   onLCOModelList(selectedOperator: any) {
     console.log(selectedOperator);
@@ -220,10 +227,10 @@ export class ChipidModelComponent implements OnInit {
     this.userService.getStbModlelList(this.role, this.username).subscribe((data: any) => {
       console.log(data);
       this.rowData = data;
-      const rowCount = this.rowData.length;
-      if (!this.gridOptions.paginationPageSizeSelector.includes(rowCount)) {
-        this.gridOptions.paginationPageSizeSelector.push(rowCount);
-      }
+      // const rowCount = this.rowData.length;
+      // if (!this.gridOptions.paginationPageSizeSelector.includes(rowCount)) {
+      //   this.gridOptions.paginationPageSizeSelector.push(rowCount);
+      // }
     })
   }
   getModelForceList(value: any) {
@@ -245,9 +252,9 @@ export class ChipidModelComponent implements OnInit {
       this.filteredAddedList = [...this.allocated];
     })
   }
-  submit() {
-    console.log(this.subLcoChipID);
 
+
+  submit() {
     this.userService.getchipidUpdate(this.role, this.username, this.subLcoSmartcard, this.subLcoChipID, this.subLcoModel)
       .subscribe((res: any) => {
         this.swal.success(res?.message);

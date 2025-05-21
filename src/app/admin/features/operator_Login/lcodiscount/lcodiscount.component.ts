@@ -124,13 +124,13 @@ export class LcodiscountComponent implements OnInit, AfterViewInit {
 
       this.getDiscountOption(this.discountType.index);
 
-      this.userService.getAreaListByOperatorid(this.role, this.username, this.lcoId).subscribe((data: any) => {
-        this.area_list = Object.keys(data).map(key => ({
-          name: key,
-          value: data[key]
-        }));
-        this.filteredAreas = this.area_list;
-      });
+      // this.userService.getAreaListByOperatorid(this.role, this.username, this.lcoId).subscribe((data: any) => {
+      //   this.area_list = Object.keys(data).map(key => ({
+      //     name: key,
+      //     value: data[key]
+      //   }));
+      //   this.filteredAreas = this.area_list;
+      // });
     })
   }
   getListOfDatas() {
@@ -145,7 +145,6 @@ export class LcodiscountComponent implements OnInit, AfterViewInit {
     } else if (this.type == '2') {
       this.rowData = [];
       console.log('area', this.type);
-      this.rowData = [];
       this.onAreaStatusChange(this.lcoId);
     } else if (this.type == '3') {
       this.rowData = [];
@@ -227,9 +226,9 @@ export class LcodiscountComponent implements OnInit, AfterViewInit {
         { headerName: 'LCO-COMMISION', width: 200, field: 'new_commission_value', },
         { headerName: 'DISCOUNT', width: 250, field: 'discount_value', },
         { headerName: 'PERCENTAGE', width: 250, field: 'ispercentage', },
-  {
+        {
           headerName: 'CUSTOMER SELLING PRICE', field: 'cusdiscprice', width: 230, valueFormatter: (params: any) => parseFloat(params.value).toFixed(2)
-        },        {
+        }, {
           headerName: 'ACTION', field: '', width: 150, filter: false,
           cellRenderer: (params: any) => {
             const editButton = document.createElement('button');
@@ -323,11 +322,24 @@ export class LcodiscountComponent implements OnInit, AfterViewInit {
 
 
   onAreaStatusChange(input: any): void {
+    console.log('111111111111111111111111',input);
+
+
+    this.userService.getAreaListByOperatorid(this.role, this.username, this.lcoId).subscribe((data: any) => {
+      this.area_list = Object.keys(data).map(key => ({
+        name: key,
+        value: data[key]
+      }));
+      this.filteredAreas = this.area_list;
+    });
     const searchTerm = (input && typeof input === 'string') ? input.toLowerCase() : '';
+    console.log(searchTerm);
 
     this.filteredAreas = this.area_list.filter((area: any) =>
       area.name.toLowerCase().includes(searchTerm)
     );
+    console.log('awdsadsadsadsad', this.filteredAreas);
+
   }
 
 

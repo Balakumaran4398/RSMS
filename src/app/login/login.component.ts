@@ -7,6 +7,7 @@ import { AuthService } from '../_core/service/auth.service';
 import Swal from 'sweetalert2';
 import { SwalService } from '../_core/service/swal.service';
 import { BaseService } from '../_core/service/base.service';
+import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 // import { ChangeDetectable } from 'ag-charts-community/dist/types/src/scene/changeDetectable';
 interface requestBody {
   access_ip: any;
@@ -46,6 +47,7 @@ export class LoginComponent implements OnInit {
     private storageService: StorageService,
     private userService: BaseService,
     private router: Router,
+    private breakpointObserver: BreakpointObserver,
     // private alertService: AlertService,
     private cdr: ChangeDetectorRef,
   ) {
@@ -62,8 +64,8 @@ export class LoginComponent implements OnInit {
 
 
   }
-  public getUserRole(user:any): string {
-   
+  public getUserRole(user: any): string {
+
     if (!user || !user.roles) return 'DEFAULT_ROLE';
 
 
@@ -97,7 +99,7 @@ export class LoginComponent implements OnInit {
       console.log(this.msoLogo);
       console.log(this.msoName);
     });
-  
+
   }
   getSubscriberDetails() {
     this.userService.getSubscriberDetails(this.role, this.username).subscribe((data: any) => {
@@ -138,7 +140,7 @@ export class LoginComponent implements OnInit {
       return;
     } else if (form.valid) {
       this.swal.Loading1()
-      this.authService.login(this.signInform.value).subscribe(
+        this.authService.login(this.signInform.value).subscribe(
         (res: any) => {
           console.log(res);
           console.log(res.roles);
@@ -147,6 +149,7 @@ export class LoginComponent implements OnInit {
             this.storageService.saveToken(res.accessToken);
             this.storageService.saveUser(res);
             this.storageService.saveUsernamenew(res.username)
+           
 
             this.idstorage = res.id;
             console.log('Stored ID:', res.id);
@@ -205,8 +208,8 @@ export class LoginComponent implements OnInit {
               console.log('role', this.role);
               console.log('username', this.username);
 
-    this.role = this.getUserRole(res)
-    this.username = username;
+              this.role = this.getUserRole(res)
+              this.username = username;
               this.userService.getSubscriberDetails(this.role, this.username).subscribe((data: any) => {
                 console.log(data);
                 this.lcoDeatails = data;

@@ -18,50 +18,51 @@
                     </div>
                 </div>
                 <div class="col-12" style="padding: 1rem;">
-                    <form class="form w-100 p-3 ">
-                        <div class="input-box mb-3 row">
-                            <div class="col-12 col-md-4">
-                                <span>OPERATOR</span>
-                            </div>
-                            <div class="col-12 col-md-8">
-                                <label>{{subLcoName}}</label>
-                            </div>
+                    <!-- <form class="form w-100 p-3 "> -->
+                    <div class="input-box mb-3 row">
+                        <div class="col-12 col-md-4">
+                            <span>OPERATOR</span>
                         </div>
-                        <div class="input-box mb-3 row">
-                            <div class="col-12 col-md-4">
-                                <span>SMARTCARD</span>
-                            </div>
-                            <div class="col-12 col-md-8">
-                                <label>{{subLcoSmartcard}}</label>
-                            </div>
+                        <div class="col-12 col-md-8">
+                            <label>{{subLcoName}}</label>
                         </div>
-                        <div class="input-box mb-3 row">
-                            <div class="col-12 col-md-4">
-                                <span>BOX ID</span>
-                            </div>
-                            <div class="col-12 col-md-8">
-                                <label>{{subLcoBoxid}}</label>
-                            </div>
+                    </div>
+                    <div class="input-box mb-3 row">
+                        <div class="col-12 col-md-4">
+                            <span>SMARTCARD</span>
                         </div>
+                        <div class="col-12 col-md-8">
+                            <label>{{subLcoSmartcard}}</label>
+                        </div>
+                    </div>
+                    <div class="input-box mb-3 row">
+                        <div class="col-12 col-md-4">
+                            <span>BOX ID</span>
+                        </div>
+                        <div class="col-12 col-md-8">
+                            <label>{{subLcoBoxid}}</label>
+                        </div>
+                    </div>
 
-                        <div class="input-box mb-3 row">
-                            <div class="col-12 col-md-4">
-                                <span>MODEL</span>
-                            </div>
-                            <div class="col-12 col-md-8 input_box">
-                                <input type="text" [value]="subLcoModel" [(ngModel)]="subLcoModel">
-                            </div>
+                    <div class="input-box mb-3 row">
+                        <div class="col-12 col-md-4">
+                            <span>MODEL</span>
                         </div>
-                        <div class="input-box mb-3 row">
-                            <div class="col-12 col-md-4">
-                                <span>CHIP ID</span>
-                            </div>
-                            <div class="col-12 col-md-8 input_box">
-                                <input type="text" [value]="subLcoChipID" [(ngModel)]="subLcoChipID">
-                            </div>
+                        <div class="col-12 col-md-8 input_box">
+                            <input type="text" [value]="subLcoModel" [(ngModel)]="subLcoModel" 
+                                (keypress)="onKeydown($event)">
                         </div>
-
-                    </form>
+                    </div>
+                    <div class="input-box mb-3 row">
+                        <div class="col-12 col-md-4">
+                            <span>CHIP ID</span>
+                        </div>
+                        <div class="col-12 col-md-8 input_box">
+                            <input type="text" [value]="subLcoChipID" [(ngModel)]="subLcoChipID"
+                                (keypress)="onKeydown($event)">
+                        </div>
+                    </div>
+                    <!-- </form> -->
                     <div class="d-flex justify-content-center align-item-center ">
                         <button class="btn btn-success" (click)="submit()">Submit</button>
                     </div>

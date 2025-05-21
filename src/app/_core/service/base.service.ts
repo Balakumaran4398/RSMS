@@ -2182,7 +2182,7 @@ export class BaseService {
   //   return this.http.post<any[]>(BASE_URL + "/operator/updatePlanwiseDiscount?role=" + role + "&username=" + encodeURIComponent(username) + "&operatorid=" + operatorid + "&orderid=" + orderid + "&plan_discount=" + plan_discount, {})
   // }
   updatePlanwiseDiscount(role: any, username: any, operatorid: any, orderid: any, plan_discount: any, type: any, ismso: any): Observable<any[]> {
-    return this.http.post<any[]>(BASE_URL + "/operator/updatePlanwiseDiscount?role=" + role + "&username=" + encodeURIComponent(username) + "&operatorid=" + operatorid + "&orderid=" + orderid + "&plan_discount=" + plan_discount + "&type=" + type + "&ismso=" + ismso , {})
+    return this.http.post<any[]>(BASE_URL + "/operator/updatePlanwiseDiscount?role=" + role + "&username=" + encodeURIComponent(username) + "&operatorid=" + operatorid + "&orderid=" + orderid + "&plan_discount=" + plan_discount + "&type=" + type + "&ismso=" + ismso, {})
   }
   // getPlanDiscountDetailsByOpidPackageid(role: any, username: any, operatorid: any, orderid: any, customer_amount: any, lco_commission: any): Observable<any[]> {
   //   return this.http.get<any[]>(BASE_URL + "/operator/getPlanDiscountDetailsByOpidPackageid?role=" + role + "&username=" + encodeURIComponent(username) + "&operatorid=" + operatorid + "&orderid=" + orderid + "&customer_amount=" + customer_amount + "&lco_commission=" + lco_commission)
@@ -2347,10 +2347,18 @@ export class BaseService {
   // getGenerateQrCode(role: any, username: any, smartcard: any,): Observable<any[]> {
   //   return this.http.post<any[]>(BASE_URL + "/subscriber/generateQrCode?role=" + role + "&username=" + encodeURIComponent(username) + "&smartcard=" + smartcard, {});
   // }
-  // // -------------------------------download QR-------------
-  // getDownloadQR(role: any, username: any, smartcard: any): Observable<Blob> {
-  //   return this.http.get(BASE_URL + "/subscriber/downloadQR?role=" + role + "&username=" + username + "&smartcard=" + smartcard,{ responseType: 'blob' })
+  // getGenerateQrCode(role: any, username: any, smartcard: any): Observable<Blob> {
+  //   return this.http.get(BASE_URL + "/subscriber/generateQrCode?role=" + role + "&username=" +  encodeURIComponent(username) + "&smartcard=" + smartcard, { responseType: 'blob' },)
   // }
+
+  getGenerateQrCode(role: any, username: any, smartcard: any): Observable<Blob> {
+    return this.http.post( BASE_URL + "/subscriber/generateQrCode?role=" + role + "&username=" + encodeURIComponent(username) + "&smartcard=" + smartcard,{},{ responseType: 'blob' as 'json' }) as Observable<Blob>;
+  }
+
+  // -------------------------------download QR-------------
+  getDownloadQR(role: any, username: any, smartcard: any): Observable<Blob> {
+    return this.http.get(BASE_URL + "/subscriber/downloadQR?role=" + role + "&username=" + encodeURIComponent(username) + "&smartcard=" + smartcard, { responseType: 'blob' })
+  }
   // // ============================================================== comboPackageUpdateHistory =====================================
   getcomboPackageUpdateHistoryReport(role: any, username: any, fromdate: any, todate: any, packageid: any, reporttype: any, packagetype: any): Observable<any[]> {
     return this.http.get<any>(BASE_URL + "/report/getcomboPackageUpdateHistoryReport?role=" + role + "&username=" + username + "&fromdate=" + fromdate + "&todate=" + todate + "&packageid=" + packageid + "&reporttype=" + reporttype + "&packagetype=" + packagetype,)

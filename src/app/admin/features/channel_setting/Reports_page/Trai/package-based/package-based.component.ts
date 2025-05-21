@@ -308,11 +308,11 @@ export class PackageBasedComponent implements OnInit {
             let areasub = '';
             let header: string[] = [];
             const datas: Array<any> = [];
-            areatitle = 'A1:I2';
-            areasub = 'A3:I3';
-            header = ['S.NO', 'CHANNEL NAME PREVIOUS', 'CHANNEL NAME NEW', 'BROADCASTER NAME PREVIOUS', 'BROADCASTER NAME NEW', 'SERVICE ID PREVIOUS', 'SERVICE ID NEW', 'CREATED DATE'];
+            areatitle = 'A1:L2';
+            areasub = 'A3:L3';
+            header = ['S.NO', 'CHANNEL NAME PREVIOUS', 'CHANNEL NAME NEW', 'BROADCASTER NAME PREVIOUS', 'BROADCASTER NAME NEW', 'SERVICE ID PREVIOUS', 'SERVICE ID NEW', 'OLD PRODUCT ID', 'NEW PRODUCT ID', 'MRP PRE', 'MRP NEW', 'CREATED DATE'];
             this.rowData.forEach((d: any, index: number) => {
-              const row = [index + 1, d.channelnamepre, d.channelnamecur, d.broadcasternamepre, d.broadcasternamecur, d.serviceidpre, d.serviceidcur, d.createddate];
+              const row = [index + 1, d.channelnamepre, d.channelnamecur, d.broadcasternamepre, d.broadcasternamecur, d.serviceidpre, d.serviceidcur, d.oldproductid, d.newproductid, d.amountpre, d.amountcur, d.createddate];
               console.log('type 1 and 4', row);
               datas.push(row);
             });
@@ -326,9 +326,9 @@ export class PackageBasedComponent implements OnInit {
             let areasub = '';
             let header: string[] = [];
             const datas: Array<any> = [];
-            areatitle = 'A1:I2';
-            areasub = 'A3:I3';
-            header = ['S.NO', 'CHANNEL NAME PREVIOUS', 'CHANNEL NAME CURRENT', 'BROADCASTER NAME PREVIOUS', 'BROADCASTER NAME CURRENT', 'SERVICE ID PREVIOUS', 'SERVICE ID CURRENT', 'CREATED DATE'];
+            areatitle = 'A1:L2';
+            areasub = 'A3:L3';
+            header = ['S.NO', 'CHANNEL NAME PREVIOUS', 'CHANNEL NAME CURRENT', 'BROADCASTER NAME PREVIOUS', 'BROADCASTER NAME NEW', 'SERVICE ID PREVIOUS', 'SERVICE ID NEW', 'OLD PRODUCT ID', 'NEW PRODUCT ID', 'MRP PRE', 'MRP NEW', 'CREATED DATE'];
             this.excelService.generateTraiPackageBaseExcel(areatitle, header, datas, title, areasub, sub);
             this.rowData = [];
           }
@@ -585,7 +585,7 @@ export class PackageBasedComponent implements OnInit {
         if (type == 1) {
           this.reportMaking(x, `${this.type} REPORT - [FROM DATE: ${this.fromdate} - TO DATE: ${this.todate}].pdf`.toUpperCase(), "application/pdf");
         } else if (type == 2) {
-          this.reportMaking(x,`${this.type} REPORT - [FROM DATE: ${this.fromdate} - TO DATE: ${this.todate}].xlsx`.toUpperCase(), "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
+          this.reportMaking(x, `${this.type} REPORT - [FROM DATE: ${this.fromdate} - TO DATE: ${this.todate}].xlsx`.toUpperCase(), "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
         }
       },
         (error: any) => {

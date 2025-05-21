@@ -31,7 +31,7 @@ export class HistoryAllReportsComponent implements OnInit {
       },
     },
     paginationPageSize: 10,
-    paginationPageSizeSelector:[10,20,50],
+    paginationPageSizeSelector: [10, 20, 50],
     pagination: true,
   }
   gridApi: any;
@@ -90,6 +90,10 @@ export class HistoryAllReportsComponent implements OnInit {
     } else if (this.allType == '14') {
       this.getPackageList();
       this.getAddonList();
+    } else if (this.allType == '15') {
+      this.getChannelAgeing();
+    } else if (this.allType == '16') {
+      this.getPackageAgeing();
     }
   }
   formatDate(date: Date): string {
@@ -429,7 +433,7 @@ export class HistoryAllReportsComponent implements OnInit {
         }
       );
   }
-  
+
 
   getPairReport(type: number) {
     this.userService.getPairedSmartcardPDFReport(this.role, this.username, type)
@@ -469,7 +473,7 @@ export class HistoryAllReportsComponent implements OnInit {
         }
       );
   }
-  
+
 
   getBlockReport(type: number) {
     this.userService.getBlockSmartcardPDFReport(this.role, this.username, type)
@@ -518,7 +522,7 @@ export class HistoryAllReportsComponent implements OnInit {
           console.log(this.reportTitle);
           if (response.status === 200) {
             this.rowData = response.body;
-            
+
             console.log(this.reportTitle);
             const title = (this.reportTitle).toUpperCase();
             const sub = 'MSO ADDRESS:' + this.msodetails;
@@ -1589,15 +1593,15 @@ export class HistoryAllReportsComponent implements OnInit {
     this.package = true;
     this.addon = false;
     this.addonName = 0,
-    this.rowData =[];
-      console.log("Package Selected:", this.package);
+      this.rowData = [];
+    console.log("Package Selected:", this.package);
   }
   onAddonType() {
     this.addon = true;
     this.package = false;
     this.packagename = 0,
-    this.rowData =[];
-      console.log("Addon Selected:", this.addon);
+      this.rowData = [];
+    console.log("Addon Selected:", this.addon);
   }
   onRadioChange(event: any) {
     this.isdiscount = event.value === true;
@@ -1616,7 +1620,7 @@ export class HistoryAllReportsComponent implements OnInit {
           this.swal.Close();
         }, (err) => {
           // console.log(err);
-          
+
           this.swal.Error(err?.error?.message);
           // this.rowData =[];
           // this.swal.Close();

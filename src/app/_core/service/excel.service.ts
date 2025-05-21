@@ -1535,18 +1535,18 @@ export class ExcelService {
       });
     });
     worksheet.columns = [
-      { key: 'a', width: 10 }, // S.NO
-      { key: 'b', width: 30 }, // PACKAGE NAME PREVIOUS
-      { key: 'c', width: 30 }, // PACKAGE NAME CURRENT
-      { key: 'd', width: 40 }, // PACKAGE ID
-      { key: 'e', width: 40 }, // RCAS PRODUCT ID
-      { key: 'f', width: 30 }, // ENSCURITY PRODUCT
-      { key: 'g', width: 40 }, // OLD CHANNEL LIST
-      { key: 'h', width: 40 }, // NEW CHANNEL LIST
-      { key: 'i', width: 30 }, // ADDED
-      { key: 'j', width: 30 }, // REMOVED
-      { key: 'k', width: 20 }, // UPDATED DATE
-      { key: 'l', width: 20 }, // COUNT
+         { key: 'a', width: 10 }, // S.NO
+      { key: 'b', width: 30 }, // CHANNEL NAME PREVIOUS
+      { key: 'c', width: 30 }, // CHANNEL NAME NEW
+      { key: 'd', width: 40 }, // BROADCASTER NAME PREVIOUS
+      { key: 'e', width: 40 }, // BROADCASTER NAME NEW
+      { key: 'f', width: 30 }, // SERVICE ID PREVIOUS
+      { key: 'g', width: 40 }, // SERVICE ID NEW
+      { key: 'h', width: 40 }, // OLD PRODUCT ID
+      { key: 'i', width: 30 }, // NEW PRODUCT ID
+      { key: 'j', width: 30 }, // MRP PRE
+      { key: 'k', width: 20 }, // MRP NEW
+      { key: 'l', width: 30 }, // CREATED DATE
 
     ];
     workbook.xlsx.writeBuffer().then((data: any) => {

@@ -138,6 +138,7 @@ export class SubDashboardComponent implements OnInit {
   managePackagetable = false;
   managePackagetable1 = false;
   rechargeTypeDialog = false;
+  rechargeUpdateType = false;
   cancel_btn: boolean = false;
 
   subdashoard: any;
@@ -294,7 +295,7 @@ export class SubDashboardComponent implements OnInit {
     this.userservice.getPlanTypeList(this.role, this.username).subscribe((data: any) => {
       console.log(data);
       // if (this.role != 'ROLE_OPERATOR' && this.role != 'ROLE_SUBLCO' && this.role != 'ROLE_SUBSCRIBER') {
-      if (this.role != 'ROLE_OPERATOR'  && this.role != 'ROLE_SUBSCRIBER') {
+      if (this.role != 'ROLE_OPERATOR' && this.role != 'ROLE_SUBSCRIBER') {
         console.log('ROLE_OPERATOR     PLAN list');
         this.rechargetype = Object.keys(data).map(key => {
           const id = data[key];
@@ -1518,25 +1519,25 @@ export class SubDashboardComponent implements OnInit {
         });
 
 
-        // const QRButton = document.createElement('button');
-        // QRButton.style.backgroundColor = '#1f6764';
-        // QRButton.style.border = 'none';
-        // QRButton.style.color = 'white';
-        // QRButton.style.width = '25px';
-        // QRButton.style.height = '25px';
-        // QRButton.style.borderRadius = '12px';
-        // QRButton.style.cursor = 'pointer';
-        // QRButton.style.fontSize = '15px';
-        // QRButton.style.display = 'flex';
-        // QRButton.style.alignItems = 'center';
-        // QRButton.style.justifyContent = 'center';
-        // const QRIcon = document.createElement('i');
-        // QRButton.className = 'fa fa-qrcode'; // example icon
-        // QRButton.appendChild(QRIcon); 
-        // QRButton.title = 'QR CODE';
-        // QRButton.addEventListener('click', () => {
-        //   this.onQRcodeGenerate();
-        // });
+        const QRButton = document.createElement('button');
+        QRButton.style.backgroundColor = '#1f6764';
+        QRButton.style.border = 'none';
+        QRButton.style.color = 'white';
+        QRButton.style.width = '25px';
+        QRButton.style.height = '25px';
+        QRButton.style.borderRadius = '12px';
+        QRButton.style.cursor = 'pointer';
+        QRButton.style.fontSize = '15px';
+        QRButton.style.display = 'flex';
+        QRButton.style.alignItems = 'center';
+        QRButton.style.justifyContent = 'center';
+        const QRIcon = document.createElement('i');
+        QRButton.className = 'fa fa-qrcode'; // example icon
+        QRButton.appendChild(QRIcon);
+        QRButton.title = 'QR CODE';
+        QRButton.addEventListener('click', () => {
+          this.onQRcodeGenerate(params.data.smartcard);
+        });
         // Download Button
         const downloadButton = document.createElement('button');
         downloadButton.style.backgroundColor = '#1f6764';
@@ -1561,7 +1562,7 @@ export class SubDashboardComponent implements OnInit {
 
         container.appendChild(refreshButton);
         container.appendChild(downloadButton);
-        // container.appendChild(QRButton);
+        container.appendChild(QRButton);
 
         infoButton.addEventListener('click', () => {
         });
@@ -1569,12 +1570,10 @@ export class SubDashboardComponent implements OnInit {
         refreshButton.addEventListener('click', () => {
           this.refreshButton = params.data;
         });
-
-        downloadButton.addEventListener('click', () => {
-        });
-
         // QRButton.addEventListener('click', () => {
         // });
+        downloadButton.addEventListener('click', () => {
+        });
 
         return container;
       },
@@ -2102,7 +2101,9 @@ export class SubDashboardComponent implements OnInit {
     this.confirmation = true;
     this.isConfirmationComplete = true;
     console.log(this.billTypeValue)
-    let selectedpacklistValue = this.role === 'ROLE_SUBLCO' ? this.rowData1 : this.rows;
+    // let selectedpacklistValue = this.role === 'ROLE_SUBLCO' ? this.rowData1 : this.rows;
+    let selectedpacklistValue = this.role === 'ROLE_OPERATOR' ? this.rowData1 : this.rows;
+    console.log('selectedpacklistValue', selectedpacklistValue);
 
     let requestBody = {
       role: this.role,
@@ -2114,7 +2115,7 @@ export class SubDashboardComponent implements OnInit {
       managepacklist: this.rowData1,
       selectedpacklist: selectedpacklistValue,
       // selectedpacklist: this.rowData1,
-      retailerid: this.operatorId || this.retailerId || 0,
+      retailerid: this.retailerId || 0,
       iscollected: this.iscollected,
       comment: this.comment || '',
       dueamount: this.customerPayAmount || 0,
@@ -2163,7 +2164,8 @@ export class SubDashboardComponent implements OnInit {
     console.log('row12    recharge1   ----------  222222222222222222222', this.rowData1)
     this.confirmation = true;
     this.isConfirmationComplete = true;
-    let selectedpacklistValue = this.role === 'ROLE_SUBLCO' ? this.rows : this.rowData1;
+    // let selectedpacklistValue = this.role === 'ROLE_SUBLCO' ? this.rowData1 : this.rows;
+    let selectedpacklistValue = this.role === 'ROLE_OPERATOR' ? this.rows : this.rowData1;
 
     let requestBody = {
       role: this.role,
@@ -2175,7 +2177,7 @@ export class SubDashboardComponent implements OnInit {
       managepacklist: this.rowData1,
       // selectedpacklist: this.rows,
       selectedpacklist: selectedpacklistValue,
-      retailerid: this.operatorId || this.retailerId || 0,
+      retailerid: this.retailerId || 0,
       iscollected: this.iscollected,
       comment: this.comment || '',
       dueamount: this.customerPayAmount || 0,
@@ -2322,7 +2324,7 @@ export class SubDashboardComponent implements OnInit {
       type: 10,
       managepacklist: this.rowData1,
       selectedpacklist: this.rowData1,
-      retailerid: this.operatorId || this.retailerId || 0
+      retailerid: this.retailerId || 0
     }
     console.log("_______________________________________________________");
 
@@ -2382,7 +2384,7 @@ export class SubDashboardComponent implements OnInit {
       type: 10,
       managepacklist: this.rowData1,
       selectedpacklist: this.rows,
-      retailerid: this.operatorId || this.retailerId || 0
+      retailerid: this.retailerId || 0
     }
     this.userservice.ManagePackageCalculation(requestBody).subscribe((res: any) => {
       console.log(res);
@@ -2451,10 +2453,22 @@ export class SubDashboardComponent implements OnInit {
   }
 
   onRechargeType() {
-
+    this.rechargeUpdateType = true;
     this.rechargeTypeDialog = true;
-    console.log('scroll--11');
-
+    console.log('recharge dfksdl;fkdlsfldsfklds;', this.rechargeUpdateType)
+    setTimeout(() => {
+      const dialogElement = document.querySelector('.recharge-dialog');
+      if (dialogElement) {
+        dialogElement.scrollIntoView({ behavior: 'smooth', block: 'end' });
+      }
+    }, 100);
+    this.setBillType(this.customerPayAmount, this.collectedPayAmount);
+    this.cdr.detectChanges();
+  }
+  onRecharge1Type() {
+    this.rechargeUpdateType = false;
+    this.rechargeTypeDialog = true;
+    console.log('recharge1 dfksdl;fkdlsfldsfklds;', this.rechargeUpdateType)
     setTimeout(() => {
       const dialogElement = document.querySelector('.recharge-dialog');
       if (dialogElement) {
@@ -2501,43 +2515,47 @@ export class SubDashboardComponent implements OnInit {
 
     let smartcard = this.subdetailsList?.smartcard || this.subdetails?.smartcard;
     console.log(smartcard)
-    // this.userservice.getDownloadQR(this.role, this.username, smartcard)
-    // .subscribe((res: Blob) => {
-    //   const blob = new Blob([res], { type: res.type });
-    //   const url = window.URL.createObjectURL(blob);
+    this.userservice.getGenerateQrCode(this.role, this.username, smartcard)
+      .subscribe((res: Blob) => {
+        const blob = new Blob([res], { type: res.type });
+        const url = window.URL.createObjectURL(blob);
 
-    //   const a = document.createElement('a');
-    //   a.href = url;
-    //   a.download = 'qrcode.png'; 
-    //   document.body.appendChild(a);
-    //   a.click();
-    //   document.body.removeChild(a);
-    //   window.URL.revokeObjectURL(url);
-    // }, (err) => {
-    //   this.swal.Error(err?.error?.message);
-    // });
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `${smartcard}.png`;
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        window.URL.revokeObjectURL(url);
+        this.swal.Close();
+      }, (err) => {
+        this.swal.Error(err?.error?.message);
+      });
   }
-  onQRcodeGenerate() {
+  onQRcodeGenerate(e: any) {
+    console.log('23423423432', e);
 
     this.swal.Loading();
 
-    let smartcard = this.subdetailsList?.smartcard || this.subdetails?.smartcard;
+    // let smartcard = this.subdetailsList?.smartcard || this.subdetails?.smartcard;
+    let smartcard = e;
     console.log(smartcard)
-    //   this.userservice.getGenerateQrCode(this.role, this.username, smartcard)
-    //   .subscribe((res: Blob) => {
-    //     const blob = new Blob([res], { type: res.type });
-    //     const url = window.URL.createObjectURL(blob);
+    this.userservice.getGenerateQrCode(this.role, this.username, smartcard)
+      .subscribe((res: Blob) => {
+        const blob = new Blob([res], { type: res.type });
+        const url = window.URL.createObjectURL(blob);
 
-    //     const a = document.createElement('a');
-    //     a.href = url;
-    //     a.download = 'qrcode.png'; 
-    //     document.body.appendChild(a);
-    //     a.click();
-    //     document.body.removeChild(a);
-    //     window.URL.revokeObjectURL(url);
-    //   }, (err) => {
-    //     this.swal.Error(err?.error?.message);
-    //   });
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `${smartcard}.png`;
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        window.URL.revokeObjectURL(url);
+        this.swal.Close();
+      }, (err) => {
+        this.swal.Error(err?.error?.message);
+      });
   }
 }
 
