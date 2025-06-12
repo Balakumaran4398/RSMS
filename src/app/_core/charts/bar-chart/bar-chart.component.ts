@@ -3,7 +3,8 @@ import { BaseService } from '../../service/base.service';
 import { StorageService } from '../../service/storage.service';
 import { SwalService } from '../../service/swal.service';
 import { CanvasJS } from '@canvasjs/angular-charts';
-import * as jQuery from 'jquery';
+
+
 import { Route, Router } from '@angular/router';
 declare var AmCharts: any;
 
@@ -13,7 +14,7 @@ declare var AmCharts: any;
   styleUrls: ['./bar-chart.component.scss']
 })
 export class BarChartComponent implements OnInit {
-  chartOptions: any;
+  chartOptions: any;  
   role: string;
   username: string;
   date: any;

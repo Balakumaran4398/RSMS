@@ -102,7 +102,8 @@ export class AddLcoComponent {
         div.style.alignItems = 'center';
         div.style.justifyContent = 'center';
         div.style.cursor = 'pointer';
-        div.style.backgroundColor = '#dfacac';
+        // div.style.backgroundColor = '#dfacac';
+        div.style.border = '1px solid';
         div.title = 'EDIT COMISSION VALUE';
 
         const span = document.createElement('span');
@@ -115,14 +116,14 @@ export class AddLcoComponent {
           input.type = 'text';
           input.value = params.value;
           input.style.width = '100%';
-          input.style.height = '100%';
-          input.style.padding = '4px';
+          // input.style.height = '100%';
+          // input.style.padding = '4px';
           input.style.textAlign = 'center';
           input.style.fontSize = '14px';
           input.style.color = 'black';
           input.style.border = 'none';
           input.style.outline = 'none';
-          input.style.backgroundColor = '#ffffcc';
+          // input.style.backgroundColor = '#ffffcc';
 
           div.replaceChildren(input);
           input.focus();
@@ -169,7 +170,8 @@ export class AddLcoComponent {
         div.style.alignItems = 'center';
         div.style.justifyContent = 'center';
         div.style.cursor = 'pointer';
-        div.style.backgroundColor = '#dfacac';
+        // div.style.backgroundColor = '#dfacac';
+        div.style.border = '1px solid';
         div.title = 'EDIT MSO AMOUNT';
 
         const span = document.createElement('span');
@@ -181,16 +183,15 @@ export class AddLcoComponent {
           const input = document.createElement('input');
           input.type = 'text';
           input.value = params.value;
-          input.style.width = '100%';
-          input.style.height = '100%';
-          input.style.padding = '4px';
+            input.style.width = '100%';
+          // input.style.height = '100%';
+          // input.style.padding = '4px';
           input.style.textAlign = 'center';
           input.style.fontSize = '14px';
           input.style.color = 'black';
           input.style.border = 'none';
           input.style.outline = 'none';
-          input.style.backgroundColor = '#ffffcc';
-
+          // input.style.backgroundColor = '#ffffcc';
           div.replaceChildren(input);
           input.focus();
 
@@ -303,6 +304,7 @@ export class AddLcoComponent {
     }
   }
   onproducttypechange(event: any) {
+
     this.userservice.getLcoGroupMasterList(this.role, this.username).subscribe((data: any) => {
       this.lcomembershipList = Object.keys(data).map(key => {
         const value = data[key];
@@ -344,7 +346,7 @@ export class AddLcoComponent {
       };
       (errorStatusHandlers[error.status] || (() => Swal.fire('Error', 'Something went wrong. Please try again.', 'error')))();
     };
-
+    this.rowData = [];
     if (this.type === 'commission') {
       this.userservice.getproductMembershipList(this.role, this.username, this.producttype, this.lcogroupid).subscribe(successHandler, errorHandler);
 

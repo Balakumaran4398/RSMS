@@ -1,20 +1,23 @@
-
-<div *ngIf="type==='membership'" class="col d-flex justify-content-center align-items-center card transparent-background dialog-content">
+<div *ngIf="type==='membership'"
+    class="col d-flex justify-content-center align-items-center card transparent-background dialog-content">
     <div class="card-content ">
         <div class="Head d-flex justify-content-between align-items-center mb-3" style="padding: 1rem;">
-            <h6 >CREATE LCO GROUP</h6>
+            <h6>CREATE LCO GROUP</h6>
             <i class="fa fa-close close-icon" style="cursor: pointer;" (click)="onNoClick()"></i>
         </div>
         <div class="card-body" style="padding: 2rem;">
             <div class="input_box display align-items-center mb-3" style="padding: 1rem;">
                 <div class="col-12 col-md-6">
-                    <label  class="me-2">LCO Group Name</label>
+                    <label class="me-2">LCO Group Name</label>
                 </div>
                 <div class="col-12 col-md-6">
-                    <input type="text" id="categoryName" [(ngModel)]="lcogroupname"  (input)="clearError()" >
-                    <div *ngIf="errorMessage" class=" alert alert-danger d-flex justify-content-between align-items-center mt-3"  style="position: relative;font-size: 11px;">
+                    <input type="text" id="categoryName" [(ngModel)]="lcogroupname" (input)="clearError()">
+                    <div *ngIf="errorMessage"
+                        class=" alert alert-danger d-flex justify-content-between align-items-center mt-3"
+                        style="position: relative;font-size: 11px;">
                         {{ errorMessage }}
-                        <i class="fa fa-close close-icon" style="cursor: pointer;font-size: 11px" (click)="errorToggle()"></i>
+                        <i class="fa fa-close close-icon" style="cursor: pointer;font-size: 11px"
+                            (click)="errorToggle()"></i>
                     </div>
                 </div>
             </div>
@@ -26,28 +29,41 @@
     </div>
 </div>
 
-<div *ngIf="type==='dis_membership'" class="col d-flex justify-content-center align-items-center card transparent-background dialog-content">
+<div *ngIf="type==='dis_membership'">
+    <div class="Head d-flex justify-content-between align-items-center mb-3" style="padding: 1rem;">
+        <h6>CREATE DISTRIBUTOR</h6>
+        <i class="fa fa-close close-icon" style="cursor: pointer;" (click)="onNoClick()"></i>
+    </div>
     <div class="card-content ">
-        <div class="Head d-flex justify-content-between align-items-center mb-3" style="padding: 1rem;">
-            <h6 >CREATE DISTRIBUTOR</h6>
-            <i class="fa fa-close close-icon" style="cursor: pointer;" (click)="onNoClick()"></i>
-        </div>
         <div class="card-body" style="padding: 2rem;">
             <div class="input_box display align-items-center mb-3">
                 <div class="col-12 col-md-6">
-                    <label  class="me-2">Distributor Name</label>
+                    <label class="me-2">Distributor Name</label>
                 </div>
                 <div class="col-12 col-md-6">
                     <!-- <input type="text" id="categoryName" [(ngModel)]="lcogroupname"  (input)="clearError()" > -->
-                    <select style="color: rgb(17, 0, 0);" [(ngModel)]="distributorid">
-                    <option value="0" selected style="color: rgb(19, 17, 17);">SELECT Distributor
-                    </option>
-                    <option *ngFor="let distributor of distributorList" [value]="distributor.value">{{
-                        distributor.name}}</option>
-                </select>
-                    <div *ngIf="errorMessage" class=" alert alert-danger d-flex justify-content-between align-items-center mt-3"  style="position: relative;font-size: 11px;">
+
+                    <div class="gender-category">
+                        <select id="ltb" [(ngModel)]="distributorid">
+                            <option value="0" selected>Selected Operator Name</option>
+                            <option *ngFor="let distributor of distributorList" [value]="distributor.value"
+                                (ngModelChange)="onSubscriberStatusChange($event)">
+                               {{distributor.name}}-({{distributor.value}})
+                            </option>
+                        </select>
+                    </div>
+                    <!-- <select style="color: rgb(17, 0, 0);" [(ngModel)]="distributorid">
+                        <option value="0" selected style="color: rgb(19, 17, 17);">SELECT Distributor
+                        </option>
+                        <option *ngFor="let distributor of distributorList" [value]="distributor.value">
+                            {{distributor.name}}-({{distributor.value}})</option>
+                    </select> -->
+                    <div *ngIf="errorMessage"
+                        class=" alert alert-danger d-flex justify-content-between align-items-center mt-3"
+                        style="position: relative;font-size: 11px;">
                         {{ errorMessage }}
-                        <i class="fa fa-close close-icon" style="cursor: pointer;font-size: 11px" (click)="errorToggle()"></i>
+                        <i class="fa fa-close close-icon" style="cursor: pointer;font-size: 11px"
+                            (click)="errorToggle()"></i>
                     </div>
                 </div>
             </div>
@@ -58,5 +74,3 @@
         </div>
     </div>
 </div>
-
-

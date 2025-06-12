@@ -247,7 +247,7 @@ export class DistributordiscountComponent implements OnInit {
   }
 
   ngAfterViewInit() {
-    $('#operator').select2({
+   ($('#operator') as any).select2({
       placeholder: 'Select Retailer',
       allowClear: true
     });
@@ -260,7 +260,7 @@ export class DistributordiscountComponent implements OnInit {
         console.log(this.selectOperator);
       }
     });
-    $('#package').select2({
+    ($('#package')as any).select2({
       placeholder: 'Select Package',
       allowClear: true
     });

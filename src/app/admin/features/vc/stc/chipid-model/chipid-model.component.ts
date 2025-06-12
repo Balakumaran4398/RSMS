@@ -27,9 +27,9 @@ export class ChipidModelComponent implements OnInit {
   subLcoName: any;
   subLcoMobilenumber: any;
   subLcoBoxid: any;
-  subLcoChipID: any;
-  subLcoSmartcard: any;
-  subLcoModel: any;
+  subLcoChipID: any = '';
+  subLcoSmartcard: any = '';
+  subLcoModel: any = '';
 
 
   opName: any = 0;
@@ -96,7 +96,7 @@ export class ChipidModelComponent implements OnInit {
   }
   ngAfterViewInit() {
 
-    $('#ltb').select2({
+    ($('#ltb') as any).select2({
       placeholder: 'Select Operator Name',
       allowClear: true
     });
@@ -104,7 +104,7 @@ export class ChipidModelComponent implements OnInit {
       this.opName = event.target.value;
       this.onSubscriberStatusChange(this.opName);
     });
-    $('#lco').select2({
+    ($('#lco') as any).select2({
       placeholder: 'Select Operator Name',
       allowClear: true
     });
@@ -255,6 +255,19 @@ export class ChipidModelComponent implements OnInit {
 
 
   submit() {
+
+    if (this.subLcoChipID === '') {
+      this.swal.Error("Chip ID is required.");
+      return;
+    }
+    if (this.subLcoChipID === '') {
+      this.swal.Error("Chip ID is required .");
+      return;
+    }
+    if (this.subLcoSmartcard === '') {
+      this.swal.Error("Smartcard is required .");
+      return;
+    }
     this.userService.getchipidUpdate(this.role, this.username, this.subLcoSmartcard, this.subLcoChipID, this.subLcoModel)
       .subscribe((res: any) => {
         this.swal.success(res?.message);

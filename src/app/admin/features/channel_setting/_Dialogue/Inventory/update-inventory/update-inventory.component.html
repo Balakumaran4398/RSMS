@@ -19,7 +19,7 @@
                     <label for="">Box ID</label>
                 </div>
                 <div class="col-12 col-md-8">
-                    <input type="text" class="mb-3"  placeholder="Enter BoxID" [(ngModel)]="Boxid"  
+                    <input type="text" class="mb-3"  placeholder="Enter BoxID" [(ngModel)]="Boxid"  (keypress)="onKeydown($event)"
                     maxlength="20" pattern="[0-9]*">
                 </div>
             </div>

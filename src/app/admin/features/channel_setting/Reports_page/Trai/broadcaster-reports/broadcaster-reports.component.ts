@@ -31,6 +31,7 @@ export class BroadcasterReportsComponent implements OnInit {
   submitted: boolean = false;
   broadcasterid: any;
   broadcastername: any;
+  broadcastername_1: any;
   selectedValue: any;
   monthlyReportCastitle: any;
 
@@ -102,8 +103,11 @@ export class BroadcasterReportsComponent implements OnInit {
       //   name: item.broadcastername,
       //   value: item.id,
       // }));
+
       this.broadcasterList = data;
       console.log(this.broadcasterList);
+      // this.broadcastername_1 = data.broadcastername;
+      // console.log('this.broadcastername_1',this.broadcastername_1);
 
     })
     const currentDate = new Date();
@@ -132,14 +136,29 @@ export class BroadcasterReportsComponent implements OnInit {
   }
 
   ngAfterViewInit(): void {
-    $('#broadcaster').select2({
+    ($('#broadcaster')as any).select2({
       placeholder: 'Select Broadcaster',
       allowClear: true
     });
     $('#broadcaster').on('change', (event: any) => {
-      this.broadcastername = event.target.value;
+      // this.broadcastername = event.target.value;     
+      const selectedId = Number(event.target.value); // Get selected ID from dropdown
+      this.broadcastername = selectedId;
+
+      // Find the name from broadcasterList using the ID
+      const selectedItem = this.broadcasterList.find(item => item.id === selectedId);
+
+      if (selectedItem) {
+        console.log('Selected ID:', selectedId);
+        console.log('Selected Name:', selectedItem.broadcastername);
+      } else {
+        console.log('Broadcaster not found');
+      }
+      this.broadcastername_1 = selectedItem.broadcastername;
+      console.log('Selected Name:', this.broadcastername_1);
+
     });
-    $('#cas').select2({
+    ($('#cas')as any).select2({
       placeholder: 'Select CAS',
       allowClear: true
     });
@@ -283,11 +302,12 @@ export class BroadcasterReportsComponent implements OnInit {
     );
   }
   onSelectionBroadcaster(selectedValue: any) {
-    console.log(selectedValue);
+    console.log('adasdkjasdjasjkldsa', selectedValue);
     // this.broadcasterid = selectedValue;
     this.broadcasterid = selectedValue.value;
-    this.broadcastername = selectedValue.name;
+    this.broadcastername = selectedValue.broadcastername;
     console.log(this.broadcasterid);
+    console.log(this.broadcastername);
 
   }
   onSelectioncas(selectedValue: any) {
@@ -508,7 +528,8 @@ export class BroadcasterReportsComponent implements OnInit {
 
   getExcel(event: number) {
     console.log('dfsfdsdsfidsjkfuji', this.broadcasterid);
-
+    console.log('3453453489577834', this.broadcastername);
+   console.log('Selected Name:', this.broadcastername_1);
     console.log(event);
     if (event === 0) {
       this.monthlyReportCastitle = 'CAS GROUPED';
@@ -535,7 +556,7 @@ export class BroadcasterReportsComponent implements OnInit {
         const data = window.URL.createObjectURL(blob);
         const link = document.createElement('a');
         link.href = data;
-        link.download = (this.broadcastername + '' + this.reportTitle + '  ' + this.monthlyReportCastitle + ' ' + this.selectedMonthName + '-' + this.selectedYear + ".xlsx").toUpperCase();
+        link.download = (this.broadcastername_1 + ' ' + this.reportTitle + '  ' + this.monthlyReportCastitle + ' ' + this.selectedMonthName + '-' + this.selectedYear + ".xlsx").toUpperCase();
         link.dispatchEvent(new MouseEvent('click', { bubbles: true, cancelable: true, view: window }));
         setTimeout(() => {
           window.URL.revokeObjectURL(data);
@@ -585,7 +606,7 @@ export class BroadcasterReportsComponent implements OnInit {
         const link = document.createElement('a');
         link.href = data;
 
-        link.download = (this.broadcastername + '' + this.reportTitle + '  ' + this.monthlyReportCastitle + ' ' + this.selectedMonthName + '-' + this.selectedYear + ".pdf").toUpperCase();
+        link.download = (this.broadcastername_1 + ' ' + this.reportTitle + '  ' + this.monthlyReportCastitle + ' ' + this.selectedMonthName + '-' + this.selectedYear + ".pdf").toUpperCase();
         link.dispatchEvent(new MouseEvent('click', { bubbles: true, cancelable: true, view: window }));
         setTimeout(() => {
           window.URL.revokeObjectURL(data);

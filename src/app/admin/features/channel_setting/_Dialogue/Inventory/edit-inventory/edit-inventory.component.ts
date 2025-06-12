@@ -64,7 +64,7 @@ export class EditInventoryComponent implements OnInit {
     ($('#casType') as any).select2('destroy');
   }
   ngAfterViewInit() {
-    $('#casType').select2({
+    ($('#casType')as any).select2({
       placeholder: 'Select a CAS Name',
       allowClear: true
     });

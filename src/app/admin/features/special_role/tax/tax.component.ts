@@ -4,6 +4,7 @@ import { BaseService } from 'src/app/_core/service/base.service';
 import { MatDialog } from '@angular/material/dialog';
 import { StorageService } from 'src/app/_core/service/storage.service';
 import { SwalService } from 'src/app/_core/service/swal.service';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-tax',
@@ -23,7 +24,7 @@ export class TaxComponent {
       comparator: (valueA: any, valueB: any) => {
         const isNumberA = !isNaN(valueA) && valueA !== null;
         const isNumberB = !isNaN(valueB) && valueB !== null;
-  
+
         if (isNumberA && isNumberB) {
           return valueA - valueB;
         } else {
@@ -36,7 +37,7 @@ export class TaxComponent {
       },
     },
     paginationPageSize: 10,
-    paginationPageSizeSelector:[10,20,50],
+    paginationPageSizeSelector: [10, 20, 50],
     pagination: true,
   };
 
@@ -49,15 +50,20 @@ export class TaxComponent {
   id: any;
   role: any;
   type: number = 0;
+  userid: any;
+  accessip: any;
+
   constructor(public dialog: MatDialog, public userservice: BaseService, storageService: StorageService, private swal: SwalService,) {
     this.username = storageService.getUsername();
     this.role = storageService.getUserRole();
+    this.userid = storageService.getUserid();
+    this.accessip = storageService.getAccessip();
   }
   columnDefs: any[] = [
     {
-      headerName: "S.NO", lockPosition: true, valueGetter: 'node.rowIndex+1', headerCheckboxSelection: true, checkboxSelection: true,filter: false
+      headerName: "S.NO", lockPosition: true, valueGetter: 'node.rowIndex+1', headerCheckboxSelection: true, checkboxSelection: true, filter: false
     },
-    { headerName: 'TAX NAME	', field: 'taxname', width: 220,cellStyle: { textAlign: 'left' } },
+    { headerName: 'TAX NAME	', field: 'taxname', width: 220, cellStyle: { textAlign: 'left' } },
     {
       headerName: 'PERCENTAGE	', field: 'percentage', width: 300, cellRenderer: (params: { value: any }) => {
         return `<span>${params.value}%</span>`;
@@ -71,15 +77,15 @@ export class TaxComponent {
         return `<span style="color: ${color};">${text}</span>`;
       }
     },
-    { headerName: 'TAX TYPE	', field: 'taxtype', width: 250, cellStyle: { textAlign: 'left' }},
+    { headerName: 'TAX TYPE	', field: 'taxtype', width: 250, cellStyle: { textAlign: 'left' } },
     {
       headerName: 'STATUS', field: 'statusdisplay', width: 200,
 
       cellRenderer: (params: { value: any; data: any }) => {
-        const status = params.data?.statusdisplay; 
+        const status = params.data?.statusdisplay;
         const color = status === 'Active' ? 'green' : 'red';
         const text = status === 'Active' ? 'Active' : 'Deactive';
-        return `<span style="color: ${color}; ">${text}</span>`; 
+        return `<span style="color: ${color}; ">${text}</span>`;
       }
     },
     {
@@ -122,25 +128,115 @@ export class TaxComponent {
       this.isAnyRowSelected = selectedRows.length > 0;
       console.log("Selected Rows:", selectedRows);
       this.selectedIds = selectedRows.map((e: any) => e.id);
-      this.selectedtypes = selectedRows.map((e: any) => e.isactive);
+      this.selectedtypes = selectedRows[0].isdelete;
     }
   }
 
 
   Active() {
-    this.swal.Loading();
-    this.userservice.activeORDeactiveTax(this.role, this.username, this.selectedIds, 'false').subscribe((res: any) => {
-      this.swal.success(res?.message);
-    }, (err) => {
-      this.swal.Error(err?.error?.message);
+    // this.swal.Loading();
+    // this.userservice.activeORDeactiveTax(this.role, this.username, this.selectedIds, 'false').subscribe((res: any) => {
+    //   this.swal.success(res?.message);
+    // }, (err) => {
+    //   this.swal.Error(err?.error?.message);
+    // });
+    // this.logCreate('Tax Master Active Button Clicked', this.selectedtypes, 'Active');
+
+    Swal.fire({
+      title: "Are you sure?",
+      text: "You won't be able to Active this!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, Update it!"
+    }).then((result) => {
+      if (result.isConfirmed) {
+        Swal.fire({
+          title: 'Updating...',
+          text: 'Please wait while the TAX Master is being Updated',
+          allowOutsideClick: false,
+          didOpen: () => {
+            Swal.showLoading(null);
+          }
+        });
+        this.userservice.activeORDeactiveTax(this.role, this.username, this.selectedIds, 'false').subscribe((res: any) => {
+          console.log(res);
+          Swal.fire({
+            position: "center",
+            icon: "success",
+            title: "Your update was successful",
+            showConfirmButton: false,
+            timer: 1000
+          });
+          this.swal.success(res?.message);
+          this.logCreate('Tax Master Active Button Clicked', this.selectedtypes, 'Active');
+        },
+          (err) => {
+            Swal.fire({
+              position: 'center',
+              icon: 'error',
+              title: 'Error',
+              text: err?.error?.message,
+              showConfirmButton: false,
+              timer: 1500
+            }).then(() => {
+              window.location.reload();
+            });
+          }
+        );
+      }
     });
   }
   Deactive() {
-    this.swal.Loading();
-    this.userservice.activeORDeactiveTax(this.role, this.username, this.selectedIds, 'true').subscribe((res: any) => {
-      this.swal.success(res?.message);
-    }, (err) => {
-      this.swal.Error(err?.error?.message);
+    // this.swal.Loading();
+    // this.userservice.activeORDeactiveTax(this.role, this.username, this.selectedIds, 'true').subscribe((res: any) => {
+    //   this.swal.success(res?.message);
+    // }, (err) => {
+    //   this.swal.Error(err?.error?.message);
+    // });
+    // this.logCreate('Tax Master Deactive Button Clicked', this.selectedtypes, 'Deactive');
+
+
+
+    Swal.fire({
+      title: "Are you sure?",
+      text: "You won't be able to revert this!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, Deactive it!"
+    }).then((result) => {
+      if (result.isConfirmed) {
+        Swal.fire({
+          title: 'Deactivating...',
+          text: 'Please wait while the Tax Master is being Deactivated',
+          allowOutsideClick: false,
+          didOpen: () => {
+            Swal.showLoading(null);
+          }
+        });
+        this.userservice.activeORDeactiveTax(this.role, this.username, this.selectedIds, 'true').subscribe((res: any) => {
+          Swal.fire({
+            title: 'Deactivated!',
+            text: res.message,
+            icon: 'success',
+            timer: 2000,
+            timerProgressBar: true,
+          });
+          this.swal.success(res?.message);
+          this.logCreate('Tax Master Deactive Button Clicked', this.selectedtypes, 'Deactive');
+        }, (err) => {
+          Swal.fire({
+            title: 'Error!',
+            text: err?.error?.message,
+            icon: 'error',
+            timer: 2000,
+            timerProgressBar: true,
+          });
+        });
+      }
     });
   }
   openaddedlogue(type: any, data: any) {
@@ -160,5 +256,19 @@ export class TaxComponent {
     dialogRef.afterClosed().subscribe(result => {
       console.log('The dialog was closed');
     });
+  }
+
+  logCreate(action: any, remarks: any, data: any) {
+    let requestBody = {
+      access_ip: this.accessip,
+      action: action,
+      remarks: remarks,
+      data: data,
+      user_id: this.userid,
+    }
+    this.userservice.createLogs(requestBody).subscribe((res: any) => {
+      console.log(res);
+
+    })
   }
 }

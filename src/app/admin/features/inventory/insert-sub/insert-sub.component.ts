@@ -16,6 +16,7 @@ export class InsertSubComponent {
   gridApi: any;
   public rowSelection: any = "multiple";
   selectedLcoName: any = 0;
+  selectedLcoName_1: any;
   isLcoSelected: boolean = false;
   // lco_list: { [key: string]: number } = {};
   lco_list: any[] = [];
@@ -53,20 +54,19 @@ export class InsertSubComponent {
       },
     },
     paginationPageSize: 10,
-    paginationPageSizeSelector:[10,20,50],
+    paginationPageSizeSelector: [10, 20, 50],
     pagination: true,
   };
-
   filteredOperators: any[] = [];
   selectedOperator: any;
-
-
-
   submitted: boolean = false;
+  userid: any;
+  accessip: any;
   constructor(private userService: BaseService, private storageService: StorageService, public dialog: MatDialog) {
     this.username = storageService.getUsername();
     this.role = storageService.getUserRole();
-    
+    this.userid = storageService.getUserid();
+    this.accessip = storageService.getAccessip();
     this.operatorList();
   }
 
@@ -134,6 +134,7 @@ export class InsertSubComponent {
     console.log(selectedOperator);
     this.selectedOperator = selectedOperator;
     this.selectedLcoName = selectedOperator.value;
+    this.selectedLcoName_1 = selectedOperator.name;
     console.log(this.selectedLcoName);
   }
   Search() {
@@ -150,15 +151,8 @@ export class InsertSubComponent {
         this.gridOptions.paginationPageSizeSelector.push(rowCount);
       }
     })
+    this.logCreate('Insert Button Clicked', 'Insert', this.selectedLcoName_1);
   }
-  // onSelectionChanged() {
-  //   if (this.gridApi) {
-  //     const selectedRows = this.gridApi.getSelectedRows();
-  //     this.isAnyRowSelected = selectedRows.length > 0;
-  //     this.selectedIds = selectedRows.map((e: any) => e.id);
-  //     this.selectedtypes = selectedRows.map((e: any) => e.isactive);
-  //   }
-  // }
 
   selectedIdsSet = new Set<number>();
   onSelectionChanged(event: any) {
@@ -179,8 +173,6 @@ export class InsertSubComponent {
       this.updateSelectedRows(selectedRows);
     }
   }
-
-
   updateSelectedRows(selectedRows: any[]) {
     this.isAnyRowSelected = selectedRows.length > 0;
     // this.selectedIds = selectedRows.map((e: any) => e.id);
@@ -190,17 +182,6 @@ export class InsertSubComponent {
     console.log("Selected Rows:", this.selectedIds);
   }
 
-
-
-
-  // updateOperatorIds() {
-  //   this.operatorid = [];
-  //   this.selectedLcoKeys.forEach(key => {
-  //     if (this.lco_list[key] !== undefined) {
-  //       this.operatorid.push(this.lco_list[key]);
-  //     }
-  //   });
-  // }
   filteredLcoKeys(): string[] {
     const keys = Object.keys(this.lco_list);
     if (!this.searchTerm) {
@@ -239,5 +220,19 @@ export class InsertSubComponent {
         console.log('The dialog was closed');
       });
     }
+  }
+
+  logCreate(action: any, remarks: any, data: any) {
+    let requestBody = {
+      access_ip: this.accessip,
+      action: action,
+      remarks: remarks,
+      data: data,
+      user_id: this.userid,
+    }
+    this.userService.createLogs(requestBody).subscribe((res: any) => {
+      console.log(res);
+
+    })
   }
 }

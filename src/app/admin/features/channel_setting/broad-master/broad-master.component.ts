@@ -50,7 +50,7 @@ export class BroadMasterComponent implements OnInit {
       },
     },
     paginationPageSize: 100,
-    paginationPageSizeSelector: [10,20,50],
+    paginationPageSizeSelector: [10, 20, 50],
     pagination: true,
   };
 
@@ -59,15 +59,22 @@ export class BroadMasterComponent implements OnInit {
   isAnyRowSelected: any = false;
   selectedIds: number[] = [];
   selectedtypes: number[] = [];
+  selectedtstatus: any;
   hasSelectedRows: boolean = true;
   username: any;
   selectCount: any;
   id: any;
   role: any;
+  userid: any;
+  accessip: any;
   type: number = 0;
   constructor(public dialog: MatDialog, public userService: BaseService, storageService: StorageService) {
     this.username = storageService.getUsername();
     this.role = storageService.getUserRole();
+    this.userid = storageService.getUserid();
+    this.accessip = storageService.getAccessip();
+    console.log('userid', this.userid);
+    console.log('accessip', this.accessip);
   }
 
   ngOnInit(): void {
@@ -80,6 +87,7 @@ export class BroadMasterComponent implements OnInit {
       }
     })
   }
+  status: any;
   columnDefs: any[] = [
     {
       headerName: "S.NO", lockPosition: true, valueGetter: 'node.rowIndex+1', headerCheckboxSelection: true, filter: false, width: 150,
@@ -115,6 +123,8 @@ export class BroadMasterComponent implements OnInit {
       filter: false,
       cellRenderer: (params: any) => {
         var isActive = params.data.isactive;
+        this.status = isActive;
+        console.log('serklsdjfkljfkdlsjfklsdjfkldsjfkl', this.status);
 
         const toggleContainer = document.createElement('div');
         toggleContainer.style.display = 'flex';
@@ -153,9 +163,9 @@ export class BroadMasterComponent implements OnInit {
 
           console.log(params.data.id);
           if (isActive) {
-            this.Active(params.data.id);
+            this.Active(params.data.id, params.data.statusdisplay);
           } else {
-            this.Deactive(params.data.id);
+            this.Deactive(params.data.id, params.data.statusdisplay);
           }
 
         });
@@ -183,9 +193,11 @@ export class BroadMasterComponent implements OnInit {
 
       // Extracting 'isactive' from selected rows
       this.selectedtypes = selectedRows.map((e: any) => e.isactive);
+      // this.selectedtstatus = selectedRows.map((e: any) => e.statusdisplay);
+      this.selectedtstatus = selectedRows[0].statusdisplay;
 
       console.log("Selected IDs:", this.selectedIds);
-      console.log("Selected Types:", this.selectedtypes);
+      console.log("Selected Status:", this.selectedtstatus);
     }
   }
 
@@ -212,7 +224,7 @@ export class BroadMasterComponent implements OnInit {
     console.log(requestBody);
     Swal.fire({
       title: "Are you sure?",
-      text: "You won't be able to revert this!",
+      text: "You won't be able to Activate this!",
       icon: "warning",
       showCancelButton: true,
       confirmButtonColor: "#3085d6",
@@ -261,7 +273,9 @@ export class BroadMasterComponent implements OnInit {
 
 
 
-  Deactive(ids: any) {
+  Deactive(ids: any, status: any) {
+    console.log('dfsdfhsdjf', status);
+
     Swal.fire({
       title: "Are you sure?",
       text: "You won't be able to revert this!",
@@ -289,6 +303,7 @@ export class BroadMasterComponent implements OnInit {
             timerProgressBar: true,
           });
           this.ngOnInit();
+          this.logCreate('Broadcaster Deactive Button Clicked', status, 'Deactive');
         }, (err) => {
           Swal.fire({
             title: 'Error!',
@@ -300,8 +315,12 @@ export class BroadMasterComponent implements OnInit {
         });
       }
     });
+
+
   }
-  Active(ids: any) {
+  Active(ids: any, status: any) {
+    console.log('dfkdsjfskdfjkds', status);
+
     Swal.fire({
       title: "Are you sure?",
       text: "You won't be able to Active this!",
@@ -329,6 +348,7 @@ export class BroadMasterComponent implements OnInit {
             timerProgressBar: true,
           });
           this.ngOnInit();
+          this.logCreate('Broadcaster Active Button Clicked', status, 'Active');
         }, (err) => {
           Swal.fire({
             title: 'Error!',
@@ -340,6 +360,21 @@ export class BroadMasterComponent implements OnInit {
         });
       }
     });
+
+  }
+
+  logCreate(action: any, remarks: any, data: any) {
+    let requestBody = {
+      access_ip: this.accessip,
+      action: action,
+      remarks: remarks,
+      data: data,
+      user_id: this.userid,
+    }
+    this.userService.createLogs(requestBody).subscribe((res: any) => {
+      console.log(res);
+
+    })
   }
 
   addnew(): void {

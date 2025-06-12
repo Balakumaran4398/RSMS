@@ -146,13 +146,14 @@ input {
     font-weight: bold;
     color: green;
   }
-  
+  .mso-input,
   .current-input {
     width: 60px;
     text-align: center;
     border: none;
     border-bottom: 1px solid black;
     outline: none;
+    margin-top: -9px 
   }
   
   .modal-footer {

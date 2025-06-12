@@ -52,20 +52,32 @@ export class LogindialogueComponent implements OnInit {
 
   edituserid: any;
   editPassword: any;
+  isactive: boolean = false;
+  edituserid1: any;
+  editPassword1: any;
+  isactive1: boolean = false;
   editDate: any;
   editRole: any;
-  isactive: boolean = false;
   editmail: any;
   id: any;
+
+  userid1: any;
+  accessip: any;
   constructor(public dialogRef: MatDialogRef<LogindialogueComponent>, @Inject(MAT_DIALOG_DATA) public data: any, private cdr: ChangeDetectorRef, private fb: FormBuilder, private swal: SwalService, private userservice: BaseService, private storageservice: StorageService) {
     this.username = storageservice.getUsername();
     this.role = storageservice.getUserRole();
+    this.userid1 = storageservice.getUserid();
+    this.accessip = storageservice.getAccessip();
     console.log(data);
     this.type = data.type;
     this.edituserid = data?.data?.username;
     this.editPassword = data?.data?.password;
-    this.editRole = data?.data?.role;
     this.isactive = data?.data?.valid;
+    this.edituserid1 = data?.data?.username;
+    this.editPassword1 = data?.data?.password;
+    this.isactive1 = data?.data?.valid;
+    console.log('1111111', this.edituserid1, 'dfsfdsfdsf', this.editPassword1, '34asdfsaf232', this.isactive1);
+    this.editRole = data?.data?.role;
     this.editmail = data?.data?.email;
     this.id = data?.data?.id;
     console.log('isactive', this.isactive);
@@ -129,6 +141,8 @@ export class LogindialogueComponent implements OnInit {
       return;
     }
     console.log(this.isactive);
+    console.log('new', this.edituserid);
+    console.log('old', this.edituserid1);
 
     const requestBody = {
       role: this.role,
@@ -145,7 +159,10 @@ export class LogindialogueComponent implements OnInit {
     this.swal.Loading();
     this.userservice.updateUser(requestBody)
       .subscribe((res: any) => {
-        this.swal.success(res?.message);
+        // this.swal.success(res?.message);
+        const data = `User Name: ${this.edituserid}, ` + ` Password: ${this.editPassword},` + ` Status: ${this.isactive},`;
+        const remark = `User Name: ${this.edituserid1}, ` + ` Password: ${this.editPassword1},` + ` Status: ${this.isactive1},`;
+        this.logCreate('Login Update Button Clicked', remark, data);
       }, (err) => {
         this.swal.Error(err?.error?.message);
       });
@@ -154,5 +171,18 @@ export class LogindialogueComponent implements OnInit {
   onToggleChange() {
     console.log('isactive changed to:', !this.isactive);
     this.cdr.detectChanges();
+  }
+  logCreate(action: any, remarks: any, data: any) {
+    let requestBody = {
+      access_ip: this.accessip,
+      action: action,
+      remarks: remarks,
+      data: data,
+      user_id: this.userid,
+    }
+    this.userservice.createLogs(requestBody).subscribe((res: any) => {
+      console.log(res);
+
+    })
   }
 }

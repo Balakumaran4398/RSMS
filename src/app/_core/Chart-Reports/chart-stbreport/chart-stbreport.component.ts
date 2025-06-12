@@ -23,8 +23,7 @@ export class ChartSTBReportComponent implements OnInit {
       comparator: (valueA: any, valueB: any) => {
         const isNumberA = !isNaN(valueA) && valueA !== null;
         const isNumberB = !isNaN(valueB) && valueB !== null;
-  
-        if (isNumberA && isNumberB) {
+          if (isNumberA && isNumberB) {
           return valueA - valueB;
         } else {
           const normalizedA = valueA ? valueA.toString().trim().toLowerCase() : '';

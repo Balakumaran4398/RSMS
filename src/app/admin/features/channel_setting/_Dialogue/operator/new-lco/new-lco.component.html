@@ -108,11 +108,24 @@
                         </div>
                         <div class="col-12 col-md-8">
                             <input class="" type="mail" formControlName="mail">
-                            <div *ngIf="form.get('mail')?.invalid && form.get('mail')?.touched">
+                            <!-- <div *ngIf="form.get('mail')?.invalid && form.get('mail')?.touched">
                                 <small class="text-danger" *ngIf="form.get('mail')?.errors?.['email']">Invalid email
                                     format.</small>
                                 <small class="text-danger" *ngIf="form.get('mail')?.errors?.['required']">Email is
                                     required.</small>
+                            </div> -->
+                            <div *ngIf="form.get('mail')?.invalid && form.get('mail')?.touched">
+                                <small class="text-danger" *ngIf="form.get('mail')?.hasError('required')">
+                                    Email is required.
+                                </small>
+                                <small class="text-danger"
+                                    *ngIf="!form.get('mail')?.hasError('required') && form.get('mail')?.hasError('mail')">
+                                    Please enter a valid Email format.
+                                </small>
+                                <small class="text-danger"
+                                    *ngIf="!form.get('mail')?.hasError('required') && !form.get('mail')?.hasError('mail') && form.get('mail')?.hasError('invalidEmail')">
+                                    Email must include ".in" or ".com" after letters.
+                                </small>
                             </div>
                         </div>
                     </div>
@@ -180,7 +193,6 @@
                     </div>
                 </div>
             </div>
-
         </form>
     </div>
 
@@ -265,11 +277,24 @@
                         </div>
                         <div class="col-12 col-md-8">
                             <input class="" type="mail" formControlName="mail">
-                            <div *ngIf="form.get('mail')?.invalid && form.get('mail')?.touched">
+                            <!-- <div *ngIf="form.get('mail')?.invalid && form.get('mail')?.touched">
                                 <small class="text-danger" *ngIf="form.get('mail')?.errors?.['email']">Invalid email
                                     format.</small>
                                 <small class="text-danger" *ngIf="form.get('mail')?.errors?.['required']">Email is
                                     required.</small>
+                            </div> -->
+                            <div *ngIf="form.get('mail')?.invalid && form.get('mail')?.touched">
+                                <small class="text-danger" *ngIf="form.get('mail')?.hasError('required')">
+                                    Email is required.
+                                </small>
+                                <small class="text-danger"
+                                    *ngIf="!form.get('mail')?.hasError('required') && form.get('mail')?.hasError('mail')">
+                                    Please enter a valid Email format.
+                                </small>
+                                <small class="text-danger"
+                                    *ngIf="!form.get('mail')?.hasError('required') && !form.get('mail')?.hasError('mail') && form.get('mail')?.hasError('invalidEmail')">
+                                    Email must include ".in" or ".com" after letters.
+                                </small>
                             </div>
                         </div>
                     </div>

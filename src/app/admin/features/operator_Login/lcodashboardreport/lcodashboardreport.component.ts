@@ -847,7 +847,7 @@ export class LcodashboardreportComponent implements OnInit {
   }
 
   ngAfterViewInit() {
-    $('#Area').select2({
+    ($('#Area')as any).select2({
       placeholder: 'Select Area',
       allowClear: true
     });
@@ -855,7 +855,7 @@ export class LcodashboardreportComponent implements OnInit {
       this.areaid = event.target.value;
       this.getArealist(this.areaid);
     });
-    $('#Street').select2({
+    ($('#Street') as any).select2({
       placeholder: 'Select Street',
       allowClear: true
     });

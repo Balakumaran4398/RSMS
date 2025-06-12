@@ -14,6 +14,9 @@ export class EditareaComponent implements OnInit {
   pincode: any;
   areaname: any;
   isdelete = false;
+  pincode1: any;
+  areaname1: any;
+  isdelete1= false;
   username: any;
   operatorid: any;
   role: any;
@@ -22,15 +25,23 @@ export class EditareaComponent implements OnInit {
   id: any
   rowData: any[] = [];
   editarea: any;
+  userid: any;
+  accessip: any;
+  
   constructor(public dialogRef: MatDialogRef<EditareaComponent>, private swal: SwalService, private userservice: BaseService, private storageservice: StorageService, @Inject(MAT_DIALOG_DATA) public data: any,) {
     this.username = storageservice.getUsername();
     this.role = storageservice.getUserRole();
+    this.userid = storageservice.getUserid();
+    this.accessip = storageservice.getAccessip();
     this.editarea = data;
     this.id = data.id;
     this.areaname = data.name;
     this.pincode = data.pincode;
-    this.isdelete=data.isdelete;
-    this.operatorid=data.operatorid;
+    this.isdelete = data.isdelete;
+    this.areaname1= data.name;
+    this.pincode1 = data.pincode;
+    this.isdelete1 = data.isdelete;
+    this.operatorid = data.operatorid;
     console.log(data);
     console.log(this.isdelete);
 
@@ -60,8 +71,25 @@ export class EditareaComponent implements OnInit {
     this.userservice.updateArea(requestBody)
       .subscribe((res: any) => {
         this.swal.success(res?.message);
+        const data = ` Area Name: ${this.areaname}, ` + ` Pincode: ${this.pincode},` + ` Status: ${this.isdelete},`;
+        const remark = ` Area Name: ${this.areaname1}, ` + ` Pincode: ${this.pincode1},` + ` Status: ${this.isdelete1},`;
+        this.logCreate('Area Detatails Update Button Clicked', remark, data);
       }, (err) => {
         this.swal.Error(err?.error?.message);
       });
+  }
+
+  logCreate(action: any, remarks: any, data: any) {
+    let requestBody = {
+      access_ip: this.accessip,
+      action: action,
+      remarks: remarks,
+      data: data,
+      user_id: this.userid,
+    }
+    this.userservice.createLogs(requestBody).subscribe((res: any) => {
+      console.log(res);
+
+    })
   }
 }

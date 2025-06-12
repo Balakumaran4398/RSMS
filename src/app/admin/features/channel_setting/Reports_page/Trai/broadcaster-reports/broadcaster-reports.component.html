@@ -77,7 +77,7 @@
                             </mat-autocomplete> -->
 
                             <select id="broadcaster" style="color: rgb(17, 0, 0);" [(ngModel)]="broadcastername">
-                                <option value="0" selected style="color: rgb(19, 17, 17);">Select a Broadcaster</option>
+                                <!-- <option value="0" selected style="color: rgb(19, 17, 17);">Select a Broadcaster</option> -->
                                 <option *ngFor="let casItem of broadcasterList" [value]="casItem.id"
                                     (click)="onSelectionBroadcaster(casItem)">
                                     {{ casItem.broadcastername }}

@@ -34,7 +34,7 @@ export class CategoryComponent {
       comparator: (valueA: any, valueB: any, nodeA: any, nodeB: any, isInverted: boolean) => {
         const isNumberA = !isNaN(valueA) && valueA !== null;
         const isNumberB = !isNaN(valueB) && valueB !== null;
-  
+
         if (isNumberA && isNumberB) {
           return valueA - valueB;
         } else {
@@ -47,19 +47,25 @@ export class CategoryComponent {
       },
     },
     paginationPageSize: 100,
-    paginationPageSizeSelector: [10,20,50],
+    paginationPageSizeSelector: [10, 20, 50],
     pagination: true,
   };
   gridApi: any;
   isAnyRowSelected: any = false;
   selectedIds: number[] = [];
   selectedtypes: number[] = [];
+  selectedStatus: any;
   hasSelectedRows: boolean = true;
   type: number = 0;
+  userid: any;
+  accessip: any;
+  
   public rowSelection: any = "multiple";
   constructor(public dialog: MatDialog, public userService: BaseService, storageService: StorageService) {
     this.username = storageService.getUsername();
     this.role = storageService.getUserRole();
+    this.userid = storageService.getUserid();
+    this.accessip = storageService.getAccessip();
   }
   ngOnInit(): void {
     this.userService.CategoryList(this.role, this.username, this.type).subscribe((data) => {
@@ -75,23 +81,23 @@ export class CategoryComponent {
   columnDefs: ColDef[] = [
     {
       headerName: "S.No", lockPosition: true, valueGetter: 'node.rowIndex+1', width: 90, headerCheckboxSelection: true,
-      checkboxSelection: true,filter: false
+      checkboxSelection: true, filter: false
     },
 
     {
       headerName: 'CATEGORY NAME',
-      field: 'name', 
+      field: 'name',
       width: 600,
       editable: true,
       cellEditor: 'agTextCellEditor',
-      cellStyle: { textAlign: 'left'}, 
+      cellStyle: { textAlign: 'left' },
       // onCellValueChanged: (event) => {
       //   console.log('Cell value changed:', event.data.name);
       //   this.updateDeviceModelname(event.data.name, event.data.isactive, event.data.id);
       // },
 
       tooltipValueGetter: (params: any) => {
-        return `Edit The Category: ${params.value || ''}`; 
+        return `Edit The Category: ${params.value || ''}`;
       },
       onCellValueChanged: (event: any) => {
         console.log('Cell value changed:', event.data.name);
@@ -99,9 +105,9 @@ export class CategoryComponent {
       },
       cellRenderer: (params: any) => {
         const toggleSwitch = document.createElement('div');
-        toggleSwitch.textContent = params.value; 
-        toggleSwitch.style.cursor = 'pointer'; 
-        toggleSwitch.title = `Edit The Category: ${params.value || ''}`; 
+        toggleSwitch.textContent = params.value;
+        toggleSwitch.style.cursor = 'pointer';
+        toggleSwitch.title = `Edit The Category: ${params.value || ''}`;
         return toggleSwitch;
       }
     },
@@ -149,9 +155,9 @@ export class CategoryComponent {
 
           console.log(params.data.id);
           if (isActive) {
-            this.Active(params.data.id);
+            this.Active(params.data.id,params.data.statusdisplay);
           } else {
-            this.Deactive(params.data.id);
+            this.Deactive(params.data.id,params.data.statusdisplay);
           }
 
         });
@@ -189,7 +195,8 @@ export class CategoryComponent {
       this.isAnyRowSelected = selectedRows.length > 0;
       console.log("Selected Rows:", selectedRows);
       this.selectedIds = selectedRows.map((e: any) => e.id);
-      this.selectedtypes = selectedRows.map((e: any) => e.isactive);
+      // this.selectedtypes = selectedRows.map((e: any) => e.isactive);
+      this.selectedStatus = selectedRows[0].isactive;
       console.log(this.selectedIds);
     }
   }
@@ -250,7 +257,7 @@ export class CategoryComponent {
     });
   }
 
-  Active(ids:any) {
+  Active(ids: any,status:any) {
     Swal.fire({
       title: "Are you sure?",
       text: "You won't be able to Active this!",
@@ -278,6 +285,7 @@ export class CategoryComponent {
             timerProgressBar: true,
           });
           this.ngOnInit();
+             this.logCreate('Category Active Button Clicked', !status, 'Active');
         }, (err) => {
           Swal.fire({
             title: 'Error!',
@@ -289,8 +297,9 @@ export class CategoryComponent {
         });
       }
     });
+ 
   }
-  Deactive(ids:any) {
+  Deactive(ids: any,status:any) {
     Swal.fire({
       title: "Are you sure?",
       text: "You won't be able to revert this!",
@@ -319,6 +328,7 @@ export class CategoryComponent {
             timerProgressBar: true,
           });
           this.ngOnInit();
+          this.logCreate('Category Deactive Button Clicked', !status,'Deactive');
         }, (err: { error: { message: any; }; }) => {
           Swal.fire({
             title: 'Error!',
@@ -330,6 +340,7 @@ export class CategoryComponent {
         });
       }
     });
+    
   }
 
   addnew(type: string): void {
@@ -359,5 +370,20 @@ export class CategoryComponent {
     dialogRef.afterClosed().subscribe(result => {
       console.log('The dialog was closed');
     });
+  }
+
+
+  logCreate(action: any, remarks: any, data: any) {
+    let requestBody = {
+      access_ip: this.accessip,
+      action: action,
+      remarks: remarks,
+      data: data,
+      user_id: this.userid,
+    }
+    this.userService.createLogs(requestBody).subscribe((res: any) => {
+      console.log(res);
+
+    })
   }
 }

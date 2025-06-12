@@ -26,25 +26,25 @@ export class ChannelComponent {
     defaultColDef: {
       sortable: true,
       resizable: true,
-      filter: "agTextColumnFilter", 
+      filter: "agTextColumnFilter",
       floatingFilter: true,
       comparator: (valueA: any, valueB: any) => {
         const isNumberA = !isNaN(valueA) && valueA !== null;
         const isNumberB = !isNaN(valueB) && valueB !== null;
-  
+
         if (isNumberA && isNumberB) {
-          return valueA - valueB; 
+          return valueA - valueB;
         } else {
           const normalizedA = valueA ? valueA.toString().trim().toLowerCase() : "";
           const normalizedB = valueB ? valueB.toString().trim().toLowerCase() : "";
-          return normalizedA.localeCompare(normalizedB); 
+          return normalizedA.localeCompare(normalizedB);
         }
       },
       filterParams: {
         textFormatter: (value: string) => {
           return value ? value.toString().toLowerCase() : "";
         },
-        filterOptions: ["contains", "startsWith", "equals"], 
+        filterOptions: ["contains", "startsWith", "equals"],
         debounceMs: 200,
       },
     },
@@ -71,12 +71,14 @@ export class ChannelComponent {
   IsOperator: boolean = false;
   IsSubLCO: boolean = false;
   Isuser: boolean = false;
-
+  userid: any;
+  accessip: any;
   constructor(public dialog: MatDialog, public userService: BaseService, storageService: StorageService, private swal: SwalService, private excelService: ExcelService,) {
     this.username = storageService.getUsername();
     this.role = storageService.getUserRole();
-    console.log(this.username)
-    console.log(this.role);
+    this.userid = storageService.getUserid();
+    this.accessip = storageService.getAccessip();
+
 
   }
   ngOnInit(): void {
@@ -96,7 +98,7 @@ export class ChannelComponent {
       this.IsSubLCO = false;
       this.IsOperator = true;
       this.getLCOChannelList();
-    }else if (this.role === 'ROLE_SUBLCO') {
+    } else if (this.role === 'ROLE_SUBLCO') {
       this.Isuser = false;
       this.IsOperator = false;
       this.IsSubLCO = true;
@@ -197,8 +199,8 @@ export class ChannelComponent {
   ];
   columnDefs1: any[] = [
     {
-      headerName: "S.No", lockPosition: true, valueGetter: 'node.rowIndex+1', width: 100, 
-       filter: false
+      headerName: "S.No", lockPosition: true, valueGetter: 'node.rowIndex+1', width: 100,
+      filter: false
     },
     {
       headerName: "CHANNEL NAME", field: 'channel_name', width: 250,
@@ -241,7 +243,7 @@ export class ChannelComponent {
       console.log("selectCount:", this.selectCount);
 
       this.selectedIds = selectedRows.map((e: any) => e.channel_id);
-      this.selectedtypes = selectedRows.map((e: any) => e.statusdisplay);
+      this.selectedtypes = selectedRows[0].statusdisplay;
       console.log(this.selectedIds);
     }
   }
@@ -286,7 +288,7 @@ export class ChannelComponent {
       console.log('The dialog was closed');
     });
   }
-  Active() {
+  Active(status:any) {
     Swal.fire({
       title: "Are you sure?",
       text: "You won't be able to Active this!",
@@ -315,8 +317,8 @@ export class ChannelComponent {
             timerProgressBar: true,
             showConfirmButton: false
           });
-
           this.ngOnInit();
+          this.logCreate('Channel Active Button Clicked',  status,'Active',);
         }, (err) => {
           Swal.fire({
             title: 'Error!',
@@ -327,7 +329,7 @@ export class ChannelComponent {
       }
     });
   }
-  Deactive() {
+  Deactive(status:any) {
     Swal.fire({
       title: "Are you sure?",
       text: "You won't be able to revert this!",
@@ -356,6 +358,7 @@ export class ChannelComponent {
             showConfirmButton: false
           });
           this.ngOnInit();
+           this.logCreate('Channel Active Button Clicked', status, 'Deactive');
         }, (err) => {
           Swal.fire({
             title: 'Error!',
@@ -507,5 +510,18 @@ export class ChannelComponent {
     } else {
       Swal.fire('Error', 'Something went wrong. Please try again.', 'error');
     }
+  }
+  logCreate(action: any, remarks: any, data: any) {
+    let requestBody = {
+      access_ip: this.accessip,
+      action: action,
+      remarks: remarks,
+      data: data,
+      user_id: this.userid,
+    }
+    this.userService.createLogs(requestBody).subscribe((res: any) => {
+      console.log(res);
+
+    })
   }
 }

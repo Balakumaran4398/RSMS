@@ -7,6 +7,7 @@ import { BaseService } from 'src/app/_core/service/base.service';
 import { StorageService } from 'src/app/_core/service/storage.service';
 import Swal from 'sweetalert2';
 import { SwalService } from 'src/app/_core/service/swal.service';
+import { HttpResponse } from '@angular/common/http';
 declare var $: any;
 @Component({
   selector: 'app-allocated',
@@ -251,70 +252,35 @@ export class AllocatedComponent implements OnInit, OnDestroy {
       });
       return;
     }
-    // if (!this.smartcard || !this.selectedLcoName) {
-    //   // Swal.fire({
-    //   //   icon: 'warning',
-    //   //   title: 'Validation Error',
-    //   //   text: 'Please fill out all required fields.',
-    //   // });
-    //   return;
-    // }
-    console.log(this.selectedLcoName);
-    console.log(this.selectedOperator);
-    console.log(this.selectedOperator.value);
 
-    // if ((this.smartcard != null && this.smartcard != undefined && this.smartcard > 0) || (this.selectedLcoName != null && this.selectedLcoName != undefined && this.selectedLcoName > 0)) {
+
     this.swal.Loading();
     this.userService.getsearchforallocated_smartcard_List(this.role, this.username, this.selectedOperator || 0, this.smartcard || 0)
-      .subscribe((data: any) => {
-        this.rowData = data;
-        const rowCount = this.rowData.length;
-        if (!this.gridOptions.paginationPageSizeSelector.includes(rowCount)) {
-          this.gridOptions.paginationPageSizeSelector.push(rowCount);
+      .subscribe((response: HttpResponse<any>) => {
+        if (response.status === 200) {
+          this.rowData = response.body;
+          console.log(response);
+          const rowCount = this.rowData.length;
+          if (!this.gridOptions.paginationPageSizeSelector.includes(rowCount)) {
+            this.gridOptions.paginationPageSizeSelector.push(rowCount);
+          }
+           this.swal.Close();
+        } else if (response.status === 204) {
+          this.swal.Success_204();
+          this.rowData = [];
         }
-        this.allocatedhistory = data;
-        this.swal.Close();
-        if (data && data.length > 0) {
-          Swal.fire({
-            icon: 'success',
-            title: 'Search Completed',
-            text: data.message || 'Search results have been retrieved successfully.',
-            confirmButtonText: 'OK',
-            timer: 3000,
-            timerProgressBar: true,
-          });
-          this.swal.Close();
-        } else {
-          Swal.fire({
-            icon: 'info',
-            title: 'No Data Found',
-            text: 'No records were found for the given search criteria.',
-            confirmButtonText: 'OK',
-            timer: 2000,
-            timerProgressBar: true,
-          });
-          this.swal.Close();
-        }
-
-        console.log(data);
       },
         (error) => {
-          this.swal.Close();
-          Swal.fire({
-            icon: 'error',
-            title: 'Error',
-            text: error?.error.message || error?.error,
-            timer: 2000,
-            timerProgressBar: true,
-            confirmButtonText: 'OK'
-          });
-          this.swal.Close();
-        }
-      );
+          if (error.status === 400) {
+            this.swal.Error_400();
+          } else if (error.status === 500) {
+            this.swal.Error_500();
+          } else {
+            Swal.fire('Error', 'Something went wrong. Please try again.', 'error');
+          }
+        });
     this.rowData = [];
-    // } else {
-    //   return;
-    // }
+
   }
   submit(): void {
     const dataToSend = {

@@ -1204,10 +1204,9 @@ export class SubDashboardComponent implements OnInit {
       this.userservice.getQuickOperationDetailsBySmartcard(this.role, this.username, event.smartcard || event.boxid).subscribe(
         (data: any) => {
           this.subscriersmartcarddashoard = true;
-
           this.cdr.detectChanges();
-          console.log(data);
 
+          console.log(data);
           this.packageobject = data['packageobject'];
           this.packdateobj = data['packdateobj'];
           this.packageMessage = data['message'];
@@ -1225,9 +1224,7 @@ export class SubDashboardComponent implements OnInit {
           this.subdetails = data['subdetails'];
           this.subPairedsmartcard = data['pairedsmartcard'];
           this.message = data['message'];
-
           const isBlocked = this.statusdisplay === "Blocked";
-
           const totalRows = this.rowData1 ? this.rowData1.length : 0;
           if (totalRows > 10) {
             this.gridHeight = 600;
@@ -1259,7 +1256,6 @@ export class SubDashboardComponent implements OnInit {
             } else {
               this.refresh = true;
             }
-
             if (!item.boxstatus) {
               if ((item.status != 1 || item.suspendstatus == 1)) {
                 this.pinchange = true;
@@ -1422,7 +1418,13 @@ export class SubDashboardComponent implements OnInit {
               this.managePackagetable1 = false;
             }
           }
-          // this.onGridReady('');
+
+        
+          const ptypes = this.rowData1[0]?.ptype;
+          console.log('FIRST PTYPE:', ptypes);
+
+          // this.onGridReady(this.rowData1);
+          // this.onGridReady1(this.rowData1);
           this.reloadGridData();
           // window.location.reload();
         }, (err) => {
@@ -1450,6 +1452,10 @@ export class SubDashboardComponent implements OnInit {
     {
       headerName: 'CAS ', width: 250,
       field: 'casname',
+    },
+    {
+      headerName: 'CHIP ID', width: 200,
+      field: 'chipid',
     },
     {
       headerName: 'EXPIRY DATE	', width: 200,
@@ -1727,6 +1733,8 @@ export class SubDashboardComponent implements OnInit {
     this.gridApi = params.api;
     this.gridApi.forEachNode((node: any) => {
       if (node.data.ptype === 'BASE') {
+        console.log('1111111111111112222222222222111', node.data.ptype);
+
         console.log(node.data);
         node.setSelected(true);
       }
@@ -1847,7 +1855,7 @@ export class SubDashboardComponent implements OnInit {
       // dialogConfig.height = '1000px'; 
       width = '450px';
     } else if (type === 'editDetails') {
-      width = '1000px';
+      width = '600px';
     } else if (type === 'refresh') {
       width = '500px';
     } else if (type === 'rechargeType') {
@@ -2104,7 +2112,6 @@ export class SubDashboardComponent implements OnInit {
     // let selectedpacklistValue = this.role === 'ROLE_SUBLCO' ? this.rowData1 : this.rows;
     let selectedpacklistValue = this.role === 'ROLE_OPERATOR' ? this.rowData1 : this.rows;
     console.log('selectedpacklistValue', selectedpacklistValue);
-
     let requestBody = {
       role: this.role,
       username: this.username,
@@ -2166,7 +2173,6 @@ export class SubDashboardComponent implements OnInit {
     this.isConfirmationComplete = true;
     // let selectedpacklistValue = this.role === 'ROLE_SUBLCO' ? this.rowData1 : this.rows;
     let selectedpacklistValue = this.role === 'ROLE_OPERATOR' ? this.rows : this.rowData1;
-
     let requestBody = {
       role: this.role,
       username: this.username,

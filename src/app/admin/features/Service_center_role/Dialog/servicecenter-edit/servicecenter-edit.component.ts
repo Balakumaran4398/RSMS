@@ -42,7 +42,7 @@ export class ServicecenterEditComponent implements OnDestroy, AfterViewInit {
     ($('#issue') as any).select2('destroy');
   }
   ngAfterViewInit(): void {
-    $('#issue').select2({
+    ($('#issue')as any).select2({
       placeholder: 'Select Issue',
     });
 

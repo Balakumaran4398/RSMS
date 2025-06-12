@@ -1,8 +1,9 @@
 import { Component, Inject } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { AbstractControl, FormBuilder, FormGroup, ValidationErrors, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { BaseService } from 'src/app/_core/service/base.service';
 import { StorageService } from 'src/app/_core/service/storage.service';
+import { SwalService } from 'src/app/_core/service/swal.service';
 import Swal from 'sweetalert2';
 
 @Component({
@@ -22,6 +23,7 @@ export class EditLcoComponent {
 
   operatorid: any;
   operatorname: any;
+  operatorname1: any;
   address: any;
   area: any;
   state: any;
@@ -34,14 +36,18 @@ export class EditLcoComponent {
   userid: any;
   password: any;
 
-
-  constructor(public dialogRef: MatDialogRef<EditLcoComponent>, @Inject(MAT_DIALOG_DATA) public data: any, public dialog: MatDialog,
+  userid1: any;
+  accessip: any;
+  constructor(public dialogRef: MatDialogRef<EditLcoComponent>, @Inject(MAT_DIALOG_DATA) public data: any, public dialog: MatDialog, private swal: SwalService,
     public userService: BaseService, storageService: StorageService, private fb: FormBuilder) {
     this.username = storageService.getUsername();
     this.role = storageService.getUserRole();
+    this.userid1 = storageService.getUserid();
+    this.accessip = storageService.getAccessip();
     console.log('Received operator data:', data);
     this.operatorid = data.operatorid;
     this.operatorname = data.operatorname,
+    this.operatorname1 = data.operatorname,
       this.address = data.address,
       this.area = data.area,
       this.state = data.state,
@@ -71,7 +77,8 @@ export class EditLcoComponent {
       state: ['', Validators.required],
       pincode: ['', [Validators.required, Validators.pattern('^[0-9]{6}$')]],
       contactnumber1: ['', [Validators.required, Validators.pattern('^[0-9]{10}$')]],
-      mail: ['', [Validators.required, Validators.email]],
+      // mail: ['', [Validators.required, Validators.email]],
+      mail: ['', [Validators.required, Validators.email, this.customEmailValidator()]],
       nameheader: ['', Validators.required],
       lcobusinessid: ['', Validators.required],
       userid: ['', [Validators.required, Validators.minLength(5), Validators.maxLength(10)]],
@@ -83,29 +90,69 @@ export class EditLcoComponent {
     this.PaymentGatewayList();
     this.Businesslist();
   }
+  customEmailValidator() {
+    return (control: AbstractControl): ValidationErrors | null => {
+      const email = control.value;
+      const emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.(in|com)$/;
 
-
-  onSubmit() {
-    let requestbody = {
-      operatorid: this.operatorid,
-      operatorname: this.operatorname,
-      address: this.address,
-      area: this.area,
-      state: this.state,
-      pincode: this.pincode,
-      contactnumber1: this.contactnumber,
-      mail: this.mail,
-      nameheader: this.nameheader,
-      lcobusinessid: this.lcobusinessid,
-      userid: this.userid,
-      password: this.password,
-      paymentid: this.paymentid,
-      role: this.role,
-      username: this.username
+      if (email && !emailPattern.test(email)) {
+        return { invalidEmail: true };
+      }
+      return null;
     };
-    const missingFields = Object.keys(requestbody);
-    this.userService.EditOperator(requestbody).subscribe(
-      (res: any) => {
+  }
+
+  // onSubmit() {
+  //   let requestbody = {
+  //     operatorid: this.operatorid,
+  //     operatorname: this.operatorname,
+  //     address: this.address,
+  //     area: this.area,
+  //     state: this.state,
+  //     pincode: this.pincode,
+  //     contactnumber1: this.contactnumber,
+  //     mail: this.mail,
+  //     nameheader: this.nameheader,
+  //     lcobusinessid: this.lcobusinessid,
+  //     userid: this.userid,
+  //     password: this.password,
+  //     paymentid: this.paymentid,
+  //     role: this.role,
+  //     username: this.username
+  //   };
+  //   const missingFields = Object.keys(requestbody);
+  //   this.userService.EditOperator(requestbody).subscribe(
+  //     (res: any) => {
+  //       console.log(res);
+  //       Swal.fire({
+  //         title: 'Success!',
+  //         text: res?.message || 'Operator edited successfully.',
+  //         icon: 'success',
+  //         timer: 2000,
+  //         showConfirmButton: false,
+  //       }).then(() => {
+  //         window.location.reload();
+  //       });
+  //     },
+  //     (error) => {
+  //       console.error(error);
+  //       Swal.fire({
+  //         title: 'Error!',
+  //         text: error?.error?.message || error?.error?.lcobusinessid || error?.error?.paymentid || error?.error?.userid || error?.error?.pincode ||
+  //           error?.error?.state || error?.error?.operatorname || error?.error?.password || error?.error?.mail || error?.error?.contactnumber1 ||
+  //           error?.error?.area || error?.error?.address ||
+  //           'Something went wrong. Please try again.',
+  //         icon: 'error',
+  //         confirmButtonText: 'OK',
+  //       });
+  //     }
+  //   );
+  // }
+  onSubmit() {
+    if (!this.form.valid) {
+      this.form.markAllAsTouched();
+      this.swal.Loading();
+      this.userService.EditOperator(this.form.value).subscribe((res: any) => {
         console.log(res);
         Swal.fire({
           title: 'Success!',
@@ -114,24 +161,36 @@ export class EditLcoComponent {
           timer: 2000,
           showConfirmButton: false,
         }).then(() => {
-          window.location.reload();
+          // window.location.reload();
         });
+        this.logCreate('LCO Update Button Clicked', this.operatorname1, this.operatorname);
       },
-      (error) => {
-        console.error(error);
-        Swal.fire({
-          title: 'Error!',
-          text: error?.error?.message || error?.error?.lcobusinessid || error?.error?.paymentid || error?.error?.userid || error?.error?.pincode ||
-            error?.error?.state || error?.error?.operatorname || error?.error?.password || error?.error?.mail || error?.error?.contactnumber1 ||
-            error?.error?.area || error?.error?.address ||
-            'Something went wrong. Please try again.',
-          icon: 'error',
-          confirmButtonText: 'OK',
-        });
-      }
-    );
+        (error) => {
+          console.error(error);
+          Swal.fire({
+            title: 'Error!',
+            text: error?.error?.message ||
+              error?.error?.lcobusinessid ||
+              error?.error?.paymentid ||
+              error?.error?.userid ||
+              error?.error?.pincode ||
+              error?.error?.state ||
+              error?.error?.operatorname ||
+              error?.error?.password ||
+              error?.error?.mail ||
+              error?.error?.contactnumber1 ||
+              error?.error?.area ||
+              error?.error?.address ||
+              'Something went wrong. Please try again.',
+            icon: 'error',
+            confirmButtonText: 'OK',
+          });
+        }
+      );
+    } else {
+      this.form.markAllAsTouched();
+    }
   }
-
   PaymentGatewayList() {
     this.userService.getpaymentgatwaylist(this.role, this.username).subscribe((data: any) => {
       console.log(data);
@@ -159,5 +218,19 @@ export class EditLcoComponent {
   }
   onNoClick(): void {
     this.dialogRef.close();
+  }
+
+  logCreate(action: any, remarks: any, data: any) {
+    let requestBody = {
+      access_ip: this.accessip,
+      action: action,
+      remarks: remarks,
+      data: data,
+      user_id: this.userid1,
+    }
+    this.userService.createLogs(requestBody).subscribe((res: any) => {
+      console.log(res);
+
+    })
   }
 }

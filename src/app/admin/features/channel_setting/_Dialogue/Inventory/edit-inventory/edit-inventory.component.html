@@ -14,11 +14,11 @@
                 <div class="col-12 col-md-8 mb-3">
                     <mat-radio-group class="radio-group d-flex justify-content-center align-items-center"
                         [formControl]="BTNFormControl" aria-labelledby="status">
-                        <mat-radio-button class="radio-button" [value]="false"
+                        <mat-radio-button class="radio-button" [value]="true"
                             (change)="onInventoryTypeChange(false)"><span style="font-size: 14px;">Upload
                                 Only</span>
                         </mat-radio-button>&nbsp;
-                        <mat-radio-button class="radio-button" [value]="true"
+                        <mat-radio-button class="radio-button" [value]="false"
                             (change)="onInventoryTypeChange(true)"><span style="font-size: 14px;">With Allocation</span>
                         </mat-radio-button>
                     </mat-radio-group>
@@ -90,11 +90,11 @@
                 <div class="col-12 col-md-8 mb-3">
                     <mat-radio-group class="radio-group d-flex justify-content-center align-items-center"
                         [formControl]="BTNFormControl" aria-labelledby="status">
-                        <mat-radio-button class="radio-button" [value]="false"
+                        <mat-radio-button class="radio-button" [value]="true"
                             (change)="onInventoryTypeChange(false)"><span style="font-size: 14px;">Upload
                                 Only</span>
                         </mat-radio-button>&nbsp;
-                        <mat-radio-button class="radio-button" [value]="true"
+                        <mat-radio-button class="radio-button" [value]="false"
                             (change)="onInventoryTypeChange(true)"><span style="font-size: 14px;">With Allocation</span>
                         </mat-radio-button>
                     </mat-radio-group>

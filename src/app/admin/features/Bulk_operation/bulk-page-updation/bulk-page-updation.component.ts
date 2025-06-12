@@ -271,14 +271,6 @@ export class BulkPageUpdationComponent implements OnInit {
       package_select: [false],
       casSelect: [{ value: '', disabled: true }] // initially disabled
     });
-
-    // this.form.get('package_select')?.valueChanges.subscribe(checked => {
-    //   if (checked) {
-    //     this.form.get('casSelect')?.enable();
-    //   } else {
-    //     this.form.get('casSelect')?.disable();
-    //   }
-    // });
     this.form.get('package_select')?.valueChanges.subscribe((checked) => {
       const casSelectControl = this.form.get('casSelect');
       checked ? casSelectControl?.enable() : casSelectControl?.disable();
@@ -325,17 +317,12 @@ export class BulkPageUpdationComponent implements OnInit {
 
   getSubLCOdetails() {
     this.userservice.getSublcoDetails(this.role, this.username).subscribe((data: any) => {
-      console.log(data);
-      console.log('111111111111111');
       this.lcoDeatails = data;
       this.retailerid = this.lcoDeatails?.operatorid;
       this.isplan = this.lcoDeatails?.permissionlist?.plan;
       this.isdate = this.lcoDeatails?.permissionlist?.date;
       this.isDatetoDate = this.lcoDeatails?.permissionlist?.datetodate;
-      console.log(this.retailerid);
-      console.log(this.isplan);
-      console.log(this.isdate);
-      console.log(this.isDatetoDate);
+
     })
   }
 
@@ -343,7 +330,6 @@ export class BulkPageUpdationComponent implements OnInit {
     this.userservice.getOpDetails(this.role, this.username).subscribe((data: any) => {
       this.lcoDeatails = data;
       this.lcoId = this.lcoDeatails?.operatorid;
-      console.log(this.lcoId);
       this.operatorname = this.lcoDeatails?.operatorname;
       this.isplan = this.lcoDeatails?.isplan;
       this.isdate = this.lcoDeatails?.isdate;
@@ -451,8 +437,12 @@ export class BulkPageUpdationComponent implements OnInit {
       this.isAnyRowSelected = selectedRows.length > 0;
       this.rows = selectedRows;
     }
+    console.log('defsfdsfds',this.isAnyRowSelected);
+    
     if (this.isAnyRowSelected) {
       this.isSelectRow = true;
+    }else{
+        this.isSelectRow = false;
     }
 
   }
@@ -590,29 +580,6 @@ export class BulkPageUpdationComponent implements OnInit {
     }
     this.rowData = [];
   }
-
-  // private handleApiResponse(apiCall: Observable<HttpResponse<any[]>>) {
-  //   apiCall.subscribe(
-  //     (response: HttpResponse<any[]>) => {
-  //       if (response.status === 200) {
-  //         this.updateColumnDefs(this.selectedTab);
-  //         this.rowData = response.body;
-  //         this.swal.Success_200();
-  //       } else if (response.status === 204) {
-  //         this.swal.Success_204();
-  //       }
-  //     },
-  //     (error) => {
-  //       if (error.status === 400) {
-  //         this.swal.Error_400();
-  //       } else if (error.status === 500) {
-  //         this.swal.Error_500();
-  //       } else {
-  //         Swal.fire('Error', 'Something went wrong. Please try again.', 'error');
-  //       }
-  //     }
-  //   );
-  // }
 
   service() {
     this.userservice.getBulkPackageServiceStatus(this.role, this.username).subscribe((data: any) => {

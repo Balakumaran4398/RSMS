@@ -5,7 +5,8 @@ import { BaseService } from 'src/app/_core/service/base.service';
 import { StorageService } from 'src/app/_core/service/storage.service';
 import { SwalService } from 'src/app/_core/service/swal.service';
 import Swal from 'sweetalert2';
-import 'select2'
+// import * as $ from 'jquery';
+declare var $: any;
 @Component({
   selector: 'app-channel-create',
   templateUrl: './channel-create.component.html',
@@ -34,11 +35,18 @@ export class ChannelCreateComponent implements OnInit, AfterViewInit, OnDestroy 
   role: any; distributor_id: any; commssion: any; isactive: boolean = true; channel_desc: any;
   selectedFile: File | any = null;
   channel_name: any;
+
+
+  userid: any;
+  accessip: any;
   constructor(private cdr: ChangeDetectorRef,
     public dialogRef: MatDialogRef<ChannelCreateComponent>, private formBuilder: FormBuilder, private swal: SwalService, private userservice: BaseService, private storageService: StorageService
   ) {
     this.username = storageService.getUsername();
     this.role = storageService.getUserRole();
+    this.userid = storageService.getUserid();
+    this.accessip = storageService.getAccessip();
+
     this.form = this.formBuilder.group(
       {
         channel_name: ['', Validators.required],
@@ -197,7 +205,6 @@ export class ChannelCreateComponent implements OnInit, AfterViewInit, OnDestroy 
   onSubmit(): void {
     this.form.markAllAsTouched();
     const fd = new FormData();
-
     fd.append('channel_name', this.form?.get('channel_name')?.value);
     // fd.append('channel_logo', this.selectedFile as File);
     if (this.selectedFile) {
@@ -216,7 +223,6 @@ export class ChannelCreateComponent implements OnInit, AfterViewInit, OnDestroy 
     fd.append('broadcaster_rate', this.form?.get('inr_amt')?.value);
     fd.append('product_id', this.form?.get('product_id')?.value);
     fd.append('ispercentage', String((this.form?.get('ispercentage')?.value) || this.ispercentage));
-
     // fd.append('ispercentage', (!this.form?.get('ispercentage')?.value).toString() || this.ispercentage);
     fd.append('ispaid', this.form?.get('ispaid')?.value);
     fd.append('inr_amt', this.form?.get('inr_amt')?.value);
@@ -231,6 +237,7 @@ export class ChannelCreateComponent implements OnInit, AfterViewInit, OnDestroy 
     this.userservice.CREATE_CHANNEL(fd)
       .subscribe((res: any) => {
         this.swal.success(res?.message);
+        this.logCreate('Channel Creation', 'Create', 'Create');
       }, (err) => {
         this.swal.Error(err?.error?.message);
       });
@@ -245,7 +252,6 @@ export class ChannelCreateComponent implements OnInit, AfterViewInit, OnDestroy 
       event.preventDefault();
     }
     this.checkMaxValue();
-
   }
   onKeydown1(event: KeyboardEvent) {
     const allowedKeys = ['Backspace', 'ArrowLeft', 'ArrowRight', 'Tab', 'Delete'];
@@ -257,7 +263,19 @@ export class ChannelCreateComponent implements OnInit, AfterViewInit, OnDestroy 
 
     this.checkMaxValue();
   }
+  logCreate(action: any, remarks: any, data: any) {
+    let requestBody = {
+      access_ip: this.accessip,
+      action: action,
+      remarks: remarks,
+      data: data,
+      user_id: this.userid,
+    }
+    this.userservice.createLogs(requestBody).subscribe((res: any) => {
+      console.log(res);
 
+    })
+  }
   percentageValue(value: boolean) {
     this.ispercentage = value;
     this.checkMaxValue();

@@ -159,43 +159,44 @@
                 </thead>
                 <thead *ngIf="role != 'ROLE_OPERATOR'">
                     <tr>
-                        <!-- <th>PLAN</th>
-                        <th>CUS_AMT</th>
-                        <th>CUR_AMT</th>
-                        <th>DIS</th>
-                        <th>MSO_COM</th> -->
-
                         <th>PLAN</th>
                         <th>CUS_AMT</th>
                         <th>MSO_AMT</th>
-                        <th>LCO_COM</th>
-                        <th>CUR_AMT</th>
+                        <th>CUR_MSO_AMT</th>
                         <th>DIS</th>
+
                     </tr>
                 </thead>
-
                 <tbody *ngFor="let plan of discountPlans">
-                    <tr>
+                    <tr *ngIf="role == 'ROLE_OPERATOR'">
                         <td class="plan-name">{{ plan.name }}</td>
                         <td class="customer-amt">{{ plan.customerAmount }}</td>
-                        <!-- <td class="mso-amt">{{ plan.mso_amount }}</td> -->
                         <td class="mso-amt">{{ plan.msoamount }}</td>
                         <td class="lco-commission">{{ plan.lcoCommission }}</td>
-                        <!-- <td>
-                            <input type="text" class="discount-input" [(ngModel)]="plan.discount"
-                                (click)="updatePlanDiscount(plan)" (keypress)="onKeydown($event)">
-                            <div *ngIf="errorMessage" class="text-danger">{{plan.errorMessage }}</div>
-                        </td> -->
                         <td>
                             <input type="text" class="current-input" [(ngModel)]="plan.currentAmount"
                                 (click)="updatePlanDiscount(plan)" (keypress)="onKeydown($event)">
                             <div *ngIf="errorMessage" class="text-danger">{{plan.errorMessage }}</div>
                         </td>
-
-                        <!-- <td class="current-amt">{{ plan.currentAmount }}</td> -->
                         <td class="discount-amt">{{ plan.discount }}</td>
                     </tr>
                 </tbody>
+
+                <tbody *ngFor="let plan of discountPlans">
+                    <tr *ngIf="role != 'ROLE_OPERATOR'">
+                        <td class="plan-name">{{ plan.name }}</td>
+                        <td class="customer-amt">{{ plan.customerAmount }}</td>
+                        <td class="current-amt">{{ plan.msoamount }}</td>
+                        <td>
+                            <input type="text" class="mso-input" [(ngModel)]="plan.currentAmount"
+                                (click)="updatePlanDiscount(plan)" (keypress)="onKeydown($event)">
+                            <div *ngIf="errorMessage" class="text-danger">{{plan.errorMessage }}</div>
+                        </td>
+
+                        <td class="discount-amt">{{ plan.discount }}</td>
+                    </tr>
+                </tbody>
+
             </table>
         </div>
         <div class="modal-footer">

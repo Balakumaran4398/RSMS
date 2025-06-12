@@ -30,25 +30,25 @@ export class DistributorMasterComponent {
     defaultColDef: {
       sortable: true,
       resizable: true,
-      filter: true, 
+      filter: true,
       floatingFilter: true,
       comparator: (valueA: any, valueB: any) => {
         const isNumberA = !isNaN(valueA) && valueA !== null;
         const isNumberB = !isNaN(valueB) && valueB !== null;
-  
+
         if (isNumberA && isNumberB) {
-          return valueA - valueB; 
+          return valueA - valueB;
         } else {
           const normalizedA = valueA ? valueA.toString().trim().toLowerCase() : '';
           const normalizedB = valueB ? valueB.toString().trim().toLowerCase() : '';
-          return normalizedA.localeCompare(normalizedB); 
+          return normalizedA.localeCompare(normalizedB);
         }
       },
       filterParams: {
         textFormatter: (value: string) => {
           return value ? value.toString().toLowerCase() : '';
         },
-        debounceMs: 200, 
+        debounceMs: 200,
       },
     },
     paginationPageSize: 100,
@@ -65,9 +65,15 @@ export class DistributorMasterComponent {
   hasSelectedRows: boolean = true;
   type: number = 0;
   public rowSelection: any = "multiple";
+
+  userid: any;
+  accessip: any;
+
   constructor(public dialog: MatDialog, public userService: BaseService, storageService: StorageService) {
     this.username = storageService.getUsername();
     this.role = storageService.getUserRole();
+    this.userid = storageService.getUserid();
+    this.accessip = storageService.getAccessip();
   }
   ngOnInit(): void {
     this.userService.DistributorList(this.role, this.username, this.type).subscribe((data) => {
@@ -163,7 +169,7 @@ export class DistributorMasterComponent {
       const selectedRows = this.gridApi.getSelectedRows();
       this.isAnyRowSelected = selectedRows.length > 0;
       this.selectedIds = selectedRows.map((e: any) => e.id);
-      this.selectedtypes = selectedRows.map((e: any) => e.isactive);
+      this.selectedtypes = selectedRows[0].isactive;
 
     }
   }
@@ -183,7 +189,7 @@ export class DistributorMasterComponent {
     dialogRef.afterClosed().subscribe(result => {
     });
   }
-  Active() {
+  Active(status: any) {
     Swal.fire({
       title: "Are you sure?",
       text: "You won't be able to Active this!",
@@ -209,8 +215,10 @@ export class DistributorMasterComponent {
             icon: 'success',
             timer: 2000,
             timerProgressBar: true,
+            showConfirmButton: false
           });
           this.ngOnInit();
+          this.logCreate('Distributor Master Active Button Clicked', !status, 'Active');
         }, (err) => {
           Swal.fire({
             title: 'Error!',
@@ -223,7 +231,7 @@ export class DistributorMasterComponent {
       }
     });
   }
-  Deactive() {
+  Deactive(status: any) {
     Swal.fire({
       title: "Are you sure?",
       text: "You won't be able to revert this!",
@@ -247,9 +255,13 @@ export class DistributorMasterComponent {
           Swal.fire({
             title: 'Deactivated!',
             text: res.message,
-            icon: 'success'
+            icon: 'success',
+            timer: 2000,
+            timerProgressBar: true,
+            showConfirmButton: false
           });
           this.ngOnInit();
+          this.logCreate('Distributor Master Active Button Clicked', !status, 'Deactive');
         }, (err: { error: { message: any; }; }) => {
           Swal.fire({
             title: 'Error!',
@@ -296,5 +308,18 @@ export class DistributorMasterComponent {
         });
       }
     );
+  }
+  logCreate(action: any, remarks: any, data: any) {
+    let requestBody = {
+      access_ip: this.accessip,
+      action: action,
+      remarks: remarks,
+      data: data,
+      user_id: this.userid,
+    }
+    this.userService.createLogs(requestBody).subscribe((res: any) => {
+      console.log(res);
+
+    })
   }
 }

@@ -60,33 +60,24 @@ export class EditDismembershipComponent implements OnInit {
     return this.selectedItems.has(item);
   }
 
-  // toggleSelection(item: any) {
-  //   console.log('item', item);
-
-  //   if (this.selectedItems.has(item)) {
-  //     this.selectedItems.delete(item);
-  //   } else {
-  //     this.selectedItems.add(item);
-  //   }
-
-  //   const index = this.selectedIds.indexOf(item.id);
-  //   if (index > -1) {
-  //     this.selectedIds.splice(index, 1);
-  //   } else {
-  //     this.selectedIds.push(item.id);
-  //   }
-  //   console.log(this.selectedIds);  
-  // }
-
   toggleSelection(item: any) {
     console.log('item', item);
-    // Clear the previous selection and select only the new one
-    this.selectedItems.clear();
     this.selectedItems.add(item);
-    // Reset selectedIds and add only the current item's ID
-    this.selectedIds = [item.id];
+    if (!this.selectedIds.includes(item.id)) {
+      this.selectedIds.push(item.id);
+    }
     console.log(this.selectedIds);
   }
+
+  // toggleSelection(item: any) {
+  //   console.log('item', item);
+  //   // Clear the previous selection and select only the new one
+  //   this.selectedItems.clear();
+  //   this.selectedItems.add(item);
+  //   // Reset selectedIds and add only the current item's ID
+  //   this.selectedIds = [item.id];
+  //   console.log(this.selectedIds);
+  // }
 
   onNoClick(): void {
     this.dialogRef.close();
@@ -107,48 +98,7 @@ export class EditDismembershipComponent implements OnInit {
     this.cdr.detectChanges();
   }
 
-  // moveSelectedItems(direction: 'right' | 'left') {
-  //   console.log(this.selectedIds);
-  //   if (direction === 'right') {
-  //     this.selectedIds.forEach(id => {
-  //       const index = this.availableList.findIndex(item => item.id === id);
-  //       if (index > -1) {
-  //         // Remove the item from availableList
-  //         const [movedItem] = this.availableList.splice(index, 1);
-  //         // Add the item to addedList
-  //         this.addedList.push(movedItem);
-  //       }
-  //     });
-  //   } else if (direction === 'left') {
-  //     this.selectedIds.forEach(id => {
-  //       const index = this.addedList.findIndex(item => item.id === id);
-  //       if (index > -1) {
-  //         // Remove the item from addedList
-  //         const [movedItem] = this.addedList.splice(index, 1);
-  //         // Add the item to availableList
-  //         this.availableList.push(movedItem);
-  //       }
-  //     });
-  //   }
-
-  //   // Update containerData and containerID
-  //   this.containerData = this.addedList.map((item: { name: string; id: number }) => ({
-  //     name: item.name,
-  //     id: item.id,
-  //   }));
-  //   this.containerID = this.containerData.map((item: any) => item.id);
-  //   console.log(this.containerID);
-
-  //   // Update filtered lists
-  //   this.filteredAvailableList = [...this.availableList];
-  //   this.filteredAddedList = [...this.addedList];
-
-  //   // Clear selected items
-  //   this.selectedItems.clear();
-  // }
-
-
-
+  
   moveSelectedItems(direction: 'right' | 'left') {
     console.log(this.selectedIds);
 

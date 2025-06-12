@@ -79,9 +79,13 @@ export class LcoCommissionComponent {
     // pagination: true,
   };
   @ViewChild('agGrid') agGrid: any;
+   userid: any;
+  accessip: any;
   constructor(public dialog: MatDialog, private userservice: BaseService, private storageservice: StorageService, private cdr: ChangeDetectorRef, private swal: SwalService) {
     this.role = storageservice.getUserRole();
     this.username = storageservice.getUsername();
+     this.userid = storageservice.getUserid();
+    this.accessip = storageservice.getAccessip();
     userservice.getLcoGroupMasterList(this.role, this.username).subscribe((data: any) => {
       this.lcomembershipList = Object.keys(data).map(key => {
         const value = data[key];
@@ -816,6 +820,7 @@ export class LcoCommissionComponent {
             timer: 2000,
             timerProgressBar: true,
           });
+           this.logCreate('Distributor Membership Edit Button Clicked', 'Edit', 'Activate');
         }, (err) => {
           Swal.fire({
             title: 'Error!',
@@ -827,5 +832,19 @@ export class LcoCommissionComponent {
         });
       }
     });
+    
+  }
+   logCreate(action: any, remarks: any, data: any) {
+    let requestBody = {
+      access_ip: this.accessip,
+      action: action,
+      remarks: remarks,
+      data: data,
+      user_id: this.userid,
+    }
+    this.userservice.createLogs(requestBody).subscribe((res: any) => {
+      console.log(res);
+
+    })
   }
 }

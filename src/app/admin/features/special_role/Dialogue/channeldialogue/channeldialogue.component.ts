@@ -15,11 +15,14 @@ export class ChanneldialogueComponent implements OnInit {
   role: any;
   type: any;
   channelname: any;
+  channelname1: any;
   url: any;
   channellogo: any;
-  categoryid: any=0;
+  categoryid: any = 0;
+  categoryname: any;
   categorylist: any[] = [];
   isactive: boolean = false;
+  isactive1: boolean = false;
   id: any;
   createForm !: FormGroup;
   editform !: FormGroup;
@@ -28,17 +31,24 @@ export class ChanneldialogueComponent implements OnInit {
   filePath: string = '';
   isFileSelected: boolean = false;
   fileError: boolean = false;
+
+  userid: any;
+  accessip: any;
   constructor(public dialogRef: MatDialogRef<ChanneldialogueComponent>, @Inject(MAT_DIALOG_DATA) public data: any, private fb: FormBuilder, private swal: SwalService, private userservice: BaseService, private storageservice: StorageService) {
     this.username = storageservice.getUsername();
     this.role = storageservice.getUserRole();
+    this.userid = storageservice.getUserid();
+    this.accessip = storageservice.getAccessip();
     console.log(data);
     this.type = data?.type;
     this.channelname = data.data?.channelName;
+    this.channelname1 = data.data?.channelName;
     this.url = data.data?.url;
     this.channellogo = data.data?.logo;
-    console.log('43555555555555555555555',this.channellogo);
-    
+    console.log('43555555555555555555555', this.channellogo);
+
     this.categoryid = data.data?.categoryId;
+    this.categoryname = data.data?.categoryname;
     this.isactive = data.data?.isactive;
     this.id = data.data?.channelId;
     console.log(this.channelname);
@@ -64,7 +74,7 @@ export class ChanneldialogueComponent implements OnInit {
   }
   ngOnInit(): void {
     this.Category_list();
-  } 
+  }
   onClick(): void {
     this.dialogRef.close();
   }
@@ -141,7 +151,7 @@ export class ChanneldialogueComponent implements OnInit {
     this.swal.Loading();
     const formData = new FormData();
     formData.append('role', this.role);
-    formData.append('username', this.username); 
+    formData.append('username', this.username);
     formData.append('channelname', this.editform.get('channelname')?.value);
     formData.append('url', this.editform.get('url')?.value);
     formData.append('categoryid', this.editform.get('categoryid')?.value);
@@ -153,9 +163,25 @@ export class ChanneldialogueComponent implements OnInit {
     }
     this.userservice.specialeditLocalChannel(formData).subscribe((res: any) => {
       this.swal.success(res?.message);
+      const data = `Channel Name: ${this.channelname}, ` + ` Category Name: ${this.categoryname},` + ` Status: ${this.isactive},`;
+      const remark = `Channel Name: ${this.channelname1}, ` + ` Category Name: ${this.categoryname},` + ` Status: ${this.isactive1},`;
+      this.logCreate('CAS Master Update Button Clicked', remark, data);
     }, (err) => {
       this.swal.Error(err?.error?.message);
     });
-  }
 
+  }
+  logCreate(action: any, remarks: any, data: any) {
+    let requestBody = {
+      access_ip: this.accessip,
+      action: action,
+      remarks: remarks,
+      data: data,
+      user_id: this.userid,
+    }
+    this.userservice.createLogs(requestBody).subscribe((res: any) => {
+      console.log(res);
+
+    })
+  }
 }

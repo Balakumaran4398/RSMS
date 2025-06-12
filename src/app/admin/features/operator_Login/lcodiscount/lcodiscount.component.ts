@@ -87,18 +87,18 @@ export class LcodiscountComponent implements OnInit, AfterViewInit {
 
 
     this.onColumnDefs();
+    this.getDiscountOption(this.discountType.index);
     this.getListOfDatas();
     // this.getDiscountOption(this.type);
-    this.getDiscountOption(this.discountType.index);
 
     if ($('#Area').data('select2')) {
-      $('#Area').select2('destroy');
+      ($('#Area') as any).select2('destroy');
     }
 
 
   }
   initSelect2() {
-    $('#Area').select2({
+    ($('#Area')as any).select2({
       placeholder: 'Select Area',
       allowClear: true
     });
@@ -176,7 +176,7 @@ export class LcodiscountComponent implements OnInit, AfterViewInit {
   }
   ngOnDestroy(): void {
     if ($('#Area').data('select2')) {
-      $('#Area').select2('destroy');
+     ($('#Area')as any).select2('destroy');
     }
   }
 

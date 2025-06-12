@@ -28,7 +28,7 @@
                             <select id="ltb" [(ngModel)]="opName">
                                 <option value="0" selected>Selected Operator Name</option>
                                 <option *ngFor="let operator of filteredOperators" [value]="operator.packageid"
-                                    (ngModelChange)="onSubscriberStatusChange($event)">
+                                    (ngModelChange)="onSubscriberStatusChange(operator)">
                                     {{ operator.packagename }}
                                 </option>
                             </select>

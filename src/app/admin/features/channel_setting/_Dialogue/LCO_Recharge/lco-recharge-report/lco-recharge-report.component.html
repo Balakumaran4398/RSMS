@@ -188,37 +188,15 @@
     <div *ngIf="selectedTab === '3'" class="display justify-content-center align-item-center  flex-wrap">
         <div class=" d-flex col-12 col-md-12 justify-content-start align-items-center mb-4">
             <p class="mx-2" style="text-align: center;align-items: center;">Filter:</p>
-            <!-- <div class="input_box ">
-                <select [(ngModel)]="operatorid">
-                    <option value="0" selected>ALL Operator</option>
-                    <option *ngFor="let operator of operatorList" [value]="operator.value">{{ operator.name }}
-                    </option>
-                </select>
-            </div> -->
-
             <div class=" custom-select input_box  col-10 col-md-4 mb-2 mx-2">
-                <!-- <input type="text" placeholder="Search Operator" [(ngModel)]="operatorname" (input)="filterOperators()"
-                    (focus)="showDropdown = false" (click)="showDropdown = true">
-
-                <ul class="dropdown" *ngIf="showDropdown">
-                    <li *ngFor="let operator of filteredOperators"
-                        (click)="selectOperator(operator.value,operator.name  )">
-                        {{ operator.name }}
-                    </li>
-                </ul> -->
                 <input type="text" matInput [matAutocomplete]="auto1" (input)="filterOperators($event)"
                     placeholder="Select a Operator" [matAutocompleteDisabled]="false" [value]="selectedOperator?.name">
-
-
                 <mat-autocomplete #auto1="matAutocomplete" [displayWith]="displayOperator">
                     <mat-option *ngFor="let operator of filteredOperators1" [value]="operator.name"
                         (click)="onoperatorchange(operator)">
                         {{ operator.name }}
                     </mat-option>
                 </mat-autocomplete>
-                <!-- <div *ngIf="submitted && !operatorid" class="text-danger" style="font-size: small;">
-                    Operator is required
-                </div> -->
             </div>
             <input class="mx-2" type="checkbox" [(ngModel)]="isCheckboxChecked" style="width: 30px;height: 25px;">
             <div class="input_box ">

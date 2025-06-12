@@ -1556,7 +1556,7 @@ export class HistoryAllReportsComponent implements OnInit {
     ($('#package') as any).select2('destroy');
   }
   ngAfterViewInit(): void {
-    $('#package').select2({
+    ($('#package')as any).select2({
       placeholder: 'Select a Package Name',
       allowClear: true
     });
@@ -1566,7 +1566,7 @@ export class HistoryAllReportsComponent implements OnInit {
 
       // this.onSelectionrechargetype(event);
     });
-    $('#addon').select2({
+    ($('#addon')as any).select2({
       placeholder: 'Select a Addon Name',
       allowClear: true
     });

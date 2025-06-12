@@ -215,14 +215,14 @@ export class PackageReferenceComponent {
               input.type = 'text';
               input.value = params.value;
               input.style.width = '100%';
-              input.style.height = '100%';
-              input.style.padding = '4px';
+              // input.style.height = '100%';
+              // input.style.padding = '4px';
               input.style.textAlign = 'center';
               input.style.fontSize = '14px';
               input.style.color = 'black';
               input.style.border = 'none';
               input.style.outline = 'none';
-              input.style.backgroundColor = '#ffffcc';
+              // input.style.backgroundColor = '#ffffcc';
 
               div.replaceChildren(input);
               input.focus();
@@ -287,14 +287,14 @@ export class PackageReferenceComponent {
               input.type = 'text';
               input.value = params.value;
               input.style.width = '100%';
-              input.style.height = '100%';
-              input.style.padding = '4px';
+              // input.style.height = '100%';
+              // input.style.padding = '4px';
               input.style.textAlign = 'center';
               input.style.fontSize = '14px';
               input.style.color = 'black';
               input.style.border = 'none';
               input.style.outline = 'none';
-              input.style.backgroundColor = '#ffffcc'; // Highlight background color when editing
+              // input.style.backgroundColor = '#ffffcc';
 
               div.replaceChildren(input);
               input.focus();
@@ -358,14 +358,14 @@ export class PackageReferenceComponent {
               input.type = 'text';
               input.value = params.value;
               input.style.width = '100%';
-              input.style.height = '100%';
-              input.style.padding = '4px';
+              // input.style.height = '100%';
+              // input.style.padding = '4px';
               input.style.textAlign = 'center';
               input.style.fontSize = '14px';
               input.style.color = 'black';
               input.style.border = 'none';
               input.style.outline = 'none';
-              input.style.backgroundColor = '#ffffcc';
+              // input.style.backgroundColor = '#ffffcc';
 
               div.replaceChildren(input);
               input.focus();

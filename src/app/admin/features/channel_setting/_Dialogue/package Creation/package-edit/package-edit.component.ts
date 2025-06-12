@@ -12,15 +12,20 @@ import Swal from 'sweetalert2';
 export class PackageEditComponent implements OnInit {
   package_name: any;
   package_rate: any;
+  package_name_1: any;
+  package_rate_1: any;
   package_desc: any;
   package_id: any;
   username: any;
   order_id: any;
   ispercentage: boolean = false;
+  ispercentage_1: boolean = false;
   commission: any;
+  commission_1: any;
   role: any;
   value: any;
-
+  userid: any;
+  accessip: any;
   invalid: boolean = false;
   constructor(
     public dialogRef: MatDialogRef<PackageEditComponent>,
@@ -29,16 +34,21 @@ export class PackageEditComponent implements OnInit {
 
     this.username = storageService.getUsername();
     this.role = storageService.getUserRole();
-    console.log(this.username + "-------------------------" + this.role);
+    this.userid = storageService.getUserid();
+    this.accessip = storageService.getAccessip();
     this.package_name = data.packagename;
+    this.package_name_1 = data.packagename;
     this.package_desc = data.packagedesc;
     this.package_rate = data.packagerate;
+    this.package_rate_1 = data.packagerate;
     this.order_id = data.orderid;
     // this.broadcaster_id=data.broadcaster_id;
     this.commission = data.customeramount;
+    this.commission_1 = data.customeramount;
     console.log(this.commission);
 
     this.ispercentage = data.ispercentage;
+    this.ispercentage_1 = data.ispercentage;
     console.log(data.isactive);
 
     this.package_id = data.packageid;
@@ -141,6 +151,9 @@ export class PackageEditComponent implements OnInit {
       }).then(() => {
         window.location.reload();
       });
+      const data = ` Package Name: ${this.package_name}, ` + `Package Rate: ${this.package_rate},` + ` Commission: ${this.commission},` + ` Is Percentage: ${this.ispercentage},`;
+      const remark = ` Package Name: ${this.package_name_1}, ` + `Package Rate: ${this.package_rate_1},` + ` Commission: ${this.commission_1},` + ` Is Percentage: ${this.ispercentage_1},`;
+      this.logCreate('Package edit Button Clicked', remark, data);
     },
       (error) => {
         console.error(error);
@@ -160,7 +173,19 @@ export class PackageEditComponent implements OnInit {
 
   }
 
+  logCreate(action: any, remarks: any, data: any) {
+    let requestBody = {
+      access_ip: this.accessip,
+      action: action,
+      remarks: remarks,
+      data: data,
+      user_id: this.userid,
+    }
+    this.userService.createLogs(requestBody).subscribe((res: any) => {
+      console.log(res);
 
+    })
+  }
   preventnegativeInput(event: KeyboardEvent): void {
     if (event.key === '-' || event.key === 'e') {
       event.preventDefault();

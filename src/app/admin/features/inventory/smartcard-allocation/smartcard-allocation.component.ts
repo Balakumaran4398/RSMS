@@ -67,10 +67,13 @@ export class SmartcardAllocationComponent {
     paginationPageSizeSelector: [10, 20, 50],
     pagination: true,
   };
-
+  userid: any;
+  accessip: any;
   constructor(public dialog: MatDialog, private userService: BaseService, storageService: StorageService, private renderer: Renderer2, private swal: SwalService) {
     this.username = storageService.getUsername();
     this.role = storageService.getUserRole();
+    this.userid = storageService.getUserid();
+    this.accessip = storageService.getAccessip();
     userService.getDeallocate_smartcard_List(this.role, this.username).subscribe((data: any) => {
       console.log(data);
       this.rowData = data;
@@ -260,14 +263,10 @@ export class SmartcardAllocationComponent {
             // Reload the page after the alert is closed
             window.location.reload();
           });
-
         }, (error) => {
           // Handle HTTP errors or server issues
           console.log(error);
-
           Swal.fire({
-
-
             icon: 'error',
             title: 'Deallocation Error',
             text: error?.error?.message || error || 'A server error occurred. Please try again later.',
@@ -277,6 +276,7 @@ export class SmartcardAllocationComponent {
           console.error('Error:', error);
         });
     }
+    this.logCreate('DeAllocation Button Clicked', 'DeAllocate', 'DeAllocate');
   }
 
   generateExcel() {
@@ -334,5 +334,18 @@ export class SmartcardAllocationComponent {
             confirmButtonText: 'Ok'
           });
         });
+  }
+  logCreate(action: any, remarks: any, data: any) {
+    let requestBody = {
+      access_ip: this.accessip,
+      action: action,
+      remarks: remarks,
+      data: data,
+      user_id: this.userid,
+    }
+    this.userService.createLogs(requestBody).subscribe((res: any) => {
+      console.log(res);
+
+    })
   }
 }

@@ -29,9 +29,14 @@ export class EditmsoComponent implements OnInit {
   managepack = true;
   reportstatus = true;
   calendarrecharge = true;
+
+  userid: any;
+  accessip: any;
   constructor(public dialogRef: MatDialogRef<EditmsoComponent>, @Inject(MAT_DIALOG_DATA) public data: any, private swal: SwalService, private userService: BaseService, private storageservice: StorageService, private fb: FormBuilder) {
     this.username = storageservice.getUsername();
     this.role = storageservice.getUserRole();
+    this.userid = storageservice.getUserid();
+    this.accessip = storageservice.getAccessip();
     console.log(data);
     this.msoname = data?.data.msoName;
     this.msoarea = data?.data.msoArea;
@@ -48,7 +53,7 @@ export class EditmsoComponent implements OnInit {
     this.managepack = data?.data.managepack;
     this.reportstatus = data?.data.reportStatus;
     this.calendarrecharge = data?.data.calendarrecharge;
-    
+
     console.log('isemi', this.isemi);
     console.log('chipidforce', this.chipidforce);
     console.log('managepack', this.managepack);
@@ -58,7 +63,7 @@ export class EditmsoComponent implements OnInit {
   }
   ngOnInit() {
 
-}
+  }
 
 
 
@@ -99,7 +104,7 @@ export class EditmsoComponent implements OnInit {
       }).then(() => {
         location.reload();
       });
-
+     
     }, (err) => {
       const errorMessage = errorFields
         .map(field => err?.error?.[field])
@@ -111,6 +116,7 @@ export class EditmsoComponent implements OnInit {
         confirmButtonText: 'OK'
       });
     });
+     this.logCreate('MSO Details Button Clicked', 'Update', 'Update');
   }
 
   onNoClick(): void {
@@ -121,5 +127,19 @@ export class EditmsoComponent implements OnInit {
     if (!/^\d$/.test(key) && key !== 'Backspace') {
       event.preventDefault();
     }
+  }
+
+  logCreate(action: any, remarks: any, data: any) {
+    let requestBody = {
+      access_ip: this.accessip,
+      action: action,
+      remarks: remarks,
+      data: data,
+      user_id: this.userid,
+    }
+    this.userService.createLogs(requestBody).subscribe((res: any) => {
+      console.log(res);
+
+    })
   }
 }

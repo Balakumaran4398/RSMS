@@ -528,7 +528,7 @@
                                 </div>
                             </div>
                             <div class="col-12 col-md-12 display_btn1">
-                                <div *ngIf="role != 'ROLE_SUBLCO' && role != 'ROLE_SUBSCRIBER'"
+                                <div *ngIf="role != 'ROLE_SUBLCO' && role != 'ROLE_SUBSCRIBER' && role != 'ROLE_OPERATOR'"
                                     class="col-12 col-md-6 d-flex justify-content-center align-items-center  text3">
                                     <button class="btn  d-flex justify-content-between" [disabled]="block"
                                         (click)="openDialog('block','')">

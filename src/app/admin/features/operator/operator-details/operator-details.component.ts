@@ -78,7 +78,7 @@ export class OperatorDetailsComponent implements OnInit, AfterViewInit {
     this.operatorDeatils('');
   }
   ngAfterViewInit(): void {
-    $('#ltb').select2({
+    ($('#ltb')as any).select2({
       placeholder: 'Select Operator Name',
       allowClear: true
     });

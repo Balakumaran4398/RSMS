@@ -4,18 +4,20 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { BaseService } from 'src/app/_core/service/base.service';
 import { StorageService } from 'src/app/_core/service/storage.service';
 import { SwalService } from 'src/app/_core/service/swal.service';
-declare var $:any;
+declare var $: any;
 
 @Component({
   selector: 'app-update-ltb',
   templateUrl: './update-ltb.component.html',
   styleUrls: ['./update-ltb.component.scss']
 })
-export class UpdateLtbComponent implements OnInit,OnDestroy {
+export class UpdateLtbComponent implements OnInit, OnDestroy {
   isActive = false;
   opName: any;
+  opName_1: any;
   istax: boolean = true;
   isactive: boolean = false;
+  isactive_1: boolean = false;
   opNameList: any[] = [];
   localPaymentChannelList: any;
   role: any;
@@ -28,23 +30,30 @@ export class UpdateLtbComponent implements OnInit,OnDestroy {
   filteredOperators: any[] = [];
   selectedOperator: any;
   selectedLcoName: any;
-
-
+  selectedLcoName_1: any;
+  userid: any;
+  accessip: any;
+  channelrate: any;
   constructor(
     public dialogRef: MatDialogRef<UpdateLtbComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any, private userService: BaseService, private storageService: StorageService, private swal: SwalService, private cdr: ChangeDetectorRef) {
     console.log(data);
     this.username = storageService.getUsername();
     this.role = storageService.getUserRole();
+    this.userid = storageService.getUserid();
+    this.accessip = storageService.getAccessip();
     this.localPaymentChannelList = data;
     this.id = data.id;
     this.lcnno = data.lcn;
     this.opName = data.operatorid;
+    this.opName_1 = data.operatorname;
     this.updateLcoPrice = data.lcoprice;
+    this.channelrate = data.channelrate;
     this.updateTax = data.tax;
-    console.log(this.opName);
+    console.log(this.opName_1);
 
     this.isactive = data.statusdisplay == 'Active' ? true : false;
+    this.isactive_1 = data.statusdisplay == 'Active' ? true : false;
     this.userService.getLocalChannelOperatorList(this.role, this.username).subscribe((data: any) => {
       this.opNameList = Object.keys(data).map(key => ({
         packagename: key,
@@ -63,8 +72,12 @@ export class UpdateLtbComponent implements OnInit,OnDestroy {
       allowClear: true
     });
     $('#ltb').on('change', (event: any) => {
+      console.log(event);
+
       this.opName = event.target.value;
-      this.onSubscriberStatusChange( this.opName);
+      this.onSubscriberStatusChange(this.opName);
+      console.log(this.opName);
+
     });
   }
 
@@ -88,7 +101,7 @@ export class UpdateLtbComponent implements OnInit,OnDestroy {
       this.updateTax = data.tax;
       this.updateLcoPrice = data.lcoprice;
       // this.localPaymentChannelList = data;
-      this.cdr.detectChanges(); 
+      this.cdr.detectChanges();
     })
   }
   submit() {
@@ -97,8 +110,11 @@ export class UpdateLtbComponent implements OnInit,OnDestroy {
       .subscribe((res: any) => {
         this.swal.success(res?.message);
       }, (err) => {
-        this.swal.Error(err?.error?.message);
+        this.swal.Error1(err?.error?.message);
       });
+    const data = ` LTB Name: ${this.opName_1}, ` + ` Channel Rate: ${this.channelrate},` + ` Status: ${this.isactive},`;
+    const remark = ` LTB Name: ${this.opName}, ` + ` Channel Rate: ${this.localPaymentChannelList?.channelrate},` + ` Status: ${this.isactive_1},`;
+    this.logCreate('LTB Update Button Clicked', remark, data);
   }
   filterOperators(event: any): void {
     // const filterValue = event.target.value.toLowerCase();
@@ -113,5 +129,22 @@ export class UpdateLtbComponent implements OnInit,OnDestroy {
   onSubscriberStatusChange(selectedOperator: any) {
     this.selectedOperator = selectedOperator;
     this.selectedLcoName = selectedOperator.value;
+    this.selectedLcoName_1 = selectedOperator.packagename;
+    console.log(this.selectedLcoName_1);
+    console.log(this.selectedLcoName_1);
+  }
+
+  logCreate(action: any, remarks: any, data: any) {
+    let requestBody = {
+      access_ip: this.accessip,
+      action: action,
+      remarks: remarks,
+      data: data,
+      user_id: this.userid,
+    }
+    this.userService.createLogs(requestBody).subscribe((res: any) => {
+      console.log(res);
+
+    })
   }
 }

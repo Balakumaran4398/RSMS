@@ -405,6 +405,7 @@ export class MsorDialogueportsComponent implements OnInit, OnDestroy {
     $('#operator').on('change', (event: any) => {
       this.selectedLcoName = event.target.value;
       this.onSubscriberStatusChange(this.selectedLcoName);
+
     });
     $('#subLco').select2({
       placeholder: 'Select Sub Lco',
@@ -845,6 +846,8 @@ export class MsorDialogueportsComponent implements OnInit, OnDestroy {
   }
 
   onSubscriberStatusChange(selectedOperator: any) {
+    console.log('4543534543543543',selectedOperator);
+    
     this.selectedOperator = selectedOperator;
     this.selectedLcoName = selectedOperator.value || this.operatorId || 0;
     this.selectedSubLcoName = 0;
@@ -999,7 +1002,7 @@ export class MsorDialogueportsComponent implements OnInit, OnDestroy {
     } else if (this.type == 'lco_active_subscription') {
       this.columnDefs = [
         { headerName: "S.No", lockPosition: true, valueGetter: 'node.rowIndex+1', headerCheckboxSelection: false, checkboxSelection: false, width: 90, filter: false },
-        { headerName: 'OPERATOR ID', field: 'operatorname', cellStyle: { textAlign: 'left' }},
+        { headerName: 'OPERATOR ID', field: 'operatorname', cellStyle: { textAlign: 'left' } },
         { headerName: 'OPERATOR NAME', field: 'operatorname', cellStyle: { textAlign: 'left' } },
         { headerName: 'MOBILE NUMBER', field: 'mobileno', cellStyle: { textAlign: 'center' }, },
         { headerName: 'AREA NAME', field: 'areaname', cellStyle: { textAlign: 'left', color: 'green' }, },
@@ -1104,7 +1107,7 @@ export class MsorDialogueportsComponent implements OnInit, OnDestroy {
   }
   formatDate1(date: Date): string {
     const year = date.getFullYear();
-    const month = String(date.getMonth() + 1).padStart(2, '0'); 
+    const month = String(date.getMonth() + 1).padStart(2, '0');
     const day = String(date.getDate()).padStart(2, '0');
     return `${year}-${month}-${day}`;
   }
@@ -1295,8 +1298,19 @@ export class MsorDialogueportsComponent implements OnInit, OnDestroy {
       );
     }
   }
-
+  typaName: any;
   getRechargeExcel() {
+    console.log('53245345435', this.selectedLco);
+    console.log('53245345435', this.selectedRechargeType);
+
+    if (this.selectedRechargeType == 1) {
+      this.typaName = 'Operator'
+    } else if (this.selectedRechargeType == 2) {
+      this.typaName = 'Smartcard'
+    } else {
+      this.typaName = 'All'
+    }
+
     if (this.role == 'ROLE_SUBLCO') {
       Swal.fire({
         title: "Processing",
@@ -1314,7 +1328,7 @@ export class MsorDialogueportsComponent implements OnInit, OnDestroy {
           const link = document.createElement('a');
           link.href = data;
 
-          link.download = ("RECHARGE HISTORY REPORT.xlsx").toUpperCase();
+          link.download = (this.typaName + "  RECHARGE HISTORY REPORT.xlsx").toUpperCase();
           link.dispatchEvent(new MouseEvent('click', { bubbles: true, cancelable: true, view: window }));
           setTimeout(() => {
             window.URL.revokeObjectURL(data);
@@ -1348,7 +1362,7 @@ export class MsorDialogueportsComponent implements OnInit, OnDestroy {
           const link = document.createElement('a');
           link.href = data;
 
-          link.download = ("RECHARGE HISTORY REPORT.xlsx").toUpperCase();
+          link.download = (this.typaName + "  RECHARGE HISTORY REPORT.xlsx").toUpperCase();
           link.dispatchEvent(new MouseEvent('click', { bubbles: true, cancelable: true, view: window }));
           setTimeout(() => {
             window.URL.revokeObjectURL(data);
@@ -1385,7 +1399,7 @@ export class MsorDialogueportsComponent implements OnInit, OnDestroy {
           const link = document.createElement('a');
           link.href = data;
 
-          link.download = ("RECHARGE HISTORY REPORT.xlsx").toUpperCase();
+          link.download = (this.typaName + " RECHARGE HISTORY REPORT.xlsx").toUpperCase();
           link.dispatchEvent(new MouseEvent('click', { bubbles: true, cancelable: true, view: window }));
           setTimeout(() => {
             window.URL.revokeObjectURL(data);
@@ -1708,7 +1722,7 @@ export class MsorDialogueportsComponent implements OnInit, OnDestroy {
     this.selectedOperator.value = { value: "0" };
     this.selectedSubLcoName = "0";
   }
-
+  typeName: any;
 
   getOnlineExcel() {
     this.smartcard = this.smartcardChange(this.smartcard);
@@ -1721,6 +1735,14 @@ export class MsorDialogueportsComponent implements OnInit, OnDestroy {
       }
 
     });
+
+    if (this.selectedOnlineType == 1) {
+      this.typeName = 'Operator'
+    } else if (this.selectedOnlineType == 2) {
+      this.typeName = 'Sublco'
+    } else {
+      this.typeName = 'Subscriber'
+    }
     if (this.role == 'ROLE_SPECIAL') {
       if (this.type == 'online_payment_special') {
         console.log('123sdfsdfdsfdsf');
@@ -1737,7 +1759,7 @@ export class MsorDialogueportsComponent implements OnInit, OnDestroy {
           const link = document.createElement('a');
           link.href = data;
 
-          link.download = ("SUB ONLINE REPORT.xlsx").toUpperCase();
+          link.download = (this.typeName + "  ONLINE REPORT.xlsx").toUpperCase();
           link.dispatchEvent(new MouseEvent('click', { bubbles: true, cancelable: true, view: window }));
           setTimeout(() => {
             window.URL.revokeObjectURL(data);
@@ -1763,7 +1785,7 @@ export class MsorDialogueportsComponent implements OnInit, OnDestroy {
           const link = document.createElement('a');
           link.href = data;
 
-          link.download = ("SUB ONLINE REPORT.xlsx").toUpperCase();
+          link.download = (this.typeName + "   ONLINE REPORT.xlsx").toUpperCase();
           link.dispatchEvent(new MouseEvent('click', { bubbles: true, cancelable: true, view: window }));
           setTimeout(() => {
             window.URL.revokeObjectURL(data);
@@ -1788,7 +1810,7 @@ export class MsorDialogueportsComponent implements OnInit, OnDestroy {
           const link = document.createElement('a');
           link.href = data;
 
-          link.download = ("SUB ONLINE REPORT.xlsx").toUpperCase();
+          link.download = (this.typeName + "   ONLINE REPORT.xlsx").toUpperCase();
           link.dispatchEvent(new MouseEvent('click', { bubbles: true, cancelable: true, view: window }));
           setTimeout(() => {
             window.URL.revokeObjectURL(data);
@@ -1837,7 +1859,7 @@ export class MsorDialogueportsComponent implements OnInit, OnDestroy {
           const link = document.createElement('a');
           link.href = data;
 
-          link.download = ("SUB ONLINE REPORT.pdf").toUpperCase();
+          link.download = (this.selectedOperator.name + "   ONLINE REPORT.pdf").toUpperCase();
           link.dispatchEvent(new MouseEvent('click', { bubbles: true, cancelable: true, view: window }));
           setTimeout(() => {
             window.URL.revokeObjectURL(data);
@@ -1863,7 +1885,7 @@ export class MsorDialogueportsComponent implements OnInit, OnDestroy {
           const link = document.createElement('a');
           link.href = data;
 
-          link.download = ("SUB ONLINE REPORT.pdf").toUpperCase();
+          link.download = (this.selectedOperator.name + "   ONLINE REPORT.pdf").toUpperCase();
           link.dispatchEvent(new MouseEvent('click', { bubbles: true, cancelable: true, view: window }));
           setTimeout(() => {
             window.URL.revokeObjectURL(data);
@@ -1888,7 +1910,7 @@ export class MsorDialogueportsComponent implements OnInit, OnDestroy {
           const link = document.createElement('a');
           link.href = data;
 
-          link.download = ("SUB ONLINE REPORT.pdf").toUpperCase();
+          link.download = (this.selectedOperator.name + "   ONLINE REPORT.pdf").toUpperCase();
           link.dispatchEvent(new MouseEvent('click', { bubbles: true, cancelable: true, view: window }));
           setTimeout(() => {
             window.URL.revokeObjectURL(data);
@@ -2257,12 +2279,13 @@ export class MsorDialogueportsComponent implements OnInit, OnDestroy {
   getUserRechargeHistoryDownload(type: number) {
     this.processingSwal();
     this.swal.Loading();
+    console.log('dfdsfsdf',)
     this.userService.getUserRecharegeHistoryDownload(this.role, this.username, this.fromdate, this.todate, this.selectedUser ? this.selectedUser.value : 0, type)
       .subscribe((x: Blob) => {
         if (type == 1) {
-          this.reportMaking(x, "Subscriber_Recharge_History(" + this.selectedUser.name + ").pdf", 'application/pdf');
+          this.reportMaking(x, "Recharge_History(" + this.selectedUser.name + ").pdf", 'application/pdf');
         } else if (type == 2) {
-          this.reportMaking(x, "Subscriber_Recharge_History(" + this.selectedUser.name + ").xlsx", 'application/xlsx');
+          this.reportMaking(x, "Recharge_History(" + this.selectedUser.name + ").xlsx", 'application/xlsx');
         }
         this.swal.Close();
       },
@@ -2634,13 +2657,16 @@ export class MsorDialogueportsComponent implements OnInit, OnDestroy {
   }
 
   getSubLcoOfflinerDetailsDownload(type: number) {
+    console.log('selectedOperator', this.selectedOperator.name);
+    console.log('selectedSubLcoName', this.selectedSubLcoName);
+
     this.processingSwal();
     this.userService.getsubLcoOfflineDownload(this.role, this.username, this.fromdate, this.todate, this.selectedOperator.value, this.selectedSubLcoName, type)
       .subscribe((x: Blob) => {
         if (type == 1) {
-          this.reportMaking(x, "Sub LCO Offline Payment History (" + this.fromdate + "-" + this.todate + ").pdf", 'application/pdf');
+          this.reportMaking(x, this.selectedOperator.name + "  Offline Payment History (" + this.fromdate + "-" + this.todate + ").pdf", 'application/pdf');
         } else if (type == 2) {
-          this.reportMaking(x, "Sub LCO Offline Payment History (" + this.fromdate + "-" + this.todate + ").xlsx", 'application/xlsx');
+          this.reportMaking(x, this.selectedOperator.name + "  Offline Payment History (" + this.fromdate + "-" + this.todate + ").xlsx", 'application/xlsx');
         }
       },
         (error: any) => {

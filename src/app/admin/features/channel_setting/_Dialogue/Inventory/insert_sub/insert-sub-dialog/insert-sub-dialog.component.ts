@@ -17,18 +17,23 @@ export class InsertSubDialogComponent {
   operatorid: any;
   id: any;
   selectedLcoName: any = 0;
+  selectedLcoName_1: any ;
   // sub_list: { [key: string]: number } = {};
   sub_list: any[] = [];
   searchTerm: string = '';
   filteredOperators: any[] = [];
   selectedOperator: any;
   submitted: boolean = false;
+  userid: any;
+  accessip: any;
   constructor(
     public dialogRef: MatDialogRef<InsertSubDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any, private userService: BaseService, private storageService: StorageService, private swal: SwalService) {
     console.log(data);
     this.username = storageService.getUsername();
     this.role = storageService.getUserRole();
+    this.userid = storageService.getUserid();
+    this.accessip = storageService.getAccessip();
     this.id = data.id;
     this.operatorid = data.operatorid
     console.log(this.id);
@@ -70,6 +75,7 @@ export class InsertSubDialogComponent {
     console.log(selectedOperator);
     this.selectedOperator = selectedOperator;
     this.selectedLcoName = selectedOperator.value;
+    this.selectedLcoName_1 = selectedOperator.name;
     console.log(this.selectedLcoName);
   }
 
@@ -116,13 +122,28 @@ export class InsertSubDialogComponent {
           // this.swal.Close();
           console.error('Error:', error);
         }
+       
       );
+
+        this.logCreate('Insert Button Clicked', 'Insert', this.selectedLcoName_1);
     // .subscribe((res: any) => {
     //   this.swal.success(res?.message);
     // }, (err) => {
     //   this.swal.Error(err?.error?.message);
     // });
   }
+ logCreate(action: any, remarks: any, data: any) {
+    let requestBody = {
+      access_ip: this.accessip,
+      action: action,
+      remarks: remarks,
+      data: data,
+      user_id: this.userid,
+    }
+    this.userService.createLogs(requestBody).subscribe((res: any) => {
+      console.log(res);
 
+    })
+  }
 
 }

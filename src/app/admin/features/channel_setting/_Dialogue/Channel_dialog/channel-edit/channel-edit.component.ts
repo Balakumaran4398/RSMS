@@ -28,6 +28,7 @@ export class ChannelEditComponent {
   status: string = 'Active';
   commission: any;
   ispercentage: boolean = true;
+  ispercentage_1: boolean = true;
   categoryname: any;
   oldcategoryname: any;
   oldChannelType: any;
@@ -39,6 +40,7 @@ export class ChannelEditComponent {
   broadcasterRate: any;
   channel_typename: any;
   channelname: any;
+  channelname_1: any;
   channelId: any;
   channel_rate: any;
   broadcaster_id: any;
@@ -58,14 +60,18 @@ export class ChannelEditComponent {
   selectbroadcaster: any;
 
   issave: boolean = false;
+
+  userid: any;
+  accessip: any;
   constructor(private cdr: ChangeDetectorRef, public dialogRef: MatDialogRef<ChannelEditComponent>, @Inject(MAT_DIALOG_DATA) public data: any, private swal: SwalService, private userservice: BaseService, private storageservice: StorageService) {
     this.role = storageservice.getUserRole();
     this.username = storageservice.getUsername();
-    console.log(data);
+
+    this.userid = storageservice.getUserid();
+    this.accessip = storageservice.getAccessip();
     this.channelname = data.channel_name;
-    console.log(this.channelname);
+    this.channelname_1 = data.channel_name;
     this.channelId = data.channel_id;
-    console.log('5456465654564564', this.channelId);
     this.channellogo = data.channel_logo;
     this.channelfreq = data.channel_freq;
     this.channeldesc = data.channel_desc;
@@ -77,7 +83,7 @@ export class ChannelEditComponent {
     this.distributorid = data.distributor_id;
     this.categoryname = data.categoryid;
     this.oldcategoryname = data.categoryname;
-    this.oldChannelType  = data.channeltypename;
+    this.oldChannelType = data.channeltypename;
     this.inrAmt = data.inr_amt;
     this.channel_typename = data.channeltypeid;
     this.status = data.statusdisplay;
@@ -90,6 +96,7 @@ export class ChannelEditComponent {
     this.productid = data.product_id;
     this.commission = data.customeramount;
     this.isPercentage = data.isPercentage;
+    this.ispercentage_1 = data.isPercentage;
     // this.channelid = data.channel_id
     // this.channel_rate = data.inr_amt;
     // this.status = data.statusdisplay;
@@ -203,6 +210,9 @@ export class ChannelEditComponent {
         this.swal.Error(err?.error?.message || err?.error?.channel_name || err?.error?.inr_amt || err?.error?.broadcaster_id || err?.error?.product_id
           || err?.error?.service_id || err?.error?.customer_amount);
       });
+    const data = ` Channel_name: ${this.channelname}, ` + ` ispercentage: ${this.isPercentage},`;
+    const remark = ` Channel_name: ${this.channelname_1}, ` + ` ispercentage: ${this.ispercentage},`;
+    this.logCreate('Channel Edit Button Clicked', remark, data);
   }
   timeout: any;
   breakLoad() {
@@ -232,7 +242,19 @@ export class ChannelEditComponent {
     this.cdr.detectChanges();
   }
 
+  logCreate(action: any, remarks: any, data: any) {
+    let requestBody = {
+      access_ip: this.accessip,
+      action: action,
+      remarks: remarks,
+      data: data,
+      user_id: this.userid,
+    }
+    this.userservice.createLogs(requestBody).subscribe((res: any) => { console.log(res); })
+  }
 }
+
+
 export class EditChannelModel {
   constructor(public list: any) {
   }

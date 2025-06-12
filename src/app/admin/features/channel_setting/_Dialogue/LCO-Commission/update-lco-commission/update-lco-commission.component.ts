@@ -18,22 +18,29 @@ export class UpdateLcoCommissionComponent implements OnInit {
   producttype: any;
   productrate: any;
   commissionvalue: any;
+  commissionvalue_1: any;
   id: any;
 
   type: any;
   isYesActive: boolean = false;
   isPercentage: boolean = false;
+  isPercentage_1: boolean = false;
 
   disProductname: any;
   disProducttype: any;
   disProductrate: any;
   disCommissionvalue: any;
   msoamount: any;
+  msoamount_1: any;
   data_value: any;
+  userid: any;
+  accessip: any;
   constructor(
     public dialogRef: MatDialogRef<UpdateLcoCommissionComponent>, @Inject(MAT_DIALOG_DATA) public data: any, private cdr: ChangeDetectorRef, private swal: SwalService, private userservice: BaseService, private storageservice: StorageService) {
     this.role = storageservice.getUserRole();
     this.username = storageservice.getUsername();
+    this.userid = storageservice.getUserid();
+    this.accessip = storageservice.getAccessip();
     console.log(data);
     this.data_value = data;
     this.type = data.type;
@@ -43,12 +50,15 @@ export class UpdateLcoCommissionComponent implements OnInit {
     this.id = data?.data?.id;
     this.productrate = data?.data?.rate;
     this.commissionvalue = data?.data?.commissionvalue;
+    this.commissionvalue_1 = data?.data?.commissionvalue;
     this.isPercentage = data?.data?.ispercentage;
+    this.isPercentage_1 = data?.data?.ispercentage;
     this.disProductname = data?.data?.productname;
     this.disProducttype = data?.data?.productTypeDisplay;
     this.disProductrate = data?.data?.rate;
     this.disCommissionvalue = data?.data?.commissionvalue;
     this.msoamount = data?.data?.submsoamount;
+    this.msoamount_1 = data?.data?.submsoamount;
 
   }
   ngOnInit(): void {
@@ -70,12 +80,7 @@ export class UpdateLcoCommissionComponent implements OnInit {
   onNoClick(): void {
     this.dialogRef.close();
   }
-  // change() {
-  //   this.userservice.updateLcoCommission(this.role, this.username, this.id, this.isYesActive, this.isPercentage, this.commissionvalue).subscribe((response: any) => {
-  //     console.log(response);
 
-  //   })
-  // }
 
   updateCommission() {
     Swal.fire({
@@ -94,13 +99,16 @@ export class UpdateLcoCommissionComponent implements OnInit {
       }, (err) => {
         this.swal.Error(err?.error?.message);
       });
+    const data = ` Productname: ${this.productname}, ` + ` Producttype: ${this.producttype},` + `Commissionvalue: ${this.commissionvalue},` + ` percentage: ${this.isPercentage},`;
+    const remark = ` Productname: ${this.productname}, ` + ` Producttype: ${this.producttype},` + `Commissionvalue: ${this.commissionvalue_1},` + ` percentage: ${this.isPercentage_1},`;
+    this.logCreate('LCO Commission Edit Button Clicked', data, remark);
   }
 
   updateDisCommission() {
     Swal.fire({
       title: 'Updating Distributor Commission...',
       html: 'Please wait while the commission is being updated.',
-      timer: 3000, 
+      timer: 3000,
       timerProgressBar: true,
       didOpen: () => {
         Swal.showLoading(null);
@@ -113,6 +121,23 @@ export class UpdateLcoCommissionComponent implements OnInit {
       }, (err) => {
         this.swal.Error(err?.error?.message);
       });
+    const data = ` Productname: ${this.productname}, ` + ` Producttype: ${this.producttype},` + ` MSO Amount: ${this.msoamount},`;
+    const remark = ` Productname: ${this.productname}, ` + ` Producttype: ${this.producttype},` + ` MSO Amount: ${this.msoamount_1},`;
+    this.logCreate('Distributor Commission Edit Button Clicked', data, remark);
+  }
+
+  logCreate(action: any, remarks: any, data: any) {
+    let requestBody = {
+      access_ip: this.accessip,
+      action: action,
+      remarks: remarks,
+      data: data,
+      user_id: this.userid,
+    }
+    this.userservice.createLogs(requestBody).subscribe((res: any) => {
+      console.log(res);
+
+    })
   }
 }
 

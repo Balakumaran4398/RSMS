@@ -18,7 +18,7 @@ export class CasdialogueComponent implements OnInit {
   // casForm!: FormGroup;
   submitted = false;
   smartcart_length: any;
-  boxid_length :any;
+  boxid_length: any;
   type: any;
   casid: any;
 
@@ -42,12 +42,14 @@ export class CasdialogueComponent implements OnInit {
   website: any;
   mobileno: any;
   isactive: boolean = true;
-
-
   errorMessage: string | null = null;
+  userid: any;
+  accessip: any;
   constructor(public dialogRef: MatDialogRef<CasdialogueComponent>, @Inject(MAT_DIALOG_DATA) public data: any, private swal: SwalService, private userservice: BaseService, private storageservice: StorageService, private fb: FormBuilder) {
     this.username = storageservice.getUsername();
     this.role = storageservice.getUserRole();
+    this.userid = storageservice.getUserid();
+    this.accessip = storageservice.getAccessip();
     console.log(data);
     this.type = data?.type;
     this.casid = data?.id;
@@ -213,9 +215,7 @@ export class CasdialogueComponent implements OnInit {
       isactive: this.isactive,
       id: this.cas_id
     };
-
     console.log('Request Body:', requestBody);
-
     this.userservice.updateCas(requestBody).subscribe(
       (res: any) => {
         this.swal.success(res?.message);
@@ -226,7 +226,7 @@ export class CasdialogueComponent implements OnInit {
           err?.error?.serverport || err?.error?.smartcardlength || err?.error?.boxidlength
         );
         // this.errorMessage = this.getErrorMessage(err?.error); // Set the error message
-        console.error(this.errorMessage); // Centralized error logging
+        console.error(this.errorMessage);
       }
     );
   }
@@ -255,5 +255,19 @@ export class CasdialogueComponent implements OnInit {
     if (!/^\d$/.test(key) && key !== 'Backspace') {
       event.preventDefault();
     }
+  }
+
+  logCreate(action: any, remarks: any, data: any) {
+    let requestBody = {
+      access_ip: this.accessip,
+      action: action,
+      remarks: remarks,
+      data: data,
+      user_id: this.userid,
+    }
+    this.userservice.createLogs(requestBody).subscribe((res: any) => {
+      console.log(res);
+
+    })
   }
 }

@@ -125,22 +125,9 @@ export class AlacarteActivationComponent {
   }
   selectedTab: string = 'activation';
   ngOnInit() {
-    // this.userservice.Cas_type(this.role, this.username).subscribe((data) => {
-    //   console.log(data);
-    //   this.cas = data.map((item: any) => ({
-    //     casname: item.casname,
-    //     id: item.id
-    // }));
     this.date = new Date().toISOString().split('T')[0];
     this.selectedDate = this.date;
     this.filteredToppingList = [...this.toppingList];
-    // this.refresh();
-    console.log(this.cas);
-    // this.userservice.Finger_print_List(this.role, this.username).subscribe((data) => {
-    //   this.cas = Object.entries(data[0].caslist).map(([key, value]) => ({ name: key, id: value }));
-    //   console.log(this.cas);
-
-    // });
     this.onCaschange('');
     this.getRefreshData();
   }
@@ -363,10 +350,10 @@ export class AlacarteActivationComponent {
             if (!this.gridOptions.paginationPageSizeSelector.includes(rowCount)) {
               this.gridOptions.paginationPageSizeSelector.push(rowCount);
             }
-            this.swal.Success_200();
+            // this.swal.Success_200();
           } else if (response.status === 204) {
             this.rowData = '';
-            this.swal.Success_204();
+            // this.swal.Success_204();
           }
         },
         (error) => {

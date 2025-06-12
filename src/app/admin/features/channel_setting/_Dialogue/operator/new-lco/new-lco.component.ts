@@ -1,5 +1,5 @@
 import { Component, Inject } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { AbstractControl, FormBuilder, FormGroup, ValidationErrors, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { BaseService } from 'src/app/_core/service/base.service';
 import { StorageService } from 'src/app/_core/service/storage.service';
@@ -33,15 +33,25 @@ export class NewLcoComponent {
     // });
 
     this.businessList = Object.keys(data.data).map(key => ({
-      name: key, 
+      name: key,
       value: data.data[key]
     }));
-    
+
     console.log(this.businessList);
 
   }
   toggleedit() {
     this.dialogRef.close();
+  }
+  customEmailValidator() {
+    return (control: AbstractControl): ValidationErrors | null => {
+      const email = control.value;
+      const emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.(in|com)$/;
+      if (email && !emailPattern.test(email)) {
+        return { invalidEmail: true };
+      }
+      return null;
+    };
   }
   ngOnInit() {
     this.form = this.fb.group({
@@ -52,7 +62,8 @@ export class NewLcoComponent {
       address: ['', Validators.required],
       state: ['', Validators.required],
       userid: ['', [Validators.required, Validators.minLength(5), Validators.maxLength(10)]],
-      mail: ['', [Validators.required, Validators.email]],
+      // mail: ['', [Validators.required, Validators.email]],
+      mail: ['', [Validators.required, Validators.email, this.customEmailValidator()]],
       area: ['', Validators.required],
       pincode: ['', [Validators.required, Validators.pattern('^[0-9]{6}$')]],
       password: ['', [Validators.required, Validators.minLength(6), Validators.maxLength(12)]],
@@ -64,15 +75,46 @@ export class NewLcoComponent {
 
 
 
-  onSubmit() {
-    if (this.form.valid) {
+  // onSubmit() {
+  //   if (!this.form.valid) {
 
-    } else {
-      this.form.markAllAsTouched();
-    }
-    this.swal.Loading();
-    this.userService.NewOperator(this.form.value).subscribe(
-      (res: any) => {
+  //   } else {
+  //     this.form.markAllAsTouched();
+  //   }
+  //   this.swal.Loading();
+  //   this.userService.NewOperator(this.form.value).subscribe(
+  //     (res: any) => {
+  //       Swal.fire({
+  //         title: 'Success!',
+  //         text: res.message || 'The operator has been added successfully.',
+  //         icon: 'success',
+  //         timer: 2000,
+  //         timerProgressBar: true,
+  //         willClose: () => {
+  //           window.location.reload();
+  //           // this.ngOnInit();
+  //         }
+  //       });
+  //     },
+  //     (error: any) => {
+  //       console.error(error);
+  //       Swal.fire({
+  //         title: 'Error!',
+  //         text: error?.error.operatorname || error?.error.contactnumber2 || error?.error.address || error?.error.area || error?.error.state ||
+  //           error?.error.mail || error?.error.lcobusinessid || error?.error.message || 'There was an issue adding the operator.',
+  //         icon: 'error'
+  //       });
+  //     }
+  //   );
+  //   // } else {
+  //   //   this.form.markAllAsTouched();
+  //   // }
+  // }
+
+  onSubmit() {
+    if (!this.form.valid) {
+      this.swal.Loading();
+      this.userService.NewOperator(this.form.value).subscribe((res: any) => {
         Swal.fire({
           title: 'Success!',
           text: res.message || 'The operator has been added successfully.',
@@ -81,23 +123,29 @@ export class NewLcoComponent {
           timerProgressBar: true,
           willClose: () => {
             window.location.reload();
-            // this.ngOnInit();
           }
         });
       },
-      (error: any) => {
-        console.error(error);
-        Swal.fire({
-          title: 'Error!',
-          text: error?.error.operatorname || error?.error.contactnumber2 || error?.error.address || error?.error.area || error?.error.state ||
-            error?.error.mail || error?.error.lcobusinessid || error?.error.message || 'There was an issue adding the operator.',
-          icon: 'error'
-        });
-      }
-    );
-    // } else {
-    //   this.form.markAllAsTouched();
-    // }
+        (error: any) => {
+          console.error(error);
+          Swal.fire({
+            title: 'Error!',
+            text: error?.error.operatorname ||
+              error?.error.contactnumber2 ||
+              error?.error.address ||
+              error?.error.area ||
+              error?.error.state ||
+              error?.error.mail ||
+              error?.error.lcobusinessid ||
+              error?.error.message ||
+              'There was an issue adding the operator.',
+            icon: 'error'
+          });
+        }
+      );
+    } else {
+      this.form.markAllAsTouched();
+    }
   }
   onKeydown(event: KeyboardEvent) {
     const key = event.key;

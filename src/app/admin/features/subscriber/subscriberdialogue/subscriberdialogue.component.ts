@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, Inject, OnInit, ViewEncapsulation, OnDestroy, ViewChild } from '@angular/core';
-import { AbstractControl, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { AbstractControl, FormBuilder, FormControl, FormGroup, Validators, ValidationErrors } from '@angular/forms';
 import { MatDatepicker } from '@angular/material/datepicker';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import * as _moment from 'moment';
@@ -184,8 +184,10 @@ export class SubscriberdialogueComponent implements OnInit, OnDestroy {
   idproof: any;
   addressprooftypeid: any;
   idprooftypeid: any;
-  areaid: any = 0;
-  streetid: any = 0;
+  areaid: any;
+  streetid: any;
+  areaname: any;
+  streetname: any;
 
   packageid: any;
   plan: any;
@@ -391,7 +393,9 @@ export class SubscriberdialogueComponent implements OnInit, OnDestroy {
   isDateSelected(): boolean {
     return !!this.f_date || this.datetype;
   }
-
+  get f(): { [key: string]: AbstractControl } {
+    return this.Editform.controls;
+  }
   @ViewChild(NavComponent) navComponent!: NavComponent;
   operatorIdValue: any = '';
 
@@ -448,6 +452,9 @@ export class SubscriberdialogueComponent implements OnInit, OnDestroy {
     this.idproof = data['detailsList'].idproof;
     this.idprooftypeid = data['detailsList'].idprooftypeid;
     this.areaid = data['detailsList'].areaid;
+    this.streetid = data['detailsList'].streetid;
+    this.areaname = data['detailsList'].areaname;
+    this.streetname = data['detailsList'].streetname;
     this.statusSus = data['detailsList'].statusSus;
     this.smartcardno = data['detailsList'].smartcard;
     this.statusdisplay = data['detailsList'].statusdisplay;
@@ -497,8 +504,11 @@ export class SubscriberdialogueComponent implements OnInit, OnDestroy {
         fathername: ['', [Validators.required]],
         mobileno: ['', [Validators.required, Validators.pattern('^[0-9]{10}$')]],
         installaddress: ['', [Validators.required]],
-        email: ['', [Validators.required, Validators.email]],
+        // email: ['', [Validators.required, Validators.email]],
+        email: ['', [Validators.required, Validators.email, this.customEmailValidator()]],
         addressproof: ['', [Validators.required]],
+        areaid: [this.areaid, [Validators.required]],
+        streetid: [this.streetid, [Validators.required]],
         idproof: ['', [Validators.required]],
         idprooftypeid: ['', Validators.required],
         addressprooftypeid: ['', Validators.required],
@@ -539,6 +549,8 @@ export class SubscriberdialogueComponent implements OnInit, OnDestroy {
     ($('#package') as any).select2('destroy');
     ($('#LCO') as any).select2('destroy');
     ($('#subscriber') as any).select2('destroy');
+    ($('#Area') as any).select2('destroy');
+    ($('#Street') as any).select2('destroy');
   }
 
   ngOnInit(): void {
@@ -587,6 +599,8 @@ export class SubscriberdialogueComponent implements OnInit, OnDestroy {
     } else if (this.sType == 'editDetails') {
       this.loadIdProofList();
       this.loadAddProofList();
+      this.onoperatorchange1(this.operatorid);
+      this.onAreaStatusChange1(this.areaid);
     }
 
     this.onGridReady(params);
@@ -605,7 +619,17 @@ export class SubscriberdialogueComponent implements OnInit, OnDestroy {
     }
 
   }
+  customEmailValidator() {
+    return (control: AbstractControl): ValidationErrors | null => {
+      const email = control.value;
+      const emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.(in|com)$/;
 
+      if (email && !emailPattern.test(email)) {
+        return { invalidEmail: true };
+      }
+      return null;
+    };
+  }
   operatorIdoperatorId() {
     this.userservice.getOpDetails(this.role, this.username).subscribe((data: any) => {
       this.lcoDeatails = data;
@@ -626,7 +650,7 @@ export class SubscriberdialogueComponent implements OnInit, OnDestroy {
     this.userservice.getSublcoDetails(this.role, this.username).subscribe((data: any) => {
       this.lcoDeatails = data;
       console.log('32423432432423423432');
-      
+
       this.retailerId = this.lcoDeatails?.retailerid;
       this.operatorId = this.lcoDeatails?.retailerid;
       this.operatorname = this.lcoDeatails?.retailername;
@@ -695,15 +719,6 @@ export class SubscriberdialogueComponent implements OnInit, OnDestroy {
     })
   }
   onAllBaselistByExceptDatasActivation() {
-    // this.userservice.getAllBaselistByExceptPackId(this.role, this.username, this.operatorid, this.castype, this.type, 0)
-    //   .subscribe((data) => {
-    //     this.packagenameList = Object.entries(data).map(([name, id]) => ({
-    //       packagename: name,
-    //       packageid: id as number
-    //     }));
-    //     this.cdr.detectChanges();
-    //     this.filteredPackagenameList = this.packagenameList;
-    //   });
     this.userservice.getAllBaselistbyOperatorIdCastypeType(this.role, this.username, this.operatorid, this.castype, this.type)
       .subscribe((data) => {
         this.packagenameList = Object.entries(data).map(([name, id]) => ({
@@ -868,7 +883,38 @@ export class SubscriberdialogueComponent implements OnInit, OnDestroy {
       this.onsublist(this.subid);
     });
 
+    $('#Area').select2({
+      placeholder: 'Select Area',
+      allowClear: true
+    });
+    $('#Area').on('change', (event: any) => {
+      this.areaid = event.target.value;
+      console.log(this.areaid);
+      this.onAreaStatusChange1(this.areaid);
+      console.log('AREA', this.areaid);
+    });
+    $('#Street').select2({
+      placeholder: 'Select Street',
+      allowClear: true
+    });
+    // $('#Street').on('change', (event: any) => {
+    //   this.streetid = event.target.value;
+    //   console.log(this.streetid);
+    //   this.onStreetStatusChange1(this.streetid);
+    //   console.log('Street', this.streetid);
+    // });
 
+    $('#Street').on('select2:open', () => {
+      console.log('111');
+      setTimeout(() => {
+        $('.select2-results__option').on('mouseup', (e: any) => {
+          const selectedValue = $(e.target).attr('id')?.replace('select2-Street-result-', '');
+          this.streetid = selectedValue;
+          console.log('Forced select:', this.streetid);
+          this.onStreetStatusChange1(this.streetid);
+        });
+      });
+    });
   }
   loadIdProofList(): void {
     this.userservice.getIdProofList(this.role, this.username).subscribe(
@@ -1387,8 +1433,6 @@ export class SubscriberdialogueComponent implements OnInit, OnDestroy {
 
 
   onSubmit() {
-    console.log('xfgvxfgfiesfjlsehj', this.newSubid || this.subid_1);
-
     // if (this.Editform.invalid) {
     //   this.Editform.markAllAsTouched();
     //   return;
@@ -1526,7 +1570,19 @@ export class SubscriberdialogueComponent implements OnInit, OnDestroy {
       this.cdr.detectChanges();
     })
   }
-
+  onoperatorchange1(operator: any): void {
+    this.selectedOperator = operator;
+    this.lcoid = operator.value;
+    this.userservice.getAreaListByOperatorid(this.role, this.username, this.selectedOperator || this.lcoid || this.operatorId).subscribe((data: any) => {
+      this.area_list = Object.keys(data).map(key => {
+        const value = data[key];
+        const name = key;
+        return { name: name, value: value };
+      });
+      this.filteredAreas = this.area_list;
+      this.cdr.detectChanges();
+    })
+  }
   onAreaStatusChange(area: any): void {
     this.selectedArea = area;
     this.lcoareaid = area.value;
@@ -1546,14 +1602,32 @@ export class SubscriberdialogueComponent implements OnInit, OnDestroy {
     this.streetid = street.value;
     this.cdr.detectChanges();
   }
-
+  onAreaStatusChange1(area: any): void {
+    console.log('selecterd Area', area);
+    this.userservice.getStreetListByAreaid(this.role, this.username, area).subscribe((data: any) => {
+      this.street_list = Object.keys(data).map(key => {
+        const value = data[key];
+        const name = key;
+        return { name: name, value: value };
+      });
+      this.filteredStreet = this.street_list;
+    })
+  }
+onStreetStatusChange1(street: any): void {
+    console.log(this.streetid);
+    const match = street.match(/-(\d+)$/);
+    this.streetid = match ? match[1] : null;
+    console.log(this.streetid); // 24
+    // this.selectedStreet = street;
+    // this.streetid = street;
+    this.cdr.detectChanges();
+  }
   onsublist(sub: any): void {
     // this.f_subid = '';
     this.servicename = sub.name;
     console.log(sub);
     this.subid = sub;
     console.log('subid', this.subid);
-
     this.cdr.detectChanges();
   }
   filterOperators(event: any): void {
@@ -1964,7 +2038,7 @@ export class SubscriberdialogueComponent implements OnInit, OnDestroy {
     let plan = this.selectedRechargetype || ''
     let plandata = this.plantype || this.f_date || 4
     // this.swal.Loading();
-    this.userservice.getBaseChangeConfirmation(this.role, this.username, this.newpackagename, plan, plandata, this.smartcardno, 8,  this.retailerId || 0)
+    this.userservice.getBaseChangeConfirmation(this.role, this.username, this.newpackagename, plan, plandata, this.smartcardno, 8, this.retailerId || 0)
       .subscribe((data: any) => {
         this.changebase = data;
         this.changebase_msoAmount = data.msoAmount;
@@ -2017,7 +2091,7 @@ export class SubscriberdialogueComponent implements OnInit, OnDestroy {
       paidamt: this.paidamount || this.collectedPayAmount || 0,
       smartcard: this.smartcardno,
       type: 8,
-      retailerid:  this.retailerId || 0,
+      retailerid: this.retailerId || 0,
       iscollected: this.iscollected,
       comments: this.comment,
       android_id: 0,
@@ -2059,7 +2133,7 @@ export class SubscriberdialogueComponent implements OnInit, OnDestroy {
     console.log(this.plantype);
     console.log(this.retailerId);
 
-    this.userservice.getFirstTimeActivationConfirmation(this.role, this.username, this.newpackagename, this.selectedRechargetype, this.f_date || this.plantype || 4, this.smartcardno, 1,  this.retailerId || 0)
+    this.userservice.getFirstTimeActivationConfirmation(this.role, this.username, this.newpackagename, this.selectedRechargetype, this.f_date || this.plantype || 4, this.smartcardno, 1, this.retailerId || 0)
       .subscribe((data: any) => {
         this.First_list = data;
         this.customerPayAmount = this.First_list?.customerPayAmount;
@@ -2097,7 +2171,7 @@ export class SubscriberdialogueComponent implements OnInit, OnDestroy {
       dueamt: this.First_list.customerPayAmount,
       // paidamount: this.paidamount || this.collectedPayAmount || 0,
       paidamt: this.paidamount || this.collectedPayAmount || 0,
-      retailerid:  this.retailerId || 0,
+      retailerid: this.retailerId || 0,
       smartcard: this.smartcardno,
       type: 1,
       comments: this.comment,
@@ -2186,7 +2260,7 @@ export class SubscriberdialogueComponent implements OnInit, OnDestroy {
     }
     this.errorMessage = '';
     this.swal.Loading();
-    this.userservice.boxIdChange(this.role, this.username, this.smartcardno, this.new_boxid,  this.retailerId || 0, 2)
+    this.userservice.boxIdChange(this.role, this.username, this.smartcardno, this.new_boxid, this.retailerId || 0, 2)
       .subscribe((res: any) => {
         // this.swal.success(res?.message);
         Swal.fire({
@@ -2210,7 +2284,7 @@ export class SubscriberdialogueComponent implements OnInit, OnDestroy {
       return;
     }
     this.swal.Loading();
-    this.userservice.smartcardSuspend(this.role, this.username, this.smartcardno,  this.retailerId || 0, 4, this.sus_reason)
+    this.userservice.smartcardSuspend(this.role, this.username, this.smartcardno, this.retailerId || 0, 4, this.sus_reason)
       .subscribe((res: any) => {
         // this.swal.success(res?.message);
         Swal.fire({
@@ -2295,7 +2369,7 @@ export class SubscriberdialogueComponent implements OnInit, OnDestroy {
   }
   cancelSmartcard() {
     this.swal.Loading();
-    this.userservice.cancelSmartcard(this.role, this.username, this.smartcardno, 2,  this.retailerId || 0, 0, 0, 1, this.cancelSubRemark || 'No Comment')
+    this.userservice.cancelSmartcard(this.role, this.username, this.smartcardno, 2, this.retailerId || 0, 0, 0, 1, this.cancelSubRemark || 'No Comment')
       .subscribe((res: any) => {
         // this.swal.success(res?.message);
         Swal.fire({
@@ -2333,7 +2407,7 @@ export class SubscriberdialogueComponent implements OnInit, OnDestroy {
       username: this.username,
       smartcard: this.smartcardno,
       type: 6,
-      retailerid:  this.retailerId || 0,
+      retailerid: this.retailerId || 0,
       addonlist: this.rows,
       managepackagelist: this.rowData,
       iscollected: this.iscollected,
@@ -2426,7 +2500,7 @@ export class SubscriberdialogueComponent implements OnInit, OnDestroy {
       username: this.username,
       smartcard: this.smartcardno,
       type: 6,
-      retailerid:  this.retailerId || 0,
+      retailerid: this.retailerId || 0,
       iscollected: this.iscollected,
       alacartelist: this.rows,
       android_id: 0,
@@ -2506,7 +2580,7 @@ export class SubscriberdialogueComponent implements OnInit, OnDestroy {
       username: this.username,
       smartcard: this.smartcardno,
       type: 7,
-      retailerid:  this.retailerId || 0,
+      retailerid: this.retailerId || 0,
       iscollected: this.iscollected,
       removeproductlist: this.rows,
       android_id: 0,
@@ -2538,7 +2612,7 @@ export class SubscriberdialogueComponent implements OnInit, OnDestroy {
       username: this.username,
       smartcard: this.smartcardno,
       type: 7,
-      retailerid:  this.retailerId || 0,
+      retailerid: this.retailerId || 0,
       iscollected: this.iscollected,
       removeproductlist: this.rows,
       android_id: 0,
@@ -2562,7 +2636,7 @@ export class SubscriberdialogueComponent implements OnInit, OnDestroy {
   }
   pairSmartcard() {
     this.swal.Loading();
-    this.userservice.PairSmartcardOrBoxid(this.role, this.username, !this.ischeck, this.pairedSmartcard, this.subBoxid,  this.retailerId || 0, 1).subscribe((res: any) => {
+    this.userservice.PairSmartcardOrBoxid(this.role, this.username, !this.ischeck, this.pairedSmartcard, this.subBoxid, this.retailerId || 0, 1).subscribe((res: any) => {
       // this.swal.success(res?.message);
     }, (err) => {
       this.swal.Error(err?.error?.message);
@@ -2585,7 +2659,7 @@ export class SubscriberdialogueComponent implements OnInit, OnDestroy {
   }
   unPairSmartcard() {
     this.swal.Loading();
-    this.userservice.UnpairSmartcardOrBoxId(this.role, this.username, !this.ischeck, this.subSmartcard,  this.retailerId || 0, 1, 0, 0, 1, this.comment || 'No Comment').subscribe((res: any) => {
+    this.userservice.UnpairSmartcardOrBoxId(this.role, this.username, !this.ischeck, this.subSmartcard, this.retailerId || 0, 1, 0, 0, 1, this.comment || 'No Comment').subscribe((res: any) => {
       this.swal.success(res?.message);
       this.isUnpairDialogue = res?.message;
       this.unpairtoggle();
@@ -2595,7 +2669,7 @@ export class SubscriberdialogueComponent implements OnInit, OnDestroy {
   }
   unPairBox() {
     this.swal.Loading();
-    this.userservice.UnpairSmartcardOrBoxId(this.role, this.username, this.ischeck, this.subBoxid,  this.retailerId || 0, 2, 0, 0, 1, this.comment || 'No Comment').subscribe((res: any) => {
+    this.userservice.UnpairSmartcardOrBoxId(this.role, this.username, this.ischeck, this.subBoxid, this.retailerId || 0, 2, 0, 0, 1, this.comment || 'No Comment').subscribe((res: any) => {
       this.swal.success(res?.message);
       this.isUnpairDialogue = res?.message;
       this.unpairtoggle();

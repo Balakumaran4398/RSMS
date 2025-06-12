@@ -70,6 +70,11 @@ export class BaseService {
       return { ip: null, domain: null };
     }
   }
+
+  // ==========================================Create Log===============================
+  createLogs(requestBody: any): Observable<any[]> {
+    return this.http.post<any[]>(BASE_URL + "/log/createLogs", requestBody, {});
+  }
   // ========================================================Dashboard======================================================
   //  ------------------------------STB------------------------------
   getDashboardStbBarChart(role: any, username: string): Observable<any[]> {
@@ -471,20 +476,13 @@ export class BaseService {
     );
   }
   Finger_area(role: any, username: any): Observable<any[]> {
-    return this.http.get<any[]>(
-      BASE_URL + "/area/getallactivearea?role=" + role + "&username=" + encodeURIComponent(username),
-
-    );
+    return this.http.get<any[]>(BASE_URL + "/area/getallactivearea?role=" + role + "&username=" + encodeURIComponent(username),);
   }
   Finger_print_List(role: any, username: string,): Observable<any[]> {
-    console.log(role);
     return this.http.get<any[]>(BASE_URL + "/fingerprint/getfingerprint?role=" + role + "&username=" + encodeURIComponent(username));
   }
   Finger_datas(role: any, username: any): Observable<any[]> {
-    return this.http.get<any[]>(
-      BASE_URL + "/fingerprint/getfingerprint?role=" + role + "&username=" + encodeURIComponent(username),
-
-    );
+    return this.http.get<any[]>(BASE_URL + "/fingerprint/getfingerprint?role=" + role + "&username=" + encodeURIComponent(username),);
   }
   // ==========================================SUBSCRIBER====================================
   // -----------------------------------------------Subscriber Dashboard-------------------------------------------------
@@ -908,11 +906,25 @@ export class BaseService {
       BASE_URL + "/allocation/getallocatedSmartcardList?role=" + role + "&username=" + encodeURIComponent(username), {}
     );
   }
-  getsearchforallocated_smartcard_List(role: any, username: any, operatorid: any, searchname: any): Observable<any[]> {
-    return this.http.post<any[]>(
-      BASE_URL + "/allocation/getsearchforallocatedSmartcardList?role=" + role + "&username=" + encodeURIComponent(username) + "&operatorid=" + operatorid + "&searchname=" + searchname, {}
-    );
+  // getsearchforallocated_smartcard_List(role: any, username: any, operatorid: any, searchname: any): Observable<any[]> {
+  //   return this.http.post<any[]>(
+  //     BASE_URL + "/allocation/getsearchforallocatedSmartcardList?role=" + role + "&username=" + encodeURIComponent(username) + "&operatorid=" + operatorid + "&searchname=" + searchname, {}
+  //   );
+  // }
+  // getsearchforallocated_smartcard_List(role: any, username: any, operatorid: any, searchname: any):  Observable<HttpResponse<any[]>> {
+  //   return this.http.post<any[]>(BASE_URL + "/allocation/getsearchforallocatedSmartcardList?role=" + role + "&username=" + encodeURIComponent(username) + "&operatorid=" + operatorid + "&searchname=" + searchname,  { observe: 'response' }
+  //   );
+  // }
+  getsearchforallocated_smartcard_List(role: any, username: any, operatorid: any, searchname: any): Observable<HttpResponse<any[]>> {
+    const url = BASE_URL + "/allocation/getsearchforallocatedSmartcardList"
+      + "?role=" + role
+      + "&username=" + encodeURIComponent(username)
+      + "&operatorid=" + operatorid
+      + "&searchname=" + searchname;
+
+    return this.http.post<any[]>(url, null, { observe: 'response' });
   }
+
   getAllocatedSmartcardReport(role: any, username: any, operatorid: any, smartcard: any, reporttype: number): Observable<Blob> {
     return this.http.get(
       BASE_URL + "/report/getAllocatedSmartcardReport?role=" + role + "&username=" + encodeURIComponent(username) + "&operatorid=" + operatorid + "&smartcard=" + smartcard + "&reporttype=" + reporttype, { responseType: 'blob' }
@@ -1318,6 +1330,15 @@ export class BaseService {
     return this.http.post<any[]>(BASE_URL + "/localchannel/createLocalChannelLTB", requestBody, {});
   }
   // ===============================================================Special Role==========================================================
+  // ------------------------------------------------------------login setting  sidenav --------------------
+  getallNavigationList(role: any, username: any, loginid: any): Observable<any[]> {
+    return this.http.get<any[]>(
+      BASE_URL + "/master/getallNavigationList?role=" + role + "&username=" + encodeURIComponent(username) + "&loginid=" + loginid, {});
+  }
+
+  loginUpdatePermission(role: any, username: any, loginid: any, navigationlist: any): Observable<any[]> {
+    return this.http.post<any[]>(BASE_URL + "/master/loginUpdatePermission?role=" + role + "&username=" + username + "&loginid=" + loginid + "&navigationlist=" + navigationlist, {});
+  }
   // ------------------------------------------------------------mso details-----------------------------------------
   getMsoDetails(role: any, username: any): Observable<any[]> {
     return this.http.get<any[]>(
@@ -2352,7 +2373,7 @@ export class BaseService {
   // }
 
   getGenerateQrCode(role: any, username: any, smartcard: any): Observable<Blob> {
-    return this.http.post( BASE_URL + "/subscriber/generateQrCode?role=" + role + "&username=" + encodeURIComponent(username) + "&smartcard=" + smartcard,{},{ responseType: 'blob' as 'json' }) as Observable<Blob>;
+    return this.http.post(BASE_URL + "/subscriber/generateQrCode?role=" + role + "&username=" + encodeURIComponent(username) + "&smartcard=" + smartcard, {}, { responseType: 'blob' as 'json' }) as Observable<Blob>;
   }
 
   // -------------------------------download QR-------------
@@ -2374,4 +2395,6 @@ export class BaseService {
   getcomboPackageUpdateHistoryReportExcel_Pdf(role: any, username: any, fromdate: any, todate: any, packageid: any, reporttype: any, packagetype: any): Observable<Blob> {
     return this.http.get(BASE_URL + "/report/getcomboPackageUpdateHistoryReport?role=" + role + "&username=" + username + "&fromdate=" + fromdate + "&todate=" + todate + "&packageid=" + packageid + "&reporttype=" + reporttype + "&packagetype=" + packagetype, { responseType: 'blob' });
   }
+
+
 }

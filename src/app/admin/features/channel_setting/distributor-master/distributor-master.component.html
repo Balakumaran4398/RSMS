@@ -12,11 +12,11 @@
                     </a>
                     &nbsp;
                     <button class="btn btn-outline-info mx-1  bttn" mat-raised-button color="primary" type="button"
-                        [disabled]="!isAnyRowSelected" (click)="Active()">
+                        [disabled]="!isAnyRowSelected" (click)="Active(selectedtypes)">
                         Active
                     </button>
                     <button class="btn btn-outline-info mx-1  bttn" mat-raised-button color="accent" type="button"
-                        [disabled]="!isAnyRowSelected" (click)="Deactive()">
+                        [disabled]="!isAnyRowSelected" (click)="Deactive(selectedtypes)">
                         Deactive
                     </button>
                 </div>

@@ -13,7 +13,7 @@
             <!-- <img *ngIf="msoLogo" [src]="msoLogo" alt="MSO Logo"
                 style="width: 100px; height: auto;display:flex;margin: auto 40px;"> -->
 
-            <!-- ----------------4K--------- -->
+            <!-- ----------------4K & Deenet--------- -->
             <img *ngIf="msoLogo" [src]="msoLogo" alt="MSO Logo"
                 style="width: 54px; height: auto;display:flex;margin: auto 60px;">
 
@@ -43,6 +43,7 @@
         <li *ngIf="isUser || isReception "><a (click)="navgetToUrl('/top_subscription');setActiveLinkTabList($event)"
                 [class.hide]="!isSidebarOpen" class="nav-link"><i class='bx bx-table bx-sm icon'></i>
                 Top Subscription Details</a></li>
+               
         <li *ngIf="isReception"><a (click)="navgetToUrl('/smrt_boxid_change');setActiveLinkTab($event)"
                 class="nav-link"><mat-icon class="icon">control_camera</mat-icon>&nbsp;VC/STB Master</a>
         </li>
@@ -135,11 +136,11 @@
                 <li><a (click)="navgetToUrl('/Channel');setActiveLinkTab($event)"><i
                             class="fa fa-fw fa-comments icon ">&nbsp;</i> Channel</a>
                 </li>
-                <li><a (click)="navgetToUrl('/PackageCreation');setActiveLinkTab($event)"><i
-                            class="fa fa-fw fa-th icon ">&nbsp;</i>Package
+                <li><a (click)="navgetToUrl('/PackageCreation');setActiveLinkTab($event)">
+                    <i class="fa fa-fw fa-th icon ">&nbsp;</i>Package
                         Creation </a></li>
-                <li><a (click)="navgetToUrl('/Addon');setActiveLinkTab($event)"><i
-                            class="fa-solid fa-layer-group icon ">&nbsp;</i>Addon Package
+                <li><a (click)="navgetToUrl('/Addon');setActiveLinkTab($event)">
+                    <i class="fa-solid fa-layer-group icon ">&nbsp;</i>Addon Package
                     </a></li>
                 <li><a (click)="navgetToUrl('/PackageReference');setActiveLinkTab($event)"><i
                             class="fa-regular fa-snowflake icon ">&nbsp;</i>Package
@@ -318,11 +319,11 @@
         <li *ngIf="isSpecial ">
             <a> <i class="bx bx-cog bx-sm icon "></i> Settings <i class='bx bx-chevron-right icon-right'></i></a>
             <ul class="side-dropdown">
-                <li><a (click)="navgetToUrl('/loginsettings')" (click)="setActiveLinkTab($event)"> <i
-                            class='fa fa-fw fa-users  icon'></i> &nbsp; Login Settings</a></li>
-
-                <!-- <li><a (click)="navgetToUrl('/loginsettings_credential')" (click)="setActiveLinkTab($event)"> <i
+                <!-- <li><a (click)="navgetToUrl('/loginsettings')" (click)="setActiveLinkTab($event)"> <i
                             class='fa fa-fw fa-users  icon'></i> &nbsp; Login Settings</a></li> -->
+
+                <li><a (click)="navgetToUrl('/loginsettings_credential')" (click)="setActiveLinkTab($event)"> <i
+                            class='fa fa-fw fa-users  icon'></i> &nbsp; Login Settings</a></li>
             </ul>
         </li>
         <li class="mb-3" *ngIf="isSpecial ">
@@ -393,10 +394,10 @@
                 <i class="bx bx-joystick-button bx-sm icon "></i>
                 Package Details<i class='bx bx-chevron-right icon-right'></i></a>
             <ul class="side-dropdown">
-                <li><a (click)="navgetToUrl('/PackageCreation');setActiveLinkTab($event)" class="nav-link"><i
-                            class="fa-solid fa-layer-group  icon">&nbsp;</i>Packages</a> </li>
-                <li><a (click)="navgetToUrl('/Addon');setActiveLinkTab($event)" class="nav-link"><i
-                            class="fa fa-fw fa-comments  icon ">&nbsp;</i> Addon</a></li>
+                <li><a (click)="navgetToUrl('/PackageCreation');setActiveLinkTab($event)" class="nav-link">
+                    <i class="fa fa-fw fa-th icon ">&nbsp;</i>Packages</a> </li>
+                <li><a (click)="navgetToUrl('/Addon');setActiveLinkTab($event)" class="nav-link">
+                    <i class="fa-solid fa-layer-group icon ">&nbsp;</i> Addon</a></li>
                 <li><a (click)="navgetToUrl('/Channel');setActiveLinkTab($event)" class="nav-link"><i
                             class="fa fa-fw fa-comments  icon ">&nbsp;</i> Channel</a></li>
             </ul>

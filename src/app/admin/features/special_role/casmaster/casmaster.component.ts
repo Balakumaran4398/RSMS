@@ -25,7 +25,7 @@ export class CasmasterComponent {
       comparator: (valueA: any, valueB: any) => {
         const isNumberA = !isNaN(valueA) && valueA !== null;
         const isNumberB = !isNaN(valueB) && valueB !== null;
-  
+
         if (isNumberA && isNumberB) {
           return valueA - valueB;
         } else {
@@ -38,7 +38,7 @@ export class CasmasterComponent {
       },
     },
     paginationPageSize: 10,
-    paginationPageSizeSelector:[10,20,50],
+    paginationPageSizeSelector: [10, 20, 50],
     pagination: true,
   };
   rowData: any;
@@ -49,25 +49,29 @@ export class CasmasterComponent {
   isAnyRowSelected: any = false;
   selectedIds: number[] = [];
   selectednames: any[] = [];
-  selectedisactive: any[] = [];
+  selectedisactive: any;
   hasSelectedRows: boolean = true;
+  userid: any;
+  accessip: any;
   constructor(private userservice: BaseService, private storageservice: StorageService, private swal: SwalService, public dialog: MatDialog,) {
     this.role = storageservice.getUserRole();
     this.username = storageservice.getUsername();
+    this.userid = storageservice.getUserid();
+    this.accessip = storageservice.getAccessip();
   }
   columnDefs: any[] = [
-    { headerName: "S.No", lockPosition: true, valueGetter: 'node.rowIndex+1', headerCheckboxSelection: true, checkboxSelection: true,width:100 , filter: false},
+    { headerName: "S.No", lockPosition: true, valueGetter: 'node.rowIndex+1', headerCheckboxSelection: true, checkboxSelection: true, width: 100, filter: false },
     { headerName: "CAS ID", field: 'id' },
-    { headerName: "CAS NAME", field: 'casname',cellStyle: { textAlign: 'left' } },
-    { headerName: "VENDOR", field: 'vendor',cellStyle: { textAlign: 'left' } },
+    { headerName: "CAS NAME", field: 'casname', cellStyle: { textAlign: 'left' } },
+    { headerName: "VENDOR", field: 'vendor', cellStyle: { textAlign: 'left' } },
     { headerName: "ADDRESS", field: 'address', cellStyle: { textAlign: 'left' } },
-    { headerName: "SERVER IP", field: 'serverip',cellStyle: { textAlign: 'left' } },
-    { headerName: "SERVER PORT", field: 'serverport',cellStyle: { textAlign: 'left' } },
-    { headerName: "SMARTCARD LENGTH", field: 'smartcardlength',cellStyle: { textAlign: 'left' } },
-    { headerName: "BOX ID LENGTH", field: 'boxlength',cellStyle: { textAlign: 'left' } },
-    { headerName: "REFERENCE URL", field: 'referenceurl',cellStyle: { textAlign: 'left' } },
-    { headerName: "WEBSITE", field: 'website',cellStyle: { textAlign: 'left' } },
-    { headerName: "EMAIL", field: 'email',cellStyle: { textAlign: 'left' } },
+    { headerName: "SERVER IP", field: 'serverip', cellStyle: { textAlign: 'left' } },
+    { headerName: "SERVER PORT", field: 'serverport', cellStyle: { textAlign: 'left' } },
+    { headerName: "SMARTCARD LENGTH", field: 'smartcardlength', cellStyle: { textAlign: 'left' } },
+    { headerName: "BOX ID LENGTH", field: 'boxlength', cellStyle: { textAlign: 'left' } },
+    { headerName: "REFERENCE URL", field: 'referenceurl', cellStyle: { textAlign: 'left' } },
+    { headerName: "WEBSITE", field: 'website', cellStyle: { textAlign: 'left' } },
+    { headerName: "EMAIL", field: 'email', cellStyle: { textAlign: 'left' } },
     { headerName: "CONTACT NO", field: 'contactno' },
     {
       headerName: "IS ACTIVE", field: 'isactive',
@@ -112,7 +116,7 @@ export class CasmasterComponent {
       this.isAnyRowSelected = selectedRows.length > 0;
       this.selectedIds = selectedRows.map((e: any) => e.id);
       this.selectednames = selectedRows.map((e: any) => e.casname);
-      this.selectednames = selectedRows.map((e: any) => e.casname);
+      this.selectedisactive = selectedRows[0].isactive;
       console.log(this.selectedIds);
       console.log(this.selectednames);
 
@@ -148,17 +152,107 @@ export class CasmasterComponent {
     }
   }
   Active() {
-    this.userservice.activeORDeactiveCas(this.role, this.username, this.selectedIds, 'true').subscribe((res: any) => {
-      this.swal.success(res?.message);
-    }, (err) => {
-      this.swal.Error(err?.error?.message);
+    // this.userservice.activeORDeactiveCas(this.role, this.username, this.selectedIds, 'true').subscribe((res: any) => {
+    //   // this.swal.success(res?.message);
+    //   this.logCreate('CAS Master Active Button Clicked', !this.selectedisactive, 'Active');
+    // }, (err) => {
+    //   this.swal.Error(err?.error?.message);
+    // });
+
+    Swal.fire({
+      title: "Are you sure?",
+      text: "You won't be able to Active this!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, Update it!"
+    }).then((result) => {
+      if (result.isConfirmed) {
+        Swal.fire({
+          title: 'Updating...',
+          text: 'Please wait while the CAS Master is being Updated',
+          allowOutsideClick: false,
+          didOpen: () => {
+            Swal.showLoading(null);
+          }
+        });
+        this.userservice.activeORDeactiveCas(this.role, this.username, this.selectedIds, 'true').subscribe((res: any) => {
+          console.log(res);
+          Swal.fire({
+            position: "center",
+            icon: "success",
+            title: "Your update was successful",
+            showConfirmButton: false,
+            timer: 1000
+          });
+          this.swal.success(res?.message);
+          this.logCreate('CAS Master Active Button Clicked', !this.selectedisactive, 'Active');
+        },
+          (err) => {
+            Swal.fire({
+              position: 'center',
+              icon: 'error',
+              title: 'Error',
+              text: err?.error?.message,
+              showConfirmButton: false,
+              timer: 1500
+            }).then(() => {
+              window.location.reload();
+
+            });
+          }
+        );
+      }
     });
   }
   Deactive() {
-    this.userservice.activeORDeactiveCas(this.role, this.username, this.selectedIds, 'false').subscribe((res: any) => {
-      this.swal.success(res?.message);
-    }, (err) => {
-      this.swal.Error(err?.error?.message);
+    // this.userservice.activeORDeactiveCas(this.role, this.username, this.selectedIds, 'false').subscribe((res: any) => {
+    //   // this.swal.success(res?.message);
+    //   this.logCreate('CAS Master Deactive Button Clicked', !this.selectedisactive, 'Deactive');
+    // }, (err) => {
+    //   this.swal.Error(err?.error?.message);
+    // });
+
+
+    Swal.fire({
+      title: "Are you sure?",
+      text: "You won't be able to revert this!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, Deactive it!"
+    }).then((result) => {
+      if (result.isConfirmed) {
+        Swal.fire({
+          title: 'Deactivating...',
+          text: 'Please wait while the CAS Master is being Deactivated',
+          allowOutsideClick: false,
+          didOpen: () => {
+            Swal.showLoading(null);
+          }
+        });
+        this.userservice.activeORDeactiveCas(this.role, this.username, this.selectedIds, 'false').subscribe((res: any) => {
+          Swal.fire({
+            title: 'Deactivated!',
+            text: res.message,
+            icon: 'success',
+            timer: 2000,
+            timerProgressBar: true,
+          });
+          this.swal.success(res?.message);
+          this.logCreate('CAS Master Deactive Button Clicked', !this.selectedisactive, 'Deactive');
+        }, (err) => {
+          Swal.fire({
+            title: 'Error!',
+            text: err?.error?.message,
+            icon: 'error',
+            timer: 2000,
+            timerProgressBar: true,
+          });
+        });
+      }
     });
   }
   opendialogue(type: any, data: any) {
@@ -183,5 +277,17 @@ export class CasmasterComponent {
       console.log('The dialog was closed');
     });
   }
+  logCreate(action: any, remarks: any, data: any) {
+    let requestBody = {
+      access_ip: this.accessip,
+      action: action,
+      remarks: remarks,
+      data: data,
+      user_id: this.userid,
+    }
+    this.userservice.createLogs(requestBody).subscribe((res: any) => {
+      console.log(res);
 
+    })
+  }
 }

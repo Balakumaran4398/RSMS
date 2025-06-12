@@ -12,6 +12,7 @@ declare var $: any;
 })
 export class AddonEditComponent implements OnInit {
   addon_package_name: any;
+  addon_package_name_1: any;
   addon_package_rate: any;
   addon_package_description: any;
   taxRate: number = 1;
@@ -25,24 +26,29 @@ export class AddonEditComponent implements OnInit {
   customer_amount: any = '0.0';
   mso_amount: any = '0.0';
   ispercentage: boolean = true;
+  ispercentage_1: boolean = true;
   role: any;
   invalid: boolean = false;
   broadcaster_list: any[] = [];
+  userid: any;
+  accessip: any;
   constructor(
     public dialogRef: MatDialogRef<AddonEditComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any, private userService: BaseService, private swal: SwalService, private storageService: StorageService, private cdr: ChangeDetectorRef) {
     console.log(data);
     this.username = storageService.getUsername();
     this.role = storageService.getUserRole();
+    this.userid = storageService.getUserid();
+    this.accessip = storageService.getAccessip();
     this.id = data.id;
-
-    
     this.order_id = data.order_id;
     this.broadcaster_id = data.broadcaster_id;
     this.commission = data.customeramount;
     this.ispercentage = data.ispercentage;
+    this.ispercentage_1 = data.ispercentage;
     this.addon_package_name = data.addon_package_name;
     this.addon_package_rate = data.addon_package_rate;
+    this.addon_package_name_1 = data.addon_package_name;
     this.addon_package_description = data.addon_package_description
     this.tax_amount = 0;
     this.customer_amount = data.customeramount
@@ -152,7 +158,6 @@ export class AddonEditComponent implements OnInit {
 
   Update_Addon_package() {
     console.log(this.broadcaster_id);
-
     const request = {
       id: this.id,
       addon_package_name: this.addon_package_name,
@@ -169,16 +174,6 @@ export class AddonEditComponent implements OnInit {
       tax_amount: this.tax_amount,
       customer_amount: this.customer_amount,
     };
-    // if (!request.package_name || !request.package_rate || !request.package_desc || !request.order_id || !request.username || !request.role || !request.package_id || !request.commission || !request.ispercentage) {
-    //   Swal.fire({
-    //     position: "center",
-    //     icon: "warning",
-    //     title: "Please check the input",
-    //     showConfirmButton: false,
-    //     timer: 1500
-    //   });
-    //   return; 
-    // }
     Swal.fire({
       title: 'Updating...',
       text: 'Wait for the package to update...',
@@ -193,5 +188,20 @@ export class AddonEditComponent implements OnInit {
       }, (err) => {
         this.swal.Error(err?.error?.message);
       });
+    const remark = ` addon_package_name: ${this.addon_package_name_1}, ` + ` ispercentage: ${this.ispercentage_1},`;
+    const data = ` addon_package_name: ${this.addon_package_name}, ` + ` ispercentage: ${this.ispercentage},`;
+    this.logCreate('Addon Edit Button Clicked', remark, data);
+
+  }
+
+  logCreate(action: any, remarks: any, data: any) {
+    let requestBody = {
+      access_ip: this.accessip,
+      action: action,
+      remarks: remarks,
+      data: data,
+      user_id: this.userid,
+    }
+    this.userService.createLogs(requestBody).subscribe((res: any) => { console.log(res); })
   }
 }

@@ -12,7 +12,7 @@ import Swal from 'sweetalert2';
   templateUrl: './change-membership.component.html',
   styleUrls: ['./change-membership.component.scss']
 })
-export class ChangeMembershipComponent implements OnInit,AfterViewInit,OnDestroy {
+export class ChangeMembershipComponent implements OnInit, AfterViewInit, OnDestroy {
   lcoForm !: FormGroup<any>;
   role: any;
   username: any;
@@ -21,6 +21,7 @@ export class ChangeMembershipComponent implements OnInit,AfterViewInit,OnDestroy
   usedcount: any;
   sharecount: any;
   lcomembershipid: any = 0;
+  lcomembershipName: any ;
   lcomembershipList: any[] = [];
   gridApi: any;
   isAnyRowSelected: any = false;
@@ -29,13 +30,17 @@ export class ChangeMembershipComponent implements OnInit,AfterViewInit,OnDestroy
   count: any;
   rowData: any[] = [];
   type: any;
+  userid: any;
+  accessip: any;
   constructor(private fb: FormBuilder,
     public dialogRef: MatDialogRef<ChangeMembershipComponent>, @Inject(MAT_DIALOG_DATA) public data: any, private userservice: BaseService, private swal: SwalService,
     private storageservice: StorageService) {
     this.role = storageservice.getUserRole();
     this.username = storageservice.getUsername();
+    this.userid = storageservice.getUserid();
+    this.accessip = storageservice.getAccessip();
     console.log(data);
-    this.rowData =  data?.row;
+    this.rowData = data?.row;
     this.type = data.type;
     this.operatorid = data?.row.map((item: any) => item.operatorid);
     this.lcogroupid = data?.row[0].lcogroupid;
@@ -43,22 +48,25 @@ export class ChangeMembershipComponent implements OnInit,AfterViewInit,OnDestroy
     this.membershiplist();
   }
   ngOnDestroy(): void {
-($('#membership') as any).select2('destroy');
+    ($('#membership') as any).select2('destroy');
   }
   ngOnInit(): void {
-     
+
   }
   ngAfterViewInit(): void {
-       $('#membership').select2({
+    ($('#membership') as any).select2({
       placeholder: 'Select Membership',
       allowClear: true
     });
     $('#membership').on('change', (event: any) => {
       this.lcomembershipid = event.target.value;
+      this.lcomembershipName = event.target.name;
       console.log(this.lcomembershipid);
+      console.log('lcomembershipName',this.lcomembershipName);
 
       // this.onoperatorchange(this.lcomembershipid);
-    });  }
+    });
+  }
 
   onNoClick(): void {
     this.dialogRef.close();
@@ -73,10 +81,10 @@ export class ChangeMembershipComponent implements OnInit,AfterViewInit,OnDestroy
   }
   columnDefs: ColDef[] = [
     { headerName: "S.No", lockPosition: true, valueGetter: 'node.rowIndex+1', width: 100 },
-    { 
-      headerName: "OPERATOR", 
-      valueGetter: params => `${params.data.operatorname} (${params.data.operatorid})`, 
-      width: 400 
+    {
+      headerName: "OPERATOR",
+      valueGetter: params => `${params.data.operatorname} (${params.data.operatorid})`,
+      width: 400
     },
   ]
   membershiplist() {
@@ -127,6 +135,9 @@ export class ChangeMembershipComponent implements OnInit,AfterViewInit,OnDestroy
           }, (err) => {
             this.swal.Error(err?.error?.message);
           });
+        // const data = ` Smartcard: ${this.Smartcard}, ` + ` BoxID: ${this.Boxid},`;
+        const data = `Membership: ${this.lcomembershipName}`;
+        this.logCreate('LCO Membership change Button Clicked', 'Change', data);
       }
     });
   }
@@ -169,7 +180,20 @@ export class ChangeMembershipComponent implements OnInit,AfterViewInit,OnDestroy
           });
       }
     });
-  }
 
+  }
+  logCreate(action: any, remarks: any, data: any) {
+    let requestBody = {
+      access_ip: this.accessip,
+      action: action,
+      remarks: remarks,
+      data: data,
+      user_id: this.userid,
+    }
+    this.userservice.createLogs(requestBody).subscribe((res: any) => {
+      console.log(res);
+
+    })
+  }
 
 }

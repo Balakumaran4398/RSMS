@@ -1,4 +1,4 @@
-import { Component, Inject, EventEmitter, Output, OnInit } from '@angular/core';
+import { Component, Inject, EventEmitter, Output, OnInit, AfterViewInit } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { BaseService } from 'src/app/_core/service/base.service';
 import { StorageService } from 'src/app/_core/service/storage.service';
@@ -10,7 +10,7 @@ import Swal from 'sweetalert2';
   templateUrl: './create-lco.component.html',
   styleUrls: ['./create-lco.component.scss']
 })
-export class CreateLcoComponent implements OnInit {
+export class CreateLcoComponent implements OnInit, AfterViewInit {
   role: any;
   username: any;
   lcogroupname: any;
@@ -28,6 +28,30 @@ export class CreateLcoComponent implements OnInit {
     console.log(data);
     this.type = data.type;
   }
+  ngOnDestroy(): void {
+    ($('#ltb') as any).select2('destroy');
+  }
+  
+  ngAfterViewInit(): void {
+    ($('#ltb')as any).select2({
+      placeholder: 'Select Operator Name',
+      allowClear: true
+    });
+    $('#ltb').on('change', (event: any) => {
+      console.log(event);
+      
+      this.distributorid = event.target.value;
+      console.log(this.distributorid);
+      
+      this.onSubscriberStatusChange(this.distributorid);
+    });
+  }
+  selectedOperator: any;
+  selectedLcoName: any;
+  onSubscriberStatusChange(selectedOperator: any) {
+    this.selectedOperator = selectedOperator;
+    this.selectedLcoName = selectedOperator.value;
+  }
   ngOnInit(): void {
     // this.userservice.getAvailableAndNotAvailableDistributorList(this.role, this.username, this.distributorid).subscribe((data: any) => {
     //   console.log(data);
@@ -35,6 +59,7 @@ export class CreateLcoComponent implements OnInit {
     // })
     this.userservice.getDistributorListNotInDistributor(this.role, this.username,).subscribe((data: any) => {
       console.log(data);
+      // this.distributorList= data;
       this.distributorList = Object.keys(data).map(key => {
         const value = data[key];
         // const name = key;

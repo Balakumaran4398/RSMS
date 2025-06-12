@@ -122,8 +122,8 @@ const routes: Routes = [
       { path: 'packageReport/:id', component: ChartPackageReportComponent, },
       { path: 'STBReport/:id', component: ChartSTBReportComponent, },
       { path: 'packageBase', component: PackageBasedComponent, },
-      // ---------------------------------------------Operator-----------------------------------
-      { path: 'operator_details', component: OperatorDetailsComponent, },
+      // ---------------------------------------------Operator-------------------lcoCommissionDashboard
+       { path: 'operator_details', component: OperatorDetailsComponent, },
       { path: 'lco_recharge/:id', component: LcoRechargeComponent, },
       { path: 'top_subscription', component: TopSubLoginComponent, },
       { path: 'operatorlist', component: OperatorlistComponent, },

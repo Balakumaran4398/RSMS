@@ -19,7 +19,7 @@ export class PackageMasterComponent {
   selectedTab: string = '0';
   gridApi: any;
   selectedIds: number[] = [];
-  selectedtypes: number[] = [];
+  selectedtypes: any;
   act_deact_type: any;
   isAnyRowSelected: boolean = false;
   gridOptions = {
@@ -61,10 +61,14 @@ export class PackageMasterComponent {
   type: number = 0;
   Castype: any = 0;
   cas: any[] = [];
+  userid: any;
+  accessip: any;
   public rowSelection: any = "multiple";
   constructor(public dialog: MatDialog, public userService: BaseService, storageService: StorageService, private swal: SwalService, private excelService: ExcelService,) {
     this.username = storageService.getUsername();
     this.user_role = storageService.getUserRole();
+    this.userid = storageService.getUserid();
+    this.accessip = storageService.getAccessip();
   }
   ngOnInit(): void {
     // this.userService.getpackagemasterBaseList(this.user_role, this.username, this.type, this.Castype).subscribe((data) => {
@@ -99,7 +103,10 @@ export class PackageMasterComponent {
       const selectedRows = this.gridApi.getSelectedRows();
       this.isAnyRowSelected = selectedRows.length > 0;
       this.selectedIds = selectedRows.map((e: any) => e.id);
-      this.selectedtypes = selectedRows.map((e: any) => e.type);
+      this.selectedtypes = selectedRows[0]?.statusdisplay;
+      console.log(this.selectedtypes);
+      console.log(selectedRows);
+
 
     }
   }
@@ -247,18 +254,18 @@ export class PackageMasterComponent {
           headerName: 'IS DELETE',
           field: 'isdelete', width: 120,
           cellRenderer: (params: { value: any }) => {
-            const color = params.value ? 'blue' : 'red';
+            const color = params.value ? 'green' : 'red';
             const text = params.value ? 'YES' : 'NO';
             return `<span style="color: ${color}">${text}</span>`;
           }
         },
         {
           headerName: 'ISACTIVE',
-          field: 'isactive', width: 150,
-          cellRenderer: (params: { value: any; }) => {
-            const color = params.value ? 'green' : 'red';
-            const text = params.value ? 'Active' : 'Deactive';
-            return `<span style="color: ${color}">${text}</span>`;
+          field: 'statusdisplay', width: 150,
+          cellRenderer: (params: { value: any }) => {
+            const value = params.value?.toString().toLowerCase();
+            const color = value === 'active' ? 'green' : 'blue';
+            return `<span style="color: ${color}">${params.value}</span>`;
           }
         },
       ]
@@ -328,11 +335,11 @@ export class PackageMasterComponent {
         },
         {
           headerName: 'ISACTIVE',
-          field: 'isactive', width: 150,
-          cellRenderer: (params: { value: any; }) => {
-            const color = params.value ? 'green' : 'red';
-            const text = params.value ? 'Active' : 'Deactive';
-            return `<span style="color: ${color}">${text}</span>`;
+          field: 'statusdisplay', width: 150,
+          cellRenderer: (params: { value: any }) => {
+            const value = params.value?.toString().toLowerCase();
+            const color = value === 'active' ? 'green' : 'blue';
+            return `<span style="color: ${color}">${params.value}</span>`;
           }
         },
       ]
@@ -401,11 +408,11 @@ export class PackageMasterComponent {
         },
         {
           headerName: 'ISACTIVE',
-          field: 'isactive', width: 150,
-          cellRenderer: (params: { value: any; }) => {
-            const color = params.value ? 'green' : 'red';
-            const text = params.value ? 'Active' : 'Deactive';
-            return `<span style="color: ${color}">${text}</span>`;
+          field: 'statusdisplay', width: 150,
+          cellRenderer: (params: { value: any }) => {
+            const value = params.value?.toString().toLowerCase();
+            const color = value === 'active' ? 'green' : 'blue';
+            return `<span style="color: ${color}">${params.value}</span>`;
           }
         },
       ]
@@ -472,11 +479,11 @@ export class PackageMasterComponent {
         },
         {
           headerName: 'ISACTIVE',
-          field: 'isactive', width: 150,
-          cellRenderer: (params: { value: any; }) => {
-            const color = params.value ? 'green' : 'red';
-            const text = params.value ? 'Active' : 'Deactive';
-            return `<span style="color: ${color}">${text}</span>`;
+          field: 'statusdisplay', width: 150,
+          cellRenderer: (params: { value: any }) => {
+            const value = params.value?.toString().toLowerCase();
+            const color = value === 'active' ? 'green' : 'blue';
+            return `<span style="color: ${color}">${params.value}</span>`;
           }
         },
       ]
@@ -516,13 +523,15 @@ export class PackageMasterComponent {
         });
         this.userService.UpdatePackagemasterList(this.user_role, this.username, this.selectedIds, 'false').subscribe((res: any) => {
           Swal.fire({
-            title: 'Deleted!',
+            title: 'Deactivated!',
             text: res.message,
             icon: 'success',
             timer: 2000,
             timerProgressBar: true,
           });
           this.ngOnInit();
+          this.logCreate('Package Master Deactive Button Clicked', 'Deactive', this.selectedtypes);
+
         }, (err) => {
           Swal.fire({
             title: 'Error!',
@@ -557,13 +566,15 @@ export class PackageMasterComponent {
         });
         this.userService.UpdatePackagemasterList(this.user_role, this.username, this.selectedIds, 'true').subscribe((res: any) => {
           Swal.fire({
-            title: 'Deleted!',
+            title: 'Activated!',
             text: res.message,
             icon: 'success',
             timer: 2000,
             timerProgressBar: true,
           });
           this.ngOnInit();
+
+          this.logCreate('Package Master Active Button Clicked', 'Active', this.selectedtypes);
         }, (err) => {
           Swal.fire({
             title: 'Error!',
@@ -748,6 +759,20 @@ export class PackageMasterComponent {
       }
     });
 
+  }
+
+  logCreate(action: any, remarks: any, data: any) {
+    let requestBody = {
+      access_ip: this.accessip,
+      action: action,
+      remarks: remarks,
+      data: data,
+      user_id: this.userid,
+    }
+    this.userService.createLogs(requestBody).subscribe((res: any) => {
+      console.log(res);
+
+    })
   }
 
 }

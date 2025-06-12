@@ -27,15 +27,24 @@ export class RefundComponent {
 
   submitted: boolean = false;
   dataid: any;
+  userid: any;
+  accessip: any;
+  lconame:any;
+  lcoamount:any;
   constructor(public dialogRef: MatDialogRef<RefundComponent>, @Inject(MAT_DIALOG_DATA) public data: any, public dialog: MatDialog, private swal: SwalService, private userservice: BaseService, private storageservice: StorageService) {
     console.log(this.data);
     this.amount = data?.data.amount;
+    this.lcoamount = data?.data.amount;
+    this.lconame = data?.data.operatorname;
     // this.remarks = data.transactionremarks1;
     this.id = data?.data.id;
     this.dataid = data?.id;
     this.role = storageservice.getUserRole();
     this.username = storageservice.getUsername();
+    this.userid = storageservice.getUserid();
+    this.accessip = storageservice.getAccessip();
     this.refuntlist = data?.data;
+
     this.operatorid = data?.data.operatorid,
       this.isenablesmartcard = data.smartcard
     console.log(this.operatorid);
@@ -64,7 +73,7 @@ export class RefundComponent {
       // panelClass: 'custom-dialog-container',
       data: '1'
     });
- 
+
     dialogRef.afterClosed().subscribe((result) => {
       if (result && result.success) {
         console.log('dsfsdfdsfdsfdsf', result);
@@ -83,6 +92,9 @@ export class RefundComponent {
                   window.location.reload();
                 }
               });
+              const data = ` Operator Name: ${this.lconame}, ` + ` Amount: ${this.amount},` + ` Remarks: ${this.remarks},`;
+              const remark = ` Operator Name: ${this.lconame}, ` + ` Amount: ${this.lcoamount},` + ` Remarks: ${this.remarks},`;
+              this.logCreate('Refund Button Clicked', remark, data);
             },
             (error: any) => {
               console.error(error);
@@ -98,10 +110,20 @@ export class RefundComponent {
       }
     });
   }
-
-
-
   onNoClick(): void {
     this.dialogRef.close();
+  }
+  logCreate(action: any, remarks: any, data: any) {
+    let requestBody = {
+      access_ip: this.accessip,
+      action: action,
+      remarks: remarks,
+      data: data,
+      user_id: this.userid,
+    }
+    this.userservice.createLogs(requestBody).subscribe((res: any) => {
+      console.log(res);
+
+    })
   }
 }

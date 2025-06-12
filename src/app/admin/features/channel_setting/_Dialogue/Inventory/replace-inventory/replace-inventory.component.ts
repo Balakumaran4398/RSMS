@@ -17,19 +17,24 @@ export class ReplaceInventoryComponent {
   username: any;
   Smartcard_1: any;
   Boxid_1: any;
+  userid: any;
+  accessip: any;
   constructor(
     public dialogRef: MatDialogRef<ReplaceInventoryComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any, private userService: BaseService, private storageService: StorageService) {
     this.id = data.id;
     this.smartcard = data.smartcard;
     this.boxid = data.boxid;
+    this.Smartcard_1 = data.smartcard;
+    this.Boxid_1 = data.boxid;
     console.log(this.Smartcard_1);
     console.log(this.Boxid_1);
 
 
     this.role = storageService.getUserRole();
     this.username = storageService.getUsername();
-
+    this.userid = storageService.getUserid();
+    this.accessip = storageService.getAccessip();
   }
   onNoClick(): void {
     this.dialogRef.close();
@@ -43,7 +48,7 @@ export class ReplaceInventoryComponent {
           icon: 'success',
           title: 'Replacement Successful',
           text: data?.message || 'The smartcard and box ID have been successfully replaced.',
-          timer: 3000, 
+          timer: 3000,
           timerProgressBar: true,
           showConfirmButton: false
         }).then(() => {
@@ -62,11 +67,28 @@ export class ReplaceInventoryComponent {
         });
       }
     );
+    const data = ` Smartcard: ${this.smartcard}, ` + ` BoxID: ${this.boxid},`;
+    const remarks = ` Smartcard: ${this.Smartcard_1}, ` + ` BoxID: ${this.Boxid_1},`;
+    this.logCreate('Replacement Button Clicked', remarks, data);
+
   }
   onKeydown(event: KeyboardEvent) {
     const allowedKeys = ['Backspace', 'ArrowLeft', 'ArrowRight', 'Tab', 'Delete'];
     if (!/^[0-9]$/.test(event.key) && !allowedKeys.includes(event.key)) {
       event.preventDefault();
     }
+  }
+  logCreate(action: any, remarks: any, data: any) {
+    let requestBody = {
+      access_ip: this.accessip,
+      action: action,
+      remarks: remarks,
+      data: data,
+      user_id: this.userid,
+    }
+    this.userService.createLogs(requestBody).subscribe((res: any) => {
+      console.log(res);
+
+    })
   }
 }

@@ -63,7 +63,7 @@ export class LcodashboardComponent implements OnInit {
       comparator: (valueA: any, valueB: any) => {
         const isNumberA = !isNaN(valueA) && valueA !== null;
         const isNumberB = !isNaN(valueB) && valueB !== null;
-  
+
         if (isNumberA && isNumberB) {
           return valueA - valueB;
         } else {
@@ -84,7 +84,7 @@ export class LcodashboardComponent implements OnInit {
   role: any;
   username: any;
   package: any = 2;
-   
+
   packageid: any[] = [
     { type: 'basePackage', id: 2 },
     { type: 'addonPackage', id: 3 },
@@ -139,7 +139,8 @@ export class LcodashboardComponent implements OnInit {
     this.tableData();
     if (this.selectedPackage) {
       this.onPackageSelect(this.selectedPackage);
-    }  }
+    }
+  }
   tableData() {
     this.userservice.getAreaListByOperatorId(this.role, this.username, this.operatorid).subscribe((data: any) => {
       this.rowData = data;
@@ -153,7 +154,7 @@ export class LcodashboardComponent implements OnInit {
     })
   }
 
-  
+
 
   barChart() {
     this.userservice.getPackagewiseRechargeDetailsforBarchart(this.role, this.username, this.operatorid)
@@ -180,7 +181,7 @@ export class LcodashboardComponent implements OnInit {
           toolTip: {
             shared: true
           },
-         
+
           data: [
             {
               type: "column",
@@ -324,10 +325,9 @@ export class LcodashboardComponent implements OnInit {
   columnDefs: any[] = [
     {
       headerName: "S.No", valueGetter: 'node.rowIndex+1', width: 70, filter: false,
-      
     },
     { headerName: 'AREA NAME', width: 130, field: 'name', filter: true, },
-    
+
     {
       headerName: 'STREET DETAILS', width: 100, filter: false,
       cellRenderer: (params: any) => {
@@ -345,7 +345,7 @@ export class LcodashboardComponent implements OnInit {
         return div;
       }
     },
-    
+
     {
       headerName: 'EDIT', width: 80, filter: false,
 
@@ -399,9 +399,9 @@ export class LcodashboardComponent implements OnInit {
         return toggleContainer;
       }
     },
-    { headerName: 'SUBSCRIBER COUNT	', width: 170, field: 'subscribercount', filter: true,  },
+    { headerName: 'SUBSCRIBER COUNT	', width: 170, field: 'subscribercount', filter: true, },
     { headerName: 'PINCODE ', field: 'pincode', width: 150, filter: true, },
-   
+
   ];
   validatePincode(pincode: string): boolean {
     const pincodePattern = /^\d{6}$/;

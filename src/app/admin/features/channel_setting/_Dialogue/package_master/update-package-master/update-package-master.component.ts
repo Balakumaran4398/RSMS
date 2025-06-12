@@ -18,22 +18,28 @@ interface updateRequestbody {
 export class UpdatePackageMasterComponent implements OnInit {
   product_id: any;
   ispercentage: boolean = false;
+  product_id_1: any;
+  ispercentage_1: boolean = false;
   username: any;
   role: any;
   packageMasterForm!: FormGroup;
   submitted: boolean = false;
-
+  userid: any;
+  accessip: any;
   constructor(public dialogRef: MatDialogRef<UpdatePackageMasterComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any, private userService: BaseService, private swal: SwalService, private storageService: StorageService, private fb: FormBuilder) {
     console.log(data);
-    this.product_id = data.cas_product_id;
     this.ispercentage = data.isactive;
+    this.ispercentage_1 = data.isactive;
     console.log(this.ispercentage);
     this.product_id = data.casproductid;
     console.log('casproductid', this.product_id);
 
     this.username = storageService.getUsername();
     this.role = storageService.getUserRole();
+    this.userid = storageService.getUserid();
+    this.accessip = storageService.getAccessip();
+
 
 
   }
@@ -68,6 +74,7 @@ export class UpdatePackageMasterComponent implements OnInit {
         }).then(() => {
           window.location.reload();
         });
+
       },
       (err) => {
         Swal.fire({
@@ -80,6 +87,9 @@ export class UpdatePackageMasterComponent implements OnInit {
         });
       }
     );
+    const data = `CAS Product ID: ${this.product_id}, ` + ` Is Percentage: ${!this.ispercentage},`;
+    const remark = `CAS Product ID: ${this.product_id}, ` + ` Is Percentage: ${this.ispercentage_1},`;
+    this.logCreate('Package Master Button Clicked', remark, data);
   }
   onKeydown(event: KeyboardEvent) {
     const key = event.key;
@@ -87,6 +97,18 @@ export class UpdatePackageMasterComponent implements OnInit {
       event.preventDefault();
     }
   }
+  logCreate(action: any, remarks: any, data: any) {
+    let requestBody = {
+      access_ip: this.accessip,
+      action: action,
+      remarks: remarks,
+      data: data,
+      user_id: this.userid,
+    }
+    this.userService.createLogs(requestBody).subscribe((res: any) => {
+      console.log(res);
 
+    })
+  }
 }
 

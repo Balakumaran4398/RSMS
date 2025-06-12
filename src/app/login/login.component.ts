@@ -140,7 +140,7 @@ export class LoginComponent implements OnInit {
       return;
     } else if (form.valid) {
       this.swal.Loading1()
-        this.authService.login(this.signInform.value).subscribe(
+      this.authService.login(this.signInform.value).subscribe(
         (res: any) => {
           console.log(res);
           console.log(res.roles);
@@ -149,8 +149,8 @@ export class LoginComponent implements OnInit {
             this.storageService.saveToken(res.accessToken);
             this.storageService.saveUser(res);
             this.storageService.saveUsernamenew(res.username)
-           
-
+            this.storageService.saveAccessIP(res.access_ip)
+            this.storageService.saveID(res.id)
             this.idstorage = res.id;
             console.log('Stored ID:', res.id);
             const user = this.storageService.getUser();

@@ -16,8 +16,12 @@ export class PaymentUpdateComponent {
   role: any;
   username: any;
   pay: string = '0.0';
+  pay_1: string = '0.0';
   iscredit: boolean = true;
+  iscredit_1: boolean = true;
   confirmation: boolean = false;
+  userid: any;
+  accessip: any;
   constructor(
     public dialogRef: MatDialogRef<PaymentUpdateComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any, private userService: BaseService, private storageService: StorageService, private swal: SwalService,
@@ -26,6 +30,8 @@ export class PaymentUpdateComponent {
     this.localPaymentChannelList = data;
     this.username = storageService.getUsername();
     this.role = storageService.getUserRole();
+    this.userid = storageService.getUserid();
+    this.accessip = storageService.getAccessip();
   }
   onNoClick(): void {
     this.dialogRef.close();
@@ -44,9 +50,9 @@ export class PaymentUpdateComponent {
     this.disPaymentList = true;
     // this.cdr.detectChanges();
     this.userService.getLocalChannelPayConfirmation(this.role, this.username, this.localPaymentChannelList?.serviceid, this.pay, !this.iscredit)
-    .subscribe((res: any) => {
-      this.confirmationPaymentList = res;
-      this.swal.success_1(res?.message);
+      .subscribe((res: any) => {
+        this.confirmationPaymentList = res;
+        // this.swal.success_1(res?.message);
       }, (err) => {
         this.swal.Error(err?.error?.message);
       });
@@ -59,6 +65,21 @@ export class PaymentUpdateComponent {
       }, (err) => {
         this.swal.Error(err?.error?.message || err?.error?.payLocalChannel.expirydate);
       });
+    const data = ` Creadit: ${!this.iscredit}, ` + ` pay: ${this.pay},`;
+    const remark = ` Creadit: ${this.iscredit}, ` + ` pay: ${this.pay_1},`;
+    this.logCreate('Payment Update Button Clicked', remark, data);
   }
+  logCreate(action: any, remarks: any, data: any) {
+    let requestBody = {
+      access_ip: this.accessip,
+      action: action,
+      remarks: remarks,
+      data: data,
+      user_id: this.userid,
+    }
+    this.userService.createLogs(requestBody).subscribe((res: any) => {
+      console.log(res);
 
+    })
+  }
 }

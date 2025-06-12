@@ -30,7 +30,7 @@ export class OperatorWalletComponent implements OnInit, AfterViewInit, OnDestroy
 
   }
   ngAfterViewInit(): void {
-    $('#lco').select2({
+    ($('#lco')as any).select2({
       placeholder: 'Select a Operator',
       allowClear: true
     });

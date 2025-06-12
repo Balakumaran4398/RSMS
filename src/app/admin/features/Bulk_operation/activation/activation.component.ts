@@ -226,7 +226,7 @@ export class ActivationComponent implements OnInit {
   }
 
   ngAfterViewInit() {
-    $('#package').select2({
+    ($('#package')as any).select2({
       placeholder: 'Select Package',
       allowClear: true
     });

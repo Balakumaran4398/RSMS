@@ -14,17 +14,25 @@ export class UpdateInventoryComponent {
   Id: any;
   Boxid: any;
   Smartcard: any;
+  Boxid_1: any;
+  Smartcard_1: any;
   role: any;
   username: any;
+  userid: any;
+  accessip: any;
   constructor(
     public dialogRef: MatDialogRef<UpdateInventoryComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any, private userService: BaseService, private storageService: StorageService, private swal: SwalService) {
     this.username = storageService.getUsername();
     this.role = storageService.getUserRole();
+    this.userid = storageService.getUserid();
+    this.accessip = storageService.getAccessip();
     console.log(data);
     this.Id = data.id;
     this.Boxid = data.boxid;
     this.Smartcard = data.smartcard;
+    this.Boxid_1 = data.boxid;
+    this.Smartcard_1 = data.smartcard;
     console.log(this.Id);
     console.log(this.Boxid);
     console.log(this.Smartcard);
@@ -76,7 +84,6 @@ export class UpdateInventoryComponent {
                 timerProgressBar: true,
                 confirmButtonText: 'OK',
                 text: res?.message || 'Smartcard allocation has been updated successfully.',
-             
               });
               window.location.reload();
             },
@@ -88,7 +95,6 @@ export class UpdateInventoryComponent {
                 timerProgressBar: true,
                 confirmButtonText: 'OK',
                 text: error?.error?.message || 'There was an error updating the smartcard allocation. Please try again later.',
-        
               }).then(() => {
                 // window.location.reload();
               });
@@ -96,7 +102,22 @@ export class UpdateInventoryComponent {
           );
       }
     });
+    const data = ` Smartcard: ${this.Smartcard}, ` + ` BoxID: ${this.Boxid},`;
+    const remark = ` Smartcard: ${this.Smartcard_1}, ` + ` BoxID: ${this.Boxid_1},`;
+    this.logCreate('Box Details Update Button Clicked', remark, data);
   }
+  logCreate(action: any, remarks: any, data: any) {
+    let requestBody = {
+      access_ip: this.accessip,
+      action: action,
+      remarks: remarks,
+      data: data,
+      user_id: this.userid,
+    }
+    this.userService.createLogs(requestBody).subscribe((res: any) => {
+      console.log(res);
 
+    })
+  }
 }
 

@@ -4,6 +4,8 @@ import { MatDialog } from '@angular/material/dialog';
 import { StorageService } from 'src/app/_core/service/storage.service';
 import { SwalService } from 'src/app/_core/service/swal.service';
 import { LogindialogueComponent } from '../Dialogue/logindialogue/logindialogue.component';
+import { EditDismembershipComponent } from '../../channel_setting/_Dialogue/LCO-Commission/edit-dismembership/edit-dismembership.component';
+import { SidenavpermissionComponent } from '../Dialogue/sidenavpermission/sidenavpermission.component';
 
 @Component({
   selector: 'app-loginsettings',
@@ -22,7 +24,7 @@ export class LoginsettingsComponent {
       floatingFilter: true
     },
     paginationPageSize: 10,
-    paginationPageSizeSelector:[10,20,50],
+    paginationPageSizeSelector: [10, 20, 50],
     pagination: true,
   }
 
@@ -34,22 +36,30 @@ export class LoginsettingsComponent {
   username: any;
   id: any;
   role: any;
+  userid:any;
+  accessip:any;
   type: number = 0;
+  
   constructor(public dialog: MatDialog, public userservice: BaseService, storageService: StorageService, private swal: SwalService,) {
     this.username = storageService.getUsername();
     this.role = storageService.getUserRole();
+    this.userid = storageService.getUserid();
+    this.accessip = storageService.getAccessip();
+    console.log('role',this.role);
+   
+    
   }
   columnDefs: any[] = [
     {
       headerName: "S.NO", lockPosition: true, valueGetter: 'node.rowIndex+1', width: 100, filter: false
     },
     { headerName: 'USER NAME	', field: 'username', width: 200, cellStyle: { textAlign: 'left' } },
-    { headerName: 'PASSWORD	', field: 'password', width: 420, cellStyle: { textAlign: 'left' } },
+    { headerName: 'PASSWORD	', field: 'password', width: 250, cellStyle: { textAlign: 'left' } },
     // { headerName: 'ROLE	', field: 'rolename', width: 150, filter: false, cellStyle: { textAlign: 'left' } },
     { headerName: 'ROLE	', field: 'role', width: 150, filter: false, cellStyle: { textAlign: 'left' } },
     { headerName: 'EXPIRY DATE', field: 'expiryDate', width: 200, },
     {
-      headerName: 'STATUS', field: 'valid', width: 150, cellStyle: { textAlign: 'center' },
+      headerName: 'STATUS', field: 'valid', width: 130, cellStyle: { textAlign: 'center' },
       cellRenderer: (params: { value: any; data: any }) => {
         const color = params.value ? 'green' : 'red';
         const text = params.value ? 'Active' : 'Deactive';
@@ -75,9 +85,36 @@ export class LoginsettingsComponent {
         const div = document.createElement('div');
         div.appendChild(editButton);
         return div;
-      }
+      } 
     },
+    // {
+    //   headerName: "CHANGE SIDENAV", width: 200,
+    //   cellRenderer: (params: any) => {
+    //     const editButton = document.createElement('button');
+    //     editButton.innerHTML = '<i class="fas fa-list" style="font-size:25px;color:#035678"></i>';
+    //     editButton.style.backgroundColor = 'transparent';
+    //     editButton.style.color = '(rgb(29 1 11)';
+    //     editButton.style.border = 'none';
+    //     editButton.title = 'Operator List';
+    //     editButton.style.cursor = 'pointer';
+    //     editButton.style.marginRight = '6px';
+    //     editButton.addEventListener('click', () => {
+    //           this.openEditDismembershipDialog(params.data);
+    //     });
+    //     const div = document.createElement('div');
+    //     div.appendChild(editButton);
+    //     return div;
+    //   }
+    // },
   ];
+    openEditDismembershipDialog(data: any) {
+      const dialogRef = this.dialog.open(SidenavpermissionComponent, {
+        width: '800px',
+        // height: '1000px',
+        panelClass: 'custom-dialog-container',
+        data: data
+      });
+    }
   ngOnInit(): void {
     this.userservice.getInvent_License_Extend(this.role, this.username).subscribe((data: any) => {
       console.log(data);
@@ -125,5 +162,17 @@ export class LoginsettingsComponent {
     dialogRef.afterClosed().subscribe(result => {
       console.log('The dialog was closed');
     });
+  }
+    logCreate(action: any, remarks: any, data: any) {
+    let requestBody = {
+      access_ip: this.accessip,
+      action: action,
+      remarks: remarks,
+      data: data,
+      user_id: this.userid,
+    }
+    this.userservice.createLogs(requestBody).subscribe((res: any) => {
+      console.log(res);
+    })
   }
 }

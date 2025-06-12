@@ -23,15 +23,20 @@ export class ReallocationComponent {
   dueAmount: any;
   sub_ismei: any;
   isemi: any;
+  isemi_1: any;
   logData: any;
   sub_emi: boolean = false;
   submitted: boolean = false;
+  userid: any;
+  accessip: any;
   constructor(
     public dialogRef: MatDialogRef<ReallocationComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any, private userService: BaseService, private storageService: StorageService, private swal: SwalService) {
     console.log(data);
     this.username = storageService.getUsername();
     this.role = storageService.getUserRole();
+    this.userid = storageService.getUserid();
+    this.accessip = storageService.getAccessip();
     // this.lco_list = data.lco_list;
     this.lco_list = Object.entries(data.lco_list).map(([key, value]) => {
       return { name: key, value: value };
@@ -44,6 +49,7 @@ export class ReallocationComponent {
     console.log(this.logData);
     this.dueAmount = data.dueAmount[0];
     this.isemi = data.emi[0];
+    this.isemi_1 = data.emi[0];
     this.sub_emi = data.sub_emi;
     console.log(this.sub_emi);
   }
@@ -81,11 +87,17 @@ export class ReallocationComponent {
   displayOperator(operator: any): string {
     return operator ? operator.name : '';
   }
+  lcoName: any;
+  lcoName_1: any;
   onSubscriberStatusChange(selectedOperator: any) {
     console.log(selectedOperator);
     this.selectedOperator = selectedOperator;
     this.selectedLcoName = selectedOperator.value;
     console.log(this.selectedLcoName);
+    console.log('selectedOperator.Name', selectedOperator.name);
+    this.lcoName = selectedOperator.name;
+    this.lcoName_1 = selectedOperator.name;
+    console.log('lcoName', this.lcoName);
   }
 
   submit() {
@@ -105,8 +117,9 @@ export class ReallocationComponent {
           timerProgressBar: true,
           showConfirmButton: false
         }).then(() => {
-          window.location.reload();
+          // window.location.reload();
         });
+
       },
         (error) => {
           Swal.fire({
@@ -117,10 +130,26 @@ export class ReallocationComponent {
             showConfirmButton: true,
             timerProgressBar: true,
           }).then(() => {
-            // window.location.reload();
+            window.location.reload();
           });
           console.error('Error:', error);
         }
       );
+    const data = ` LCO Name: ${this.lcoName}, ` + ` EMI: ${this.isemi},`;
+    const remark = ` LCO Name: ${this.lcoName_1}, ` + ` EMI: ${this.isemi_1},`;
+    this.logCreate('Re Allocate Button Clicked', remark, data);
+  }
+  logCreate(action: any, remarks: any, data: any) {
+    let requestBody = {
+      access_ip: this.accessip,
+      action: action,
+      remarks: remarks,
+      data: data,
+      user_id: this.userid,
+    }
+    this.userService.createLogs(requestBody).subscribe((res: any) => {
+      console.log(res);
+
+    })
   }
 }

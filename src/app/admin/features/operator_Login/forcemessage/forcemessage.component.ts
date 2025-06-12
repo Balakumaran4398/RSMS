@@ -51,11 +51,11 @@ export class ForcemessageComponent {
   fontsize_1: any;
   fontcolor_1: any = '';
   bgcolor_1: any = '';
-  repeatfor: any;
   repeatfor_1: any;
   transparancy_1: any;
-  duration: any;
-  timegap: any = 0;
+  repeatfor: any = '';
+  duration: any = '';
+  timegap: any = '';
   msgcontent: any;
 
   isservicedisabled: boolean = false;
@@ -87,6 +87,7 @@ export class ForcemessageComponent {
 
   lcoDeatails: any;
   operatorid: any;
+  isForce: boolean = false;
   constructor(private userservice: BaseService, private cdr: ChangeDetectorRef, private storageService: StorageService, private fb: FormBuilder, private swal: SwalService, public dialog: MatDialog) {
     this.username = storageService.getUsername();
     this.role = storageService.getUserRole();
@@ -125,10 +126,10 @@ export class ForcemessageComponent {
       position: [0, Validators.required],
       fontcolor: [0, Validators.required],
       bgcolor: [0, Validators.required],
-      repeatfor: [0, Validators.required],
       transparency: ['', Validators.required],
-      duration: [0, Validators.required],
-      timegap: [0, Validators.required],
+      repeatfor: [this.force_1 ? '' : 0, Validators.required],
+      duration: [this.force_1 ? '' : 0, Validators.required],
+      timegap: [this.force_1 ? '' : 0, Validators.required],
       msgcontent: [0, Validators.required],
       role: this.role,
       username: this.username,
@@ -142,6 +143,8 @@ export class ForcemessageComponent {
       this.lcoDeatails = data;
       console.log(this.lcoDeatails);
       this.operatorid = this.lcoDeatails?.operatorid;
+      this.isForce = this.lcoDeatails?.enableforce;
+      console.log('fjhjkhdsjkfh', this.isForce);
       console.log(this.operatorid);
       this.getForcemsg(this.operatorid)
     })
@@ -318,7 +321,7 @@ export class ForcemessageComponent {
   onForceChange(event: any) {
     console.log(event);
     console.log(this.force_1);
-
+    this.force_1 = event.value;
     if (this.force_1 === false) {
       this.cdr.detectChanges();
       // this.isRepeatfor = [1, 3, 7].includes(this.castype);
@@ -332,8 +335,6 @@ export class ForcemessageComponent {
       this.isTimeGap = false;
     }
 
-
-    this.force_1 = event.value;
     this.isRepeatforDisabled = !this.force_1;
   }
 

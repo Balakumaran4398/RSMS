@@ -4,6 +4,7 @@ import { BaseService } from 'src/app/_core/service/base.service';
 import { StorageService } from 'src/app/_core/service/storage.service';
 import { PackageplandialogueComponent } from '../Dialogue/packageplandialogue/packageplandialogue.component';
 import { SwalService } from 'src/app/_core/service/swal.service';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-packageplan',
@@ -26,7 +27,7 @@ export class PackageplanComponent implements OnInit {
       comparator: (valueA: any, valueB: any) => {
         const isNumberA = !isNaN(valueA) && valueA !== null;
         const isNumberB = !isNaN(valueB) && valueB !== null;
-  
+
         if (isNumberA && isNumberB) {
           return valueA - valueB;
         } else {
@@ -39,7 +40,7 @@ export class PackageplanComponent implements OnInit {
       },
     },
     paginationPageSize: 10,
-    paginationPageSizeSelector:[10,20,50],
+    paginationPageSizeSelector: [10, 20, 50],
     pagination: true,
   };
 
@@ -52,14 +53,18 @@ export class PackageplanComponent implements OnInit {
   id: any;
   role: any;
   type: number = 0;
+  userid: any;
+  accessip: any;
   constructor(public dialog: MatDialog, public userservice: BaseService, storageService: StorageService, private swal: SwalService,) {
     this.username = storageService.getUsername();
     this.role = storageService.getUserRole();
+    this.userid = storageService.getUserid();
+    this.accessip = storageService.getAccessip();
   }
 
   columnDefs: any[] = [
     {
-      headerName: "S.No", lockPosition: true, valueGetter: 'node.rowIndex+1', headerCheckboxSelection: true,filter: false,
+      headerName: "S.No", lockPosition: true, valueGetter: 'node.rowIndex+1', headerCheckboxSelection: true, filter: false,
       checkboxSelection: true,
     },
     { headerName: 'COUNTRYNAME', field: 'planname', width: 250, },
@@ -69,7 +74,7 @@ export class PackageplanComponent implements OnInit {
       cellRenderer: (params: { value: any; data: any }) => {
         const color = params.value ? 'green' : 'red';
         // const text = params.value ? 'True' : 'False' ;
-        const text = params.value ?  'Active': 'Deactive' ;
+        const text = params.value ? 'Active' : 'Deactive';
         return `<span style="color: ${color}; ">${text}</span>`;
       }
     },
@@ -113,24 +118,112 @@ export class PackageplanComponent implements OnInit {
       this.isAnyRowSelected = selectedRows.length > 0;
       console.log("Selected Rows:", selectedRows);
       this.selectedIds = selectedRows.map((e: any) => e.id);
-      this.selectedtypes = selectedRows.map((e: any) => e.isactive);
+      this.selectedtypes = selectedRows[0].isactive;
     }
   }
 
   Active() {
-    this.swal.Loading();
-    this.userservice.activeORDeactivePackagePlan(this.role, this.username, this.selectedIds, 'true').subscribe((res: any) => {
-      this.swal.success(res?.message);
-    }, (err) => {
-      this.swal.Error(err?.error?.message);
+    // this.swal.Loading();
+    // this.userservice.activeORDeactivePackagePlan(this.role, this.username, this.selectedIds, 'true').subscribe((res: any) => {
+    //   this.swal.success(res?.message);
+    // }, (err) => {
+    //   this.swal.Error(err?.error?.message);
+    // });
+
+    Swal.fire({
+      title: "Are you sure?",
+      text: "You won't be able to Active this!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, Active it!"
+    }).then((result) => {
+      if (result.isConfirmed) {
+        Swal.fire({
+          title: 'Updating...',
+          text: 'Please wait while the Package Plan is being Updated',
+          allowOutsideClick: false,
+          didOpen: () => {
+            Swal.showLoading(null);
+          }
+        });
+        this.userservice.activeORDeactivePackagePlan(this.role, this.username, this.selectedIds, 'true').subscribe((res: any) => {
+          console.log(res);
+          Swal.fire({
+            position: "center",
+            icon: "success",
+            title: "Your update was successful",
+            showConfirmButton: false,
+            timer: 1000
+          });
+          this.swal.success(res?.message);
+          this.logCreate('Package Plan Active Button Clicked', !this.selectedtypes, 'Active');
+        },
+          (err) => {
+            Swal.fire({
+              position: 'center',
+              icon: 'error',
+              title: 'Error',
+              text: err?.error?.message,
+              showConfirmButton: false,
+              timer: 1500
+            }).then(() => {
+              window.location.reload();
+
+            });
+          }
+        );
+      }
     });
   }
   Deactive() {
-    this.swal.Loading();
-    this.userservice.activeORDeactivePackagePlan(this.role, this.username, this.selectedIds, 'false').subscribe((res: any) => {
-      this.swal.success(res?.message);
-    }, (err) => {
-      this.swal.Error(err?.error?.message);
+    // this.swal.Loading();
+    // this.userservice.activeORDeactivePackagePlan(this.role, this.username, this.selectedIds, 'false').subscribe((res: any) => {
+    //   this.swal.success(res?.message);
+    // }, (err) => {
+    //   this.swal.Error(err?.error?.message);
+    // });
+
+
+    Swal.fire({
+      title: "Are you sure?",
+      text: "You won't be able to revert this!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, Deactive it!"
+    }).then((result) => {
+      if (result.isConfirmed) {
+        Swal.fire({
+          title: 'Deactivating...',
+          text: 'Please wait while the Package Plan is being Deactivated',
+          allowOutsideClick: false,
+          didOpen: () => {
+            Swal.showLoading(null);
+          }
+        });
+         this.userservice.activeORDeactivePackagePlan(this.role, this.username, this.selectedIds, 'false').subscribe((res: any) => {
+          Swal.fire({
+            title: 'Deactivated!',
+            text: res.message,
+            icon: 'success',
+            timer: 2000,
+            timerProgressBar: true,
+          });
+          this.swal.success(res?.message);
+          this.logCreate('Package Plan Deactive Button Clicked', !this.selectedtypes, 'Deactive');
+        }, (err) => {
+          Swal.fire({
+            title: 'Error!',
+            text: err?.error?.message,
+            icon: 'error',
+            timer: 2000,
+            timerProgressBar: true,
+          });
+        });
+      }
     });
   }
   openaddedlogue(type: any, data: any) {
@@ -150,5 +243,18 @@ export class PackageplanComponent implements OnInit {
     dialogRef.afterClosed().subscribe(result => {
       console.log('The dialog was closed');
     });
+  }
+  logCreate(action: any, remarks: any, data: any) {
+    let requestBody = {
+      access_ip: this.accessip,
+      action: action,
+      remarks: remarks,
+      data: data,
+      user_id: this.userid,
+    }
+    this.userservice.createLogs(requestBody).subscribe((res: any) => {
+      console.log(res);
+
+    })
   }
 }

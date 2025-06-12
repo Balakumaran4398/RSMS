@@ -101,7 +101,7 @@ export class LcoDashboardComponent implements OnInit {
   }
 
   ngAfterViewInit() {
-    $('#model').select2({
+    ($('#model')as any).select2({
       placeholder: 'Select Model',
       allowClear: true
     });

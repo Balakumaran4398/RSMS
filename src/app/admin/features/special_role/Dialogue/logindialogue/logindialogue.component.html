@@ -142,7 +142,7 @@
                 </div>
 
                 <div class="col-12 col-md-7">
-                    <input type="text" [(ngModel)]="edituserid" [value]="data?.data?.username"
+                    <input type="text" [(ngModel)]="edituserid" [value]="data?.data?.username" 
                         placeholder="Enter User Name" #idInput="ngModel">
                     <div *ngIf="idInput.invalid && idInput.touched" class="text-danger">
                         User Name is required.
@@ -256,7 +256,7 @@
             <!-- Submit and Cancel Buttons -->
             <div class="form-group d-flex justify-content-center align-items-center mb-3">
                 <!-- <button type="submit" class="btn btn-success me-2" [disabled]="editForm.invalid">Save</button> -->
-                <button type="submit" class="btn btn-success me-2">Save</button>
+                <button type="submit" class="btn btn-success me-2">Update</button>
                 <button type="button" class="btn btn-danger" (click)="onClick()">Cancel</button>
             </div>
         </form>

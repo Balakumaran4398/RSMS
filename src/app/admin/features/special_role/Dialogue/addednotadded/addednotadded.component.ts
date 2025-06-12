@@ -385,11 +385,12 @@ export class AddednotaddedComponent implements OnInit {
         id: item.id
       }));
       this.containerID = this.containerData.map((item: any) => item.id);
-      console.log(this.containerID);
+      console.log('uhfjkdshfudshfjsdhfjsdfd    32423423894', this.containerID);
     }
     this.filteredNotPermissionList = [...this.NotpermissionList];
     this.filteredPermissionList = [...this.permissionList];
     this.selectedItems.clear();
+
   }
 
   moveAllItems1(direction: 'right' | 'left') {
@@ -418,6 +419,12 @@ export class AddednotaddedComponent implements OnInit {
     this.selectedItems.clear();
   }
   save() {
+     this.containerData = this.addedList.map((item: { name: string, id: number }) => ({
+        name: item.name,
+        id: item.id
+      }));
+      this.containerID = this.containerData.map((item: any) => item.id);
+      console.log(this.containerID);
     this.swal.Loading();
     console.log(this.containerID);
     let permissionList = this.containerID.length == 0 ? 0 : this.containerID;
@@ -429,6 +436,13 @@ export class AddednotaddedComponent implements OnInit {
     });
   }
   save1() {
+    console.log('dfsdjkhfjkdshfjksdhf', this.containerID);
+    this.containerData = this.permissionList.map((item: { name: string, id: number }) => ({
+      name: item.name,
+      id: item.id
+    }));
+    this.containerID = this.containerData.map((item: any) => item.id);
+    console.log('uhfjkdshfudshfjsdhfjsdfd    32423423894', this.containerID);
     this.swal.Loading();
     console.log(this.containerID);
     let permissionList = this.containerID.length == 0 ? 0 : this.containerID;

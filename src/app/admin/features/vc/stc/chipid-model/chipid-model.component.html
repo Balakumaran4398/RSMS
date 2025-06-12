@@ -13,8 +13,7 @@
                         [ngClass]="(subscriberList.length != 0 && searchitem?.value?.length != 0 && showDropdown) ? 'show' : 'hide'"
                         aria-labelledby="dropdownMenuButton">
                         <a (click)="goToSubscriberDashboard(lcomember)" *ngFor="let lcomember of subscriberList"
-                            class="dropdown-item"> {{
-                            lcomember.value }}</a>
+                            class="dropdown-item"> {{lcomember.value }}</a>
                     </div>
                 </div>
                 <div class="col-12" style="padding: 1rem;">

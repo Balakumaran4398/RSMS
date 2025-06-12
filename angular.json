@@ -36,7 +36,7 @@
               "./node_modules/ag-grid-community/styles/ag-theme-alpine.css"
             ],
             "scripts": [
-
+              
             ]
           },
           "configurations": {

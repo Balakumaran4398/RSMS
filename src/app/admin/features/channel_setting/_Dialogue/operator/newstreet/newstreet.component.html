@@ -24,11 +24,11 @@
 </div> -->
 
 <div *ngIf="type=='newstreet'">
+    <div class="Head d-flex justify-content-between align-items-center mb-3" style="padding: 1rem;">
+        <h6>NEW STREET</h6>
+        <i class="fa fa-close close-icon" style="cursor: pointer;" (click)="onNoClick()"></i>
+    </div>
     <div class="card-content " style="width: 100%;">
-        <div class="Head d-flex justify-content-between align-items-center mb-3" style="padding: 1rem;">
-            <h6>NEW STREET</h6>
-            <i class="fa fa-close close-icon" style="cursor: pointer;" (click)="onNoClick()"></i>
-        </div>
         <div class="card">
             <form #streetForm="ngForm" (ngSubmit)="newStreet()" novalidate>
                 <div class="input_box display align-items-center mb-3">
@@ -54,12 +54,12 @@
     </div>
 </div>
 <div *ngIf="type=='editstreet'"
-    class="col d-flex justify-content-center align-items-center card transparent-background dialog-content">
+    >
+    <div class="Head d-flex justify-content-between align-items-center mb-3" style="padding: 1rem;">
+        <h6>Edit STREET</h6>
+        <i class="fa fa-close close-icon" style="cursor: pointer;" (click)="onNoClick()"></i>
+    </div>
     <div class="card-content " style="width: 100%;">
-        <div class="Head d-flex justify-content-between align-items-center mb-3" style="padding: 1rem;">
-            <h6>Edit STREET</h6>
-            <i class="fa fa-close close-icon" style="cursor: pointer;" (click)="onNoClick()"></i>
-        </div>
         <div class="card-body" style="padding: 1rem;">
             <form #streetForm="ngForm" (ngSubmit)="editStreet()" novalidate>
                 <div class="input_box display align-items-center mb-3">

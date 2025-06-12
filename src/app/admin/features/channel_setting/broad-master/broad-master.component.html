@@ -13,11 +13,11 @@
                             <i class="fa fa-plus"></i> New
                         </a>
                         <button class="btn btn-outline-info mx-1 " mat-raised-button color="primary" type="button"
-                            [disabled]="!isAnyRowSelected" (click)="Active(this.selectedIds)">
+                            [disabled]="!isAnyRowSelected" (click)="Active(this.selectedIds,selectedtstatus)">
                             Active
                         </button>
                         <button class="btn btn-outline-info mx-1 " mat-raised-button color="accent" type="button"
-                            [disabled]="!isAnyRowSelected" (click)="Deactive(this.selectedIds)">
+                            [disabled]="!isAnyRowSelected" (click)="Deactive(this.selectedIds,selectedtstatus)">
                             Deactive
                         </button>
                     </div>

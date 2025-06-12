@@ -3,6 +3,8 @@ import { Router } from '@angular/router';
 const TOKEN_KEY = 'auth-token';
 const USER_KEY = 'auth-user'
 const USERNAME = 'username'
+const ACCESSIP = 'access_ip'
+const ID = 'id'
 
 @Injectable({
   providedIn: 'root'
@@ -33,6 +35,14 @@ export class StorageService {
     window.sessionStorage.removeItem(USERNAME);
     window.sessionStorage.setItem(USERNAME, username);
   }
+  public saveAccessIP(access_ip: any): void {
+    window.sessionStorage.removeItem(ACCESSIP);
+    window.sessionStorage.setItem(ACCESSIP, access_ip);
+  }
+  public saveID(id: any): void {
+    window.sessionStorage.removeItem(ID);
+    window.sessionStorage.setItem(ID, id);
+  }
 
   public saveUser(user: any): void {
     window.sessionStorage.removeItem(USER_KEY);
@@ -47,6 +57,24 @@ export class StorageService {
     }
     return {};
   }
+  public getAccessIP(): any {
+    const user = window.sessionStorage.getItem(USER_KEY);
+    if (user) {
+      const parsedUser = JSON.parse(user);
+      let AccessIP = parsedUser.access_ip;
+      return parsedUser;
+    }
+    return {};
+  }
+  public getUserID(): any {
+    const user = window.sessionStorage.getItem(USER_KEY);
+    if (user) {
+      const parsedUser = JSON.parse(user);
+      let UserID = parsedUser.id;
+      return parsedUser;
+    }
+    return {};
+  }
 
   // signOut(): void {
   //   window.sessionStorage.clear();
@@ -55,10 +83,8 @@ export class StorageService {
   reload() {
     window.location.reload();
   }
-  public getUsername(): string {
-    const user = this.getUser();   
-    return user.username || '';
-  }
+
+
   // public getUserRole(): string {
   //   const user = this.getUser();
 
@@ -84,5 +110,13 @@ export class StorageService {
   public getUserid(): number | null {
     const user = this.getUser();
     return user ? user.id : null;
+  }
+  public getUsername(): string {
+    const user = this.getUser();
+    return user.username || '';
+  }
+  public getAccessip(): any {
+    const user = this.getAccessIP();
+    return user.access_ip || '';
   }
 }

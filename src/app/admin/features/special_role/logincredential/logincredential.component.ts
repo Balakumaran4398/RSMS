@@ -44,7 +44,7 @@ form!: FormGroup;
         username: this.username,
         userid: userid,
         password: password,
-        type: 4,
+        type: 6,
       }
       this.swal.Loading();
         this.userservice.checkLoginCredenticals(requestBody).subscribe(

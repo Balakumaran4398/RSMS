@@ -26,9 +26,14 @@ export class DialogChipidComponent implements OnInit {
   md_mrp: any;
   md_id: any;
   md_status: boolean = false;
+
+  userid: any;
+  accessip: any;
   constructor(public dialogRef: MatDialogRef<DialogChipidComponent>, @Inject(MAT_DIALOG_DATA) public data: any, private userService: BaseService, private storageServce: StorageService, private swal: SwalService) {
     this.role = storageServce.getUserRole();
     this.username = storageServce.getUsername();
+    this.userid = storageServce.getUserid();
+    this.accessip = storageServce.getAccessip();
     console.log(data);
     this.type = data.type;
     this.md_modelName = data?.data?.model;
@@ -56,13 +61,27 @@ export class DialogChipidComponent implements OnInit {
         this.swal.Error(err?.error?.message);
       });
   }
-  getUpdateModel(){
-    this.userService.getUpdateModel(this.role,this.username,this.md_modelName,this.md_modelno,this.md_status,this.md_id)
-    .subscribe((res: any) => {
+  getUpdateModel() {
+    this.userService.getUpdateModel(this.role, this.username, this.md_modelName, this.md_modelno, this.md_status, this.md_id)
+      .subscribe((res: any) => {
+        console.log(res);
+        this.swal.success(res?.message);
+      }, (err) => {
+        this.swal.Error(err?.error?.message);
+      });
+    this.logCreate('STB Model Edit Button Clicked', 'Edit', 'Edit');
+  }
+  logCreate(action: any, remarks: any, data: any) {
+    let requestBody = {
+      access_ip: this.accessip,
+      action: action,
+      remarks: remarks,
+      data: data,
+      user_id: this.userid,
+    }
+    this.userService.createLogs(requestBody).subscribe((res: any) => {
       console.log(res);
-      this.swal.success(res?.message);
-    }, (err) => {
-      this.swal.Error(err?.error?.message);
-    });
+
+    })
   }
 }
