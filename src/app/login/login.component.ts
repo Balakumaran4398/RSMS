@@ -151,12 +151,14 @@ export class LoginComponent implements OnInit {
             this.storageService.saveUsernamenew(res.username)
             this.storageService.saveAccessIP(res.access_ip)
             this.storageService.saveID(res.id)
+            this.storageService.saveNavList(res.navigationmap)
             this.idstorage = res.id;
             console.log('Stored ID:', res.id);
             const user = this.storageService.getUser();
             console.log(user.username);
             this.roles = user.roles;
             console.log(this.roles);
+            console.log(res.navigationmap);
 
             this.post();
             // const role = this.storageService.getUserRole();

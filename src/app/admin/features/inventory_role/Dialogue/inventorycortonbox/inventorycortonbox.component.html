@@ -57,20 +57,6 @@
                         [disabled]="!isemi" (keypress)="onKeydown($event)" />
                 </div>
             </div>
-            <div class="row align-items-center input_box ">
-                <div class="col-12 col-md-3">
-                    <span class="form-label">Select Operator</span>
-                </div>
-                <div class="col-12 col-md-9 mb-3 file-upload-container">
-                    <select id="operator" [(ngModel)]="selectOperator">
-                        <!-- <option [value]="0" selected>All Operator</option> -->
-                        <option *ngFor="let operator of filteredOperatorList" [value]="operator.value"
-                            (ngModelChange)="onAreaList($event)">
-                            {{ operator.name }}
-                        </option>
-                    </select>
-                </div>
-            </div>
             <div class="row align-items-center">
                 <div class="col-12 col-md-3 input_box">
                     <span>Type</span>
@@ -78,9 +64,12 @@
                 <div class="col-12 col-md-9 mb-10">
                     <mat-radio-group class="radio-group d-block justify-content-center align-items-center"
                         aria-labelledby="status" [(ngModel)]="selectedType">
-                        <mat-radio-button class="radio-button" [value]="'1'">
+                        <mat-radio-button
+                            *ngIf="(role === 'ROLE_OPERATOR'  && distributor )|| role === 'ROLE_INVENTORY'"
+                            class="radio-button" [value]="'1'">
                             <span style="font-size: 14px;">Operator Allocated Only</span>
                         </mat-radio-button>&nbsp;
+
                         <mat-radio-button class="radio-button" [value]="'2'">
                             <span style="font-size: 14px;">Subscriber Import Only</span>
                         </mat-radio-button>&nbsp;
@@ -90,6 +79,22 @@
                     </mat-radio-group>
                 </div>
             </div>
+            <div *ngIf="(role === 'ROLE_OPERATOR'  && distributor )|| role === 'ROLE_INVENTORY'"
+                class="row align-items-center input_box ">
+                <div class="col-12 col-md-3">
+                    <span class="form-label">Select Operator</span>
+                </div>
+                <div class="col-12 col-md-9 mb-3 file-upload-container">
+                    <select id="operator" [(ngModel)]="selectOperator">
+                        <option *ngFor="let operator of filteredOperatorList" [value]="operator.value"
+                            (ngModelChange)="onAreaList($event)">
+                            {{ operator.name }}
+                        </option>
+                    </select>
+                </div>
+            </div>
+
+
 
             <div class="row align-items-center input_box">
                 <div class="col-12 col-md-3">
@@ -180,6 +185,7 @@
                 <!-- <div class="col-12 col-md-8 mb-3 file-upload-container">
                     <input type="date" (change)="onFileSelected($event)"  />
                 </div> -->
+
                 <mat-form-field class="input-field" appearance="outline">
                     <mat-label>Choose a date</mat-label>
                     <input matInput [matDatepicker]="picker" (dateChange)="logValues()" [(ngModel)]="date"
@@ -216,6 +222,20 @@
                 </div>
             </div>
 
+            <!-- <div class="row align-items-center input_box">
+                <div class="col-12 col-md-3">
+                    <label class="form-label">LCO Name</label>
+                </div>
+                <div class="col-12 col-md-9 mb-3 file-upload-container">
+                    <select id="operator" class="file-input" [(ngModel)]="selectLco">
+                        <option value="0" selected>Select LCO</option>
+                        <option *ngFor="let lco of filteredOperatorList" [value]="lco.value"
+                            (ngModelChange)="onAreaList($event)">
+                            {{ lco.name }}
+                        </option>
+                    </select>
+                </div>
+            </div> -->
             <div class="row align-items-center input_box">
                 <div class="col-12 col-md-3">
                     <label class="form-label">Area Name</label>

@@ -1,14 +1,14 @@
-<!-- <div class="Head d-flex justify-content-between align-items-center mb-3" style="padding: 1rem;">
-    <h6>OPERATOR LIST</h6>
+<div class="Head d-flex justify-content-between align-items-center mb-3" style="padding: 1rem;">
+    <h6>SIDENAV LIST</h6>
     <i class="fa fa-close close-icon" style="cursor: pointer;" (click)="onNoClick()"></i>
 </div>
 
 <section>
     <div class="col-12 col-12 mb-3 d-flex justify-content-center align-items-center ">
         <div style="padding: 0.5rem;">
-            <h6 style="text-align: center;font-weight: bold;"> <span style="color: #09080a;font-size: 17px;
-    font-weight: bold;">SUBMSO :</span>
-                {{distributor}}-{{distributorid}}</h6>
+            <h6 style="text-align: center;font-weight: bold;color: #317a06;"> <span
+                    style="color: #09080a;font-size: 17px;font-weight: bold;">SUBMSO :</span>
+                {{role}}</h6>
         </div>
     </div>
     <div class="d-flex flex-column flex-lg-row justify-content-center align-items-center mobile">
@@ -20,13 +20,13 @@
                         (ngModelChange)="filterAvailableList()">
                 </div>
                 <div class="table1 mb-3">
-                    <p style="color: white;">AVAILABLE LCO - {{availableList.length}}</p>
+                    <p style="color: white;">AVAILABLE SIDENAV - {{notaddedList.length}}</p>
                     <div class="row inp">
                         <div class="col-12 example-container">
-                            <div cdkDropList #todoList="cdkDropList" [cdkDropListData]="filteredAvailableList"
+                            <div cdkDropList #todoList="cdkDropList" [cdkDropListData]="filteredNotAddedList"
                                 [cdkDropListConnectedTo]="[doneList]" class="example-list"
                                 (cdkDropListDropped)="drop($event,1)">
-                                <div *ngFor="let item of filteredAvailableList" class="example-box"
+                                <div *ngFor="let item of filteredNotAddedList" class="example-box"
                                     (click)="toggleSelection(item)" cdkDrag [cdkDragData]="item"
                                     [class.selected]="isSelected(item)">
                                     {{ item.name }}-({{item.id}})
@@ -47,10 +47,11 @@
             <div class="card">
 
                 <div class="input_box">
-                    <input type="text" placeholder="Search" [(ngModel)]="searchTermAdded" (ngModelChange)="filterAddedList()">
+                    <input type="text" placeholder="Search" [(ngModel)]="searchTermAdded"
+                        (ngModelChange)="filterAddedList()">
                 </div>
                 <div class="table2 mb-3">
-                    <p style="color: white;">ADDED LCO - {{addedList.length}}</p>
+                    <p style="color: white;">ADDED SIDENAV - {{addedList.length}}</p>
                     <div class="row inp">
                         <div class="col-12 example-container">
                             <div cdkDropList #doneList="cdkDropList" [cdkDropListData]="filteredAddedList"
@@ -71,6 +72,6 @@
     </div>
     <div class="col-12 d-flex justify-content-center align-item-center">
         <button type="button" class="btn" style="background:#058372;color: white;height: 2pc; width: 5pc"
-           >Save</button>
+            (click)="save()">Save</button>
     </div>
-</section> -->
+</section>

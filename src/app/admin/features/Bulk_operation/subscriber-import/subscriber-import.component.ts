@@ -16,10 +16,10 @@ import { SwalService } from 'src/app/_core/service/swal.service';
 export class SubscriberImportComponent implements OnInit {
   file: File | null = null;
   filePath: string = '';
+  isFileSelected: boolean = false;
   streetid: any = 0;
   street_list: { [key: string]: number } = {};
   isCheckboxChecked: boolean = false;
-  isFileSelected: boolean = false;
   isCheckboxChecked_operator: boolean = false;
   Dialogue: boolean = false;
   closeDialogue: boolean = true;

@@ -141,7 +141,7 @@ export class SubscriberdialogueComponent implements OnInit, OnDestroy {
   // smartcard: any = 0;
   boxid: any = "";
   cas: any[] = [];
-  lcoid: any = 0;
+  lcoid: any = '';
   lcoareaid: any = 0;
   lcostreetid: any = 0;
   withsubscription = false;
@@ -398,7 +398,7 @@ export class SubscriberdialogueComponent implements OnInit, OnDestroy {
   }
   @ViewChild(NavComponent) navComponent!: NavComponent;
   operatorIdValue: any = '';
-
+  distributor: boolean = false;
   constructor(private router: Router, public dialogRef: MatDialogRef<SubscriberdialogueComponent>, private swal: SwalService,
     @Inject(MAT_DIALOG_DATA) public data: any, public userservice: BaseService, private cdr: ChangeDetectorRef, public storageService: StorageService, private fb: FormBuilder, private zone: NgZone) {
     console.log(data);
@@ -623,7 +623,6 @@ export class SubscriberdialogueComponent implements OnInit, OnDestroy {
     return (control: AbstractControl): ValidationErrors | null => {
       const email = control.value;
       const emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.(in|com)$/;
-
       if (email && !emailPattern.test(email)) {
         return { invalidEmail: true };
       }
@@ -639,9 +638,7 @@ export class SubscriberdialogueComponent implements OnInit, OnDestroy {
       this.isplan = this.lcoDeatails?.isplan;
       this.isdate = this.lcoDeatails?.isdate;
       this.isdateTodate = this.lcoDeatails?.isdatetodate;
-      console.log('PLAN', this.isplan);
-      console.log('DATE', this.isdate);
-      console.log('DATE TO DATE', this.isdateTodate);
+      this.distributor = this.lcoDeatails?.isdistributor;
       this.onoperatorchange_LCO(this.operatorId);
     })
   }
@@ -649,27 +646,15 @@ export class SubscriberdialogueComponent implements OnInit, OnDestroy {
   subLCOdetails() {
     this.userservice.getSublcoDetails(this.role, this.username).subscribe((data: any) => {
       this.lcoDeatails = data;
-      console.log('32423432432423423432');
-
       this.retailerId = this.lcoDeatails?.retailerid;
       this.operatorId = this.lcoDeatails?.retailerid;
       this.operatorname = this.lcoDeatails?.retailername;
       this.SublcopermissionObj = this.lcoDeatails?.permissionlist;
-      console.log('dfdsfdsfjkhsdfkhdsjk', this.SublcopermissionObj);
-
       this.Subwallet = this.SublcopermissionObj?.wallet;
       this.sublcoDiscount = this.lcoDeatails?.sublcodiscount;
       this.isplan = this.SublcopermissionObj.plan;
       this.isdate = this.SublcopermissionObj.date;
       this.isdateTodate = this.SublcopermissionObj.datetodate;
-
-
-
-      console.log('sublcoDiscount', this.sublcoDiscount);
-      console.log('Subwallet', this.Subwallet);
-      console.log('PLAN', this.isplan);
-      console.log('DATE', this.isdate);
-      console.log('DATE TO DATE', this.isdateTodate);
 
     })
   }
@@ -681,11 +666,7 @@ export class SubscriberdialogueComponent implements OnInit, OnDestroy {
       this.isplan = true;
       this.isdate = this.lcoDeatails.date;
       this.isdateTodate = this.lcoDeatails.datetodate;
-      console.log('PLAN', this.isplan);
-      console.log('DATE', this.isdate);
-      console.log('DATE TO DATE', this.isdateTodate);
-      console.log('ADDON ADD', this.subAddonAdd);
-      console.log('ALACARTE', this.subAlacarte);
+
     })
   }
   onoperatorchange_LCO(operator: any): void {
@@ -862,6 +843,7 @@ export class SubscriberdialogueComponent implements OnInit, OnDestroy {
       this.newpackagename = event.target.value;
       this.onSelectionrechargetype(event);
     });
+
     $('#lco').select2({
       placeholder: 'Select a Operator',
       allowClear: true
@@ -869,9 +851,10 @@ export class SubscriberdialogueComponent implements OnInit, OnDestroy {
     $('#lco').on('change', (event: any) => {
       this.lcoid = event.target.value;
       console.log(this.lcoid);
-
       this.onSubscriberStatusChange(event);
     });
+
+
     $('#subscriber').select2({
       placeholder: 'Select a Subscriber',
       allowClear: true
@@ -1558,8 +1541,13 @@ export class SubscriberdialogueComponent implements OnInit, OnDestroy {
 
 
   onoperatorchange(operator: any): void {
+    console.log(operator);
     this.selectedOperator = operator;
     this.lcoid = operator.value;
+    this.lcoareaid = '';
+    this.lcostreetid = '';
+    this.filteredAreas = [];
+    this.filteredStreet = [];
     this.userservice.getAreaListByOperatorid(this.role, this.username, this.lcoid || this.operatorId).subscribe((data: any) => {
       this.area_list = Object.keys(data).map(key => {
         const value = data[key];
@@ -1570,6 +1558,8 @@ export class SubscriberdialogueComponent implements OnInit, OnDestroy {
       this.cdr.detectChanges();
     })
   }
+
+
   onoperatorchange1(operator: any): void {
     this.selectedOperator = operator;
     this.lcoid = operator.value;
@@ -1586,12 +1576,15 @@ export class SubscriberdialogueComponent implements OnInit, OnDestroy {
   onAreaStatusChange(area: any): void {
     this.selectedArea = area;
     this.lcoareaid = area.value;
+    this.lcostreetid = '';
+    this.filteredStreet = [];
     this.userservice.getStreetListByAreaid(this.role, this.username, this.lcoareaid).subscribe((data: any) => {
       this.street_list = Object.keys(data).map(key => {
         const value = data[key];
         const name = key;
         return { name: name, value: value };
       });
+
       this.filteredStreet = this.street_list;
       this.cdr.detectChanges();
     })
@@ -1613,7 +1606,7 @@ export class SubscriberdialogueComponent implements OnInit, OnDestroy {
       this.filteredStreet = this.street_list;
     })
   }
-onStreetStatusChange1(street: any): void {
+  onStreetStatusChange1(street: any): void {
     console.log(this.streetid);
     const match = street.match(/-(\d+)$/);
     this.streetid = match ? match[1] : null;
@@ -1632,15 +1625,11 @@ onStreetStatusChange1(street: any): void {
   }
   filterOperators(event: any): void {
     console.log('event', event);
-
-    // const filterValue = event.target.value.toLowerCase();
     const filterValue = event;
     this.cdr.detectChanges;
     this.filteredOperators = this.lco_list.filter(operator =>
       operator.name.toLowerCase().includes(filterValue)
     );
-    console.log(this.filteredOperators);
-
   }
 
 

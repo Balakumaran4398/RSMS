@@ -23,11 +23,11 @@ export class EditDismembershipComponent implements OnInit {
   availableList: any[] = [];
   addedList: any[] = [];
   selectedItems: Set<any> = new Set();
+  selectedIds: string[] = [];
   availableid: any;
   addedid: any;
   containerData: any;
   containerID: any[] = [];
-  selectedIds: string[] = [];
   todoList: any;
   doneList: any;
   droppedItemId: any;
@@ -46,7 +46,7 @@ export class EditDismembershipComponent implements OnInit {
     this.distributor = data.operatorname;
   }
   ngOnInit(): void {
-    this.userservice.getAvailableAndNotAvailableDistributorList(this.role, this.username, this.distributorid).subscribe((data: any) => {
+    // this.userservice.getAvailableAndNotAvailableDistributorList(this.role, this.username, this.distributorid).subscribe((data: any) => {
       this.userservice.getAvailableAndNotAvailableDistributorList(this.role, this.username, this.distributorid).subscribe((data: any) => {
         this.availableList = data?.available?.map((operator: any) => ({ name: operator.operatorname, id: operator.operatorid })) || [];
         this.addedList = data?.added?.map((operator: any) => ({ name: operator.operatorname, id: operator.operatorid })) || [];
@@ -54,7 +54,7 @@ export class EditDismembershipComponent implements OnInit {
         this.filteredAddedList = [...this.addedList];
 
       });
-    });
+    // });
   }
   isSelected(item: string): boolean {
     return this.selectedItems.has(item);

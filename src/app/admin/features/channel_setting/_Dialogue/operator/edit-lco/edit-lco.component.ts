@@ -47,7 +47,7 @@ export class EditLcoComponent {
     console.log('Received operator data:', data);
     this.operatorid = data.operatorid;
     this.operatorname = data.operatorname,
-    this.operatorname1 = data.operatorname,
+      this.operatorname1 = data.operatorname,
       this.address = data.address,
       this.area = data.area,
       this.state = data.state,
@@ -93,7 +93,7 @@ export class EditLcoComponent {
   customEmailValidator() {
     return (control: AbstractControl): ValidationErrors | null => {
       const email = control.value;
-      const emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.(in|com)$/;
+      const emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.(com|in)$/;
 
       if (email && !emailPattern.test(email)) {
         return { invalidEmail: true };
@@ -101,6 +101,7 @@ export class EditLcoComponent {
       return null;
     };
   }
+
 
   // onSubmit() {
   //   let requestbody = {

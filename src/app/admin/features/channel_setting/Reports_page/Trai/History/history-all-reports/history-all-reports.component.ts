@@ -273,6 +273,19 @@ export class HistoryAllReportsComponent implements OnInit {
         { headerName: 'CAS', field: 'casname', width: 150 },
         { headerName: 'PACKAGE', field: 'productname', width: 300 },
       ]
+    }
+    else if (this.allType == '14') {
+      console.log('colmnDefs', this.allType, '14');
+      this.columnDefs = [
+        { headerName: "S.No", lockPosition: true, valueGetter: 'node.rowIndex+1', headerCheckboxSelection: false, checkboxSelection: false, width: 90 },
+        { headerName: 'PACKAGE ID', field: 'packageid', width: 150 },
+        { headerName: 'PACKAGE NAME', field: 'packagename', width: 200 },
+        { headerName: 'TYPE', field: 'type', width: 200 },
+        { headerName: 'PRODUCT TYPE	', field: 'packagetypedisplay', width: 250 },
+        { headerName: 'OLD REFERENCE ID', field: 'oldreferencename', width: 250 },
+        { headerName: 'NEW REFERENCE ID', field: 'newreferencename', width: 150 },
+        { headerName: 'LOG DATE', field: 'logdate', width: 250 },
+      ]
     } else if (this.allType == '15') {
       this.columnDefs = [
         { headerName: "S.No", lockPosition: true, valueGetter: 'node.rowIndex+1', headerCheckboxSelection: false, checkboxSelection: false, width: 90 },
@@ -1556,7 +1569,7 @@ export class HistoryAllReportsComponent implements OnInit {
     ($('#package') as any).select2('destroy');
   }
   ngAfterViewInit(): void {
-    ($('#package')as any).select2({
+    ($('#package') as any).select2({
       placeholder: 'Select a Package Name',
       allowClear: true
     });
@@ -1566,7 +1579,7 @@ export class HistoryAllReportsComponent implements OnInit {
 
       // this.onSelectionrechargetype(event);
     });
-    ($('#addon')as any).select2({
+    ($('#addon') as any).select2({
       placeholder: 'Select a Addon Name',
       allowClear: true
     });

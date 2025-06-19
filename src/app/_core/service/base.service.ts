@@ -759,6 +759,7 @@ export class BaseService {
     return this.http.get<any[]>(
       BASE_URL + "/subscriber/getAreaListByOperatorid?role=" + role + "&username=" + encodeURIComponent(username) + "&operatorid=" + operatorid);
   }
+
   getStreetListByAreaid(role: any, username: any, areaid: any): Observable<any[]> {
     return this.http.get<any[]>(
       BASE_URL + "/subscriber/getStreetListByAreaid?role=" + role + "&username=" + encodeURIComponent(username) + "&areaid=" + areaid);
@@ -1266,7 +1267,14 @@ export class BaseService {
   bulkSubscriberInsert(requestBody: any): Observable<any[]> {
     return this.http.post<any[]>(BASE_URL + "/subscriber/bulkSubscriberInsert", requestBody, {});
   }
-
+  // -------------------------------------------------------------Bulk Smartcard List --------------------------------
+  getBulkSmartcardRefresh(requestBody: any): Observable<any[]> {
+    return this.http.post<any[]>(BASE_URL + "/bulk/uploadFileforSmartcardRefresh", requestBody, {});
+  }
+  // -------------------------------------------------------------Bulk Operator Creation--------------------------------
+  // getBulkOperatorCreation(requestBody: any): Observable<any[]> {
+  //   return this.http.post<any[]>(BASE_URL + "/subscriber/bulkSubscriberInsert", requestBody, {});
+  // }
   // ------------------------------------------------SPECIAL ROLE BULK OPERATION------------------------
   getAreaChangeSubscriberList(role: any, username: any, operatorid: any,): Observable<HttpResponse<any[]>> {
     return this.http.get<any[]>(
@@ -1564,6 +1572,10 @@ export class BaseService {
     return this.http.get<any[]>(
       BASE_URL + "/report/GetOperatorDashboardPdfReport?role=" + role + "&username=" + encodeURIComponent(username) + "&type=" + type + "&reporttype=" + reporttype + "&operatorid=" + operatorid + '&yearmonth=' + yearmonth + '&fromdate=' + fromdate + '&todate=' + todate, { observe: 'response' });
   }
+  getOperatorDashboard(role: any, username: any, type: any, reporttype: any, operatorid: any, yearmonth: any, fromdate: any, todate: any): Observable<any[]> {
+    return this.http.get<any[]>(
+      BASE_URL + "/report/GetOperatorDashboardPdfReport?role=" + role + "&username=" + encodeURIComponent(username) + "&type=" + type + "&reporttype=" + reporttype + "&operatorid=" + operatorid + '&yearmonth=' + yearmonth + '&fromdate=' + fromdate + '&todate=' + todate,);
+  }
   getOperatorDashboardPDFReport(role: any, username: any, type: any, reporttype: any, operatorid: any, yearmonth: any, fromdate: any, todate: any): Observable<Blob> {
     return this.http.get(BASE_URL + "/report/GetOperatorDashboardPdfReport?role=" + role + "&username=" + encodeURIComponent(username) + "&type=" + type + "&reporttype=" + reporttype + "&operatorid=" + operatorid + '&yearmonth=' + yearmonth + '&fromdate=' + fromdate + '&todate=' + todate, { responseType: 'blob' });
   }
@@ -1846,12 +1858,19 @@ export class BaseService {
   }
 
   // =============================================================MSO REPORTS+=================================
-
+  // ---------------------------------------------------Monthwise--------------------------------------------
   getMonthwisePaymentCollection(role: any, username: any, month: any, year: any, reportgentype: any): Observable<Blob> {
     return this.http.get(BASE_URL + "/report/getMonthwisePaymentCollection?role=" + role + "&username=" + encodeURIComponent(username) + "&month=" + month + "&year=" + year + "&reportgentype=" + reportgentype, { responseType: 'blob' });
   }
   getMonthwisePaymentCollectionData(role: any, username: any, month: any, year: any, reportgentype: any): Observable<any[]> {
     return this.http.get<any[]>(BASE_URL + "/report/getMonthwisePaymentCollection?role=" + role + "&username=" + encodeURIComponent(username) + "&month=" + month + "&year=" + year + "&reportgentype=" + reportgentype,);
+  }
+  // ---------------------------------------------------Yearwise--------------------------------------------
+  getYearwisePaymentCollection(role: any, username: any, year: any, reportgentype: any): Observable<Blob> {
+    return this.http.get(BASE_URL + "/report/getYearlyPaymentCollection?role=" + role + "&username=" + encodeURIComponent(username) + "&year=" + year + "&reportgentype=" + reportgentype, { responseType: 'blob' });
+  }
+  getYearwisePaymentCollectionData(role: any, username: any, year: any, reportgentype: any): Observable<any[]> {
+    return this.http.get<any[]>(BASE_URL + "/report/getYearlyPaymentCollection?role=" + role + "&username=" + encodeURIComponent(username) + "&year=" + year + "&reportgentype=" + reportgentype,);
   }
 
   // -----------------------------------------------ExcludingReport-------------------------------------------------------
@@ -2382,7 +2401,7 @@ export class BaseService {
   }
   // // ============================================================== comboPackageUpdateHistory =====================================
   getcomboPackageUpdateHistoryReport(role: any, username: any, fromdate: any, todate: any, packageid: any, reporttype: any, packagetype: any): Observable<any[]> {
-    return this.http.get<any>(BASE_URL + "/report/getcomboPackageUpdateHistoryReport?role=" + role + "&username=" + username + "&fromdate=" + fromdate + "&todate=" + todate + "&packageid=" + packageid + "&reporttype=" + reporttype + "&packagetype=" + packagetype,)
+    return this.http.get<any>(BASE_URL + "/report/getcomboPackageUpdateHistoryReport?role=" + role + "&username=" + encodeURIComponent(username) + "&fromdate=" + fromdate + "&todate=" + todate + "&packageid=" + packageid + "&reporttype=" + reporttype + "&packagetype=" + packagetype,)
   }
   // ----------------------------------------------------Addon list --------------------------------
   getpackageListforReport(role: any, username: any): Observable<any[]> {
@@ -2393,8 +2412,17 @@ export class BaseService {
     return this.http.get<any[]>(BASE_URL + "/report/getaddonpackageListforReport?role=" + role + "&username=" + encodeURIComponent(username),)
   }
   getcomboPackageUpdateHistoryReportExcel_Pdf(role: any, username: any, fromdate: any, todate: any, packageid: any, reporttype: any, packagetype: any): Observable<Blob> {
-    return this.http.get(BASE_URL + "/report/getcomboPackageUpdateHistoryReport?role=" + role + "&username=" + username + "&fromdate=" + fromdate + "&todate=" + todate + "&packageid=" + packageid + "&reporttype=" + reporttype + "&packagetype=" + packagetype, { responseType: 'blob' });
+    return this.http.get(BASE_URL + "/report/getcomboPackageUpdateHistoryReport?role=" + role + "&username=" + encodeURIComponent(username) + "&fromdate=" + fromdate + "&todate=" + todate + "&packageid=" + packageid + "&reporttype=" + reporttype + "&packagetype=" + packagetype, { responseType: 'blob' });
   }
 
+  // -----------------------------------------------lco transfer------------------------
 
+  getOperatorModelCottonWiseSubscriber(role: any, username: any, operatorid: any, model: any, cartonid: any): Observable<any[]> {
+    return this.http.get<any[]>(BASE_URL + "/allocation/getOperatorModelCottonWiseSubscriber?role=" + role + "&username=" + encodeURIComponent(username) + "&operatorid=" + operatorid + "&model=" + model + "&cartonid=" + cartonid);
+  }
+
+  // ---------------------------------------------lco transfer corton box list ---------------------------------------------
+  getCartonListByOpidModel(role: any, username: any,  model: any, opid: any): Observable<any[]> {
+    return this.http.get<any[]>(BASE_URL + "/allocation/getCartonListByOpidModel?role=" + role + "&username=" + encodeURIComponent(username) + "&model=" + model + "&opid=" + opid);
+  }
 }

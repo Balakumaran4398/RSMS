@@ -76,6 +76,7 @@ export class SubDashboardComponent implements OnInit {
 
   gridHeight: any;
   noofdays: any;
+
   gridOptions = {
     defaultColDef: {
       // width: 205
@@ -357,7 +358,7 @@ export class SubDashboardComponent implements OnInit {
       console.log('PLAN', this.isplan);
       console.log('DATE', this.isdate);
       console.log('DATE TO DATE', this.isdateTodate);
-
+  
     })
   }
   sublcoBalance: any;
@@ -1842,6 +1843,24 @@ export class SubDashboardComponent implements OnInit {
     const dialogRef = this.dialog.open(LcologinpageComponent, {
       data: dialogData,
       // width: '500px',
+    });
+    dialogRef.afterClosed().subscribe(result => {
+      console.log('The dialog was closed', result);
+    });
+  }
+  openLoginPage1(type: any) {
+    let dialogData = {
+      type: type || null,
+      detailsList: this.subdetailsList || [],
+      pairBoxlist: this.subPairedboxid || [],
+      pairSmartcardlist: this.subPairedsmartcard || [],
+      newsubid: this.subscriberid || null,
+      subId: this.subdetailsList?.subid || null,
+      plantype: this.packagePlan || null
+    };
+    const dialogRef = this.dialog.open(SubscriberdialogueComponent, {
+      data: dialogData,
+      width: '500px',
     });
     dialogRef.afterClosed().subscribe(result => {
       console.log('The dialog was closed', result);

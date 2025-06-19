@@ -3,16 +3,41 @@
         <button type="button" class="btn btn-primary bttn" (click)="goBack()"><i
                 class="fa-solid fa-reply mx-2"></i>Back</button>
     </div>
+
+    <div class=" d-flex justify-content-center align-item-center mx-2 mb-2">
+        <mat-radio-group class="radio-group" aria-labelledby="status" [(ngModel)]="dateType">
+            <mat-radio-button class="radio-button" [value]="false" (click)="onTypeBased('false')">Monthly Wise
+            </mat-radio-button>&nbsp;
+            <mat-radio-button class="radio-button" [value]="true" (click)="onTypeBased('true')">Yearly Wise
+            </mat-radio-button>
+        </mat-radio-group>
+    </div>
     <div class="container mb-3">
-        <div class="mb-3">
+
+        <div *ngIf="dateType == false" class="mb-3">
             <h4>MONTHLY DATEWISE PAYMENT COLLECTION </h4>
+        </div>
+
+        <div *ngIf="dateType == true" class="mb-3">
+            <h4>YEARLY WISE PAYMENT COLLECTION </h4>
         </div>
 
         <div class="card col-md-12 d-block justify-content-center align-items-center onlinebox" style="padding: 1rem;">
             <div class="col-12 col-md-12  justify-content-center align-items-center  ">
                 <div class="input_box_old display_datewise justify-content-center align-item-center">
 
-                    <div class="input_box_old display mb-3">
+                    <div *ngIf="dateType" class="input_box_old display mb-3">
+                        <div class="col-12 col-md-6">
+                            <label for="">Select Year</label>
+                        </div>
+                        <div class="col-12 col-md-6">
+                            <select name="year" id="year" [(ngModel)]="selectedYear">
+                                <option value="0" selected>Select Year</option>
+                                <option *ngFor="let year of years" [value]="year">{{ year }}</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div *ngIf="!dateType" class="input_box_old display mb-3">
                         <div class="col-12 col-md-6">
                             <label for="">Select Year</label>
                         </div>
@@ -24,7 +49,7 @@
                         </div>
                     </div>
 
-                    <div class="display mb-3">
+                    <div *ngIf="!dateType" class="display mb-3">
                         <div class="col-12 col-md-6">
                             <label for="">Select Month</label>
                         </div>
@@ -37,7 +62,7 @@
                             </select>
                         </div>
                     </div>
-                    <div class="display1 mb-3">
+                    <div *ngIf="!dateType" class="display1 mb-3">
                         <div class="col-6 col-md-6">
                             <span style="color: #243359;" for="">Reports</span>
                         </div>
@@ -52,15 +77,32 @@
                             </div>
                         </div>
                     </div>
+                    <div *ngIf="dateType" class="display1 mb-3">
+                        <div class="col-6 col-md-6">
+                            <span style="color: #243359;" for="">Reports</span>
+                        </div>
+                        <div class="col-6 col-md-6 display1">
+                            <div class="export-icon col-6 col-md-3 mx-2">
+                                <button class="btn btn-primary me-2 bttn"
+                                    (click)="getYearwisePaymentCollectionData()">Submit</button>
+                            </div>
+                            <div class="export-icon col-6 col-md-3 mx-2" (click)="yearwisePaymentCollectionExcel()">
+                                <img src="/assets/images/icons/Excel.png" alt="Excel Icon" width="40px">
+                                <div class="tooltip">Excel</div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
+
     <ag-grid-angular #agGrid id="myGrid" domLayout='normal' class="ag-theme-alpine table-class" rowAnimation
         [gridOptions]="gridOptions" [columnDefs]="columnDefs" [rowData]="rowData" (gridReady)="onGridReady($event)"
         [enableCellTextSelection]="true">
     </ag-grid-angular>
 </div>
+
 <div *ngIf="type== 'recharge_deduction_including'">
     <div class="mb-3">
         <h4>Operators Recharge and Deduction Report <span> - (Including GST)</span></h4>
@@ -958,6 +1000,12 @@
             <div class="input_box d-flex justify-content-center align-item-center mx-2 mb-2">
                 <select name="cas" id="cas" [(ngModel)]="selectedlcocas">
                     <option disabled>Select One</option>
+                    <option *ngFor="let cas of casList" [value]="cas.value">{{ cas.label }}</option>
+                </select>
+            </div>
+            <div class="input_box d-flex justify-content-center align-item-center mx-2 mb-2">
+                <select name="area" id="area" [(ngModel)]="selectedArea">
+                    <option disabled>Select Area</option>
                     <option *ngFor="let cas of casList" [value]="cas.value">{{ cas.label }}</option>
                 </select>
             </div>

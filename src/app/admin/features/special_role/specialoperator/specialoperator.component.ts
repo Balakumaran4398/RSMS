@@ -172,7 +172,7 @@ export class SpecialoperatorComponent {
       this.operatorid = operator.value;
     }
 
-    
+
     this.swal.Loading();
     this.userservice.OperatorDetails(this.role, this.username, this.operatorid).subscribe(
       (data: any) => {
@@ -243,12 +243,16 @@ export class SpecialoperatorComponent {
 
   }
 
-  New_lco() {
+  New_lco(type: any) {
     console.log(this.businessList);
+    let dialogData = {
+      data: this.businessList,
+      type: type
+    }
     const dialogRef = this.dialog.open(NewLcoComponent, {
       width: '600px',
       panelClass: 'custom-dialog-container',
-      data: this.businessList
+       data: dialogData
     });
 
     dialogRef.afterClosed().subscribe(result => {

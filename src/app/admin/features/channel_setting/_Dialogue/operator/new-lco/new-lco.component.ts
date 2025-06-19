@@ -67,7 +67,7 @@ export class NewLcoComponent {
       area: ['', Validators.required],
       pincode: ['', [Validators.required, Validators.pattern('^[0-9]{6}$')]],
       password: ['', [Validators.required, Validators.minLength(6), Validators.maxLength(12)]],
-      lcobusinessid: ['', Validators.required],
+      lcobusinessid: ['0', Validators.required],
       role: this.role,
       username: this.username
     });

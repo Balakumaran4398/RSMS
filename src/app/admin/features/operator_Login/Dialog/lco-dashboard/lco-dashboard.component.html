@@ -73,9 +73,17 @@
                     Submit
                 </button>
             </div>
-            <div class="col-12 col-md-4 d-flex justify-content-end align-items-center mb-2 ml-auto"
+       
+            <!-- <div class="col-12 col-md-4 d-flex justify-content-end align-items-center mb-2 ml-auto"
                 style="margin-top: -1%;">
                 <button type="submit" (click)="openDialoguePage('lco_inventory')" class="btn bttn"
+                    [disabled]="!isAnyRowSelected" style="background-color:#577266">
+                    ALLOCATED
+                </button>
+            </div> -->
+            <div class="col-12 col-md-4 d-flex justify-content-end align-items-center mb-2 ml-auto"
+                style="margin-top: -1%;">
+                <button type="submit" (click)="openDialoguePage('allocatted')" class="btn bttn"
                     [disabled]="!isAnyRowSelected" style="background-color:#577266">
                     ALLOCATED
                 </button>
@@ -87,9 +95,57 @@
             [enableCellTextSelection]="true">
         </ag-grid-angular>
     </div>
-    <div *ngIf="type !== '6'">
+    <div *ngIf="type !== '6' && type !== '13'">
         <ag-grid-angular #agGrid id="myGrid" domLayout='normal' class="ag-theme-alpine table-class" rowAnimation
             [gridOptions]="gridOptions" [columnDefs]="columnDefs" [rowData]="rowData" (gridReady)="onGridReady($event)"
+            [enableCellTextSelection]="true">
+        </ag-grid-angular>
+    </div>
+
+
+    <div *ngIf="type == '13'">
+        <div class="row justify-content-start align-items-center mb-3">
+            <div class="col-12 col-md-3  mb-2" style="margin-top: -1.5%;">
+                <select id="lco" [(ngModel)]="opName" (ngModelChange)="getLcoTransfer($event)">
+                    <option value="0" selected>Selected Operator Name</option>
+                    <option *ngFor="let operator of filteredOperators" [value]="operator.value">
+                        {{ operator.name }}
+                    </option>
+                </select>
+            </div>
+            <div class="col-12 col-md-3  mb-2" style="margin-top: -1.5%;">
+                <select id="model" [(ngModel)]="model" (ngModelChange)="onModelList($event)" class="form-select">
+                    <option value="0" selected>Select Model</option>
+                    <option *ngFor="let model of filteredModel" [value]="model.modelname">{{ model.modelname }}</option>
+                </select>
+            </div>
+            <div class="col-12 col-md-3  mb-2">
+                <mat-form-field class="w-100" appearance="outline">
+                    <mat-label>Select CartonBox</mat-label>
+                    <mat-select [formControl]="toppings" multiple [(ngModel)]="cortonBox">
+                        <mat-option *ngFor="let box of cortonBoxList" [value]="box">
+                            {{ box }}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </div>
+            <div class="col-12 col-md-1 text-center mb-2" style="margin-top: -1%;">
+                <button type="submit" (click)="getChangeLCO('lcochange')" class="btn bttn"
+                    [disabled]="!isAnyRowSelected" style="background-color:#577266;color: white;">
+                    Update
+                </button>
+            </div>
+            <!-- <div class="col-12 col-md-2 d-flex justify-content-end align-items-center mb-2 ml-auto"
+                style="margin-top: -1%;">
+                <button type="submit" (click)="openDialoguePage('lco_inventory')" class="btn bttn"
+                    [disabled]="!isAnyRowSelected" style="background-color:#577266">
+                    ALLOCATED
+                </button>
+            </div> -->
+        </div>
+        <ag-grid-angular #agGrid id="myGrid" domLayout='normal' class="ag-theme-alpine table-class" rowAnimation
+            [rowSelection]="rowSelection" [gridOptions]="gridOptions" [columnDefs]="columnDefs" [rowData]="rowData"
+            (selectionChanged)="onSelectionChanged()" (gridReady)="onGridReady($event)"
             [enableCellTextSelection]="true">
         </ag-grid-angular>
     </div>

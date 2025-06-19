@@ -502,9 +502,27 @@
                                     <div *ngIf="lcoid.invalid && lcoid.touched" class="text-danger">
                                         LCO Name is required
                                     </div>
-
                                 </div>
-                                <div *ngIf="role == 'ROLE_OPERATOR'" class="col-12 col-md-8">
+
+                                <div class="col-12 col-md-8" *ngIf="role === 'ROLE_OPERATOR' && distributor">
+                                   
+                                    <input type="text" matInput [matAutocomplete]="auto" [(ngModel)]="operatorname"
+                                        name="lcoName" (ngModelChange)="filterOperators($event)"
+                                        placeholder="Select or type Operator" (focus)="onInputFocus()"
+                                        (blur)="onInputBlur()">
+
+                                    <mat-autocomplete #auto="matAutocomplete">
+                                        <mat-option *ngFor="let operator of filteredOperators" [value]="operator.name"
+                                            (onSelectionChange)="onoperatorchange(operator)">
+                                            {{ operator.name }}
+                                        </mat-option>
+                                    </mat-autocomplete>
+
+                                    <div *ngIf="lcoid.invalid && lcoid.touched" class="text-danger">
+                                        LCO Name is required
+                                    </div>
+                                </div>
+                                <div *ngIf="role == 'ROLE_OPERATOR' && !distributor" class="col-12 col-md-8">
                                     {{operatorname}}
                                 </div>
                             </div>

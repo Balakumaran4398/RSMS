@@ -111,6 +111,9 @@ import { LcodashboardsublcoreportComponent } from './features/operator_Login/lco
 import { LcocommisiomddiscountComponent } from './features/channel_setting/lcocommisiomddiscount/lcocommisiomddiscount.component';
 import { LogincredentialComponent } from './features/special_role/logincredential/logincredential.component';
 import { LcocommissioncredentialComponent } from './features/channel_setting/lcocommissioncredential/lcocommissioncredential.component';
+import { SmartcardrefreshComponent } from './features/Bulk_operation/smartcardrefresh/smartcardrefresh.component';
+import { BulkoperatorcreationComponent } from './features/Bulk_operation/bulkoperatorcreation/bulkoperatorcreation.component';
+import { VersionComponent } from './features/version/version.component';
 
 
 const routes: Routes = [
@@ -123,7 +126,7 @@ const routes: Routes = [
       { path: 'STBReport/:id', component: ChartSTBReportComponent, },
       { path: 'packageBase', component: PackageBasedComponent, },
       // ---------------------------------------------Operator-------------------lcoCommissionDashboard
-       { path: 'operator_details', component: OperatorDetailsComponent, },
+      { path: 'operator_details', component: OperatorDetailsComponent, },
       { path: 'lco_recharge/:id', component: LcoRechargeComponent, },
       { path: 'top_subscription', component: TopSubLoginComponent, },
       { path: 'operatorlist', component: OperatorlistComponent, },
@@ -178,6 +181,8 @@ const routes: Routes = [
       { path: 'lcodashboard/:operatorid', component: LcodashboardComponent },
       // -----------------------------------Bulk operation----------------------------------------------
       { path: 'subscriber_import', component: SubscriberImportComponent },
+      { path: 'smartcard_refresh', component: SmartcardrefreshComponent },
+      { path: 'bulk_smartcard_creation', component: BulkoperatorcreationComponent },
       { path: 'activation', component: ActivationComponent },
       { path: 'deactivation', component: DeactivationComponent },
       { path: 'addon_activation', component: AddonActivationComponent },
@@ -245,6 +250,8 @@ const routes: Routes = [
       { path: 'sublco_dashboard_report/:id/:userid/:retailerid', component: LcodashboardsublcoreportComponent },
       { path: 'operator_areachange', component: OperatorareachangeComponent },
       { path: 'discount_smartcard_details/:smartcard', component: DiscountsmartcardComponent },
+      // ---------------------------   version  ------------------------------
+      { path: 'version', component: VersionComponent },
     ]
   }
 ];

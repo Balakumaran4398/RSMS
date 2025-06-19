@@ -170,7 +170,6 @@ export class MsorDialogueportsComponent implements OnInit, OnDestroy {
   casList: any[] = [
     { label: "RCAS", value: 1 },
     { label: "ALL CAS", value: 0 },
-
   ]
   date: any;
   months: any[] = [];
@@ -187,6 +186,7 @@ export class MsorDialogueportsComponent implements OnInit, OnDestroy {
 
   gridApi: any;
   // --------------------lcowiseactive report-----------
+  selectedArea: any = '0';
   selectedlcocas: any = '0';
   selectedlcoModel: any = '0';
   batch: boolean = false;
@@ -242,6 +242,9 @@ export class MsorDialogueportsComponent implements OnInit, OnDestroy {
     else if (this.type == 'lco_active_subscription') {
       this.lcowiseActiveSubCount();
     }
+    // else if (this.type == 'monthly_datewise') {
+    //   this.dateType === true;
+    // }
     // console.log(sublco);
     // this.lcoDeatails = this.sublco?.lcoDeatails;
     // console.log('lcoDeatails', this.lcoDeatails);
@@ -319,7 +322,7 @@ export class MsorDialogueportsComponent implements OnInit, OnDestroy {
   //   this.currentRechargeTypes = this.role === 'ROLE_SUBSCRIBER' ? this.RechargeType1 : this.RechargeType;
   // }
   getMonthwisePaymentCollectionData() {
-    this.swal.Loading();
+    // this.swal.Loading();
     this.userService.getMonthwisePaymentCollectionData(this.role, this.username, this.selectedMonth, this.selectedYear, 3).subscribe((data: any) => {
       console.log(data);
       this.rowData = data;
@@ -327,7 +330,22 @@ export class MsorDialogueportsComponent implements OnInit, OnDestroy {
       if (!this.gridOptions.paginationPageSizeSelector.includes(rowCount)) {
         this.gridOptions.paginationPageSizeSelector.push(rowCount);
       }
-      this.swal.Close();
+    }, err => {
+      this.swal.Error(err?.error?.message);
+      // this.swal.Close();
+    })
+  }
+  getYearwisePaymentCollectionData() {
+    // this.swal.Loading();
+    this.userService.getYearwisePaymentCollectionData(this.role, this.username, this.selectedYear, 3).subscribe((data: any) => {
+      console.log(data);
+      this.rowData = data;
+      const rowCount = this.rowData.length;
+      if (!this.gridOptions.paginationPageSizeSelector.includes(rowCount)) {
+        this.gridOptions.paginationPageSizeSelector.push(rowCount);
+      }
+    }, err => {
+      this.swal.Error(err?.error?.message);
     })
   }
   getSubscriberDetails() {
@@ -722,7 +740,13 @@ export class MsorDialogueportsComponent implements OnInit, OnDestroy {
       this.isSubLCO = false;
     }
   }
-
+  dateType: boolean = false;
+  onTypeBased(type: any) {
+    console.log(type);
+    this.dateType = type === 'true';
+    console.log('dateType:', this.dateType);
+    this.rowData = [];
+  }
 
   onOnlineType(selectedValue: any) {
     this.selectedOnlineType = selectedValue;
@@ -846,8 +870,8 @@ export class MsorDialogueportsComponent implements OnInit, OnDestroy {
   }
 
   onSubscriberStatusChange(selectedOperator: any) {
-    console.log('4543534543543543',selectedOperator);
-    
+    console.log('4543534543543543', selectedOperator);
+
     this.selectedOperator = selectedOperator;
     this.selectedLcoName = selectedOperator.value || this.operatorId || 0;
     this.selectedSubLcoName = 0;
@@ -984,6 +1008,7 @@ export class MsorDialogueportsComponent implements OnInit, OnDestroy {
         { headerName: 'TOTAL', field: 'total', width: 200 },
       ]
     }
+
     else if (this.type == 'user_rechargehistory') {
       this.columnDefs = [
         { headerName: "S.No", lockPosition: true, valueGetter: 'node.rowIndex+1', headerCheckboxSelection: false, checkboxSelection: false, width: 90, filter: false },
@@ -1161,7 +1186,7 @@ export class MsorDialogueportsComponent implements OnInit, OnDestroy {
           Swal.close();
           Swal.fire({
             title: 'Error!',
-            text: error?.error?.message || 'There was an issue generating the PDF CAS form report.',
+            text: error?.error?.message || 'There was an issue generating the Excel report.',
             icon: 'error',
             confirmButtonText: 'Ok'
           });
@@ -1179,7 +1204,7 @@ export class MsorDialogueportsComponent implements OnInit, OnDestroy {
         Swal.showLoading(null);
       }
     });
-    // this.swal.Loading();
+    this.swal.Loading();
     this.userService.getMonthwisePaymentCollection(this.role, this.username, this.selectedMonth, this.selectedYear, 1)
       .subscribe((x: Blob) => {
         const blob = new Blob([x], { type: 'application/pdf' });
@@ -1199,7 +1224,85 @@ export class MsorDialogueportsComponent implements OnInit, OnDestroy {
           Swal.close();
           Swal.fire({
             title: 'Error!',
-            text: error?.error?.message || 'There was an issue generating the PDF CAS form report.',
+            text: error?.error?.message || 'There was an issue generating the PDF report.',
+            icon: 'error',
+            confirmButtonText: 'Ok'
+          });
+        });
+  }
+
+  // --------------------------------------------------YearWise---------------------------
+  yearwisePaymentCollectionExcel() {
+    this.submitted = true;
+    if (!this.selectedYear && !this.selectedMonth && !this.selectedDate) {
+      this.submitted = true;
+    }
+    Swal.fire({
+      title: "Processing",
+      text: "Please wait while the report is being generated...",
+      showConfirmButton: false,
+      didOpen: () => {
+        Swal.showLoading(null);
+      }
+    });
+    this.swal.Loading();
+    this.userService.getYearwisePaymentCollection(this.role, this.username, this.selectedYear, 2)
+      .subscribe((x: Blob) => {
+        const blob = new Blob([x], { type: 'application/xlsx' });
+        const data = window.URL.createObjectURL(blob);
+        const link = document.createElement('a');
+        link.href = data;
+        link.download = (this.type + '-' + this.selectedYear + ".xlsx").toUpperCase();
+        link.dispatchEvent(new MouseEvent('click', { bubbles: true, cancelable: true, view: window }));
+        setTimeout(() => {
+          window.URL.revokeObjectURL(data);
+          link.remove();
+        }, 100);
+        Swal.close();
+      },
+        (error: any) => {
+          Swal.close();
+          Swal.fire({
+            title: 'Error!',
+            text: error?.error?.message || 'There was an issue generating the Excel report.',
+            icon: 'error',
+            confirmButtonText: 'Ok'
+          });
+        });
+  }
+  yearwisePaymentCollectionPdf() {
+    if (!this.selectedYear && !this.selectedMonth && !this.selectedDate) {
+      this.submitted = true;
+    }
+    Swal.fire({
+      title: "Processing",
+      text: "Please wait while the report is being generated...",
+      showConfirmButton: false,
+      didOpen: () => {
+        Swal.showLoading(null);
+      }
+    });
+    this.swal.Loading();
+    this.userService.getYearwisePaymentCollection(this.role, this.username, this.selectedYear, 1)
+      .subscribe((x: Blob) => {
+        const blob = new Blob([x], { type: 'application/pdf' });
+        const data = window.URL.createObjectURL(blob);
+        const link = document.createElement('a');
+        link.href = data;
+
+        link.download = (this.type + '-' + this.selectedYear + ".pdf").toUpperCase();
+        link.dispatchEvent(new MouseEvent('click', { bubbles: true, cancelable: true, view: window }));
+        setTimeout(() => {
+          window.URL.revokeObjectURL(data);
+          link.remove();
+        }, 100);
+        Swal.close();
+      },
+        (error: any) => {
+          Swal.close();
+          Swal.fire({
+            title: 'Error!',
+            text: error?.error?.message || 'There was an issue generating the PDF report.',
             icon: 'error',
             confirmButtonText: 'Ok'
           });

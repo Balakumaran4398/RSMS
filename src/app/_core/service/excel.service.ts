@@ -5,7 +5,7 @@ import { Injectable } from '@angular/core';
 import * as Excel from 'exceljs';
 
 @Injectable({
-  providedIn: 'root', // <-- this registers the service globally
+  providedIn: 'root',
 })
 export class ExcelService {
 
@@ -179,6 +179,78 @@ export class ExcelService {
         type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
       });
       fs.saveAs(blob, 'Bulk Box Activation.xlsx');
+    });
+  }
+  async generateSmartcardRefreshExcel() {
+    const header = ['Smartcard (Mandatory)'];
+    const workbook = new Excel.Workbook();
+    const worksheet = workbook.addWorksheet('Sharing Data');
+    const headerRow = worksheet.addRow(header);
+    headerRow.eachCell((cell) => {
+      cell.fill = {
+        type: 'pattern',
+        pattern: 'solid',
+        fgColor: { argb: '326D41' },
+      };
+      cell.font = {
+        color: { argb: 'FFFFFF' },
+        bold: true,
+      };
+      cell.alignment = {
+        horizontal: 'center',
+        vertical: 'middle',
+      };
+      cell.border = {
+        top: { style: 'thin' },
+        left: { style: 'thin' },
+        bottom: { style: 'thin' },
+        right: { style: 'thin' },
+      };
+    });
+    worksheet.getColumn(1).width = 30;
+    headerRow.height = 30;
+    worksheet.addRow([]);
+    workbook.xlsx.writeBuffer().then((data: any) => {
+      const blob = new Blob([data], {
+        type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+      });
+      fs.saveAs(blob, 'Bulk Smartcard Refresh.xlsx');
+    });
+  }
+  async generateOpearateCreationExcel() {
+    const header = ['Smartcard (Mandatory)'];
+    const workbook = new Excel.Workbook();
+    const worksheet = workbook.addWorksheet('Sharing Data');
+    const headerRow = worksheet.addRow(header);
+    headerRow.eachCell((cell) => {
+      cell.fill = {
+        type: 'pattern',
+        pattern: 'solid',
+        fgColor: { argb: '326D41' },
+      };
+      cell.font = {
+        color: { argb: 'FFFFFF' },
+        bold: true,
+      };
+      cell.alignment = {
+        horizontal: 'center',
+        vertical: 'middle',
+      };
+      cell.border = {
+        top: { style: 'thin' },
+        left: { style: 'thin' },
+        bottom: { style: 'thin' },
+        right: { style: 'thin' },
+      };
+    });
+    worksheet.getColumn(1).width = 30;
+    headerRow.height = 30;
+    worksheet.addRow([]);
+    workbook.xlsx.writeBuffer().then((data: any) => {
+      const blob = new Blob([data], {
+        type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+      });
+      fs.saveAs(blob, 'Bulk Operate Creation.xlsx');
     });
   }
 
@@ -1535,7 +1607,7 @@ export class ExcelService {
       });
     });
     worksheet.columns = [
-         { key: 'a', width: 10 }, // S.NO
+      { key: 'a', width: 10 }, // S.NO
       { key: 'b', width: 30 }, // CHANNEL NAME PREVIOUS
       { key: 'c', width: 30 }, // CHANNEL NAME NEW
       { key: 'd', width: 40 }, // BROADCASTER NAME PREVIOUS

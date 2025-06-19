@@ -21,6 +21,7 @@ export class InventorycortonboxComponent implements OnInit {
   selectOperator: any;
   selectSubscriber: any;
   selectArea: any;
+  selectLco: any;
   selectedPackage: any;
   days: any;
   selectStreet: any;
@@ -40,6 +41,7 @@ export class InventorycortonboxComponent implements OnInit {
   filteredOperatorList: any[] = [];
 
   filteredAreaList: any[] = [];
+  filteredLcoList: any[] = [];
   filteredStreetList: any[] = [];
   filteredPackageList: any[] = [];
 
@@ -58,6 +60,9 @@ export class InventorycortonboxComponent implements OnInit {
   f_date: any;
   rechargetype: any;
   subdetailsList: any;
+
+  userid: any;
+  accessip: any;
   constructor(public dialogRef: MatDialogRef<InventorycortonboxComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any, public dialog: MatDialog, private userservice: BaseService, private cdr: ChangeDetectorRef, private excelService: ExcelService, private storageService: StorageService, private swal: SwalService) {
     this.type = data.type;
@@ -71,6 +76,8 @@ export class InventorycortonboxComponent implements OnInit {
 
     this.username = storageService.getUsername();
     this.role = storageService.getUserRole();
+    this.userid = storageService.getUserid();
+    this.accessip = storageService.getAccessip();
   }
   ngOnInit(): void {
     this.operatorlist();
@@ -83,10 +90,12 @@ export class InventorycortonboxComponent implements OnInit {
   }
   lcoDeatails: any;
   operatorid: any;
+  distributor: boolean = false;
   operatorIdoperatorId() {
     this.userservice.getOpDetails(this.role, this.username).subscribe((data: any) => {
       this.lcoDeatails = data;
       this.operatorid = this.lcoDeatails?.operatorid;
+      this.distributor = this.lcoDeatails?.isdistributor;
       this.onAreaList(this.operatorid)
     })
   }
@@ -141,6 +150,9 @@ export class InventorycortonboxComponent implements OnInit {
     }
   }
   onStreetList(type: any) {
+    console.log(type);
+    console.log(this.selectArea);
+
     if (this.selectOperator || this.operatorid) {
       this.userservice.getStreetListByAreaid(this.role, this.username, this.selectArea)
         .subscribe((data: any) => {
@@ -318,10 +330,8 @@ export class InventorycortonboxComponent implements OnInit {
   logValues(): void {
     const formattedDate = this.date ? this.formatDate(this.date) : 'No date selected';
     console.log('Selected Date:', formattedDate);
-
     this.cur_date = formattedDate;
     console.log(this.cur_date);
-
   }
   upload() {
     console.log(this.date);
@@ -329,7 +339,7 @@ export class InventorycortonboxComponent implements OnInit {
     this.userservice.getInventoryUpdateDate(this.role, this.username, this.cur_date)
       .subscribe((res: any) => {
         this.swal.success(res?.message);
-
+        this.logCreate('Login Update Button Clicked', this.date, this.cur_date);
       }, (err) => {
         this.swal.Error(err?.error?.message);
       });
@@ -405,4 +415,19 @@ export class InventorycortonboxComponent implements OnInit {
       this.isDisabled = true
     }
   }
+
+  logCreate(action: any, remarks: any, data: any) {
+    let requestBody = {
+      access_ip: this.accessip,
+      action: action,
+      remarks: remarks,
+      data: data,
+      user_id: this.userid,
+    }
+    this.userservice.createLogs(requestBody).subscribe((res: any) => {
+      console.log(res);
+
+    })
+  }
+
 }

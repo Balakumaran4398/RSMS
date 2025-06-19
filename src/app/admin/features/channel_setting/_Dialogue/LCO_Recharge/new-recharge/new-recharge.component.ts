@@ -17,15 +17,15 @@ export class NewRechargeComponent implements OnInit {
   username: any;
   id: any;
   role: any;
-  type: number = 2;
+  type: number = 1;
   operatorList: any[] = [];
 
   isshow: boolean = false;
 
   payment: any[] = [
-    { lable: "Cheque", value: 1 },
-    { lable: "Cash", value: 2 },
-    { lable: "Account Transfer", value: 3 },
+    { lable: "Cheque", value: 0 },
+    { lable: "Cash", value: 1 },
+    { lable: "Account Transfer", value: 2 },
   ];
   filteredOperators: any[] = [];
   selectedOperator: any;
@@ -92,7 +92,7 @@ export class NewRechargeComponent implements OnInit {
       console.log(this.isshow);
 
       if (this.isshow) {
-        this.payment = this.payment.filter(item => item.value !== 2);
+        this.payment = this.payment.filter(item => item.value !== 1);
       }
     });
   }

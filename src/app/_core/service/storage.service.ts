@@ -5,6 +5,7 @@ const USER_KEY = 'auth-user'
 const USERNAME = 'username'
 const ACCESSIP = 'access_ip'
 const ID = 'id'
+const NAVLIST = 'navigationmap'
 
 @Injectable({
   providedIn: 'root'
@@ -39,6 +40,12 @@ export class StorageService {
     window.sessionStorage.removeItem(ACCESSIP);
     window.sessionStorage.setItem(ACCESSIP, access_ip);
   }
+  public saveNavList(navigationmap: any): void {
+    console.log('1111111111');
+
+    window.sessionStorage.removeItem(NAVLIST);
+    window.sessionStorage.setItem(NAVLIST, JSON.stringify(navigationmap));
+  }
   public saveID(id: any): void {
     window.sessionStorage.removeItem(ID);
     window.sessionStorage.setItem(ID, id);
@@ -72,6 +79,21 @@ export class StorageService {
       const parsedUser = JSON.parse(user);
       let UserID = parsedUser.id;
       return parsedUser;
+    }
+    return {};
+  }
+  public getNavList(): any {
+    console.log('1111111111111111111111eeeeeeeeeeffffffffff33333333333');
+
+    // const user = window.sessionStorage.getItem(NAVLIST);
+    const user = sessionStorage.getItem(NAVLIST);
+    // if (user) {
+    //   console.log(user);
+    //   const parsedUser = JSON.parse(user);
+    //   return parsedUser;
+    // }
+    if (user) {
+      return JSON.parse(user); 
     }
     return {};
   }
@@ -118,5 +140,15 @@ export class StorageService {
   public getAccessip(): any {
     const user = this.getAccessIP();
     return user.access_ip || '';
+  }
+  // public getNavigationList(): any {
+  //   console.log('11111111111,dfdfdsff');
+
+  //   const user = this.getNavList();
+  //   console.log('User from getNavigationList:', user);
+  //   return user.navigationmap || {};
+  // }
+  public getNavigationList(): any {
+    return this.getNavList(); // do NOT access user.navigationmap
   }
 }

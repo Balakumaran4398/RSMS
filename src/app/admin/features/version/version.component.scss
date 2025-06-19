@@ -1,0 +1,102 @@
+.ver {
+    padding: 2%;
+    background-color: var(--primary-color);
+    color: white;
+}
+
+#videoContainer {
+    display: none;
+    margin-top: 20px;
+}
+
+.cardContainer {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 2%;
+    padding: 10px 20px;
+}
+
+.card {
+    cursor: pointer;
+    padding: 20px;
+    border-radius: 5px;
+    background-color: rgb(91 128 186);
+    ;
+    background-size: cover;
+    background-position: center;
+    flex: 1 1 calc(33% - 20px);
+    max-width: calc(33.33% - 20px);
+    margin: 15px 0;
+    box-shadow: 3px 4px 8px 2px rgba(0, 0, 0, 0.5);
+    display: -webkit-inline-box;
+
+    gap: 15px;
+    align-items: center;
+    justify-content: flex-start;
+    position: relative;
+}
+
+.royal-card {
+    color: rgb(247, 247, 247);
+    box-shadow: rgba(50, 50, 93, 0.25) 0px 30px 60px -12px inset, rgba(0, 0, 0, 0.3) 0px 18px 36px -18px inset !important;
+
+}
+
+
+.royal-card:hover {
+    transform: scale(1.05);
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3);
+}
+
+.royal-card:hover .tooltip {
+    opacity: 1;
+}
+
+.card .tooltip {
+    position: absolute;
+    bottom: 80px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgba(0, 0, 0, 0.6);
+    color: white;
+    padding: 5px 10px;
+    border-radius: 10px;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.card:hover .tooltip {
+    opacity: 1;
+}
+@media (max-width: 1200px) {
+    .card {
+      flex: 1 1 calc(50% - 20px);
+      max-width: calc(50% - 20px);
+    }
+  }
+  
+  @media (max-width: 850px) {
+    .card {
+      flex: 1 1 calc(90%);
+      max-width: calc(90%);
+    }
+  }
+  
+  @media (max-width: 650px) {
+    .card {
+      flex: 1 1 100%;
+      max-width: 100%;
+    }
+  }
+  
+  @media (max-width: 350px) {
+    .card i {
+      display: none;
+    }
+  }
+  
+  .pannel {
+    border: none !important;
+    box-shadow: none !important;
+    border-color: transparent !important;
+  }

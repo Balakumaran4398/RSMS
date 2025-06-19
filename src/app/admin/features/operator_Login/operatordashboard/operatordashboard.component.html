@@ -1,6 +1,4 @@
 <div *ngIf="role == 'ROLE_OPERATOR'">
-
-
     <div class="row" style="padding: 10px;">
         <div class="col-12 col-md-7 display justify-content-center align-item-center balance gap-3">
             <div class="col-12 col-lg-4 mb-3 ">
@@ -198,6 +196,15 @@
                     <div class="mt-2 mb-2 text-center text">Area Wise Subscriber</div>
                 </div>
             </div>
+            <div *ngIf="distributor" class="col-6 col-lg-1-7 ">
+                <div class="card box d-flex flex-column justify-content-between p-3" (click)="openLCO_Dialog(13)">
+                    <div class="d-flex justify-content-between w-100">
+                        <i class='bx bxs-group'></i>
+                        <!-- <span class="fw-bold">{{operatorDetailsCount?.areachange}}</span> -->
+                    </div>
+                    <div class="mt-2 mb-2 text-center text">LCO Transfer</div>
+                </div>
+            </div>
         </div>
     </div>
 
@@ -254,10 +261,10 @@
                     <h5>{{operatorBalance}} </h5>
                 </div>
             </div>
-            <div  class="card box d-flex flex-column justify-content-between p-3">
+            <div class="card box d-flex flex-column justify-content-between p-3">
                 <div class="mt-2 mb-3 text-center text1">Current Balance</div>
                 <div class="d-flex justify-content-center align-item-center ">
-                    <i  *ngIf="wallet" class="fa-solid fa-indian-rupee-sign rupee mx-2"></i>
+                    <i *ngIf="wallet" class="fa-solid fa-indian-rupee-sign rupee mx-2"></i>
                     <h5 *ngIf="wallet">{{operatorBalance}} </h5>
                     <p *ngIf="!wallet" style="color: rgb(70, 70, 70);">{{'No Wallet available'}} </p>
                 </div>

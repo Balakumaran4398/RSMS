@@ -142,8 +142,7 @@
                 </div>
 
                 <div class="col-12 col-md-7">
-                    <input type="text" [(ngModel)]="edituserid" [value]="data?.data?.username" 
-                        placeholder="Enter User Name" #idInput="ngModel">
+                    <input type="text" [(ngModel)]="edituserid"  name="edituserid" [value]="edituserid" placeholder="Enter User Name"  #idInput="ngModel" required>
                     <div *ngIf="idInput.invalid && idInput.touched" class="text-danger">
                         User Name is required.
                     </div>
@@ -159,7 +158,7 @@
                 </div>
                 <div class="col-12 col-md-7">
                     <input type="password" [(ngModel)]="editPassword" name="password" placeholder="Enter Password"
-                        #passwordInput="ngModel" required >
+                        #passwordInput="ngModel" required>
                     <!-- minlength="8" pattern="^(?=.*[A-Za-z])(?=.*\d).+$" -->
                     <div *ngIf="passwordInput.invalid && passwordInput.touched" class="text-danger">
                         <div *ngIf="passwordInput.errors?.['required']">Password is required.</div>
@@ -248,7 +247,8 @@
                 </div> -->
                 <div class="toggle">
                     <label class="switch">
-                        <input type="checkbox" id="lcoLabel" name="lcoLabel" [(ngModel)]="isactive" (change)="onToggleChange()">
+                        <input type="checkbox" id="lcoLabel" name="lcoLabel" [(ngModel)]="isactive"
+                            (change)="onToggleChange()">
                         <span class="slider"></span>
                     </label>
                 </div>

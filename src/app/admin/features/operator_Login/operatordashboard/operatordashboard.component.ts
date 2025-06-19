@@ -56,6 +56,7 @@ export class OperatordashboardComponent implements OnInit {
   walletshare: boolean = false;
 
   retailerid: any;
+  distributor: boolean = false;
   constructor(private router: Router, private userService: BaseService, private storageService: StorageService, public dialog: MatDialog,) {
     this.role = storageService.getUserRole();
     this.username = storageService.getUsername();
@@ -152,7 +153,7 @@ export class OperatordashboardComponent implements OnInit {
       this.operatorBalance = this.lcoDeatails?.balance;
       this.LcorechargeCount = this.lcoDeatails?.todayrechargecount;
       this.isonlineRecharge = this.lcoDeatails?.isonlinepayment;
-
+      this.distributor = this.lcoDeatails?.isdistributor;
 
       this.operataDetailsCount(this.operatorId)
       this.getbar(this.operatorId)

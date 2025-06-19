@@ -58,13 +58,14 @@ export class NavComponent implements OnInit, AfterViewInit {
   operatorname: any;
   operatorBalance: any;
   distributor: boolean = false;
+  navigationList: any = {};
   constructor(private router: Router, private breakpointObserver: BreakpointObserver, private cd: ChangeDetectorRef, private dataService: DataService, private cdr: ChangeDetectorRef, private userservice: BaseService, private storageservice: StorageService) {
-    // this.breakpointChanged();
     this.role = storageservice.getUserRole();
     this.username = storageservice.getUsername();
+    this.navigationList = storageservice.getNavigationList();
     console.log(this.role);
     console.log(this.username);
-
+    console.log(this.navigationList);
     if (this.role.includes('ROLE_ADMIN')) {
       this.isUser = true;
       this.isReception = false;
@@ -208,6 +209,9 @@ export class NavComponent implements OnInit, AfterViewInit {
     }
   }
 
+
+
+
   operatorIdoperatorId() {
     this.userservice.getOpDetails(this.role, this.username).subscribe((data: any) => {
       this.lcoDeatails = data;
@@ -216,6 +220,7 @@ export class NavComponent implements OnInit, AfterViewInit {
       this.operatorBalance = this.lcoDeatails?.balance;
       this.distributor = this.lcoDeatails?.isdistributor;
     })
+
   }
 
 

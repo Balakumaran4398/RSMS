@@ -36,18 +36,18 @@ export class LoginsettingsComponent {
   username: any;
   id: any;
   role: any;
-  userid:any;
-  accessip:any;
+  userid: any;
+  accessip: any;
   type: number = 0;
-  
+
   constructor(public dialog: MatDialog, public userservice: BaseService, storageService: StorageService, private swal: SwalService,) {
     this.username = storageService.getUsername();
     this.role = storageService.getUserRole();
     this.userid = storageService.getUserid();
     this.accessip = storageService.getAccessip();
-    console.log('role',this.role);
-   
-    
+    console.log('role', this.role);
+
+
   }
   columnDefs: any[] = [
     {
@@ -85,36 +85,48 @@ export class LoginsettingsComponent {
         const div = document.createElement('div');
         div.appendChild(editButton);
         return div;
-      } 
+      }
     },
-    // {
-    //   headerName: "CHANGE SIDENAV", width: 200,
-    //   cellRenderer: (params: any) => {
-    //     const editButton = document.createElement('button');
-    //     editButton.innerHTML = '<i class="fas fa-list" style="font-size:25px;color:#035678"></i>';
-    //     editButton.style.backgroundColor = 'transparent';
-    //     editButton.style.color = '(rgb(29 1 11)';
-    //     editButton.style.border = 'none';
-    //     editButton.title = 'Operator List';
-    //     editButton.style.cursor = 'pointer';
-    //     editButton.style.marginRight = '6px';
-    //     editButton.addEventListener('click', () => {
-    //           this.openEditDismembershipDialog(params.data);
-    //     });
-    //     const div = document.createElement('div');
-    //     div.appendChild(editButton);
-    //     return div;
-    //   }
-    // },
-  ];
-    openEditDismembershipDialog(data: any) {
-      const dialogRef = this.dialog.open(SidenavpermissionComponent, {
-        width: '800px',
-        // height: '1000px',
-        panelClass: 'custom-dialog-container',
-        data: data
-      });
+ 
+    {
+      headerName: "CHANGE SIDENAV", width: 200,
+      cellRenderer: (params: any) => {
+        const allowedRoles = ['Admin', 'Special', 'Reception', 'cus_service', 'service_center'];
+
+        if (!allowedRoles.includes(params.data.role)) {
+          return '';
+        }
+
+        const editButton = document.createElement('button');
+        editButton.innerHTML = '<i class="fas fa-list" style="font-size:25px;color:#035678"></i>';
+        editButton.style.backgroundColor = 'transparent';
+        editButton.style.color = 'rgb(29 1 11)';
+        editButton.style.border = 'none';
+        editButton.title = 'Operator List';
+        editButton.style.cursor = 'pointer';
+        editButton.style.marginRight = '6px';
+
+        editButton.addEventListener('click', () => {
+          this.openEditDismembershipDialog(params.data);
+        });
+
+        const div = document.createElement('div');
+        div.appendChild(editButton);
+        return div;
+      }
     }
+
+  ];
+  openEditDismembershipDialog(data: any) {
+    console.log(data);
+
+    const dialogRef = this.dialog.open(SidenavpermissionComponent, {
+      width: '800px',
+      // height: '1000px',
+      panelClass: 'custom-dialog-container',
+      data: data
+    });
+  }
   ngOnInit(): void {
     this.userservice.getInvent_License_Extend(this.role, this.username).subscribe((data: any) => {
       console.log(data);
@@ -163,7 +175,7 @@ export class LoginsettingsComponent {
       console.log('The dialog was closed');
     });
   }
-    logCreate(action: any, remarks: any, data: any) {
+  logCreate(action: any, remarks: any, data: any) {
     let requestBody = {
       access_ip: this.accessip,
       action: action,

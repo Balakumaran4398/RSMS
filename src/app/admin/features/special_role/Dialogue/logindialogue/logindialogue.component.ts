@@ -50,7 +50,7 @@ export class LogindialogueComponent implements OnInit {
   password: any;
 
 
-  edituserid: any;
+  edituserid: any='';
   editPassword: any;
   isactive: boolean = false;
   edituserid1: any;
@@ -71,6 +71,8 @@ export class LogindialogueComponent implements OnInit {
     console.log(data);
     this.type = data.type;
     this.edituserid = data?.data?.username;
+    console.log(this.edituserid);
+    
     this.editPassword = data?.data?.password;
     this.isactive = data?.data?.valid;
     this.edituserid1 = data?.data?.username;
@@ -141,9 +143,6 @@ export class LogindialogueComponent implements OnInit {
       return;
     }
     console.log(this.isactive);
-    console.log('new', this.edituserid);
-    console.log('old', this.edituserid1);
-
     const requestBody = {
       role: this.role,
       username: this.username,
@@ -156,10 +155,10 @@ export class LogindialogueComponent implements OnInit {
     };
     console.log(requestBody);
 
-    this.swal.Loading();
+    // this.swal.Loading();
     this.userservice.updateUser(requestBody)
       .subscribe((res: any) => {
-        // this.swal.success(res?.message);
+        this.swal.success(res?.message);
         const data = `User Name: ${this.edituserid}, ` + ` Password: ${this.editPassword},` + ` Status: ${this.isactive},`;
         const remark = `User Name: ${this.edituserid1}, ` + ` Password: ${this.editPassword1},` + ` Status: ${this.isactive1},`;
         this.logCreate('Login Update Button Clicked', remark, data);
@@ -184,5 +183,9 @@ export class LogindialogueComponent implements OnInit {
       console.log(res);
 
     })
+  }
+  onedit(op: any) {
+    console.log(op);
+
   }
 }

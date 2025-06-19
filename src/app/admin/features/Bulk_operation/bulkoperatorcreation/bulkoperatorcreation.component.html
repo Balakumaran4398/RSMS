@@ -1,0 +1,60 @@
+<section>
+    <div class=" title mb-8">
+        <p>BULK OPERATOR CREATION</p>
+    </div>
+     <div class="" style="margin:30px auto;max-width: 500px;">
+        <div class="card p-4 file ">
+            <div class="d-flex justify-content-center align-items-center m-3">
+                <img src="/assets/images/icons/xlsx.png" class="img" alt="File Icon">
+                <span style="margin: 0 15px; display: inline-block; text-align: center;padding: 0 10px;">
+                    ---&gt;
+                </span>
+                <img src="/assets/images/icons/dashboard.png" class="img" alt="File Icon">
+            </div>
+            <div class="mb-3">
+                <div class="mb-3">
+                    <span class="p"> 1) Must have kept the data according to the format file <span
+                            style="font-weight: 600;">(Please
+                            check the format file by below download option)</span>
+                        otherwise that subscriber details <span style="color: red;">will be ignore</span>.
+                    </span>
+                </div>
+                <div class="mb-3">
+                    <span class="p">
+                        2) If you don't feel the need to enter any data in non-mandatory columns, even then you will
+                        <span style="color: red;">should not enter any data or remarks</span>.
+                    </span>
+                </div>
+            </div>
+            <a class="mb-3" (click)="generateExcel()" style="cursor: pointer;">* Download Format File</a>
+            <div class="checkbox-text mb-3">
+                <div class="checkbox-content">
+                    <input type="checkbox" id="terms" (change)="onCheckboxChange($event)">
+                    <label for="confirmPass">I agree to the above statement</label>
+                </div>
+            </div>
+            <div class="d-flex">
+                <div class="col-4 col-md-4 col-sm-6 mb-3">
+                    <label class="btn " [style.background-color]="isCheckboxChecked ? '#3d5e80' : '#d3d3d3'"
+                        [style.color]="isCheckboxChecked ? 'white' : 'black'"
+                        [style.cursor]="isCheckboxChecked ? 'pointer' : 'not-allowed'">
+                        <i class="fa fa-plus"></i> Choose
+                        <input type="file" style="display: none;" accept=".xls,.xlsx,.csv" [disabled]="!isCheckboxChecked"
+                            (change)="handleFileInput($event)">
+                    </label>
+                </div>
+                <div class="col-8 col-md-8 col-sm-6 mb-3">
+                    <span style="color:#0a21d0">{{ filePath }} </span>
+                </div>
+            </div>
+
+
+            <div class="d-flex justify-content-end align-items-center mt-3">
+                <button type="submit" class="btn btn-success" [disabled]="!isCheckboxChecked || !isFileSelected"
+                    (click)="submit()">
+                    Submit 
+                </button>
+            </div>
+        </div>
+    </div>
+</section>

@@ -9,6 +9,7 @@ import { SwalService } from 'src/app/_core/service/swal.service';
 import Swal from 'sweetalert2';
 import { Location } from '@angular/common';
 import { InventorycortonboxComponent } from '../../../inventory_role/Dialogue/inventorycortonbox/inventorycortonbox.component';
+import { SpecialeditbulkpackageComponent } from '../../../special_role/Dialogue/Bulk operation/specialeditbulkpackage/specialeditbulkpackage.component';
 
 @Component({
   selector: 'app-lco-dashboard',
@@ -20,7 +21,7 @@ export class LcoDashboardComponent implements OnInit {
   username: any;
   type: any;
   columnDefs: any[] = [];
-  rowData: any;
+  rowData: any = [];
   public rowSelection: any = "multiple";
   rowData1: any;
   gridOptions = {
@@ -65,6 +66,7 @@ export class LcoDashboardComponent implements OnInit {
   toppingList: any[] = [];
   cortonBox: any[] = [];
   model: any;
+  opName: any;
 
   isAnyRowSelected: any = false;
   selectedIds: number[] = [];
@@ -73,9 +75,11 @@ export class LcoDashboardComponent implements OnInit {
   isemi: any;
   hasSelectedRows: boolean = true;
   isRowSelected: boolean = false;
-
+  filteredOperators: any[] = [];
   constructor(private route: ActivatedRoute, private location: Location, public dialog: MatDialog, private userService: BaseService, private router: Router, private storageServive: StorageService, private excelService: ExcelService, private swal: SwalService,) {
     this.type = this.route.snapshot.paramMap.get('id');
+    console.log(this.type);
+
     this.role = storageServive.getUserRole();
     this.username = storageServive.getUsername();
   }
@@ -95,13 +99,29 @@ export class LcoDashboardComponent implements OnInit {
 
     if (this.type == '6') {
       this.getModelList();
-      this.getNotAllocattedDetails();
+
+      // this.getInventoryDetails(this.lcoId);
+      // this.getNotAllocattedDetails();
+
+    }
+    if (this.type == '13') {
+      this.getModelList();
+      // this.getInventoryDetails(this.lcoId);
+      // this.getNotAllocattedDetails();
     }
 
   }
 
   ngAfterViewInit() {
-    ($('#model')as any).select2({
+    ($('#lco') as any).select2({
+      placeholder: 'Select LCO',
+      allowClear: true
+    });
+    $('#lco').on('change', (event: any) => {
+      this.opName = event.target.value;
+      this.getLcoTransfer(this.opName);
+    });
+    ($('#model') as any).select2({
       placeholder: 'Select Model',
       allowClear: true
     });
@@ -109,14 +129,24 @@ export class LcoDashboardComponent implements OnInit {
       this.model = event.target.value;
       this.onModelList(this.model);
     });
+    ($('#lcotransfer_model') as any).select2({
+      placeholder: 'Select Model',
+      allowClear: true
+    });
+    $('#lcotransfer_model').on('change', (event: any) => {
+      this.model = event.target.value;
+      this.getLcoTransferCortonBoxList(this.model);
+    });
   }
   onModelList(event: any) {
     console.log(event);
+    this.cortonBoxList = [];
     this.userService.getCortonBoxList(this.role, this.username, this.model).subscribe((data: any) => {
       console.log(data);
       this.cortonBoxList = data.map((item: any) => item.cartonbox);
       // this.cortonBoxList=[...this.toppingList]
     })
+    this.getLcoTransfer(this.model)
   }
   onCortonBoxChange(selectedValues: any[]) {
     console.log("Selected Values: ", selectedValues);
@@ -126,7 +156,7 @@ export class LcoDashboardComponent implements OnInit {
 
   }
   getNotAllocattedDetails() {
-    this.userService.getAllCartonBoxList(this.username, this.role).subscribe((data: any) => {
+    this.userService.getAllCartonBoxList(this.role, this.username,).subscribe((data: any) => {
       // this.cortonBoxList = data;
       this.rowData = data;
       console.log(this.filteredModel);
@@ -143,6 +173,33 @@ export class LcoDashboardComponent implements OnInit {
       }, (err) => {
         this.swal.Error3(err?.error?.message || err?.error);
       });
+  }
+  getLcoTransferCortonBoxList(model: any) {
+    console.log(model);
+    console.log(this.opName);
+    this.rowData = [];
+    this.userService.getCartonListByOpidModel(this.role, this.username, model, this.opName,)
+      .subscribe((data: any) => {
+        this.rowData = data;
+        console.log(data);
+        // this.swal.success(data?.message);
+      }, (err) => {
+        this.swal.Error(err?.error?.message || err?.error);
+      });
+    // this.getLcoTransfer(model)
+  }
+  getLcoTransfer(lcoid: any) {
+    console.log(lcoid);
+    this.rowData = [];
+    this.userService.getOperatorModelCottonWiseSubscriber(this.role, this.username, this.opName || 0, this.model || null, 0)
+      .subscribe((data: any) => {
+        this.rowData = data;
+        console.log(data);
+        // this.swal.success(data?.message);
+      }, (err) => {
+        this.swal.Error(err?.error?.message || err?.error);
+      });
+
   }
   onSelectionChanged() {
     if (this.gridApi) {
@@ -173,29 +230,44 @@ export class LcoDashboardComponent implements OnInit {
       this.lcoId = this.lcoDeatails?.operatorid;
       this.operatorname = this.lcoDeatails?.operatorname;
       console.log(this.lcoId);
-      // if (this.type = 7) {
-      // this.onTableData();
-      this.getreport(this.lcoId);
-      // } else if (this.type = 4) {
-      //   this.onTableData();
-      // }
+      if (this.type == 6) {
+        // this.onTableData();
+        this.getInventoryDetails(this.lcoId);
+      } else if (this.type == 13) {
+        this.operatorlist(this.lcoId);
+        this.getLcoTransfer(this.lcoId);
+      }
     })
   }
 
   getSubLCODetails() {
+
     this.userService.getSublcoDetails(this.role, this.username).subscribe((data: any) => {
       console.log(data);
       this.lcoDeatails = data;
       console.log(this.lcoDeatails);
       this.lcoId = this.lcoDeatails?.operatorid;
       this.operatorname = this.lcoDeatails?.operatorname;
-      this.getreport(this.lcoId);
+      // this.getreport(this.lcoId);
     })
   }
   getModelList() {
     this.userService.getModelList(this.role, this.username).subscribe((data: any) => {
       console.log(data);
       this.filteredModel = data;
+    })
+  }
+  operatorlist(lcoid: any) {
+    this.userService.getOeratorList(this.role, this.username, lcoid).subscribe((data: any) => {
+      console.log(data);
+      this.filteredOperators = Object.keys(data).map(key => {
+        const value = data[key];
+        const name = key;
+        console.log(name);
+        console.log(value);
+
+        return { name: name, value: value };
+      });
     })
   }
   onGridReady(params: { api: any; }) {
@@ -212,11 +284,11 @@ export class LcoDashboardComponent implements OnInit {
       // case '7': return 'TOTAL SUBSCRIBER';
       case '11': return 'ACTIVE SUBSCRIBER';
       case '12': return 'DEACTIVE SUBSCRIBER';
+      case '13': return 'LCO TRANSFER';
       default: return 'UNKNOWN TYPE';
     }
   }
   setType(OType: string) {
-
     switch (OType) {
       case '1':
         this.OType = 'total smartcard connection';
@@ -253,6 +325,9 @@ export class LcoDashboardComponent implements OnInit {
         break;
       case '12':
         this.OType = 'areawise';
+        break;
+      case '13':
+        this.OType = 'lco transfer';
         break;
       default:
         this.OType = 0;
@@ -302,11 +377,18 @@ export class LcoDashboardComponent implements OnInit {
         { headerName: 'MODEL', field: 'model', width: 200, },
         { headerName: 'CHIP ID', field: 'chipid', width: 300, },
       ]
+    } else if (this.type == 13) {
+      this.columnDefs = [
+        { headerName: "S.No", lockPosition: true, valueGetter: 'node.rowIndex+1', width: 90, filter: false, headerCheckboxSelection: true, checkboxSelection: true, },
+        { headerName: 'SMARTCARD', field: 'smartcard', width: 500, },
+        { headerName: 'AREA NAME', field: 'areaname', width: 500, },
+        { headerName: 'OPERATOR NAME', field: 'operatorname', cellStyle: { textAlign: 'center', color: 'green' }, width: 500, },
+
+      ]
     } else if (this.type == 1) {
       // } else if (this.type == 7) {
       this.columnDefs = [
         { headerName: "S.No", lockPosition: true, valueGetter: 'node.rowIndex+1', width: 90, filter: false },
-        // { headerName: 'SMARTCARD', field: 'smartcard', width: 400, },
         {
           headerName: 'SMARTCARD', field: 'smartcard', width: 220,
           cellStyle: (params: any) => {
@@ -352,7 +434,6 @@ export class LcoDashboardComponent implements OnInit {
     else if (this.type == 2) {
       this.columnDefs = [
         { headerName: "S.No", lockPosition: true, valueGetter: 'node.rowIndex+1', width: 90, filter: false },
-        // { headerName: 'SMARTCARD', field: 'smartcard', width: 220, },
         {
           headerName: 'SMARTCARD', field: 'smartcard', width: 220,
           cellStyle: (params: any) => {
@@ -404,7 +485,6 @@ export class LcoDashboardComponent implements OnInit {
     else if (this.type == 3) {
       this.columnDefs = [
         { headerName: "S.No", lockPosition: true, valueGetter: 'node.rowIndex+1', width: 90, filter: false },
-        // { headerName: 'SMARTCARD', field: 'smartcard', width: 230, },
         {
           headerName: 'SMARTCARD', field: 'smartcard', width: 220,
           cellStyle: (params: any) => {
@@ -456,7 +536,6 @@ export class LcoDashboardComponent implements OnInit {
     } else if (this.type == 4) {
       this.columnDefs = [
         { headerName: "S.No", lockPosition: true, valueGetter: 'node.rowIndex+1', width: 90, filter: false },
-        // { headerName: 'SMARTCARD', field: 'smartcard', width: 220, },
         {
           headerName: 'SMARTCARD', field: 'smartcard', width: 220,
           cellStyle: (params: any) => {
@@ -505,7 +584,6 @@ export class LcoDashboardComponent implements OnInit {
     } else if (this.type == 5) {
       this.columnDefs = [
         { headerName: "S.No", lockPosition: true, valueGetter: 'node.rowIndex+1', width: 90, filter: false },
-        // { headerName: 'SMARTCARD', field: 'smartcard', width: 200, },
         {
           headerName: 'SMARTCARD', field: 'smartcard', width: 220,
           cellStyle: (params: any) => {
@@ -554,6 +632,7 @@ export class LcoDashboardComponent implements OnInit {
         { headerName: 'EXPIRY DATE', field: 'expirydate', width: 200, },
       ]
     }
+
   }
   getExcel() {
     const generateExcelReport = (areatitle: string, areasub: string, header: string[], datas: any[]) => {
@@ -717,6 +796,15 @@ export class LcoDashboardComponent implements OnInit {
           });
         });
   }
+  getInventoryDetails(lcoid: any) {
+    console.log('dfefdsfdsfdsf', lcoid);
+    this.swal.Loading();
+    this.userService.getOperatorDashboard(this.role, this.username, this.type, 2, lcoid, 0, 0, 0).subscribe((data: any) => {
+      console.log(data);
+      this.rowData = data;
+      this.swal.Close();
+    })
+  }
 
   goBack(): void {
     this.location.back();
@@ -802,6 +890,21 @@ export class LcoDashboardComponent implements OnInit {
     };
     console.log(dialogData);
     const dialogRef = this.dialog.open(InventorycortonboxComponent, {
+      data: dialogData,
+      width: type === 'allocatted' ? '1010px' : 'auto',
+      maxWidth: type === ' allocatted' ? '100vw' : 'auto'
+    });
+    dialogRef.afterClosed().subscribe(result => {
+      console.log('The dialog was closed', result);
+    });
+  }
+  getChangeLCO(type: any) {
+    let dialogData = {
+      type: type,
+      smartcard: this.selectedSmartcard, isemi: this.isemi, row: this.rows
+    };
+    console.log(dialogData);
+    const dialogRef = this.dialog.open(SpecialeditbulkpackageComponent, {
       data: dialogData,
       width: type === 'lco_inventory' ? '720px' : 'auto',
       maxWidth: type === ' lco_inventory' ? '100vw' : 'auto'

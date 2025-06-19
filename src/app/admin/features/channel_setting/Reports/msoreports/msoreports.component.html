@@ -85,8 +85,10 @@
           </div>
           <div *ngIf="isUser || isReception || isSpecial" class="card royal-card tooltip-container"
             (click)="openMsoDialog('monthly_datewise')"><i class="fas fa-clipboard-list"></i>
-            <div><strong>Monthly Datewise <br> Payment Collection Report</strong> </div>
+            <!-- <div><strong>Monthly Datewise <br> Payment Collection Report</strong> </div> -->
+            <div><strong>Payment Collection Report</strong> </div>
           </div>
+
 
           <div *ngIf="isUser || isReception || isSpecial" class="card royal-card tooltip-container"
             (click)="openMsoDialog('subscriber_bill')"><i class="fas fa-clipboard-list"></i>
