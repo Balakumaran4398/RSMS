@@ -1,26 +1,11 @@
-<!-- <section class="content1" style="max-height: 800px;overflow: scroll;"> -->
-<section class="content1">
+<!-- <section class="content1">
     <div class="row g-6 mb-6">
-        <!-- <div class="col-xl-7 col-sm-6 col-12">
-            <div class="card">
-                <div class="card-body">
-                    <div class="row">
-                        <div class="col">
-                            <app-stb-chart></app-stb-chart>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div> -->
-
-
         <div class="col-xl-6 col-sm-6 col-12">
             <div class="card">
                 <div class="card-body">
                     <div class="row">
                         <div class="col">
                             <app-inventory-chart></app-inventory-chart>
-                            <!-- l;lk;lk -->
                         </div>
                     </div>
                 </div>
@@ -40,36 +25,91 @@
     </div>
 
     <div class="row g-6 mb-6">
-
-
-
         <div class="col-xl-12 col-sm-12 col-12">
             <div class="card">
                 <div class="card-body">
                     <div class="row">
                         <div class="col">
                             <app-bar-chart></app-bar-chart>
-                            <!-- lkjlkjlj -->
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-        <!-- <div class="col-xl-6 col-sm-6 col-12">
-            <div class="card">
+
+    </div>
+</section> -->
+
+<section class="content1">
+    <div class="row g-6 mb-6">
+        <div class="col-xl-12 col-sm-12 col-12 mb-3">
+            <div class="">
                 <div class="card-body">
                     <div class="row">
                         <div class="col">
-                            <ag-grid-angular #agGrid id="myGrid"
-                                style="max-height: 450px;overflow: scroll;overflow-y: hidden;overflow-x: hidden;"
-                                domLayout='normal' class="ag-theme-alpine table-class" rowAnimation
-                                [gridOptions]="gridOptions" [columnDefs]="columnnDefs" [rowData]="rowData"
-                                [enableCellTextSelection]="true">
-                            </ag-grid-angular>
+                            <app-inventory-chart></app-inventory-chart>
                         </div>
                     </div>
                 </div>
             </div>
-        </div> -->
+        </div>
+    </div>
+    <div class="row g-6 mb-6">
+        <div class="col-xl-7 col-sm-6 col-12 mb-3">
+            <div class="card">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col">
+                            <app-bar-chart></app-bar-chart>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-xl-5 col-sm-6 col-12 mb-3">
+            <div class="card">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col">
+                            <app-package-chart></app-package-chart>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row g-6 mb-6">
+        <div class="col-xl-7 col-sm-6 col-12">
+            <div class="card">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="mb-3">
+                            <h6
+                                style="color:rgb(83, 81, 81);font-size: 20px;font-weight: 600;text-align: start;font-family:sans-serif;">
+                                CAS CONNECTION DETAILS</h6>
+                        </div>
+                        <div class="col">
+                            <ag-grid-angular #agGrid id="myGrid"
+                                style="max-height: 260px;overflow: scroll;overflow-y: hidden;overflow-x: hidden;"
+                                domLayout='normal' class="ag-theme-alpine table-class" rowAnimation
+                                [gridOptions]="gridOptions" [columnDefs]="columnnDefs" [rowData]="rowData" [context]="{ componentParent: this }"
+                                [enableCellTextSelection]="true">
+                            </ag-grid-angular>
+                          </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-xl-5 col-sm-6 col-12 mb-3">
+            <div class="card">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col">
+                            <app-bobbulechart></app-bobbulechart>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 </section>

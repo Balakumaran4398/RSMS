@@ -126,7 +126,7 @@ export class ChartInventoryReportComponent {
         { headerName: "S.No", lockPosition: true, valueGetter: 'node.rowIndex+1', width: 90, },
         { headerName: "SMARTCARD", field: 'smartcard', width: 300, },
         { headerName: "BOX ID", field: 'boxid', width: 250, },
-        { headerName: "CARTON BOX", field: 'cottonboxdisplay', width: 250, },
+        { headerName: "CARTON BOX", field: 'cottonboxdisplay', width: 230, },
         { headerName: "CAS NAME", field: 'casname', width: 300, },
         {
           headerName: "IS ALLOCATED", field: 'isallocated', width: 200,
@@ -163,7 +163,7 @@ export class ChartInventoryReportComponent {
           headerName: "STATUS", field: 'statusdisplay', width: 200,
 
         },
-        { headerName: "OPERATOR NAME", field: 'operatorname', width: 250, },
+        { headerName: "OPERATOR NAME", field: 'operatorname', width: 230, },
       ]
     } else if (this.type == 13) {
       this.columnDefs = [
@@ -186,7 +186,7 @@ export class ChartInventoryReportComponent {
           headerName: "STATUS", field: 'statusdisplay', width: 150,
 
         },
-        { headerName: "OPERATOR NAME", field: 'operatorname', width: 250, },
+        { headerName: "OPERATOR NAME", field: 'operatorname', width: 240, },
       ]
     }
   }
@@ -203,8 +203,8 @@ export class ChartInventoryReportComponent {
             console.log(this.type);
             if (this.type == 11) {
               console.log(this.type);
-              const areatitle = 'A1:H2';
-              const areasub = 'A3:H3';
+              const areatitle = 'A1:G2';
+              const areasub = 'A3:G3';
               const title = this.id + ' REPORT';
               const sub = 'MSO ADDRESS:' + this.msodetails;
               const header = ['S.NO', 'CARTON BOX', 'SMARTCARD', 'BOX ID', 'CAS TYPE', 'ISALLOCATED', 'STATUS'];

@@ -1,37 +1,31 @@
-
 import { Component, Inject } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { Router } from '@angular/router';
-
 import { BaseService } from 'src/app/_core/service/base.service';
 import { StorageService } from 'src/app/_core/service/storage.service';
-import Swal from 'sweetalert2';
-import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
-import { RefundComponent } from '../refund/refund.component';
-// import { D } from 'node_modules1/@angular/cdk/keycodes';
 import { SwalService } from 'src/app/_core/service/swal.service';
+import Swal from 'sweetalert2';
 import { Location } from '@angular/common';
-
-
 @Component({
-  selector: 'app-loginrefund',
-  templateUrl: './loginrefund.component.html',
-  styleUrls: ['./loginrefund.component.scss']
+  selector: 'app-version-login-credential',
+  templateUrl: './version-login-credential.component.html',
+  styleUrls: ['./version-login-credential.component.scss']
 })
-export class LoginrefundComponent {
+export class VersionLoginCredentialComponent {
   form!: FormGroup;
   isLoggedIn = false; // Track login status
 
   username: any;
   role: any;
-  type: any;
   newSubid: any;
   subId: any;
   detailsList: any[] = [];
   pairBoxList: any[] = [];
   pairSmartcardList: any[] = [];
   planType: any[] = [];
-  constructor(public dialogRef: MatDialogRef<LoginrefundComponent>, @Inject(MAT_DIALOG_DATA) public data: any, private location: Location, private swal: SwalService, private userservice: BaseService, private storageservice: StorageService, private fb: FormBuilder, private router: Router, public dialog: MatDialog,) {
+
+  constructor(public dialogRef: MatDialogRef<VersionLoginCredentialComponent>, @Inject(MAT_DIALOG_DATA) public data: any, private location: Location, private swal: SwalService, private userservice: BaseService, private storageservice: StorageService, private fb: FormBuilder, private router: Router, public dialog: MatDialog,) {
     this.role = storageservice.getUserRole();
     this.username = storageservice.getUsername();
     this.form = fb.group({
@@ -41,14 +35,12 @@ export class LoginrefundComponent {
       username: this.username
     })
     console.log(data);
-    this.type = 1;
-   
-  }
 
+  }
   ngOnInit() {
     this.form = this.fb.group({
-      userid: ['', Validators.required],  
-      password: ['', Validators.required], 
+      userid: ['', Validators.required],
+      password: ['', Validators.required],
     });
   }
 
@@ -61,9 +53,9 @@ export class LoginrefundComponent {
         username: this.username,
         userid: userid,
         password: password,
-        type: 1,
+        type: 4,
       }
-          this.userservice.checkLoginCredenticals(requestBody).subscribe(
+      this.userservice.checkLoginCredenticals(requestBody).subscribe(
         (res: any) => {
           Swal.fire({
             title: 'Login Successful',
@@ -123,7 +115,4 @@ export class LoginrefundComponent {
       }
     });
   }
-
-  
-
 }

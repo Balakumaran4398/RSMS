@@ -1272,9 +1272,9 @@ export class BaseService {
     return this.http.post<any[]>(BASE_URL + "/bulk/uploadFileforSmartcardRefresh", requestBody, {});
   }
   // -------------------------------------------------------------Bulk Operator Creation--------------------------------
-  // getBulkOperatorCreation(requestBody: any): Observable<any[]> {
-  //   return this.http.post<any[]>(BASE_URL + "/subscriber/bulkSubscriberInsert", requestBody, {});
-  // }
+  getBulkOperatorCreation(requestBody: any): Observable<any[]> {
+    return this.http.post<any[]>(BASE_URL + "/bulk/uploadFileBulkOperatorCreation", requestBody, {});
+  }
   // ------------------------------------------------SPECIAL ROLE BULK OPERATION------------------------
   getAreaChangeSubscriberList(role: any, username: any, operatorid: any,): Observable<HttpResponse<any[]>> {
     return this.http.get<any[]>(
@@ -2422,7 +2422,18 @@ export class BaseService {
   }
 
   // ---------------------------------------------lco transfer corton box list ---------------------------------------------
-  getCartonListByOpidModel(role: any, username: any,  model: any, opid: any): Observable<any[]> {
+  getCartonListByOpidModel(role: any, username: any, model: any, opid: any): Observable<any[]> {
     return this.http.get<any[]>(BASE_URL + "/allocation/getCartonListByOpidModel?role=" + role + "&username=" + encodeURIComponent(username) + "&model=" + model + "&opid=" + opid);
   }
+
+  // =====================================HOME=====================================================
+  // -----------------------------------CAS WISE BOX DETAILS----------------------------------------
+  getDashboardCaswiseBoxDetails(role: any, username: any): Observable<any[]> {
+    return this.http.get<any[]>(BASE_URL + "/subscriber/getDashboardCaswiseBoxDetails?role=" + role + "&username=" + encodeURIComponent(username));
+  }
+  // --------------------------------------------Customer Growth in last 4 monrhs ---------------------------------------
+   getDashboardMonthwiseFirstTimeActivationDetails(role: any, username: any): Observable<any[]> {
+    return this.http.get<any[]>(BASE_URL + "/subscriber/getDashboardMonthwiseFirstTimeActivationDetails?role=" + role + "&username=" + encodeURIComponent(username));
+  }
+
 }

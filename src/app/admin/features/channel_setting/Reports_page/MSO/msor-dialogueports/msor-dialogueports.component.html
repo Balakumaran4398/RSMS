@@ -1003,12 +1003,12 @@
                     <option *ngFor="let cas of casList" [value]="cas.value">{{ cas.label }}</option>
                 </select>
             </div>
-            <div class="input_box d-flex justify-content-center align-item-center mx-2 mb-2">
+            <!-- <div class="input_box d-flex justify-content-center align-item-center mx-2 mb-2">
                 <select name="area" id="area" [(ngModel)]="selectedArea">
                     <option disabled>Select Area</option>
                     <option *ngFor="let cas of casList" [value]="cas.value">{{ cas.label }}</option>
                 </select>
-            </div>
+            </div> -->
             <div class=" d-flex justify-content-center align-item-center mx-2 mb-2">
                 <mat-radio-group class="radio-group" aria-labelledby="status" [(ngModel)]="batch">
                     <mat-radio-button class="radio-button" [value]="false">Active

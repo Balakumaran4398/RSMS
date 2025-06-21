@@ -1,13 +1,27 @@
+<!-- <div class="inventory-chart-container">
+  <div id="inventarychartContainer" class="chart-container"></div>
+</div> -->
 
 
-
-<div class="inventory-chart-container">
-
-  <div id="inventarychartContainer" class="chart-container" ></div>
-    <!-- <div class="data-points-list">
-      <div *ngFor="let point of dataPoints" class="data-point-item">
-        <span class="color-box" [style.backgroundColor]="point.color"></span>
-        <span>{{ point.name }}: {{ point.y }}</span>
+<div class="inventory-container">
+  <h3 style="text-align: start;color:rgb(83, 81, 81)">INVENTORY DETAILS</h3>
+  <div class="card-wrapper">
+    <div class="inventory-card" *ngFor="let item of inventoryData" (click)="item.click()"
+      style="display: flex; justify-content: space-between;align-items: center;">
+      <div>
+        <div class="icon-box" [ngStyle]="{ 'background-color': item.color }">
+          <i class="material-icons">dvr</i>
+        </div>
       </div>
-    </div> -->
+      <div>
+        <div class="card-content">
+          <p class="title">{{ item.title }}</p>
+          <h2 class="count">{{ item.count | number: '2.0' }}</h2>
+          <div class="footer" style="display: flex;justify-content: end;align-items: end;">
+            <span class="description">{{ item.description }}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>

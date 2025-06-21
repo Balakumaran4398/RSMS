@@ -82,7 +82,7 @@ export class BulkoperatorcreationComponent implements OnInit {
     }
   }
 
-  submit() {
+  submit1() {
     this.submitted = true;
     if (this.file) {
       console.log(this.file);
@@ -90,10 +90,10 @@ export class BulkoperatorcreationComponent implements OnInit {
       formData.append('role', this.role);
       formData.append('username', this.username);
       formData.append('file', this.file);
-      formData.append('retailerid', this.retailerid || 0);
+      // formData.append('retailerid', this.retailerid || 0);
       // formData.append('uploadtype', '12');
       this.swal.Loading();
-      this.userservice.bulkSubscriberInsert(formData)
+      this.userservice.getBulkOperatorCreation(formData)
         .subscribe((res: any) => {
           this.swal.success(res?.message);
         }, (err) => {
@@ -108,4 +108,31 @@ export class BulkoperatorcreationComponent implements OnInit {
       });
     }
   }
+
+  submit() {
+      this.submitted = true;
+      if (this.file) {
+        console.log(this.file);
+        const formData = new FormData();
+        formData.append('role', this.role);
+        formData.append('username', this.username);
+        formData.append('file', this.file);
+        formData.append('retailerid', this.retailerid || 0);
+        formData.append('uploadtype', '12');
+        this.swal.Loading();
+        this.userservice.getBulkSmartcardRefresh(formData)
+          .subscribe((res: any) => {
+            this.swal.success(res?.message);
+          }, (err) => {
+            this.swal.Error(err?.error?.message);
+          });
+      } else {
+        Swal.fire({
+          title: 'Error!',
+          text: 'No file selected. Please choose a file to upload.',
+          icon: 'error',
+          confirmButtonText: 'OK'
+        });
+      }
+    }
 }

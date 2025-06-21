@@ -1,4 +1,4 @@
-
+<!-- 
 
 <div class="input_box display col-12 col-md-12  justify-content-between align-items-center mt-1 mb-2">
   <div class="col-12 col-md-6 d-flex justify-content-start mx-2">
@@ -18,4 +18,17 @@
 <div class="line"></div>
 <div id="barchartContainer" style="height: 370px; width: 100%;"></div>
 
-
+ -->
+<div class="input_box display col-12 col-md-12  justify-content-between align-items-center mt-1 mb-2">
+  <div class="col-12 col-md-6 d-flex justify-content-start mx-2">
+    <h6 style="text-align: center;color:rgb(83, 81, 81); font-family: 'poppins';">NEXT 7 DAYS SUBSCRIPTION EXPIRED COUNT  </h6>
+  </div>
+  <div class="col-12 col-md-3 mx-2">
+    <input type="date" [(ngModel)]="date" (change)="onDateChange($event)" />
+  </div>
+  <a class="btn btn-success mx-1 bttn" (click)="openMsoDialog()">
+    Get Report
+  </a>
+</div>
+<div class="line"></div>
+<div id="barchartContainer" style="height: 270px; width: 100%;"></div>

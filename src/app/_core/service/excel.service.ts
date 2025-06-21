@@ -218,40 +218,133 @@ export class ExcelService {
     });
   }
   async generateOpearateCreationExcel() {
-    const header = ['Smartcard (Mandatory)'];
+    // const header = ['LCO NAME', 'MODEL', 'EMAIL', 'ADDRESS', 'AREA NAME', 'STATE', 'PINCODE', 'USER ID', 'PASSWORD', 'BUSINESS NAME'];
+
+    // const workbook = new Excel.Workbook();
+    // const worksheet = workbook.addWorksheet('Sharing Data');
+    // const headerRow = worksheet.addRow(header);
+    // headerRow.eachCell((cell) => {
+    //   cell.fill = {
+    //     type: 'pattern',
+    //     pattern: 'solid',
+    //     fgColor: { argb: '326D41' },
+    //   };
+    //   cell.font = {
+    //     color: { argb: 'FFFFFF' },
+    //     bold: true,
+    //   };
+    //   cell.alignment = {
+    //     horizontal: 'center',
+    //     vertical: 'middle',
+    //   };
+    //   cell.border = {
+    //     top: { style: 'thin' },
+    //     left: { style: 'thin' },
+    //     bottom: { style: 'thin' },
+    //     right: { style: 'thin' },
+    //   };
+    // });
+    // worksheet.getColumn(1).width = 30;
+    // worksheet.getColumn(2).width = 20;
+    // worksheet.getColumn(3).width = 30;
+    // worksheet.getColumn(4).width = 30;
+    // worksheet.getColumn(5).width = 20;
+    // worksheet.getColumn(6).width = 20;
+    // worksheet.getColumn(7).width = 20;
+    // worksheet.getColumn(8).width = 20;
+    // worksheet.getColumn(9).width = 20;
+    // worksheet.getColumn(10).width = 30;
+    // headerRow.height = 30;
+    // worksheet.addRow([]);
+    // workbook.xlsx.writeBuffer().then((data: any) => {
+    //   const blob = new Blob([data], {
+    //     type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+    //   });
+    //   fs.saveAs(blob, 'Bulk Operate Creation.xlsx');
+    // });
+
+
+    const ws1Header = ['LCO NAME', 'MOBILE', 'EMAIL', 'ADDRESS', 'AREA NAME', 'STATE', 'PINCODE', 'USER ID', 'PASSWORD', 'BUSINESS NAME'];
+    const ws2SubHeader = ['Field Name', 'Data Format', 'Mandatory'];
+    const values1 = [
+      ['LCO NAME', 'String', 'Yes'],
+      ['MOBILE NUMBER', '10-digit (should be unique)', 'Yes'],
+      ['EMAIL', '', 'No'],
+      ['ADDRESS', 'String', 'Yes'],
+      ['AREA NAME', '', 'Yes'],
+      ['STATE', '', 'Yes'],
+      ['PINCODE', '6-digit', 'Yes'],
+      ['USER ID', 'Minimum 6 Maximum 2', 'Yes'],
+      ['PASSWORD', 'Minimum 6 Maximum 2', 'Yes'],
+      ['BUSINESS NAME', '', 'No'],
+    ];
+
     const workbook = new Excel.Workbook();
-    const worksheet = workbook.addWorksheet('Sharing Data');
-    const headerRow = worksheet.addRow(header);
-    headerRow.eachCell((cell) => {
-      cell.fill = {
-        type: 'pattern',
-        pattern: 'solid',
-        fgColor: { argb: '326D41' },
-      };
-      cell.font = {
-        color: { argb: 'FFFFFF' },
-        bold: true,
-      };
-      cell.alignment = {
-        horizontal: 'center',
-        vertical: 'middle',
-      };
+
+    // First sheet setup
+    const sheet1 = workbook.addWorksheet('Sheet1');
+    const headerRow1 = sheet1.addRow(ws1Header);
+    headerRow1.eachCell((cell) => {
+      applyHeaderStyle(cell, '326D41');
+    });
+    headerRow1.height = 20; 
+
+
+    const sheet2 = workbook.addWorksheet('Sheet2');
+    sheet2.mergeCells('A1:C1');
+    sheet2.getCell('A1').value = 'OPERATOR CREATION';
+    applyHeaderStyle(sheet2.getCell('A1'), '326D41');
+
+
+    const headerRow2 = sheet2.addRow(ws2SubHeader);
+    headerRow2.eachCell((cell) => {
+      applyHeaderStyle(cell, '201065');
+    });
+    headerRow2.height = 20;
+
+
+    const startRow = 2;
+    values1.forEach((row, index) => {
+      const rowData = sheet2.addRow([...row]);
+      rowData.eachCell((cell, colNumber) => {
+        if (colNumber === 3) {
+          cell.font = {
+            color: { argb: cell.value === 'Yes' ? '10A715' : 'EF0D15' },
+            bold: true
+          };
+        }
+        applyCellBorder(cell);
+      });
+    });
+
+ 
+    sheet1.columns = ws1Header.map(() => ({ width: 20 }));
+    [1, 2, 3, 5, 6, 7].forEach((colNum) => {
+      sheet2.getColumn(colNum).width = 30;
+    });
+
+    // Generate the Excel file
+    const buffer = await workbook.xlsx.writeBuffer();
+    const blob = new Blob([buffer], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
+    fs.saveAs(blob, 'Bulk Operator Creation.xlsx');
+
+    // Helper functions
+    function applyHeaderStyle(cell: Excel.Cell, color: string) {
+      cell.fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: color } };
+      cell.font = { color: { argb: 'FFFFFF' }, bold: true };
+      cell.alignment = { horizontal: 'center', vertical: 'middle' };
+      applyCellBorder(cell);
+    }
+
+    function applyCellBorder(cell: Excel.Cell) {
       cell.border = {
         top: { style: 'thin' },
         left: { style: 'thin' },
         bottom: { style: 'thin' },
-        right: { style: 'thin' },
+        right: { style: 'thin' }
       };
-    });
-    worksheet.getColumn(1).width = 30;
-    headerRow.height = 30;
-    worksheet.addRow([]);
-    workbook.xlsx.writeBuffer().then((data: any) => {
-      const blob = new Blob([data], {
-        type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
-      });
-      fs.saveAs(blob, 'Bulk Operate Creation.xlsx');
-    });
+    }
+
   }
 
   async generateDeactivationExcel() {
@@ -1368,8 +1461,8 @@ export class ExcelService {
   ) {
     const columns = [
       { key: 'a', width: 15 }, // S.NO
-      { key: 'b', width: 30 }, // SMARTCARD
-      { key: 'c', width: 20 }, // BOX ID
+      { key: 'b', width: 20 }, // SMARTCARD
+      { key: 'c', width: 30 }, // BOX ID
       { key: 'd', width: 20 }, // CAS 
       { key: 'e', width: 20 }, // ISALLOCATED
       { key: 'f', width: 20 }, // STATUS

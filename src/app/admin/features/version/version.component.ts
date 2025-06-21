@@ -1,4 +1,9 @@
-import { Component, ElementRef, ViewChild } from '@angular/core';
+import { Component, ElementRef, Inject, ViewChild } from '@angular/core';
+import { VersionLoginCredentialComponent } from './dialog/version-login-credential/version-login-credential.component';
+import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
+import { BaseService } from 'src/app/_core/service/base.service';
+import { StorageService } from 'src/app/_core/service/storage.service';
+import { SwalService } from 'src/app/_core/service/swal.service';
 
 @Component({
   selector: 'app-version',
@@ -24,6 +29,7 @@ export class VersionComponent {
   visibleMessages: string[] = [];
   index = 0;
 
+  constructor(public dialog: MatDialog, private swal: SwalService, private userservice: BaseService, private storageservice: StorageService) { }
   ngOnInit() {
     this.showMessagesOneByOne();
   }
@@ -63,22 +69,33 @@ export class VersionComponent {
   }
   getVersion(type: any) {
     console.log(type);
-    
-    if (type == 1) {
-      this.showVersion_3 = true;
-      this.showVersion_6 = false;
-      this.showVersion_4 = false;
-    } else if (type == 2) {
-      this.showVersion_6 = true;
-      this.showVersion_4 = false;
-      this.showVersion_3 = false;
-    } else if (type == 3) {
-      this.showVersion_3 = false;
-      this.showVersion_4 = true;
-      this.showVersion_6 = false;
-    }
+    const dialogRef = this.dialog.open(VersionLoginCredentialComponent, {
+      // width: '500px',
+      // panelClass: 'custom-dialog-container',
+      data: '1'
+    });
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result && result.success) {
+        console.log('dsfsdfdsfdsfdsf', result);
+        if (type == 1) {
+          this.showVersion_3 = true;
+          this.showVersion_6 = false;
+          this.showVersion_4 = false;
+        } else if (type == 2) {
+          this.showVersion_6 = true;
+          this.showVersion_4 = false;
+          this.showVersion_3 = false;
+        } else if (type == 3) {
+          this.showVersion_3 = false;
+          this.showVersion_4 = true;
+          this.showVersion_6 = false;
+        }
+      } else {
+        console.log('Dialog closed without success');
+      }
+    });
   }
-    getClose() {
+  getClose() {
     this.showVersion_3 = false;
     this.showVersion_4 = false;
     this.showVersion_6 = false;

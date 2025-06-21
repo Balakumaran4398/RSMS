@@ -112,7 +112,7 @@ export class ChartPackageReportComponent {
           { headerName: "PACKAGE NAME", field: 'productname', width: 300, },
           { headerName: "PACKAGE RATE", field: 'rate', width: 300, },
           { headerName: "PRODUCT ID", field: 'casproductid', width: 300, },
-          { headerName: "CAS TYPE", field: 'casname', width: 300, },
+          { headerName: "CAS TYPE", field: 'casname', width: 290, },
         ];
         break;
 
@@ -123,7 +123,7 @@ export class ChartPackageReportComponent {
           { headerName: "PACKAGE NAME", field: 'productname', width: 300, },
           { headerName: "PACKAGE RATE", field: 'rate', width: 300, },
           { headerName: "PRODUCT ID", field: 'casproductid', width: 300, },
-          { headerName: "CAS TYPE", field: 'casname', width: 300, },
+          { headerName: "CAS TYPE", field: 'casname', width: 290, },
         ];
         break;
 
@@ -134,7 +134,7 @@ export class ChartPackageReportComponent {
           { headerName: "PRODUCT ID", field: 'productid', width: 300, },
           { headerName: "RATE", field: 'rate', width: 300, },
           { headerName: "SERVICE ID", field: 'serviceid', width: 300, },
-          { headerName: "CREATED DATE", field: 'createddate', width: 300, },
+          { headerName: "CREATED DATE", field: 'createddate', width: 290, },
         ];
         break;
       case '10': // FTA CHANNEL
@@ -144,7 +144,7 @@ export class ChartPackageReportComponent {
           { headerName: "PRODUCT ID", field: 'productid', width: 300, },
           { headerName: "RATE", field: 'rate', width: 300, },
           { headerName: "SERVICE ID", field: 'serviceid', width: 300, },
-          { headerName: "CREATED DATE", field: 'createddate', width: 300, },
+          { headerName: "CREATED DATE", field: 'createddate', width: 290, },
         ];
         break;
 

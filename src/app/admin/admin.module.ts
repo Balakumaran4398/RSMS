@@ -205,12 +205,14 @@ import { SidenavpermissionComponent } from "./features/special_role/Dialogue/sid
 import { SmartcardrefreshComponent } from "./features/Bulk_operation/smartcardrefresh/smartcardrefresh.component";
 import { version } from "moment";
 import { VersionComponent } from "./features/version/version.component";
+import { BobbulechartComponent } from "../_core/charts/bobbulechart/bobbulechart.component";
+import { VersionLoginCredentialComponent } from "./features/version/dialog/version-login-credential/version-login-credential.component";
 @NgModule({
     declarations: [
         AdminBaseComponent, NavComponent, HomeComponent, NavbarComponent, MsodetailsComponent, CasmasterComponent,
         // -------------------------Dashboard-----------------------------
         BarChartComponent, InventoryChartComponent, LcoCommissionChartComponent,
-        PackageChartComponent, StbChartComponent,
+        PackageChartComponent, StbChartComponent,BobbulechartComponent,
         // -------------------------------------Dashboard Report--------------------------------
         ChartSTBReportComponent, ChartPackageReportComponent, ChartInventoryReportComponent,
         // -------------------------------------Top_subscriber_Details------------------------------------
@@ -274,7 +276,7 @@ import { VersionComponent } from "./features/version/version.component";
         LcoSmartcardDialogComponent, LcoSmartcardpayDialogComponent, SmrtBoxidChangeComponent, LcodashboardreportComponent, OperatorareachangeComponent, DiscountdialogComponent, DiscountsmartcardComponent,
         DistributordiscountComponent, DistribtorupdatediscountComponent, LcoDummycmpComponent, DialogChipidComponent, LcodashboardsublcoreportComponent, LcocommisiomddiscountComponent, LogincredentialComponent, LcocommissioncredentialComponent,
         // ===============================================version======================================
-        VersionComponent
+        VersionComponent,VersionLoginCredentialComponent
     ],
     imports: [
         CommonModule,

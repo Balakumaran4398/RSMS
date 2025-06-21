@@ -18,26 +18,72 @@ export class InventoryChartComponent implements OnInit {
   chart: any;
   chartOptions: any;
   dataPoints: { name: string; y: number; color: string, click?: () => void; }[] = [];
-
+  inventoryData: any;
+  lco_end: any;
+  box_in_msohand: any;
+  customer_end: any;
   constructor(private userservice: BaseService, private storageservice: StorageService, private router: Router) {
     this.role = this.storageservice.getUserRole();
     this.username = this.storageservice.getUsername();
   }
 
   ngOnInit(): void {
+    // this.userservice.getDashboardBoxPieChart(this.role, this.username).subscribe((data: any) => {
+    //   console.log(data);
+    //   this.updateChartData(data);
+    // });
+
     this.userservice.getDashboardBoxPieChart(this.role, this.username).subscribe((data: any) => {
       console.log(data);
-      this.updateChartData(data);
+      this.lco_end = data["New box in LCO End"];
+      this.customer_end = data["New in Customer End"];
+      this.box_in_msohand = data["New box in MSO Hand"];
+
+      this.inventoryData = [
+        {
+          title: 'Total Box in Inventory',
+          count: this.customer_end,
+          change: 10.00,
+          description: 'Total Box in Inventory this month',
+          color: '#ff44ec',
+          click: () => this.navigateToPage('BOX IN CUSTOMER HAND')
+        },
+        {
+          title: 'Box In MSO Hand',
+          count: this.box_in_msohand,
+          change: 10.00,
+          description: 'Total Box in MSO Hand this month',
+          color: '#00cfd3',
+          click: () => this.navigateToPage('BOX IN MSO HAND')
+        },
+        {
+          title: 'Box In LCO End',
+          count: this.lco_end,
+          change: 10.00,
+          description: 'Total Box in LCO End this month',
+          color: '#00d47e',
+          click: () => this.navigateToPage('BOX IN LCO HAND')
+        },
+        {
+          title: 'Box in Customer End',
+          count: this.customer_end,
+          change: 10.00,
+          description: 'Total Box in Customer End this month',
+          color: '#0095ff',
+          click: () => this.navigateToPage('BOX IN CUSTOMER HAND')
+        }
+      ];
+      // this.updateChartData(data);
     });
   }
 
-  
+
 
   updateChartData(apiData: any): void {
     this.dataPoints = [
-      { name: "New box in MSO Hand", y: apiData["New box in MSO Hand"], color: "#77edd0",click: () => this.navigateToPage('BOX IN MSO HAND') },
-      { name: "New box in LCO End", y: apiData["New box in LCO End"], color: "#33a5d6",click: () => this.navigateToPage('BOX IN LCO HAND') },
-      { name: "New in Customer End", y: apiData["New in Customer End"], color: "#3bada6",click: () => this.navigateToPage('BOX IN CUSTOMER HAND') }
+      { name: "New box in MSO Hand", y: apiData["New box in MSO Hand"], color: "#77edd0", click: () => this.navigateToPage('BOX IN MSO HAND') },
+      { name: "New box in LCO End", y: apiData["New box in LCO End"], color: "#33a5d6", click: () => this.navigateToPage('BOX IN LCO HAND') },
+      { name: "New in Customer End", y: apiData["New in Customer End"], color: "#3bada6", click: () => this.navigateToPage('BOX IN CUSTOMER HAND') }
     ];
 
     this.chartOptions = {
@@ -66,7 +112,7 @@ export class InventoryChartComponent implements OnInit {
     this.renderChart();
   }
 
-  
+
   renderChart(): void {
     this.chart = new CanvasJS.Chart("inventarychartContainer", this.chartOptions);
     this.chart.render();

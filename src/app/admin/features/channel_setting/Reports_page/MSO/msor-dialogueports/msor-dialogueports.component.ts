@@ -322,7 +322,7 @@ export class MsorDialogueportsComponent implements OnInit, OnDestroy {
   //   this.currentRechargeTypes = this.role === 'ROLE_SUBSCRIBER' ? this.RechargeType1 : this.RechargeType;
   // }
   getMonthwisePaymentCollectionData() {
-    // this.swal.Loading();
+    this.swal.Loading();
     this.userService.getMonthwisePaymentCollectionData(this.role, this.username, this.selectedMonth, this.selectedYear, 3).subscribe((data: any) => {
       console.log(data);
       this.rowData = data;
@@ -330,13 +330,14 @@ export class MsorDialogueportsComponent implements OnInit, OnDestroy {
       if (!this.gridOptions.paginationPageSizeSelector.includes(rowCount)) {
         this.gridOptions.paginationPageSizeSelector.push(rowCount);
       }
+      this.swal.Close();
     }, err => {
       this.swal.Error(err?.error?.message);
       // this.swal.Close();
     })
   }
   getYearwisePaymentCollectionData() {
-    // this.swal.Loading();
+    this.swal.Loading();
     this.userService.getYearwisePaymentCollectionData(this.role, this.username, this.selectedYear, 3).subscribe((data: any) => {
       console.log(data);
       this.rowData = data;
@@ -344,6 +345,7 @@ export class MsorDialogueportsComponent implements OnInit, OnDestroy {
       if (!this.gridOptions.paginationPageSizeSelector.includes(rowCount)) {
         this.gridOptions.paginationPageSizeSelector.push(rowCount);
       }
+      this.swal.Close();
     }, err => {
       this.swal.Error(err?.error?.message);
     })
