@@ -1281,9 +1281,12 @@ export class BaseService {
       BASE_URL + "/bulk/getAreaChangeSubscriberList?role=" + role + "&username=" + encodeURIComponent(username) + "&operatorid=" + operatorid, { observe: 'response' });
   }
   getLcochangeSubscriberList(role: any, username: any, operatorid: any, areaid: any, streetid: any): Observable<HttpResponse<any[]>> {
-    return this.http.get<any[]>(
-      BASE_URL + "/bulk/getLcochangeSubscriberList?role=" + role + "&username=" + encodeURIComponent(username) + "&operatorid=" + operatorid + "&areaid=" + areaid + "&streetid=" + streetid, { observe: 'response' });
+    return this.http.get<any[]>(BASE_URL + "/bulk/getLcochangeSubscriberList?role=" + role + "&username=" + encodeURIComponent(username) + "&operatorid=" + operatorid + "&areaid=" + areaid + "&streetid=" + streetid, { observe: 'response' });
   }
+  getAreawiseReport(role: any, username: any, operatorid: any, areaid: any, streetid: any): Observable<Blob> {
+    return this.http.get(BASE_URL + "/bulk/getLcochangeSubscriberList?role=" + role + "&username=" + encodeURIComponent(username) + "&operatorid=" + operatorid + "&areaid=" + areaid + "&streetid=" + streetid, { responseType: 'blob' });
+  }
+
 
   updateLcoChangeSubscriber(requestBody: any): Observable<any[]> {
     return this.http.post<any[]>(BASE_URL + "/bulk/updateLcoChangeSubscriber", requestBody, {});
@@ -2432,7 +2435,7 @@ export class BaseService {
     return this.http.get<any[]>(BASE_URL + "/subscriber/getDashboardCaswiseBoxDetails?role=" + role + "&username=" + encodeURIComponent(username));
   }
   // --------------------------------------------Customer Growth in last 4 monrhs ---------------------------------------
-   getDashboardMonthwiseFirstTimeActivationDetails(role: any, username: any): Observable<any[]> {
+  getDashboardMonthwiseFirstTimeActivationDetails(role: any, username: any): Observable<any[]> {
     return this.http.get<any[]>(BASE_URL + "/subscriber/getDashboardMonthwiseFirstTimeActivationDetails?role=" + role + "&username=" + encodeURIComponent(username));
   }
 

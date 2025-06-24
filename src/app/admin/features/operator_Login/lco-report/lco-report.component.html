@@ -34,6 +34,11 @@
                     <div><strong>MONTHWISE LCO ACTIVATION COUNT</strong></div>
                     <div class="tooltip">Monthwise activation count</div>
                 </div>
+                <div *ngIf="role== 'ROLE_OPERATOR'" class="card royal-card tooltip-container"
+                    (click)="openLCODialog('areawise_subscriber')">
+                    <div><strong>AREA WISE SUBSCRIBER REPORT</strong></div>
+                    <div class="tooltip">Areawise Subscriber count</div>
+                </div>
             </div>
 
         </mat-expansion-panel>

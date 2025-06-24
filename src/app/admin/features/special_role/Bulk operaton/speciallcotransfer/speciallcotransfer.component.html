@@ -32,8 +32,8 @@
                         [style.color]="isCheckboxChecked ? 'white' : 'black'"
                         [style.cursor]="isCheckboxChecked ? 'pointer' : 'not-allowed'">
                         <i class="fa fa-plus"></i> Choose
-                        <input type="file" style="display: none;" [disabled]="!isCheckboxChecked"  accept=".xls,.xlsx,.csv"
-                            (change)="handleFileInput($event)">
+                        <input type="file" style="display: none;" [disabled]="!isCheckboxChecked"
+                            accept=".xls,.xlsx,.csv" (change)="handleFileInput($event)">
                     </label>
                 </div>
                 <div class="col-8 col-md-8 col-sm-6 mb-3">
@@ -77,18 +77,6 @@
                         <label for="area" style="color: #261b72;font-size: 15px;">Choose Area :</label>
                     </div>
                     <div class="col-12  col-md-6">
-                        <!-- <mat-form-field appearance="outline" class="w-100">
-                            <mat-label>Select Area</mat-label>
-                            <mat-select [(ngModel)]="area" (ngModelChange)="onAreaStatusChange()" name="area" required>
-                                <mat-option value="">Select Area</mat-option>
-                                <mat-option value="0">All Area</mat-option>
-                                <mat-option *ngFor="let area of areaList" [value]="area.value">{{ area.name
-                                    }}</mat-option>
-                            </mat-select>
-                            <mat-error *ngIf="!area">Area is required</mat-error>
-                        </mat-form-field> -->
-
-
                         <select id="area" [(ngModel)]="area">
                             <option value="0" selected>Select Area</option>
                             <option *ngFor="let area of areaList" [value]="area.value"
@@ -105,17 +93,6 @@
                         <label for="street" style="color: #261b72;font-size: 15px;">Choose Street :</label>
                     </div>
                     <div class="col-12  col-md-6 mb-3">
-                        <!-- <mat-form-field appearance="outline" class="w-100">
-                            <mat-label>Select Street</mat-label>
-                            <mat-select [(ngModel)]="street" name="street" required>
-                                <mat-option value="">Select Street</mat-option>
-                                <mat-option value="0">All Street</mat-option>
-                                <mat-option *ngFor="let street of streetList" [value]="street.value">{{ street.name
-                                    }}</mat-option>
-                            </mat-select>
-                            <mat-error *ngIf="!street">Street is required</mat-error>
-                        </mat-form-field> -->
-
                         <select id="street" [(ngModel)]="street">
                             <option value="0" selected>Select Street</option>
                             <option *ngFor="let Street of streetList" [value]="Street.value"

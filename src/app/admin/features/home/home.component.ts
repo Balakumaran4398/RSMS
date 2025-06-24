@@ -65,18 +65,20 @@ export class HomeComponent implements OnInit {
       width: 150,
       cellRenderer: (params: any) => {
         const countValue = params.value;
-        console.log(countValue);
-        const isDisabled = params.context.componentParent.isshow;
-        console.log(isDisabled);
+        const isAJK = params.context.componentParent.isshow;
+        console.log('ISRO', isAJK);
         return `
-        <button ${countValue ? 'disabled' : ''} 
-                style="padding: 4px 10px; background-color: ${countValue ? '#ccc' : '#007bff'}; 
-                       color: block; border: none; border-radius: 4px;">
-          ${isDisabled}
-        </button>
-      `;
+      <button 
+        style="padding: 4px 10px; background-color: ${isAJK ? '#28a745' : '#007bff'};color: white; border: none; border-radius: 4px;">
+        ${isAJK ? 'AJK' : countValue}
+      </button>`;
+      },
+      onCellClicked: (params: any) => {
+        const isAJK = params.context.componentParent.isshow;
+        if (!isAJK) {
+          params.context.componentParent.getCountDetails(params.data);
+        }
       }
     },
-    
   ]
 }

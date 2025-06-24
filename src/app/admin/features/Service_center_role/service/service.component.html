@@ -810,6 +810,13 @@
             <div class="mx-2 d-flex justify-content-center align-items-center" style="margin-top: -1.2%;">
                 <button type="button" class="btn btn-success" (click)="onServiceHistory()">Submit </button>
             </div>
+            <div class="mx-2 d-flex justify-content-center align-items-center" style="margin-top: -1.2%;">
+                <!-- <button type="button" class="btn btn-danger" (click)="getMultiDispatch()">Dispatch </button> -->
+                <button class="btn btn-outline-info mx-1 " mat-raised-button color="primary" type="button"
+                    [disabled]="!isAnyRowSelected" (click)="openEditDialog(this.selectedIds,'1')">
+                    Dispatch
+                </button>
+            </div>
             <div class=" display1" style="margin-top: -1.2%;">
                 <div class="export-icon  mx-2">
                     <img src="/assets/images/icons/Excel.png" alt="Excel Icon" width="40px"
@@ -823,8 +830,9 @@
                 </div>
             </div>
         </div>
-        <ag-grid-angular #agGrid id="myGrid" domLayout="normal" class="ag-theme-alpine table-class" rowAnimation
-            [gridOptions]="gridOptions" [columnDefs]="columnDefs" [rowData]="rowData" [enableCellTextSelection]="true"
+        <ag-grid-angular #agGrid id="myGrid" domLayout="normal" class="ag-theme-alpine table-class" rowAnimation (gridReady)="onGridReady($event)"
+            (selectionChanged)="onSelectionChanged()" [rowSelection]="rowSelection" [gridOptions]="gridOptions"
+            [columnDefs]="columnDefs" [rowData]="rowData" [enableCellTextSelection]="true"
             [style.height.px]="getTableHeight()">
         </ag-grid-angular>
     </div>

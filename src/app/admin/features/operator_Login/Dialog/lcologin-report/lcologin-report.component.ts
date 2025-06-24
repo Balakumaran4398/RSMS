@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { AfterViewInit, Component, OnDestroy, OnInit } from '@angular/core';
 import { BaseService } from 'src/app/_core/service/base.service';
 import { StorageService } from 'src/app/_core/service/storage.service';
 import { Location } from '@angular/common';
@@ -6,26 +6,25 @@ import { ActivatedRoute } from '@angular/router';
 import Swal from 'sweetalert2';
 import { SwalService } from 'src/app/_core/service/swal.service';
 import { FormBuilder, FormGroup } from '@angular/forms';
+import { HttpResponse } from '@angular/common/http';
 
 @Component({
   selector: 'app-lcologin-report',
   templateUrl: './lcologin-report.component.html',
   styleUrls: ['./lcologin-report.component.scss']
 })
-export class LcologinReportComponent implements OnInit {
+export class LcologinReportComponent implements OnInit, AfterViewInit, OnDestroy {
   role: any;
   username: any;
 
   type: any;
   gridOptions = {
     defaultColDef: {
-
-
     },
     paginationPageSize: 10,
     pagination: true,
   }
-  rowData: any[] = [];
+  rowData: any;
   columnDefs: any[] = [];
 
   fromdate: any;
@@ -36,18 +35,50 @@ export class LcologinReportComponent implements OnInit {
   operatorId: any;
   operatorname: any;
   dateRangeForm: FormGroup;
+
+  lco: string = '';
+  area: string = '';
+  street: string = '';
+  lcoList: Array<{ name: string, value: string }> = [];
+  areaList: Array<{ name: string, value: string }> = [];
+  streetList: Array<{ name: string, value: string }> = [];
+
   constructor(private route: ActivatedRoute, private fb: FormBuilder, private userService: BaseService, private storageService: StorageService, private location: Location, private swal: SwalService) {
     this.role = storageService.getUserRole();
     this.username = storageService.getUsername();
     this.type = this.route.snapshot.paramMap.get('id');
+    console.log('fgfdgfdgfdg', this.type);
     this.dateRangeForm = this.fb.group({
       fromdate: [new Date()],
       todate: [new Date()]
     });
   }
+  ngOnDestroy(): void {
+    ($('#Area') as any).select2('destroy');
+    ($('#Street') as any).select2('destroy');
+  }
+  ngAfterViewInit() {
+    ($('#area') as any).select2({
+      placeholder: 'Select Area',
+      allowClear: true
+    });
+    $('#area').on('change', (event: any) => {
+      this.area = event.target.value;
+      this.onAreaStatusChange(this.area);
+    });
+    ($('#street') as any).select2({
+      placeholder: 'Select Street',
+      allowClear: true
+    });
+    $('#street').on('change', (event: any) => {
+      this.street = event.target.value;
+      this.onStreetList(this.street);
+    });
+  }
+
   formatDate(date: Date): string {
     const year = date.getFullYear();
-    const month = String(date.getMonth() + 1).padStart(2, '0'); // Months are zero-based
+    const month = String(date.getMonth() + 1).padStart(2, '0');
     const day = String(date.getDate()).padStart(2, '0');
     return `${year}-${month}-${day}`;
   }
@@ -57,8 +88,44 @@ export class LcologinReportComponent implements OnInit {
     this.fromdate = this.fromdate ? this.formatDate(this.fromdate) : this.formatDate(new Date());
     this.todate = this.todate ? this.formatDate(this.todate) : this.formatDate(new Date());
   }
+  onSubscriberStatusChange(type: any) {
+    console.log(this.operatorId);
+    this.areaList = [];
+    this.streetList = [];
+    if (this.operatorId) {
+      this.userService.getAreaListByOperatorid(this.role, this.username, this.operatorId)
+        .subscribe((data: any) => {
+          console.log(data);
+          this.areaList = Object.keys(data || {}).map(key => {
+            const name = key.replace(/\(\d+\)$/, '').trim();
+            const value = data[key];
+            return { name, value };
+          });
+          console.log(this.areaList);
+        });
+    }
+  }
 
 
+  onAreaStatusChange(type: any) {
+    console.log(this.area);
+    this.streetList = [];
+    if (this.area) {
+      this.userService.getStreetListByAreaid(this.role, this.username, this.area)
+        .subscribe((data: any) => {
+          console.log(data);
+          this.streetList = Object.keys(data || {}).map(key => {
+            const name = key.replace(/\(\d+\)$/, '').trim();
+            const value = data[key];
+            return { name, value };
+          });
+          console.log(this.streetList);
+        });
+    }
+  }
+  onStreetList(type: any) {
+
+  }
 
   goBack(): void {
     this.location.back();
@@ -213,6 +280,18 @@ export class LcologinReportComponent implements OnInit {
         { headerName: 'LOG DATE', field: 'transaction_date', width: 200 },
         { headerName: 'EXPIRY DATE', field: 'transaction_date', width: 200 },
       ]
+    } else if (this.type == 'areawise_subscriber') {
+      this.columnDefs = [
+        { headerName: "S.No", lockPosition: true, valueGetter: 'node.rowIndex+1', headerCheckboxSelection: false, checkboxSelection: false, width: 80, filter: false },
+        { headerName: 'SUBSCRIBER NAME', field: 'customername', width: 200 },
+        { headerName: 'MOBILE NUMBER', field: 'mobileno', width: 200 },
+        { headerName: 'SMARTCARD', field: 'smartcard', width: 200 },
+        { headerName: 'BOX ID', field: 'boxid', width: 150 },
+        { headerName: 'PACKAGE', field: '', width: 150 },
+        { headerName: 'LAST ACTIVATION DATE ', field: '', width: 200 },
+        { headerName: 'EXPIRY DATE', field: 'expirydate', width: 200 },
+        { headerName: 'STATUS', field: '', width: 200 },
+      ]
     }
   }
   getCurrentActReportDownload(event: any) {
@@ -275,12 +354,13 @@ export class LcologinReportComponent implements OnInit {
       transfer_smartcard: 'TRANSFER SMARTCARD REPORT',
       collection_bill: 'COLLECTION BILL REPORT',
       user_recharge: 'USER RECHARGE HISTORY',
+      areawise_subscriber: 'AREA WISE SUBSCRIBER REPORT',
     };
     return titles[type] || 'REPORT';
   }
   requiresDatePicker(type: string): boolean {
     return type !== 'box_in_hand' && type !== 'current_active_smartcard' && type !== 'current_Deactive_smartcard' && type !== 'expired_smartcard'
-      && type !== 'areawise_sub';
+      && type !== 'areawise_sub' && type !== 'areawise_subscriber';
   }
   // getdownloadReport(type: string, format: number) {
   //   const reportFunctions: { [key: string]: (event: number) => void } = {
@@ -300,7 +380,10 @@ export class LcologinReportComponent implements OnInit {
       this.lcoDeatails = data;
       this.operatorId = this.lcoDeatails?.operatorid;
       this.operatorname = this.lcoDeatails?.operatorname;
-      this.getMonthwiseReport();
+      if (this.type != 'areawise_subscriber') {
+        this.getMonthwiseReport();
+      }
+      this.onSubscriberStatusChange(this.operatorId);
     })
   }
   getSubscriberBillDownload(type: number) {
@@ -319,12 +402,52 @@ export class LcologinReportComponent implements OnInit {
           this.pdfswalError(error?.error.message);
         });
   }
+  getAreawiseDownload(type: number) {
+    this.swal.Loading()
+    this.processingSwal();
+    this.userService.getAreawiseReport(this.role, this.username, this.operatorId, this.area, 0)
+      .subscribe((x: Blob) => {
+        if (type == 1) {
+          this.reportMaking(x, "AREA WISE SUBSCRIBER REPORT COUNT(" + this.operatorname + ").pdf", 'application/pdf');
+        } else if (type == 2) {
+          this.reportMaking(x, "AREA WISE SUBSCRIBER REPORT COUNT(" + this.operatorname + ").xlsx", 'application/xlsx');
+        }
+        this.swal.Close()
+      },
+        (error: any) => {
+          this.pdfswalError(error?.error.message);
+        });
+  }
 
   getMonthwiseReport() {
     this.userService.getlcoMonthwiseActivationData(this.role, this.username, this.operatorId, this.fromdate, this.todate, 3).subscribe((data: any) => {
       console.log(data);
       this.rowData = data;
     })
+  }
+
+  getAreaReport() {
+    this.userService.getLcochangeSubscriberList(this.role, this.username, this.operatorId, this.area, 0).subscribe(
+      (response: HttpResponse<any[]>) => {
+        if (response.status === 200) {
+          // this.updateColumnDefs(this.selectedTab);
+          this.rowData = response.body;
+          console.log(this.rowData);
+          // this.swal.Success_200();
+        } else if (response.status === 204) {
+          this.swal.Success_204();
+        }
+      },
+      (error) => {
+        if (error.status === 400) {
+          this.swal.Error_400();
+        } else if (error.status === 500) {
+          this.swal.Error_500();
+        } else {
+          Swal.fire('Error', 'Something went wrong. Please try again.', 'error');
+        }
+      }
+    );
   }
   getFromDate(event: any) {
     console.log(event.value);

@@ -11,123 +11,145 @@
 //     display: flex;
 //     align-items: flex-start;
 //   }
-  
+
 //   .data-points-list {
 //     margin-right: 20px;
 //     font-size: 16px;
 //   }
-  
+
 //   .data-point-item {
 //     display: flex;
 //     align-items: center;
 //     margin-bottom: 10px;
 //   }
-  
+
 //   .color-box {
 //     width: 20px;
 //     height: 20px;
 //     margin-right: 8px;
 //     border-radius: 4px;
 //   }
-  
+
 
 
 .inventory-container {
-    // padding: 20px;
-    // background-color: #edf0f6;
-  
-    h3 {
-      font-size: 20px;
-      font-weight: bold;
-      margin-bottom: 16px;
+  // padding: 20px;
+  // background-color: #edf0f6;
+
+  h3 {
+    font-size: 20px;
+    font-weight: bold;
+    margin-bottom: 16px;
+  }
+
+  .card-wrapper {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px;
+    justify-content: flex-start;
+
+    @media (max-width: 1024px) {
+      justify-content: center;
     }
-  
-    .card-wrapper {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 16px;
-      justify-content: flex-start;
-  
-      @media (max-width: 1024px) {
-        justify-content: center;
-      }
-    }
-  
-    .inventory-card {
-      background-color: white;
-      border-radius: 8px;
-      flex: 1 1 calc(25% - 16px);
+  }
+
+  .inventory-card {
+    background-color: white;
+    border-radius: 8px;
+    flex: 1 1 calc(25% - 16px);
     //   min-width: 220px;
     //   max-width: 260px;
-      padding: 10px;
-      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+    padding: 10px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+    display: flex;
+    // flex-direction: column;
+    flex-direction: inherit;
+    align-items: center;
+    transition: transform 0.2s;
+    // display: -webkit-inline-box;
+
+    &:hover {
+      transform: translateY(-5px);
+    }
+
+    .icon-box {
+      width: 40px;
+      height: 40px;
+      border-radius: 8px;
       display: flex;
-      // flex-direction: column;
-      flex-direction: inherit;
       align-items: center;
-      transition: transform 0.2s;
-      // display: -webkit-inline-box;
-  
-      &:hover {
-        transform: translateY(-5px);
-      }
-  
-      .icon-box {
-        width: 40px;
-        height: 40px;
-        border-radius: 8px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
+      justify-content: center;
+      color: white;
+      font-size: 24px;
+      margin-bottom: 10px;
+    }
+
+    .title {
+      font-size: 16px;
+      color: #555;
+      text-align: center;
+    }
+
+    .count {
+      font-size: 25px;
+      margin: 10px 0;
+      color: #333;
+    }
+
+    .footer {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+
+      .percent-change {
+        background-color: #ff6f6f;
+        padding: 4px 10px;
+        border-radius: 12px;
         color: white;
-        font-size: 24px;
-        margin-bottom: 10px;
+        font-size: 12px;
+        margin-bottom: 4px;
       }
-  
-      .title {
-        font-size: 16px;
-        color: #555;
+
+      .description {
+        font-size: 12px;
+        color: #666;
         text-align: center;
-      }
-  
-      .count {
-        font-size: 25px;
-        margin: 10px 0;
-        color: #333;
-      }
-  
-      .footer {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-  
-        .percent-change {
-          background-color: #ff6f6f;
-          padding: 4px 10px;
-          border-radius: 12px;
-          color: white;
-          font-size: 12px;
-          margin-bottom: 4px;
-        }
-  
-        .description {
-          font-size: 12px;
-          color: #666;
-          text-align: center;
-        }
-      }
-    }
-  
-    // Responsive Breakpoints
-    @media (max-width: 768px) {
-      .inventory-card {
-        flex: 1 1 calc(50% - 16px);
-      }
-    }
-  
-    @media (max-width: 480px) {
-      .inventory-card {
-        flex: 1 1 100%;
       }
     }
   }
+
+  .inventory-card:hover {
+    background-color: var(--primary-color);
+
+    .title {
+      font-size: 16px;
+      color: #ffffff;
+      text-align: center;
+    }
+
+    .count {
+      font-size: 25px;
+      margin: 10px 0;
+      color: #ffffff;
+    }
+
+    .description {
+      font-size: 12px;
+      color: #ffffff;
+      text-align: center;
+    }
+  }
+
+  // Responsive Breakpoints
+  @media (max-width: 768px) {
+    .inventory-card {
+      flex: 1 1 calc(50% - 16px);
+    }
+  }
+
+  @media (max-width: 480px) {
+    .inventory-card {
+      flex: 1 1 100%;
+    }
+  }
+}

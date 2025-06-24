@@ -20,12 +20,15 @@ export class ServicecenterEditComponent implements OnDestroy, AfterViewInit {
   id: any;
   msoid: any;
   searchTerm: any;
-
+  type: any;
   filteredProblemList: any[] = [];
-  constructor(public dialogRef: MatDialogRef<ServicecenterEditComponent>, @Inject(MAT_DIALOG_DATA) public data: any,private storageservice: StorageService, private userservice: BaseService, private swal: SwalService) {
+  constructor(public dialogRef: MatDialogRef<ServicecenterEditComponent>, @Inject(MAT_DIALOG_DATA) public data: any, private storageservice: StorageService, private userservice: BaseService, private swal: SwalService) {
     console.log(data)
     this.role = storageservice.getUserRole();
     this.username = storageservice.getUsername();
+    this.type = data?.type;
+    console.log(this.type);
+
     this.entry = data?.data.serviceid;
     this.entryName = this.filteredProblemList.find(i => i.id == this.entry)?.name || '';
     this.dispatch = data?.data.remarks;
@@ -42,7 +45,7 @@ export class ServicecenterEditComponent implements OnDestroy, AfterViewInit {
     ($('#issue') as any).select2('destroy');
   }
   ngAfterViewInit(): void {
-    ($('#issue')as any).select2({
+    ($('#issue') as any).select2({
       placeholder: 'Select Issue',
     });
 

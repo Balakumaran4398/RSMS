@@ -25,9 +25,6 @@ export class BroadMasterComponent implements OnInit {
   isnew: boolean = false;
   isdelete: boolean = false;
   public rowSelection: any = "multiple";
-
-
-
   gridOptions = {
     defaultColDef: {
       sortable: true,
@@ -275,7 +272,6 @@ export class BroadMasterComponent implements OnInit {
 
   Deactive(ids: any, status: any) {
     console.log('dfsdfhsdjf', status);
-
     Swal.fire({
       title: "Are you sure?",
       text: "You won't be able to revert this!",

@@ -230,8 +230,8 @@ export class LcoDashboardComponent implements OnInit {
       this.lcoId = this.lcoDeatails?.operatorid;
       this.operatorname = this.lcoDeatails?.operatorname;
       console.log(this.lcoId);
+      this.onTableData();
       if (this.type == 6) {
-        // this.onTableData();
         this.getInventoryDetails(this.lcoId);
       } else if (this.type == 13) {
         this.operatorlist(this.lcoId);

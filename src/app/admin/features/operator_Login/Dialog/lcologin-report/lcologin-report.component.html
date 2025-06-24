@@ -54,7 +54,7 @@
         </div>
     </div>
     <div class="display justify-content-between align-items-center">
-        <div *ngIf="requiresDatePicker(type)" class="d-flex justify-content-between align-items-center">
+        <div *ngIf="requiresDatePicker(type) " class="d-flex justify-content-between align-items-center">
             <!-- <mat-form-field appearance="outline">
                 <mat-date-range-input [rangePicker]="picker">
                     <input matStartDate matInput placeholder="Start date" (dateChange)="getFromDate($event)" />
@@ -80,19 +80,63 @@
                 <span style="color: white;" (click)="getMonthwiseReport()">Get</span>
             </button>
         </div>
-        <div class="display1 justify-content-end align-items-center mb-3">
+        <div *ngIf="type != 'areawise_subscriber'" class="display1 justify-content-end align-items-center mb-3">
             <div class="export-icon mx-2">
                 <img src="/assets/images/icons/Excel.png" alt="Excel Icon" width="40px"
                     (click)="getSubscriberBillDownload( 2)">
                 <div class="tooltip">Excel</div>
             </div>
             <div class="export-icon">
-                <img src="/assets/images/icons/pdf.png" alt="PDF Icon" width="40px" (click)="getSubscriberBillDownload( 1)">
+                <img src="/assets/images/icons/pdf.png" alt="PDF Icon" width="40px"
+                    (click)="getSubscriberBillDownload( 1)">
                 <div class="tooltip">Pdf</div>
             </div>
         </div>
-    </div>
 
+    </div>
+    <div *ngIf="type == 'areawise_subscriber'">
+        <div class=" col-12 display">
+            <div class="col-12 col-md-6 mb-3 display ">
+                <div class="col-4 col-md-4 mb-2">
+                    <select id="area" [(ngModel)]="area">
+                        <option value="0" selected>Select Area</option>
+                        <option *ngFor="let area of areaList" [value]="area.value"
+                            (ngModelChange)="onAreaStatusChange($event)">
+                            {{ area.name }}
+                        </option>
+                    </select>
+                </div>
+
+                <div class="col-4 col-md-4 mb-2">
+                    <select id="street" [(ngModel)]="street">
+                        <option value="0" selected>Select Street</option>
+                        <option *ngFor="let Street of streetList" [value]="Street.value"
+                            (ngModelChange)="onStreetList($event)">
+                            {{ Street.name }}
+                        </option>
+                    </select>
+                </div>
+
+                <div class="col-4 col-md-2 mb-2 d-flex align-items-center">
+                    <button class="btn w-100" style="background-color: var(--primary-color);" (click)="getAreaReport()">
+                        <span style="color: white;">Get</span>
+                    </button>
+                </div>
+            </div>
+            <div class="col-12 col-md-6  mb-3 display1">
+                <div class="export-icon mx-2">
+                    <img src="/assets/images/icons/Excel.png" alt="Excel Icon" width="40px"
+                        (click)="getSubscriberBillDownload( 2)">
+                    <div class="tooltip">Excel</div>
+                </div>
+                <div class="export-icon">
+                    <img src="/assets/images/icons/pdf.png" alt="PDF Icon" width="40px"
+                        (click)="getSubscriberBillDownload( 1)">
+                    <div class="tooltip">Pdf</div>
+                </div>
+            </div>
+        </div>
+    </div>
     <ag-grid-angular #agGrid id="myGrid" domLayout='normal' class="ag-theme-alpine table-class" rowAnimation
         [gridOptions]="gridOptions" [columnDefs]="columnDefs" [rowData]="rowData" [enableCellTextSelection]="true">
     </ag-grid-angular>

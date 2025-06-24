@@ -72,26 +72,14 @@ export class ServiceComponent implements OnInit, OnDestroy {
   noSmartcardDetails: any;
 
 
-  // gridOptions = {
-  //   defaultColDef: {
-  //     sortable: true,
-  //     resizable: true,
-  //     filter: true,
-  //     width: 300,
-  //     floatingFilter: true,
-  //     comparator: (valueA: any, valueB: any) => {
-  //       const normalizedA = valueA ? valueA.toString().trim().toLowerCase() : '';
-  //       const normalizedB = valueB ? valueB.toString().trim().toLowerCase() : '';
-  //       if (normalizedA < normalizedB) return -1;
-  //       if (normalizedA > normalizedB) return 1;
-  //       return 0;
-  //     },
-  //   },
-  //   paginationPageSize: 10,
-  //   pagination: true,
-  // }
-
-
+  gridApi: any;
+  isAnyRowSelected: any = false;
+  selectedIds: number[] = [];
+  selectedtypes: number[] = [];
+  selectedtstatus: any;
+  hasSelectedRows: boolean = true;
+  selectCount: any;
+  public rowSelection: any = "multiple";
   gridOptions = {
     defaultColDef: {
       sortable: true,
@@ -101,7 +89,7 @@ export class ServiceComponent implements OnInit, OnDestroy {
       comparator: (valueA: any, valueB: any) => {
         const isNumberA = !isNaN(valueA) && valueA !== null;
         const isNumberB = !isNaN(valueB) && valueB !== null;
-  
+
         if (isNumberA && isNumberB) {
           return valueA - valueB;
         } else {
@@ -114,7 +102,7 @@ export class ServiceComponent implements OnInit, OnDestroy {
       },
     },
     paginationPageSize: 10,
-    paginationPageSizeSelector:[10,20,50],
+    paginationPageSizeSelector: [10, 20, 50],
     pagination: true,
   };
 
@@ -161,7 +149,7 @@ export class ServiceComponent implements OnInit, OnDestroy {
     }
     return this.tabletoSmartcardMsoid === 0;  // Only checked if boxid condition is not met
   }
-  
+
   get isOpen(): boolean {
     // return this.tabletoSmartcardData === 'OPEN';
     return this.tabletoSmartcardMsoid === 1;
@@ -484,7 +472,10 @@ export class ServiceComponent implements OnInit, OnDestroy {
     this.initializeSelect2();
   }
   columnDefs: ColDef[] = [
-    { headerName: "S.No", lockPosition: true, valueGetter: 'node.rowIndex+1', cellClass: 'locked-col', width: 100, },
+    {
+      headerName: "S.NO", lockPosition: true, valueGetter: 'node.rowIndex+1', headerCheckboxSelection: true, filter: false, width: 150,
+      checkboxSelection: true,
+    },
     { headerName: "MODEL", field: 'model', width: 100 },
     { headerName: "TOKEN NUMBER", field: 'referencenumber', width: 150 },
     { headerName: "OPERATOR NAME", field: 'operatorname', width: 200, cellStyle: { textAlign: 'left' }, },
@@ -531,7 +522,7 @@ export class ServiceComponent implements OnInit, OnDestroy {
         editButton.style.marginRight = '6px';
         editButton.style.fontSize = "30px";
         editButton.addEventListener('click', () => {
-          this.openEditDialog(params.data);
+          this.openEditDialog(params.data, '2');
         });
         const div = document.createElement('div');
         div.appendChild(editButton);
@@ -555,6 +546,27 @@ export class ServiceComponent implements OnInit, OnDestroy {
     { headerName: "DISPATCHER", field: 'dispatcher', width: 150, cellStyle: { textAlign: 'left' }, },
 
   ]
+  onGridReady(params: { api: any; }) {
+    this.gridApi = params.api;
+    // this.gridApi.sizeColumnsToFit();
+  }
+  onSelectionChanged() {
+    console.log('ewrwrewrer');
+
+    if (this.gridApi) {
+      const selectedRows = this.gridApi.getSelectedRows();
+      this.isAnyRowSelected = selectedRows.length > 0;
+      console.log("Selected Rows:", selectedRows);
+      this.selectCount = selectedRows.length
+      this.selectedIds = selectedRows.map((e: any) => e.id);
+      this.selectedtypes = selectedRows.map((e: any) => e.isactive);
+      // this.selectedtstatus = selectedRows.map((e: any) => e.statusdisplay);
+      this.selectedtstatus = selectedRows[0].statusdisplay;
+
+      console.log("Selected IDs:", this.selectedIds);
+      console.log("Selected Status:", this.selectedtstatus);
+    }
+  }
 
   getFromDate(event: any) {
     console.log(event.value);
@@ -655,18 +667,16 @@ export class ServiceComponent implements OnInit, OnDestroy {
         }
       });
   }
-  openEditDialog(data: any,): void {
+  openEditDialog(data: any, type: any): void {
     let d = {
       data: data,
-      problem: this.filteredProblemList
+      problem: this.filteredProblemList,
+      type: type
     }
     const dialogRef = this.dialog.open(ServicecenterEditComponent, {
-      // width: '500px',
-      // height: '600px',
       maxWidth: "500px",
       data: d
     });
-
     dialogRef.afterClosed().subscribe(result => {
       console.log('The dialog was closed');
     });
@@ -722,5 +732,10 @@ export class ServiceComponent implements OnInit, OnDestroy {
       return 600;
     }
     return 600;
+  }
+  getMultiDispatch(ids: any, status: any) {
+    console.log(ids);
+    console.log(status);
+
   }
 }

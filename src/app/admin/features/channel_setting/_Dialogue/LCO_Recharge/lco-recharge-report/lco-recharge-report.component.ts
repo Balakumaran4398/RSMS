@@ -43,20 +43,6 @@ export const MY_FORMATS1: MatDateFormats = {
   selector: 'app-lco-recharge-report',
   templateUrl: './lco-recharge-report.component.html',
   styleUrls: ['./lco-recharge-report.component.scss'],
-  // providers: [
-  //   {
-  //     provide: DateAdapter,
-  //     useClass: MomentDateAdapter,
-  //     deps: [MAT_DATE_LOCALE, MAT_MOMENT_DATE_ADAPTER_OPTIONS],
-  //   },
-
-  // { provide: MAT_DATE_FORMATS, useValue: MY_FORMATS },
-  // { provide: MAT_DATE_FORMATS, useValue: MY_FORMATS1 },
-  // ],
-  // encapsulation: ViewEncapsulation.None,
-  // changeDetection: ChangeDetectionStrategy.OnPush,
-
-
 })
 export class LcoRechargeReportComponent implements OnInit {
 
@@ -71,10 +57,8 @@ export class LcoRechargeReportComponent implements OnInit {
   type: any = '0';
   selectedTab: any = '1';
 
-
   selectedMonth: any = 0;
   selectedYear: any = 0;
-
 
   isCheckboxChecked: boolean = false;
   submitted: boolean = false;
