@@ -22,6 +22,7 @@ export class InventoryChartComponent implements OnInit {
   lco_end: any;
   box_in_msohand: any;
   customer_end: any;
+  total_inventory: any;
   constructor(private userservice: BaseService, private storageservice: StorageService, private router: Router) {
     this.role = this.storageservice.getUserRole();
     this.username = this.storageservice.getUsername();
@@ -38,15 +39,16 @@ export class InventoryChartComponent implements OnInit {
       this.lco_end = data["New box in LCO End"];
       this.customer_end = data["New in Customer End"];
       this.box_in_msohand = data["New box in MSO Hand"];
+      this.total_inventory = data["Inventory total count"];
 
       this.inventoryData = [
         {
           title: 'Total Box in Inventory',
-          count: this.customer_end,
+          count: this.total_inventory,
           change: 10.00,
           description: 'Total Box in Inventory this month',
           color: '#ff44ec',
-          click: () => this.navigateToPage('BOX IN CUSTOMER HAND')
+          click: () => this.navigateToPage('TOTAL BOX IN INVENTORY')
         },
         {
           title: 'Box In MSO Hand',
@@ -131,7 +133,9 @@ export class InventoryChartComponent implements OnInit {
       case 'BOX IN CUSTOMER HAND':
         packageId = '13';
         break;
-
+      case 'TOTAL BOX IN INVENTORY':
+        packageId = '14';
+        break;
       default:
         packageId = '';
     }

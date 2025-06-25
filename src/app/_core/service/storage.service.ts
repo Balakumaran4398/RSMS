@@ -4,6 +4,7 @@ const TOKEN_KEY = 'auth-token';
 const USER_KEY = 'auth-user'
 const USERNAME = 'username'
 const ACCESSIP = 'access_ip'
+const LCO = 'islco'
 const ID = 'id'
 const NAVLIST = 'navigationmap'
 
@@ -40,6 +41,10 @@ export class StorageService {
     window.sessionStorage.removeItem(ACCESSIP);
     window.sessionStorage.setItem(ACCESSIP, access_ip);
   }
+  public saveLco(islco: any): void {
+    window.sessionStorage.removeItem(LCO);
+    window.sessionStorage.setItem(LCO, islco);
+  }
   public saveNavList(navigationmap: any): void {
     console.log('1111111111');
 
@@ -69,6 +74,15 @@ export class StorageService {
     if (user) {
       const parsedUser = JSON.parse(user);
       let AccessIP = parsedUser.access_ip;
+      return parsedUser;
+    }
+    return {};
+  }
+  public getLCO(): any {
+    const user = window.sessionStorage.getItem(USER_KEY);
+    if (user) {
+      const parsedUser = JSON.parse(user);
+      let LCO = parsedUser.islco;
       return parsedUser;
     }
     return {};
@@ -140,6 +154,10 @@ export class StorageService {
   public getAccessip(): any {
     const user = this.getAccessIP();
     return user.access_ip || '';
+  }
+  public getIsLCO(): any {
+    const user = this.getLCO();
+    return user.islco || '';
   }
   // public getNavigationList(): any {
   //   console.log('11111111111,dfdfdsff');

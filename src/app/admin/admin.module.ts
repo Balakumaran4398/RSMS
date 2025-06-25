@@ -207,9 +207,10 @@ import { version } from "moment";
 import { VersionComponent } from "./features/version/version.component";
 import { BobbulechartComponent } from "../_core/charts/bobbulechart/bobbulechart.component";
 import { VersionLoginCredentialComponent } from "./features/version/dialog/version-login-credential/version-login-credential.component";
+import { HomeLoginCredentialComponent } from "./features/home_Dialog/home-login-credential/home-login-credential.component";
 @NgModule({
     declarations: [
-        AdminBaseComponent, NavComponent, HomeComponent, NavbarComponent, MsodetailsComponent, CasmasterComponent,
+        AdminBaseComponent, NavComponent, HomeComponent, NavbarComponent, MsodetailsComponent, CasmasterComponent,HomeLoginCredentialComponent,
         // -------------------------Dashboard-----------------------------
         BarChartComponent, InventoryChartComponent, LcoCommissionChartComponent,
         PackageChartComponent, StbChartComponent,BobbulechartComponent,

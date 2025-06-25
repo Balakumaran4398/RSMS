@@ -60,15 +60,10 @@ export class LoginComponent implements OnInit {
     this.username = storageService.getUsername();
     console.log('ROLE', this.role);
     console.log('USERNAME', this.username);
-
-
-
   }
   public getUserRole(user: any): string {
 
     if (!user || !user.roles) return 'DEFAULT_ROLE';
-
-
     if (user.roles.includes('ROLE_ADMIN')) return 'ROLE_ADMIN';
     if (user.roles.includes('ROLE_RECEPTION')) return 'ROLE_RECEPTION';
     if (user.roles.includes('ROLE_SPECIAL')) return 'ROLE_SPECIAL';
@@ -152,6 +147,7 @@ export class LoginComponent implements OnInit {
             this.storageService.saveAccessIP(res.access_ip)
             this.storageService.saveID(res.id)
             this.storageService.saveNavList(res.navigationmap)
+            this.storageService.saveLco(res.islco)
             this.idstorage = res.id;
             console.log('Stored ID:', res.id);
             const user = this.storageService.getUser();
@@ -159,6 +155,7 @@ export class LoginComponent implements OnInit {
             this.roles = user.roles;
             console.log(this.roles);
             console.log(res.navigationmap);
+            console.log(res.islco);
 
             this.post();
             // const role = this.storageService.getUserRole();

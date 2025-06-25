@@ -6,7 +6,7 @@ import { CanvasJS } from '@canvasjs/angular-charts';
 
 
 import { Route, Router } from '@angular/router';
-declare var AmCharts: any;
+
 
 @Component({
   selector: 'app-bar-chart',
@@ -14,26 +14,14 @@ declare var AmCharts: any;
   styleUrls: ['./bar-chart.component.scss']
 })
 export class BarChartComponent implements OnInit {
-  chartOptions: any;  
+  chartOptions: any;
   role: string;
   username: string;
   date: any;
   chart: any;
   value: any;
 
-  BAChartDataValue = [5, 17, 9, 12, 2];
-  BAChartDataLabel = ['TATA', 'Mahendra', 'Toyota', 'Tesla', 'BMW'];
-  BAChartJobErrColors = [
-    'rgba(26, 176, 169, 1)',
-    'rgba(119, 209, 190, 1)',
-    'rgba(127, 188, 212, 1)',
-    'rgba(28, 120, 212, 1)',
-    'rgba(3, 3, 158, 1)',
-  ];
-
-  BAChartCountTotal = this.BAChartDataValue.reduce((acc, val) => acc + val, 0);
-
-  constructor(private userservice: BaseService, private storageservice: StorageService, private swal: SwalService,private router:Router) {
+  constructor(private userservice: BaseService, private storageservice: StorageService, private swal: SwalService, private router: Router) {
     this.role = storageservice.getUserRole();
     this.username = storageservice.getUsername();
   }
@@ -41,59 +29,6 @@ export class BarChartComponent implements OnInit {
   ngOnInit(): void {
     this.date = new Date().toISOString().split('T')[0];
     this.loadChartData(this.date);
-
-
-    jQuery('.chart-input').off().on('input change', function () {
-      jQuery('.chart-input')
-        .off('input change') 
-        .on('input change', function (this: HTMLInputElement) {
-          var property = jQuery(this).data('property');
-          var target = (window as any).chart; 
-
-          if (!target) {
-            console.error('Chart object not found');
-            return;
-          }
-
-          target.startDuration = 0;
-
-          if (property === 'topRadius') {
-            target = target.graphs[0];
-          }
-
-          target[property] = this.value;
-          target.validateNow();
-        });
-    });
-
-    AmCharts.makeChart("chartdiv", {
-      "type": "serial",
-      "startDuration": 2,
-      "dataProvider": [
-        { "country": "Customer Amount", "visits": 4025, "color": "#027523" },
-        { "country": "LCO Profit", "visits": 1882, "color": "#048077" },
-        { "country": "LCO Amount", "visits": 1192, "color": "#022738" },
-        { "country": "LCO Tax", "visits": 2010, "color": "#423f69" },
-        { "country": "Refund", "visits": 2882, "color": "#69101d" },
-        { "country": "Recharge", "visits": 3882, "color": "#750b1a" },
-      ],
-      "valueAxes": [{ "position": "left", "axisAlpha": 0, "gridAlpha": 0 }],
-      "graphs": [{
-        "balloonText": "[[category]]: <b>[[value]]</b>",
-        "colorField": "color",
-        "fillAlphas": 0.85,
-        "lineAlpha": 0.1,
-        "type": "column",
-        "topRadius": 1,
-        "valueField": "visits"
-      }],
-      "depth3D": 40,
-      "angle": 30,
-      "chartCursor": { "categoryBalloonEnabled": false, "cursorAlpha": 0, "zoomable": false },
-      "categoryField": "country",
-      "categoryAxis": { "gridPosition": "start", "axisAlpha": 0, "gridAlpha": 0 }
-    });
-    
   }
 
   openMsoDialog() {
@@ -134,9 +69,7 @@ export class BarChartComponent implements OnInit {
         } else {
           color = "#d1ae2e";
         }
-        // color = count > 0 ? "#f4a261" : "#505081";
         dataPoints.push({
-          // x: new Date(date),
           y: count,
           label: date,
           color: color,
@@ -168,82 +101,18 @@ export class BarChartComponent implements OnInit {
         labelFontColor: "#001716",
         labelAlign: "center",
         interval: 1,
-
       },
       data: [{
         type: "column",
         dataPoints: dataPoints,
+        dataPointWidth: 10,
         indexLabelFontColor: "#5A5757",
         indexLabelPlacement: "inside",
-        width: 10,
         indexLabelAlign: "center",
         indexTextAlign: "center",
-        color: (e: any) => e.dataPoint.color,
-        // color: (dataPoints: any) => {
-        //   if (dataPoints.y > 0) {
-        //     return "#3bada6";
-        //   }
-        //   return "#d1ae2e";
-        // }
+        // color: (e: any) => e.dataPoint.color,
       }]
     });
-
     chart.render();
   }
-
-  // updateChartData(data: any): void {
-  //   const dataPoints = [];
-  //   const colors = ["#93B1B5", "#FFDBBB", "#BADDFF", "#CBBD93", "#DBD1ED", "#77B1D4", "#E3F0A3","#7D99AA"]; 
-  
-  //   let index = 0;
-  //   for (const date in data) {
-  //     if (data.hasOwnProperty(date)) {
-  //       const count = data[date];
-  //       const color = colors[index % colors.length]; 
-  //       dataPoints.push({
-  //         y: count,
-  //         label: date,
-  //         color: color,
-  //         indexLabel: count.toString(),
-  //         indexLabelFontColor: "#5A5757",
-  //         indexLabelFontSize: 14,
-  //         indexLabelPlacement: "outside",
-  //         indexLabelAlign: "left"
-  //       });
-  //         index++; 
-  //     }
-  //   }
-  
-  //   const chart = new CanvasJS.Chart("barchartContainer", {
-  //     animationEnabled: true,
-  //     responsive: true,
-  //     axisY: {
-  //       title: "Count",
-  //       titleFontSize: 16,
-  //       titleFontColor: "#5A5757",
-  //       labelFontColor: "#5A5757",
-  //       gridThickness: 0
-  //     },
-  //     axisX: {
-  //       title: "Date",
-  //       labelFontSize: 14,
-  //       labelFontColor: "#001716",
-  //       labelAlign: "center",
-  //       interval: 1
-  //     },
-  //     data: [{
-  //       type: "column",
-  //       dataPoints: dataPoints,
-  //       dataPointWidth: 10, 
-  //       indexLabelFontColor: "#5A5757",
-  //       indexLabelPlacement: "inside",
-  //       indexLabelAlign: "center",
-  //       color: (e: any) => e.dataPoint.color
-  //     }]
-  //   });
-  
-  //   chart.render();
-  // }
-  
-
 }

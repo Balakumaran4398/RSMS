@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
 import { BaseService } from 'src/app/_core/service/base.service';
 import { StorageService } from 'src/app/_core/service/storage.service';
+import { HomeLoginCredentialComponent } from '../home_Dialog/home-login-credential/home-login-credential.component';
 
 @Component({
   selector: 'app-home',
@@ -26,7 +28,7 @@ export class HomeComponent implements OnInit {
   username: any;
   role: any;
   isshow: boolean = false;
-  constructor(private userService: BaseService, private storageService: StorageService) {
+  constructor(private userService: BaseService, private storageService: StorageService, public dialog: MatDialog,) {
     this.username = storageService.getUsername();
     this.role = storageService.getUserRole();
   }
@@ -46,8 +48,43 @@ export class HomeComponent implements OnInit {
   }
   columnnDefs: any[] = [
     { headerName: "S.No", lockPosition: true, valueGetter: 'node.rowIndex+1', width: 100, },
-    { headerName: "CAS NAME", field: 'cas_name', width: 250, },
-    { headerName: "COUNT", field: 'count', width: 100, },
+    { headerName: "CAS NAME", field: 'cas_name', width: 200, },
+    {
+      headerName: "COUNT",
+      field: 'count',
+      width: 150,
+      cellRenderer: (params: any) => {
+        const context = params.context.componentParent;
+        const isAJK = context.isshow;
+        const countValue = params.value;
+        return isAJK
+          ? `<button style="padding: 4px 10px; background-color:rgb(13, 109, 187); color: white; border: none; border-radius: 4px;">
+         AJK
+       </button>`
+          : `${countValue}`;
+      },
+      onCellClicked: (params: any) => {
+        const context = params.context.componentParent;
+        if (context.isshow) {
+          const dialogRef = context.dialog.open(HomeLoginCredentialComponent, {
+            maxWidth: "500px",
+            data: { data: params.data }
+          });
+          dialogRef.afterClosed().subscribe((result: any) => {
+            console.log('The dialog was closed');
+            if (result && result.success) {
+              console.log('Success result:', result);
+              context.isshow = false;
+              params.api.refreshCells({
+                rowNodes: [params.node],
+                columns: ['count'],
+                force: true
+              });
+            }
+          });
+        }
+      }
+    },
     {
       headerName: "STATUS", field: 'status', width: 200, cellStyle: (params: any) => {
         if (params.value === 'Active') {
@@ -59,26 +96,21 @@ export class HomeComponent implements OnInit {
       }
     },
     { headerName: "ID", field: 'id', width: 200, },
-    {
-      headerName: "COUNT",
-      field: 'count',
-      width: 150,
-      cellRenderer: (params: any) => {
-        const countValue = params.value;
-        const isAJK = params.context.componentParent.isshow;
-        console.log('ISRO', isAJK);
-        return `
-      <button 
-        style="padding: 4px 10px; background-color: ${isAJK ? '#28a745' : '#007bff'};color: white; border: none; border-radius: 4px;">
-        ${isAJK ? 'AJK' : countValue}
-      </button>`;
-      },
-      onCellClicked: (params: any) => {
-        const isAJK = params.context.componentParent.isshow;
-        if (!isAJK) {
-          params.context.componentParent.getCountDetails(params.data);
-        }
-      }
-    },
   ]
+  openEditDialog(data: any): void {
+    let d = {
+      data: data,
+    }
+    console.log(data);
+    const dialogRef = this.dialog.open(HomeLoginCredentialComponent, {
+      maxWidth: "500px",
+      data: d
+    });
+    dialogRef.afterClosed().subscribe(result => {
+      console.log('The dialog was closed');
+      if (result && result.success) {
+        console.log('dsfsdfdsfdsfdsf', result);
+      }
+    });
+  }
 }

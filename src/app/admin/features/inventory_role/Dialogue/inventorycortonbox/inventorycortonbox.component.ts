@@ -182,6 +182,21 @@ export class InventorycortonboxComponent implements OnInit {
       });
       console.log(this.filteredPackageList);
     });
+
+    // this.userservice.getAllBaselistbyOperatorIdCastypeType(this.role, this.username, this.operatorid, 1, 1)
+    //   .subscribe((data: any) => {
+    //     // this.packagenameList = Object.entries(data).map(([name, id]) => ({
+    //     //   packagename: name,
+    //     //   packageid: id as number
+    //     // }));
+    //     // this.cdr.detectChanges();
+    //     // this.filteredPackagenameList = this.packagenameList;
+    //     this.filteredPackageList = Object.keys(data).map(key => {
+    //       const value = data[key];
+    //       const name = key;
+    //       return { name: name, value: value };
+    //     });
+    //   });
   }
 
   getPlanList() {
@@ -252,7 +267,7 @@ export class InventorycortonboxComponent implements OnInit {
     $('#package').on('change', (event: any) => {
       this.selectedPackage = event.target.value;
       console.log(this.selectedPackage);
-      this.onPackageList(this.selectedPackage);
+      // this.onPackageList(this.selectedPackage);
     });
   }
   onFileSelected(event: any) {

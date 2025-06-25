@@ -1,9 +1,50 @@
-<div>
-    <div>
-        <h6 style="color:rgb(83, 81, 81);font-size: 20px;font-weight: 600;text-align: start;font-family:sans-serif;">
-            CUSTOMER GROWTH</h6>
-    </div>
-    <div id="bubbleChartContainer" style="height: 270px; width: 100%;"></div>
-</div>
+<h6 style="color:rgb(83, 81, 81);font-size: 20px;font-weight: 600;text-align: start;font-family:sans-serif;">
+    CUSTOMER GROWTH</h6>
+<div class="bubble-card" style="height: 230px; width: 100%;">
+    <div class="bubble-left">
+        <div class="bubble-wrap">
+            <div class="bubble pink" [ngStyle]="{
+        width: (40 + bubbleData[3].count) + 'px',
+        height: (40 + bubbleData[3].count) + 'px',
+        top: '0px',
+        left: '0px'
+      }" [attr.title]="bubbleData[3]?.label + ': ' + bubbleData[3]?.count">
+                {{ bubbleData[3]?.count }}
+            </div>
 
-<!-- <div id="chart" class="chart"></div> -->
+            <div class="bubble blue" [ngStyle]="{
+        width: (40 + bubbleData[0].count) + 'px',
+        height: (40 + bubbleData[0].count) + 'px',
+        top: '20px',
+        left: '100px'
+      }" [attr.title]="bubbleData[0]?.label + ': ' + bubbleData[0]?.count">
+                {{ bubbleData[0]?.count }}
+            </div>
+
+            <div class="bubble cyan" [ngStyle]="{
+        width: (40 + bubbleData[2].count) + 'px',
+        height: (40 + bubbleData[2].count) + 'px',
+        top: '80px',
+        left: '10px'
+      }" [attr.title]="bubbleData[2]?.label + ': ' + bubbleData[2]?.count">
+                {{ bubbleData[2]?.count }}
+            </div>
+
+            <div class="bubble green" [ngStyle]="{
+        width: (40 + bubbleData[1].count) + 'px',
+        height: (40 + bubbleData[1].count) + 'px',
+        top: '80px',
+        left: '100px'
+      }" [attr.title]="bubbleData[1]?.label + ': ' + bubbleData[1]?.count">
+                {{ bubbleData[1]?.count }}
+            </div>
+        </div>
+    </div>
+
+    <div class="legend">
+        <div class="legend-item" *ngFor="let item of bubbleData">
+            <span class="dot" [style.backgroundColor]="item.color"></span>
+            {{ item.label }}
+        </div>
+    </div>
+</div>

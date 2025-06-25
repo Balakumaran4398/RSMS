@@ -1582,11 +1582,10 @@ export class BaseService {
   getOperatorDashboardPDFReport(role: any, username: any, type: any, reporttype: any, operatorid: any, yearmonth: any, fromdate: any, todate: any): Observable<Blob> {
     return this.http.get(BASE_URL + "/report/GetOperatorDashboardPdfReport?role=" + role + "&username=" + encodeURIComponent(username) + "&type=" + type + "&reporttype=" + reporttype + "&operatorid=" + operatorid + '&yearmonth=' + yearmonth + '&fromdate=' + fromdate + '&todate=' + todate, { responseType: 'blob' });
   }
-
-
-
-
-
+  // ===============================================================multi selection Dispatch ====================
+  getserviceBulkDispath(role: any, username: any, id: any, dispatchremarks: any): Observable<any[]> {
+    return this.http.post<any[]>(BASE_URL + "/allocation/serviceBulkDispath?role=" + role + "&username=" + encodeURIComponent(username) + "&id=" + id + "&dispatchremarks=" + dispatchremarks, {});
+  }
 
   // ==================================================Trai Reports================================================================================
   // -------------------------------------------------Package Based & Addon Package Reports------------------------------------------------------------
@@ -1875,7 +1874,13 @@ export class BaseService {
   getYearwisePaymentCollectionData(role: any, username: any, year: any, reportgentype: any): Observable<any[]> {
     return this.http.get<any[]>(BASE_URL + "/report/getYearlyPaymentCollection?role=" + role + "&username=" + encodeURIComponent(username) + "&year=" + year + "&reportgentype=" + reportgentype,);
   }
-
+  // ---------------------------------------------------AJK Payment Colection Report---------------------------
+  getPaymentCollectionDataReport(role: any, username: any, month: any, year: any, reportgentype: any): Observable<Blob> {
+    return this.http.get(BASE_URL + "/report/getPaymentCollectionReport?role=" + role + "&username=" + encodeURIComponent(username) + "&month=" + month + "&year=" + year + "&reportgentype=" + reportgentype, { responseType: 'blob' });
+  }
+  getPaymentCollectionReport(role: any, username: any, month: any, year: any, reportgentype: any): Observable<any[]> {
+    return this.http.get<any[]>(BASE_URL + "/report/getPaymentCollectionReport?role=" + role + "&username=" + encodeURIComponent(username) + "&month=" + month + "&year=" + year + "&reportgentype=" + reportgentype,);
+  }
   // -----------------------------------------------ExcludingReport-------------------------------------------------------
   getExcluding(role: any, username: any, fromdate: any, todate: any, month: any, year: any, datetype: any, type: any, reporttype: any, operatorid: any, reportgentype: any): Observable<HttpResponse<any[]>> {
     return this.http.get<any[]>(BASE_URL + "/report/getExcludingReport?role=" + role + "&username=" + encodeURIComponent(username) + "&fromdate=" + fromdate + "&todate=" + todate + "&month=" + month + "&year=" + year + "&datetype=" + datetype + "&type=" + type + "&reporttype=" + reporttype + "&operatorid=" + operatorid + "&reportgentype=" + reportgentype, { observe: 'response' });

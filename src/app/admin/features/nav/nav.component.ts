@@ -58,14 +58,17 @@ export class NavComponent implements OnInit, AfterViewInit {
   operatorname: any;
   operatorBalance: any;
   distributor: boolean = false;
+  isLco: boolean = false;
   navigationList: any = {};
   constructor(private router: Router, private breakpointObserver: BreakpointObserver, private cd: ChangeDetectorRef, private dataService: DataService, private cdr: ChangeDetectorRef, private userservice: BaseService, private storageservice: StorageService) {
     this.role = storageservice.getUserRole();
     this.username = storageservice.getUsername();
     this.navigationList = storageservice.getNavigationList();
+    this.isLco = storageservice.getIsLCO();
     console.log(this.role);
     console.log(this.username);
     console.log(this.navigationList);
+    console.log(this.isLco);
     if (this.role.includes('ROLE_ADMIN')) {
       this.isUser = true;
       this.isReception = false;

@@ -67,6 +67,9 @@ export class ChartInventoryReportComponent {
       case '13':
         this.id = 'BOX IN CUSTOMER HAND';
         break;
+      case '14':
+        this.id = 'TOTAL BOX IN INVENTORY';
+        break;
       default:
         this.id = '';
 
@@ -79,7 +82,7 @@ export class ChartInventoryReportComponent {
           if (response.status === 200) {
             // this.updateColumnDefs(this.type);
             this.rowData = response.body;
-            const rowCount = this.rowData.length ;
+            const rowCount = this.rowData.length;
             if (!this.gridOptions.paginationPageSizeSelector.includes(rowCount)) {
               this.gridOptions.paginationPageSizeSelector.push(rowCount);
             }
@@ -135,6 +138,10 @@ export class ChartInventoryReportComponent {
             const color = value === true || value === 'true' ? 'green' : 'red';
             const text = value === true || value === 'true' ? 'TRUE' : 'FALSE';
             return `<span style="color: ${color}; font-weight: bold;">${text}</span>`;
+          }, cellStyle: {
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center'
           }
         },
         {
@@ -157,6 +164,11 @@ export class ChartInventoryReportComponent {
             const color = value === true || value === 'true' ? 'green' : 'red';
             const text = value === true || value === 'true' ? 'TRUE' : 'FALSE';
             return `<span style="color: ${color}; font-weight: bold;">${text}</span>`;
+          },
+          cellStyle: {
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center'
           }
         },
         {
@@ -180,6 +192,11 @@ export class ChartInventoryReportComponent {
             const color = value === true || value === 'true' ? 'green' : 'red';
             const text = value === true || value === 'true' ? 'TRUE' : 'FALSE';
             return `<span style="color: ${color}; font-weight: bold;">${text}</span>`;
+          },
+          cellStyle: {
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center'
           }
         },
         {
@@ -187,6 +204,41 @@ export class ChartInventoryReportComponent {
 
         },
         { headerName: "OPERATOR NAME", field: 'operatorname', width: 240, },
+      ]
+    } else if (this.type == 14) {
+      this.columnDefs = [
+        { headerName: "S.No", lockPosition: true, valueGetter: 'node.rowIndex+1', width: 100, },
+        { headerName: "SMARTCARD", field: 'smartcard', width: 300, },
+        { headerName: "BOX ID", field: 'boxid', width: 300, },
+        {
+          headerName: "CAS NAME", field: 'casname', width: 300, cellStyle: {
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center'
+          }
+        },
+        {
+          headerName: "IS ALLOCATED", field: 'isallocated', width: 250,
+          cellRenderer: (params: any) => {
+            const value = params.value;
+            const color = value === true || value === 'true' ? 'green' : 'red';
+            const text = value === true || value === 'true' ? 'TRUE' : 'FALSE';
+            return `<span style="color: ${color}; font-weight: bold;">${text}</span>`;
+          },
+          cellStyle: {
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center'
+          }
+        },
+        {
+          headerName: "STATUS", field: 'statusdisplay', width: 300, cellStyle: {
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center'
+          }
+
+        },
       ]
     }
   }
@@ -244,6 +296,21 @@ export class ChartInventoryReportComponent {
                 datas.push(row);
               });
               this.excelService.generateboxinCustomerExcel(areatitle, header, datas, title, areasub, sub);
+              this.swal.Close();
+            } else if (this.type == 14) {
+              console.log(this.type);
+              const areatitle = 'A1:G2';
+              const areasub = 'A3:G3';
+              const title = this.id + ' REPORT';
+              const sub = 'MSO ADDRESS:' + this.msodetails;
+              const header = ['S.NO', 'CARTON BOX', 'SMARTCARD', 'BOX ID', 'CAS TYPE', 'ISALLOCATED', 'STATUS'];
+              const data = this.rowData;
+              const datas: Array<any> = [];
+              data.forEach((d: any, index: number) => {
+                const row = [index + 1, d.cottonboxdisplay, d.smartcard, d.boxid, d.casname, d.isallocated, d.statusdisplay];
+                datas.push(row);
+              });
+              this.excelService.generateDashboardInventoryExcel(areatitle, header, datas, title, areasub, sub);
               this.swal.Close();
             }
           }

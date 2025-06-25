@@ -671,7 +671,8 @@ export class ServiceComponent implements OnInit, OnDestroy {
     let d = {
       data: data,
       problem: this.filteredProblemList,
-      type: type
+      type: type,
+      id:this.selectedIds
     }
     const dialogRef = this.dialog.open(ServicecenterEditComponent, {
       maxWidth: "500px",

@@ -1,21 +1,21 @@
 import { Component, Inject } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
+import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { MatDialogRef, MAT_DIALOG_DATA, MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 import { BaseService } from 'src/app/_core/service/base.service';
 import { StorageService } from 'src/app/_core/service/storage.service';
 import { SwalService } from 'src/app/_core/service/swal.service';
 import Swal from 'sweetalert2';
 import { Location } from '@angular/common';
-@Component({
-  selector: 'app-version-login-credential',
-  templateUrl: './version-login-credential.component.html',
-  styleUrls: ['./version-login-credential.component.scss']
-})
-export class VersionLoginCredentialComponent {
-  form!: FormGroup;
-  isLoggedIn = false; // Track login status
 
+@Component({
+  selector: 'app-home-login-credential',
+  templateUrl: './home-login-credential.component.html',
+  styleUrls: ['./home-login-credential.component.scss']
+})
+export class HomeLoginCredentialComponent {
+  form!: FormGroup;
+  isLoggedIn = false;
   username: any;
   role: any;
   newSubid: any;
@@ -25,7 +25,7 @@ export class VersionLoginCredentialComponent {
   pairSmartcardList: any[] = [];
   planType: any[] = [];
 
-  constructor(public dialogRef: MatDialogRef<VersionLoginCredentialComponent>, @Inject(MAT_DIALOG_DATA) public data: any, private location: Location, private swal: SwalService, private userservice: BaseService, private storageservice: StorageService, private fb: FormBuilder, private router: Router, public dialog: MatDialog,) {
+  constructor(public dialogRef: MatDialogRef<HomeLoginCredentialComponent>, @Inject(MAT_DIALOG_DATA) public data: any, private location: Location, private swal: SwalService, private userservice: BaseService, private storageservice: StorageService, private fb: FormBuilder, private router: Router, public dialog: MatDialog,) {
     this.role = storageservice.getUserRole();
     this.username = storageservice.getUsername();
     this.form = fb.group({
@@ -108,6 +108,7 @@ export class VersionLoginCredentialComponent {
         if (role === 'ROLE_USER' || role === 'ROLE_RECEPTION') {
           this.router.navigate(['admin/home']).then(() => {
           });
+
         }
       } else if (result.dismiss === Swal.DismissReason.cancel) {
         this.location.back();

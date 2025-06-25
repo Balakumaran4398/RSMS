@@ -47,7 +47,7 @@ export class MsorDialogueportsComponent implements OnInit, OnDestroy {
       filter: true,
       floatingFilter: true
     },
-    paginationPageSize: 10,
+    paginationPageSize: 30,
     paginationPageSizeSelector: [10, 20],
     pagination: true,
   }
@@ -218,6 +218,7 @@ export class MsorDialogueportsComponent implements OnInit, OnDestroy {
   operatorname: any;
   subscriberid: any;
   subOpid: any;
+  isshow: boolean = false;
   constructor(private route: ActivatedRoute, private location: Location,
     public userService: BaseService, private cdr: ChangeDetectorRef, public storageservice: StorageService, private swal: SwalService, public sublco: OperatorService) {
     this.type = this.route.snapshot.paramMap.get('id');
@@ -233,29 +234,14 @@ export class MsorDialogueportsComponent implements OnInit, OnDestroy {
     if (this.type == 'total_lco') {
       this.getTotalOperatorReport();
     }
-    // else if (this.type == 'online_payment') {
-    //   this.getOnline();
-    // }
+
     else if (this.type == 'user_rechargehistory') {
       this.getUserRechargeHistory();
     }
     else if (this.type == 'lco_active_subscription') {
       this.lcowiseActiveSubCount();
     }
-    // else if (this.type == 'monthly_datewise') {
-    //   this.dateType === true;
-    // }
-    // console.log(sublco);
-    // this.lcoDeatails = this.sublco?.lcoDeatails;
-    // console.log('lcoDeatails', this.lcoDeatails);
 
-    // // 3. retailerId can be directly accessed from lcoDeatails
-    // this.retailerId = this.lcoDeatails?.retailerId;
-    // console.log('retailerId', this.retailerId);
-
-    // // 4. subOperatorId is the operatorId inside lcoDeatails
-    // this.subOperatorId = this.lcoDeatails?.operatorId;
-    // console.log('subOperatorId', this.subOperatorId);;
   }
   getFilteredOnlineType() {
     return this.role === "ROLE_SPECIAL"
@@ -278,6 +264,7 @@ export class MsorDialogueportsComponent implements OnInit, OnDestroy {
         console.log('lco_recharge not found in URL');
       }
     });
+    this.getMSODetails();
     this.onColumnDefs();
     this.generateMonths();
     this.generateYears();
@@ -318,9 +305,12 @@ export class MsorDialogueportsComponent implements OnInit, OnDestroy {
     console.log('subOperatorId', this.subOperatorId);
   }
 
-  // setRechargeTypesBasedOnRole() {
-  //   this.currentRechargeTypes = this.role === 'ROLE_SUBSCRIBER' ? this.RechargeType1 : this.RechargeType;
-  // }
+  getMSODetails() {
+    this.userService.getMsoDetails(this.role, this.username).subscribe((res: any) => {
+      console.log(res);
+      this.isshow = res.msoName.includes('AJK') ? true : false;
+    });
+  }
   getMonthwisePaymentCollectionData() {
     this.swal.Loading();
     this.userService.getMonthwisePaymentCollectionData(this.role, this.username, this.selectedMonth, this.selectedYear, 3).subscribe((data: any) => {
@@ -350,6 +340,25 @@ export class MsorDialogueportsComponent implements OnInit, OnDestroy {
       this.swal.Error(err?.error?.message);
     })
   }
+  getPaymentCollectionData() {
+    this.swal.Loading();
+    if (this.dateType == false) {
+      this.selectedMonth
+    } else {
+      this.selectedMonth = 0;
+    }
+    this.userService.getPaymentCollectionReport(this.role, this.username, this.selectedMonth || 0, this.selectedYear, 3).subscribe((data: any) => {
+      console.log(data);
+      this.rowData = data;
+      const rowCount = this.rowData.length;
+      if (!this.gridOptions.paginationPageSizeSelector.includes(rowCount)) {
+        this.gridOptions.paginationPageSizeSelector.push(rowCount);
+      }
+      this.swal.Close();
+    }, err => {
+      this.swal.Error(err?.error?.message);
+    })
+  }
   getSubscriberDetails() {
     this.userService.getSubscriberDetails(this.role, this.username).subscribe((data: any) => {
       console.log(data);
@@ -360,8 +369,6 @@ export class MsorDialogueportsComponent implements OnInit, OnDestroy {
       this.subOpid = this.lcoDeatails.operatorid;
       console.log('this.subscriberid', this.subscriberid);
       console.log('this.subscriberid', this.subOpid);
-
-
     })
   }
   filterOnlineTypeByRole() {
@@ -1001,12 +1008,36 @@ export class MsorDialogueportsComponent implements OnInit, OnDestroy {
     else if (this.type == 'monthly_datewise') {
       this.columnDefs = [
         { headerName: "S.No", lockPosition: true, valueGetter: 'node.rowIndex+1', width: 90 },
-        { headerName: 'DATE', field: 'transaction_date', width: 200 },
-        { headerName: 'CHEQUE', field: 'cheque', width: 250, cellStyle: { textAlign: 'center' }, },
+        {
+          headerName: 'DATE', field: 'transaction_date', width: 200, valueFormatter: (params: any) => {
+            const value = params.value;
+            if (!value) return '—';
+            return typeof value === 'string' ? value : new Date(value).toLocaleDateString();
+          }
+        }, { headerName: 'CHEQUE', field: 'cheque', width: 250, cellStyle: { textAlign: 'center' }, },
         { headerName: 'CASH', field: 'cash', width: 220, cellStyle: { textAlign: 'center', color: 'green' }, },
         { headerName: 'ACCOUNT	', field: 'account', width: 200, cellStyle: { textAlign: 'center' } },
         { headerName: 'ONLINE', field: 'online', width: 200 },
         { headerName: 'DEDUCTION', field: 'detection', width: 200 },
+        { headerName: 'TOTAL', field: 'total', width: 200 },
+      ]
+    } else if (this.type == 'payment_collection_AJK') {
+      this.columnDefs = [
+        { headerName: "S.No", lockPosition: true, valueGetter: 'node.rowIndex+1', width: 90 },
+        {
+          headerName: 'DATE', field: 'transaction_date', width: 200, valueFormatter: (params: any) => {
+            const value = params.value;
+            if (!value) return '—';
+            return typeof value === 'string' ? value : new Date(value).toLocaleDateString();
+          }
+        },
+        { headerName: 'WALLET CREDIT', field: 'walletcredit', width: 250, cellStyle: { textAlign: 'center' }, },
+        { headerName: 'WALLET SHARE', field: 'walletshare', width: 220, cellStyle: { textAlign: 'center', }, },
+        { headerName: 'ONLINE', field: 'online', width: 200 },
+        { headerName: 'DEDUCTION', field: 'detection', width: 200 },
+        { headerName: 'FREE	', field: 'free', width: 200, cellStyle: { textAlign: 'center' } },
+        { headerName: 'RIDPAY CREDIT', field: 'ridpaycredit', width: 200 },
+        { headerName: 'RIDPAY DEDUCTION', field: 'ridpaydetection', width: 200 },
         { headerName: 'TOTAL', field: 'total', width: 200 },
       ]
     }
@@ -1272,7 +1303,9 @@ export class MsorDialogueportsComponent implements OnInit, OnDestroy {
           });
         });
   }
-  yearwisePaymentCollectionPdf() {
+  // ---------------------------------payment collection report (AJK)-------------------------------
+  PaymentCollectionExcel() {
+    this.submitted = true;
     if (!this.selectedYear && !this.selectedMonth && !this.selectedDate) {
       this.submitted = true;
     }
@@ -1285,14 +1318,18 @@ export class MsorDialogueportsComponent implements OnInit, OnDestroy {
       }
     });
     this.swal.Loading();
-    this.userService.getYearwisePaymentCollection(this.role, this.username, this.selectedYear, 1)
+    if (this.dateType == false) {
+      this.selectedMonth
+    } else {
+      this.selectedMonth = 0;
+    }
+    this.userService.getPaymentCollectionDataReport(this.role, this.username, this.selectedMonth || 0, this.selectedYear, 2)
       .subscribe((x: Blob) => {
-        const blob = new Blob([x], { type: 'application/pdf' });
+        const blob = new Blob([x], { type: 'application/xlsx' });
         const data = window.URL.createObjectURL(blob);
         const link = document.createElement('a');
         link.href = data;
-
-        link.download = (this.type + '-' + this.selectedYear + ".pdf").toUpperCase();
+        link.download = (this.type + '-' + this.selectedYear + ".xlsx").toUpperCase();
         link.dispatchEvent(new MouseEvent('click', { bubbles: true, cancelable: true, view: window }));
         setTimeout(() => {
           window.URL.revokeObjectURL(data);
@@ -1304,7 +1341,7 @@ export class MsorDialogueportsComponent implements OnInit, OnDestroy {
           Swal.close();
           Swal.fire({
             title: 'Error!',
-            text: error?.error?.message || 'There was an issue generating the PDF report.',
+            text: error?.error?.message || 'There was an issue generating the Excel report.',
             icon: 'error',
             confirmButtonText: 'Ok'
           });
@@ -2916,7 +2953,8 @@ export class MsorDialogueportsComponent implements OnInit, OnDestroy {
     button.addEventListener('mouseleave', () => button.style.color = 'rgb(104, 102, 102)');
     button.addEventListener('click', () => this.refreshData(params.data));
 
-    if (params.data.status === "success") {
+
+    if (params.data.status === "success" || params.data.status === "payment_successfull") {
       button.disabled = true;
       button.style.cursor = 'not-allowed';
       button.style.background = 'linear-gradient(rgb(251 234 170), rgb(229 200 164))';

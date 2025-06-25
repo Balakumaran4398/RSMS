@@ -70,8 +70,12 @@
         <li *ngIf="isUser || isReception ">
             <a> <i class="bx bx-user bx-sm icon "></i> Operator <i class='bx bx-chevron-right icon-right'></i></a>
             <ul class="side-dropdown">
-                <li *ngIf="navigationList.operatordetails"><a
+                <li *ngIf="!isLco && navigationList.operatordetails"><a
                         (click)="navgetToUrl('/lco_recharge/1');setActiveLinkTab($event)">
+                        <i class='fa fa-fw fa-users  icon'></i> &nbsp;
+                        Operator Details</a></li>
+                <li *ngIf="isLco && navigationList.operatordetails"><a
+                        (click)="navgetToUrl('/operator_details');setActiveLinkTab($event)">
                         <i class='fa fa-fw fa-users  icon'></i> &nbsp;
                         Operator Details</a></li>
 
@@ -471,7 +475,7 @@
                 class="nav-link">
                 <i class="bx bx-analyse bx-sm icon "></i>&nbsp;Bill Collection</a>
         </li>
-    
+
         <li *ngIf="distributor && isOperator">
             <a (click)="navgetToUrl('/distributor_setting'); setActiveLinkTab($event)" class="nav-link">
                 <i class="bx bx-error-alt bx-sm icon"></i>&nbsp;Distributor Setting
@@ -617,4 +621,3 @@
         <router-outlet></router-outlet>
     </main>
 </section>
-

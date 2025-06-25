@@ -21,6 +21,7 @@ export class ServicecenterEditComponent implements OnDestroy, AfterViewInit {
   msoid: any;
   searchTerm: any;
   type: any;
+  selectedList: any[] = [];
   filteredProblemList: any[] = [];
   constructor(public dialogRef: MatDialogRef<ServicecenterEditComponent>, @Inject(MAT_DIALOG_DATA) public data: any, private storageservice: StorageService, private userservice: BaseService, private swal: SwalService) {
     console.log(data)
@@ -28,7 +29,8 @@ export class ServicecenterEditComponent implements OnDestroy, AfterViewInit {
     this.username = storageservice.getUsername();
     this.type = data?.type;
     console.log(this.type);
-
+    this.selectedList = data?.id;
+    console.log(this.selectedList);
     this.entry = data?.data.serviceid;
     this.entryName = this.filteredProblemList.find(i => i.id == this.entry)?.name || '';
     this.dispatch = data?.data.remarks;
@@ -62,6 +64,14 @@ export class ServicecenterEditComponent implements OnDestroy, AfterViewInit {
   onSubmit() {
     this.swal.Loading();
     this.userservice.updateServiceLog(this.role, this.username, this.id, this.entry, this.dispatch, this.delivery, this.amount || 0).subscribe((res: any) => {
+      this.swal.success(res?.message);
+    }, (err) => {
+      this.swal.Error(err?.error?.message);
+    });
+  }
+  onDispatch() {
+    this.swal.Loading();
+    this.userservice.getserviceBulkDispath(this.role, this.username, this.selectedList, this.delivery).subscribe((res: any) => {
       this.swal.success(res?.message);
     }, (err) => {
       this.swal.Error(err?.error?.message);

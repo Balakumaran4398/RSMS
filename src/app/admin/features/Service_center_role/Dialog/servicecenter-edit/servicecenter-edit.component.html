@@ -6,7 +6,7 @@
     <div class="col d-flex justify-content-center align-items-center card transparent-background">
         <div class="card-content">
             <div class="card-body col-12 col-md-12 mobile">
-                <div class="input_box col-12 col-md-12 display mb-3">
+                <!-- <div class="input_box col-12 col-md-12 display mb-3">
                     <div class="col-12 col-md-4 ">
                         <span for="categoryName" class="me-2">Entry </span>
                     </div>
@@ -16,7 +16,7 @@
                             </option>
                         </select>
                     </div>
-                </div>
+                </div> -->
                 <!-- <div class="input_box  col-12 col-md-12  display align-items-center mb-3">
                     <div class="col-12 col-md-4 ">
                         <span for="channelLogo" class="me-2"> Close</span>
@@ -31,9 +31,7 @@
                         <span for="channelLogo" class="me-2">Dispatch </span>
                     </div>
                     <div class="col-12 col-md-8">
-                        <input type="text" [(ngModel)]="delivery" class=" flex-grow-1" placeholder="Enter Delivery"
-                            [disabled]=" msoid == 1 || msoid == 2"
-                            [ngStyle]="{ 'border-color': msoid == 1 || msoid == 2 ? '#e9e3e3':'gray' }">
+                        <input type="text" [(ngModel)]="delivery" class=" flex-grow-1" placeholder="Enter Delivery">
                     </div>
                 </div>
                 <!-- <div class="input_box  col-12 col-md-12  display align-items-center mb-3">
@@ -50,7 +48,7 @@
             </div>
             <div class="text-center">
                 <div class="input_box d-flex justify-content-center align-items-center">
-                    <button type="button" class="btn btn-success mx-3" (click)="onSubmit()"
+                    <button type="button" class="btn btn-success mx-3" (click)="onDispatch()"
                         style="color: white;">Update</button>
                     <button type="button" class="btn btn-danger" (click)="onNoClick()"
                         style="color: white;">cancel</button>

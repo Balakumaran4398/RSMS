@@ -44,7 +44,7 @@
             <div><strong> Online Payment History</strong> </div>
             <div class="tooltip">Operator/Subscriber/Sublco Online Payment</div>
           </div>
-          <div *ngIf="isSpecial " class="card royal-card tooltip-container"
+          <div *ngIf="isSpecial || isUser" class="card royal-card tooltip-container"
             (click)="openMsoDialog('online_payment_special')"><i class="fas fa-file-invoice"></i>
             <div><strong> Online Payment History</strong> </div>
             <div class="tooltip">Operator/Subscriber/Sublco Online Payment</div>
@@ -83,12 +83,14 @@
             <div><strong> Wallet Share Report</strong> </div>
             <div class="tooltip">Recharge Invoice</div>
           </div>
-          <div *ngIf="isUser || isReception || isSpecial" class="card royal-card tooltip-container"
+          <div *ngIf="(isUser || isReception || isSpecial) && !isshow" class="card royal-card tooltip-container"
             (click)="openMsoDialog('monthly_datewise')"><i class="fas fa-clipboard-list"></i>
-            <!-- <div><strong>Monthly Datewise <br> Payment Collection Report</strong> </div> -->
             <div><strong>Payment Collection Report</strong> </div>
           </div>
-
+          <div *ngIf="isUser && isshow" class="card royal-card tooltip-container"
+            (click)="openMsoDialog('payment_collection_AJK')"><i class="fas fa-clipboard-list"></i>
+            <div><strong>Payment Collection Report</strong> </div>
+          </div>
 
           <div *ngIf="isUser || isReception || isSpecial" class="card royal-card tooltip-container"
             (click)="openMsoDialog('subscriber_bill')"><i class="fas fa-clipboard-list"></i>
