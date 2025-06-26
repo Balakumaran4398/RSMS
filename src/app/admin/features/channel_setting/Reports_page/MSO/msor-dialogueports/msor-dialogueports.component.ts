@@ -1031,14 +1031,33 @@ export class MsorDialogueportsComponent implements OnInit, OnDestroy {
             return typeof value === 'string' ? value : new Date(value).toLocaleDateString();
           }
         },
+        // {
+        //   headerName: 'DATE',
+        //   field: 'transaction_date',
+        //   width: 200,
+        //   valueFormatter: (params: any) => {
+        //     const isTotalRow = params.node?.rowPinned === 'bottom'; 
+        //     const value = params.value;
+        //     if (isTotalRow) return 'Total';
+        //     if (!value) return '—';
+        //     return typeof value === 'string' ? value : new Date(value).toLocaleDateString();
+        //   },
+        //   cellStyle: (params: any) => {
+        //     const isTotalRow = params.node?.rowPinned === 'bottom'; 
+        //     return isTotalRow
+        //       ? { fontWeight: 'bold', color: 'red' }
+        //       : {};
+        //   }
+        // },
         { headerName: 'WALLET CREDIT', field: 'walletcredit', width: 250, cellStyle: { textAlign: 'center' }, },
         { headerName: 'WALLET SHARE', field: 'walletshare', width: 220, cellStyle: { textAlign: 'center', }, },
-        { headerName: 'ONLINE', field: 'online', width: 200 },
-        { headerName: 'DEDUCTION', field: 'detection', width: 200 },
+        { headerName: 'SHARE PAID', field: 'sharepaid', width: 220, cellStyle: { textAlign: 'center', }, },
         { headerName: 'FREE	', field: 'free', width: 200, cellStyle: { textAlign: 'center' } },
+        { headerName: 'ONLINE', field: 'online', width: 200 },
         { headerName: 'RIDPAY CREDIT', field: 'ridpaycredit', width: 200 },
         { headerName: 'RIDPAY DEDUCTION', field: 'ridpaydetection', width: 200 },
-        { headerName: 'TOTAL', field: 'total', width: 200 },
+        { headerName: 'TOTAL', field: 'total', width: 200, cellStyle: { fontWeight: 'bold' } },
+        // { headerName: 'DEDUCTION', field: 'detection', width: 200 },
       ]
     }
 

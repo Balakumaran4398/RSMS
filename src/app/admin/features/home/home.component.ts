@@ -47,19 +47,19 @@ export class HomeComponent implements OnInit {
     });
   }
   columnnDefs: any[] = [
-    { headerName: "S.No", lockPosition: true, valueGetter: 'node.rowIndex+1', width: 100, },
-    { headerName: "CAS NAME", field: 'cas_name', width: 200, },
+    { headerName: "S.No", lockPosition: true, valueGetter: 'node.rowIndex+1', width: 80, },
+    { headerName: "CAS NAME", field: 'cas_name', width: 300, },
     {
       headerName: "COUNT",
       field: 'count',
-      width: 150,
+      width: 300,
       cellRenderer: (params: any) => {
         const context = params.context.componentParent;
         const isAJK = context.isshow;
         const countValue = params.value;
         return isAJK
           ? `<button style="padding: 4px 10px; background-color:rgb(13, 109, 187); color: white; border: none; border-radius: 4px;">
-         AJK
+         Count
        </button>`
           : `${countValue}`;
       },
@@ -84,9 +84,33 @@ export class HomeComponent implements OnInit {
           });
         }
       }
+      // onCellClicked: (params: any) => {
+      // const context = params.context.componentParent;
+
+      //   if (!rowData.isshow) {
+      //     const context = params.context.componentParent;
+      //     const dialogRef = context.dialog.open(HomeLoginCredentialComponent, {
+      //       maxWidth: "500px",
+      //       data: { data: rowData }
+      //     });
+
+      //     dialogRef.afterClosed().subscribe((result: any) => {
+      //       if (result && result.success) {
+      //         console.log('Dialog success');
+      //         rowData.isshow = true; 
+      //         params.api.refreshCells({
+      //           rowNodes: [params.node],
+      //           columns: ['count'],
+      //           force: true
+      //         });
+      //       }
+      //     });
+      //   }
+      // }
+
     },
     {
-      headerName: "STATUS", field: 'status', width: 200, cellStyle: (params: any) => {
+      headerName: "STATUS", field: 'status', width: 300, cellStyle: (params: any) => {
         if (params.value === 'Active') {
           return { color: 'green', fontWeight: 'bold' };
         } else if (params.value === 'Deactive') {
@@ -95,7 +119,6 @@ export class HomeComponent implements OnInit {
         return null;
       }
     },
-    { headerName: "ID", field: 'id', width: 200, },
   ]
   openEditDialog(data: any): void {
     let d = {

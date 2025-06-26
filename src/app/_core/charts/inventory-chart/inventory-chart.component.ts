@@ -29,11 +29,6 @@ export class InventoryChartComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    // this.userservice.getDashboardBoxPieChart(this.role, this.username).subscribe((data: any) => {
-    //   console.log(data);
-    //   this.updateChartData(data);
-    // });
-
     this.userservice.getDashboardBoxPieChart(this.role, this.username).subscribe((data: any) => {
       console.log(data);
       this.lco_end = data["New box in LCO End"];

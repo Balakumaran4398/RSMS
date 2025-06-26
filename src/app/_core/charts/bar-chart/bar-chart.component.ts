@@ -40,12 +40,8 @@ export class BarChartComponent implements OnInit {
     if (input.value) {
       const selectedDate = new Date(input.value);
       const today = new Date();
-      // if (selectedDate <= today) {
       this.date = input.value;
       this.loadChartData(this.date);
-      // } else {
-      // this.swal.warning_1();
-      // }
     }
   }
 
@@ -82,18 +78,13 @@ export class BarChartComponent implements OnInit {
       }
     }
     const chart = new CanvasJS.Chart("barchartContainer", {
-      // title: {
-      //   text: "NEXT 7 DAYS SUBSCRIPTION EXPIRED COUNT",
-      //   fontSize: 18,
-      //   // fontWeight: 600
-      // },
       animationEnabled: true,
       axisY: {
         title: "Count",
         titleFontSize: 16,
         titleFontColor: "#5A5757",
         labelFontColor: "#5A5757",
-        gridThickness: 0
+        gridThickness: 0,
       },
       axisX: {
         title: "Date",
@@ -110,7 +101,6 @@ export class BarChartComponent implements OnInit {
         indexLabelPlacement: "inside",
         indexLabelAlign: "center",
         indexTextAlign: "center",
-        // color: (e: any) => e.dataPoint.color,
       }]
     });
     chart.render();
