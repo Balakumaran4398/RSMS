@@ -1898,14 +1898,16 @@ export class BaseService {
     return this.http.get(BASE_URL + "/report/getIncludingReport?role=" + role + "&username=" + encodeURIComponent(username) + "&fromdate=" + fromdate + "&todate=" + todate + "&month=" + month + "&year=" + year + "&datetype=" + datetype + "&type=" + type + "&reporttype=" + reporttype + "&operatorid=" + operatorid + "&reportgentype=" + reportgentype, { responseType: 'blob' });
   }
   // -----------------------------------------------MSO -LCO WISE -------------------------------------------------------
-  getLcowiseActiveSubCount(role: any, username: any, operatorid: any, model: any, reporttype: any, batch: any, castype: any,): Observable<HttpResponse<any[]>> {
-    return this.http.get<any>(BASE_URL + "/report/lcowiseactivesubscription?role=" + role + "&username=" + encodeURIComponent(username) + "&operatorid=" + operatorid + "&model=" + model + "&reporttype=" + reporttype + "&batch=" + batch + "&castype=" + castype, { observe: 'response' });
+  getLcowiseActiveSubCount(role: any, username: any, operatorid: any, model: any, reporttype: any, batch: any, castype: any, districtname: any): Observable<HttpResponse<any[]>> {
+    return this.http.get<any>(BASE_URL + "/report/lcowiseactivesubscription?role=" + role + "&username=" + encodeURIComponent(username) + "&operatorid=" + operatorid + "&model=" + model + "&reporttype=" + reporttype + "&batch=" + batch + "&castype=" + castype + "&districtname=" + districtname, { observe: 'response' });
   }
-  getLcowiseActiveSubCountReport(role: any, username: any, operatorid: any, model: any, reporttype: any, batch: any, castype: any,): Observable<Blob> {
-    return this.http.get(BASE_URL + "/report/lcowiseactivesubscription?role=" + role + "&username=" + encodeURIComponent(username) + "&operatorid=" + operatorid + "&model=" + model + "&reporttype=" + reporttype + "&batch=" + batch + "&castype=" + castype, { responseType: 'blob' });
+  getLcowiseActiveSubCountReport(role: any, username: any, operatorid: any, model: any, reporttype: any, batch: any, castype: any, districtname: any): Observable<Blob> {
+    return this.http.get(BASE_URL + "/report/lcowiseactivesubscription?role=" + role + "&username=" + encodeURIComponent(username) + "&operatorid=" + operatorid + "&model=" + model + "&reporttype=" + reporttype + "&batch=" + batch + "&castype=" + castype + "&districtname=" + districtname, { responseType: 'blob' });
   }
-
-
+  // --------------------------------------------DISTRICT LIST---------------------------------------------------
+  getDistrictList(role: any, username: any,): Observable<HttpResponse<any[]>> {
+    return this.http.get<any>(BASE_URL + "/report/getDistrictList?role=" + role + "&username=" + encodeURIComponent(username));
+  }
   getLcowiseExpirySubCount(role: any, username: any, month: any, year: any, todate: any, reporttype: any): Observable<HttpResponse<any[]>> {
     return this.http.get<any>(BASE_URL + "/report/lcowiseactiveexpirycount?role=" + role + "&username=" + encodeURIComponent(username) + "&month=" + month + "&year=" + year + "&todate=" + todate + "&reporttype=" + reporttype, { observe: 'response' });
   }

@@ -131,7 +131,7 @@ const routes: Routes = [
       { path: 'top_subscription', component: TopSubLoginComponent, },
       { path: 'operatorlist', component: OperatorlistComponent, },
       { path: 'nav', component: NavbarComponent, },
-      { path: 'lcorecharge', component: LcoRechargeReportComponent, },
+      { path: 'lcorecharge/:id', component: LcoRechargeReportComponent, },
       { path: 'loginreund/:id', component: LoginrefundComponent, },
       // --------------------------------------------Top-Subscriber-Details---------------------------------
       { path: 'top_sub_detail', component: TopSubDetailComponent, },

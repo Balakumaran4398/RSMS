@@ -5,13 +5,15 @@
 
 <div class="inventory-container">
   <h3 style="text-align: start;color:rgb(83, 81, 81)">INVENTORY DETAILS</h3>
-  <div class="card-wrapper">
-    <div class="inventory-card" *ngFor="let item of inventoryData" (click)="item.click()"
-      style="display: flex; justify-content: space-between;align-items: center;">
-      <div>
-        <div class="icon-box" [ngStyle]="{ 'background-color': item.color }">
-          <i class="material-icons">dvr</i>
-        </div>
+  <div class="card-wrapper" (mouseleave)="onMouseLeaveAll()">
+
+    <div class="inventory-card" *ngFor="let item of inventoryData; let i = index" (mouseenter)="onMouseEnter(i)"
+      (click)="onCardClick(i, item)" [ngClass]="{
+      'hovered':
+        hoveredIndex === i || (hoveredIndex === null && selectedIndex === i)
+    }" style="display: flex; justify-content: space-between; align-items: center;">
+      <div class="icon-box" [ngStyle]="{ 'background-color': item.color }">
+        <i class="material-icons">dvr</i>
       </div>
       <div>
         <div class="card-content">

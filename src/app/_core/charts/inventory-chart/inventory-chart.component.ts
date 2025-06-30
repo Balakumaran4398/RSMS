@@ -23,12 +23,15 @@ export class InventoryChartComponent implements OnInit {
   box_in_msohand: any;
   customer_end: any;
   total_inventory: any;
+  hoveredIndex: number | null = 0;
+  selectedIndex: number | null = 0;
   constructor(private userservice: BaseService, private storageservice: StorageService, private router: Router) {
     this.role = this.storageservice.getUserRole();
     this.username = this.storageservice.getUsername();
   }
 
   ngOnInit(): void {
+    this.hoveredIndex = this.selectedIndex ?? 0;
     this.userservice.getDashboardBoxPieChart(this.role, this.username).subscribe((data: any) => {
       console.log(data);
       this.lco_end = data["New box in LCO End"];
@@ -74,8 +77,18 @@ export class InventoryChartComponent implements OnInit {
     });
   }
 
+  onMouseEnter(index: number) {
+    this.hoveredIndex = index;
+  }
 
-
+  onMouseLeaveAll() {
+    this.hoveredIndex = null;
+  }
+  onCardClick(index: number, item: any) {
+    this.selectedIndex = index;
+    this.hoveredIndex = index;
+    item.click();
+  }
   updateChartData(apiData: any): void {
     this.dataPoints = [
       { name: "New box in MSO Hand", y: apiData["New box in MSO Hand"], color: "#77edd0", click: () => this.navigateToPage('BOX IN MSO HAND') },

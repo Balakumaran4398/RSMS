@@ -1097,7 +1097,7 @@
             <div class="input_box d-flex justify-content-center align-item-center mx-2 mb-2">
                 <select name="type" id="type" [(ngModel)]="selectedlcoModel">
                     <option value="0" selected>All Model</option>
-                    <option *ngFor="let type of model" [value]="type.id">{{ type.modelname }}</option>
+                    <option *ngFor="let type of model" [value]="type.modelname">{{ type.modelname }}</option>
                 </select>
             </div>
             <div class="input_box d-flex justify-content-center align-item-center mx-2 mb-2">
@@ -1106,12 +1106,12 @@
                     <option *ngFor="let cas of casList" [value]="cas.value">{{ cas.label }}</option>
                 </select>
             </div>
-            <!-- <div class="input_box d-flex justify-content-center align-item-center mx-2 mb-2">
+            <div class="input_box d-flex justify-content-center align-item-center mx-2 mb-2">
                 <select name="area" id="area" [(ngModel)]="selectedArea">
-                    <option disabled>Select Area</option>
-                    <option *ngFor="let cas of casList" [value]="cas.value">{{ cas.label }}</option>
+                    <option disabled>Select District</option>
+                    <option *ngFor="let dist of DistrictList" [value]="dist.districtid">{{ dist.districtname }}</option>
                 </select>
-            </div> -->
+            </div>
             <div class=" d-flex justify-content-center align-item-center mx-2 mb-2">
                 <mat-radio-group class="radio-group" aria-labelledby="status" [(ngModel)]="batch">
                     <mat-radio-button class="radio-button" [value]="false">Active

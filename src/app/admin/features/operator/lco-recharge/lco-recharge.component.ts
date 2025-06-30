@@ -52,7 +52,48 @@ export class LcoRechargeComponent implements OnInit {
   }
   submit() {
     console.log('submit ');
+ if (this.id == '3') {
+      if (this.form.valid) {
+        this.swal.Loading1();
+        const { userid, password } = this.form.value;
+        this.userservice.LCOLogin(this.role, this.username, userid, password, 2).subscribe(
+          (res: any) => {
+            const role = this.storageservice.getUserRole();
+            const user = this.storageservice.getUser();
+            Swal.fire({
+              title: 'Login Successful',
+              text: res?.message || 'You will be redirected shortly.',
+              icon: 'success',
+              timer: 1000,
+              showConfirmButton: false,
+            }).then(() => {
+              if (role === 'ROLE_ADMIN' || role === 'ROLE_RECEPTION') {
+                this.router.navigate(['admin/lcorecharge/2']).then(() => {
+                  console.log('Navigated to lcorecharge page');
+                });
+              }
+            });
+          },
+          (error: any) => {
+            Swal.fire({
+              title: 'Login Failed',
+              text: error?.error?.message || 'Username or password is incorrect. Please try again.',
+              icon: 'error',
+              confirmButtonText: 'Retry'
+            });
+            console.log('Error:', error?.error?.message);
+          });
+      }
+      else {
+        Swal.fire({
+          title: 'Invalid Form',
+          text: 'Please fill in all required fields.',
+          icon: 'warning',
+          confirmButtonText: 'OK'
+        });
 
+      }
+    }
     if (this.id == '2') {
       console.log('operator Recharge');
       if (this.form.valid) {
@@ -70,7 +111,7 @@ export class LcoRechargeComponent implements OnInit {
               showConfirmButton: false,
             }).then(() => {
               if (role === 'ROLE_ADMIN' || role === 'ROLE_RECEPTION') {
-                this.router.navigate(['admin/lcorecharge']).then(() => {
+                this.router.navigate(['admin/lcorecharge/1']).then(() => {
                   console.log('Navigated to lcorecharge page');
                 });
               }

@@ -27,14 +27,27 @@ export class NewRechargeComponent implements OnInit {
     { lable: "Cash", value: 1 },
     { lable: "Account Transfer", value: 2 },
   ];
+  payment1: any[] = [
+    { lable: "Share Amount", value: 0 },
+    { lable: "Demo Recharge", value: 2 },
+    { lable: "Wallet Credit", value: 4 },
+  ];
+  filteredOperators1: any[] = [
+    { name: "AJKADMIN(862)", value: 862 },
+    { name: "AJKTV(1)", value: 1 }
+  ];
+
   filteredOperators: any[] = [];
   selectedOperator: any;
   operatorid: any;
-
+  paymentType: any;
 
   constructor(public dialogRef: MatDialogRef<NewRechargeComponent>, @Inject(MAT_DIALOG_DATA) public data: any, private fb: FormBuilder, private swal: SwalService, public dialog: MatDialog, public userService: BaseService, storageService: StorageService) {
     this.username = storageService.getUsername();
     this.role = storageService.getUserRole();
+    this.paymentType = data;
+    console.log(this.paymentType);
+
     this.userService.getOeratorList(this.role, this.username, 1).subscribe((data: any) => {
       console.log(data);
       this.operatorList = Object.keys(data).map(key => {
@@ -42,8 +55,23 @@ export class NewRechargeComponent implements OnInit {
         const name = key;
         return { name: name, value: value };
       });
-      this.filteredOperators = this.operatorList;
+      // this.filteredOperators = this.operatorList;
+      this.updateFilteredOperators();
     })
+  }
+  onPaymentTypeChange(event: any) {
+    this.type = +event.target.value;
+    this.updateFilteredOperators();
+  }
+
+  updateFilteredOperators() {
+    
+    if (this.type === 4) {
+      this.filteredOperators = this.filteredOperators1;
+    } else {
+      this.filteredOperators = this.operatorList;
+    }
+    // this.filteredOperators=[];
   }
   toggleedit() {
     this.dialogRef.close();
@@ -80,7 +108,6 @@ export class NewRechargeComponent implements OnInit {
       role: this.role,
       username: this.username
     });
-
     this.onMsolist();
 
   }

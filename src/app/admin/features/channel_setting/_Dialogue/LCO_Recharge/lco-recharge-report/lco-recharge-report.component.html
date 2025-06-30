@@ -1,16 +1,22 @@
 <div class="">
     <section class="Tab col-xl-12 col-sm-6 col-12">
         <div class="display tablist justify-content-center align-items-center">
-            <div class="tab mb-3" [class.active]="selectedTab === '1'" (click)="selectTab('1')">RECHARGE LOG
+            <div *ngIf="routerId == '1' " class="tab mb-3" [class.active]="selectedTab === '1'"
+                (click)="selectTab('1')">
+                RECHARGE LOG
             </div>
-            <div class="tab mb-3" [class.active]="selectedTab === '2'" (click)="selectTab('2')">LOG RECHARGE REPORT
+            <div *ngIf="routerId == '1' " class="tab mb-3" [class.active]="selectedTab === '2'"
+                (click)="selectTab('2')">
+                LOG RECHARGE REPORT
             </div>
-            <div class="tab mb-3" [class.active]="selectedTab === '3'" (click)="selectTab('3')">REFUND AMOUNT
+            <div *ngIf="routerId == '1' " class="tab mb-3" [class.active]="selectedTab === '3'"
+                (click)="selectTab('3')">
+                REFUND AMOUNT
             </div>
         </div>
     </section>
 
-    <div *ngIf="selectedTab === '1'" class="row display justify-content-center align-items-center">
+    <div *ngIf="selectedTab === '1' && (routerId == '2'|| routerId == '1')" class="row display justify-content-center align-items-center">
         <div class=" display col-12 col-md-10 justify-content-start align-items-center">
             <p class="mx-2"
                 style="text-align: center;align-items: center;color: rgb(0, 12, 22); font-size: 16px;font-weight: 600;">

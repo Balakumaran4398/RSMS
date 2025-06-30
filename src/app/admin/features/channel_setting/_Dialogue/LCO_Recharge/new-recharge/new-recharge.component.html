@@ -5,16 +5,22 @@
 <div class="">
     <div class="display justify-content-center align-items-center mobile">
         <form action="" [formGroup]="form">
-            <div class="col-12 col-md-12 " >
+            <div class="col-12 col-md-12 ">
                 <div class="input-box">
                     <div class="mb-3 edit">
                         <div class="col-12 col-md-6">
                             <label class="form-label">Payment Mode </label>
                         </div>
                         <div class="col-12 col-md-6">
-                            <select [(ngModel)]="type" formControlName="paymenttypeid">
-                                <option value="0" selected>Select Payment</option>
+                            <select *ngIf=" this.paymentType == 1" [(ngModel)]="type" formControlName="paymenttypeid" aria-placeholder="Select payment"
+                                (change)="onPaymentTypeChange($event)">
+                                <option value="" selected disabled>Select Payment</option>
                                 <option *ngFor="let Type of payment" [value]="Type.value">{{ Type.lable }}</option>
+                            </select>
+                            <select *ngIf=" this.paymentType == 2" [(ngModel)]="type" formControlName="paymenttypeid" aria-placeholder="Select payment"
+                                (change)="onPaymentTypeChange($event)">
+                                <option value="" selected disabled>Select Payment</option>
+                                <option *ngFor="let Type of payment1" [value]="Type.value">{{ Type.lable }}</option>
                             </select>
                             <div *ngIf="form.get('paymenttypeid')?.invalid && form.get('paymenttypeid')?.touched">
                                 <small class="text-danger">Payment Mode is required.</small>
@@ -30,7 +36,8 @@
                                 <option *ngFor="let operator of operatorList" [value]="operator.value">{{ operator.name}}
                                 </option>
                             </select> -->
-                            <input type="text" matInput [matAutocomplete]="auto" formControlName="operatorid" (input)="filterOperators($event)" placeholder="Select a Operator"
+                            <input type="text" matInput [matAutocomplete]="auto" formControlName="operatorid"
+                                (input)="filterOperators($event)" placeholder="Select a Operator"
                                 [matAutocompleteDisabled]="false" [value]="selectedOperator?.name">
 
                             <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayOperator">
@@ -66,7 +73,8 @@
                             <label class="form-label">Amount</label>
                         </div>
                         <div class="col-12 col-md-6">
-                            <input class="" type="text" formControlName="amount" (keypress)="onKeydown1($event)" placeholder="Enter Amount">
+                            <input class="" type="text" formControlName="amount" (keypress)="onKeydown1($event)"
+                                placeholder="Enter Amount">
                             <div *ngIf="form.get('amount')?.invalid && form.get('amount')?.touched">
                                 <small class="text-danger">Amount is required.</small>
                             </div>

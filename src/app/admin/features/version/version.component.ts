@@ -19,11 +19,35 @@ export class VersionComponent {
   @ViewChild('videoSection') videoSection!: ElementRef<HTMLElement>;
 
   messages: string[] = [
+    
+
+    'ADMIN ROLE:',
+
+    'DashBoard:-',
+    '1. The dashboard provides access to the total box inventory and allows reports to be downloaded.',
+    '2. CAS connection details are available for monitoring and management.',
+    '3. Customer growth analytics are also displayed on the dashboard.',
+
+    'Operator:-',
+    '1. The Admin has the ability to perform recharges on behalf of operators.',
+    
+    'Bulk Operation:-',
+    '1. A bulk smart card refresh feature is available for efficient mass updates.',
+    '2. Bulk operator creation can be performed to streamline onboarding.',
+    '3. LCO transfers can be carried out in bulk under this section.',
+
+    'Reports:-',
+    ' MSO Reports:',
+    '1. A Payment Collection Report is available for financial tracking.',
+    '2. An LCO-wise Activation and Subscription Count report provides insights into subscription distribution.',
+
+    'DISTRIBUTOR ROLE :',
+
     '1. The functions for changing LCO, Smart Card Transfer and Box Transfer login credentials are for MSO Admin role use only. These features are no longer accessible to LCO and Sub-LCO users. Changes have been implemented accordingly.',
     '2. For the Distributor role, the Change LCO operator list is now displayed.',
     '3. A Bulk Operation feature has been added under the Distributor role, enabling LCO transfers.',
     '4. Inventory management and LCO transfer functionalities have been integrated into the Distributor role.',
-    '5. In MSO Reports, a new Payment Collection report has been added with monthly breakdowns by year.'
+    '5. In MSO Reports, a new Payment Collection report has been added with monthly breakdowns by year.',
   ];
 
   visibleMessages: string[] = [];

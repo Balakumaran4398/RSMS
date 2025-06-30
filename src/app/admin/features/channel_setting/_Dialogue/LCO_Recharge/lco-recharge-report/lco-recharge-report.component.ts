@@ -14,6 +14,7 @@ import { MAT_MOMENT_DATE_ADAPTER_OPTIONS, MomentDateAdapter } from '@angular/mat
 import { HttpResponse } from '@angular/common/http';
 import { SwalService } from 'src/app/_core/service/swal.service';
 import { ExcelService } from 'src/app/_core/service/excel.service';
+import { Router, ActivatedRoute } from '@angular/router';
 // import { log } from 'console';
 
 export const MY_FORMATS: MatDateFormats = {
@@ -49,7 +50,7 @@ export class LcoRechargeReportComponent implements OnInit {
   maxDate = new Date();
   fromdate: any;
   todate: any;
-
+  id: any;
   selectedDate: any;
   isDateEnabled: boolean = false;
   isMonthYearEnabled: boolean = false;
@@ -66,26 +67,6 @@ export class LcoRechargeReportComponent implements OnInit {
   date: any;
   operatorid: any = 0;
   operatorList: any[] = [];
-  // gridOptions = {
-  //   defaultColDef: {
-  //     sortable: true,
-  //     resizable: false,
-  //     filter: true,
-  //     width: 300,
-  //     floatingFilter: true,
-  //     comparator: (valueA: any, valueB: any) => {
-  //       if (!isNaN(valueA) && !isNaN(valueB)) {
-  //         return Number(valueA) - Number(valueB);
-  //       }
-  //       if (!valueA) valueA = '';
-  //       if (!valueB) valueB = '';
-  //       return valueA.toLowerCase().localeCompare(valueB.toLowerCase());
-  //     },
-  //   },
-  //   paginationPageSize: 10,
-  //   pagination: true,
-  // }
-
   gridOptions = {
     defaultColDef: {
       sortable: true,
@@ -113,7 +94,7 @@ export class LcoRechargeReportComponent implements OnInit {
 
   role: any;
   username: any;
-  id: any;
+  routerId: any;
   msodetails: any;
   rowData: any;
 
@@ -140,7 +121,7 @@ export class LcoRechargeReportComponent implements OnInit {
 
   columnDefs: any;
   currentDate: any;
-  constructor(private userservice: BaseService, private storageservice: StorageService, private swal: SwalService, private excelService: ExcelService, public dialog: MatDialog, private dateAdapter: DateAdapter<Moment>, private cdr: ChangeDetectorRef) {
+  constructor(private userservice: BaseService, public router: Router, private route: ActivatedRoute, private storageservice: StorageService, private swal: SwalService, private excelService: ExcelService, public dialog: MatDialog, private dateAdapter: DateAdapter<Moment>, private cdr: ChangeDetectorRef) {
     this.role = storageservice.getUserRole();
     this.username = storageservice.getUsername();
     this.userservice.getOeratorList(this.role, this.username, 2).subscribe((data: any) => {
@@ -160,6 +141,7 @@ export class LcoRechargeReportComponent implements OnInit {
     return operator ? operator.name : '';
   }
   ngOnInit(): void {
+    this.routerId = this.route.snapshot.paramMap.get('id');
     this.generateMonths();
     this.generateYears();
     // this.getrefundData('');
@@ -1002,10 +984,13 @@ export class LcoRechargeReportComponent implements OnInit {
     });
   }
   NewRecharge() {
+    let type = this.routerId;
+    console.log(type);
+
     const dialogRef = this.dialog.open(NewRechargeComponent, {
       width: '500px',
       panelClass: 'custom-dialog-container',
-      // data: dataToSend
+      data: type
     });
 
     dialogRef.afterClosed().subscribe(result => {

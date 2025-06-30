@@ -152,6 +152,7 @@ export class MsorDialogueportsComponent implements OnInit, OnDestroy {
     { label: "SUBSCRIBER", value: 3 },
   ]
   filteredOnlineType: any[] = [];
+  DistrictList: any[] = [];
 
   filteredRechargeType: any[] = [];
   RechargeType: any[] = [
@@ -240,6 +241,7 @@ export class MsorDialogueportsComponent implements OnInit, OnDestroy {
     }
     else if (this.type == 'lco_active_subscription') {
       this.lcowiseActiveSubCount();
+      this.getDistrictList();
     }
 
   }
@@ -304,7 +306,14 @@ export class MsorDialogueportsComponent implements OnInit, OnDestroy {
     this.subOperatorId = this.subLcoDetails?.operatorId;
     console.log('subOperatorId', this.subOperatorId);
   }
+  getDistrictList() {
+    this.userService.getDistrictList(this.role, this.username).subscribe((data: any) => {
+      console.log(data);
+      this.DistrictList = data;
+      console.log(this.DistrictList);
 
+    });
+  }
   getMSODetails() {
     this.userService.getMsoDetails(this.role, this.username).subscribe((res: any) => {
       console.log(res);
@@ -425,6 +434,20 @@ export class MsorDialogueportsComponent implements OnInit, OnDestroy {
     ($('#subLco') as any).select2('destroy');
   }
   ngAfterViewInit() {
+    $('#area').select2({
+      placeholder: 'Select a Area',
+      allowClear: true
+    });
+    $('#area').on('change', (event: any) => {
+      this.selectedArea = event.target.value;
+    });
+    $('#type').select2({
+      placeholder: 'Select a Model',
+      allowClear: true
+    });
+    $('#type').on('change', (event: any) => {
+      this.selectedlcoModel = event.target.value;
+    });
     $('#operator').select2({
       placeholder: 'Select a Operator',
       allowClear: true
@@ -1031,24 +1054,6 @@ export class MsorDialogueportsComponent implements OnInit, OnDestroy {
             return typeof value === 'string' ? value : new Date(value).toLocaleDateString();
           }
         },
-        // {
-        //   headerName: 'DATE',
-        //   field: 'transaction_date',
-        //   width: 200,
-        //   valueFormatter: (params: any) => {
-        //     const isTotalRow = params.node?.rowPinned === 'bottom'; 
-        //     const value = params.value;
-        //     if (isTotalRow) return 'Total';
-        //     if (!value) return '—';
-        //     return typeof value === 'string' ? value : new Date(value).toLocaleDateString();
-        //   },
-        //   cellStyle: (params: any) => {
-        //     const isTotalRow = params.node?.rowPinned === 'bottom'; 
-        //     return isTotalRow
-        //       ? { fontWeight: 'bold', color: 'red' }
-        //       : {};
-        //   }
-        // },
         { headerName: 'WALLET CREDIT', field: 'walletcredit', width: 250, cellStyle: { textAlign: 'center' }, },
         { headerName: 'WALLET SHARE', field: 'walletshare', width: 220, cellStyle: { textAlign: 'center', }, },
         { headerName: 'SHARE PAID', field: 'sharepaid', width: 220, cellStyle: { textAlign: 'center', }, },
@@ -2152,7 +2157,7 @@ export class MsorDialogueportsComponent implements OnInit, OnDestroy {
 
   lcowiseActiveSubCount() {
     this.swal.Loading();
-    this.userService.getLcowiseActiveSubCount(this.role, this.username, this.selectedOperator.value, this.selectedlcoModel, 3, this.batch, this.selectedlcocas).subscribe(
+    this.userService.getLcowiseActiveSubCount(this.role, this.username, this.selectedOperator.value, this.selectedlcoModel, 3, this.batch, this.selectedlcocas, this.selectedArea).subscribe(
       (response: HttpResponse<any>) => {
         if (response.status === 200) {
           console.log(response);
@@ -2184,7 +2189,7 @@ export class MsorDialogueportsComponent implements OnInit, OnDestroy {
     //   this.submitted = true;
     // }
     this.processingSwal();
-    this.userService.getLcowiseActiveSubCountReport(this.role, this.username, this.selectedOperator.value, this.selectedlcoModel, 2, this.batch, this.selectedlcocas).subscribe(
+    this.userService.getLcowiseActiveSubCountReport(this.role, this.username, this.selectedOperator.value, this.selectedlcoModel, 2, this.batch, this.selectedlcocas, this.selectedArea).subscribe(
       (x: Blob) => {
         if (type == 2) {
           this.reportMaking(x, this.type + '  ' + this.selectedOperator.name + ".xlsx", 'application/xlsx');

@@ -118,7 +118,32 @@
     }
   }
 
-  .inventory-card:hover {
+  // .inventory-card:hover {
+  //   background-color: var(--primary-color);
+
+  //   .title {
+  //     font-size: 16px;
+  //     color: #ffffff;
+  //     text-align: center;
+  //   }
+
+  //   .count {
+  //     font-size: 25px;
+  //     margin: 10px 0;
+  //     color: #ffffff;
+  //   }
+
+  //   .description {
+  //     font-size: 12px;
+  //     color: #ffffff !important;
+  //     text-align: center;
+  //   }
+  // }
+  .inventory-card {
+  transition: background-color 0.3s;
+
+  &.hovered,
+  &:hover {
     background-color: var(--primary-color);
 
     .title {
@@ -139,6 +164,9 @@
       text-align: center;
     }
   }
+}
+
+
 
   // Responsive Breakpoints
   @media (max-width: 768px) {

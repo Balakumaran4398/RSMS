@@ -46,69 +46,14 @@ export class HomeComponent implements OnInit {
       console.log(this.isshow);
     });
   }
+  // `<button style="padding: 4px 10px; background-color:rgb(13, 109, 187); color: white; border: none; border-radius: 4px;">
+  //        Count
+  //      </button>`
   columnnDefs: any[] = [
     { headerName: "S.No", lockPosition: true, valueGetter: 'node.rowIndex+1', width: 80, },
+
     { headerName: "CAS NAME", field: 'cas_name', width: 300, },
-    {
-      headerName: "COUNT",
-      field: 'count',
-      width: 300,
-      cellRenderer: (params: any) => {
-        const context = params.context.componentParent;
-        const isAJK = context.isshow;
-        const countValue = params.value;
-        return isAJK
-          ? `<button style="padding: 4px 10px; background-color:rgb(13, 109, 187); color: white; border: none; border-radius: 4px;">
-         Count
-       </button>`
-          : `${countValue}`;
-      },
-      onCellClicked: (params: any) => {
-        const context = params.context.componentParent;
-        if (context.isshow) {
-          const dialogRef = context.dialog.open(HomeLoginCredentialComponent, {
-            maxWidth: "500px",
-            data: { data: params.data }
-          });
-          dialogRef.afterClosed().subscribe((result: any) => {
-            console.log('The dialog was closed');
-            if (result && result.success) {
-              console.log('Success result:', result);
-              context.isshow = false;
-              params.api.refreshCells({
-                rowNodes: [params.node],
-                columns: ['count'],
-                force: true
-              });
-            }
-          });
-        }
-      }
-      // onCellClicked: (params: any) => {
-      // const context = params.context.componentParent;
 
-      //   if (!rowData.isshow) {
-      //     const context = params.context.componentParent;
-      //     const dialogRef = context.dialog.open(HomeLoginCredentialComponent, {
-      //       maxWidth: "500px",
-      //       data: { data: rowData }
-      //     });
-
-      //     dialogRef.afterClosed().subscribe((result: any) => {
-      //       if (result && result.success) {
-      //         console.log('Dialog success');
-      //         rowData.isshow = true; 
-      //         params.api.refreshCells({
-      //           rowNodes: [params.node],
-      //           columns: ['count'],
-      //           force: true
-      //         });
-      //       }
-      //     });
-      //   }
-      // }
-
-    },
     {
       headerName: "STATUS", field: 'status', width: 300, cellStyle: (params: any) => {
         if (params.value === 'Active') {
@@ -119,6 +64,74 @@ export class HomeComponent implements OnInit {
         return null;
       }
     },
+    {
+      headerName: "",
+      field: 'count',
+      width: 300,
+      cellRenderer: (params: any) => {
+        console.log(params);
+        // const context = params.context.componentParent;
+        console.log('aaaaaaaa', this.isshow);
+        const isAJK = this.isshow;
+        const countValue = params.value;
+        // this.isshow = true;
+        return isAJK ? '<i class="fa fa-info" style="font-size: 25px;;cursor:pointer;color:#024871"></i>' : `${countValue}`;
+      },
+      // onCellClicked: (params: any) => {
+      //   const context = params.context.componentParent;
+      //   console.log('dddd', context);
+      //   if (context.isshow) {
+      //     console.log('eeeee', context.isshow);
+      //     const dialogRef = context.dialog.open(HomeLoginCredentialComponent, {
+      //       maxWidth: "500px",
+      //       data: { data: params.data }
+      //     });
+      //     dialogRef.afterClosed().subscribe((result: any) => {
+      //       console.log('The dialog was closed');
+      //       if (result && result.success) {
+      //         console.log('Success result:', result);
+      //         context.isshow = false;
+      //         params.api.refreshCells({
+      //           rowNodes: [params.node],
+      //           columns: ['count'],
+      //           force: true
+      //         });
+      //         // context.isshow = true;
+      //       }
+      //     });
+      //   }
+      // }
+
+      onCellClicked: (params: any) => {
+        const isShow = this.isshow;
+        console.log('isShow:', isShow);
+
+        if (isShow) {
+          console.log('Opening dialog...');
+
+          const dialogRef = this.dialog.open(HomeLoginCredentialComponent, {
+            maxWidth: '500px',
+            data: { data: params.data }
+          });
+
+          dialogRef.afterClosed().subscribe((result: any) => {
+            console.log('The dialog was closed');
+            if (result && result.success) {
+              console.log('Success result:', result);
+              this.isshow = true;
+              // Refresh specific cell
+              params.api.refreshCells({
+                rowNodes: [params.node],
+                columns: ['count'],
+                force: true
+              });
+            }
+          });
+        }
+      }
+
+    },
+
   ]
   openEditDialog(data: any): void {
     let d = {

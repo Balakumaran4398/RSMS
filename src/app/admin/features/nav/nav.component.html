@@ -70,18 +70,21 @@
         <li *ngIf="isUser || isReception ">
             <a> <i class="bx bx-user bx-sm icon "></i> Operator <i class='bx bx-chevron-right icon-right'></i></a>
             <ul class="side-dropdown">
-                <li *ngIf="!isLco && navigationList.operatordetails"><a
-                        (click)="navgetToUrl('/lco_recharge/1');setActiveLinkTab($event)">
-                        <i class='fa fa-fw fa-users  icon'></i> &nbsp;
-                        Operator Details</a></li>
                 <li *ngIf="isLco && navigationList.operatordetails"><a
                         (click)="navgetToUrl('/operator_details');setActiveLinkTab($event)">
                         <i class='fa fa-fw fa-users  icon'></i> &nbsp;
                         Operator Details</a></li>
-
+                <li *ngIf="!isLco && navigationList.operatordetails"><a
+                        (click)="navgetToUrl('/lco_recharge/1');setActiveLinkTab($event)">
+                        <i class='fa fa-fw fa-users  icon'></i> &nbsp;
+                        Operator Details</a></li>
                 <li *ngIf="navigationList.lcorecharge"><a
                         (click)="navgetToUrl('/lco_recharge/2');setActiveLinkTab($event)"><i
                             class='fa-solid fa-indian-rupee-sign icon'></i> &nbsp;LCO
+                        Recharge</a></li>
+                <li *ngIf="navigationList.lcorecharge"><a
+                        (click)="navgetToUrl('/lco_recharge/3');setActiveLinkTab($event)"><i
+                            class='fa-solid fa-indian-rupee-sign icon'></i> &nbsp;Admin
                         Recharge</a></li>
             </ul>
         </li>
@@ -460,6 +463,9 @@
                             class="fa fa-fw fa-solid fa-users icon ">&nbsp;</i>Bulk Operator Creation </a> </li>
                 <li *ngIf="distributor"><a (click)="navgetToUrl('/special_lcotransfer');setActiveLinkTab($event)">
                         <i class='fas fa-exchange-alt icon'></i> &nbsp;LCO Transfer</a> </li>
+                <li ><a
+                        (click)="navgetToUrl('/Subscription_Extend');setActiveLinkTab($event)"><i
+                            class="fa fa-fw fa-cubes icon">&nbsp;</i>Subscription Extend</a> </li>
             </ul>
         </li>
 

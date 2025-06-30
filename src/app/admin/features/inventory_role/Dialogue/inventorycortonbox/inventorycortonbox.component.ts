@@ -326,7 +326,9 @@ export class InventorycortonboxComponent implements OnInit {
   // }
   setallocation() {
     this.swal.Loading();
-    this.userservice.getLCOportalcortonBoxDetails(this.role, this.username, this.selectOperator || 0, this.isemi, this.dueamount || 0, this.selectedType, this.selectArea || 0, this.selectStreet || 0,
+    console.log(this.operatorid);
+    
+    this.userservice.getLCOportalcortonBoxDetails(this.role, this.username, this.selectOperator || this.operatorid || 0, this.isemi, this.dueamount || 0, this.selectedType, this.selectArea || 0, this.selectStreet || 0,
       this.selectedPackage || 0, this.days || 0, this.selectSubscriber || 0, this.smartcardList, this.selectedRechargetype || 5, this.plantype || this.f_date || null)
       .subscribe((res: any) => {
         this.swal.success(res?.message);

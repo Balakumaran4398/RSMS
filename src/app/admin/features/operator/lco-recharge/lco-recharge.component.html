@@ -4,6 +4,7 @@
     <form class="form" [formGroup]="form">
       <p *ngIf="id == '1'" class="title">CHECK LCO DETAILS</p>
       <p *ngIf="id == '2'" class="title">CHECK LCO RECHARGE</p>
+      <p *ngIf="id == '3'" class="title">CHECK ADMIN RECHARGE</p>
       <input placeholder="Username" class="username input" type="text" formControlName="userid" />
       <div *ngIf="form.get('userid')?.invalid && form.get('userid')?.touched" class="text-danger">
         <small>Username is required.</small>
