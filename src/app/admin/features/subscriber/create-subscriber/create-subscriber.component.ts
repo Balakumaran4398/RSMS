@@ -631,9 +631,12 @@ export class CreateSubscriberComponent implements AfterViewInit, OnDestroy {
           }).then(() => {
             // window.location.reload()
           });
-          // let subid = data.message;
-          // let subid = data.message.match(/\d+/)?.[0];
-          let subid = data.message.split(" ").pop();
+
+          let message = data.message;
+          let parts = message.split(":");
+          let subid = parts[1].trim(); 
+          // let subid = parts.length > 1 ? parts[1].trim() : null;
+
           console.log(subid);
 
           this.router.navigate([`/admin/subscriber-full-info/${subid}/new`]);

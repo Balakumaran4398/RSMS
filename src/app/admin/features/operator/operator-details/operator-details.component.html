@@ -15,7 +15,7 @@
                 </mat-autocomplete>
             </mat-form-field> -->
 
-            <select id="ltb"  [value]="selectedOperator?.name">
+            <select id="ltb" [value]="selectedOperator?.name">
                 <option (click)="onoperatorchange({ name: 'ALL Operator (0)' })" selected>ALL Operator(0)</option>
                 <option *ngFor="let operator of filteredOperators" [value]="operator.name"
                     (click)="onoperatorchange(operator)">
@@ -195,6 +195,20 @@
                                     <span class="tooltip">PRODUCTWISE CURRENT COUNT
                                     </span>
                                 </div>
+                            </div>
+                            <div class="files tooltip-container mx-2">
+                                <a (click)="navgetTosublcoUrl(operator.operatorid)" class="tooltip-container">
+                                    <i class='fa-solid fa-people-group'
+                                        style="font-size:25px;color:var(--primary-color)"></i>
+                                    <span class="tooltip">TO CLICK SUBLCO DETAILS</span>
+                                </a>
+                            </div>
+                            <div class="files tooltip-container mx-2">
+                                <a (click)="onRoleBaseDashboard(operator.userid,operator.password)" class="tooltip-container">
+                                    <i class='fa-solid fa fa-address-card-o'
+                                        style="font-size:25px;color:var(--primary-color)"></i>
+                                    <span class="tooltip">TO CLICK {{operator.operatorname}} ROLE</span>
+                                </a>
                             </div>
                         </div>
                     </div>

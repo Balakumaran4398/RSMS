@@ -14,6 +14,16 @@ import { OperatordialogueComponent } from '../../channel_setting/_Dialogue/opera
 import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { OperatorcancelsubreportComponent } from '../../channel_setting/_Dialogue/operator/operatorcancelsubreport/operatorcancelsubreport.component';
 import { SwalService } from 'src/app/_core/service/swal.service';
+import { AuthService } from 'src/app/_core/service/auth.service';
+import { FormBuilder, } from '@angular/forms';
+import Swal from 'sweetalert2';
+interface requestBody {
+  access_ip: any;
+  action: any;
+  remarks: any;
+  data: any;
+  user_id: any;
+}
 @Component({
   selector: 'app-operator-details',
   templateUrl: './operator-details.component.html',
@@ -69,16 +79,27 @@ export class OperatorDetailsComponent implements OnInit, AfterViewInit {
   paginatedData: any;
 
   operator: any;
+  signInform: { username: string; password: string } = { username: '', password: '' };
 
-  constructor(public responsive: BreakpointObserver, private dataService: DataService, private cdr: ChangeDetectorRef, private router: Router, public dialog: MatDialog, private swal: SwalService, private userservice: BaseService, private storageservice: StorageService) {
+
+  idstorage: any;
+  roles: any;
+  userService: any;
+  lcoDeatails: any;
+  subscriberid: any;
+
+  constructor(public responsive: BreakpointObserver, private fb: FormBuilder, private dataService: DataService, private cdr: ChangeDetectorRef, private router: Router, public dialog: MatDialog, private swal: SwalService, private userservice: BaseService, private storageservice: StorageService,
+    private authService: AuthService
+  ) {
     this.role = storageservice.getUserRole();
     this.username = storageservice.getUsername();
     this.loadOperators();
     this.onBusinessList();
     this.operatorDeatils('');
+
   }
   ngAfterViewInit(): void {
-    ($('#ltb')as any).select2({
+    ($('#ltb') as any).select2({
       placeholder: 'Select Operator Name',
       allowClear: true
     });
@@ -118,7 +139,7 @@ export class OperatorDetailsComponent implements OnInit, AfterViewInit {
   }
   operatorDeatils(event: any) {
     console.log(event);
-    this.swal.Loading();
+    // this.swal.Loading();
     this.userservice.OperatorDetails(this.role, this.username, this.operatorid).subscribe(
       (data: any) => {
         this.operator_details = data;
@@ -130,7 +151,9 @@ export class OperatorDetailsComponent implements OnInit, AfterViewInit {
         }
         // this.originalPagedOperators = [...data]; 
         this.pagedOperators = [...data];
+        console.log(this.pagedOperators);
         this.updatePageData();
+
         this.swal.Close();
       });
   }
@@ -326,14 +349,131 @@ export class OperatorDetailsComponent implements OnInit, AfterViewInit {
       width: '500px',
       panelClass: 'custom-dialog-container',
       data: dialogData,
-
     });
   }
+  navgetTosublcoUrl(operatorid: number) {
+    const detailsList = this.operator_details.find((op: any) => op.operatorid === operatorid);
+    this.dataService.setDialogData({ detailsList });
+    this.router.navigateByUrl(`/admin/sublcodashboard/${operatorid}`);
+    console.log(detailsList);
+  }
+  public getUserRole(user: any): string {
+
+    if (!user || !user.roles) return 'DEFAULT_ROLE';
+    if (user.roles.includes('ROLE_OPERATOR')) return 'ROLE_OPERATOR';
+    if (user.roles.includes('ROLE_SUBLCO')) return 'ROLE_SUBLCO';
+    if (user.roles.includes('ROLE_SUBSCRIBER')) return 'ROLE_SUBSCRIBER';
+    return 'DEFAULT_ROLE';
+  }
+  onRoleBaseDashboard(username: any, password: any) {
+    this.swal.Loading1();
+    console.log(this.signInform);
+    this.signInform = {
+      username: username,
+      password: password
+    }
+    this.authService.login(this.signInform).subscribe(
+      (res: any) => {
+        console.log(res);
+        console.log(res.roles);
+        if (res.roles.includes('ROLE_OPERATOR') || res.roles.includes('ROLE_SUBLCO') || res.roles.includes('ROLE_SUBSCRIBER')) {
+          this.storageservice.saveToken(res.accessToken);
+          this.storageservice.saveUser(res);
+          this.storageservice.saveUsernamenew(res.username)
+          this.storageservice.saveAccessIP(res.access_ip)
+          this.storageservice.saveID(res.id)
+          this.storageservice.saveNavList(res.navigationmap)
+          this.storageservice.saveLco(res.islco)
+          this.idstorage = res.id;
+          console.log('Stored ID:', res.id);
+          const user = this.storageservice.getUser();
+          console.log(user.username);
+          this.roles = user.roles;
+          console.log(this.roles);
+          console.log(res.navigationmap);
+          console.log(res.islco);
+
+          this.post();
+
+          let isOperator = this.roles.includes('ROLE_OPERATOR');
+          let isSubLco = this.roles.includes('ROLE_SUBLCO');
+          let isSubcriber = this.roles.includes('ROLE_SUBSCRIBER');
+
+          Swal.fire({
+            position: "center",
+            icon: "success",
+            title: 'SUCCESS',
+            text: res.message || "Your Login is Successful",
+            showConfirmButton: false,
+            timerProgressBar: true,
+            timer: 2000
+          });
+          if (isOperator) {
+            this.router.navigate(['admin/operator_dashboard']).then(() => {
+            
+            });
+          
+          } else if (isSubLco) {
+            this.router.navigate(['admin/operator_dashboard']).then(() => {
+            });
+          } else if (isSubcriber) {
+            console.log('role', this.role);
+            console.log('username', this.username);
+
+            this.role = this.getUserRole(res)
+            this.username = this.username;
+            this.userService.getSubscriberDetails(this.role, this.username).subscribe((data: any) => {
+              console.log(data);
+              this.lcoDeatails = data;
+              this.subscriberid = this.lcoDeatails.subid;
+              this.router.navigate(['admin/subscriber-full-info/' + this.subscriberid + '/new']).then(() => {
+              });
+            })
+          }
+          this.swal.Close();
+        } else {
+          Swal.fire({
+            position: 'center',
+            icon: 'error',
+            title: 'Error',
+            text: 'You do not have the required role.',
+            showConfirmButton: false,
+            timer: 1500
+          });
+          this.swal.Close();
+        }
+      },
+      err => {
+        console.error('Login error', err);
+        let errorMessage = 'An error occurred during login.';
+
+        if (err.status === 0) {
+          errorMessage = 'Unable to reach the server. Please try again later.';
+        } else if (err.status === 401) {
+          errorMessage = 'Invalid username or password. Please try again.';
+        } else if (err?.error?.message) {
+          errorMessage = err.error.message;
+        }
+        Swal.fire({
+          position: 'center',
+          icon: 'error',
+          title: 'Login Failed',
+          text: errorMessage,
+          showConfirmButton: false,
+          timerProgressBar: true,
+          timer: 2000
+        });
+      }
+    );
+  }
+  post() {
+    let requestBody: requestBody = { access_ip: "", action: "Sign in", data: "Sign in", remarks: "Sign in", user_id: this.idstorage };
+  }
+
+
   opencancelsubDialog(type: string, operatorid: any): void {
     const detailsList = this.operator_details.find((op: any) => op.operatorid === operatorid);
-
     let dialogData = { type: type, detailsList: this.operator_details, operator: detailsList.operatorid, operatorname: detailsList.operatorname, };
-
     const dialogRef = this.dialog.open(OperatorcancelsubreportComponent, {
       width: '500px',
       panelClass: 'custom-dialog-container',

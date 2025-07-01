@@ -121,7 +121,6 @@ export class BroadMasterComponent implements OnInit {
       cellRenderer: (params: any) => {
         var isActive = params.data.isactive;
         this.status = isActive;
-        console.log('serklsdjfkljfkdlsjfklsdjfkldsjfkl', this.status);
 
         const toggleContainer = document.createElement('div');
         toggleContainer.style.display = 'flex';

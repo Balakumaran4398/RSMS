@@ -68,7 +68,7 @@ export class LcoRechargeComponent implements OnInit {
               showConfirmButton: false,
             }).then(() => {
               if (role === 'ROLE_ADMIN' || role === 'ROLE_RECEPTION') {
-                this.router.navigate(['admin/lcorecharge/2']).then(() => {
+                this.router.navigate(['admin/lcorecharge']).then(() => {
                   console.log('Navigated to lcorecharge page');
                 });
               }

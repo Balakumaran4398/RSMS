@@ -195,6 +195,7 @@ export class NavComponent implements OnInit, AfterViewInit {
     })
   }
   ngOnInit() {
+ 
     this.checkDeviceType();
     const sidemenuLinks = document.querySelectorAll('.side-menu li a');
     sidemenuLinks.forEach(link => {
@@ -535,6 +536,16 @@ export class NavComponent implements OnInit, AfterViewInit {
   isAdmin = false;
 
   navgetToUrl(id: any,) {
+    const hasReloaded = localStorage.getItem('hasReloaded');
+
+    if (hasReloaded) {
+      localStorage.setItem('hasReloaded', 'true');
+      setTimeout(() => {
+        location.reload();
+      }, 1000);
+    }
+    console.log('erewr43543543', hasReloaded);
+
     this.activeItem = id;
     this.router.navigateByUrl("admin" + id);
     console.log("Current width:", window.innerWidth);

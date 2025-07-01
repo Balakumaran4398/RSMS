@@ -1,24 +1,27 @@
 <h6 style="color:rgb(83, 81, 81);font-size: 20px;font-weight: 600;text-align: start;font-family:sans-serif;">
     CUSTOMER GROWTH</h6>
-<div class="bubble-card" style="height: 230px; width: 100%;">
+<div class="bubble-card" style="height: 260px; width: 100%;">
     <div class="bubble-left">
         <div class="bubble-wrap">
             <div class="bubble pink" [ngStyle]="{
-        width: (40 + bubbleData[3].count) + 'px',
+
+    width: (40 + bubbleData[3].count) + 'px',
         height: (40 + bubbleData[3].count) + 'px',
-        top: '0px',
-        left: '10px'
-      }" [attr.title]="bubbleData[3]?.label + ': ' + bubbleData[3]?.count">
-                {{ bubbleData[3]?.count }}
+        top: '25px',
+        left: '35px'
+      }" [attr.title]="bubbleData[3].label + ': ' + bubbleData[3].count">
+                {{ bubbleData[3].count }}
+                <!-- {{0}} -->
             </div>
 
             <div class="bubble blue" [ngStyle]="{
         width: (40 + bubbleData[0].count) + 'px',
         height: (40 + bubbleData[0].count) + 'px',
         top: '20px',
-        left: '80px'
-      }" [attr.title]="bubbleData[0]?.label + ': ' + bubbleData[0]?.count">
-                {{ bubbleData[0]?.count }}
+        left: '70px'
+      }" [attr.title]="bubbleData[0].label + ': ' + bubbleData[0].count">
+                {{ bubbleData[0].count }}
+                <!-- {{10}} -->
             </div>
 
             <div class="bubble cyan" [ngStyle]="{
@@ -26,8 +29,9 @@
         height: (40 + bubbleData[2].count) + 'px',
         top: '60px',
         left: '25px'
-      }" [attr.title]="bubbleData[2]?.label + ': ' + bubbleData[2]?.count">
-                {{ bubbleData[2]?.count }}
+      }" [attr.title]="bubbleData[2].label + ': ' + bubbleData[2].count">
+                {{ bubbleData[2].count }}
+                <!-- {{20}} -->
             </div>
 
             <div class="bubble green" [ngStyle]="{
@@ -35,8 +39,9 @@
         height: (40 + bubbleData[1].count) + 'px',
         top: '60px',
         left: '70px'
-      }" [attr.title]="bubbleData[1]?.label + ': ' + bubbleData[1]?.count">
-                {{ bubbleData[1]?.count }}
+      }" [attr.title]="bubbleData[1].label + ': ' + bubbleData[1].count">
+                {{ bubbleData[1].count }}
+                <!-- {{10}} -->
             </div>
         </div>
     </div>

@@ -452,6 +452,14 @@ export class BaseService {
     return this.http.get<any[]>(BASE_URL + "/package/getpackagemasterBaseList?role=" + role + "&username=" + encodeURIComponent(username) + "&type=" + type + "&castype=" + castype);
   }
   // ---------------------------------------REPORTS-----------------------------------------------
+  // ---------------------------------------------getRepairedSmartcardList----------------------------------------------
+  getReparidSmartcardListReport(role: any, u_name: any, reporttype: any): Observable<Blob> {
+    return this.http.get(BASE_URL + "/report/getReparidSmartcardList?&role=" + role + "&username=" + encodeURIComponent(u_name) + "&reporttype=" + reporttype, { responseType: 'blob' });
+  }
+  getReparidSmartcardList(role: any, username: string, reporttype: any): Observable<any[]> {
+    return this.http.get<any[]>(BASE_URL + "/report/getReparidSmartcardList?role=" + role + "&username=" + encodeURIComponent(username) + "&reporttype=" + reporttype,);
+  }
+  // ----------------------------------------------------------------------------------------------------------------------
   getPackagePDFReport(role: any, u_name: any, type: any): Observable<Blob> {
     return this.http.get(BASE_URL + "/report/getChannelReport?&role=" + role + "&username=" + encodeURIComponent(u_name) + "&type=" + type, { responseType: 'blob' });
   }
@@ -1283,10 +1291,15 @@ export class BaseService {
   getLcochangeSubscriberList(role: any, username: any, operatorid: any, areaid: any, streetid: any): Observable<HttpResponse<any[]>> {
     return this.http.get<any[]>(BASE_URL + "/bulk/getLcochangeSubscriberList?role=" + role + "&username=" + encodeURIComponent(username) + "&operatorid=" + operatorid + "&areaid=" + areaid + "&streetid=" + streetid, { observe: 'response' });
   }
-  getAreawiseReport(role: any, username: any, operatorid: any, areaid: any, streetid: any): Observable<Blob> {
-    return this.http.get(BASE_URL + "/bulk/getLcochangeSubscriberList?role=" + role + "&username=" + encodeURIComponent(username) + "&operatorid=" + operatorid + "&areaid=" + areaid + "&streetid=" + streetid, { responseType: 'blob' });
+  getAreawiseReport(role: any, username: any, operatorid: any, areaid: any, streetid: any, reporttype: any): Observable<Blob> {
+    return this.http.get(BASE_URL + "/bulk/getLcochangeSubscriberList?role=" + role + "&username=" + encodeURIComponent(username) + "&operatorid=" + operatorid + "&areaid=" + areaid + "&streetid=" + streetid + "&reporttype=" + reporttype, { responseType: 'blob' });
   }
-
+  getAreaAndStreetWiseReportList(role: any, username: any, operatorid: any, areaid: any, streetid: any, reporttype: any): Observable<HttpResponse<any[]>> {
+    return this.http.get<any[]>(BASE_URL + "/report/getAreaAndStreetWiseReport?role=" + role + "&username=" + encodeURIComponent(username) + "&operatorid=" + operatorid + "&areaid=" + areaid + "&streetid=" + streetid + "&reporttype=" + reporttype, { observe: 'response' });
+  }
+  getAreaAndStreetWiseReport(role: any, username: any, operatorid: any, areaid: any, streetid: any, reporttype: any): Observable<Blob> {
+    return this.http.get(BASE_URL + "/report/getAreaAndStreetWiseReport?role=" + role + "&username=" + encodeURIComponent(username) + "&operatorid=" + operatorid + "&areaid=" + areaid + "&streetid=" + streetid + "&reporttype=" + reporttype, { responseType: 'blob' });
+  }
 
   updateLcoChangeSubscriber(requestBody: any): Observable<any[]> {
     return this.http.post<any[]>(BASE_URL + "/bulk/updateLcoChangeSubscriber", requestBody, {});

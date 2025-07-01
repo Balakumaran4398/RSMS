@@ -243,6 +243,9 @@ export class MsorDialogueportsComponent implements OnInit, OnDestroy {
       this.lcowiseActiveSubCount();
       this.getDistrictList();
     }
+    if (this.type == 'repair_smartcard') {
+      this.getRepairSmartcard();
+    }
 
   }
   getFilteredOnlineType() {
@@ -305,6 +308,7 @@ export class MsorDialogueportsComponent implements OnInit, OnDestroy {
 
     this.subOperatorId = this.subLcoDetails?.operatorId;
     console.log('subOperatorId', this.subOperatorId);
+
   }
   getDistrictList() {
     this.userService.getDistrictList(this.role, this.username).subscribe((data: any) => {
@@ -658,48 +662,48 @@ export class MsorDialogueportsComponent implements OnInit, OnDestroy {
     } else {
       return
     }
-    this.columnDefs2 = this.rechargeOperatorValue == 3
+       this.columnDefs2 = this.rechargeOperatorValue == 3
       ? [
         { headerName: "S.No", lockPosition: true, valueGetter: 'node.rowIndex+1', headerCheckboxSelection: false, checkboxSelection: false, width: 90, filter: false },
-        { headerName: 'CUSTOMER NAME', field: 'customername', width: 150 },
+        { headerName: 'CUSTOMER NAME', field: 'customername', width: 200 },
         { headerName: 'AREA ID', field: 'dummyarea', width: 150, cellStyle: { textAlign: 'center' } },
         { headerName: 'CUSTOMER NO', field: 'customerno', width: 150, cellStyle: { textAlign: 'center' } },
         { headerName: 'SMARTCARD', field: 'referenceid', width: 200 },
-        { headerName: 'PACKAGE NAME', field: 'productname', width: 150 },
-        { headerName: 'ACTION', field: 'remarks2', width: 150 },
-        { headerName: 'TRANSACTION TYPE', field: 'remarks', width: 150, cellStyle: { textAlign: 'center' } },
+        { headerName: 'PACKAGE NAME', field: 'productname', width: 200 },
+        { headerName: 'ACTION', field: 'remarks2', width: 200 },
+        { headerName: 'TRANSACTION TYPE', field: 'remarks', width: 200, cellStyle: { textAlign: 'center' } },
         { headerName: 'DAYS', field: 'days', width: 120, cellStyle: { textAlign: 'center' } },
-        { headerName: 'DISOLDBALANCE', field: 'disoldbalance', width: 120, cellStyle: { textAlign: 'center' } },
+        { headerName: 'DISOLDBALANCE', field: 'disoldbalance', width: 200, cellStyle: { textAlign: 'center' } },
         { headerName: 'DISAMOUNT', field: 'disamount', width: 120, cellStyle: { textAlign: 'center' } },
-        { headerName: 'DISCURRENTBALANCE', field: 'disnewbalance', width: 120, cellStyle: { textAlign: 'center' } },
-        { headerName: 'SUBLCOOLDBALANCE', field: 'sublcooldbalance', width: 120, cellStyle: { textAlign: 'center' } },
-        { headerName: 'SUBLCOAMOUNT', field: 'sublcoamount', width: 120, cellStyle: { textAlign: 'center' } },
-        { headerName: 'SUBLCONEWBALANCE', field: 'sublconewbalance', width: 120, cellStyle: { textAlign: 'center' } },
+        { headerName: 'DISCURRENTBALANCE', field: 'disnewbalance', width: 200, cellStyle: { textAlign: 'center' } },
+        { headerName: 'SUBLCOOLDBALANCE', field: 'sublcooldbalance', width: 200, cellStyle: { textAlign: 'center' } },
+        { headerName: 'SUBLCOAMOUNT', field: 'sublcoamount', width: 200, cellStyle: { textAlign: 'center' } },
+        { headerName: 'SUBLCONEWBALANCE', field: 'sublconewbalance', width: 200, cellStyle: { textAlign: 'center' } },
         {
-          headerName: 'BEFORE BALANCE', field: 'oldbalance', width: 150, cellStyle: { textAlign: 'center' },
+          headerName: 'BEFORE BALANCE', field: 'oldbalance', width: 200, cellStyle: { textAlign: 'center' },
           valueFormatter: (params: any) => {
             const value = params.value;
             return value !== undefined && value !== null ? value.toFixed(2) : '0.00';
           }
         },
         {
-          headerName: 'LCO AMOUNT', field: 'lcoamount', width: 150, cellStyle: { textAlign: 'center', color: 'green' },
+          headerName: 'LCO AMOUNT', field: 'lcoamount', width: 200, cellStyle: { textAlign: 'center', color: 'green' },
           valueFormatter: (params: any) => {
             const value = params.value;
             return value !== undefined && value !== null ? value.toFixed(2) : '0.00';
           }
         },
         {
-          headerName: 'AFTER BALANCE', field: 'currentbalance', width: 150, cellStyle: { textAlign: 'center' },
+          headerName: 'AFTER BALANCE', field: 'currentbalance', width: 200, cellStyle: { textAlign: 'center' },
           valueFormatter: (params: any) => {
             const value = params.value;
             return value !== undefined && value !== null ? value.toFixed(2) : '0.00';
           }
         },
-        { headerName: 'TRANSACTION DATE', field: 'transactiondate', width: 150 },
-        { headerName: 'EXPIRY DATE', field: 'expirydate', width: 150 },
+        { headerName: 'TRANSACTION DATE', field: 'transactiondate', width: 200 },
+        { headerName: 'EXPIRY DATE', field: 'expirydate', width: 200 },
         {
-          headerName: 'USER AGENT', field: 'useragent', width: 150,
+          headerName: 'USER AGENT', field: 'useragent', width: 200,
           valueGetter: (params: any) => {
             const useragent = params.data.useragent || '';
             const remarks1 = params.data.remarks1 || '';
@@ -707,45 +711,47 @@ export class MsorDialogueportsComponent implements OnInit, OnDestroy {
             return `${useragent} -[( ${operatorname})-( ${remarks1})]`;
           },
         },
-        { headerName: 'ADDRESS', field: 'address', width: 150 },
+        { headerName: 'ADDRESS', field: 'address', width: 200 },
         { headerName: 'AREA NAME', field: 'areaname', width: 150 },
         { headerName: 'COMMENT', field: 'comment', width: 150 },
+        { headerName: 'CAS FORM ID', field: 'casformid', width: 150 },
+        { headerName: 'BOX ID', field: 'boxid', width: 150 },
       ]
       : [
         { headerName: "S.No", lockPosition: true, valueGetter: 'node.rowIndex+1', headerCheckboxSelection: false, checkboxSelection: false, width: 90 },
-        { headerName: 'CUSTOMER NAME', field: 'customername', width: 150 },
+        { headerName: 'CUSTOMER NAME', field: 'customername', width: 200 },
         { headerName: 'AREA ID', field: 'dummyarea', width: 150, cellStyle: { textAlign: 'center' } },
         { headerName: 'CUSTOMER NO', field: 'customerno', width: 150, cellStyle: { textAlign: 'center' } },
         { headerName: 'SMARTCARD', field: 'referenceid', width: 200 },
-        { headerName: 'PACKAGE NAME', field: 'productname', width: 150 },
-        { headerName: 'ACTION', field: 'remarks2', width: 150 },
-        { headerName: 'TRANSACTION TYPE', field: 'remarks', width: 150, cellStyle: { textAlign: 'center' } },
-        { headerName: 'DAYS', field: 'days', width: 120, cellStyle: { textAlign: 'center' } },
+        { headerName: 'PACKAGE NAME', field: 'productname', width: 200 },
+        { headerName: 'ACTION', field: 'remarks2', width: 200 },
+        { headerName: 'TRANSACTION TYPE', field: 'remarks', width: 200, cellStyle: { textAlign: 'center' } },
+        { headerName: 'DAYS', field: 'days', width: 200, cellStyle: { textAlign: 'center' } },
         {
-          headerName: 'BEFORE BALANCE', field: 'oldbalance', width: 150, cellStyle: { textAlign: 'center' }, valueFormatter: (params: any) => {
+          headerName: 'BEFORE BALANCE', field: 'oldbalance', width: 200, cellStyle: { textAlign: 'center' }, valueFormatter: (params: any) => {
             const value = params.value;
             return value !== undefined && value !== null ? value.toFixed(2) : '0.00';
           }
         },
         // { headerName: 'LCO AMOUNT', field: 'lcoamount', width: 150, cellStyle: { textAlign: 'center', color: 'green' } },
         {
-          headerName: 'LCO AMOUNT', field: 'lcoamount', width: 150, cellStyle: { textAlign: 'center', color: 'green' },
+          headerName: 'LCO AMOUNT', field: 'lcoamount', width: 200, cellStyle: { textAlign: 'center', color: 'green' },
           valueFormatter: (params: any) => {
             const value = params.value;
             return value !== undefined && value !== null ? value.toFixed(2) : '0.00';
           }
         },
         {
-          headerName: 'AFTER BALANCE', field: 'currentbalance', width: 150, cellStyle: { textAlign: 'center' },
+          headerName: 'AFTER BALANCE', field: 'currentbalance', width: 200, cellStyle: { textAlign: 'center' },
           valueFormatter: (params: any) => {
             const value = params.value;
             return value !== undefined && value !== null ? value.toFixed(2) : '0.00';
           }
         },
-        { headerName: 'TRANSACTION DATE', field: 'transactiondate', width: 150 },
-        { headerName: 'EXPIRY DATE', field: 'expirydate', width: 150 },
+        { headerName: 'TRANSACTION DATE', field: 'transactiondate', width: 200 },
+        { headerName: 'EXPIRY DATE', field: 'expirydate', width: 200 },
         {
-          headerName: 'USER AGENT', field: 'useragent', width: 150,
+          headerName: 'USER AGENT', field: 'useragent', width: 200,
           valueGetter: (params: any) => {
             const useragent = params.data.useragent || '';
             const remarks1 = params.data.remarks1 || '';
@@ -753,9 +759,11 @@ export class MsorDialogueportsComponent implements OnInit, OnDestroy {
             return `${useragent} -[( ${operatorname})-( ${remarks1})]`;
           },
         },
-        { headerName: 'ADDRESS', field: 'address', width: 150 },
+        { headerName: 'ADDRESS', field: 'address', width: 200 },
         { headerName: 'AREA NAME', field: 'areaname', width: 150 },
         { headerName: 'COMMENT', field: 'comment', width: 150 },
+        { headerName: 'CAS FORM ID', field: 'casformid', width: 150 },
+        { headerName: 'BOX ID', field: 'boxid', width: 150 },
       ];
   }
 
@@ -1174,6 +1182,20 @@ export class MsorDialogueportsComponent implements OnInit, OnDestroy {
         { headerName: "BASE", field: 'baseAmount', width: 250 },
         { headerName: "ADDON", field: 'addonBase', width: 200 },
         { headerName: "ALACARTE", field: 'alacarteBase', width: 250 },
+      ]
+    }
+    else if (this.type == 'repair_smartcard') {
+      this.columnDefs = [
+        { headerName: "S.No", lockPosition: true, valueGetter: 'node.rowIndex+1', headerCheckboxSelection: false, checkboxSelection: false, width: 70, filter: false },
+        { headerName: 'LCO NAME', field: 'operator_name', width: 250 },
+        { headerName: 'CUSTOMER NAME', field: 'customer_name', width: 200 },
+        { headerName: 'SMARTCARD', field: 'smartcard', width: 230 },
+        { headerName: 'BOX ID', field: 'box_id', width: 150 },
+        { headerName: 'REPLACE SMARTCARD', field: 'replaced_smartcard', width: 250 },
+        { headerName: 'REPLACE BOXID', field: 'replace_box_id', width: 200 },
+        { headerName: 'REMARKS', field: 'remarks', width: 200 },
+        { headerName: 'CREATED DATE', field: 'created_date', width: 200, },
+        { headerName: 'UPDATED DATE', field: 'updated_date', width: 200, },
       ]
     }
 
@@ -2839,7 +2861,35 @@ export class MsorDialogueportsComponent implements OnInit, OnDestroy {
           this.pdfswalError(error?.error.message);
         });
   }
-
+  // ==================================================== Repair Smartcard ========================================
+  getRepairSmartcardReport(type: number) {
+    this.processingSwal();
+    this.userService.getReparidSmartcardListReport(this.role, this.username, type)
+      .subscribe((x: Blob) => {
+        if (type == 1) {
+          this.reportMaking(x, "Repair Smartcard Report.pdf", 'application/pdf');
+        } else if (type == 2) {
+          this.reportMaking(x, "Repair Smartcard Report.xlsx", 'application/xlsx');
+        }
+      },
+        (error: any) => {
+          this.pdfswalError(error?.error.message);
+        });
+  }
+  getRepairSmartcard() {
+    this.swal.Loading();
+    this.userService.getReparidSmartcardList(this.role, this.username, 3)
+      .subscribe((data: any) => {
+        console.log(data);
+        this.rowData = data;
+        console.log(this.rowData);
+        const rowCount = this.rowData.length;
+        if (!this.gridOptions.paginationPageSizeSelector.includes(rowCount)) {
+          this.gridOptions.paginationPageSizeSelector.push(rowCount);
+        }
+        this.swal.Close();
+      });
+  }
   // =========================================================lcoInvoice===========================
 
   onGridReady1() {

@@ -54,15 +54,55 @@ export class HomeComponent implements OnInit {
 
     { headerName: "CAS NAME", field: 'cas_name', width: 300, },
 
+    // {
+    //   headerName: "STATUS", field: 'status', width: 300, cellStyle: (params: any) => {
+    //     if (params.value === 'Active') {
+    //       return { color: 'green', fontWeight: 'bold' };
+    //     } else if (params.value === 'Deactive') {
+    //       return { color: 'red', fontWeight: 'bold' };
+    //     }
+    //     return null;
+    //   }
+    // },
+  
     {
-      headerName: "STATUS", field: 'status', width: 300, cellStyle: (params: any) => {
-        if (params.value === 'Active') {
-          return { color: 'green', fontWeight: 'bold' };
-        } else if (params.value === 'Deactive') {
-          return { color: 'red', fontWeight: 'bold' };
-        }
-        return null;
-      }
+      headerName: 'STATUS',
+      field: 'status', width: 300,
+      cellRenderer: (params: any) => {
+        const isActive = params.data.status === "Active";
+        const toggleButton = document.createElement('button');
+        toggleButton.style.backgroundColor = 'transparent';
+        toggleButton.style.border = 'none';
+        toggleButton.style.fontSize = '22px';
+        toggleButton.style.display = 'flex';
+        toggleButton.style.alignItems = 'center';
+        toggleButton.style.justifyContent = 'center';
+        toggleButton.style.marginTop = '10px';
+        const icon = document.createElement('i');
+        icon.className = 'fa';
+        toggleButton.appendChild(icon);
+        const updateButtonStyle = (Active: boolean) => {
+          if (Active) {
+            icon.className = 'fa-solid fa-toggle-on';
+            toggleButton.style.color = '#3fd106';
+            toggleButton.style.fontSize = '24px';
+            icon.style.fontSize = '24px';
+          } else {
+            icon.className = 'fa-solid fa-toggle-off';
+            toggleButton.style.color = '#c71a14';
+            toggleButton.style.fontSize = '24px';
+            icon.style.fontSize = '24px';
+          }
+        };
+
+        updateButtonStyle(isActive);
+        const div = document.createElement('div');
+        div.style.display = 'flex';
+        div.style.alignItems = 'center';
+        div.style.justifyContent = 'center';
+        div.appendChild(toggleButton);
+        return div;
+      },
     },
     {
       headerName: "",

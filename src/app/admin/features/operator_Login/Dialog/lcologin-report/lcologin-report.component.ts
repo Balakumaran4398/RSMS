@@ -283,16 +283,16 @@ export class LcologinReportComponent implements OnInit, AfterViewInit, OnDestroy
     } else if (this.type == 'areawise_subscriber') {
       this.columnDefs = [
         { headerName: "S.No", lockPosition: true, valueGetter: 'node.rowIndex+1', headerCheckboxSelection: false, checkboxSelection: false, width: 80, filter: false },
+        { headerName: 'LCO NAME', field: 'operatorname', width: 250 },
         { headerName: 'SUBSCRIBER NAME', field: 'customername', width: 200 },
-        { headerName: 'MOBILE NUMBER', field: 'mobileno', width: 200 },
-        { headerName: 'SMARTCARD', field: 'smartcard', width: 200 },
+        { headerName: 'MOBILE NUMBER', field: 'mobileno', width: 150 },
+        { headerName: 'AREA NAME', field: 'areaname', width: 130 },
+        { headerName: 'STREET NAME', field: 'streetname', width: 150 },
+        { headerName: 'SMARTCARD', field: 'smartcard', width: 250 },
         { headerName: 'BOX ID', field: 'boxid', width: 150 },
-        { headerName: 'PACKAGE', field: '', width: 150 },
-        { headerName: 'LAST ACTIVATION DATE ', field: '', width: 200 },
         { headerName: 'EXPIRY DATE', field: 'expirydate', width: 200 },
-        { headerName: 'STATUS', field: '', width: 200 },
       ]
-    }
+    } 
   }
   getCurrentActReportDownload(event: any) {
     console.log(event);
@@ -405,7 +405,7 @@ export class LcologinReportComponent implements OnInit, AfterViewInit, OnDestroy
   getAreawiseDownload(type: number) {
     this.swal.Loading()
     this.processingSwal();
-    this.userService.getAreawiseReport(this.role, this.username, this.operatorId, this.area, 0)
+    this.userService.getAreaAndStreetWiseReport(this.role, this.username, this.operatorId, this.area, this.street,type)
       .subscribe((x: Blob) => {
         if (type == 1) {
           this.reportMaking(x, "AREA WISE SUBSCRIBER REPORT COUNT(" + this.operatorname + ").pdf", 'application/pdf');
@@ -427,7 +427,7 @@ export class LcologinReportComponent implements OnInit, AfterViewInit, OnDestroy
   }
 
   getAreaReport() {
-    this.userService.getLcochangeSubscriberList(this.role, this.username, this.operatorId, this.area, 0).subscribe(
+    this.userService.getAreaAndStreetWiseReportList(this.role, this.username, this.operatorId, this.area, this.street,3).subscribe(
       (response: HttpResponse<any[]>) => {
         if (response.status === 200) {
           // this.updateColumnDefs(this.selectedTab);

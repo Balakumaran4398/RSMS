@@ -5,6 +5,7 @@ import { BaseService } from 'src/app/_core/service/base.service';
 import { StorageService } from 'src/app/_core/service/storage.service';
 import { BroadCreateDialogComponent } from '../../channel_setting/_Dialogue/broad-create-dialog/broad-create-dialog.component';
 import { OperatorWalletComponent } from '../Dialog/operator-wallet/operator-wallet.component';
+import { Location } from '@angular/common';
 declare var AmCharts: any;
 
 @Component({
@@ -15,7 +16,6 @@ declare var AmCharts: any;
 export class OperatordashboardComponent implements OnInit {
   role: any;
   username: any;
-
   activecount: any;
   areachange: any;
   deactivecount: any;
@@ -57,7 +57,7 @@ export class OperatordashboardComponent implements OnInit {
 
   retailerid: any;
   distributor: boolean = false;
-  constructor(private router: Router, private userService: BaseService, private storageService: StorageService, public dialog: MatDialog,) {
+  constructor(private router: Router, private userService: BaseService, private storageService: StorageService, public dialog: MatDialog, private location: Location,) {
     this.role = storageService.getUserRole();
     this.username = storageService.getUsername();
     const style = document.createElement("style");
@@ -83,6 +83,7 @@ export class OperatordashboardComponent implements OnInit {
 
   ngOnInit(): void {
     if (this.role == 'ROLE_OPERATOR') {
+
       this.getOperator()
       this.operatorDetails();
       this.date = new Date().toISOString().split('T')[0];
@@ -99,10 +100,17 @@ export class OperatordashboardComponent implements OnInit {
     const currentDate = new Date();
     this.selectedMonth = (currentDate.getMonth() + 1).toString().padStart(2, '0');
     this.selectedYear = currentDate.getFullYear();
-
-
   }
 
+  goBack(): void {
+    if (this.role == 'ROLE_OPERATOR') {
+      this.router.navigate(['admin/operator_details']).then(() => {
+      });
+    } else if (this.role == 'ROLE_SUBLCO') {
+      this.router.navigate(['admin/operator_details']).then(() => {
+      });
+    }
+  }
   onOnlineRecharge() {
     this.router.navigate(['admin/online_recharge']);
   }
@@ -157,7 +165,6 @@ export class OperatordashboardComponent implements OnInit {
 
       this.operataDetailsCount(this.operatorId)
       this.getbar(this.operatorId)
-
     })
   }
   wallet: boolean = false;
