@@ -21,12 +21,15 @@ export class SubscriptionBasedComponent implements OnInit {
   rowData: any;
   msodetails: any;
   productType: any = '';
+  castype: any;
 
+  casname: any;
   operatorNameList: any;
   filteredOperators: any[] = [];
+  cas: any[] = [];
   operatorList: any[] = [];
   selectedOperator: any;
-  operatorid: any = 0;
+  operatorid: any;
   pagedOperators: any;
 
 
@@ -42,9 +45,14 @@ export class SubscriptionBasedComponent implements OnInit {
   months: any[] = [];
   years: any[] = [];
   Date: any[] = [];
-
+  types: any = [
+    { label: "Date", value: 1 },
+    { label: "Month & Year", value: 2 },
+    { label: "Year", value: 3 },
+  ]
   selectedMonth: any = 0;
   selectedYear: any = 0;
+  selectType: any = 0;
   selectedweek: any = 0;
   selectedDate: any = 0;
   selectedMonthName: any;
@@ -56,7 +64,9 @@ export class SubscriptionBasedComponent implements OnInit {
 
   dayOfMonth = new Date().getDate();
 
-
+  isDate: boolean = false;
+  isYear: boolean = false;
+  isMonthYear: boolean = false;
 
   currentDate = new Date();
   currentMonth = (this.currentDate.getMonth() + 1).toString().padStart(2, '0');
@@ -75,6 +85,34 @@ export class SubscriptionBasedComponent implements OnInit {
     this.loadOperators();
     this.generateMonths();
     this.generateYears();
+    if (this.type == 'castype' || this.type == 'base_package' || this.type == 'addon_package' || this.type == 'alacarte') {
+      this.ongetCastype();
+    }
+  }
+
+  ngOnDestroy(): void {
+    ($('#cas') as any).select2('destroy');
+    ($('#ltb') as any).select2('destroy');
+  }
+  ngAfterViewInit() {
+    ($('#cas') as any).select2({
+      placeholder: 'Select CAS',
+      allowClear: true
+    });
+    $('#cas').on('change', (event: any) => {
+      this.castype = event.target.value;
+      console.log(this.castype);
+      this.onCastype(this.castype);
+    });
+    ($('#ltb') as any).select2({
+      placeholder: 'Select Operator Name',
+      allowClear: true
+    });
+    $('#ltb').on('change', (event: any) => {
+      this.operatorid = event.target.value;
+      console.log(this.operatorid);
+      this.onSubscriberStatusChange(this.operatorid);
+    });
   }
   formatDate(date: Date): string {
     const year = date.getFullYear();
@@ -107,18 +145,6 @@ export class SubscriptionBasedComponent implements OnInit {
       { value: '12', name: 'December' }
     ];
   }
-  // onMonthChange() {
-  //   if (this.selectedMonth !== '0') {
-  //     this.selectedMonthName = this.months.find(month => month.value === this.selectedMonth)?.name || '';
-  //     this.isDateDisabled = false;
-  //     this.generateDates(this.selectedMonthName);
-  //   } else {
-  //     this.isDateDisabled = true;
-  //     this.Date = [];
-  //   }
-  // }
-
-
   onMonthChange() {
     if (this.selectedMonth !== '0') {
       this.selectedMonthName = this.months.find(month => month.value === this.selectedMonth)?.name || '';
@@ -129,7 +155,6 @@ export class SubscriptionBasedComponent implements OnInit {
       const isBeforeCurrentYear = this.selectedYear < currentYear;
 
       if (isBeforeCurrentYear) {
-        // Show all weeks for previous years
         this.Date = [
           { value: '04', name: 'All', isEnabled: true },
           { value: '01', name: '07 ' + this.selectedMonthName, isEnabled: true },
@@ -146,18 +171,22 @@ export class SubscriptionBasedComponent implements OnInit {
       this.isDateDisabled = true;
       this.Date = [];
     }
-    // this.onVisible()
   }
-
-  // generateDates(selectedMonthName: string) {
-  //   this.Date = [
-  //     { value: '1', name: '07 ' + selectedMonthName },
-  //     { value: '2', name: '14 ' + selectedMonthName },
-  //     { value: '3', name: '21 ' + selectedMonthName },
-  //     { value: '4', name: 'All' }
-  //   ];
-  // }
-
+  onTypeChange(type: any) {
+    if (type == 1) {
+      this.isDate = true;
+      this.isMonthYear = false;
+      this.isYear = false;
+    } else if (type == 2) {
+      this.isDate = false;
+      this.isMonthYear = true;
+      this.isYear = false;
+    } else if (type == 3) {
+      this.isDate = false;
+      this.isMonthYear = false;
+      this.isYear = true;
+    }
+  }
   generateYears() {
     const startYear = 2012;
     const currentYear = new Date().getFullYear();
@@ -177,7 +206,7 @@ export class SubscriptionBasedComponent implements OnInit {
       case 'date_subscription':
         return 'As on Date Active/Deactive Subscription Report (All Types of Products)';
       default:
-        return 'Unknown Type'; // Optional: Handle unexpected types
+        return 'Unknown Type';
     }
   }
   generateDates(selectedMonthName: string) {
@@ -235,9 +264,6 @@ export class SubscriptionBasedComponent implements OnInit {
     }
   }
   calculateCurrentWeek(date: Date, selectedMonth: string) {
-    console.log(date);
-    console.log(selectedMonth);
-    console.log('1111111111111111currentWeek', date);
     const currentMonth = (date.getMonth() + 1).toString().padStart(2, '0');
     const currentDay = date.getDate();
     if (currentMonth === selectedMonth) {
@@ -264,29 +290,33 @@ export class SubscriptionBasedComponent implements OnInit {
   }
   loadOperators() {
     this.userService.getOeratorList(this.role, this.username, 1).subscribe((data: any) => {
-      console.log(data);
       this.operatorList = Object.keys(data).map(key => {
         const value = data[key];
         return { name: key, value: value };
       });
-      console.log(this.filteredOperators);
-
       this.filteredOperators = this.operatorList;
     });
   }
   onoperatorchange(operator: any): void {
-    console.log(operator);
     this.selectedOperator = operator;
     this.operatorid = operator.value;
-    console.log(this.operatorid);
-
-
   }
+  onSubscriberStatusChange(operator: any) {
+    console.log(operator);
+    this.selectedOperator = operator;
+    // this.operatorid = operator;
+    console.log(this.operatorid);
+    let str = operator;
+    let match = str.match(/\(([^)]+)\)/);
+    let insideValue = match ? match[1] : null;
+    console.log(insideValue);
+    this.operatorid = insideValue;
+    console.log(this.operatorid);
+  }
+
   displayOperator(operator: any): string {
     return operator ? operator.name : '';
   }
-
-
   getWeeklyActiveDeactiveReport(type: number) {
     this.processingSwal();
     this.userService.getWeeklyActiveOrDeactiveSubscriptionPDFReport(this.role, this.username, this.selectedMonth, this.selectedYear, this.selectedDate, this.isActive, type)
@@ -303,15 +333,9 @@ export class SubscriptionBasedComponent implements OnInit {
   }
 
   // ============================================================weekly Subscription above=========================
-
-
-
-
   getBasePackageReport(type: number) {
     this.processingSwal();
-    console.log(this.operatorid)
-
-    this.userService.getasOnDateBaseActiveOrDeactivePDFReport(this.role, this.username, this.operatorid, this.cur_date, this.isActive, type)
+    this.userService.getasOnDateBaseActiveOrDeactivePDFReport(this.role, this.username, this.operatorid, this.cur_date, this.isActive, type, this.castype || 0)
       .subscribe((x: Blob) => {
         const operatorName = this.selectedOperator?.name || 'ALL OPERATOR';
         if (type == 1) {
@@ -324,14 +348,12 @@ export class SubscriptionBasedComponent implements OnInit {
           this.pdfswalError(error?.error.message);
         });
   }
-
-
   // ====================================================================Base Subscription Above========================
 
 
   getAddonPackageReport(type: number) {
     this.processingSwal();
-    this.userService.getasOnDateAddonActiveOrDeactivePDFReport(this.role, this.username, this.operatorid, this.cur_date, this.isActive, type)
+    this.userService.getasOnDateAddonActiveOrDeactivePDFReport(this.role, this.username, this.operatorid, this.cur_date, this.isActive, type, this.castype || 0)
       .subscribe((x: Blob) => {
 
         const operatorName = this.selectedOperator?.name || 'ALL OPERATOR';
@@ -347,12 +369,9 @@ export class SubscriptionBasedComponent implements OnInit {
   }
 
   // -------------------------------------------------------Alacarte Subscription -----------------------------------
-
-
-
   getAlacartePackageReport(type: number) {
     this.processingSwal();
-    this.userService.getasOnDateAlacarteActiveOrDeactiveSubscriptionPDFReport(this.role, this.username, this.cur_date, this.isActive, type)
+    this.userService.getasOnDateAlacarteActiveOrDeactiveSubscriptionPDFReport(this.role, this.username, this.cur_date, this.isActive, type, this.castype || 0)
       .subscribe((x: Blob) => {
 
         const operatorName = this.selectedOperator?.name || 'ALL OPERATOR';
@@ -423,38 +442,38 @@ export class SubscriptionBasedComponent implements OnInit {
         );
     }
   }
-  getAllTypesPDF() {
-    if (!this.cur_date) {
-      this.submitted = true;
-    } else {
-      this.swal.Loading();
-      this.userService.getasOnDateAlacarteActiveOrDeactiveSubscriptionPDFReport(this.role, this.username, this.cur_date, this.isActive, 1)
-        .subscribe((x: Blob) => {
-          this.swal.Close();
-          const blob = new Blob([x], { type: 'application/pdf' });
-          const data = window.URL.createObjectURL(blob);
-          const link = document.createElement('a');
-          link.href = data;
-          // link.download = (this.type + ".pdf").toUpperCase();
-          link.download = `${this.type} REPORT - [  ${this.cur_date}].pdf`.toUpperCase();
+  // getAllTypesPDF() {
+  //   if (!this.cur_date) {
+  //     this.submitted = true;
+  //   } else {
+  //     this.swal.Loading();
+  //     this.userService.getasOnDateAlacarteActiveOrDeactiveSubscriptionPDFReport(this.role, this.username, this.cur_date, this.isActive, 1, this.castype || 0)
+  //       .subscribe((x: Blob) => {
+  //         this.swal.Close();
+  //         const blob = new Blob([x], { type: 'application/pdf' });
+  //         const data = window.URL.createObjectURL(blob);
+  //         const link = document.createElement('a');
+  //         link.href = data;
+  //         // link.download = (this.type + ".pdf").toUpperCase();
+  //         link.download = `${this.type} REPORT - [  ${this.cur_date}].pdf`.toUpperCase();
 
-          link.dispatchEvent(new MouseEvent('click', { bubbles: true, cancelable: true, view: window }));
-          setTimeout(() => {
-            window.URL.revokeObjectURL(data);
-            link.remove();
-          }, 100);
-        },
-          (error: any) => {
-            this.swal.Close();
-            Swal.fire({
-              title: 'Error!',
-              text: error?.error?.message || 'There was an issue generating the PDF CAS form report.',
-              icon: 'error',
-              confirmButtonText: 'Ok'
-            });
-          });
-    }
-  }
+  //         link.dispatchEvent(new MouseEvent('click', { bubbles: true, cancelable: true, view: window }));
+  //         setTimeout(() => {
+  //           window.URL.revokeObjectURL(data);
+  //           link.remove();
+  //         }, 100);
+  //       },
+  //         (error: any) => {
+  //           this.swal.Close();
+  //           Swal.fire({
+  //             title: 'Error!',
+  //             text: error?.error?.message || 'There was an issue generating the PDF CAS form report.',
+  //             icon: 'error',
+  //             confirmButtonText: 'Ok'
+  //           });
+  //         });
+  //   }
+  // }
 
 
   // ------------------------------------------------------------------product all--------------------------------
@@ -489,8 +508,6 @@ export class SubscriptionBasedComponent implements OnInit {
   }
 
   // -----------------------------------------------------common method for pdf and excel------------------------------------------------------------------------
-
-
   reportMaking(x: Blob, reportname: any, reporttype: any) {
     const blob = new Blob([x], { type: reporttype });
     const data = window.URL.createObjectURL(blob);
@@ -522,6 +539,47 @@ export class SubscriptionBasedComponent implements OnInit {
         Swal.showLoading(null);
       }
     });
+  }
+  // -----------------------------------------------------castype-------------------------------------------
 
+  ongetCastype() {
+    this.userService.Cas_type(this.role, this.username).subscribe((data: any) => {
+      this.cas = data;
+      console.log('dfdsfdsfsd', this.cas);
+      this.cas = data.map((item: any) => ({
+        id: item.id,
+        name: item.casname
+      }));
+      // this.filteredCasList = this.cas;
+      console.log(this.cas);
+
+    });
+  }
+  onCastype(cas: any) {
+    console.log(cas);
+    // const selectedCas = this.cas.find((c: any) => c.id === +cas);
+    // console.log(selectedCas);
+    // this.casname = selectedCas ? selectedCas.name : '';
+    // console.log(this.casname);
+  }
+  // ---------------------------------------------------------------CAS TYPE REPORTS--------------------------------------------------
+  getCASTypeReport(type: number) {
+    console.log(type);
+    // this.processingSwal();
+    this.userService.getCaswiseFirsttimeActivationReport(this.role, this.username, this.cur_date || 0, this.selectedMonth || 0, this.selectedYear || 0, type, this.selectType, this.operatorid || 0, this.castype || 0)
+      .subscribe((x: Blob) => {
+        if (type == 1) {
+          // this.reportMaking(x, `CAS TYPE REPORT - [ ${this.selectedMonth} -  ${this.selectedMonthName}].pdf`.toUpperCase(), "application/pdf");
+          this.reportMaking(x, `CAS TYPE FIRST TIME ACIVATION REPORT.pdf`.toUpperCase(), "application/pdf");
+        } else if (type == 2) {
+          // this.reportMaking(x, `CAS TYPE REPORT - [ ${this.selectedMonth} -  ${this.selectedMonthName}].xlsx`.toUpperCase(), "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
+          this.reportMaking(x, `CAS TYPE FIRST TIME ACIVATION REPORT.xlsx`.toUpperCase(), "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
+        }
+      },
+        (error: any) => {
+          console.log(error?.error.message);
+
+          this.pdfswalError(error?.error.message);
+        });
   }
 }

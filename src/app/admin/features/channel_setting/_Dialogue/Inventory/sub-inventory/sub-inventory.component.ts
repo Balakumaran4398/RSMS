@@ -112,7 +112,7 @@ export class SubInventoryComponent {
           .subscribe((res: any) => {
             this.swal.success(res?.message);
           }, (err) => {
-            this.swal.Error(err?.error?.message);
+            this.swal.Error1(err?.error?.message);
           });
       }
     });

@@ -13,24 +13,11 @@
                 <div class="col-12 col-md-6">
                     <select id="channel" [(ngModel)]="channel">
                         <option value="0" selected>Selected channel Name</option>
-                        <!-- <option *ngFor="let op of chNameList" [value]="op.channelid">
-                            {{ op.channelname }}
-                        </option> -->
                         <option *ngFor="let channel of filteredChannels" [value]="channel.channelid"
                             (click)="onChannelStatusChange(channel)">
                             {{ channel.channelname }}
                         </option>
                     </select>
-                    <!-- <input type="text" matInput [matAutocomplete]="autochannel" [(ngModel)]="channel" maxlength="20"
-                        (input)="filterChannels($event)" placeholder="Selected CHANGE Name"
-                        [matAutocompleteDisabled]="false" [value]="selectedChannelName">
-
-                    <mat-autocomplete #autochannel="matAutocomplete" [displayWith]="displayChannel">
-                        <mat-option *ngFor="let channel of filteredChannels" [value]="channel.channelid"
-                            (click)="onChannelStatusChange(channel)">
-                            {{ channel.channelname }}
-                        </mat-option>
-                    </mat-autocomplete> -->
                 </div>
             </div>
             <div class="input_box display mb-1">
@@ -45,17 +32,6 @@
                             {{ operator.packagename }}
                         </option>
                     </select>
-
-                    <!-- <input type="text" matInput [matAutocomplete]="auto" [(ngModel)]="opName" maxlength="20"
-                        (input)="filterOperators($event)" placeholder="Selected Operator Name"
-                        [matAutocompleteDisabled]="false" [value]="selectedOperator?.packagename">
-
-                    <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayOperator">
-                        <mat-option *ngFor="let operator of filteredOperators" [value]="operator.packageid"
-                            (click)="onSubscriberStatusChange(operator)">
-                            {{ operator.packagename }}
-                        </mat-option>
-                    </mat-autocomplete> -->
                 </div>
             </div>
 

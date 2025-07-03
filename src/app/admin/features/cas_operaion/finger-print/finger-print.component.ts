@@ -263,8 +263,6 @@ export class FingerPrintComponent {
   ];
 
   constructor(private userservice: BaseService, private router: Router, private storageService: StorageService, private fb: FormBuilder) {
-
-
     this.form = this.fb.group({
       castype: [this.castypeid, Validators.required],
       castypedisplay: [this.castype_1, Validators.required],
@@ -757,13 +755,13 @@ export class FingerPrintComponent {
     }
     if (this.castype == 2) {
       this.isTimeSpan = false;
-    }else {
+    } else {
       this.isTimeSpan = true;
     }
     if (this.castype == 4) {
       this.isHH = true;
       this.isMM = true;
-    }else {
+    } else {
       this.isHH = false;
       this.isMM = false;
     }

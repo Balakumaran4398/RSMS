@@ -12,12 +12,9 @@
                                 <label for="">CAS</label>
                             </div>
                             <div class="col-12 col-md-8">
-                                <!-- <input type="text" placeholder="Search an CAS" formControlName="castypedisplay"
-                                    (input)="onSearchChange($event)" [(ngModel)]="castype_1" [value]="casname"
-                                    [matAutocomplete]="auto" class="example-input"> -->
                                 <div class="input-container">
-                                    <input type="text" placeholder="Search a CAS" 
-                                        [value]="casname" (input)="onSearchChange($event)" [matAutocomplete]="auto"
+                                    <input type="text" placeholder="Search a CAS" [value]="casname"
+                                        (input)="onSearchChange($event)" [matAutocomplete]="auto"
                                         class="example-input" />
                                     <i class="bx bx-chevron-down icon-right"></i>
                                 </div>
@@ -104,22 +101,21 @@
                                 </div>
                             </div>
                             <div class="col-12 col-md-5" *ngIf="isMsoEnabled">
-                                <input class="input_sb" readOnly style="font-size: 14px;"
-                                    formControlName="intendid" [(ngModel)]="intendid_1">
+                                <input class="input_sb" readOnly style="font-size: 14px;" formControlName="intendid"
+                                    [(ngModel)]="intendid_1">
 
                                 <div *ngIf="form.get('intendid')?.invalid && form.get('intendid')?.touched">
-                                    <small *ngIf="form.get('intendid')?.errors?.['required']"
-                                        class="text-danger">Intend ID is required.</small>
+                                    <small *ngIf="form.get('intendid')?.errors?.['required']" class="text-danger">Intend
+                                        ID is required.</small>
                                 </div>
                             </div>
                             <div class="col-12 col-md-5" *ngIf="isSmartcardEnabled">
-                      
-                                <input placeholder="Enter the smartcard..." class="input_sb"  #searchitem
+
+                                <input placeholder="Enter the smartcard..." class="input_sb" #searchitem
                                     style="font-size: 14px;" [maxlength]="castype != 6 ? 20 : 14"
                                     (input)="validateExactLength()" formControlName="intendid"
                                     (keyup)="onSmartcardlist( searchitem?.value)" [(ngModel)]="intendid_1">
-                                <div style=" max-height: 150px;overflow: scroll;;"
-                                    class="dropdown-menu input"
+                                <div style=" max-height: 150px;overflow: scroll;;" class="dropdown-menu input"
                                     [ngClass]="(subscriberList.length != 0 && searchitem?.value?.length != 0 && showDropdown) ? 'show' : 'hide'"
                                     aria-labelledby="dropdownMenuButton">
                                     <a (click)="goToSubscriberDashboard(lcomember)"
@@ -150,8 +146,8 @@
                         </div>
 
 
-                     
-                          
+
+
                         <div class="input-box mb-3">
                             <div class="col-sm-4">
                                 <label for="">Type</label>

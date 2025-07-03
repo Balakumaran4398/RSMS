@@ -1640,25 +1640,32 @@ export class BaseService {
 
   // ----------------------------------Base package -------------------------------
 
-  getasOnDateBaseActiveOrDeactiveExcelReport(role: any, username: any, operatorid: any, date: any, type: any, reporttype: any): Observable<HttpResponse<any[]>> {
-    return this.http.get<any[]>(BASE_URL + "/report/asOnDateBaseActiveOrDeactiveSubscriptionReport?role=" + role + "&username=" + encodeURIComponent(username) + "&operatorid=" + operatorid + "&date=" + date + "&type=" + type + "&reporttype=" + reporttype, { observe: 'response' });
+  getasOnDateBaseActiveOrDeactiveExcelReport(role: any, username: any, operatorid: any, date: any, type: any, reporttype: any, castype: any): Observable<HttpResponse<any[]>> {
+    return this.http.get<any[]>(BASE_URL + "/report/asOnDateBaseActiveOrDeactiveSubscriptionReport?role=" + role + "&username=" + encodeURIComponent(username) + "&operatorid=" + operatorid + "&date=" + date + "&type=" + type + "&reporttype=" + reporttype + "&castype=" + castype, { observe: 'response' });
   }
-  getasOnDateBaseActiveOrDeactivePDFReport(role: any, username: any, operatorid: any, date: any, type: any, reporttype: any): Observable<Blob> {
-    return this.http.get(BASE_URL + "/report/asOnDateBaseActiveOrDeactiveSubscriptionReport?role=" + role + "&username=" + encodeURIComponent(username) + "&operatorid=" + operatorid + "&date=" + date + "&type=" + type + "&reporttype=" + reporttype, { responseType: 'blob' });
+  getasOnDateBaseActiveOrDeactivePDFReport(role: any, username: any, operatorid: any, date: any, type: any, reporttype: any, castype: any): Observable<Blob> {
+    return this.http.get(BASE_URL + "/report/asOnDateBaseActiveOrDeactiveSubscriptionReport?role=" + role + "&username=" + encodeURIComponent(username) + "&operatorid=" + operatorid + "&date=" + date + "&type=" + type + "&reporttype=" + reporttype + "&castype=" + castype, { responseType: 'blob' });
   }
   // --------------------------------------Addon Package-----------------------------
-  getasOnDateAddonActiveOrDeactiveExcelReport(role: any, username: any, operatorid: any, date: any, type: any, reporttype: any): Observable<HttpResponse<any[]>> {
-    return this.http.get<any[]>(BASE_URL + "/report/asOnDateAddonActiveOrDeactiveSubscriptionReport?role=" + role + "&username=" + encodeURIComponent(username) + "&operatorid=" + operatorid + "&date=" + date + "&type=" + type + "&reporttype=" + reporttype, { observe: 'response' });
+  getasOnDateAddonActiveOrDeactiveExcelReport(role: any, username: any, operatorid: any, date: any, type: any, reporttype: any, csatype: any): Observable<HttpResponse<any[]>> {
+    return this.http.get<any[]>(BASE_URL + "/report/asOnDateAddonActiveOrDeactiveSubscriptionReport?role=" + role + "&username=" + encodeURIComponent(username) + "&operatorid=" + operatorid + "&date=" + date + "&type=" + type + "&reporttype=" + reporttype + "&csatype=" + csatype, { observe: 'response' });
   }
-  getasOnDateAddonActiveOrDeactivePDFReport(role: any, username: any, operatorid: any, date: any, type: any, reporttype: any): Observable<Blob> {
-    return this.http.get(BASE_URL + "/report/asOnDateAddonActiveOrDeactiveSubscriptionReport?role=" + role + "&username=" + encodeURIComponent(username) + "&operatorid=" + operatorid + "&date=" + date + "&type=" + type + "&reporttype=" + reporttype, { responseType: 'blob' });
+  getasOnDateAddonActiveOrDeactivePDFReport(role: any, username: any, operatorid: any, date: any, type: any, reporttype: any, csatype: any): Observable<Blob> {
+    return this.http.get(BASE_URL + "/report/asOnDateAddonActiveOrDeactiveSubscriptionReport?role=" + role + "&username=" + encodeURIComponent(username) + "&operatorid=" + operatorid + "&date=" + date + "&type=" + type + "&reporttype=" + reporttype + "&csatype=" + csatype, { responseType: 'blob' });
+  }
+  // -------------------------------------------------------CASTYPE-------------------
+  getCaswiseFirsttimeActivationlIST(role: any, username: any, date: any, month: any, year: any, reporttype: any, type: any, operatorid: any, castype: any): Observable<HttpResponse<any[]>> {
+    return this.http.get<any[]>(BASE_URL + "/report/getCaswiseFirsttimeActivationReport?role=" + role + "&username=" + encodeURIComponent(username) + "&date=" + date + "&month=" + month + "&year=" + year + "&reporttype=" + reporttype + "&type=" + type + "&operatorid=" + operatorid + "&castype=" + castype, { observe: 'response' });
+  }
+  getCaswiseFirsttimeActivationReport(role: any, username: any, date: any, month: any, year: any, reporttype: any, type: any, operatorid: any, castype: any): Observable<Blob> {
+    return this.http.get(BASE_URL + "/report/getCaswiseFirsttimeActivationReport?role=" + role + "&username=" + encodeURIComponent(username) + "&date=" + date + "&month=" + month + "&year=" + year + "&reporttype=" + reporttype + "&type=" + type + "&operatorid=" + operatorid + "&castype=" + castype, { responseType: 'blob' });
   }
   // ------------------------------------------------------Alacarte---------------------------------
   getasOnDateAlacarteActiveOrDeactiveSubscriptionExcelReport(role: any, username: any, date: any, type: any, reporttype: any): Observable<HttpResponse<any[]>> {
     return this.http.get<any[]>(BASE_URL + "/report/asOnDateAlacarteActiveOrDeactiveSubscriptionReport?role=" + role + "&username=" + encodeURIComponent(username) + "&date=" + date + "&type=" + type + "&reporttype=" + reporttype, { observe: 'response' });
   }
-  getasOnDateAlacarteActiveOrDeactiveSubscriptionPDFReport(role: any, username: any, date: any, type: any, reporttype: any): Observable<Blob> {
-    return this.http.get(BASE_URL + "/report/asOnDateAlacarteActiveOrDeactiveSubscriptionReport?role=" + role + "&username=" + encodeURIComponent(username) + "&date=" + date + "&type=" + type + "&reporttype=" + reporttype, { responseType: 'blob' });
+  getasOnDateAlacarteActiveOrDeactiveSubscriptionPDFReport(role: any, username: any, date: any, type: any, reporttype: any, castype: any): Observable<Blob> {
+    return this.http.get(BASE_URL + "/report/asOnDateAlacarteActiveOrDeactiveSubscriptionReport?role=" + role + "&username=" + encodeURIComponent(username) + "&date=" + date + "&type=" + type + "&reporttype=" + reporttype + "&castype=" + castype, { responseType: 'blob' });
   }
   // ----------------------------------------All product-----------------------------------------
   getasOnDateAllProductActiveOrDeactiveSubscriptionReport(role: any, username: any, operatorid: any, date: any, type: any, reporttype: any): Observable<Blob> {

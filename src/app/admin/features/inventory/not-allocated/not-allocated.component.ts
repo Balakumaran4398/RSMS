@@ -50,7 +50,7 @@ export class NotAllocatedComponent implements OnInit {
       },
     },
     paginationPageSize: 10,
-    paginationPageSizeSelector:[10,20,50],
+    paginationPageSizeSelector: [10, 20, 50],
     pagination: true,
   };
 
@@ -143,6 +143,7 @@ export class NotAllocatedComponent implements OnInit {
 
   selectedIdsSet = new Set<number>();
   onSelectionChanged(event: any) {
+   
     if (this.gridApi) {
       let selectedRows: any[] = [];
       this.gridApi.forEachNodeAfterFilter((rowNode: any) => {
@@ -154,7 +155,7 @@ export class NotAllocatedComponent implements OnInit {
       console.log("Filtered & Selected Rows:", selectedRows);
       if (selectedRows.length === 0) {
         this.gridApi.deselectAll();
-        this.selectedIdsSet.clear();
+        // this.selectedIdsSet.clear();
       }
       console.log("Final Selected Rows:", selectedRows);
       this.updateSelectedRows(selectedRows);
@@ -170,6 +171,7 @@ export class NotAllocatedComponent implements OnInit {
     this.selectsmartcard = selectedRows.map((e: any) => e.smartcard);
     console.log("Updated Selected Rows:", selectedRows);
     console.log("Persistently Selected IDs:", this.selectsmartcard);
+    console.log("this.selectedIdsSet:", this.selectedIdsSet);
   }
   onGridReady(params: { api: any; }) {
     this.gridApi = params.api;
@@ -194,7 +196,8 @@ export class NotAllocatedComponent implements OnInit {
       rowData: this.rowData,
       lco_list: this.lco_list,
       castype: this.caslist,
-      smartcard: this.selectsmartcard,
+      // smartcard: this.selectsmartcard,
+      smartcard: this.selectedIdsSet,
       type: this.role
     };
     const dialogRef = this.dialog.open(EditInventoryComponent, {
@@ -223,7 +226,8 @@ export class NotAllocatedComponent implements OnInit {
         // rowData: this.rows,
         lco_list: this.lco_list,
         castype: this.caslist,
-        smartcard: this.selectsmartcard,
+        // smartcard: this.selectsmartcard,
+        smartcard: this.selectedIdsSet,
         isemi: this.isemi,
         subIsemi: this.selectedisEmi,
       };

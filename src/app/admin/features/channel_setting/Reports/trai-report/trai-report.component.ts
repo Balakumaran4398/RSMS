@@ -45,6 +45,7 @@ export class TraiReportComponent implements OnInit {
     } else if (event == 'Synchronization') {
       width = '600px';
     }
+
     let dialogData = { type: event };
     const dialogRef = this.dialog.open(PackageBasedComponent, {
       width: width, // Updated width
@@ -59,6 +60,8 @@ export class TraiReportComponent implements OnInit {
     let width = '500px';
     if (event == 'weekly_based') {
       width = '500px';
+    } else if (event == 'castype') {
+      width = '700px';
     }
     let dialogData = { type: event };
     const dialogRef = this.dialog.open(SubscriptionBasedComponent, {

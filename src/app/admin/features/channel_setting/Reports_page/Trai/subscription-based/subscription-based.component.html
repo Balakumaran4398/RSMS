@@ -60,6 +60,19 @@
                             </div>
                         </div>
                     </div>
+                    <div *ngIf="type !== 'date_subscription'" class="input_box display  mb-3">
+                        <div class="col-12 col-md-6">
+                            <span for="">Select CAS</span>
+                        </div>
+                        <div class="col-12 col-md-6">
+                            <select name="cas" id="cas" [(ngModel)]="castype">
+                                <option value="0" selected> All cas</option>
+                                <option *ngFor="let cas of cas" [value]="cas.id" (ngModelChange)="onCastype(cas)">
+                                    {{cas.name }}
+                                </option>
+                            </select>
+                        </div>
+                    </div>
                     <div class="input_box display mb-3">
                         <div class="col-12 col-md-6">
                             <span>Status</span>
@@ -239,6 +252,125 @@
                                 <div class="tooltip">Excel</div>
                             </div>
                             <div class="export-icon col-6 col-md-3" (click)="getWeeklyActiveDeactiveReport(1)">
+                                <img src="/assets/images/icons/pdf.png" alt="PDF Icon" width="40px">
+                                <div class="tooltip">Pdf</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- dfds -->
+    </div>
+</div>
+<div *ngIf="type == 'castype'">
+    <div class="Head d-flex justify-content-between align-items-center mb-3">
+        <span class="span">CAS Wise First Time Activation Report</span>
+        <i class="fa fa-close close-icon" (click)="onNoClick()"></i>
+    </div>
+    <div class="container">
+        <div class="card d-block justify-content-center align-items-center mb-3"
+            style="border: 1px solid #055478;padding: 1rem;">
+            <div class="col-12 display align-items-center">
+                <div class="col-12 col-md-12  justify-content-center align-items-center  ">
+
+                    <div class="input_box display mb-3">
+                        <div class="col-12 col-md-6">
+                            <span for="">Select Type</span>
+                        </div>
+                        <div class="col-12 col-md-6">
+                            <select name="year" id="year" [(ngModel)]="selectType" (change)="onTypeChange(selectType)">
+                                <option value="0" disabled>Select Type</option>
+                                <option *ngFor="let type of types" [value]="type.value">{{ type.label }}</option>
+                            </select>
+
+                        </div>
+                    </div>
+                    <div *ngIf="isYear" class="input_box display mb-3">
+                        <div class="col-12 col-md-6">
+                            <span for="">Select year</span>
+                        </div>
+                        <div class="col-12 col-md-6">
+                            <select name="year" id="year" [(ngModel)]="selectedYear">
+                                <option value="0" disabled>Select Year</option>
+                                <option *ngFor="let year of years" [value]="year">{{ year }}</option>
+                            </select>
+                            <div *ngIf="submitted && !selectedYear" class="text-danger" style="font-size: small;">
+                                Year is required
+                            </div>
+                        </div>
+                    </div>
+                    <div *ngIf="isMonthYear" class="input_box display mb-3">
+                        <div class="col-12 col-md-6">
+                            <span for="">Select Month</span>
+                        </div>
+                        <div class="col-12 col-md-6">
+                            <select name="month" id="month" [(ngModel)]="selectedMonth" (change)="onMonthChange()">
+                                <option value="0" selected>Select Month</option>
+                                <option *ngFor="let month of months" [value]="month.value">{{ month.name }}
+                                </option>
+                            </select>
+                            <div *ngIf="submitted && !selectedMonth" class="text-danger" style="font-size: small;">
+                                Month is required
+                            </div>
+                        </div>
+                    </div>
+                    <div *ngIf="isDate" class=" display mb-3">
+                        <div class="col-12 col-md-6 sidename">
+                            <span style="color: #243359;">Select a Date</span>
+                        </div>
+
+                        <div class="col-12 col-md-6">
+                            <mat-form-field class="input-field" appearance="outline">
+                                <mat-label>Choose a date</mat-label>
+                                <input matInput [matDatepicker]="picker" (dateChange)="logValues()" [(ngModel)]="date"
+                                    placeholder="Select a Date" readonly>
+                                <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+                                <mat-datepicker #picker></mat-datepicker>
+                            </mat-form-field>
+                            <div *ngIf="submitted && !date" class="text-danger" style="font-size: small;">
+                                Date is required
+                            </div>
+                        </div>
+                    </div>
+                    <div class="input_box display  mb-3">
+                        <div class="col-12 col-md-6">
+                            <span for="">Select CAS</span>
+                        </div>
+                        <div class="col-12 col-md-6">
+                            <select name="cas" id="cas" [(ngModel)]="castype">
+                                <option value="0" selected> All cas</option>
+                                <option *ngFor="let cas of cas" [value]="cas.id" (ngModelChange)="onCastype(cas)">
+                                    {{cas.name }}
+                                </option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="input_box display mb-1">
+                        <div class="col-12 col-md-6">
+                            <span for="">Selected Operator</span>
+                        </div>
+                        <div class="col-12 col-md-6">
+                            <select id="ltb" [(ngModel)]="operatorid">
+                                <option value="0" selected>All Operator</option>
+                                <option *ngFor="let operator of filteredOperators" [value]="operator.name"
+                                    (ngModelChange)="onSubscriberStatusChange($event)">
+                                    {{ operator.name }}
+                                </option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="input_box display1 mb-3">
+                        <div class="col-6 col-md-6">
+                            <span for="">Reports</span>
+                        </div>
+                        <div class="col-6 col-md-6 display1">
+                            <div class="export-icon col-6 col-md-3 mx-2" (click)="getCASTypeReport(2)">
+                                <img src="/assets/images/icons/Excel.png" alt="Excel Icon" width="40px">
+                                <div class="tooltip">Excel</div>
+                            </div>
+                            <div class="export-icon col-6 col-md-3" (click)="getCASTypeReport(1)">
                                 <img src="/assets/images/icons/pdf.png" alt="PDF Icon" width="40px">
                                 <div class="tooltip">Pdf</div>
                             </div>
