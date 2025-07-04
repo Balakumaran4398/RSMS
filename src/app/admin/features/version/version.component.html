@@ -1,11 +1,11 @@
 <div>
-    <h5>Version Information</h5>
+    <h5>New Updates</h5>
 </div>
 <div class="cardContainer">
     <div class="col-12 col-md-5 col-lg-5 card royal-card d-flex justify-content-center align-item-center"
         (click)="getVersion('1')">
-        <div><strong>Version - 6.9.31</strong></div>
-        <div class="tooltip">Version - 6.9.31</div>
+        <div><strong>Version - 7.2.4</strong></div>
+        <div class="tooltip">Version - 7.2.4</div>
     </div>
     <!-- <div class="col-12 col-md-5 col-lg-5 card royal-card d-flex justify-content-center align-item-center"
         (click)="getVersion('2')">
@@ -32,7 +32,7 @@
 
     </div> -->
 </div>
-<div *ngIf="showVersion_3 " >
+<div *ngIf="showVersion_3 ">
     <div class="d-flex justify-content-between align-item-center" style="padding: 10px;">
         <h5>Version - 6.9.31</h5>
         <button type="button" class="btn btn-primary bttn" style="background-color: black;" (click)="getClose()"><i
@@ -41,7 +41,8 @@
     <div class="ver mb-4">
         <p style="font-size: large;font-weight: bold;">Features (Text) :-</p>
         <div *ngFor="let message of visibleMessages" style="padding: 10px;">
-            <span>{{ message }}</span>
+            <span *ngIf="role == 'ROLE_ADMIN'">{{ message }}</span>
+            <span *ngIf="role == 'ROLE_OPERATOR'">{{ message }}</span>
         </div>
     </div>
     <!-- <button class="btn btn-outline-info mx-1 mb-4" mat-raised-button

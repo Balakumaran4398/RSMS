@@ -104,10 +104,10 @@ export class OperatordashboardComponent implements OnInit {
 
   goBack(): void {
     if (this.role == 'ROLE_OPERATOR') {
-      this.router.navigate(['admin/operator_details']).then(() => {
+      this.router.navigate(['/']).then(() => {
       });
     } else if (this.role == 'ROLE_SUBLCO') {
-      this.router.navigate(['admin/operator_details']).then(() => {
+      this.router.navigate(['/']).then(() => {
       });
     }
   }

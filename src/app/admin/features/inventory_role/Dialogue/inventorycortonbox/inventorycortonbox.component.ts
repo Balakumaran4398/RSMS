@@ -327,15 +327,33 @@ export class InventorycortonboxComponent implements OnInit {
   setallocation() {
     this.swal.Loading();
     console.log(this.operatorid);
-    
-    this.userservice.getLCOportalcortonBoxDetails(this.role, this.username, this.selectOperator || this.operatorid || 0, this.isemi, this.dueamount || 0, this.selectedType, this.selectArea || 0, this.selectStreet || 0,
-      this.selectedPackage || 0, this.days || 0, this.selectSubscriber || 0, this.smartcardList, this.selectedRechargetype || 5, this.plantype || this.f_date || null)
-      .subscribe((res: any) => {
-        this.swal.success(res?.message);
-      }, (err) => {
-        console.log(err);
-        this.swal.Error(err?.error?.message || err?.error || '');
-      });
+    if (this.selectedType == '3') {
+      this.userservice.getLCOportalcortonBoxDetails(this.role, this.username, this.selectOperator || this.operatorid || 0, this.isemi, this.dueamount || 0, this.selectedType, this.selectArea || 0, this.selectStreet || 0,
+        this.selectedPackage || 0, this.days || 0, this.selectSubscriber || 0, this.smartcardList, this.selectedRechargetype || 1, this.plantype || this.f_date || this.days || 0)
+        .subscribe((res: any) => {
+          this.swal.success(res?.message);
+        }, (err) => {
+          console.log(err);
+          this.swal.Error(err?.error?.message || err?.error || '');
+        });
+    } else {
+      this.userservice.getLCOportalcortonBoxDetails(this.role, this.username, this.selectOperator || this.operatorid || 0, this.isemi, this.dueamount || 0, this.selectedType, this.selectArea || 0, this.selectStreet || 0,
+        this.selectedPackage || 0, this.days || 0, this.selectSubscriber || 0, this.smartcardList, this.selectedRechargetype || 0, this.plantype || this.f_date || 0)
+        .subscribe((res: any) => {
+          this.swal.success(res?.message);
+        }, (err) => {
+          console.log(err);
+          this.swal.Error(err?.error?.message || err?.error || '');
+        });
+    }
+    // this.userservice.getLCOportalcortonBoxDetails(this.role, this.username, this.selectOperator || this.operatorid || 0, this.isemi, this.dueamount || 0, this.selectedType, this.selectArea || 0, this.selectStreet || 0,
+    //   this.selectedPackage || 0, this.days || 0, this.selectSubscriber || 0, this.smartcardList, this.selectedRechargetype || 5, this.plantype || this.f_date || null)
+    //   .subscribe((res: any) => {
+    //     this.swal.success(res?.message);
+    //   }, (err) => {
+    //     console.log(err);
+    //     this.swal.Error(err?.error?.message || err?.error || '');
+    //   });
   }
 
   formatDate(date: Date): string {

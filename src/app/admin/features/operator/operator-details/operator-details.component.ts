@@ -410,11 +410,12 @@ export class OperatorDetailsComponent implements OnInit, AfterViewInit {
           });
           if (isOperator) {
             this.router.navigate(['admin/operator_dashboard']).then(() => {
-            
+              window.location.reload();
             });
-          
+
           } else if (isSubLco) {
             this.router.navigate(['admin/operator_dashboard']).then(() => {
+              window.location.reload();
             });
           } else if (isSubcriber) {
             console.log('role', this.role);

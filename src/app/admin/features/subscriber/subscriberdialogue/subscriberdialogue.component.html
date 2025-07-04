@@ -505,7 +505,7 @@
                                 </div>
 
                                 <div class="col-12 col-md-8" *ngIf="role === 'ROLE_OPERATOR' && distributor">
-                                   
+
                                     <input type="text" matInput [matAutocomplete]="auto" [(ngModel)]="operatorname"
                                         name="lcoName" (ngModelChange)="filterOperators($event)"
                                         placeholder="Select or type Operator" (focus)="onInputFocus()"
@@ -2099,8 +2099,6 @@
                 </div>
             </div>
         </div>
-
-
         <div class="input_box  mb-3">
             <div class="d-flex align-items-center justify-content-center">
                 <div class="col-6 col-md-6">
@@ -2216,7 +2214,7 @@
                 </div>
                 <div *ngIf="(role =='ROLE_SUBLCO' && sublcoDiscount == 1 && Subwallet) ||  (role !='ROLE_SUBLCO')"
                     class="input_box  mb-3">
-                    <div class="d-flex align-items-center justify-content-center">
+                    <div *ngIf="role !=='ROLE_SUBSCRIBER'" class="d-flex align-items-center justify-content-center">
                         <div class="col-6 col-md-6">
                             <span class="me-2">MSO Amount</span>
                         </div>
@@ -2225,7 +2223,7 @@
                         </div>
                     </div>
                 </div>
-
+               
 
 
                 <div class="mb-3">
@@ -2494,7 +2492,7 @@
                     </div>
                     <div *ngIf="(role =='ROLE_SUBLCO' && sublcoDiscount == 1 && Subwallet) ||  (role !='ROLE_SUBLCO')"
                         class="input_box  mb-3">
-                        <div class="d-flex align-items-center justify-content-center">
+                        <div *ngIf="role !=='ROLE_SUBSCRIBER'" class="d-flex align-items-center justify-content-center">
                             <div class="col-6 col-md-6">
                                 <span class="me-2">MSO Amount</span>
                             </div>
@@ -2670,27 +2668,7 @@
                             </div>
                         </div>
                     </div>
-                    <!-- <div class="input_box Isactive mb-1">
-                        <div class="d-flex align-items-center justify-content-center">
-                            <div class="col-5 col-md-6">
-                                <span class="me-2"> Customer Pay Amount </span>
-                            </div>
-                            <div class="col-7 col-md-6 value">
-                                {{alacarteConfirmationData.customerPayAmount}}
-                            </div>
-                        </div>
-                    </div>
-                    <div *ngIf="(role == 'ROLE_SUBLCO'  && Subwallet) || role !='ROLE_SUBLCO' && role != 'ROLE_SUBSCRIBER' "
-                        class="input_box  mb-1">
-                        <div class="d-flex align-items-center justify-content-center">
-                            <div class="col-5 col-md-6">
-                                <span for="password" class="me-2">Mso Amount for LCO </span>
-                            </div>
-                            <div class="col-7 col-md-6 value">
-                                {{alacarteConfirmationData.msoAmount}}
-                            </div>
-                        </div>
-                    </div> -->
+                   
                     <div class="input_box  mb-3">
                         <div class="d-flex align-items-center justify-content-center">
                             <div class="col-6 col-md-6">
@@ -2704,7 +2682,7 @@
 
                     <div *ngIf="(role =='ROLE_SUBLCO' && sublcoDiscount == 1 && Subwallet) ||  (role !='ROLE_SUBLCO')"
                         class="input_box  mb-3">
-                        <div class="d-flex align-items-center justify-content-center">
+                        <div *ngIf="role !=='ROLE_SUBSCRIBER'" class="d-flex align-items-center justify-content-center">
                             <div class="col-6 col-md-6">
                                 <span class="me-2">MSO Amount</span>
                             </div>

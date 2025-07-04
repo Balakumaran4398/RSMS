@@ -96,7 +96,7 @@
                         <i class='fa fa-fw fa-users  icon'></i> &nbsp;
                         Operator Details</a></li>
 
-                        
+
                 <li *ngIf="username !== 'manikandan' && navigationList.lcorecharge"><a
                         (click)="navgetToUrl('/lco_recharge/2');setActiveLinkTab($event)"><i
                             class='fa-solid fa-indian-rupee-sign icon'></i> &nbsp;LCO Recharge</a></li>
@@ -107,10 +107,10 @@
 
                 <li *ngIf=" username !== 'manikandan' && navigationList.lcorecharge"><a
                         (click)="navgetToUrl('/lco_recharge/3');setActiveLinkTab($event)"><i
-                            class='fa-solid fa-indian-rupee-sign icon'></i> &nbsp;Admin Recharge</a></li>
+                            class='fa fa-fw fa-circle-o icon'></i> &nbsp;Admin Recharge</a></li>
                 <li *ngIf=" username == 'manikandan' && navigationList.lcorecharge"><a
                         (click)="navgetToUrl('/lcorecharge/2');setActiveLinkTab($event)"><i
-                            class='fa-solid fa-indian-rupee-sign icon'></i> &nbsp;Admin Recharge</a></li>
+                            class='fa fa-fw fa-circle-o icon'></i> &nbsp;Admin Recharge</a></li>
             </ul>
         </li>
 
@@ -317,7 +317,7 @@
         </li>
         <li class="mb-3" *ngIf="isUser || isReception">
             <a>
-                <i class="bx bx-joystick-button bx-sm icon "></i>
+                <i class="bx bx-clipboard bx-sm icon "></i>
                 Reports <i class='bx bx-chevron-right icon-right'></i></a>
             <ul class="side-dropdown">
                 <li *ngIf="navigationList.traireports"><a
@@ -508,7 +508,7 @@
                 <i class="bx bx-label bx-sm icon "></i> &nbsp;Message</a></li>
         <li *ngIf="isOperator || isSubLco && SublcoReport"><a
                 (click)="navgetToUrl('/lcoReports');setActiveLinkTab($event)" class="nav-link">
-                <i class="bx bx-bullseye bx-sm icon "></i>&nbsp;Reports</a>
+                <i class="bx bx-clipboard bx-sm icon "></i>&nbsp;Reports</a>
         </li>
         <li *ngIf="isOperator || isSubLco"><a (click)="navgetToUrl('/bill_collection');setActiveLinkTab($event)"
                 class="nav-link">
@@ -594,11 +594,11 @@
         <li *ngIf="isSubscriber"><a (click)="navgetToUrl('/online_recharge');setActiveLinkTab($event)"
                 class=" nav-link"> <i class="bx bx-bolt-circle bx-sm icon">&nbsp;</i>Online Recharge</a> </li>
         <li *ngIf="isSubscriber"><a (click)="navgetToUrl('/lcoReports');setActiveLinkTab($event)" class=" nav-link">
-                <i class="bx bx-joystick-button bx-sm icon ">&nbsp;</i>Reports</a> </li>
+                <i class="bx bx-clipboard bx-sm icon ">&nbsp;</i>Reports</a> </li>
         <li *ngIf="isSubscriber"><a (click)="navgetToUrl('/lcoChangePassword');setActiveLinkTab($event)"
                 class="nav-link"> <i class="bx bx-shield-plus bx-sm icon ">&nbsp;</i>Change Password</a> </li>
         <li *ngIf="isUser || (distributor && isOperator)"><a (click)="navgetToUrl('/version');setActiveLinkTab($event)"
-                class="nav-link"> <i class="bx bx-bullseye bx-sm icon "></i>&nbsp;Version </a></li>
+                class="nav-link"> <i class="bx bx-bullseye bx-sm icon "></i>&nbsp;Updates </a></li>
 
     </ul>
 </section>

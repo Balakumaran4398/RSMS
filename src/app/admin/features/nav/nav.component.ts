@@ -195,7 +195,14 @@ export class NavComponent implements OnInit, AfterViewInit {
     })
   }
   ngOnInit() {
- 
+    // const hasReloaded = localStorage.getItem('hasReloaded');
+    // if (!hasReloaded) {
+    //   localStorage.setItem('hasReloaded', 'true');
+    //   setTimeout(() => {
+    //     location.reload();
+    //   }, 3000);
+    // }
+    // console.log('erewr43543543', hasReloaded);
     this.checkDeviceType();
     const sidemenuLinks = document.querySelectorAll('.side-menu li a');
     sidemenuLinks.forEach(link => {
@@ -212,10 +219,6 @@ export class NavComponent implements OnInit, AfterViewInit {
       this.subLCOdetails();
     }
   }
-
-
-
-
   operatorIdoperatorId() {
     this.userservice.getOpDetails(this.role, this.username).subscribe((data: any) => {
       this.lcoDeatails = data;
@@ -224,7 +227,6 @@ export class NavComponent implements OnInit, AfterViewInit {
       this.operatorBalance = this.lcoDeatails?.balance;
       this.distributor = this.lcoDeatails?.isdistributor;
     })
-
   }
 
 
@@ -403,6 +405,8 @@ export class NavComponent implements OnInit, AfterViewInit {
     this.isSidebarOpen = !this.isSidebarOpen;
   }
   ngAfterViewInit(): void {
+
+
     const sidebar = document.getElementById('sidebar');
     const allDropdown = document.querySelectorAll('#sidebar .side-dropdown');
     // console.log(allDropdown);
@@ -536,19 +540,18 @@ export class NavComponent implements OnInit, AfterViewInit {
   isAdmin = false;
 
   navgetToUrl(id: any,) {
-    const hasReloaded = localStorage.getItem('hasReloaded');
-
-    if (hasReloaded) {
-      localStorage.setItem('hasReloaded', 'true');
-      setTimeout(() => {
-        location.reload();
-      }, 1000);
-    }
-    console.log('erewr43543543', hasReloaded);
-
     this.activeItem = id;
     this.router.navigateByUrl("admin" + id);
     console.log("Current width:", window.innerWidth);
+
+    // const hasReloaded = localStorage.getItem('hasReloaded');
+    // if (!hasReloaded) {
+    //   localStorage.setItem('hasReloaded', 'true');
+    //   setTimeout(() => {
+    //     location.reload();
+    //   }, 1000);
+    // }
+    // console.log('erewr43543543', hasReloaded);
 
     if (window.innerWidth <= 760) {
       this.isSidebarOpen = false;
