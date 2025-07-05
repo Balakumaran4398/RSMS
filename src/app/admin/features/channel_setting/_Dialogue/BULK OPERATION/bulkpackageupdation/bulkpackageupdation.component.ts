@@ -1,12 +1,13 @@
 import { HttpResponse } from '@angular/common/http';
 import { ChangeDetectorRef, Component, Inject, OnInit, ViewChild } from '@angular/core';
 import { MatAutocompleteTrigger } from '@angular/material/autocomplete';
-import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MatDialogRef, MAT_DIALOG_DATA, MatDialog } from '@angular/material/dialog';
 import { BehaviorSubject } from 'rxjs';
 import { BaseService } from 'src/app/_core/service/base.service';
 import { StorageService } from 'src/app/_core/service/storage.service';
 import { SwalService } from 'src/app/_core/service/swal.service';
 import Swal from 'sweetalert2';
+import { RechargeConfirmationComponent } from '../../recharge-confirmation/recharge-confirmation.component';
 declare var $: any;
 // const moment = _rollupMoment || _moment;
 @Component({
@@ -76,7 +77,9 @@ export class BulkpackageupdationComponent implements OnInit {
   rechargetype: any;
   rechargeType: any;
   lcoid: any;
-  constructor(public dialogRef: MatDialogRef<BulkpackageupdationComponent>, private swal: SwalService,
+  fromdate: any;
+  todate: any;
+  constructor(public dialogRef: MatDialogRef<BulkpackageupdationComponent>, private swal: SwalService, public dialog: MatDialog,
     @Inject(MAT_DIALOG_DATA) public data: any, public userservice: BaseService, private cdr: ChangeDetectorRef, public storageService: StorageService) {
     this.username = storageService.getUsername();
     this.role = storageService.getUserRole();
@@ -87,7 +90,8 @@ export class BulkpackageupdationComponent implements OnInit {
     console.log('plan=', this.plan + '     ' + 'date=', this.date + '     ' + 'dateTodate=', this.dateTodate);
     this.lcoid = data.retailerid;
     console.log(this.lcoid);
-
+    this.fromdate = data.fromdate;
+    this.todate = data.todate;
     this.Type = data?.status;
     this.castype = data?.castype;
     this.bulkDatas = data?.rowData[0];
@@ -146,34 +150,93 @@ export class BulkpackageupdationComponent implements OnInit {
 
 
   getPlanList() {
+
+
     // this.userservice.getPlanTypeList(this.role, this.username).subscribe((data: any) => {
     //   console.log(data);
+    //   if (this.role != 'ROLE_OPERATOR' && this.role != 'ROLE_SUBLCO' && this.role != 'ROLE_SUBSCRIBER') {
+    //     this.rechargetype = Object.keys(data).map(key => {
+    //       const id = data[key];
+    //       const name = key.replace(/\(\d+\)$/, '').trim();
+    //       return { name: name, id: id };
+    //     });
+    //     this.cdr.detectChanges();
+    //   } else if (this.role == 'ROLE_OPERATOR' || this.role == 'ROLE_SUBLCO') {
+    //     console.log('123456789rfrd1234567', this.role);
+    //     const rawList = Object.keys(data).map(key => {
+    //       const id = data[key];
+    //       const name = key.replace(/\(\d+\)$/, '').trim();
+    //       return { name, id };
+    //     });
 
-    //   // this.rechargetype = Object.entries(data).map(([key, value]) => ({ name: key, id: value }));
-    //   this.rechargetype = Object.keys(data).map(key => {
-    //     const id = data[key];
-    //     const name = key.replace(/\(\d+\)$/, '').trim();
-    //     return { name: name, id: id };
-    //   });
-
-    //   if (!this.lcodatetype) {
-    //     this.rechargetype = this.rechargetype.filter((item: any) => item.name === "Plan");
+    //     this.rechargetype = rawList.filter(item => {
+    //       const name = item.name.toLowerCase();
+    //       if (name === 'plan' && this.plan) return true;
+    //       if (name === 'date' && this.date) return true;
+    //       if (name === 'date-to-date' && this.dateTodate) return true;
+    //       return false;
+    //     });
+    //     this.cdr.detectChanges();
+    //   } else if (this.role == 'ROLE_SUBSCRIBER') {
+    //     console.log('1234567890', this.role);
+    //     const rawList = Object.keys(data).map(key => {
+    //       const id = data[key];
+    //       const name = key.replace(/\(\d+\)$/, '').trim();
+    //       return { name, id };
+    //     });
+    //     console.log(rawList);
+    //     this.rechargetype = rawList.filter(item => {
+    //       const name = item.name.toLowerCase();
+    //       if (name === 'plan' && this.plan) return true;
+    //       if (name === 'date' && this.date) return true;
+    //       if (name === 'date-to-date' && this.dateTodate) return true;
+    //       return false;
+    //     });
+    //     this.cdr.detectChanges();
     //   }
-    //   console.log(this.selectedPackage);
-
-    //   console.log(this.rechargeType);
-
     //   this.cdr.detectChanges();
+    //   console.log(this.rechargetype);
     // })
+
 
     this.userservice.getPlanTypeList(this.role, this.username).subscribe((data: any) => {
       console.log(data);
       if (this.role != 'ROLE_OPERATOR' && this.role != 'ROLE_SUBLCO' && this.role != 'ROLE_SUBSCRIBER') {
-        this.rechargetype = Object.keys(data).map(key => {
-          const id = data[key];
-          const name = key.replace(/\(\d+\)$/, '').trim();
-          return { name: name, id: id };
-        });
+        if (this.fromdate == this.todate) {
+          this.rechargetype = Object.keys(data).map(key => {
+            const id = data[key];
+            const name = key.replace(/\(\d+\)$/, '').trim();
+            return { name: name, id: id };
+          });
+        } else {
+          const rawList = Object.keys(data).map(key => {
+            const id = data[key];
+            const name = key.replace(/\(\d+\)$/, '').trim();
+            return { name, id };
+          });
+          console.log('RAW LIST', rawList);
+          if (this.fromdate !== this.todate) {
+            console.log('1111', rawList);
+            this.rechargetype = rawList.filter(item => {
+              const name = item.name.toLowerCase();
+              console.log(name);
+              return (name === 'plan');
+            });
+            console.log('2222', this.rechargetype);
+          } else {
+            this.rechargetype = rawList.filter(item => {
+              const name = item.name.toLowerCase();
+              return (
+                (name === 'plan' && this.plan) ||
+                (name === 'date' && this.date) ||
+                (name === 'date-to-date' && this.dateTodate)
+              );
+            });
+          }
+        }
+        console.log('RECHARGE TYPE', this.rechargetype);
+
+
         this.cdr.detectChanges();
       } else if (this.role == 'ROLE_OPERATOR' || this.role == 'ROLE_SUBLCO') {
         console.log('123456789rfrd1234567', this.role);
@@ -182,14 +245,23 @@ export class BulkpackageupdationComponent implements OnInit {
           const name = key.replace(/\(\d+\)$/, '').trim();
           return { name, id };
         });
-
-        this.rechargetype = rawList.filter(item => {
-          const name = item.name.toLowerCase();
-          if (name === 'plan' && this.plan) return true;
-          if (name === 'date' && this.date) return true;
-          if (name === 'date-to-date' && this.dateTodate) return true;
-          return false;
-        });
+        if (this.fromdate !== this.todate) {
+          this.rechargetype = rawList.filter(item => {
+            const name = item.name.toLowerCase();
+            if (name === 'plan' && this.plan) return true;
+            // if (name === 'date' && this.date) return true;
+            // if (name === 'date-to-date' && this.dateTodate) return true;
+            return false;
+          });
+        } else {
+          this.rechargetype = rawList.filter(item => {
+            const name = item.name.toLowerCase();
+            if (name === 'plan' && this.plan) return true;
+            if (name === 'date' && this.date) return true;
+            if (name === 'date-to-date' && this.dateTodate) return true;
+            return false;
+          });
+        }
         this.cdr.detectChanges();
       } else if (this.role == 'ROLE_SUBSCRIBER') {
         console.log('1234567890', this.role);
@@ -199,13 +271,48 @@ export class BulkpackageupdationComponent implements OnInit {
           return { name, id };
         });
         console.log(rawList);
-        this.rechargetype = rawList.filter(item => {
-          const name = item.name.toLowerCase();
-          if (name === 'plan' && this.plan) return true;
-          if (name === 'date' && this.date) return true;
-          if (name === 'date-to-date' && this.dateTodate) return true;
-          return false;
+        if (this.fromdate !== this.todate) {
+          this.rechargetype = rawList.filter(item => {
+            const name = item.name.toLowerCase();
+            if (name === 'plan' && this.plan) return true;
+            // if (name === 'date' && this.date) return true;
+            // if (name === 'date-to-date' && this.dateTodate) return true;
+            return false;
+          });
+        } else {
+          this.rechargetype = rawList.filter(item => {
+            const name = item.name.toLowerCase();
+            if (name === 'plan' && this.plan) return true;
+            if (name === 'date' && this.date) return true;
+            if (name === 'date-to-date' && this.dateTodate) return true;
+            return false;
+          });
+        }
+        this.cdr.detectChanges();
+      } else if (this.role == 'ROLE_OPERATOR' || this.role == 'ROLE_SUBLCO') {
+        console.log('123456789rfrd1234567', this.role);
+        const rawList = Object.keys(data).map(key => {
+          const id = data[key];
+          const name = key.replace(/\(\d+\)$/, '').trim();
+          return { name, id };
         });
+        if (this.fromdate !== this.todate) {
+          this.rechargetype = rawList.filter(item => {
+            const name = item.name.toLowerCase();
+            if (name === 'plan' && this.plan) return true;
+            // if (name === 'date' && this.date) return true;
+            // if (name === 'date-to-date' && this.dateTodate) return true;
+            return false;
+          });
+        } else {
+          this.rechargetype = rawList.filter(item => {
+            const name = item.name.toLowerCase();
+            if (name === 'plan' && this.plan) return true;
+            if (name === 'date' && this.date) return true;
+            if (name === 'date-to-date' && this.dateTodate) return true;
+            return false;
+          });
+        }
         this.cdr.detectChanges();
       }
       this.cdr.detectChanges();
@@ -474,5 +581,34 @@ export class BulkpackageupdationComponent implements OnInit {
       }, (err) => {
         this.swal.Error(err?.error?.message);
       });
+  }
+
+
+
+  openLoginPage(): void {
+    let requestBody = {
+      role: this.role,
+      username: this.username,
+      operatorid: 1,
+      packageid: this.packageid || this.data?.packageid || 0,
+      plan: this.plantype || this.f_date || 4,
+      plantype: this.selectedRechargetype,
+      isallpack: this.isallpack,
+      expiredsubscriberlist: this.rowData,
+      retailerid: this.lcoid || 0,
+    }
+    let width = '500px';
+    console.log(requestBody);
+
+    const dialogRef = this.dialog.open(RechargeConfirmationComponent, {
+      width: width,
+      // maxWidth: '100vw',
+      panelClass: 'custom-dialog-container',
+      data: requestBody
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      console.log('The dialog was closed');
+    });
   }
 }

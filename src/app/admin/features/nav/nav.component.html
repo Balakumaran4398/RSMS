@@ -388,7 +388,8 @@
                             class="fa fa-fw fa-solid fa-gears icon ">&nbsp;</i>Bulk Smartcard Refresh </a> </li>
                 <li><a (click)="navgetToUrl('/special_lcotransfer');setActiveLinkTab($event)">
                         <i class='fas fa-exchange-alt icon'></i> &nbsp;LCO Transfer</a> </li>
-                <li><a (click)="navgetToUrl('/bulk_smartcard_creation');setActiveLinkTab($event)"><i
+                <li *ngIf="!isOperator || !isSubLco"><a
+                        (click)="navgetToUrl('/bulk_smartcard_creation');setActiveLinkTab($event)"><i
                             class="fa fa-fw fa-solid fa-users icon ">&nbsp;</i>Bulk Operator Creation </a> </li>
             </ul>
         </li>
@@ -493,8 +494,7 @@
                 <li *ngIf="!isSubLco"><a (click)="navgetToUrl('/Recurring');setActiveLinkTab($event)"><i
                             class="fa-regular fa-registered icon">&nbsp;</i>Recurring</a>
                 </li>
-                <li><a (click)="navgetToUrl('/bulk_smartcard_creation');setActiveLinkTab($event)"><i
-                            class="fa fa-fw fa-solid fa-users icon ">&nbsp;</i>Bulk Operator Creation </a> </li>
+              
                 <li *ngIf="distributor"><a (click)="navgetToUrl('/special_lcotransfer');setActiveLinkTab($event)">
                         <i class='fas fa-exchange-alt icon'></i> &nbsp;LCO Transfer</a> </li>
                 <li><a (click)="navgetToUrl('/Subscription_Extend');setActiveLinkTab($event)"><i

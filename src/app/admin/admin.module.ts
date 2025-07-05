@@ -208,6 +208,7 @@ import { VersionComponent } from "./features/version/version.component";
 import { BobbulechartComponent } from "../_core/charts/bobbulechart/bobbulechart.component";
 import { VersionLoginCredentialComponent } from "./features/version/dialog/version-login-credential/version-login-credential.component";
 import { HomeLoginCredentialComponent } from "./features/home_Dialog/home-login-credential/home-login-credential.component";
+import { RechargeConfirmationComponent } from "./features/channel_setting/_Dialogue/recharge-confirmation/recharge-confirmation.component";
 @NgModule({
     declarations: [
         AdminBaseComponent, NavComponent, HomeComponent, NavbarComponent, MsodetailsComponent, CasmasterComponent,HomeLoginCredentialComponent,
@@ -277,7 +278,7 @@ import { HomeLoginCredentialComponent } from "./features/home_Dialog/home-login-
         LcoSmartcardDialogComponent, LcoSmartcardpayDialogComponent, SmrtBoxidChangeComponent, LcodashboardreportComponent, OperatorareachangeComponent, DiscountdialogComponent, DiscountsmartcardComponent,
         DistributordiscountComponent, DistribtorupdatediscountComponent, LcoDummycmpComponent, DialogChipidComponent, LcodashboardsublcoreportComponent, LcocommisiomddiscountComponent, LogincredentialComponent, LcocommissioncredentialComponent,
         // ===============================================version======================================
-        VersionComponent,VersionLoginCredentialComponent
+        VersionComponent,VersionLoginCredentialComponent,RechargeConfirmationComponent
     ],
     imports: [
         CommonModule,

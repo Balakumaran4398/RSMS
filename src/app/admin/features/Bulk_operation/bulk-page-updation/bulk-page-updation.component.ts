@@ -437,12 +437,12 @@ export class BulkPageUpdationComponent implements OnInit {
       this.isAnyRowSelected = selectedRows.length > 0;
       this.rows = selectedRows;
     }
-    console.log('defsfdsfds',this.isAnyRowSelected);
-    
+    console.log('defsfdsfds', this.isAnyRowSelected);
+
     if (this.isAnyRowSelected) {
       this.isSelectRow = true;
-    }else{
-        this.isSelectRow = false;
+    } else {
+      this.isSelectRow = false;
     }
 
   }
@@ -604,6 +604,8 @@ export class BulkPageUpdationComponent implements OnInit {
   }
 
   openLoginPage(data: any, rowData: any): void {
+    
+    
     console.log(data);
     const dataToSend = {
       status: data,
@@ -621,7 +623,6 @@ export class BulkPageUpdationComponent implements OnInit {
     console.log(dataToSend);
     if (data = 'bulk') {
       width = '2000px';
-
     }
     const dialogRef = this.dialog.open(BulkpackageupdationComponent, {
       width: width,

@@ -18,6 +18,7 @@ export class BroadcasterReportsComponent implements OnInit {
   returndata: any;
   username: any;
   role: any;
+  rowData1: any;
   rowData: any[] = [];
   addonlist: any[] = [];
   alacartelist: any[] = [];
@@ -76,6 +77,7 @@ export class BroadcasterReportsComponent implements OnInit {
   casname: any = '';
   cas: any[] = [];
   filteredCasList: { name: string; id: number }[] = [];
+  AgeingType: any;
 
   constructor(private route: ActivatedRoute, private swal: SwalService, private excelService: ExcelService, private location: Location,
     public userService: BaseService, private cdr: ChangeDetectorRef, public storageservice: StorageService) {
@@ -128,6 +130,12 @@ export class BroadcasterReportsComponent implements OnInit {
     this.generateDates(this.selectedMonthName)
     this.onVisible();
     this.onMonthChange();
+
+    if (this.allType == 6) {
+      this.getAgeing(1);
+    } else if (this.allType == 7) {
+      this.getAgeing(2);
+    }
   }
 
   ngOnDestroy(): void {
@@ -136,7 +144,7 @@ export class BroadcasterReportsComponent implements OnInit {
   }
 
   ngAfterViewInit(): void {
-    ($('#broadcaster')as any).select2({
+    ($('#broadcaster') as any).select2({
       placeholder: 'Select Broadcaster',
       allowClear: true
     });
@@ -158,7 +166,7 @@ export class BroadcasterReportsComponent implements OnInit {
       console.log('Selected Name:', this.broadcastername_1);
 
     });
-    ($('#cas')as any).select2({
+    ($('#cas') as any).select2({
       placeholder: 'Select CAS',
       allowClear: true
     });
@@ -254,20 +262,20 @@ export class BroadcasterReportsComponent implements OnInit {
     else if (this.allType == '6' || this.allType == '7') {
       this.columnDefs = [
         { headerName: "S.No", lockPosition: true, valueGetter: 'node.rowIndex+1', width: 90 },
-        { headerName: 'PRODUCT ID	', field: 'smartcard', width: 150, cellStyle: { textAlign: 'center' }, },
-        { headerName: 'PRODUCT NAME', field: 'logdate', width: 200 },
-        { headerName: 'CAS', field: 'activity', width: 150, cellStyle: { textAlign: 'center' }, },
-        { headerName: '0-30', field: 'remarks', width: 120, cellStyle: { textAlign: 'center' }, },
-        { headerName: '31-60', field: 'remarks', width: 120, cellStyle: { textAlign: 'center' }, },
-        { headerName: '61-90', field: 'remarks', width: 120, cellStyle: { textAlign: 'center' }, },
-        { headerName: '91-120', field: 'remarks', width: 100, cellStyle: { textAlign: 'center' }, },
-        { headerName: '121-150', field: 'remarks', width: 100, cellStyle: { textAlign: 'center' }, },
-        { headerName: '151-180', field: 'remarks', width: 100, cellStyle: { textAlign: 'center' }, },
-        { headerName: '181-210', field: 'remarks', width: 100, cellStyle: { textAlign: 'center' }, },
-        { headerName: '211-240', field: 'remarks', width: 100, cellStyle: { textAlign: 'center' }, },
-        { headerName: '241-270', field: 'remarks', width: 100, cellStyle: { textAlign: 'center' }, },
-        { headerName: '271-300', field: 'remarks', width: 100, cellStyle: { textAlign: 'center' }, },
-        { headerName: '301-365', field: 'remarks', width: 100, cellStyle: { textAlign: 'center' }, },
+        { headerName: 'PRODUCT ID	', field: 'productid', width: 150, cellStyle: { textAlign: 'center' }, },
+        { headerName: 'PRODUCT NAME', field: 'productname', width: 200 },
+        { headerName: 'CAS', field: 'casname', width: 150, cellStyle: { textAlign: 'center' }, },
+        { headerName: '0-30', field: 'count1', width: 120, cellStyle: { textAlign: 'center' }, },
+        { headerName: '31-60', field: 'count2', width: 120, cellStyle: { textAlign: 'center' }, },
+        { headerName: '61-90', field: 'count3', width: 120, cellStyle: { textAlign: 'center' }, },
+        { headerName: '91-120', field: 'count4', width: 100, cellStyle: { textAlign: 'center' }, },
+        { headerName: '121-150', field: 'count5', width: 100, cellStyle: { textAlign: 'center' }, },
+        { headerName: '151-180', field: 'count6', width: 100, cellStyle: { textAlign: 'center' }, },
+        { headerName: '181-210', field: 'count7', width: 100, cellStyle: { textAlign: 'center' }, },
+        { headerName: '211-240', field: 'count8', width: 100, cellStyle: { textAlign: 'center' }, },
+        { headerName: '241-270', field: 'count9', width: 100, cellStyle: { textAlign: 'center' }, },
+        { headerName: '271-300', field: 'count10', width: 100, cellStyle: { textAlign: 'center' }, },
+        { headerName: '301-365', field: 'count11', width: 100, cellStyle: { textAlign: 'center' }, },
       ]
     } else {
       console.warn('Unknown allType:', this.allType);
@@ -529,7 +537,7 @@ export class BroadcasterReportsComponent implements OnInit {
   getExcel(event: number) {
     console.log('dfsfdsdsfidsjkfuji', this.broadcasterid);
     console.log('3453453489577834', this.broadcastername);
-   console.log('Selected Name:', this.broadcastername_1);
+    console.log('Selected Name:', this.broadcastername_1);
     console.log(event);
     if (event === 0) {
       this.monthlyReportCastitle = 'CAS GROUPED';
@@ -961,9 +969,6 @@ export class BroadcasterReportsComponent implements OnInit {
       }
     });
     this.userService.getMonthlyBroadcasterCaswisePDFReport(this.role, this.username, this.selectedMonth, this.selectedYear, this.selectedDate, this.broadcastername, event, this.casname, 1)
-      // .subscribe((data: any) => {
-      //   console.log(data);
-      // })
       .subscribe((x: Blob) => {
         const blob = new Blob([x], { type: 'application/pdf' });
         const data = window.URL.createObjectURL(blob);
@@ -987,7 +992,96 @@ export class BroadcasterReportsComponent implements OnInit {
           });
         });
   }
+
+  // --------------------------------------------------Channel Ageing & Package Ageing -----------------------------------
+  getAgeing(ageing: any) {
+    this.swal.Loading();
+    this.userService.getChannelOrPackageAgeingList(this.role, this.username, ageing, 3)
+      .subscribe(
+        (response: HttpResponse<any[]>) => {
+          console.log(this.reportTitle);
+
+          if (response.status === 200) {
+            this.rowData1 = response.body;
+            console.log(this.rowData1);
+            const rowCount = this.rowData1.length;
+            if (!this.gridOptions.paginationPageSizeSelector.includes(rowCount)) {
+              this.gridOptions.paginationPageSizeSelector.push(rowCount);
+            }
+            this.swal.Close();
+          } else if (response.status === 204) {
+            this.swal.Success_204();
+            this.rowData1 = [];
+            this.swal.Close();
+          }
+        },
+        (error) => {
+          this.handleApiError(error);
+        }
+      );
+  }
+
+
+  getAgeingReport(type: number, ageing: any) {
+    console.log(ageing);
+
+    this.processingSwal();
+    this.userService.getChannelOrPackageAgeingListReport(this.role, this.username, ageing, type)
+      .subscribe((x: Blob) => {
+        if (ageing == 1) {
+          if (type == 1) {
+            this.reportMaking(x, `CHANNEL AGEING REPORT.pdf`.toUpperCase(), "application/pdf");
+          } else if (type == 2) {
+            this.reportMaking(x, `CHANNEL AGEING REPORT.xlsx`.toUpperCase(), "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
+          }
+        } else {
+          if (type == 1) {
+            this.reportMaking(x, `PACKAGE AGEING REPORT.pdf`.toUpperCase(), "application/pdf");
+          } else if (type == 2) {
+            this.reportMaking(x, `PACKAGE AGEING REPORT.xlsx`.toUpperCase(), "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
+          }
+        }
+      },
+        (error: any) => {
+          this.pdfswalError(error?.error.message);
+        });
+  }
   // -----------------------------------------------------------------------------------------------------------------------------
+
+  // -----------------------------------------------------common method for pdf and excel------------------------------------------------------------------------
+  reportMaking(x: Blob, reportname: any, reporttype: any) {
+    const blob = new Blob([x], { type: reporttype });
+    const data = window.URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.href = data;
+    link.download = reportname.toUpperCase();
+    link.dispatchEvent(new MouseEvent('click', { bubbles: true, cancelable: true, view: window }));
+    setTimeout(() => {
+      window.URL.revokeObjectURL(data);
+      link.remove();
+    }, 100);
+    Swal.close();
+  }
+  pdfswalError(error: any) {
+    Swal.close();
+    Swal.fire({
+      title: 'Error!',
+      text: error.message || 'There was an issue generating the PDF CAS form report.',
+      icon: 'error',
+      confirmButtonText: 'Ok'
+    });
+  }
+  processingSwal() {
+    Swal.fire({
+      title: "Processing",
+      text: "Please wait while the report is being generated...",
+      showConfirmButton: false,
+      didOpen: () => {
+        Swal.showLoading(null);
+      }
+    });
+  }
+
   handleApiError(error: any) {
     if (error.status === 400) {
       this.swal.Error_400();

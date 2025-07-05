@@ -1671,6 +1671,7 @@ export class BaseService {
   getasOnDateAllProductActiveOrDeactiveSubscriptionReport(role: any, username: any, operatorid: any, date: any, type: any, reporttype: any): Observable<Blob> {
     return this.http.get(BASE_URL + "/report/asOnDateAllProductActiveOrDeactiveSubscriptionReport?role=" + role + "&username=" + encodeURIComponent(username) + "&operatorid=" + operatorid + "&date=" + date + "&type=" + type + "&reporttype=" + reporttype, { responseType: 'blob' });
   }
+  // --------------------------------------------Channel Ageing & Package Ageing-----------------
   // --------------------------------------------------History REPORTS========================
   // ------------------------------------------------All Service Report------------------------------------------------
   getAllServiceHistoryExcelReport(role: any, username: any, fromdate: any, todate: any, smartcard: any, reporttype: any): Observable<HttpResponse<any[]>> {
@@ -1709,6 +1710,13 @@ export class BaseService {
   }
   getChannelAgeingReport(role: any, username: any, type: any, reporttype: any): Observable<Blob> {
     return this.http.get(BASE_URL + "/report/AgeingReport?role=" + role + "&username=" + encodeURIComponent(username) + "&type=" + type + "&reporttype=" + reporttype, { responseType: 'blob' });
+  }
+
+  getChannelOrPackageAgeingListReport(role: any, username: any, type: any, reporttype: any): Observable<Blob> {
+    return this.http.get(BASE_URL + "/report/getChannelOrPackageAgeingReport?role=" + role + "&username=" + encodeURIComponent(username) + "&type=" + type + "&reporttype=" + reporttype, { responseType: 'blob' });
+  }
+  getChannelOrPackageAgeingList(role: any, username: any, type: any, reporttype: any): Observable<HttpResponse<any[]>> {
+    return this.http.get<any[]>(BASE_URL + "/report/getChannelOrPackageAgeingReport?role=" + role + "&username=" + encodeURIComponent(username) + "&type=" + type + "&reporttype=" + reporttype, { observe: 'response' });
   }
   // ----------------------------------------Package Ageing------------------------------------
   getPackageAgeing(role: any, username: any, type: any, reporttype: any): Observable<HttpResponse<any[]>> {

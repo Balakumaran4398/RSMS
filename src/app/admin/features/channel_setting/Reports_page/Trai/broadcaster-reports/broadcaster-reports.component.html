@@ -644,25 +644,25 @@
         <button type="button" class="btn btn-primary bttn" (click)="goBack()"><i
                 class="fa-solid fa-reply mx-2"></i>Back</button>
     </div>
-    <div style="position: sticky;top: 6%;z-index: 1000;background-color: rgba(255, 255, 255, 0.8);padding: 1rem;">
-        <h3>CHANNEL AGING REPORT</h3>
-    </div>
+    <!-- <div style="position: sticky;top: 6%;z-index: 1000;background-color: rgba(255, 255, 255, 0.8);padding: 1rem;"> -->
+    <h3>CHANNEL AGEING REPORT</h3>
+    <!-- </div> -->
     <div class="row " style="padding: 1rem;">
         <div class="row d-flex align-items-center justify-content-center">
             <div class="col-12 col-sm-12 m-3">
                 <div class="col display justify-content-end align-items-end mb-3">
                     <!-- <div class="col  mb-3"> -->
                     <div class="d-flex">
-                        <div class="allreport mb-2">
+                        <!-- <div class="allreport mb-2" (click)="getAgeing(1)">
                             <a class="btn btn-success mx-1">
                                 Get Report
                             </a>
-                        </div>
-                        <div class="input_box mx-2 ">
+                        </div> -->
+                        <div class="input_box mx-2 " (click)="getAgeingReport(2,1)" style="cursor: pointer;">
                             <img src="/assets/images/icons/Excel.png" alt="Excel Icon" width="40px">
                             <div class="tooltip">Excel</div>
                         </div>
-                        <div class="input_box mx-2 mb-2">
+                        <div class="input_box mx-2 mb-2" (click)="getAgeingReport(1,1)" style="cursor: pointer;">
                             <img src="/assets/images/icons/pdf.png" alt="PDF Icon" width="40px">
                             <div class="tooltip">Pdf</div>
                         </div>
@@ -674,10 +674,10 @@
                 <!-- <h5>OVER ALL PRODUCT REPORT</h5> -->
                 <div>
                     <div class="tab">
-                        <span>CHANNEL AGING LIST </span>
+                        <span>CHANNEL AGEING LIST</span>
                     </div>
-                    <ag-grid-angular #agGrid id="myGrid" domLayout='autoHeight' class="ag-theme-alpine table-class"
-                        rowAnimation [gridOptions]="gridOptions" [columnDefs]="columnDefs" [rowData]="rowData"
+                    <ag-grid-angular #agGrid id="myGrid" domLayout='normal' class="ag-theme-alpine table-class"
+                        rowAnimation [gridOptions]="gridOptions" [columnDefs]="columnDefs" [rowData]="rowData1"
                         (gridReady)="onGridReady($event)" [enableCellTextSelection]="true">
                     </ag-grid-angular>
                 </div>
@@ -691,9 +691,9 @@
         <button type="button" class="btn btn-primary bttn" (click)="goBack()"><i
                 class="fa-solid fa-reply mx-2"></i>Back</button>
     </div>
-    <div style="position: sticky;top: 6%;z-index: 1000;background-color: rgba(255, 255, 255, 0.8);padding: 1rem;">
-        <h3>PACKAGE AGING REPORT</h3>
-    </div>
+    <!-- <div style="position: sticky;top: 6%;z-index: 1000;background-color: rgba(255, 255, 255, 0.8);padding: 1rem;"> -->
+    <h3>PACKAGE AGEING REPORT</h3>
+    <!-- </div> -->
     <div class="row " style="padding: 1rem;">
 
         <div class="row d-flex align-items-center justify-content-center">
@@ -701,16 +701,16 @@
                 <div class="col display justify-content-end align-items-end mb-3">
                     <!-- <div class="col  mb-3"> -->
                     <div class="d-flex">
-                        <div class="allreport mb-2">
+                        <!-- <div class="allreport mb-2" (click)="getAgeing(2)">
                             <a class="btn btn-success mx-1">
                                 Get Report
                             </a>
-                        </div>
-                        <div class="input_box mx-2 ">
+                        </div> -->
+                        <div class="input_box mx-2" (click)="getAgeingReport(2,2)" style="cursor: pointer;">
                             <img src="/assets/images/icons/Excel.png" alt="Excel Icon" width="40px">
                             <div class="tooltip">Excel</div>
                         </div>
-                        <div class="input_box mx-2 mb-2">
+                        <div class="input_box mx-2 mb-2" (click)="getAgeingReport(1,2)" style="cursor: pointer;">
                             <img src="/assets/images/icons/pdf.png" alt="PDF Icon" width="40px">
                             <div class="tooltip">Pdf</div>
                         </div>
@@ -722,10 +722,10 @@
                 <!-- <h5>OVER ALL PRODUCT REPORT</h5> -->
                 <div>
                     <div class="tab">
-                        <span>PACKAGE AGING lIST - </span>
+                        <span>PACKAGE AGEING lIST</span>
                     </div>
-                    <ag-grid-angular #agGrid id="myGrid" domLayout='autoHeight' class="ag-theme-alpine table-class"
-                        rowAnimation [gridOptions]="gridOptions" [columnDefs]="columnDefs" [rowData]="rowData"
+                    <ag-grid-angular #agGrid id="myGrid" domLayout='normal' class="ag-theme-alpine table-class"
+                        rowAnimation [gridOptions]="gridOptions" [columnDefs]="columnDefs" [rowData]="rowData1"
                         (gridReady)="onGridReady($event)" [enableCellTextSelection]="true">
                     </ag-grid-angular>
                 </div>
