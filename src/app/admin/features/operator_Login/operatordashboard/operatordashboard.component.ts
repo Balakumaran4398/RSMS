@@ -53,7 +53,7 @@ export class OperatordashboardComponent implements OnInit {
   selectedMonth: any = 0;
   selectedYear: any = 0;
 
-  walletshare: boolean = false;
+  walletshare: boolean = true;
 
   retailerid: any;
   distributor: boolean = false;

@@ -13,12 +13,26 @@ import { BulkpackageupdationComponent } from '../BULK OPERATION/bulkpackageupdat
 export class RechargeConfirmationComponent {
   role: any;
   username: any;
+  requestBody: any[] = [];
   constructor(public dialogRef: MatDialogRef<BulkpackageupdationComponent>, private swal: SwalService,
     @Inject(MAT_DIALOG_DATA) public data: any, public userservice: BaseService, private cdr: ChangeDetectorRef, public storageService: StorageService) {
     this.username = storageService.getUsername();
     this.role = storageService.getUserRole();
+    console.log(data);
+    this.requestBody = data;
   }
-    onNoClick(): void {
+  onNoClick(): void {
     this.dialogRef.close();
+  }
+  submit() {
+    console.log(this.requestBody);
+
+    this.swal.Loading();
+    this.userservice.bulkPackageUpdation(this.requestBody)
+      .subscribe((res: any) => {
+        this.swal.success(res?.message);
+      }, (err) => {
+        this.swal.Error(err?.error?.message);
+      });
   }
 }

@@ -358,7 +358,6 @@ export class SubDashboardComponent implements OnInit {
       console.log('PLAN', this.isplan);
       console.log('DATE', this.isdate);
       console.log('DATE TO DATE', this.isdateTodate);
-  
     })
   }
   sublcoBalance: any;
@@ -1420,7 +1419,7 @@ export class SubDashboardComponent implements OnInit {
             }
           }
 
-        
+
           const ptypes = this.rowData1[0]?.ptype;
           console.log('FIRST PTYPE:', ptypes);
 
@@ -2129,7 +2128,7 @@ export class SubDashboardComponent implements OnInit {
     this.isConfirmationComplete = true;
     console.log(this.billTypeValue)
     // let selectedpacklistValue = this.role === 'ROLE_SUBLCO' ? this.rowData1 : this.rows;
-    let selectedpacklistValue = this.role === 'ROLE_OPERATOR' ? this.rowData1 : this.rows;
+    let selectedpacklistValue = this.role === 'ROLE_OPERATOR' || this.role === 'ROLE_SUBLCO' ? this.rowData1 : this.rows;
     console.log('selectedpacklistValue', selectedpacklistValue);
     let requestBody = {
       role: this.role,
@@ -2191,7 +2190,7 @@ export class SubDashboardComponent implements OnInit {
     this.confirmation = true;
     this.isConfirmationComplete = true;
     // let selectedpacklistValue = this.role === 'ROLE_SUBLCO' ? this.rowData1 : this.rows;
-    let selectedpacklistValue = this.role === 'ROLE_OPERATOR' ? this.rows : this.rowData1;
+    let selectedpacklistValue = this.role === 'ROLE_OPERATOR' || this.role === 'ROLE_SUBLCO' ? this.rows : this.rowData1;
     let requestBody = {
       role: this.role,
       username: this.username,

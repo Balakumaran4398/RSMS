@@ -61,6 +61,7 @@ export class BulkpackageupdationComponent implements OnInit {
 
 
   datetype = false;
+  isSubmit = false;
   lcodatetype: any;
   noofdays: any;
   f_date: any;
@@ -322,6 +323,7 @@ export class BulkpackageupdationComponent implements OnInit {
   onSelectionrechargetype(selectedValue: string) {
     const rechargetype = Number(selectedValue);
     if (rechargetype == 1) {
+      this.isSubmit = true;
       this.isplantype = true;
       this.datetype = false;
       const defaultPlan = this.plantype$.getValue().find(plan => plan.key === '1month');
@@ -332,6 +334,7 @@ export class BulkpackageupdationComponent implements OnInit {
 
     }
     if (rechargetype == 2) {
+       this.isSubmit = true;
       this.isplantype = false;
       this.datetype = true;
       this.plantype = 0;
@@ -340,6 +343,7 @@ export class BulkpackageupdationComponent implements OnInit {
 
     }
     if (rechargetype == 3) {
+       this.isSubmit = true;
       this.dateTodate;
       this.isplantype = false;
       this.datetype = false;

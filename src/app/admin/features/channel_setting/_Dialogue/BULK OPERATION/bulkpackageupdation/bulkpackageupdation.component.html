@@ -186,7 +186,7 @@
                     </div>
                 </div>
                 <div class="form-group d-flex justify-content-center align-items-center  mb-1">
-                    <button type="button" class="btn btn-primary me-2" (click)="openLoginPage()">Submit</button>
+                    <button type="button" class="btn btn-primary me-2 " [disabled]="!isSubmit" (click)="openLoginPage()">Submit</button>
                     <!-- <button type="button" class="btn btn-primary me-2" (click)="Submit()">Submit</button> -->
                     <button type="button" class="btn btn-secondary" (click)="onNoClick()">Cancel</button>
                 </div>

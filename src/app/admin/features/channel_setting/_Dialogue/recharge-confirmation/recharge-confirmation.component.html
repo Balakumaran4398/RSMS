@@ -2,7 +2,7 @@
     <h6>Recharge Confirmation</h6>
     <i class="fa fa-close close-icon" style="cursor: pointer;" (click)="onNoClick()"></i>
 </div>
-<div class="mobile1" >
+<div class="mobile1">
     <div style="padding: 1rem;">
         <div class="cancel_sub display_mobile mb-2  align-items-center justify-content-center row">
             <div class="col-12 col-md-12 display_moile justify-content-start lign-items-center">
@@ -45,6 +45,12 @@
                             <!-- {{bulkDatas?.operatorid}} -->
                         </div>
                     </div>
+                </div>
+            </div>
+            <div class="col-12 col-md-12 d-flex justify-content-center align-item-center mb-3">
+                <div class="d-flex align-item-center mx-3">
+                    <button type="submit" class="btn btn-success me-2" (click)="submit()" >Update</button>
+                    <button type="button" class="btn btn-danger" (click)="onNoClick()">Cancel</button>
                 </div>
             </div>
 

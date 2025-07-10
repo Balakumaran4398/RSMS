@@ -180,7 +180,10 @@ export class CreateSubscriberComponent implements AfterViewInit, OnDestroy {
         idprooftypeid: ['', Validators.required],
         addressprooftypeid: ['', Validators.required],
         role: this.role,
-        username: this.username
+        username: this.username,
+        Credential: false,
+        userid: '',
+        password: '',
       },
     );
     this.loadIdProofList();
@@ -634,7 +637,7 @@ export class CreateSubscriberComponent implements AfterViewInit, OnDestroy {
 
           let message = data.message;
           let parts = message.split(":");
-          let subid = parts[1].trim(); 
+          let subid = parts[1].trim();
           // let subid = parts.length > 1 ? parts[1].trim() : null;
 
           console.log(subid);

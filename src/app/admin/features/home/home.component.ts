@@ -114,61 +114,61 @@ export class HomeComponent implements OnInit {
         console.log('aaaaaaaa', this.isshow);
         const isAJK = this.isshow;
         const countValue = params.value;
-        // this.isshow = true;
+        this.isshow = true;
         return isAJK ? '<i class="fa fa-info" style="font-size: 25px;;cursor:pointer;color:#024871"></i>' : `${countValue}`;
       },
-      // onCellClicked: (params: any) => {
-      //   const context = params.context.componentParent;
-      //   console.log('dddd', context);
-      //   if (context.isshow) {
-      //     console.log('eeeee', context.isshow);
-      //     const dialogRef = context.dialog.open(HomeLoginCredentialComponent, {
-      //       maxWidth: "500px",
-      //       data: { data: params.data }
-      //     });
-      //     dialogRef.afterClosed().subscribe((result: any) => {
-      //       console.log('The dialog was closed');
-      //       if (result && result.success) {
-      //         console.log('Success result:', result);
-      //         context.isshow = false;
-      //         params.api.refreshCells({
-      //           rowNodes: [params.node],
-      //           columns: ['count'],
-      //           force: true
-      //         });
-      //         // context.isshow = true;
-      //       }
-      //     });
-      //   }
-      // }
-
       onCellClicked: (params: any) => {
-        const isShow = this.isshow;
-        console.log('isShow:', isShow);
-
-        if (isShow) {
-          console.log('Opening dialog...');
-
-          const dialogRef = this.dialog.open(HomeLoginCredentialComponent, {
-            maxWidth: '500px',
+        const context = params.context.componentParent;
+        console.log('dddd', context);
+        if (context.isshow) {
+          console.log('eeeee', context.isshow);
+          const dialogRef = context.dialog.open(HomeLoginCredentialComponent, {
+            maxWidth: "500px",
             data: { data: params.data }
           });
-
           dialogRef.afterClosed().subscribe((result: any) => {
             console.log('The dialog was closed');
             if (result && result.success) {
               console.log('Success result:', result);
-              this.isshow = true;
-              // Refresh specific cell
+              context.isshow = false;
               params.api.refreshCells({
                 rowNodes: [params.node],
                 columns: ['count'],
                 force: true
               });
+              // context.isshow = false;
             }
           });
         }
       }
+
+      // onCellClicked: (params: any) => {
+      //   const isShow = this.isshow;
+      //   console.log('isShow:', isShow);
+
+      //   if (isShow) {
+      //     console.log('Opening dialog...');
+
+      //     const dialogRef = this.dialog.open(HomeLoginCredentialComponent, {
+      //       maxWidth: '500px',
+      //       data: { data: params.data }
+      //     });
+
+      //     dialogRef.afterClosed().subscribe((result: any) => {
+      //       console.log('The dialog was closed');
+      //       if (result && result.success) {
+      //         console.log('Success result:', result);
+      //         this.isshow = true;
+      //         // Refresh specific cell
+      //         params.api.refreshCells({
+      //           rowNodes: [params.node],
+      //           columns: ['count'],
+      //           force: true
+      //         });
+      //       }
+      //     });
+      //   }
+      // }
 
     },
 

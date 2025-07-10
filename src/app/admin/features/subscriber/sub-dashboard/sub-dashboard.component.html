@@ -19,14 +19,19 @@
                             <div class="d-flex">
                                 <div class="col-5 col-md-5 d-flex justify-content-start align-items-center "
                                     style="padding: 0.5rem;">
-                                    <h6 style="color: rgb(7, 138, 127);">Name</h6>
+                                    <h6 style="color: rgb(7, 138, 127);">Name </h6>
                                 </div>
                                 <div class="col-1 col-md-1 d-flex justify-content-start align-items-center ">
                                     <h6>:</h6>
                                 </div>
+
                                 <div class="col-6 col-md-8 display1 justify-content-start align-items-center ">
                                     <h6 style="color: rgb(66, 64, 64);">{{subdetailsList?.customername}}
-                                        {{subdetails?.customername}}</h6>
+                                        {{subdetails?.customername}} <span
+                                            *ngIf="subdetailsList?.subid || lcoDeatails?.subid"
+                                            style="color: #001731;font-weight: bold;">
+                                            [{{subdetailsList?.subid || lcoDeatails?.subid}}]
+                                        </span> </h6>
                                 </div>
                             </div>
                             <div class="d-flex">

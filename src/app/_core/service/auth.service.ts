@@ -5,8 +5,6 @@ import { Observable } from 'rxjs';
 import URLs from 'src/app/URL';
 import { StorageService } from './storage.service';
 var AUTH_API = URLs.AUTH_URL();
-
-
 // var AUTH_API = 'http://192.168.70.201:8585/rsms/api/auth';
 
 // var AUTH_API = 'http://192.168.1.117:8081/api/auth';         //JAYA AKKA    
@@ -14,7 +12,7 @@ var AUTH_API = URLs.AUTH_URL();
 // var AUTH_API ='http://192.168.1.111:8081/api/auth';         //SUBHA
 // var AUTH_API = 'http://192.168.70.201:8585/rsms/api/auth';   //QC
 // var AUTH_API ='http://103.183.47.212:8585/rsms/api/auth';       // 103
-  
+
 
 // var AUTH_API ='http://4kdigital.ridsys.in:8585/rsms/api/auth';   //4k
 // var AUTH_API ='http://cas.ridsys.in:8585/rsms/api/auth';   //AJK
@@ -31,7 +29,7 @@ const httpOptions = {
 })
 export class AuthService {
   ip: any
-  domain:any;
+  domain: any;
   warningMessage: any;
   warningMessageDate: any;
   notificationMessage: boolean = false;
@@ -69,14 +67,14 @@ export class AuthService {
 
       if (ipPattern.test(hostname)) {
         console.log("Detected IP:", hostname);
-        return { ip: hostname, domain: null }; 
+        return { ip: hostname, domain: null };
       } else {
         console.log("Detected Domain:", hostname);
-        return { ip: null, domain: hostname }; 
+        return { ip: null, domain: hostname };
       }
     } catch (error) {
       console.error("Invalid URL:", error);
-      return { ip: null, domain: null }; 
+      return { ip: null, domain: null };
     }
   }
   login(credentials: { username: any; password: any; }): Observable<any> {

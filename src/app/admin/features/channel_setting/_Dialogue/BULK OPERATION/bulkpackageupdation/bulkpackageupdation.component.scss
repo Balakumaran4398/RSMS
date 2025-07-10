@@ -35,10 +35,35 @@
 .display {
     display: flex;
 }
-.mobile2{
+
+.mobile2 {
     position: relative;
     margin-left: 25%;
 }
+
+@property --angle {
+    syntax: "<angle>";
+    initial-value: 0deg;
+    inherits: false;
+}
+
+.element {
+    height: 40px;
+    width: 40px;
+    background-image: conic-gradient(from var(--angle), red, blue, red);
+    animation: 1s spin linear infinite;
+}
+
+@keyframes spin {
+    from {
+        --angle: 0deg;
+    }
+
+    to {
+        --angle: 360deg
+    }
+}
+
 @media screen and (max-width:560px) {
     .dis {
         display: none;
@@ -46,38 +71,45 @@
 
     .display {
         display: block;
-        span{
+
+        span {
             font-size: 15px;
         }
     }
-    .mobile1{
+
+    .mobile1 {
         max-height: 700px;
         overflow: auto;
     }
-    .mobile2{
+
+    .mobile2 {
         position: relative;
         margin-left: 0%;
     }
-    mat-option{
+
+    mat-option {
         font-size: 13px;
     }
 }
 
 @media screen and (max-width:770px) {
-    .mobile1{
+    .mobile1 {
         max-height: 700px;
         overflow: auto;
     }
-    mat-option{
+
+    mat-option {
         font-size: 13px;
     }
+
     .dis {
         display: none;
     }
 
     .display {
         display: block;
-        span{
+
+        span {
             font-size: 15px;
         }
     }
