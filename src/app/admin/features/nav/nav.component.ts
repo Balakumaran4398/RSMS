@@ -627,4 +627,9 @@ export class NavComponent implements OnInit, AfterViewInit {
     this.router.navigateByUrl(`/admin/sublcodashboard/${operatorid}`);
     // console.log(detailsList);
   }
+  startListening(id: any) {
+    this.activeItem = id;
+    this.router.navigateByUrl("admin" + id);
+    console.log("Current width:", window.innerWidth);
+  }
 }

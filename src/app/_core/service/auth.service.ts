@@ -19,7 +19,7 @@ var AUTH_API = URLs.AUTH_URL();
 // var AUTH_API ='http://rdigital.ridsys.in:8585/rsms/api/auth';   //rdigital
 
 // var AUTH_API = 'http://rdigital.ridsys.in:8585/rsms/api/auth';
-// const AUTH_API = URLs.AUTH_URL();
+// var AUTH_API = URLs.AUTH_URL();
 const BASE_API = URLs.BASE_URL();
 const httpOptions = {
   headers: new HttpHeaders({ 'Content-Type': 'application/json' }),

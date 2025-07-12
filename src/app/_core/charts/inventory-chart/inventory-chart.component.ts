@@ -44,7 +44,7 @@ export class InventoryChartComponent implements OnInit {
           title: 'Total Box in Inventory',
           count: this.total_inventory,
           change: 10.00,
-          description: 'Total Box in Inventory this month',
+          description: 'Total Box in Inventory',
           color: '#ff44ec',
           click: () => this.navigateToPage('TOTAL BOX IN INVENTORY')
         },
@@ -52,7 +52,7 @@ export class InventoryChartComponent implements OnInit {
           title: 'Box In MSO Hand',
           count: this.box_in_msohand,
           change: 10.00,
-          description: 'Total Box in MSO Hand this month',
+          description: 'Total Box in MSO Hand',
           color: '#00cfd3',
           click: () => this.navigateToPage('BOX IN MSO HAND')
         },
@@ -60,7 +60,7 @@ export class InventoryChartComponent implements OnInit {
           title: 'Box In LCO End',
           count: this.lco_end,
           change: 10.00,
-          description: 'Total Box in LCO End this month',
+          description: 'Total Box in LCO End',
           color: '#00d47e',
           click: () => this.navigateToPage('BOX IN LCO HAND')
         },
@@ -68,7 +68,7 @@ export class InventoryChartComponent implements OnInit {
           title: 'Box in Customer End',
           count: this.customer_end,
           change: 10.00,
-          description: 'Total Box in Customer End this month',
+          description: 'Total Box in Customer End',
           color: '#0095ff',
           click: () => this.navigateToPage('BOX IN CUSTOMER HAND')
         }

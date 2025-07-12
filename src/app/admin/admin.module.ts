@@ -209,6 +209,8 @@ import { BobbulechartComponent } from "../_core/charts/bobbulechart/bobbulechart
 import { VersionLoginCredentialComponent } from "./features/version/dialog/version-login-credential/version-login-credential.component";
 import { HomeLoginCredentialComponent } from "./features/home_Dialog/home-login-credential/home-login-credential.component";
 import { RechargeConfirmationComponent } from "./features/channel_setting/_Dialogue/recharge-confirmation/recharge-confirmation.component";
+import { BulkoperatorcreationComponent } from "./features/Bulk_operation/bulkoperatorcreation/bulkoperatorcreation.component";
+import { VoicerecognizeComponent } from "./features/voicerecognize/voicerecognize.component";
 @NgModule({
     declarations: [
         AdminBaseComponent, NavComponent, HomeComponent, NavbarComponent, MsodetailsComponent, CasmasterComponent,HomeLoginCredentialComponent,
@@ -259,7 +261,7 @@ import { RechargeConfirmationComponent } from "./features/channel_setting/_Dialo
 
         // -----------------------------------bulk operation-------------------------------
         SubscriberImportComponent, AlacarteActivationComponent, AddonActivationComponent, ActivationComponent, BulkBaseChangeComponent, BulkPageUpdationComponent,
-        DeactivationComponent, SubscriptionExdendComponent, RefreshComponent, RecurringComponent, SmartcardrefreshComponent,
+        DeactivationComponent, SubscriptionExdendComponent, RefreshComponent, RecurringComponent, SmartcardrefreshComponent,BulkoperatorcreationComponent,
 
         // --------------------------------------------Local Broadcasting-------------------------------------------------------------------------------
         PaymentUpdateComponent, CreateltbComponent, UpdateLtbComponent,
@@ -278,7 +280,7 @@ import { RechargeConfirmationComponent } from "./features/channel_setting/_Dialo
         LcoSmartcardDialogComponent, LcoSmartcardpayDialogComponent, SmrtBoxidChangeComponent, LcodashboardreportComponent, OperatorareachangeComponent, DiscountdialogComponent, DiscountsmartcardComponent,
         DistributordiscountComponent, DistribtorupdatediscountComponent, LcoDummycmpComponent, DialogChipidComponent, LcodashboardsublcoreportComponent, LcocommisiomddiscountComponent, LogincredentialComponent, LcocommissioncredentialComponent,
         // ===============================================version======================================
-        VersionComponent,VersionLoginCredentialComponent,RechargeConfirmationComponent
+        VersionComponent,VersionLoginCredentialComponent,RechargeConfirmationComponent,VoicerecognizeComponent
     ],
     imports: [
         CommonModule,

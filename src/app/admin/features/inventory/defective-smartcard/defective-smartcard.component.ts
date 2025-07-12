@@ -31,7 +31,7 @@ export class DefectiveSmartcardComponent {
       comparator: (valueA: any, valueB: any) => {
         const isNumberA = !isNaN(valueA) && valueA !== null;
         const isNumberB = !isNaN(valueB) && valueB !== null;
-  
+
         if (isNumberA && isNumberB) {
           return valueA - valueB;
         } else {
@@ -44,10 +44,10 @@ export class DefectiveSmartcardComponent {
       },
     },
     paginationPageSize: 10,
-    paginationPageSizeSelector:[10,20,50],
+    paginationPageSizeSelector: [10, 20, 50],
     pagination: true,
   };
-  
+
   rowData: any[] = [];
   constructor(public dialog: MatDialog, public userService: BaseService, storageService: StorageService, private renderer: Renderer2) {
     this.username = storageService.getUsername();
@@ -62,7 +62,7 @@ export class DefectiveSmartcardComponent {
     })
   }
   columnDefs: ColDef[] = [
-    {headerName: 'S.NO', lockPosition: true, headerCheckboxSelection: true,valueGetter: 'node.rowIndex+1', checkboxSelection: true, width: 100,filter:false },
+    { headerName: 'S.NO', lockPosition: true, headerCheckboxSelection: true, valueGetter: 'node.rowIndex+1', checkboxSelection: true, width: 100, filter: false },
     { headerName: 'SMARTCARD', field: 'smartcard', width: 250 },
     { headerName: 'BOX_ID', field: 'boxid', width: 200 },
     { headerName: 'CAS', field: 'casname', width: 200, cellStyle: { textAlign: 'center' }, },
@@ -70,7 +70,7 @@ export class DefectiveSmartcardComponent {
     { headerName: 'LCO NAME', field: 'operatorname', width: 200 },
 
     {
-      headerName: 'IS_DEFECTIVE', field: 'defectivedisplay', cellStyle: { textAlign: 'center' },width: 250,
+      headerName: 'IS_DEFECTIVE', field: 'defectivedisplay', cellStyle: { textAlign: 'center' }, width: 250,
       cellRenderer: (params: any) => {
         const value = params.value?.toString().toUpperCase();
         const color = value === 'YES' ? '#06991a' : value === 'NO' ? 'red' : 'black';
@@ -78,8 +78,8 @@ export class DefectiveSmartcardComponent {
       },
     },
     {
-      headerName: "Action",width: 220,
-      editable: true,filter:false,
+      headerName: "Action", width: 220,
+      editable: true, filter: false,
       cellRenderer: (params: any) => {
         if (params.data.defectivedisplay === "Yes") {
           const replaceButton = document.createElement('button');
@@ -147,6 +147,7 @@ export class DefectiveSmartcardComponent {
   onSelectionChanged(event: any) {
     if (this.gridApi) {
       let selectedRows: any[] = [];
+      //  this.selectedIdsSet.clear();
       this.gridApi.forEachNodeAfterFilter((rowNode: any) => {
         if (rowNode.isSelected()) {
           selectedRows.push(rowNode.data);
@@ -178,7 +179,7 @@ export class DefectiveSmartcardComponent {
   openEditDialog(data: any): void {
     console.log(data);
     const dialogRef = this.dialog.open(ReplaceInventoryComponent, {
-      width: '400px',
+      width: '550px',
       // height: '500px',
       data: data
 
@@ -200,8 +201,8 @@ export class DefectiveSmartcardComponent {
       });
     } else {
       const dataToSend = {
-        rowData: this.rowData, 
-        selectedIds: this.selectedIds, 
+        rowData: this.rowData,
+        selectedIds: this.selectedIds,
       };
       console.log(dataToSend);
       const dialogRef = this.dialog.open(DefectiveInventoryComponent, {

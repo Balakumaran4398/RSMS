@@ -1,0 +1,23 @@
+<div class="container">
+  <!-- <h1>🎙️ Voice Detection in Angular</h1> -->
+
+  <input
+    type="text"
+    [(ngModel)]="recognizedText"
+    placeholder="Detected speech will appear here..."
+    readonly
+  />
+
+  <br /><br />
+
+  <button (click)="startListening()" [disabled]="isListening">
+    ▶️ Start Listening
+  </button>
+
+  <button (click)="stopListening()" [disabled]="!isListening">
+    ⏹ Stop
+  </button>
+
+  <p *ngIf="isListening">Listening... Speak now!</p>
+</div>
+

@@ -36,6 +36,16 @@
                     <h5>{{operatorBalance}} </h5>
                 </div>
             </div>
+            <div *ngIf="!walletshare" class="card box d-flex flex-column justify-content-between p-3">
+                <div class="d-flex justify-content-around">
+                    <div class="mt-2 mb-3 text-center text1">Current Balance</div>
+                    <!-- <i class="fa-solid fa-share forward mt-2 mb-3"></i> -->
+                </div>
+                <div class="d-flex justify-content-center align-item-center ">
+                    <!-- <i class="fa-solid fa-indian-rupee-sign rupee mx-2"></i> -->
+                    <h5>{{operatorBalance}} </h5>
+                </div>
+            </div>
         </div>
 
         <div *ngIf="isonlineRecharge"
@@ -241,59 +251,53 @@
     </div>
 </div>
 <div *ngIf="role == 'ROLE_SUBLCO'" class="row" style="padding: 10px;">
-    <!-- <div class="col-12 col-md-2 d-flex  justify-content-start align-items-start">
-            <button type="button" class="btn btn-primary bttn" (click)="goBack()"><i
-                    class="fa-solid fa-reply mx-2"></i>Back</button>
-        </div> -->
-    <div class="col-12 col-md-7 display justify-content-center align-item-center balance gap-3">
-        <div class="col-12 col-lg-6 mb-3 ">
-            <div *ngIf="walletshare" class="card box d-flex flex-column justify-content-between p-3" (click)="addnew()">
-                <!-- <div *ngIf="walletshare" class="card box d-flex flex-column justify-content-between p-3" > -->
-                <div class="d-flex justify-content-around">
-                    <div class="mt-2 mb-3 text-center text1">Current Balance</div>
-                    <i class="fa-solid fa-share forward mt-2 mb-3"></i>
-                </div>
-                <div class="d-flex justify-content-center align-item-center ">
-                    <i class="fa-solid fa-indian-rupee-sign rupee mx-2"></i>
-                    <h5>{{operatorBalance}} </h5>
-                </div>
-            </div>
-            <div class="card box d-flex flex-column justify-content-between p-3">
-                <div class="mt-2 mb-3 text-center text1">Current Balance</div>
-                <div class="d-flex justify-content-center align-item-center ">
-                    <i *ngIf="wallet" class="fa-solid fa-indian-rupee-sign rupee mx-2"></i>
-                    <h5 *ngIf="wallet">{{operatorBalance}} </h5>
-                    <p *ngIf="!wallet" style="color: rgb(70, 70, 70);">{{'No Wallet available'}} </p>
-                </div>
-            </div>
-        </div>
-        <div class="col-12 col-lg-6 mb-3 ">
-            <div class="card d-flex flex-column justify-content-between p-3">
-                <div class="mt-2 mb-3 text-center text1">Today Recharge</div>
-                <div class="d-flex justify-content-center align-item-center ">
-                    <i class="fa-solid fa-indian-rupee-sign rupee mx-2"></i>
-                    <h5> {{operatorDetailsCount?.todayrechargeamount}}
-                    </h5>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div *ngIf=" role==='ROLE_SUBLCO' && onlineRecharge == true || role !== 'ROLE_SUBLCO'"
-        class="col-12 col-md-5 d-flex justify-content-end align-item-center online_recharge">
-        <div class="col-12 col-lg-12  mb-3">
-            <div class="card box d-flex flex-column justify-content-between align-items-center "
-                style="background: linear-gradient(180deg, #c44205, #9c4a01);" (click)="onOnlineRecharge()">
-                <div class="d-flex  w-100" style="justify-content: space-around;align-items: center;height: 100%;">
-                    <span>
-                        <i class="bx bx-bolt-circle" style="font-size: 40px; color: rgb(248, 244, 244);"></i>
-                    </span>
-                    <span class="online">Online Recharge </span>
-                    <span><i class="bx bx-chevron-right-circle" style="color: white;"></i> </span>
-                </div>
-            </div>
-        </div>
-    </div>
 
+
+    <div class="row" style="padding: 10px;">
+        <div *ngIf="walletshare" class="col-12 col-md-7 display justify-content-center align-item-center balance gap-3">
+
+           
+            <div *ngIf="walletshare" class="col-12 col-lg-6 mb-3 ">
+                <div class="card box d-flex flex-column justify-content-between p-3">
+                    <div class="d-flex justify-content-around">
+                        <div class="mt-2 mb-3 text-center text1">Current Balance</div>
+                        <!-- <i class="fa-solid fa-share forward mt-2 mb-3"></i> -->
+                    </div>
+                    <div class="d-flex justify-content-center align-item-center ">
+                        <!-- <i class="fa-solid fa-indian-rupee-sign rupee mx-2"></i> -->
+                        <h5>{{operatorBalance}} </h5>
+                    </div>
+                </div>
+            </div>
+            <div class="col-12 col-lg-6 mb-3 ">
+                <div class="card d-flex flex-column justify-content-between p-3">
+                    <div class="mt-2 mb-3 text-center text1">Today Recharge</div>
+                    <div class="d-flex justify-content-center align-item-center ">
+                        <i class="fa-solid fa-indian-rupee-sign rupee mx-2"></i>
+                        <h5> {{operatorDetailsCount?.todayrechargeamount}}
+                        </h5>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        <div *ngIf="onlineRecharge && walletshare"
+            class="col-12 col-md-5 d-flex justify-content-end align-item-center online_recharge">
+            <!-- <div  class="col-12 col-md-5 d-flex justify-content-end align-item-center online_recharge"> -->
+            <div class="col-12 col-lg-12  mb-3">
+                <div class="card box d-flex flex-column justify-content-between align-items-center "
+                    style="background: linear-gradient(180deg, #c44205, #9c4a01);" (click)="onOnlineRecharge()">
+                    <div class="d-flex  w-100" style="justify-content: space-around;align-items: center;height: 100%;">
+                        <span>
+                            <i class="bx bx-bolt-circle" style="font-size: 40px; color: rgb(248, 244, 244);"></i>
+                        </span>
+                        <span class="online">Online Recharge </span>
+                        <span><i class="bx bx-chevron-right-circle" style="color: white;"></i> </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
     <div class="">
         <div class="row">
             <div class="col-6 col-lg-3">

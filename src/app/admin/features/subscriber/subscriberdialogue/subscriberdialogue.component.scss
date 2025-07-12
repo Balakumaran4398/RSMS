@@ -17,6 +17,7 @@
   justify-content: center;
   align-items: center;
 }
+
 #smartcard,
 #package {
   width: auto !important;
@@ -254,27 +255,20 @@ body {
 .select2-container {
   width: 250px !important;
 }
+
 .select2-container .select2-selection--single {
   height: 45px !important;
   margin-top: 1%;
 }
 
- .select2-container .select2-selection--single .select2-selection__rendered {
+.select2-container .select2-selection--single .select2-selection__rendered {
   margin-top: 7px;
 }
 
 .select2-container--default .select2-selection--single .select2-selection__arrow {
   top: 10px;
 }
-// ::ng-deep .ag-header-viewport {
-//   text-align: center !important;
-//   background: #3d5857 !important;
-// }
 
-// .ag-root-wrapper {
-//   max-height: 600px !important;
-//   overflow: scroll;
-// }
 
 // ------------------------report-----------
 .header {
@@ -284,12 +278,7 @@ body {
   color: wheat;
 }
 
-
 // -----------------------Login Form----------------------------------
-
-
-
-
 ::selection {
   background-color: gray;
 }
@@ -743,24 +732,28 @@ body {
   height: 400px;
   text-align: center;
 }
+
 .responsive-grid {
   width: 100%;
-  max-width: 1200px; 
+  max-width: 1200px;
   margin: auto;
 }
 
 
 @media (max-width: 768px) {
   .responsive-grid {
-      width: 100%;
+    width: 100%;
   }
 }
-::ng-deep .ag-header{
+
+::ng-deep .ag-header {
   background-color: #557c9b !important;
 }
-.custom{
+
+.custom {
   background-color: lightslategrey;
 }
+
 // ==================================================================================================
 // .title {
 //   text-align: center;
@@ -795,6 +788,7 @@ body {
 .black-text {
   color: black;
 }
+
 .green-text {
   color: green;
 }
@@ -810,6 +804,7 @@ body {
 .red-text {
   color: red;
 }
+
 .confirm1 {
   text-align: center;
   font-weight: 600;

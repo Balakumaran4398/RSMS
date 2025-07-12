@@ -4,41 +4,40 @@
     <div class="bubble-left">
         <div class="bubble-wrap">
             <div class="bubble pink" [ngStyle]="{
-
-    width: (40 + bubbleData[3].count) + 'px',
-        height: (40 + bubbleData[3].count) + 'px',
-        top: '25px',
-        left: '35px'
+        width: '75px',
+        height:'75px',
+        top: '5px',
+        left: '20px'
       }" [attr.title]="bubbleData[3].label + ': ' + bubbleData[3].count">
                 {{ bubbleData[3].count }}
                 <!-- {{0}} -->
             </div>
 
             <div class="bubble blue" [ngStyle]="{
-        width: (40 + bubbleData[0].count) + 'px',
-        height: (40 + bubbleData[0].count) + 'px',
-        top: '20px',
-        left: '70px'
+        width: '80px',
+        height: '80px',
+        top: '0px',
+        left: '80px'
       }" [attr.title]="bubbleData[0].label + ': ' + bubbleData[0].count">
                 {{ bubbleData[0].count }}
                 <!-- {{10}} -->
             </div>
 
             <div class="bubble cyan" [ngStyle]="{
-        width: (40 + bubbleData[2].count) + 'px',
-        height: (40 + bubbleData[2].count) + 'px',
+        width: '70px',
+        height: '70px',
         top: '60px',
-        left: '25px'
+        left: '15px'
       }" [attr.title]="bubbleData[2].label + ': ' + bubbleData[2].count">
                 {{ bubbleData[2].count }}
                 <!-- {{20}} -->
             </div>
 
             <div class="bubble green" [ngStyle]="{
-        width: (40 + bubbleData[1].count) + 'px',
-        height: (40 + bubbleData[1].count) + 'px',
+        width: '100px',
+        height: '100px',
         top: '60px',
-        left: '70px'
+        left: '60px'
       }" [attr.title]="bubbleData[1].label + ': ' + bubbleData[1].count">
                 {{ bubbleData[1].count }}
                 <!-- {{10}} -->

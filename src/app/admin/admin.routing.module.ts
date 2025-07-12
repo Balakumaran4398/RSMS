@@ -114,6 +114,7 @@ import { LcocommissioncredentialComponent } from './features/channel_setting/lco
 import { SmartcardrefreshComponent } from './features/Bulk_operation/smartcardrefresh/smartcardrefresh.component';
 import { BulkoperatorcreationComponent } from './features/Bulk_operation/bulkoperatorcreation/bulkoperatorcreation.component';
 import { VersionComponent } from './features/version/version.component';
+import { VoicerecognizeComponent } from './features/voicerecognize/voicerecognize.component';
 
 
 const routes: Routes = [
@@ -252,6 +253,7 @@ const routes: Routes = [
       { path: 'discount_smartcard_details/:smartcard', component: DiscountsmartcardComponent },
       // ---------------------------   version  ------------------------------
       { path: 'version', component: VersionComponent },
+      { path: 'voice', component: VoicerecognizeComponent },
     ]
   }
 ];

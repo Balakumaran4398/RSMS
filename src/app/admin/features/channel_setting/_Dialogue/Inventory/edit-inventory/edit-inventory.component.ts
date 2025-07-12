@@ -2,6 +2,7 @@ import { Component, Inject, OnInit } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { BaseService } from 'src/app/_core/service/base.service';
+import { ExcelService } from 'src/app/_core/service/excel.service';
 import { StorageService } from 'src/app/_core/service/storage.service';
 import { SwalService } from 'src/app/_core/service/swal.service';
 import Swal from 'sweetalert2';
@@ -39,7 +40,7 @@ export class EditInventoryComponent implements OnInit {
   type: any;
   constructor(
     public dialogRef: MatDialogRef<EditInventoryComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: any, public dialog: MatDialog, private userService: BaseService, private storageService: StorageService, private swal: SwalService) {
+    @Inject(MAT_DIALOG_DATA) public data: any, public dialog: MatDialog, private userService: BaseService,private excelService: ExcelService, private storageService: StorageService, private swal: SwalService) {
     this.username = storageService.getUsername();
     this.role = storageService.getUserRole();
     this.castype = data.castype;
@@ -172,5 +173,7 @@ export class EditInventoryComponent implements OnInit {
         });
     }
   }
-
+  generateExcel() {
+    this.excelService.generateInventoryUpload();
+  }
 }

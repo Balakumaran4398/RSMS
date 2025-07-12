@@ -183,6 +183,7 @@ export class OperatordashboardComponent implements OnInit {
       this.rechargeHistory = this.subLcoPermission?.rechargehistory;
       console.log(this.rechargeHistory);
       this.onlineRecharge = this.subLcoPermission.online_recharge;
+       console.log(this.onlineRecharge);
       this.getSubLcoDetailsCount(this.retailerid)
     })
   }
@@ -195,6 +196,9 @@ export class OperatordashboardComponent implements OnInit {
       this.walletshare = this.lcoDeatails?.permissionlist?.wallet;
       console.log('walletshare', this.walletshare);
       console.log('SUBSCRIBER DETAILS', this.lcoDeatails);
+     
+      console.log(this.onlineRecharge);
+      
     })
   }
 

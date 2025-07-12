@@ -28,8 +28,8 @@ export class NewRechargeComponent implements OnInit {
     { lable: "Account Transfer", value: 2 },
   ];
   payment1: any[] = [
-    { lable: "Share Amount", value: 0 },
-    { lable: "Demo Recharge", value: 2 },
+    { lable: "Share Amount", value: 5 },
+    { lable: "Demo Recharge", value: 6 },
     { lable: "Wallet Credit", value: 4 },
   ];
   filteredOperators1: any[] = [

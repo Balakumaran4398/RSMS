@@ -9,11 +9,10 @@
                 <label>Smartcard</label>
             </div>
             <div class="col-12 col-md-8">
-                <input type="text" [(ngModel)]="smartcard" (keydown)="onKeydown($event)" maxlength="20"
-                    pattern="[0-9]*">
+                <input type="text" [(ngModel)]="Smartcard_1"  maxlength="20" >
             </div>
         </div>
-        <div class="input_box col-12 col-md-12 display_1 mb-2">
+        <!-- <div class="input_box col-12 col-md-12 display_1 mb-2">
             <div class="col-12 col-md-4">
                 <label>Box ID</label>
             </div>
@@ -21,6 +20,31 @@
                 <div class="gender-category">
                     <input type="text" [(ngModel)]="boxid">
                 </div>
+            </div>
+        </div> -->
+        <div class=" input_box col-12 col-md-12 display_1 mb-2">
+            <div class="col-12 col-md-4">
+                <label for="">Select a Smartcard</label>
+            </div>
+            <div class="col-12 col-md-8">
+                <select id="smartcard" [(ngModel)]="smartcard">
+                    <option value="0" selected>Select a Smartcard</option>
+                    <option *ngFor="let area of filteredSmartcard" [value]="area.name"
+                        (ngMOdelChange)="onSmartcardList($event)">
+                        {{ area.name }}
+                    </option>
+                </select>
+
+            </div>
+        </div>
+        <div class="input_box col-12 col-md-12 display_1 mb-2">
+            <div class="col-12 col-md-4">
+
+                <label for="">Boxid</label>
+            </div>
+            <div class="col-12 col-md-8">
+                <input placeholder="Enter Boxid" type="text" [(ngModel)]="boxid" readonly id="boxid">
+         
             </div>
         </div>
     </div>

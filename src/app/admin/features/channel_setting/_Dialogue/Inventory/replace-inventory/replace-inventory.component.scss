@@ -1,14 +1,50 @@
 .display {
     display: block;
 }
-.display_1{
+
+.display_1 {
     display: flex;
 }
+
+::ng-deep .select2-container {
+  width: 350px !important;
+}
+
+.select2-container .select2-selection--single {
+  height: 45px !important;
+  margin-top: 1%;
+}
+
+.select2-container .select2-selection--single .select2-selection__rendered {
+  margin-top: 7px;
+}
+
+.select2-container--default .select2-selection--single .select2-selection__arrow {
+  top: 10px;
+}
+
 @media screen and (max-width: 560px) {
     .display {
         display: block;
     }
-    .display_1{
+
+    .display_1 {
         display: block;
+    }
+
+    ::ng-deep .select2 {
+        width: 280px !important;
+    }
+
+    ::ng-deep .select2 {
+        width: 280px !important;
+    }
+}
+
+
+@media screen and (max-width:720px) {
+    .display {
+        display: block;
+        padding: 5px;
     }
 }
