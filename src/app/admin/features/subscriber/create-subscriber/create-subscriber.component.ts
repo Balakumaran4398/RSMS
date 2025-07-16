@@ -181,7 +181,7 @@ export class CreateSubscriberComponent implements AfterViewInit, OnDestroy {
         addressprooftypeid: ['', Validators.required],
         role: this.role,
         username: this.username,
-        Credential: false,
+        credentials: false,
         userid: '',
         password: '',
       },

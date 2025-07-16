@@ -533,6 +533,190 @@ export class NavComponent implements OnInit, AfterViewInit {
         popup.style.display = "none";
       });
     }
+
+
+
+    // -----------------------------------_Voice search-----------------------
+
+    const SpeechRecognition = (window as any).SpeechRecognition || (window as any).webkitSpeechRecognition;
+
+    if (!SpeechRecognition) {
+      alert('Speech Recognition is not supported in your browser.');
+      return;
+    }
+
+    const recognition = new SpeechRecognition();
+    recognition.continuous = true;
+    recognition.lang = 'en-US';
+    recognition.interimResults = false;
+
+    const output = document.querySelector("#output");
+    const startBtn = document.querySelector("#start-btn");
+    const stopBtn = document.querySelector("#stop-btn");
+
+    console.log('Start Button:', startBtn);
+    console.log('Stop Button:', stopBtn);
+    console.log('OUTPUT:', output);
+
+    startBtn?.addEventListener("click", () => {
+      console.log("🎤 Start button clicked. Listening...");
+      recognition.start();
+    });
+
+    stopBtn?.addEventListener("click", () => {
+      console.log("🛑 Stop button clicked.");
+      recognition.stop();
+    });
+
+    recognition.addEventListener("result", (event: any) => {
+      const transcript = Array.from(event.results)
+        .map((result: any) => result[0].transcript)
+        .join("")
+        .toLowerCase()
+        .trim();
+
+      console.log("🗣️ Transcript:", transcript);
+
+      if (output) {
+        output.textContent = transcript;
+      }
+
+      // ✅ Voice command based routing
+      if (this.isUser) {
+        if (transcript.includes("dashboard")) {
+          this.navgetToUrl('/home');
+        } else if (transcript.includes("top subscription")) {
+          if (this.username === 'manikandan') {
+            this.navgetToUrl('/top_sub_detail');
+          } else {
+            this.navgetToUrl('/top_subscription');
+          }
+        } else if (transcript.includes("operator details")) {
+          if (this.username === 'manikandan') {
+            this.navgetToUrl('/operator_details');
+          } else {
+            this.navgetToUrl('/lco_recharge/1');
+          }
+        } else if (transcript.includes("lco recharge")) {
+          this.navgetToUrl('/lco_recharge/2');
+        } else if (transcript.includes("admin recharge")) {
+          this.navgetToUrl('/lco_recharge/3');
+        } else if (transcript.includes("finger frint")) {
+          this.navgetToUrl('/finger_print');
+        } else if (transcript.includes("scrolling")) {
+          this.navgetToUrl('/scrolling');
+        } else if (transcript.includes("message details")) {
+          this.navgetToUrl('/message');
+        } else if (transcript.includes("force tuning")) {
+          this.navgetToUrl('/fource_tuning');
+        } else if (transcript.includes("mail")) {
+          this.navgetToUrl('/mail');
+        } else if (transcript.includes("broadcaster master")) {
+          this.navgetToUrl('/Broadcast');
+        } else if (transcript.includes("distributor master")) {
+          this.navgetToUrl('/Distributer');
+        } else if (transcript.includes("channel type master")) {
+          this.navgetToUrl('/Channeltype');
+        } else if (transcript.includes("category master")) {
+          this.navgetToUrl('/categery')
+        } else if (transcript.includes("channel")) {
+          this.navgetToUrl('/Channel')
+        } else if (transcript.includes("package creation")) {
+          this.navgetToUrl('/PackageCreation')
+        } else if (transcript.includes("addon package")) {
+          this.navgetToUrl('/Addon')
+        } else if (transcript.includes("package reference")) {
+          this.navgetToUrl('/PackageReference')
+        } else if (transcript.includes("package master")) {
+          this.navgetToUrl('/PackageMaster')
+        } else if (transcript.includes("lco  commission")) {
+          if (this.username === 'manikandan' && this.navigationList.lcocommission) {
+            this.navgetToUrl('/LcoCommission');
+          } else {
+            this.navgetToUrl('/LcoCommission_credential');
+          }
+        } else if (transcript.includes("discount")) {
+          this.navgetToUrl('/lcoCommissionDashboard')
+        } else if (transcript.includes("packagewise operator")) {
+          this.navgetToUrl('/PackagewiseOperator')
+        } else if (transcript.includes("chip id and model")) {
+          this.navgetToUrl('/chipid')
+        }
+      } else if (this.isInventory) {
+        if (transcript.includes("inventory")) {
+          this.navgetToUrl('/inventor_inventory');
+        } else if (transcript.includes("license extend")) {
+          if (this.username === 'manikandan' && this.isLco) {
+            this.navgetToUrl('/inventory_cortonbox_data');
+          } else {
+            this.navgetToUrl('/inventory_license');
+          }
+        } else if (transcript.includes("carton box upload")) {
+          this.navgetToUrl('/inventory_cortonbox');
+        }
+      } else if (this.isUser || this.isReception) {
+        if (transcript.includes("create subscriber")) {
+          this.navgetToUrl('/Create_sub');
+        } else if (transcript.includes("subscriber details")) {
+          this.navgetToUrl('/subscriber');
+        } else if (transcript.includes('expiry details')) {
+          this.navgetToUrl('/expiry')
+        } else if (transcript.includes('not allocated smartcard')) {
+          this.navgetToUrl('/not_allacate_smartcard')
+        }
+      }
+      //  else if (this.isUser) {
+      //   if (transcript.includes("Finger Print")) {
+      //     this.navgetToUrl('/finger_print');
+      //   } else if (transcript.includes("Scrolling")) {
+      //     this.navgetToUrl('/scrolling');
+      //   } else if (transcript.includes("Message Details")) {
+      //     this.navgetToUrl('/message');
+      //   } else if (transcript.includes("Force Tuning")) {
+      //     this.navgetToUrl('/fource_tuning');
+      //   } else if (transcript.includes("Mail")) {
+      //     this.navgetToUrl('/mail');
+      //   } else if (transcript.includes("Broadcaster Master")) {
+      //     this.navgetToUrl('/Broadcast');
+      //   } else if (transcript.includes("Distributor Master")) {
+      //     this.navgetToUrl('/Distributer');
+      //   } else if (transcript.includes("Channel Type Master")) {
+      //     this.navgetToUrl('/Channeltype');
+      //   } else if (transcript.includes("Category Master")) {
+      //     this.navgetToUrl('/categery')
+      //   } else if (transcript.includes("Channel")) {
+      //     this.navgetToUrl('/Channel')
+      //   } else if (transcript.includes("Package Creation")) {
+      //     this.navgetToUrl('/PackageCreation')
+      //   } else if (transcript.includes("Addon Package")) {
+      //     this.navgetToUrl('/Addon')
+      //   } else if (transcript.includes("Package Reference")) {
+      //     this.navgetToUrl('/PackageReference')
+      //   } else if (transcript.includes("Package Master")) {
+      //     this.navgetToUrl('/PackageMaster')
+      //   } else if (transcript.includes("Lco  Commission")) {
+      //     if (this.username === 'manikandan' && this.navigationList.lcocommission) {
+      //       this.navgetToUrl('/LcoCommission');
+      //     } else {
+      //       this.navgetToUrl('/LcoCommission_credential');
+      //     }
+      //   } else if (transcript.includes("Discount")) {
+      //     this.navgetToUrl('/lcoCommissionDashboard')
+      //   } else if (transcript.includes("Packagewise Operator")) {
+      //     this.navgetToUrl('/PackagewiseOperator')
+      //   } else if (transcript.includes("Chip ID and Model")) {
+      //     this.navgetToUrl('/chipid')
+      //   }
+      // }
+    });
+
+    recognition.addEventListener("error", (event: any) => {
+      console.error("Speech recognition error:", event.error);
+    });
+
+    recognition.addEventListener("end", () => {
+      console.log("Recognition ended.");
+    });
   }
   isMobile = false;
   currentBreakpoint: any;
@@ -543,16 +727,6 @@ export class NavComponent implements OnInit, AfterViewInit {
     this.activeItem = id;
     this.router.navigateByUrl("admin" + id);
     console.log("Current width:", window.innerWidth);
-
-    // const hasReloaded = localStorage.getItem('hasReloaded');
-    // if (!hasReloaded) {
-    //   localStorage.setItem('hasReloaded', 'true');
-    //   setTimeout(() => {
-    //     location.reload();
-    //   }, 1000);
-    // }
-    // console.log('erewr43543543', hasReloaded);
-
     if (window.innerWidth <= 760) {
       this.isSidebarOpen = false;
       this.cd.detectChanges();
@@ -560,7 +734,6 @@ export class NavComponent implements OnInit, AfterViewInit {
       sidebar?.classList.add('hide');
       console.log("p");
     }
-
   }
 
 

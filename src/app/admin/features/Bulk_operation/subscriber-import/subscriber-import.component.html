@@ -1,117 +1,157 @@
-<section>
+<section class="Tab col-12">
     <div class=" title mb-8">
         <p>Subscriber Import</p>
     </div>
+    <div class="row">
+        <div class="col-12 col-lg-4 d-flex justify-content-center align-items-center mb-4 mb-lg-0">
+            <div *ngIf="closeDialogue" class="" style="margin:30px auto;max-width: 500px;">
+                <div class="card p-4 file ">
+                    <div class="d-flex justify-content-center align-items-center m-3">
+                        <img src="/assets/images/icons/xlsx.png" class="img" alt="File Icon">
+                        <span style="margin: 0 15px; display: inline-block; text-align: center;padding: 0 10px;">
+                            ---&gt;
+                        </span>
+                        <img src="/assets/images/icons/dashboard.png" class="img" alt="File Icon">
+                    </div>
+                    <div class="mb-3">
+                        <div class="mb-3">
+                            <span class="p"> 1) Must have kept the data according to the format file <span
+                                    style="font-weight: 600;">(Please
+                                    check the format file by below download option)</span>
+                                otherwise that subscriber details <span style="color: red;">will be ignore</span>.
+                            </span>
+                        </div>
+                        <div class="mb-3">
+                            <span class="p">
+                                2) If you don't feel the need to enter any data in non-mandatory columns, even then you
+                                will
+                                <span style="color: red;">should not enter any data or remarks</span>.
+                            </span>
+                        </div>
+                    </div>
+                    <a class="mb-3" (click)="generateExcel()" style="cursor: pointer;">* Download Format File</a>
+                    <div class="checkbox-text mb-3">
+                        <div class="checkbox-content">
+                            <input type="checkbox" id="terms" (change)="onCheckboxChange($event)">
+                            <label for="confirmPass">I agree to the above statement</label>
+                        </div>
+                    </div>
+                    <div class="d-flex">
+                        <div class="col-4 col-md-4 col-sm-6 mb-3">
+                            <label class="btn " [style.background-color]="isCheckboxChecked ? '#3d5e80' : '#d3d3d3'"
+                                [style.color]="isCheckboxChecked ? 'white' : 'black'"
+                                [style.cursor]="isCheckboxChecked ? 'pointer' : 'not-allowed'">
+                                <i class="fa fa-plus"></i> Choose
+                                <input type="file" style="display: none;" accept=".xls,.xlsx,.csv"
+                                    [disabled]="!isCheckboxChecked" (change)="handleFileInput($event)">
+                            </label>
+                        </div>
+                        <div class="col-8 col-md-8 col-sm-6 mb-3">
+                            <span style="color:#0a21d0">{{ filePath }} </span>
+                        </div>
+                    </div>
 
-    <div *ngIf="closeDialogue" class="" style="margin:30px auto;max-width: 500px;">
-        <div class="card p-4 file ">
-            <div class="d-flex justify-content-center align-items-center m-3">
-                <img src="/assets/images/icons/xlsx.png" class="img" alt="File Icon">
-                <span style="margin: 0 15px; display: inline-block; text-align: center;padding: 0 10px;">
-                    ---&gt;
-                </span>
-                <img src="/assets/images/icons/dashboard.png" class="img" alt="File Icon">
+
+                    <div class="d-flex justify-content-end align-items-center mt-3">
+                        <button type="submit" class="btn btn-success" [disabled]="!isCheckboxChecked || !isFileSelected"
+                            (click)="opendialogue()">
+                            Next &nbsp;<i class="fa fa-arrow-right" aria-hidden="true"></i>
+                        </button>
+                    </div>
+                </div>
             </div>
-            <div class="mb-3">
-                <div class="mb-3">
-                    <span class="p"> 1) Must have kept the data according to the format file <span
-                            style="font-weight: 600;">(Please
-                            check the format file by below download option)</span>
-                        otherwise that subscriber details <span style="color: red;">will be ignore</span>.
-                    </span>
-                </div>
-                <div class="mb-3">
-                    <span class="p">
-                        2) If you don't feel the need to enter any data in non-mandatory columns, even then you will
-                        <span style="color: red;">should not enter any data or remarks</span>.
-                    </span>
-                </div>
-            </div>
-            <a class="mb-3" (click)="generateExcel()" style="cursor: pointer;">* Download Format File</a>
-            <div class="checkbox-text mb-3">
-                <div class="checkbox-content">
-                    <input type="checkbox" id="terms" (change)="onCheckboxChange($event)">
-                    <label for="confirmPass">I agree to the above statement</label>
-                </div>
-            </div>
-            <div class="d-flex">
-                <div class="col-4 col-md-4 col-sm-6 mb-3">
-                    <label class="btn " [style.background-color]="isCheckboxChecked ? '#3d5e80' : '#d3d3d3'"
-                        [style.color]="isCheckboxChecked ? 'white' : 'black'"
-                        [style.cursor]="isCheckboxChecked ? 'pointer' : 'not-allowed'">
-                        <i class="fa fa-plus"></i> Choose
-                        <input type="file" style="display: none;" accept=".xls,.xlsx,.csv" [disabled]="!isCheckboxChecked"
-                            (change)="handleFileInput($event)">
-                    </label>
-                </div>
-                <div class="col-8 col-md-8 col-sm-6 mb-3">
-                    <span style="color:#0a21d0">{{ filePath }} </span>
-                </div>
-            </div>
 
+            <div *ngIf="Dialogue">
+                <div class="d-flex justify-content-center  ">
+                    <div class="col-12 col-md-4  card p-4 file ">
+                        <div class="d-flex justify-content-center align-items-center m-3">
+                            <img src="/assets/images/icons/xlsx.png" class="img" alt="File Icon">
+                            <span style="margin: 0 15px; display: inline-block; text-align: center;padding: 0 10px;">
+                                ---&gt;
+                            </span>
+                            <img src="/assets/images/icons/dashboard.png" class="img" alt="File Icon">
+                        </div>
 
-            <div class="d-flex justify-content-end align-items-center mt-3">
-                <button type="submit" class="btn btn-success" [disabled]="!isCheckboxChecked || !isFileSelected"
-                    (click)="opendialogue()">
-                    Next &nbsp;<i class="fa fa-arrow-right" aria-hidden="true"></i>
-                </button>
-            </div>
-        </div>
-    </div>
+                        <span style="color:orangered;font-size: 16px;">Chosen File: <span style="color:#0a21d0">{{
+                                filePath }}
+                            </span>
+                        </span>
 
-    <div *ngIf="Dialogue">
-        <div class="d-flex justify-content-center  ">
-            <div class="col-12 col-md-4  card p-4 file ">
-                <div class="d-flex justify-content-center align-items-center m-3">
-                    <img src="/assets/images/icons/xlsx.png" class="img" alt="File Icon">
-                    <span style="margin: 0 15px; display: inline-block; text-align: center;padding: 0 10px;">
-                        ---&gt;
-                    </span>
-                    <img src="/assets/images/icons/dashboard.png" class="img" alt="File Icon">
-                </div>
-
-                <span style="color:orangered;font-size: 16px;">Chosen File: <span style="color:#0a21d0">{{ filePath }}
-                    </span>
-                </span>
-
-                <div class="input_box col-12 col-md-12 d-flex justify-content-center align-items-center mb-3">
-                    <!-- <select style="color: rgb(17, 0, 0);" [(ngModel)]="operatorid" (change)="onOperatorChange($event)">
+                        <div class="input_box col-12 col-md-12 d-flex justify-content-center align-items-center mb-3">
+                            <!-- <select style="color: rgb(17, 0, 0);" [(ngModel)]="operatorid" (change)="onOperatorChange($event)">
                         <option value="" selected style="color: rgb(19, 17, 1.7);">Select a operator </option>
                         <option *ngFor="let operator of operatorList" [value]="operator.value">{{ operator.name}}
                         </option>
                     </select> -->
-                    
-                    <input type="text" matInput [matAutocomplete]="auto" [(ngModel)]="operatorid" 
-                        (input)="filterPackage($event)" placeholder="Select a operator"
-                        [matAutocompleteDisabled]="false" [value]="selectedPackageName">
 
-                    <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayOperator">
-                        <mat-option *ngFor="let operator of filteredPackage" [value]="operator.value"
-                            (click)="onOperatorChange(operator)">
-                            {{ operator.name }}
-                        </mat-option>
-                    </mat-autocomplete>
-                  
-                </div>
-                <div *ngIf="submitted && !operatorid" class="text-danger" style="font-size: small;">
-                    Package Name is required
-                </div>
-                <div class="checkbox-text mb-3">
-                    <div class="checkbox-content">
-                        <input type="checkbox" id="terms" [(ngModel)]="insert"
-                            (change)="onCheckboxChange_Operator($event)">
-                        <label for="confirmPass">With smartcard allocate to subscriber</label>
+                            <input type="text" matInput [matAutocomplete]="auto" [(ngModel)]="operatorid"
+                                (input)="filterPackage($event)" placeholder="Select a operator"
+                                [matAutocompleteDisabled]="false" [value]="selectedPackageName">
+
+                            <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayOperator">
+                                <mat-option *ngFor="let operator of filteredPackage" [value]="operator.value"
+                                    (click)="onOperatorChange(operator)">
+                                    {{ operator.name }}
+                                </mat-option>
+                            </mat-autocomplete>
+
+                        </div>
+                        <div *ngIf="submitted && !operatorid" class="text-danger" style="font-size: small;">
+                            Package Name is required
+                        </div>
+                        <div class="checkbox-text mb-3">
+                            <div class="checkbox-content">
+                                <input type="checkbox" id="terms" [(ngModel)]="insert"
+                                    (change)="onCheckboxChange_Operator($event)">
+                                <label for="confirmPass">With smartcard allocate to subscriber</label>
+                            </div>
+                        </div>
+                        <div class="d-flex justify-content-end align-items-center mt-3 ">
+                            <button type="button" class="btn btn-success mx-2" (click)="goBack()">Back &nbsp;<i
+                                    class="fa fa-arrow-left" aria-hidden="true"></i></button>
+                            <button type="submit" class="btn btn-success" [disabled]="!operatorid"
+                                (click)="bulkSubscriberImport()">Submit</button>
+                        </div>
                     </div>
                 </div>
-                <div class="d-flex justify-content-end align-items-center mt-3 ">
-                    <button type="button" class="btn btn-success mx-2" (click)="goBack()">Back &nbsp;<i
-                            class="fa fa-arrow-left" aria-hidden="true"></i></button>
-                    <button type="submit" class="btn btn-success"  [disabled]="!operatorid"  (click)="bulkSubscriberImport()">Submit</button>
+            </div>
+        </div>
+        <div class="col-12 col-lg-8 d-flex justify-content-center">
+            <div class="card col-12">
+                <!-- <div class="title">
+                    <h5>BULK FIRST TIME ACTIVATION HISTORY</h5>
+                </div> -->
+                <div class="row d-flex align-items-center justify-content-center" style="padding: 0.5rem;">
+                    <div class="col-12 mb-3">
+                        <div class="row align-items-start justify-content-center mb-3" style="gap:10px;">
+                            <div class="col-12 col-md-3 mb-2 mb-md-0 ">
+                                <input class="date form-control  bttn" type="date" name="" id=""
+                                    [(ngModel)]="selectedDate">
+                            </div>
+                            <div class="col-12 col-md-3 mb-2 mb-md-0">
+                                <button class="btn btn-secondary w-100 bttn" (click)="getData()">Get Data</button>
+                            </div>
+                            <div class="col-12 col-md-3 mb-2 mb-md-0">
+                                <button class="btn btn-secondary w-100 bttn" (click)="refresh()">Refresh</button>
+                            </div>
+                            <div class="col-12 col-md-1 mb-2  export-icon me-2"
+                                (click)="getSubscriberImportReport(2)">
+                                <img src="/assets/images/icons/Excel.png" alt="Excel Icon">
+                            </div>
+                            <div class="col-12 col-md-1 mb-2  export-icon" (click)="getSubscriberImportReport(1)">
+                                <img src="/assets/images/icons/pdf.png" alt="PDF Icon">
+                            </div>
+                        </div>
+
+                        <ag-grid-angular #agGrid id="myGrid" domLayout='normal' class="ag-theme-alpine table-class"
+                            rowAnimation [rowSelection]="rowSelection" [gridOptions]="gridOptions"
+                            [columnDefs]="columnDefs" [rowData]="rowData" [enableCellTextSelection]="true">
+                        </ag-grid-angular>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
-
 
 
 

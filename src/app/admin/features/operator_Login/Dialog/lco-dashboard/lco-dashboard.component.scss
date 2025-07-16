@@ -1,6 +1,7 @@
-.display{
+.display {
     display: flex;
 }
+
 ::ng-deep .select2-container {
     width: 100% !important;
 }
@@ -17,7 +18,6 @@
 
 ::ng-deep .select2-container--default .select2-selection--single .select2-selection__arrow {
     top: 13px;
-
 }
 
 .bttn1 {

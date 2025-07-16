@@ -127,27 +127,29 @@ export class SpeciallcotransferComponent implements OnInit {
   columnDefs: ColDef[] = [
     { headerName: "S.No", lockPosition: true, valueGetter: 'node.rowIndex+1', cellClass: 'locked-col', width: 100, suppressNavigable: true, sortable: false, filter: false },
     { headerName: "SMARTCARD", field: 'smartcard', width: 250 },
-    { headerName: "LCO NAME", field: 'operatorname', width: 200, cellStyle: { textAlign: 'left', }, },
+    { headerName: "LCO NAME", field: 'lconame', width: 200, cellStyle: { textAlign: 'left', }, },
     { headerName: "REMARKS", field: 'remarks', width: 200 },
-    { headerName: "PACKAGE NAME", field: 'packagename', width: 200 },
-    { headerName: "NO OF DAYS", field: 'days', width: 200 },
+    // { headerName: "STATUS ", field: 'status', width: 200 },
+    // { headerName: "STREET", field: 'remarks', width: 200 },
+    // { headerName: "PACKAGE NAME", field: 'packagename', width: 200 },
+    // { headerName: "NO OF DAYS", field: 'days', width: 200 },
     {
       headerName: "STATUS",
       field: 'status',
-      width: 200,
+      width: 300,
       cellRenderer: (params: any) => {
         if (params.value === 'Success') {
           return `<span style="color: green;">${params.value}</span>`;
-        } else if (params.value === 'Please recharge') {
+        } else if (params.value === 'Smartcard Not Exist') {
           return `<span style="color: red;">${params.value}</span>`;
-        } else if (params.value === 'Connection Testing') {
-          return `<span style="color: orange;">${params.value}</span>`;
+        } else  {
+          return `<span style="color:rgb(0, 17, 20);">${params.value}</span>`;
         }
         return params.value;
       }
     },
     { headerName: "CREATED DATE	", field: 'createddate', width: 220 },
-    { headerName: "END DATE	", field: 'expirydate', width: 220 },
+    // { headerName: "END DATE	", field: 'expirydate', width: 220 },
   ];
   submit(): void {
     if (this.file) {
@@ -239,7 +241,7 @@ export class SpeciallcotransferComponent implements OnInit {
     console.log(this.selectedDate);
     console.log(this.date);
 
-    this.userservice.getBulkOperationListByDate(this.role, this.username, 'lco_transfer', dateToPass, 12)
+    this.userservice.getBulkOperationListByDate(this.role, this.username, 'bulk_lco_change', dateToPass, 12)
       .subscribe(
         (response: HttpResponse<any[]>) => { // Expect HttpResponse<any[]>
           if (response.status === 200) {
@@ -267,7 +269,7 @@ export class SpeciallcotransferComponent implements OnInit {
 
   }
   refresh() {
-    this.userservice.getBulkOperationRefreshList(this.role, this.username, 'lco_transfer', 12)
+    this.userservice.getBulkOperationRefreshList(this.role, this.username, 'bulk_lco_change', 12)
       .subscribe(
         (response: HttpResponse<any[]>) => { // Expect HttpResponse<any[]>
           if (response.status === 200) {
@@ -300,7 +302,7 @@ export class SpeciallcotransferComponent implements OnInit {
     console.log('Date passed to report:', dateToPass);
 
     this.userservice
-      .getBulkFirstTimeActivationDownload(this.role, this.username, dateToPass, 'lco_transfer', 12, type)
+      .getBulkFirstTimeActivationDownload(this.role, this.username, dateToPass, 'bulk_lco_change', 12, type)
       .subscribe(
         (x: Blob) => {
           if (type === 1) {

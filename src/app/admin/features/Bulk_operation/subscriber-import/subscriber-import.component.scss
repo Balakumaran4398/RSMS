@@ -54,3 +54,12 @@ p {
     padding: 20px;
     background-color: antiquewhite;
 }
+.btn {
+    color: var(--primary-color);
+    background-color: lightgray;
+}
+
+.btn:hover {
+    color: white;
+    background-color: var(--primary-color);
+}

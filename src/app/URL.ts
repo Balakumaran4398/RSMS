@@ -18,6 +18,7 @@ export default class URLs {
         // return 'http://rdigital.ridsys.in:8585/rsms/api/auth';   //rdigital
         // return 'http://deenet.ridsys.in:8585/rsms/api/auth';   //deenet
         // return 'http://192.168.0.39:8585/rsms/api/auth';   // siddeshwar
+        // return 'http://192.168.0.39:8585/rsms/api/auth';   // siddeshwar
     }
 
     static BASE_URL(): String {

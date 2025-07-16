@@ -165,7 +165,12 @@ export class LcoDashboardComponent implements OnInit {
   }
   submit() {
     this.rowData = [];
-    this.userService.getCortonBoxDetails(this.role, this.username, this.model, this.cortonBox)
+    const cortobox = this.cortonBox && this.cortonBox.length > 0 ? this.cortonBox : [0];
+    console.log(cortobox);
+    console.log(this.cortonBox);
+
+
+    this.userService.getCortonBoxDetails(this.role, this.username, this.model, cortobox)
       .subscribe((data: any) => {
         this.rowData = data;
         console.log(data);
@@ -173,6 +178,59 @@ export class LcoDashboardComponent implements OnInit {
       }, (err) => {
         this.swal.Error3(err?.error?.message || err?.error);
       });
+  }
+  CortonBoxList: any[] = [];
+  // getCortonboxFiltered(cortonbox1: any) {
+  //    this.rowData = [];
+  //   console.log("Selected/deselected item:", cortonbox1);
+  //   console.log("Selected/deselected item:", cortonbox1.source.value);
+  //   // this.CortonBoxList = cortonbox1.source.value;
+  //   this.CortonBoxList = cortonbox1;
+
+  //   console.log("Current selected items (cortonBox):", this.CortonBoxList);
+  //   const cortobox = this.CortonBoxList && this.CortonBoxList.length > 0 ? this.CortonBoxList : [0];
+  //   console.log(cortobox);
+  //   console.log(this.CortonBoxList);
+
+
+  //   this.userService.getCortonBoxDetails(this.role, this.username, this.model, cortobox)
+  //     .subscribe((data: any) => {
+  //       this.rowData = data;
+  //       console.log(data);
+  //       // this.swal.success(data?.message);
+  //     }, (err) => {
+  //       this.swal.Error3(err?.error?.message || err?.error);
+  //     });
+  // }
+
+
+
+  getCortonboxFiltered(event: any) {
+    console.log(event);
+    this.rowData = [];
+    const CortonBoxList = event.source.value;
+    console.log("Clicked item (only one):", CortonBoxList);
+
+    // Get full selected list from ngModel or form control
+    console.log("✅ Full selected list:", this.cortonBox);
+
+    // Use full list for API
+    this.CortonBoxList = event.source.value;
+    console.log('1113235w4etfgrestf', this.CortonBoxList);
+
+    const cortobox = this.CortonBoxList.length > 0 ? this.CortonBoxList : [0];
+
+    console.log("📦 Final cartonBox list sent to API:", cortobox);
+
+    this.userService.getCortonBoxDetails(this.role, this.username, this.model, cortobox)
+      .subscribe(
+        (data: any) => {
+          this.rowData = data;
+        },
+        (err) => {
+          this.swal.Error3(err?.error?.message || err?.error);
+        }
+      );
   }
   getLcoTransferCortonBoxList(model: any) {
     console.log(model);
@@ -374,9 +432,8 @@ export class LcoDashboardComponent implements OnInit {
       this.columnDefs = [
         { headerName: "S.No", lockPosition: true, valueGetter: 'node.rowIndex+1', width: 90, filter: false, headerCheckboxSelection: true, checkboxSelection: true, },
         { headerName: 'SMARTCARD', field: 'smartcard', width: 400, },
-        { headerName: 'BOX ID	', field: 'boxid', cellStyle: { textAlign: 'center', color: 'green' }, width: 300, },
-        { headerName: 'CORTON BOX', field: 'cottonbox', width: 300, },
-        { headerName: 'MODEL', field: 'model', width: 200, },
+        { headerName: 'BOX ID	', field: 'boxid', cellStyle: { textAlign: 'center', color: 'green' }, width: 400, },
+        { headerName: 'CORTON BOX', field: 'cartonbox', width: 400, },
         { headerName: 'CHIP ID', field: 'chipid', width: 300, },
       ]
     } else if (this.type == 13) {

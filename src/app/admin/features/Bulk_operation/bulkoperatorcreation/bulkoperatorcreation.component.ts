@@ -61,7 +61,7 @@ export class BulkoperatorcreationComponent implements OnInit {
     if (this.role == 'ROLE_SUBLCO') {
       this.subLCOdetails();
     }
-    if(this.role == 'ROLE_ADMIN'){
+    if (this.role == 'ROLE_ADMIN') {
       this.refresh();
     }
   }
@@ -140,28 +140,22 @@ export class BulkoperatorcreationComponent implements OnInit {
 
   columnDefs: ColDef[] = [
     { headerName: "S.No", lockPosition: true, valueGetter: 'node.rowIndex+1', cellClass: 'locked-col', width: 100, suppressNavigable: true, sortable: false, filter: false },
-    { headerName: "SMARTCARD", field: 'smartcard', width: 250 },
-    { headerName: "LCO NAME", field: 'operatorname', width: 200, cellStyle: { textAlign: 'left', }, },
-    { headerName: "REMARKS", field: 'remarks', width: 200 },
-    { headerName: "PACKAGE NAME", field: 'packagename', width: 200 },
-    { headerName: "NO OF DAYS", field: 'days', width: 200 },
-    {
+    { headerName: "LCO NAME", field: 'smartcard', width: 200, cellStyle: { textAlign: 'left', }, },
+     {
       headerName: "STATUS",
       field: 'status',
-      width: 200,
+      width: 300,
       cellRenderer: (params: any) => {
-        if (params.value === 'Success') {
+        if (params.value === 'Operator Created Successfully') {
           return `<span style="color: green;">${params.value}</span>`;
-        } else if (params.value === 'Please recharge') {
-          return `<span style="color: red;">${params.value}</span>`;
-        } else if (params.value === 'Connection Testing') {
-          return `<span style="color: orange;">${params.value}</span>`;
+        }  else  {
+          return `<span style="color:rgb(202, 26, 2);">${params.value}</span>`;
         }
         return params.value;
       }
     },
+    { headerName: "REMARKS", field: 'remarks', width: 200 },
     { headerName: "CREATED DATE	", field: 'createddate', width: 220 },
-    { headerName: "END DATE	", field: 'expirydate', width: 220 },
   ];
   submit() {
     this.submitted = true;

@@ -142,8 +142,7 @@
             <ul class="side-dropdown">
                 <li *ngIf="navigationList.fingerprint"> <a
                         (click)="navgetToUrl('/finger_print');setActiveLinkTab($event)"><i
-                            class="fas fa-fingerprint fa-lg icon ">&nbsp;</i>Finger
-                        Print</a> </li>
+                            class="fas fa-fingerprint fa-lg icon ">&nbsp;</i>Finger Print</a> </li>
                 <li *ngIf="navigationList.scrolling"><a (click)="navgetToUrl('/scrolling');setActiveLinkTab($event)"><i
                             class="fa fa-fw fa-gear icon">&nbsp;</i>Scrolling </a>
                 </li>
@@ -152,8 +151,7 @@
                         Message Details</a></li>
                 <li *ngIf="navigationList.forcetuning"><a
                         (click)="navgetToUrl('/fource_tuning');setActiveLinkTab($event)">
-                        <i class="fa fa-fw fa-circle-o icon">&nbsp;</i>Force
-                        Tuning </a></li>
+                        <i class="fa fa-fw fa-circle-o icon">&nbsp;</i>Force Tuning </a></li>
                 <li *ngIf="navigationList.Mail"><a (click)="navgetToUrl('/mail');setActiveLinkTab($event)"> <i
                             class="fa fa-fw fa-comments icon">&nbsp;</i> Mail </a></li>
             </ul>
@@ -164,47 +162,38 @@
             <ul class="side-dropdown">
                 <li *ngIf="navigationList.broadcastermaster"><a
                         (click)="navgetToUrl('/Broadcast');setActiveLinkTab($event)"><i
-                            class="fa fa-fw fa-bullhorn icon">&nbsp;</i>Broadcaster
-                        Master
+                            class="fa fa-fw fa-bullhorn icon">&nbsp;</i>Broadcaster Master
                     </a> </li>
                 <li *ngIf="navigationList.distributormaster"><a
                         (click)="navgetToUrl('/Distributer');setActiveLinkTab($event)"><i
-                            class="fa fa-fw fa-sitemap icon ">&nbsp;</i>Distributor
-                        Master </a> </li>
+                            class="fa fa-fw fa-sitemap icon ">&nbsp;</i>Distributor Master </a> </li>
                 <li *ngIf="navigationList.channel_type_master"><a
                         (click)="navgetToUrl('/Channeltype');setActiveLinkTab($event)"><i
-                            class="fa fa-fw fa-envelope icon">&nbsp;</i> Channel
-                        Type Master </a></li>
+                            class="fa fa-fw fa-envelope icon">&nbsp;</i> Channel Type Master </a></li>
                 <li *ngIf="navigationList.categorymaster"><a
                         (click)="navgetToUrl('/categery');setActiveLinkTab($event)"><i
-                            class="fa fa-fw fa-circle-o icon ">&nbsp;</i> Category
-                        Master </a></li>
+                            class="fa fa-fw fa-circle-o icon ">&nbsp;</i> Category Master </a></li>
                 <li *ngIf="navigationList.channel"><a (click)="navgetToUrl('/Channel');setActiveLinkTab($event)"><i
                             class="fa fa-fw fa-comments icon ">&nbsp;</i> Channel</a>
                 </li>
                 <li *ngIf="navigationList.packagecreation"><a
                         (click)="navgetToUrl('/PackageCreation');setActiveLinkTab($event)">
-                        <i class="fa fa-fw fa-th icon ">&nbsp;</i>Package
-                        Creation </a></li>
+                        <i class="fa fa-fw fa-th icon ">&nbsp;</i>Package Creation </a></li>
                 <li *ngIf="navigationList.addon_package_creation"><a
                         (click)="navgetToUrl('/Addon');setActiveLinkTab($event)">
                         <i class="fa-solid fa-layer-group icon ">&nbsp;</i>Addon Package
                     </a></li>
                 <li *ngIf="navigationList.packagereference"><a
                         (click)="navgetToUrl('/PackageReference');setActiveLinkTab($event)"><i
-                            class="fa-regular fa-snowflake icon ">&nbsp;</i>Package
-                        Reference</a></li>
+                            class="fa-regular fa-snowflake icon ">&nbsp;</i>Package Reference</a></li>
                 <li *ngIf="navigationList.packagemaster"><a (click)="navgetToUrl('/PackageMaster')"
-                        (click)="setActiveLinkTab($event)"><i class="fa fa-fw fa-cubes icon ">&nbsp;</i>Package
-                        Master </a></li>
+                        (click)="setActiveLinkTab($event)"><i class="fa fa-fw fa-cubes icon ">&nbsp;</i>Package Master </a></li>
                 <li *ngIf="username == 'manikandan' && navigationList.lcocommission"><a
                         (click)="navgetToUrl('/LcoCommission');setActiveLinkTab($event)"><i
-                            class="fa fa-fw fa-th-large icon ">&nbsp;</i>Lco
-                        Commission </a></li>
+                            class="fa fa-fw fa-th-large icon ">&nbsp;</i>Lco  Commission </a></li>
                 <li *ngIf="username !== 'manikandan' && navigationList.lcocommission"><a
                         (click)="navgetToUrl('/LcoCommission_credential');setActiveLinkTab($event)"><i
-                            class="fa fa-fw fa-th-large icon ">&nbsp;</i>Lco
-                        Commission </a></li>
+                            class="fa fa-fw fa-th-large icon ">&nbsp;</i>Lco Commission </a></li>
                 <li><a (click)="navgetToUrl('/lcoCommissionDashboard');setActiveLinkTab($event)" class="nav-link">
                         <i class='fas fa-tags icon'></i>&nbsp;Discount</a>
                 </li>
@@ -494,7 +483,7 @@
                 <li *ngIf="!isSubLco"><a (click)="navgetToUrl('/Recurring');setActiveLinkTab($event)"><i
                             class="fa-regular fa-registered icon">&nbsp;</i>Recurring</a>
                 </li>
-              
+
                 <li *ngIf="distributor"><a (click)="navgetToUrl('/special_lcotransfer');setActiveLinkTab($event)">
                         <i class='fas fa-exchange-alt icon'></i> &nbsp;LCO Transfer</a> </li>
                 <li><a (click)="navgetToUrl('/Subscription_Extend');setActiveLinkTab($event)"><i
@@ -641,9 +630,11 @@
                                     }}</a>
                             </div>
                         </div>
-                           <a (click)="startListening('/voice')">🎙️ </a>
+                        <!-- <a (click)="startListening('/voice')">🎙️ </a> -->
+                          <a id="start-btn">🎙️</a>
+                        
                     </div>
-                  
+
                     <div class="d-block">
                         <div class=" d-flex justify-content-between align-items-center mx-2 tooltip-container ">
                             <a class="logout " (click)="logout()">

@@ -1,23 +1,26 @@
-<div class="container">
-  <!-- <h1>🎙️ Voice Detection in Angular</h1> -->
+<!-- <div class="container">
 
-  <input
-    type="text"
-    [(ngModel)]="recognizedText"
-    placeholder="Detected speech will appear here..."
-    readonly
-  />
+    <input type="text" [(ngModel)]="recognizedText" placeholder="Detected speech will appear here..." readonly />
 
-  <br /><br />
+    <br /><br />
 
-  <button (click)="startListening()" [disabled]="isListening">
-    ▶️ Start Listening
-  </button>
+    <button (click)="startListening()" [disabled]="isListening">
+        ▶️ Start Listening
+    </button>
 
-  <button (click)="stopListening()" [disabled]="!isListening">
-    ⏹ Stop
-  </button>
+    <button (click)="stopListening()" [disabled]="!isListening">
+        ⏹ Stop
+    </button>
 
-  <p *ngIf="isListening">Listening... Speak now!</p>
+    <p *ngIf="isListening">Listening... Speak now!</p>
+</div> -->
+
+<!-- <button id="start-btn">Start</button>
+<button id="stop-btn">Stop</button>
+<p id="output"></p> -->
+<div style="text-align: center; margin-top: 50px;">
+  <button id="start-btn">Start</button>
+  <button id="stop-btn">Stop</button>
+  <p id="output">Speak something and it will appear here...</p>
 </div>
 
