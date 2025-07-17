@@ -2473,5 +2473,8 @@ export class BaseService {
   getDashboardMonthwiseFirstTimeActivationDetails(role: any, username: any): Observable<any[]> {
     return this.http.get<any[]>(BASE_URL + "/subscriber/getDashboardMonthwiseFirstTimeActivationDetails?role=" + role + "&username=" + encodeURIComponent(username));
   }
-
+  // =============================================Bulk Package Updation File Upload=================================
+  getUploadFileforPackageUpdation(requestBody: any): Observable<any[]> {
+    return this.http.post<any[]>(BASE_URL + "/bulk/uploadFileforPackageUpdation", requestBody, {});
+  }
 }

@@ -14,11 +14,20 @@ export class RechargeConfirmationComponent {
   role: any;
   username: any;
   requestBody: any[] = [];
+  amount_status: any;
+  lco_Balance: any;
+  totalLCO_amount: any;
+  new_balance: any;
   constructor(public dialogRef: MatDialogRef<BulkpackageupdationComponent>, private swal: SwalService,
     @Inject(MAT_DIALOG_DATA) public data: any, public userservice: BaseService, private cdr: ChangeDetectorRef, public storageService: StorageService) {
     this.username = storageService.getUsername();
     this.role = storageService.getUserRole();
     console.log(data);
+    this.amount_status = data?.Amount_Status;
+    this.lco_Balance = data?.lcoBalance;
+    this.totalLCO_amount = data?.TotalLCO_Amount;
+    this.new_balance = parseFloat((this.lco_Balance - this.totalLCO_amount).toFixed(2));
+    console.log(this.new_balance);
     this.requestBody = data;
   }
   onNoClick(): void {

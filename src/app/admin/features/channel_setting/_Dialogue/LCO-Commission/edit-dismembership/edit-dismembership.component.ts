@@ -44,16 +44,18 @@ export class EditDismembershipComponent implements OnInit {
     this.type = data.type;
     this.distributorid = data.operatorid;
     this.distributor = data.operatorname;
+    console.log(this.distributor);
+
   }
   ngOnInit(): void {
     // this.userservice.getAvailableAndNotAvailableDistributorList(this.role, this.username, this.distributorid).subscribe((data: any) => {
-      this.userservice.getAvailableAndNotAvailableDistributorList(this.role, this.username, this.distributorid).subscribe((data: any) => {
-        this.availableList = data?.available?.map((operator: any) => ({ name: operator.operatorname, id: operator.operatorid })) || [];
-        this.addedList = data?.added?.map((operator: any) => ({ name: operator.operatorname, id: operator.operatorid })) || [];
-        this.filteredAvailableList = [...this.availableList];
-        this.filteredAddedList = [...this.addedList];
+    this.userservice.getAvailableAndNotAvailableDistributorList(this.role, this.username, this.distributorid).subscribe((data: any) => {
+      this.availableList = data?.available?.map((operator: any) => ({ name: operator.operatorname, id: operator.operatorid })) || [];
+      this.addedList = data?.added?.map((operator: any) => ({ name: operator.operatorname, id: operator.operatorid })) || [];
+      this.filteredAvailableList = [...this.availableList];
+      this.filteredAddedList = [...this.addedList];
 
-      });
+    });
     // });
   }
   isSelected(item: string): boolean {
@@ -84,21 +86,27 @@ export class EditDismembershipComponent implements OnInit {
   }
 
   filterAvailableList() {
+    // this.filteredAvailableList = this.availableList.filter(item =>
+    //   item.name.toLowerCase().includes(this.searchTermAvailable.toLowerCase())
+    // );
     this.filteredAvailableList = this.availableList.filter(item =>
-      item.name.toLowerCase().includes(this.searchTermAvailable.toLowerCase())
+      item.name.toLowerCase().includes(this.searchTermAvailable.toLowerCase()) ||
+      item.id.toString().toLowerCase().includes(this.searchTermAvailable.toLowerCase())
     );
+
     this.cdr.detectChanges();
   }
 
   // Filter function for added list
   filterAddedList() {
     this.filteredAddedList = this.addedList.filter(item =>
-      item.name.toLowerCase().includes(this.searchTermAdded.toLowerCase())
+      item.name.toLowerCase().includes(this.searchTermAdded.toLowerCase()) || 
+       item.id.toString().toLowerCase().includes(this.searchTermAdded.toLowerCase())
     );
     this.cdr.detectChanges();
   }
 
-  
+
   moveSelectedItems(direction: 'right' | 'left') {
     console.log(this.selectedIds);
 

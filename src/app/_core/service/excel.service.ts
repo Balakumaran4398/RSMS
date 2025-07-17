@@ -181,6 +181,47 @@ export class ExcelService {
       fs.saveAs(blob, 'Bulk Box Activation.xlsx');
     });
   }
+  async generateBulkPackageUpdationExcel() {
+    const header = ['Smartcard'];
+    const workbook = new Excel.Workbook();
+    const worksheet = workbook.addWorksheet('sheet1');
+    const headerRow = worksheet.addRow(header);
+    headerRow.eachCell((cell) => {
+      cell.fill = {
+        type: 'pattern',
+        pattern: 'solid',
+        fgColor: { argb: '326D41' },
+      };
+      cell.font = {
+        color: { argb: 'FFFFFF' },
+        bold: true,
+      };
+      cell.alignment = {
+        horizontal: 'center',
+        vertical: 'middle',
+      };
+      cell.border = {
+        top: { style: 'thin' },
+        left: { style: 'thin' },
+        bottom: { style: 'thin' },
+        right: { style: 'thin' },
+      };
+    });
+
+    worksheet.getColumn(1).width = 30;
+   
+
+    headerRow.height = 30;
+
+    worksheet.addRow([]);
+
+    workbook.xlsx.writeBuffer().then((data: any) => {
+      const blob = new Blob([data], {
+        type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+      });
+      fs.saveAs(blob, 'Bulk Package Updation.xlsx');
+    });
+  }
   async generateInventoryUpload() {
     const header = ['Smartcard', 'Box ID','Chip ID','Model'];
     const workbook = new Excel.Workbook();
@@ -261,53 +302,7 @@ export class ExcelService {
     });
   }
   async generateOpearateCreationExcel() {
-    // const header = ['LCO NAME', 'MODEL', 'EMAIL', 'ADDRESS', 'AREA NAME', 'STATE', 'PINCODE', 'USER ID', 'PASSWORD', 'BUSINESS NAME'];
-
-    // const workbook = new Excel.Workbook();
-    // const worksheet = workbook.addWorksheet('Sharing Data');
-    // const headerRow = worksheet.addRow(header);
-    // headerRow.eachCell((cell) => {
-    //   cell.fill = {
-    //     type: 'pattern',
-    //     pattern: 'solid',
-    //     fgColor: { argb: '326D41' },
-    //   };
-    //   cell.font = {
-    //     color: { argb: 'FFFFFF' },
-    //     bold: true,
-    //   };
-    //   cell.alignment = {
-    //     horizontal: 'center',
-    //     vertical: 'middle',
-    //   };
-    //   cell.border = {
-    //     top: { style: 'thin' },
-    //     left: { style: 'thin' },
-    //     bottom: { style: 'thin' },
-    //     right: { style: 'thin' },
-    //   };
-    // });
-    // worksheet.getColumn(1).width = 30;
-    // worksheet.getColumn(2).width = 20;
-    // worksheet.getColumn(3).width = 30;
-    // worksheet.getColumn(4).width = 30;
-    // worksheet.getColumn(5).width = 20;
-    // worksheet.getColumn(6).width = 20;
-    // worksheet.getColumn(7).width = 20;
-    // worksheet.getColumn(8).width = 20;
-    // worksheet.getColumn(9).width = 20;
-    // worksheet.getColumn(10).width = 30;
-    // headerRow.height = 30;
-    // worksheet.addRow([]);
-    // workbook.xlsx.writeBuffer().then((data: any) => {
-    //   const blob = new Blob([data], {
-    //     type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
-    //   });
-    //   fs.saveAs(blob, 'Bulk Operate Creation.xlsx');
-    // });
-
-
-    const ws1Header = ['LCO NAME', 'MOBILE', 'EMAIL', 'ADDRESS', 'AREA NAME', 'STATE', 'PINCODE', 'USER ID', 'PASSWORD', 'BUSINESS NAME'];
+     const ws1Header = ['LCO NAME', 'MOBILE', 'EMAIL', 'ADDRESS', 'AREA NAME', 'STATE', 'PINCODE', 'USER ID', 'PASSWORD', 'BUSINESS NAME'];
     const ws2SubHeader = ['Field Name', 'Data Format', 'Mandatory'];
     const values1 = [
       ['LCO NAME', 'String', 'Yes'],
@@ -596,15 +591,10 @@ export class ExcelService {
       fs.saveAs(blob, `Channel Details.xlsx`);
     });
   }
-
-
-
   async generateIMAGEExcel(areatitle: string, headers: any, dataRow: any[], titles: any, cellSize: any, areasub: any, sub: any) {
-
     const subtitle = sub;
     const title = titles;
     const header = headers;
-
     const workbook = new Excel.Workbook();
     const worksheet = workbook.addWorksheet('Sheet 1');
 

@@ -80,6 +80,15 @@ export class BulkpackageupdationComponent implements OnInit {
   lcoid: any;
   fromdate: any;
   todate: any;
+
+  file: File | null = null;
+  filePath: string = '';
+  isFileSelected: boolean = false;
+  submitted: boolean = false;
+
+  amount_status: any;
+  lco_Balance: any;
+  totalLCO_amount: any;
   constructor(public dialogRef: MatDialogRef<BulkpackageupdationComponent>, private swal: SwalService, public dialog: MatDialog,
     @Inject(MAT_DIALOG_DATA) public data: any, public userservice: BaseService, private cdr: ChangeDetectorRef, public storageService: StorageService) {
     this.username = storageService.getUsername();
@@ -87,6 +96,7 @@ export class BulkpackageupdationComponent implements OnInit {
     console.log(data);
     this.plan = data?.plan;
     this.date = data?.date;
+    this.file = data?.file;
     this.dateTodate = data?.dateTodate;
     console.log('plan=', this.plan + '     ' + 'date=', this.date + '     ' + 'dateTodate=', this.dateTodate);
     this.lcoid = data.retailerid;
@@ -114,20 +124,20 @@ export class BulkpackageupdationComponent implements OnInit {
   packagePlan: any;
   ngOnInit(): void {
     this.getPlanList();
-    this.userservice.Finger_print_List(this.role, this.username).subscribe((data) => {
-      this.cas = Object.entries(data[0].caslist).map(([key, value]) => ({ name: key, id: value }));
-      this.filteredCasList = this.cas;
-    })
-    this.userservice.getBulkPackageList(this.role, this.username, this.castype).subscribe((data: any) => {
-      console.log(data);
-      this.lcomembershipList = Object.keys(data).map(key => {
-        const value = data[key];
-        const name = key;
-        return { name: name, value: value };
-      });
-      console.log(this.lcomembershipList);
-      this.filteredPackage = this.lcomembershipList
-    });
+    // this.userservice.Finger_print_List(this.role, this.username).subscribe((data) => {
+    //   this.cas = Object.entries(data[0].caslist).map(([key, value]) => ({ name: key, id: value }));
+    //   this.filteredCasList = this.cas;
+    // })
+    // this.userservice.getBulkPackageList(this.role, this.username, this.castype).subscribe((data: any) => {
+    //   console.log(data);
+    //   this.lcomembershipList = Object.keys(data).map(key => {
+    //     const value = data[key];
+    //     const name = key;
+    //     return { name: name, value: value };
+    //   });
+    //   console.log(this.lcomembershipList);
+    //   this.filteredPackage = this.lcomembershipList
+    // });
     this.userservice.getActivePackagePlanList(this.role, this.username).subscribe((data: any) => {
       this.packagePlan = data;
       const sortedData = Object.entries(data)
@@ -145,7 +155,11 @@ export class BulkpackageupdationComponent implements OnInit {
         }
       }
     });
+    console.log(this.Type);
 
+    // if (this.Type == 'bulk') {
+    //   this.changePlan();
+    // }
   }
 
 
@@ -199,10 +213,14 @@ export class BulkpackageupdationComponent implements OnInit {
     //   console.log(this.rechargetype);
     // })
 
+    console.log(this.Type);
+    console.log(this.role);
 
     this.userservice.getPlanTypeList(this.role, this.username).subscribe((data: any) => {
       console.log(data);
-      if (this.role != 'ROLE_OPERATOR' && this.role != 'ROLE_SUBLCO' && this.role != 'ROLE_SUBSCRIBER') {
+
+      if (this.role != 'ROLE_OPERATOR' && this.role != 'ROLE_SUBLCO' && this.role != 'ROLE_SUBSCRIBER' && this.role == 'ROLE_ADMIN') {
+
         if (this.fromdate == this.todate) {
           this.rechargetype = Object.keys(data).map(key => {
             const id = data[key];
@@ -216,6 +234,7 @@ export class BulkpackageupdationComponent implements OnInit {
             return { name, id };
           });
           console.log('RAW LIST', rawList);
+      
           if (this.fromdate !== this.todate) {
             console.log('1111', rawList);
             this.rechargetype = rawList.filter(item => {
@@ -239,7 +258,8 @@ export class BulkpackageupdationComponent implements OnInit {
 
 
         this.cdr.detectChanges();
-      } else if (this.role == 'ROLE_OPERATOR' || this.role == 'ROLE_SUBLCO') {
+      }
+      else if (this.role == 'ROLE_OPERATOR' || this.role == 'ROLE_SUBLCO') {
         console.log('123456789rfrd1234567', this.role);
         const rawList = Object.keys(data).map(key => {
           const id = data[key];
@@ -276,8 +296,6 @@ export class BulkpackageupdationComponent implements OnInit {
           this.rechargetype = rawList.filter(item => {
             const name = item.name.toLowerCase();
             if (name === 'plan' && this.plan) return true;
-            // if (name === 'date' && this.date) return true;
-            // if (name === 'date-to-date' && this.dateTodate) return true;
             return false;
           });
         } else {
@@ -321,37 +339,52 @@ export class BulkpackageupdationComponent implements OnInit {
     })
   }
   onSelectionrechargetype(selectedValue: string) {
-    const rechargetype = Number(selectedValue);
-    if (rechargetype == 1) {
-      this.isSubmit = true;
-      this.isplantype = true;
-      this.datetype = false;
-      const defaultPlan = this.plantype$.getValue().find(plan => plan.key === '1month');
-      if (defaultPlan) {
-        this.plantype = defaultPlan.value;
+    if (this.Type == 'excel_upload') {
+      const rechargetype = Number(selectedValue);
+      if (rechargetype == 1) {
+        this.isSubmit = true;
+        this.isplantype = true;
+        this.datetype = false;
+        const defaultPlan = this.plantype$.getValue().find(plan => plan.key === '1month');
+        if (defaultPlan) {
+          this.plantype = defaultPlan.value;
+        }
+        this.isDisabled = false;
+
       }
-      this.isDisabled = false;
+    } else {
+      const rechargetype = Number(selectedValue);
+      if (rechargetype == 1) {
+        this.isSubmit = true;
+        this.isplantype = true;
+        this.datetype = false;
+        const defaultPlan = this.plantype$.getValue().find(plan => plan.key === '1month');
+        if (defaultPlan) {
+          this.plantype = defaultPlan.value;
+        }
+        this.isDisabled = false;
 
-    }
-    if (rechargetype == 2) {
-       this.isSubmit = true;
-      this.isplantype = false;
-      this.datetype = true;
-      this.plantype = 0;
-      this.isDisabled = true;
-      // this.f_date = this.subdetailsList.expiryDate;
+      }
+      if (rechargetype == 2) {
+        this.isSubmit = true;
+        this.isplantype = false;
+        this.datetype = true;
+        this.plantype = 0;
+        this.isDisabled = true;
+        // this.f_date = this.subdetailsList.expiryDate;
 
+      }
+      if (rechargetype == 3) {
+        this.isSubmit = true;
+        this.dateTodate;
+        this.isplantype = false;
+        this.datetype = false;
+        this.plantype = 0;
+        this.f_date = null;
+        this.isDisabled = false;
+      }
+      this.isRecharge = true;
     }
-    if (rechargetype == 3) {
-       this.isSubmit = true;
-      this.dateTodate;
-      this.isplantype = false;
-      this.datetype = false;
-      this.plantype = 0;
-      this.f_date = null;
-      this.isDisabled = false;
-    }
-    this.isRecharge = true;
   }
 
 
@@ -500,7 +533,7 @@ export class BulkpackageupdationComponent implements OnInit {
   onproducttypechange(selectedOperator: any) {
     this.selectedPackage = selectedOperator;
     this.selectedPackageName = selectedOperator.name;
-    this.changePlan();
+    // this.changePlan();
   }
   filterPackage(event: any): void {
     const filterValue = event.target.value.toLowerCase();
@@ -525,16 +558,21 @@ export class BulkpackageupdationComponent implements OnInit {
       packageid: this.packageid || this.data?.packageid || 0,
       plantype: this.plantype,
       // isallpack: this.isallpack,
-      expiredsubscriberlist: this.rowData
+      expiredsubscriberlist: this.rowData,
+      plan: this.selectedRechargetype,
+      retailerid: this.lcoid
 
     }
     // this.swal.Loading();
     this.userservice.bulkPackageUpdaionConfirmation(requestBody)
-      .subscribe((res: any) => {
-        this.rowData1 = res;
-        console.log(this.rowData1);
+      .subscribe((data: any) => {
+        this.amount_status = data?.amountStatus;
+        this.totalLCO_amount = data?.totalLcoAmount;
+        this.lco_Balance = data?.lcoBalance;
+        console.log('1111111111', this.amount_status);
+        console.log('22222222', this.totalLCO_amount);
+        console.log('333333', this.lco_Balance);
 
-        // this.swal.success(res?.message);
       }, (err) => {
         this.swal.Error(err?.error?.message);
       });
@@ -590,6 +628,10 @@ export class BulkpackageupdationComponent implements OnInit {
 
 
   openLoginPage(): void {
+    // this.changePlan();
+    console.log('1111111111', this.amount_status);
+    console.log('22222222', this.totalLCO_amount);
+    console.log('333333', this.lco_Balance);
     let requestBody = {
       role: this.role,
       username: this.username,
@@ -600,19 +642,90 @@ export class BulkpackageupdationComponent implements OnInit {
       isallpack: this.isallpack,
       expiredsubscriberlist: this.rowData,
       retailerid: this.lcoid || 0,
+      lcoBalance: this.lco_Balance,
+      TotalLCO_Amount: this.totalLCO_amount,
+      Amount_Status: this.amount_status
     }
     let width = '500px';
     console.log(requestBody);
 
-    const dialogRef = this.dialog.open(RechargeConfirmationComponent, {
-      width: width,
-      // maxWidth: '100vw',
-      panelClass: 'custom-dialog-container',
-      data: requestBody
-    });
+    // const dialogRef = this.dialog.open(RechargeConfirmationComponent, {
+    //   width: width,
+    //   // maxWidth: '100vw',
+    //   panelClass: 'custom-dialog-container',
+    //   data: requestBody
+    // });
 
-    dialogRef.afterClosed().subscribe(result => {
-      console.log('The dialog was closed');
-    });
+    // dialogRef.afterClosed().subscribe(result => {
+    //   console.log('The dialog was closed');
+    // });
+
+    this.userservice.bulkPackageUpdaionConfirmation(requestBody)
+      .subscribe((data: any) => {
+        this.amount_status = data?.amountStatus;
+        this.totalLCO_amount = data?.totalLcoAmount;
+        this.lco_Balance = data?.lcoBalance;
+
+        console.log('1111111111', this.amount_status);
+        console.log('22222222', this.totalLCO_amount);
+        console.log('333333', this.lco_Balance);
+
+        const dialogRef = this.dialog.open(RechargeConfirmationComponent, {
+          width: '500px',
+          panelClass: 'custom-dialog-container',
+          data: {
+            role: this.role,
+            username: this.username,
+            operatorid: 1,
+            packageid: this.packageid || this.data?.packageid || 0,
+            plan: this.plantype || this.f_date || 4,
+            plantype: this.selectedRechargetype,
+            isallpack: this.isallpack,
+            expiredsubscriberlist: this.rowData,
+            retailerid: this.lcoid || 0,
+            lcoBalance: this.lco_Balance,
+            TotalLCO_Amount: this.totalLCO_amount,
+            Amount_Status: this.amount_status
+          }
+        });
+
+        dialogRef.afterClosed().subscribe(result => {
+          console.log('The dialog was closed');
+        });
+
+      }, (err) => {
+        this.swal.Error(err?.error?.message);
+      });
+  }
+
+
+  getBulkPackageUpdation() {
+    console.log(this.file);
+    this.submitted = true;
+    if (this.file) {
+      console.log(this.file);
+      const formData = new FormData();
+      formData.append('role', this.role);
+      formData.append('username', this.username);
+      formData.append('file', this.file);
+      formData.append('type', '11');
+      formData.append('plan', this.selectedRechargetype);
+      formData.append('planid', this.plantype || this.f_date || 4,);
+      formData.append('retailerid', '0');
+      this.swal.Loading();
+      this.userservice.getUploadFileforPackageUpdation(formData)
+        .subscribe((res: any) => {
+          this.swal.success(res?.message);
+        }, (err) => {
+          this.swal.Error(err?.error?.message);
+        });
+    } else {
+      Swal.fire({
+        title: 'Error!',
+        text: 'No file selected. Please choose a file to upload.',
+        icon: 'error',
+        confirmButtonText: 'OK'
+      });
+    }
   }
 }

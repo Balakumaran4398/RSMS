@@ -11,6 +11,8 @@ import Swal from 'sweetalert2';
 import { EditInventoryComponent } from '../../channel_setting/_Dialogue/Inventory/edit-inventory/edit-inventory.component';
 import { BulkpackageupdationComponent } from '../../channel_setting/_Dialogue/BULK OPERATION/bulkpackageupdation/bulkpackageupdation.component';
 import { from, Observable } from 'rxjs';
+import { ExcelService } from 'src/app/_core/service/excel.service';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-bulk-page-updation',
@@ -56,6 +58,10 @@ export class BulkPageUpdationComponent implements OnInit {
   isplan: any;
   isdate: any;
   isDatetoDate: any;
+
+  file: File | null = null;
+  filePath: string = '';
+  isFileSelected: boolean = false;
 
   type: any = [
     { label: "Select filter Type", value: 0 },
@@ -120,6 +126,7 @@ export class BulkPageUpdationComponent implements OnInit {
     },
 
   }
+
   selectRowsBasedOnUsername(params: { api: { forEachNode: (arg0: (node: any) => void) => void; }; }) {
     params.api.forEachNode((node) => {
       if (node.data) {
@@ -148,7 +155,7 @@ export class BulkPageUpdationComponent implements OnInit {
     this.fetchPackageList();
   }
   columnDefs: any;
-  constructor(public dialog: MatDialog, private fb: FormBuilder, private userservice: BaseService, private cdr: ChangeDetectorRef, private storageService: StorageService, private swal: SwalService) {
+  constructor(public dialog: MatDialog, private snackBar: MatSnackBar, private fb: FormBuilder, private excelService: ExcelService, private userservice: BaseService, private cdr: ChangeDetectorRef, private storageService: StorageService, private swal: SwalService) {
     this.username = storageService.getUsername();
     this.role = storageService.getUserRole();
     this.columnDefs = [
@@ -243,7 +250,7 @@ export class BulkPageUpdationComponent implements OnInit {
             this.gridOptions.paginationPageSizeSelector.push(rowCount);
           }
 
-          this.swal.Success_200();
+          // this.swal.Success_200();
           successCallback();
         } else if (response.status === 204) {
           this.swal.Success_204();
@@ -297,8 +304,6 @@ export class BulkPageUpdationComponent implements OnInit {
       () => console.log('Success for Bulk Package 2'),
       () => console.log('Error for Bulk Package 2')
     );
-
-
     this.service();
     // this.fetchPackageList();
     this.fetchOperatorList();
@@ -604,9 +609,10 @@ export class BulkPageUpdationComponent implements OnInit {
   }
 
   openLoginPage(data: any, rowData: any): void {
-    
-    
+
     console.log(data);
+    console.log(this.retailerid);
+
     const dataToSend = {
       status: data,
       rowData: this.rows,
@@ -617,22 +623,69 @@ export class BulkPageUpdationComponent implements OnInit {
       plan: this.isplan,
       date: this.isdate,
       dateTodate: this.isDatetoDate,
-      retailerid: this.retailerid,
+      retailerid:this.operatorid || this.lcoId||this.retailerid ,
+      file: this.file
     };
     let width = '600px';
     console.log(dataToSend);
-    if (data = 'bulk') {
-      width = '2000px';
-    }
-    const dialogRef = this.dialog.open(BulkpackageupdationComponent, {
-      width: width,
-      maxWidth: '100vw',
-      panelClass: 'custom-dialog-container',
-      data: dataToSend
-    });
 
-    dialogRef.afterClosed().subscribe(result => {
-      console.log('The dialog was closed');
-    });
+    if (data === 'bulk') {
+      width = '2000px';
+    } else if (data === 'excel_upload') {
+      width = '800px';
+    }
+
+    if (data === 'excel_upload') {
+      if (this.file) {
+        const dialogRef = this.dialog.open(BulkpackageupdationComponent, {
+          width: width,
+          maxWidth: '100vw',
+          panelClass: 'custom-dialog-container',
+          data: dataToSend
+        });
+
+        dialogRef.afterClosed().subscribe(result => {
+          console.log('The dialog was closed');
+        });
+      } else {
+        console.error('Please select a file to upload.');
+        this.snackBar.open('Please select a valid file before uploading.', 'Close', {
+          duration: 3000,
+        });
+      }
+    } else {
+      const dialogRef = this.dialog.open(BulkpackageupdationComponent, {
+        width: width,
+        maxWidth: '100vw',
+        panelClass: 'custom-dialog-container',
+        data: dataToSend
+      });
+
+      dialogRef.afterClosed().subscribe(result => {
+        console.log('The dialog was closed');
+      });
+    }
+
+
+  }
+
+
+
+  generateExcel() {
+    this.excelService.generateBulkPackageUpdationExcel();
+  }
+  handleFileInput(event: Event): void {
+    console.log(event);
+    const input = event.target as HTMLInputElement;
+    if (input.files && input.files.length > 0) {
+      this.isFileSelected = true;
+      this.file = input.files[0];
+      this.filePath = input.files[0].name;
+      console.log(this.file);
+    } else {
+      this.isFileSelected = false;
+      this.file = null;
+      this.filePath = '';
+    }
   }
 }

@@ -4,6 +4,8 @@
             BULK PACKAGE UPDATION</p>
     </div>
     <div class=" tablist justify-content-center align-items-center my-3 new_d">
+        <div class="tab mb-3 bttn" [class.active]="selectedTab === 'excel_upload'" (click)="selectbulk('excel_upload')">
+            EXCEL UPLOAD </div>
         <div class="tab mb-3 bttn" [class.active]="selectedTab === 'bulk_package'" (click)="selectbulk('bulk_package')">
             BULK PACKAGE </div>
         <div class="tab mb-3 bttn" [class.active]="selectedTab === 'pending'" (click)="selectPending('pending')">PENDING
@@ -12,6 +14,7 @@
             ARCHIVE
         </div>
     </div>
+
     <div *ngIf="selectedTab === 'bulk_package'" class="commission">
         <div class="col-12 col-md-12  box  display justify-content-center align-items-center ">
             <div class="checkbox-text mb-3 mx-2">
@@ -247,5 +250,19 @@
             </div>
         </div>
     </div>
-
+    <div *ngIf="selectedTab === 'excel_upload'" class="commission1">
+        <div class="col-12 col-md-12 box  ">
+            <div class="dropbox display" id="dropbox">
+                <div class="dropbox-icon">📁</div>
+                <div class="dropbox-text">Drop files here</div>
+                <a class="mb-3" (click)="generateExcel()" style="cursor: pointer;">* Download Format File</a>
+                <div class="display">
+                    <input type="file" #fileInput hidden accept=".xls,.xlsx,.csv" (change)="handleFileInput($event)" />
+                    <button class="browse-btn mx-3" (click)="fileInput.click()">Browse Files</button>
+                    <button type="submit" class="upload-btn" (click)="openLoginPage('excel_upload','')">Submit</button>
+                </div>
+                <span style="color:#0a21d0">{{ filePath }} </span>
+            </div>
+        </div>
+    </div>
 </section>

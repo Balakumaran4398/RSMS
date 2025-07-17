@@ -157,12 +157,6 @@
                             <span for="">Plan </span>
                         </div>
                         <div class="col-12 col-md-6">
-                            <!-- <select [(ngModel)]="plantype" (ngModelChange)="changePlan()">
-                                <option value="0" selected disabled>Selected Plan</option>
-                                <option *ngFor="let plan of plantype$ | async" [value]="plan.value">
-                                    {{ plan.key }}
-                                </option>
-                            </select> -->
                             <select [(ngModel)]="plantype">
                                 <option value="0" selected disabled>Selected Plan</option>
                                 <option *ngFor="let plan of plantype$ | async" [value]="plan.value">
@@ -190,6 +184,45 @@
                     <!-- <button type="button" class="btn btn-primary me-2" (click)="Submit()">Submit</button> -->
                     <button type="button" class="btn btn-secondary" (click)="onNoClick()">Cancel</button>
                 </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div *ngIf="Type=='excel_upload'">
+    <div class="Head d-flex justify-content-between align-items-center mb-3">
+        <h6>Bulk Package Updation File Upload</h6>
+        <i class="fa fa-close close-icon" style="cursor: pointer;" (click)="onNoClick()"></i>
+    </div>
+    <div class=" col-12 col-sm-6  mb-3 mobile2">
+        <div class="card d-flex justify-content-center align-item-center mb-3 ">
+            <div class="col-12 col-md-12 input_box ">
+                <select [(ngModel)]="selectedRechargetype" (ngModelChange)="onSelectionrechargetype($event)">
+                    <option value="0" selected>Selected Recharge Type</option>
+                    <option *ngFor="let rt of rechargetype" [value]="rt.id">
+                        {{rt.name}}
+                    </option>
+                </select>
+            </div>
+            <div class="input_box  mb-3" style="margin-top: 2%;">
+                <div *ngIf="isplantype" class="col-12 col-md-10 display align-items-center justify-content-center ">
+                    <div class="col-12 col-md-4">
+                        <span for="">Plan </span>
+                    </div>
+                    <div class="col-12 col-md-6">
+                        <select [(ngModel)]="plantype">
+                            <option value="0" selected disabled>Selected Plan</option>
+                            <option *ngFor="let plan of plantype$ | async" [value]="plan.value">
+                                {{ plan.key }}
+                            </option>
+                        </select>
+                    </div>
+                </div>
+                
+            </div>
+            <div class="form-group d-flex justify-content-center align-items-center  mb-1">
+                <!-- <button type="button" class="btn btn-primary me-2 " [disabled]="!isSubmit" (click)="openLoginPage()">Submit</button> -->
+                <button type="button" class="btn btn-primary me-2" (click)="getBulkPackageUpdation()">Submit</button>
+                <button type="button" class="btn btn-secondary" (click)="onNoClick()">Cancel</button>
             </div>
         </div>
     </div>

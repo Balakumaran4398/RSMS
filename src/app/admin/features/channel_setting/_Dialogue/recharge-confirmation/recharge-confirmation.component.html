@@ -15,7 +15,7 @@
                             <span class="me-2">:</span>
                         </div>
                         <div class="col-5 col-md-5 value">
-                            <!-- {{bulkDatas?.operatorname}} -->
+                            {{lco_Balance}}
                         </div>
                     </div>
                 </div>
@@ -29,27 +29,28 @@
                         </div>
 
                         <div class="col-5 col-md-5 value">
-                            <!-- {{bulkDatas?.mobileno}} -->
+                            {{totalLCO_amount}}
                         </div>
                     </div>
                 </div>
                 <div class="input_box  mb-3">
                     <div class="d-flex align-items-center justify-content-center">
                         <div class="col-5 col-md-5">
-                            <span class="me-2">Remaining Amount</span>
+                            <span class="me-2">New Balance</span>
                         </div>
                         <div class="col-1 col-md-1">
                             <span class="me-2">:</span>
                         </div>
                         <div class="col-5 col-md-5 value">
-                            <!-- {{bulkDatas?.operatorid}} -->
+                            {{new_balance}}
                         </div>
                     </div>
                 </div>
             </div>
             <div class="col-12 col-md-12 d-flex justify-content-center align-item-center mb-3">
                 <div class="d-flex align-item-center mx-3">
-                    <button type="submit" class="btn btn-success me-2" (click)="submit()" >Update</button>
+                    <button type="submit" class="btn btn-success me-2" [disabled]="!amount_status"
+                        (click)="submit()">Update</button>
                     <button type="button" class="btn btn-danger" (click)="onNoClick()">Cancel</button>
                 </div>
             </div>
