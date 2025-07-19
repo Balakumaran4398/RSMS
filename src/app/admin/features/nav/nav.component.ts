@@ -551,22 +551,27 @@ export class NavComponent implements OnInit, AfterViewInit {
     recognition.interimResults = false;
 
     const output = document.querySelector("#output");
-    const startBtn = document.querySelector("#start-btn");
-    const stopBtn = document.querySelector("#stop-btn");
+    // const startBtn = document.querySelector("#start-btn");
+    // const stopBtn = document.querySelector("#stop-btn");
+    const startBtn: HTMLElement | null = document.getElementById('stop-btn');
+    const stopBtn: HTMLElement | null = document.getElementById('start-btn');
 
-    console.log('Start Button:', startBtn);
-    console.log('Stop Button:', stopBtn);
+    if (startBtn && stopBtn) {
+      startBtn.addEventListener("click", () => {
+        startBtn.style.display = 'none';
+        stopBtn.style.display = 'inline';
+        console.log('Start Button:', startBtn);
+        recognition.start();
+      });
+
+      stopBtn.addEventListener("click", () => {
+        stopBtn.style.display = 'none';
+        startBtn.style.display = 'inline';
+        console.log('Stop Button:', stopBtn);
+        recognition.stop();
+      });
+    }
     console.log('OUTPUT:', output);
-
-    startBtn?.addEventListener("click", () => {
-      console.log("🎤 Start button clicked. Listening...");
-      recognition.start();
-    });
-
-    stopBtn?.addEventListener("click", () => {
-      console.log("🛑 Stop button clicked.");
-      recognition.stop();
-    });
 
     recognition.addEventListener("result", (event: any) => {
       const transcript = Array.from(event.results)
@@ -579,135 +584,175 @@ export class NavComponent implements OnInit, AfterViewInit {
 
       if (output) {
         output.textContent = transcript;
-      }
+        console.log(output);
 
-      // ✅ Voice command based routing
+      }
+      const navigateIfMatch = (keyword: string, path: string) => {
+        if (transcript.includes(keyword)) {
+          recognition.stop(); // stop listening immediately
+          this.navgetToUrl(path);
+        }
+      };
       if (this.isUser) {
-        if (transcript.includes("dashboard")) {
-          this.navgetToUrl('/home');
-        } else if (transcript.includes("top subscription")) {
-          if (this.username === 'manikandan') {
-            this.navgetToUrl('/top_sub_detail');
-          } else {
-            this.navgetToUrl('/top_subscription');
-          }
-        } else if (transcript.includes("operator details")) {
-          if (this.username === 'manikandan') {
-            this.navgetToUrl('/operator_details');
-          } else {
-            this.navgetToUrl('/lco_recharge/1');
-          }
-        } else if (transcript.includes("lco recharge")) {
-          this.navgetToUrl('/lco_recharge/2');
-        } else if (transcript.includes("admin recharge")) {
-          this.navgetToUrl('/lco_recharge/3');
-        } else if (transcript.includes("finger frint")) {
-          this.navgetToUrl('/finger_print');
-        } else if (transcript.includes("scrolling")) {
-          this.navgetToUrl('/scrolling');
-        } else if (transcript.includes("message details")) {
-          this.navgetToUrl('/message');
-        } else if (transcript.includes("force tuning")) {
-          this.navgetToUrl('/fource_tuning');
-        } else if (transcript.includes("mail")) {
-          this.navgetToUrl('/mail');
-        } else if (transcript.includes("broadcaster master")) {
-          this.navgetToUrl('/Broadcast');
-        } else if (transcript.includes("distributor master")) {
-          this.navgetToUrl('/Distributer');
-        } else if (transcript.includes("channel type master")) {
-          this.navgetToUrl('/Channeltype');
-        } else if (transcript.includes("category master")) {
-          this.navgetToUrl('/categery')
-        } else if (transcript.includes("channel")) {
-          this.navgetToUrl('/Channel')
-        } else if (transcript.includes("package creation")) {
-          this.navgetToUrl('/PackageCreation')
-        } else if (transcript.includes("addon package")) {
-          this.navgetToUrl('/Addon')
-        } else if (transcript.includes("package reference")) {
-          this.navgetToUrl('/PackageReference')
-        } else if (transcript.includes("package master")) {
-          this.navgetToUrl('/PackageMaster')
-        } else if (transcript.includes("lco  commission")) {
+        navigateIfMatch("dashboard", "/home");
+        navigateIfMatch("top subscription", this.username === 'manikandan' ? "/top_sub_detail" : "/top_subscription");
+        navigateIfMatch("operator details", this.username === 'manikandan' ? "/operator_details" : "/lco_recharge/1");
+        navigateIfMatch("lco recharge", "/lco_recharge/2");
+        navigateIfMatch("admin recharge", "/lco_recharge/3");
+        navigateIfMatch("create subscriber", "/Create_sub");
+        navigateIfMatch("subscriber details", "/subscriber");
+        navigateIfMatch("expiry", "/expiry");
+        navigateIfMatch("not allocated", "/not_allacate_smartcard");
+        navigateIfMatch("allocated", "/not_allacate_smartcard");
+        navigateIfMatch("smartcard de allocation", "/smartcard_declaration");
+        navigateIfMatch("smartcard re allocation", "/smartcard_reallocation");
+        navigateIfMatch("defective", "/defective_smart");
+        navigateIfMatch("insert", "/insert_sub");
+        navigateIfMatch("fingerprint", "/finger_print");
+        navigateIfMatch("scrolling", "/scrolling");
+        navigateIfMatch("message", "/message");
+        navigateIfMatch("force tuning", "/fource_tuning");
+        navigateIfMatch("mail", "/mail");
+        navigateIfMatch("broadcaster", "/Broadcast");
+        navigateIfMatch("distributor", "/Distributer");
+        navigateIfMatch("channeltype", "/Channeltype");
+        navigateIfMatch("category", "/categery");
+        navigateIfMatch("channel", "/Channel");
+        navigateIfMatch("package creation", "/PackageCreation");
+        navigateIfMatch("addon package", "/Addon");
+        navigateIfMatch("reference", "/PackageReference");
+        navigateIfMatch("package master", "/PackageMaster");
+        if (transcript.includes("lco commission")) {
+          recognition.stop();
           if (this.username === 'manikandan' && this.navigationList.lcocommission) {
             this.navgetToUrl('/LcoCommission');
           } else {
             this.navgetToUrl('/LcoCommission_credential');
           }
-        } else if (transcript.includes("discount")) {
-          this.navgetToUrl('/lcoCommissionDashboard')
-        } else if (transcript.includes("packagewise operator")) {
-          this.navgetToUrl('/PackagewiseOperator')
-        } else if (transcript.includes("chip id and model")) {
-          this.navgetToUrl('/chipid')
         }
-      } else if (this.isInventory) {
-        if (transcript.includes("inventory")) {
-          this.navgetToUrl('/inventor_inventory');
-        } else if (transcript.includes("license extend")) {
-          if (this.username === 'manikandan' && this.isLco) {
-            this.navgetToUrl('/inventory_cortonbox_data');
-          } else {
-            this.navgetToUrl('/inventory_license');
-          }
-        } else if (transcript.includes("carton box upload")) {
-          this.navgetToUrl('/inventory_cortonbox');
-        }
-      } else if (this.isUser || this.isReception) {
-        if (transcript.includes("create subscriber")) {
-          this.navgetToUrl('/Create_sub');
-        } else if (transcript.includes("subscriber details")) {
-          this.navgetToUrl('/subscriber');
-        } else if (transcript.includes('expiry details')) {
-          this.navgetToUrl('/expiry')
-        } else if (transcript.includes('not allocated smartcard')) {
-          this.navgetToUrl('/not_allacate_smartcard')
-        }
+        navigateIfMatch("discount", "/lcoCommissionDashboard");
+        navigateIfMatch("packagewise", "/PackagewiseOperator");
+        navigateIfMatch("chip id ", "/chipid");
+        navigateIfMatch("subscriber import", "/subscriber_import");
+        navigateIfMatch("activation", "/activation");
+        navigateIfMatch("deactivation", "/deactivation");
+        navigateIfMatch("bulk smartcard refresh", "/smartcard_refresh");
+        navigateIfMatch("addon", "/addon_activation");
+        navigateIfMatch("alacarte", "/Alacarte_Activation");
+        navigateIfMatch("bulk package updation", "/Bulk_Package_Updation");
+        navigateIfMatch("bulk operator", "/bulk_smartcard_creation");
+        navigateIfMatch("subscription extend", "/Subscription_Extend");
+        navigateIfMatch("bulk base change", "/Bulk_Base_Change");
+        navigateIfMatch("bulk reactive", "/Bulk_Refresh");
+        navigateIfMatch("recurring", "/Recurring");
+        navigateIfMatch("lco transfer", "/special_lcotransfer");
+        navigateIfMatch("local broadcasting", "/payment_channel");
+        navigateIfMatch("payment channel ", "/payment_channel");
+        navigateIfMatch("local broadcaster", "/local_payment");
+        navigateIfMatch("trai", "/traiReports");
+        navigateIfMatch("mso", "/msoReports");
+        navigateIfMatch("invoice bill", "/msodialogueReports/lcoinvoice");
+
+        navigateIfMatch("deduction including gst", "/msodialogueReports/recharge_deduction_including");
+        navigateIfMatch("recharge history", "/msodialogueReports/recharge_history");
+        navigateIfMatch("online payment", "/msodialogueReports/online_payment_special");
+        navigateIfMatch("wallet share", "/msodialogueReports/walletShare");
+        navigateIfMatch("payment collection", "/msodialogueReports/payment_collection_AJK");
+        navigateIfMatch("subscriber bill", "/msodialogueReports/subscriber_bill");
+        navigateIfMatch("user recharge", "/msodialogueReports/user_rechargehistory");
+
+        navigateIfMatch("lcowise active subscription count", "/msodialogueReports/lco_active_subscription");
+        navigateIfMatch("customer activation form", "/msodialogueReports/customer_activation_form");
+        navigateIfMatch("lcowise expiry count difference", "/msodialogueReports/lcowiseExpiryCountDiff");
+
+        navigateIfMatch("total lco", "/msodialogueReports/total_lco");
+        navigateIfMatch("lco transfer details", "/msodialogueReports/lco_transfer_details");
+        navigateIfMatch("repair smartcard", "/msodialogueReports/repair_smartcard");
+
+        navigateIfMatch("monthly broadcaster", "/broadcasterReports/1");
+        navigateIfMatch("over all product", "/broadcasterReports/2");
+        navigateIfMatch("universal count", "/broadcasterReports/3");
+        navigateIfMatch("base product", "/broadcasterReports/4");
+        navigateIfMatch("caswise", "/broadcasterReports/5");
+
+        navigateIfMatch("all service", "/historyAllReports/1");
+        navigateIfMatch("total smartcard list", "/historyAllReports/2");
+        navigateIfMatch("paired smartcard", "/historyAllReports/3");
+        navigateIfMatch("block list", "/historyAllReports/4");
+        navigateIfMatch("combo package", "/historyAllReports/14");
+
+        navigateIfMatch("as on date suspend", "/historyAllReports/14");
+        navigateIfMatch("suspend report for particular duration", "/historyAllReports/12");
+        navigateIfMatch("suspend history", "/historyAllReports/13");
+
+        navigateIfMatch("scroll history", "/historyAllReports/12");
+        navigateIfMatch("mail history", "/historyAllReports/6");
+        navigateIfMatch("finger history", "/historyAllReports/7");
+        navigateIfMatch("message history", "/historyAllReports/8");
+
+        navigateIfMatch("network smartcard status count", "/historyAllReports/9");
+        navigateIfMatch("network smartcard active deactive status count ", "/historyAllReports/10");
+
+        navigateIfMatch("channel ageing", "/broadcasterReports/6");
+        navigateIfMatch("package ageing", "/broadcasterReports/7");
+
       }
-      //  else if (this.isUser) {
-      //   if (transcript.includes("Finger Print")) {
-      //     this.navgetToUrl('/finger_print');
-      //   } else if (transcript.includes("Scrolling")) {
-      //     this.navgetToUrl('/scrolling');
-      //   } else if (transcript.includes("Message Details")) {
-      //     this.navgetToUrl('/message');
-      //   } else if (transcript.includes("Force Tuning")) {
-      //     this.navgetToUrl('/fource_tuning');
-      //   } else if (transcript.includes("Mail")) {
-      //     this.navgetToUrl('/mail');
-      //   } else if (transcript.includes("Broadcaster Master")) {
-      //     this.navgetToUrl('/Broadcast');
-      //   } else if (transcript.includes("Distributor Master")) {
-      //     this.navgetToUrl('/Distributer');
-      //   } else if (transcript.includes("Channel Type Master")) {
-      //     this.navgetToUrl('/Channeltype');
-      //   } else if (transcript.includes("Category Master")) {
-      //     this.navgetToUrl('/categery')
-      //   } else if (transcript.includes("Channel")) {
-      //     this.navgetToUrl('/Channel')
-      //   } else if (transcript.includes("Package Creation")) {
-      //     this.navgetToUrl('/PackageCreation')
-      //   } else if (transcript.includes("Addon Package")) {
-      //     this.navgetToUrl('/Addon')
-      //   } else if (transcript.includes("Package Reference")) {
-      //     this.navgetToUrl('/PackageReference')
-      //   } else if (transcript.includes("Package Master")) {
-      //     this.navgetToUrl('/PackageMaster')
-      //   } else if (transcript.includes("Lco  Commission")) {
-      //     if (this.username === 'manikandan' && this.navigationList.lcocommission) {
-      //       this.navgetToUrl('/LcoCommission');
+      // else if (this.isInventory) {
+      //   navigateIfMatch("inventory", "/inventor_inventory");
+      //   if (transcript.includes("license extend")) {
+      //     recognition.stop();
+      //     if (this.username === 'manikandan' && this.isLco) {
+      //       this.navgetToUrl('/inventory_cortonbox_data');
       //     } else {
-      //       this.navgetToUrl('/LcoCommission_credential');
+      //       this.navgetToUrl('/inventory_license');
       //     }
-      //   } else if (transcript.includes("Discount")) {
-      //     this.navgetToUrl('/lcoCommissionDashboard')
-      //   } else if (transcript.includes("Packagewise Operator")) {
-      //     this.navgetToUrl('/PackagewiseOperator')
-      //   } else if (transcript.includes("Chip ID and Model")) {
-      //     this.navgetToUrl('/chipid')
+      //   }
+      //   navigateIfMatch("carton box upload", "/inventory_cortonbox");
+      // } else if (this.isReception) {
+      //   navigateIfMatch("dashboard", "/home");
+      //   navigateIfMatch("top subscription", this.username === 'manikandan' ? "/top_sub_detail" : "/top_subscription");
+      //   navigateIfMatch("operator details", this.username === 'manikandan' ? "/operator_details" : "/lco_recharge/1");
+      //   navigateIfMatch("lco recharge", "/lco_recharge/2");
+      //   navigateIfMatch("admin recharge", "/lco_recharge/3");
+      //   navigateIfMatch("create subscriber", "/Create_sub");
+      //   navigateIfMatch("subscriber details", "/subscriber");
+      //   navigateIfMatch("expiry details", "/expiry");
+      //   navigateIfMatch("not allocated smartcard", "/not_allacate_smartcard");
+      //   navigateIfMatch("allocated smartcard", "/not_allacate_smartcard");
+      //   navigateIfMatch("smartcard deallocation", "/smartcard_declaration");
+      //   navigateIfMatch("smartcard reallocation", "/smartcard_reallocation");
+      //   navigateIfMatch("defective smartcard", "/defective_smart");
+      //   navigateIfMatch("insert into subscriber", "/insert_sub");
+      //   navigateIfMatch("trai reports", "/traiReports");
+      //   navigateIfMatch("mso reports", "/msoReports");
+      // } else if (this.isSpecial) {
+      //   navigateIfMatch("mso details", "/msodetails");
+      //   navigateIfMatch("cas master", "/casmaster");
+      //   navigateIfMatch("tax master", "/tax");
+      //   navigateIfMatch("billing", "/invoice");
+      //   navigateIfMatch("operator", "/special_operator");
+      //   navigateIfMatch("proof settings", "/proof");
+      //   navigateIfMatch("lco settings", "/Packageplan");
+      //   navigateIfMatch("package plan", "/Packageplan");
+      //   navigateIfMatch("local channel", "/channeldetails");
+      //   navigateIfMatch("ads upload", "/adsdetails");
+      //   navigateIfMatch("bulk package updation", "/Bulk_Package_Updation");
+      //   navigateIfMatch("lco and area change", "/special_area_package");
+      //   navigateIfMatch("cancel subscription", "/special_cancel_subscription");
+      //   navigateIfMatch("bulk smartcard refresh", "/smartcard_refresh");
+      //   navigateIfMatch("lco transfer", "/special_lcotransfer");
+      //   navigateIfMatch("bulk operator creation", "/bulk_smartcard_creation");
+      //   navigateIfMatch("mso reports", "/msoReports");
+      //     if (transcript.includes("login settings")) {
+      //     recognition.stop();
+      //     if (this.username === 'manikandan') {
+      //       this.navgetToUrl('/loginsettings');
+      //     } else {
+      //       this.navgetToUrl('/loginsettings_credential');
+      //     }
       //   }
       // }
+
     });
 
     recognition.addEventListener("error", (event: any) => {

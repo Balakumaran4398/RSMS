@@ -4,8 +4,7 @@
             BULK PACKAGE UPDATION</p>
     </div>
     <div class=" tablist justify-content-center align-items-center my-3 new_d">
-        <div class="tab mb-3 bttn" [class.active]="selectedTab === 'excel_upload'" (click)="selectbulk('excel_upload')">
-            EXCEL UPLOAD </div>
+
         <div class="tab mb-3 bttn" [class.active]="selectedTab === 'bulk_package'" (click)="selectbulk('bulk_package')">
             BULK PACKAGE </div>
         <div class="tab mb-3 bttn" [class.active]="selectedTab === 'pending'" (click)="selectPending('pending')">PENDING
@@ -13,6 +12,8 @@
         <div class="tab mb-3 bttn" [class.active]="selectedTab === 'archive'" (click)="selectArchive('archive')">
             ARCHIVE
         </div>
+        <div class="tab mb-3 bttn" [class.active]="selectedTab === 'excel_upload'" (click)="selectbulk('excel_upload')">
+            FILE UPLOAD </div>
     </div>
 
     <div *ngIf="selectedTab === 'bulk_package'" class="commission">

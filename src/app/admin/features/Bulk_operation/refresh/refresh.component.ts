@@ -119,7 +119,7 @@ export class RefreshComponent implements OnDestroy {
     this.date = new Date().toISOString().split('T')[0];
     this.selectedDate = this.date;
     console.log('11111111111');
-
+    this.operatorlist();
     this.refresh();
     if (this.role == 'ROLE_SUBLCO') {
       console.log('ADFGHJKRTYUJKL ', this.role);

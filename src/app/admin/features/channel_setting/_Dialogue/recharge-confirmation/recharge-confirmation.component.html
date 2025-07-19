@@ -9,7 +9,8 @@
                 <div class="input_box  mb-3">
                     <div class="d-flex align-items-center justify-content-center">
                         <div class="col-5 col-md-5">
-                            <span for="password" class="me-2">Operator Balance</span>
+                            <span *ngIf="role=='ROLE_ADMIN' || role=='ROLE_OPERATOR'"  class="me-2">Operator Balance</span>
+                            <span *ngIf="role=='ROLE_SUBLCO'"  class="me-2">Sub LCO Balance</span>
                         </div>
                         <div class="col-1 col-md-1">
                             <span class="me-2">:</span>

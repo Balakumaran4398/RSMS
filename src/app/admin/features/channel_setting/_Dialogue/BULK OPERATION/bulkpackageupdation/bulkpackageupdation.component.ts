@@ -77,6 +77,9 @@ export class BulkpackageupdationComponent implements OnInit {
   isRecharge = false;
   rechargetype: any;
   rechargeType: any;
+  planRechargeType: any[] = [
+    { name: "Plan", id: 1 },
+  ]
   lcoid: any;
   fromdate: any;
   todate: any;
@@ -89,6 +92,8 @@ export class BulkpackageupdationComponent implements OnInit {
   amount_status: any;
   lco_Balance: any;
   totalLCO_amount: any;
+  opid: any;
+  retailerid: any;
   constructor(public dialogRef: MatDialogRef<BulkpackageupdationComponent>, private swal: SwalService, public dialog: MatDialog,
     @Inject(MAT_DIALOG_DATA) public data: any, public userservice: BaseService, private cdr: ChangeDetectorRef, public storageService: StorageService) {
     this.username = storageService.getUsername();
@@ -99,7 +104,12 @@ export class BulkpackageupdationComponent implements OnInit {
     this.file = data?.file;
     this.dateTodate = data?.dateTodate;
     console.log('plan=', this.plan + '     ' + 'date=', this.date + '     ' + 'dateTodate=', this.dateTodate);
-    this.lcoid = data.retailerid;
+    this.retailerid = data.retailerid;
+    this.opid = data.operatorid;
+    this.lcoid = data.lcoid;
+    console.log('123214324324', this.opid);
+    console.log('gjkfdgjkl', this.lcoid);
+
     console.log(this.lcoid);
     this.fromdate = data.fromdate;
     this.todate = data.todate;
@@ -234,7 +244,7 @@ export class BulkpackageupdationComponent implements OnInit {
             return { name, id };
           });
           console.log('RAW LIST', rawList);
-      
+
           if (this.fromdate !== this.todate) {
             console.log('1111', rawList);
             this.rechargetype = rawList.filter(item => {
@@ -363,7 +373,6 @@ export class BulkpackageupdationComponent implements OnInit {
           this.plantype = defaultPlan.value;
         }
         this.isDisabled = false;
-
       }
       if (rechargetype == 2) {
         this.isSubmit = true;
@@ -371,8 +380,6 @@ export class BulkpackageupdationComponent implements OnInit {
         this.datetype = true;
         this.plantype = 0;
         this.isDisabled = true;
-        // this.f_date = this.subdetailsList.expiryDate;
-
       }
       if (rechargetype == 3) {
         this.isSubmit = true;
@@ -533,7 +540,6 @@ export class BulkpackageupdationComponent implements OnInit {
   onproducttypechange(selectedOperator: any) {
     this.selectedPackage = selectedOperator;
     this.selectedPackageName = selectedOperator.name;
-    // this.changePlan();
   }
   filterPackage(event: any): void {
     const filterValue = event.target.value.toLowerCase();
@@ -569,10 +575,7 @@ export class BulkpackageupdationComponent implements OnInit {
         this.amount_status = data?.amountStatus;
         this.totalLCO_amount = data?.totalLcoAmount;
         this.lco_Balance = data?.lcoBalance;
-        console.log('1111111111', this.amount_status);
-        console.log('22222222', this.totalLCO_amount);
-        console.log('333333', this.lco_Balance);
-
+  
       }, (err) => {
         this.swal.Error(err?.error?.message);
       });
@@ -608,7 +611,7 @@ export class BulkpackageupdationComponent implements OnInit {
     let requestBody = {
       role: this.role,
       username: this.username,
-      operatorid: 1,
+      operatorid: this.operatorid || 0,
       packageid: this.packageid || this.data?.packageid || 0,
       plan: this.plantype || this.f_date || 4,
       plantype: this.selectedRechargetype,
@@ -628,55 +631,34 @@ export class BulkpackageupdationComponent implements OnInit {
 
 
   openLoginPage(): void {
-    // this.changePlan();
-    console.log('1111111111', this.amount_status);
-    console.log('22222222', this.totalLCO_amount);
-    console.log('333333', this.lco_Balance);
     let requestBody = {
       role: this.role,
       username: this.username,
-      operatorid: 1,
+      operatorid: this.opid || this.lcoid || 0,
       packageid: this.packageid || this.data?.packageid || 0,
       plan: this.plantype || this.f_date || 4,
       plantype: this.selectedRechargetype,
       isallpack: this.isallpack,
       expiredsubscriberlist: this.rowData,
-      retailerid: this.lcoid || 0,
+      retailerid: this.retailerid || 0,
       lcoBalance: this.lco_Balance,
       TotalLCO_Amount: this.totalLCO_amount,
       Amount_Status: this.amount_status
     }
     let width = '500px';
     console.log(requestBody);
-
-    // const dialogRef = this.dialog.open(RechargeConfirmationComponent, {
-    //   width: width,
-    //   // maxWidth: '100vw',
-    //   panelClass: 'custom-dialog-container',
-    //   data: requestBody
-    // });
-
-    // dialogRef.afterClosed().subscribe(result => {
-    //   console.log('The dialog was closed');
-    // });
-
     this.userservice.bulkPackageUpdaionConfirmation(requestBody)
       .subscribe((data: any) => {
         this.amount_status = data?.amountStatus;
         this.totalLCO_amount = data?.totalLcoAmount;
         this.lco_Balance = data?.lcoBalance;
-
-        console.log('1111111111', this.amount_status);
-        console.log('22222222', this.totalLCO_amount);
-        console.log('333333', this.lco_Balance);
-
         const dialogRef = this.dialog.open(RechargeConfirmationComponent, {
           width: '500px',
           panelClass: 'custom-dialog-container',
           data: {
             role: this.role,
             username: this.username,
-            operatorid: 1,
+            operatorid: this.operatorid || 0,
             packageid: this.packageid || this.data?.packageid || 0,
             plan: this.plantype || this.f_date || 4,
             plantype: this.selectedRechargetype,
@@ -710,7 +692,7 @@ export class BulkpackageupdationComponent implements OnInit {
       formData.append('file', this.file);
       formData.append('type', '11');
       formData.append('plan', this.selectedRechargetype);
-      formData.append('planid', this.plantype || this.f_date || 4,);
+      formData.append('planid', this.plantype);
       formData.append('retailerid', '0');
       this.swal.Loading();
       this.userservice.getUploadFileforPackageUpdation(formData)

@@ -176,7 +176,6 @@
                                     (ngModelChange)="onSelectiondatetype($event)">
                             </div>
                         </div>
-
                     </div>
                 </div>
                 <div class="form-group d-flex justify-content-center align-items-center  mb-1">
@@ -198,7 +197,7 @@
             <div class="col-12 col-md-12 input_box ">
                 <select [(ngModel)]="selectedRechargetype" (ngModelChange)="onSelectionrechargetype($event)">
                     <option value="0" selected>Selected Recharge Type</option>
-                    <option *ngFor="let rt of rechargetype" [value]="rt.id">
+                    <option *ngFor="let rt of planRechargeType" [value]="rt.id">
                         {{rt.name}}
                     </option>
                 </select>

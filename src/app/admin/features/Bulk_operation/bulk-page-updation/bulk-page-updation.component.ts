@@ -609,9 +609,7 @@ export class BulkPageUpdationComponent implements OnInit {
   }
 
   openLoginPage(data: any, rowData: any): void {
-
     console.log(data);
-    console.log(this.retailerid);
 
     const dataToSend = {
       status: data,
@@ -623,7 +621,9 @@ export class BulkPageUpdationComponent implements OnInit {
       plan: this.isplan,
       date: this.isdate,
       dateTodate: this.isDatetoDate,
-      retailerid:this.operatorid || this.lcoId||this.retailerid ,
+      retailerid: this.retailerid,
+      lcoid: this.lcoId,
+      operatorid: this.operatorid,
       file: this.file
     };
     let width = '600px';
@@ -665,8 +665,6 @@ export class BulkPageUpdationComponent implements OnInit {
         console.log('The dialog was closed');
       });
     }
-
-
   }
 
 
