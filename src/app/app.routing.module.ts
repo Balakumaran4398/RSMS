@@ -4,11 +4,15 @@ import { LoginComponent } from './login/login.component';
 import { AuthGuard } from './_core/service/auth.guard';
 import { AdminBaseComponent } from './admin/admin.base.component';
 import { HashLocationStrategy, LocationStrategy } from '@angular/common';
+import { PaymentcustomerComponent } from './admin/features/Add payment/paymentcustomer/paymentcustomer.component';
+import { PaymentalertComponent } from './admin/features/Add payment/paymentalert/paymentalert.component';
 const routes: Routes = [
-  { path: '', redirectTo: 'login', pathMatch: 'full' },
+  { path: 'payment_customer/:id', component: PaymentcustomerComponent },
+  { path: 'payment_customer', component: PaymentalertComponent },
   { path: 'login', component: LoginComponent },
-  { path: "admin", component: AdminBaseComponent, canActivate: [AuthGuard], loadChildren: () => import('./admin/admin.module').then(m => m.AdminModule) },
-  { path: "**", component: LoginComponent }
+  { path: 'admin', component: AdminBaseComponent, canActivate: [AuthGuard], loadChildren: () => import('./admin/admin.module').then(m => m.AdminModule) },
+  { path: '', component: LoginComponent },
+  { path: '**', component: LoginComponent }
 ];
 
 @NgModule({

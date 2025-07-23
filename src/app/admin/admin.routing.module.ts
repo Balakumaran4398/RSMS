@@ -115,6 +115,7 @@ import { SmartcardrefreshComponent } from './features/Bulk_operation/smartcardre
 import { BulkoperatorcreationComponent } from './features/Bulk_operation/bulkoperatorcreation/bulkoperatorcreation.component';
 import { VersionComponent } from './features/version/version.component';
 import { VoicerecognizeComponent } from './features/voicerecognize/voicerecognize.component';
+import { PaymentcustomerComponent } from './features/Add payment/paymentcustomer/paymentcustomer.component';
 
 
 const routes: Routes = [
@@ -251,9 +252,11 @@ const routes: Routes = [
       { path: 'sublco_dashboard_report/:id/:userid/:retailerid', component: LcodashboardsublcoreportComponent },
       { path: 'operator_areachange', component: OperatorareachangeComponent },
       { path: 'discount_smartcard_details/:smartcard', component: DiscountsmartcardComponent },
+
       // ---------------------------   version  ------------------------------
       { path: 'version', component: VersionComponent },
       { path: 'voice', component: VoicerecognizeComponent },
+      // { path: 'payment_customer', component: PaymentcustomerComponent },
     ]
   }
 ];

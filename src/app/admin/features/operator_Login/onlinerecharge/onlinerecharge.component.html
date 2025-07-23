@@ -10,24 +10,7 @@
                     <div class="card-content">
                         <h5>Wallet Balance</h5>
                         <span style="color: green;">{{ operatorDetails?.balance | currency: 'INR' }}</span>
-
                     </div>
-                    <!-- <div class="pay-his-div">
-                        <span class="recent-his">Recent history <span>&#8645;</span></span>
-                        <table mat-table [dataSource]="recenthistory" class="mat-elevation">
-                            <ng-container style="height: 15px;" matColumnDef="creationdate">
-                                <th *matHeaderCellDef> Recharge Date </th>
-                                <td *matCellDef="let element"> {{element.creationdate}} </td>
-                            </ng-container>
-                            <ng-container style="height: 15px;" matColumnDef="amount">
-                                <th *matHeaderCellDef> Amount </th>
-                                <td *matCellDef="let element"> {{element.amount | currency: curcode }} </td>
-                            </ng-container>
-
-                            <tr mat-header-row style="height: 15px;" *matHeaderRowDef="displayedColumns"></tr>
-                            <tr mat-row style="height: 15px;" *matRowDef="let row; columns: displayedColumns;"></tr>
-                        </table>
-                    </div> -->
                 </mat-card-content>
                 <span class="recent-his">Wallet Pay <span>{{currency}}</span></span>
                 <table style="background: #101a4059;">

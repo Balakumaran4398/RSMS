@@ -741,10 +741,19 @@
 
                                         <div *ngIf="(role =='ROLE_SUBLCO' && sublcoDiscount == 1 && wallet) ||  (role !='ROLE_SUBLCO')"
                                             class="input_box  mb-3">
-                                            <div *ngIf="role !=='ROLE_SUBSCRIBER'"
+                                            <div *ngIf="role !=='ROLE_SUBSCRIBER' && role !=='ROLE_SUBLCO'"
                                                 class="d-flex align-items-center justify-content-center">
                                                 <div class="col-6 col-md-6">
                                                     <span class="me-2">MSO Amount</span>
+                                                </div>
+                                                <div class="col-6 col-md-6 value">
+                                                    {{manageData.msoAmount}}
+                                                </div>
+                                            </div>
+                                            <div *ngIf="role =='ROLE_SUBLCO'"
+                                                class="d-flex align-items-center justify-content-center">
+                                                <div class="col-6 col-md-6">
+                                                    <span class="me-2">SUB MSO Amount</span>
                                                 </div>
                                                 <div class="col-6 col-md-6 value">
                                                     {{manageData.msoAmount}}

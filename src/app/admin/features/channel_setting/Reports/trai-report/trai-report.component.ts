@@ -44,6 +44,8 @@ export class TraiReportComponent implements OnInit {
       width = '600px';
     } else if (event == 'Synchronization') {
       width = '600px';
+    }else if (event == 'Reconsolation') {
+      width = '600px';
     }
 
     let dialogData = { type: event };

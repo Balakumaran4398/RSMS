@@ -80,8 +80,7 @@
                         style="color:#0a21d0">{{filePath }}
                     </span>
                 </span>
-                <div 
-                    class="input_box col-12 col-md-12 d-flex justify-content-center align-items-center mb-3">
+                <div class="input_box col-12 col-md-12 d-flex justify-content-center align-items-center mb-3">
                     <input type="text" matInput [matAutocomplete]="auto" [(ngModel)]="lcogroupid"
                         (input)="filterPackage($event)" placeholder="Select  package" [matAutocompleteDisabled]="false"
                         [value]="selectedPackageName">
@@ -106,7 +105,7 @@
                     Package Name is required
                 </div>
 
-                <div class="col-12 col-md-12 d-flex justify-content-between align-items-center mb-3">
+                <!-- <div class="col-12 col-md-12 d-flex justify-content-between align-items-center mb-3">
                     <div class="col-6 col-md-6 d-flex justify-content-start align-items-center">
                         <span>Subscription days :</span>
                     </div>
@@ -114,10 +113,53 @@
                         <input type="text" [(ngModel)]="plan" pattern="[0-9]*" maxlength="3"
                             (keypress)="onKeydown($event)" (input)="checkPlanValidity()" placeholder="Enter days">
                     </div>
+                </div> -->
+
+                <div class="col-md-12 mb-4 d-flex justify-content-between">
+                    <div data-mdb-input-init class="form-outline col-6 col-md-6">
+                        <span class="form-label" for="form3Example1m">Recharge Type</span>
+                    </div>
+                    <div data-mdb-input-init class="input_box col-6 col-md-6">
+                        <select [(ngModel)]="selectedRechargetype" (ngModelChange)="onSelectionrechargetype($event)">
+                            <option value="0" selected>Selected Recharge Type</option>
+                            <option *ngFor="let rt of rechargetype" [value]="rt.id">
+                                {{rt.name}}
+                            </option>
+                        </select>
+                    </div>
                 </div>
-                <div *ngIf="submitted && !plan" class="text-danger" style="font-size: small;">
+                <div class="input_box  mb-3" style="margin-top: 2%;">
+                    <div *ngIf="isplantype" class="col-12 col-md-12 display align-items-center justify-content-center ">
+                        <div class="col-md-12 mb-4 d-flex justify-content-between">
+                            <div data-mdb-input-init class="form-outline col-6 col-md-6">
+                                <span class="form-label" for="form3Example1m">Plan</span>
+                            </div>
+                            <div data-mdb-input-init class="form-outline col-6 col-md-6">
+                                <select [(ngModel)]="plantype">
+                                    <option value="0" selected disabled>Selected Plan</option>
+                                    <option *ngFor="let plan of plantype$ | async" [value]="plan.value">
+                                        {{ plan.key }}
+                                    </option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div *ngIf="datetype">
+                        <div class="col-md-12 mb-4 d-flex justify-content-between">
+                            <div data-mdb-input-init class="form-outline col-6 col-md-6">
+                                <span class="form-label" for="form3Example1m">Date</span>
+                            </div>
+                            <div data-mdb-input-init class="form-outline col-6 col-md-6">
+                                <input type="date" [(ngModel)]="f_date"
+                                    [min]="noofdays == 0 ? getNextDay1() : getNextDay(lcodatetype)"
+                                    (ngModelChange)="onSelectiondatetype($event)">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- <div *ngIf="submitted && !plan" class="text-danger" style="font-size: small;">
                     please Enter the days.
-                </div>
+                </div> -->
                 <div class="d-flex justify-content-end align-items-center mt-3 ">
                     <button type="button" class="btn btn-success mx-2" (click)="goBack()">Back &nbsp;<i
                             class="fa fa-arrow-left" aria-hidden="true"></i></button>

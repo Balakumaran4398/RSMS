@@ -7,7 +7,7 @@
                     style="width: 150px; height: auto;display:flex;margin: auto;"> -->
 
 
-                    <!-- -----------------------4K & Deenet--------------- -->
+                <!-- -----------------------4K & Deenet--------------- -->
                 <img *ngIf="msoLogo" [src]="msoLogo" alt="MSO Logo"
                     style="width: 100px; height: auto;display:flex;margin: auto;">
             </div>
@@ -18,26 +18,26 @@
             <form class="login-form" [formGroup]="signInform" (ngSubmit)="submit(signInform)">
                 <div class="sign-in-htm">
                     <mat-form-field class="example-full-width w-100 mb-3 " appearance="outline">
-                        <mat-label >Username</mat-label>
+                        <mat-label>Username</mat-label>
                         <input matInput id="user" formControlName="username" placeholder="Username"
                             style="font-size: medium;">
                         <span class="input-group-addon input">
                             <i class="fa-solid fa-user" style="color: #1f6764;"></i>
                         </span>
                     </mat-form-field>
-              
+
 
                     <mat-form-field class="example-full-width w-100 mb-3 password-field" appearance="outline">
                         <mat-label>Password</mat-label>
                         <div class="password-container">
-                            <input matInput id="password" [type]="isShow ? 'text' : 'password'" formControlName="password"
-                                placeholder="Password">
-                            <mat-icon (click)="toggleShowPassword()" class="eye-icon"> 
+                            <input matInput id="password" [type]="isShow ? 'text' : 'password'"
+                                formControlName="password" placeholder="Password">
+                            <mat-icon (click)="toggleShowPassword()" class="eye-icon">
                                 {{ isShow ? 'visibility' : 'visibility_off' }}
                             </mat-icon>
                         </div>
                     </mat-form-field>
-                    
+
                     <br>
                     <div class="group">
                         <input type="submit" class="button" value="Sign In">
@@ -60,11 +60,15 @@
                 </div>
                 <div class="d-flex justify-content-center align-item-center">
                     <div style="padding: 20px 0px;">
-                        <p style="color:#525252;text-align: center;margin-bottom: -4%;font-size: x-small;">Powered by
+                        <p style="color:#160000;text-align: center;margin-bottom: -4%;font-size: x-small;">Powered by
                         </p>
                     </div>
                     <div class="d-flex justify-content-center">
-                        <img style="height: 60px;" src="/assets/images/login/Rid_logo.png">
+                        <a href="http://www.ridsys.com/" target="_blank">
+                            <img style="height: 60px;" src="/assets/images/login/Rid_logo.png" alt="Ridsys Logo">
+                        </a>
+
+                        <!-- <img style="height: 60px;" src="/assets/images/login/Rid_logo.png"> -->
                     </div>
                 </div>
             </div>

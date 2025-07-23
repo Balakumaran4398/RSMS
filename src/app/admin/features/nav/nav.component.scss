@@ -137,6 +137,9 @@
         font-weight: 700;
     }
 
+    .mobile_nav {
+        display: none;
+    }
 
 }
 
@@ -225,13 +228,16 @@
 .version span {
     font-size: 1.2em;
     font-weight: 600;
-    color: #2d584e
-    // color: var(--primary-color);
+    color: #2d584e // color: var(--primary-color);
 }
 
 @media screen and (max-width: 1200px) {
     .search input {
         max-width: 360px;
+    }
+
+    .mobile_nav {
+        display: none;
     }
 }
 
@@ -244,6 +250,10 @@
 @media screen and (max-width: 830px) {
     .search input {
         max-width: 250px;
+    }
+
+    .mobile_nav {
+        display: none;
     }
 }
 
@@ -369,6 +379,10 @@
         height: auto;
         overflow: scroll;
         width: 22pc;
+    }
+
+    .mobile_nav {
+        display: none;
     }
 }
 

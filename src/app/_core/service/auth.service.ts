@@ -4,7 +4,7 @@ import { Router } from '@angular/router';
 import { Observable } from 'rxjs';
 import URLs from 'src/app/URL';
 import { StorageService } from './storage.service';
-var AUTH_API = URLs.AUTH_URL();
+// var AUTH_API = URLs.AUTH_URL();
 // var AUTH_API = 'http://192.168.70.201:8585/rsms/api/auth';
 
 // var AUTH_API = 'http://192.168.1.117:8081/api/auth';         //JAYA AKKA    
@@ -19,7 +19,7 @@ var AUTH_API = URLs.AUTH_URL();
 // var AUTH_API ='http://rdigital.ridsys.in:8585/rsms/api/auth';   //rdigital
 
 // var AUTH_API = 'http://rdigital.ridsys.in:8585/rsms/api/auth';
-// var AUTH_API = URLs.AUTH_URL();
+var AUTH_API = URLs.AUTH_URL();
 const BASE_API = URLs.BASE_URL();
 const httpOptions = {
   headers: new HttpHeaders({ 'Content-Type': 'application/json' }),
@@ -81,6 +81,7 @@ export class AuthService {
     console.log('Username   :' + credentials.username);
     console.log('Password   :' + credentials.password);
     return this.http.post(AUTH_API + '/signin', { username: credentials.username, password: credentials.password }, httpOptions);
+    // return this.http.post(AUTH_API + '/payment_customer', { username: credentials.username, password: credentials.password }, httpOptions);
   }
 
   notification(): Observable<any> {

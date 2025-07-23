@@ -29,6 +29,7 @@ export class RechargeConfirmationComponent {
     this.new_balance = parseFloat((this.lco_Balance - this.totalLCO_amount).toFixed(2));
     console.log(this.new_balance);
     this.requestBody = data;
+      console.log(this.requestBody);
   }
   onNoClick(): void {
     this.dialogRef.close();

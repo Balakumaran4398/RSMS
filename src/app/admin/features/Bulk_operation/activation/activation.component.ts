@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { ColDef } from 'ag-grid-community';
 import { BaseService } from 'src/app/_core/service/base.service';
 import { StorageService } from 'src/app/_core/service/storage.service';
@@ -6,6 +6,7 @@ import { HttpResponse } from '@angular/common/http';
 import Swal from 'sweetalert2';
 import { ExcelService } from 'src/app/_core/service/excel.service';
 import { SwalService } from 'src/app/_core/service/swal.service';
+import { BehaviorSubject } from 'rxjs';
 @Component({
   selector: 'app-activation',
   templateUrl: './activation.component.html',
@@ -87,10 +88,30 @@ export class ActivationComponent implements OnInit {
   lcoDeatails: any;
   operatorid: any;
   retailerid: any;
-  constructor(private userservice: BaseService, private swal: SwalService, private storageservice: StorageService, private excelService: ExcelService) {
+
+
+  rechargetype: any;
+  lcodatetype: any;
+  isplan = false;
+  isdate = false;
+  isdateTodate = false;
+  packagePlan: any;
+  plantype$ = new BehaviorSubject<{ key: string, value: number }[]>([]);
+
+  isDisabled: boolean = true;
+  isRecharge = false;
+  isplantype = false;
+  datetype = false;
+  isSubmit = false;
+  f_date: any;
+  dateTodate = false;
+
+  selectedRechargetype: any = 0;
+  noofdays: any;
+  constructor(private userservice: BaseService, private swal: SwalService, private storageservice: StorageService, private excelService: ExcelService, private cdr: ChangeDetectorRef) {
     this.role = storageservice.getUserRole();
     this.username = storageservice.getUsername();
-
+    this.f_date = this.lcodatetype;
   }
   ngOnInit(): void {
     this.date = new Date().toISOString().split('T')[0];
@@ -102,10 +123,10 @@ export class ActivationComponent implements OnInit {
     } else if (this.role == 'ROLE_SUBLCO') {
       this.getSubLCOdetails();
     }
-
+    this.getPlanList();
+    this.getplan();
   }
-  isplan: any;
-  isdate: any;
+
   isdatetodate: any;
   operatorIdoperatorId() {
     this.userservice.getOpDetails(this.role, this.username).subscribe((data: any) => {
@@ -226,7 +247,7 @@ export class ActivationComponent implements OnInit {
   }
 
   ngAfterViewInit() {
-    ($('#package')as any).select2({
+    ($('#package') as any).select2({
       placeholder: 'Select Package',
       allowClear: true
     });
@@ -285,9 +306,9 @@ export class ActivationComponent implements OnInit {
       formData.append('file', this.file);
       formData.append('packageid', this.lcogroupid);
       formData.append('type', '1');
-      formData.append('plantype', '5');
-      formData.append('plan', this.plan);
-      formData.append('retailerid', this.retailerid || '0');
+      formData.append('plantype', this.selectedRechargetype);
+      formData.append('plan', this.plantype || this.f_date || 4);
+      formData.append('retailerid', this.operatorid || this.retailerid || '0');
       this.userservice.uploadFirsttimeActivation(formData)
         .subscribe((res: any) => {
           this.swal.success(res?.message);
@@ -401,5 +422,108 @@ export class ActivationComponent implements OnInit {
   }
   generateExcel(type: string) {
     this.excelService.generatealacarteactivationExcel(type);
+  }
+  getplan() {
+    this.userservice.getActivePackagePlanList(this.role, this.username).subscribe((data: any) => {
+      this.packagePlan = data;
+      const sortedData = Object.entries(data)
+        .map(([key, value]) => ({
+          key: key.replace(/\(\d+\)/, '').trim(),
+          value: value as number
+        }))
+
+      this.plantype$.next(sortedData);
+      if (this.selectedRechargetype === 1) {
+        const defaultPlan = sortedData.find(plan => plan.key === '1month');
+        if (defaultPlan) {
+          this.plantype = defaultPlan.value;
+          console.log(this.plantype);
+        }
+      }
+    });
+  }
+  getPlanList() {
+    this.userservice.getPlanTypeList(this.role, this.username).subscribe((data: any) => {
+      console.log(data);
+      // if (this.role != 'ROLE_OPERATOR' && this.role != 'ROLE_SUBSCRIBER') {
+      console.log('ROLE_OPERATOR  - PLAN list');
+      this.rechargetype = Object.keys(data).map(key => {
+        const id = data[key];
+        const name = key.replace(/\(\d+\)$/, '').trim();
+        return { name: name, id: id };
+      });
+
+      this.cdr.detectChanges();
+      console.log(this.rechargetype);
+    });
+  }
+  getNextDay(dateString: any): string | null {
+    console.log(dateString);
+    if (!dateString) {
+      return null;
+    }
+    const date = new Date(dateString);
+    date.setDate(date.getDate() + 1);
+    return date.toISOString().split('T')[0];
+  }
+  getNextDay1(): string | null {
+    const date = new Date();
+    date.setDate(date.getDate() + 1);
+    return date.toISOString().split('T')[0];
+  }
+  onSelectionrechargetype(selectedValue: string) {
+    const rechargetype = Number(selectedValue);
+    if (rechargetype == 1) {
+      this.isSubmit = true;
+      this.isplantype = true;
+      this.datetype = false;
+      const defaultPlan = this.plantype$.getValue().find(plan => plan.key === '1month');
+      if (defaultPlan) {
+        this.plantype = defaultPlan.value;
+      }
+      this.isDisabled = false;
+    }
+    if (rechargetype == 2) {
+      this.isSubmit = true;
+      this.isplantype = false;
+      this.datetype = true;
+      this.plantype = 0;
+      this.isDisabled = true;
+    }
+    if (rechargetype == 3) {
+      this.isSubmit = true;
+      this.dateTodate;
+      this.isplantype = false;
+      this.datetype = false;
+      this.plantype = 0;
+      this.f_date = null;
+      this.isDisabled = false;
+    }
+    this.isRecharge = true;
+  }
+
+  onSelectiondatetype(selectedValue: string) {
+    // this.cdr.detectChanges();
+    const rechargetype = Number(selectedValue);
+    console.log('selectrdvalue', selectedValue);
+
+    if (rechargetype == 1) {
+      this.isplantype = true;
+      this.datetype = false;
+    }
+    if (rechargetype == 2) {
+      this.isplantype = false;
+      this.datetype = true;
+    }
+    if (rechargetype == 3) {
+      this.datetype = false;
+      this.isplantype = false;
+    }
+
+    if ((this.selectedRechargetype == '3') || (this.selectedRechargetype != '3' && this.plantype != 0) || (this.f_date)) {
+      this.isDisabled = false
+    } else {
+      this.isDisabled = true
+    }
   }
 }

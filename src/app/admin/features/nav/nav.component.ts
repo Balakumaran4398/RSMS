@@ -60,15 +60,16 @@ export class NavComponent implements OnInit, AfterViewInit {
   distributor: boolean = false;
   isLco: boolean = false;
   navigationList: any = {};
+  SublcopermissionObj: any;
+  SublcoReport: any;
+  retailername: any;
+  subscribername: any;
   constructor(private router: Router, private breakpointObserver: BreakpointObserver, private cd: ChangeDetectorRef, private dataService: DataService, private cdr: ChangeDetectorRef, private userservice: BaseService, private storageservice: StorageService) {
     this.role = storageservice.getUserRole();
     this.username = storageservice.getUsername();
     this.navigationList = storageservice.getNavigationList();
     this.isLco = storageservice.getIsLCO();
-    console.log(this.role);
-    console.log(this.username);
-    console.log(this.navigationList);
-    console.log(this.isLco);
+
     if (this.role.includes('ROLE_ADMIN')) {
       this.isUser = true;
       this.isReception = false;
@@ -172,13 +173,13 @@ export class NavComponent implements OnInit, AfterViewInit {
       this.getSubscriberDetails();
     }
   }
-  SublcopermissionObj: any;
-  SublcoReport: any;
+
   subLCOdetails() {
     this.userservice.getSublcoDetails(this.role, this.username).subscribe((data: any) => {
       console.log(data);
       this.lcoDeatails = data;
       this.SublcopermissionObj = this.lcoDeatails?.permissionlist;
+      this.retailername = this.lcoDeatails?.retailername;
       this.SublcoReport = this.SublcopermissionObj?.report;
       console.log('eresuofhdljkfhdsjkfhnsjdhfdjsfh', this.SublcopermissionObj);
       console.log('REFRESH', this.SublcoReport);
@@ -191,6 +192,7 @@ export class NavComponent implements OnInit, AfterViewInit {
       this.lcoDeatails = data;
       console.log('SUBSCRIBER DETAILS', this.lcoDeatails);
       this.subscriberid = this.lcoDeatails.subid;
+      this.subscribername = this.lcoDeatails.subscribername;
       console.log('this.subscriberid', this.subscriberid);
     })
   }

@@ -71,9 +71,9 @@ export class BulkpackageupdationComponent implements OnInit {
   date = false;
   dateTodate = false;
   selectedRechargetype: any = 0;
+  isplantype = false;
 
   isDisabled: boolean = true;
-  isplantype = false;
   isRecharge = false;
   rechargetype: any;
   rechargeType: any;
@@ -94,6 +94,7 @@ export class BulkpackageupdationComponent implements OnInit {
   totalLCO_amount: any;
   opid: any;
   retailerid: any;
+  packagePlan: any;
   constructor(public dialogRef: MatDialogRef<BulkpackageupdationComponent>, private swal: SwalService, public dialog: MatDialog,
     @Inject(MAT_DIALOG_DATA) public data: any, public userservice: BaseService, private cdr: ChangeDetectorRef, public storageService: StorageService) {
     this.username = storageService.getUsername();
@@ -109,6 +110,7 @@ export class BulkpackageupdationComponent implements OnInit {
     this.lcoid = data.lcoid;
     console.log('123214324324', this.opid);
     console.log('gjkfdgjkl', this.lcoid);
+    console.log('gjkfdgjkl', this.retailerid);
 
     console.log(this.lcoid);
     this.fromdate = data.fromdate;
@@ -116,7 +118,8 @@ export class BulkpackageupdationComponent implements OnInit {
     this.Type = data?.status;
     this.castype = data?.castype;
     this.bulkDatas = data?.rowData[0];
-    this.operatorid = data?.rowData[0].operatorid;
+    // this.operatorid = data?.rowData[0].operatorid || '';
+    console.log(this.operatorid);
     console.log(this.bulkDatas);
     this.rowData = data?.rowData
     console.log(this.bulkDatas?.mobileno);
@@ -131,7 +134,7 @@ export class BulkpackageupdationComponent implements OnInit {
     console.log(this.lcodatetype);
 
   }
-  packagePlan: any;
+
   ngOnInit(): void {
     this.getPlanList();
     // this.userservice.Finger_print_List(this.role, this.username).subscribe((data) => {
@@ -556,30 +559,7 @@ export class BulkpackageupdationComponent implements OnInit {
     return casItem ? casItem.name : '';
   }
 
-  changePlan() {
-    let requestBody = {
-      role: this.role,
-      username: this.username,
-      operatorid: this.operatorid,
-      packageid: this.packageid || this.data?.packageid || 0,
-      plantype: this.plantype,
-      // isallpack: this.isallpack,
-      expiredsubscriberlist: this.rowData,
-      plan: this.selectedRechargetype,
-      retailerid: this.lcoid
 
-    }
-    // this.swal.Loading();
-    this.userservice.bulkPackageUpdaionConfirmation(requestBody)
-      .subscribe((data: any) => {
-        this.amount_status = data?.amountStatus;
-        this.totalLCO_amount = data?.totalLcoAmount;
-        this.lco_Balance = data?.lcoBalance;
-  
-      }, (err) => {
-        this.swal.Error(err?.error?.message);
-      });
-  }
   onSelectiondatetype(selectedValue: string) {
     // this.cdr.detectChanges();
     const rechargetype = Number(selectedValue);
@@ -617,7 +597,7 @@ export class BulkpackageupdationComponent implements OnInit {
       plantype: this.selectedRechargetype,
       isallpack: this.isallpack,
       expiredsubscriberlist: this.rowData,
-      retailerid: this.lcoid || 0,
+      retailerid: this.retailerid || 0,
     }
     this.swal.Loading();
     this.userservice.bulkPackageUpdation(requestBody)
@@ -627,8 +607,6 @@ export class BulkpackageupdationComponent implements OnInit {
         this.swal.Error(err?.error?.message);
       });
   }
-
-
 
   openLoginPage(): void {
     let requestBody = {
@@ -658,13 +636,13 @@ export class BulkpackageupdationComponent implements OnInit {
           data: {
             role: this.role,
             username: this.username,
-            operatorid: this.operatorid || 0,
+            operatorid: this.opid || this.lcoid || 0,
             packageid: this.packageid || this.data?.packageid || 0,
             plan: this.plantype || this.f_date || 4,
             plantype: this.selectedRechargetype,
             isallpack: this.isallpack,
             expiredsubscriberlist: this.rowData,
-            retailerid: this.lcoid || 0,
+            retailerid: this.retailerid || 0,
             lcoBalance: this.lco_Balance,
             TotalLCO_Amount: this.totalLCO_amount,
             Amount_Status: this.amount_status
@@ -693,7 +671,7 @@ export class BulkpackageupdationComponent implements OnInit {
       formData.append('type', '11');
       formData.append('plan', this.selectedRechargetype);
       formData.append('planid', this.plantype);
-      formData.append('retailerid', '0');
+      formData.append('retailerid', this.retailerid || 0);
       this.swal.Loading();
       this.userservice.getUploadFileforPackageUpdation(formData)
         .subscribe((res: any) => {

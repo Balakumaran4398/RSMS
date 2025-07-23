@@ -283,32 +283,36 @@ export class BulkPageUpdationComponent implements OnInit {
       checked ? casSelectControl?.enable() : casSelectControl?.disable();
     });
 
-    this.userservice.Finger_print_List(this.role, this.username).subscribe((data) => {
-      this.cas = Object.entries(data[0].caslist).map(([key, value]) => ({ name: key, id: value }));
-      this.filteredCasList = this.cas;
-    })
+    // this.userservice.Finger_print_List(this.role, this.username).subscribe((data) => {
+    //   this.cas = Object.entries(data[0].caslist).map(([key, value]) => ({ name: key, id: value }));
+    //   this.filteredCasList = this.cas;
+    // })
     const dateToPass = this.selectedDate || this.fromdate;
     const dateToPass1 = this.selectedDate || this.todate;
-    this.callApi(
-      this.userservice.getAllBulkPackageListByFromdateTodateAndStatus(
-        this.role, this.username, this.selectedDate, this.selectedDate, 0, 3
-      ),
-      () => console.log('Success for Bulk Package 1'),
-      () => console.log('Error for Bulk Package 1')
-    );
-
-    this.callApi(
-      this.userservice.getAllBulkPackageListByFromdateTodateAndStatus(
-        this.role, this.username, dateToPass, dateToPass1, 0, 2
-      ),
+    // this.callApi(
+    //   this.userservice.getAllBulkPackageListByFromdateTodateAndStatus(
+    //     this.role, this.username, this.selectedDate, this.selectedDate, 0, 3
+    //   ),
+    //   () => console.log('Success for Bulk Package 1'),
+    //   () => console.log('Error for Bulk Package 1')
+    // );
+    this.callApi(this.userservice.getExpirySubscriberDetailsByDatePackAndOperatorId(
+      this.role, this.username, dateToPass || null, dateToPass1 || null, this.package || 0, this.operatorid || this.lcoId || this.retailerid || 0
+    ),
       () => console.log('Success for Bulk Package 2'),
-      () => console.log('Error for Bulk Package 2')
-    );
+      () => console.log('Error for Bulk Package 2'));
+    // this.callApi(
+    //   this.userservice.getAllBulkPackageListByFromdateTodateAndStatus(
+    //     this.role, this.username, dateToPass, dateToPass1, 0, 2
+    //   ),
+    //   () => console.log('Success for Bulk Package 2'),
+    //   () => console.log('Error for Bulk Package 2')
+    // );
     this.service();
     // this.fetchPackageList();
     this.fetchOperatorList();
     this.fetchPackageList();
-    this.updateColumnDefs('archive');
+    this.updateColumnDefs('bulk_package');
     this.fromdate = this.fromdate ? this.formatDate(this.fromdate) : this.formatDate(new Date());
     this.todate = this.todate ? this.formatDate(this.todate) : this.formatDate(new Date());
     if (this.role == 'ROLE_OPERATOR') {
@@ -507,7 +511,6 @@ export class BulkPageUpdationComponent implements OnInit {
           if (!this.gridOptions.paginationPageSizeSelector.includes(rowCount)) {
             this.gridOptions.paginationPageSizeSelector.push(rowCount);
           }
-
           this.swal.Success_200();
         } else if (response.status === 204) {
           this.swal.Success_204();
