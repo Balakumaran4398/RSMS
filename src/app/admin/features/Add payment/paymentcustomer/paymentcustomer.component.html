@@ -10,49 +10,6 @@
             <div class="col-xl-6">
               <div class="card-body p-md-5 text-black ">
                 <h3 class="mb-5 text-uppercase">payment For Set Top Box</h3>
-                <!-- <div class="col-md-12 mb-4 d-flex justify-content-between">
-                  <div data-mdb-input-init class="form-outline col-6 col-md-6">
-                    <span class="form-label" for="form3Example1m">Recharge Type</span>
-                  </div>
-                  <div data-mdb-input-init class="input_box col-6 col-md-6">
-                    <select [(ngModel)]="selectedRechargetype" (ngModelChange)="onSelectionrechargetype($event)">
-                      <option value="0" selected>Selected Recharge Type</option>
-                      <option *ngFor="let rt of rechargetype" [value]="rt.id">
-                        {{rt.name}}
-                      </option>
-                    </select>
-                  </div>
-                </div> -->
-
-                <!-- <div class="input_box  mb-3" style="margin-top: 2%;">
-                  <div *ngIf="isplantype" class="col-12 col-md-12 display align-items-center justify-content-center ">
-                    <div class="col-md-12 mb-4 d-flex justify-content-between">
-                      <div data-mdb-input-init class="form-outline col-6 col-md-6">
-                        <span class="form-label" for="form3Example1m">Plan</span>
-                      </div>
-                      <div data-mdb-input-init class="form-outline col-6 col-md-6">
-                        <select [(ngModel)]="plantype">
-                          <option value="0" selected disabled>Selected Plan</option>
-                          <option *ngFor="let plan of plantype$ | async" [value]="plan.value">
-                            {{ plan.key }}
-                          </option>
-                        </select>
-                      </div>
-                    </div>
-                  </div>
-                  <div *ngIf="datetype">
-                    <div class="col-md-12 mb-4 d-flex justify-content-between">
-                      <div data-mdb-input-init class="form-outline col-6 col-md-6">
-                        <span class="form-label" for="form3Example1m">Date</span>
-                      </div>
-                      <div data-mdb-input-init class="form-outline col-6 col-md-6">
-                        <input type="date" [(ngModel)]="f_date"
-                          [min]="noofdays == 0 ? getNextDay1() : getNextDay(lcodatetype)"
-                          (ngModelChange)="onSelectiondatetype($event)">
-                      </div>
-                    </div>
-                  </div>
-                </div> -->
                 <div class="col-md-12 mb-4 d-flex justify-content-between">
                   <div data-mdb-input-init class="form-outline col-6 col-md-6">
                     <label class="form-label" for="form3Example1m">Name</label>
@@ -126,7 +83,7 @@
                     {{alacarte_pack}}
                   </div>
                 </div>
-                <div class="col-md-12 mb-4 d-flex justify-content-between">
+                <!-- <div class="col-md-12 mb-4 d-flex justify-content-between">
                   <div data-mdb-input-init class="form-outline col-6 col-md-6">
                     <span class="form-label" for="form3Example1m">Recharge Type</span>
                   </div>
@@ -138,9 +95,10 @@
                       </option>
                     </select>
                   </div>
-                </div>
+                </div> -->
                 <div class="input_box  mb-3" style="margin-top: 2%;">
-                  <div *ngIf="isplantype" class="col-12 col-md-12 display align-items-center justify-content-center ">
+                  <!-- <div *ngIf="isplantype" class="col-12 col-md-12 display align-items-center justify-content-center "> -->
+                  <div  class="col-12 col-md-12 display align-items-center justify-content-center ">
                     <div class="col-md-12 mb-4 d-flex justify-content-between">
                       <div data-mdb-input-init class="form-outline col-6 col-md-6">
                         <span class="form-label" for="form3Example1m">Plan</span>
@@ -155,7 +113,7 @@
                       </div>
                     </div>
                   </div>
-                  <div *ngIf="datetype">
+                  <!-- <div *ngIf="datetype">
                     <div class="col-md-12 mb-4 d-flex justify-content-between">
                       <div data-mdb-input-init class="form-outline col-6 col-md-6">
                         <span class="form-label" for="form3Example1m">Date</span>
@@ -166,8 +124,7 @@
                           (ngModelChange)="onSelectiondatetype($event)">
                       </div>
                     </div>
-
-                  </div>
+                  </div> -->
                 </div>
                 <div class="d-flex justify-content-center pt-3">
                   <button type="button" data-mdb-button-init data-mdb-ripple-init class="btn ms-2"

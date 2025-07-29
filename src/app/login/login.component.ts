@@ -206,7 +206,6 @@ export class LoginComponent implements OnInit {
             } else if (isSubcriber) {
               console.log('role', this.role);
               console.log('username', this.username);
-
               this.role = this.getUserRole(res)
               this.username = username;
               this.userService.getSubscriberDetails(this.role, this.username).subscribe((data: any) => {

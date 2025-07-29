@@ -1,6 +1,8 @@
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { BehaviorSubject } from 'rxjs/internal/BehaviorSubject';
+import { AuthService } from 'src/app/_core/service/auth.service';
 import { BaseService } from 'src/app/_core/service/base.service';
 import { StorageService } from 'src/app/_core/service/storage.service';
 import { SwalService } from 'src/app/_core/service/swal.service';
@@ -14,29 +16,26 @@ declare var EasebuzzCheckout: any;
 export class PaymentcustomerComponent implements OnInit {
   role: any;
   username: any;
-  newSmartcard: any ;
+  newSmartcard: any;
   selectedRechargetype: any = 0;
-  isDisabled: boolean = true;
-  isRecharge = false;
   noofdays: any;
   lcodatetype: any;
+  rechargetype: any;
   f_date: any;
+  packagePlan: any;
+  plantype: any = 0;
+  isDisabled: boolean = true;
+  isRecharge = false;
   dateTodate = false;
   isplantype = false;
   datetype = false;
   isSubmit = false;
-  rechargetype: any;
   plan = false;
   date = false;
-  
-  plantype: any = 0;
   isplan = false;
   isdate = false;
   isdateTodate = false;
-  packagePlan: any;
   plantype$ = new BehaviorSubject<{ key: string, value: number }[]>([]);
-
-
   amount: any;
   operatorid: any;
   transResponse: any;
@@ -63,8 +62,8 @@ export class PaymentcustomerComponent implements OnInit {
   addon_pack: any;
   alacarte_pack: any;
   id: any;
-
-  constructor(private route: ActivatedRoute, private router: Router, private userService: BaseService, private storageService: StorageService, private cdr: ChangeDetectorRef, private swal: SwalService,) {
+  signInform!: FormGroup;
+  constructor(private route: ActivatedRoute, private router: Router, private fb: FormBuilder, private authService: AuthService, private userService: BaseService, private storageService: StorageService, private cdr: ChangeDetectorRef, private swal: SwalService,) {
     // this.role = storageService.getUserRole();
     // this.username = storageService.getUsername();
     this.route.paramMap.subscribe(params => {
@@ -81,56 +80,38 @@ export class PaymentcustomerComponent implements OnInit {
       this.getPlanList();
       this.getplan();
     });
+    this.signInform = this.fb.group({
+      username: new FormControl('', [Validators.required]),
+      password: new FormControl('', [Validators.required])
+    });
     this.f_date = this.lcodatetype;
   }
   ngOnInit(): void {
+    console.log('1231231231');
+
+    let requestBody = {
+      username: this.username,
+      password: this.username
+    }
+    this.authService.login(requestBody).subscribe(
+      (res: any) => {
+        console.log(res);
+        this.storageService.saveToken(res.accessToken);
+      }
+    );
+    console.log('above code is correct?');
 
   }
 
   getPlanList() {
     this.userService.getPlanTypeList(this.role, this.username).subscribe((data: any) => {
       console.log(data);
-      // if (this.role != 'ROLE_OPERATOR' && this.role != 'ROLE_SUBSCRIBER') {
-        console.log('ROLE_OPERATOR  - PLAN list');
-        this.rechargetype = Object.keys(data).map(key => {
-          const id = data[key];
-          const name = key.replace(/\(\d+\)$/, '').trim();
-          return { name: name, id: id };
-        });
-      // } else if (this.role == 'ROLE_OPERATOR' || this.role == 'ROLE_SUBLCO') {
-      //   console.log('ROLE_SUBLCO     PLAN list');
+      this.rechargetype = Object.keys(data).map(key => {
+        const id = data[key];
+        const name = key.replace(/\(\d+\)$/, '').trim();
+        return { name: name, id: id };
+      });
 
-      //   const rawList = Object.keys(data).map(key => {
-      //     const id = data[key];
-      //     const name = key.replace(/\(\d+\)$/, '').trim();
-      //     return { name, id };
-      //   });
-
-      //   this.rechargetype = rawList.filter(item => {
-      //     const name = item.name.toLowerCase();
-      //     if (name === 'plan' && this.isplan) return true;
-      //     if (name === 'date' && this.isdate) return true;
-      //     if (name === 'date-to-date' && this.isdateTodate) return true;
-      //     return false;
-      //   });
-      //   this.cdr.detectChanges();
-      // } else if (this.role == 'ROLE_SUBSCRIBER') {
-      //   console.log('ROLE_SUBSCRIBER     PLAN list');
-      //   const rawList = Object.keys(data).map(key => {
-      //     const id = data[key];
-      //     const name = key.replace(/\(\d+\)$/, '').trim();
-      //     return { name, id };
-      //   });
-      //   console.log(rawList);
-      //   this.rechargetype = rawList.filter(item => {
-      //     const name = item.name.toLowerCase();
-      //     if (name === 'plan' && this.isplan) return true;
-      //     if (name === 'date' && this.isdate) return true;
-      //     if (name === 'date-to-date' && this.isdateTodate) return true;
-      //     return false;
-      //   });
-      //   this.cdr.detectChanges();
-      // }
       this.cdr.detectChanges();
       console.log(this.rechargetype);
     });
@@ -200,7 +181,6 @@ export class PaymentcustomerComponent implements OnInit {
 
   }
   onSelectiondatetype(selectedValue: string) {
-    // this.cdr.detectChanges();
     const rechargetype = Number(selectedValue);
     console.log('selectrdvalue', selectedValue);
 
@@ -224,7 +204,45 @@ export class PaymentcustomerComponent implements OnInit {
     }
   }
   getpay() {
-    this.makeEaseBuzzPayment();
+    // this.makeEaseBuzzPayment();
+    this.userService.getuserOnlineInitialRequest(this.role, this.username, this.newSmartcard, this.plantype, this.username).subscribe((res: any) => {
+      this.transResponse = res;
+      console.log(res);
+      this.easebuzzData = this.transResponse.data;
+      console.log('STATUS', res.status);
+      if (res.status == '1') {
+        if (this.gatewaymode == 'LIVE') {
+          console.log('gatewaymode', this.gatewaymode);
+          this.mode = 'prod';
+          console.log('prod', this.mode);
+        } else {
+          this.mode = 'test';
+          console.log('test', this.mode);
+          var easebuzzCheckout = new EasebuzzCheckout(this.apikey, this.mode);
+          var options = {
+            access_key: this.easebuzzData,
+            onResponse: (response: any) => {
+              console.log('wsedasdsad', response);
+              if (response.status) {
+                this.swal.Loading();
+                this.userService.getUserOnlineFailurelRecharge(this.role, this.username, this.newSmartcard, response.amount, response.txnid, response.status, this.username)
+                  .subscribe((res: any) => {
+                    this.swal.success(res?.message);
+                  }, (err) => {
+                    this.swal.Error(err?.error?.message);
+                  });
+              } else {
+              }
+            },
+            theme: '#123456',
+          };
+          easebuzzCheckout.initiatePayment(options);
+        }
+      } else {
+        alert(res.data);
+      }
+    })
+
   }
   makeEaseBuzzPayment() {
     if (this.role == 'ROLE_SUBLCO') {
@@ -243,9 +261,7 @@ export class PaymentcustomerComponent implements OnInit {
             console.log('test', this.mode);
           }
 
-          var easebuzzCheckout = new EasebuzzCheckout(
-            this.apikey,
-            this.mode,);
+          var easebuzzCheckout = new EasebuzzCheckout(this.apikey, this.mode,);
           var options = {
             access_key: this.easebuzzData,
             onResponse: (response: any) => {
@@ -390,7 +406,6 @@ export class PaymentcustomerComponent implements OnInit {
       this.expiry = data.subscriberdetails.expirydate;
       this.addon_pack = data.subscriberdetails.acount;
       this.alacarte_pack = data.subscriberdetails.achannels;
-
     },
       (error: any) => {
         console.error('Error fetching data:', error);

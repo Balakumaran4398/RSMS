@@ -16,6 +16,7 @@ export class StorageService {
   signOut(): void {
     window.sessionStorage.clear();
     this.router.navigate(['/signin']);
+    // this.router.navigate(['/payment_customer']);
 
     let myInterval = setInterval(() => {
       window.location.reload();

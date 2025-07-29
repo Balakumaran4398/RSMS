@@ -28,6 +28,8 @@ export class RecurringComponent implements OnInit {
   gridApi: any;
   isAnyRowSelected: any = false;
   selectedIds: any[] = [];
+  selectedSmartcards: any[] = [];
+  rows: any[] = [];
   selectedtypes: any[] = [];
   hasSelectedRows: boolean = true;
 
@@ -39,8 +41,8 @@ export class RecurringComponent implements OnInit {
   Isuser: boolean = false;
   IsOperator: boolean = false;
 
-  lcoDeatails:any;
-  lcoid:any;
+  lcoDeatails: any;
+  lcoid: any;
 
   columnDefs: ColDef[] = [
     {
@@ -74,7 +76,7 @@ export class RecurringComponent implements OnInit {
       floatingFilter: true
     },
     paginationPageSize: 10,
-    paginationPageSizeSelector:[10,20],
+    paginationPageSizeSelector: [10, 20],
     pagination: true,
   }
   constructor(public dialog: MatDialog, private fb: FormBuilder, private userservice: BaseService, private storageService: StorageService, private swal: SwalService) {
@@ -82,20 +84,59 @@ export class RecurringComponent implements OnInit {
     this.role = storageService.getUserRole();
   }
 
-  onSelectionChanged() {
-    console.log('zdfdsjfhsdjfhjksdhfjkdsh');
+  // onSelectionChanged() {
+  //   console.log('zdfdsjfhsdjfhjksdhfjkdsh');
+  //   if (this.gridApi) {
+  //     console.log('1228986676');
+  //     const selectedRows = this.gridApi.getSelectedRows();
+  //     this.isAnyRowSelected = selectedRows.length > 0;
+  //     console.log("Selected Rows:", selectedRows);
+  //     console.log(this.isAnyRowSelected);
+  //     this.selectedIds = selectedRows;
+  //   }
+  // }
 
-    if (this.gridApi) {
-      console.log('1228986676');
-
-      const selectedRows = this.gridApi.getSelectedRows();
-      this.isAnyRowSelected = selectedRows.length > 0;
-      console.log("Selected Rows:", selectedRows);
-      console.log(this.isAnyRowSelected);
-
-      this.selectedIds = selectedRows;
-
+  toggleSelection(smartcard: any, id: any): void {
+    const index = this.selectedSmartcards.indexOf(smartcard);
+    if (index === -1) {
+      this.selectedSmartcards.push(smartcard);
+      this.selectedIds.push(id);
+    } else {
+      this.selectedSmartcards.splice(index, 1);
+      this.selectedIds.splice(index, 1);
     }
+  }
+  selectedIdsSet = new Set<number>();
+  onSelectionChanged(event: any) {
+    if (this.gridApi) {
+      let selectedRows: any[] = [];
+      //  this.selectedIdsSet.clear();
+      this.gridApi.forEachNodeAfterFilter((rowNode: any) => {
+        if (rowNode.isSelected()) {
+          selectedRows.push(rowNode.data);
+          this.selectedIdsSet.add(rowNode.data.id);
+          this.rows = selectedRows;
+        }
+      });
+
+      console.log("Filtered & Selected Rows:", selectedRows);
+      if (selectedRows.length === 0) {
+        this.gridApi.deselectAll();
+        this.selectedIdsSet.clear();
+      }
+      console.log("Final Selected Rows:", selectedRows);
+      this.updateSelectedRows(selectedRows);
+    }
+  }
+
+
+  updateSelectedRows(selectedRows: any[]) {
+    this.isAnyRowSelected = selectedRows.length > 0;
+    // this.selectedIds = selectedRows.map((e: any) => e.id);
+    this.selectedIds = Array.from(this.selectedIdsSet)
+    this.selectedtypes = selectedRows.map((e: any) => e.isactive);
+    console.log("Updated Selected Rows:", selectedRows);
+    console.log("Selected Rows:", this.selectedIds);
   }
   ngOnInit(): void {
     this.userservice.getOeratorList(this.role, this.username, 1).subscribe((data: any) => {
@@ -197,7 +238,8 @@ export class RecurringComponent implements OnInit {
         let requestBody = {
           role: this.role,
           username: this.username,
-          recurringlist: this.selectedIds,
+          // recurringlist: this.selectedIds,
+          recurringlist: this.rows,
           isrecurring: 'true',
         }
         this.userservice.bulkIsRecurring(requestBody)
@@ -246,7 +288,8 @@ export class RecurringComponent implements OnInit {
         let requestBody = {
           role: this.role,
           username: this.username,
-          recurringlist: this.selectedIds,
+          // recurringlist: this.selectedIds,
+          recurringlist: this.rows,
           isrecurring: 'false',
         }
         this.userservice.bulkIsRecurring(requestBody)

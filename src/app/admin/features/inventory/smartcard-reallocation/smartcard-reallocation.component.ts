@@ -210,7 +210,6 @@ export class SmartcardReallocationComponent implements OnInit {
 
 
   onGridReady(params: { api: any; }) {
-
     this.gridApi = params.api;
   }
 

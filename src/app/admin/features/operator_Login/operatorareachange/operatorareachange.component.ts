@@ -53,6 +53,7 @@ export class OperatorareachangeComponent implements OnInit {
   gridApi: any;
   isAnyRowSelected: any = false;
   selectedIds: number[] = [];
+  selectedSmartcards: any[] = [];
   selectedtypes: number[] = [];
   hasSelectedRows: boolean = true;
   isRowSelected: boolean = false;
@@ -83,12 +84,12 @@ export class OperatorareachangeComponent implements OnInit {
     this.operatorIdoperatorId();
   }
 
-  onTableData(lco:any) {
+  onTableData(lco: any) {
     this.rowData = [];
     if (lco) {
       this.userservice.getAreaListByOperatorid(this.role, this.username, lco)
         .subscribe((data: any) => {
-       
+
           this.areaList = Object.keys(data).map(key => {
             const name = key.replace(/\(\d+\)$/, '').trim();
             const value = data[key];
@@ -184,7 +185,8 @@ export class OperatorareachangeComponent implements OnInit {
       operatorid: this.lcoId,
       areaid: this.area,
       streetid: this.street,
-      subscriberlist: this.rows,
+      // subscriberlist: this.rows,
+      subscriberlist: this.selectRows,
 
     }
     this.swal.Loading();
@@ -195,15 +197,54 @@ export class OperatorareachangeComponent implements OnInit {
         this.swal.Error(err?.error?.message || err?.error?.areaid || err?.error?.streetid);
       });
   }
-  onSelectionChanged() {
-    if (this.gridApi) {
-      const selectedRows = this.gridApi.getSelectedRows();
-      this.isAnyRowSelected = selectedRows.length > 0;
-      console.log("Selected Rows:", selectedRows);
-      this.rows = selectedRows;
-      this.selectedIds = selectedRows.map((e: any) => e.id);
-      this.selectedtypes = selectedRows.map((e: any) => e.isactive);
+  toggleSelection(smartcard: any, id: any): void {
+    const index = this.selectedSmartcards.indexOf(smartcard);
+    if (index === -1) {
+      this.selectedSmartcards.push(smartcard);
+      this.selectedIds.push(id);
+    } else {
+      this.selectedSmartcards.splice(index, 1);
+      this.selectedIds.splice(index, 1);
     }
+  }
+  selectedIdsSet = new Set<number>();
+  onSelectionChanged() {
+    // if (this.gridApi) {
+    //   const selectedRows = this.gridApi.getSelectedRows();
+    //   this.isAnyRowSelected = selectedRows.length > 0;
+    //   console.log("Selected Rows:", selectedRows);
+    //   this.rows = selectedRows;
+    //   this.selectedIds = selectedRows.map((e: any) => e.id);
+    //   this.selectedtypes = selectedRows.map((e: any) => e.isactive);
+    // }
+    if (this.gridApi) {
+      let selectedRows: any[] = [];
+      //  this.selectedIdsSet.clear();
+      this.gridApi.forEachNodeAfterFilter((rowNode: any) => {
+        if (rowNode.isSelected()) {
+          selectedRows.push(rowNode.data);
+          this.selectedIdsSet.add(rowNode.data.id);
+        }
+      });
+      console.log("Filtered & Selected Rows:", selectedRows);
+      if (selectedRows.length === 0) {
+        this.gridApi.deselectAll();
+        this.selectedIdsSet.clear();
+      }
+      console.log("Final Selected Rows:", selectedRows);
+      this.updateSelectedRows(selectedRows);
+
+    }
+  }
+  selectRows: any;
+  updateSelectedRows(selectedRows: any[]) {
+    this.isAnyRowSelected = selectedRows.length > 0;
+    // this.selectedIds = selectedRows.map((e: any) => e.id);
+    this.selectedIds = Array.from(this.selectedIdsSet)
+    this.selectedtypes = selectedRows.map((e: any) => e.isactive);
+    this.selectRows = selectedRows;
+    console.log("Updated Selected Rows:", this.selectRows);
+    console.log("Selected Rows:", this.selectedIds);
   }
   onGridReady(params: { api: any; }) {
     this.gridApi = params.api;
@@ -224,5 +265,5 @@ export class OperatorareachangeComponent implements OnInit {
     })
   }
 
-  
+
 }

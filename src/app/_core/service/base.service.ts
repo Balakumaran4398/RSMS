@@ -1862,13 +1862,28 @@ export class BaseService {
   }
 
   // ---------------------------------------------------Synchronizatio Reports-----------------------------
-  getSynchronizationExcelReport(requestBody: any): Observable<any[]> {
-    return this.http.post<any[]>(BASE_URL + "/report/uploadFileForSynchronizationReport", requestBody,);
+  // getSynchronizationExcelReport(requestBody: any): Observable<any[]> {
+  //   return this.http.post<any[]>(BASE_URL + "/report/uploadFileForSynchronizationReport", requestBody,);
+  // }
+  getSynchronizationExcelReport(requestBody: any): Observable<HttpResponse<any[]>> {
+    return this.http.post<any[]>(
+      BASE_URL + "/report/uploadFileForSynchronizationReport",
+      requestBody,
+      { observe: 'response' } // <-- Observe full HTTP response
+    );
   }
+
   getSynchronizationPDFReport(requestBody: any): Observable<Blob> {
     return this.http.post(BASE_URL + "/report/uploadFileForSynchronizationReport", requestBody, { responseType: 'blob' });
   }
 
+  // -------------------------------------------------Reconsolation Report --------------------------------------
+  getuploadFileReconcialiationReport(requestBody: any): Observable<HttpResponse<any[]>> {
+    return this.http.post<any[]>(BASE_URL + "/report/uploadFileReconcialiationReport", requestBody, { observe: 'response' });
+  }
+  // getuploadFileReconcialiationReport(requestBody: any): Observable<Blob> {
+  //   return this.http.post(BASE_URL + "/report/uploadFileReconcialiationReport", requestBody, { responseType: 'blob' });
+  // }
   // ====================================================LCO RECHARGE [OPERATOR]===============================================
   // -----------------------------------------------getRechargeLogReport-----------------------------
   getRechargeLogPDFReport(role: any, username: any, fromdate: any, todate: any, operatorid: any): Observable<Blob> {
@@ -2476,5 +2491,13 @@ export class BaseService {
   // =============================================Bulk Package Updation File Upload=================================
   getUploadFileforPackageUpdation(requestBody: any): Observable<any[]> {
     return this.http.post<any[]>(BASE_URL + "/bulk/uploadFileforPackageUpdation", requestBody, {});
+  }
+  // ========================================== Payment Customer For Recharge ===================================
+  // ---------------------------------------------------Initial API---------------------------------
+  getuserOnlineInitialRequest(role: any, username: any, smartcard: any, plan: any, mobileno: any): Observable<any[]> {
+    return this.http.post<any[]>(BASE_URL + "/user/userOnlineInitialRequest?role=" + role + "&username=" + username + "&smartcard=" + smartcard + "&plan=" + plan + "&mobileno=" + mobileno, {});
+  }
+  getUserOnlineFailurelRecharge(role: any, username: any, smartcard: any, amount: any, transactionid: any, paymentstatus: any, mobileno: any): Observable<any[]> {
+    return this.http.post<any[]>(BASE_URL + "/user/UserOnlineFailurelRecharge?role=" + role + "&username=" + username + "&smartcard=" + smartcard + "&amount=" + amount + "&transactionid=" + transactionid + "&paymentstatus=" + paymentstatus + "&mobileno=" + mobileno, {});
   }
 }

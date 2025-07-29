@@ -131,15 +131,12 @@ export class NotAllocatedComponent implements OnInit {
         editButton.addEventListener('click', () => {
           this.openEditDialog(params.data);
         });
-
         const div = document.createElement('div');
         div.appendChild(editButton);
         return div;
       }
     },
-
-
-  ]
+    ]
 
   selectedIdsSet = new Set<number>();
   onSelectionChanged(event: any) {
@@ -155,7 +152,7 @@ export class NotAllocatedComponent implements OnInit {
       console.log("Filtered & Selected Rows:", selectedRows);
       if (selectedRows.length === 0) {
         this.gridApi.deselectAll();
-        // this.selectedIdsSet.clear();
+        this.selectedIdsSet.clear();
       }
       console.log("Final Selected Rows:", selectedRows);
       this.updateSelectedRows(selectedRows);

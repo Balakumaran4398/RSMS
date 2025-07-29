@@ -67,7 +67,7 @@
             </div>
             <ag-grid-angular #agGrid id="myGrid" domLayout='normal' class="ag-theme-alpine table-class"
                 [rowSelection]="rowSelection" [gridOptions]="gridOptions"
-                [columnDefs]="columnDefs" [rowData]="rowData" (selectionChanged)="onSelectionChanged()"
+                [columnDefs]="columnDefs" [rowData]="rowData" (selectionChanged)="onSelectionChanged($event)"
                 (gridReady)="onGridReady($event)" [enableCellTextSelection]="true">
             </ag-grid-angular>
         </div>

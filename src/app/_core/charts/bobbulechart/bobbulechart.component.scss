@@ -27,20 +27,27 @@
   height: 200px;
 }
 
+// .bubble {
+//   position: absolute;
+//   border-radius: 50%;
+//   color: white;
+//   font-weight: bold;
+//   font-size: 18px;
+//   display: flex;
+//   align-items: center;
+//   justify-content: center;
+//   transition: all 0.3s ease;
+//   text-align: center;
+// }
+
 .bubble {
-  position: absolute;
-  border-radius: 50%;
-  color: white;
-  font-weight: bold;
-  font-size: 18px;
   display: flex;
-  align-items: center;
+  border-radius: 50%;
   justify-content: center;
-  transition: all 0.3s ease;
-  text-align: center;
+  align-items: center;
+  font-weight: bold;
+  color: white;
 }
-
-
 .bubble.blue {
   background-color: #00bfff;
 }

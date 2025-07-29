@@ -46,6 +46,7 @@ export class BulkPageUpdationComponent implements OnInit {
   selectedIds: number[] = [];
   selectedtypes: number[] = [];
   rows: any[] = [];
+  selectedSmartcards: any[] = [];
   isAnyRowSelected: boolean = false;
   isSelectRow: boolean = false;
   searchTerm: any;
@@ -438,25 +439,69 @@ export class BulkPageUpdationComponent implements OnInit {
   }
 
 
-  onSelectionChanged() {
-    const selectedNodes = this.gridApi.getSelectedNodes();
-    const selectedData = selectedNodes.map((node: any) => node.data);
-    if (this.gridApi) {
-      const selectedRows = this.gridApi.getSelectedRows();
-      this.isAnyRowSelected = selectedRows.length > 0;
-      this.rows = selectedRows;
-    }
-    console.log('defsfdsfds', this.isAnyRowSelected);
+  // onSelectionChanged() {
+  //   const selectedNodes = this.gridApi.getSelectedNodes();
+  //   const selectedData = selectedNodes.map((node: any) => node.data);
+  //   if (this.gridApi) {
+  //     const selectedRows = this.gridApi.getSelectedRows();
+  //     this.isAnyRowSelected = selectedRows.length > 0;
+  //     this.rows = selectedRows;
+  //   }
+  //   console.log('defsfdsfds', this.isAnyRowSelected);
 
-    if (this.isAnyRowSelected) {
-      this.isSelectRow = true;
+  //   if (this.isAnyRowSelected) {
+  //     this.isSelectRow = true;
+  //   } else {
+  //     this.isSelectRow = false;
+  //   }
+  // }
+
+  toggleSelection(smartcard: any, id: any): void {
+    const index = this.selectedSmartcards.indexOf(smartcard);
+    if (index === -1) {
+      this.selectedSmartcards.push(smartcard);
+      this.selectedIds.push(id);
     } else {
-      this.isSelectRow = false;
+      this.selectedSmartcards.splice(index, 1);
+      this.selectedIds.splice(index, 1);
     }
-
+  }
+  selectedIdsSet = new Set<number>();
+  onSelectionChanged(event: any) {
+    if (this.gridApi) {
+      let selectedRows: any[] = [];
+      //  this.selectedIdsSet.clear();
+      this.gridApi.forEachNodeAfterFilter((rowNode: any) => {
+        if (rowNode.isSelected()) {
+          selectedRows.push(rowNode.data);
+          this.selectedIdsSet.add(rowNode.data.id);
+          this.rows = selectedRows;
+        }
+      });
+      if (this.isAnyRowSelected) {
+        this.isSelectRow = true;
+      } else {
+        this.isSelectRow = false;
+      }
+      console.log("Filtered & Selected Rows:", selectedRows);
+      if (selectedRows.length === 0) {
+        this.gridApi.deselectAll();
+        this.selectedIdsSet.clear();
+      }
+      console.log("Final Selected Rows:", selectedRows);
+      this.updateSelectedRows(selectedRows);
+    }
   }
 
 
+  updateSelectedRows(selectedRows: any[]) {
+    this.isAnyRowSelected = selectedRows.length > 0;
+    // this.selectedIds = selectedRows.map((e: any) => e.id);
+    this.selectedIds = Array.from(this.selectedIdsSet)
+    this.selectedtypes = selectedRows.map((e: any) => e.isactive);
+    console.log("Updated Selected Rows:", selectedRows);
+    console.log("Selected Rows:", this.selectedIds);
+  }
   onGridReady = (params: any) => {
     this.gridApi = params.api;
     this.gridColumnApi = params.columnApi;

@@ -30,7 +30,9 @@ export class PackageBasedComponent implements OnInit {
     { lable: "All", value: 4 },
   ];
   file: File | null = null;
+  file1: File | any = null;
   filePath: string = '';
+  isDateSelect: boolean = false;
   isFileSelected: boolean = false;
   submitted: boolean = false;
   $event: any;
@@ -73,16 +75,23 @@ export class PackageBasedComponent implements OnInit {
   fromdate: any;
   todate: any;
 
+  fromdate1: any;
+  todate1: any;
+  isupload: boolean | any = false;
   handleFileInput(event: Event): void {
     const input = event.target as HTMLInputElement;
-
     if (input.files && input.files.length > 0) {
       this.isFileSelected = true;
+      this.isDateSelect = true;
       this.file = input.files[0];
       this.filePath = input.files[0].name;
       console.log(this.file);
+      if (this.type == 'Reconsolation') {
+        this.getReconsolationUploadData();
+      }
     } else {
       this.isFileSelected = false;
+      this.isDateSelect = false;
       this.file = null;
       this.filePath = '';
     }
@@ -92,8 +101,10 @@ export class PackageBasedComponent implements OnInit {
     const date = new Date(event.value).getDate();
     const month = new Date(event.value).getMonth() + 1;
     const year = new Date(event.value).getFullYear();
-    this.fromdate = year + "-" + month + "-" + date
+    this.fromdate = year + "-" + month + "-" + date;
+    this.fromdate1 = year + "-" + month + "-" + date;
     console.log(this.fromdate);
+    console.log(this.fromdate1);
     return this.fromdate;
 
   }
@@ -101,8 +112,10 @@ export class PackageBasedComponent implements OnInit {
     const date = new Date(event.value).getDate();
     const month = new Date(event.value).getMonth() + 1;
     const year = new Date(event.value).getFullYear();
-    this.todate = year + "-" + month + "-" + date
+    this.todate = year + "-" + month + "-" + date;
+    this.todate1 = year + "-" + month + "-" + date;
     console.log(this.todate);
+    console.log(this.todate1);
     return this.todate;
   }
   getPackage_AddonExcel() {
@@ -196,38 +209,55 @@ export class PackageBasedComponent implements OnInit {
       formData.append('role', this.role);
       formData.append('username', this.username);
       formData.append('file', this.file);
-      formData.append('fromdate', this.fromdate);
-      formData.append('todate', this.todate);
+      formData.append('fromdate', this.fromdate || 0);
+      formData.append('todate', this.todate || 0);
       formData.append('reporttype', '2');
-      formData.append('type', this.productType);
-      // this.swal.Loading();
-      this.userService.getSynchronizationExcelReport(formData)
-        .subscribe(
-          (response: any) => {
-            console.log(this.type);
-            this.rowData = response;
-            console.log(this.type);
+      if (this.type == 'Synchronization') {
+        formData.append('type', this.productType);
+      }
+      // if (this.type == 'Synchronization') {
+      this.swal.Loading();
+      this.userService.getSynchronizationExcelReport(formData).subscribe(
+        (response: HttpResponse<any[]>) => {
+          const statusCode = response.status;
+          const responseData = response.body;
+
+          console.log('HTTP Status:', statusCode);
+          if (statusCode === 204 || !responseData || responseData.length === 0) {
             const title = (this.type + ' REPORT [FROM DATE: ' + this.fromdate + ' - TO DATE: ' + this.todate + ']').toUpperCase();
             const sub = 'MSO ADDRESS:' + this.msodetails;
-            let areatitle = '';
-            let areasub = '';
-            let additionalSubheaders = {
+            const additionalSubheaders = {
               'From Date': this.fromdate,
               'To Date': this.todate,
               'Package Type': this.productType,
             };
-            let header: string[] = [];
-            const datas: Array<any> = [];
-            areatitle = 'A1:H2';
-            areasub = 'A3:H3';
-            header = ['S.NO', 'SMARTCARD', 'PRODUCT ID', 'ACTIVATION DATE', 'EXPIRY DATE', 'ACTIVITY', 'STATUS', 'TYPE'];
+            const header = ['S.NO', 'SMARTCARD', 'PRODUCT ID', 'ACTIVATION DATE', 'EXPIRY DATE', 'ACTIVITY', 'STATUS', 'TYPE'];
 
+            this.excelService.generateSynchronizationExcel(
+              'A1:H2',
+              header,
+              [],
+              title,
+              'A3:H3',
+              sub,
+              additionalSubheaders
+            );
+          } else {
+            this.rowData = responseData;
+            const title = (this.type + ' REPORT [FROM DATE: ' + this.fromdate + ' - TO DATE: ' + this.todate + ']').toUpperCase();
+            const sub = 'MSO ADDRESS:' + this.msodetails;
+            const additionalSubheaders = {
+              'From Date': this.fromdate,
+              'To Date': this.todate,
+              'Package Type': this.productType,
+            };
+
+            const datas: any[] = [];
             this.rowData.forEach((d: any, index: number) => {
               const row = [index + 1, d.smartcard, d.orderid, d.logdate, d.expirydate, d.activity, d.status, d.type];
               datas.push(row);
             });
 
-            // this.excelService.generateSynchronizationExcel( areatitle, header, datas, title,  areasub, sub, additionalSubheaders);
             this.excelService.generateSynchronizationExcel(
               'A1:H2',
               ['S.NO', 'SMARTCARD', 'PRODUCT ID', 'ACTIVATION DATE', 'EXPIRY DATE', 'ACTIVITY', 'STATUS', 'TYPE'],
@@ -237,11 +267,15 @@ export class PackageBasedComponent implements OnInit {
               sub,
               additionalSubheaders
             );
-          },
-          (error) => {
-            this.handleApiError(error);
           }
-        );
+          this.swal.Close();
+        },
+        (error) => {
+          this.handleApiError(error);
+        }
+      );
+
+      // }
     } else {
       Swal.fire({
         title: 'Error!',
@@ -250,7 +284,6 @@ export class PackageBasedComponent implements OnInit {
         confirmButtonText: 'OK'
       });
     }
-
   }
   getPDF() {
     if (this.file) {
@@ -292,6 +325,132 @@ export class PackageBasedComponent implements OnInit {
       });
     }
   }
+
+  // ======================================RECONSOLATION==========================================
+  dummyFile: any;
+  getReconsolationUploadData() {
+    const formData = new FormData();
+    formData.append('role', this.role);
+    formData.append('username', this.username);
+    if (this.file1) {
+      formData.append('file', this.file1);
+    } else {
+      this.dummyFile = new Blob(['Dummy content'], { type: 'text/plain' });
+      const extensions = ['dummy.xlsx', 'dummy.xls', 'dummy.csv'];
+      const randomName = extensions[Math.floor(Math.random() * extensions.length)];
+
+      formData.append('file', this.dummyFile, randomName);
+    }
+    formData.append('fromdate', this.fromdate1 || 0);
+    formData.append('todate', this.todate1 || 0);
+    formData.append('isupload', this.isupload = 'true');
+    formData.append('reporttype', '2');
+
+    console.log(this.file1);
+    this.swal.Loading();
+
+    this.userService.getuploadFileReconcialiationReport(formData).subscribe(
+      (response: HttpResponse<any[]>) => {
+        const statusCode = response.status;
+        const responseData = response.body;
+        console.log('HTTP Status:', statusCode);
+        if (statusCode === 200 || !responseData || responseData.length === 0) {
+          this.swal.success_1(statusCode);
+        } else if (statusCode === 204 || !responseData || responseData.length === 0) {
+          this.swal.info(statusCode);
+        } else {
+          this.swal.Error(statusCode);
+        }
+      },
+      (error) => {
+        this.handleApiError(error);
+      }
+
+    );
+    // this.swal.Close();
+  }
+  getReconsolationData() {
+    const formData = new FormData();
+    formData.append('role', this.role);
+    formData.append('username', this.username);
+    // formData.append('file', this.file1);
+    if (this.file1) {
+      formData.append('file', this.file1);
+    } else {
+      this.dummyFile = new Blob(['Dummy content'], { type: 'text/plain' });
+      const extensions = ['dummy.xlsx', 'dummy.xls', 'dummy.csv'];
+      const randomName = extensions[Math.floor(Math.random() * extensions.length)];
+
+      formData.append('file', this.dummyFile, randomName);
+    }
+    formData.append('fromdate', this.fromdate1 || 0);
+    formData.append('todate', this.todate1 || 0);
+    formData.append('reporttype', '2');
+    formData.append('isupload', this.isupload = 'false');
+    console.log(this.file1);
+    this.swal.Loading();
+    // if (this.file1) {
+    //   this.userService.getuploadFileReconcialiationReport(formData).subscribe(
+    //     (response: HttpResponse<any[]>) => {
+    //       const statusCode = response.status;
+    //       const responseData = response.body;
+    //     }
+    //   );
+    //   this.swal.Close();
+    // } else {
+    this.userService.getuploadFileReconcialiationReport(formData).subscribe(
+      (response: HttpResponse<any[]>) => {
+        const statusCode = response.status;
+        const responseData = response.body;
+        console.log('HTTP Status:', statusCode);
+        if (statusCode === 204 || !responseData || responseData.length === 0) {
+          const title = (this.type + ' REPORT [FROM DATE: ' + this.fromdate + ' - TO DATE: ' + this.todate + ']').toUpperCase();
+          const sub = 'MSO ADDRESS:' + this.msodetails;
+          const additionalSubheaders = {
+            'From Date': this.fromdate,
+            'To Date': this.todate,
+          };
+          const header = ['S.NO', 'SMARTCARD', 'ACTIVATION DATE', 'EXPIRY DATE', 'ACTIVITY', 'STATUS', 'TYPE'];
+          this.excelService.generateSynchronizationExcel(
+            'A1:G2',
+            header,
+            [],
+            title,
+            'A3:G3',
+            sub,
+            additionalSubheaders
+          );
+        } else {
+          this.rowData = responseData;
+          const title = (this.type + ' REPORT [FROM DATE: ' + this.fromdate + ' - TO DATE: ' + this.todate + ']').toUpperCase();
+          const sub = 'MSO ADDRESS:' + this.msodetails;
+          const additionalSubheaders = {
+            'From Date': this.fromdate,
+            'To Date': this.todate,
+          };
+          const datas: any[] = [];
+          this.rowData.forEach((d: any, index: number) => {
+            const row = [index + 1, d.smartcard, d.logdate, d.expirydate, d.activity, d.status, d.type];
+            datas.push(row);
+          });
+          this.excelService.generateSynchronizationExcel(
+            'A1:H2',
+            ['S.NO', 'SMARTCARD', 'ACTIVATION DATE', 'EXPIRY DATE', 'ACTIVITY', 'STATUS', 'TYPE'],
+            datas,
+            title,
+            'A3:G3',
+            sub,
+            additionalSubheaders
+          );
+        }
+        this.swal.Close();
+      },
+      (error) => {
+        this.handleApiError(error);
+      }
+    );
+  }
+  // }
   getChannelExcel() {
     this.swal.Loading();
     this.userService.getChannelModificationExcelReport(this.role, this.username, this.fromdate, this.todate, 2)

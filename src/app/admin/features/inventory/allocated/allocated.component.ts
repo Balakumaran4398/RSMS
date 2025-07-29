@@ -33,6 +33,8 @@ export class AllocatedComponent implements OnInit, OnDestroy {
   isAnyRowSelected: any = false;
   selectedIds: number[] = [];
   selectedtypes: number[] = [];
+  rows: any[] = [];
+  selectedSmartcards: any[] = [];
   hasSelectedRows: boolean = true;
 
   gridOptions = {
@@ -129,34 +131,65 @@ export class AllocatedComponent implements OnInit, OnDestroy {
 
 
 
-  onSelectionChanged() {
+  // onSelectionChanged() {
+  //   if (this.gridApi) {
+  //     const selectedRows = this.gridApi.getSelectedRows();
+  //     this.isAnyRowSelected = selectedRows.length > 0;
+  //     console.log("Selected Rows:", selectedRows);
+
+  //     // Extracting IDs from selected rows
+  //     this.selectedIds = selectedRows.map((e: any) => e.id);
+
+  //     // Extracting 'isactive' from selected rows
+  //     this.selectedtypes = selectedRows.map((e: any) => e.isactive);
+
+  //     console.log("Selected IDs:", this.selectedIds);
+  //     console.log("Selected Types:", this.selectedtypes);
+  //   }
+  // }
+
+ toggleSelection(smartcard: any, id: any): void {
+    const index = this.selectedSmartcards.indexOf(smartcard);
+    if (index === -1) {
+      this.selectedSmartcards.push(smartcard);
+      this.selectedIds.push(id);
+    } else {
+      this.selectedSmartcards.splice(index, 1);
+      this.selectedIds.splice(index, 1);
+    }
+  }
+  selectedIdsSet = new Set<number>();
+  onSelectionChanged(event: any) {
     if (this.gridApi) {
-      const selectedRows = this.gridApi.getSelectedRows();
-      this.isAnyRowSelected = selectedRows.length > 0;
-      console.log("Selected Rows:", selectedRows);
+      let selectedRows: any[] = [];
+      //  this.selectedIdsSet.clear();
+      this.gridApi.forEachNodeAfterFilter((rowNode: any) => {
+        if (rowNode.isSelected()) {
+          selectedRows.push(rowNode.data);
+          this.selectedIdsSet.add(rowNode.data.id);
+          this.rows = selectedRows;
+        }
+      });
 
-      // Extracting IDs from selected rows
-      this.selectedIds = selectedRows.map((e: any) => e.id);
-
-      // Extracting 'isactive' from selected rows
-      this.selectedtypes = selectedRows.map((e: any) => e.isactive);
-
-      console.log("Selected IDs:", this.selectedIds);
-      console.log("Selected Types:", this.selectedtypes);
+      console.log("Filtered & Selected Rows:", selectedRows);
+      if (selectedRows.length === 0) {
+        this.gridApi.deselectAll();
+        this.selectedIdsSet.clear();
+      }
+      console.log("Final Selected Rows:", selectedRows);
+      this.updateSelectedRows(selectedRows);
     }
   }
 
-  // filteredLcoKeys(): string[] {
-  //   const keys = Object.keys(this.lco_list);
 
-  //   if (!this.searchTerm) {
-  //     return keys;
-  //   }
-
-  //   return keys.filter(key =>
-  //     key.toLowerCase().includes(this.searchTerm.toLowerCase())
-  //   );
-  // }
+  updateSelectedRows(selectedRows: any[]) {
+    this.isAnyRowSelected = selectedRows.length > 0;
+    // this.selectedIds = selectedRows.map((e: any) => e.id);
+    this.selectedIds = Array.from(this.selectedIdsSet)
+    this.selectedtypes = selectedRows.map((e: any) => e.isactive);
+    console.log("Updated Selected Rows:", selectedRows);
+    console.log("Selected Rows:", this.selectedIds);
+  }
   filterOperators(event: any): void {
     const filterValue = event.target.value.toLowerCase();
     this.filteredOperators = this.lco_list.filter(operator =>

@@ -24,7 +24,6 @@ interface requestBodylogs {
 })
 export class SubDashboardComponent implements OnInit {
   @ViewChild('dateInput') dateInput!: ElementRef<HTMLInputElement>;
-
   role: any;
   checkingObj: any = {};
   username: any;
@@ -1198,7 +1197,7 @@ export class SubDashboardComponent implements OnInit {
     }
   }
   refreshpage(event: any) {
-    console.log('REFRESH');
+    console.log('REFRESH', event);
     for (let index = 0; index < 2; index++) {
       console.log(event.boxid)
       this.userservice.getQuickOperationDetailsBySmartcard(this.role, this.username, event.smartcard || event.boxid).subscribe(
