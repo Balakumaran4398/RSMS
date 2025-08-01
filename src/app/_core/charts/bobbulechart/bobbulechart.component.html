@@ -1,48 +1,41 @@
-<h6 style="color:rgb(83, 81, 81);font-size: 20px;font-weight: 600;text-align: start;font-family:sans-serif;">
+<!-- <h6 style="color:rgb(83, 81, 81);font-size: 20px;font-weight: 600;text-align: start;font-family:sans-serif;">
     CUSTOMER GROWTH</h6>
 <div class="bubble-card" style="height: 260px; width: 100%;">
     <div class="bubble-left">
         <div class="bubble-wrap">
-            <!-- <div class="bubble pink" [ngStyle]="{ width: '75px', height:'75px', top: '5px',left: '20px'}"
-                [attr.title]="bubbleData[3].label + ': ' + bubbleData[3].count">
-                {{ bubbleData[3].count }}
+            <div class="bubble pink" [ngStyle]="{ width: '75px', height:'75px', top: '5px',left: '20px'}"
+                    [attr.title]="bubbleData[3].label + ': ' + bubbleData[3].count">
+                    {{ bubbleData[3].count }}
+                </div>
+
+                <div class="bubble blue" [ngStyle]="{ width: '80px',height: '80px', top: '0px', left: '80px' }"
+                    [attr.title]="bubbleData[0].label + ': ' + bubbleData[0].count">
+                    {{ bubbleData[0].count }}
+                </div>
+
+                <div class="bubble cyan" [ngStyle]="{ width: '70px', height: '70px',top: '60px', left: '15px'}"
+                    [attr.title]="bubbleData[2].label + ': ' + bubbleData[2].count">
+                    {{ bubbleData[2].count }}
+                </div>
+
+                <div class="bubble green" [ngStyle]="{width: '100px',height: '100px',top: '60px',left: '60px'}"
+                    [attr.title]="bubbleData[1].label + ': ' + bubbleData[1].count">
+                    {{ bubbleData[1].count }}
+                </div>
+
+                   
+
+            <div *ngFor="let bubble of bubbleData; let i = index" class="bubble" [ngStyle]="{
+       backgroundColor: bubble.color,
+       width: getBubbleSize(bubble.count),
+       height: getBubbleSize(bubble.count),
+       top: getBubbleTop(i),
+       left: getBubbleLeft(i)
+     }" [attr.title]="bubble.label + ': ' + bubble.count">
+                {{ bubble.count }}
             </div>
 
-            <div class="bubble blue" [ngStyle]="{ width: '80px',height: '80px', top: '0px', left: '80px' }"
-                [attr.title]="bubbleData[0].label + ': ' + bubbleData[0].count">
-                {{ bubbleData[0].count }}
-            </div>
 
-            <div class="bubble cyan" [ngStyle]="{ width: '70px', height: '70px',top: '60px', left: '15px'}"
-                [attr.title]="bubbleData[2].label + ': ' + bubbleData[2].count">
-                {{ bubbleData[2].count }}
-            </div>
-
-            <div class="bubble green" [ngStyle]="{width: '100px',height: '100px',top: '60px',left: '60px'}"
-                [attr.title]="bubbleData[1].label + ': ' + bubbleData[1].count">
-                {{ bubbleData[1].count }}
-            </div> -->
-
-            <div class="bubble pink" [ngStyle]="getBubbleStyle(3)"
-                [attr.title]="bubbleData[3].label + ': ' + bubbleData[3].count">
-                {{ bubbleData[3].count }}
-            </div>
-
-            <div class="bubble blue" [ngStyle]="getBubbleStyle(0)"
-                [attr.title]="bubbleData[0].label + ': ' + bubbleData[0].count">
-                {{ bubbleData[0].count }}
-            </div>
-
-            <div class="bubble cyan" [ngStyle]="getBubbleStyle(2)"
-                [attr.title]="bubbleData[2].label + ': ' + bubbleData[2].count">
-                {{ bubbleData[2].count }}
-            </div>
-
-            <div class="bubble green" [ngStyle]="getBubbleStyle(1)"
-                [attr.title]="bubbleData[1].label + ': ' + bubbleData[1].count">
-                {{ bubbleData[1].count }}
-            </div>
-            
         </div>
     </div>
 
@@ -52,4 +45,12 @@
             {{ item.label }}
         </div>
     </div>
+</div> -->
+
+<div class="bubble-chart-container">
+ <div >
+        <h6 style="color:rgb(83, 81, 81);font-size: 20px;font-weight: 600;text-align: start;font-family:sans-serif;">CUSTOMER GROWTH</h6>
+    </div>
+    <div id="bubbleChartContainer" style="height: 270px; width:88%;" ></div>
+
 </div>

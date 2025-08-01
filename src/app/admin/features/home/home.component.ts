@@ -64,7 +64,7 @@ export class HomeComponent implements OnInit {
     //     return null;
     //   }
     // },
-  
+
     {
       headerName: 'STATUS',
       field: 'status', width: 300,
@@ -74,6 +74,7 @@ export class HomeComponent implements OnInit {
         toggleButton.style.backgroundColor = 'transparent';
         toggleButton.style.border = 'none';
         toggleButton.style.fontSize = '22px';
+        toggleButton.style.color = '#3fd106';
         toggleButton.style.display = 'flex';
         toggleButton.style.alignItems = 'center';
         toggleButton.style.justifyContent = 'center';
@@ -81,17 +82,27 @@ export class HomeComponent implements OnInit {
         const icon = document.createElement('i');
         icon.className = 'fa';
         toggleButton.appendChild(icon);
-        const updateButtonStyle = (Active: boolean) => {
-          if (Active) {
-            icon.className = 'fa-solid fa-toggle-on';
-            toggleButton.style.color = '#3fd106';
-            toggleButton.style.fontSize = '24px';
-            icon.style.fontSize = '24px';
+        // const updateButtonStyle = (Active: boolean) => {
+        //   if (Active) {
+        //     icon.className = 'fa-solid fa-toggle-on';
+        //     toggleButton.style.color = '#3fd106';
+        //     toggleButton.style.fontSize = '24px';
+        //     icon.style.fontSize = '24px';
+        //   } else {
+        //     icon.className = 'fa-solid fa-toggle-off';
+        //     toggleButton.style.color = '#c71a14';
+        //     toggleButton.style.fontSize = '24px';
+        //     icon.style.fontSize = '24px';
+        //   }
+        // };
+        const updateButtonStyle = (active: boolean) => {
+          icon.className = 'fa-solid fa-circle'; 
+          icon.style.fontSize = '12px';
+
+          if (active) {
+            toggleButton.style.color = '#3fd106'; 
           } else {
-            icon.className = 'fa-solid fa-toggle-off';
-            toggleButton.style.color = '#c71a14';
-            toggleButton.style.fontSize = '24px';
-            icon.style.fontSize = '24px';
+            toggleButton.style.color = '#c71a14'; 
           }
         };
 

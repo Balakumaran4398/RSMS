@@ -90,11 +90,11 @@
                         <input type="text" formControlName="fathername" placeholder="Enter Father name" required
                             [ngClass]="{ 'is-invalid': submitted && f['fathername'].errors }" />
 
-                        <!-- <div style="position: relative; font-size: small;" *ngIf="submitted && f['fathername'].errors"
+                        <div style="position: relative; font-size: small;" *ngIf="submitted && f['fathername'].errors"
                             class="invalid-feedback">
                             <div *ngIf="f['fathername'].errors['required']">Father Name is required
                             </div>
-                        </div> -->
+                        </div>
                     </div>
                     <div class="input_box col-12 col-md-6 ">
                         <div class="">
@@ -130,7 +130,6 @@
                         <span for="pass">Landline No</span>
                         <input maxlength="10" type="text" formControlName="landlineno" (keypress)="onKeydown($event)"
                             placeholder="Enter Landline No" />
-
                         <!-- <div style="position: relative; font-size: small;" *ngIf="submitted && f['landlineno'].errors"
                             class="invalid-feedback">
                             <div *ngIf="f['landlineno'].errors['required']">
@@ -142,7 +141,6 @@
                         <label for="email">Email ID</label>
                         <input type="text" formControlName="email" placeholder="Ex. example@gmail.com"
                             [ngClass]="{ 'is-invalid': submitted && f['email'].errors }" required />
-                   
                         <!-- <div *ngIf="form.get('email')?.invalid && form.get('email')?.touched" class="error-message">
                             <div *ngIf="form.get('email')?.invalid && form.get('email')?.touched" class="error-message">
                                 <div *ngIf="form.get('email')?.hasError('required')">

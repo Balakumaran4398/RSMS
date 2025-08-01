@@ -257,7 +257,7 @@ export class LoginComponent implements OnInit {
 
   toggleShowPassword() {
     this.isShow = !this.isShow;
-    this.cdr.detectChanges(); // Ensure UI updates immediately
+    this.cdr.detectChanges();
   }
   onReset() {
     this.submitted = false;

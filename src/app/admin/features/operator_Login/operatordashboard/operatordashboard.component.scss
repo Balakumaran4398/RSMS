@@ -74,6 +74,11 @@ h5 {
     color: #0469db;
 }
 
+.bttn:hover {
+    background-color: rgb(21, 198, 211);
+    color: black;
+}
+
 @media screen and (max-width:990px) {
     .display {
         display: block;

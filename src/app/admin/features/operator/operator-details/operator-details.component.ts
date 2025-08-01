@@ -133,6 +133,12 @@ export class OperatorDetailsComponent implements OnInit, AfterViewInit {
     this.loadOperators();
     this.updatePageData();
 
+    // const token = this.storageservice.getToken();
+    // console.log('11111111', token);
+
+    // if (!token) {
+    //   this.router.navigate(['/login'], { replaceUrl: true });
+    // }
   }
   // operatorDeatils(event: any) {
   //   console.log(event);
@@ -154,7 +160,7 @@ export class OperatorDetailsComponent implements OnInit, AfterViewInit {
   //       this.swal.Close();
   //     });
   // }
-   operatorDeatils(event: any) {
+  operatorDeatils(event: any) {
     console.log(event);
     this.swal.Loading();
 
@@ -390,7 +396,7 @@ export class OperatorDetailsComponent implements OnInit, AfterViewInit {
     if (user.roles.includes('ROLE_SUBSCRIBER')) return 'ROLE_SUBSCRIBER';
     return 'DEFAULT_ROLE';
   }
-  onRoleBaseDashboard(username: any, password: any) {
+  onRoleBaseDashboard(username: any, password: any, id: any) {
     this.swal.Loading1();
     console.log(this.signInform);
     this.signInform = {
@@ -434,18 +440,18 @@ export class OperatorDetailsComponent implements OnInit, AfterViewInit {
             timer: 2000
           });
           if (isOperator) {
-            this.router.navigate(['admin/operator_dashboard']).then(() => {
+            // this.router.navigateByUrl('admin/operator_dashboard', { replaceUrl: true });
+            this.router.navigate(['admin/operator_dashboard'],).then(() => {
               window.location.reload();
             });
-
           } else if (isSubLco) {
-            this.router.navigate(['admin/operator_dashboard']).then(() => {
+            // this.router.navigateByUrl('admin/operator_dashboard', { replaceUrl: true });
+            this.router.navigate(['admin/operator_dashboard'],).then(() => {
               window.location.reload();
             });
           } else if (isSubcriber) {
             console.log('role', this.role);
             console.log('username', this.username);
-
             this.role = this.getUserRole(res)
             this.username = this.username;
             this.userService.getSubscriberDetails(this.role, this.username).subscribe((data: any) => {
@@ -491,6 +497,7 @@ export class OperatorDetailsComponent implements OnInit, AfterViewInit {
         });
       }
     );
+
   }
   post() {
     let requestBody: requestBody = { access_ip: "", action: "Sign in", data: "Sign in", remarks: "Sign in", user_id: this.idstorage };

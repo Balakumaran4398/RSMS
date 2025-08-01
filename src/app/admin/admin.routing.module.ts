@@ -48,7 +48,6 @@ import { RecurringComponent } from './features/Bulk_operation/recurring/recurrin
 import { AlacarteActivationComponent } from './features/Bulk_operation/alacarte-activation/alacarte-activation.component';
 import { HashLocationStrategy, LocationStrategy } from '@angular/common';
 import { RouterModule, Routes } from '@angular/router';
-import { AuthGuard } from '../_core/service/auth.guard';
 import { LcodashboardComponent } from './features/channel_setting/_Dialogue/operator/lcodashboard/lcodashboard.component';
 import { SubloginComponent } from './features/subscriber/sublogin/sublogin.component';
 import { OperatorlistComponent } from './features/operator/operatorlist/operatorlist.component';

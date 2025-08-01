@@ -60,6 +60,7 @@ export class OperatordashboardComponent implements OnInit {
   constructor(private router: Router, private userService: BaseService, private storageService: StorageService, public dialog: MatDialog, private location: Location,) {
     this.role = storageService.getUserRole();
     this.username = storageService.getUsername();
+
     const style = document.createElement("style");
     if (this.role == 'ROLE_SUBLCO') {
       style.innerHTML = `
@@ -83,7 +84,6 @@ export class OperatordashboardComponent implements OnInit {
 
   ngOnInit(): void {
     if (this.role == 'ROLE_OPERATOR') {
-
       this.getOperator()
       this.operatorDetails();
       this.date = new Date().toISOString().split('T')[0];
@@ -96,7 +96,6 @@ export class OperatordashboardComponent implements OnInit {
     } else if (this.role == 'ROLE_SUBSCRIBER') {
       this.getSubscriberDetails();
     }
-
     const currentDate = new Date();
     this.selectedMonth = (currentDate.getMonth() + 1).toString().padStart(2, '0');
     this.selectedYear = currentDate.getFullYear();
@@ -183,7 +182,7 @@ export class OperatordashboardComponent implements OnInit {
       this.rechargeHistory = this.subLcoPermission?.rechargehistory;
       console.log(this.rechargeHistory);
       this.onlineRecharge = this.subLcoPermission.online_recharge;
-       console.log(this.onlineRecharge);
+      console.log(this.onlineRecharge);
       this.getSubLcoDetailsCount(this.retailerid)
     })
   }
@@ -196,9 +195,9 @@ export class OperatordashboardComponent implements OnInit {
       this.walletshare = this.lcoDeatails?.permissionlist?.wallet;
       console.log('walletshare', this.walletshare);
       console.log('SUBSCRIBER DETAILS', this.lcoDeatails);
-     
+
       console.log(this.onlineRecharge);
-      
+
     })
   }
 

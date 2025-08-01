@@ -706,6 +706,7 @@ export class SubscriberdialogueComponent implements OnInit, OnDestroy {
       .subscribe((data) => {
         this.packagenameList = Object.entries(data).map(([name, id]) => ({
           packagename: name,
+            // packagename: name.substring(0, name.indexOf('(')).trim(),
           packageid: id as number
         }));
         this.cdr.detectChanges();

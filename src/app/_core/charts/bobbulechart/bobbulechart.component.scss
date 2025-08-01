@@ -1,31 +1,32 @@
-.bubble-card {
-  display: flex;
-  background: #fff;
-  border-radius: 10px;
-  padding: 20px;
-  width: 100%;
-  max-width: 540px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
-  justify-content: space-between;
-  align-items: flex-start;
-}
+// .bubble-card {
+//   display: flex;
+//   background: #fff;
+//   border-radius: 10px;
+//   padding: 20px;
+//   width: 100%;
+//   max-width: 540px;
+//   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+//   justify-content: space-between;
+//   align-items: flex-start;
+// }
 
-.bubble-left {
-  flex: 1;
-}
+// .bubble-left {
+//   flex: 1;
+// }
 
-.title {
-  font-weight: bold;
-  font-size: 14px;
-  margin-bottom: 15px;
-  color: #333;
-}
+// .title {
+//   font-weight: bold;
+//   font-size: 14px;
+//   margin-bottom: 15px;
+//   color: #333;
+// }
 
-.bubble-wrap {
-  position: relative;
-  width: 200px;
-  height: 200px;
-}
+// .bubble-wrap {
+//   position: relative;
+//   width: 200px;
+//   height: 200px;
+// }
+
 
 // .bubble {
 //   position: absolute;
@@ -40,52 +41,50 @@
 //   text-align: center;
 // }
 
-.bubble {
-  display: flex;
-  border-radius: 50%;
-  justify-content: center;
-  align-items: center;
-  font-weight: bold;
-  color: white;
-}
-.bubble.blue {
-  background-color: #00bfff;
-}
 
-.bubble.green {
-  background-color: #00cc66;
-}
+// .pink {
+//   background-color: pink;
+// }
 
-.bubble.cyan {
-  background-color: #00ced1;
-}
+// .blue {
+//   background-color: blue;
+// }
 
-.bubble.pink {
-  background-color: #ff66cc;
-}
+// .cyan {
+//   background-color: cyan;
+// }
 
-.legend {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-  padding-left: 20px;
-  justify-content: center;
-}
-
-.legend-item {
-  display: flex;
-  align-items: center;
-  font-size: 14px;
-  color: #555;
-}
-
-.legend-item .dot {
-  width: 12px;
-  height: 12px;
-  border-radius: 50%;
-  margin-right: 10px;
-  display: inline-block;
-}
+// .green {
+//   background-color: green;
+// }
 
 
+
+// .legend {
+//   flex: 1;
+//   display: flex;
+//   flex-direction: column;
+//   gap: 12px;
+//   padding-left: 20px;
+//   justify-content: center;
+// }
+
+// .legend-item {
+//   display: flex;
+//   align-items: center;
+//   font-size: 14px;
+//   color: #555;
+// }
+
+// .legend-item .dot {
+//   width: 12px;
+//   height: 12px;
+//   border-radius: 50%;
+//   margin-right: 10px;
+//   display: inline-block;
+// }
+
+
+::ng-deep .canvasjs-chart-credit {
+    display: none !important;
+}
