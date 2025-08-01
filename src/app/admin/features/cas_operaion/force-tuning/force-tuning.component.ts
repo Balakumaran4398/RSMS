@@ -176,25 +176,25 @@ export class ForceTuningComponent {
       event.preventDefault();
     }
   }
-  onSubscriberStatusChange(operator: any): void {
-    this.selectedOperator = operator;
-    this.intendid = operator.id;
-    this.Lconame = operator.name;
-    console.log(this.intendid);
-    console.log(this.Lconame);
-    this.form.patchValue({ intendid: this.intendid });
-    this.cdr.detectChanges();
-    this.userservice.getSubscriberIdListByOperatorid(this.role, this.username, this.intendid).subscribe((data: any) => {
-      console.log(data);
-      this.area = Object.keys(data).map(key => {
-        const value = data[key];
-        const name = key;
-        return { name: name, value: value };
-      });
-      // this.filteredSub = this.sub_list;
-      // console.log(this.filteredSub);
-    })
-  }
+  // onSubscriberStatusChange(operator: any): void {
+  //   this.selectedOperator = operator;
+  //   this.intendid = operator.id;
+  //   this.Lconame = operator.name;
+  //   console.log(this.intendid);
+  //   console.log(this.Lconame);
+  //   this.form.patchValue({ intendid: this.intendid });
+  //   this.cdr.detectChanges();
+  //   this.userservice.getSubscriberIdListByOperatorid(this.role, this.username, this.intendid,).subscribe((data: any) => {
+  //     console.log(data);
+  //     this.area = Object.keys(data).map(key => {
+  //       const value = data[key];
+  //       const name = key;
+  //       return { name: name, value: value };
+  //     });
+  //     // this.filteredSub = this.sub_list;
+  //     // console.log(this.filteredSub);
+  //   })
+  // }
   onSubmit() {
     this.submitted = true;
     // if (this.form.valid) {

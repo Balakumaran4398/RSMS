@@ -7,6 +7,7 @@ import { BroadCreateDialogComponent } from '../_Dialogue/broad-create-dialog/bro
 import { Tooltip } from 'chart.js';
 import { TooltipPosition } from 'ag-charts-community/dist/types/src/module-support';
 import { filter } from 'rxjs';
+import { SwalService } from 'src/app/_core/service/swal.service';
 interface updateRequestbody {
   broadcastername: any,
   username: any,
@@ -65,7 +66,7 @@ export class BroadMasterComponent implements OnInit {
   userid: any;
   accessip: any;
   type: number = 0;
-  constructor(public dialog: MatDialog, public userService: BaseService, storageService: StorageService) {
+  constructor(public dialog: MatDialog, public userService: BaseService, storageService: StorageService, private swal: SwalService) {
     this.username = storageService.getUsername();
     this.role = storageService.getUserRole();
     this.userid = storageService.getUserid();
@@ -177,12 +178,14 @@ export class BroadMasterComponent implements OnInit {
     this.gridApi = params.api;
     this.gridApi.sizeColumnsToFit();
   }
-
+  oldbroadcastorName: any;
   onSelectionChanged() {
     if (this.gridApi) {
       const selectedRows = this.gridApi.getSelectedRows();
       this.isAnyRowSelected = selectedRows.length > 0;
       console.log("Selected Rows:", selectedRows);
+      this.oldbroadcastorName = selectedRows[0].broadcastername;
+      console.log(this.oldbroadcastorName);
       this.selectCount = selectedRows.length
       // Extracting IDs from selected rows
       this.selectedIds = selectedRows.map((e: any) => e.id);
@@ -228,39 +231,18 @@ export class BroadMasterComponent implements OnInit {
       confirmButtonText: "Yes, Update it!"
     }).then((result) => {
       if (result.isConfirmed) {
-        Swal.fire({
-          title: 'Updating...',
-          text: 'Please wait while the Broadcaster is being Updated',
-          allowOutsideClick: false,
-          didOpen: () => {
-            Swal.showLoading(null);
-          }
-        });
+        this.swal.Loading();
         this.userService.Broadcaster_update(requestBody).subscribe(
-          (res) => {
+          (res: any) => {
             console.log(res);
-            Swal.fire({
-              position: "center",
-              icon: "success",
-              title: "Your update was successful",
-              showConfirmButton: false,
-              timer: 1000
-            }).then(() => {
-              window.location.reload();
-            });
-          },
-          (err) => {
-            Swal.fire({
-              position: 'center',
-              icon: 'error',
-              title: 'Error',
-              text: err?.error?.message,
-              showConfirmButton: false,
-              timer: 1500
-            }).then(() => {
-              window.location.reload();
+            this.swal.success(res?.message);
+            // this.logCreate('Broadcaster Name Changed', broadcastername, this.oldbroadcastorName);
+            this.logCreate(`Broadcaster [${this.oldbroadcastorName}] name changed`, broadcastername, this.oldbroadcastorName);
 
-            });
+          },
+
+          (err: any) => {
+            this.swal.Error(err?.error?.message);
           }
         );
       }
@@ -281,32 +263,12 @@ export class BroadMasterComponent implements OnInit {
       confirmButtonText: "Yes, Deactive it!"
     }).then((result) => {
       if (result.isConfirmed) {
-        Swal.fire({
-          title: 'Deactivating...',
-          text: 'Please wait while the Broadcaster is being Deactivated',
-          allowOutsideClick: false,
-          didOpen: () => {
-            Swal.showLoading(null);
-          }
-        });
+        this.swal.Loading();
         this.userService.deleteBroadcaster(this.role, this.username, ids).subscribe((res: any) => {
-          Swal.fire({
-            title: 'Deactivated!',
-            text: res.message,
-            icon: 'success',
-            timer: 2000,
-            timerProgressBar: true,
-          });
-          this.ngOnInit();
+          this.swal.success(res?.message);
           this.logCreate('Broadcaster Deactive Button Clicked', status, 'Deactive');
         }, (err) => {
-          Swal.fire({
-            title: 'Error!',
-            text: err?.error?.message,
-            icon: 'error',
-            timer: 2000,
-            timerProgressBar: true,
-          });
+          this.swal.Error(err?.error?.message);
         });
       }
     });
@@ -326,32 +288,12 @@ export class BroadMasterComponent implements OnInit {
       confirmButtonText: "Yes, Active it!"
     }).then((result) => {
       if (result.isConfirmed) {
-        Swal.fire({
-          title: 'Updateing...',
-          text: 'Please wait while the Broadcaster is being updated',
-          allowOutsideClick: false,
-          didOpen: () => {
-            Swal.showLoading(null);
-          }
-        });
+        this.swal.Loading();
         this.userService.ActiveBroadcaster(this.role, this.username, ids).subscribe((res: any) => {
-          Swal.fire({
-            title: 'Activated!',
-            text: res.message,
-            icon: 'success',
-            timer: 2000,
-            timerProgressBar: true,
-          });
-          this.ngOnInit();
+          this.swal.success(res?.message);
           this.logCreate('Broadcaster Active Button Clicked', status, 'Active');
         }, (err) => {
-          Swal.fire({
-            title: 'Error!',
-            text: err?.error?.message,
-            icon: 'error',
-            timer: 2000,
-            timerProgressBar: true,
-          });
+          this.swal.Error(err?.error?.message);
         });
       }
     });
@@ -359,6 +301,8 @@ export class BroadMasterComponent implements OnInit {
   }
 
   logCreate(action: any, remarks: any, data: any) {
+    console.log(remarks);
+
     let requestBody = {
       access_ip: this.accessip,
       action: action,

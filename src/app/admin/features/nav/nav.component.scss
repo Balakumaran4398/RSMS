@@ -368,7 +368,8 @@
     display: block;
     top: 36px;
     height: auto;
-    overflow: scroll;
+    background-color: white !important;
+    // overflow: scroll;
 }
 
 @media screen and (max-width:560px) {
@@ -377,8 +378,9 @@
         top: 48px;
         right: -2pc;
         height: auto;
-        overflow: scroll;
+        // overflow: scroll;
         width: 22pc;
+        background-color: white !important;
     }
 
     .mobile_nav {

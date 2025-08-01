@@ -65,7 +65,7 @@ export class NewRechargeComponent implements OnInit {
   }
 
   updateFilteredOperators() {
-    
+
     if (this.type === 4) {
       this.filteredOperators = this.filteredOperators1;
     } else {
@@ -109,7 +109,6 @@ export class NewRechargeComponent implements OnInit {
       username: this.username
     });
     this.onMsolist();
-
   }
 
   onMsolist() {
@@ -151,7 +150,6 @@ export class NewRechargeComponent implements OnInit {
           timerProgressBar: true,
           willClose: () => {
             window.location.reload();
-            // this.ngOnInit();
           }
         });
       },

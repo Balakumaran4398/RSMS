@@ -200,19 +200,19 @@ export class ChannelEditComponent {
       ispercentage: !this.ispercentage,
       role: this.role,
       username: this.username
-
     };
     this.swal.Loading();
     this.userservice.UPDATE_CHANNEL(requestbody)
       .subscribe((res: any) => {
         this.swal.success(res?.message);
+        const data = ` Channel_name: ${this.channelname}, ` + ` ispercentage: ${this.isPercentage},`;
+        const remark = ` Channel_name: ${this.channelname_1}, ` + ` ispercentage: ${this.ispercentage},`;
+        this.logCreate('Channel Edit Button Clicked', remark, data);
       }, (err) => {
         this.swal.Error(err?.error?.message || err?.error?.channel_name || err?.error?.inr_amt || err?.error?.broadcaster_id || err?.error?.product_id
           || err?.error?.service_id || err?.error?.customer_amount);
       });
-    const data = ` Channel_name: ${this.channelname}, ` + ` ispercentage: ${this.isPercentage},`;
-    const remark = ` Channel_name: ${this.channelname_1}, ` + ` ispercentage: ${this.ispercentage},`;
-    this.logCreate('Channel Edit Button Clicked', remark, data);
+
   }
   timeout: any;
   breakLoad() {

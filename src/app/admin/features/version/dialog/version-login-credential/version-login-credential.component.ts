@@ -54,6 +54,7 @@ export class VersionLoginCredentialComponent {
         userid: userid,
         password: password,
         type: 4,
+        // type: 7,
       }
       this.userservice.checkLoginCredenticals(requestBody).subscribe(
         (res: any) => {

@@ -150,7 +150,15 @@ export class SwalService {
   Close() {
     Swal.close();
   }
-
+ Alert(title: string, text: string, icon: 'success' | 'error' | 'warning' | 'info') {
+    Swal.fire({
+      title: title || 'Alert!',
+      text: text || '',
+      icon: icon || 'info',
+      timer: 1000,
+      showConfirmButton: false
+    });
+  }
   Invalid() {
     Swal.fire({
       title: 'Warning!',

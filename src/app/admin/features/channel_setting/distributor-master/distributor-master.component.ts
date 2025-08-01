@@ -5,6 +5,7 @@ import { StorageService } from 'src/app/_core/service/storage.service';
 import Swal from 'sweetalert2';
 import { CreateDistributorComponent } from '../_Dialogue/Distributor_dialog/create-distributor/create-distributor.component';
 import { EditDistributorComponent } from '../_Dialogue/Distributor_dialog/edit-distributor/edit-distributor.component';
+import { SwalService } from 'src/app/_core/service/swal.service';
 interface updateRequestbody {
   name: any,
   contact: any,
@@ -69,7 +70,7 @@ export class DistributorMasterComponent {
   userid: any;
   accessip: any;
 
-  constructor(public dialog: MatDialog, public userService: BaseService, storageService: StorageService) {
+  constructor(public dialog: MatDialog, public userService: BaseService, storageService: StorageService,private swal:SwalService) {
     this.username = storageService.getUsername();
     this.role = storageService.getUserRole();
     this.userid = storageService.getUserid();

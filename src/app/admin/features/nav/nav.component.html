@@ -101,10 +101,10 @@
                 <li *ngIf="username == 'manikandan' && navigationList.lcorecharge"><a
                         (click)="navgetToUrl('/lcorecharge/1');setActiveLinkTab($event)"><i
                             class='fa-solid fa-indian-rupee-sign icon'></i> &nbsp;LCO Recharge</a></li>
-                <li
-                    *ngIf="!isReception && username !== 'manikandan'&& msoName == 'AJK TV' && navigationList.lcorecharge">
+                <li *ngIf="!isReception && username !== 'manikandan'&& msoName == 'AJK' && navigationList.lcorecharge">
                     <a (click)="navgetToUrl('/lco_recharge/3');setActiveLinkTab($event)"><i
-                            class='fa fa-fw fa-circle-o icon'></i> &nbsp;Admin Recharge</a></li>
+                            class='fa fa-fw fa-circle-o icon'></i> &nbsp;Admin Recharge</a>
+                </li>
                 <li *ngIf="!isReception &&username == 'manikandan' && navigationList.lcorecharge"><a
                         (click)="navgetToUrl('/lcorecharge/2');setActiveLinkTab($event)"><i
                             class='fa fa-fw fa-circle-o icon'></i> &nbsp;Admin Recharge</a></li>
@@ -598,7 +598,6 @@
                 &nbsp;
                 &nbsp;
                 <div class="nav-content w-100 d-flex justify-content-between align-items-center">
-
                     <!-- <div *ngIf="isSubscriber" class="version col-4 col-md-4">
                         <span class="ver" style="color: var(--role-color);"> {{role}}
                             &nbsp;</span>
@@ -608,8 +607,6 @@
                             {{subscribername}}
                             &nbsp;</span>
                     </div>
-
-
                     <div *ngIf="!isSearch"
                         class="search-and-image col-7 col-md-7 col-sm-7 col-lg-7 d-flex justify-content-start align-items-center"
                         (clickOutside)="closeDropdown()">
@@ -628,11 +625,8 @@
                             </div>
                         </div>
                         <!-- <a (click)="startListening('/voice')">🎙️ </a> -->
-
                         <a id="start-btn" style="display: none;"><i class="fas fa-microphone"></i></a>
                         <a id="stop-btn"><i class="fas fa-microphone-slash"></i></a>
-
-
                     </div>
 
                     <div class="d-block">

@@ -399,6 +399,7 @@ export class SubscriberdialogueComponent implements OnInit, OnDestroy {
   @ViewChild(NavComponent) navComponent!: NavComponent;
   operatorIdValue: any = '';
   distributor: boolean = false;
+  isCollected_details: boolean = false;
   constructor(private router: Router, public dialogRef: MatDialogRef<SubscriberdialogueComponent>, private swal: SwalService,
     @Inject(MAT_DIALOG_DATA) public data: any, public userservice: BaseService, private cdr: ChangeDetectorRef, public storageService: StorageService, private fb: FormBuilder, private zone: NgZone) {
     console.log(data);
@@ -639,6 +640,7 @@ export class SubscriberdialogueComponent implements OnInit, OnDestroy {
       this.isdate = this.lcoDeatails?.isdate;
       this.isdateTodate = this.lcoDeatails?.isdatetodate;
       this.distributor = this.lcoDeatails?.isdistributor;
+      this.isCollected_details = this.lcoDeatails?.isCollected;
       this.onoperatorchange_LCO(this.operatorId);
     })
   }
@@ -655,7 +657,7 @@ export class SubscriberdialogueComponent implements OnInit, OnDestroy {
       this.isplan = this.SublcopermissionObj.plan;
       this.isdate = this.SublcopermissionObj.date;
       this.isdateTodate = this.SublcopermissionObj.datetodate;
-
+      this.isCollected_details = this.SublcopermissionObj?.isCollected;
     })
   }
   sub_subscriberid: any;
@@ -666,7 +668,7 @@ export class SubscriberdialogueComponent implements OnInit, OnDestroy {
       this.isplan = true;
       this.isdate = this.lcoDeatails.date;
       this.isdateTodate = this.lcoDeatails.datetodate;
-
+      this.isCollected_details = this.lcoDeatails?.isCollected;
     })
   }
   onoperatorchange_LCO(operator: any): void {
@@ -809,7 +811,7 @@ export class SubscriberdialogueComponent implements OnInit, OnDestroy {
     });
   }
   onSubscriberList() {
-    this.userservice.getSubscriberIdListByOperatorid(this.role, this.username, this.operatorid).subscribe((data: any) => {
+    this.userservice.getSubscriberIdListByOperatorid(this.role, this.username, this.operatorid,this.subid).subscribe((data: any) => {
       this.sub_list = Object.keys(data).map(key => {
         const value = data[key];
         const name = key;
@@ -1525,7 +1527,7 @@ export class SubscriberdialogueComponent implements OnInit, OnDestroy {
     this.servicename = '';
     this.cdr.detectChanges();
     // this.userservice.getSubscriberIdListByOperatorid(this.role, this.username, this.operatorid).subscribe((data: any) => {
-    this.userservice.getSubscriberIdListByOperatorid(this.role, this.username, this.lcoid).subscribe((data: any) => {
+    this.userservice.getSubscriberIdListByOperatorid(this.role, this.username, this.lcoid,this.subid).subscribe((data: any) => {
       this.sub_list = Object.keys(data).map(key => {
         const value = data[key];
         const name = key;
@@ -2029,6 +2031,8 @@ export class SubscriberdialogueComponent implements OnInit, OnDestroy {
     // this.swal.Loading();
     this.userservice.getBaseChangeConfirmation(this.role, this.username, this.newpackagename, plan, plandata, this.smartcardno, 8, this.retailerId || 0)
       .subscribe((data: any) => {
+        console.log(data);
+
         this.changebase = data;
         this.changebase_msoAmount = data.msoAmount;
         // this.customerPayAmount = data.msoAmount;
@@ -2060,6 +2064,8 @@ export class SubscriberdialogueComponent implements OnInit, OnDestroy {
 
   comment: any = 'No Comment';
   baseChangeofSmartcardPackageActivate() {
+    console.log('1111111');
+    
     let plandata = this.plantype || this.f_date || 4
     console.log(plandata);
     console.log(this.billTypeValue?.bill_type);

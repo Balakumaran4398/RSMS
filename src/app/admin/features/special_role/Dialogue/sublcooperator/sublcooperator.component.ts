@@ -267,28 +267,33 @@ export class SublcooperatorComponent implements OnInit {
   data: any;
   onGridReady(params: any,) {
     this.gridApi = params.api;
+    this.swal.Loading();
     this.userservice.getAllSublcoListByOperatorId(this.role, this.username, this.operatorid).subscribe((data: any) => {
       console.log(data);
-      this.rowData = data;
-      
-      // data.forEach((item: any) => {
-      //   this.sublcocount = item.sublcoDiscount;
-      //   console.log(this.sublcocount);
-      // });
-      // this.sublcocount = [];
+      if (data && data.length > 0) {
+        this.rowData = data;
 
-      this.data = this.sublcocount;
-      console.log('data', this.data);
-      this.rowData = this.rowData.map(row => ({
-        ...row,
-        isCustomerMode: this.isCustomerMode
-      }));
-      this.length = this.rowData.length;
-      this.paginatedData = this.rowData.slice(
-        this.pageIndex * this.pageSize,
-        this.pageIndex * this.pageSize + this.pageSize
-      );
+        // data.forEach((item: any) => {
+        //   this.sublcocount = item.sublcoDiscount;
+        //   console.log(this.sublcocount);
+        // });
+        // this.sublcocount = [];
 
+        this.data = this.sublcocount;
+        console.log('data', this.data);
+        this.rowData = this.rowData.map(row => ({
+          ...row,
+          isCustomerMode: this.isCustomerMode
+        }));
+        this.length = this.rowData.length;
+        this.paginatedData = this.rowData.slice(
+          this.pageIndex * this.pageSize,
+          this.pageIndex * this.pageSize + this.pageSize
+        );
+      } else {
+        this.swal.Alert('No Sub LCO details found', '', 'info');
+      }
+      this.swal.Close();
       this.paginatedData.forEach((item: any) => {
         this.userservice.getSublcoLoginDashboardCount(this.role, item.username, item.retailerId)
           .subscribe((data: any) => {

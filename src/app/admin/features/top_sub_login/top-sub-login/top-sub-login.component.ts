@@ -45,6 +45,7 @@ export class TopSubLoginComponent {
         userid: userid,
         password: password,
         type: 4,
+        // type: 7,
       }
       this.swal.Loading();
       // this.userservice.checkLoginCredenticals(this.role, this.username, userid, password, 4).subscribe(

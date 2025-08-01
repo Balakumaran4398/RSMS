@@ -856,14 +856,22 @@
                                         [disabled]="isDisabled"
                                         (click)="rechargetoggleConfirmation()">Confirmation</button>
 
-                                    <button *ngIf="role == 'ROLE_OPERATOR' || role == 'ROLE_SUBLCO' " type="button"
-                                        class="btn2  recharge bttn me-2" [disabled]="isRecharge"
+                                    <button
+                                        *ngIf="role == 'ROLE_OPERATOR' &&isCollected_details|| role == 'ROLE_SUBLCO'&&isCollected_details "
+                                        type="button" class="btn2  recharge bttn me-2" [disabled]="isRecharge"
                                         [ngStyle]="{'background': isRecharge ? 'rgb(160 187 240)' : 'rgb(8, 79, 212)'}"
                                         (click)="onRechargeType()">Recharge</button>
+                                    <button
+                                        *ngIf="role == 'ROLE_OPERATOR' && !isCollected_details|| role == 'ROLE_SUBLCO' && !isCollected_details"
+                                        type="button" class="btn2  recharge bttn me-2" [disabled]="isRecharge"
+                                        [ngStyle]="{'background': isRecharge ? 'rgb(160 187 240)' : 'rgb(8, 79, 212)'}"
+                                        (click)="onRechargeType()">Recharge</button>
+
                                     <button *ngIf="role != 'ROLE_OPERATOR' && role != 'ROLE_SUBLCO'  " type="button"
                                         class="btn2  recharge bttn me-2" [disabled]="isRecharge"
                                         [ngStyle]="{'background': isRecharge ? 'rgb(160 187 240)' : 'rgb(8, 79, 212)'}"
                                         (click)="recharge()">Recharge</button>
+
                                     <!-- <button type="button" class="btn2  recharge bttn me-2" [disabled]="isRecharge"
                                         [ngStyle]="{'background': isRecharge ? 'rgb(160 187 240)' : 'rgb(8, 79, 212)'}"
                                         (click)="onRechargeType()">Recharge</button> -->
@@ -887,7 +895,7 @@
         </div>
     </section>
 </div>
-<div *ngIf="rechargeTypeDialog" class="recharge-dialog">
+<div *ngIf="rechargeTypeDialog && !isCollected_details" class="recharge-dialog">
     <div class="mobileview">
         <div class="mb-3">
             <!-- <h2 class="title" ></h2> -->

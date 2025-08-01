@@ -128,7 +128,7 @@
                                 <div *ngIf="Editform.get('address')?.errors?.['required']">Address is required.</div>
                             </div>
                         </div>
-                       
+
                         <div class="mb-3">
                             <label>Area Name</label>
                             <select id="Area" [(ngModel)]="areaid" formControlName="areaid">
@@ -1825,8 +1825,13 @@
             (click)="onFirstTimeActivationButtonClick()" [disabled]="isDisabled">
             Confirmation
         </button>
-        <button *ngIf="role =='ROLE_OPERATOR' || role == 'ROLE_SUBLCO' " type="button" class="btn  recharge me-2 bttn"
-            (click)="onRechargeType('first_time')" [disabled]="!isActive">Activate</button>
+        <button *ngIf="role =='ROLE_OPERATOR' && isCollected_details || role == 'ROLE_SUBLCO' && isCollected_details "
+            type="button" class="btn  recharge me-2 bttn" (click)="onRechargeType('first_time')"
+            [disabled]="!isActive">Activate</button>
+        <button *ngIf="role =='ROLE_OPERATOR' && !isCollected_details || role == 'ROLE_SUBLCO' && !isCollected_details "
+            type="button" class="btn  recharge me-2 bttn" (click)="firsttimeActivationOfCard()"
+            [disabled]="!isActive">Activate</button>
+
         <button *ngIf="role !='ROLE_OPERATOR' && role != 'ROLE_SUBLCO' " type="button" class="btn  recharge me-2 bttn"
             (click)="firsttimeActivationOfCard()" [disabled]="!isActive">Activate</button>
 
@@ -2056,8 +2061,14 @@
             [disabled]="isDisabled">
             Confirmation
         </button>
-        <button *ngIf="role == 'ROLE_OPERATOR' || role == 'ROLE_SUBLCO'" type="button" class="btn  recharge me-2 bttn"
-            [disabled]="!isActive" (click)="onRechargeType('activation')">Activate</button>
+        <button *ngIf="role == 'ROLE_OPERATOR' && isCollected_details || role == 'ROLE_SUBLCO' && isCollected_details"
+            type="button" class="btn  recharge me-2 bttn" [disabled]="!isActive"
+            (click)="onRechargeType('activation')">Activate</button>
+
+        <button *ngIf="role == 'ROLE_OPERATOR' && !isCollected_details || role == 'ROLE_SUBLCO' && !isCollected_details"
+            type="button" class="btn  recharge me-2 bttn" [disabled]="!isActive"
+            (click)="ActivationOfCard()">Activate</button>
+
         <button *ngIf="role != 'ROLE_OPERATOR' && role != 'ROLE_SUBLCO'" type="button" class="btn  recharge me-2 bttn"
             [disabled]="!isActive" (click)="ActivationOfCard()">Activate</button>
 
@@ -2224,9 +2235,6 @@
                         </div>
                     </div>
                 </div>
-
-
-
                 <div class="mb-3">
                     <div class="d-flex align-items-center justify-content-center">
                         <div class="input_box col-6 col-md-6">
@@ -2277,10 +2285,15 @@
             [disabled]="!isActive">Confirmation</button>
 
 
-        <button type="button" *ngIf="role == 'ROLE_OPERATOR' ||  role == 'ROLE_SUBLCO'" class="btn  recharge me-2 bttn"
-            (click)="onRechargeType('base')" [disabled]="!isActive">Activate</button>
+        <button type="button"
+            *ngIf="role == 'ROLE_OPERATOR' && isCollected_details||  role == 'ROLE_SUBLCO' && isCollected_details"
+            class="btn  recharge me-2 bttn" (click)="baseChangeofSmartcardPackageActivate()"
+            [disabled]="!isActive">Activate</button>
+        <button type="button"
+            *ngIf="role == 'ROLE_OPERATOR' && !isCollected_details||  role == 'ROLE_SUBLCO' && !isCollected_details"
+            class="btn  recharge me-2 bttn" (click)="onRechargeType('base')" [disabled]="!isActive">Activate</button>
 
-        <button *ngIf="role != 'ROLE_OPERATOR' &&  role != 'ROLE_SUBLCO' " type="button" class="btn  recharge me-2 bttn"
+        <button *ngIf="role != 'ROLE_OPERATOR' &&  role != 'ROLE_SUBLCO'" type="button" class="btn  recharge me-2 bttn"
             (click)="baseChangeofSmartcardPackageActivate()" [disabled]="!isActive">Activate</button>
 
         <button type="button" class="btn btn-danger me-2 bttn" (click)="onNoClick()">Cancel</button>
@@ -2459,28 +2472,6 @@
                         </div>
                     </div>
 
-                    <!-- <div class="input_box Isactive mb-1">
-                        <div class="d-flex align-items-center justify-content-center">
-                            <div class="col-5 col-md-6">
-                                <span class="me-2"> Customer Pay Amount </span>
-                            </div>
-                            <div class="col-7 col-md-6 value">
-                                {{addonConfirmationData.customerPayAmount}}
-                            </div>
-                        </div>
-                    </div>
-
-                    <div *ngIf="(role == 'ROLE_SUBLCO'  && Subwallet) ||  role !='ROLE_SUBLCO' && role != 'ROLE_SUBSCRIBER' "
-                        class="input_box  mb-1">
-                        <div class="d-flex align-items-center justify-content-center">
-                            <div class="col-5 col-md-6">
-                                <span for="password" class="me-2">Mso Amount for LCO </span>
-                            </div>
-                            <div class="col-7 col-md-6 value">
-                                {{addonConfirmationData.msoAmount}}
-                            </div>
-                        </div>
-                    </div> -->
                     <div class="input_box  mb-3">
                         <div class="d-flex align-items-center justify-content-center">
                             <div class="col-6 col-md-6">
@@ -2502,8 +2493,6 @@
                             </div>
                         </div>
                     </div>
-
-
                     <div class="input_box Isactive mb-1">
                         <div class="d-flex align-items-center justify-content-center">
                             <div class="col-5 col-md-6">
@@ -2525,7 +2514,6 @@
                             </div>
                         </div>
                     </div>
-
 
                     <div class=" Isactive mb-1">
                         <div class="d-flex align-items-center justify-content-center">
@@ -2573,9 +2561,16 @@
                         (click)="onAddonConfirmation()">Confirmation</button>
                     <button *ngIf="addonconfirmation" type="button" class="btn btn-warning me-2 bttn"
                         style="height: 40px;" [disabled]="!isAnyRowSelected" (click)="onAddon()">Confirmation</button>
-                    <button *ngIf="role =='ROLE_OPERATOR' || role == 'ROLE_SUBLCO' " type="button"
-                        class="btn btn-success me-2 bttn" style="height: 40px;" [disabled]="!isaddaddon"
+
+                    <button
+                        *ngIf="role =='ROLE_OPERATOR' && isCollected_details || role == 'ROLE_SUBLCO'&& isCollected_details "
+                        type="button" class="btn btn-success me-2 bttn" style="height: 40px;" [disabled]="!isaddaddon"
+                        (click)="addAddonForSmartcard()">ADD</button>
+                    <button
+                        *ngIf="role =='ROLE_OPERATOR'&& !isCollected_details || role == 'ROLE_SUBLCO'&& !isCollected_details "
+                        type="button" class="btn btn-success me-2 bttn" style="height: 40px;" [disabled]="!isaddaddon"
                         (click)="onRechargeType('add')">ADD</button>
+
                     <button *ngIf="role !='ROLE_OPERATOR' && role != 'ROLE_SUBLCO' " type="button"
                         class="btn btn-success me-2 bttn" style="height: 40px;" [disabled]="!isaddaddon"
                         (click)="addAddonForSmartcard()">ADD</button>
@@ -2765,9 +2760,15 @@
                         style="height: 40px;" [disabled]="!isAnyRowSelected"
                         (click)="onAlacarte()">Confirmation</button>
 
-                    <button *ngIf="role =='ROLE_OPERATOR' || role == 'ROLE_SUBLCO'" type="button"
-                        class="btn btn-success me-2 bttn" style="height: 40px;" [disabled]="!isaddalacarte"
-                        (click)="onRechargeType('alacarteadd')">ADD</button>
+                    <button
+                        *ngIf="role =='ROLE_OPERATOR' && isCollected_details || role == 'ROLE_SUBLCO' && isCollected_details"
+                        type="button" class="btn btn-success me-2 bttn" style="height: 40px;"
+                        [disabled]="!isaddalacarte" (click)="onRechargeType('alacarteadd')">ADD</button>
+
+                    <button
+                        *ngIf="role =='ROLE_OPERATOR' && !isCollected_details || role == 'ROLE_SUBLCO' && !isCollected_details"
+                        type="button" class="btn btn-success me-2 bttn" style="height: 40px;"
+                        [disabled]="!isaddalacarte" (click)="addAlacarteSmartcard()">ADD</button>
                     <button *ngIf="role !='ROLE_OPERATOR' && role != 'ROLE_SUBLCO'" type="button"
                         class="btn btn-success me-2 bttn" style="height: 40px;" [disabled]="!isaddalacarte"
                         (click)="addAlacarteSmartcard()">ADD</button>
@@ -3052,7 +3053,7 @@
         <button type="button" class="btn btn-danger me-2 bttn" (click)="onNoClick()">No</button>
     </div>
 </div>
-<div *ngIf="rechargeTypeDialog" class="recharge-dialog1">
+<div *ngIf="rechargeTypeDialog && !isCollected_details" class="recharge-dialog1">
     <hr>
     <div class="mobileview">
         <div class="mb-3">

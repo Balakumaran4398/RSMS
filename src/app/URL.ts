@@ -15,9 +15,8 @@ export default class URLs {
         // return `http://${host}:8585/rsms/api/auth`;              // HOST      
         // return 'http://4kdigital.ridsys.in:8585/rsms/api/auth';   //4k
         // return 'https://cas.ridsys.in:8585/rsms/api/auth';          //AJK
-        // return 'http://rdigital.ridsys.in:8585/rsms/api/auth';   //rdigital
+        // return 'http://rdigital.ridsys.in:8585/rsms/api/auth';   //rdigital  
         // return 'http://deenet.ridsys.in:8585/rsms/api/auth';   //deenet
-        // return 'http://192.168.0.39:8585/rsms/api/auth';   // siddeshwar
         // return 'http://192.168.0.39:8585/rsms/api/auth';   // siddeshwar
     }
 
@@ -35,6 +34,7 @@ export default class URLs {
         // return "https://cas.ridsys.in:8585/rsms/api";         // AJK
         // return "http://rdigital.ridsys.in:8585/rsms/api";   //rdigital
         // return "http://deenet.ridsys.in:8585/rsms/api";   //deenet
+        // return "http://192.168.0.39:8585/rsms/api";   // siddeshwar
         // return "http://192.168.0.39:8585/rsms/api";   // siddeshwar
     }
 }

@@ -72,7 +72,7 @@ export class SubDashboardComponent implements OnInit {
   selectedtypes: number[] = [];
   rows: any[] = [];
   isAnyRowSelected: boolean = false;
-
+  isCollected_details: boolean = false;
   gridHeight: any;
   noofdays: any;
 
@@ -353,6 +353,7 @@ export class SubDashboardComponent implements OnInit {
       this.operatorId = this.lcoDeatails?.operatorid;
       this.isplan = this.lcoDeatails?.isplan;
       this.isdate = this.lcoDeatails?.isdate;
+      this.isCollected_details = this.lcoDeatails?.isCollected;
       this.isdateTodate = this.lcoDeatails?.isdatetodate;
       console.log('PLAN', this.isplan);
       console.log('DATE', this.isdate);
@@ -382,6 +383,8 @@ export class SubDashboardComponent implements OnInit {
       this.sublcoInfo = this.Sublcopermissionlist.info;
       this.wallet = this.Sublcopermissionlist.wallet;
       this.sublcoDiscount = this.lcoDeatails?.sublcodiscount;
+      this.isCollected_details = this.lcoDeatails?.isCollected;
+
       console.log('wallet', this.wallet);
       console.log('subAddonAdd', this.subAddonAdd);
       console.log('ADD SMARTCARD', this.addsmartcard);

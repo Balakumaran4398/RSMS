@@ -136,7 +136,7 @@ p {
     width: auto;
     padding: 10px 3px;
     background-color: rgb(67, 80, 61);
-    
+
 }
 
 .inventory p,
@@ -294,6 +294,11 @@ span {
     .grid-container {
         grid-template-columns: 1fr;
     }
+
+    .file-container {
+        gap: 10px
+    }
+
 }
 
 @media screen and (max-width:540px) {
@@ -313,6 +318,12 @@ span {
     .child-card {
         gap: 10px
     }
+
+    .file-container {
+        display: flex;
+        gap: 0px
+    }
+
 
 }
 
@@ -338,17 +349,18 @@ span {
 
 
 ::ng-deep .select2-container {
-  width: 300px !important;
+    width: 250px !important;
 }
+
 ::ng-deep .select2-container .select2-selection--single {
-  height: 45px !important;
-  margin-top: 1%;
+    height: 45px !important;
+    margin-top: 1%;
 }
 
 ::ng-deep .select2-container .select2-selection--single .select2-selection__rendered {
-  margin-top: 7px;
+    margin-top: 7px;
 }
 
 ::ng-deep .select2-container--default .select2-selection--single .select2-selection__arrow {
-  top: 10px;
+    top: 10px;
 }

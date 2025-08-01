@@ -5,6 +5,7 @@ import { BaseService } from 'src/app/_core/service/base.service';
 import { StorageService } from 'src/app/_core/service/storage.service';
 import Swal from 'sweetalert2';
 import { CreateChannelTypeComponent } from '../_Dialogue/channel_Type/create-channel-type/create-channel-type.component';
+import { SwalService } from 'src/app/_core/service/swal.service';
 interface updateRequestbody {
   name: any,
   username: any,
@@ -56,12 +57,13 @@ export class ChannelTypeComponent {
   isAnyRowSelected: any = false;
   selectedIds: number[] = [];
   selectedtypes: number[] = [];
+  selectedName: any
   hasSelectedRows: boolean = true;
   type: number = 0;
   public rowSelection: any = "multiple";
   userid: any;
   accessip: any;
-  constructor(public dialog: MatDialog, public userService: BaseService, storageService: StorageService) {
+  constructor(public dialog: MatDialog, public userService: BaseService, storageService: StorageService, private swal: SwalService) {
     this.username = storageService.getUsername();
     this.role = storageService.getUserRole();
     this.userid = storageService.getUserid();
@@ -144,9 +146,9 @@ export class ChannelTypeComponent {
           toggleCircle.style.left = isActive ? 'calc(100% - 22px)' : '3px';
 
           if (isActive) {
-            this.Active(params.data.id,params.data.isactive);
+            this.Active(params.data.id, params.data.isactive);
           } else {
-            this.Deactive(params.data.id,params.data.isactive);
+            this.Deactive(params.data.id, params.data.isactive);
           }
         });
         toggleContainer.appendChild(toggleSwitch);
@@ -163,6 +165,7 @@ export class ChannelTypeComponent {
       this.isAnyRowSelected = selectedRows.length > 0;
       this.selectedIds = selectedRows.map((e: any) => e.id);
       this.selectedtypes = selectedRows[0].isactive;
+      this.selectedName = selectedRows[0].name;
     }
   }
   updateDeviceModelname(name: string, isactive: boolean, id: number) {
@@ -183,36 +186,16 @@ export class ChannelTypeComponent {
       confirmButtonText: "Yes, Update it!"
     }).then((result) => {
       if (result.isConfirmed) {
-        Swal.fire({
-          title: 'Updating...',
-          text: 'Please wait while the Channel type is being Updated',
-          allowOutsideClick: false,
-          didOpen: () => {
-            Swal.showLoading(null);
-          }
-        });
+        this.swal.Loading();
         this.userService.ChannelType_update(requestBody).subscribe(
           (res: any) => {
-            Swal.fire({
-              position: "center",
-              icon: "success",
-              title: res?.message || "Your update was successful",
-              showConfirmButton: false,
-              timer: 1000
-            }).then(() => {
-              window.location.reload();
-            });
+            this.swal.success(res?.message);
+            // this.logCreate('ChannelType `${name}` name changed', name, this.selectedName);
+            this.logCreate(`ChannelType [${this.selectedName}] name changed`, name, this.selectedName);
 
           },
           (err) => {
-            Swal.fire({
-              position: 'center',
-              icon: 'error',
-              title: 'Error',
-              text: err?.error?.message,
-              showConfirmButton: false,
-              timer: 1500
-            });
+            this.swal.Error(err?.errror?.message);
           }
         );
       }
@@ -255,24 +238,14 @@ export class ChannelTypeComponent {
       });
       if (result.isConfirmed) {
         this.userService.deleteChannelType(this.role, this.username, this.selectedIds).subscribe((res: any) => {
-          Swal.fire({
-            title: 'Deleted!',
-            text: res.message,
-            icon: 'success'
-          })
-          this.ngOnInit();
+          this.swal.success(res?.message);
         }, err => {
-          Swal.fire({
-            title: 'Error!',
-            text: err?.error?.message,
-            icon: 'error'
-          })
+          this.swal.Error(err?.error?.message);
         });
-        // window.location.reload();
       };
     });
   }
-  Active(ids: any,status:any) {
+  Active(ids: any, status: any) {
     Swal.fire({
       title: "Are you sure?",
       text: "You won't be able to Active this!",
@@ -283,39 +256,18 @@ export class ChannelTypeComponent {
       confirmButtonText: "Yes, Active it!"
     }).then((result) => {
       if (result.isConfirmed) {
-        Swal.fire({
-          title: 'Updateing...',
-          text: 'Please wait while the Channel is being updated',
-          allowOutsideClick: false,
-          didOpen: () => {
-            Swal.showLoading(null);
-          }
-        });
+        this.swal.Loading();
         this.userService.ActiveChannelTpe(this.role, this.username, ids).subscribe((res: any) => {
-          Swal.fire({
-            title: 'Activated!',
-            text: res.message,
-            icon: 'success',
-          timer: 2000,
-            timerProgressBar: true,
-            showConfirmButton: false
-          });
-          this.ngOnInit();
-         this.logCreate('ChannelType Active Button Clicked', !status, 'Active');
+          this.swal.success(res?.message);
+          this.logCreate('ChannelType Active Button Clicked', !this.selectedtypes, 'Active');
         }, (err) => {
-          Swal.fire({
-            title: 'Error!',
-            text: err?.error?.message,
-            icon: 'error',
-            timer: 2000,
-            timerProgressBar: true,
-          });
+          this.swal.Error(err?.error?.message);
         });
       }
     });
-     
+
   }
-  Deactive(ids: any,status:any) {
+  Deactive(ids: any, status: any) {
     Swal.fire({
       title: "Are you sure?",
       text: "You won't be able to revert this!",
@@ -326,37 +278,15 @@ export class ChannelTypeComponent {
       confirmButtonText: "Yes, Deactivate it!"
     }).then((result) => {
       if (result.isConfirmed) {
-        Swal.fire({
-          title: 'Deactivating...',
-          text: 'Please wait while the Channel Type is being Deactivate',
-          allowOutsideClick: false,
-          didOpen: () => {
-            Swal.showLoading(null);
-          }
-        });
+        this.swal.Loading();
         this.userService.deleteChannelType(this.role, this.username, ids).subscribe((res: any) => {
-          Swal.fire({
-            title: 'Deactivated!',
-            text: res.message,
-            icon: 'success',
-            timer: 2000,
-            timerProgressBar: true,
-          });
-          this.ngOnInit();
-         
-
+          this.swal.success(res?.message);
         }, (err) => {
-          Swal.fire({
-            title: 'Error!',
-            text: err?.error?.message,
-            icon: 'error',
-            timer: 2000,
-            timerProgressBar: true,
-          });
+          this.swal.Error(err?.error?.message);
         });
       }
     });
-     this.logCreate('ChannelType Active Button Clicked', !status, 'Deactive');
+    this.logCreate('ChannelType Active Button Clicked', this.selectedtypes, 'Deactive');
   }
   addnew(): void {
     let dialogData = {};

@@ -259,7 +259,7 @@ export class PackageCreateComponent implements OnInit {
 
   onKeydown(event: KeyboardEvent) {
     const allowedKeys = ['Backspace', 'ArrowLeft', 'ArrowRight', 'Tab', 'Delete'];
-    if (!/^[0-9]$/.test(event.key) && !allowedKeys.includes(event.key)) {
+    if (!/^[0-9.]$/.test(event.key) && !allowedKeys.includes(event.key)) {
       event.preventDefault();
     }
   }

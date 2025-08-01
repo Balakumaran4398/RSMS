@@ -118,9 +118,6 @@ export class OperatorDetailsComponent implements OnInit, AfterViewInit {
   }
 
   ngOnInit(): void {
-
-
-
     const response = { isactive: 'true' };
     this.setOperator(response);
     this.responsive
@@ -137,25 +134,53 @@ export class OperatorDetailsComponent implements OnInit, AfterViewInit {
     this.updatePageData();
 
   }
-  operatorDeatils(event: any) {
+  // operatorDeatils(event: any) {
+  //   console.log(event);
+  //   // this.swal.Loading();
+  //   this.userservice.OperatorDetails(this.role, this.username, this.operatorid).subscribe(
+  //     (data: any) => {
+  //       this.operator_details = data;
+  //       this.dashboardDetails = data.map((item: any) => item.list);
+  //       this.totalLength = data.length;
+  //       // this.pagedOperators = data;
+  //       if (!this.originalPagedOperators || this.originalPagedOperators.length === 0) {
+  //         this.originalPagedOperators = [...data];
+  //       }
+  //       // this.originalPagedOperators = [...data]; 
+  //       this.pagedOperators = [...data];
+  //       console.log(this.pagedOperators);
+  //       this.updatePageData();
+
+  //       this.swal.Close();
+  //     });
+  // }
+   operatorDeatils(event: any) {
     console.log(event);
-    // this.swal.Loading();
+    this.swal.Loading();
+
     this.userservice.OperatorDetails(this.role, this.username, this.operatorid).subscribe(
       (data: any) => {
-        this.operator_details = data;
-        this.dashboardDetails = data.map((item: any) => item.list);
-        this.totalLength = data.length;
-        // this.pagedOperators = data;
-        if (!this.originalPagedOperators || this.originalPagedOperators.length === 0) {
-          this.originalPagedOperators = [...data];
+        if (data && data.length > 0) {
+          this.operator_details = data;
+          this.dashboardDetails = data.map((item: any) => item.list);
+          this.totalLength = data.length;
+          if (!this.originalPagedOperators || this.originalPagedOperators.length === 0) {
+            this.originalPagedOperators = [...data];
+          }
+          this.pagedOperators = [...data];
+          this.updatePageData();
+        } else {
+          this.swal.Alert('No operator details found', '', 'info');
         }
-        // this.originalPagedOperators = [...data]; 
-        this.pagedOperators = [...data];
-        console.log(this.pagedOperators);
-        this.updatePageData();
 
         this.swal.Close();
-      });
+      },
+      (error) => {
+        this.swal.Close();
+        this.swal.Alert('Error loading operator details', '', 'error');
+        console.error(error);
+      }
+    );
   }
   onBusinessList() {
     this.userservice.getLcoBusinesslist(this.role, this.username).subscribe((data: any) => {

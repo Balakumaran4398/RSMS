@@ -3,6 +3,7 @@ import { AbstractControl, FormBuilder, FormGroup, ValidationErrors, Validators }
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { BaseService } from 'src/app/_core/service/base.service';
 import { StorageService } from 'src/app/_core/service/storage.service';
+import { SwalService } from 'src/app/_core/service/swal.service';
 import Swal from 'sweetalert2';
 interface Dist_Requestbody {
   name: any,
@@ -29,13 +30,16 @@ export class EditDistributorComponent {
   distributor_contact: any;
   distributor_address: any;
   distributor_email: any;
-  distributor_isactive: boolean=false;
-
+  distributor_isactive: boolean = false;
+  userid: any;
+  accessip: any;
 
   constructor(
     public dialogRef: MatDialogRef<EditDistributorComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any,
-    public userService: BaseService,public storageService: StorageService,private fb: FormBuilder) {
+    public userService: BaseService, public storageService: StorageService, private fb: FormBuilder, private swal: SwalService) {
+    this.userid = storageService.getUserid();
+    this.accessip = storageService.getAccessip();
     this.username = this.storageService.getUsername();
     this.user_role = this.storageService.getUserRole();
     this.distributor_name = data.name;
@@ -45,6 +49,7 @@ export class EditDistributorComponent {
     this.distributor_isactive = data.isactive;
     this.distributor_id = data.id;
     console.log(data);
+    console.log(this.distributor_email);
 
     this.distributorForm = this.fb.group({
       distributor_name: [data.name, Validators.required],
@@ -52,22 +57,22 @@ export class EditDistributorComponent {
       distributor_address: [data.address, Validators.required],
       // distributor_email: [data.email, [Validators.required, Validators.email]],
       distributor_email: [
-        '', 
+        data.email,
         [Validators.required, Validators.email, this.customEmailValidator()]
       ],
       distributor_isactive: [data.isactive]
     });
   }
 
- customEmailValidator() {
+  customEmailValidator() {
     return (control: AbstractControl): ValidationErrors | null => {
       const email = control.value;
       const emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.(in|com)$/;
 
       if (email && !emailPattern.test(email)) {
-        return { invalidEmail: true }; 
+        return { invalidEmail: true };
       }
-      return null; 
+      return null;
     };
   }
   ngOnInit() {
@@ -90,6 +95,16 @@ export class EditDistributorComponent {
       role: this.user_role,
       id: this.distributor_id,
     };
+    let requestBody1: Dist_Requestbody = {
+      name: this.distributor_name,
+      contact: this.distributor_contact,
+      email: this.distributor_email,
+      address: this.distributor_address,
+      username: this.username,
+      isactive: this.distributor_isactive,
+      role: this.user_role,
+      id: this.distributor_id,
+    };
     console.log(requestBody);
     Swal.fire({
       title: 'Updating...',
@@ -99,31 +114,19 @@ export class EditDistributorComponent {
         Swal.showLoading(null);
       }
     });
+    const oldDataString = JSON.stringify(requestBody);
+    const newDataString = JSON.stringify(requestBody1);
+
+    
     this.userService.Distributor_update(requestBody).subscribe(
-      (res) => {
-        console.log(res); 
-        Swal.fire({
-          position: "center",
-          icon: "success",
-          title: "Your update was successful!!",
-          showConfirmButton: false,
-          timer: 2000,
-          timerProgressBar: true,
-        }).then(() => {
-          window.location.reload();
-          this.closeDialog();
-        });
+      (res: any) => {
+        console.log(res);
+        this.logCreate('Distributor Edit', newDataString, oldDataString);
+        this.swal.success(res?.message);
+        // this.closeDialog();
       },
       (err) => {
-        Swal.fire({
-          position: 'center',
-          icon: 'error',
-          title: 'Error',
-          text: err?.error?.message,
-          showConfirmButton: false,
-          timer: 2000,
-          timerProgressBar: true,
-        });
+        this.swal.Error(err?.error?.message);
       }
     );
   }
@@ -136,5 +139,20 @@ export class EditDistributorComponent {
     if (!/^[0-9]$/.test(event.key) && !allowedKeys.includes(event.key)) {
       event.preventDefault();
     }
+  }
+
+  logCreate(action: any, remarks: any, data: any) {
+    console.log(remarks);
+
+    let requestBody = {
+      access_ip: this.accessip,
+      action: action,
+      remarks: remarks,
+      data: data,
+      user_id: this.userid,
+    }
+    this.userService.createLogs(requestBody).subscribe((res: any) => {
+      console.log(res);
+    })
   }
 }

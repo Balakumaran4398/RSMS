@@ -87,16 +87,14 @@ export class LoginsettingsComponent {
         return div;
       }
     },
- 
+
     {
       headerName: "CHANGE SIDENAV", width: 200,
       cellRenderer: (params: any) => {
         const allowedRoles = ['Admin', 'Special', 'Reception', 'cus_service', 'service_center'];
-
         if (!allowedRoles.includes(params.data.role)) {
           return '';
         }
-
         const editButton = document.createElement('button');
         editButton.innerHTML = '<i class="fas fa-list" style="font-size:25px;color:#035678"></i>';
         editButton.style.backgroundColor = 'transparent';

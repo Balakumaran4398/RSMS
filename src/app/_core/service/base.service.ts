@@ -652,9 +652,10 @@ export class BaseService {
     return this.http.post<any[]>(
       BASE_URL + "/subscriber/BlockSmartcard?role=" + role + "&username=" + encodeURIComponent(username) + "&smartcard=" + smartcard + "&type=" + type + "&reason=" + reason, {});
   }
-  getSubscriberIdListByOperatorid(role: any, username: any, operatorid: any): Observable<any[]> {
+
+  getSubscriberIdListByOperatorid(role: any, username: any, operatorid: any, subid: any): Observable<any[]> {
     return this.http.get<any[]>(
-      BASE_URL + "/subscriber/getSubscriberIdListByOperatorid?role=" + role + "&username=" + encodeURIComponent(username) + "&operatorid=" + operatorid, {});
+      BASE_URL + "/subscriber/getSubscriberIdListByOperatorid?role=" + role + "&username=" + encodeURIComponent(username) + "&operatorid=" + operatorid + "&subid=" + subid, {});
   }
   // getPdfBillReport(role: any, username: any, subid: any, smartcard: any): Observable<Blob> {
   //   return this.http.get(BASE_URL + "/subscriber/getPdfBillReport?role=" + role + "&username=" + encodeURIComponent(username) + "&subid=" + subid + "&smartcard=" + smartcard,{responseType: 'blob'});

@@ -6,6 +6,7 @@ import { BaseService } from 'src/app/_core/service/base.service';
 import { StorageService } from 'src/app/_core/service/storage.service';
 import Swal from 'sweetalert2';
 import { CategoryDialogComponent } from '../_Dialogue/category_master/category-dialog/category-dialog.component';
+import { SwalService } from 'src/app/_core/service/swal.service';
 
 interface updateRequestbody {
   name: any,
@@ -59,9 +60,9 @@ export class CategoryComponent {
   type: number = 0;
   userid: any;
   accessip: any;
-  
+
   public rowSelection: any = "multiple";
-  constructor(public dialog: MatDialog, public userService: BaseService, storageService: StorageService) {
+  constructor(public dialog: MatDialog, public userService: BaseService, storageService: StorageService, private swal: SwalService) {
     this.username = storageService.getUsername();
     this.role = storageService.getUserRole();
     this.userid = storageService.getUserid();
@@ -155,32 +156,14 @@ export class CategoryComponent {
 
           console.log(params.data.id);
           if (isActive) {
-            this.Active(params.data.id,params.data.statusdisplay);
+            this.Active(params.data.id, params.data.statusdisplay);
           } else {
-            this.Deactive(params.data.id,params.data.statusdisplay);
+            this.Deactive(params.data.id, params.data.statusdisplay);
           }
-
         });
-        // const updateToggleStyle = (active: boolean) => {
-        //   toggleSwitch.style.backgroundColor = active ? '#4CAF50' : '#616060';
-        //   toggleCircle.style.left = active ? 'calc(100% - 22px)' : '3px';
-        //   toggleSwitch.title = active ? 'Deactivate the Customer' : 'Activate the Customer';
-        // };
-
-        // toggleSwitch.addEventListener('click', () => {
-        //   const currentStatus = params.data.isactive;
-        //   const newStatus = !currentStatus;
-        //   params.data.isactive = newStatus; 
-        //   updateToggleStyle(newStatus);
-
-        //   console.log(`Status changed to: ${newStatus ? 'Active' : 'Inactive'}`);
-        // });
         toggleContainer.appendChild(toggleSwitch);
         return toggleContainer;
       }
-
-
-
     }
   ]
 
@@ -189,15 +172,19 @@ export class CategoryComponent {
     this.gridApi = params.api;
     this.gridApi.sizeColumnsToFit();
   }
+  oldCategoryName: any;
   onSelectionChanged() {
     if (this.gridApi) {
       const selectedRows = this.gridApi.getSelectedRows();
       this.isAnyRowSelected = selectedRows.length > 0;
+      this.oldCategoryName = selectedRows[0].name;
       console.log("Selected Rows:", selectedRows);
       this.selectedIds = selectedRows.map((e: any) => e.id);
       // this.selectedtypes = selectedRows.map((e: any) => e.isactive);
       this.selectedStatus = selectedRows[0].isactive;
       console.log(this.selectedIds);
+      console.log(this.selectedStatus);
+
     }
   }
 
@@ -220,44 +207,26 @@ export class CategoryComponent {
       confirmButtonText: "Yes, Update it!"
     }).then((result) => {
       if (result.isConfirmed) {
-        Swal.fire({
-          title: 'Updating...',
-          text: 'Please wait while the Category is being Updated',
-          allowOutsideClick: false,
-          didOpen: () => {
-            Swal.showLoading(null);
-          }
-        });
+        this.swal.Loading();
         this.userService.Category_update(requestBody).subscribe(
-          (res) => {
+          (res: any) => {
             console.log(res);
-            Swal.fire({
-              position: "center",
-              icon: "success",
-              title: "Your update was successful",
-              showConfirmButton: false,
-              timer: 1000
-            }).then(() => {
-              window.location.reload();
-            });
+            this.swal.success(res?.message);
+            // this.logCreate('Edit Category Details', name, this.oldCategoryName);
+            this.logCreate(`Category [${this.oldCategoryName}] name changed`, name, this.oldCategoryName);
 
           },
           (err) => {
-            Swal.fire({
-              position: 'center',
-              icon: 'error',
-              title: 'Error',
-              text: err?.error?.message,
-              showConfirmButton: false,
-              timer: 1500
-            });
+            this.swal.Error(err?.error?.message);
           }
         );
       }
     });
   }
 
-  Active(ids: any,status:any) {
+  Active(ids: any, status: any) {
+    console.log('dfkdsjfskdfjkds', status);
+
     Swal.fire({
       title: "Are you sure?",
       text: "You won't be able to Active this!",
@@ -268,38 +237,21 @@ export class CategoryComponent {
       confirmButtonText: "Yes, Active it!"
     }).then((result) => {
       if (result.isConfirmed) {
-        Swal.fire({
-          title: 'Updateing...',
-          text: 'Please wait while the Category is being updated',
-          allowOutsideClick: false,
-          didOpen: () => {
-            Swal.showLoading(null);
-          }
-        });
-        this.userService.ActiveCategory(this.role, this.username, this.selectedIds).subscribe((res: any) => {
-          Swal.fire({
-            title: 'Activated!',
-            text: res.message,
-            icon: 'success',
-            timer: 2000,
-            timerProgressBar: true,
-          });
-          this.ngOnInit();
-             this.logCreate('Category Active Button Clicked', !status, 'Active');
+        this.swal.Loading();
+        // this.userService.ActiveCategory(this.role, this.username, this.selectedIds).subscribe((res: any) => {
+        this.userService.ActiveCategory(this.role, this.username, ids).subscribe((res: any) => {
+          this.swal.success(res?.message);
+          this.logCreate('Category Active Button Clicked', !this.selectedStatus, 'Active');
         }, (err) => {
-          Swal.fire({
-            title: 'Error!',
-            text: err?.error?.message,
-            icon: 'error',
-            timer: 2000,
-            timerProgressBar: true,
-          });
+          this.swal.Error(err?.error?.message);
         });
       }
     });
- 
+
   }
-  Deactive(ids: any,status:any) {
+  Deactive(ids: any, status: any) {
+    console.log('dfkdsjfskdfjkds', status);
+
     Swal.fire({
       title: "Are you sure?",
       text: "You won't be able to revert this!",
@@ -310,37 +262,20 @@ export class CategoryComponent {
       confirmButtonText: "Yes, Deactive it!"
     }).then((result) => {
       if (result.isConfirmed) {
-        Swal.fire({
-          title: 'Deactivating...',
-          text: 'Please wait while the Category is being Deactivated',
-          allowOutsideClick: false,
-          didOpen: () => {
-            Swal.showLoading(null);
-          }
-        });
+        this.swal.Loading();
 
-        this.userService.deleteCategory(this.role, this.username, this.selectedIds).subscribe((res: any) => {
-          Swal.fire({
-            title: 'Deactivated!',
-            text: res.message,
-            icon: 'success',
-            timer: 2000,
-            timerProgressBar: true,
-          });
-          this.ngOnInit();
-          this.logCreate('Category Deactive Button Clicked', !status,'Deactive');
+        // this.userService.deleteCategory(this.role, this.username, this.selectedIds).subscribe((res: any) => {
+        this.userService.deleteCategory(this.role, this.username, ids).subscribe((res: any) => {
+
+          this.swal.success(res?.message);
+
+          this.logCreate('Category Deactive Button Clicked', this.selectedStatus, 'Deactive');
         }, (err: { error: { message: any; }; }) => {
-          Swal.fire({
-            title: 'Error!',
-            text: err?.error?.message,
-            icon: 'error',
-            timer: 2000,
-            timerProgressBar: true,
-          });
+          this.swal.Error(err?.error?.message);
         });
       }
     });
-    
+
   }
 
   addnew(type: string): void {
@@ -371,7 +306,6 @@ export class CategoryComponent {
       console.log('The dialog was closed');
     });
   }
-
 
   logCreate(action: any, remarks: any, data: any) {
     let requestBody = {

@@ -1,7 +1,23 @@
 <!-- <div class="opt" style="max-height: 800px;overflow: scroll;"> -->
 <div class="opt">
     <div class=" col-12 col-md-12 mb-4 display justify-content-start align-items-baseline   ">
-        <div class="col-12 col-md-3">
+        
+        <!-- style="background-color: #0c5e85;color: white;" -->
+        <div class="d-flex justify-content-center mb-2" style="align-items: baseline;">
+            <button class="btn btn-outline-info mx-1 bttn" mat-raised-button color="custom-select"
+                style="background-color: var(--primary-color);color: white;" type="button" (click)="New_lco('new_lco')">
+                <i class="fa fa-plus mx-2" style="padding-right: 1px;font-size: 14px"></i>
+                NEW LCO
+            </button>
+        </div>
+        <div class="d-flex justify-content-center mb-2" style="align-items: baseline;">
+            <button class="btn btn-outline-info mx-1 bttn" mat-raised-button color="custom-select"
+                style="background-color: var(--primary-color);color: white;" type="button" (click)="New_lco_business()">
+                <i class="fa fa-plus mx-2" style="padding-right: 1px;font-size: 14px"></i>
+                New LCO Business
+            </button>
+        </div>
+        <div class="col-12 col-md-3 mb-3">
             <!-- <mat-form-field class="example-full-width" style="min-width: 100%;" appearance="outline">
                 <mat-label>Select Operator</mat-label>
                 <input type="text" matInput [matAutocomplete]="auto" (input)="filterOperators($event)"
@@ -22,21 +38,6 @@
                     {{ operator.name }}
                 </option>
             </select>
-        </div>
-        <!-- style="background-color: #0c5e85;color: white;" -->
-        <div class="d-flex justify-content-center mb-2" style="align-items: baseline;">
-            <button class="btn btn-outline-info mx-1 bttn" mat-raised-button color="custom-select"
-                style="background-color: var(--primary-color);color: white;" type="button" (click)="New_lco('new_lco')">
-                <i class="fa fa-plus mx-2" style="padding-right: 1px;font-size: 14px"></i>
-                NEW LCO
-            </button>
-        </div>
-        <div class="d-flex justify-content-center mb-2" style="align-items: baseline;">
-            <button class="btn btn-outline-info mx-1 bttn" mat-raised-button color="custom-select"
-                style="background-color: var(--primary-color);color: white;" type="button" (click)="New_lco_business()">
-                <i class="fa fa-plus mx-2" style="padding-right: 1px;font-size: 14px"></i>
-                New LCO Business
-            </button>
         </div>
     </div>
     <div class="grid-container">

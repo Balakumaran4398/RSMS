@@ -8,11 +8,11 @@
                     <span>+</span> New
                 </a>
                 <button class="btn btn-outline-info mx-1  " mat-raised-button color="primary" type="button"
-                    [disabled]="!isAnyRowSelected" (click)="Active(this.selectedIds,selectedStatus)">
+                    [disabled]="!isAnyRowSelected" (click)="Active(selectedIds,selectedStatus)">
                     Active
                 </button>
                 <button class="btn btn-outline-info mx-1  " mat-raised-button color="accent" type="button"
-                    [disabled]="!isAnyRowSelected" (click)="Deactive(this.selectedIds,selectedStatus)">
+                    [disabled]="!isAnyRowSelected" (click)="Deactive(selectedIds,selectedStatus)">
                     Deactive
                 </button>
             </div>
