@@ -17,6 +17,10 @@ export class AllocatedInventoryComponent {
   smartcard: any;
   boxid: any;
   castype: any[] = [];
+  castype1: any[] = [{
+    "id": 6,
+    "name": "ICAS"
+  }];
   // lco_list: { [key: string]: number } = {};
   lco_list: any[] = [];
   operatorid: { [key: string]: number } = {};
@@ -29,7 +33,7 @@ export class AllocatedInventoryComponent {
   submitted: boolean = false;
   constructor(
     public dialogRef: MatDialogRef<AllocatedInventoryComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: any, private userService: BaseService, private storageService: StorageService,private swal:SwalService) {
+    @Inject(MAT_DIALOG_DATA) public data: any, private userService: BaseService, private storageService: StorageService, private swal: SwalService) {
     console.log('Data received:', data);
     this.username = storageService.getUsername();
     this.role = storageService.getUserRole();
@@ -37,10 +41,10 @@ export class AllocatedInventoryComponent {
     // this.castype = data.castype;
     this.castype = data.castype;
     console.log(this.castype);
-    
+
     this.lco_list = data.lco_list;
     console.log(this.castype);
-    this.filteredOperators=this.lco_list;
+    this.filteredOperators = this.lco_list;
 
   }
 
@@ -55,13 +59,13 @@ export class AllocatedInventoryComponent {
   displayOperator(operator: any): string {
     return operator ? operator.name : '';
   }
-  onCasChange(){
+  onCasChange() {
     this.userService.getAllocationMsoSmartcardListByCastype(this.role, this.username, this.selectedCasType).subscribe(
       (res: any) => {
         // this.returndata = res;
         console.log(res);
-        this.smartcard= res.smartcard;
-        this.boxid= res.boxid;
+        this.smartcard = res.smartcard;
+        this.boxid = res.boxid;
 
         // this.swal.success(res?.message);
       }, (err) => {
@@ -78,7 +82,7 @@ export class AllocatedInventoryComponent {
     //   (res: any) => {
     //     // this.returndata = res;
     //     console.log(res);
-        
+
     //     // this.swal.success(res?.message);
     //   }, (err) => {
     //     // this.swal.Error(err?.error?.message);
@@ -122,15 +126,9 @@ export class AllocatedInventoryComponent {
     console.log(this.boxid);
 
     if (!this.selectedLcoName || !this.selectedCasType || !this.smartcard || !this.boxid) {
-      // Swal.fire({
-      //   icon: 'warning',
-      //   title: 'Incomplete Information',
-      //   text: 'Please fill in all required fields before submitting.',
-      //   timer:3000,
-      //   timerProgressBar: true,
-      // });
       return;
     }
+    this.swal.Loading();
     this.userService.Create_Allocated(
       this.selectedLcoName,
       this.selectedCasType,
@@ -139,28 +137,10 @@ export class AllocatedInventoryComponent {
       this.role,
       this.username
     ).subscribe((data: any) => {
-      // Show success alert
-      Swal.fire({
-        icon: 'success',
-        title: 'Created!',
-        text: data?.message || 'Smartcard allocation has been created successfully.',
-        timer: 3000,
-        timerProgressBar: true,
-
-      }).then(() => {
-        window.location.reload();
-      });
+      this.swal.success(data?.message);
     }, (error: any) => {
-      // Show error alert
-      Swal.fire({
-        icon: 'error',
-        title: 'Error',
-        text: error?.error?.message || error?.error?.createnewsmartcardallocation.boxid ||
-        'There was an error creating the smartcard allocation. Please try again.',
-        timer: 3000,
-        timerProgressBar: true,
+      this.swal.Error(error?.error?.message || error?.error?.['createnewsmartcardallocation.boxid']);
 
-      });
     });
   }
 

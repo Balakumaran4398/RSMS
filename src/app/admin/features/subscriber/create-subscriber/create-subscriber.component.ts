@@ -164,16 +164,15 @@ export class CreateSubscriberComponent implements AfterViewInit, OnDestroy {
         streetid: ['', Validators.required || this.streetid],
         casformid: ['',],
         customername: ['', [Validators.required,]],
-        customernamelast: ['', [Validators.required]],
+        customernamelast: ['',],
         fathername: ['', [Validators.required]],
         dateofbirth: ['', [Validators.required]],
         address: ['', [Validators.required]],
         installaddress: ['', [Validators.required]],
         mobileno: ['', [Validators.required, Validators.pattern('^[0-9]{10}$')]],
         landlineno: ['',],
-        // email: ['', [Validators.required, Validators.email]],
-        email: ['',
-          [Validators.required, Validators.email, this.customEmailValidator()]],
+        email: ['', ],
+        // email: ['',[Validators.required, Validators.email, this.customEmailValidator()]],
         formsubmissiondate: ['', [Validators.required]],
         addressproof: ['', [Validators.required]],
         idproof: ['', [Validators.required]],
@@ -594,13 +593,13 @@ export class CreateSubscriberComponent implements AfterViewInit, OnDestroy {
     const value1 = match1 ? match[1] : '';
     this.form.removeControl('idprooftypeid');
     this.form.addControl('idprooftypeid', new FormControl(value1))
-    let formsubmissiondate = this.form.get('formsubmissiondate')?.value
-    let formsubmissiondateReplaced = formsubmissiondate.replace('T', ' ');
-    this.form.removeControl('formsubmissiondate');
-    this.form.addControl('formsubmissiondate', new FormControl(formsubmissiondateReplaced))
+    // let formsubmissiondate = this.form.get('formsubmissiondate')?.value
+    // let formsubmissiondateReplaced = formsubmissiondate.replace('T', ' ');
+    // this.form.removeControl('formsubmissiondate');
+    // this.form.addControl('formsubmissiondate', new FormControl(formsubmissiondateReplaced))
     const errorFields = ['operatorid', 'areaid', 'streetid',
-      'customername', 'customernamelast', 'fathername',
-      'dateofbirth', 'mobileno', 'landlineno', 'email',
+      'customername',  'fathername',
+      'dateofbirth', 'mobileno', 'landlineno', 
       'formsubmissiondate', 'addressproof', 'addressprooftypeid', 'idproof', 'idprooftypeid', 'address', 'installaddress',
     ];
     console.log(this.form);

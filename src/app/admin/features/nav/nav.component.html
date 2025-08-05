@@ -14,9 +14,12 @@
                 style="width: 100px; height: auto;display:flex;margin: auto 40px;"> -->
 
             <!-- ----------------4K & Deenet--------- -->
-            <img *ngIf="msoLogo" [src]="msoLogo" alt="MSO Logo"
-                style="width: 54px; height: auto;display:flex;margin: auto 60px;">
-
+            <!-- <img *ngIf="msoLogo" [src]="msoLogo" alt="MSO Logo"
+                style="width: 54px; height: auto;display:flex;margin: auto 60px;"> -->
+            <img *ngIf="msoLogo" [src]="msoLogo" (error)="msoLogo = null" alt="MSO Logo" class="mb-3"
+                style="width: 100px; height: auto; margin: auto 30px;">
+            <i *ngIf="!msoLogo" class="fas fa-user-circle fa-2x mb-3"
+                style="font-size: 40px; display: flex;justify-content: center ;color:var(--role-color);"></i>
             <!-- ----------------------Normal--------------- -->
             <h5 class="brand-text mb-1" style="margin: 5px 30px;color: var(--primary-color);"
                 [ngStyle]="{'visibility': !isSidebarlogo ? 'visible' : 'hidden'}"> {{msoName}} </h5>
@@ -579,6 +582,8 @@
                 <i class="bx bx-clipboard bx-sm icon ">&nbsp;</i>Reports</a> </li>
         <li *ngIf="isSubscriber"><a (click)="navgetToUrl('/lcoChangePassword');setActiveLinkTab($event)"
                 class="nav-link"> <i class="bx bx-shield-plus bx-sm icon ">&nbsp;</i>Change Password</a> </li>
+        <!-- <li *ngIf="isUser || (distributor && isOperator)"><a (click)="navgetToUrl('/logs');setActiveLinkTab($event)"
+                class="nav-link"> <i class="bx bx-memory-card bx-sm icon "></i>&nbsp;Logs </a></li> -->
         <li *ngIf="isUser || (distributor && isOperator)"><a (click)="navgetToUrl('/version');setActiveLinkTab($event)"
                 class="nav-link"> <i class="bx bx-bullseye bx-sm icon "></i>&nbsp;Updates </a></li>
 
@@ -602,11 +607,11 @@
                         <span class="ver" style="color: var(--role-color);"> {{role}}
                             &nbsp;</span>
                     </div> -->
-                    <div *ngIf="isOperator || isSubLco || isSubscriber " class="version col-4 col-md-4 mobile_nav">
+                    <!-- <div *ngIf="isOperator || isSubLco || isSubscriber " class="version col-4 col-md-4 mobile_nav">
                         <span class="ver" style="color: var(--role-color);"> {{operatorname}} {{retailername}}
                             {{subscribername}}
                             &nbsp;</span>
-                    </div>
+                    </div> -->
                     <div *ngIf="!isSearch"
                         class="search-and-image col-7 col-md-7 col-sm-7 col-lg-7 d-flex justify-content-start align-items-center"
                         (clickOutside)="closeDropdown()">
@@ -631,14 +636,83 @@
                     </div>
 
                     <div class="d-block">
-                        <div class=" d-flex justify-content-between align-items-center mx-2 tooltip-container ">
+                        <!-- <div class=" d-flex justify-content-between align-items-center mx-2 tooltip-container ">
                             <a class="logout " (click)="logout()">
                                 <i class="fa-solid fa-power-off" style="color: var(--primary-color);"></i>
                                 <span><i [ngClass]="showLogoutDropdown ? 'ri-arrow-up-s-line' : 'ri-arrow-down-s-line'"
                                         style="margin: auto;"></i></span>
                             </a>
                             <div class="tooltip">LOGOUT</div>
-                        </div>
+                        </div> -->
+                        <button mat-icon-button class="mat-icon-margin" [matMenuTriggerFor]="menu"
+                            aria-label="Example icon-button with a menu">
+                            <mat-icon>more_vert</mat-icon>
+                        </button>
+                        <mat-menu #menu="matMenu" style="width: 100pc;">
+                            <!-- <img *ngIf="msoLogo" [src]="msoLogo" (error)="msoLogo = null" alt="MSO Logo" class="mb-3"
+                                style="width: 100px; height: auto; margin: auto 60px;"> -->
+                            <!-- <i *ngIf="!msoLogo" class="fas fa-user-circle fa-2x mb-3"
+                                style="font-size: 54px; display: flex;justify-content: center ;color:var(--role-color);"></i> -->
+                            <i  class="fas fa-user-circle fa-2x mb-3"
+                                style="font-size: 54px; display: flex;justify-content: center ;color:var(--role-color);"></i>
+
+                            <div class="col-12 d-flex " style="justify-content: center;" *ngIf="isUser">
+                                <span class="ver_role"> {{role}}
+                                    &nbsp;</span>
+                            </div>
+                            <div class="col-12 d-flex " style="justify-content: center;"
+                                *ngIf="isOperator || isSubLco || isSubscriber">
+                                <span class="ver_role">
+                                    {{operatorname}}
+                                    {{retailername}} {{subscribername}}
+                                    &nbsp;</span>
+                            </div>
+                            <!-- <button mat-menu-item *ngIf="isUser">
+                                <span style="font-size: larger; font-weight: 700;color: unset;"> {{role}}
+                                    &nbsp;</span>
+                            </button>
+                            <button mat-menu-item *ngIf="isOperator || isSubLco || isSubscriber">
+                                <span style="font-size: larger; font-weight: 700;color: unset;"> {{operatorname}}
+                                    {{retailername}} {{subscribername}}
+                                    &nbsp;</span>
+                            </button> -->
+                            <button mat-menu-item *ngIf="isUser">
+                                <mat-icon>phone</mat-icon>
+                                <span>{{msoContact}}</span>
+                            </button>
+                            <button mat-menu-item *ngIf="!isUser">
+                                <mat-icon>phone</mat-icon>
+                                <span>{{contact}}</span>
+                            </button>
+                            <!-- <button mat-menu-item>
+                                <mat-icon> person </mat-icon>
+                                <span>Profile</span>
+                            </button> -->
+                            <!-- <button mat-menu-item>
+                                <mat-icon>help</mat-icon>
+                                <span>Help</span>
+                            </button>
+                            <button mat-menu-item>
+                                <mat-icon>dialpad</mat-icon>
+                                <span>Redial</span>
+                            </button>
+                            <button mat-menu-item disabled>
+                                <mat-icon>voicemail</mat-icon>
+                                <span>Check voice mail</span>
+                            </button>
+                            <button mat-menu-item>
+                                <mat-icon>notifications_off</mat-icon>
+                                <span>Disable alerts</span>
+                            </button> -->
+                            <button mat-menu-item (click)="loginAdmin()" *ngIf="isOperator">
+                                <mat-icon>ios_share</mat-icon>
+                                <span>Return Portal</span>
+                            </button>
+                            <button mat-menu-item (click)="logout()">
+                                <mat-icon>logout</mat-icon>
+                                <span>Logout</span>
+                            </button>
+                        </mat-menu>
                     </div>
                 </div>
             </div>

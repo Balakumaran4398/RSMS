@@ -114,14 +114,14 @@ export class EditDistributorComponent {
         Swal.showLoading(null);
       }
     });
-    const oldDataString = JSON.stringify(requestBody);
-    const newDataString = JSON.stringify(requestBody1);
-
-    
+    // const oldDataString = JSON.stringify(requestBody);
+    // const newDataString = JSON.stringify(requestBody1);
+    const data = ` Distributor Name: ${this.distributorForm.value.distributor_name}, ` + ` Contact: ${this.distributorForm.value.distributor_contact},` + `Email : ${this.distributorForm.value.distributor_email}` + `Address : ${this.distributorForm.value.distributor_address}` + `Isactive:${this.distributorForm.value.distributor_isactive}`;
+    const remark = ` Distributor Name: ${this.distributor_name}, ` + ` Contact: ${this.distributor_contact},` + `Email : ${this.distributor_email}` + `Address : ${this.distributor_address}` + `Isactive:${this.distributor_isactive}`;
     this.userService.Distributor_update(requestBody).subscribe(
       (res: any) => {
         console.log(res);
-        this.logCreate('Distributor Edit', newDataString, oldDataString);
+        this.logCreate('Distributor Edit', remark, data);
         this.swal.success(res?.message);
         // this.closeDialog();
       },

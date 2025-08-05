@@ -83,6 +83,16 @@ export class SwalService {
       showConfirmButton: false
     })
   }
+   info2(message: any) {
+    Swal.fire({
+      title: 'Info!',
+      text: message,
+      icon: 'info',
+      timer: 3000,
+      timerProgressBar: true,
+      showConfirmButton: false
+    })
+  }
   Error(message: any) {
     Swal.fire({
       title: 'Error!',
@@ -91,9 +101,7 @@ export class SwalService {
       timer: 2000,
       timerProgressBar: true,
       showConfirmButton: false
-    }).then(() => {
-      // location.reload();
-    });
+    })
   }
   Error1(message: any) {
     Swal.fire({

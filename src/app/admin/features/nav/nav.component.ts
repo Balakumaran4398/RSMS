@@ -6,6 +6,7 @@ import { BaseService } from 'src/app/_core/service/base.service';
 import { StorageService } from 'src/app/_core/service/storage.service';
 import Swal from 'sweetalert2';
 import { DataService } from 'src/app/_core/service/Data.service';
+import { AuthService } from 'src/app/_core/service/auth.service';
 
 @Component({
   selector: 'app-nav',
@@ -56,6 +57,7 @@ export class NavComponent implements OnInit, AfterViewInit {
   lcoDeatails: any;
   operatorId: any;
   operatorname: any;
+  contact: any;
   operatorBalance: any;
   distributor: boolean = false;
   isLco: boolean = false;
@@ -64,7 +66,13 @@ export class NavComponent implements OnInit, AfterViewInit {
   SublcoReport: any;
   retailername: any;
   subscribername: any;
-  constructor(private router: Router, private breakpointObserver: BreakpointObserver, private cd: ChangeDetectorRef, private dataService: DataService, private cdr: ChangeDetectorRef, private userservice: BaseService, private storageservice: StorageService) {
+  signInform: { username: string; password: string } = { username: '', password: '' };
+  tempLoggerPass: any;
+  errorMessage = '';
+  timeout: any;
+  msoContact: any;
+
+  constructor(private router: Router, private breakpointObserver: BreakpointObserver, private cd: ChangeDetectorRef, private dataService: DataService, private cdr: ChangeDetectorRef, private userservice: BaseService, private storageservice: StorageService, private authService: AuthService) {
     this.role = storageservice.getUserRole();
     this.username = storageservice.getUsername();
     this.navigationList = storageservice.getNavigationList();
@@ -183,6 +191,8 @@ export class NavComponent implements OnInit, AfterViewInit {
       this.SublcoReport = this.SublcopermissionObj?.report;
       console.log('eresuofhdljkfhdsjkfhnsjdhfdjsfh', this.SublcopermissionObj);
       console.log('REFRESH', this.SublcoReport);
+      this.contact = this.lcoDeatails?.contactnumber;
+
     })
   }
   getSubscriberDetails() {
@@ -193,6 +203,8 @@ export class NavComponent implements OnInit, AfterViewInit {
       console.log('SUBSCRIBER DETAILS', this.lcoDeatails);
       this.subscriberid = this.lcoDeatails.subid;
       this.subscribername = this.lcoDeatails.subscribername;
+      this.contact = this.lcoDeatails?.contactnumber;
+
       console.log('this.subscriberid', this.subscriberid);
     })
   }
@@ -223,20 +235,22 @@ export class NavComponent implements OnInit, AfterViewInit {
   }
   operatorIdoperatorId() {
     this.userservice.getOpDetails(this.role, this.username).subscribe((data: any) => {
+      console.log(data);
       this.lcoDeatails = data;
       this.operatorId = this.lcoDeatails?.operatorid;
       this.operatorname = this.lcoDeatails?.operatorname;
       this.operatorBalance = this.lcoDeatails?.balance;
       this.distributor = this.lcoDeatails?.isdistributor;
+      this.contact = this.lcoDeatails?.contactnumber;
     })
   }
-
 
   msoDetails() {
     this.userservice.getMsoDetails(this.role, this.username).subscribe((data: any) => {
       this.msoLogo = `${data.msoLogo}`;
       // this.msoName = `${data.msoName}`;
       this.msoName = data.msoName.includes('AJK') ? 'AJK' : '';
+      this.msoContact = data.msoContact;
 
     })
   }
@@ -617,6 +631,7 @@ export class NavComponent implements OnInit, AfterViewInit {
         navigateIfMatch("message", "/message");
         navigateIfMatch("force", "/fource_tuning");
         navigateIfMatch("mail", "/mail");
+        navigateIfMatch("log", "/logs");
         navigateIfMatch("broadcaster", "/Broadcast");
         navigateIfMatch("distributor", "/Distributer");
         navigateIfMatch("channeltype", "/Channeltype");
@@ -731,9 +746,8 @@ export class NavComponent implements OnInit, AfterViewInit {
         navigateIfMatch("stbmaster", "/smrt_boxid_change");
         navigateIfMatch("trai reports", "/traiReports");
         navigateIfMatch("mso reports", "/msoReports");
-
+        navigateIfMatch("log", "/logs");
         navigateIfMatch("invoice bill", "/msodialogueReports/lcoinvoice");
-
         navigateIfMatch("deduction including gst", "/msodialogueReports/recharge_deduction_including");
         navigateIfMatch("recharge history", "/msodialogueReports/recharge_history");
         navigateIfMatch("online payment", "/msodialogueReports/online_payment_special");
@@ -795,6 +809,7 @@ export class NavComponent implements OnInit, AfterViewInit {
         navigateIfMatch("bulk operator creation", "/bulk_smartcard_creation");
         navigateIfMatch("mso reports", "/msoReports");
 
+        navigateIfMatch("log", "/logs");
 
         navigateIfMatch("invoice bill", "/msodialogueReports/lcoinvoice");
 
@@ -919,4 +934,40 @@ export class NavComponent implements OnInit, AfterViewInit {
     this.router.navigateByUrl("admin" + id);
     console.log("Current width:", window.innerWidth);
   }
+
+  loginAdmin() {
+    if (this.role == 'ROLE_OPERATOR') {
+      this.login('/operator_details');
+      // this.router.navigateByUrl("admin/operator_details");
+    }
+  }
+
+  login(path: any) {
+    console.log(path);
+    this.signInform = {
+      username: this.username,
+      password: this.tempLoggerPass
+    }
+    console.log(this.signInform);
+
+    this.authService.login(this.signInform).subscribe(
+      data => {
+        this.storageservice.saveToken(data.accessToken);
+        this.storageservice.saveUser(data);
+        this.role = this.storageservice.getUser().roles;
+        this.router.navigate([path]);
+        console.log(this.router.navigate([path]));
+        this.timeout = setTimeout(() => {
+          clearTimeout(this.timeout);
+          window.location.reload();
+        }, 10);
+      },
+      err => {
+        this.errorMessage = err.error.message;
+        // this.isLoginFailed = true;
+      }
+    );
+  }
+
+
 }

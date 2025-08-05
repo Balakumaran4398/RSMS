@@ -29,6 +29,21 @@ export class EditmsoComponent implements OnInit {
   managepack = true;
   reportstatus = true;
   calendarrecharge = true;
+  msoname1: any;
+  msoarea1: any;
+  msostreet1: any;
+  msostate1: any;
+  msopincode1: any;
+  msoemail1: any;
+  msocontact1: any;
+  panno1: any;
+  gstno1: any;
+
+  isemi1 = true;
+  chipidforce1 = true;
+  managepack1 = true;
+  reportstatus1 = true;
+  calendarrecharge1 = true;
 
   userid: any;
   accessip: any;
@@ -47,12 +62,26 @@ export class EditmsoComponent implements OnInit {
     this.msocontact = data?.data.msoContact;
     this.panno = data?.data.panNo;
     this.gstno = data?.data.gstNo;
-
     this.isemi = data?.data.isemi;
     this.chipidforce = data?.data.chipidForce;
     this.managepack = data?.data.managepack;
     this.reportstatus = data?.data.reportStatus;
     this.calendarrecharge = data?.data.calendarrecharge;
+
+    this.msoname1 = data?.data.msoName;
+    this.msoarea1 = data?.data.msoArea;
+    this.msostreet1 = data?.data.msoStreet;
+    this.msostate1 = data?.data.msoState;
+    this.msopincode1 = data?.data.msoPincode;
+    this.msoemail = data?.data.msoEmail;
+    this.msocontact1 = data?.data.msoContact;
+    this.panno1 = data?.data.panNo;
+    this.gstno1 = data?.data.gstNo;
+    this.isemi1 = data?.data.isemi;
+    this.chipidforce1 = data?.data.chipidForce;
+    this.managepack1 = data?.data.managepack;
+    this.reportstatus1 = data?.data.reportStatus;
+    this.calendarrecharge1 = data?.data.calendarrecharge;
 
     console.log('isemi', this.isemi);
     console.log('chipidforce', this.chipidforce);
@@ -94,17 +123,17 @@ export class EditmsoComponent implements OnInit {
     ];
     this.swal.Loading();
     this.userService.updateMso(requestBody).subscribe((res: any) => {
-      Swal.fire({
-        title: 'Success',
-        text: res?.message || 'MSO details updated successfully!',
-        icon: 'success',
-        confirmButtonText: 'OK',
-        timer: 2000,
-        timerProgressBar: true,
-      }).then(() => {
-        location.reload();
-      });
-     
+      // Swal.fire({
+      //   title: 'Success',
+      //   text: res?.message || 'MSO details updated successfully!',
+      //   icon: 'success',
+      //   confirmButtonText: 'OK',
+      //   timer: 2000,
+      //   timerProgressBar: true,
+      // }).then(() => {
+      //   location.reload();
+      // });
+      this.swal.success(res?.message);
     }, (err) => {
       const errorMessage = errorFields
         .map(field => err?.error?.[field])
@@ -116,7 +145,9 @@ export class EditmsoComponent implements OnInit {
         confirmButtonText: 'OK'
       });
     });
-     this.logCreate('MSO Details Button Clicked', 'Update', 'Update');
+    const data = ` OLD MSO NAME : ${this.msoname1}, ` + ` OLD MSO AREA :${this.msoarea1}, ` + ` OLD MSO STREET :${this.msostate1}, ` + ` OLD MSO PINCODE :${this.msopincode1}` + ` OLD MSO EMAIL :${this.msoemail1}, ` + ` OLD MSO CONTACT :${this.msocontact1}, ` + ` OLD MSO PAN NUMBER :${this.panno1}, ` + ` OLD MSO GST NUMBER :${this.gstno1}, ` + ` OLD ISEMI :${this.isemi1}, ` + ` OLD CHIP ID FORCE :${this.chipidforce1}, ` + ` OLD MANAGE PACK :${this.managepack1}, ` + ` OLD CALENDOR RECHARGE :${this.calendarrecharge1}`;
+    const remark = ` NEW MSO NAME : ${this.msoname}, ` + ` NEW MSO AREA :${this.msoarea}, ` + ` NEW MSO STREET :${this.msostate}, ` + ` NEW MSO PINCODE :${this.msopincode}` + ` NEW MSO EMAIL :${this.msoemail}, ` + ` NEW MSO CONTACT :${this.msocontact}, ` + ` NEW MSO PAN NUMBER :${this.panno}, ` + ` NEW MSO GST NUMBER :${this.gstno}, ` + ` NEW ISEMI :${this.isemi}, ` + ` NEW CHIP ID FORCE :${this.chipidforce}, ` + `  NEW  MANAGE PACK :${this.managepack}, ` + ` NEW CALENDOR RECHARGE :${this.calendarrecharge}`;
+    this.logCreate('MSO Details Button Clicked', data, remark);
   }
 
   onNoClick(): void {
@@ -139,7 +170,6 @@ export class EditmsoComponent implements OnInit {
     }
     this.userService.createLogs(requestBody).subscribe((res: any) => {
       console.log(res);
-
     })
   }
 }

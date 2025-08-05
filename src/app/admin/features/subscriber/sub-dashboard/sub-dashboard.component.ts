@@ -353,7 +353,9 @@ export class SubDashboardComponent implements OnInit {
       this.operatorId = this.lcoDeatails?.operatorid;
       this.isplan = this.lcoDeatails?.isplan;
       this.isdate = this.lcoDeatails?.isdate;
-      this.isCollected_details = this.lcoDeatails?.isCollected;
+      this.isCollected_details = this.lcoDeatails?.iscollected;
+      console.log('111111111 isCollected_details', this.isCollected_details);
+
       this.isdateTodate = this.lcoDeatails?.isdatetodate;
       console.log('PLAN', this.isplan);
       console.log('DATE', this.isdate);
@@ -2492,6 +2494,7 @@ export class SubDashboardComponent implements OnInit {
     this.cdr.detectChanges();
   }
   onRecharge1Type() {
+    console.log('111111111');
     this.rechargeUpdateType = false;
     this.rechargeTypeDialog = true;
     console.log('recharge1 dfksdl;fkdlsfldsfklds;', this.rechargeUpdateType)
@@ -2505,6 +2508,7 @@ export class SubDashboardComponent implements OnInit {
     this.cdr.detectChanges();
   }
   onRechargeType1() {
+    console.log('2222222');
     this.rechargeTypeDialog = false;
     console.log('scroll');
 

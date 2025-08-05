@@ -81,8 +81,8 @@ export class AllocatedComponent implements OnInit, OnDestroy {
       });
       this.filteredOperators = this.lco_list;
       console.log(this.lco_list);
-      this.caslist = data[0].castype;
-      console.log(this.caslist);
+      // this.caslist = data[0].castype;
+      // console.log(this.caslist);
     })
 
     this.operatorList();
@@ -321,7 +321,7 @@ export class AllocatedComponent implements OnInit, OnDestroy {
       lco_list: this.lco_list,
       castype: this.caslist,
     };
-    console.log(dataToSend);
+    console.log('allocated',dataToSend);
 
     const dialogRef = this.dialog.open(AllocatedInventoryComponent, {
       width: '450px',

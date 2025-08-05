@@ -22,15 +22,23 @@ export class TaxdetailsComponent {
   editPercentage: boolean = false;
   editTaxtype: any;
   isdelete = true;
+  editTaxname1: any;
+  editTaxapplicable1: any;
+  editPercentage1: boolean = false;
+  editTaxtype1: any;
+  isdelete1 = true;
   id: any;
-
   username: any;
   role: any;
   errorMessage: any;
   type: any;
+  userid: any;
+  accessip: any;
   constructor(public dialogRef: MatDialogRef<ProofdetailsComponent>, @Inject(MAT_DIALOG_DATA) public data: any, private swal: SwalService, private userservice: BaseService, private storageservice: StorageService) {
     this.username = storageservice.getUsername();
     this.role = storageservice.getUserRole();
+    this.userid = storageservice.getUserid();
+    this.accessip = storageservice.getAccessip();
     console.log(data);
     this.type = data.type
     this.editTaxname = data?.data?.taxname
@@ -38,6 +46,12 @@ export class TaxdetailsComponent {
     this.editPercentage = data?.data?.percentage
     this.editTaxtype = data?.data?.taxtype
     this.isdelete = data?.data?.isdelete,
+      // -------------------------------------------------
+      this.editTaxname1 = data?.data?.taxname
+    this.editTaxapplicable1 = data?.data?.taxapplicable
+    this.editPercentage1 = data?.data?.percentage
+    this.editTaxtype1 = data?.data?.taxtype
+    this.isdelete1 = data?.data?.isdelete,
       console.log(this.isdelete);
     this.id = data?.data?.id
     console.log(this.editTaxname);
@@ -96,11 +110,24 @@ export class TaxdetailsComponent {
         this.swal.Error(errorMessage);
       }
     );
+    const data = ` Old Tax Name : ${this.editTaxname1}, ` + ` Old Tax Applicable: ${this.editTaxapplicable1}, ` + ` Old Percentage :${this.editPercentage1}, ` + ` Old Tax type :${this.editTaxtype1}, ` + ` Old isDelete :${this.isdelete1}`;
+    const remark = ` New Tax Name : ${this.editTaxname}, ` + ` New Tax Applicable: ${this.editTaxapplicable}, ` + ` New Percentage :${this.editPercentage}, ` + ` New Tax type :${this.editTaxtype}, ` + ` New isDelete :${this.isdelete}`;
+    this.logCreate('MSO Details Button Clicked', data, remark);
   }
   edit(event: any) {
     console.log(event);
-
     console.log(this.taxapplicable);
-
+  }
+  logCreate(action: any, remarks: any, data: any) {
+    let requestBody = {
+      access_ip: this.accessip,
+      action: action,
+      remarks: remarks,
+      data: data,
+      user_id: this.userid,
+    }
+    this.userservice.createLogs(requestBody).subscribe((res: any) => {
+      console.log(res);
+    })
   }
 }

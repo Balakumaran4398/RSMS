@@ -115,6 +115,7 @@ import { BulkoperatorcreationComponent } from './features/Bulk_operation/bulkope
 import { VersionComponent } from './features/version/version.component';
 import { VoicerecognizeComponent } from './features/voicerecognize/voicerecognize.component';
 import { PaymentcustomerComponent } from './features/Add payment/paymentcustomer/paymentcustomer.component';
+import { LogmaintainComponent } from './features/logmaintain/logmaintain.component';
 
 
 const routes: Routes = [
@@ -255,6 +256,7 @@ const routes: Routes = [
       // ---------------------------   version  ------------------------------
       { path: 'version', component: VersionComponent },
       { path: 'voice', component: VoicerecognizeComponent },
+      { path: 'logs', component: LogmaintainComponent },
       // { path: 'payment_customer', component: PaymentcustomerComponent },
     ]
   }

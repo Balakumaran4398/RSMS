@@ -45,6 +45,22 @@ export class CasdialogueComponent implements OnInit {
   errorMessage: string | null = null;
   userid: any;
   accessip: any;
+  // ------------------------------------------------------------
+  cas_id1: any;
+  cas_name1: any;
+  msovendor1: any;
+  uname1: any;
+  password1: any;
+  address1: any;
+  serviceip1: any;
+  serverport1: any;
+  smartcardlength1: any;
+  boxidlength1: any;
+  referenceurl1: any;
+  email1: any;
+  website1: any;
+  mobileno1: any;
+  isactive1: boolean = true;
   constructor(public dialogRef: MatDialogRef<CasdialogueComponent>, @Inject(MAT_DIALOG_DATA) public data: any, private swal: SwalService, private userservice: BaseService, private storageservice: StorageService, private fb: FormBuilder) {
     this.username = storageservice.getUsername();
     this.role = storageservice.getUserRole();
@@ -102,8 +118,6 @@ export class CasdialogueComponent implements OnInit {
     this.msovendor = data?.data?.vendor;
     this.address = data?.data?.address;
     this.serviceip = data?.data?.serverip;
-    console.log('serviceip', this.serviceip);
-
     this.serverport = data?.data?.serverport;
     this.smartcardlength = data?.data?.smartcardlength;
     this.boxidlength = data?.data?.boxlength;
@@ -114,6 +128,21 @@ export class CasdialogueComponent implements OnInit {
     this.isactive = data?.data?.isactive;
 
     // ------------------------------------
+    this.cas_id1 = data?.data?.id;
+    this.cas_name1 = data?.data?.casname;
+    this.uname1 = data?.data?.username;
+    this.password1 = data?.data?.password;
+    this.msovendor1 = data?.data?.vendor;
+    this.address1 = data?.data?.address;
+    this.serviceip1 = data?.data?.serverip;
+    this.serverport1 = data?.data?.serverport;
+    this.smartcardlength1 = data?.data?.smartcardlength;
+    this.boxidlength1 = data?.data?.boxlength;
+    this.referenceurl1 = data?.data?.referenceurl;
+    this.email1 = data?.data?.email;
+    this.website1 = data?.data?.website;
+    this.mobileno1 = data?.data?.contactno;
+    this.isactive1 = data?.data?.isactive;
   }
   ngOnInit(): void {
     this.casList = this.casid.map((id: any, index: any) => ({
@@ -191,11 +220,6 @@ export class CasdialogueComponent implements OnInit {
   //   // }
   // }
   editcas() {
-    // if (casForm.invalid) { // Validate before submission
-    //   this.markAllFieldsAsTouched(casForm);
-    //   return;
-    // }
-
     const requestBody = {
       casname: this.cas_name,
       uname: this.uname,
@@ -227,8 +251,11 @@ export class CasdialogueComponent implements OnInit {
         );
         // this.errorMessage = this.getErrorMessage(err?.error); // Set the error message
         console.error(this.errorMessage);
-      }
+      },
     );
+    const data = ` Old CAS ID : ${this.cas_id1}, ` + ` Old CAS NAME : ${this.cas_name1}, ` + ` Old USER NAME :${this.uname1}, ` + ` Old PASSWORD :${this.password1}, ` + ` Old VENDOR :${this.msovendor1}` + ` Old ADDRESS :${this.address1}, ` + ` Old SERVER IP :${this.serviceip1}, ` + ` Old SERVER PORT :${this.serverport1}, ` + ` Old SMARTCARD LENGTH :${this.smartcardlength1}, ` + ` Old BOXID LENGTH :${this.boxidlength1}, ` + ` Old REFERENCE URL :${this.referenceurl1}, ` + ` Old WEBSITE :${this.website1}, ` + ` Old EMAIL :${this.email1}, ` + ` OLD CONTACT NUMBER :${this.mobileno1}, ` + ` Old ISEMI :${this.isactive1}`;
+    const remark = ` NEW CAS ID : ${this.cas_id}, ` + ` NEW CAS NAME : ${this.cas_name}, ` + ` NEW USER NAME :${this.uname}, ` + ` NEW PASSWORD :${this.password}, ` + ` NEW VENDOR :${this.msovendor}` + ` NEW ADDRESS :${this.address}, ` + ` NEW SERVER IP :${this.serviceip}, ` + ` NEW SERVER PORT :${this.serverport}, ` + ` NEW SMARTCARD LENGTH :${this.smartcardlength}, ` + ` NEW BOXID LENGTH :${this.boxidlength}, ` + ` NEW REFERENCE URL :${this.referenceurl}, ` + ` NEW WEBSITE :${this.website}, ` + ` NEW EMAIL :${this.email}, ` + ` NEW CONTACT NUMBER :${this.mobileno}, ` + ` NEW ISEMI :${this.isactive}`;
+    this.logCreate('CAS Master Details Button Clicked', data, remark);
   }
   markAllFieldsAsTouched(form: NgForm) {
     Object.keys(form.controls).forEach(control => {
@@ -267,7 +294,6 @@ export class CasdialogueComponent implements OnInit {
     }
     this.userservice.createLogs(requestBody).subscribe((res: any) => {
       console.log(res);
-
     })
   }
 }

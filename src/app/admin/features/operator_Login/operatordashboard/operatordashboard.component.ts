@@ -6,6 +6,7 @@ import { StorageService } from 'src/app/_core/service/storage.service';
 import { BroadCreateDialogComponent } from '../../channel_setting/_Dialogue/broad-create-dialog/broad-create-dialog.component';
 import { OperatorWalletComponent } from '../Dialog/operator-wallet/operator-wallet.component';
 import { Location } from '@angular/common';
+import { AuthService } from 'src/app/_core/service/auth.service';
 declare var AmCharts: any;
 
 @Component({
@@ -57,9 +58,16 @@ export class OperatordashboardComponent implements OnInit {
 
   retailerid: any;
   distributor: boolean = false;
-  constructor(private router: Router, private userService: BaseService, private storageService: StorageService, public dialog: MatDialog, private location: Location,) {
+  tempLoggerPass: any;
+  signInform: { username: string; password: string } = { username: '', password: '' };
+  errorMessage = '';
+  timeout: any;
+  constructor(private router: Router, private userService: BaseService, private storageService: StorageService, public dialog: MatDialog, private location: Location, private authService: AuthService) {
     this.role = storageService.getUserRole();
     this.username = storageService.getUsername();
+    this.tempLoggerPass = storageService.getLoggerPass();
+
+    console.log(this.tempLoggerPass);
 
     const style = document.createElement("style");
     if (this.role == 'ROLE_SUBLCO') {
@@ -109,7 +117,36 @@ export class OperatordashboardComponent implements OnInit {
       this.router.navigate(['/']).then(() => {
       });
     }
+    // if (this.role == 'OPERATOR' ) {
+    //   this.login('/operator_dashboard');
+    // }
   }
+  login(path: any) {
+    console.log(path);
+    
+    this.signInform = {
+      username: this.username,
+      password: this.tempLoggerPass
+    }
+    this.authService.login(this.signInform).subscribe(
+      data => {
+        this.storageService.saveToken(data.accessToken);
+        this.storageService.saveUser(data);
+        this.role = this.storageService.getUser().roles;
+        this.router.navigate([path]);
+
+        this.timeout = setTimeout(() => {
+          clearTimeout(this.timeout);
+          window.location.reload();
+        }, 10);
+      },
+      err => {
+        this.errorMessage = err.error.message;
+        // this.isLoginFailed = true;
+      }
+    );
+  }
+
   onOnlineRecharge() {
     this.router.navigate(['admin/online_recharge']);
   }

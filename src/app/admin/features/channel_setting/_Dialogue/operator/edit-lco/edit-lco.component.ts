@@ -150,6 +150,7 @@ export class EditLcoComponent {
   //   );
   // }
   onSubmit() {
+    console.log(this.form.value.operatorname);
     if (!this.form.valid) {
       this.form.markAllAsTouched();
       this.swal.Loading();
@@ -164,7 +165,14 @@ export class EditLcoComponent {
         }).then(() => {
           // window.location.reload();
         });
-        this.logCreate('LCO Update Button Clicked', this.operatorname1, this.operatorname);
+        console.log(this.form.value.operatorid);
+
+        const data = `Operator Name: ${this.form.value.operatorname}, ` + ` Contact: ${this.form.value.contactnumber1}, ` + `Email : ${this.form.value.mail}, ` + `Address : ${this.form.value.address}, ` + `Area:${this.form.value.area}, ` + `State:${this.form.value.state}, ` + `Pincode:${this.form.value.pincode}, ` + `username: ${this.form.value.userid}, ` + `password:${this.form.value.password}, ` + `Business Name:${this.form.value.lcobusinessid}, ` + `Payment Gateway:${this.form.value.paymentid}`;
+        const remark = `Operator Name: ${this.operatorname1}, ` + ` Contact: ${this.contactnumber}, ` + `Email : ${this.mail}, ` + `Address : ${this.address}, ` + `Area:${this.area}` + `State:${this.state}, ` + `Pincode:${this.pincode}, ` + `username: ${this.userid}, ` + `password:${this.password}, ` + `Business Name:${this.lcobusinessid}, ` + `Payment Gateway:${this.paymentid}`;
+
+
+        this.logCreate('LCO Update Button Clicked', remark, data);
+        // this.logCreate('LCO Update Button Clicked', remark, data);
       },
         (error) => {
           console.error(error);

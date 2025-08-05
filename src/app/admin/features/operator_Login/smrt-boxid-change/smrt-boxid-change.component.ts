@@ -77,12 +77,14 @@ export class SmrtBoxidChangeComponent implements OnInit {
     this.boxidvalue
     if (this.type === 'smartcard') {
       this.boxidvalue;
-      this.smartcardvalue
+      this.smartcardvalue;
+      this.rowData = [];
       this.header = 'Smartcard Change Operation';
       this.onColumnDefs();
     } else if (this.type === 'boxid') {
       this.boxidvalue;
       this.smartcardvalue = '';
+      this.rowData = [];
       this.header = 'Box ID Change Operation';
       this.onColumnDefs();
     }
@@ -117,7 +119,11 @@ export class SmrtBoxidChangeComponent implements OnInit {
   }
   smrtSubmit(selectType: any) {
     console.log(selectType);
-
+    if (selectType == 1) {
+      this.oldboxid = '';
+    } else {
+      this.oldsmartcard = '';
+    }
     this.userservice.getDataBysmartcardOrBoxid(this.role, this.username, selectType, this.oldsmartcard || this.oldboxid).subscribe((res: any) => {
       console.log(res);
       this.flag = res.flag;
@@ -125,36 +131,52 @@ export class SmrtBoxidChangeComponent implements OnInit {
       this.smartcardvalue = res.smartcard;
       console.log(this.smartcardvalue);
       console.log(this.boxidvalue);
-      // if (!this.flag) {
-      //   // this.smartcardid = !this.smartcardid;
-      //   this.smartcardid = false;
-      // } else {
-      //   this.smartcardid = true;
-      // }
+      if (res.flag) {
+        this.swal.success(res.result);
+      } else {
+        this.swal.Error(res.result);
+      }
+    }, (error: any) => {
+      console.log(error);
 
-      // this.oldsmartcard = '';
-      // this.oldboxid = '';
-    })
+      const errors = error?.error;
+      const messages = [];
+
+      if (errors) {
+        if (errors['getDataBysmartcardOrBoxid.smartcard']) {
+          messages.push(errors['getDataBysmartcardOrBoxid.smartcard']);
+        }
+        if (errors['SmartcardChange.oldsmartcard']) {
+          messages.push(errors['SmartcardChange.oldsmartcard']);
+        }
+        if (errors['SmartcardChange.newsmartcard']) {
+          messages.push(errors['SmartcardChange.newsmartcard']);
+        }
+      }
+      this.swal.Error(messages.length ? messages.join('\n') : error?.error?.message);
+    });
   }
-  // getMaskedSmartcard(): string {
-  //   if (this.smartcardvalue) {
-  //     return this.smartcardvalue.slice(0, -4).replace(/./g, '*') + this.smartcardvalue.slice(-4);
-  //   }
-  //   return '';
-  // }
-  // getMaskedBoxid(): string {
-  //   if (this.boxidvalue) {
-  //     return this.boxidvalue.slice(0, -4).replace(/./g, '*') + this.boxidvalue.slice(-4);
-  //   }
-  //   return '';
-  // }
   getSmartcardSubmit() {
     this.swal.Loading();
     this.userservice.getSmartcardChange(this.role, this.username, 2, this.oldsmartcard, this.newsmartcard, this.boxidvalue)
       .subscribe((res: any) => {
         this.swal.success(res?.message);
       }, (err) => {
-        this.swal.Error(err?.error?.message);
+        const errors = err?.error;
+        const messages = [];
+
+        if (errors) {
+          if (errors['getDataBysmartcardOrBoxid.smartcard']) {
+            messages.push(errors['getDataBysmartcardOrBoxid.smartcard']);
+          }
+          if (errors['SmartcardChange.oldsmartcard']) {
+            messages.push(errors['SmartcardChange.oldsmartcard']);
+          }
+          if (errors['SmartcardChange.newsmartcard']) {
+            messages.push(errors['SmartcardChange.newsmartcard']);
+          }
+        }
+        this.swal.Error(messages.length ? messages.join('\n') : err?.error?.message);
       });
   }
   getboxidSubmit() {
@@ -163,7 +185,23 @@ export class SmrtBoxidChangeComponent implements OnInit {
       .subscribe((res: any) => {
         this.swal.success(res?.message);
       }, (err) => {
-        this.swal.Error(err?.error?.message);
+        // this.swal.Error(err?.error?.message);
+        const errors = err?.error;
+        const messages = [];
+
+        if (errors) {
+          if (errors['BoxChange.newboxid']) {
+            messages.push(errors['BoxChange.newboxid']);
+          }
+          if (errors['BoxChange.oldboxid']) {
+            messages.push(errors['BoxChange.oldboxid']);
+          }
+          if (errors['BoxChange.smartcard']) {
+            messages.push(errors['BoxChange.smartcard']);
+          }
+        }
+
+        this.swal.Error(messages.length ? messages.join('\n') : err?.error?.message);
       });
   }
   getData() {

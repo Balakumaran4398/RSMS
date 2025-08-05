@@ -640,7 +640,9 @@ export class SubscriberdialogueComponent implements OnInit, OnDestroy {
       this.isdate = this.lcoDeatails?.isdate;
       this.isdateTodate = this.lcoDeatails?.isdatetodate;
       this.distributor = this.lcoDeatails?.isdistributor;
-      this.isCollected_details = this.lcoDeatails?.isCollected;
+      this.isCollected_details = this.lcoDeatails?.iscollected;
+      console.log(' isCollected_details', this.isCollected_details);
+
       this.onoperatorchange_LCO(this.operatorId);
     })
   }
@@ -706,7 +708,7 @@ export class SubscriberdialogueComponent implements OnInit, OnDestroy {
       .subscribe((data) => {
         this.packagenameList = Object.entries(data).map(([name, id]) => ({
           packagename: name,
-            // packagename: name.substring(0, name.indexOf('(')).trim(),
+          // packagename: name.substring(0, name.indexOf('(')).trim(),
           packageid: id as number
         }));
         this.cdr.detectChanges();
@@ -812,7 +814,7 @@ export class SubscriberdialogueComponent implements OnInit, OnDestroy {
     });
   }
   onSubscriberList() {
-    this.userservice.getSubscriberIdListByOperatorid(this.role, this.username, this.operatorid,this.subid).subscribe((data: any) => {
+    this.userservice.getSubscriberIdListByOperatorid(this.role, this.username, this.operatorid, this.subid).subscribe((data: any) => {
       this.sub_list = Object.keys(data).map(key => {
         const value = data[key];
         const name = key;
@@ -1528,7 +1530,7 @@ export class SubscriberdialogueComponent implements OnInit, OnDestroy {
     this.servicename = '';
     this.cdr.detectChanges();
     // this.userservice.getSubscriberIdListByOperatorid(this.role, this.username, this.operatorid).subscribe((data: any) => {
-    this.userservice.getSubscriberIdListByOperatorid(this.role, this.username, this.lcoid,this.subid).subscribe((data: any) => {
+    this.userservice.getSubscriberIdListByOperatorid(this.role, this.username, this.lcoid, this.subid).subscribe((data: any) => {
       this.sub_list = Object.keys(data).map(key => {
         const value = data[key];
         const name = key;
@@ -2066,7 +2068,7 @@ export class SubscriberdialogueComponent implements OnInit, OnDestroy {
   comment: any = 'No Comment';
   baseChangeofSmartcardPackageActivate() {
     console.log('1111111');
-    
+
     let plandata = this.plantype || this.f_date || 4
     console.log(plandata);
     console.log(this.billTypeValue?.bill_type);

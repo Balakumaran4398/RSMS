@@ -54,7 +54,7 @@
             </div>
             <div class="col-12 col-md-6 ">
                 <!-- [disabled]="!castypeSmartcard || filteredSmartcard.length === 0" -->
-                <input  type="text" placeholder="Enter Smartcard" [(ngModel)]="smartcard" maxlength="20" readonly>
+                <input  type="text" placeholder="Enter Smartcard" [(ngModel)]="smartcard" maxlength="20" >
                 <div *ngIf="submitted && !smartcard" class="text-danger" style="font-size: small;">
                     Smartcard is required
                 </div>
@@ -67,7 +67,7 @@
                 <label for="">Box ID</label>
             </div>
             <div class="col-12 col-md-6 ">
-                <input type="text" placeholder="Enter BoxID" [(ngModel)]="boxid" readonly>
+                <input type="text" placeholder="Enter BoxID" [(ngModel)]="boxid" >
                 <div *ngIf="submitted && !boxid" class="text-danger" style="font-size: small;">
                     Boxid is required
                 </div>

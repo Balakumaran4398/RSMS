@@ -96,7 +96,7 @@ export class InventorycortonboxComponent implements OnInit {
       this.lcoDeatails = data;
       this.operatorid = this.lcoDeatails?.operatorid;
       this.distributor = this.lcoDeatails?.isdistributor;
-      this.onAreaList(this.operatorid)
+      this.onAreaList(this.operatorid);
     })
   }
   getEmi() {
@@ -131,12 +131,16 @@ export class InventorycortonboxComponent implements OnInit {
         const name = key;
         return { name: name, value: value };
       });
+
     })
   }
   onAreaList(type: any) {
-    console.log(type);
+    if (this.distributor) {
+      this.filteredAreaList = [];
+    }
     if (this.selectOperator || this.operatorid) {
       this.userservice.getAreaListByOperatorid(this.role, this.username, this.selectOperator || this.operatorid)
+        // this.userservice.getAreaListByOperatorid(this.role, this.username, this.selectLco || this.selectOperator || this.operatorid)
         .subscribe((data: any) => {
           console.log(data);
           console.log(data?.streetid);
@@ -241,6 +245,16 @@ export class InventorycortonboxComponent implements OnInit {
     $('#operator').on('change', (event: any) => {
       this.selectOperator = event.target.value;
       this.onAreaList(this.selectOperator);
+      console.log('123435435435');
+    });
+    $('#operator1').select2({
+      placeholder: 'Select LCO',
+      allowClear: true
+    });
+    $('#operator1').on('change', (event: any) => {
+      this.selectOperator = event.target.value;
+      this.onAreaList(this.selectOperator);
+      console.log('123435435435');
     });
     $('#area').select2({
       placeholder: 'Select Area',

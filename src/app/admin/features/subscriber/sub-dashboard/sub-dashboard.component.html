@@ -832,10 +832,19 @@
                                         [ngStyle]="{'background': isDisabled ? 'rgb(226 176 110)' : 'rgb(243, 146, 19)'}"
                                         [disabled]="isDisabled"
                                         (click)="rechargetoggleConfirmation1()">Confirmation</button>
-                                    <button *ngIf="role == 'ROLE_OPERATOR' ||  role == 'ROLE_SUBLCO'" type="button"
-                                        class="btn2  recharge bttn me-2" [disabled]="isRecharge"
+
+                                    <button
+                                        *ngIf="role == 'ROLE_OPERATOR' && !isCollected_details||  role == 'ROLE_SUBLCO'&& !isCollected_details"
+                                        type="button" class="btn2  recharge bttn me-2" [disabled]="isRecharge"
+                                        [ngStyle]="{'background': isRecharge ? 'rgb(160 187 240)' : 'rgb(8, 79, 212)'}"
+                                        (click)="recharge1()">Recharge</button>
+
+                                    <button
+                                        *ngIf="role == 'ROLE_OPERATOR'&& isCollected_details ||  role == 'ROLE_SUBLCO' && isCollected_details"
+                                        type="button" class="btn2  recharge bttn me-2" [disabled]="isRecharge"
                                         [ngStyle]="{'background': isRecharge ? 'rgb(160 187 240)' : 'rgb(8, 79, 212)'}"
                                         (click)="onRecharge1Type()">Recharge</button>
+
                                     <button *ngIf="role != 'ROLE_OPERATOR' &&  role != 'ROLE_SUBLCO' " type="button"
                                         class="btn2  recharge bttn me-2" [disabled]="isRecharge"
                                         [ngStyle]="{'background': isRecharge ? 'rgb(160 187 240)' : 'rgb(8, 79, 212)'}"
@@ -845,6 +854,7 @@
                                         style="background-color: red;" (click)="toggleConfirmation()">Cancel</button>
                                 </div>
                             </div>
+
                             <div *ngIf="managePackagetable1" class="confirmation-dialog">
                                 <div class=" d-flex justify-content-start align-item-center  mb-2">
                                     <button *ngIf="!confirmation" type="button" class="btn2 confirm me-2 bttn"
@@ -855,14 +865,13 @@
                                         [ngStyle]="{'background': isDisabled ? 'rgb(226 176 110)' : 'rgb(243, 146, 19)'}"
                                         [disabled]="isDisabled"
                                         (click)="rechargetoggleConfirmation()">Confirmation</button>
-
                                     <button
-                                        *ngIf="role == 'ROLE_OPERATOR' &&isCollected_details|| role == 'ROLE_SUBLCO'&&isCollected_details "
+                                        *ngIf="role == 'ROLE_OPERATOR' && !isCollected_details|| role == 'ROLE_SUBLCO'&& !isCollected_details "
                                         type="button" class="btn2  recharge bttn me-2" [disabled]="isRecharge"
                                         [ngStyle]="{'background': isRecharge ? 'rgb(160 187 240)' : 'rgb(8, 79, 212)'}"
-                                        (click)="onRechargeType()">Recharge</button>
+                                        (click)="recharge()">Recharge</button>
                                     <button
-                                        *ngIf="role == 'ROLE_OPERATOR' && !isCollected_details|| role == 'ROLE_SUBLCO' && !isCollected_details"
+                                        *ngIf="role == 'ROLE_OPERATOR' && isCollected_details|| role == 'ROLE_SUBLCO' && isCollected_details"
                                         type="button" class="btn2  recharge bttn me-2" [disabled]="isRecharge"
                                         [ngStyle]="{'background': isRecharge ? 'rgb(160 187 240)' : 'rgb(8, 79, 212)'}"
                                         (click)="onRechargeType()">Recharge</button>
@@ -895,7 +904,7 @@
         </div>
     </section>
 </div>
-<div *ngIf="rechargeTypeDialog && !isCollected_details" class="recharge-dialog">
+<div *ngIf="rechargeTypeDialog && isCollected_details" class="recharge-dialog">
     <div class="mobileview">
         <div class="mb-3">
             <!-- <h2 class="title" ></h2> -->

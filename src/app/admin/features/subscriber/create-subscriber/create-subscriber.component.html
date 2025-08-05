@@ -75,8 +75,9 @@
                     </div>
                     <div class="input_box">
                         <label for="phone">Subscriber Name Last</label>
-                        <input type="text" formControlName="customernamelast" placeholder="Enter Subscriber Last Name"
-                            required [ngClass]="{ 'is-invalid': submitted && f['customernamelast'].errors }" />
+                        <input type="text" formControlName="customernamelast" placeholder="Enter Subscriber Last Name">
+                        <!-- <input type="text" formControlName="customernamelast" placeholder="Enter Subscriber Last Name"
+                            required [ngClass]="{ 'is-invalid': submitted && f['customernamelast'].errors }" /> -->
 
                         <!-- <div style="position: relative; font-size: small;"
                             *ngIf="submitted && f['customernamelast'].errors" class="invalid-feedback">
@@ -139,8 +140,9 @@
                     </div>
                     <div class="input_box">
                         <label for="email">Email ID</label>
-                        <input type="text" formControlName="email" placeholder="Ex. example@gmail.com"
-                            [ngClass]="{ 'is-invalid': submitted && f['email'].errors }" required />
+                        <input type="text" formControlName="email" placeholder="Ex. example@gmail.com" />
+                        <!-- <input type="text" formControlName="email" placeholder="Ex. example@gmail.com"
+                            [ngClass]="{ 'is-invalid': submitted && f['email'].errors }" required /> -->
                         <!-- <div *ngIf="form.get('email')?.invalid && form.get('email')?.touched" class="error-message">
                             <div *ngIf="form.get('email')?.invalid && form.get('email')?.touched" class="error-message">
                                 <div *ngIf="form.get('email')?.hasError('required')">

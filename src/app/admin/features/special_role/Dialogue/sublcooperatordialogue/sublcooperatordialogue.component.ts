@@ -58,6 +58,7 @@ export class SublcooperatordialogueComponent implements OnInit {
   address: any;
   password: any;
   retailerid: any;
+  userId: any;
 
   paymentid: any = 0;
   selectedid: any;
@@ -100,10 +101,13 @@ export class SublcooperatordialogueComponent implements OnInit {
   retailerUsername: any;
 
   selectedRow: any;
-
+  userid: any;
+  accessip: any;
   constructor(public dialogRef: MatDialogRef<SublcooperatordialogueComponent>, @Inject(MAT_DIALOG_DATA) public data: any, private fb: FormBuilder, private userservice: BaseService, private storageservice: StorageService, private swal: SwalService, public dialog: MatDialog,) {
     this.role = storageservice.getUserRole();
     this.username = storageservice.getUsername();
+    this.userid = storageservice.getUserid();
+    this.accessip = storageservice.getAccessip();
     console.log(data);
     this.type = data.type;
     this.operatorid = data.id;
@@ -117,6 +121,7 @@ export class SublcooperatordialogueComponent implements OnInit {
     this.contactno2 = data?.data.contactNo2;
     this.address = data?.data.address;
     this.password = data?.data.password;
+    this.userId = data?.data.username;
     this.retailerid = data?.data.retailerId;
     this.lcoid = data?.data.operatorId;
     console.log(this.retailerid);
@@ -131,7 +136,7 @@ export class SublcooperatordialogueComponent implements OnInit {
       contactno2: ['', [Validators.required, Validators.pattern('^[0-9]{10}$')]],
       address: ['', Validators.required],
       password: ['', [Validators.required, Validators.pattern('^[A-Za-z\\d@$!%*?&]{6,12}$')]],
-
+      userId: ['', [Validators.required,]],
       // password: ['', [Validators.required,  Validators.pattern('^(?=.*[A-Za-z])(?=.*\\d)[A-Za-z\\d@$!%*?&]{6,12}$')]],
       // password: ['', [Validators.required, Validators.pattern('^(?=.*[A-Za-z])(?=.*\\d)[A-Za-z\\d@$!%*?&]{8,}$')]],
       role: this.role,
@@ -146,6 +151,7 @@ export class SublcooperatordialogueComponent implements OnInit {
       contactno2: ['', [Validators.required, Validators.pattern('^[0-9]{10}$')]],
       address: ['', Validators.required],
       password: ['', [Validators.required, Validators.pattern('^(?=.*[A-Za-z])(?=.*\\d)[A-Za-z\\d@$!%*?&]{8,}$')]],
+      userId: ['', [Validators.required,]],
       role: this.role,
       username: this.username,
       operatorid: this.operatorid || this.lcoid,
@@ -370,9 +376,12 @@ export class SublcooperatordialogueComponent implements OnInit {
     this.userservice.sublcoUpdate(this.editform.value)
       .subscribe((res: any) => {
         this.swal.success(res?.message);
+        const data = ` Retailer Name : ${this.editform.value.retailername}, ` + ` Mobile Number : ${this.editform.value.contactno}, ` + `Alternate Number :${this.editform.value.contactno2}, ` + `Address : ${this.editform.value.address}, ` + `Password : ${this.editform.value.password}`;
+        const remark = ` Retailer Name : ${this.retailername}, ` + ` Mobile Number : ${this.contactno}, ` + `Alternate Number :${this.contactno2}, ` + `Address : ${this.address}, ` + `Password : ${this.password}`;
+        this.logCreate('Street Update Button Clicked', remark, data);
       }, (err) => {
         const errorMessage = errorFields
-          .map(field => err?.error?.[field])
+          .map(field =>err?.error?.message || err?.error?.[field])
           .find(message => message) || 'An error occurred while creating the subscriber.'
         this.swal.Error(errorMessage);
       });
@@ -579,4 +588,20 @@ export class SublcooperatordialogueComponent implements OnInit {
   moveAllSelected_added_Items(event: any) { }
 
   save() { }
+
+  // -------------------------------------------------------- Create Log -----------------------------
+  logCreate(action: any, remarks: any, data: any) {
+    let requestBody = {
+      access_ip: this.accessip,
+      action: action,
+      remarks: remarks,
+      data: data,
+      user_id: this.userid,
+    }
+    this.userservice.createLogs(requestBody).subscribe((res: any) => {
+      console.log(res);
+
+    })
+  }
+
 }

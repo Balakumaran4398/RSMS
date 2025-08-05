@@ -212,12 +212,13 @@ import { RechargeConfirmationComponent } from "./features/channel_setting/_Dialo
 import { BulkoperatorcreationComponent } from "./features/Bulk_operation/bulkoperatorcreation/bulkoperatorcreation.component";
 import { VoicerecognizeComponent } from "./features/voicerecognize/voicerecognize.component";
 import { PaymentcustomerComponent } from "./features/Add payment/paymentcustomer/paymentcustomer.component";
+import { LogmaintainComponent } from "./features/logmaintain/logmaintain.component";
 @NgModule({
     declarations: [
-        AdminBaseComponent, NavComponent, HomeComponent, NavbarComponent, MsodetailsComponent, CasmasterComponent,HomeLoginCredentialComponent,
+        AdminBaseComponent, NavComponent, HomeComponent, NavbarComponent, MsodetailsComponent, CasmasterComponent, HomeLoginCredentialComponent,
         // -------------------------Dashboard-----------------------------
         BarChartComponent, InventoryChartComponent, LcoCommissionChartComponent,
-        PackageChartComponent, StbChartComponent,BobbulechartComponent,
+        PackageChartComponent, StbChartComponent, BobbulechartComponent,
         // -------------------------------------Dashboard Report--------------------------------
         ChartSTBReportComponent, ChartPackageReportComponent, ChartInventoryReportComponent,
         // -------------------------------------Top_subscriber_Details------------------------------------
@@ -262,7 +263,7 @@ import { PaymentcustomerComponent } from "./features/Add payment/paymentcustomer
 
         // -----------------------------------bulk operation-------------------------------
         SubscriberImportComponent, AlacarteActivationComponent, AddonActivationComponent, ActivationComponent, BulkBaseChangeComponent, BulkPageUpdationComponent,
-        DeactivationComponent, SubscriptionExdendComponent, RefreshComponent, RecurringComponent, SmartcardrefreshComponent,BulkoperatorcreationComponent,
+        DeactivationComponent, SubscriptionExdendComponent, RefreshComponent, RecurringComponent, SmartcardrefreshComponent, BulkoperatorcreationComponent,
 
         // --------------------------------------------Local Broadcasting-------------------------------------------------------------------------------
         PaymentUpdateComponent, CreateltbComponent, UpdateLtbComponent,
@@ -281,7 +282,10 @@ import { PaymentcustomerComponent } from "./features/Add payment/paymentcustomer
         LcoSmartcardDialogComponent, LcoSmartcardpayDialogComponent, SmrtBoxidChangeComponent, LcodashboardreportComponent, OperatorareachangeComponent, DiscountdialogComponent, DiscountsmartcardComponent,
         DistributordiscountComponent, DistribtorupdatediscountComponent, LcoDummycmpComponent, DialogChipidComponent, LcodashboardsublcoreportComponent, LcocommisiomddiscountComponent, LogincredentialComponent, LcocommissioncredentialComponent,
         // ===============================================version======================================
-        VersionComponent,VersionLoginCredentialComponent,RechargeConfirmationComponent,VoicerecognizeComponent,PaymentcustomerComponent
+        VersionComponent, VersionLoginCredentialComponent, RechargeConfirmationComponent, VoicerecognizeComponent, PaymentcustomerComponent ,
+        // ===========================================Logs===========================================
+    LogmaintainComponent
+
     ],
     imports: [
         CommonModule,

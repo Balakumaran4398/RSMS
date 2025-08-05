@@ -319,7 +319,11 @@ export class DistributordiscountComponent implements OnInit {
 
   onKeydown(event: KeyboardEvent) {
     const key = event.key;
-    if (!/^\d$/.test(key) && key !== 'Backspace') {
+    if (!/^\d$/.test(key) && key !== 'Backspace' && key !== '.') {
+      event.preventDefault();
+    }
+    const inputElement = event.target as HTMLInputElement;
+    if (key === '.' && inputElement.value.includes('.')) {
       event.preventDefault();
     }
   }

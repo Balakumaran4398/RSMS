@@ -4,6 +4,7 @@ const TOKEN_KEY = 'auth-token';
 const USER_KEY = 'auth-user'
 const USERNAME = 'username'
 const ACCESSIP = 'access_ip'
+const TEMP_LOGGER_PASSWORD = 'password';
 const LCO = 'islco'
 const ID = 'id'
 const NAVLIST = 'navigationmap'
@@ -47,8 +48,6 @@ export class StorageService {
     window.sessionStorage.setItem(LCO, islco);
   }
   public saveNavList(navigationmap: any): void {
-    console.log('1111111111');
-
     window.sessionStorage.removeItem(NAVLIST);
     window.sessionStorage.setItem(NAVLIST, JSON.stringify(navigationmap));
   }
@@ -79,6 +78,21 @@ export class StorageService {
     }
     return {};
   }
+ 
+
+
+
+
+  public saveLoggerPass(password: any): void {
+    console.log('edrfdsfdsf' + password);
+
+    window.sessionStorage.removeItem(TEMP_LOGGER_PASSWORD);
+    window.sessionStorage.setItem(TEMP_LOGGER_PASSWORD, password);
+  }
+
+  public getLoggerPass(): String | null {
+    return window.sessionStorage.getItem(TEMP_LOGGER_PASSWORD);
+  }
   public getLCO(): any {
     const user = window.sessionStorage.getItem(USER_KEY);
     if (user) {
@@ -98,36 +112,17 @@ export class StorageService {
     return {};
   }
   public getNavList(): any {
-    console.log('1111111111111111111111eeeeeeeeeeffffffffff33333333333');
-
-    // const user = window.sessionStorage.getItem(NAVLIST);
     const user = sessionStorage.getItem(NAVLIST);
-    // if (user) {
-    //   console.log(user);
-    //   const parsedUser = JSON.parse(user);
-    //   return parsedUser;
-    // }
     if (user) {
-      return JSON.parse(user); 
+      return JSON.parse(user);
     }
     return {};
   }
 
-  // signOut(): void {
-  //   window.sessionStorage.clear();
-  //   setInterval(this.reload, 500)
-  // }
   reload() {
     window.location.reload();
   }
 
-
-  // public getUserRole(): string {
-  //   const user = this.getUser();
-
-  //   // return user.roles.includes('ROLE_RECEPTION') ? 'ROLE_RECEPTION' : 'DEFAULT_ROLE';
-  //   return user.roles.includes('ROLE_ADMIN') ? 'ROLE_ADMIN' : (user.roles.includes('ROLE_RECEPTION') ? 'ROLE_RECEPTION' : (user.roles.includes('ROLE_SPECIAL') ? 'ROLE_SPECIAL' :  'DEFAULT_ROLE'));
-  // }
   public getUserRole(): string {
     const user = this.getUser();
     if (!user || !user.roles) return 'DEFAULT_ROLE';
