@@ -67,6 +67,18 @@
                         </div>
                         <div class="col-12 col-md-6">
                             <div class="input_box col-12 col-md-12">
+                                <label for="">User Name</label>
+                            </div>
+                            <div class="input_box col-12 col-md-12">
+                                <input type="text" formControlName="userid" placeholder="Enter Username"
+                                    [(ngModel)]="userId">
+                                <div *ngIf="form.get('userid')?.invalid && form.get('userid')?.touched">
+                                    <small class="text-danger">Username is required.</small>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-12 col-md-6">
+                            <div class="input_box col-12 col-md-12">
                                 <label for="">Password</label>
                             </div>
                             <div class="input_box col-12 col-md-12">
@@ -172,9 +184,9 @@
                                 <label for="">User Name</label>
                             </div>
                             <div class="input_box col-12 col-md-12">
-                                <input type="text" formControlName="userId" placeholder="Enter Username"
+                                <input type="text" formControlName="userid" placeholder="Enter Username"
                                     [(ngModel)]="userId">
-                                <div *ngIf="form.get('userId')?.invalid && form.get('userId')?.touched">
+                                <div *ngIf="form.get('userid')?.invalid && form.get('userid')?.touched">
                                     <small class="text-danger">Username is required.</small>
                                 </div>
                             </div>

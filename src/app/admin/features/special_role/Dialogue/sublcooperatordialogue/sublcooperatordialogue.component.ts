@@ -136,7 +136,7 @@ export class SublcooperatordialogueComponent implements OnInit {
       contactno2: ['', [Validators.required, Validators.pattern('^[0-9]{10}$')]],
       address: ['', Validators.required],
       password: ['', [Validators.required, Validators.pattern('^[A-Za-z\\d@$!%*?&]{6,12}$')]],
-      userId: ['', [Validators.required,]],
+      userid: ['', [Validators.required,]],
       // password: ['', [Validators.required,  Validators.pattern('^(?=.*[A-Za-z])(?=.*\\d)[A-Za-z\\d@$!%*?&]{6,12}$')]],
       // password: ['', [Validators.required, Validators.pattern('^(?=.*[A-Za-z])(?=.*\\d)[A-Za-z\\d@$!%*?&]{8,}$')]],
       role: this.role,
@@ -151,7 +151,7 @@ export class SublcooperatordialogueComponent implements OnInit {
       contactno2: ['', [Validators.required, Validators.pattern('^[0-9]{10}$')]],
       address: ['', Validators.required],
       password: ['', [Validators.required, Validators.pattern('^(?=.*[A-Za-z])(?=.*\\d)[A-Za-z\\d@$!%*?&]{8,}$')]],
-      userId: ['', [Validators.required,]],
+      userid: ['', [Validators.required,]],
       role: this.role,
       username: this.username,
       operatorid: this.operatorid || this.lcoid,
@@ -335,7 +335,7 @@ export class SublcooperatordialogueComponent implements OnInit {
       this.form.markAllAsTouched();
       return;
     }
-    const errorFields = ['retailername', 'contactno', 'contactno2', 'address', 'password', 'role', 'website', 'username', 'operatorid',];
+    const errorFields = ['retailername', 'contactno', 'contactno2', 'address', 'password', 'role', 'website', 'username', 'operatorid','userid',];
     this.swal.Loading();
 
     this.userservice.sublcoCreate(this.form.value).subscribe(
@@ -376,15 +376,16 @@ export class SublcooperatordialogueComponent implements OnInit {
     this.userservice.sublcoUpdate(this.editform.value)
       .subscribe((res: any) => {
         this.swal.success(res?.message);
-        const data = ` Retailer Name : ${this.editform.value.retailername}, ` + ` Mobile Number : ${this.editform.value.contactno}, ` + `Alternate Number :${this.editform.value.contactno2}, ` + `Address : ${this.editform.value.address}, ` + `Password : ${this.editform.value.password}`;
-        const remark = ` Retailer Name : ${this.retailername}, ` + ` Mobile Number : ${this.contactno}, ` + `Alternate Number :${this.contactno2}, ` + `Address : ${this.address}, ` + `Password : ${this.password}`;
-        this.logCreate('Street Update Button Clicked', remark, data);
+
       }, (err) => {
         const errorMessage = errorFields
-          .map(field =>err?.error?.message || err?.error?.[field])
+          .map(field => err?.error?.message || err?.error?.[field])
           .find(message => message) || 'An error occurred while creating the subscriber.'
         this.swal.Error(errorMessage);
       });
+    const data = ` Old Retailer Name : ${this.editform.value.retailername}, ` + `  Old Mobile Number : ${this.editform.value.contactno}, ` + ` Old Alternate Number :${this.editform.value.contactno2}, ` + ` Old Address : ${this.editform.value.address}, `+ ` Old Username : ${this.editform.value.userId}` + ` Old Password : ${this.editform.value.password}`;
+    const remark = ` New Retailer Name : ${this.retailername}, ` + ` New Mobile Number : ${this.contactno}, ` + ` New Alternate Number :${this.contactno2}, ` + ` New Address : ${this.address}, ` + ` New Username : ${this.userId}` +` New Password : ${this.password}`;
+    this.logCreate('Street Update Button Clicked', remark, data);
   }
 
 

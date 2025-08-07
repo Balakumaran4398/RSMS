@@ -220,6 +220,16 @@ export class SwalService {
       showConfirmButton: true
     });
   }
+  Error_501() {
+    Swal.fire({
+      title: 'Error',
+      text: 'Bad Request. Please check the input.',
+      icon: 'error',
+      timer: 3000,
+      timerProgressBar: true,
+      showConfirmButton: true
+    });
+  }
 
   Custom_Error_400(error: any) {
     Swal.fire({

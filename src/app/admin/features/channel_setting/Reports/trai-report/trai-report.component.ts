@@ -44,7 +44,7 @@ export class TraiReportComponent implements OnInit {
       width = '600px';
     } else if (event == 'Synchronization') {
       width = '600px';
-    }else if (event == 'Reconsolation') {
+    }else if (event == 'Reconcilation') {
       width = '600px';
     }
 

@@ -86,7 +86,7 @@ export class PackageBasedComponent implements OnInit {
       this.file = input.files[0];
       this.filePath = input.files[0].name;
       console.log(this.file);
-      if (this.type == 'Reconsolation') {
+      if (this.type == 'Reconcilation') {
         this.getReconsolationUploadData();
       }
     } else {
@@ -329,12 +329,18 @@ export class PackageBasedComponent implements OnInit {
   // ======================================RECONSOLATION==========================================
   dummyFile: any;
   getReconsolationUploadData() {
+    console.log(this.file);
+
     const formData = new FormData();
     formData.append('role', this.role);
     formData.append('username', this.username);
-    if (this.file1) {
-      formData.append('file', this.file1);
+    if (this.file) {
+
+      formData.append('file', this.file);
+      console.log('11111111', this.file);
     } else {
+      console.log('22222222');
+
       this.dummyFile = new Blob(['Dummy content'], { type: 'text/plain' });
       const extensions = ['dummy.xlsx', 'dummy.xls', 'dummy.csv'];
       const randomName = extensions[Math.floor(Math.random() * extensions.length)];
@@ -344,38 +350,44 @@ export class PackageBasedComponent implements OnInit {
     formData.append('fromdate', this.fromdate1 || 0);
     formData.append('todate', this.todate1 || 0);
     formData.append('isupload', this.isupload = 'true');
-    formData.append('reporttype', '2');
+    formData.append('reporttype', '3');
 
-    console.log(this.file1);
+    console.log(this.file);
     this.swal.Loading();
 
+
     this.userService.getuploadFileReconcialiationReport(formData).subscribe(
-      (response: HttpResponse<any[]>) => {
+      (response: HttpResponse<any>) => {
         const statusCode = response.status;
         const responseData = response.body;
+
         console.log('HTTP Status:', statusCode);
-        if (statusCode === 200 || !responseData || responseData.length === 0) {
-          this.swal.success_1(statusCode);
-        } else if (statusCode === 204 || !responseData || responseData.length === 0) {
-          this.swal.info(statusCode);
-        } else {
-          this.swal.Error(statusCode);
+
+        if (statusCode === 200) {
+          console.log('responseData', responseData);
+          if (responseData?.message) {
+            this.swal.success_1(responseData.message);
+          }
+
         }
       },
       (error) => {
-        this.handleApiError(error);
+        console.log('Error message', error);
+        this.swal.Error(error?.error?.message)
+        // this.handleApiError(error);
       }
-
     );
-    // this.swal.Close();
+
+
   }
   getReconsolationData() {
+    console.log('file', this.file)
     const formData = new FormData();
     formData.append('role', this.role);
     formData.append('username', this.username);
     // formData.append('file', this.file1);
-    if (this.file1) {
-      formData.append('file', this.file1);
+    if (this.file) {
+      formData.append('file', this.file);
     } else {
       this.dummyFile = new Blob(['Dummy content'], { type: 'text/plain' });
       const extensions = ['dummy.xlsx', 'dummy.xls', 'dummy.csv'];
@@ -385,70 +397,82 @@ export class PackageBasedComponent implements OnInit {
     }
     formData.append('fromdate', this.fromdate1 || 0);
     formData.append('todate', this.todate1 || 0);
-    formData.append('reporttype', '2');
+    formData.append('reporttype', '3');
     formData.append('isupload', this.isupload = 'false');
-    console.log(this.file1);
+    console.log(this.file);
     this.swal.Loading();
-    // if (this.file1) {
-    //   this.userService.getuploadFileReconcialiationReport(formData).subscribe(
-    //     (response: HttpResponse<any[]>) => {
-    //       const statusCode = response.status;
-    //       const responseData = response.body;
-    //     }
-    //   );
-    //   this.swal.Close();
-    // } else {
     this.userService.getuploadFileReconcialiationReport(formData).subscribe(
-      (response: HttpResponse<any[]>) => {
+      (response: HttpResponse<any>) => {
         const statusCode = response.status;
         const responseData = response.body;
-        console.log('HTTP Status:', statusCode);
+
+        const title = (this.type + ' REPORT [FROM DATE: ' + this.fromdate + ' - TO DATE: ' + this.todate + ']').toUpperCase();
+        const sub = 'MSO ADDRESS:' + this.msodetails;
+        const additionalSubheaders = {
+          'From Date': this.fromdate,
+          'To Date': this.todate,
+        };
+          const header = ['S.NO', 'CAS CHANNEL NAME', 'CAS PRODUCT ID', 'CAS PRODUCT NAME', 'CAS MISMATCH','SMS CHANNEL NAME', 'SMS PRODUCT ID', 'SMS PRODUCT NAME','SMS MISMATCH','LOG DATE','IS MATCH'];
+
         if (statusCode === 204 || !responseData || responseData.length === 0) {
-          const title = (this.type + ' REPORT [FROM DATE: ' + this.fromdate + ' - TO DATE: ' + this.todate + ']').toUpperCase();
-          const sub = 'MSO ADDRESS:' + this.msodetails;
-          const additionalSubheaders = {
-            'From Date': this.fromdate,
-            'To Date': this.todate,
-          };
-          const header = ['S.NO', 'SMARTCARD', 'ACTIVATION DATE', 'EXPIRY DATE', 'ACTIVITY', 'STATUS', 'TYPE'];
-          this.excelService.generateSynchronizationExcel(
-            'A1:G2',
+          this.swal.success(responseData.message);
+          this.excelService.generateReconcilationExcel(
+            'A1:K2',
             header,
             [],
             title,
-            'A3:G3',
+            'A3:K3',
             sub,
             additionalSubheaders
           );
-        } else {
-          this.rowData = responseData;
-          const title = (this.type + ' REPORT [FROM DATE: ' + this.fromdate + ' - TO DATE: ' + this.todate + ']').toUpperCase();
-          const sub = 'MSO ADDRESS:' + this.msodetails;
-          const additionalSubheaders = {
-            'From Date': this.fromdate,
-            'To Date': this.todate,
-          };
-          const datas: any[] = [];
-          this.rowData.forEach((d: any, index: number) => {
-            const row = [index + 1, d.smartcard, d.logdate, d.expirydate, d.activity, d.status, d.type];
-            datas.push(row);
-          });
-          this.excelService.generateSynchronizationExcel(
-            'A1:H2',
-            ['S.NO', 'SMARTCARD', 'ACTIVATION DATE', 'EXPIRY DATE', 'ACTIVITY', 'STATUS', 'TYPE'],
-            datas,
-            title,
-            'A3:G3',
-            sub,
-            additionalSubheaders
-          );
+        } else if (statusCode === 200) {
+          console.log('responseData', responseData);
+
+          this.swal.success_1(responseData.message);
+          // if (responseData?.message) {
+          //   console.log('11111111111');
+            
+          // } else {
+            this.rowData = responseData.data;
+            const datas: any[] = this.rowData.map((d: any, index: number) => [
+              index + 1,
+              d.caschannelname,
+              d.casproductname,
+              d.casproductid,
+              d.casmismatch,
+              d.smschannelname,
+              d.smsproductid,
+              d.smsproductname,
+              d.smsmismatch,
+              d.logdate,
+              d.ismatch
+            ]);
+            this.excelService.generateReconcilationExcel(
+              'A1:K2',
+              header,
+              datas,
+              title,
+              'A3:K3',
+              sub,
+              additionalSubheaders
+            );
+          // }
         }
-        this.swal.Close();
+        //  else if (statusCode === 400 || statusCode === 500 || statusCode === 501) {
+        //   if (responseData?.message) {
+        //     this.swal.Error(responseData.message);
+        //   }
+        // }
       },
       (error) => {
-        this.handleApiError(error);
+        console.log('Error message', error);
+        this.swal.Error(error?.error?.message);
+        // this.handleApiError(error);
+        // this.swal.Close();
       }
     );
+
+
   }
   // }
   getChannelExcel() {
@@ -753,10 +777,13 @@ export class PackageBasedComponent implements OnInit {
   }
   // ------------------------------------------------------------------------------------------------
   handleApiError(error: any) {
+    console.log(error);
     if (error.status === 400) {
       this.swal.Error_400();
     } else if (error.status === 500) {
       this.swal.Error_500();
+    } else if (error.status === 501) {
+      this.swal.Error_501();
     } else {
       Swal.fire('Error', 'Something went wrong. Please try again.', 'error');
     }

@@ -1,6 +1,6 @@
-<mat-tab-group animationDuration="500ms" (selectedTabChange)="onTabChange($event)" *ngIf="!isTabDisabled" >
-    <mat-tab *ngFor="let tab of ['SMARTCARD CHANGE', 'BOX ID CHANGE', ]" [label]="tab" >
-        <div class="mt-5"  style="overflow-x: hidden;" >
+<mat-tab-group animationDuration="500ms" (selectedTabChange)="onTabChange($event)" *ngIf="!isTabDisabled">
+    <mat-tab *ngFor="let tab of ['SMARTCARD CHANGE', 'BOX ID CHANGE', ]" [label]="tab">
+        <div class="mt-5" style="overflow-x: hidden;">
             <h5 class="">{{header}}</h5>
             <div class="row justify-content-start">
                 <!-- <div class="col-md-8">
@@ -86,15 +86,15 @@
                                 Submit
                             </button>
                         </div>
-                        <div class="col-12 col-md-auto mb-3">
+                        <div *ngIf="isreplace" class="col-12 col-md-auto mb-3">
                             <span>Enter New Smartcard :</span>
                         </div>
-                        <div class="col-12 col-md-auto input_box mb-3">
+                        <div *ngIf="isreplace" class="col-12 col-md-auto input_box mb-3">
                             <input type="text" class="form-control" placeholder="Enter New Smartcard" maxlength="20"
                                 [(ngModel)]="newsmartcard">
                         </div>
 
-                        <div class="col-12 col-md-auto mb-3">
+                        <div *ngIf="isreplace" class="col-12 col-md-auto mb-3">
                             <button class="btn w-100 btn-success bttn" (click)="getSmartcardSubmit()">
                                 Replace
                             </button>
@@ -106,8 +106,8 @@
             </div>
             <div class="tab-content mt-3">
                 <ag-grid-angular #agGrid id="myGrid" domLayout="normal" class="ag-theme-alpine table-class" rowAnimation
-                   [gridOptions]="gridOptions" [columnDefs]="columnDefs"
-                    (gridReady)="onGridReady($event)" [rowData]="rowData" [enableCellTextSelection]="true">
+                    [gridOptions]="gridOptions" [columnDefs]="columnDefs" (gridReady)="onGridReady($event)"
+                    [rowData]="rowData" [enableCellTextSelection]="true">
                 </ag-grid-angular>
             </div>
 

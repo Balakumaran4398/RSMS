@@ -948,6 +948,8 @@ export class NavComponent implements OnInit, AfterViewInit {
       username: this.username,
       password: this.tempLoggerPass
     }
+    console.log(this.tempLoggerPass);
+    
     console.log(this.signInform);
 
     this.authService.login(this.signInform).subscribe(

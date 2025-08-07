@@ -17,7 +17,7 @@
             <!-- <img *ngIf="msoLogo" [src]="msoLogo" alt="MSO Logo"
                 style="width: 54px; height: auto;display:flex;margin: auto 60px;"> -->
             <img *ngIf="msoLogo" [src]="msoLogo" (error)="msoLogo = null" alt="MSO Logo" class="mb-3"
-                style="width: 100px; height: auto; margin: auto 30px;">
+                style="width: 50px; height: auto; margin: auto 60px;">
             <i *ngIf="!msoLogo" class="fas fa-user-circle fa-2x mb-3"
                 style="font-size: 40px; display: flex;justify-content: center ;color:var(--role-color);"></i>
             <!-- ----------------------Normal--------------- -->
@@ -653,18 +653,17 @@
                                 style="width: 100px; height: auto; margin: auto 60px;"> -->
                             <!-- <i *ngIf="!msoLogo" class="fas fa-user-circle fa-2x mb-3"
                                 style="font-size: 54px; display: flex;justify-content: center ;color:var(--role-color);"></i> -->
-                            <i  class="fas fa-user-circle fa-2x mb-3"
+                            <i class="fas fa-user-circle fa-2x mb-3"
                                 style="font-size: 54px; display: flex;justify-content: center ;color:var(--role-color);"></i>
 
-                            <div class="col-12 d-flex " style="justify-content: center;" *ngIf="isUser">
+                            <div class="col-12 d-flex " style="justify-content: center;"
+                                *ngIf="isUser || isReception || isSpecial || isInventory || isCustomerService || isServiceCenter">
                                 <span class="ver_role"> {{role}}
                                     &nbsp;</span>
                             </div>
                             <div class="col-12 d-flex " style="justify-content: center;"
                                 *ngIf="isOperator || isSubLco || isSubscriber">
-                                <span class="ver_role">
-                                    {{operatorname}}
-                                    {{retailername}} {{subscribername}}
+                                <span class="ver_role"> {{operatorname}} {{retailername}} {{subscribername}}
                                     &nbsp;</span>
                             </div>
                             <!-- <button mat-menu-item *ngIf="isUser">
@@ -676,11 +675,12 @@
                                     {{retailername}} {{subscribername}}
                                     &nbsp;</span>
                             </button> -->
-                            <button mat-menu-item *ngIf="isUser">
+                            <button mat-menu-item
+                                *ngIf="isUser || isReception || isSpecial || isInventory || isCustomerService || isServiceCenter">
                                 <mat-icon>phone</mat-icon>
                                 <span>{{msoContact}}</span>
                             </button>
-                            <button mat-menu-item *ngIf="!isUser">
+                            <button mat-menu-item *ngIf="isOperator || isSubLco || isSubscriber ">
                                 <mat-icon>phone</mat-icon>
                                 <span>{{contact}}</span>
                             </button>

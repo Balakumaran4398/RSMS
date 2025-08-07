@@ -29,8 +29,8 @@ export class RefundComponent {
   dataid: any;
   userid: any;
   accessip: any;
-  lconame:any;
-  lcoamount:any;
+  lconame: any;
+  lcoamount: any;
   constructor(public dialogRef: MatDialogRef<RefundComponent>, @Inject(MAT_DIALOG_DATA) public data: any, public dialog: MatDialog, private swal: SwalService, private userservice: BaseService, private storageservice: StorageService) {
     console.log(this.data);
     this.amount = data?.data.amount;
@@ -55,12 +55,27 @@ export class RefundComponent {
   toggleedit() {
     this.dialogRef.close({ success: true });
   }
+  // onKeydown(event: KeyboardEvent) {
+  //   const key = event.key;
+  //   if (!/^\d$/.test(key) && key !== 'Backspace') {
+  //     event.preventDefault();
+  //   }
+  // }
   onKeydown(event: KeyboardEvent) {
     const key = event.key;
-    if (!/^\d$/.test(key) && key !== 'Backspace') {
+    const allowedKeys = ['Backspace', 'Tab', 'ArrowLeft', 'ArrowRight', 'Delete'];
+
+    if (!/^\d$/.test(key) && key !== '.' && !allowedKeys.includes(key)) {
+      event.preventDefault();
+    }
+
+    // Optional: Prevent more than one decimal point
+    const input = event.target as HTMLInputElement;
+    if (key === '.' && input.value.includes('.')) {
       event.preventDefault();
     }
   }
+
 
   onSubmit() {
     this.submitted = true;

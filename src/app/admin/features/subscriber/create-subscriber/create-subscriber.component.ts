@@ -165,7 +165,7 @@ export class CreateSubscriberComponent implements AfterViewInit, OnDestroy {
         casformid: ['',],
         customername: ['', [Validators.required,]],
         customernamelast: ['',],
-        fathername: ['', [Validators.required]],
+        fathername: ['', ],
         dateofbirth: ['', [Validators.required]],
         address: ['', [Validators.required]],
         installaddress: ['', [Validators.required]],
@@ -598,7 +598,7 @@ export class CreateSubscriberComponent implements AfterViewInit, OnDestroy {
     // this.form.removeControl('formsubmissiondate');
     // this.form.addControl('formsubmissiondate', new FormControl(formsubmissiondateReplaced))
     const errorFields = ['operatorid', 'areaid', 'streetid',
-      'customername',  'fathername',
+      'customername',  
       'dateofbirth', 'mobileno', 'landlineno', 
       'formsubmissiondate', 'addressproof', 'addressprooftypeid', 'idproof', 'idprooftypeid', 'address', 'installaddress',
     ];

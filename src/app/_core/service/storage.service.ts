@@ -54,6 +54,8 @@ export class StorageService {
   public saveID(id: any): void {
     window.sessionStorage.removeItem(ID);
     window.sessionStorage.setItem(ID, id);
+    console.log('ID', ID);
+
   }
 
   public saveUser(user: any): void {
@@ -78,20 +80,23 @@ export class StorageService {
     }
     return {};
   }
- 
-
-
-
 
   public saveLoggerPass(password: any): void {
-    console.log('edrfdsfdsf' + password);
-
     window.sessionStorage.removeItem(TEMP_LOGGER_PASSWORD);
     window.sessionStorage.setItem(TEMP_LOGGER_PASSWORD, password);
+    console.log('11111111111', TEMP_LOGGER_PASSWORD, password);
   }
 
-  public getLoggerPass(): String | null {
-    return window.sessionStorage.getItem(TEMP_LOGGER_PASSWORD);
+  public getLoggerPass(): any {
+    const password = window.sessionStorage.getItem(TEMP_LOGGER_PASSWORD);
+    if (password) {
+      console.log(password);
+
+      const parsedPassword = JSON.parse(password);
+      let Password = parsedPassword.password;
+      return parsedPassword;
+    }
+    return {};
   }
   public getLCO(): any {
     const user = window.sessionStorage.getItem(USER_KEY);

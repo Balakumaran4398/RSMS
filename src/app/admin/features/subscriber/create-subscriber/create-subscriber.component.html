@@ -74,7 +74,7 @@
                         </div>
                     </div>
                     <div class="input_box">
-                        <label for="phone">Subscriber Name Last</label>
+                        <span for="phone">Subscriber Name Last</span>
                         <input type="text" formControlName="customernamelast" placeholder="Enter Subscriber Last Name">
                         <!-- <input type="text" formControlName="customernamelast" placeholder="Enter Subscriber Last Name"
                             required [ngClass]="{ 'is-invalid': submitted && f['customernamelast'].errors }" /> -->
@@ -87,15 +87,17 @@
                         </div> -->
                     </div>
                     <div class="input_box">
-                        <label for="pass">Father Name</label>
-                        <input type="text" formControlName="fathername" placeholder="Enter Father name" required
+                        <span for="pass">Father Name</span>
+                        <input type="text" formControlName="fathername" placeholder="Enter Father name" />
+
+                        <!-- <input type="text" formControlName="fathername" placeholder="Enter Father name" required
                             [ngClass]="{ 'is-invalid': submitted && f['fathername'].errors }" />
 
                         <div style="position: relative; font-size: small;" *ngIf="submitted && f['fathername'].errors"
                             class="invalid-feedback">
                             <div *ngIf="f['fathername'].errors['required']">Father Name is required
                             </div>
-                        </div>
+                        </div> -->
                     </div>
                     <div class="input_box col-12 col-md-6 ">
                         <div class="">
@@ -139,7 +141,7 @@
                         </div> -->
                     </div>
                     <div class="input_box">
-                        <label for="email">Email ID</label>
+                        <span for="email">Email ID</span>
                         <input type="text" formControlName="email" placeholder="Ex. example@gmail.com" />
                         <!-- <input type="text" formControlName="email" placeholder="Ex. example@gmail.com"
                             [ngClass]="{ 'is-invalid': submitted && f['email'].errors }" required /> -->

@@ -209,7 +209,7 @@ export class ExcelService {
     });
 
     worksheet.getColumn(1).width = 30;
-   
+
 
     headerRow.height = 30;
 
@@ -223,7 +223,7 @@ export class ExcelService {
     });
   }
   async generateInventoryUpload() {
-    const header = ['Smartcard', 'Box ID','Chip ID','Model'];
+    const header = ['Smartcard', 'Box ID', 'Chip ID', 'Model'];
     const workbook = new Excel.Workbook();
     const worksheet = workbook.addWorksheet('Sheet1');
     const headerRow = worksheet.addRow(header);
@@ -302,7 +302,7 @@ export class ExcelService {
     });
   }
   async generateOpearateCreationExcel() {
-     const ws1Header = ['LCO NAME', 'MOBILE', 'EMAIL', 'ADDRESS', 'AREA NAME', 'STATE', 'PINCODE', 'USER ID', 'PASSWORD', 'BUSINESS NAME'];
+    const ws1Header = ['LCO NAME', 'MOBILE', 'EMAIL', 'ADDRESS', 'AREA NAME', 'STATE', 'PINCODE', 'USER ID', 'PASSWORD', 'BUSINESS NAME'];
     const ws2SubHeader = ['Field Name', 'Data Format', 'Mandatory'];
     const values1 = [
       ['LCO NAME', 'String', 'Yes'],
@@ -325,7 +325,7 @@ export class ExcelService {
     headerRow1.eachCell((cell) => {
       applyHeaderStyle(cell, '326D41');
     });
-    headerRow1.height = 20; 
+    headerRow1.height = 20;
 
 
     const sheet2 = workbook.addWorksheet('Sheet2');
@@ -355,7 +355,7 @@ export class ExcelService {
       });
     });
 
- 
+
     sheet1.columns = ws1Header.map(() => ({ width: 20 }));
     [1, 2, 3, 5, 6, 7].forEach((colNum) => {
       sheet2.getColumn(colNum).width = 30;
@@ -3046,6 +3046,154 @@ export class ExcelService {
       fs.saveAs(blob, `${title}.xlsx`);
     });
   }
+
+  // ------------------------------------------RECONCILATION --------------------------------------------
+  async generateReconcilationExcel(
+    areatitle: string,
+    headers: any,
+    dataRow: any[],
+    title: string,
+    areasub: string,
+    subtitle: string,
+    additionalSubheaders: any
+  ) {
+    const workbook = new Excel.Workbook();
+    const worksheet = workbook.addWorksheet('Sheet 1');
+
+    //========== TITLE ==========
+    const titleRow = worksheet.addRow([title]);
+    titleRow.font = {
+      family: 4,
+      size: 16,
+      color: { argb: 'FFFFFF' },
+      bold: true,
+    };
+    titleRow.alignment = { horizontal: 'center' };
+    titleRow.eachCell((cell: any) => {
+      cell.fill = {
+        type: 'pattern',
+        pattern: 'solid',
+        fgColor: { argb: '34495e' },
+      };
+      cell.border = {
+        top: { style: 'thin' },
+        left: { style: 'thin' },
+        bottom: { style: 'thin' },
+        right: { style: 'thin' },
+      };
+    });
+    worksheet.mergeCells(areatitle);
+
+    //========== SUBTITLE ==========
+    const subtitleRow = worksheet.addRow([subtitle]);
+    subtitleRow.font = {
+      family: 4,
+      size: 12,
+      color: { argb: '000000' },
+      bold: true,
+    };
+    subtitleRow.height = 20;
+    subtitleRow.alignment = { horizontal: 'center' };
+    subtitleRow.eachCell((cell: any) => {
+      cell.fill = {
+        type: 'pattern',
+        pattern: 'solid',
+        fgColor: { argb: 'cce0d8' },
+      };
+      cell.border = {
+        top: { style: 'thin' },
+        left: { style: 'thin' },
+        bottom: { style: 'thin' },
+        right: { style: 'thin' },
+      };
+    });
+    worksheet.mergeCells(areasub);
+
+    //========== ADDITIONAL SUBHEADERS ==========
+    const subheaderValues = [
+      `From Date: ${additionalSubheaders['From Date']}`,
+      `To Date: ${additionalSubheaders['To Date']}`,
+  
+    ];
+    const subheaderRow = worksheet.addRow(subheaderValues);
+    subheaderRow.font = {
+      family: 4,
+      size: 12,
+      color: { argb: '000000' },
+      bold: false,
+    };
+    subheaderRow.height = 20;
+    subheaderRow.alignment = { horizontal: 'center', vertical: 'middle' };
+    subheaderRow.eachCell((cell: any) => {
+      cell.fill = {
+        type: 'pattern',
+        pattern: 'solid',
+        fgColor: { argb: 'e8f8f5' },
+      };
+      cell.border = {
+        top: { style: 'thin' },
+        left: { style: 'thin' },
+        bottom: { style: 'thin' },
+        right: { style: 'thin' },
+      };
+    });
+
+    worksheet.columns = [
+      { width: 30 }, // S.No
+      { width: 60 }, // CAS CHANNEL NAME
+      { width: 30 }, // CAS PRODUCT ID
+      { width: 30 }, // CAS PRODUCT NAME
+      { width: 60 }, // CAS MISMATCH
+      { width: 60 }, // SMS CHANNEL NAME
+      { width: 30 }, // SMS PRODUCT ID
+      { width: 30 }, //SMS PRODUCT NAME
+      { width: 60 }, // SMS MISMATCH
+      { width: 20 }, // LOG DATE
+      { width: 20 }, // IS MATCH
+    ];
+
+    //========== COLUMN HEADERS ==========
+    const headerRow = worksheet.addRow(headers);
+    headerRow.font = { bold: true, color: { argb: 'FFFFFF' } };
+    headerRow.alignment = { vertical: 'middle', horizontal: 'center' };
+    headerRow.height = 20;
+
+    headerRow.eachCell((cell: any) => {
+      cell.fill = {
+        type: 'pattern',
+        pattern: 'solid',
+        fgColor: { argb: '333333' },
+      };
+      cell.border = {
+        top: { style: 'thin' },
+        left: { style: 'thin' },
+        bottom: { style: 'thin' },
+        right: { style: 'thin' },
+      };
+    });
+
+    //========== DATA ROWS ==========
+    dataRow.forEach((d) => {
+      const row = worksheet.addRow(d);
+      row.alignment = { vertical: 'middle', horizontal: 'center' };
+      row.height = 20;
+      row.eachCell((cell: any) => {
+        cell.border = {
+          left: { style: 'thin' },
+          right: { style: 'thin' },
+        };
+      });
+    });
+
+    // Save the Excel file
+    workbook.xlsx.writeBuffer().then((data: any) => {
+      const blob = new Blob([data], {
+        type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+      });
+      fs.saveAs(blob, `${title}.xlsx`);
+    });
+  }
+
   generateExcelReport(addonList: any[], alacarteList: any[], baseList: any[], title: string, sub: string) {
     const workbook = new Excel.Workbook();
     const worksheet = workbook.addWorksheet('Package Data');

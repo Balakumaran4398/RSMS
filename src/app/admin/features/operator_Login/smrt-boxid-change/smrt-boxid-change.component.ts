@@ -27,6 +27,7 @@ export class SmrtBoxidChangeComponent implements OnInit {
   smartcardid: boolean = false;
   boxid: boolean = false;
   flag: boolean = false;
+  isreplace: boolean = false;
 
 
   gridOptions = {
@@ -129,10 +130,11 @@ export class SmrtBoxidChangeComponent implements OnInit {
       this.flag = res.flag;
       this.boxidvalue = res.boxid;
       this.smartcardvalue = res.smartcard;
+      this.isreplace = res.isreplace;
       console.log(this.smartcardvalue);
       console.log(this.boxidvalue);
       if (res.flag) {
-        this.swal.success(res.result);
+        this.swal.success_1(res.result);
       } else {
         this.swal.Error(res.result);
       }

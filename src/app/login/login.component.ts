@@ -148,10 +148,18 @@ export class LoginComponent implements OnInit {
             this.storageService.saveID(res.id)
             this.storageService.saveNavList(res.navigationmap)
             this.storageService.saveLco(res.islco)
+            if (res.roles.includes('ROLE_ADMIN')) {
+              this.storageService.saveLoggerPass(this.signInform.value.password)
+              console.log(this.signInform.value.password);
+              console.log(this.storageService.saveLoggerPass(this.signInform.value.password));
+            }
             this.idstorage = res.id;
             console.log('Stored ID:', res.id);
+            console.log('password:', res.password);
             const user = this.storageService.getUser();
+            const password = this.storageService.getLoggerPass();
             console.log(user.username);
+            console.log(password.password);
             this.roles = user.roles;
             console.log(this.roles);
             console.log(res.navigationmap);
