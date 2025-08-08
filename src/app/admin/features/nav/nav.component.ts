@@ -7,6 +7,7 @@ import { StorageService } from 'src/app/_core/service/storage.service';
 import Swal from 'sweetalert2';
 import { DataService } from 'src/app/_core/service/Data.service';
 import { AuthService } from 'src/app/_core/service/auth.service';
+import { LoginComponent } from 'src/app/login/login.component';
 
 @Component({
   selector: 'app-nav',
@@ -30,6 +31,8 @@ export class NavComponent implements OnInit, AfterViewInit {
   showLogoutDropdown: boolean = true;
   role: any;
   username: any;
+  tempUsername: any;
+  tempPassword: any;
   subscriber: any;
   searchname: any;
   lcomember: any = '';
@@ -62,6 +65,7 @@ export class NavComponent implements OnInit, AfterViewInit {
   distributor: boolean = false;
   isLco: boolean = false;
   navigationList: any = {};
+  navigationList1: any = {};
   SublcopermissionObj: any;
   SublcoReport: any;
   retailername: any;
@@ -75,10 +79,26 @@ export class NavComponent implements OnInit, AfterViewInit {
   constructor(private router: Router, private breakpointObserver: BreakpointObserver, private cd: ChangeDetectorRef, private dataService: DataService, private cdr: ChangeDetectorRef, private userservice: BaseService, private storageservice: StorageService, private authService: AuthService) {
     this.role = storageservice.getUserRole();
     this.username = storageservice.getUsername();
+    this.tempUsername = storageservice.getLoggerName();
+    this.tempPassword = storageservice.getLoggerPass();
+    console.log(this.tempUsername);
+    console.log(this.tempPassword);
+    if (this.isOpNavigate) {
+      console.log(this.isOpNavigate);
+
+      this.login('/admin/operator_details');
+    }
     this.navigationList = storageservice.getNavigationList();
+    // this.navigationList = this.navigationList1;
+    console.log(this.navigationList);
+    console.log(this.navigationList1);
+
+
+
     this.isLco = storageservice.getIsLCO();
 
     if (this.role.includes('ROLE_ADMIN')) {
+      console.log('111111111111--------------Admin');
       this.isUser = true;
       this.isReception = false;
       this.isSpecial = false;
@@ -142,6 +162,7 @@ export class NavComponent implements OnInit, AfterViewInit {
       this.isSubscriber = false;
       this.role = 'ROLE_SERVICECENTER';
     } else if (this.role.includes('ROLE_OPERATOR')) {
+      console.log('111111111111--------------Operator');
       this.isInventory = false;
       this.isReception = false;
       this.isUser = false;
@@ -231,6 +252,14 @@ export class NavComponent implements OnInit, AfterViewInit {
     if (this.role == 'ROLE_SUBLCO') {
       console.log('ROLE', this.role);
       this.subLCOdetails();
+    }
+    const isOpFlag = sessionStorage.getItem('isOpNavigate');
+    if (isOpFlag === 'true' && this.role === 'ROLE_ADMIN') {
+      this.login1('/admin/operator_details');
+      sessionStorage.removeItem('isOpNavigate');
+
+    } else {
+      console.log('Flag not set or role mismatch — not logging in.');
     }
   }
   operatorIdoperatorId() {
@@ -934,39 +963,61 @@ export class NavComponent implements OnInit, AfterViewInit {
     this.router.navigateByUrl("admin" + id);
     console.log("Current width:", window.innerWidth);
   }
-
+  isOpNavigate: boolean = false;
   loginAdmin() {
+    this.isOpNavigate = true;
+    sessionStorage.setItem('isOpNavigate', 'true');
     if (this.role == 'ROLE_OPERATOR') {
-      this.login('/operator_details');
-      // this.router.navigateByUrl("admin/operator_details");
+      this.login('/admin/operator_details');
     }
   }
 
   login(path: any) {
-    console.log(path);
     this.signInform = {
-      username: this.username,
-      password: this.tempLoggerPass
+      username: this.tempUsername,
+      password: this.tempPassword
     }
-    console.log(this.tempLoggerPass);
-    
-    console.log(this.signInform);
-
     this.authService.login(this.signInform).subscribe(
       data => {
+        this.navigationList1 = data.navigationmap;
         this.storageservice.saveToken(data.accessToken);
         this.storageservice.saveUser(data);
         this.role = this.storageservice.getUser().roles;
         this.router.navigate([path]);
-        console.log(this.router.navigate([path]));
-        this.timeout = setTimeout(() => {
-          clearTimeout(this.timeout);
-          window.location.reload();
-        }, 10);
+        let isUser = this.role.includes('ROLE_ADMIN');
+        if (isUser) {
+          this.router.navigate(['admin/operator_details'],).then(() => {
+            window.location.reload();
+            this.navigationList = data.navigationmap;
+          });
+        }
       },
       err => {
         this.errorMessage = err.error.message;
-        // this.isLoginFailed = true;
+      }
+    );
+  }
+  login1(path: any) {
+    this.signInform = {
+      username: this.tempUsername,
+      password: this.tempPassword
+    }
+    this.authService.login(this.signInform).subscribe(
+      data => {
+        this.navigationList1 = data.navigationmap;
+        this.storageservice.saveToken(data.accessToken);
+        this.storageservice.saveUser(data);
+        this.role = this.storageservice.getUser().roles;
+        this.router.navigate([path]);
+        let isUser = this.role.includes('ROLE_ADMIN');
+        if (isUser) {
+          this.router.navigate(['admin/operator_details'],).then(() => {
+            this.navigationList = data.navigationmap;
+          });
+        }
+      },
+      err => {
+        this.errorMessage = err.error.message;
       }
     );
   }

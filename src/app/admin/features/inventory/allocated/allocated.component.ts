@@ -275,7 +275,6 @@ export class AllocatedComponent implements OnInit, OnDestroy {
     this.gridApi = params.api;
   }
   Search() {
-    // this.submitted = true;
     if (!this.smartcard && !this.selectedOperator) {
       Swal.fire({
         icon: 'warning',

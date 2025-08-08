@@ -128,22 +128,17 @@
                             </mat-card>
                         </div>
                     </div>
-
-
                     <br>
-
-
                     <div class="report d-flex justify-content-center">
                         <div class="file-container">
                             <div class="files mx-2">
                                 <a (click)="navgetToUrl(operator.operatorid)" class="tooltip-container">
-                                    <i class='bx bx-sm bxs-grid-alt'
-                                        style="font-size:25px;color:var(--primary-color)"></i>
+                                    <!-- <i class='bx bx-sm bxs-grid-alt' style="font-size:25px;color:var(--primary-color)"></i> -->
+                                    <i class='fa fa-dashboard'
+                                        style="font-size:25px;color:var(--primary-color);margin-top: -2px;"></i>
                                     <span class="tooltip">Dashboard</span>
                                 </a>
                             </div>
-
-
                             <div class="files tooltip-container mx-2"
                                 (click)="openDialog('recharge',operator.operatorid)">
                                 <div class="files tooltip-container ">
@@ -198,7 +193,8 @@
                             <div class="files tooltip-container mx-2">
                                 <a (click)="onRoleBaseDashboard(operator.userid,operator.password,1)"
                                     class="tooltip-container">
-                                    <i class='fa-solid fa fa-address-card-o'
+                                    <!-- <i class='fa-solid fa fa-address-card-o' -->
+                                    <i class='fa-solid fa fa-mail-forward'
                                         style="font-size:25px;color:var(--primary-color)"></i>
                                     <span class="tooltip">TO CLICK {{operator.operatorname}} ROLE</span>
                                 </a>

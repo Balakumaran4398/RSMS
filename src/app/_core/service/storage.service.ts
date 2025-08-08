@@ -5,9 +5,12 @@ const USER_KEY = 'auth-user'
 const USERNAME = 'username'
 const ACCESSIP = 'access_ip'
 const TEMP_LOGGER_PASSWORD = 'password';
+const TEMP_LOGGER_USERNAME = 'tem-logger-username';
+const TEMP_LOGGER_ROLE = 'tem-logger-role';
 const LCO = 'islco'
 const ID = 'id'
 const NAVLIST = 'navigationmap'
+const NAVLIST1 = 'navigationmap'
 
 @Injectable({
   providedIn: 'root'
@@ -51,6 +54,10 @@ export class StorageService {
     window.sessionStorage.removeItem(NAVLIST);
     window.sessionStorage.setItem(NAVLIST, JSON.stringify(navigationmap));
   }
+  public saveNavList1(navigationmap: any): void {
+    window.sessionStorage.removeItem(NAVLIST1);
+    window.sessionStorage.setItem(NAVLIST1, JSON.stringify(navigationmap));
+  }
   public saveID(id: any): void {
     window.sessionStorage.removeItem(ID);
     window.sessionStorage.setItem(ID, id);
@@ -81,22 +88,49 @@ export class StorageService {
     return {};
   }
 
-  public saveLoggerPass(password: any): void {
-    window.sessionStorage.removeItem(TEMP_LOGGER_PASSWORD);
-    window.sessionStorage.setItem(TEMP_LOGGER_PASSWORD, password);
-    console.log('11111111111', TEMP_LOGGER_PASSWORD, password);
+  // public saveLoggerPass(password: any): void {
+  //   window.sessionStorage.removeItem(TEMP_LOGGER_PASSWORD);
+  //   window.sessionStorage.setItem(TEMP_LOGGER_PASSWORD, password);
+  //   console.log('11111111111', TEMP_LOGGER_PASSWORD, password);
+  // }
+
+  // public getLoggerPass(): any {
+  //   const password = window.sessionStorage.getItem(TEMP_LOGGER_PASSWORD);
+  //   if (password) {
+  //     console.log(password);
+
+  //     const parsedPassword = JSON.parse(password);
+  //     let Password = parsedPassword;
+  //     return parsedPassword;
+  //   }
+  //   return {};
+  // }
+
+  public saveLoggerRole(username: any): void {
+    window.sessionStorage.removeItem(TEMP_LOGGER_ROLE);
+    window.sessionStorage.setItem(TEMP_LOGGER_ROLE, username);
   }
 
-  public getLoggerPass(): any {
-    const password = window.sessionStorage.getItem(TEMP_LOGGER_PASSWORD);
-    if (password) {
-      console.log(password);
+  public getLoggerRole(): String | null {
+    return window.sessionStorage.getItem(TEMP_LOGGER_ROLE);
+  }
 
-      const parsedPassword = JSON.parse(password);
-      let Password = parsedPassword.password;
-      return parsedPassword;
-    }
-    return {};
+
+  public saveLoggerName(username: any): void {
+    window.sessionStorage.removeItem(TEMP_LOGGER_USERNAME);
+    window.sessionStorage.setItem(TEMP_LOGGER_USERNAME, username);
+  }
+
+  public getLoggerName(): String | null {
+    return window.sessionStorage.getItem(TEMP_LOGGER_USERNAME);
+  }
+  public saveLoggerPass(username: any): void {
+    window.sessionStorage.removeItem(TEMP_LOGGER_PASSWORD);
+    window.sessionStorage.setItem(TEMP_LOGGER_PASSWORD, username);
+  }
+
+  public getLoggerPass(): String | null {
+    return window.sessionStorage.getItem(TEMP_LOGGER_PASSWORD);
   }
   public getLCO(): any {
     const user = window.sessionStorage.getItem(USER_KEY);
@@ -118,6 +152,13 @@ export class StorageService {
   }
   public getNavList(): any {
     const user = sessionStorage.getItem(NAVLIST);
+    if (user) {
+      return JSON.parse(user);
+    }
+    return {};
+  }
+  public getNavList1(): any {
+    const user = sessionStorage.getItem(NAVLIST1);
     if (user) {
       return JSON.parse(user);
     }
@@ -168,6 +209,9 @@ export class StorageService {
   //   return user.navigationmap || {};
   // }
   public getNavigationList(): any {
+    return this.getNavList(); // do NOT access user.navigationmap
+  }
+  public getNavigationList1(): any {
     return this.getNavList(); // do NOT access user.navigationmap
   }
 }

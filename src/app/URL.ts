@@ -9,7 +9,7 @@ export default class URLs {
         // return 'http://192.168.1.102:8585/api/auth';             //JAYA AKKA    
         // return 'http://192.168.1.112:8585/api/auth';             //BALA
         // return 'http://192.168.1.111:8585/api/auth';             //SUBHA
-        return 'http://192.168.70.201:8585/rsms/api/auth';          //QC
+        return 'http://192.168.70.201:8585/rsms/api/auth';          //QC    
         // return 'http://103.183.47.212:8585/rsms/api/auth';       //103
 
         // return `http://${host}:8585/rsms/api/auth`;              // HOST      
@@ -19,7 +19,7 @@ export default class URLs {
         // return 'http://deenet.ridsys.in:8585/rsms/api/auth';   //deenet
         // return 'http://192.168.0.39:8585/rsms/api/auth';   // siddeshwar
     }
-
+    
     static BASE_URL(): String {
         const host = window.location.hostname;
 

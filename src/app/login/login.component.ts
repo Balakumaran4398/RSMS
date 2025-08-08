@@ -137,6 +137,7 @@ export class LoginComponent implements OnInit {
       this.swal.Loading1()
       this.authService.login(this.signInform.value).subscribe(
         (res: any) => {
+          console.log(this.signInform.value);
           console.log(res);
           console.log(res.roles);
           if (res.roles.includes('ROLE_ADMIN') || res.roles.includes('ROLE_RECEPTION') || res.roles.includes('ROLE_SPECIAL')
@@ -147,19 +148,23 @@ export class LoginComponent implements OnInit {
             this.storageService.saveAccessIP(res.access_ip)
             this.storageService.saveID(res.id)
             this.storageService.saveNavList(res.navigationmap)
+            // this.storageService.saveNavList1(res.navigationmap)
             this.storageService.saveLco(res.islco)
             if (res.roles.includes('ROLE_ADMIN')) {
-              this.storageService.saveLoggerPass(this.signInform.value.password)
+              this.storageService.saveLoggerPass(this.signInform.value.password);
+              this.storageService.saveLoggerName(this.signInform.value.username);
+              this.storageService.saveNavList1(res.navigationmap)
               console.log(this.signInform.value.password);
-              console.log(this.storageService.saveLoggerPass(this.signInform.value.password));
+              console.log(this.signInform.value.username);
+              console.log(res.navigationmap);
             }
             this.idstorage = res.id;
             console.log('Stored ID:', res.id);
             console.log('password:', res.password);
             const user = this.storageService.getUser();
-            const password = this.storageService.getLoggerPass();
+            // const password = this.storageService.getLoggerPass();
             console.log(user.username);
-            console.log(password.password);
+            // console.log(password.password);
             this.roles = user.roles;
             console.log(this.roles);
             console.log(res.navigationmap);
