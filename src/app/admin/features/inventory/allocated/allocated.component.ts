@@ -148,7 +148,7 @@ export class AllocatedComponent implements OnInit, OnDestroy {
   //   }
   // }
 
- toggleSelection(smartcard: any, id: any): void {
+  toggleSelection(smartcard: any, id: any): void {
     const index = this.selectedSmartcards.indexOf(smartcard);
     if (index === -1) {
       this.selectedSmartcards.push(smartcard);
@@ -208,29 +208,12 @@ export class AllocatedComponent implements OnInit, OnDestroy {
     console.log(this.selectedLcoName);
   }
   columnDefs: ColDef[] = [
-    {
-      lockPosition: true, headerCheckboxSelection: true, checkboxSelection: true, width: 80, filter: false
-    },
-    {
-      headerName: 'SMARTCARD', width: 250,
-      field: 'smartcard',
-
-    },
-    {
-      headerName: 'BOX_ID', width: 200,
-      field: 'boxid',
-
-    },
-    {
-      headerName: 'CARTON BOX', width: 210,
-      field: 'cottonbox',
-
-    },
-    {
-      headerName: 'CAS', width: 150, cellStyle: { textAlign: 'center' },
-      field: 'casname',
-
-    },
+    { headerName: "S.No", width: 100, lockPosition: true, valueGetter: 'node.rowIndex+1', },
+    // { lockPosition: true, headerCheckboxSelection: true, checkboxSelection: true, width: 80, filter: false },
+    { headerName: 'SMARTCARD', width: 250, field: 'smartcard', },
+    { headerName: 'BOX_ID', width: 200, field: 'boxid', },
+    { headerName: 'CARTON BOX', width: 210, field: 'cottonbox', },
+    { headerName: 'CAS', width: 150, cellStyle: { textAlign: 'center' }, field: 'casname', },
     {
       headerName: 'IS_ALLOCATED', width: 200,
       field: 'allocationstatus', cellStyle: { textAlign: 'center' },
@@ -264,11 +247,7 @@ export class AllocatedComponent implements OnInit, OnDestroy {
       },
     },
 
-    {
-      headerName: 'LCO_NAME', width: 200, cellStyle: { textAlign: 'left' },
-      field: 'operatorname',
-
-    },
+    { headerName: 'LCO_NAME', width: 200, cellStyle: { textAlign: 'left' }, field: 'operatorname', },
   ]
 
   onGridReady(params: { api: any; }) {
@@ -296,7 +275,7 @@ export class AllocatedComponent implements OnInit, OnDestroy {
           if (!this.gridOptions.paginationPageSizeSelector.includes(rowCount)) {
             this.gridOptions.paginationPageSizeSelector.push(rowCount);
           }
-           this.swal.Close();
+          this.swal.Close();
         } else if (response.status === 204) {
           this.swal.Success_204();
           this.rowData = [];
@@ -320,7 +299,7 @@ export class AllocatedComponent implements OnInit, OnDestroy {
       lco_list: this.lco_list,
       castype: this.caslist,
     };
-    console.log('allocated',dataToSend);
+    console.log('allocated', dataToSend);
 
     const dialogRef = this.dialog.open(AllocatedInventoryComponent, {
       width: '450px',

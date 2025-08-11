@@ -101,12 +101,24 @@ export class ReallocationComponent {
   }
 
   submit() {
+
     this.submitted = true;
     if (!this.selectedLcoName) {
       return
     }
     this.swal.Loading();
-    this.userService.ReAllocate_Smartcard(this.role, this.username, this.smartcardlist, this.selectedLcoName, this.dueAmount, this.isemi)
+    let requesbody = {
+      role: this.role,
+      username: this.username,
+      smartcardlist: this.smartcardlist,
+      operatorid: this.selectedLcoName,
+      totalamount: this.dueAmount,
+      isemi: this.isemi
+    }
+    console.log(requesbody);
+
+    // this.userService.ReAllocate_Smartcard(this.role, this.username, this.smartcardlist, this.selectedLcoName, this.dueAmount, this.isemi)
+    this.userService.ReAllocate_Smartcard(requesbody)
       .subscribe((res: any) => {
         console.log(res);
         Swal.fire({
@@ -117,7 +129,7 @@ export class ReallocationComponent {
           timerProgressBar: true,
           showConfirmButton: false
         }).then(() => {
-          // window.location.reload();
+          window.location.reload();
         });
 
       },
@@ -129,9 +141,10 @@ export class ReallocationComponent {
             timer: 3000,
             showConfirmButton: true,
             timerProgressBar: true,
-          }).then(() => {
-            window.location.reload();
-          });
+          })
+          // .then(() => {
+          //   window.location.reload();
+          // });
           console.error('Error:', error);
         }
       );

@@ -15,7 +15,9 @@ import { SwalService } from 'src/app/_core/service/swal.service';
 export class SmartcardAllocationComponent {
   gridApi: any;
   isAnyRowSelected: any = false;
+  // selectedIds: number[] = [];
   selectedIds: number[] = [];
+  // selectedIds = new Set<number>();
   selectedtypes: number[] = [];
   hasSelectedRows: boolean = true;
   username: any;
@@ -212,6 +214,9 @@ export class SmartcardAllocationComponent {
     this.isAnyRowSelected = selectedRows.length > 0;
     // this.selectedIds = selectedRows.map((e: any) => e.id);
     this.selectedIds = Array.from(this.selectedIdsSet);
+    // this.selectedIds = this.selectedIdsSet;
+    console.log('6785ywejkfhdsouijj', this.selectedIds);
+
     this.selectedtypes = selectedRows.map((e: any) => e.isactive);
   }
 
@@ -236,8 +241,8 @@ export class SmartcardAllocationComponent {
     });
   }
   showDisabledMessage(): void {
+    console.log(this.selectedIdsSet)
     if (!this.isAnyRowSelected) {
-      // Display an information message if no row is selected
       Swal.fire({
         icon: 'info',
         title: 'Action Disabled',
@@ -247,9 +252,17 @@ export class SmartcardAllocationComponent {
         showConfirmButton: false
       });
     } else {
-      // If a row is selected, proceed with the deallocation
+
+      let requestBody = {
+        id: this.selectedIds,
+        role: this.role,
+        username: this.username,
+      }
+      console.log(requestBody);
+      
       this.swal.Loading();
-      this.userService.DeAllocate_Smartcard(this.role, this.username, this.selectedIds)
+      // this.userService.DeAllocate_Smartcard(this.role, this.username, this.selectedIds)
+      this.userService.DeAllocate_Smartcard(requestBody)
         .subscribe((res: any) => {
           console.log(res);
           Swal.fire({

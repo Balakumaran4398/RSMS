@@ -1018,24 +1018,38 @@ export class BaseService {
   Create_Allocated(operatorid: any, castype: any, smartcard: any, boxid: any, role: any, username: any,): Observable<any[]> {
     return this.http.post<any[]>(BASE_URL + "/allocation/createNewSmartcardAllocation?role=" + role + "&username=" + encodeURIComponent(username) + "&castype=" + castype + "&operatorid=" + operatorid + "&smartcard=" + smartcard + "&boxid=" + boxid, {});
   }
-  Defective_remark_Allocated(id: any, remarks: any, role: any, username: any,): Observable<any[]> {
-    return this.http.post<any[]>(BASE_URL + "/allocation/setDefectiveSmartcard?role=" + role + "&username=" + encodeURIComponent(username) + "&id=" + id + "&remarks=" + remarks, {});
-  }
+  // Defective_remark_Allocated(id: any, remarks: any, role: any, username: any,): Observable<any[]> {
+  //   return this.http.post<any[]>(BASE_URL + "/allocation/setDefectiveSmartcard?role=" + role + "&username=" + encodeURIComponent(username) + "&id=" + id + "&remarks=" + remarks, {});
+  // }
+
   Defective_Replace_Allocated(role: any, username: any, id: any, smartcard: any, boxid: any): Observable<any[]> {
     return this.http.post<any[]>(BASE_URL + "/allocation/setReplaceSmartcardBoxid?role=" + role + "&username=" + encodeURIComponent(username) + "&id=" + id + "&smartcard=" + smartcard + "&boxid=" + boxid, {});
   }
-  Defective_Insert_Allocated(role: any, username: any, subid: any, id: any, operatorid: any): Observable<any[]> {
-    return this.http.post<any[]>(BASE_URL + "/allocation/allocateSmartcardToSubscriber?role=" + role + "&username=" + encodeURIComponent(username) + "&subid=" + subid + "&id=" + id + "&operatorid=" + operatorid, {});
+  // Defective_Insert_Allocated(role: any, username: any, subid: any, id: any, operatorid: any): Observable<any[]> {
+  //   return this.http.post<any[]>(BASE_URL + "/allocation/allocateSmartcardToSubscriber?role=" + role + "&username=" + encodeURIComponent(username) + "&subid=" + subid + "&id=" + id + "&operatorid=" + operatorid, {});
+  // }
+  Defective_Insert_Allocated(requestBody: any,): Observable<any[]> {
+    return this.http.post<any[]>(BASE_URL + "/allocation/allocateSmartcardToSubscriber", requestBody, {});
   }
   // ReAllocate_Smartcard(role: any, username: any, smartcardlist: any, operatorid: any): Observable<any[]> {
   //   return this.http.post<any[]>(BASE_URL + "/allocation/reallocateSmartcard?role=" + role + "&username=" + encodeURIComponent(username) + "&smartcardlist=" + smartcardlist + "&operatorid=" + operatorid, {});
   // }
-  ReAllocate_Smartcard(role: any, username: any, smartcardlist: any, operatorid: any, totalamount: any, isemi: any): Observable<any[]> {
-    return this.http.post<any[]>(BASE_URL + "/allocation/reallocateSmartcard?role=" + role + "&username=" + encodeURIComponent(username) + "&smartcardlist=" + smartcardlist + "&operatorid=" + operatorid + "&totalamount=" + totalamount + "&isemi=" + isemi, {});
+  // ReAllocate_Smartcard(role: any, username: any, smartcardlist: any, operatorid: any, totalamount: any, isemi: any): Observable<any[]> {
+  //   return this.http.post<any[]>(BASE_URL + "/allocation/reallocateSmartcard?role=" + role + "&username=" + encodeURIComponent(username) + "&smartcardlist=" + smartcardlist + "&operatorid=" + operatorid + "&totalamount=" + totalamount + "&isemi=" + isemi, {});
+  // }
+  Defective_remark_Allocated(requestBody: any,): Observable<any[]> {
+    return this.http.post<any[]>(BASE_URL + "/allocation/setDefectiveSmartcard", requestBody, {});
   }
-  DeAllocate_Smartcard(role: any, username: any, id: any): Observable<any[]> {
-    return this.http.post<any[]>(BASE_URL + "/allocation/smartcardDeallocation?role=" + role + "&username=" + encodeURIComponent(username) + "&id=" + id, {});
+  ReAllocate_Smartcard(requestBody: any,): Observable<any[]> {
+    return this.http.post<any[]>(BASE_URL + "/allocation/reallocateSmartcard", requestBody, {});
   }
+  DeAllocate_Smartcard(requestBody: any): Observable<any[]> {
+    return this.http.post<any[]>(BASE_URL + "/allocation/smartcardDeallocation", requestBody, {});
+  }
+  // DeAllocate_Smartcard(role: any, username: any, id: any): Observable<any[]> {
+  //   return this.http.post<any[]>(BASE_URL + "/allocation/smartcardDeallocation?role=" + role + "&username=" + encodeURIComponent(username) + "&id=" + id, {});
+  // }
+
   // -----------------------------------------------------___DELETE -------------------------------------------------------------
   delete_Smartcard_boxid(role: any, username: any, id: any) {
     return this.http.delete<any[]>(BASE_URL + "/allocation/deleteDeallocatedSmartcard?role=" + role + "&username=" + encodeURIComponent(username) + "&id=" + id);

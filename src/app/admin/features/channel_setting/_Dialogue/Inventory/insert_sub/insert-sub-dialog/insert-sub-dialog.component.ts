@@ -92,7 +92,15 @@ export class InsertSubDialogComponent {
       return;
     }
     this.swal.Loading();
-    this.userService.Defective_Insert_Allocated(this.role, this.username, this.selectedLcoName, this.id, this.operatorid)
+    let requestbody = {
+      role:this.role,
+      username:this.username,
+      subid:this.selectedLcoName,
+      id:this.id,
+      operatorid:this.operatorid
+    }
+    // this.userService.Defective_Insert_Allocated(this.role, this.username, this.selectedLcoName, this.id, this.operatorid)
+    this.userService.Defective_Insert_Allocated(requestbody)
       .subscribe(
         (res: any) => {
           console.log(res);

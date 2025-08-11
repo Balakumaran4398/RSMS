@@ -14,7 +14,7 @@ export class DefectiveInventoryComponent {
   username: any;
   role: any;
   id: any;
-  selectedIds: any[];
+  selectedIds: any[] = [];
   userid: any;
   accessip: any;
   constructor(
@@ -54,7 +54,14 @@ export class DefectiveInventoryComponent {
       }
     });
 
-    this.userService.Defective_remark_Allocated(this.selectedIds, this.remarks, this.role, this.username)
+    let requestBody = {
+      id: this.selectedIds,
+      remarks: this.remarks,
+      role: this.role,
+      username: this.username,
+    }
+    // this.userService.Defective_remark_Allocated(this.selectedIds, this.remarks, this.role, this.username)
+    this.userService.Defective_remark_Allocated(requestBody)
       .subscribe(
         (data: any) => {
           Swal.fire({
