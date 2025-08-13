@@ -25,7 +25,7 @@ export class PackageBASEDEMOComponent {
   type: any;
   constructor(
     public dialogRef: MatDialogRef<PackageBASEDEMOComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: any, private userService: BaseService, private storageservice: StorageService, private swal:SwalService) {
+    @Inject(MAT_DIALOG_DATA) public data: any, private userService: BaseService, private storageservice: StorageService, private swal: SwalService) {
     this.dailogObj = data;
     this.type = data.type
     this.package_id = data.package_id;
@@ -135,19 +135,12 @@ export class PackageBASEDEMOComponent {
         console.log(response);
         console.log(this.rowData);
         console.log(this.rowDataUnpair);
-
-        Swal.close();
+        this.swal.success_1(response.message)
       },
       (error) => {
         console.error('Error fetching addon package channel list', error);
-
-        Swal.fire({
-          icon: 'error',
-          title: 'Error',
-          text: 'Failed to fetch addon package channel list'
-        });
-        window.location.reload();
-      }
+        this.swal.Error1(error?.error?.message);
+     }
     );
   }
   ngOnInit(): void {
@@ -155,7 +148,7 @@ export class PackageBASEDEMOComponent {
     // });
     if (this.dailogObj.type === 'pair') {
       this.pair();
-    }else if (this.dailogObj.type === 'addonpair'){
+    } else if (this.dailogObj.type === 'addonpair') {
       this.addonPair();
     }
     if (this.dailogObj.type === 'paychannel' || this.dailogObj.type === 'bouquet') {
@@ -197,7 +190,7 @@ export class PackageBASEDEMOComponent {
         { headerName: 'PRODUCT ID', field: 'productid', width: 130 },
         { headerName: 'CHANNEL ID', field: 'channelid', width: 150 },
       ];
-    }else if (this.dailogObj.type === 'addonpair') {
+    } else if (this.dailogObj.type === 'addonpair') {
       this.columnDefs = [
         { headerName: 'S.No', valueGetter: 'node.rowIndex + 1', width: 80 },
         { headerName: 'CHANNEL NAME', field: 'channelname', width: 200 },

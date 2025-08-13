@@ -288,9 +288,9 @@ export class AddonManageComponent {
       data: dialogData
     });
 
-    dialogRef.afterClosed().subscribe(result => {
-      console.log('The dialog was closed');
-    });
+    // dialogRef.afterClosed().subscribe(result => {
+    //   console.log('The dialog was closed');
+    // });
   }
   toggleSelection(item: string) {
     if (this.selectedItems.has(item)) {
