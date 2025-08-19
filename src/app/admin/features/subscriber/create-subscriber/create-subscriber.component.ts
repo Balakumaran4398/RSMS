@@ -170,6 +170,7 @@ export class CreateSubscriberComponent implements AfterViewInit, OnDestroy {
         address: ['', [Validators.required]],
         installaddress: ['', [Validators.required]],
         mobileno: ['', [Validators.required, Validators.pattern('^[0-9]{10}$')]],
+        mobileno2: ['', ],
         landlineno: ['',],
         email: ['', ],
         // email: ['',[Validators.required, Validators.email, this.customEmailValidator()]],
@@ -638,9 +639,7 @@ export class CreateSubscriberComponent implements AfterViewInit, OnDestroy {
           let parts = message.split(":");
           let subid = parts[1].trim();
           // let subid = parts.length > 1 ? parts[1].trim() : null;
-
           console.log(subid);
-
           this.router.navigate([`/admin/subscriber-full-info/${subid}/new`]);
 
         },
@@ -681,6 +680,15 @@ export class CreateSubscriberComponent implements AfterViewInit, OnDestroy {
       event.preventDefault();
     }
   }
+  onKeydown1(event: KeyboardEvent) {
+  const allowedKeys = ['Backspace', 'Delete', 'ArrowLeft', 'ArrowRight', 'Tab'];
+  const key = event.key;
+
+  if (!/^\d$/.test(key) && !allowedKeys.includes(key)) {
+    event.preventDefault();
+  }
+}
+
   onKeydown_landline(event: KeyboardEvent) {
     const allowedKeys = ['Backspace', 'Tab', 'ArrowLeft', 'ArrowRight', '-', 'Delete'];
     const key = event.key;

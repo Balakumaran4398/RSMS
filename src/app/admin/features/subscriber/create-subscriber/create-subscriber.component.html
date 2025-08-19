@@ -128,6 +128,24 @@
                             </div>
                         </div>
                     </div>
+                    <div class="input_box">
+                        <span for="phone">Alternate Number</span>
+                        <!-- <input pattern="[0-9]*" maxlength="10" type="text" (keypress)="onKeydown($event)"
+                            formControlName="mobileno2" placeholder="Enter Alternate Mobile No" /> -->
+                        <input pattern="[0-9]*" maxlength="10"  type="text" (keypress)="onKeydown($event)"
+                            formControlName="mobileno2" placeholder="Enter Mobile No" 
+                            [ngClass]="{ 'is-invalid': submitted && f['mobileno2'].errors }" />
+
+                        <div style="position: relative; font-size: small;" *ngIf="submitted && f['mobileno2'].errors"
+                            class="invalid-feedback">
+                            <div *ngIf="f['mobileno2'].errors['required']">
+                                Mobile Number is required
+                            </div>
+                            <div *ngIf="f['mobileno2'].errors['pattern']">
+                                Please enter a valid 10-digit Mobile Number
+                            </div>
+                        </div>
+                    </div>
 
                     <div class="input_box">
                         <span for="pass">Landline No</span>
@@ -161,19 +179,7 @@
                             </div>
                         </div> -->
                     </div>
-                    <div class="input_box">
-                        <label for="confirmPass">Form Submission Date</label>
-                        <input type="date" step='1' placeholder="Form Submission Date" [max]="today"
-                            formControlName="formsubmissiondate"
-                            [ngClass]="{ 'is-invalid': submitted && f['formsubmissiondate'].errors }" required>
 
-                        <div style="position: relative;font-size: small; "
-                            *ngIf="submitted && f['formsubmissiondate'].errors" class="invalid-feedback">
-                            <div *ngIf="f['formsubmissiondate'].errors['required']">Form Submission Date is
-                                required
-                            </div>
-                        </div>
-                    </div>
                     <div class="input_box">
                         <label>Address Proof Name</label>
                         <select id="addressprooftypeid" formControlName="addressprooftypeid"
@@ -254,6 +260,19 @@
                             </div>
                             <div *ngIf="f['idproof'].errors?.['maxlength']">
                                 Maximum length allowed is {{ getMaxLength(selectedIDProofType) }} characters.
+                            </div>
+                        </div>
+                    </div>
+                    <div class="input_box">
+                        <label for="confirmPass">Form Submission Date</label>
+                        <input type="date" step='1' placeholder="Form Submission Date" [max]="today"
+                            formControlName="formsubmissiondate"
+                            [ngClass]="{ 'is-invalid': submitted && f['formsubmissiondate'].errors }" required>
+
+                        <div style="position: relative;font-size: small; "
+                            *ngIf="submitted && f['formsubmissiondate'].errors" class="invalid-feedback">
+                            <div *ngIf="f['formsubmissiondate'].errors['required']">Form Submission Date is
+                                required
                             </div>
                         </div>
                     </div>

@@ -44,7 +44,7 @@ export class SublcooperatorComponent implements OnInit {
   // ------------------------------sublco grid----------------------
   operator_details: any = [];
   pagedOperators: any = [];
-  pageSize = 5;
+  pageSize = 25;
   pageIndex = 0;
   totalLength = 0;
   paginatedData: any;

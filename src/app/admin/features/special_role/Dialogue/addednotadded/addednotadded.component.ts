@@ -112,6 +112,7 @@ export class AddednotaddedComponent implements OnInit {
   }
 
   toggleSelection(item: string) {
+    console.log('toggleSelectedItem = ', item);
     if (this.selectedItems.has(item)) {
       this.selectedItems.delete(item);
     } else {
@@ -360,10 +361,13 @@ export class AddednotaddedComponent implements OnInit {
       this.selectedItems.forEach(id => {
         const index = this.NotpermissionList.findIndex(item => item.id === id);
         if (index > -1) {
-          this.NotpermissionList.splice(index, 1);
-          this.permissionList.push(this.NotpermissionList[index]);
+          // this.NotpermissionList.splice(index, 1);
+          // this.permissionList.push(this.NotpermissionList[index]);
+          const [removedItem] = this.NotpermissionList.splice(index, 1); // store removed
+          this.permissionList.push(removedItem);
         }
       });
+      console.log(this.containerData);
       this.containerData = this.permissionList.map((item: { name: string, id: number }) => ({
         name: item.name,
         id: item.id
@@ -376,8 +380,10 @@ export class AddednotaddedComponent implements OnInit {
       this.selectedItems.forEach(id => {
         const index = this.permissionList.findIndex(item => item.id === id);
         if (index > -1) {
-          this.permissionList.splice(index, 1);
-          this.NotpermissionList.push(this.permissionList[index]);
+          // this.permissionList.splice(index, 1);
+          // this.NotpermissionList.push(this.permissionList[index]);
+          const [removedItem] = this.permissionList.splice(index, 1); // store removed
+          this.NotpermissionList.push(removedItem);
         }
       });
       this.containerData = this.permissionList.map((item: { name: string, id: number }) => ({
@@ -419,17 +425,17 @@ export class AddednotaddedComponent implements OnInit {
     this.selectedItems.clear();
   }
   save() {
-     this.containerData = this.addedList.map((item: { name: string, id: number }) => ({
-        name: item.name,
-        id: item.id
-      }));
-      this.containerID = this.containerData.map((item: any) => item.id);
-      console.log(this.containerID);
+    this.containerData = this.addedList.map((item: { name: string, id: number }) => ({
+      name: item.name,
+      id: item.id
+    }));
+    this.containerID = this.containerData.map((item: any) => item.id);
+    console.log(this.containerID);
     this.swal.Loading();
     console.log(this.containerID);
     let permissionList = this.containerID.length == 0 ? 0 : this.containerID;
     console.log(permissionList);
-    this.userservice.sublcoUpdateArea(this.role, this.username, this.retailerid, permissionList).subscribe((res: any) => {
+    this.userservice.sublcoUpdateArea(this.role, this.username, this.retailerid, permissionList, false, true).subscribe((res: any) => {
       this.swal.success(res?.message);
     }, (err) => {
       this.swal.Error(err?.error?.message);
@@ -447,7 +453,7 @@ export class AddednotaddedComponent implements OnInit {
     console.log(this.containerID);
     let permissionList = this.containerID.length == 0 ? 0 : this.containerID;
     console.log(permissionList);
-    this.userservice.sublcoUpdatePermission(this.role, this.username, this.retailerid, permissionList).subscribe((res: any) => {
+    this.userservice.sublcoUpdatePermission(this.role, this.username, this.retailerid, permissionList, false, true).subscribe((res: any) => {
       this.swal.success(res?.message);
     }, (err) => {
       this.swal.Error(err?.error?.message);

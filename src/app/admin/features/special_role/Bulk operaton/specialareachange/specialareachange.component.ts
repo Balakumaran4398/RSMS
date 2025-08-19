@@ -44,7 +44,7 @@ export class SpecialareachangeComponent implements OnInit {
       },
     },
     paginationPageSize: 10,
-    paginationPageSizeSelector:[10,20,50],
+    paginationPageSizeSelector: [10, 20, 50],
     pagination: true,
   };
 
@@ -54,12 +54,17 @@ export class SpecialareachangeComponent implements OnInit {
   lco: string = '';
   area: string = '';
   street: string = '';
+  selectoperator: any;
+  selectArea: any;
+  selectStreet: any;
   lcoList: Array<{ name: string, value: string }> = [];
   areaList: Array<{ name: string, value: string }> = [];
   streetList: Array<{ name: string, value: string }> = [];
 
   filteredOperators: any[] = [];
-
+  filteredOperatorList: any[] = [];
+  filteredAreaList: any[] = [];
+  filteredStreetList: any[] = [];
   gridApi: any;
   isAnyRowSelected: any = false;
   selectedIds: number[] = [];
@@ -97,23 +102,6 @@ export class SpecialareachangeComponent implements OnInit {
   onGridReady(params: { api: any; }) {
     this.gridApi = params.api;
   }
-  // filteredLcoList = [...this.lcoList];
-  // lcoInput: string = '';
-
-  // filterLcoList() {
-  //   console.log(this.lcoList);
-
-  //   this.filteredLcoList = this.lcoList.filter(lco =>
-  //     lco.name.toLowerCase().includes(this.lco.toLowerCase())
-  //   );
-  //   console.log(this.filteredLcoList);
-
-  // }
-  // onLcoSelected(selectedValue: string) {
-  //   this.lco = this.lcoList.find(lco => lco.value === selectedValue)?.name || '';
-  //   this.onTableData();
-  // }
-
   private updateColumnDefs(tab: string): void {
     console.log(this.rowData = []);
     if (tab === 'areachange') {
@@ -158,59 +146,20 @@ export class SpecialareachangeComponent implements OnInit {
         const name = key;
         return { name: name, value: value };
       });
-      this.filteredOperators = this.lcoList
+      // this.filteredOperators = this.lcoList
+      this.filteredOperatorList = this.lcoList
     })
   }
 
 
-  onSubscriberStatusChange() {
-    console.log(this.lco);
-    this.rowData = [];
-    this.areaList = [];
-    this.streetList = [];
-    if (this.lco) {
-      this.userservice.getAreaListByOperatorid(this.role, this.username, this.lco)
-        .subscribe((data: any) => {
-          console.log(data);
 
-          console.log(data?.areaid);
-          this.areaList = Object.keys(data).map(key => {
-            const name = key.replace(/\(\d+\)$/, '').trim();
-            const value = data[key];
-            return { name, value };
-          });
-          console.log(this.areaList);
-        });
-    }
-    this.userservice.getLcochangeSubscriberList(this.role, this.username, this.lco, this.area, 0).subscribe(
-      (response: HttpResponse<any[]>) => {
-        if (response.status === 200) {
-          this.rowData = response.body;
-          const rowCount = this.rowData.length;
-          if (!this.gridOptions.paginationPageSizeSelector.includes(rowCount)) {
-            this.gridOptions.paginationPageSizeSelector.push(rowCount);
-          }
-          // this.swal.Success_200();
-        } else if (response.status === 204) {
-          this.swal.Success_204();
-        }
-      },
-      (error) => {
-        if (error.status === 400) {
-          this.swal.Error_400();
-        } else if (error.status === 500) {
-          this.swal.Error_500();
-        } else {
-          Swal.fire('Error', 'Something went wrong. Please try again.', 'error');
-        }
-      }
-    );
-  }
+
+
   onSubscriberStatusLCOChange() {
     console.log(this.lco);
-    this.areaList = [];
-    this.streetList = [];
     this.rowData = [];
+    this.selectoperator = '';
+    this.selectArea = '';
     if (this.lco) {
       this.userservice.getAreaListByOperatorid(this.role, this.username, this.lco)
         .subscribe((data: any) => {
@@ -227,7 +176,11 @@ export class SpecialareachangeComponent implements OnInit {
             return { name, value };
           });
           console.log(this.areaList);
+          this.filteredAreaList = this.areaList;
         });
+
+      this.filteredAreaList = [];
+      this.filteredStreetList = [];
     }
     this.userservice.getLcochangeSubscriberList(this.role, this.username, this.lco, 0, 0).subscribe(
       (response: HttpResponse<any[]>) => {
@@ -260,6 +213,8 @@ export class SpecialareachangeComponent implements OnInit {
   onAreaStatusChange() {
     console.log(this.area);
     this.streetList = [];
+    this.areaList = [];
+
     if (this.area) {
       this.userservice.getStreetListByAreaid(this.role, this.username, this.area)
         .subscribe((data: any) => {
@@ -271,6 +226,7 @@ export class SpecialareachangeComponent implements OnInit {
             return { name, value };
           });
           console.log(this.streetList);
+          this.filteredStreetList = this.streetList
         });
     }
   }
@@ -288,6 +244,7 @@ export class SpecialareachangeComponent implements OnInit {
             return { name, value };
           });
           console.log(this.streetList);
+          this.filteredStreetList = this.streetList
         });
     }
     this.userservice.getLcochangeSubscriberList(this.role, this.username, this.lco, this.area, 0).subscribe(
@@ -346,8 +303,13 @@ export class SpecialareachangeComponent implements OnInit {
   }
 
 
+
+
+
   onTableData() {
     this.rowData = [];
+    this.selectoperator = '';
+    this.selectArea = '';
     if (this.lco) {
       this.userservice.getAreaListByOperatorid(this.role, this.username, this.lco)
         .subscribe((data: any) => {
@@ -364,7 +326,10 @@ export class SpecialareachangeComponent implements OnInit {
             return { name, value };
           });
           console.log(this.areaList);
+          this.filteredAreaList = this.areaList;
         });
+      this.filteredAreaList = [];
+      this.filteredStreetList = [];
     }
     this.userservice.getAreaChangeSubscriberList(this.role, this.username, this.lco,).subscribe(
       (response: HttpResponse<any[]>) => {
@@ -393,8 +358,50 @@ export class SpecialareachangeComponent implements OnInit {
       }
     );
   }
+  filteredOperator() {
+    const searchTerm = this.selectoperator?.toLowerCase() || '';
+    if (!searchTerm) {
+      this.filteredOperatorList = [...this.lcoList];
+    } else {
+      console.log('Filtered List', this.filteredOperatorList);
+      console.log('LCO List', this.lcoList);
 
+      this.filteredOperatorList = this.lcoList.filter(op =>
+        op.name.toLowerCase().includes(searchTerm) ||
+        op.value.toString().toLowerCase().includes(searchTerm)
+      );
+    }
+  }
+  filteredArea() {
+    const searchTerm = this.selectArea?.toLowerCase() || '';
+    console.log(this.selectArea);
 
+    if (!searchTerm) {
+      this.filteredAreaList = this.areaList;
+    } else {
+      console.log('Filtered List', this.filteredAreaList);
+      console.log('area List', this.areaList);
+
+      this.filteredAreaList = this.areaList.filter(area =>
+        area.name.toLowerCase().includes(searchTerm) ||
+        area.value.toString().toLowerCase().includes(searchTerm)
+      );
+    }
+  }
+  filteredStreet() {
+    const searchTerm = this.selectStreet?.toLowerCase() || '';
+    if (!searchTerm) {
+      this.filteredStreetList = [...this.streetList];
+    } else {
+      console.log('Filtered List', this.filteredStreetList);
+      console.log('Street List', this.streetList);
+
+      this.filteredStreetList = this.streetList.filter(str =>
+        str.name.toLowerCase().includes(searchTerm) ||
+        str.value.toString().toLowerCase().includes(searchTerm)
+      );
+    }
+  }
 
   change(type: any) {
     let width = '500px';
@@ -419,15 +426,34 @@ export class SpecialareachangeComponent implements OnInit {
       areaid: this.area,
       streetid: this.street,
       subscriberlist: this.rows,
-
     }
+
     this.swal.Loading();
+    if (!this.lco) {
+      this.swal.Error("Please select LCO");
+      return;
+    }
+
+    if (!this.area) {
+      this.swal.Error("Please select Area");
+      return;
+    }
+
+    if (!this.street) {
+      this.swal.Error("Please enter Street");
+      return;
+    }
+
     this.userservice.updateAreaChangeSubscriber(requestBody)
-      .subscribe((res: any) => {
-        this.swal.success(res?.message);
-      }, (err) => {
-        this.swal.Error(err?.error?.message);
-      });
+      .subscribe(
+        (res: any) => {
+          this.swal.success(res?.message);
+        },
+        (err) => {
+          this.swal.Error(err?.error?.message);
+        }
+      );
+
   }
   tableData() {
     this.userservice.getAreaListByOperatorId(this.role, this.username, this.operatorid).subscribe((data: any) => {

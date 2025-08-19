@@ -46,8 +46,7 @@
                                     [cdkDropListConnectedTo]="[doneList]" class="example-list"
                                     (cdkDropListDropped)="drop2($event,1)">
                                     <div *ngFor="let item of filteredNotaddedList" class="example-box"
-                                        (click)="toggleSelection(item.id)" cdkDrag 
-                                        [class.selected]="isSelected(item)">
+                                        (click)="toggleSelection(item.id)" [class.selected]="isSelected(item.id)" cdkDrag>
                                         {{ item.name }}
                                     </div>
                                 </div>
@@ -76,8 +75,7 @@
                                     [cdkDropListConnectedTo]="[todoList]" class="example-list"
                                     (cdkDropListDropped)="drop2($event,2)">
                                     <div *ngFor="let item of filteredAddedList" class="example-box"
-                                        (click)="toggleSelection(item.id)" cdkDrag 
-                                        [class.selected]="isSelected(item)">
+                                        (click)="toggleSelection(item.id)" [class.selected]="isSelected(item.id)" cdkDrag>
                                         {{ item.name }}
                                     </div>
                                 </div>
@@ -142,8 +140,7 @@
                                     [cdkDropListConnectedTo]="[doneList]" class="example-list"
                                     (cdkDropListDropped)="drop1($event,1)">
                                     <div *ngFor="let item of filteredNotPermissionList" class="example-box"
-                                        (click)="toggleSelection(item.id)" cdkDrag 
-                                        [class.selected]="isSelected(item)">
+                                        (click)="toggleSelection(item.id)" cdkDrag [class.selected]="isSelected(item.id)">
                                         {{ item.name }}
                                     </div>
                                 </div>
@@ -173,8 +170,7 @@
                                     [cdkDropListConnectedTo]="[todoList]" class="example-list"
                                     (cdkDropListDropped)="drop1($event,2)">
                                     <div *ngFor="let item of filteredPermissionList" class="example-box" cdkDrag
-                                        (click)="toggleSelection(item.id)"
-                                        [class.selected]="isSelected(item)">
+                                        (click)="toggleSelection(item.id)" [class.selected]="isSelected(item.id)">
                                         {{ item.name }}
                                     </div>
                                 </div>

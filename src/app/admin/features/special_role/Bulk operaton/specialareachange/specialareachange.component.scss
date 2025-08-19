@@ -93,6 +93,28 @@ p {
 
 }
 
+.option_input {
+    border: 1px solid #0a2e23;
+    background: white;
+    border-radius: 10px;
+    max-height: 10%;
+    position: sticky;
+    top: -2.5%;
+    z-index: 1;
+}
+
+.option_input:hover {
+    background: white;
+}
+
+.option_input input {
+    background: white;
+}
+
+.option_input input:hover,
+.option_input input:focus {
+    background: white !important;
+}
 @media screen and (max-width:560px) {
     .display {
         display: block;

@@ -635,7 +635,7 @@
         <div class="col-md-12 d-flex justify-content-center align-items-start mb-3">
 
             <div class="col-12 d-flex justify-content-start align-items-center flex-wrap">
-                <div class="input_box2 me-3">
+                <div *ngIf="role == 'ROLE_ADMIN'" class="input_box2 me-3">
                     <input type="text" matInput [matAutocomplete]="auto" [(ngModel)]="selectedLcoName"
                         (input)="filterOperators($event)" placeholder="Select  Operator"
                         [matAutocompleteDisabled]="false" [value]="selectedOperator?.name">
@@ -645,14 +645,6 @@
                             {{ operator.name }}
                         </mat-option>
                     </mat-autocomplete>
-
-
-                    <!-- <select id="operator" [(ngModel)]="selectedLcoName">
-                        <option *ngFor="let operator of filteredOperators" [value]="operator.value"
-                            (ngMOdelChange)="onSubscriberStatusChange($event)">
-                            {{ operator.name }}
-                        </option>
-                    </select> -->
                 </div>
 
                 <div class="input_box2 me-3">
@@ -661,7 +653,6 @@
                         [matAutocompleteDisabled]="false" [value]="selectedSubOperator?.retailerName">
 
                     <mat-autocomplete #auto1="matAutocomplete" [displayWith]="displaysublco">
-                        <!-- <mat-option [value]="0" selected   (click)="onSublcoChange({ operatorId: 0, retailerName: 'All Sub lco' })">All Sub LCO</mat-option> -->
                         <mat-option *ngFor="let operator of filteredSubLcoList" [value]="operator.operatorId"
                             (click)="onSublcochange(operator)">
                             {{ operator.retailerName }}

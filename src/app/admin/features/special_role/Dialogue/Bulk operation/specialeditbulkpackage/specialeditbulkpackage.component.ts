@@ -32,7 +32,12 @@ export class SpecialeditbulkpackageComponent implements OnInit {
   streetid: any;
 
   filteredOperators: any[] = [];
-
+  selectoperator: any;
+  selectArea: any;
+  selectStreet: any;
+  filteredOperatorList: any[] = [];
+  filteredAreaList: any[] = [];
+  filteredStreetList: any[] = [];
   constructor(public dialogRef: MatDialogRef<SpecialeditbulkpackageComponent>, @Inject(MAT_DIALOG_DATA) public data: any, private userservice: BaseService, private swal: SwalService,
     private storageservice: StorageService) {
     this.role = storageservice.getUserRole();
@@ -75,14 +80,14 @@ export class SpecialeditbulkpackageComponent implements OnInit {
   ]
 
   operatorlist() {
-    this.userservice.getOeratorList(this.role, this.username,1).subscribe((data: any) => {
+    this.userservice.getOeratorList(this.role, this.username, 1).subscribe((data: any) => {
       console.log(data);
       this.lcoList = Object.keys(data).map(key => {
         const value = data[key];
         const name = key;
         return { name: name, value: value };
       });
-      this.filteredOperators = this.lcoList
+      this.filteredOperatorList = this.lcoList
     })
   }
 
@@ -101,6 +106,7 @@ export class SpecialeditbulkpackageComponent implements OnInit {
             return { name, value };
           });
           console.log(this.areaList);
+          this.filteredAreaList = this.areaList;
         });
     }
   }
@@ -108,7 +114,6 @@ export class SpecialeditbulkpackageComponent implements OnInit {
 
   onAreaStatusChange() {
     console.log(this.area);
-
     // this.streetList = [];
     if (this.area) {
       this.userservice.getStreetListByAreaid(this.role, this.username, this.area)
@@ -120,6 +125,7 @@ export class SpecialeditbulkpackageComponent implements OnInit {
             return { name, value };
           });
           console.log(this.streetList);
+          this.filteredStreetList = this.streetList;
         });
     }
   }
@@ -146,6 +152,51 @@ export class SpecialeditbulkpackageComponent implements OnInit {
     );
   }
 
+  filteredOperator() {
+    const searchTerm = this.selectoperator?.toLowerCase() || '';
+    if (!searchTerm) {
+      this.filteredOperatorList = [...this.lcoList];
+    } else {
+      console.log('Filtered List', this.filteredOperatorList);
+      console.log('LCO List', this.lcoList);
+
+      this.filteredOperatorList = this.lcoList.filter(op =>
+        op.name.toLowerCase().includes(searchTerm) ||
+        op.value.toString().toLowerCase().includes(searchTerm)
+      );
+    }
+  }
+  filteredArea() {
+    const searchTerm = this.selectArea?.toLowerCase() || '';
+    console.log(this.selectArea);
+
+    if (!searchTerm) {
+      this.filteredAreaList = this.areaList;
+    } else {
+      console.log('Filtered List', this.filteredAreaList);
+      console.log('area List', this.areaList);
+
+      this.filteredAreaList = this.areaList.filter(area =>
+        area.name.toLowerCase().includes(searchTerm) ||
+        area.value.toString().toLowerCase().includes(searchTerm)
+      );
+    }
+  }
+  filteredStreet() {
+    const searchTerm = this.selectStreet?.toLowerCase() || '';
+    if (!searchTerm) {
+      this.filteredStreetList = [...this.streetList];
+    } else {
+      console.log('Filtered List', this.filteredStreetList);
+      console.log('Street List', this.streetList);
+
+      this.filteredStreetList = this.streetList.filter(str =>
+        str.name.toLowerCase().includes(searchTerm) ||
+        str.value.toString().toLowerCase().includes(searchTerm)
+      );
+    }
+  }
+
   updateArea() {
     let requestBody = {
       role: this.role,
@@ -154,7 +205,7 @@ export class SpecialeditbulkpackageComponent implements OnInit {
       areaid: this.area,
       streetid: this.street,
       subscriberlist: this.rowData,
-  
+
     }
     this.swal.Loading();
     this.userservice.updateAreaChangeSubscriber(requestBody)
@@ -169,7 +220,7 @@ export class SpecialeditbulkpackageComponent implements OnInit {
       role: this.role,
       username: this.username,
       retailerid: 0,
-      type: 2,  
+      type: 2,
       operatorid: this.lco,
       areaid: this.area,
       streetid: this.street,

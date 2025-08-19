@@ -29,7 +29,9 @@
                         <div class="sub-tittle mb-3 col-md-6" style="text-align: left;font-weight: bold;">
                             {{operator?.retailerName || 'empty'}} <span
                                 style="color: rgb(1, 1, 14);font-weight: bold;">[{{operator?.retailerId}}]</span> -
-                            <span style="color: var(--oper-grid-amount);">[{{operator?.balance}}]</span>
+                            <span style="color: #d82be7;font-weight: bold;">[<i
+                                    class="fa-solid fa-indian-rupee-sign rupee "
+                                    style="font-size: 18px;color:#195800"></i> {{operator?.balance}}]</span>
                         </div>
                         <div class="sub-tittle mb-3 col-md-6" style="text-align: right;color: rgb(26, 23, 23);">
                             Phone: <span style="color: rgb(19, 4, 104);">{{operator?.contactNo ||
@@ -55,7 +57,6 @@
                                             style="text-transform: lowercase;">{{operator?.password}}</span>
                                     </p>
                                 </div>
-
                             </div>
                             <div class="d-flex">
                                 <div class="sub-tittle mb-3 col-md-12">
@@ -114,7 +115,6 @@
                                 <span class="tooltip">SUBLCO Discount</span>
                             </div>
                         </div>
-
                     </div>
                     <br>
                     <div class="child-card col-12">
@@ -123,7 +123,9 @@
                                 <p class="sub-text">Active</p>
                                 <span style="color: #0e610b;">
                                     <div class="circle" style="background-color: rgb(122, 64, 129);"><span
-                                            class="circle-text">{{operator?.count?.activecount}}</span></div>
+                                            class="circle-text">
+                                            <!-- {{operator?.count?.activecount}} -->
+                                        {{operator.activecount}}</span></div>
                                 </span>
                                 <span class="tooltip">Active</span>
                             </div>
@@ -133,7 +135,7 @@
                                 <p class="sub-text">Deactive</p>
                                 <span style="color: #0e610b;">
                                     <div class="circle" style="background-color: rgb(72 67 82)"><span
-                                            class="circle-text">{{operator?.count?.deactivecount}}</span></div>
+                                            class="circle-text">{{operator?.deactivecount}}</span></div>
                                 </span>
                                 <span class="tooltip">Deactive</span>
                             </div>
@@ -143,7 +145,7 @@
                                 <p class="sub-text">New</p>
                                 <span style="color: #0e610b;">
                                     <div class="circle" style="background-color: rgb(13 131 33);"><span
-                                            class="circle-text">{{operator?.count?.newsubscribercount}}</span></div>
+                                            class="circle-text">{{operator?.newcount}}</span></div>
                                 </span> <span class="tooltip">New</span>
                             </div>
                         </div>

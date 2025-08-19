@@ -662,7 +662,7 @@ export class MsorDialogueportsComponent implements OnInit, OnDestroy {
     } else {
       return
     }
-       this.columnDefs2 = this.rechargeOperatorValue == 3
+    this.columnDefs2 = this.rechargeOperatorValue == 3
       ? [
         { headerName: "S.No", lockPosition: true, valueGetter: 'node.rowIndex+1', headerCheckboxSelection: false, checkboxSelection: false, width: 90, filter: false },
         { headerName: 'CUSTOMER NAME', field: 'customername', width: 200 },
@@ -2820,7 +2820,7 @@ export class MsorDialogueportsComponent implements OnInit, OnDestroy {
 
   getSubLcoOfflineDetailsReport() {
     this.swal.Loading();
-    this.userService.getsubLcoOfflineReport(this.role, this.username, this.fromdate, this.todate, this.selectedOperator.value, this.selectedSubLcoName, 3)
+    this.userService.getsubLcoOfflineReport(this.role, this.username, this.fromdate, this.todate, this.operatorId || this.selectedOperator.value, this.selectedSubLcoName, 3)
       .subscribe(
         (response: HttpResponse<any>) => {
           if (response.status === 200) {
@@ -2849,7 +2849,7 @@ export class MsorDialogueportsComponent implements OnInit, OnDestroy {
     console.log('selectedSubLcoName', this.selectedSubLcoName);
 
     this.processingSwal();
-    this.userService.getsubLcoOfflineDownload(this.role, this.username, this.fromdate, this.todate, this.selectedOperator.value, this.selectedSubLcoName, type)
+    this.userService.getsubLcoOfflineDownload(this.role, this.username, this.fromdate, this.todate, this.operatorId || this.selectedOperator.value, this.selectedSubLcoName, type)
       .subscribe((x: Blob) => {
         if (type == 1) {
           this.reportMaking(x, this.selectedOperator.name + "  Offline Payment History (" + this.fromdate + "-" + this.todate + ").pdf", 'application/pdf');

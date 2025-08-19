@@ -1444,18 +1444,18 @@ export class BaseService {
     return this.http.get<any[]>(
       BASE_URL + "/sublco/getallAreaList?role=" + role + "&username=" + encodeURIComponent(username) + "&retailerid=" + retailerid + "&operatorid=" + operatorid, {});
   }
-  sublcoUpdateArea(role: any, username: any, retailerid: any, arealist: any): Observable<any[]> {
+  sublcoUpdateArea(role: any, username: any, retailerid: any, arealist: any, areatype: any, webtype: any): Observable<any[]> {
     return this.http.post<any[]>(
-      BASE_URL + "/sublco/sublcoUpdateArea?role=" + role + "&username=" + encodeURIComponent(username) + "&retailerid=" + retailerid + "&arealist=" + arealist, {});
+      BASE_URL + "/sublco/sublcoUpdateArea?role=" + role + "&username=" + encodeURIComponent(username) + "&retailerid=" + retailerid + "&arealist=" + arealist + "&areatype=" + areatype + "&webtype=" + webtype, {});
   }
   getallPermissionList(role: any, username: any, retailerid: any): Observable<any[]> {
     return this.http.get<any[]>(
       BASE_URL + "/sublco/getallPermissionList?role=" + role + "&username=" + encodeURIComponent(username) + "&retailerid=" + retailerid, {});
   }
 
-  sublcoUpdatePermission(role: any, username: any, retailerid: any, permissionlist: any): Observable<any[]> {
+  sublcoUpdatePermission(role: any, username: any, retailerid: any, permissionlist: any, permissiontype: any, webtype: any): Observable<any[]> {
     return this.http.post<any[]>(
-      BASE_URL + "/sublco/sublcoUpdatePermission?role=" + role + "&username=" + encodeURIComponent(username) + "&retailerid=" + retailerid + "&permissionlist=" + permissionlist, {});
+      BASE_URL + "/sublco/sublcoUpdatePermission?role=" + role + "&username=" + encodeURIComponent(username) + "&retailerid=" + retailerid + "&permissionlist=" + permissionlist + "&permissiontype=" + permissiontype + "&webtype=" + webtype, {});
   }
   // --------------------------------------------------paymentgatewaylist--------------------------------------
 
