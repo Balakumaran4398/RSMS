@@ -98,7 +98,7 @@ export class SwalService {
       title: 'Error!',
       text: message,
       icon: 'error',
-      timer: 2000,
+      timer: 3000,
       timerProgressBar: true,
       showConfirmButton: false
     })

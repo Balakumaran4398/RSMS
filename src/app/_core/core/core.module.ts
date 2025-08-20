@@ -12,7 +12,6 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
 @NgModule({
     declarations: [
         LoginComponent,
-
     ],
     imports: [
         CommonModule,

@@ -669,8 +669,8 @@ export class BulkpackageupdationComponent implements OnInit {
       formData.append('username', this.username);
       formData.append('file', this.file);
       formData.append('type', '11');
-      formData.append('plan', this.selectedRechargetype);
-      formData.append('planid', this.plantype);
+      formData.append('planid', this.selectedRechargetype);
+      formData.append('plan', this.plantype);
       formData.append('retailerid', this.retailerid || 0);
       this.swal.Loading();
       this.userservice.getUploadFileforPackageUpdation(formData)

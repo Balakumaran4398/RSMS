@@ -2132,7 +2132,9 @@ export class SubDashboardComponent implements OnInit {
     this.isConfirmationComplete = true;
     console.log(this.billTypeValue)
     // let selectedpacklistValue = this.role === 'ROLE_SUBLCO' ? this.rowData1 : this.rows;
-    let selectedpacklistValue = this.role === 'ROLE_OPERATOR' || this.role === 'ROLE_SUBLCO' ? this.rowData1 : this.rows;
+    // let selectedpacklistValue = this.role === 'ROLE_OPERATOR' || this.role === 'ROLE_SUBLCO' ? this.rowData1 : this.rows;
+    let selectedpacklistValue = this.role === 'ROLE_SUBLCO'   ? this.rowData1   : this.role === 'ROLE_OPERATOR'    ? this.rowData1    : this.rowData1; 
+    console.log(selectedpacklistValue);
     console.log('selectedpacklistValue', selectedpacklistValue);
     let requestBody = {
       role: this.role,
@@ -2194,7 +2196,10 @@ export class SubDashboardComponent implements OnInit {
     this.confirmation = true;
     this.isConfirmationComplete = true;
     // let selectedpacklistValue = this.role === 'ROLE_SUBLCO' ? this.rowData1 : this.rows;
-    let selectedpacklistValue = this.role === 'ROLE_OPERATOR' || this.role === 'ROLE_SUBLCO' ? this.rows : this.rowData1;
+    // let selectedpacklistValue = this.role === 'ROLE_OPERATOR' || this.role === 'ROLE_SUBLCO' ? this.rows : this.rowData1;
+    let selectedpacklistValue = this.role === 'ROLE_SUBLCO'   ? this.rowData1   : this.role === 'ROLE_OPERATOR'    ? this.rows    : this.rowData1; 
+    console.log(selectedpacklistValue);
+    
     let requestBody = {
       role: this.role,
       username: this.username,
