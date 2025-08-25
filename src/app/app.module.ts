@@ -20,10 +20,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
   ],
   imports: [
-    BrowserModule, HttpClientModule,
-    AppRoutingModule, CoreModule,
-    AdminModule,
-    BrowserAnimationsModule,
+    BrowserModule, HttpClientModule, AppRoutingModule, CoreModule, AdminModule, BrowserAnimationsModule,
 
   ],
   providers: [{ provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true }],

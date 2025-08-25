@@ -612,7 +612,13 @@
                                         (click)="openDialog('BASE','')">
                                         BASE CHANGE
                                     </div> -->
-                                    <div *ngIf="role != 'ROLE_SUBLCO' && !base   || (role == 'ROLE_SUBLCO' && !base && subChangeBase && packageStatus== 'Expired')"
+                                    <!-- <div *ngIf="role != 'ROLE_SUBLCO' && !base   || (role == 'ROLE_SUBLCO' && !base && subChangeBase && packageStatus== 'Expired')"
+                                        class="tab mb-3 bttn" [class.active]="selectedTab === 'BASE'"
+                                        (click)="openDialog('BASE','')">
+                                        BASE CHANGE
+                                    </div> -->
+
+                                    <div *ngIf="role != 'ROLE_SUBLCO' && !base   || (role == 'ROLE_SUBLCO' && !base) || (role == 'ROLE_SUBSCRIBER' && subChangeBase  && packageStatus== 'Expired')"
                                         class="tab mb-3 bttn" [class.active]="selectedTab === 'BASE'"
                                         (click)="openDialog('BASE','')">
                                         BASE CHANGE

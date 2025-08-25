@@ -7,7 +7,7 @@ import { StorageService } from 'src/app/_core/service/storage.service';
 import Swal from 'sweetalert2';
 import { DataService } from 'src/app/_core/service/Data.service';
 import { AuthService } from 'src/app/_core/service/auth.service';
-import { LoginComponent } from 'src/app/login/login.component';
+
 
 @Component({
   selector: 'app-nav',

@@ -202,7 +202,15 @@ export class ExpiryDetailsComponent implements OnInit, OnDestroy {
   }
   Submit() {
     this.swal.Loading();
-    this.userservice.getExpirySubscriberByOperator(this.role, this.username, this.operatorid || this.lcoId || this.retailerId, this.fromdate, this.todate, this.format)
+    let Op_Id: any;
+    if (this.role == "ROLE_ADMIN") {
+      Op_Id = this.operatorid
+    } else if (this.role == "ROLE_OPERATOR") {
+      Op_Id = this.lcoId
+    } else if (this.role == "ROLE_SUBLCO") {
+      Op_Id = this.retailerId
+    }
+    this.userservice.getExpirySubscriberByOperator(this.role, this.username, Op_Id, this.fromdate, this.todate, this.format)
       .subscribe(
         (response: HttpResponse<any[]>) => { // Expect HttpResponse<any[]>
           if (response.status === 200) {
@@ -232,7 +240,15 @@ export class ExpiryDetailsComponent implements OnInit, OnDestroy {
 
     this.cdr.detectChanges();
     this.swal.Loading();
-    this.userservice.getExpirySubscriberByOperator(this.role, this.username, this.operatorid || this.lcoId || this.retailerId, this.fromdate, this.todate, this.format)
+    let Op_Id: any;
+    if (this.role == "ROLE_ADMIN") {
+      Op_Id = this.operatorid
+    } else if (this.role == "ROLE_OPERATOR") {
+      Op_Id = this.lcoId
+    } else if (this.role == "ROLE_SUBLCO") {
+      Op_Id = this.retailerId
+    }
+    this.userservice.getExpirySubscriberByOperator(this.role, this.username, Op_Id, this.fromdate, this.todate, this.format)
       .subscribe(
         (response: HttpResponse<any[]>) => { // Expect HttpResponse<any[]>
           if (response.status === 200) {
@@ -279,7 +295,15 @@ export class ExpiryDetailsComponent implements OnInit, OnDestroy {
   exportAsXLSX1(): void {
     this.cdr.detectChanges();
     this.swal.Loading();
-    this.userservice.getExpirySubscriberByOperator(this.role, this.username, this.operatorid || this.lcoId || this.retailerId, this.fromdate, this.todate, this.format_1).subscribe(
+    let Op_Id: any;
+    if (this.role == "ROLE_ADMIN") {
+      Op_Id = this.operatorid
+    } else if (this.role == "ROLE_OPERATOR") {
+      Op_Id = this.lcoId
+    } else if (this.role == "ROLE_SUBLCO") {
+      Op_Id = this.retailerId
+    }
+    this.userservice.getExpirySubscriberByOperator(this.role, this.username, Op_Id, this.fromdate, this.todate, this.format_1).subscribe(
       (response: HttpResponse<any[]>) => { // Expect HttpResponse<any[]>
         if (response.status === 200) {
           this.rowData = response.body;
