@@ -73,11 +73,13 @@ export class ChannelComponent {
   Isuser: boolean = false;
   userid: any;
   accessip: any;
+  isInventoryUpload: boolean = false;
   constructor(public dialog: MatDialog, public userService: BaseService, storageService: StorageService, private swal: SwalService, private excelService: ExcelService,) {
     this.username = storageService.getUsername();
     this.role = storageService.getUserRole();
     this.userid = storageService.getUserid();
     this.accessip = storageService.getAccessip();
+    this.isInventoryUpload = storageService.getIsInventoryUpload();
 
 
   }
@@ -288,7 +290,7 @@ export class ChannelComponent {
       console.log('The dialog was closed');
     });
   }
-  Active(status:any) {
+  Active(status: any) {
     Swal.fire({
       title: "Are you sure?",
       text: "You won't be able to Active this!",
@@ -318,7 +320,7 @@ export class ChannelComponent {
             showConfirmButton: false
           });
           this.ngOnInit();
-          this.logCreate('Channel Active Button Clicked',  status,'Active',);
+          this.logCreate('Channel Active Button Clicked', status, 'Active',);
         }, (err) => {
           Swal.fire({
             title: 'Error!',
@@ -329,7 +331,7 @@ export class ChannelComponent {
       }
     });
   }
-  Deactive(status:any) {
+  Deactive(status: any) {
     Swal.fire({
       title: "Are you sure?",
       text: "You won't be able to revert this!",
@@ -358,7 +360,7 @@ export class ChannelComponent {
             showConfirmButton: false
           });
           this.ngOnInit();
-           this.logCreate('Channel Active Button Clicked', status, 'Deactive');
+          this.logCreate('Channel Active Button Clicked', status, 'Deactive');
         }, (err) => {
           Swal.fire({
             title: 'Error!',
@@ -469,16 +471,20 @@ export class ChannelComponent {
         });
   }
   generateExcel() {
-    const dialogRef = this.dialog.open(LoginrefundComponent, {
-      data: '1'
-    });
-    dialogRef.afterClosed().subscribe((result) => {
-      if (result && result.success) {
-        this.excelService.generateChannelDetailsExcel();
-      } else {
-        console.log('Dialog closed without success');
-      }
-    });
+    if (this.isInventoryUpload = false) {
+      this.excelService.generateChannelDetailsExcel();
+    } else {
+      const dialogRef = this.dialog.open(LoginrefundComponent, {
+        data: '1'
+      });
+      dialogRef.afterClosed().subscribe((result) => {
+        if (result && result.success) {
+          this.excelService.generateChannelDetailsExcel();
+        } else {
+          console.log('Dialog closed without success');
+        }
+      });
+    }
   }
   // generateExcel() {
   //   const dialogData = {

@@ -75,8 +75,8 @@ export class LcodashboardComponent implements OnInit {
         }
       },
     },
-    paginationPageSize: 5,
-    pagination: true,
+    // paginationPageSize: 5,
+    // pagination: true,
   }
 
   editingRow: any;

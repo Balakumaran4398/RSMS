@@ -45,10 +45,18 @@
                 class="active nav-link">
                 <i class="bx bx-home bx-sm icon "></i>
                 Dashboard</a></li>
-        <li *ngIf="username !=='manikandan' && (isUser || isReception) && navigationList.topsubscription"><a
-                (click)="navgetToUrl('/top_subscription');setActiveLinkTabList($event)" [class.hide]="!isSidebarOpen"
+        <li
+            *ngIf="username !=='manikandan' && (isUser && istopsubscription || isReception) && navigationList.topsubscription">
+            <a (click)="navgetToUrl('/top_subscription');setActiveLinkTabList($event)" [class.hide]="!isSidebarOpen"
                 class="nav-link"><i class='bx bx-table bx-sm icon'></i>
-                Top Subscription Details</a></li>
+                Top Subscription Details</a>
+        </li>
+        <li
+            *ngIf="username !=='manikandan' && (isUser && !istopsubscription || isReception) && navigationList.topsubscription">
+            <a (click)="navgetToUrl('/top_sub_detail');setActiveLinkTabList($event)" [class.hide]="!isSidebarOpen"
+                class="nav-link"><i class='bx bx-table bx-sm icon'></i>
+                Top Subscription Details</a>
+        </li>
         <li *ngIf="username =='manikandan' && (isUser || isReception) && navigationList.topsubscription"><a
                 (click)="navgetToUrl('/top_sub_detail');setActiveLinkTabList($event)" [class.hide]="!isSidebarOpen"
                 class="nav-link"><i class='bx bx-table bx-sm icon'></i>
@@ -83,28 +91,34 @@
         <li *ngIf="isUser || isReception ">
             <a> <i class="bx bx-user bx-sm icon "></i> Operator <i class='bx bx-chevron-right icon-right'></i></a>
             <ul class="side-dropdown">
-                <li *ngIf=" username == 'manikandan' && (isLco && navigationList.operatordetails)"><a
+                <li *ngIf=" username == 'manikandan' && (!isLco && navigationList.operatordetails)"><a
                         (click)="navgetToUrl('/operator_details');setActiveLinkTab($event)">
                         <i class='fa fa-fw fa-users  icon'></i> &nbsp;
                         Operator Details</a></li>
-                <li *ngIf=" username == 'manikandan' &&  (!isLco && navigationList.operatordetails)"><a
+                <li *ngIf=" username == 'manikandan' &&  (isLco && navigationList.operatordetails)"><a
                         (click)="navgetToUrl('/lco_recharge/1');setActiveLinkTab($event)">
                         <i class='fa fa-fw fa-users  icon'></i> &nbsp;
                         Operator Details</a></li>
-                <li *ngIf=" username !== 'manikandan' && (isLco && navigationList.operatordetails)"><a
+                <li *ngIf=" username !== 'manikandan' && (!isLco && navigationList.operatordetails)"><a
                         (click)="navgetToUrl('/operator_details');setActiveLinkTab($event)">
                         <i class='fa fa-fw fa-users  icon'></i> &nbsp;
                         Operator Details</a></li>
-                <li *ngIf=" username !== 'manikandan' &&  (!isLco && navigationList.operatordetails)"><a
+                <li *ngIf=" username !== 'manikandan' &&  (isLco && navigationList.operatordetails)"><a
                         (click)="navgetToUrl('/lco_recharge/1');setActiveLinkTab($event)">
                         <i class='fa fa-fw fa-users  icon'></i> &nbsp;
                         Operator Details</a></li>
-                <li *ngIf="username !== 'manikandan' && navigationList.lcorecharge"><a
+                <li *ngIf="username !== 'manikandan' &&(islcorecharge && navigationList.lcorecharge)"><a
                         (click)="navgetToUrl('/lco_recharge/2');setActiveLinkTab($event)"><i
                             class='fa-solid fa-indian-rupee-sign icon'></i> &nbsp;LCO Recharge</a></li>
+                <li *ngIf="username !== 'manikandan' &&(!islcorecharge && navigationList.lcorecharge)"><a
+                        (click)="navgetToUrl('/lcorecharge/1');setActiveLinkTab($event)"><i
+                            class='fa-solid fa-indian-rupee-sign icon'></i> &nbsp;LCO Recharge</a></li>
+
                 <li *ngIf="username == 'manikandan' && navigationList.lcorecharge"><a
                         (click)="navgetToUrl('/lcorecharge/1');setActiveLinkTab($event)"><i
                             class='fa-solid fa-indian-rupee-sign icon'></i> &nbsp;LCO Recharge</a></li>
+
+
                 <li *ngIf="!isReception && username !== 'manikandan'&& msoName == 'AJK' && navigationList.lcorecharge">
                     <a (click)="navgetToUrl('/lco_recharge/3');setActiveLinkTab($event)"><i
                             class='fa fa-fw fa-circle-o icon'></i> &nbsp;Admin Recharge</a>
@@ -688,7 +702,7 @@
                                 <mat-icon>phone</mat-icon>
                                 <span>{{contact}}</span>
                             </button>
-                           
+
                             <button mat-menu-item (click)="loginAdmin()" *ngIf="isOperator">
                                 <mat-icon>ios_share</mat-icon>
                                 <span>Return Portal</span>

@@ -119,6 +119,13 @@ export class ChipidModelComponent implements OnInit {
       event.preventDefault();
     }
   }
+  onKeydown1(event: KeyboardEvent) {
+    const key = event.key;
+    if (!/^[\d_]$/.test(key) && key !== 'Backspace') {
+      event.preventDefault();
+    }
+  }
+
 
   ltbList() {
     this.userService.getLocalChannelOperatorList(this.role, this.username).subscribe((data: any) => {

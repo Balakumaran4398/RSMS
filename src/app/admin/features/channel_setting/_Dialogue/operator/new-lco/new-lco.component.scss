@@ -7,12 +7,12 @@
  span{
     font-weight: bold;
  }
-.display {
-    display: flex;
-}
+// .display {
+//     display: flex;
+// }
 
 .input_box label {
-    font-weight: 500;
+    font-weight: 600;
     margin-bottom: 5px;
     display: block;
     color: #243359;
@@ -73,7 +73,7 @@
     }
 
     .mobile {
-        max-height: 600px;
+        max-height: 556px;
         overflow: scroll;
     }
 

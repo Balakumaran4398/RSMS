@@ -7,25 +7,14 @@
             <div class="d-flex justify-content-center align-item-center">
                 <form [formGroup]="form" (ngSubmit)="submit()">
                     <div class="col d-flex justify-content-center align-items-center">
-                        <div class="col-12 col-md-12 sol-sm-6" style="padding: 1rem;max-height: 65vh;overflow: scroll;overflow-x: hidden;">
+                        <div class="col-12 col-md-12 sol-sm-6"
+                            style="padding: 1rem;max-height: 65vh;overflow: scroll;overflow-x: hidden;">
                             <div class="row">
                                 <div class="input-box mb-3">
                                     <div class="col-12 col-md-4">
                                         <label for="">CAS</label>
                                     </div>
                                     <div class="col-12 col-md-8">
-                                        <!-- <select placeholder="Select the CAS" formControlName="castype"
-                                            (ngModelChange)="onSelectionFingerPrint($event)">
-                                            <option value="">Select CAS</option>
-                                            <option *ngFor="let casItem of cas" [value]="casItem.id">
-                                                {{ casItem.name }}
-                                            </option>
-                                        </select> -->
-
-                                        <!-- <input type="text" placeholder="Search an CAS" formControlName="castype"
-                                            [value]="casname" (input)="onSearchChange($event)" [matAutocomplete]="auto"
-                                            class="example-input"> -->
-
                                         <div class="input-container">
                                             <input type="text" placeholder="Search a CAS" formControlName="castype"
                                                 [value]="casname" (input)="onSearchChange($event)"
@@ -75,10 +64,6 @@
                                         </div>
                                     </div>
                                     <div class="col-12 col-md-8" *ngIf="isSmartcardEnabled">
-                                        <!-- <input placeholder="Enter Smartcard" type="text" formControlName="intendid"
-                                            [(ngModel)]="intendid_1" (keypress)="onKeydown($event)"
-                                            [maxlength]="castype != 6 ? 20 : 14" (input)="validateExactLength()"> -->
-
                                         <input placeholder="Enter the smartcard..." class="input_sb" #searchitem
                                             style="font-size: 14px;" [maxlength]="castype != 6 ? 20 : 14"
                                             (input)="validateExactLength()" formControlName="intendid"
@@ -93,11 +78,6 @@
                                                 lcomember.value }}</a>
                                         </div>
 
-                                        <!-- <div *ngIf="isInvalidLength">
-                                            <small class="text-danger">
-                                                Please enter exactly {{ castype != 6 ? 20 : 14 }} digits.
-                                            </small>
-                                        </div> -->
                                         <div *ngIf="form.get('intendid')?.invalid && form.get('intendid')?.touched">
                                             <small class="text-danger">Intend ID is required.</small>
                                         </div>
@@ -396,9 +376,9 @@
             <div class="row d-flex  justify-content-center" style="padding: 0.5rem;">
                 <div class="col-12 col-sm-12 col-md-12 mb-3">
                     <ag-grid-angular #agGrid id="myGrid" domLayout='autoHeight' class="ag-theme-alpine table-class"
-                        style="max-height: 775px;overflow: scroll;overflow-x: hidden" rowAnimation [rowSelection]="rowSelection"
-                        [gridOptions]="gridOptions" [columnDefs]="columnDefs" [rowData]="rowData"
-                        (gridReady)="onGridReady()" [enableCellTextSelection]="true">
+                        style="max-height: 775px;overflow: scroll;overflow-x: hidden" rowAnimation
+                        [rowSelection]="rowSelection" [gridOptions]="gridOptions" [columnDefs]="columnDefs"
+                        [rowData]="rowData" (gridReady)="onGridReady()" [enableCellTextSelection]="true">
                     </ag-grid-angular>
                 </div>
             </div>

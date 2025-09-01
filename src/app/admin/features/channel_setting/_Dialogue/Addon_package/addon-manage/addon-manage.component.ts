@@ -454,72 +454,210 @@ export class AddonManageComponent {
 
 
 
-  moveAll_alacarte_Items(direction: 'left' | 'right') {
-    this.modified = true;
-    if (direction === 'right') {
-      this.added_alacarte_list.push(...this.available_alacarte_list);
-      this.alacarte_list_id = this.available_alacarte_list.map((item: any) => {
-        const match = item.match(/\((\d+)\)/);
-        return match ? match[1] : null;
-      });
-      this.containerData = this.added_alacarte_list.map((item: any) => {
-        const match = item.match(/\((\d+)\)/);
-        return match ? match[1] : null;
-      });
-      console.log(this.containerData);
-      this.available_alacarte_list = [];
-    } else if (direction === 'left') {
-      this.available_alacarte_list.push(...this.added_alacarte_list);
-      this.added_alacarte_list = [];
+  // moveAll_alacarte_Items(direction: 'left' | 'right') {
+  //   this.modified = true;
+  //   if (direction === 'right') {
+  //     this.added_alacarte_list.push(...this.available_alacarte_list);
+  //     this.alacarte_list_id = this.available_alacarte_list.map((item: any) => {
+  //       const match = item.match(/\((\d+)\)/);
+  //       return match ? match[1] : null;
+  //     });
+  //     this.containerData = this.added_alacarte_list.map((item: any) => {
+  //       const match = item.match(/\((\d+)\)/);
+  //       return match ? match[1] : null;
+  //     });
+  //     console.log(this.containerData);
+  //     this.available_alacarte_list = [];
+  //   } else if (direction === 'left') {
+  //     this.available_alacarte_list.push(...this.added_alacarte_list);
+  //     this.added_alacarte_list = [];
+  //   }
+  //   this.filteredAvailableAlacarteList = [...this.available_alacarte_list];
+  //   this.filteredAddedList = [...this.added_alacarte_list];
+  //   this.selectedItems.clear();
+  // }
+
+  //   moveAll_alacarte_Items(direction: 'left' | 'right') {
+  //   this.modified = true;
+
+  //   if (direction === 'right') {
+  //     // move only filtered items from available → added
+  //     this.added_alacarte_list.push(...this.filteredAvailableAlacarteList);
+
+  //     // extract IDs only for moved items
+  //     const movedIds = this.filteredAvailableAlacarteList.map((item: any) => {
+  //       const match = item.match(/\((\d+)\)/);
+  //       return match ? match[1] : null;
+  //     });
+
+  //     this.alacarte_list_id.push(...movedIds);
+  //     this.containerData.push(...movedIds);
+
+  //     // remove only moved items from available
+  //     this.available_alacarte_list = this.available_alacarte_list.filter(
+  //       (item: any) => !this.filteredAvailableAlacarteList.includes(item)
+  //     );
+
+  //   } else if (direction === 'left') {
+  //     // move only filtered items from added → available
+  //     this.available_alacarte_list.push(...this.filteredAddedList);
+
+  //     // remove only moved items from added
+  //     this.added_alacarte_list = this.added_alacarte_list.filter(
+  //       (item: any) => !this.filteredAddedList.includes(item)
+  //     );
+  //   }
+
+  //   // refresh filters
+  //   this.filteredAvailableAlacarteList = [...this.available_alacarte_list];
+  //   this.filteredAddedList = [...this.added_alacarte_list];
+  //   this.selectedItems.clear();
+  // }
+
+    moveAll_alacarte_Items(direction: 'left' | 'right') {
+      this.modified = true;
+
+      if (direction === 'right') {
+        const itemsToMove = [...this.filteredAvailableAlacarteList];
+        console.log("Moving filtered available → added", itemsToMove);
+        itemsToMove.forEach(item => {
+          if (!this.added_alacarte_list.includes(item)) {
+            this.added_alacarte_list.push(item);
+          }
+        });
+        this.available_alacarte_list = this.available_alacarte_list.filter(
+          (item: any) => !itemsToMove.includes(item)
+        );
+        this.containerData = [...this.added_alacarte_list];
+        this.containerData = this.containerData.map((item: any) => {
+          const match = item.match(/\((\d+)\)/);
+          return match ? match[1] : null;
+        }).filter(Boolean);
+
+        console.log("Final containerData (full items):", this.containerData);
+        console.log("Final alacarte_list_id (only IDs):", this.alacarte_list_id);
+
+      } else if (direction === 'left') {
+        console.log("Moving filtered added → available");
+
+        const itemsToMove = [...this.filteredAddedList];
+        console.log("Moving filtered added", itemsToMove);
+        itemsToMove.forEach(item => {
+          if (!this.available_alacarte_list.includes(item)) {
+            this.available_alacarte_list.push(item);
+          }
+        });
+        this.added_alacarte_list = this.added_alacarte_list.filter(
+          (item: any) => !itemsToMove.includes(item)
+        );
+        this.containerData = [...this.added_alacarte_list];
+        this.containerData = this.containerData.map((item: any) => {
+          const match = item.match(/\((\d+)\)/);
+          return match ? match[1] : null;
+        }).filter(Boolean);
+
+        console.log("Final containerData (full items):", this.containerData);
+        console.log("Final alacarte_list_id (only IDs):", this.alacarte_list_id);
+      }
+      this.filteredAvailableAlacarteList = [...this.available_alacarte_list];
+      this.filteredAddedList = [...this.added_alacarte_list];
+
+      this.selectedItems.clear();
     }
-    this.filteredAvailableAlacarteList = [...this.available_alacarte_list];
-    this.filteredAddedList = [...this.added_alacarte_list];
-    this.selectedItems.clear();
-  }
+
+
+
+
+
+
+
+  // moveAll_bouquet_Items(direction: 'left' | 'right') {
+  //   this.modified = true;
+  //   if (direction === 'right') {
+  //     console.log('right to left');
+
+  //     this.added_bouquet_list.push(...this.available_bouquet_list);
+  //     this.available_bouquet_list.forEach((item: any) => {
+  //       if (!this.added_bouquet_list.includes(item)) {
+  //         this.added_bouquet_list.push(item);
+  //       }
+  //     });
+  //     this.containerData = this.added_bouquet_list.map((item: any) => {
+  //       const match = item.match(/\((\d+)\)/);
+  //       return match ? match[1] : null;
+  //     });
+  //     console.log(this.containerData);
+  //     this.available_bouquet_list = [];
+  //   } else if (direction === 'left') {
+  //     console.log('left to right');
+
+  //     this.added_bouquet_list.forEach((item: any) => {
+  //       if (!this.available_bouquet_list.includes(item)) {
+  //         this.available_bouquet_list.push(item);
+  //       }
+  //     });
+  //     this.bouquet_list_id = this.available_bouquet_list.map((item: any) => {
+  //       const match = item.match(/\((\d+)\)/);
+  //       return match ? match[1] : null;
+  //     });
+  //     console.log(this.bouquet_list_id);
+  //     this.available_bouquet_list.push(...this.added_bouquet_list);
+  //     this.added_bouquet_list = [];
+  //   }
+
+  //   this.filteredAvailableBouquetList = [...this.available_bouquet_list];
+  //   this.filteredAddedBouquetList = [...this.added_bouquet_list];
+  //   this.selectedItems.clear();
+  // }
 
 
   moveAll_bouquet_Items(direction: 'left' | 'right') {
     this.modified = true;
     if (direction === 'right') {
-      console.log('right to left');
-
-      this.added_bouquet_list.push(...this.available_bouquet_list);
-      this.available_bouquet_list.forEach((item: any) => {
+      console.log('moving FILTERED available → added');
+      const itemsToMove = [...this.filteredAvailableBouquetList];
+      console.log("Moving filtered available → added", itemsToMove);
+      itemsToMove.forEach(item => {
         if (!this.added_bouquet_list.includes(item)) {
           this.added_bouquet_list.push(item);
         }
       });
-      // this.bouquet_list_id = this.available_bouquet_list.map((item: any) => {
-      //   const match = item.match(/\((\d+)\)/);
-      //   return match ? match[1] : null;
-      // });
-      this.containerData = this.added_bouquet_list.map((item: any) => {
+      this.available_alacarte_list = this.available_alacarte_list.filter(
+        (item: any) => !itemsToMove.includes(item)
+      );
+      this.containerData = [...this.added_bouquet_list];
+      this.containerData = this.containerData.map((item: any) => {
         const match = item.match(/\((\d+)\)/);
         return match ? match[1] : null;
-      });
-      console.log(this.containerData);
-      this.available_bouquet_list = [];
-    } else if (direction === 'left') {
-      console.log('left to right');
+      }).filter(Boolean);
 
-      this.added_bouquet_list.forEach((item: any) => {
+      console.log("Final containerData (full items):", this.containerData);
+      console.log("Final alacarte_list_id (only IDs):", this.added_bouquet_list);
+    } else if (direction === 'left') {
+      console.log("moving FILTERED added → available");
+      const itemsToMove = [...this.filteredAddedBouquetList];
+      itemsToMove.forEach(item => {
         if (!this.available_bouquet_list.includes(item)) {
           this.available_bouquet_list.push(item);
         }
       });
-      this.bouquet_list_id = this.available_bouquet_list.map((item: any) => {
+      this.added_bouquet_list = this.added_bouquet_list.filter(
+        (item: any) => !itemsToMove.includes(item)
+      );
+    }
+    this.containerData = this.added_bouquet_list
+      .map((item: any) => {
         const match = item.match(/\((\d+)\)/);
         return match ? match[1] : null;
-      });
-      console.log(this.bouquet_list_id);
-      this.available_bouquet_list.push(...this.added_bouquet_list);
-      this.added_bouquet_list = [];
-    }
-
+      })
+      .filter(Boolean);
+    console.log("Final containerData (only IDs):", this.containerData);
+    console.log("Right side items (added_bouquet_list):", this.added_bouquet_list);
     this.filteredAvailableBouquetList = [...this.available_bouquet_list];
     this.filteredAddedBouquetList = [...this.added_bouquet_list];
     this.selectedItems.clear();
   }
+
   filterAvailableList(): void {
     this.cdr.detectChanges();
     console.log(this.filteredAvailableAlacarteList);

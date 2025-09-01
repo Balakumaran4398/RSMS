@@ -25,9 +25,9 @@
                             </div>
                         </div>
                     </div>
-                    <div class="mb-3 edit">
-                        <div class="col-12 col-md-4">
-                            <span class="form-label">LCO Name</span>
+                    <div class="mb-3 edit ">
+                        <div class="col-12 col-md-4 ">
+                            <label class="form-label">LCO Name</label>
                         </div>
                         <div class="col-12 col-md-8">
                             <input class="" type="text" id="" name="" value="" formControlName="operatorname">
@@ -38,7 +38,7 @@
                     </div>
                     <div class="mb-3 edit">
                         <div class="col-12 col-md-4">
-                            <span class="form-label">Mobile Number 1</span>
+                            <label class="form-label">Mobile Number 1</label>
                         </div>
                         <div class="col-12 col-md-8">
                             <input class="" type="text" pattern="0-9" maxlength="10" (keypress)="onKeydown($event)"
@@ -69,7 +69,7 @@
                     </div>
                     <div class="mb-3 edit">
                         <div class="col-12 col-md-4">
-                            <span class="form-label">Address</span>
+                            <label class="form-label">Address</label>
                         </div>
                         <div class="col-12 col-md-8">
                             <input class="" type="text" id="" name="" value="" formControlName="address">
@@ -81,7 +81,7 @@
                     <div class="mb-3 edit">
                         <div class="col-12 col-md-4">
 
-                            <span class="form-label">Area Name</span>
+                            <label class="form-label">Area Name</label>
                         </div>
                         <div class="col-12 col-md-8">
                             <input class="" type="text" formControlName="area">
@@ -92,7 +92,7 @@
                     </div>
                     <div class="mb-3 edit">
                         <div class="col-12 col-md-4">
-                            <span class="form-label">State</span>
+                            <label class="form-label">State</label>
                         </div>
                         <div class="col-12 col-md-8">
                             <input class="" type="text" formControlName="state">
@@ -104,7 +104,7 @@
 
                     <div class="mb-3 edit">
                         <div class="col-12 col-md-4">
-                            <span class="form-label">Email</span>
+                            <label class="form-label">Email</label>
                         </div>
                         <div class="col-12 col-md-8">
                             <input class="" type="mail" formControlName="mail">
@@ -132,7 +132,7 @@
 
                     <div class="mb-3 edit">
                         <div class="col-12 col-md-4">
-                            <span class="form-label">Pincode</span>
+                            <label class="form-label">Pincode</label>
                         </div>
                         <div class="col-12 col-md-8">
                             <input class="" type="text" pattern="0-9" maxlength="6" (keypress)="onKeydown($event)"
@@ -146,7 +146,7 @@
                     </div>
                     <div class="mb-3 edit">
                         <div class="col-12 col-md-4">
-                            <span class="form-label">User ID</span>
+                            <label class="form-label">User ID</label>
                         </div>
                         <div class="col-12 col-md-8">
                             <input class="" type="text" formControlName="userid">
@@ -161,7 +161,7 @@
                     </div>
                     <div class="mb-3 edit">
                         <div class="col-12 col-md-4">
-                            <span class="form-label">Password</span>
+                            <label class="form-label">Password</label>
                         </div>
                         <div class="col-12 col-md-8">
                             <input class="" type="password" formControlName="password" maxlength="12">
@@ -178,7 +178,7 @@
                     </div>
                     <div class="mb-3 edit">
                         <div class="col-12 col-md-4">
-                            <span class="form-label">Business Name</span>
+                            <label class="form-label">Business Name</label>
                         </div>
                         <div class="col-12 col-md-8">
                             <select class="form-select" formControlName="lcobusinessid">
@@ -214,7 +214,7 @@
 
                     <div class="mb-3 edit">
                         <div class="col-12 col-md-4">
-                            <span class="form-label">Name Head</span>
+                            <label class="form-label">Name Head</label>
                         </div>
                         <div class="col-12 col-md-8">
                             <div class="custom-radio">
@@ -231,7 +231,7 @@
                     </div>
                     <div class="mb-3 edit">
                         <div class="col-12 col-md-4">
-                            <span class="form-label">Operator Name</span>
+                            <label class="form-label">Operator Name</label>
                         </div>
                         <div class="col-12 col-md-8">
                             <input class="" type="text" id="" name="" value="" formControlName="operatorname">
@@ -242,7 +242,7 @@
                     </div>
                     <div class="mb-3 edit">
                         <div class="col-12 col-md-4">
-                            <span class="form-label">Mobile Number</span>
+                            <label class="form-label">Mobile Number</label>
                         </div>
                         <div class="col-12 col-md-8">
                             <input class="" type="text" pattern="0-9" maxlength="10" (keypress)="onKeydown($event)"
@@ -273,7 +273,7 @@
                     </div>
                     <div class="mb-3 edit">
                         <div class="col-12 col-md-4">
-                            <span class="form-label">Email</span>
+                            <label class="form-label">Email</label>
                         </div>
                         <div class="col-12 col-md-8">
                             <input class="" type="mail" formControlName="mail">
@@ -298,20 +298,10 @@
                             </div>
                         </div>
                     </div>
-                    <!-- <div class="mb-3 edit">
-                        <div class="col-12 col-md-4">
-                            <span class="form-label">Mobile Number 2</span>
-                        </div>
-                        <div class="col-12 col-md-8">
-                            <input class="" type="text" pattern="0-9" maxlength="10" (keypress)="onKeydown($event)"
-                                formControlName="contactnumber2">
-                            <div *ngIf="form.get('contactnumber2')?.invalid && form.get('contactnumber2')?.touched">
-                            </div>
-                        </div>
-                    </div> -->
+                    
                     <div class="mb-3 edit">
                         <div class="col-12 col-md-4">
-                            <span class="form-label">Address</span>
+                            <label class="form-label">Address</label>
                         </div>
                         <div class="col-12 col-md-8">
                             <input class="" type="text" id="" name="" value="" formControlName="address">
@@ -323,7 +313,7 @@
                     <div class="mb-3 edit">
                         <div class="col-12 col-md-4">
 
-                            <span class="form-label">Area Name</span>
+                            <label class="form-label">Area Name</label>
                         </div>
                         <div class="col-12 col-md-8">
                             <input class="" type="text" formControlName="area">
@@ -335,7 +325,7 @@
                     <div class="mb-3 edit">
                         <div class="col-12 col-md-4">
 
-                            <span class="form-label">Street Name</span>
+                            <label class="form-label">Street Name</label>
                         </div>
                         <div class="col-12 col-md-8">
                             <input class="" type="text" formControlName="street">
@@ -346,7 +336,7 @@
                     </div>
                     <div class="mb-3 edit">
                         <div class="col-12 col-md-4">
-                            <span class="form-label">State</span>
+                            <label class="form-label">State</label>
                         </div>
                         <div class="col-12 col-md-8">
                             <input class="" type="text" formControlName="state">
@@ -360,7 +350,7 @@
 
                     <div class="mb-3 edit">
                         <div class="col-12 col-md-4">
-                            <span class="form-label">Pincode</span>
+                            <label class="form-label">Pincode</label>
                         </div>
                         <div class="col-12 col-md-8">
                             <input class="" type="text" pattern="0-9" maxlength="6" (keypress)="onKeydown($event)"
@@ -374,7 +364,7 @@
                     </div>
                     <div class="mb-3 edit">
                         <div class="col-12 col-md-4">
-                            <span class="form-label">User Name</span>
+                            <label class="form-label">User Name</label>
                         </div>
                         <div class="col-12 col-md-8">
                             <input class="" type="text" formControlName="userid">
@@ -389,7 +379,7 @@
                     </div>
                     <div class="mb-3 edit">
                         <div class="col-12 col-md-4">
-                            <span class="form-label">Password</span>
+                            <label class="form-label">Password</label>
                         </div>
                         <div class="col-12 col-md-8">
                             <input class="" type="password" formControlName="password" maxlength="12">
@@ -407,7 +397,7 @@
 
                     <div class="mb-3 edit">
                         <div class="col-12 col-md-4">
-                            <span class="form-label">Business Name</span>
+                            <label class="form-label">Business Name</label>
                         </div>
                         <div class="col-12 col-md-8">
                             <select class="form-select" formControlName="lcobusinessid">

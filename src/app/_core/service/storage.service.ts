@@ -141,6 +141,42 @@ export class StorageService {
     }
     return {};
   }
+  public getLCORecharge(): any {
+    const user = window.sessionStorage.getItem(USER_KEY);
+    if (user) {
+      const parsedUser = JSON.parse(user);
+      let LCO = parsedUser.islcorecharge;
+      return parsedUser;
+    }
+    return {};
+  }
+  public getInventoryUpload(): any {
+    const user = window.sessionStorage.getItem(USER_KEY);
+    if (user) {
+      const parsedUser = JSON.parse(user);
+      let LCO = parsedUser.isinventoryupload;
+      return parsedUser;
+    }
+    return {};
+  }
+  public getTopSubscription(): any {
+    const user = window.sessionStorage.getItem(USER_KEY);
+    if (user) {
+      const parsedUser = JSON.parse(user);
+      let LCO = parsedUser.istopsubscription;
+      return parsedUser;
+    }
+    return {};
+  }
+  public getVersion(): any {
+    const user = window.sessionStorage.getItem(USER_KEY);
+    if (user) {
+      const parsedUser = JSON.parse(user);
+      let LCO = parsedUser.isversion;
+      return parsedUser;
+    }
+    return {};
+  }
   public getUserID(): any {
     const user = window.sessionStorage.getItem(USER_KEY);
     if (user) {
@@ -201,13 +237,22 @@ export class StorageService {
     const user = this.getLCO();
     return user.islco || '';
   }
-  // public getNavigationList(): any {
-  //   console.log('11111111111,dfdfdsff');
-
-  //   const user = this.getNavList();
-  //   console.log('User from getNavigationList:', user);
-  //   return user.navigationmap || {};
-  // }
+  public getIsTopSubscription(): any {
+    const user = this.getTopSubscription();
+    return user.istopsubscription || '';
+  }
+  public getIsLCO_Recharge(): any {
+    const user = this.getLCORecharge();
+    return user.islcorecharge || '';
+  }
+    public getIsVersion(): any {
+    const user = this.getVersion();
+    return user.isversion || '';
+  }
+    public getIsInventoryUpload(): any {
+    const user = this.getInventoryUpload();
+    return user.isinventoryupload || '';
+  }
   public getNavigationList(): any {
     return this.getNavList(); // do NOT access user.navigationmap
   }

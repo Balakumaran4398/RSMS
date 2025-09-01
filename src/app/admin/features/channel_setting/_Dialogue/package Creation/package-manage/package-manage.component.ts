@@ -815,7 +815,7 @@ export class PackageManageComponent {
     }
     let dialogData = { type: type, package_id: this.package_id }
     const dialogRef = this.dialog.open(PackageBASEDEMOComponent, {
-      width: width, 
+      width: width,
       panelClass: 'custom-dialog-container',
       data: dialogData
     });
@@ -1116,73 +1116,356 @@ export class PackageManageComponent {
   }
 
   alacarteId: any;
+  // moveAll_alacarte_Items(direction: 'left' | 'right') {
+  //   this.modified = true;
+  //   if (direction === 'right') {
+  //     this.added_alacarte_list.push(...this.available_alacarte_list);
+  //     this.alacarte_list_id = this.available_alacarte_list.map((item: any) => {
+  //       const match = item.match(/\((\d+)\)/);
+  //       return match ? match[1] : null;
+  //     });
+  //     this.containerData = this.added_alacarte_list.map((item: any) => {
+  //       const match = item.match(/\((\d+)\)/);
+  //       return match ? match[1] : null;
+  //     });
+  //     this.available_alacarte_list = [];
+  //   } else if (direction === 'left') {
+  //     this.available_alacarte_list.push(...this.added_alacarte_list);
+  //     this.added_alacarte_list = [];
+
+  //   }
+  //   this.filteredAvailableAlacarteList = [...this.available_alacarte_list];
+  //   this.filteredAddedList = [...this.added_alacarte_list];
+  //   this.selectedItems.clear();
+  // }
+  // moveAll_alacarte_Items(direction: 'left' | 'right') {
+  //   this.modified = true;
+
+  //   if (direction === 'right') {
+
+  //     const itemsToMove = [...this.filteredAvailableAlacarteList];
+  //     console.log("Moving filtered available → added", itemsToMove);
+  //     console.log("Moving filtered available → added", this.added_alacarte_list);
+
+  //     // ✅ add only new items to right side (no duplicates)
+  //     itemsToMove.forEach(item => {
+  //       if (!this.added_alacarte_list.includes(item)) {
+  //         this.added_alacarte_list.push(item);
+  //       }
+  //     });
+
+  //     // ✅ remove only moved items from left side
+  //     this.available_alacarte_list = this.available_alacarte_list.filter(
+  //       (item: any) => !itemsToMove.includes(item)
+  //     );
+
+  //     // update IDs only for moved items
+  //     const movedIds = itemsToMove.map((item: any) => {
+  //       const match = item.match(/\((\d+)\)/);
+  //       return match ? match[1] : null;
+  //     });
+
+  //     this.alacarte_list_id.push(...movedIds);
+  //     this.containerData.push(...movedIds);
+  //     console.log(this.containerData);
+
+  //   } else if (direction === 'left') {
+  //     console.log("Moving filtered added → available");
+
+  //     const itemsToMove = [...this.filteredAddedList];
+  //     console.log("Moving filtered available → added", itemsToMove);
+  //     console.log("Moving filtered available → added", this.available_alacarte_list);
+  //     // ✅ add only new items to left side (no duplicates)
+  //     itemsToMove.forEach(item => {
+  //       if (!this.available_alacarte_list.includes(item)) {
+  //         this.available_alacarte_list.push(item);
+  //       }
+  //     });
+
+  //     // ✅ remove only moved items from right side
+  //     this.added_alacarte_list = this.added_alacarte_list.filter(
+  //       (item: any) => !itemsToMove.includes(item)
+  //     );
+  //   }
+
+  //   // 🔄 Refresh filtered lists so UI updates
+  //   this.filteredAvailableAlacarteList = [...this.available_alacarte_list];
+  //   this.filteredAddedList = [...this.added_alacarte_list];
+
+  //   // clear selection
+  //   this.selectedItems.clear();
+  // }
+
+  // moveAll_alacarte_Items(direction: 'left' | 'right') {
+  //   this.modified = true;
+
+  //   if (direction === 'right') {
+  //     const itemsToMove = [...this.filteredAvailableAlacarteList];
+  //     console.log("Moving filtered available → added", itemsToMove);
+
+  //     // ✅ Add only new items to right side (no duplicates)
+  //     itemsToMove.forEach(item => {
+  //       if (!this.added_alacarte_list.includes(item)) {
+  //         this.added_alacarte_list.push(item);
+  //       }
+  //     });
+  //     console.log('added_alacarte_list', this.added_alacarte_list);
+  //     console.log('available_alacarte_list', this.available_alacarte_list);
+
+  //     // ✅ Remove only moved items from left side
+  //     this.available_alacarte_list = this.available_alacarte_list.filter(
+  //       (item: any) => itemsToMove.includes(item)
+  //     );
+
+
+  //     // ✅ Extract moved IDs
+  //     const movedIds = itemsToMove.map((item: any) => {
+  //       const match = item.match(/\((\d+)\)/);
+  //       return match ? match[1] : null;
+  //     }).filter(Boolean);
+
+  //     // ✅ Keep containerData = already inside + new moved data
+
+  //     // ✅ Remove duplicates (if needed)
+
+
+  //     // ✅ Keep alacarte_list_id also updated
+  //     this.alacarte_list_id = Array.from(new Set([
+  //       ...this.alacarte_list_id,
+  //       ...movedIds
+  //     ]));
+  //     this.containerData = this.added_alacarte_list
+
+  //     console.log("Final containerData:", this.containerData);
+
+
+  //   } else if (direction === 'left') {
+  //     console.log("Moving filtered added → available");
+
+  //     const itemsToMove = [...this.filteredAddedList];
+  //     console.log("Moving filtered added", itemsToMove);
+
+  //     // ✅ add only new items to left side (no duplicates)
+  //     itemsToMove.forEach(item => {
+  //       if (!this.available_alacarte_list.includes(item)) {
+  //         this.available_alacarte_list.push(item);
+  //       }
+  //     });
+
+  //     // ✅ remove only moved items from right side
+  //     this.added_alacarte_list = this.added_alacarte_list.filter(
+  //       (item: any) => !itemsToMove.includes(item)
+  //     );
+
+  //     // ✅ also remove from containerData & alacarte_list_id
+  //     const removedIds = itemsToMove.map((item: any) => {
+  //       const match = item.match(/\((\d+)\)/);
+  //       return match ? match[1] : null;
+  //     });
+
+
+  //     this.alacarte_list_id = this.alacarte_list_id.filter(
+  //       (id: any) => !removedIds.includes(id)
+  //     );
+  //     this.containerData = this.available_alacarte_list
+  //   }
+
+  //   // 🔄 Refresh filtered lists so UI updates
+  //   this.filteredAvailableAlacarteList = [...this.available_alacarte_list];
+  //   this.filteredAddedList = [...this.added_alacarte_list];
+
+  //   // clear selection
+  //   this.selectedItems.clear();
+  // }
+
+
+
   moveAll_alacarte_Items(direction: 'left' | 'right') {
     this.modified = true;
     if (direction === 'right') {
-      this.added_alacarte_list.push(...this.available_alacarte_list);
-      this.alacarte_list_id = this.available_alacarte_list.map((item: any) => {
+      const itemsToMove = [...this.filteredAvailableAlacarteList];
+      console.log("Moving filtered available → added", itemsToMove);
+      itemsToMove.forEach(item => {
+        if (!this.added_alacarte_list.includes(item)) {
+          this.added_alacarte_list.push(item);
+        }
+      });
+      this.available_alacarte_list = this.available_alacarte_list.filter(
+        (item: any) => !itemsToMove.includes(item)
+      );
+      this.containerData = [...this.added_alacarte_list];
+      this.containerData = this.containerData.map((item: any) => {
         const match = item.match(/\((\d+)\)/);
         return match ? match[1] : null;
-      });
-      this.containerData = this.added_alacarte_list.map((item: any) => {
-        const match = item.match(/\((\d+)\)/);
-        return match ? match[1] : null;
-      });
-      this.available_alacarte_list = [];
-    } else if (direction === 'left') {
-      this.available_alacarte_list.push(...this.added_alacarte_list);
-      this.added_alacarte_list = [];
+      }).filter(Boolean);
 
+      console.log("Final containerData (full items):", this.containerData);
+      console.log("Final alacarte_list_id (only IDs):", this.alacarte_list_id);
+
+    } else if (direction === 'left') {
+      console.log("Moving filtered added → available");
+
+      const itemsToMove = [...this.filteredAddedList];
+      console.log("Moving filtered added", itemsToMove);
+      itemsToMove.forEach(item => {
+        if (!this.available_alacarte_list.includes(item)) {
+          this.available_alacarte_list.push(item);
+        }
+      });
+      this.added_alacarte_list = this.added_alacarte_list.filter(
+        (item: any) => !itemsToMove.includes(item)
+      );
+      this.containerData = [...this.added_alacarte_list];
+      this.containerData = this.containerData.map((item: any) => {
+        const match = item.match(/\((\d+)\)/);
+        return match ? match[1] : null;
+      }).filter(Boolean);
+
+      console.log("Final containerData (full items):", this.containerData);
+      console.log("Final alacarte_list_id (only IDs):", this.alacarte_list_id);
     }
     this.filteredAvailableAlacarteList = [...this.available_alacarte_list];
     this.filteredAddedList = [...this.added_alacarte_list];
+
     this.selectedItems.clear();
   }
 
 
+  // moveAll_bouquet_Items(direction: 'left' | 'right') {
+  //   this.modified = true;
+  //   if (direction === 'right') {
+  //     console.log('right to left');
+
+  //     this.added_bouquet_list.push(...this.available_bouquet_list);
+  //     this.available_bouquet_list.forEach((item: any) => {
+  //       if (!this.added_bouquet_list.includes(item)) {
+  //         this.added_bouquet_list.push(item);
+  //       }
+  //     });
+
+  //     this.containerData = this.added_bouquet_list.map((item: any) => {
+  //       const match = item.match(/\((\d+)\)/);
+  //       return match ? match[1] : null;
+  //     });
+  //     console.log(this.containerData);
+  //     this.available_bouquet_list = [];
+  //   } else if (direction === 'left') {
+  //     console.log('left to right');
+
+  //     this.added_bouquet_list.forEach((item: any) => {
+  //       if (!this.available_bouquet_list.includes(item)) {
+  //         this.available_bouquet_list.push(item);
+  //       }
+  //     });
+  //     this.bouquet_list_id = this.available_bouquet_list.map((item: any) => {
+  //       const match = item.match(/\((\d+)\)/);
+  //       return match ? match[1] : null;
+  //     });
+  //     console.log(this.bouquet_list_id);
+  //     this.available_bouquet_list.push(...this.added_bouquet_list);
+  //     this.added_bouquet_list = [];
+  //   }
+
+  //   this.filteredAvailableBouquetList = [...this.available_bouquet_list];
+  //   this.filteredAddedBouquetList = [...this.added_bouquet_list];
+  //   this.selectedItems.clear();
+  // }
+
+  // moveAll_bouquet_Items(direction: 'left' | 'right') {
+  //   this.modified = true;
+
+  //   if (direction === 'right') {
+  //     console.log('moving FILTERED available → added');
+
+  //     // move only filtered available items
+  //     this.added_bouquet_list.push(...this.filteredAvailableBouquetList);
+
+  //     // remove moved items from available
+  //     this.available_bouquet_list = this.available_bouquet_list.filter(
+  //       (item: any) => !this.filteredAvailableBouquetList.includes(item)
+  //     );
+
+  //     // update IDs for moved items
+  //     const movedIds = this.filteredAvailableBouquetList.map((item: any) => {
+  //       const match = item.match(/\((\d+)\)/);
+  //       return match ? match[1] : null;
+  //     });
+  //     this.containerData.push(...movedIds);
+
+  //   } else if (direction === 'left') {
+  //     console.log('moving FILTERED added → available');
+
+  //     // move only filtered added items
+  //     this.available_bouquet_list.push(...this.filteredAddedBouquetList);
+
+  //     // remove moved items from added
+  //     this.added_bouquet_list = this.added_bouquet_list.filter(
+  //       (item: any) => !this.filteredAddedBouquetList.includes(item)
+  //     );
+
+  //     // update bouquet_list_id
+  //     this.bouquet_list_id = this.available_bouquet_list.map((item: any) => {
+  //       const match = item.match(/\((\d+)\)/);
+  //       return match ? match[1] : null;
+  //     });
+  //   }
+
+  //   // refresh filtered lists
+  //   this.filteredAvailableBouquetList = [...this.available_bouquet_list];
+  //   this.filteredAddedBouquetList = [...this.added_bouquet_list];
+  //   this.selectedItems.clear();
+
+  // }
 
   moveAll_bouquet_Items(direction: 'left' | 'right') {
     this.modified = true;
     if (direction === 'right') {
-      console.log('right to left');
-
-      this.added_bouquet_list.push(...this.available_bouquet_list);
-      this.available_bouquet_list.forEach((item: any) => {
+      console.log('moving FILTERED available → added');
+      const itemsToMove = [...this.filteredAvailableBouquetList];
+      console.log("Moving filtered available → added", itemsToMove);
+      itemsToMove.forEach(item => {
         if (!this.added_bouquet_list.includes(item)) {
           this.added_bouquet_list.push(item);
         }
       });
-      // this.bouquet_list_id = this.available_bouquet_list.map((item: any) => {
-      //   const match = item.match(/\((\d+)\)/);
-      //   return match ? match[1] : null;
-      // });
-      this.containerData = this.added_bouquet_list.map((item: any) => {
+      this.available_alacarte_list = this.available_alacarte_list.filter(
+        (item: any) => !itemsToMove.includes(item)
+      );
+      this.containerData = [...this.added_bouquet_list];
+      this.containerData = this.containerData.map((item: any) => {
         const match = item.match(/\((\d+)\)/);
         return match ? match[1] : null;
-      });
-      console.log(this.containerData);
-      this.available_bouquet_list = [];
-    } else if (direction === 'left') {
-      console.log('left to right');
+      }).filter(Boolean);
 
-      this.added_bouquet_list.forEach((item: any) => {
+      console.log("Final containerData (full items):", this.containerData);
+      console.log("Final alacarte_list_id (only IDs):", this.added_bouquet_list);
+    } else if (direction === 'left') {
+      console.log("moving FILTERED added → available");
+      const itemsToMove = [...this.filteredAddedBouquetList];
+      itemsToMove.forEach(item => {
         if (!this.available_bouquet_list.includes(item)) {
           this.available_bouquet_list.push(item);
         }
       });
-      this.bouquet_list_id = this.available_bouquet_list.map((item: any) => {
+      this.added_bouquet_list = this.added_bouquet_list.filter(
+        (item: any) => !itemsToMove.includes(item)
+      );
+    }
+    this.containerData = this.added_bouquet_list
+      .map((item: any) => {
         const match = item.match(/\((\d+)\)/);
         return match ? match[1] : null;
-      });
-      console.log(this.bouquet_list_id);
-      this.available_bouquet_list.push(...this.added_bouquet_list);
-      this.added_bouquet_list = [];
-    }
+      })
+      .filter(Boolean);
 
+    console.log("Final containerData (only IDs):", this.containerData);
+    console.log("Right side items (added_bouquet_list):", this.added_bouquet_list);
     this.filteredAvailableBouquetList = [...this.available_bouquet_list];
     this.filteredAddedBouquetList = [...this.added_bouquet_list];
     this.selectedItems.clear();
   }
+
+
   containerData: any = [];
   drop(event: CdkDragDrop<string[]>) {
     console.log(event);
@@ -1200,10 +1483,6 @@ export class PackageManageComponent {
         event.currentIndex,
       );
     }
-    // this.containerData = event.container.data.map(item => {
-    //   const match = item.match(/\((.*?)\)/);
-    //   return match ? match[1] : null;
-    // }).filter(Boolean);
 
     this.containerData = event.container.data.map((item: any) => {
       const matches = item.match(/\((\d+)\)/g);
@@ -1344,6 +1623,7 @@ export class PackageManageComponent {
     this.containerID = this.alacarteId || 0
     console.log(this.containerID);
     this.containerData = this.containerData.length == 0 ? 0 : this.containerData;
+    console.log(this.containerData);
 
     if (this.alacarte_list_id) {
       console.log('save');
@@ -1365,6 +1645,7 @@ export class PackageManageComponent {
             }
           });
           console.log(this.alacarte_list_id);
+          console.log(this.containerData);
           this.userService.AddingdAlacarteTo_Base_Package(this.modified, this.containerData, this.role, this.username, this.package_id).subscribe((res: any) => {
             console.log(res);
             this.swal.success(res?.message);

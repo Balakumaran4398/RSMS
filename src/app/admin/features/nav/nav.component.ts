@@ -64,6 +64,10 @@ export class NavComponent implements OnInit, AfterViewInit {
   operatorBalance: any;
   distributor: boolean = false;
   isLco: boolean = false;
+  istopsubscription: boolean = false;
+  isInventoryUpload: boolean = false;
+  isVersion: boolean = false;
+  islcorecharge: boolean = false;
   navigationList: any = {};
   navigationList1: any = {};
   SublcopermissionObj: any;
@@ -96,6 +100,15 @@ export class NavComponent implements OnInit, AfterViewInit {
 
 
     this.isLco = storageservice.getIsLCO();
+    this.islcorecharge = storageservice.getIsLCO_Recharge();
+    this.istopsubscription = storageservice.getIsTopSubscription();
+    this.isInventoryUpload = storageservice.getIsInventoryUpload();
+    this.isVersion = storageservice.getIsVersion();
+    console.log('lco recharge',this.islcorecharge);
+    console.log('top subscription',this.istopsubscription);
+    console.log('inventory upload',this.isInventoryUpload);
+    console.log('version',this.isVersion);
+    
 
     if (this.role.includes('ROLE_ADMIN')) {
       console.log('111111111111--------------Admin');
