@@ -79,6 +79,9 @@ export class AllocatedComponent implements OnInit, OnDestroy {
       this.lco_list = Object.entries(data[0].operatorid).map(([key, value]) => {
         return { name: key, value: value };
       });
+         this.caslist = Object.entries(data[0].castype).map(([key, value]) => {
+        return { name: key, value: value };
+      });
       this.filteredOperators = this.lco_list;
       console.log(this.lco_list);
       // this.caslist = data[0].castype;
@@ -86,7 +89,7 @@ export class AllocatedComponent implements OnInit, OnDestroy {
     })
 
     this.operatorList();
-    this.casList();
+    // this.casList();
   }
   ngOnInit(): void {
 
@@ -115,18 +118,18 @@ export class AllocatedComponent implements OnInit, OnDestroy {
       this.filteredOperators = this.lco_list;
     })
   }
-  casList() {
-    this.userService.Cas_type(this.role, this.username).subscribe((data) => {
-      this.cas = data;
-      console.log('dfdsfdsfsd', this.cas);
-      this.cas = data.map((item: any) => ({
-        id: item.id,
-        name: item.casname
-      }));
-      this.caslist = this.cas;
-      console.log(this.cas);
-    });
-  }
+  // casList() {
+  //   this.userService.Cas_type(this.role, this.username).subscribe((data) => {
+  //     this.cas = data;
+  //     console.log('dfdsfdsfsd', this.cas);
+  //     this.cas = data.map((item: any) => ({
+  //       id: item.id,
+  //       name: item.casname
+  //     }));
+  //     this.caslist = this.cas;
+  //     console.log(this.cas);
+  //   });
+  // }
 
 
 
