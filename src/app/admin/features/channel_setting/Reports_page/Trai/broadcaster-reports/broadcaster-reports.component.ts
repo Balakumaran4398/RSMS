@@ -31,7 +31,7 @@ export class BroadcasterReportsComponent implements OnInit {
   selectedYear: any;
   submitted: boolean = false;
   broadcasterid: any;
-  broadcastername: any;
+  broadcastername: any=0;
   broadcastername_1: any;
   selectedValue: any;
   monthlyReportCastitle: any;
