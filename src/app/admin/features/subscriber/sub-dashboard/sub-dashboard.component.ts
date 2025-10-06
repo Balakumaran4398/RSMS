@@ -387,6 +387,7 @@ export class SubDashboardComponent implements OnInit {
       this.sublcoDiscount = this.lcoDeatails?.sublcodiscount;
       this.isCollected_details = this.lcoDeatails?.isCollected;
 
+      console.log('isCollected_details', this.isCollected_details);
       console.log('wallet', this.wallet);
       console.log('subAddonAdd', this.subAddonAdd);
       console.log('ADD SMARTCARD', this.addsmartcard);
@@ -2190,7 +2191,6 @@ export class SubDashboardComponent implements OnInit {
   //   });
   // }
   recharge1() {
-
     console.log('row11    recharge1     --------- 111111111111111111', this.rows)
     console.log('row12    recharge1   ----------  222222222222222222222', this.rowData1)
     this.confirmation = true;

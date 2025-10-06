@@ -181,7 +181,7 @@ export class LcodashboardreportComponent implements OnInit {
         this.swal.Error(err?.error?.message);
         this.swal.Close();
       });
-      this.swal.Close();
+    this.swal.Close();
   }
 
   getLcoInvoiceReport(reportType: number) {
@@ -436,6 +436,8 @@ export class LcodashboardreportComponent implements OnInit {
       ]
     }
     else if (this.type == 9) {
+      console.log("fdsfjdsjdksjfkdsjfkdsjfkjd : ----------------------Type ",this.type);
+      
       this.columnDefs1 = [
         { headerName: "S.No", valueGetter: 'node.rowIndex+1', lockPosition: true, headerCheckboxSelection: true, checkboxSelection: true, width: 100, filter: false },
         {
@@ -476,9 +478,6 @@ export class LcodashboardreportComponent implements OnInit {
           }
         },
 
-
-        //  { headerName: "S.No", valueGetter: 'node.rowIndex+1', lockPosition: true, headerCheckboxSelection: true, checkboxSelection: true, width: 100, filter: false },
-        // { headerName: "SMARTCARD", field: 'smartcard', width: 250 },
         { headerName: "BOXID", field: 'boxid', width: 200 },
         { headerName: "CORTON BOX", field: 'cartonbox', width: 200 },
         { headerName: "SUBSCRIBER NAME	", field: 'customername', width: 250 },
@@ -847,7 +846,7 @@ export class LcodashboardreportComponent implements OnInit {
   }
 
   ngAfterViewInit() {
-    ($('#Area')as any).select2({
+    ($('#Area') as any).select2({
       placeholder: 'Select Area',
       allowClear: true
     });

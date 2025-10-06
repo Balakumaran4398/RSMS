@@ -79,9 +79,11 @@ export class AllocatedComponent implements OnInit, OnDestroy {
       this.lco_list = Object.entries(data[0].operatorid).map(([key, value]) => {
         return { name: key, value: value };
       });
-         this.caslist = Object.entries(data[0].castype).map(([key, value]) => {
+      this.caslist = Object.entries(data[0].castype).map(([key, value]) => {
+        console.log(data[0].castype);
         return { name: key, value: value };
       });
+      console.log(this.caslist);
       this.filteredOperators = this.lco_list;
       console.log(this.lco_list);
       // this.caslist = data[0].castype;

@@ -1405,8 +1405,7 @@ export class MsorDialogueportsComponent implements OnInit, OnDestroy {
   getRecharge() {
     if (this.role == 'ROLE_SUBLCO') {
       this.swal.Loading();
-      this.userService.getRechargeHistory(this.role, this.username, this.selectedRechargeType, this.subOperatorId, this.fromdate, this.todate, 0, 4,
-        this.retailerId, 3, 0).subscribe(
+      this.userService.getRechargeHistory(this.role, this.username, this.selectedRechargeType, this.subOperatorId, this.fromdate, this.todate, 0, 4, this.retailerId, 3, 0,0).subscribe(
           (response: HttpResponse<any>) => {
             if (response.status === 200) {
               console.log(response);
@@ -1429,8 +1428,7 @@ export class MsorDialogueportsComponent implements OnInit, OnDestroy {
     } else if (this.role == 'ROLE_SUBSCRIBER') {
       console.log(this.subOpid);
       this.swal.Loading();
-      this.userService.getRechargeHistory(this.role, this.username, this.selectedRechargeType, this.subOpid, this.fromdate, this.todate, 0, 5,
-        0, 3, this.subscriberid).subscribe(
+      this.userService.getRechargeHistory(this.role, this.username, this.selectedRechargeType, this.subOpid, this.fromdate, this.todate, 0, 5,0, 3, this.subscriberid,0).subscribe(
           (response: HttpResponse<any>) => {
             if (response.status === 200) {
               console.log(response);
@@ -1461,9 +1459,7 @@ export class MsorDialogueportsComponent implements OnInit, OnDestroy {
           Swal.showLoading(null);
         }
       });
-      this.userService.getRechargeHistory(this.role, this.username, this.selectedRechargeType, this.selectedOperator.value || this.operatorId || 0, this.fromdate, this.todate, this.smartcard, this.useragent,
-        this.selectedSubLcoName, 3, 0
-      ).subscribe(
+      this.userService.getRechargeHistory(this.role, this.username, this.selectedRechargeType, this.selectedOperator.value || this.operatorId || 0, this.fromdate, this.todate, this.smartcard, this.useragent, this.selectedSubLcoName, 3, 0,0).subscribe(
         (response: HttpResponse<any>) => {
           if (response.status === 200) {
             this.rowData = response.body;
@@ -1508,8 +1504,7 @@ export class MsorDialogueportsComponent implements OnInit, OnDestroy {
           Swal.showLoading(null);
         }
       });
-      this.userService.getRechargeHistoryReport(this.role, this.username, this.selectedRechargeType, this.subOperatorId, this.fromdate, this.todate, 0, 4, this.retailerId, 2, 0
-      )
+      this.userService.getRechargeHistoryReport(this.role, this.username, this.selectedRechargeType, this.subOperatorId, this.fromdate, this.todate, 0, 4, this.retailerId, 2, 0, 0)
         .subscribe((x: Blob) => {
           const blob = new Blob([x], { type: 'application/xlsx' });
           const data = window.URL.createObjectURL(blob);
@@ -1528,7 +1523,7 @@ export class MsorDialogueportsComponent implements OnInit, OnDestroy {
             Swal.close();
             Swal.fire({
               title: 'Error!',
-              text: error?.error?.message || 'There was an issue generating the PDF CAS form report.',
+              text: error?.error?.message || 'There was an issue generating the Excel report.',
               icon: 'error',
               confirmButtonText: 'Ok'
             });
@@ -1542,8 +1537,7 @@ export class MsorDialogueportsComponent implements OnInit, OnDestroy {
           Swal.showLoading(null);
         }
       });
-      this.userService.getRechargeHistoryReport(this.role, this.username, this.selectedRechargeType, this.subOpid, this.fromdate, this.todate, 0, 5, 0, 2, this.subscriberid
-      )
+      this.userService.getRechargeHistoryReport(this.role, this.username, this.selectedRechargeType, this.subOpid, this.fromdate, this.todate, 0, 5, 0, 2, this.subscriberid, 0)
         .subscribe((x: Blob) => {
           const blob = new Blob([x], { type: 'application/xlsx' });
           const data = window.URL.createObjectURL(blob);
@@ -1562,7 +1556,7 @@ export class MsorDialogueportsComponent implements OnInit, OnDestroy {
             Swal.close();
             Swal.fire({
               title: 'Error!',
-              text: error?.error?.message || 'There was an issue generating the PDF CAS form report.',
+              text: error?.error?.message || 'There was an issue generating the Excel report.',
               icon: 'error',
               confirmButtonText: 'Ok'
             });
@@ -1578,9 +1572,7 @@ export class MsorDialogueportsComponent implements OnInit, OnDestroy {
           Swal.showLoading(null);
         }
       });
-      this.userService.getRechargeHistoryReport(this.role, this.username, this.selectedRechargeType, this.selectedOperator.value || this.operatorId || 0, this.fromdate, this.todate, this.smartcard, this.useragent,
-        this.selectedSubLcoName, 2, 0
-      )
+      this.userService.getRechargeHistoryReport(this.role, this.username, this.selectedRechargeType, this.selectedOperator.value || this.operatorId || 0, this.fromdate, this.todate, this.smartcard, this.useragent, this.selectedSubLcoName, 2, 0, 0)
         .subscribe((x: Blob) => {
           const blob = new Blob([x], { type: 'application/xlsx' });
           const data = window.URL.createObjectURL(blob);
@@ -1599,7 +1591,7 @@ export class MsorDialogueportsComponent implements OnInit, OnDestroy {
             Swal.close();
             Swal.fire({
               title: 'Error!',
-              text: error?.error?.message || 'There was an issue generating the PDF CAS form report.',
+              text: error?.error?.message || 'There was an issue generating the Excel report.',
               icon: 'error',
               confirmButtonText: 'Ok'
             });
@@ -1616,8 +1608,7 @@ export class MsorDialogueportsComponent implements OnInit, OnDestroy {
           Swal.showLoading(null);
         }
       });
-      this.userService.getRechargeHistoryReport(this.role, this.username, this.selectedRechargeType, this.subOperatorId, this.fromdate, this.todate, 0, 4, this.retailerId, 1, 0
-      )
+      this.userService.getRechargeHistoryReport(this.role, this.username, this.selectedRechargeType, this.subOperatorId, this.fromdate, this.todate, 0, 4, this.retailerId, 1, 0, 0)
         .subscribe((x: Blob) => {
           const blob = new Blob([x], { type: 'application/pdf' });
           const data = window.URL.createObjectURL(blob);
@@ -1649,8 +1640,7 @@ export class MsorDialogueportsComponent implements OnInit, OnDestroy {
           Swal.showLoading(null);
         }
       });
-      this.userService.getRechargeHistoryReport(this.role, this.username, this.selectedRechargeType, this.subOpid, this.fromdate, this.todate, 0, 5, 0, 1, this.subscriberid
-      )
+      this.userService.getRechargeHistoryReport(this.role, this.username, this.selectedRechargeType, this.subOpid, this.fromdate, this.todate, 0, 5, 0, 1, this.subscriberid, 0)
         .subscribe((x: Blob) => {
           const blob = new Blob([x], { type: 'application/pdf' });
           const data = window.URL.createObjectURL(blob);
@@ -1684,9 +1674,7 @@ export class MsorDialogueportsComponent implements OnInit, OnDestroy {
           Swal.showLoading(null);
         }
       });
-      this.userService.getRechargeHistoryReport(this.role, this.username, this.selectedRechargeType, this.selectedOperator.value || this.operatorId || 0, this.fromdate, this.todate, this.smartcard, this.useragent,
-        this.selectedSubLcoName, 1, 0
-      )
+      this.userService.getRechargeHistoryReport(this.role, this.username, this.selectedRechargeType, this.selectedOperator.value || this.operatorId || 0, this.fromdate, this.todate, this.smartcard, this.useragent, this.selectedSubLcoName, 1, 0, 0)
         .subscribe((x: Blob) => {
           const blob = new Blob([x], { type: 'application/pdf' });
           const data = window.URL.createObjectURL(blob);

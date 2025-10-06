@@ -65,32 +65,16 @@
                             <label for="">Broadcaster</label>
                         </div>
                         <div class="col-12 col-md-6">
-                            <!-- <input type="text" placeholder="Select a Broadcaster" [(ngModel)]="broadcastername"
-                                (input)="onSearchBroadcaster($event)" [matAutocomplete]="auto" class="example-input">
-
-                            <mat-autocomplete #auto="matAutocomplete">
-                                <mat-option value=" " disabled>Select a Broadcaster</mat-option>
-                                <mat-option *ngFor="let casItem of filteredBroadcaster()" [value]="casItem.name"
-                                    (click)="onSelectionBroadcaster(casItem)">
-                                    {{ casItem.name }}
-                                </mat-option>
-                            </mat-autocomplete> -->
-
+        
                             <select id="broadcaster" style="color: rgb(17, 0, 0);" [(ngModel)]="broadcastername">
-                                <!-- <option value="0" selected style="color: rgb(19, 17, 17);">Select a Broadcaster</option> -->
                                 <option *ngFor="let casItem of broadcasterList" [value]="casItem.id"
                                     (click)="onSelectionBroadcaster(casItem)">
                                     {{ casItem.broadcastername }}
                                 </option>
                             </select>
-<!-- 
-                            <div *ngIf="submitted && !broadcastername" class="text-danger" style="font-size: small;">
-                                Broadcaster is required
-                            </div> -->
                         </div>
                     </div>
                     <div *ngIf="isVisible== false" class="input_box display1 mb-3">
-                        <!-- <div *ngIf="type == '1'" class="input_box display1 mb-3"> -->
                         <div class="col-6 col-md-6">
                             <span style="color: #243359;" for="">CAS Grouped</span>
                         </div>
@@ -107,7 +91,6 @@
                     </div>
                     <div *ngIf="isVisible">
                         <div class="input_box display1 mb-3">
-                            <!-- <div *ngIf="type == '1'" class="input_box display1 mb-3"> -->
                             <div class="col-6 col-md-6">
                                 <span style="color: #243359;" for="">CAS Grouped</span>
                             </div>
@@ -123,9 +106,7 @@
                             </div>
                         </div>
 
-                        <!-- <div *ngIf="isVisible"> -->
                         <div class="input_box display1 mb-3">
-                            <!-- <div *ngIf="type == '1'" class="input_box display1 mb-3"> -->
                             <div class="col-6 col-md-6">
                                 <span style="color: #243359;" for="">CAS Combined</span>
                             </div>
@@ -141,7 +122,6 @@
                             </div>
                         </div>
                         <div class="input_box display1 mb-3">
-                            <!-- <div *ngIf="type == '2'" class="input_box display1 mb-3"> -->
                             <div class="col-6 col-md-6">
                                 <span style="color: #243359;" for="">Channel wise</span>
                             </div>
@@ -653,17 +633,17 @@
                 <div class="col display justify-content-end align-items-end mb-3">
                     <!-- <div class="col  mb-3"> -->
                     <div class="d-flex">
-                        <!-- <div class="allreport mb-2" (click)="getAgeing(1)">
-                            <a class="btn btn-success mx-1">
+                        <div class="allreport mb-2" (click)="getAgeing(1)">
+                            <a class="btn btn-success mx-1" style="cursor: pointer;">
                                 Get Report
                             </a>
-                        </div> -->
-                        <div class="input_box mx-2 " (click)="getAgeingReport(2,1)" style="cursor: pointer;">
-                            <img src="/assets/images/icons/Excel.png" alt="Excel Icon" width="40px">
+                        </div>
+                        <div class="input_box mx-2 " (click)="getAgeingReport(2,1)" >
+                            <img src="/assets/images/icons/Excel.png" alt="Excel Icon" width="40px" style="cursor: pointer;">
                             <div class="tooltip">Excel</div>
                         </div>
-                        <div class="input_box mx-2 mb-2" (click)="getAgeingReport(1,1)" style="cursor: pointer;">
-                            <img src="/assets/images/icons/pdf.png" alt="PDF Icon" width="40px">
+                        <div class="input_box mx-2 mb-2" (click)="getAgeingReport(1,1)">
+                            <img src="/assets/images/icons/pdf.png" alt="PDF Icon" width="40px" style="cursor: pointer;">
                             <div class="tooltip">Pdf</div>
                         </div>
 
@@ -701,11 +681,11 @@
                 <div class="col display justify-content-end align-items-end mb-3">
                     <!-- <div class="col  mb-3"> -->
                     <div class="d-flex">
-                        <!-- <div class="allreport mb-2" (click)="getAgeing(2)">
+                        <div class="allreport mb-2" (click)="getAgeing(2)">
                             <a class="btn btn-success mx-1">
                                 Get Report
                             </a>
-                        </div> -->
+                        </div>
                         <div class="input_box mx-2" (click)="getAgeingReport(2,2)" style="cursor: pointer;">
                             <img src="/assets/images/icons/Excel.png" alt="Excel Icon" width="40px">
                             <div class="tooltip">Excel</div>

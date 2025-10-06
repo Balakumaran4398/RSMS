@@ -273,12 +273,12 @@ export class FingerPrintComponent {
       intendlco: [this.intendidLco, Validators.required],
       intendSmartcard: [this.intendidLco, Validators.required],
       type: ['', Validators.required],
-      positiontype: ['', Validators.required],
+      positiontype: [this.position_1, Validators.required],
       fontsize: ['', Validators.required],
       font_style: [0, Validators.required],
       bgcolor: ['', Validators.required],
       fontcolor: ['', Validators.required],
-      transparancy: ['', Validators.required],
+      transparancy: [this.transparancy_1|| 0, Validators.required],
       duration: ['', Validators.required],
       display_duration: ['', Validators.required],
       timegap: [0, Validators.required],
@@ -544,8 +544,10 @@ export class FingerPrintComponent {
       this.form.patchValue({ castype: this.fplistLastObj.castype });
       this.form.patchValue({ castypedisplay: this.fplistLastObj.casname });
       this.form.patchValue({ serviceid: this.fplistLastObj.serviceid });
+      this.form.patchValue({ transparancy_1: this.fplistLastObj.transparancy });
       this.form.patchValue({ servicename: this.fplistLastObj.servicename });
-
+      this.form.patchValue({ position_1: this.fplistLastObj.positiontype });
+      this.form.patchValue({ duration_1: this.fplistLastObj.duration });
       this.form.patchValue({ intendid: this.fplistLastObj.intendid });
       this.form.patchValue({ intendlco: this.fplistLastObj.lconame });
 

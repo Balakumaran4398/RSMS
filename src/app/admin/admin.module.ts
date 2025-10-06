@@ -213,6 +213,7 @@ import { BulkoperatorcreationComponent } from "./features/Bulk_operation/bulkope
 import { VoicerecognizeComponent } from "./features/voicerecognize/voicerecognize.component";
 import { PaymentcustomerComponent } from "./features/Add payment/paymentcustomer/paymentcustomer.component";
 import { LogmaintainComponent } from "./features/logmaintain/logmaintain.component";
+import { AccountInfoComponent } from "./features/account-info/account-info.component";
 @NgModule({
     declarations: [
         AdminBaseComponent, NavComponent, HomeComponent, NavbarComponent, MsodetailsComponent, CasmasterComponent, HomeLoginCredentialComponent,
@@ -282,9 +283,9 @@ import { LogmaintainComponent } from "./features/logmaintain/logmaintain.compone
         LcoSmartcardDialogComponent, LcoSmartcardpayDialogComponent, SmrtBoxidChangeComponent, LcodashboardreportComponent, OperatorareachangeComponent, DiscountdialogComponent, DiscountsmartcardComponent,
         DistributordiscountComponent, DistribtorupdatediscountComponent, LcoDummycmpComponent, DialogChipidComponent, LcodashboardsublcoreportComponent, LcocommisiomddiscountComponent, LogincredentialComponent, LcocommissioncredentialComponent,
         // ===============================================version======================================
-        VersionComponent, VersionLoginCredentialComponent, RechargeConfirmationComponent, VoicerecognizeComponent, PaymentcustomerComponent ,
+        VersionComponent, VersionLoginCredentialComponent, RechargeConfirmationComponent, VoicerecognizeComponent, PaymentcustomerComponent, AccountInfoComponent,
         // ===========================================Logs===========================================
-    LogmaintainComponent
+        LogmaintainComponent
 
     ],
     imports: [

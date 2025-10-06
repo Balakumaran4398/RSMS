@@ -49,7 +49,7 @@
             <mat-error *ngIf="!streetid">Street is required</mat-error>
         </mat-form-field>
         <ag-grid-angular #agGrid id="myGrid" domLayout='normal' class="ag-theme-alpine table-class" rowAnimation
-            [rowSelection]="rowSelection" [gridOptions]="gridOptions" [columnDefs]="columnDefs1" [rowData]="rowData"
+            [rowSelection]="rowSelection" [gridOptions]="gridOptions" [columnDefs]="columnDefs1" [rowData]="rowData1"
             (selectionChanged)="onSelectionChanged()" (gridReady)="onGridReady($event)"
             [enableCellTextSelection]="true">
         </ag-grid-angular>

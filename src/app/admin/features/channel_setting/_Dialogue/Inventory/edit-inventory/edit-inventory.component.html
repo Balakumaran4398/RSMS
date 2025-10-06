@@ -113,11 +113,11 @@
                 <div class="col-12 col-md-4">
                     <label>Select CAS type</label>
                 </div>
-                <div class="col-12 col-md-8 mb-3">
+              <div class="col-12 col-md-8 mb-3">
                     <select id="casType" [(ngModel)]="selectedCasType" [formControl]="CASFormControl">
                         <option value="0" selected>Select a CAS Name</option>
-                        <option *ngFor="let key of caslist" [value]="key.id">
-                            {{ key.name }}
+                        <option *ngFor="let key of filteredCasKeys()" [value]="castype[key]">
+                            {{ key }}
                         </option>
                     </select>
                 </div>

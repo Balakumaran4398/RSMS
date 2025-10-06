@@ -1,0 +1,42 @@
+
+.card {
+    padding: 0.5rem;
+}
+
+.input-box label {
+    font-weight: 500;
+    margin-bottom: 5px;
+    display: block;
+    font-size: 16px;
+    color: #243359;
+}
+input {
+    width: 80%;
+    height: 40px;
+    border-radius: 4px;
+    padding: 0px 12px;
+    border-top: 2px solid #b0afaf;
+    border-bottom: 0.9px solid lightgray;
+    border-left: 0.9px solid lightgray;
+    border-right: 0.9px solid lightgray;
+}
+
+.display_1 {
+    display: flex;
+}
+.operator_width {
+    width: 130%;
+}
+@media (max-width: 767.98px) {
+    .btn {
+        padding: 0.5rem 1rem;
+    }
+
+    .operator_width {
+        width: 100%;
+    }
+
+    .display_1 {
+        display: block;
+    }
+}

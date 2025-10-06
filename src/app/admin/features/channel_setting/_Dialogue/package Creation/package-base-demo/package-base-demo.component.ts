@@ -42,6 +42,7 @@ export class PackageBASEDEMOComponent {
   //   { headerName: 'STATUS', field: 'statusdisplay',  width: 130 }
   // ];
   columnDefs: ColDef[] = [];
+  columnDefs1: ColDef[] = [];
 
   loadAddonPackageChannelList() {
 
@@ -78,14 +79,6 @@ export class PackageBASEDEMOComponent {
   }
 
   pair() {
-    // Swal.fire({
-    //   title: 'Loading...',
-    //   html: 'Fetching package channel list...',
-    //   allowOutsideClick: false,
-    //   didOpen: () => {
-    //     Swal.showLoading(null);
-    //   }
-    // });
     this.swal.Loading();
     this.userService.RcasPackageChannelList(this.role, this.username, 1, this.package_id).subscribe(
       (response: any) => {
@@ -115,14 +108,6 @@ export class PackageBASEDEMOComponent {
   }
 
   addonPair() {
-    // Swal.fire({
-    //   title: 'Loading...',
-    //   html: 'Fetching package channel list...',
-    //   allowOutsideClick: false,
-    //   didOpen: () => {
-    //     Swal.showLoading(null);
-    //   }
-    // });
     this.swal.Loading();
     this.userService.RcasPackageChannelList(this.role, this.username, 2, this.package_id).subscribe(
       (response: any) => {
@@ -140,12 +125,10 @@ export class PackageBASEDEMOComponent {
       (error) => {
         console.error('Error fetching addon package channel list', error);
         this.swal.Error1(error?.error?.message);
-     }
+      }
     );
   }
   ngOnInit(): void {
-    // this.userService.AddonPackageChannelList(this.role, this.username, 1, this.package_id).subscribe((data: any) => {
-    // });
     if (this.dailogObj.type === 'pair') {
       this.pair();
     } else if (this.dailogObj.type === 'addonpair') {
@@ -178,24 +161,94 @@ export class PackageBASEDEMOComponent {
             } else if (params.value === false) {
               return `<span style="color: red; font-weight: bold;">Deactive</span>`;
             }
-            return params.value; // handle other values if needed
+            return params.value; 
           }
         },
 
       ];
     } else if (this.dailogObj.type === 'pair') {
       this.columnDefs = [
-        { headerName: 'S.No', valueGetter: 'node.rowIndex + 1', width: 80 },
-        { headerName: 'CHANNEL NAME', field: 'channelname', width: 200 },
+        { headerName: 'S.No', valueGetter: 'node.rowIndex + 1', width: 100 },
+        { headerName: 'CHANNEL NAME', field: 'channelname', width: 350 },
+        { headerName: 'PRODUCT ID', field: 'productid', width: 180 },
+        { headerName: 'CHANNEL ID', field: 'channelid', width: 160 },
+        {
+          headerName: 'STATUS',
+          field: 'statusdisplay',
+          width: 150,
+          cellRenderer: (params: any) => {
+            if (params.value === 'Active') {
+              return `<span style="color: green; font-weight: bold;">${params.value}</span>`;
+            } else if (params.value === 'Deactive') {
+              return `<span style="color: red; font-weight: bold;">${params.value}</span>`;
+            } else {
+              return `<span>${params.value || ''}</span>`;
+            }
+          }
+        }
+      ];
+      this.columnDefs1 = [
+        { headerName: 'S.No', valueGetter: 'node.rowIndex + 1', width: 100 },
+        { headerName: 'CHANNEL NAME', field: 'channelname', width: 250 },
         { headerName: 'PRODUCT ID', field: 'productid', width: 130 },
-        { headerName: 'CHANNEL ID', field: 'channelid', width: 150 },
+        { headerName: 'CHANNEL ID', field: 'channelid', width: 160 },
+        { headerName: 'Matching Type', field: 'matchingType', width: 150 },
+        {
+          headerName: 'STATUS',
+          field: 'statusdisplay',
+          width: 150,
+          cellRenderer: (params: any) => {
+            if (params.value === 'Active') {
+              return `<span style="color: green; font-weight: bold;">${params.value}</span>`;
+            } else if (params.value === 'Deactive') {
+              return `<span style="color: red; font-weight: bold;">${params.value}</span>`;
+            } else {
+              return `<span>${params.value || ''}</span>`;
+            }
+          }
+        }
       ];
     } else if (this.dailogObj.type === 'addonpair') {
       this.columnDefs = [
-        { headerName: 'S.No', valueGetter: 'node.rowIndex + 1', width: 80 },
-        { headerName: 'CHANNEL NAME', field: 'channelname', width: 200 },
-        { headerName: 'PRODUCT ID', field: 'productid', width: 130 },
+        { headerName: 'S.No', valueGetter: 'node.rowIndex + 1', width: 100 },
+        { headerName: 'CHANNEL NAME', field: 'channelname', width: 350 },
+        { headerName: 'PRODUCT ID', field: 'productid', width: 200 },
         { headerName: 'CHANNEL ID', field: 'channelid', width: 150 },
+        {
+          headerName: 'STATUS',
+          field: 'statusdisplay',
+          width: 150,
+          cellRenderer: (params: any) => {
+            if (params.value === 'Active') {
+              return `<span style="color: green; font-weight: bold;">${params.value}</span>`;
+            } else if (params.value === 'Deactive') {
+              return `<span style="color: red; font-weight: bold;">${params.value}</span>`;
+            } else {
+              return `<span>${params.value || ''}</span>`;
+            }
+          }
+        }
+      ];
+      this.columnDefs1 = [
+        { headerName: 'S.No', valueGetter: 'node.rowIndex + 1', width: 100 },
+        { headerName: 'CHANNEL NAME', field: 'channelname', width: 250 },
+        { headerName: 'PRODUCT ID', field: 'productid', width: 150 },
+        { headerName: 'CHANNEL ID', field: 'channelid', width: 150 },
+        { headerName: 'Matching Type', field: 'matchingType', width: 150 },
+        {
+          headerName: 'STATUS',
+          field: 'statusdisplay',
+          width: 150,
+          cellRenderer: (params: any) => {
+            if (params.value === 'Active') {
+              return `<span style="color: green; font-weight: bold;">${params.value}</span>`;
+            } else if (params.value === 'Deactive') {
+              return `<span style="color: red; font-weight: bold;">${params.value}</span>`;
+            } else {
+              return `<span>${params.value || ''}</span>`;
+            }
+          }
+        }
       ];
     }
   }

@@ -804,8 +804,11 @@ export class PackageManageComponent {
   pay_channel(type: any) {
     console.log(type);
     let width = '1500px';
+    let height = '600px'; 
+
     if (type === 'pair') {
-      width = '1250px';
+      width = '1000px';
+      height = '1000px';
     }
     if (type === 'paychannel') {
       width = '805px';
@@ -816,6 +819,7 @@ export class PackageManageComponent {
     let dialogData = { type: type, package_id: this.package_id }
     const dialogRef = this.dialog.open(PackageBASEDEMOComponent, {
       width: width,
+      height:height,
       panelClass: 'custom-dialog-container',
       data: dialogData
     });

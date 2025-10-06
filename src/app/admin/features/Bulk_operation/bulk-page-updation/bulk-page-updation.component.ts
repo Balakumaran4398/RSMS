@@ -327,8 +327,9 @@ export class BulkPageUpdationComponent implements OnInit {
 
   getSubLCOdetails() {
     this.userservice.getSublcoDetails(this.role, this.username).subscribe((data: any) => {
+      console.log("SUBLSOC", data);
       this.lcoDeatails = data;
-      this.retailerid = this.lcoDeatails?.operatorid;
+      this.retailerid = this.lcoDeatails?.retailerid;
       this.isplan = this.lcoDeatails?.permissionlist?.plan;
       this.isdate = this.lcoDeatails?.permissionlist?.date;
       this.isDatetoDate = this.lcoDeatails?.permissionlist?.datetodate;
@@ -483,12 +484,10 @@ export class BulkPageUpdationComponent implements OnInit {
       } else {
         this.isSelectRow = false;
       }
-      console.log("Filtered & Selected Rows:", selectedRows);
       if (selectedRows.length === 0) {
         this.gridApi.deselectAll();
         this.selectedIdsSet.clear();
       }
-      console.log("Final Selected Rows:", selectedRows);
       this.updateSelectedRows(selectedRows);
     }
   }
@@ -499,8 +498,6 @@ export class BulkPageUpdationComponent implements OnInit {
     // this.selectedIds = selectedRows.map((e: any) => e.id);
     this.selectedIds = Array.from(this.selectedIdsSet)
     this.selectedtypes = selectedRows.map((e: any) => e.isactive);
-    console.log("Updated Selected Rows:", selectedRows);
-    console.log("Selected Rows:", this.selectedIds);
   }
   onGridReady = (params: any) => {
     this.gridApi = params.api;

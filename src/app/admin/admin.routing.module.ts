@@ -116,12 +116,14 @@ import { VersionComponent } from './features/version/version.component';
 import { VoicerecognizeComponent } from './features/voicerecognize/voicerecognize.component';
 import { PaymentcustomerComponent } from './features/Add payment/paymentcustomer/paymentcustomer.component';
 import { LogmaintainComponent } from './features/logmaintain/logmaintain.component';
+import { AccountInfoComponent } from './features/account-info/account-info.component';
 
 
 const routes: Routes = [
   {
     path: "", children: [
       { path: 'home', component: HomeComponent, },
+      { path: 'account_info', component: AccountInfoComponent, },
       // --------------------------------------------Dashboard  Reports -------------------------------------
       { path: 'inventoryReport/:id', component: ChartInventoryReportComponent, },
       { path: 'packageReport/:id', component: ChartPackageReportComponent, },

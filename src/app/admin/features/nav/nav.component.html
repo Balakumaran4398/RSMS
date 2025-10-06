@@ -46,13 +46,13 @@
                 <i class="bx bx-home bx-sm icon "></i>
                 Dashboard</a></li>
         <li
-            *ngIf="username !=='manikandan' && (isUser && istopsubscription || isReception) && navigationList.topsubscription">
+            *ngIf="username !=='manikandan' && ((isUser || isReception) && istopsubscription) && navigationList.topsubscription">
             <a (click)="navgetToUrl('/top_subscription');setActiveLinkTabList($event)" [class.hide]="!isSidebarOpen"
                 class="nav-link"><i class='bx bx-table bx-sm icon'></i>
                 Top Subscription Details</a>
         </li>
         <li
-            *ngIf="username !=='manikandan' && (isUser && !istopsubscription || isReception) && navigationList.topsubscription">
+            *ngIf="username !=='manikandan' && ((isUser || isReception) && !istopsubscription ) && navigationList.topsubscription">
             <a (click)="navgetToUrl('/top_sub_detail');setActiveLinkTabList($event)" [class.hide]="!isSidebarOpen"
                 class="nav-link"><i class='bx bx-table bx-sm icon'></i>
                 Top Subscription Details</a>
@@ -142,6 +142,11 @@
                         (click)="navgetToUrl('/subscriber');setActiveLinkTab($event)"><i
                             class="fa fa-fw fa-user on icon">&nbsp;</i>
                         Subscriber Details</a></li>
+                <li *ngIf="isUser">
+                    <a (click)="navgetToUrl('/account_info');setActiveLinkTabList($event)" [class.hide]="!isSidebarOpen"
+                        class="nav-link"><i class='fa-solid fa-book-open-reader icon'></i>
+                        Account Info </a>
+                </li>
                 <li *ngIf="navigationList.expiry_details"><a
                         (click)="navgetToUrl('/expiry');setActiveLinkTab($event)"><i
                             class="fa fas fa-user-alt-slash icon">&nbsp;</i> Expiry

@@ -31,7 +31,7 @@ export class BroadcasterReportsComponent implements OnInit {
   selectedYear: any;
   submitted: boolean = false;
   broadcasterid: any;
-  broadcastername: any=0;
+  broadcastername: any = 0;
   broadcastername_1: any;
   selectedValue: any;
   monthlyReportCastitle: any;
@@ -255,6 +255,7 @@ export class BroadcasterReportsComponent implements OnInit {
         { headerName: 'SUBS COUNT AS 7TH	', field: 'w1', width: 200, cellStyle: { textAlign: 'center' }, },
         { headerName: 'SUBS COUNT AS 14TH	', field: 'w2', width: 200, cellStyle: { textAlign: 'center' }, },
         { headerName: 'SUBS COUNT AS 21TH	', field: 'w3', width: 200, cellStyle: { textAlign: 'center' }, },
+        { headerName: 'SUBS COUNT AS 28TH	', field: 'w4', width: 200, cellStyle: { textAlign: 'center' }, },
         { headerName: 'AVERAGE', field: 'avg', width: 150 },
         { headerName: 'MONTH AND YEAR', field: 'monthyear', width: 150 },
       ]

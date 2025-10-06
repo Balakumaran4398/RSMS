@@ -282,8 +282,8 @@ export class AddonManageComponent {
   pay_channel(type: any) {
     let dialogData = { type: type, package_id: this.id }
     const dialogRef = this.dialog.open(PackageBASEDEMOComponent, {
-      width: '1500px',
-      height: '600px',
+      width: '1000px',
+      // height: '600px',
       panelClass: 'custom-dialog-container',
       data: dialogData
     });

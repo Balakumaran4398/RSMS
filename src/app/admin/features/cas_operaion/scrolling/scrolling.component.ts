@@ -236,7 +236,7 @@ export class ScrollingComponent {
       intendto: ['', Validators.required],
       intendid: [0, Validators.required],
       serviceid: ['', Validators.required],
-      scrollfontsize: ['', Validators.required],
+      scrollfontsize: [0, Validators.required],
       scrollposition: ['', Validators.required],
       scrollcolor: [0, Validators.required],
       scrollbgcolor: [0, Validators.required],

@@ -442,7 +442,7 @@
                                 <label for="">Display Duration</label>
                             </div>
 
-                            <div *ngIf="isminDidDuration" class="col-12 col-md-8">
+                            <!-- <div *ngIf="isminDidDuration" class="col-12 col-md-8"> -->
                                 <input type="text" matInput placeholder="Enter Display duration"
                                     (keypress)="onKeydown($event)" pattern="[0-9]*" maxlength="2"
                                     formControlName="display_duration" [(ngModel)]="display_duration">
@@ -450,9 +450,9 @@
                                     *ngIf="form.get('display_duration')?.invalid && form.get('display_duration')?.touched">
                                     <small class="text-danger">Display Duration is required.</small>
                                 </div>
-                            </div>
+                            <!-- </div> -->
 
-                            <div *ngIf="ismaxDidDuration" class="col-12 col-md-8">
+                            <!-- <div *ngIf="ismaxDidDuration" class="col-12 col-md-8">
                                 <input type="text" matInput placeholder="Enter Display duration"
                                     (keypress)="onKeydown($event)" pattern="[0-9]*" maxlength="3"
                                     formControlName="display_duration" [(ngModel)]="display_duration">
@@ -460,7 +460,7 @@
                                     *ngIf="form.get('display_duration')?.invalid && form.get('display_duration')?.touched">
                                     <small class="text-danger"> Display Duration is required.</small>
                                 </div>
-                            </div>
+                            </div> -->
                         </div>
                         <div *ngIf="isTimeGap" class="input-box mb-3">
                             <div class="col-sm-4">

@@ -10,16 +10,28 @@
                     <div><strong>WALLET SHARE REPORT</strong></div>
                     <div class="tooltip">Wallet smartcard report</div>
                 </div>
-                <div class="card royal-card tooltip-container" (click)="openMsoDialog('sub_online_recharge_count')">
+                <div *ngIf="role== 'ROLE_SUBLCO'" class="card royal-card tooltip-container"
+                    (click)="openMsoDialog('sub_online_recharge_count')">
+                    <div><strong>SUBLCO ONLINE RECHARGE REPORT</strong></div>
+                    <div class="tooltip">Subscriber online recharge report</div>
+                </div>
+                <div *ngIf="role== 'ROLE_SUBSCRIBER'" class="card royal-card tooltip-container"
+                    (click)="openMsoDialog('sub_online_recharge_count')">
                     <div><strong>SUBSCRIBER ONLINE RECHARGE REPORT</strong></div>
                     <div class="tooltip">Subscriber online recharge report</div>
                 </div>
-                <div  class="card royal-card tooltip-container"
+                <div *ngIf="role== 'ROLE_SUBLCO'" class="card royal-card tooltip-container"
                     (click)="openMsoDialog('sublco_offline')"><i class="fas fa-clipboard-list"></i>
-                    <div><strong> Sublco Offline <br> Payment History</strong> </div>
+                    <div><strong> SUBLCO OFFLINE <br> PAYMENT HISTORY</strong> </div>
                     <div class="tooltip">Sublco Offline Payment</div>
                 </div>
-                <div class="card royal-card tooltip-container" (click)="openMsoDialog('recharge_history')">
+                <div *ngIf="role== 'ROLE_SUBLCO'" class="card royal-card tooltip-container"
+                    (click)="openMsoDialog('recharge_history')">
+                    <div><strong>SUBLCO PACKAGE RECHARGE REPORT</strong></div>
+                    <div class="tooltip">Subscriber package recharge report</div>
+                </div>
+                <div *ngIf="role== 'ROLE_SUBSCRIBER'" class="card royal-card tooltip-container"
+                    (click)="openMsoDialog('recharge_history')">
                     <div><strong>SUBSCRIBER PACKAGE RECHARGE REPORT</strong></div>
                     <div class="tooltip">Subscriber package recharge report</div>
                 </div>

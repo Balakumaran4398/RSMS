@@ -1974,12 +1974,12 @@ export class BaseService {
   }
   // -------------------------------------------------------Rechargr History report-------------------------------
 
-  getRechargeHistoryReport(role: any, username: any, type: any, operatorid: any, fromdate: any, todate: any, smartcard: any, useragent: any, sublcoid: any, reporttype: any, subid: any): Observable<Blob> {
-    return this.http.get(BASE_URL + "/report/GetRechargeHistoryReport?role=" + role + "&username=" + encodeURIComponent(username) + "&type=" + type + "&operatorid=" + operatorid + "&fromdate=" + fromdate + "&todate=" + todate + "&smartcard=" + smartcard + "&useragent=" + useragent + "&sublcoid=" + sublcoid + "&reporttype=" + reporttype + "&subid=" + subid, { responseType: 'blob' });
+  getRechargeHistoryReport(role: any, username: any, type: any, operatorid: any, fromdate: any, todate: any, smartcard: any, useragent: any, sublcoid: any, reporttype: any, subid: any, groupid: any): Observable<Blob> {
+    return this.http.get(BASE_URL + "/report/GetRechargeHistoryReport?role=" + role + "&username=" + encodeURIComponent(username) + "&type=" + type + "&operatorid=" + operatorid + "&fromdate=" + fromdate + "&todate=" + todate + "&smartcard=" + smartcard + "&useragent=" + useragent + "&sublcoid=" + sublcoid + "&reporttype=" + reporttype + "&subid=" + subid + "&groupid=" + groupid, { responseType: 'blob' });
   }
 
-  getRechargeHistory(role: any, username: any, type: any, operatorid: any, fromdate: any, todate: any, smartcard: any, useragent: any, sublcoid: any, reporttype: any, subid: any): Observable<HttpResponse<any[]>> {
-    return this.http.get<any[]>(BASE_URL + "/report/GetRechargeHistoryReport?role=" + role + "&username=" + encodeURIComponent(username) + "&type=" + type + "&operatorid=" + operatorid + "&fromdate=" + fromdate + "&todate=" + todate + "&smartcard=" + smartcard + "&useragent=" + useragent + "&sublcoid=" + sublcoid + "&reporttype=" + reporttype + "&subid=" + subid, { observe: 'response' });
+  getRechargeHistory(role: any, username: any, type: any, operatorid: any, fromdate: any, todate: any, smartcard: any, useragent: any, sublcoid: any, reporttype: any, subid: any, groupid: any): Observable<HttpResponse<any[]>> {
+    return this.http.get<any[]>(BASE_URL + "/report/GetRechargeHistoryReport?role=" + role + "&username=" + encodeURIComponent(username) + "&type=" + type + "&operatorid=" + operatorid + "&fromdate=" + fromdate + "&todate=" + todate + "&smartcard=" + smartcard + "&useragent=" + useragent + "&sublcoid=" + sublcoid + "&reporttype=" + reporttype + "&subid=" + subid + "&groupid=" + groupid, { observe: 'response' });
   }
 
   // ---------------------------------------------------------OnlinePaymentHistory--------------------------------------------
@@ -2514,5 +2514,9 @@ export class BaseService {
   }
   getUserOnlineFailurelRecharge(role: any, username: any, smartcard: any, amount: any, transactionid: any, paymentstatus: any, mobileno: any): Observable<any[]> {
     return this.http.post<any[]>(BASE_URL + "/user/UserOnlineFailurelRecharge?role=" + role + "&username=" + username + "&smartcard=" + smartcard + "&amount=" + amount + "&transactionid=" + transactionid + "&paymentstatus=" + paymentstatus + "&mobileno=" + mobileno, {});
+  }
+  // =================================================AccountInfoUpdateIcas==========================================
+  getupdateAccountInformationIcas(role: any, username: any, smartcard: any): Observable<any[]> {
+    return this.http.get<any[]>(BASE_URL + "/subscriber/updateAccountInformationIcas?role=" + role + "&username=" + encodeURIComponent(username) + "&smartcard=" + smartcard);
   }
 }
