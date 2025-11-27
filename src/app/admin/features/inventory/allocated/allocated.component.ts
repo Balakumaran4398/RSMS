@@ -83,7 +83,7 @@ export class AllocatedComponent implements OnInit, OnDestroy {
         console.log(data[0].castype);
         return { name: key, value: value };
       });
-      console.log(this.caslist);
+      console.log("Cas",this.caslist);
       this.filteredOperators = this.lco_list;
       console.log(this.lco_list);
       // this.caslist = data[0].castype;

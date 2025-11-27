@@ -62,12 +62,20 @@
                     <span for="operatorName" class="me-2">Operator Name</span>
                 </div>
                 <div class="col-12 col-md-6">
-                    <select id="lco" [(ngModel)]="operatorname" name="operatorname">
+                    <!-- <select id="lco" [(ngModel)]="operatorname" name="operatorname">
                         <option value="" selected>Select an Operator</option>
                         <option *ngFor="let key of lco_list" [value]="key.operatorid">
                             {{ key.operatorname }}
                         </option>
+                    </select> -->
+                    <select id="lco" [(ngModel)]="operatorname" name="operatorname">
+                        <option value="" selected>Select an Operator</option>
+
+                        <option *ngFor="let item of lco_list" [value]="item.operatorid">
+                            {{ item.operatorname }}
+                        </option>
                     </select>
+
                     <div *ngIf="(lcoForm.submitted ) && !operatorname" class="text-danger">
                         Please select an Operator.
                     </div>

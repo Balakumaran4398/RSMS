@@ -595,7 +595,7 @@ export class HistoryAllReportsComponent implements OnInit {
         (error: any) => {
           Swal.fire({
             title: 'Error!',
-            text: error?.error?.message || 'There was an issue generating the PDF CAS form report.',
+            text: error?.error?.message || 'There was a problem generating the form report.',
             icon: 'error',
             confirmButtonText: 'Ok'
           });
@@ -694,7 +694,7 @@ export class HistoryAllReportsComponent implements OnInit {
         (error: any) => {
           Swal.fire({
             title: 'Error!',
-            text: error?.error?.message || 'There was an issue generating the PDF CAS form report.',
+            text: error?.error?.message || 'There was a problem generating the form report.',
             icon: 'error',
             confirmButtonText: 'Ok'
           });
@@ -791,7 +791,7 @@ export class HistoryAllReportsComponent implements OnInit {
         (error: any) => {
           Swal.fire({
             title: 'Error!',
-            text: error?.error?.message || 'There was an issue generating the PDF CAS form report.',
+            text: error?.error?.message || 'There was a problem generating the form report.',
             icon: 'error',
             confirmButtonText: 'Ok'
           });
@@ -890,7 +890,7 @@ export class HistoryAllReportsComponent implements OnInit {
         (error: any) => {
           Swal.fire({
             title: 'Error!',
-            text: error?.error?.message || 'There was an issue generating the PDF CAS form report.',
+            text: error?.error?.message || 'There was a problem generating the form report.',
             icon: 'error',
             confirmButtonText: 'Ok'
           });
@@ -977,7 +977,7 @@ export class HistoryAllReportsComponent implements OnInit {
         (error: any) => {
           Swal.fire({
             title: 'Error!',
-            text: error?.error?.message || 'There was an issue generating the PDF CAS form report.',
+            text: error?.error?.message || 'There was a problem generating the form report.',
             icon: 'error',
             confirmButtonText: 'Ok'
           });
@@ -1070,7 +1070,7 @@ export class HistoryAllReportsComponent implements OnInit {
         (error: any) => {
           Swal.fire({
             title: 'Error!',
-            text: error?.error?.message || 'There was an issue generating the PDF CAS form report.',
+            text: error?.error?.message || 'There was a problem generating the form report.',
             icon: 'error',
             confirmButtonText: 'Ok'
           });
@@ -1167,7 +1167,7 @@ export class HistoryAllReportsComponent implements OnInit {
         (error: any) => {
           Swal.fire({
             title: 'Error!',
-            text: error?.error?.message || 'There was an issue generating the PDF CAS form report.',
+            text: error?.error?.message || 'There was a problem generating the form report.',
             icon: 'error',
             confirmButtonText: 'Ok'
           });
@@ -1275,7 +1275,7 @@ export class HistoryAllReportsComponent implements OnInit {
         (error: any) => {
           Swal.fire({
             title: 'Error!',
-            text: error?.error?.message || 'There was an issue generating the PDF CAS form report.',
+            text: error?.error?.message || 'There was a problem generating the form report.',
             icon: 'error',
             confirmButtonText: 'Ok'
           });
@@ -1385,7 +1385,7 @@ export class HistoryAllReportsComponent implements OnInit {
         (error: any) => {
           Swal.fire({
             title: 'Error!',
-            text: error?.error?.message || 'There was an issue generating the PDF CAS form report.',
+            text: error?.error?.message || 'There was a problem generating the form report.',
             icon: 'error',
             confirmButtonText: 'Ok'
           });
@@ -1496,7 +1496,7 @@ export class HistoryAllReportsComponent implements OnInit {
         (error: any) => {
           Swal.fire({
             title: 'Error!',
-            text: error?.error?.message || 'There was an issue generating the PDF CAS form report.',
+            text: error?.error?.message || 'There was a problem generating the form report.',
             icon: 'error',
             confirmButtonText: 'Ok'
           });
@@ -1539,7 +1539,7 @@ export class HistoryAllReportsComponent implements OnInit {
     Swal.close();
     Swal.fire({
       title: 'Error!',
-      text: error.message || 'There was an issue generating the PDF CAS form report.',
+      text: error.message || 'There was a problem generating the form report.',
       icon: 'error',
       confirmButtonText: 'Ok'
     });

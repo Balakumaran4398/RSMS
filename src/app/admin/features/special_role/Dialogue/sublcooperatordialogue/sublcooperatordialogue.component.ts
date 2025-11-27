@@ -103,6 +103,7 @@ export class SublcooperatordialogueComponent implements OnInit {
   selectedRow: any;
   userid: any;
   accessip: any;
+  sublco_isactive: any;
   constructor(public dialogRef: MatDialogRef<SublcooperatordialogueComponent>, @Inject(MAT_DIALOG_DATA) public data: any, private fb: FormBuilder, private userservice: BaseService, private storageservice: StorageService, private swal: SwalService, public dialog: MatDialog,) {
     this.role = storageservice.getUserRole();
     this.username = storageservice.getUsername();
@@ -121,6 +122,8 @@ export class SublcooperatordialogueComponent implements OnInit {
     this.contactno2 = data?.data.contactNo2;
     this.address = data?.data.address;
     this.password = data?.data.password;
+    this.sublco_isactive = data?.data.isactive;
+    console.log("dfgdsfdsfdsf===>", this.sublco_isactive);
     this.userId = data?.data.username;
     this.retailerid = data?.data.retailerId;
     this.lcoid = data?.data.operatorId;
@@ -137,6 +140,7 @@ export class SublcooperatordialogueComponent implements OnInit {
       address: ['', Validators.required],
       password: ['', [Validators.required, Validators.pattern('^[A-Za-z\\d@$!%*?&]{6,12}$')]],
       userid: ['', [Validators.required,]],
+      isactive: ['',],
       // password: ['', [Validators.required,  Validators.pattern('^(?=.*[A-Za-z])(?=.*\\d)[A-Za-z\\d@$!%*?&]{6,12}$')]],
       // password: ['', [Validators.required, Validators.pattern('^(?=.*[A-Za-z])(?=.*\\d)[A-Za-z\\d@$!%*?&]{8,}$')]],
       role: this.role,
@@ -152,6 +156,7 @@ export class SublcooperatordialogueComponent implements OnInit {
       address: ['', Validators.required],
       password: ['', [Validators.required, Validators.pattern('^(?=.*[A-Za-z])(?=.*\\d)[A-Za-z\\d@$!%*?&]{8,}$')]],
       userid: ['', [Validators.required,]],
+      isactive: [],
       role: this.role,
       username: this.username,
       operatorid: this.operatorid || this.lcoid,
@@ -164,6 +169,9 @@ export class SublcooperatordialogueComponent implements OnInit {
     this.generateYears();
     this.getSublcoDiscountList();
     console.log(this.type);
+    this.editform.patchValue({
+      isactive: this.sublco_isactive
+    })
   }
 
 
@@ -335,7 +343,7 @@ export class SublcooperatordialogueComponent implements OnInit {
       this.form.markAllAsTouched();
       return;
     }
-    const errorFields = ['retailername', 'contactno', 'contactno2', 'address', 'password', 'role', 'website', 'username', 'operatorid','userid',];
+    const errorFields = ['retailername', 'contactno', 'contactno2', 'address', 'password', 'role', 'website', 'username', 'operatorid', 'userid',];
     this.swal.Loading();
 
     this.userservice.sublcoCreate(this.form.value).subscribe(
@@ -383,8 +391,8 @@ export class SublcooperatordialogueComponent implements OnInit {
           .find(message => message) || 'An error occurred while creating the subscriber.'
         this.swal.Error(errorMessage);
       });
-    const data = ` Old Retailer Name : ${this.editform.value.retailername}, ` + `  Old Mobile Number : ${this.editform.value.contactno}, ` + ` Old Alternate Number :${this.editform.value.contactno2}, ` + ` Old Address : ${this.editform.value.address}, `+ ` Old Username : ${this.editform.value.userId}` + ` Old Password : ${this.editform.value.password}`;
-    const remark = ` New Retailer Name : ${this.retailername}, ` + ` New Mobile Number : ${this.contactno}, ` + ` New Alternate Number :${this.contactno2}, ` + ` New Address : ${this.address}, ` + ` New Username : ${this.userId}` +` New Password : ${this.password}`;
+    const data = ` Old Retailer Name : ${this.editform.value.retailername}, ` + `  Old Mobile Number : ${this.editform.value.contactno}, ` + ` Old Alternate Number :${this.editform.value.contactno2}, ` + ` Old Address : ${this.editform.value.address}, ` + ` Old Username : ${this.editform.value.userId}` + ` Old Password : ${this.editform.value.password}`;
+    const remark = ` New Retailer Name : ${this.retailername}, ` + ` New Mobile Number : ${this.contactno}, ` + ` New Alternate Number :${this.contactno2}, ` + ` New Address : ${this.address}, ` + ` New Username : ${this.userId}` + ` New Password : ${this.password}`;
     this.logCreate('Street Update Button Clicked', remark, data);
   }
 

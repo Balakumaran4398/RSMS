@@ -235,12 +235,12 @@
                                 <label for="">Show Style</label>
                             </div>
                             <div class="col-12 col-md-8">
-                                <select placeholder="Select the type" formControlName="type" [(ngModel)]="s_Style">
+                                <select placeholder="Select the type" formControlName="showstyle" [(ngModel)]="s_Style">
                                     <option value="0" disabled>Select a Show Style</option>
                                     <option value="" *ngFor="let ty of showStyle" [value]="ty.value"
                                         [disabled]="castype == 4 && ty.value == 3">{{ty.lable}} </option>
                                 </select>
-                                <div *ngIf=" form.get('type')?.invalid && form.get('type')?.touched">
+                                <div *ngIf=" form.get('showstyle')?.invalid && form.get('showstyle')?.touched">
                                     <small class="text-danger">Show Style is required.</small>
                                 </div>
                             </div>

@@ -5,10 +5,10 @@
             <i class="fa fa-plus"></i> New
         </a>
 
-        <button class="btn btn-outline-info mx-1" mat-raised-button color="primary" type="button"
+        <!-- <button class="btn btn-outline-info mx-1" mat-raised-button color="primary" type="button"
             [disabled]="!isAnyRowSelected" (click)="opendialogue('deletesublco','')">
             Delete
-        </button>
+        </button> -->
         <button [disabled]="!sublcorecharge" class="btn btn-outline-info mx-1" mat-raised-button color="accent"
             type="button" (click)="openLcoRechargelogue('sub_lco_recharge','')">
             Recharge
@@ -60,12 +60,12 @@
                             </div>
                             <div class="d-flex">
                                 <div class="sub-tittle mb-3 col-md-12">
-                                    <p class="text "
-                                        [ngClass]="operator?.isactive == 'true' ?  'deactive-text' : 'active-text'">
+                                    <p class="text " [ngClass]="operator?.isactive  ?  'active-text' : 'deactive-text'">
                                         <span class="label">Status</span>
                                         <span class="separator1">:</span>
-                                        <span class="last1">{{ operator?.isactive == 'true' ? 'Deactive' :
-                                            'Active'}}</span>
+                                        <span class="last1">
+                                            {{ operator?.isactive ? 'Active' : 'Deactive' }}
+                                        </span>
                                     </p>
                                 </div>
                             </div>
@@ -125,7 +125,7 @@
                                     <div class="circle" style="background-color: rgb(122, 64, 129);"><span
                                             class="circle-text">
                                             <!-- {{operator?.count?.activecount}} -->
-                                        {{operator.activecount}}</span></div>
+                                            {{operator.activecount}}</span></div>
                                 </span>
                                 <span class="tooltip">Active</span>
                             </div>

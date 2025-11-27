@@ -309,6 +309,8 @@
                 <li *ngIf="navigationList.bulk_lco_transfer"><a
                         (click)="navgetToUrl('/special_lcotransfer');setActiveLinkTab($event)">
                         <i class='fas fa-exchange-alt icon'></i> &nbsp;LCO Transfer</a></li>
+                <li><a (click)="navgetToUrl('/bulk_qrcode');setActiveLinkTab($event)">
+                        <i class='fas fa-qrcode icon'></i> &nbsp;Bulk QR Download</a></li>
             </ul>
         </li>
 
@@ -505,7 +507,7 @@
                 <li *ngIf="!isSubLco"><a (click)="navgetToUrl('/Recurring');setActiveLinkTab($event)"><i
                             class="fa-regular fa-registered icon">&nbsp;</i>Recurring</a>
                 </li>
-
+                {{isOperator || isSubLco || distributor}}
                 <li *ngIf="distributor"><a (click)="navgetToUrl('/special_lcotransfer');setActiveLinkTab($event)">
                         <i class='fas fa-exchange-alt icon'></i> &nbsp;LCO Transfer</a> </li>
                 <li><a (click)="navgetToUrl('/Subscription_Extend');setActiveLinkTab($event)"><i
@@ -607,8 +609,11 @@
                 class="nav-link"> <i class="bx bx-shield-plus bx-sm icon ">&nbsp;</i>Change Password</a> </li>
         <!-- <li *ngIf="isUser || (distributor && isOperator)"><a (click)="navgetToUrl('/logs');setActiveLinkTab($event)"
                 class="nav-link"> <i class="bx bx-memory-card bx-sm icon "></i>&nbsp;Logs </a></li> -->
-        <li *ngIf="isUser || (distributor && isOperator)"><a (click)="navgetToUrl('/version');setActiveLinkTab($event)"
-                class="nav-link"> <i class="bx bx-bullseye bx-sm icon "></i>&nbsp;Updates </a></li>
+
+
+
+        <!-- <li *ngIf="isUser || (distributor && isOperator)"><a (click)="navgetToUrl('/version');setActiveLinkTab($event)"
+                class="nav-link"> <i class="bx bx-bullseye bx-sm icon "></i>&nbsp;Updates </a></li> -->
 
     </ul>
 </section>

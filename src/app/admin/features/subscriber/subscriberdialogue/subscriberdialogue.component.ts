@@ -109,9 +109,11 @@ export class SubscriberdialogueComponent implements OnInit, OnDestroy {
   unpair: boolean = false;
   ischeck: boolean = false;
   pairedSmartcard: any;
+  logpairedSmartcard: any;
   packageMessage: any;
   sendMessageName: any;
   pairedBoxid: any;
+  logpairedBoxid: any;
 
   cardOldBalance: any;
   newexpiryDate: any;
@@ -135,6 +137,7 @@ export class SubscriberdialogueComponent implements OnInit, OnDestroy {
   castype: any;
   castypeSmartcard: any = 0;
   lconame: any;
+  loglconame: any;
 
   smartcard: any = 0;
   submitted: boolean = false;
@@ -142,8 +145,12 @@ export class SubscriberdialogueComponent implements OnInit, OnDestroy {
   boxid: any = "";
   cas: any[] = [];
   lcoid: any = '';
+  loglcoid: any = '';
+  lcolcoid: any = '';
   lcoareaid: any = 0;
+  loglcoareaid: any = 0;
   lcostreetid: any = 0;
+  loglcostreetid: any = 0;
   withsubscription = false;
   area: any[] = [];
   searchTerm: any;
@@ -156,38 +163,60 @@ export class SubscriberdialogueComponent implements OnInit, OnDestroy {
   pairSmartcardList: any[] = [];
   packageMessageList: any[] = [];
   subSmartcard: any;
+  logsubSmartcard: any;
   subBoxid: any;
+  logsubBoxid: any;
   isUnpairDialogue: any;
   operatorid: any;
+  logoperatorid: any;
   subid: any;
+  logsubid: any;
   islock = false;
   password: any;
   subscribername: any;
+  logsubscribername: any;
   boxstatus: any;
   subusername: any;
   Wallet: any;
 
   currentstatus: any;
   subscribernameLast: any;
+  logsubscribernameLast: any;
   dateofbirth: any;
+  logdateofbirth: any;
   fathername: any;
+  logfathername: any;
   customerid: any;
+  logcustomerid: any;
   address: any;
   mobileno: any;
   landlineno: any;
+  loglandlineno: any;
   installaddress: any;
+  loginstalladdress: any;
   email: any;
+  logemail: any;
   casformid: any
+  logcasformid: any
   livetv = false;
+  loglivetv = false;
   addressproof: any;
+  logaddressproof: any;
 
   idproof: any;
+  logidproof: any;
   addressprooftypeid: any;
+  logaddressprooftypeid: any;
   idprooftypeid: any;
+  logidprooftypeid: any;
   areaid: any;
+  logareaid: any;
   streetid: any;
+  logstreetid: any;
   areaname: any;
+  logareaname: any;
   streetname: any;
+  logstreetname: any;
 
   packageid: any;
   plan: any;
@@ -198,28 +227,38 @@ export class SubscriberdialogueComponent implements OnInit, OnDestroy {
   tomorrow: any;
   f_subid: any;
   boxno: any;
+  logboxno: any;
   message: any;
   smart: boolean = false;
   box: boolean = false;
   status: any;
+  logStatus: any;
   smartcardno: any;
   operatorname: any;
   mobile: any;
   cardbalance: any;
   currentPackagename: any;
+  logcurrentPackagename: any;
   noOfDays: any;
+  lognoOfDays: any;
   customwerAmount: any;
   expirydate: any;
+  logexpirydate: any;
   packagename: any;
   newpackagename: any = 0;
+  lognewpackagename: any = 0;
   statusdisplay: any;
+  logStatusdisplay: any;
   baseplan: any;
   newpin: any;
+  lognewpin: any;
   statusValue: any;
   statusSus: any;
   oldpin: any;
+  logoldpin: any;
   PVRstatus: boolean = false;
   forcemsg: any;
+  logForcemsg: any;
   plantype: any;
   rechargetype: any[] = [];
   packagenameList: any[] = [];
@@ -262,6 +301,7 @@ export class SubscriberdialogueComponent implements OnInit, OnDestroy {
 
   lcoDeatails: any;
   operatorId: any;
+  logoperatorId: any;
   isplan = false;
   isdate = false;
   isdateTodate = false;
@@ -400,10 +440,21 @@ export class SubscriberdialogueComponent implements OnInit, OnDestroy {
   operatorIdValue: any = '';
   distributor: boolean = false;
   isCollected_details: boolean = false;
+  userid: any;
+  accessip: any;
+  logSmartcard: any;
+  logPVR: any;
+  logMobileno: any;
+  logAddress: any;
+  logForceMsge: any;
   constructor(private router: Router, public dialogRef: MatDialogRef<SubscriberdialogueComponent>, private swal: SwalService,
     @Inject(MAT_DIALOG_DATA) public data: any, public userservice: BaseService, private cdr: ChangeDetectorRef, public storageService: StorageService, private fb: FormBuilder, private zone: NgZone) {
     console.log(data);
     this.subscriberdata = data;
+    this.userid = storageService.getUserid();
+    this.accessip = storageService.getAccessip();
+    console.log("USER ID ===================>", this.userid);
+
     this.role = storageService.getUserRole();
     this.username = storageService.getUsername();
     console.log(this.role);
@@ -419,50 +470,83 @@ export class SubscriberdialogueComponent implements OnInit, OnDestroy {
     console.log('isCollected', this.iscollected);
 
     this.subSmartcard = data.subSmartcarList;
+    this.logsubSmartcard = data.subSmartcarList;
     this.subBoxid = data.subBoxList;
+    this.logsubBoxid = data.subBoxList;
     this.pairedSmartcard = this.pairSmartcardList;
+    console.log("fiuesoirueiowruewiouoi", this.pairedSmartcard);
+
     this.pairedBoxid = this.pairBoxList;
     this.subscribername = data['detailsList'].customername;
+    this.logsubscribername = data['detailsList'].customername;
     this.packageStatus = data['detailsList'].package_status;
     this.operatorid = data['detailsList'].operatorid;
+    this.logoperatorid = data['detailsList'].operatorid;
     this.subid = data['detailsList'].subid;
+    this.logsubid = data['detailsList'].subid;
     this.baseplan = data['detailsList'].baseplan;
     this.mobile = data['detailsList'].mobileno;
+    this.logMobileno = data['detailsList'].mobileno;
     this.Wallet = data['detailsList'].balance;
     this.password = data['detailsList'].password;
     this.islock = data['detailsList'].islock;
     this.boxstatus = data['detailsList'].boxstatus;
     this.subusername = data['detailsList'].username;
     this.subscribernameLast = data['detailsList'].customernamelast;
+    this.logsubscribernameLast = data['detailsList'].customernamelast;
     this.casformid = data['detailsList'].casformid;
+    this.logcasformid = data['detailsList'].casformid;
     this.dateofbirth = data['detailsList'].dateofbirth;
+    this.logdateofbirth = data['detailsList'].dateofbirth;
     this.fathername = data['detailsList'].fathername;
+    this.logfathername = data['detailsList'].fathername;
     this.lconame = data['detailsList'].operatorname;
+    this.loglconame = data['detailsList'].operatorname;
     this.cardbalance = data['detailsList'].cardbalance;
     this.currentPackagename = data['detailsList'].smartpackagename;
+    this.logcurrentPackagename = data['detailsList'].smartpackagename;
     this.noOfDays = data['detailsList'].noofdays
+    this.lognoOfDays = data['detailsList'].noofdays
     this.customerid = data['detailsList'].customerid ? data['detailsList'].customerid : 0;
     this.address = data['detailsList'].address;
+    this.logAddress = data['detailsList'].address;
     this.mobileno = data['detailsList'].mobileno;
     this.landlineno = data['detailsList'].landlineno;
+    this.loglandlineno = data['detailsList'].landlineno;
     this.installaddress = data['detailsList'].installaddress;
+    this.loginstalladdress = data['detailsList'].installaddress;
     this.email = data['detailsList'].email;
+    this.logemail = data['detailsList'].email;
     this.livetv = data['detailsList'].islivetv;
+    this.loglivetv = data['detailsList'].islivetv;
     this.addressproof = data['detailsList'].addressproof;
+    this.logaddressproof = data['detailsList'].addressproof;
     this.addressprooftypeid = data['detailsList'].addressprooftypeid;
+    this.logaddressprooftypeid = data['detailsList'].addressprooftypeid;
     this.idproof = data['detailsList'].idproof;
+    this.logidproof = data['detailsList'].idproof;
     this.idprooftypeid = data['detailsList'].idprooftypeid;
+    this.logidprooftypeid = data['detailsList'].idprooftypeid;
     this.areaid = data['detailsList'].areaid;
+    this.logareaid = data['detailsList'].areaid;
     this.streetid = data['detailsList'].streetid;
+    this.logstreetid = data['detailsList'].streetid;
     this.areaname = data['detailsList'].areaname;
+    this.logareaname = data['detailsList'].areaname;
     this.streetname = data['detailsList'].streetname;
+    this.logstreetname = data['detailsList'].streetname;
     this.statusSus = data['detailsList'].statusSus;
     this.smartcardno = data['detailsList'].smartcard;
+    this.logSmartcard = data['detailsList'].smartcard;
     this.statusdisplay = data['detailsList'].statusdisplay;
+    this.logStatusdisplay = data['detailsList'].statusdisplay;
+
     this.boxno = data['detailsList'].boxid;
+    this.logboxno = data['detailsList'].boxid;
     this.castype = data['detailsList'].castype;
     this.operatname = data['detailsList'].operatorname;
     // console.log(this.operatname);
+
 
     this.servicename = data['detailsList'].customername;
     this.basePackageId = data['detailsList'].packageid;
@@ -479,13 +563,19 @@ export class SubscriberdialogueComponent implements OnInit, OnDestroy {
       this.rechargeToggle = true;
     }
     this.expirydate = data['detailsList'].expirydate;
+    this.logexpirydate = data['detailsList'].expirydate;
     this.operatorname = data['detailsList'].operatorname;
     this.packagename = data['subdetaillist']?.[0]?.packagename;
     this.message = data['accountsList']?.msgcontent;
+    this.logForceMsge = data['accountsList']?.msgcontent;
     this.status = data['detailsList'].status;
+    this.logStatus = data['detailsList'].status;
     this.oldpin = data['detailsList'].pinnumber;
+    this.logoldpin = data['detailsList'].pinnumber;
     this.PVRstatus = data['detailsList'].pvrsupport;
+    this.logPVR = data['detailsList'].pvrsupport;
     this.forcemsg = data['detailsList'].isdeleteforcemessage;
+    this.logForcemsg = data['detailsList'].isdeleteforcemessage;
     this.islogindetails = data.islogindetails || false;
     this.isEditSubscriberDetails = data.isEditSubscriberDetails || false;
     this.isConfirmationReport = data.isConfirmationReport || false;
@@ -634,6 +724,7 @@ export class SubscriberdialogueComponent implements OnInit, OnDestroy {
     this.userservice.getOpDetails(this.role, this.username).subscribe((data: any) => {
       this.lcoDeatails = data;
       this.operatorId = this.lcoDeatails?.operatorid;
+      this.logoperatorId = this.lcoDeatails?.operatorid;
       this.operatorname = this.lcoDeatails?.operatorname;
       console.log(this.operatorId);
       this.isplan = this.lcoDeatails?.isplan;
@@ -846,6 +937,8 @@ export class SubscriberdialogueComponent implements OnInit, OnDestroy {
     });
     $('#package').on('change', (event: any) => {
       this.newpackagename = event.target.value;
+
+      console.log("trtohretjhrjth===============>", this.newpackagename);
       this.onSelectionrechargetype(event);
     });
 
@@ -1410,10 +1503,14 @@ export class SubscriberdialogueComponent implements OnInit, OnDestroy {
         Swal.showLoading(null);
       }
     });
+    const data = ` CAS Type Smartcard: ${this.castypeSmartcard}, ` + ` Smartcard: ${this.smartcard},` + `Boxid : ${this.boxid}`;
+    console.log(data);
+
     this.userservice.addSmartcardToSubscriber(this.role, this.username, this.operatorid, this.castypeSmartcard, this.smartcard, this.boxid, this.subid_1 || this.newSubid).subscribe(
       (res: any) => {
         this.returndata = res;
         this.swal.success(res?.message);
+        this.logCreate('Add Smartcard Creation', 'Create', data);
       }, (err) => {
         this.swal.Error(err?.error?.message);
       });
@@ -1426,11 +1523,26 @@ export class SubscriberdialogueComponent implements OnInit, OnDestroy {
     //   return;
     // }
     console.log(this.Editform.value);
+    console.log("Mobile Number =====>", this.logMobileno);
+    console.log("Address =====>", this.logAddress);
 
     this.swal.Loading();
+    const remark = `Old Subscriber Name :${this.subscribername}, ` + ` Old Subscriber Last Name :${this.logsubscribernameLast}, ` + ` Old Address :${this.logAddress}, ` + `Old Boxid :${this.logboxno}, `
+      + ` Old Area Name :${this.logareaid}, ` + ` Old Address Proof ID: ${this.logaddressprooftypeid}, ` + ` Old Address Proof :${this.logaddressproof}, ` + `Old Date of Birth : ${this.logdateofbirth}, `
+      + ` Old landlineno : ${this.loglandlineno}, ` + ` Old Live TV : ${this.loglivetv}, ` + `Old CAS Form ID :${this.logcasformid}, ` + `Old Father's Name : ${this.logfathername}, `
+      + ` Old Mobile Number : ${this.logMobileno}, ` + `Old  Street Name : ${this.logstreetid}, ` + `Old Identity Proof ID : ${this.logidprooftypeid}, `
+      + `Old Identity Proof : ${this.logidproof}, ` + ` Old Installation Address  : ${this.loginstalladdress}, ` + ` old Email : ${this.logemail}`
+
+    const data = `New Subscriber Name :${this.Editform.value.customername}, ` + `New Subscriber Last Name :${this.Editform.value.customerlastname}, ` + `New Address :${this.Editform.value.address}, ` + ` Boxid :${this.boxno}, 
+    ` + ` New Area Name :${this.Editform.value.areaid}, ` + `New Address Proof ID : ${this.Editform.value.addressprooftypeid}, ` + ` New Address Proof :${this.Editform.value.addressproof}, ` + `New Date of Birth : ${this.Editform.value.dateofbirth}, `
+      + ` New landlineno : ${this.Editform.value.landlineno}, ` + ` New Live TV : ${this.Editform.value.islivetv}, ` + `New CAS Form ID :${this.Editform.value.casformid}, ` + `New Father's Name : ${this.Editform.value.fathername}, `
+      + ` New Mobile Number : ${this.Editform.value.mobileno}, ` + `New  Street Name : ${this.Editform.value.streetid}, ` + `New Identity Proof ID : ${this.Editform.value.idprooftypeid}, `
+      + `New Identity Proof : ${this.Editform.value.idproof}, ` + ` New Installation Address  : ${this.Editform.value.installaddress}, ` + ` New Email : ${this.Editform.value.email}`
+
     this.userservice.UpdateSubscriberDetails(this.Editform.value)
       .subscribe((res: any) => {
         this.swal.success(res?.message);
+        this.logCreate('Subscriber Edit ', remark, data);
       }, (err) => {
         this.swal.Error(err?.error?.message || err?.error?.customername || err?.error?.customerlastname || err?.error?.fathername || err?.error?.idproof || err?.error?.idprooftypeid
           || err?.error?.addressproof || err?.error?.addressprooftypeid || err?.error?.customername || err?.error?.dateofbirth || err?.error?.email
@@ -1549,8 +1661,11 @@ export class SubscriberdialogueComponent implements OnInit, OnDestroy {
     console.log(operator);
     this.selectedOperator = operator;
     this.lcoid = operator.value;
+    this.loglcoid = operator.value;
     this.lcoareaid = '';
+    this.loglcoareaid = '';
     this.lcostreetid = '';
+    this.loglcostreetid = '';
     this.filteredAreas = [];
     this.filteredStreet = [];
     this.userservice.getAreaListByOperatorid(this.role, this.username, this.lcoid || this.operatorId).subscribe((data: any) => {
@@ -1582,6 +1697,7 @@ export class SubscriberdialogueComponent implements OnInit, OnDestroy {
     this.selectedArea = area;
     this.lcoareaid = area.value;
     this.lcostreetid = '';
+    this.loglcoareaid = '';
     this.filteredStreet = [];
     this.userservice.getStreetListByAreaid(this.role, this.username, this.lcoareaid).subscribe((data: any) => {
       this.street_list = Object.keys(data).map(key => {
@@ -1733,6 +1849,13 @@ export class SubscriberdialogueComponent implements OnInit, OnDestroy {
   }
 
   changeOperator() {
+    const remark = `Old Operator Name: ${this.operatorname}, ` + `Old Area Name: ${this.areaname},` + `Old Street Name : ${this.streetname}, ` + `Old Comments : ${this.comment || 'No Comment'}, ` + `Old Cancel Current Subscription:${this.withsubscription}` + `Old Retailer id:${this.retailerId || 0, 2, 0, 0, 1}`;
+    const data = ` New Operator ID: ${this.selectedOperator.name}, ` + `New Area Name: ${this.selectedArea.name}, ` + `New Street Name : ${this.selectedStreet.name}, ` + `New Comments : ${this.comment || 'No Comment'}, ` + `New Cancel Current Subscription:${this.withsubscription}` + `New Retailer id:${this.retailerId || 0, 2, 0, 0, 1}`;
+
+    console.log("2344324====>" + data);
+    console.log("2344324====>" + remark);
+
+
     this.swal.Loading();
     // if ((!this.lcoid || this.operatorId) || !this.lcoareaid || !this.lcostreetid) {
     //   this.swal.Error('All fields are required');
@@ -1741,6 +1864,8 @@ export class SubscriberdialogueComponent implements OnInit, OnDestroy {
     this.userservice.transferLcoToSmartcard(this.role, this.username, (this.lcoid || this.operatorId), this.lcoareaid, this.lcostreetid, this.subid_1 || this.newSubid, this.withsubscription, this.retailerId || 0, 2, 0, 0, 1, this.comment || 'No Comment')
       .subscribe((res: any) => {
         this.swal.success(res?.message);
+
+        this.logCreate('Change Operator', remark, data);
       }, (err) => {
         this.swal.Error(err?.error?.message);
       });
@@ -1748,6 +1873,10 @@ export class SubscriberdialogueComponent implements OnInit, OnDestroy {
 
   refreshSmartcard() {
     this.swal.Loading();
+
+    const remark = `Old Subscriber Name: ${this.logsubscribername}, ` + `Old Mobile Number: ${this.logMobileno},` + `Old Smartcard : ${this.logSmartcard || this.newRefreshSmartcard.smartcard}` + `Old Boxid : ${this.logboxno || this.newRefreshSmartcard?.boxid || 'Boxid Not available'}` + `Old Status:${this.statusdisplay || this.newRefreshSmartcard?.statusdisplay}`;
+    const data = `New Subscriber Name: ${this.subscribername}, ` + `New Mobile Number: ${this.mobile},` + `New Smartcard : ${this.smartcardno || this.newRefreshSmartcard.smartcard}` + `New Boxid : ${this.boxno || this.newRefreshSmartcard?.boxid || 'Boxid Not available'}` + `New Status:${this.statusdisplay || this.newRefreshSmartcard?.statusdisplay}`;
+
     this.userservice.refreshSmartcard(this.role, this.username, this.smartcardno || this.newRefreshSmartcard.smartcard, this.retailerId || 0, 3)
       .subscribe((res: any) => {
         // this.swal.success(res?.message);
@@ -1765,6 +1894,7 @@ export class SubscriberdialogueComponent implements OnInit, OnDestroy {
               window.location.reload();
             }, 100);
           });
+          this.logCreate('Distributor Edit', remark, data);
           this.dialogRef.close({ success: true, smartcard: this.smartcardno });
 
         });
@@ -1775,6 +1905,9 @@ export class SubscriberdialogueComponent implements OnInit, OnDestroy {
   }
   deactivationofSmartcard() {
     this.swal.Loading();
+    const remark = `Old Subscriber Name :${this.logsubscribername}, ` + `Old Mobile Number :${this.logMobileno}, ` + `Old Smartcard :${this.logSmartcard}, ` + `Old Boxid :${this.logboxno}, ` + `Old Status :${this.logStatusdisplay}`
+    const data = `New Subscriber Name :${this.subscribername}, ` + `New Mobile Number :${this.mobile}, ` + `New Smartcard :${this.smartcardno}, ` + `New Boxid :${this.boxno}, ` + ` Status :${this.statusdisplay}`
+
     this.userservice.deactivationofSmartcard(this.role, this.username, this.smartcardno, 2)
       .subscribe((res: any) => {
         // this.swal.success(res?.message);
@@ -1789,6 +1922,7 @@ export class SubscriberdialogueComponent implements OnInit, OnDestroy {
           this.router.navigate([`/admin/subscriber-full-info/${this.smartcardno}/subsmartcard`]);
           this.dialogRef.close({ success: true, smartcard: this.smartcardno });
         });
+        this.logCreate('Deactivation', remark, data);
       }, (err) => {
         this.swal.Error(err?.error?.message);
       });
@@ -1798,6 +1932,9 @@ export class SubscriberdialogueComponent implements OnInit, OnDestroy {
       this.errorMessage = 'please Entered the Pin !!';
       return;
     }
+    const remark = `Old Subscriber Name :${this.logsubscribername}, ` + `Old Mobile Number :${this.logMobileno}, ` + `Old Smartcard :${this.logSmartcard}, ` + `Old Boxid :${this.logboxno}, ` + ` Old PIN :${this.logoldpin}, ` + ` New Pin : ${this.newpin}, ` + `Old Retailer Id : ${this.retailerId || 0}`
+    const data = `New Subscriber Name :${this.subscribername}, ` + `New Mobile Number :${this.mobile}, ` + `New Smartcard :${this.smartcardno}, ` + `New Boxid :${this.boxno}, ` + ` Old PIN :${this.oldpin}, ` + ` New Pin : ${this.newpin}, ` + `New Retailer Id : ${this.retailerId || 0}`
+
     this.swal.Loading();
     this.userservice.pinchange(this.role, this.username, this.smartcardno, this.newpin, 3, this.retailerId || 0)
       .subscribe((res: any) => {
@@ -1813,12 +1950,17 @@ export class SubscriberdialogueComponent implements OnInit, OnDestroy {
           this.router.navigate([`/admin/subscriber-full-info/${this.smartcardno}/subsmartcard`]);
           this.dialogRef.close({ success: true, smartcard: this.smartcardno });
         });
+        this.logCreate('Pin Change', remark, data);
+
       }, (err) => {
         this.swal.Error(err?.error?.message);
       });
   }
   pvrchange() {
     this.swal.Loading();
+    const remark = `Old Subscriber Name :${this.logsubscribername}, ` + `Old Mobile Number :${this.logMobileno}, ` + `Old Smartcard :${this.logSmartcard}, ` + `Old Boxid :${this.logboxno}, ` + `Old PVR STATUS :${this.logPVR}` + `Old Retailer Id : ${this.retailerId || 0}`
+    const data = `New Subscriber Name :${this.subscribername}, ` + `New Mobile Number :${this.mobile}, ` + `New Smartcard :${this.smartcardno}, ` + `New Boxid :${this.boxno}, ` + `New PVR STATUS :${this.PVRstatus}, ` + `New Retailer Id : ${this.retailerId || 0}`
+
     this.userservice.pvrChange(this.role, this.username, this.smartcardno, this.PVRstatus, 3, this.retailerId || 0)
       .subscribe((res: any) => {
         // this.swal.success(res?.message);
@@ -1833,6 +1975,8 @@ export class SubscriberdialogueComponent implements OnInit, OnDestroy {
           this.router.navigate([`/admin/subscriber-full-info/${this.smartcardno}/subsmartcard`]);
           this.dialogRef.close({ success: true, smartcard: this.smartcardno });
         });
+        this.logCreate('PVR Change', remark, data);
+
       }, (err) => {
         this.swal.Error(err?.error?.message);
       });
@@ -1840,6 +1984,9 @@ export class SubscriberdialogueComponent implements OnInit, OnDestroy {
 
   deleteForceMessage() {
     this.swal.Loading();
+    const remark = `Old Subscriber Name :${this.logsubscribername}, ` + ` Old Mobile Number :${this.logMobileno}, ` + `Old Smartcard :${this.logSmartcard}, ` + `Old Boxid :${this.logboxno}, ` + `Old Message :${this.logForceMsge}, ` + `Old Retailer Id : ${this.retailerId || 0}`
+    const data = `New Subscriber Name :${this.subscribername}, ` + `New Mobile Number :${this.mobile}, ` + `New Smartcard :${this.smartcardno}, ` + `New Boxid :${this.boxno}, ` + `New Message :${this.packageMessage?.msgcontent}, ` + `New Retailer Id : ${this.retailerId || 0}`
+
     this.userservice.deleteForceMessage(this.role, this.username, this.smartcardno)
       .subscribe((res: any) => {
         // this.swal.success(res?.message);
@@ -1854,12 +2001,17 @@ export class SubscriberdialogueComponent implements OnInit, OnDestroy {
           this.router.navigate([`/admin/subscriber-full-info/${this.smartcardno}/subsmartcard`]);
           this.dialogRef.close({ success: true, smartcard: this.smartcardno });
         });
+        this.logCreate('Delete Force Message', remark, data);
+
       }, (err) => {
         this.swal.Error(err?.error?.message);
       });
   }
   forcetuning() {
     this.swal.Loading();
+    const remark = `Old Subscriber Name :${this.logsubscribername}, ` + `Old Mobile Number :${this.logMobileno}, ` + `Old Smartcard :${this.logSmartcard}, ` + `Old Boxid :${this.logboxno}, ` + `Old STATUS :${this.logStatus == 1 ? 'Enable' : this.logStatus == 2 ? 'Old' : 'Unknown'}, ` + `Old Retailer Id : ${this.retailerId || 0}, `
+    const data = `New Subscriber Name :${this.subscribername}, ` + `New Mobile Number :${this.mobile}, ` + `New Smartcard :${this.smartcardno}, ` + `New Boxid :${this.boxno}, ` + `New STATUS :${this.status == 1 ? 'Enable' : this.status == 2 ? 'Old' : 'Unknown'}, ` + `New Retailer Id : ${this.retailerId || 0}`
+
     this.userservice.forceTuning(this.role, this.username, this.smartcardno)
       .subscribe((res: any) => {
         // this.swal.success(res?.message);
@@ -1874,6 +2026,8 @@ export class SubscriberdialogueComponent implements OnInit, OnDestroy {
           this.router.navigate([`/admin/subscriber-full-info/${this.smartcardno}/subsmartcard`]);
           this.dialogRef.close({ success: true, smartcard: this.smartcardno });
         });
+        this.logCreate('Force Tuning', remark, data);
+
       }, (err) => {
         this.swal.Error(err?.error?.message);
       });
@@ -1888,6 +2042,9 @@ export class SubscriberdialogueComponent implements OnInit, OnDestroy {
     const formValues = this.Sendmseform.value;
     console.log('formvalues', formValues);
     console.log('message', formValues.message);
+    const remark = `Old Smartcard :${this.logSmartcard}, ` + `Old Boxid :${this.logboxno}, ` + `Old Force Message :${this.logForcemsg == 1 ? 'Enable' : this.logForcemsg == 2 ? 'Disable' : 'Unknown'}`
+    const data = `New Smartcard :${this.smartcard}, ` + `New Boxid :${this.boxno}, ` + `New Force Message :${this.forcemsg == 1 ? 'Enable' : this.forcemsg == 2 ? 'Disable' : 'Unknown'}, ` + ` No.of Time :${formValues.repeatfor || 0}, ` +
+      ` Display Duration :${formValues.duration || 0}, ` + ` Time Interval : ${formValues.timegap || 0}, ` + `New Message : ${formValues.message}`
 
     const payload = {
       smartcard: formValues.smartcard,
@@ -1914,6 +2071,8 @@ export class SubscriberdialogueComponent implements OnInit, OnDestroy {
           this.router.navigate([`/admin/subscriber-full-info/${this.smartcardno}/subsmartcard`]);
           this.dialogRef.close({ success: true, smartcard: this.smartcardno });
         });
+        this.logCreate('Send Message', remark, data);
+
       }, (err) => {
         this.swal.Error(err?.error?.message);
       });
@@ -1978,6 +2137,12 @@ export class SubscriberdialogueComponent implements OnInit, OnDestroy {
 
 
   ActivationOfCard() {
+
+    
+    const remark = ` Old Subscriber Name :${this.logsubscribername}, ` + `  Old Boxid :${this.logboxno}, ` + ` Old LCO Name :${this.loglconame}, ` + ` Old Smartcard :${this.logSmartcard}, ` + ` Old Package Name :${this.newpackagename}, ` + ` Old  Recharge Type :${this.selectedRechargetype}` + ` Old Plan Type : ${this.plantype}, ` + ` Old Date : ${this.f_date}`
+    const data = `New Subscriber Name :${this.subscribername}, ` + ` New Boxid :${this.boxno}, ` + ` New LCO Name :${this.operatorname}, ` + ` New Smartcard :${this.logSmartcard}, ` + ` New Package Name :${this.newpackagename}, ` + ` New Recharge Type :${this.selectedRechargetype}, ` +
+      ` New Plan Type : ${this.plantype}, ` + ` New Date : ${this.f_date}`
+
     let requestBody = {
       packageid: this.newpackagename,
       plantype: this.selectedRechargetype,
@@ -2021,6 +2186,7 @@ export class SubscriberdialogueComponent implements OnInit, OnDestroy {
           this.router.navigate([`/admin/subscriber-full-info/${this.smartcardno}/subsmartcard`]);
           this.dialogRef.close({ success: true, smartcard: this.smartcardno });
         });
+        this.logCreate('ACTIVATION', remark, data);
       }, (err) => {
         this.swal.Error(err?.error?.message);
       });
@@ -2032,6 +2198,12 @@ export class SubscriberdialogueComponent implements OnInit, OnDestroy {
     let plan = this.selectedRechargetype || ''
     let plandata = this.plantype || this.f_date || 4
     // this.swal.Loading();
+    const remark = `Old Subscriber Name :${this.logsubscribername}, ` + ` Old Smartcard :${this.logSmartcard}, ` + ` Old Boxid :${this.logboxno}, ` + ` Old Current Package :${this.logcurrentPackagename}, ` + `Old  No of Days :${this.lognoOfDays}, ` + ` Old Expiry Date :${this.logexpirydate}, ` + ` Package Name :${this.newpackagename}, ` + ` Recharge Type :${this.selectedRechargetype}, ` +
+      ` Old Plan Type : ${this.plantype}, ` + ` Old Date : ${this.f_date}`
+    const data = `New Subscriber Name :${this.subscribername}, ` + ` New Smartcard :${this.smartcardno}, ` + ` New Boxid :${this.boxno}, ` + ` New Current Package :${this.currentPackagename}, ` + ` New No of Days :${this.noOfDays}, ` + ` New Expiry Date :${this.expirydate}, ` + ` New Package Name :${this.newpackagename}, ` + ` New Recharge Type :${this.selectedRechargetype}, ` + ` New Plan Type : ${this.plantype}, ` + ` New Date : ${this.f_date}, `
+      + ` New Refund Amount to LCO : ${this.changebase_totalRefundToLco}, `+ `  Customer pay : ${this.iscollected}, ` + ` Enter Amount : ${this.collectedPayAmount}, ` + ` Comment : ${this.comment}, `
+
+
     this.userservice.getBaseChangeConfirmation(this.role, this.username, this.newpackagename, plan, plandata, this.smartcardno, 8, this.retailerId || 0)
       .subscribe((data: any) => {
         console.log(data);
@@ -2056,6 +2228,8 @@ export class SubscriberdialogueComponent implements OnInit, OnDestroy {
         console.log(this.balanceamount);
         console.log(this.newExcessAmount);
         this.cdr.detectChanges();
+        this.logCreate('Base Change', remark, data);
+
         // this.isActive = true;
       }, (err) => {
         this.swal.Error(err?.error?.message);
@@ -2077,6 +2251,13 @@ export class SubscriberdialogueComponent implements OnInit, OnDestroy {
     this.isActive = true;
     this.confirmation = true;
     this.isConfirmationComplete = true;
+
+    const remark = `Old Subscriber Name :${this.logsubscribername}, ` + ` Old Boxid :${this.logboxno}, ` + ` Old Current Package :${this.logcurrentPackagename}, ` + `Old  No of Days :${this.lognoOfDays}, ` + ` Old Expiry Date :${this.logexpirydate}, ` + ` Package Name :${this.newpackagename}, ` + ` Recharge Type :${this.selectedRechargetype}, ` +
+      ` Old Plan Type : ${this.plantype}, ` + ` Old Date : ${this.f_date}`
+    const data = `New Subscriber Name :${this.subscribername}, ` + ` New Boxid :${this.boxno}, ` + ` New Current Package :${this.currentPackagename}, ` + ` New No of Days :${this.noOfDays}, ` + ` New Expiry Date :${this.expirydate}, ` + ` New Package Name :${this.newpackagename}, ` + ` New Recharge Type :${this.selectedRechargetype}, ` + ` New Plan Type : ${this.plantype}, ` + ` New Date : ${this.f_date}, `
+     + ` New Refund Amount to LCO : ${this.changebase_totalRefundToLco}, `  + `  Customer pay : ${this.iscollected}, ` + ` Enter Amount : ${this.collectedPayAmount}, ` + ` Comment : ${this.comment}, `
+
+
     let requestBody = {
       role: this.role,
       username: this.username,
@@ -2099,7 +2280,7 @@ export class SubscriberdialogueComponent implements OnInit, OnDestroy {
     Swal.fire({
       title: 'Loading...',
       text: 'Please wait while we process your request.',
-      allowOutsideClick: false, // Disable clicking outside the popup to close it
+      allowOutsideClick: false,
       didOpen: () => {
         Swal.showLoading(null);
       }
@@ -2117,6 +2298,7 @@ export class SubscriberdialogueComponent implements OnInit, OnDestroy {
         this.router.navigate([`/admin/subscriber-full-info/${this.smartcardno}/subsmartcard`]);
         this.dialogRef.close({ success: true, smartcard: this.smartcardno });
       });
+      this.logCreate('Base Change', remark, data);
     }, (err) => {
       this.swal.Error(err?.error?.message);
     });
@@ -2127,9 +2309,10 @@ export class SubscriberdialogueComponent implements OnInit, OnDestroy {
     console.log('2423423423432423432432432432');
 
     this.isActive = true;
-    console.log(this.f_date);
-    console.log(this.plantype);
-    console.log(this.retailerId);
+    const remark = `Old Subscriber Name :${this.logsubscribername}, ` + `Old Boxid :${this.logboxno}, ` + `Old LCO Name :${this.loglconame}, ` + `Old Smartcard :${this.logSmartcard}, ` + `Old Package Name :${this.newpackagename}, ` + `Old Recharge Type :${this.selectedRechargetype}, ` +
+      `Old Plan Type : ${this.plantype}, ` + `Old Date : ${this.f_date}`
+    const data = ` NewSubscriber Name :${this.subscribername}, ` + `New Boxid :${this.boxno}, ` + `New LCO Name :${this.operatorname}, ` + `New Smartcard :${this.smartcardno}, ` + `New Package Name :${this.newpackagename}, ` + `New Recharge Type :${this.selectedRechargetype}` + `New Plan Type : ${this.plantype}, ` + `New Date : ${this.f_date}`
+
 
     this.userservice.getFirstTimeActivationConfirmation(this.role, this.username, this.newpackagename, this.selectedRechargetype, this.f_date || this.plantype || 4, this.smartcardno, 1, this.retailerId || 0)
       .subscribe((data: any) => {
@@ -2144,7 +2327,7 @@ export class SubscriberdialogueComponent implements OnInit, OnDestroy {
         this.setBillType(this.customerPayAmount, this.collectedPayAmount);
         // this.swal.success_1(data?.message);
         this.cdr.detectChanges();
-
+        this.logCreate('First time Activatoin', remark, data);
       }, (err) => {
         this.swal.Error(err?.error?.message || err?.error?.getFirstTimeActivationConfirmation.plan);
       });
@@ -2155,6 +2338,9 @@ export class SubscriberdialogueComponent implements OnInit, OnDestroy {
     console.log('213213213');
     console.log(this.billTypeValue?.bill_type);
     console.log('collectedPayAmount', this.collectedPayAmount);
+    const remark = `Old Subscriber Name :${this.logsubscribername}, ` + `Old Boxid :${this.logboxno}, ` + `Old LCO Name :${this.loglconame}, ` + `Old Smartcard :${this.logSmartcard}, ` + `Old Package Name :${this.newpackagename}, ` + `Old Recharge Type :${this.selectedRechargetype}, ` +
+      `Old Plan Type : ${this.plantype}, ` + `Old Date : ${this.f_date}`
+    const data = ` NewSubscriber Name :${this.subscribername}, ` + `New Boxid :${this.boxno}, ` + `New LCO Name :${this.operatorname}, ` + `New Smartcard :${this.smartcardno}, ` + `New Package Name :${this.newpackagename}, ` + `New Recharge Type :${this.selectedRechargetype}` + `New Plan Type : ${this.plantype}, ` + `New Date : ${this.f_date}`
 
     console.log(this.plantype);
     // this.plantype || this.f_date || 4,
@@ -2197,18 +2383,13 @@ export class SubscriberdialogueComponent implements OnInit, OnDestroy {
           // location.reload();
           this.dialogRef.close({ success: true, smartcard: this.smartcardno });
         });
+        this.logCreate('First time Activatoin', remark, data);
       }, (err) => {
         this.swal.Error(err?.error?.message);
       });
   }
 
   lcotransferSinglesmartcard() {
-    // Validate that both fields are selected
-    // if (this.operatname || this.lcoid === 0) {
-    //   this.errorMessage = 'Please Select LCO Name!';
-    // } else if ( this.servicename || this.f_subid === 0) {
-    //   this.errorMessage1 = 'Please Select Subscriber Name!';
-    // } else {
     let isFirstCall = true;
     let subscriptionId: string;
     let subscriptionOperatorid: string;
@@ -2222,13 +2403,9 @@ export class SubscriberdialogueComponent implements OnInit, OnDestroy {
       subscriptionId = this.f_subid;
       subscriptionOperatorid = this.lcoid;
     }
-    console.log(subscriptionId);
-    console.log(subscriptionOperatorid);
-    console.log(this.lcoid);
-    console.log(this.subid);
-    console.log('OPERATOR ID', this.operatorid);
-
     this.errorMessage = '';
+    const remark = `Old Subscriber Name: ${this.logsubscribername}, ` + `Old Mobile Number: ${this.logMobileno},` + `Old LCO Name : ${this.loglconame}` + `Old Smartcard : ${this.logSmartcard}` + `Old Boxid:${this.logboxno}, ` + ` New LCO Name : ${this.loglconame}, ` + `Old Subscriber: ${this.logsubid}`;
+    const data = `New Subscriber Name: ${this.subscribername}, ` + `New Mobile Number: ${this.mobile},` + `New LCO Name : ${this.lconame}` + `New Smartcard : ${this.smartcardno}` + `New Boxid:${this.boxno}, ` + ` New LCO Name : ${this.operatorname}, ` + `New Subscriber: ${this.subid}`;
     this.swal.Loading();
     // this.userservice.lcotransferSinglesmartcard(this.role, this.username, subscriptionOperatorid, this.subid, this.withsubscription, this.smartcardno, 0, 2
     this.userservice.lcotransferSinglesmartcard(this.role, this.username, subscriptionOperatorid || this.lcoid, this.subid, this.withsubscription, this.smartcardno, this.retailerId || 0, 2, 0, 0, 1, this.comment || 'No Comment'
@@ -2245,6 +2422,7 @@ export class SubscriberdialogueComponent implements OnInit, OnDestroy {
         this.router.navigate([`/admin/subscriber-full-info/${this.smartcardno}/subsmartcard`]);
         this.dialogRef.close({ success: true, smartcard: this.smartcardno });
       });
+      this.logCreate('Smartcard Transfer', remark, data);
     }, (err) => {
       this.swal.Error(err?.error?.message);
     });
@@ -2258,6 +2436,9 @@ export class SubscriberdialogueComponent implements OnInit, OnDestroy {
     }
     this.errorMessage = '';
     this.swal.Loading();
+    const remark = `Old Subscriber Name: ${this.logsubscribername}, ` + `Old Mobile Number: ${this.logMobileno}, ` + `Old Smartcard : ${this.logSmartcard}, ` + `Old Boxid:${this.logboxno}, `;
+    const data = `New Subscriber Name: ${this.subscribername}, ` + `New Mobile Number: ${this.mobile},` + `New Smartcard : ${this.smartcardno}, ` + `New Boxid:${this.new_boxid}, `;
+
     this.userservice.boxIdChange(this.role, this.username, this.smartcardno, this.new_boxid, this.retailerId || 0, 2)
       .subscribe((res: any) => {
         // this.swal.success(res?.message);
@@ -2272,6 +2453,8 @@ export class SubscriberdialogueComponent implements OnInit, OnDestroy {
           this.router.navigate([`/admin/subscriber-full-info/${this.smartcardno}/subsmartcard`]);
           this.dialogRef.close({ success: true, smartcard: this.smartcardno });
         });
+        this.logCreate('BOX Transfer', remark, data);
+
       }, (err) => {
         this.swal.Error(err?.error?.message || err?.error?.boxidchange.boxid);
       });
@@ -2282,6 +2465,9 @@ export class SubscriberdialogueComponent implements OnInit, OnDestroy {
       return;
     }
     this.swal.Loading();
+    const remark = `Old Subscriber Name: ${this.logsubscribername}, ` + `Old Mobile Number: ${this.logMobileno},  ` + `Old Smartcard : ${this.logSmartcard},  ` + `Old Boxid:${this.logboxno}, ` + `Old STATUS :${this.logStatusdisplay === 'Active' || this.logStatusdisplay === 'Deactivate'}, `;
+    const data = `New Subscriber Name: ${this.subscribername}, ` + `New Mobile Number: ${this.mobile},` + `New Smartcard : ${this.smartcardno}` + `New Boxid:${this.boxno}, ` + `New STATUS :${this.statusdisplay === 'Active' || this.statusdisplay === 'Deactivate'}, ` + `Suspend Reason :${this.sus_reason} `;
+
     this.userservice.smartcardSuspend(this.role, this.username, this.smartcardno, this.retailerId || 0, 4, this.sus_reason)
       .subscribe((res: any) => {
         // this.swal.success(res?.message);
@@ -2296,12 +2482,17 @@ export class SubscriberdialogueComponent implements OnInit, OnDestroy {
           this.router.navigate([`/admin/subscriber-full-info/${this.smartcardno}/subsmartcard`]);
           this.dialogRef.close({ success: true, smartcard: this.smartcardno });
         });
+        this.logCreate('SUSPEND', remark, data);
+
       }, (err) => {
         this.swal.Error(err?.error?.message);
       });
   }
   reactivationofSmartcard() {
     this.swal.Loading();
+    const remark = `Old Subscriber Name :${this.logsubscribername}, ` + ` Old Mobile Number :${this.logMobileno}, ` + ` Old Smartcard :${this.logSmartcard}, ` + ` Old Boxid :${this.logboxno}, ` + ` Old STATUS :${this.logStatusdisplay === 'Active' || this.logStatusdisplay === 'Deactivate'}, ` + ` Old Retailer Id : ${this.retailerId || 0}`
+    const data = `New Subscriber Name :${this.subscribername}, ` + ` New Mobile Number :${this.mobile}, ` + ` New Smartcard :${this.smartcardno}, ` + ` New Boxid :${this.boxno}, ` + ` New STATUS :${this.statusdisplay === 'Active' || this.statusdisplay === 'Deactivate'}, ` + ` New Retailer Id : ${this.retailerId || 0}`
+
     this.userservice.reactivationofSmartcard(this.role, this.username, this.smartcardno, this.retailerId || 0, 3)
       .subscribe((res: any) => {
         // this.swal.success(res?.message);
@@ -2316,12 +2507,16 @@ export class SubscriberdialogueComponent implements OnInit, OnDestroy {
           this.router.navigate([`/admin/subscriber-full-info/${this.smartcardno}/subsmartcard`]);
           this.dialogRef.close({ success: true, smartcard: this.smartcardno });
         });
+        this.logCreate('RE-ACTIVATE SMARTCARD', remark, data);
       }, (err) => {
         this.swal.Error(err?.error?.message);
       });
   }
   resume() {
     this.swal.Loading();
+    const remark = `Old Subscriber Name :${this.logsubscribername}, ` + ` Old Mobile Number :${this.logMobileno}, ` + ` Old LCO Name :${this.loglconame}, ` + ` Old Smartcard :${this.logSmartcard}, ` + ` Old Boxid :${this.logboxno}, ` + ` Old STATUS :${this.logStatusdisplay === 'Active' || this.logStatusdisplay === 'Deactivate'}, ` + ` Old Retailer Id : ${this.retailerId || 0}`
+    const data = `New Subscriber Name :${this.subscribername}, ` + ` New Mobile Number :${this.mobile}, ` + ` New LCO Name :${this.operatname}, ` + ` New Smartcard :${this.smartcardno}, ` + ` New Boxid :${this.boxno}, ` + ` New STATUS :${this.logStatusdisplay === 'Active' || this.logStatusdisplay === 'Deactivate'}, ` + ` New Retailer Id : ${this.retailerId || 0}`
+
     this.userservice.smartcardResume(this.role, this.username, this.smartcardno, this.retailerId || 0, 5,)
       .subscribe((res: any) => {
         // this.swal.success(res?.message);
@@ -2336,6 +2531,8 @@ export class SubscriberdialogueComponent implements OnInit, OnDestroy {
           this.router.navigate([`/admin/subscriber-full-info/${this.smartcardno}/subsmartcard`]);
           this.dialogRef.close({ success: true, smartcard: this.smartcardno });
         });
+        this.logCreate('RESUME SMARTCARD', remark, data);
+
       }, (err) => {
         this.swal.Error(err?.error?.message);
       });
@@ -2346,6 +2543,10 @@ export class SubscriberdialogueComponent implements OnInit, OnDestroy {
       return;
     }
     this.swal.Loading();
+    const remark = ` Old Subscriber Name :${this.logsubscribername}, ` + ` Old Mobile Number :${this.logMobileno}, ` + ` Old Smartcard :${this.logSmartcard}, ` + ` Old Boxid :${this.logboxno}, ` + ` Old STATUS :${this.logStatusdisplay === 'Active' || this.logStatusdisplay === 'Deactivate'}, ` + `  Reason: ${this.block_reason}, ` + ` Old Retailer Id : ${this.retailerId || 0}`
+    const data = `New Subscriber Name :${this.subscribername}, ` + ` New Mobile Number :${this.mobile}, ` + ` New Smartcard :${this.smartcardno}, ` + `New  Boxid :${this.boxno}, ` + ` New STATUS :${this.statusdisplay === 'Active' || this.statusdisplay === 'Deactivate'}, ` + ` Reason: ${this.block_reason}, ` + ` New Retailer Id : ${this.retailerId || 0}`
+
+
     this.userservice.blockSmartcard(this.role, this.username, this.smartcardno, 2, this.block_reason).subscribe(
       (res: any) => {
         // this.swal.success(res?.message);
@@ -2360,6 +2561,8 @@ export class SubscriberdialogueComponent implements OnInit, OnDestroy {
           this.router.navigate([`/admin/subscriber-full-info/${this.smartcardno}/subsmartcard`]);
           this.dialogRef.close({ success: true, smartcard: this.smartcardno });
         });
+        this.logCreate('Block SMARTCARD', remark, data);
+
       }, (err) => {
         this.swal.Error(err?.error?.message);
       });
@@ -2367,6 +2570,9 @@ export class SubscriberdialogueComponent implements OnInit, OnDestroy {
   }
   cancelSmartcard() {
     this.swal.Loading();
+    const remark = ` Old Smartcard :${this.logSmartcard}, ` + ` Old Boxid :${this.logboxno}, ` + `Old Expiry Date :${this.expirydate}, ` + `Old Comment : ${this.cancelSubRemark}` + `Old Retailer Id : ${this.retailerId || 0}`
+    const data = ` New Smartcard :${this.smartcardno}, ` + ` New Boxid :${this.boxno}, ` + ` New Expiry Date :${this.expirydate}, ` + ` New Retailer Id : ${this.retailerId || 0}`
+
     this.userservice.cancelSmartcard(this.role, this.username, this.smartcardno, 2, this.retailerId || 0, 0, 0, 1, this.cancelSubRemark || 'No Comment')
       .subscribe((res: any) => {
         // this.swal.success(res?.message);
@@ -2381,6 +2587,7 @@ export class SubscriberdialogueComponent implements OnInit, OnDestroy {
           this.router.navigate([`/admin/subscriber-full-info/${this.smartcardno}/subsmartcard`]);
           this.dialogRef.close({ success: true, smartcard: this.smartcardno });
         });
+        this.logCreate('Cancel Subscription', remark, data);
       }, (err) => {
         this.swal.Error(err?.error?.message);
       });
@@ -2399,6 +2606,9 @@ export class SubscriberdialogueComponent implements OnInit, OnDestroy {
   addAddonConfirmation() {
     this.isaddaddon = true;
     this.finalrow = this.rows
+
+    const remark = ` Old Subscriber Name: ${this.logsubscribername}, ` + ` Old Mobile Number: ${this.logMobileno}, ` + ` Old LCO Name : ${this.lconame}, ` + ` Old Smartcard : ${this.logSmartcard}, ` + ` Old Boxid:${this.logboxno}, `  + `Selected Addon count : ${this.rows?.length}, ` + ` Customer pay : ${this.iscollected}`;
+    const data = ` New Subscriber Name: ${this.subscribername}, ` + ` New Mobile Number: ${this.mobile},` + ` New LCO Name : ${this.lconame}` + ` New Smartcard : ${this.smartcardno}` + ` New Boxid:${this.boxno}, ` + ` New Subscriber: ${this.subid}`;
 
     let requestBody = {
       role: this.role,
@@ -2434,6 +2644,7 @@ export class SubscriberdialogueComponent implements OnInit, OnDestroy {
         // this.newExcessAmount = this.oldexcessAmount - this.balanceamount;
         this.newExcessAmount = this.oldexcessAmount + this.balanceamount;
         this.setBillType(this.customerPayAmount, this.collectedPayAmount);
+        this.logCreate('ADDON ADD', remark, data);
 
       }, (err) => {
         this.swal.Error(err?.error?.message);
@@ -2445,6 +2656,10 @@ export class SubscriberdialogueComponent implements OnInit, OnDestroy {
     this.confirmation = true;
     this.isConfirmationComplete = true;
     this.finalrow = this.rows;
+
+  
+    const remark = ` Old Subscriber Name: ${this.logsubscribername}, ` + ` Old Mobile Number: ${this.logMobileno}, ` + ` Old LCO Name : ${this.lconame}, ` + ` Old Smartcard : ${this.logSmartcard}, ` + ` Old Boxid:${this.logboxno}, `  + `Selected Addon count : ${this.rows?.length}, ` + ` Customer pay : ${this.iscollected}`;
+    const data = ` New Subscriber Name: ${this.subscribername}, ` + ` New Mobile Number: ${this.mobile},` + ` New LCO Name : ${this.lconame}` + ` New Smartcard : ${this.smartcardno}` + ` New Boxid:${this.boxno}, ` + ` New Subscriber: ${this.subid}`;
 
     let requestBody = {
       role: this.role,
@@ -2465,7 +2680,7 @@ export class SubscriberdialogueComponent implements OnInit, OnDestroy {
     }
     Swal.fire({
       title: 'Adding...',
-      text: 'Please wait Smartcard Added.',
+      text: 'Please wait...',
       icon: 'info',
       allowOutsideClick: false,
       showConfirmButton: false, // Hide the confirm button
@@ -2483,6 +2698,7 @@ export class SubscriberdialogueComponent implements OnInit, OnDestroy {
           this.swal.Success_204();
           this.rowData = [];
         }
+        this.logCreate('ADDON ADD', remark, data);
       },
       (error) => {
         this.handleApiError(error);
@@ -2493,6 +2709,9 @@ export class SubscriberdialogueComponent implements OnInit, OnDestroy {
   addAlacarteConfirmation() {
     this.isaddalacarte = true;
     this.finalrow = this.rows
+    const remark = ` Old Subscriber Name: ${this.logsubscribername}, ` + ` Old Mobile Number: ${this.logMobileno},` + ` Old LCO Name : ${this.loglconame}, ` + ` Old Smartcard : ${this.logSmartcard}, ` + ` Old Boxid:${this.logboxno}, `   + `Selected Addon count : ${this.rows?.length}, ` + ` Customer pay : ${this.iscollected}`;
+    const data = `New Subscriber Name: ${this.subscribername}, ` + ` New Mobile Number: ${this.mobile}, ` + ` New LCO Name : ${this.lconame}, ` + ` New Smartcard : ${this.smartcardno}, ` + ` New Boxid:${this.boxno}, ` + ` New Subscriber: ${this.subid}`;
+
     let requestBody = {
       role: this.role,
       username: this.username,
@@ -2520,6 +2739,8 @@ export class SubscriberdialogueComponent implements OnInit, OnDestroy {
         this.setBillType(this.customerPayAmount, this.collectedPayAmount);
         this.cdr.detectChanges;
         this.showData = true;
+        this.logCreate('ALACARTE ADD', remark, data);
+
         // this.swal.success(res?.message);
       }, (err) => {
         this.swal.Error(err?.error?.message);
@@ -2527,6 +2748,10 @@ export class SubscriberdialogueComponent implements OnInit, OnDestroy {
   }
   addAlacarteSmartcard() {
     console.log(';213123213k;lkfsd;gjkfdskgjfdkjm');
+
+    const remark = ` Old Subscriber Name: ${this.logsubscribername}, ` + ` Old Mobile Number: ${this.logMobileno},` + ` Old LCO Name : ${this.loglconame}, ` + ` Old Smartcard : ${this.logSmartcard}, ` + ` Old Boxid:${this.logboxno}, ` 
+       + `Selected Addon count : ${this.rows?.length}, ` + ` Customer pay : ${this.iscollected}`;
+    const data = `New Subscriber Name: ${this.subscribername}, ` + ` New Mobile Number: ${this.mobile}, ` + ` New LCO Name : ${this.lconame}, ` + ` New Smartcard : ${this.smartcardno}, ` + ` New Boxid:${this.boxno}, ` + ` New Subscriber: ${this.subid}`;
 
     let requestBody = {
       role: this.role,
@@ -2546,7 +2771,7 @@ export class SubscriberdialogueComponent implements OnInit, OnDestroy {
     }
     Swal.fire({
       title: 'Updateing...',
-      text: 'Please wait while the Recurring is being updated',
+      text: 'Please wait ...',
       allowOutsideClick: false,
       didOpen: () => {
         Swal.showLoading(null);
@@ -2561,6 +2786,7 @@ export class SubscriberdialogueComponent implements OnInit, OnDestroy {
           this.swal.Success_204();
           this.rowData = [];
         }
+        this.logCreate('ALACARTE ADD', remark, data);
       },
       (error) => {
         this.handleApiError(error);
@@ -2573,6 +2799,12 @@ export class SubscriberdialogueComponent implements OnInit, OnDestroy {
     this.removeproduct = true;
     this.isRemove = this.removeproduct && this.isAnyRowSelected ? true : false;
     this.finalrow = this.rows;
+
+
+    // const remark = `Old Expiry date: ${this.lcoreExpirydate}, ` + ` Old Refund Amount for LCO : ${this.lcoreFund}, `;
+    // const data = ` New Expiry date: ${this.lcoreExpirydate}, ` + ` New Refund Amount for LCO : ${this.lcoreFund}, ` + ` Remove Product List : ${this.rows}`;
+
+
     let requestBody = {
       role: this.role,
       username: this.username,
@@ -2599,12 +2831,17 @@ export class SubscriberdialogueComponent implements OnInit, OnDestroy {
         this.lcoreExpirydate = resposne.expiryDate;
         this.cdr.detectChanges;
         this.showData = true;
+        // this.logCreate('Remove Product Confirmation', remark, data);
+
         // this.swal.success(res?.message);
       }, (err) => {
         this.swal.Error(err?.error?.message);
       });
   }
   removeProductForSmartcard() {
+    const remark = `Old Expiry date: ${this.lcoreExpirydate}, ` + ` Old Refund Amount for LCO : ${this.lcoreFund}, `;
+    const data = ` New Expiry date: ${this.lcoreExpirydate}, ` + ` New Refund Amount for LCO : ${this.lcoreFund}, ` + `Remove Product List : ${this.rows}, ` + ` Retailer Id : ${this.retailerId}`;
+
     let requestBody = {
       role: this.role,
       username: this.username,
@@ -2628,22 +2865,34 @@ export class SubscriberdialogueComponent implements OnInit, OnDestroy {
         this.cdr.detectChanges;
         this.showData = true;
         this.swal.success(res?.message);
+        this.logCreate('Remove Product Confirmation', remark, data);
+
       }, (err) => {
         this.swal.Error(err?.error?.message);
       });
   }
   pairSmartcard() {
     this.swal.Loading();
+
+    const remark = `Old Smartcard : ${this.logpairedSmartcard}, ` + `Old Boxid:${this.logsubBoxid},`;
+    const data = `New Smartcard : ${this.pairedSmartcard}, ` + ` New Boxid:${this.subBoxid},`;
+
     this.userservice.PairSmartcardOrBoxid(this.role, this.username, !this.ischeck, this.pairedSmartcard, this.subBoxid, this.retailerId || 0, 1).subscribe((res: any) => {
-      // this.swal.success(res?.message);
+      this.swal.success(res?.message);
+      this.logCreate('Pair Smartcard', remark, data);
     }, (err) => {
       this.swal.Error(err?.error?.message);
     });
   }
   pairBox() {
     this.swal.Loading();
+    const remark = `Old Smartcard : ${this.logsubSmartcard}, ` + ` Old Boxid:${this.pairedBoxid},`;
+    const  data= `New Smartcard : ${this.subSmartcard}, ` + ` New oxid:${this.pairedBoxid},`;
+
     this.userservice.PairSmartcardOrBoxid(this.role, this.username, this.ischeck, this.subSmartcard, this.pairedBoxid, this.retailerId || 0, 2).subscribe((res: any) => {
       this.swal.success(res?.message);
+      this.logCreate('Pair Box', remark, data);
+
     }, (err) => {
       this.swal.Error(err?.error?.message);
     });
@@ -2657,9 +2906,12 @@ export class SubscriberdialogueComponent implements OnInit, OnDestroy {
   }
   unPairSmartcard() {
     this.swal.Loading();
+    const remark = `OLd Smartcard : ${this.logsubSmartcard}, ` + ` Old Boxid:${this.logpairedBoxid},`;
+    const data = `New Smartcard : ${this.subSmartcard}, ` + ` New Boxid:${this.pairedBoxid},`;
     this.userservice.UnpairSmartcardOrBoxId(this.role, this.username, !this.ischeck, this.subSmartcard, this.retailerId || 0, 1, 0, 0, 1, this.comment || 'No Comment').subscribe((res: any) => {
       this.swal.success(res?.message);
       this.isUnpairDialogue = res?.message;
+      this.logCreate('UnPair Smartcard', remark, data);
       this.unpairtoggle();
     }, (err) => {
       this.swal.Error(err?.error?.message);
@@ -2667,9 +2919,12 @@ export class SubscriberdialogueComponent implements OnInit, OnDestroy {
   }
   unPairBox() {
     this.swal.Loading();
+    const remark = ` Old Smartcard : ${this.logsubSmartcard}, ` + `Old Boxid:${this.logpairedBoxid},`;
+    const data = `New Smartcard : ${this.subSmartcard}, ` + ` New Boxid:${this.pairedBoxid},`;
     this.userservice.UnpairSmartcardOrBoxId(this.role, this.username, this.ischeck, this.subBoxid, this.retailerId || 0, 2, 0, 0, 1, this.comment || 'No Comment').subscribe((res: any) => {
       this.swal.success(res?.message);
       this.isUnpairDialogue = res?.message;
+      this.logCreate('UnPair Box', remark, data);
       this.unpairtoggle();
     }, (err) => {
       this.swal.Error(err?.error?.message);
@@ -2866,6 +3121,20 @@ export class SubscriberdialogueComponent implements OnInit, OnDestroy {
     // }
 
     console.log('Bill Type:', this.billTypeValue?.bill_type);
+  }
+
+
+  logCreate(action: any, remarks: any, data: any) {
+    let requestBody = {
+      access_ip: this.accessip,
+      action: action,
+      remarks: remarks,
+      data: data,
+      user_id: this.userid,
+    }
+    this.userservice.createLogs(requestBody).subscribe((res: any) => {
+      console.log(res);
+    })
   }
 }
 

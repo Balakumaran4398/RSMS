@@ -709,6 +709,7 @@ export class LcodashboardreportComponent implements OnInit {
   onAreaStatusChange() {
     this.street_list = [];
     this.rowData = [];
+    this.rowData1 = [];
     if (this.areaid) {
       this.userService.getStreetListByAreaid(this.role, this.username, this.areaid)
         .subscribe((data: any) => {
@@ -762,7 +763,7 @@ export class LcodashboardreportComponent implements OnInit {
       // this.userservice.getLcochangeSubscriberList(this.role, this.username, this.lco, this.area, this.street).subscribe(
       (response: HttpResponse<any[]>) => {
         if (response.status === 200) {
-          this.rowData = response.body;
+          this.rowData1 = response.body;
           console.log(this.rowData1);
           // this.swal.Success_200();
         } else if (response.status === 204) {

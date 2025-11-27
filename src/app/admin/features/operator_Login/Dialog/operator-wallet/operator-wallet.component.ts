@@ -81,18 +81,24 @@ export class OperatorWalletComponent implements OnInit, AfterViewInit, OnDestroy
       event.preventDefault();
     }
   }
+  // onOperatorList() {
+  //   this.userService.getAllLcoList(this.role, this.username, this.parantOperatorId).subscribe((data: any) => {
+  //       this.lco_list = data;
+  //   })
+  // }
   onOperatorList() {
-    this.userService.getAllLcoList(this.role, this.username, this.parantOperatorId).subscribe((data: any) => {
-      // this.lco_list = Object.keys(data).map(key => {
-      //   const value = data[key];
-      //   const name = key;
-      //   return { name: name, value: value };
-      // });
-      this.lco_list = data;
-      // this.filteredOperators = this.lco_list;
-      // this.cdr.detectChanges;
-    })
-  }
+  this.userService.getNotinOperatorList(this.role, this.username, this.parantOperatorId)
+    .subscribe((data: any) => {
+      this.lco_list = Object.keys(data).map(key => {
+        return {
+          operatorname: key,        
+          operatorid: data[key]    
+        };
+      });
+      console.log(this.lco_list); 
+    });
+}
+
   onNoClick(): void {
     this.dialogRef.close();
   }

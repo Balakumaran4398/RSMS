@@ -525,7 +525,7 @@ export class SubscriptionBasedComponent implements OnInit {
     Swal.close();
     Swal.fire({
       title: 'Error!',
-      text: error.message || 'There was an issue generating the PDF CAS form report.',
+      text: error.message || 'There was a problem generating the form report..',
       icon: 'error',
       confirmButtonText: 'Ok'
     });

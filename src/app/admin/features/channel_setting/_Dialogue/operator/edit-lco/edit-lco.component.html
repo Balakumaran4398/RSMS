@@ -24,17 +24,35 @@
                             </div>
                         </div>
                     </div>
-
+    <!-- 
+                        <div class="mb-3">
+                            <label class="form-label">Mobile Number</label>
+                            <input class="" type="text" pattern="0-9" maxlength="10" minlength="10"
+                                (keypress)="onKeydown($event)" formControlName="contactnumber1" [(ngModel)]="   ">
+                            <div *ngIf="form.get('contactnumber1')?.touched && form.get('contactnumber1')?.invalid">
+                                <small class="text-danger" *ngIf="form.get('contactnumber1')?.errors?.['required']">
+                                    Mobile Number is required.
+                                </small>
+                                <small class="text-danger" *ngIf="form.get('contactnumber1')?.errors?.['pattern']">
+                                    Mobile Number must be exactly 10 digits.
+                                </small>
+                            </div>
+                        </div> -->
                     <div class="mb-3">
                         <label class="form-label">Mobile Number</label>
-                        <input class="" type="text" pattern="0-9" maxlength="10" (keypress)="onKeydown($event)"
-                            formControlName="contactnumber1" [(ngModel)]="contactnumber">
-                        <div *ngIf="form.get('contactnumber1')?.invalid && form.get('contactnumber1')?.touched">
+                        <input type="text" maxlength="10" formControlName="contactnumber1"
+                            (keypress)="onKeydown($event)" placeholder="Enter 10-digit number" class="form-control" [(ngModel)]="contactnumber"/>
 
-                            <small class="text-danger" *ngIf="form.get('contactnumber1')?.errors?.['required']">Mobile
-                                Number is
-                                required.</small>
+                        <!-- Validation Message -->
+                        <div *ngIf="form.get('contactnumber1')?.touched && form.get('contactnumber1')?.invalid">
+                            <small class="text-danger" *ngIf="form.get('contactnumber1')?.errors?.['required']">
+                                Mobile number is required.
+                            </small>
+                            <small class="text-danger" *ngIf="form.get('contactnumber1')?.errors?.['pattern']">
+                                Mobile number must be exactly 10 digits.
+                            </small>
                         </div>
+
                     </div>
 
                     <div class="mb-3">

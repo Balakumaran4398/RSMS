@@ -48,7 +48,7 @@ export class FingerPrintComponent {
   fontstyle_1: any = 0;
   positiontype_1: any;
   position_1: any = 0;
-  s_Style: any = 0;
+  s_Style: any;
   repeatfor_1: any;
   timegap_1: any;
   transparancy_1: any;
@@ -273,12 +273,13 @@ export class FingerPrintComponent {
       intendlco: [this.intendidLco, Validators.required],
       intendSmartcard: [this.intendidLco, Validators.required],
       type: ['', Validators.required],
+      showstyle: ['',],
       positiontype: [this.position_1, Validators.required],
       fontsize: ['', Validators.required],
       font_style: [0, Validators.required],
       bgcolor: ['', Validators.required],
       fontcolor: ['', Validators.required],
-      transparancy: [this.transparancy_1|| 0, Validators.required],
+      transparancy: [this.transparancy_1 || 0, Validators.required],
       duration: ['', Validators.required],
       display_duration: ['', Validators.required],
       timegap: [0, Validators.required],
@@ -371,7 +372,7 @@ export class FingerPrintComponent {
         Swal.fire({
           title: 'Error!',
           text: error?.error.castype || error?.error?.intendid || error?.error.serviceid || error?.error.fontsize || error?.error.duration || error?.error.repeatfor || error?.error.timegap ||
-            error?.error.message || error?.error.x || error?.error.y || error?.error.positiontype || 'There was a problem creating the message.',
+            error?.error.message || error?.error.x || error?.error.y || error?.error.positiontype || error?.error.showstyle || 'There was a problem creating the message.',
           icon: 'error',
           confirmButtonText: 'OK',
           timer: 3000,
@@ -531,7 +532,7 @@ export class FingerPrintComponent {
       this.repeatfor_1 = this.fplistLastObj.repeatfor;
       this.timegap_1 = this.fplistLastObj.timegap;
       this.transparancy_1 = this.fplistLastObj.transparancy;
-      this.s_Style = this.fplistLastObj.transparancy;
+      this.s_Style = this.fplistLastObj.showStyle;
       this.hh = this.fplistLastObj.hh;
       this.mm = this.fplistLastObj.mm;
       this.ss = this.fplistLastObj.ss;
@@ -580,6 +581,35 @@ export class FingerPrintComponent {
       }
       this.onSelectionFingerPrint(selectvalue);
       console.log(selectvalue);
+
+
+      console.log("castypeid===>", this.castypeid);
+      const showStyleCtrl = this.form.get('showstyle');
+      console.log("showStyleCtrl===>", showStyleCtrl);
+      if (this.castypeid === 6 || this.castypeid === 1) {
+        console.log("castype = 6 or 1, setting value 0");
+        showStyleCtrl?.setValue(0);
+        showStyleCtrl?.clearValidators();
+        showStyleCtrl?.updateValueAndValidity();
+      } else {
+        console.log("castype is other, require value");
+        showStyleCtrl?.setValidators([Validators.required]);
+        showStyleCtrl?.updateValueAndValidity();
+      }
+
+      // const showStyleCtrl = this.form.get('showstyle');
+
+      // if (this.castypeid === 6 || this.castypeid === 1) {
+      //   console.log("dfdsfds9809809980", this.castypeid);
+
+      //   showStyleCtrl?.clearValidators();
+      //   showStyleCtrl?.updateValueAndValidity();
+      // } else {
+      //   showStyleCtrl?.setValidators([Validators.required]);
+      //   showStyleCtrl?.updateValueAndValidity();
+      // }
+
+
 
     })
     this.updateDisplayValue();

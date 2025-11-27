@@ -846,7 +846,7 @@
                                         (click)="recharge1()">Recharge</button>
 
                                     <button
-                                        *ngIf="role == 'ROLE_OPERATOR'&& isCollected_details ||  role == 'ROLE_SUBLCO' && isCollected_details"
+                                        *ngIf="role == 'ROLE_OPERATOR' && isCollected_details ||  role == 'ROLE_SUBLCO' && isCollected_details"
                                         type="button" class="btn2  recharge bttn me-2" [disabled]="isRecharge"
                                         [ngStyle]="{'background': isRecharge ? 'rgb(160 187 240)' : 'rgb(8, 79, 212)'}"
                                         (click)="onRecharge1Type()">Recharge</button>

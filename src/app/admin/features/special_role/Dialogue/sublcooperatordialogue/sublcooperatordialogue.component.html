@@ -208,6 +208,28 @@
                                 </div>
                             </div>
                         </div>
+                        <div class="col-12 col-md-6 d-flex mt-4 isactive">
+                            <div class="input_box col-12 col-md-4">
+                                <span for="">Status</span>
+                            </div>
+                            <div class="input_box1 col-12 col-md-8">
+
+                                <mat-radio-group formControlName="isactive" style="display: flex;">
+                                    <mat-radio-button class="example-margin" [value]="true">Active</mat-radio-button>
+                                    <mat-radio-button class="example-margin" [value]="false">Deactive</mat-radio-button>
+                                </mat-radio-group>
+                                <!-- <div class="toggle-button-cover">
+                                    <div class="button b2" id="button-10">
+                                        <input type="checkbox" class="checkbox" formControlName="isactive" />
+                                        <div class="knobs">
+                                            <span>YES</span>
+                                        </div>
+                                        <div class="layer"></div>
+                                    </div>
+                                </div> -->
+                            </div>
+                        </div>
+
                     </div>
                 </div>
             </div>

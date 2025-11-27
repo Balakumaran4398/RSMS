@@ -99,7 +99,7 @@ export class LcoRechargeComponent implements OnInit {
       if (this.form.valid) {
         this.swal.Loading1();
         const { userid, password } = this.form.value;
-        this.userservice.LCOLogin(this.role, this.username, userid, password, 2).subscribe(
+        this.userservice.LCOLogin(this.role, this.username, userid, password, 1).subscribe(
           (res: any) => {
             const role = this.storageservice.getUserRole();
             const user = this.storageservice.getUser();

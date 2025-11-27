@@ -1197,6 +1197,31 @@ export class MsorDialogueportsComponent implements OnInit, OnDestroy {
         { headerName: 'CREATED DATE', field: 'created_date', width: 200, },
         { headerName: 'UPDATED DATE', field: 'updated_date', width: 200, },
       ]
+    } else if (this.type == 'log') {
+      this.columnDefs = [
+        { headerName: "S.No", lockPosition: true, valueGetter: 'node.rowIndex+1', headerCheckboxSelection: false, checkboxSelection: false, width: 70, filter: false },
+        { headerName: 'ACCESS IP', field: 'access_ip', width: 250 },
+        { headerName: 'ACTION', field: 'action', width: 250 },
+        { headerName: 'DATA', field: 'data', width: 400 },
+        { headerName: 'REMARKS', field: 'remarks', width: 400 },
+        {
+          headerName: 'LOG DATE',
+          field: 'log_date',
+          width: 200,
+          valueFormatter: (params: any) => {
+            if (!params.value) return '';
+            const date = new Date(params.value);
+            // Format as YYYY-MM-DD HH:mm:ss (local time)
+            const yyyy = date.getFullYear();
+            const mm = String(date.getMonth() + 1).padStart(2, '0');
+            const dd = String(date.getDate()).padStart(2, '0');
+            const hh = String(date.getHours()).padStart(2, '0');
+            const mi = String(date.getMinutes()).padStart(2, '0');
+            const ss = String(date.getSeconds()).padStart(2, '0');
+            return `${yyyy}-${mm}-${dd} ${hh}:${mi}:${ss}`;
+          }
+        }
+      ]
     }
 
   }
@@ -1405,49 +1430,49 @@ export class MsorDialogueportsComponent implements OnInit, OnDestroy {
   getRecharge() {
     if (this.role == 'ROLE_SUBLCO') {
       this.swal.Loading();
-      this.userService.getRechargeHistory(this.role, this.username, this.selectedRechargeType, this.subOperatorId, this.fromdate, this.todate, 0, 4, this.retailerId, 3, 0,0).subscribe(
-          (response: HttpResponse<any>) => {
-            if (response.status === 200) {
-              console.log(response);
-              this.rowData = response.body;
-              const rowCount = this.rowData.length;
-              if (!this.gridOptions.paginationPageSizeSelector.includes(rowCount)) {
-                this.gridOptions.paginationPageSizeSelector.push(rowCount);
-              }
-              this.swal.Success_200();
-            } else if (response.status === 204) {
-              this.swal.Success_204();
-              this.rowData = [];
+      this.userService.getRechargeHistory(this.role, this.username, this.selectedRechargeType, this.subOperatorId, this.fromdate, this.todate, 0, 4, this.retailerId, 3, 0, 0).subscribe(
+        (response: HttpResponse<any>) => {
+          if (response.status === 200) {
+            console.log(response);
+            this.rowData = response.body;
+            const rowCount = this.rowData.length;
+            if (!this.gridOptions.paginationPageSizeSelector.includes(rowCount)) {
+              this.gridOptions.paginationPageSizeSelector.push(rowCount);
             }
-            Swal.close();
-          },
-          (error) => {
-            this.handleApiError(error.error.message, error.status);
+            this.swal.Success_200();
+          } else if (response.status === 204) {
+            this.swal.Success_204();
+            this.rowData = [];
           }
-        );
+          Swal.close();
+        },
+        (error) => {
+          this.handleApiError(error.error.message, error.status);
+        }
+      );
     } else if (this.role == 'ROLE_SUBSCRIBER') {
       console.log(this.subOpid);
       this.swal.Loading();
-      this.userService.getRechargeHistory(this.role, this.username, this.selectedRechargeType, this.subOpid, this.fromdate, this.todate, 0, 5,0, 3, this.subscriberid,0).subscribe(
-          (response: HttpResponse<any>) => {
-            if (response.status === 200) {
-              console.log(response);
-              this.rowData = response.body;
-              const rowCount = this.rowData.length;
-              if (!this.gridOptions.paginationPageSizeSelector.includes(rowCount)) {
-                this.gridOptions.paginationPageSizeSelector.push(rowCount);
-              }
-              // this.swal.Success_200();
-            } else if (response.status === 204) {
-              this.swal.Success_204();
-              this.rowData = [];
+      this.userService.getRechargeHistory(this.role, this.username, this.selectedRechargeType, this.subOpid, this.fromdate, this.todate, 0, 5, 0, 3, this.subscriberid, 0).subscribe(
+        (response: HttpResponse<any>) => {
+          if (response.status === 200) {
+            console.log(response);
+            this.rowData = response.body;
+            const rowCount = this.rowData.length;
+            if (!this.gridOptions.paginationPageSizeSelector.includes(rowCount)) {
+              this.gridOptions.paginationPageSizeSelector.push(rowCount);
             }
-            Swal.close();
-          },
-          (error) => {
-            this.handleApiError(error.error.message, error.status);
+            // this.swal.Success_200();
+          } else if (response.status === 204) {
+            this.swal.Success_204();
+            this.rowData = [];
           }
-        );
+          Swal.close();
+        },
+        (error) => {
+          this.handleApiError(error.error.message, error.status);
+        }
+      );
     }
     else {
       this.smartcard = this.smartcardChange(this.smartcard);
@@ -1459,7 +1484,7 @@ export class MsorDialogueportsComponent implements OnInit, OnDestroy {
           Swal.showLoading(null);
         }
       });
-      this.userService.getRechargeHistory(this.role, this.username, this.selectedRechargeType, this.selectedOperator.value || this.operatorId || 0, this.fromdate, this.todate, this.smartcard, this.useragent, this.selectedSubLcoName, 3, 0,0).subscribe(
+      this.userService.getRechargeHistory(this.role, this.username, this.selectedRechargeType, this.selectedOperator.value || this.operatorId || 0, this.fromdate, this.todate, this.smartcard, this.useragent, this.selectedSubLcoName, 3, 0, 0).subscribe(
         (response: HttpResponse<any>) => {
           if (response.status === 200) {
             this.rowData = response.body;
@@ -1626,7 +1651,7 @@ export class MsorDialogueportsComponent implements OnInit, OnDestroy {
             Swal.close();
             Swal.fire({
               title: 'Error!',
-              text: error?.error?.message || 'There was an issue generating the PDF CAS form report.',
+              text: error?.error?.message || 'There was a problem generating the form report.',
               icon: 'error',
               confirmButtonText: 'Ok'
             });
@@ -1658,7 +1683,7 @@ export class MsorDialogueportsComponent implements OnInit, OnDestroy {
             Swal.close();
             Swal.fire({
               title: 'Error!',
-              text: error?.error?.message || 'There was an issue generating the PDF CAS form report.',
+              text: error?.error?.message || 'There was a problem generating the form report.',
               icon: 'error',
               confirmButtonText: 'Ok'
             });
@@ -1692,7 +1717,7 @@ export class MsorDialogueportsComponent implements OnInit, OnDestroy {
             Swal.close();
             Swal.fire({
               title: 'Error!',
-              text: error?.error?.message || 'There was an issue generating the PDF CAS form report.',
+              text: error?.error?.message || 'There was a problem generating the form report..',
               icon: 'error',
               confirmButtonText: 'Ok'
             });
@@ -1947,7 +1972,7 @@ export class MsorDialogueportsComponent implements OnInit, OnDestroy {
             Swal.close();
             Swal.fire({
               title: 'Error!',
-              text: error?.error?.message || 'There was an issue generating the PDF CAS form report.',
+              text: error?.error?.message || 'There was a problem generating the form report.',
               icon: 'error',
               confirmButtonText: 'Ok'
             });
@@ -1973,7 +1998,7 @@ export class MsorDialogueportsComponent implements OnInit, OnDestroy {
             Swal.close();
             Swal.fire({
               title: 'Error!',
-              text: error?.error?.message || 'There was an issue generating the PDF CAS form report.',
+              text: error?.error?.message || 'There was a problem generating the form report..',
               icon: 'error',
               confirmButtonText: 'Ok'
             });
@@ -1998,7 +2023,7 @@ export class MsorDialogueportsComponent implements OnInit, OnDestroy {
             Swal.close();
             Swal.fire({
               title: 'Error!',
-              text: error?.error?.message || 'There was an issue generating the PDF CAS form report.',
+              text: error?.error?.message || 'There was a problem generating the form report..',
               icon: 'error',
               confirmButtonText: 'Ok'
             });
@@ -2047,7 +2072,7 @@ export class MsorDialogueportsComponent implements OnInit, OnDestroy {
             Swal.close();
             Swal.fire({
               title: 'Error!',
-              text: error?.error?.message || 'There was an issue generating the PDF CAS form report.',
+              text: error?.error?.message || 'There was a problem generating the form report..',
               icon: 'error',
               confirmButtonText: 'Ok'
             });
@@ -2073,7 +2098,7 @@ export class MsorDialogueportsComponent implements OnInit, OnDestroy {
             Swal.close();
             Swal.fire({
               title: 'Error!',
-              text: error?.error?.message || 'There was an issue generating the PDF CAS form report.',
+              text: error?.error?.message || 'There was a problem generating the form report.',
               icon: 'error',
               confirmButtonText: 'Ok'
             });
@@ -2098,7 +2123,7 @@ export class MsorDialogueportsComponent implements OnInit, OnDestroy {
             Swal.close();
             Swal.fire({
               title: 'Error!',
-              text: error?.error?.message || 'There was an issue generating the PDF CAS form report.',
+              text: error?.error?.message || 'There was a problem generating the form report..',
               icon: 'error',
               confirmButtonText: 'Ok'
             });
@@ -2419,7 +2444,7 @@ export class MsorDialogueportsComponent implements OnInit, OnDestroy {
       this.submitted = true;
     }
     this.processingSwal();
-    this.userService.getLcowiseExpirySubCountReport(this.role, this.username, this.selectedYear, this.selectedMonth, this.selectedDate, type)
+    this.userService.getLcowiseExpirySubCountReport(this.role, this.username, this.selectedMonth, this.selectedYear,this.selectedDate, type)
       .subscribe((x: Blob) => {
         if (type == 1) {
           this.reportMaking(x, this.type + '  ' + this.selectedMonthName + '-' + this.selectedYear + '-' + this.selectedDate + ".pdf", 'application/pdf');
@@ -2505,7 +2530,7 @@ export class MsorDialogueportsComponent implements OnInit, OnDestroy {
     Swal.close();
     Swal.fire({
       title: 'Error!',
-      text: error?.message || 'There was an issue generating the PDF CAS form report.',
+      text: error?.error?.message || 'There was a problem generating the form report..',
       icon: 'error',
       confirmButtonText: 'Ok',
       timer: 2000,
@@ -2904,6 +2929,46 @@ export class MsorDialogueportsComponent implements OnInit, OnDestroy {
       );
   }
 
+  // ================================================Logs===============================
+
+  getLogReport() {
+    this.swal.Loading();
+    this.userService.getLogReport(this.role, this.username, this.fromdate, this.todate)
+      .subscribe({
+        next: (res: any) => {
+          console.log('322');
+          console.log(res);
+
+          // Handle 204 or empty response
+          if (!res || (Array.isArray(res) && res.length === 0)) {
+            this.rowData = [];
+            this.swal.Close();
+            this.swal.info1('No data found ');
+            return;
+          }
+
+          this.rowData = res;
+          const rowCount = this.rowData.length;
+
+          if (!this.gridOptions.paginationPageSizeSelector.includes(rowCount)) {
+            this.gridOptions.paginationPageSizeSelector.push(rowCount);
+          }
+
+          this.swal.Close();
+        },
+        error: (err) => {
+          // Check if response code is 204 (No Content)
+          if (err.status === 204) {
+            this.swal.Close();
+            this.swal.info1('No data.');
+          } else {
+            this.swal.Error(err?.error?.message || 'An unexpected error occurred.');
+            this.swal.Close();
+          }
+        }
+      });
+  }
+  // ------------------------------------------------------------------------------------------
   submit() {
     // this.swal.Loading();
     this.rowData = [];
@@ -2928,22 +2993,49 @@ export class MsorDialogueportsComponent implements OnInit, OnDestroy {
     this.submitted = true;
     console.log(this.selectedLcoName);
     console.log(this.selectedOperator);
-    this.userService.getLcoInvoiceDetails(this.role, this.username, this.selectedOperator, this.selectedMonth || null, this.selectedYear || null, type).
-      subscribe({
-        next: (x: Blob) => {
-          this.swal.Close();
+    if (!this.selectedMonth && !this.selectedYear) {
+      this.swal.Close();
+      this.swal.warning1("Please select both Month and Year");
+      return;
+    }
 
+    if (!this.selectedYear) {
+      this.swal.Close();
+      this.swal.warning1("Please select a Year");
+      return;
+    }
+
+    if (!this.selectedMonth) {
+      this.swal.Close();
+      this.swal.warning1("Please select a Month");
+      return;
+    }
+    this.userService.getLcoInvoiceDetails(this.role, this.username, this.selectedOperator, this.selectedMonth || 0, this.selectedYear || 0, type).
+      subscribe({
+        next: (x: any) => {
+          this.swal.Close();
           if (type == 1) {
             this.reportMaking(x, 'OPERATOR WISE GST FILE' + this.selectedMonthName + '-' + this.selectedYear + ".pdf", 'application/pdf');
           } else if (type == 2) {
             this.reportMaking(x, 'OPERATOR WISE GST FILE' + this.selectedMonthName + '-' + this.selectedYear + ".xlsx", 'application/xlsx');
           }
+
         },
         error: (error: any) => {
           this.swal.Close();
-          this.pdfswalError(error?.error.message);
+          if (error.status === 404) {
+            const msg = error?.error?.message || "Invoice Not Generated!" || "No data found ";
+            this.swal.info1(msg);
+            return;
+          }
+          const msg = error?.error?.message || error?.message  || "Something went wrong!";
+          this.pdfswalError(msg);
         }
+
       });
+
+
+
   }
 
   onlinePayment() {

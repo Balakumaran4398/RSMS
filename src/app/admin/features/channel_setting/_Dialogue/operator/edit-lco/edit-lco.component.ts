@@ -103,56 +103,14 @@ export class EditLcoComponent {
   }
 
 
-  // onSubmit() {
-  //   let requestbody = {
-  //     operatorid: this.operatorid,
-  //     operatorname: this.operatorname,
-  //     address: this.address,
-  //     area: this.area,
-  //     state: this.state,
-  //     pincode: this.pincode,
-  //     contactnumber1: this.contactnumber,
-  //     mail: this.mail,
-  //     nameheader: this.nameheader,
-  //     lcobusinessid: this.lcobusinessid,
-  //     userid: this.userid,
-  //     password: this.password,
-  //     paymentid: this.paymentid,
-  //     role: this.role,
-  //     username: this.username
-  //   };
-  //   const missingFields = Object.keys(requestbody);
-  //   this.userService.EditOperator(requestbody).subscribe(
-  //     (res: any) => {
-  //       console.log(res);
-  //       Swal.fire({
-  //         title: 'Success!',
-  //         text: res?.message || 'Operator edited successfully.',
-  //         icon: 'success',
-  //         timer: 2000,
-  //         showConfirmButton: false,
-  //       }).then(() => {
-  //         window.location.reload();
-  //       });
-  //     },
-  //     (error) => {
-  //       console.error(error);
-  //       Swal.fire({
-  //         title: 'Error!',
-  //         text: error?.error?.message || error?.error?.lcobusinessid || error?.error?.paymentid || error?.error?.userid || error?.error?.pincode ||
-  //           error?.error?.state || error?.error?.operatorname || error?.error?.password || error?.error?.mail || error?.error?.contactnumber1 ||
-  //           error?.error?.area || error?.error?.address ||
-  //           'Something went wrong. Please try again.',
-  //         icon: 'error',
-  //         confirmButtonText: 'OK',
-  //       });
-  //     }
-  //   );
-  // }
+
   onSubmit() {
     console.log(this.form.value.operatorname);
-    if (!this.form.valid) {
-      this.form.markAllAsTouched();
+    console.log("fjsiefjsdfk=====", this.form);
+
+
+    if (this.form.invalid && /^[0-9]{10}$/.test(this.form.value.contactnumber1)) {
+
       this.swal.Loading();
       this.userService.EditOperator(this.form.value).subscribe((res: any) => {
         console.log(res);
@@ -163,12 +121,9 @@ export class EditLcoComponent {
           timer: 2000,
           showConfirmButton: false,
         }).then(() => {
-          window.location.reload();
+          // window.location.reload();
         });
         console.log(this.form.value.operatorid);
-
-
-        // this.logCreate('LCO Update Button Clicked', remark, data);
       },
         (error) => {
           console.error(error);

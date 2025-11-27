@@ -215,11 +215,11 @@
                             </span>
                             <input class="date" type="text" pattern="^0\d{2,4}\d{6,8}$" [(ngModel)]="landlineno"
                                 formControlName="landlineno" (keypress)="onKeydown_landline($event)" maxlength="11">
-                            <div *ngIf="Editform.get('landlineno')?.touched && Editform.get('landlineno')?.invalid"
+                            <!-- <div *ngIf="Editform.get('landlineno')?.touched && Editform.get('landlineno')?.invalid"
                                 class="text-danger">
                                 <div *ngIf="Editform.get('landlineno')?.errors?.['required']">landlineno is required.
                                 </div>
-                            </div>
+                            </div> -->
                         </div>
                         <div class="mb-3 display justify-content-between align-items-center livetv">
                             <label>Premium version subscriber app (Live TV)
@@ -580,8 +580,7 @@
                             <div class="cancelcard ">
                                 <div class=" input_box display mb-3">
                                     <div class=" col-12 col-md-6">
-                                        <span style="font-size:14px;font-weight:600;color:#259bb7">Cancel Current
-                                            Subscription</span>
+                                        <span style="font-size:14px;font-weight:600;color:#259bb7">Cancel Current Subscription</span>
                                     </div>
                                     <div class="col-12 col-md-6 value">
                                         <mat-radio-group class="radio-group" aria-labelledby="status"
@@ -644,7 +643,7 @@
                 </div>
                 <div class="col-6 col-md-6 value">
                     <!-- {{smartcardno}} {{newRefreshSmartcard.smartcard}} -->
-                    {{ smartcardno || newRefreshSmartcard?.smartcard || 'Smartcard Not available' }}
+                    {{ newRefreshSmartcard?.smartcard ||smartcardno || 'Smartcard Not available' }}
 
                 </div>
             </div>
@@ -1556,7 +1555,7 @@
                     <span class="me-2">LCO Name</span>
                 </div>
                 <div class="col-6 col-md-6 value">
-                    {{mobile}}
+                    {{operatname}}
                 </div>
             </div>
         </div>
@@ -2236,7 +2235,7 @@
                     </div>
                 </div> -->
 
- <div *ngIf="(role =='ROLE_ADMIN' || role =='ROLE_OPERATOR' || (role =='ROLE_SUBLCO' && sublcoDiscount == 1 && Subwallet)) "
+                <div *ngIf="(role =='ROLE_ADMIN' || role =='ROLE_OPERATOR' || (role =='ROLE_SUBLCO' && sublcoDiscount == 1 && Subwallet)) "
                     class="input_box  mb-3">
                     <div class="d-flex align-items-center justify-content-center">
                         <div class="col-6 col-md-6">
@@ -2258,7 +2257,7 @@
                     </div>
                 </div> -->
                 <!-- <div *ngIf="role =='ROLE_SUBSCRIBER' || (role =='ROLE_SUBLCO' && sublcoDiscount == 1 && Subwallet) ||  (role !='ROLE_SUBLCO')"  class="input_box  mb-3"> -->
-                <div *ngIf="role =='ROLE_SUBSCRIBER'"  class="input_box  mb-3">
+                <div *ngIf="role =='ROLE_SUBSCRIBER'" class="input_box  mb-3">
                     <div class="d-flex align-items-center justify-content-center">
                         <div class="col-6 col-md-6">
                             <span class="me-2">SUB MSO Amount</span>
@@ -2429,7 +2428,7 @@
 </div>
 
 
-<div *ngIf="sType=='addon'" style="overflow-x:hidden ;" >
+<div *ngIf="sType=='addon'" style="overflow-x:hidden ;">
     <div class="Head d-flex justify-content-between align-items-center mb-3">
         <span class="span">ADDON ADD</span>
         <i class="fa fa-close close-icon" (click)="onNoClick()"></i>

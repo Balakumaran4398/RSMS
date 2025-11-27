@@ -1,0 +1,72 @@
+<h3>Bulk QR Code Download</h3>
+<div class="d-flex justify-content-center align-item-center mb-3" style="margin-top: 50px;">
+    <div class="col-12 col-md-4 ">
+        <div class="card p-3">
+            <div class=" display_1 mb-4 mb-2">
+                <div class="input_box col-12 col-md-4 ">
+                    <span style="margin-top: 5%;" for="">LCO</span>
+                </div>
+                <div class="col-12 col-md-8 ">
+                    <select id="ltb" [value]="selectedOperator?.name">
+                        <option selected>Select LCO </option>
+                        <option *ngFor="let operator of filteredOperators" [value]="operator.name"
+                            (click)="onoperatorchange(operator)">
+                            {{ operator.name }}
+                        </option>
+                    </select>
+                </div>
+            </div>
+
+            <div class=" display_1 mb-4 mb-2">
+                <div class="input_box col-12 col-md-4 ">
+                    <span style="margin-top: 5%;" for="">CAS LIST</span>
+                </div>
+                <div class="col-12 col-md-8 ">
+                    <select id="cas" [value]="selectedCas?.name">
+                        <option selected value="0">Select Cas </option>
+                        <option *ngFor="let cas of filteredCasList" [value]="cas.id">
+                            {{ cas.name }}
+                        </option>
+                    </select>
+                </div>
+            </div>
+            <div class=" display_1 mb-4 mb-2">
+                <div class="input_box col-12 col-md-4 ">
+                    <span style="margin-top: 5%;" for="">STATUS</span>
+                </div>
+                <div class="col-12 col-md-8 ">
+                    <select id="type" [(ngModel)]="selectedType" name="type">
+                        <option *ngFor="let type of filteredTypes" [ngValue]="type.id">
+                            {{ type.name }}
+                        </option>
+                    </select>
+                </div>
+            </div>
+            <div class=" display_1 mb-4   mb-2">
+                <!-- <div class=" display_1 mb-4   mb-2" *ngIf="selectedType?.name === 'Sublcowise'"> -->
+                <div class="input_box col-12 col-md-4 ">
+                    <span style="margin-top: 5%;" for="">SUB LCO</span>
+                </div>
+                <div class="col-12 col-md-8 ">
+                    <select id="sublco" [value]="selectedSublco?.name">
+                        <option selected value="0">Select SUB LCO </option>
+                        <option *ngFor="let sublco of filteredSublcoList" [value]="sublco.id">
+                            {{ sublco.name }}
+                        </option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="display_1 justify-content-between align-item-center  mb-2">
+                <div class="input_box col-12 col-md-4">
+                    <span for="">Submit</span>
+                </div>
+                <div class="col-12 col-md-8 d-flex justify-content-start align-items-center">
+                    <button class="btn btn-success mx-3 bttn" (click)="submit()">
+                        Submit
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

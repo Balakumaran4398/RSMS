@@ -117,6 +117,7 @@ import { VoicerecognizeComponent } from './features/voicerecognize/voicerecogniz
 import { PaymentcustomerComponent } from './features/Add payment/paymentcustomer/paymentcustomer.component';
 import { LogmaintainComponent } from './features/logmaintain/logmaintain.component';
 import { AccountInfoComponent } from './features/account-info/account-info.component';
+import { BulkQrComponent } from './features/Bulk_operation/bulk-qr/bulk-qr.component';
 
 
 const routes: Routes = [
@@ -196,6 +197,7 @@ const routes: Routes = [
       { path: 'Bulk_Refresh', component: RefreshComponent },
       { path: 'Recurring', component: RecurringComponent },
       { path: 'Alacarte_Activation', component: AlacarteActivationComponent },
+       { path: 'bulk_qrcode', component: BulkQrComponent },
       // --------------------------------------Reports-----------------------------------
       { path: 'traiReports', component: TraiReportComponent },
       { path: 'msoReports', component: MsoreportsComponent },

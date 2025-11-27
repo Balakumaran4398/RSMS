@@ -385,7 +385,8 @@ export class SubDashboardComponent implements OnInit {
       this.sublcoInfo = this.Sublcopermissionlist.info;
       this.wallet = this.Sublcopermissionlist.wallet;
       this.sublcoDiscount = this.lcoDeatails?.sublcodiscount;
-      this.isCollected_details = this.lcoDeatails?.isCollected;
+      // this.isCollected_details = this.lcoDeatails?.isCollected;
+      this.isCollected_details = this.lcoDeatails?.permissionlist.is_collection;
 
       console.log('isCollected_details', this.isCollected_details);
       console.log('wallet', this.wallet);
@@ -1905,6 +1906,7 @@ export class SubDashboardComponent implements OnInit {
       subId: this.subdetailsList?.subid || null,
       plantype: this.packagePlan || null
     };
+    console.log(dialogData);
 
     const dialogRef = this.dialog.open(SubscriberdialogueComponent, {
       data: dialogData,
@@ -2134,7 +2136,7 @@ export class SubDashboardComponent implements OnInit {
     console.log(this.billTypeValue)
     // let selectedpacklistValue = this.role === 'ROLE_SUBLCO' ? this.rowData1 : this.rows;
     // let selectedpacklistValue = this.role === 'ROLE_OPERATOR' || this.role === 'ROLE_SUBLCO' ? this.rowData1 : this.rows;
-    let selectedpacklistValue = this.role === 'ROLE_SUBLCO'   ? this.rowData1   : this.role === 'ROLE_OPERATOR'    ? this.rowData1    : this.rowData1; 
+    let selectedpacklistValue = this.role === 'ROLE_SUBLCO' ? this.rowData1 : this.role === 'ROLE_OPERATOR' ? this.rowData1 : this.rowData1;
     console.log(selectedpacklistValue);
     console.log('selectedpacklistValue', selectedpacklistValue);
     let requestBody = {
@@ -2197,9 +2199,18 @@ export class SubDashboardComponent implements OnInit {
     this.isConfirmationComplete = true;
     // let selectedpacklistValue = this.role === 'ROLE_SUBLCO' ? this.rowData1 : this.rows;
     // let selectedpacklistValue = this.role === 'ROLE_OPERATOR' || this.role === 'ROLE_SUBLCO' ? this.rows : this.rowData1;
-    let selectedpacklistValue = this.role === 'ROLE_SUBLCO'   ? this.rowData1   : this.role === 'ROLE_OPERATOR'    ? this.rows    : this.rowData1; 
+    // let selectedpacklistValue = this.role === 'ROLE_SUBLCO' ? this.rowData1 : this.role === 'ROLE_OPERATOR' ? this.rows : this.rowData1;
+
+
+    let selectedpacklistValue = this.role === 'ROLE_SUBLCO' ? (this.isCollected_details ? this.rows : this.rowData1) : this.role === 'ROLE_OPERATOR' ? (this.isCollected_details ? this.rows : this.rowData1) : this.rowData1 ;
+
+    // let selectedpacklistValue =( this.role === 'ROLE_SUBLCO' : this.isCollected_details = true ? this.rowData1 : this.rows) : (this.role === 'ROLE_OPERATOR' ? isCollected_details =true ? this.rows : rowData1): this.rows;
     console.log(selectedpacklistValue);
-    
+    console.log(this.role === 'ROLE_SUBLCO', "rows", this.rowData1);
+    console.log(this.role === 'ROLE_OPERATOR', "rows", this.rows);
+    console.log(this.role === 'ROLE_ADMIN', "rows", this.rows);
+    console.log(this.role === 'ROLE_ADMIN', "rows", this.rowData1);
+
     let requestBody = {
       role: this.role,
       username: this.username,

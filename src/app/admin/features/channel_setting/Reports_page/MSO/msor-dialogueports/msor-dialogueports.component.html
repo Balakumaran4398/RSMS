@@ -427,14 +427,6 @@
                         <option *ngFor="let Type of filteredRechargeType" [value]="Type.value">{{ Type.label }}</option>
                     </select>
                 </div>
-                <!-- <div *ngIf="role !== 'ROLE_SUBLCO'" class="input_box me-3">
-                    <select (ngModelChange)="onRechargeType($event)" [(ngModel)]="selectedRechargeType">
-                        <option value='' disabled>Select Type</option>
-                        <option *ngFor="let Type of RechargeType" [value]="Type.value">{{ Type.label }}</option>
-                    </select>
-                </div> -->
-
-
                 <div class=" me-3">
                     <mat-form-field appearance="outline">
                         <mat-date-range-input [rangePicker]="picker" [max]="today">
@@ -1342,18 +1334,18 @@
                 <option value="0" selected>Select Month</option>
                 <option *ngFor="let month of months" [value]="month.value">{{ month.name }}</option>
             </select>
-            <div *ngIf="submitted && !selectedMonth" class="text-danger" style="font-size: small;">
+            <!-- <div *ngIf="submitted && !selectedMonth" class="text-danger" style="font-size: small;">
                 Monrh Requred
-            </div>
+            </div> -->
         </div>
         <div class="mx-3 mb-2">
             <select name="year" id="year" [(ngModel)]="selectedYear">
                 <option value="0" selected>Select Year</option>
                 <option *ngFor="let year of years" [value]="year">{{ year }}</option>
             </select>
-            <div *ngIf="submitted && !selectedYear" class="text-danger" style="font-size: small;">
+            <!-- <div *ngIf="submitted && !selectedYear" class="text-danger" style="font-size: small;">
                 year Requred
-            </div>
+            </div> -->
         </div>
         <div class="mx-3 mb-2">
             <!-- <input type="text" matInput [matAutocomplete]="auto" [(ngModel)]="selectedLcoName"
@@ -1419,4 +1411,49 @@
         (gridReady)="onGridReady($event)" [enableCellTextSelection]="true">
     </ag-grid-angular>
 
+</div>
+
+
+<div *ngIf="type== 'log'">
+    <div class="mb-3">
+        <h4>Log Report</h4>
+    </div>
+    <div class="col-12 col-md-2 d-flex mx-2 mb-2">
+        <button type="button" class="btn btn-primary bttn" (click)="goBack()"><i
+                class="fa-solid fa-reply mx-2"></i>Back</button>
+    </div><br /><br />
+    <div class="col-12 col-md-12 display justify-content-start align-items-center mb-3">
+        <!-- First Section -->
+
+        <div class="display justify-content-start align-items-center">
+
+            <div class=" me-3">
+                <mat-form-field appearance="outline">
+                    <mat-date-range-input [rangePicker]="picker" [max]="today">
+                        <input style="width: 22vh;" matStartDate matInput placeholder="Start date"
+                            (dateChange)="getFromDate($event)">
+                        <input matEndDate matInput placeholder="End date" (dateChange)="getToDate($event)">
+                    </mat-date-range-input>
+                    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                    <mat-date-range-picker #picker></mat-date-range-picker>
+                </mat-form-field>
+            </div>
+        </div>
+
+        <div class="input_box col-10 col-md-3 mx-2 mb-2">
+            <div class="display justify-content-start align-items-center" style="display: flex;">
+                <button class="btn mx-2 bttn" style="background-color: rgb(26, 129, 133); border-radius: 5px;"
+                    (click)="getLogReport()">
+                    <span style="color: white;">Submit</span>
+                </button>
+
+            </div>
+
+        </div>
+    </div>
+
+    <ag-grid-angular #agGrid id="myGrid" domLayout='normal' class="ag-theme-alpine table-class" rowAnimation
+        [gridOptions]="gridOptions" [columnDefs]="columnDefs" [rowData]="rowData" (gridReady)="onGridReady($event)"
+        [enableCellTextSelection]="true">
+    </ag-grid-angular>
 </div>

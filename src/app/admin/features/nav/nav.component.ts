@@ -598,296 +598,296 @@ export class NavComponent implements OnInit, AfterViewInit {
 
     // -----------------------------------_Voice search-----------------------
 
-    const SpeechRecognition = (window as any).SpeechRecognition || (window as any).webkitSpeechRecognition;
+    // const SpeechRecognition = (window as any).SpeechRecognition || (window as any).webkitSpeechRecognition;
 
-    if (!SpeechRecognition) {
-      alert('Speech Recognition is not supported in your browser.');
-      return;
-    }
+    // if (!SpeechRecognition) {
+    //   alert('Speech Recognition is not supported in your browser.');
+    //   return;
+    // }
 
-    const recognition = new SpeechRecognition();
-    recognition.continuous = true;
-    recognition.lang = 'en-US';
-    recognition.interimResults = false;
+    // const recognition = new SpeechRecognition();
+    // recognition.continuous = true;
+    // recognition.lang = 'en-US';
+    // recognition.interimResults = false;
 
-    const output = document.querySelector("#output");
-    // const startBtn = document.querySelector("#start-btn");
-    // const stopBtn = document.querySelector("#stop-btn");
-    const startBtn: HTMLElement | null = document.getElementById('stop-btn');
-    const stopBtn: HTMLElement | null = document.getElementById('start-btn');
+    // const output = document.querySelector("#output");
+    // // const startBtn = document.querySelector("#start-btn");
+    // // const stopBtn = document.querySelector("#stop-btn");
+    // const startBtn: HTMLElement | null = document.getElementById('stop-btn');
+    // const stopBtn: HTMLElement | null = document.getElementById('start-btn');
 
-    if (startBtn && stopBtn) {
-      startBtn.addEventListener("click", () => {
-        startBtn.style.display = 'none';
-        stopBtn.style.display = 'inline';
-        console.log('Start Button:', startBtn);
-        recognition.start();
-      });
+    // if (startBtn && stopBtn) {
+    //   startBtn.addEventListener("click", () => {
+    //     startBtn.style.display = 'none';
+    //     stopBtn.style.display = 'inline';
+    //     console.log('Start Button:', startBtn);
+    //     recognition.start();
+    //   });
 
-      stopBtn.addEventListener("click", () => {
-        stopBtn.style.display = 'none';
-        startBtn.style.display = 'inline';
-        console.log('Stop Button:', stopBtn);
-        recognition.stop();
-      });
-    }
-    console.log('OUTPUT:', output);
+    //   stopBtn.addEventListener("click", () => {
+    //     stopBtn.style.display = 'none';
+    //     startBtn.style.display = 'inline';
+    //     console.log('Stop Button:', stopBtn);
+    //     recognition.stop();
+    //   });
+    // }
+    // console.log('OUTPUT:', output);
 
-    recognition.addEventListener("result", (event: any) => {
-      const transcript = Array.from(event.results)
-        .map((result: any) => result[0].transcript)
-        .join("")
-        .toLowerCase()
-        .trim();
+    // recognition.addEventListener("result", (event: any) => {
+    //   const transcript = Array.from(event.results)
+    //     .map((result: any) => result[0].transcript)
+    //     .join("")
+    //     .toLowerCase()
+    //     .trim();
 
-      console.log("🗣️ Transcript:", transcript);
+    //   console.log("🗣️ Transcript:", transcript);
 
-      if (output) {
-        output.textContent = transcript;
-        console.log(output);
+    //   if (output) {
+    //     output.textContent = transcript;
+    //     console.log(output);
 
-      }
-      const navigateIfMatch = (keyword: string, path: string) => {
-        if (transcript.includes(keyword)) {
-          // recognition.stop();
-          this.navgetToUrl(path);
-        }
-      };
-      if (this.isUser) {
-        navigateIfMatch("dashboard", "/home");
-        navigateIfMatch("top subscription", this.username === 'manikandan' ? "/top_sub_detail" : "/top_subscription");
-        navigateIfMatch("operator details", this.username === 'manikandan' ? "/operator_details" : "/lco_recharge/1");
-        navigateIfMatch("lco recharge", "/lco_recharge/2");
-        navigateIfMatch("admin recharge", "/lco_recharge/3");
-        navigateIfMatch("create subscriber", "/Create_sub");
-        navigateIfMatch("subscriber details", "/subscriber");
-        navigateIfMatch("expiry", "/expiry");
-        navigateIfMatch("not allocated", "/not_allacate_smartcard");
-        navigateIfMatch("allocated", "/not_allacate_smartcard");
-        navigateIfMatch("de allocation", "/smartcard_declaration");
-        navigateIfMatch("re allocation", "/smartcard_reallocation");
-        navigateIfMatch("defective", "/defective_smart");
-        navigateIfMatch("insert", "/insert_sub");
-        navigateIfMatch("fingerprint", "/finger_print");
-        navigateIfMatch("scrolling", "/scrolling");
-        navigateIfMatch("message", "/message");
-        navigateIfMatch("force", "/fource_tuning");
-        navigateIfMatch("mail", "/mail");
-        navigateIfMatch("log", "/logs");
-        navigateIfMatch("broadcaster", "/Broadcast");
-        navigateIfMatch("distributor", "/Distributer");
-        navigateIfMatch("channeltype", "/Channeltype");
-        navigateIfMatch("category", "/categery");
-        navigateIfMatch("channel", "/Channel");
-        navigateIfMatch("package creation", "/PackageCreation");
-        navigateIfMatch("addon", "/Addon");
-        navigateIfMatch("reference", "/PackageReference");
-        navigateIfMatch("package master", "/PackageMaster");
-        if (transcript.includes("lco commission")) {
-          recognition.stop();
-          if (this.username === 'manikandan' && this.navigationList.lcocommission) {
-            this.navgetToUrl('/LcoCommission');
-          } else {
-            this.navgetToUrl('/LcoCommission_credential');
-          }
-        }
-        navigateIfMatch("discount", "/lcoCommissionDashboard");
-        navigateIfMatch("packagewise", "/PackagewiseOperator");
-        navigateIfMatch("vc or chip ID", "/chipid");
-        navigateIfMatch("subscriber import", "/subscriber_import");
-        navigateIfMatch("activation", "/activation");
-        navigateIfMatch("deactivation", "/deactivation");
-        navigateIfMatch("bulksmartcardrefresh", "/smartcard_refresh");
-        navigateIfMatch("addon", "/addon_activation");
-        navigateIfMatch("alacarte", "/Alacarte_Activation");
-        navigateIfMatch("bulkpackageupdation", "/Bulk_Package_Updation");
-        navigateIfMatch("bulk operator", "/bulk_smartcard_creation");
-        navigateIfMatch("subscription extend", "/Subscription_Extend");
-        navigateIfMatch("bulk base change", "/Bulk_Base_Change");
-        navigateIfMatch("bulk reactive", "/Bulk_Refresh");
-        navigateIfMatch("recurring", "/Recurring");
-        navigateIfMatch("lco transfer", "/special_lcotransfer");
-        navigateIfMatch("local broadcasting", "/payment_channel");
-        navigateIfMatch("payment channel ", "/payment_channel");
-        navigateIfMatch("local broadcaster", "/local_payment");
-        navigateIfMatch("trai", "/traiReports");
-        navigateIfMatch("mso", "/msoReports");
+    //   }
+    //   const navigateIfMatch = (keyword: string, path: string) => {
+    //     if (transcript.includes(keyword)) {
+    //       // recognition.stop();
+    //       this.navgetToUrl(path);
+    //     }
+    //   };
+    //   if (this.isUser) {
+    //     navigateIfMatch("dashboard", "/home");
+    //     navigateIfMatch("top subscription", this.username === 'manikandan' ? "/top_sub_detail" : "/top_subscription");
+    //     navigateIfMatch("operator details", this.username === 'manikandan' ? "/operator_details" : "/lco_recharge/1");
+    //     navigateIfMatch("lco recharge", "/lco_recharge/2");
+    //     navigateIfMatch("admin recharge", "/lco_recharge/3");
+    //     navigateIfMatch("create subscriber", "/Create_sub");
+    //     navigateIfMatch("subscriber details", "/subscriber");
+    //     navigateIfMatch("expiry", "/expiry");
+    //     navigateIfMatch("not allocated", "/not_allacate_smartcard");
+    //     navigateIfMatch("allocated", "/not_allacate_smartcard");
+    //     navigateIfMatch("de allocation", "/smartcard_declaration");
+    //     navigateIfMatch("re allocation", "/smartcard_reallocation");
+    //     navigateIfMatch("defective", "/defective_smart");
+    //     navigateIfMatch("insert", "/insert_sub");
+    //     navigateIfMatch("fingerprint", "/finger_print");
+    //     navigateIfMatch("scrolling", "/scrolling");
+    //     navigateIfMatch("message", "/message");
+    //     navigateIfMatch("force", "/fource_tuning");
+    //     navigateIfMatch("mail", "/mail");
+    //     navigateIfMatch("log", "/logs");
+    //     navigateIfMatch("broadcaster", "/Broadcast");
+    //     navigateIfMatch("distributor", "/Distributer");
+    //     navigateIfMatch("channeltype", "/Channeltype");
+    //     navigateIfMatch("category", "/categery");
+    //     navigateIfMatch("channel", "/Channel");
+    //     navigateIfMatch("package creation", "/PackageCreation");
+    //     navigateIfMatch("addon", "/Addon");
+    //     navigateIfMatch("reference", "/PackageReference");
+    //     navigateIfMatch("package master", "/PackageMaster");
+    //     if (transcript.includes("lco commission")) {
+    //       recognition.stop();
+    //       if (this.username === 'manikandan' && this.navigationList.lcocommission) {
+    //         this.navgetToUrl('/LcoCommission');
+    //       } else {
+    //         this.navgetToUrl('/LcoCommission_credential');
+    //       }
+    //     }
+    //     navigateIfMatch("discount", "/lcoCommissionDashboard");
+    //     navigateIfMatch("packagewise", "/PackagewiseOperator");
+    //     navigateIfMatch("vc or chip ID", "/chipid");
+    //     navigateIfMatch("subscriber import", "/subscriber_import");
+    //     navigateIfMatch("activation", "/activation");
+    //     navigateIfMatch("deactivation", "/deactivation");
+    //     navigateIfMatch("bulksmartcardrefresh", "/smartcard_refresh");
+    //     navigateIfMatch("addon", "/addon_activation");
+    //     navigateIfMatch("alacarte", "/Alacarte_Activation");
+    //     navigateIfMatch("bulkpackageupdation", "/Bulk_Package_Updation");
+    //     navigateIfMatch("bulk operator", "/bulk_smartcard_creation");
+    //     navigateIfMatch("subscription extend", "/Subscription_Extend");
+    //     navigateIfMatch("bulk base change", "/Bulk_Base_Change");
+    //     navigateIfMatch("bulk reactive", "/Bulk_Refresh");
+    //     navigateIfMatch("recurring", "/Recurring");
+    //     navigateIfMatch("lco transfer", "/special_lcotransfer");
+    //     navigateIfMatch("local broadcasting", "/payment_channel");
+    //     navigateIfMatch("payment channel ", "/payment_channel");
+    //     navigateIfMatch("local broadcaster", "/local_payment");
+    //     navigateIfMatch("trai", "/traiReports");
+    //     navigateIfMatch("mso", "/msoReports");
 
-        navigateIfMatch("invoice bill", "/msodialogueReports/lcoinvoice");
+    //     navigateIfMatch("invoice bill", "/msodialogueReports/lcoinvoice");
 
-        navigateIfMatch("deduction including gst", "/msodialogueReports/recharge_deduction_including");
-        navigateIfMatch("recharge history", "/msodialogueReports/recharge_history");
-        navigateIfMatch("online payment", "/msodialogueReports/online_payment_special");
-        navigateIfMatch("wallet share", "/msodialogueReports/walletShare");
-        navigateIfMatch("payment collection", "/msodialogueReports/payment_collection_AJK");
-        navigateIfMatch("subscriber bill", "/msodialogueReports/subscriber_bill");
-        navigateIfMatch("user recharge", "/msodialogueReports/user_rechargehistory");
+    //     navigateIfMatch("deduction including gst", "/msodialogueReports/recharge_deduction_including");
+    //     navigateIfMatch("recharge history", "/msodialogueReports/recharge_history");
+    //     navigateIfMatch("online payment", "/msodialogueReports/online_payment_special");
+    //     navigateIfMatch("wallet share", "/msodialogueReports/walletShare");
+    //     navigateIfMatch("payment collection", "/msodialogueReports/payment_collection_AJK");
+    //     navigateIfMatch("subscriber bill", "/msodialogueReports/subscriber_bill");
+    //     navigateIfMatch("user recharge", "/msodialogueReports/user_rechargehistory");
 
-        navigateIfMatch("lcowiseactivesubscriptioncount", "/msodialogueReports/lco_active_subscription");
-        navigateIfMatch("customer activation form", "/msodialogueReports/customer_activation_form");
-        navigateIfMatch("lcowiseexpirycountdifference", "/msodialogueReports/lcowiseExpiryCountDiff");
+    //     navigateIfMatch("lcowiseactivesubscriptioncount", "/msodialogueReports/lco_active_subscription");
+    //     navigateIfMatch("customer activation form", "/msodialogueReports/customer_activation_form");
+    //     navigateIfMatch("lcowiseexpirycountdifference", "/msodialogueReports/lcowiseExpiryCountDiff");
 
-        navigateIfMatch("total lco", "/msodialogueReports/total_lco");
-        navigateIfMatch("lcotransferdetails", "/msodialogueReports/lco_transfer_details");
-        navigateIfMatch("repairsmartcard", "/msodialogueReports/repair_smartcard");
+    //     navigateIfMatch("total lco", "/msodialogueReports/total_lco");
+    //     navigateIfMatch("lcotransferdetails", "/msodialogueReports/lco_transfer_details");
+    //     navigateIfMatch("repairsmartcard", "/msodialogueReports/repair_smartcard");
 
-        navigateIfMatch("monthly broadcaster", "/broadcasterReports/1");
-        navigateIfMatch("over all product", "/broadcasterReports/2");
-        navigateIfMatch("universal count", "/broadcasterReports/3");
-        navigateIfMatch("base product", "/broadcasterReports/4");
-        navigateIfMatch("caswise", "/broadcasterReports/5");
+    //     navigateIfMatch("monthly broadcaster", "/broadcasterReports/1");
+    //     navigateIfMatch("over all product", "/broadcasterReports/2");
+    //     navigateIfMatch("universal count", "/broadcasterReports/3");
+    //     navigateIfMatch("base product", "/broadcasterReports/4");
+    //     navigateIfMatch("caswise", "/broadcasterReports/5");
 
-        navigateIfMatch("all service", "/historyAllReports/1");
-        navigateIfMatch("total smartcard list", "/historyAllReports/2");
-        navigateIfMatch("paired smartcard", "/historyAllReports/3");
-        navigateIfMatch("block list", "/historyAllReports/4");
-        navigateIfMatch("combo package", "/historyAllReports/14");
+    //     navigateIfMatch("all service", "/historyAllReports/1");
+    //     navigateIfMatch("total smartcard list", "/historyAllReports/2");
+    //     navigateIfMatch("paired smartcard", "/historyAllReports/3");
+    //     navigateIfMatch("block list", "/historyAllReports/4");
+    //     navigateIfMatch("combo package", "/historyAllReports/14");
 
-        navigateIfMatch("as on date suspend", "/historyAllReports/14");
-        navigateIfMatch("suspend report for particular duration", "/historyAllReports/12");
-        navigateIfMatch("suspend history", "/historyAllReports/13");
+    //     navigateIfMatch("as on date suspend", "/historyAllReports/14");
+    //     navigateIfMatch("suspend report for particular duration", "/historyAllReports/12");
+    //     navigateIfMatch("suspend history", "/historyAllReports/13");
 
-        navigateIfMatch("scroll history", "/historyAllReports/12");
-        navigateIfMatch("mail history", "/historyAllReports/6");
-        navigateIfMatch("finger history", "/historyAllReports/7");
-        navigateIfMatch("message history", "/historyAllReports/8");
+    //     navigateIfMatch("scroll history", "/historyAllReports/12");
+    //     navigateIfMatch("mail history", "/historyAllReports/6");
+    //     navigateIfMatch("finger history", "/historyAllReports/7");
+    //     navigateIfMatch("message history", "/historyAllReports/8");
 
-        navigateIfMatch("network smartcard status count", "/historyAllReports/9");
-        navigateIfMatch("network smartcard active deactive status count ", "/historyAllReports/10");
+    //     navigateIfMatch("network smartcard status count", "/historyAllReports/9");
+    //     navigateIfMatch("network smartcard active deactive status count ", "/historyAllReports/10");
 
-        navigateIfMatch("channel ageing", "/broadcasterReports/6");
-        navigateIfMatch("package ageing", "/broadcasterReports/7");
+    //     navigateIfMatch("channel ageing", "/broadcasterReports/6");
+    //     navigateIfMatch("package ageing", "/broadcasterReports/7");
 
-      }
-      else if (this.isInventory) {
-        navigateIfMatch("inventory", "/inventor_inventory");
-        if (transcript.includes("license extend")) {
-          recognition.stop();
-          if (this.username === 'manikandan' && this.isLco) {
-            this.navgetToUrl('/inventory_cortonbox_data');
-          } else {
-            this.navgetToUrl('/inventory_license');
-          }
-        }
-        navigateIfMatch("carton box upload", "/inventory_cortonbox");
-      } else if (this.isReception) {
-        navigateIfMatch("dashboard", "/home");
-        navigateIfMatch("top subscription", this.username === 'manikandan' ? "/top_sub_detail" : "/top_subscription");
-        navigateIfMatch("operator details", this.username === 'manikandan' ? "/operator_details" : "/lco_recharge/1");
-        navigateIfMatch("lco recharge", "/lco_recharge/2");
-        navigateIfMatch("admin recharge", "/lco_recharge/3");
-        navigateIfMatch("create subscriber", "/Create_sub");
-        navigateIfMatch("subscriber details", "/subscriber");
-        navigateIfMatch("expiry details", "/expiry");
-        navigateIfMatch("not allocated", "/not_allacate_smartcard");
-        navigateIfMatch("allocated", "/not_allacate_smartcard");
-        navigateIfMatch("de allocation", "/smartcard_declaration");
-        navigateIfMatch("re allocation", "/smartcard_reallocation");
-        navigateIfMatch("defective smartcard", "/defective_smart");
-        navigateIfMatch("insert into subscriber", "/insert_sub");
-        navigateIfMatch("stbmaster", "/smrt_boxid_change");
-        navigateIfMatch("trai reports", "/traiReports");
-        navigateIfMatch("mso reports", "/msoReports");
-        navigateIfMatch("log", "/logs");
-        navigateIfMatch("invoice bill", "/msodialogueReports/lcoinvoice");
-        navigateIfMatch("deduction including gst", "/msodialogueReports/recharge_deduction_including");
-        navigateIfMatch("recharge history", "/msodialogueReports/recharge_history");
-        navigateIfMatch("online payment", "/msodialogueReports/online_payment_special");
-        navigateIfMatch("wallet share", "/msodialogueReports/walletShare");
-        navigateIfMatch("payment collection", "/msodialogueReports/payment_collection_AJK");
-        navigateIfMatch("subscriber bill", "/msodialogueReports/subscriber_bill");
-        navigateIfMatch("user recharge", "/msodialogueReports/user_rechargehistory");
+    //   }
+    //   else if (this.isInventory) {
+    //     navigateIfMatch("inventory", "/inventor_inventory");
+    //     if (transcript.includes("license extend")) {
+    //       recognition.stop();
+    //       if (this.username === 'manikandan' && this.isLco) {
+    //         this.navgetToUrl('/inventory_cortonbox_data');
+    //       } else {
+    //         this.navgetToUrl('/inventory_license');
+    //       }
+    //     }
+    //     navigateIfMatch("carton box upload", "/inventory_cortonbox");
+    //   } else if (this.isReception) {
+    //     navigateIfMatch("dashboard", "/home");
+    //     navigateIfMatch("top subscription", this.username === 'manikandan' ? "/top_sub_detail" : "/top_subscription");
+    //     navigateIfMatch("operator details", this.username === 'manikandan' ? "/operator_details" : "/lco_recharge/1");
+    //     navigateIfMatch("lco recharge", "/lco_recharge/2");
+    //     navigateIfMatch("admin recharge", "/lco_recharge/3");
+    //     navigateIfMatch("create subscriber", "/Create_sub");
+    //     navigateIfMatch("subscriber details", "/subscriber");
+    //     navigateIfMatch("expiry details", "/expiry");
+    //     navigateIfMatch("not allocated", "/not_allacate_smartcard");
+    //     navigateIfMatch("allocated", "/not_allacate_smartcard");
+    //     navigateIfMatch("de allocation", "/smartcard_declaration");
+    //     navigateIfMatch("re allocation", "/smartcard_reallocation");
+    //     navigateIfMatch("defective smartcard", "/defective_smart");
+    //     navigateIfMatch("insert into subscriber", "/insert_sub");
+    //     navigateIfMatch("stbmaster", "/smrt_boxid_change");
+    //     navigateIfMatch("trai reports", "/traiReports");
+    //     navigateIfMatch("mso reports", "/msoReports");
+    //     navigateIfMatch("log", "/logs");
+    //     navigateIfMatch("invoice bill", "/msodialogueReports/lcoinvoice");
+    //     navigateIfMatch("deduction including gst", "/msodialogueReports/recharge_deduction_including");
+    //     navigateIfMatch("recharge history", "/msodialogueReports/recharge_history");
+    //     navigateIfMatch("online payment", "/msodialogueReports/online_payment_special");
+    //     navigateIfMatch("wallet share", "/msodialogueReports/walletShare");
+    //     navigateIfMatch("payment collection", "/msodialogueReports/payment_collection_AJK");
+    //     navigateIfMatch("subscriber bill", "/msodialogueReports/subscriber_bill");
+    //     navigateIfMatch("user recharge", "/msodialogueReports/user_rechargehistory");
 
-        navigateIfMatch("lcowiseactivesubscriptioncount", "/msodialogueReports/lco_active_subscription");
-        navigateIfMatch("customer activation form", "/msodialogueReports/customer_activation_form");
-        navigateIfMatch("lcowiseexpirycountdifference", "/msodialogueReports/lcowiseExpiryCountDiff");
+    //     navigateIfMatch("lcowiseactivesubscriptioncount", "/msodialogueReports/lco_active_subscription");
+    //     navigateIfMatch("customer activation form", "/msodialogueReports/customer_activation_form");
+    //     navigateIfMatch("lcowiseexpirycountdifference", "/msodialogueReports/lcowiseExpiryCountDiff");
 
-        navigateIfMatch("total lco", "/msodialogueReports/total_lco");
-        navigateIfMatch("lcotransferdetails", "/msodialogueReports/lco_transfer_details");
-        navigateIfMatch("repairsmartcard", "/msodialogueReports/repair_smartcard");
+    //     navigateIfMatch("total lco", "/msodialogueReports/total_lco");
+    //     navigateIfMatch("lcotransferdetails", "/msodialogueReports/lco_transfer_details");
+    //     navigateIfMatch("repairsmartcard", "/msodialogueReports/repair_smartcard");
 
-        navigateIfMatch("monthly broadcaster", "/broadcasterReports/1");
-        navigateIfMatch("over all product", "/broadcasterReports/2");
-        navigateIfMatch("universal count", "/broadcasterReports/3");
-        navigateIfMatch("base product", "/broadcasterReports/4");
-        navigateIfMatch("caswise", "/broadcasterReports/5");
+    //     navigateIfMatch("monthly broadcaster", "/broadcasterReports/1");
+    //     navigateIfMatch("over all product", "/broadcasterReports/2");
+    //     navigateIfMatch("universal count", "/broadcasterReports/3");
+    //     navigateIfMatch("base product", "/broadcasterReports/4");
+    //     navigateIfMatch("caswise", "/broadcasterReports/5");
 
-        navigateIfMatch("all service", "/historyAllReports/1");
-        navigateIfMatch("total smartcard list", "/historyAllReports/2");
-        navigateIfMatch("paired smartcard", "/historyAllReports/3");
-        navigateIfMatch("block list", "/historyAllReports/4");
-        navigateIfMatch("combo package", "/historyAllReports/14");
+    //     navigateIfMatch("all service", "/historyAllReports/1");
+    //     navigateIfMatch("total smartcard list", "/historyAllReports/2");
+    //     navigateIfMatch("paired smartcard", "/historyAllReports/3");
+    //     navigateIfMatch("block list", "/historyAllReports/4");
+    //     navigateIfMatch("combo package", "/historyAllReports/14");
 
-        navigateIfMatch("as on date suspend", "/historyAllReports/14");
-        navigateIfMatch("suspend report for particular duration", "/historyAllReports/12");
-        navigateIfMatch("suspend history", "/historyAllReports/13");
+    //     navigateIfMatch("as on date suspend", "/historyAllReports/14");
+    //     navigateIfMatch("suspend report for particular duration", "/historyAllReports/12");
+    //     navigateIfMatch("suspend history", "/historyAllReports/13");
 
-        navigateIfMatch("scroll history", "/historyAllReports/12");
-        navigateIfMatch("mail history", "/historyAllReports/6");
-        navigateIfMatch("finger history", "/historyAllReports/7");
-        navigateIfMatch("message history", "/historyAllReports/8");
+    //     navigateIfMatch("scroll history", "/historyAllReports/12");
+    //     navigateIfMatch("mail history", "/historyAllReports/6");
+    //     navigateIfMatch("finger history", "/historyAllReports/7");
+    //     navigateIfMatch("message history", "/historyAllReports/8");
 
-        navigateIfMatch("network smartcard status count", "/historyAllReports/9");
-        navigateIfMatch("network smartcard active deactive status count ", "/historyAllReports/10");
+    //     navigateIfMatch("network smartcard status count", "/historyAllReports/9");
+    //     navigateIfMatch("network smartcard active deactive status count ", "/historyAllReports/10");
 
-        navigateIfMatch("channel ageing", "/broadcasterReports/6");
-        navigateIfMatch("package ageing", "/broadcasterReports/7");
+    //     navigateIfMatch("channel ageing", "/broadcasterReports/6");
+    //     navigateIfMatch("package ageing", "/broadcasterReports/7");
 
-      } else if (this.isSpecial) {
-        navigateIfMatch("msodetails", "/msodetails");
-        navigateIfMatch("casmaster", "/casmaster");
-        navigateIfMatch("tax master", "/tax");
-        navigateIfMatch("billing", "/invoice");
-        navigateIfMatch("operator", "/special_operator");
-        navigateIfMatch("proof settings", "/proof");
-        navigateIfMatch("lco settings", "/Packageplan");
-        navigateIfMatch("package plan", "/Packageplan");
-        navigateIfMatch("local channel", "/channeldetails");
-        navigateIfMatch("ads upload", "/adsdetails");
-        navigateIfMatch("lco and area change", "/special_area_package");
-        navigateIfMatch("cancel subscription", "/special_cancel_subscription");
-        navigateIfMatch("bulksmartcardrefresh", "/smartcard_refresh");
-        navigateIfMatch("lco transfer", "/special_lcotransfer");
-        navigateIfMatch("bulk operator creation", "/bulk_smartcard_creation");
-        navigateIfMatch("mso reports", "/msoReports");
+    //   } else if (this.isSpecial) {
+    //     navigateIfMatch("msodetails", "/msodetails");
+    //     navigateIfMatch("casmaster", "/casmaster");
+    //     navigateIfMatch("tax master", "/tax");
+    //     navigateIfMatch("billing", "/invoice");
+    //     navigateIfMatch("operator", "/special_operator");
+    //     navigateIfMatch("proof settings", "/proof");
+    //     navigateIfMatch("lco settings", "/Packageplan");
+    //     navigateIfMatch("package plan", "/Packageplan");
+    //     navigateIfMatch("local channel", "/channeldetails");
+    //     navigateIfMatch("ads upload", "/adsdetails");
+    //     navigateIfMatch("lco and area change", "/special_area_package");
+    //     navigateIfMatch("cancel subscription", "/special_cancel_subscription");
+    //     navigateIfMatch("bulksmartcardrefresh", "/smartcard_refresh");
+    //     navigateIfMatch("lco transfer", "/special_lcotransfer");
+    //     navigateIfMatch("bulk operator creation", "/bulk_smartcard_creation");
+    //     navigateIfMatch("mso reports", "/msoReports");
 
-        navigateIfMatch("log", "/logs");
+    //     navigateIfMatch("log", "/logs");
 
-        navigateIfMatch("invoice bill", "/msodialogueReports/lcoinvoice");
+    //     navigateIfMatch("invoice bill", "/msodialogueReports/lcoinvoice");
 
-        navigateIfMatch("deduction including gst", "/msodialogueReports/recharge_deduction_including");
-        navigateIfMatch("recharge history", "/msodialogueReports/recharge_history");
-        navigateIfMatch("online payment", "/msodialogueReports/online_payment_special");
-        navigateIfMatch("wallet share", "/msodialogueReports/walletShare");
-        navigateIfMatch("payment collection", "/msodialogueReports/payment_collection_AJK");
-        navigateIfMatch("subscriber bill", "/msodialogueReports/subscriber_bill");
-        navigateIfMatch("user recharge", "/msodialogueReports/user_rechargehistory");
+    //     navigateIfMatch("deduction including gst", "/msodialogueReports/recharge_deduction_including");
+    //     navigateIfMatch("recharge history", "/msodialogueReports/recharge_history");
+    //     navigateIfMatch("online payment", "/msodialogueReports/online_payment_special");
+    //     navigateIfMatch("wallet share", "/msodialogueReports/walletShare");
+    //     navigateIfMatch("payment collection", "/msodialogueReports/payment_collection_AJK");
+    //     navigateIfMatch("subscriber bill", "/msodialogueReports/subscriber_bill");
+    //     navigateIfMatch("user recharge", "/msodialogueReports/user_rechargehistory");
 
-        navigateIfMatch("lcowiseactivesubscriptioncount", "/msodialogueReports/lco_active_subscription");
-        navigateIfMatch("customer activation form", "/msodialogueReports/customer_activation_form");
-        navigateIfMatch("lcowiseexpirycountdifference", "/msodialogueReports/lcowiseExpiryCountDiff");
+    //     navigateIfMatch("lcowiseactivesubscriptioncount", "/msodialogueReports/lco_active_subscription");
+    //     navigateIfMatch("customer activation form", "/msodialogueReports/customer_activation_form");
+    //     navigateIfMatch("lcowiseexpirycountdifference", "/msodialogueReports/lcowiseExpiryCountDiff");
 
-        navigateIfMatch("total lco", "/msodialogueReports/total_lco");
-        navigateIfMatch("lcotransferdetails", "/msodialogueReports/lco_transfer_details");
-        navigateIfMatch("repairsmartcard", "/msodialogueReports/repair_smartcard");
-        if (transcript.includes("login settings")) {
-          recognition.stop();
-          if (this.username === 'manikandan') {
-            this.navgetToUrl('/loginsettings');
-          } else {
-            this.navgetToUrl('/loginsettings_credential');
-          }
-        }
-      }
-    });
+    //     navigateIfMatch("total lco", "/msodialogueReports/total_lco");
+    //     navigateIfMatch("lcotransferdetails", "/msodialogueReports/lco_transfer_details");
+    //     navigateIfMatch("repairsmartcard", "/msodialogueReports/repair_smartcard");
+    //     if (transcript.includes("login settings")) {
+    //       recognition.stop();
+    //       if (this.username === 'manikandan') {
+    //         this.navgetToUrl('/loginsettings');
+    //       } else {
+    //         this.navgetToUrl('/loginsettings_credential');
+    //       }
+    //     }
+    //   }
+    // });
 
-    recognition.addEventListener("error", (event: any) => {
-      console.error("Speech recognition error:", event.error);
-    });
+    // recognition.addEventListener("error", (event: any) => {
+    //   console.error("Speech recognition error:", event.error);
+    // });
 
-    recognition.addEventListener("end", () => {
-      console.log("Recognition ended.");
-    });
+    // recognition.addEventListener("end", () => {
+    //   console.log("Recognition ended.");
+    // });
   }
   isMobile = false;
   currentBreakpoint: any;

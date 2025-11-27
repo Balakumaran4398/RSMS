@@ -214,6 +214,7 @@ import { VoicerecognizeComponent } from "./features/voicerecognize/voicerecogniz
 import { PaymentcustomerComponent } from "./features/Add payment/paymentcustomer/paymentcustomer.component";
 import { LogmaintainComponent } from "./features/logmaintain/logmaintain.component";
 import { AccountInfoComponent } from "./features/account-info/account-info.component";
+import { BulkQrComponent } from "./features/Bulk_operation/bulk-qr/bulk-qr.component";
 @NgModule({
     declarations: [
         AdminBaseComponent, NavComponent, HomeComponent, NavbarComponent, MsodetailsComponent, CasmasterComponent, HomeLoginCredentialComponent,
@@ -264,7 +265,7 @@ import { AccountInfoComponent } from "./features/account-info/account-info.compo
 
         // -----------------------------------bulk operation-------------------------------
         SubscriberImportComponent, AlacarteActivationComponent, AddonActivationComponent, ActivationComponent, BulkBaseChangeComponent, BulkPageUpdationComponent,
-        DeactivationComponent, SubscriptionExdendComponent, RefreshComponent, RecurringComponent, SmartcardrefreshComponent, BulkoperatorcreationComponent,
+        DeactivationComponent, SubscriptionExdendComponent, RefreshComponent, RecurringComponent, SmartcardrefreshComponent, BulkoperatorcreationComponent,BulkQrComponent,
 
         // --------------------------------------------Local Broadcasting-------------------------------------------------------------------------------
         PaymentUpdateComponent, CreateltbComponent, UpdateLtbComponent,

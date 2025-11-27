@@ -49,6 +49,16 @@ export class SwalService {
       showConfirmButton: false
     });
   }
+  success_3(message: any) {
+    Swal.fire({
+      title: 'Success!',
+      text: message,
+      icon: 'success',
+      timer: 1000,
+      timerProgressBar: true,
+      showConfirmButton: false
+    });
+  }
   warning(message: any) {
     Swal.fire({
       title: 'Warning!',
@@ -59,6 +69,16 @@ export class SwalService {
       showConfirmButton: false
     }).then(() => {
       location.reload();
+    });
+  }
+  warning1(message: any) {
+    Swal.fire({
+      title: 'Warning!',
+      text: message,
+      icon: 'warning',
+      timer: 2000,
+      timerProgressBar: true,
+      showConfirmButton: true
     });
   }
   info(message: any) {
@@ -83,7 +103,7 @@ export class SwalService {
       showConfirmButton: false
     })
   }
-   info2(message: any) {
+  info2(message: any) {
     Swal.fire({
       title: 'Info!',
       text: message,
@@ -158,7 +178,7 @@ export class SwalService {
   Close() {
     Swal.close();
   }
- Alert(title: string, text: string, icon: 'success' | 'error' | 'warning' | 'info') {
+  Alert(title: string, text: string, icon: 'success' | 'error' | 'warning' | 'info') {
     Swal.fire({
       title: title || 'Alert!',
       text: text || '',
@@ -241,6 +261,7 @@ export class SwalService {
       showConfirmButton: true
     });
   }
+  
   Error_404() {
     Swal.fire({
       title: 'Error',

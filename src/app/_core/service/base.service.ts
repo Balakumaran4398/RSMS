@@ -2519,4 +2519,18 @@ export class BaseService {
   getupdateAccountInformationIcas(role: any, username: any, smartcard: any): Observable<any[]> {
     return this.http.get<any[]>(BASE_URL + "/subscriber/updateAccountInformationIcas?role=" + role + "&username=" + encodeURIComponent(username) + "&smartcard=" + smartcard);
   }
+
+  // =========================================================Log Report =========================
+  getLogReport(role: any, username: any, fromdate: any, todate: any): Observable<any[]> {
+    return this.http.get<any[]>(BASE_URL + "/log/GetLogDetails?role=" + role + "&username=" + encodeURIComponent(username) + "&fromdate=" + fromdate + "&todate=" + todate);
+  }
+
+  // =================================================Bulk QR Download =================
+
+  getBulkQRDownload(role: any, username: any, operatorid: any, castype: any, status: any, retailerid: any): Observable<HttpResponse<Blob>> {
+    return this.http.get(BASE_URL + "/bulk/getBulkQRDownload", {
+      params: { role: role, username: username, operatorid: operatorid, castype: castype, status: status, retailerid: retailerid, }, responseType: 'blob', observe: 'response'
+    });
+  }
+
 }
