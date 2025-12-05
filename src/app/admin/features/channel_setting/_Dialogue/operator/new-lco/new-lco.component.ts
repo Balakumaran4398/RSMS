@@ -56,13 +56,12 @@ export class NewLcoComponent {
   ngOnInit() {
     this.form = this.fb.group({
       nameheader: ['', Validators.required],
-      operatorname: ['', Validators.required],
+      operatorname: ['', [Validators.required, Validators.pattern(/^[A-Za-z0-9 ]+$/)]],
       contactnumber1: ['', [Validators.required, Validators.pattern('^[0-9]{10}$')]],
-      contactnumber2: ['', [Validators.required, Validators.pattern('^[0-9]{10}$')]],
+      contactnumber2: ['', [ Validators.pattern('^[0-9]{10}$')]],
       address: ['', Validators.required],
       state: ['', Validators.required],
       userid: ['', [Validators.required, Validators.minLength(5), Validators.maxLength(10)]],
-      // mail: ['', [Validators.required, Validators.email]],
       mail: ['', [Validators.required, Validators.email, this.customEmailValidator()]],
       area: ['', Validators.required],
       pincode: ['', [Validators.required, Validators.pattern('^[0-9]{6}$')]],
@@ -111,26 +110,70 @@ export class NewLcoComponent {
   //   // }
   // }
 
+  // onSubmit() {
+  //   if (!this.form.valid) {
+  //     this.swal.Loading();
+  //     this.userService.NewOperator(this.form.value).subscribe((res: any) => {
+  //       Swal.fire({
+  //         title: 'Success!',
+  //         text: res.message || 'The operator has been added successfully.',
+  //         icon: 'success',
+  //         timer: 2000,
+  //         timerProgressBar: true,
+  //         willClose: () => {
+  //           window.location.reload();
+  //         }
+  //       });
+  //     },
+  //       (error: any) => {
+  //         console.error(error);
+  //         Swal.fire({
+  //           title: 'Error!',
+  //           text: error?.error.operatorname ||
+  //             error?.error.contactnumber2 ||
+  //             error?.error.address ||
+  //             error?.error.area ||
+  //             error?.error.state ||
+  //             error?.error.mail ||
+  //             error?.error.lcobusinessid ||
+  //             error?.error.message ||
+  //             'There was an issue adding the operator.',
+  //           icon: 'error'
+  //         });
+  //       }
+  //     );
+  //   } else {
+  //     this.form.markAllAsTouched();
+  //   }
+  // }
+
+
   onSubmit() {
-    if (!this.form.valid) {
+    console.log(this.form.valid);
+    console.log(this.form.value);
+    if (this.form.valid) {
+
       this.swal.Loading();
-      this.userService.NewOperator(this.form.value).subscribe((res: any) => {
-        Swal.fire({
-          title: 'Success!',
-          text: res.message || 'The operator has been added successfully.',
-          icon: 'success',
-          timer: 2000,
-          timerProgressBar: true,
-          willClose: () => {
-            window.location.reload();
-          }
-        });
-      },
+
+      this.userService.NewOperator(this.form.value).subscribe(
+        (res: any) => {
+          Swal.fire({
+            title: 'Success!',
+            text: res.message || 'The operator has been added successfully.',
+            icon: 'success',
+            timer: 2000,
+            timerProgressBar: true,
+            willClose: () => {
+              window.location.reload();
+            }
+          });
+        },
         (error: any) => {
           console.error(error);
           Swal.fire({
             title: 'Error!',
-            text: error?.error.operatorname ||
+            text:
+              error?.error.operatorname ||
               error?.error.contactnumber2 ||
               error?.error.address ||
               error?.error.area ||
@@ -143,10 +186,14 @@ export class NewLcoComponent {
           });
         }
       );
+
     } else {
+      // highlight all invalid fields
       this.form.markAllAsTouched();
     }
   }
+
+
   onKeydown(event: KeyboardEvent) {
     const key = event.key;
     if (!/^\d$/.test(key) && key !== 'Backspace') {

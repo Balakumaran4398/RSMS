@@ -24,7 +24,7 @@
                             </div>
                         </div>
                     </div>
-    <!-- 
+                    <!-- 
                         <div class="mb-3">
                             <label class="form-label">Mobile Number</label>
                             <input class="" type="text" pattern="0-9" maxlength="10" minlength="10"
@@ -41,9 +41,9 @@
                     <div class="mb-3">
                         <label class="form-label">Mobile Number</label>
                         <input type="text" maxlength="10" formControlName="contactnumber1"
-                            (keypress)="onKeydown($event)" placeholder="Enter 10-digit number" class="form-control" [(ngModel)]="contactnumber"/>
+                            (keypress)="onKeydown($event)" placeholder="Enter 10-digit number" class="form-control"
+                            [(ngModel)]="contactnumber" />
 
-                        <!-- Validation Message -->
                         <div *ngIf="form.get('contactnumber1')?.touched && form.get('contactnumber1')?.invalid">
                             <small class="text-danger" *ngIf="form.get('contactnumber1')?.errors?.['required']">
                                 Mobile number is required.
@@ -106,8 +106,13 @@
                         <label class="form-label">LCO Name</label>
                         <input class="" type="text" id="" name="" value="" formControlName="operatorname"
                             [(ngModel)]="operatorname">
-                        <div *ngIf="form.get('operatorname')?.invalid && form.get('operatorname')?.touched">
-                            <small class="text-danger">LCO Name is required.</small>
+                        <div *ngIf="form.get('operatorname')?.touched">
+                            <small class="text-danger" *ngIf="form.get('operatorname')?.errors?.['required']">
+                                LCO Name is required.
+                            </small>
+                            <small class="text-danger" *ngIf="form.get('operatorname')?.errors?.['pattern']">
+                                Special characters are not accepted.
+                            </small>
                         </div>
                     </div>
 
@@ -139,14 +144,22 @@
 
                     <div class="mb-3">
                         <label class="form-label">Pincode</label>
-                        <input class="" type="text" pattern="0-9" maxlength="6" (keypress)="onKeydown($event)"
-                            [(ngModel)]="pincode" formControlName="pincode">
-                        <div *ngIf="form.get('pincode')?.invalid && form.get('pincode')?.touched">
 
-                            <small class="text-danger" *ngIf="form.get('pincode')?.errors?.['required']">Pincode is
-                                required.</small>
+                        <input type="text" maxlength="6" (keypress)="onKeydown($event)" formControlName="pincode"  [(ngModel)]="pincode">
+
+                        <div *ngIf="form.get('pincode')?.touched">
+
+                            <small class="text-danger" *ngIf="form.get('pincode')?.errors?.['required']">
+                                Pincode is required.
+                            </small>
+
+                            <small class="text-danger" *ngIf="form.get('pincode')?.errors?.['pattern']">
+                                Pincode must be exactly 6 digits.
+                            </small>
+
                         </div>
                     </div>
+
 
                     <div class="mb-3">
                         <label class="form-label">Password</label>
@@ -174,10 +187,9 @@
                 </div>
             </div>
         </div>
+        <div class="d-flex justify-content-center align-item-center mx-5 mb-4">
+            <button type="submit" class="btn btn-success me-2" (click)="onSubmit()">Update</button>
+            <button type="button" class="btn btn-secondary bttn" (click)="toggleedit()">Cancel</button>
+        </div>
     </form>
-</div>
-
-<div class="d-flex justify-content-center align-item-center mx-5 mb-4">
-    <button type="submit" class="btn btn-success me-2" (click)="onSubmit()">Update</button>
-    <button type="button" class="btn btn-secondary bttn" (click)="toggleedit()">Cancel</button>
 </div>

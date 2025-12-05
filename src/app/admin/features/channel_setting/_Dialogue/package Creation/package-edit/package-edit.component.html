@@ -19,8 +19,8 @@
                 <span>Package Rate</span>
             </div>
             <div class="col-12 col-md-6">
-                <input type="text" id="package_rate" class="" maxlength="10" pattern="[0-9]*"
-                    (keydown)="onKeydown($event)" [(ngModel)]="package_rate">
+                <input type="text" id="package_rate" class="" maxlength="10"   pattern="^[0-9]*\.?[0-9]*$"
+                    (keydown)="onKeydown2($event)" [(ngModel)]="package_rate">
             </div>
         </div>
 

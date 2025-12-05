@@ -121,8 +121,8 @@ export class UpdateLcoCommissionComponent implements OnInit {
       }, (err) => {
         this.swal.Error(err?.error?.message);
       });
-    const data = ` Productname: ${this.productname}, ` + ` Producttype: ${this.producttype},` + ` MSO Amount: ${this.msoamount},`;
-    const remark = ` Productname: ${this.productname}, ` + ` Producttype: ${this.producttype},` + ` MSO Amount: ${this.msoamount_1},`;
+    const remark = ` Productname: ${this.productname}, ` + ` Producttype: ${this.producttype},` + ` MSO Amount: ${this.msoamount},`;
+    const  data= ` Productname: ${this.productname}, ` + ` Producttype: ${this.producttype},` + ` MSO Amount: ${this.msoamount_1},`;
     this.logCreate('Distributor Commission Edit Button Clicked', data, remark);
   }
 

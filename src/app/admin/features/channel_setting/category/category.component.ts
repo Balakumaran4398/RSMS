@@ -81,14 +81,14 @@ export class CategoryComponent {
 
   columnDefs: ColDef[] = [
     {
-      headerName: "S.No", lockPosition: true, valueGetter: 'node.rowIndex+1', width: 90, headerCheckboxSelection: true,
+      headerName: "S.No", lockPosition: true, valueGetter: 'node.rowIndex+1', width: 150, headerCheckboxSelection: true,
       checkboxSelection: true, filter: false
     },
 
     {
       headerName: 'CATEGORY NAME',
       field: 'name',
-      width: 600,
+      width: 400,
       editable: true,
       cellEditor: 'agTextCellEditor',
       cellStyle: { textAlign: 'left' },
@@ -108,7 +108,7 @@ export class CategoryComponent {
         const toggleSwitch = document.createElement('div');
         toggleSwitch.textContent = params.value;
         toggleSwitch.style.cursor = 'pointer';
-        toggleSwitch.title = `Edit The Category: ${params.value || ''}`;
+        // toggleSwitch.title = `Edit The Category: ${params.value || ''}`;
         return toggleSwitch;
       }
     },
@@ -213,7 +213,7 @@ export class CategoryComponent {
             console.log(res);
             this.swal.success(res?.message);
             // this.logCreate('Edit Category Details', name, this.oldCategoryName);
-            this.logCreate(`Category [${this.oldCategoryName}] name changed`, name, this.oldCategoryName);
+            this.logCreate(`Category [${this.oldCategoryName}] name changed`, this.oldCategoryName,name);
 
           },
           (err) => {

@@ -193,8 +193,8 @@ export class LcoCommissionComponent {
       const selectedRows = this.gridApi.getSelectedRows();
       this.isAnyRowSelected = selectedRows.length > 0;
       this.rows = selectedRows;
-      this.selectedIds = selectedRows.map((row: any) => row.operatorid); // Adjust 'id' to match your data structure
-      this.selectedname = selectedRows.map((row: any) => row.operatorname); // Adjust 'name' to match your data structure
+      this.selectedIds = selectedRows.map((row: any) => row.operatorid); 
+      this.selectedname = selectedRows.map((row: any) => row.operatorname); 
     }
   }
 

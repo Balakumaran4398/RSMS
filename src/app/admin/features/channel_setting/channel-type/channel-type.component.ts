@@ -81,10 +81,15 @@ export class ChannelTypeComponent {
   columnDefs: ColDef[] = [
     {
       headerName: "S.No", lockPosition: true, valueGetter: 'node.rowIndex+1', headerCheckboxSelection: true,
-      checkboxSelection: true, width: 90, filter: false
+      checkboxSelection: true,
+      //  width: 150,
+        flex:1,
+        filter: false
     },
     {
-      headerName: 'CHANNEL TYPE NAME', width: 600,
+      headerName: 'CHANNEL TYPE NAME', 
+      // width: 600,
+        flex:2,
       field: 'name',
       cellStyle: { textAlign: 'left' },
       editable: true,
@@ -108,7 +113,8 @@ export class ChannelTypeComponent {
     {
       headerName: "STATUS",
       field: 'isactive',
-      width: 870,
+      // width: 600,
+      flex:3,
       cellRenderer: (params: any) => {
         var isActive = params.data.isactive;
 
@@ -190,8 +196,7 @@ export class ChannelTypeComponent {
         this.userService.ChannelType_update(requestBody).subscribe(
           (res: any) => {
             this.swal.success(res?.message);
-            // this.logCreate('ChannelType `${name}` name changed', name, this.selectedName);
-            this.logCreate(`ChannelType [${this.selectedName}] name changed`, name, this.selectedName);
+            this.logCreate(`ChannelType [${this.selectedName}] name changed`,this.selectedName, name);
 
           },
           (err) => {

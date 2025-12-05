@@ -784,8 +784,12 @@ export class BaseService {
     );
   }
 
-  getExpirySubscriberByOperator(role: any, username: any, operatorid: any, fromdate: any, todate: any, format: any): Observable<HttpResponse<any[]>> {
-    return this.http.get<any[]>(BASE_URL + "/subscriber/getExpirySubscriberByOperator?role=" + role + "&username=" + encodeURIComponent(username) + "&operatorid=" + operatorid + "&fromdate=" + fromdate + "&todate=" + todate + "&format=" + format, { observe: 'response' }
+  // getExpirySubscriberByOperator(role: any, username: any, operatorid: any, fromdate: any, todate: any, format: any): Observable<HttpResponse<any[]>> {
+  //   return this.http.get<any[]>(BASE_URL + "/subscriber/getExpirySubscriberByOperator?role=" + role + "&username=" + encodeURIComponent(username) + "&operatorid=" + operatorid + "&fromdate=" + fromdate + "&todate=" + todate + "&format=" + format, { observe: 'response' }
+  //   )
+  // }
+  getExpirySubscriberByOperator(role: any, username: any, operatorid: any, fromdate: any, todate: any, format: any, areaid: any, streetid: any,): Observable<HttpResponse<any[]>> {
+    return this.http.get<any[]>(BASE_URL + "/subscriber/getExpirySubscriberByOperator?role=" + role + "&username=" + encodeURIComponent(username) + "&operatorid=" + operatorid + "&fromdate=" + fromdate + "&todate=" + todate + "&format=" + format + "&areaid=" + areaid + "&streetid=" + streetid, { observe: 'response' }
     )
   }
 

@@ -88,7 +88,7 @@ export class UpdatePackageMasterComponent implements OnInit {
       }
     );
     const data = `CAS Product ID: ${this.product_id}, ` + ` Is Percentage: ${!this.ispercentage},`;
-    const remark = `CAS Product ID: ${this.product_id}, ` + ` Is Percentage: ${this.ispercentage_1},`;
+    const remark = `CAS Product ID: ${this.product_id}, ` + ` Is Percentage: ${this.ispercentage},`;
     this.logCreate('Package Master Button Clicked', remark, data);
   }
   onKeydown(event: KeyboardEvent) {

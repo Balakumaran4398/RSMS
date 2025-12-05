@@ -91,7 +91,7 @@ export class DistributorMasterComponent {
     { headerName: "DISTRIBUTOR NAME", field: 'name', cellEditor: 'agTextCellEditor', width: 300, cellStyle: { textAlign: 'left' }, },
     {
       headerName: "STATUS",
-      field: 'isactive',
+      field: 'isactive',width: 150,
       cellRenderer: (params: any) => {
         const isActive = params.data.isactive;
         const toggleContainer = document.createElement('div');

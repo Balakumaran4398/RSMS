@@ -29,26 +29,43 @@
                         <div class="col-12 col-md-4 ">
                             <label class="form-label">LCO Name</label>
                         </div>
-                        <div class="col-12 col-md-8">
-                            <input class="" type="text" id="" name="" value="" formControlName="operatorname">
+                        <!-- <div class="col-12 col-md-8">
+                            <input class="" type="text" formControlName="operatorname">
                             <div *ngIf="form.get('operatorname')?.invalid && form.get('operatorname')?.touched">
                                 <small class="text-danger">LCO Name is required.</small>
+
+                            </div>
+                        </div> -->
+                        <div class="col-12 col-md-8">
+                            <input type="text" formControlName="operatorname">
+
+                            <div *ngIf="form.get('operatorname')?.touched">
+                                <small class="text-danger" *ngIf="form.get('operatorname')?.errors?.['required']">
+                                    LCO Name is required.
+                                </small>
+                                <small class="text-danger" *ngIf="form.get('operatorname')?.errors?.['pattern']">
+                                    <!-- Only letters, numbers and spaces are allowed. -->
+                                    Special characters are not Accepted.
+                                </small>
                             </div>
                         </div>
+
                     </div>
                     <div class="mb-3 edit">
                         <div class="col-12 col-md-4">
                             <label class="form-label">Mobile Number 1</label>
                         </div>
-                        <div class="col-12 col-md-8">
-                            <input class="" type="text" pattern="0-9" maxlength="10" (keypress)="onKeydown($event)"
-                                formControlName="contactnumber1">
-                            <div *ngIf="form.get('contactnumber1')?.invalid && form.get('contactnumber1')?.touched">
 
-                                <small class="text-danger"
-                                    *ngIf="form.get('contactnumber1')?.errors?.['required']">Mobile
-                                    Number is
-                                    required.</small>
+                        <div class="col-12 col-md-8">
+                            <input type="text" maxlength="10" (keypress)="onKeydown($event)"
+                                formControlName="contactnumber1">
+                            <div *ngIf="form.get('contactnumber1')?.touched">
+                                <small class="text-danger" *ngIf="form.get('contactnumber1')?.errors?.['required']">
+                                    Mobile Number is required.
+                                </small>
+                                <small class="text-danger" *ngIf="form.get('contactnumber1')?.errors?.['pattern']">
+                                    Mobile Number must be exactly 10 digits.
+                                </small>
                             </div>
                         </div>
                     </div>
@@ -56,17 +73,20 @@
                         <div class="col-12 col-md-4">
                             <span class="form-label">Mobile Number 2</span>
                         </div>
-                        <div class="col-12 col-md-8">
-                            <input class="" type="text" pattern="0-9" maxlength="10" (keypress)="onKeydown($event)"
-                                formControlName="contactnumber2">
-                            <div *ngIf="form.get('contactnumber2')?.invalid && form.get('contactnumber2')?.touched">
 
-                                <!-- <small class="text-danger" *ngIf="form.get('contactnumber2')?.errors?.['required']">Mobile
-                                    Number is
-                                    required.</small> -->
+                        <div class="col-12 col-md-8">
+                            <input type="text" maxlength="10" (keypress)="onKeydown($event)"
+                                formControlName="contactnumber2">
+                            <div *ngIf="form.get('contactnumber2')?.touched">
+                                <small class="text-danger" *ngIf="form.get('contactnumber2')?.errors?.['pattern']">
+                                    Mobile Number must be exactly 10 digits.
+                                </small>
+
                             </div>
                         </div>
                     </div>
+
+
                     <div class="mb-3 edit">
                         <div class="col-12 col-md-4">
                             <label class="form-label">Address</label>
@@ -234,7 +254,7 @@
                             <label class="form-label">Operator Name</label>
                         </div>
                         <div class="col-12 col-md-8">
-                            <input class="" type="text" id="" name="" value="" formControlName="operatorname">
+                            <input class="" type="text" formControlName="operatorname">
                             <div *ngIf="form.get('operatorname')?.invalid && form.get('operatorname')?.touched">
                                 <small class="text-danger">LCO Name is required.</small>
                             </div>
@@ -298,7 +318,7 @@
                             </div>
                         </div>
                     </div>
-                    
+
                     <div class="mb-3 edit">
                         <div class="col-12 col-md-4">
                             <label class="form-label">Address</label>
@@ -348,7 +368,7 @@
 
 
 
-                    <div class="mb-3 edit">
+                   <div class="mb-3 edit">
                         <div class="col-12 col-md-4">
                             <label class="form-label">Pincode</label>
                         </div>

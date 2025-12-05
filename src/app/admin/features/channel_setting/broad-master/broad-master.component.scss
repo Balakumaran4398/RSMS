@@ -4,25 +4,36 @@
   text-align: center;
 }
 
-.responsive-grid {
-  width: 100%;
-  max-width: 1200px;
-  margin: auto;
-}
+// .responsive-grid {
+//   width: 100%;
+//   max-width: 1200px;
+//   margin: auto;
+// }
 
 .display {
   display: flex;
 }
 
-@media (max-width: 768px) {
-  .responsive-grid {
-    width: 100%;
-  }
+// @media (max-width: 768px) {
+//   .responsive-grid {
+//     width: 100%;
+//   }
 
-  .display {
-    display: contents;
-  }
+//   .display {
+//     display: contents;
+//   }
+// }
+
+::ng-deep .ag-grid-wrapper {
+  width: 100%;
+  overflow-x: hidden !important;
 }
+
+.table-class {
+  width: 100% !important;
+  min-width: 600px;
+}
+
 
 ::ng-deep .ag-header {
   background-color: #557c9b !important;

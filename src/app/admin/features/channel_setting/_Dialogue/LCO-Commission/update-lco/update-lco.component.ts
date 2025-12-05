@@ -13,21 +13,33 @@ import Swal from 'sweetalert2';
 export class UpdateLcoComponent {
   role: any;
   username: any;
+  id: any;
   usedcount: any;
   sharedcount: any;
   lcogroupid: any;
+  id_1: any;
+  usedcount_1: any;
+  sharedcount_1: any;
+  lcogroupid_1: any;
   lcogroupname: any;
   lcomembershipList: any = [];
-  id: any;
+  userid: any;
+  accessip: any;
   constructor(
     public dialogRef: MatDialogRef<UpdateLcoComponent>, @Inject(MAT_DIALOG_DATA) public data: any, private swal: SwalService, private userservice: BaseService, private cdr: ChangeDetectorRef, private storageservice: StorageService) {
     this.role = storageservice.getUserRole();
     this.username = storageservice.getUsername();
+    this.userid = storageservice.getUserid();
+    this.accessip = storageservice.getAccessip();
     this.lcogroupname = data.groupname;
     this.lcogroupid = data.lcogroupid;
     this.id = data.id;
     this.usedcount = data.usedcount;
     this.sharedcount = data.sharecount;
+    this.lcogroupid_1 = data.lcogroupid;
+    this.id_1 = data.id;
+    this.usedcount_1 = data.usedcount;
+    this.sharedcount_1 = data.sharecount;
     console.log('Initial Data:', data);
     console.log('Initial lcogroupid:', this.lcogroupid);
     console.log('Initial lcogroupname:', this.lcogroupname);
@@ -70,38 +82,32 @@ export class UpdateLcoComponent {
             Swal.showLoading(null);
           }
         });
-        this.userservice.UpdatecomembershipFUP(this.role, this.username, this.id, this.sharedcount, this.lcogroupid)
-          // .subscribe(
-          //   (res: any) => {
-          //     Swal.fire({
-          //       title: 'Success!',
-          //       text: res?.message,
-          //       icon: 'success',
-          //       timer: 2000,
-          //       timerProgressBar: true,
-          //       showConfirmButton: false
-          //     }).then(() => {
-          //       this.dialogRef.close();
-          //     });
-          //   },
-          //   (err: any) => {
-          //     Swal.fire({
-          //       title: 'Error!',
-          //       text: err?.error?.message,
-          //       icon: 'error',
-          //       confirmButtonText: 'OK',
-          //       timer: 2000,
-          //       timerProgressBar: true,
-          //     });
-          //   }
+        // this.userservice.UpdatecomembershipFUP(this.role, this.username, this.id, this.sharedcount, this.lcogroupid)
+        this.userservice.UpdatecomembershipFUP(this.role, this.username, this.usedcount, this.sharedcount, this.lcogroupid)
           .subscribe((res: any) => {
             this.swal.success(res?.message);
+            const  data= `Used Count: ${this.usedcount}, ` + ` Shared Count: ${this.sharedcount},` + `Membership : ${this.lcogroupid}`;
+            const remark = `Used Count: ${this.usedcount_1}, ` + ` Shared Count: ${this.sharedcount_1},` + `Membership : ${this.lcogroupid_1}`;
+            this.logCreate('Package Master Button Clicked', remark, data);
           }, (err) => {
             this.swal.Error(err?.error?.message);
           });
 
       }
     });
+  }
+  logCreate(action: any, remarks: any, data: any) {
+    let requestBody = {
+      access_ip: this.accessip,
+      action: action,
+      remarks: remarks,
+      data: data,
+      user_id: this.userid,
+    }
+    this.userservice.createLogs(requestBody).subscribe((res: any) => {
+      console.log(res);
+
+    })
   }
 }
 

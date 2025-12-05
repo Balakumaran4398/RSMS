@@ -57,7 +57,7 @@ export class BroadMasterComponent implements OnInit {
   isAnyRowSelected: any = false;
   selectedIds: number[] = [];
   selectedtypes: number[] = [];
-  selectedtstatus: any;
+  selectedtstatus: any; 
   hasSelectedRows: boolean = true;
   username: any;
   selectCount: any;
@@ -94,7 +94,7 @@ export class BroadMasterComponent implements OnInit {
 
     {
       headerName: 'BROADCASTER NAME',
-      field: 'broadcastername', width: 550,
+      field: 'broadcastername', width: 400,
 
       cellStyle: { textAlign: 'left', },
       editable: true,
@@ -110,13 +110,13 @@ export class BroadMasterComponent implements OnInit {
         const toggleSwitch = document.createElement('div');
         toggleSwitch.textContent = params.value;
         toggleSwitch.style.cursor = 'pointer';
-        toggleSwitch.title = `Edit The Broadcaster: ${params.value || ''}`;
+        // toggleSwitch.title = `Edit The Broadcaster: ${params.value || ''}`;
         return toggleSwitch;
       }
     },
     {
       headerName: "STATUS",
-      field: 'isactive', width: 500,
+      field: 'isactive', width: 400,
       cellStyle: { textAlign: 'center' },
       filter: false,
       cellRenderer: (params: any) => {
@@ -174,7 +174,6 @@ export class BroadMasterComponent implements OnInit {
   ]
 
   onGridReady(params: { api: any; }) {
-    // this.gridApi.sizeColumnsToFit();
     this.gridApi = params.api;
     this.gridApi.sizeColumnsToFit();
   }

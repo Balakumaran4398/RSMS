@@ -23,10 +23,14 @@ export class ChannelEditComponent {
   distributorid: any;
   tsId: any;
   productid: any;
+  productid1: any;
   serviceid: any;
+  serviceid1: any;
   customerAmount: any;
   status: string = 'Active';
+  status1: string = 'Active';
   commission: any;
+  commission1: any;
   ispercentage: boolean = true;
   ispercentage_1: boolean = true;
   categoryname: any;
@@ -43,10 +47,11 @@ export class ChannelEditComponent {
   channelname_1: any;
   channelId: any;
   channel_rate: any;
+  channel_rate1: any;
   broadcaster_id: any;
   category_id: any;
   channel_type_id: any;
-  isPercentage: boolean;
+  isPercentage: boolean = false;
   isactive = '1';
   ispaid: boolean;
   categoryid: any;
@@ -71,12 +76,15 @@ export class ChannelEditComponent {
     this.accessip = storageservice.getAccessip();
     this.channelname = data.channel_name;
     this.channelname_1 = data.channel_name;
+    this.channel_rate = data.channel_rate;
+    this.channel_rate1 = data.channel_rate;
     this.channelId = data.channel_id;
     this.channellogo = data.channel_logo;
     this.channelfreq = data.channel_freq;
     this.channeldesc = data.channel_desc;
     this.tsId = data.ts_id;
     this.serviceid = data.service_id;
+    this.serviceid1 = data.service_id;
     this.broadcasterRate = data.broadcaster_rate;
     this.oldBroadcastername = data.broadcastername;
     this.broadcastername = data.broadcasterid;
@@ -87,6 +95,7 @@ export class ChannelEditComponent {
     this.inrAmt = data.inr_amt;
     this.channel_typename = data.channeltypeid;
     this.status = data.statusdisplay;
+    this.status1 = data.statusdisplay;
     // this.status = data.isactive;
     // this.isactive = data.statusdisplay;;
 
@@ -94,7 +103,9 @@ export class ChannelEditComponent {
 
     this.ispaid = data.paidstatus;
     this.productid = data.product_id;
+    this.productid1 = data.product_id;
     this.commission = data.customeramount;
+    this.commission1 = data.customeramount;
     this.isPercentage = data.isPercentage;
     this.ispercentage_1 = data.isPercentage;
     // this.channelid = data.channel_id
@@ -205,8 +216,40 @@ export class ChannelEditComponent {
     this.userservice.UPDATE_CHANNEL(requestbody)
       .subscribe((res: any) => {
         this.swal.success(res?.message);
-        const data = ` Channel_name: ${this.channelname}, ` + ` ispercentage: ${this.isPercentage},`;
-        const remark = ` Channel_name: ${this.channelname_1}, ` + ` ispercentage: ${this.ispercentage},`;
+
+        const oldData: { [key: string]: any } = {
+          channel_name: this.channelname,
+          channel_rate: this.channel_rate,
+          product_id: this.productid,
+          service_id: this.serviceid,
+          status: this.status,
+          commission: this.commission,
+          ispercentage: this.isPercentage
+        };
+
+        const newData: { [key: string]: any } = {
+          channel_name: this.channelname_1,
+          channel_rate: this.channel_rate1,
+          product_id: this.productid1,
+          service_id: this.serviceid1,
+          status: this.status1,
+          commission: this.commission1,
+          ispercentage: !this.ispercentage
+        };
+
+        let remarkParts: string[] = [];
+        let dataParts: string[] = [];
+
+        for (const key in oldData) {
+          if (oldData[key] !== newData[key]) {
+            remarkParts.push(`Old ${key}: ${oldData[key]}`);
+            dataParts.push(`New ${key}: ${newData[key]}`);
+          }
+        }
+
+        const remark = remarkParts.join(', ');
+        const data = dataParts.join(', ');
+
         this.logCreate('Channel Edit Button Clicked', remark, data);
       }, (err) => {
         this.swal.Error(err?.error?.message || err?.error?.channel_name || err?.error?.inr_amt || err?.error?.broadcaster_id || err?.error?.product_id

@@ -33,8 +33,19 @@ export class EditLcoComponent {
   nameheader: any;
   paymentid: any = 0;
   lcobusinessid: any = 0;
+  address_1: any;
+  area_1: any;
+  state_1: any;
+  pincode_1: any;
+  contactnumber_1: any;
+  mail_1: any;
+  nameheader_1: any;
+  paymentid_1: any = 0;
+  lcobusinessid_1: any = 0;
   userid: any;
   password: any;
+  userid_1: any;
+  password_1: any;
 
   userid1: any;
   accessip: any;
@@ -56,10 +67,23 @@ export class EditLcoComponent {
       this.mail = data.mail,
       this.nameheader = data.nameheader,
       this.paymentid = data.paymentid,
+      this.password = data.password,
+      this.userid = data.userid
+    this.address_1 = data.address,
+      this.area_1 = data.area,
+      this.state_1 = data.state,
+      this.pincode_1 = data.pincode,
+      this.contactnumber_1 = data.contactnumber1,
+      console.log("Contact Number", this.contactnumber_1);
+
+    this.mail_1 = data.mail,
+      this.nameheader_1 = data.nameheader,
+      this.paymentid_1 = data.paymentid,
       // this.lcobusinessid = data.lcobusinessid,
       this.lcobusinessid = data.lcobusinessid || 0;
-    this.password = data.password,
-      this.userid = data.userid
+
+    this.password_1 = data.password,
+      this.userid_1 = data.userid
     this.type = data.type;
     console.log(this.type);
 
@@ -71,7 +95,7 @@ export class EditLcoComponent {
   ngOnInit() {
     this.form = this.fb.group({
       operatorid: this.operatorid,
-      operatorname: ['', Validators.required],
+      operatorname: ['', [Validators.required, Validators.pattern(/^[A-Za-z0-9 ]+$/)]],
       address: ['', Validators.required],
       area: ['', Validators.required],
       state: ['', Validators.required],
@@ -105,12 +129,10 @@ export class EditLcoComponent {
 
 
   onSubmit() {
-    console.log(this.form.value.operatorname);
-    console.log("fjsiefjsdfk=====", this.form);
-
-
-    if (this.form.invalid && /^[0-9]{10}$/.test(this.form.value.contactnumber1)) {
-
+    console.log(this.form.valid);
+    console.log(this.form.value);
+    // if (this.form.invalid && /^[0-9]{10}$/.test(this.form.value.contactnumber1)) {
+    if (!this.form.invalid) {
       this.swal.Loading();
       this.userService.EditOperator(this.form.value).subscribe((res: any) => {
         console.log(res);
@@ -121,8 +143,8 @@ export class EditLcoComponent {
           timer: 2000,
           showConfirmButton: false,
         }).then(() => {
-          // window.location.reload();
-        });
+          location.reload();
+        })
         console.log(this.form.value.operatorid);
       },
         (error) => {
@@ -147,9 +169,39 @@ export class EditLcoComponent {
           });
         }
       );
-      const data = ` Old Operator Name: ${this.form.value.operatorname}, ` + `  Old Contact: ${this.form.value.contactnumber1}, ` + ` Old Email : ${this.form.value.mail}, ` + ` Old Address : ${this.form.value.address}, ` + ` Old Area:${this.form.value.area}, ` + ` Old State:${this.form.value.state}, ` + ` Old Pincode:${this.form.value.pincode}, ` + ` Old username: ${this.form.value.userid}, ` + ` Old password:${this.form.value.password}, ` + ` Old Business Name:${this.form.value.lcobusinessid}, ` + ` Old Payment Gateway:${this.form.value.paymentid}`;
-      const remark = ` New Operator Name: ${this.operatorname1}, ` + ` New Contact: ${this.contactnumber}, ` + ` New Email : ${this.mail}, ` + ` New Address : ${this.address}, ` + ` New Area:${this.area}` + ` New State:${this.state}, ` + ` New Pincode:${this.pincode}, ` + ` New username: ${this.userid}, ` + ` New password:${this.password}, ` + ` New Business Name:${this.lcobusinessid}, ` + ` New Payment Gateway:${this.paymentid}`;
-      this.logCreate('LCO Update Button Clicked', remark, data);
+      // const data = ` New Operator Name: ${this.form.value.operatorname}, ` + `  New Contact: ${this.form.value.contactnumber1}, ` + ` New Email : ${this.form.value.mail}, ` + ` New Address : ${this.form.value.address}, ` + ` New Area:${this.form.value.area}, ` + ` New State:${this.form.value.state}, ` + ` New Pincode:${this.form.value.pincode}, ` + ` New username: ${this.form.value.userid}, ` + ` New password:${this.form.value.password}, ` + ` New Business Name:${this.form.value.lcobusinessid_1}, ` + ` New Payment Gateway:${this.form.value.paymentid}`;
+      // const remark = ` Old Operator Name: ${this.operatorname1}, ` + ` Old Contact: ${this.contactnumber_1}, ` + ` Old Email : ${this.mail_1}, ` + ` Old Address : ${this.address_1}, ` + ` Old Area:${this.area_1}` + ` Old State:${this.state_1}, ` + ` Old Pincode:${this.pincode_1}, ` + ` Old username: ${this.userid_1}, ` + ` Old password:${this.password_1}, ` + ` Old Business Name:${this.lcobusinessid_1}, ` + ` Old Payment Gateway:${this.paymentid_1}`;
+
+
+      const newData =
+        `New Name header: ${this.form.value.nameheader}, ` +
+        `New Operator Name: ${this.form.value.operatorname}, ` +
+        `New Contact: ${this.form.value.contactnumber1}, ` +
+        `New Email: ${this.form.value.mail}, ` +
+        `New Address: ${this.form.value.address}, ` +
+        `New Area: ${this.form.value.area}, ` +
+        `New State: ${this.form.value.state}, ` +
+        `New Pincode: ${this.form.value.pincode}, ` +
+        `New Username: ${this.form.value.userid}, ` +
+        `New Password: ${this.form.value.password}, ` +
+        `New Business Name: ${this.form.value.lcobusinessid}, ` +
+        `New Payment Gateway: ${this.form.value.paymentid}`;
+
+      const oldData =
+        `Old Name header: ${this.nameheader_1}, ` +
+        `Old Operator Name: ${this.operatorname1}, ` +
+        `Old Contact: ${this.contactnumber_1}, ` +
+        `Old Email: ${this.mail_1}, ` +
+        `Old Address: ${this.address_1}, ` +
+        `Old Area: ${this.area_1}, ` +
+        `Old State: ${this.state_1}, ` +
+        `Old Pincode: ${this.pincode_1}, ` +
+        `Old Username: ${this.userid_1}, ` +
+        `Old Password: ${this.password_1}, ` +
+        `Old Business Name: ${this.lcobusinessid_1}, ` +
+        `Old Payment Gateway: ${this.paymentid_1}`;
+
+      this.logCreate('LCO Update Button Clicked', oldData, newData);
     } else {
       this.form.markAllAsTouched();
     }

@@ -15,13 +15,18 @@ export class AddonEditComponent implements OnInit {
   addon_package_name_1: any;
   addon_package_rate: any;
   addon_package_description: any;
+  addon_package_description1: any;
+  addon_package_rate_1: any;
+  addon_package_description_1: any;
   taxRate: number = 1;
   package_id: any;
   id: any;
   username: any;
   order_id: any;
   broadcaster_id: any;
+  broadcaster_id1: any;
   commission: any;
+  commission1: any;
   tax_amount: any = '0.0';
   customer_amount: any = '0.0';
   mso_amount: any = '0.0';
@@ -43,13 +48,18 @@ export class AddonEditComponent implements OnInit {
     this.id = data.id;
     this.order_id = data.order_id;
     this.broadcaster_id = data.broadcaster_id;
+    this.broadcaster_id1 = data.broadcaster_id;
     this.commission = data.customeramount;
+    this.commission1 = data.customeramount;
     this.ispercentage = data.ispercentage;
     this.ispercentage_1 = data.ispercentage;
     this.addon_package_name = data.addon_package_name;
+    this.addon_package_name_1 = data.addon_package_name;
     this.addon_package_rate = data.addon_package_rate;
+    this.addon_package_rate_1 = data.addon_package_rate;
     this.addon_package_name_1 = data.addon_package_name;
     this.addon_package_description = data.addon_package_description
+    this.addon_package_description1 = data.addon_package_description
     this.tax_amount = 0;
     this.customer_amount = data.customeramount
     this.mso_amount = 0;
@@ -155,7 +165,19 @@ export class AddonEditComponent implements OnInit {
     console.log('invalid-------------------------------' + this.invalid);
 
   }
+  onKeydown2(event: KeyboardEvent) {
+    const allowedKeys = ['Backspace', 'ArrowLeft', 'ArrowRight', 'Tab', 'Delete'];
 
+    if (/^[0-9]$/.test(event.key)) return;
+    if (event.key === '.') {
+      if ((event.target as HTMLInputElement).value.includes('.')) {
+        event.preventDefault();
+      }
+      return;
+    }
+    if (allowedKeys.includes(event.key)) return;
+    event.preventDefault();
+  }
   Update_Addon_package() {
     console.log(this.broadcaster_id);
     const request = {
@@ -188,8 +210,43 @@ export class AddonEditComponent implements OnInit {
       }, (err) => {
         this.swal.Error(err?.error?.message);
       });
-    const remark = ` addon_package_name: ${this.addon_package_name_1}, ` + ` ispercentage: ${this.ispercentage_1},`;
-    const data = ` addon_package_name: ${this.addon_package_name}, ` + ` ispercentage: ${this.ispercentage},`;
+
+
+
+
+        const newData: { [key: string]: any } = {
+          addon_package_name: this.addon_package_name,
+          addon_package_rate: this.addon_package_rate,
+          broadcaster_id: this.broadcaster_id,
+          addon_package_description: this.addon_package_description,
+          commission: this.commission,
+          ispercentage: this.ispercentage
+        };
+
+        const oldData: { [key: string]: any } = {
+          addon_package_name: this.addon_package_name_1,
+          addon_package_rate: this.addon_package_rate_1,
+          broadcaster_id: this.broadcaster_id1,
+          addon_package_description: this.addon_package_description1,
+          commission: this.commission1,
+          ispercentage: !this.ispercentage
+        };
+
+        let remarkParts: string[] = [];
+        let dataParts: string[] = [];
+
+        for (const key in oldData) {
+          if (oldData[key] !== newData[key]) {
+            remarkParts.push(`Old ${key}: ${oldData[key]}`);
+            dataParts.push(`New ${key}: ${newData[key]}`);
+          }
+        }
+
+        const remark = remarkParts.join(', ');
+        const data = dataParts.join(', ');
+
+
+
     this.logCreate('Addon Edit Button Clicked', remark, data);
 
   }

@@ -57,10 +57,13 @@ export class PackageReferenceComponent {
 
   rows: any[] = [];
   agGrid: any;
-
+  userid: any;
+  accessip: any;
   constructor(public dialog: MatDialog, public userservice: BaseService, storageService: StorageService) {
     this.username = storageService.getUsername();
     this.role = storageService.getUserRole();
+    this.userid = storageService.getUserid();
+    this.accessip = storageService.getAccessip();
   }
   selectTab(tab: string) {
     this.selectedTab = tab;
@@ -78,6 +81,34 @@ export class PackageReferenceComponent {
     }
 
   }
+
+  getPackageTypeLabel(tab: any): string {
+    console.log(tab);
+
+    switch (tab) {
+      case 1: return 'BASE PACKAGE';
+      case 2: return 'ADDON PACKAGE';
+      case 3: return 'ALACARTE';
+      default: return 'UNKNOWN';
+    }
+  }
+
+  packageTypeMap: any = {
+    1: 'BASE PACKAGE',
+    2: 'ADDON PACKAGE',
+    3: 'ALACARTE'
+  };
+  CasTypeMap: any = {
+    1: 'RCAS',
+    2: 'GOCAS',
+    3: 'ABVCAS',
+    4: 'TELECAS',
+    5: 'KVCAS',
+    6: 'ICAS',
+    7: 'ENSUTITY',
+    8: 'FCAS'
+  };
+
   getBasePackageData(event: any) {
     this.onSubscriberStatusChange(event)
 
@@ -401,13 +432,12 @@ export class PackageReferenceComponent {
       type: this.selectedTab
     } as any;
     this.rows = this.gridApi.getSelectedRows();
-    // if (this.rows.length === 0) {
-    //   this.rows = this.gridApi.getDisplayedRowAtIndex(0);
-    // }
     requestBody['baselist'] = this.rows;
+    // const casProductId = this.rows?.[0]?.casproductid ?? '';
+    const casProductIds = this.rows.map(row => row.casproductid).filter(id => id !== null && id !== undefined).join(',');
     console.log(requestBody);
-
-
+    const selectedTabLabel = this.packageTypeMap[this.selectedTab];
+    const selectedCasLabel = this.CasTypeMap[this.Castype];
     Swal.fire({
       title: 'Updating...',
       didOpen: () => {
@@ -416,7 +446,9 @@ export class PackageReferenceComponent {
     });
     this.userservice.ProductTeference_SaveAll(requestBody).subscribe(
       (response: any) => {
-        console.log('Product ID updated successfully', response);
+        const remark = ` Cas: ${selectedCasLabel}, ` + ` Type: ${selectedTabLabel},`;
+        const data = ` Cas: ${selectedCasLabel}, ` + ` Type: ${selectedTabLabel},` + `Cas Product ids ;${casProductIds}`;
+        this.logCreate('Addon Edit Button Clicked', remark, data);
         Swal.fire({
           title: 'Success!',
           text: response.message || 'Product ID updated successfully.',
@@ -424,8 +456,9 @@ export class PackageReferenceComponent {
           timer: 2000,
           timerProgressBar: true,
           showConfirmButton: false
+
         }).then(() => {
-          location.reload();
+          // location.reload();
         });
       },
       (error) => {
@@ -443,5 +476,14 @@ export class PackageReferenceComponent {
 
   addnew(type: string): void {
   }
-
+  logCreate(action: any, remarks: any, data: any) {
+    let requestBody = {
+      access_ip: this.accessip,
+      action: action,
+      remarks: remarks,
+      data: data,
+      user_id: this.userid,
+    }
+    this.userservice.createLogs(requestBody).subscribe((res: any) => { console.log(res); })
+  }
 }

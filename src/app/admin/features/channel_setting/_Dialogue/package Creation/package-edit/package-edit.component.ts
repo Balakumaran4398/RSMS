@@ -200,4 +200,19 @@ export class PackageEditComponent implements OnInit {
       event.preventDefault();
     }
   }
+
+  onKeydown2(event: KeyboardEvent) {
+    const allowedKeys = ['Backspace', 'ArrowLeft', 'ArrowRight', 'Tab', 'Delete'];
+
+    if (/^[0-9]$/.test(event.key)) return;
+    if (event.key === '.') {
+      if ((event.target as HTMLInputElement).value.includes('.')) {
+        event.preventDefault();
+      }
+      return;
+    }
+    if (allowedKeys.includes(event.key)) return;
+    event.preventDefault();
+  }
+
 }

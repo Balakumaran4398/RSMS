@@ -29,9 +29,15 @@ export class ExpiryDetailsComponent implements OnInit, OnDestroy {
   searchTerm: string = '';
   searchText: any = '';
   filteredOperators: any[] = [];
+  filteredArea: any[] = [];
+  filteredStreet: any[] = [];
   showDropdown: boolean = false;
   operatorList: any[] = [];
+  areaList: any[] = [];
+  streetList: any[] = [];
   operatorname: any;
+  arearname: any;
+  streetname: any;
   lconame: any;
   rowData: any;
   msodetails: any;
@@ -91,6 +97,8 @@ export class ExpiryDetailsComponent implements OnInit, OnDestroy {
   }
   ngOnDestroy(): void {
     ($('#operator') as any).select2('destroy');
+    ($('#street') as any).select2('destroy');
+    ($('#area') as any).select2('destroy');
   }
 
   ngOnInit(): void {
@@ -104,18 +112,14 @@ export class ExpiryDetailsComponent implements OnInit, OnDestroy {
 
     console.log(this.fromdate);
     console.log(this.todate);
-    // this.dateRangeForm.patchValue({
-    //   fromdate: new Date(),
-    //   todate: new Date()
-    // })
     this.dateRangeForm.patchValue({
       fromdate: this.fromdate,
       todate: this.todate
     })
-    // this.dateRangeForm.get('fromdate').set(this.fromdate);
-    // this.dateRangeForm.get('todate').set(this.todate);
     if (this.role == 'ROLE_OPERATOR') {
       this.operatorIdoperatorId();
+    } else if (this.role == 'ROLE_SUBLCO') {
+      this.SubLCOIdoperatorId();
     }
   }
   ngAfterViewInit() {
@@ -126,6 +130,26 @@ export class ExpiryDetailsComponent implements OnInit, OnDestroy {
     $('#operator').on('change', (event: any) => {
       this.operatorname = event.target.value;
       this.selectOperator1(this.operatorname);
+    });
+    $('#area').select2({
+      placeholder: 'Select Area Name',
+      allowClear: true
+    });
+    $('#area').on('change', (event: any) => {
+      this.arearname = event.target.value;
+      this.selectArea(this.arearname);
+      console.log(this.arearname);
+
+    });
+    $('#street').select2({
+      placeholder: 'Select Street Name',
+      allowClear: true
+    });
+    $('#street').on('change', (event: any) => {
+      this.streetname = event.target.value;
+      console.log(this.streetname);
+
+      // this.getStreetList(this.streetname);
     });
   }
   formatDate(date: Date): string {
@@ -143,6 +167,30 @@ export class ExpiryDetailsComponent implements OnInit, OnDestroy {
         return { name: name, id: value };
       });
       this.filteredOperators = this.operatorList;
+    })
+  }
+  getAreaList(id: any) {
+    console.log(id);
+    this.userservice.getAreaListByOperatorId(this.role, this.username, id).subscribe((data: any) => {
+      console.log(data);
+      this.areaList = data.map((item: any) => ({
+        id: item.id,
+        name: item.name
+      }));
+      console.log(this.areaList);
+      this.filteredArea = this.areaList;
+    })
+  }
+  getStreetList(id: any) {
+    console.log(id);
+    this.userservice.getStreetListByAreaId(this.role, this.username, id).subscribe((data: any) => {
+      console.log(data);
+      this.streetList = data.map((street: any) => ({
+        id: street.id,
+        name: street.name
+      }))
+      console.log(this.streetList);
+      this.filteredStreet = this.streetList;
     })
   }
 
@@ -174,7 +222,12 @@ export class ExpiryDetailsComponent implements OnInit, OnDestroy {
     this.operatorname = event;
     console.log(this.operatorid);
     console.log(this.operatorname);
+    this.getAreaList(this.operatorid)
 
+  }
+  selectArea(event: any) {
+    console.log(event);
+    this.getStreetList(event)
   }
   filteredLcoKeys(): string[] {
     const keys = Object.keys(this.lco_list);
@@ -210,7 +263,9 @@ export class ExpiryDetailsComponent implements OnInit, OnDestroy {
     } else if (this.role == "ROLE_SUBLCO") {
       Op_Id = this.retailerId
     }
-    this.userservice.getExpirySubscriberByOperator(this.role, this.username, Op_Id, this.fromdate, this.todate, this.format)
+    // this.userservice.getExpirySubscriberByOperator(this.role, this.username, Op_Id, this.fromdate, this.todate, this.format)
+    this.userservice.getExpirySubscriberByOperator(this.role, this.username, Op_Id, this.fromdate, this.todate, this.format, this.arearname || 0, this.streetname || 0)
+
       .subscribe(
         (response: HttpResponse<any[]>) => { // Expect HttpResponse<any[]>
           if (response.status === 200) {
@@ -248,7 +303,7 @@ export class ExpiryDetailsComponent implements OnInit, OnDestroy {
     } else if (this.role == "ROLE_SUBLCO") {
       Op_Id = this.retailerId
     }
-    this.userservice.getExpirySubscriberByOperator(this.role, this.username, Op_Id, this.fromdate, this.todate, this.format)
+    this.userservice.getExpirySubscriberByOperator(this.role, this.username, Op_Id, this.fromdate, this.todate, this.format, this.arearname || 0, this.streetname || 0)
       .subscribe(
         (response: HttpResponse<any[]>) => { // Expect HttpResponse<any[]>
           if (response.status === 200) {
@@ -303,7 +358,7 @@ export class ExpiryDetailsComponent implements OnInit, OnDestroy {
     } else if (this.role == "ROLE_SUBLCO") {
       Op_Id = this.retailerId
     }
-    this.userservice.getExpirySubscriberByOperator(this.role, this.username, Op_Id, this.fromdate, this.todate, this.format_1).subscribe(
+    this.userservice.getExpirySubscriberByOperator(this.role, this.username, Op_Id, this.fromdate, this.todate, this.format_1, this.arearname || 0, this.streetname || 0).subscribe(
       (response: HttpResponse<any[]>) => { // Expect HttpResponse<any[]>
         if (response.status === 200) {
           this.rowData = response.body;
@@ -363,9 +418,21 @@ export class ExpiryDetailsComponent implements OnInit, OnDestroy {
       this.lcoId = this.lcoDeatails?.operatorid;
       console.log(this.lcoId);
       this.operatorname = this.lcoDeatails?.operatorname;
+      this.getAreaList(this.lcoId)
     })
   }
+  SubLCOIdoperatorId() {
+    console.log('222222222-------ROLE_SUBLCO');
 
+    this.userservice.getSublcoDetails(this.role, this.username).subscribe((data: any) => {
+      console.log(data);
+      console.log('111111111111111');
+      this.lcoDeatails = data;
+      this.retailerId = this.lcoDeatails?.operatorid;
+      this.getAreaList(this.retailerId)
+
+    })
+  }
 
   handleApiError(error: any) {
     if (error.status === 400) {

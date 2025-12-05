@@ -25,15 +25,44 @@
                     <span for="">Operator</span>
                 </div>
                 <div class=" custom-select  operator_width  mb-2 mx-2">
-                    <select id="operator" [(ngModel)]="operatorname">
+                    <select id="operator" [(ngModel)]="operatorname"    (ngModelChange)="selectOperator1($event)">
                         <option value="0" selected>ALL Operator</option>
                         <option *ngFor="let operator of filteredOperators" [value]="operator.id"
-                            (ngModelChange)="selectOperator1($event)">
+                         >
                             {{ operator.name }}
                         </option>
                     </select>
                 </div>
             </div>
+            <div *ngIf="role === 'ROLE_OPERATOR' || role === 'ROLE_SUBLCO'" class=" display_1  mb-3">
+                <div class="input_box col-12 col-md-4">
+                    <span for="">Area</span>
+                </div>
+                <div class="custom-select operator_width mb-2 mx-2">
+                    <select id="area" [(ngModel)]="arearname" (ngModelChange)="selectArea($event)">
+                        <option value="0" selected>ALL Area</option>
+
+                        <option *ngFor="let area of filteredArea" [value]="area.id">
+                            {{ area.name }}
+                        </option>
+                    </select>
+                </div>
+
+            </div>
+            <div *ngIf="role === 'ROLE_OPERATOR' || role === 'ROLE_SUBLCO'" class=" display_1  mb-3">
+                <div class="input_box col-12 col-md-4">
+                    <span for="">Street</span>
+                </div>
+                <div class=" custom-select  operator_width  mb-2 mx-2">
+                    <select id="street" [(ngModel)]="streetname">
+                        <option value="0" selected>ALL Street</option>
+                        <option *ngFor="let street of filteredStreet" [value]="street.id">
+                            {{ street.name }}
+                        </option>
+                    </select>
+                </div>
+            </div>
+
             <div class="display_1 justify-content-between align-item-center mb-3">
                 <div class="input_box col-12 col-md-4">
                     <span for="">Submit</span>
@@ -56,7 +85,7 @@
                     <div class="export-icon" (click)="exportAsXLSX1()">
                         <img src="/assets/images/icons/Excel.png" alt="Excel Icon">
                     </div>
-                                </div>
+                </div>
             </div>
         </div>
     </div>
